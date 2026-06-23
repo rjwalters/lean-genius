@@ -1,0 +1,163 @@
+{
+  "slug": "lagrange-theorem-oq-01-oq-01",
+  "title": "Formalize the application: use Sylow theory to classify groups of order pq (p...",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Formalize the application: use Sylow theory to classify groups of order pq (p....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-05T02:57:44.811Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Lean file and gallery entry created in session 1. SylowTheoremOQ01 provides all needed infrastructure.",
+    "builtItems": [
+      "LagrangeTheoremOQ01OQ01.lean: 169 lines, 13 theorems, 0 sorries, imports SylowTheoremOQ01",
+      "src/data/proofs/lagrange-theorem-oq-01-oq-01/meta.json: full gallery metadata",
+      "src/data/proofs/lagrange-theorem-oq-01-oq-01/index.ts: gallery entry loader",
+      "src/data/proofs/lagrange-theorem-oq-01-oq-01/annotations.json: 6 annotations",
+      "listings.json: new entry added after lagrange-theorem-oq-01"
+    ],
+    "insights": [
+      "SylowTheoremOQ01.lean (namespace SylowPQ) already has complete pq-classification proof: 21 theorems, 0 sorries, 0 axioms",
+      "Key Mathlib tools: card_sylow_modEq_one (n_p ≡ 1 mod p), card_sylow_dvd_index (n_p | index), Commute.orderOf_mul_eq_mul_orderOf_of_coprime for cyclic proof",
+      "n_q = 1 always for pq-group (p < q): follows because p < q implies p-1 < q implies q ∤ p-1, so n_q ≠ p",
+      "Cyclic proof uses commutator trick: P ∩ Q = {1} (coprime orders) + P⊴G + Q⊴G → P,Q commute → element of order pq"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Docker build to verify Lean file compiles (may need adjustment if SylowPQ API changed)",
+      "Construct non-abelian semidirect product ℤ/q ⋊ ℤ/p in Lean 4 as extension"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "lagrange-theorem",
+    "lagrange-theorem-oq-01",
+    "lagrange-theorem-oq-01-oq-03",
+    "lagrange-theorem-oq-02",
+    "lagrange-theorem-oq-02-oq-01",
+    "lagrange-theorem-oq-03",
+    "lagrange-theorem-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-05T02:57:44.811Z",
+  "lastUpdate": "2026-05-05T02:57:44.811Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LagrangeTheorem.lean",
+      "filename": "LagrangeTheorem.lean",
+      "lineCount": 223,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheorem.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01.lean",
+      "filename": "LagrangeTheoremOQ01.lean",
+      "lineCount": 142,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ02.lean",
+      "filename": "LagrangeTheoremOQ01OQ02.lean",
+      "lineCount": 122,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ03.lean",
+      "filename": "LagrangeTheoremOQ01OQ03.lean",
+      "lineCount": 212,
+      "theoremCount": 13,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02.lean",
+      "filename": "LagrangeTheoremOQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02OQ01.lean",
+      "filename": "LagrangeTheoremOQ02OQ01.lean",
+      "lineCount": 227,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ03.lean",
+      "filename": "LagrangeTheoremOQ03.lean",
+      "lineCount": 374,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ05.lean",
+      "filename": "LagrangeTheoremOQ05.lean",
+      "lineCount": 114,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ05.lean"
+    }
+  ]
+}

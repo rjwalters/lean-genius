@@ -1,0 +1,148 @@
+[
+  {
+    "id": "ann-1213-problem-setup",
+    "proofId": "erdos-1213",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "Sequences with Bounded Gaps and Interval Sums",
+    "content": "The problem considers strictly increasing sequences a₁ < a₂ < ... with a₁ = a and gaps aᵢ₊₁ - aᵢ ≤ K. An 'interval' I here means a consecutive block of indices [l, r], and its sum is ∑_{i=l}^{r} aᵢ. The constraint a₁ = a fixes the starting value, while the gap condition K ≥ aᵢ₊₁ - aᵢ ≥ 1 forces the sequence to grow by at most K each step. The problem asks: for long enough sequences (n > f(a,K)), must two distinct intervals [l₁,r₁] ≠ [l₂,r₂] have the same sum?",
+    "mathContext": "Sequence: $a = a_1 < a_2 < \\cdots < a_n$ with $1 \\leq a_{i+1} - a_i \\leq K$. Elements satisfy: $a + i - 1 \\leq a_i \\leq a + K(i-1)$. Interval sum: $S(l,r) = \\sum_{i=l}^{r} a_i$. Range of interval sums: $S(l,r) \\in [\\binom{r-l+2}{2} + a(r-l+1) - \\binom{r-l+1}{2}, a(r-l+1) + K\\binom{r-l+1}{2}] \\approx [a(r-l+1), (a+K(r-l))(r-l+1)]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strictly increasing sequences",
+      "bounded differences",
+      "contiguous sub-array sums",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "integer sequences",
+      "contiguous subarray",
+      "sum of arithmetic-like sequences"
+    ]
+  },
+  {
+    "id": "ann-1213-pigeonhole",
+    "proofId": "erdos-1213",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "Pigeonhole Principle: More Intervals than Possible Sum Values",
+    "content": "The core argument: a sequence of length n has n(n+1)/2 distinct intervals (pairs (l,r) with l ≤ r). Each interval sum lies in [a, (a+K(n-1))·n]. If n(n+1)/2 exceeds the number of distinct integers in this range, the pigeonhole principle guarantees two intervals with the same sum. This gives a crude bound of roughly f(a,K) ~ (Kn)^(1/2), but this is the wrong direction—we need n large so there are many intervals. The actual bound requires tracking both the number of intervals and the range of sums more carefully.",
+    "mathContext": "Number of intervals: $\\binom{n+1}{2} = n(n+1)/2$. Range of sums: at most $M = (a + Kn) \\cdot n - a \\approx Kn^2$. Pigeonhole gives: if $n(n+1)/2 > M \\approx Kn^2$, a collision exists. But $n(n+1)/2 > Kn^2$ requires $n < 1/(2K) - 1$, which is only useful for small $K$. The Hegyvári bound $f(a,K) \\ll a \\cdot e^{O(K)}$ uses a more refined argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "Finset.exists_ne_map_eq_of_card_lt",
+      "interval counting",
+      "sum range estimation"
+    ],
+    "prerequisites": [
+      "pigeonhole principle",
+      "counting intervals in a sequence",
+      "bounding sums of bounded-gap sequences"
+    ]
+  },
+  {
+    "id": "ann-1213-hegyvari-bound",
+    "proofId": "erdos-1213",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "Hegyvári's 1986 Result: f(a,K) ≪ a·e^{O(K)}",
+    "content": "Hegyvári [He86] proved the existence of f(a,K) with the exponential bound f(a,K) ≪ a·e^{O(K)}. The exponential dependence on K likely arises from an inductive argument: for gap bound K+1, one builds on the case K by considering how additional gaps interact. The key difficulty is that interval sums grow faster when gaps are large. Hegyvári himself noted the exponential seems improvable—he 'believes that the exponential dependence on K here is not best possible', suggesting a polynomial bound f(a,K) ≪ a·K^C may hold.",
+    "mathContext": "$f(a, K) \\ll a \\cdot e^{O(K)}$ (Hegyvári 1986). The implicit constant in $e^{O(K)}$ is unspecified. For fixed $K$, $f(a,K) = O(a)$—linear in $a$. The conjecture is $f(a,K) \\ll a \\cdot K^c$ for some constant $c > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hegyvári 1986",
+      "exponential vs polynomial bounds",
+      "inductive arguments",
+      "bounded gaps analysis"
+    ],
+    "prerequisites": [
+      "big-O and ≪ notation",
+      "exponential growth vs polynomial growth",
+      "induction on gap bound K"
+    ]
+  },
+  {
+    "id": "ann-1213-van-der-waerden",
+    "proofId": "erdos-1213",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "insight",
+    "title": "Combinatorial Flavor: Ramsey Theory for Interval Sums",
+    "content": "This problem fits the mold of combinatorial Ramsey theory: any long enough structure must contain a specified substructure. Here the 'structure' is a sequence with bounded gaps, and the 'substructure' is two equal-sum intervals. The Van der Waerden numbers W(r,k) (minimum N such that any r-coloring of {1,...,N} contains a monochromatic k-term arithmetic progression) are analogous: one bounds the threshold as a function of parameters. Unlike Van der Waerden numbers (whose exact values are very hard to compute), the threshold f(a,K) seems to have a cleaner structure due to the explicit gap condition.",
+    "mathContext": "Analogy: Van der Waerden numbers $W(2;3) = 9$ (min $N$ so every 2-coloring of $[N]$ has a monochromatic 3-AP). Here: $f(a,K)$ is the min $n$ so every bounded-gap sequence of length $n$ starting at $a$ has two equal-sum intervals. Both are existence thresholds, but $f(a,K)$ is about sequences, not colorings.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Van der Waerden theorem",
+      "Ramsey numbers",
+      "Hales-Jewett theorem",
+      "combinatorial existence theorems"
+    ],
+    "prerequisites": [
+      "Van der Waerden theorem statement",
+      "Ramsey theory basics",
+      "arithmetic progressions in sets"
+    ]
+  },
+  {
+    "id": "ann-1213-mathlib-import",
+    "proofId": "erdos-1213",
+    "range": {
+      "startLine": 16,
+      "endLine": 16
+    },
+    "type": "concept",
+    "title": "Mathlib Import: Available Tools for Formalization",
+    "content": "Importing all of Mathlib gives access to the complete toolkit for a future formalization: `StrictMono` for the strictly-increasing condition, `Finset.Ico l r` for contiguous index intervals, `Finset.sum` for interval sums, and crucially `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` — Mathlib's finitary pigeonhole principle. The pigeonhole lemma states: if |s| > |t| and f maps s into t, there exist distinct x, y ∈ s with f(x) = f(y). Applied with s = set of index-intervals and f = interval-sum function, it yields two intervals with the same sum once the number of intervals exceeds the range of sums.",
+    "mathContext": "Key Mathlib lemmas: `Finset.exists_ne_map_eq_of_card_lt_of_maps_to : s.card > t.card → (∀ x ∈ s, f x ∈ t) → ∃ x ∈ s, ∃ y ∈ s, x ≠ y ∧ f x = f y`. Also: `Finset.card_Ico : (Finset.Ico l r).card = r - l`, `Finset.sum_Ico_eq_sum_range`, `StrictMono.lt_iff_lt`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.exists_ne_map_eq_of_card_lt_of_maps_to",
+      "StrictMono",
+      "Finset.Ico",
+      "Finset.sum",
+      "Mathlib4"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib structure",
+      "Finset API"
+    ]
+  },
+  {
+    "id": "ann-1213-lean-formalization",
+    "proofId": "erdos-1213",
+    "range": {
+      "startLine": 18,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Lean Stub: Formalizing the Bounded-Gap Sequence Condition",
+    "content": "The current Lean content is `erdos_1213 : True := by sorry`. A formalization would require: (1) a type for strictly increasing bounded-gap sequences, expressible as `(f : ℕ → ℕ) (hstrict : StrictMono f) (hgap : ∀ i, f (i+1) - f i ≤ K)`; (2) a definition of interval sum `intervalSum f l r = ∑ i in Finset.Ico l r, f i`; (3) a proof that for n > f(a,K), there exist l₁ ≤ r₁ and l₂ ≤ r₂ with (l₁,r₁) ≠ (l₂,r₂) and `intervalSum f l₁ r₁ = intervalSum f l₂ r₂`. Mathlib's `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` (finitary pigeonhole) is the key lemma.",
+    "mathContext": "Lean 4 sketch: `def BoundedGapSeq (a K : ℕ) (n : ℕ) : Type := {f : Fin n → ℕ // f 0 = a ∧ StrictMono f ∧ ∀ i, f i.succ - f i ≤ K}`. Interval sum: `def S (f : Fin n → ℕ) (l r : Fin n) := ∑ i in Finset.Ico l r, f i`. Pigeonhole: `Finset.exists_ne_map_eq_of_card_lt_of_maps_to`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "StrictMono in Mathlib",
+      "Finset.Ico",
+      "Finset.sum",
+      "pigeonhole in Lean",
+      "Fin n type"
+    ],
+    "prerequisites": [
+      "Lean 4 StrictMono",
+      "Finset.Ico",
+      "Finset.exists_ne_map_eq_of_card_lt_of_maps_to"
+    ]
+  }
+]

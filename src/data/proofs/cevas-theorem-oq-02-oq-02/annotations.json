@@ -1,0 +1,228 @@
+[
+  {
+    "id": "polygon-ceva-config-structure",
+    "proofId": "cevas-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 53,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "PolygonCevaConfig: Weight Parameters for n-gon Cevians",
+    "content": "The PolygonCevaConfig structure packages the weight parameters (alpha_i, beta_i) for an n-sided spherical polygon Ceva configuration. Each cevian point Q_i on arc P_iP_{i+1} is defined as normalize(alpha_i * P_i + beta_i * P_{i+1}). The strict positivity constraints alpha_pos and beta_pos ensure the cevian points lie in the interior of each arc, excluding degenerate cases where a cevian collapses to a vertex.",
+    "mathContext": "Q_i = \\text{normalize}(\\alpha_i \\cdot P_i + \\beta_i \\cdot P_{i+1}), \\quad \\alpha_i, \\beta_i > 0",
+    "significance": "key",
+    "relatedConcepts": [
+      "cevian",
+      "spherical polygon",
+      "weight parametrization",
+      "convex combination"
+    ],
+    "prerequisites": [
+      "Fin n indexing",
+      "real-valued functions"
+    ]
+  },
+  {
+    "id": "ceva-product-definition",
+    "proofId": "cevas-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 62,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Ceva Product: The Central Algebraic Invariant",
+    "content": "The cevaProduct is defined as the finite product of ratios beta_i/alpha_i over Fin n. This single real number encodes the entire concurrency condition for the n-gon. The product being exactly 1 characterizes concurrent cevians, while deviations from 1 measure how far the configuration is from concurrency. The use of Finset.prod over Fin n provides a clean, dimension-independent formulation.",
+    "mathContext": "\\text{cevaProduct}(\\text{cfg}) = \\prod_{i \\in \\text{Fin}\\, n} \\frac{\\beta_i}{\\alpha_i}",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite product",
+      "Finset.prod",
+      "ratio of weights"
+    ],
+    "prerequisites": [
+      "Fin n",
+      "Finset.univ",
+      "real division"
+    ]
+  },
+  {
+    "id": "prod-div-distrib-step",
+    "proofId": "cevas-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 94,
+      "endLine": 102
+    },
+    "type": "concept",
+    "title": "Factoring the Product of Ratios via Finset.prod_div_distrib",
+    "content": "The theorem ceva_product_eq_ratio applies Finset.prod_div_distrib to factor the product of individual ratios into a ratio of products. This Mathlib lemma states that the product of f(i)/g(i) equals (product of f(i))/(product of g(i)). This factoring is the critical algebraic step that transforms the componentwise ratio condition into a global balance condition on the weight products, enabling all subsequent results.",
+    "mathContext": "\\prod_i \\frac{\\beta_i}{\\alpha_i} = \\frac{\\prod_i \\beta_i}{\\prod_i \\alpha_i}",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.prod_div_distrib",
+      "algebraic simplification",
+      "product factorization"
+    ],
+    "prerequisites": [
+      "Finset.prod_div_distrib from Mathlib.Algebra.BigOperators.Ring.Finset"
+    ]
+  },
+  {
+    "id": "main-theorem-weight-balance",
+    "proofId": "cevas-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 104,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Main Theorem: Weight Balance Characterizes Concurrency",
+    "content": "The polygon_ceva_weight_balance theorem establishes the biconditional: the Ceva product equals 1 if and only if the product of all alpha weights equals the product of all beta weights. The forward direction uses div_eq_one_iff_eq (valid since the alpha product is nonzero by positivity), while the reverse uses div_self. This dimension-independent criterion works uniformly for triangles, quadrilaterals, pentagons, and all higher polygons.",
+    "mathContext": "\\prod_{i=0}^{n-1} \\frac{\\beta_i}{\\alpha_i} = 1 \\iff \\prod_{i=0}^{n-1} \\alpha_i = \\prod_{i=0}^{n-1} \\beta_i",
+    "significance": "key",
+    "relatedConcepts": [
+      "biconditional",
+      "div_eq_one_iff_eq",
+      "concurrency criterion"
+    ],
+    "prerequisites": [
+      "ceva_product_eq_ratio",
+      "prod_alpha_ne_zero",
+      "prod_beta_pos"
+    ]
+  },
+  {
+    "id": "triangle-specialization",
+    "proofId": "cevas-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 129,
+      "endLine": 139
+    },
+    "type": "insight",
+    "title": "Recovering Classical Triangle Ceva from the General Criterion",
+    "content": "The triangle_ceva_specialization instantiates the general polygon theorem at n=3, recovering the classical condition alpha_0 * alpha_1 * alpha_2 = beta_0 * beta_1 * beta_2. The proof uses Fin.prod_univ_three to unfold the finite product over Fin 3 into an explicit triple multiplication. This confirms backward compatibility with the triangle Ceva theorem proved geometrically in CevasTheoremOQ02OQ01.lean.",
+    "mathContext": "\\alpha_0 \\cdot \\alpha_1 \\cdot \\alpha_2 = \\beta_0 \\cdot \\beta_1 \\cdot \\beta_2",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fin.prod_univ_three",
+      "classical Ceva theorem",
+      "backward compatibility"
+    ],
+    "prerequisites": [
+      "polygon_ceva_weight_balance",
+      "Fin.prod_univ_three"
+    ]
+  },
+  {
+    "id": "quadrilateral-ceva-novel",
+    "proofId": "cevas-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 145,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "Novel Quadrilateral Ceva Theorem for Spherical Geometry",
+    "content": "The quadrilateral_ceva theorem provides the n=4 specialization, yielding the condition alpha_0 * alpha_1 * alpha_2 * alpha_3 = beta_0 * beta_1 * beta_2 * beta_3. This is identified as a new result not commonly found in classical geometry textbooks, which typically stop at the triangle case. The proof applies Fin.prod_univ_four followed by ring_nf to normalize the product expression into canonical multiplicative form.",
+    "mathContext": "\\alpha_0 \\cdot \\alpha_1 \\cdot \\alpha_2 \\cdot \\alpha_3 = \\beta_0 \\cdot \\beta_1 \\cdot \\beta_2 \\cdot \\beta_3",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fin.prod_univ_four",
+      "spherical quadrilateral",
+      "ring_nf tactic"
+    ],
+    "prerequisites": [
+      "polygon_ceva_weight_balance",
+      "Fin.prod_univ_four"
+    ]
+  },
+  {
+    "id": "equal-weight-medial-cevians",
+    "proofId": "cevas-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 167,
+      "endLine": 182
+    },
+    "type": "insight",
+    "title": "Medial Cevians Always Satisfy the Ceva Condition",
+    "content": "The equal_weight_polygon_ceva theorem shows that when all weights are equal (alpha_i = beta_i for every i), the Ceva product is trivially 1. Geometrically, this means cevians to the midpoints of each arc are always concurrent, regardless of the polygon shape or number of sides. The proof reduces each ratio beta_i/alpha_i = w_i/w_i = 1 via div_self, then the product of all ones is 1 by Finset.prod_eq_one.",
+    "mathContext": "\\alpha_i = \\beta_i \\; \\forall i \\implies \\prod_i \\frac{\\beta_i}{\\alpha_i} = \\prod_i 1 = 1",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "medial point",
+      "arc midpoint",
+      "Finset.prod_eq_one",
+      "div_self"
+    ],
+    "prerequisites": [
+      "positivity of weights",
+      "div_self for nonzero reals"
+    ]
+  },
+  {
+    "id": "ceva-menelaus-duality-polygons",
+    "proofId": "cevas-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 220,
+      "endLine": 233
+    },
+    "type": "concept",
+    "title": "Ceva-Menelaus Duality via Sign Flip",
+    "content": "The negate_one_ratio_flips_sign theorem extends the classical Ceva-Menelaus duality to n-gons. Negating a single ratio r_k multiplies the entire product by -1. The proof uses Function.update to modify exactly one component, then Finset.prod_update_of_mem to factor out the modified term. Combined with Finset.mul_prod_erase, the product decomposes as r_k times the remaining factors, and negating r_k yields the negative of the original product.",
+    "mathContext": "r'_i = \\begin{cases} -r_k & i = k \\\\ r_i & i \\neq k \\end{cases} \\implies \\prod_i r'_i = -\\prod_i r_i",
+    "significance": "key",
+    "relatedConcepts": [
+      "Menelaus theorem",
+      "Function.update",
+      "Finset.prod_update_of_mem",
+      "sign change"
+    ],
+    "prerequisites": [
+      "Finset.mul_prod_erase",
+      "nonzero ratios assumption"
+    ]
+  },
+  {
+    "id": "scaling-invariance-projective",
+    "proofId": "cevas-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 239,
+      "endLine": 258
+    },
+    "type": "insight",
+    "title": "Scaling Invariance Reveals Projective Nature",
+    "content": "The ceva_product_scale_invariant theorem proves that multiplying all weights by a common positive factor c leaves the Ceva product unchanged. This follows because (c * beta_i)/(c * alpha_i) = beta_i/alpha_i by mul_div_mul_left. The mathematical significance is that the concurrency condition is fundamentally projective: it depends only on the ratios beta_i/alpha_i, not on the absolute magnitudes of the weights. This places the Ceva condition naturally within the framework of projective geometry on the sphere.",
+    "mathContext": "\\prod_i \\frac{c \\cdot \\beta_i}{c \\cdot \\alpha_i} = \\prod_i \\frac{\\beta_i}{\\alpha_i} \\quad (c > 0)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "projective geometry",
+      "scale invariance",
+      "homogeneous coordinates",
+      "mul_div_mul_left"
+    ],
+    "prerequisites": [
+      "mul_div_mul_left",
+      "positivity of scaling factor"
+    ]
+  },
+  {
+    "id": "angle-product-connection",
+    "proofId": "cevas-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 297,
+      "endLine": 318
+    },
+    "type": "concept",
+    "title": "Connecting Angle-Based and Weight-Based Formulations",
+    "content": "The angle_product_from_weight_ratios theorem bridges the geometric (angle-based) and algebraic (weight-based) formulations of the polygon Ceva condition. Given any function sinRatio satisfying sinRatio(i) = beta_i/alpha_i (the sin-ratio formula from CevasTheoremOQ02OQ01), the product of sinRatio values equals 1 if and only if the weight balance holds. This abstraction avoids re-proving the sin-ratio formula and composes cleanly with the main theorem via equational substitution.",
+    "mathContext": "\\prod_i \\frac{\\sin(\\angle P_i C Q_i)}{\\sin(\\angle Q_i C P_{i+1})} = 1 \\iff \\prod_i \\alpha_i = \\prod_i \\beta_i",
+    "significance": "key",
+    "relatedConcepts": [
+      "sin-ratio formula",
+      "angle bisector",
+      "abstract composition",
+      "spherical trigonometry"
+    ],
+    "prerequisites": [
+      "polygon_ceva_weight_balance",
+      "sin-ratio formula from CevasTheoremOQ02OQ01"
+    ]
+  }
+]

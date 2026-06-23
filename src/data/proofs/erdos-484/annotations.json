@@ -1,0 +1,278 @@
+[
+  {
+    "id": "ann-e484-coloring",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 36,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "k-Coloring and Color Classes",
+    "content": "**Coloring N k** = Fin N → Fin k assigns each element of {0,...,N-1} one of k colors. **colorClass χ c** = Finset.filter (fun n => χ n = c) Finset.univ — the set of elements with color c.",
+    "significance": "key",
+    "mathContext": "The formalization models k-colorings as functions into Fin k, the standard Lean/Mathlib encoding. A **k-coloring** of {1,...,N} is a partition into k color classes C₁ ∪ ... ∪ Cₖ = {1,...,N}. By the **pigeonhole principle**, some color class has size ≥ N/k. The choice of Fin N → Fin k (rather than a Set-based partition) is computationally convenient: equality of colors is decidable, enabling Finset.filter. In **Ramsey theory**, the key insight is that sufficiently structured objects (here, arithmetic structure of sums) are unavoidable under any partition.",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "pigeonhole principle",
+      "partition into color classes",
+      "Fin k"
+    ],
+    "prerequisites": [
+      "Fin",
+      "Finset.filter",
+      "Finset.univ"
+    ]
+  },
+  {
+    "id": "ann-e484-mono-sum",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 49,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Monochromatic Sum and Representable Integers",
+    "content": "**isMonochromaticSum χ s**: s = (a+1) + (b+1) where a ≠ b and χ(a) = χ(b) — a sum of two distinct same-colored elements. **monochromaticSums χ** = {s | isMonochromaticSum χ s} — the set of all representable integers.",
+    "significance": "key",
+    "mathContext": "A monochromatic sum a + b (with a ≠ b, same color) is the central object. The +1 offsets convert from Fin N (0-indexed) to {1,...,N}. The set of representable sums is a **restricted sumset**: it's the union ∪_c (Cₖ + Cₖ) where Cₖ + Cₖ = {a+b : a,b ∈ Cₖ, a≠b} is the restricted sumset of color class c. This connects to **additive combinatorics**: the Cauchy-Davenport theorem bounds |A+B| for sets in ℤ/pℤ, and the Freiman-Ruzsa theorem bounds |A+A| in terms of |A|. The problem asks whether the union of these restricted sumsets always covers a positive fraction of {2,...,2N}.",
+    "relatedConcepts": [
+      "restricted sumsets",
+      "Cauchy-Davenport theorem",
+      "Freiman-Ruzsa theorem",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "Fin N",
+      "existential quantifier"
+    ]
+  },
+  {
+    "id": "ann-e484-roth",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 67,
+      "endLine": 82
+    },
+    "type": "definition",
+    "title": "Roth's Conjecture (Proved by ESS)",
+    "content": "**roth_conjecture**: ∃ c > 0 such that for all k ≥ 1 and N large enough, any k-coloring of {1,...,N} has ≥ cN representable monochromatic sums. **roth_conjecture_true**: axiomatized as proved by Erdős-Sárközy-Sós (1989).",
+    "significance": "key",
+    "mathContext": "This was originally conjectured by **Klaus Friedrich Roth** (the same Roth who proved Roth's theorem on 3-term APs in dense sets). Roth's conjecture is qualitative: it asks only for *some* positive constant c. The Erdős-Sárközy-Sós resolution is much stronger: they showed c can be taken close to 1/2 (since almost all even numbers in {2,...,2N} are representable), and gave the precise error term O(N^{1-1/2^{k+1}}). The formalization defines the conjecture as a Prop and axiomatizes its truth. The nested quantifier structure (∃ c, ∀ k, ∃ N₀, ∀ N ≥ N₀, ∀ χ) carefully separates the universal constant c from the k-dependent threshold N₀.",
+    "relatedConcepts": [
+      "Roth's theorem on APs",
+      "positive density in additive combinatorics",
+      "universal vs k-dependent constants"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Coloring",
+      "isMonochromaticSum"
+    ]
+  },
+  {
+    "id": "ann-e484-ess",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 86,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Erdős-Sárközy-Sós Main Theorem",
+    "content": "**ESS_theorem**: For any k ≥ 1, there exists C > 0 such that any k-coloring of {1,...,N} has ≥ N/2 − C·N^{1−1/2^{k+1}} even integers representable as monochromatic sums.",
+    "significance": "key",
+    "mathContext": "The **Erdős-Sárközy-Sós theorem (1989)** is the definitive result on Problem #484. The bound N/2 − O(N^{1−1/2^{k+1}}) says that *almost all even numbers* in {2,...,2N} are representable as monochromatic sums — the only exceptions number O(N^{1−ε}) where ε = 1/2^{k+1}. The restriction to even sums is natural: if a ≡ b mod 2 (same parity), then a + b is even, and within a large enough color class, elements of both parities are abundant. The exponent 1 − 1/2^{k+1} arises from an iterative argument: each color contributes a correction factor of 1/2, and k+1 iterations of this bound give the geometric decay 1/2^{k+1}. The proof uses **Fourier analysis on ℤ/Mℤ** (exponential sums) and the **large sieve inequality** to bound the number of unrepresented sums.",
+    "relatedConcepts": [
+      "Fourier analysis on cyclic groups",
+      "large sieve inequality",
+      "iterative density increment"
+    ],
+    "prerequisites": [
+      "Coloring",
+      "isMonochromaticSum",
+      "Real.rpow"
+    ]
+  },
+  {
+    "id": "ann-e484-parity",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 100,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Parity Structure and Error Exponent",
+    "content": "**even_sum_parity**: (a+1) + (b+1) mod 2 = ((a+1) mod 2 + (b+1) mod 2) mod 2 — parity is additive. **exponent_sublinear**: 1 − 1/2^{k+1} < 1 for all k ≥ 1, ensuring the error term is sub-linear.",
+    "significance": "key",
+    "mathContext": "The parity observation explains why the ESS theorem focuses on *even* sums: a + b is even iff a ≡ b mod 2. In any color class of size m, roughly m/2 elements are odd and m/2 are even, so the sumset of same-parity pairs produces ≈ m²/4 even sums. The sub-linearity of the error exponent 1 − 1/2^{k+1} is crucial: it guarantees the error term o(N) is negligible compared to the main term N/2. For k = 1 (trivial case), the exponent is 1 − 1/4 = 3/4; for k = 2, it's 7/8; and it approaches 1 as k → ∞, meaning the error term gets closer to linear for many colors (but never reaches it).",
+    "relatedConcepts": [
+      "parity in additive combinatorics",
+      "sub-linear error terms",
+      "geometric decay of exponents"
+    ],
+    "prerequisites": [
+      "Nat.mod",
+      "exponent computation"
+    ]
+  },
+  {
+    "id": "ann-e484-two-color",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 122,
+      "endLine": 142
+    },
+    "type": "concept",
+    "title": "Two-Coloring Case: O(log N) Tight Bound",
+    "content": "**ESS_two_coloring**: For k = 2, ≥ N/2 − C·log N even numbers are representable. **two_coloring_optimal**: ∃ a 2-coloring where no power of 2 is a monochromatic sum, showing O(log N) exceptions is best possible.",
+    "significance": "key",
+    "mathContext": "The k = 2 case is the most refined result. The bound N/2 − O(log N) says all but O(log N) even numbers are representable — a striking near-completeness result. The **optimality** comes from the 2-adic valuation construction: coloring n by ν₂(n) mod 2 prevents any power of 2 from being a monochromatic sum. Since there are ⌊log₂(2N)⌋ = O(log N) powers of 2 in {2,...,2N}, this shows exactly O(log N) even numbers can be missed. The proof of the upper bound uses the fact that for 2 colors, each color class has size ≥ N/2, giving very dense sumsets where Fourier analysis yields strong bounds on the unrepresented count.",
+    "relatedConcepts": [
+      "2-adic valuation",
+      "tight bounds",
+      "powers of 2 obstruction",
+      "dense sumset analysis"
+    ],
+    "prerequisites": [
+      "Coloring N 2",
+      "Real.log",
+      "isMonochromaticSum"
+    ]
+  },
+  {
+    "id": "ann-e484-optimal",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 144,
+      "endLine": 157
+    },
+    "type": "concept",
+    "title": "Optimal 2-adic Valuation Construction",
+    "content": "**optimal_construction_exists**: Color n by ν₂(n) mod 2 (the 2-adic valuation of n, reduced mod 2). This construction blocks all powers of 2 from being monochromatic sums.",
+    "significance": "key",
+    "mathContext": "The **2-adic valuation** ν₂(n) counts the largest power of 2 dividing n. The construction χ(n) = ν₂(n) mod 2 alternates colors based on the 'deepest' factor of 2. If a + b = 2^m, then exactly one of a, b has the higher 2-adic valuation (by the ultrametric property ν₂(a+b) = min(ν₂(a), ν₂(b)) when ν₂(a) ≠ ν₂(b)), forcing ν₂(a) ≠ ν₂(b), and hence χ(a) and χ(b) have different parities — making the sum non-monochromatic. The Lean formalization explicitly constructs this coloring using the 2-adic valuation and verifies the non-representability of powers of 2. This is a beautiful example of **number-theoretic structure obstructing Ramsey-type universality**.",
+    "relatedConcepts": [
+      "2-adic valuation ν₂",
+      "ultrametric property",
+      "extremal colorings",
+      "obstruction constructions"
+    ],
+    "prerequisites": [
+      "Nat.dvd",
+      "Coloring N 2"
+    ]
+  },
+  {
+    "id": "ann-e484-sumset",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 159,
+      "endLine": 184
+    },
+    "type": "concept",
+    "title": "Sumset Structure: Pigeonhole and Density",
+    "content": "**sumset_lower_bound**: By pigeonhole, some color class has size ≥ N/k. **sumset_density**: A set of size m has sumset (restricted, same-set sums) of size ≥ m − 1.",
+    "significance": "key",
+    "mathContext": "These are the **structural foundations** of the ESS proof. The pigeonhole principle guarantees a large color class: in a k-coloring of N elements, some class has size ≥ ⌈N/k⌉. For the sumset, if C = {c₁ < c₂ < ... < cₘ} ⊂ ℤ, the restricted sumset C + C ⊇ {c₁ + c₂, c₁ + c₃, ..., c₁ + cₘ}, which has m − 1 distinct elements (since c₁ + cᵢ < c₁ + cⱼ for i < j). Stronger results are available: the **Freiman-Ruzsa theorem** shows |C + C| ≥ 2|C| − 1 for sets in ℤ, and the **Plünnecke-Ruzsa inequality** bounds iterated sumsets. These basic bounds already give the qualitative result (Roth's conjecture); the precise error term requires Fourier methods.",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "restricted sumset",
+      "Freiman's theorem |A+A| ≥ 2|A|-1",
+      "Plünnecke-Ruzsa inequality"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "colorClass"
+    ]
+  },
+  {
+    "id": "ann-e484-fourier",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 186,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "Fourier Analytic Bound on Unrepresented Sums",
+    "content": "**fourier_representation_count**: The number of even numbers in {0,...,2N} that are NOT monochromatic sums is ≤ ⌈N^{1−1/2^{k+1}}⌉. This is the technical heart of the ESS theorem.",
+    "significance": "key",
+    "mathContext": "The proof uses **discrete Fourier analysis** on ℤ/Mℤ. The representation number r(s) = #{(a,b) ∈ Cⱼ² : a ≠ b, a+b = s} counts how many ways s can be written as a monochromatic sum from color j. By Parseval's identity and the convolution theorem, Σ r(s)² = ΣΣ |Ĉⱼ(t)|⁴ where Ĉⱼ is the Fourier transform of the indicator of Cⱼ. The **large sieve inequality** bounds Σ |Ĉⱼ(t)|² ≤ N + M for 'well-spaced' frequencies. Combining these bounds shows that the number of s with r(s) = 0 is at most N^{1−1/2^{k+1}}. The iterative exponent 1/2^{k+1} comes from repeated application of Cauchy-Schwarz in the Fourier domain, each application squaring the exponent and losing a factor of 1/2.",
+    "relatedConcepts": [
+      "discrete Fourier transform",
+      "Parseval's identity",
+      "large sieve inequality",
+      "representation numbers"
+    ],
+    "prerequisites": [
+      "Nat.ceil",
+      "Real.rpow"
+    ]
+  },
+  {
+    "id": "ann-e484-density",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 200,
+      "endLine": 224
+    },
+    "type": "concept",
+    "title": "Positive Density and c → 1/2",
+    "content": "**positive_density**: Roth's conjecture holds — proved by `exact roth_conjecture_true`. **constant_half_minus_epsilon**: For any ε > 0 and fixed k, the constant c = 1/2 − ε works for N large enough, since the error N^{1−1/2^{k+1}} = o(N).",
+    "significance": "key",
+    "mathContext": "The theorem `positive_density` is one of the rare **proved theorems** in this file (not an axiom): it follows immediately from the axiomatized `roth_conjecture_true`. The strengthening to c = 1/2 − ε follows from the ESS error bound: N/2 − C·N^{1−1/2^{k+1}} ≥ (1/2 − ε)N when N^{−1/2^{k+1}} ≤ ε/C, i.e., N ≥ (C/ε)^{2^{k+1}}. The limiting density 1/2 is optimal: only *even* sums are guaranteed, and there are exactly N/2 even numbers in {2,...,2N}. So the problem is really asking: which even numbers are *not* representable? The ESS theorem answers: only sub-linearly many.",
+    "relatedConcepts": [
+      "limiting density",
+      "even number representation",
+      "o(N) error terms"
+    ],
+    "prerequisites": [
+      "roth_conjecture_true",
+      "ESS_theorem"
+    ]
+  },
+  {
+    "id": "ann-e484-schur",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 242,
+      "endLine": 252
+    },
+    "type": "concept",
+    "title": "Schur's Theorem (1916)",
+    "content": "**schur_theorem**: For any k ≥ 1 and N large enough, any k-coloring of {1,...,N} contains monochromatic a, b, c with a + b = c. This is the 'equation version' where the sum itself must be in the same color class.",
+    "significance": "supporting",
+    "mathContext": "**Issai Schur's theorem (1916)** is one of the earliest results in **Ramsey theory on the integers**. It states that the equation x + y = z is **partition regular**: for any finite coloring of ℕ, there is a monochromatic solution. Schur's theorem is stronger than Problem #484 in one sense (the sum c is also in the same color class) but weaker in another (it only guarantees *existence* of one solution, not a positive fraction of representable integers). Schur numbers S(k) = the smallest N such that any k-coloring of {1,...,N} has a monochromatic solution: S(1) = 2, S(2) = 5, S(3) = 14, S(4) = 45. Schur's theorem is a corollary of **Ramsey's theorem**: take a monochromatic triangle in a complete graph colored by x − y.",
+    "relatedConcepts": [
+      "Schur numbers",
+      "partition regularity",
+      "Ramsey's theorem",
+      "sum-free sets"
+    ],
+    "prerequisites": [
+      "Coloring",
+      "Fin N"
+    ]
+  },
+  {
+    "id": "ann-e484-hindman",
+    "proofId": "erdos-484",
+    "range": {
+      "startLine": 254,
+      "endLine": 261
+    },
+    "type": "concept",
+    "title": "Hindman's Theorem (1974)",
+    "content": "**hindman_theorem**: Any finite coloring of ℕ has an infinite set S such that all finite sums of distinct elements of S share one color. This is vastly stronger than Schur — giving infinite monochromatic sumset structure.",
+    "significance": "supporting",
+    "mathContext": "**Neil Hindman's theorem (1974)** is one of the deepest results in combinatorial set theory. It states that for any finite coloring of ℕ, there exists an infinite set S = {s₁, s₂, s₃, ...} such that all finite sums sᵢ₁ + sᵢ₂ + ... + sᵢₖ (with distinct indices) receive the same color. This is an **IP set** (infinite-dimensional parallelepiped). Schur's theorem is the special case |S| = 2 (only considering pairs). Hindman's original proof was combinatorial and extremely complex; a simpler proof using **ultrafilters on the Stone-Čech compactification βℕ** was later given by Galvin and Glazer. The formalization axiomatizes this using `∃ S : Set ℕ, Set.Infinite S ∧ ∀ F : Finset ℕ, ↑F ⊆ S → F.Nonempty → χ(F.sum id) = c`.",
+    "relatedConcepts": [
+      "IP sets",
+      "Stone-Čech compactification βℕ",
+      "ultrafilter proof",
+      "Galvin-Glazer theorem"
+    ],
+    "prerequisites": [
+      "Set.Infinite",
+      "Finset.sum"
+    ]
+  }
+]

@@ -1,0 +1,191 @@
+[
+  {
+    "id": "ann-680-imports",
+    "proofId": "erdos-680",
+    "type": "concept",
+    "range": {
+      "startLine": 20,
+      "endLine": 26
+    },
+    "title": "Imports and Dependencies",
+    "content": "Imports Mathlib modules for prime number basics (`Nat.Prime.Basic`), filters for asymptotic statements (`Order.Filter.Basic`, `Topology.Algebra.Order.LiminfLimsup`), real numbers (`Data.Real.Basic`, `Data.Real.Sqrt`), and the general tactic library. The filter imports support expressing Cramér's and Granville's conjectures as asymptotic statements.",
+    "mathContext": "The formalization uses `Nat.minFac` as the least prime factor function $p(m)$, `Real.exp` and `Real.sqrt` for the exponential variant $e^{(1+\\varepsilon)\\sqrt{k}}$, and `Real.log` for the prime gap bound $O((\\log p)^2)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.minFac",
+      "Real.exp",
+      "Filter.atTop",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib library"
+    ]
+  },
+  {
+    "id": "ann-680-main-conjecture",
+    "proofId": "erdos-680",
+    "type": "definition",
+    "range": {
+      "startLine": 29,
+      "endLine": 37
+    },
+    "title": "Main Conjecture and HasLargeLPF",
+    "content": "**ErdosProblem680**: For all sufficiently large $n$, there exists $k \\ge 1$ with $p(n+k) > k^2 + 1$, where $p(m) = \\text{minFac}(m)$ is the least prime factor.\n\n**HasLargeLPF n**: The predicate for individual $n$ — there exists $k \\ge 1$ with $p(n+k) > k^2 + 1$. The main conjecture is equivalent to: HasLargeLPF holds for all sufficiently large $n$.",
+    "mathContext": "The conjecture states $\\exists N_0,\\, \\forall n \\ge N_0,\\, \\exists k \\ge 1 : p(n+k) > k^2 + 1$. The threshold $k^2 + 1$ is chosen so that finding such $k$ requires either a prime near $n$ or a number with unusually large smallest prime factor.",
+    "significance": "key",
+    "relatedConcepts": [
+      "least prime factor",
+      "Nat.minFac",
+      "eventually property",
+      "prime gap conjectures"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "natural number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-680-variant",
+    "proofId": "erdos-680",
+    "type": "definition",
+    "range": {
+      "startLine": 41,
+      "endLine": 54
+    },
+    "title": "Exponential Variant and Combined Statement",
+    "content": "**ErdosProblem680Variant**: For every $\\varepsilon > 0$, there exists $C > 0$ such that the exponential version (with threshold $e^{(1+\\varepsilon)\\sqrt{k}} + C$) eventually fails. This says the quadratic bound $k^2 + 1$ cannot be improved to an exponential bound.\n\n**ErdosProblem680Combined**: The conjunction of the main conjecture (quadratic bound works) and the variant (exponential bound doesn't). Together they pin down the critical growth rate.",
+    "mathContext": "The exponential variant says: $\\forall \\varepsilon > 0,\\, \\exists C > 0$ such that $\\neg(\\exists N_0,\\, \\forall n \\ge N_0,\\, \\exists k \\ge 1 : p(n+k) > \\lfloor e^{(1+\\varepsilon)\\sqrt{k}} + C \\rfloor)$. The gap between $k^2$ and $e^{\\sqrt{k}}$ is the 'interesting zone' where the problem lives.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential vs polynomial growth",
+      "critical threshold",
+      "floor function"
+    ],
+    "prerequisites": [
+      "ErdosProblem680",
+      "Real.exp",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-680-cramer",
+    "proofId": "erdos-680",
+    "type": "definition",
+    "range": {
+      "startLine": 58,
+      "endLine": 70
+    },
+    "title": "Cramér's Conjecture and Its Implication",
+    "content": "**CramerConjecture**: Prime gaps after prime $p$ are $O((\\log p)^2)$. Formalized using `Nat.find (Nat.exists_infinite_primes (p + 1))` to find the next prime after $p$.\n\n**cramer_implies_large_lpf** (axiom): If Cramér's conjecture holds, then for any $\\varepsilon > 0$ and sufficiently large $n$, there exists $k$ with $p(n+k) > \\lfloor e^{(1-\\varepsilon)\\sqrt{k}} \\rfloor$. This is strictly stronger than the $k^2 + 1$ threshold.",
+    "mathContext": "Cramér's conjecture (1936): $p_{n+1} - p_n = O((\\log p_n)^2)$. If true, for $n$ large, there exists a prime in $[n+1, n + O((\\log n)^2)]$. Setting $k = O((\\log n)^2)$ and using $p(n+k) = n+k$ when $n+k$ is prime gives the reduction: $n + k \\gg e^{(1-\\varepsilon)\\sqrt{k}}$ for $k = O((\\log n)^2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cramér's conjecture",
+      "prime gaps",
+      "next prime function",
+      "Nat.exists_infinite_primes"
+    ],
+    "prerequisites": [
+      "prime number theorem",
+      "prime gap theory",
+      "logarithmic functions"
+    ]
+  },
+  {
+    "id": "ann-680-basic-properties",
+    "proofId": "erdos-680",
+    "type": "concept",
+    "range": {
+      "startLine": 76,
+      "endLine": 94
+    },
+    "title": "Basic Properties: Quadratic vs Exponential and k=1 Case",
+    "content": "**quadratic_weaker_than_exponential** (axiom): For any $\\varepsilon > 0$, eventually $k^2 + 1 < e^{(1+\\varepsilon)\\sqrt{k}}$. This justifies that the main conjecture is strictly weaker than the exponential version.\n\n**lpf_k1_means_odd** (proved): When $k = 1$, the condition $p(n+1) > 1^2 + 1 = 2$ means $n + 1$ is not divisible by 2, i.e., $n + 1$ is odd. Uses `Nat.minFac_le_of_dvd`.\n\n**prime_offset_gives_large_lpf** (proved): If $n + k$ is prime and $k^2 + 1 < n + k$, then $p(n+k) = n + k > k^2 + 1$. The key reduction: finding a prime near $n$ suffices.",
+    "mathContext": "The $k = 1$ case is the simplest: $p(n+1) > 2$ iff $n+1$ is odd (not divisible by 2). For $k = 1$ and $n$ even, this always holds since $n + 1$ is odd. The prime offset lemma reduces the problem to prime gaps: if the nearest prime $p$ to $n$ satisfies $p - n \\le \\sqrt{p - 1}$, then $k = p - n$ works.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity argument",
+      "Nat.minFac_le_of_dvd",
+      "Prime.minFac_eq",
+      "prime gap reduction"
+    ],
+    "prerequisites": [
+      "Nat.minFac",
+      "prime number basics",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-680-granville",
+    "proofId": "erdos-680",
+    "type": "concept",
+    "range": {
+      "startLine": 98,
+      "endLine": 124
+    },
+    "title": "Granville's Refinement and Prime Distribution Reduction",
+    "content": "**granvilleConstant**: Approximation of $2e^{-\\gamma} \\approx 1.1229$ where $\\gamma$ is the Euler-Mascheroni constant.\n\n**GranvilleRefinement**: The maximal prime gap after $p$ is at most $(2e^{-\\gamma} + \\varepsilon)(\\log p)^2$ for large $p$. Refines Cramér's predicted constant from 1 to $2e^{-\\gamma}$.\n\n**problem680_from_prime_distribution** (proved): Reduces Erdős #680 to prime distribution: if for large $n$ there exists $k$ with $n + k$ prime and $k^2 + 1 < n + k$, then ErdosProblem680 holds. Uses `prime_offset_gives_large_lpf` as the key step.",
+    "mathContext": "Granville (1995) argued that Cramér's random model underestimates gaps near numbers divisible by many small primes. The corrected prediction is $\\max_{p_n \\le x}(p_{n+1} - p_n) \\sim 2e^{-\\gamma}(\\log x)^2$ where $\\gamma \\approx 0.5772$, giving $2e^{-\\gamma} \\approx 1.1229$. The reduction theorem `problem680_from_prime_distribution` shows Erdős #680 follows from any prime gap bound of the form $O(n^{1/2 - \\varepsilon})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler-Mascheroni constant",
+      "Granville's conjecture",
+      "prime gap models",
+      "Cramér random model"
+    ],
+    "prerequisites": [
+      "CramerConjecture",
+      "prime_offset_gives_large_lpf",
+      "Real.exp"
+    ]
+  },
+  {
+    "id": "ann-680-structural-lemmas",
+    "proofId": "erdos-680",
+    "type": "concept",
+    "range": {
+      "startLine": 126,
+      "endLine": 170
+    },
+    "title": "Structural Lemmas",
+    "content": "Five structural results building the proof toolkit:\n\n**hasLargeLPF_of_succ_prime** (proved): If $n + 1$ is prime and $n \\ge 2$, then HasLargeLPF $n$ holds with $k = 1$, since $p(n+1) = n + 1 > 2$.\n\n**hasLargeLPF_from_nearby_prime** (proved): For any prime $p > n$ with $k = p - n$ satisfying $k^2 + 1 < p$, HasLargeLPF $n$ holds.\n\n**minFac_prime_self** (proved): $p.\\text{minFac} = p$ for prime $p$. One-line proof via `hp.minFac_eq`.\n\n**minFac_gt_of_no_small_divisor** (proved): If $m \\ge 2$ and no prime $\\le b$ divides $m$, then $p(m) > b$. Proof by contradiction using `Nat.minFac_dvd`.\n\n**hasLargeLPF_monotone_offset** (proved): If $p(n+k) > k^2 + 1$ and $n' + k' = n + k$ with $k' \\le k$, then $p(n'+k') > k'^2 + 1$. Smaller offsets give a weaker threshold.",
+    "mathContext": "The monotonicity lemma is key: if we find a 'good' offset $k$ for $n$, any representation $n' + k' = n + k$ with smaller $k'$ also works because $k'^2 + 1 \\le k^2 + 1 < p(n+k) = p(n'+k')$. This means the property transfers to nearby integers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.minFac_dvd",
+      "Prime.minFac_eq",
+      "proof by contradiction",
+      "nlinarith tactic"
+    ],
+    "prerequisites": [
+      "HasLargeLPF",
+      "Nat.minFac properties",
+      "natural number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-680-computational",
+    "proofId": "erdos-680",
+    "type": "concept",
+    "range": {
+      "startLine": 171,
+      "endLine": 195
+    },
+    "title": "Computational Verification",
+    "content": "**Verified instances**: HasLargeLPF is confirmed for $n = 2, 4, 6, 8, 10, 12, 14, 20, 24, 100$ using `native_decide`.\n\nAll examples use $k = 1$, showing $p(n+1) > 2$ for each case:\n- $n = 2$: $p(3) = 3 > 2$ (prime)\n- $n = 8$: $p(9) = 3 > 2$ ($9 = 3^2$)\n- $n = 14$: $p(15) = 3 > 2$ ($15 = 3 \\cdot 5$)\n- $n = 100$: $p(101) = 101 > 2$ (prime)\n\nThe `native_decide` tactic compiles the decidable proposition to native code for efficient verification.",
+    "mathContext": "For even $n$, $n + 1$ is always odd, so $p(n+1) \\ge 3 > 2 = 1^2 + 1$, meaning $k = 1$ always works. The conjecture becomes interesting for large $n$ where one needs $k > 1$ and $p(n+k) > k^2 + 1$ for that larger $k$. The small-case verification is thus 'easy' — the real challenge is the asymptotic regime.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide tactic",
+      "decidable propositions",
+      "computational verification",
+      "small case analysis"
+    ],
+    "prerequisites": [
+      "HasLargeLPF",
+      "Nat.minFac computation",
+      "native_decide"
+    ]
+  }
+]

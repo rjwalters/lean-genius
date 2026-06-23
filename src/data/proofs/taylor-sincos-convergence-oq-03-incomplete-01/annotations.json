@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-leibniz",
+    "proofId": "taylor-sincos-convergence-oq-03-incomplete-01",
+    "range": {
+      "startLine": 40,
+      "endLine": 54
+    },
+    "type": "insight",
+    "title": "The Leibniz Estimation, Discharged",
+    "content": "alternating_tail_bound is the parent's first sorry: for an antitone summable sequence a, the alternating tail from index n has norm ≤ a n. The proof derives a ≥ 0 from antitone + (terms → 0), shows the signed series Σ(-1)^i a_i is summable (its norm is a), rewrites the tail Σ' k (-1)^(k+n) a(k+n) as (Σ' (-1)^i a_i) − Σ_{i<n}(-1)^i a_i via Summable.sum_add_tsum_nat_add, and applies Mathlib's alternating_series_error_bound. This is the engine behind both trigonometric bounds."
+  },
+  {
+    "id": "ann-terms",
+    "proofId": "taylor-sincos-convergence-oq-03-incomplete-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Why the Domain Is |x| ≤ 1",
+    "content": "The alternating estimation requires the term magnitudes to decrease. For the sin/cos series, |x|^{2k+2}/(2k+2)! ≤ |x|^{2k}/(2k)! holds precisely when |x| ≤ 1 (then |x|^{2k+2} ≤ |x|^{2k}, and the larger factorial only helps). cosTermAbs_antitone and sinTermAbs_antitone establish this; summability comes free as a subseries (even or odd indices) of the summable Σ|x|^n/n!. This domain restriction is exactly the correct scope of the alternating sharpening — sharper than Lagrange, but only where the terms are monotone."
+  },
+  {
+    "id": "ann-remainders",
+    "proofId": "taylor-sincos-convergence-oq-03-incomplete-01",
+    "range": {
+      "startLine": 102,
+      "endLine": 139
+    },
+    "type": "insight",
+    "title": "From Taylor tsum to the Sharp Bound",
+    "content": "cos_alternating_remainder and sin_alternating_remainder write the k-th Taylor term as (-1)^k times a non-negative magnitude — for cosine, x^{2k} = |x|^{2k} (even power, via pow_mul + sq_abs) so it works for both signs of x; for sine, x ≥ 0 gives x^{2k+1} = |x|^{2k+1}. Rewriting cos/sin as their tsums (Real.cos_eq_tsum / Real.sin_eq_tsum) and the partial sums correspondingly, the bound is exactly alternating_series_error_bound applied to the antitone, summable magnitude sequence. The error is the first omitted term — the alternating sharpening of Taylor's remainder."
+  }
+]

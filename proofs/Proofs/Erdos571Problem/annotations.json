@@ -1,0 +1,92 @@
+[
+  {
+    "id": "def-bipartite",
+    "proofId": "erdos-571",
+    "range": { "startLine": 50, "endLine": 54 },
+    "type": "definition",
+    "title": "Bipartite Graph",
+    "content": "A graph is bipartite if vertices partition into two sets A, B with edges only between them.",
+    "significance": "minor"
+  },
+  {
+    "id": "def-extremal-number",
+    "proofId": "erdos-571",
+    "range": { "startLine": 73, "endLine": 77 },
+    "type": "definition",
+    "title": "Extremal Number",
+    "content": "ex(n;G) = maximum edges in an n-vertex G-free graph. The central function in Turán theory.",
+    "significance": "major"
+  },
+  {
+    "id": "def-turan-exponent",
+    "proofId": "erdos-571",
+    "range": { "startLine": 94, "endLine": 102 },
+    "type": "definition",
+    "title": "Turán Exponent",
+    "content": "α ∈ [1,2) is a Turán exponent if there exists a bipartite G with ex(n;G) ≍ n^α.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-main",
+    "proofId": "erdos-571",
+    "range": { "startLine": 106, "endLine": 111 },
+    "type": "conjecture",
+    "title": "Main Conjecture (Open)",
+    "content": "Every rational α ∈ [1,2) is a Turán exponent. This is the Erdős-Simonovits conjecture.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-cjl",
+    "proofId": "erdos-571",
+    "range": { "startLine": 115, "endLine": 118 },
+    "type": "theorem",
+    "title": "Conlon-Janzer-Lee (2021)",
+    "content": "3/2 - 1/(2s) is a Turán exponent for all s ≥ 2.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-jiang-qiu",
+    "proofId": "erdos-571",
+    "range": { "startLine": 120, "endLine": 133 },
+    "type": "theorem",
+    "title": "Jiang-Qiu Results (2020, 2023)",
+    "content": "Multiple families: 4/3-1/(3s), 5/4-1/(4s), and 1+a/b with b > a². Low exponents.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-near-two",
+    "proofId": "erdos-571",
+    "range": { "startLine": 144, "endLine": 147 },
+    "type": "theorem",
+    "title": "Conlon-Janzer (2022)",
+    "content": "2 - a/b is a Turán exponent whenever b ≥ (a-1)². Covers exponents near 2.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-bukh-conlon",
+    "proofId": "erdos-571",
+    "range": { "startLine": 157, "endLine": 165 },
+    "type": "theorem",
+    "title": "Bukh-Conlon (2018)",
+    "content": "Every rational α ∈ [1,2) is achievable for a FINITE FAMILY of bipartite graphs. Weakened version proved.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-kst",
+    "proofId": "erdos-571",
+    "range": { "startLine": 169, "endLine": 178 },
+    "type": "theorem",
+    "title": "Kővári-Sós-Turán",
+    "content": "For complete bipartite K_{s,t} with s ≤ t: ex(n; K_{s,t}) = O(n^{2-1/s}). Classical bound.",
+    "significance": "minor"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-571",
+    "range": { "startLine": 234, "endLine": 252 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "OPEN - Many exponents known, Bukh-Conlon proved family version, but whether every rational in [1,2) works for a single bipartite graph remains open. Exponents near 1 are hardest.",
+    "significance": "major"
+  }
+]

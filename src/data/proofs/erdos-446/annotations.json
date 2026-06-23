@@ -1,0 +1,210 @@
+[
+  {
+    "id": "ann-e446-header",
+    "proofId": "erdos-446",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #446** studies the density δ(n) of integers having a divisor in the interval (n, 2n). This problem has two parts: (1) determine the growth rate of δ(n), and (2) determine whether δ₁(n) = o(δ(n)), where δ₁(n) counts integers with exactly one such divisor. Ford (2008) resolved both: δ(n) ≍ 1/((log n)^α (log log n)^{3/2}) where α ≈ 0.08607, and the secondary conjecture is FALSE. The problem has a 74-year history from Besicovitch (1934) through Ford (2008).",
+    "mathContext": "The problem sits in analytic number theory, connecting divisor distribution with asymptotic density. The constant α = 1 - (1 + log log 2)/log 2 has a delicate definition involving iterated logarithms, reflecting deep structure in how divisors cluster near doubling intervals.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic-density",
+      "divisor-distribution",
+      "analytic-number-theory"
+    ],
+    "prerequisites": [
+      "positive integers and their divisors",
+      "logarithm function",
+      "limiting behavior of sequences"
+    ]
+  },
+  {
+    "id": "ann-e446-divisor-interval",
+    "proofId": "erdos-446",
+    "range": {
+      "startLine": 39,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Divisor in Interval Predicate",
+    "content": "**hasDivisorInInterval m n** holds when the integer m has at least one divisor d in the open interval (n, 2n). The definition is existential: ∃ d, n < d < 2n ∧ d | m. The set **integersWithDivisor n** collects all such m. These are the central predicates — the density of this set is precisely δ(n).",
+    "mathContext": "The interval (n, 2n) is a 'doubling interval' containing n-1 integers. Divisors in this range are neither too small (trivial) nor too large (rare), making their distribution subtle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility",
+      "open-interval",
+      "density"
+    ],
+    "prerequisites": [
+      "divides relation a | b",
+      "existential quantifier",
+      "integer intervals"
+    ]
+  },
+  {
+    "id": "ann-e446-delta",
+    "proofId": "erdos-446",
+    "range": {
+      "startLine": 48,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Asymptotic Density δ(n)",
+    "content": "**delta n** is the asymptotic density of integers with a divisor in (n, 2n), axiomatized with bounds: 0 ≤ δ(n) ≤ 1. The density is defined as the limit lim_{N→∞} |{m ≤ N : ∃d ∈ (n, 2n), d | m}| / N. This limit exists by standard analytic number theory arguments. Axiomatization is needed because formalizing the limit requires measure-theoretic infrastructure beyond Mathlib.",
+    "mathContext": "Asymptotic density (or natural density) measures the 'proportion' of integers satisfying a property. It is well-defined for this set by results of Davenport and Erdős.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural-density",
+      "axiomatization",
+      "limit"
+    ],
+    "prerequisites": [
+      "counting finite sets of integers",
+      "ratios and proportions",
+      "convergence of a limit"
+    ]
+  },
+  {
+    "id": "ann-e446-divisor-count",
+    "proofId": "erdos-446",
+    "range": {
+      "startLine": 59,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Divisor Count and δᵣ(n)",
+    "content": "**divisorCount m n** computes the number of divisors of m in (n, 2n) using Finset.filter. **deltaR n r** axiomatizes the density of integers with exactly r such divisors. The **delta_decomposition** axiom captures δ(n) = Σᵣ δᵣ(n) — the total density decomposes by divisor count. This decomposition is what Erdős's secondary question probes.",
+    "mathContext": "The decomposition δ(n) = Σᵣ≥1 δᵣ(n) is immediate from definitions. Erdős conjectured the r=1 term is negligible (δ₁ = o(δ)), but Ford showed each term is comparable to the total.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisor-counting",
+      "decomposition",
+      "finset-filter"
+    ],
+    "prerequisites": [
+      "cardinality of a finite set",
+      "filtering a set by a predicate",
+      "summation over an index"
+    ]
+  },
+  {
+    "id": "ann-e446-alpha",
+    "proofId": "erdos-446",
+    "range": {
+      "startLine": 75,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "The Erdős Constant α",
+    "content": "**alpha** = 1 - (1 + log log 2) / log 2 ≈ 0.08607. This constant governs the power-law decay of δ(n): the density decreases like (log n)^{-α}, which is extremely slow since α is small. The numerical bounds 0.086 < α < 0.087 are axiomatized. The appearance of nested logarithms (log log 2) reflects the fractal-like structure of divisor distribution.",
+    "mathContext": "The constant α also appears in related problems about the distribution of divisors. Its small value explains why δ(n) → 0 so slowly — one needs n around 10^{10} before δ(n) drops noticeably below 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos-constant",
+      "nested-logarithm",
+      "slow-decay"
+    ],
+    "prerequisites": [
+      "natural logarithm and its values",
+      "iterated function application",
+      "real-valued numerical constants"
+    ]
+  },
+  {
+    "id": "ann-e446-historical",
+    "proofId": "erdos-446",
+    "range": {
+      "startLine": 85,
+      "endLine": 105
+    },
+    "type": "concept",
+    "title": "Historical Results: Besicovitch to Erdős",
+    "content": "Three landmark results span 26 years: **Besicovitch (1934)** proved liminf δ(n) = 0 — the density can get arbitrarily small. **Erdős (1935)**, at age 22, strengthened this to δ(n) = o(1) — the full limit is 0, not just the liminf. **Erdős (1960)** found the correct exponent: δ(n) = (log n)^{-α + o(1)}, identifying α as the decay rate. Each result tightened the previous one.",
+    "mathContext": "The progression from liminf to lim to quantitative bounds is a classic pattern in analytic number theory. Erdős's 1960 result, published in Russian (Vestnik Leningrad. Univ.), left only the secondary correction factor to be determined.",
+    "significance": "key",
+    "relatedConcepts": [
+      "besicovitch",
+      "erdos-1935",
+      "erdos-1960",
+      "quantitative-bounds"
+    ],
+    "prerequisites": [
+      "limit inferior of a sequence",
+      "little-o notation",
+      "chronology of mathematical results"
+    ]
+  },
+  {
+    "id": "ann-e446-ford-main",
+    "proofId": "erdos-446",
+    "range": {
+      "startLine": 107,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Ford's Exact Asymptotic (2008)",
+    "content": "**ford_2008_main** gives the exact growth rate: δ(n) ≍ 1/((log n)^α (log log n)^{3/2}). The ≍ notation means there exist constants 0 < c < C such that c·f(n) ≤ δ(n) ≤ C·f(n) for all large n. The (log log n)^{3/2} factor refines Erdős's 1960 estimate. Ford's paper appeared in the Annals of Mathematics, one of the most prestigious journals in mathematics.",
+    "mathContext": "Ford's proof uses sophisticated techniques from multiplicative number theory, including the anatomy of integers and sieve methods. The secondary factor (log log n)^{3/2} arises from the precise structure of smooth numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exact-asymptotic",
+      "annals-of-mathematics",
+      "ford-2008"
+    ],
+    "prerequisites": [
+      "upper and lower bounds with constants",
+      "exponential and power functions",
+      "peer-reviewed mathematical literature"
+    ]
+  },
+  {
+    "id": "ann-e446-ford-disproof",
+    "proofId": "erdos-446",
+    "range": {
+      "startLine": 118,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Ford's Disproof and Generalization",
+    "content": "**ford_2008_disproof** shows δ₁(n) is NOT o(δ(n)): there exists c > 0 with δ₁(n) ≥ c·δ(n) for all large n. **ford_2008_general** extends this: for each r ≥ 1, δᵣ(n) ≫ᵣ δ(n). This means no single divisor count dominates — the distribution is surprisingly flat. Erdős was 'quite sure' that δ₁ = o(δ) at Oberwolfach in 1986, but his own doubt (citing Tenenbaum's work) proved prescient.",
+    "mathContext": "The disproof shows that the typical integer with a divisor in (n, 2n) has just one such divisor, contradicting the intuition that divisors should 'cluster'. The implicit constants in ≫ᵣ depend on r.",
+    "significance": "key",
+    "relatedConcepts": [
+      "disproof",
+      "concentration",
+      "erdos-conjecture-false"
+    ],
+    "prerequisites": [
+      "negation of a limit statement",
+      "existential constants in inequalities",
+      "asymptotic comparison of functions"
+    ]
+  },
+  {
+    "id": "ann-e446-prime",
+    "proofId": "erdos-446",
+    "range": {
+      "startLine": 131,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Primes Avoid the Interval",
+    "content": "**prime_no_divisor** is a constructively proved theorem: if p > 2n is prime, then p has no divisor in (n, 2n). The proof uses Nat.Prime.eq_one_or_self_of_dvd — a prime's only divisors are 1 and itself, and neither falls in (n, 2n) when p > 2n. This illustrates that primes are 'invisible' to the density δ(n) for large enough primes.",
+    "mathContext": "This is one of the few fully proved results in the formalization. It uses omega for the arithmetic contradictions after case-splitting on the prime's divisors.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime-divisors",
+      "constructive-proof",
+      "omega-tactic"
+    ],
+    "prerequisites": [
+      "definition of a prime number",
+      "divisors of a prime",
+      "proof by contradiction"
+    ]
+  }
+]

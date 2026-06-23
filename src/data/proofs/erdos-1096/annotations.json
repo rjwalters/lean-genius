@@ -1,0 +1,218 @@
+[
+  {
+    "id": "ann-e1096-header",
+    "proofId": "erdos-1096",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1096: Gap Convergence in q-Expansions**\n\nThis open problem concerns the structure of numbers representable as finite sums of powers of q. For 1 < q close to 1, the q-representable numbers can be ordered as 0 = x₁ < x₂ < x₃ < ⋯.\n\n**The Question:** Do the gaps x_{k+1} - x_k converge to 0?\n\n**Conjecture:** The threshold is the smallest Pisot number q₀ ≈ 1.3247.\n\n**Known:**\n- Pisot numbers do NOT have gaps → 0 (EJK 1990)\n- All gaps ≤ 1 for q ≤ 2 (EJK 1990)\n\n**Open:** Whether all 1 < q < q₀ have the gap property.",
+    "mathContext": "For $1 < q < 1 + \\varepsilon$, consider $Q_q = \\{\\sum_{i \\in S} q^i : S \\subseteq \\mathbb{N} \\text{ finite}\\}$. Erdős and Joó (1991) conjectured: $\\lim_{k \\to \\infty} (x_{k+1} - x_k) = 0$ iff $q < q_0 \\approx 1.3247$, the smallest Pisot-Vijayaraghavan number (root of $x^3 = x + 1$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pisot numbers",
+      "q-expansions",
+      "Digit expansions"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "algebraic number theory basics"
+    ]
+  },
+  {
+    "id": "ann-e1096-qrep",
+    "proofId": "erdos-1096",
+    "range": {
+      "startLine": 45,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "q-Representable Numbers",
+    "content": "**QRepresentable q:**\n\nA number x is **q-representable** if x = Σ_{i∈S} q^i for some finite S ⊆ ℕ.\n\n**Examples:**\n- q = 2: These are non-negative integers (binary representation)\n- q close to 1: The set becomes dense in [0, ∞)\n- q Pisot: Special gaps and unique expansion properties\n\nThe structure depends crucially on the algebraic properties of q.",
+    "mathContext": "$Q_q = \\{\\sum_{i \\in S} q^i : S \\subseteq \\mathbb{N},\\, |S| < \\infty\\}$. For $q = 2$: $Q_2 = \\mathbb{N}$ (binary representation). For $q \\to 1^+$: $Q_q$ becomes dense in $[0, \\infty)$ since $\\sum_{i=0}^{N} q^i \\approx N+1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Base representations",
+      "Power sums"
+    ],
+    "prerequisites": [
+      "Finset.sum in Lean 4",
+      "power series basics"
+    ]
+  },
+  {
+    "id": "ann-e1096-examples",
+    "proofId": "erdos-1096",
+    "range": {
+      "startLine": 60,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "Basic Examples",
+    "content": "**Immediate q-representable numbers:**\n\n- `zero_q_representable`: 0 ∈ QRepresentable q (empty sum)\n- `one_q_representable`: 1 ∈ QRepresentable q (S = {0})\n- `q_q_representable`: q ∈ QRepresentable q (S = {1})\n\nThese form the beginning of the ordered sequence when q < 2. The proofs use `Finset.sum` on empty or singleton sets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Empty sum",
+      "Singleton sets"
+    ],
+    "prerequisites": [
+      "Finset operations",
+      "power function"
+    ],
+    "mathContext": "See annotation content for formal details of basic examples"
+  },
+  {
+    "id": "ann-e1096-sequence",
+    "proofId": "erdos-1096",
+    "range": {
+      "startLine": 79,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "The Ordered Sequence and Gap Function",
+    "content": "**qSequence q k:**\n\nThe q-representable numbers form a countable set enumerated in increasing order:\n\n- x₁ = 0 (empty sum)\n- x₂ = 1 (just q⁰)\n- x₃ = q (just q¹)\n- x₄ = q² or 1+q (depending on q)\n\nFor 1 < q < 2, the axiom `qSequence_initial` establishes the first three terms.\n\n**gap q k** = qSequence(q, k+1) - qSequence(q, k) captures consecutive differences.",
+    "mathContext": "The enumeration $0 = x_1 < x_2 < x_3 < \\cdots$ is axiomatized. The gap function $g(k) = x_{k+1} - x_k$ captures the local spacing. For $q$ close to 1, intuitively $g(k) \\to 0$ because $q^i \\approx 1$ makes the sums densely spaced.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Well-ordering",
+      "Countable sets",
+      "Consecutive differences"
+    ],
+    "prerequisites": [
+      "well-ordering of ℝ subsets",
+      "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-e1096-pisot",
+    "proofId": "erdos-1096",
+    "range": {
+      "startLine": 99,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "Pisot-Vijayaraghavan Numbers",
+    "content": "**IsPisot q:**\n\nA **Pisot number** θ > 1 is an algebraic integer whose Galois conjugates all have absolute value < 1.\n\n**Key Examples:**\n- **Smallest Pisot** q₀ ≈ 1.3247: root of x³ = x + 1\n- **Golden ratio** φ = (1+√5)/2 ≈ 1.618: root of x² = x + 1\n\n**Remarkable Properties:**\n- Powers θⁿ get exponentially close to integers\n- Unique expansion properties in base θ\n- Central role in dynamics and number theory\n\nAxioms establish: `smallestPisot_value` (bounds), `smallestPisot_is_pisot` (Pisot property), `smallestPisot_minimal` (minimality), `goldenRatio_is_pisot`.",
+    "mathContext": "A Pisot-Vijayaraghavan number $\\theta > 1$ is an algebraic integer with all conjugates $|\\theta_i| < 1$. The smallest is $q_0 \\approx 1.3247$ (root of $x^3 - x - 1 = 0$). The golden ratio $\\varphi = \\frac{1+\\sqrt{5}}{2}$ is Pisot with conjugate $\\frac{1-\\sqrt{5}}{2} \\approx -0.618$. Key property: $\\theta^n \\to$ nearest integer exponentially fast, since $\\sum |\\theta_i^n| \\to 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Algebraic integers",
+      "Galois conjugates",
+      "Salem numbers"
+    ],
+    "prerequisites": [
+      "algebraic integers",
+      "minimal polynomials",
+      "Galois conjugates"
+    ]
+  },
+  {
+    "id": "ann-e1096-gap-property",
+    "proofId": "erdos-1096",
+    "range": {
+      "startLine": 123,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "Gap Property and EJK Results",
+    "content": "**HasGapProperty q:**\n\nA value q has the **gap property** if:\n\n`lim_{k→∞} gap(q, k) = 0`\n\nFormalized as `Filter.Tendsto (gap q) Filter.atTop (nhds 0)`.\n\n**Key EJK Results (1990):**\n- `pisot_no_gap_property`: Pisot numbers do NOT have the gap property\n- `gap_universal_bound`: For 1 < q ≤ 2, all gaps ≤ 1\n\nPisot numbers create 'holes' in q-expansion structure that persist at all scales.",
+    "mathContext": "$\\text{HasGapProperty}(q) :\\Leftrightarrow \\lim_{k \\to \\infty} g_q(k) = 0$, formalized as `Filter.Tendsto (gap q) atTop (nhds 0)`. EJK (1990): $\\theta$ Pisot $\\Rightarrow \\neg\\text{HasGapProperty}(\\theta)$. Also: $\\forall q \\in (1, 2],\\, g_q(k) \\leq 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Limits",
+      "Filter convergence",
+      "Structural holes"
+    ],
+    "prerequisites": [
+      "topological limits",
+      "nhds filter",
+      "Pisot number theory"
+    ]
+  },
+  {
+    "id": "ann-e1096-conjecture",
+    "proofId": "erdos-1096",
+    "range": {
+      "startLine": 140,
+      "endLine": 151
+    },
+    "type": "theorem",
+    "title": "The Erdős-Joó Conjecture",
+    "content": "**ErdosJooConjecture:**\n\nThe conjecture has two parts:\n\n1. **Open:** For all 1 < q < q₀, we have HasGapProperty(q)\n2. **Known:** ¬HasGapProperty(q₀)\n\nPart 2 follows immediately from q₀ being Pisot combined with `pisot_no_gap_property`.\n\n**conjecture_second_part** proves Part 2 as a direct application.",
+    "mathContext": "The Erdős-Joó conjecture: $\\text{HasGapProperty}(q) \\iff q < q_0$ (the smallest Pisot number). Part 2 ($\\neg\\text{HasGapProperty}(q_0)$) follows from $q_0$ being Pisot. Part 1 ($q < q_0 \\Rightarrow$ gaps $\\to 0$) remains open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Phase transitions",
+      "Threshold phenomena"
+    ],
+    "prerequisites": [
+      "Parts I-III of this file"
+    ]
+  },
+  {
+    "id": "ann-e1096-m-digit",
+    "proofId": "erdos-1096",
+    "range": {
+      "startLine": 159,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "m-Digit Expansions and Characterizations",
+    "content": "**QRepresentableM q m:**\n\nGeneralizing from binary coefficients to digits 0, 1, ..., m.\n\n**Bugeaud's Characterization (1996):** For 1 < q ≤ 2, q is Pisot iff liminf of m-digit gaps > 0 for all m ≥ 1.\n\n**EJS Refinement (1996):** For 1 < q < φ, only need to check m = 2 digit expansions.\n\nSince φ ≈ 1.618 > q₀ ≈ 1.325, this simplification applies to the entire range of interest.",
+    "mathContext": "$Q_q^{(m)} = \\{\\sum_{i} d_i q^i : d_i \\in \\{0, 1, \\ldots, m\\}\\}$ generalizes binary to $m$-ary coefficients. Bugeaud (1996): $q$ is Pisot $\\iff$ $\\liminf g_q^{(m)}(k) > 0$ for all $m \\geq 1$. EJS refinement: for $q < \\varphi$, only $m = 2$ is needed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Characterization theorems",
+      "Digit expansions",
+      "Equivalences"
+    ],
+    "prerequisites": [
+      "digit expansions",
+      "liminf",
+      "Bugeaud (1996)"
+    ]
+  },
+  {
+    "id": "ann-e1096-density",
+    "proofId": "erdos-1096",
+    "range": {
+      "startLine": 185,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Density Near 1",
+    "content": "**density_near_one:**\n\nAs q approaches 1 from above, the q-representable numbers become arbitrarily dense:\n\n∀ ε > 0, ∀ N > 0, ∃ q ∈ (1, 1+ε) such that QRepresentable(q) ∩ [0,N] is ε-dense.\n\n**Intuition:** For q very close to 1, the powers 1, q, q², ... are nearly equal, so their sums cover [0, N] densely.\n\nThis explains why the gap property should hold for q sufficiently close to 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dense sets",
+      "Limiting behavior"
+    ],
+    "prerequisites": [
+      "density in metric spaces",
+      "approximation theory"
+    ],
+    "mathContext": "See annotation content for formal details of density near 1"
+  },
+  {
+    "id": "ann-e1096-summary",
+    "proofId": "erdos-1096",
+    "range": {
+      "startLine": 196,
+      "endLine": 204
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_1096_summary:**\n\nThe formalization captures the state of knowledge in three parts:\n\n1. **Pisot → No Gap Property:** All Pisot numbers fail to have gaps → 0\n2. **Universal Bound:** For 1 < q ≤ 2, gaps are at most 1\n3. **Smallest Pisot:** q₀ specifically fails the gap property\n\n**What remains open:** Does every 1 < q < q₀ have the gap property?\n\nThe conjecture says yes, but this is unproved.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary",
+      "Open questions"
+    ],
+    "prerequisites": [
+      "all previous sections"
+    ],
+    "mathContext": "See annotation content for formal details of summary theorem"
+  }
+]

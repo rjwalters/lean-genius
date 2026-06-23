@@ -1,0 +1,131 @@
+{
+  "id": "cauchy-schwarz-oq-01-oq-01-oq-01",
+  "title": "Complex Gram-Schmidt via Cauchy-Schwarz Equality",
+  "slug": "cauchy-schwarz-oq-01-oq-01-oq-01",
+  "description": "Formalizes the Gram-Schmidt orthogonalization process using the Cauchy-Schwarz equality characterization. Shows that CS equality holds iff the Gram-Schmidt residual vanishes (the vector is already a scalar multiple). Includes 2-vector and 3-vector Gram-Schmidt with pairwise orthogonality proofs.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gram%E2%80%93Schmidt_process",
+    "date": "2026-04-13",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzOQ01OQ01OQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "inner-product-spaces",
+      "gram-schmidt",
+      "cauchy-schwarz",
+      "orthogonalization"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-13",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified from Mathlib.",
+    "lineCount": 226,
+    "theoremCount": 9,
+    "definitionCount": 4,
+    "originalContributions": [
+      "projCoeff, orthProj, orthResidual: projection pipeline",
+      "orthResidual_inner_eq_zero: fundamental orthogonality",
+      "gramSchmidt3: three-vector orthogonalization with pairwise orthogonality",
+      "cs_equality_iff_residual_zero: CS equality ↔ trivial Gram-Schmidt step",
+      "orthResidual_eq_zero_iff_smul: residual vanishes iff linearly dependent",
+      "norm_orthResidual_le: projection decreases norm"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Gram-Schmidt process has a long history. Laplace (1749) and others used orthogonalization techniques implicitly, but Jørgen Pedersen Gram (1883) gave the first systematic treatment in his work on linear independence of functions. Erhard Schmidt (1907) formalized the process for Hilbert spaces (then newly being developed), connecting it to the emerging theory of infinite-dimensional inner product spaces. The Cauchy-Schwarz inequality (proved by Cauchy 1821 for finite sums, Schwarz 1885 for integrals) gives the fundamental bound ‖⟪u,v⟫‖ ≤ ‖u‖·‖v‖ with equality precisely when u and v are linearly dependent.\n\nThe connection between Gram-Schmidt and the CS equality case is classical: equality holds iff the vectors are proportional, which is exactly when the Gram-Schmidt residual vanishes (the projection step is trivial). This connection is often stated informally in linear algebra courses but rarely formalized precisely. For complex inner product spaces, the proof requires careful handling of conjugate symmetry (⟪v,u⟫ = conj(⟪u,v⟫)), which the `inner_conj_symm` Mathlib lemma provides.\n\nThe Gram-Schmidt process has two main variants: the classical (or 'modified') Gram-Schmidt, which processes vectors sequentially and can suffer from numerical instability, and the Householder reflection method, which is numerically more stable. Mathlib has `EuclideanDomain.gramSchmidt` for the abstract algebraic process. This formalization provides a concrete projection pipeline (`projCoeff → orthProj → orthResidual`) that directly connects to the Cauchy-Schwarz equality characterization, making explicit the relationship between linear dependence (CS equality) and trivial projection (zero residual).",
+    "problemStatement": "Formalize the complex Gram-Schmidt process using the Cauchy-Schwarz equality characterization. Show that (1) the residual u − (⟪v,u⟫/⟪v,v⟫)·v is orthogonal to v, (2) the residual vanishes iff u is a scalar multiple of v, and (3) this is precisely the equality case of Cauchy-Schwarz.",
+    "proofStrategy": "Define a projection pipeline: projCoeff → orthProj → orthResidual. Prove orthogonality by direct inner product computation (field_simp + ring). For the 3-vector case, use the key fact that projecting onto v₂ preserves orthogonality to v₁ when v₁ ⊥ v₂ (the cross-term ⟪v₂, v₁⟫ = 0 kills the interference). The CS connection is proved by reproducing the parent's Pythagoras argument within the residual framework.",
+    "keyInsights": [
+      "Gram-Schmidt is orthogonal projection iterated: each step projects onto one direction and takes the residual",
+      "CS equality = trivial Gram-Schmidt step: ‖⟪u,v⟫‖ = ‖u‖·‖v‖ iff the residual u − proj(v,u) is zero",
+      "For 3-vector Gram-Schmidt, orthogonality of v₁ ⊥ v₂ is crucial: it ensures projecting u₃ onto v₂ doesn't destroy the v₁-orthogonality",
+      "The norm inequality ‖residual‖ ≤ ‖u‖ follows from Pythagoras: ‖u‖² = ‖residual‖² + ‖projection‖²",
+      "The framework generalizes to any `InnerProductSpace 𝕜 E` where `𝕜` is `RCLike` (real or complex), handled uniformly by the `RCLike.norm_ofReal` and `starRingEnd_apply` lemmas. This means the same Gram-Schmidt code works for ℝ-inner product spaces and ℂ-inner product spaces without case analysis."
+    ]
+  },
+  "sections": [
+    {
+      "id": "projection-pipeline",
+      "title": "Orthogonal Projection and Residual",
+      "startLine": 33,
+      "endLine": 74,
+      "summary": "Defines the projection coefficient, orthogonal projection, and residual. Proves the fundamental orthogonality property and the decomposition identity."
+    },
+    {
+      "id": "gram-schmidt-2",
+      "title": "Two-Vector Gram-Schmidt",
+      "startLine": 76,
+      "endLine": 92,
+      "summary": "Shows that the Gram-Schmidt residual is orthogonal to the direction vector, establishing the 2-vector case."
+    },
+    {
+      "id": "gram-schmidt-3",
+      "title": "Three-Vector Gram-Schmidt",
+      "startLine": 94,
+      "endLine": 126,
+      "summary": "Defines the 3-vector Gram-Schmidt step and proves pairwise orthogonality using the key fact that v₁ ⊥ v₂ prevents interference."
+    },
+    {
+      "id": "cs-connection",
+      "title": "Connection to Cauchy-Schwarz Equality",
+      "startLine": 121,
+      "endLine": 178,
+      "summary": "The central result: CS equality (‖⟪u,v⟫‖ = ‖u‖·‖v‖) holds iff the Gram-Schmidt residual vanishes, connecting the inequality to the orthogonalization process."
+    },
+    {
+      "id": "norm-properties",
+      "title": "Part 5: Norm Properties and Summary",
+      "startLine": 183,
+      "endLine": 226,
+      "summary": "Proves ‖residual‖ ≤ ‖u‖ via Pythagorean decomposition. Summary comment explains the architecture.",
+      "mathContext": "‖u‖² = ‖residual‖² + ‖projection‖² follows from orthogonality and norm_add_sq. Since ‖projection‖² ≥ 0, we get ‖residual‖ ≤ ‖u‖."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization answers the parent's open question by showing that Gram-Schmidt orthogonalization is precisely the process of detecting and removing linear dependence, with Cauchy-Schwarz equality as the detector. The key theorem cs_equality_iff_residual_zero makes explicit what is often only stated informally: CS equality means the projection step is trivial.",
+    "implications": "The projection pipeline (projCoeff → orthProj → orthResidual) could serve as building blocks for formalizing more advanced linear algebra: QR factorization, least-squares problems, and the connection between Gram-Schmidt and Householder reflections.",
+    "openQuestions": [
+      "Can this framework be extended to infinite-dimensional Hilbert spaces with convergence guarantees for the modified Gram-Schmidt process?",
+      "Can the connection to Mathlib's orthogonalProjection be made explicit, showing that orthProj agrees with the Mathlib definition?"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CauchySchwarzOQ01OQ01OQ01",
+    "lineCount": 226,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 4,
+    "path": "Proofs/CauchySchwarzOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Answers OQ-1: formalizes Gram-Schmidt using the CS equality characterization. The parent proves $\\|\\langle u, v \\rangle\\| = \\|u\\| \\|v\\|$ iff $u, v$ are linearly dependent; this entry exposes that 'iff' as the geometric content of the projection $u \\mapsto u - \\frac{\\langle u, v \\rangle}{\\|v\\|^2} v$ vanishing."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01",
+      "relationship": "ancestor",
+      "description": "Grandparent: Cauchy-Schwarz for complex inner product spaces (RCLike-uniform). This entry inherits its uniform RCLike treatment — the same Gram-Schmidt code runs over both $\\mathbb{R}$- and $\\mathbb{C}$-inner product spaces because Mathlib's `RCLike.norm_ofReal` and `starRingEnd_apply` reduce the projection coefficient to the same shape in both cases."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "ancestor",
+      "description": "Root: the original Cauchy-Schwarz inequality $|\\langle u, v\\rangle| \\leq \\|u\\| \\|v\\|$ over real inner product spaces, with the equality condition (linear dependence) proved via the Lagrange identity. This entry's residual-zero characterization is the geometric translation of that algebraic equality test."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "Integral analogue: $(\\int fg)^2 \\leq (\\int f^2)(\\int g^2)$ in $L^2$. The Gram-Schmidt residual construction here generalizes verbatim to $L^2$: the residual is the projection of $f$ onto the orthogonal complement of $g$, and equality in the integral CS holds iff that residual vanishes (i.e. $f$ and $g$ are proportional almost everywhere). This entry's discrete machinery thus prefigures the $L^2$ orthogonal-projection technology."
+    },
+    {
+      "targetId": "lagrange-four-squares",
+      "relationship": "related",
+      "description": "Both proofs use the polarization-style identity $\\|\\alpha u + \\beta v\\|^2 = |\\alpha|^2 \\|u\\|^2 + 2\\operatorname{Re}(\\bar\\alpha \\beta \\langle u, v\\rangle) + |\\beta|^2 \\|v\\|^2$ as a building block. In Cauchy-Schwarz that polarization is plugged with the optimal coefficient (the projection coefficient $\\langle u, v\\rangle / \\|v\\|^2$); in Lagrange's four-square identity, the same multiplicative structure on quaternion norms drives the four-square sum-product formula."
+    }
+  ],
+  "sorries": 0
+}

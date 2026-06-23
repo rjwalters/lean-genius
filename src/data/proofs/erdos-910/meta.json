@@ -1,0 +1,181 @@
+{
+  "id": "erdos-910",
+  "title": "Erdős Problem #910: Connected Subsets of Euclidean Space",
+  "slug": "erdos-910",
+  "description": "Does every connected set in ℝⁿ have a proper connected subset that isn't a point or homeomorphic to the whole? Does it have more than 2^ℵ₀ connected subsets? Both NO—Rudin (1958) constructed a counterexample under CH.",
+  "meta": {
+    "author": "Mary Ellen Rudin (1958)",
+    "sourceUrl": "https://erdosproblems.com/910",
+    "date": "1958",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos910OQ01.lean",
+    "tags": [
+      "erdos",
+      "topology",
+      "connected-sets",
+      "homeomorphism",
+      "continuum-hypothesis",
+      "set-theory",
+      "counterexample"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "erdosNumber": 910,
+    "erdosUrl": "https://erdosproblems.com/910",
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib.Topology.Connected.Basic",
+        "description": "Mathlib.Topology.Connected.Basic"
+      },
+      {
+        "theorem": "Mathlib.Topology.Homeomorph",
+        "description": "Mathlib.Topology.Homeomorph"
+      },
+      {
+        "theorem": "Mathlib.SetTheory.Cardinal.Basic",
+        "description": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Mathlib.Topology.Order",
+        "description": "Mathlib.Topology.Order"
+      }
+    ],
+    "originalContributions": [
+      "connectedSubsets/connectedSubsetsOf: collections of connected subsets",
+      "AreHomeomorphic: homeomorphism between subsets via Nonempty (S ≃ₜ T)",
+      "areHomeomorphic_refl/symm: proved reflexivity and symmetry",
+      "HasDiverseConnectedSubset: formal definition of Erdős's diversity condition",
+      "erdosFirstConjecture/erdosSecondConjecture: formal statements",
+      "ContinuumHypothesis: ℵ₁ = 2^ℵ₀",
+      "IsRudinSet: self-similar connected set definition",
+      "rudin_theorem: axiomatized existence under CH",
+      "rudin_set_no_diverse_subset: proved no diverse subsets (no sorry)",
+      "erdos_first_conjecture_false: proved negation under CH (0 sorries)",
+      "erdos_second_conjecture_false: proved negation under CH (0 sorries)",
+      "erdos_910_both_false: combined result disproving both conjectures"
+    ],
+    "lineCount": 155,
+    "assumptions": "1 axiom: rudin_theorem_ch. See Lean source for the complete statement.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 7,
+    "additionalFiles": [
+      "Proofs/Erdos910Problem.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős posed two questions about connected subsets of $\\mathbb{R}^n$ in the 1940s, expecting affirmative answers based on the intuition that connected sets should possess rich internal structure. For typical connected sets — intervals, disks, manifolds — there are continuum-many connected subsets, and most proper connected subsets are not homeomorphic to the whole. Mary Ellen Rudin, in her landmark 1958 paper 'A connected subset of the plane' (Fundamenta Mathematicae 46), provided a stunning counterexample to both conjectures simultaneously. Working under the Continuum Hypothesis (CH), she constructed a connected subset $X \\subseteq \\mathbb{R}^2$ with the extraordinary property that every proper connected subset of $X$ is either a single point or homeomorphic to $X$ itself. Moreover, $X$ has exactly $2^{\\aleph_0}$ connected subsets, not more. The construction uses transfinite induction of length $\\aleph_1$, which equals $2^{\\aleph_0}$ under CH, to build $X$ point by point while maintaining both the connectivity and the self-similarity property at each stage. Rudin's result was one of her first major contributions to point-set topology; she later became one of the most influential topologists of the 20th century. The dependence on CH remains a fundamental aspect of this problem — it is still unknown whether a ZFC counterexample exists.",
+    "problemStatement": "Two questions: (1) Does every connected set in $\\mathbb{R}^n$ contain a connected subset which is not a point and not homeomorphic to the original set? (2) If $n \\geq 2$, does every connected set in $\\mathbb{R}^n$ contain more than $2^{\\aleph_0}$ many connected subsets? Both answered NO under CH (Rudin 1958).",
+    "text": "Does every connected set in ℝⁿ have a proper connected subset that isn't a point or homeomorphic to the whole? Does it have more than 2^ℵ₀ connected subsets? Both NO—Rudin (1958) constructed a counterexample under CH.",
+    "proofStrategy": "The formalization defines connected subsets, homeomorphism between subsets (via `Homeomorph`), and Erdős's two conjectures as `Prop` definitions. The Rudin set is defined as a connected set where every proper connected subset is a singleton or homeomorphic to the whole. Rudin's existence theorem (under CH) is axiomatized. The main structural theorem — Rudin sets have no diverse subsets — is fully proved by case analysis. The negation of both conjectures under CH follows: the first via proof by contradiction, the second via cardinal comparison.",
+    "keyInsights": [
+      "**Self-similar rigidity**: A Rudin set $X$ has the remarkable property that its only proper connected subsets are points and copies of $X$ itself. This extreme self-similarity means the topology of $X$ is maximally rigid — it admits no 'intermediate' connected substructures.",
+      "**CH enables transfinite construction**: Rudin builds $X \\subseteq \\mathbb{R}^2$ by transfinite induction of length $\\aleph_1 = 2^{\\aleph_0}$ (using CH). At each successor ordinal $\\alpha$, she adds a point ensuring that partial connected subsets either collapse to singletons or extend to copies of the whole. Without CH, the induction length may not match the continuum.",
+      "**Both conjectures fall simultaneously**: The Rudin set is a single counterexample to both questions: (1) no diverse connected subset exists (every non-singleton is homeomorphic to $X$), and (2) $X$ has exactly $2^{\\aleph_0}$ connected subsets, not $> 2^{\\aleph_0}$.",
+      "**Set-theoretic independence**: The dependence on CH is not merely a proof artifact. Whether ZFC alone can resolve these questions is open, making this a problem at the intersection of topology and set theory.",
+      "**Elegant proof structure**: The formalization cleanly separates the definitions (connected subsets, homeomorphism, diversity), the conjecture statements, the Rudin set properties, and the disproof. The key theorem `rudin_set_no_diverse_subset` is fully proved by case analysis on the Rudin property."
+    ],
+    "prerequisites": [
+      "Point-set topology: connected spaces, subspace topology, and the definition of connectedness via separation",
+      "Homeomorphisms: continuous bijections with continuous inverses, topological equivalence of subsets",
+      "Cardinal arithmetic: cardinalities of infinite sets, the continuum $2^{\\aleph_0}$, and comparison of cardinals",
+      "The Continuum Hypothesis (CH): the assertion $\\aleph_1 = 2^{\\aleph_0}$ and its role in transfinite constructions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "problem-statement",
+      "title": "Problem Statement and Overview",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Erdős Problem #910: two questions about connected sets in $\\mathbb{R}^n$ — (1) does every connected set contain a connected subset that is neither a point nor homeomorphic to the whole, and (2) for $n \\ge 2$, does it contain more than $2^{\\aleph_0}$ connected subsets? Both answered NO by Mary Ellen Rudin (1958) under CH."
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions: Connected Subsets and Rudin Sets",
+      "startLine": 38,
+      "endLine": 61,
+      "summary": "Defines `connectedSubsetsOf S` (connected subsets within $S$ via Mathlib's `IsConnected`), `AreHomeomorphic` (subspace homeomorphism), `HasDiverseConnectedSubset` (a proper connected subset that is neither a singleton nor homeomorphic to the whole), and `IsRudinSet` (a connected set with no diverse connected subset)."
+    },
+    {
+      "id": "homeomorphism-basics",
+      "title": "Homeomorphism Basics",
+      "startLine": 62,
+      "endLine": 70,
+      "summary": "Proves `areHomeomorphic_refl` (via `Homeomorph.refl`) and `areHomeomorphic_symm` (via `Homeomorph.symm`), establishing reflexivity and symmetry of the homeomorphism relation."
+    },
+    {
+      "id": "erdos-conjectures",
+      "title": "Erdős's Conjectures Formalized",
+      "startLine": 71,
+      "endLine": 86,
+      "summary": "Specializes to $\\mathbb{R} \\times \\mathbb{R}$ to avoid universe issues: `erdosFirstConjecture` (every connected set has a diverse subset), `connectedSubsetCardinality` (cardinality of connected subsets), and `erdosSecondConjecture` (connected sets have $> 2^{\\aleph_0}$ connected subsets)."
+    },
+    {
+      "id": "rudin-axiom",
+      "title": "Rudin's Axiom (under CH)",
+      "startLine": 87,
+      "endLine": 99,
+      "summary": "Encodes Rudin's deep 1958 construction as `rudin_theorem_ch`: under CH ($\\mathfrak{c} = \\aleph_1$) there exists a connected planar Rudin set with exactly continuum-many connected subsets, including nontriviality. This is the sole axiom of the file."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems: Both Conjectures False under CH",
+      "startLine": 100,
+      "endLine": 140,
+      "summary": "Proves `rudin_set_no_diverse_subset` (Rudin sets have no diverse connected subset), then `erdos_first_conjecture_false` and `erdos_second_conjecture_false`, each deriving a contradiction from the Rudin set supplied by the axiom under CH. All proved with 0 sorries."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: Combined Disproof",
+      "startLine": 141,
+      "endLine": 155,
+      "summary": "Combines the two disproofs into `erdos_910_both_false`: under CH, both of Erdős's conjectures about connected subsets of Euclidean space are false, via Rudin's 1958 construction."
+    }
+  ],
+  "conclusion": {
+    "summary": "Both of Erdős's questions about connected subsets are answered negatively under CH. Mary Ellen Rudin (1958) constructed a connected planar set where every proper connected subset is either a single point or homeomorphic to the whole, and there are exactly $2^{\\aleph_0}$ connected subsets. The formalization captures the definitions, Rudin's theorem as an axiom, and proves the key structural result (no diverse subsets) fully.",
+    "implications": "**Theoretical Significance**: Rudin's construction reveals that connected sets can have surprisingly rigid topological structure, with no 'intermediate' connected substructures.\n\nThe dependence on CH highlights deep connections between point-set topology and set theory. This result is a landmark in the study of pathological connected sets and influenced later work on totally disconnected and hereditarily indecomposable continua.",
+    "openQuestions": [
+      "Does there exist a ZFC-provable counterexample (without assuming CH)? This is the main open question remaining from Erdős's problem.",
+      "Under $\\neg$CH, can connected sets in $\\mathbb{R}^2$ always be shown to have diverse connected subsets?",
+      "What axioms beyond ZFC affect the answer? Does Martin's Axiom suffice for Rudin's construction?",
+      "Can the Rudin set construction be modified to work in higher dimensions $\\mathbb{R}^n$ for $n \\geq 3$?",
+      "What is the minimum cardinality of a connected subset of $\\mathbb{R}^2$ that is a Rudin set (under CH)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-909",
+      "relationship": "related",
+      "description": "Erdős Problem #909 on dimension of product spaces is another Erdős topology problem using set-theoretic methods."
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "broader-context",
+      "description": "The Borsuk-Ulam theorem is a foundational result in algebraic topology, connecting to the broader study of topological properties of Euclidean space."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Cardinal"
+    ],
+    "namespace": "Erdos910",
+    "lineCount": 155,
+    "axiomCount": 1,
+    "theoremCount": 6,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos910OQ01.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Erdos910Problem.lean"
+    ]
+  },
+  "sorries": 0
+}

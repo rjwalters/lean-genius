@@ -1,0 +1,304 @@
+[
+  {
+    "id": "erdos-1068-imports",
+    "proofId": "erdos-1068",
+    "type": "concept",
+    "range": {
+      "startLine": 34,
+      "endLine": 38
+    },
+    "title": "Imports: Graph Theory and Set Theory",
+    "content": "Imports Mathlib's `SimpleGraph` for graph infrastructure, `Cardinal` for uncountable cardinals ($\\aleph_1$), and `Set.Countable` for the countability predicate. This combination bridges finite combinatorics (graph coloring, paths) with infinite set theory (uncountable cardinals, countable sets).",
+    "mathContext": "Uses $\\texttt{SimpleGraph}$ for undirected graphs, $\\texttt{Cardinal}$ for $\\aleph_0, \\aleph_1$, and $\\texttt{Set.Countable}$ for the predicate distinguishing countable from uncountable vertex sets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Cardinal",
+      "Set.Countable",
+      "ordinal arithmetic"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "cardinal arithmetic",
+      "countability"
+    ]
+  },
+  {
+    "id": "erdos-1068-path",
+    "proofId": "erdos-1068",
+    "type": "definition",
+    "range": {
+      "startLine": 51,
+      "endLine": 54
+    },
+    "title": "Paths in Graphs",
+    "content": "Defines a path as a list of vertices where consecutive entries are adjacent. This concrete representation (rather than Mathlib's `Walk` type) allows direct reasoning about internal vertices via list operations, which is essential for defining internal disjointness.",
+    "mathContext": "A path $p = (v_0, v_1, \\ldots, v_k)$ satisfies $v_i \\sim v_{i+1}$ for all $0 \\leq i < k$. The internal vertices are $\\{v_1, \\ldots, v_{k-1}\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "graph walks",
+      "vertex lists",
+      "adjacency",
+      "path length"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "list data structures"
+    ]
+  },
+  {
+    "id": "erdos-1068-disjoint",
+    "proofId": "erdos-1068",
+    "type": "definition",
+    "range": {
+      "startLine": 58,
+      "endLine": 64
+    },
+    "title": "Internal Disjointness of Paths",
+    "content": "Two paths are internally disjoint if they share no internal vertices (vertices that are neither first nor last). A collection of paths is pairwise internally disjoint if every pair is internally disjoint. This is the key concept for Menger's theorem: $k$-connectivity is equivalent to $k$ pairwise internally disjoint paths between any two vertices.",
+    "mathContext": "Paths $p_1, p_2$ from $u$ to $v$ are internally disjoint iff $\\text{int}(p_1) \\cap \\text{int}(p_2) = \\emptyset$ where $\\text{int}(p) = p \\setminus \\{u, v\\}$. By Menger's theorem (1927), $\\kappa(u,v) = $ max number of pairwise internally disjoint $u$-$v$ paths.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Menger's theorem",
+      "vertex connectivity",
+      "vertex cuts",
+      "disjoint path systems"
+    ],
+    "prerequisites": [
+      "graph paths",
+      "vertex separation",
+      "Menger's theorem"
+    ]
+  },
+  {
+    "id": "erdos-1068-inf-connected",
+    "proofId": "erdos-1068",
+    "type": "definition",
+    "range": {
+      "startLine": 75,
+      "endLine": 76
+    },
+    "title": "Infinite Vertex-Connectivity",
+    "content": "A graph is infinitely connected if any two distinct vertices are joined by infinitely many pairwise internally disjoint paths. This is an extremely strong structural property: by the infinite Menger theorem (Aharoni-Berger, 2009), it is equivalent to saying no finite vertex cut can disconnect the graph.",
+    "mathContext": "$$G \\text{ is } \\infty\\text{-connected} \\iff \\forall u \\neq v,\\; \\exists \\text{ infinitely many pairwise internally disjoint } u\\text{-}v \\text{ paths}$$\nBy the infinite Menger theorem: $\\kappa(u,v) = \\aleph_0$ for all $u \\neq v$, equivalently no finite vertex cut separates any two vertices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite Menger theorem",
+      "Aharoni-Berger theorem",
+      "vertex connectivity",
+      "κ-connected graphs"
+    ],
+    "prerequisites": [
+      "vertex connectivity",
+      "Menger's theorem",
+      "infinite combinatorics"
+    ]
+  },
+  {
+    "id": "erdos-1068-chromatic",
+    "proofId": "erdos-1068",
+    "type": "definition",
+    "range": {
+      "startLine": 81,
+      "endLine": 83
+    },
+    "title": "Chromatic Number ≥ ℵ₁",
+    "content": "Defines $\\chi(G) \\geq \\aleph_1$ via the negation of countable colorability: no function $c : V \\to C$ with $C$ countable can be a proper coloring. By the De Bruijn-Erdős theorem (1951), this implies finite subgraphs with arbitrarily large chromatic number.",
+    "mathContext": "$$\\chi(G) \\geq \\aleph_1 \\iff \\forall C \\text{ countable},\\; \\forall c : V \\to C,\\; \\exists u \\sim v : c(u) = c(v)$$\nBy De Bruijn-Erdős, $\\chi(G) \\geq \\aleph_1$ implies $\\chi(G) \\geq k$ for every finite $k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "graph coloring",
+      "De Bruijn-Erdős theorem",
+      "uncountable cardinals"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "cardinal arithmetic",
+      "countability"
+    ]
+  },
+  {
+    "id": "erdos-1068-induced",
+    "proofId": "erdos-1068",
+    "type": "definition",
+    "range": {
+      "startLine": 88,
+      "endLine": 92
+    },
+    "title": "Induced Subgraph on a Vertex Set",
+    "content": "Constructs the induced subgraph $G[S]$ on a vertex set $S$: vertices are elements of $S$, edges are inherited from $G$. The `SimpleGraph` axioms (symmetry, no loops) are verified by delegating to $G$. This is the key construction for Problem 1068: we seek a countable $S$ such that $G[S]$ is infinitely connected.",
+    "mathContext": "$G[S]$ has vertex set $S$ and edge set $\\{(u,v) : u, v \\in S,\\, u \\sim_G v\\}$. The problem asks: $\\exists S \\subseteq V$ countable such that $G[S]$ is $\\infty$-connected.",
+    "significance": "key",
+    "relatedConcepts": [
+      "induced subgraphs",
+      "vertex restriction",
+      "subgraph isomorphism"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "set restriction"
+    ]
+  },
+  {
+    "id": "erdos-1068-conjecture",
+    "proofId": "erdos-1068",
+    "type": "concept",
+    "range": {
+      "startLine": 97,
+      "endLine": 101
+    },
+    "title": "Erdős Problem 1068: The Main Conjecture",
+    "content": "The central open question: does every graph with $\\chi(G) \\geq \\aleph_1$ contain a countable vertex set $S$ such that $G[S]$ is infinitely connected? This is a weakening of Problem 1067 (disproved by Soukup). The restriction to countable subgraphs makes this fundamentally different — Soukup's counterexample controls uncountable sets but says nothing about countable ones.",
+    "mathContext": "$$\\forall G \\text{ with } \\chi(G) \\geq \\aleph_1,\\; \\exists S \\subseteq V(G) : |S| \\leq \\aleph_0 \\wedge G[S] \\text{ is } \\infty\\text{-connected}$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Hajnal conjecture",
+      "uncountable chromatic number",
+      "countable substructures"
+    ],
+    "prerequisites": [
+      "infinite graph theory",
+      "chromatic number",
+      "infinite connectivity"
+    ]
+  },
+  {
+    "id": "erdos-1068-soukup",
+    "proofId": "erdos-1068",
+    "type": "concept",
+    "range": {
+      "startLine": 104,
+      "endLine": 107
+    },
+    "title": "Soukup's Counterexample (2015)",
+    "content": "Soukup (2015, *Combinatorica*) constructed in ZFC a graph with $\\chi(G) \\geq \\aleph_1$ where every uncountable vertex set induces a graph that is NOT infinitely connected. The construction uses ladder systems on non-special trees: pairs of vertices from any uncountable set can be separated by a finite vertex cut. This makes the countable case (Problem 1068) the remaining open question.",
+    "mathContext": "$$\\exists G : \\chi(G) \\geq \\aleph_1 \\wedge \\forall S \\subseteq V(G),\\; |S| > \\aleph_0 \\implies G[S] \\text{ is NOT } \\infty\\text{-connected}$$\nSoukup's graph uses $\\omega_1$-trees with ladder systems defining edges.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ladder systems",
+      "non-special trees",
+      "ZFC constructions",
+      "counterexamples"
+    ],
+    "prerequisites": [
+      "set-theoretic combinatorics",
+      "tree structures",
+      "infinite graph theory"
+    ]
+  },
+  {
+    "id": "erdos-1068-problem1067",
+    "proofId": "erdos-1068",
+    "type": "concept",
+    "range": {
+      "startLine": 108,
+      "endLine": 112
+    },
+    "title": "Problem 1067 Disproved",
+    "content": "Problem 1067 asked whether every graph with $\\chi(G) \\geq \\aleph_1$ contains an infinitely connected subgraph with $\\chi \\geq \\aleph_1$. Soukup showed the answer is NO. Problem 1068 weakens this by dropping the chromatic number requirement and only asking for countability of the subgraph.",
+    "mathContext": "Problem 1067 (DISPROVED): $\\forall G$ with $\\chi(G) \\geq \\aleph_1$, $\\exists H \\subseteq G$ with $H$ $\\infty$-connected and $\\chi(H) \\geq \\aleph_1$.\nProblem 1068 (OPEN): replace $\\chi(H) \\geq \\aleph_1$ with $|V(H)| \\leq \\aleph_0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Hajnal program",
+      "chromatic subgraph forcing",
+      "problem weakening"
+    ],
+    "prerequisites": [
+      "infinite chromatic number",
+      "graph connectivity"
+    ]
+  },
+  {
+    "id": "erdos-1068-separator",
+    "proofId": "erdos-1068",
+    "type": "concept",
+    "range": {
+      "startLine": 115,
+      "endLine": 187
+    },
+    "title": "No Finite Vertex Separator",
+    "content": "In an infinitely connected graph, removing any finite set of vertices leaves any two remaining vertices connected. This is a consequence of the infinite Menger theorem (Aharoni-Berger, 2009, *Inventiones mathematicae*), which resolved the Erdős-Menger conjecture: in infinite graphs, the max number of disjoint $A$-$B$ paths equals the min size of an $A$-$B$ separator.",
+    "mathContext": "If $G$ is $\\infty$-connected and $S$ is finite with $u, v \\notin S$, then $\\exists$ $u$-$v$ path in $G - S$. Follows from $\\kappa(u,v) = \\aleph_0 > |S|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Aharoni-Berger theorem",
+      "infinite Menger theorem",
+      "vertex cuts",
+      "graph resilience"
+    ],
+    "prerequisites": [
+      "Menger's theorem",
+      "vertex connectivity",
+      "infinite combinatorics"
+    ]
+  },
+  {
+    "id": "erdos-1068-set-theory",
+    "proofId": "erdos-1068",
+    "type": "insight",
+    "range": {
+      "startLine": 189,
+      "endLine": 195
+    },
+    "title": "Set-Theoretic Sensitivity",
+    "content": "Komjáth (2013, *Israel J. Math.*) showed that a related question (graphs of cardinality $\\aleph_1$ with $\\chi \\geq \\aleph_1$ and uncountable infinitely connected subgraphs) is independent of ZFC. Problem 1068 may also be sensitive to set-theoretic axioms, though independence has not been established for this specific variant. Recorded here as documentation prose (no formal declaration).",
+    "mathContext": "Komjáth's independence result uses forcing: in one model of ZFC the answer is yes, in another no. The ZFC-independence status of Problem 1068 specifically remains unknown.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ZFC independence",
+      "forcing",
+      "Komjáth's results",
+      "set-theoretic combinatorics"
+    ],
+    "prerequisites": [
+      "set theory",
+      "forcing",
+      "ZFC axioms"
+    ]
+  },
+  {
+    "id": "erdos-1068-bowler",
+    "proofId": "erdos-1068",
+    "type": "insight",
+    "range": {
+      "startLine": 197,
+      "endLine": 202
+    },
+    "title": "Bowler-Pikhurko Simplification (2024)",
+    "content": "Bowler and Pikhurko (2024) provided a simplified construction of Soukup's counterexample for Problem #1067, illuminating the structure of the problem; their construction uses tree-like \"ladder\" graphs. Recorded here as documentation prose (no formal declaration).",
+    "mathContext": "The simplified construction (arXiv:2402.05984) replaces Soukup's non-special tree technique with a more direct ladder-graph approach, preserving the key property that uncountable vertex sets have finite vertex cuts.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proof simplification",
+      "ladder graphs",
+      "infinite graph theory"
+    ],
+    "prerequisites": [
+      "Soukup's counterexample",
+      "tree-based graph constructions"
+    ]
+  },
+  {
+    "id": "erdos-1068-proved-theorems",
+    "proofId": "erdos-1068",
+    "type": "concept",
+    "range": {
+      "startLine": 209,
+      "endLine": 238
+    },
+    "title": "Structural Implications of Infinite Connectivity",
+    "content": "Two fully proved (non-axiomatized) theorems: (1) `inf_connected_implies_path`: infinite connectivity implies the existence of a path between any two distinct vertices (extracting one path from the infinite family), and (2) `inf_connected_subgraph_has_paths`: if $G[S]$ is infinitely connected, then any two vertices in $S$ are path-connected within $S$. These are verified by Lean's kernel.",
+    "mathContext": "$\\infty$-connected $\\implies$ connected: the infinite family of disjoint paths is nonempty, yielding at least one $u$-$v$ path. For induced subgraphs: $G[S]$ $\\infty$-connected $\\implies$ $G[S]$ connected.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "connectivity implies paths",
+      "structural monotonicity",
+      "proof extraction"
+    ],
+    "prerequisites": [
+      "graph connectivity",
+      "basic graph theory"
+    ]
+  }
+]

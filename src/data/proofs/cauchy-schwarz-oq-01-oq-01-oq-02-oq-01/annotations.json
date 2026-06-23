@@ -1,0 +1,57 @@
+[
+  {
+    "id": "rs-01",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "type": "insight",
+    "title": "The Squared-Modulus Split: Re² + Im²",
+    "content": "`cnorm_sq z : ‖z‖² = (Re z)² + (Im z)²` (via `Complex.sq_norm` then `Complex.normSq_apply`) is the algebraic heart of the strengthening. Cauchy–Schwarz controls the full modulus ‖⟪u,v⟫‖²; this identity resolves it into two nonnegative pieces — the imaginary part (Robertson's commutator term) and the real part (the covariance Robertson discards). Keeping both gives Schrödinger."
+  },
+  {
+    "id": "rs-02",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 50,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "The Covariance Functional Robertson Throws Away",
+    "content": "`anticommutatorEV A B ψ = ⟪ψ,(AB+BA)ψ⟫` and `covarianceEV A B ψ = Re(½⟨{A,B}⟩ − ⟨A⟩⟨B⟩)`. This is the quantum covariance of the observables A and B in the state ψ. Robertson's 1929 inequality drops it entirely; Schrödinger's 1930 refinement is exactly what you get by keeping it."
+  },
+  {
+    "id": "rs-03",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 114
+    },
+    "type": "technique",
+    "title": "Covariance = Real Part of the Centered Inner Product",
+    "content": "`covarianceEV_eq_re` proves Cov(A,B) = Re⟪u,v⟫ for the centered vectors u = Aψ−⟨A⟩ψ, v = Bψ−⟨B⟩ψ. Since ⟪v,u⟫ = conj⟪u,v⟫, the symmetric sum ⟪u,v⟫ + ⟪v,u⟫ = 2·Re⟪u,v⟫ expands (reusing the parent's `inner_centered_eq`) to ⟨{A,B}⟩ − 2⟨A⟩⟨B⟩. Halving via `Complex.div_ofNat_re` matches covarianceEV exactly — the real part Robertson never uses."
+  },
+  {
+    "id": "rs-04",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 123,
+      "endLine": 165
+    },
+    "type": "insight",
+    "title": "Full Cauchy–Schwarz Gives Both Terms at Once",
+    "content": "`robertson_schrodinger_inequality` applies ‖⟪u,v⟫‖ ≤ ‖u‖·‖v‖, squares it, and splits ‖⟪u,v⟫‖² = Re² + Im². The real part is the covariance (Part II); the imaginary part carries the commutator — the parent's identity ⟪u,v⟫ − conj⟪u,v⟫ = ⟨[A,B]⟩ shows [A,B] is purely imaginary with im = 2·Im⟪u,v⟫, so ‖⟨[A,B]⟩‖² = 4·(Im⟪u,v⟫)². Assembling: σ_A²σ_B² ≥ Cov² + (½|⟨[A,B]⟩|)²."
+  },
+  {
+    "id": "rs-05",
+    "proofId": "cauchy-schwarz-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 172,
+      "endLine": 196
+    },
+    "type": "insight",
+    "title": "Robertson is the Corollary; the Gap is Cov²",
+    "content": "`robertson_of_schrodinger` recovers the parent's σ_A·σ_B ≥ ½|⟨[A,B]⟩| by dropping the nonnegative Cov(A,B)² and taking square roots. `schrodinger_gap_nonneg` records the exact improvement: σ_A²σ_B² − (½|⟨[A,B]⟩|)² ≥ Cov(A,B)². Equality in Robertson therefore forces Cov(A,B) = 0 — the strengthening is genuine precisely for correlated observables."
+  }
+]

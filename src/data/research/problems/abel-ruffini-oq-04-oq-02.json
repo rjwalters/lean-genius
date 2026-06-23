@@ -1,0 +1,211 @@
+{
+  "slug": "abel-ruffini-oq-04-oq-02",
+  "title": "S₂, S₃, S₄ Are Solvable: Complete Classification",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Prove S₂, S₃, S₄ solvable explicitly to complete the degree-by-degree picture.",
+    "whyMatters": [
+      "Completes the solvability classification for symmetric groups",
+      "Explains why polynomial equations of degree ≤ 4 are solvable by radicals"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Sₙ not solvable for n ≥ 5 (parent: abel-ruffini-oq-04)",
+      "S₀, S₁ solvable (trivial/subsingleton instances)"
+    ],
+    "open": [],
+    "goal": "Prove S₂, S₃, S₄ solvable and establish Sₙ solvable iff n ≤ 4"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-27T00:00:00Z",
+    "iteration": 1,
+    "focus": "Formalize solvability of S₂, S₃, S₄",
+    "blockers": [],
+    "nextAction": "Complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "builtItems": [
+      "s2_comm: CommGroup instance for Perm(Fin 2) via decide",
+      "s2_solvable: S₂ is solvable (from CommGroup)",
+      "s3_solvable: S₃ is solvable (derivedSeries 2 = ⊥ by decide)",
+      "s4_solvable: S₄ is solvable (derivedSeries 3 = ⊥ by native_decide)",
+      "solvable_iff_le_four: Sₙ solvable ↔ n ≤ 4",
+      "small_symmetric_solvable: n ≤ 4 → Sₙ solvable",
+      "large_symmetric_not_solvable: n ≥ 5 → Sₙ not solvable"
+    ],
+    "insights": [
+      "S₂ is the only non-trivial abelian symmetric group — CommGroup instance is the clean proof",
+      "decide handles S₃ (6 elements) for derived series computation",
+      "native_decide is needed for S₄ (24 elements) — regular decide might time out",
+      "The bidirectional classification solvable_iff_le_four is the most valuable theorem",
+      "The interval_cases tactic cleanly handles the n ∈ {0,...,4} case split"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "abel-ruffini",
+    "abel-ruffini-galois-extensions",
+    "abel-ruffini-galois-extensions-oq-04",
+    "abel-ruffini-oq-04",
+    "abel-ruffini-oq-04-oq-01",
+    "abel-ruffini-oq-04-oq-02",
+    "abel-ruffini-oq-04-oq-02-oq-02",
+    "abel-ruffini-oq-04-oq-02-oq-03",
+    "abel-ruffini-oq-04-oq-03",
+    "abel-ruffini-oq-04-oq-07",
+    "abel-ruffini-oq-09"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Equiv.Perm.not_solvable",
+      "IsSolvable",
+      "derivedSeries"
+    ]
+  },
+  "started": "2026-03-27T00:00:00Z",
+  "lastUpdate": "2026-06-14T01:14:16Z",
+  "significance": 7,
+  "tractability": 9,
+  "leanFiles": [
+    {
+      "path": "Proofs/AbelRuffini.lean",
+      "filename": "AbelRuffini.lean",
+      "lineCount": 187,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffini.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
+      "filename": "AbelRuffiniGaloisExtensions.lean",
+      "lineCount": 534,
+      "theoremCount": 59,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensions.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensionsOQ04.lean",
+      "filename": "AbelRuffiniGaloisExtensionsOQ04.lean",
+      "lineCount": 235,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ04.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04.lean",
+      "filename": "AbelRuffiniOQ04.lean",
+      "lineCount": 164,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ01.lean",
+      "filename": "AbelRuffiniOQ04OQ01.lean",
+      "lineCount": 1498,
+      "theoremCount": 64,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02.lean",
+      "filename": "AbelRuffiniOQ04OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02OQ02.lean",
+      "filename": "AbelRuffiniOQ04OQ02OQ02.lean",
+      "lineCount": 168,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ02OQ03.lean",
+      "lineCount": 105,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ03.lean",
+      "lineCount": 243,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ07.lean",
+      "filename": "AbelRuffiniOQ04OQ07.lean",
+      "lineCount": 378,
+      "theoremCount": 12,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ07.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ09.lean",
+      "filename": "AbelRuffiniOQ09.lean",
+      "lineCount": 541,
+      "theoremCount": 21,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ09.lean"
+    }
+  ]
+}

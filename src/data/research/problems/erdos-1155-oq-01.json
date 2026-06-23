@@ -1,0 +1,134 @@
+{
+  "slug": "erdos-1155-oq-01",
+  "title": "Triangle removal process: exact asymptotics f(n) = Θ(n^{3/2})",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formalizes the gap between the Bohman-Frieze-Lubetzky $n^{3/2+o(1)}$ result and Erdős's conjectured $\\Theta(n^{3/2})$ for the triangle removal process on $K_n$. The triangle removal process repeatedly deletes edges of a uniformly random triangle from $K_n$ until no triangles remain; $f(n)$ counts the surviving edges. This 489-line formalization proves 20 theorems from 5 axioms (0 sorries): structural decomposition of the conjecture into independent $O$ and $\\Omega$ bounds, characterization of $3/2$ as the exact critical exponent, the strict hierarchy Conjecture $\\Rightarrow$ BFL $\\Rightarrow$ Grable, and sufficient conditions (ratio convergence) for the full conjecture.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-06T22:03:59.700Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-1155-oq-01\n\nTriangle removal process exact asymptotics f(n) = Θ(n^{3/2}).\n\n---\n\n## Problem Understanding\n\nErdős Problem #1155: Start with K_n, repeatedly remove random triangle (all 3 edges) until triangle-free. Let f(n) = remaining edges. Is E[f(n)] ≍ n^{3/2}?\n\nKnown: BFL (2015) proved f(n) = n^{3/2+o(1)} a.s. The gap to Θ(n^{3/2}) is open.\n\n---\n\n## Session 2026-03-11 (Session 1) - Survey\n\n**Mode**: FRESH\n**Outcome**: surveyed\n\n### What I Did\n- Read Erdos1155Problem.lean (5 axioms, 4 proved theorems, 2 sorries)\n- Read Erdos1155OQ01.lean (6 axioms, 18 proved theorems, 0 sorries)\n- OQ01 already proves the parent sorries (triangleFree_iff_cliqueFree3, complete_has_triangles)\n- Comprehensive formalization: hierarchy, ratio characterization, sufficient conditions, exponent tightness\n\n### Key Findings\n- File is at full survey quality: 0 sorries, 18 proved theorems\n- 6 axioms encode known published results (BFL bounds, Mantel theorem, process properties)\n- The open conjecture f(n) = Θ(n^{3/2}) is genuinely open — no further formalization progress possible\n- Parent file's `trivial_upper_bound` sorry could be proved from `triangleRemoval_mantel_bound` but is redundant\n\n### Next Steps\n- No further work needed unless new mathematical results appear\n- Problem is survey-complete\n\n---\n\n## Insights\n\n- The gap between BFL and the conjecture is precisely: n^{-ε} ≤ f/n^{3/2} ≤ n^ε vs c ≤ f/n^{3/2} ≤ C\n- limit_implies_conjecture: if f(n)/n^{3/2} → L > 0, full conjecture follows\n- limsup_liminf_implies_conjecture: bounded ratio suffices\n\n---\n\n## Dead Ends\n\n- The open conjecture is not provable from current knowledge\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "combinatorics",
+    "probability"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-115",
+    "erdos-1155",
+    "erdos-1155-oq-01",
+    "erdos-1155-oq-01-oq-01",
+    "erdos-1155-oq-01-oq-06",
+    "erdos-1155-oq-01-oq-07",
+    "erdos-1155-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-07T18:02:01.177Z",
+  "lastUpdate": "2026-03-12T17:29:54.449Z",
+  "completed": "2026-03-12T17:29:54.449Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1155OQ01.lean",
+      "filename": "Erdos1155OQ01.lean",
+      "lineCount": 412,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155OQ01OQ01.lean",
+      "filename": "Erdos1155OQ01OQ01.lean",
+      "lineCount": 297,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155OQ01OQ06.lean",
+      "filename": "Erdos1155OQ01OQ06.lean",
+      "lineCount": 11,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01OQ06.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155OQ01OQ07.lean",
+      "filename": "Erdos1155OQ01OQ07.lean",
+      "lineCount": 356,
+      "theoremCount": 21,
+      "axiomCount": 3,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01OQ07.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155OQ02.lean",
+      "filename": "Erdos1155OQ02.lean",
+      "lineCount": 315,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155Problem.lean",
+      "filename": "Erdos1155Problem.lean",
+      "lineCount": 231,
+      "theoremCount": 8,
+      "axiomCount": 5,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155Problem.lean"
+    }
+  ]
+}

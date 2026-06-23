@@ -1,0 +1,187 @@
+[
+  {
+    "id": "ann-357-header",
+    "proofId": "erdos-357",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Problem Overview and Setup",
+    "content": "**Erdős Problem #357** asks: given a strictly increasing integer sequence $1 \\leq a_1 < a_2 < \\cdots < a_k \\leq n$, require all **consecutive sums** $\\sum_{i=u}^{v} a_i$ (for every contiguous index range $[u,v]$) to be distinct. Let $f(n)$ be the maximum such $k$. Is $f(n) = o(n)$?\n\n**Known**: $f(n) \\geq (2+o(1))\\sqrt{n}$ (Weisenberg). The non-monotone variant $g(n) = \\Theta(n)$ (Hegyvári 1986), so monotonicity is the key constraint.\n\n**Imports**: BigOperators for $\\sum$, Filter/Asymptotics for the $o(n)$ conjecture, Tactic for proof automation.",
+    "mathContext": "Opens `Filter`, `Asymptotics`, `Real` for the little-o notation `=o[atTop]`. Namespace `Erdos357` isolates all definitions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "consecutive-sums",
+      "distinct-sums",
+      "asymptotics",
+      "sidon-sets"
+    ],
+    "prerequisites": [
+      "strictly increasing integer sequences in [1,n]",
+      "consecutive (contiguous) sums of a sequence",
+      "little-o asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-357-has-distinct-sums",
+    "proofId": "erdos-357",
+    "range": {
+      "startLine": 30,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "HasDistinctSums — Core Predicate",
+    "content": "**HasDistinctSums** captures the property that all consecutive sums are distinct via a clean abstraction: the map $J \\mapsto \\sum_{i \\in J} a(i)$ is **injective** on the family of ord-connected Finsets.\n\nA Finset $J \\subseteq \\iota$ is **ord-connected** if: whenever $i, k \\in J$ and $i \\leq j \\leq k$, then $j \\in J$. For $\\iota = \\{1, \\ldots, k\\}$, ord-connected subsets are exactly the contiguous index ranges $\\{u, u+1, \\ldots, v\\}$.\n\nThe definition is generic over any `Preorder ι` and `AddCommMonoid α`, allowing it to be instantiated for integer sequences (ℤ), natural number sequences (ℕ), or infinite sequences (ℕ → ℕ).",
+    "mathContext": "Uses `Set.InjOn` from Mathlib: `S.InjOn f` means `f` is injective when restricted to `S`. The set `{J : Finset ι | J.OrdConnected}` is the family of contiguous intervals. This formulation avoids needing to enumerate $u, v$ explicitly.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Finset.OrdConnected",
+      "Set.InjOn",
+      "Finset.sum",
+      "consecutive-intervals"
+    ],
+    "prerequisites": [
+      "Finset.OrdConnected and contiguous index intervals",
+      "Set.InjOn injectivity on a family of subsets",
+      "Finset.sum over a Preorder and AddCommMonoid"
+    ]
+  },
+  {
+    "id": "ann-357-function-f",
+    "proofId": "erdos-357",
+    "range": {
+      "startLine": 41,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "The Function f(n)",
+    "content": "**f(n)** is defined as the supremum of all valid sequence lengths $k$:\n$$f(n) = \\sup\\{k \\in \\mathbb{N} : \\exists\\, a : \\{1,\\ldots,k\\} \\to \\mathbb{Z},\\ a(\\{1,\\ldots,k\\}) \\subseteq [1,n],\\ a \\text{ strictly increasing},\\ \\text{HasDistinctSums}\\, a\\}$$\n\nThe set is nonempty (the empty sequence $k=0$ witnesses it), so `sSup` gives a well-defined natural number. The `noncomputable` annotation is needed because `sSup` on `ℕ` is noncomputable via classical logic.\n\nUsing $a : \\mathrm{Fin}\\, k \\to \\mathbb{Z}$ (rather than $\\{1,\\ldots,k\\}$) makes indexing uniform in Lean. The constraint `Set.range a ⊆ Set.Icc 1 n` enforces $1 \\leq a_i \\leq n$.",
+    "mathContext": "The sequence type `Fin k → ℤ` has a natural `Preorder` (index order), making `HasDistinctSums a` well-typed. `StrictMono a` means $i < j \\Rightarrow a(i) < a(j)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "sSup",
+      "Fin",
+      "StrictMono",
+      "Set.Icc"
+    ],
+    "prerequisites": [
+      "HasDistinctSums"
+    ]
+  },
+  {
+    "id": "ann-357-variants",
+    "proofId": "erdos-357",
+    "range": {
+      "startLine": 53,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Variants g(n) and h(n)",
+    "content": "Two relaxations of $f(n)$:\n\n**g(n)** (non-monotone): sequences $a : \\mathrm{Fin}\\, k \\to \\mathbb{N}$ with range in $[1,n]$, no monotonicity required. Hegyvári (1986) proved $g(n) = \\Theta(n)$, showing relaxing monotonicity allows dramatically longer sequences.\n\n**h(n)** (weakly monotone): sequences $a : \\mathrm{Fin}\\, k \\to \\mathbb{Z}$ with $a_i \\leq a_{i+1}$ (ties allowed). Interpolates between $f$ and $g$: $f(n) \\leq h(n)$ (every strictly increasing sequence is weakly increasing).\n\nThe inequality chain $f(n) \\leq h(n) \\leq g(n)$ holds mathematically, though formalizing it requires bridging the ℤ/ℕ type difference.",
+    "mathContext": "`g` uses `Fin k → ℕ` (natural numbers) while `f`, `h` use `Fin k → ℤ` (integers). This type difference complicates formal comparison. `Monotone a` for `h` means $i \\leq j \\Rightarrow a(i) \\leq a(j)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Monotone",
+      "StrictMono",
+      "noncomputable",
+      "sSup"
+    ],
+    "prerequisites": [
+      "HasDistinctSums",
+      "f"
+    ]
+  },
+  {
+    "id": "ann-357-conjecture",
+    "proofId": "erdos-357",
+    "range": {
+      "startLine": 71,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "The Main Conjecture: f(n) = o(n)",
+    "content": "**Erdos357Conjecture** states: $(f(n))_{n \\geq 1} = o(n)$, formalized as\n```\n(fun n ↦ (f n : ℝ)) =o[atTop] (fun n ↦ (n : ℝ))\n```\nThis uses Mathlib's `IsLittleO` at `Filter.atTop`: for every $\\varepsilon > 0$, eventually $f(n) \\leq \\varepsilon n$.\n\nThe conjecture asserts that strict monotonicity fundamentally limits the sequence length: you cannot pack $\\Theta(n)$ integers into $[1,n]$ with all consecutive sums distinct while maintaining the strictly increasing constraint.\n\nSince $g(n) = \\Theta(n)$ (Hegyvári), the conjecture highlights that monotonicity — not the distinctness condition — is the binding constraint.",
+    "mathContext": "`IsLittleO` (written `=o`) in Mathlib: `f =o[l] g` means `‖f‖ / ‖g‖ → 0` along filter `l`. Here `atTop` is the cofinite filter on ℕ, encoding 'for all sufficiently large n'.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "IsLittleO",
+      "Filter.atTop",
+      "asymptotics",
+      "open-conjecture"
+    ],
+    "prerequisites": [
+      "f",
+      "g"
+    ]
+  },
+  {
+    "id": "ann-357-weisenberg",
+    "proofId": "erdos-357",
+    "range": {
+      "startLine": 84,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "Weisenberg's Lower Bound: f(n) ≥ (2+o(1))√n",
+    "content": "**weisenberg_lower_bound** axiomatizes: there exists a function $o(n) = o(1)$ (vanishing as $n \\to \\infty$) such that $f(n) \\geq (2 + o(n)) \\cdot \\sqrt{n}$ for all large $n$.\n\nThe proof idea: **B₂ sequences** (Sidon sets) have distinct consecutive sums. If $A = \\{a_1 < a_2 < \\cdots < a_k\\} \\subseteq [1,n]$ satisfies $a_i + a_j \\ne a_k + a_l$ for all $i < j$ and $k < l$, then consecutive sums of $A$ are distinct. Erdős–Turán (1941) proved the maximum B₂ set in $[1,n]$ has size $(1+o(1))\\sqrt{n}$, giving $f(n) \\geq (2+o(1))\\sqrt{n}$ (the factor of 2 comes from a refinement in Weisenberg's argument).\n\nFormalized with an explicit little-o correction term `o : ℕ → ℝ` satisfying `o =o[atTop] (1 : ℕ → ℝ)`, making the bound precise.",
+    "mathContext": "B₂ (Sidon) sets: $A$ is B₂ if the multiset $\\{a+b : a,b \\in A, a \\leq b\\}$ has all distinct elements. The connection to distinct consecutive sums: consecutive sums are differences of prefix sums, and distinct prefix sums follow from the B₂ property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sidon-sets",
+      "B2-sequences",
+      "erdos-turan-1941",
+      "IsLittleO"
+    ],
+    "prerequisites": [
+      "f",
+      "Erdos357Conjecture"
+    ]
+  },
+  {
+    "id": "ann-357-hegyvari",
+    "proofId": "erdos-357",
+    "range": {
+      "startLine": 98,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Hegyvári's Bounds and the Proved Density Result",
+    "content": "**hegyvari_bounds** axiomatizes Hegyvári (1986): there exist $o_1, o_2 = o(1)$ such that\n$$\\left(\\tfrac{1}{3} + o_1(n)\\right) n \\leq g(n) \\leq \\left(\\tfrac{2}{3} + o_2(n)\\right) n$$\nfor all large $n$. This shows $g(n) = \\Theta(n)$ — dramatically larger than the conjectured $f(n) = o(n)$.\n\n**infinite_set_lower_density_zero** is a *proved* result (though axiomatized here for formalization convenience): any infinite strictly increasing sequence $A : \\mathbb{N} \\to \\mathbb{N}$ with distinct consecutive sums satisfies\n$$\\liminf_{n \\to \\infty} \\frac{\\#\\{k : A(k) \\leq n\\}}{n} = 0$$\ni.e., $A$ has lower density 0. The stronger density 0 conjecture (limit exists and equals 0) remains open.",
+    "mathContext": "The `Filter.liminf` formulation uses Mathlib's `Filter.liminf (f : α → β) l` for the limit inferior of `f` along filter `l`. For density: `#{k | A k ≤ n} / n` where `#` denotes `Finset.card`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hegyvari-1986",
+      "density",
+      "Filter.liminf",
+      "lower-density"
+    ],
+    "prerequisites": [
+      "g",
+      "HasDistinctSums"
+    ]
+  },
+  {
+    "id": "ann-357-open-conjectures",
+    "proofId": "erdos-357",
+    "range": {
+      "startLine": 116,
+      "endLine": 135
+    },
+    "type": "concept",
+    "title": "Open Conjectures for Infinite Sets",
+    "content": "Three open questions for infinite sets with distinct consecutive sums:\n\n**InfiniteDensityZeroConjecture**: For any infinite $A$ with distinct consecutive sums, $\\#\\{k : A(k) \\leq n\\}/n \\to 0$. This strengthens the proved lower density 0 result by requiring the full limit (not just liminf) to equal 0.\n\n**InfiniteSumConvergesConjecture**: For any infinite $A$ with distinct consecutive sums, $\\sum_{k=0}^{\\infty} 1/A(k) < \\infty$. This is a strong sparsity assertion: the sequence elements grow faster than any harmonic series, e.g., faster than $k \\log k$.\n\n**g_ge_f_Remark**: Records that $f(n) \\leq g(n)$ should hold (relaxing monotonicity can only increase the maximum), stated as a Prop for future formalization — bridging ℤ-sums and ℕ-sums across `f` and `g` requires additional work.",
+    "mathContext": "`Summable (fun k => (1:ℝ) / A k)` is Mathlib's statement that $\\sum 1/A(k)$ converges. `Filter.Tendsto f atTop (𝓝 0)` captures $f(n) \\to 0$ as $n \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summable",
+      "Filter.Tendsto",
+      "density-zero",
+      "open-conjecture"
+    ],
+    "prerequisites": [
+      "HasDistinctSums",
+      "infinite_set_lower_density_zero"
+    ]
+  }
+]

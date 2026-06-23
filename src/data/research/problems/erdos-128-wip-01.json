@@ -1,0 +1,42 @@
+{
+  "slug": "erdos-128-wip-01",
+  "title": "Erdős #128: hereditary triangle-freeness + monotone edge count",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "G.triangleFree\\Rightarrow (G.induce\\ S).triangleFree;\\ (G.induce\\ S).edgeCount\\le G.edgeCount",
+    "plain": "Prove the foundational induced-subgraph monotonicities for Erdős #128 (triangle-free dense subgraphs).",
+    "whyMatters": []
+  },
+  "knowledge": {
+    "progressSummary": "Supplied the FIRST theorems for Erdős #128 ($250 open: dense large induced subgraphs force a triangle?). Scaffold Erdos128Problem.lean is prose-only AND fails to build (missing DecidablePred for edgeCount + trailing docstrings). Self-contained re-decl (Classical decidability): hasTriangle_induce (induced triangle => ambient), triangleFree_induce (HEREDITARY -- why C5-blow-ups are triangle-free), edgeCount_induce_le (MONOTONE), triangleFree_of_no_edges. 4 thm/4 def/1 struct, 0 sorries/0 axioms (Classical.choice doesn't count), builds green 7743 jobs.",
+    "builtItems": [
+      "hasTriangle_induce: induced triangle => ambient triangle",
+      "triangleFree_induce: triangle-freeness hereditary",
+      "edgeCount_induce_le: edge count monotone under induce",
+      "triangleFree_of_no_edges: empty graph triangle-free"
+    ],
+    "insights": [
+      "Induced adjacency entails ambient adjacency => substructures lift.",
+      "Triangle-freeness hereditary = 'no induced subgraph has a triangle' = why C5-blow-up extremal witnesses are triangle-free at every scale.",
+      "Edge-count monotonicity underlies the density hypothesis denseSubgraphs."
+    ],
+    "mathlibGaps": [
+      "Scaffold Erdos128Problem.lean broken: missing DecidablePred instance for edgeCount filter (G.adj Prop not decidable) + trailing docstrings parse errors."
+    ],
+    "nextSteps": [
+      "Formalize a partial result toward optimal constant 1/50.",
+      "Formalize the C5-blow-up extremal construction using triangleFree_induce.",
+      "Repair the broken scaffold."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "erdos",
+    "extremal-graph-theory"
+  ],
+  "significance": 6,
+  "tractability": 5
+}

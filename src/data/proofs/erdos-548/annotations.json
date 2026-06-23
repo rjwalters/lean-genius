@@ -1,0 +1,380 @@
+[
+  {
+    "id": "ann-548-header",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Problem Statement and Imports",
+    "content": "The Erdos-Sos Conjecture (1963): every graph on $n$ vertices with more than $(k-1)n/2$ edges contains every tree on $k+1$ vertices. Equivalently, average degree $> k-1$ forces all trees with $k$ edges. Imports Mathlib's simple graph library, connectivity, graph homomorphisms, and finite set cardinality. The `open` command brings `SimpleGraph` and `Finset` into scope.",
+    "mathContext": "$|E(G)| > \\frac{(k-1)n}{2} \\implies T \\subseteq G$ for every tree $T$ with $|V(T)| = k+1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turan problem",
+      "extremal graph theory",
+      "tree embedding"
+    ],
+    "prerequisites": [
+      "SimpleGraph in Mathlib",
+      "graph connectivity",
+      "graph homomorphisms"
+    ]
+  },
+  {
+    "id": "ann-548-tree-def",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 48,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Tree Definition and Edge Count",
+    "content": "A tree is defined as a connected acyclic graph. The axiom `tree_edge_count` states that a tree on $k+1$ vertices has exactly $k$ edges, a fundamental fact following from the characterization of trees as minimally connected graphs (removing any edge disconnects). This links vertex count to edge count: $|E(T)| = |V(T)| - 1$.",
+    "mathContext": "$T$ is a tree $\\iff$ $T$ is connected and $|E(T)| = |V(T)| - 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "spanning trees",
+      "Cayley's formula",
+      "connected graphs"
+    ],
+    "prerequisites": [
+      "graph connectivity",
+      "acyclicity",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-548-path",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 56,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Path Graph",
+    "content": "Defines the path graph $P_n$ on vertices $\\{0, 1, \\ldots, n-1\\}$ with edges between consecutive integers. The adjacency is defined as $i \\sim j \\iff |i - j| = 1$, expressed as two disjunctions to maintain symmetry. `symm` and `loopless` are proved inline. Paths are the 'hardest' trees to embed because they require finding a long sequence of distinct adjacent vertices.",
+    "mathContext": "$P_n = (\\{0,\\ldots,n-1\\},\\, \\{\\{i,i+1\\} : 0 \\le i < n-1\\})$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hamiltonian paths",
+      "longest path problem",
+      "Dirac's theorem"
+    ],
+    "prerequisites": [
+      "Fin type",
+      "SimpleGraph construction",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-548-star",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 70,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "Star Graph",
+    "content": "Defines the star graph $K_{1,k}$ with center vertex 0 connected to $k$ leaves $\\{1, \\ldots, k\\}$. Stars are the 'easiest' trees to embed: any vertex of degree $\\ge k$ yields a star. The contrast between stars (easy) and paths (hard) illustrates why the conjecture must handle all tree shapes simultaneously. The `star_is_tree` theorem (sorry) would establish this is indeed a tree.",
+    "mathContext": "$K_{1,k} = (\\{0, 1, \\ldots, k\\},\\, \\{\\{0, i\\} : 1 \\le i \\le k\\})$",
+    "significance": "key",
+    "relatedConcepts": [
+      "degree conditions",
+      "bipartite graphs",
+      "caterpillar trees"
+    ],
+    "prerequisites": [
+      "SimpleGraph construction",
+      "star topology"
+    ]
+  },
+  {
+    "id": "ann-548-subgraph",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 88,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "Subgraph Containment and T-Free",
+    "content": "Defines `ContainsSubgraph G H` via an injective graph homomorphism $f: V(H) \\hookrightarrow V(G)$ preserving edges. `TreeFree G T` means $T \\not\\subseteq G$. This is the standard notion of subgraph isomorphism: injectivity ensures distinct vertices map to distinct vertices, and edge preservation ensures adjacencies are maintained.",
+    "mathContext": "$H \\subseteq G \\iff \\exists f: V(H) \\hookrightarrow V(G),\\; uv \\in E(H) \\implies f(u)f(v) \\in E(G)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph homomorphism",
+      "subgraph isomorphism",
+      "Ramsey theory"
+    ],
+    "prerequisites": [
+      "Function.Injective",
+      "edge preservation"
+    ]
+  },
+  {
+    "id": "ann-548-edges",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 98,
+      "endLine": 116
+    },
+    "type": "definition",
+    "title": "Edge Counting, Handshaking, and Average Degree",
+    "content": "Defines `edgeCount`, states the handshaking lemma $\\sum \\deg(v) = 2|E|$ (sorry), and defines `avgDegree` = $2|E|/n \\in \\mathbb{Q}$. The equivalence `avg_degree_iff_edges` (sorry) converts between the average degree formulation and the edge count formulation. This bridges the two standard ways of stating the conjecture: $\\bar{d}(G) > k-1$ is equivalent to $|E(G)| > (k-1)n/2$.",
+    "mathContext": "$\\bar{d}(G) = \\frac{2|E(G)|}{n} > k-1 \\iff |E(G)| > \\frac{(k-1)n}{2}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "handshaking lemma",
+      "degree sequence",
+      "average degree"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "rational arithmetic",
+      "edgeFinset"
+    ]
+  },
+  {
+    "id": "ann-548-conjecture",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 118,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "The Erdos-Sos Conjecture (Two Forms)",
+    "content": "States the conjecture in two equivalent forms. `ErdosSosConjecture` quantifies over arbitrary vertex types with strict inequality $|E| > (k-1)n/2$. `Erdos548Statement` uses Erdos's original phrasing with $|E| \\ge (k-1)n/2 + 1$ on concrete `Fin n` types. The conjecture would completely resolve the tree Turan problem: $\\text{ex}(n, T) \\le (k-1)n/2$ for every tree $T$ with $k$ edges.",
+    "mathContext": "$\\forall G,\\, |E(G)| > \\frac{(k-1)n}{2} \\implies \\forall T \\text{ tree with } k+1 \\text{ vertices},\\, T \\subseteq G$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turan problem for trees",
+      "extremal numbers",
+      "forbidden subgraph"
+    ],
+    "prerequisites": [
+      "universal quantification over types",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-548-trivial",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 143,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Trivial Bound",
+    "content": "The weakest bound: $n(k-1) + 1$ edges suffice for any tree on $k+1$ vertices. This is roughly $n$ times weaker than the conjecture. The proof uses induction on $k$: find a vertex of degree $\\ge k$ (exists by pigeonhole), embed the tree root there, remove the vertex, and apply the inductive hypothesis to each subtree in the reduced graph.",
+    "mathContext": "$|E(G)| \\ge n(k-1) + 1 \\implies T \\subseteq G$ for all trees $T$ with $k+1$ vertices",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "inductive embedding",
+      "greedy algorithm",
+      "factor-of-2 gap"
+    ],
+    "prerequisites": [
+      "induction on tree size",
+      "degree counting"
+    ]
+  },
+  {
+    "id": "ann-548-girth",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 156,
+      "endLine": 162
+    },
+    "type": "definition",
+    "title": "Girth",
+    "content": "Defines `girth` as the infimum of cycle lengths (using $\\mathbb{N}^\\infty$) and `hasGirthAtLeast G g` as the property that all cycles have length $\\ge g$. High girth gives locally tree-like structure: for girth $\\ge 5$, the 2-neighborhood of any vertex is a tree, which is exactly what greedy tree-embedding algorithms exploit.",
+    "mathContext": "$\\text{girth}(G) = \\min\\{|C| : C \\text{ is a cycle in } G\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Moore bound",
+      "cage graphs",
+      "locally tree-like graphs"
+    ],
+    "prerequisites": [
+      "Walk.IsCycle",
+      "infimum over walks"
+    ]
+  },
+  {
+    "id": "ann-548-brandt",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 164,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Brandt-Dobson (1996): Girth >= 5",
+    "content": "The Erdos-Sos conjecture holds for graphs with girth $\\ge 5$. With no triangles or 4-cycles, every pair of adjacent vertices shares no common neighbor, making the graph locally tree-like. This enables a greedy embedding: start by placing any edge of the tree, then extend greedily using the tree-like neighborhood structure. No 'collisions' occur during embedding.",
+    "mathContext": "$\\text{girth}(G) \\ge 5 \\land |E(G)| > (k-1)n/2 \\implies T \\subseteq G$",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy embedding",
+      "locally tree-like",
+      "triangle-free graphs"
+    ],
+    "prerequisites": [
+      "girth definition",
+      "neighborhood structure"
+    ]
+  },
+  {
+    "id": "ann-548-c4free",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 175,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "Sacle-Wozniak (1997): C4-Free",
+    "content": "The conjecture holds for $C_4$-free graphs. Without 4-cycles, edges cannot form dense bicliques $K_{2,t}$, which would 'waste' edge budget without helping tree embedding. The `C4Free` definition allows either girth $\\ge 5$ or the weaker property that every 4-cycle is degenerate. Sacle-Wozniak's result generalizes Brandt-Dobson by allowing triangles.",
+    "mathContext": "$G$ is $C_4$-free $\\land |E(G)| > (k-1)n/2 \\implies T \\subseteq G$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kovari-Sos-Turan theorem",
+      "Zarankiewicz problem",
+      "biclique-free"
+    ],
+    "prerequisites": [
+      "cycle detection",
+      "bipartite structure"
+    ]
+  },
+  {
+    "id": "ann-548-complement",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 190,
+      "endLine": 209
+    },
+    "type": "concept",
+    "title": "Wang-Li-Liu (2000): Complement Girth >= 5",
+    "content": "The conjecture holds when the complement $\\bar{G}$ has girth $\\ge 5$. If $\\bar{G}$ is sparse (high girth), then $G$ is dense with large neighborhoods. Every pair of non-adjacent vertices in $G$ must share many common neighbors (since $\\bar{G}$ has no short cycles), enabling inductive tree embedding within these large common neighborhoods. The `complement` is constructed explicitly.",
+    "mathContext": "$\\text{girth}(\\bar{G}) \\ge 5 \\land |E(G)| > (k-1)n/2 \\implies T \\subseteq G$",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph complement",
+      "dense graphs",
+      "clique embedding"
+    ],
+    "prerequisites": [
+      "complement definition",
+      "girth of complement"
+    ]
+  },
+  {
+    "id": "ann-548-extremal",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 211,
+      "endLine": 222
+    },
+    "type": "definition",
+    "title": "Extremal Number ex(n, T)",
+    "content": "Defines $\\text{ex}(n, T)$ as the supremum of edge counts over all $T$-free graphs on $n$ vertices. The theorem `erdos_sos_implies_extremal` (sorry) shows the conjecture implies $\\text{ex}(n, T) \\le (k-1)n/2$ for all trees $T$. This is the Turan-number formulation of the conjecture.",
+    "mathContext": "$\\text{ex}(n, T) = \\max\\{|E(G)| : |V(G)| = n,\\, T \\not\\subseteq G\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turan number",
+      "Ramsey number",
+      "extremal function"
+    ],
+    "prerequisites": [
+      "sSup over graphs",
+      "TreeFree"
+    ]
+  },
+  {
+    "id": "ann-548-special",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 224,
+      "endLine": 235
+    },
+    "type": "concept",
+    "title": "Special Trees: Paths Are Extremal, Stars Are Easy",
+    "content": "Two contrasting results. `path_extremal`: $\\text{ex}(n, P_{k+1}) = (k-1)n/2$ exactly, making paths the tightest case (Erdos-Gallai 1959). `star_easier` (sorry): $|E| \\ge kn/2$ guarantees $K_{1,k} \\subseteq G$, since pigeonhole gives a vertex of degree $\\ge k$. Stars need slightly more edges than the conjecture threshold, but are trivial to embed once found.",
+    "mathContext": "$\\text{ex}(n, P_{k+1}) = \\frac{(k-1)n}{2}$ (tight); $K_{1,k} \\subseteq G$ if $\\exists v: \\deg(v) \\ge k$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdos-Gallai theorem",
+      "pigeonhole principle",
+      "extremal trees"
+    ],
+    "prerequisites": [
+      "extremalNumber",
+      "degree counting"
+    ]
+  },
+  {
+    "id": "ann-548-komlos",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 237,
+      "endLine": 249
+    },
+    "type": "concept",
+    "title": "Komlos-Sos-Szemeredi: Large k",
+    "content": "For sufficiently large $k$, the conjecture holds. The approach uses Szemeredi's regularity lemma to decompose the host graph into pseudorandom bipartite pairs, then the blow-up lemma to embed the tree. The regularity lemma partitions vertices so that most pairs of parts behave like random bipartite graphs; the blow-up lemma then embeds bounded-degree subgraphs into regular pairs. The threshold $k_0$ is not explicitly known, and full proof details remain unpublished.",
+    "mathContext": "$\\exists k_0 : \\forall k \\ge k_0,\\, |E(G)| > (k-1)n/2 \\implies T \\subseteq G$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemeredi regularity lemma",
+      "blow-up lemma",
+      "asymptotic graph theory"
+    ],
+    "prerequisites": [
+      "regularity lemma",
+      "pseudorandom graphs"
+    ]
+  },
+  {
+    "id": "ann-548-related",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 251,
+      "endLine": 272
+    },
+    "type": "concept",
+    "title": "Related: Erdos-Gallai and Turan for Paths",
+    "content": "Two classical results providing context. The Erdos-Gallai matching theorem (1959): the maximum edges without a $(k+1)$-edge matching is $\\max\\{\\binom{2k+1}{2}, \\binom{k}{2} + k(n-k)\\}$. The Turan number for paths: $\\text{ex}(n, P_k) = (k-2)(n-1)/2$ for $n \\ge k-1$. These show the Erdos-Sos conjecture fits into a family of extremal results about substructure thresholds.",
+    "mathContext": "$\\text{ex}(n, (k+1)K_2) = \\max\\{\\binom{2k+1}{2}, \\binom{k}{2} + k(n-k)\\}$; $\\text{ex}(n, P_k) = \\frac{(k-2)(n-1)}{2}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "matching theory",
+      "Turan-type results",
+      "Berge's theorem"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "matching definition"
+    ]
+  },
+  {
+    "id": "ann-548-open",
+    "proofId": "erdos-548",
+    "range": {
+      "startLine": 274,
+      "endLine": 286
+    },
+    "type": "insight",
+    "title": "Open Status and Summary",
+    "content": "The conjecture remains open after 60+ years. `erdos_548_open` is a tautology ($P \\lor \\neg P$), reflecting that neither proof nor counterexample is known. The problem is marked 'falsifiable' because a single finite counterexample (specific $G$, $T$, $k$, $n$) would disprove it. Extensive computational searches have found no counterexample, and partial results for girth conditions, $C_4$-free graphs, and large $k$ provide strong evidence.",
+    "mathContext": "$\\text{ErdosSosConjecture} \\lor \\neg\\text{ErdosSosConjecture}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problems",
+      "falsifiability",
+      "computational evidence"
+    ],
+    "prerequisites": [
+      "classical logic",
+      "finite counterexample"
+    ]
+  }
+]

@@ -1,0 +1,482 @@
+[
+  {
+    "id": "ann-e907-context",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Statement and Background",
+    "content": "Erdős Problem #907 asks: if f(x+h) - f(x) is continuous for every h > 0, can f be decomposed as g + φ for continuous g and additive φ? De Bruijn proved YES in 1951.",
+    "mathContext": "The problem concerns functions $f : \\mathbb{R} \\to \\mathbb{R}$ whose **difference functions** $\\Delta_h f(x) = f(x+h) - f(x)$ are continuous for every $h > 0$. This is strictly weaker than $f$ being continuous—it only constrains the increments. De Bruijn (1951) proved that such $f$ decomposes as $f = g + \\varphi$ where $g$ is continuous and $\\varphi$ satisfies Cauchy's equation $\\varphi(x+y) = \\varphi(x) + \\varphi(y)$. The additive part $\\varphi$ may be discontinuous (and thus pathological via AC), but the continuous differences condition completely characterizes the structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-functional-equation",
+      "difference-operator",
+      "de-Bruijn-decomposition",
+      "regularity-theory"
+    ],
+    "prerequisites": [
+      "continuity",
+      "additive-functions",
+      "real-analysis"
+    ]
+  },
+  {
+    "id": "ann-e907-additive-def",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 40,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Additive Functions (Cauchy's Equation)",
+    "content": "A function φ : ℝ → ℝ is additive if φ(x + y) = φ(x) + φ(y) for all x, y. This is Cauchy's functional equation, one of the most fundamental in mathematics.",
+    "mathContext": "Cauchy's functional equation $\\varphi(x+y) = \\varphi(x) + \\varphi(y)$ for all $x, y \\in \\mathbb{R}$ was studied by Cauchy (1821). Solutions form a $\\mathbb{Q}$-vector space: if $\\varphi$ is a solution, so is $c \\cdot \\varphi$ for $c \\in \\mathbb{Q}$. The continuous solutions are exactly $\\varphi(x) = cx$ for $c \\in \\mathbb{R}$, but using the Axiom of Choice (specifically, a Hamel basis for $\\mathbb{R}$ over $\\mathbb{Q}$), there exist wildly discontinuous solutions whose graphs are dense in $\\mathbb{R}^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-1821",
+      "Hamel-basis",
+      "Q-linear-map",
+      "functional-equation"
+    ],
+    "prerequisites": [
+      "real-valued-functions",
+      "algebraic-identities"
+    ]
+  },
+  {
+    "id": "ann-e907-additive-zero",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 51,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Additive Functions Vanish at Zero",
+    "content": "If φ is additive, then φ(0) = 0. Proof: φ(0) = φ(0+0) = φ(0) + φ(0), so φ(0) = 0.",
+    "mathContext": "From $\\varphi(0) = \\varphi(0 + 0) = \\varphi(0) + \\varphi(0)$ we get $\\varphi(0) = 0$. Fully proved in Lean via `linarith` after simplification. This is the base case for the inductive proof of $\\varphi(nx) = n\\varphi(x)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "group-homomorphism",
+      "identity-element"
+    ],
+    "prerequisites": [
+      "IsAdditive"
+    ]
+  },
+  {
+    "id": "ann-e907-additive-neg",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 57,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Additive Functions and Negation",
+    "content": "If φ is additive, then φ(-x) = -φ(x). Proof: φ(0) = φ(x + (-x)) = φ(x) + φ(-x) = 0.",
+    "mathContext": "From $0 = \\varphi(0) = \\varphi(x + (-x)) = \\varphi(x) + \\varphi(-x)$, we get $\\varphi(-x) = -\\varphi(x)$. This shows additive functions are group homomorphisms $(\\mathbb{R}, +) \\to (\\mathbb{R}, +)$. Fully proved via `linarith` using `additive_zero`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "group-homomorphism",
+      "additive-inverse"
+    ],
+    "prerequisites": [
+      "IsAdditive",
+      "additive_zero"
+    ]
+  },
+  {
+    "id": "ann-e907-additive-nat-mul",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 63,
+      "endLine": 73
+    },
+    "type": "concept",
+    "title": "Additive Functions and Natural Multiplication",
+    "content": "If φ is additive, then φ(nx) = n·φ(x) for all natural numbers n. This follows by induction on n.",
+    "mathContext": "By induction: $\\varphi(0 \\cdot x) = 0 = 0 \\cdot \\varphi(x)$ (base), and $\\varphi((n+1)x) = \\varphi(nx + x) = \\varphi(nx) + \\varphi(x) = n\\varphi(x) + \\varphi(x) = (n+1)\\varphi(x)$ (step). Fully proved in Lean using `induction n with | zero => ... | succ n ih => ...` and `ring`. Combined with `additive_neg`, this gives $\\varphi(nx) = n\\varphi(x)$ for all $n \\in \\mathbb{Z}$, establishing $\\mathbb{Z}$-homogeneity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Z-module-homomorphism",
+      "induction",
+      "homogeneity"
+    ],
+    "prerequisites": [
+      "IsAdditive",
+      "additive_zero",
+      "Nat.rec"
+    ]
+  },
+  {
+    "id": "ann-e907-additive-rat-mul",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 75,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Additive Functions and Rational Multiplication",
+    "content": "If φ is additive, then φ(qx) = q·φ(x) for all rationals q. This extends ℚ-linearity from ℕ-homogeneity. Axiomatized as the proof requires careful handling of rational arithmetic.",
+    "mathContext": "For $q = p/r$ with $r \\ne 0$: $r \\cdot \\varphi(qx) = \\varphi(r \\cdot qx) = \\varphi(px) = p \\cdot \\varphi(x)$, so $\\varphi(qx) = (p/r) \\cdot \\varphi(x) = q \\cdot \\varphi(x)$. This shows every additive function is a $\\mathbb{Q}$-linear map $\\mathbb{R} \\to \\mathbb{R}$. Axiomatized because the Lean proof requires careful casting between `ℚ` and `ℝ`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Q-linear-map",
+      "rational-homogeneity",
+      "Hamel-basis"
+    ],
+    "prerequisites": [
+      "IsAdditive",
+      "additive_nat_mul",
+      "additive_neg"
+    ]
+  },
+  {
+    "id": "ann-e907-linear-def",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 86,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Linear Functions",
+    "content": "A function φ : ℝ → ℝ is linear if φ(x) = cx for some constant c. Linear functions are the 'nice' additive functions.",
+    "mathContext": "The definition `IsLinear φ := ∃ c : ℝ, ∀ x, φ x = c * x` captures $\\mathbb{R}$-linear functions $\\mathbb{R} \\to \\mathbb{R}$. These are exactly the continuous additive functions. The classification—continuous additive $\\iff$ linear—is the starting point for understanding when additive functions are 'nice' versus pathological.",
+    "significance": "key",
+    "relatedConcepts": [
+      "R-linear-map",
+      "continuous-additive",
+      "slope"
+    ],
+    "prerequisites": [
+      "real-valued-functions"
+    ]
+  },
+  {
+    "id": "ann-e907-linear-additive",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 90,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "Linear Functions are Additive",
+    "content": "Every linear function φ(x) = cx is additive: c(x+y) = cx + cy. The converse requires continuity.",
+    "mathContext": "If $\\varphi(x) = cx$, then $\\varphi(x+y) = c(x+y) = cx + cy = \\varphi(x) + \\varphi(y)$. Fully proved via `ring` after extracting the constant $c$. The converse (additive $\\implies$ linear) requires an additional regularity hypothesis: continuity, measurability, monotonicity, or even boundedness on an interval all suffice.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distributive-law",
+      "regularity-conditions"
+    ],
+    "prerequisites": [
+      "IsLinear",
+      "IsAdditive"
+    ]
+  },
+  {
+    "id": "ann-e907-cont-additive-linear",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 97,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "Continuous Additive Functions are Linear",
+    "content": "A fundamental result: if φ is both additive and continuous, then φ(x) = cx for some c. Measurability or monotonicity also suffice.",
+    "mathContext": "**Cauchy's theorem** (generalized): if $\\varphi$ is additive and continuous, then $\\varphi(x) = cx$ where $c = \\varphi(1)$. The proof uses $\\mathbb{Q}$-linearity plus density of $\\mathbb{Q}$ in $\\mathbb{R}$: for any $x$, approximate $x$ by rationals $q_n \\to x$; then $\\varphi(x) = \\lim \\varphi(q_n) = \\lim q_n \\cdot \\varphi(1) = x \\cdot \\varphi(1)$ by continuity. Axiomatized as `continuous_additive_is_linear`. This is the key regularity result underlying de Bruijn's decomposition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-theorem",
+      "density-of-Q",
+      "regularity-implies-linearity"
+    ],
+    "prerequisites": [
+      "IsAdditive",
+      "Continuous",
+      "additive_rat_mul"
+    ]
+  },
+  {
+    "id": "ann-e907-mono-additive-linear",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 101,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "Monotone Additive Functions are Linear",
+    "content": "If φ is additive and monotone (or antitone), then φ must be linear. This is another regularity condition forcing linearity.",
+    "mathContext": "If $\\varphi$ is additive and monotone, then for $q \\le x \\le q'$ (rationals), $q\\varphi(1) = \\varphi(q) \\le \\varphi(x) \\le \\varphi(q') = q'\\varphi(1)$. Taking $q \\to x$ and $q' \\to x$ forces $\\varphi(x) = x\\varphi(1)$. This shows that even the weakest regularity conditions (monotonicity, local boundedness, Lebesgue measurability) force additive functions to be linear.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "regularity-conditions",
+      "Ostrowski-theorem"
+    ],
+    "prerequisites": [
+      "IsAdditive",
+      "Monotone"
+    ]
+  },
+  {
+    "id": "ann-e907-discont-exists",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 112,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Existence of Discontinuous Additive Functions",
+    "content": "Via the Axiom of Choice, there exist additive functions that are not continuous. These are highly pathological.",
+    "mathContext": "Using a Hamel basis $\\{b_\\alpha\\}$ for $\\mathbb{R}$ over $\\mathbb{Q}$ (which exists by AC/Zorn's lemma), define $\\varphi(b_\\alpha) = c_\\alpha$ arbitrarily and extend by $\\mathbb{Q}$-linearity. Unless the $c_\\alpha$ satisfy $c_\\alpha = c \\cdot b_\\alpha$ for some fixed $c$, the resulting $\\varphi$ is discontinuous. Such functions are **non-measurable** (hence non-constructive) and their graphs are dense in $\\mathbb{R}^2$. Axiomatized as `exists_discontinuous_additive`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hamel-basis",
+      "Axiom-of-Choice",
+      "Zorn's-lemma",
+      "non-measurable-function"
+    ],
+    "prerequisites": [
+      "IsAdditive",
+      "Continuous"
+    ]
+  },
+  {
+    "id": "ann-e907-discont-dense",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 116,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "Discontinuous Additive Functions Have Dense Graphs",
+    "content": "A discontinuous additive function has a graph that is dense in ℝ²: for any point (a,b) and ε > 0, there exists x with |x-a| < ε and |φ(x)-b| < ε.",
+    "mathContext": "If $\\varphi$ is additive and not continuous, then $\\{(x, \\varphi(x)) : x \\in \\mathbb{R}\\}$ is dense in $\\mathbb{R}^2$. The proof uses the fact that $\\operatorname{graph}(\\varphi)$ is a $\\mathbb{Q}$-linear subspace of $\\mathbb{R}^2$ that is not contained in any line through the origin, so it must be all of $\\mathbb{R}^2$ by dimension considerations. This pathological behavior shows how badly behaved non-continuous additive functions are.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "dense-graph",
+      "Q-vector-space",
+      "pathological-function"
+    ],
+    "prerequisites": [
+      "IsAdditive",
+      "discontinuity"
+    ]
+  },
+  {
+    "id": "ann-e907-difference-def",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 127,
+      "endLine": 130
+    },
+    "type": "theorem",
+    "title": "The Difference Operator",
+    "content": "The difference operator Δ_h f(x) = f(x+h) - f(x) measures how f changes when translated by h. This is the central object in Erdős #907.",
+    "mathContext": "The **forward difference operator** $\\Delta_h f(x) = f(x+h) - f(x)$ is a fundamental tool in analysis. It satisfies: $\\Delta_h(f + g) = \\Delta_h f + \\Delta_h g$ (linearity), $\\Delta_0 f = 0$ (trivial), and $\\Delta_{h_1} \\Delta_{h_2} f = \\Delta_{h_2} \\Delta_{h_1} f$ (commutativity). In the Lean formalization, `difference f h x = f (x + h) - f x` with notation `Δ[h] f`. The condition `hasContinuousDifferences f` asserts $\\Delta_h f \\in C(\\mathbb{R})$ for all $h > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite-differences",
+      "translation-operator",
+      "modulus-of-continuity"
+    ],
+    "prerequisites": [
+      "real-valued-functions",
+      "subtraction"
+    ]
+  },
+  {
+    "id": "ann-e907-cont-diffs-def",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 132,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "Continuous Differences Condition",
+    "content": "The condition in Erdős #907: f has continuous differences if Δ_h f is continuous for every h > 0. This is weaker than f being continuous.",
+    "mathContext": "The condition $\\forall h > 0,\\, \\Delta_h f \\in C(\\mathbb{R})$ is the central hypothesis. It's strictly weaker than continuity of $f$: if $\\varphi$ is a discontinuous additive function, then $f = \\varphi$ has continuous differences (since $\\Delta_h \\varphi = \\varphi(h)$ is constant, hence continuous) but $f$ itself is discontinuous. The restriction to $h > 0$ is without loss of generality since $\\Delta_{-h} f(x) = -\\Delta_h f(x-h)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "weaker-than-continuity",
+      "additive-counterexample",
+      "translation-invariance"
+    ],
+    "prerequisites": [
+      "difference",
+      "Continuous"
+    ]
+  },
+  {
+    "id": "ann-e907-cont-has-cont-diffs",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 136,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Continuous Functions Have Continuous Differences",
+    "content": "If f is continuous, then all its differences are continuous. This is straightforward: Δ_h f = f ∘ (+h) - f is a difference of continuous functions.",
+    "mathContext": "If $f \\in C(\\mathbb{R})$, then $\\Delta_h f(x) = f(x+h) - f(x)$ is the difference of two continuous functions: $f \\circ (\\cdot + h)$ and $f$. Fully proved in Lean via `hf.sub (hf.comp (continuous_add_right h))`. This shows continuous functions satisfy the hypothesis of de Bruijn's theorem—the interesting case is when $f$ is *not* continuous but still has continuous differences.",
+    "significance": "key",
+    "relatedConcepts": [
+      "composition-of-continuous",
+      "difference-of-continuous"
+    ],
+    "prerequisites": [
+      "Continuous",
+      "hasContinuousDifferences"
+    ]
+  },
+  {
+    "id": "ann-e907-additive-diff-const",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 143,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "Additive Differences are Constant",
+    "content": "If φ is additive, then Δ_h φ(x) = φ(h) for all x. The difference is constant because φ(x+h) - φ(x) = φ(h) by additivity.",
+    "mathContext": "$\\Delta_h \\varphi(x) = \\varphi(x+h) - \\varphi(x) = \\varphi(x) + \\varphi(h) - \\varphi(x) = \\varphi(h)$, independent of $x$. Fully proved by unfolding `difference` and applying `hadd x h` then `ring`. This is the key observation: additive functions automatically have continuous differences (constant functions are continuous), so they are 'invisible' to the difference operator. De Bruijn's theorem says this is the *only* obstruction to continuity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "translation-invariance",
+      "constant-function",
+      "kernel-of-difference"
+    ],
+    "prerequisites": [
+      "IsAdditive",
+      "difference"
+    ]
+  },
+  {
+    "id": "ann-e907-decomp-def",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 158,
+      "endLine": 160
+    },
+    "type": "definition",
+    "title": "De Bruijn Decomposition",
+    "content": "A function f has a De Bruijn decomposition if f = g + φ for some continuous g and additive φ. This separates the 'regular' and 'irregular' parts.",
+    "mathContext": "The decomposition $f = g + \\varphi$ with $g \\in C(\\mathbb{R})$ and $\\varphi$ additive separates $f$ into a continuous 'regular' part and a (possibly pathological) additive 'irregular' part. In Lean: `hasDeBruijnDecomposition f := ∃ (g φ : ℝ → ℝ), Continuous g ∧ IsAdditive φ ∧ ∀ x, f x = g x + φ x`. The decomposition is unique up to adding a linear function to $g$ and subtracting it from $\\varphi$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "function-decomposition",
+      "regular-irregular-splitting",
+      "quotient-space"
+    ],
+    "prerequisites": [
+      "Continuous",
+      "IsAdditive"
+    ]
+  },
+  {
+    "id": "ann-e907-de-bruijn-thm",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 162,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "De Bruijn's Theorem (1951)",
+    "content": "The central result: if all differences of f are continuous, then f has a De Bruijn decomposition. This is axiomatized as the full proof requires significant work.",
+    "mathContext": "**De Bruijn's theorem** (1951, 'Functions whose differences belong to a given class'): if $\\Delta_h f \\in C(\\mathbb{R})$ for all $h > 0$, then $f = g + \\varphi$ with $g \\in C(\\mathbb{R})$ and $\\varphi$ additive. The proof constructs $g$ as a regularization of $f$ (e.g., via convolution with an approximate identity or Cesàro averaging) and shows $\\varphi = f - g$ is additive. Axiomatized as `de_bruijn_theorem` since the proof involves measure-theoretic techniques beyond simple Lean tactics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "regularization",
+      "averaging-operator",
+      "de-Bruijn-1951"
+    ],
+    "prerequisites": [
+      "hasContinuousDifferences",
+      "hasDeBruijnDecomposition"
+    ]
+  },
+  {
+    "id": "ann-e907-main",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 166,
+      "endLine": 169
+    },
+    "type": "concept",
+    "title": "Erdős Problem #907 Statement",
+    "content": "The formal statement of Erdős #907: hasContinuousDifferences f → hasDeBruijnDecomposition f. The answer is YES, via de Bruijn's theorem.",
+    "mathContext": "The main theorem `erdos_907 (f : ℝ → ℝ) : hasContinuousDifferences f → hasDeBruijnDecomposition f := de_bruijn_theorem f` is a one-line proof applying the axiomatized de Bruijn theorem. This file achieves 0 sorries because de Bruijn's theorem and other deep results are axiomatized, while all structural consequences (properties of additive functions, difference operators, examples) are fully proved.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-problem-resolution",
+      "de-Bruijn-theorem"
+    ],
+    "prerequisites": [
+      "de_bruijn_theorem"
+    ]
+  },
+  {
+    "id": "ann-e907-unique",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 177,
+      "endLine": 182
+    },
+    "type": "concept",
+    "title": "Uniqueness of Decomposition",
+    "content": "The decomposition f = g + φ is essentially unique: if f = g₁ + φ₁ = g₂ + φ₂, then g₁ = g₂ + cx and φ₁ = φ₂ - cx for some constant c.",
+    "mathContext": "If $f = g_1 + \\varphi_1 = g_2 + \\varphi_2$, then $g_1 - g_2 = \\varphi_2 - \\varphi_1$ is both continuous and additive, hence linear: $g_1 - g_2 = cx$ for some $c$. Thus the decomposition is unique modulo $C(\\mathbb{R}) \\cap \\text{Additive} = \\text{Linear}$. Axiomatized as `decomposition_unique`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "uniqueness-modulo-linear",
+      "quotient-by-linear"
+    ],
+    "prerequisites": [
+      "hasDeBruijnDecomposition",
+      "continuous_additive_is_linear"
+    ]
+  },
+  {
+    "id": "ann-e907-cont-decomp",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 184,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Continuous Functions Decompose Trivially",
+    "content": "If f is already continuous, it decomposes as f + 0 where the additive part is zero.",
+    "mathContext": "For $f \\in C(\\mathbb{R})$: take $g = f$ and $\\varphi = 0$. The zero function is trivially additive ($0 + 0 = 0$) and $f = f + 0$. Fully proved in Lean via `refine ⟨f, fun _ => 0, hf, ?_, ?_, fun _ => rfl⟩` with `intro x y; ring` for additivity of zero.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trivial-decomposition",
+      "zero-function"
+    ],
+    "prerequisites": [
+      "Continuous",
+      "hasDeBruijnDecomposition"
+    ]
+  },
+  {
+    "id": "ann-e907-sq-example",
+    "proofId": "erdos-907",
+    "range": {
+      "startLine": 205,
+      "endLine": 213
+    },
+    "type": "concept",
+    "title": "Example: x² Has Continuous Differences",
+    "content": "The function f(x) = x² has continuous differences: Δ_h(x²) = (x+h)² - x² = 2hx + h², which is continuous in x.",
+    "mathContext": "The difference $\\Delta_h(x^2) = (x+h)^2 - x^2 = 2hx + h^2$ is a polynomial in $x$ (for fixed $h$), hence continuous. Fully proved: the proof rewrites the difference as the polynomial $2hx + h^2$ using `ext x; ring`, then applies `continuity`. Since $x^2$ is already continuous, its decomposition is trivial ($g = x^2$, $\\varphi = 0$), demonstrated by the subsequent `example`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial-differences",
+      "finite-differences-of-polynomials"
+    ],
+    "prerequisites": [
+      "hasContinuousDifferences",
+      "continuity"
+    ]
+  }
+]

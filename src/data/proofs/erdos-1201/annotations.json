@@ -1,0 +1,545 @@
+[
+  {
+    "id": "ann-problem-context",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Erdős #1201: Greatest Prime Factor of Consecutive Products",
+    "content": "P(n,k) denotes the greatest prime factor of the product n(n+1)···(n+k). Erdős conjectured that for any tolerance ε > 0 and density target η > 0, long enough windows guarantee P(n,k) > n^(1-ε) for almost all starting points n. The ε=1/2 case (square root threshold) was proved by Erdős himself. The full conjecture is open. This formalization captures the conjecture, the partial result as an axiom, and a large library of structural theorems about GPF and consecutive products.",
+    "mathContext": "$P(n,k) = \\max\\{p \\text{ prime} : p \\mid n(n+1)\\cdots(n+k)\\}$. Conjecture: $\\forall \\varepsilon, \\eta > 0, \\exists k: \\overline{d}(\\{n : P(n,k) > n^{1-\\varepsilon}\\}) \\geq 1-\\eta$. Known: holds for $\\varepsilon = 1/2$ (Erdős). Connection: $P(n) \\to \\infty$ is easy; the density statement is hard.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greatest-prime-factor",
+      "smooth-numbers",
+      "upper-density",
+      "Sylvester-Schur-theorem"
+    ],
+    "prerequisites": [
+      "analytic-number-theory",
+      "smooth-number-theory",
+      "Filter.limsup"
+    ]
+  },
+  {
+    "id": "ann-core-definitions",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 24,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Core Definitions: greatestPrimeFactor, consecutiveProduct, upperDensity",
+    "content": "greatestPrimeFactor n is defined via Nat.primeFactors.max' with a guard for the empty case (n ≤ 1 returns 0). consecutiveProduct n k is Finset.prod over range(k+1) of (n+i), and gpfConsecutive n k = greatestPrimeFactor (consecutiveProduct n k). upperDensity uses Filter.limsup at Filter.atTop — the standard formalization of lim sup of a sequence of ratios. The noncomputable annotations are necessary because greatestPrimeFactor and upperDensity involve Classical.choice through Finset.max' and Filter.limsup.",
+    "mathContext": "$\\text{gpf}(n) = \\max(n.\\text{primeFactors}) \\text{ if nonempty, else } 0$. $\\text{consec}(n,k) = \\prod_{i=0}^{k}(n+i)$. $P(n,k) = \\text{gpf}(\\text{consec}(n,k))$. $\\overline{d}(S) = \\limsup_{N\\to\\infty} \\frac{|S \\cap [1,N]|}{N}$ using real division.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.primeFactors",
+      "Finset.max'",
+      "Filter.limsup",
+      "Filter.atTop"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Nat.Factors",
+      "Mathlib.Data.Finset.Basic",
+      "Filter.limsup"
+    ]
+  },
+  {
+    "id": "ann-conjecture-axiom",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 51,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "Main Conjecture and the ε=1/2 Axiom",
+    "content": "ErdosProblem1201 is a Prop (not a theorem) — it records the open conjecture in Lean's type system. The axiom erdos_1201_half_case captures Erdős's proven partial result: for every η > 0 there exists k such that {n | P(n,k) > √n} has upper density ≥ 1-η. Encoding known results as axioms is the correct approach for axiomatized gallery entries: it lets all downstream theorems compile while being transparent about what has not been machine-verified. This is the single `axiom` in the file (axiomCount = 1).",
+    "mathContext": "$\\text{ErdosProblem1201} := \\forall \\varepsilon \\in (0,1), \\eta > 0, \\exists k: \\overline{d}(\\{n : P(n,k) > n^{1-\\varepsilon}\\}) \\geq 1-\\eta$. Axiom: $\\forall \\eta > 0, \\exists k: \\overline{d}(\\{n : \\sqrt{n} < P(n,k)\\}) \\geq 1-\\eta$ (ε=1/2 case, Erdős).",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiomatized-formalization",
+      "partial-result",
+      "open-conjecture",
+      "lim-sup-density"
+    ],
+    "prerequisites": [
+      "ErdosProblem1201",
+      "erdos_1201_half_case",
+      "upperDensity"
+    ]
+  },
+  {
+    "id": "ann-gpf-properties",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 73,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "GPF Properties: Primality, Divisibility, Maximality",
+    "content": "Seven theorems establish that greatestPrimeFactor n behaves correctly for n ≥ 2: gpf_prime (P(n) is prime), gpf_mem_primeFactors (P(n) ∈ n.primeFactors), gpf_dvd (P(n) | n), gpf_le (P(n) ≤ n), gpf_ge_two (P(n) ≥ 2), gpf_max (every prime factor p ≤ P(n)), and gpf_ge_prime_dvd (p prime and p | n ⟹ p ≤ P(n)). All proofs go through Finset.max'_mem and Finset.le_max'.",
+    "mathContext": "For $n \\geq 2$: $P(n) \\in n.\\text{primeFactors}$, $P(n) \\mid n$, $2 \\leq P(n) \\leq n$, and $\\forall p \\in n.\\text{primeFactors}: p \\leq P(n)$. These follow from $\\text{Finset.max'}$ being the maximum of a finite set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.primeFactors",
+      "Finset.max'",
+      "prime-divisor",
+      "maximality"
+    ],
+    "prerequisites": [
+      "Nat.prime_of_mem_primeFactors",
+      "Finset.max'_mem",
+      "Finset.le_max'",
+      "Nat.mem_primeFactors"
+    ]
+  },
+  {
+    "id": "ann-consecutive-product",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 119,
+      "endLine": 187
+    },
+    "type": "concept",
+    "title": "Consecutive Product: Recursion, Divisibility, Monotonicity",
+    "content": "This section proves the structural facts: consecutiveProduct_zero/_one (small windows), consecutiveProduct_pos (positive for n ≥ 1), dvd_consecutiveProduct_left/right (both n and n+k divide the product), the key recursion consecutiveProduct_succ (n(n+1)···(n+k+1) splits off the leading factor), dvd_consecutiveProduct_of_dvd_lt, and gpfConsecutive_mono — the central monotonicity result that GPF is non-decreasing in window size.",
+    "mathContext": "$\\text{consec}(n,0) = n$, $\\text{consec}(n,1) = n(n+1)$, and $\\text{consec}(n,k+1) = n \\cdot \\text{consec}(n+1,k)$. Monotonicity: $P(n,k) \\leq P(n,k+1)$ because $\\text{consec}(n,k) \\mid \\text{consec}(n,k+1)$, so every prime factor of the smaller product divides the larger one.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.prod",
+      "divisibility-in-products",
+      "gpf-monotonicity",
+      "window-extension"
+    ],
+    "prerequisites": [
+      "Finset.dvd_prod_of_mem",
+      "Finset.prod_dvd_prod_of_subset",
+      "Nat.mem_primeFactors"
+    ]
+  },
+  {
+    "id": "ann-large-prime-criterion",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 193,
+      "endLine": 209
+    },
+    "type": "concept",
+    "title": "Large Prime Factor Criterion: gpfConsecutive_large_of_prime_dvd",
+    "content": "gpfConsecutive_large_of_prime_dvd is the key sufficient condition: if there exists a prime p ≤ n+k such that p | n+i for some i ≤ k and p > n^(1-ε), then P(n,k) > n^(1-ε). The proof shows p ∈ (consecutiveProduct n k).primeFactors (using Finset.dvd_prod_of_mem with index i), then applies gpf_max. The calc block combines the hypotheses directly.",
+    "mathContext": "If $p$ prime, $p \\mid n+i$ for some $i \\leq k$, $p > n^{1-\\varepsilon}$: then $p \\in \\text{primeFactors}(\\text{consec}(n,k))$, so $P(n,k) \\geq p > n^{1-\\varepsilon}$. This is the standard 'prime witness' argument that drives almost every lower bound in the file.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime-witness",
+      "prime-in-window",
+      "smooth-number-threshold"
+    ],
+    "prerequisites": [
+      "gpf_max",
+      "Finset.dvd_prod_of_mem",
+      "Nat.mem_primeFactors"
+    ]
+  },
+  {
+    "id": "ann-half-case-equivalence",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 235,
+      "endLine": 264
+    },
+    "type": "concept",
+    "title": "ε=1/2 Case: sqrt(n) < P(n,k) ↔ n < P(n,k)²",
+    "content": "gpfConsecutive_half_iff proves the biconditional Real.sqrt n < gpfConsecutive n k ↔ n < (gpfConsecutive n k)², using Real.sqrt_lt' and monotonicity of squaring. erdos_1201_half_squared then applies the axiom to produce the squared-GPF density statement, converting Erdős's √n threshold into an n < P² threshold that is easier to manipulate downstream.",
+    "mathContext": "$P(n,k) > \\sqrt{n} \\iff P(n,k)^2 > n$ (for $P(n,k) \\geq 0$), by squaring both non-negative sides. Base cases $n \\in \\{0,1\\}$ are handled by interval_cases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.sqrt",
+      "square-root-threshold",
+      "analytic-number-theory-technique"
+    ],
+    "prerequisites": [
+      "Real.sqrt_lt'",
+      "Real.sqrt_lt_sqrt_iff",
+      "erdos_1201_half_case"
+    ]
+  },
+  {
+    "id": "ann-bertrand-application",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 270,
+      "endLine": 294
+    },
+    "type": "insight",
+    "title": "Bertrand's Postulate: Wide Windows Always Have a Large Prime",
+    "content": "gpfConsecutive_self_gt proves P(n,n) > n for n ≥ 1, and gpfConsecutive_gt_n_of_large_window extends this to any window width k ≥ n. The mechanism is Bertrand's postulate (Nat.exists_prime_lt_and_le_two_mul): there is a prime p with n < p ≤ 2n ≤ n+k, this p divides the term n+(p-n) inside the window, so P(n,k) ≥ p > n.",
+    "mathContext": "Bertrand's Postulate: $\\forall n \\geq 1, \\exists p$ prime with $n < p \\leq 2n$. For width $k \\geq n$, $[n, n+k] \\supseteq [n+1, 2n]$ contains $p$, so $p \\mid (n+(p-n))$ and $P(n,k) \\geq p > n$. This is essentially the ε→0 endpoint of the conjecture for the widest windows.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bertrand-postulate",
+      "Nat.exists_prime_lt_and_le_two_mul",
+      "prime-in-interval",
+      "window-width"
+    ],
+    "prerequisites": [
+      "Nat.exists_prime_lt_and_le_two_mul",
+      "Finset.dvd_prod_of_mem",
+      "consecutiveProduct_ge_n"
+    ]
+  },
+  {
+    "id": "ann-prime-start-term-dvd",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 300,
+      "endLine": 318
+    },
+    "type": "concept",
+    "title": "Prime-Start Bound and Term Divisibility",
+    "content": "Two small but load-bearing facts. gpfConsecutive_ge_self_of_prime: if n itself is prime, then P(n,k) ≥ n for any window width (the leftmost term contributes its own prime factor n). dvd_consecutiveProduct_term: each window term n+i (for i ≤ k) divides the whole product — the elementary divisibility used everywhere a 'prime witness' is extracted from a specific term.",
+    "mathContext": "If $n$ is prime then $n \\mid \\text{consec}(n,k)$ and $n \\in \\text{primeFactors}$, so $P(n,k) \\geq n$. For each $i \\leq k$, $(n+i) \\mid \\prod_{j=0}^{k}(n+j)$ by Finset.dvd_prod_of_mem.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime-start",
+      "Finset.dvd_prod_of_mem",
+      "term-divisibility"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Finset.dvd_prod_of_mem"
+    ]
+  },
+  {
+    "id": "ann-sylvester-schur",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 324,
+      "endLine": 382
+    },
+    "type": "concept",
+    "title": "Sylvester-Schur: A Prime Factor Exceeds the Window Size",
+    "content": "The Sylvester–Schur theorem states that among k+1 consecutive integers each greater than k+1, at least one has a prime factor exceeding k+1. This block formalizes the small-window/diagonal cases: gpfConsecutive_gt_k_of_prime_in_window, gpfConsecutive_succ_gt_k, gpfConsecutive_gt_pred_self, and the n = k+2 / n = k+3 cases, culminating in gpfConsecutive_prime_gt_k for prime starts. These give P(n,k) > k under mild hypotheses — a window-relative analogue of Bertrand's postulate.",
+    "mathContext": "Sylvester (1892) / Schur (1929): the product $n(n+1)\\cdots(n+k)$ with $n > k$ has a prime factor $> k+1$. Equivalently $\\binom{n+k}{k+1}$ is divisible by a prime $> k+1$. The cases here establish $P(n,k) > k$ for concrete small configurations en route to the general bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylvester-Schur-theorem",
+      "binomial-coefficient-prime-factors",
+      "Bertrand-postulate",
+      "prime-in-window"
+    ],
+    "prerequisites": [
+      "Nat.exists_prime_lt_and_le_two_mul",
+      "Finset.dvd_prod_of_mem",
+      "gpf_max"
+    ]
+  },
+  {
+    "id": "ann-infinitely-many",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 388,
+      "endLine": 401
+    },
+    "type": "insight",
+    "title": "Infinitely Many Good Starting Points",
+    "content": "erdos_1201_infinitely_many shows that for any fixed window width k and any ε ∈ (0,1), there are infinitely many n with P(n,k) > n^(1-ε). This is a far weaker statement than the density conjecture (it says nothing about how *common* good n are), but it confirms the good set is never finite, ruling out the trivial failure mode.",
+    "mathContext": "$\\forall k, \\varepsilon \\in (0,1): \\{n : P(n,k) > n^{1-\\varepsilon}\\}$ is infinite. Proof builds an unbounded supply of witnesses (e.g. prime starts), where $P(n,k) \\geq n > n^{1-\\varepsilon}$. Density $\\overline{d} \\geq 1-\\eta$ is the genuinely hard strengthening.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "infinitude",
+      "good-set",
+      "prime-starts"
+    ],
+    "prerequisites": [
+      "Nat.exists_infinite_primes",
+      "gpfConsecutive_ge_self_of_prime"
+    ]
+  },
+  {
+    "id": "ann-density-machinery-k",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 407,
+      "endLine": 483
+    },
+    "type": "concept",
+    "title": "Good-Set Monotonicity in k and the Density Machinery",
+    "content": "Establishes that enlarging the window only helps. Pointwise (erdos_1201_good_implies_good_succ) and as sets (erdos_1201_good_set_mono_k) the good set grows with k. The supporting densityFun lemmas (nonneg, le_one, mono, bounded/cobounded under atTop, add_compl) package the limsup so that upperDensity_mono and erdos_1201_density_mono_k can conclude that upper density is monotone in k. This reduces the conjecture to finding *one* sufficiently large k.",
+    "mathContext": "If $P(n,k) > n^{1-\\varepsilon}$ then $P(n,k+1) \\geq P(n,k) > n^{1-\\varepsilon}$ (gpf monotone in $k$), so good-sets nest: $G_k \\subseteq G_{k+1}$. Hence $\\overline{d}(G_k) \\leq \\overline{d}(G_{k+1})$, and it suffices to drive $\\overline{d}(G_k) \\to 1$ as $k \\to \\infty$. The densityFun lemmas verify the boundedness hypotheses Filter.limsup requires.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.limsup",
+      "monotone-density",
+      "isBoundedUnder",
+      "good-set-nesting"
+    ],
+    "prerequisites": [
+      "Filter.limsup_le_limsup",
+      "Filter.isBoundedUnder",
+      "gpfConsecutive_mono"
+    ]
+  },
+  {
+    "id": "ann-eps-monotone-partial",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 489,
+      "endLine": 544
+    },
+    "type": "concept",
+    "title": "ε-Monotonicity and the Partial Conjecture (Proved for ε ≥ 1/2)",
+    "content": "The headline *positive* result. erdos_1201_sqrt_le_rpow_of_large_eps shows n^(1/2) ≤ n^(1-ε) is reversed for ε ≥ 1/2 — i.e. n^(1-ε) ≤ √n, so passing the √n test implies passing the n^(1-ε) test. Combined with ε-monotonicity of the good set (good_implies_larger_eps, good_set_mono_eps, density_mono_eps) and the half-case axiom, erdos_1201_half_case_implies and erdos_1201_partial_conjecture conclude that ErdosProblem1201 holds for every ε ∈ [1/2, 1). The open part is exactly ε < 1/2.",
+    "mathContext": "For $\\varepsilon \\geq 1/2$ and $n \\geq 1$: $1-\\varepsilon \\leq 1/2$ so $n^{1-\\varepsilon} \\leq n^{1/2} = \\sqrt{n}$. Thus $P(n,k) > \\sqrt{n} \\Rightarrow P(n,k) > n^{1-\\varepsilon}$, and Erdős's $\\varepsilon=1/2$ density bound transfers to all $\\varepsilon \\geq 1/2$. Raising $\\varepsilon$ weakens the threshold, so good-sets and their densities are monotone in $\\varepsilon$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.rpow",
+      "epsilon-monotonicity",
+      "partial-result",
+      "reduction-to-half-case"
+    ],
+    "prerequisites": [
+      "Real.rpow_le_rpow_left_iff",
+      "Real.rpow_natCast",
+      "erdos_1201_half_squared"
+    ]
+  },
+  {
+    "id": "ann-upper-lower-bounds",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 551,
+      "endLine": 667
+    },
+    "type": "concept",
+    "title": "Two-Sided Bounds and Tight Bertrand Estimates",
+    "content": "Sandwiches P(n,k) between explicit quantities. gpfConsecutive_upper_bound: every prime factor of the window is ≤ n+k, so P(n,k) ≤ n+k. le_gpfConsecutive_of_prime_dvd_term: any prime dividing a window term is a lower bound. exists_dvd_in_consecutive supplies a divisible term among m consecutive integers. The prime-window-size lemmas (ge_succ_k_of_prime, gt_k_of_prime_succ) give P(n,k) ≥ k+1 when k+1 is prime, and gpfConsecutive_between sharpens the diagonal to n < P(n,n) ≤ 2n. gpfConsecutive_eq_of_prime_right and gpfConsecutive_bertrand handle prime right-endpoints.",
+    "mathContext": "Upper: $P(n,k) \\leq n+k$ (largest possible term). Lower: $P(n,k) \\geq p$ for any prime $p \\mid (n+i)$. Diagonal: $n < P(n,n) \\leq 2n$ — the upper half from $P \\leq 2n$ via the window's largest term, the lower half from Bertrand.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "two-sided-bounds",
+      "Bertrand-postulate",
+      "prime-window-size",
+      "right-endpoint"
+    ],
+    "prerequisites": [
+      "gpf_max",
+      "gpf_le",
+      "Nat.exists_prime_lt_and_le_two_mul"
+    ]
+  },
+  {
+    "id": "ann-max-formula-smooth",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 673,
+      "endLine": 710
+    },
+    "type": "concept",
+    "title": "Max Formula and Smooth-Window Reformulation",
+    "content": "gpfConsecutive_eq_sup_range expresses P(n,k) as the maximum of the individual greatest prime factors gpf(n+i) over i ≤ k — the GPF of a product of coprime-ish terms is the max of the terms' GPFs. gpfConsecutive_le_iff is the crucial *smooth-window* reformulation: P(n,k) ≤ t iff every term n+i is t-smooth (all prime factors ≤ t). This duality converts the prime-factor conjecture into a statement about smooth numbers, the form in which the analytic theory is developed.",
+    "mathContext": "$P(n,k) = \\max_{0 \\le i \\le k} \\text{gpf}(n+i)$. Smooth duality: $P(n,k) \\le t \\iff \\forall i \\le k,\\; (n+i) \\text{ is } t\\text{-smooth}$. So 'n is bad' $\\iff$ the whole window $[n,n+k]$ is $n^{1-\\varepsilon}$-smooth, linking GPF lower bounds to the scarcity of smooth-number runs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth-numbers",
+      "Finset.sup",
+      "GPF-of-product",
+      "smooth-window-duality"
+    ],
+    "prerequisites": [
+      "greatestPrimeFactor_mul",
+      "Finset.sup_le_iff",
+      "Nat.le_of_mem_primeFactors"
+    ]
+  },
+  {
+    "id": "ann-primes-short-windows",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 716,
+      "endLine": 792
+    },
+    "type": "concept",
+    "title": "GPF for Primes, Short Windows, and Products",
+    "content": "Concrete evaluations that anchor the abstract bounds. greatestPrimeFactor_prime (gpf p = p) and gpfConsecutive_prime_start. For length-2 windows: gpfConsecutive_one_eq_max gives P(n,1) = max(gpf(n), gpf(n+1)), with one_coprime and one_ne recording that gcd(n,n+1)=1 forces distinct prime factors. gpfConsecutive_ge_left/_ge_right bound the window GPF below by the endpoints' GPFs. greatestPrimeFactor_mul gives the multiplicative max formula gpf(ab) = max(gpf a, gpf b) for a,b ≥ 2.",
+    "mathContext": "$\\text{gpf}(p) = p$ for prime $p$; $P(n,1) = \\max(\\text{gpf}(n), \\text{gpf}(n+1))$ with $\\gcd(n,n+1)=1$; and $\\text{gpf}(ab) = \\max(\\text{gpf}\\,a, \\text{gpf}\\,b)$ since $\\text{primeFactors}(ab) = \\text{primeFactors}(a) \\cup \\text{primeFactors}(b)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "consecutive-coprimality",
+      "primeFactors-union",
+      "endpoint-bounds"
+    ],
+    "prerequisites": [
+      "Nat.Coprime.primeFactors",
+      "Nat.primeFactors_mul",
+      "Finset.max'"
+    ]
+  },
+  {
+    "id": "ann-recursive-concat",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 798,
+      "endLine": 969
+    },
+    "type": "concept",
+    "title": "Recursive Formulas, Window Concatenation, and Localization",
+    "content": "The algebra of how window GPFs compose. gpfConsecutive_le_of_le_k (general k-monotonicity), gpfConsecutive_succ_right / _succ_left (one-step extension on either end as a max), and gpfConsecutive_window_concat (splitting [n, n+j+k+1] into two abutting windows: P = max of the pieces). gpfConsecutive_eq_right_iff characterizes when the max is attained at the right endpoint, feeding the infinitude results prime_right_infinite and eq_right_infinite. gpfConsecutive_eq_term_gpf localizes the GPF to a single term once it exceeds k.",
+    "mathContext": "$P(n,k+1) = \\max(P(n,k), \\text{gpf}(n+k+1))$ and $P(n, j+k+1) = \\max(P(n,j), P(n+j+1, k))$. Localization: if $P(n,k) > k$ then the maximizing prime sits in a unique window term, so $P(n,k) = \\text{gpf}(n+i)$ for that $i$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "window-concatenation",
+      "recursive-formula",
+      "GPF-localization",
+      "infinitude-of-good-n"
+    ],
+    "prerequisites": [
+      "greatestPrimeFactor_mul",
+      "Finset.sup_union",
+      "Dirichlet-primes-in-AP"
+    ]
+  },
+  {
+    "id": "ann-factorial-lower-bound",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 975,
+      "endLine": 1108
+    },
+    "type": "concept",
+    "title": "Factorial Divisibility and the Universal Lower Bound",
+    "content": "A genuinely unconditional engine. consecutiveProduct_eq_descFactorial identifies the window product with a descending factorial, so factorial_dvd_consecutiveProduct gives (k+1)! | n(n+1)···(n+k) — the classic binomial-coefficient integrality. From this, gpfConsecutive_ge_factorial_gpf bounds P(n,k) below by gpf((k+1)!), and gpfConsecutive_gt_half_k yields the *unconditional* bound 2·P(n,k) > k. erdos_1201_threshold_bound then converts this into goodness whenever n^(1-ε) < k/2, and erdos_1201_conjecture_large_eps / erdos_1201_equiv_small_eps formally reduce the open problem to the regime ε < 1/2.",
+    "mathContext": "$(k+1)! \\mid \\prod_{i=0}^{k}(n+i)$ because $\\binom{n+k}{k+1} \\in \\mathbb{Z}$. Hence $P(n,k) \\ge \\text{gpf}((k+1)!) > k/2$ (a prime in $(\\,k/2, k+1]$ exists by Bertrand). So if $n^{1-\\varepsilon} < k/2$ then $P(n,k) > n^{1-\\varepsilon}$ — goodness is automatic once the window is wide relative to $n^{1-\\varepsilon}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.descFactorial",
+      "binomial-integrality",
+      "factorial-divisibility",
+      "reduction-to-small-eps"
+    ],
+    "prerequisites": [
+      "Nat.factorial_dvd_descFactorial",
+      "Nat.descFactorial",
+      "Bertrand-postulate"
+    ]
+  },
+  {
+    "id": "ann-smooth-characterization",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 1114,
+      "endLine": 1167
+    },
+    "type": "concept",
+    "title": "Smooth-Window Characterization and Conditional Reduction",
+    "content": "Recasts goodness in the contrapositive. erdos_1201_not_good_smooth_window: n fails the ε-test exactly when its whole window is n^(1-ε)-smooth. erdos_1201_good_iff_rough_term: n is good iff some term carries a prime factor above the threshold ('rough' term). erdos_1201_conditional_proof shows the full conjecture would follow from a clean prime-in-window hypothesis — making explicit the analytic input still missing for ε < 1/2.",
+    "mathContext": "$n$ bad $\\iff$ every $n+i$ is $n^{1-\\varepsilon}$-smooth $\\iff$ no term has a prime factor $> n^{1-\\varepsilon}$. The conjecture is therefore equivalent to: smooth windows of length $k+1$ have upper density $\\le \\eta$ for suitable $k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth-number-density",
+      "rough-numbers",
+      "contrapositive-characterization",
+      "conditional-reduction"
+    ],
+    "prerequisites": [
+      "gpfConsecutive_le_iff",
+      "smooth-number-theory"
+    ]
+  },
+  {
+    "id": "ann-density-complement",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 1173,
+      "endLine": 1285
+    },
+    "type": "insight",
+    "title": "Density Complement and the Smooth-Density Conditional",
+    "content": "Bridges 'good density large' and 'bad density small'. erdos_1201_good_prime_k0 seeds the good set with the primes. upperDensity_compl_ge and upperDensity_le_of_subset_union_finite handle complements up to finite error, and good_compl_n_ge_2 identifies the bad set. erdos_1201_from_bad_density_bound converts an upper bound on the bad (smooth-window) density into the required lower bound on good density, and erdos_1201_smooth_decay_implies_conjecture states the conjecture follows once smooth-window density decays in k.",
+    "mathContext": "$\\overline{d}(G^c) \\le \\eta \\Rightarrow \\overline{d}(G) \\ge 1-\\eta$ requires care because upper density is only finitely subadditive. The proof works with $\\limsup$ of complementary counting ratios, absorbing finite discrepancies (small $n$, the $n \\le 1$ guard) without affecting the density.",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper-density-complement",
+      "finite-error-absorption",
+      "smooth-density-decay",
+      "limsup-of-complement"
+    ],
+    "prerequisites": [
+      "Filter.limsup",
+      "upperDensity",
+      "smooth-number-density"
+    ]
+  },
+  {
+    "id": "ann-upper-density-asymptotics",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 1291,
+      "endLine": 1398
+    },
+    "type": "concept",
+    "title": "Upper-Density Basic Facts and Asymptotic Growth",
+    "content": "The foundational density toolkit plus the per-n asymptotics. upperDensity_empty/_le_one/_ge_zero/_univ pin the range of upper density to [0,1] with the expected boundary values (icc_one_card counts the interval). gpfConsecutive_atTop shows that for fixed n ≥ 2, P(n,k) → ∞ as the window grows, so erdos_1201_eventually_good: every fixed n is eventually good. erdos_1201_density_eventually_large then shows, under the conjecture, that the good density stays large for all sufficiently wide windows.",
+    "mathContext": "$0 \\le \\overline{d}(S) \\le 1$, $\\overline{d}(\\emptyset)=0$, $\\overline{d}(\\mathbb{N})=1$. For fixed $n$, $P(n,k) \\to \\infty$ since the window eventually contains arbitrarily large primes (Bertrand on $[k, 2k]$), giving eventual goodness pointwise — though *uniform* density control is the hard part.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "upper-density-range",
+      "Filter.Tendsto-atTop",
+      "eventual-goodness",
+      "Finset.Icc-card"
+    ],
+    "prerequisites": [
+      "Filter.limsup_le",
+      "Filter.tendsto_atTop",
+      "Bertrand-postulate"
+    ]
+  },
+  {
+    "id": "ann-lower-density-strong",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 1404,
+      "endLine": 1613
+    },
+    "type": "concept",
+    "title": "Lower Density and the Strong Conjecture",
+    "content": "Introduces lowerDensity (liminf of counting ratios) and its calculus: lowerDensity_nonneg, lowerDensity_le_upperDensity, and the duality lowerDensity_compl = 1 − upperDensity (with upperDensity_compl_eq). These let ErdosProblem1201Strong be stated with lim inf in place of lim sup, and erdos_1201_strong_implies_weak shows it implies the original conjecture. The capstone erdos_1201_strong_iff_smooth_decay (a 110-line proof) establishes the strong conjecture is *equivalent* to smooth-window density decaying to 0 — the cleanest analytic restatement of the whole problem.",
+    "mathContext": "$\\underline{d}(S) = \\liminf_N \\frac{|S \\cap [1,N]|}{N}$, with $\\underline{d}(S^c) = 1 - \\overline{d}(S)$. Strong form demands $\\underline{d}(G_k) \\ge 1-\\eta$. Equivalence: Strong $\\iff \\overline{d}(\\{n : [n,n+k] \\text{ is } n^{1-\\varepsilon}\\text{-smooth}\\}) \\to 0$ as $k \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower-density",
+      "Filter.liminf",
+      "complement-duality",
+      "smooth-decay-equivalence"
+    ],
+    "prerequisites": [
+      "Filter.liminf",
+      "Filter.liminf_compl",
+      "upperDensity_compl_eq"
+    ]
+  },
+  {
+    "id": "ann-prime-window-goodness",
+    "proofId": "erdos-1201",
+    "range": {
+      "startLine": 1619,
+      "endLine": 1649
+    },
+    "type": "concept",
+    "title": "Prime-Window Automatic Goodness",
+    "content": "Closing corollaries giving sufficient conditions for a single n to be good, with no density argument. erdos_1201_good_of_any_prime_in_window: any prime anywhere in [n, n+k] above the threshold makes n good. erdos_1201_good_prime_any_k: a prime start n is good for every k. erdos_1201_good_prime_endpoint: a prime right endpoint n+k makes n good. Together they show the good set always contains the dense scaffolding of prime-related starts and endpoints.",
+    "mathContext": "If $\\exists$ prime $p \\in [n, n+k]$ with $p > n^{1-\\varepsilon}$ then $P(n,k) \\ge p > n^{1-\\varepsilon}$. In particular prime $n$ (then $P(n,k) \\ge n$) and prime $n+k$ (then $P(n,k) \\ge n+k > n^{1-\\varepsilon}$) are always good.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime-witness",
+      "good-set-scaffolding",
+      "prime-endpoints"
+    ],
+    "prerequisites": [
+      "gpfConsecutive_large_of_prime_dvd",
+      "Nat.Prime"
+    ]
+  }
+]

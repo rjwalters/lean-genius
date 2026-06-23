@@ -1,0 +1,169 @@
+[
+  {
+    "id": "ann-cramer-oq02-01-complexity-models",
+    "proofId": "cramers-rule-oq-02",
+    "range": {
+      "startLine": 57,
+      "endLine": 88
+    },
+    "type": "concept",
+    "title": "Complexity Models: Counting Multiplications",
+    "content": "The module defines three concrete complexity functions. `detMuls n = n * n!` counts the multiplications in one n×n determinant via the Leibniz expansion: n! permutations each requiring n multiplications. `cramersRuleMuls n = (n+1) * detMuls n` counts the full cost of Cramer's rule: we need det(A) plus det(A₁),...,det(Aₙ), totaling n+1 determinants. `gaussMuls n = n³` is a conservative upper bound for Gaussian elimination (the true count is ≈n³/3). The lemma `cramersRuleMuls_eq` expands the definition to `(n+1)*n*n!`, the form used in proofs. Small examples: at n=4, Cramer needs 480 vs Gaussian's 64; at n=6, Cramer needs 30240 vs Gaussian's 216.",
+    "mathContext": "Leibniz formula: $\\det(A) = \\sum_{\\sigma \\in S_n} \\text{sgn}(\\sigma) \\prod_{i=1}^n a_{i,\\sigma(i)}$. Cost: $|S_n| = n!$ terms, each costing $n$ multiplications, giving $n \\cdot n!$ total. Gaussian elimination via forward elimination + back-substitution: $(n-1) + (n-2) + \\cdots + 1 \\approx n^2/2$ pivot operations, each costing $O(n)$, giving $O(n^3/3)$ total.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "detMuls",
+      "cramersRuleMuls",
+      "gaussMuls",
+      "Leibniz-formula",
+      "Gaussian-elimination"
+    ],
+    "prerequisites": [
+      "Nat.factorial",
+      "algorithm-complexity",
+      "determinant"
+    ]
+  },
+  {
+    "id": "ann-cramer-oq02-02-factorial-growth",
+    "proofId": "cramers-rule-oq-02",
+    "range": {
+      "startLine": 90,
+      "endLine": 112
+    },
+    "type": "concept",
+    "title": "Key Growth Lemma: n! Outgrows n² from n=4 Onward",
+    "content": "The lemma `factorial_gt_sq` proves n² < n! for all n ≥ 4 by strong induction. Base case: 4² = 16 < 24 = 4!, handled by `decide`. Inductive step: given m² < m! (for m ≥ 4), prove (m+1)² < (m+1)!. Since (m+1)! = (m+1)*m! and (m+1)² = m²+2m+1, we need (m+1)*m! > m²+2m+1. From m! > m² we get (m+1)*m! > (m+1)*m², and (m+1)*m² - (m+1)² = m³ - m = m(m²-1) ≥ 0 for m≥1. The `nlinarith [Nat.factorial_pos m]` tactic closes this nonlinear inequality.",
+    "mathContext": "The inequality $n! > n^2$ holds for $n \\geq 4$. Exact values: $4!=24>16=4^2$, $5!=120>25=5^2$, $6!=720>36=6^2$. For $n \\geq 4$: $(n+1)! = (n+1) \\cdot n! > (n+1) \\cdot n^2 \\geq (n+1)^2$ when $n^2 \\geq n+1$, which holds for $n \\geq 2$. The factorial grows faster than any polynomial.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.factorial_succ",
+      "Nat.factorial_pos",
+      "nlinarith",
+      "strong-induction"
+    ],
+    "prerequisites": [
+      "Nat.factorial",
+      "Nat.lt_or_eq_of_le",
+      "polynomial-vs-factorial-growth"
+    ]
+  },
+  {
+    "id": "ann-cramer-oq02-03-main-comparison",
+    "proofId": "cramers-rule-oq-02",
+    "range": {
+      "startLine": 116,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Main Theorem: Gaussian Beats Cramer for n ≥ 4",
+    "content": "The theorem `gauss_beats_cramer` proves `gaussMuls n < cramersRuleMuls n` (i.e., n³ < (n+1)*n*n!) for n ≥ 4. The proof is elegant: from `factorial_gt_sq` we have n² < n!, and `nlinarith [Nat.factorial_pos n]` combines this with `0 < n` to deduce n³ = n*n² < n*n! ≤ (n+1)*n*n!. The speedup theorems give concrete ratios: at n=4, Cramer/Gauss = 480/64 > 7; at n=5, the ratio > 28; at n=6, the ratio = 140 (exactly). Note: `cramer_much_worse_at_6` uses 139 (not 140) because at n=6, 140*216 = 30240 = cramersRuleMuls 6 exactly — the bound is tight.",
+    "mathContext": "Proof chain: $n^3 = n \\cdot n^2 < n \\cdot n!$ (since $n^2 < n!$ and $n > 0$) $\\leq (n+1) \\cdot n \\cdot n!$ (since $1 \\leq n+1$). The `nlinarith` tactic handles the nonlinear step $n \\cdot n^2 < n \\cdot n!$ from $n^2 < n!$ and $n > 0$. At $n=6$: ratio exactly $= 140$, confirming the bound is tight at this value.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorial_gt_sq",
+      "nlinarith",
+      "Nat.factorial_pos",
+      "complexity-ratio"
+    ],
+    "prerequisites": [
+      "factorial_gt_sq",
+      "ordered-arithmetic",
+      "polynomial-inequalities"
+    ]
+  },
+  {
+    "id": "ann-cramer-oq02-04-asymptotic",
+    "proofId": "cramers-rule-oq-02",
+    "range": {
+      "startLine": 135,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Asymptotic Theorem: The Gap Grows Without Bound",
+    "content": "The theorem `cramer_asymptotically_worse` proves that for any K, there exists N = max(4, K) such that for all n ≥ N, K*n³ < (n+1)*n*n!. This shows the ratio cramersRuleMuls/gaussMuls → ∞. The proof uses a three-step chain: (1) K*n³ ≤ n*n³ (since K ≤ n, using `mul_le_mul_right'`), (2) n*n³ = n*n*n² < n*n*n! (since n² < n!, using `mul_lt_mul_of_pos_left`), (3) n*n*n! ≤ (n+1)*n*n! (since n ≤ n+1, using two applications of `mul_le_mul_right'`). The explicit have-steps are needed because `nlinarith` cannot handle the three-variable product K*n³ ≤ n*n*n!.",
+    "mathContext": "For $n \\geq \\max(4, K)$: $K \\cdot n^3 \\leq n \\cdot n^3 = n \\cdot n \\cdot n^2 < n \\cdot n \\cdot n! \\leq (n+1) \\cdot n \\cdot n!$. The ratio $\\frac{\\text{cramersRuleMuls}(n)}{\\text{gaussMuls}(n)} = \\frac{(n+1) \\cdot n!}{n^2} \\to \\infty$ since $n! / n^2 \\geq 1$ and $(n+1) \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "mul_le_mul_right'",
+      "mul_lt_mul_of_pos_left",
+      "Nat.le_succ",
+      "asymptotic-analysis"
+    ],
+    "prerequisites": [
+      "gauss_beats_cramer",
+      "factorial_gt_sq",
+      "ordered-monoid-lemmas"
+    ]
+  },
+  {
+    "id": "ann-cramer-oq02-05-no-crossover",
+    "proofId": "cramers-rule-oq-02",
+    "range": {
+      "startLine": 170,
+      "endLine": 190
+    },
+    "type": "insight",
+    "title": "No Equal-Complexity Point: Gaussian Always Wins",
+    "content": "The `cramer_vs_gauss_small` lemma reveals a counterintuitive fact: in the n³ model, Gaussian elimination beats Cramer's rule for ALL n ≥ 1, not just n ≥ 4. At n=1: Cramer=2 vs Gauss=1; at n=2: Cramer=12 vs Gauss=8; at n=3: Cramer=72 vs Gauss=27. The threshold n=4 in `gauss_beats_cramer` is a proof artifact (where n!>n² first holds), not a computational crossover. The theorem `complexity_threshold` packages this complete picture: four conjuncts covering n=1,2,3 by native_decide and n≥4 by the factorial argument.",
+    "mathContext": "Concrete values: $\\text{cramersRuleMuls}(1)=2, \\text{gaussMuls}(1)=1$; $\\text{cramersRuleMuls}(2)=12, \\text{gaussMuls}(2)=8$; $\\text{cramersRuleMuls}(3)=72, \\text{gaussMuls}(3)=27$. All ratios $> 1$. The proof threshold $n \\geq 4$ is where the induction on $n! > n^2$ starts, but the inequality holds earlier too.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "complexity_threshold",
+      "proof-artifacts"
+    ],
+    "prerequisites": [
+      "cramersRuleMuls",
+      "gaussMuls",
+      "direct-computation"
+    ]
+  },
+  {
+    "id": "ann-cramer-oq02-06-nlinarith-usage",
+    "proofId": "cramers-rule-oq-02",
+    "range": {
+      "startLine": 95,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "nlinarith for Factorial-Polynomial Inequalities",
+    "content": "The `nlinarith` tactic appears at two key points. In the factorial induction (`factorial_gt_sq`), `nlinarith [Nat.factorial_pos m]` closes `(m+1)² < (m+1)*m!` from `m²<m!` — the hint provides `0<m!` which lets nlinarith multiply hypotheses and find the Positivstellensatz certificate. In the main theorem, `nlinarith [Nat.factorial_pos n]` closes `n³ < (n+1)*n*n!` from `n²<n!` and `0<n`. The tactic works because the goal is a polynomial inequality in n with n! treated as an atomic variable satisfying `n!>n²`.",
+    "mathContext": "nlinarith uses a Positivstellensatz certificate: it searches for a nonnegative linear combination of products of hypotheses that equals the negation of the goal. For `n³ < (n+1)*n*n!` given `n²<n!` and `0<n`: the certificate involves `n * (n! - n²) > 0` (product of `n>0` and `n!>n²`), giving `n*n! > n*n² = n³`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nlinarith",
+      "Positivstellensatz",
+      "polynomial-arithmetic",
+      "Nat.factorial_pos"
+    ],
+    "prerequisites": [
+      "nlinarith-tactic",
+      "Nat.factorial_pos",
+      "nonlinear-arithmetic"
+    ]
+  },
+  {
+    "id": "ann-cramer-oq02-07-summary",
+    "proofId": "cramers-rule-oq-02",
+    "range": {
+      "startLine": 192,
+      "endLine": 207
+    },
+    "type": "concept",
+    "title": "Summary: Three Components of the Complexity Gap",
+    "content": "The capstone theorem `cramer_vs_gauss_summary` packages three complementary results: (1) the pointwise comparison (Gaussian < Cramer for n≥4 via factorial growth), (2) the asymptotic dominance (for any K, the gap eventually exceeds K-fold), and (3) the concrete anchor (at n=4: 64 vs 480, a 7.5× gap). Together these establish not just that Gaussian is faster, but that it is faster by a super-polynomial factor that grows without any bound. The proof is a simple structural conjunction of the three previously proved theorems, showing the modular design: each component was proved cleanly and the summary theorem just assembles them.",
+    "mathContext": "The three components together imply: $\\frac{\\text{cramersRuleMuls}(n)}{\\text{gaussMuls}(n)} = \\frac{(n+1) \\cdot n!}{n^2} \\to \\infty$ faster than any polynomial. Specifically, $\\frac{(n+1) \\cdot n!}{n^2} \\geq n-1$ for $n \\geq 4$ (since $n! \\geq n^3$ for $n \\geq 6$), so the ratio grows at least linearly in n — and in fact super-polynomially since $n! / n^k \\to \\infty$ for any fixed $k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cramer_vs_gauss_summary",
+      "gauss_beats_cramer",
+      "cramer_asymptotically_worse"
+    ],
+    "prerequisites": [
+      "gauss_beats_cramer",
+      "cramer_asymptotically_worse",
+      "conjunction-of-theorems"
+    ]
+  }
+]

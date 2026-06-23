@@ -1,0 +1,257 @@
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "erdos-490-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Module Overview: The Limit Question for Distinct Products",
+    "content": "This module formalizes a specific open question from Erdős Problem #490: given pairs $A, B \\subseteq \\{1,\\ldots,N\\}$ with all products $ab$ distinct, does the normalized maximum $\\max |A||B| \\cdot \\log N / N^2$ converge as $N \\to \\infty$?\n\nSzemerédi (1976) proved the upper bound $|A||B| \\leq C \\cdot N^2/\\log N$, while the construction $A = \\{1,\\ldots,\\lfloor N/2 \\rfloor\\}$, $B = \\{p \\in (N/2, N] : p \\text{ prime}\\}$ achieves $\\sim N^2/(2\\log N)$ by the prime number theorem. The ratio $\\operatorname{maxProd}(N) \\cdot \\log N / N^2$ is thus bounded between positive constants. But does it converge?\n\nThe formalization axiomatizes the deep bounds (Szemerédi's theorem and the optimal construction) and derives from them that the product ratio sequence is sandwiched and that any limit must lie in $[c, C]$. Three axioms, five definitions, nine theorems, zero sorries.",
+    "mathContext": "Define $f(N) = \\max\\{|A| \\cdot |B| : A, B \\subseteq \\{1,\\ldots,N\\},\\; ab \\neq a'b' \\text{ for } (a,b) \\neq (a',b')\\}$. Szemerédi: $f(N) \\leq C \\cdot N^2/\\log N$. Optimal: $f(N) \\geq c \\cdot N^2/\\log N$. Question: does $\\lim_{N \\to \\infty} f(N) \\cdot \\log N / N^2$ exist?",
+    "significance": "key",
+    "prerequisites": [
+      "Erdős Problem #490",
+      "Szemerédi's multiplicative theorem",
+      "prime number theorem"
+    ],
+    "relatedConcepts": [
+      "distinct products",
+      "multiplicative combinatorics",
+      "Szemerédi's theorem",
+      "limit existence"
+    ]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "erdos-490-oq-01",
+    "range": {
+      "startLine": 32,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Core Combinatorial Setup: Subsets and Distinct Products",
+    "content": "`IsSubsetUpTo' A N` encodes $A \\subseteq \\{1,\\ldots,N\\}$ by requiring $1 \\leq a \\leq N$ for all $a \\in A$.\n\n`HasDistinctProducts' A B` encodes the constraint that the product map $(a, b) \\mapsto ab$ is injective on $A \\times B$: if $a_1 b_1 = a_2 b_2$ with $a_i \\in A$, $b_i \\in B$, then $a_1 = a_2$ and $b_1 = b_2$. This is stronger than requiring all products to be distinct as multiset elements — it demands the factorization is unique.\n\nNote: distinct products over $\\{1,\\ldots,N\\}$ connects to unique factorization in $\\mathbb{Z}$. If $A$ and $B$ consist of integers with disjoint prime support, distinctness is automatic. The constraint becomes interesting when $A$ and $B$ share prime factors, forcing a tension between size and multiplicative independence.",
+    "mathContext": "$A \\subseteq \\{1,\\ldots,N\\}$: $\\forall a \\in A,\\; 1 \\leq a \\leq N$.\n\nDistinct products: the map $\\phi: A \\times B \\to \\mathbb{N}$, $\\phi(a,b) = ab$ is injective. Equivalently, $|\\{ab : a \\in A, b \\in B\\}| = |A| \\cdot |B|$.",
+    "significance": "key",
+    "prerequisites": [
+      "Finset membership",
+      "injectivity",
+      "product map"
+    ],
+    "relatedConcepts": [
+      "Sidon sets",
+      "B_h sets",
+      "sum-product phenomenon",
+      "multiplicative energy"
+    ]
+  },
+  {
+    "id": "ann-maxprod-axiom",
+    "proofId": "erdos-490-oq-01",
+    "range": {
+      "startLine": 45,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Axiomatizing the Maximum: maxProd Existence and Extraction",
+    "content": "The axiom `maxProd_exists` asserts that for each $N \\geq 2$, the maximum of $|A| \\cdot |B|$ over valid pairs exists and is achieved. This is mathematically clear (finite optimization over a finite domain) but axiomatized because formalizing the finiteness argument fully would require constructing the search space explicitly.\n\n`maxProd N hN` extracts the maximum value via `Exists.choose`, and two extraction theorems provide the interface:\n- `maxProd_is_upper`: for any valid pair, $|A||B| \\leq \\operatorname{maxProd}(N)$\n- `maxProd_is_achieved`: there exists a valid pair achieving equality\n\nThis axiomatization pattern — assert existence, extract via `choose`, provide upper and achieved interfaces — is a clean way to work with extremal combinatorial quantities in Lean without building the full optimization machinery.",
+    "mathContext": "$\\operatorname{maxProd}(N) = \\max\\{|A| \\cdot |B| : A, B \\subseteq \\{1,\\ldots,N\\},\\; \\phi_{A,B} \\text{ injective}\\}$.\n\nThe maximum exists because the domain $\\{(A,B) : A, B \\subseteq \\{1,\\ldots,N\\}\\}$ is finite and non-empty (take $A = B = \\{1\\}$).",
+    "significance": "supporting",
+    "prerequisites": [
+      "Exists.choose",
+      "finite optimization",
+      "noncomputable definitions"
+    ],
+    "relatedConcepts": [
+      "axiomatization pattern",
+      "extremal combinatorics",
+      "noncomputable extraction"
+    ]
+  },
+  {
+    "id": "ann-szemeredi-axiom",
+    "proofId": "erdos-490-oq-01",
+    "range": {
+      "startLine": 71,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "The Key Bounds: Szemerédi Upper and Optimal Lower",
+    "content": "Two axioms encode the deep number-theoretic results that bound the product ratio:\n\n**Szemerédi upper bound** (`szemeredi_upper`): $\\exists C > 0$ such that $\\operatorname{maxProd}(N) \\leq C \\cdot N^2/\\log N$ for all $N \\geq 2$. Szemerédi (1976) proved this using a combinatorial double-counting argument involving the multiplicative structure of $\\{1,\\ldots,N\\}$.\n\n**Optimal lower bound** (`optimal_lower`): $\\exists c > 0$ such that $\\operatorname{maxProd}(N) \\geq c \\cdot N^2/\\log N$ for all $N \\geq 2$. The witness construction takes $A = \\{1,\\ldots,\\lfloor N/2 \\rfloor\\}$ and $B = \\{p \\text{ prime} : N/2 < p \\leq N\\}$. Since the primes in $B$ are all $> N/2$, each product $ab$ has a unique factorization into $a \\cdot p$, ensuring distinctness. By the prime number theorem, $|B| \\sim N/(2\\log N)$ and $|A| \\sim N/2$, giving $|A||B| \\sim N^2/(4\\log N)$.\n\nThese bounds together pin $\\operatorname{maxProd}(N)$ to the order $\\Theta(N^2/\\log N)$.",
+    "mathContext": "Upper: $\\operatorname{maxProd}(N) \\leq C \\cdot N^2/\\log N$ (Szemerédi 1976).\nLower: $\\operatorname{maxProd}(N) \\geq c \\cdot N^2/\\log N$ (prime construction).\n\nCombined: $\\operatorname{maxProd}(N) = \\Theta(N^2/\\log N)$, so $\\operatorname{productRatio}(N) = \\Theta(1)$.",
+    "significance": "key",
+    "prerequisites": [
+      "Szemerédi's multiplicative bound",
+      "prime number theorem",
+      "asymptotic notation"
+    ],
+    "relatedConcepts": [
+      "Szemerédi's theorem",
+      "prime counting function",
+      "Theta notation",
+      "extremal number theory"
+    ]
+  },
+  {
+    "id": "ann-product-ratio",
+    "proofId": "erdos-490-oq-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "The Product Ratio: The Normalized Sequence Under Study",
+    "content": "The product ratio $\\operatorname{productRatio}'(N) = \\operatorname{maxProd}(N) \\cdot \\log N / N^2$ normalizes the maximum product size by the expected order of growth. If this sequence converges, the limit $L$ is a fundamental constant of multiplicative combinatorics — analogous to how the prime counting function $\\pi(N) \\sim N/\\log N$ has the implicit constant 1 (the prime number theorem).\n\nThe definition is `noncomputable` because `maxProd` itself is noncomputable (extracted via `Exists.choose`). The ratio is well-defined for $N \\geq 2$ since $\\log N > 0$ and $N^2 > 0$.",
+    "mathContext": "$\\operatorname{productRatio}'(N) = \\frac{\\operatorname{maxProd}(N) \\cdot \\log N}{N^2}$.\n\nIf $\\operatorname{maxProd}(N) = (L + o(1)) \\cdot N^2/\\log N$, then $\\operatorname{productRatio}'(N) \\to L$.",
+    "significance": "key",
+    "prerequisites": [
+      "Real.log",
+      "noncomputable definitions"
+    ],
+    "relatedConcepts": [
+      "normalization",
+      "asymptotic constant",
+      "prime number theorem"
+    ]
+  },
+  {
+    "id": "ann-bounded-above",
+    "proofId": "erdos-490-oq-01",
+    "range": {
+      "startLine": 88,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Product Ratio Bounded Above from Szemerédi",
+    "content": "Derives $\\operatorname{productRatio}'(N) \\leq C$ from the Szemerédi upper bound. The proof unfolds `productRatio'`, establishes positivity of $\\log N$ and $N^2$, then rewrites $\\operatorname{maxProd}(N) \\cdot \\log N / N^2 \\leq C$ as $\\operatorname{maxProd}(N) \\cdot \\log N \\leq C \\cdot N^2$.\n\nThe key step is the `calc` block: multiply both sides of Szemerédi's bound by $\\log N$ and simplify using `field_simp` to cancel the $\\log N$ denominator. The monotonicity lemma `mul_le_mul_of_nonneg_left` handles the multiplication by $\\log N \\geq 0$.",
+    "mathContext": "$\\operatorname{productRatio}'(N) = \\frac{\\operatorname{maxProd}(N) \\cdot \\log N}{N^2} \\leq \\frac{C \\cdot N^2/\\log N \\cdot \\log N}{N^2} = C$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "div_le_iff",
+      "mul_le_mul_of_nonneg_left",
+      "field_simp"
+    ],
+    "relatedConcepts": [
+      "algebraic manipulation",
+      "positivity tactic",
+      "calc blocks"
+    ]
+  },
+  {
+    "id": "ann-bounded-below",
+    "proofId": "erdos-490-oq-01",
+    "range": {
+      "startLine": 103,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Product Ratio Bounded Below from Optimal Construction",
+    "content": "Derives $c \\leq \\operatorname{productRatio}'(N)$ from the optimal lower bound, using the same algebraic technique as the upper bound proof but in the reverse direction. The `calc` block multiplies the lower bound by $\\log N$ and uses `field_simp` to cancel, then `ring` reorders the product.\n\nTogether with `productRatio_bounded_above`, this establishes the sandwich: $c \\leq \\operatorname{productRatio}'(N) \\leq C$ for all $N \\geq 2$.",
+    "mathContext": "$\\operatorname{productRatio}'(N) = \\frac{\\operatorname{maxProd}(N) \\cdot \\log N}{N^2} \\geq \\frac{c \\cdot N^2/\\log N \\cdot \\log N}{N^2} = c$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "le_div_iff",
+      "field_simp",
+      "ring"
+    ],
+    "relatedConcepts": [
+      "sandwich inequality",
+      "lower bound",
+      "symmetric argument"
+    ]
+  },
+  {
+    "id": "ann-limit-sandwich",
+    "proofId": "erdos-490-oq-01",
+    "range": {
+      "startLine": 122,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "The Limit Question and Sandwich Theorem",
+    "content": "`LimitExists'` defines convergence via the standard $\\varepsilon$-$\\delta$ formulation: $\\exists L,\\; \\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0,\\; |\\operatorname{productRatio}'(N) - L| < \\varepsilon$.\n\n`limit_in_sandwich` is the main theorem: if the limit exists, it lies in $[c, C]$. The proof uses contradiction twice:\n1. **Lower bound**: Assume $L < c$. Set $\\varepsilon = c - L > 0$. For large $N$, $|\\operatorname{productRatio}'(N) - L| < c - L$, so $\\operatorname{productRatio}'(N) < c$. But $\\operatorname{productRatio}'(N) \\geq c$ by the lower bound — contradiction.\n2. **Upper bound**: Assume $L > C$. Set $\\varepsilon = L - C > 0$. For large $N$, $\\operatorname{productRatio}'(N) > C$. But $\\operatorname{productRatio}'(N) \\leq C$ — contradiction.\n\nThis is a standard real analysis argument, but the formalization handles the dependent hypotheses ($hN : 2 \\leq N$) carefully, using `max N₀ 2` to satisfy both the convergence threshold and the $N \\geq 2$ requirement.",
+    "mathContext": "If $a_n \\to L$ and $c \\leq a_n \\leq C$ for all $n$, then $c \\leq L \\leq C$.\n\nProof: If $L < c$, take $\\varepsilon = c - L$. Then $|a_n - L| < c - L$ for large $n$, so $a_n < c$ — contradicting $a_n \\geq c$. Similarly for $L > C$.",
+    "significance": "key",
+    "prerequisites": [
+      "epsilon-delta definition",
+      "abs_lt",
+      "by_contra",
+      "linarith"
+    ],
+    "relatedConcepts": [
+      "squeeze theorem",
+      "limit of bounded sequence",
+      "proof by contradiction",
+      "max trick for dependent hypotheses"
+    ]
+  },
+  {
+    "id": "ann-structural",
+    "proofId": "erdos-490-oq-01",
+    "range": {
+      "startLine": 162,
+      "endLine": 201
+    },
+    "type": "concept",
+    "title": "Structural Analysis: Nonnegativity, Cardinality, and Full Sandwich",
+    "content": "Three supporting results and the capstone theorem:\n\n**`productRatio_nonneg`**: The product ratio is nonneg because $\\operatorname{maxProd}(N) \\geq 0$ (as a natural number cast to $\\mathbb{R}$), $\\log N > 0$ for $N \\geq 2$, and $N^2 > 0$. Uses `div_nonneg` and `mul_nonneg`.\n\n**`card_le_of_subset_upto`**: If $A \\subseteq \\{1,\\ldots,N\\}$, then $|A| \\leq N$. Proved by inclusion $A \\hookrightarrow [1, N]$ via `Finset.card_le_card`, then `Finset.card_Icc` computes $|[1,N]| = N$.\n\n**`maxProd_le_sq`**: The trivial bound $\\operatorname{maxProd}(N) \\leq N^2$ follows from $|A| \\leq N$ and $|B| \\leq N$ applied to an achieving pair.\n\n**`productRatio_sandwich`**: The capstone: $\\exists c, C$ with $0 < c \\leq C$ such that $c \\leq \\operatorname{productRatio}'(N) \\leq C$ for all $N \\geq 2$. Combines the bounded above/below results and verifies $c \\leq C$ by evaluating at $N = 2$.",
+    "mathContext": "$|A| \\leq N$ for $A \\subseteq \\{1,\\ldots,N\\}$, so $|A||B| \\leq N^2$.\n\nFull sandwich: $\\exists\\, 0 < c \\leq C$ with $c \\leq \\operatorname{productRatio}'(N) \\leq C$ for all $N \\geq 2$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Finset.card_le_card",
+      "Finset.card_Icc",
+      "Nat.mul_le_mul"
+    ],
+    "relatedConcepts": [
+      "trivial bound",
+      "cardinality argument",
+      "sandwich inequality"
+    ]
+  },
+  {
+    "id": "ann-capstone-sandwich",
+    "proofId": "erdos-490-oq-01",
+    "range": {
+      "startLine": 191,
+      "endLine": 201
+    },
+    "type": "insight",
+    "title": "Capstone: Full Sandwich with Explicit c ≤ C",
+    "content": "The capstone theorem `productRatio_sandwich` combines all bounds into a single statement: there exist constants $0 < c \\leq C$ such that $c \\leq \\operatorname{productRatio}'(N) \\leq C$ for all $N \\geq 2$. The proof obtains $c$ and $C$ from the lower and upper bound theorems, then verifies $c \\leq C$ by evaluating both bounds at $N = 2$ and using `linarith`. This establishes that the product ratio is a bounded positive sequence — the essential precondition for asking whether it converges.",
+    "mathContext": "$\\exists\\, 0 < c \\leq C$ with $c \\leq \\operatorname{productRatio}'(N) \\leq C$ for all $N \\geq 2$. The inequality $c \\leq C$ is verified at $N = 2$.",
+    "significance": "key",
+    "prerequisites": [
+      "productRatio_bounded_below",
+      "productRatio_bounded_above",
+      "linarith"
+    ],
+    "relatedConcepts": [
+      "bounded sequence",
+      "Bolzano-Weierstrass theorem",
+      "convergence vs oscillation"
+    ]
+  },
+  {
+    "id": "ann-summary-checks",
+    "proofId": "erdos-490-oq-01",
+    "range": {
+      "startLine": 203,
+      "endLine": 215
+    },
+    "type": "concept",
+    "title": "Summary: Nine Theorems from Three Axioms",
+    "content": "The `#check` block lists all nine theorems proved in the development, providing an at-a-glance inventory of the formalization's output:\n\n- `maxProd_is_upper` / `maxProd_is_achieved`: interface theorems for the axiomatized maximum\n- `productRatio_bounded_above` / `productRatio_bounded_below`: the core sandwich bounds\n- `limit_in_sandwich`: the main analytical result (limit constrained to $[c, C]$)\n- `productRatio_nonneg`: nonnegativity of the ratio\n- `card_le_of_subset_upto`: cardinality bound $|A| \\leq N$\n- `maxProd_le_sq`: trivial bound $\\operatorname{maxProd}(N) \\leq N^2$\n- `productRatio_sandwich`: capstone combining all bounds\n\nThis `#check` pattern is a Lean convention for summarizing a module's public API, making it easy for other files to discover available lemmas.",
+    "mathContext": "Nine theorems from three axioms: two interface lemmas (upper bound, achievability), two sandwich bounds ($c \\leq r(N) \\leq C$), one limit theorem ($L \\in [c, C]$), and four structural results (nonnegativity, cardinality, trivial bound, full sandwich).",
+    "significance": "supporting",
+    "prerequisites": [
+      "Lean #check command"
+    ],
+    "relatedConcepts": [
+      "module API",
+      "theorem inventory",
+      "Lean conventions"
+    ]
+  }
+]

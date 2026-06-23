@@ -1,0 +1,197 @@
+{
+  "id": "erdos-590",
+  "title": "Erdős #590: Ordinal Ramsey Theory for ω^ω",
+  "slug": "erdos-590",
+  "description": "Does every 2-coloring of K_{ω^ω} contain a red K_{ω^ω} or a blue K_3? YES - proved by Chang (1972). The Ramsey property fails for ω³, ω⁴, ... but is restored for ω^ω.",
+  "meta": {
+    "author": "Chang (1972), Specker (1957), Larson (1973)",
+    "sourceUrl": "https://erdosproblems.com/590",
+    "date": "1972",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos590Problem.lean",
+    "tags": [
+      "erdos",
+      "set-theory",
+      "ramsey-theory",
+      "ordinals",
+      "combinatorics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 590,
+    "erdosUrl": "https://erdosproblems.com/590",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$250",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Ordinal.opow_pos",
+        "description": "Ordinal exponentiation preserves positivity",
+        "module": "Mathlib.SetTheory.Ordinal.Exponential"
+      },
+      {
+        "theorem": "Ordinal.isLimit_opow_left",
+        "description": "Ordinal power of a limit is a limit",
+        "module": "Mathlib.SetTheory.Ordinal.Exponential"
+      },
+      {
+        "theorem": "Ordinal.opow_lt_opow_right",
+        "description": "Monotonicity of ordinal exponentiation in the exponent",
+        "module": "Mathlib.SetTheory.Ordinal.Exponential"
+      },
+      {
+        "theorem": "Ordinal.opow_add",
+        "description": "Ordinal exponentiation addition law: α^(β+γ) = α^β · α^γ",
+        "module": "Mathlib.SetTheory.Ordinal.Exponential"
+      }
+    ],
+    "originalContributions": [
+      "OrdinalRamseyProperty axiomatization with arrow notation",
+      "Specker's positive (ω²) and negative (ω^n, n≥3) results as axioms",
+      "Explicit failure derivations for ω³ and ω⁴",
+      "Chang's theorem as axiom: ω^ω → (ω^ω, 3)²",
+      "Milner-Larson extension to arbitrary finite m",
+      "Ordinal hierarchy properties: positivity, limit, chain",
+      "pattern_summary combining three key results",
+      "Problems #591 and #592 as Prop definitions",
+      "Ordinal arithmetic: omega_omega_dominates and squared form"
+    ],
+    "axiomCount": 5,
+    "lineCount": 238,
+    "assumptions": "5 axioms: OrdinalRamseyProperty, specker_omega_squared, specker_omega_power_n_fails, and 2 more. See Lean source for complete statements.",
+    "theoremCount": 14,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #590: Ordinal Ramsey Theory for ω^ω**\n\n**Origins and the Erdős-Rado program:**\nThis problem originates in the partition calculus developed by Erdős and Rado in the 1950s, which systematically studies Ramsey-type properties for infinite cardinals and ordinals. The arrow notation $\\alpha \\to (\\beta, n)^2$ was introduced by Erdős and Rado to express: every 2-coloring of pairs from $\\alpha$ contains a monochromatic set of order type $\\beta$ in color 0, or a monochromatic $n$-element set in color 1.\n\n**Specker's surprising discovery (1957):**\nErnst Specker proved two results that together revealed a counterintuitive phenomenon:\n\n1. *Positive result:* $\\omega^2 \\to (\\omega^2, 3)^2$ holds. The proof uses the product structure of $\\omega^2 = \\omega \\cdot \\omega$: decompose into $\\omega$ many copies of $\\omega$, apply finite Ramsey theory within copies, and extract a monochromatic set by a diagonal argument.\n\n2. *Negative result:* $\\omega^n \\nrightarrow (\\omega^n, 3)^2$ for all finite $n \\ge 3$. The counterexample coloring uses the Cantor normal form: given two ordinals below $\\omega^n$, the color depends on which 'digit' of their base-$\\omega$ representations first differs. For $n \\ge 3$, the three-dimensional structure allows a triangle-free coloring that avoids large monochromatic sets. This fails for $n = 2$ because two dimensions are insufficient.\n\nThe surprise is that *monotonicity fails*: $\\omega^2 < \\omega^3$, yet $\\omega^2$ has the Ramsey property while $\\omega^3$ does not.\n\n**Chang's resolution (1972):**\nChang proved the remarkable result that $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$, resolving Problem #590. The key insight is that $\\omega^\\omega = \\sup_n \\omega^n$ is a limit ordinal, not a successor. Specker's counterexample colorings for $\\omega^n$ cannot be extended to $\\omega^\\omega$ because there is no 'highest coordinate' in the Cantor normal form to anchor the coloring.\n\nChang's proof proceeds by transfinite induction on the ordinals below $\\omega^\\omega$. Given a 2-coloring, he restricts to initial segments of the form $\\omega^n$, uses compactness-type arguments to extract coherent monochromatic pieces from successive levels, and assembles them into a monochromatic set of the full order type $\\omega^\\omega$. The argument critically uses that $\\omega^\\omega$ is the *supremum* of the failing cases, allowing a limit construction that sidesteps each individual failure.\n\n**The Milner-Larson generalization:**\nMilner extended Chang's result to show $\\omega^\\omega \\to (\\omega^\\omega, m)^2$ for every finite $m$, not just $m = 3$. Larson (1973/74) provided a substantially shorter proof of this generalization. The extension to larger $m$ requires more careful bookkeeping but follows the same structural approach.\n\n**The broader pattern:**\nThe results reveal a striking pattern in the ordinal hierarchy:\n- $\\omega$ works (trivially)\n- $\\omega^2$ works (Specker)\n- $\\omega^3, \\omega^4, \\ldots, \\omega^n$ all fail for $n \\ge 3$ (Specker)\n- $\\omega^\\omega$ works (Chang)\n- $\\omega^{\\omega^2}$ is OPEN (Problem #591, \\$250 prize)\n\nThe emerging picture suggests that the Ramsey property is restored at limit ordinal exponents, but this remains conjectural.",
+    "problemStatement": "Let $\\alpha = \\omega^\\omega$. Does $\\alpha \\to (\\alpha, 3)^2$ hold? That is, in any red/blue coloring of the edges of the complete graph $K_{\\omega^\\omega}$, must there exist either a red copy of $K_{\\omega^\\omega}$ or a blue triangle $K_3$?\n\n**Answer**: YES (Chang 1972, $250 prize)\n\nIn arrow notation: $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$\n\n**Context**:\n- $\\omega^2 \\to (\\omega^2, 3)^2$ holds (Specker 1957)\n- $\\omega^n \\nrightarrow (\\omega^n, 3)^2$ for $n \\ge 3$ (Specker 1957)\n- $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$ holds (Chang 1972 — this problem)\n- $\\omega^\\omega \\to (\\omega^\\omega, m)^2$ for all finite $m$ (Milner; shorter proof by Larson 1973)",
+    "text": "Does every 2-coloring of K_{ω^ω} contain a red K_{ω^ω} or a blue K_3? YES - proved by Chang (1972). The Ramsey property fails for ω³, ω⁴, ... but is restored for ω^ω.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization captures the ordinal Ramsey theory landscape in eight parts:\n\n1. **Ramsey property axiomatization (Part I):** `OrdinalRamseyProperty α β n` captures $\\alpha \\to (\\beta, n)^2$ as an axiom, since the full definition requires order-preserving embeddings, coloring functions on $[\\alpha]^2$, and order type computations. Custom notation `α →ₒ (β, n)²` provides readable syntax.\n\n2. **Specker's results (Part II):** Two axioms: `specker_omega_squared` for the positive result $\\omega^2 \\to (\\omega^2, 3)^2$, and `specker_omega_power_n_fails` for the parametric negative result $\\omega^n \\nrightarrow (\\omega^n, 3)^2$ when $n \\ge 3$. Explicit failure theorems for $\\omega^3$ and $\\omega^4$ are derived via `le_refl` and `norm_num`.\n\n3. **Chang's theorem (Part III):** The main result `chang_omega_omega` as an axiom, with `erdos_590_solved` as a trivial wrapper.\n\n4. **Milner-Larson extension (Part IV):** `milner_larson_extension` axiom for arbitrary $m \\ge 1$, with specific instances for $m = 4$ and $m = 10$.\n\n5. **Ordinal hierarchy (Part V):** Proved lemmas using Mathlib: `omega_positive` ($0 < \\omega$), `omega_squared_eq` ($\\omega^2 = \\omega \\cdot \\omega$), `omega_cubed_eq` ($\\omega^3 = \\omega^3$), `omega_omega_positive` ($0 < \\omega^\\omega$), `omega_omega_is_limit` ($\\omega^\\omega$ is a limit ordinal), and `omega_power_chain` ($\\omega^n < \\omega^\\omega$ for $n \\ge 1$).\n\n6. **Pattern summary (Part VI):** `pattern_summary` combines positive ($\\omega^2$), negative ($\\omega^3$), and restored ($\\omega^\\omega$) results into one conjunction.\n\n7. **Related problems (Part VII):** Problems #591 and #592 as `Prop` definitions, correctly reflecting their open status.\n\n8. **Ordinal arithmetic (Part VIII):** `omega_omega_dominates` (all finite powers are smaller) and `omega_omega_squared_form` ($\\omega^\\omega \\cdot \\omega^\\omega = \\omega^{\\omega + \\omega}$) proved from Mathlib.",
+    "keyInsights": [
+      "**Arrow notation and the partition calculus:** The notation $\\alpha \\to (\\beta, n)^2$ compactly encodes a complex statement about 2-colorings of pairs. The '2' refers to coloring pairs (2-element subsets), the first argument $\\beta$ is an ordinal (order type of the monochromatic set in color 0), and the second argument $n$ is a natural number (size of the monochromatic set in color 1). This asymmetry -- ordinal vs natural number -- is essential: requiring an ordinal-typed monochromatic set in BOTH colors would make the property trivially false for most ordinals.",
+      "**Specker's non-monotonicity surprise:** In finite Ramsey theory, larger vertex sets always have 'better' Ramsey properties (by restriction). For ordinals this fails spectacularly: $\\omega^2 \\subseteq \\omega^3$ yet $\\omega^2$ has the property and $\\omega^3$ does not. The failure stems from the requirement that the monochromatic set have order type $\\omega^3$ (not just $\\omega^2$) -- the coloring can avoid order type $\\omega^3$ while $\\omega^3$ has enough room for Specker's Cantor-normal-form trick.",
+      "**Limit ordinal restoration:** The limit ordinal $\\omega^\\omega = \\sup_n \\omega^n$ restores the Ramsey property that fails for all successor cases $\\omega^3, \\omega^4, \\ldots$. Intuitively, Specker's counterexample colorings for $\\omega^n$ depend on a fixed finite number of 'coordinates,' but $\\omega^\\omega$ has infinitely many coordinate levels, so no single coordinate-based coloring can work against all levels simultaneously.",
+      "**Milner-Larson: clique size is irrelevant:** Once the Ramsey property holds for triangles ($m = 3$), it holds for arbitrary finite clique sizes ($m$) as the second color target. The proof bootstraps from $m = 3$ by iterating: given a coloring avoiding blue $K_m$, find a large monochromatic set in the first color, and repeat. The ordinal $\\omega^\\omega$ is 'rich enough' that this iteration does not exhaust the monochromatic set.",
+      "**The open frontier:** Problem #591 asks about $\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$ and Problem #592 asks whether the pattern extends to all limit exponents: $\\omega^\\alpha \\to (\\omega^\\alpha, 3)^2$ for every limit $\\alpha$. If the pattern holds, it would establish a deep structural principle: the Ramsey property for $\\omega^\\alpha$ depends precisely on whether $\\alpha$ is 0, 1, or a limit ordinal."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Set theory and cardinality",
+      "Ramsey theory (partition regularity)",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "background",
+      "title": "Part I: Ordinal Ramsey Property Axiomatization",
+      "summary": "Axiomatizes `OrdinalRamseyProperty α β n` as a `Prop` with notation `α →ₒ (β, n)²`, capturing the Erdős-Rado arrow relation $\\alpha \\to (\\beta, n)^2$ without requiring the full definition involving order-preserving embeddings and pair colorings.",
+      "startLine": 39,
+      "endLine": 52,
+      "mathContext": "Axiomatizes `OrdinalRamseyProperty α β n` as a `Prop` with notation `α →ₒ (β, n)²`, capturing the Erdős-Rado arrow relation $\\alpha \\to (\\beta, n)^2$ without requiring the full definition involving order-preserving embeddings and pair colorings."
+    },
+    {
+      "id": "specker",
+      "title": "Part II: Specker's Results (1957)",
+      "summary": "Two axioms for Specker's results: `specker_omega_squared` ($\\omega^2 \\to (\\omega^2, 3)^2$ holds) and `specker_omega_power_n_fails` ($\\omega^n \\nrightarrow (\\omega^n, 3)^2$ for $n \\ge 3$). Explicit failure theorems for $\\omega^3$ (via `le_refl 3`) and $\\omega^4$ (via `norm_num`) derived as corollaries.",
+      "startLine": 53,
+      "endLine": 78,
+      "mathContext": "Two axioms for Specker's results: `specker_omega_squared` ($\\omega^2 \\to (\\omega^2, 3)^2$ holds) and `specker_omega_power_n_fails` ($\\omega^n \\nrightarrow (\\omega^n, 3)^2$ for $n \\ge 3$). Explicit failure theorems for $\\omega^3$ (via `le_refl 3`) and $\\omega^4$ (via `norm_num`) derived as corollaries."
+    },
+    {
+      "id": "chang",
+      "title": "Part III: Chang's Theorem (1972)",
+      "summary": "The main result `chang_omega_omega`: $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$, resolving Problem #590. The wrapper `erdos_590_solved` makes the solution explicit. Chang's proof uses transfinite induction exploiting the limit ordinal structure.",
+      "startLine": 79,
+      "endLine": 95,
+      "mathContext": "The main result `chang_omega_omega`: $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$, resolving Problem #590."
+    },
+    {
+      "id": "milner-larson",
+      "title": "Part IV: Milner-Larson Extension",
+      "summary": "Generalization `milner_larson_extension`: $\\omega^\\omega \\to (\\omega^\\omega, m)^2$ for all $m \\ge 1$. Specific instances for $m = 4$ and $m = 10$ derived via `norm_num`. Larson's 1973 proof was substantially shorter than Milner's original.",
+      "startLine": 96,
+      "endLine": 113,
+      "mathContext": "Generalization `milner_larson_extension`: $\\omega^\\omega \\to (\\omega^\\omega, m)^2$ for all $m \\ge 1$. Specific instances for $m = 4$ and $m = 10$ derived via `norm_num`."
+    },
+    {
+      "id": "ordinal-hierarchy",
+      "title": "Part V: The Ordinal Hierarchy",
+      "summary": "Proved properties using Mathlib: $\\omega > 0$, $\\omega^2 = \\omega \\cdot \\omega$, $\\omega^3 = \\omega \\cdot \\omega \\cdot \\omega$, $\\omega^\\omega > 0$, $\\omega^\\omega$ is a limit ordinal, and $\\omega^n < \\omega^\\omega$ for all $n \\ge 1$. Uses `omega0_pos`, `pow_two`, `pow_succ`, `opow_pos`, `isLimit_opow_left`, `opow_lt_opow_right`.",
+      "startLine": 114,
+      "endLine": 143,
+      "mathContext": "Proved properties using Mathlib: $\\omega > 0$, $\\omega^2 = \\omega \\cdot \\omega$, $\\omega^3 = \\omega \\cdot \\omega \\cdot \\omega$, $\\omega^\\omega > 0$, $\\omega^\\omega$ is a limit ordinal, and $\\omega^n < \\omega^\\omega$ for all $n \\ge 1$."
+    },
+    {
+      "id": "pattern",
+      "title": "Part VI: The Pattern Summary",
+      "summary": "The `pattern_summary` theorem bundles: (1) $\\omega^2$ works, (2) $\\omega^3$ fails, (3) $\\omega^\\omega$ works. Includes a documentation table showing the full pattern from $\\omega$ through $\\omega^{\\omega^2}$ with the OPEN case marked.",
+      "startLine": 144,
+      "endLine": 169,
+      "mathContext": "The `pattern_summary` theorem bundles: (1) $\\omega^2$ works, (2) $\\omega^3$ fails, (3) $\\omega^\\omega$ works. Includes a documentation table showing the full pattern from $\\omega$ through $\\omega^{\\omega^2}$ with the OPEN case marked."
+    },
+    {
+      "id": "related-problems",
+      "title": "Part VII: Related Problems #591 and #592",
+      "summary": "Defines `problem_591_conjecture` ($\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$, OPEN, \\$250) and `problem_592_related` (the general question for all limit $\\alpha$) as `Prop` definitions rather than theorems.",
+      "startLine": 170,
+      "endLine": 181,
+      "mathContext": "Defines `problem_591_conjecture` ($\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$, OPEN, \\$250) and `problem_592_related` (the general question for all limit $\\alpha$) as `Prop` definitions rather than theorems."
+    },
+    {
+      "id": "ordinal-arithmetic",
+      "title": "Part VIII: Ordinal Arithmetic Identities",
+      "summary": "Two proved results: `omega_omega_dominates` ($\\omega^n < \\omega^\\omega$ for all $n : \\mathbb{N}$, including $n = 0$ via `one_lt_opow`) and `omega_omega_squared_form` ($\\omega^\\omega \\cdot \\omega^\\omega = \\omega^{\\omega + \\omega}$ via `opow_add`).",
+      "startLine": 182,
+      "endLine": 238,
+      "mathContext": "Two proved results: `omega_omega_dominates` ($\\omega^n < \\omega^\\omega$ for all $n : \\mathbb{N}$, including $n = 0$ via `one_lt_opow`) and `omega_omega_squared_form` ($\\omega^\\omega \\cdot \\omega^\\omega = \\omega^{\\omega + \\omega}$ via `opow_add`)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #590 is SOLVED with answer YES ($250 prize paid to Chang). The formalization captures the complete ordinal Ramsey landscape: Specker's positive result for $\\omega^2$, Specker's surprising failures for $\\omega^n$ ($n \\ge 3$), Chang's restoration for $\\omega^\\omega$, and the Milner-Larson generalization to arbitrary finite clique sizes. The ordinal arithmetic is verified from Mathlib, and the connections to open problems #591 and #592 are stated.",
+    "implications": "**Theoretical Significance**: **Connections and Impact**\n\n1. **Partition calculus:** Chang's theorem is a landmark of infinitary combinatorics, demonstrating that ordinal Ramsey properties exhibit qualitatively different behavior from their finite counterparts\n\n2. **Non-monotonicity paradigm:** Specker's results established that Ramsey-type properties can decrease with increasing ordinal size, a phenomenon without finite analogue that motivated decades of research in partition calculus\n\n**3. Limit ordinal restoration principle:** The pattern -- properties fail for successor ordinal exponents but are restored for limit ordinal exponents -- appears to be a general structural phenomenon, though proving it beyond $\\omega^\\omega$ remains open\n\n4. **Cantor normal form techniques:** The interplay between ordinal Ramsey theory and Cantor normal form representations connects set theory with combinatorics in a fundamental way\n\n5. **Prize problems:** Problems #591 ($\\omega^{\\omega^2}$) and #592 (general limit ordinals) remain open, suggesting that the techniques needed may require substantially new ideas beyond Chang's transfinite induction.",
+    "openQuestions": [
+      "Does $\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$ hold? (Problem #591, $250 prize)",
+      "For which ordinals $\\alpha$ does $\\alpha \\to (\\alpha, 3)^2$ hold? Is there a characterization in terms of Cantor normal form?",
+      "Does the limit ordinal restoration principle hold: $\\omega^\\alpha \\to (\\omega^\\alpha, 3)^2$ for every limit ordinal $\\alpha$? (Problem #592)",
+      "Can Chang's proof be effectivized to give explicit bounds on the Ramsey numbers for finite approximations?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Ordinal.Exponential",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Ordinal"
+    ],
+    "namespace": "Erdos590",
+    "lineCount": 238,
+    "axiomCount": 5,
+    "theoremCount": 14,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos590Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-591",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, ordinals, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, ramsey-theory, set-theory"
+    }
+  ],
+  "sorries": 0
+}

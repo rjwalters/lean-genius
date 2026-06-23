@@ -1,0 +1,271 @@
+[
+  {
+    "id": "ann-e270-header",
+    "proofId": "erdos-270",
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #270: Irrationality of Product-Reciprocal Series**\n\nThe problem asks: for f(n) → ∞, is the series\n$$\\sum_{n \\geq 1} \\frac{1}{(n+1)(n+2)\\cdots(n+f(n))}$$\nalways irrational?\n\n**Surprising Answer:** NO! In fact, for ANY positive real α, there exists f achieving that sum.\n\nThis is a complete disproof in the strongest sense - the series can be rational, irrational, or transcendental.",
+    "mathContext": "Crmarić and Kovač (2025) published this in 'On the irrationality of certain super-polynomially decaying series.'",
+    "significance": "key",
+    "relatedConcepts": [
+      "Irrationality",
+      "Series",
+      "Number theory"
+    ],
+    "prerequisites": [
+      "Rational And Irrational Numbers",
+      "Infinite Series",
+      "Erdős Problems"
+    ]
+  },
+  {
+    "id": "ann-e270-rising-product",
+    "proofId": "erdos-270",
+    "range": {
+      "startLine": 55,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Rising Factorial",
+    "content": "**risingProduct n k:**\n\nThe product (n+1)(n+2)⋯(n+k), also called the rising factorial or Pochhammer symbol.\n\n**Formula:** (n+k)! / n!\n\n**Examples:**\n- risingProduct(3, 2) = 4 × 5 = 20\n- risingProduct(1, 3) = 2 × 3 × 4 = 24",
+    "significance": "key",
+    "relatedConcepts": [
+      "Factorial",
+      "Pochhammer symbol"
+    ],
+    "mathContext": "See the content field for the mathematical context of this annotation.",
+    "prerequisites": [
+      "Factorials",
+      "Finite Products",
+      "Pochhammer Symbol"
+    ]
+  },
+  {
+    "id": "ann-e270-series",
+    "proofId": "erdos-270",
+    "range": {
+      "startLine": 72,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "The Series",
+    "content": "**productReciprocalSeries f:**\n\nThe infinite sum Σ_{n≥1} 1/((n+1)(n+2)⋯(n+f(n))).\n\nWhen f(n) → ∞, the denominators grow super-exponentially, ensuring convergence.\n\nThe question: what values can this sum take?",
+    "significance": "key",
+    "relatedConcepts": [
+      "Infinite series",
+      "Convergence"
+    ],
+    "mathContext": "See annotation content for formal details of the series",
+    "prerequisites": [
+      "Infinite Series",
+      "Series Convergence",
+      "Reciprocal Terms"
+    ]
+  },
+  {
+    "id": "ann-e270-tends-infinity",
+    "proofId": "erdos-270",
+    "range": {
+      "startLine": 85,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "Limit Condition",
+    "content": "**TendsToInfinity f:**\n\nf(n) → ∞ means: for every M, eventually f(n) > M.\n\nThis is the key hypothesis - the number of factors in the denominator must grow without bound.\n\nWithout this, the series might diverge or have trivial behavior.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Limits",
+      "Asymptotics"
+    ],
+    "mathContext": "See annotation content for formal details of limit condition",
+    "prerequisites": [
+      "Limits Of Sequences",
+      "Divergence To Infinity",
+      "Eventually Properties"
+    ]
+  },
+  {
+    "id": "ann-e270-conjecture",
+    "proofId": "erdos-270",
+    "range": {
+      "startLine": 105,
+      "endLine": 113
+    },
+    "type": "definition",
+    "title": "The Original Conjecture",
+    "content": "**ErdosGrahamConjecture:**\n\nFor all f with f(n) → ∞, the sum is irrational.\n\nErdős and Graham (1980) wrote: 'the answer is almost surely in the affirmative if f(n) is assumed to be nondecreasing.'\n\nThis turned out to be FALSE in general (but may be true for non-decreasing f).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Conjectures",
+      "Irrationality"
+    ],
+    "mathContext": "See annotation content for formal details of the original conjecture",
+    "prerequisites": [
+      "Irrationality",
+      "Monotone Functions",
+      "Mathematical Conjectures"
+    ]
+  },
+  {
+    "id": "ann-e270-crmaric-kovac",
+    "proofId": "erdos-270",
+    "range": {
+      "startLine": 121,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Crmarić-Kovač Theorem (2025)",
+    "content": "**crmaric_kovac_2025:**\n\nFor ANY α > 0, there exists f: ℕ → ℕ with f(n) → ∞ such that the series equals α exactly.\n\nThis completely disproves the original conjecture:\n- Want sum = 1? There's an f for that.\n- Want sum = π? There's an f for that.\n- Want sum = 1/7? There's an f for that.\n\nThe series can achieve any positive real value.",
+    "mathContext": "Published on arXiv in 2025, this resolved a 45-year-old problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Disproof",
+      "Construction",
+      "Any value achievable"
+    ],
+    "prerequisites": [
+      "Constructive Existence Proof",
+      "Positive Real Numbers",
+      "Series Value"
+    ]
+  },
+  {
+    "id": "ann-e270-disproved",
+    "proofId": "erdos-270",
+    "range": {
+      "startLine": 143,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Conjecture Disproved",
+    "content": "**erdos_270_disproved:**\n\n```lean\ntheorem erdos_270_disproved : ¬ErdosGrahamConjecture\n```\n\nProof idea: Take α = 1 (a rational). By Crmarić-Kovač, there exists f with sum = 1. But the conjecture says the sum must be irrational. Contradiction!",
+    "significance": "key",
+    "relatedConcepts": [
+      "Disproof",
+      "Contradiction"
+    ],
+    "mathContext": "See annotation content for formal details of conjecture disproved",
+    "prerequisites": [
+      "Proof By Contradiction",
+      "Logical Negation",
+      "Counterexample"
+    ]
+  },
+  {
+    "id": "ann-e270-central-binomial",
+    "proofId": "erdos-270",
+    "range": {
+      "startLine": 162,
+      "endLine": 172
+    },
+    "type": "definition",
+    "title": "Central Binomial Coefficients",
+    "content": "**centralBinomial n:**\n\nC(2n, n) = (2n)! / (n!)²\n\nWhen f(n) = n, the series becomes Σ 1/C(2n, n).\n\nThis is a classical series with a beautiful closed form.\n\n**Connection:** 1/C(2n,n) = 1/((n+1)(n+2)⋯(2n)) × n!",
+    "significance": "key",
+    "relatedConcepts": [
+      "Binomial coefficients",
+      "Special functions"
+    ],
+    "mathContext": "See annotation content for formal details of central binomial coefficients",
+    "prerequisites": [
+      "Binomial Coefficients",
+      "Factorials",
+      "Closed-Form Expression"
+    ]
+  },
+  {
+    "id": "ann-e270-hansen",
+    "proofId": "erdos-270",
+    "range": {
+      "startLine": 174,
+      "endLine": 193
+    },
+    "type": "concept",
+    "title": "Hansen's Transcendental Result",
+    "content": "**hansen_1975 and hansen_transcendental:**\n\nFor f(n) = n, the sum equals:\n$$\\frac{1}{3} + \\frac{2\\pi}{3^{5/2}} \\approx 0.536$$\n\nThis is TRANSCENDENTAL (not just irrational)!\n\nThe presence of π guarantees transcendence. Hansen published this in 'A Table of Series and Products' (1975).",
+    "mathContext": "This shows certain specific choices of f do give irrational (even transcendental) sums.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Transcendental numbers",
+      "π",
+      "Closed forms"
+    ],
+    "prerequisites": [
+      "Transcendental Numbers",
+      "Closed-Form Sum",
+      "The Constant Pi"
+    ]
+  },
+  {
+    "id": "ann-e270-nondecreasing",
+    "proofId": "erdos-270",
+    "range": {
+      "startLine": 201,
+      "endLine": 221
+    },
+    "type": "concept",
+    "title": "Non-decreasing Case (Open)",
+    "content": "**NondecreasingConjecture:**\n\nIf f is NON-DECREASING and f(n) → ∞, is the sum always irrational?\n\n**This remains OPEN!**\n\nCrmarić-Kovač showed that non-decreasing sums form a set of Lebesgue measure zero. This suggests:\n- Most reals are NOT achievable with non-decreasing f\n- The conjecture might be true in this restricted case\n\nBut measure zero ≠ empty set!",
+    "significance": "key",
+    "relatedConcepts": [
+      "Open problems",
+      "Monotonicity",
+      "Measure theory"
+    ],
+    "mathContext": "See annotation content for formal details of non-decreasing case (open)",
+    "prerequisites": [
+      "Monotone Functions",
+      "Lebesgue Measure Zero",
+      "Open Problems"
+    ]
+  },
+  {
+    "id": "ann-e270-convergence",
+    "proofId": "erdos-270",
+    "range": {
+      "startLine": 227,
+      "endLine": 234
+    },
+    "type": "concept",
+    "title": "Convergence",
+    "content": "**series_converges:**\n\nFor any f with f(n) → ∞, the series converges.\n\n**Why?** Eventually f(n) ≥ 2, so terms are at most 1/((n+1)(n+2)) ~ 1/n².\n\nSince Σ 1/n² converges, so does our series (by comparison).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Convergence",
+      "Comparison test"
+    ],
+    "mathContext": "See annotation content for formal details of convergence",
+    "prerequisites": [
+      "Comparison Test",
+      "Basel Problem Series",
+      "Asymptotic Bounds"
+    ]
+  },
+  {
+    "id": "ann-e270-summary",
+    "proofId": "erdos-270",
+    "range": {
+      "startLine": 249,
+      "endLine": 254
+    },
+    "type": "concept",
+    "title": "Summary",
+    "content": "**erdos_270_summary:**\n\n**Question:** For f(n) → ∞, is Σ 1/((n+1)⋯(n+f(n))) always irrational?\n\n**Answer:** NO (Crmarić-Kovač, 2025)\n- Any α > 0 is achievable\n- The conjecture is completely false\n\n**Special case:** f(n) = n gives 1/3 + 2π/3^(5/2) (transcendental)\n\n**Open:** Is the sum irrational when f is non-decreasing?",
+    "significance": "key",
+    "relatedConcepts": [
+      "Main result",
+      "Disproof",
+      "Open problem"
+    ],
+    "mathContext": "See annotation content for formal details of summary",
+    "prerequisites": [
+      "Irrationality",
+      "Transcendental Numbers",
+      "Open Problems"
+    ]
+  }
+]

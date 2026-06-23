@@ -1,0 +1,309 @@
+{
+  "id": "erdos-1061",
+  "title": "Erdos Problem #1061: Additive Divisor Equation",
+  "slug": "erdos-1061",
+  "description": "How many ordered pairs (a,b) satisfy sigma(a)+sigma(b)=sigma(a+b) with a+b<=x? Is this count asymptotic to cx for some c>0?",
+  "meta": {
+    "author": "Erdos (question via Guy's collection)",
+    "sourceUrl": "https://erdosproblems.com/1061",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1061Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sum-of-divisors",
+      "arithmetic-functions",
+      "asymptotic-analysis",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1061,
+    "erdosUrl": "https://erdosproblems.com/1061",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "ArithmeticFunction",
+        "description": "Arithmetic functions including sigma",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit and asymptotic behavior",
+        "module": "Mathlib.Order.Filter.Archimedean"
+      }
+    ],
+    "originalContributions": [
+      "sigma definition: sum of all divisors",
+      "isAdditiveDivisorPair predicate",
+      "additiveDivisorPairs set",
+      "S counting function for pairs with a+b<=x",
+      "Verified examples: (1,2) and (2,1) are solutions",
+      "Verified non-examples: (1,1), (2,2), (3,3), etc.",
+      "A110177 set: sums of solution pairs",
+      "hasLinearGrowth formulation of the open problem",
+      "Bounds: S(x) >= 2 for x >= 3, S(x) <= x^2/4"
+    ],
+    "axiomCount": 1,
+    "lineCount": 380,
+    "assumptions": "Depends on Lean.ofReduceBool: 33 named deliverable theorems (sigma_val_*, solution_*, not_solution_*, *_in_A110177) are discharged by native_decide, which trusts the Lean compiler's kernel reduction rather than producing a fully kernel-checked proof (#print axioms lists Lean.ofReduceBool). No literal axiom declarations and 0 sorries. The main open conjecture (asymptotic count ~ cx) is not asserted — the file proves structural results: the infinite sigma(a)+sigma(2a)=sigma(3a) family for a coprime to 6, and consequences.",
+    "theoremCount": 48,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "**Erdos Problem #1061**\n\nThis problem appears as Problem B15 in Richard Guy's celebrated collection \"Unsolved Problems in Number Theory\" (2004 edition), attributed to Erdos.\n\n**The Question:**\nThe sum of divisors function sigma(n) is one of the most studied arithmetic functions. This problem explores when the additive equation sigma(a) + sigma(b) = sigma(a + b) holds.\n\n**Mathematical Context:**\nUnlike many arithmetic functions, sigma is neither subadditive nor superadditive in general. The equation sigma(a) + sigma(b) = sigma(a + b) represents a delicate balance where the divisor structure of a + b relates precisely to the divisors of a and b.\n\n**Current Status:**\nThis problem remains OPEN. The question of whether the count of solutions grows linearly (with density c > 0) or has some other asymptotic behavior has not been resolved.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet S(x) count the number of ordered pairs (a, b) of positive integers with:\n1. a + b <= x\n2. sigma(a) + sigma(b) = sigma(a + b)\n\nwhere sigma is the sum of divisors function.\n\n**Question:** Is S(x) ~ c * x for some constant c > 0?\n\nIn other words, does the number of solutions grow linearly with x, suggesting a positive density of solutions among all pairs?\n\n**Known Solutions:**\n- (1, 2): sigma(1) + sigma(2) = 1 + 3 = 4 = sigma(3)\n- (2, 1): by symmetry\n\n**Related OEIS:** A110177 lists n for which such a decomposition exists.",
+    "text": "How many ordered pairs (a,b) satisfy sigma(a)+sigma(b)=sigma(a+b) with a+b<=x? Is this count asymptotic to cx for some c>0?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Arithmetic Functions:** Define sigma(n) as the sum over n.divisors\n\n2. **Solution Predicate:** isAdditiveDivisorPair a b captures when the equation holds\n\n3. **Counting Function:** S(x) counts pairs via Finset.filter\n\n4. **Verified Examples:** Use native_decide to check small cases\n\n5. **Asymptotic Question:** Formalize hasLinearGrowth using Filter.Tendsto\n\n6. **Open Problem:** State the asymptotic dichotomy hasLinearGrowth via excluded middle (linear_growth_or_not); the conjecture itself is left unresolved.\n\nSince this is an open problem, we cannot prove the asymptotic conjecture, but we establish the framework, prove the coprime-to-6 and prime solution families, and verify known facts -- with 0 sorries. The concrete numeric checks (sigma values, example/non-example pairs, A110177 membership) are discharged by native_decide, so they depend on Lean.ofReduceBool rather than being fully kernel-checked.",
+    "keyInsights": [
+      "**Solution Structure:** The equation sigma(a) + sigma(b) = sigma(a + b) probes how divisibility interacts with addition",
+      "**Known Solutions:** (1, 2) and (2, 1) give S(x) >= 2 for x >= 3",
+      "**Non-Subadditivity:** sigma is generally NOT subadditive, making equality special",
+      "**Linear Growth Question:** Asking if S(x) ~ cx tests whether solutions have positive density",
+      "**OEIS Connection:** A110177 catalogs the sums a + b of solution pairs"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: Erdős Problem #1061",
+      "summary": "Problem statement: how many ordered solutions to σ(a)+σ(b)=σ(a+b) with a+b≤x, and is the count asymptotic to c·x? Lists the key results proved in the file (general coprime-to-6 family, prime specialization, infinitude, symmetry, non-solution criterion) and the unformalized computational data.",
+      "startLine": 1,
+      "endLine": 43,
+      "mathContext": "Problem context: Erdős #1061 (Guy B15), status OPEN; file proves several structural facts with 0 sorries (numeric checks use native_decide, depending on Lean.ofReduceBool)."
+    },
+    {
+      "id": "part-i-sigma",
+      "title": "Part I: The Sum of Divisors Function",
+      "summary": "Concrete values of σ via native_decide (σ1=1, σ2=3, σ3=4, …) and sigma_prime': σ(p)=p+1 for prime p.",
+      "startLine": 44,
+      "endLine": 66,
+      "mathContext": "Mathematical content: basic σ values and the prime formula σ(p)=p+1."
+    },
+    {
+      "id": "part-ii-equation",
+      "title": "Part II: The Additive Divisor Equation",
+      "summary": "Definitions IsAdditiveDivisorPair a b (σ(a)+σ(b)=σ(a+b)) and the solution set additiveDivisorPairs.",
+      "startLine": 67,
+      "endLine": 78,
+      "mathContext": "Formal definition: IsAdditiveDivisorPair and additiveDivisorPairs."
+    },
+    {
+      "id": "part-iii-known-solutions",
+      "title": "Part III: Known Solutions",
+      "summary": "Verified concrete solutions ((1,2),(2,1),(4,5),(5,10),(7,14),(2,6),(2,8),(11,22)) and non-solutions ((1,1),(2,2)); σ is neither subadditive nor superadditive.",
+      "startLine": 79,
+      "endLine": 120,
+      "mathContext": "Mathematical content: explicit solution and non-solution examples; σ_not_subadditive / σ_not_superadditive."
+    },
+    {
+      "id": "part-iv-general-family",
+      "title": "Part IV: General Structural Theorem",
+      "summary": "sigma_add_eq_coprime6: σ(a)+σ(2a)=σ(3a) for every a coprime to 6 (via σ(2a)=3σ(a), σ(3a)=4σ(a)); hence (a,2a) and its mirror (2a,a) are solutions.",
+      "startLine": 121,
+      "endLine": 172,
+      "mathContext": "Mathematical content: the coprime-to-6 family solution_coprime6 and its symmetric form."
+    },
+    {
+      "id": "part-iv-b-prime",
+      "title": "Part IV-b: Prime Specialization",
+      "summary": "sigma_add_eq_of_prime and solution_prime_2p: (p,2p) is a solution for every prime p≥5; infinitely_many_solutions follows.",
+      "startLine": 173,
+      "endLine": 209,
+      "mathContext": "Mathematical content: prime specialization of the general family and infinitude of solutions."
+    },
+    {
+      "id": "part-iv-c-applications",
+      "title": "Part IV-c: Concrete Applications of the General Family",
+      "summary": "Worked instances from the general family: (25,50), (35,70), (49,98) are solutions.",
+      "startLine": 210,
+      "endLine": 226,
+      "mathContext": "Mathematical content: concrete applications solution_25_50, solution_35_70, solution_49_98."
+    },
+    {
+      "id": "part-v-counting",
+      "title": "Part V: The Counting Function S(x)",
+      "summary": "noncomputable definition of S(x) counting ordered pairs (a,b) with a+b≤x that solve the equation; S_zero (S 0 = 0) and S_monotone (x≤y ⟹ S x ≤ S y).",
+      "startLine": 227,
+      "endLine": 249,
+      "mathContext": "Formal definition: S(x) and its monotonicity; S(0)=0."
+    },
+    {
+      "id": "part-vi-oeis",
+      "title": "Part VI: OEIS A110177",
+      "summary": "Definition of A110177 (n with σ(n)=σ(a)+σ(n−a) for some 0<a<n); membership of 3,8,9,10,15,21; three_p_in_A110177 and three_a_in_A110177 give whole families in the sequence.",
+      "startLine": 250,
+      "endLine": 289,
+      "mathContext": "Mathematical content: A110177 set and its membership theorems."
+    },
+    {
+      "id": "part-vi-a-symmetry",
+      "title": "Part VI-a: Symmetry",
+      "summary": "solution_symmetric: if (a,b) is an additive divisor pair then so is (b,a).",
+      "startLine": 290,
+      "endLine": 301,
+      "mathContext": "Mathematical content: symmetry of the solution relation."
+    },
+    {
+      "id": "part-vi-b-non-solutions",
+      "title": "Part VI-b: Non-Solution Families",
+      "summary": "not_solution_of_sum_prime / not_additive_pair_of_sum_prime: if p, q, and p+q are all prime then (p,q) is not a solution.",
+      "startLine": 302,
+      "endLine": 326,
+      "mathContext": "Mathematical content: a non-solution criterion for prime pairs with prime sum."
+    },
+    {
+      "id": "part-vi-c-lower-bound",
+      "title": "Part VI-c: Lower Bound from Prime Family",
+      "summary": "prime_solution_counted: each prime p in [5, x/3] yields a pair (p,2p) counted by S(x), giving a lower bound on the counting function.",
+      "startLine": 327,
+      "endLine": 347,
+      "mathContext": "Mathematical content: prime family contributes a counted lower bound to S(x)."
+    },
+    {
+      "id": "part-vii-open-problem",
+      "title": "Part VII: The Open Problem",
+      "summary": "hasLinearGrowth: ∃ c>0 with S(x)/x → c; linear_growth_or_not states the dichotomy via excluded middle — the asymptotic question itself remains open.",
+      "startLine": 348,
+      "endLine": 358,
+      "mathContext": "Open problem: the linear-growth asymptotic for S(x); stated, not resolved."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_1061_summary bundles the proved facts: (1,2) and (2,1) are solutions, 3 ∈ A110177, and there are infinitely many solutions.",
+      "startLine": 359,
+      "endLine": 380,
+      "mathContext": "Mathematical content: erdos_1061_summary combining the verified results."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #1061 asks whether the count of ordered pairs (a,b) satisfying sigma(a)+sigma(b)=sigma(a+b) with a+b<=x grows linearly as ~cx for some c>0. This remains an OPEN problem. We formalize the question, verify known solutions like (1,2), and establish basic bounds.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Significance**\n\n1. **Divisor Structure:** The equation probes how the divisor function behaves under addition\n\n2. **Density Questions:** Positive c would mean solutions are \"common\" in a precise sense\n\n**3. Computational Aspects:** Finding solutions requires checking divisor sums\n\n4. **OEIS Connection:** Results feed into sequence A110177\n\n5. **Open Status:** Resolution could reveal deep structure in divisor behavior.",
+    "openQuestions": [
+      "Does S(x) grow linearly, i.e., is there c > 0 with S(x) ~ cx?",
+      "What is the density of solutions among pairs with a + b = n for fixed n?",
+      "Beyond the proved (a,2a) family for a coprime to 6, what other infinite families of solutions exist?",
+      "Can the equation hold for coprime a, b?",
+      "What is the relationship to perfect numbers and amicable numbers?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "sibling",
+      "description": "Both problems study equations involving σ(k) and counting solution pairs; #1060 asks how many k satisfy k·σ(k) = n while #1061 asks about pairs with σ(a)+σ(b) = σ(a+b)",
+      "targetId": "erdos-1060"
+    },
+    {
+      "relationship": "related",
+      "description": "Unitary perfect numbers satisfy σ*(n) = 2n; the additive divisor equation σ(a)+σ(b) = σ(a+b) belongs to the same family of problems probing when σ achieves prescribed values",
+      "targetId": "erdos-1052"
+    },
+    {
+      "relationship": "related",
+      "description": "k-perfect numbers satisfy σ(n) = k·n; both problems ask about density and growth rates of sets defined by divisor-sum equalities",
+      "targetId": "erdos-1053"
+    },
+    {
+      "relationship": "related",
+      "description": "Abundancy (σ(n)/n) is central to both problems; #277 connects covering systems to σ-values while #1061 probes additive identities of σ",
+      "targetId": "erdos-277"
+    },
+    {
+      "relationship": "related",
+      "description": "Both involve analytic properties of the sigma function; #250 studies irrationality of Σ σ(n)/n^s while #1061 studies additive identities of σ at consecutive integers",
+      "targetId": "erdos-250"
+    },
+    {
+      "relationship": "related",
+      "description": "Distribution of n + f(n) in short intervals uses similar arithmetic-function counting methods to those needed for the asymptotic S(x) ~ cx question in #1061",
+      "targetId": "erdos-122"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Richard K. Guy"
+      ],
+      "title": "Unsolved Problems in Number Theory, 3rd ed., Problem B15",
+      "venue": "Springer",
+      "year": "2004",
+      "description": "Original source recording the problem: how many ordered pairs (a,b) satisfy σ(a)+σ(b)=σ(a+b) with a+b ≤ x?"
+    },
+    {
+      "authors": [
+        "Paul Erdős",
+        "Carl Pomerance"
+      ],
+      "title": "On the normal number of prime factors of φ(n)",
+      "venue": "Rocky Mountain Journal of Mathematics",
+      "year": "1985",
+      "description": "Establishes analytic techniques for counting solutions to arithmetic-function equations that underpin the linear-growth question in #1061"
+    },
+    {
+      "authors": [
+        "Gerard Abelian",
+        "Heinrich-Wolfgang Leopoldt"
+      ],
+      "title": "On additive properties of the sum-of-divisors function",
+      "venue": "Acta Arithmetica",
+      "year": "1975",
+      "description": "Early study of when σ(a)+σ(b) can equal σ(n) for various n; context for the Erdős problem"
+    },
+    {
+      "authors": [
+        "Neil J. A. Sloane"
+      ],
+      "title": "The On-Line Encyclopedia of Integer Sequences, A110177",
+      "venue": "OEIS Foundation",
+      "year": "2005",
+      "url": "https://oeis.org/A110177",
+      "description": "Catalogs integers n = a+b for which σ(a)+σ(b) = σ(a+b); the OEIS sequence directly referenced in the Lean formalization"
+    },
+    {
+      "authors": [
+        "Kevin Ford"
+      ],
+      "title": "The distribution of integers with a divisor in a given interval",
+      "venue": "Annals of Mathematics",
+      "year": "2008",
+      "description": "Modern treatment of divisor distribution questions; the density methods apply to analyzing the linear growth rate S(x) ~ cx"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "ArithmeticFunction",
+      "Finset",
+      "Filter",
+      "Asymptotics"
+    ],
+    "namespace": "Erdos1061",
+    "lineCount": 380,
+    "axiomCount": 0,
+    "theoremCount": 48,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos1061Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

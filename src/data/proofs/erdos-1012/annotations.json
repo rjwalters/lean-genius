@@ -1,0 +1,358 @@
+[
+  {
+    "id": "ann-1012-header",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Documentation",
+    "content": "The header documents Erdős Problem #1012: for $k \\ge 0$, what is the minimum $f(k)$ such that every graph on $n \\ge f(k)$ vertices with at least $\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$ edges contains an $(n-k)$-cycle? Woodall (1972) solved this completely, showing $f(k) \\le 2k+3$ with the bonus that such graphs are pancyclic from $3$ to $n-k$.",
+    "mathContext": "$f(k) := \\min\\{n_0 : \\forall n \\ge n_0, |E(G)| \\ge \\binom{n-k-1}{2} + \\binom{k+2}{2} + 1 \\Rightarrow C_{n-k} \\subseteq G\\}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "extremal graph theory",
+      "Hamiltonian cycles",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-1012-edgecount",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 32,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Edge and Vertex Count",
+    "content": "Defines `edgeCount` as the cardinality of the edge finset and `vertexCount` as `Fintype.card V`. These work with Lean's `SimpleGraph` type, which represents undirected graphs without self-loops or multi-edges. The edge finset uses `DecidableRel G.Adj` to enumerate edges computationally.",
+    "mathContext": "$|E(G)| = |\\{\\{u,v\\} : G.\\text{Adj}(u,v)\\}|$, $|V(G)| = |V|$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Fintype",
+      "edgeFinset"
+    ],
+    "prerequisites": [
+      "Lean 4 SimpleGraph",
+      "Fintype"
+    ]
+  },
+  {
+    "id": "ann-1012-threshold",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 46,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Edge Threshold Definition",
+    "content": "The critical edge count $\\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$ arises from extremal constructions: the complete graph $K_{n-k-1}$ contributes $\\binom{n-k-1}{2}$ edges, and a carefully attached $(k+2)$-clique adds $\\binom{k+2}{2}$. One more edge beyond this breaks the structure and forces an $(n-k)$-cycle.",
+    "mathContext": "$T(n,k) = \\binom{n-k-1}{2} + \\binom{k+2}{2} + 1 = \\frac{(n-k-1)(n-k-2)}{2} + \\frac{(k+2)(k+1)}{2} + 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal graph",
+      "binomial coefficient",
+      "Turán number"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "extremal graph theory"
+    ]
+  },
+  {
+    "id": "ann-1012-threshold-computations",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 55,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Threshold Computations and Simplifications",
+    "content": "Machine-verified computations of $\\binom{m}{2}$ for small $m$ (0 through 3) using `decide`, plus threshold simplifications for $k=0$ and $k=1$. The $k=0$ case gives $\\binom{n-1}{2} + 2$, and the $k=1$ case gives $\\binom{n-2}{2} + 4$. Concrete values: $T(3,0)=3$, $T(4,0)=5$, $T(5,0)=8$, confirming the quadratic growth of the threshold.",
+    "mathContext": "$T(n,0) = \\binom{n-1}{2} + 2$; $T(n,1) = \\binom{n-2}{2} + 4$; $T(3,0)=3, T(4,0)=5, T(5,0)=8$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decide tactic",
+      "binomial coefficient identities",
+      "quadratic growth"
+    ],
+    "prerequisites": [
+      "Nat.choose"
+    ]
+  },
+  {
+    "id": "ann-1012-hascycle",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 101,
+      "endLine": 109
+    },
+    "type": "definition",
+    "title": "Cycle of Length $l$",
+    "content": "Defines `hasCycleOfLength G l` as the existence of an injective function from $\\text{Fin}(l)$ to $V$ where consecutive images (cyclically) are adjacent. The empty cycle ($l=0$) is `False`. This definition captures the graph-theoretic notion of a cycle as a closed walk visiting $l$ distinct vertices with all consecutive pairs connected by edges.",
+    "mathContext": "$G$ has a $C_l \\iff \\exists$ injective $f : \\{0,\\ldots,l-1\\} \\to V$ with $G.\\text{Adj}(f(i), f((i+1) \\mod l))$ for all $i$",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle graph",
+      "injective function",
+      "Fin type",
+      "closed walk"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Function.Injective"
+    ]
+  },
+  {
+    "id": "ann-1012-hamiltonian",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 111,
+      "endLine": 113
+    },
+    "type": "definition",
+    "title": "Hamiltonian Cycle",
+    "content": "A Hamiltonian cycle is a cycle visiting all $n$ vertices: `hasCycleOfLength G (Fintype.card V)`. The Hamiltonian cycle problem is NP-complete in general, but sufficient edge density guarantees existence—this is the content of Ore's theorem ($k=0$ case of the problem).",
+    "mathContext": "$G$ is Hamiltonian $\\iff G$ has $C_n$ where $n = |V(G)|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hamiltonian cycle problem",
+      "NP-completeness",
+      "Ore's theorem",
+      "Dirac's theorem"
+    ],
+    "prerequisites": [
+      "hasCycleOfLength",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-1012-pancyclic",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 115,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "Pancyclic Up To $m$",
+    "content": "A graph is pancyclic up to $m$ if it contains cycles of every length from $3$ to $m$. Woodall's surprising result shows that dense graphs aren't just forced to have one long cycle—they have the complete spectrum of cycle lengths. Bondy's metaconjecture (1971) predicted this: conditions forcing Hamiltonicity usually force pancyclicity.",
+    "mathContext": "$G$ is pancyclic up to $m \\iff \\forall l \\in \\{3,4,\\ldots,m\\}, C_l \\subseteq G$",
+    "significance": "key",
+    "relatedConcepts": [
+      "pancyclic graph",
+      "Bondy's metaconjecture",
+      "cycle spectrum"
+    ],
+    "prerequisites": [
+      "hasCycleOfLength"
+    ]
+  },
+  {
+    "id": "ann-1012-haslongcycle",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 124,
+      "endLine": 129
+    },
+    "type": "definition",
+    "title": "Long Cycle Property",
+    "content": "The property `hasLongCycle n k` states that every graph on $n$ vertices with $\\ge T(n,k)$ edges contains a cycle of length $n-k$. This universally quantifies over all vertex types $V$ with $|V|=n$ and all simple graphs $G$ on $V$ exceeding the edge threshold. The function $f(k) = \\min\\{n_0 : \\forall n \\ge n_0, \\text{hasLongCycle}(n,k)\\}$.",
+    "mathContext": "$\\text{hasLongCycle}(n,k) \\iff \\forall G \\text{ on } n \\text{ vertices}: |E(G)| \\ge T(n,k) \\Rightarrow C_{n-k} \\subseteq G$",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal number",
+      "cycle containment",
+      "universal quantification over graphs"
+    ],
+    "prerequisites": [
+      "edgeThreshold",
+      "hasCycleOfLength",
+      "SimpleGraph"
+    ]
+  },
+  {
+    "id": "ann-1012-ore",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 137,
+      "endLine": 142
+    },
+    "type": "insight",
+    "title": "Ore's Theorem (1961) — Axiomatized",
+    "content": "Ore's theorem: every graph on $n \\ge 1$ vertices with $\\ge \\binom{n-1}{2} + 2$ edges has a Hamiltonian cycle. This is the $k=0$ case: $f(0) = 1$. Ore's original proof uses a degree-sum condition ($\\deg(u) + \\deg(v) \\ge n$ for non-adjacent $u,v$), from which the edge count follows. The theorem is axiomatized because formalizing the full proof would require extensive graph theory infrastructure.",
+    "mathContext": "$\\forall n \\ge 1: |E(G)| \\ge \\binom{n-1}{2} + 2 \\Rightarrow G$ has a Hamiltonian cycle",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ore's theorem",
+      "degree-sum condition",
+      "Dirac's theorem",
+      "Hamiltonian graph"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Hamiltonian cycle theory"
+    ]
+  },
+  {
+    "id": "ann-1012-bondy",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 144,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Bondy's Theorem (1971) — Axiomatized",
+    "content": "Bondy's theorem extends Ore to $k=1$: every graph on $n \\ge 1$ vertices with $\\ge \\binom{n-2}{2} + 4$ edges has an $(n-1)$-cycle. Bondy also formulated his famous metaconjecture: almost any condition on a graph sufficient to imply it is Hamiltonian is also sufficient to imply it is pancyclic. Woodall's pancyclicity result confirms this metaconjecture for the edge-threshold setting.",
+    "mathContext": "$\\forall n \\ge 1: |E(G)| \\ge \\binom{n-2}{2} + 4 \\Rightarrow C_{n-1} \\subseteq G$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bondy's theorem",
+      "Bondy's metaconjecture",
+      "near-Hamiltonian cycles"
+    ],
+    "prerequisites": [
+      "Ore's theorem"
+    ]
+  },
+  {
+    "id": "ann-1012-woodall",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 150,
+      "endLine": 153
+    },
+    "type": "insight",
+    "title": "Woodall's Theorem (1972) — Complete Solution",
+    "content": "Woodall's definitive result: for $n \\ge 2k+3$, every graph on $n$ vertices with $\\ge T(n,k)$ edges has an $(n-k)$-cycle. This gives $f(k) \\le 2k+3$ for all $k$, completely solving Problem #1012. The bound $2k+3$ arises from the symmetry of the threshold at the boundary: when $n = 2k+3$, both binomial terms in the threshold are equal ($\\binom{k+2}{2}$).",
+    "mathContext": "$\\forall k, \\forall n \\ge 2k+3: |E(G)| \\ge \\binom{n-k-1}{2} + \\binom{k+2}{2} + 1 \\Rightarrow C_{n-k} \\subseteq G$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Woodall's theorem",
+      "extremal graph theory",
+      "cycle forcing"
+    ],
+    "prerequisites": [
+      "Ore's theorem",
+      "Bondy's theorem",
+      "extremal combinatorics"
+    ]
+  },
+  {
+    "id": "ann-1012-woodallpan",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 155,
+      "endLine": 161
+    },
+    "type": "insight",
+    "title": "Woodall Pancyclicity — Stronger Than Asked",
+    "content": "Woodall proved more than Erdős asked: under the same conditions, the graph has cycles of ALL lengths from $3$ to $n-k$, not just length $n-k$. This is the pancyclicity surprise—dense graphs have a complete cycle spectrum. The result validates Bondy's metaconjecture: the edge condition that forces long cycles actually forces all intermediate cycle lengths.",
+    "mathContext": "$n \\ge 2k+3 \\wedge |E(G)| \\ge T(n,k) \\Rightarrow \\forall l \\in \\{3,\\ldots,n-k\\}: C_l \\subseteq G$",
+    "significance": "key",
+    "relatedConcepts": [
+      "pancyclicity",
+      "Bondy's metaconjecture",
+      "cycle spectrum completeness"
+    ],
+    "prerequisites": [
+      "Woodall's theorem",
+      "isPancyclicUpTo"
+    ]
+  },
+  {
+    "id": "ann-1012-tight",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 163,
+      "endLine": 169
+    },
+    "type": "insight",
+    "title": "Threshold Tightness — Axiomatized",
+    "content": "The edge threshold is sharp: there exist graphs with $T(n,k) - 1$ edges that avoid $(n-k)$-cycles. The extremal construction is $K_{n-k-1} \\cup K_{k+2}$ plus some edges—a graph with two dense components connected by a bottleneck that prevents long cycles. This shows $T(n,k)$ cannot be reduced.",
+    "mathContext": "$\\exists G: |V(G)|=n, |E(G)| = T(n,k)-1, C_{n-k} \\not\\subseteq G$",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal construction",
+      "sharpness",
+      "Turán graph analogue"
+    ],
+    "prerequisites": [
+      "edgeThreshold"
+    ]
+  },
+  {
+    "id": "ann-1012-proved-consequences",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 175,
+      "endLine": 219
+    },
+    "type": "concept",
+    "title": "Proved Structural Theorems",
+    "content": "A suite of consequences proved from the axioms: Ore gives the $k=0$ case ($n \\ge 1$), Bondy gives $k=1$ ($n \\ge 1$), Woodall settles all $k$ ($n \\ge 2k+3$). The proofs show that Ore and Bondy improve Woodall's bound for small $k$: Ore works from $n=1$ while Woodall only gives $n \\ge 3$ for $k=0$. Also proves pancyclicity implies long cycles (by taking $l = n-k$ in the pancyclic range).",
+    "mathContext": "Ore: $f(0) = 1$; Bondy: $f(1) = 1$; Woodall: $f(k) \\le 2k+3$ for all $k \\ge 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem hierarchy",
+      "special vs general case",
+      "proof by specialization"
+    ],
+    "prerequisites": [
+      "ore_theorem",
+      "bondy_theorem",
+      "woodall_theorem"
+    ]
+  },
+  {
+    "id": "ann-1012-threshold-analysis",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 225,
+      "endLine": 325
+    },
+    "type": "concept",
+    "title": "Threshold Analysis (29 Proved Theorems)",
+    "content": "Extensive analysis of the edge threshold: the closed form $\\frac{(n-k-1)(n-k-2)}{2} + \\frac{(k+2)(k+1)}{2} + 1$, monotonicity of each binomial term (first decreasing in $k$, second increasing), positivity, lower bounds, and the symmetric boundary property. At $n = 2k+3$, both terms equal $\\binom{k+2}{2}$, giving $T(2k+3, k) = 2\\binom{k+2}{2} + 1$. Also shows Woodall-satisfying graphs contain triangles.",
+    "mathContext": "$T(2k+3, k) = 2\\binom{k+2}{2} + 1$; $\\binom{n-k-1}{2} \\ge \\binom{k+2}{2}$ when $n \\ge 2k+3$; $T(n,k) \\ge 2\\binom{k+2}{2} + 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotonicity",
+      "boundary symmetry",
+      "binomial coefficient growth",
+      "Turán-type bounds"
+    ],
+    "prerequisites": [
+      "Nat.choose_two_right",
+      "Nat.choose_le_choose"
+    ]
+  },
+  {
+    "id": "ann-1012-summary",
+    "proofId": "erdos-1012",
+    "range": {
+      "startLine": 327,
+      "endLine": 345
+    },
+    "type": "concept",
+    "title": "File Summary",
+    "content": "Summarizes the 345-line formalization: 5 axioms encoding the deep graph theory results (Ore, Bondy, Woodall cycle and pancyclic theorems, threshold tightness) and 29 proved theorems analyzing the threshold structure. Zero sorries—all unproved statements are correctly marked as axioms rather than using sorry. The file demonstrates the formal structure of an extremal graph theory result.",
+    "mathContext": "5 axioms (Ore, Bondy, Woodall×2, tightness) + 29 proved theorems, 0 sorries",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "axiom vs sorry",
+      "proof architecture",
+      "formalization completeness"
+    ],
+    "prerequisites": [
+      "axiom versus sorry in Lean",
+      "separating deep results from combinatorial corollaries",
+      "axiomCount accounting for assumptions"
+    ]
+  }
+]

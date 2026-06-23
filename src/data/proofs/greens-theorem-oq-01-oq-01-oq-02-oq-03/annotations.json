@@ -1,0 +1,151 @@
+[
+  {
+    "id": "ann-audit-header",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "concept",
+    "title": "S1 OBSERVE Audit: Codomain Genericity Confirmed",
+    "content": "The header records the S1 audit (PR #17769) that decided this question is mathematically routine: every Mathlib lemma invoked by the parent file's real-valued proofs is *already* codomain-generic. The audit explicitly catalogues the five Bochner-generic lemmas (`MeasureTheory.integral_integral_swap`, `Measure.prod_mono`, `Measure.restrict_mono`, `integral_of_le`, `Integrable.mono_measure`) and the lone ℝ-specific tactic (`linarith` in the sign-analysis sub-cases), pinpointing `linarith → abel` as the only non-mechanical substitution required for the Bochner port. This audit-then-port pattern — rather than blind reproof — is how this gallery handles codomain-generalization questions efficiently.",
+    "mathContext": "Audit conclusion: for $f : \\mathbb{R} \\times \\mathbb{R} \\to E$ with $E$ a Banach space ($\\mathrm{NormedAddCommGroup}\\ E$, $\\mathrm{NormedSpace}\\ \\mathbb{R}\\ E$, $\\mathrm{CompleteSpace}\\ E$), the parent's three real-valued $\\mathrm{intervalIntegral\\_swap}$ theorems generalize verbatim, modulo replacing four $\\mathrm{linarith}$ calls (over $\\mathbb{R}$) with $\\mathrm{abel}$ (over any additive abelian group).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bochner integral",
+      "codomain genericity",
+      "Mathlib refactoring discipline",
+      "audit-then-port pattern"
+    ],
+    "prerequisites": [
+      "Mathlib's Bochner integration setup",
+      "the parent slug greens-theorem-oq-01-oq-01-oq-02"
+    ]
+  },
+  {
+    "id": "ann-imports-setup",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 41, "endLine": 54 },
+    "type": "definition",
+    "title": "Banach Codomain Variable Block",
+    "content": "The three-instance variable block `[NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]` is the canonical Mathlib4 setup for Bochner-valued integration. Completeness is essential: the Bochner integral is defined as the unique continuous linear extension of the simple-function integral, and the limit exists only in a Banach space. `NormedSpace ℝ` (rather than over an arbitrary scalar field) is required because `intervalIntegral.integral_symm` and `integral_neg` are proved in Mathlib for ℝ-modules; the result is *not* a scalar-genericity result but specifically a real-scalar Bochner-genericity result. The three imports cover (i) `intervalIntegral` notation, (ii) product-measure Fubini, and (iii) product-measure mass and monotonicity.",
+    "mathContext": "Banach setup: $\\langle E, \\|\\cdot\\| \\rangle$ a Banach space over $\\mathbb{R}$, i.e. a complete normed $\\mathbb{R}$-vector space. The Bochner integral $\\int_X f\\,d\\mu \\in E$ is defined for strongly-measurable $f : X \\to E$ with $\\int_X \\|f\\|\\,d\\mu < \\infty$ as the limit of integrals of simple-function approximants, using completeness of $E$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Banach space",
+      "Bochner-Pettis measurability",
+      "strong measurability",
+      "completion of normed spaces"
+    ],
+    "prerequisites": [
+      "normed vector spaces",
+      "completeness in metric spaces",
+      "Mathlib's MeasureTheory namespace"
+    ]
+  },
+  {
+    "id": "ann-ordered-case",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 56, "endLine": 81 },
+    "type": "insight",
+    "title": "Ordered Case: Icc-to-Ioc Bridge, Then Bochner Fubini",
+    "content": "The proof of the ordered case follows a three-step pattern that is the canonical bridge from interval-integral notation `∫ x in a..b, f x` to product-measure Fubini. (1) `integral_of_le hab` rewrites each `∫ x in a..b` as `∫ x in Ioc a b, f x ∂volume`, which exposes the underlying restricted Lebesgue integral. (2) The hypothesis is upgraded from `Integrable f ((volume.restrict (Icc a b)).prod (volume.restrict (Icc c d)))` to the Ioc-restricted version via `Integrable.mono_measure` plus `Measure.prod_mono` applied to `Measure.restrict_mono Ioc_subset_Icc_self`. This is the *only* point in the proof where the Icc-vs-Ioc distinction matters, and it is purely a measure-monotonicity step — completely independent of the codomain. (3) `MeasureTheory.integral_integral_swap` (Mathlib's Bochner Fubini) closes the goal, with `.symm` flipping the conclusion. Every lemma in this chain is already stated for Banach codomains, which is why the port is verbatim.",
+    "mathContext": "Reduction: $\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy \\;=\\; \\int_{Ioc(c,d)}\\!\\!\\int_{Ioc(a,b)} f\\;d\\mathrm{vol}\\;d\\mathrm{vol} \\;\\stackrel{\\text{Fubini}}{=}\\; \\int_{Ioc(a,b)}\\!\\!\\int_{Ioc(c,d)} f\\;d\\mathrm{vol}\\;d\\mathrm{vol} \\;=\\; \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$, valid for $a \\le b$, $c \\le d$, $f$ measurable and integrable on the product rectangle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fubini's theorem",
+      "product measure",
+      "interval integral",
+      "Lebesgue measure restriction",
+      "measure monotonicity"
+    ],
+    "prerequisites": [
+      "Bochner Fubini (Mathlib MeasureTheory.Integral.Prod)",
+      "interval integral notation",
+      "Measure.restrict",
+      "Ioc_subset_Icc_self"
+    ]
+  },
+  {
+    "id": "ann-sign-helpers",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 83, "endLine": 95 },
+    "type": "insight",
+    "title": "Sign-Flip and Negation-Extraction (Codomain-Generic)",
+    "content": "The two `private` lemmas `flip_bounds_E` and `neg_outside_E` are one-line ports of the parent's real-valued helpers. `flip_bounds_E` packages `intervalIntegral.integral_symm`, which is the convention that swapping the limits of `∫ x in a..b, f x` negates the integral — this convention is purely *definitional* in Mathlib (the interval integral is `∫ x in Ioc a b - ∫ x in Ioc b a`), so the lemma costs only a `rw`. `neg_outside_E` is `intervalIntegral.integral_neg` repackaged with the codomain made explicit; the underlying fact is that the Bochner integral is an *additive* operation on $E$, so it commutes with negation. Both are codomain-generic in Mathlib because Mathlib's interval integral is defined for any `NormedAddCommGroup` codomain.",
+    "mathContext": "Sign-flip: $\\int_a^b f\\,dx \\;=\\; -\\int_b^a f\\,dx$ (Mathlib's interval-integral convention). Negation: $\\int_a^b (-g)\\,dx \\;=\\; -\\int_a^b g\\,dx$ (linearity, codomain-generic). These two identities together generate the parent's full sign analysis in the general case.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interval-integral sign convention",
+      "linearity of integration",
+      "abelian group homomorphism"
+    ],
+    "prerequisites": [
+      "intervalIntegral.integral_symm",
+      "intervalIntegral.integral_neg"
+    ]
+  },
+  {
+    "id": "ann-general-case",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 97, "endLine": 189 },
+    "type": "insight",
+    "title": "General Case (S3 proven): Four-Way Sign Analysis, linarith → rw+neg_neg",
+    "content": "The general case drops the ordering hypotheses and threads sign-flip identities through a four-way case split on `(a ≤ b vs b < a) × (c ≤ d vs d < c)`. Each branch translates a misordered interval `∫ x in a..b` (with `b < a`) into `-(∫ x in b..a)` via `flip_bounds_E`, then pushes the negation through the outer integral via `neg_outside_E`, then closes by `intervalIntegral_swap_of_le` on the reordered bounds. The parent's four `linarith` invocations (which closed real-specific identities like `-α + α = 0`) are replaced by `rw [hAB, hBC, hCD, neg_neg]` (Cases 1-3, three sign flips ending in one `-(-X) = X`) or `simp only [neg_neg]` (Case 4 has *five* sign flips, requiring repeated `neg_neg` rewriting). The substitution works because every identity used is of the form `X = -(-X)` in an additive-abelian group — purely codomain-generic.",
+    "mathContext": "General Fubini for interval integrals: $\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy \\;=\\; \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$ for *arbitrary* $a, b, c, d \\in \\mathbb{R}$, provided $f$ is jointly measurable and integrable on $\\mathrm{uIcc}(a,b) \\times \\mathrm{uIcc}(c,d)$. The four-case algebra is $\\pm \\int \\pm \\int f = \\pm \\int \\pm \\int f$, which collapses by repeated $-(-X) = X$ — codomain-generic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive-abelian group identity",
+      "rcases on le_or_lt",
+      "uIcc (unordered closed interval)",
+      "neg_neg lemma",
+      "case analysis on order"
+    ],
+    "prerequisites": [
+      "ordered case (above)",
+      "sign-flip helpers (above)",
+      "uIcc (Set.uIcc)",
+      "neg_neg in additive groups"
+    ]
+  },
+  {
+    "id": "ann-case-4-structure",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 163, "endLine": 189 },
+    "type": "insight",
+    "title": "Case 4 (b < a ∧ d < c): Five Sign-Flips, Closed by simp only [neg_neg]",
+    "content": "Case 4 (both pairs misordered) is the most intricate sub-case. The proof chains five named sign-flip equalities: `hAB` flips the inner `∫ a..b` to `-∫ b..a` (via `flip_bounds_E` + `neg_outside_E`); `hBC` flips the outer `∫ c..d` to `-∫ d..c` (via `flip_bounds_E`); `hCD` applies the ordered-case Fubini to `∫ d..c ∫ b..a`; `hDE` flips inner `∫ d..c → -∫ c..d` (via `flip_bounds_E` + `neg_outside_E`); `hEF` flips outer `∫ b..a → -∫ a..b` (via `flip_bounds_E`). The chain `rw [hAB, hBC, hCD, hDE, hEF]` produces a quadruple-nested negation `-(-(-(-X)))`, which `simp only [neg_neg]` collapses to `X` in a single tactic call. This is the cleanest illustration of why the codomain only needs to be an additive-abelian group: the entire reduction is just iterated double-negation.",
+    "mathContext": "Quadruple-nested negation: $-(-(-(-X))) = X$ in any additive group, by four applications of $-(-Y) = Y$. The Mathlib `simp only [neg_neg]` discharges all four simultaneously. For an additively closed monoid this would fail; for a group (or any `SubtractionMonoid`), it succeeds — which is why $E$ only needs `NormedAddCommGroup`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "neg_neg simp lemma",
+      "additive group double-negation",
+      "simp only vs rw discipline",
+      "case analysis combinatorics"
+    ],
+    "prerequisites": [
+      "additive-group identity neg_neg",
+      "simp only tactic"
+    ]
+  },
+  {
+    "id": "ann-continuous-case",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 191, "endLine": 214 },
+    "type": "insight",
+    "title": "Continuous Case (S3 proven): Hypothesis-Free via Compact Rectangle",
+    "content": "The continuous case removes the measurability and integrability hypotheses, requiring only `Continuous f`. Both are recovered automatically: `hf.measurable` (i.e., `Continuous.measurable`) supplies joint measurability via the Borel σ-algebra on E, and integrability is obtained via `ContinuousOn.integrableOn_compact` applied to the compact rectangle `uIcc a b ×ˢ uIcc c d` (compactness from `isCompact_uIcc.prod isCompact_uIcc`). The resulting `IntegrableOn` is on the *set-restricted* product measure, but the general case wants the *measure-restricted* product. The bridge is `restrict_prod_eq_prod_restrict measurableSet_uIcc measurableSet_uIcc`, which exchanges `(volume.restrict (s ×ˢ t))` with `(volume.restrict s).prod (volume.restrict t)` under measurability of `s` and `t`. All four Mathlib helpers are codomain-generic.",
+    "mathContext": "Continuous Fubini: for $f : \\mathbb{R}^2 \\to E$ continuous and $a,b,c,d \\in \\mathbb{R}$, $\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$. Key facts: (i) $f$ continuous on compact $K = [a,b] \\times [c,d]$ implies $\\|f\\|$ bounded on $K$, hence Bochner-integrable; (ii) $\\mathrm{vol}|_{s \\times t} = \\mathrm{vol}|_s \\times \\mathrm{vol}|_t$ for measurable $s, t$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Continuous.measurable",
+      "ContinuousOn.integrableOn_compact",
+      "isCompact_uIcc",
+      "restrict_prod_eq_prod_restrict",
+      "Borel measurability inheritance"
+    ],
+    "prerequisites": [
+      "general case (above)",
+      "Continuous.measurable",
+      "compact-set integrability",
+      "set-restriction vs measure-restriction of product measures"
+    ]
+  }
+]

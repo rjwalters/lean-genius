@@ -1,0 +1,194 @@
+[
+  {
+    "id": "ann-1023-overview",
+    "proofId": "erdos-1023",
+    "range": {
+      "startLine": 1,
+      "endLine": 58
+    },
+    "type": "concept",
+    "title": "Problem Overview and Setup",
+    "content": "Erdős Problem #1023 asks whether the maximum size F(n) of a union-free family of subsets of {1,...,n} grows as c · 2^n / √n. A family is union-free if no member equals the union of other members. The answer is YES: F(n) = C(n, ⌊n/2⌋) ~ √(2/π) · 2^n / √n. The formalization includes several proofs by Aristotle (Harmonic), covering the equivalence of union-free definitions, the antichain-to-union-free implication, middle layer cardinality, and the asymptotic result.",
+    "mathContext": "This problem sits at the intersection of extremal set theory and Sperner theory. The key connection is that antichains (no containment) imply union-freeness, linking the problem to the classical Dilworth-Sperner framework for poset width.",
+    "significance": "key",
+    "relatedConcepts": [
+      "union-free-families",
+      "extremal-set-theory",
+      "Sperner-theorem",
+      "antichains"
+    ],
+    "prerequisites": [
+      "subsets of a finite ground set {1,...,n}",
+      "set union as a family operation",
+      "growth rate notation f(n) ~ g(n)"
+    ]
+  },
+  {
+    "id": "ann-1023-unionfree-def",
+    "proofId": "erdos-1023",
+    "range": {
+      "startLine": 77,
+      "endLine": 106
+    },
+    "type": "concept",
+    "title": "Union-Free Families: Definitions and Equivalence",
+    "content": "Two equivalent formulations of union-freeness are given: isUnionFree says no member A equals the union of a subfamily of F \\ {A} with at least 2 elements; isUnionFree' says no member A equals the union of any subfamily G ⊆ F with A ∉ G and |G| ≥ 2. The equivalence is proved by Aristotle via a direct argument using erase_subset.",
+    "mathContext": "The subtle distinction is whether we work with F.erase A or require A ∉ G explicitly. The equivalence is immediate but important for flexibility in later proofs. The subfamily size constraint (≥ 2) prevents the trivial case A = A.",
+    "significance": "key",
+    "relatedConcepts": [
+      "union-free",
+      "subfamily",
+      "set-union",
+      "logical-equivalence"
+    ],
+    "prerequisites": [
+      "subfamily of a finite set system",
+      "Finset.erase and removing an element from a family",
+      "cardinality threshold |G| >= 2 to exclude the trivial A = A case"
+    ]
+  },
+  {
+    "id": "ann-1023-extremal",
+    "proofId": "erdos-1023",
+    "range": {
+      "startLine": 107,
+      "endLine": 125
+    },
+    "type": "definition",
+    "title": "The Extremal Function F(n)",
+    "content": "unionFreeMax(n) is defined as the supremum of {k : ∃ F union-free with |F| = k}. The achievability theorem shows this supremum is attained: there exists a union-free family of exactly this size. The proof uses finiteness of the set of possible cardinalities (bounded by the powerset size) and compactness.",
+    "mathContext": "The supremum is well-defined because the set of valid cardinalities is bounded above by 2^n (every family is a subset of the powerset) and nonempty (the empty family is union-free). This is a standard extremal combinatorics setup.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal-function",
+      "supremum",
+      "finiteness",
+      "powerset"
+    ],
+    "prerequisites": [
+      "supremum over a finite set of achievable cardinalities",
+      "powerset of {1,...,n} as an upper bound 2^n",
+      "attainment of a maximum (existence of an extremal family)"
+    ]
+  },
+  {
+    "id": "ann-1023-antichain",
+    "proofId": "erdos-1023",
+    "range": {
+      "startLine": 126,
+      "endLine": 151
+    },
+    "type": "concept",
+    "title": "Antichains are Union-Free",
+    "content": "If F is an antichain (no set contains another), then F is union-free. The proof proceeds by contradiction: if A = ∪G for some subfamily G, then every B ∈ G satisfies B ⊆ A (since B ⊆ ∪G = A). Since F is an antichain and B, A ∈ F, we get B = A for all B ∈ G. But |G| ≥ 2 requires two distinct elements, contradicting that they all equal A.",
+    "mathContext": "This is the crucial bridge between Sperner theory and the union-free problem. It shows that the Sperner bound C(n, ⌊n/2⌋) is a lower bound for the union-free problem, since the middle layer is an antichain of this size.",
+    "significance": "key",
+    "relatedConcepts": [
+      "antichain",
+      "Sperner-theorem",
+      "containment",
+      "proof-by-contradiction"
+    ],
+    "prerequisites": [
+      "set containment B subseteq union of G",
+      "antichain: incomparable elements under inclusion",
+      "proof by contradiction with distinct elements forcing B = A"
+    ]
+  },
+  {
+    "id": "ann-1023-middle-layer",
+    "proofId": "erdos-1023",
+    "range": {
+      "startLine": 152,
+      "endLine": 201
+    },
+    "type": "concept",
+    "title": "Middle Layer and Lower Bound",
+    "content": "The middle layer consists of all subsets of size ⌊n/2⌋. Its cardinality is C(n, ⌊n/2⌋). It is an antichain because if A ⊆ B and |A| = |B| = ⌊n/2⌋, then A = B. Being an antichain, it is union-free. This gives F(n) ≥ C(n, ⌊n/2⌋). The middle layer cardinality is computed via a bijection with the standard binomial coefficient counting.",
+    "mathContext": "The middle layer is the largest antichain in the Boolean lattice 2^[n] by Sperner's theorem. The proof that equal-sized sets with containment must be equal follows from the monotonicity of Finset.card under Finset.card_le_card.",
+    "significance": "key",
+    "relatedConcepts": [
+      "middle-layer",
+      "binomial-coefficient",
+      "antichain",
+      "Sperner-theorem"
+    ],
+    "prerequisites": [
+      "k-th layer (sets of fixed size floor(n/2))",
+      "equal-cardinality sets with containment are equal",
+      "binomial coefficient C(n, floor(n/2)) counting"
+    ]
+  },
+  {
+    "id": "ann-1023-upper-bound",
+    "proofId": "erdos-1023",
+    "range": {
+      "startLine": 205,
+      "endLine": 221
+    },
+    "type": "concept",
+    "title": "Upper Bound and Exact Value",
+    "content": "The Erdős-Kleitman upper bound F(n) ≤ C(n, ⌊n/2⌋) is axiomatized. Combined with the lower bound, this gives the exact value F(n) = C(n, ⌊n/2⌋) via le_antisymm. The upper bound proof (not formalized) uses a clever double counting argument involving chain decompositions of the Boolean lattice.",
+    "mathContext": "The Erdős-Kleitman result is the hard direction. The proof technique relates to the LYM inequality and symmetric chain decompositions. The axiomatization is appropriate since the full proof would require substantial additional Mathlib infrastructure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdos-Kleitman",
+      "upper-bound",
+      "chain-decomposition",
+      "LYM-inequality"
+    ],
+    "prerequisites": [
+      "Erdos-Kleitman upper bound F(n) <= C(n, floor(n/2))",
+      "le_antisymm combining matching lower and upper bounds",
+      "symmetric chain decomposition of the Boolean lattice"
+    ]
+  },
+  {
+    "id": "ann-1023-asymptotic",
+    "proofId": "erdos-1023",
+    "range": {
+      "startLine": 222,
+      "endLine": 276
+    },
+    "type": "definition",
+    "title": "Asymptotic Form and Main Result",
+    "content": "By Stirling's approximation, C(n, ⌊n/2⌋) ~ √(2/π) · 2^n / √n. The constant c = √(2/π) ≈ 0.798 is defined as asymptoticConstant. The main question erdos_1023_question asks whether F(n)/（2^n/√n) converges to some positive constant. The answer (axiom erdos_1023_solved) is YES, with c = √(2/π). The asymptotic theorem unionFreeMax_asymptotic is proved for n=1 by a computational argument.",
+    "mathContext": "Stirling's approximation n! ~ √(2πn)(n/e)^n yields C(n, n/2) = n!/(n/2)!² ~ 2^n · √(2/(πn)). The formalization axiomatizes the Stirling bound and derives the asymptotic equivalence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Stirling-approximation",
+      "central-binomial",
+      "asymptotic-analysis",
+      "convergence"
+    ],
+    "prerequisites": [
+      "Stirling's approximation n! ~ sqrt(2 pi n)(n/e)^n",
+      "central binomial coefficient C(n, n/2)",
+      "limit of F(n)/(2^n/sqrt(n)) to the constant sqrt(2/pi)"
+    ]
+  },
+  {
+    "id": "ann-1023-problem447",
+    "proofId": "erdos-1023",
+    "range": {
+      "startLine": 277,
+      "endLine": 331
+    },
+    "type": "concept",
+    "title": "Connection to Problem 447 and Hunter's Observation",
+    "content": "A family is 2-union-free if no member equals the union of exactly two other members. Every union-free family is 2-union-free (since forbidding all unions is stronger than forbidding pairwise unions). Hunter observed that Problem 447's solution (the maximum 2-union-free family also has size C(n, ⌊n/2⌋)) gives an alternative proof of the exact value of F(n), since unionFreeMax ≤ twoUnionFreeMax = C(n, ⌊n/2⌋).",
+    "mathContext": "The implication union-free → 2-union-free is proved constructively: given B, C witnessing a 2-union, the pair {B, C} forms a subfamily of size 2 witnessing the general union condition. The proof uses Finset.insert_subset_iff and careful bookkeeping of the distinctness conditions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "2-union-free",
+      "Problem-447",
+      "Hunter-observation",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "2-union-free families (forbidding unions of exactly two members)",
+      "monotonicity: stronger forbiddance implies weaker (union-free => 2-union-free)",
+      "Erdos Problem 447 extremal value C(n, floor(n/2))"
+    ]
+  }
+]

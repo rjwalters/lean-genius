@@ -1,0 +1,225 @@
+[
+  {
+    "id": "ann-214-header",
+    "proofId": "erdos-214",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #214 (1983, SOLVED): If S ⊂ ℝ² has no two points at distance 1, must the complement Sᶜ contain four points forming a unit square? YES — Juhász (1979) proved the complement must contain a congruent copy of ANY 4-point configuration, not just squares.",
+    "mathContext": "The problem concerns the geometric Ramsey theory of the plane: partitioning $\\mathbb{R}^2$ into $S$ and $S^c$ where $S$ avoids unit distances forces $S^c$ to be geometrically rich. The result is equivalent to: the unit distance graph $G_1(\\mathbb{R}^2)$ has the property that every independent set has a complement containing all 4-point configurations up to congruence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit distance graph",
+      "independent set",
+      "geometric Ramsey theory",
+      "chromatic number"
+    ],
+    "prerequisites": [
+      "Euclidean distance",
+      "complement of a set",
+      "congruence"
+    ]
+  },
+  {
+    "id": "ann-214-plane-dist",
+    "proofId": "erdos-214",
+    "range": {
+      "startLine": 36,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Plane and Distance",
+    "content": "The Euclidean plane ℝ² is defined as EuclideanSpace ℝ (Fin 2), and distance as ‖p - q‖. This uses Mathlib's inner product space structure on ℝ^n.",
+    "mathContext": "The plane $\\mathbb{R}^2 = \\texttt{EuclideanSpace}\\;\\mathbb{R}\\;(\\texttt{Fin } 2)$ has the Euclidean norm $\\|p - q\\| = \\sqrt{(p_0 - q_0)^2 + (p_1 - q_1)^2}$. The $\\texttt{dist}$ function wraps this norm. All distance-based definitions use this metric.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "EuclideanSpace",
+      "norm",
+      "inner product space"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2"
+    ]
+  },
+  {
+    "id": "ann-214-unit-free",
+    "proofId": "erdos-214",
+    "range": {
+      "startLine": 47,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "IsUnitDistanceFree",
+    "content": "A set S ⊆ ℝ² is unit-distance-free if no two distinct points in S are exactly distance 1 apart: ∀ p, q ∈ S, p ≠ q → ‖p - q‖ ≠ 1. Equivalently, S is an independent set in the unit distance graph.",
+    "mathContext": "$\\texttt{IsUnitDistanceFree}(S) \\iff \\forall p, q \\in S,\\; p \\neq q \\implies \\|p - q\\| \\neq 1$. Such sets are precisely the independent sets of the unit distance graph $G_1(\\mathbb{R}^2)$. The maximum density of such a set is related to $1/\\chi(\\mathbb{R}^2)$, where $\\chi(\\mathbb{R}^2) \\in \\{5, 6, 7\\}$ is the chromatic number of the plane.",
+    "significance": "key",
+    "relatedConcepts": [
+      "independent set",
+      "unit distance graph",
+      "chromatic number of the plane"
+    ],
+    "prerequisites": [
+      "Set",
+      "Euclidean distance",
+      "graph theory"
+    ]
+  },
+  {
+    "id": "ann-214-unit-square",
+    "proofId": "erdos-214",
+    "range": {
+      "startLine": 51,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "IsUnitSquare and ContainsUnitSquare",
+    "content": "Four points form a unit square if all four edges have length 1 and both diagonals have length √2. ContainsUnitSquare(S) means S contains four such points. The side-diagonal characterization uniquely determines a square up to congruence.",
+    "mathContext": "The conditions $d(p_i, p_{i+1}) = 1$ for edges and $d(p_1, p_3) = d(p_2, p_4) = \\sqrt{2}$ characterize a unit square. The diagonal condition $d = \\sqrt{2} = \\sqrt{1^2 + 1^2}$ follows from the Pythagorean theorem for a square with side 1. Note: the ordering $p_1, p_2, p_3, p_4$ traces the perimeter, so the definition checks a specific labeling of the square's vertices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pythagorean theorem",
+      "regular polygon",
+      "vertex labeling"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "Euclidean geometry"
+    ]
+  },
+  {
+    "id": "ann-214-statement",
+    "proofId": "erdos-214",
+    "range": {
+      "startLine": 67,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "Erdos214Statement and Solution",
+    "content": "The main statement: ∀ S, IsUnitDistanceFree S → ContainsUnitSquare Sᶜ. Juhász's theorem (1979) is axiomatized as juhasz_1979, and erdos_214_solved simply applies it. The complement Sᶜ must contain a unit square whenever S avoids the unit distance.",
+    "mathContext": "$\\texttt{Erdos214Statement} = \\forall S \\subseteq \\mathbb{R}^2,\\; \\texttt{IsUnitDistanceFree}(S) \\to \\texttt{ContainsUnitSquare}(S^c)$. Juhász's proof uses the fact that for any $p \\in S$, the entire unit circle $\\{q : \\|p - q\\| = 1\\}$ lies in $S^c$. With enough unit circles in $S^c$, their intersection patterns guarantee the existence of four points forming a unit square.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit circle in complement",
+      "axiom",
+      "direct application"
+    ],
+    "prerequisites": [
+      "IsUnitDistanceFree",
+      "ContainsUnitSquare"
+    ]
+  },
+  {
+    "id": "ann-214-stronger",
+    "proofId": "erdos-214",
+    "range": {
+      "startLine": 77,
+      "endLine": 106
+    },
+    "type": "concept",
+    "title": "Juhász's Stronger Theorem — Any 4-Point Set",
+    "content": "Juhász proved a stronger result: the complement contains a congruent copy of ANY 4-point configuration, not just unit squares. ContainsCongruentCopy uses an isometry f with f(P_i) ∈ Sᶜ for all i. The theorem unit_square_from_stronger derives the original statement (sorry: needs explicit unit square as PointSet 4).",
+    "mathContext": "$\\texttt{JuhaszStrongerTheorem} = \\forall S,\\; \\texttt{IsUnitDistanceFree}(S) \\to \\forall P : \\texttt{Fin } 4 \\to \\mathbb{R}^2,\\; \\exists f : \\mathbb{R}^2 \\to \\mathbb{R}^2$ isometry with $f(P_i) \\in S^c\\; \\forall i$. The isometry preserves all distances, so the image is congruent to $P$. This is a Ramsey-type theorem: avoiding one distance (unit) in $S$ forces ALL bounded configurations in $S^c$. The 4-point threshold is sharp — the result fails for some $n$-point configurations when $n$ is large enough.",
+    "significance": "key",
+    "relatedConcepts": [
+      "isometry",
+      "congruent copy",
+      "Ramsey theory",
+      "PointSet"
+    ],
+    "prerequisites": [
+      "isometry definition",
+      "ContainsCongruentCopy"
+    ]
+  },
+  {
+    "id": "ann-214-limitations",
+    "proofId": "erdos-214",
+    "range": {
+      "startLine": 108,
+      "endLine": 122
+    },
+    "type": "insight",
+    "title": "Limitations and the 5-Point Question",
+    "content": "The result fails for sufficiently large n-point configurations: ∃ n, ∃ S unit-distance-free with ∃ P (n-point set) not congruently embedded in Sᶜ. The 5-point case is formalized as HoldsFor5Points : Prop and remains OPEN.",
+    "mathContext": "The failure for large $n$ is expected: a unit-distance-free $S$ can have positive (Lebesgue) measure (e.g., a union of small disks), and for large $n$, some $n$-point configurations require more 'room' than $S^c$ provides locally. The critical threshold — the largest $n$ for which the property holds for ALL $n$-point configurations — is unknown. The 5-point case is the first open instance.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold phenomenon",
+      "measure-theoretic obstruction",
+      "open problem"
+    ],
+    "prerequisites": [
+      "PointSet",
+      "ContainsCongruentCopy"
+    ]
+  },
+  {
+    "id": "ann-214-unit-graph",
+    "proofId": "erdos-214",
+    "range": {
+      "startLine": 124,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Unit Distance Graph and Chromatic Number",
+    "content": "Defines UnitDistanceGraph(S) = {(p,q) : p,q ∈ S, p≠q, dist(p,q)=1}. Proves unit_distance_free_iff_no_edges: S is unit-distance-free iff its unit distance graph is empty. Also states the chromatic number χ(ℝ²) ∈ {5,6,7} (de Grey 2018 lower bound).",
+    "mathContext": "The theorem $\\texttt{unit\\_distance\\_free\\_iff\\_no\\_edges}$ is fully proved: ($\\to$) if $S$ is unit-distance-free and $(p,q) \\in \\texttt{UDG}(S)$, then $p, q \\in S$ with $\\|p-q\\| = 1$, contradicting the definition; ($\\leftarrow$) if $\\texttt{UDG}(S) = \\emptyset$ and $p, q \\in S$ with $\\|p-q\\| = 1$, then $(p,q) \\in \\texttt{UDG}(S) = \\emptyset$, contradiction. The chromatic number $\\chi(\\mathbb{R}^2)$ connects: each color class in a proper coloring is unit-distance-free, so Juhász's theorem applies to each class.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph characterization",
+      "Hadwiger-Nelson problem",
+      "de Grey"
+    ],
+    "prerequisites": [
+      "Set.mem_empty_iff_false",
+      "ext",
+      "simp"
+    ]
+  },
+  {
+    "id": "ann-214-proof-techniques",
+    "proofId": "erdos-214",
+    "range": {
+      "startLine": 153,
+      "endLine": 174
+    },
+    "type": "insight",
+    "title": "Proof Techniques (Placeholder Axioms)",
+    "content": "Three placeholder axioms (True) sketch the proof strategy: (1) maximal unit-distance-free sets have specific geometric structure, (2) for any p ∈ S, the unit circle at p lies in Sᶜ (pigeonhole), (3) unit circles intersect in ≤ 2 points, limiting local sparseness of Sᶜ.",
+    "mathContext": "The key geometric insight: for $p \\in S$, the circle $\\{q : \\|p-q\\| = 1\\}$ lies entirely in $S^c$ (since $q \\in S$ would give a unit distance pair). For two points $p_1, p_2 \\in S$ with $\\|p_1 - p_2\\| \\neq 1$, their unit circles intersect in $\\leq 2$ points. The intersection points, together with the circle arcs in $S^c$, provide enough points to construct any 4-point configuration. The proof uses a continuity/compactness argument on the configuration space.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "unit circle",
+      "circle intersection",
+      "configuration space"
+    ],
+    "prerequisites": [
+      "geometric reasoning"
+    ]
+  },
+  {
+    "id": "ann-214-examples",
+    "proofId": "erdos-214",
+    "range": {
+      "startLine": 176,
+      "endLine": 197
+    },
+    "type": "definition",
+    "title": "Examples: Scaled Lattice",
+    "content": "The integer lattice ℤ² is NOT unit-distance-free (contains (0,0) and (1,0) at distance 1). The scaled lattice √2·ℤ² IS unit-distance-free (axiomatized), and its complement contains unit squares (axiomatized). The scaling factor √2 ensures no lattice pair has distance 1.",
+    "mathContext": "For the scaled lattice $\\sqrt{2}\\mathbb{Z}^2$: two points $(\\sqrt{2}a, \\sqrt{2}b)$ and $(\\sqrt{2}c, \\sqrt{2}d)$ have distance $\\sqrt{2}\\sqrt{(a-c)^2 + (b-d)^2}$. This equals 1 iff $(a-c)^2 + (b-d)^2 = 1/2$, which has no integer solutions. So the lattice is unit-distance-free. Its complement is 'most of $\\mathbb{R}^2$' (Lebesgue measure 1), making it easy to find unit squares there.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "lattice",
+      "irrational scaling",
+      "Lebesgue measure"
+    ],
+    "prerequisites": [
+      "integer solutions",
+      "distance formula"
+    ]
+  }
+]

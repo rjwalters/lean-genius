@@ -1,0 +1,319 @@
+[
+  {
+    "id": "ann-890-header",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 30,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Imports and Namespace Setup",
+    "content": "Imports Mathlib modules for arithmetic functions (`ArithmeticFunction.Defs` for omega), prime counting (`PrimeCounting` for pi), finite sets (`Finset.Basic`), filters (`Filter.Basic`), real logarithms (`SpecialFunctions.Log.Basic`), and general tactics. Opens `Nat`, `Finset`, `Filter` namespaces and scopes `ArithmeticFunction.omega` for the omega notation.",
+    "mathContext": "Uses `ArithmeticFunction.omega` for $\\omega(n) = |\\{p \\text{ prime} : p \\mid n\\}|$, `Nat.primeCounting` for $\\pi(k) = |\\{p \\leq k : p \\text{ prime}\\}|$, `Real.log` for $\\log x$, and `Finset.range` for summation indices $\\{0, \\ldots, k-1\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ArithmeticFunction.omega",
+      "Nat.primeCounting",
+      "Real.log",
+      "Finset.range"
+    ],
+    "prerequisites": [
+      "Mathlib imports",
+      "namespace management"
+    ]
+  },
+  {
+    "id": "ann-890-cumulative-omega",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 49,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Cumulative Omega S_k(n)",
+    "content": "Defines `cumulativeOmega k n = (Finset.range k).sum (fun i => omega (n + i))`, the sum of distinct prime factor counts across k consecutive integers starting at n. Marked noncomputable since omega involves decidable primality. For k = 1, this is just omega(n); for k = 2, it is omega(n) + omega(n+1).",
+    "mathContext": "$S_k(n) = \\sum_{i=0}^{k-1} \\omega(n+i)$. For example, $S_2(14) = \\omega(14) + \\omega(15) = 2 + 2 = 4$ (since $14 = 2 \\cdot 7$ and $15 = 3 \\cdot 5$). The function is well-defined for all $k, n \\in \\mathbb{N}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum",
+      "ArithmeticFunction.omega",
+      "consecutive integers",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "ArithmeticFunction.omega",
+      "Finset.range",
+      "Finset.sum"
+    ]
+  },
+  {
+    "id": "ann-890-pi",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 56,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Prime Counting Function pi(k)",
+    "content": "Defines `pi k = Nat.primeCounting k` as a convenience abbreviation for the prime counting function. Marked noncomputable. Values: pi(1) = 0, pi(2) = 1, pi(5) = 3, pi(10) = 4. Used in the Erdős-Selfridge bound k + pi(k) - 1.",
+    "mathContext": "$\\pi(k) = |\\{p \\leq k : p \\text{ prime}\\}|$. By the prime number theorem, $\\pi(k) \\sim k / \\log k$. The function appears in the Erdős-Selfridge lower bound $\\liminf S_k(n) \\geq k + \\pi(k) - 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.primeCounting",
+      "prime number theorem",
+      "abbrev"
+    ],
+    "prerequisites": [
+      "Nat.primeCounting"
+    ]
+  },
+  {
+    "id": "ann-890-liminf-atmost",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 64,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Liminf At Most Predicate",
+    "content": "Defines `LiminfAtMost f L : Prop` as: for every N_0, there exists n >= N_0 with f(n) <= L. This captures 'liminf f <= L', meaning f(n) <= L infinitely often. A custom predicate rather than using Mathlib's Filter.liminf, chosen for simplicity with natural-number-valued functions.",
+    "mathContext": "$\\text{LiminfAtMost}(f, L) \\equiv \\forall N_0,\\, \\exists n \\geq N_0,\\, f(n) \\leq L$. Equivalently: $\\liminf_{n \\to \\infty} f(n) \\leq L$. The quantifier structure is $\\forall\\exists$ (infinitely often).",
+    "significance": "key",
+    "relatedConcepts": [
+      "liminf",
+      "infinitely often",
+      "Filter.liminf",
+      "quantifier alternation"
+    ],
+    "prerequisites": [
+      "natural number ordering"
+    ]
+  },
+  {
+    "id": "ann-890-liminf-atleast",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 71,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Liminf At Least Predicate",
+    "content": "Defines `LiminfAtLeast f L : Prop` as: there exists N_0 such that for all n >= N_0, f(n) >= L. This captures 'liminf f >= L', meaning f(n) >= L eventually. The quantifier structure is exists-forall (eventually).",
+    "mathContext": "$\\text{LiminfAtLeast}(f, L) \\equiv \\exists N_0,\\, \\forall n \\geq N_0,\\, f(n) \\geq L$. Equivalently: $\\liminf_{n \\to \\infty} f(n) \\geq L$. Combined with LiminfAtMost, these predicates can sandwich the liminf.",
+    "significance": "key",
+    "relatedConcepts": [
+      "liminf",
+      "eventually",
+      "Filter.Eventually",
+      "quantifier alternation"
+    ],
+    "prerequisites": [
+      "natural number ordering"
+    ]
+  },
+  {
+    "id": "ann-890-limsup-ratio",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 80,
+      "endLine": 85
+    },
+    "type": "definition",
+    "title": "Limsup Ratio Is One Predicate",
+    "content": "Defines `LimsupRatioIsOne f : Prop` capturing lim sup f(n) * log(log n) / log n = 1. Formalized as: for all epsilon > 0, (a) eventually f(n) * log(log n) <= (1 + epsilon) * log n, and (b) infinitely often f(n) * log(log n) >= (1 - epsilon) * log n. Uses Real.log for both nested logarithms.",
+    "mathContext": "$\\text{LimsupRatioIsOne}(f) \\equiv \\forall \\varepsilon > 0: (\\exists N_0,\\, \\forall n \\geq N_0,\\, f(n) \\cdot \\log\\log n \\leq (1+\\varepsilon)\\log n) \\land (\\forall N_0,\\, \\exists n \\geq N_0,\\, f(n) \\cdot \\log\\log n \\geq (1-\\varepsilon)\\log n)$. This is the standard $\\varepsilon$-$N$ formulation of $\\limsup f(n) \\cdot \\log\\log n / \\log n = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limsup",
+      "Real.log",
+      "epsilon-N definition",
+      "Hardy-Ramanujan theorem"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "epsilon-delta formulations"
+    ]
+  },
+  {
+    "id": "ann-890-conjecture-liminf",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 96,
+      "endLine": 98
+    },
+    "type": "definition",
+    "title": "Conjecture 1: Liminf Upper Bound (OPEN)",
+    "content": "Defines `ErdosConjecture890_liminf : Prop` stating that for every k >= 1, LiminfAtMost (cumulativeOmega k) (k + pi k). This is the first open conjecture: the liminf of S_k(n) is at most k + pi(k). Combined with the Erdős-Selfridge lower bound k + pi(k) - 1, this would determine liminf S_k(n) to within 1.",
+    "mathContext": "$\\forall k \\geq 1,\\, \\liminf_{n \\to \\infty} S_k(n) \\leq k + \\pi(k)$. For $k = 2$: $\\liminf S_2(n) \\leq 2 + \\pi(2) = 3$. The Erdős-Selfridge bound gives $\\liminf S_2(n) \\geq 2 + \\pi(2) - 1 = 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open conjecture",
+      "liminf",
+      "Erdős-Selfridge",
+      "prime counting function"
+    ],
+    "prerequisites": [
+      "LiminfAtMost",
+      "cumulativeOmega",
+      "pi"
+    ]
+  },
+  {
+    "id": "ann-890-conjecture-limsup",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 108,
+      "endLine": 109
+    },
+    "type": "definition",
+    "title": "Conjecture 2: Limsup Ratio (OPEN)",
+    "content": "Defines `ErdosConjecture890_limsup k : Prop` as `LimsupRatioIsOne (cumulativeOmega k)`. This is the second open conjecture: lim sup S_k(n) * log log n / log n = 1 for each k. For k = 1, this reduces to the classical Hardy-Ramanujan result (axiomatized separately).",
+    "mathContext": "$\\limsup_{n \\to \\infty} S_k(n) \\cdot \\frac{\\log\\log n}{\\log n} = 1$. The maximum growth rate of $S_k(n)$ matches that of $\\omega(n)$ alone. Heuristically, the dominant contribution to $\\max_{m \\leq n} S_k(m)$ comes from blocks containing one highly composite number.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open conjecture",
+      "limsup",
+      "Hardy-Ramanujan",
+      "highly composite numbers"
+    ],
+    "prerequisites": [
+      "LimsupRatioIsOne",
+      "cumulativeOmega"
+    ]
+  },
+  {
+    "id": "ann-890-erdos-selfridge",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 122,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Erdős-Selfridge Lower Bound",
+    "content": "Axiomatizes `erdos_selfridge_lower_bound`: for every k >= 1, LiminfAtLeast (cumulativeOmega k) (k + pi k - 1). This is the key known result: the product n(n+1)...(n+k-1) is divisible by all primes <= k, so among k consecutive integers, all but at most one have a prime factor > k. By Pólya's theorem on k-smooth number gaps, this gives S_k(n) >= k + pi(k) - 1 eventually.",
+    "mathContext": "$\\liminf_{n \\to \\infty} S_k(n) \\geq k + \\pi(k) - 1$. Proof: $\\prod_{i=0}^{k-1}(n+i) = k! \\binom{n+k-1}{k}$ is divisible by $\\text{lcm}(1, \\ldots, k)$. Among $n, \\ldots, n+k-1$, at most one can be $k$-smooth (by Pólya's gap theorem). So $\\geq k-1$ of them have a prime factor $> k$, contributing $\\geq k + \\pi(k) - 1$ total prime factors.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pólya's theorem",
+      "k-smooth numbers",
+      "axiom",
+      "product of consecutive integers"
+    ],
+    "prerequisites": [
+      "LiminfAtLeast",
+      "cumulativeOmega",
+      "pi",
+      "Pólya's gap theorem"
+    ]
+  },
+  {
+    "id": "ann-890-classical-omega",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 130,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Classical Omega Limsup (Hardy-Ramanujan)",
+    "content": "Axiomatizes `classical_omega_limsup : LimsupRatioIsOne (fun n => omega n)`. This is the classical Hardy-Ramanujan (1917) result: lim sup omega(n) * log log n / log n = 1. The maximum of omega(n) for n <= x is approximately log x / log log x, achieved by highly composite numbers.",
+    "mathContext": "$\\limsup_{n \\to \\infty} \\omega(n) \\cdot \\frac{\\log\\log n}{\\log n} = 1$. Hardy and Ramanujan (1917) showed $\\omega(n) \\sim \\log\\log n$ for almost all $n$, but $\\max_{m \\leq n} \\omega(m) \\sim \\log n / \\log\\log n$. The Erdős-Kac theorem (1940) gives the Gaussian fluctuation: $(\\omega(n) - \\log\\log n)/\\sqrt{\\log\\log n} \\Rightarrow N(0,1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hardy-Ramanujan theorem",
+      "Erdős-Kac theorem",
+      "highly composite numbers",
+      "axiom"
+    ],
+    "prerequisites": [
+      "LimsupRatioIsOne",
+      "ArithmeticFunction.omega"
+    ]
+  },
+  {
+    "id": "ann-890-mono",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 137,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Monotonicity of S_k (PROVED)",
+    "content": "Proves `cumulativeOmega_mono : cumulativeOmega k n <= cumulativeOmega (k+1) n`. The proof unfolds `cumulativeOmega` and applies `Finset.sum_le_sum_of_subset`, using the fact that `range k` is a subset of `range (k+1)`. The `omega` tactic handles the subset proof. This is a genuine Lean proof.",
+    "mathContext": "$S_k(n) \\leq S_{k+1}(n)$ since $S_{k+1}(n) = S_k(n) + \\omega(n+k) \\geq S_k(n)$. Formally: $\\text{range}\\,k \\subseteq \\text{range}\\,(k+1)$ and $\\omega \\geq 0$, so the sum over the larger set dominates.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_le_sum_of_subset",
+      "Finset.range",
+      "omega tactic",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "cumulativeOmega",
+      "Finset.sum_le_sum_of_subset"
+    ]
+  },
+  {
+    "id": "ann-890-k1",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 148,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Lower Bound at k = 1 (PROVED)",
+    "content": "Proves `erdos_890_lower_bound_k1 : LiminfAtLeast (cumulativeOmega 1) (1 + pi 1 - 1)` by instantiating `erdos_selfridge_lower_bound` at k = 1 with `le_refl 1`. This gives liminf omega(n) >= 1 + pi(1) - 1 = 1 + 0 - 1 = 0, which is trivially true since omega(n) >= 0.",
+    "mathContext": "At $k = 1$: $\\liminf \\omega(n) \\geq 1 + \\pi(1) - 1 = 0$ (since $\\pi(1) = 0$). This is trivial: $\\omega(n) \\geq 0$ for all $n$. The interesting cases are $k \\geq 2$ where the bound becomes non-trivial.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "erdos_selfridge_lower_bound",
+      "le_refl",
+      "specialization"
+    ],
+    "prerequisites": [
+      "erdos_selfridge_lower_bound"
+    ]
+  },
+  {
+    "id": "ann-890-sandwich",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 156,
+      "endLine": 162
+    },
+    "type": "concept",
+    "title": "Liminf Sandwich (PROVED, conditional)",
+    "content": "Proves `erdos_890_liminf_sandwich`: assuming Conjecture 1 holds, for every k >= 1, both LiminfAtLeast (cumulativeOmega k) (k + pi k - 1) and LiminfAtMost (cumulativeOmega k) (k + pi k). The proof pairs the Erdős-Selfridge axiom with the conjecture hypothesis. This is a conditional result: if the conjecture is true, liminf S_k(n) is determined to within 1.",
+    "mathContext": "$\\text{Conjecture 1} \\Rightarrow \\forall k \\geq 1: k + \\pi(k) - 1 \\leq \\liminf S_k(n) \\leq k + \\pi(k)$. The proof is $\\langle \\text{Erdős-Selfridge},\\, \\text{Conjecture 1} \\rangle$. This pins the liminf to $\\{k + \\pi(k) - 1,\\, k + \\pi(k)\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conditional theorem",
+      "sandwich inequality",
+      "And.intro"
+    ],
+    "prerequisites": [
+      "erdos_selfridge_lower_bound",
+      "ErdosConjecture890_liminf"
+    ]
+  },
+  {
+    "id": "ann-890-restated",
+    "proofId": "erdos-890",
+    "range": {
+      "startLine": 167,
+      "endLine": 170
+    },
+    "type": "concept",
+    "title": "Known Lower Bound (PROVED)",
+    "content": "Proves `erdos_890_known_lower_bound` by directly equating it with `erdos_selfridge_lower_bound`. This is a top-level restatement for clarity: for all k >= 1, LiminfAtLeast (cumulativeOmega k) (k + pi k - 1). The proof is just the axiom itself.",
+    "mathContext": "$\\forall k \\geq 1,\\, \\liminf S_k(n) \\geq k + \\pi(k) - 1$. This is a definitional restatement of the Erdős-Selfridge axiom as a named theorem for the gallery.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "definitional equality",
+      "top-level restatement",
+      "erdos_selfridge_lower_bound"
+    ],
+    "prerequisites": [
+      "erdos_selfridge_lower_bound"
+    ]
+  }
+]

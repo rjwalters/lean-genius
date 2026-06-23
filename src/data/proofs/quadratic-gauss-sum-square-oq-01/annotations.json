@@ -1,0 +1,140 @@
+[
+  {
+    "id": "qgss-oq01-ann-strategy",
+    "proofId": "quadratic-gauss-sum-square-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 34
+    },
+    "type": "insight",
+    "title": "Separating the Elementary Half from Gauss's Hard Theorem",
+    "content": "The module docstring fixes the scope precisely. The parent file supplies the square identity g² = (-1)^((p-1)/2)·p, which determines g only up to sign. Gauss's full sign theorem — g = √p for p ≡ 1 (mod 4) and g = i·√p for p ≡ 3 (mod 4) — is genuinely deep (Schur's eigenvalue argument on the finite Fourier transform, or Dirichlet's analytic evaluation) and is deliberately NOT attempted. What this file isolates is the elementary consequence: a complex number whose square is a nonzero real must sit on a coordinate axis, with the axis chosen by the sign of the square. That alone gives the real/imaginary dichotomy and, with the magnitude, pins g to one of just four points ±√p, ±i√p.",
+    "mathContext": "Granting $g^2 = (-1)^{(p-1)/2}\\,p$, the dichotomy asks only whether $g$ lies on $\\mathbb{R}$ or on $i\\mathbb{R}$; the remaining binary $\\pm$ is the open hard theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic Gauss sum",
+      "sign of the Gauss sum",
+      "finite Fourier transform",
+      "first supplement to quadratic reciprocity"
+    ],
+    "prerequisites": [
+      "Gauss sum square identity",
+      "primitive additive character"
+    ]
+  },
+  {
+    "id": "qgss-oq01-ann-pos-real-lemma",
+    "proofId": "quadratic-gauss-sum-square-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 53
+    },
+    "type": "theorem",
+    "title": "A Square that is a Positive Real Forces the Real Axis",
+    "content": "`im_eq_zero_of_sq_eq_pos_real`: if z² = r with r > 0 real, then z.im = 0. The proof extracts the real and imaginary parts of z² = r via `congrArg`, expanding with `Complex.mul_im`/`Complex.mul_re`: the imaginary part gives 2·Re(z)·Im(z) = 0, so Re(z)·Im(z) = 0, and the real part gives Re(z)² − Im(z)² = r. The product splitting yields two cases; the branch Re(z) = 0 is excluded because it would force −Im(z)² = r > 0, contradicting `mul_self_nonneg`. Hence Im(z) = 0. No square roots or argument function are invoked — purely sign reasoning closed by `linarith`/`nlinarith`.",
+    "mathContext": "If $z^2 = r > 0$ then $2\\,\\mathrm{Re}(z)\\mathrm{Im}(z)=0$ and $\\mathrm{Re}(z)^2-\\mathrm{Im}(z)^2=r$; $\\mathrm{Re}(z)=0$ would give $-\\mathrm{Im}(z)^2=r>0$, impossible, so $\\mathrm{Im}(z)=0$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "complex multiplication formula",
+      "real and imaginary parts",
+      "coordinate axes in ℂ"
+    ],
+    "prerequisites": [
+      "Complex.mul_re / Complex.mul_im",
+      "mul_eq_zero",
+      "mul_self_nonneg"
+    ]
+  },
+  {
+    "id": "qgss-oq01-ann-neg-real-lemma",
+    "proofId": "quadratic-gauss-sum-square-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 69
+    },
+    "type": "theorem",
+    "title": "A Square that is a Negative Real Forces the Imaginary Axis",
+    "content": "`re_eq_zero_of_sq_eq_neg_real` is the exact mirror of the positive-real lemma: if z² = r with r < 0 real, then z.re = 0. The same extraction gives Re(z)·Im(z) = 0 and Re(z)² − Im(z)² = r; this time the branch Im(z) = 0 is excluded because it would force Re(z)² = r < 0. So Re(z) = 0 and z is purely imaginary. The two lemmas together encode the geometric fact that the square map folds the two coordinate axes onto the positive and negative real rays respectively.",
+    "mathContext": "If $z^2 = r < 0$ then $\\mathrm{Im}(z)=0$ would give $\\mathrm{Re}(z)^2=r<0$, impossible, so $\\mathrm{Re}(z)=0$ and $z\\in i\\mathbb{R}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "purely imaginary numbers",
+      "squaring map on ℂ",
+      "real and imaginary parts"
+    ],
+    "prerequisites": [
+      "Complex.mul_re / Complex.mul_im",
+      "mul_eq_zero",
+      "mul_self_nonneg"
+    ]
+  },
+  {
+    "id": "qgss-oq01-ann-case-one",
+    "proofId": "quadratic-gauss-sum-square-oq-01",
+    "range": {
+      "startLine": 71,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "Case p ≡ 1 (mod 4): the Gauss Sum is Real",
+    "content": "`gaussSum_im_eq_zero_of_one_mod_four`: the parity of (p−1)/2 is the hinge. From p % 4 = 1, `Nat.even_iff` plus `omega` deliver `Even ((p−1)/2)`, and `Even.neg_one_pow` collapses the sign factor to +1, so the parent's `gaussSum_quadratic_sq` reads g² = +p, a positive real (p > 0 since p is prime). Feeding this to `im_eq_zero_of_sq_eq_pos_real` yields Im g = 0. The closing `rw [hsq]; push_cast; ring` reconciles the natural-number cast (p : ℂ) with the real coercion required by the arithmetic lemma.",
+    "mathContext": "$p\\equiv 1\\pmod 4 \\Rightarrow (p-1)/2$ even $\\Rightarrow (-1)^{(p-1)/2}=1 \\Rightarrow g^2=+p>0 \\Rightarrow \\mathrm{Im}\\,g=0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity of (p−1)/2",
+      "Even.neg_one_pow",
+      "residue classes mod 4"
+    ],
+    "prerequisites": [
+      "gaussSum_quadratic_sq (parent)",
+      "Nat.even_iff",
+      "omega"
+    ]
+  },
+  {
+    "id": "qgss-oq01-ann-case-three",
+    "proofId": "quadratic-gauss-sum-square-oq-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 95
+    },
+    "type": "theorem",
+    "title": "Case p ≡ 3 (mod 4): the Gauss Sum is Purely Imaginary",
+    "content": "`gaussSum_re_eq_zero_of_three_mod_four` is the mirror case. From p % 4 = 3, `Nat.odd_iff` plus `omega` give `Odd ((p−1)/2)`, and `Odd.neg_one_pow` collapses the sign factor to −1, so the parent gives g² = −p, a negative real. `re_eq_zero_of_sq_eq_neg_real` then yields Re g = 0. The two cases are exhaustive for odd primes (p % 4 ∈ {1, 3}), so together they establish the full dichotomy: g is real exactly when p ≡ 1 and purely imaginary exactly when p ≡ 3.",
+    "mathContext": "$p\\equiv 3\\pmod 4 \\Rightarrow (p-1)/2$ odd $\\Rightarrow (-1)^{(p-1)/2}=-1 \\Rightarrow g^2=-p<0 \\Rightarrow \\mathrm{Re}\\,g=0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity of (p−1)/2",
+      "Odd.neg_one_pow",
+      "residue classes mod 4"
+    ],
+    "prerequisites": [
+      "gaussSum_quadratic_sq (parent)",
+      "Nat.odd_iff",
+      "omega"
+    ]
+  },
+  {
+    "id": "qgss-oq01-ann-magnitude",
+    "proofId": "quadratic-gauss-sum-square-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "Magnitude: ‖g‖² = p, Independent of the Open Sign",
+    "content": "`gaussSum_normSq_eq`: unlike the dichotomy, the magnitude needs no residue case split. Applying the multiplicative `Complex.normSq` to g² = (-1)^((p-1)/2)·p and using `map_pow`/`map_mul` gives (normSq g)² = normSq(−1)^(p−1) · normSq(p)² ; with normSq(−1) = 1 and `Complex.normSq_natCast` giving normSq(p) = p² this collapses to (normSq g)² = p². Nonnegativity of `normSq` (and of p) then selects the positive square root via `nlinarith`, so normSq g = p, i.e. |g| = √p. This is the Parseval/orthogonality content of the Gauss sum made explicit, and it holds regardless of the unknown leading ±.",
+    "mathContext": "$\\mathrm{normSq}(g)^2 = \\mathrm{normSq}(g^2) = \\mathrm{normSq}\\big((-1)^{(p-1)/2}p\\big) = p^2$, and $\\mathrm{normSq}\\ge 0$ forces $\\mathrm{normSq}\\,g = p$, i.e. $|g|=\\sqrt p$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Complex.normSq multiplicativity",
+      "Parseval / character orthogonality",
+      "absolute value of the Gauss sum"
+    ],
+    "prerequisites": [
+      "Complex.normSq_natCast",
+      "map_mul / map_pow",
+      "Complex.normSq_nonneg"
+    ]
+  }
+]

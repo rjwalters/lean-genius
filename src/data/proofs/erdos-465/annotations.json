@@ -1,0 +1,281 @@
+[
+  {
+    "id": "ann-465-header",
+    "proofId": "erdos-465",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #465 (SOLVED): Let N(X,δ) be the maximum number of points in a circle of radius X such that all pairwise distances avoid integers by at least δ (i.e., ‖d‖ ≥ δ where ‖·‖ is the distance to the nearest integer). Two questions: (1) Is N(X,δ) = o(X)? (2) Is N(X,δ) < X^{1/2+o(1)}? Both answered YES — Sárközy (1976) for sublinearity, Konyagin (2001) for the optimal √X bound.",
+    "mathContext": "Define $N(X, \\delta) = \\max\\{n : \\exists P_1, \\ldots, P_n \\in B(0, X) \\text{ with } \\|\\|P_i - P_j\\|\\| \\geq \\delta\\; \\forall i \\neq j\\}$, where $\\|x\\| = \\min_{n \\in \\mathbb{Z}} |x - n|$ is the distance to the nearest integer. The problem asks how many points can be packed in a disk while keeping all pairwise distances 'far from integers.' The answer $N(X, \\delta) \\asymp X^{1/2}$ reveals that integer-distance avoidance is extremely restrictive: in a disk containing $\\sim \\pi X^2$ lattice points (all with integer distances), only $\\sim \\sqrt{X}$ points can be chosen with distances bounded away from integers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Diophantine approximation",
+      "distance to nearest integer",
+      "exponential sums",
+      "packing density",
+      "lattice point counting"
+    ],
+    "prerequisites": [
+      "Euclidean distance",
+      "distance to nearest integer",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-465-distToInt",
+    "proofId": "erdos-465",
+    "range": {
+      "startLine": 48,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Distance to Nearest Integer",
+    "content": "Two equivalent definitions of ‖x‖: (1) distToInt(x) = |x - round(x)|, (2) distToInt'(x) = min(x - ⌊x⌋, ⌈x⌉ - x). Three axiomatized properties: equivalence of the two definitions, 0 ≤ ‖x‖ ≤ 1/2 always, and ‖x‖ = 0 iff x ∈ ℤ.",
+    "mathContext": "The function $\\|x\\| = \\min_{n \\in \\mathbb{Z}} |x - n|$ is a 1-periodic, continuous function with $\\|x\\| \\in [0, 1/2]$. It measures the 'fractional proximity to integers.' The two Lean definitions use $|x - \\mathrm{round}(x)|$ and $\\min(x - \\lfloor x \\rfloor, \\lceil x \\rceil - x)$ respectively. Their equivalence follows from the definition of rounding: $\\mathrm{round}(x) = \\lfloor x + 1/2 \\rfloor$. The condition $\\|x\\| = 0 \\iff x \\in \\mathbb{Z}$ means avoiding integers is equivalent to $\\|d\\| > 0$; the strengthened condition $\\|d\\| \\geq \\delta$ creates a 'buffer zone' around each integer.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fractional part",
+      "rounding",
+      "periodic function",
+      "1-Lipschitz"
+    ],
+    "prerequisites": [
+      "floor/ceiling functions",
+      "absolute value",
+      "Real.round"
+    ]
+  },
+  {
+    "id": "ann-465-pointconfig",
+    "proofId": "erdos-465",
+    "range": {
+      "startLine": 69,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Point Configurations and N(X,δ)",
+    "content": "PointConfig n is a structure with n points in a disk of radius X (using ℂ for the plane), with proof that radius > 0 and all points lie in the disk. DistancesAvoidIntegers requires ‖|Pᵢ - Pⱼ|‖ ≥ δ for all i ≠ j. maxPoints(X,δ) = sSup over valid n.",
+    "mathContext": "Points are modeled in $\\mathbb{C}$ (the complex plane) with $|\\cdot|$ as the Euclidean norm. The structure $\\texttt{PointConfig}(n)$ packages $n$ points in a disk $B(0, X) = \\{z \\in \\mathbb{C} : |z| \\leq X\\}$. The function $N(X, \\delta) = \\sup\\{n \\in \\mathbb{N} : \\exists P \\in \\texttt{PointConfig}(n),\\; P.\\text{radius} = X \\wedge \\texttt{DistancesAvoidIntegers}(P, \\delta)\\}$ is defined via $\\texttt{sSup}$. The use of $\\texttt{sSup}$ on $\\mathbb{N}$ is well-defined since the set is bounded (at most $O(X^2)$ points fit in a disk by packing arguments).",
+    "significance": "key",
+    "relatedConcepts": [
+      "complex plane as R²",
+      "metric ball",
+      "supremum",
+      "packing number"
+    ],
+    "prerequisites": [
+      "Complex.abs",
+      "sSup",
+      "Finset",
+      "Fin n"
+    ]
+  },
+  {
+    "id": "ann-465-first-conjecture",
+    "proofId": "erdos-465",
+    "range": {
+      "startLine": 89,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "First Conjecture: Sublinear Growth",
+    "content": "FirstConjecture states N(X,δ) = o(X): for every ε > 0 and every fixed δ ∈ (0, 1/2), there exists X₀ such that N(X,δ) < εX for all X ≥ X₀. This is the weaker of the two conjectures — it only rules out linear growth.",
+    "mathContext": "The $o(X)$ statement is formalized as: $\\forall \\delta \\in (0, 1/2),\\; \\forall \\varepsilon > 0,\\; \\exists X_0,\\; \\forall X \\geq X_0,\\; N(X, \\delta) < \\varepsilon X$. This is equivalent to $\\lim_{X \\to \\infty} N(X, \\delta)/X = 0$. The conjecture says that integer-distance avoidance prevents linear packing. Note that without the avoidance constraint, one could trivially pack $\\Theta(X)$ points in a disk of radius $X$ (e.g., equally spaced on a line).",
+    "significance": "key",
+    "relatedConcepts": [
+      "little-o notation",
+      "asymptotic density",
+      "sublinear growth"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-465-sarkozy",
+    "proofId": "erdos-465",
+    "range": {
+      "startLine": 94,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Sárközy's Theorem (1976)",
+    "content": "SarkozyBound axiomatizes N(X,δ) ≤ C·δ⁻³·X/log log X for X ≥ 3. The theorem first_conjecture_holds derives FirstConjecture from SarkozyBound with a sorry (needs log log X → ∞). Sárközy's proof uses analytic number theory and counting arguments on the distribution of distances mod 1.",
+    "mathContext": "Sárközy's bound $N(X, \\delta) \\leq C \\cdot \\delta^{-3} \\cdot \\frac{X}{\\log \\log X}$ gives sublinear growth since $\\log \\log X \\to \\infty$, but extremely slowly. The $\\delta^{-3}$ dependence shows the constraint weakens as $\\delta \\to 0$ (smaller buffer zones allow more points). The proof uses the key observation that among $n$ points in a disk, the $\\binom{n}{2}$ pairwise distances have controlled distribution modulo 1, and exponential sum techniques bound how many distances can simultaneously avoid $(-\\delta, \\delta) + \\mathbb{Z}$. The sorry in $\\texttt{first\\_conjecture\\_holds}$ is a calculus step: showing $C \\cdot \\delta^{-3} / \\log \\log X < \\varepsilon$ for large $X$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential sums",
+      "distribution mod 1",
+      "iterated logarithm",
+      "analytic number theory"
+    ],
+    "prerequisites": [
+      "SarkozyBound definition",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-465-second-conjecture",
+    "proofId": "erdos-465",
+    "range": {
+      "startLine": 115,
+      "endLine": 119
+    },
+    "type": "theorem",
+    "title": "Second Conjecture: Square Root Growth",
+    "content": "SecondConjecture states N(X,δ) < X^{1/2+o(1)}: for every ε > 0, there exists X₀ such that N(X,δ) < X^{1/2+ε} for all X ≥ X₀. This is dramatically stronger than the first conjecture — it pins down the growth exponent to 1/2.",
+    "mathContext": "The statement $N(X, \\delta) < X^{1/2 + \\varepsilon}$ for all $\\varepsilon > 0$ and large $X$ is equivalent to $\\limsup_{X \\to \\infty} \\frac{\\log N(X, \\delta)}{\\log X} \\leq 1/2$. Compare with Sárközy's bound: $X / \\log \\log X$ has $\\limsup (\\log N) / (\\log X) = 1$, so it doesn't constrain the exponent at all. The second conjecture requires a fundamentally different approach — Fourier analysis rather than elementary counting.",
+    "significance": "key",
+    "relatedConcepts": [
+      "growth exponent",
+      "polynomial growth",
+      "limsup characterization"
+    ],
+    "prerequisites": [
+      "Real.rpow",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-465-konyagin",
+    "proofId": "erdos-465",
+    "range": {
+      "startLine": 121,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Konyagin's Theorem (2001)",
+    "content": "KonyaginBound axiomatizes N(X,δ) ≤ C_δ·X^{1/2} for X ≥ 1. The theorem second_conjecture_holds derives SecondConjecture from KonyaginBound with a sorry (needs C·X^{1/2} < X^{1/2+ε} for large X). Konyagin's proof uses deep Fourier analysis and exponential sum estimates to achieve the optimal exponent.",
+    "mathContext": "Konyagin's bound $N(X, \\delta) \\leq C_\\delta \\cdot X^{1/2}$ is a 25-year improvement over Sárközy: the ratio $\\frac{X / \\log \\log X}{X^{1/2}} = X^{1/2} / \\log \\log X \\to \\infty$. The proof strategy: consider the $\\binom{n}{2}$ pairwise distances $d_{ij} = |P_i - P_j|$ and their exponential sums $S(t) = \\sum_{i \\neq j} e^{2\\pi i t d_{ij}}$. The condition $\\|d_{ij}\\| \\geq \\delta$ forces $S(t)$ to be large at integer $t$ (constructive interference), while $S(t)$'s $L^2$ norm is controlled by $n^2 X$, giving $n^2 \\leq O(n^2 X / n^2) \\cdot n$, i.e., $n \\leq O(X^{1/2})$. The sorry in $\\texttt{second\\_conjecture\\_holds}$ needs $C \\cdot X^{1/2} < X^{1/2 + \\varepsilon}$ when $X > C^{2/\\varepsilon}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fourier analysis",
+      "exponential sums",
+      "L² estimate",
+      "constructive interference"
+    ],
+    "prerequisites": [
+      "KonyaginBound definition",
+      "Real.rpow"
+    ]
+  },
+  {
+    "id": "ann-465-comparison",
+    "proofId": "erdos-465",
+    "range": {
+      "startLine": 141,
+      "endLine": 160
+    },
+    "type": "insight",
+    "title": "Bound Comparison",
+    "content": "sarkozy_weaker_than_konyagin trivially states the relationship. Two placeholder axioms note that X/log log X is 'almost linear' (exponent 1) while X^{1/2} is much smaller. For X = 10⁶: Sárközy gives ~400,000 while Konyagin gives ~1,000 — a factor of 400.",
+    "mathContext": "The comparison is stark: $X / \\log \\log X \\gg X^{1/2}$ for all large $X$. The ratio $\\frac{X / \\log \\log X}{X^{1/2}} = \\frac{X^{1/2}}{\\log \\log X} \\to \\infty$. For $X = 10^6$: Sárközy gives $\\sim 10^6 / \\log \\log(10^6) \\approx 10^6 / 2.6 \\approx 385{,}000$, while Konyagin gives $\\sim C_\\delta \\cdot 10^3 \\approx 1{,}000$. The 25-year gap (1976 to 2001) reflects the difficulty: Konyagin needed deep Fourier-analytic machinery that was unavailable to Sárközy. The placeholder $\\texttt{True}$ axioms $\\texttt{sarkozy\\_is\\_almost\\_linear}$ and $\\texttt{konyagin\\_is\\_sqrt}$ carry no mathematical content.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "bound comparison",
+      "growth rate hierarchy",
+      "iterated logarithm"
+    ],
+    "prerequisites": [
+      "SarkozyBound",
+      "KonyaginBound"
+    ]
+  },
+  {
+    "id": "ann-465-lower-bound",
+    "proofId": "erdos-465",
+    "range": {
+      "startLine": 161,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Lower Bound and Optimality (Problem #466)",
+    "content": "LowerBound axiomatizes N(X,δ) ≥ c_δ·X^{1/2}: configurations of ~√X points exist. The axiom problem_466_lower_bound asserts this. exponent_optimal trivially packages both bounds. Together with Konyagin's upper bound, this gives N(X,δ) ≍ X^{1/2} — the exponent 1/2 is tight.",
+    "mathContext": "The lower bound $N(X, \\delta) \\geq c_\\delta \\cdot X^{1/2}$ means there EXIST configurations of $\\sim \\sqrt{X}$ points with all distances avoiding integers by $\\delta$. The construction (from Problem #466) uses a perturbation of lattice-like configurations: start with $\\sim \\sqrt{X}$ points on a carefully chosen curve and perturb to ensure $\\|d_{ij}\\| \\geq \\delta$. The matching upper and lower bounds give $N(X, \\delta) \\asymp_\\delta X^{1/2}$, determining the growth exponent exactly. The theorem $\\texttt{exponent\\_optimal}$ packages $\\texttt{KonyaginBound} \\wedge \\texttt{LowerBound} \\to \\texttt{True}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "matching bounds",
+      "tight exponent",
+      "lattice perturbation",
+      "constructive lower bound"
+    ],
+    "prerequisites": [
+      "LowerBound definition",
+      "problem_466_lower_bound"
+    ]
+  },
+  {
+    "id": "ann-465-techniques",
+    "proofId": "erdos-465",
+    "range": {
+      "startLine": 182,
+      "endLine": 201
+    },
+    "type": "insight",
+    "title": "Proof Techniques (Placeholder Axioms)",
+    "content": "Three placeholder True axioms sketch the tools: (1) exponential_sum_method — counting with distance constraints via exponential sums, (2) discrepancy_connection — distribution of distances mod 1, (3) fourier_approach — Konyagin's sharp bound via Fourier analysis.",
+    "mathContext": "The three techniques are deeply interconnected. **Exponential sums**: for integer $t$, $\\sum_{i \\neq j} e^{2\\pi i t d_{ij}}$ is large when distances are near integers, small when they avoid integers. **Discrepancy**: the sequence $\\{d_{ij}\\}$ has low discrepancy mod 1 by the Erdős-Turán inequality: $D_N \\leq O(1/T + \\sum_{t=1}^{T} |S(t)|/t)$. **Fourier analysis**: Konyagin's proof controls $\\int_0^1 |\\sum_j e^{2\\pi i t |P_j|^2}|^4 dt$ via the fourth moment method, relating the geometric constraint to an $L^4$ bound. These are all placeholder $\\texttt{True}$ with no mathematical content in the Lean file.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős-Turán inequality",
+      "discrepancy mod 1",
+      "fourth moment method",
+      "exponential sum"
+    ],
+    "prerequisites": [
+      "Fourier analysis",
+      "exponential sums"
+    ]
+  },
+  {
+    "id": "ann-465-generalizations",
+    "proofId": "erdos-465",
+    "range": {
+      "startLine": 203,
+      "endLine": 241
+    },
+    "type": "insight",
+    "title": "Generalizations and Intuition",
+    "content": "HigherDimAnalogue defines the d-dimensional version (placeholder True). other_norms and problem_953_connection note extensions to ℓᵖ norms and Problem #953. The intuition section explains why √X: the πX² lattice points in a disk all have integer distances, so perturbing to avoid integers 'costs' a factor of X^{3/2}, leaving X^{1/2}.",
+    "mathContext": "**Why $X^{1/2}$?** Consider the $\\sim \\pi X^2$ lattice points in a disk of radius $X$. All distances between lattice points are integers ($\\|d\\| = 0$). To satisfy $\\|d\\| \\geq \\delta$, we must select a subset where no two points have nearly-integer distance. The number of lattice points near a given point is $O(X)$, and each creates $O(1)$ distance constraints, limiting the independent set to $O(X^{1/2})$. In higher dimensions $\\mathbb{R}^d$, the analogous question has $N(X, \\delta) \\asymp X^{d/2}$ (heuristically, $\\pi X^{2d}$ lattice points in a $d$-ball, reduced by a factor of $X^{d}$ from constraints). Problem #953 asks the measure-theoretic variant: how large can a measurable set $A \\subseteq B(0, r)$ be if all distances in $A$ avoid integers?",
+    "significance": "key",
+    "relatedConcepts": [
+      "lattice point counting",
+      "higher-dimensional analogue",
+      "measure-theoretic variant",
+      "independent set"
+    ],
+    "prerequisites": [
+      "lattice points in disks",
+      "dimension scaling"
+    ]
+  },
+  {
+    "id": "ann-465-summary",
+    "proofId": "erdos-465",
+    "range": {
+      "startLine": 243,
+      "endLine": 256
+    },
+    "type": "concept",
+    "title": "Summary: erdos_465_solved and erdos_465_summary",
+    "content": "erdos_465_solved packages FirstConjecture ∧ SecondConjecture, proved from the two corollary theorems (which use sorry for calculus steps). erdos_465_summary adds KonyaginBound ∧ LowerBound for the full picture. optimal_growth packages the tight bounds. erdos_465_status gives a human-readable string.",
+    "mathContext": "The packaging theorems: $\\texttt{erdos\\_465\\_solved} : \\texttt{FirstConjecture} \\wedge \\texttt{SecondConjecture}$ uses $\\texttt{first\\_conjecture\\_holds}$ and $\\texttt{second\\_conjecture\\_holds}$ (both with sorry). $\\texttt{erdos\\_465\\_summary}$ adds the tight asymptotic: $\\texttt{KonyaginBound} \\wedge \\texttt{LowerBound}$ from axioms. $\\texttt{optimal\\_growth}$ directly applies $\\texttt{konyagin\\_2001}$ and $\\texttt{problem\\_466\\_lower\\_bound}$. The two sorry entries are in corollaries that need elementary calculus ($\\log \\log X \\to \\infty$ and $C \\cdot X^{1/2} < X^{1/2 + \\varepsilon}$ for large $X$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem packaging",
+      "conjunction introduction",
+      "corollary with sorry"
+    ],
+    "prerequisites": [
+      "first_conjecture_holds",
+      "second_conjecture_holds",
+      "konyagin_2001",
+      "problem_466_lower_bound"
+    ]
+  }
+]

@@ -1,0 +1,145 @@
+{
+  "slug": "lagrange-four-squares-oq-02",
+  "title": "Distribution of Four-Square Representations Among Orderings",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "Four-square representation types have computable contributions determined by permutation multiplicities and sign factors, with verified values for key equality patterns and small n.",
+    "plain": "Backfills metadata for the ordering and symmetry distribution of four-square representations. The Lean file defines representation types, enumerates sorted nonnegative quadruples, computes sign/permutation contributions, verifies small totals, and proves closed-form contribution values for several equality patterns.",
+    "whyMatters": [
+      "Lagrange's four-squares theorem counts existence; this slice studies how representations are distributed across symmetries and orderings.",
+      "The contribution formula separates permutation multiplicities from sign choices, making the combinatorics inspectable.",
+      "Orbit-stabilizer checks explain the numerical contribution factors that appear in four-square counts."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`totalFromEnum` computes representation counts from enumerated type contributions.",
+      "`totalFromEnum_1` through later concrete checks verify small values such as n = 1, 2, 3, 4, 9, 14, 15, and 16.",
+      "`trivialType_contribution`, `allEqualType_contribution`, `threeEqualType_contribution`, `twoPairType_contribution`, and related theorems prove closed-form contributions for equality patterns.",
+      "`allDistinctType_contribution` proves the all-distinct contribution is 384, with `symmetry_ratio_eq_factorial` connecting the ratio to 4!.",
+      "`orbit_stabilizer_trivial` and companion theorems record stabilizer-size ratios for several type families.",
+      "The exact `LagrangeFourSquaresOQ02.lean` file is recorded with 0 axioms and 0 sorries; sibling four-squares files include separate axioms."
+    ],
+    "open": [
+      "The metadata is scoped to the clean OQ02 ordering/symmetry file and does not claim the axiom-dependent base Lagrange proof."
+    ],
+    "goal": "Expose the clean four-squares ordering-distribution theorem evidence while clearly separating sibling-file assumptions."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-02-06T19:32:14.361Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "lagrange-four-squares",
+    "representations",
+    "combinatorics",
+    "symmetry",
+    "orbit-stabilizer",
+    "formalized"
+  ],
+  "relatedProofs": [
+    "lagrange-four-squares",
+    "lagrange-four-squares-oq-01",
+    "lagrange-four-squares-oq-02",
+    "lagrange-four-squares-oq-04",
+    "lagrange-four-squares-waring-g2"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-13T07:22:26.135Z",
+  "completed": "2026-02-13T07:22:26.135Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/LagrangeFourSquares.lean",
+      "filename": "LagrangeFourSquares.lean",
+      "lineCount": 393,
+      "theoremCount": 15,
+      "axiomCount": 5,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquares.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ01.lean",
+      "filename": "LagrangeFourSquaresOQ01.lean",
+      "lineCount": 396,
+      "theoremCount": 71,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ01OQ01.lean",
+      "filename": "LagrangeFourSquaresOQ01OQ01.lean",
+      "lineCount": 209,
+      "theoremCount": 18,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ02.lean",
+      "filename": "LagrangeFourSquaresOQ02.lean",
+      "lineCount": 652,
+      "theoremCount": 105,
+      "axiomCount": 0,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ04.lean",
+      "filename": "LagrangeFourSquaresOQ04.lean",
+      "lineCount": 227,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ04.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresWaringG2.lean",
+      "filename": "LagrangeFourSquaresWaringG2.lean",
+      "lineCount": 443,
+      "theoremCount": 68,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresWaringG2.lean"
+    }
+  ]
+}

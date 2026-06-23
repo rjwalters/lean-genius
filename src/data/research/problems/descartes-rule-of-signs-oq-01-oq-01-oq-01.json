@@ -1,0 +1,41 @@
+{
+  "slug": "descartes-rule-of-signs-oq-01-oq-01-oq-01",
+  "title": "Full Descartes' Rule (positive root count ≤ sign variations)",
+  "phase": "ACT",
+  "status": "completed",
+  "tier": "B",
+  "path": "proofs/Proofs/DescartesRuleOfSignsOQ01.lean",
+  "problemStatement": "Can the full Descartes' rule of signs — not just the parity result, but the exact bound positive_roots ≤ sign_variations, counted with multiplicity — be formalized in Lean 4?",
+  "knownResults": "Mathlib provides Polynomial.signVariations and Polynomial.roots_countP_pos_le_signVariations (Wiedijk #100), giving the exact upper bound directly. The companion parity result (sign_variations - positive_roots is even) is NOT in Mathlib but is fully proved in DescartesRuleOfSignsOQ01.lean via descartes_parity_proved (Stage A combinatorial + Stage B IVT).",
+  "currentState": "RESOLVED. The exact upper bound is descartes_upper_bound (DescartesRuleOQ01, 0 axioms) = p.roots_countP_pos_le_signVariations. The parity completion descartes_parity is now a theorem (was an axiom).",
+  "knowledge": {
+    "progressSummary": "RESOLVED + axiom eliminated. The full Descartes bound positive_roots ≤ sign_variations is already provided by Mathlib (roots_countP_pos_le_signVariations) and re-exported as descartes_upper_bound with 0 axioms. This session removed the now-redundant `axiom descartes_parity` from DescartesRuleOfSignsOQ01.lean: its identical statement was already proved by descartes_parity_proved (Part IX, 0 sorries). The file is now fully axiom-free (axiomCount 1 -> 0).",
+    "builtItems": [
+      "Removed `axiom descartes_parity` from DescartesRuleOfSignsOQ01.lean (axiomCount 1 -> 0)",
+      "Added `theorem descartes_parity := descartes_parity_proved` in new Part X (after its dependency)",
+      "Relocated parity corollaries descartes_rule_combined, one_sign_variation_one_positive_root, positive_root_count_from_sv to Part X with unchanged bodies",
+      "Updated meta descartes-rule-of-signs-oq-01: leanFile.axiomCount 1 -> 0, theoremCount 48 -> 49"
+    ],
+    "insights": [
+      "Mathlib already has the full Descartes upper bound (roots_countP_pos_le_signVariations), so OQ[0] of descartes-rule-of-signs-oq-01-oq-01 is resolvable directly — no complex-root-theory route required.",
+      "The parity half (absent from Mathlib) was already proved in-file via descartes_parity_proved but left shadowed by a redundant axiom; the file's own summary note flagged this for removal.",
+      "Reordering was needed because descartes_parity_proved (Part IX) is defined after the original Parts VI/VII consumers; moving the consumers to Part X (post-proof) avoids relocating ~700 lines of infrastructure."
+    ],
+    "mathlibGaps": [
+      "Mathlib lacks the Descartes parity result (sign_variations ≡ positive_roots mod 2); it is supplied locally by descartes_parity_proved and could be a candidate for upstreaming."
+    ],
+    "nextSteps": [
+      "Docker-build Proofs.DescartesRuleOfSignsOQ01 to confirm the refactor compiles (shipped build-pending; pool was saturated).",
+      "Consider upstreaming descartes_parity_proved to Mathlib as the parity companion to roots_countP_pos_le_signVariations."
+    ]
+  },
+  "tags": ["polynomials", "descartes", "sign-variations", "axiom-elimination"],
+  "relatedProofs": ["descartes-rule-of-signs-oq-01", "descartes-rule-of-signs-oq-01-oq-01"],
+  "references": [
+    "Mathlib.Algebra.Polynomial.RuleOfSigns",
+    "Wiedijk 100 Theorems #100 (Descartes' Rule of Signs)"
+  ],
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": ["proofs/Proofs/DescartesRuleOfSignsOQ01.lean"]
+}

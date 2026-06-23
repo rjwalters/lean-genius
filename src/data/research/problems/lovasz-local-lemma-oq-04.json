@@ -1,0 +1,93 @@
+{
+  "slug": "lovasz-local-lemma-oq-04",
+  "title": "Lovász Local Lemma: Variable Version with Asymmetric Dependencies",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Lovász Local Lemma: Variable Version with Asymmetric Dependencies.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-22T12:51:58.078Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "combinatorics",
+    "probability",
+    "lovasz",
+    "dependency-graph"
+  ],
+  "relatedProofs": [
+    "lovasz-local-lemma",
+    "lovasz-local-lemma-oq-02",
+    "prob-method-lovasz-local"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T12:51:58.078Z",
+  "lastUpdate": "2026-04-22T12:51:58.078Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LovaszLocalLemma.lean",
+      "filename": "LovaszLocalLemma.lean",
+      "lineCount": 365,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemma.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ02.lean",
+      "filename": "LovaszLocalLemmaOQ02.lean",
+      "lineCount": 241,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ02.lean"
+    },
+    {
+      "path": "Proofs/LovaszLocalLemmaOQ02Aristotle.lean",
+      "filename": "LovaszLocalLemmaOQ02Aristotle.lean",
+      "lineCount": 142,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 9,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemmaOQ02Aristotle.lean"
+    }
+  ]
+}

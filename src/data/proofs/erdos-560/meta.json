@@ -1,0 +1,196 @@
+{
+  "id": "erdos-560",
+  "title": "Erdos Problem #560: Size Ramsey Number of Complete Bipartite Graphs",
+  "slug": "erdos-560",
+  "description": "Determine the size Ramsey number R_hat(K_{n,n}) - the minimum edges in a graph H such that any 2-coloring contains a monochromatic K_{n,n}. Known bounds: (1/60)n^2*2^n to (3/2)n^3*2^n.",
+  "meta": {
+    "author": "Erdos-Rousseau (1993 lower), EFRS (1978 upper), CFW (2023 conjecture)",
+    "sourceUrl": "https://erdosproblems.com/560",
+    "date": "2023",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos560Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "size-ramsey-numbers",
+      "bipartite-graphs",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 560,
+    "erdosUrl": "https://erdosproblems.com/560",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Basic",
+        "description": "Simple graph definitions",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Subgraph",
+        "description": "Subgraph definitions and properties",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite type operations",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real number operations for bounds",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "completeBipartiteGraph definition using Sum types",
+      "EdgeColoring definition for 2-colorings",
+      "HasMonochromaticCopy formalization",
+      "sizeRamseyNumber noncomputable definition",
+      "erdos_rousseau_lower_bound axiom: (1/60)n^2*2^n",
+      "upper_bound axiom: (3/2)n^3*2^n",
+      "size_ramsey_bounds combined theorem",
+      "cfw_general_lower: CFW 2023 general result",
+      "cfw_asymptotic: asymptotic bounds",
+      "cfw_conjecture: conjectured n^3*2^n",
+      "size_ramsey_monotone and size_ramsey_lower properties",
+      "classicalRamseyNumber and relationship",
+      "bounds_gap analysis showing O(n) factor",
+      "erdos_560_summary main results"
+    ],
+    "axiomCount": 5,
+    "lineCount": 265,
+    "assumptions": "5 axioms: embedding_preserves_edges, erdos_rousseau_lower_bound, upper_bound, thetaNotation, size_ramsey_monotone_bipartite. 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "**Erdos Problem #560: Size Ramsey Numbers**\n\nThe size Ramsey number R_hat(G) asks for the minimum number of edges (not vertices) in a graph H such that any 2-coloring of H's edges yields a monochromatic copy of G.\n\n**Key History:**\n- Erdos-Faudree-Rousseau-Schelp [EFRS78b]: Introduced size Ramsey numbers, proved upper bound\n- Nesetril-Rodl [NeRo78]: Independent proof of upper bound\n- Erdos-Rousseau [ErRo93]: Proved lower bound (1/60)n^2*2^n for n >= 6\n- Conlon-Fox-Wigderson [CFW23]: Recent progress, conjectured tight bounds\n\n**Mathematical Setting:**\nUnlike classical Ramsey numbers which count vertices, size Ramsey numbers count edges. This measures the \"edge-complexity\" of Ramsey-type results. For K_{n,n}, the known bounds have an O(n) gap.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $\\hat{R}(G)$ denote the size Ramsey number - the minimal number of edges $m$ such that there exists a graph $H$ with $m$ edges where any 2-coloring of $H$'s edges contains a monochromatic copy of $G$.\n\nDetermine $\\hat{R}(K_{n,n})$, where $K_{n,n}$ is the complete bipartite graph with $n$ vertices in each part.\n\n**Known Bounds:**\n$$\\frac{1}{60}n^2 2^n < \\hat{R}(K_{n,n}) < \\frac{3}{2}n^3 2^n$$\n\n**Conjecture (CFW 2023):** $\\hat{R}(K_{n,n}) \\asymp n^3 2^n$",
+    "text": "Determine the size Ramsey number R_hat(K_{n,n}) - the minimum edges in a graph H such that any 2-coloring contains a monochromatic K_{n,n}. Known bounds: (1/60)n^2*2^n to (3/2)n^3*2^n.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define complete bipartite graph K_{n,n} using Sum types (Fin n + Fin n)\n\n2. **Size Ramsey Formalization:** Define EdgeColoring, HasMonochromaticCopy, and sizeRamseyNumber\n\n3. **Bounds as Axioms:**\n   - erdos_rousseau_lower_bound: (1/60)n^2*2^n (1993)\n   - upper_bound: (3/2)n^3*2^n (1978)\n\n4. **CFW Results:** Include the 2023 results on general K_{s,t} and the conjecture\n\n5. **Analysis:** Theorem showing bounds gap is O(n), implications of conjecture",
+    "keyInsights": [
+      "**Size vs Classical Ramsey:** Size Ramsey numbers measure edge-complexity rather than vertex count",
+      "**Exponential Growth:** Both bounds grow as 2^n but with polynomial factors n^2 vs n^3",
+      "**O(n) Gap:** Current knowledge leaves a linear factor of uncertainty in the answer",
+      "**CFW Conjecture:** Believed that n^3*2^n is the correct order, matching the upper bound",
+      "**Bipartite Structure:** The complete bipartite graph K_{n,n} is particularly interesting due to its symmetric structure"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "EdgeColoring, completeBipartiteGraph K_{n,n}",
+      "startLine": 42,
+      "endLine": 78,
+      "mathContext": "Mathematical content: EdgeColoring, completeBipartiteGraph K_{n,n}"
+    },
+    {
+      "id": "size-ramsey",
+      "title": "Size Ramsey Numbers",
+      "summary": "HasMonochromaticCopy, isSizeRamseyWitness, sizeRamseyNumber",
+      "startLine": 79,
+      "endLine": 119,
+      "mathContext": "Mathematical content: HasMonochromaticCopy, isSizeRamseyWitness, sizeRamseyNumber"
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "summary": "erdos_rousseau_lower_bound, upper_bound, size_ramsey_bounds",
+      "startLine": 122,
+      "endLine": 149,
+      "mathContext": "Bound: erdos_rousseau_lower_bound, upper_bound, size_ramsey_bounds"
+    },
+    {
+      "id": "cfw-results",
+      "title": "Conlon-Fox-Wigderson Results",
+      "summary": "cfw_general_lower, cfw_asymptotic, cfw_conjecture",
+      "startLine": 150,
+      "endLine": 183,
+      "mathContext": "Mathematical content: cfw_general_lower, cfw_asymptotic, cfw_conjecture"
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "Monotonicity, lower bounds, K11 case, path linear bound",
+      "startLine": 184,
+      "endLine": 210,
+      "mathContext": "Bound: Monotonicity, lower bounds, K11 case, path linear bound"
+    },
+    {
+      "id": "classical-ramsey",
+      "title": "Classical Ramsey Relation",
+      "summary": "classicalRamseyNumber, size vs classical relationship",
+      "startLine": 211,
+      "endLine": 238,
+      "mathContext": "Mathematical content: classicalRamseyNumber, size vs classical relationship"
+    },
+    {
+      "id": "bounds-gap",
+      "title": "Gap Analysis",
+      "summary": "bounds_gap theorem, cfw_implies_tight_lower",
+      "startLine": 239,
+      "endLine": 265,
+      "mathContext": "Verified: bounds_gap theorem, cfw_implies_tight_lower"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #560 asks for the exact size Ramsey number of complete bipartite graphs K_{n,n}. Known bounds place it between (1/60)n^2*2^n (Erdos-Rousseau 1993) and (3/2)n^3*2^n (EFRS 1978). The gap is O(n). Conlon-Fox-Wigderson (2023) conjecture the answer is Theta(n^3*2^n), matching the upper bound up to constants.",
+    "implications": "**Theoretical Significance**: **Connections to Ramsey Theory**\n\n1. **Size Complexity:** Understanding edge-minimal Ramsey graphs\n\n2. **Classical vs Size:** Size Ramsey numbers can be much smaller than edges in K_{R(G)}\n\n**3. Probabilistic Methods:** Both bounds use probabilistic and counting arguments\n\n4. **Bipartite Graphs:** K_{n,n} is a natural test case for bipartite Ramsey theory\n\n5. **Recent Progress:** CFW 2023 shows active research continues.",
+    "openQuestions": [
+      "Determine exact value or tighter bounds for R_hat(K_{n,n})",
+      "Prove or disprove CFW conjecture that R_hat(K_{n,n}) ~ n^3*2^n",
+      "Improve lower bound to match conjectured n^3*2^n",
+      "Extend results to K_{s,t} for all s <= t",
+      "Understand structure of optimal Ramsey graphs for K_{n,n}"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos560",
+    "lineCount": 265,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos560Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: bipartite-graphs, graph-theory, open"
+    }
+  ],
+  "sorries": 0
+}

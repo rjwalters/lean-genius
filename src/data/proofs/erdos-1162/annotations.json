@@ -1,0 +1,191 @@
+[
+  {
+    "id": "ann-header-imports",
+    "proofId": "erdos-1162",
+    "range": {
+      "startLine": 1,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "Module Header: Erdős Problem #1162: Number of Subgroups of S_n",
+    "content": "Module docstring and imports for the Erdős Problem #1162: Number of Subgroups of S_n formalization.",
+    "mathContext": "**Problem Statement (Partially Resolved)**\n\nGive an asymptotic formula for the number of subgroups of $S_n$. Is there a statistical theorem on their order?\n\n**Known:**\n- Pyber (1993): $\\log f(n) \\asym",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "erdos",
+      "group-theory",
+      "symmetric-group",
+      "enumeration"
+    ],
+    "prerequisites": [
+      "Mathlib"
+    ]
+  },
+  {
+    "id": "ann-numsubgroups",
+    "title": "numSubgroups: Nat.card of the Subgroup Lattice",
+    "mathContext": "$f(n) = |\\{H : H \\leq S_n\\}|$ is defined as `Nat.card (Subgroup (Equiv.Perm (Fin n)))` — the cardinality of the type of all subgroups of $S_n$. In Lean 4, `Subgroup G` is a type whose elements are all subgroups of $G$. Since `Equiv.Perm (Fin n)` is a finite group for all $n$, there are only finitely many subgroups, making `Nat.card` well-defined.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.card for infinite/finite types",
+      "Subgroup G as a Lean type",
+      "Equiv.Perm (Fin n) as S_n",
+      "roney_dougal_tracey axiom"
+    ],
+    "prerequisites": [
+      "Subgroup structure in Mathlib",
+      "Nat.card vs Fintype.card",
+      "Equiv.Perm as the symmetric group type"
+    ],
+    "proofId": "erdos-1162",
+    "range": {
+      "startLine": 52,
+      "endLine": 53
+    },
+    "type": "concept",
+    "content": "numSubgroups: Nat.card of the Subgroup Lattice. $f(n) = |\\{H : H \\leq S_n\\}|$ is defined as `Nat.card (Subgroup (Equiv.Perm (Fin n)))` — the cardinality of the type of all subgroups of $S_n$. In Lean 4, `Subgroup G` is a type whose elements are all subgroups of $G$. Since `Equiv.Perm (Fin n)` is a finite group for all $n$, there are only finitely many subgroups, making `Nat.card` well-defined."
+  },
+  {
+    "id": "ann-rdt-axiom",
+    "title": "roney_dougal_tracey: The 2025 Asymptotic as a Filter Limit",
+    "mathContext": "The axiom states `Tendsto (fun n => Real.log (numSubgroups n : ℝ) / (n : ℝ)^2) atTop (nhds (1/16))` — the ratio $\\log f(n) / n^2$ converges to $1/16$ as $n \\to \\infty$. In Mathlib's filter language: the function converges in the `nhds (1/16)` neighborhood filter, as $n$ goes to the `atTop` filter on $\\mathbb{N}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Tendsto for limits",
+      "nhds filter in topology",
+      "rdt_implies_pyber derived theorem",
+      "Gaussian binomial coefficients"
+    ],
+    "prerequisites": [
+      "Mathlib's Tendsto and atTop",
+      "nhds as neighborhood filter",
+      "Real.log for the log-count"
+    ],
+    "proofId": "erdos-1162",
+    "range": {
+      "startLine": 82,
+      "endLine": 83
+    },
+    "type": "concept",
+    "content": "roney_dougal_tracey: The 2025 Asymptotic as a Filter Limit. The axiom states `Tendsto (fun n => Real.log (numSubgroups n : ℝ) / (n : ℝ)^2) atTop (nhds (1/16))` — the ratio $\\log f(n) / n^2$ converges to $1/16$ as $n \\to \\infty$. In Mathlib's filter language: the function converges in the `nhds (1/16)` neighborhood filter, as $n$ goes to the `atTop` filter on $\\mathbb{N}$."
+  },
+  {
+    "id": "ann-rdt-implies-pyber",
+    "title": "rdt_implies_pyber: Extracting Pyber's Bounds from RDT via ε-N",
+    "mathContext": "From $\\log f(n)/n^2 \\to 1/16$, the proof extracts Pyber's two-sided bound: $\\exists c_1, c_2 > 0$, $\\exists N$, $\\forall n \\geq N: c_1 n^2 \\leq \\log f(n) \\leq c_2 n^2$. The witnesses are $c_1 = 1/32$ and $c_2 = 3/32$, obtained by applying the convergence at $\\varepsilon = 1/32$ (a distance of 1/32 from 1/16 gives the interval $(1/32, 3/32)$ for the ratio).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Metric.tendsto_nhds for ε-N",
+      "abs_lt for two-sided bounds",
+      "Filter.eventually_atTop.mp",
+      "pyber_theorem corollary"
+    ],
+    "prerequisites": [
+      "Metric.tendsto_nhds reformulation",
+      "Real.dist_eq for |f - L|",
+      "div_lt_iff and lt_div_iff for n² factor"
+    ],
+    "proofId": "erdos-1162",
+    "range": {
+      "startLine": 88,
+      "endLine": 113
+    },
+    "type": "concept",
+    "content": "rdt_implies_pyber: Extracting Pyber's Bounds from RDT via ε-N. From $\\log f(n)/n^2 \\to 1/16$, the proof extracts Pyber's two-sided bound: $\\exists c_1, c_2 > 0$, $\\exists N$, $\\forall n \\geq N: c_1 n^2 \\leq \\log f(n) \\leq c_2 n^2$. The witnesses are $c_1 = 1/32$ and $c_2 = 3/32$, obtained by applying the convergence at $\\varepsilon = 1/32$ (a distance of 1/32 from 1/16 gives the interval $(1/32, 3/32)$ for the ratio)."
+  },
+  {
+    "id": "ann-constant-explanation",
+    "title": "constant_explanation: The 1/16 = (1/4)² Identity",
+    "mathContext": "The constant $1/16$ is $(1/4)^2$: the dominant subgroups of $S_n$ are elementary abelian 2-groups embedded via the wreath product $(\\mathbb{Z}/2\\mathbb{Z}) \\wr S_{\\lfloor n/4 \\rfloor}$. The rank of the elementary abelian part is $\\lfloor n/4 \\rfloor$, so its number of subgroups grows as $2^{k^2/4}$ where $k = n/4$, giving $\\log_2 f(n) \\approx (n/4)^2/4 = n^2/64$, i.e., $\\log f(n) \\approx n^2/64 \\cdot \\log 2 \\approx n^2/16$ (using $\\log 2 \\cdot 4 \\approx 1$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "wreath product (Z/2Z) ≀ S_{n/4}",
+      "Gaussian binomial coefficients",
+      "maxElem2Rank definition",
+      "asymptoticConstant = 1/16"
+    ],
+    "prerequisites": [
+      "wreath product subgroup counting",
+      "Gaussian binomial coefficient asymptotics",
+      "norm_num for real arithmetic"
+    ],
+    "proofId": "erdos-1162",
+    "range": {
+      "startLine": 145,
+      "endLine": 146
+    },
+    "type": "concept",
+    "content": "constant_explanation: The 1/16 = (1/4)² Identity. The constant $1/16$ is $(1/4)^2$: the dominant subgroups of $S_n$ are elementary abelian 2-groups embedded via the wreath product $(\\mathbb{Z}/2\\mathbb{Z}) \\wr S_{\\lfloor n/4 \\rfloor}$. The rank of the elementary abelian part is $\\lfloor n/4 \\rfloor$, so its number of subgroups grows as $2^{k^2/4}$ where $k = n/4$, giving $\\log_2 f(n) \\approx (n/4)^2/4 = n^2/64$, i.e., $\\log f(n) \\approx n^2/64 \\cdot \\log 2 \\approx n^2/16$ (using $\\log 2 \\cdot 4 \\approx 1$)."
+  },
+  {
+    "id": "ann-f1-proof",
+    "title": "f1: Subsingleton → Unique → Nat.card_unique",
+    "mathContext": "$f(1) = 1$ because $S_1 = \\text{Equiv.Perm}(\\text{Fin 1})$ is the trivial group (a subsingleton). The proof chain: `Equiv.Perm.subsingleton` gives `Subsingleton (S_1)` → a subsingleton group has a unique subgroup (since all elements equal the identity, so $H = \\{e\\}$ for any $H$) → `Nat.card_unique` gives `Nat.card (Subgroup S_1) = 1`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Equiv.Perm.subsingleton for Fin 1",
+      "Subsingleton.eq_one",
+      "Unique.mk and Nat.card_unique",
+      "f2-f4 via native_decide"
+    ],
+    "prerequisites": [
+      "Subsingleton and Unique type classes",
+      "Nat.card_unique for unique types",
+      "haveI for local instance provision"
+    ],
+    "proofId": "erdos-1162",
+    "range": {
+      "startLine": 164,
+      "endLine": 171
+    },
+    "type": "concept",
+    "content": "f1: Subsingleton → Unique → Nat.card_unique. $f(1) = 1$ because $S_1 = \\text{Equiv.Perm}(\\text{Fin 1})$ is the trivial group (a subsingleton). The proof chain: `Equiv.Perm.subsingleton` gives `Subsingleton (S_1)` → a subsingleton group has a unique subgroup (since all elements equal the identity, so $H = \\{e\\}$ for any $H$) → `Nat.card_unique` gives `Nat.card (Subgroup S_1) = 1`."
+  },
+  {
+    "id": "ann-native-decide",
+    "title": "f2, f3, f4: native_decide for Small Subgroup Counts",
+    "mathContext": "$f(2) = 2$, $f(3) = 6$, $f(4) = 30$ are proved by `simp only [Nat.card_eq_fintype_card]; native_decide`. The `Nat.card_eq_fintype_card` rewrite converts to `Fintype.card`, for which Lean can enumerate all subgroups of $S_2$, $S_3$, $S_4$ computationally. `native_decide` compiles the enumeration to native code for speed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide vs decide",
+      "Fintype.card for Subgroup",
+      "Nat.card_eq_fintype_card rewrite",
+      "subgroup lattice of S_3 (6 subgroups)"
+    ],
+    "prerequisites": [
+      "native_decide vs decide performance tradeoff",
+      "Fintype.card synthesizable for small groups",
+      "subgroup lattice enumeration"
+    ],
+    "proofId": "erdos-1162",
+    "range": {
+      "startLine": 175,
+      "endLine": 192
+    },
+    "type": "concept",
+    "content": "f2, f3, f4: native_decide for Small Subgroup Counts. $f(2) = 2$, $f(3) = 6$, $f(4) = 30$ are proved by `simp only [Nat.card_eq_fintype_card]; native_decide`. The `Nat.card_eq_fintype_card` rewrite converts to `Fintype.card`, for which Lean can enumerate all subgroups of $S_2$, $S_3$, $S_4$ computationally. `native_decide` compiles the enumeration to native code for speed."
+  },
+  {
+    "id": "ann-erdos1162-summary",
+    "title": "erdos1162_asymptotic: The Answer to Erdős-Turán's Question",
+    "mathContext": "`erdos1162_asymptotic` is defined as the `Prop` `Tendsto (fun n => Real.log (numSubgroups n : ℝ) / (n : ℝ)^2) atTop (nhds (1/16))`, and `erdos_1162 : erdos1162_asymptotic := roney_dougal_tracey` proves it is satisfied. This is the formal answer to Erdős and Turán's question about the asymptotic formula for $|\\{H : H \\leq S_n\\}|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "roney_dougal_tracey axiom",
+      "axiom reduction strategy",
+      "pyber_theorem as corollary",
+      "Erdős-Turán problem history"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto for asymptotic statements",
+      "the single remaining axiom pattern in Lean 4"
+    ],
+    "proofId": "erdos-1162",
+    "range": {
+      "startLine": 197,
+      "endLine": 198
+    },
+    "type": "concept",
+    "content": "erdos1162_asymptotic: The Answer to Erdős-Turán's Question. `erdos1162_asymptotic` is defined as the `Prop` `Tendsto (fun n => Real.log (numSubgroups n : ℝ) / (n : ℝ)^2) atTop (nhds (1/16))`, and `erdos_1162 : erdos1162_asymptotic := roney_dougal_tracey` proves it is satisfied. This is the formal answer to Erdős and Turán's question about the asymptotic formula for $|\\{H : H \\leq S_n\\}|$."
+  }
+]

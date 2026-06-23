@@ -1,0 +1,230 @@
+{
+  "id": "erdos-561",
+  "title": "Size Ramsey Numbers for Unions of Stars",
+  "slug": "erdos-561",
+  "description": "For unions of stars F₁ = ∪_{i≤s} K_{1,nᵢ} and F₂ = ∪_{j≤t} K_{1,mⱼ}, prove that the size Ramsey number R̂(F₁,F₂) = Σ_{k=2}^{s+t} max{nᵢ + mⱼ - 1 : i + j = k}. The uniform case (all nᵢ equal, all mⱼ equal) was proven by Burr-Erdős-Faudree-Rousseau-Schelp (1978).",
+  "meta": {
+    "author": "Erdős (conjecture), Burr-Erdős-Faudree-Rousseau-Schelp (uniform case, 1978)",
+    "sourceUrl": "https://erdosproblems.com/561",
+    "date": "2026-03-12",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos561Problem.lean",
+    "tags": [
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "combinatorics",
+      "stars"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-01-22",
+    "erdosNumber": 561,
+    "erdosUrl": "https://erdosproblems.com/561",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Basic",
+        "description": "Basic natural number operations",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Basic",
+        "description": "Simple graph definitions and basic operations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.Basic",
+        "description": "Finite sets and basic operations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "List.Basic",
+        "description": "List operations including sum and replicate",
+        "module": "Mathlib.Data.List.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Star structure: formal representation of K_{1,n} star graphs",
+      "StarUnion structure: disjoint unions of stars with leaf count lists",
+      "EdgeColoring type: 2-colorings for Ramsey theory",
+      "hasRamseyProperty predicate: Ramsey property for star unions",
+      "sizeRamseyNumber definition: size Ramsey number R̂(F₁,F₂)",
+      "indexSumPairs and maxForIndexSum: formula computation helpers",
+      "conjecturedFormula: the Erdős conjecture formula",
+      "befrs78_theorem axiom: BEFRS78 result for uniform case",
+      "uniform_case theorem: application of BEFRS78",
+      "sizeRamsey_lower_bound theorem: lower bound R̂ ≥ max edges",
+      "erdos_561 theorem: main result for uniform star unions"
+    ],
+    "axiomCount": 5,
+    "lineCount": 227,
+    "assumptions": "5 axioms: hasMonochromaticCopy, sizeRamseyNumber, befrs78_theorem, sizeRamsey_lower_bound, classicalRamseyNumber. 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 18
+  },
+  "overview": {
+    "historicalContext": "Size Ramsey numbers were introduced by Erdős, Faudree, Rousseau, and Schelp in their 1978 paper in Periodica Mathematica Hungarica, measuring the minimum number of edges (rather than vertices) needed in a host graph to guarantee a monochromatic copy. The same group, together with Burr, proved the conjectured formula for uniform star unions in Indagationes Mathematicae (1978). Beck's celebrated 1983 result showed that size Ramsey numbers are linear for all bounded-degree graphs, but the exact formulas remain unknown for most graph families. Stars are among the few families where exact values are conjectured, making this a key test problem for the theory.",
+    "problemStatement": "Let R̂(G) denote the size Ramsey number: the minimal number of edges m such that there is a graph H with m edges where any 2-coloring of the edges of H contains a monochromatic copy of G. For unions of stars F₁ = ∪_{i≤s} K_{1,nᵢ} and F₂ = ∪_{j≤t} K_{1,mⱼ}, prove that R̂(F₁,F₂) = Σ_{2≤k≤s+t} max{nᵢ + mⱼ - 1 : i + j = k}.",
+    "text": "For unions of stars F₁ = ∪_{i≤s} K_{1,nᵢ} and F₂ = ∪_{j≤t} K_{1,mⱼ}, prove that the size Ramsey number R̂(F₁,F₂) = Σ_{k=2}^{s+t} max{nᵢ + mⱼ - 1 : i + j = k}. The uniform case (all nᵢ equal, all mⱼ equal) was proven by Burr-Erdős-Faudree-Rousseau-Schelp (1978).",
+    "proofStrategy": "The formalization defines star graphs and their unions, establishes the size Ramsey number framework, and states the conjectured formula. The uniform case (proven by BEFRS78) is formalized as an axiom, and the general conjecture remains open. Key bounds are established relating size Ramsey numbers to classical Ramsey numbers.",
+    "keyInsights": [
+      "Size Ramsey numbers can be linear in vertex count for sparse graphs, unlike exponential classical Ramsey numbers",
+      "The formula involves a sum over index pairs, capturing how stars from F₁ and F₂ interact",
+      "The uniform case admits a closed-form solution proven in 1978",
+      "Stars are 'Ramsey-efficient' due to their simple structure — Beck (1983) showed bounded-degree graphs have linear size Ramsey numbers",
+      "The formalization bridges axiomatized deep results (BEFRS78) with constructive Lean proofs (uniform_case), demonstrating how to formalize partially-solved combinatorial problems"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)",
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "star-graphs",
+      "title": "Star Graphs",
+      "startLine": 35,
+      "endLine": 54,
+      "summary": "Defines the Star structure representing K_{1,n} with n leaves, including edge and vertex counts.",
+      "mathContext": "The star $K_{1,n}$ has $|E| = n$ edges and $|V| = n+1$ vertices. The `Star` structure stores `leaves` and a proof `pos : leaves ≥ 1`. Example: `claw = ⟨3, by omega⟩` for $K_{1,3}$."
+    },
+    {
+      "id": "star-unions",
+      "title": "Unions of Stars",
+      "startLine": 55,
+      "endLine": 77,
+      "summary": "Defines StarUnion as a disjoint union of stars with component count and total edge/vertex calculations.",
+      "mathContext": "$F = \\cup_{i \\leq s} K_{1,n_i}$ encoded as `stars : List ℕ` with `nonempty`. $|E(F)| = \\sum n_i$ (`totalEdges`), $|V(F)| = \\sum (n_i + 1)$ (`totalVertices`)."
+    },
+    {
+      "id": "colorings-ramsey",
+      "title": "Graph Colorings and Ramsey Theory",
+      "startLine": 78,
+      "endLine": 99,
+      "summary": "Defines 2-edge-colorings, monochromatic subgraphs, and the Ramsey property for star unions.",
+      "mathContext": "`EdgeColoring V G = V → V → Bool`. `hasRamseyProperty V H F₁ F₂` states $\\forall c, \\exists$ monochromatic $F_1$ (red) or $F_2$ (blue). `hasMonochromaticCopy` is axiomatized."
+    },
+    {
+      "id": "size-ramsey-numbers",
+      "title": "Size Ramsey Numbers",
+      "startLine": 100,
+      "endLine": 115,
+      "summary": "Defines the size Ramsey number R̂(F₁, F₂) as the minimum edge count for a graph with the Ramsey property.",
+      "mathContext": "$\\hat{R}(F_1, F_2) = \\min\\{|E(H)| : \\text{RP}(H; F_1, F_2)\\}$. Axiomatized with existence guarantee. For stars, $\\hat{R}$ is $O(n)$ vs $O(2^n)$ for classical $R$."
+    },
+    {
+      "id": "conjectured-formula",
+      "title": "The Conjectured Formula",
+      "startLine": 116,
+      "endLine": 148,
+      "summary": "Formalizes the Erdős conjecture: R̂(F₁,F₂) = Σ_{k=2}^{s+t} max{nᵢ + mⱼ - 1 : i + j = k}.",
+      "mathContext": "Formula: $\\hat{R}(F_1, F_2) = \\sum_{k=2}^{s+t} \\max\\{n_i + m_j - 1 : i+j=k\\}$. Uses `indexSumPairs`, `maxForIndexSum`, and `conjecturedFormula` as building blocks."
+    },
+    {
+      "id": "uniform-case",
+      "title": "The Uniform Case (BEFRS78)",
+      "startLine": 149,
+      "endLine": 180,
+      "summary": "States and applies the BEFRS78 theorem proving the conjecture when all stars in each union are identical.",
+      "mathContext": "BEFRS78: $F_1 = s \\cdot K_{1,n}, F_2 = t \\cdot K_{1,m}$ uniform $\\implies \\hat{R}(F_1, F_2) = \\text{formula}$. `uniform_case` constructs the unions via `List.replicate` and applies the axiom."
+    },
+    {
+      "id": "bounds",
+      "title": "Lower and Upper Bounds",
+      "startLine": 181,
+      "endLine": 195,
+      "summary": "Establishes bounds: R̂(F₁,F₂) ≥ max(|E(F₁)|, |E(F₂)|) and upper bounds from complete graphs.",
+      "mathContext": "Lower: $\\hat{R} \\geq \\max(|E(F_1)|, |E(F_2)|)$. Upper: $\\hat{R} \\leq \\binom{R}{2}$ via $K_R$. For stars the gap is dramatic: $\\hat{R} = O(n)$ vs $\\binom{R}{2} = O(n^2)$."
+    },
+    {
+      "id": "classical-connection",
+      "title": "Connection to Classical Ramsey Numbers",
+      "startLine": 196,
+      "endLine": 211,
+      "summary": "Relates size Ramsey numbers to classical Ramsey numbers, noting that stars are particularly efficient.",
+      "mathContext": "Axiomatized `classicalRamseyNumber` and `size_vs_classical`: $\\hat{R}(F_1, F_2) \\leq R(F_1,F_2) \\cdot (R(F_1,F_2) - 1)/2$. Beck's theorem shows this bound is far from tight for bounded-degree graphs."
+    },
+    {
+      "id": "summary-main",
+      "title": "Summary and Main Results",
+      "startLine": 212,
+      "endLine": 227,
+      "summary": "Consolidates the main theorem (uniform case proven) and states the open question for general star unions.",
+      "mathContext": "`erdos_561_summary = ⟨befrs78_theorem, sizeRamsey_lower_bound⟩`. `erdos_561 = befrs78_theorem`. `openQuestion = erdosConjecture` captures the remaining general case."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the framework for size Ramsey numbers of star unions. The BEFRS78 theorem (1978) proves the conjectured formula for uniform star unions, while the general case remains one of the notable open problems in Ramsey theory.",
+    "implications": "A proof of the general case would provide exact values for an important class of size Ramsey numbers and could yield insights into the structure of Ramsey-minimal graphs for sparse graph families.",
+    "openQuestions": [
+      "Does the formula R̂(F₁,F₂) = Σ_{k=2}^{s+t} max{nᵢ + mⱼ - 1 : i+j=k} hold for all star unions, not just uniform ones?",
+      "What is the structure of Ramsey-minimal graphs for star unions?",
+      "Can the techniques from BEFRS78 be extended to non-uniform cases?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.List.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos561",
+    "lineCount": 227,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 18,
+    "path": "Proofs/Erdos561Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Burr, S. A., Erdős, P., Faudree, R. J., Rousseau, C. C., and Schelp, R. H.",
+      "title": "Ramsey-minimal graphs for multiple copies",
+      "year": "1978",
+      "venue": "Indagationes Mathematicae (Proc.) 81(2), 187-195",
+      "note": "Proved the conjectured formula for uniform star unions"
+    },
+    {
+      "authors": "Erdős, P., Faudree, R. J., Rousseau, C. C., and Schelp, R. H.",
+      "title": "The size Ramsey number",
+      "year": "1978",
+      "venue": "Period. Math. Hungar. 9(1-2), 145-161",
+      "note": "Introduced size Ramsey numbers and established basic theory"
+    },
+    {
+      "authors": "Beck, J.",
+      "title": "On size Ramsey number of paths, trees, and circuits. I",
+      "year": "1983",
+      "venue": "J. Graph Theory 7(1), 115-129",
+      "note": "Proved size Ramsey numbers are linear for bounded-degree graphs"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1030",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    }
+  ],
+  "sorries": 0
+}

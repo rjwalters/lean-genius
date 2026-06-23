@@ -1,0 +1,243 @@
+{
+  "id": "erdos-357",
+  "title": "Erdős Problem #357: Distinct Consecutive Sums",
+  "slug": "erdos-357",
+  "description": "Let f(n) be the maximal k such that 1 ≤ a₁ < ... < aₖ ≤ n with all consecutive sums Σᵢ₌ᵤᵛ aᵢ distinct. Is f(n) = o(n)? Known: f(n) ≥ (2+o(1))√n; the non-monotone variant g(n) = Θ(n) (Hegyvári 1986). OPEN.",
+  "meta": {
+    "author": "Erdős–Harzheim (1977); Hegyvári (1986); Weisenberg",
+    "sourceUrl": "https://erdosproblems.com/357",
+    "date": "1977",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos357Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "number-theory",
+      "sequences",
+      "distinct-sums",
+      "sidon-sets",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 357,
+    "erdosUrl": "https://erdosproblems.com/357",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Asymptotics.IsLittleO",
+        "description": "Little-o asymptotic notation",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for limits at infinity",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Finset.OrdConnected",
+        "description": "Ord-connected subsets (intervals)",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "HasDistinctSums: generic definition over ord-connected intervals, works for ℤ, ℕ, or any AddCommMonoid",
+      "Three variants f(n) (strictly increasing), g(n) (unrestricted), h(n) (weakly increasing)",
+      "Weisenberg's (2+o(1))√n lower bound axiomatized with explicit little-o correction term",
+      "Hegyvári (1986) Θ(n) bounds for g(n) formalized with explicit o₁, o₂ correction terms",
+      "Infinite-set lower density 0 (proved) distinguished from density 0 (open conjecture)",
+      "Sum convergence conjecture Σ 1/aₙ as a formal Prop"
+    ],
+    "axiomCount": 3,
+    "assumptions": "3 axioms: weisenberg_lower_bound (f(n) ≥ (2+o(1))√n via B₂ sequences), hegyvari_bounds ((1/3+o(1))n ≤ g(n) ≤ (2/3+o(1))n, Hegyvári 1986), infinite_set_lower_density_zero (proved: any infinite A with distinct consecutive sums has lower density 0). 0 sorries.",
+    "lineCount": 137,
+    "theoremCount": 0,
+    "definitionCount": 8,
+    "additionalFiles": [
+      "Proofs/Stubs/Erdos357Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #357 was posed in Erdős's 1977 paper 'Problems and results on combinatorial number theory III.' Given a strictly increasing sequence $1 \\leq a_1 < a_2 < \\cdots < a_k \\leq n$, consider all 'consecutive sums' $\\sum_{i=u}^{v} a_i$ for $1 \\leq u \\leq v \\leq k$. There are $k(k+1)/2$ such sums. The function $f(n)$ measures the maximum $k$ for which all these sums can be distinct.\n\nWeisenberg connected this to **Sidon sets** (B₂ sequences), introduced by Simon Sidon in the 1930s and studied by Erdős and Turán (1941). Any B₂ set — where all pairwise sums $a_i + a_j$ (with $i \\ne j$) are distinct — automatically has distinct consecutive sums, because consecutive sums are differences of partial sums and hence determined by pairs. Since the largest B₂ set in $[1,n]$ has size $(1+o(1))\\sqrt{n}$ (Erdős–Turán 1941), this gives $f(n) \\geq (2+o(1))\\sqrt{n}$.\n\nHegyvári (1986) studied the **non-monotone variant** $g(n)$ in 'On consecutive sums in sequences' (Acta Math. Hungar. 48, 193–200), proving $(1/3+o(1))n \\leq g(n) \\leq (2/3+o(1))n$. The dramatic contrast — $g(n) = \\Theta(n)$ vs. conjectured $f(n) = o(n)$ — shows that strict monotonicity is the fundamental constraint.",
+    "problemStatement": "Let $1 \\leq a_1 < a_2 < \\cdots < a_k \\leq n$ be integers such that all sums $\\sum_{i=u}^{v} a_i$ (for $1 \\leq u \\leq v \\leq k$) are distinct. Define $f(n)$ to be the maximum such $k$.\n\n**Main question (OPEN)**: Is $f(n) = o(n)$?\n\n**Known bounds**:\n- $f(n) \\geq (2+o(1))\\sqrt{n}$ (Weisenberg, via B₂ sequences)\n- Non-monotone variant: $\\frac{1}{3}n + o(n) \\leq g(n) \\leq \\frac{2}{3}n + o(n)$ (Hegyvári 1986)\n\n**Infinite set results**:\n- Lower density 0 for any infinite A with distinct consecutive sums (proved)\n- Density 0 and $\\sum 1/a_k < \\infty$ (both conjectured, OPEN)",
+    "text": "Let f(n) be the maximal k such that 1 ≤ a₁ < ... < aₖ ≤ n with all consecutive sums Σᵢ₌ᵤᵛ aᵢ distinct. Is f(n) = o(n)?",
+    "proofStrategy": "The Lean formalization defines `HasDistinctSums` as injectivity of the sum map on ord-connected Finsets — a clean abstraction that handles the 'consecutive' (contiguous index range) condition via Mathlib's `Finset.OrdConnected`.\n\nThree variants are defined via `sSup`: `f(n)` (strictly increasing, elements in ℤ), `g(n)` (unrestricted, elements in ℕ), and `h(n)` (weakly increasing, elements in ℤ). The main conjecture `Erdos357Conjecture` is stated as `(f · : ℝ) =o[atTop] id`.\n\nThe three key mathematical results are axiomatized: Weisenberg's √n lower bound (with explicit little-o correction), Hegyvári's Θ(n) bounds for g(n), and the proved lower-density-0 result for infinite sets. Two open conjectures (density 0 and sum convergence) are stated as Prop definitions.",
+    "keyInsights": [
+      "**Ord-connected intervals**: The 'consecutive sum' condition is precisely that the index set is an ord-connected Finset. Mathlib's `Finset.OrdConnected` captures this: $J$ is ord-connected if $i,k \\in J$ and $i \\leq j \\leq k$ implies $j \\in J$.",
+      "**B₂ connection**: Sidon sets (all pairwise sums $a_i + a_j$ distinct) automatically have distinct consecutive sums. This links the problem to additive combinatorics and gives the $\\sqrt{n}$ lower bound via Erdős–Turán (1941).",
+      "**Monotonicity phase transition**: Without monotonicity, $g(n) = \\Theta(n)$ (Hegyvári). With strict monotonicity, $f(n)$ is conjectured $o(n)$. The dramatic gap shows monotonicity — not distinctness itself — is the binding constraint.",
+      "**Density hierarchy for infinite sets**: Lower density 0 is proved for any infinite A with distinct consecutive sums. Full density 0 (Cesàro average goes to 0) and $\\sum 1/a_k < \\infty$ are both open, forming a chain of increasingly strong sparsity conditions.",
+      "**Triangular counting**: A length-$k$ sequence has $k(k+1)/2$ contiguous intervals. Each must give a distinct sum. This quadratic growth in constraints is what limits $k$ relative to $n$."
+    ],
+    "prerequisites": [
+      "Additive combinatorics (Sidon sets, B₂ sequences)",
+      "Asymptotics: little-o notation and Filter.atTop in Mathlib",
+      "Finset.OrdConnected and Finset.sum in Mathlib",
+      "Density of sequences: liminf and Tendsto"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module docstring with problem statement, known bounds, and references. Four Mathlib imports covering BigOperators, Filter, Asymptotics, and Tactic. Opens Filter, Asymptotics, Real; namespace Erdos357."
+    },
+    {
+      "id": "core-definition",
+      "title": "HasDistinctSums — Core Definition",
+      "startLine": 30,
+      "endLine": 40,
+      "summary": "Defines HasDistinctSums: injectivity of J ↦ Σ_{i∈J} a(i) on the family of ord-connected Finsets. Generic over any Preorder ι and AddCommMonoid α.",
+      "mathContext": "An interval J ⊆ ι is ord-connected if i,k ∈ J and i ≤ j ≤ k implies j ∈ J. This captures 'consecutive' (contiguous index range) conditions."
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(n)",
+      "startLine": 41,
+      "endLine": 51,
+      "summary": "Defines f(n) = sSup{k | ∃ a : Fin k → ℤ, range a ⊆ [1,n], StrictMono a, HasDistinctSums a}. Noncomputable via sSup.",
+      "mathContext": "f(n) is the maximum k for strictly increasing integer sequences in [1,n] with all consecutive sums distinct."
+    },
+    {
+      "id": "variants-g-h",
+      "title": "Variants g(n) and h(n)",
+      "startLine": 53,
+      "endLine": 69,
+      "summary": "g(n): unrestricted sequences (no monotonicity), elements in ℕ. h(n): weakly increasing sequences (Monotone), elements in ℤ. Both defined via sSup.",
+      "mathContext": "f(n) ≤ h(n) ≤ g(n) since each relaxes monotonicity constraints. g(n) = Θ(n) vs conjectured f(n) = o(n)."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 71,
+      "endLine": 82,
+      "summary": "Erdos357Conjecture := (f · : ℝ) =o[atTop] (· : ℝ): f(n) = o(n). The central open question.",
+      "mathContext": "Uses Mathlib's IsLittleO at atTop. Since g(n) = Θ(n), the conjecture asserts strict monotonicity fundamentally limits the sequence length."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results (Axiomatized)",
+      "startLine": 84,
+      "endLine": 114,
+      "summary": "Three axioms: weisenberg_lower_bound (f(n) ≥ (2+o(1))√n via B₂), hegyvari_bounds ((1/3+o(1))n ≤ g(n) ≤ (2/3+o(1))n), infinite_set_lower_density_zero (proved: liminf #{A∩[1,n]}/n = 0 for infinite A).",
+      "mathContext": "Weisenberg's bound exploits the B₂⊆distinct-consecutive-sums inclusion and Erdős–Turán (1941). Hegyvári (1986) uses a probabilistic/greedy construction for the lower bound and averaging for the upper. Lower density 0 follows from a counting argument on sums."
+    },
+    {
+      "id": "open-conjectures",
+      "title": "Open Conjectures for Infinite Sets",
+      "startLine": 116,
+      "endLine": 135,
+      "summary": "InfiniteDensityZeroConjecture: #{A∩[1,n]}/n → 0 for any infinite A with distinct sums (open, stronger than lower density 0). InfiniteSumConvergesConjecture: Σ 1/A(k) < ∞ (open). g_ge_f_Remark: f(n) ≤ g(n) recorded as a Prop for future formalization.",
+      "mathContext": "Both infinite-set conjectures strengthen the proved lower-density-0 result. Sum convergence Σ 1/a_k < ∞ implies faster-than-linear spacing, a strong sparsity assertion."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-321",
+      "relationship": "related",
+      "description": "Both involve extremal problems on integer sequences with distinctness constraints."
+    },
+    {
+      "targetId": "erdos-332",
+      "relationship": "related",
+      "description": "Related sequence extremal problems from the Erdős–Graham program."
+    },
+    {
+      "targetId": "erdos-867",
+      "relationship": "related",
+      "description": "Problem #867 on subsequences with distinct sums; both study extremal sequence properties with distinctness conditions."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and results on combinatorial number theory III",
+      "year": "1977",
+      "venue": "Number Theory Day (New York 1976), Lecture Notes in Mathematics 626, Springer, pp. 43–72",
+      "note": "Original source of Problem #357"
+    },
+    {
+      "authors": "Hegyvári, Norbert",
+      "title": "On consecutive sums in sequences",
+      "year": "1986",
+      "venue": "Acta Mathematica Hungarica 48(1–2), 193–200",
+      "note": "Proved (1/3+o(1))n ≤ g(n) ≤ (2/3+o(1))n for the non-monotone variant, establishing g(n) = Θ(n)"
+    },
+    {
+      "authors": "Erdős, Paul; Turán, Paul",
+      "title": "On a problem of Sidon in additive number theory, and on some related problems",
+      "year": "1941",
+      "venue": "Journal of the London Mathematical Society 16(4), 212–215",
+      "note": "Proved the largest B₂ (Sidon) set in [1,n] has size (1+o(1))√n; underlying Weisenberg's lower bound"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #357 asks whether f(n) = o(n) for the maximum length of a strictly increasing integer sequence in [1,n] with all consecutive sums distinct. The formalization defines HasDistinctSums via ord-connected Finsets, introduces three variants (f strict, g unrestricted, h weakly increasing), states the main conjecture, and axiomatizes the three key results: Weisenberg's (2+o(1))√n lower bound (via B₂ sequences), Hegyvári's Θ(n) bounds for g(n), and the proved lower-density-0 result for infinite sets. Two open infinite-set conjectures (density 0 and Σ 1/aₙ convergence) complete the picture.",
+    "implications": "A proof that f(n) = o(n) would establish that strict monotonicity fundamentally limits additive structure in integer sequences. The connection to Sidon sets links this to central themes in additive combinatorics. The density conjectures for infinite sets, if proved, would give precise sparsity information parallel to results on B₂ sequences.",
+    "openQuestions": [
+      "Is f(n) = o(n)? (Main question, OPEN)",
+      "What is the true asymptotic of f(n)? Is f(n) = Θ(√n)?",
+      "Does every infinite A with distinct consecutive sums have density 0?",
+      "Does every infinite A with distinct consecutive sums satisfy Σ 1/aₙ < ∞?",
+      "Can g_ge_f_Remark be formalized without sorry (requires bridging ℤ-sums and ℕ-sums)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Asymptotics",
+      "Real"
+    ],
+    "namespace": "Erdos357",
+    "lineCount": 137,
+    "axiomCount": 3,
+    "theoremCount": 0,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos357Problem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Stubs/Erdos357Aristotle.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "Erdos357Conjecture",
+      "type": "open",
+      "description": "The main open question: is f(n) = o(n)?",
+      "leanType": "(fun n ↦ (f n : ℝ)) =o[atTop] (fun n ↦ (n : ℝ))"
+    },
+    {
+      "name": "weisenberg_lower_bound",
+      "type": "axiom",
+      "description": "f(n) ≥ (2+o(1))√n via B₂ sequences (Weisenberg)",
+      "leanType": "∃ o : ℕ → ℝ, o =o[atTop] (1 : ℕ → ℝ) ∧ ∀ᶠ n in atTop, (2 + o n) * √n ≤ (f n : ℝ)"
+    },
+    {
+      "name": "hegyvari_bounds",
+      "type": "axiom",
+      "description": "Hegyvári (1986): (1/3+o(1))n ≤ g(n) ≤ (2/3+o(1))n",
+      "leanType": "∃ o₁ o₂, ... ∀ᶠ n, (1/3 + o₁ n) * n ≤ g n ∧ g n ≤ (2/3 + o₂ n) * n"
+    },
+    {
+      "name": "infinite_set_lower_density_zero",
+      "type": "axiom",
+      "description": "Proved: any infinite strictly increasing A with distinct consecutive sums has lower density 0",
+      "leanType": "∀ A : ℕ → ℕ, StrictMono A → HasDistinctSums A → liminf (#{k | A k ≤ n} / n) = 0"
+    }
+  ],
+  "sorries": 0
+}

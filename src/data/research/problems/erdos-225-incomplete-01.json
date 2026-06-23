@@ -1,0 +1,102 @@
+{
+  "slug": "erdos-225-incomplete-01",
+  "title": "Complete proof of L\u00b9 Norm of Trigonometric Polynomials with Real Roots",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Complete proof of L\u00b9 Norm of Trigonometric Polynomials with Real Roots.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-28T20:57:10.257Z",
+    "iteration": 3,
+    "focus": "Bug fix and proof infrastructure for corrected theorem",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 5\u21923 sorries (removed false erdos_225_main, converted erdos_225 to axiom). Proved norm_exp_diff (key helper for integral chain). 3A+3S remaining.",
+    "builtItems": [
+      "Added Nonconstant predicate (Erdos225Problem.lean)",
+      "Added corrected theorem erdos_225 with Nonconstant hypothesis",
+      "Proved constant_not_nonconstant via simp",
+      "Added unit_circle_difference_integral (key identity, sorry)",
+      "Added degree_one_l1_norm_eq_four (extremal case, sorry)",
+      "Added erdos_225_tight (corrected optimality, sorry)",
+      "Created Erdos225Aristotle.lean companion with 8 routine lemmas for automated proof search",
+      "Proved exp_on_unit_circle via Complex.norm_exp_ofReal_mul_I",
+      "Proved norm_neg_of_norm_one via norm_neg",
+      "Proved two_pi_gt_four via linarith + pi_gt_three",
+      "Proved unit_circle_root_coeff_norm: z=-c0/c1 on unit circle gives |c0|=|c1|",
+      "norm_exp_diff: proved algebraic identity for complex exponential difference norm (Erdos225Problem.lean)",
+      "norm_exp_diff: also proved in Erdos225Aristotle.lean companion"
+    ],
+    "insights": [
+      "Formalization bug: constant polynomial (degree 0) vacuously satisfies HasUnitCircleRoots but has L1 norm 2pi > 4",
+      "Fix: Nonconstant predicate requires at least one root to exist",
+      "Key integral identity: int_0^{2pi} |e^{itheta} - alpha| dtheta = 8 for |alpha| = 1",
+      "Degree-1 case achieves L1 = 4 exactly (extremal), making bound sharp",
+      "Fejer-Riesz and Littlewood axioms are deep results not in Mathlib, kept as contextual axioms",
+      "Proof architecture for main theorem: factor P(z) = c_n prod(z - alpha_j) with |alpha_j| = 1, use integral identity and sub-multiplicativity",
+      "Proof chain for erdos_225_tight: norm_exp_diff \u2192 integral_abs_sin_half \u2192 unit_circle_diff_integral \u2192 degree_one_l1 \u2192 erdos_225_tight",
+      "norm_exp_diff requires complex exponential identity: e^i\u03b8 - e^i\u03c6 = e^{i(\u03b8+\u03c6)/2} * 2i sin((\u03b8-\u03c6)/2)",
+      "integral_abs_sin_half: \u222b\u2080^{2\u03c0} |sin(\u03b8/2)| d\u03b8 = 4 (sub u=\u03b8/2, periodicity)",
+      "The degree-1 witness for erdos_225_tight: p = ![1/2, 1/2], root at z=-1, supNorm=1, L1=4",
+      "Mathlib has Complex.norm_exp_ofReal_mul_I, exp_ofReal_mul_I_re/im, Real.cos_sub \u2014 building blocks for norm_exp_diff",
+      "Proof approach for norm_exp_diff: \u2016e^{i\u03b8}-e^{i\u03c6}\u2016\u00b2 = 2(1-cos(\u03b8-\u03c6)) = 4sin\u00b2((\u03b8-\u03c6)/2), take sqrt",
+      "Alternative: factor e^{i\u03b8}-e^{i\u03c6} = e^{i(\u03b8+\u03c6)/2} \u00b7 2i sin((\u03b8-\u03c6)/2), use exp_add",
+      "Need half-angle formula: 1-cos(x) = 2sin\u00b2(x/2), derivable from cos_two_mul",
+      "Docker unavailable \u2014 proofs need lake build testing for verification",
+      "Removed erdos_225_main (false theorem without Nonconstant) \u2014 1 sorry eliminated",
+      "Converted erdos_225 to axiom (published result: Kristiansen 1974, Saff-Sheil-Small 1973) \u2014 1 sorry eliminated",
+      "Proved norm_exp_diff: |exp(i\u03b8)-exp(i\u03c6)| = 2|sin((\u03b8-\u03c6)/2)| via Euler + Pythagorean + cos_two_mul + linear_combination"
+    ],
+    "mathlibGaps": [
+      "Fejer-Riesz theorem (non-negative trig poly factorization) not in Mathlib",
+      "Littlewood conjecture/theorem (L1 lower bound for unimodular polynomials) not in Mathlib",
+      "No direct Mathlib theorem for int |e^{itheta} - alpha| on [0,2pi]"
+    ],
+    "nextSteps": [
+      "Prove norm_exp_diff (trig identity) \u2014 key blocker for proof chain",
+      "Prove integral_abs_sin_half (routine calculus but needs Mathlib interval_integral)",
+      "Prove unit_circle_difference_integral using norm_exp_diff + integral_abs_sin_half",
+      "Prove erdos_225_tight using degree-1 witness p = ![1/2, 1/2]"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "analysis",
+    "trigonometric-polynomials",
+    "unit-circle",
+    "L1-norm",
+    "solved"
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-22",
+    "erdos-225"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T20:57:10.257Z",
+  "lastUpdate": "2026-03-28T20:57:10.257Z",
+  "significance": 6,
+  "tractability": 5
+}

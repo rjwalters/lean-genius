@@ -1,0 +1,155 @@
+{
+  "id": "buffons-needle-oq-01-oq-01-oq-04",
+  "title": "Higher-Dimensional Cauchy-Crofton Formula",
+  "slug": "buffons-needle-oq-01-oq-01-oq-04",
+  "description": "Generalizes the 2D Buffon-Barbier formula to n dimensions via the Cauchy-Crofton formula. Defines sphere surface areas via the Gamma function, computes the dimension-dependent crossing constant c_n = 2sigma_{n-2}/((n-1)*sigma_{n-1}), and proves the n-dimensional expected crossings formula E[crossings] = c_n * L / d. Verifies c_2 = 2/pi recovers the classical result.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%27s_formula",
+    "date": "2026-04-12",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BuffonsNeedleOQ01OQ01OQ04.lean",
+    "tags": [
+      "integral-geometry",
+      "cauchy-crofton",
+      "buffon",
+      "sphere-area",
+      "gamma-function"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-12",
+    "axiomCount": 2,
+    "assumptions": "2 structure-encoded assumptions in AngularAverageData: angularAvg_eq (the angular average on RP^{n-1} is proportional to norm with constant sigma_{n-2}/(n-1)), angularAvg_nonneg (non-negativity). These encode integration on the unit sphere which Mathlib lacks.",
+    "lineCount": 568,
+    "theoremCount": 30,
+    "definitionCount": 5,
+    "originalContributions": [
+      "sphereArea: sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) with n=0,1,2 computed",
+      "cauchyCroftonConst: c_n = 2*sigma_{n-2}/((n-1)*sigma_{n-1})",
+      "cauchyCrofton_two: c_2 = 2/pi (Buffon-Barbier constant)",
+      "cauchyCrofton_three: c_3 = 1/2 (3D crossing constant)",
+      "expectedCrossings_dim2: recovers 2L/(pi*d) for n=2",
+      "expectedCrossings_dim3: gives L/(2d) for n=3",
+      "unit_circle_crossings: unit circle crosses unit grid 4 times on average",
+      "sphereArea_recurrence: sigma_n = 2*pi/(n-1) * sigma_{n-2}",
+      "cauchyCrofton_le_one_dim2: c_2 <= 1",
+      "sphereArea_three: sigma_3 = 2*pi^2 (S^3 surface area)",
+      "cauchyCrofton_four: c_4 = 4/(3*pi) (4D crossing constant)",
+      "expectedCrossings_dim4: gives 4L/(3*pi*d) for n=4",
+      "sphereArea_four: sigma_4 = 8*pi^2/3 (proved via Gamma(5/2) = (3/4)*sqrt(pi))",
+      "sphereArea_five: sigma_5 = pi^3 (proved via Gamma(3) = 2)",
+      "cauchyCrofton_five: c_5 = 3/8 (5D crossing constant)",
+      "cauchyCrofton_six: c_6 = 16/(15*pi) (6D crossing constant)",
+      "cauchyCrofton_recurrence: c_{n+2} = c_n * (n/(n+1)) for n >= 2",
+      "cauchyCrofton_even_sq_bound: c_{2(k+1)}^2 <= (2/pi)^2/(k+1) by induction",
+      "cauchyCrofton_odd_sq_bound: c_{2k+3}^2 <= (1/4)*2/(k+2) by induction",
+      "cauchyCroftonConst_tendsto_zero: c_n -> 0 as n -> infinity (proved via even/odd subsequence squeeze)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The **Cauchy-Crofton formula** has a rich history spanning two centuries of integral geometry. Augustin-Louis Cauchy (1789–1857) gave early versions in 1832 and 1841, computing the 'measure of projections' of a curve. Morgan Crofton (1826–1915) put this on a firm probabilistic footing in 1868, interpreting Cauchy's formula as the expected number of intersections with a random line — now a cornerstone of geometric probability.\n\nBuffon's original needle problem (1733) asked: if a needle of length $L$ is dropped on a floor with parallel lines spaced $d$ apart, what is the probability it crosses a line? The answer $p = 2L/(\\pi d)$ can be seen as the 2D Cauchy-Crofton formula: $E[\\text{crossings}] = c_2 \\cdot L/d$ with $c_2 = 2/\\pi$. Barbier (1860) extended this to smooth curves: any convex curve of perimeter $L$ crosses a random line grid with spacing $d$ an average of $2L/(\\pi d)$ times.\n\nThe **n-dimensional generalization** requires the sphere surface areas $\\sigma_k = 2\\pi^{(k+1)/2}/\\Gamma((k+1)/2)$: $\\sigma_0 = 2$ (0-sphere = two points), $\\sigma_1 = 2\\pi$ (circle), $\\sigma_2 = 4\\pi$ (sphere surface). The dimensional constant becomes $c_n = 2\\sigma_{n-2}/((n-1)\\sigma_{n-1})$, reflecting the ratio of $(n-2)$-sphere and $(n-1)$-sphere surface areas. At $n=2$: $c_2 = 2\\cdot 2/(1\\cdot 2\\pi) = 2/\\pi$, recovering Buffon-Barbier.\n\nLuis Santaló's *Integral Geometry and Geometric Probability* (1976) gives the definitive modern treatment, connecting Cauchy-Crofton to kinematic formulas, mixed volumes, and Hadwiger's theorem on intrinsic volumes.",
+    "problemStatement": "Generalize the 2D Buffon-Barbier expected crossings formula to n dimensions. Define the Cauchy-Crofton constant c_n, prove it gives the correct formula E[crossings] = c_n * L / d, and verify that c_2 = 2/pi recovers the classical 2D result.",
+    "proofStrategy": "**Part I** (lines 36-100): Defines sphere surface area sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) using Mathlib's Gamma function. Proves specific values sigma_0 = 2, sigma_1 = 2*pi, sigma_2 = 4*pi using Gamma computations (Gamma_one_half_eq, Gamma_add_one).\n\n**Part II** (lines 102-140): Defines the Cauchy-Crofton constant c_n = 2*sigma_{n-2}/((n-1)*sigma_{n-1}). Computes c_2 = 2/pi and c_3 = 1/2 by substituting the sphere area values.\n\n**Part III** (lines 142-165): Axiomatizes the angular averaging identity on RP^{n-1} via AngularAverageData structure. The key property: the average of |<v, omega>| over hyperplane normals equals sigma_{n-2}/(n-1) * ||v||.\n\n**Parts IV-VI** (lines 167-255): Proves the n-dimensional expected crossings formula, linearity, scaling, and dimensional specializations. Verifies n=2 gives 2L/(pi*d), n=3 gives L/(2d). Proves the sphere area recurrence and the unit circle crossing count.",
+    "keyInsights": [
+      "**Dimension-dependent crossing constant**: c_n = 2*sigma_{n-2}/((n-1)*sigma_{n-1}) decreases as n grows: c_2 = 2/pi ~ 0.637, c_3 = 1/2, c_4 = 4/(3*pi) ~ 0.424. In higher dimensions, random hyperplanes are 'less likely' to cross a curve, geometrically because most directions are perpendicular to the curve.",
+      "**Sphere surface areas via Gamma**: The formula sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) unifies diverse geometric constants: sigma_0 = 2 (two points), sigma_1 = 2*pi (circle), sigma_2 = 4*pi (sphere). The Gamma function recurrence gives sigma_n = 2*pi/(n-1) * sigma_{n-2}.",
+      "**The angular average is the bridge**: The integral geometry formula reduces to a single analytic identity: the average of |<v, omega>| over the projective sphere. In 2D this is the integral from the parent proof: integral_0^pi |sin(theta + c)| dtheta = 2. In n dimensions, the constant 2 generalizes to sigma_{n-2}/(n-1).",
+      "**Unit circle sanity check**: A unit circle (perimeter 2*pi) crossing a line grid with unit spacing should cross 4 times on average (2 entries + 2 exits). The formula gives c_2 * 2*pi / 1 = (2/pi) * 2*pi = 4.",
+      "**Sphere area recurrence proves the dimension ladder**: `sphereArea_recurrence` proves sigma_n = 2*pi/(n-1) * sigma_{n-2} using the Gamma function identity Gamma((n+1)/2) = ((n-1)/2) * Gamma((n-1)/2). The proof chains `Gamma_add_one`, `rpow_add`, `push_cast`, and `omega` — a non-trivial mix of analytic and algebraic reasoning. This recurrence is the key to computing c_n for all n: c_4 = 4/(3*pi), c_5 = 3/8, c_6 = 16/(15*pi), and the limit c_n → 0 as n → ∞ is proved via even/odd subsequence squeeze bounds using the recurrence c_{n+2} = c_n * n/(n+1)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring: generalizes the 2D Buffon-Barbier formula to curves in ℝⁿ crossing random hyperplane grids, E[crossings] = c_n·L/d with c_n = 2σ_{n-2}/((n-1)σ_{n-1}); lists the six main results and references (Cauchy, Crofton, Santaló). Imports Mathlib, opens Real/MeasureTheory, declares the CauchyCrofton namespace.",
+      "mathContext": "$E[\\text{crossings}] = c_n \\cdot L / d$ with $c_n = \\frac{2\\sigma_{n-2}}{(n-1)\\sigma_{n-1}}$."
+    },
+    {
+      "id": "sphere-area",
+      "title": "Part I: Sphere Surface Area",
+      "startLine": 33,
+      "endLine": 144,
+      "summary": "Defines sphereArea(n) = 2π^{(n+1)/2}/Γ((n+1)/2) and proves positivity plus the explicit values σ_0=2, σ_1=2π, σ_2=4π, σ_3=2π², σ_4=8π²/3, σ_5=π³. Also defines unitBallVolume and its positivity.",
+      "mathContext": "$\\sigma_n = 2\\pi^{(n+1)/2}/\\Gamma((n+1)/2)$; explicit values $\\sigma_0=2,\\sigma_1=2\\pi,\\sigma_2=4\\pi,\\sigma_3=2\\pi^2,\\sigma_4=8\\pi^2/3,\\sigma_5=\\pi^3$."
+    },
+    {
+      "id": "cauchy-crofton-const",
+      "title": "Part II: The Cauchy–Crofton Constant",
+      "startLine": 145,
+      "endLine": 226,
+      "summary": "Defines cauchyCroftonConst(n) = 2σ_{n-2}/((n-1)σ_{n-1}) and computes c_2=2/π, c_3=1/2, c_4=4/(3π), c_5=3/8, c_6=16/(15π), plus positivity for n ≥ 2.",
+      "mathContext": "$c_n = \\frac{2\\sigma_{n-2}}{(n-1)\\sigma_{n-1}}$; $c_2=2/\\pi,\\,c_3=1/2,\\,c_4=4/(3\\pi),\\,c_5=3/8,\\,c_6=16/(15\\pi)$."
+    },
+    {
+      "id": "angular-average",
+      "title": "Part III: Angular Averaging on the Projective Sphere (Axiomatized)",
+      "startLine": 227,
+      "endLine": 248,
+      "summary": "AngularAverageData structure packaging the sphere-integral identity Mathlib lacks: fields angularAvg (maps ‖v‖ to the average of |⟨v,ω⟩| over RP^{n-1}), angularAvg_eq (proportional to ‖v‖ with constant σ_{n-2}/(n-1)), and angularAvg_nonneg.",
+      "mathContext": "$\\int_{\\text{RP}^{n-1}} |\\langle v, \\omega \\rangle| d\\omega = \\frac{\\sigma_{n-2}}{n-1} \\|v\\|$, encoded as a structure carrying the identity as a hypothesis field."
+    },
+    {
+      "id": "expected-crossings-formula",
+      "title": "Part IV: The n-Dimensional Cauchy–Crofton Formula",
+      "startLine": 249,
+      "endLine": 320,
+      "summary": "Defines expectedCrossings(L,d) = c_n·L/d and proves expectedCrossings_eq_angularAvg, the explicit dim-2/3/4 values (2L/(πd), L/(2d), 4L/(3πd)), linearity in arc length (L₁+L₂), and inverse scaling in grid spacing (λd ↦ crossings/λ).",
+      "mathContext": "$E[\\text{crossings}] = c_n \\cdot L / d$. Linearity: $E[L_1+L_2]=E[L_1]+E[L_2]$. Scaling: $E[L,\\lambda d]=E[L,d]/\\lambda$."
+    },
+    {
+      "id": "dimension-ladder",
+      "title": "Part V: The Dimension Ladder",
+      "startLine": 321,
+      "endLine": 345,
+      "summary": "sphereArea_recurrence: σ_n = 2π/(n-1)·σ_{n-2}, proved via the Gamma recurrence Γ((n+1)/2) = (n-1)/2·Γ((n-1)/2), connecting consecutive sphere areas and hence the dimension ladder for c_n.",
+      "mathContext": "$\\sigma_n = \\frac{2\\pi}{n-1}\\sigma_{n-2}$ via $\\Gamma((n+1)/2) = \\frac{n-1}{2}\\Gamma((n-1)/2)$."
+    },
+    {
+      "id": "consistency-check",
+      "title": "Part VI: Consistency Check — Recovering 2D from General Formula",
+      "startLine": 346,
+      "endLine": 568,
+      "summary": "angular_constant_dim2 (σ_0/σ_1 recovers the 2D constant), unit_circle_crossings (a unit circle crosses 4 times), cauchyCrofton_le_one_dim2 (c_2 ≤ 1 via π > 3), cauchyCrofton_product/cauchyCrofton_ratio, and cauchyCroftonConst_tendsto_zero (c_n → 0 as n → ∞), proved via the private recurrence and even/odd squared-bound subsequence squeeze.",
+      "mathContext": "Recovers $c_2 = 2/\\pi$ as the $n=2$ case; $c_2 \\leq 1$; and $c_n \\to 0$ as $n \\to \\infty$ via the recurrence $c_{n+2} = c_n \\cdot n/(n+1)$ and an even/odd subsequence squeeze."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Cauchy-Crofton formula is axiomatized for n dimensions, generalizing the 2D Buffon-Barbier result. All sorries are eliminated: cauchyCroftonConst_tendsto_zero is proved via even/odd subsequence squeeze bounds using the recurrence c_{n+2} = c_n * n/(n+1). The remaining 2 axioms encode the angular averaging identity on RP^{n-1}.",
+    "implications": "This formalization provides the dimensional framework for integral geometry in Lean. The angular averaging identity, once proved from sphere integration theory (Haar measure on S^{n-1}), would reduce the axiom count to 0. The sphere surface area computations are independently useful for geometric measure theory applications.",
+    "openQuestions": [
+      "Prove the angular averaging identity from sphere measure theory (requires Haar measure on S^{n-1})",
+      "Formalize the Cauchy-Crofton formula for surfaces in R^n (codimension > 1 intersections)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CauchyCrofton",
+    "lineCount": 568,
+    "axiomCount": 0,
+    "theoremCount": 30,
+    "definitionCount": 5,
+    "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Generalizes the 2D Buffon-Barbier formula to n dimensions"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "related",
+      "description": "The original Buffon's needle problem; the n=2 case of Cauchy-Crofton"
+    },
+    {
+      "targetId": "area-of-circle-oq-02",
+      "relationship": "related",
+      "description": "N-ball volumes use the same Gamma function framework as sphere surface areas"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,182 @@
+[
+  {
+    "id": "erdos-825-header",
+    "proofId": "erdos-825",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "title": "Problem Overview",
+    "content": "Erdős Problem 825 asks whether there exists an absolute constant C > 2 such that every integer n with σ(n) > Cn is semiperfect. A weird number is abundant but not semiperfect; the problem asks if weird numbers have bounded abundancy.",
+    "mathContext": "This connects the divisor-sum function σ(n) = Σ_{d|n} d to subset-sum representability. The abundancy index σ(n)/n measures how 'divisor-rich' n is. The conjecture predicts a phase transition: beyond some threshold abundancy, the subset-sum problem on proper divisors always has a solution equalling n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisor-sum",
+      "weird-numbers",
+      "abundancy",
+      "subset-sum"
+    ],
+    "prerequisites": [
+      "Divisor function",
+      "Abundant numbers",
+      "Subset-sum problem"
+    ]
+  },
+  {
+    "id": "erdos-825-divisor-defs",
+    "proofId": "erdos-825",
+    "type": "definition",
+    "range": {
+      "startLine": 28,
+      "endLine": 37
+    },
+    "title": "Divisor Sum and Proper Divisors",
+    "content": "**`divisorSum n`** computes σ(n) by summing all divisors. **`properDivisors n`** is the set of divisors strictly less than n. **`IsAbundant n`** holds when σ(n) > 2n, i.e., the sum of proper divisors exceeds n.",
+    "mathContext": "The abundancy condition σ(n) > 2n is equivalent to σ*(n) > n where σ*(n) is the sum of proper divisors. About 25% of integers are abundant. The density of abundant numbers that are also semiperfect is about 24.96%.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sigma-function",
+      "abundant-numbers",
+      "number-theory"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.sum",
+      "Divisibility"
+    ]
+  },
+  {
+    "id": "erdos-825-semiperfect",
+    "proofId": "erdos-825",
+    "type": "definition",
+    "range": {
+      "startLine": 41,
+      "endLine": 43
+    },
+    "title": "Semiperfect Number",
+    "content": "**`IsSemiperfect n`** means n equals the sum of some subset of its proper divisors. This is a subset-sum problem: can we pick divisors d₁, ..., dₖ < n with d₁ + ··· + dₖ = n?",
+    "mathContext": "Semiperfect numbers include all perfect numbers (where ALL proper divisors sum to n) and many abundant numbers. The key difficulty is that subset-sum is NP-complete in general, so proving semiperfectness requires structural arguments, not just computation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset-sum",
+      "perfect-numbers",
+      "NP-completeness"
+    ],
+    "prerequisites": [
+      "properDivisors",
+      "Finset subset",
+      "Finset.sum"
+    ]
+  },
+  {
+    "id": "erdos-825-weird",
+    "proofId": "erdos-825",
+    "type": "definition",
+    "range": {
+      "startLine": 45,
+      "endLine": 46
+    },
+    "title": "Weird Number",
+    "content": "**`IsWeird n`** means n is abundant (σ(n) > 2n) but not semiperfect. Weird numbers are rare: the smallest is 70, and their density among the integers is very small.",
+    "mathContext": "Despite being abundant, weird numbers resist expression as a subset sum of their own divisors. The sequence begins 70, 836, 4030, 5830, 7192, ... All known weird numbers are even.",
+    "significance": "key",
+    "relatedConcepts": [
+      "weird-numbers",
+      "rare-sequences"
+    ],
+    "prerequisites": [
+      "IsAbundant",
+      "IsSemiperfect"
+    ]
+  },
+  {
+    "id": "erdos-825-examples",
+    "proofId": "erdos-825",
+    "type": "concept",
+    "range": {
+      "startLine": 56,
+      "endLine": 60
+    },
+    "title": "Concrete Example: 70 is Weird",
+    "content": "70 is the smallest weird number with σ(70) = 144. Its proper divisors are {1, 2, 5, 7, 10, 14, 35}, summing to 74 > 70, but no subset sums to exactly 70.",
+    "mathContext": "One can verify exhaustively: the 2⁷ = 128 subsets of {1,2,5,7,10,14,35} achieve sums {0,1,2,...,74} \\ {70}. The abundancy of 70 is 144/70 ≈ 2.057, just barely above 2.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "smallest-weird",
+      "exhaustive-check"
+    ],
+    "prerequisites": [
+      "IsWeird",
+      "divisorSum"
+    ]
+  },
+  {
+    "id": "erdos-825-lower",
+    "proofId": "erdos-825",
+    "type": "concept",
+    "range": {
+      "startLine": 63,
+      "endLine": 68
+    },
+    "title": "Lower Bound: C Must Exceed 2",
+    "content": "Any valid constant C must satisfy C > 2. The witness is n = 70: σ(70) = 144 > 140 = 2·70, yet 70 is weird (not semiperfect). So C = 2 fails.",
+    "mathContext": "This is a sharp necessary condition. The question becomes: how large must C be? The conjectured answer is C = 3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower-bound",
+      "counterexample"
+    ],
+    "prerequisites": [
+      "weird_70",
+      "sigma_70",
+      "IsSemiperfect"
+    ]
+  },
+  {
+    "id": "erdos-825-odd-weird",
+    "proofId": "erdos-825",
+    "type": "concept",
+    "range": {
+      "startLine": 70,
+      "endLine": 80
+    },
+    "title": "Odd Weird Numbers Connection",
+    "content": "No odd weird number is known up to 10²¹ (Erdős Problem #470). If no odd weird numbers exist, then all weird numbers have even structure forcing abundancy < 4, which would imply C = 3 works.",
+    "mathContext": "Even abundant numbers have abundancy at most 2·σ(n/2)/n + some correction. The absence of odd weird numbers would constrain the abundancy of all weird numbers, connecting two Erdős problems.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "odd-weird",
+      "erdos-470",
+      "open-problem"
+    ],
+    "prerequisites": [
+      "IsWeird",
+      "abundancy",
+      "Even/odd classification"
+    ]
+  },
+  {
+    "id": "erdos-825-conjecture",
+    "proofId": "erdos-825",
+    "type": "insight",
+    "range": {
+      "startLine": 83,
+      "endLine": 94
+    },
+    "title": "Erdős Problem 825 and C = 3 Strengthening",
+    "content": "**Main conjecture**: ∃ C > 2 such that σ(n) > Cn implies n is semiperfect. The strengthened version asserts C = 3 suffices. Both formulations are captured: the general existential and the specific C = 3 version.",
+    "mathContext": "Erdős offered a $25 prize for this problem. It remains open. The C = 3 version would follow from proving that no weird number has abundancy ≥ 3, which would follow from proving no odd weird numbers exist.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos-prize",
+      "open-problem",
+      "abundancy-threshold"
+    ],
+    "prerequisites": [
+      "ErdosProblem825",
+      "necessary_lower_bound",
+      "odd_weird_abundancy_bound"
+    ]
+  }
+]

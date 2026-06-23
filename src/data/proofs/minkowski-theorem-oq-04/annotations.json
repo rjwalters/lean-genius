@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ann-mk04-header",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 7, "endLine": 62 },
+    "type": "concept",
+    "title": "Blichfeldt's Strengthening of Minkowski",
+    "content": "Hans Blichfeldt's 1914 theorem replaces Minkowski's geometric hypotheses (convex, centrally symmetric) with a single measure-theoretic one: vol(S) > k already forces k+1 points of S that are pairwise ℤⁿ-congruent. The proof is a fundamental-domain pigeonhole, flexible enough that Minkowski's classical theorem falls out as a corollary via the half-scaling T = (1/2)·S. This formalization is axiom-free (status `verified`): the module docstring records that all four originally-stated axioms were eliminated across sessions S1–S14 — the k=1 case now calls Mathlib's `IsAddFundamentalDomain.exists_ne_zero_vadd_eq` directly, and the general-k case `blichfeldt_general` was promoted from axiom to a fully proved theorem (PRs #17298/#17329).",
+    "mathContext": "**k=1**: $\\mathrm{vol}(S) > 1 \\Rightarrow \\exists\\, x \\ne y \\in S,\\ x - y \\in \\mathbb{Z}^n$.\n\n**general**: $\\mathrm{vol}(S) > k \\Rightarrow \\exists\\ k{+}1$ distinct $x_0,\\dots,x_k \\in S$ with all $x_i - x_j \\in \\mathbb{Z}^n$.",
+    "significance": "key",
+    "relatedConcepts": ["geometry of numbers", "Minkowski's lattice point theorem", "fundamental domain", "Lebesgue measure", "pigeonhole principle"],
+    "prerequisites": ["Lebesgue measure on ℝⁿ", "integer lattice ℤⁿ", "fundamental domain F = [0,1)ⁿ"]
+  },
+  {
+    "id": "ann-mk04-infrastructure",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 81, "endLine": 117 },
+    "type": "theorem",
+    "title": "Measure-Theory Infrastructure (Proved, Not Axioms)",
+    "content": "Two proved helper theorems (both were axioms in earlier sessions). `blichfeldt_proj_measurable`: the slice {z ∈ F | z+v ∈ S} is measurable, since translation z ↦ z+v is measurable (`measurable_id.add_const`) so the preimage is measurable, intersected with the measurable fundamental domain. `blichfeldt_disj_bound`: pairwise-disjoint measurable subsets of F have total volume ≤ 1, via `measure_iUnion` (σ-additivity) + `measure_mono` against `stdLattice_covolume = 1`. These are kept as reusable building blocks for the general-k covering-count argument.",
+    "mathContext": "$\\{z \\in F \\mid z+v \\in S\\} = F \\cap (\\cdot + v)^{-1}(S)$ is measurable; $\\sum'_v \\mathrm{vol}(A_v) = \\mathrm{vol}(\\bigcup_v A_v) \\le \\mathrm{vol}(F) = 1$ for pairwise-disjoint $A_v \\subseteq F$.",
+    "significance": "supporting",
+    "relatedConcepts": ["measurable preimage", "σ-additivity", "monotonicity of measure", "covolume of a lattice"],
+    "prerequisites": ["σ-algebra of measurable sets", "Lebesgue measure of [0,1)ⁿ"]
+  },
+  {
+    "id": "ann-mk04-basic",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 123, "endLine": 166 },
+    "type": "theorem",
+    "title": "Blichfeldt's Basic Theorem k=1 (Proved, Axiom-Free)",
+    "content": "`blichfeldt_basic`: a measurable S ⊆ ℝⁿ with vol(S) > 1 contains two distinct points x, y with x − y ∈ ℤⁿ. The current proof is a direct application of Mathlib's `MeasureTheory.IsAddFundamentalDomain.exists_ne_zero_vadd_eq` to the standard ℤⁿ-fundamental-domain (covolume 1): a set of volume > 1 cannot avoid all lattice translates, yielding x, y ∈ S with g +ᵥ x = y for some g ≠ 0; the `g +ᵥ x = y` AddSubgroup action is bridged to (g:ℝⁿ)+x = y via `AddSubgroup.vadd_def`/`vadd_eq_add`. The `[NeZero n]` instance rules out the vacuous ℝ⁰ case.",
+    "mathContext": "$\\mathrm{vol}(S) > 1 \\Rightarrow \\exists\\, x, y \\in S,\\ x \\ne y,\\ x - y \\in \\mathbb{Z}^n$. Earlier proofs built the pigeonhole by hand from a `blichfeldt_volume_partition` axiom (now eliminated).",
+    "significance": "critical",
+    "relatedConcepts": ["IsAddFundamentalDomain.exists_ne_zero_vadd_eq", "fundamental domain pigeonhole", "stdLattice", "covolume 1"],
+    "prerequisites": ["Lebesgue measure", "additive fundamental domain", "ℤⁿ as additive subgroup"]
+  },
+  {
+    "id": "ann-mk04-covering-integral",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 187, "endLine": 323 },
+    "type": "theorem",
+    "title": "Covering-Count Integral Identity",
+    "content": "The analytic core for the general-k case. `volume_eq_setLIntegral_indicator_tsum` proves the covering-count identity ∫⁻ z in F, c(z) dz = vol(S), where c(z) = ∑' v∈ℤⁿ, 1_S((v:ℝⁿ)+z) counts how many lattice translates of z land in S. It follows from Mathlib's `IsAddFundamentalDomain.lintegral_eq_tsum''` plus Tonelli (to swap the ℕ∞-valued sum and integral). `volume_eq_setLIntegral_indicator_tsum_lattice` is the basis-parametric variant for an arbitrary full-rank ℤ-lattice. This replaces the old 'averaging argument — currently axiomatized' with a proved identity.",
+    "mathContext": "$\\int_F c(z)\\, dz = \\sum_{v\\in\\mathbb{Z}^n} \\mathrm{vol}(S_v) = \\mathrm{vol}(S)$, with $c(z) = \\#\\{v : z+v \\in S\\}$ — averaging then forces $c(z) \\ge k+1$ somewhere when $\\mathrm{vol}(S) > k$.",
+    "significance": "key",
+    "relatedConcepts": ["covering function", "lintegral", "Tonelli's theorem", "IsAddFundamentalDomain.lintegral_eq_tsum", "ℕ∞-valued integration"],
+    "prerequisites": ["Lebesgue integration", "tsum of indicators", "fundamental domain integration"]
+  },
+  {
+    "id": "ann-mk04-general",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 309, "endLine": 457 },
+    "type": "theorem",
+    "title": "Blichfeldt's General Theorem (Proved via Path A Contrapose)",
+    "content": "`blichfeldt_general`: vol(S) > k yields k+1 pairwise ℤⁿ-congruent points — promoted from axiom to a fully proved theorem (S13/S14). The proof is a contrapositive in three moves. Move A: rewrite vol(S) as ∫_F c(z) dz via the covering-count identity. Move B: from the negation of the conclusion, derive the pointwise bound c(z) ≤ k, rewriting the tsum-of-indicators as the encard of the hitting set T(z) (`tsum_subtype` + `ENNReal.tsum_set_one`) and extracting a `Fin (k+1) → L` injection from the encard bound (`Set.toFinset_card` + `Fintype.equivFinOfCardEq`). Move C: integrate c(z) ≤ k over F (`setLIntegral_mono_ae` + `setLIntegral_const` + covolume 1) to get vol(S) ≤ k, contradicting the hypothesis.",
+    "mathContext": "$\\mathrm{vol}(S) > k \\Rightarrow \\exists$ injective $x : \\mathrm{Fin}(k+1) \\to S$ with all $x_i - x_j \\in \\mathbb{Z}^n$. Contradiction: $c(z) \\le k$ everywhere would give $\\mathrm{vol}(S) = \\int_F c \\le k$.",
+    "significance": "critical",
+    "relatedConcepts": ["contrapositive proof", "covering count", "Set.encard", "Fintype.equivFinOfCardEq", "averaging argument"],
+    "prerequisites": ["covering-count integral identity", "ENNReal integration", "finite cardinality extraction"]
+  },
+  {
+    "id": "ann-mk04-general-lattice",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 441, "endLine": 579 },
+    "type": "theorem",
+    "title": "General Theorem for an Arbitrary Full-Rank Lattice",
+    "content": "`blichfeldt_general_lattice` generalizes from the standard lattice ℤⁿ to any full-rank ℤ-lattice L: if vol(S) > k · covol(L) then S has k+1 points pairwise congruent mod L. `blichfeldt_basic_from_general` then recovers the k=1 case from the general theorem (a consistency cross-check, extracting two points indexed by `Fin 2`). The lattice-parametric form is the version most useful downstream, where lattices arise with covolume ≠ 1.",
+    "mathContext": "$\\mathrm{vol}(S) > k\\cdot\\mathrm{covol}(L) \\Rightarrow \\exists\\ k{+}1$ points of $S$ pairwise congruent mod $L$.",
+    "significance": "key",
+    "relatedConcepts": ["full-rank ℤ-lattice", "covolume", "ZLattice", "lattice-parametric generalization"],
+    "prerequisites": ["blichfeldt_general", "ZLattice covolume", "fundamental domain of a lattice"]
+  },
+  {
+    "id": "ann-mk04-corollaries",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 580, "endLine": 738 },
+    "type": "theorem",
+    "title": "Concrete and Reformulated Blichfeldt Corollaries",
+    "content": "Named specializations and alternative phrasings, all proved. `blichfeldt_three_points` (k=2: vol > 2 ⇒ 3 congruent points) and `blichfeldt_four_points` (k=3: vol > 3 ⇒ 4 points) instantiate the general theorem at small k. `blichfeldt_general_pairwise` restates the conclusion with explicit nonzero pairwise differences (the classical 'there exist distinct points whose differences are nonzero lattice vectors' phrasing). `blichfeldt_general_finset` packages the k+1 witnesses as a `Finset` of cardinality k+1 rather than a `Fin (k+1)` indexing — the form convenient for counting applications.",
+    "mathContext": "$\\mathrm{vol}(S) > 2 \\Rightarrow 3$ congruent points; $\\mathrm{vol}(S) > 3 \\Rightarrow 4$; pairwise/Finset forms repackage the same $k{+}1$ witnesses.",
+    "significance": "supporting",
+    "relatedConcepts": ["specialization", "Finset cardinality", "pairwise distinct", "Fin (k+1) indexing"],
+    "prerequisites": ["blichfeldt_general", "Finset.card", "Fin / Fintype"]
+  },
+  {
+    "id": "ann-mk04-minkowski",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 754, "endLine": 856 },
+    "type": "theorem",
+    "title": "Minkowski Recovered via Half-Scaling (Sorry-Free)",
+    "content": "`minkowski_from_blichfeldt` derives Minkowski's classical lattice-point theorem from `blichfeldt_basic`, with 0 sorries (was 2). Set T = (1/2)·S; then vol(T) = vol(S)/2ⁿ > 1 when vol(S) > 2ⁿ, so Blichfeldt gives a ≠ b ∈ T with a − b ∈ ℤⁿ. Writing a = x₀/2, b = y₀/2: central symmetry of S gives −y₀ ∈ S, and convexity gives the midpoint (x₀ + (−y₀))/2 = a − b ∈ S — a nonzero lattice point. The two formerly-sorried facts are now proved: measurability of T (rewrite as preimage of S under the doubling map) and the volume identity (`Measure.addHaar_smul` + ENNReal arithmetic on (2⁻¹)ⁿ·2ⁿ = 1). Convexity converting a *difference* in T into a *single element* of S is precisely why Blichfeldt is strictly stronger than Minkowski.",
+    "mathContext": "$\\mathrm{vol}(S) > 2^n,\\ S$ convex & centrally symmetric $\\Rightarrow \\exists\\, 0 \\ne p \\in S \\cap \\mathbb{Z}^n$, via $T = \\tfrac12 S$ and $a - b = \\tfrac12(x_0 + (-y_0)) \\in S$.",
+    "significance": "critical",
+    "relatedConcepts": ["Minkowski's lattice point theorem", "central symmetry", "convexity", "Measure.addHaar_smul", "half-scaling"],
+    "prerequisites": ["blichfeldt_basic", "convex midpoint", "Haar measure scaling"]
+  },
+  {
+    "id": "ann-mk04-minkowski-general",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 857, "endLine": 1108 },
+    "type": "theorem",
+    "title": "Generalized Minkowski (k+1-Point Forms)",
+    "content": "The k+1-point generalizations of Minkowski, all proved by combining `blichfeldt_general` with the half-scaling and convexity/symmetry extraction. `minkowski_general_k`: a convex centrally-symmetric S with vol(S) > k·2ⁿ contains k+1 lattice points (the standard counting strengthening). `minkowski_general_k_pairwise` states it with explicit nonzero pairwise differences, and `minkowski_general_k_finset` packages the witnesses as a Finset of size k+1. `minkowski_four_points` is the concrete k=3 instance. These mirror the Blichfeldt corollary family, transported through the half-scaling bridge.",
+    "mathContext": "$S$ convex, centrally symmetric, $\\mathrm{vol}(S) > k\\cdot 2^n \\Rightarrow |S \\cap \\mathbb{Z}^n| \\ge k+1$ (counting form of Minkowski).",
+    "significance": "key",
+    "relatedConcepts": ["generalized Minkowski", "counting lattice points", "Finset form", "central symmetry + convexity"],
+    "prerequisites": ["blichfeldt_general", "minkowski_from_blichfeldt", "convexity"]
+  }
+]

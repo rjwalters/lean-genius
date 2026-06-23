@@ -1,0 +1,131 @@
+[
+  {
+    "id": "ann-e962-header",
+    "proofId": "erdos-962",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #962: Consecutive Integers with Large Prime Divisors**\n\nLet k(n) be the maximal k such that there exists m ≤ n where each of m+1, ..., m+k is divisible by at least one prime greater than k.\n\n**Known Results:**\n- Lower: k(n) ≥ exp((1/√2 - o(1))√(log n · log log n)) (Tang)\n- Upper: k(n) ≤ (1 + o(1))√n (Tao)\n\n**Conjecture (OPEN):** k(n) = o(n^ε) for all ε > 0",
+    "mathContext": "This problem connects prime distribution theory with divisibility patterns of consecutive integers. The gap between known bounds spans from subpolynomial to polynomial growth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Largest prime factor",
+      "Smooth numbers",
+      "Sieve methods"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e962-defs",
+    "proofId": "erdos-962",
+    "range": {
+      "startLine": 38,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Core Definitions",
+    "content": "**lpf(n):** Largest prime factor of n, or 0 if n ≤ 1. Uses Mathlib's factorization.\n\n**HasLargePrimeFactor(n, k):** True if n has at least one prime factor > k. This is the central property for valid intervals.",
+    "mathContext": "The largest prime factor function and its comparison to k are the building blocks. HasLargePrimeFactor n k is equivalent to ¬IsSmooth n k for n > 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prime factorization",
+      "Smooth numbers"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e962-kfunc",
+    "proofId": "erdos-962",
+    "range": {
+      "startLine": 56,
+      "endLine": 100
+    },
+    "type": "definition",
+    "title": "The k(n) Function and Properties",
+    "content": "**IsValidInterval(m, k):** Every integer in {m+1,...,m+k} has a prime factor > k.\n\n**k_func(n):** Defined as sSup{k : ∃ m ≤ n, IsValidInterval m k} — the longest valid interval below n.\n\n**Properties (axiomatized):**\n- k_bounded: k(n) ≤ n\n- k_monotone: k(n) ≤ k(n+1)\n- k_pos: k(n) ≥ 1 for n ≥ 2\n- k_small_values: k(10) ≤ 5, k(100) ≤ 15",
+    "mathContext": "The function k(n) measures how long intervals of non-smooth consecutive integers can be. Its growth rate is the central question of Problem #962.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Supremum",
+      "Extremal combinatorics",
+      "Integer intervals"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e962-erdoslower",
+    "proofId": "erdos-962",
+    "range": {
+      "startLine": 102,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Erdős's Original Lower Bound (1965)",
+    "content": "**erdos_lower_bound:** For any ε > 0, ∃ C > 0 such that eventually k(n) ≥ C·exp((log n)^{1/2-ε}).\n\nErdős used sieve methods to show small primes can 'miss' long intervals. This was the first non-trivial lower bound, establishing k(n) grows faster than any polynomial in log n.",
+    "mathContext": "Erdős presented this at a 1965 symposium on extremal problems in number theory. The sieve approach remains the foundation for all subsequent lower bound improvements.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sieve methods",
+      "Exponential bounds"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e962-tang",
+    "proofId": "erdos-962",
+    "range": {
+      "startLine": 116,
+      "endLine": 135
+    },
+    "type": "concept",
+    "title": "Tang's Improved Lower Bound",
+    "content": "**tang_lower_bound:** For any ε > 0, eventually k(n) ≥ exp((1/√2-ε)·√(log n · log log n)).\n\n**tangConstant = 1/√2 ≈ 0.707** arises from optimizing over prime sieves.\n\nThis bound is subpolynomial: exp(√(log n · log log n)) = o(n^ε) for any ε > 0. It represents the current state of the art for lower bounds.",
+    "mathContext": "Tang's improvement over Erdős's original bound is significant — the exponent changes from (log n)^{1/2-ε} to √(log n · log log n), which grows much faster.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Optimized sieves",
+      "Subpolynomial growth"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e962-tao",
+    "proofId": "erdos-962",
+    "range": {
+      "startLine": 137,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Tao's Upper Bound",
+    "content": "**tao_upper_bound:** For any ε > 0, eventually k(n) ≤ (1+ε)·√n.\n\n**Pigeonhole argument:** If k > √n, among primes p ≤ k, by pigeonhole some p divides two numbers in {m+1,...,m+k}. Since those numbers are at distance < k ≤ p·... this contradicts each having a prime factor > k.\n\nTao provided this elegant argument in a comment on erdosproblems.com.",
+    "mathContext": "This was the first non-trivial upper bound and uses only elementary counting. The gap between √n (polynomial) and exp(√(log n · log log n)) (subpolynomial) is enormous.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pigeonhole principle",
+      "Elementary bounds"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e962-summary",
+    "proofId": "erdos-962",
+    "range": {
+      "startLine": 183,
+      "endLine": 192
+    },
+    "type": "concept",
+    "title": "Summary Theorems",
+    "content": "**erdos_962_summary** and **erdos_962:** Combine Tang's lower bound and Tao's upper bound into a single conjunction, proved by ⟨tang_lower_bound, tao_upper_bound⟩.\n\nThe formalization captures the known bounds while the open conjecture ErdosConjecture is defined as a Prop but not asserted as an axiom, reflecting its unsolved status.",
+    "mathContext": "The summary represents the state of knowledge: bounds established, but the exact growth rate of k(n) remains unknown. Closing the gap is one of the outstanding problems in extremal number theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Solved bounds",
+      "Open conjecture",
+      "State of the art"
+    ],
+    "prerequisites": []
+  }
+]

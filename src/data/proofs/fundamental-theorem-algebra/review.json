@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "proofId": "fundamental-theorem-algebra",
+  "reviewDate": "2026-03-24T12:00:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "B-",
+    "oneLiner": "Honest Mathlib curation with excellent pedagogy, undermined by phantom theorem names in overview.text and several metadata inaccuracies.",
+    "tier": "B",
+    "tierJustification": "Core theorem (fundamental_theorem_of_algebra) is a one-line call to Mathlib's Complex.exists_root. Corollaries (splits_over_complex, card_roots_eq_degree, monic_prod_roots) are thin wrappers around Mathlib. The file's value lies in pedagogical arrangement, not original proof work. no_roots_implies_constant is the only theorem with substantive multi-step reasoning."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json assumptions field (line 55)",
+      "finding": "The assumptions field is exemplary: 'The core existence result delegates to Mathlib's Complex.exists_root... Original contributions are pedagogical wrappers composing Mathlib's IsAlgClosed infrastructure.' This is exactly the right framing — honest about what Mathlib provides and what the file adds.",
+      "recommendation": "Preserve this as a model for how to write assumptions fields for Mathlib-based proofs."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json overview.historicalContext",
+      "finding": "The historical context is rich, accurate, and well-proportioned. It traces FTA from Girard (1629) through d'Alembert (1746), Euler (1749), Lagrange (1772), Laplace (1795), to Gauss (1799, 1816, 1816, 1849). The point about every proof requiring analysis is correctly stated and important.",
+      "recommendation": "Preserve. This is gallery-quality mathematical exposition."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "no_roots_implies_constant, lines 81-100",
+      "finding": "The most substantive original proof in the file. Multi-step reasoning with case analysis (p = 0 vs p ≠ 0), degree manipulation, and a clean by_contra structure. Genuinely demonstrates formal proof technique beyond wrapping Mathlib.",
+      "recommendation": "Highlight this more prominently as the file's strongest original contribution."
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "meta.json overview.text (line 61)",
+      "finding": "The overview.text references five theorem names that DO NOT EXIST in the Lean file: 'fta_exists_root' (actual: fundamental_theorem_of_algebra), 'polynomial_splits_over_complex' (actual: splits_over_complex), 'polynomial_factors_completely' (no single equivalent), 'fta_degree_two' (actual: quadratic_has_root), and 'fta_linear' (DOES NOT EXIST AT ALL). This text appears to have been written about a different version of the file.",
+      "recommendation": "Rewrite overview.text to use the actual theorem names from the Lean source. Remove the reference to fta_linear entirely — there is no linear polynomial theorem in the file."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "meta.json leanFile.theoremCount (line 284)",
+      "finding": "Claims theoremCount: 4 but the file contains 6 named theorems: fundamental_theorem_of_algebra, no_roots_implies_constant, splits_over_complex, card_roots_eq_degree, monic_prod_roots, quadratic_has_root. Additionally there are 3 examples.",
+      "recommendation": "Update theoremCount to 6."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions (lines 39-44)",
+      "finding": "Lists card_roots_eq_degree and monic_prod_roots as 'original contributions,' but both are thin wrappers. card_roots_eq_degree (lines 132-140) calls Polynomial.natDegree_eq_card_roots then applies simp to clean up map_id (~6 lines). monic_prod_roots (lines 144-155) calls prod_multiset_X_sub_C_of_monic_of_roots_card_eq after identical setup. The assumptions field correctly calls these 'pedagogical wrappers' — the originalContributions list should match.",
+      "recommendation": "Either rename the list to 'contributions' (dropping 'original') or add qualifiers: 'card_roots_eq_degree - Mathlib wrapper adapting natDegree_eq_card_roots for ℂ[X]', 'monic_prod_roots - Mathlib wrapper for complete factorization over ℂ'. This brings the list in line with the honest assumptions field."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "annotations.json ann-monic-factorization range (line 121-123)",
+      "finding": "Annotation ann-monic-factorization claims range lines 102-110, but monic_prod_roots is at lines 144-155 in the Lean file. Similarly, ann-quadratic-case claims range lines 119-128, but the quadratic theorem is at lines 174-208. These ranges point to the wrong code.",
+      "recommendation": "Fix annotation ranges: ann-monic-factorization should be 144-155, ann-quadratic-case should be 174-208 (or remove it in favor of the correct ann-quadratic-theorem which already covers 174-209)."
+    },
+    {
+      "severity": "minor",
+      "category": "gap",
+      "location": "meta.json mathlibDependencies (lines 22-37)",
+      "finding": "Lists 3 Mathlib dependencies but omits Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq, which is used at line 155 and is the key theorem powering monic_prod_roots.",
+      "recommendation": "Add the missing dependency: {theorem: 'Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq', description: 'Monic polynomial equals product of root factors when root count equals degree', module: 'Mathlib.Algebra.Polynomial.Splits'}."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json sections line numbers",
+      "finding": "Section line numbers are shifted from the actual code. For example: 'mathlib-imports' says lines 24-33 but imports are lines 1-4; 'main-theorem' says lines 57-83 but the theorem spans lines 75-100; 'algebraic-closure' says lines 84-106 but the code is at lines 102-117.",
+      "recommendation": "Update section line numbers to match the current Lean file. Key boundaries: imports (1-4), namespace+examples (42-63), main theorem (65-100), algebraic closure (102-117), factorization (119-155), commentary (157-172), quadratic (174-210)."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json overview.proofStrategy (line 62)",
+      "finding": "Describes the 5-step Liouville proof strategy as if it were done in this file, but the actual proof is a single line: 'Complex.exists_root hp'. The strategy describes what happens inside Mathlib, not in this file.",
+      "recommendation": "Add a clarifying note: 'This is the strategy behind Mathlib's Complex.exists_root, which this file invokes directly. The formalization here provides the corollaries and pedagogical context.'"
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json overview.text mentions '17 declarations'",
+      "finding": "Claims '17 declarations' but the file contains 6 theorems, 3 examples, 3 #check commands, and supporting comments/namespace = roughly 12-13 items depending on counting method. 17 is an overcount.",
+      "recommendation": "Verify declaration count and correct. The file has 6 theorems, 3 examples, and 3 #check lines."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Rewrite overview.text to use actual theorem names from the Lean source (fundamental_theorem_of_algebra, no_roots_implies_constant, splits_over_complex, card_roots_eq_degree, monic_prod_roots, quadratic_has_root). Remove all references to non-existent names (fta_exists_root, polynomial_splits_over_complex, polynomial_factors_completely, fta_degree_two, fta_linear).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Fix leanFile.theoremCount from 4 to 6. Fix section line numbers to match current Lean source. Fix annotation ranges for ann-monic-factorization (should be 144-155) and ann-quadratic-case (should be 174-208 or removed in favor of ann-quadratic-theorem).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Revise originalContributions list to match the honest framing in the assumptions field. Either rename to 'contributions' or add qualifiers acknowledging that card_roots_eq_degree and monic_prod_roots are Mathlib wrappers. Keep no_roots_implies_constant and quadratic_has_root as the items with genuine original proof work.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Add missing mathlibDependency: Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq (used at line 155). Add clarifying note to proofStrategy indicating it describes Mathlib's internal proof, not this file's content.",
+      "status": "resolved"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 5,
+    "originalityAccuracy": 6,
+    "completeness": 8,
+    "framingPrecision": 6,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 5,
+    "overall": 6.3
+  },
+  "suggestedBestFraming": "A pedagogical curation of the Fundamental Theorem of Algebra via Mathlib: the core theorem delegates to Complex.exists_root, while this file provides the contrapositive formulation, complete factorization corollaries, and a worked quadratic example with extensive historical exposition."
+}

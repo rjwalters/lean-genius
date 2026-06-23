@@ -1,0 +1,214 @@
+{
+  "id": "erdos-765",
+  "title": "Erdos Problem #765: Asymptotic Formula for ex(n; C4)",
+  "slug": "erdos-765",
+  "description": "Determine an asymptotic formula for ex(n; C4), the maximum number of edges in an n-vertex graph with no 4-cycle. Answer: ex(n; C4) ~ (1/2)n^{3/2}.",
+  "meta": {
+    "author": "Erdos-Klein (1938), Reiman (1958), Erdos-Renyi-Brown, Furedi (1983)",
+    "sourceUrl": "https://erdosproblems.com/765",
+    "date": "1938-1983",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos765Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "extremal-graph-theory",
+      "turan-numbers",
+      "projective-planes",
+      "solved",
+      "disproved-conjecture"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 765,
+    "erdosUrl": "https://erdosproblems.com/765",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-02-05",
+    "mathlib_version": "4.26.0",
+    "relatedProblems": [],
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.Basic",
+        "description": "Simple graph definitions and adjacency predicates",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Clique",
+        "description": "Clique and cycle detection infrastructure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "SimpleGraph.edgeFinset",
+        "description": "Edge counting for finite simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real power function for n^{3/2} and n^{1/2} expressions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for Reiman's bound 1/(2*sqrt(2))",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "hasFourCycle: formal 4-cycle definition with 6 distinctness and 4 adjacency conditions",
+      "isFourCycleFree: C4-free graph predicate (negation of hasFourCycle)",
+      "edgeCount: edge counting via G.edgeFinset.card",
+      "ex_C4 (axiom): extremal number for C4",
+      "projectivePlaneVertices: formula q^2 + q + 1 for projective plane size",
+      "asymptotic_ratio: ratio ex(n;C4)/n^{3/2} (noncomputable def)",
+      "Erdos-Klein O(n^{3/2}) upper bound (1938): documented in docstring only",
+      "Reiman bounds 1/(2*sqrt(2)) <= L <= 1/2 (1958): documented in docstring only",
+      "Projective plane lower bound via PG(2,q): documented in docstring only",
+      "asymptotic_formula (axiom): limit equals 1/2",
+      "erdos_765 (PROVED): main asymptotic result, direct from asymptotic_formula",
+      "Furedi exact result for q > 13 prime power (1983): documented in docstring only",
+      "Erdos refined upper bound with 1/4 coefficient: documented in docstring only",
+      "erdos_conjecture: definition of Erdos's refined conjecture",
+      "Ma-Yang disproof via positive-density counterexample (2023): documented in docstring only",
+      "is_B2_sequence: Sidon set / B2 sequence definition",
+      "fano_plane_example, pg23_example, pg24_example, pg25_example (4 PROVED): projective plane vertex counts",
+      "erdos_765_summary (PROVED): combines asymptotic formula and Fano plane example"
+    ],
+    "axiomCount": 2,
+    "lineCount": 215,
+    "assumptions": "2 axioms: ex_C4, asymptotic_formula. 0 sorries.",
+    "theoremCount": 6,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "**The Pre-Turan Era and the Origins of Extremal Graph Theory (1936-1938)**\n\nErdos first encountered this problem in 1936 while studying B2 sequences (Sidon sets) in additive number theory — Problem #425 in his collection. He proved ex(n; C4) = O(n^{3/2}) using a double-counting argument: in a C4-free graph, each pair of vertices shares at most one common neighbor, so the number of 2-paths is at most C(n,2). He later wrote with characteristic self-deprecation: 'Being struck by a curious blindness and lack of imagination, I did not at that time extend the problem from C4 to other graphs and thus missed founding an interesting and fruitful new branch of graph theory.' Turan's systematic study of extremal numbers began in 1941, five years later.\n\n**The Race for the Exact Constant (1958-1983)**\n\nReiman (1958) proved that the limit L = lim ex(n;C4)/n^{3/2} exists and satisfies 1/(2*sqrt(2)) <= L <= 1/2. The lower bound uses the Erdos-Renyi-Brown construction: the incidence graph of the projective plane PG(2,q) is C4-free (two points determine a unique line, so no two vertices share more than one common neighbor) with (1/2)q(q+1)^2 edges on q^2+q+1 vertices. For n = q^2 + q + 1, this achieves ratio approaching 1/2. Furedi (1983) completed the picture by proving exact equality for q > 13: the projective plane graph is the unique extremal graph.\n\n**Recent Developments: The Ma-Yang Breakthrough (2023)**\n\nErdos conjectured the more precise formula ex(n;C4) = (1/2)n^{3/2} + (1/4)n + O(sqrt(n)) but cautioned he had 'limited evidence.' Ma and Yang (2023) spectacularly disproved this by showing the coefficient 1/4 can be improved to 1/4 - c for some c > 0, for a positive density of values of n. The exact lower-order terms remain an active research area.\n\n**The Lean formalization** axiomatizes the historical progression from Erdos-Klein through Furedi and Ma-Yang, proving 6 results (main theorem, 4 projective plane examples, summary) and establishing the complete story of Problem #765.",
+    "problemStatement": "**Problem**: Give an asymptotic formula for ex(n; C4), where ex(n; C4) denotes the maximum number of edges in an n-vertex graph containing no 4-cycle (quadrilateral).\n\n**Answer**: ex(n; C4) ~ (1/2)n^{3/2}\n\nMore precisely:\n- lim_{n -> inf} ex(n;C4)/n^{3/2} = 1/2\n- For n = q^2 + q + 1 (q prime power > 13): ex(n;C4) = (1/2)q(q+1)^2 exactly\n- Erdos's refined conjecture ex(n;C4) = (1/2)n^{3/2} + (1/4)n + O(sqrt(n)) was DISPROVED by Ma-Yang (2023)",
+    "text": "Determine an asymptotic formula for ex(n; C4), the maximum number of edges in an n-vertex graph with no 4-cycle. Answer: ex(n; C4) ~ (1/2)n^{3/2}.",
+    "proofStrategy": "**Formalization Architecture**\n\nThe formalization builds the complete story of Problem #765 in 8 sections:\n\n1. **Basic Definitions** (hasFourCycle, isFourCycleFree, edgeCount): C4 defined via 4 distinct vertices with 6 distinctness + 4 adjacency conditions\n\n2. **Extremal Function** (ex_C4): Axiomatized maximum; existence guarantee documented in docstring only\n\n3. **Historical Bounds**: Erdos-Klein upper bound, Reiman's constants, projective plane construction — all documented in docstrings only, not formalized as Lean declarations\n\n4. **Asymptotic Formula** (asymptotic_ratio, asymptotic_formula, erdos_765): Main result via limit definition\n\n5. **Furedi's Exact Result**: Documented in docstring only — not formalized as a Lean declaration\n\n6. **Erdos's Conjecture and Disproof** (erdos_conjecture def): Refined conjecture defined; upper bound and Ma-Yang disproof documented in docstrings only\n\n7. **B2 Sequences**: Connection to Sidon sets in additive combinatorics\n\n8. **Examples** (4 PROVED): Projective plane vertex counts for q = 2,3,4,5",
+    "keyInsights": [
+      "**Projective Planes as Extremal Graphs**: The incidence graph of PG(2,q) achieves ex(n;C4) for n = q^2+q+1. The C4-free property follows from the projective plane axiom: two points determine a unique line, so no two vertices share more than one common neighbor.",
+      "**Double Counting Argument**: The upper bound uses sum of C(deg(v), 2) <= C(n,2), since each pair contributes at most one 2-path. By Cauchy-Schwarz, this gives |E| = O(n^{3/2}).",
+      "**B2 Sequences (Sidon Sets)**: Erdos's original motivation was additive combinatorics (Problem #425). A B2 set of size k in [1,n] gives a C4-free bipartite graph, connecting the extremal function to the Sidon problem.",
+      "**Ma-Yang Disproof (2023)**: The coefficient 1/4 in the second-order term is NOT tight. For a positive density of n, the coefficient can be improved to 1/4 - c. The exact second-order behavior remains open.",
+      "**Pre-Turan History**: This problem predates Turan's famous theorem by 5 years, making it one of the earliest extremal graph theory results. The connection between forbidden subgraphs and edge density was not yet a field."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 29,
+      "endLine": 56,
+      "summary": "hasFourCycle (4 distinct vertices with 6 distinctness + 4 adjacency conditions), isFourCycleFree (negation), edgeCount (G.edgeFinset.card). Uses SimpleGraph.Adj and Fintype.",
+      "mathContext": "Mathematical content: hasFourCycle (4 distinct vertices with 6 distinctness + 4 adjacency conditions), isFourCycleFree (negation), edgeCount (G.edgeFinset.card). Uses SimpleGraph.Adj and Fintype."
+    },
+    {
+      "id": "extremal-function",
+      "title": "Extremal Function ex(n; C4)",
+      "startLine": 57,
+      "endLine": 67,
+      "summary": "ex_C4 (axiom): maximum edges in n-vertex C4-free graph. Existence of optimal graph documented in docstring only. The central object of Problem #765.",
+      "mathContext": "Axiomatized: ex_C4 (axiom): maximum edges in n-vertex C4-free graph. Existence guarantee documented in docstring only — no Lean declaration."
+    },
+    {
+      "id": "historical-bounds",
+      "title": "Historical Bounds (1938-1958)",
+      "startLine": 68,
+      "endLine": 88,
+      "summary": "Historical bounds documented in docstrings only: Erdos-Klein O(n^{3/2}) via double counting (1938), Reiman 1/(2*sqrt(2)) <= L <= 1/2 (1958), PG(2,q) lower bound (1/2)q(q+1)^2 for n = q^2+q+1. projectivePlaneVertices def: q^2+q+1.",
+      "mathContext": "Historical bounds documented in docstrings only — not formalized as Lean declarations. Only actual declaration: projectivePlaneVertices def: q^2+q+1."
+    },
+    {
+      "id": "asymptotic-formula",
+      "title": "The Asymptotic Formula",
+      "startLine": 89,
+      "endLine": 115,
+      "summary": "asymptotic_ratio (noncomputable def): ex_C4(n)/n^{3/2}. asymptotic_formula (axiom): limit is 1/2. erdos_765 (PROVED): main theorem, direct from asymptotic_formula.",
+      "mathContext": "Verified: asymptotic_ratio (noncomputable def): ex_C4(n)/n^{3/2}. asymptotic_formula (axiom): limit is 1/2. erdos_765 (PROVED): main theorem, direct from asymptotic_formula."
+    },
+    {
+      "id": "furedi-exact",
+      "title": "Furedi's Exact Result (1983)",
+      "startLine": 116,
+      "endLine": 124,
+      "summary": "Furedi's theorem (1983): for q > 13 prime power, ex(q^2+q+1; C4) = (1/2)q(q+1)^2 exactly; PG(2,q) is the unique extremal graph. Documented in docstring only — no Lean declaration.",
+      "mathContext": "Documented in docstring only — furedi_exact is not a Lean axiom declaration. Historical result: for q > 13 prime power, ex(q^2+q+1; C4) = (1/2)q(q+1)^2."
+    },
+    {
+      "id": "erdos-conjecture",
+      "title": "Erdos's Conjecture and Ma-Yang Disproof",
+      "startLine": 125,
+      "endLine": 144,
+      "summary": "erdos_conjecture (def): lower bound conjecture (1/2)n^{3/2} + (1/4)n + O(sqrt(n)). Refined upper bound and Ma-Yang disproof (2023) documented in docstrings only — not formalized as Lean declarations.",
+      "mathContext": "Formal definition: erdos_conjecture (def). Erdos refined upper bound and Ma-Yang disproof documented in docstrings only — not Lean axiom declarations."
+    },
+    {
+      "id": "number-theory",
+      "title": "Connection to Number Theory",
+      "startLine": 145,
+      "endLine": 157,
+      "summary": "is_B2_sequence: Sidon set definition (all pairwise sums distinct). Erdos's original 1936 motivation connecting additive combinatorics to extremal graph theory.",
+      "mathContext": "Formal definition: is_B2_sequence: Sidon set definition (all pairwise sums distinct). Erdos's original 1936 motivation connecting additive combinatorics to extremal graph theory."
+    },
+    {
+      "id": "examples",
+      "title": "Projective Plane Examples (4 PROVED)",
+      "startLine": 158,
+      "endLine": 215,
+      "summary": "fano_plane_example: PG(2,2) = 7 vertices. pg23_example: PG(2,3) = 13. pg24_example: PG(2,4) = 21. pg25_example: PG(2,5) = 31. All proved by simp[projectivePlaneVertices]; ring.",
+      "mathContext": "Mathematical content: fano_plane_example: PG(2,2) = 7 vertices. pg23_example: PG(2,3) = 13. pg24_example: PG(2,4) = 21. pg25_example: PG(2,5) = 31. All proved by simp[projectivePlaneVertices]; ring."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #765 asks for an asymptotic formula for ex(n;C4). The answer is ex(n;C4) ~ (1/2)n^{3/2}, established through 45 years of work from Erdos-Klein (1938) through Furedi (1983). The formalization axiomatizes the full historical progression and proves 6 results: the main theorem, 4 projective plane examples, and a summary theorem.",
+    "implications": "1. **Finite Geometry**: Projective planes provide the extremal constructions, connecting graph theory to algebraic geometry over finite fields\n\n2. **Additive Combinatorics**: The B2 sequence connection (Erdos's original motivation) links the extremal function to Sidon sets and sum-free sets\n\n**3. Zarankiewicz Problem**: ex(n;C4) is equivalent to the bipartite problem z(n,n;2,2), connecting to 0-1 matrix theory\n\n4. **Turan Theory**: One of the foundational results predating Turan's theorem by 5 years, establishing the paradigm of forbidden subgraph extremal problems\n\n5. **Active Research**: The Ma-Yang disproof (2023) shows the second-order terms remain poorly understood, with the exact coefficient of n still open.",
+    "openQuestions": [
+      "What is the exact coefficient of n in ex(n;C4) = (1/2)n^{3/2} + cn + o(n)?",
+      "Can the Ma-Yang bound be further improved for all n (not just positive density)?",
+      "What is ex(n;C4) for general n, not just projective plane sizes q^2+q+1?",
+      "How does the extremal function behave for other even cycles: ex(n;C_{2k}) for k >= 3?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos765",
+    "lineCount": 215,
+    "axiomCount": 2,
+    "theoremCount": 6,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos765Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-theory, solved, turan-numbers"
+    },
+    {
+      "targetId": "erdos-147",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, turan-numbers"
+    },
+    {
+      "targetId": "erdos-182",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory, solved"
+    }
+  ],
+  "sorries": 0
+}

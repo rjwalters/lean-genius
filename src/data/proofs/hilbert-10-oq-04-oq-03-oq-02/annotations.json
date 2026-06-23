@@ -1,0 +1,29 @@
+[
+  {
+    "id": "h10oq040302-ann-01",
+    "proofId": "hilbert-10-oq-04-oq-03-oq-02",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "concept",
+    "title": "Solvability as Range Membership",
+    "content": "solvable_iff_mem_range records the definitional starting point: the linear system A x = b is solvable over ℤ exactly when b lies in LinearMap.range A.mulVecLin. The proof is a one-line simp with LinearMap.mem_range (which unfolds range membership to an existential preimage) and Matrix.mulVecLin_apply (which identifies the linear map A.mulVecLin with matrix–vector multiplication A *ᵥ x). This reframes a concrete equation-solving question as a submodule-membership question, the form needed for the structural reformulation that follows.",
+    "mathContext": "For a matrix $A$ over a commutative (semi)ring, $x \\mapsto A x$ is a linear map $\\mathbb{Z}^n \\to \\mathbb{Z}^m$; solvability of $A x = b$ is membership of $b$ in its image."
+  },
+  {
+    "id": "h10oq040302-ann-02",
+    "proofId": "hilbert-10-oq-04-oq-03-oq-02",
+    "range": { "startLine": 53, "endLine": 60 },
+    "type": "concept",
+    "title": "The Column-Span Bridge",
+    "content": "solvable_iff_mem_colSpan is the entry's main contribution: A x = b is solvable over ℤ iff b ∈ Submodule.span ℤ (Set.range A.col). It follows by rewriting solvable_iff_mem_range with Mathlib's Matrix.range_mulVecLin, which states LinearMap.range A.mulVecLin = span ℤ (range A.col) — the image of multiplication by A is the span of its columns. The significance is that the right-hand side is a finitely generated ℤ-submodule of Fin m → ℤ, the precise object on which Mathlib's Smith-normal-form structure theory (Module.Basis.SmithNormalForm) operates. This is the reduction a Decidable instance for system solvability would build on; the decision step itself (invariant-factor divisibility) is not carried out here.",
+    "mathContext": "The set of attainable right-hand sides $\\{A x : x \\in \\mathbb{Z}^n\\}$ is the column lattice — the $\\mathbb{Z}$-span of the columns of $A$. Deciding $b$ in this lattice is exactly what Smith normal form $U A V = D$ answers."
+  },
+  {
+    "id": "h10oq040302-ann-03",
+    "proofId": "hilbert-10-oq-04-oq-03-oq-02",
+    "range": { "startLine": 62, "endLine": 92 },
+    "type": "technique",
+    "title": "Single-Row Consistency and a Worked System",
+    "content": "solvable_single_row_iff_sum checks the reduction against the parent: for one equation (m = 1), the matrix system (of fun _ => a) *ᵥ x = (fun _ => b) is solvable iff the scalar equation Σ j, a j * x j = b is. The forward direction evaluates the function equality at the unique index 0 (congrFun … 0) and simplifies mulVec/dotProduct; the reverse direction proves the function equality pointwise (funext, fin_cases on Fin 1). The resulting scalar equation is exactly the hypothesis form of the parent's solvable_iff_gcd_dvd, so composing the two recovers the gcd ∣ b criterion and confirms the system and single-equation entries agree on their overlap. A worked 2×2 example (x + 2y = 5, 3x + 4y = 11, witness (1,2)) shows the system statement is non-vacuous.",
+    "mathContext": "The single-equation case is the $m = 1$ slice of the system theory; the worked $2 \\times 2$ instance exhibits an explicit lattice point $A(1,2)^\\top = (5,11)^\\top$."
+  }
+]

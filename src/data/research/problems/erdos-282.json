@@ -1,0 +1,120 @@
+{
+  "slug": "erdos-282",
+  "title": "Erdős #282",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $A\\subseteq \\mathbb{N}$ be an infinite set and consider the following greedy algorithm for a rational $x\\in (0,1)$: choose the minimal $n\\in A$ such that $n\\geq 1/x$ and repeat with $x$ replaced by $x-\\frac{1}{n}$. If this terminates after finitely many steps then this produces a representation of $x$ as the sum of distinct unit fractions with denominators from $A$.\n\nDoes this process always terminate if $x$ has odd denominator and $A$ is the set of odd numbers? More generally, for which pairs $x$ and $A$ does this process terminate?\n\n\n\nIn 1202 Fibonacci observed that this process terminates for any $x$ when $A=\\mathbb{N}$. The problem when $A$ is the set of odd numbers is due to Stein.\n\nGraham \\cite{Gr64b} has shown that $\\frac{m}{n}$ is the sum of distinct unit fractions with denominators $\\equiv a\\pmod{d}$ if and only if\\[\\left(\\frac{n}{(n,(a,d))},\\frac{d}{(a,d)}\\right)=1.\\]Does the greedy algorithm always terminate in such cases?\n\nGraham \\cite{Gr64c} has also shown that $x$ is the sum of distinct unit fractions with square denominators if and only if $x\\in [0,\\pi^2/6-1)\\cup [1,\\pi^2/6)$. Does the greedy algorithm for this always terminate? Erd\\H{o}s and Graham believe not - indeed, perhaps it fails to terminate almost always.\n\nSee also [206].",
+    "plain": "Study when greedy Egyptian-fraction algorithms terminate when denominators are restricted to an infinite set such as the odd positive integers or perfect squares.",
+    "whyMatters": [
+      "Formalizes restricted Egyptian-fraction representability and greedy-step existence questions.",
+      "The Lean file proves general representation equivalences and odd-positive infinitude, but leaves the hard termination questions open.",
+      "The current termination predicate is extensional finite representability rather than an iterative trace of the greedy algorithm."
+    ],
+    "plainEnglish": "Study when greedy Egyptian-fraction algorithms terminate when denominators are restricted to an infinite set such as the odd positive integers or perfect squares."
+  },
+  "knownResults": {
+    "proven": [
+      "`IsEgyptianFracRep`, `IsRepresentable`, `greedyStep`, and `GreedyTerminates` formalize finite restricted-denominator representations and a greedy candidate step.",
+      "`greedyStep_mem` and `greedyStep_le` prove that the greedy step picks a valid denominator from any infinite set when 0 < x <= 1.",
+      "`greedy_implies_representable` and `representable_iff_greedy` are definitional equivalences in the current model.",
+      "`unit_frac_representable` and `oddPositives_infinite` prove basic examples and infinitude of the odd denominator set."
+    ],
+    "open": [
+      "`SteinOddGreedyConjecture` remains open as a Prop definition.",
+      "`ErdosGrahamSquaresConjecture` remains open as a Prop definition.",
+      "Fibonacci termination is represented by the axiom `fibonacci_greedy_terminates`.",
+      "The current `GreedyTerminates` definition does not yet encode the actual iterative greedy process."
+    ],
+    "goal": "Separate the proved finite-representability framework from the open greedy-termination conjectures and the Fibonacci axiom."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "The file has 8 theorem declarations, 11 definitions, 1 axiom, and 0 sorries; the odd-denominator and square-denominator problems are stated but not solved.",
+    "blockers": [
+      "`fibonacci_greedy_terminates` is axiomatized.",
+      "`GreedyTerminates` is definitionally finite representability rather than a step-indexed greedy run.",
+      "The Stein odd-denominator and Erdos-Graham square-denominator questions remain open."
+    ],
+    "nextAction": "Define an explicit iterated greedy process and prove that finite termination yields the existing representability predicate.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "CURRENT: 8 theorem declarations, 11 definitions, 1 axiom, 0 sorries. The file proves greedy-step existence facts for infinite denominator sets, but the central termination conjectures remain open.",
+    "builtItems": [
+      "`IsEgyptianFracRep`, `IsRepresentable`, and `GreedyTerminates`",
+      "`greedyStep` with `greedyStep_mem` and `greedyStep_le`",
+      "`oddPositives`, `HasOddDenom`, `SteinOddGreedyConjecture`",
+      "`GrahamRepresentability` and `ErdosGrahamSquaresConjecture`",
+      "`unit_frac_representable` and `oddPositives_infinite`"
+    ],
+    "insights": [
+      "The source is sorry-free but has one axiom for Fibonacci greedy termination.",
+      "`GreedyTerminates` and `IsRepresentable` are currently the same existential finite-representation predicate.",
+      "The Stein and square-denominator questions are active Prop definitions, not proved theorems.",
+      "A real greedy-algorithm proof needs a recursive or step-indexed state, not only the final finite set."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Add an explicit greedy-iteration relation or sequence.",
+      "Prove soundness from iterative termination to finite representability.",
+      "Then revisit odd denominators and square denominators against the stronger model."
+    ],
+    "markdown": "# Erdős #282 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subseteq \\mathbb{N}$ be an infinite set and consider the following greedy algorithm for a rational $x\\in (0,1)$: choose the minimal $n\\in A$ such that $n\\geq 1/x$ and repeat with $x$ replaced by $x-\\frac{1}{n}$. If this terminates after finitely many steps then this produces a representation of $x$ as the sum of distinct unit fractions with denominators from $A$.\n\nDoes this process always terminate if $x$ has odd denominator and $A$ is the set of odd numbers? More generally, for which pairs $x$ and $A$ does this process terminate?\n\n\n\nIn 1202 Fibonacci observed that this process terminates for any $x$ when $A=\\mathbb{N}$. The problem when $A$ is the set of odd numbers is due to Stein.\n\nGraham \\cite{Gr64b} has shown that $\\frac{m}{n}$ is the sum of distinct unit fractions with denominators $\\equiv a\\pmod{d}$ if and only if\\[\\left(\\frac{n}{(n,(a,d))},\\frac{d}{(a,d)}\\right)=1.\\]Does the greedy algorithm always terminate in such cases?\n\nGraham \\cite{Gr64c} has also shown that $x$ is the sum of distinct unit fractions with square denominators if and only if $x\\in [0,\\pi^2/6-1)\\cup [1,\\pi^2/6)$. Does the greedy algorithm for this always terminate? Erd\\H{o}s and Graham believe not - indeed, perhaps it fails to terminate almost always.\n\nSee also [206].\n\n\n\n\nReferences\n\n\n[Gr64b] Graham, R. L., On finite sums of unit fractions. Proc. London Math. Soc. (3) (1964), 193-207.\n\n[Gr64c] Graham, R. L., On finite sums of reciprocals of distinct nth powers. Pacific J. Math. (1964), 85-92.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #6\n- Problem #206\n- Problem #281\n- Problem #283\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gr64b\n- Gr64c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "egyptian-fractions",
+    "greedy-algorithms",
+    "rational-representations",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-28",
+    "erdos-282"
+  ],
+  "references": {
+    "papers": [
+      "Fibonacci 1202",
+      "Graham 1964 restricted Egyptian fractions",
+      "Erdos-Graham square denominator problem"
+    ],
+    "urls": [
+      "https://erdosproblems.com/282"
+    ],
+    "mathlib": [
+      "Rat",
+      "Finset.sum",
+      "Set.Infinite",
+      "Nat.find",
+      "Filter"
+    ]
+  },
+  "started": "2026-01-12T22:33:22.720Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
+  "significance": 5,
+  "tractability": 3,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos282Problem.lean",
+      "filename": "Erdos282Problem.lean",
+      "lineCount": 179,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos282Problem.lean"
+    }
+  ]
+}

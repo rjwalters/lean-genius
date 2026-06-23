@@ -1,0 +1,195 @@
+{
+  "id": "euler-polyhedral-formula-oq-01-oq-01-oq-01",
+  "title": "The Discharging Base for Planar Graphs",
+  "slug": "euler-polyhedral-formula-oq-01-oq-01-oq-01",
+  "description": "Proves the quantitative discharging-base inequality ∑(6 − deg v) ≥ 12 behind the Five Color Theorem's low-degree-vertex fact, axiom-free, and derives the sharpened consequences: ≥2 vertices of degree ≤ 5, no planar graph of minimum degree ≥ 6, and average degree < 6.",
+  "meta": {
+    "author": "Lean Genius Research Agent",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Discharging_method_(discrete_mathematics)",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "planar-graphs",
+      "discharging",
+      "coloring",
+      "handshaking",
+      "euler-formula"
+    ],
+    "proofRepoPath": "Proofs/PlanarGraphDischarging.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.sum_degrees_eq_twice_card_edges",
+        "description": "Handshaking lemma: sum of degrees = 2|E|",
+        "module": "Mathlib.Combinatorics.SimpleGraph.DegreeSum"
+      },
+      {
+        "theorem": "Finset.sum_sub_distrib",
+        "description": "Sum of differences splits as difference of sums",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_filter_add_sum_filter_not",
+        "description": "Splitting a sum over a predicate and its negation",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_nonpos",
+        "description": "A sum of non-positive terms is non-positive",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "total_charge_eq: the discrete Gauss–Bonnet charge identity ∑(6 − deg v) = 6V − 2E (pure handshaking, no planarity needed)",
+      "discharging_base: the planar discharging-base inequality ∑(6 − deg v) ≥ 12 — the quantitative foundation of every discharging argument",
+      "exists_low_degree': re-derivation of the parent Five Color Theorem's low-degree-vertex fact directly from the discharging base",
+      "two_low_degree: strict sharpening — a planar graph has at least TWO vertices of degree ≤ 5 (parent only gives one)",
+      "no_min_degree_six: there is no planar graph of minimum degree ≥ 6",
+      "sum_degrees_le / average_degree_lt_six: the average degree of a planar graph is strictly below 6",
+      "charge_eq_twelve_iff_triangulation: sharpness — equality in the discharging base holds exactly for triangulations (E = 3V − 6)"
+    ],
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "lineCount": 206,
+    "assumptions": "None beyond Lean/Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). Verified axiom-free via #print axioms on all 8 results — no sorry, no native_decide, no custom axioms. The only mathematical input is the planar edge bound E ≤ 3V − 6, supplied as an explicit hypothesis (identical to the hypothesis used by the parent Five Color Theorem).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The **discharging method** is the engine behind the deepest results on planar graph coloring, including the Appel–Haken (1977) and Robertson–Sanders–Seymour–Thomas (1997) proofs of the Four Color Theorem. Its starting point is an elementary but remarkable fact: if one assigns to each vertex `v` of a planar graph the **charge** `6 − deg(v)`, then the total charge is always exactly `6V − 2E ≥ 12`, a fixed positive constant independent of the size of the graph. This is the combinatorial shadow of Gauss–Bonnet: the charge `6 − deg(v)` is the discrete curvature concentrated at `v`, and the total curvature of a sphere is constant.\n\nThe parent gallery entry (Five Color Theorem via Kempe Chains) used only the weakest consequence of this fact — that *some* vertex has degree ≤ 5 — as the seed of its inductive argument. This entry isolates and proves the full quantitative inequality and several sharpened consequences, entirely axiom-free.",
+    "problemStatement": "**Open Question (from the parent Five Color Theorem entry)**: The parent proves only the existence of one vertex of degree ≤ 5 (`exists_low_degree`). Can the underlying quantitative discharging base — ∑(6 − deg v) ≥ 12 — be formalized axiom-free, and what sharper consequences does it yield about the degree sequence of a planar graph?",
+    "text": "Proves the discharging-base inequality ∑(6 − deg v) ≥ 12 for planar graphs and derives sharpened consequences about low-degree vertices and average degree, all fully machine-checked and axiom-free.",
+    "proofStrategy": "The argument is a clean two-step reduction:\n\n1. **Charge identity (handshaking only).** `total_charge_eq` rewrites ∑(6 − deg v) = (∑ 6) − (∑ deg v) = 6V − 2E using `Finset.sum_sub_distrib`, `Finset.sum_const`, and the handshaking lemma `sum_degrees_eq_twice_card_edges`. No planarity is used here.\n\n2. **Planar inequality.** Substituting the planar edge bound E ≤ 3V − 6 gives ∑(6 − deg v) = 6V − 2E ≥ 12 (`discharging_base`) by `linarith`.\n\nConsequences then follow by elementary charge accounting: `exists_low_degree'` (a positive total forces a positive term, i.e. deg < 6); `two_low_degree` (split the charge into low-degree and high-degree parts via `Finset.sum_filter_add_sum_filter_not`; high-degree vertices contribute ≤ 0 and each low-degree vertex contributes ≤ 6, so 12 ≤ 6·|L| forces |L| ≥ 2); and the average-degree bounds from the same identity.",
+    "keyInsights": [
+      "**Charge = discrete curvature.** The quantity `6 − deg(v)` is the combinatorial Gauss–Bonnet curvature; handshaking plus Euler force its total to the constant 12, regardless of graph size — this is why discharging arguments scale.",
+      "**The parent's lemma is the weakest corollary.** `exists_low_degree` (∃ deg ≤ 5) is just 'positive total ⟹ positive term'; the same inequality immediately yields ≥2 such vertices and rules out minimum degree ≥ 6.",
+      "**Identity before inequality.** Separating the planarity-free charge identity (`total_charge_eq`) from the planar inequality keeps the proof modular and makes the equality (sharpness) case fall out for free.",
+      "**Sharpness is exactly triangulations.** Equality ∑(6 − deg v) = 12 holds iff E = 3V − 6, i.e. for maximal planar graphs (triangulations) — recorded in `charge_eq_twelve_iff_triangulation`.",
+      "**Axiom-free with the same hypothesis as the parent.** Only the edge bound E ≤ 3V − 6 is assumed (exactly as in the parent file); no planarity, Kempe-chain, or vertex-deletion axioms are needed."
+    ],
+    "prerequisites": [
+      "Graph theory (vertices, degrees, edges)",
+      "The handshaking lemma (∑ deg = 2E)",
+      "Euler's formula consequence E ≤ 3V − 6 for planar graphs"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Imports (SimpleGraph Basic/Finite/DegreeSum, Fintype, Mathlib.Tactic), an extended docstring explaining the discharging base, the charge = discrete curvature viewpoint, and the relationship to the parent Five Color Theorem entry, and the PlanarGraphDischarging namespace with SimpleGraph/Finset opened."
+    },
+    {
+      "id": "part-1-charge-identity",
+      "title": "PART 1: The Discharging Identity (no planarity needed)",
+      "startLine": 64,
+      "endLine": 82,
+      "summary": "total_charge_eq: ∑(6 − deg v) = 6V − 2E, proved from the handshaking lemma sum_degrees_eq_twice_card_edges via Finset.sum_sub_distrib and Finset.sum_const. Pure combinatorics, no planarity hypothesis."
+    },
+    {
+      "id": "part-2-discharging-base",
+      "title": "PART 2: The Discharging Base Inequality (planar graphs)",
+      "startLine": 83,
+      "endLine": 95,
+      "summary": "discharging_base: for a planar graph (E ≤ 3V − 6) the total charge satisfies ∑(6 − deg v) ≥ 12, obtained by substituting the edge bound into the charge identity."
+    },
+    {
+      "id": "part-3-low-degree-consequences",
+      "title": "PART 3: Consequences for Low-Degree Vertices",
+      "startLine": 96,
+      "endLine": 164,
+      "summary": "exists_low_degree' (≥1 vertex of degree ≤ 5, re-deriving the parent's fact from positivity of the total charge); two_low_degree (≥2 vertices of degree ≤ 5, splitting the charge over low/high-degree vertices); no_min_degree_six (no planar graph has minimum degree ≥ 6)."
+    },
+    {
+      "id": "part-4-average-degree",
+      "title": "PART 4: Average Degree Bound",
+      "startLine": 165,
+      "endLine": 194,
+      "summary": "sum_degrees_le (∑ deg ≤ 6V − 12) and average_degree_lt_six (∑ deg < 6V for a nonempty planar graph): the average degree of a planar graph is strictly below 6."
+    },
+    {
+      "id": "part-5-sharpness",
+      "title": "PART 5: Sharpness of the Discharging Base",
+      "startLine": 195,
+      "endLine": 206,
+      "summary": "charge_eq_twelve_iff_triangulation: equality ∑(6 − deg v) = 12 holds exactly when E = 3V − 6, i.e. for edge-maximal planar graphs (triangulations), recording the equality case of the charge identity."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry proves the discharging-base inequality ∑(6 − deg v) ≥ 12 for planar graphs and its sharpenings — at least two vertices of degree ≤ 5, the non-existence of planar graphs with minimum degree ≥ 6, and the strict average-degree bound — all fully machine-checked and axiom-free (0 sorries, 0 axioms, no native_decide). It isolates the quantitative foundation that the parent Five Color Theorem entry used only in its weakest form.",
+    "implications": "**Theoretical Significance**: The discharging base is the seed of every discharging argument in graph coloring, including the proofs of the Four Color Theorem. By proving the full inequality axiom-free (where the parent only needed the bare existence of a low-degree vertex), this entry provides reusable, foundational infrastructure: the charge identity ∑(6 − deg v) = 6V − 2E and its planar corollary are exactly the inputs a formal discharging proof would build on.",
+    "openQuestions": [
+      "Can the count of low-degree vertices be pushed from ≥2 to the classical ≥3 (or ≥4 under suitable connectivity), using a structural/recursive refinement of the charge accounting?",
+      "Can the charge identity be combined with a formal planarity definition to formalize a first genuine discharging rule (e.g. an unavoidable-set lemma)?",
+      "Can the discharging base be generalized to graphs embedded on a surface of genus g, where the total charge becomes 6V − 2E = 12 − 12g · (correction) via the Euler characteristic 2 − 2g?",
+      "Does the average-degree bound yield an axiom-free degeneracy/5-degeneracy statement that strengthens the parent's coloring infrastructure?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "PlanarGraphDischarging",
+    "lineCount": 206,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/PlanarGraphDischarging.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-polyhedral-formula-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Sharpens the parent Five Color Theorem entry's exists_low_degree (∃ vertex of degree ≤ 5) into the full quantitative discharging base ∑(6 − deg v) ≥ 12, axiom-free, and derives ≥2 low-degree vertices and the average-degree bound"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "foundational",
+      "description": "Euler's formula V − E + F = 2 gives the edge bound E ≤ 3V − 6 that drives the discharging base; the total charge 6V − 2E is the discrete Gauss–Bonnet curvature of the planar embedding"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "related",
+      "description": "The discharging method whose base inequality is proved here is the technique behind the Appel–Haken and Robertson–Sanders–Seymour–Thomas proofs of the Four Color Theorem"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Reinhard Diestel",
+      "title": "Graph Theory (5th edition)",
+      "year": "2017",
+      "venue": "Springer GTM 173",
+      "note": "§5.1 for the planar edge bound E ≤ 3V − 6 and §5.4 for the discharging method"
+    },
+    {
+      "authors": "Kenneth Appel and Wolfgang Haken",
+      "title": "Every planar map is four colorable",
+      "year": "1977",
+      "venue": "Illinois Journal of Mathematics",
+      "note": "First proof of the Four Color Theorem; introduced the large-scale discharging argument whose base is formalized here"
+    },
+    {
+      "authors": "Neil Robertson, Daniel Sanders, Paul Seymour, Robin Thomas",
+      "title": "The four-colour theorem",
+      "year": "1997",
+      "venue": "Journal of Combinatorial Theory, Series B",
+      "note": "Simplified, machine-verified proof of the Four Color Theorem via a refined discharging procedure"
+    }
+  ],
+  "sorries": 0
+}

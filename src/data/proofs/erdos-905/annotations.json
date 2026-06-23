@@ -1,0 +1,229 @@
+[
+  {
+    "id": "erdos-905-header",
+    "proofId": "erdos-905",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #905: Every graph with n vertices and > n²/4 edges contains an edge in at least n/6 triangles. SOLVED by Edwards (unpublished) and Hadziivanov-Nikiforov (1979). Strengthens Turán's theorem: not just triangles exist above the threshold, but edges are forced into many triangles.",
+    "mathContext": "Conjectured by Bollobás and Erdős. The constant n/6 is tight. See [KhNi79].",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "extremal graph theory",
+      "triangle-free graphs"
+    ],
+    "tags": [
+      "extremal-graph-theory",
+      "turan-theorem",
+      "triangle-multiplicity",
+      "solved-problem"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "Turán's theorem",
+      "triangle counting"
+    ]
+  },
+  {
+    "id": "erdos-905-definitions",
+    "proofId": "erdos-905",
+    "type": "definition",
+    "range": {
+      "startLine": 41,
+      "endLine": 66
+    },
+    "title": "Graph Structure and Edge Count",
+    "content": "Graph(n): structure with edges : Finset (Fin n × Fin n), symmetric and irreflexive. edgeCount(G) = G.edges.card / 2. Adj G u v ↔ (u,v) ∈ G.edges.",
+    "mathContext": "Custom graph structure rather than Mathlib's SimpleGraph, using explicit edge sets for finite computation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "simple graph",
+      "undirected graph",
+      "edge set",
+      "Finset"
+    ],
+    "tags": [
+      "graph-structure",
+      "finset",
+      "lean4-formalization"
+    ],
+    "prerequisites": [
+      "simple graphs",
+      "finite sets",
+      "Lean 4 structures"
+    ]
+  },
+  {
+    "id": "erdos-905-triangles",
+    "proofId": "erdos-905",
+    "type": "definition",
+    "range": {
+      "startLine": 68,
+      "endLine": 93
+    },
+    "title": "Triangle Definitions",
+    "content": "IsTriangle G u v w: three distinct mutually adjacent vertices. triangleCountEdge G u v: number of triangles containing edge {u,v}. maxTriangleMultiplicity G: maximum triangleCountEdge over all edges.",
+    "mathContext": "triangleCountEdge is the key quantity — the main theorem guarantees some edge achieves triangleCountEdge ≥ n/6.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle",
+      "K₃",
+      "edge-triangle multiplicity"
+    ],
+    "tags": [
+      "triangle-counting",
+      "edge-multiplicity",
+      "graph-substructure"
+    ],
+    "prerequisites": [
+      "adjacency",
+      "graph triangles",
+      "combinatorial counting"
+    ]
+  },
+  {
+    "id": "erdos-905-turan",
+    "proofId": "erdos-905",
+    "type": "definition",
+    "range": {
+      "startLine": 95,
+      "endLine": 117
+    },
+    "title": "Turán Threshold",
+    "content": "turanNumber n = n²/4: the Turán number ex(n, K₃). AboveTuran G: edgeCount G > turanNumber n. turan_theorem (axiom): exceeding n²/4 edges forces a triangle.",
+    "mathContext": "Turán's theorem (1941) is foundational to extremal graph theory. The complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} achieves the bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "extremal graph theory",
+      "bipartite graphs"
+    ],
+    "tags": [
+      "turan-number",
+      "extremal-threshold",
+      "triangle-free"
+    ],
+    "prerequisites": [
+      "Turán's theorem",
+      "complete bipartite graphs",
+      "extremal graph theory"
+    ]
+  },
+  {
+    "id": "erdos-905-main",
+    "proofId": "erdos-905",
+    "type": "insight",
+    "range": {
+      "startLine": 119,
+      "endLine": 144
+    },
+    "title": "Bollobás-Erdős Theorem (SOLVED)",
+    "content": "BollobasErdosConjecture: ∀ n ≥ 1, ∀ G above Turán, ∃ edge {u,v} with triangleCountEdge G u v ≥ n/6. bollobas_erdos_theorem (axiom): the conjecture holds. main_theorem_alt (axiom): alternate formulation via maxTriangleMultiplicity.",
+    "mathContext": "Proved independently by Edwards (unpublished) and Hadziivanov-Nikiforov (1979). erdos_905 := bollobas_erdos_theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bollobás-Erdős",
+      "Hadziivanov-Nikiforov",
+      "Edwards"
+    ],
+    "tags": [
+      "main-theorem",
+      "bollobas-erdos",
+      "triangle-multiplicity",
+      "solved"
+    ],
+    "prerequisites": [
+      "Turán's theorem",
+      "triangle counting",
+      "extremal graph theory"
+    ]
+  },
+  {
+    "id": "erdos-905-tightness",
+    "proofId": "erdos-905",
+    "type": "insight",
+    "range": {
+      "startLine": 146,
+      "endLine": 158
+    },
+    "title": "Tightness of n/6",
+    "content": "constant_tight (axiom): for every ε > 0, for large n, there exist graphs above Turán with maxTriangleMultiplicity ≤ n/6 + εn. The constant n/6 cannot be improved.",
+    "mathContext": "Shows the theorem is optimal. The bound is achieved asymptotically.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tightness",
+      "extremal examples",
+      "optimal constant"
+    ],
+    "tags": [
+      "tightness",
+      "optimal-constant",
+      "asymptotic-bound"
+    ],
+    "prerequisites": [
+      "extremal graph constructions",
+      "asymptotic analysis",
+      "Turán threshold"
+    ]
+  },
+  {
+    "id": "erdos-905-turan-graph",
+    "proofId": "erdos-905",
+    "type": "definition",
+    "range": {
+      "startLine": 160,
+      "endLine": 186
+    },
+    "title": "Turán Graph and Properties",
+    "content": "IsTuranGraph G: G is complete bipartite with balanced parts (K_{⌊n/2⌋,⌈n/2⌉}). turan_graph_triangle_free (axiom): no triangles. above_turan_creates_triangles (axiom): adding any edge to T(n,2) creates triangles via shared neighbors.",
+    "mathContext": "The Turán graph is the unique extremal triangle-free graph. Adding a non-edge within one part creates triangles through the other part.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Turán graph",
+      "complete bipartite",
+      "extremal graphs"
+    ],
+    "tags": [
+      "turan-graph",
+      "complete-bipartite",
+      "extremal-construction"
+    ],
+    "prerequisites": [
+      "complete bipartite graphs",
+      "Turán's theorem",
+      "triangle-free graphs"
+    ]
+  },
+  {
+    "id": "erdos-905-key-lemma",
+    "proofId": "erdos-905",
+    "type": "insight",
+    "range": {
+      "startLine": 188,
+      "endLine": 190
+    },
+    "title": "Triangle Count Lower Bound",
+    "content": "triangle_count_lower_bound (axiom): T(G) ≥ (e(G) - n²/4) · n/6. Each excess edge above the Turán threshold contributes about n/6 triangles.",
+    "mathContext": "Key quantitative lemma underlying the main theorem. Uses counting arguments.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "counting argument",
+      "Kruskal-Katona theorem",
+      "double counting"
+    ],
+    "tags": [
+      "counting-argument",
+      "lower-bound",
+      "triangle-density"
+    ],
+    "prerequisites": [
+      "double counting",
+      "Turán threshold",
+      "combinatorial inequalities"
+    ]
+  }
+]

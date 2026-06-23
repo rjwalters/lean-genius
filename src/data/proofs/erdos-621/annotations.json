@@ -1,0 +1,597 @@
+[
+  {
+    "id": "ann-621-imports",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 22,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Mathlib Graph Theory Imports",
+    "content": "Imports `SimpleGraph.Basic` for the graph type, `SimpleGraph.Clique` for clique/triangle definitions, `Fintype` for finiteness, and `Tactic` for proof automation. The `Sym2` type from SimpleGraph represents unordered edges.",
+    "mathContext": "Mathlib's `SimpleGraph V` models simple undirected graphs as symmetric irreflexive relations on vertex type $V$. Edges are represented as elements of `Sym2 V` (unordered pairs).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Sym2",
+      "Fintype",
+      "decidability"
+    ],
+    "prerequisites": [
+      "type theory",
+      "Mathlib graph library"
+    ]
+  },
+  {
+    "id": "ann-621-triangle",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 38,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Triangle (IsTriangle)",
+    "content": "A triangle in graph $G$ is a triple of distinct, pairwise-adjacent vertices. The definition requires all three distinctness conditions and all three adjacencies explicitly, making it compatible with Lean's definitional equality.",
+    "mathContext": "A triangle is a complete subgraph $K_3$: vertices $a, b, c$ with $a \\ne b$, $b \\ne c$, $a \\ne c$, and edges $\\{a,b\\}, \\{b,c\\}, \\{a,c\\} \\in E(G)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "clique",
+      "cycle",
+      "triangle-free graph",
+      "Ramsey theory"
+    ],
+    "prerequisites": [
+      "simple graph",
+      "adjacency"
+    ]
+  },
+  {
+    "id": "ann-621-hits",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 42,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "Hits Triangle",
+    "content": "An edge set $S$ hits a triangle $abc$ if $S$ contains at least one of the triangle's three edges. This is the fundamental notion for defining triangle edge covers—an edge set that hits every triangle in the graph.",
+    "mathContext": "$S$ hits triangle $(a,b,c)$ iff $\\{a,b\\} \\in S \\lor \\{b,c\\} \\in S \\lor \\{a,c\\} \\in S$. This is the hypergraph transversal condition where triangles form a 3-uniform hypergraph on the edge set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "transversal",
+      "hitting set",
+      "hypergraph",
+      "vertex cover"
+    ],
+    "prerequisites": [
+      "set membership",
+      "triangle definition"
+    ]
+  },
+  {
+    "id": "ann-621-cover",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 46,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Triangle Edge Cover",
+    "content": "A triangle edge cover is an edge set that hits every triangle in $G$. This is the edge analogue of a vertex cover for the triangle hypergraph. The minimum such cover has size $\\tau_1(G)$.",
+    "mathContext": "$S$ is a triangle edge cover iff $\\forall (a,b,c)$ forming a triangle in $G$, $S \\cap \\{\\{a,b\\},\\{b,c\\},\\{a,c\\}\\} \\ne \\emptyset$. Equivalently, $S$ is a transversal of the triangle hypergraph $\\mathcal{H} = (E(G), \\{E(T) : T \\text{ is a triangle}\\})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "transversal number",
+      "hypergraph cover",
+      "τ₁",
+      "edge cover"
+    ],
+    "prerequisites": [
+      "triangle",
+      "hitting set"
+    ]
+  },
+  {
+    "id": "ann-621-sparse",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 50,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Triangle-Sparse Edge Set",
+    "content": "An edge set is triangle-sparse if no triangle has two or more of its edges in the set. This is the independence condition dual to covering: a maximum triangle-sparse set has size $\\alpha_1(G)$.",
+    "mathContext": "$S$ is triangle-sparse iff for every triangle $(a,b,c)$, $|S \\cap \\{\\{a,b\\},\\{b,c\\},\\{a,c\\}\\}| \\le 1$. This is equivalent to $S$ being an independent set in the triangle hypergraph $\\mathcal{H}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "independent set",
+      "matching",
+      "hypergraph independence",
+      "α₁"
+    ],
+    "prerequisites": [
+      "triangle",
+      "hypergraph independence"
+    ]
+  },
+  {
+    "id": "ann-621-bipartite-def",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 57,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Bipartite Graph",
+    "content": "A graph is bipartite if it admits a proper 2-coloring: a function $f: V \\to \\{0,1\\}$ such that adjacent vertices receive different colors. Equivalently, the graph contains no odd cycles.",
+    "mathContext": "$G$ is bipartite iff $\\exists f: V \\to \\mathrm{Bool}$ such that $G.\\mathrm{Adj}(v,w) \\implies f(v) \\ne f(w)$. By König's theorem, this is equivalent to $\\chi(G) \\le 2$, or equivalently, $G$ contains no odd cycle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "2-colorable",
+      "odd cycle",
+      "König's theorem"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "adjacency"
+    ]
+  },
+  {
+    "id": "ann-621-edgeset-cover",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 63,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Full Edge Set is a Cover",
+    "content": "The full edge set $E(G)$ is always a triangle edge cover: every triangle has all three of its edges in $E(G)$ by definition. This establishes well-definedness of $\\tau_1$ (the infimum is over a non-empty set).",
+    "mathContext": "$E(G)$ is a triangle edge cover since for any triangle $(a,b,c)$, $\\{a,b\\} \\in E(G)$ by adjacency. Thus $\\tau_1(G) \\le |E(G)|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "well-definedness",
+      "τ₁ upper bound",
+      "trivial cover"
+    ],
+    "prerequisites": [
+      "triangle edge cover",
+      "edge membership"
+    ]
+  },
+  {
+    "id": "ann-621-empty-sparse",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 70,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "Empty Set is Sparse",
+    "content": "The empty edge set is vacuously triangle-sparse: no triangle can have two edges in $\\emptyset$. This establishes well-definedness of $\\alpha_1$ (the supremum is over a non-empty set, since $\\emptyset$ is always feasible).",
+    "mathContext": "$\\emptyset$ is triangle-sparse since $|\\emptyset \\cap E(T)| = 0 \\le 1$ for every triangle $T$. Thus $\\alpha_1(G) \\ge 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "well-definedness",
+      "α₁ lower bound",
+      "vacuous truth"
+    ],
+    "prerequisites": [
+      "triangle-sparse",
+      "empty set"
+    ]
+  },
+  {
+    "id": "ann-621-tau1",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 89,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "τ₁(G): Triangle Edge Cover Number",
+    "content": "Defined as the minimum cardinality over all triangle edge covers that are subsets of $E(G)$, using `Finset.inf'`. The witness for non-emptiness is the full edge set (from `edgeFinset_is_cover`). This is the covering number of the triangle hypergraph.",
+    "mathContext": "$\\tau_1(G) = \\min\\{|S| : S \\subseteq E(G),\\, S \\text{ is a triangle edge cover}\\}$. This is the transversal number $\\tau(\\mathcal{H})$ of the triangle hypergraph $\\mathcal{H}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "transversal number",
+      "Finset.inf'",
+      "hypergraph cover",
+      "LP relaxation"
+    ],
+    "prerequisites": [
+      "triangle edge cover",
+      "Finset operations",
+      "well-definedness"
+    ]
+  },
+  {
+    "id": "ann-621-alpha1",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 99,
+      "endLine": 106
+    },
+    "type": "definition",
+    "title": "α₁(G): Triangle-Sparse Number",
+    "content": "Defined as the maximum cardinality over all triangle-sparse subsets of $E(G)$, using `Finset.sup'`. The witness for non-emptiness is the empty set (from `empty_is_sparse`). This is the independence number of the triangle hypergraph.",
+    "mathContext": "$\\alpha_1(G) = \\max\\{|S| : S \\subseteq E(G),\\, S \\text{ is triangle-sparse}\\}$. This is the independence number $\\alpha(\\mathcal{H})$ of the triangle hypergraph.",
+    "significance": "key",
+    "relatedConcepts": [
+      "independence number",
+      "Finset.sup'",
+      "hypergraph independence",
+      "LP duality"
+    ],
+    "prerequisites": [
+      "triangle-sparse",
+      "Finset operations",
+      "well-definedness"
+    ]
+  },
+  {
+    "id": "ann-621-tauB",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 113,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "τ_B(G): Bipartite Edge Deletion Number",
+    "content": "Axiomatized as the minimum number of edges whose removal makes $G$ bipartite. This is the odd cycle edge transversal number. A full definition would require Mathlib's `deleteEdges` and a proof that bipartiteness is witnessed by some edge set removal.",
+    "mathContext": "$\\tau_B(G) = \\min\\{|S| : S \\subseteq E(G),\\, G - S \\text{ is bipartite}\\}$. This equals the minimum edge cut to eliminate all odd cycles. By the max-flow min-cut theorem for odd cycles, this relates to fractional chromatic number.",
+    "significance": "key",
+    "relatedConcepts": [
+      "odd cycle transversal",
+      "bipartite removal",
+      "edge deletion",
+      "frustration index"
+    ],
+    "prerequisites": [
+      "bipartite graph",
+      "edge deletion",
+      "odd cycles"
+    ]
+  },
+  {
+    "id": "ann-621-bipartite-triangle-free",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 128,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "Bipartite Implies Triangle-Free",
+    "content": "Bipartite graphs contain no triangles. The proof uses a pigeonhole argument: in a 2-coloring $f: V \\to \\mathrm{Bool}$, edges connect differently-colored vertices. Three mutual adjacencies $a$-$b$, $b$-$c$, $a$-$c$ force $f(a) \\ne f(b)$, $f(b) \\ne f(c)$, hence $f(a) = f(c)$, contradicting $f(a) \\ne f(c)$. The proof uses `cases` on `Bool` values and `simp_all`.",
+    "mathContext": "If $G$ is bipartite with 2-coloring $f$, then $G$ has no triangle, since a triangle on $\\{a,b,c\\}$ requires $f(a) \\ne f(b) \\ne f(c) \\ne f(a)$, impossible with $|\\mathrm{Bool}| = 2$. This is the contrapositive of: graphs with odd cycles are not 2-colorable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "2-colorability",
+      "odd cycle characterization",
+      "König's theorem"
+    ],
+    "prerequisites": [
+      "bipartite graph",
+      "triangle",
+      "Bool has two elements"
+    ]
+  },
+  {
+    "id": "ann-621-tau1letauB",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 142,
+      "endLine": 144
+    },
+    "type": "concept",
+    "title": "τ₁ ≤ τ_B: Covers from Bipartite Removal",
+    "content": "Any edge set whose removal makes $G$ bipartite is automatically a triangle edge cover (since bipartite graphs are triangle-free). Therefore the minimum triangle cover is at most the minimum bipartite-making removal. This inequality is the bridge between the original EGT conjecture and Norin-Sun's stronger result.",
+    "mathContext": "$\\tau_1(G) \\le \\tau_B(G)$ because if $G - S$ is bipartite (hence triangle-free), then $S$ must contain at least one edge from every triangle of $G$. This is the key reduction: bounding $\\alpha_1 + \\tau_B$ suffices for bounding $\\alpha_1 + \\tau_1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "relaxation",
+      "bipartite removal",
+      "monotonicity of covers"
+    ],
+    "prerequisites": [
+      "bipartite implies triangle-free",
+      "triangle edge cover",
+      "τ_B definition"
+    ]
+  },
+  {
+    "id": "ann-621-egt",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 149,
+      "endLine": 150
+    },
+    "type": "definition",
+    "title": "EGT Conjecture",
+    "content": "The Erdős-Gallai-Tuza conjecture: $\\alpha_1(G) + \\tau_1(G) \\le n^2/4$ for every graph $G$ on $n$ vertices. The bound $n^2/4$ matches Mantel's theorem and Turán's theorem for triangles.",
+    "mathContext": "$\\alpha_1(G) + \\tau_1(G) \\le \\frac{n^2}{4}$ where $n = |V(G)|$. The bound is tight: balanced complete bipartite graphs $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ achieve $\\alpha_1 + \\tau_1 = \\lfloor n^2/4 \\rfloor$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mantel's theorem",
+      "Turán's theorem",
+      "extremal graph theory",
+      "Gallai identity"
+    ],
+    "prerequisites": [
+      "α₁ definition",
+      "τ₁ definition",
+      "extremal bounds"
+    ]
+  },
+  {
+    "id": "ann-621-norinsun",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 158,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Norin-Sun 2016: The Stronger Result",
+    "content": "Axiomatizes the Norin-Sun theorem: $\\alpha_1(G) + \\tau_B(G) \\le n^2/4$. This is strictly stronger than the EGT conjecture since $\\tau_B \\ge \\tau_1$. The proof, which uses structural graph theory and the Kruskal-Katona theorem, is beyond current Mathlib.",
+    "mathContext": "$\\alpha_1(G) + \\tau_B(G) \\le \\frac{n^2}{4}$ (Norin-Sun 2016). Since $\\tau_1 \\le \\tau_B$, this implies $\\alpha_1 + \\tau_1 \\le \\alpha_1 + \\tau_B \\le n^2/4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kruskal-Katona theorem",
+      "structural graph theory",
+      "extremal result"
+    ],
+    "prerequisites": [
+      "α₁ definition",
+      "τ_B definition",
+      "deep graph theory"
+    ]
+  },
+  {
+    "id": "ann-621-main-proof",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 163,
+      "endLine": 169
+    },
+    "type": "concept",
+    "title": "EGT Conjecture Resolved",
+    "content": "The main theorem: the EGT conjecture follows from Norin-Sun and $\\tau_1 \\le \\tau_B$. The proof unfolds both definitions, applies Norin-Sun, casts the natural number inequality $\\tau_1 \\le \\tau_B$ to reals via `Nat.cast_le`, and closes with `linarith`. This is the formal derivation showing the original conjecture is a corollary of the stronger result.",
+    "mathContext": "$\\alpha_1 + \\tau_1 \\le \\alpha_1 + \\tau_B \\le n^2/4$ by monotonicity and Norin-Sun. The `linarith` tactic handles the real arithmetic chain.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linarith",
+      "Nat.cast_le",
+      "corollary derivation"
+    ],
+    "prerequisites": [
+      "Norin-Sun result",
+      "τ₁ ≤ τ_B",
+      "real number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-621-tf-tau-zero",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 181,
+      "endLine": 192
+    },
+    "type": "concept",
+    "title": "τ₁ = 0 for Triangle-Free Graphs",
+    "content": "For triangle-free graphs, the empty set is a valid triangle edge cover (vacuously), so $\\tau_1(G) = 0$. The proof uses `le_antisymm`: the empty set witnesses $\\tau_1 \\le 0$ via `Finset.inf'_le`, and $0 \\le \\tau_1$ is trivial.",
+    "mathContext": "If $G$ has no triangles, then $\\tau_1(G) = 0$, since $\\emptyset$ is a triangle edge cover (vacuously hitting all zero triangles).",
+    "significance": "key",
+    "relatedConcepts": [
+      "vacuous truth",
+      "triangle-free graph",
+      "Finset.inf'_le"
+    ],
+    "prerequisites": [
+      "triangle edge cover",
+      "triangle-free hypothesis"
+    ]
+  },
+  {
+    "id": "ann-621-tf-alpha-all",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 202,
+      "endLine": 214
+    },
+    "type": "concept",
+    "title": "α₁ = |E(G)| for Triangle-Free Graphs",
+    "content": "For triangle-free graphs, every edge set is vacuously triangle-sparse, so the maximum sparse set is the full edge set. The proof shows both $\\alpha_1 \\le |E|$ (all sparse sets are subsets of edges) and $\\alpha_1 \\ge |E|$ (the full edge set is sparse).",
+    "mathContext": "If $G$ is triangle-free, $\\alpha_1(G) = |E(G)|$, since every subset of $E(G)$ is trivially triangle-sparse (no triangle exists to violate the sparsity condition).",
+    "significance": "key",
+    "relatedConcepts": [
+      "vacuous sparsity",
+      "Finset.sup'_le",
+      "Finset.le_sup'"
+    ],
+    "prerequisites": [
+      "triangle-sparse",
+      "triangle-free hypothesis"
+    ]
+  },
+  {
+    "id": "ann-621-mantel",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 218,
+      "endLine": 221
+    },
+    "type": "concept",
+    "title": "Mantel's Theorem (1907)",
+    "content": "Axiomatizes Mantel's theorem: a triangle-free graph on $n$ vertices has at most $n^2/4$ edges. This classical result (the first case of Turán's theorem) is the baseline for the triangle-free reduction of the EGT conjecture.",
+    "mathContext": "Mantel (1907): If $G$ is triangle-free on $n$ vertices, $|E(G)| \\le \\lfloor n^2/4 \\rfloor$. Equality iff $G \\cong K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. This is Turán's theorem for $r = 2$: $\\mathrm{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "extremal number",
+      "Turán graph",
+      "Zykov symmetrization"
+    ],
+    "prerequisites": [
+      "triangle-free graph",
+      "extremal graph theory"
+    ]
+  },
+  {
+    "id": "ann-621-tf-egt",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 224,
+      "endLine": 229
+    },
+    "type": "concept",
+    "title": "Triangle-Free EGT via Mantel",
+    "content": "For triangle-free graphs, the EGT conjecture reduces to Mantel's theorem: $\\alpha_1 + \\tau_1 = |E| + 0 = |E| \\le n^2/4$. The proof rewrites using `triangle_free_tau1_zero` and `triangle_free_alpha1_all_edges`, then applies Mantel.",
+    "mathContext": "Triangle-free case: $\\alpha_1(G) + \\tau_1(G) = |E(G)| + 0 = |E(G)| \\le n^2/4$ by Mantel. This shows the EGT bound is tight for triangle-free graphs when $G = K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mantel's theorem",
+      "special case analysis",
+      "extremal equality"
+    ],
+    "prerequisites": [
+      "τ₁ = 0 for triangle-free",
+      "α₁ = |E| for triangle-free",
+      "Mantel's theorem"
+    ]
+  },
+  {
+    "id": "ann-621-bounds",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 234,
+      "endLine": 248
+    },
+    "type": "concept",
+    "title": "Basic Upper Bounds",
+    "content": "Proves $\\tau_1(G) \\le |E(G)|$ (the full edge set is a cover) and $\\alpha_1(G) \\le |E(G)|$ (sparse sets are subsets of edges). These follow directly from the definitions using `Finset.inf'_le` and `Finset.sup'_le` respectively.",
+    "mathContext": "$\\tau_1(G) \\le |E(G)|$ and $\\alpha_1(G) \\le |E(G)|$ are trivial bounds. The interesting bound is $\\alpha_1(G) \\le n^2/4$ (from Norin-Sun).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trivial bounds",
+      "Finset.inf'_le",
+      "Finset.sup'_le"
+    ],
+    "prerequisites": [
+      "τ₁ definition",
+      "α₁ definition"
+    ]
+  },
+  {
+    "id": "ann-621-alpha1-bound",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 252,
+      "endLine": 256
+    },
+    "type": "concept",
+    "title": "α₁(G) ≤ n²/4 from Norin-Sun",
+    "content": "Derives $\\alpha_1(G) \\le n^2/4$ as a corollary of Norin-Sun by observing $\\tau_B \\ge 0$. Since $\\alpha_1 + \\tau_B \\le n^2/4$ and $\\tau_B \\ge 0$, we get $\\alpha_1 \\le n^2/4$. Uses `Nat.cast_nonneg` and `linarith`.",
+    "mathContext": "$\\alpha_1(G) \\le \\alpha_1(G) + \\tau_B(G) \\le n^2/4$ since $\\tau_B(G) \\ge 0$. This gives an independent bound on the triangle-sparse number without involving the covering number.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Norin-Sun corollary",
+      "nonnegativity",
+      "Nat.cast_nonneg"
+    ],
+    "prerequisites": [
+      "Norin-Sun result",
+      "τ_B ≥ 0"
+    ]
+  },
+  {
+    "id": "ann-621-tf-sum",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 261,
+      "endLine": 265
+    },
+    "type": "concept",
+    "title": "Triangle-Free Sum Identity",
+    "content": "For triangle-free graphs, $\\alpha_1(G) + \\tau_1(G) = |E(G)|$. This is a Gallai-type identity for the triangle hypergraph in the degenerate case: when there are no triangles, covering and independence partition the edge count exactly.",
+    "mathContext": "$\\alpha_1(G) + \\tau_1(G) = |E(G)| + 0 = |E(G)|$ for triangle-free $G$. Compare with the Gallai identity $\\alpha(G) + \\tau(G) = n$ for vertex cover/independent set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gallai identity",
+      "LP duality",
+      "complementary slackness"
+    ],
+    "prerequisites": [
+      "τ₁ = 0 for triangle-free",
+      "α₁ = |E| for triangle-free"
+    ]
+  },
+  {
+    "id": "ann-621-equality",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 271,
+      "endLine": 276
+    },
+    "type": "concept",
+    "title": "Equality is Achievable",
+    "content": "Axiomatizes that for every $n \\ge 2$, there exists a graph achieving $\\alpha_1 + \\tau_1 = \\lfloor n^2/4 \\rfloor$. The balanced complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is triangle-free with $|E| = \\lfloor n^2/4 \\rfloor$.",
+    "mathContext": "The bound $n^2/4$ is tight: $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ achieves $\\alpha_1 + \\tau_1 = \\lfloor n^2/4 \\rfloor + 0 = \\lfloor n^2/4 \\rfloor$. Complete graphs and $K_{m,m}$ + universal vertex also achieve equality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán graph",
+      "extremal graph",
+      "tight bound"
+    ],
+    "prerequisites": [
+      "EGT conjecture",
+      "triangle-free sum identity",
+      "balanced bipartite graph"
+    ]
+  },
+  {
+    "id": "ann-621-problem23",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 281,
+      "endLine": 285
+    },
+    "type": "definition",
+    "title": "Problem #23 Conjecture: τ_B ≤ n²/25",
+    "content": "Defines the conjecture from Erdős Problem #23: $\\tau_B(G) \\le n^2/25$ for all graphs on $n$ vertices. This would be a much stronger bound on bipartite removal than what follows from the EGT conjecture alone.",
+    "mathContext": "Problem #23: $\\tau_B(G) \\le n^2/25$ for all $n$-vertex graphs. The constant $1/25$ comes from the extremal graph $C_5 \\square K_{n/5}$ (a balanced blow-up of the 5-cycle), which has $\\tau_B = n^2/25$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős Problem #23",
+      "bipartite removal",
+      "blow-up construction",
+      "pentagon"
+    ],
+    "prerequisites": [
+      "τ_B definition",
+      "extremal constructions"
+    ]
+  },
+  {
+    "id": "ann-621-p23-implies",
+    "proofId": "erdos-621",
+    "range": {
+      "startLine": 288,
+      "endLine": 295
+    },
+    "type": "concept",
+    "title": "Problem #23 Implies τ₁ Bound",
+    "content": "If Problem #23 holds ($\\tau_B \\le n^2/25$), then $\\tau_1 \\le n^2/25$ via the chain $\\tau_1 \\le \\tau_B \\le n^2/25$. The proof uses `calc` with `Nat.cast_le` for the first step and the Problem #23 hypothesis for the second.",
+    "mathContext": "$\\tau_1(G) \\le \\tau_B(G) \\le n^2/25$. Combined with Norin-Sun, this would give $\\alpha_1(G) \\ge n^2/4 - n^2/25 = 21n^2/100$, a strong lower bound on the sparse number.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "transitive inequality",
+      "calc proof",
+      "conditional result"
+    ],
+    "prerequisites": [
+      "τ₁ ≤ τ_B",
+      "Problem #23 conjecture"
+    ]
+  }
+]

@@ -1,0 +1,260 @@
+[
+  {
+    "id": "ann-e987-header",
+    "proofId": "erdos-987",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Problem Overview and Imports",
+    "content": "**Erdős Problem #987: Exponential Sums**\n\nFor sequence x₁,x₂,... ∈ (0,1), define Aₖ = limsup|∑e(kxⱼ)|.\n\n**Questions:**\n1. Is limsup Aₖ = ∞? YES (proved)\n2. Is Aₖ = o(k) possible? OPEN\n\n**Known:** √k ≤ Aₖ ≤ k infinitely often vs always.\n\nThe imports bring in complex exponentials (`Complex.exp`), trigonometric functions, filter limits (`limsup` via `Filter.atTop`), and basic real/complex arithmetic. The `open` statement exposes `Complex`, `Real`, and `Filter` namespaces for cleaner notation throughout.",
+    "mathContext": "The problem studies $A_k = \\limsup_{n \\to \\infty} \\left|\\sum_{j=1}^n e^{2\\pi i k x_j}\\right|$ for sequences $(x_j) \\subset (0,1)$. The exponential sum $\\sum e^{2\\pi i k x_j}$ is a random walk on the unit circle in $\\mathbb{C}$, and $A_k$ captures its worst-case growth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Exponential sums",
+      "Weyl sums",
+      "Discrepancy theory",
+      "Equidistribution mod 1"
+    ],
+    "prerequisites": [
+      "Complex analysis",
+      "Filter limits",
+      "Harmonic analysis"
+    ]
+  },
+  {
+    "id": "ann-e987-exp-func",
+    "proofId": "erdos-987",
+    "range": {
+      "startLine": 42,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "The e(x) Function and Properties",
+    "content": "**e(x) = e^{2πix}:** Maps reals to the unit circle in ℂ.\n\nDefined as `Complex.exp (2 * Real.pi * x * Complex.I)`, this is the standard number-theoretic exponential function. Key axiomatized properties:\n- **e_norm**: |e(x)| = 1 always (maps to unit circle)\n- **e_periodic**: e(x + 1) = e(x) (period 1)\n\nFor x ∈ [0,1], e(x) traces the unit circle once. This function is the fundamental building block of Fourier analysis on ℝ/ℤ.",
+    "mathContext": "$e(x) = e^{2\\pi i x} = \\cos(2\\pi x) + i\\sin(2\\pi x)$. The key properties $|e(x)| = 1$ and $e(x+1) = e(x)$ follow from Euler's formula. As a character of $(\\mathbb{R}/\\mathbb{Z}, +)$, the functions $e(kx)$ for $k \\in \\mathbb{Z}$ form an orthonormal basis of $L^2([0,1])$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's formula",
+      "Characters of abelian groups",
+      "Fourier basis",
+      "Unit circle"
+    ],
+    "prerequisites": [
+      "Complex exponential",
+      "Periodicity",
+      "Group characters"
+    ]
+  },
+  {
+    "id": "ann-e987-partial-sum",
+    "proofId": "erdos-987",
+    "range": {
+      "startLine": 57,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Partial Sums and the Aₖ Function",
+    "content": "**partialSum Sₙ(k) = ∑_{j=1}^n e(kxⱼ):** A sum of n unit vectors in the complex plane, each at angle 2πkxⱼ. The alignment or cancellation of these vectors determines the sum's magnitude.\n\n**A(x,k) = limsup_{n→∞} |Sₙ(k)|:** Measures the worst-case magnitude of partial sums for the k-th harmonic. Using `limsup` (not `sup`) captures eventual behavior, ignoring transient effects from the first few terms.\n\nThe definition uses `Finset.range n` for finite sums and `Complex.abs` for the modulus, then takes the limit superior along `Filter.atTop`.",
+    "mathContext": "$S_n(k) = \\sum_{j=1}^n e(kx_j)$ is a sum of $n$ unit vectors at angles $2\\pi k x_j$. For random angles, $|S_n| \\sim \\sqrt{n}$ by the central limit theorem. The key quantity $A_k = \\limsup_{n\\to\\infty} |S_n(k)|$ measures the maximum possible alignment for the $k$-th Fourier frequency.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Random walk on circle",
+      "Central limit theorem",
+      "Fourier coefficients",
+      "Limsup filter"
+    ],
+    "prerequisites": [
+      "Finite sums in Lean",
+      "Complex modulus",
+      "Filter.limsup"
+    ]
+  },
+  {
+    "id": "ann-e987-unit-interval",
+    "proofId": "erdos-987",
+    "range": {
+      "startLine": 80,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "Unit Interval Predicate",
+    "content": "**InUnitInterval x:** Requires all sequence elements xₙ (for n ≥ 1) to lie in the open interval (0,1). This is the natural domain for equidistribution theory, as the exponential function e(x) is periodic with period 1, so values in [0,1) represent distinct points on the circle.",
+    "mathContext": "$\\text{InUnitInterval}(x) \\iff \\forall n \\geq 1,\\; 0 < x_n < 1$. The open interval $(0,1)$ avoids boundary issues; since $e(0) = e(1) = 1$, the endpoints are identified on the circle $\\mathbb{R}/\\mathbb{Z}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Unit interval",
+      "Circle group",
+      "Equidistribution domain"
+    ],
+    "prerequisites": [
+      "Real number ordering"
+    ]
+  },
+  {
+    "id": "ann-e987-erdos-results",
+    "proofId": "erdos-987",
+    "range": {
+      "startLine": 87,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Erdős's Early Results (1964-1965)",
+    "content": "**erdos_1964_basic:** For any sequence in (0,1), the supremum of partial sums over n is unbounded as k → ∞. Erdős noted this is 'easy to see' — intuitively, for large k the phases kxⱼ mod 1 become essentially independent, preventing persistent cancellation.\n\n**erdos_1965_log_bound:** Aₖ ≫ log k infinitely often. Erdős's 'very easy' proof gave the first quantitative lower bound, showing that the growth rate of Aₖ is at least logarithmic. This was the starting point for the race toward stronger bounds.",
+    "mathContext": "The 1964 result states $\\sup_n |S_n(k)| \\to \\infty$ as $k \\to \\infty$. The 1965 improvement gives $A_k \\geq C \\log k$ for infinitely many $k$, where $C > 0$ is an absolute constant. The logarithmic bound can be proved using the pigeonhole principle on the distribution of $kx_j \\bmod 1$ in short arcs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pigeonhole principle",
+      "Phase equidistribution",
+      "Lower bounds for exponential sums"
+    ],
+    "prerequisites": [
+      "Logarithmic growth",
+      "Supremum",
+      "Asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e987-clunie",
+    "proofId": "erdos-987",
+    "range": {
+      "startLine": 106,
+      "endLine": 134
+    },
+    "type": "concept",
+    "title": "Clunie's Results (1967)",
+    "content": "**clunie_sqrt_bound:** Aₖ ≫ √k for infinitely many k. This was the major breakthrough — an exponential improvement from log k to √k. Clunie's argument uses the second moment method: $\\sum_k |S_n(k)|^2 = nN$ by orthogonality, so some k must contribute Ω(√k).\n\n**clunie_upper_construction:** There exist sequences with Aₖ ≤ k for ALL k. This establishes the O(k) upper bound and shows that linear growth cannot be avoided in general.\n\n**tao_sqrt_bound:** Tao independently proved the √k lower bound, confirming Clunie's result through a different approach.",
+    "mathContext": "Clunie's proof of $A_k \\gg \\sqrt{k}$ relies on the identity $\\sum_{k=1}^K |S_n(k)|^2 = nK + \\text{(cross terms)}$, where the cross terms involve correlations $\\sum_j e((k-k')x_j)$. By the Cauchy-Schwarz inequality, at least one $k \\leq K$ must have $|S_n(k)| \\geq c\\sqrt{K}$. The upper construction uses carefully chosen sequences (e.g., based on normal numbers) where the phases distribute uniformly enough to prevent superlinear growth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Second moment method",
+      "Cauchy-Schwarz inequality",
+      "Orthogonality of characters",
+      "Normal numbers"
+    ],
+    "prerequisites": [
+      "Second moment method",
+      "Complex orthogonality",
+      "Constructive analysis"
+    ]
+  },
+  {
+    "id": "ann-e987-liu",
+    "proofId": "erdos-987",
+    "range": {
+      "startLine": 136,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "Liu's Results and Finite Points (1969)",
+    "content": "**FinitelyManyDistinct:** The sequence takes only finitely many distinct values, formalized as ∃ S : Finset ℝ, ∀ n ≥ 1, x n ∈ S.\n\n**liu_finite_distinct:** With finitely many distinct points, for any ε > 0, Aₖ ≫ k^{1-ε} infinitely often — nearly linear growth!\n\n**clunie_observation_finite:** Under the finite distinct assumption, Aₖ is actually unbounded (a stronger qualitative statement noted in the MathSciNet review of Liu's paper).\n\nThe finite distinct case is much more constrained: if x takes values only in {a₁,...,aₘ}, then the partial sum becomes a weighted sum of m fixed complex numbers, and Dirichlet's theorem on simultaneous approximation forces alignment.",
+    "mathContext": "For a sequence taking values in a finite set $\\{a_1, \\ldots, a_m\\}$ with frequencies $f_j$, the partial sum is approximately $n \\sum_j f_j e(k a_j)$. By Dirichlet's simultaneous approximation theorem, there exist $k$ making all $k a_j$ close to integers simultaneously, giving $|S_n(k)| \\approx n$. Liu's quantitative bound $A_k \\gg k^{1-\\varepsilon}$ refines this to a precise growth rate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet's approximation theorem",
+      "Simultaneous rational approximation",
+      "Finite point measures",
+      "Weyl sums for polynomials"
+    ],
+    "prerequisites": [
+      "Diophantine approximation",
+      "Finset membership",
+      "Power growth rates"
+    ]
+  },
+  {
+    "id": "ann-e987-open",
+    "proofId": "erdos-987",
+    "range": {
+      "startLine": 166,
+      "endLine": 199
+    },
+    "type": "insight",
+    "title": "The Open Question and Known Bounds",
+    "content": "**SublinearGrowth:** Aₖ = o(k), meaning Aₖ/k → 0 as k → ∞, formalized using `Filter.Tendsto` to `nhds 0`.\n\n**openQuestion:** Is there a sequence x ∈ (0,1)^ℕ with SublinearGrowth? This remains OPEN since 1965.\n\n**known_bounds theorem** (proved, not axiomatized!): Combines Clunie's two results into one statement:\n1. Lower: Aₖ ≥ C√k infinitely often (no sequence avoids this)\n2. Upper: ∃ sequences with Aₖ ≤ k always\n\nThis theorem is one of only two proved results (not axioms) in the file, giving it special significance. The gap between √k and k is where the open question lives — can we find sequences in the 'valley' between these bounds?",
+    "mathContext": "The open question asks whether $\\lim_{k\\to\\infty} A_k/k = 0$ is achievable. We know $A_k \\geq C\\sqrt{k}$ i.o. (so $o(\\sqrt{k})$ is impossible) and $A_k \\leq k$ is achievable. The gap between $\\Theta(\\sqrt{k})$ and $O(k)$ represents a fundamental open problem in the theory of exponential sums. If $A_k = o(k)$ is achievable, it would mean sequences exist with better-than-linear cancellation at all frequencies simultaneously.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sublinear growth",
+      "Little-o notation",
+      "Filter.Tendsto",
+      "Asymptotic gaps"
+    ],
+    "prerequisites": [
+      "Topological limits",
+      "nhds filter",
+      "Asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e987-weyl",
+    "proofId": "erdos-987",
+    "range": {
+      "startLine": 201,
+      "endLine": 216
+    },
+    "type": "concept",
+    "title": "Weyl Sum Bound",
+    "content": "**weyl_sum_bound:** For equidistributed sequences like nα mod 1 (irrational α), the geometric sum |∑e(jθ)| ≤ csc(πθ/2) provides uniform bounds on exponential sums.\n\nThis axiom connects the problem to Weyl's equidistribution criterion: a sequence is equidistributed mod 1 if and only if all exponential sums ∑e(kxⱼ)/n → 0 as n → ∞. The bound quantifies the rate of cancellation for arithmetic progressions on the circle.",
+    "mathContext": "Weyl's bound $\\left|\\sum_{j=0}^{n-1} e(j\\theta)\\right| = \\left|\\frac{e(n\\theta) - 1}{e(\\theta) - 1}\\right| \\leq \\frac{1}{|\\sin(\\pi\\theta)|}$ is the geometric series formula applied to the unit circle. For $\\theta$ bounded away from integers, this gives $O(1)$ cancellation, meaning $A_k = O(1)$ for the arithmetic sequence $x_j = j\\alpha$. Such sequences trivially satisfy $A_k = o(k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Weyl equidistribution criterion",
+      "Geometric series on circle",
+      "Irrational rotation",
+      "Kronecker's theorem"
+    ],
+    "prerequisites": [
+      "Geometric series",
+      "Weyl's criterion",
+      "Diophantine properties of α"
+    ]
+  },
+  {
+    "id": "ann-e987-discrepancy",
+    "proofId": "erdos-987",
+    "range": {
+      "startLine": 218,
+      "endLine": 237
+    },
+    "type": "concept",
+    "title": "Discrepancy Theory Connection",
+    "content": "**discrepancy:** Measures how far a finite sequence deviates from uniform distribution, defined as the supremum over all intervals [a,b) ⊂ [0,1] of the difference between the empirical proportion and the expected proportion b-a.\n\n**erdos_turan inequality:** The cornerstone connecting exponential sums to equidistribution: D_n ≤ 1/K + Σ|Sₙ(k)|/(k·n). Small exponential sums force small discrepancy, meaning the sequence is well-distributed.\n\nThis is a deep duality: controlling Fourier coefficients (exponential sums) controls spatial distribution (discrepancy). The Erdős-Turán inequality is the quantitative form of Weyl's equidistribution criterion.",
+    "mathContext": "The Erdős-Turán inequality states $D_N \\leq \\frac{C_1}{K+1} + C_2 \\sum_{k=1}^K \\frac{|S_N(k)|}{k}$ for any $K \\geq 1$. Optimizing $K$ gives the best discrepancy bound from exponential sum information. If $A_k = o(k)$, then $|S_N(k)|/k \\to 0$ for each fixed $k$, suggesting (but not proving) good equidistribution properties.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Turán inequality",
+      "Weyl's criterion",
+      "Discrepancy theory",
+      "Koksma-Hlawka inequality"
+    ],
+    "prerequisites": [
+      "Supremum over intervals",
+      "Empirical distribution",
+      "Fourier-analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-e987-main",
+    "proofId": "erdos-987",
+    "range": {
+      "startLine": 239,
+      "endLine": 245
+    },
+    "type": "concept",
+    "title": "Main Result: erdos_987",
+    "content": "**erdos_987_unbounded** (axiom): Aₖ → ∞ for any sequence, a consequence of Clunie's √k bound.\n\n**erdos_987** (theorem, proved): The summary statement combining three key facts:\n1. Aₖ grows unboundedly for any sequence (from erdos_987_unbounded)\n2. Aₖ ≥ C√k infinitely often (from clunie_sqrt_bound)\n3. ∃ sequences with Aₖ ≤ k always (from clunie_upper_construction)\n\nProved directly as `⟨erdos_987_unbounded, clunie_sqrt_bound, clunie_upper_construction⟩` — a simple conjunction of the three axiomatized results. This is one of two proved (non-axiom) results in the file, alongside `known_bounds`.",
+    "mathContext": "The theorem packages the complete state of knowledge about Problem #987: $\\forall (x_j) \\subset (0,1)$, $\\limsup A_k = \\infty$ and $A_k \\geq C\\sqrt{k}$ i.o., while $\\exists (x_j)$ with $A_k \\leq k$ for all $k$. The remaining open question—whether $A_k = o(k)$ is achievable—would complete the picture by determining whether the upper bound $O(k)$ can be improved.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Triple conjunction",
+      "Axiom packaging",
+      "State of the art summary"
+    ],
+    "prerequisites": [
+      "Conjunction introduction",
+      "Axiom application"
+    ]
+  }
+]

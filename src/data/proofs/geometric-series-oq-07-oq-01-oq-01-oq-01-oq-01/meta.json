@@ -1,0 +1,132 @@
+{
+  "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
+  "slug": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GeometricSeriesOQ07OQ01OQ01OQ01"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Polynomial",
+      "GeometricSeriesOQ07OQ01OQ01",
+      "GeometricSeriesOQ07OQ01OQ01OQ01"
+    ],
+    "namespace": "GeometricSeriesOQ07OQ01OQ01OQ01OQ01",
+    "lineCount": 125,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "Worpitzky's Row Sum ∑ⱼ⟨n,j⟩ = n! and the Low-Column Closed Forms ⟨n,1⟩ = 2ⁿ−n−1, ⟨n,2⟩",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "geometric-series",
+      "eulerian-numbers",
+      "worpitzky",
+      "descent-statistic",
+      "triangle-recurrence",
+      "closed-form",
+      "factorial",
+      "OEIS-A000295",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 125,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "eulerian_row_sum: THE DECLARED OPEN QUESTION (parent's oq-01) — the Worpitzky row identity ∑_{j∈range(n+1)} ⟨n,j⟩ = n! for the combinatorial Eulerian numbers ⟨n,j⟩ built in the parent. Proved by evaluating the parent's coefficient identity eulerPoly_eq_eulerianNumbers (E_{m+1}(X) = ∑ⱼ ⟨m+1,j⟩·X^{j+1}) at X = 1 and feeding in the parent's analytic row sum eval_eulerPoly_one (Eₘ(1) = m!); the diagonal term ⟨n,n⟩ = 0 (eulerian_succ_self) is peeled off so the combinatorial sum lines up with the polynomial's coefficient range. This realises the descent statistic as exhaustive: the n! permutations of {1,…,n} are partitioned across row n by their descent count.",
+      "eulerian_col_one: the second column of the Eulerian triangle has the explicit closed form ⟨n,1⟩ = 2ⁿ − n − 1 (OEIS A000295, 'Eulerian numbers / Woodall numbers minus structure'), proved by induction from the column recurrence ⟨n+1,1⟩ = 2·⟨n,1⟩ + n. This is the first nontrivial case of the general inclusion–exclusion formula ⟨n,k⟩ = ∑ᵢ (−1)ⁱ C(n+1,i)(k+1−i)ⁿ (at k=1: 2ⁿ − (n+1)).",
+      "eulerian_col_two: the third column closed form, stated as 2·⟨n,2⟩ = 2·3ⁿ − (n+1)·2ⁿ⁺¹ + n·(n+1) (equivalently ⟨n,2⟩ = 3ⁿ − (n+1)·2ⁿ + C(n+1,2), OEIS A000460) — cleared of its /2 so the statement stays over ℤ with no division. Proved by induction from ⟨n+1,2⟩ = 3·⟨n,2⟩ + (n−1)·⟨n,1⟩, substituting the previous column; the truncated subtraction (n−1 : ℕ) at n=0 is reconciled with (n−1 : ℤ) using ⟨0,1⟩ = 0. This is the k=2 case of the inclusion–exclusion formula.",
+      "eulerian_top: the right border ⟨n+1,n⟩ = 1 (the largest column with a nonzero entry in row n+1, since a permutation of {1,…,n+1} has at most n descents), proved by induction using the parent's diagonal-vanishing ⟨n+1,n+1⟩ = 0; together with the left border ⟨n,0⟩ = 1 (eulerian_col_zero) this pins both edges of the triangle.",
+      "Worked values check the formulas against the explicit triangle rows: ⟨3,·⟩ = 1,4,1 (⟨3,1⟩ = 2³−3−1 = 4, 2·⟨3,2⟩ = 2·27−4·16+12 = 2, row sum 1+4+1 = 6 = 3!) and ⟨4,·⟩ = 1,11,11,1 (⟨4,1⟩ = 16−5 = 11, 2·⟨4,2⟩ = 2·81−5·32+20 = 22, row sum 24 = 4!)."
+    ],
+    "prerequisites": [
+      "Parent: geometric-series-oq-07-oq-01-oq-01-oq-01 (the combinatorial Eulerian numbers) — supplies the def eulerian, the recurrence eulerian_succ_succ, the vanishing lemmas eulerian_eq_zero_of_lt / eulerian_succ_self, and the coefficient identity eulerPoly_eq_eulerianNumbers used for the row sum",
+      "Grandparent: geometric-series-oq-07-oq-01-oq-01 (Frobenius' identity) — supplies eulerPoly and its analytic row sum eval_eulerPoly_one (Eₘ(1) = m!), evaluated at X = 1 to obtain Worpitzky's combinatorial row sum",
+      "Polynomial evaluation: Polynomial.eval_finset_sum / eval_C / eval_pow / eval_X to evaluate the coefficient identity at X = 1",
+      "Elementary induction with Finset.sum_range_succ, push_cast, ring and Nat.cast_sub bookkeeping for the truncated subtraction in the column recurrences"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.eval_finset_sum",
+        "description": "Distributes polynomial evaluation over a Finset sum, turning eval₁ of ∑ⱼ C(⟨m+1,j⟩)·X^{j+1} into ∑ⱼ ⟨m+1,j⟩ and hence the Worpitzky row sum from the parent's coefficient identity.",
+        "module": "Mathlib.Algebra.Polynomial.Eval"
+      },
+      {
+        "theorem": "GeometricSeriesOQ07OQ01OQ01OQ01.eulerPoly_eq_eulerianNumbers",
+        "description": "The parent's coefficient identity E_{m+1}(X) = ∑ⱼ ⟨m+1,j⟩·X^{j+1}. Evaluated at X = 1 it converts the analytic row sum Eₘ(1) = m! into the combinatorial Worpitzky row sum ∑ⱼ ⟨m,j⟩ = m!.",
+        "module": "Proofs.GeometricSeriesOQ07OQ01OQ01OQ01"
+      },
+      {
+        "theorem": "GeometricSeriesOQ07OQ01OQ01.eval_eulerPoly_one",
+        "description": "The grandparent's analytic Eulerian row sum Eₘ(1) = m!, the value of the Eulerian polynomial at 1. Combined with the coefficient identity it gives the combinatorial row sum.",
+        "module": "Proofs.GeometricSeriesOQ07OQ01OQ01"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "question": "Prove the general explicit (inclusion–exclusion / Worpitzky-inverse) formula ⟨n,k⟩ = ∑_{i=0}^{k} (−1)ⁱ·C(n+1,i)·(k+1−i)ⁿ for ALL columns, not just k = 0,1,2. The reduction is already worked out: setting W n k = ∑_{i=0}^{k} (−1)ⁱ·C(n+1,i)·(k+1−i)ⁿ over ℤ, an induction on n shows (⟨n,k⟩ : ℤ) = W n k provided the single pure binomial identity W(n+1,k+1) = (k+2)·W n (k+1) + (n−k)·W n k holds (proved via Pascal's rule on C(n+2,i), a reindexing of the shifted half, and the absorption i·C(n+1,i) = (n+1)·C(n,i−1)). The base row n=0, the column k=0, and the integer-vs-truncated (n−k) reconciliation (using ⟨n,k⟩ = 0 for n<k) are all mechanical once that lemma is in hand.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02",
+      "question": "Derive the second-from-the-edge entries via the combinatorial palindromy ⟨n,n−2⟩ = ⟨n,1⟩ = 2ⁿ − n − 1: the sibling oq-02 proves the polynomial symmetry Eₘ(X) = X^{m+1}Eₘ(1/X); bridge it to the combinatorial ⟨m,j⟩ = ⟨m,m−1−j⟩ defined here so the closed forms for columns 1 and 2 transfer to the two columns below the right border.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent (the combinatorial Eulerian numbers). The parent defines ⟨n,j⟩ via the triangle recurrence and identifies them with the coefficients of the Eulerian polynomial, leaving open (oq-01) the Worpitzky row identity ∑ⱼ ⟨n,j⟩ = n!. This entry settles it (by evaluating the parent's coefficient identity at X = 1) and adds the explicit low-column closed forms ⟨n,1⟩ = 2ⁿ−n−1 and ⟨n,2⟩, plus both triangle borders ⟨n,0⟩ = ⟨n+1,n⟩ = 1, reusing the parent's recurrence and vanishing lemmas."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01",
+      "relationship": "uses",
+      "description": "Grandparent (Frobenius' identity). Supplies the Eulerian polynomial eulerPoly and its analytic row sum eval_eulerPoly_one (Eₘ(1) = m!), which this entry transports through the parent's coefficient identity to obtain the combinatorial Worpitzky row sum."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling. oq-02 proves the palindromic symmetry of the Eulerian polynomial Eₘ(X) = X^{m+1}Eₘ(1/X) by coefficient extraction. The combinatorial palindromy ⟨n,k⟩ = ⟨n,n−1−k⟩ it encodes would reflect the closed forms proved here across each row (e.g. ⟨n,n−2⟩ = ⟨n,1⟩ = 2ⁿ−n−1)."
+    }
+  ],
+  "references": [
+    {
+      "title": "Concrete Mathematics (Eulerian numbers, Worpitzky's identity, the triangle recurrence, descents)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for the Eulerian numbers ⟨n,k⟩, the row sum ∑ₖ ⟨n,k⟩ = n!, Worpitzky's identity, and the explicit low-column values 2ⁿ−n−1 etc."
+    },
+    {
+      "title": "OEIS A000295 (the second Eulerian column 2ⁿ − n − 1) and A000460 (the third Eulerian column)",
+      "author": "OEIS Foundation",
+      "year": "2025",
+      "venue": "The On-Line Encyclopedia of Integer Sequences",
+      "description": "Catalogues the explicit low-column Eulerian sequences proved here as closed forms."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Building on the parent's combinatorial Eulerian numbers ⟨n,j⟩ (defined by the triangle recurrence and identified with the coefficients of the Eulerian polynomial), this entry answers the parent's declared open question oq-01 — Worpitzky's row sum ∑_{j} ⟨n,j⟩ = n! — by evaluating the parent's coefficient identity E_{m+1}(X) = ∑ⱼ ⟨m+1,j⟩·X^{j+1} at X = 1 and combining it with the grandparent's analytic row sum Eₘ(1) = m!, peeling off the diagonal zero ⟨n,n⟩ = 0 to align the ranges. Alongside it, the entry supplies the famous explicit closed forms for the low columns — ⟨n,1⟩ = 2ⁿ − n − 1 (OEIS A000295) and ⟨n,2⟩ = 3ⁿ − (n+1)·2ⁿ + C(n+1,2) (OEIS A000460, stated as 2·⟨n,2⟩ over ℤ to avoid division) — together with both borders ⟨n,0⟩ = 1 and ⟨n+1,n⟩ = 1. Each column form is a short induction from the Eulerian recurrence feeding in the previous column, with the only subtlety the truncated ℕ-subtraction reconciled via the above-diagonal vanishing. 125 lines, 5 theorems, 0 definitions, 0 axioms, 0 sorries; #print axioms reports only propext / Classical.choice / Quot.sound.",
+    "implications": "The columns ⟨n,1⟩ and ⟨n,2⟩ are exactly the first two nontrivial cases of the general inclusion–exclusion formula ⟨n,k⟩ = ∑ᵢ (−1)ⁱ C(n+1,i)(k+1−i)ⁿ, so this entry both verifies that formula at the boundary and isolates the single binomial identity (the recurrence for the alternating sum W) that remains to obtain it for every column — recorded as the follow-up open question. The Worpitzky row sum closes the descent-statistic loop opened by the parent: ⟨n,j⟩ is now provably an exhaustive partition of the n! permutations.",
+    "openQuestions": [
+      "Prove the general inclusion–exclusion formula ⟨n,k⟩ = ∑ᵢ (−1)ⁱ C(n+1,i)(k+1−i)ⁿ for all columns, via the alternating-sum recurrence W(n+1,k+1) = (k+2)·W n (k+1) + (n−k)·W n k.",
+      "Bridge the polynomial palindromy Eₘ(X) = X^{m+1}Eₘ(1/X) to the combinatorial ⟨m,j⟩ = ⟨m,m−1−j⟩ so the low-column forms transfer to the columns below the right border."
+    ]
+  }
+}

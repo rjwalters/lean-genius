@@ -1,0 +1,186 @@
+{
+  "id": "subset-count",
+  "title": "Number of Subsets of a Set",
+  "slug": "subset-count",
+  "description": "A finite set with n elements has exactly 2^n subsets. This fundamental result connects set theory to binary counting.",
+  "meta": {
+    "author": "Classical result (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Power_set#Properties",
+    "date": "Classical",
+    "status": "verified",
+    "tags": [
+      "set-theory",
+      "combinatorics",
+      "counting",
+      "classic",
+      "beginner",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/SubsetCount.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_powerset",
+        "description": "Cardinality of powerset equals 2^n",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Fintype.card_finset",
+        "description": "Number of Finsets of a Fintype equals 2^n",
+        "module": "Mathlib.Data.Fintype.Card"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical documentation explaining the binary bijection",
+      "Multiple theorem formulations and examples",
+      "Connection to binomial coefficients",
+      "Cardinality bounds and properties"
+    ],
+    "dateAdded": "2025-12-26",
+    "wiedijkNumber": 52,
+    "axiomCount": 0,
+    "lineCount": 178,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The fact that a set with n elements has 2^n subsets is one of the most fundamental results in combinatorics. The power set P(S) has cardinality 2^|S|, with applications in set theory, probability, computer science (n bits represent 2^n states), and algebra (Boolean algebras). The bijection between subsets and binary strings of length n is used throughout discrete mathematics. Cantor's theorem (1891) generalizes this: |P(S)| > |S| for any set S, even infinite ones, establishing that 2^{aleph_0} > aleph_0 and launching modern set theory. The sum of binomial coefficients ∑_{k=0}^{n} C(n,k) = 2^n, which follows by setting x=1 in the binomial theorem, unifies the subset-count result with polynomial identities.",
+    "problemStatement": "**The Number of Subsets Theorem** (Wiedijk #52):\n\nFor any finite set $S$ with $n$ elements:\n$$|\\mathcal{P}(S)| = 2^n$$\n\nwhere $\\mathcal{P}(S)$ denotes the power set (set of all subsets) of $S$.\n\nEquivalently, the number of ways to choose a subset of an n-element set is $2^n$.",
+    "text": "A finite set with n elements has exactly 2^n subsets. This fundamental result connects set theory to binary counting.",
+    "proofStrategy": "The proof uses a **bijection with binary strings**:\n\n1. **Characteristic function**: Each subset $T \\subseteq S$ corresponds to a function $\\chi_T : S \\to \\{0, 1\\}$ where:\n   - $\\chi_T(x) = 1$ if $x \\in T$\n   - $\\chi_T(x) = 0$ if $x \\notin T$\n\n2. **Binary counting**: With $n$ elements, each making an independent binary choice (in or out), we get:\n   $$2 \\times 2 \\times \\cdots \\times 2 = 2^n$$\n\n3. **Mathlib formalization**: The theorem `Finset.card_powerset` directly provides this result for finite sets represented as `Finset`.",
+    "keyInsights": [
+      "Each element is either included or excluded from a subset (2 choices)",
+      "With n independent binary choices, we get 2^n total subsets",
+      "This bijection connects subsets to binary strings of length n",
+      "The sum of binomial coefficients equals 2^n: sum(C(n,k)) = 2^n",
+      "Adding one element doubles the number of subsets"
+    ],
+    "prerequisites": [
+      "Set theory and cardinality",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Overview of the theorem, its significance, and connection to binary representations.",
+      "mathContext": "The theorem $|\\mathcal{P}(S)| = 2^{|S|}$: a finite set with $n$ elements has exactly $2^n$ subsets. Connected to binary representations: each subset corresponds to an $n$-bit binary string indicating membership."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 44,
+      "endLine": 58,
+      "summary": "The core theorem proving |P(S)| = 2^|S| using Mathlib's Finset.card_powerset.",
+      "mathContext": "The core result: `Finset.card_powerset` gives $|\\mathcal{P}(S)| = 2^{|S|}$ for any finite set $S$. The proof uses the bijection between subsets and characteristic functions $\\chi: S \\to \\{0, 1\\}$, of which there are $2^{|S|}$."
+    },
+    {
+      "id": "binary-bijection",
+      "title": "Binary Bijection",
+      "startLine": 59,
+      "endLine": 75,
+      "summary": "Explanation of the correspondence between subsets and binary strings.",
+      "mathContext": "The bijection $\\mathcal{P}(S) \\cong \\{0,1\\}^S$: each subset $T \\subseteq S$ corresponds to its characteristic function $\\chi_T(x) = [x \\in T]$. This gives $|\\mathcal{P}(S)| = |\\{0,1\\}^S| = 2^{|S|}$. The bijection is constructive and underlies the binary encoding of subsets in algorithms."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 76,
+      "endLine": 90,
+      "summary": "Concrete examples for sets of size 0, 1, 3, and 4.",
+      "mathContext": "Concrete verifications: $|\\mathcal{P}(\\emptyset)| = 2^0 = 1$, $|\\mathcal{P}(\\{a\\})| = 2^1 = 2$, $|\\mathcal{P}(\\{a,b,c\\})| = 2^3 = 8$, $|\\mathcal{P}(\\{1,2,3,4\\})| = 2^4 = 16$."
+    },
+    {
+      "id": "properties",
+      "title": "Powerset Properties",
+      "startLine": 91,
+      "endLine": 119,
+      "summary": "Properties including empty set membership and cardinality bounds.",
+      "mathContext": "Properties of the power set: $\\emptyset \\in \\mathcal{P}(S)$ and $S \\in \\mathcal{P}(S)$ for all $S$. Cardinality bounds: $1 \\leq |\\mathcal{P}(S)| = 2^{|S|}$ and $|T| \\leq |S|$ for $T \\in \\mathcal{P}(S)$."
+    },
+    {
+      "id": "binomial",
+      "title": "Binomial Connection",
+      "startLine": 120,
+      "endLine": 178,
+      "summary": "Connection to binomial coefficients: sum of C(n,k) equals 2^n.",
+      "mathContext": "Connection to binomial coefficients: $\\sum_{k=0}^{n} \\binom{n}{k} = 2^n$. This counts subsets by size: $\\binom{n}{k}$ subsets of size $k$, summing to $2^n$ total. Equivalently, this is the binomial theorem evaluated at $x = y = 1$: $(1+1)^n = \\sum \\binom{n}{k}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The number of subsets theorem is verified using Mathlib's finite set infrastructure. The proof leverages the bijection between subsets and binary characteristic functions.",
+    "implications": "This fundamental result has wide-ranging applications:\n\n**1. Combinatorics**\nFoundation for counting arguments involving subsets.\n\n**2. Computer Science**\nJustifies the 2^n complexity of subset enumeration algorithms.\n\n**3. Probability**\nSample spaces for n independent binary events have 2^n outcomes.\n\n**4. Logic**\nBoolean functions on n variables have 2^(2^n) possibilities.\n\n**5. Cryptography**\nKey spaces of n-bit keys have 2^n elements.",
+    "openQuestions": [
+      "What about infinite sets? (Cantor's theorem: |P(S)| > |S|)",
+      "How does this generalize to multisets?",
+      "What counting problems reduce to subset counting?",
+      "How does the 2^n growth affect algorithm complexity?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "SubsetCount",
+    "lineCount": 178,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/SubsetCount.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem $(1+1)^n = \\sum_{k=0}^n \\binom{n}{k}$ is the algebraic identity underlying $|\\mathcal{P}(S)| = 2^n$ — the number of subsets equals the sum of binomial coefficients"
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "related",
+      "description": "Cantor's theorem ($|S| < |\\mathcal{P}(S)|$) is the infinite generalization: for infinite sets, the power set is strictly larger, proved by the diagonal argument"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's diagonalization establishes the uncountability of $\\mathcal{P}(\\mathbb{N})$ — while this entry counts finite subsets ($2^n$), the diagonal argument shows the infinite case is qualitatively different"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The proof that $|\\mathcal{P}(S)| = 2^n$ typically proceeds by induction: adding one element doubles the number of subsets"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "thematic",
+      "description": "The birthday problem uses combinatorial counting over subsets — the same power-set enumeration framework, applied to probability"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Graham, Ronald L.; Knuth, Donald E.; Patashnik, Oren",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "venue": "Addison-Wesley, 2nd edition",
+      "note": "Standard reference for combinatorial identities including the proof that a set with n elements has 2^n subsets"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "subset_count",
+      "type": "core",
+      "description": "A set with n elements has exactly 2^n subsets",
+      "leanType": "[Fintype S] -> Fintype.card S = n -> Fintype.card (Set S) = 2^n"
+    }
+  ],
+  "sorries": 0
+}

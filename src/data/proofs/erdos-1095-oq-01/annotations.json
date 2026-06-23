@@ -1,0 +1,282 @@
+[
+  {
+    "id": "ann-e1095-oq01-header",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Statement: Asymptotics of g(k)",
+    "content": "Erdős Problem #1095 OQ01 asks about the growth rate of $g(k)$, the smallest $n > k+1$ such that all prime factors of $\\binom{n}{k}$ exceed $k$. The conjecture is $\\log g(k) \\sim c \\cdot k / \\log k$ for some constant $c > 0$. Known bounds span from $k^{1+c}$ (Ecklund-Erdős-Selfridge) to $\\exp((1+o(1))k)$, with Konyagin's improvement $g(k) \\gg \\exp(c(\\log k)^2)$ sitting between.",
+    "mathContext": "$g(k) = \\min\\{n > k+1 : p \\mid \\binom{n}{k} \\implies p > k\\}$. Conjecture: $\\log g(k) \\sim c \\cdot k / \\log k$. Known: $k^{1+c} < g(k) \\leq \\exp((1+o(1))k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "binomial coefficients",
+      "prime factorization"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-allprimesexceed",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "AllPrimesExceed: k-Smooth-Free Predicate",
+    "content": "Defines the predicate that all prime factors of $m$ exceed $k$: for every prime $p \\leq k$, $p \\nmid m$. When applied to $m = \\binom{n}{k}$, this means the binomial coefficient has no 'small' prime factors. Equivalently, $\\binom{n}{k}$ is not divisible by any of the primes $2, 3, 5, \\ldots, p_\\pi(k)$ where $\\pi(k)$ is the prime counting function.",
+    "mathContext": "$\\text{AllPrimesExceed}(m, k) \\iff \\forall p \\text{ prime},\\; p \\leq k \\implies p \\nmid m$. Equivalently, $m$ has no prime factor $\\leq k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "k-smooth",
+      "prime factorization",
+      "sieve theory"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-gfunc",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 47,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Axiomatized g(k) Function with Properties",
+    "content": "The function $g(k)$ is axiomatized with four properties: (1) existence as a function $\\mathbb{N} \\to \\mathbb{N}$, (2) $g(k) > k+1$, (3) all prime factors of $\\binom{g(k)}{k}$ exceed $k$, and (4) minimality. Axiomatization is appropriate because proving existence requires the finiteness argument that some $n \\leq \\exp((1+o(1))k)$ satisfies the condition, which relies on the Ecklund-Erdős-Selfridge upper bound.",
+    "mathContext": "$g : \\mathbb{N} \\to \\mathbb{N}$, $g(k) > k+1$, $p | \\binom{g(k)}{k} \\implies p > k$, and $g(k) = \\min\\{n > k+1 : \\text{AllPrimesExceed}(\\binom{n}{k}, k)\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "well-ordering principle",
+      "extremal combinatorics",
+      "Skolem function"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "AllPrimesExceed"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-allprimesexceed-one",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 63,
+      "endLine": 64
+    },
+    "type": "concept",
+    "title": "AllPrimesExceed Holds for 1",
+    "content": "The number 1 trivially has no prime factors at all, so it satisfies AllPrimesExceed for any $k$. The proof uses `Nat.eq_one_of_dvd_one`: any divisor of 1 equals 1, but primes are $> 1$, giving a contradiction. This base case is needed for structural induction arguments.",
+    "mathContext": "$\\forall k,\\; \\text{AllPrimesExceed}(1, k)$ since $p | 1 \\implies p = 1$, contradicting $p$ prime.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "unit element",
+      "vacuous truth"
+    ],
+    "prerequisites": [
+      "Nat.eq_one_of_dvd_one",
+      "Nat.Prime.one_lt"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-dvd-inherit",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "AllPrimesExceed Inherited by Divisors",
+    "content": "If all prime factors of $m$ exceed $k$, then all prime factors of any divisor $d | m$ also exceed $k$. This follows from transitivity of divisibility: $p | d$ and $d | m$ imply $p | m$. This structural lemma enables reasoning about factors of smooth-free numbers.",
+    "mathContext": "$\\text{AllPrimesExceed}(m, k) \\land d | m \\implies \\text{AllPrimesExceed}(d, k)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "divisibility transitivity",
+      "prime factorization"
+    ],
+    "prerequisites": [
+      "dvd_trans"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-mono",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 74,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "AllPrimesExceed Monotone in k",
+    "content": "If all prime factors of $m$ exceed $k$ and $j \\leq k$, then all prime factors of $m$ also exceed $j$. Monotonicity in the threshold parameter: raising the bar from $j$ to $k$ is a stronger condition. This enables arguments where we strengthen the AllPrimesExceed predicate.",
+    "mathContext": "$j \\leq k \\land \\text{AllPrimesExceed}(m, k) \\implies \\text{AllPrimesExceed}(m, j)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone predicates",
+      "order theory"
+    ],
+    "prerequisites": [
+      "le_trans"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-negation",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Contrapositive: Witnessing a Small Prime Factor",
+    "content": "If there exists a prime $p \\leq k$ dividing $m$, then $\\text{AllPrimesExceed}(m, k)$ fails. This is the direct contrapositive of the definition, but having it as an explicit lemma simplifies reasoning about when $g(k)$ candidates are eliminated. For example, to show $g(2) \\neq 4$, one exhibits the witness $p = 2$ dividing $\\binom{4}{2} = 6$.",
+    "mathContext": "$p$ prime, $p \\leq k$, $p \\mid m \\implies \\neg\\text{AllPrimesExceed}(m, k)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "contrapositive reasoning",
+      "witness-based proofs",
+      "decidability"
+    ],
+    "prerequisites": [
+      "AllPrimesExceed",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-choose-zero",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 91,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Boundary: C(n,k) = 0 When k > n",
+    "content": "When $k > n$, $\\binom{n}{k} = 0$ by convention. Since $0$ is divisible by every prime, $\\text{AllPrimesExceed}(0, k)$ fails for $k \\geq 2$ (as $2 \\mid 0$). This means the search for $n$ with smooth-free $\\binom{n}{k}$ only makes sense when $n \\geq k$. The lemma wraps Mathlib's `Nat.choose_eq_zero_of_lt`.",
+    "mathContext": "$n < k \\implies \\binom{n}{k} = 0$. Since $p \\mid 0$ for all $p$, AllPrimesExceed fails at $\\binom{n}{k}$ when $n < k$ and $k \\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binomial coefficient boundary",
+      "degenerate cases",
+      "Nat.choose_eq_zero_of_lt"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "Nat.lt"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-choose-odd",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "Smooth-Free Binomial Coefficients Must Be Odd",
+    "content": "For $k \\geq 2$, if $\\binom{n}{k}$ has all prime factors exceeding $k$, then in particular $2 \\nmid \\binom{n}{k}$ (since $2 \\leq k$ and $2$ is prime). This means $\\binom{n}{k}$ must be odd — a severe constraint. By Kummer's theorem, $\\binom{n}{k}$ is odd iff there are no carries when adding $k$ and $n-k$ in binary, which greatly restricts the possible $n$ values.",
+    "mathContext": "$k \\geq 2 \\land \\text{AllPrimesExceed}(\\binom{n}{k}, k) \\implies 2 \\nmid \\binom{n}{k}$. By Kummer's theorem: $\\nu_2(\\binom{n}{k}) = $ number of carries in $k + (n-k)$ base 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kummer's theorem",
+      "carries in binary addition",
+      "odd binomial coefficients"
+    ],
+    "prerequisites": [
+      "Nat.prime_two",
+      "AllPrimesExceed"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-concrete",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 106,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Concrete Values: g(1)=3, g(2)=6",
+    "content": "Verifies the concrete values by computation: $\\binom{3}{1} = 3$ (prime, exceeds 1), confirming $g(1) = 3$. For $k=2$: $\\binom{4}{2} = 6 = 2 \\times 3$ (has factor 2 ≤ 2), $\\binom{5}{2} = 10 = 2 \\times 5$ (has factor 2 ≤ 2), but $\\binom{6}{2} = 15 = 3 \\times 5$ (both factors exceed 2), so $g(2) = 6$. The growth from $g(1)=3$ to $g(2)=6$ already shows super-linear behavior.",
+    "mathContext": "$g(1) = 3$: $\\binom{3}{1} = 3$, prime $> 1$. $g(2) = 6$: $\\binom{6}{2} = 15 = 3 \\cdot 5$, both primes $> 2$. Verified by `decide`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "small cases",
+      "computational verification"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "decide tactic"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-gfunc-lower",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 124,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "g(k) ≥ k + 2: Immediate Lower Bound",
+    "content": "A trivial lower bound: $g(k) \\geq k + 2$ follows immediately from the axiom $g(k) > k + 1$. While far weaker than the conjectured $g(k) \\geq \\exp(c \\cdot k / \\log k)$, this establishes the minimal structural property that $g$ grows at least linearly.",
+    "mathContext": "$g(k) > k + 1 \\implies g(k) \\geq k + 2$ (since $g(k) \\in \\mathbb{N}$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "integer lower bounds",
+      "linear growth"
+    ],
+    "prerequisites": [
+      "gFunc_gt",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-conjecture-context",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 128,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "Why the Full Conjecture Is Not Formalized",
+    "content": "The full asymptotic conjecture $\\log g(k) \\sim c \\cdot k / \\log k$ requires expressing limits of real-valued functions at infinity, specifically $\\lim_{k \\to \\infty} \\frac{\\log g(k)}{k / \\log k} = c$. In Lean 4 with Mathlib, this would use `Filter.Tendsto` with the `atTop` filter and `Real.log`. The file avoids this dependency to keep the formalization self-contained within natural number arithmetic and `Nat.choose`. The informal statement in the comment block preserves the conjecture's full mathematical content, while the formal `ErdosProblem1095OQ01` definition captures a weaker (but still open) consequence: super-polynomial growth $g(k) > k^c$.",
+    "mathContext": "Full: $\\lim_{k \\to \\infty} \\frac{\\log g(k)}{k / \\log k} = c$, requiring `Filter.Tendsto (fun k => Real.log (gFunc k) / (k / Real.log k)) Filter.atTop (nhds c)`. Weakened formal version avoids real analysis entirely.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "asymptotic equivalence",
+      "formalization trade-offs"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "Filter.atTop"
+    ]
+  },
+  {
+    "id": "ann-e1095-oq01-conjecture",
+    "proofId": "erdos-1095-oq-01",
+    "range": {
+      "startLine": 151,
+      "endLine": 152
+    },
+    "type": "definition",
+    "title": "Main Open Statement (Weakened)",
+    "content": "The formalized statement is a weakened version of the full conjecture: it asks whether $g(k) > k^c$ for some $c > 0$ and all $k > 0$ (super-polynomial growth). The full conjecture $\\log g(k) \\sim c \\cdot k / \\log k$ (placing $g$ at intermediate growth between polynomial and exponential) requires real analysis machinery (Filter.Tendsto, asymptotics) not used in this file. Even this weakened statement remains open.",
+    "mathContext": "Weakened: $\\exists c > 0,\\; \\forall k > 0,\\; g(k) > k^c$. Full conjecture: $\\lim_{k \\to \\infty} \\frac{\\log g(k)}{k / \\log k} = c$ for some $c > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "super-polynomial growth",
+      "open problems"
+    ],
+    "prerequisites": [
+      "gFunc",
+      "Filter.Tendsto"
+    ]
+  }
+]

@@ -1,0 +1,205 @@
+[
+  {
+    "id": "erdos-130-imports",
+    "proofId": "erdos-130",
+    "type": "concept",
+    "range": {
+      "startLine": 20,
+      "endLine": 23
+    },
+    "title": "Library Imports",
+    "content": "Imports Mathlib for natural numbers, real numbers, set theory, and tactics. These provide the foundation for Euclidean distance computations and graph-theoretic definitions on point sets.",
+    "mathContext": "The formalization works over $\\mathbb{R}^2$ represented as a structure with $(x, y) \\in \\mathbb{R}^2$, requiring `Data.Real.Basic` for real arithmetic and `Data.Set.Basic` for infinite point sets $A \\subseteq \\mathbb{R}^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "real arithmetic",
+      "set theory",
+      "Lean tactics"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib real number library"
+    ]
+  },
+  {
+    "id": "erdos-130-point2",
+    "proofId": "erdos-130",
+    "type": "definition",
+    "range": {
+      "startLine": 28,
+      "endLine": 34
+    },
+    "title": "Point2 and Squared Distance",
+    "content": "A point in the plane is a structure with coordinates $(x, y) \\in \\mathbb{R}^2$. The squared distance $\\text{distSq}(p, q) = (p_x - q_x)^2 + (p_y - q_y)^2$ avoids square roots, simplifying reasoning about integer distances.",
+    "mathContext": "Using squared distance $d^2(p,q) = (x_p - x_q)^2 + (y_p - y_q)^2$ lets us characterize integer distance as $\\exists n \\in \\mathbb{N}: d^2(p,q) = n^2$, avoiding irrational intermediate values.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean distance",
+      "squared norm",
+      "Pythagorean distance"
+    ],
+    "prerequisites": [
+      "real number arithmetic",
+      "structure types in Lean"
+    ]
+  },
+  {
+    "id": "erdos-130-collinear-cocircular",
+    "proofId": "erdos-130",
+    "type": "definition",
+    "range": {
+      "startLine": 37,
+      "endLine": 46
+    },
+    "title": "Collinearity and Cocircularity",
+    "content": "Three points are collinear if the cross product of difference vectors vanishes: $(q_x - p_x)(r_y - p_y) = (r_x - p_x)(q_y - p_y)$. Four points are cocircular if they lie on a common circle of positive radius.",
+    "mathContext": "AreCollinear$(p,q,r)$: the $2 \\times 2$ determinant $\\begin{vmatrix} q_x - p_x & r_x - p_x \\\\ q_y - p_y & r_y - p_y \\end{vmatrix} = 0$. AreCocircular$(p,q,r,s)$: $\\exists (c_x, c_y, r) \\in \\mathbb{R}^3$ with $r > 0$ and all four points at squared distance $r^2$ from $(c_x, c_y)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cross product",
+      "circumscribed circle",
+      "determinant test",
+      "degeneracy conditions"
+    ],
+    "prerequisites": [
+      "real linear algebra",
+      "circle equation"
+    ]
+  },
+  {
+    "id": "erdos-130-general-position",
+    "proofId": "erdos-130",
+    "type": "definition",
+    "range": {
+      "startLine": 48,
+      "endLine": 54
+    },
+    "title": "General Position",
+    "content": "A point set is in general position if no three points are collinear and no four are cocircular. This prevents degenerate configurations that would trivially allow infinite integer distance sets (by the Anning–Erdős theorem).",
+    "mathContext": "InGeneralPosition$(A)$: $\\forall p \\neq q \\neq r \\in A: \\neg$AreCollinear$(p,q,r)$ and $\\forall p,q,r,s \\in A$ pairwise distinct: $\\neg$AreCocircular$(p,q,r,s)$. The no-3-collinear condition is the crucial one for Anning–Erdős; no-4-cocircular prevents additional degeneracies.",
+    "significance": "key",
+    "relatedConcepts": [
+      "general position in combinatorial geometry",
+      "Anning–Erdős theorem",
+      "point configuration"
+    ],
+    "prerequisites": [
+      "AreCollinear",
+      "AreCocircular"
+    ]
+  },
+  {
+    "id": "erdos-130-integer-dist",
+    "proofId": "erdos-130",
+    "type": "definition",
+    "range": {
+      "startLine": 57,
+      "endLine": 62
+    },
+    "title": "Integer Distance and Graph Edges",
+    "content": "Two points are at integer distance if $\\exists n \\in \\mathbb{N}: d^2(p,q) = n^2$. The integer distance graph $G(A)$ has vertex set $A$ and edges connecting pairs at integer distance, with $p \\neq q$ required.",
+    "mathContext": "IsIntegerDist$(p,q) \\iff \\exists n \\in \\mathbb{N}: (p_x - q_x)^2 + (p_y - q_y)^2 = n^2$. IntDistEdge$(A, p, q)$: $p, q \\in A \\wedge p \\neq q \\wedge$ IsIntegerDist$(p,q)$. The graph $G(A) = (A, \\{\\{p,q\\} : $ IntDistEdge$(A,p,q)\\})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit distance graph",
+      "Hadwiger–Nelson problem",
+      "rational distance sets"
+    ],
+    "prerequisites": [
+      "distSq",
+      "Pythagorean triples"
+    ]
+  },
+  {
+    "id": "erdos-130-coloring",
+    "proofId": "erdos-130",
+    "type": "definition",
+    "range": {
+      "startLine": 67,
+      "endLine": 78
+    },
+    "title": "Proper Coloring, Chromatic Number, and Cliques",
+    "content": "A $k$-coloring $c: A \\to \\text{Fin}\\,k$ is proper if adjacent vertices get different colors. ChromaticAtMost$(A, k)$ means a proper $k$-coloring exists. HasClique$(A, k)$ means $k$ mutually integer-distant points exist in $A$.",
+    "mathContext": "IsProperColoring$(A, k, c)$: $\\forall p,q$ with IntDistEdge$(A,p,q): c(p) \\neq c(q)$. The chromatic number $\\chi(G(A)) = \\min\\{k : $ ChromaticAtMost$(A,k)\\}$. HasClique$(A,k)$: $\\exists S \\subseteq A, |S| = k$, all pairwise at integer distance.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph coloring",
+      "chromatic number",
+      "clique number",
+      "omega vs chi"
+    ],
+    "prerequisites": [
+      "IntDistEdge",
+      "Fin type",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "erdos-130-chromatic-question",
+    "proofId": "erdos-130",
+    "type": "concept",
+    "range": {
+      "startLine": 85,
+      "endLine": 87
+    },
+    "title": "Question 1: Infinite Chromatic Number",
+    "content": "Can there exist an infinite general-position set $A \\subseteq \\mathbb{R}^2$ such that $\\chi(G(A)) > k$ for every $k$? This is the central open question — the existence of such a set would show that general position cannot tame the chromatic number.",
+    "mathContext": "erdos_130_infinite_chromatic: $\\exists A \\subseteq \\mathbb{R}^2, A$ infinite $\\wedge$ InGeneralPosition$(A) \\wedge \\forall k: \\neg$ChromaticAtMost$(A, k)$. Axiomatized since this is the open conjecture itself.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unbounded chromatic number",
+      "Hadwiger–Nelson problem",
+      "Kneser graph coloring"
+    ],
+    "prerequisites": [
+      "InGeneralPosition",
+      "ChromaticAtMost"
+    ]
+  },
+  {
+    "id": "erdos-130-clique-question",
+    "proofId": "erdos-130",
+    "type": "concept",
+    "range": {
+      "startLine": 90,
+      "endLine": 92
+    },
+    "title": "Question 2: Clique Number Bound",
+    "content": "For any infinite general-position set $A$, the clique number $\\omega(G(A))$ is finite — there exists $M$ bounding the size of any clique. This is a consequence of Anning–Erdős and is stated as an axiom.",
+    "mathContext": "erdos_130_clique_bound: $\\forall A$ infinite in general position, $\\exists M: \\forall k,$ HasClique$(A,k) \\implies k \\leq M$. This follows from Anning–Erdős: an infinite clique would give infinitely many mutually integer-distant points, forcing collinearity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "clique bound",
+      "Anning–Erdős consequence"
+    ],
+    "prerequisites": [
+      "InGeneralPosition",
+      "HasClique",
+      "anning_erdos"
+    ]
+  },
+  {
+    "id": "erdos-130-anning-erdos",
+    "proofId": "erdos-130",
+    "type": "concept",
+    "range": {
+      "startLine": 99,
+      "endLine": 103
+    },
+    "title": "Anning–Erdős Theorem and Finite Clique Consequence",
+    "content": "Anning and Erdős (1945) proved that any infinite set of points in the plane with all pairwise distances integers must have all points collinear. This classical result implies that no infinite clique can exist in general position, since an infinite clique requires all pairwise integer distances.",
+    "mathContext": "anning_erdos: $\\forall A$ infinite, $(\\forall p \\neq q \\in A:$ IsIntegerDist$(p,q)) \\implies \\exists p,q \\in A: \\forall r \\in A,$ AreCollinear$(p,q,r)$. The contrapositive applied to general position gives finite_clique_general_position: $\\omega(G(A)) < \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Anning–Erdős theorem",
+      "integer distance sets",
+      "collinearity forcing"
+    ],
+    "prerequisites": [
+      "IsIntegerDist",
+      "AreCollinear",
+      "Set.Infinite"
+    ]
+  }
+]

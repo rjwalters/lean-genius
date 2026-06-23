@@ -1,0 +1,105 @@
+{
+  "slug": "erdos-389",
+  "title": "Erdos #389",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Is it true that for every $n\\geq 1$ there is a $k$ such that\\[n(n+1)\\cdots(n+k-1)\\mid (n+k)\\cdots (n+2k-1)?\\]\n\n\n\nAsked by Erd\\H{o}s and Straus.\nFor example when $n=2$ we have $k=5$:\\[2\\times 3 \\times 4 \\times 5\\times 6 \\mid 7 \\times 8 \\times 9\\times 10\\times 11.\\]and when $n=3$ we have $k=4$:\\[3\\times 4\\times 5\\times 6 \\mid 7\\times 8\\times 9\\times 10.\\]Bhavik Mehta has computed the minimal such $k$ for $1\\leq n\\leq 18$ (now available as A375071 on the OEIS).",
+    "plain": "Is it true that for every $n\\geq 1$ there is a $k$ such that\\[n(n+1)\\cdots(n+k-1)\\mid (n+k)\\cdots (n+2k-1)?\\]",
+    "whyMatters": [
+      "The problem asks for divisibility between adjacent blocks of consecutive integers, a concrete testing ground for factorial and binomial coefficient identities.",
+      "Small verified cases and Mehta's computed n = 4 value provide strong landmarks without resolving the universal conjecture.",
+      "The Lean file separates the open existence statement from computable finite witnesses."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "The examples n = 2, k = 5 and n = 3, k = 4 satisfy the required divisibility relation by native computation.",
+      "For n = 4, k = 207 is verified as a witness, and no smaller k works (Lean: mehta_n4_minimal and mehta_n4_minimality).",
+      "The consecutive-product identity consecutiveProd n k = k! * choose (n + k - 1) k is formalized.",
+      "The open conjecture is represented as a definition rather than an axiom, keeping the file free of false proof obligations."
+    ],
+    "open": [
+      "The Erdos-Straus question remains open for arbitrary n: whether some k always satisfies the divisibility.",
+      "General bounds or constructive choices of k as a function of n are not proved.",
+      "The OEIS/Mehta data for 1 <= n <= 18 is not fully formalized beyond the recorded small cases."
+    ],
+    "goal": "Record the verified small cases, Mehta n = 4 computation, and binomial-product infrastructure while preserving the general conjecture as open."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-01-13T01:10:23.917Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0A, 0S, 6T proved. All axioms eliminated — Mehta computational results proved by native_decide. Fully verified.",
+    "builtItems": [
+      "erdos_389_n2: divides_upper_block 2 5 proved by native_decide",
+      "erdos_389_n3: divides_upper_block 3 4 proved by native_decide",
+      "Eliminated ratio_identity (vacuously true, removed)",
+      "Converted erdos_389 from axiom to ErdosProblem389 def",
+      "consecutiveProd_binomial: proved by induction using Nat.add_one_mul_choose_eq",
+      "consecutiveProd_succ: recurrence helper (proved)",
+      "Fixed import (Finset.LocallyFinite→Nat.Choose.Basic)",
+      "Fixed minimalK definition (was unsound)",
+      "Added Nat.decidableDvd instance for native_decide",
+      "mehta_n4_minimal: proved (was axiom) by native_decide",
+      "mehta_n4_minimality: proved (was axiom) via Finset.Ico reformulation + native_decide"
+    ],
+    "insights": [
+      "Open conjecture was incorrectly axiomatized — converted to def",
+      "n=2 (k=5) and n=3 (k=4) cases provable by native_decide (computational verification)",
+      "ratio_identity axiom was vacuously true (used ∨ ¬divides as escape clause) — removed",
+      "consecutiveProd relates to binomial coefficients: consecutiveProd n k = k! * C(n+k-1,k)",
+      "n=4 has minimal k=207 (Bhavik Mehta computation) — too large for native_decide",
+      "mehta_n4_minimal and mehta_n4_minimality proved by native_decide — bignum arithmetic handles k=207 computation",
+      "mehta_n4_minimality reformulated as Finset.Ico check for decidability"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdos #389 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $n\\geq 1$ there is a $k$ such that\\[n(n+1)\\cdots(n+k-1)\\mid (n+k)\\cdots (n+2k-1)?\\]\n\n\n\nAsked by Erd\\H{o}s and Straus.\nFor example when $n=2$ we have $k=5$:\\[2\\times 3 \\times 4 \\times 5\\times 6 \\mid 7 \\times 8 \\times 9\\times 10\\times 11.\\]and when $n=3$ we have $k=4$:\\[3\\times 4\\times 5\\times 6 \\mid 7\\times 8\\times 9\\times 10.\\]Bhavik Mehta has computed the minimal such $k$ for $1\\leq n\\leq 18$ (now available as A375071 on the OEIS).\n\n\nBack to the problem\n\n## Status\n\n**Erdos Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #388\n- Problem #390\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "divisibility",
+    "computational-verification"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-38",
+    "erdos-389"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T01:10:23.917Z",
+  "lastUpdate": "2026-03-24T16:30:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos389Problem.lean",
+      "filename": "Erdos389Problem.lean",
+      "lineCount": 122,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos389Problem.lean"
+    }
+  ]
+}

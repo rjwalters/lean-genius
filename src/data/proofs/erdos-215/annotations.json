@@ -1,0 +1,171 @@
+[
+  {
+    "id": "ann-e215-overview",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Problem Overview: The Steinhaus Lattice Point Problem",
+    "content": "Erdős Problem #215 is the Steinhaus lattice point problem: does there exist a set $S \\subseteq \\mathbb{R}^2$ such that every congruent copy of $S$ (under isometries: translations, rotations, reflections) contains exactly one point from the integer lattice $\\mathbb{Z}^2$? Erdős was 'almost certain that such a set does not exist.' Surprisingly, **Jackson and Mauldin (2002)** proved the answer is YES, but their construction fundamentally requires the **Axiom of Choice** via transfinite induction over the group of Euclidean isometries. No explicit construction is known. Published in *Proc. Natl. Acad. Sci. USA* 99 (2002), 15883–15887. The formalization imports `EuclideanDist`, `Isometry`, and `Set.Card`.",
+    "mathContext": "Question: $\\exists S \\subseteq \\mathbb{R}^2$ such that $\\forall T \\cong S,\\, |T \\cap \\mathbb{Z}^2| = 1$? Answer: YES (Jackson-Mauldin 2002, using AC). Here $T \\cong S$ means $T = f(S)$ for some isometry $f : \\mathbb{R}^2 \\to \\mathbb{R}^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Steinhaus property",
+      "lattice points",
+      "Axiom of Choice",
+      "isometry group"
+    ],
+    "prerequisites": [
+      "Euclidean isometries",
+      "integer lattice $\\mathbb{Z}^2$",
+      "set theory basics",
+      "transfinite induction"
+    ]
+  },
+  {
+    "id": "ann-e215-lattice",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 32,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Integer Lattice and Lattice Point Characterization",
+    "content": "Two equivalent definitions of $\\mathbb{Z}^2$ in the Euclidean plane: (1) `integerLattice` as $\\{p \\in \\text{EuclideanSpace}\\, \\mathbb{R}\\, (\\text{Fin}\\, 2) \\mid \\forall i,\\, \\exists n : \\mathbb{Z},\\, p\\, i = n\\}$ — every coordinate is an integer. (2) `isLatticePoint p` as $\\exists m, n : \\mathbb{Z},\\, p\\, 0 = m \\wedge p\\, 1 = n$ — explicitly naming the two coordinates. The theorem `integerLattice_iff_isLatticePoint` proves their equivalence by `fin_cases` on the index, decomposing $\\text{Fin}\\, 2$ into its two elements.",
+    "mathContext": "$\\mathbb{Z}^2 = \\{p \\in \\mathbb{R}^2 : p_0, p_1 \\in \\mathbb{Z}\\}$. Equivalence proved by case analysis on $i \\in \\text{Fin}\\, 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "EuclideanSpace",
+      "Fin 2",
+      "integer coordinates",
+      "lattice membership"
+    ],
+    "prerequisites": [
+      "EuclideanSpace ℝ (Fin 2)",
+      "Int coercion to ℝ",
+      "fin_cases tactic"
+    ]
+  },
+  {
+    "id": "ann-e215-congruence",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 64,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "Isometries and Congruence of Sets",
+    "content": "**Congruence** of sets: `IsCongruent S T` means $T = f(S)$ for some isometry $f$. In $\\mathbb{R}^2$, isometries are compositions of translations, rotations, and reflections — the Euclidean group $E(2)$. Two basic properties: (1) `isCongruent_refl` proved by the identity isometry `id` with `isometry_id`. (2) `isCongruent_symm` axiomatized for simplicity (the proof would require inverting the isometry, which is valid since isometries of Euclidean space are bijective).",
+    "mathContext": "$S \\cong T \\iff \\exists f : \\mathbb{R}^2 \\to \\mathbb{R}^2,\\, f \\text{ isometry} \\wedge T = f(S)$. Reflexivity: $S \\cong S$ via $\\text{id}$. Symmetry: axiomatized (requires $f^{-1}$ isometry).",
+    "significance": "key",
+    "relatedConcepts": [
+      "isometry",
+      "Euclidean group E(2)",
+      "set image",
+      "congruence relation"
+    ],
+    "prerequisites": [
+      "Isometry type in Mathlib",
+      "Set.image",
+      "isometry_id"
+    ]
+  },
+  {
+    "id": "ann-e215-steinhaus",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 95,
+      "endLine": 115
+    },
+    "type": "definition",
+    "title": "The Steinhaus Property and Lattice Point Counting",
+    "content": "The central definition: `HasSteinhausProperty S` means $\\forall T,\\, S \\cong T \\implies \\exists! p,\\, p \\in T \\cap \\mathbb{Z}^2$ — every congruent copy of $S$ meets the integer lattice in **exactly one** point. The uniqueness quantifier $\\exists!$ ensures both existence and uniqueness. Also defined: `latticePointCount S := (S \\cap \\text{integerLattice}).\\text{ncard}` using `Set.ncard` for cardinality of potentially infinite intersections. A Steinhaus set acts as a **universal selector** for lattice points under rigid motions.",
+    "mathContext": "$\\text{HasSteinhausProperty}(S) \\iff \\forall T \\cong S,\\, \\exists! p \\in T \\cap \\mathbb{Z}^2$. $\\text{latticePointCount}(S) = |S \\cap \\mathbb{Z}^2|$ via $\\text{Set.ncard}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unique existence",
+      "selector function",
+      "Set.ncard",
+      "lattice intersection"
+    ],
+    "prerequisites": [
+      "ExistsUnique (∃!)",
+      "Set.inter",
+      "Set.ncard from Data.Set.Card"
+    ]
+  },
+  {
+    "id": "ann-e215-jackson-mauldin",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 117,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "Jackson-Mauldin Theorem and Main Result",
+    "content": "The core axiom `jackson_mauldin_theorem`: $\\exists S \\subseteq \\mathbb{R}^2,\\, \\text{HasSteinhausProperty}(S)$. **Jackson and Mauldin's proof (2002):** Enumerate all isometries of $\\mathbb{R}^2$ using a well-ordering (Axiom of Choice). By transfinite induction, build $S$ point-by-point: at each stage, add a point to $S$ that ensures the current isometric copy meets $\\mathbb{Z}^2$ in exactly one point, while not violating the constraint for previously handled copies. The construction is highly non-constructive — the well-ordering of the continuum-many isometries prevents any explicit description. The theorem `erdos_215_answer` simply unfolds the axiom: the answer to Erdős Problem #215 is YES.",
+    "mathContext": "Axiom: $\\exists S,\\, \\forall T \\cong S,\\, \\exists! p \\in T \\cap \\mathbb{Z}^2$. Theorem: $\\text{erdos\\_215\\_answer} := \\text{jackson\\_mauldin\\_theorem}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Axiom of Choice",
+      "transfinite induction",
+      "well-ordering",
+      "non-constructive existence"
+    ],
+    "prerequisites": [
+      "Axiom of Choice",
+      "cardinality of isometry group",
+      "transfinite construction"
+    ]
+  },
+  {
+    "id": "ann-e215-properties",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 148,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "Necessary Conditions: Unboundedness and Measure Pathology",
+    "content": "Two properties Steinhaus sets must satisfy: (1) `steinhaus_set_unbounded`: any $S$ with the Steinhaus property must be unbounded. Intuitively, a bounded set $S$ inside a ball of radius $R$ could be rotated so that the ball avoids all lattice points, giving zero intersection. (2) `steinhaus_set_measure_pathological`: Steinhaus sets cannot be 'nice' in the measure-theoretic sense — they cannot have finite positive Lebesgue measure. (Axiomatized with a `True` placeholder for the full measure statement.) These properties show that Steinhaus sets are inherently pathological objects.",
+    "mathContext": "If $\\text{HasSteinhausProperty}(S)$ then $S$ is unbounded: $\\neg\\text{IsBounded}(S)$. Also, $S$ cannot have $0 < \\mu(S) < \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "boundedness",
+      "Bornology.IsBounded",
+      "Lebesgue measure",
+      "pathological sets"
+    ],
+    "prerequisites": [
+      "Bornology",
+      "bounded sets in metric spaces",
+      "measure theory basics"
+    ]
+  },
+  {
+    "id": "ann-e215-selector",
+    "proofId": "erdos-215",
+    "range": {
+      "startLine": 166,
+      "endLine": 187
+    },
+    "type": "theorem",
+    "title": "The Lattice Point Selector Function",
+    "content": "Given a Steinhaus set $S$, the function `steinhausSelector S hS T hT` extracts the unique lattice point from any congruent copy $T$. Defined via `ExistsUnique.choose` from the Steinhaus property. Two theorems: (1) `steinhausSelector_mem`: the selected point lies in $T \\cap \\mathbb{Z}^2$. (2) `steinhausSelector_unique`: any point in $T \\cap \\mathbb{Z}^2$ equals the selected one. This gives a well-defined function from congruent copies to lattice points — a canonical choice function that, remarkably, selects exactly one lattice point from every rigid motion of $S$.",
+    "mathContext": "$\\text{steinhausSelector}(S, T) \\in T \\cap \\mathbb{Z}^2$ and $\\forall p \\in T \\cap \\mathbb{Z}^2,\\, p = \\text{steinhausSelector}(S, T)$. Defined via $\\exists!$ elimination.",
+    "significance": "key",
+    "relatedConcepts": [
+      "choice function",
+      "ExistsUnique.choose",
+      "canonical selector",
+      "unique element extraction"
+    ],
+    "prerequisites": [
+      "ExistsUnique API",
+      "Exists.choose",
+      "noncomputable definition"
+    ]
+  }
+]

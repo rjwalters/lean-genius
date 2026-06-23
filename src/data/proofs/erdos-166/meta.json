@@ -1,0 +1,226 @@
+{
+  "id": "erdos-166",
+  "title": "Erdős Problem #166: Ramsey Number R(4,k) Lower Bound",
+  "slug": "erdos-166",
+  "description": "Prove that R(4,k) >> k³/(log k)^O(1). SOLVED by Mattheus-Verstraete (2023): R(4,k) >> k³/(log k)⁴, earning the $250 Erdős prize.",
+  "meta": {
+    "author": "Erdős, Spencer, Ajtai, Komlós, Szemerédi, Mattheus, Verstraete",
+    "sourceUrl": "https://erdosproblems.com/166",
+    "date": "2023",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos166Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "ramsey-theory",
+      "graph-theory",
+      "probabilistic-method",
+      "algebraic-constructions",
+      "finite-geometry"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 166,
+    "erdosUrl": "https://erdosproblems.com/166",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$250",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for clique representation and monochromatic subgraphs",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Sym2",
+        "description": "Unordered pairs modeling undirected edges in complete graphs",
+        "module": "Mathlib.Data.Sym.Sym2"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real numbers for asymptotic bound expressions",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "sInf",
+        "description": "Set infimum for defining R(s,t) as minimum N satisfying Ramsey property",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for polylogarithmic correction factors in bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic for Ramsey number manipulations",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "RamseyNumber: Formal definition of R(s,t) via sInf over edge 2-colorings using Sym2",
+      "ramsey_symmetric: Verified proof R(s,t) = R(t,s) via color complementation",
+      "ramsey_one_left: Verified proof R(1,t) = 1 by singleton witness construction",
+      "ramsey_two_left: Verified proof R(2,t) = t via edge-case analysis and le_antisymm",
+      "aks_upper_bound: Axiom encoding AKS 1980 greedy coloring bound k³/(log k)²",
+      "mattheus_verstraete: Axiom encoding the 2023 solution k³/(log k)⁴",
+      "Erdos166Statement: Formal problem statement as existential over constants",
+      "erdos_166_solved: Verified proof the problem is solved (instantiates A=4)",
+      "current_bounds: Combined sandwich inequality packaging both bounds",
+      "logarithmic_gap: Verified analysis of remaining gap in log k exponent (2 ≤ α ≤ 4)"
+    ],
+    "dateAdded": "2026-01-19",
+    "axiomCount": 2,
+    "lineCount": 269,
+    "assumptions": "2 axioms: aks_upper_bound, mattheus_verstraete. 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Erdős offered $250 for proving that $R(4,k)$ grows like $k^3$ up to polylogarithmic factors. Spencer (1977) gave the first non-trivial lower bound $R(4,k) \\geq c(k \\log k)^{5/2}$ using the probabilistic method with dependent random choices. Ajtai, Komlós, and Szemerédi (1980) established the complementary upper bound $R(4,k) \\leq Ck^3/(\\log k)^2$ using a greedy algorithm, confirming that $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$ for some $\\alpha$. For 43 years, closing this gap—improving the lower bound exponent from $5/2$ on $(k\\log k)$ to cubic in $k$—resisted all probabilistic approaches. The breakthrough came in 2023 when Sam Mattheus and Jacques Verstraete proved $R(4,k) \\geq ck^3/(\\log k)^4$ using algebraic constructions from finite geometry: $K_4$-free graphs built from incidence structures of classical polar spaces over $\\mathbb{F}_q$. This earned them the $250 Erdős prize and demonstrated that algebraic methods can succeed where probabilistic ones plateau.",
+    "problemStatement": "Prove that $R(4,k) \\gg k^3/(\\log k)^{O(1)}$, where $R(4,k)$ is the Ramsey number representing the minimum $N$ such that any 2-coloring of $K_N$ contains either a monochromatic $K_4$ or a monochromatic $K_k$.",
+    "text": "Prove that R(4,k) >> k³/(log k)^O(1). SOLVED by Mattheus-Verstraete (2023): R(4,k) >> k³/(log k)⁴, earning the $250 Erdős prize.",
+    "proofStrategy": "The formalization defines $R(s,t)$ as $\\inf\\{N : \\forall c : \\text{Sym2}(\\text{Fin}\\,N) \\to \\text{Bool},\\, \\exists K_s^{\\text{red}} \\lor K_t^{\\text{blue}}\\}$ and verifies fundamental properties from scratch: symmetry via color complementation, $R(1,t) = 1$ by singleton witness, and $R(2,t) = t$ by a detailed $\\text{le\\_antisymm}$ argument with edge-case analysis. Known exact values ($R(3,3) = 6$, $R(4,4) = 18$, $R(4,5) = 25$), asymptotic bounds ($R(3,k) = \\Theta(k^2/\\log k)$), and Spencer's $(k \\log k)^{5/2}$ lower bound are documented in narrative comments (not axiomatized). Only AKS's $k^3/(\\log k)^2$ upper bound and Mattheus-Verstraete's $k^3/(\\log k)^4$ lower bound are axiomatized. These two axioms are combined into the resolution `erdos_166_solved` (instantiating $A = 4$), a sandwich `current_bounds`, and a `logarithmic_gap` analysis showing $2 \\leq \\alpha \\leq 4$.",
+    "keyInsights": [
+      "**Ramsey numbers $R(4,k)$ grow cubically in $k$:** Both the AKS upper bound $k^3/(\\log k)^2$ and the Mattheus-Verstraete lower bound $k^3/(\\log k)^4$ confirm $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$ for $2 \\leq \\alpha \\leq 4$.",
+      "**Algebraic constructions broke the probabilistic barrier:** For 43 years, probabilistic methods could not improve Spencer's $(k \\log k)^{5/2}$ to cubic. Mattheus-Verstraete used incidence graphs of polar spaces over $\\mathbb{F}_q$, achieving $q^3$ vertices, no $K_4$, and independence number $O(q)$.",
+      "**The color-swap symmetry $R(s,t) = R(t,s)$ is fully verified:** The proof uses Boolean negation $c \\mapsto \\neg c$ with `congr!` and `aesop`, cleanly demonstrating Lean's automation on combinatorial symmetry arguments.",
+      "**$R(2,t) = t$ is a non-trivial verification:** Despite being elementary, the formal proof requires careful handling of `sInf`, `le_antisymm`, `Finset.card`, and case analysis on Boolean colorings—a good test of Lean's infrastructure.",
+      "**The remaining gap is purely logarithmic:** After Mattheus-Verstraete, the open question reduces to determining the exact exponent of $\\log k$ in $R(4,k) \\sim k^3/(\\log k)^\\alpha$, with $2 \\leq \\alpha \\leq 4$.",
+      "**Prize problems drive mathematical progress:** Erdős's $250 bounty on this problem focused attention on a specific barrier, and the eventual algebraic solution opened new techniques applicable to other Ramsey problems."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Ramsey theory (partition regularity)",
+      "Graph theory (vertices, edges, colorings)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-1",
+      "title": "Ramsey Number Definitions",
+      "startLine": 36,
+      "endLine": 52,
+      "summary": "Defines $R(s,t)$ as $\\inf\\{N : \\forall c : \\text{Sym2}(\\text{Fin}\\,N) \\to \\text{Bool},\\, \\exists$ red $K_s$ or blue $K_t\\}$. Uses `Sym2` for unordered edges and `Finset (Fin N)` for cliques. Introduces notation `R(s, t)`.",
+      "mathContext": "Defines $R(s,t)$ as $\\inf\\{N : \\forall c : \\text{Sym2}(\\text{Fin}\\,N) \\to \\text{Bool},\\, \\exists$ red $K_s$ or blue $K_t\\}$."
+    },
+    {
+      "id": "section-2",
+      "title": "Basic Properties",
+      "startLine": 53,
+      "endLine": 123,
+      "summary": "Three verified results: (1) `ramsey_symmetric` proves $R(s,t) = R(t,s)$ via color complement `c \\mapsto \\neg c$, (2) `ramsey_one_left` proves $R(1,t) = 1$ by singleton witness, (3) `ramsey_two_left` proves $R(2,t) = t$ via pigeonhole-style case analysis on edge colors.",
+      "mathContext": "Three verified results: (1) `ramsey_symmetric` proves $R(s,t) = R(t,s)$ via color complement `c \\mapsto \\neg c$, (2) `ramsey_one_left` proves $R(1,t) = 1$ by singleton witness, (3) `ramsey_two_left` proves $R(2,t) = t$ via pigeonhole-style case analysis on edge colors."
+    },
+    {
+      "id": "section-3",
+      "title": "Known Exact Values",
+      "startLine": 124,
+      "endLine": 144,
+      "summary": "Documents $R(3,3) = 6$, $R(4,4) = 18$, $R(4,5) = 25$, and the tight bounds $R(3,k) = \\Theta(k^2/\\log k)$ from Kim (1995) and Shearer (1983) as narrative context. No axiom declarations in this section.",
+      "mathContext": "Narrative context only: $R(3,3) = 6$, $R(4,4) = 18$, $R(4,5) = 25$, $R(3,k) = \\Theta(k^2/\\log k)$ — all doc comments, no declarations."
+    },
+    {
+      "id": "section-4",
+      "title": "Historical Lower Bounds",
+      "startLine": 145,
+      "endLine": 153,
+      "summary": "Documents Spencer's 1977 bound $R(4,k) \\geq c(k \\log k)^{5/2}$ as narrative context. Best lower bound for 46 years but suboptimal by factor $k^{1/2}$. Not axiomatized — doc comment only.",
+      "mathContext": "Narrative context only: Spencer's bound in doc comment, no axiom declaration."
+    },
+    {
+      "id": "section-5",
+      "title": "AKS Upper Bound",
+      "startLine": 154,
+      "endLine": 166,
+      "summary": "Axiomatizes the Ajtai-Komlós-Szemerédi 1980 upper bound $R(4,k) \\leq Ck^3/(\\log k)^2$ from greedy coloring. Established the cubic benchmark for $R(4,k)$.",
+      "mathContext": "Axiomatized: Axiomatizes the Ajtai-Komlós-Szemerédi 1980 upper bound $R(4,k) \\leq Ck^3/(\\log k)^2$ from greedy coloring. Established the cubic benchmark for $R(4,k)$."
+    },
+    {
+      "id": "section-6",
+      "title": "The Solution: Mattheus-Verstraete 2023",
+      "startLine": 168,
+      "endLine": 180,
+      "summary": "Axiomatizes the breakthrough $R(4,k) \\geq ck^3/(\\log k)^4$ using algebraic constructions from finite geometry (polar spaces over $\\mathbb{F}_q$). Solved Erdős #166, earned \\$250 prize.",
+      "mathContext": "Axiomatized: Axiomatizes the breakthrough $R(4,k) \\geq ck^3/(\\log k)^4$ using algebraic constructions from finite geometry (polar spaces over $\\mathbb{F}_q$). Solved Erdős #166, earned \\$250 prize."
+    },
+    {
+      "id": "section-7",
+      "title": "Formal Statement and Resolution",
+      "startLine": 182,
+      "endLine": 217,
+      "summary": "`Erdos166Statement` defines the conjecture as $\\exists c, A > 0$ with cubic lower bound. `erdos_166_solved` proves it by instantiating $A = 4$ from Mattheus-Verstraete. `current_bounds` packages the sandwich inequality $ck^3/(\\log k)^4 \\leq R(4,k) \\leq Ck^3/(\\log k)^2$.",
+      "mathContext": "`Erdos166Statement` defines the conjecture as $\\exists c, A > 0$ with cubic lower bound. `erdos_166_solved` proves it by instantiating $A = 4$ from Mattheus-Verstraete. `current_bounds` packages the sandwich inequality $ck^3/(\\log k)^4 \\leq R(4,k) \\leq Ck^3/(\\log k)^2$."
+    },
+    {
+      "id": "section-8",
+      "title": "Summary and Logarithmic Gap",
+      "startLine": 218,
+      "endLine": 269,
+      "summary": "`erdos_166_status` confirms resolution. `logarithmic_gap` formalizes the remaining open question: $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$ with $2 \\leq \\alpha \\leq 4$. Determining the exact $\\alpha$ is the natural successor problem.",
+      "mathContext": "`logarithmic_gap` formalizes the remaining open question: $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$ with $2 \\leq \\alpha \\leq 4$. Determining the exact $\\alpha$ is the natural successor problem."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #166 was SOLVED by Mattheus and Verstraete in 2023, earning the $250 Erdős prize. The answer is YES: $R(4,k) \\geq c \\cdot k^3/(\\log k)^4$ for some $c > 0$. The formalization verifies three fundamental Ramsey properties from scratch (symmetry, $R(1,t)=1$, $R(2,t)=t$) and axiomatizes the three historical bounds that frame the problem's 46-year arc from Spencer to Mattheus-Verstraete.",
+    "implications": "**Theoretical Significance**: The Mattheus-Verstraete solution demonstrates the power of algebraic graph constructions from finite geometry in Ramsey theory.\n\nTheir technique—building $K_4$-free graphs from incidence structures of polar spaces over $\\mathbb{F}_q$—provides a new paradigm for constructing extremal graphs, potentially applicable to $R(s,k)$ for $s \\geq 5$ and to hypergraph Ramsey problems. The remaining polylogarithmic gap ($\\alpha \\in [2,4]$) is now the central open question.",
+    "openQuestions": [
+      "What is the exact exponent $\\alpha$ in $R(4,k) = \\Theta(k^3/(\\log k)^\\alpha)$? Is $\\alpha = 2$ (matching AKS) or $\\alpha = 4$ (matching Mattheus-Verstraete)?",
+      "Can the Mattheus-Verstraete technique extend to prove $R(5,k) \\gg k^4/(\\log k)^{O(1)}$?",
+      "Are there fully explicit (deterministic, polynomial-time) constructions of $K_4$-free graphs with independence number $O(k)$ on $\\Omega(k^3/(\\log k)^4)$ vertices?",
+      "Can any of the axiomatized bounds (ramsey_3_3 = 6, R(3,k) asymptotics, spencer_lower_bound) be fully verified in Lean using Mathlib?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Sym.Sym2"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos166",
+    "lineCount": 269,
+    "axiomCount": 2,
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos166Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-165",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, probabilistic-method, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-812",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, probabilistic-method, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, ramsey-theory"
+    }
+  ],
+  "references": [
+    {
+      "key": "GRS90c",
+      "authors": [
+        "R.L. Graham",
+        "B.L. Rothschild",
+        "J.H. Spencer"
+      ],
+      "title": "Ramsey Theory",
+      "venue": "Wiley-Interscience, New York",
+      "year": "1990",
+      "edition": "2nd",
+      "note": "Comprehensive reference for Ramsey theory and partition regularity"
+    }
+  ],
+  "sorries": 0
+}

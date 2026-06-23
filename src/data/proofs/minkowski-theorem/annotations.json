@@ -1,0 +1,261 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "minkowski-theorem",
+    "range": {
+      "startLine": 1,
+      "endLine": 97
+    },
+    "type": "concept",
+    "title": "Minkowski's Theorem: Wiedijk #40",
+    "content": "**Minkowski's Convex Body Theorem**:\n\nLet $L$ be a lattice in $\\mathbb{R}^n$ with covolume $V$. If $S$ is:\n1. **Convex**: Line segments between points lie in $S$\n2. **Centrally symmetric**: $x \\in S \\Rightarrow -x \\in S$\n3. **Volume**: $\\text{vol}(S) > 2^n V$\n\nThen $S$ contains a **non-zero lattice point**.\n\n**Historical**: Minkowski (1889), founding \"Geometry of Numbers.\"\n\n**Applications**: Fermat's two squares, Lagrange's four squares, class number finiteness.",
+    "mathContext": "The theorem connects the geometry of convex bodies (volume, symmetry) to the arithmetic of lattices (integer points). It is the founding result of the geometry of numbers, a field that uses geometric arguments to prove number-theoretic statements.",
+    "significance": "key",
+    "relatedConcepts": [
+      "geometry of numbers",
+      "lattices",
+      "convex bodies"
+    ],
+    "prerequisites": [
+      "convex sets",
+      "lattice theory",
+      "measure theory",
+      "linear algebra"
+    ]
+  },
+  {
+    "id": "ann-symmetric",
+    "proofId": "minkowski-theorem",
+    "range": {
+      "startLine": 114,
+      "endLine": 131
+    },
+    "type": "definition",
+    "title": "Central Symmetry",
+    "content": "**Centrally Symmetric Set**:\n\n$$\\text{CentrallySymmetric}(S) :\\Leftrightarrow \\forall x \\in S, -x \\in S$$\n\n**Key Property**: The origin lies in any nonempty symmetric convex set.\n\n**Proof**: For $x \\in S$:\n- $-x \\in S$ by symmetry\n- Midpoint $(x + (-x))/2 = 0$ by convexity\n\n**Examples**:\n- Balls centered at origin\n- Ellipses centered at origin\n- Any set with $S = -S$",
+    "mathContext": "Central symmetry ($x \\in S \\Rightarrow -x \\in S$) combines with convexity to guarantee the origin lies in $S$: the midpoint of $x$ and $-x$ is $0$, and convexity forces midpoints to remain in $S$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "symmetry",
+      "origin",
+      "convexity"
+    ],
+    "prerequisites": [
+      "convex sets",
+      "negation in vector spaces"
+    ]
+  },
+  {
+    "id": "ann-origin-mem",
+    "proofId": "minkowski-theorem",
+    "range": {
+      "startLine": 119,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Origin Membership Lemma",
+    "content": "**Theorem**: The origin lies in any nonempty, centrally symmetric, convex set $S$.\n\n**Proof**: Pick $x \\in S$ (nonemptiness). Then $-x \\in S$ (symmetry). By convexity with weights $1/2$ each, the midpoint $\\frac{1}{2}x + \\frac{1}{2}(-x) = 0 \\in S$.\n\nThis is the only fully proved theorem in the file (not axiomatized).",
+    "mathContext": "Uses Mathlib's `Convex ℝ S` applied to $x$ and $-x$ with coefficients $1/2$, combined with the definition `CentrallySymmetric`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "convexity",
+      "midpoint",
+      "Mathlib Convex"
+    ],
+    "prerequisites": [
+      "Convex ℝ S definition",
+      "smul_neg",
+      "sub_eq_add_neg"
+    ]
+  },
+  {
+    "id": "ann-lattice",
+    "proofId": "minkowski-theorem",
+    "range": {
+      "startLine": 151,
+      "endLine": 177
+    },
+    "type": "definition",
+    "title": "Lattices in Euclidean Space",
+    "content": "**Lattice Definition**:\n\nA lattice $L \\subset \\mathbb{R}^n$ is the set of integer linear combinations of $n$ linearly independent vectors (a **basis**).\n\n$$L = \\{\\sum_{i=1}^n a_i \\mathbf{v}_i : a_i \\in \\mathbb{Z}\\} = B\\mathbb{Z}^n$$\n\n**Covolume**: $\\text{covol}(L) = |\\det(B)|$\n(Volume of fundamental domain)\n\n**Standard Lattice**: $\\mathbb{Z}^n$ with identity basis, covolume 1.\n\nMathlib representation: Basis matrix with nonzero determinant.",
+    "mathContext": "The lattice is defined as a `structure` with a basis matrix $B \\in M_{n \\times n}(\\mathbb{R})$ and proof that $\\det(B) \\neq 0$. The covolume $|\\det(B)|$ measures the volume of the fundamental parallelotope.",
+    "significance": "key",
+    "relatedConcepts": [
+      "basis",
+      "covolume",
+      "fundamental domain",
+      "Matrix.det"
+    ],
+    "prerequisites": [
+      "linear algebra",
+      "determinants",
+      "Matrix (Fin n) (Fin n) ℝ"
+    ]
+  },
+  {
+    "id": "ann-convex-body",
+    "proofId": "minkowski-theorem",
+    "range": {
+      "startLine": 195,
+      "endLine": 206
+    },
+    "type": "definition",
+    "title": "Convex Bodies",
+    "content": "**Convex Body Structure**:\n\n```lean\nstructure ConvexBody (n : ℕ) where\n  carrier : Set (EuclideanN n)\n  convex : Convex ℝ carrier\n  symmetric : CentrallySymmetric n carrier\n  nonempty : carrier.Nonempty\n```\n\n**Properties**:\n- The origin is always in a convex body\n- Compact with nonempty interior\n\nFor Minkowski: convex + symmetric + large volume.",
+    "mathContext": "Bundles convexity, central symmetry, and nonemptiness into a single structure. The `ConvexBody.zero_mem` theorem follows immediately from `origin_mem_of_symmetric_nonempty`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convex set",
+      "Mathlib Convex",
+      "membership"
+    ],
+    "prerequisites": [
+      "Convex ℝ",
+      "CentrallySymmetric",
+      "Set.Nonempty"
+    ]
+  },
+  {
+    "id": "ann-volume",
+    "proofId": "minkowski-theorem",
+    "range": {
+      "startLine": 222,
+      "endLine": 234
+    },
+    "type": "definition",
+    "title": "Volume and Critical Threshold",
+    "content": "**HasVolume typeclass**: Abstracts the Lebesgue measure as a positive real number associated with a convex body.\n\n**Critical Volume**: $\\text{critVol}(L) = 2^n \\cdot \\text{covol}(L)$\n\nThis is the threshold: if $\\text{vol}(S) > \\text{critVol}(L)$, Minkowski's theorem applies. The factor $2^n$ arises from the scaling $S/2$ in the pigeonhole argument.",
+    "mathContext": "The critical volume $2^n \\cdot |\\det(B)|$ is proved positive using `pow_pos` for $2^n > 0$ and `abs_pos.mpr` for $|\\det(B)| > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "critical volume",
+      "scaling factor"
+    ],
+    "prerequisites": [
+      "pow_pos",
+      "mul_pos",
+      "Lattice.covolume_pos"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "minkowski-theorem",
+    "range": {
+      "startLine": 273,
+      "endLine": 275
+    },
+    "type": "concept",
+    "title": "Main Theorem (Axiomatized)",
+    "content": "**Minkowski's Fundamental Theorem**:\n\n$$\\text{vol}(S) > 2^n \\cdot \\text{covol}(L) \\Rightarrow \\exists x \\in S \\cap L, x \\neq 0$$\n\n**Status**: Axiomatized because the full proof requires measure-theoretic machinery (Fubini's theorem, change of variables) and a careful infinite pigeonhole argument that is beyond current scope.\n\nThe equivalent formulation `minkowski_fundamental'` unfolds `criticalVolume` explicitly.",
+    "mathContext": "Stated as `axiom` rather than `theorem` because the proof requires integration over lattice translates and measure-theoretic pigeonhole, which needs Mathlib's `MeasureTheory.Measure.Lebesgue` in a way not yet set up in this file.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom",
+      "volume threshold",
+      "lattice point",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "HasVolume",
+      "criticalVolume",
+      "ConvexBody",
+      "Lattice",
+      "latticePoints"
+    ]
+  },
+  {
+    "id": "ann-integer-lattice",
+    "proofId": "minkowski-theorem",
+    "range": {
+      "startLine": 298,
+      "endLine": 307
+    },
+    "type": "concept",
+    "title": "Integer Lattice Specialization",
+    "content": "**For $\\mathbb{Z}^n$**: If $\\text{vol}(S) > 2^n$, then $S$ contains a nonzero integer point.\n\nThis is the most commonly stated form. The proof rewrites `criticalVolume (standardLattice n) = 2^n` using `standardLattice_covolume` and applies the main axiom.",
+    "mathContext": "Derives the standard-lattice case from the general theorem by showing $\\text{covol}(\\mathbb{Z}^n) = 1$, so $\\text{critVol} = 2^n \\cdot 1 = 2^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "integer lattice",
+      "Zⁿ",
+      "volume bound"
+    ],
+    "prerequisites": [
+      "standardLattice",
+      "standardLattice_covolume",
+      "minkowski_fundamental"
+    ]
+  },
+  {
+    "id": "ann-fermat",
+    "proofId": "minkowski-theorem",
+    "range": {
+      "startLine": 340,
+      "endLine": 346
+    },
+    "type": "concept",
+    "title": "Application: Fermat's Two Squares",
+    "content": "**Fermat's Theorem**: Every prime $p \\equiv 1 \\pmod 4$ is a sum of two squares.\n\n**Proof via Minkowski**:\n1. Since $p \\equiv 1 \\pmod 4$, $-1$ is a quadratic residue: $k^2 \\equiv -1$\n2. Lattice $L = \\{(a,b) \\in \\mathbb{Z}^2 : a \\equiv kb \\pmod p\\}$\n3. $\\text{covol}(L) = p$\n4. Disk $D = \\{x^2 + y^2 < 2p\\}$ has area $2\\pi p > 4p = 2^2 \\cdot p$\n5. By Minkowski, $D$ contains $(a,b) \\in L \\setminus \\{0\\}$\n6. Then $a^2 + b^2 < 2p$ and $a^2 + b^2 \\equiv 0 \\pmod p$\n7. Therefore $a^2 + b^2 = p$\n\nThe actual Lean proof uses Mathlib's `Nat.Prime.sq_add_sq` directly.",
+    "mathContext": "While the annotation describes the Minkowski-based proof, the Lean code delegates to Mathlib's `Nat.Prime.sq_add_sq` which uses a different approach (Zagier's involution or Gaussian integers). The condition $p \\% 4 \\neq 3$ is equivalent to $p \\equiv 1 \\pmod{4}$ for odd primes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat",
+      "sum of squares",
+      "quadratic residues",
+      "Nat.Prime.sq_add_sq"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "quadratic residues mod p",
+      "Minkowski's theorem in ℝ²"
+    ]
+  },
+  {
+    "id": "ann-blichfeldt",
+    "proofId": "minkowski-theorem",
+    "range": {
+      "startLine": 400,
+      "endLine": 405
+    },
+    "type": "theorem",
+    "title": "Blichfeldt's Generalization",
+    "content": "**Blichfeldt's Theorem (1914)**: If $\\text{vol}(S) > k \\cdot 2^n \\cdot \\text{covol}(L)$, then $S$ contains at least $k+1$ lattice points.\n\nThis generalizes Minkowski's theorem (which is the $k = 1$ case). Stated here as a `def` proposition — not proved.\n\nBlichfeldt's proof uses the same pigeonhole principle but counts overlapping translates more carefully.",
+    "mathContext": "Stated as `blichfeldt_statement : ℕ → Prop` using `Finset` to assert the existence of $k+1$ lattice points in $S$. The $k=1$ case recovers Minkowski's fundamental theorem.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Blichfeldt",
+      "lattice point counting",
+      "pigeonhole generalization"
+    ],
+    "prerequisites": [
+      "Finset",
+      "criticalVolume",
+      "ConvexBody",
+      "latticePoints"
+    ]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "minkowski-theorem",
+    "range": {
+      "startLine": 411,
+      "endLine": 443
+    },
+    "type": "concept",
+    "title": "Significance and Modern Relevance",
+    "content": "**Foundational Impact**:\n\nMinkowski's 1889 paper founded \"Geometry of Numbers\" - using geometry for arithmetic.\n\n**Connections**:\n- **Algebraic Number Theory**: Class group finiteness\n- **Diophantine Equations**: Existence of integer solutions\n- **Cryptography**: Lattice-based (LWE, NTRU)\n- **Coding Theory**: Sphere packing bounds\n\n**Modern Applications**:\n- Post-quantum cryptography (lattice problems quantum-resistant)\n- Shortest vector problem (NP-hard)\n- Signal processing, MIMO systems\n- Integer programming\n\n**Generalizations**: Blichfeldt, successive minima.",
+    "mathContext": "Minkowski's theorem underpins modern lattice cryptography: the security of schemes like LWE (Learning With Errors) and NTRU depends on the computational hardness of finding short lattice vectors, while Minkowski's theorem guarantees such vectors exist.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cryptography",
+      "class number",
+      "sphere packing",
+      "post-quantum"
+    ],
+    "prerequisites": [
+      "lattice theory",
+      "computational complexity"
+    ]
+  }
+]

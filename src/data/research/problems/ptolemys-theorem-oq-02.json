@@ -1,0 +1,147 @@
+{
+  "slug": "ptolemys-theorem-oq-02",
+  "title": "Ptolemy's Theorem → Sine Addition Formula (Complex-Number Proof)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem sin_add_from_ptolemy (α β : ℝ) (hα : 0 < α) (hα' : α < π/4) (hβ : 0 < β) (hβ' : β < π/4) (hab : α + β < π/2) : sin (α + β) = sin α * cos β + cos α * sin β",
+    "plain": "Can the complex-number proof of Ptolemy's theorem be applied on the unit circle to derive the sine addition formula sin(α+β) = sin α cos β + cos α sin β?",
+    "whyMatters": [
+      "Closes the historical loop — machine-verifies the classical derivation Ptolemy used 1500 years before Euler's exponential form",
+      "Demonstrates that pure algebraic Ptolemy (no geometry) suffices for trigonometric identities",
+      "Gallery entry shows complex-analytic proof techniques on the unit circle"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "sin_add_from_ptolemy: sin(α+β) = sinα cosβ + cosα sinβ via Ptolemy's theorem on the unit-circle quadrilateral (1, exp(2αI), -1, exp(-2βI))",
+      "Five chord-length lemmas: ‖1 - exp(2αI)‖ = 2 sin α, ‖exp(2αI) - (-1)‖ = 2 cos α, etc., for α, β ∈ (0, π/2)",
+      "ccw_order: the four points lie in counterclockwise order on the unit circle for α, β ∈ (0, π/2)"
+    ],
+    "open": [
+      "cos addition via symmetric quadrilateral choice (open question listed in gallery entry)",
+      "Generalize chord-length lemmas to circles of arbitrary radius r"
+    ],
+    "goal": "sin(α+β) = sinα cosβ + cosα sinβ derived from Ptolemy's equality on a specific unit-circle quadrilateral"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-24",
+    "iteration": 1,
+    "focus": "sin_add_from_ptolemy proved in PtolemysComplexProofOQ02.lean (PR #12279); gallery entry verified",
+    "blockers": [],
+    "nextAction": "Closed: complete formalization in gallery as ptolemys-complex-proof-oq-02 (badge: mathlib).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: PtolemysComplexProof.lean — 6 theorems, 0 sorries, 0 axioms. Algebraic identity over CommRing, Ptolemy inequality (3 formulations), equality characterization via proportionality. Gallery entry created.",
+    "builtItems": [
+      "ptolemy_algebraic_identity: ring identity (z1-z3)(z2-z4)=(z1-z2)(z3-z4)+(z2-z3)(z1-z4) over CommRing",
+      "ptolemy_complex_identity: same identity specialized to C",
+      "ptolemy_inequality: norm form via triangle inequality + norm_mul",
+      "ptolemy_inequality_abs: Complex.abs form via Complex.norm_eq_abs",
+      "ptolemy_inequality_dist: dist form via dist_eq_norm",
+      "Gallery entry: src/data/proofs/ptolemys-complex-proof/ with meta.json, index.ts, annotations.json",
+      "ptolemy_equality_of_proportional: equality holds when opposite-side products are positively proportional in ℂ"
+    ],
+    "insights": [
+      "The identity holds over any CommRing -- Ptolemy is purely algebraic, geometry enters only through the norm",
+      "The entire proof is 3 steps: norm_mul, algebraic identity, norm_add_le (triangle inequality)",
+      "This yields the inequality form, not equality -- equality requires concyclicity characterization",
+      "dist_eq_norm bridges the complex proof to the classical geometric statement",
+      "Ptolemy equality reduces to: both sides equal (1+t)·‖(z₁-z₂)(z₃-z₄)‖ when the summands have ratio t≥0",
+      "The sufficient condition for equality (positive proportionality of opposite-side products) corresponds geometrically to the four points being concyclic in the standard ordering"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Equality characterization: prove equality holds iff points are concyclic (cross-ratio is real positive)",
+      "Derive the sine addition formula from Ptolemy applied to unit circle"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "circle",
+    "classic",
+    "intermediate",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "ptolemys-theorem",
+    "ptolemys-theorem-oq-01",
+    "ptolemys-theorem-oq-01-incomplete-01",
+    "ptolemys-theorem-oq-01-oq-01",
+    "ptolemys-theorem-oq-01-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.838Z",
+  "lastUpdate": "2026-04-27T13:55:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/PtolemysTheorem.lean",
+      "filename": "PtolemysTheorem.lean",
+      "lineCount": 241,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheorem.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01.lean",
+      "filename": "PtolemysTheoremOQ01.lean",
+      "lineCount": 483,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01Incomplete01.lean",
+      "filename": "PtolemysTheoremOQ01Incomplete01.lean",
+      "lineCount": 490,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01OQ01.lean",
+      "filename": "PtolemysTheoremOQ01OQ01.lean",
+      "lineCount": 289,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01OQ02.lean",
+      "filename": "PtolemysTheoremOQ01OQ02.lean",
+      "lineCount": 271,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01OQ02.lean"
+    }
+  ]
+}

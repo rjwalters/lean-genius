@@ -1,0 +1,181 @@
+[
+  {
+    "id": "ann-etrans-oq01-01-header",
+    "proofId": "e-transcendental-oq-01",
+    "range": {
+      "startLine": 9,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "Is e + π Transcendental? The State of the Open Problem",
+    "content": "The header frames one of the deepest open problems in transcendental number theory: despite knowing e (Hermite 1873) and π (Lindemann 1882) are individually transcendental, the transcendence of e+π remains unknown after 140+ years. The doc comment organizes what IS known: (1) e transcendental, (2) π transcendental, (3) at least one of {e+π, eπ} is transcendental (proved here), (4) e^π transcendental (Gelfond-Schneider). The Schanuel conjecture connection: if true, it implies e and π are algebraically independent, hence e+π is transcendental. Nesterenko 1996 theorem (π, e^π, Γ(1/4) algebraically independent) does not directly give e+π.",
+    "mathContext": "**Transcendental number**: $x$ is transcendental over $\\mathbb{Q}$ if no polynomial $p \\in \\mathbb{Q}[X]$ satisfies $p(x) = 0$. **Known transcendentals**: $e$ (Hermite 1873), $\\pi$ (Lindemann 1882), $e^\\pi$ (Gelfond 1929), $2^{\\sqrt{2}}$ (Gelfond-Schneider 1934). **Unknown**: $e+\\pi$, $e \\cdot \\pi$, $e^e$, $\\pi^e$. **Schanuel's conjecture**: tr.deg $\\mathbb{Q}(z_1, \\ldots, z_n, e^{z_1}, \\ldots, e^{z_n}) / \\mathbb{Q} \\geq n$ for $\\mathbb{Q}$-linearly independent $z_i \\in \\mathbb{C}$. Would immediately imply $e, \\pi$ algebraically independent.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Transcendental",
+      "Schanuel's conjecture",
+      "Hermite 1873",
+      "Lindemann 1882",
+      "Nesterenko 1996"
+    ],
+    "prerequisites": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Real.exp",
+      "Real.pi",
+      "IsAlgebraic"
+    ]
+  },
+  {
+    "id": "ann-etrans-oq01-02-axioms",
+    "proofId": "e-transcendental-oq-01",
+    "range": {
+      "startLine": 67,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "Foundational Axioms: Hermite's and Lindemann's Theorems",
+    "content": "Two deep results are axiomatized: e_transcendental_q : Transcendental ℚ (Real.exp 1) (Hermite 1873) and pi_transcendental_q : Transcendental ℚ Real.pi (Lindemann 1882). Both are provable in Lean 4 but their proofs are in separate modules. Hermite's proof uses auxiliary integrals to bound rational approximations to e, deriving a contradiction. Lindemann's proof extends this via the Lindemann-Weierstrass theorem: if α₁,...,αₙ are distinct algebraic numbers, then e^α₁,...,e^αₙ are linearly independent over ℚ. These axioms are the two foundational inputs for all results in the file.",
+    "mathContext": "**Transcendental ℚ x** = $\\lnot$(IsAlgebraic ℚ x). **Hermite (1873)**: assume $\\sum a_k e^k = 0$ (integers $a_k$), construct auxiliary integral $I_p$ satisfying $|\\sum a_k I_p(k)| < C^p/p!$ → nonzero integer with modulus $< 1$ for large $p$ → contradiction. **Lindemann-Weierstrass (1882)**: $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are linearly independent over $\\bar{\\mathbb{Q}}$ for distinct algebraic $\\alpha_i$. Applied at $\\alpha_1 = i\\pi$ (algebraic? — NO, $i\\pi$ is transcendental): Lindemann's original argument uses $e^{i\\pi} + 1 = 0$ directly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hermite's theorem",
+      "Lindemann-Weierstrass theorem",
+      "Transcendental",
+      "Real.exp 1",
+      "Real.pi"
+    ],
+    "prerequisites": [
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "eTranscendental module",
+      "PiTranscendental module"
+    ]
+  },
+  {
+    "id": "ann-etrans-oq01-03-vieta",
+    "proofId": "e-transcendental-oq-01",
+    "range": {
+      "startLine": 77,
+      "endLine": 96
+    },
+    "type": "insight",
+    "title": "Vieta Identity: e and π Are Roots of a Common Quadratic Over ℚ(e+π, eπ)",
+    "content": "The block comment explains the algebraic key: e and π are the two roots of T² - (e+π)T + (e·π) = 0. e_root_of_vieta_quadratic proves (exp 1)² - (exp 1 + π)(exp 1) + (exp 1 · π) = 0 by ring — a pure algebraic identity. pi_root_of_vieta_quadratic is the symmetric version. Both proofs are one-line ring computations requiring no axioms. The significance: the quadratic's coefficients are exactly (e+π) and (e·π). If both were algebraic over ℚ, then e would be algebraic over an algebraic extension of ℚ — hence algebraic over ℚ, contradicting Hermite.",
+    "mathContext": "**Vieta's formulas**: if $r_1, r_2$ are roots of $T^2 - sT + p = 0$, then $s = r_1+r_2$ and $p = r_1 r_2$. For $r_1=e, r_2=\\pi$: $e^2 - (e+\\pi)e + e\\pi = e^2 - e^2 - e\\pi + e\\pi = 0$. **Field-theoretic interpretation**: $e \\in \\mathbb{Q}(e+\\pi, e\\pi)[X]/(X^2 - (e+\\pi)X + e\\pi)$. So $[\\mathbb{Q}(e+\\pi, e\\pi, e) : \\mathbb{Q}(e+\\pi, e\\pi)] \\leq 2$. If $e+\\pi, e\\pi \\in \\bar{\\mathbb{Q}}$, then $e \\in \\bar{\\mathbb{Q}}$ by the algebraic extension tower.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Vieta's formulas",
+      "ring tactic",
+      "symmetric polynomials",
+      "e_root_of_vieta_quadratic",
+      "pi_root_of_vieta_quadratic"
+    ],
+    "prerequisites": [
+      "ring tactic",
+      "Real.exp 1",
+      "Real.pi",
+      "Real arithmetic"
+    ]
+  },
+  {
+    "id": "ann-etrans-oq01-04-closure",
+    "proofId": "e-transcendental-oq-01",
+    "range": {
+      "startLine": 102,
+      "endLine": 120
+    },
+    "type": "insight",
+    "title": "Algebraic Closure Lemma: Roots of Algebraic Quadratics Are Algebraic",
+    "content": "algebraic_root_of_algebraic_quadratic is axiomatized: if s, p are algebraic over ℚ and x satisfies x² - s·x + p = 0, then x is algebraic. The block comment gives the mathematical proof via tower law: K = ℚ(s,p) is a finite algebraic extension; x satisfies X² - sX + p ∈ K[X]; so x is algebraic over K of degree ≤ 2; by transitivity (tower law) x is algebraic over ℚ. The Mathlib path uses Algebra.IsAlgebraic.trans. This lemma is the bridge from 'e+π and eπ algebraic' to 'e algebraic', completing the contradiction with Hermite's theorem.",
+    "mathContext": "**Tower law for algebraic extensions**: if $L/K$ and $K/F$ are algebraic, then $L/F$ is algebraic. In Lean: `Algebra.IsAlgebraic.trans`. Applied: $\\mathbb{Q} \\hookrightarrow \\mathbb{Q}(s,p) \\hookrightarrow \\mathbb{Q}(s,p,x)$ with both extensions algebraic. **Why degree ≤ 2**: $x^2 = sx - p \\in \\mathbb{Q}(s,p)$, so $\\{1, x\\}$ spans $\\mathbb{Q}(s,p,x)$ over $\\mathbb{Q}(s,p)$. This makes the overall extension finite, hence algebraic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Algebra.IsAlgebraic.trans",
+      "tower law",
+      "algebraic extensions",
+      "IsAlgebraic",
+      "algebraic closure"
+    ],
+    "prerequisites": [
+      "IsAlgebraic ℚ",
+      "tower law",
+      "Algebra.IsAlgebraic.trans",
+      "finite algebraic extension"
+    ]
+  },
+  {
+    "id": "ann-etrans-oq01-05-main",
+    "proofId": "e-transcendental-oq-01",
+    "range": {
+      "startLine": 126,
+      "endLine": 166
+    },
+    "type": "insight",
+    "title": "Main Theorem: At Least One of {e+π, e·π} Is Transcendental",
+    "content": "e_plus_pi_or_e_times_pi_transcendental proves Transcendental ℚ (exp 1 + π) ∨ Transcendental ℚ (exp 1 · π). Proof: by_contra h; simp only [not_or, Transcendental, not_not] extracts hsum : IsAlgebraic ℚ (exp 1 + π) and hprod : IsAlgebraic ℚ (exp 1 · π); algebraic_root_of_algebraic_quadratic hsum hprod hroot gives he_alg : IsAlgebraic ℚ (exp 1); exact e_transcendental_q he_alg. The doc comment notes: 'This uses ONLY e's transcendence'. The symmetric variant uses π's transcendence via mul_comm to handle hprod'.",
+    "mathContext": "The proof logic: $\\lnot(A \\lor B) = (\\lnot A) \\land (\\lnot B)$. So assuming both $e+\\pi$ and $e\\pi$ algebraic, we derive $e$ algebraic (via Vieta + closure), contradicting Hermite. **simp [not_or, Transcendental, not_not]**: unfolds $\\lnot(\\text{Transcendental} = \\lnot\\text{IsAlgebraic})$ to give IsAlgebraic directly. **Key insight**: the proof of $e+\\pi$ transcendence is pure algebra — it would work for any two transcendentals that are each other's Galois conjugate over an algebraically closed field.",
+    "significance": "key",
+    "relatedConcepts": [
+      "by_contra",
+      "not_or",
+      "not_not",
+      "algebraic_root_of_algebraic_quadratic",
+      "e_transcendental_q"
+    ],
+    "prerequisites": [
+      "e_root_of_vieta_quadratic",
+      "algebraic_root_of_algebraic_quadratic",
+      "e_transcendental_q",
+      "simp not_or"
+    ]
+  },
+  {
+    "id": "ann-etrans-oq01-06-consequences",
+    "proofId": "e-transcendental-oq-01",
+    "range": {
+      "startLine": 172,
+      "endLine": 186
+    },
+    "type": "insight",
+    "title": "Conditional Consequences: Algebraicity of One Forces Transcendence of the Other",
+    "content": "Two contrapositive theorems. sum_transcendental_if_prod_algebraic: if e·π algebraic then e+π transcendental. prod_transcendental_if_sum_algebraic: if e+π algebraic then e·π transcendental. Both proved by rcases on e_plus_pi_or_e_times_pi_transcendental: if the first disjunct is transcendental, we are done; if the second is transcendental but is assumed algebraic, absurd gives contradiction. These 4-line proofs establish the mutual exclusion: algebraicity of either e+π or eπ would immediately prove transcendence of the other — a powerful conditional result.",
+    "mathContext": "Logical structure: from $A \\lor B$ (where $A$ = e+π transcendental, $B$ = eπ transcendental): $\\lnot A \\Rightarrow B$ (contrapositive: if e+π algebraic, eπ transcendental) and $\\lnot B \\Rightarrow A$ (if eπ algebraic, e+π transcendental). This is a **disjunctive syllogism**. **Numerical context**: $e+\\pi \\approx 5.8599$, $e\\pi \\approx 8.5397$. The irrationality measures of both are unknown; no rational approximation is suspiciously close.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rcases",
+      "absurd",
+      "e_plus_pi_or_e_times_pi_transcendental",
+      "disjunctive syllogism"
+    ],
+    "prerequisites": [
+      "e_plus_pi_or_e_times_pi_transcendental",
+      "rcases on Or",
+      "absurd lemma"
+    ]
+  },
+  {
+    "id": "ann-etrans-oq01-07-open",
+    "proofId": "e-transcendental-oq-01",
+    "range": {
+      "startLine": 192,
+      "endLine": 297
+    },
+    "type": "insight",
+    "title": "Open Problems, Schanuel's Conjecture, and Nesterenko's Theorem",
+    "content": "Three sorry-based theorems state open problems: e_plus_pi_transcendental, e_times_pi_transcendental, and e_plus_pi_irrational (even irrationality is open!). Schanuel's conjecture is explained: ℚ-linearly independent z₁,...,zₙ give tr.deg ℚ(z₁,...,zₙ,e^z₁,...,e^zₙ)/ℚ ≥ n. Nesterenko's theorem 1996 is axiomatized as nesterenko_algebraic_independence using MvPolynomial.aeval over Fin 3. gammaQuarter : ℝ = (Complex.Gamma (1/4)).re. pi_plus_exp_pi_transcendental (π + e^π transcendental) is stated from Nesterenko but has sorry — needs IsAlgebraic → polynomial witness construction.",
+    "mathContext": "**Schanuel applied to e, π**: take $z_1 = 1, z_2 = i\\pi$ (ℚ-linearly independent since $\\pi$ transcendental). Then tr.deg $\\mathbb{Q}(1, i\\pi, e^1, e^{i\\pi}) = $ tr.deg $\\mathbb{Q}(i\\pi, e, -1) \\geq 2$. So $e, \\pi$ algebraically independent. **Nesterenko 1996**: $\\pi, e^\\pi, \\Gamma(1/4)$ are algebraically independent over $\\mathbb{Q}$ — an unconditional deep result. Note: $e^\\pi \\approx 23.14 \\neq e \\approx 2.71$, so Nesterenko does NOT directly give e+π. **Open problem depth**: after 150+ years of transcendence theory, even asking if $e+\\pi$ is irrational remains beyond reach.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Schanuel's conjecture",
+      "Nesterenko 1996",
+      "MvPolynomial.aeval",
+      "gammaQuarter",
+      "algebraic independence"
+    ],
+    "prerequisites": [
+      "MvPolynomial",
+      "Complex.Gamma",
+      "Fin 3 indexing",
+      "sorry as open problem marker"
+    ]
+  }
+]

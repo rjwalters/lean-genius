@@ -1,0 +1,238 @@
+{
+  "id": "erdos-453",
+  "title": "Erdős Problem #453: Prime Products and Squares",
+  "slug": "erdos-453",
+  "description": "Is it true that for all large n, there exists i < n with p_n² < p_{n+i}·p_{n-i}? SOLVED: NO. Pomerance (1979) proved infinitely many n have p_n² > p_{n+i}·p_{n-i} for all i < n, using convex hull geometry on log primes.",
+  "meta": {
+    "author": "Paul Erdős, Ernst Straus",
+    "sourceUrl": "https://erdosproblems.com/453",
+    "date": "1979",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos453Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "convex-geometry",
+      "prime-number-graph"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 453,
+    "erdosUrl": "https://erdosproblems.com/453",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Convergence via filter tendsto",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Convex",
+        "description": "Convexity definitions for real spaces",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "nthPrime definition and prime sequence properties",
+      "ErdosStrausConjecture and SelfridgeConjecture formal definitions",
+      "conjectures_mutually_exclusive theorem (fully proved)",
+      "IsConvexHullVertex characterization for discrete sequences",
+      "LogConvexityProperty equivalence with vertex definition",
+      "counterexample_set_infinite theorem (fully proved from axioms)",
+      "log_convexity_iff_vertex identity (proved by rfl)"
+    ],
+    "axiomCount": 2,
+    "lineCount": 364,
+    "assumptions": "2 axioms: logPrime_ratio_tendsto_zero (from PNT), pomerance_convex_hull_lemma. 0 sorries — nthPrime_is_prime/strictMono now proved via Mathlib, log_to_product fully proved.",
+    "theoremCount": 17,
+    "definitionCount": 7
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Convex.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos453",
+    "lineCount": 364,
+    "axiomCount": 2,
+    "theoremCount": 17,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos453Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "foundational",
+      "description": "Bertrand's postulate bounds prime gaps; the prime gap structure underlies the prime number graph used in Pomerance's proof"
+    },
+    {
+      "targetId": "erdos-216",
+      "relationship": "technique",
+      "description": "Both use convex hull geometry — Problem #216 for empty convex polygons in point sets, Problem #453 for the prime number graph"
+    },
+    {
+      "targetId": "erdos-233",
+      "relationship": "related",
+      "description": "Both study prime gap structure: Problem #233 on sum of squares of gaps, Problem #453 on product inequalities from convexity of log primes"
+    },
+    {
+      "targetId": "erdos-218",
+      "relationship": "related",
+      "description": "Both concern local behavior of the prime sequence: Problem #218 on gap comparison densities, Problem #453 on product comparisons at individual primes"
+    },
+    {
+      "targetId": "erdos-203",
+      "relationship": "thematic",
+      "description": "Both are solved Erdős problems about prime distribution: Problem #203 on covering systems avoiding primes, Problem #453 on prime products and squares"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Straus originally conjectured that for all large n, some i < n satisfies p_n² < p_{n+i}·p_{n-i}. Selfridge disagreed, conjecturing the opposite. Pomerance (1979) proved Selfridge correct using an elegant convex hull argument on the prime number graph.\n\nThe proof is remarkably short: consider the graph of points (n, log p_n). By the Prime Number Theorem, p_n ~ n log n, so log p_n / n → 0. This means the non-horizontal part of the upper convex hull boundary is concave with infinitely many vertices. At each vertex n, the strict convexity condition 2·log p_n > log p_{n-i} + log p_{n+i} holds for all i, which exponentiates to p_n² > p_{n+i}·p_{n-i}.\n\nThis is Problem A14 in Guy's 'Unsolved Problems in Number Theory'. Pomerance published the result in 'The prime number graph' (Mathematics of Computation, 1979), a paper that also studied the convexity properties of the prime sequence more broadly.",
+    "problemStatement": "Is it true that, for all sufficiently large n, there exists some i < n such that p_n² < p_{n+i}·p_{n-i}, where p_k is the k-th prime?",
+    "text": "Is it true that for all large n, there exists i < n with p_n² < p_{n+i}·p_{n-i}? SOLVED: NO. Pomerance (1979) proved infinitely many n have p_n² > p_{n+i}·p_{n-i} for all i < n, using convex hull geometry on log primes.",
+    "proofStrategy": "The formalization defines the Erdős-Straus conjecture and Selfridge's counter-conjecture, proves they are mutually exclusive (a genuine Lean proof by contradiction using omega), then axiomatizes Pomerance's result. The key geometric machinery — the convex hull vertex characterization, the o(n) lemma guaranteeing infinitely many vertices, and the log-to-product bridge — is formalized to capture the structure of Pomerance's short proof. The infinitude of the counterexample set is proved as a genuine theorem using Set.infinite_iff_nat_lt.",
+    "keyInsights": [
+      "**Logarithmic Bridge:** The multiplicative inequality $p_n^2 > p_{n+i} p_{n-i}$ is equivalent to the additive $2 \\log p_n > \\log p_{n+i} + \\log p_{n-i}$ via monotonicity of $\\exp$, enabling geometric analysis.",
+      "**Convex Hull Criterion:** Index $n$ is a convex hull vertex of $\\{(n, \\log p_n)\\}$ iff $2 \\log p_n > \\log p_{n-i} + \\log p_{n+i}$ for all $0 < i < n$ — exactly the Selfridge condition.",
+      "**PNT is Key:** $p_n \\sim n \\log n$ gives $\\log p_n / n \\to 0$, the sublinearity condition forcing infinitely many convex hull vertices.",
+      "**Counterexample Infinitude:** The counterexample set $\\{n \\mid \\forall i < n : p_n^2 > p_{n+i}p_{n-i}\\}$ is not just nonempty but **cofinal** in $\\mathbb{N}$ — proved formally via `Set.infinite_iff_nat_lt`.",
+      "**Geometry Resolves Arithmetic:** Pomerance's short proof is a masterclass in converting a number-theoretic question ($p_n^2$ vs $p_{n+i}p_{n-i}$) into a geometric one (convex hull vertices of a planar curve).",
+      "**Mutual Exclusivity in Lean:** `conjectures_mutually_exclusive` is a genuine Lean proof (no axioms) using `omega` — the only fully proved result aside from `counterexample_set_infinite` and `log_convexity_iff_vertex`."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "primes",
+      "title": "The Prime Sequence",
+      "startLine": 43,
+      "endLine": 94,
+      "summary": "Defines `nthPrime` (1-indexed wrapper for Mathlib's `Nat.Prime.nthPrime`), verifies $p_1=2, p_2=3, p_3=5, p_4=7$ (proved), and proves primality of all terms ($n \\geq 1$) and strict monotonicity of $n \\mapsto p_{n+1}$.",
+      "mathContext": "Defines `nthPrime` (1-indexed wrapper for Mathlib's `Nat.Prime.nthPrime`), verifies $p_1=2, p_2=3, p_3=5, p_4=7$ (proved), and proves primality of all terms ($n \\geq 1$) and strict monotonicity of $n \\mapsto p_{n+1}$."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Conjectures",
+      "startLine": 95,
+      "endLine": 127,
+      "summary": "Formalizes `ErdosStrausConjecture` ($\\exists N,\\ \\forall n \\geq N,\\ \\exists i < n : p_n^2 < p_{n+i} p_{n-i}$) and `SelfridgeConjecture` ($\\forall N,\\ \\exists n \\geq N,\\ \\forall i < n : p_n^2 > p_{n+i} p_{n-i}$). Proves mutual exclusivity in Lean using `omega` on $\\mathbb{Z}$ inequalities.",
+      "mathContext": "Formalizes `ErdosStrausConjecture` ($\\exists N,\\ \\forall n \\geq N,\\ \\exists i < n : p_n^2 < p_{n+i} p_{n-i}$) and `SelfridgeConjecture` ($\\forall N,\\ \\exists n \\geq N,\\ \\forall i < n : p_n^2 > p_{n+i} p_{n-i}$). Proves mutual exclusivity in Lean using `omega` on $\\mathbb{Z}$ inequalities."
+    },
+    {
+      "id": "convexity",
+      "title": "Log-Prime Convexity Machinery",
+      "startLine": 128,
+      "endLine": 162,
+      "summary": "Introduces `logPrime n = log p_n`, axiomatizes $\\log p_n / n \\to 0$ (follows from PNT: $p_n \\sim n \\log n$), defines `IsConvexHullVertex` via the discrete concavity condition $2a_n > a_{n-i} + a_{n+i}$, and axiomatizes Pomerance's lemma: $a_n = o(n) \\Rightarrow$ infinitely many convex hull vertices.",
+      "mathContext": "Introduces `logPrime n = log p_n`, axiomatizes $\\log p_n / n \\to 0$ (follows from PNT: $p_n \\sim n \\log n$), defines `IsConvexHullVertex` via the discrete concavity condition $2a_n > a_{n-i} + a_{n+i}$, and axiomatizes Pomerance's lemma: $a_n = o(n) \\Rightarrow$ infinitely many convex hull vertices."
+    },
+    {
+      "id": "pomerance",
+      "title": "Pomerance's Theorem (1979)",
+      "startLine": 163,
+      "endLine": 205,
+      "summary": "Proves `convexity_implies_product_bound` (convex hull vertex $\\Rightarrow p_n^2 > p_{n+i} p_{n-i}$, fully proved via `log_to_product`), derives `pomerance_1979` as a theorem from the axiom `pomerance_convex_hull_lemma` (infinitely many such $n$ exist), and proves `selfridge_correct` and `erdos_straus_wrong`.",
+      "mathContext": "Proves `convexity_implies_product_bound` (convex hull vertex $\\Rightarrow p_n^2 > p_{n+i} p_{n-i}$, fully proved via `log_to_product`), derives `pomerance_1979` as a theorem from the axiom `pomerance_convex_hull_lemma` (infinitely many such $n$ exist), and proves `selfridge_correct` and `erdos_straus_wrong`."
+    },
+    {
+      "id": "solution",
+      "title": "Problem #453 Solution",
+      "startLine": 206,
+      "endLine": 231,
+      "summary": "States `erdos_453_solution : ¬ErdosStrausConjecture` and `erdos_453_negative_answer` (positive form: $\\forall N,\\ \\exists n \\geq N,\\ \\forall i : p_n^2 > p_{n+i} p_{n-i}$). Both proved as one-line term applications of `pomerance_1979`.",
+      "mathContext": "States `erdos_453_solution : ¬ErdosStrausConjecture` and `erdos_453_negative_answer` (positive form: $\\forall N,\\ \\exists n \\geq N,\\ \\forall i : p_n^2 > p_{n+i} p_{n-i}$)."
+    },
+    {
+      "id": "prime-graph",
+      "title": "The Prime Number Graph",
+      "startLine": 232,
+      "endLine": 253,
+      "summary": "Defines `primeGraph n = (n, log p_n) ∈ ℝ × ℝ` and `geometric_interpretation` (convex hull vertex $\\Rightarrow$ product inequality $p_n^2 > p_{n+i} p_{n-i}$), recasting Problem #453 as a statement about the discrete graph $\\{(n, \\log p_n)\\}$.",
+      "mathContext": "Defines `primeGraph n = (n, log p_n) ∈ ℝ × ℝ` and `geometric_interpretation` (convex hull vertex $\\Rightarrow$ product inequality $p_n^2 > p_{n+i} p_{n-i}$), recasting Problem #453 as a statement about the discrete graph $\\{(n, \\log p_n)\\}$."
+    },
+    {
+      "id": "related-properties",
+      "title": "Related Properties",
+      "startLine": 254,
+      "endLine": 306,
+      "summary": "Introduces `LogConvexityProperty` ($2 \\log p_n > \\log p_{n-i} + \\log p_{n+i}$), proves `log_convexity_iff_vertex` by `rfl` (definitionally equal to `IsConvexHullVertex logPrime`), and proves `log_to_product` — the real-analysis bridge from the log inequality to $p_n^2 > p_{n+i} p_{n-i}$ via `Real.log_mul`, `Real.log_pow`, and strict monotonicity of $\\log$ (fully proved, no sorry).",
+      "mathContext": "Introduces `LogConvexityProperty` ($2 \\log p_n > \\log p_{n-i} + \\log p_{n+i}$), proves `log_convexity_iff_vertex` by `rfl` (definitionally equal to `IsConvexHullVertex logPrime`), and proves `log_to_product` — the real-analysis bridge from the log inequality to $p_n^2 > p_{n+i} p_{n-i}$ via `Real.log_mul`, `Real.log_pow`, and strict monotonicity of $\\log$ (fully proved, no sorry)."
+    },
+    {
+      "id": "density",
+      "title": "Density of Counterexamples",
+      "startLine": 307,
+      "endLine": 322,
+      "summary": "Proves `counterexample_set_infinite` (fully, no sorry) using `Set.infinite_iff_nat_lt` and `pomerance_1979`. The counterexample set $\\{n \\mid \\forall i < n : p_n^2 > p_{n+i} p_{n-i}\\}$ is cofinal in $\\mathbb{N}$.",
+      "mathContext": "Proves `counterexample_set_infinite` (fully, no sorry) using `Set.infinite_iff_nat_lt` and `pomerance_1979`. The counterexample set $\\{n \\mid \\forall i < n : p_n^2 > p_{n+i} p_{n-i}\\}$ is cofinal in $\\mathbb{N}$."
+    },
+    {
+      "id": "guy-connection",
+      "title": "Connection to Guy's Collection",
+      "startLine": 323,
+      "endLine": 336,
+      "summary": "States `guy_problem_A14 : ¬ErdosStrausConjecture` as an alias linking to Problem A14 in R.K. Guy's 'Unsolved Problems in Number Theory' (Springer, 2004).",
+      "mathContext": "Mathematical content: States `guy_problem_A14 : ¬ErdosStrausConjecture` as an alias linking to Problem A14 in R.K. Guy's 'Unsolved Problems in Number Theory' (Springer, 2004)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 337,
+      "endLine": 364,
+      "summary": "Packages the complete resolution: `erdos_453_summary : ¬ErdosStrausConjecture ∧ SelfridgeConjecture`, proved by `⟨erdos_straus_wrong, selfridge_correct⟩`. Erdős-Straus false, Selfridge true, Pomerance 1979 is the key reference.",
+      "mathContext": "Packages the complete resolution: `erdos_453_summary : ¬ErdosStrausConjecture ∧ SelfridgeConjecture`, proved by `⟨erdos_straus_wrong, selfridge_correct⟩`. Erdős-Straus false, Selfridge true, Pomerance 1979 is the key reference."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #453 is SOLVED. The answer is NO. Pomerance (1979) proved there are infinitely many n such that p_n² > p_{n+i}·p_{n-i} for ALL i < n, contradicting the Erdős-Straus conjecture and confirming Selfridge's intuition.",
+    "implications": "**Theoretical Significance**: The prime number graph provides geometric insight into prime distribution.\n\nConvex hull analysis is a powerful tool for studying multiplicative properties of primes. The technique of converting arithmetic questions into geometric ones via logarithms is broadly applicable.",
+    "openQuestions": [
+      "What is the natural density of $\\{n \\mid \\forall\\, 0 < i < n : p_n^2 > p_{n+i}p_{n-i}\\}$ in $\\mathbb{N}$? Pomerance proved infinitude but not a density estimate.",
+      "Can `convexity_implies_product_bound` be proved in Lean without `sorry`? It requires `Real.log_mul` and `Real.exp_lt_exp` — straightforward but not yet formalized.",
+      "Is there an explicit constructive sequence of counterexamples (not just an existence proof)? The Lean axiom `pomerance_1979` is non-constructive.",
+      "Can the full argument be formalized in Lean without any `axiom` or `sorry`, using only Mathlib's PNT and real analysis lemmas?"
+    ]
+  },
+  "references": [
+    {
+      "key": "pomerance1979",
+      "title": "The prime number graph",
+      "author": "C. Pomerance",
+      "year": "1979",
+      "volume": "33",
+      "pages": "399-408",
+      "venue": "Mathematics of Computation"
+    },
+    {
+      "key": "guy2004",
+      "title": "Unsolved Problems in Number Theory (Problem A14)",
+      "author": "R.K. Guy",
+      "year": "2004",
+      "publisher": "Springer"
+    }
+  ],
+  "sorries": 0
+}

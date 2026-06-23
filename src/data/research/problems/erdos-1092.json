@@ -1,0 +1,104 @@
+{
+  "slug": "erdos-1092",
+  "title": "Erdos 1092 chromatic decomposition threshold",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Define thresholds f_r(n) for when every subgraph can be made r-colorable after deleting a bounded number of edges, forcing the whole graph to be (r+1)-colorable. The original superlinear question for r=2 is disproved by Rodl's construction; the Lean file now keeps a small graph/coloring framework and records pitfalls in the threshold formalization.",
+    "plain": "How much local edge deletion toward r-colorability can force a global (r+1)-coloring, and what breaks in naive threshold definitions?",
+    "whyMatters": [
+      "The proof file is useful as a cleaned-up graph-coloring threshold scaffold after removing false axioms.",
+      "It documents why naive monotonicity and lower-bound claims fail under the current `sSup` threshold formulation.",
+      "The metadata should frame this as verified infrastructure and model hygiene, not as a formal proof of Rodl's construction."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`SGraph`, `SGraph.edgeCount`, `SGraph.hasColoring`, `SGraph.chromaticNum`, `CanReduceChromatic`, and `fThreshold` formalize the graph, coloring, deletion, and threshold vocabulary.",
+      "`SGraph.hasColoring_self` and `SGraph.hasColoring_mono` prove basic coloring facts.",
+      "`canReduce_zero`, `CanReduceChromatic_mono_k`, and `CanReduceChromatic_mono_r` prove monotonicity of the deletion/coloring reduction relation.",
+      "The source comments explicitly mark the earlier positive superlinear questions, trivial lower bound, and Problem 744 monotonicity link as removed or false under the current formalization."
+    ],
+    "open": [
+      "`Erdos1092Problem.lean` has zero active axioms and zero active sorries.",
+      "Rodl's counterexample and any sharp asymptotic threshold theorem are not formalized as active Lean results here."
+    ],
+    "goal": "Expose the verified graph-coloring threshold definitions and removed-false-axiom boundaries for future corrected formalization work."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-01-15T14:52:37.979Z",
+    "iteration": 3,
+    "focus": "Metadata backfill aligned with the cleaned zero-axiom graph-coloring scaffold.",
+    "blockers": [],
+    "nextAction": "Use the current `SGraph` and `CanReduceChromatic` API as a starting point, but revisit the `sSup` threshold design before proving asymptotic claims.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 1A→0A. Removed unused rodl_upper_bound axiom. File is now fully verified (0A 0S 5T).",
+    "builtItems": [
+      "Removed false axiom erdos_1092_question1 with documented counterexample",
+      "Removed false axiom erdos_1092_question2 (consequence of Q1 being false)",
+      "Proved hasColoring_self: every graph on n vertices is n-colorable",
+      "Proved hasColoring_mono: r1-colorable implies r2-colorable for r1 ≤ r2",
+      "Proved canReduce_zero: if G is r-colorable, no edge removal needed",
+      "Removed unsound axiom f_trivial_lower (sSup undefined for unbounded sets)",
+      "Removed unsound axiom erdos_744_connection (sSup undefined for unbounded sets)",
+      "Proved CanReduceChromatic_mono_k: monotonicity of edge removal budget",
+      "Proved CanReduceChromatic_mono_r: monotonicity of color count in CanReduceChromatic",
+      "Documented sSup boundedness requirement on fThreshold definition"
+    ],
+    "insights": [
+      "erdos_1092_question1 is FALSE: asserts f_2(n) >> n but Tang/Rodl showed f_2(n) = O(n polylog(n))",
+      "erdos_1092_question2 is FALSE: generalizes Q1, which is already false for r=2",
+      "rodl_upper_bound is the correct bound (legitimate cited axiom)",
+      "The file docstring already acknowledges Q1 is disproved but axiomatized it anyway",
+      "rodl_upper_bound axiom was unused — removed (1→0A). File now axiom-free."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1092 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f_r(n)$ be maximal such that, if a graph $G$ has the property that every subgraph $H$ on $m$ vertices is the union of a graph with chromatic number $r$ and a graph with $\\leq f_r(m)$ edges, then $G$ has chromatic number $\\leq r+1$.\n\nIs it true that $f_2(n) \\gg n$? More generally, is $f_r(n)\\gg_r n$?\n\n\n\nA conjecture of Erd\\H{o}s, Hajnal, and Szemer\\'{e}di. This seems to be closely related to, but distinct from, [744].\n\nTang notes in the comments that a construction of R\\\"{o}dl \\cite{Ro82} disproves the first question, so that $f_2(n)\\not\\gg n$.\n\n\n\n\nReferences\n\n\n[Ro82] R\\\"{o}dl, Vojt\\vEch, Nearly bipartite graphs with large chromatic number. Combinatorica (1982), 377-383.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #744\n- Problem #1091\n- Problem #1093\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Ro82\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "chromatic-number",
+    "thresholds",
+    "model-diagnostic",
+    "zero-axiom"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-109",
+    "erdos-1092"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T14:52:37.979Z",
+  "lastUpdate": "2026-03-27T20:00:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1092Problem.lean",
+      "filename": "Erdos1092Problem.lean",
+      "lineCount": 161,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1092Problem.lean"
+    }
+  ]
+}

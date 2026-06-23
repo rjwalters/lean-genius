@@ -1,0 +1,305 @@
+[
+  {
+    "id": "ann-e709-header",
+    "proofId": "erdos-709",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #709** asks for tight bounds on $f(n)$, the minimal function ensuring any interval of $f(n) \\cdot \\max(A)$ consecutive integers contains distinct multiples covering every element of an $n$-element set $A \\subseteq [2,\\infty)$.\n\n**Known bounds** (Erdős-Surányi, 1959):\n- Lower: $f(n) \\geq (\\log n)^c$ for some $c > 0$\n- Upper: $f(n) \\leq C\\sqrt{n}$ for some $C > 0$\n\nThe problem is **open**: the true growth rate of $f(n)$ remains unknown.",
+    "mathContext": "This is a covering problem in combinatorial number theory. The function f(n) captures how long an interval must be to guarantee a system of distinct representatives under divisibility constraints. The normalization by max(A) makes f(n) depend only on the set size n, not the specific elements.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Divisibility",
+      "Covering problems",
+      "Systems of distinct representatives",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "combinatorial number theory",
+      "divisibility",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e709-validset",
+    "proofId": "erdos-709",
+    "range": {
+      "startLine": 48,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "ValidSet",
+    "content": "**ValidSet** A:\n\nA finite set of positive integers where every element is at least 2.\n\n**Definition:**\n```lean\ndef ValidSet (A : Finset ℕ) : Prop := ∀ a ∈ A, a ≥ 2\n```\n\nThe constraint a ≥ 2 is essential: if a = 1 were allowed, every integer would be a multiple of 1, making the problem trivial.",
+    "mathContext": "The condition a ≥ 2 ensures non-trivial divisibility constraints. For a = 1, every integer is a multiple, so the covering problem degenerates.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finite sets",
+      "Divisibility",
+      "Natural numbers"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "elementary number theory"
+    ]
+  },
+  {
+    "id": "ann-e709-interval",
+    "proofId": "erdos-709",
+    "range": {
+      "startLine": 55,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Interval Structure",
+    "content": "**Interval** of consecutive integers:\n\nRepresents the set {start, start+1, ..., start+length-1}.\n\n```lean\nstructure Interval where\n  start : ℕ\n  length : ℕ\n```\n\nThe key parameter is **length**: Problem 709 asks how large the length must be (as a multiple of max(A)) to guarantee covering.",
+    "mathContext": "Working with intervals of consecutive integers rather than arbitrary sets is what distinguishes this from more general covering problems. The consecutive structure interacts with divisibility in structured ways.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Consecutive integers",
+      "Interval arithmetic",
+      "Number theory"
+    ],
+    "prerequisites": [
+      "Lean 4 structures",
+      "natural number arithmetic",
+      "set theory basics"
+    ]
+  },
+  {
+    "id": "ann-e709-covering",
+    "proofId": "erdos-709",
+    "range": {
+      "startLine": 70,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Covering Structure",
+    "content": "**Covering** for set A in interval I:\n\nAn assignment mapping each $a_i \\in A$ to a distinct $x_i \\in I$ with $a_i \\mid x_i$.\n\nFour conditions must hold:\n1. **in_interval**: Each $x_i$ lies in $I$\n2. **divides**: Each $a_i$ divides its assigned $x_i$\n3. **injective**: All $x_i$ are distinct (the 'system of distinct representatives' condition)\n\nThis is the central object: Problem 709 asks when such a covering is guaranteed to exist.",
+    "mathContext": "This is formally a system of distinct representatives (SDR) for the bipartite graph where each a_i is connected to its multiples in I. Hall's marriage theorem characterizes when SDRs exist, which underlies the upper bound proof.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Systems of distinct representatives",
+      "Hall's marriage theorem",
+      "Bipartite matching",
+      "Injective functions"
+    ],
+    "prerequisites": [
+      "Lean 4 structures",
+      "functions and injectivity",
+      "divisibility",
+      "graph theory"
+    ]
+  },
+  {
+    "id": "ann-e709-f-function",
+    "proofId": "erdos-709",
+    "range": {
+      "startLine": 96,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "The Function f(n)",
+    "content": "**f(n)**: the minimal $k$ such that any interval of $k \\cdot \\max(A)$ consecutive integers has the covering property for every valid $n$-element set $A$.\n\nAxiomatized with:\n- **f_pos**: $f(n) > 0$ for $n \\geq 1$\n- **f_sufficient**: intervals of length $\\geq f(n) \\cdot \\max(A)$ always admit a covering\n\nComputing f(n) exactly is infeasible, so we axiomatize it and work with bounds.",
+    "mathContext": "The function f(n) is well-defined by a compactness argument: for fixed n, there are finitely many 'worst-case' configurations up to scaling by max(A). The axiomatization captures the key property that f(n) suffices without needing to compute it.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal functions",
+      "Minimax problems",
+      "Axiomatization"
+    ],
+    "prerequisites": [
+      "extremal combinatorics",
+      "axiomatization in Lean",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-e709-lower-bound",
+    "proofId": "erdos-709",
+    "range": {
+      "startLine": 107,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Lower Bound: (log n)^c",
+    "content": "**Lower bound** (Erdős-Surányi 1959):\n\n$$f(n) \\geq (\\log n)^c$$\n\nfor some constant $c > 0$ and all sufficiently large $n$.\n\n**Proof idea**: Take $A = \\{p_1, \\ldots, p_n\\}$ to be the first $n$ primes. By the Chinese Remainder Theorem, the events '$p_i$ divides a random integer' are approximately independent. A probabilistic counting argument shows that short intervals sometimes fail to provide enough distinct multiples.",
+    "mathContext": "The lower bound uses the probabilistic method — a hallmark of Erdős's approach. The key insight is that for prime sets, the Chinese Remainder Theorem makes the divisibility constraints nearly independent, and a counting argument shows short intervals are sometimes insufficient.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Probabilistic method",
+      "Chinese Remainder Theorem",
+      "Prime numbers",
+      "Erdős-style arguments"
+    ],
+    "prerequisites": [
+      "probabilistic method",
+      "prime number theory",
+      "combinatorial counting"
+    ]
+  },
+  {
+    "id": "ann-e709-upper-bound",
+    "proofId": "erdos-709",
+    "range": {
+      "startLine": 112,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Upper Bound: C√n",
+    "content": "**Upper bound** (Erdős-Surányi 1959):\n\n$$f(n) \\leq C\\sqrt{n}$$\n\nfor some constant $C > 0$ and all $n \\geq 1$.\n\n**Proof idea**: In an interval of length $\\sqrt{n} \\cdot \\max(A)$, each $a_i$ has at least $\\sqrt{n}$ multiples in $I$. By Hall's marriage theorem, a system of distinct representatives exists whenever every subset $S \\subseteq A$ collectively has at least $|S|$ multiples — which the $\\sqrt{n}$ multiplicity guarantees.",
+    "mathContext": "Hall's marriage theorem states that a bipartite graph has a perfect matching iff every subset of one side has enough neighbors. Here, each a_i has ≥ √n multiples in I, and the pigeonhole principle ensures Hall's condition is satisfied.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hall's marriage theorem",
+      "Pigeonhole principle",
+      "Greedy algorithms",
+      "Bipartite matching"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-e709-combined",
+    "proofId": "erdos-709",
+    "range": {
+      "startLine": 117,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Erdős-Surányi 1959",
+    "content": "**Combined bounds theorem:**\n\n$$(\\log n)^c \\ll f(n) \\ll \\sqrt{n}$$\n\nThis theorem packages both bounds into a single statement. The proof is immediate from the two axioms `lower_bound_log` and `upper_bound_sqrt`.\n\nThe gap between these bounds is the heart of the open problem.",
+    "mathContext": "The ≪ notation (Vinogradov notation) means 'bounded above by a constant times'. The combined statement shows f(n) is sandwiched between polynomial and logarithmic growth, with the exact rate unknown.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Asymptotic notation",
+      "Vinogradov notation",
+      "Bounds"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "mathematical logic"
+    ]
+  },
+  {
+    "id": "ann-e709-special",
+    "proofId": "erdos-709",
+    "range": {
+      "startLine": 127,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Small Cases: f(1) and f(2)",
+    "content": "**Special cases:**\n\n- $f(1) = 1$: Any interval of length $\\max(A)$ contains a multiple of the single element $a_1$\n- $f(2) \\leq 2$: Two elements can always be covered in an interval of length $2 \\cdot \\max(A)$\n\nThese base cases are easy to verify directly and anchor the function f.",
+    "mathContext": "For f(1): in any interval of length a₁, at least one integer is divisible by a₁ (since multiples of a₁ are spaced a₁ apart). For f(2): with length 2·max(a,b), there are enough multiples of both a and b to find distinct ones.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Base cases",
+      "Divisibility spacing"
+    ],
+    "prerequisites": [
+      "elementary number theory",
+      "divisibility",
+      "case analysis"
+    ]
+  },
+  {
+    "id": "ann-e709-monotone",
+    "proofId": "erdos-709",
+    "range": {
+      "startLine": 137,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Monotonicity and Growth",
+    "content": "**Properties of f:**\n\n- **Monotone**: $m \\leq n \\implies f(m) \\leq f(n)$ — larger sets need longer intervals\n- **At least logarithmic**: $f(n) \\geq \\log n$ for $n \\geq 2$ — even the weakest lower bound grows\n\nMonotonicity follows because any $m$-element covering problem embeds into an $n$-element one.",
+    "mathContext": "Monotonicity is natural: covering more elements is harder. The logarithmic lower bound is weaker than (log n)^c but holds for all n ≥ 2, not just sufficiently large n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Monotone functions",
+      "Extremal combinatorics"
+    ],
+    "prerequisites": [
+      "extremal combinatorics",
+      "order theory",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-e709-problem708",
+    "proofId": "erdos-709",
+    "range": {
+      "startLine": 143,
+      "endLine": 166
+    },
+    "type": "concept",
+    "title": "Connection to Problem 708",
+    "content": "**Problem 708** defines $g(n)$: the minimal size of a subset $B$ needed for covering.\n\n**Key distinction:**\n- $f(n)$ (Problem 709): How **long** must an interval be?\n- $g(n)$ (Problem 708): How **large** must a covering subset be?\n\nBoth are covering-by-divisibility problems but measure different quantities.\n\n**Known for g**: $g(n) \\geq 2n - 1$, $g(2) = 2$, $g(3) = 4$.",
+    "mathContext": "Problems 708 and 709 are companion problems that Erdős posed together. They share the underlying structure of divisibility coverings but optimize different parameters. Techniques for one often inform the other.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős Problem 708",
+      "Covering problems",
+      "Extremal set theory"
+    ],
+    "prerequisites": [
+      "extremal set theory",
+      "combinatorial number theory",
+      "covering problems"
+    ]
+  },
+  {
+    "id": "ann-e709-open",
+    "proofId": "erdos-709",
+    "range": {
+      "startLine": 168,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "The Open Problem",
+    "content": "**The central open question**: What is the true growth rate of $f(n)$?\n\nThe Erdős-Surányi bounds leave a polynomial gap. We formalize the openness via two axioms:\n\n- **Lower not tight**: $f(n)$ is not bounded by $C \\cdot (\\log n)^C$ for any constant $C$\n- **Upper not tight**: $f(n)$ does not always exceed $\\sqrt{n}/2$\n\nThree candidate asymptotic behaviors:\n1. $f(n) \\sim (\\log n)^c$ for some $c > 1$\n2. $f(n) \\sim n^\\alpha$ for some $0 < \\alpha < 1/2$\n3. $f(n) \\sim \\sqrt{n} / (\\log n)^\\beta$ for some $\\beta > 0$",
+    "mathContext": "The conjecture_growth_rate definition formalizes the question of whether f(n) has polynomial growth by asking if log(f(n))/log(n) converges. This would rule out the logarithmic-power scenario. The problem has remained open for over 65 years.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Asymptotic analysis",
+      "Growth rates",
+      "Open problems in combinatorics"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "axiomatization in Lean"
+    ]
+  },
+  {
+    "id": "ann-e709-techniques",
+    "proofId": "erdos-709",
+    "range": {
+      "startLine": 202,
+      "endLine": 230
+    },
+    "type": "concept",
+    "title": "Proof Techniques",
+    "content": "**Two fundamentally different methods** establish the known bounds:\n\n**Lower bound (CRT + probabilistic)**:\n- Take $A = \\{p_1, \\ldots, p_n\\}$ as distinct primes\n- By CRT, multiples of different primes are nearly independent\n- Probabilistic counting shows short intervals sometimes fail\n\n**Upper bound (Hall's marriage theorem)**:\n- In long intervals, each $a_i$ has $\\geq \\sqrt{n}$ multiples\n- Hall's condition is satisfied: every subset has enough neighbors\n- Therefore a system of distinct representatives exists",
+    "mathContext": "The asymmetry in proof techniques is remarkable: the lower bound uses probabilistic/algebraic methods (CRT), while the upper bound uses combinatorial/graph-theoretic methods (Hall's theorem). Bridging this methodological gap may be key to closing the bounds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Probabilistic method",
+      "Chinese Remainder Theorem",
+      "Hall's marriage theorem",
+      "Bipartite matching"
+    ],
+    "prerequisites": [
+      "probabilistic method",
+      "number theory",
+      "graph theory"
+    ]
+  }
+]

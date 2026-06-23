@@ -1,0 +1,271 @@
+{
+  "id": "unit-distance-independence",
+  "title": "Unit Distance Graph Independence Numbers and Hadwiger-Nelson Bounds",
+  "slug": "unit-distance-independence",
+  "description": "Formalizes independence number theory for unit distance graphs in the plane and proves the Hadwiger-Nelson chromatic number bounds 5 ≤ χ(ℝ²) ≤ 7 (axiomatized). Develops abstract independence set theory for simple graphs, proves structural theorems about the unit distance graph, and connects independence numbers to chromatic bounds. 65 theorems, 2 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-02",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/UnitDistanceIndependence.lean",
+    "tags": [
+      "combinatorial-geometry",
+      "graph-theory",
+      "independence-number",
+      "unit-distance-graphs",
+      "hadwiger-nelson",
+      "chromatic-number"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-04-02",
+    "axiomCount": 1,
+    "assumptions": "1 axiom in the parent file UnitDistanceIndependence.lean: hadwiger_nelson_lower_bound (chi(R^2) >= 5, de Grey 2018, genuinely hard - requires the explicit 1581-vertex graph). The upper bound hadwiger_nelson_upper_bound (chi(R^2) <= 7) is now a fully machine-checked THEOREM in the parent file, discharged directly by hadwiger_nelson_7coloring from the companion UnitDistanceHN7.lean (explicit hexagonal 7-coloring + A2-lattice Voronoi covering-radius bound; 0 sorries, 0 axioms, no native_decide; #print axioms = [propext, Classical.choice, Quot.sound]). Thus the only remaining assumption is the de Grey lower bound.",
+    "lineCount": 948,
+    "theoremCount": 66,
+    "definitionCount": 12,
+    "additionalFiles": [
+      "Proofs/UnitDistanceHN7.lean",
+      "Proofs/UnitDistanceHN7Aristotle.lean"
+    ],
+    "originalContributions": [
+      "IsIndepSet/IsIndepFinset: independence set predicates for abstract simple graphs",
+      "isIndepFinset_empty: empty set is independent",
+      "isIndepFinset_singleton: singleton sets are independent",
+      "indep_subset_closed: subsets of independent sets are independent",
+      "coloring_independent_color_classes: each color class of a k-coloring is independent",
+      "chromatic_upper_via_cover: chromatic number ≤ number of independent sets in a cover",
+      "independence_number: definition α(G) = max |I| for independent I",
+      "alpha_chromatic_bound: α(G) ≥ |V|/χ(G) (fractional coloring bound)",
+      "UnitDistanceGraph: definition with edges between points at distance 1",
+      "moser_spindle: the Moser spindle subgraph (5-chromatic) construction",
+      "covering_radius (UnitDistanceHN7.lean): the A₂ cube-coordinate rounding keeps every point within the circumradius s=2/5 of its Voronoi center — the last remaining geometric obligation of the hexagonal 7-coloring, proved via Q(Δq,Δr) ≤ 1/3 (hexRound_Q_bound) by a four-branch case analysis with explicit SOS certificates",
+      "hadwiger_nelson_7coloring (UnitDistanceHN7.lean): complete, machine-verified proof of the Hadwiger-Nelson upper bound χ(ℝ²) ≤ 7 (0 sorries, 0 axioms)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Hadwiger-Nelson problem (1950) asks: what is the chromatic number χ(ℝ²) of the plane, where two points are connected if they are unit distance apart? The answer must lie between 4 (upper bound proved via hexagonal tiling prior to 2018) and 7. In 2018, amateur mathematician Aubrey de Grey shocked the mathematical community by constructing a graph with 1581 vertices embedded in the plane with no two adjacent vertices at unit distance, proving χ(ℝ²) ≥ 5. This formalization develops the independence number theory and axiomatizes the Hadwiger-Nelson bounds.\n\nThe problem was posed by Edward Nelson in 1950 and independently by Hugo Hadwiger. The initial bounds 4 ≤ χ(ℝ²) ≤ 7 were established quickly: the upper bound 7 via a hexagonal tiling argument, the lower bound 4 via the Moser spindle (a 4-chromatic 7-vertex unit distance graph constructed by William and Leo Moser in 1961). The gap 4 ≤ χ(ℝ²) ≤ 7 persisted unchanged for 57 years, becoming one of the most famous unsolved problems in combinatorial geometry.\n\nIn April 2018, **Aubrey de Grey** — better known as a biogerontologist than a mathematician — announced a 1581-vertex unit distance graph with chromatic number 5, improving the lower bound to 5. The result was verified computationally and improved shortly after by others; within weeks, the graph was reduced to 553 vertices. De Grey's breakthrough, shared on social media before formal publication, sparked a massive collaborative effort (the Polymath project) to understand and extend the result. As of 2026, the exact value of χ(ℝ²) ∈ {5, 6, 7} remains unknown.\n\nThe **fractional chromatic number** χ_f(ℝ²) is known to lie in [3.5, 4]: Frankl and Wilson (1981) proved χ_f(ℝ²) ≥ 4 using linear algebra over finite fields (showing that a measurable set avoiding unit distances has density ≤ 1/4), while the hexagonal tiling gives χ_f ≤ 4. The integrality gap between the fractional and integer chromatic numbers encodes the difficulty of the Hadwiger-Nelson problem.",
+    "problemStatement": "What is the chromatic number of the unit distance graph on ℝ²? Prove that 5 ≤ χ(ℝ²) ≤ 7 and develop the independence number theory that relates chromatic and independence numbers.",
+    "text": "The unit distance graph G on ℝ² has χ(G) ≤ 7: use a hexagonal tiling where each hexagon has diameter slightly less than 1, color the 7 hexagon types in a repeating pattern. No two points in the same color class are unit distance apart. For the lower bound χ(G) ≥ 5: de Grey's 2018 construction provides a subgraph with chromatic number 5, improving the previous lower bound of 4. The independence number α(G') for finite point sets G' bounds chromatic number via α(G') ≥ |V|/χ(G').",
+    "proofStrategy": "Part I develops abstract independence theory. Part II defines the unit distance graph and independence sets in ℝ². Part III proves structural bounds: α ≥ |V|/χ. Part IV axiomatizes the Hadwiger-Nelson bounds. The Moser spindle construction demonstrates a 4-chromatic subgraph.",
+    "keyInsights": [
+      "The key bound: α(G) ≥ n/χ(G), so knowing α gives a lower bound on χ",
+      "The 7-coloring of ℝ² uses a hexagonal tiling — the hexagonal close-packing achieves 7 colors",
+      "De Grey's 2018 construction: a 1581-vertex graph embeddable in ℝ² with χ=5, proving χ(ℝ²)≥5",
+      "This remains one of the most famous open problems: is χ(ℝ²) = 5, 6, or 7?",
+      "The problem connects to the fractional chromatic number χ_f(ℝ²) ≈ 3.5 (proved Frankl-Wilson 1981)",
+      "**The rational plane vs the real plane**: The chromatic number of the rational plane $\\chi(\\mathbb{Q}^2)$ (where two rational-coordinate points are adjacent if their distance is exactly 1) equals 4 — proved using a 4-coloring based on the parity of numerators when coordinates are in lowest terms (Woodall 1973, Falconer 1981). The real plane requires at least 5 colors (de Grey 2018). This contrast shows that the irrationality of unit distances is essential: the Moser spindle — the 4-chromatic 7-vertex unit distance graph used to prove $\\chi(\\mathbb{R}^2) \\geq 4$ before de Grey — cannot be embedded with all vertices at rational coordinates, because the spindle's unit distances involve $\\sqrt{3}$. De Grey's leap from 4 to 5 required a carefully constructed 1581-vertex graph exploiting irrational unit distance chains."
+    ],
+    "prerequisites": [
+      "Graph theory: chromatic numbers, independent sets, colorings",
+      "Euclidean geometry: distances in ℝ², hexagonal tilings",
+      "Combinatorics: independence number bounds",
+      "de Grey's 2018 result for the lower bound 5"
+    ]
+  },
+  "conclusion": {
+    "summary": "Independence number theory for unit distance graphs is formally developed. The Hadwiger-Nelson bounds 5 ≤ χ(ℝ²) ≤ 7 are axiomatized (requiring substantial geometric computation). 65 theorems, 12 definitions, 948 lines, 2 axioms.",
+    "implications": "The chromatic number of the plane is one of the most tantalizing open problems: known since 1950, with a major breakthrough in 2018 (de Grey's lower bound of 5), yet still unresolved. Formalizing the independence number theory and the axiomatic bounds provides infrastructure for future computational attacks on the problem.",
+    "openQuestions": [
+      "Prove hadwiger_nelson_lower_bound ≥ 5: formalize de Grey's 1581-vertex construction",
+      "Prove hadwiger_nelson_upper_bound ≤ 7: formalize the hexagonal 7-coloring",
+      "Determine the exact chromatic number (5, 6, or 7) — a major open problem",
+      "Prove the fractional chromatic number χ_f(ℝ²) ≥ 3.5 (Frankl-Wilson 1981)"
+    ]
+  },
+  "leanFile": {
+    "namespace": "UnitDistanceIndependence",
+    "lineCount": 948,
+    "axiomCount": 1,
+    "theoremCount": 66,
+    "definitionCount": 12,
+    "path": "Proofs/UnitDistanceIndependence.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/UnitDistanceHN7.lean",
+      "Proofs/UnitDistanceHN7Aristotle.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both study colorings of combinatorial structures; Ramsey is about graph colorings, Hadwiger-Nelson is about plane colorings"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "companion",
+      "description": "Both are famous chromatic number problems about coloring geometric or combinatorial structures: the four-color theorem proves χ(planar graphs) ≤ 4 and the Hadwiger-Nelson problem asks for χ(ℝ²) — the plane as a unit distance graph; the 4CT was solved in 1976 while the Hadwiger-Nelson problem remains open after 75 years"
+    },
+    {
+      "targetId": "lovasz-local-lemma",
+      "relationship": "related",
+      "description": "The Lovász Local Lemma gives a probabilistic method for showing proper colorings exist when event dependencies are sparse; it applies to unit distance graphs via the fractional relaxation: if each neighborhood has few vertices, LLL guarantees a proper coloring, complementing the explicit construction approach of Hadwiger-Nelson"
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "foundational",
+      "description": "Euler's polyhedral formula V − E + F = 2 is foundational for planar graph theory and underlies the proof infrastructure of the four-color theorem, which in turn provides the upper bound context for the Hadwiger-Nelson problem; both the 4CT and Hadwiger-Nelson explore how geometric constraints bound chromatic numbers"
+    },
+    {
+      "targetId": "picks-theorem",
+      "relationship": "related",
+      "description": "Pick's theorem counts lattice points in polygons using area, while the Hadwiger-Nelson problem concerns unit distances in the plane — both reveal how the integer/rational structure of the plane differs from real-valued geometry; the chromatic number of the rational plane χ(ℚ²) = 4 is known, while χ(ℝ²) ≥ 5 requires irrational coordinates (de Grey 2018)"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-udi-overview",
+      "title": "Overview and Setting",
+      "startLine": 1,
+      "endLine": 33,
+      "description": "File header: introduces the unit distance graph G on R^2 (edges between points at Euclidean distance 1), the independence number α(S) for finite point sets, and the headline results — independence set theory, coloring/independence connections, and the Hadwiger-Nelson bounds 5 ≤ χ(R^2) ≤ 7. 65 theorems, 2 axioms, 0 sorries.",
+      "mathContext": "Unit distance graph $G$ on $\\mathbb{R}^2$: $u\\sim v \\iff \\|u-v\\|=1$. Headline bound (Hadwiger–Nelson): $5 \\le \\chi(\\mathbb{R}^2) \\le 7$."
+    },
+    {
+      "id": "sec-udi-abstract-independence",
+      "title": "Part I: Abstract Graph Independence",
+      "startLine": 34,
+      "endLine": 47,
+      "description": "Defines IsIndepSet (for Set V) and IsIndepFinset (for Finset V): a vertex set with no two adjacent members in a simple graph.",
+      "mathContext": "$S$ independent $\\iff \\forall u,v\\in S,\\ \\lnot(u\\sim_G v)$. Defined for both $\\mathrm{Set}\\,V$ (IsIndepSet) and $\\mathrm{Finset}\\,V$ (IsIndepFinset)."
+    },
+    {
+      "id": "sec-udi-basic-properties",
+      "title": "Part II: Basic Properties of Independent Sets",
+      "startLine": 48,
+      "endLine": 76,
+      "description": "Proves the empty set and singletons are independent, that subsets of independent sets are independent, and that an independent set induces no internal edges.",
+      "mathContext": "$\\varnothing$ and singletons $\\{v\\}$ are independent in any $G$; $T\\subseteq S$ with $S$ independent $\\Rightarrow T$ independent. $S$ independent $\\iff$ $G$ induces no edge inside $S$."
+    },
+    {
+      "id": "sec-udi-independence-number",
+      "title": "Part IIb: Independence Number",
+      "startLine": 77,
+      "endLine": 103,
+      "description": "Defines independenceNumber α(G) as the maximum cardinality of an independent finset, proves α(G) ≥ 0 via the empty set, and that any independent set has cardinality ≤ α(G).",
+      "mathContext": "$\\alpha(G)=\\max\\{|S| : S \\text{ independent}\\}$. Then $\\alpha(G)\\ge 0$ and every independent set satisfies $|S|\\le\\alpha(G)$."
+    },
+    {
+      "id": "sec-udi-coloring-independence",
+      "title": "Part III: Coloring and Independence Relationship",
+      "startLine": 104,
+      "endLine": 121,
+      "description": "Defines IsProperColoring (adjacent vertices receive distinct colors) and proves each color class of a proper coloring is an independent set.",
+      "mathContext": "Proper coloring $c:V\\to\\mathrm{Fin}\\,n$ with $u\\sim v\\Rightarrow c(u)\\ne c(v)$. Each color class $c^{-1}(i)$ is an independent set."
+    },
+    {
+      "id": "sec-udi-hadwiger-nelson",
+      "title": "Part IV: The Hadwiger-Nelson Problem",
+      "startLine": 122,
+      "endLine": 144,
+      "description": "Introduces Plane := EuclideanSpace ℝ (Fin 2) and axiomatizes the Hadwiger-Nelson bounds — De Grey's lower bound χ(ℝ²) ≥ 5 and the upper bound χ(ℝ²) ≤ 7 — concluding 5 ≤ χ(ℝ²) ≤ 7.",
+      "mathContext": "$\\mathrm{Plane}:=\\mathrm{EuclideanSpace}\\,\\mathbb{R}\\,(\\mathrm{Fin}\\,2)$. Axioms: $\\chi(\\mathbb{R}^2)\\ge 5$ (de Grey 2018) and $\\chi(\\mathbb{R}^2)\\le 7$ (hexagonal tiling), giving $5\\le\\chi(\\mathbb{R}^2)\\le 7$."
+    },
+    {
+      "id": "sec-udi-structural-theorems",
+      "title": "Part V: Independent Set Structure Theorems",
+      "startLine": 145,
+      "endLine": 185,
+      "description": "Proves structural results: extending an independent set by a non-adjacent vertex (isIndepFinset_insert), that an edge forces an endpoint out of any independent set, existence of a nonempty independent set, and the |V| cardinality bound.",
+      "mathContext": "Insert/extend lemmas: $v\\notin S$ non-adjacent to all of $S\\Rightarrow S\\cup\\{v\\}$ independent. An edge $\\{u,v\\}$ forces at least one endpoint out of any independent set; $|S|\\le|V|$."
+    },
+    {
+      "id": "sec-udi-unit-distance-graph",
+      "title": "Part VI: Unit Distance Graph Specific Results",
+      "startLine": 186,
+      "endLine": 212,
+      "description": "Defines unitDistGraph on a finite subset of the plane (adjacency iff Euclidean distance 1) and characterizes its independent sets as point sets with no pair at distance 1.",
+      "mathContext": "$G$ on a finite $S\\subset\\mathbb{R}^2$ with $u\\sim v\\iff\\|u-v\\|=1$. A subset is independent $\\iff$ it contains no two points at distance exactly $1$."
+    },
+    {
+      "id": "sec-udi-clique-duality",
+      "title": "Part VII: Independence and Clique Duality",
+      "startLine": 213,
+      "endLine": 241,
+      "description": "Establishes that an independent set in G is a clique in the complement graph Gᶜ, that an edgeless graph makes every set independent, and that a complete graph on ≥ 2 vertices has independence number 1.",
+      "mathContext": "$S$ independent in $G$ $\\iff$ $S$ is a clique in the complement $G^c$. Edgeless $\\bot$ makes every set independent; $K_n$ ($n\\ge2$) has $\\alpha=1$."
+    },
+    {
+      "id": "sec-udi-counting-arguments",
+      "title": "Part VIII: Counting Arguments",
+      "startLine": 242,
+      "endLine": 262,
+      "description": "Shows a proper k-coloring partitions the vertices into independent color classes, each vertex lying in exactly one class.",
+      "mathContext": "A proper $k$-coloring partitions $V$ into $k$ independent color classes: $V=\\bigsqcup_{i<k} c^{-1}(i)$, each $c^{-1}(i)$ independent."
+    },
+    {
+      "id": "sec-udi-pigeonhole",
+      "title": "Part IX: Pigeonhole Bound",
+      "startLine": 263,
+      "endLine": 313,
+      "description": "Proves the pigeonhole bound: a proper k-coloring of n vertices has a color class of size ≥ n/k, hence α(G) ≥ |V|/k whenever G is k-colorable.",
+      "mathContext": "Pigeonhole: in a proper $k$-coloring of $n$ vertices some class has $\\ge \\lceil n/k\\rceil$ vertices, so $\\alpha(G)\\ge |V|/\\chi(G)$."
+    },
+    {
+      "id": "sec-udi-greedy-bound",
+      "title": "Part X: Maximum Degree and Greedy Bound",
+      "startLine": 314,
+      "endLine": 504,
+      "description": "Develops degree theory (degree, maxDegree, isolated vertices, the |V|−1 degree bound), maximal independent sets (IsMaximalIndep, closedNeighborhoodIn), and works toward the greedy bound α(G) ≥ |V|/(Δ+1).",
+      "mathContext": "With $\\Delta=$ max degree: a maximal independent set $I$ covers $V$ via closed neighborhoods ($|N[v]|\\le\\Delta+1$), giving the greedy bound $\\alpha(G)\\ge \\dfrac{|V|}{\\Delta+1}$."
+    },
+    {
+      "id": "sec-udi-additional-structure",
+      "title": "Part XI: Additional Structural Theorems",
+      "startLine": 505,
+      "endLine": 600,
+      "description": "Proves alpha_chi_ge_card (k·α(G) ≥ |V|), independent_extend, disjoint independent unions, independence under erasure, α(G) ≥ 1 for nonempty graphs, the neighborhood definition with neighborhood_card_eq_degree, and monotonicity independent_mono.",
+      "mathContext": "$k\\cdot\\alpha(G)\\ge|V|$ for a $k$-coloring; $\\alpha(G)\\ge|I|$ for any independent $I$; union of independent sets with no cross-edges is independent; fewer edges ($G\\le H$) only increases independence."
+    },
+    {
+      "id": "sec-udi-additional-bounds",
+      "title": "Part XIII: Additional Independence Bounds",
+      "startLine": 601,
+      "endLine": 698,
+      "description": "Proves independenceNumber_le_card, common_neighbor_indep, the chromatic bound indep_chromatic_bound, independence/clique intersection, indep_neighbors_outside, that an independent set is a clique in the complement, the degree-sum bound, and positivity of α(G).",
+      "mathContext": "$\\alpha(G)\\le|V|$; the central inequality $\\chi(G)\\cdot\\alpha(G)\\ge|V|$; two vertices with a common neighbor restrictions; $\\alpha(G)\\ge1$ whenever $V\\ne\\varnothing$."
+    },
+    {
+      "id": "sec-udi-complement-duality",
+      "title": "Part XIV: Complement Graph and Independence-Clique Duality",
+      "startLine": 699,
+      "endLine": 758,
+      "description": "Establishes indep_iff_compl_isClique and clique_iff_compl_indep, double-complement identities (compl_compl_eq, indep_compl_compl), complement adjacency facts for ⊥ and ⊤, and that an independent set is a clique in the complement.",
+      "mathContext": "Independence–clique duality: $S$ independent in $G$ $\\iff$ $S$ is a clique in $G^c$, and $G^{cc}=G$. Adjacency in $\\bot^c=\\top$ and $\\top^c=\\bot$ made explicit."
+    },
+    {
+      "id": "sec-udi-handshaking",
+      "title": "Part XV: Handshaking Lemma and Edge Counting",
+      "startLine": 759,
+      "endLine": 783,
+      "description": "Proves degree_eq_mathlib_degree (agreement with SimpleGraph.degree), the handshaking lemma sum_degrees_eq_twice_edges, and the edge-count upper bound via maximum degree.",
+      "mathContext": "Handshaking lemma: $\\sum_{v} \\deg(v) = 2|E|$. Consequently $|E|\\le \\tfrac{1}{2}|V|\\,\\Delta$."
+    },
+    {
+      "id": "sec-udi-min-degree-edges",
+      "title": "Part XVI: Minimum Degree and Edge Bounds",
+      "startLine": 784,
+      "endLine": 845,
+      "description": "Defines minDegree and proves minDegree ≤ degree ≤ maxDegree, the twice-edges lower bound via minimum degree, the regular-graph edge count, and degree-sum/cut-edge identities for independent sets.",
+      "mathContext": "With $\\delta=$ min degree: $2|E|\\ge |V|\\,\\delta$; an $r$-regular graph has $|E|=\\tfrac{1}{2}r|V|$; the degree sum over an independent set counts its cut edges to the rest of $V$."
+    },
+    {
+      "id": "sec-udi-specific-families",
+      "title": "Part XVII: Independence Number of Specific Graph Families",
+      "startLine": 846,
+      "endLine": 872,
+      "description": "Computes independence numbers for specific families: α of the empty graph (alpha_bot), complement adjacency of distinct vertices, and the ≤ 1 bound for the complement of the edgeless graph.",
+      "mathContext": "$\\alpha(\\bot)=|V|$ (edgeless graph). In $\\bot^c=\\top$ (complete graph) every independent set has $\\le 1$ vertex, so $\\alpha(\\top)=1$."
+    },
+    {
+      "id": "sec-udi-summary",
+      "title": "Part XII: Summary",
+      "startLine": 873,
+      "endLine": 948,
+      "description": "Closing summary: enumerates the 48 proved theorems (0 sorries), the 2 axioms used (the Hadwiger-Nelson bounds), and what is intentionally not proven and why.",
+      "mathContext": "Recap of the toolkit: $\\alpha(G)\\ge|V|/\\chi(G)$ (pigeonhole) and $\\alpha(G)\\ge|V|/(\\Delta+1)$ (greedy), feeding the still-open Hadwiger–Nelson window $5\\le\\chi(\\mathbb{R}^2)\\le 7$."
+    }
+  ],
+  "sorries": 0
+}

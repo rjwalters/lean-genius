@@ -1,0 +1,347 @@
+[
+  {
+    "id": "ann-e426-header",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #426: Unique Subgraphs**\n\nH is a **unique subgraph** of G if there's exactly one way to embed H in G.\n\n**Question:** Can a graph have ≫ 2^(n choose 2)/n! unique subgraphs?\n\n**Answer:** NO (Bradač-Christoph 2024)\n\n**Historical progress:**\n- Entringer-Erdős (1972): First constructions\n- Brouwer (1975): 2^{(n choose 2) - O(n)}/n!\n- Bradač-Christoph (2024): Impossibility proof",
+    "mathContext": "The bound 2^(n choose 2)/n! is the number of non-isomorphic graphs (Pólya), so it's trivially best possible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Subgraph counting",
+      "Graph enumeration",
+      "Pólya enumeration"
+    ],
+    "prerequisites": [
+      "subgraph embeddings",
+      "unique subgraphs (exactly one copy)",
+      "counting graphs up to isomorphism"
+    ]
+  },
+  {
+    "id": "ann-e426-subgraph-copy",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 47,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Subgraph Copy",
+    "content": "**SubgraphCopy G H f:**\n\nf : W → V is a subgraph copy of H in G if:\n1. f is injective\n2. f preserves edges: H.Adj x y → G.Adj (f x) (f y)\n\nThis defines how H 'appears' in G.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Graph embedding",
+      "Injective maps"
+    ],
+    "mathContext": "See annotation content for formal details of subgraph copy",
+    "prerequisites": [
+      "graph adjacency",
+      "injective edge-preserving maps"
+    ]
+  },
+  {
+    "id": "ann-e426-count-copies",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 55,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Count Subgraph Copies",
+    "content": "**CountSubgraphCopies G H:**\n\nThe number of distinct ways to embed H as a subgraph of G.\n\nThis counts all injective edge-preserving maps from H to G.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Subgraph enumeration",
+      "Counting functions"
+    ],
+    "mathContext": "See annotation content for formal details of count subgraph copies",
+    "prerequisites": [
+      "subgraph copies (embeddings)",
+      "counting injective edge-preserving maps"
+    ]
+  },
+  {
+    "id": "ann-e426-unique",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 63,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Unique Subgraph",
+    "content": "**IsUniqueSubgraph G H:**\n\nH is a unique subgraph of G if CountSubgraphCopies G H = 1.\n\nThere is exactly ONE way to find H in G - a strong constraint.",
+    "mathContext": "Uniqueness is rare because most graphs have symmetries or structural patterns creating multiple embeddings.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Uniqueness",
+      "Graph structure"
+    ],
+    "prerequisites": [
+      "the count of subgraph copies",
+      "the count being exactly 1"
+    ]
+  },
+  {
+    "id": "ann-e426-noniso",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 84,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "Non-Isomorphic Graphs Count",
+    "content": "**nonIsomorphicGraphs n:**\n\n~ 2^(n choose 2) / n! (Pólya's theorem)\n\nThis is the total number of 'different' graphs on n vertices.",
+    "mathContext": "The division by n! accounts for vertex labelings; 2^(n choose 2) counts labeled graphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pólya enumeration",
+      "Graph counting"
+    ],
+    "prerequisites": [
+      "graphs up to isomorphism",
+      "Pólya's enumeration theorem",
+      "the count 2^(n choose 2)/n!"
+    ]
+  },
+  {
+    "id": "ann-e426-max-unique",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 104,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Maximum Unique Subgraphs",
+    "content": "**maxUniqueSubgraphs n:**\n\nf(n) = maximum number of unique subgraphs achievable by any graph on n vertices.\n\nThe question asks: Is f(n) = Ω(nonIsomorphicGraphs n)?",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal functions",
+      "Maximum"
+    ],
+    "mathContext": "See annotation content for formal details of maximum unique subgraphs",
+    "prerequisites": [
+      "unique subgraphs",
+      "maximizing over all graphs on n vertices"
+    ]
+  },
+  {
+    "id": "ann-e426-entringer",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 116,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Entringer-Erdős (1972)",
+    "content": "**entringer_erdos_1972:**\n\nFirst construction achieving 2^{(n choose 2) - O(n^{3/2+o(1)})} unique subgraphs.\n\nThis was the starting point for the problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Original construction",
+      "Historical"
+    ],
+    "mathContext": "See annotation content for formal details of entringer-erdős (1972)",
+    "prerequisites": [
+      "unique subgraphs",
+      "the 2^{(n choose 2) − O(n^{3/2+o(1)})} construction",
+      "axioms as stated assumptions in the formalization"
+    ]
+  },
+  {
+    "id": "ann-e426-brouwer",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 123,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Brouwer (1975)",
+    "content": "**brouwer_1975:**\n\nImproved construction achieving ~ 2^{(n choose 2) - O(n)} / n! unique subgraphs.\n\nThis is a factor of 2^{O(n)} below the naive bound but was believed to be essentially optimal.",
+    "mathContext": "Erdős offered $25 to prove Brouwer's construction was optimal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Improved bound",
+      "Best construction"
+    ],
+    "prerequisites": [
+      "unique subgraphs",
+      "the improved 2^{(n choose 2) − O(n)}/n! construction",
+      "axioms as stated assumptions in the formalization"
+    ]
+  },
+  {
+    "id": "ann-e426-original-question",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 136,
+      "endLine": 144
+    },
+    "type": "definition",
+    "title": "Original Question",
+    "content": "**OriginalQuestion:**\n\n∃ c > 0 such that f(n) ≥ c · 2^(n choose 2)/n! for all large n.\n\nEquivalently: Can we achieve a constant fraction of all non-isomorphic graphs as unique subgraphs?",
+    "significance": "key",
+    "relatedConcepts": [
+      "Main conjecture",
+      "Linear lower bound"
+    ],
+    "mathContext": "See annotation content for formal details of original question",
+    "prerequisites": [
+      "the maximum f(n)",
+      "a constant fraction of all non-isomorphic graphs"
+    ]
+  },
+  {
+    "id": "ann-e426-prizes",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 146,
+      "endLine": 159
+    },
+    "type": "concept",
+    "title": "Prize Structure",
+    "content": "**The Erdős Prizes:**\n\n- $100 for a construction achieving ≫ 2^(n choose 2)/n! (Spencer's belief)\n- $25 for proving no such construction exists (Erdős's belief)\n\nErdős believed Brouwer was optimal; Spencer disagreed.",
+    "mathContext": "This illustrates how Erdős used prizes to motivate research on open problems.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős prizes",
+      "Problem history"
+    ],
+    "prerequisites": [
+      "the original question",
+      "Erdős prize problems"
+    ]
+  },
+  {
+    "id": "ann-e426-bradac",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 163,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "Bradač-Christoph (2024)",
+    "content": "**bradac_christoph_2024:**\n\nThe answer is NO: f(n) = o(2^(n choose 2)/n!)\n\nFor any ε > 0, eventually f(n) < ε · nonIsomorphicGraphs(n).\n\nThis resolves Erdős Problem #426 negatively.",
+    "mathContext": "From arXiv:2410.16233 'Unique subgraphs are rare'.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Resolution",
+      "2024 paper"
+    ],
+    "prerequisites": [
+      "the maximum f(n)",
+      "o(2^(n choose 2)/n!) growth",
+      "the Bradač–Christoph 2024 result",
+      "axioms as stated assumptions in the formalization"
+    ]
+  },
+  {
+    "id": "ann-e426-quantitative",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 174,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Quantitative Bound",
+    "content": "**bradac_christoph_quantitative:**\n\nThe o(1) factor is explicitly O(log log log n / log log n).\n\nThis is a very slowly decreasing function, showing uniqueness decays gradually.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Explicit bounds",
+      "Rate of decay"
+    ],
+    "mathContext": "See annotation content for formal details of quantitative bound",
+    "prerequisites": [
+      "the o(1) factor",
+      "the explicit O(log log log n / log log n) bound"
+    ]
+  },
+  {
+    "id": "ann-e426-resolved",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 183,
+      "endLine": 202
+    },
+    "type": "concept",
+    "title": "Problem Resolved",
+    "content": "**original_question_false, erdos_426_resolved:**\n\n¬OriginalQuestion\n\nThe answer to Erdős's question is NO. Unique subgraphs are rare - they cannot approach the total count of non-isomorphic graphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Resolution",
+      "Impossibility"
+    ],
+    "mathContext": "See annotation content for formal details of problem resolved",
+    "prerequisites": [
+      "the original question",
+      "its negation",
+      "the Bradač–Christoph resolution"
+    ]
+  },
+  {
+    "id": "ann-e426-insight",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 204,
+      "endLine": 223
+    },
+    "type": "concept",
+    "title": "Why Unique Subgraphs Are Rare",
+    "content": "**Key Insights:**\n\n1. **Automorphisms:** Graphs with symmetries create multiple embeddings\n2. **Structural regularity:** Repeated patterns prevent uniqueness\n3. **The gap:** Brouwer loses 2^{O(n)} from the naive bound\n4. **Unavoidable:** Even the naive bound is unreachable\n\nUniqueness requires that every embedding produces a distinct 'fingerprint'.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Graph symmetry",
+      "Automorphisms"
+    ],
+    "mathContext": "See annotation content for formal details of why unique subgraphs are rare",
+    "prerequisites": [
+      "graph automorphisms creating multiple embeddings",
+      "structural regularity / repeated patterns"
+    ]
+  },
+  {
+    "id": "ann-e426-automorphism",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 228,
+      "endLine": 249
+    },
+    "type": "definition",
+    "title": "Automorphisms and Asymmetry",
+    "content": "**HasAutomorphism, IsAsymmetric:**\n\nAn automorphism is a bijection σ : V → V preserving adjacency.\n\nA graph is asymmetric if its only automorphism is the identity.\n\n**Key fact:** Almost all graphs are asymmetric (Erdős-Rényi), yet unique subgraphs are still rare - the obstacle is deeper than just symmetry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Graph automorphisms",
+      "Asymmetric graphs"
+    ],
+    "mathContext": "See annotation content for formal details of automorphisms and asymmetry",
+    "prerequisites": [
+      "graph automorphisms (adjacency-preserving bijections)",
+      "asymmetric graphs (trivial automorphism group)"
+    ]
+  },
+  {
+    "id": "ann-e426-summary",
+    "proofId": "erdos-426",
+    "range": {
+      "startLine": 255,
+      "endLine": 255
+    },
+    "type": "concept",
+    "title": "Problem Summary",
+    "content": "**erdos_426_summary:**\n\n| Aspect | Result |\n|--------|--------|\n| Question | Can f(n) = Ω(2^(n choose 2)/n!)? |\n| Answer | NO (Bradač-Christoph 2024) |\n| Upper bound | f(n) = o(2^(n choose 2)/n!) |\n| Best construction | 2^{(n choose 2) - O(n)}/n! (Brouwer) |\n| Prize | $25 for impossibility proof |",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary",
+      "Final answer"
+    ],
+    "mathContext": "See annotation content for formal details of problem summary",
+    "prerequisites": [
+      "the question f(n) = Ω(2^(n choose 2)/n!)",
+      "the NO answer (Bradač–Christoph)",
+      "why unique subgraphs are rare"
+    ]
+  }
+]

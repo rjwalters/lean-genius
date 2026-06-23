@@ -1,0 +1,287 @@
+/-
+  Nonderogatory ⟹ Cyclic Vector: Arbitrary Fields
+
+  The nonderogatory cyclic vector theorem (OQ-05-OQ-01) was proved for
+  infinite fields, and OQ-05-OQ-01-OQ-01 weakened this to |K| > n.
+
+  This file addresses the remaining case: over finite fields F_q with q ≤ n,
+  does every nonderogatory matrix still have a cyclic vector?
+
+  **Answer: YES.** The theorem holds over ALL fields, including finite fields
+  with |K| ≤ n. The union avoidance argument is unnecessary.
+
+  Proof Strategy (Bezout/CRT Projections via WIP04/WIP05):
+  For M ∈ M_n(K) nonderogatory (minpoly = charpoly, both of degree n):
+  1. Factor μ := minpoly K M = ∏ p_i^{e_i} via UFD (`UniqueFactorizationMonoid`)
+  2. For each i, build a primary vector v_i with `p_i^{e_i-1}(M)v_i ≠ 0`
+     and `p_i^{e_i}(M)v_i = 0` (kernel facts only — no PID structure theorem).
+  3. CRT projections π_i = b_i F_i(M) (where a_i p_i^{e_i} + b_i F_i = 1) extract
+     the i-th component, giving p_i^{e_i} ∣ r whenever r(M)(∑ v_i) = 0.
+  4. Pairwise coprimality ⇒ μ ∣ r, contradicting `deg r < n = deg μ`.
+
+  This avoids the structure theorem for f.g. modules over a PID entirely.
+  The full proof is in `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean`
+  (factored case, axiom-free) and `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean`
+  (UFD factorization wrapper, axiom-free). This file delegates to WIP05.
+
+  Key insight: The proof works over ANY field (finite or infinite) because
+  it uses Bezout/CRT projections rather than cardinality arguments
+  (union avoidance) or rational canonical form.
+-/
+import Mathlib
+import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05
+
+noncomputable section
+
+namespace CyclicVectorArbitrary
+
+open Matrix Polynomial
+
+attribute [local instance] Classical.propDecidable
+
+variable {K : Type*} [Field K] {n : ℕ}
+
+-- ============================================================
+-- SECTION I: Definitions (consistent with OQ05OQ01)
+-- ============================================================
+
+def IsCyclicVector (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K) : Prop :=
+  ∀ p : K[X], p.natDegree < n → (aeval M p).mulVec v = 0 → p = 0
+
+def IsNonderogatory (M : Matrix (Fin n) (Fin n) K) : Prop :=
+  minpoly K M = M.charpoly
+
+-- ============================================================
+-- SECTION II: Similarity Preserves Cyclic Vectors
+-- ============================================================
+
+/-- Conjugation by an invertible matrix commutes with polynomial evaluation.
+    Uses P.inv and P.val (Units structure fields) to avoid coercion elaboration issues. -/
+theorem aeval_conj (M : Matrix (Fin n) (Fin n) K) (P : (Matrix (Fin n) (Fin n) K)ˣ)
+    (p : K[X]) :
+    aeval (P.inv * M * P.val) p = P.inv * aeval M p * P.val := by
+  -- Key: (P.inv * M * P.val)^k = P.inv * M^k * P.val by induction
+  have conj_pow : ∀ k : ℕ, (P.inv * M * P.val) ^ k = P.inv * M ^ k * P.val := by
+    intro k
+    induction k with
+    | zero =>
+      simp only [pow_zero, mul_one]
+      exact P.inv_val.symm
+    | succ k ih =>
+      rw [pow_succ, ih]
+      calc P.inv * M ^ k * P.val * (P.inv * M * P.val)
+          = P.inv * M ^ k * (P.val * P.inv) * M * P.val := by simp only [mul_assoc]
+        _ = P.inv * M ^ k * 1 * M * P.val := by rw [P.val_inv]
+        _ = P.inv * M ^ k * M * P.val := by rw [mul_one]
+        _ = P.inv * M ^ (k + 1) * P.val := by rw [mul_assoc P.inv (M ^ k) M, ← pow_succ M k]
+  -- Induct on p
+  induction p using Polynomial.induction_on' with
+  | add p q hp hq =>
+    simp only [map_add, hp, hq, mul_add, add_mul]
+  | monomial k a =>
+    simp only [Polynomial.aeval_monomial, conj_pow]
+    -- aeval_monomial gives algebraMap K _ a * M^k; convert to a • M^k via ← Algebra.smul_def
+    simp only [← Algebra.smul_def]
+    rw [← smul_mul_assoc, ← mul_smul_comm]
+
+/-- If N has a cyclic vector w, and M = P.inv * N * P.val, then M has a cyclic vector. -/
+theorem cyclic_vector_of_similar
+    (M N : Matrix (Fin n) (Fin n) K)
+    (P : (Matrix (Fin n) (Fin n) K)ˣ)
+    (hMN : M = P.inv * N * P.val)
+    (w : Fin n → K) (hw : IsCyclicVector N w) :
+    ∃ v, IsCyclicVector M v := by
+  -- v = P.inv · w is cyclic for M
+  refine ⟨P.inv.mulVec w, fun p hp hann => ?_⟩
+  apply hw p hp
+  -- Substitute M = P.inv * N * P.val and apply aeval_conj
+  rw [hMN, aeval_conj N P p] at hann
+  -- hann : (P.inv * aeval N p * P.val) *ᵥ (P.inv *ᵥ w) = 0
+  -- Key matrix identity: P.val * (P.inv * aeval N p * P.val) * P.inv = aeval N p
+  have heq : P.val * (P.inv * aeval N p * P.val) * P.inv = aeval N p := by
+    calc P.val * (P.inv * aeval N p * P.val) * P.inv
+        = (P.val * P.inv) * aeval N p * (P.val * P.inv) := by simp only [mul_assoc]
+      _ = aeval N p := by simp only [P.val_inv, one_mul, mul_one]
+  -- Use mulVec_mulVec (forward) to unfold (P.val * A * P.inv) *ᵥ w
+  -- = P.val *ᵥ (A *ᵥ (P.inv *ᵥ w)) for A = P.inv * aeval N p * P.val
+  have key : (P.val * (P.inv * aeval N p * P.val) * P.inv) *ᵥ w =
+             P.val *ᵥ ((P.inv * aeval N p * P.val) *ᵥ (P.inv *ᵥ w)) := by
+    rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
+  rw [← heq, key, hann, Matrix.mulVec_zero]
+
+-- ============================================================
+-- SECTION III: Annihilator Characterization
+-- ============================================================
+
+/-- The annihilator polynomial of a vector: the monic generator of
+    {p : p(M)v = 0}. This equals the minimal polynomial of M
+    restricted to the cyclic subspace generated by v. -/
+theorem annihilator_dvd_minpoly (M : Matrix (Fin n) (Fin n) K)
+    (v : Fin n → K) (p : K[X]) (hp : (aeval M p).mulVec v = 0) :
+    (aeval M (EuclideanDomain.gcd p (minpoly K M))).mulVec v = 0 := by
+  -- This follows from the Bezout identity: gcd(p, μ) = ap + bμ
+  -- So gcd(M)v = a(M)p(M)v + b(M)μ(M)v = 0 + 0 = 0
+  set μ := minpoly K M
+  set d := EuclideanDomain.gcd p μ
+  have bezout := EuclideanDomain.gcd_eq_gcd_ab p μ
+  have hμ_ann : (aeval M μ : Matrix (Fin n) (Fin n) K) = 0 := minpoly.aeval K M
+  calc (aeval M d).mulVec v
+      = (aeval M (EuclideanDomain.gcdA p μ * p +
+          EuclideanDomain.gcdB p μ * μ)).mulVec v := by
+        congr 1; congr 1; rw [show d = _ from bezout]; ring
+    _ = (aeval M (EuclideanDomain.gcdA p μ * p)).mulVec v +
+        (aeval M (EuclideanDomain.gcdB p μ * μ)).mulVec v := by
+        rw [map_add, Matrix.add_mulVec]
+    _ = (aeval M (EuclideanDomain.gcdA p μ) * aeval M p).mulVec v +
+        (aeval M (EuclideanDomain.gcdB p μ) * aeval M μ).mulVec v := by
+        rw [map_mul, map_mul]
+    _ = (aeval M (EuclideanDomain.gcdA p μ)).mulVec ((aeval M p).mulVec v) +
+        (aeval M (EuclideanDomain.gcdB p μ)).mulVec ((aeval M μ).mulVec v) := by
+        rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
+    _ = 0 := by rw [hp, hμ_ann, Matrix.zero_mulVec,
+                     Matrix.mulVec_zero, Matrix.mulVec_zero, add_zero]
+
+/-- A vector is cyclic iff p(M)v = 0 implies minpoly | p
+    (i.e., the annihilator of v equals the minimal polynomial). -/
+theorem cyclic_iff_ann_eq_minpoly (M : Matrix (Fin n) (Fin n) K)
+    (hn : 0 < n) (hnd : IsNonderogatory M) (v : Fin n → K) :
+    IsCyclicVector M v ↔
+      ∀ p : K[X], (aeval M p).mulVec v = 0 → minpoly K M ∣ p := by
+  constructor
+  · -- Forward: cyclic ⟹ ann = minpoly
+    intro hcyc p hp
+    -- gcd(p, μ) annihilates v and divides μ
+    set μ := minpoly K M
+    set d := EuclideanDomain.gcd p μ
+    have hd_ann := annihilator_dvd_minpoly M v p hp
+    have hd_dvd_μ : d ∣ μ := EuclideanDomain.gcd_dvd_right p μ
+    -- If d properly divides μ, then deg(d) < deg(μ) = n
+    have hd_ne : d ≠ 0 := by
+      intro h0; rw [h0] at hd_dvd_μ
+      exact (minpoly.monic (isIntegral M)).ne_zero (eq_zero_of_zero_dvd hd_dvd_μ)
+    have hd_deg_le : d.natDegree ≤ μ.natDegree := Polynomial.natDegree_le_of_dvd hd_dvd_μ
+      (minpoly.monic (isIntegral M)).ne_zero
+    have hμ_deg : μ.natDegree = n := by
+      rw [show μ = minpoly K M from rfl, hnd, Matrix.charpoly_natDegree_eq_dim,
+          Fintype.card_fin]
+    rcases hd_deg_le.lt_or_eq with hd_lt | hd_eq
+    · -- deg(d) < deg(μ) = n: cyclicity forces d = 0, contradicting d ≠ 0
+      exfalso; exact absurd (hcyc d (by omega) hd_ann) hd_ne
+    · -- deg(d) = deg(μ): μ = d * q where q is a unit, so μ ∣ d ∣ p
+      obtain ⟨q, hq_eq⟩ := hd_dvd_μ
+      have hμ_ne : μ ≠ 0 := (minpoly.monic (isIntegral M)).ne_zero
+      have hq_ne : q ≠ 0 := right_ne_zero_of_mul (hq_eq ▸ hμ_ne)
+      have hq_deg : q.natDegree = 0 := by
+        have h1 : μ.natDegree = d.natDegree + q.natDegree := by
+          rw [hq_eq]; exact Polynomial.natDegree_mul hd_ne hq_ne
+        omega
+      have hq_unit : IsUnit q := by
+        rw [Polynomial.eq_C_of_natDegree_eq_zero hq_deg]
+        exact isUnit_C.mpr (IsUnit.mk0 _ (by
+          intro h0; exact hq_ne
+            (by rw [Polynomial.eq_C_of_natDegree_eq_zero hq_deg, h0, map_zero])))
+      obtain ⟨u, hu⟩ := hq_unit
+      have hμ_du : μ = d * ↑u := by rw [hq_eq, hu]
+      have hd_eq_μu : d = μ * ↑u⁻¹ :=
+        ((calc μ * ↑u⁻¹ = d * ↑u * ↑u⁻¹ := by rw [hμ_du]
+          _ = d * (↑u * ↑u⁻¹) := by ring
+          _ = d := by rw [Units.mul_inv, mul_one]).symm)
+      exact dvd_trans ⟨↑u⁻¹, hd_eq_μu⟩ (EuclideanDomain.gcd_dvd_left p μ)
+  · -- Backward: ann = minpoly ⟹ cyclic
+    intro hann p hp hpann
+    by_contra hp_ne
+    have hμ_dvd := hann p hpann
+    have hμ_deg : (minpoly K M).natDegree = n := by
+      rw [hnd, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]
+    exact absurd (Polynomial.natDegree_le_of_dvd hμ_dvd hp_ne) (by omega)
+
+-- (The companion-matrix cyclic-vector path used in earlier drafts of this file
+-- has been retired: WIP04/WIP05 give a direct Bezout/CRT proof of the main
+-- theorem, so the companion-matrix construction is no longer on the critical
+-- path. The standalone lemmas `aeval_conj` and `cyclic_vector_of_similar`
+-- about similarity invariance are retained above; the previously-included
+-- `companionMatrix_cyclic_e0` and its private helpers depended on
+-- `Proofs.CayleyHamiltonReductionOQ02OQ01`, which is currently affected by
+-- Mathlib API drift, and were removed to keep this file independently buildable.)
+
+
+-- ============================================================
+-- SECTION IV.5: Main Theorem (All Fields)
+-- ============================================================
+
+/-- **Main Result**: Over ANY field K, nonderogatory matrices have cyclic vectors.
+
+    This is the closed (axiom-free, sorry-free) form of the theorem. The previous
+    version of this file isolated the gap to a single sorry assuming Rational
+    Canonical Form (`nonderogatory_similar_companion`); WIP04 + WIP05 instead prove
+    the cyclic vector existence directly via Bezout/CRT projections and UFD
+    factorization of `minpoly K M`, completely avoiding the PID structure theorem.
+
+    The result is delegated to
+    `GeneralCyclicVectorComplete.nonderogatory_has_cyclic_vector_any_field`
+    (see `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean`). The local `IsCyclicVector`
+    and `IsNonderogatory` definitions match the ones used there definitionally. -/
+theorem nonderogatory_has_cyclic_vector_any_field
+    (M : Matrix (Fin n) (Fin n) K) (h : IsNonderogatory M) :
+    ∃ v, IsCyclicVector M v := by
+  -- The local `IsNonderogatory` and `IsCyclicVector` are definitionally equal to
+  -- the corresponding definitions in `GeneralCyclicVector` (both unfold to the
+  -- same `minpoly K M = M.charpoly` and `∀ p, p.natDegree < n → ...` respectively).
+  have h' : GeneralCyclicVector.IsNonderogatory M := h
+  obtain ⟨v, hv⟩ :=
+    GeneralCyclicVectorComplete.nonderogatory_has_cyclic_vector_any_field M h'
+  exact ⟨v, hv⟩
+
+/-- Corollary: The cyclic vector theorem holds over all finite fields,
+    including those with |K| ≤ n. The union avoidance lemma is not needed. -/
+theorem nonderogatory_has_cyclic_vector_finite_any_size [Fintype K]
+    (M : Matrix (Fin n) (Fin n) K) (h : IsNonderogatory M) :
+    ∃ v, IsCyclicVector M v :=
+  nonderogatory_has_cyclic_vector_any_field M h
+
+-- ============================================================
+-- SECTION V: Counterexample to Union Avoidance over Small Fields
+-- ============================================================
+
+/-- Over F₂, the 2-dimensional vector space F₂² can be covered by 3
+    proper subspaces (the three 1-dimensional subspaces). This shows
+    union avoidance fails when |K| ≤ n. Yet the nonderogatory cyclic
+    vector theorem still holds (by the module-theoretic argument). -/
+theorem F2_union_covers :
+    ∀ v : Fin 2 → ZMod 2, v ≠ 0 →
+      v ∈ ({![1, 0], ![0, 1], ![1, 1]} : Set (Fin 2 → ZMod 2)) := by
+  decide
+
+/- ## Summary
+
+**Problem**: For which (n, q) pairs does every nonderogatory M ∈ M_n(F_q) have
+a cyclic vector? Does the theorem fail when q ≤ n?
+
+**Answer**: The theorem holds for ALL (n, q). No failure threshold exists.
+
+**Status (this file)**: 0 axioms, 0 sorries. The previously-isolated sorry on
+`nonderogatory_similar_companion` (Rational Canonical Form) has been removed:
+the main theorem is now closed by delegating to WIP04 (Bezout/CRT primary
+decomposition) + WIP05 (UFD factorization of `minpoly K M`).
+
+**Proved here (sorry-free)**:
+- `annihilator_dvd_minpoly`: Bezout identity for GCD annihilation
+- `cyclic_iff_ann_eq_minpoly`: Characterization of cyclic vectors via annihilators
+- `aeval_conj`: Conjugation commutes with polynomial evaluation (inductive proof)
+- `cyclic_vector_of_similar`: Cyclic vectors transfer under similarity
+- `F2_union_covers`: Counterexample showing union avoidance fails over F₂
+- `nonderogatory_has_cyclic_vector_any_field`: Main theorem (delegates to WIP05)
+- `nonderogatory_has_cyclic_vector_finite_any_size`: Finite-field corollary
+
+**Removed in this revision**: `sum_mulVec_dist`, `aeval_eq_range_sum`, and
+`companionMatrix_cyclic_e0` (which depended on `Proofs.CayleyHamiltonReductionOQ02OQ01`,
+currently affected by Mathlib API drift). The companion-matrix path is no longer
+needed: WIP04 + WIP05 close the main theorem directly via Bezout/CRT projections
+plus UFD factorization, and `aeval_conj` / `cyclic_vector_of_similar` /
+`cyclic_iff_ann_eq_minpoly` remain as standalone lemmas useful for future
+RCF-based formalizations.
+-/
+
+end CyclicVectorArbitrary
+
+end

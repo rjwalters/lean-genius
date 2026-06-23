@@ -1,0 +1,79 @@
+[
+  {
+    "id": "ann-containment-overview",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "What survives when nontriviality is dropped",
+    "content": "The parent file proved a **coincidence**: for pieces of size $\\ge 2$, $\\mathrm{Perm}(\\alpha\\oplus\\beta)$ is solvable iff $\\mathrm{Perm}(\\alpha\\times\\beta)$ is, the unique survivor being $(2,2)$. Remove the hypothesis $\\mathrm{card}\\,\\alpha,\\mathrm{card}\\,\\beta\\ge 2$ and the equivalence degrades into a **strict containment**: every solvable disjoint union is a solvable product, but not conversely. The survivor sets are nested, $\\{a+b\\le 4\\}\\subsetneq\\{ab\\le 4\\}$, and the difference is carried entirely by the degenerate cardinalities $0$ and $1$."
+  },
+  {
+    "id": "ann-amgm",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 61,
+      "endLine": 90
+    },
+    "type": "key-step",
+    "title": "AM–GM is the mechanism",
+    "content": "Everything rests on one elementary inequality of naturals: $4ab\\le(a+b)^2$, because $(a+b)^2-4ab=(a-b)^2\\ge 0$. It is the arithmetic mean–geometric mean inequality, and it makes the **sum** the harder quantity to bound: $a+b\\le 4$ forces $ab\\le\\tfrac{(a+b)^2}{4}\\le 4$, but $ab\\le 4$ says nothing about $a+b$. The Lean proof discharges $4ab\\le(a+b)^2$ over $\\mathbb{Z}$ via `zify` then `nlinarith [sq_nonneg ((a:\\mathbb{Z})-b)]`, then bounds $(a+b)^2\\le 16$ to land the cap-$4$ specialization."
+  },
+  {
+    "id": "ann-containment",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 91,
+      "endLine": 110
+    },
+    "type": "key-step",
+    "title": "The product is the more permissive operation",
+    "content": "Feeding AM–GM into the parent chain's thresholds $\\mathrm{Perm}(\\alpha\\oplus\\beta)\\text{ solvable}\\iff\\mathrm{card}\\,\\alpha+\\mathrm{card}\\,\\beta\\le 4$ and $\\mathrm{Perm}(\\alpha\\times\\beta)\\text{ solvable}\\iff\\mathrm{card}\\,\\alpha\\cdot\\mathrm{card}\\,\\beta\\le 4$ gives, with **no** hypothesis on the pieces, $\\mathrm{Perm}(\\alpha\\oplus\\beta)\\text{ solvable}\\Rightarrow\\mathrm{Perm}(\\alpha\\times\\beta)\\text{ solvable}$. The $\\oplus$-survivor set is a subset of the $\\times$-survivor set."
+  },
+  {
+    "id": "ann-strictness",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 111,
+      "endLine": 137
+    },
+    "type": "key-step",
+    "title": "The witness (Fin 1, Fin 4)",
+    "content": "The inclusion is proper. Take $\\alpha=\\mathrm{Fin}\\,1$, $\\beta=\\mathrm{Fin}\\,4$. The product $\\mathrm{Fin}\\,1\\times\\mathrm{Fin}\\,4$ has $1\\cdot 4=4$ points, so $\\mathrm{Perm}$ on it is solvable ($S_4$); the union $\\mathrm{Fin}\\,1\\oplus\\mathrm{Fin}\\,4$ has $1+4=5$ points, so $\\mathrm{Perm}$ on it is not. A single trivial factor — $\\mathrm{card}\\,1$, the multiplicative neutral — separates the two operations, and it does so exactly at the Abel–Ruffini threshold $5$."
+  },
+  {
+    "id": "ann-gap",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 138,
+      "endLine": 170
+    },
+    "type": "key-step",
+    "title": "The gap is exactly the trivial pieces",
+    "content": "Any pair in the gap — a product-survivor $ab\\le 4$ that is not a sum-survivor $a+b>4$ — must have a trivial piece, $a\\le 1$ or $b\\le 1$. If both were $\\ge 2$, then $a+b\\ge 5$ forces one factor $\\ge 3$ and so $ab\\ge 3\\cdot 2=6>4$, a contradiction. Hence among pieces of size $\\ge 2$ the two caps coincide: $ab\\le 4\\iff a+b\\le 4$. This is precisely the arithmetic reason the parent's preservation coincidence required nontriviality."
+  },
+  {
+    "id": "ann-restore",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 161,
+      "endLine": 170
+    },
+    "type": "concept",
+    "title": "Nontriviality restores the symmetry",
+    "content": "`nontriviality_restores_symmetry` is the pure-arithmetic statement $a,b\\ge 2\\Rightarrow(ab\\le 4\\iff a+b\\le 4)$ — both sides true exactly at $a=b=2$. It is the engine behind the parent's $\\mathrm{sum\\_prod\\_survival\\_coincide}$: deleting the degenerate sizes deletes the entire gap between the two survivor sets, collapsing the containment back to an equivalence."
+  },
+  {
+    "id": "ann-fullpicture",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 171,
+      "endLine": 175
+    },
+    "type": "concept",
+    "title": "Containment, strictness, and the recovered coincidence",
+    "content": "`without_nontriviality_only_containment` assembles the three facts into one statement: (1) the unconditional containment $\\oplus\\Rightarrow\\times$; (2) the strict-inclusion witness $(\\mathrm{Fin}\\,1,\\mathrm{Fin}\\,4)$; (3) the parent's coincidence, imported as the $\\mathrm{card}\\ge 2$ restriction. The parent's symmetric picture is the shadow this containment casts once the trivial cardinalities are removed."
+  }
+]

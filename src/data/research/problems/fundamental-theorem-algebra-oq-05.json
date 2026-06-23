@@ -1,0 +1,90 @@
+{
+  "slug": "fundamental-theorem-algebra-oq-05",
+  "title": "The Artin-Schreier theorem (1927) characterizes real-closed fields: a field $F$ is real-closed iff $F(\\sqrt{-1})$ is algebraically closed. Can we formalize this generalization and show that FTA is a s",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: The Artin-Schreier theorem (1927) characterizes real-closed fields: a field $F$ is real-closed iff $F(\\sqrt{-1})$ is algebraically closed. Can we formalize this generalization and show that FTA is a s.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-29T18:32:39.305Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "fundamental-theorem-algebra",
+    "fundamental-theorem-algebra-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:32:39.305Z",
+  "lastUpdate": "2026-03-29T18:32:39.305Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FundamentalTheoremAlgebra.lean",
+      "filename": "FundamentalTheoremAlgebra.lean",
+      "lineCount": 215,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebra.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ02.lean",
+      "filename": "FundamentalTheoremAlgebraOQ02.lean",
+      "lineCount": 126,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ02.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ04.lean",
+      "filename": "FundamentalTheoremAlgebraOQ04.lean",
+      "lineCount": 208,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ04.lean"
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "id": "erdos-1-oq-01",
+  "title": "Distinct Subset Sums: Sum Bound and Hereditary Structure",
+  "slug": "erdos-1-oq-01",
+  "description": "Unconditional partial results for Erdős Problem #1 (distinct subset sums, $500 prize). Proves the sharp sum bound 2ⁿ ≤ Σ(A)+1 (tighter than the classical element-wise counting bound), the hereditary property that subsets/erasures of distinct-subset-sum sets remain distinct-subset-sum, small-case witnesses, and recovers the counting bound 2ⁿ ≤ n·N+1 as a corollary. The headline conjecture N ≥ c·2ⁿ remains open; the known DFX lower and Conway–Guy upper bounds are recorded as Prop statements.",
+  "meta": {
+    "author": "Erdős (1955, problem); partial results formalized 2026",
+    "sourceUrl": "https://erdosproblems.com/1",
+    "date": "1955",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1OQ01.lean",
+    "tags": [
+      "additive-combinatorics",
+      "erdos",
+      "distinct-subset-sums",
+      "counting-bound",
+      "hereditary-property"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 146,
+    "assumptions": "None. The file and its only proof-relevant import (Proofs.Erdos1Problem) are axiom-free, sorry-free, and use no decide/native_decide; the import closure is Mathlib-only. The two definitions dubroff_fox_xu_bound and conway_guy_upper are unproved Prop statements recording known bounds — they are not used as assumptions by any theorem. The headline Erdős conjecture N ≥ c·2ⁿ is OPEN and is not asserted by any theorem in this file.",
+    "dateAdded": "2026-06-16",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_image_of_injOn",
+        "description": "Counts the 2^|A| distinct subset sums: the powerset image has full cardinality because the subset-sum map is injective on the powerset (the distinct-subset-sums hypothesis).",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_le_card",
+        "description": "Monotonicity of cardinality under ⊆, used to bound the image of subset sums by range(Σ(A)+1) in distinct_subset_sums_sum_bound.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.sum_le_sum_of_subset_of_nonneg",
+        "description": "Each subset sum is ≤ Σ(A) since the elements are nonnegative naturals, placing every subset sum inside range(Σ(A)+1).",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      },
+      {
+        "theorem": "Finset.subset_singleton_iff",
+        "description": "Case analysis on subsets of a singleton, used in dss_singleton_one to enumerate ∅ and {1}.",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "distinct_subset_sums_sum_bound: 2^|A| ≤ Σ(A) + 1 — sharp sum bound via the pigeonhole that 2^|A| distinct subset sums are nonnegative integers in [0, Σ(A)]",
+      "hasDistinctSubsetSums_subset: the distinct-subset-sums property is hereditary under ⊆",
+      "hasDistinctSubsetSums_erase: erasing an element preserves distinct subset sums",
+      "sum_bound_implies_counting: 2^|A| ≤ |A|·N + 1 — recovers the classical counting bound from the sum bound and Σ(A) ≤ |A|·N",
+      "dss_empty, dss_singleton_one: base-case witnesses (f(1) = 1)",
+      "dubroff_fox_xu_bound, conway_guy_upper: Prop statements of the best known lower (DFX 2021) and conjectured-optimal upper (Conway–Guy) bounds"
+    ],
+    "theoremCount": 6,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1 ($500 prize) asks: if $A \\subseteq \\{1,\\ldots,N\\}$ has $n$ elements with all $2^n$ subset sums distinct, must $N \\geq c \\cdot 2^n$ for an absolute constant $c > 0$? The elementary counting bound (1964) gives $N \\geq (2^n-1)/n$: the $2^n$ subset sums lie in $[0, nN]$, so $nN + 1 \\geq 2^n$. Dubroff–Fox–Xu (2021) improved this to $N \\geq \\sqrt{2/\\pi} \\cdot 2^n/\\sqrt{n}$ via a Berry–Esseen anticoncentration argument, while the Conway–Guy sequence supplies the conjectured-optimal upper bound $N \\approx 0.22009 \\cdot 2^n$. Erdős conjectured the true constant is $1/\\sqrt{2}$. This entry collects the unconditional, fully machine-checked facts that underpin these bounds: a sum bound strictly sharper than the counting bound, and the hereditary structure of distinct-subset-sum sets.",
+    "problemStatement": "For $A \\subseteq \\mathbb{N}$ with all $2^{|A|}$ subset sums distinct, prove the sum bound $2^{|A|} \\leq \\sum_{a \\in A} a + 1$, the hereditary closure of the distinct-subset-sums property under subsets and erasures, and recover the counting bound $2^{|A|} \\leq |A| \\cdot N + 1$ as a corollary.",
+    "text": "Unconditional sum bound, hereditary structure, small-case witnesses, and corollary counting bound for the Erdős distinct subset sums problem, with the known DFX/Conway–Guy bounds recorded as statements.",
+    "proofStrategy": "The central result `distinct_subset_sums_sum_bound` ($2^{|A|} \\leq \\Sigma(A) + 1$) is a clean injectivity/pigeonhole argument: the subset-sum map $S \\mapsto \\sum_{x \\in S} x$ is injective on $A$'s powerset (the distinct-subset-sums hypothesis), so its image has cardinality exactly $2^{|A|}$ (`Finset.card_image_of_injOn`); every subset sum lies in $[0, \\Sigma(A)]$ (`Finset.sum_le_sum_of_subset_of_nonneg`), so the image embeds into `range (Σ(A)+1)`, and `Finset.card_le_card` finishes with `omega`. This is sharper than the counting bound because it bounds $2^n$ by the actual total $\\Sigma(A)$ rather than by the crude product $n \\cdot N$. `sum_bound_implies_counting` then derives the classical bound by composing with $\\Sigma(A) \\leq |A| \\cdot N$ (`Finset.sum_le_sum` against the constant $N$). The hereditary lemmas are one-line monotonicity arguments: a distinct-subset-sums witness for the larger set restricts to any subset, and erasure is a special case of `⊆`.",
+    "keyInsights": [
+      "The sum bound $2^n \\leq \\Sigma(A) + 1$ is strictly stronger than the element-wise counting bound $2^n \\leq nN + 1$, because it bounds the number of subset sums by the true range $[0, \\Sigma(A)]$ rather than by the worst-case range $[0, nN]$. Whenever $A$ is not the all-$N$ multiset (always, since the elements are distinct), $\\Sigma(A) < nN$ and the sum bound is the tighter inequality.",
+      "Distinctness of subset sums is a *hereditary* (downward-closed) property: if $B$ has distinct subset sums and $A \\subseteq B$, then any two distinct subsets of $A$ are also distinct subsets of $B$, hence have distinct sums. This makes the extremal function $f(n) = \\min\\{N : \\exists A \\subseteq \\{1,\\ldots,N\\}, |A| = n, \\text{DSS}\\}$ monotone and lets one remove elements without destroying the property — the structural backbone of inductive constructions like Conway–Guy.",
+      "The proof is entirely combinatorial: it uses only injectivity of the subset-sum map on the powerset, the embedding of sums into an integer interval, and cardinality monotonicity. No probability, no Berry–Esseen, and no axioms are needed for these facts — they are the unconditional skeleton that the harder DFX (lower) and Conway–Guy (upper) results build upon.",
+      "Formal verification cleanly separates what is *proved unconditionally* (this entry) from what remains *open or axiomatized*: the DFX lower bound (companion erdos-1-oq-02) carries a Berry–Esseen anticoncentration axiom, and the Conway–Guy optimum is recorded here only as the Prop `conway_guy_upper`. The headline conjecture $N \\geq c \\cdot 2^n$ is asserted by no theorem in this file.",
+      "The $\\sqrt{n}$ gap between this file's elementary sum bound and the Dubroff–Fox–Xu bound is an $L^1$-versus-$L^2$ phenomenon. The range pigeonhole here controls the $2^n$ subset sums by their $L^1$ span $\\Sigma(A) = \\sum a_i$, forcing $2^n \\leq \\Sigma(A)+1$ and hence — via $\\Sigma(A) \\leq nN$ — only $N \\gtrsim 2^n/n$. DFX instead controls them by the $L^2$ quantity $\\sqrt{\\sum a_i^2}$, the standard deviation of the uniform random subset sum $\\sum_i \\varepsilon_i a_i$: distinctness makes each value occur with probability exactly $2^{-n}$, and Berry–Esseen anticoncentration caps that probability by $O(1/\\sqrt{\\sum a_i^2})$, giving $\\sqrt{\\sum a_i^2} \\gtrsim 2^n$; since $\\sqrt{\\sum a_i^2} \\leq \\sqrt{n}\\,N$ this sharpens the bound to $N \\gtrsim 2^n/\\sqrt{n}$. The elementary proof formalized here is blind to the $L^2$ concentration of subset sums — supplying it is exactly the role of the axiomatized Berry–Esseen step in companion erdos-1-oq-02, and an elementary route to the same $\\sqrt{n}$ saving is open question (4)."
+    ],
+    "prerequisites": [
+      "Distinct subset sums and the extremal function f(n) for Erdős Problem #1",
+      "The classical counting bound N ≥ (2^n − 1)/n",
+      "Finset cardinality and injectivity API (powerset, card_image_of_injOn)",
+      "Erdős Problem #1 formalization (parent file Erdos1Problem.lean, defining hasDistinctSubsetSums)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header and Overview",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring states Erdős Problem #1 OQ-01 (does N ≥ c·2ⁿ hold?), records the best known bounds (DFX lower, Conway–Guy upper), and lists what this file adds: a tighter sum bound, hereditary monotonicity, recovery of the counting bound, and small-case checks. Imports Erdos1Problem (for hasDistinctSubsetSums) and Mathlib; opens Finset.",
+      "mathContext": "The parent `Proofs.Erdos1Problem` defines `hasDistinctSubsetSums A := ∀ S T ⊆ A, Σ S = Σ T → S = T`. The headline question is Erdős's $500 conjecture; this file proves the unconditional facts surrounding it."
+    },
+    {
+      "id": "part-i-sum-bound",
+      "title": "Part I: Sum Bound",
+      "startLine": 27,
+      "endLine": 58,
+      "summary": "distinct_subset_sums_sum_bound: 2^|A| ≤ Σ(A) + 1. The subset-sum map is injective on the powerset (Set.InjOn from the DSS hypothesis), so its image has card 2^|A| (card_image_of_injOn); the image embeds in range(Σ(A)+1) since every subset sum ≤ Σ(A); card_le_card + card_range close it.",
+      "mathContext": "The $2^{|A|}$ distinct subset sums are nonnegative integers in $[0, \\Sigma(A)]$, an interval with $\\Sigma(A)+1$ values, forcing $2^{|A|} \\leq \\Sigma(A)+1$. This is the sharp form of the pigeonhole that drives all lower bounds for the problem."
+    },
+    {
+      "id": "part-ii-structural",
+      "title": "Part II: Hereditary Structure",
+      "startLine": 59,
+      "endLine": 73,
+      "summary": "hasDistinctSubsetSums_subset: A ⊆ B and B DSS ⟹ A DSS (restrict the witness). hasDistinctSubsetSums_erase: erasing an element preserves DSS, as a special case of the subset lemma via Finset.erase_subset.",
+      "mathContext": "Distinct subset sums is downward closed: distinct subsets of $A$ are distinct subsets of $B$, so their sums differ. This monotonicity underlies the well-definedness and monotonicity of the extremal function $f(n)$."
+    },
+    {
+      "id": "part-iii-small-cases",
+      "title": "Part III: Small Case Verification",
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "dss_empty: ∅ has distinct subset sums (only subset is ∅). dss_singleton_one: {1} has distinct subset sums (subsets ∅, {1} with sums 0, 1), realizing f(1) = 1.",
+      "mathContext": "Base cases anchoring the extremal function: $f(0) = 0$ (empty set) and $f(1) = 1$ (the set $\\{1\\}$). These witness that the sum bound is tight at small $n$."
+    },
+    {
+      "id": "part-iv-counting-corollary",
+      "title": "Part IV: Sum Bound Implies Counting Bound",
+      "startLine": 89,
+      "endLine": 103,
+      "summary": "sum_bound_implies_counting: if every a ∈ A satisfies a ≤ N and A is DSS, then 2^|A| ≤ |A|·N + 1. Composes the sum bound with Σ(A) ≤ Σ(fun _ => N) = |A|·N (Finset.sum_le_sum, sum_const).",
+      "mathContext": "Recovers the classical counting bound $2^n \\leq nN + 1$ as a corollary of the sharper sum bound, since $\\Sigma(A) \\leq nN$ when all elements are $\\leq N$."
+    },
+    {
+      "id": "part-v-known-bounds",
+      "title": "Part V: The Conjecture and Known Bounds",
+      "startLine": 104,
+      "endLine": 146,
+      "summary": "Two Prop statements (not theorems): dubroff_fox_xu_bound packages the DFX 2021 lower bound N ≥ √(2/π)·2ⁿ/√n as an existential over a positive rational constant; conway_guy_upper packages the conjectured-optimal upper bound ∃ DSS sets with max ≤ 0.22009·2ⁿ. A closing summary docstring tallies 6 theorems, 2 definitions, 0 axioms, 0 sorries.",
+      "mathContext": "These definitions state — but do not prove — the current best lower bound (DFX) and conjectured optimum (Conway–Guy). They make the open frontier explicit without introducing axioms; no theorem in the file depends on them."
+    }
+  ],
+  "conclusion": {
+    "summary": "Establishes the unconditional, axiom-free core of Erdős Problem #1: the sharp sum bound 2^|A| ≤ Σ(A)+1, hereditary closure of the distinct-subset-sums property, small-case witnesses, and the classical counting bound as a corollary. The DFX lower bound and Conway–Guy upper bound are recorded as Prop statements; the headline conjecture is asserted nowhere.",
+    "implications": "The sum bound is the tightest elementary bound available without anticoncentration machinery, and the hereditary lemmas justify the monotonicity of the extremal function f(n) used by every construction in the literature. Together they form the verified substrate on which the harder lower bound (erdos-1-oq-02, axiomatized via Berry–Esseen) and the Conway–Guy upper bound rest.",
+    "openQuestions": [
+      "Does N ≥ c·2ⁿ hold for an absolute constant c > 0 (Erdős's $500 conjecture)? This is the headline open question; no theorem here asserts it.",
+      "Can dubroff_fox_xu_bound be proved in Lean? It requires formalizing Berry–Esseen anticoncentration for Bernoulli sums (see companion erdos-1-oq-02, which currently axiomatizes this step).",
+      "Can conway_guy_upper be proved by formalizing the Conway–Guy sequence and verifying its distinct-subset-sums property and max-element growth?",
+      "Is there an elementary proof closing the √n gap between the counting/sum bounds and the DFX bound without probability-theoretic input?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "extends",
+      "description": "Parent: Erdős Problem #1 — the distinct subset sums problem. This entry adds the unconditional sum bound and hereditary structure on top of the parent's definitions (hasDistinctSubsetSums)."
+    },
+    {
+      "targetId": "erdos-1-oq-02",
+      "relationship": "companion",
+      "description": "Dubroff–Fox–Xu lower bound framework. OQ-01 proves the elementary sum/counting bounds unconditionally; OQ-02 sharpens the lower bound to √(2/π)·2ⁿ/√n via an axiomatized Berry–Esseen anticoncentration step. The Prop dubroff_fox_xu_bound here states exactly what OQ-02 works toward."
+    },
+    {
+      "targetId": "erdos-1-oq-03",
+      "relationship": "companion",
+      "description": "Conway–Guy upper bound construction. The Prop conway_guy_upper recorded in OQ-01 is the statement that OQ-03 formalizes via the explicit Conway–Guy sequence."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "distinct_subset_sums_sum_bound",
+      "type": "core",
+      "description": "Sharp sum bound: a set with distinct subset sums satisfies 2^|A| ≤ Σ(A) + 1.",
+      "leanType": "hasDistinctSubsetSums A → 2 ^ A.card ≤ A.sum id + 1"
+    },
+    {
+      "name": "hasDistinctSubsetSums_subset",
+      "type": "core",
+      "description": "The distinct-subset-sums property is hereditary under ⊆.",
+      "leanType": "hasDistinctSubsetSums B → A ⊆ B → hasDistinctSubsetSums A"
+    },
+    {
+      "name": "sum_bound_implies_counting",
+      "type": "supporting",
+      "description": "Recovers the classical counting bound from the sum bound.",
+      "leanType": "(∀ a ∈ A, a ≤ N) → hasDistinctSubsetSums A → 2 ^ A.card ≤ A.card * N + 1"
+    },
+    {
+      "name": "dss_singleton_one",
+      "type": "supporting",
+      "description": "Base-case witness: {1} has distinct subset sums, realizing f(1) = 1.",
+      "leanType": "hasDistinctSubsetSums ({1} : Finset ℕ)"
+    }
+  ],
+  "references": [
+    {
+      "key": "Er55",
+      "citation": "Erdős, P. (1955). Problems and results in additive number theory. Colloque sur la Théorie des Nombres, Bruxelles, 127-137.",
+      "type": "paper",
+      "description": "Original formulation of the distinct subset sums problem (Problem #1, $500 prize), conjecturing N ≥ c·2ⁿ."
+    },
+    {
+      "key": "DFX21",
+      "citation": "Dubroff, Q., Fox, J. & Xu, M. Z. (2021). A note on the Erdős distinct subset sums problem. SIAM Journal on Discrete Mathematics, 35(1), 322-324.",
+      "type": "paper",
+      "description": "Best known lower bound N ≥ √(2/π)·2ⁿ/√n via Berry–Esseen anticoncentration; stated here as dubroff_fox_xu_bound and formalized in erdos-1-oq-02."
+    },
+    {
+      "key": "Bo96",
+      "citation": "Bohman, T. (1996). A sum packing problem of Erdős and the Conway-Guy sequence. Proceedings of the AMS, 124(12), 3627-3636.",
+      "type": "paper",
+      "description": "Analysis of the Conway–Guy sequence giving DSS sets with max ≈ 0.22·2ⁿ; the conjectured-optimal upper bound recorded here as conway_guy_upper."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos1Problem",
+      "Mathlib"
+    ],
+    "namespace": "(root)",
+    "lineCount": 146,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos1OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

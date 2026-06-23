@@ -1,0 +1,250 @@
+[
+  {
+    "id": "ann-algebraic-overview",
+    "proofId": "algebraic-numbers-countable",
+    "range": {
+      "startLine": 1,
+      "endLine": 66
+    },
+    "type": "concept",
+    "title": "Cantor 1874: Algebraic Numbers Are Countable — The Theorem That Created Transcendental Number Theory",
+    "content": "This module formalizes Cantor's 1874 theorem that the algebraic numbers are countable. The result appears in the same paper ('Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen') where Cantor proved the real numbers are uncountable — the first demonstration that infinite sets can have different sizes.\n\nThe historical significance is profound:\n- Before 1874: mathematicians knew of no transcendental numbers (numbers that are not roots of any rational polynomial)\n- Hermite 1873: proved e is transcendental — the first specific transcendental\n- Cantor 1874: proved 'almost all' reals are transcendental (in the sense of cardinality), before anyone knew how to construct them\n- Liouville 1844 had earlier shown transcendental numbers exist by explicit construction (Liouville's constant), but Cantor's cardinality argument showed they must be 'everywhere'\n\nThe formalization proves 18 theorems organized in 7 sections: direct results (delegating to Mathlib), bounded-degree sets, exact-degree stratification, degree union decomposition, degree 1 = rationals, cardinality equality, and exhaustive filtration. Two proof styles are used: the direct one-line delegation to `Algebraic.countable`, and the constructive degree-stratification proof via `Set.countable_iUnion`.",
+    "mathContext": "**Countability hierarchy for number systems:** $\\mathbb{N} \\cong \\mathbb{Z} \\cong \\mathbb{Q} \\cong \\overline{\\mathbb{Q}}$ (all $\\aleph_0$) $\\subsetneq \\mathbb{R} \\cong \\mathbb{C} \\cong (\\mathbb{R} \\setminus \\overline{\\mathbb{Q}})$ (all $2^{\\aleph_0}$). Combined with $|\\mathbb{R}| = 2^{\\aleph_0} > \\aleph_0 = |\\overline{\\mathbb{Q}}|$ (Cantor's diagonal, same 1874 paper), this *immediately* yields the existence of transcendentals — *without* explicit construction.\n\n**The Cantor 1874 height function (constructive enumeration).** Cantor's original 1874 argument assigns to each polynomial $p(x) = a_n x^n + a_{n-1} x^{n-1} + \\cdots + a_0 \\in \\mathbb{Z}[x]$ with $a_n \\neq 0$ a *height* $h(p) = n + |a_n| + |a_{n-1}| + \\cdots + |a_0|$. Two key combinatorial facts:\n\n1. For each fixed integer $h \\geq 1$, there are *finitely many* polynomials with height exactly $h$ (since each $|a_i| \\leq h$ and $n \\leq h$, the count is bounded by $h \\cdot (2h+1)^{h+1}$, an explicit finite combinatorial bound).\n2. Each polynomial of degree $n$ has at most $n$ distinct real roots (fundamental theorem of algebra over $\\mathbb{C}$, restricted to $\\mathbb{R}$).\n\nEnumerate polynomials by height $h = 1, 2, 3, \\ldots$ (finitely many per stratum), within each height enumerate the polynomials lexicographically by $(a_n, a_{n-1}, \\ldots, a_0)$, and within each polynomial enumerate its roots in increasing real order. This gives an explicit bijection between $\\mathbb{N}$ and $\\overline{\\mathbb{Q}} \\cap \\mathbb{R}$ — a *constructive* witness to countability, predating Mathlib's `Polynomial.exists_finset_roots` by 150 years.\n\n**Why ℚ-coefficients vs ℤ-coefficients agree:** $\\alpha$ algebraic over $\\mathbb{Q}$ $\\iff$ $\\alpha$ algebraic over $\\mathbb{Z}$ — multiply through by the common denominator of the $\\mathbb{Q}$-coefficients to clear fractions, preserving the root set. So Cantor's $\\mathbb{Z}[x]$-based enumeration and Mathlib's $\\mathbb{Q}$-coefficient `Algebraic` predicate define the same set.\n\n**Cardinal arithmetic of the bounded-degree filtration (this file's alternative approach):** $|\\{p \\in \\mathbb{Q}[x] : \\deg p \\leq d\\}| = |\\mathbb{Q}^{d+1}| = \\aleph_0^{d+1} = \\aleph_0$ (Cantor's pair-coding identity $\\aleph_0 \\cdot \\aleph_0 = \\aleph_0$, applied $d+1$ times). Each such polynomial has $\\leq d$ real roots, so $|\\{\\alpha \\in \\mathbb{R} : \\alpha\\text{ algebraic of degree} \\leq d\\}| \\leq \\aleph_0 \\cdot d = \\aleph_0$. The exhaustive union $\\overline{\\mathbb{Q}} \\cap \\mathbb{R} = \\bigcup_{d \\in \\mathbb{N}} \\{\\alpha : \\deg \\alpha \\leq d\\}$ is a countable union of countable sets, hence countable (`Set.countable_iUnion` in Mathlib).\n\n**Lower bound on $|\\overline{\\mathbb{Q}}|$:** $\\mathbb{Q} \\subseteq \\overline{\\mathbb{Q}}$ (every rational is a root of $x - q$, degree 1), so $|\\overline{\\mathbb{Q}}| \\geq |\\mathbb{Q}| = \\aleph_0$. Combined with the upper bound, $|\\overline{\\mathbb{Q}}| = \\aleph_0$ exactly. The *proper* containment $\\mathbb{Q} \\subsetneq \\overline{\\mathbb{Q}}$ (witnessed by $\\sqrt{2} \\notin \\mathbb{Q}$, Pythagoras c. 500 BCE) coexisting with the *cardinal equality* $|\\mathbb{Q}| = |\\overline{\\mathbb{Q}}|$ is the cardinal-paradox addressed in `ann-algebraic-cardinality-paradox`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cantor-1874",
+      "countability",
+      "degree-stratification",
+      "Algebraic.countable",
+      "transcendental-numbers",
+      "cardinality",
+      "Cantor height function",
+      "fundamental theorem of algebra (root count bound)",
+      "Set.countable_iUnion",
+      "Cardinal.aleph0",
+      "Liouville's constant (1844 explicit transcendental)",
+      "Hermite 1873 ($e$ transcendental)",
+      "Lindemann 1882 ($\\pi$ transcendental, $e^\\alpha$ transcendental for nonzero algebraic $\\alpha$)",
+      "abel-ruffini (algebraic non-radical numbers)",
+      "hermite-lindemann",
+      "liouville-theorem",
+      "cantors-theorem"
+    ],
+    "prerequisites": [
+      "Mathlib.Algebra.AlgebraicCard",
+      "Set.Countable and Set.countable_iUnion",
+      "Cardinal.mk and Cardinal.aleph0",
+      "ℵ₀ · ℵ₀ = ℵ₀ (Cantor pairing function)",
+      "polynomial degree and root count (Polynomial.card_roots_le_degree)",
+      "the equivalence Q-algebraic ⟺ Z-algebraic (clear denominators)"
+    ]
+  },
+  {
+    "id": "ann-algebraic-core-countable",
+    "proofId": "algebraic-numbers-countable",
+    "range": {
+      "startLine": 76,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "algebraic_reals_countable: One-Line Proof via Mathlib's Algebraic.countable",
+    "content": "The shortest proof in the file is the most fundamental:\n\n```lean\ntheorem algebraic_reals_countable : Set.Countable {x : ℝ | IsAlgebraic ℚ x} :=\n  Algebraic.countable ℚ ℝ\n```\n\n`Algebraic.countable` (in `Mathlib.Algebra.AlgebraicCard`) proves: if R is a countable commutative ring and E is an R-algebra, then the set of R-algebraic elements of E is countable. Applied with R = ℚ (which is countable/Denumerable) and E = ℝ, this gives the result in one line.\n\nThe cardinality strengthening `card_algebraic_reals_eq_aleph0` uses `Algebraic.cardinalMk_of_countable_of_charZero ℚ ℝ`, which needs char(ℝ) = 0 (characteristic zero). This condition ensures infinitely many distinct algebraic numbers exist (ruling out the finite case). The result Cardinal.mk {...} = Cardinal.aleph0 is strictly stronger than Set.Countable — it proves countably infinite, not just countable.\n\nBoth real and complex cases are handled: `algebraic_complex_countable` and `card_algebraic_complex_eq_aleph0` use ℂ instead of ℝ, and `Algebraic.countable ℚ ℂ` works because ℂ is also a ℚ-algebra.",
+    "mathContext": "Mathlib's `Algebraic.countable` proof works as follows: algebraic elements of E over R are a subset of roots of all nonzero polynomials in R[X]. There are countably many such polynomials (R[X] is countable when R is countable), each has finitely many roots. The countable union of finite sets is countable. This is exactly the degree-stratification argument, packaged abstractly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Algebraic.countable",
+      "cardinalMk_of_countable_of_charZero",
+      "Cardinal.aleph0",
+      "Denumerable-ℚ",
+      "minimal polynomial",
+      "algebraic closure",
+      "countable union of countable sets",
+      "Cantor-Bernstein theorem"
+    ],
+    "prerequisites": [
+      "Mathlib.Algebra.AlgebraicCard",
+      "ℚ is Denumerable (Mathlib.Data.Rat.Denumerable)"
+    ]
+  },
+  {
+    "id": "ann-algebraic-bounded-exact",
+    "proofId": "algebraic-numbers-countable",
+    "range": {
+      "startLine": 107,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Two Stratification Levels: Bounded vs Exact Degree — A Filtration Structure",
+    "content": "The formalization defines two nested families of sets:\n\n**Bounded degree**: `algebraicRealsOfBoundedDegree d = {x | IsAlgebraic ℚ x ∧ natDegree(minpoly x) ≤ d}`\n- Forms a monotone chain: deg≤0 ⊆ deg≤1 ⊆ deg≤2 ⊆ ...\n- Union equals all algebraic reals (proven in §7)\n- `bounded_degree_monotone`: monotonicity proved by Nat.le_succ_of_le\n\n**Exact degree**: `algebraicRealsOfDegree d = {x | IsAlgebraic ℚ x ∧ natDegree(minpoly x) = d}`\n- Each a distinct, disjoint horizontal slice\n- `exact_degree_subset_bounded`: degree d ⊆ bounded degree d (le_of_eq converts = to ≤)\n- Union equals all algebraic reals (proven in §4)\n\nThe relationship: algebraicRealsOfBoundedDegree d = ⋃_{k≤d} algebraicRealsOfDegree k. Both are countable (as subsets of the countable set of all algebraic numbers via Set.Countable.mono).\n\nCountability of bounded-degree sets is proved first (§2), then exact-degree (§3) uses it as an intermediate step via the inclusion chain: exact d ⊆ bounded d ⊆ all algebraic (countable).",
+    "mathContext": "The bounded-degree filtration is an algebraic analogue of truncated Taylor series: algebraicRealsOfBoundedDegree d can be thought of as 'numbers algebraically describable by polynomials of complexity ≤ d'. As d → ∞, this exhausts all algebraic numbers. This is formalized in `algebraic_reals_eq_iUnion_bounded`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebraicRealsOfBoundedDegree",
+      "algebraicRealsOfDegree",
+      "bounded_degree_monotone",
+      "Set.Countable.mono",
+      "minpoly.natDegree"
+    ],
+    "prerequisites": [
+      "Algebraic.countable for the outer containment",
+      "Set.Countable.mono for inheritance to subsets"
+    ]
+  },
+  {
+    "id": "ann-algebraic-stratification",
+    "proofId": "algebraic-numbers-countable",
+    "range": {
+      "startLine": 171,
+      "endLine": 201
+    },
+    "type": "concept",
+    "title": "Degree Stratification: algebraic_reals_eq_iUnion_degree and the Alternative Countability Proof",
+    "content": "The degree stratification theorem `algebraic_reals_eq_iUnion_degree` proves:\n{x : ℝ | IsAlgebraic ℚ x} = ⋃ d : ℕ, algebraicRealsOfDegree d\n\nThe proof is a `by ext x; simp; constructor` argument:\n- **(→)**: Given IsAlgebraic ℚ x, take d = (minpoly ℚ x).natDegree. Then x ∈ algebraicRealsOfDegree d since natDegree(minpoly ℚ x) = d by rfl.\n- **(←)**: Given ⟨d, hx, _⟩, extract IsAlgebraic from hx.1 (the first component of the conjunction defining algebraicRealsOfDegree).\n\n`algebraic_reals_countable_via_strata` then uses this to give an alternative proof:\n```lean\nrw [algebraic_reals_eq_iUnion_degree]\nexact Set.countable_iUnion algebraicRealsOfDegree_countable\n```\n\n`Set.countable_iUnion` proves: if I is a countable index type (ℕ is Countable) and each A i is countable, then ⋃ i, A i is countable. Applied with A d = algebraicRealsOfDegree d (each countable by algebraicRealsOfDegree_countable), this gives the result.",
+    "mathContext": "**Cardinal arithmetic underlying the proof.** The lemma `Set.countable_iUnion` is the type-theoretic shadow of the classical cardinal identity $\\aleph_0 \\cdot \\aleph_0 = \\aleph_0$: a countable union of countable sets injects into $\\mathbb{N} \\times \\mathbb{N}$, which is countable by Cantor's pairing $\\langle m, n \\rangle \\mapsto \\binom{m+n+1}{2} + n$. Specialized here, $|\\{\\alpha \\in \\mathbb{R} : \\mathrm{IsAlgebraic}\\,\\mathbb{Q}\\,\\alpha\\}| = |\\bigcup_{d \\in \\mathbb{N}} \\mathrm{algebraicRealsOfDegree}\\,d| \\leq \\aleph_0 \\cdot \\aleph_0 = \\aleph_0$, and the lower bound $\\aleph_0$ comes from $\\mathbb{Q} \\subseteq$ algebraic reals (degree-1 stratum alone).\n\n**Why the index-type condition is essential — and not just a Mathlib technicality.** A union of uncountably many countable sets is generally uncountable: e.g., $\\mathbb{R} = \\bigcup_{x \\in \\mathbb{R}} \\{x\\}$ is a continuum-indexed union of singletons. `Set.countable_iUnion` requires `[Countable ι]` precisely because the cardinal bound $|\\bigcup_i A_i| \\leq |\\iota| \\cdot \\sup_i |A_i|$ degrades to $\\mathfrak{c}$ for $|\\iota| = \\mathfrak{c}$. The proof here threads this needle exactly: stratifying by degree gives an $\\mathbb{N}$-indexed union (good), but had the proof attempted to stratify by, say, the *splitting field* (a continuum-indexed parameter), the same union argument would fail. The choice of degree as the stratification index is what makes the cardinal arithmetic work, and any future generalization (e.g., to a different countable invariant like *height* of a minimal polynomial, à la Northcott's theorem) preserves this structural soundness as long as the index remains countable.\n\n**Mathlib's instance chain making `algebraicRealsOfDegree_countable` discharge.** The countability of each stratum decomposes as: (1) `Polynomial.degreeLT ℚ d` (the $\\mathbb{Q}$-vector space of polynomials of degree $< d$, $\\mathbb{Q}^d$-isomorphic) is countable via `Polynomial.countable_degreeLT`, which itself reduces to $\\mathbb{Q}$ countable + finite-product countability; (2) each polynomial has at most $d$ roots over an integral domain by `Polynomial.card_roots_le_degree`; (3) the image of a countable set under a finite-fiber map is countable (the union $\\bigcup_{p \\in \\text{polys}_{\\leq d}} p^{-1}(0)$ is then bounded by a countable index with finite fibers). The composition `countable × finite-fiber-map → countable` is mechanized as `Set.Countable.iUnion` in the finite-fiber case and is what discharges the per-stratum step.\n\n**Dual-smallness with the Baire category theorem.** Cardinality is one notion of 'small'; *meagerness* (countable union of nowhere-dense sets) is another. The algebraic reals are meager in $\\mathbb{R}$ as well as countable: each algebraic real is isolated from generic transcendentals in any open interval (the minimal-polynomial vanishing locus is finite, hence nowhere dense), so $\\bigcup_d \\mathrm{algebraicRealsOfDegree}\\,d$ is a countable union of nowhere-dense sets — meager. The transcendental reals are therefore *comeager* (residual): generic in both the measure-theoretic (Lebesgue-measure zero complement) and topological (residual) senses. The countable-iUnion structure in the Lean proof has the same shape as the meagerness proof — degree stratification is the canonical filtration witnessing both notions of smallness simultaneously.\n\n**Connection to Northcott's theorem and the Weil-Vojta height filtration.** A finer filtration than degree alone is height: the Weil absolute height $H(\\alpha) = \\prod_v \\max(|\\alpha|_v, 1)$ over a number field. Northcott (1949) proved that for any bounds $D, H$, the set $\\{\\alpha \\in \\overline{\\mathbb{Q}} : [\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\leq D, H(\\alpha) \\leq H\\}$ is *finite*. This gives an $\\mathbb{N} \\times \\mathbb{N}$-indexed exhaustion of $\\overline{\\mathbb{Q}}$ by finite sets — strictly stronger than this proof's $\\mathbb{N}$-indexed exhaustion by countable sets. Northcott's filtration is the modern Diophantine refinement: cardinality $\\aleph_0$ follows immediately ($\\aleph_0 \\cdot \\aleph_0 \\cdot \\aleph_0 = \\aleph_0$), but additionally yields *effective* enumeration with polynomial growth rate (key for transcendence theory and the Baker-style linear-forms-in-logarithms apparatus). The Lean proof's degree-only stratification is the *minimal* exhaustion that suffices for countability; height-stratification is the canonical *finer* exhaustion that supports both qualitative countability and quantitative Diophantine bounds.\n",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.countable_iUnion",
+      "algebraicRealsOfDegree",
+      "minpoly.natDegree",
+      "degree-stratification",
+      "countable index type",
+      "Sigma type",
+      "cardinal arithmetic",
+      "ω-indexed union",
+      "Cantor pairing function",
+      "Baire category theorem",
+      "meager sets in ℝ",
+      "Northcott theorem (1949)",
+      "Weil absolute height",
+      "transcendence theory",
+      "Polynomial.degreeLT countability"
+    ],
+    "prerequisites": [
+      "algebraicRealsOfDegree_countable",
+      "Set.countable_iUnion (for countable index type)",
+      "algebraic_reals_eq_iUnion_degree",
+      "aleph_0 · aleph_0 = aleph_0 cardinal arithmetic",
+      "Cantor pairing",
+      "Polynomial.card_roots_le_degree",
+      "Baire category dual-smallness perspective"
+    ]
+  },
+  {
+    "id": "ann-algebraic-via-strata-alternative-proof",
+    "proofId": "algebraic-numbers-countable",
+    "range": {
+      "startLine": 196,
+      "endLine": 201
+    },
+    "type": "insight",
+    "title": "One Theorem, Two Proofs: algebraic_reals_countable_via_strata as a Methodological Exhibit",
+    "content": "The four lines of `algebraic_reals_countable_via_strata` are not new mathematics — the theorem statement is **identical** to `algebraic_reals_countable` proved in §1. What is new is the *route*. The original (§1) is a one-line delegation to `Algebraic.countable ℚ ℝ`, treating Mathlib's general theorem as a black box. This alternative re-derives the same result from the degree stratification:\n\n```lean\ntheorem algebraic_reals_countable_via_strata :\n    Set.Countable {x : ℝ | IsAlgebraic ℚ x} := by\n  rw [algebraic_reals_eq_iUnion_degree]\n  exact Set.countable_iUnion algebraicRealsOfDegree_countable\n```\n\nThe pedagogical lesson: in formal mathematics, having *two independent proofs* of the same theorem is itself a result. It exposes the internal structure of the algebraic numbers (a countable union of countable strata indexed by degree), and it confirms that Mathlib's abstract `Algebraic.countable` is consistent with the constructive degree-by-degree count that Cantor used in 1874. Removing either proof would lose information: §1 gives the shortest road to a usable lemma; §4 gives the route a student or another formalization could re-walk from first principles.\n\nNote: `algebraic_reals_countable_via_strata` is technically redundant in the formal sense — its conclusion equals an already-proved theorem — but every formalization library values such redundant proofs for exactly this exposition-of-structure reason. Mathlib itself ships many `_via_*` lemmas for the same purpose.",
+    "mathContext": "The two proofs realise the dichotomy between **set-theoretic** (\\S 1: ${\\rm Alg}(\\mathbb{R}) = \\{x \\mid \\text{IsAlgebraic } \\mathbb{Q}\\ x\\}$ is countable by Mathlib's general statement) and **combinatorial** (\\S 4: ${\\rm Alg}(\\mathbb{R}) = \\bigcup_{d \\in \\mathbb{N}} \\text{alg}_d$, a countable union of countable strata). The latter is exactly Cantor's 1874 argument unpacked: enumerate by degree, then by polynomial within each degree. Both proofs ultimately rely on the same Mathlib fact $|\\mathbb{Q}[X]| = \\aleph_0$, but \\S 4 surfaces this dependence through the degree filtration whereas \\S 1 hides it inside $\\texttt{Algebraic.countable}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "alternative-proof",
+      "Set.countable_iUnion",
+      "algebraic_reals_eq_iUnion_degree",
+      "redundant-but-pedagogical-proof",
+      "Mathlib black-box vs first-principles",
+      "Cantor's 1874 enumeration"
+    ],
+    "prerequisites": [
+      "algebraic_reals_countable (§1) for comparison",
+      "algebraic_reals_eq_iUnion_degree (§4) as the rewrite step",
+      "Set.countable_iUnion from Mathlib.Data.Set.Countable"
+    ]
+  },
+  {
+    "id": "ann-algebraic-degree1-filtration",
+    "proofId": "algebraic-numbers-countable",
+    "range": {
+      "startLine": 207,
+      "endLine": 217
+    },
+    "type": "concept",
+    "title": "Degree 1 = Rationals and the Monotone Filtration ℚ ⊆ deg≤1 ⊆ deg≤2 ⊆ ...",
+    "content": "Section 5 establishes two structural facts about the degree stratification:\n\n**`rat_algebraic_degree_one`**: Every rational q ∈ ℚ is algebraic of degree 1:\n```lean\ntheorem rat_algebraic_degree_one (q : ℚ) :\n    IsAlgebraic ℚ (algebraMap ℚ ℝ q) := isAlgebraic_algebraMap q\n```\nThe proof is a single call to `isAlgebraic_algebraMap`, which states that any element mapped from the coefficient ring R into an R-algebra E via `algebraMap` is algebraic over R. For q ∈ ℚ mapped to ℝ, the minimal polynomial is X - q (degree 1), confirming degree exactly 1. This pins the bottom stratum: deg-1 ⊇ image(ℚ → ℝ).\n\n**`bounded_degree_monotone`**: The degree-bounded sets form a monotone chain:\n```lean\ntheorem bounded_degree_monotone (d : ℕ) :\n    algebraicRealsOfBoundedDegree d ⊆ algebraicRealsOfBoundedDegree (d + 1)\n```\nProof: if natDegree(minpoly x) ≤ d, then also ≤ d+1 by `Nat.le_succ_of_le`. This single-line proof establishes the filtration structure: the bounded-degree sets are nested ⋯ ⊆ B_d ⊆ B_{d+1} ⊆ ⋯ with exhaustive union (proved in §7). \n\nTogether, these give the chain: ℚ ≅ algebraicRealsOfDegree 1 ⊆ algebraicRealsOfBoundedDegree 1 ⊆ algebraicRealsOfBoundedDegree 2 ⊆ ⋯ ⊆ all algebraic, with each inclusion proper (e.g., ∛2 ∈ B_3 \\ B_2) and all having the same cardinality ℵ₀.",
+    "mathContext": "`isAlgebraic_algebraMap` is the Mathlib lemma: for any `Algebra R E`, `∀ r : R, IsAlgebraic R (algebraMap R E r)`. It works because r satisfies the polynomial X - algebraMap r, which has degree 1 and coefficient 1 ≠ 0. This is the cleanest way to connect ℚ-rationality to degree-1 algebraicity in Lean.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "isAlgebraic_algebraMap",
+      "algebraMap",
+      "bounded_degree_monotone",
+      "Nat.le_succ_of_le",
+      "degree-1-rationals"
+    ],
+    "prerequisites": [
+      "algebraicRealsOfBoundedDegree definition (§2)",
+      "Algebra R E typeclass",
+      "isAlgebraic_algebraMap from Mathlib.RingTheory.Algebraic.Basic"
+    ]
+  },
+  {
+    "id": "ann-algebraic-cardinality-paradox",
+    "proofId": "algebraic-numbers-countable",
+    "range": {
+      "startLine": 223,
+      "endLine": 235
+    },
+    "type": "concept",
+    "title": "Cardinal Paradox: Algebraic ≅ ℚ ≅ ℕ Despite Proper Containment ℕ ⊊ ℚ ⊊ Algebraic",
+    "content": "The theorem `card_algebraic_eq_card_rat` proves:\nCardinal.mk {x : ℝ // IsAlgebraic ℚ x} = Cardinal.mk ℚ\n\nProof:\n```lean\nrw [card_algebraic_reals_eq_aleph0, Cardinal.mk_denumerable]\n```\n\nBoth sides equal ℵ₀: the left by `card_algebraic_reals_eq_aleph0`, the right because ℚ is Denumerable (has an explicit bijection to ℕ), giving `Cardinal.mk ℚ = Cardinal.aleph0` via `mk_denumerable`.\n\nSimilarly `card_algebraic_eq_card_nat` gives |algebraic reals| = |ℕ|.\n\nThis formalizes the 'Hilbert Hotel' phenomenon for algebraic numbers: adding √2, √3, ∛2, and all other algebraic irrationals to ℚ doesn't change the cardinality. The proper containment ℕ ⊊ ℤ ⊊ ℚ ⊊ algebraic reals is real (no surjection in the other direction), but all these sets have the same infinite cardinality ℵ₀.\n\nThe logical structure: |algebraic| = ℵ₀ = |ℕ| = |ℤ| = |ℚ| ≠ |ℝ| = 2^ℵ₀ = |ℂ| = |transcendentals|.\n\n**Why this is the conceptual core of Cantor's 1874 theorem.** Cantor's December 1873 letter to Dedekind, and the resulting paper *Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen* (Crelle 77, 1874), introduces *two* theorems sequentially: (i) the algebraic numbers are countable; (ii) the real numbers are uncountable. The 1874 paper does *not* yet have the diagonal argument (that came in 1891); the 1874 uncountability proof uses the nested-intervals argument. The *combination* (i) + (ii) yields Cantor's first existence proof of transcendental numbers: since $|\\overline{\\mathbb{Q}}| = \\aleph_0 < 2^{\\aleph_0} = |\\mathbb{R}|$, the set $\\mathbb{R} \\setminus \\overline{\\mathbb{Q}}$ of *transcendental* reals is non-empty — in fact has cardinality $2^{\\aleph_0}$ (uncountably many transcendentals, only countably many algebraic). **This existence proof is non-constructive**: it certifies transcendentals exist without exhibiting any specific one. Liouville's 1844 explicit construction $\\sum_{n=1}^{\\infty} 10^{-n!} = 0.110001000…$ predated Cantor by 30 years and *did* exhibit specific transcendentals, but Cantor's cardinality argument established a far stronger conclusion: transcendentals are the *overwhelming majority* of real numbers in a precise cardinal-arithmetic sense.\n\n**The density paradox: countable but topologically everywhere.** Despite their countability, the algebraic reals are *dense* in $\\mathbb{R}$ — every open interval contains infinitely many algebraic numbers (in fact, infinitely many rationals, which are degree-1 algebraic). So $\\overline{\\mathbb{Q}} \\cap \\mathbb{R}$ is a *countable dense subset* of $\\mathbb{R}$, mirroring $\\mathbb{Q}$'s topological behavior. The complement $\\mathbb{R} \\setminus \\overline{\\mathbb{Q}}$ (the transcendentals) is *also* dense — a meager-in-the-Baire-sense (uncountably many) set sandwiching a meager (countable) set. This is the same phenomenon as $\\mathbb{R} = \\mathbb{Q} \\sqcup (\\mathbb{R} \\setminus \\mathbb{Q})$ where both halves are dense; here it's lifted from the $\\mathbb{Q}$/irrational split to the $\\overline{\\mathbb{Q}}$/transcendental split, with the *transcendental* irrationals as the genuinely-large complementary set.\n\n**Cardinal-arithmetic strength of ℵ₀ + Hilbert Hotel intuition.** The Hilbert Hotel (Hilbert's lecture, c. 1924) captures the surprise: a hotel with rooms 1, 2, 3, … fully occupied can still accommodate an extra guest (move occupant $n$ to room $n+1$) — or accommodate a *countably infinite bus* of new arrivals (move occupant $n$ to room $2n$, freeing all odd rooms) — because $\\aleph_0 + 1 = \\aleph_0 + \\aleph_0 = \\aleph_0$. The 'algebraic = rational + algebraic irrational' equation here is the *infinite-bus version*: each irreducible polynomial of degree $\\geq 2$ over $\\mathbb{Q}$ contributes at most $\\deg(p)$ new algebraic numbers to the rationals, and the countable union $\\bigcup_d \\bigcup_{p : \\text{degree } d} \\text{roots}(p)$ remains countable by the cardinal identity $\\aleph_0 \\cdot \\aleph_0 \\cdot \\aleph_0 = \\aleph_0$ (countable degrees, countably many polynomials per degree, finitely many roots per polynomial). The `iUnion_bounded` lemma (annotation `ann-algebraic-iUnion-bounded`) is the technical realization of this triple countable union.\n\n**Connection to the continuum hypothesis (CH).** Cantor's 1874 paper is the *birth* of the cardinal hierarchy $\\aleph_0 < 2^{\\aleph_0}$, and the question 'is there an intermediate cardinal $\\aleph_0 < \\kappa < 2^{\\aleph_0}$?' is precisely the *continuum hypothesis* he formulated in 1878. Cardinality of algebraic numbers fixes one end of the comparison: $|\\overline{\\mathbb{Q}}| = \\aleph_0$ is *exactly* the lower bound, and any countable subset of $\\mathbb{R}$ inherits this cardinality. By Gödel (1940, $\\text{Con(ZFC)} \\Rightarrow \\text{Con(ZFC + CH)}$) and Cohen (1963, $\\text{Con(ZFC)} \\Rightarrow \\text{Con(ZFC + }\\neg\\text{CH)}$), CH is *independent* of ZFC. The Lean formalization here cannot decide CH — it lives in the cardinal arithmetic Lean inherits from ZFC, where $2^{\\aleph_0}$ remains opaque — but the inequality $|\\overline{\\mathbb{Q}}| = \\aleph_0 < 2^{\\aleph_0}$ is provable from ZFC alone (Cantor's diagonal theorem), and this file formalizes the $\\aleph_0$ side of it. The transcendental-existence corollary follows from any model of ZFC, independently of how CH is decided in that model.\n\n**Pedagogical placement.** This annotation is *the* result that conveys why Cantor's theorem matters — not just 'algebraic numbers are countable as a curiosity' but 'algebraic numbers are countable, transcendentals exist, the continuum is strictly larger than any explicitly-constructible number system'. The gallery cross-references `cantors-theorem` (uncountability of $\\mathbb{R}$, the matching upper bound) and `liouville-theorem` (explicit transcendental construction) form the complete triangle with this entry; all three together establish the existence and abundance of transcendentals from independent angles — cardinality (Cantor 1874), diophantine approximation (Liouville 1844), and transcendence proofs for specific numbers like $e$ (Hermite 1873) and $\\pi$ (Lindemann 1882) that the gallery formalizes in `hermite-lindemann`.",
+    "mathContext": "Cardinal.mk_denumerable states: for any type α with [Denumerable α], Cardinal.mk α = Cardinal.aleph0. A type is Denumerable if it has a bijection to ℕ. ℚ is Denumerable (proved via the Cantor pairing function on ℤ × ℕ). This gives the cardinality equality without constructing an explicit bijection between algebraic reals and ℚ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.mk_denumerable",
+      "Cardinal.aleph0",
+      "Denumerable-ℚ",
+      "Cardinal-arithmetic",
+      "Hilbert-Hotel (Hilbert 1924 lecture)",
+      "Cantor-Bernstein-Schroeder theorem",
+      "countable dense order",
+      "ℵ₀ arithmetic (ℵ₀ + n = ℵ₀, ℵ₀ · ℵ₀ = ℵ₀)",
+      "cardinality of power set (2^ℵ₀)",
+      "Cantor 1874 transcendental-existence corollary",
+      "Liouville 1844 explicit transcendentals (Σ 10⁻ⁿ!)",
+      "continuum hypothesis (Cantor 1878 / Gödel 1940 / Cohen 1963)",
+      "topological density of countable sets in ℝ",
+      "Baire category and meager sets",
+      "Hermite (1873) e transcendental",
+      "Lindemann (1882) π transcendental",
+      "cardinal independence from ZFC"
+    ],
+    "prerequisites": [
+      "card_algebraic_reals_eq_aleph0",
+      "Cardinal.mk_denumerable from Logic.Denumerable",
+      "Rat.instDenumerable",
+      "Cantor's diagonal theorem (|2^ℵ₀| > ℵ₀)",
+      "ZFC cardinal arithmetic",
+      "topological notion of density",
+      "Baire category theorem",
+      "concept of constructive vs non-constructive existence proof"
+    ]
+  },
+  {
+    "id": "ann-algebraic-iUnion-bounded",
+    "proofId": "algebraic-numbers-countable",
+    "range": {
+      "startLine": 241,
+      "endLine": 254
+    },
+    "type": "concept",
+    "title": "Exhaustive Filtration: algebraic_reals_eq_iUnion_bounded Closes the Loop",
+    "content": "`algebraic_reals_eq_iUnion_bounded` proves:\n{x : ℝ | IsAlgebraic ℚ x} = ⋃ d : ℕ, algebraicRealsOfBoundedDegree d\n\nThis is the bounded-degree analogue of `algebraic_reals_eq_iUnion_degree` (§4). The proof mirrors the exact-degree version:\n```lean\next x; simp only [Set.mem_setOf_eq, Set.mem_iUnion, algebraicRealsOfBoundedDegree]\nconstructor\n· intro hx\n  exact ⟨(minpoly ℚ x).natDegree, hx, le_refl _⟩\n· rintro ⟨d, hx, -⟩\n  exact hx\n```\nThe key difference from the exact-degree version: the witness is d = natDegree(minpoly ℚ x), and the degree bound is `le_refl _` (natDegree ≤ natDegree) rather than `rfl` (natDegree = natDegree). This is a minor change but correctly matches the `≤` vs `=` distinction in the two set definitions.\n\nTogether with `bounded_degree_monotone` (§5), this closes the loop: the monotone chain B_0 ⊆ B_1 ⊆ B_2 ⊆ ⋯ exhausts all algebraic numbers. The section ends with `end AlgebraicNumbersCountable`, closing the namespace opened at line 68.",
+    "mathContext": "The two union theorems — exact-degree and bounded-degree — are related by: ⋃ d, algebraicRealsOfDegree d = ⋃ d, algebraicRealsOfBoundedDegree d (both equal the algebraic reals). This is consistent because algebraicRealsOfBoundedDegree d = ⋃_{k=0}^{d} algebraicRealsOfDegree k, so the two unions have the same limit. The bounded-degree filtration is coarser (each B_d contains multiple exact strata) but has nicer topological properties.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "algebraicRealsOfBoundedDegree",
+      "algebraic_reals_eq_iUnion_degree",
+      "bounded_degree_monotone",
+      "Set.mem_iUnion",
+      "le_refl"
+    ],
+    "prerequisites": [
+      "algebraicRealsOfBoundedDegree definition (§2)",
+      "algebraic_reals_eq_iUnion_degree (§4) for comparison",
+      "bounded_degree_monotone (§5) for filtration structure"
+    ]
+  }
+]

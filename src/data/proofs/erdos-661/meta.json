@@ -1,0 +1,156 @@
+{
+  "id": "erdos-661",
+  "title": "Erdős Problem #661: Bipartite Distinct Distances",
+  "slug": "erdos-661",
+  "description": "Do there exist point sets x₁,...,xₙ and y₁,...,yₙ in ℝ² with o(n/√log n) distinct bipartite distances? Is F(2n) = o(f(2n))? In ℝ⁴ all distances can be equal (Lenz). $50 reward. Open.",
+  "meta": {
+    "erdosNumber": 661,
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos661Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "distances",
+      "discrete-geometry",
+      "open"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/661",
+    "erdosUrl": "https://erdosproblems.com/661",
+    "erdosProblemStatus": "open",
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "lineCount": 164,
+    "assumptions": "0 `axiom` declarations and 0 sorries. F(2n) and f(2n) are declared as `opaque` constants with concrete bodies (`:= fun _ => 0`); being sealed definitions with a fixed value they assert nothing and carry no assumption. The deep results (the F(2n) = o(f(2n)) conjecture, the Guth–Katz lower bound, and the lattice upper bound) appear only as informal comments and are NOT formalized. The verified mathematical content is the elementary distance-squared infrastructure, the bipartite-distance-set cardinality bound, and the Lenz construction in ℝ⁴ (all bipartite distances equal √2), all fully proved.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 9
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Part I: Imports and Setup",
+      "startLine": 20,
+      "endLine": 23,
+      "summary": "Imports `Mathlib.Data.Nat.Basic`, `Mathlib.Data.Real.Basic`, `Mathlib.Data.Finset.Basic`, and `Mathlib.Tactic` for arithmetic, real analysis, finite sets, and proof tactics.",
+      "mathContext": "Verified: Imports `Mathlib.Data.Nat.Basic`, `Mathlib.Data.Real.Basic`, `Mathlib.Data.Finset.Basic`, and `Mathlib.Tactic` for arithmetic, real analysis, finite sets, and proof tactics."
+    },
+    {
+      "id": "point-distance",
+      "title": "Part II: Points and Distance",
+      "startLine": 28,
+      "endLine": 37,
+      "summary": "Defines $\\text{Point2} = \\mathbb{R} \\times \\mathbb{R}$ and squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$. The bipartite distance set $\\text{bipartiteDistSet}(X,Y) = \\{d^2(x,y) \\mid x \\in X, y \\in Y\\}$ captures all cross-pair distances.",
+      "mathContext": "Defines $\\text{Point2} = \\mathbb{R} \\times \\mathbb{R}$ and squared Euclidean distance $d^2(p,q) = (p_1 - q_1)^2 + (p_2 - q_2)^2$. The bipartite distance set $\\text{bipartiteDistSet}(X,Y) = \\{d^2(x,y) \\mid x \\in X, y \\in Y\\}$ captures all cross-pair distances."
+    },
+    {
+      "id": "extremal-functions",
+      "title": "Part III: Extremal Functions F(2n) and f(2n)",
+      "startLine": 38,
+      "endLine": 45,
+      "summary": "Declares $F(2n)$ (the minimum bipartite distinct distances between two $n$-point sets) and $f(2n)$ (the minimum over all $2n$-point sets) as `opaque` placeholder constants with body `:= fun _ => 0`, since their exact values are unknown. These are sealed definitions, not axioms — they assert nothing. The central question is whether $F(2n) = o(f(2n))$.",
+      "mathContext": "Declares $F(2n)$ and $f(2n)$ as `opaque` placeholder constants (`:= fun _ => 0`), since their exact values are unknown. These are sealed definitions, not axioms, and assert nothing."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part IV: The Erdős–Pach Conjecture",
+      "startLine": 46,
+      "endLine": 55,
+      "summary": "States the main conjecture in an informal source comment: $\\forall \\varepsilon > 0, \\exists N_0$ such that $n \\ge N_0 \\Rightarrow F(2n) \\le \\varepsilon \\cdot f(2n)$. This is NOT formalized as a Lean declaration — it is documented as prose only.",
+      "mathContext": "States the main conjecture as an informal source comment ($F(2n) = o(f(2n))$). It is NOT formalized as a Lean declaration."
+    },
+    {
+      "id": "guth-katz",
+      "title": "Part V: Guth–Katz Lower Bound",
+      "startLine": 56,
+      "endLine": 64,
+      "summary": "Documents, as an informal source comment, the landmark Guth–Katz (2015) result $f(2n) \\ge C \\cdot n / \\log n$ for some constant $C > 0$. This essentially resolved Erdős's distinct distances problem (Problem #89) and sets the benchmark for the bipartite variant. It is described in prose only and is NOT formalized as a Lean declaration.",
+      "mathContext": "Documents the Guth–Katz (2015) result $f(2n) \\ge C \\cdot n / \\log n$ as an informal source comment. It is NOT formalized as a Lean declaration."
+    },
+    {
+      "id": "lattice-upper",
+      "title": "Part VI: Lattice Upper Bound",
+      "startLine": 65,
+      "endLine": 71,
+      "summary": "Documents, as an informal source comment, the lattice upper bound $f(2n) \\le C \\cdot n / \\sqrt{\\log n}$, achieved by the integer lattice $\\{1,\\ldots,\\sqrt{n}\\}^2$. The gap between $n/\\log n$ and $n/\\sqrt{\\log n}$ remains open even for general point sets. It is described in prose only and is NOT formalized as a Lean declaration.",
+      "mathContext": "Documents the lattice upper bound $f(2n) \\le C \\cdot n / \\sqrt{\\log n}$ as an informal source comment. It is NOT formalized as a Lean declaration."
+    },
+    {
+      "id": "lenz-construction",
+      "title": "Part VII: Lenz Construction in ℝ⁴ (Verified)",
+      "startLine": 122,
+      "endLine": 164,
+      "summary": "Formalizes and verifies Lenz's construction in $\\mathbb{R}^4$. Defines $\\text{Point4} = (\\mathbb{R}^2) \\times (\\mathbb{R}^2)$, squared distance $d_4^2$, and two orthogonal unit circles $C_1(\\theta) = (\\cos\\theta, \\sin\\theta, 0, 0)$, $C_2(\\phi) = (0, 0, \\cos\\phi, \\sin\\phi)$. Proves $d_4^2(C_1(\\theta), C_2(\\phi)) = 2$ for all $\\theta, \\phi$ (so all bipartite distances equal $\\sqrt{2}$, giving $F_4(2n) = 1$). Also proves both circles have unit norm. All 3 theorems fully verified (0 sorries).",
+      "mathContext": "Verified: Lenz's theorem that two orthogonal unit circles in $\\mathbb{R}^4$ produce constant bipartite distance $\\sqrt{2}$. Proof uses the Pythagorean identity $\\sin^2\\theta + \\cos^2\\theta = 1$."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Pach posed Problem #661 around 1990, asking whether bipartite point configurations in ℝ² can have asymptotically fewer distinct cross-distances than general configurations. The question is deeply connected to the celebrated Erdős distinct distances problem (Problem #89), essentially resolved by Guth and Katz in 2015 using the polynomial method and algebraic geometry of ruled surfaces. Their proof showed f(2n) ≥ Ω(n/log n), matching the lattice upper bound f(2n) ≤ O(n/√(log n)) up to a √(log n) factor. For the bipartite variant, Lenz demonstrated that in ℝ⁴, placing points on two orthogonal circles yields F(2n) = 1 — a maximal saving. Whether any analogous saving is possible in ℝ² remains completely open, making this one of the outstanding problems in combinatorial geometry. The problem connects to the Szemerédi–Trotter incidence theorem, Elekes–Rónyai type results on expanding polynomials, and the sum-product phenomenon.",
+    "problemStatement": "Do there exist point sets x₁,...,xₙ and y₁,...,yₙ in ℝ² such that the number of distinct distances d(xᵢ,yⱼ) is o(n/√(log n))?",
+    "text": "Do there exist point sets x₁,...,xₙ and y₁,...,yₙ in ℝ² with o(n/√log n) distinct bipartite distances? Is F(2n) = o(f(2n))? In ℝ⁴ all distances can be equal (Lenz). $50 reward. Open.",
+    "proofStrategy": "We define ℝ² points and squared Euclidean distance, then construct the bipartite distance set via Finset product and prove its elementary properties (non-negativity, symmetry, the cardinality bound, monotonicity). The extremal functions F(2n) and f(2n) are declared as `opaque` placeholder constants (sealed value 0), since their exact values are unknown. The deep results — the F(2n) = o(f(2n)) conjecture, the Guth–Katz lower bound, and the lattice upper bound — are recorded only as informal comments and are NOT formalized. The single substantive formalized result is Lenz's ℝ⁴ construction: two orthogonal unit circles whose every bipartite distance equals √2 (so F₄(2n) = 1), proved with 0 axioms and 0 sorries.",
+    "keyInsights": [
+      "**Guth–Katz polynomial method**: Their 2015 proof that $f(2n) \\ge \\Omega(n/\\log n)$ used the Elekes–Sharir framework, reducing distinct distances to counting point-line incidences in 3D, then bounding these via algebraic geometry of ruled surfaces",
+      "**Lenz construction in $\\mathbb{R}^4$**: Two orthogonal unit circles in $\\mathbb{R}^4$ yield $F(2n) = 1$, showing that dimensional constraints are essential — the problem is specifically about $\\mathbb{R}^2$",
+      "**Lattice gap**: The integer lattice $\\{1,\\ldots,\\sqrt{n}\\}^2$ gives $f(2n) \\le O(n/\\sqrt{\\log n})$ via Landau's theorem on sums of two squares, leaving a $\\sqrt{\\log n}$ gap with the Guth–Katz lower bound",
+      "**Bipartite structure**: Restricting to cross-distances eliminates the 'diagonal' pairs $d(x_i,x_j)$, potentially allowing geometric configurations that exploit this constraint for fewer distinct values",
+      "**Connection to incidence geometry**: The problem is equivalent to asking about point-curve incidences where the curves are distance circles, linking it to the Szemerédi–Trotter theorem and sum-product estimates"
+    ],
+    "prerequisites": [
+      "Combinatorial geometry (incidence bounds, configurations)",
+      "Discrete geometry (point-line incidences, arrangements)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #661 asks whether the bipartite structure can reduce the number of distinct distances below the general Guth–Katz threshold in ℝ². This entry provides verified infrastructure (squared-distance properties, the bipartite-distance-set cardinality bound) and a full formalization of the Lenz construction in ℝ⁴, which shows all bipartite distances can be made equal (F₄(2n) = 1). The extremal functions F(2n) and f(2n) are opaque placeholders, and the Guth–Katz lower bound, lattice upper bound, and the main conjecture are recorded as background commentary rather than formalized. The problem remains fully open in the plane.",
+    "implications": "**Theoretical Significance**: Resolving this would clarify whether bipartite point configurations have fundamentally different distance properties than general configurations.\n\nA positive answer (F(2n) = o(f(2n))) would reveal hidden structure in bipartite geometry; a negative answer would suggest the Guth–Katz bound is universal. Either way, the result would impact incidence geometry, additive combinatorics, and the sum-product phenomenon.",
+    "openQuestions": [
+      "Is F(2n) = o(f(2n)) in ℝ²? Even a single construction beating the lattice bound would be significant",
+      "What is the correct order of magnitude of F(2n)? Could it be as low as O(n^c) for some c < 1?",
+      "Does the Lenz phenomenon partially extend to ℝ³ — can F(2n) in ℝ³ be O(1)?",
+      "Can techniques from the polynomial method (used for Guth–Katz) be adapted to the bipartite setting?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 164,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos661Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Erdős–Pach (1990): bipartite distinct distances problem",
+    "Guth–Katz (2015): f(2n) ≳ n/log n for general point sets",
+    "Lenz: ℝ⁴ construction with one bipartite distance",
+    "https://erdosproblems.com/661"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, discrete-geometry, open"
+    },
+    {
+      "targetId": "erdos-1087",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distances, open"
+    },
+    {
+      "targetId": "erdos-503",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, distances, open"
+    }
+  ],
+  "sorries": 0
+}

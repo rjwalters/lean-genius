@@ -1,0 +1,190 @@
+{
+  "id": "erdos-472",
+  "title": "Erdős Problem #472: Ulam Prime Sequences",
+  "slug": "erdos-472",
+  "description": "Given an initial finite sequence of primes, extend by taking q_{n+1} as the smallest prime of the form q_n + q_i − 1. Does there exist a seed making the sequence infinite? Starting with 3, 5 gives 3, 5, 7, 11, 13, 17, …",
+  "meta": {
+    "author": "Ulam (attributed by Erdős)",
+    "sourceUrl": "https://erdosproblems.com/472",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos472Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "sequences",
+      "greedy-algorithms",
+      "ulam"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 472,
+    "erdosUrl": "https://erdosproblems.com/472",
+    "erdosProblemStatus": "open",
+    "axiomCount": 1,
+    "lineCount": 327,
+    "assumptions": "1 axiom: ulam35_contains_all_odd_primes_conjecture. See Lean source for the complete statement.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 30,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "This problem originated with Stanisław Ulam and appears in the Erdős–Graham collection (1980). Ulam studied iterative constructions on number sequences extensively, including his famous Ulam numbers (integers uniquely representable as sums of two earlier terms). Problem 472 applies a related greedy principle specifically to primes: given a finite seed of primes, extend by always choosing the smallest prime of the form q_n + q_i − 1. The shift by −1 (rather than plain addition) creates a subtle parity structure: when both operands are odd, the candidate is odd and hence potentially prime. The seed [3, 5] produces the sequence 3, 5, 7, 11, 13, 17, 19, 23, ... which computationally matches all odd primes through 23. Whether any seed produces an infinite sequence remains open. The problem connects to questions about additive bases among primes, Goldbach-type phenomena, and the distribution of primes in arithmetic progressions.",
+    "problemStatement": "Given primes q₁ < … < qₘ, define q_{n+1} as the smallest prime of the form qₙ + qᵢ − 1 for i ≤ n. Does there exist a seed such that the sequence never terminates?",
+    "text": "Given an initial finite sequence of primes, extend by taking q_{n+1} as the smallest prime of the form q_n + q_i − 1. Does there exist a seed making the sequence infinite? Starting with 3, 5 gives 3, 5, 7, 11, 13, 17, …",
+    "proofStrategy": "The formalization provides both an abstract specification (IsUlamPrimeSeq with four conjuncts: seed matching, primality, monotonicity, minimality) and a computable implementation (ulamNextCandidate, ulamStep, ulamExtend). The computable version is validated against the abstract specification via native_decide proofs that verify the first 8 terms. Structural theorems establish parity properties explaining why odd seeds are superior, and a gap bound showing consecutive terms differ by at least 2. The strongest conjecture—that [3,5] contains all odd primes—is axiomatized separately.",
+    "keyInsights": [
+      "**Parity structure**: The −1 shift ensures odd + odd − 1 = odd, so all-odd seeds produce exclusively odd candidates, maximizing the chance of primality",
+      "**Seed 2 is toxic**: For p ≥ 3, the candidate p + 2 − 1 = p + 1 is always even, contributing zero useful candidates—formally proved in the file",
+      "**Self-candidate 2p − 1**: Using q_i = q_n gives the Mersenne-like 2p − 1, guaranteeing at least one odd candidate at each step (though not necessarily prime)",
+      "**Computational evidence**: The first 8 terms from [3, 5] are exactly the odd primes 3, 5, 7, 11, 13, 17, 19, 23—all verified by native_decide",
+      "**Gap bound**: Consecutive terms differ by at least 2 (except possibly 2 → 3), constraining the growth rate to at least linear in n"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "States Erdős Problem #472 (Ulam prime sequences, due to Ulam). Given primes $q_1<\\cdots<q_m$, extend so $q_{n+1}$ is the smallest prime of the form $q_n+q_i-1$ ($i\\leq n$); does some seed give an infinite sequence? Example: $3,5\\to3,5,7,11,13,17,\\dots$. Imports Mathlib.",
+      "mathContext": "Extension: $q_{n+1}=\\min\\{$prime $q_n+q_i-1:i\\leq n\\}$. Infinite for some seed?"
+    },
+    {
+      "id": "ulam-extension",
+      "title": "Ulam Prime Extension",
+      "startLine": 18,
+      "endLine": 41,
+      "summary": "Defines `IsCandidateNext` (a candidate $p=\\text{last}+q-1$ that is prime, $q$ in the sequence) and `IsUlamPrimeSeq seed f` (the seed matches, all values prime, strictly increasing, and each $f(n+1)$ is the smallest prime of the form $f(n)+f(i)-1$).",
+      "mathContext": "`IsUlamPrimeSeq`: seed-matching, prime, increasing, minimal-prime extension rule."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 42,
+      "endLine": 52,
+      "summary": "Defines `ErdosProblem472`: there exists a finite seed of $\\geq2$ distinct primes whose Ulam extension produces an infinite sequence.",
+      "mathContext": "$\\exists$ seed of primes, $|seed|\\geq2$, sorted, with an infinite Ulam sequence."
+    },
+    {
+      "id": "known-example",
+      "title": "Known Example: Seed [3, 5]",
+      "startLine": 53,
+      "endLine": 67,
+      "summary": "Defines `ulamSeed35 = [3,5]` and PROVES its basic properties (`ulamSeed35_prime`, `_sorted`, `_length`) by `decide`. Conjectured to generate the infinite sequence $3,5,7,11,13,17,\\dots$.",
+      "mathContext": "Seed $[3,5]$: primes, sorted, length $\\geq2$."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 68,
+      "endLine": 112,
+      "summary": "PROVES `candidate_self_odd` ($2f(n)-1$ is odd), `ulam_seq_ge_two` (all terms $\\geq2$), and `ulam_seq_gap` (consecutive terms differ by $\\geq2$, except the $2\\to3$ case).",
+      "mathContext": "$f(n+1)\\geq f(n)+2$ (or $f(n)=2,f(n+1)=3$)."
+    },
+    {
+      "id": "computable-step",
+      "title": "Computable Ulam Step Function",
+      "startLine": 113,
+      "endLine": 139,
+      "summary": "Defines the computable machinery: `listMin`, `ulamNextCandidate` (minimum prime candidate $\\text{last}+q-1>\\text{last}$), `ulamStep` (extend by one), and `ulamExtend` (extend by $n$ steps).",
+      "mathContext": "`ulamNextCandidate`/`ulamStep`/`ulamExtend`: executable extension for `native_decide`."
+    },
+    {
+      "id": "computational-verification",
+      "title": "Computational Verification of {3, 5}",
+      "startLine": 140,
+      "endLine": 168,
+      "summary": "PROVES (by `native_decide`) the early terms `ulam35_term2/3/4/5` ($7,11,13,17$) and `ulam35_first_terms` ($\\text{ulamExtend}\\,4\\,[3,5]=[3,5,7,11,13,17]$).",
+      "mathContext": "$[3,5]\\to[3,5,7,11,13,17]$ (computed)."
+    },
+    {
+      "id": "structural-observations",
+      "title": "Structural Observations (Parity)",
+      "startLine": 169,
+      "endLine": 197,
+      "summary": "PROVES parity facts: `candidates_odd_of_odd` (odd+odd-1 is odd), `seed_two_gives_even` (the seed element $2$ gives even, hence non-prime, candidates), and `odd_candidate_from_odd` (odd seeds give odd candidates) — explaining why odd seeds are preferred.",
+      "mathContext": "Odd $p,q\\Rightarrow p+q-1$ odd; seed element $2$ gives even (never prime) candidates."
+    },
+    {
+      "id": "further-extensions",
+      "title": "Further Extensions",
+      "startLine": 198,
+      "endLine": 215,
+      "summary": "PROVES more computed terms: `ulam35_term6/7` ($19,23$), `ulam35_extends_8` ($\\text{ulamExtend}\\,6\\,[3,5]=[3,5,7,11,13,17,19,23]$), and that the first 8 terms are prime (`ulam35_all_prime_8`) and increasing (`ulam35_increasing_8`).",
+      "mathContext": "$[3,5]$ extends to $[3,5,7,11,13,17,19,23]$ (8 terms, all prime, increasing)."
+    },
+    {
+      "id": "general-bounds",
+      "title": "General Structural Bounds",
+      "startLine": 216,
+      "endLine": 255,
+      "summary": "PROVES, for any Ulam sequence from a seed with all primes $\\geq3$: `ulam_seq_ge_three` (every term $\\geq3$), `ulam_seq_ne_two` (no term is $2$), and `ulam_seq_odd` (every term is odd). Plus `ulam35_seed_ge_three`.",
+      "mathContext": "Seed $\\geq3\\Rightarrow$ all terms $\\geq3$, $\\neq2$, odd."
+    },
+    {
+      "id": "growth-observation",
+      "title": "Growth Observation",
+      "startLine": 256,
+      "endLine": 264,
+      "summary": "States the AXIOM `ulam35_contains_all_odd_primes_conjecture`: every odd prime eventually appears in the $\\{3,5\\}$ Ulam extension. If true, this gives infiniteness. OPEN.",
+      "mathContext": "Axiom (conjecture): every odd prime appears in the $\\{3,5\\}$ Ulam sequence."
+    },
+    {
+      "id": "step-analysis",
+      "title": "Step Analysis via Seed Elements",
+      "startLine": 265,
+      "endLine": 327,
+      "summary": "PROVES structural step results for the $\\{3,5\\}$ sequence: `ulam35_f0_eq_three`/`_f1_eq_five`, `ulam35_gap_ge_two`, that $3$ and $5$ stay in the candidate list (`ulam35_three_in_ofFn`/`_five_in_ofFn`), and the prime-gap steps `ulam35_twin_prime_step` ($f(n)+2$ prime $\\Rightarrow f(n+1)=f(n)+2$, via $3$ always present) and `ulam35_cousin_prime_upper` ($f(n)+4$ prime $\\Rightarrow f(n+1)\\leq f(n)+4$, via $5$).",
+      "mathContext": "$f(0)=3,f(1)=5$; twin: $f(n)+2$ prime$\\Rightarrow f(n+1)=f(n)+2$; cousin: $f(n)+4$ prime$\\Rightarrow f(n+1)\\leq f(n)+4$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization of Erdős Problem 472 provides both an abstract specification and computable implementation of Ulam's prime sequence extension rule. The parity analysis reveals why odd seeds are structurally superior: the −1 shift preserves oddness, while seed element 2 contributes only even (hence composite) candidates. Computational verification through 8 terms shows the [3, 5] sequence matching all odd primes up to 23, but whether any seed produces an infinite sequence remains open.",
+    "implications": "**Theoretical Significance**: Resolution would connect additive combinatorics of primes with greedy algorithm termination theory.\n\nIf the [3, 5] sequence indeed contains all odd primes, this would establish a new additive characterization of the prime sequence. The problem also relates to questions about additive bases: is the set of primes a 'shifted additive basis' for itself?.",
+    "openQuestions": [
+      "Does the seed [3, 5] produce an infinite sequence, and does it contain all odd primes?",
+      "For seeds that terminate, what is the maximum achievable sequence length as a function of seed size?",
+      "Is there a seed of size > 2 that produces a longer or denser sequence than [3, 5]?",
+      "Can the growth rate of the [3, 5] sequence be shown to match the prime-counting function π(x)?",
+      "Does parity analysis alone (all candidates odd) suffice to prove non-termination, or are deeper number-theoretic inputs needed?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 327,
+    "axiomCount": 1,
+    "theoremCount": 30,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos472Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
+    },
+    {
+      "targetId": "erdos-1101",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
+    }
+  ],
+  "sorries": 0
+}

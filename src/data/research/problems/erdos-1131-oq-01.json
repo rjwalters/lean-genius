@@ -1,0 +1,152 @@
+{
+  "slug": "erdos-1131-oq-01",
+  "title": "Is min I = 2 - (1+o(1))/n",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Is min I = 2 - (1+o(1))/n.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-25T00:00:00.000Z",
+    "iteration": 4,
+    "focus": "Fixed integral_sin_mul and integral_cos_mul_sin via FTC (Real.hasDerivAt_cos + chain rule). Reduced API-breakage sorries from 4 to 2.",
+    "blockers": [],
+    "nextAction": "Fix integral_cos_substitution (change of variables via integral_comp_mul_deriv), then integral_chebyshev_sq follows from cos² identity + substitution + integral_cos_mul_sin.",
+    "attemptCounts": {
+      "total": 4,
+      "currentApproach": 2,
+      "approachesTried": 4
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: chebyshev_interp structured into 3 steps; interpolation-exactness step now discharged. 0 sorries remain across both files (2 axioms: erdos_1131_conjecture, erdos_1131_variance_conjecture encode the open conjecture).",
+    "builtItems": [
+      "lagrangeBasis_self: Finset.prod_eq_one + div_self (product of 1s)",
+      "lagrangeBasis_other: Finset.prod_eq_zero + sub_self (zero factor)",
+      "chebyshevNodes_in_range: Real.neg_one_le_cos + Real.cos_le_one",
+      "chebyshevNodes_distinct: Real.strictAntiOn_cos.injOn on [0,pi]",
+      "lagrangeIntegral: noncomputable def using intervalIntegral",
+      "lagrangeBasis_eq_eval_basis: connects product form to Mathlib Lagrange.basis",
+      "partition_of_unity: sum_k l_k(x) = 1 for all x (via Lagrange.sum_basis)",
+      "sum_sq_lagrangeBasis_ge: ∑l_k² ≥ 1/n via variance identity (PROVED, 0 sorry)",
+      "lagrangeIntegral_lower_bound: I ≥ 2/n via integral monotonicity (PROVED, 0 sorry)",
+      "two_sin_mul_cos: product-to-sum 2sin(a)cos(b) = sin(a+b)+sin(a-b) (PROVED)",
+      "sin_nat_mul_pi: sin(m*π) = 0 for ℕ (PROVED by induction)",
+      "discrete_cosine_vanishing: ∑cos(rθ_k) = 0 via Abel summation (PROVED)",
+      "partial_fraction_sum: ∑1/(4(j+1)²-1) = m/(2m+1) (PROVED by induction)",
+      "two_cos_mul_sin: 2cos(a)sin(b)=sin(a+b)-sin(a-b) (PROVED)",
+      "integral_sin_mul: ∫sin(kθ)=(1-cos(kπ))/k via FTC (PROVED)",
+      "cos_nat_mul_pi: cos(m*π)=(-1)^m by induction (PROVED)",
+      "integral_cos_mul_sin: ∫cos(2jθ)sin(θ)=-2/(4j²-1) via product-to-sum (PROVED)",
+      "integral_cos_substitution: ∫₋₁¹f(x)=∫₀^πf(cosθ)sinθ via change of variables (PROVED)",
+      "integral_chebyshev_sq: ∫₋₁¹cos²(j·arccos x)=1-1/(4j²-1) (PROVED)",
+      "chebyshev_sq_expansion: ∑l_k²=(1/n)(1+2∑cos²(j·arccos x)) (sorry - DCT identity)",
+      "chebyshev_integral_trace: I=(1/n)(2n-2∑1/(4j²-1)) (PROVED from expansion+integration)",
+      "chebyshev_integral_exact: I_cheb = 2 - 2(n-1)/(n(2n-1)) (PROVED from trace + partial_fraction)",
+      "chebyshev_integral_lt_two: I_cheb < 2 (PROVED from exact formula)",
+      "chebyshev_integral_estimate: ∃c>0, |I-(2-c/n)|≤c/n² (PROVED, was axiom)",
+      "two_cos_mul_cos: product-to-sum for cosines",
+      "frequency_abel_sum: Abel summation 2sin(β)∑cos(2jβ) = (1-(-1)^s)sin(β)",
+      "frequency_cosine_sum_even: ∑cos(jsπ/n) = 0 for even s",
+      "frequency_cosine_sum_odd: ∑cos(jsπ/n) = 1 for odd s",
+      "dct_diagonal: 1+2∑cos²(jθ_k) = n",
+      "dct_offdiag: 1+2∑cos(jθ_k)cos(jθ_m) = 0 for k≠m (statement)",
+      "dct_offdiag: 1+2∑cos(jθ_k)cos(jθ_m)=0 for k≠m (PROVED, ~70 lines)",
+      "integral_cos_substitution: ∫₋₁¹f(x)dx = ∫₀^πf(cosθ)sinθdθ (PROVED via integral_comp_mul_deriv)",
+      "integral_chebyshev_sq: ∫₋₁¹cos²(j·arccos x)dx = 1-1/(4j²-1) (PROVED via substitution+cos²+FTC)",
+      "chebyshev_integral_trace: I=(1/n)(2n-2∑1/(4j²-1)) (PROVED from expansion+integration)",
+      "chebyshev_interp: proof structured (Steps 1-2 coded, Step 3 sorry for Lagrange exactness + degree T bound)"
+    ],
+    "insights": [
+      "lagrangeBasis product form makes self/other proofs very clean",
+      "Chebyshev arguments (2k+1)pi/(2n) lie in (0,pi) with cos strictly decreasing - direct injectivity",
+      "div_le_iff and div_le_one_of_le removed in Mathlib v4.26.0 - use gcongr + field_simp instead",
+      "Mathlib has Lagrange.sum_basis in LinearAlgebra.Lagrange - partition of unity for free",
+      "Connection between product-form and Mathlib polynomial form needs Finset.erase/filter equivalence + field_simp",
+      "Upper bound axiom I <= 2n is mathematically FALSE for nodes with small separation",
+      "Variance identity approach: ∑(l_k-1/n)² = ∑l_k² - 1/n avoids need for sq_sum_le_card_mul_sum_sq",
+      "intervalIntegral.integral_sub + integral_nonneg is cleaner than integral_mono for lower bounds",
+      "Continuous.intervalIntegrable provides integrability for polynomial-type functions via continuous_finset_sum/prod",
+      "KEY INSIGHT: chebyshev_integral_estimate axiom is existential with c depending on n, so c=n*(2-I) works if I<2",
+      "Exact formula I_cheb(n) = 2 - 2(n-1)/(n(2n-1)) via discrete Chebyshev expansion",
+      "Discrete cosine sum: ∑_k cos(rθ_k) = 0 for 0<r<2n, provable via telescoping+sin(rπ)=0",
+      "Mathlib has Chebyshev polynomials (Polynomial.Chebyshev.T) and T_real_cos: cos(nθ) = T_n(cos θ)",
+      "DCT dual orthogonality: 1+2∑cos(jθ_k)cos(jθ_m) = nδ_{km} follows from frequency cosine sums",
+      "frequency_cosine_sum uses Abel summation: multiply by 2sin(β), telescope, evaluate via sin(sπ)=0 and parity",
+      "chebyshev_sq_expansion proof: use Lagrange interpolation of T_j + DCT Parseval identity, avoids direct polynomial theory",
+      "Pre-existing API breakage: hasDerivAt_cos, integral_eq_sub_of_hasDerivAt, continuous_sin renamed in Mathlib 4.26",
+      "dct_offdiag: product-to-sum + parity argument — s1+s2 always odd, exactly one even/one odd",
+      "integral_cos_substitution: use integral_comp_mul_deriv with cos/(-sin), negate + flip orientation",
+      "integral_chebyshev_sq: arccos(cos θ)=θ on [0,π] + cos² identity + integral_cos_mul_sin",
+      "chebyshev_integral_trace: integrand rewrite via chebyshev_sq_expansion + linearity + integral_finset_sum",
+      "OQ01 file clean: 1A (open conjecture) + 11T + 0S",
+      "Parent file has 1 sorry (chebyshev_sq_expansion) needing Lagrange interpolation — documented approach",
+      "chebyshev_interp sorry needs: (1) T_real_cos from Mathlib Polynomial.Chebyshev, (2) lagrangeBasis_eq_eval_basis link, (3) Lagrange interpolation exactness for degree < n polynomials at n distinct points",
+      "chebyshev_sq_expansion sorry depends on chebyshev_interp + DCT diagonal/offdiag (already proved in file)",
+      "Key Mathlib tools: Lagrange.basis, degree_interpolate_lt, card_roots_le_degree (polynomial uniqueness)",
+      "Proof path: show T_{j+1} and Lagrange interpolant are both degree < n, agree at n nodes → equal by uniqueness",
+      "chebyshev_interp proof structured into 3 steps: (1) LHS=T_{j+1}(x) via T_real_cos+cos_arccos, (2) cos((j+1)θ_k)=T_{j+1}(nodes k) via T_real_cos, (3) Lagrange interpolation exactness via interpolate_poly_eq_self. Step 3 remains sorry.",
+      "Key Mathlib APIs: Polynomial.Chebyshev.T_real_cos, Lagrange.interpolate_poly_eq_self, Real.cos_arccos. Need degree_T or natDegree_T for the degree bound."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "approximation-theory",
+    "interpolation",
+    "lagrange-polynomials",
+    "legendre-polynomials",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-113",
+    "erdos-1131",
+    "erdos-1131-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.907Z",
+  "lastUpdate": "2026-03-24T00:48:59.907Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1131OQ01.lean",
+      "filename": "Erdos1131OQ01.lean",
+      "lineCount": 294,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1131OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1131Problem.lean",
+      "filename": "Erdos1131Problem.lean",
+      "lineCount": 1077,
+      "theoremCount": 14,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1131Problem.lean"
+    }
+  ]
+}

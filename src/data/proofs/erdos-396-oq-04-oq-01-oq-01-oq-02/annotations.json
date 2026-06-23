@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-e396oq04oq01oq01oq02-ratioquarter",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 55,
+      "endLine": 58
+    },
+    "type": "key-step",
+    "title": "The 3/2 appears in one normalised step",
+    "content": "Dividing the parent's ratio identity $r\\,k = 4 - 6/(k+2)$ by the limiting rate $4$ gives $r\\,k/4 = 1 - (3/2)/(k+2)$ — a single $\\texttt{ring}$ rewrite. The coefficient $3/2$ of the harmonic correction is *exactly* the critical exponent of the Catalan asymptotic $\\text{catalan}\\,n \\sim 4^n/(n^{3/2}\\sqrt{\\pi})$, exposed here before any summation or limit.",
+    "mathContext": "$\\dfrac{r\\,k}{4} = \\dfrac{1}{4}\\left(4 - \\dfrac{6}{k+2}\\right) = 1 - \\dfrac{3/2}{k+2}$."
+  },
+  {
+    "id": "ann-e396oq04oq01oq01oq02-logle",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 67,
+      "endLine": 76
+    },
+    "type": "key-step",
+    "title": "Elementary log bound on each step",
+    "content": "The single Mathlib inequality $\\log y \\le y - 1$ (valid for $y > 0$) at $y = r\\,k/4$ gives $\\log(r\\,k/4) \\le r\\,k/4 - 1 = -(3/2)/(k+2)$ — exactly a quarter of the parent's deficit $\\delta\\,k = 6/(k+2)$. This is the only analytic ingredient; everything downstream is summation and exponentiation.",
+    "mathContext": "$\\log\\frac{r\\,k}{4} \\le \\frac{r\\,k}{4} - 1 = -\\frac{3/2}{k+2} = -\\frac{1}{4}\\,\\delta\\,k.$"
+  },
+  {
+    "id": "ann-e396oq04oq01oq01oq02-logge",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 78,
+      "endLine": 90
+    },
+    "type": "observation",
+    "title": "Reciprocal gives a matching lower bound",
+    "content": "Applying the *same* inequality to $(r\\,k/4)^{-1} = 4/r\\,k$ and using $\\log(x^{-1}) = -\\log x$ yields $\\log(r\\,k/4) \\ge -3/(2k+1)$. Both bounds carry leading coefficient $3/2$, so the exponent is pinned from both sides — it is intrinsic to the recurrence, not an artefact of one estimate.",
+    "mathContext": "$-\\log\\frac{r\\,k}{4} = \\log\\frac{4}{r\\,k} \\le \\frac{4}{r\\,k} - 1 = \\frac{3}{2k+1}.$"
+  },
+  {
+    "id": "ann-e396oq04oq01oq01oq02-telescope",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 98,
+      "endLine": 114
+    },
+    "type": "key-step",
+    "title": "Telescoping through the logarithm",
+    "content": "Because each Catalan step multiplies by $r\\,m$, normalising by $4$ at every step makes the product collapse: $\\log(\\text{catalan}\\,n/4^n) = \\sum_{k<n} \\log(r\\,k/4)$. The induction's successor step factors $\\text{catalan}(m{+}1)/4^{m+1} = (r\\,m/4)\\cdot(\\text{catalan}\\,m/4^m)$ and splits the logarithm with $\\texttt{Real.log\\_mul}$ (both factors positive). This exact finite identity is the bridge from the integer recurrence to the asymptotic.",
+    "mathContext": "$\\log\\frac{\\text{catalan}\\,n}{4^n} = \\sum_{k=0}^{n-1} \\log\\frac{r\\,k}{4}.$"
+  },
+  {
+    "id": "ann-e396oq04oq01oq01oq02-normlogle",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 123,
+      "endLine": 144
+    },
+    "type": "key-step",
+    "title": "Summing to the harmonic deficit",
+    "content": "Summing the per-step bound and recognising each comparison term $-(3/2)/(k+2)$ as $-(1/4)\\,\\delta\\,k$, the parent's deficit sum $\\sum_{k<n}\\delta\\,k = 6\\,(H_{n+1}-1)$ collapses the right-hand side to $-(3/2)\\,(H_{n+1}-1)$. The log of the normalised Catalan number is thus controlled by a harmonic number with the critical coefficient $3/2$.",
+    "mathContext": "$\\log\\frac{\\text{catalan}\\,n}{4^n} \\le \\sum_{k<n}\\left(-\\tfrac{1}{4}\\delta\\,k\\right) = -\\tfrac{3}{2}\\,(H_{n+1}-1).$"
+  },
+  {
+    "id": "ann-e396oq04oq01oq01oq02-headline",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 146,
+      "endLine": 155
+    },
+    "type": "key-step",
+    "title": "Headline: the 3/2-exponent decay bound",
+    "content": "Exponentiating via $x = \\exp(\\log x)$ (for $x > 0$) and monotonicity of $\\exp$ gives the headline bound $\\text{catalan}\\,n / 4^n \\le \\exp\\!\\big(-(3/2)\\,(H_{n+1}-1)\\big)$. Since $H_{n+1}-1 \\sim \\log n$, the right side is $\\sim n^{-3/2}$: the recurrence alone forces the critical exponent $3/2$ of $\\text{catalan}\\,n \\sim 4^n/(n^{3/2}\\sqrt\\pi)$, with no Stirling estimate.",
+    "mathContext": "$\\dfrac{\\text{catalan}\\,n}{4^n} \\le \\exp\\!\\Big(-\\tfrac{3}{2}(H_{n+1}-1)\\Big) \\sim n^{-3/2}.$"
+  },
+  {
+    "id": "ann-e396oq04oq01oq01oq02-bracket",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 170,
+      "endLine": 175
+    },
+    "type": "observation",
+    "title": "Two-sided log bracket",
+    "content": "Combining the per-step upper and lower bounds, the recurrence pins $\\log(\\text{catalan}\\,n/4^n)$ between $-\\sum_{k<n} 3/(2k+1)$ and $-(3/2)(H_{n+1}-1)$ — two harmonic-type sums both with leading coefficient $3/2$. The exponent $3/2$ is therefore forced from both directions.",
+    "mathContext": "$-\\sum_{k<n}\\frac{3}{2k+1} \\le \\log\\frac{\\text{catalan}\\,n}{4^n} \\le -\\frac{3}{2}(H_{n+1}-1).$"
+  },
+  {
+    "id": "ann-e396oq04oq01oq01oq02-squeeze",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 182,
+      "endLine": 197
+    },
+    "type": "observation",
+    "title": "Independent, rate-quantified vanishing",
+    "content": "The bound $\\exp(-(3/2)(H_{n+1}-1)) \\to 0$ because the parent's harmonic deficit sum diverges. Squeezing $0 \\le \\text{catalan}\\,n/4^n \\le \\exp(-(3/2)(H_{n+1}-1))$ then proves $\\text{catalan}\\,n/4^n \\to 0$ — an independent proof of the vanishing, driven by harmonic divergence rather than Stirling, with the decay rate made explicit.",
+    "mathContext": "$0 \\le \\dfrac{\\text{catalan}\\,n}{4^n} \\le \\exp\\!\\Big(-\\tfrac{3}{2}(H_{n+1}-1)\\Big) \\to 0.$"
+  }
+]

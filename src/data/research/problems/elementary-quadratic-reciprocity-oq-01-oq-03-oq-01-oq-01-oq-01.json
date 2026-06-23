@@ -1,0 +1,32 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01",
+  "title": "Prime-power Zolotarev (units): sign(x ↦ u·x on (ℤ/pⁿ)ˣ) = legendreSym p (u mod p)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "ℤ/pⁿ is not a field for n ≥ 2, so the prime base case's field quadratic character is unavailable — but (ℤ/pⁿ)ˣ is still CYCLIC for odd p (ZMod.isCyclic_units_of_prime_pow), and cyclicity is the only structure the left-regular-representation sign argument actually needs.",
+      "x ↦ u·x on the unit group is left translation Equiv.mulLeft u; left translation by a generator of a finite group is a single |G|-cycle, whose sign is -(-1)^|G| = -1 exactly when |G| is even, and |(ℤ/pⁿ)ˣ| = pⁿ⁻¹(p-1) is even for odd p.",
+      "The Legendre value is recovered via the reduction homomorphism ρ : (ℤ/pⁿ)ˣ → (ℤ/p)ˣ, which is surjective (ZMod.unitsMap_surjective); a surjective hom sends a generator to a generator, so ρ g generates (ℤ/p)ˣ and is a non-residue — letting the parent's generator_not_isSquare be reused verbatim.",
+      "Both sign ∘ (left translation) and quadraticChar ∘ ρ are homomorphisms (ℤ/pⁿ)ˣ → {±1}; on a cyclic group they coincide once they agree on a generator, so writing u = gᵏ collapses the statement to (-1)ᵏ = (-1)ᵏ.",
+      "Stating the fixed-point-free / single-cycle / power-multiplicativity lemmas for an arbitrary finite group (Part 0) cleanly separates the group-theoretic core of Zolotarev's lemma from the number-theoretic input."
+    ],
+    "builtItems": [
+      "ZolotarevPrimePower.mulLeftHom (def): left regular representation G →* Perm G of a finite group (Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01.lean:69)",
+      "ZolotarevPrimePower.mulLeft_no_fixed / mulLeft_generator_isCycle / mulLeft_support_eq_univ / generator_ne_one: generic single-cycle structure of a generator's translation (lines 75-109)",
+      "ZolotarevPrimePower.sign_mulLeft_generator: sign of a generator's translation is -1 for an even-order group (line 112); sign_mulLeft_pow: power-multiplicativity (line 119)",
+      "ZolotarevPrimePower.card_units_prime_pow_even: |(ℤ/pⁿ)ˣ| = pⁿ⁻¹(p-1) is even (line 131)",
+      "ZolotarevPrimePower.sign_mulLeft_eq_quadraticChar and sign_mulLeft_eq_legendre: the units-level prime-power Zolotarev lemma, sign(x ↦ u·x on (ℤ/pⁿ)ˣ) = quadraticChar/legendreSym of the reduction (lines 148, 188). 0 sorries, 0 axioms."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no off-the-shelf 'sign of left translation in a finite group' lemma; built generically here from Equiv.Perm.IsCycle.sign.",
+      "No direct 'sign of multiplication on ℤ/pⁿ' / whole-ring prime-power statement; the units-vs-nonunits assembly (via Equiv.Perm.sign_subtypeCongr) and the y ↦ p·ỹ intertwining iso onto p·(ℤ/pⁿ) ≅ ℤ/pⁿ⁻¹ remain to be formalized."
+    ],
+    "nextSteps": [
+      "Assemble the whole-ring prime-power statement: decompose ringMulPerm u on ℤ/pⁿ over the invariant units/non-units partition (Equiv.Perm.sign_subtypeCongr), identify the units part with sign(mulLeft u) [this entry] and the non-unit part p·(ℤ/pⁿ) with ringMulPerm of the reduced unit on ℤ/pⁿ⁻¹ via the intertwining map y ↦ p·ỹ, and induct on n to get sign(ringMulPerm u on ℤ/pⁿ) = (legendreSym p u)ⁿ = J(u | pⁿ).",
+      "Combine the per-prime-power whole-ring result with the great-grandparent's CRT multiplicativity (sign_ringMulPerm_mul_of_odd) to obtain sign(ringMulPerm a on ℤ/n) = J(a | n) for EVERY odd n.",
+      "Specialize the general-odd statement to recover quadratic reciprocity itself (Zolotarev's original application)."
+    ],
+    "progressSummary": "COMPLETE (units level): proved unconditionally and axiom-free that for an odd prime p and n ≥ 1, sign(x ↦ u·x on (ℤ/pⁿ)ˣ) = legendreSym p (u mod p) — the genuinely new prime-power computation the squarefree parent flagged, reusing the prime base case's generator-is-a-non-residue lemma but replacing the field quadratic character with the reduction homomorphism (ℤ/pⁿ)ˣ → (ℤ/p)ˣ. The whole-ring assembly (non-unit part + induction on n) and the CRT step to all odd n remain open."
+  }
+}

@@ -1,0 +1,208 @@
+[
+  {
+    "id": "ann-gsoq02-docstring",
+    "proofId": "cauchy-schwarz-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Module Overview: Gram-Schmidt via Cauchy-Schwarz",
+    "content": "The module header frames the formalization goal: build the entire Gram-Schmidt orthogonalization process using the Cauchy-Schwarz inequality as its quantitative foundation. The key insight is that the projection coefficient $\\langle v, u \\rangle / \\langle v, v \\rangle$ is bounded by $\\|u\\|/\\|v\\|$ via Cauchy-Schwarz, which ensures the projection never amplifies norms and provides numerical stability guarantees.",
+    "mathContext": "The projection bound $|\\langle v, u \\rangle / \\langle v, v \\rangle| \\leq \\|u\\|/\\|v\\|$ follows directly from $|\\langle v, u \\rangle| \\leq \\|v\\| \\cdot \\|u\\|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "Gram-Schmidt process",
+      "orthogonal projection",
+      "numerical stability"
+    ],
+    "prerequisites": [
+      "inner product spaces",
+      "Cauchy-Schwarz inequality"
+    ]
+  },
+  {
+    "id": "ann-gsoq02-proj-def",
+    "proofId": "cauchy-schwarz-oq-01-oq-02",
+    "range": {
+      "startLine": 47,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Orthogonal Projection and Coefficient",
+    "content": "Defines the orthogonal projection $\\text{proj}_v(u) = (\\langle v, u \\rangle / \\langle v, v \\rangle) \\cdot v$ and the scalar projection coefficient $c = \\langle v, u \\rangle / \\langle v, v \\rangle$. The projection maps $u$ onto the one-dimensional subspace spanned by $v$. This is the fundamental operation of Gram-Schmidt: at each step, we subtract the projection onto a previously orthogonalized vector.",
+    "mathContext": "$\\text{proj}_v(u) = \\frac{\\langle v, u \\rangle}{\\langle v, v \\rangle} \\cdot v \\in \\text{span}(v)$. The coefficient $c = \\langle v, u \\rangle / \\|v\\|^2$ since $\\langle v, v \\rangle = \\|v\\|^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "orthogonal projection",
+      "inner product",
+      "scalar multiplication",
+      "one-dimensional subspace"
+    ],
+    "prerequisites": [
+      "inner product spaces",
+      "division in fields"
+    ]
+  },
+  {
+    "id": "ann-gsoq02-residual-orth",
+    "proofId": "cauchy-schwarz-oq-01-oq-02",
+    "range": {
+      "startLine": 61,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "Residual Orthogonality: The Fundamental Property",
+    "content": "Proves that $u - \\text{proj}_v(u) \\perp v$, the defining property of orthogonal projection. The proof unfolds the definition, applies inner product linearity (inner_sub_left, inner_smul_left), and uses field_simp to handle the division by $\\langle v, v \\rangle$. This is proved in both argument orders ($\\langle u - \\text{proj}_v(u), v \\rangle = 0$ and $\\langle v, u - \\text{proj}_v(u) \\rangle = 0$) using conjugate symmetry.",
+    "mathContext": "$\\langle u - \\text{proj}_v(u), v \\rangle = \\langle u, v \\rangle - \\frac{\\langle v, u \\rangle}{\\langle v, v \\rangle} \\langle v, v \\rangle = \\langle u, v \\rangle - \\overline{\\langle v, u \\rangle} = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "orthogonality",
+      "inner product linearity",
+      "conjugate symmetry",
+      "field_simp tactic"
+    ],
+    "prerequisites": [
+      "inner product axioms",
+      "complex conjugation"
+    ]
+  },
+  {
+    "id": "ann-gsoq02-cs-bound",
+    "proofId": "cauchy-schwarz-oq-01-oq-02",
+    "range": {
+      "startLine": 84,
+      "endLine": 101
+    },
+    "type": "insight",
+    "title": "Cauchy-Schwarz Projection Bound: The Key Connection",
+    "content": "This is the central theorem connecting Cauchy-Schwarz to Gram-Schmidt. The projection coefficient norm satisfies $\\|c\\| = |\\langle v, u \\rangle| / \\|v\\|^2 \\leq (\\|v\\| \\cdot \\|u\\|) / \\|v\\|^2 = \\|u\\| / \\|v\\|$, where the inequality is precisely Cauchy-Schwarz ($|\\langle v, u \\rangle| \\leq \\|v\\| \\cdot \\|u\\|$). The proof computes the norm of the complex division, rewrites $\\|\\langle v, v \\rangle\\| = \\|v\\|^2$, then reduces to Cauchy-Schwarz via a careful calc chain with multiplication by $\\|v\\|$.",
+    "mathContext": "$\\left\\|\\frac{\\langle v, u \\rangle}{\\langle v, v \\rangle}\\right\\| = \\frac{|\\langle v, u \\rangle|}{\\|v\\|^2} \\leq \\frac{\\|v\\| \\cdot \\|u\\|}{\\|v\\|^2} = \\frac{\\|u\\|}{\\|v\\|}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "norm_inner_le_norm",
+      "projection coefficient",
+      "calc proof"
+    ],
+    "prerequisites": [
+      "Cauchy-Schwarz inequality",
+      "norm properties",
+      "ordered field arithmetic"
+    ]
+  },
+  {
+    "id": "ann-gsoq02-proj-norm",
+    "proofId": "cauchy-schwarz-oq-01-oq-02",
+    "range": {
+      "startLine": 105,
+      "endLine": 113
+    },
+    "type": "insight",
+    "title": "Projection Non-Amplification",
+    "content": "Derives the key consequence: $\\|\\text{proj}_v(u)\\| \\leq \\|u\\|$. Projection onto any direction never increases the norm. The proof combines the coefficient bound $\\|c\\| \\leq \\|u\\|/\\|v\\|$ with $\\|\\text{proj}_v(u)\\| = \\|c\\| \\cdot \\|v\\|$, cancelling $\\|v\\|$. This is the stability guarantee: each Gram-Schmidt step removes a bounded component.",
+    "mathContext": "$\\|\\text{proj}_v(u)\\| = \\|c\\| \\cdot \\|v\\| \\leq \\frac{\\|u\\|}{\\|v\\|} \\cdot \\|v\\| = \\|u\\|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "norm preservation",
+      "projection operator",
+      "operator norm",
+      "contraction"
+    ],
+    "prerequisites": [
+      "norm of scalar multiplication",
+      "projection coefficient bound"
+    ]
+  },
+  {
+    "id": "ann-gsoq02-gs-step",
+    "proofId": "cauchy-schwarz-oq-01-oq-02",
+    "range": {
+      "startLine": 121,
+      "endLine": 159
+    },
+    "type": "concept",
+    "title": "One-Step Gram-Schmidt with Pythagoras",
+    "content": "Defines $\\text{gs}(v, u) = u - \\text{proj}_v(u)$ and proves three properties: (1) orthogonality $\\text{gs}(v,u) \\perp v$, (2) the Pythagorean decomposition $\\|u\\|^2 = \\|\\text{proj}_v(u)\\|^2 + \\|\\text{gs}(v,u)\\|^2$, and (3) the norm bound $\\|\\text{gs}(v,u)\\| \\leq \\|u\\|$. The Pythagoras proof uses $u = \\text{proj}_v(u) + \\text{gs}(v,u)$ with orthogonality of the summands, then `norm_add_sq` from Mathlib. The helper `le_of_sq_le_sq` extracts the norm inequality from the squared version via `nlinarith`.",
+    "mathContext": "$\\|u\\|^2 = \\|\\text{proj}_v(u)\\|^2 + \\|u - \\text{proj}_v(u)\\|^2$ since $\\text{proj}_v(u) \\perp (u - \\text{proj}_v(u))$. This is the Pythagorean theorem in inner product spaces.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pythagorean theorem",
+      "orthogonal decomposition",
+      "norm_add_sq",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "orthogonality",
+      "Pythagorean theorem in inner product spaces"
+    ]
+  },
+  {
+    "id": "ann-gsoq02-multi-step",
+    "proofId": "cauchy-schwarz-oq-01-oq-02",
+    "range": {
+      "startLine": 172,
+      "endLine": 184
+    },
+    "type": "concept",
+    "title": "Multi-Step Gram-Schmidt via List Induction",
+    "content": "Extends the one-step process to finite lists using structural recursion. For an input list $[v_1, \\ldots, v_n]$, the algorithm recursively orthogonalizes the tail, then projects $v_1$ against all previously orthogonalized vectors using `foldl`. The length-preservation theorem confirms the output has the same number of vectors as the input. Note: the `foldl` processes vectors in accumulated order, so each new vector is orthogonalized against all prior ones.",
+    "mathContext": "$\\text{GS}([]) = []$, $\\text{GS}(v :: vs) = (v - \\sum_{e \\in \\text{GS}(vs)} \\text{proj}_e(v)) :: \\text{GS}(vs)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "structural recursion",
+      "list induction",
+      "foldl",
+      "length preservation"
+    ],
+    "prerequisites": [
+      "inductive data types",
+      "list operations in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-gsoq02-stability",
+    "proofId": "cauchy-schwarz-oq-01-oq-02",
+    "range": {
+      "startLine": 198,
+      "endLine": 219
+    },
+    "type": "insight",
+    "title": "Stability Analysis and Edge Cases",
+    "content": "Three theorems characterize the behavior of Gram-Schmidt in special cases. The stability theorem shows $\\|\\text{gs}(v,u) - u\\| = \\|\\text{proj}_v(u)\\| \\leq \\|u\\|$: the perturbation introduced by each GS step is bounded. When $u \\perp v$ ($\\langle v, u \\rangle = 0$), the projection vanishes and $\\text{gs}(v,u) = u$ (identity). When $u = cv$ (parallel), the projection equals $u$ and $\\text{gs}(v, cv) = 0$ (complete cancellation). These edge cases verify the formalization handles degenerate inputs correctly.",
+    "mathContext": "Orthogonal: $\\langle v, u \\rangle = 0 \\implies \\text{gs}(v,u) = u$. Parallel: $u = cv \\implies \\text{gs}(v, u) = 0$. General: $\\|\\text{gs}(v,u) - u\\| \\leq \\|u\\|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "numerical stability",
+      "edge case analysis",
+      "linear dependence",
+      "orthogonality"
+    ],
+    "prerequisites": [
+      "projection properties",
+      "inner product of parallel vectors"
+    ]
+  },
+  {
+    "id": "ann-gsoq02-summary",
+    "proofId": "cauchy-schwarz-oq-01-oq-02",
+    "range": {
+      "startLine": 247,
+      "endLine": 254
+    },
+    "type": "insight",
+    "title": "Summary Theorem: Cauchy-Schwarz Controls Gram-Schmidt",
+    "content": "The capstone theorem `gram_schmidt_uses_cauchy_schwarz` packages all three fundamental properties into a single conjunction: (1) projection boundedness from Cauchy-Schwarz, (2) residual orthogonality, and (3) Pythagorean norm decomposition. This provides a clean API-level answer to the open question: yes, the entire Gram-Schmidt process can be built on Cauchy-Schwarz as the quantitative backbone.",
+    "mathContext": "$\\forall u, v \\neq 0: \\, \\|\\text{proj}_v(u)\\| \\leq \\|u\\| \\,\\wedge\\, \\text{gs}(v,u) \\perp v \\,\\wedge\\, \\|u\\|^2 = \\|\\text{proj}\\|^2 + \\|\\text{gs}\\|^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjunction",
+      "API design",
+      "formalization completeness"
+    ],
+    "prerequisites": [
+      "all previous results in this module"
+    ]
+  }
+]

@@ -1,0 +1,211 @@
+{
+  "id": "erdos-894",
+  "title": "Erdős Problem #894: Chromatic Numbers of Lacunary Cayley Graphs",
+  "slug": "erdos-894",
+  "description": "For a lacunary sequence A with n_{k+1} ≥ (1+ε)n_k, does there exist a finite coloring of ℕ with no monochromatic a-b ∈ A? SOLVED: YES, using O(ε⁻¹ log(1/ε)) colors (Peres-Schlag 2010).",
+  "meta": {
+    "author": "Katznelson (2001), Peres-Schlag (2010)",
+    "sourceUrl": "https://erdosproblems.com/894",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos894Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "chromatic-number",
+      "lacunary-sequences",
+      "cayley-graphs",
+      "diophantine-approximation",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 894,
+    "erdosUrl": "https://erdosproblems.com/894",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.ceil_pos",
+        "description": "Positive natural ceiling for color count",
+        "module": "Mathlib.Algebra.Order.Floor.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for Peres-Schlag bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Irrational numbers for Problem #464",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsLacunary, geometricSequence: lacunary sequence definitions",
+      "lacunary_exponential_growth, geometric_is_lacunary: proved growth properties",
+      "Coloring, AvoidsMonochromatic, IsFinitelyColorable: coloring definitions",
+      "fractionalDistance, katznelsonColoring: Diophantine approximation and explicit coloring",
+      "problem_464_result, katznelson_theorem: axiomatized key results",
+      "lacunary_finitely_colorable, erdos_894: proved main theorem from axioms",
+      "Peres-Schlag (2010) bound O(ε⁻¹ log(1/ε)) noted in docstring (Part VI), not axiomatized",
+      "CayleyGraph structure, lacunaryCayleyGraph: proved Cayley graph construction",
+      "problem_464_implies_894: proved logical implication",
+      "powers_of_2_colorable, powers_of_3_colorable: proved special cases",
+      "erdos_894_summary: proved summary combining main result and implication"
+    ],
+    "axiomCount": 3,
+    "lineCount": 225,
+    "assumptions": "3 axioms: chromaticNumber, problem_464_result, katznelson_theorem. 0 sorries.",
+    "theoremCount": 8,
+    "definitionCount": 11
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #894 asks whether Cayley graphs on ℤ defined by lacunary sequences have finite chromatic number. A sequence A = {n₁ < n₂ < ...} is lacunary if n_{k+1} ≥ (1+ε)n_k for some ε > 0. The connection to Diophantine approximation was observed by Katznelson (2001): if there exists an irrational θ such that all multiples θ·n_k stay bounded away from integers, then coloring by position on the circle (mod 1) gives a valid finite coloring.\n\nPeres and Schlag (2010) resolved both this problem and the closely related Problem #464 simultaneously. They proved that O(ε⁻¹ log(1/ε)) colors suffice for a lacunary sequence with ratio (1+ε), and that this bound is essentially optimal. Their proof combined harmonic analysis and metric number theory.\n\nThe formalization proves the main theorem (lacunary_finitely_colorable) from two axiomatized results: Problem #464's guarantee of a badly approximable irrational, and Katznelson's observation that this yields a valid coloring. Several proved results include exponential growth of lacunary sequences, the Cayley graph construction with proved symmetry, the logical implication from Problem #464 to #894, and special cases for powers of 2 and 3.",
+    "problemStatement": "Let A = {n₁ < n₂ < ...} ⊂ ℕ be a lacunary sequence with n_{k+1} ≥ (1+ε)n_k. Does there exist a finite coloring of ℕ with no monochromatic solutions to a - b ∈ A? Equivalently, does the Cayley graph on ℤ with connection set A have finite chromatic number?\n\n**Status: SOLVED (YES)**\n**Quantitative bound:** O(ε⁻¹ log(1/ε)) colors suffice (Peres-Schlag 2010)",
+    "text": "For a lacunary sequence A with n_{k+1} ≥ (1+ε)n_k, does there exist a finite coloring of ℕ with no monochromatic a-b ∈ A? SOLVED: YES, using O(ε⁻¹ log(1/ε)) colors (Peres-Schlag 2010).",
+    "proofStrategy": "The formalization defines IsLacunary, proves exponential growth, constructs Katznelson's coloring via circle intervals of length δ (from Problem #464's irrational θ), and derives the main theorem lacunary_finitely_colorable. The CayleyGraph structure is defined and the lacunary Cayley graph is constructed with proved symmetry. Quantitative bounds from Peres-Schlag (2010) are mentioned in the Part VI docstring but not axiomatized. Special cases (powers of 2 and 3) are proved from the main theorem. The summary theorem combines the main result with the proved implication from Problem #464.",
+    "keyInsights": [
+      "Irrational rotation provides the coloring: color n by position of θn on the circle",
+      "Problem #464 guarantees a badly approximable θ for lacunary sequences",
+      "O(ε⁻¹ log(1/ε)) colors suffice and are essentially optimal (Peres-Schlag 2010)",
+      "Cayley graphs on ℤ with lacunary generators have finite chromatic number",
+      "The circle division into δ-intervals gives O(1/δ) colors avoiding monochromatic differences"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lacunary-sequences",
+      "title": "Part I: Lacunary Sequences",
+      "startLine": 38,
+      "endLine": 74,
+      "summary": "Defines IsLacunary(a, ε). Proves lacunary_exponential_growth by induction. Defines geometricSequence, proves geometric_is_lacunary.",
+      "mathContext": "Formal definition: Defines IsLacunary(a, ε). Proves lacunary_exponential_growth by induction. Defines geometricSequence, proves geometric_is_lacunary."
+    },
+    {
+      "id": "colorings",
+      "title": "Part II: Colorings and Cayley Graphs",
+      "startLine": 75,
+      "endLine": 93,
+      "summary": "Defines Coloring(k), AvoidsMonochromatic, IsFinitelyColorable, chromaticNumber (axiom).",
+      "mathContext": "Formal definition: Defines Coloring(k), AvoidsMonochromatic, IsFinitelyColorable, chromaticNumber (axiom)."
+    },
+    {
+      "id": "diophantine",
+      "title": "Part III: The Diophantine Approximation Connection",
+      "startLine": 94,
+      "endLine": 106,
+      "summary": "Defines fractionalDistance. Axiom problem_464_result: lacunary sequences have badly approximable θ.",
+      "mathContext": "Formal definition: Defines fractionalDistance. Axiom problem_464_result: lacunary sequences have badly approximable θ."
+    },
+    {
+      "id": "katznelson",
+      "title": "Part IV: Katznelson's Coloring Construction",
+      "startLine": 107,
+      "endLine": 124,
+      "summary": "Defines katznelsonColoring using circle intervals. Axiom katznelson_theorem: coloring avoids monochromatic differences.",
+      "mathContext": "Formal definition: Defines katznelsonColoring using circle intervals. Axiom katznelson_theorem: coloring avoids monochromatic differences."
+    },
+    {
+      "id": "main-result",
+      "title": "Part V: The Main Result",
+      "startLine": 125,
+      "endLine": 140,
+      "summary": "Proves lacunary_finitely_colorable from Problem #464 and Katznelson. Defines ErdosConjecture894, proves erdos_894.",
+      "mathContext": "Formal definition: Proves lacunary_finitely_colorable from Problem #464 and Katznelson. Defines ErdosConjecture894, proves erdos_894."
+    },
+    {
+      "id": "quantitative",
+      "title": "Part VI: Quantitative Bounds (Peres-Schlag 2010)",
+      "startLine": 141,
+      "endLine": 154,
+      "summary": "Docstring-only narrative on Peres-Schlag (2010) bound O(ε⁻¹ log(1/ε)) — no axioms or theorems declared in this part.",
+      "mathContext": "Docstring-only narrative on Peres-Schlag (2010) bound O(ε⁻¹ log(1/ε)) — no axioms or theorems declared in this part."
+    },
+    {
+      "id": "cayley-graphs",
+      "title": "Part VII: Cayley Graphs",
+      "startLine": 155,
+      "endLine": 186,
+      "summary": "Defines CayleyGraph structure, lacunaryCayleyGraph (proved symmetric and generated_by_A). Defines cayleyChromatic.",
+      "mathContext": "Formal definition: Defines CayleyGraph structure, lacunaryCayleyGraph (proved symmetric and generated_by_A). Defines cayleyChromatic."
+    },
+    {
+      "id": "connection-464",
+      "title": "Part VIII: Connection to Problem #464",
+      "startLine": 187,
+      "endLine": 201,
+      "summary": "Defines Problem464Statement. Proves problem_464_implies_894.",
+      "mathContext": "Formal definition: Defines Problem464Statement. Proves problem_464_implies_894."
+    },
+    {
+      "id": "special-cases",
+      "title": "Part IX: Special Cases",
+      "startLine": 202,
+      "endLine": 221,
+      "summary": "Proves powers_of_2_colorable and powers_of_3_colorable from main theorem.",
+      "mathContext": "Verified: Proves powers_of_2_colorable and powers_of_3_colorable from main theorem."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "startLine": 222,
+      "endLine": 225,
+      "summary": "Proves erdos_894_summary combining main result and Problem #464 implication. Problem SOLVED: YES.",
+      "mathContext": "Verified: Proves erdos_894_summary combining main result and Problem #464 implication. Problem SOLVED: YES."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #894 is SOLVED. Every lacunary sequence is finitely colorable: O(ε⁻¹ log(1/ε)) colors suffice for a sequence with ratio (1+ε). The proof uses irrational rotation (Katznelson's connection to Problem #464) and quantitative bounds (Peres-Schlag 2010).",
+    "implications": "The result connects Cayley graph chromatic numbers to Diophantine approximation and harmonic analysis. It resolves the question of finite colorability for an important class of infinite graphs.",
+    "openQuestions": [
+      "Is the O(ε⁻¹ log(1/ε)) bound exactly optimal?",
+      "What about non-lacunary sequences with gaps?",
+      "Can the construction be made explicit for specific sequences?",
+      "What is the chromatic number for powers of 2?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.Order.Floor.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Real"
+    ],
+    "namespace": "Erdos894",
+    "lineCount": 225,
+    "axiomCount": 3,
+    "theoremCount": 8,
+    "definitionCount": 11,
+    "path": "Proofs/Erdos894Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-465",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, diophantine-approximation, solved"
+    },
+    {
+      "targetId": "erdos-57",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-58",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, combinatorics, solved"
+    }
+  ],
+  "sorries": 0
+}

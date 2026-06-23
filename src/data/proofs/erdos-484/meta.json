@@ -1,0 +1,186 @@
+{
+  "id": "erdos-484",
+  "title": "Erdős #484: Monochromatic Sums in Colorings",
+  "slug": "erdos-484",
+  "description": "Prove ∃ c > 0 such that any k-coloring of {1,...,N} has at least cN integers representable as monochromatic sums a+b (same color, a≠b). SOLVED: Erdős-Sárközy-Sós (1989) proved N/2 − O(N^{1−1/2^{k+1}}) even sums; for k=2, N/2 − O(log N) is tight (2-adic valuation obstruction).",
+  "meta": {
+    "author": "Klaus Friedrich Roth, Paul Erdős, András Sárközy, Vera T. Sós",
+    "erdosNumber": 484,
+    "status": "axiomatized",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "colorings",
+      "sumsets",
+      "ramsey-theory",
+      "fourier-analysis",
+      "partition-regularity",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/484",
+    "erdosUrl": "https://erdosproblems.com/484",
+    "erdosProblemStatus": "solved",
+    "proofRepoPath": "Proofs/Erdos484Problem.lean",
+    "date": "1989",
+    "dateAdded": "2026-01-19",
+    "relatedProblems": [
+      {
+        "id": "erdos-432",
+        "relation": "Pairwise coprime sumsets; both study structure forced on sumsets by arithmetic constraints (coprimality vs coloring)"
+      },
+      {
+        "id": "erdos-45",
+        "relation": "Monochromatic Egyptian fractions under colorings; same Ramsey-on-arithmetic framework but with reciprocal sum = 1 instead of a+b representability"
+      },
+      {
+        "id": "erdos-36",
+        "relation": "Minimum overlap problem; both ask about unavoidable additive structure in partitions of {1,...,N}"
+      },
+      {
+        "id": "erdos-444",
+        "relation": "Generalized divisor functions; extremal growth faster than polynomial, similar 'density vs extremal' theme"
+      }
+    ],
+    "axiomCount": 3,
+    "lineCount": 261,
+    "assumptions": "3 axioms: roth_conjecture_true (Roth conjecture is true), ESS_two_coloring (ESS two-coloring construction), two_coloring_optimal (two-coloring is optimal). 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 5
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 34,
+      "endLine": 64,
+      "summary": "Defines **Coloring N k** = Fin N → Fin k, **colorClass χ c** via Finset.filter, **isMonochromaticSum χ s** (s = a+b with same color, a≠b), and **monochromaticSums χ** = {s | isMonochromaticSum χ s}. These encode the partition and sumset structure.",
+      "mathContext": "Defines **Coloring N k** = Fin N → Fin k, **colorClass χ c** via Finset.filter, **isMonochromaticSum χ s** (s = a+b with same color, a≠b), and **monochromaticSums χ** = {s | isMonochromaticSum χ s}. These encode the partition and sumset structure."
+    },
+    {
+      "id": "roth-conjecture",
+      "title": "Roth's Conjecture (Proved)",
+      "startLine": 65,
+      "endLine": 83,
+      "summary": "**roth_conjecture**: ∃ c > 0, ∀ k ≥ 1, ∃ N₀, ∀ N ≥ N₀, ∀ χ, |monochromaticSums χ| ≥ cN. **roth_conjecture_true**: axiomatized as proved by Erdős-Sárközy-Sós (1989). The nested quantifiers separate the universal constant from the k-dependent threshold.",
+      "mathContext": "**roth_conjecture**: ∃ c > 0, ∀ k ≥ 1, ∃ N₀, ∀ N ≥ N₀, ∀ χ, |monochromaticSums χ| ≥ cN. **roth_conjecture_true**: axiomatized as proved by Erdős-Sárközy-Sós (1989). The nested quantifiers separate the universal constant from the k-dependent threshold."
+    },
+    {
+      "id": "ess-theorem",
+      "title": "Erdős-Sárközy-Sós Theorem",
+      "startLine": 84,
+      "endLine": 119,
+      "summary": "**ESS_theorem**: ≥ N/2 − C·N^{1−1/2^{k+1}} even numbers are representable monochromatic sums. **even_sum_parity**: parity is additive. **exponent_sublinear**: error exponent < 1 always. Uses Fourier analysis and the large sieve inequality.",
+      "mathContext": "**ESS_theorem**: ≥ N/2 − C·N^{1−1/2^{k+1}} even numbers are representable monochromatic sums. **even_sum_parity**: parity is additive. **exponent_sublinear**: error exponent < 1 always. Uses Fourier analysis and the large sieve inequality."
+    },
+    {
+      "id": "two-coloring",
+      "title": "Two-Coloring Case (k = 2)",
+      "startLine": 120,
+      "endLine": 158,
+      "summary": "**ESS_two_coloring**: N/2 − O(log N) even sums for k=2. **two_coloring_optimal**: ∃ 2-coloring blocking all powers of 2. **optimal_construction_exists**: the 2-adic valuation coloring χ(n) = ν₂(n) mod 2 achieves this — the O(log N) bound is tight.",
+      "mathContext": "**ESS_two_coloring**: N/2 − O(log N) even sums for k=2. **two_coloring_optimal**: ∃ 2-coloring blocking all powers of 2. **optimal_construction_exists**: the 2-adic valuation coloring χ(n) = ν₂(n) mod 2 achieves this — the O(log N) bound is tight."
+    },
+    {
+      "id": "proof-ideas",
+      "title": "Key Proof Ideas",
+      "startLine": 159,
+      "endLine": 199,
+      "summary": "**sumset_lower_bound**: pigeonhole gives color class of size ≥ N/k. **sumset_density**: restricted sumset of size m set has ≥ m−1 elements. **fourier_representation_count**: Fourier analysis bounds unrepresented even numbers at ≤ N^{1−1/2^{k+1}}.",
+      "mathContext": "**sumset_lower_bound**: pigeonhole gives color class of size ≥ N/k. **sumset_density**: restricted sumset of size m set has ≥ m−1 elements. **fourier_representation_count**: Fourier analysis bounds unrepresented even numbers at ≤ N^{1−1/2^{k+1}}."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences and Density",
+      "startLine": 200,
+      "endLine": 225,
+      "summary": "**positive_density**: proved (not axiom) by `exact roth_conjecture_true`. **constant_half_minus_epsilon**: c = 1/2 − ε works for N large enough. The limiting density 1/2 is optimal since only even sums are guaranteed.",
+      "mathContext": "**positive_density**: proved (not axiom) by `exact roth_conjecture_true`. **constant_half_minus_epsilon**: c = 1/2 − ε works for N large enough. The limiting density 1/2 is optimal since only even sums are guaranteed."
+    },
+    {
+      "id": "extensions",
+      "title": "Extensions: Schur and Hindman",
+      "startLine": 226,
+      "endLine": 261,
+      "summary": "**schur_theorem** (1916): any k-coloring has monochromatic a+b=c (the sum in the same color class). **hindman_theorem** (1974): any finite coloring of ℕ has an infinite monochromatic IP set. Both are deeper partition regularity results contextualizing #484.",
+      "mathContext": "**schur_theorem** (1916): any k-coloring has monochromatic a+b=c (the sum in the same color class). **hindman_theorem** (1974): any finite coloring of ℕ has an infinite monochromatic IP set. Both are deeper partition regularity results contextualizing #484."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Problem #484 originated as a conjecture of **Klaus Friedrich Roth** about the structure of sumsets under finite partitions. **Erdős** promoted the problem, connecting it to his broader program on partition regularity in additive combinatorics. It was solved by **Erdős, Sárközy, and Sós** in their 1989 paper 'On a conjecture of Roth and some related problems I'. Their solution was far stronger than Roth's conjecture: they showed almost all even numbers in {2,...,2N} are representable as monochromatic sums, with only O(N^{1−1/2^{k+1}}) exceptions. For k = 2, the error drops to O(log N), and this is tight — the **2-adic valuation construction** χ(n) = ν₂(n) mod 2 shows that all ⌊log₂(2N)⌋ powers of 2 can be simultaneously non-representable. A refinement appears as Problem 25 on **Ben Green's** open problems list, asking for the exact second-order term.",
+    "problemStatement": "Prove that there exists an absolute constant c > 0 such that, whenever {1,...,N} is k-colored (with N large enough depending on k), there are at least cN integers representable as monochromatic sums — that is, a + b where a, b are in the same color class and a ≠ b.",
+    "text": "Prove ∃ c > 0 such that any k-coloring of {1,...,N} has at least cN integers representable as monochromatic sums a+b (same color, a≠b). SOLVED: Erdős-Sárközy-Sós (1989) proved N/2 − O(N^{1−1/2^{k+1}}) even sums; for k=2, N/2 − O(log N) is tight (2-adic valuation obstruction).",
+    "proofStrategy": "The formalization defines k-colorings as Fin N → Fin k, monochromatic sums via existential quantification, and Roth's conjecture as a nested ∃∀ statement. The ESS theorem giving the precise N/2 − O(N^{1−1/2^{k+1}}) bound is axiomatized, along with the k = 2 case (O(log N) tight), the 2-adic valuation construction, sumset structure lemmas, and the Fourier bound on unrepresented sums. Schur's and Hindman's theorems provide context. The final theorem `erdos_484` is proved (not axiomatized) by combining the three main components. 0 sorries throughout.",
+    "keyInsights": [
+      "**Almost all even numbers are representable**: the ESS bound N/2 − O(N^{1−ε}) shows monochromatic sums cover nearly half of {2,...,2N} — the maximum possible for even sums",
+      "**Fourier analysis is the key tool**: exponential sums and the large sieve inequality bound the number of 'missing' sums, with the iterative exponent 1/2^{k+1} from repeated Cauchy-Schwarz",
+      "**The 2-adic valuation obstruction**: χ(n) = ν₂(n) mod 2 blocks all powers of 2 from being monochromatic sums — a beautiful number-theoretic construction proving O(log N) is tight for k=2",
+      "**Partition regularity hierarchy**: Schur (one monochromatic solution) → Problem #484 (positive fraction of sums) → Hindman (infinite monochromatic IP set) — each is qualitatively stronger",
+      "**Only even sums are guaranteed**: odd sums a+b require a,b of different parity, and the coloring can separate parities — so the problem is fundamentally about even sums"
+    ],
+    "prerequisites": [
+      "Number theory fundamentals",
+      "Combinatorial analysis"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #484 is SOLVED by Erdős, Sárközy, and Sós (1989). Any k-coloring of {1,...,N} has ≥ N/2 − O(N^{1−1/2^{k+1}}) even monochromatic sums. For k = 2, the bound N/2 − O(log N) is tight — the 2-adic valuation construction avoids all powers of 2.",
+    "implications": "**Theoretical Significance**: The result establishes that monochromatic sums are **unavoidable at positive density** in any partition — a quantitative strengthening of Schur's theorem.\n\nThe techniques (Fourier analysis, large sieve) have become standard in additive combinatorics, influencing work on the Freiman-Ruzsa conjecture and sum-product estimates. The tight O(log N) bound for k = 2 via the 2-adic valuation reveals deep connections between partition regularity and p-adic structure.",
+    "openQuestions": [
+      "What is the exact optimal constant in the error term for general k? (Ben Green's Problem 25)",
+      "Can the exponent 1 − 1/2^{k+1} be improved, or is it best possible for the ESS approach?",
+      "What is the structure of extremal colorings that minimize the number of monochromatic sums for k ≥ 3?",
+      "Does an analogous result hold for monochromatic sums a₁ + a₂ + ... + aₘ with m > 2 summands?",
+      "What happens in the multidimensional setting: colorings of ℤ^d with vector sums?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "Erdos484",
+    "lineCount": 261,
+    "axiomCount": 3,
+    "theoremCount": 4,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos484Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Roth, K.F.: Original conjecture on monochromatic sums in finite colorings",
+    "Erdős, P., Sárközy, A., and Sós, V.T. (1989): 'On a conjecture of Roth and some related problems I' — complete solution with N/2 − O(N^{1−1/2^{k+1}}) bound",
+    "Green, B.: Problem 25 on 'Some open problems in additive combinatorics' — asks for exact error terms",
+    "Schur, I. (1916): 'Über die Kongruenz x^m + y^m ≡ z^m (mod p)' — earliest partition regularity result",
+    "Hindman, N. (1974): 'Finite sums from sequences within cells of a partition of N' — infinite monochromatic sum structure",
+    "Freiman, G.A. (1973): 'Foundations of a Structural Theory of Set Addition'",
+    "https://erdosproblems.com/484"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-432",
+      "relationship": "related",
+      "description": "Related formalization"
+    },
+    {
+      "targetId": "erdos-45",
+      "relationship": "related",
+      "description": "Related formalization"
+    },
+    {
+      "targetId": "erdos-36",
+      "relationship": "related",
+      "description": "Related formalization"
+    },
+    {
+      "targetId": "erdos-444",
+      "relationship": "related",
+      "description": "Related formalization"
+    }
+  ],
+  "sorries": 0
+}

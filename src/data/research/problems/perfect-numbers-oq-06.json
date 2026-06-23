@@ -1,0 +1,106 @@
+{
+  "slug": "perfect-numbers-oq-06",
+  "title": "Every Even Perfect Number is Triangular",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "proof",
+  "problemStatement": {
+    "formal": "n \\text{ even} \\wedge n \\text{ perfect} \\implies \\exists m,\\ n = \\tfrac{m(m+1)}{2}",
+    "plain": "Every even perfect number is a triangular number. More precisely, if n is even and perfect then n = T_{2^p-1} where 2^p-1 is the Mersenne prime in the Euclid–Euler factorization n = 2^{p-1}(2^p-1); so the triangulating index is itself a Mersenne prime.",
+    "whyMatters": [
+      "Classical consequence of Euclid–Euler: all known perfect numbers are triangular",
+      "Links two of the most famous figurate/number-theoretic families",
+      "Examples: 6=T_3, 28=T_7, 496=T_31, 8128=T_127 — the index is the Mersenne prime",
+      "Closes the form → triangular gap left open by the parent Euclid–Euler entry"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "even_perfect_isTriangular: Even n ∧ n.Perfect → IsTriangular n",
+      "even_perfect_triangular_mersenne_prime: even perfect n = T_m with m = mersenne(k+1) prime",
+      "two_mul_euclid_factor: 2·(2^k·mersenne(k+1)) = mersenne(k+1)·(mersenne(k+1)+1) (division-free core identity)",
+      "isTriangular_of_two_mul / two_mul_triangular: division-free certificate for triangularity",
+      "Concrete examples: 6, 28, 496, 8128 all IsTriangular"
+    ],
+    "open": [],
+    "goal": "Prove every even perfect number is triangular, 0 sorries, 0 axioms beyond Mathlib's foundational set."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-19T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Proof complete and machine-checked. Uses Mathlib Archive Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect for the Euclid–Euler factorization, then the division-free identity 2n = m(m+1) with m = mersenne(k+1). Verified 0 axioms.",
+    "blockers": [],
+    "nextAction": "None. Lean obligations fully discharged.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE. Every even perfect number is triangular, with triangulating index equal to the Mersenne prime from its Euclid–Euler factorization. Verified 0 sorries / 0 axioms.",
+    "builtItems": [
+      "PerfectNumbersOQ06.lean: even-perfect → triangular (~105 lines)",
+      "IsTriangular (n : ℕ) := ∃ m, n = m*(m+1)/2: triangular-number predicate",
+      "isTriangular_of_two_mul: 2n = m(m+1) → IsTriangular n (division-free certificate)",
+      "two_mul_triangular: 2·T_m = m(m+1) via Nat.even_mul_succ_self",
+      "two_mul_euclid_factor: 2·(2^k·mersenne(k+1)) = mersenne(k+1)·(mersenne(k+1)+1)",
+      "even_perfect_isTriangular: main theorem",
+      "even_perfect_triangular_mersenne_prime: strengthened (index is a Mersenne prime)"
+    ],
+    "insights": [
+      "Working with the doubled form 2n = m(m+1) sidesteps all natural-number division",
+      "m + 1 = 2^{k+1} follows from mersenne (k+1) = 2^{k+1} - 1 via Nat.sub_add_cancel Nat.one_le_two_pow",
+      "After rw [hm1, pow_succ], the identity 2·2^k·m = m·(2·2^k) is pure ring",
+      "Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect returns ∃ k, Prime (mersenne (k+1)) ∧ n = 2^k · mersenne (k+1)",
+      "Nat.even_mul_succ_self m gives 2 ∣ m(m+1); Nat.mul_div_cancel' makes 2·(m(m+1)/2)=m(m+1) exact",
+      "Keeping mersenne (k+1) opaque (only using m+1 = 2^{k+1}) avoids unfolding subtraction"
+    ],
+    "mathlibGaps": [
+      "Mathlib has the Euclid–Euler theorem but no statement that even perfect numbers are triangular"
+    ],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "perfect-numbers",
+    "triangular-numbers",
+    "mersenne-primes",
+    "euclid-euler"
+  ],
+  "relatedProofs": [
+    "perfect-numbers",
+    "perfect-numbers-oq-03",
+    "triangular-reciprocals"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect",
+      "mersenne",
+      "Nat.even_mul_succ_self",
+      "Nat.mul_div_cancel'",
+      "Nat.sub_add_cancel"
+    ]
+  },
+  "started": "2026-06-19T00:00:00.000Z",
+  "lastUpdate": "2026-06-19T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/PerfectNumbersOQ06.lean",
+      "filename": "PerfectNumbersOQ06.lean",
+      "lineCount": 105,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PerfectNumbersOQ06.lean"
+    }
+  ]
+}

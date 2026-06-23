@@ -1,0 +1,94 @@
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "chebyshev-pnt-bridge-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Bertrand's Postulate in the Chebyshev-PNT Bridge",
+    "content": "The parent proves Chebyshev bounds giving π(x) = Θ(x/log x). Its third open question asks to formalize Bertrand's postulate — a prime in (n, 2n] for every n — which shares the same factorization machinery. This file states Bertrand (via Mathlib) and derives its consequences for the prime-counting function π, with 0 axioms / 0 sorries.",
+    "mathContext": "Bertrand's postulate is the qualitative seed of the PNT: primes never thin out enough to leave a doubling interval empty.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bertrand's postulate",
+      "prime-counting function",
+      "Chebyshev bounds"
+    ],
+    "prerequisites": [
+      "primes",
+      "π(x)"
+    ]
+  },
+  {
+    "id": "ann-bertrand",
+    "proofId": "chebyshev-pnt-bridge-oq-03",
+    "range": {
+      "startLine": 37,
+      "endLine": 40
+    },
+    "type": "theorem",
+    "title": "Bertrand's Postulate",
+    "content": "For every n ≥ 1 there is a prime p with n < p ≤ 2n, via Mathlib's `Nat.exists_prime_lt_and_le_two_mul` (Erdős's central-binomial argument — the same factorization bound that powers the Chebyshev bridge).",
+    "mathContext": "∃ prime p, n < p ≤ 2n.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Bertrand's postulate",
+      "central binomial coefficient"
+    ]
+  },
+  {
+    "id": "ann-pi-doubling",
+    "proofId": "chebyshev-pnt-bridge-oq-03",
+    "range": {
+      "startLine": 42,
+      "endLine": 57
+    },
+    "type": "theorem",
+    "title": "π(2n) ≥ π(n) + 1",
+    "content": "Each doubling interval (n, 2n] contributes at least one new prime. The Bertrand prime p gives the chain π'(n+1) ≤ π'(p) < π'(p+1) ≤ π'(2n+1): the outer steps are monotonicity of π', and the strict middle jump is `Nat.count_succ` at the prime p. Since π(m) = π'(m+1), this is π(n) + 1 ≤ π(2n).",
+    "mathContext": "The prime p ∈ (n, 2n] is counted by π(2n) but not by π(n).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "prime counting",
+      "count_succ",
+      "monotonicity"
+    ]
+  },
+  {
+    "id": "ann-two-pow",
+    "proofId": "chebyshev-pnt-bridge-oq-03",
+    "range": {
+      "startLine": 59,
+      "endLine": 74
+    },
+    "type": "theorem",
+    "title": "π(2^k) ≥ k and Primes Between Powers",
+    "content": "Iterating the doubling bound from 2^0 = 1 gives π(2^k) ≥ k — at least k primes below 2^k, a clean lower bound of the correct Θ(x/log x) order (π(2^k)·log 2 ≥ k = log₂(2^k)). Also: a prime always lies in (2^k, 2^(k+1)].",
+    "mathContext": "By induction: π(2^(m+1)) = π(2·2^m) ≥ π(2^m) + 1 ≥ m + 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower bound",
+      "powers of two",
+      "PNT order"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "chebyshev-pnt-bridge-oq-03",
+    "range": {
+      "startLine": 76,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "Strictness and Explicit Cases",
+    "content": "π is strictly increasing across doublings (π(n) < π(2n)), and explicit witnesses: a prime in (1,2] (namely 2) and in (5,10] (namely 7).",
+    "mathContext": "Concrete instances of Bertrand's postulate.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "strict monotonicity",
+      "examples"
+    ]
+  }
+]

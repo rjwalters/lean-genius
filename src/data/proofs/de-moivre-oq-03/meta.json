@@ -1,0 +1,269 @@
+{
+  "id": "de-moivre-oq-03",
+  "title": "De Moivre OQ-03: Fractional Exponents and Root Extraction",
+  "slug": "de-moivre-oq-03",
+  "description": "Extends De Moivre's theorem to fractional exponents z^(p/q), proving root enumeration, distinctness, and principal value consistency via Mathlib's cpow.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DeMoivreOQ03.lean",
+    "tags": [
+      "complex-analysis",
+      "trigonometry",
+      "de-moivre",
+      "fractional-powers",
+      "roots-of-unity",
+      "wiedijk-100"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.exp_mul_I",
+        "description": "Euler's formula: exp(θ*I) = cos(θ) + i*sin(θ)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Complex.exp_two_pi_mul_I",
+        "description": "exp(2πi) = 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Complex.log_exp",
+        "description": "Principal logarithm inverts exp for -π < im(z) ≤ π",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Log"
+      },
+      {
+        "theorem": "Complex.cpow_def_of_ne_zero",
+        "description": "z^w = exp(w * log(z)) for z ≠ 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
+      },
+      {
+        "theorem": "Complex.exp_eq_exp_iff_exists_int",
+        "description": "exp(z) = exp(w) iff z = w + 2πik for some integer k",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Complex.cpow_intCast",
+        "description": "z^(n:ℂ) = z^n for integer n",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
+      }
+    ],
+    "originalContributions": [
+      "Complete enumeration of q-th roots of z^p via De Moivre extension",
+      "Root factorization as principal root times roots of unity",
+      "Full proof of root distinctness using exp periodicity",
+      "Principal value via cpow matches k=0 root",
+      "Consistency: fractional power raised to q gives integer power",
+      "Square root and cube root special cases"
+    ],
+    "dateAdded": "2026-02-26",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 275,
+    "assumptions": "0 axioms, 0 sorries. Fractional powers via Mathlib's cpow_def_of_ne_zero and exp/log. Original root enumeration and distinctness proofs.",
+    "theoremCount": 14,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "De Moivre's theorem (1707) states that $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ for integer $n$. Abraham de Moivre, a French Huguenot mathematician exiled to England, published this result in the *Philosophical Transactions* of the Royal Society. While the integer case follows by induction on Euler's formula $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$ (1748), the extension to fractional exponents $p/q$ introduces the fundamental complication of **multi-valuedness**: $z^{p/q}$ has exactly $q$ distinct values, reflecting the $q$-fold covering of $\\mathbb{C}^*$ by itself. This multi-valuedness was first systematically studied by Euler and later by Cauchy and Riemann, who introduced branch cuts and Riemann surfaces to resolve it. The modern approach defines $z^w = \\exp(w \\log z)$ and selects a **principal branch** via the principal logarithm ($-\\pi < \\arg z \\leq \\pi$). This formalization bridges classical root extraction with Mathlib's principal-branch `cpow`, providing the first complete formal treatment of fractional De Moivre including root enumeration, distinctness, and consistency.",
+    "problemStatement": "**Open Question**: Extend De Moivre's theorem to fractional exponents $z^{p/q}$.\n\n**Answer**: The $q$-th roots of $(e^{i\\theta})^p$ are $\\zeta_k = \\exp\\bigl(i(p\\theta + 2\\pi k)/q\\bigr)$ for $k = 0, \\ldots, q-1$. These are all distinct and factor as $\\zeta_k = \\zeta_0 \\cdot \\omega_k$ where $\\omega_k$ are $q$-th roots of unity. The principal value via `cpow` selects $k=0$.",
+    "text": "Extends De Moivre's theorem to fractional exponents z^(p/q), proving root enumeration, distinctness, and principal value consistency via Mathlib's cpow.",
+    "proofStrategy": "The proof proceeds in stages:\n1. **Root verification**: Show each $\\zeta_k^q = (e^{i\\theta})^p$ using exponential arithmetic and $e^{2\\pi i k} = 1$.\n2. **Root factorization**: Factor $\\zeta_k = \\zeta_0 \\cdot \\omega_k$ where $\\omega_k = e^{2\\pi i k/q}$.\n3. **Distinctness**: Use `exp_eq_exp_iff_exists_int` to show equal roots imply $j - k = mq$, contradicting $0 \\leq j, k < q$.\n4. **Principal value**: Use `cpow_def_of_ne_zero` and `log_exp` (with principal range $-\\pi < \\theta \\leq \\pi$) to connect Mathlib's `cpow` to $\\zeta_0$.\n5. **Consistency**: Verify $(z^{p/q})^q = z^p$ and that $q = 1$ recovers integer De Moivre.",
+    "keyInsights": [
+      "The **multi-valuedness** of $z^{p/q}$ arises from the periodicity of exp: $\\exp(z) = \\exp(z + 2\\pi ik)$, so the inverse $\\log$ is inherently multi-valued with branches separated by $2\\pi i$",
+      "**Root distinctness** reduces to a pigeonhole argument: if $\\zeta_j = \\zeta_k$ then $j - k = mq$ for some integer $m$, but $|j - k| < q$ forces $m = 0$",
+      "Mathlib's `cpow` selects the **principal branch** via `log`, which requires $-\\pi < \\theta \\leq \\pi$ — this convention matches the standard branch cut along the negative real axis",
+      "All $q$ roots factor as **principal root times roots of unity**: $\\zeta_k = \\zeta_0 \\cdot \\omega_k$, reflecting the coset decomposition $z^{1/q} \\cdot \\mu_q$ where $\\mu_q$ is the cyclic group of $q$-th roots of unity",
+      "The **square root negation** $\\zeta_1 = -\\zeta_0$ is a direct consequence of Euler's identity $e^{i\\pi} = -1$, providing a satisfying concrete instance of the general theory"
+    ],
+    "prerequisites": [
+      "Complex analysis (roots of unity, complex nth roots)",
+      "Trigonometry (multiple angle formulas, Chebyshev polynomials)",
+      "Algebra (polynomial identities, binomial theorem)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Problem Statement",
+      "summary": "Module docstring establishing the problem: extend De Moivre's theorem to fractional exponents $z^{p/q}$, with key results and references",
+      "startLine": 1,
+      "endLine": 36,
+      "mathContext": "**De Moivre for $p/q$**: $(e^{i\\theta})^{p/q}$ has $q$ values: $\\zeta_k = \\exp\\left(\\frac{i(p\\theta + 2\\pi k)}{q}\\right)$ for $k = 0, 1, \\ldots, q-1$."
+    },
+    {
+      "id": "definitions",
+      "title": "Root Definitions",
+      "summary": "Defines $\\texttt{qthRoot}(\\theta, p, q, k) = \\exp(i(p\\theta + 2\\pi k)/q)$, the $k$-th candidate $q$-th root of $(e^{i\\theta})^p$",
+      "startLine": 37,
+      "endLine": 40,
+      "mathContext": "$\\zeta_k(\\theta, p, q) = \\exp\\left(\\frac{i(p\\theta + 2\\pi k)}{q}\\right)$. Principal value: $\\zeta_0 = \\exp(ip\\theta/q)$. All $q$ roots related by: $\\zeta_k = \\omega_k \\cdot \\zeta_0$ where $\\omega_k = e^{2\\pi ik/q}$."
+    },
+    {
+      "id": "root-verification",
+      "title": "Part I: Root Verification",
+      "summary": "Proves $\\zeta_k^q = (e^{i\\theta})^p$ by cancelling the $q$ denominator and applying $e^{2\\pi ik} = 1$",
+      "startLine": 41,
+      "endLine": 70,
+      "mathContext": "$\\zeta_k^q = \\exp\\left(\\frac{iq(p\\theta + 2\\pi k)}{q}\\right) = \\exp(i(p\\theta + 2\\pi k)) = e^{ip\\theta} \\cdot (e^{2\\pi i})^k = (e^{i\\theta})^p$. Cancellation of $q$ in the exponent is the key step."
+    },
+    {
+      "id": "roots-of-unity",
+      "title": "Part II: Roots of Unity and Factorization",
+      "summary": "Defines $\\omega_k = e^{2\\pi ik/q}$, proves $\\omega_k^q = 1$, and shows the factorization $\\zeta_k = \\zeta_0 \\cdot \\omega_k$",
+      "startLine": 71,
+      "endLine": 97,
+      "mathContext": "$\\omega_k = e^{2\\pi ik/q}$ satisfies $\\omega_k^q = 1$. Factorization: $\\zeta_k = \\omega_k \\cdot \\zeta_0$. The $q$-th roots of unity form a cyclic group $\\mu_q \\cong \\mathbb{Z}/q\\mathbb{Z}$."
+    },
+    {
+      "id": "distinctness",
+      "title": "Part III: Root Distinctness",
+      "summary": "Proves $j \\neq k$ with $0 \\leq j,k < q$ implies $\\zeta_j \\neq \\zeta_k$ via a pigeonhole argument on $|j - k| < q$",
+      "startLine": 98,
+      "endLine": 148,
+      "mathContext": "$j \\neq k,\\ 0 \\leq j, k < q \\Rightarrow \\zeta_j \\neq \\zeta_k$. Proof: $\\zeta_j = \\zeta_k \\Rightarrow \\omega_j = \\omega_k \\Rightarrow e^{2\\pi i(j-k)/q} = 1 \\Rightarrow q \\mid (j-k)$, contradicting $|j-k| < q$."
+    },
+    {
+      "id": "principal-value",
+      "title": "Part IV: Principal Value via cpow",
+      "summary": "Connects Mathlib's $\\texttt{cpow}(e^{i\\theta}, p/q)$ to $\\zeta_0 = \\exp(ip\\theta/q)$ using `log_exp` for $-\\pi < \\theta \\leq \\pi$; includes trigonometric form $\\cos(p\\theta/q) + i\\sin(p\\theta/q)$",
+      "startLine": 149,
+      "endLine": 184,
+      "mathContext": "$\\text{cpow}(e^{i\\theta}, p/q) = \\zeta_0 = \\exp(ip\\theta/q)$ for $\\theta \\in (-\\pi, \\pi]$. Mathlib's `Complex.cpow` selects the principal branch via the principal logarithm."
+    },
+    {
+      "id": "consistency",
+      "title": "Part V: Consistency with Integer De Moivre",
+      "summary": "Shows $z^{p/1} = z^p$ and $(z^{p/q})^q = z^p$, confirming the principal value is a genuine $q$-th root of $z^p$",
+      "startLine": 185,
+      "endLine": 200,
+      "mathContext": "$z^{p/1} = z^p$ (integer exponents). $(z^{p/q})^q = z^p$ (power-of-power). These verify that fractional exponents extend integer exponents consistently."
+    },
+    {
+      "id": "sqrt-case",
+      "title": "Part VI: Square Root Special Case",
+      "summary": "Proves both square roots satisfy $\\zeta_k^2 = e^{i\\theta}$ and that $\\zeta_1 = -\\zeta_0$ via Euler's identity $e^{i\\pi} = -1$",
+      "startLine": 201,
+      "endLine": 224,
+      "mathContext": "$q=2$: $\\zeta_0 = e^{i\\theta/2}$, $\\zeta_1 = e^{i(\\theta + 2\\pi)/2} = -e^{i\\theta/2} = -\\zeta_0$. Both satisfy $\\zeta_k^2 = e^{i\\theta}$. The two square roots are antipodal on the unit circle."
+    },
+    {
+      "id": "cube-root-case",
+      "title": "Part VII: Cube Root Special Case",
+      "summary": "Verifies all three cube roots satisfy $\\zeta_k^3 = e^{i\\theta}$ and factor as $\\zeta_k = \\zeta_0 \\cdot \\omega_k$ with $\\omega_k \\in \\mu_3$",
+      "startLine": 225,
+      "endLine": 237,
+      "mathContext": "$q=3$: $\\zeta_k = e^{i(\\theta + 2\\pi k)/3}$ for $k \\in \\{0,1,2\\}$. All satisfy $\\zeta_k^3 = e^{i\\theta}$. Factored: $\\zeta_k = \\omega^k \\cdot \\zeta_0$ where $\\omega = e^{2\\pi i/3}$."
+    },
+    {
+      "id": "examples",
+      "title": "Part VIII: Verified Examples",
+      "summary": "Concrete computations: $\\zeta_0(0,1,2) = 1$, $\\zeta_0(0,1,3) = 1$, and $\\zeta_1(0,1,4) = i$ (the fourth root $e^{i\\pi/2}$)",
+      "startLine": 238,
+      "endLine": 256,
+      "mathContext": "$\\zeta_0(0, 1, 2) = e^0 = 1$ (principal square root of 1). $\\zeta_0(0, 1, 3) = e^0 = 1$ (principal cube root of 1). $\\zeta_1(0, 1, 2) = e^{i\\pi} = -1$ (other square root of 1)."
+    },
+    {
+      "id": "summary",
+      "title": "Part IX: Summary Theorem",
+      "summary": "Bundles all four main results into a single conjunction: root verification, unity factorization, principal value identification, and consistency",
+      "startLine": 257,
+      "endLine": 275,
+      "mathContext": "Four main results: (1) $\\zeta_k^q = (e^{i\\theta})^p$, (2) $\\omega_k^q = 1$ and $\\zeta_k = \\omega_k \\zeta_0$, (3) distinctness ($q$ distinct roots), (4) $\\text{cpow}$ consistency with $\\zeta_0$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization fully extends De Moivre's theorem to fractional exponents z^(p/q), proving root enumeration, factorization via roots of unity, distinctness, and consistency with both integer De Moivre and Mathlib's cpow. All theorems are fully proved with zero sorries.",
+    "implications": "Completes the De Moivre open question series (OQ-01: Chebyshev extraction, OQ-02: Chebyshev properties, OQ-03: fractional exponents). Provides a foundation for formal treatment of multi-valued complex functions.",
+    "openQuestions": [
+      "Extend to irrational exponents z^α via limits of rational approximations",
+      "Formalize the full Riemann surface structure of z^(p/q)",
+      "Connect root enumeration to Galois theory of cyclotomic extensions"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "de-moivre",
+      "relationship": "Base theorem: integer exponent De Moivre"
+    },
+    {
+      "id": "de-moivre-oq-01",
+      "relationship": "OQ-01: Chebyshev polynomial extraction from De Moivre"
+    },
+    {
+      "id": "de-moivre-oq-02",
+      "relationship": "OQ-02: Deeper Chebyshev properties"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Complex",
+      "Real"
+    ],
+    "namespace": "DeMoivreOQ03",
+    "lineCount": 275,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 2,
+    "path": "Proofs/DeMoivreOQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Abraham De Moivre",
+      "title": "Original theorem for integer exponents",
+      "year": "1707",
+      "venue": "Philosophical Transactions"
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "Extension via exponential form",
+      "year": "1748",
+      "venue": "Introductio in analysin infinitorum"
+    },
+    {
+      "authors": "Tristan Needham",
+      "title": "Visual Complex Analysis",
+      "year": "1997",
+      "venue": "Oxford University Press"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "de-moivre-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Explicit Multiple Angle Formulas from De Moivre's Theorem"
+    },
+    {
+      "targetId": "de-moivre-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Chebyshev Polynomial Properties via De Moivre's Theorem"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "foundational",
+      "description": "Euler's identity e^(i*pi) + 1 = 0 is the special case of Euler's formula that underpins this entire formalization. The fractional root negation zeta_1 = -zeta_0 for square roots is a direct consequence of e^(i*pi) = -1."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "The Fundamental Theorem of Algebra guarantees that z^q - w = 0 has exactly q roots in C. This formalization constructively exhibits and proves distinctness of all q roots of (e^(i*theta))^p, providing a concrete instance of the FTA for cyclotomic-type polynomials."
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "The q-th roots of unity omega_k = e^(2*pi*i*k/q) used in the root factorization zeta_k = zeta_0 * omega_k are primitive roots when gcd(k,q) = 1. The cyclic group structure mu_q of roots of unity connects De Moivre's fractional powers to the theory of primitive roots."
+    }
+  ],
+  "sorries": 0
+}

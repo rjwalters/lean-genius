@@ -1,0 +1,229 @@
+{
+  "id": "erdos-220",
+  "title": "Erdős Problem #220: Squared Gaps Between Reduced Residues",
+  "slug": "erdos-220",
+  "description": "For reduced residues a₁ < ⋯ < a_{φ(n)} mod n, is ∑(a_{k+1}-a_k)² ≪ n²/φ(n)? Montgomery-Vaughan (1986) proved YES, with general bound for any power γ ≥ 1.",
+  "meta": {
+    "author": "Montgomery-Vaughan (1986 resolution)",
+    "sourceUrl": "https://erdosproblems.com/220",
+    "date": "1986",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos220Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "reduced-residues",
+      "totient",
+      "gaps",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "erdosNumber": 220,
+    "erdosUrl": "https://erdosproblems.com/220",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality predicate",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sort",
+        "description": "Sorting finite sets",
+        "module": "Mathlib.Data.Finset.Sort"
+      }
+    ],
+    "originalContributions": [
+      "reducedResidues n: set {m : 1 ≤ m < n, gcd(m,n) = 1}",
+      "sortedResidues n: reduced residues in increasing order",
+      "gap n k: difference a_{k+1} - a_k",
+      "sumGapPowers n γ: ∑(gap)^γ",
+      "sumSquaredGaps n: γ = 2 case",
+      "boundedSquaredGaps n: n²/φ(n)",
+      "montgomery_vaughan_squared axiom: main result",
+      "montgomery_vaughan_general axiom: generalization",
+      "jacobsthal n: maximum gap function"
+    ],
+    "axiomCount": 4,
+    "lineCount": 227,
+    "assumptions": "4 axioms: montgomery_vaughan_squared (squared gaps sum O(n²/φ(n))), montgomery_vaughan_general (γ-th power generalization), maximum_gap_bound (max gap ≤ C·n/φ(n)·(log n)²), gap_concentration (squared sum ≤ C·φ(n)·avg²). 2 sorries (sum_gaps_bound derivation; reduced_residues_count).",
+    "theoremCount": 3,
+    "definitionCount": 14,
+    "additionalFiles": [
+      "Proofs/Erdos220Aristotle.lean",
+      "Proofs/Erdos220ProblemProvable.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #220**\n\nThis problem concerns the gaps between consecutive reduced residues modulo n. The reduced residues are integers 1 ≤ m < n with gcd(m,n) = 1, and there are φ(n) of them.\n\n**Background:**\n- Average gap is n/φ(n)\n- Large gaps can occur (related to Jacobsthal's function)\n- Erdős asked if squared gaps sum to O(n²/φ(n))\n\n**History:**\n- Erdős posed the problem; $500 prize\n- The general γ ≥ 1 version was posed in [Er73]\n- Montgomery and Vaughan proved it in 1986 (Ann. of Math.)\n- Discussed in Guy's \"Unsolved Problems in Number Theory\" (B40)\n\n**Context:** The bound n²/φ(n) is what you'd get if all gaps were equal to the average. The theorem says even with gap variance, the squared sum doesn't exceed this by more than a constant factor.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet n ≥ 1 and A = {a₁ < a₂ < ⋯ < a_{φ(n)}} be the reduced residues mod n.\n\n**Conjecture:** ∑_{k=1}^{φ(n)-1} (a_{k+1} - a_k)² ≪ n²/φ(n)\n\n**Resolution:** Montgomery-Vaughan (1986) proved YES.\n\n**Generalization:** For any γ ≥ 1,\n∑_{k=1}^{φ(n)-1} (a_{k+1} - a_k)^γ ≪ n^γ/φ(n)^{γ-1}",
+    "text": "For reduced residues a₁ < ⋯ < a_{φ(n)} mod n, is ∑(a_{k+1}-a_k)² ≪ n²/φ(n)? Montgomery-Vaughan (1986) proved YES, with general bound for any power γ ≥ 1.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Reduced Residues:** Filter Finset.range n by coprimality\n\n2. **Gap Structure:** Sort residues, compute consecutive differences\n\n3. **Sum of Powers:** Define sumGapPowers for general γ\n\n4. **Main Results:** Montgomery-Vaughan theorems as axioms\n\n5. **Special Cases:** Prime n (all gaps 1), power of 2 (tight bound)\n\n**Why Axioms:** The proof uses deep sieve methods and analysis beyond Mathlib.",
+    "keyInsights": [
+      "**Average Gap:** With φ(n) residues in [1,n-1], average gap is n/φ(n).",
+      "**Variance Control:** The theorem says gap variance is controlled - squared sum ≤ C times \"all gaps equal\" case.",
+      "**Tight for 2^k:** When n = 2^k, all gaps are 2, and bound is exactly matched.",
+      "**Jacobsthal's Function:** Maximum gap g(n) is related to prime gaps after sieving.",
+      "**General Powers:** The γ ≥ 1 generalization shows all power sums are controlled similarly."
+    ],
+    "prerequisites": [
+      "Euler's totient function $\\varphi(n)$",
+      "Coprimality and reduced residue systems",
+      "Sieve methods (Selberg/Brun sieve)",
+      "Asymptotic notation ($\\ll$, $O$)",
+      "Jacobsthal's function and prime gaps"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Header, Imports & Part I: Reduced Residues",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "File header stating Erdős #220 (squared gaps between reduced residues, solved by Montgomery-Vaughan 1986, $500 prize), imports, and Part I. Defines reducedResidues n = {1 ≤ m < n : gcd(m,n)=1}, card_reducedResidues (= φ(n), sorry), sortedResidues n (residues sorted increasingly), and a n k (the k-th reduced residue).",
+      "mathContext": "Reduced residues mod $n$: $\\{1 \\le m < n : \\gcd(m,n)=1\\}$, of which there are $\\varphi(n)$. They are listed increasingly as $a_1 < a_2 < \\cdots < a_{\\varphi(n)}$."
+    },
+    {
+      "id": "gaps",
+      "title": "Part II: Gaps Between Consecutive Reduced Residues",
+      "startLine": 67,
+      "endLine": 78,
+      "summary": "Defines gap n k = a(n, k+1) − a(n, k), the gap between consecutive reduced residues, and gapList n collecting all φ(n)−1 gaps.",
+      "mathContext": "The gaps $a_{k+1}-a_k$ partition $[a_1, a_{\\varphi(n)}]$; their average size is $n/\\varphi(n)$."
+    },
+    {
+      "id": "sum-powers",
+      "title": "Part III: Sum of Powers of Gaps",
+      "startLine": 79,
+      "endLine": 90,
+      "summary": "Defines sumGapPowers n γ = ∑ gap^γ and the specialization sumSquaredGaps n = sumGapPowers n 2, the quantity Erdős #220 bounds.",
+      "mathContext": "$\\sum_k (a_{k+1}-a_k)^\\gamma$ for a general power $\\gamma$; the $\\gamma = 2$ case is the squared-gap sum."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part IV: The Erdős Conjecture",
+      "startLine": 91,
+      "endLine": 110,
+      "summary": "Defines boundedSquaredGaps n = n²/φ(n) and erdos_220_conjecture (∃ C>0, sumSquaredGaps n ≤ C·n²/φ(n) for all n ≥ 1), plus the general-power versions boundedGamaPowers n γ and erdos_220_general.",
+      "mathContext": "Conjecture: $\\sum (a_{k+1}-a_k)^2 \\ll n^2/\\varphi(n)$, generalized to $\\sum (a_{k+1}-a_k)^\\gamma \\ll n^\\gamma/\\varphi(n)^{\\gamma-1}$ for $\\gamma \\ge 1$."
+    },
+    {
+      "id": "montgomery-vaughan",
+      "title": "Part V: Montgomery-Vaughan Theorem (1986)",
+      "startLine": 111,
+      "endLine": 132,
+      "summary": "Axiomatizes the resolution: montgomery_vaughan_squared (the squared-gap bound holds) and montgomery_vaughan_general (the γ-th power bound for any γ ≥ 1), proved by Montgomery and Vaughan (1986).",
+      "mathContext": "Montgomery–Vaughan (1986) proved $\\sum (a_{k+1}-a_k)^\\gamma \\ll n^\\gamma/\\varphi(n)^{\\gamma-1}$ via sieve and large-sieve methods beyond current Mathlib, hence stated as axioms."
+    },
+    {
+      "id": "average-gap",
+      "title": "Part VI: Average Gap Analysis",
+      "startLine": 133,
+      "endLine": 153,
+      "summary": "Defines averageGap n = n/φ(n), states sum_gaps_bound (∑ gaps ≤ n, sorry), and records observations: gaps all equal to the average give exactly n²/φ(n), and large gaps must be rare by pigeonhole.",
+      "mathContext": "If every gap equalled the average $n/\\varphi(n)$, the squared sum would be exactly $\\varphi(n)\\cdot(n/\\varphi(n))^2 = n^2/\\varphi(n)$ — motivating the conjectured bound."
+    },
+    {
+      "id": "special-cases",
+      "title": "Part VII: Special Cases",
+      "startLine": 154,
+      "endLine": 167,
+      "summary": "Worked special cases: n prime (all gaps 1, ∑ gap² = p−2), n = 2^k (all gaps 2, ∑ gap² = 2^{k+1}, bound tight), and n primorial (large prime-gap effects controlled by Montgomery-Vaughan).",
+      "mathContext": "For $n = 2^k$ the bound is tight: all gaps equal $2$, so $\\sum (a_{k+1}-a_k)^2 = 2^{k+1} = n^2/\\varphi(n)$."
+    },
+    {
+      "id": "prime-gaps",
+      "title": "Part VIII: Relation to Prime Gaps",
+      "startLine": 168,
+      "endLine": 184,
+      "summary": "Defines jacobsthal n (the maximum gap) and axiomatizes maximum_gap_bound (max gap ≤ C·(n/φ(n))·(log n)²), relating gap sizes to prime-gap behaviour after sieving.",
+      "mathContext": "Jacobsthal's function $g(n)$ is the largest gap; the squared-gap sum depends on how many gaps of each size occur — few large gaps plus many small gaps keeps the sum manageable."
+    },
+    {
+      "id": "gap-distribution",
+      "title": "Part IX: The Distribution of Gaps",
+      "startLine": 185,
+      "endLine": 198,
+      "summary": "Defines countGapsOfSize n g and axiomatizes gap_concentration: sumSquaredGaps n ≤ C·φ(n)·(averageGap n)² = O(n²/φ(n)), expressing that gaps concentrate near the average.",
+      "mathContext": "Concentration of gaps near $n/\\varphi(n)$ yields $\\sum (a_{k+1}-a_k)^2 = O(\\varphi(n)\\cdot (n/\\varphi(n))^2) = O(n^2/\\varphi(n))$."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "startLine": 199,
+      "endLine": 227,
+      "summary": "Summary of the resolved problem and the proved theorem erdos_220_summary (= montgomery_vaughan_squared), with the key ideas: average gap n/φ(n), rare large gaps, a controlled gap distribution, and tightness for n = 2^k.",
+      "mathContext": "Erdős #220 is SOLVED: $\\sum (a_{k+1}-a_k)^2 \\ll n^2/\\varphi(n)$, with the generalization for all $\\gamma \\ge 1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #220 was solved by Montgomery and Vaughan in 1986. The sum of squared gaps between reduced residues is O(n²/φ(n)), and more generally ∑(gap)^γ ≪ n^γ/φ(n)^{γ-1} for all γ ≥ 1. This shows the distribution of gaps is well-controlled.",
+    "implications": "The result shows that despite the existence of large gaps (related to Jacobsthal's function), they are rare enough that power sums remain bounded. This connects to sieve theory and the distribution of primes.",
+    "openQuestions": [
+      "What are the best explicit constants in the O(·) bounds?",
+      "How does the gap distribution depend on the prime factorization of n?",
+      "Can the techniques extend to other arithmetic progressions?"
+    ]
+  },
+  "leanFile": {
+    "imports": [],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 227,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 14,
+    "path": "Proofs/Erdos220Problem.lean",
+    "sorries": 2,
+    "additionalFiles": [
+      "Proofs/Erdos220Aristotle.lean",
+      "Proofs/Erdos220ProblemProvable.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-240",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gaps, number-theory, solved"
+    },
+    {
+      "targetId": "erdos-48",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, solved, totient"
+    },
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, totient"
+    }
+  ],
+  "references": [
+    {
+      "key": "HW79b",
+      "authors": [
+        "G.H. Hardy",
+        "E.M. Wright"
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "venue": "Oxford University Press",
+      "year": "1979",
+      "edition": "5th",
+      "note": "Standard reference for reduced residue systems and Euler's totient"
+    }
+  ],
+  "sorries": 2
+}

@@ -1,0 +1,320 @@
+{
+  "id": "liouville-theorem",
+  "title": "Liouville's Theorem on Transcendental Numbers",
+  "slug": "liouville-theorem",
+  "description": "Liouville numbers are transcendental. This provides the first explicit construction of transcendental numbers via rational approximation bounds.",
+  "meta": {
+    "wiedijkNumber": 18,
+    "author": "Joseph Liouville (1844)",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Liouville/Basic.html",
+    "date": "1844",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/LiouvilleTheorem.lean",
+    "tags": [
+      "number-theory",
+      "transcendental",
+      "approximation",
+      "algebraic",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Liouville.transcendental",
+        "description": "Main theorem: Liouville numbers are transcendental",
+        "module": "Mathlib.NumberTheory.Liouville.Basic"
+      },
+      {
+        "theorem": "liouvilleNumber",
+        "description": "The explicit Liouville constant",
+        "module": "Mathlib.NumberTheory.Liouville.LiouvilleNumber"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical presentation of Liouville's approximation theorem",
+      "Connection to Roth's theorem and Diophantine approximation",
+      "Uncountability of Liouville numbers proved via Baire category theorem (residual + perfect space argument)"
+    ],
+    "dateAdded": "2025-12-29",
+    "axiomCount": 1,
+    "assumptions": "1 axiom declaration: roth_theorem (optimal exponent 2+epsilon). Previously axiomatized results now proved: liouville_approximation_theorem_axiom (via Mathlib's exists_pos_real_of_irrational_root + integer gap argument), liouville_uncountable_axiom (via Baire category), liouville_constant_irrational_axiom (via transcendence), liouville_add_rat_axiom (via LiouvilleWith.add_rat), liouville_mul_rat_axiom (via LiouvilleWith.rat_mul).",
+    "lineCount": 528,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 17,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Joseph Liouville published his groundbreaking result in 1844 in the *Journal de Mathématiques Pures et Appliquées*, a journal he himself had founded in 1836. At the time, mathematicians strongly suspected that transcendental numbers existed — Euler had conjectured as much — but no one had produced a single example. Liouville's insight was indirect: rather than analyzing a specific constant, he identified a *structural property* (superpolynomial approximability by rationals) that forces transcendence. He then exhibited $L = \\sum 10^{-n!}$ as a concrete number with this property. This was nearly 30 years before Cantor's cardinality argument (1874) showed transcendentals are overwhelmingly common, and predated Hermite's proof that $e$ is transcendental (1873) and Lindemann's proof for $\\pi$ (1882). Liouville's method via Diophantine approximation remains the conceptual foundation for modern transcendence theory, influencing the Thue-Siegel-Roth progression that culminated in Roth's Fields Medal.",
+    "problemStatement": "**Liouville's Theorem**: If $\\alpha$ is algebraic of degree $n \\geq 2$, then there exists $c > 0$ such that $|\\alpha - p/q| > c/q^n$ for all rationals $p/q$.\n\n**Corollary**: Numbers that violate this bound (Liouville numbers) must be transcendental.",
+    "text": "Liouville numbers are transcendental. This provides the first explicit construction of transcendental numbers via rational approximation bounds.",
+    "proofStrategy": "For algebraic $\\alpha$ with minimal polynomial $P$ of degree $n$, if $p/q$ is close to $\\alpha$, then $q^n|P(p/q)| \\geq 1$ (since it is a nonzero integer after clearing denominators). The Mean Value Theorem bounds $P(p/q) = P(p/q) - P(\\alpha) = (p/q - \\alpha) P'(\\xi)$ for some $\\xi$ between $p/q$ and $\\alpha$. If $|\\alpha - p/q| < 1$, then $|P'(\\xi)|$ is bounded by a constant $M$ depending only on $\\alpha$, yielding $|\\alpha - p/q| \\geq 1/(M q^n)$. The Lean formalization uses Mathlib's `Liouville.transcendental` which encapsulates this contrapositive argument.",
+    "keyInsights": [
+      "Algebraic numbers cannot be approximated too well by rationals — the degree of the minimal polynomial imposes a hard limit of $c/q^n$",
+      "The proof hinges on an integrality argument: $q^n P(p/q)$ is a nonzero integer when $P$ is the minimal polynomial, giving a lower bound of 1",
+      "Liouville numbers violate all polynomial approximation bounds simultaneously, so they cannot satisfy any algebraic equation",
+      "The Liouville constant $L = \\sum 10^{-n!}$ achieves superpolynomial approximation because factorial gaps in the decimal expansion make partial sums extraordinarily close to $L$",
+      "Roth's theorem (1955) dramatically improved the exponent from $n$ to $2 + \\varepsilon$, showing algebraic irrationals are even harder to approximate than Liouville's bound suggests"
+    ],
+    "prerequisites": [
+      "Number theory (algebraic and transcendental numbers)",
+      "Real analysis (approximation theory, continued fractions)",
+      "Polynomial algebra (minimal polynomials, degree bounds)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "intro",
+      "title": "Historical Introduction and Documentation",
+      "startLine": 1,
+      "endLine": 85,
+      "summary": "Module docstring for Liouville's theorem (Wiedijk #18): Liouville numbers are transcendental, giving the first explicit transcendental (the Liouville constant $\\sum 10^{-n!}$, 1844). Surveys the theorems, historical significance, key ideas (rational-approximation rate), Mathlib dependencies, status, and references.",
+      "mathContext": "Liouville numbers (super-rational-approximable) are transcendental; first explicit transcendental $\\sum 10^{-n!}$."
+    },
+    {
+      "id": "part1",
+      "title": "Part I: Background and Definitions",
+      "startLine": 86,
+      "endLine": 107,
+      "summary": "Background and the basic setup for Liouville approximation (preliminary definitions and notation for the approximation framework).",
+      "mathContext": "Setup: rational approximation $|x-p/q|$ and the Liouville approximation framework."
+    },
+    {
+      "id": "part2",
+      "title": "Part II: Liouville's Approximation Theorem",
+      "startLine": 108,
+      "endLine": 238,
+      "summary": "PROVES `liouville_approximation_theorem` (1844, formerly an axiom, now proved): an algebraic irrational of degree $n$ cannot be approximated by rationals faster than order $n$. Includes the `_axiom`-named variant (also a theorem).",
+      "mathContext": "Algebraic $\\alpha$ of degree $n$: $|\\alpha-p/q|>c/q^n$ (Liouville 1844, proved)."
+    },
+    {
+      "id": "part3",
+      "title": "Part III: Liouville Numbers and Their Transcendence",
+      "startLine": 239,
+      "endLine": 279,
+      "summary": "Defines/characterizes Liouville numbers (`liouville_def`) and PROVES the main theorem `liouville_transcendental` (Wiedijk #18: every Liouville number is transcendental) and `liouville_not_algebraic`.",
+      "mathContext": "Liouville number $\\Rightarrow$ transcendental (not algebraic)."
+    },
+    {
+      "id": "part4",
+      "title": "Part IV: The Liouville Constant",
+      "startLine": 280,
+      "endLine": 333,
+      "summary": "PROVES properties of the Liouville constant $\\sum 10^{-n!}$: `liouville_constant_is_liouville`, `liouville_constant_transcendental` (the first explicit transcendental, 1844), and `liouville_constant_irrational` (formerly axiom, now proved).",
+      "mathContext": "$\\sum_n 10^{-n!}$ is a Liouville number, hence transcendental and irrational."
+    },
+    {
+      "id": "part5",
+      "title": "Part V: Properties of Liouville Numbers",
+      "startLine": 334,
+      "endLine": 382,
+      "summary": "PROVES closure/structure properties (all formerly axioms, now proved): `liouville_uncountable` (the Liouville numbers are uncountable), `liouville_add_rat` (adding a rational preserves the property), and `liouville_mul_rat` (scaling by a nonzero rational preserves it).",
+      "mathContext": "Liouville set uncountable; closed under $+\\mathbb{Q}$ and $\\times\\mathbb{Q}^\\times$."
+    },
+    {
+      "id": "part6",
+      "title": "Part VI: Generalizations and Improvements",
+      "startLine": 383,
+      "endLine": 431,
+      "summary": "States Roth's theorem (1955) as the file's single AXIOM `roth_theorem` (algebraic irrationals have approximation exponent exactly $2$) — the sharp improvement of Liouville's bound.",
+      "mathContext": "Axiom (Roth 1955): algebraic irrational $\\alpha$ has $|\\alpha-p/q|>c/q^{2+\\varepsilon}$."
+    },
+    {
+      "id": "part7",
+      "title": "Part VII: Connections to Other Results",
+      "startLine": 432,
+      "endLine": 458,
+      "summary": "A documentation section relating Liouville's theorem to broader results in transcendence theory and Diophantine approximation (no declarations).",
+      "mathContext": "Connections: transcendence theory, Diophantine approximation, Roth/Thue–Siegel."
+    },
+    {
+      "id": "part8",
+      "title": "Part VIII: Examples and Computations",
+      "startLine": 459,
+      "endLine": 471,
+      "summary": "PROVES base-generalized examples: `liouville_base_2_transcendental` ($\\sum 2^{-n!}$ transcendental) and `liouville_any_base_transcendental` ($\\sum b^{-n!}$ transcendental for any base $b\\geq2$).",
+      "mathContext": "$\\sum_n b^{-n!}$ is transcendental for every integer base $b\\geq2$."
+    },
+    {
+      "id": "part9",
+      "title": "Part IX: Measure-Theoretic Perspective",
+      "startLine": 472,
+      "endLine": 496,
+      "summary": "A documentation section on the measure-theoretic viewpoint: the Liouville numbers, though uncountable, form a set of Lebesgue measure zero (no declarations).",
+      "mathContext": "Liouville numbers: uncountable but Lebesgue-measure zero."
+    },
+    {
+      "id": "part10",
+      "title": "Part X: Summary",
+      "startLine": 497,
+      "endLine": 528,
+      "summary": "Closing documentation recapping the results: Liouville's approximation theorem, transcendence of Liouville numbers (Wiedijk #18), the explicit Liouville constant, closure properties, and Roth's sharpening.",
+      "mathContext": "Recap: Liouville numbers transcendental (#18); explicit constant; Roth's exponent-2 sharpening."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Hermite's 1873 proof that e is transcendental — the second specific transcendental number proved, using auxiliary polynomial methods rather than Diophantine approximation"
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Lindemann's 1882 proof that π is transcendental, resolving the ancient problem of squaring the circle and building on techniques from Hermite-Lindemann"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "The Hermite-Lindemann theorem provides a much more powerful transcendence criterion (e^α transcendental for algebraic α ≠ 0), superseding Liouville's approximation approach for specific constants"
+    },
+    {
+      "targetId": "gelfond-schneider",
+      "relationship": "related",
+      "description": "The Gelfond-Schneider theorem (1934) resolved Hilbert's 7th problem using transcendence methods that evolved from the tradition Liouville began"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "Irrationality of √2 is the simplest case of the algebraic-transcendental hierarchy: √2 is algebraic of degree 2, hence not Liouville, while Liouville numbers go further and are transcendental"
+    },
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "related",
+      "description": "Countability of rationals contextualizes Liouville's result: algebraic numbers are countable while transcendentals (including Liouville numbers) are uncountable"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA (every polynomial has complex roots) establishes that algebraic numbers form a field. Liouville's theorem shows this field is a proper subset of R — there exist reals satisfying no polynomial equation"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini shows some algebraic numbers can't be expressed by radicals; Liouville goes further, exhibiting numbers that aren't algebraic at all — a hierarchy of inexpressibility"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's 1874 cardinality argument showed transcendentals are uncountable — 30 years after Liouville's constructive proof produced the first explicit example. Liouville's approach is constructive where Cantor's is existential"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "related",
+      "description": "The irrationality of nth roots establishes these numbers as algebraic of degree n, placing them precisely in Liouville's framework: by the approximation theorem, they resist rational approximation beyond c/q^n"
+    },
+    {
+      "targetId": "hurwitz-theorem",
+      "relationship": "foundational",
+      "description": "Hurwitz's theorem (|α-p/q| < 1/(√5·q²) for infinitely many p/q) establishes that the exponent 2 in Roth's theorem is optimal — the approximation exponent cannot be reduced below 2 for any irrational"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "foundational",
+      "description": "Dirichlet's approximation theorem guarantees |α-p/q| < 1/(qN) for some q ≤ N, providing the baseline for all Diophantine approximation results including Liouville's bound"
+    }
+  ],
+  "conclusion": {
+    "summary": "Liouville's theorem opened the field of transcendence theory by providing the first explicit transcendental numbers. The technique of bounding rational approximations remains fundamental to Diophantine approximation, and the approximation exponent problem spawned a century of improvements culminating in Roth's optimal result.",
+    "implications": "**Theoretical Significance**: The theorem evolved into Roth's theorem (Fields Medal 1958), which gives optimal exponent $2+\\varepsilon$. This connects to Baker's theorem on linear forms in logarithms (Fields Medal 1970), Schmidt's subspace theorem, and modern transcendence theory.\n\nThe measure-theoretic perspective — that Liouville numbers are simultaneously uncountable and measure-zero — foreshadows the Baire category vs. measure duality that pervades real analysis.",
+    "openQuestions": [
+      "Is there an effective version of Roth's theorem that gives computable constants?",
+      "What is the irrationality measure of specific constants like e, π, or ln(2)?",
+      "What is the Hausdorff dimension of the set of numbers with irrationality measure exactly μ for a given μ > 2?",
+      "Can Liouville's approximation approach be extended to p-adic or function field settings?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Transcendental.Liouville.Basic",
+      "Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleNumber",
+      "Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith",
+      "Mathlib.NumberTheory.Transcendental.Liouville.Residual",
+      "Mathlib.Topology.Algebra.Module.PerfectSpace",
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "Polynomial",
+      "Nat"
+    ],
+    "namespace": "LiouvilleTheorem",
+    "lineCount": 528,
+    "axiomCount": 1,
+    "theoremCount": 17,
+    "definitionCount": 0,
+    "path": "Proofs/LiouvilleTheorem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Liouville, Joseph",
+      "title": "Sur des classes très-étendues de quantités dont la valeur n'est ni algébrique, ni même réductible à des irrationnelles algébriques",
+      "year": "1851",
+      "venue": "Journal de Mathématiques Pures et Appliquées 16, 133–142",
+      "note": "Proved the existence of transcendental numbers by constructing explicit examples using rapidly convergent series"
+    },
+    {
+      "authors": "Liouville, Joseph",
+      "title": "Nouvelle démonstration d'un théorème sur les irrationnelles algébriques",
+      "year": "1844",
+      "venue": "Comptes rendus de l'Académie des Sciences 18, 910–911",
+      "note": "The original 1844 announcement of Liouville's approximation theorem and the first transcendental number, predating the fuller 1851 treatment"
+    },
+    {
+      "authors": "Roth, Klaus Friedrich",
+      "title": "Rational approximations to algebraic numbers",
+      "year": "1955",
+      "venue": "Mathematika 2, 1–20",
+      "note": "Proved the optimal exponent 2+ε for Diophantine approximation of algebraic irrationals, earning the Fields Medal in 1958"
+    },
+    {
+      "authors": "Baker, Alan",
+      "title": "Transcendental Number Theory",
+      "year": "1990",
+      "venue": "Cambridge University Press (reprint of 1975 edition)",
+      "note": "Standard reference on transcendence theory, covering Liouville's theorem, the Thue-Siegel-Roth progression, Hermite-Lindemann, Gelfond-Schneider, and Baker's own results on linear forms in logarithms"
+    },
+    {
+      "authors": "Thue, Axel",
+      "title": "Über Annäherungswerte algebraischer Zahlen",
+      "year": "1909",
+      "venue": "Journal für die reine und angewandte Mathematik 135, 284–305",
+      "note": "First improvement of Liouville's exponent from n to n/2+1+ε, initiating the Thue-Siegel-Roth progression"
+    },
+    {
+      "authors": "Niven, Ivan",
+      "title": "Irrational Numbers",
+      "year": "1956",
+      "venue": "Carus Mathematical Monographs 11, MAA",
+      "note": "Accessible treatment of Liouville numbers, the approximation theorem, and connections to continued fractions and Diophantine approximation"
+    },
+    {
+      "authors": "Bugeaud, Yann",
+      "title": "Approximation by Algebraic Numbers",
+      "year": "2004",
+      "venue": "Cambridge Tracts in Mathematics 160, Cambridge University Press",
+      "note": "Modern comprehensive treatment of Diophantine approximation including Liouville numbers, irrationality measures, and the Thue-Siegel-Roth theorem"
+    },
+    {
+      "authors": "Wiedijk, Freek",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "The definitive list of 100 well-known theorems and their formalization status. Liouville's theorem is #18"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "liouville_approximation",
+      "type": "core",
+      "description": "Algebraic numbers of degree d cannot be approximated by rationals better than |a - p/q| >= c/q^d",
+      "leanType": "IsAlgebraic Q a -> algebraicDegree a = d -> exists c > 0, forall p q, |a - p/q| >= c / q^d"
+    }
+  ],
+  "sorries": 0
+}

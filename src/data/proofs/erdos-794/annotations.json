@@ -1,0 +1,209 @@
+[
+  {
+    "id": "ann-e794-header",
+    "proofId": "erdos-794",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #794 (1969, DISPROVED): Is it true that every 3-uniform hypergraph on 3n vertices with at least n³+1 edges must contain K₄⁻ (4 vertices, 3 edges) or a 5-7 configuration? Balogh showed the 5-7 condition is redundant. Harris provided a counterexample: 9 vertices, 28 edges, no K₄⁻. The correct Turán density for K₄⁻ is at least 2/7 (Frankl-Füredi 1984), making the n³+1 threshold (density 2/9) insufficient.",
+    "mathContext": "A 3-uniform hypergraph $H = (V, E)$ has $E \\subseteq \\binom{V}{3}$. The Turán density $\\pi(F)$ for a forbidden 3-graph $F$ is $\\lim_{n \\to \\infty} \\max\\{|E|/\\binom{n}{3} : |V| = n, F \\not\\subseteq H\\}$. For $K_4^- = $ (4 vertices, 3 edges), the density $n^3 + 1$ on $3n$ vertices corresponds to density $\\frac{n^3}{\\binom{3n}{3}} \\approx \\frac{n^3}{(3n)^3/6} = \\frac{2}{9}$, which is below the Frankl-Füredi lower bound $\\pi(K_4^-) \\geq 2/7 \\approx 0.286$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán density",
+      "3-uniform hypergraph",
+      "K₄⁻",
+      "forbidden subgraph",
+      "extremal combinatorics"
+    ],
+    "prerequisites": [
+      "hypergraph basics",
+      "Turán theory",
+      "edge density"
+    ]
+  },
+  {
+    "id": "ann-e794-hypergraph3",
+    "proofId": "erdos-794",
+    "range": {
+      "startLine": 48,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "Hypergraph3 Structure",
+    "content": "Hypergraph3 V is a structure with vertices (Finset V), edges (Finset (Finset V)), and proofs that every edge has exactly 3 elements and is a subset of vertices. vertexCount and edgeCount extract cardinalities.",
+    "mathContext": "The structure encodes a 3-uniform hypergraph $H = (V, E)$ where $E \\subseteq \\binom{V}{3}$. The field $\\texttt{edge\\_card}$ ensures 3-uniformity: $\\forall e \\in E,\\; |e| = 3$. The field $\\texttt{edge\\_subset}$ ensures $e \\subseteq V$. Using $\\texttt{Finset (Finset V)}$ for edges means edges are unordered sets, matching the hypergraph convention. The maximum possible edge count is $\\binom{|V|}{3}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset",
+      "3-uniformity",
+      "hypergraph representation"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "subset relation"
+    ]
+  },
+  {
+    "id": "ann-e794-k4minus",
+    "proofId": "erdos-794",
+    "range": {
+      "startLine": 69,
+      "endLine": 87
+    },
+    "type": "definition",
+    "title": "ContainsK4Minus and Contains5_7",
+    "content": "ContainsK4Minus H means ∃ S with |S| = 4, S ⊆ V, and exactly 3 edges within S. Contains5_7 H means ∃ S with |S| = 5 and exactly 7 edges within S. In a 3-uniform hypergraph, K₄⁻ has 4 vertices with 3 of the possible 4 edges — one edge 'missing.'",
+    "mathContext": "For 4 vertices in a 3-uniform hypergraph, there are $\\binom{4}{3} = 4$ possible edges. $K_4^-$ uses 3 of these 4 edges. For 5 vertices, $\\binom{5}{3} = 10$ possible edges; 7 edges is a high-density subhypergraph. The filter $\\texttt{H.edges.filter}(e \\subseteq S)$ counts edges within the vertex subset $S$. Note that the 5-7 configuration is dense enough ($7/10 = 0.7$) that it must contain $K_4^-$ as a sub-configuration — this is Balogh's observation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete 3-graph K₄",
+      "edge density within subsets",
+      "Finset.filter"
+    ],
+    "prerequisites": [
+      "binomial coefficient C(n,3)",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-e794-balogh",
+    "proofId": "erdos-794",
+    "range": {
+      "startLine": 89,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Balogh's Observation",
+    "content": "balogh_observation axiomatizes: Contains5_7 H → ContainsK4Minus H. Any 5-vertex set with 7 of 10 possible edges contains a 4-vertex subset with 3 of 4 possible edges. second_condition_redundant simply applies this axiom. This simplifies the problem to asking only about K₄⁻.",
+    "mathContext": "The proof is a counting argument: among 5 vertices, each 4-vertex subset has $\\binom{5}{4} = 5$ possible selections. With 7 edges on 5 vertices (out of 10 possible), each 4-vertex subset inherits at least $7 - \\binom{4}{3} = 7 - 4 = 3$ edges on average by inclusion-exclusion. More precisely, each edge is counted by $\\binom{5-3}{1} = 2$ of the 5 subsets, so the total edges across all subsets is $7 \\times 2 = 14$, averaging $14/5 = 2.8$ per subset. At least one subset has $\\geq 3$ edges, giving $K_4^-$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "double counting",
+      "pigeonhole principle",
+      "subhypergraph inheritance"
+    ],
+    "prerequisites": [
+      "balogh_observation axiom",
+      "Contains5_7"
+    ]
+  },
+  {
+    "id": "ann-e794-conjectures",
+    "proofId": "erdos-794",
+    "range": {
+      "startLine": 106,
+      "endLine": 135
+    },
+    "type": "definition",
+    "title": "Original and Simplified Conjectures",
+    "content": "Erdos794Conjecture: ∀ H on 3n vertices with ≥ n³+1 edges, ContainsK4Minus H ∨ Contains5_7 H. Erdos794Simplified: the same with just ContainsK4Minus. simplified_implies_original (PROVED): the simplified version implies the original by taking the left disjunct.",
+    "mathContext": "The original conjecture $\\forall H,\\; |V| = 3n \\wedge |E| \\geq n^3 + 1 \\implies K_4^- \\subseteq H \\vee \\texttt{5-7} \\subseteq H$ is weakened to the simplified version $\\forall H,\\; |V| = 3n \\wedge |E| \\geq n^3 + 1 \\implies K_4^- \\subseteq H$. The implication $\\texttt{Simplified} \\implies \\texttt{Original}$ is trivial (left injection into disjunction). The converse uses Balogh: $\\texttt{Original} \\implies \\texttt{Simplified}$ because $\\texttt{5-7} \\implies K_4^-$. So the two are equivalent, and disproving either disproves both.",
+    "significance": "key",
+    "relatedConcepts": [
+      "logical simplification",
+      "disjunction elimination",
+      "equivalence of formulations"
+    ],
+    "prerequisites": [
+      "Erdos794Conjecture",
+      "Erdos794Simplified",
+      "Or.elim"
+    ]
+  },
+  {
+    "id": "ann-e794-harris",
+    "proofId": "erdos-794",
+    "range": {
+      "startLine": 137,
+      "endLine": 176
+    },
+    "type": "concept",
+    "title": "Harris's Counterexample",
+    "content": "HarrisCounterexample structure for n=3: 9 vertices (Fin 9), 28 edges, all 3-element. The construction: 27 cross-product edges {a,b,c} with a ∈ {1,2,3}, b ∈ {4,5,6}, c ∈ {7,8,9}, plus edge {1,2,3}. n3_threshold (PROVED): 3³+1 = 28. harris_counterexample_exists axiom: ∃ H on Fin 9 with 9 vertices, 28 edges, ¬ContainsK4Minus.",
+    "mathContext": "The construction is a tripartite product: partition $\\{1,\\ldots,9\\}$ into $A = \\{1,2,3\\}$, $B = \\{4,5,6\\}$, $C = \\{7,8,9\\}$, and take all $3 \\times 3 \\times 3 = 27$ cross-product triples $\\{a, b, c\\}$ with $a \\in A, b \\in B, c \\in C$. This is a balanced tripartite 3-graph. Adding the single intra-partition edge $\\{1,2,3\\}$ gives 28 edges total. **Why no $K_4^-$?** Any 4 vertices with 3 edges would need 3 triples sharing at least 2 vertices in some pair of parts, but the cross-product structure prevents this: each pair of parts contributes at most one element per edge, so 4 vertices span at most 2 cross-product edges. The additional edge $\\{1,2,3\\}$ is within $A$, so it can't combine with cross-product edges to form $K_4^-$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tripartite product",
+      "balanced partition",
+      "counterexample construction",
+      "cross-product hypergraph"
+    ],
+    "prerequisites": [
+      "Fin 9",
+      "Finset",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-e794-disproved",
+    "proofId": "erdos-794",
+    "range": {
+      "startLine": 178,
+      "endLine": 196
+    },
+    "type": "concept",
+    "title": "erdos_794_disproved and erdos_794_original_false (PROVED)",
+    "content": "erdos_794_disproved proves ¬Erdos794Simplified: assumes the conjecture, extracts Harris's H with 9 vertices and 28 edges, applies the conjecture to get ContainsK4Minus H, contradicting ¬ContainsK4Minus. erdos_794_original_false extends to ¬Erdos794Conjecture by showing Simplified ↔ Original.",
+    "mathContext": "The proof of $\\neg\\texttt{Erdos794Simplified}$: assume $\\forall H,\\; |V| = 3n \\wedge |E| \\geq n^3 + 1 \\implies K_4^- \\subseteq H$. Apply with Harris's $H$ and $n = 3$: $|V| = 9 = 3 \\times 3$ and $|E| = 28 \\geq 3^3 + 1 = 28$, giving $K_4^- \\subseteq H$, contradicting $\\neg(K_4^- \\subseteq H)$. For the original: if $\\texttt{Original}$ holds, then for any $H$ with enough edges, either $K_4^- \\subseteq H$ (done) or $\\texttt{5-7} \\subseteq H$ (which implies $K_4^- \\subseteq H$ by Balogh), giving $\\texttt{Simplified}$. So $\\neg\\texttt{Simplified} \\implies \\neg\\texttt{Original}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "counterexample application",
+      "logical chaining"
+    ],
+    "prerequisites": [
+      "harris_counterexample_exists",
+      "balogh_observation",
+      "omega"
+    ]
+  },
+  {
+    "id": "ann-e794-density",
+    "proofId": "erdos-794",
+    "range": {
+      "startLine": 198,
+      "endLine": 224
+    },
+    "type": "concept",
+    "title": "Turán Density and Frankl-Füredi Bound",
+    "content": "turanDensityK4Minus is defined as the real number 2/7 (conjectured value). frankl_furedi_lower axiomatizes that this density is ≥ 2/7. turan_conjecture records Turán's earlier conjecture of 1/4. current_conjecture states the believed value 2/7.",
+    "mathContext": "The Turán density $\\pi(K_4^-)$ is defined as $\\lim_{n \\to \\infty} \\max\\{|E|/\\binom{n}{3} : H \\text{ is } K_4^-\\text{-free on } n \\text{ vertices}\\}$. Frankl and Füredi (1984) proved $\\pi(K_4^-) \\geq 2/7$ by constructing a $K_4^-$-free 3-graph achieving this density: the 'Fano complement' construction. Turán conjectured $\\pi(K_4^-) = 1/4$ (based on the complete balanced tripartite 3-graph), but $2/7 > 1/4 = 0.25$, disproving Turán's conjecture for this specific forbidden hypergraph. The current belief $\\pi(K_4^-) = 2/7$ remains open — proving the matching upper bound is a major challenge in extremal hypergraph theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán density",
+      "Fano complement",
+      "extremal hypergraph theory",
+      "Turán conjecture"
+    ],
+    "prerequisites": [
+      "frankl_furedi_lower axiom",
+      "density definition"
+    ]
+  },
+  {
+    "id": "ann-e794-summary",
+    "proofId": "erdos-794",
+    "range": {
+      "startLine": 227,
+      "endLine": 256
+    },
+    "type": "concept",
+    "title": "Summary: erdos_794_summary and erdos_794 (PROVED)",
+    "content": "erdos_794_summary packages three results: ¬Erdos794Conjecture (from erdos_794_original_false), Contains5_7 → ContainsK4Minus (from balogh_observation), and density ≥ 2/7 (from frankl_furedi_lower). erdos_794 is the final theorem: ¬Erdos794Conjecture.",
+    "mathContext": "The summary theorem $\\texttt{erdos\\_794\\_summary} : \\neg\\texttt{Erdos794Conjecture} \\wedge (\\forall H, \\texttt{Contains5\\_7}\\; H \\to \\texttt{ContainsK4Minus}\\; H) \\wedge \\texttt{turanDensityK4Minus} \\geq 2/7$ is proved by $\\langle\\texttt{erdos\\_794\\_original\\_false}, \\lambda\\; H \\Rightarrow \\texttt{balogh\\_observation}\\; H, \\texttt{frankl\\_furedi\\_lower}\\rangle$. The file has 0 sorry entries and uses 3 axioms (balogh_observation, harris_counterexample_exists, frankl_furedi_lower) plus 1 noncomputable definition (turanDensityK4Minus).",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem packaging",
+      "conjunction introduction",
+      "axiom summary"
+    ],
+    "prerequisites": [
+      "erdos_794_original_false",
+      "balogh_observation",
+      "frankl_furedi_lower"
+    ]
+  }
+]

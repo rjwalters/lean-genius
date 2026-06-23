@@ -1,0 +1,121 @@
+{
+  "slug": "bezout-identity-oq-01-oq-01-oq-02",
+  "title": "Binary GCD Extended to Integers",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "Define intBinaryGcd : \\mathbb{Z} \\to \\mathbb{Z} \\to \\mathbb{Z} extending Stein's binary GCD to integer inputs and prove (1) intBinaryGcd a b = (\\mathrm{Int.gcd}\\, a\\, b : \\mathbb{Z}); (2) intBinaryGcd a b \\mid a and intBinaryGcd a b \\mid b; (3) \\forall d, d \\mid a \\land d \\mid b \\Rightarrow d \\mid intBinaryGcd a b; (4) sign-invariance under negation; (5) Bézout: \\exists u, v \\in \\mathbb{Z}, u\\cdot a + v\\cdot b = intBinaryGcd a b.",
+    "plain": "Can Stein's binary GCD algorithm, which computes gcd(a, b) for natural numbers using only subtraction, halving, and parity tests, be extended to integers? Prove the extension equals Mathlib's Int.gcd, satisfies divisibility, sign invariance, and yields explicit Bézout coefficients.",
+    "whyMatters": [
+      "Stein's algorithm is used in GMP, OpenSSL, and Java BigInteger — all on integer inputs.",
+      "Bézout coefficients are inherently integer-valued (witnesses may be negative even for ℕ inputs), so a faithful integer formalization is required.",
+      "Validates the natAbs-reduction design pattern: signs are parasitic, not structural, for any sign-invariant integer operation."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "intBinaryGcd a b = (Int.gcd a b : ℤ)",
+      "intBinaryGcd a b ∣ a and intBinaryGcd a b ∣ b",
+      "Universal property: d ∣ a ∧ d ∣ b → d ∣ intBinaryGcd a b",
+      "Sign invariance: intBinaryGcd (-a) b = intBinaryGcd a (-b) = intBinaryGcd a b",
+      "Bézout identity: ∃ u v : ℤ, u*a + v*b = intBinaryGcd a b",
+      "Boundary cases: intBinaryGcd 0 b = b.natAbs, intBinaryGcd a 0 = a.natAbs"
+    ],
+    "open": [
+      "Track Bézout coefficients through Stein's iteration directly (not via fallback to extended Euclidean) — this is OQ-01-OQ-01-OQ-01.",
+      "Complexity bound: prove intBinaryGcd a b runs in O(log² max(|a|, |b|)) bit operations.",
+      "Native-integer Stein iteration that handles signs without natAbs reduction at definition time."
+    ],
+    "goal": "0 sorries, 0 axioms — fully verified extension of binary GCD to ℤ with the GCD/Bézout package."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-07T12:00:00.000Z",
+    "iteration": 1,
+    "focus": "Slug fully verified and merged in PR #16475 (2026-05-07).",
+    "blockers": [],
+    "nextAction": "None on this slug. Follow-up OQ-01-OQ-01-OQ-01 (extended Stein with Bézout tracking) is the natural next step.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 12 theorems + 1 def + 5 native_decide examples, 0 sorries, 0 axioms (verified). Definition intBinaryGcd a b := ↑(binaryGcd a.natAbs b.natAbs) reduces to the parent ℕ algorithm via Int.natAbs. All properties (divisibility, sign-invariance, Bézout, universal property, boundary cases) inherit from Mathlib's Int.gcd via the equivalence intBinaryGcd_eq_gcd. Gallery entry verified, PR #16475 merged.",
+    "builtItems": [
+      "Proofs/BezoutIdentityOQ01OQ01OQ02.lean:44 — def intBinaryGcd : ℤ → ℤ → ℤ via natAbs reduction",
+      "Proofs/BezoutIdentityOQ01OQ01OQ02.lean:51 — intBinaryGcd_eq_gcd: equivalence with Mathlib's Int.gcd",
+      "Proofs/BezoutIdentityOQ01OQ01OQ02.lean:60-65 — intBinaryGcd_dvd_left/right via ▸ rewrite",
+      "Proofs/BezoutIdentityOQ01OQ01OQ02.lean:68-89 — intBinaryGcd_comm, _neg_left, _neg_right, _natAbs (sign invariance)",
+      "Proofs/BezoutIdentityOQ01OQ01OQ02.lean:96-105 — boundary cases intBinaryGcd_zero_left/right",
+      "Proofs/BezoutIdentityOQ01OQ01OQ02.lean:115 — bezout_via_intBinaryGcd: integer Bézout via Int.gcdA/gcdB",
+      "Proofs/BezoutIdentityOQ01OQ01OQ02.lean:130 — dvd_intBinaryGcd: universal property routed through Bézout",
+      "Proofs/BezoutIdentityOQ01OQ01OQ02.lean:140-144 — 5 native_decide examples covering all four sign combinations of (±12, ±8) and a coprime case (17, 5)",
+      "src/data/proofs/bezout-identity-oq-01-oq-01-oq-02/meta.json — gallery entry, status=verified, badge=original"
+    ],
+    "insights": [
+      "The integer extension is a one-liner via natAbs because Mathlib's Int.gcd is *defined* as Nat.gcd a.natAbs b.natAbs. Once binaryGcd_eq_gcd is invoked, intBinaryGcd_eq_gcd reduces to rfl.",
+      "Sign invariance is parasitic, not structural. Reducing to ℕ at definition time avoids handling signs case-by-case in the algorithm — a design lesson for any sign-invariant integer operation (Int.lcm, Int.abs, etc.).",
+      "Bézout coefficients are borrowed from Mathlib's Int.gcdA, Int.gcdB (extended Euclidean), not computed by Stein's iteration. Tracking Bézout pairs through binary GCD is the genuine open question (OQ-01-OQ-01-OQ-01); subtraction-and-halve doesn't admit the same coefficient recurrence as quotient-and-remainder.",
+      "The universal property dvd_intBinaryGcd routes through Bézout, not the algorithm: d ∣ a ∧ d ∣ b → d ∣ u*a + v*b. This is the standard pattern in any Bézout domain (every finitely generated ideal is principal).",
+      "Lean 4.26 API gotchas surfaced: Int.gcd_dvd_left needs ↑(a.gcd b) dot notation handled via ▸ transport; linear_combination for Bézout produces residual binaryGcd a.natAbs = binaryGcd |a|.natAbs goals — explicit rw [heq, hbez]; ring works; dvd_intBinaryGcd cleaner via Bézout than via Int.dvd_gcd."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "OQ-01-OQ-01-OQ-01 (Proofs/BezoutIdentityOQ01OQ01OQ01.lean): track Bézout coefficients through Stein's iteration directly. Currently has 2 axioms, 0 sorries — the genuine open question.",
+      "Consider companion intBinaryLcm definition + GCD-LCM identity (gcd*lcm = |a*b|) as a sister theorem; not pursued in this slug to keep scope focused.",
+      "Complexity bound formalization: prove intBinaryGcd terminates in O(log²(max |a|, |b|)) bit operations — would require a counter-tracking variant or termination-measure analysis."
+    ],
+    "markdown": "# Knowledge Base: bezout-identity-oq-01-oq-01-oq-02\n\nFull formalization complete. See `research/problems/bezout-identity-oq-01-oq-01-oq-02/knowledge.md` for the prior session's narrative log.\n\n## Status\n\nVerified gallery entry. 12 theorems + 1 def, 0 sorries, 0 axioms. Merged in PR #16475 (2026-05-07).\n\n## Key Technique\n\n**Transport along definitional equality.** The definition `intBinaryGcd a b := ↑(binaryGcd a.natAbs b.natAbs)` factors entirely through the parent's ℕ algorithm. Each property is inherited from `Int.gcd` via the `▸` rewrite, with no extra arithmetic.\n\n## Follow-up\n\nThe genuine open question — tracking Bézout coefficients through Stein's iteration directly — is OQ-01-OQ-01-OQ-01 (`Proofs/BezoutIdentityOQ01OQ01OQ01.lean`), which currently carries 2 axioms.\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "algorithm",
+    "gcd",
+    "integers",
+    "bezout",
+    "verified"
+  ],
+  "relatedProofs": [
+    "bezout-identity",
+    "bezout-identity-oq-01",
+    "bezout-identity-oq-01-oq-01",
+    "bezout-identity-oq-01-oq-01-oq-01",
+    "bezout-identity-oq-01-oq-01-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "Stein, J. (1967). Computational problems associated with Racah algebra. Journal of Computational Physics 1, 397–405."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Binary_GCD_algorithm",
+      "https://github.com/rjwalters/lean-genius/pull/16475"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Data.Nat.GCD.Basic"
+    ]
+  },
+  "started": "2026-05-07T00:00:00.000Z",
+  "lastUpdate": "2026-05-08T07:22:00.000Z",
+  "completed": "2026-05-07T12:00:00.000Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/BezoutIdentityOQ01OQ01OQ02.lean",
+      "filename": "BezoutIdentityOQ01OQ01OQ02.lean",
+      "lineCount": 146,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BezoutIdentityOQ01OQ01OQ02.lean"
+    }
+  ]
+}

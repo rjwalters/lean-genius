@@ -1,0 +1,208 @@
+[
+  {
+    "id": "ann-e495-header",
+    "proofId": "erdos-495",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**The Littlewood Conjecture** is one of the most famous open problems in number theory. It asks: for any two real numbers α and β, can you always find integers n that make the product n · ‖nα‖ · ‖nβ‖ arbitrarily small? Here ‖x‖ means the distance from x to the nearest whole number. Think of it as asking whether every pair of reals can be simultaneously well-approximated by fractions, in a multiplicative sense.",
+    "mathContext": "The conjecture states lim inf_{n→∞} n·‖nα‖·‖nβ‖ = 0 for all α, β ∈ ℝ. This is a multiplicative strengthening of Dirichlet's theorem on simultaneous approximation. Open since c. 1930.",
+    "significance": "key",
+    "relatedConcepts": [
+      "diophantine-approximation",
+      "littlewood-conjecture",
+      "liminf"
+    ],
+    "prerequisites": [
+      "real numbers and the nearest-integer distance ‖x‖",
+      "Diophantine approximation of reals by fractions",
+      "liminf of a sequence over the integers"
+    ]
+  },
+  {
+    "id": "ann-e495-distint",
+    "proofId": "erdos-495",
+    "range": {
+      "startLine": 39,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Distance to Nearest Integer",
+    "content": "**distInt x** computes how far x is from the nearest whole number. For example, distInt(3.2) = 0.2 and distInt(3.8) = 0.2 (distance to 4). This is always between 0 and 1/2. In number theory notation, this is written ‖x‖ and is fundamental to measuring how well real numbers can be approximated by integers.",
+    "mathContext": "distInt(x) = |x - round(x)|. Satisfies 0 ≤ distInt(x) ≤ 1/2 for all x ∈ ℝ. Both bounds are axiomatized here since the full proof requires properties of round that interact with the absolute value.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fractional-part",
+      "nearest-integer",
+      "diophantine-approximation"
+    ],
+    "prerequisites": [
+      "absolute value of a real number",
+      "rounding a real to its nearest integer",
+      "the fractional part of a real number"
+    ]
+  },
+  {
+    "id": "ann-e495-product",
+    "proofId": "erdos-495",
+    "range": {
+      "startLine": 58,
+      "endLine": 71
+    },
+    "type": "theorem",
+    "title": "The Littlewood Product",
+    "content": "**littlewoodProduct n α β** is the quantity n · ‖nα‖ · ‖nβ‖. This measures how well both α and β can be simultaneously approximated by rationals with denominator n. The Littlewood conjecture asserts this product can be made arbitrarily small.",
+    "mathContext": "L(n, α, β) = n · ‖nα‖ · ‖nβ‖. The multiplicative structure (product of three terms) is what makes this conjecture so much harder than the additive Dirichlet theorem, which gives ‖nα‖ < 1/n for infinitely many n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "simultaneous-approximation",
+      "multiplicative-number-theory"
+    ],
+    "prerequisites": [
+      "the nearest-integer distance ‖nα‖",
+      "simultaneous approximation of two reals by a common denominator",
+      "Dirichlet's theorem giving ‖nα‖ < 1/n"
+    ]
+  },
+  {
+    "id": "ann-e495-conjecture",
+    "proofId": "erdos-495",
+    "range": {
+      "startLine": 73,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "The Littlewood Conjecture",
+    "content": "**LittlewoodConjecture** is formalized as: for every pair of reals (α, β), every ε > 0, and every starting point N, there exists n ≥ N with n · ‖nα‖ · ‖nβ‖ < ε. This 'infinitely often' formulation is equivalent to saying the liminf is zero. The conjecture has been open for nearly a century.",
+    "mathContext": "LittlewoodConjecture : Prop := ∀ α β : ℝ, ∀ ε > 0, ∀ N : ℕ, ∃ n ≥ N, n ≥ 1 ∧ littlewoodProduct n α β < ε. This is equivalent to the liminf formulation but avoids needing to formalize liminf over ℕ → ℝ in the type theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open-conjecture",
+      "liminf",
+      "diophantine-approximation"
+    ],
+    "prerequisites": [
+      "the Littlewood product n·‖nα‖·‖nβ‖",
+      "the 'infinitely often' formulation via ∃ n ≥ N",
+      "equivalence of liminf zero with the existential statement"
+    ]
+  },
+  {
+    "id": "ann-e495-rational",
+    "proofId": "erdos-495",
+    "range": {
+      "startLine": 88,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Rational Case",
+    "content": "**The conjecture is trivially true when α is rational.** If α = p/q, then for any multiple n of q, we have nα is an integer, so ‖nα‖ = 0 and the entire product vanishes. This is the simplest case and shows the conjecture is really about irrational numbers.",
+    "mathContext": "If α = p/q with q ≥ 1, then for n = kq we get ‖nα‖ = ‖kp‖ = 0, making the Littlewood product zero. Axiomatized since the formal proof requires divisibility arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rational-approximation",
+      "trivial-case"
+    ],
+    "prerequisites": [
+      "rational numbers written as p/q",
+      "divisibility and integer multiples of a denominator",
+      "‖nα‖ = 0 when nα is an integer"
+    ]
+  },
+  {
+    "id": "ann-e495-cubic",
+    "proofId": "erdos-495",
+    "range": {
+      "startLine": 100,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Cassels-Swinnerton-Dyer (1955)",
+    "content": "**The first non-trivial result:** Cassels and Swinnerton-Dyer proved the Littlewood conjecture holds when α and β are algebraically related cubic irrationals — for example, α = ∛2 and β = (∛2)². Their proof uses the geometry of numbers and properties of cubic number fields.",
+    "mathContext": "The theorem applies when α is a root of a cubic polynomial aX³ + bX + c = 0 (a ≠ 0) and β = rα² + sα for rational r, s. This covers pairs in the same cubic field extension of ℚ. The proof was later reinterpreted in terms of dynamics on SL(3,ℝ)/SL(3,ℤ).",
+    "significance": "key",
+    "relatedConcepts": [
+      "cubic-number-field",
+      "geometry-of-numbers",
+      "algebraic-irrationals"
+    ],
+    "prerequisites": [
+      "cubic irrationals as roots of aX³ + bX + c",
+      "cubic field extensions of ℚ",
+      "Minkowski's geometry of numbers"
+    ]
+  },
+  {
+    "id": "ann-e495-ekl",
+    "proofId": "erdos-495",
+    "range": {
+      "startLine": 113,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Einsiedler-Katok-Lindenstrauss (2006)",
+    "content": "**The major breakthrough:** EKL proved that the set of counterexamples to the Littlewood conjecture has Hausdorff dimension zero. In simple terms, counterexamples (if they exist) are vanishingly rare — far rarer than any positive-dimensional set. This work earned Elon Lindenstrauss the 2010 Fields Medal.\n\n**ekl_countable_exceptions**: We axiomatize a weaker consequence: for each fixed α, the set of β failing Littlewood is countable.",
+    "mathContext": "The proof uses ergodic theory on the homogeneous space SL(3,ℝ)/SL(3,ℤ), specifically the classification of invariant measures for diagonal actions (the A-action). The key insight is translating the number-theoretic problem into a question about orbit closures in a Lie group quotient.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ergodic-theory",
+      "hausdorff-dimension",
+      "homogeneous-dynamics",
+      "fields-medal"
+    ],
+    "prerequisites": [
+      "Hausdorff dimension of a set",
+      "ergodic theory and invariant measures",
+      "the homogeneous space SL(3,ℝ)/SL(3,ℤ)"
+    ]
+  },
+  {
+    "id": "ann-e495-padic",
+    "proofId": "erdos-495",
+    "range": {
+      "startLine": 138,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "The p-adic Littlewood Conjecture",
+    "content": "**A natural variant** replaces one of the ‖·‖ factors with the p-adic absolute value |·|_p. The de Mathan-Teulié conjecture (2004) asks: for every real α and prime p, is lim inf n · |n|_p · ‖nα‖ = 0? Einsiedler-Kleinbock (2007) proved the analogous Hausdorff dimension zero result. Badziahin-Velani (2014) made further progress for badly approximable numbers.",
+    "mathContext": "PAdicLittlewood p : Prop := ∀ α : ℝ, ∀ ε > 0, ∀ N, ∃ n ≥ N, n ≥ 1 ∧ n · distInt(nα) < ε · n. The p-adic valuation |n|_p = p^(-v_p(n)) measures divisibility by p. This variant connects Diophantine approximation to p-adic analysis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-adic-numbers",
+      "de-mathan-teulie",
+      "badly-approximable-numbers"
+    ],
+    "prerequisites": [
+      "the p-adic absolute value |n|_p and valuation v_p",
+      "primes dividing an integer",
+      "the de Mathan-Teulié conjecture variant"
+    ]
+  },
+  {
+    "id": "ann-e495-summary",
+    "proofId": "erdos-495",
+    "range": {
+      "startLine": 165,
+      "endLine": 178
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_495_summary** combines the known results:\n1. The conjecture holds for rational α (trivially)\n2. For each α, exceptions are countable (consequence of EKL)\n\n**Status: OPEN** in full generality.",
+    "mathContext": "The summary theorem assembles littlewood_rational_case and ekl_countable_exceptions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "open-problem",
+      "diophantine-approximation",
+      "ergodic-theory"
+    ],
+    "prerequisites": [
+      "the trivial rational case of Littlewood",
+      "the countable-exceptions consequence of EKL",
+      "open status of the conjecture in full generality"
+    ]
+  }
+]

@@ -1,0 +1,140 @@
+[
+  {
+    "id": "ann-e543-header",
+    "proofId": "erdos-543",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #543** asks whether the threshold f(N) for random subset sum spanning of abelian groups satisfies f(N) ≤ log₂ N + o(log log N). Erdős and Rényi proved f(N) ≤ log₂ N + O(log log N) in 1965, and the question is whether the O(log log N) can be improved. Erdős believed it cannot, and this was confirmed: the answer is NO.",
+    "mathContext": "The function f(N) measures the worst-case (over all abelian groups of size N) minimal random subset size for which subset sums cover the entire group with probability ≥ 1/2. The information-theoretic lower bound is log₂ N (since 2^k subset sums must cover N elements), and the extra log log N term arises from collision effects.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset sums",
+      "probabilistic method",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "Abelian groups",
+      "Subset sums",
+      "Probabilistic method"
+    ]
+  },
+  {
+    "id": "ann-e543-subset-sums",
+    "proofId": "erdos-543",
+    "range": {
+      "startLine": 41,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Subset Sums and Spanning Sets",
+    "content": "**subsetSums A** is the set of all elements expressible as ∑_{x ∈ S} x for some S ⊆ A. **IsSpanningSet A** says every group element is a subset sum of A, i.e., subsetSums A = G. The equivalence with Set.univ is proved by unfolding definitions and applying simp.",
+    "mathContext": "Subset sums differ from linear spans: coefficients are restricted to {0, 1}, not arbitrary integers. This makes the covering problem harder. For example, in ℤ/8ℤ, the set {1, 2, 4} spans via subset sums (gives 0-7), but {3} alone generates the entire group under repeated addition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset sum problem",
+      "group generation",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "Subset sum problem",
+      "Group generation",
+      "Boolean coefficients"
+    ]
+  },
+  {
+    "id": "ann-e543-f-def",
+    "proofId": "erdos-543",
+    "range": {
+      "startLine": 57,
+      "endLine": 74
+    },
+    "type": "concept",
+    "title": "The Function f(N)",
+    "content": "**f(N)** is axiomatized as the minimal k such that a random k-subset of any abelian group of size N spans with probability ≥ 1/2. The spanningProbability definition counts the fraction of k-subsets that are spanning sets. The function f is axiomatized (rather than defined via Nat.find over a supremum) because constructing the supremum over all abelian groups of a given size requires dependent type-level quantification.",
+    "mathContext": "The key property f_le_card ensures f(N) ≤ N, since the full group trivially spans itself. The spanning probability is monotone in k: larger subsets are more likely to span, so a threshold function is well-defined.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold function",
+      "worst-case analysis",
+      "Nat.find"
+    ],
+    "prerequisites": [
+      "Threshold functions",
+      "Nat.find",
+      "Worst-case analysis"
+    ]
+  },
+  {
+    "id": "ann-e543-erdos-renyi",
+    "proofId": "erdos-543",
+    "range": {
+      "startLine": 87,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Erdős-Rényi Upper Bound (1965)",
+    "content": "**erdos_renyi_upper_bound** states f(N) ≤ log₂ N + C · log(log N) for some constant C > 0 and all N ≥ 2. This is the main known upper bound from the original 1965 paper. The proof uses probabilistic counting: for k = ⌈log₂ N⌉ + C · log log N, union-bounding over all N group elements shows each is missed with probability < 1/(2N), so the total failure probability is < 1/2.",
+    "mathContext": "The log₂ N term ensures 2^k ≥ N potential subset sums. The additional C · log log N term handles the birthday-paradox-like collisions among subset sums. Without it, too many subset sums would coincide, leaving some group elements uncovered.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "union bound",
+      "birthday paradox"
+    ],
+    "prerequisites": [
+      "Union bound",
+      "Logarithms",
+      "Birthday paradox"
+    ]
+  },
+  {
+    "id": "ann-e543-conjecture-disproof",
+    "proofId": "erdos-543",
+    "range": {
+      "startLine": 102,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "The Conjecture and Its Disproof",
+    "content": "**LittleOConjecture** asks if the O(log log N) can be improved to o(log log N). **ErdosCounterConjecture** says it cannot: there exists ε > 0 with f(N) > log₂ N + ε · log log N for infinitely many N. The theorem **conjectures_complementary** proves these are logical negations using push_neg. The axiom **chatgpt_tang_disproof** asserts ErdosCounterConjecture holds, and **little_o_conjecture_false** derives ¬LittleOConjecture as a corollary.",
+    "mathContext": "The logical equivalence LittleOConjecture ↔ ¬ErdosCounterConjecture is nontrivial to formalize because it involves quantifier manipulation (∀ε∃N₀∀N vs ∃ε∀N₀∃N). The push_neg tactic handles the quantifier negation cleanly. The disproof confirms that collision effects in finite fields of prime order create an inherent log log N barrier.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quantifier negation",
+      "disproof",
+      "finite fields"
+    ],
+    "prerequisites": [
+      "Quantifier negation",
+      "Finite fields",
+      "Logical equivalence"
+    ]
+  },
+  {
+    "id": "ann-e543-lower-bounds",
+    "proofId": "erdos-543",
+    "range": {
+      "startLine": 148,
+      "endLine": 162
+    },
+    "type": "concept",
+    "title": "Lower Bounds",
+    "content": "**naive_lower_bound** states f(N) ≥ log₂ N - 1, an information-theoretic bound since 2^k subset sums must cover N elements. **erdos_hall_lower** (1978) shows the bound cannot improve even to o(log log log N), providing an intermediate result between the trivial lower bound and the full ChatGPT-Tang disproof. Together these establish that f(N) = log₂ N + Θ(log log N).",
+    "mathContext": "The Erdős-Hall lower bound was historically significant: it showed the log log N term has structural meaning beyond just an artifact of the proof technique. The progression from o(log log log N) to o(log log N) being impossible took several decades to establish.",
+    "significance": "key",
+    "relatedConcepts": [
+      "information theory",
+      "counting lower bounds",
+      "Erdős-Hall theorem"
+    ],
+    "prerequisites": [
+      "Information theory",
+      "Counting arguments",
+      "Entropy lower bounds"
+    ]
+  }
+]

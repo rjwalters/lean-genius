@@ -1,0 +1,96 @@
+{
+  "slug": "feuerbachs-theorem-defs-oq-02",
+  "title": "Nine-Point Circle Uniqueness",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "The gallery proof (`feuerbachs-theorem-defs`) already establishes that all 9 special",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-05T17:45:36-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: feuerbachs-theorem-defs-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "geometry",
+    "euclidean-geometry",
+    "nine-point-circle",
+    "feuerbach",
+    "uniqueness",
+    "triangle"
+  ],
+  "relatedProofs": [
+    "feuerbachs-theorem",
+    "feuerbachs-theorem-defs",
+    "feuerbachs-theorem-defs-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-06T01:14:00.443Z",
+  "lastUpdate": "2026-04-06T01:14:00.465Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/FeuerbachsTheoremDefs.lean",
+      "filename": "FeuerbachsTheoremDefs.lean",
+      "lineCount": 688,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 34,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremDefs.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremDefsOQ03.lean",
+      "filename": "FeuerbachsTheoremDefsOQ03.lean",
+      "lineCount": 251,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremDefsOQ03.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremDefsOQ04.lean",
+      "filename": "FeuerbachsTheoremDefsOQ04.lean",
+      "lineCount": 191,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremDefsOQ04.lean"
+    }
+  ]
+}

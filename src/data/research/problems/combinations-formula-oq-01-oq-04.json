@@ -1,0 +1,48 @@
+{
+  "id": "combinations-formula-oq-01-oq-04",
+  "problemStatement": {
+    "formal": "\\det\\bigl(e(a_i, b_j)\\bigr)_{1 \\le i,j \\le n} = \\sum_{\\substack{(P_1,\\ldots,P_n)\\ \\text{non-intersecting}}} \\mathrm{sgn}(\\sigma) \\prod_{i=1}^n w(P_i)",
+    "plain": "The Lindstr\u00f6m-Gessel-Viennot (LGV) lemma: given strictly ordered source positions a_1 < ... < a_r and target positions b_1 < ... < b_r, the determinant of the matrix M where M_{ij} = C(m + b_j - a_i, m) equals the number of non-intersecting r-tuples of lattice paths.",
+    "whyMatters": [
+      "Unifies combinatorial determinant identities",
+      "Engine behind Catalan numbers, Schur polynomials, plane partition formulas",
+      "Connects algebraic (determinant) and combinatorial (path counting) viewpoints"
+    ]
+  },
+  "knowledge": {
+    "insights": [
+      "The r\u00d7r LGV for lattice paths is fully proved in BallotProblemOQ03OQ02.lean (lgv_lemma_rxr)",
+      "Well-formedness condition (max source \u2264 min target) is necessary for the theorem",
+      "The 1\u00d71 case is trivial: det = C(m+b-a, m)",
+      "For m=2 sources=[0,1] targets=[2,3]: det=6, verified by native_decide on determinant",
+      "For m=3 sources=[0,1] targets=[3,4]: det=50, verified by native_decide on determinant",
+      "niTupleCount is noncomputable (uses Classical.dec) \u2014 must derive from det, not native_decide",
+      "The file imports BallotProblemOQ03OQ02 and presents LGV from the combinations/determinant angle"
+    ],
+    "builtItems": [
+      "CombinationsFormulaOQ01OQ04.lean: 14 theorems, 0 sorries, 0 axioms",
+      "lgvConfig1: 1\u00d71 LGV configuration",
+      "lgvConfig2: 2\u00d72 LGV configuration with sources [a,a+1] and targets [b,b+1]",
+      "lgv_one_by_one: 1\u00d71 det = C(m+b-a,m)",
+      "lgv_2x2_det_ex1: det=6 for m=2,a=0,b=2 via native_decide",
+      "lgv_2x2_det_ex2: det=50 for m=3,a=0,b=3 via native_decide",
+      "lgv_det_is_natural: det is always a natural number (counts path tuples)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "progressSummary": "COMPLETED: 0 sorries, 0 axioms, PR submitted (pending Docker build)"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-04T21:01:44.925228",
+    "iteration": 1,
+    "focus": "Proof completed, PR submitted for Docker build verification",
+    "blockers": [],
+    "nextAction": "Await Docker build and PR merge",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  }
+}

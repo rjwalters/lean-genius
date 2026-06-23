@@ -1,0 +1,122 @@
+[
+  {
+    "id": "eh-framework-intro",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "The Elliott-Halberstam Conditional Framework",
+    "content": "This file formalizes the conditional improvement of the bounded prime gaps bound from H ≤ 246 (unconditional Polymath 8b) to H ≤ 12 under the Elliott-Halberstam conjecture. The key tool is the Maynard-Tao sieve applied to admissible tuples: unconditionally it requires k ≥ 50 primes in the tuple (giving the 246-element tuple of diameter 246), but under EH only k ≥ 5 are needed (giving the 5-element tuple {0,2,6,8,12} of diameter 12). The file imports from BoundedPrimeGaps.lean (base definitions: IsAdmissible, primeGap, nthPrime, maynard_tao_sieve_eh axiom) and BoundedPrimeGapsOQ01.lean (admissibility of the 5-tuple and non-admissibility of all diameter ≤ 10 candidates).",
+    "mathContext": "**EH Conjecture**: $\\sum_{q \\leq x^{1/2}} \\max_{(a,q)=1} \\left| \\pi(x;q,a) - \\frac{\\pi(x)}{\\varphi(q)} \\right| = O(x / (\\log x)^A)$ for every $A > 0$. The Bombieri-Vinogradov theorem proves this for $q \\leq x^{1/2 - \\varepsilon}$ (strict inequality). EH conjectures the same at the **critical boundary** $q \\leq x^{1/2}$.",
+    "significance": "critical",
+    "prerequisites": ["Dirichlet's theorem on primes in APs", "Bombieri-Vinogradov theorem", "sieve theory", "admissible k-tuples"],
+    "relatedConcepts": ["Maynard-Tao sieve", "Elliott-Halberstam conjecture", "Bombieri-Vinogradov theorem", "bounded-prime-gaps", "bounded-prime-gaps-oq-01"]
+  },
+  {
+    "id": "eh-conditional-h12-main",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 38, "endLine": 63 },
+    "type": "theorem",
+    "title": "EH Conditional H ≤ 12: The Core Result",
+    "content": "eh_conditional_h_le_12 is the main theorem: for every N, there exists n ≥ N with primeGap(n) ≤ 12. The proof applies the parent axiom maynard_tao_sieve_eh to the admissible 5-tuple {0,2,6,8,12} proved optimal in OQ01. Three preconditions are verified by native_decide: (1) quintuple_card = 5 (the sieve needs k ≥ 5), (2) quintuple_le_12 (all elements ≤ 12, so diameter ≤ 12), and (3) admissibility (from admissible_5_tuple_min_diam_12 in the parent). eh_strictly_improves_on_246 packages this as a strict improvement over the Polymath unconditional bound.",
+    "mathContext": "**Maynard-Tao EH sieve** (axiom): For any admissible $k$-tuple $\\mathcal{H} = \\{h_1,\\ldots,h_k\\}$ with $k \\geq 5$ and $\\max h_i \\leq D$, assuming EH: $\\liminf_{n\\to\\infty}(p_{n+1} - p_n) \\leq D$. Applied with $\\mathcal{H} = \\{0,2,6,8,12\\}$, $D=12$: $\\text{primeGap}(n) \\leq 12$ infinitely often.",
+    "significance": "critical",
+    "prerequisites": ["maynard_tao_sieve_eh axiom", "admissible_5_tuple_min_diam_12", "Elliott-Halberstam conjecture"],
+    "relatedConcepts": ["primeGap", "IsAdmissible", "admissible_5_tuple_min_diam_12", "eh_threshold_lt_bv_threshold"]
+  },
+  {
+    "id": "numerical-bound-comparison",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 65, "endLine": 85 },
+    "type": "theorem",
+    "title": "Numerical Comparison: H ≤ 12 vs H ≤ 246, Sieve Threshold 5 vs 50",
+    "content": "A cluster of arithmetic theorems quantifies the EH improvement. eh_bound_lt_polymath_bound (12 < 246) and bound_gap (246 - 12 = 234) record the gap in absolute terms. eh_improvement_factor (20·12 ≤ 246) shows the approximately 20× improvement. sieve_threshold_ratio (5·10 = 50) and bv_needs_10x_more_elements (50 = 10·5) quantify the root cause: EH needs only a 5-element tuple where BV requires 50. The 10× reduction in tuple size translates directly to the ~20× reduction in gap bound, since the optimal k-tuple diameter grows roughly linearly with k.",
+    "mathContext": "The gap reduction: $246/12 \\approx 20$. The threshold reduction: $50/5 = 10$. The connection: the optimal admissible $k$-tuple has diameter $\\sim k \\log k$ by the prime $k$-tuples conjecture and greedy constructions, so reducing $k$ from 50 to 5 (a factor of 10) reduces the bound roughly proportionally.",
+    "significance": "key",
+    "prerequisites": ["Polymath 8b result H ≤ 246", "Maynard-Tao sieve threshold analysis"],
+    "relatedConcepts": ["eh_conditional_h_le_12", "sieve_threshold_ratio", "bv_level_eq_eh_level"]
+  },
+  {
+    "id": "no-admissible-5tuple-diam10",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 87, "endLine": 98 },
+    "type": "theorem",
+    "title": "Diameter 12 Is Tight: No Admissible 5-Tuple with Diameter ≤ 10",
+    "content": "no_admissible_5_tuple_diam_le_10 consolidates the five non-admissibility witnesses from BoundedPrimeGapsOQ01: the 5 even 5-tuples containing 0 with diameter ≤ 10 are {0,2,4,6,8}, {0,2,4,6,10}, {0,2,4,8,10}, {0,2,6,8,10}, and {0,4,6,8,10}. Each is non-admissible because some prime p divides h-h' for all pairs h,h' in the tuple. The conjunction asserts that EH cannot give H < 12: no admissible 5-tuple with diameter < 12 exists (for tuples containing 0), so H = 12 is the best possible EH bound with k=5.",
+    "mathContext": "An admissible $k$-tuple $\\mathcal{H}$ requires: for every prime $p$, not all residues $\\pmod{p}$ are occupied by elements of $\\mathcal{H}$. For $k=5$ elements, primes $p \\leq k+1 = 6$ are the only constraints. Each rejected tuple fails admissibility at $p=3$ or $p=5$: e.g., $\\{0,2,4,6,8\\}$ covers all of $\\mathbb{Z}/3\\mathbb{Z}$ (since $0,2,4,6,8 \\equiv 0,2,1,0,2 \\pmod{3}$ — wait, actually $\\{0,1,2\\} \\pmod{3}$).",
+    "significance": "key",
+    "prerequisites": ["IsAdmissible definition", "admissible k-tuple theory", "prime k-tuples conjecture"],
+    "relatedConcepts": ["admissible_5_tuple_min_diam_12", "not_admissible_0_2_4_6_8", "IsAdmissible", "bounded-prime-gaps-oq-01"]
+  },
+  {
+    "id": "bv-vs-eh-level",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 100, "endLine": 135 },
+    "type": "concept",
+    "title": "BV Level vs EH Level: The θ = 1/2 Knife's Edge",
+    "content": "The bvLevel and ehLevel definitions both equal 1/2, making bv_level_eq_eh_level a definitional rfl. The deep distinction — that BV is proved for strict θ < 1/2 while EH conjectures equality at θ = 1/2 — cannot be captured by a single real number. The Lean comment acknowledges this: 'the encoding here cannot express that finer distinction.' The numerically significant facts are the sieve threshold values: bv_requires_50_elements (50 = 50) and eh_requires_5_elements (5 = 5) are literal-equality markers recording these values, with the meaningful inequality in eh_threshold_lt_bv_threshold (5 < 50).",
+    "mathContext": "The Bombieri-Vinogradov theorem: $\\sum_{q \\leq x^\\theta} \\max_{(a,q)=1} |\\pi(x;q,a) - \\pi(x)/\\varphi(q)| \\ll_A x/(\\log x)^A$ for any $\\theta < 1/2$. **EH conjecture**: the same holds at $\\theta = 1/2$. The sieve threshold $k_0$ satisfies: $k_0 \\approx 50$ for BV ($\\theta < 1/2$) and $k_0 \\approx 5$ for EH ($\\theta = 1/2$). The jump from $\\theta = 1/2 - \\varepsilon$ to $\\theta = 1/2$ reduces $k_0$ by a factor of 10.",
+    "significance": "critical",
+    "prerequisites": ["Bombieri-Vinogradov theorem", "Elliott-Halberstam conjecture", "equidistribution in arithmetic progressions"],
+    "relatedConcepts": ["bvLevel", "ehLevel", "eh_threshold_lt_bv_threshold", "maynard_tao_sieve_eh"]
+  },
+  {
+    "id": "sieve-threshold-structure",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 137, "endLine": 143 },
+    "type": "theorem",
+    "title": "Sieve Threshold Structure: 5 | 50 and 5 < 50",
+    "content": "eh_threshold_lt_bv_threshold (5 < 50) is the key structural inequality: the EH sieve needs a smaller tuple by a factor of 10. eh_threshold_divides_bv (5 | 50) records a stronger divisibility relation between the thresholds — the EH threshold exactly divides the BV threshold, making the ratio a clean integer 10. These are the 'substantive numeric relations' mentioned in the comments, distinguishing them from the literal-equality markers bv_requires_50_elements and eh_requires_5_elements which merely record the values without comparison.",
+    "mathContext": "The sieve threshold $k_0(\\theta)$ for the Maynard-Tao sieve satisfies $k_0(1/2 - \\varepsilon) \\approx 50$ and $k_0(1/2) \\approx 5$ (conjectural). The exact values in Polymath 8b: $k_0 = 50$ for BV level; $k_0 = 5$ for EH level. The ratio $50/5 = 10$ is an integer, captured by $5 \\mid 50$.",
+    "significance": "key",
+    "prerequisites": ["Maynard-Tao sieve threshold analysis", "Polymath 8b results"],
+    "relatedConcepts": ["bvLevel", "ehLevel", "sieve_threshold_ratio", "eh_conditional_h_le_12"]
+  },
+  {
+    "id": "admissible-tuple-witnesses",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 145, "endLine": 170 },
+    "type": "theorem",
+    "title": "Two Optimal Admissible 5-Tuples of Diameter 12",
+    "content": "This section exhibits the two admissible 5-tuples that achieve the optimal EH bound. eh_witness_1 ({0,2,6,8,12}) and eh_witness_2 ({0,4,6,10,12}) both have diameter 12 and are admissible (from the parent file). two_optimal_5_tuples confirms they are distinct (by native_decide). quintuple_diameter (12-0=12) records the diameter calculation. sieve_witness_comparison shows the 5-tuple is much smaller than the 50-tuple needed by BV. Having two independent witnesses is notable: it shows H ≤ 12 can be certified by either tuple, providing redundancy and suggesting the optimal diameter 12 is robust.",
+    "mathContext": "Admissibility check for $\\{0,2,6,8,12\\}$: for $p=2$, elements mod 2 are $\\{0,0,0,0,0\\}$ — all even, but $p=2$ gives only 2 residues so not all covered. For $p=3$: residues are $\\{0,2,0,2,0\\} = \\{0,2\\}$ — not all 3 residues covered. For $p=5$: residues $\\{0,2,1,3,2\\} = \\{0,1,2,3\\}$ — not all 5 residues. For $p=7$: $\\{0,2,6,1,5\\}$ — not all 7. So admissible. Similarly for $\\{0,4,6,10,12\\}$.",
+    "significance": "key",
+    "prerequisites": ["IsAdmissible definition", "admissible_5_tuple_min_diam_12", "bounded-prime-gaps-oq-01"],
+    "relatedConcepts": ["eh_conditional_h_le_12", "no_admissible_5_tuple_diam_le_10", "admissible_5_tuple_min_diam_12'"]
+  },
+  {
+    "id": "gap-hierarchy",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 172, "endLine": 200 },
+    "type": "insight",
+    "title": "The Hierarchy: TPC → EH Bound → Polymath Bound",
+    "content": "Three theorems establish the implication chain. gap_bound_eh_implies_unconditional: H ≤ 12 implies H ≤ 246 (trivially, since 12 ≤ 246). gap_bound_tpc_implies_eh: TPC (Twin Prime Conjecture, H ≤ 2) implies the EH bound H ≤ 12 (since 2 ≤ 12). eh_conditional_range: under EH, the optimal bound H_opt satisfies 2 ≤ H_opt ≤ 12 — TPC would give the lower bound, EH gives the upper. The hierarchy TPC (H=2) → EH (H≤12) → Polymath (H≤246) shows three tiers of increasingly achievable prime gap bounds: TPC is deepest (open), EH is conditional (open), Polymath is proved.",
+    "mathContext": "The hierarchy: TPC ($H=2$, open) $\\Rightarrow$ EH conditional ($H \\leq 12$, conditional) $\\Rightarrow$ Polymath ($H \\leq 246$, proved). Each implication is trivial from the bound: $2 \\leq 12 \\leq 246$. The mathematical content is in which bounds can be PROVED, not in the logical implications between them.",
+    "significance": "critical",
+    "prerequisites": ["Twin Prime Conjecture", "bounded prime gaps", "primeGap definition"],
+    "relatedConcepts": ["eh_conditional_h_le_12", "OpenQuestion01OQ02", "bounded-prime-gaps", "bounded-prime-gaps-oq-01"]
+  },
+  {
+    "id": "open-question-definition",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 202, "endLine": 210 },
+    "type": "definition",
+    "title": "Formal Definition of the Open Question",
+    "content": "OpenQuestion01OQ02 is defined as the proposition ∃ H ≤ 12, ∀N, ∃n ≥ N, primeGap(n) ≤ H — the existence of an unconditional prime gap bound of at most 12. eh_solves_oq01oq02 proves this proposition holds assuming EH (by taking H=12 from eh_conditional_h_le_12). This is the conditional answer: the open question is whether it holds WITHOUT assuming EH. The formal definition makes the open problem machine-checkable: any unconditional proof of OpenQuestion01OQ02 would constitute a mathematical breakthrough.",
+    "mathContext": "$\\text{OpenQuestion01OQ02} :\\equiv \\exists H \\leq 12,\\ \\forall N \\in \\mathbb{N},\\ \\exists n \\geq N,\\ p_{n+1} - p_n \\leq H$. Under EH: take $H = 12$, proved by `eh_conditional_h_le_12`. Unconditionally: open; would require either proving EH or finding a different argument.",
+    "significance": "critical",
+    "prerequisites": ["primeGap definition", "Elliott-Halberstam conjecture", "admissible 5-tuple theory"],
+    "relatedConcepts": ["eh_conditional_h_le_12", "eh_solves_oq01oq02", "h12_unconditional_implies_progress", "bounded-prime-gaps"]
+  },
+  {
+    "id": "progress-threshold",
+    "proofId": "bounded-prime-gaps-oq-01-oq-02",
+    "range": { "startLine": 212, "endLine": 219 },
+    "type": "theorem",
+    "title": "Any Unconditional H ≤ 12 Surpasses State of the Art",
+    "content": "h12_unconditional_implies_progress shows that if OpenQuestion01OQ02 holds unconditionally, then there exists H < 246 with infinitely many prime gaps ≤ H. The proof extracts H ≤ 12 from OpenQuestion01OQ02 and uses 12 < 246 (via omega). This simple observation has important framing: proving OpenQuestion01OQ02 unconditionally would, by definition, improve on the best current unconditional bound. It would not require a separate argument to be 'important' — the progress would be immediate and automatic.",
+    "mathContext": "If $\\exists H \\leq 12$ unconditionally giving infinitely many gaps $\\leq H$, then $H \\leq 12 < 246$, so $\\exists H < 246$ with infinitely many gaps $\\leq H$. This surpasses Polymath 8b's $H \\leq 246$ unconditionally. The maximum improvement is from 246 to 2 (TPC), with the EH bound of 12 as an intermediate milestone.",
+    "significance": "supporting",
+    "prerequisites": ["Polymath 8b H ≤ 246 unconditional", "OpenQuestion01OQ02"],
+    "relatedConcepts": ["OpenQuestion01OQ02", "eh_conditional_h_le_12", "gap_bound_eh_implies_unconditional", "bounded-prime-gaps"]
+  }
+]

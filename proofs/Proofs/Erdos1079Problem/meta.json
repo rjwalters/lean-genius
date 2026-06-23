@@ -1,0 +1,17 @@
+{
+  "problem_number": 1079,
+  "title": "Turán Density in Neighborhoods",
+  "status": "solved",
+  "solvers": ["Bollobás-Thomason (1981)", "Bondy (1983)"],
+  "source_url": "https://erdosproblems.com/1079",
+  "overview": "For r ≥ 4: If G has n vertices and ≥ ex(n; K_r) edges, must G contain a vertex with degree d ≫ n whose neighborhood has ≥ ex(d; K_{r-1}) edges?",
+  "sections": [],
+  "conclusion": "YES (unless G is the Turán graph). Bollobás-Thomason (1981) proved the statement. Bondy (1983) strengthened it by showing the max-degree vertex always works. This is a 'nice generalisation of Turán's theorem' as Erdős hoped.",
+  "references": [
+    "Erdős [Er75] - Original problem",
+    "Bollobás-Thomason [BoTh81] - First proof",
+    "Bondy [Bo83b] - Strengthening with max-degree vertex"
+  ],
+  "related_problems": [],
+  "tags": ["graph-theory", "turan-number", "extremal", "neighborhoods", "solved"]
+}

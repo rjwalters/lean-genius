@@ -1,0 +1,42 @@
+{
+  "slug": "erdos-100-oq-01-incomplete-01",
+  "title": "Erdős #100: integer-distance bridge — #distinct distances ≤ diameter",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "integer\\ distances\\Rightarrow \\#distinct\\le \\mathrm{diam}",
+    "plain": "Formalize the integer-distance to bounded-distinct-distances bridge behind the best diameter lower bound for Erdős #100.",
+    "whyMatters": []
+  },
+  "knowledge": {
+    "progressSummary": "Formalized the combinatorial bridge behind the best lower bound (Guth-Katz, diam>=c n/log n) for open Erdős #100 (integer-distance sets, diam>>n?), independent of the scaffold's Piepmeyer explicit-witness sorry. Proved: any finite set S of positive-integer reals each <=D has |S|<=floor(D)<=D (inject each value's nat form into {1,...,floor D}); hence #distinct integer distances <= diameter. 3 thm, 0 sorries/0 axioms, builds green 7743 jobs.",
+    "builtItems": [
+      "card_le_floor_of_pos_int_le: |S|<=floor(D) for positive integers <=D",
+      "card_le_of_pos_int_le: |S|<=D directly",
+      "distinct_distances_le_diam: #distinct integer distances <= diameter"
+    ],
+    "insights": [
+      "Integer distances confine distinct distances to {1,...,floor(diam)}, size <= diameter.",
+      "Pure counting injection: distinct integers have distinct floors landing in a length-floor(D) range.",
+      "This single inequality upgrades the Guth-Katz distinct-distances bound to a diameter bound.",
+      "Bridge is independent of the hard Piepmeyer explicit-witness sorry."
+    ],
+    "mathlibGaps": [
+      "No formalized Guth-Katz distinct-distances lower bound to connect end-to-end."
+    ],
+    "nextSteps": [
+      "Discharge the Piepmeyer 9-point integer-distance witness (scaffold sorry).",
+      "Connect to a Guth-Katz formalization for diam>=c n/log n end-to-end.",
+      "Attack the open diam>>n conjecture."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "erdos",
+    "discrete-geometry"
+  ],
+  "significance": 7,
+  "tractability": 5
+}

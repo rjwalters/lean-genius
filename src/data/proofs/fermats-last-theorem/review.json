@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "proofId": "fermats-last-theorem",
+  "reviewDate": "2026-03-23T14:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "B-",
+    "oneLiner": "Honestly axiomatized FLT with excellent pedagogy and real Mathlib results for n=3,4 — but three axioms secretly encode True rather than mathematical content, and several metadata fields are inaccurate.",
+    "tier": "C",
+    "tierJustification": "The main theorem (fermatLastTheorem) is axiomatized. The file wraps two Mathlib results (n=3, n=4) and provides one genuine proof (flt_multiple). Three of five axioms (FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem) conclude with True, encoding no mathematical content. The file's primary value is as a pedagogical exposition of the Wiles proof structure."
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json status/badge (lines 9, 19)",
+      "finding": "The metadata honestly declares status: 'axiomatized' and badge: 'axiom'. This is the correct framing for a proof where the main result is axiomatized. Compare favorably with entries that use True placeholders but claim 'verified' status.",
+      "recommendation": "Preserve. This is the right way to handle deep results that are beyond current formalization capabilities."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "flt_multiple, lines 162-172",
+      "finding": "The reduction-to-primes theorem is genuinely proved: if FLT holds for n, it holds for all multiples of n. The proof uses pow_mul rewriting and pow_ne_zero in a clean ~10-line argument. This is the file's most substantive original contribution — a real mathematical result with real proof work.",
+      "recommendation": "Preserve and highlight. This theorem is genuinely useful and demonstrates the classical reduction argument."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Docstrings and overview throughout",
+      "finding": "The exposition of the Wiles proof strategy (Frey curve, modularity, Ribet's theorem, contradiction) is excellent. The historical context from Fermat's marginal note through Kummer to Wiles is accurate and engaging. The key insights about Galois representations, Taylor-Wiles patching, and the Langlands program are genuinely informative.",
+      "recommendation": "Preserve. This is high-quality mathematical exposition."
+    },
+    {
+      "severity": "moderate",
+      "category": "gap",
+      "location": "FreyCurve_is_semistable (line 86), ModularityTheorem_semistable (line 105), RibetTheorem (line 119)",
+      "finding": "Three of five axioms conclude with True, not mathematical content. FreyCurve_is_semistable takes hypotheses about a Fermat equation but concludes 'True' — it doesn't actually state that the Frey curve is semi-stable. Similarly, ModularityTheorem_semistable is just 'True' with no mention of elliptic curves or modular forms. RibetTheorem is 'True' with Fermat hypotheses but no statement about modularity. Compare with FLT_for_odd_primes (line 135) which axiomatizes the correct mathematical content: FermatLastTheoremFor p.",
+      "recommendation": "Either remove the three True-axioms (they add no mathematical content) or upgrade them to state their actual mathematical content. For example, ModularityTheorem_semistable should at minimum reference a modularity predicate, even if the predicate itself is a sorry'd definition."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "Lean file line 38 vs meta.json line 20",
+      "finding": "The Lean docstring states 'Note: 3 sorries remain' (line 38) but the file has 0 sorries and 5 axioms. meta.json correctly says sorries: 0. The docstring is stale and contradicts the actual file content.",
+      "recommendation": "Update the Lean docstring to say 'Note: 5 axioms remain (FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem, FLT_for_odd_primes, fermatLastTheorem). The full theorem requires the Modularity Theorem...' etc."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "meta.json mathlibDependencies (lines 21-27)",
+      "finding": "Lists EllipticCurve from Mathlib.AlgebraicGeometry.EllipticCurve.Weierstrass as a dependency, but this module is NOT imported in the Lean file. EllipticCurve only appears in a comment (lines 81-82). The actual Mathlib dependencies used are: FermatLastTheoremFor (from FLT.Basic), fermatLastTheoremFour (from FLT.Four), fermatLastTheoremThree (from FLT.Three).",
+      "recommendation": "Replace the mathlibDependencies entry with the three FLT modules actually imported and used: FermatLastTheoremFor, fermatLastTheoremFour, fermatLastTheoremThree."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions item 2 (line 30)",
+      "finding": "'Frey curve construction formalization' — there is no FreyCurve definition in the Lean file. The Frey curve appears only in comments (lines 79-82, commented out) and in an axiom that concludes with True (line 86). No elliptic curve is constructed. This contribution claim is inaccurate.",
+      "recommendation": "Replace with 'Axiomatized proof structure following the Frey-Ribet-Wiles strategy' or 'Pedagogical exposition of the Frey curve and modularity approach'. Do not claim a formalization that doesn't exist."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json overview.text (line 48)",
+      "finding": "References theorem names that don't match the file: 'flt_statement', 'flt_n4', 'flt_n3', 'flt_reduces_to_primes'. Actual names are: the Prop example on line 65, fermat_four, fermat_three, flt_multiple. The overview text appears to have been written before the file was finalized.",
+      "recommendation": "Update overview.text to use the actual theorem names from the Lean file."
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "no_sum_of_cubes (line 193), no_sum_of_fourth_powers (line 197)",
+      "finding": "These are pure synonyms: no_sum_of_cubes = fermat_three = fermatLastTheoremThree (each case stated 3 times). no_sum_of_fourth_powers = fermat_four = fermatLastTheoremFour. The redundancy adds no mathematical or pedagogical value.",
+      "recommendation": "Remove the synonyms. fermat_four and fermat_three are sufficient with their descriptive docstrings."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json axiomCount: 5 and assumptions (lines 41, 43)",
+      "finding": "axiomCount: 5 is technically correct but doesn't distinguish between the 2 axioms that state real mathematical content (FLT_for_odd_primes, fermatLastTheorem) and the 3 that conclude with True (FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem). The assumptions field says '5 axiom(s) encoding mathematical hypotheses' but 3 of them encode no hypothesis — they encode True.",
+      "recommendation": "Update assumptions to: '2 axioms with real mathematical content (FLT_for_odd_primes, fermatLastTheorem). 3 placeholder axioms concluding with True (FreyCurve_is_semistable, ModularityTheorem_semistable, RibetTheorem) that serve as proof-structure markers without encoding mathematical statements.'"
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Fix meta.json mathlibDependencies: replace EllipticCurve (not imported) with the three actually used: FermatLastTheoremFor, fermatLastTheoremFour, fermatLastTheoremThree. Fix overview.text to use actual theorem names (fermat_four, fermat_three, flt_multiple instead of flt_n4, flt_n3, flt_reduces_to_primes). Fix originalContributions item 2 to not claim Frey curve 'formalization'.",
+      "status": "resolved",
+      "resolvedBy": "enricher",
+      "resolvedDate": "2026-03-25"
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "researcher",
+      "description": "Upgrade the three True-axioms to state actual mathematical content. FreyCurve_is_semistable should state semi-stability (even as a Prop definition). ModularityTheorem_semistable should reference modular forms. RibetTheorem should state that the Frey curve cannot be modular. Alternatively, remove them and keep only FLT_for_odd_primes and fermatLastTheorem.",
+      "status": "open"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Fix the stale docstring on line 38 ('3 sorries remain' — should say '5 axioms'). Update assumptions field to distinguish real axioms from True placeholders. Remove redundant theorem synonyms (no_sum_of_cubes, no_sum_of_fourth_powers).",
+      "status": "resolved",
+      "resolvedBy": "enricher",
+      "resolvedDate": "2026-03-25",
+      "note": "assumptions field updated to distinguish 2 real axioms from 3 True-placeholder axioms. Lean docstring and synonym removal are researcher-scope (Lean file edits not permitted for enricher)."
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 5,
+    "originalityAccuracy": 6,
+    "completeness": 6,
+    "framingPrecision": 6,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 5,
+    "overall": 6.0
+  },
+
+  "suggestedBestFraming": "An axiomatized pedagogical overview of Fermat's Last Theorem (Wiedijk #33), presenting the Frey-Ribet-Wiles proof structure with Mathlib-verified cases for n=3 (Euler) and n=4 (Fermat's descent), a genuine proof that FLT reduces to prime exponents, and axiomatized statements for the general theorem and for odd primes, with the modularity theorem and Ribet's theorem as future formalization targets."
+}

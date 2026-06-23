@@ -1,0 +1,36 @@
+{
+  "id": "angle-trisection-oq-02-oq-01-oq-03",
+  "name": "p-group Galois → power-of-p degree criterion (general prime)",
+  "parentId": "angle-trisection-oq-02-oq-01",
+  "status": "in-progress",
+  "knowledge": {
+    "score": 10,
+    "insights": [
+      "The parent OQ-02-OQ-01 proves, for the prime 2, that a 2-group Galois group forces the minimal-polynomial degree to be a power of 2 — the algebraic core of the impossibility of angle trisection. The argument never used anything special about 2: it rests only on natDegree ∣ |Gal| (natDegree_dvd_card_gal) plus IsPGroup.iff_card.",
+      "This child lifts the result to an ARBITRARY prime p: Gal(minpoly ℚ α) a p-group ⟹ natDegree = p^k. Divisibility natDegree ∣ p^n is upgraded to equality via Nat.dvd_prime_pow.",
+      "IsPGroup.iff_card requires [Fact p.Prime] [Finite G] — supplied via haveI : Fact p.Prime := ⟨hp⟩; the Gal group's Finite instance is automatic (separable polynomial over CharZero).",
+      "Contrapositive non-constructibility criterion: if natDegree is not a power of p, Gal is not a p-group.",
+      "Concrete degree-3 obstruction: a real with minimal degree 3 has no 2-group Galois group (3 ≠ 2^k for all k), precisely why the 60° angle cannot be trisected (cos 20° has minimal degree 3)."
+    ],
+    "builtItems": [
+      "AngleTrisectionOQ02OQ01OQ03.lean: 4 theorems, 0 axioms, 0 sorries, reuses parent natDegree_dvd_card_gal.",
+      "galois_pgroup_implies_degree_pow_p: p-group Gal ⟹ natDegree ∣ p^n.",
+      "galois_pgroup_implies_degree_is_pow_p: p-group Gal ⟹ natDegree = p^k.",
+      "not_pgroup_of_degree_ne_pow_p: degree not a power of p ⟹ Gal not a p-group.",
+      "degree_three_not_2group: minimal degree 3 ⟹ not a 2-group (the trisection obstruction)."
+    ],
+    "progressSummary": "Child of angle-trisection-oq-02-oq-01 (Galois → degree criterion). The parent handles the prime 2; this entry generalizes to an arbitrary prime p — p-group Galois group ⟹ minimal-polynomial degree is a power of p — together with the contrapositive non-constructibility criterion and the concrete degree-3 (cos 20°) obstruction behind the impossibility of trisecting 60°. All 0-axiom verified (#print axioms = propext/Classical.choice/Quot.sound only), no native_decide.",
+    "nextSteps": [
+      "Instantiate degree_three_not_2group at α = cos 20° using the cluster's cos20 minimal-polynomial degree result to obtain a fully concrete non-trisectability corollary.",
+      "Mirror the criterion at the field-degree / finrank level (not just minpoly natDegree) to align with IsConstructibleFromQ.",
+      "Generalize to the converse direction (degree a power of p does not by itself force a p-group) to clarify the gap between necessary and sufficient conditions."
+    ]
+  },
+  "relatedProofs": [
+    "angle-trisection",
+    "angle-trisection-oq-02",
+    "angle-trisection-oq-02-oq-01",
+    "angle-trisection-oq-02-oq-01-oq-01",
+    "angle-trisection-oq-02-oq-01-oq-02"
+  ]
+}

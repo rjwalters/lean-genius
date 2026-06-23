@@ -1,0 +1,166 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "de-moivre",
+    "range": {
+      "startLine": 5,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "De Moivre's Theorem: Wiedijk #17",
+    "content": "**Wiedijk #17**: De Moivre's Formula (c. 1707)\n\n$$(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$$\n\nConnects **powers of complex numbers** in polar form to **multiple angle formulas** for trigonometry.\n\n**Historical**: Abraham de Moivre (1667-1754), a French Huguenot refugee in London, discovered this around 1707 while working on recurrence relations. He never published a clean statement — Euler (1748) gave the modern formulation in *Introductio in analysin infinitorum*, connecting it to $e^{i\\theta} = \\cos\\theta + i\\sin\\theta$. Roger Cotes (1714) independently found related results. The theorem unifies all trigonometric addition formulas into a single algebraic identity.",
+    "mathContext": "(cos θ + i sin θ)^n = cos(nθ) + i sin(nθ)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's formula",
+      "complex numbers",
+      "trigonometry",
+      "polar form"
+    ],
+    "prerequisites": [
+      "complex numbers",
+      "trigonometric functions",
+      "Euler's formula"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "de-moivre",
+    "range": {
+      "startLine": 59,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Main Theorem: Trigonometric Form",
+    "content": "**Proof Strategy**:\n\n1. Use Euler's formula: $\\cos\\theta + i\\sin\\theta = e^{i\\theta}$ (`Complex.exp_mul_I`)\n2. Apply power rule: $(e^x)^n = e^{nx}$ (`Complex.exp_nat_mul`)\n3. Convert back: $e^{in\\theta} = \\cos(n\\theta) + i\\sin(n\\theta)$\n\n**Lean Details**: `conv_lhs` rewrites the LHS using Euler's formula. After applying `exp_nat_mul`, the exponent argument needs massaging: `(n : ℂ) * (θ * I)` must become `(n * θ : ℝ) * I`. This is handled by `simp [ofReal_mul, ofReal_natCast]` and `ring`. The proof is 8 lines — the exponential representation makes the theorem almost trivial.\n\n**Key insight**: The entire proof reduces to showing that two representations of the same complex number agree. The 'hard work' is in Mathlib's `exp_mul_I` and `exp_nat_mul`.",
+    "mathContext": "(e^{iθ})^n = e^{inθ}",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential form",
+      "Euler's identity",
+      "Complex.exp_mul_I",
+      "Complex.exp_nat_mul"
+    ],
+    "prerequisites": [
+      "Euler's formula",
+      "exponential power rule",
+      "complex number coercion (ℕ → ℂ via ℝ)"
+    ]
+  },
+  {
+    "id": "ann-exp-form",
+    "proofId": "de-moivre",
+    "range": {
+      "startLine": 82,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "Exponential Form",
+    "content": "**Two equivalent exponential formulations**:\n\n1. $(e^{\\theta I})^n = e^{n\\theta I}$ — with $\\theta I$ ordering\n2. $(e^{I\\theta})^n = e^{I \\cdot n\\theta}$ — with $I\\theta$ ordering\n\nBoth reduce to `exp_nat_mul` plus `ring` (to rearrange the exponent). These are the 'cleanest' statements because they avoid the trigonometric functions entirely — the identity is purely about the exponential function.\n\n**Why two versions**: Mathlib's `exp_mul_I` uses $\\theta \\cdot I$ ordering, but mathematical convention often writes $e^{i\\theta}$ with $I$ first. Both orderings are provided for convenience.",
+    "mathContext": "(exp(θI))^n = exp(nθI)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "exponential function",
+      "complex analysis",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "complex exponential",
+      "exp power rule for natural number exponents"
+    ]
+  },
+  {
+    "id": "ann-integer-ext",
+    "proofId": "de-moivre",
+    "range": {
+      "startLine": 101,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Integer Exponents",
+    "content": "De Moivre's theorem extends to **all integers** (including negative):\n\n$$(\\cos\\theta + i\\sin\\theta)^{n} = \\cos(n\\theta) + i\\sin(n\\theta) \\quad \\text{for } n \\in \\mathbb{Z}$$\n\nFor $n = -1$: $(\\cos\\theta + i\\sin\\theta)^{-1} = \\cos\\theta - i\\sin\\theta = \\overline{e^{i\\theta}}$\n\nThis is the **complex conjugate** — geometrically, reflection across the real axis. On the unit circle, $z^{-1} = \\bar{z}$ because $|z| = 1$.\n\n**Lean**: Uses `Complex.exp_int_mul` (integer version of the power rule) and `zpow` (integer exponentiation). The trigonometric form `de_moivre_int'` reuses `de_moivre_int` after Euler's formula conversion, with `ofReal_intCast` for the ℤ → ℝ → ℂ coercion chain.",
+    "mathContext": "(cos θ + i sin θ)^n for n ∈ ℤ",
+    "significance": "key",
+    "relatedConcepts": [
+      "complex conjugate",
+      "negative exponents",
+      "zpow",
+      "Complex.exp_int_mul"
+    ],
+    "prerequisites": [
+      "integer exponentiation (zpow)",
+      "complex conjugation",
+      "unit circle geometry"
+    ]
+  },
+  {
+    "id": "ann-double-triple",
+    "proofId": "de-moivre",
+    "range": {
+      "startLine": 132,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "Double and Triple Angle Formulas",
+    "content": "**n = 2** (double angle):\n$$\\cos(2\\theta) + i\\sin(2\\theta) = (\\cos\\theta + i\\sin\\theta)^2$$\n\nExpanding the RHS and comparing real/imaginary parts:\n$$\\cos(2\\theta) = \\cos^2\\theta - \\sin^2\\theta, \\quad \\sin(2\\theta) = 2\\sin\\theta\\cos\\theta$$\n\n**n = 3** (triple angle):\n$$\\cos(3\\theta) = 4\\cos^3\\theta - 3\\cos\\theta, \\quad \\sin(3\\theta) = 3\\sin\\theta - 4\\sin^3\\theta$$\n\n**Lean**: Both are one-liners — just `exact de_moivre θ 2` and `exact de_moivre θ 3`. The binomial expansion and real/imaginary separation are not formalized here, but the complex-valued identities follow immediately. This demonstrates the power of De Moivre: all multiple-angle formulas are special cases of a single theorem.",
+    "mathContext": "cos(2θ) = cos²θ - sin²θ, sin(2θ) = 2 sin θ cos θ",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trig identities",
+      "angle formulas",
+      "Chebyshev polynomials",
+      "binomial expansion"
+    ],
+    "prerequisites": [
+      "De Moivre's theorem (main)",
+      "binomial theorem for complex numbers"
+    ]
+  },
+  {
+    "id": "ann-roots-of-unity",
+    "proofId": "de-moivre",
+    "range": {
+      "startLine": 168,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Roots of Unity",
+    "content": "**De Moivre's theorem finds the nth roots of unity**:\n\n$$\\omega_k = e^{2\\pi i k/n} \\quad (k = 0, 1, \\ldots, n-1)$$\n\nBy De Moivre: $(\\omega_k)^n = e^{2\\pi i k} = (e^{2\\pi i})^k = 1^k = 1$\n\n**Lean Proof**: After `exp_nat_mul`, the key step is `field_simp` to cancel the $n$ in $n \\cdot (2\\pi I \\cdot k / n)$, giving $2\\pi I \\cdot k$. This is rearranged to $k \\cdot (2\\pi I)$, then `Complex.exp_nat_mul` converts $e^{k \\cdot 2\\pi I} = (e^{2\\pi I})^k$. Finally `Complex.exp_two_pi_mul_I` gives $e^{2\\pi I} = 1$, so the result is $1^k = 1$.\n\n**Geometric interpretation**: The $n$ roots form a regular $n$-gon inscribed in the unit circle, equally spaced by angle $2\\pi/n$. This connects algebra (polynomial $z^n - 1 = 0$) to geometry (regular polygons).",
+    "mathContext": "ω_k^n = 1 where ω_k = exp(2πik/n)",
+    "significance": "key",
+    "relatedConcepts": [
+      "roots of unity",
+      "cyclotomic polynomials",
+      "FFT",
+      "Complex.exp_two_pi_mul_I",
+      "regular polygons"
+    ],
+    "prerequisites": [
+      "De Moivre's theorem",
+      "exp(2πi) = 1",
+      "field_simp for rational expressions"
+    ]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "de-moivre",
+    "range": {
+      "startLine": 210,
+      "endLine": 239
+    },
+    "type": "concept",
+    "title": "Applications and Exports",
+    "content": "**De Moivre's theorem is fundamental to**:\n\n| Domain | Application |\n|--------|------------|\n| **Signal processing** | Fourier analysis: DFT uses roots of unity |\n| **Electrical engineering** | AC circuits: phasor representation |\n| **Physics** | Wave mechanics, quantum theory |\n| **Number theory** | Cyclotomic fields, Galois theory |\n| **Numerical analysis** | FFT algorithm relies on roots of unity |\n\n**The elegance**: Powers become multiplication of angles, roots become division of angles. A rotation by angle $\\theta$ iterated $n$ times is a rotation by $n\\theta$ — De Moivre's theorem is the algebraic expression of this geometric fact.\n\nThe `#check` statements export all six main theorems for use in other modules.",
+    "mathContext": "Powers ↔ angle multiplication, roots ↔ angle division",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fourier transform",
+      "phasors",
+      "quantum mechanics",
+      "cyclotomic fields"
+    ],
+    "prerequisites": [
+      "applications of complex analysis"
+    ]
+  }
+]

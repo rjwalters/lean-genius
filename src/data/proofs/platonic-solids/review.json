@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "proofId": "platonic-solids",
+  "reviewDate": "2026-03-24T12:00:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "B+",
+    "oneLiner": "A well-structured, genuinely original classification proof with minimal Mathlib dependency, marred by a mismatched badge and inflated prerequisites list.",
+    "tier": "A",
+    "tierJustification": "Fully formalized with 0 sorries, 0 axioms. The main classification theorem platonic_classification is a complete biconditional proved by exhaustive case analysis. All definitions are filled in. No mathematical assumptions."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "platonic_classification, lines 220-278",
+      "finding": "The core classification theorem is a genuine ~60-line case analysis proving the biconditional: (p-2)(q-2) < 4 iff (p,q) is one of the five Platonic pairs. This is substantive, well-structured proof work with four helper lemmas (large_p_fails, p5_large_q_fails, p4_large_q_fails, p3_large_q_fails) using calc blocks and Nat.mul_le_mul. The proof barely uses Mathlib — this is mostly original reasoning.",
+      "recommendation": "Preserve this structure. It is the strongest part of the formalization."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Duality section, lines 371-413",
+      "finding": "The duality section is a nice mathematical bonus: defining the dual operation, proving self-duality of the tetrahedron, the cube-octahedron and dodecahedron-icosahedron dual pairs, that duality preserves the constraint (via Nat.mul_comm), and that dual is an involution. This goes beyond the minimum needed for Wiedijk #50.",
+      "recommendation": "Preserve. This adds genuine mathematical value."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "meta.json badge field (line 21)",
+      "finding": "The badge is set to \"mathlib\" but the proof has minimal Mathlib dependency — only Finset.Basic for the validPairs set and Tactic for standard tactics. The core classification logic (platonic_classification, all helper lemmas) is original case analysis using omega, norm_num, and calc. This proof is much closer to 'original' than 'mathlib'.",
+      "recommendation": "Change badge from \"mathlib\" to \"original\". The proof's mathematical content is overwhelmingly original work, not Mathlib wrapper code."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json prerequisites (lines 39-45) and overview.prerequisites (lines 61-67)",
+      "finding": "The prerequisites list includes 'Symmetry groups of polyhedra and SO(3)' and 'Classification of convex regular polyhedra', neither of which are used in the Lean proof. The proof is purely combinatorial — it classifies integer pairs satisfying an inequality. No group theory, no prior classification result, no SO(3) appears anywhere in the formalization.",
+      "recommendation": "Remove 'Symmetry groups of polyhedra and SO(3)' and 'Classification of convex regular polyhedra' from prerequisites. The actual prerequisites are: natural number arithmetic, Euler's polyhedral formula (used informally to derive the constraint), and finite set enumeration."
+    },
+    {
+      "severity": "minor",
+      "category": "overclaim",
+      "location": "meta.json originalContributions items 3-4 (lines 32-34)",
+      "finding": "'Derivation of V, E, F for each solid from Schlafli symbols' — the geometry theorems (lines 347-360) are all proved by rfl (definitional computation). 'Verification of Euler's formula for all five solids' (lines 363-369) is just norm_num on literal integer expressions like (4:Z) - 6 + 4 = 2, not connected to the computeVEF function. These are computational checks, not substantive contributions.",
+      "recommendation": "Reframe these as 'Computational verification of V, E, F values' and 'Numerical check of Euler's formula for all five solids'. Accurate but more honest about the proof effort involved."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "all_satisfy_euler, lines 363-369",
+      "finding": "This theorem checks Euler's formula using hardcoded integer literals (4 - 6 + 4 = 2, etc.) rather than connecting to the computeVEF function results. It would be more mathematically rigorous to derive V, E, F from computeVEF and then verify V - E + F = 2 as a chain of equalities.",
+      "recommendation": "Consider a version that extracts V, E, F from computeVEF and proves Euler's formula through the computation pipeline. Low priority — the current version is correct, just not connected to the formalization's own definitions."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json leanFile.definitionCount (line 146)",
+      "finding": "Claims 10 definitions but the file contains at least 12: SchlafliPair, satisfiesConstraint, Decidable instance, tetrahedron, cube, octahedron, dodecahedron, icosahedron, validPairs, PlatonicData, computeVEF, dual.",
+      "recommendation": "Update definitionCount to 12."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json conclusion.implications (line 129)",
+      "finding": "The implications field has broken formatting: '1. First complete classification of a family of geometric objects\\n2.\\n\\nFoundation for understanding symmetry groups' — there is a broken numbered list with an empty item 2 followed by a line break.",
+      "recommendation": "Fix the formatting to produce a clean numbered list."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json crossReferences: pythagorean-theorem, four-color-theorem, isoperimetric-theorem (lines 170-189)",
+      "finding": "The cross-references to pythagorean-theorem ('foundational'), four-color-theorem ('thematic'), and isoperimetric-theorem ('related') are decorative rather than reflecting actual formal dependencies. The Lean proof does not import or use any results from these proofs. Only euler-polyhedral-formula is a genuine mathematical dependency (though even Euler's formula is used informally, not as a Lean import).",
+      "recommendation": "Consider downgrading pythagorean-theorem from 'foundational' to 'thematic'. The golden ratio connection mentioned in the description is mathematically true but not present in the formalization."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Change meta.json badge from 'mathlib' to 'original'. The proof has minimal Mathlib dependency — the classification logic is entirely original case analysis.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Remove 'Symmetry groups of polyhedra and SO(3)' and 'Classification of convex regular polyhedra' from both meta.prerequisites and overview.prerequisites. These are not used in the Lean proof.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Fix broken formatting in conclusion.implications: item 2 is empty with a stray newline. Produce a clean numbered list.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Reframe originalContributions items 3-4 to accurately reflect they are computational verifications (rfl/norm_num proofs), not substantive derivations.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Update leanFile.definitionCount from 10 to 12.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-6",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Consider connecting all_satisfy_euler to the computeVEF function so Euler's formula verification flows through the formalization's own definitions rather than hardcoded literals.",
+      "status": "open"
+    },
+    {
+      "id": "ai-7",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Downgrade pythagorean-theorem cross-reference from 'foundational' to 'thematic' — the golden ratio connection is real mathematics but absent from the formalization.",
+      "status": "resolved"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 8,
+    "originalityAccuracy": 8,
+    "completeness": 9,
+    "framingPrecision": 7,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 7,
+    "overall": 7.8
+  },
+  "suggestedBestFraming": "A complete Lean 4 formalization proving that exactly five integer pairs (p,q) with p,q >= 3 satisfy the regularity constraint (p-2)(q-2) < 4, classifying the Platonic solids by their Schläfli symbols via exhaustive case analysis, with bonus sections on geometric properties (V,E,F computation) and duality."
+}

@@ -1,0 +1,258 @@
+[
+  {
+    "id": "ann-461-header",
+    "proofId": "erdos-461",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "title": "Problem Background",
+    "content": "Erdős Problem 461 asks whether $f(n,t)$, the count of distinct $t$-smooth components in $\\{n+1,\\ldots,n+t\\}$, grows linearly in $t$. From Erdős–Graham (1980), p.92, who proved the weaker bound $f(n,t) \\gg t/\\log t$.",
+    "mathContext": "The $t$-smooth component $s_t(n)$ is the largest divisor of $n$ all of whose prime factors are $< t$. This connects to the smooth number counting function $\\Psi(x, y) = |\\{n \\leq x : P^+(n) \\leq y\\}|$ and Dickman's $\\rho$ function. Hildebrand–Tenenbaum estimates give $\\Psi(x, y) \\sim x \\rho(u)$ where $u = \\log x / \\log y$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "Dickman function",
+      "Hildebrand-Tenenbaum estimates"
+    ],
+    "prerequisites": [
+      "smooth numbers and the smooth-counting function",
+      "Dickman's rho function and Hildebrand-Tenenbaum estimates",
+      "asymptotic growth notation"
+    ]
+  },
+  {
+    "id": "ann-461-smooth-component",
+    "proofId": "erdos-461",
+    "type": "definition",
+    "range": {
+      "startLine": 24,
+      "endLine": 27
+    },
+    "title": "Smooth Component Definition",
+    "content": "The $t$-smooth component $s_t(n)$ is defined **constructively** as `(n.factors.filter (· < t)).prod` — the product of prime factors of $n$ (with multiplicity) that are strictly less than $t$. This extracts the largest divisor of $n$ whose prime factorization consists entirely of primes $< t$. Handles $n = 0$ correctly: `Nat.factors 0 = []`, so $s_t(0) = 1$.",
+    "mathContext": "$s_t(n) = \\prod_{\\substack{p^a \\| n \\\\ p < t}} p^a$. The definition uses `Nat.factors` (the list of prime factors with multiplicity) and `List.filter`/`List.prod`. Noncomputable since `Nat.factors` involves factorization. The smooth-rough decomposition gives $n = s_t(n) \\cdot r_t(n)$ where $r_t(n)$ has all primes $\\geq t$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factorization",
+      "smooth-rough decomposition",
+      "Nat.factors"
+    ],
+    "prerequisites": [
+      "ann-461-header"
+    ]
+  },
+  {
+    "id": "ann-461-infrastructure",
+    "proofId": "erdos-461",
+    "type": "concept",
+    "range": {
+      "startLine": 33,
+      "endLine": 61
+    },
+    "title": "Infrastructure Lemmas",
+    "content": "Two key helper lemmas **proved** by induction on lists. `list_prod_filter_dvd`: the product of a filtered sublist divides the product of the full list, i.e., $(l.\\text{filter}\\, p).\\text{prod} \\mid l.\\text{prod}$. `prime_dvd_list_prod_mem`: if a prime $p$ divides the product of a list of primes, then $p$ is a member of that list.",
+    "mathContext": "$\\prod_{x \\in \\text{filter}(l, p)} x \\mid \\prod_{x \\in l} x$ is proved by structural induction on lists with case analysis on the filter predicate. `list_prod_filter_dvd` uses `mul_dvd_mul_left` and `dvd_mul_of_dvd_right`. `prime_dvd_list_prod_mem` uses `Nat.Prime.dvd_mul` for the inductive step. Both are marked `private` as internal infrastructure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "list induction",
+      "product divisibility",
+      "prime membership"
+    ],
+    "prerequisites": [
+      "ann-461-smooth-component"
+    ]
+  },
+  {
+    "id": "ann-461-smooth-dvd",
+    "proofId": "erdos-461",
+    "type": "concept",
+    "range": {
+      "startLine": 65,
+      "endLine": 69
+    },
+    "title": "Smooth Component Divides $n$",
+    "content": "**`smoothComponent_dvd`** is **proved**: for $n \\neq 0$, $s_t(n) \\mid n$. The proof unfolds `smoothComponent`, applies `list_prod_filter_dvd` to `n.factors`, and rewrites with `Nat.prod_factors`.",
+    "mathContext": "$n \\neq 0 \\implies s_t(n) \\mid n$. Since $s_t(n)$ is a subproduct of the prime factorization of $n$, divisibility follows from `list_prod_filter_dvd` composed with `Nat.prod_factors hn : n.factors.prod = n`. This is the fundamental theorem of arithmetic in action.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility",
+      "fundamental theorem of arithmetic",
+      "Nat.prod_factors"
+    ],
+    "prerequisites": [
+      "ann-461-infrastructure"
+    ]
+  },
+  {
+    "id": "ann-461-smooth-smooth",
+    "proofId": "erdos-461",
+    "type": "concept",
+    "range": {
+      "startLine": 71,
+      "endLine": 78
+    },
+    "title": "Smooth Component is $t$-Smooth",
+    "content": "**`smoothComponent_smooth`** is **proved**: every prime factor $p$ of $s_t(n)$ satisfies $p < t$. Uses `prime_dvd_list_prod_mem` to show $p$ must appear in the filtered list, then extracts the filter predicate $p < t$.",
+    "mathContext": "$p$ prime $\\wedge$ $p \\mid s_t(n) \\implies p < t$. The proof chain: $p \\mid s_t(n) = (\\text{factors}(n).\\text{filter}(\\cdot < t)).\\text{prod}$ implies $p \\in \\text{factors}(n).\\text{filter}(\\cdot < t)$ by `prime_dvd_list_prod_mem`, and the filter condition gives $p < t$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "t-smooth numbers",
+      "filter predicate extraction",
+      "prime factor bound"
+    ],
+    "prerequisites": [
+      "ann-461-infrastructure"
+    ]
+  },
+  {
+    "id": "ann-461-smooth-pos",
+    "proofId": "erdos-461",
+    "type": "concept",
+    "range": {
+      "startLine": 80,
+      "endLine": 85
+    },
+    "title": "Smooth Component is Positive",
+    "content": "**`smoothComponent_pos`** is **proved**: $s_t(n) > 0$ for all $t, n$. Since every element in the filtered factor list is a prime (hence $\\geq 2 > 0$), the product is positive by `List.prod_pos`.",
+    "mathContext": "$s_t(n) > 0$ follows from the fact that a product of positive integers is positive. Each factor in the filtered list satisfies $q \\in \\text{factors}(n)$, so $q$ is prime, hence $q \\geq 2 > 0$. `List.prod_pos` gives the result.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity",
+      "product of primes",
+      "List.prod_pos"
+    ],
+    "prerequisites": [
+      "ann-461-smooth-component"
+    ]
+  },
+  {
+    "id": "ann-461-complement",
+    "proofId": "erdos-461",
+    "type": "concept",
+    "range": {
+      "startLine": 87,
+      "endLine": 96
+    },
+    "title": "No Small Primes in Complement",
+    "content": "**`no_small_prime_in_complement`** is **proved**: if $p$ is prime with $p < t$ and $p$ divides the product of factors $\\geq t$, this yields a contradiction. Key infrastructure for the maximality theorem, showing the complement part is coprime to any $t$-smooth divisor.",
+    "mathContext": "$p < t \\wedge p \\mid \\prod_{q \\in \\text{factors}(n),\\, q \\geq t} q \\implies \\bot$. By `prime_dvd_list_prod_mem`, $p$ would be in the complement-filtered list, but the filter requires all elements $\\geq t$, contradicting $p < t$. This establishes the coprimality needed for the smooth-rough decomposition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "coprimality",
+      "smooth-rough decomposition",
+      "complement filter"
+    ],
+    "prerequisites": [
+      "ann-461-infrastructure"
+    ]
+  },
+  {
+    "id": "ann-461-smooth-largest",
+    "proofId": "erdos-461",
+    "type": "concept",
+    "range": {
+      "startLine": 98,
+      "endLine": 106
+    },
+    "title": "Smooth Component is Maximal (sorry)",
+    "content": "**`smoothComponent_largest`**: if $d \\mid n$ and all prime factors of $d$ are $< t$, then $d \\mid s_t(n)$. This establishes $s_t(n)$ as the **largest** $t$-smooth divisor. Contains the file's **only sorry**. The proof strategy: decompose $n = s_t(n) \\cdot c$ where $\\gcd(d, c) = 1$ (since $d$ is $t$-smooth and $c$ has all primes $\\geq t$), then $d \\mid n$ and coprimality gives $d \\mid s_t(n)$.",
+    "mathContext": "$d \\mid n \\wedge (\\forall p \\text{ prime}, p \\mid d \\implies p < t) \\implies d \\mid s_t(n)$. Would require: (1) $n = s_t(n) \\cdot c$ where $c = (n.\\text{factors}.\\text{filter}(\\cdot \\geq t)).\\text{prod}$, (2) $\\gcd(d, c) = 1$ via `no_small_prime_in_complement`, (3) `Nat.Coprime.dvd_of_dvd_mul_right` to extract $d \\mid s_t(n)$. An excellent Aristotle proof search candidate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "maximality",
+      "coprime decomposition",
+      "Nat.Coprime.dvd_of_dvd_mul_right"
+    ],
+    "prerequisites": [
+      "ann-461-complement",
+      "ann-461-smooth-dvd"
+    ]
+  },
+  {
+    "id": "ann-461-count",
+    "proofId": "erdos-461",
+    "type": "definition",
+    "range": {
+      "startLine": 110,
+      "endLine": 112
+    },
+    "title": "Distinct Count Function",
+    "content": "**`smoothDistinctCount n t`** defines $f(n,t) = |\\{s_t(m) : n < m \\leq n+t\\}|$ using `Finset.Icc` for the interval $[n+1, n+t]$, `Finset.image` to compute the set of smooth components, and `Finset.card` for the cardinality.",
+    "mathContext": "$f(n,t) = |\\text{image}(s_t, \\{n+1, \\ldots, n+t\\})|$. Uses `Finset.Icc` rather than `Finset.range` for a natural match with the interval. Noncomputable since `smoothComponent` is noncomputable (involves factorization). The image operation collapses integers sharing the same smooth component.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.image",
+      "counting distinct values",
+      "Finset.Icc"
+    ],
+    "prerequisites": [
+      "ann-461-smooth-component"
+    ]
+  },
+  {
+    "id": "ann-461-conjecture",
+    "proofId": "erdos-461",
+    "type": "concept",
+    "range": {
+      "startLine": 116,
+      "endLine": 121
+    },
+    "title": "Main Conjecture: Linear Growth",
+    "content": "**`ErdosProblem461`**: $\\exists C > 0, \\exists t_0, \\forall t \\geq t_0, \\forall n, f(n,t) \\geq C \\cdot t$. The conjecture asks for linear growth of distinct smooth components, the strongest possible bound since $f(n,t) \\leq t$. Quantifies $\\forall n$ uniformly, making it stronger than an average-case statement.",
+    "mathContext": "The conjecture says $f(n,t) = \\Theta(t)$ since the trivial upper bound $f(n,t) \\leq t$ is already proved. The $\\forall n$ quantification demands the bound holds for ALL starting points, not just typical ones. Compare with the analogous question for prime-counting: the number of primes in $(n, n+t)$ is $\\sim t/\\log t$ by PNT, but short interval results require additional sieve assumptions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear growth conjecture",
+      "uniform bound",
+      "open problem"
+    ],
+    "prerequisites": [
+      "ann-461-count"
+    ]
+  },
+  {
+    "id": "ann-461-eg-bound",
+    "proofId": "erdos-461",
+    "type": "concept",
+    "range": {
+      "startLine": 125,
+      "endLine": 129
+    },
+    "title": "Erdős–Graham Lower Bound",
+    "content": "**`erdos_graham_lower`** (axiom): $f(n,t) \\geq C \\cdot t/\\log t$ for all $n$ and large $t$. This falls a logarithmic factor short of the conjectured linear bound. Axiomatized since the proof requires sieve methods not yet in Mathlib.",
+    "mathContext": "$\\exists C > 0, \\exists t_0, \\forall t \\geq t_0, \\forall n : f(n,t) \\geq C \\cdot t / \\log t$. The original proof in Erdős–Graham (1980, p.92) uses multiplicative function estimates and sieve-theoretic arguments. The logarithmic gap between $t/\\log t$ and $t$ is reminiscent of the prime number theorem gap: the number of primes in $[1, t]$ is $\\sim t/\\log t$ rather than $\\Theta(t)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Graham bound",
+      "sieve methods",
+      "logarithmic gap"
+    ],
+    "prerequisites": [
+      "ann-461-conjecture"
+    ]
+  },
+  {
+    "id": "ann-461-boundary-cases",
+    "proofId": "erdos-461",
+    "type": "concept",
+    "range": {
+      "startLine": 133,
+      "endLine": 172
+    },
+    "title": "Boundary Cases and Basic Properties",
+    "content": "Six results are **proved**: `smoothComponent_one` ($s_t(1) = 1$), `smoothComponent_zero` ($s_t(0) = 1$), `smoothComponent_t_le_one` ($t \\leq 1 \\implies s_t(n) = 1$), `smoothComponent_prime` ($s_t(p) = p$ if $p < t$, else $1$), `smoothDistinctCount_le` ($f(n,t) \\leq t$), `smoothDistinctCount_zero` ($f(n,0) = 0$). All fully proved, no sorry.",
+    "mathContext": "The prime case $s_t(p) = p$ or $1$ uses `Nat.factors_prime` reducing to a singleton list $[p]$, then the filter either keeps or drops $p$ based on $p < t$. The upper bound $f(n,t) \\leq t$ uses `Finset.card_image_le` ($|\\text{image}(f, S)| \\leq |S|$) combined with `Finset.card_Icc` ($|[n+1, n+t]| = t$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "boundary analysis",
+      "Nat.factors_prime",
+      "Finset.card_image_le"
+    ],
+    "prerequisites": [
+      "ann-461-smooth-component",
+      "ann-461-count"
+    ]
+  }
+]

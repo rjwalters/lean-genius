@@ -1,0 +1,146 @@
+{
+  "id": "pythagorean-triples-oq-05",
+  "title": "The Brahmagupta–Fibonacci Two-Squares Identity",
+  "slug": "pythagorean-triples-oq-05",
+  "description": "The two-squares identity (a²+b²)(c²+d²) = (ac−bd)² + (ad+bc)² over a commutative ring, with the structural consequence that sums of two squares are closed under multiplication (and finite products).",
+  "meta": {
+    "author": "Brahmagupta, Fibonacci (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brahmagupta%E2%80%93Fibonacci_identity",
+    "date": "628",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "algebra",
+      "pythagorean-triples",
+      "sum-of-two-squares",
+      "gaussian-integers",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/PythagoreanTriplesOQ05.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "List.prod_cons",
+        "description": "Unfolds the product of a cons list for the finite-product closure",
+        "module": "Mathlib.Algebra.BigOperators.Group.List"
+      }
+    ],
+    "originalContributions": [
+      "sq_add_sq_mul_sq_add_sq: the Brahmagupta–Fibonacci identity (a²+b²)(c²+d²) = (ac−bd)² + (ad+bc)² over any CommRing",
+      "sq_add_sq_mul_sq_add_sq': the conjugate form (ac+bd)² + (ad−bc)²",
+      "IsSumOfTwoSquares: predicate ∃ a b, x = a² + b²",
+      "IsSumOfTwoSquares.mul: sums of two squares are closed under multiplication",
+      "IsSumOfTwoSquares.sq: every square is a sum of two squares",
+      "IsSumOfTwoSquares.listProd: closure under finite products"
+    ],
+    "dateAdded": "2026-06-19",
+    "lineCount": 75,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The identity (a²+b²)(c²+d²) = (ac−bd)² + (ad+bc)² appears in Brahmagupta's Brāhmasphuṭasiddhānta (628 CE) — in fact in the more general Brahmagupta identity with a parameter — and was transmitted to Europe through Fibonacci's Liber Quadratorum (1225). Its modern reading is that the Gaussian-integer norm N(a+bi) = a²+b² is multiplicative: N(zw) = N(z)N(w). This multiplicativity is the engine behind the two-squares theorem (which integers are sums of two squares): since the set of sums of two squares is closed under multiplication, the question reduces to prime factors, and Fermat's theorem on sums of two squares settles the primes (p = a²+b² iff p = 2 or p ≡ 1 mod 4). The same identity underlies the parametrization of Pythagorean triples and generalizes to the four-square (Euler) and eight-square (Degen–Graves–Cayley) identities for quaternion and octonion norms.",
+    "problemStatement": "**Open Question (pythagorean-triples-oq-05)**: Formalize the ring identity (a²+b²)(c²+d²) = (ac−bd)² + (ad+bc)² over a commutative ring and derive that being a sum of two squares is preserved under multiplication.\n\n**Result**: sq_add_sq_mul_sq_add_sq (the identity, by `ring`), its conjugate form, and IsSumOfTwoSquares.mul / IsSumOfTwoSquares.listProd (closure under multiplication and finite products).",
+    "text": "The Brahmagupta–Fibonacci identity (a²+b²)(c²+d²) = (ac−bd)² + (ad+bc)² over a commutative ring, with closure of sums of two squares under multiplication.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. The identity is a polynomial identity over a commutative ring, dispatched by `ring`; the conjugate form differs only by the sign convention on the cross terms.\n2. For closure under multiplication, destructure the witnesses x = a²+b², y = c²+d² and supply the explicit witnesses (ac−bd, ad+bc) from the identity.\n3. Finite-product closure follows by list induction: the empty product 1 = 1²+0², and the cons step applies binary closure.",
+    "keyInsights": [
+      "**The identity IS norm multiplicativity.** N(z)N(w) = N(zw) for the Gaussian-integer norm N(a+bi) = a²+b²; the explicit witnesses (ac−bd, ad+bc) are the real and imaginary parts of the product (a+bi)(c+di).",
+      "**Closure reduces the two-squares theorem to primes.** Because sums of two squares form a multiplicatively closed set, deciding which integers are sums of two squares reduces to the prime factors — the structural reason Fermat's theorem on primes ≡ 1 mod 4 suffices.",
+      "**Ring-level generality.** Stated over an arbitrary CommRing, the identity applies uniformly to ℤ, ℝ, ℂ, polynomial rings, and finite rings — wherever a 'sum of two squares' makes sense."
+    ],
+    "prerequisites": [
+      "Commutative rings and the `ring` tactic",
+      "Existential witnesses in Lean",
+      "List induction for the finite-product version"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Module docstring stating the open question and the Gaussian-norm reading, Mathlib import, and the PythagoreanTriplesOQ05 namespace over a commutative ring.",
+      "mathContext": "Work over an arbitrary commutative ring R; 'sum of two squares' means $\\exists a\\,b,\\ x = a^2 + b^2$."
+    },
+    {
+      "id": "identity",
+      "title": "The Brahmagupta–Fibonacci Identity",
+      "startLine": 25,
+      "endLine": 40,
+      "summary": "sq_add_sq_mul_sq_add_sq and its conjugate form sq_add_sq_mul_sq_add_sq', both proved by `ring`.",
+      "mathContext": "$(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2 = (ac+bd)^2 + (ad-bc)^2$, the multiplicativity of the Gaussian norm."
+    },
+    {
+      "id": "closure",
+      "title": "Closure of Sums of Two Squares",
+      "startLine": 42,
+      "endLine": 70,
+      "summary": "Defines IsSumOfTwoSquares and proves closure under multiplication (.mul), that squares are sums of two squares (.sq), and closure under finite products (.listProd).",
+      "mathContext": "The set $\\{x : \\exists a\\,b,\\ x = a^2+b^2\\}$ is a multiplicative submonoid; the explicit product witness comes from the identity."
+    },
+    {
+      "id": "example",
+      "title": "Concrete Witness over ℤ",
+      "startLine": 72,
+      "endLine": 75,
+      "summary": "A worked instance: (1²+2²)(1²+1²) = 10 = 1²+3², exhibiting 10 as a sum of two squares through the identity.",
+      "mathContext": "$5 \\cdot 2 = 10 = 1^2 + 3^2$, the identity applied to (a,b,c,d) = (1,2,1,1)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "extends",
+      "description": "The two-squares identity is the algebraic backbone of Pythagorean-triple parametrization and the Gaussian-integer view of sums of squares"
+    },
+    {
+      "targetId": "pythagorean-triples-oq-04",
+      "relationship": "related",
+      "description": "OQ-04 addresses Fermat's two-square theorem for primes; this entry supplies the multiplicative closure that reduces the general two-squares question to those primes"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of the Brahmagupta–Fibonacci two-squares identity over an arbitrary commutative ring, with the structural corollary that sums of two squares are closed under multiplication and finite products.",
+    "implications": "Provides the multiplicativity of the Gaussian-integer norm in ring-level generality and the closure property that, together with Fermat's prime two-square theorem, characterizes the integers expressible as a sum of two squares. Generalizes to the four- and eight-square identities for quaternion and octonion norms.",
+    "openQuestions": [
+      "Connect IsSumOfTwoSquares over ℤ to Mathlib's ZMod / Gaussian-integer machinery for the full two-squares theorem.",
+      "Formalize Euler's four-square identity and the Hurwitz–quaternion norm multiplicativity in the same style."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "PythagoreanTriplesOQ05",
+    "lineCount": 75,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/PythagoreanTriplesOQ05.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Brahmagupta",
+      "title": "Brāhmasphuṭasiddhānta",
+      "year": "628",
+      "venue": "",
+      "note": "Contains the (general) Brahmagupta identity, of which the two-squares identity is the unit-parameter case"
+    },
+    {
+      "authors": "Fibonacci (Leonardo of Pisa)",
+      "title": "Liber Quadratorum (The Book of Squares)",
+      "year": "1225",
+      "venue": "",
+      "note": "Transmits and uses the two-squares identity in the study of sums of squares"
+    }
+  ],
+  "sorries": 0
+}

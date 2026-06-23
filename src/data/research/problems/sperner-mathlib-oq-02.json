@@ -1,0 +1,36 @@
+{
+  "slug": "sperner-mathlib-oq-02",
+  "title": "Cardinality lower bounds for panchromatic cells (Sperner door-counting)",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 6,
+  "status": "completed",
+  "phase": "COMPLETED",
+  "started": "2026-06-18",
+  "lastUpdate": "2026-06-18",
+  "path": "proofs/Proofs/SpernerMathlibOQ02.lean",
+  "tags": ["combinatorics", "sperner", "kkm", "parity", "lower-bound", "gallery-extracted"],
+  "problemStatement": "Does the door-counting parity argument behind Sperner's lemma extend from existence (exists_panchromatic) to a lower bound on the panchromatic cell count (a KKM-type counting refinement)?",
+  "knownResults": "Parent sperner-mathlib proves sperner_parity (panchromatic count congruent mod 2 to boundary door count) and exists_panchromatic (odd boundary => a panchromatic cell exists). Classical Sperner gives an ODD number of fully-labeled simplices.",
+  "currentState": "RESOLVED at the count level. PR #25931 registers SpernerMathlibOQ02.lean with odd_card_panchromatic (Odd count), one_le_card_panchromatic (1 <= count), and unconditional Sperner-coloring versions deriving boundary oddness via boundary_doors_odd_of_last_face. parity_bound_sharp documents that mod-2 counting cannot exceed the 1 <= bound.",
+  "knowledge": {
+    "insights": [
+      "The parity identity sperner_parity already encodes the lower bound: panchromatic count = boundary door count (mod 2), so odd boundary forces Odd panchromatic count, strictly stronger than the existence statement exists_panchromatic extracts.",
+      "Oddness is the exact counting content of the mod-2 door argument: it rules out 0 AND every even count, but cannot certify any constant lower bound above 1 (a count of exactly 1 is odd).",
+      "A genuine numeric KKM-type lower bound stronger than 1 would require oriented / degree-theoretic information beyond mod-2 parity; the door-counting method is sharp at 1.",
+      "The boundary-oddness hypothesis of the existence theorem can be discharged for genuine Sperner colorings via the parent's boundary_doors_odd_of_last_face, yielding an UNCONDITIONAL count-level Sperner lemma."
+    ],
+    "builtItems": [
+      "odd_card_panchromatic (SpernerMathlibOQ02.lean) — odd boundary => Odd (#panchromatic cells)",
+      "one_le_card_panchromatic (SpernerMathlibOQ02.lean) — odd boundary => 1 <= #panchromatic cells",
+      "sperner_coloring_odd_card_panchromatic (SpernerMathlibOQ02.lean) — unconditional odd count for a Sperner coloring",
+      "sperner_coloring_one_le_card_panchromatic (SpernerMathlibOQ02.lean) — unconditional 1 <= lower bound",
+      "parity_bound_sharp (SpernerMathlibOQ02.lean) — the 1 <= bound is the sharp limit of the mod-2 method"
+    ],
+    "nextSteps": [
+      "For a strictly stronger lower bound, pursue an ORIENTED Sperner count (signed door involution / degree) — exact panchromatic count rather than parity; substantial new infrastructure (~500+ lines), likely a separate OQ.",
+      "Construct an explicit geometric witness (e.g. the 1-d interval with one cell) proving the 1 <= bound is attained, formalizing sharpness beyond the number-theoretic parity_bound_sharp; requires re-exposing the private interval infrastructure."
+    ],
+    "progressSummary": "COMPLETE (count-level): PR #25931 lifts Sperner existence to a cardinality lower bound (Odd, 1 <=), unconditional for Sperner colorings, with documented sharpness. 0 sorries / 0 axioms."
+  }
+}

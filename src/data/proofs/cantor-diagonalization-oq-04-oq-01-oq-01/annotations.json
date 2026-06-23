@@ -1,0 +1,96 @@
+[
+  {
+    "id": "ann-lawvere-ccc-context",
+    "proofId": "cantor-diagonalization-oq-04-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 64 },
+    "type": "concept",
+    "title": "Lawvere's Fixed-Point Theorem in a Genuine Cartesian Closed Category",
+    "content": "This file answers the **headline open question** of the parent (`CantorDiagonalizationOQ04OQ01`): can Lawvere's fixed-point theorem be stated and proved using Mathlib's `CartesianClosed` typeclass, in *any* cartesian closed category with a terminal object? The parent had conjectured that the setoid layer was the maximal version achievable in Lean. **It is not** — Mathlib's curry/uncurry adjunction and cartesian-monoidal lemmas are exactly enough. The proof is fully *point-free*: there are no set elements, only **global points** `𝟙_ C ⟶ X` (morphisms out of the terminal object, which is the monoidal unit in a cartesian monoidal category).",
+    "mathContext": "Lawvere's theorem (1969): in a cartesian closed category, if some object $A$ *point-surjectively parametrizes* the morphisms $A \\to B$ — i.e. there is $\\varphi : A \\to B^A$ such that every $f : A \\to B$ is the name of some global point of $A$ — then **every endomorphism $t : B \\to B$ has a fixed point**. Contrapositively, an object $B$ with a fixed-point-free endomorphism cannot be parametrized by any $A$ inside $A \\to B^A$. This single statement specializes to Cantor's theorem, Russell's paradox, Gödel's first incompleteness theorem, Tarski's undefinability of truth, and the unsolvability of the halting problem, by choosing the category and the fixed-point-free $t$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lawvere's fixed-point theorem (1969)",
+      "cartesian closed category",
+      "exponential object A ⟹ B and the curry/uncurry adjunction",
+      "global points 𝟙_C ⟶ X as element substitutes",
+      "Cantor, Russell, Gödel, Tarski, Turing as instances"
+    ],
+    "prerequisites": [
+      "Mathlib CategoryTheory.Monoidal.Closed.Cartesian (CartesianClosed = MonoidalClosed on a cartesian monoidal category)",
+      "Parent setoid version CantorDiagonalizationOQ04OQ01",
+      "Adjunction tensorLeft A ⊣ exp A"
+    ]
+  },
+  {
+    "id": "ann-lawvere-ccc-name",
+    "proofId": "cantor-diagonalization-oq-04-oq-01-oq-01",
+    "range": { "startLine": 66, "endLine": 71 },
+    "type": "definition",
+    "title": "The Name (Exponential Transpose) of a Morphism",
+    "content": "`name f := curry ((ρ_ A).hom ≫ f)` is the global point `𝟙_ C ⟶ (A ⟹ B)` that internalizes a morphism `f : A ⟶ B`. Currying turns `A ⊗ 𝟙_ C ⟶ B` into `𝟙_ C ⟶ (A ⟹ B)`, and the right unitor `(ρ_ A).hom : A ⊗ 𝟙_ C ⟶ A` provides the needed map. In `Type`, `name f` is just `f` regarded as a single point of the function space `B^A`. The whole argument is mediated by names: a *point* of `A ⟹ B` and a *morphism* `A ⟶ B` are interchangeable up to the unit isomorphism `A ⊗ 𝟙_ C ≅ A`.",
+    "mathContext": "The bijection $\\mathrm{Hom}(A, B) \\cong \\mathrm{Hom}(\\mathbf 1, B^A)$ is the global-points instance of the exponential adjunction $\\mathrm{Hom}(A \\otimes Y, B) \\cong \\mathrm{Hom}(Y, B^A)$ at $Y = \\mathbf 1$. Stating point-surjectivity through `name` is what keeps the hypothesis categorical rather than relying on a Lean-level surjection of function types.",
+    "significance": "important",
+    "relatedConcepts": ["exponential transpose", "currying", "right unitor", "global elements"],
+    "prerequisites": ["curry : (A ⊗ Y ⟶ X) → (Y ⟶ A ⟹ X)", "right unitor ρ"]
+  },
+  {
+    "id": "ann-lawvere-ccc-hypotheses",
+    "proofId": "cantor-diagonalization-oq-04-oq-01-oq-01",
+    "range": { "startLine": 72, "endLine": 80 },
+    "type": "definition",
+    "title": "Point-Surjectivity and Fixed Points, Categorically",
+    "content": "`PointSurjective φ` says every `f : A ⟶ B` equals `name f` reached through `φ`: there is a global point `a : 𝟙_ C ⟶ A` with `a ≫ φ = name f`. This is the categorical replacement for 'the coding map is surjective' — but only on *points*, which is all the diagonal argument needs (hence Lawvere's term 'weakly point-surjective'). `IsFixedPoint t s` is simply `s ≫ t = s` for a global point `s : 𝟙_ C ⟶ B`. Note the hypothesis is a *premise* of the theorem, not an axiom: Lawvere's theorem is genuinely conditional, so the file remains axiom-free.",
+    "mathContext": "Point-surjectivity is strictly weaker than surjectivity of $\\varphi$ as a morphism, yet sufficient. The asymmetry is the crux of every diagonal argument: a set can name all of its endo-*functions* pointwise without the naming map being epi.",
+    "significance": "important",
+    "relatedConcepts": ["weak point-surjectivity", "fixed point of an endomorphism", "conditional theorem"],
+    "prerequisites": ["global points", "name (exponential transpose)"]
+  },
+  {
+    "id": "ann-lawvere-ccc-diagonal",
+    "proofId": "cantor-diagonalization-oq-04-oq-01-oq-01",
+    "range": { "startLine": 81, "endLine": 88 },
+    "type": "technique",
+    "title": "The Diagonal Morphism",
+    "content": "The heart of the argument: `f := lift (𝟙 A) (𝟙 A) ≫ uncurry φ ≫ t`. Here `lift (𝟙 A) (𝟙 A) : A ⟶ A ⊗ A` is the **categorical diagonal** Δ, `uncurry φ : A ⊗ A ⟶ B` evaluates `φ(a)` at `a` (the self-application `a ↦ φ(a)(a)`), and `t : B ⟶ B` is post-composed. Point-surjectivity then names this very `f`: `obtain ⟨a, ha⟩ := hφ f` gives a global point `a` with `a ≫ φ = name f`. The fixed point will be `s := a ≫ f` (in elements: `s = φ(a)(a)`).",
+    "mathContext": "Diagonalization $g(x) = t(\\varphi(x)(x))$ is the same move as Cantor's $g(x) = \\lnot \\varphi(x)(x)$; substituting the name $a$ of $g$ into itself forces $\\varphi(a)(a) = g(a) = t(\\varphi(a)(a))$, a fixed point. The categorical diagonal $\\Delta$ replaces the duplication of the variable $x$.",
+    "significance": "key",
+    "relatedConcepts": ["categorical diagonal lift (𝟙 A) (𝟙 A)", "self-application via uncurry", "Cantor diagonal"],
+    "prerequisites": ["lift / fst / snd in a cartesian monoidal category", "uncurry"]
+  },
+  {
+    "id": "ann-lawvere-ccc-beta",
+    "proofId": "cantor-diagonalization-oq-04-oq-01-oq-01",
+    "range": { "startLine": 89, "endLine": 103 },
+    "type": "technique",
+    "title": "β-Reduction: Evaluating φ(a) at a Equals f(a)",
+    "content": "The key lemma `beta : lift a a ≫ uncurry φ = a ≫ f`. Step `star` uncurries the naming equation: from `a ≫ φ = name f`, naturality `uncurry_natural_left` gives `(A ◁ a) ≫ uncurry φ = (ρ_ A).hom ≫ f` (since `uncurry (name f) = (ρ_ A).hom ≫ f` by `uncurry_curry`). Then `beta` factors `lift a a` through the whiskering `A ◁ a` via `lift_whiskerLeft`, applies `star`, and collapses the right unitor with the unit coherence **`(ρ_ A).hom = fst _ _`** (`rightUnitor_hom`) so that `lift a (𝟙 _) ≫ (ρ_ A).hom = a` by `lift_fst`. This is exactly the β-rule 'apply the name of f to the point a, get f(a)' done with morphisms.",
+    "mathContext": "In any CCC the evaluation of a transposed morphism reproduces the original: $\\mathrm{ev} \\circ \\langle \\mathrm{name}(f), \\mathrm{id}\\rangle = f$. Here it appears as `lift a a ≫ uncurry φ = a ≫ f`, the single non-trivial coherence calculation. The unit law `(ρ_ A).hom = fst` is what makes the terminal-object bookkeeping disappear.",
+    "significance": "key",
+    "relatedConcepts": ["β-reduction in a CCC", "uncurry_natural_left", "rightUnitor_hom = fst", "lift_whiskerLeft"],
+    "prerequisites": ["naturality of uncurry", "unit coherence in a cartesian monoidal category"]
+  },
+  {
+    "id": "ann-lawvere-ccc-close",
+    "proofId": "cantor-diagonalization-oq-04-oq-01-oq-01",
+    "range": { "startLine": 104, "endLine": 111 },
+    "type": "technique",
+    "title": "Closing the Fixed Point",
+    "content": "`factI : a ≫ f = (lift a a ≫ uncurry φ) ≫ t` simply unfolds the diagonal definition of `f` and pushes the point `a` through `Δ = lift (𝟙 A) (𝟙 A)` using `comp_lift` (`a ≫ lift (𝟙 A) (𝟙 A) = lift a a`). Rewriting `factI` with `beta` turns it into `a ≫ f = (a ≫ f) ≫ t`, i.e. `s = s ≫ t`. Taking `.symm` gives the goal `s ≫ t = s`. The fixed point `s = a ≫ f` is produced with no choice beyond the witness `a` already handed to us by point-surjectivity.",
+    "mathContext": "The two equations `s = lift a a ≫ uncurry φ` (β) and `a ≫ f = s ≫ t` (diagonal unfolding) intersect at `s = s ≫ t`. This is the categorical shadow of `φ(a)(a) = f(a) = t(φ(a)(a))`.",
+    "significance": "important",
+    "relatedConcepts": ["comp_lift", "fixed-point equation s ≫ t = s"],
+    "prerequisites": ["β-reduction lemma above"]
+  },
+  {
+    "id": "ann-lawvere-ccc-cantor",
+    "proofId": "cantor-diagonalization-oq-04-oq-01-oq-01",
+    "range": { "startLine": 112, "endLine": 120 },
+    "type": "concept",
+    "title": "The Abstract Cantor / Diagonal Contrapositive",
+    "content": "`lawvere_cantor`: if `t : B ⟶ B` is fixed-point free (no global point `s` with `s ≫ t = s`), then **no** `φ : A ⟶ (A ⟹ B)` is point-surjective. This is the form in which Lawvere's theorem yields impossibility results. Choosing `B` to be a two-element object with `t = ¬` recovers Cantor: there is no point-surjective coding of `A ⟹ Ω` inside `A`. The same statement, read in a category of computable functions, is the halting problem; read in arithmetic, it is Gödel/Tarski.",
+    "mathContext": "Cantor, Russell, Gödel, Tarski, Turing are all the contrapositive of one fact: a fixed-point-free endomorphism witnesses non-parametrizability. `lawvere_cantor` is that fact, stated once and for all in a CCC.",
+    "significance": "key",
+    "relatedConcepts": ["Cantor's theorem", "Russell's paradox", "Gödel incompleteness", "halting problem", "fixed-point-free endomorphism"],
+    "prerequisites": ["lawvere_fixedPoint"]
+  }
+]

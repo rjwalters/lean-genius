@@ -1,0 +1,78 @@
+{
+  "slug": "erdos-190",
+  "title": "Erdős #190",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $H(k)$ be the smallest $N$ such that in any finite colouring of $\\{1,\\ldots,N\\}$ (into any number of colours) there is always either a monochromatic $k$-term arithmetic progression or a rainbow arithmetic progression (i.e. all elements are different colours). Estimate $H(k)$. Is it true that\\[H(k)^{1/k}/k \\to \\infty\\]as $k\\to\\infty$?\n\n\n\nThis type of problem belongs to 'canonical' Ramsey theory. The existence of $H(k)$ follows from Szemer\\'{e}di's theorem, and it is easy to show that $H(k)^{1/k}\\to\\infty$.",
+    "plain": "Let $H(k)$ be the smallest $N$ such that in any finite colouring of $\\{1,\\ldots,N\\}$ (into any number of colours) there is always either a monochromatic $k$-term arithmetic progression or a rainbow arithmetic progression (i.e. all elements are different colours). Estimate $H(k)$. Is it true that\\[H(k)^{1/k}/k \\to \\infty\\]as $k\\to\\infty$?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-26T00:00:00Z",
+    "iteration": 3,
+    "focus": "3 explicit axioms, 9 script-counted theorem declarations, and 0 sorries; structural canonical-Ramsey lemmas are verified.",
+    "blockers": [],
+    "nextAction": "Keep the deep canonical-Ramsey assumptions explicit; further work would formalize the remaining external results."
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 3 explicit axioms, 9 script-counted theorem declarations, and 0 sorries. H_spec, H_pos, H_minimal, and H_lower_bound are formalized; the asymptotic problem remains open.",
+    "builtItems": [
+      "H_minimal: proved from Nat.find_min (prior session)",
+      "H_pos: proved for k>=1 (prior session)",
+      "H_spec: proved via Fin.castLE restriction from Nat.find_spec",
+      "H_lower_bound: proved — k-term AP needs N>=k (strengthened to k>=1 from k>=3)"
+    ],
+    "insights": [
+      "H_pos is FALSE for k=0: H(0)=0 because empty AP (Fin 0) trivially satisfies hasCanonicalAP",
+      "H_spec is provable via restriction: χ → χ∘Fin.castLE transfers canonical AP from Fin(H k) to Fin N",
+      "H_minimal is a direct consequence of Nat.find minimality",
+      "H_pos proved: H(k)>0 for k≥1 via Fin 0 emptiness — Fin.elim0 eliminates impossible Fin k → Fin 0",
+      "H_spec follows from Nat.find_spec + Fin.castLE restriction: restrict coloring to first H(k) elements, get canonical AP, lift back via injective castLE",
+      "H_lower_bound: any k-term AP has max value a+(k-1)*d >= k-1, so it needs N>=k",
+      "For rainbow case in H_spec: Fin.castLE_injective preserves card of image, and Finset.image_image transfers color map",
+      "H_le_W axiom (H(k)≤W(k;2)) may be incorrect: W(k;2) handles 2-colorings but H(k) must handle all c-colorings. For c≥3, W(k;c)>>W(k;2), so monochromatic APs are not guaranteed.",
+      "All 7 remaining axioms are deep (Szemerédi, van der Waerden), open conjecture, asymptotic results, or require computational case analysis. No routine axioms to eliminate."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-19",
+    "erdos-190"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T16:01:50.836Z",
+  "lastUpdate": "2026-03-26T23:30:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos190Problem.lean",
+      "filename": "Erdos190Problem.lean",
+      "lineCount": 400,
+      "theoremCount": 9,
+      "axiomCount": 3,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos190Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,189 @@
+[
+  {
+    "id": "ann-719-imports",
+    "proofId": "erdos-719",
+    "range": {
+      "startLine": 15,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib for natural numbers (`Nat.Basic`), finite sets (`Finset.Basic`), powersets (`Finset.Powerset`), cardinality (`Finset.Card`), and general tactics. These provide the foundation for representing $r$-uniform hypergraphs as finite set families.",
+    "mathContext": "The formalization uses `Finset (Finset V)` for hyperedge families, `Finset.powerset` for generating all subsets (used in defining complete cliques), and `Finset.card` for the uniformity and Turán number conditions. The `sSup` function from Mathlib gives the Turán number definition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset",
+      "Finset.powerset",
+      "Finset.card",
+      "sSup"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib"
+    ]
+  },
+  {
+    "id": "ann-719-hypergraph",
+    "proofId": "erdos-719",
+    "range": {
+      "startLine": 25,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "r-Uniform Hypergraphs and Complete Cliques",
+    "content": "**RUniformHypergraph V r**: A structure with `edges : Finset (Finset V)` and proof that every edge has exactly $r$ vertices.\n\n**completeClique r S**: All $r$-element subsets of $S$, obtained by filtering `S.powerset`. When $|S| = r+1$, this is $K_{r+1}^r$ with $\\binom{r+1}{r} = r+1$ edges.",
+    "mathContext": "An $r$-uniform hypergraph generalizes graphs ($r = 2$) to higher uniformity. The complete $r$-uniform clique $K_{r+1}^r$ on $r+1$ vertices contains all $\\binom{r+1}{r} = r+1$ possible $r$-edges. For $r = 2$, $K_3^2$ is a triangle with 3 edges. For $r = 3$, $K_4^3$ is a tetrahedron with 4 facets. The Turán problem asks for the maximum number of $r$-edges avoiding such a clique.",
+    "significance": "key",
+    "relatedConcepts": [
+      "r-uniform hypergraph",
+      "complete hypergraph",
+      "Finset.powerset",
+      "Nat.choose"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Fintype",
+      "DecidableEq"
+    ]
+  },
+  {
+    "id": "ann-719-pieces",
+    "proofId": "erdos-719",
+    "range": {
+      "startLine": 37,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Decomposition Pieces",
+    "content": "**IsFullClique r S edges**: $|S| = r+1$ and `edges = completeClique r S`.\n\n**IsSingleEdge r e edges**: $|e| = r$ and `edges = {e}`.\n\n**IsDecompPiece r piece**: A piece is either a single $r$-edge ($K_r^r$) or a full $(r+1)$-clique ($K_{r+1}^r$).",
+    "mathContext": "The decomposition partitions the edge set into pieces of two types: trivial pieces (single edges) and non-trivial pieces (complete $(r+1)$-cliques consuming $r+1$ edges at once). Each clique piece 'saves' $r$ pieces compared to using $r+1$ single-edge pieces. The conjecture bounds the total number of pieces by the Turán number, which measures how many edges a clique-free hypergraph can have.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsFullClique",
+      "IsSingleEdge",
+      "decomposition",
+      "edge partition"
+    ],
+    "prerequisites": [
+      "RUniformHypergraph",
+      "completeClique"
+    ]
+  },
+  {
+    "id": "ann-719-decomp",
+    "proofId": "erdos-719",
+    "range": {
+      "startLine": 55,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Valid Decomposition",
+    "content": "**PiecesEdgeDisjoint piece₁ piece₂**: No $r$-edge belongs to both pieces.\n\n**IsValidDecomp r H pieces**: A structure requiring:\n- `pieces_valid`: Every piece is a single edge or full clique\n- `pairwise_disjoint`: Pieces share no $r$-edges\n- `covers`: Every edge of $H$ belongs to some piece",
+    "mathContext": "The three conditions ensure the pieces form a proper partition of the edge set into canonical substructures. The edge-disjointness is the key constraint — it prevents double-counting and ensures each $r$-edge is accounted for exactly once. This is analogous to a block design where blocks (cliques) partition the point-pairs (edges).",
+    "significance": "key",
+    "relatedConcepts": [
+      "edge partition",
+      "block design",
+      "Disjoint",
+      "covering"
+    ],
+    "prerequisites": [
+      "IsDecompPiece",
+      "PiecesEdgeDisjoint",
+      "RUniformHypergraph"
+    ]
+  },
+  {
+    "id": "ann-719-turan",
+    "proofId": "erdos-719",
+    "range": {
+      "startLine": 78,
+      "endLine": 105
+    },
+    "type": "definition",
+    "title": "Turán Number and Main Conjecture",
+    "content": "**IsCliqueFree r H**: No $(r+1)$-element set has all its $r$-subsets as edges.\n\n**turanHypergraph n r**: $\\text{ex}_r(n; K_{r+1}^r) = \\sup\\{|E(H)| : H \\text{ is } K_{r+1}^r\\text{-free}\\}$.\n\n**erdos_sauer_conjecture** (axiom): For $r \\ge 2$, every $r$-uniform hypergraph on $n$ vertices has a valid decomposition into $\\le \\text{ex}_r(n; K_{r+1}^r)$ pieces.",
+    "mathContext": "For $r = 2$, Turán's theorem (1941) gives $\\text{ex}_2(n; K_3) = \\lfloor n^2/4 \\rfloor$, achieved by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. For $r \\ge 3$, the exact value of $\\text{ex}_r(n; K_{r+1}^r)$ is the central open problem of extremal hypergraph theory. Turán conjectured $\\text{ex}_3(n; K_4^3) = (5/9 + o(1))\\binom{n}{3}$ but this remains unproven. The Erdős-Sauer conjecture thus depends on another major open problem for $r \\ge 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "extremal hypergraph theory",
+      "sSup",
+      "Turán density"
+    ],
+    "prerequisites": [
+      "IsCliqueFree",
+      "RUniformHypergraph",
+      "turanHypergraph"
+    ]
+  },
+  {
+    "id": "ann-719-graph-case",
+    "proofId": "erdos-719",
+    "range": {
+      "startLine": 112,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Graph Case (r = 2)",
+    "content": "**turan_graph** (axiom): $\\text{ex}_2(n; K_3) = \\lfloor n^2/4 \\rfloor$ (Turán's theorem).\n\n**graph_case_bound** (proved): The graph case of the conjecture reduces to: every graph on $n$ vertices decomposes into $\\le \\lfloor n^2/4 \\rfloor$ edges and triangles.",
+    "mathContext": "Turán's theorem (1941) is one of the foundational results of extremal graph theory. The complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is triangle-free and has $\\lfloor n^2/4 \\rfloor$ edges, achieving the maximum. For the decomposition conjecture, the graph case asks whether every graph can be written as at most $\\lfloor n^2/4 \\rfloor$ edges and triangles — a non-trivial structural claim even for this well-understood Turán number.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "complete bipartite graph",
+      "triangle decomposition",
+      "n²/4"
+    ],
+    "prerequisites": [
+      "turanHypergraph",
+      "IsValidDecomp",
+      "erdos_sauer_conjecture"
+    ]
+  },
+  {
+    "id": "ann-719-structural",
+    "proofId": "erdos-719",
+    "range": {
+      "startLine": 128,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "Structural Results",
+    "content": "**choose_succ_self** (proved): $\\binom{r+1}{r} = r+1$, showing each $(r+1)$-clique has exactly $r+1$ edges.\n\n**empty_case** (proved): The empty hypergraph trivially satisfies the conjecture with 0 pieces.\n\n**decomp_pieces_le_edges** (sorry): Any valid decomposition has $|\\text{pieces}| \\le |E(H)|$.\n\n**trivial_decomp_exists** (sorry): The one-piece-per-edge decomposition always works with $|E(H)|$ pieces.",
+    "mathContext": "The structural results establish the basic framework. The identity $\\binom{r+1}{r} = r+1$ means each clique piece accounts for $r+1$ edges, so using cliques reduces the piece count. The trivial decomposition (all single-edge pieces) always exists but may use too many pieces. The conjecture's content is that clique pieces can always reduce the count below the Turán number.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.choose",
+      "trivial decomposition",
+      "piece counting",
+      "empty case"
+    ],
+    "prerequisites": [
+      "IsValidDecomp",
+      "choose_succ_self"
+    ]
+  },
+  {
+    "id": "ann-719-related",
+    "proofId": "erdos-719",
+    "range": {
+      "startLine": 168,
+      "endLine": 176
+    },
+    "type": "concept",
+    "title": "Related Problems",
+    "content": "Notes connections to three related Erdős problems:\n- **#718**: Lower bounds on Turán numbers for hypergraphs\n- **#720**: Turán densities for higher uniformity\n- **#83**: Triangle decomposition problems for dense graphs\n\nTogether these form a cluster around extremal hypergraph theory and decomposition.",
+    "mathContext": "The Turán density $\\pi(F) = \\lim_{n \\to \\infty} \\text{ex}_r(n; F)/\\binom{n}{r}$ is known for all graphs ($r = 2$) by the Erdős-Stone-Simonovits theorem but unknown for most hypergraphs ($r \\ge 3$). Problems #718 and #720 address different aspects of hypergraph Turán theory. Problem #83 on triangle decompositions in dense graphs is the $r = 2$ specialization of decomposition questions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Turán density",
+      "Erdős-Stone-Simonovits theorem",
+      "hypergraph Turán problem"
+    ],
+    "prerequisites": [
+      "turanHypergraph",
+      "erdos_sauer_conjecture"
+    ]
+  }
+]

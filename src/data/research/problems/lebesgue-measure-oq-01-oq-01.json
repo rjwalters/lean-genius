@@ -1,0 +1,194 @@
+{
+  "slug": "lebesgue-measure-oq-01-oq-01",
+  "title": "Can the modified Dirichlet function $f(x) = 1/q$ for $x = p/q$ in lowest term...",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Define Thomae's function on R and prove its Lebesgue integral over R and over [0, 1] is zero.",
+    "plain": "Formalize the modified Dirichlet, or Thomae, function: it is nonzero only on rational points, so it is zero almost everywhere and has Lebesgue integral zero.",
+    "whyMatters": [
+      "Thomae's function is a classic example separating pointwise discontinuity behavior from Lebesgue integration.",
+      "The proof shows how a countable support gives an almost-everywhere zero function.",
+      "The result reuses the same measure-zero rational-set idea behind the standard Dirichlet-function integral."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Thomae's function is defined by rational denominator when x is rational and zero when x is irrational (Lean: thomae).",
+      "The function is zero at irrational points, nonnegative, and bounded above by one (Lean: thomae_irrational, thomae_nonneg, thomae_le_one).",
+      "The support of Thomae's function is contained in the rationals, hence it is zero almost everywhere (Lean: thomae_support_subset_rationals, thomae_ae_zero).",
+      "The Lebesgue integral over R and over the unit interval is zero (Lean: thomae_integral_zero, thomae_integral_unit_interval).",
+      "The file compares Thomae's function with the standard Dirichlet indicator and proves the Dirichlet integral is also zero (Lean: thomae_le_dirichlet, dirichlet_integral_zero)."
+    ],
+    "open": [],
+    "goal": "Document the verified almost-everywhere-zero proof that Thomae's function has Lebesgue integral zero."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T20:57:10.258Z",
+    "iteration": 2,
+    "focus": "Full formalization created",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full formalization of Thomae function integral. 153 lines, 9 theorems, 0 axioms, 0 sorries. All results fully verified including unit interval restriction.",
+    "builtItems": [
+      "proofs/Proofs/LebesgueMeasureOQ01OQ01.lean (153 lines, 9 theorems, 0 axioms, 0 sorries)",
+      "src/data/proofs/lebesgue-measure-oq-01-oq-01/ (gallery entry)",
+      "thomae: modified Dirichlet function definition via classical choice",
+      "thomae_ae_zero: thomae = 0 a.e. (via measure_mono_null + countable_range)",
+      "thomae_integral_zero: main result ∫ thomae = 0 (sorry-free)",
+      "thomae_le_dirichlet: pointwise comparison with standard Dirichlet",
+      "dirichlet_integral_zero: standard Dirichlet integral = 0",
+      "thomae_integral_unit_interval: unit interval restriction proved via ae_restrict_of_ae"
+    ],
+    "insights": [
+      "Thomae function (modified Dirichlet) = 0 a.e. since support ⊆ ℚ which has measure 0",
+      "Main integral result follows immediately from integral_eq_zero_of_ae",
+      "Thomae ≤ Dirichlet pointwise: 1/q ≤ 1 for q ≥ 1",
+      "ae_restrict_of_ae bridges ae properties from full measure to restricted measure — standard Mathlib API"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Formalize Riemann integrability of Thomae function",
+      "Prove continuity at irrationals / discontinuity at rationals"
+    ]
+  },
+  "tags": [
+    "measure-theory",
+    "lebesgue-integral",
+    "dirichlet-function",
+    "thomae-function",
+    "almost-everywhere",
+    "countable-sets",
+    "real-analysis"
+  ],
+  "relatedProofs": [
+    "lebesgue-measure",
+    "lebesgue-measure-oq-01",
+    "lebesgue-measure-oq-01-oq-01",
+    "lebesgue-measure-oq-01-oq-01-oq-02",
+    "lebesgue-measure-oq-02",
+    "lebesgue-measure-oq-03",
+    "lebesgue-measure-oq-03-oq-01",
+    "lebesgue-measure-oq-06"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T20:57:10.258Z",
+  "lastUpdate": "2026-03-29T00:05:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LebesgueMeasure.lean",
+      "filename": "LebesgueMeasure.lean",
+      "lineCount": 418,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasure.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01.lean",
+      "filename": "LebesgueMeasureOQ01.lean",
+      "lineCount": 198,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01OQ01.lean",
+      "filename": "LebesgueMeasureOQ01OQ01.lean",
+      "lineCount": 154,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ01OQ01OQ02.lean",
+      "filename": "LebesgueMeasureOQ01OQ01OQ02.lean",
+      "lineCount": 241,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ02.lean",
+      "filename": "LebesgueMeasureOQ02.lean",
+      "lineCount": 225,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ02.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ03.lean",
+      "filename": "LebesgueMeasureOQ03.lean",
+      "lineCount": 137,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ03.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ03OQ01.lean",
+      "filename": "LebesgueMeasureOQ03OQ01.lean",
+      "lineCount": 283,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ06.lean",
+      "filename": "LebesgueMeasureOQ06.lean",
+      "lineCount": 1518,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06.lean"
+    },
+    {
+      "path": "Proofs/LebesgueMeasureOQ06Aristotle.lean",
+      "filename": "LebesgueMeasureOQ06Aristotle.lean",
+      "lineCount": 76,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LebesgueMeasureOQ06Aristotle.lean"
+    }
+  ]
+}

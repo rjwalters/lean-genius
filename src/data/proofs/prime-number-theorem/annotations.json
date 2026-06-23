@@ -1,0 +1,589 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 10,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "The Prime Number Theorem",
+    "content": "One of the most celebrated results in mathematics:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x)}{x/\\ln x} = 1$$\n\nThis tells us the **density of primes** near x is approximately 1/ln(x) — primes become rarer, but in a precisely quantifiable way governed by the logarithm.\n\n**Historical milestones**:\n- **1798**: Legendre conjectures π(x) ≈ x/(ln x − 1.08366)\n- **1849**: Gauss refines to Li(x) = ∫₂ˣ dt/ln t\n- **1859**: Riemann's epoch-making paper connects primes to ζ(s) zeros via the explicit formula\n- **1896**: Hadamard & de la Vallée Poussin independently prove PNT using the zero-free region Re(s) = 1\n- **1949**: Erdős & Selberg give an elementary proof (no complex analysis)\n- **2004**: First formal proof in Isabelle (Avigad et al.)\n- **2024**: PrimeNumberTheoremAnd project formally proves PNT in Lean 4 (Kontorovich, Tao, et al.)",
+    "mathContext": "π(x) ~ x/ln(x), equivalently: lim_{x→∞} π(x)·ln(x)/x = 1. The proof requires showing ζ(1+it) ≠ 0 for all t ∈ ℝ, then applying a Tauberian theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime counting function",
+      "Riemann zeta function",
+      "asymptotic analysis",
+      "Tauberian theorems"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "infinitude-primes",
+        "relationship": "PNT quantifies Euclid's qualitative result: not only are there infinitely many primes, but their density is precisely 1/ln(x)"
+      },
+      {
+        "proofId": "riemann-hypothesis",
+        "relationship": "RH would sharpen PNT's error term from O(x·exp(-c√ln x)) to O(√x·ln x) — the zeros of ζ(s) control prime distribution"
+      }
+    ],
+    "prerequisites": [
+      "prime counting function π(x)",
+      "Riemann zeta function ζ(s)",
+      "asymptotic notation (big-O, little-o, ~)",
+      "Filter.Tendsto in Mathlib"
+    ]
+  },
+  {
+    "id": "ann-prime-pi",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 72,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Prime Counting Function",
+    "content": "$$\\pi(x) = \\#\\{p \\leq x : p \\text{ is prime}\\}$$\n\nThe fundamental object of study in prime distribution theory. Some values:\n\n| x | π(x) | x/ln(x) | Error |\n|---|------|---------|-------|\n| 10 | 4 | 4.3 | −8% |\n| 100 | 25 | 21.7 | +13% |\n| 1000 | 168 | 145 | +14% |\n| 10⁶ | 78,498 | 72,382 | +8% |\n\nMathlib provides `Nat.primeCounting` which counts primes up to n. The formalization wraps this with a floor function: `primePi(x) = Nat.primeCounting ⌊x⌋₊`.",
+    "mathContext": "π(x) = #{p ≤ x : p prime} = Nat.primeCounting ⌊x⌋₊. Related: Chebyshev functions θ(x) = Σ_{p≤x} ln p, ψ(x) = Σ_{p^k≤x} ln p.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime numbers",
+      "counting functions",
+      "Chebyshev functions",
+      "Mathlib.NumberTheory.PrimeCounting"
+    ],
+    "prerequisites": [
+      "Nat.primeCounting (Mathlib.NumberTheory.PrimeCounting)",
+      "Nat.floor (⌊·⌋₊)",
+      "prime numbers",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-prime-approx",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 77,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "The PNT Approximation",
+    "content": "The simplest approximation to π(x):\n\n$$\\text{primeApprox}(x) = \\frac{x}{\\ln x}$$\n\nThis is the \"first-order\" estimate. PNT says π(x) ~ x/ln(x), meaning their ratio → 1.\n\n**Guard**: defined as 0 for x ≤ 1 to avoid division by ln(1) = 0 or negative logarithms. This is mathematically inconsequential since PNT concerns the limit as x → ∞.",
+    "mathContext": "x/ln x for x > 1, 0 otherwise. The conditional avoids the singularity at x = 1 where ln x = 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic equivalence",
+      "logarithm",
+      "partial function"
+    ],
+    "prerequisites": [
+      "Real.log (Mathlib.Analysis.SpecialFunctions.Log.Basic)",
+      "conditional expression (if/then/else) in Lean 4",
+      "natural logarithm ln x"
+    ]
+  },
+  {
+    "id": "ann-li",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 81,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "Logarithmic Integral Li(x)",
+    "content": "A **much better** approximation to π(x):\n\n$$\\text{Li}(x) = \\int_2^x \\frac{dt}{\\ln t}$$\n\nGauss observed empirically that Li(x) tracks π(x) more closely than x/ln(x). The asymptotic expansion via repeated integration by parts:\n\n$$\\text{Li}(x) = \\frac{x}{\\ln x} + \\frac{x}{\\ln^2 x} + \\frac{2x}{\\ln^3 x} + \\cdots + \\frac{(k-1)! \\cdot x}{\\ln^k x} + O\\left(\\frac{x}{\\ln^{k+1} x}\\right)$$\n\nshows Li(x) ~ x/ln(x), but captures higher-order terms. The lower limit 2 avoids the integrable singularity at t = 1.",
+    "mathContext": "Li(x) = ∫₂ˣ dt/ln t. Asymptotic: Li(x) = x/ln x · Σ_{k=0}^{n} k!/ln^k(x) + O(x/ln^{n+2}x). Related to the Ramanujan prime counting approximation R(x).",
+    "significance": "key",
+    "relatedConcepts": [
+      "integral",
+      "asymptotic expansion",
+      "Gauss",
+      "integration by parts"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "prime-reciprocal-divergence",
+        "relationship": "The divergence of Σ 1/p (Euler) is a consequence of Li(x) → ∞; both reflect the logarithmic density of primes"
+      }
+    ],
+    "prerequisites": [
+      "intervalIntegral (Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic)",
+      "Real.log",
+      "asymptotic expansion via integration by parts",
+      "measure theory (MeasureTheory.Measure)"
+    ]
+  },
+  {
+    "id": "ann-pnt-ratio",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 92,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "PNT: Ratio Form",
+    "content": "**Prime Number Theorem (Ratio Form)**:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x) \\cdot \\ln x}{x} = 1$$\n\nThis is the classical statement, formulated as convergence to 1 of the ratio π(x)·ln(x)/x. In Lean, expressed using `Tendsto` to the neighborhood `𝓝 1` along the `atTop` filter.\n\nThe formulation π(x)·ln(x)/x (rather than π(x)/(x/ln(x))) avoids division-by-zero issues and is more natural for filter-based limits in Lean.",
+    "mathContext": "Tendsto (λ x, π(x)·ln(x)/x) atTop (𝓝 1). Equivalent to: ∀ε>0, ∃X, ∀x≥X, |π(x)·ln(x)/x − 1| < ε.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limits",
+      "Tendsto",
+      "atTop filter",
+      "neighborhood filter"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto (Mathlib.Order.Filter.Basic)",
+      "Filter.atTop",
+      "nhds / 𝓝 (neighborhood filter)",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-pnt-equiv",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 100,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "PNT: Asymptotic Equivalence",
+    "content": "**Asymptotic Notation**:\n\n$$\\pi(x) \\sim \\frac{x}{\\ln x}$$\n\nUsing Mathlib's `Asymptotics.IsEquivalent` (notation `~[atTop]`), we express that two functions have the same asymptotic behavior.\n\nf ~[l] g means (f - g) =o[l] g, or equivalently f/g → 1 along filter l. This is a standard equivalence relation on functions that are eventually nonzero.",
+    "mathContext": "(λ x, π(x)) ~[atTop] (λ x, x/ln x). Uses Mathlib.Analysis.Asymptotics.IsEquivalent, which is reflexive, symmetric, and transitive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic equivalence",
+      "IsEquivalent",
+      "big-O notation",
+      "little-o notation"
+    ],
+    "prerequisites": [
+      "Asymptotics.IsEquivalent (Mathlib.Analysis.Asymptotics.Defs)",
+      "Filter.atTop",
+      "asymptotic equivalence f ~ g",
+      "Asymptotics.IsLittleO"
+    ]
+  },
+  {
+    "id": "ann-pnt-error",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 109,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "PNT: Error Term Form",
+    "content": "**Error Term Formulation**:\n\n$$\\pi(x) = \\frac{x}{\\ln x} + o\\left(\\frac{x}{\\ln x}\\right)$$\n\nThe error π(x) − x/ln(x) grows slower than x/ln(x) itself. Expressed using Mathlib's `Asymptotics.IsLittleO` (notation `=o[atTop]`).\n\nThe equivalence f ~ g ⟺ f − g = o(g) is proved in the formalization as `equiv_iff_error`. The best known unconditional error bound is π(x) = Li(x) + O(x · exp(−c(ln x)^{3/5} (ln ln x)^{-1/5})) due to Vinogradov–Korobov.",
+    "mathContext": "(λ x, π(x) − x/ln x) =o[atTop] (λ x, x/ln x). Unconditional: |π(x)−Li(x)| = O(x·exp(−c·ln^{3/5}x·(ln ln x)^{−1/5})).",
+    "significance": "key",
+    "relatedConcepts": [
+      "error bounds",
+      "IsLittleO",
+      "Vinogradov",
+      "Korobov"
+    ],
+    "prerequisites": [
+      "Asymptotics.IsLittleO (Mathlib.Analysis.Asymptotics.Defs)",
+      "Asymptotics.IsEquivalent",
+      "little-o notation f = o(g)",
+      "Vinogradov-Korobov zero-free region"
+    ]
+  },
+  {
+    "id": "ann-pnt-li",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 118,
+      "endLine": 125
+    },
+    "type": "concept",
+    "title": "PNT: Logarithmic Integral Form",
+    "content": "The **strongest** standard form of PNT:\n\n$$\\pi(x) \\sim \\text{Li}(x)$$\n\nSince Li(x) ~ x/ln(x), this is equivalent to the other forms by transitivity. But Li(x) is a far superior numerical approximation:\n\n| x | π(x) | x/ln(x) | Li(x) | |π−Li| |\n|---|------|---------|-------|---------|\n| 10⁶ | 78,498 | 72,382 | 78,628 | 130 |\n| 10⁹ | 50,847,534 | 48,254,942 | 50,849,235 | 1,701 |\n\nLi(x) captures the first several terms of the asymptotic expansion, while x/ln(x) only captures the leading term.",
+    "mathContext": "(λ x, π(x)) ~[atTop] Li. Proved equivalent to ratio form via li_iff_equiv using transitivity of ~.",
+    "significance": "key",
+    "relatedConcepts": [
+      "logarithmic integral",
+      "Gauss",
+      "asymptotic expansion",
+      "transitivity"
+    ],
+    "prerequisites": [
+      "Asymptotics.IsEquivalent",
+      "logIntegral (Li function)",
+      "transitivity of asymptotic equivalence",
+      "li_equiv_approx: Li(x) ~ x/ln x"
+    ]
+  },
+  {
+    "id": "ann-equivalences",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 127,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "Equivalence of Formulations",
+    "content": "**All four formulations are equivalent**:\n\n1. **Ratio**: π(x)·ln(x)/x → 1\n2. **Asymptotic**: π(x) ~ x/ln(x)\n3. **Error**: π(x) − x/ln(x) = o(x/ln(x))\n4. **Li**: π(x) ~ Li(x)\n\nThe equivalences are axiomatized as:\n- `ratio_iff_equiv`: (1) ⟺ (2) — unwinding definitions of Tendsto and IsEquivalent\n- `equiv_iff_error`: (2) ⟺ (3) — standard f~g ⟺ f−g=o(g)\n- `li_iff_equiv`: (4) ⟺ (2) — transitivity via Li(x) ~ x/ln(x)\n\nA fifth equivalent formulation uses Chebyshev's ψ-function: ψ(x) ~ x, which is often the form directly proved via complex analysis.",
+    "mathContext": "PNT_Ratio ⟺ PNT_Equiv ⟺ PNT_Error ⟺ PNT_Li. Also equivalent: θ(x) ~ x, ψ(x) ~ x, and Σ_{n≤x} Λ(n) ~ x where Λ is the von Mangoldt function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic equivalence",
+      "Chebyshev ψ-function",
+      "von Mangoldt function",
+      "Tauberian theorems"
+    ],
+    "prerequisites": [
+      "ratio_iff_equiv: PNT_Ratio ↔ PNT_Equiv",
+      "equiv_iff_error: PNT_Equiv ↔ PNT_Error",
+      "li_iff_equiv: PNT_Li ↔ PNT_Equiv",
+      "Chebyshev ψ-function ψ(x) ~ x"
+    ]
+  },
+  {
+    "id": "ann-main-axiom",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 194,
+      "endLine": 208
+    },
+    "type": "concept",
+    "title": "The Main Theorem (Axiomatized)",
+    "content": "**The Prime Number Theorem** (axiomatized):\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x) \\cdot \\ln x}{x} = 1$$\n\n**Why an axiom?** A complete proof requires the full machinery of analytic number theory:\n1. **Complex analysis**: Cauchy's integral formula, residue calculus\n2. **Riemann zeta function**: analytic continuation to ℂ\\{1}, functional equation\n3. **Zero-free region**: proving ζ(1+it) ≠ 0 for all real t (the hardest step)\n4. **Tauberian theorem**: Wiener-Ikehara or Newman's simplified approach\n\nThe **PrimeNumberTheoremAnd** project by Kontorovich, Tao, et al. provides a complete Lean 4 formalization. The axiom here references that work.",
+    "mathContext": "axiom primeNumberTheorem : Tendsto (λ x, π(x)·ln(x)/x) atTop (𝓝 1). Key step: ζ(1+it) ≠ 0 proved via 3·4·cos trick: 3+4cos(θ)+cos(2θ) ≥ 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hadamard",
+      "de la Vallée Poussin",
+      "Wiener-Ikehara theorem",
+      "Newman's Tauberian theorem"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "riemann-hypothesis",
+        "relationship": "PNT uses the weakest form of zeta zero information (no zeros on Re(s)=1); RH asserts all zeros lie on Re(s)=1/2"
+      }
+    ],
+    "prerequisites": [
+      "axiom primeNumberTheorem (PNT_Ratio)",
+      "complex analysis: Riemann zeta function ζ(s)",
+      "zero-free region: ζ(1+it) ≠ 0",
+      "Wiener-Ikehara / Newman Tauberian theorem"
+    ]
+  },
+  {
+    "id": "ann-density",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 222,
+      "endLine": 238
+    },
+    "type": "concept",
+    "title": "Prime Density Tends to Zero",
+    "content": "**Corollary**: The density of primes goes to zero:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x)}{x} = 0$$\n\nFrom PNT: π(x)/x ~ 1/ln(x) → 0.\n\n**Interpretation**: The \"probability\" of a random number near x being prime is ≈ 1/ln(x). At x = 10¹⁰⁰, this is about 1/230. Despite vanishing density, there are infinitely many primes — the natural density is 0 but the counting function diverges.",
+    "mathContext": "Tendsto (λ x, π(x)/x) atTop (𝓝 0). Follows from PNT: π(x)/x ~ 1/ln(x) and ln(x) → ∞.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "probability heuristic",
+      "logarithmic decay"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "infinitude-primes",
+        "relationship": "Euclid proved primes are infinite; this corollary shows their density nonetheless vanishes — they become ever sparser"
+      }
+    ],
+    "prerequisites": [
+      "prime_asymptotic: π(x) ~ x/ln x",
+      "Filter.Tendsto atTop (𝓝 0)",
+      "natural density",
+      "Real.log_tendsto_atTop"
+    ]
+  },
+  {
+    "id": "ann-nth-prime",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 240,
+      "endLine": 257
+    },
+    "type": "concept",
+    "title": "Nth Prime Asymptotics",
+    "content": "**Inverse PNT**: The nth prime satisfies:\n\n$$p_n \\sim n \\ln n$$\n\nThis is the \"inverse\" of PNT: if π(x) ~ x/ln(x), inverting gives pₙ ~ n·ln(n). A more precise estimate: pₙ = n(ln n + ln ln n − 1 + o(1)).\n\nIn Lean, uses `Nat.nth Nat.Prime n` for the nth prime and `Tendsto ... atTop (𝓝 1)` for the asymptotic ratio.\n\n**Examples**:\n- p₁₀ = 29 ≈ 10·ln(10) = 23\n- p₁₀₀ = 541 ≈ 100·ln(100) = 461\n- p₁₀₀₀ = 7919 ≈ 1000·ln(1000) = 6908",
+    "mathContext": "Tendsto (λ n, pₙ/(n·ln n)) atTop (𝓝 1). Refinement: pₙ = n·ln n + n·ln ln n − n + O(n·ln ln n/ln n).",
+    "significance": "key",
+    "relatedConcepts": [
+      "nth prime",
+      "inverse function",
+      "Nat.nth",
+      "Rosser's theorem"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "bertrands-postulate",
+        "relationship": "Bertrand's postulate (pₙ₊₁ < 2pₙ) gives a crude bound; PNT's inverse gives the precise asymptotics pₙ ~ n ln n"
+      }
+    ],
+    "prerequisites": [
+      "Nat.nth Nat.Prime (nth prime in Mathlib)",
+      "primeNumberTheorem (PNT ratio form)",
+      "asymptotic inversion",
+      "Rosser's theorem: pₙ > n ln n"
+    ]
+  },
+  {
+    "id": "ann-mertens",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 259,
+      "endLine": 282
+    },
+    "type": "concept",
+    "title": "Mertens' Theorem",
+    "content": "**Sum of Prime Reciprocals** (Mertens, 1874):\n\n$$\\sum_{p \\leq x} \\frac{1}{p} = \\ln\\ln x + M + o(1)$$\n\nwhere M ≈ 0.2615 is the **Meissel–Mertens constant**.\n\nThis shows prime reciprocals diverge, but *extremely slowly* — as ln(ln(x)). For comparison:\n- Harmonic series: Σ_{n≤x} 1/n ~ ln(x) (slow)\n- Prime reciprocals: Σ_{p≤x} 1/p ~ ln(ln(x)) (much slower)\n\nMertens' proof uses partial summation (Abel summation) with estimates on π(x). The formalization axiomatizes the existence of the constant c (= M).",
+    "mathContext": "∃c, Tendsto (λ x, Σ_{p≤x,prime} 1/p − ln ln x) atTop (𝓝 c) where c = M ≈ 0.2615. Mertens also proved: ∏_{p≤x}(1−1/p) ~ e^{-γ}/ln x.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mertens",
+      "Meissel-Mertens constant",
+      "partial summation",
+      "Euler-Mascheroni constant"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "prime-reciprocal-divergence",
+        "relationship": "Euler (1737) proved Σ 1/p diverges; Mertens (1874) quantified the rate as ln ln x + M"
+      }
+    ],
+    "prerequisites": [
+      "prime_asymptotic: π(x) ~ x/ln x",
+      "partial summation (Abel summation)",
+      "Real.log_log_tendsto",
+      "Finset.sum over primes"
+    ]
+  },
+  {
+    "id": "ann-gaps",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 284,
+      "endLine": 306
+    },
+    "type": "concept",
+    "title": "Prime Gaps Are Sublinear",
+    "content": "**Prime Gaps Bound**: For any ε > 0 and sufficiently large x, consecutive primes near x differ by at most εx.\n\nFrom PNT: there are ~ x/ln(x) primes up to x, so the average gap is ~ ln(x). Since ln(x) = o(x), gaps are o(x) — sublinear growth.\n\nThe formalization states: ∀ε>0, ∃X, ∀x≥X, for any prime p ≤ x, there exists a next prime q with q ≤ x + εx.\n\n**Stronger known results**: Baker–Harman–Pintz (2001) proved gaps ≤ x^{0.525}. Under RH, gaps ≤ O(√x · ln x). Maynard–Tao (2014) proved bounded gaps between primes.",
+    "mathContext": "∀ε>0, ∃X, ∀x≥X, ∀p prime ≤ x, ∃q prime: p < q ≤ x+εx. Average gap: x/π(x) ~ ln(x). Best unconditional: gap ≤ x^{0.525}.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime gaps",
+      "Baker-Harman-Pintz",
+      "Maynard-Tao",
+      "Cramér conjecture"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "bertrands-postulate",
+        "relationship": "Bertrand's postulate gives gap < p (i.e., ε=1); PNT improves this to gap = o(p) for any ε>0"
+      }
+    ],
+    "prerequisites": [
+      "primeNumberTheorem (PNT ratio form)",
+      "prime counting estimates: π(x) ~ x/ln x",
+      "average prime gap: x/π(x) ~ ln x",
+      "Baker-Harman-Pintz theorem"
+    ]
+  },
+  {
+    "id": "ann-rh",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 312,
+      "endLine": 326
+    },
+    "type": "concept",
+    "title": "The Riemann Hypothesis",
+    "content": "The **Riemann Hypothesis** (RH, 1859):\n\nAll non-trivial zeros of ζ(s) have Re(s) = 1/2.\n\nThis is one of the seven **Millennium Prize Problems** ($1M reward, Clay Mathematics Institute). It is the deepest open problem connected to prime distribution.\n\nRH is axiomatized here as a `Prop` (the formalization focuses on PNT, and RH is only used for conditional error bounds). A proper definition requires ζ(s) for complex s with analytic continuation.\n\n**Known**: Over 10¹³ zeros computed, all on the critical line. Hardy (1914) proved infinitely many zeros lie on Re(s) = 1/2.",
+    "mathContext": "RH: ∀s, ζ(s) = 0 ∧ 0 < Re(s) < 1 → Re(s) = 1/2. Axiomatized as a Prop since defining ζ: ℂ → ℂ with analytic continuation is beyond this file's scope.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riemann zeta function",
+      "critical line",
+      "Millennium Prize Problems",
+      "Hardy's theorem"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "riemann-hypothesis",
+        "relationship": "The gallery's dedicated RH entry formalizes equivalent forms (Robin's inequality, explicit formula) and partial results"
+      }
+    ],
+    "prerequisites": [
+      "Riemann zeta function ζ(s) for complex s",
+      "analytic continuation of ζ to ℂ \\ {1}",
+      "non-trivial zeros of ζ(s)",
+      "Millennium Prize Problems"
+    ]
+  },
+  {
+    "id": "ann-von-koch",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 328,
+      "endLine": 351
+    },
+    "type": "concept",
+    "title": "Von Koch's Theorem (Conditional on RH)",
+    "content": "**Under RH** (von Koch, 1901):\n\n$$|\\pi(x) - \\text{Li}(x)| = O(\\sqrt{x} \\ln x)$$\n\nThis is a **dramatic** improvement over the unconditional bound O(x·exp(−c·ln^{3/5}x)):\n- At x = 10¹², unconditional: error ≤ ~10⁹. Under RH: error ≤ ~10⁶·ln(10¹²) ≈ 3×10⁷.\n\n**Why RH helps**: Riemann's explicit formula writes π(x) as a sum over ζ-zeros: π(x) = Li(x) − Σ_ρ Li(x^ρ) + smaller terms. If all ρ satisfy Re(ρ) = 1/2, then |x^ρ| = √x, giving the √x bound.",
+    "mathContext": "RH ⟹ ∃C>0, ∀x≥2, |π(x)−Li(x)| ≤ C·√x·ln x. Explicit formula: π(x) = Li(x) − Σ_ρ Li(x^ρ) − ln 2 + ∫_x^∞ dt/(t(t²−1)·ln t).",
+    "significance": "key",
+    "relatedConcepts": [
+      "von Koch",
+      "explicit formula",
+      "Riemann Hypothesis",
+      "square root cancellation"
+    ],
+    "prerequisites": [
+      "RiemannHypothesis (axiom Prop)",
+      "logIntegral Li(x)",
+      "Riemann explicit formula: π(x) = Li(x) − Σ_ρ Li(x^ρ) + …",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-chebyshev",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 357,
+      "endLine": 380
+    },
+    "type": "concept",
+    "title": "Chebyshev's Bounds (1852)",
+    "content": "**Before PNT** (Chebyshev, 1852):\n\n$$0.92 < \\frac{\\pi(x) \\ln x}{x} < 1.11$$\n\nfor sufficiently large x. Chebyshev proved that **if** the limit exists, it must equal 1.\n\n**Method**: Analyzed prime factorization of the central binomial coefficient C(2n,n) = (2n)!/(n!)², using:\n- Legendre's formula: v_p(n!) = Σ_{k≥1} ⌊n/p^k⌋\n- The bound 2²ⁿ/√(2n) ≤ C(2n,n) ≤ 2²ⁿ\n\nThis was 44 years before Hadamard/de la Vallée Poussin proved the limit exists! Chebyshev's elementary approach remains influential — Erdős's proof of Bertrand's postulate uses similar ideas.",
+    "mathContext": "∃X, ∀x≥X, x>1 → 0.92 < π(x)·ln(x)/x < 1.11. Chebyshev's sharper constants: A = ln(2·3·5·30)/(30) ≈ 0.92129, B ≈ 1.10555.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chebyshev",
+      "central binomial coefficient",
+      "Legendre's formula",
+      "elementary methods"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "bertrands-postulate",
+        "relationship": "Erdős's 1932 proof of Bertrand's postulate uses Chebyshev-style analysis of binomial coefficient prime factorizations"
+      }
+    ],
+    "prerequisites": [
+      "Nat.centralBinom (central binomial coefficient)",
+      "Nat.factorization / multiplicity (p-adic valuation)",
+      "Legendre's formula: vₚ(n!) = Σ_{k≥1} ⌊n/pᵏ⌋",
+      "elementary number theory (no complex analysis)"
+    ]
+  },
+  {
+    "id": "ann-euler-product",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 403,
+      "endLine": 410
+    },
+    "type": "concept",
+    "title": "Euler Product Connection",
+    "content": "**Euler's product formula** (1737):\n\n$$\\zeta(s) = \\sum_{n=1}^{\\infty} \\frac{1}{n^s} = \\prod_{p \\text{ prime}} \\frac{1}{1 - p^{-s}}$$\n\nfor Re(s) > 1. This identity — equating a sum over integers with a product over primes — is the **fundamental bridge** between analysis and prime distribution.\n\nTaking logarithms: log ζ(s) = Σ_p p⁻ˢ + O(1). The pole of ζ(s) at s = 1 encodes the infinitude of primes; the zero-free region on Re(s) = 1 encodes PNT.",
+    "mathContext": "ζ(s) = Π_p (1−p⁻ˢ)⁻¹ for Re(s)>1. The connection: −ζ'(s)/ζ(s) = Σ_n Λ(n)/nˢ where Λ is the von Mangoldt function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler product",
+      "Riemann zeta function",
+      "von Mangoldt function",
+      "Dirichlet series"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "dirichlets-theorem",
+        "relationship": "Dirichlet generalized Euler's approach: L-functions L(s,χ) = Π_p(1−χ(p)p⁻ˢ)⁻¹ prove primes in arithmetic progressions"
+      },
+      {
+        "proofId": "prime-reciprocal-divergence",
+        "relationship": "Euler's product at s=1 diverges (ζ has a pole), directly yielding Σ 1/p = ∞"
+      }
+    ],
+    "prerequisites": [
+      "Dirichlet series: Σ aₙ/nˢ",
+      "Euler product formula ζ(s) = Π_p(1−p⁻ˢ)⁻¹",
+      "von Mangoldt function Λ(n)",
+      "Nat.Prime.prime_def_minFac"
+    ]
+  },
+  {
+    "id": "ann-numerical",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 416,
+      "endLine": 428
+    },
+    "type": "concept",
+    "title": "Numerical Evidence",
+    "content": "**Comparing approximations**:\n\n| x | π(x) | x/ln(x) | Li(x) | |π−x/ln x| | |π−Li| |\n|---|------|---------|-------|-----------|--------|\n| 10 | 4 | 4.3 | 6.2 | 0.3 | 2.2 |\n| 10³ | 168 | 145 | 178 | 23 | 10 |\n| 10⁶ | 78,498 | 72,382 | 78,628 | 6,116 | 130 |\n| 10⁹ | 50,847,534 | 48,254,942 | 50,849,235 | 2.6M | 1,701 |\n| 10¹² | 37,607,912,018 | ~34.4B | ~37.6B | ~3.2B | ~38,263 |\n\nLi(x) is consistently better by orders of magnitude. Remarkably, Li(x) > π(x) for all computed values, though Littlewood (1914) proved π(x) > Li(x) occurs infinitely often (the first crossover is believed to be near x ≈ 10³¹⁶).",
+    "mathContext": "Skewes' number: the first x where π(x) > Li(x). Upper bound: e^{e^{e^{79}}} (Skewes, 1933, assuming RH). Modern: ≈ 1.397×10³¹⁶.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "numerical computation",
+      "Skewes' number",
+      "Littlewood's theorem",
+      "approximation quality"
+    ],
+    "prerequisites": [
+      "primePi(x) values at powers of 10",
+      "primeApprox(x) = x/ln x",
+      "logIntegral Li(x)",
+      "Littlewood's oscillation theorem"
+    ]
+  },
+  {
+    "id": "ann-prime-counting-axiom",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 382,
+      "endLine": 402
+    },
+    "type": "concept",
+    "title": "Axiom: Prime Counting Tends to Infinity",
+    "content": "`prime_counting_tendsto_top_axiom` axiomatizes that $\\pi(x) \\to \\infty$ as $x \\to \\infty$. This is a weak consequence of Euclid's theorem (infinitude of primes) but stated here as an axiom rather than proved from Mathlib's `Nat.infinite_setOf_prime` because converting between the set-theoretic infinitude and the analytic limit requires bridging Mathlib's `Finset`-based counting with the `Filter.Tendsto` framework.\n\n`prime_counting_tendsto_top` wraps the axiom for downstream use. This is a common formalization pattern: axiomatize a 'morally obvious' fact that requires significant infrastructure to prove formally, marking it for future replacement when the bridge lemmas are available.",
+    "mathContext": "$\\pi(x) \\to \\infty$ as $x \\to \\infty$. Quantitatively: $\\pi(x) \\geq \\ln\\ln x$ (Euler, 1737) and $\\pi(x) \\geq x/(2\\ln x)$ for $x \\geq 59$ (Chebyshev bound). PNT gives $\\pi(x) \\sim x/\\ln x$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Tendsto",
+      "atTop filter",
+      "primePi"
+    ],
+    "relatedConcepts": [
+      "axiom usage",
+      "formalization gap",
+      "prime counting function",
+      "Euclid's theorem"
+    ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "prime-number-theorem",
+    "range": {
+      "startLine": 430,
+      "endLine": 460
+    },
+    "type": "concept",
+    "title": "Summary and API Surface",
+    "content": "The summary doc-comment recaps the six key aspects of PNT:\n1. **Statement**: $\\pi(x) \\sim x/\\ln x$\n2. **Meaning**: fraction $\\sim 1/\\ln x$ of integers up to $x$ are prime\n3. **Better approximation**: $\\pi(x) \\sim \\text{Li}(x) = \\int_2^x dt/\\ln t$\n4. **Error terms**: unconditional $O(x e^{-c\\sqrt{\\ln x}})$ vs conditional (RH) $O(\\sqrt{x} \\ln x)$\n5. **Proof techniques**: complex analysis of $\\zeta(s)$, zero-free region, Tauberian theorems\n6. **History**: Gauss/Legendre conjecture (~1800), Hadamard/de la Vallée Poussin proof (1896)\n\n`pnt_summary` is a trivial placeholder theorem ($1 + 1 = 2$) anchoring the doc-comment. The four `#check` commands verify the API: `primeNumberTheorem`, `prime_asymptotic`, `prime_density_tends_to_zero`, `nth_prime_asymptotic`.",
+    "mathContext": "Error term hierarchy:\n- Trivial: $\\pi(x) = x/\\ln x + O(x/\\ln^2 x)$ (from PNT)\n- Best unconditional: $\\pi(x) = \\text{Li}(x) + O(x \\exp(-c(\\ln x)^{3/5}(\\ln\\ln x)^{-1/5}))$ (Korobov-Vinogradov, 1958)\n- Under RH: $\\pi(x) = \\text{Li}(x) + O(\\sqrt{x} \\ln x)$ (von Koch, 1901)",
+    "significance": "supporting",
+    "prerequisites": [
+      "PNT statement",
+      "Li(x) function"
+    ],
+    "relatedConcepts": [
+      "logarithmic integral",
+      "error terms",
+      "zero-free region",
+      "Tauberian theorem"
+    ]
+  }
+]

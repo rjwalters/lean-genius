@@ -1,0 +1,181 @@
+[
+  {
+    "id": "ann-bpg-oq03-01-header",
+    "proofId": "bounded-prime-gaps-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "OQ-03: Is 246 Optimal for the 50-Tuple Sieve?",
+    "content": "**Polymath 8b and the 246 Bound**:\n\nThe Polymath 8b project reduced Zhang's 70 million bound to 246 by finding an admissible 50-tuple with exactly that diameter.\n\n**OQ-03**: Is 246 the best possible for 50-tuple sieves?\n**Answer**: YES — Engelsma (2013) proved by exhaustive computer search that no admissible 50-tuple achieves diameter < 246.\n\nThis file formalizes Engelsma's result with 0 sorries and 1 axiom.",
+    "mathContext": "$\\liminf_{n\\to\\infty}(p_{n+1}-p_n)$: Zhang (2013) gave the first finite bound $\\leq 70{,}000{,}000$; Polymath 8b (2014) reduced it to $\\leq 246$ via an admissible 50-tuple. OQ-03 asks whether 246 is the minimum diameter achievable by any admissible 50-element set.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "admissible k-tuples",
+      "Maynard-Tao sieve",
+      "Polymath 8 project",
+      "liminf of prime gaps",
+      "Zhang's theorem"
+    ],
+    "prerequisites": [
+      "prime number theory",
+      "sieve theory basics",
+      "Hardy-Littlewood k-tuple conjecture"
+    ]
+  },
+  {
+    "id": "ann-bpg-oq03-02-tuple",
+    "proofId": "bounded-prime-gaps-oq-03",
+    "range": {
+      "startLine": 37,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "The Engelsma/Polymath 50-Tuple Definition",
+    "content": "**The Engelsma 50-Tuple**:\n\n```\nengelsma50Tuple = {0, 4, 6, 16, 30, 34, 36, 46, 48, 58, 60, 64, 70, 78, 84,\n  88, 90, 94, 100, 106, 108, 114, 118, 126, 130, 136, 144, 148, 150, 156,\n  160, 168, 174, 178, 184, 190, 196, 198, 204, 210, 214, 216, 220, 226,\n  228, 234, 238, 240, 244, 246}\n```\n\nKey properties verified by `native_decide`:\n- Exactly 50 elements\n- min = 0, max = 246\n- Diameter = 246\n\nThis is the canonical Polymath 8b tuple, discovered by computer-aided optimization.",
+    "mathContext": "An admissible $k$-tuple is a finite set $H \\subset \\mathbb{N}$ such that for every prime $p$, the image $\\{h \\bmod p : h \\in H\\}$ does not cover all of $\\mathbb{Z}/p\\mathbb{Z}$. Here $H = \\{0, 4, 6, \\ldots, 244, 246\\}$ with $|H| = 50$ and $\\mathrm{diam}(H) = \\max H - \\min H = 246$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "admissible k-tuples",
+      "Finset in Lean 4",
+      "native_decide",
+      "Hardy-Littlewood conjecture",
+      "prime constellations"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "Lean 4 Finset API",
+      "decidable propositions in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-bpg-oq03-03-admissible",
+    "proofId": "bounded-prime-gaps-oq-03",
+    "range": {
+      "startLine": 59,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Admissibility: Splitting on Small vs. Large Primes",
+    "content": "**Admissibility Proof Strategy**:\n\nA set H is *admissible* if for every prime p, H does not cover all residues mod p (i.e., the image of H in ℤ/pℤ has fewer than p elements).\n\nThe proof splits into two cases:\n\n**Small primes (p ≤ 47)**: Native decide checks each of the 15 small primes: {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47}. Compiled evaluation verifies the tuple misses at least one residue class for each.\n\n**Large primes (p ≥ 53)**: Since |tuple| = 50 < 53 ≤ p, the image of the tuple in ℤ/pℤ has at most 50 elements — fewer than p — so admissibility is automatic.\n\nThe gap [48,52] is bridged by `interval_cases p` which exhausts composites {48,49,50,51,52} (none are prime).",
+    "mathContext": "For prime $p$: admissibility requires $|\\{h \\bmod p : h \\in H\\}| < p$. For $p \\leq 47$: each of the 15 primes is checked by compiled evaluation. For $p \\geq 53$: $|\\mathrm{image}(H \\bmod p)| \\leq |H| = 50 < 53 \\leq p$ by the pigeonhole principle and `Finset.card_image_le`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sieve theory",
+      "modular arithmetic",
+      "pigeonhole principle",
+      "native_decide",
+      "interval_cases tactic"
+    ],
+    "prerequisites": [
+      "prime number theory",
+      "modular arithmetic",
+      "Lean 4 decidable instances",
+      "Finset.card_image_le"
+    ]
+  },
+  {
+    "id": "ann-bpg-oq03-04-diameter",
+    "proofId": "bounded-prime-gaps-oq-03",
+    "range": {
+      "startLine": 102,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Exact Diameter Verification via Finset Extremes",
+    "content": "**Diameter = 246 Exactly**:\n\nThe diameter of a finite set is $\\max H - \\min H$. For the Engelsma tuple:\n- `engelsma50Tuple_max`: max element = 246 (via `native_decide`)\n- `engelsma50Tuple_min`: min element = 0 (via `native_decide`)\n- `engelsma50Tuple_diam`: diameter = 246 - 0 = 246 (by rewriting)\n\nAdditionally, `engelsma50Tuple_mem_range` confirms all elements lie in [0, 246] using the Mathlib API `Finset.min'_le` and `Finset.le_max'` (post-4.26.0 signature: no explicit `Nonempty` argument).\n\nThe use of `Finset.max'` and `Finset.min'` (primed variants) requires a nonemptiness proof, which is supplied by `engelsma50Tuple_nonempty`.",
+    "mathContext": "$\\mathrm{diam}(H) = \\max' H - \\min' H = 246 - 0 = 246$. The Lean proof uses `Finset.max'` and `Finset.min'` which are the 'safe' variants requiring $H \\neq \\emptyset$, avoiding the `Option` type of `Finset.max` and `Finset.min`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.max'",
+      "Finset.min'",
+      "diameter of a finite set",
+      "Finset.min'_le",
+      "Finset.le_max'"
+    ],
+    "prerequisites": [
+      "order theory",
+      "Lean 4 Finset API",
+      "Mathlib 4.26.0 API changes"
+    ]
+  },
+  {
+    "id": "ann-bpg-oq03-05-engelsma-axiom",
+    "proofId": "bounded-prime-gaps-oq-03",
+    "range": {
+      "startLine": 124,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Engelsma's Axiom: Encoding a Computational Theorem",
+    "content": "**Engelsma's Lower Bound (Axiom)**:\n\n```lean\naxiom engelsma_lower_bound :\n    ∀ H : Finset ℕ, IsAdmissible H → H.card ≥ 50 →\n    ∀ hne : H.Nonempty, H.max' hne - H.min' hne ≥ 246\n```\n\nThis encodes Engelsma's 2013 exhaustive computer search. He enumerated all admissible tuples with small diameter and verified none with 50 or more elements has diameter < 246.\n\nFormalizing this directly would require:\n1. A Lean implementation of the search algorithm\n2. Formal verification that the search is correct and complete\n3. Computational proof that all cases were checked\n\nThis is a substantial certified computation project, so we take the result as a verified axiom.",
+    "mathContext": "$\\forall H \\subseteq \\mathbb{N},\\ |H| \\geq 50,\\ H \\text{ admissible} \\Rightarrow \\mathrm{diam}(H) = \\max' H - \\min' H \\geq 246$. This universal statement over all finite admissible sets with $\\geq 50$ elements captures the full strength of Engelsma's 2013 exhaustive search.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exhaustive computer search",
+      "certified computation",
+      "axioms in Lean 4",
+      "admissible k-tuples",
+      "computational mathematics"
+    ],
+    "prerequisites": [
+      "sieve theory",
+      "admissible tuples",
+      "Lean 4 axiom declaration",
+      "formal verification of algorithms"
+    ]
+  },
+  {
+    "id": "ann-bpg-oq03-06-optimality",
+    "proofId": "bounded-prime-gaps-oq-03",
+    "range": {
+      "startLine": 138,
+      "endLine": 175
+    },
+    "type": "insight",
+    "title": "Optimality: 246 is Both Achievable and Minimal",
+    "content": "**The Main Optimality Results**:\n\n- `admissible_50_tuple_diam_achieved`: There exists an admissible 50-tuple with diameter exactly 246 (witnessed by `engelsma50Tuple`).\n- `admissible_50_tuple_diam_ge_246`: Every admissible set with ≥ 50 elements has diameter ≥ 246 (directly from the axiom).\n- `admissible_50_tuple_min_diam`: The conjunction — 246 is both achievable and the minimum.\n- `admissible_50_tuple_large_spread`: Any admissible 50-tuple contains elements ≥ 246 apart (using the min/max as witnesses).\n\nTogether these establish that 246 is the *exact* minimum diameter, not just an upper bound.",
+    "mathContext": "$(\\exists H\\ \\text{admissible},\\ |H| = 50,\\ \\mathrm{diam}(H) = 246)$ AND $(\\forall H\\ \\text{admissible},\\ |H| \\geq 50 \\Rightarrow \\mathrm{diam}(H) \\geq 246)$. The conjunction pins the minimum: $\\min\\{\\mathrm{diam}(H) : H\\ \\text{admissible},\\ |H| \\geq 50\\} = 246$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "optimization over admissible tuples",
+      "prime gap bounds",
+      "Maynard-Tao sieve",
+      "witness-based existence proofs"
+    ],
+    "prerequisites": [
+      "sieve theory",
+      "Lean 4 existential proofs",
+      "Finset.Nonempty",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-bpg-oq03-07-consequences",
+    "proofId": "bounded-prime-gaps-oq-03",
+    "range": {
+      "startLine": 176,
+      "endLine": 216
+    },
+    "type": "insight",
+    "title": "Consequences: The 50-Tuple Sieve Cannot Improve Beyond 246",
+    "content": "**Consequences for the Polymath Bound**:\n\n- `no_admissible_50_tuple_diam_le_245`: Any set with ≥ 50 elements and diameter ≤ 245 is provably NOT admissible.\n- `tight_246_via_admissibility`: Diameter < 246 ↔ not admissible (for 50-element sets).\n- `polymath_strictly_improves_zhang`: 246 < 70,000,000 — sanity check by `norm_num`.\n- `optimal_prime_gap_via_50_tuple`: The complete characterization — 246 is achievable, and nothing smaller exists.\n\nThe final theorem establishes that any attempt to improve the Polymath bound below 246 via the same 50-tuple Maynard-Tao approach is provably impossible.",
+    "mathContext": "$\\neg\\exists H$ admissible with $|H| \\geq 50$ and $\\mathrm{diam}(H) < 246$. Combined with existence: $\\{\\mathrm{diam}(H) : H\\ \\text{admissible},\\ |H| = 50\\}$ has minimum exactly 246. Improving $\\liminf(p_{n+1}-p_n) \\leq 246$ unconditionally requires $k > 50$ or new techniques beyond the Maynard-Tao $k$-tuple sieve.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polymath 8b",
+      "Zhang's theorem",
+      "Twin Prime Conjecture",
+      "Elliott-Halberstam conjecture",
+      "Maynard-Tao sieve"
+    ],
+    "prerequisites": [
+      "prime number theory",
+      "sieve theory",
+      "Lean 4 negation proofs",
+      "omega tactic",
+      "norm_num tactic"
+    ]
+  }
+]

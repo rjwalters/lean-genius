@@ -1,0 +1,170 @@
+[
+  {
+    "id": "ann-header-structure",
+    "proofId": "bertrands-postulate-oq-03-oq-04-oq-03",
+    "range": {
+      "startLine": 10,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "Modularization of Filter Algebra Steps",
+    "content": "The file header explicitly frames the open question: can the inline filter algebra steps from OQ-04's `long_interval_density_from_pnt` be extracted as standalone, sorry-free lemmas? The two steps are named: (1) PNT rescaling — expressing π((1+c)x) with log(x) instead of log((1+c)x); (2) interval density — combining two PNT estimates to get the gap count. The key algebraic identity underlying step (2) is displayed in ASCII art: interval density = (1+c)/c × PNT_at_(1+c)x - 1/c × PNT_at_x.",
+    "mathContext": "$\\frac{\\pi((1+c)x) - \\pi(x)}{cx} = \\frac{1+c}{c} \\cdot \\frac{\\pi((1+c)x)}{(1+c)x} - \\frac{1}{c} \\cdot \\frac{\\pi(x)}{x}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "PNT density",
+      "modular proof design",
+      "filter algebra",
+      "open question"
+    ],
+    "prerequisites": [
+      "Prime Number Theorem",
+      "Filter.Tendsto in Lean 4",
+      "prime counting function π(x)"
+    ]
+  },
+  {
+    "id": "ann-log-ratio",
+    "proofId": "bertrands-postulate-oq-03-oq-04-oq-03",
+    "range": {
+      "startLine": 60,
+      "endLine": 90
+    },
+    "type": "concept",
+    "title": "Log Ratio Lemma: Change of Logarithm",
+    "content": "The private lemma `log_ratio_tendsto_one` proves that log(x)/log((1+c)x) → 1. The proof strategy uses `filter_upwards` to work for large x (where log x > 0), rewrites the ratio as 1/(1 + log(1+c)/log(x)), and then uses `tendsto_const_nhds.div_atTop Real.tendsto_log_atTop` to show the denominator log(1+c)/log(x) → 0. This lemma is the technical bridge allowing PNT's natural statement at (1+c)x (using log((1+c)x)) to be converted to use log(x) instead.",
+    "mathContext": "$\\frac{\\log x}{\\log((1+c)x)} = \\frac{1}{1 + \\frac{\\log(1+c)}{\\log x}} \\to \\frac{1}{1+0} = 1$ since $\\log x \\to \\infty$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "log arithmetic",
+      "tendsto_const_nhds.div_atTop",
+      "filter_upwards",
+      "change of logarithm"
+    ],
+    "prerequisites": [
+      "Real.log properties",
+      "Filter.Tendsto",
+      "real analysis limits"
+    ]
+  },
+  {
+    "id": "ann-pnt-rescaling",
+    "proofId": "bertrands-postulate-oq-03-oq-04-oq-03",
+    "range": {
+      "startLine": 96,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "PNT Rescaling via Filter Composition",
+    "content": "The theorem `pnt_at_scaled_point` uses `primeNumberTheorem.comp` with the scaling map `x ↦ (1+c)·x` to obtain PNT at the scaled point. The composition `Filter.Tendsto.comp (Filter.Tendsto.const_mul_atTop h1c_pos tendsto_id)` shifts the evaluation point from x to (1+c)x. Then `pnt_1c.mul hlog_ratio` multiplies the two limits (both → 1), and `hmul.congr'` with `field_simp; ring` cleans up the algebraic equality. The `filter_upwards` guard ensures log((1+c)x) ≠ 0 so the algebraic manipulation is valid.",
+    "mathContext": "$\\pi((1+c)x) \\cdot \\frac{\\log((1+c)x)}{(1+c)x} \\to 1$ (PNT at $(1+c)x$), and $\\frac{\\log x}{\\log((1+c)x)} \\to 1$; multiplying gives $\\pi((1+c)x) \\cdot \\frac{\\log x}{(1+c)x} \\to 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Tendsto.comp",
+      "Filter.Tendsto.mul",
+      "tendsto_congr'",
+      "PNT composition"
+    ],
+    "prerequisites": [
+      "Prime Number Theorem statement",
+      "Filter composition in Lean 4",
+      "log_ratio_tendsto_one"
+    ]
+  },
+  {
+    "id": "ann-congr-technique",
+    "proofId": "bertrands-postulate-oq-03-oq-04-oq-03",
+    "range": {
+      "startLine": 120,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Filter.tendsto_congr' for Function Equality Cleanup",
+    "content": "A recurring pattern in this file: after combining filter limits, the resulting function expression doesn't syntactically match the goal. `Filter.tendsto_congr'` (or `Filter.Tendsto.congr'`) allows replacing a function with an eventually-equal one. The proof of eventual equality uses `filter_upwards` to work in a region where log ≠ 0, then `field_simp; ring` to prove the algebraic identity. This decomposes the proof into (1) limit combination and (2) algebraic rewriting, keeping each step clean.",
+    "mathContext": "If $f =_{\\text{a.e.}} g$ and $f \\to L$, then $g \\to L$; here $(\\text{product expression}) =_{x \\to \\infty} \\pi((1+c)x) \\cdot \\log(x) / ((1+c)x)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Filter.tendsto_congr'",
+      "filter_upwards",
+      "algebraic equality",
+      "field_simp"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto congruence lemmas",
+      "eventually-equal functions",
+      "Lean field_simp tactic"
+    ]
+  },
+  {
+    "id": "ann-density-theorem",
+    "proofId": "bertrands-postulate-oq-03-oq-04-oq-03",
+    "range": {
+      "startLine": 136,
+      "endLine": 182
+    },
+    "type": "insight",
+    "title": "Interval Density via Linear Combination of PNT Estimates",
+    "content": "The main theorem `pnt_density_long_interval` implements the algebraic identity: scale pnt_at_scaled_point by (1+c)/c and subtract PNT scaled by 1/c. The key calculation is (1+c)/c × 1 - 1/c × 1 = 1 (done by `rw [show ...]` with `field_simp; ring`). The `congr'` step then verifies that (1+c)/c × [π((1+c)x)·logx/((1+c)x)] - 1/c × [π(x)·logx/x] equals the goal expression (π((1+c)x) - π(x))·logx/(cx) via `field_simp; ring`. This is a clean application of Mathlib's `Tendsto.const_mul` and `Tendsto.sub` combinators.",
+    "mathContext": "$\\frac{(\\pi((1+c)x) - \\pi(x)) \\log x}{cx} = \\frac{1+c}{c} \\cdot \\underbrace{\\frac{\\pi((1+c)x) \\log x}{(1+c)x}}_{\\to 1} - \\frac{1}{c} \\cdot \\underbrace{\\frac{\\pi(x) \\log x}{x}}_{\\to 1} \\to \\frac{1+c}{c} - \\frac{1}{c} = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tendsto.const_mul",
+      "Tendsto.sub",
+      "algebraic decomposition",
+      "prime gap density"
+    ],
+    "prerequisites": [
+      "pnt_at_scaled_point",
+      "primeNumberTheorem",
+      "filter limit arithmetic"
+    ]
+  },
+  {
+    "id": "ann-gap-summary",
+    "proofId": "bertrands-postulate-oq-03-oq-04-oq-03",
+    "range": {
+      "startLine": 188,
+      "endLine": 213
+    },
+    "type": "insight",
+    "title": "The Long/Short Interval Density Gap",
+    "content": "The theorem `pnt_density_gap_summary` is a structural summary packaging both what is proved and what is open. Part (1) uses `pnt_density_long_interval` to confirm the h = cx case is unconditionally proved. Part (2) references the conditional theorem from OQ-04: if `ShortIntervalPNT θ` holds (an open conjecture for θ < 1/2, RH-conditional for θ ∈ (1/2,1)), then primes exist in every interval (x, x + x^θ]. This explicit conjunction of proved and open parts is pedagogically important — it makes the boundary of current knowledge precise.",
+    "mathContext": "Proved: $\\pi((1+c)x) - \\pi(x) \\sim cx/\\log x$ for fixed $c > 0$. Open: for $h = x^\\theta$, $\\theta < 1$, density $\\sim x^\\theta/\\log x$ requires `ShortIntervalPNT θ` (unknown for $\\theta < 1/2$, RH-conditional for $\\theta \\in (1/2, 1)$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "ShortIntervalPNT",
+      "short interval prime conjecture",
+      "Riemann Hypothesis",
+      "prime gap bounds"
+    ],
+    "prerequisites": [
+      "BertrandsPostulateOQ03OQ04.ShortIntervalPNT",
+      "pnt_density_long_interval",
+      "open problems in analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-preamble-imports",
+    "proofId": "bertrands-postulate-oq-03-oq-04-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 9
+    },
+    "type": "concept",
+    "title": "Import Chain: Dependency Architecture",
+    "content": "The import chain reveals the proof's dependency architecture: `Proofs.PrimeNumberTheorem` carries the single PNT axiom (`primeNumberTheorem : Tendsto (fun x => primePi x * log x / x) atTop (nhds 1)`); `Proofs.BertrandsPostulateOQ03` provides the Krylov-type combinatorial structure; `Proofs.BertrandsPostulateOQ03OQ04` provides `long_interval_density_from_pnt` and the `ShortIntervalPNT θ` typeclass. The Mathlib imports provide the filter analysis infrastructure: `Filter.Tendsto`, `Tendsto.mul/sub/const_mul/comp`, and the specific limits `tendsto_const_nhds.div_atTop` and `Real.tendsto_log_atTop`. Crucially, `open PrimeNumberTheorem (primePi primeApprox primeNumberTheorem)` exposes the PNT theorem by name, making the proof terms readable without namespace prefixes.",
+    "mathContext": "The single external hypothesis is `primeNumberTheorem : \\lim_{x \\to \\infty} \\pi(x) \\log(x) / x = 1$, imported from `Proofs.PrimeNumberTheorem`. All filter combinators (`Tendsto.mul`, `Tendsto.const_mul`, `Tendsto.sub`, `Tendsto.comp`) come from Mathlib's `Filter.Basic`. The log-specific tools (`tendsto_log_atTop`, `log_mul`, `log_pos`) come from `SpecialFunctions.Log.Basic`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "PrimeNumberTheorem axiom",
+      "filter analysis infrastructure",
+      "Lean 4 import resolution",
+      "open namespace"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Proofs.PrimeNumberTheorem structure",
+      "Mathlib filter algebra"
+    ]
+  }
+]

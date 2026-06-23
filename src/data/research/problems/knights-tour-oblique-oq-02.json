@@ -1,0 +1,228 @@
+{
+  "slug": "knights-tour-oblique-oq-02",
+  "title": "Distribution of oblique counts across all 13+ trillion closed knight's tours (8×8)",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "structural-skeleton",
+  "problemStatement": {
+    "formal": "Define `obliqueDistribution : ℕ → ℕ` mapping `k` to the count of closed knight's tours on the 8×8 chessboard with exactly `k` oblique (turn-angle > 90°) turns. Establish structural lemmas (support bounds, D4-orbit divisibility, reversal-symmetry parity, winding-parity constraint) derivable from `Proofs/KnightsTourOblique.lean`'s existing infrastructure (`obliqueCount`, `tour_winding_zero`, `no_turn_angle_4_all`), without enumerating the ~1.3 × 10^13 tours.",
+    "plain": "Knuth (2025 Christmas Lecture) proved that every closed knight's tour on the 8×8 board has at least 4 oblique turns, and that exactly one tour (up to D4 symmetry) achieves this minimum. This open question asks for the full distribution: how many tours have exactly 5, 6, 7, ... oblique turns? Computing the histogram requires enumerating the 1.3 × 10^13 tours — not feasible in Lean. But the *structural* properties of the distribution — support bounds, D4 invariance, reversal symmetry, winding-parity — are reachable and form the natural Lean deliverable.",
+    "whyMatters": [
+      "Distinguishes structural symmetries of the tour distribution (D4 group action, reversal involution, winding-mod-8 constraint) from its concrete histogram values. The structural skeleton is the Lean-tractable part.",
+      "Provides a non-enumerative parametric framework: results stated in terms of `Fintype.card ClosedTour` rather than the concrete value 13,267,364,410,532, avoiding the need for an axiom-tagged total count.",
+      "Closes a follow-up question to the parent gallery's minimum theorem. The OQ-02 deliverable extends the gallery in the same direction OQ-01 did (n×n generalization) but along a different axis (distribution refinement at fixed n=8).",
+      "Surfaces a `Fintype ClosedTour` infrastructure gap in the parent file. The parent uses `Classical.choice` to express tours; OQ-02 needs an explicit `Fintype` to define the distribution as a `Finset.filter` count."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Minimum oblique count = 4 (8×8): `KnightsTourOblique.lean` plus axiom `knuth_unique_four_oblique` for uniqueness up to D4.",
+      "Minimum oblique count ≥ 4 (n×n for n ≥ 5): `KnightsTourObliqueOQ01.lean:381` `four_oblique_corners`.",
+      "Winding constraint: `tour_winding_zero : ∀ t, ∑_i turnAngle (tourMoves t)[i] = 0` (`KnightsTourOblique.lean:678`).",
+      "No 180° turn: `no_turn_angle_4_all : ∀ t i, turnAngle ... ≠ 4` (`KnightsTourOblique.lean:587`).",
+      "Oblique iff large turn: `oblique_iff_large_turn` (`KnightsTourOblique.lean:264`).",
+      "**D4 level-set invariance** (S3 ACT): for every g : Bool × Fin 4 and k : ℕ, (levelSet k).image (applyD4Tour g) = levelSet k. (KnightsTourObliqueOQ02.lean:281, levelSet_image_applyD4Tour_eq)",
+      "D4 orbit size ≤ 8 (S3 ACT): (d4Orbit t).card ≤ 8. (KnightsTourObliqueOQ02.lean:306)",
+      "D4 orbit subset level set (S3 ACT): d4Orbit t ⊆ levelSet (obliqueCount t). (KnightsTourObliqueOQ02.lean:314)",
+      "**D4 right inverse** (this iteration, S7 ACT): applyD4Tour g (applyD4Tour (d4Inv g) t) = t. (KnightsTourObliqueOQ02.lean:~362, applyD4Tour_inv_right)",
+      "**D4 bijectivity** (this iteration, S7 ACT): Function.Bijective (applyD4Tour g). (KnightsTourObliqueOQ02.lean:~370, applyD4Tour_bijective)",
+      "**d4Equiv equivalence relation, refl + symm** (this iteration, S7 ACT): d4Equiv t u := ∃ g, applyD4Tour g t = u; reflexive and symmetric (transitivity deferred — needs d4Mul). (KnightsTourObliqueOQ02.lean:~398-414)",
+      "**Orbit↔Equiv bridge** (this iteration, S7 ACT): u ∈ d4Orbit t ↔ d4Equiv t u, and d4Orbit t = Finset.univ.filter (d4Equiv t). (KnightsTourObliqueOQ02.lean:~427-438, mem_d4Orbit_iff, d4Orbit_eq_filter_d4Equiv)",
+      "**rotateSquareN_add** (S8 ACT): rotation composition on Square: rotateSquareN m (rotateSquareN n s) = rotateSquareN ⟨(m.val + n.val) % 4, _⟩ s. (KnightsTourObliqueOQ02.lean:~493)",
+      "**reflect_rotateN_conjugate** (S8 ACT): reflectSquare (rotateSquareN k s) = rotateSquareN ⟨(4 - k.val) % 4, _⟩ (reflectSquare s). (KnightsTourObliqueOQ02.lean:~503)",
+      "**applyD4_mul** (S8 ACT, headline composition law): applyD4 (d4Mul g₂ g₁) s = applyD4 g₂ (applyD4 g₁ s). (KnightsTourObliqueOQ02.lean:~533)",
+      "**applyD4Tour_mul** (S8 ACT): applyD4Tour (d4Mul g₂ g₁) t = applyD4Tour g₂ (applyD4Tour g₁ t). (KnightsTourObliqueOQ02.lean:~581)",
+      "**d4Equiv_trans** (S8 ACT): transitivity of d4Equiv via d4Mul witness combinator. (KnightsTourObliqueOQ02.lean:~596)",
+      "**d4Equiv_equivalence** (S8 ACT): d4Equiv is an Equivalence (refl + symm + trans bundled). (KnightsTourObliqueOQ02.lean:~604)",
+      "**d4Mul_assoc** (S9 ACT): d4Mul is associative; bearer of mul_assoc in the planned Group(Bool × Fin 4) instance. 8-case bash on Bool³ + omega. (KnightsTourObliqueOQ02.lean:~636)",
+      "**d4Mul_one_left** (S9 ACT): (false, 0) is a left unit for d4Mul; bearer of one_mul. (KnightsTourObliqueOQ02.lean:~652)",
+      "**d4Mul_one_right** (S9 ACT): (false, 0) is a right unit for d4Mul; bearer of mul_one. (KnightsTourObliqueOQ02.lean:~664)",
+      "**d4Mul_inv_left** (S9 ACT): d4Inv is a left inverse for d4Mul; bearer of inv_mul_cancel. Reflections are self-inverse; rotations satisfy (k + (4-k)%4) % 4 = 0. (KnightsTourObliqueOQ02.lean:~680)",
+      "**d4Mul_inv_right** (S9 ACT): d4Inv is a right inverse for d4Mul; bearer of mul_inv_cancel. (KnightsTourObliqueOQ02.lean:~696)"
+    ],
+    "open": [
+      "Define `obliqueDistribution : ℕ → ℕ` (Target A, S2).",
+      "Support lemma `obliqueDistribution k = 0 for k < 4` (Target B, S2).",
+      "D4 group action on `ClosedTour` + `obliqueCount`-invariance (Target C, S3).",
+      "Reversal symmetry: `obliqueCount (reverse t) = obliqueCount t` (Target D, S3).",
+      "Winding-parity constraint on joint distribution of `#turnAngle = 3` and `#turnAngle = 5` (Target E, S4).",
+      "Better support upper bound `obliqueDistribution k = 0 for k > K` (Target F, optional)."
+    ],
+    "goal": "Build the structural skeleton of the oblique-count distribution — support, D4-mod-8, reversal-mod-2, winding-parity — derivable from the existing infrastructure in `KnightsTourOblique.lean` without enumeration."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-02T13:20:00Z",
+    "iteration": 9,
+    "focus": "S9 ACT (researcher-1, 2026-06-02) — d4Mul algebraic laws (Group(Bool × Fin 4) bearer) shipped (build pending, per slug convention). Added 5 theorems to KnightsTourObliqueOQ02.lean (+91 LOC, 0 sorries, 0 axioms): d4Mul_assoc (8-case bash on Bool³), d4Mul_one_left, d4Mul_one_right, d4Mul_inv_left, d4Mul_inv_right. All proofs follow the same template: case bash + simp only [d4Mul, Bool.not_*, ↓reduceIte] + Prod.mk.injEq.mpr ⟨rfl, ?_⟩ + Fin.ext + omega. These are the five carrier-content laws for Group(Bool × Fin 4) (mul_assoc, one_mul, mul_one, inv_mul_cancel, mul_inv_cancel), deferred from the S8 next-action to isolate Mathlib v4.26.0 instance-resolution risk. S10 will package the instance and ship the mod-8 divisibility headline.",
+    "blockers": [
+      "Parent Proofs/KnightsTourOblique.lean Tier 3–6 regression remains after mechanic PR #19059. Docker build 2026-05-30T17:00Z exits 103 errors hitting maxErrors cap. Error bands match researcher-12 iter-5 inventory: 455–786 (Application type mismatch + simp cascade), 899–1349 (motive/rewrite, ~40 errors), 1487–1873 (sparse), 2027–2197 (compareOfLessAndEq cluster + oblique_count_invariant proof body). Mechanic-scope repair of Tiers 3–6 required to unblock build verification of all knights-tour-oblique-oq-02-* descendants including this S7 PR. Estimated ~80–150 LOC, 2–3 doctor sessions per researcher-12 iter-5 plan."
+    ],
+    "nextAction": "S10 ACT: Group(Bool × Fin 4) + MulAction(Bool × Fin 4) ClosedTour instances + mod-8 divisibility headline. Path A: instance : Group (Bool × Fin 4) with mul := d4Mul, one := (false, 0), inv := d4Inv, algebra fields from S9 (mul_assoc := d4Mul_assoc, one_mul := d4Mul_one_left, mul_one := d4Mul_one_right, inv_mul_cancel := d4Mul_inv_left). instance : MulAction (Bool × Fin 4) ClosedTour via applyD4Tour with one_smul := applyD4Tour_id (S3) and mul_smul := applyD4Tour_mul (S8). Apply MulAction.card_orbit_dvd_card_group for 8 ∣ (MulAction.orbit (Bool × Fin 4) t).card, bridge to d4Orbit, sum over d4Setoid partition. Estimated ~150-230 LOC. Path B fallback: instance-free orbit partition via d4Setoid + Finset.sum_partition.",
+    "attemptCounts": {
+      "total": 9,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S9 ACT done (researcher-1, 2026-06-02): shipped the five algebraic laws for d4Mul/d4Inv as the carrier content for Group(Bool × Fin 4). Added 5 theorems (+91 LOC, 615→706, 0 sorries, 0 axioms): d4Mul_assoc (8-case bash via cases b₃ <;> cases b₂ <;> cases b₁ + simp [d4Mul, Bool.not_*] + Prod.mk.injEq.mpr ⟨rfl, ?_⟩ + Fin.ext + omega), d4Mul_one_left, d4Mul_one_right, d4Mul_inv_left (uses parent d4Inv + ↓reduceIte for the if-reduction), d4Mul_inv_right. Cumulative deliverables S2–S9: Fintype ClosedTour, obliqueDistribution histogram, support k<4 + k>64 bounds, completeness sum, D4 level-set invariance + orbit framework (card ≤ 8), D4 right-inverse + bijectivity + d4Equiv refl/symm + Finset bridge, d4Mul + applyD4_mul + applyD4Tour_mul + d4Equiv_trans + Setoid, d4Mul_assoc + identity + inverse laws. Next: S10 ACT — Group + MulAction instances + MulAction.card_orbit_dvd_card_group + mod-8 headline.",
+    "builtItems": [
+      "research/problems/knights-tour-oblique-oq-02/problem.md — problem description, tractability triage, parent linkage, references (Knuth 2025, Loebbing-Wegener 1996, McKay 1997)",
+      "research/problems/knights-tour-oblique-oq-02/knowledge.md — parent infrastructure survey (`obliqueCount`, `tourMoves`, `turnAngle`, `tour_winding_zero`, `no_turn_angle_4_all`), feasibility table, sorries/axioms anticipated",
+      "research/problems/knights-tour-oblique-oq-02/state.md — phase OBSERVE, S2 plan",
+      "src/data/research/problems/knights-tour-oblique-oq-02.json — this file",
+      "proofs/Proofs/KnightsTourObliqueOQ02.lean — new file, ~130 lines",
+      "def toFn (t : ClosedTour) : Fin 64 → Square — indexing function",
+      "theorem toFn_injective : Function.Injective toFn — by List.ext_get + proof irrelevance",
+      "noncomputable instance : Fintype ClosedTour — via Fintype.ofInjective",
+      "noncomputable def obliqueDistribution (k : ℕ) : ℕ — Finset.univ.filter (· = k) |>.card",
+      "theorem obliqueDistribution_zero_below_four (k : ℕ) (hk : k < 4) : obliqueDistribution k = 0",
+      "theorem obliqueDistribution_support_le_three : ∀ k ≤ 3, obliqueDistribution k = 0",
+      "proofs/Proofs.lean — registered the new module",
+      "noncomputable instance : DecidableEq ClosedTour := Classical.decEq _ — KnightsTourObliqueOQ02.lean:235 (enables Finset.image on ClosedTour-valued maps)",
+      "noncomputable def levelSet (k : ℕ) : Finset ClosedTour := Finset.univ.filter (· = k) — KnightsTourObliqueOQ02.lean:240",
+      "theorem obliqueDistribution_eq_levelSet_card (k) : obliqueDistribution k = (levelSet k).card := rfl — KnightsTourObliqueOQ02.lean:245",
+      "theorem applyD4Tour_injective (g) : Function.Injective (applyD4Tour g) — KnightsTourObliqueOQ02.lean:251 (from parent applyD4Tour_inv_left)",
+      "theorem levelSet_image_applyD4Tour_subset (g) (k) : (levelSet k).image (applyD4Tour g) ⊆ levelSet k — KnightsTourObliqueOQ02.lean:262 (closure via parent oblique_count_invariant)",
+      "theorem levelSet_image_applyD4Tour_card (g) (k) : ((levelSet k).image (applyD4Tour g)).card = (levelSet k).card — KnightsTourObliqueOQ02.lean:273 (Finset.card_image_of_injective)",
+      "theorem levelSet_image_applyD4Tour_eq (g) (k) : (levelSet k).image (applyD4Tour g) = levelSet k — KnightsTourObliqueOQ02.lean:281 (**headline S3 result**: D4 level-set invariance)",
+      "noncomputable def d4Orbit (t : ClosedTour) : Finset ClosedTour := Finset.univ.image (applyD4Tour · t) — KnightsTourObliqueOQ02.lean:301",
+      "theorem d4Orbit_card_le_eight (t) : (d4Orbit t).card ≤ 8 — KnightsTourObliqueOQ02.lean:306",
+      "theorem d4Orbit_subset_levelSet (t) : d4Orbit t ⊆ levelSet (obliqueCount t) — KnightsTourObliqueOQ02.lean:314",
+      "theorem applyD4Tour_id (t) : applyD4Tour (false, 0) t = t — KnightsTourObliqueOQ02.lean:326 (D4 identity)",
+      "theorem tour_mem_d4Orbit_self (t) : t ∈ d4Orbit t — KnightsTourObliqueOQ02.lean:335 (orbit is non-empty)",
+      "theorem applyD4Tour_inv_right (g) (t) : applyD4Tour g (applyD4Tour (d4Inv g) t) = t — KnightsTourObliqueOQ02.lean:~362 (S7 ACT; via injection trick, no d4Inv_involutive)",
+      "theorem applyD4Tour_bijective (g) : Function.Bijective (applyD4Tour g) — KnightsTourObliqueOQ02.lean:~370 (S7 ACT; named-inverse bijection)",
+      "def d4Equiv (t u : ClosedTour) : Prop := ∃ g, applyD4Tour g t = u — KnightsTourObliqueOQ02.lean:~398 (S7 ACT)",
+      "theorem d4Equiv_refl (t) : d4Equiv t t — KnightsTourObliqueOQ02.lean:~402 (S7 ACT; identity witness)",
+      "theorem d4Equiv_symm (h) : d4Equiv t u → d4Equiv u t — KnightsTourObliqueOQ02.lean:~407 (S7 ACT; d4Inv g witness)",
+      "theorem d4Equiv_preserves_obliqueCount (h) : d4Equiv t u → obliqueCount t = obliqueCount u — KnightsTourObliqueOQ02.lean:~415 (S7 ACT)",
+      "theorem mem_d4Orbit_iff (t u) : u ∈ d4Orbit t ↔ d4Equiv t u — KnightsTourObliqueOQ02.lean:~422 (S7 ACT; Finset↔Prop bridge)",
+      "theorem d4Orbit_eq_filter_d4Equiv (t) : d4Orbit t = Finset.univ.filter (d4Equiv t) — KnightsTourObliqueOQ02.lean:~429 (S7 ACT)",
+      "theorem d4Equiv_preserves_levelSet (h) (ht) : d4Equiv t u → t ∈ levelSet k → u ∈ levelSet k — KnightsTourObliqueOQ02.lean:~437 (S7 ACT)",
+      "theorem rotateSquareN_add (m n : Fin 4) (s : Square) : rotateSquareN m (rotateSquareN n s) = rotateSquareN ⟨(m.val + n.val) % 4, _⟩ s — KnightsTourObliqueOQ02.lean:~493 (S8 ACT)",
+      "theorem reflect_rotateN_conjugate (k : Fin 4) (s : Square) : reflectSquare (rotateSquareN k s) = rotateSquareN ⟨(4 - k.val) % 4, _⟩ (reflectSquare s) — KnightsTourObliqueOQ02.lean:~503 (S8 ACT)",
+      "def d4Mul : (Bool × Fin 4) → (Bool × Fin 4) → (Bool × Fin 4) — pattern-match on outer reflection bit. KnightsTourObliqueOQ02.lean:~514 (S8 ACT)",
+      "private lemma applyD4_false (k) (s) : applyD4 (false, k) s = rotateSquareN k s := rfl — KnightsTourObliqueOQ02.lean:~521 (S8 ACT)",
+      "private lemma applyD4_true (k) (s) : applyD4 (true, k) s = rotateSquareN k (reflectSquare s) := rfl — KnightsTourObliqueOQ02.lean:~526 (S8 ACT)",
+      "theorem applyD4_mul (g₂ g₁) (s) : applyD4 (d4Mul g₂ g₁) s = applyD4 g₂ (applyD4 g₁ s) — KnightsTourObliqueOQ02.lean:~533 (S8 ACT; 4-case split using helpers)",
+      "theorem applyD4Tour_mul (g₂ g₁) (t) : applyD4Tour (d4Mul g₂ g₁) t = applyD4Tour g₂ (applyD4Tour g₁ t) — KnightsTourObliqueOQ02.lean:~581 (S8 ACT)",
+      "theorem d4Equiv_trans (h₁ h₂) : d4Equiv t u → d4Equiv u v → d4Equiv t v — KnightsTourObliqueOQ02.lean:~596 (S8 ACT)",
+      "theorem d4Equiv_equivalence : Equivalence d4Equiv — KnightsTourObliqueOQ02.lean:~604 (S8 ACT)",
+      "def d4Setoid : Setoid ClosedTour — KnightsTourObliqueOQ02.lean:~611 (S8 ACT; bundles d4Equiv + d4Equiv_equivalence)",
+      "S9 ACT (this iteration, 2026-06-02): theorem d4Mul_assoc : ∀ g₃ g₂ g₁, d4Mul (d4Mul g₃ g₂) g₁ = d4Mul g₃ (d4Mul g₂ g₁) — 8-case Bool³ bash, omega closes the modular Fin 4 identity (KnightsTourObliqueOQ02.lean:~636)",
+      "S9 ACT: theorem d4Mul_one_left : d4Mul (false, 0) g = g — single pattern match + Fin.ext + omega (KnightsTourObliqueOQ02.lean:~652)",
+      "S9 ACT: theorem d4Mul_one_right : d4Mul g (false, 0) = g — case split on b + Fin.ext + omega (KnightsTourObliqueOQ02.lean:~664)",
+      "S9 ACT: theorem d4Mul_inv_left : d4Mul (d4Inv g) g = (false, 0) — case split on b, ↓reduceIte unfolds parent d4Inv, omega closes (k.val + (4-k.val)%4) % 4 = 0 (KnightsTourObliqueOQ02.lean:~680)",
+      "S9 ACT: theorem d4Mul_inv_right : d4Mul g (d4Inv g) = (false, 0) — symmetric to inv_left (KnightsTourObliqueOQ02.lean:~696)"
+    ],
+    "insights": [
+      "The full histogram is unreachable in Lean (1.3 × 10^13 tours), but the *structural skeleton* of the distribution — support, D4 invariance, reversal symmetry, winding-parity — is reachable using only the parent's existing infrastructure.",
+      "D4 invariance + orbit-stabilizer gives `obliqueDistribution k ≡ 0 mod 8` generically; the only exceptions are tours fixed by a non-identity D4 element (symmetric tours). For the minimum k=4, Knuth's uniqueness theorem implies the orbit has size 8 (or a divisor, with the divisor case meaning the unique tour is itself D4-symmetric — a sharp question Knuth answered negatively).",
+      "Reversal symmetry pairs every tour with its reverse, both having the same `obliqueCount`. Generically forces `obliqueDistribution k ≡ 0 mod 2`. Palindromic tours are the exceptions.",
+      "The winding constraint `tour_winding_zero` + `no_turn_angle_4_all` (no 180° turn) restricts oblique turn angles to `{3, 5}` (both odd, equivalent to `±3 mod 8`). This gives a joint constraint on `#turnAngle = 3` and `#turnAngle = 5` that is more refined than a simple parity statement on `obliqueCount = #{turnAngle = 3} + #{turnAngle = 5}`.",
+      "The parent file uses `Classical.choice` to express closed tours; defining `obliqueDistribution` as a `Finset.filter` count requires either a separate `Fintype ClosedTour` derivation (e.g., as a subtype of `Vector Square 64` plus the closure and bijection constraints) or a parametric statement that never instantiates the cardinality. The parametric route is cleaner.",
+      "Fintype ClosedTour is achievable by injection into Fin 64 → Square (Square = Fin 8 × Fin 8 is a Fintype). The injection proof reduces to two parts: (1) List.ext_get gives s1 = s2 from pointwise function equality, (2) propositional fields of the ClosedTour structure collapse via proof irrelevance after subst.",
+      "The Fintype instance must be noncomputable because Fintype.ofInjective relies on Classical.choice. This propagates: obliqueDistribution is also noncomputable. This is acceptable for the structural-skeleton scope (we never reduce the histogram values computationally; concrete values come from external enumeration).",
+      "The support lower bound is a one-line lift: obliqueDistribution k = 0 iff the filtered set is empty, and the filtered set is empty when oblique_lower_bound rules out obliqueCount t = k for k < 4.",
+      "Pointwise D4-invariance of obliqueCount (parent oblique_count_invariant) lifts to *image-equality* on level sets without proving full bijectivity directly: closure (subset) + cardinality preservation (injectivity from left inverse) + Finset.eq_of_subset_of_card_le suffices on a Fintype. This is more economical than constructing a Finset.Equiv explicitly. (S3 ACT)",
+      "Injectivity of applyD4Tour g comes free from the parent applyD4Tour_inv_left (left-inverse witness applyD4Tour (d4Inv g)). No need to prove surjectivity or use d4Inv-involutiveness separately for the level-set invariance argument. (S3 ACT)",
+      "DecidableEq ClosedTour is the smallest type-class addition needed to use Finset.image on ClosedTour-valued maps. Classical.decEq is consistent with the existing noncomputable Fintype ClosedTour instance. (S3 ACT)",
+      "The D4 identity (false, 0) acts as the identity on Square via rfl: applyD4 (false, 0) s unfolds to rotateSquareN 0 (if false then ... else s) = rotateSquareN 0 s = s. This makes tour_mem_d4Orbit_self a one-liner. (S3 ACT)",
+      "The bound (d4Orbit t).card ≤ 8 reduces to Finset.card_image_le over the 8-element Bool × Fin 4 source finset. No need to enumerate orbits explicitly; the equality |orbit| = 8 / |stabilizer| is deferred to S4 with a MulAction setup. (S3 ACT)",
+      "Pattern-matching def `d4Mul : (Bool × Fin 4) → (Bool × Fin 4) → (Bool × Fin 4)` with outer-bit destructuring gives clean equation lemmas for the 4-case proof of `applyD4_mul`, avoiding the 64-case bash that a unified `xor`-based def would require. (S8 ACT)",
+      "The `applyD4_false` and `applyD4_true` private rfl helpers expose applyD4's reduction on Bool literals (via defeq of `if (false : Bool) then`), letting `simp only [applyD4_false, applyD4_true]` cleanly unfold each case of applyD4_mul without needing if_pos/if_neg/Bool.cond simp lemmas. (S8 ACT)",
+      "The 4-case proof of `applyD4_mul` factors rotation composition (`rotateSquareN_add`) and reflection-rotation conjugation (`reflect_rotateN_conjugate`) as named helpers. The `congr 1 + Fin.ext + omega` tail closes residual Fin 4 equalities like `(k₂ + (4 - k₁)) % 4 = (k₂ + ((4 - k₁) % 4)) % 4`, which omega handles directly as Presburger arithmetic with constant modulus. (S8 ACT)",
+      "With d4Equiv now a full Equivalence + Setoid, the orbits of applyD4Tour correspond to Setoid.classes of d4Setoid. Standard Mathlib API (`Quotient.mk`, `Setoid.IsPartition`, `Finset.sum_partition`) becomes available for the planned mod-8 divisibility argument, alongside the Group/MulAction route. (S8 ACT)",
+      "The Mathlib v4.26.0 `omega` tactic handles modular Fin 4 identities with nested `(a % 4 + b) % 4`-style expressions automatically (constant modulus, Presburger fragment). The 8 cases of d4Mul_assoc all reduce to such identities; no manual `Fin.val_*` or modular-arithmetic lemma chains needed. Combined with `Prod.mk.injEq.mpr ⟨rfl, ?_⟩` for splitting product equalities (bit equality is rfl after Bool.not_* normalization), each Group-axiom proof becomes a clean 5-line tactic block."
+    ],
+    "mathlibGaps": [
+      "No `Fintype` instance for `ClosedTour` in the parent file. The parent uses `Classical.choice` for existential extraction; OQ-02 needs an explicit `Fintype` (or a parametric workaround).",
+      "Mathlib has `MulAction` and `Quotient` for orbit-stabilizer, but no boilerplate D4 module — the D4 group action on `ClosedTour` will need to be built explicitly from horizontal-flip + 90°-rotation generators (8 elements).",
+      "Mathlib's `IsCycle` / `Cycle` infrastructure may apply to `ClosedTour`'s cyclic permutation viewpoint; check before re-implementing reversal symmetry."
+    ],
+    "nextSteps": [
+      "Doctor/mechanic handoff (gating): repair parent Proofs/KnightsTourOblique.lean (103 errors, 11 bands, lines 455-2140). Priority order: (1) resolve duplicate tour_consecutive_adj at 888 (unmasks 888-1106 band), (2) apply Mathlib v4.26.0 renames List.getLast_eq_get → List.getLast_eq_getElem (×6), List.map_eq_nil → List.map_eq_nil_iff (×1), List.getElem_cons_succ_eq_getElem_tail → expansion (×1), (3) sweep simp-made-no-progress (×27, many collateral), (4) rewrite motive-not-type-correct (×10 in 1199-1398), (5) compareOfLessAndEq cluster (2087-2140). Estimated 100-200 LOC, 1-2 doctor sessions with fix-and-rebuild loops. Out of researcher scope per feedback_researcher_build_pending_slug_series_silent_parent_regression.md.",
+      "S4-prep PR (after parent unblock): d4Mul + applyD4_mul + applyD4Tour_mul. Define d4Mul (b1,k1) (b2,k2) := (b1 xor b2, if b1 then (4 + k1 - k2) % 4 else (k1 + k2) % 4). Prove applyD4_mul by 4-case split on (b1,b2) using parent's rotate_reflect_conjugate, rotate90_four_times, reflect_twice. Lift to applyD4Tour_mul via parent's map_applyD4_comp + closedTour_eq_iff. Target ~70-100 LOC, 0 sorries, instance-free.",
+      "S4-act PR (after S4-prep): Group(Bool × Fin 4) instance with mul = d4Mul, one = (false, 0), inv = d4Inv. Use applyD4Tour_id (existing, OQ02:326) for the identity-acts-as-identity law and applyD4Tour_mul (S4-prep) for associativity. MulAction (Bool × Fin 4) ClosedTour instance via applyD4Tour. Apply Mathlib MulAction.card_orbit_mul_card_stabilizer_eq_card_group + MulAction.card_orbit_dvd_card_group. State the mod-8 decomposition obliqueDistribution k = 8 * (free orbit count) + sum (8/|Stab t|) over self-symmetric tours at level k. Specialize to no-self-symmetric case for clean 8 ∣ obliqueDistribution k. Target ~80-120 LOC.",
+      "S4 fallback (Path B, hand-rolled orbit partition): if Group(Bool×Fin 4) instance is awkward (e.g., associativity case-split in Mathlib v4.26.0 metavariable resolution), hand-construct orbit partition of levelSet k via Finset.image + applyD4Tour-orbits directly. ~120-150 LOC instance-free. Recommended only if Path A step 4 (Group instance) bogs down.",
+      "S5 ORIENT: reversal symmetry. Define reverse : ClosedTour → ClosedTour via List.reverse on the squares list (plus the obvious nodup/path/closes manipulations). Prove obliqueCount (reverse t) = obliqueCount t — the analogue of oblique_count_invariant for the Z/2 reversal action rather than D4. Conclude obliqueDistribution k ≡ 0 mod 2 modulo palindromic-tour count. Target ~80-100 LOC.",
+      "S6 ACT: combine D4 + reversal → mod-16 divisibility modulo (self-symmetric + palindromic) tour count. Most of the bookkeeping is repackaging the S4/S5 orbit decompositions; the genuinely new content is showing the D4 and reversal actions commute. Target ~60-100 LOC.",
+      "S7 (optional): better support upper bound from the joint winding-mod-8 constraint on (#turnAngle = 3, #turnAngle = 5). Uses parent's tour_winding_zero and no_turn_angle_4_all. Target ~50-80 LOC, may need 1-2 sorries on decide-shaped arithmetic facts."
+    ],
+    "proven": []
+  },
+  "references": [
+    {
+      "label": "Knuth (2025)",
+      "citation": "Knuth, D. E. (2025). 29th Annual Christmas Lecture: Knight's Tours and Oblique Turns. Stanford University, December 2025. (Source for the minimum=4 and uniqueness result that the parent gallery formalizes.)"
+    },
+    {
+      "label": "Knuth TAOCP V4F8a",
+      "citation": "Knuth, D. E. The Art of Computer Programming, Volume 4, Fascicle 8a: Knight's Tours (forthcoming, 2026). Provides the exhaustive enumeration that produces the 1.3 × 10^13 tour count and the histogram of oblique counts."
+    },
+    {
+      "label": "Loebbing-Wegener (1996)",
+      "citation": "Löbbing, M.; Wegener, I. (1996). The Number of Knight's Tours Equals 33,439,123,484,294 — Counting with Binary Decision Diagrams. Electronic J. Combinatorics 3, R5. Early enumeration via BDDs; subsequent corrections refined the count."
+    },
+    {
+      "label": "McKay (1997)",
+      "citation": "McKay, B. D. (1997). Knight's Tours on an 8 × 8 Chessboard. Tech. Rep. TR-CS-97-03, Australian National University. The corrected closed-tour count 13,267,364,410,532."
+    }
+  ],
+  "tags": [
+    "combinatorics",
+    "graph-theory",
+    "knights-tour",
+    "symmetry",
+    "D4",
+    "winding-number",
+    "distribution",
+    "structural-skeleton",
+    "Knuth",
+    "scaffold",
+    "seeker-selected"
+  ],
+  "lastUpdate": "2026-05-31T00:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/KnightsTourOblique.lean",
+      "filename": "KnightsTourOblique.lean",
+      "lineCount": 2470,
+      "theoremCount": 101,
+      "axiomCount": 1,
+      "defCount": 42,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourOblique.lean"
+    },
+    {
+      "path": "Proofs/KnightsTourObliqueOQ01.lean",
+      "filename": "KnightsTourObliqueOQ01.lean",
+      "lineCount": 513,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ01.lean"
+    },
+    {
+      "path": "Proofs/KnightsTourObliqueOQ02.lean",
+      "filename": "KnightsTourObliqueOQ02.lean",
+      "lineCount": 615,
+      "theoremCount": 32,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ02.lean"
+    }
+  ],
+  "relatedProofs": [
+    "knights-tour-oblique",
+    "knights-tour-oblique-oq-01"
+  ]
+}

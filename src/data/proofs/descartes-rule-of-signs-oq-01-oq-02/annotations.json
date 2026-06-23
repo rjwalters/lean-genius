@@ -1,0 +1,221 @@
+[
+  {
+    "id": "ann-dr-oq01-oq02-header",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 57
+    },
+    "type": "insight",
+    "title": "Header: Minimal Infrastructure for Descartes Parity — Both Ingredients Needed",
+    "content": "The module addresses a targeted open question: what is the minimal infrastructure for Descartes' parity result (sv ≡ pos_roots mod 2)? The answer, fully justified in the proof architecture, is that both conjugate pairing AND sign variation parity under root extraction are needed — neither alone suffices.\n\nThe 4 imports: `RuleOfSigns` (the main Descartes theorem), `Roots` (polynomial root theory), `Div` (polynomial division for factoring), `IsAlgClosed.Basic` (FTA for complex roots). The `set_option maxHeartbeats 400000` raises the default timeout for the harder proofs.\n\nThe proof architecture (induction on degree): at each step, factor p = (x - r₁) · q and apply IH to q. The case split is on whether r₁ is positive, negative, or a complex conjugate pair. The sign variation change under each root type (mod 2) then drives the parity count.",
+    "mathContext": "The three root types and their parity contributions to sign variations:\n- Positive real root (r > 0): sv(p) ≡ sv(q) + 1 (mod 2) — changes parity (axiomatized)\n- Negative real root (r < 0): sv(p) ≡ sv(q) (mod 2) — preserves parity (via negSubst)\n- Complex pair (r, r̄): sv(p) ≡ sv(q) (mod 2) — preserves parity (removes 2 roots at once)\n\nStatus: 1 axiom (`sign_variation_parity_under_positive_root`), 0 sorries. The file establishes the structural framework; the hard combinatorial lemma is axiomatized.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "signVariations",
+      "conjugate pairing",
+      "parity induction",
+      "DescartesRuleOfSignsOQ01 parent",
+      "IsAlgClosed"
+    ],
+    "prerequisites": [
+      "Descartes rule of signs (OQ01)",
+      "Complex conjugate root theorem",
+      "Polynomial.signVariations from Mathlib"
+    ]
+  },
+  {
+    "id": "ann-parity-arithmetic",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": {
+      "startLine": 61,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "Parity Arithmetic Scaffolding",
+    "content": "Part I establishes elementary lemmas about even/odd arithmetic that serve as the inductive backbone. The key lemma `same_parity_iff_even_sum` states: a + b is even iff a and b have the same parity. This allows the Descartes parity result (sv ≡ pos, i.e., sv + pos is even) to be proved by assembling parities piece by piece via addition. The `same_parity_of_diff_even` lemma handles the case where two counts differ by an even amount (e.g., sv and degree differ by 2k after induction).\n\nAll proofs use `omega` or direct `Even`/`Odd` Mathlib lemmas rather than `ZMod 2` — staying in ℕ avoids coercions. The `even_add_odd` lemma is proved by contradiction via `omega_nat`: if `ha : Even a` and `hb : ¬Even b`, then `Even (a + b)` is impossible.",
+    "mathContext": "$a + b \\equiv 0 \\pmod{2}$ iff $a \\equiv b \\pmod{2}$. In Lean 4, `Even n` means `∃ k, n = 2k`, and `Nat.odd_iff_not_even.mpr` converts between `¬Even` and `Odd`. The `same_parity_of_diff_even` lemma: if $a = b + 2k$, then `Even a ↔ Even b`, proved by `rw [h]` and `Nat.even_add`. The `even_two_mul k ▸ Iff.rfl` step unfolds `Even (2 * k)` using the `even_two_mul` simp lemma.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Even in Mathlib",
+      "Nat.odd_iff_not_even",
+      "omega tactic for Nat arithmetic",
+      "parity composition lemmas"
+    ],
+    "prerequisites": [
+      "Basic Nat parity in Mathlib",
+      "Even and Odd definitions in Lean 4",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-root-decomposition",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": {
+      "startLine": 100,
+      "endLine": 113
+    },
+    "type": "insight",
+    "title": "Root Count Decomposition with Conjugate Pair Parity",
+    "content": "The two theorems `root_count_decomposition` and `degree_parity_eq_real_root_parity` formalize the role of complex conjugate pairing in the parity proof. `root_count_decomposition` says: if total = pos + neg_zero + nonreal with nonreal even, then total is even iff pos + neg_zero is even. This is the formal statement of 'non-real roots do not affect parity.' The proof is two lines of modular arithmetic via `Nat.even_add`.\n\n`degree_parity_eq_real_root_parity` is the specialization to degree ≡ real roots (mod 2), which is the direct consequence of conjugate pairing (all non-real roots paired). Both proofs follow the same pattern: rewrite by the sum decomposition, then use `Nat.even_add` with the hypothesis that nonreal is even.",
+    "mathContext": "The Fundamental Theorem of Algebra counts roots over ℂ. The complex conjugate root theorem: if $z$ is a root of $p \\in \\mathbb{R}[X]$, so is $\\bar{z}$. Thus $|\\text{non-real roots}|$ is even. Therefore $\\deg(p) = |\\text{pos}| + |\\text{neg}| + |\\text{nonreal}|$ where $|\\text{nonreal}|$ is even, giving $\\deg(p) \\equiv |\\text{pos}| + |\\text{neg}| \\pmod{2}$. This is the starting point for the parity chain.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsAlgClosed",
+      "complex conjugate root theorem",
+      "Polynomial.roots",
+      "degree-root count relation"
+    ],
+    "prerequisites": [
+      "Fundamental Theorem of Algebra in Mathlib",
+      "Complex.conj_root_of_real_coeff",
+      "Nat parity arithmetic"
+    ]
+  },
+  {
+    "id": "ann-gap-analysis",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": {
+      "startLine": 119,
+      "endLine": 148
+    },
+    "type": "insight",
+    "title": "The Gap: Why Conjugate Pairing Alone Is Insufficient",
+    "content": "Conjugate pairing gives degree ≡ real roots (mod 2), but Descartes parity needs sv ≡ positive roots (mod 2). These are different statements — the bridge requires two additional steps that cannot be derived from conjugate pairing alone:\n\n**Claim A**: sv(p) ≡ degree(p) (mod 2) — a combinatorial fact about how sign variations relate to polynomial degree, proved by analyzing each root type's contribution.\n\n**Claim B**: negative roots contribute even parity — follows from the negSubst substitution p(-x) mapping negative roots to positive roots, combined with Descartes for p(-x).\n\nOnly when Claims A and B are added to conjugate pairing does the parity result follow. The module documentation (lines 119-141) formalizes this in a commented proof sketch, making the logical dependency explicit.",
+    "mathContext": "The chain: sv(p) ≡ deg(p) (mod 2) [Claim A] ≡ real_roots (mod 2) [conjugate pairing] = pos + neg [decomposition] ≡ pos (mod 2) [neg even via Claim B]. All four steps are needed. Formally: `parity_chain` (lines 150-163) assembles them given `h_sv_deg : Even (sv + degree)`, `h_deg : degree = pos + neg + nonreal`, `h_nonreal : Even nonreal`, `h_neg : Even neg`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjugate root theorem",
+      "sign variation",
+      "proof architecture",
+      "negSubst substitution"
+    ],
+    "prerequisites": [
+      "complex conjugate pairing",
+      "sign variation definition",
+      "parity composition lemmas"
+    ]
+  },
+  {
+    "id": "ann-parity-chain",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": {
+      "startLine": 150,
+      "endLine": 163
+    },
+    "type": "insight",
+    "title": "Parity Chain Theorem: Assembling All Four Ingredients",
+    "content": "The `parity_chain` theorem is the formal assembly point: given all four hypotheses — (1) sv ≡ degree (h_sv_deg : Even (sv + degree)), (2) degree = pos + neg + nonreal (h_deg), (3) nonreal even (h_nonreal), (4) neg even (h_neg) — conclude sv + pos is even (Descartes parity).\n\nThe proof: first construct `h1 : Even (degree + pos)` by algebraic manipulation of h_deg with h_neg and h_nonreal (showing pos + neg + nonreal + pos = 2*pos + (neg + nonreal), the latter even). Then conclude by `omega`: `sv + pos = (sv + degree) + (degree + pos) - 2 * degree`, with sv + degree and degree + pos both even, so sv + pos is even.",
+    "mathContext": "$\\text{sv} + \\text{pos}$ is even given: $\\text{sv} + \\text{deg}$ even, $\\text{deg} = \\text{pos} + \\text{neg} + \\text{nonreal}$, $\\text{neg}$ and $\\text{nonreal}$ even. The `omega` step works because: $\\text{sv} + \\text{pos} = (\\text{sv} + \\text{deg}) + (\\text{deg} + \\text{pos}) - 2 \\cdot \\text{deg}$, and the two bracketed terms are even by hypothesis, while $2 \\cdot \\text{deg}$ is trivially even.",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "parity composition",
+      "proof architecture",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "parity arithmetic lemmas",
+      "root decomposition"
+    ]
+  },
+  {
+    "id": "ann-hard-axiom",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": {
+      "startLine": 169,
+      "endLine": 186
+    },
+    "type": "insight",
+    "title": "Sign Variation Parity Under Positive Root (Axiomatized)",
+    "content": "The irreducible hard lemma: when p = (x-r) · q with r > 0, the sign variations of p and q have different parity (i.e., p.signVariations + q.signVariations is odd). This captures the combinatorial fact that extracting a positive root changes the sign variation count by an odd number.\n\nWhy this is hard to formalize: proving this requires (1) a theory of coefficient sign sequences under polynomial multiplication — specifically how multiplication by (X - C r) transforms the coefficient list; (2) counting how sign changes interact with the new coefficient pattern. The standard proof uses the Intermediate Value Theorem between consecutive sign changes. These ingredients require ~200-300 lines of Mathlib API not yet available.\n\nThe docstring explicitly catalogs the missing infrastructure: coefficient sign sequence theory, effect of (X - C r) multiplication, and sign change counting. This is formalization's honest boundary.",
+    "mathContext": "$p = (x-r) \\cdot q,\\; r > 0 \\Rightarrow \\text{sv}(p) + \\text{sv}(q)$ is odd. Equivalently, sv(p) ≡ sv(q) + 1 (mod 2). For the converse root types: negative root (r < 0) gives sv(p) ≡ sv(q) (mod 2) by applying this axiom to p(-x); complex pair gives sv(p) ≡ sv(q) (mod 2) since the pair contributes a degree-2 factor with no real roots. The Mathlib module `Polynomial.RuleOfSigns` provides the top-level Descartes theorem but not this parity lemma.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial multiplication",
+      "coefficient sign sequences",
+      "Budan-Fourier theorem",
+      "Polynomial.signVariations"
+    ],
+    "prerequisites": [
+      "sign variation definition",
+      "polynomial factoring",
+      "X - C r as a linear factor"
+    ]
+  },
+  {
+    "id": "ann-linear-parity",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": {
+      "startLine": 192,
+      "endLine": 205
+    },
+    "type": "concept",
+    "title": "Linear Parity: Base Case with pos ≤ sv ≤ 1",
+    "content": "The linear parity theorem `linear_parity_trivial` handles the degree-1 base case for the Descartes induction. For a linear polynomial ax + b (a ≠ 0): pos ≤ 1, sv ≤ 1, and the Descartes property (sv - pos = 2k) is always satisfied because the only options are pos = sv (difference 0) or pos + 2 ≤ sv (but since both are ≤ 1, this forces pos = 0, sv = 1 or pos = sv = 0).\n\nThe proof uses `rcases hparity with h | h` to split the two cases, then `exact ⟨0, by omega⟩` for pos = sv and `exact ⟨1, by omega⟩` for pos + 2 ≤ sv. The `omega` handles the arithmetic in each case.",
+    "mathContext": "For $p = ax + b$ with $a \\neq 0$: the unique real root is $r = -b/a$. If $a, b$ have opposite signs, $r > 0$ (one positive root) and sv = 1; if same signs, $r \\leq 0$ and sv = 0. In both cases pos = sv, so sv - pos = 0 = 2·0. The theorem is stated abstractly (without the actual polynomial) because the connection between coefficient signs and root signs is the content of the full Descartes theorem — this provides just the parity part.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "induction base case",
+      "linear polynomial",
+      "Descartes parity",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "basic polynomial theory",
+      "linear root formula",
+      "parity arithmetic"
+    ]
+  },
+  {
+    "id": "ann-quadratic-parity",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": {
+      "startLine": 211,
+      "endLine": 223
+    },
+    "type": "concept",
+    "title": "Quadratic Parity: interval_cases Decides All 9 Combinations",
+    "content": "The quadratic parity theorem `quadratic_parity` handles the degree-2 case. For a quadratic: pos ≤ 2, sv ≤ 2, and if pos ≤ sv and sv + pos is even, then ∃ k, pos + 2k = sv.\n\nThe proof uses `interval_cases pos <;> interval_cases sv <;> simp_all <;> omega`: enumerate all (pos, sv) pairs in {0,1,2}² satisfying pos ≤ sv, check which have sv + pos even, and for those provide the witness k. The nine cases reduce to:\n- (0,0): k=0 ✓; (0,1): sv+pos=1 odd, excluded; (0,2): k=1 ✓\n- (1,1): k=0 ✓; (1,2): sv+pos=3 odd, excluded; (2,2): k=0 ✓\n\n`interval_cases` in Mathlib: given bounds `hpos : pos ≤ 2` and `pos : ℕ`, generates three cases pos = 0, 1, 2. Combined with `<;>` for parallel application, this fully automates the case analysis — 3 lines instead of ~20 manual cases.",
+    "mathContext": "The quadratic $ax^2 + bx + c$ has discriminant $\\Delta = b^2 - 4ac$: if $\\Delta > 0$, two real roots; if $\\Delta = 0$, one repeated root; if $\\Delta < 0$, no real roots (pos = 0, sv = 0 or 2). The sign variation depends on the signs of a, b, c — the theorem abstracts away these details and just asserts the existence of k. The `interval_cases` + `omega` combination is the idiomatic Lean 4 pattern for proving existential statements over small finite ranges.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval_cases tactic",
+      "quadratic polynomial",
+      "discriminant",
+      "Descartes parity",
+      "finite case analysis"
+    ],
+    "prerequisites": [
+      "interval_cases from Mathlib.Tactic",
+      "omega for arithmetic",
+      "simp_all for simplification",
+      "parity arithmetic"
+    ]
+  },
+  {
+    "id": "ann-summary-assessment",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-02",
+    "range": {
+      "startLine": 228,
+      "endLine": 270
+    },
+    "type": "insight",
+    "title": "Summary: Both Ingredients Required, Neither Alone Sufficient",
+    "content": "The summary assessment (Part VII) directly answers the open question. The three required components in order of difficulty:\n\n1. **Complex conjugate pairing** (Easy): proved elsewhere, gives non-real root count even\n2. **Negative root analysis** (Medium): negSubst p(-x) maps negative roots to positive; combined with Descartes for p(-x), gives negative root count bounded and parity follows\n3. **Sign variation parity under positive root extraction** (Hard): axiomatized — requires coefficient sign sequence theory\n\nThe conclusion: conjugate pairing alone is NOT sufficient. The full parity proof requires two structurally independent ingredients: complex-analytic (conjugate pairing) and combinatorial-algebraic (sign variation parity). The dichotomy between existence structure (pairing) and counting structure (mod 2) is the key conceptual insight of this file.",
+    "mathContext": "The negSubst connection: if $q(x) = p(-x)$, then the positive roots of $q$ are exactly the negatives of the negative roots of $p$. By Descartes for $q$: $|\\text{pos roots of } q| \\leq \\text{sv}(q)$ and $\\text{sv}(q) - |\\text{pos roots of } q| \\equiv 0 \\pmod{2}$. Since $|\\text{pos roots of } q| = |\\text{neg roots of } p|$, the parity of negative roots of $p$ follows. This is the 'medium' ingredient — uses Descartes for $q$ but not sign variation analysis for $p$ directly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "negSubst substitution",
+      "sign variation parity",
+      "conjugate pairing",
+      "complexity hierarchy",
+      "formalization assessment"
+    ],
+    "prerequisites": [
+      "Descartes rule of signs (main theorem)",
+      "complex conjugate root theorem",
+      "negSubst lemma from parent file"
+    ]
+  }
+]

@@ -1,0 +1,128 @@
+[
+  {
+    "id": "def-graph",
+    "proofId": "erdos-22",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "definition",
+    "title": "Graph Structure",
+    "content": "A simple graph represented by an adjacency relation with symmetry and no self-loops.",
+    "significance": "minor"
+  },
+  {
+    "id": "def-independent-set",
+    "proofId": "erdos-22",
+    "range": { "startLine": 63, "endLine": 64 },
+    "type": "definition",
+    "title": "Independent Set",
+    "content": "A set is independent if no two vertices in it are adjacent. The independence number α(G) is the size of the largest such set.",
+    "significance": "major"
+  },
+  {
+    "id": "def-clique-free",
+    "proofId": "erdos-22",
+    "range": { "startLine": 71, "endLine": 76 },
+    "type": "definition",
+    "title": "Clique-Free Graphs",
+    "content": "A graph contains K_k if there exist k pairwise adjacent vertices. A graph is K_k-free if it contains no such clique.",
+    "significance": "major"
+  },
+  {
+    "id": "def-ramsey-turan-number",
+    "proofId": "erdos-22",
+    "range": { "startLine": 82, "endLine": 84 },
+    "type": "definition",
+    "title": "Ramsey-Turán Number",
+    "content": "rt(n; k, ℓ) is the maximum edges in a K_k-free graph on n vertices with independence number < ℓ. This combines Ramsey-theoretic and Turán-theoretic constraints.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-turan",
+    "proofId": "erdos-22",
+    "range": { "startLine": 108, "endLine": 112 },
+    "type": "theorem",
+    "title": "Turán's Theorem",
+    "content": "The maximum edges in a K_{r+1}-free graph on n vertices is approximately (1 - 1/r) · n²/2. For K₄-free graphs this gives ~n²/3 edges.",
+    "significance": "major"
+  },
+  {
+    "id": "def-bollobas-erdos-conjecture",
+    "proofId": "erdos-22",
+    "range": { "startLine": 129, "endLine": 134 },
+    "type": "definition",
+    "title": "Bollobás-Erdős Conjecture",
+    "content": "For all ε > 0 and sufficiently large n, rt(n; 4, εn) ≥ n²/8. This asks if K₄-free graphs with sublinear independence can still have many edges.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-bollobas-erdos-1976",
+    "proofId": "erdos-22",
+    "range": { "startLine": 136, "endLine": 139 },
+    "type": "theorem",
+    "title": "Bollobás-Erdős 1976 Result",
+    "content": "Proved a weaker bound: rt(n; 4, εn) ≥ (1/8 - ε) · n² for large n. This established the conjecture asymptotically.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-fox-loh-zhao",
+    "proofId": "erdos-22",
+    "range": { "startLine": 141, "endLine": 150 },
+    "type": "theorem",
+    "title": "Fox-Loh-Zhao 2015 (Main Result)",
+    "content": "Proved the conjecture: there exist K₄-free graphs with ≥ n²/8 edges and independence number ≪ (log log n)^(3/2) / (log n)^(1/2) · n, which is much smaller than εn.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-conjecture-resolved",
+    "proofId": "erdos-22",
+    "range": { "startLine": 167, "endLine": 202 },
+    "type": "theorem",
+    "title": "Conjecture Resolution",
+    "content": "Complete formal proof that the Bollobás-Erdős conjecture follows from the Fox-Loh-Zhao construction. Uses monotonicity of rt and the sublinear independence bound.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-tightness",
+    "proofId": "erdos-22",
+    "range": { "startLine": 210, "endLine": 219 },
+    "type": "theorem",
+    "title": "Tightness of Bound",
+    "content": "The bound n²/8 is sharp: K₄-free graphs with sublinear independence cannot have significantly more than n²/8 edges.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-construction",
+    "proofId": "erdos-22",
+    "range": { "startLine": 222, "endLine": 237 },
+    "type": "insight",
+    "title": "Pseudorandom Construction",
+    "content": "Fox-Loh-Zhao use Cayley graphs over finite fields with probabilistic deletion to remove K₄'s while preserving edge density.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-density-gap",
+    "proofId": "erdos-22",
+    "range": { "startLine": 251, "endLine": 256 },
+    "type": "theorem",
+    "title": "Edge Density Gap",
+    "content": "The gap: Turán gives edge density 1/3 ≈ 0.333, while Ramsey-Turán with small independence gives 1/8 = 0.125. We lose ~62% of edges for sublinear independence.",
+    "significance": "minor"
+  },
+  {
+    "id": "def-ramsey-turan-density",
+    "proofId": "erdos-22",
+    "range": { "startLine": 276, "endLine": 290 },
+    "type": "definition",
+    "title": "Ramsey-Turán Density",
+    "content": "ρ_r = lim_{n→∞} rt(n; r, o(n)) / (n²/2). Known values: ρ₃ = 0, ρ₄ = 1/4, ρ₅ = 1/4. The density is positive iff r ≥ 4.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-why-n2-over-8",
+    "proofId": "erdos-22",
+    "range": { "startLine": 299, "endLine": 303 },
+    "type": "insight",
+    "title": "Why n²/8?",
+    "content": "n²/8 edges out of max n²/2 edges gives edge density 1/4, which equals ρ₄. This is the fundamental limit for K₄-free graphs with sublinear independence.",
+    "significance": "minor"
+  }
+]

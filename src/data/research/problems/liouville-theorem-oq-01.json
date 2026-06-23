@@ -1,0 +1,99 @@
+{
+  "slug": "liouville-theorem-oq-01",
+  "title": "liouville-theorem-oq-01",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-04T22:00:00Z",
+    "iteration": 2,
+    "focus": "S1 STATE-SYNC — JSON insights were cross-contaminated from sibling OQ-04 work; OQ-01 (effective Roth) needs fresh observation pass",
+    "blockers": [
+      "Effective Roth is a major open Diophantine approximation problem — not tractable in a single session; would require Mathlib infrastructure for explicit constants in Schmidt subspace / Roth-type bounds that does not exist."
+    ],
+    "nextAction": "Observe-phase: clarify whether OQ-01 should target a survey/documentation artifact (effective Roth statement + literature pointers) or be reclassified given its open status.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 STATE-SYNC (2026-06-04): JSON metadata reconciled with on-disk Lean files. LiouvilleTheoremOQ04.lean sorryCount corrected 4→0 (the 4 grep hits were docstring mentions, not sorry tactics). LiouvilleTheorem.lean confirmed at 1 axiom (roth_theorem, Fields-Medal depth — must remain axiom). Prior insights and progress notes in this JSON describe parent / OQ-04 work (uncountability of Liouville numbers, Baire category proof of liouville_uncountable_axiom) and do not bear on OQ-01's actual question (effective version of Roth's theorem with computable constants). No code change this session.",
+    "builtItems": [
+      "Proved liouville_uncountable_axiom in LiouvilleTheorem.lean:275-283 using Baire category theorem"
+    ],
+    "insights": [
+      "Mathlib has Liouville.transcendental but NOT the approximation theorem (lower bound |a-p/q|>=c/q^n)",
+      "The approximation theorem axiom is the hardest: needs MVT + minimal polynomial degree bound",
+      "liouville_uncountable_axiom: could be proved via cardinality arguments if Mathlib has uncountability of reals with specific density properties",
+      "roth_theorem is extremely deep (1955 Fields Medal) — not in Mathlib, should remain axiom",
+      "File already uses Mathlib well: Liouville.transcendental, liouville_liouvilleNumber, LiouvilleWith API",
+      "Proof strategy for liouville_uncountable_axiom: define liouvilleFamily(s) = Σₙ (if s(n) then 2 else 1)/10^((n+1)!) for s : ℕ→Bool, show all values are Liouville (factorial gaps give Liouville property), show injective (first differing digit dominates tail), conclude via Cardinal.cantor ℵ₀",
+      "CantorDiagonalizationOQ01.lean shows Cardinal.cantor ℵ₀ gives ℵ₀ < 2^ℵ₀, and Set.countable_range + Equiv.ofInjective can transfer countability back to domain",
+      "The main challenge is proving liouvilleFamily_isLiouville: need to show partial sums give approximations with error < 1/q^m where q = 10^((N+1)!) and N > m",
+      "Docker was unavailable for build verification — cannot write 100+ lines of unverified analysis proofs safely",
+      "Proved liouville_uncountable_axiom via Baire category: residual (comeagre) + PerfectSpace ℝ argument",
+      "Key Mathlib theorems: eventually_residual_liouville, not_isMeagre_of_mem_residual, interior_singleton, isMeagre_biUnion",
+      "Axiom count reduced from 3 to 2 (remaining: liouville_approximation_theorem_axiom, roth_theorem)",
+      "S1 STATE-SYNC (2026-06-04): the preceding insights describe parent / OQ-04 work, not OQ-01. OQ-01's actual question is 'effective Roth' — make the constant c(α,ε) in Roth's |α-p/q| > c/q^(2+ε) computable from α and ε. This is genuinely open in mathematics; partial effective bounds exist (Bombieri, Schmidt, Evertse) but only for restricted classes; no Mathlib infrastructure for it.",
+      "S1 STATE-SYNC (2026-06-04): LiouvilleTheorem.lean has 1 remaining axiom = `roth_theorem` (lines 415-416), declared as the noneffective 1955 statement. The OQ-01 follow-up would conceptually replace this axiom with an effective version `roth_theorem_effective` that, given algebraic α (with explicit minimal polynomial data) and ε > 0, produces an explicit c(α,ε). No such theorem exists in Mathlib.",
+      "S1 STATE-SYNC (2026-06-04): leanFiles[1].sorryCount in JSON was 4, but `grep -nE '^[[:space:]]*sorry[[:space:]]*$|:= sorry|:= by sorry'` returns 0 matches in LiouvilleTheoremOQ04.lean — the 4 grep hits are all docstring text (line 647 'sorry/axiom-free', 1248 'Proved (no sorry)', 1276 'Replaced `sorry`', 1278 'sorry 1 → axiom 1'). JSON updated."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "STALE (pre-2026-06-04, OQ-04 work): Prove liouville_uncountable_axiom via injection from (ℕ → Bool) — already completed in parent file LiouvilleTheorem.lean:346-354 via Baire category.",
+      "STALE (pre-2026-06-04, OQ-04 work): tail bound and injectivity arguments — superseded by Baire-category proof.",
+      "OQ-01 next steps (post-2026-06-04 STATE-SYNC): (a) decide whether to keep OQ-01 active or reclassify as 'literature-survey-only' since effective Roth is genuinely open; (b) if active, draft a LiouvilleTheoremOQ01.lean stub with the precise effective-Roth statement and explicit reference axioms (e.g. Bombieri-van der Poorten quantitative form), with NO sorries — pure documentation + axiomatization scaffold; (c) survey Mathlib for any quantitative Roth-style results (none expected)."
+    ],
+    "markdown": "# Knowledge Base: liouville-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "liouville-theorem",
+    "liouville-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T11:59:37.383Z",
+  "lastUpdate": "2026-06-04T22:05:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/LiouvilleTheorem.lean",
+      "filename": "LiouvilleTheorem.lean",
+      "lineCount": 528,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LiouvilleTheorem.lean"
+    },
+    {
+      "path": "Proofs/LiouvilleTheoremOQ04.lean",
+      "filename": "LiouvilleTheoremOQ04.lean",
+      "lineCount": 1344,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LiouvilleTheoremOQ04.lean"
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+[
+  {
+    "id": "ann-lawvere-main",
+    "proofId": "cantor-diagonalization-oq-03",
+    "range": {
+      "startLine": 42,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Lawvere Fixed-Point Theorem",
+    "content": "The core 3-line proof: given surjective $e$ and any $f$, obtain $a_0$ with $e(a_0) = \\lambda a. f(e(a)(a))$ by surjectivity, then $e(a_0)(a_0)$ is the fixed point. The diagonal construction $g(a) = f(e(a)(a))$ is the categorical essence of all diagonal arguments.",
+    "mathContext": "$\\forall f : B \\to B,\\; \\exists b : B,\\; f(b) = b$ whenever $e : A \\to (A \\to B)$ is surjective. The witness is $b = e(a_0)(a_0)$ where $e(a_0) = g$ and $g(a) := f(e(a)(a))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "diagonal argument",
+      "Lawvere fixed-point theorem",
+      "cartesian closed category",
+      "surjection",
+      "Yanofsky's universal approach"
+    ],
+    "prerequisites": [
+      "function surjectivity",
+      "function extensionality"
+    ]
+  },
+  {
+    "id": "ann-contrapositive",
+    "proofId": "cantor-diagonalization-oq-03",
+    "range": {
+      "startLine": 58,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "No Fixed-Point-Free Corollary",
+    "content": "The contrapositive of the Lawvere theorem: if some endomorphism $f : B \\to B$ has no fixed point (i.e., $\\forall b,\\; f(b) \\neq b$), then no function $e : A \\to (A \\to B)$ can be surjective. This is the form most directly applied to derive impossibility results.",
+    "mathContext": "$\\neg(\\exists\\, e : A \\to (A \\to B),\\; \\text{Surjective}(e))$ whenever $\\exists f : B \\to B$ with $\\forall b,\\; f(b) \\neq b$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "contrapositive reasoning",
+      "impossibility proof",
+      "fixed-point-free map"
+    ],
+    "prerequisites": [
+      "Lawvere fixed-point theorem"
+    ]
+  },
+  {
+    "id": "ann-lawvere-negation",
+    "proofId": "cantor-diagonalization-oq-03",
+    "range": {
+      "startLine": 72,
+      "endLine": 80
+    },
+    "type": "insight",
+    "title": "Negation Has No Fixed Point",
+    "content": "If $\\neg p = p$, cast along this equality to get $p \\to \\neg p$ and $\\neg p \\to p$. Define $\\neg p := \\lambda h.\\, (\\mathrm{cast}\\,h^{-1}\\,h)\\,h$ (self-application), then apply to get $p$, yielding contradiction. This uses the same self-referential trick as Russell's paradox and the liar sentence.",
+    "mathContext": "$\\forall p : \\mathrm{Prop},\\; \\neg p \\neq p$. Proof: assume $\\neg p = p$, then $\\mathrm{cast}(h^{-1}) : p \\to \\neg p$ and $\\mathrm{cast}(h) : \\neg p \\to p$. Construct $\\neg p$ by $\\lambda hp.\\, (\\mathrm{cast}(h^{-1})\\, hp)\\, hp$, then derive $p$ via $\\mathrm{cast}(h)$, contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "liar paradox",
+      "self-reference",
+      "Russell's paradox",
+      "cast in type theory",
+      "proof irrelevance"
+    ],
+    "prerequisites": [
+      "propositional logic",
+      "type-theoretic cast/transport"
+    ]
+  },
+  {
+    "id": "ann-lawvere-cantor",
+    "proofId": "cantor-diagonalization-oq-03",
+    "range": {
+      "startLine": 83,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "Cantor's Theorem from Lawvere",
+    "content": "Cantor's theorem in 3 lines: assume surjective $e : A \\to (A \\to \\mathrm{Prop})$, apply Lawvere with $f = \\mathrm{Not}$, get fixed point $b$ with $\\neg b = b$, contradicting `not_has_no_fixpoint`. This derivation makes explicit that the only property of $\\mathrm{Prop}$ used is that it admits a fixed-point-free endomorphism.",
+    "mathContext": "$\\neg\\,\\text{Surjective}(e)$ for any $e : A \\to (A \\to \\mathrm{Prop})$. Instantiation: $B = \\mathrm{Prop}$, $f = \\neg$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cantor's theorem",
+      "power set",
+      "cardinality",
+      "diagonal argument"
+    ],
+    "prerequisites": [
+      "Lawvere fixed-point theorem",
+      "negation has no fixed point"
+    ]
+  },
+  {
+    "id": "ann-cantor-alt",
+    "proofId": "cantor-diagonalization-oq-03",
+    "range": {
+      "startLine": 90,
+      "endLine": 92
+    },
+    "type": "concept",
+    "title": "Alternative Cantor Statement",
+    "content": "Restates Cantor's theorem in existential form: there is no pair $(e, \\text{proof of surjectivity})$ for any $e : A \\to (A \\to \\mathrm{Prop})$. This is a direct application of the contrapositive form (`no_surjection_if_no_fixpoint`) with $f = \\neg$, showing how the different formulations compose cleanly.",
+    "mathContext": "$\\neg\\,(\\exists\\, e : A \\to (A \\to \\mathrm{Prop}),\\; \\text{Surjective}(e))$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "existential quantification",
+      "proof term composition"
+    ],
+    "prerequisites": [
+      "Cantor's theorem",
+      "contrapositive corollary"
+    ]
+  },
+  {
+    "id": "ann-cantor-bool",
+    "proofId": "cantor-diagonalization-oq-03",
+    "range": {
+      "startLine": 102,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Cantor's Theorem for Bool",
+    "content": "The decidable version replaces $\\mathrm{Prop}$ with $\\mathrm{Bool}$ and $\\neg$ with boolean negation $!$. The key lemma `bnot_has_no_fixpoint` is proved by `cases b <;> decide` — Lean's kernel computation verifies $!\\mathrm{true} \\neq \\mathrm{true}$ and $!\\mathrm{false} \\neq \\mathrm{false}$ automatically. This variant is useful in computational contexts where classical propositions are unavailable.",
+    "mathContext": "$\\neg\\,\\text{Surjective}(e)$ for any $e : A \\to (A \\to \\mathrm{Bool})$, using $!b \\neq b$ for all $b : \\mathrm{Bool}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decidability",
+      "boolean algebra",
+      "kernel computation",
+      "constructive mathematics"
+    ],
+    "prerequisites": [
+      "Lawvere fixed-point theorem",
+      "boolean negation"
+    ]
+  },
+  {
+    "id": "ann-russell",
+    "proofId": "cantor-diagonalization-oq-03",
+    "range": {
+      "startLine": 123,
+      "endLine": 125
+    },
+    "type": "insight",
+    "title": "Russell's Paradox as Cantor Instance",
+    "content": "Russell's paradox — the set $R = \\{x \\mid x \\notin x\\}$ leads to contradiction — is exactly Cantor's theorem for the identity: if every predicate on $A$ were represented by an element of $A$, we'd have a surjection $A \\to (A \\to \\mathrm{Prop})$. The formal proof is a one-line invocation of `cantor_no_surjection`, making the logical connection transparent.",
+    "mathContext": "$\\neg\\,(\\exists\\, e : A \\to (A \\to \\mathrm{Prop}),\\; \\forall S : A \\to \\mathrm{Prop},\\; \\exists a,\\; e(a) = S)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Russell's paradox",
+      "naive set theory",
+      "type universe",
+      "comprehension principle"
+    ],
+    "prerequisites": [
+      "Cantor's theorem"
+    ]
+  },
+  {
+    "id": "ann-diagonal",
+    "proofId": "cantor-diagonalization-oq-03",
+    "range": {
+      "startLine": 136,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Explicit Diagonal Non-Membership",
+    "content": "Makes the diagonal construction explicit as a set-theoretic non-membership result: the function $g(a) = f(e(a)(a))$ is not in the range of $e$ when $f$ is fixed-point-free. This is the constructive content of Cantor's argument — rather than deriving a contradiction from surjectivity, it directly exhibits a function outside the range.",
+    "mathContext": "$(\\lambda a.\\, f(e(a)(a))) \\notin \\text{range}(e)$ whenever $\\forall b,\\; f(b) \\neq b$. Proof: if $e(a_0) = g$, then $f(e(a_0)(a_0)) = e(a_0)(a_0)$, contradicting fixed-point-freeness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "constructive proof",
+      "explicit witness",
+      "range of a function",
+      "diagonal function"
+    ],
+    "prerequisites": [
+      "function range (Set.range)",
+      "fixed-point-free endomorphism"
+    ]
+  }
+]

@@ -1,0 +1,134 @@
+[
+  {
+    "id": "ann-e832-header",
+    "proofId": "erdos-832",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #832** asks whether r-uniform hypergraphs with chromatic number k must have at least C((r-1)(k-1)+1, r) edges. Alon (1985) disproved this for r ≥ 4 using Turán number constructions. The Fano plane disproves r=3, k=3. Asymptotically, m(r,k) ~ c_r · k^r (Cherkashin-Petrov 2020).",
+    "mathContext": "This problem connects hypergraph coloring theory to extremal combinatorics, asking for the minimum edge count that forces high chromatic number.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hypergraph coloring",
+      "Extremal combinatorics",
+      "Turán numbers"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e832-defs",
+    "proofId": "erdos-832",
+    "range": {
+      "startLine": 35,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Hypergraph Definitions",
+    "content": "**Hypergraph(V):** A set of edges, each a Finset of vertices.\n\n**IsUniform(H, r):** Every edge has exactly r vertices.\n\n**IsProperColouring(H, c):** Assignment c : V → Fin k where no edge is monochromatic (every edge has at least two distinctly-colored vertices).\n\n**hasChromaticNumberAtLeast(H, k):** No proper (k-1)-colouring exists.",
+    "mathContext": "An $r$-uniform hypergraph $\\mathcal{H} = (V, E)$ has $E \\subseteq \\binom{V}{r}$. A proper $k$-coloring $c: V \\to [k]$ satisfies $|c(e)| \\geq 2$ for every $e \\in E$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Uniform hypergraphs",
+      "Chromatic number",
+      "Graph coloring"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e832-conjecture",
+    "proofId": "erdos-832",
+    "range": {
+      "startLine": 64,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Erdős's Conjecture (Disproved)",
+    "content": "**erdosConjecture(r, k):** For r ≥ 3, every r-uniform hypergraph with chromatic number ≥ k has at least C((r-1)(k-1)+1, r) edges. The conjectured extremal example is the complete r-uniform hypergraph on (r-1)(k-1)+1 vertices.\n\nThis conjecture is FALSE for r ≥ 4 (Alon 1985) and for r = 3, k = 3 (Fano plane).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal problems",
+      "Complete hypergraphs",
+      "Binomial coefficients"
+    ],
+    "mathContext": "See annotation content for formal details of erdős's conjecture (disproved)",
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e832-counterexamples",
+    "proofId": "erdos-832",
+    "range": {
+      "startLine": 74,
+      "endLine": 94
+    },
+    "type": "concept",
+    "title": "Counterexamples",
+    "content": "**steiner_counterexample:** The Fano plane is a 3-uniform hypergraph on 7 vertices with 7 edges and chromatic number 3. The conjecture predicts ≥ C(5,3) = 10 edges, so 7 < 10 is a counterexample for r = 3, k = 3.\n\n**alon_disproof:** For r ≥ C and k ≥ C·r, there exists an r-uniform hypergraph with chromatic number ≥ k having at most (7/8)^r times the conjectured edges. This disproves the conjecture for all r ≥ 4.",
+    "mathContext": "Alon's construction uses Turán numbers to find hypergraphs with high chromatic number but few edges relative to the complete hypergraph.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fano plane",
+      "Steiner systems",
+      "Turán numbers"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e832-asymptotics",
+    "proofId": "erdos-832",
+    "range": {
+      "startLine": 96,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Asymptotic Bounds on m(r,k)",
+    "content": "**m(r, k):** The minimum number of edges in any r-uniform hypergraph with chromatic number > k. Axiomatized since computing the minimum is not feasible.\n\n**akolzin_shabanov_bounds (2016):** (r/log r)·k^r ≪ m(r,k) ≪ (r³ log r)·k^r. These are the tightest known bounds.\n\n**cherkashin_petrov_limit (2020):** For fixed r ≥ 3, the ratio m(r,k)/k^r converges to a constant c_r > 0 as k → ∞.",
+    "mathContext": "The convergence result resolves the leading-order asymptotic, leaving only the determination of the constant c_r as an open problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Asymptotic analysis",
+      "Convergence",
+      "Extremal thresholds"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e832-examples",
+    "proofId": "erdos-832",
+    "range": {
+      "startLine": 118,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Open Questions and Examples",
+    "content": "**r3_open_question:** Whether the conjecture holds for r = 3 with sufficiently large k remains open.\n\n**Concrete computations** verified by norm_num:\n- 7 < C(5,3) = 10: Fano plane has fewer edges than predicted\n- (7/8)^4 < 0.6: Alon's factor gives ~41% reduction for r = 4",
+    "significance": "key",
+    "relatedConcepts": [
+      "Open problems",
+      "Computed bounds"
+    ],
+    "mathContext": "See annotation content for formal details of open questions and examples",
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e832-summary",
+    "proofId": "erdos-832",
+    "range": {
+      "startLine": 132,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_832** packages two key results:\n1. Alon's disproof: ∃ C, for r ≥ C and k ≥ C·r, counterexample hypergraphs exist\n2. Cherkashin-Petrov: m(r,k)/k^r → c_r for each r ≥ 3\n\nProved by `⟨alon_disproof, cherkashin_petrov_limit⟩`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary theorem",
+      "Disproof",
+      "Asymptotics"
+    ],
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "prerequisites": []
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-qr-two-doc",
+    "proofId": "quadratic-reciprocity-oq-03-oq-01",
+    "range": {
+      "startLine": 4,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "The Factor 2: Completing the Reduction Toolkit",
+    "content": "The parent `quadratic-reciprocity-oq-03` packaged three reduction steps of the Legendre-symbol algorithm — multiplicativity, the first supplementary law $\\left(\\tfrac{-1}{p}\\right)$, and the reciprocity swap. Its first open question asked whether the **second supplementary law** (the factor $2$) could be added in the same one-line wrapper style. This file answers **yes**.\n\nMathlib states the second supplementary law in *character form*:\n$$\\left(\\tfrac{2}{p}\\right) = \\chi_8(p \\bmod 8) \\qquad (p \\neq 2),$$\nwhere $\\chi_8$ is the mod-8 quadratic character: $+1$ on residues $\\{1,7\\}$ and $-1$ on $\\{3,5\\}$. This is the directly *computable* shape the algorithm needs, so it is exposed as the fourth reduction lemma `legendreSym_two_eq`.",
+    "mathContext": "The classical textbook form $\\left(\\tfrac{2}{p}\\right) = (-1)^{(p^2-1)/8}$ is equivalent to the χ₈ form but is *not* a named Mathlib lemma. Bridging the two requires a finite `p % 8` case-split together with the parity of $(p^2-1)/8$ (which is $0,1,1,0 \\pmod 2$ on residues $1,3,5,7$). That bridge is a documented follow-up; the χ₈ wrapper is the form the algorithm actually evaluates, so the OQ — packaging the law as an algorithmic step — is delivered in full.",
+    "significance": "key",
+    "relatedConcepts": [
+      "second supplementary law",
+      "mod-8 quadratic character χ₈",
+      "Legendre symbol algorithm",
+      "Quadratic Reciprocity"
+    ],
+    "prerequisites": [
+      "Legendre symbol",
+      "Quadratic residues mod p",
+      "p mod 8 case analysis"
+    ]
+  },
+  {
+    "id": "ann-legendresym-two-eq",
+    "proofId": "quadratic-reciprocity-oq-03-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Step 3b — The Fourth Reduction Lemma",
+    "content": "```lean\ntheorem legendreSym_two_eq (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :\n    legendreSym p 2 = χ₈ (p : ZMod 8) :=\n  legendreSym.at_two hp\n```\n\nFor an odd prime $p$:\n$$\\left(\\tfrac{2}{p}\\right) = \\chi_8(p \\bmod 8).$$\n\nThis is the *factor-2 step* of the Legendre-symbol algorithm — the fourth reduction lemma, a one-line wrapper around Mathlib's `legendreSym.at_two`, in exactly the style of the parent's first-supplementary wrapper `legendreSym_neg_one_eq`.",
+    "mathContext": "`legendreSym.at_two` is Mathlib's name for the second supplementary law in character form. The hypothesis `hp : p ≠ 2` excludes the degenerate case. The value of the lemma is in the *packaging*: it presents the law as one reduction step of an algorithm rather than as a scattered library result, completing the toolkit (multiplicativity, $-1$, swap, and now $2$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "second supplementary law",
+      "legendreSym.at_two",
+      "mod-8 quadratic character χ₈",
+      "one-line wrapper"
+    ],
+    "prerequisites": [
+      "Legendre symbol",
+      "Quadratic character χ₈",
+      "ZMod 8"
+    ]
+  },
+  {
+    "id": "ann-residue-one-iff",
+    "proofId": "quadratic-reciprocity-oq-03-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 103
+    },
+    "type": "definition",
+    "title": "Residue Criterion — (2/p) = 1 ⟺ p ≡ ±1 (mod 8)",
+    "content": "```lean\ntheorem legendreSym_two_eq_one_iff (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :\n    legendreSym p 2 = 1 ↔ p % 8 = 1 ∨ p % 8 = 7\n```\n\nThe *decision form* of the second supplementary law: $2$ is a quadratic residue mod $p$ exactly when $p \\equiv 1$ or $p \\equiv 7 \\pmod 8$. Useful when the algorithm needs only the residue/non-residue verdict rather than the signed character value.",
+    "mathContext": "The proof composes Mathlib's `legendreSym.eq_one_iff` (`(a/p) = 1 ↔ a` is a nonzero square) with `ZMod.exists_sq_eq_two_iff` (`2` is a square mod `p` ↔ `p % 8 ∈ {1,7}`). The non-vanishing side-goal `(2 : ZMod p) ≠ 0` is discharged by rewriting through `ZMod.natCast_eq_zero_iff` and `Nat.prime_dvd_prime_iff_eq` to reduce `p ∣ 2` to `p = 2`, contradicting `hp`. A `norm_cast` step reconciles the `(2 : ℤ)` cast with `(2 : ZMod p)`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic residue mod p",
+      "ZMod.exists_sq_eq_two_iff",
+      "legendreSym.eq_one_iff",
+      "p mod 8 = 1 or 7"
+    ],
+    "prerequisites": [
+      "Legendre symbol",
+      "Quadratic residues in ZMod p",
+      "Cast lemmas for ZMod"
+    ]
+  },
+  {
+    "id": "ann-residue-neg-one-iff",
+    "proofId": "quadratic-reciprocity-oq-03-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 120
+    },
+    "type": "insight",
+    "title": "Non-Residue Criterion via Complement + omega",
+    "content": "```lean\ntheorem legendreSym_two_eq_neg_one_iff (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :\n    legendreSym p 2 = -1 ↔ p % 8 = 3 ∨ p % 8 = 5\n```\n\nThe complementary verdict: $2$ is a non-residue mod $p$ exactly when $p \\equiv 3$ or $p \\equiv 5 \\pmod 8$.",
+    "mathContext": "After rewriting with `legendreSym.eq_neg_one_iff` and `ZMod.exists_sq_eq_two_iff`, the goal becomes `¬(p%8 = 1 ∨ p%8 = 7) ↔ p%8 = 3 ∨ p%8 = 5`. The key fact is that an odd prime has `p % 8 ∈ {1,3,5,7}`: writing `p = 2k+1` (from `Odd p`, via `(Fact.out).odd_of_ne_two hp`) lets `omega` derive the four-case membership and then close both directions of the equivalence automatically. This shows the two decision-form lemmas partition all odd-prime cases.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "non-residue criterion",
+      "logical complement",
+      "omega tactic",
+      "odd prime p mod 8 ∈ {1,3,5,7}"
+    ],
+    "prerequisites": [
+      "legendreSym.eq_neg_one_iff",
+      "Oddness of odd primes",
+      "Linear arithmetic over residues"
+    ]
+  },
+  {
+    "id": "ann-decide-examples",
+    "proofId": "quadratic-reciprocity-oq-03-oq-01",
+    "range": {
+      "startLine": 126,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Verified Computations via decide",
+    "content": "Five concrete values of $\\left(\\tfrac{2}{p}\\right)$ verified by Lean's `decide` tactic:\n\n| Symbol | Value | $p \\bmod 8$ |\n|---|---|---|\n| $(2/3)$ | $-1$ | $3$ |\n| $(2/5)$ | $-1$ | $5$ |\n| $(2/23)$ | $+1$ | $7$ |\n| $(2/31)$ | $+1$ | $7$ |\n| $(2/41)$ | $+1$ | $1$ |\n\nThe two non-residue cases ($p \\equiv 3, 5$) and three residue cases ($p \\equiv 7, 7, 1$) directly exercise the residue split. A final `#check` confirms `QRAlgorithmTwo.legendreSym_two_eq` is exported.",
+    "mathContext": "`decide` evaluates `legendreSym p 2` via Euler's criterion in the finite ring `ZMod p`: for a concrete small prime $p$, `ZMod p` is a `Fintype`, so the equality $2^{(p-1)/2} = \\pm 1$ is decidable and Lean computes it at elaboration time. No `native_decide` is needed (search space is tiny, $p \\le 41$), so every example is kernel-checked.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decide tactic",
+      "Euler's criterion",
+      "decidable equality in ZMod p",
+      "elaboration-time evaluation"
+    ],
+    "prerequisites": [
+      "Lean's decide tactic",
+      "Finite computation in ZMod p",
+      "Legendre symbol value"
+    ]
+  }
+]

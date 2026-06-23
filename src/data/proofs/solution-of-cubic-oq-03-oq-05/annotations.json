@@ -1,0 +1,164 @@
+[
+  {
+    "id": "ann-setup",
+    "proofId": "solution-of-cubic-oq-03-oq-05",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Setup: CommRing Generality and Namespace",
+    "content": "The file header declares that `variable {R : Type*} [CommRing R]` — all theorems are proved over an arbitrary commutative ring, not just over ℂ or ℝ. The namespace `VietaCubic` groups the six theorems. The single import `Mathlib` pulls in everything, including `Mathlib.RingTheory.Polynomial.Basic` (Polynomial API) and `Mathlib.Tactic` (`ring`, `simp`, `linarith`).",
+    "mathContext": "A commutative ring $R$ satisfies: addition and multiplication are both associative and commutative, multiplication distributes over addition, there are additive and multiplicative identities, and every element has an additive inverse. Fields ($\\mathbb{Q}, \\mathbb{R}, \\mathbb{C}$) and rings ($\\mathbb{Z}, \\mathbb{Z}/n\\mathbb{Z}$, polynomial rings) all qualify. The Vieta proofs require no division, so the commutative ring axioms suffice.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "CommRing",
+      "type class",
+      "Lean namespace",
+      "Mathlib import"
+    ],
+    "prerequisites": [
+      "Lean 4 type classes",
+      "ring theory basics"
+    ]
+  },
+  {
+    "id": "ann-factor-expansion",
+    "proofId": "solution-of-cubic-oq-03-oq-05",
+    "range": {
+      "startLine": 28,
+      "endLine": 35
+    },
+    "type": "insight",
+    "title": "Product Expansion via Ring Tactic",
+    "content": "The entire algebraic content of Vieta's formulas is encoded in this single theorem: (x-r₁)(x-r₂)(x-r₃) = x³ - σ₁x² + σ₂x - σ₃. The proof is `ring` — a single call to Lean's polynomial ring normalizer, which verifies multivariate polynomial identities over any commutative ring. This is a dramatic demonstration of the power of algebraic automation: an identity that would require pages of careful coefficient bookkeeping in classical math is verified in one line.",
+    "mathContext": "$(x-r_1)(x-r_2)(x-r_3) = x^3 - (r_1+r_2+r_3)x^2 + (r_1r_2+r_1r_3+r_2r_3)x - r_1r_2r_3$",
+    "significance": "key",
+    "relatedConcepts": [
+      "ring tactic",
+      "polynomial expansion",
+      "elementary symmetric polynomials",
+      "multivariate polynomial normalization"
+    ],
+    "prerequisites": [
+      "commutative rings",
+      "polynomial ring",
+      "Lean tactics"
+    ]
+  },
+  {
+    "id": "ann-vieta-sigma1",
+    "proofId": "solution-of-cubic-oq-03-oq-05",
+    "range": {
+      "startLine": 42,
+      "endLine": 52
+    },
+    "type": "insight",
+    "title": "First Vieta Formula: Sum of Roots",
+    "content": "vieta_sigma1 extracts the degree-2 coefficient from the polynomial equality h. The proof pattern: (1) rewrite using cubic_factor_expansion to get explicit coefficients; (2) apply congr_arg with Polynomial.coeff · 2 to extract degree-2 terms from both sides; (3) simp evaluates the coefficient operations to get a ring equation; (4) linarith closes the arithmetic. The negative sign in a = -(r₁+r₂+r₃) reflects the standard form x³ + ax² vs the factored form with -σ₁.",
+    "mathContext": "$a = -(r_1 + r_2 + r_3) = -\\sigma_1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "first elementary symmetric polynomial",
+      "coefficient extraction",
+      "congr_arg",
+      "linarith"
+    ],
+    "prerequisites": [
+      "polynomial coefficients",
+      "Lean ring tactics"
+    ]
+  },
+  {
+    "id": "ann-vieta-sigma2",
+    "proofId": "solution-of-cubic-oq-03-oq-05",
+    "range": {
+      "startLine": 54,
+      "endLine": 65
+    },
+    "type": "insight",
+    "title": "Second Vieta Formula: Sum of Products of Pairs",
+    "content": "vieta_sigma2 extracts the degree-1 coefficient. The proof mirrors vieta_sigma1 exactly, with `Polynomial.coeff p 1` instead of `Polynomial.coeff p 2`. The second elementary symmetric polynomial $\\sigma_2 = r_1 r_2 + r_1 r_3 + r_2 r_3$ has no sign change: the coefficient `b` equals $\\sigma_2$ directly, because the degree-1 term in the expansion has a positive sign.",
+    "mathContext": "$b = r_1 r_2 + r_1 r_3 + r_2 r_3 = \\sigma_2$. No sign change: expanding $(x-r_1)(x-r_2)(x-r_3)$, the $x$ coefficient is $+(r_1 r_2 + r_1 r_3 + r_2 r_3)$. The sign pattern for degree-$n$ Vieta's formulas is $(-1)^k \\sigma_k$, so degree-1 gets $(−1)^{n−1} = (−1)^2 = +1$ for $n=3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "second elementary symmetric polynomial",
+      "coefficient extraction",
+      "sign pattern"
+    ],
+    "prerequisites": [
+      "vieta_sigma1",
+      "polynomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-vieta-sigma3",
+    "proofId": "solution-of-cubic-oq-03-oq-05",
+    "range": {
+      "startLine": 67,
+      "endLine": 78
+    },
+    "type": "insight",
+    "title": "Third Vieta Formula: Product of All Roots",
+    "content": "vieta_sigma3 extracts the degree-0 (constant) coefficient. The product of all roots $r_1 r_2 r_3 = \\sigma_3 = -c$ (with a sign change). This is also the value of the polynomial at $x=0$: substituting gives $0^3 + a \\cdot 0^2 + b \\cdot 0 + c = c = -(r_1 r_2 r_3)$. For integer polynomials with rational roots, this is the basis of the rational root theorem: any rational root $p/q$ must have $p \\mid c$ and $q \\mid$ the leading coefficient.",
+    "mathContext": "$c = -r_1 r_2 r_3 = -\\sigma_3$. Extracting `Polynomial.coeff p 0` from both sides of the factorization gives the constant term. The sign: expanding $(x-r_1)(x-r_2)(x-r_3)$ yields $+(-r_1)(-r_2)(-r_3) = -r_1 r_2 r_3$ as the constant term.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "third elementary symmetric polynomial",
+      "constant term",
+      "rational root theorem",
+      "product of roots"
+    ],
+    "prerequisites": [
+      "vieta_sigma1",
+      "vieta_sigma2",
+      "polynomial evaluation at 0"
+    ]
+  },
+  {
+    "id": "ann-vieta-combined",
+    "proofId": "solution-of-cubic-oq-03-oq-05",
+    "range": {
+      "startLine": 85,
+      "endLine": 95
+    },
+    "type": "insight",
+    "title": "Combined Vieta's Theorem",
+    "content": "vieta_cubic packages all three Vieta relations into a single conjunction, which is the natural statement: given the factorization hypothesis h, one obtains all three relations simultaneously. The proof is structural: ⟨vieta_sigma1 ..., vieta_sigma2 ..., vieta_sigma3 ...⟩ is a conjunction introduction in Lean. This combined form is the version most useful in applications, where one needs all three relations at once.",
+    "mathContext": "$x^3 + ax^2 + bx + c = (x-r_1)(x-r_2)(x-r_3) \\;\\Rightarrow\\; a = -\\sigma_1 \\;\\wedge\\; b = \\sigma_2 \\;\\wedge\\; c = -\\sigma_3$",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjunction",
+      "Vieta's theorem",
+      "elementary symmetric polynomials",
+      "factorization"
+    ],
+    "prerequisites": [
+      "commutative rings",
+      "polynomial factorization"
+    ]
+  },
+  {
+    "id": "ann-root-satisfies",
+    "proofId": "solution-of-cubic-oq-03-oq-05",
+    "range": {
+      "startLine": 102,
+      "endLine": 110
+    },
+    "type": "insight",
+    "title": "Root Satisfaction via Evaluation",
+    "content": "root_satisfies proves that r₁ satisfies the polynomial equation by evaluating at r₁: the factored form becomes (r₁-r₁)·(r₁-r₂)·(r₁-r₃) = 0·(···) = 0. This is the converse direction: not just that the coefficients satisfy Vieta's formulas, but that the named roots actually vanish the polynomial. The proof uses simp with Polynomial.eval lemmas, demonstrating how Lean handles polynomial evaluation.",
+    "mathContext": "$(r_1 - r_1)(r_1 - r_2)(r_1 - r_3) = 0 \\cdot (r_1 - r_2)(r_1 - r_3) = 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial evaluation",
+      "root of polynomial",
+      "factor theorem",
+      "Polynomial.eval"
+    ],
+    "prerequisites": [
+      "polynomial evaluation",
+      "ring axioms"
+    ]
+  }
+]

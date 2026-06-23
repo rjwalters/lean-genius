@@ -1,0 +1,100 @@
+{
+  "slug": "desargues-theorem-oq-02-oq-02",
+  "title": "Can we formalize the self-duality property of Desargues's theorem explicitly?",
+  "phase": "ORIENT",
+  "status": "blocked",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "On a projective plane (Configuration.ProjectivePlane P L) define centrally/axially perspective triangles via Concurrent/Collinear. Desargues's statement is self-dual: its plane-dual equals its converse. Formalize Desarguesian(Dual P) ↔ ConverseDesarguesian P, and the finite Desargues 10₃ configuration's incidence-reversing self-duality.",
+    "plain": "Make the self-duality of Desargues's theorem explicit and machine-checked. Answer: yes. Under projective duality (point↔line, collinear↔concurrent), central perspectivity ↔ axial perspectivity, so the dual of Desargues's theorem is exactly its converse — the theorem is its own dual. Formalize this at the projective-incidence level (Mathlib Configuration.Dual), NOT on the parent's affine Moulton model (affine planes are not self-dual).",
+    "whyMatters": [
+      "Makes the projective principle of duality executable rather than informal",
+      "Self-duality is why Desargues's converse needs no separate proof"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent desargues-theorem-oq-02: Moulton plane is a concrete non-Desarguesian (affine) counterexample",
+      "Mathlib: dual of a projective plane is a projective plane (Configuration.Dual duality principle)"
+    ],
+    "open": [
+      "Lean: desarguesian_dual_iff : Desarguesian (Dual P) ↔ ConverseDesarguesian P (build-gated)",
+      "Lean: finite Desargues 10₃ configuration self-duality by decide (build-gated)"
+    ],
+    "goal": "An explicit Lean formalization of the self-duality of Desargues's theorem: the class-level dual↔converse equivalence plus a decidable finite self-dual 10₃ configuration."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-13",
+    "iteration": 1,
+    "focus": "Core math resolved on paper (self-dual = own converse via the duality dictionary); formalization layered as finite-decidable 10₃ + abstract Configuration.Dual swap. Build-gated by the 2026-06-13 verification blackout.",
+    "blockers": [
+      "Verification blackout 2026-06-13: Docker down + Aristotle 404 (both confirmed live this session)"
+    ],
+    "nextAction": "When infra returns, create DesarguesTheoremOQ02OQ02.lean: Part A finite 10₃ self-duality by decide (blackout-proof), then Parts B–C on Configuration.ProjectivePlane/Configuration.Dual.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED (ORIENT): self-duality of Desargues fully resolved on paper. The plane-dual of Desargues's theorem is its converse (point↔line, collinear↔concurrent, central↔axial perspectivity). Formalizable at the projective layer via Mathlib Configuration.Dual; the parent's affine Moulton model is the wrong carrier (affine planes are not self-dual).",
+    "builtItems": [],
+    "insights": [
+      "Duality dictionary: point↔line, lies-on↔passes-through, collinear↔concurrent, join↔meet — sends a triangle to a trilateral and central perspectivity to axial perspectivity",
+      "Dual of Desargues's statement = its converse, so the theorem is self-dual (its own dual)",
+      "Right layer is projective/abstract: affine planes (the parent's onLine over ℚ²) are NOT self-dual because parallel lines have no dual point",
+      "Desargues is false in general projective planes (parent counterexample), so self-duality must be stated class-level: Desarguesian(Dual P) ↔ ConverseDesarguesian P, not 'D holds ⇒ converse holds'",
+      "Cheapest first compile = finite Desargues 10₃ configuration self-duality: Fin 10 incidence matrix + duality permutation σ, goal inc p l = inc (σ l) (σ p) by decide — no Mathlib Configuration dependency"
+    ],
+    "mathlibGaps": [
+      "Mathlib Configuration provides ProjectivePlane (L329), Dual (L46), and the instance ProjectivePlane (Dual L) (Dual P) (L338, the duality principle) — confirmed against source — but NOT perspectivity / Desargues predicates, which must be defined",
+      "Gotcha: the dual swaps type order — a predicate Foo P L on the dual is Foo (Dual L) (Dual P), not Foo (Dual P) (Dual L)"
+    ],
+    "nextSteps": [
+      "Part A: finite 10₃ self-dual configuration (Fin 10, incidence Bool matrix, σ : Perm (Fin 10), decide) — blackout-proof milestone",
+      "Part B: define Concurrent/Collinear, centrally/axially perspective, Desarguesian/ConverseDesarguesian on Configuration.ProjectivePlane",
+      "Part C: swap lemmas under Configuration.Dual → desarguesian_dual_iff and converse_iff_desarguesian"
+    ]
+  },
+  "tags": [
+    "projective-geometry",
+    "duality",
+    "desargues",
+    "incidence-geometry",
+    "configuration",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "desargues-theorem-oq-02",
+    "desargues-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Combinatorics.Configuration",
+      "Configuration.ProjectivePlane",
+      "Configuration.Dual"
+    ]
+  },
+  "started": "2026-06-10T11:02:49-07:00",
+  "lastUpdate": "2026-06-13",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/DesarguesTheoremOQ02.lean",
+      "filename": "DesarguesTheoremOQ02.lean",
+      "lineCount": 333,
+      "theoremCount": 35,
+      "axiomCount": 0,
+      "defCount": 21,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ02.lean"
+    }
+  ]
+}

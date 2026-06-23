@@ -1,0 +1,346 @@
+[
+  {
+    "id": "erdos-428-prime-counting",
+    "proofId": "erdos-428",
+    "type": "definition",
+    "range": {
+      "startLine": 25,
+      "endLine": 27
+    },
+    "title": "Prime Counting Function $\\pi(n)$",
+    "content": "**primeCounting n** counts the number of primes $\\leq n$, defined via `Finset.filter Nat.Prime (Finset.range (n + 1))`. This is the standard prime counting function $\\pi(n)$, which by the Prime Number Theorem satisfies $\\pi(n) \\sim n/\\ln n$. Examples: $\\pi(10) = 4$ (primes 2, 3, 5, 7), $\\pi(100) = 25$.",
+    "significance": "key",
+    "mathContext": "$\\pi(n) = |\\{p \\leq n : p \\text{ prime}\\}|$. Defined via `Finset.filter Nat.Prime (Finset.range (n + 1)).card`. The notation $\\pi(x)$ dates to Legendre (1808); the asymptotic $\\pi(x) \\sim x/\\ln x$ was proved by Hadamard and de la Vallée Poussin (1896).",
+    "relatedConcepts": [
+      "prime counting function",
+      "Prime Number Theorem",
+      "Finset.filter"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Finset.filter",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "erdos-428-density-ratio",
+    "proofId": "erdos-428",
+    "type": "definition",
+    "range": {
+      "startLine": 29,
+      "endLine": 31
+    },
+    "title": "Prime Density Ratio",
+    "content": "**primeDensityRatio A n** $= |A \\cap [1,n]| / \\pi(n)$, measuring the size of $A$ relative to the prime counting function. This is not the natural density (which divides by $n$) but the *prime density*: it asks what fraction of primes up to $n$ are 'matched' by elements of $A$. A set with primeDensityRatio bounded away from 0 is 'substantial' in the sense of having comparable size to the primes.",
+    "significance": "key",
+    "mathContext": "$\\text{primeDensityRatio}(A, n) = |A \\cap [1,n]|_{\\text{ncard}} / \\pi(n)$. Noncomputable due to `Set.ncard`. `primeDensityRatio_nonneg`: the ratio is always $\\geq 0$ via `div_nonneg`.",
+    "relatedConcepts": [
+      "asymptotic density",
+      "Set.ncard",
+      "prime density"
+    ],
+    "prerequisites": [
+      "primeCounting",
+      "Set.ncard",
+      "Set.Icc"
+    ]
+  },
+  {
+    "id": "erdos-428-all-offsets-prime",
+    "proofId": "erdos-428",
+    "type": "definition",
+    "range": {
+      "startLine": 35,
+      "endLine": 37
+    },
+    "title": "All Offsets Prime Predicate",
+    "content": "**AllOffsetsPrime A n** holds when for every $a \\in A$ with $0 < a < n$, the value $n - a$ is prime. This formalizes the 'prime-generating offset' property: $n$ acts as a 'prime hub' relative to $A$, producing primes when shifted by any offset. For example, if $A = \\{1, 3, 7\\}$ and $n = 12$, we need 11, 9, 5 all prime. Since $9 = 3^2$ is not prime, `AllOffsetsPrime` fails here.",
+    "significance": "key",
+    "mathContext": "$\\text{AllOffsetsPrime}(A, n) \\iff \\forall a \\in A,\\, 0 < a < n \\implies (n - a) \\in \\mathbb{P}$. Special case: $\\text{AllOffsetsPrime}\\, \\{2\\}\\, n$ means $n - 2$ is prime (twin prime condition).",
+    "relatedConcepts": [
+      "prime-generating offsets",
+      "twin primes",
+      "admissible tuples"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Set membership"
+    ]
+  },
+  {
+    "id": "erdos-428-main-conjecture",
+    "proofId": "erdos-428",
+    "type": "concept",
+    "range": {
+      "startLine": 41,
+      "endLine": 46
+    },
+    "title": "Erdős Problem 428 (Main Conjecture)",
+    "content": "**ErdosProblem428**: Does there exist $A \\subseteq \\mathbb{N}$ with `Filter.liminf (primeDensityRatio A) atTop > 0` (positive prime density) such that $\\exists^\\infty n,\\, \\text{AllOffsetsPrime}\\, A\\, n$ (infinitely many prime-generating $n$)? The liminf condition is the essential difficulty: $A$ must maintain its density consistently, not just along a subsequence. This is strictly stronger than the limsup variant. OPEN.",
+    "significance": "key",
+    "mathContext": "$\\exists A \\subseteq \\mathbb{N},\\, (\\exists^\\infty n,\\, \\text{AllOffsetsPrime}\\, A\\, n) \\wedge \\liminf_{n \\to \\infty} \\frac{|A \\cap [1,n]|}{\\pi(n)} > 0$. Posed by Erdős-Graham (1980).",
+    "relatedConcepts": [
+      "open problem",
+      "Filter.liminf",
+      "Filter.Frequently",
+      "prime distribution"
+    ],
+    "prerequisites": [
+      "primeDensityRatio",
+      "AllOffsetsPrime",
+      "Filter.liminf",
+      "Filter.atTop"
+    ]
+  },
+  {
+    "id": "erdos-428-limsup-variant",
+    "proofId": "erdos-428",
+    "type": "concept",
+    "range": {
+      "startLine": 50,
+      "endLine": 55
+    },
+    "title": "Limsup Variant",
+    "content": "**ErdosProblem428Limsup**: Same as Problem 428 but with `Filter.limsup` replacing `Filter.liminf`. This is strictly weaker: it only requires the density to be positive along some subsequence. Erdős and Graham showed this follows from the $k$-tuple conjecture. The theorem `liminf_implies_limsup` shows the main conjecture implies this variant.",
+    "significance": "key",
+    "mathContext": "$\\exists A,\\, (\\exists^\\infty n,\\, \\text{AllOffsetsPrime}\\, A\\, n) \\wedge \\limsup_{n \\to \\infty} \\frac{|A \\cap [1,n]|}{\\pi(n)} > 0$. Conditionally holds under the $k$-tuple conjecture.",
+    "relatedConcepts": [
+      "Filter.limsup",
+      "conditional results",
+      "Erdős-Graham"
+    ],
+    "prerequisites": [
+      "ErdosProblem428",
+      "Filter.limsup"
+    ]
+  },
+  {
+    "id": "erdos-428-liminf-implies-limsup",
+    "proofId": "erdos-428",
+    "type": "concept",
+    "range": {
+      "startLine": 57,
+      "endLine": 62
+    },
+    "title": "Liminf Implies Limsup",
+    "content": "**liminf_implies_limsup**: `ErdosProblem428 → ErdosProblem428Limsup`. The proof destructs the hypothesis into $\\langle A, h_{\\text{freq}}, h_{\\text{liminf}}\\rangle$ and uses the same $A$ with `lt_of_lt_of_le` and `Filter.liminf_le_limsup` to establish limsup > 0. This is the expected implication: consistent density (liminf > 0) implies subsequential density (limsup > 0).",
+    "significance": "key",
+    "mathContext": "Proof: destructs existential, applies $\\liminf \\leq \\limsup$ via `Filter.liminf_le_limsup` with `lt_of_lt_of_le` for the strict inequality chain.",
+    "relatedConcepts": [
+      "Filter.liminf_le_limsup",
+      "lt_of_lt_of_le",
+      "verified proof"
+    ],
+    "prerequisites": [
+      "ErdosProblem428",
+      "ErdosProblem428Limsup",
+      "Filter.liminf_le_limsup"
+    ]
+  },
+  {
+    "id": "erdos-428-ktuple",
+    "proofId": "erdos-428",
+    "type": "theorem",
+    "range": {
+      "startLine": 66,
+      "endLine": 71
+    },
+    "title": "Prime $k$-Tuple Conjecture (Hardy-Littlewood)",
+    "content": "**PrimeKTupleConjecture**: For any admissible tuple $H$ (i.e., for every prime $p$, there exists $n$ such that $p \\nmid (n + h)$ for all $h \\in H$), there are infinitely many $n$ where $n + h$ is prime for all $h \\in H$. Admissibility rules out local obstructions: e.g., $\\{0, 1\\}$ is not admissible since one of $n, n+1$ is always even. Proposed by Hardy-Littlewood (1923).",
+    "significance": "key",
+    "mathContext": "$\\forall H \\text{ admissible},\\, \\exists^\\infty n,\\, \\forall h \\in H,\\, (n + h) \\in \\mathbb{P}$. Special cases: twin primes ($H = \\{0, 2\\}$), Sophie Germain primes. Maynard-Tao (2014) proved bounded gaps as a partial result.",
+    "relatedConcepts": [
+      "Hardy-Littlewood conjecture",
+      "admissible tuples",
+      "twin primes",
+      "bounded gaps"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Finset",
+      "Filter.Frequently",
+      "admissibility"
+    ]
+  },
+  {
+    "id": "erdos-428-erdos-graham-axiom",
+    "proofId": "erdos-428",
+    "type": "concept",
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
+    "title": "Erdős-Graham: $k$-Tuple $\\Rightarrow$ Limsup Variant",
+    "content": "**erdos_graham_limsup** (axiom): `PrimeKTupleConjecture → ErdosProblem428Limsup`. This captures the result of Erdős and Graham (1980) that the $k$-tuple conjecture implies the existence of offset sets with positive limsup prime density. The proof strategy: given the $k$-tuple conjecture, one constructs a greedy sequence of admissible tuples that generate increasingly large offset sets.",
+    "significance": "key",
+    "mathContext": "Axiomatized because the proof requires the Erdős-Graham greedy construction on admissible tuples combined with the PNT. From Erdős-Graham (1980), L'Enseignement Math. Monograph No. 28.",
+    "relatedConcepts": [
+      "Erdős-Graham result",
+      "greedy admissible construction",
+      "conditional results"
+    ],
+    "prerequisites": [
+      "PrimeKTupleConjecture",
+      "ErdosProblem428Limsup"
+    ]
+  },
+  {
+    "id": "erdos-428-prime-counting-pos",
+    "proofId": "erdos-428",
+    "type": "concept",
+    "range": {
+      "startLine": 79,
+      "endLine": 85
+    },
+    "title": "Prime Counting is Positive",
+    "content": "**primeCounting_pos**: For $n \\geq 2$, $\\pi(n) > 0$. Proved by exhibiting 2 as a prime in `Finset.range(n+1)` using `Finset.card_pos.mpr` with the witness $\\langle 2, \\ldots \\rangle$. This ensures the denominator of `primeDensityRatio` is positive for $n \\geq 2$, making the ratio well-defined.",
+    "significance": "supporting",
+    "mathContext": "Constructive witness proof: exhibits $2 \\in \\text{Finset.filter Nat.Prime (Finset.range}(n+1))$ via `omega` and `Nat.prime_iff.mpr`.",
+    "relatedConcepts": [
+      "constructive witness",
+      "Finset.card_pos",
+      "primeCounting"
+    ],
+    "prerequisites": [
+      "primeCounting",
+      "Nat.prime_iff",
+      "Finset.card_pos"
+    ]
+  },
+  {
+    "id": "erdos-428-singleton-offset",
+    "proofId": "erdos-428",
+    "type": "concept",
+    "range": {
+      "startLine": 87,
+      "endLine": 94
+    },
+    "title": "Singleton Sets Satisfy AllOffsetsPrime",
+    "content": "**singleton_offset**: For any $a$ with $0 < a < n$ and $(n-a)$ prime, `AllOffsetsPrime {a} n` holds. Proved by substituting the unique element via `Set.mem_singleton_iff`. This shows `AllOffsetsPrime` is trivially achievable for singleton sets -- the challenge is finding *large* sets $A$ with the property.",
+    "significance": "supporting",
+    "mathContext": "Direct proof by singleton membership elimination via `Set.mem_singleton_iff` then `subst`.",
+    "relatedConcepts": [
+      "singleton sets",
+      "Set.mem_singleton_iff",
+      "trivial solutions"
+    ],
+    "prerequisites": [
+      "AllOffsetsPrime",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "erdos-428-empty-trivial",
+    "proofId": "erdos-428",
+    "type": "concept",
+    "range": {
+      "startLine": 96,
+      "endLine": 99
+    },
+    "title": "Empty Set is Trivially AllOffsetsPrime",
+    "content": "**empty_trivial**: `AllOffsetsPrime ∅ n` holds vacuously for all $n$, since there are no elements to check. Proved by `Set.not_mem_empty`. Combined with `finite_set_zero_density`, this shows trivial solutions have zero density.",
+    "significance": "supporting",
+    "mathContext": "Vacuous truth via `Set.not_mem_empty`; the universal quantifier over $\\emptyset$ is trivially satisfied.",
+    "relatedConcepts": [
+      "vacuous truth",
+      "Set.not_mem_empty",
+      "trivial solutions"
+    ],
+    "prerequisites": [
+      "AllOffsetsPrime",
+      "Set.not_mem_empty"
+    ]
+  },
+  {
+    "id": "erdos-428-mono",
+    "proofId": "erdos-428",
+    "type": "concept",
+    "range": {
+      "startLine": 101,
+      "endLine": 106
+    },
+    "title": "Subset Monotonicity (Antitonicity)",
+    "content": "**allOffsetsPrime_mono**: If $A \\subseteq B$ and `AllOffsetsPrime B n`, then `AllOffsetsPrime A n`. The proof applies the subset hypothesis to reduce $A$-membership to $B$-membership. This means `AllOffsetsPrime` is *antitone*: the property becomes easier as the set gets smaller, making the density constraint the key difficulty.",
+    "significance": "key",
+    "mathContext": "Direct proof: $a \\in A \\implies a \\in B$ (by $A \\subseteq B$), then apply $h_B$. Antitonicity: shrinking $A$ makes `AllOffsetsPrime` easier but density harder.",
+    "relatedConcepts": [
+      "antitonicity",
+      "subset monotonicity",
+      "tension between density and structure"
+    ],
+    "prerequisites": [
+      "AllOffsetsPrime",
+      "set inclusion"
+    ]
+  },
+  {
+    "id": "erdos-428-density-nonneg",
+    "proofId": "erdos-428",
+    "type": "concept",
+    "range": {
+      "startLine": 108,
+      "endLine": 114
+    },
+    "title": "Density Ratio is Nonneg",
+    "content": "**primeDensityRatio_nonneg**: `primeDensityRatio A n ≥ 0` for all $A, n$. Proved using `div_nonneg` and `Nat.cast_nonneg'` for both numerator and denominator. This ensures the liminf and limsup are meaningful as nonnegative real numbers.",
+    "significance": "supporting",
+    "mathContext": "`div_nonneg` with `Nat.cast_nonneg'` for both $|A \\cap [1,n]|_{\\text{ncard}}$ and $\\pi(n)$.",
+    "relatedConcepts": [
+      "nonnegativity",
+      "div_nonneg",
+      "Nat.cast_nonneg'"
+    ],
+    "prerequisites": [
+      "primeDensityRatio",
+      "div_nonneg"
+    ]
+  },
+  {
+    "id": "erdos-428-finite-zero-density",
+    "proofId": "erdos-428",
+    "type": "concept",
+    "range": {
+      "startLine": 117,
+      "endLine": 118
+    },
+    "title": "Finite Sets Have Zero Liminf Density",
+    "content": "**finite_set_zero_density** (axiom): If $A$ is finite, then $\\liminf_{n \\to \\infty} \\text{primeDensityRatio}(A, n) = 0$. Intuitively: a finite set eventually stops contributing new elements, so $|A \\cap [1,n]|$ is eventually constant while $\\pi(n) \\to \\infty$, forcing the ratio to 0.",
+    "significance": "key",
+    "mathContext": "Axiomatized; proof would use `Set.Finite` $\\implies$ $|A \\cap [1,n]|$ eventually constant, combined with $\\pi(n) \\to \\infty$ (from PNT or Bertrand's postulate).",
+    "relatedConcepts": [
+      "finite sets",
+      "vanishing density",
+      "Prime Number Theorem"
+    ],
+    "prerequisites": [
+      "Set.Finite",
+      "primeDensityRatio",
+      "Filter.liminf"
+    ]
+  },
+  {
+    "id": "erdos-428-requires-infinite",
+    "proofId": "erdos-428",
+    "type": "concept",
+    "range": {
+      "startLine": 120,
+      "endLine": 131
+    },
+    "title": "Solutions Require Infinite Sets",
+    "content": "**erdos428_requires_infinite**: Any solution to Problem 428 must use an infinite set $A$. Proved by contradiction: if $A$ were finite, `finite_set_zero_density` gives liminf $= 0$, contradicting liminf $> 0$ via `linarith`. This is the key structural insight: the density requirement forces infinite offset sets, ruling out all trivial constructions.",
+    "significance": "key",
+    "mathContext": "Proof by contradiction: `by_contra` + `push_neg` converts $\\neg\\text{Infinite}$ to `Finite`, then `finite_set_zero_density` gives liminf $= 0$, contradicting liminf $> 0$ via `linarith`.",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "Set.Infinite",
+      "linarith",
+      "structural insight"
+    ],
+    "prerequisites": [
+      "finite_set_zero_density",
+      "ErdosProblem428",
+      "Set.Infinite",
+      "linarith"
+    ]
+  }
+]

@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "proofId": "liouville-theorem",
+  "reviewDate": "2026-03-24T12:30:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "B-",
+    "oneLiner": "Superb pedagogical exposition of Liouville's theorem with honest axiom labeling, but formal content is thin — all theorems are one-liners and one axiom is provably unnecessary",
+    "tier": "B/C",
+    "tierJustification": "Core Wiedijk #18 result (Liouville numbers are transcendental) comes from Mathlib one-liner. File extends with 6 axiomatized results (approximation theorem, closure properties, uncountability, Roth's theorem) and extensive exposition. Formal substance is Tier B for the Mathlib core, Tier C for the axiomatized extensions."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Lean source lines 109-138, 210-233, 303-346, 392-411 (docstrings)",
+      "finding": "The pedagogical exposition is outstanding. The proof outline for the approximation theorem (lines 109-138) clearly explains the MVT-based argument with numbered steps. The Liouville constant explanation (lines 210-233) makes the factorial gap argument intuitive. The Thue-Siegel-Roth progression (lines 339-345) is a model of how to present mathematical history in a formal proof file. The measure-category duality discussion (lines 392-411) is genuinely insightful.",
+      "recommendation": "Preserve all expository content. This is the entry's greatest asset and among the best pedagogical writing in the gallery."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json status and badge fields",
+      "finding": "The file is honestly labeled: status 'axiomatized', badge 'axiom', axiomCount 6, with all 6 axioms individually described in the assumptions field. A reader knows exactly what is proved and what is assumed.",
+      "recommendation": "Preserve this transparent labeling."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Lean source lines 380-386 (generalized Liouville numbers)",
+      "finding": "The generalization from base 10 to arbitrary base b >= 2 (liouville_any_base_transcendental) is a clean, useful result that goes slightly beyond a bare Mathlib import. The base-2 case is also given as an explicit instance. This demonstrates good mathematical taste in choosing what to formalize.",
+      "recommendation": "Keep these generalizations."
+    },
+    {
+      "severity": "major",
+      "category": "gap",
+      "location": "liouville_constant_irrational_axiom, line 253",
+      "finding": "This axiom is PROVABLY UNNECESSARY. The docstring at lines 249-252 explicitly explains the proof: 'Transcendental implies irrational: if L = p/q, then L is a root of q·X - p = 0, making L algebraic. This contradicts transcendence.' The file already proves liouville_constant_transcendental (line 246), so the irrationality follows by a short proof. Declaring this as an axiom inflates the axiom count from 5 to 6 and introduces an avoidable assumption.",
+      "recommendation": "Replace the axiom with a proof: prove that transcendental implies irrational using the argument the docstring already describes. This would reduce axiomCount to 5 and strengthen the formalization. Target: researcher."
+    },
+    {
+      "severity": "moderate",
+      "category": "precision",
+      "location": "meta.json leanFile.theoremCount: 12",
+      "finding": "The theorem count of 12 includes 5 theorems that are thin wrappers calling their corresponding axioms (liouville_approximation_theorem just calls liouville_approximation_theorem_axiom, etc.). These wrappers add no mathematical content. The actual distinct non-trivial theorem count is closer to 7, and even those are all one-liners.",
+      "recommendation": "Consider consolidating: either prove the results (eliminating the axiom+wrapper pattern) or keep only the axioms. The current pattern doubles the apparent API surface without adding content."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions[2]: 'Properties of Liouville numbers (uncountable, measure zero)'",
+      "finding": "The uncountability is axiomatized (not proved), and the measure zero property is only discussed in docstrings with no formal statement at all. Listing axiomatized and docstring-only content as 'original contributions' overstates the formal content.",
+      "recommendation": "Reframe to: 'Axiomatized properties of Liouville numbers (uncountability, closure under rational operations)' to honestly reflect that these are stated but not proved."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "crossReferences: hermite-lindemann relationship 'generalizes'",
+      "finding": "The cross-reference says Hermite-Lindemann 'generalizes' Liouville's theorem, but the relationship direction is wrong. Hermite-Lindemann uses entirely different methods (auxiliary polynomial construction) and is not a generalization of Liouville's Diophantine approximation approach. The description text is correct but the relationship type 'generalizes' is misleading.",
+      "recommendation": "Change relationship to 'related' or 'supersedes'. Hermite-Lindemann provides a more powerful transcendence criterion but by different methods."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "annotations.json ann-roth: 'Roth's proof introduced the large sieve method'",
+      "finding": "This is historically inaccurate. Roth's proof used a polynomial method related to the Thue-Siegel approach, not the large sieve. The large sieve was developed independently by Linnik (1941) and later refined by Bombieri and others. Roth's key innovation was the use of the 'index' of a rational approximation.",
+      "recommendation": "Correct to: 'Roth's proof refined the Thue-Siegel polynomial method, introducing the concept of the index of a rational approximation.'"
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "liouville_not_algebraic, lines 201-204",
+      "finding": "This theorem just unfolds the Transcendental definition: `have := liouville_transcendental x hx; unfold Transcendental at this; exact this`. The Transcendental/IsAlgebraic equivalence is definitional in Lean — this adds nothing over liouville_transcendental.",
+      "recommendation": "Remove or merge into the docstring of liouville_transcendental with a note about the definitional equivalence."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "crossReferences: sqrt2-irrational relationship 'specializes'",
+      "finding": "The relationship type 'specializes' for sqrt2-irrational doesn't fit. Irrationality of sqrt(2) is not a specialization of Liouville's theorem — sqrt(2) is algebraic, hence NOT Liouville. The description tries to connect them via the 'algebraic-transcendental hierarchy' but this is a conceptual stretch.",
+      "recommendation": "Change relationship to 'related' and simplify the description to note the contrast: sqrt(2) is algebraic (resists approximation beyond c/q^2 by Liouville's theorem), while Liouville numbers are transcendental."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "researcher",
+      "description": "Prove liouville_constant_irrational: replace the axiom with a proof that transcendental implies irrational (if x = p/q rational, then x is root of q*X - p, contradicting transcendence). This removes one unnecessary axiom and reduces axiomCount to 5.",
+      "status": "open"
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Reframe originalContributions[2] to honestly describe axiomatized properties rather than implying they are proved. Also update theoremCount to distinguish genuine theorems from axiom wrappers.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Fix cross-reference relationships: change hermite-lindemann from 'generalizes' to 'related' or 'supersedes', and change sqrt2-irrational from 'specializes' to 'related' with corrected description.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Correct the historical claim in ann-roth annotation about the 'large sieve method' — Roth used the polynomial/index method, not the large sieve.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Consider proving liouville_add_rat and liouville_mul_rat, which have short proof sketches in their docstrings. These should be provable from the Liouville definition without deep Mathlib dependencies.",
+      "status": "open"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 5,
+    "originalityAccuracy": 7,
+    "completeness": 5,
+    "framingPrecision": 7,
+    "pedagogicalQuality": 9,
+    "internalConsistency": 6,
+    "overall": 6.5
+  },
+  "suggestedBestFraming": "A pedagogical Mathlib wrapper for Wiedijk #18 (Liouville's theorem) that proves Liouville numbers are transcendental and constructs the Liouville constant via Mathlib, then axiomatizes five additional properties (approximation bound, uncountability, closure properties, Roth's theorem) with extensive exposition covering the Thue-Siegel-Roth progression and measure-category duality."
+}

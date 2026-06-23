@@ -1,0 +1,148 @@
+[
+  {
+    "id": "erdos-78-ann-simpleg",
+    "proofId": "erdos-78",
+    "range": {
+      "startLine": 26,
+      "endLine": 29
+    },
+    "type": "definition",
+    "title": "Simple Graph Structure",
+    "content": "Custom `SimpleG n` structure for graphs on $\\text{Fin}\\,n$ vertices, with adjacency relation `adj`, symmetry, and irreflexivity. This avoids Mathlib's `SimpleGraph` type class complexity while maintaining the essential properties needed for Ramsey theory. The structure is parameterized by vertex count $n$.",
+    "mathContext": "`SimpleG n` = $(V, E)$ with $V = \\text{Fin}\\,n$, $E \\subseteq \\binom{V}{2}$, formalized as `adj : Fin n \\to Fin n \\to Prop` with `symm` and `irrefl`",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simple graph",
+      "adjacency relation",
+      "symmetric relation",
+      "irreflexive relation"
+    ],
+    "prerequisites": [
+      "Fin type",
+      "Prop",
+      "symmetric relations"
+    ]
+  },
+  {
+    "id": "erdos-78-ann-clique",
+    "proofId": "erdos-78",
+    "range": {
+      "startLine": 32,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "Clique Definition",
+    "content": "A $k$-clique in $G$ is a subset $S$ of $k$ vertices where every pair is adjacent. This is the combinatorial heart of Ramsey theory: $R(k)$ is the minimum $n$ forcing a $k$-clique or $k$-independent set in every graph on $n$ vertices.",
+    "mathContext": "$G.\\text{hasClique}(k) \\iff \\exists S \\subseteq V, |S| = k, \\forall u, v \\in S, u \\ne v \\Rightarrow G.\\text{adj}(u, v)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "clique",
+      "complete subgraph",
+      "clique number",
+      "Turán's theorem"
+    ],
+    "prerequisites": [
+      "SimpleG",
+      "Finset.card",
+      "pairwise adjacency"
+    ]
+  },
+  {
+    "id": "erdos-78-ann-indepset",
+    "proofId": "erdos-78",
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Independent Set Definition",
+    "content": "A $k$-independent set in $G$ is a subset $S$ of $k$ vertices where no pair is adjacent. Equivalently, it is a $k$-clique in the complement graph $\\overline{G}$. The independence number $\\alpha(G)$ is the size of the largest independent set.",
+    "mathContext": "$G.\\text{hasIndepSet}(k) \\iff \\exists S \\subseteq V, |S| = k, \\forall u, v \\in S, u \\ne v \\Rightarrow \\neg G.\\text{adj}(u, v)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "independent set",
+      "independence number",
+      "complement graph",
+      "stable set"
+    ],
+    "prerequisites": [
+      "SimpleG",
+      "Finset.card",
+      "pairwise non-adjacency"
+    ]
+  },
+  {
+    "id": "erdos-78-ann-ramsey",
+    "proofId": "erdos-78",
+    "range": {
+      "startLine": 41,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Diagonal Ramsey Number R(k)",
+    "content": "The diagonal Ramsey number $R(k)$ is the minimum $n$ such that every graph on $n$ vertices contains either a $k$-clique or a $k$-independent set. Equivalently, every 2-coloring of $K_n$'s edges contains a monochromatic $K_k$. The axiomatization separates the existence (`ramseyNumber`) from the specification (`ramseyNumber_spec`), which states the Ramsey property for graphs on $R(k)$ vertices.",
+    "mathContext": "$R(k) = \\min\\{n : \\forall G \\text{ on } n \\text{ vertices}, \\omega(G) \\ge k \\text{ or } \\alpha(G) \\ge k\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number",
+      "Ramsey's theorem",
+      "monochromatic subgraph",
+      "edge coloring"
+    ],
+    "prerequisites": [
+      "SimpleG",
+      "hasClique",
+      "hasIndepSet"
+    ]
+  },
+  {
+    "id": "erdos-78-ann-probabilistic",
+    "proofId": "erdos-78",
+    "range": {
+      "startLine": 52,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Erdős Probabilistic Bound (1947)",
+    "content": "Erdős's landmark 1947 result: $R(k) > k \\cdot 2^{k/2} / e$, proved by showing a random graph on $n < \\sqrt{2}^k$ vertices has no $k$-clique or $k$-independent set with positive probability. This was the birth of the probabilistic method in combinatorics. The bound is non-constructive: it proves existence without giving an explicit construction. The formalization axiomatizes both the exponential form ($\\exists C > 1, C^k \\le R(k)$) and the asymptotic $\\sqrt{2}$ constant.",
+    "mathContext": "$R(k) \\ge k \\cdot 2^{k/2}/e \\approx (\\sqrt{2})^k$. Proof: $\\Pr[\\text{random } G \\text{ has } k\\text{-clique}] \\le \\binom{n}{k} 2^{-\\binom{k}{2}} < 1$ when $n < \\sqrt{2}^k$",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "random graph",
+      "union bound",
+      "first moment method"
+    ],
+    "prerequisites": [
+      "Ramsey number",
+      "probability",
+      "union bound",
+      "binomial coefficient"
+    ]
+  },
+  {
+    "id": "erdos-78-ann-paley",
+    "proofId": "erdos-78",
+    "range": {
+      "startLine": 1,
+      "endLine": 16
+    },
+    "type": "insight",
+    "title": "Paley Graph and the Constructive Gap",
+    "content": "The best known explicit Ramsey graphs before Li (2023) were Paley graphs: for a prime $p \\equiv 1 \\pmod{4}$, connect vertices $i, j \\in \\mathbb{F}_p$ iff $i - j$ is a quadratic residue. These achieve $\\alpha(G), \\omega(G) \\sim \\sqrt{p}$ (by the Weil bound), giving independence/clique number $\\sqrt{n}$. The target is $c \\cdot \\log n$, an exponential gap from $\\sqrt{n}$. This gap between $\\sqrt{n}$ and $\\log n$ represents one of the largest known gaps between constructive and probabilistic bounds in all of combinatorics.",
+    "mathContext": "Paley graph: $\\omega(G), \\alpha(G) \\sim \\sqrt{n}$ vs. target $c \\cdot \\log n$ — an exponential gap",
+    "significance": "key",
+    "relatedConcepts": [
+      "Paley graph",
+      "quadratic residue",
+      "Weil bound",
+      "character sums",
+      "pseudorandomness"
+    ],
+    "prerequisites": [
+      "finite field",
+      "quadratic residue",
+      "Weil's theorem"
+    ]
+  }
+]

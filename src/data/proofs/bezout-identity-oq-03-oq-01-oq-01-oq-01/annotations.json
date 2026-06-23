@@ -1,0 +1,186 @@
+[
+  {
+    "id": "ann-header-setup",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Module Header and Ring Setup",
+    "content": "The module docstring references two standard algebra textbooks: Lang's *Algebra* (2002, Ch. II §2) and Atiyah-Macdonald's *Introduction to Commutative Algebra* (1969, Prop. 1.10), placing this formalization in the classical commutative algebra tradition. The single `import Mathlib` provides the complete ideal theory infrastructure. The `CommRing R` typeclass constraint restricts to commutative rings — an essential restriction, since the CRT fails for general non-commutative rings where left ideals, right ideals, and two-sided ideals diverge. The `open Ideal` command brings ideal operations (⊔, ⊓, *, quotient) into scope without qualification.",
+    "mathContext": "The setup works over an arbitrary commutative ring $R$, not just $\\mathbb{Z}$ or a PID. This generality captures the CRT for polynomial rings $k[x]$, number rings $\\mathcal{O}_K$, and formal power series rings $k[[x]]$ simultaneously.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "commutative ring",
+      "ideal theory",
+      "Atiyah-Macdonald",
+      "universe polymorphism"
+    ],
+    "prerequisites": [
+      "Lean 4 type classes",
+      "Mathlib ring theory"
+    ]
+  },
+  {
+    "id": "ann-coprimality-characterization",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 31,
+      "endLine": 34
+    },
+    "type": "concept",
+    "title": "Coprimality as Sum Equals Whole Ring",
+    "content": "The foundational characterization: two ideals I, J in a commutative ring R are coprime (IsCoprime I J) if and only if their sum is the entire ring (I + J = R, or equivalently I ⊔ J = ⊤ in the lattice of ideals). This generalizes the integer notion gcd(m,n) = 1, which is equivalent to (m) + (n) = ℤ. The proof is a one-liner wrapping Mathlib's Ideal.isCoprime_iff_sup_eq.",
+    "mathContext": "$I$ and $J$ are coprime $\\iff I + J = R \\iff \\exists a \\in I, b \\in J: a + b = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "coprime ideals",
+      "lattice of ideals",
+      "Bézout identity",
+      "maximal ideals"
+    ],
+    "prerequisites": [
+      "ideal theory",
+      "lattice operations on ideals"
+    ]
+  },
+  {
+    "id": "ann-inf-eq-mul",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 49
+    },
+    "type": "insight",
+    "title": "Intersection Equals Product for Coprime Ideals",
+    "content": "The key structural theorem: for coprime ideals, I ∩ J = I · J. The ≤ direction (I·J ⊆ I∩J) is immediate from Ideal.mul_le_inf. The ≥ direction uses a Bézout-style argument: since I + J = R, there exist a ∈ I, b ∈ J with a + b = 1. For any x ∈ I ∩ J, we write x = x·1 = x·a + x·b. Since x ∈ J and a ∈ I, xa ∈ I·J; since x ∈ I and b ∈ J, xb ∈ I·J. This element-level decomposition is the heart of the proof.\n\nNote that this equality fails without coprimality: in ℤ, (2) ∩ (4) = (4) but (2)·(4) = (8). The Bézout coefficients a + b = 1 are the essential ingredient.",
+    "mathContext": "For coprime $I + J = R$: $I \\cap J = I \\cdot J$. Proof: $x \\in I \\cap J \\Rightarrow x = xa + xb$ where $a + b = 1$, $a \\in I$, $b \\in J$, so $xa \\in JI$ and $xb \\in IJ$.\n\nThis is the ideal-theoretic analogue of $\\text{lcm}(m,n) = mn/\\gcd(m,n)$: when $\\gcd = 1$, $\\text{lcm} = mn$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bézout identity",
+      "ideal product",
+      "lattice meet",
+      "element-level reasoning"
+    ],
+    "prerequisites": [
+      "coprime ideals",
+      "ideal arithmetic"
+    ]
+  },
+  {
+    "id": "ann-two-fold-crt",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "Two-Fold CRT: R/(I∩J) ≅ R/I × R/J",
+    "content": "The binary case of the CRT: for coprime ideals I, J in R, the quotient R/(I∩J) is isomorphic to R/I × R/J as rings. The map sends x + (I∩J) to (x + I, x + J). Surjectivity says every pair of residues is achievable; injectivity says x ∈ I∩J iff x ∈ I and x ∈ J. All three properties (well-defined ring homomorphism, surjective, injective) are obtained from Mathlib's quotientInfEquivQuotientProd.",
+    "mathContext": "$R/(I \\cap J) \\cong R/I \\times R/J$ via $x + (I \\cap J) \\mapsto (x + I, x + J)$. The isomorphism is both a ring homomorphism and a bijection.\n\nFor $R = \\mathbb{Z}$, $I = (m)$, $J = (n)$ with $\\gcd(m,n) = 1$: this recovers $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ring isomorphism",
+      "quotient ring",
+      "direct product",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "quotient rings",
+      "ring homomorphisms",
+      "coprime ideals"
+    ]
+  },
+  {
+    "id": "ann-k-fold-crt",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 96
+    },
+    "type": "insight",
+    "title": "General k-Fold CRT: R/⨅Iᵢ ≅ ∏ R/Iᵢ",
+    "content": "The full generalization: for any finite family of pairwise coprime ideals {Iᵢ}_{i∈ι}, the quotient R/(⨅ Iᵢ) is isomorphic to the product ∏ R/Iᵢ. This is the abstract algebra formulation that subsumes all concrete CRT instances (ℤ/nℤ, polynomial rings, number fields). The proof wraps Mathlib's quotientInfRingEquivPiQuotient, with surjectivity and injectivity following from the ring equivalence.\n\nThe k-fold CRT is proved by induction on the number of ideals, using the coprimality inheritance property (isCoprime_of_coprime_inf) to reduce the k-ideal case to the 2-ideal case at each step.",
+    "mathContext": "For pairwise coprime $\\{I_i\\}_{i \\in \\iota}$: $R / \\bigcap_i I_i \\cong \\prod_i R/I_i$. Coprimality: $I_i + I_j = R$ for $i \\neq j$.\n\nThe k-fold CRT is Proposition 1.10 in Atiyah-Macdonald and is the algebraic foundation for the structure of $\\text{Spec}(R/\\bigcap I_i) = \\bigsqcup \\text{Spec}(R/I_i)$ in algebraic geometry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pairwise coprime",
+      "product of rings",
+      "infimum of ideals",
+      "Atiyah-Macdonald Prop 1.10"
+    ],
+    "prerequisites": [
+      "2-fold CRT",
+      "finite families of ideals",
+      "pairwise coprimality"
+    ]
+  },
+  {
+    "id": "ann-crt-product",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 102,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "CRT for Products: R/(I·J) ≅ R/I × R/J",
+    "content": "This theorem bridges the product and intersection formulations: for coprime ideals, I·J = I∩J (from inf_eq_mul_of_coprime), so the CRT isomorphism R/(I∩J) ≅ R/I × R/J transfers to R/(I·J) ≅ R/I × R/J. The proof substitutes I·J for I∩J using the equality and applies crt_two.\n\nThis product form is often more natural in applications: in ℤ, working with (mn) = (m)·(n) is more convenient than (m) ∩ (n), and in polynomial rings, the product of ideals corresponds to multiplying generators.",
+    "mathContext": "For coprime $I + J = R$: $R/(I \\cdot J) \\cong R/(I \\cap J) \\cong R/I \\times R/J$. The first isomorphism uses $I \\cdot J = I \\cap J$; the second is the 2-fold CRT.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ideal product",
+      "ideal intersection",
+      "quotient equivalence"
+    ],
+    "prerequisites": [
+      "inf_eq_mul_of_coprime",
+      "crt_two"
+    ]
+  },
+  {
+    "id": "ann-crt-unique",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 113,
+      "endLine": 120
+    },
+    "type": "concept",
+    "title": "Uniqueness of CRT Solutions",
+    "content": "The uniqueness theorem: if x ≡ y (mod I) and x ≡ y (mod J), then x ≡ y (mod I ∩ J). Equivalently, the CRT solution is unique modulo the intersection. The proof is direct: x - y ∈ I and x - y ∈ J implies x - y ∈ I ∩ J by Submodule.mem_inf.\n\nThis is the content of injectivity of the CRT map rephrased at the element level. Combined with surjectivity, it gives the full CRT: every pair of residues is achievable, and the solution is unique modulo I ∩ J.",
+    "mathContext": "$x \\equiv y \\pmod{I}$ and $x \\equiv y \\pmod{J}$ $\\Rightarrow$ $x \\equiv y \\pmod{I \\cap J}$. Proof: $x - y \\in I \\cap J$ iff $x - y \\in I$ and $x - y \\in J$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "uniqueness",
+      "injectivity",
+      "simultaneous congruences"
+    ],
+    "prerequisites": [
+      "quotient ring equality",
+      "Submodule.mem_inf"
+    ]
+  },
+  {
+    "id": "ann-coprimality-inheritance",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 127,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Coprimality Inheritance: I⊥J ∧ I⊥K ⟹ I⊥(J∩K)",
+    "content": "A key closure property: if ideal I is coprime to both J and K, then I is coprime to J ∩ K. The proof uses two facts: (1) IsCoprime.mul_right gives coprimality with J·K, and (2) J·K ≤ J∩K (Ideal.mul_le_inf), so coprimality with the smaller ideal J·K implies coprimality with the larger J∩K. This inheritance property is essential for inductive arguments in the k-fold CRT.\n\nThe proof strategy — going through the product rather than the intersection — is typical in ideal theory: products are easier to manipulate algebraically, while intersections have cleaner lattice-theoretic properties.",
+    "mathContext": "$I + J = R$ and $I + K = R \\Rightarrow I + (J \\cap K) = R$. Uses $I + JK = R$ (from IsCoprime.mul_right) and $JK \\subseteq J \\cap K$.\n\nEquivalently: in the lattice of ideals, $I \\vee J = \\top$ and $I \\vee K = \\top$ imply $I \\vee (J \\wedge K) = \\top$ — a distributivity-like property.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "coprimality inheritance",
+      "ideal lattice monotonicity",
+      "inductive CRT arguments",
+      "lattice distributivity"
+    ],
+    "prerequisites": [
+      "coprime ideals",
+      "ideal product vs intersection"
+    ]
+  }
+]

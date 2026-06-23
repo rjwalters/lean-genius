@@ -1,0 +1,192 @@
+[
+  {
+    "id": "ann-sg-counting-def",
+    "proofId": "sophie-germain-oq-02",
+    "range": {
+      "startLine": 47,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Sophie Germain Prime Counting Function",
+    "content": "Defines $\\pi_{SG}(n)$ as the cardinality of Sophie Germain primes in $\\{0, 1, \\ldots, n\\}$. Uses `Finset.range(n+1)` to generate candidates, `filter` with the `IsSophieGermainPrime` predicate, and `.card` to count. Declared `noncomputable` because `IsSophieGermainPrime` involves `Decidable` instances that are not computationally available in general.",
+    "mathContext": "$\\pi_{SG}(n) = |\\{p \\in \\{0, \\ldots, n\\} : \\text{IsSophieGermainPrime}(p)\\}|$. In Lean: `(Finset.range (n+1)).filter (fun p => IsSophieGermainPrime p) |>.card`.",
+    "significance": "key",
+    "prerequisites": [
+      "Finset.range and Finset.filter",
+      "Finset.card",
+      "IsSophieGermainPrime predicate",
+      "noncomputable definitions"
+    ],
+    "relatedConcepts": [
+      "prime counting function",
+      "arithmetic functions",
+      "Finset operations in Mathlib",
+      "decidability in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-sg-le-pi",
+    "proofId": "sophie-germain-oq-02",
+    "range": {
+      "startLine": 59,
+      "endLine": 63
+    },
+    "type": "insight",
+    "title": "Sophie Germain Primes Are a Subset of All Primes",
+    "content": "Every Sophie Germain prime is a prime (the condition adds the requirement that $2p+1$ also be prime). Therefore $\\pi_{SG}(n) \\leq \\pi(n)$. The proof uses `Finset.card_le_card` to reduce to showing that the SG-prime filter is a subset of the prime filter, which follows from destructuring `IsSophieGermainPrime` to extract the underlying primality.",
+    "mathContext": "$\\pi_{SG}(n) \\leq \\pi(n)$ since $\\{p \\leq n : \\text{SG prime}\\} \\subseteq \\{p \\leq n : \\text{prime}\\}$. The proof extracts `hp.1 : Nat.Prime p` from `hp : IsSophieGermainPrime p`.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Finset.card_le_card",
+      "IsSophieGermainPrime structure",
+      "subset of filtered finsets"
+    ],
+    "relatedConcepts": [
+      "subset counting",
+      "Finset.card_le_card",
+      "prime density"
+    ]
+  },
+  {
+    "id": "ann-monotonicity",
+    "proofId": "sophie-germain-oq-02",
+    "range": {
+      "startLine": 75,
+      "endLine": 79
+    },
+    "type": "insight",
+    "title": "Monotonicity of the Counting Function",
+    "content": "If $m \\leq n$, then $\\pi_{SG}(m) \\leq \\pi_{SG}(n)$. This is an essential property for any counting function. The proof shows the filtered finset for $m$ is a subset of that for $n$: any $p$ in $\\{0, \\ldots, m\\}$ that is an SG prime is also in $\\{0, \\ldots, n\\}$ (since $p \\leq m \\leq n$), and `omega` handles the arithmetic.",
+    "mathContext": "$m \\leq n \\Rightarrow \\pi_{SG}(m) \\leq \\pi_{SG}(n)$. Monotonicity makes $\\pi_{SG}$ a valid counting function in the analytic number theory sense.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Finset.card_le_card",
+      "range subset inclusion",
+      "omega tactic"
+    ],
+    "relatedConcepts": [
+      "monotone functions",
+      "counting functions in analytic number theory",
+      "Finset.range monotonicity"
+    ]
+  },
+  {
+    "id": "ann-concrete-values",
+    "proofId": "sophie-germain-oq-02",
+    "range": {
+      "startLine": 82,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "Computing Concrete Values",
+    "content": "Three concrete computations: $\\pi_{SG}(0) = 0$, $\\pi_{SG}(1) = 0$, $\\pi_{SG}(2) = 1$. The first two use `interval_cases` to enumerate all $p \\leq 0$ (resp. $\\leq 1$) and check none satisfies `IsSophieGermainPrime`. The third uses `decide` to evaluate the finite computation directly: 2 is the smallest Sophie Germain prime since both 2 and $2 \\cdot 2 + 1 = 5$ are prime.",
+    "mathContext": "The Sophie Germain primes begin: $2, 3, 5, 11, 23, 29, 41, 53, 83, 89, \\ldots$ The first SG prime is 2: both 2 and $2(2)+1 = 5$ are prime. The Lean `decide` tactic evaluates $\\pi_{SG}(2) = 1$ by brute-force computation on $\\{0, 1, 2\\}$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "interval_cases tactic",
+      "decide tactic",
+      "IsSophieGermainPrime for small values"
+    ],
+    "relatedConcepts": [
+      "decidable computation in Lean 4",
+      "interval_cases tactic",
+      "first Sophie Germain primes"
+    ]
+  },
+  {
+    "id": "ann-twin-prime-constant",
+    "proofId": "sophie-germain-oq-02",
+    "range": {
+      "startLine": 108,
+      "endLine": 111
+    },
+    "type": "definition",
+    "title": "The Twin Prime Constant",
+    "content": "Defines $C_2 \\approx 0.6602$ as a noncomputable real number. The true value is the infinite product $C_2 = \\prod_{p \\geq 3 \\text{ prime}} p(p-2)/(p-1)^2$, but this is approximated here to avoid axiomatizing the existence of infinite products. This design keeps the entry at 0 axioms -- the constant is stated as a definition, not an assumption.",
+    "mathContext": "$C_2 = \\prod_{p \\geq 3} \\frac{p(p-2)}{(p-1)^2} = \\prod_{p \\geq 3} \\left(1 - \\frac{1}{(p-1)^2}\\right) \\approx 0.6601618158\\ldots$ The constant appears in the asymptotics of both twin primes and Sophie Germain primes because both involve pairs of primes separated by a fixed linear function.",
+    "significance": "key",
+    "prerequisites": [
+      "infinite products over primes",
+      "Hardy-Littlewood conjectures",
+      "noncomputable definitions"
+    ],
+    "relatedConcepts": [
+      "twin prime constant",
+      "Hardy-Littlewood conjecture",
+      "Bateman-Horn conjecture",
+      "Euler product"
+    ]
+  },
+  {
+    "id": "ann-mod-three",
+    "proofId": "sophie-germain-oq-02",
+    "range": {
+      "startLine": 116,
+      "endLine": 133
+    },
+    "type": "insight",
+    "title": "Residue Class Constraint: p \u2261 2 (mod 3)",
+    "content": "For Sophie Germain primes $p > 3$: $p \\equiv 2 \\pmod{3}$. The proof eliminates $p \\equiv 0$ (since $p$ is prime and $p > 3$, so $3 \\nmid p$) and $p \\equiv 1$ (since $2(1) + 1 = 3 \\equiv 0 \\pmod{3}$, giving $3 \\mid (2p+1)$, contradicting primality of $2p+1 > 3$). This is the **simplest sieve condition** for Sophie Germain primes: it eliminates all primes $p \\equiv 1 \\pmod{3}$.",
+    "mathContext": "If $p \\equiv 1 \\pmod{3}$, then $2p + 1 \\equiv 2(1) + 1 = 3 \\equiv 0 \\pmod{3}$, so $3 \\mid (2p+1)$. Since $p > 3$ implies $2p+1 > 7 > 3$, the number $2p+1$ is divisible by 3 but not equal to 3, contradicting primality. Therefore $p \\equiv 2 \\pmod{3}$.",
+    "significance": "key",
+    "prerequisites": [
+      "modular arithmetic",
+      "Nat.Prime.eq_one_or_self_of_dvd",
+      "proof by elimination"
+    ],
+    "relatedConcepts": [
+      "residue classes",
+      "sieve conditions",
+      "modular arithmetic in Lean 4",
+      "prime residue constraints"
+    ]
+  },
+  {
+    "id": "ann-mod-six",
+    "proofId": "sophie-germain-oq-02",
+    "range": {
+      "startLine": 137,
+      "endLine": 143
+    },
+    "type": "insight",
+    "title": "Residue Class Constraint: p \u2261 5 (mod 6)",
+    "content": "Strengthens the mod 3 result: for $p > 3$, combining $p \\equiv 2 \\pmod{3}$ with $p$ odd (since $p > 2$ and prime) gives $p \\equiv 5 \\pmod{6}$. The oddness follows from `Nat.Prime.odd_of_ne_two`. This is the tightest residue class constraint available from simple modular arithmetic.",
+    "mathContext": "$p > 3$ prime and $p \\equiv 2 \\pmod{3}$ and $p \\equiv 1 \\pmod{2}$ together give $p \\equiv 5 \\pmod{6}$ by CRT. The candidates are $5, 11, 17, 23, 29, 35, \\ldots$ Of these, not all are SG primes (e.g., 17 is prime but $2(17)+1 = 35 = 5 \\times 7$ is not), but all SG primes $> 3$ lie in this progression.",
+    "significance": "key",
+    "prerequisites": [
+      "sg_mod_three theorem",
+      "Nat.Prime.odd_of_ne_two",
+      "Chinese Remainder Theorem (implicit)"
+    ],
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "arithmetic progressions",
+      "prime sieving",
+      "Dirichlet's theorem on primes in progressions"
+    ]
+  },
+  {
+    "id": "ann-safe-prime",
+    "proofId": "sophie-germain-oq-02",
+    "range": {
+      "startLine": 148,
+      "endLine": 155
+    },
+    "type": "insight",
+    "title": "Safe Prime Properties",
+    "content": "Two properties of the safe prime $q = 2p+1$: (1) if $p$ is a Sophie Germain prime, then $q$ is prime (this is essentially the definition unwrapped), and (2) $q$ is always odd for $p \\geq 1$ (since $2p$ is even, $2p+1$ is odd). These simple lemmas are useful for downstream cryptographic applications.",
+    "mathContext": "$\\text{SafePrime}(p) = 2p + 1$. If $\\text{IsSophieGermainPrime}(p)$, then $\\text{Nat.Prime}(2p+1)$ by the second component of the SG prime definition. For $p \\geq 1$: $(2p+1) \\bmod 2 = 1$ since $2p$ is even.",
+    "significance": "supporting",
+    "prerequisites": [
+      "SafePrime definition",
+      "IsSophieGermainPrime structure",
+      "parity of even + 1"
+    ],
+    "relatedConcepts": [
+      "safe primes",
+      "cryptographic primes",
+      "Diffie-Hellman groups",
+      "parity arguments"
+    ]
+  }
+]

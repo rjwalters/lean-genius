@@ -1,0 +1,107 @@
+{
+  "slug": "erdos-380",
+  "title": "Erdős #380",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "We call an interval $[u,v]$ 'bad' if the greatest prime factor of $\\prod_{u\\leq m\\leq v}m$ occurs with an exponent greater than $1$. Let $B(x)$ count the number of $n\\leq x$ which are contained in at least one bad interval. Is it true that\\[B(x)\\sim \\#\\{ n\\leq x: P(n)^2\\mid n\\},\\]where $P(n)$ is the largest prime factor of $n$?\n\n\n\nErd\\H{o}s and Graham only knew that $B(x) > x^{1-o(1)}$. Similarly, we call an interval $[u,v]$ 'very bad' if $\\prod_{u\\leq m\\leq v}m$ is powerful. The number of integers $n\\leq x$ contained in at least one very bad interval should be $\\ll x^{1/2}$. In fact, it should be asymptotic to the number of powerful numbers $\\leq x$.\n\nWe have\\[\\#\\{ n\\leq x: P(n)^2\\mid n\\}=\\frac{x}{\\exp((c+o(1))\\sqrt{\\log x\\log\\log x})}\\]for some constant $c>0$.\n\nTao notes in the comments that if $[u,v]$ is bad then it cannot contain any primes, and hence certainly $v<2u$, and in general $v-u$ must be small (for example, assuming Cramer's conjecture, $v-u\\ll (\\log u)^2$).\n\nSee also [382].",
+    "plain": "We call an interval $[u,v]$ 'bad' if the greatest prime factor of $\\prod_{u\\leq m\\leq v}m$ occurs with an exponent greater than $1$. Let $B(x)$ count the number of $n\\leq x$ which are contained in at least one bad interval. Is it true that\\[B(x)\\sim \\#\\{ n\\leq x: P(n)^2\\mid n\\},\\]where $P(n)$ is the largest prime factor of $n$?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-13T00:59:36.242Z",
+    "iteration": 4,
+    "focus": "Assessed as complete — 1 deep axiom, 0 sorries",
+    "blockers": [],
+    "nextAction": "Problem complete. Axiom requires advanced analytic NT (Dickman function, smoothness estimates).",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 1A deep (gpfSquare_asymptotic, sieve methods), 17T proved, 0S. Comprehensive formalization with Bertrand-based no-prime theorem, counting chain, very-bad intervals.",
+    "builtItems": [
+      "Proved gpf_prime (theorem, 4 lines)",
+      "Proved gpf_dvd (theorem, 4 lines)",
+      "Proved gpf_largest (theorem, 4 lines)",
+      "Defined greatestPrimeFactor via Nat.primeFactors.max (noncomputable def)",
+      "bad_interval_no_prime_general: unconditional no-prime theorem (Bertrand)",
+      "bad_interval_v_bound: structural bound v<2u for bad intervals",
+      "singleton_bad_iff: [n,n] bad ↔ P(n)²|n for n≥2",
+      "gpfSquare_in_bad: P(n)²|n → InBadInterval n",
+      "badCount_ge_gpfSquareCount: B(x) ≥ #{n≤x: P(n)²|n}",
+      "IsPowerful, IsVeryBadInterval, InVeryBadInterval (definitions)",
+      "veryBadCount, powerfulCount (counting functions)",
+      "veryBad_is_bad: very bad → bad (proved)",
+      "veryBad_interval_no_prime: corollary of bad_interval_no_prime_general (proved)",
+      "singleton_veryBad_iff: [n,n] very bad ↔ n powerful (proved)",
+      "powerful_in_veryBad: powerful n → InVeryBadInterval (proved)",
+      "veryBadCount_le_badCount: inequality (proved)",
+      "veryBadCount_ge_powerfulCount: inequality (proved)",
+      "counting_chain: summary of all counting inequalities (proved)",
+      "VeryBadConjecture: secondary conjecture statement",
+      "erdos_graham_lower: derived from gpfSquare_asymptotic + badCount_ge_gpfSquareCount (axiom→theorem)"
+    ],
+    "insights": [
+      "greatestPrimeFactor defined via Nat.primeFactors.max, eliminating 4 axioms",
+      "gpf_prime proved using Finset.max_mem + Nat.mem_primeFactors",
+      "gpf_dvd proved using Finset.max_mem + Nat.mem_primeFactors",
+      "gpf_largest proved using Finset.le_max + Nat.mem_primeFactors",
+      "Nat.primeFactors_nonempty exists in Mathlib for n > 1",
+      "bad_interval_no_prime_general: proved ALL bad intervals prime-free via Bertrand (no v<2u needed)",
+      "bad_interval_v_bound: corollary v<2u for bad intervals with u≥1, via Bertrand + no-prime",
+      "Key insight: by Bertrand, largest prime ≤ v is > v/2, so GPF has unique multiple in [u,v], giving v_P(product)=1, contradiction with bad",
+      "Singleton [n,n] bad iff P(n)²|n — directly links IsBadInterval to gpfSquareCount",
+      "B(x) ≥ #{n≤x: P(n)²|n} via singleton bad intervals — lower bound on the conjecture ratio",
+      "Both axioms (erdos_graham_lower, gpfSquare_asymptotic) are deep analytic results — not eliminable",
+      "IsPowerful n: 1 < n ∧ ∀ p prime, p|n → p²|n — standard definition for powerful/squareful numbers",
+      "veryBad → bad: powerful product implies P²|product for GPF, so every very bad interval is bad",
+      "Singleton [n,n] is very bad ↔ n is powerful — parallels singleton_bad_iff for bad intervals",
+      "Full counting chain: powerfulCount ≤ veryBadCount ≤ badCount ≥ gpfSquareCount",
+      "erdos_graham_lower is redundant given gpfSquare_asymptotic: chain x^{1-ε} ≤ gpfSquareCount(x) ≤ badCount(x) gives the bound directly"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #380 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWe call an interval $[u,v]$ 'bad' if the greatest prime factor of $\\prod_{u\\leq m\\leq v}m$ occurs with an exponent greater than $1$. Let $B(x)$ count the number of $n\\leq x$ which are contained in at least one bad interval. Is it true that\\[B(x)\\sim \\#\\{ n\\leq x: P(n)^2\\mid n\\},\\]where $P(n)$ is the largest prime factor of $n$?\n\n\n\nErd\\H{o}s and Graham only knew that $B(x) > x^{1-o(1)}$. Similarly, we call an interval $[u,v]$ 'very bad' if $\\prod_{u\\leq m\\leq v}m$ is powerful. The number of integers $n\\leq x$ contained in at least one very bad interval should be $\\ll x^{1/2}$. In fact, it should be asymptotic to the number of powerful numbers $\\leq x$.\n\nWe have\\[\\#\\{ n\\leq x: P(n)^2\\mid n\\}=\\frac{x}{\\exp((c+o(1))\\sqrt{\\log x\\log\\log x})}\\]for some constant $c>0$.\n\nTao notes in the comments that if $[u,v]$ is bad then it cannot contain any primes, and hence certainly $v<2u$, and in general $v-u$ must be small (for example, assuming Cramer's conjecture, $v-u\\ll (\\log u)^2$).\n\nSee also [382].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #382\n- Problem #379\n- Problem #381\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-38",
+    "erdos-380"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T00:59:36.242Z",
+  "lastUpdate": "2026-03-29T07:10:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos380Problem.lean",
+      "filename": "Erdos380Problem.lean",
+      "lineCount": 397,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos380Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+[
+  {
+    "id": "ann-ftd-imports",
+    "proofId": "feuerbachs-theorem-defs",
+    "range": {
+      "startLine": 1,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Module Setup and Historical Documentation",
+    "content": "The module imports Mathlib's Euclidean geometry infrastructure (sphere definitions, triangle operations, circumcenter API), real square roots, trigonometric functions, and general-purpose tactics. The detailed docstring explains the scope: this file provides all definitions and nine-point circle proofs, while the actual Feuerbach tangency (incircle and excircle distance relations) is proved in FeuerbachsTheoremOQ01.lean. The file operates in a `noncomputable section` because the coordinate geometry uses real-valued functions like `Real.sqrt`.",
+    "mathContext": "Feuerbach's Theorem (Wiedijk #29): The nine-point circle of any triangle is internally tangent to the incircle and externally tangent to each of the three excircles. This module provides the definitional foundation: $\\mathbb{R}^2$ coordinates, special points, and nine-point circle membership proofs.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nine-point circle",
+      "Feuerbach point",
+      "Wiedijk's 100 theorems"
+    ],
+    "prerequisites": [
+      "Mathlib Euclidean geometry",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-ftd-triangle-struct",
+    "proofId": "feuerbachs-theorem-defs",
+    "range": {
+      "startLine": 60,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "Triangle Structure and Basic Measurements",
+    "content": "The `Triangle` structure represents a non-degenerate triangle in $\\mathbb{R}^2$ via three vertices $A, B, C$ with the non-degeneracy condition that the signed area is nonzero. This single condition ensures all vertices are distinct and non-collinear, which is needed for every subsequent computation (circumcenter denominator, altitude projections, etc.). Side lengths use `Real.sqrt` for Euclidean distance, the semiperimeter is $(a+b+c)/2$, and the area uses the shoelace formula with absolute value.",
+    "mathContext": "Non-degeneracy: $(B_x - A_x)(C_y - A_y) - (C_x - A_x)(B_y - A_y) \\neq 0$. Side lengths: $a = |BC| = \\sqrt{(C_x - B_x)^2 + (C_y - B_y)^2}$. Area: $\\Delta = \\frac{1}{2}|\\det\\begin{pmatrix} B-A \\\\ C-A \\end{pmatrix}|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "signed area",
+      "shoelace formula",
+      "non-degeneracy"
+    ],
+    "prerequisites": [
+      "Euclidean distance",
+      "determinant"
+    ]
+  },
+  {
+    "id": "ann-ftd-special-points",
+    "proofId": "feuerbachs-theorem-defs",
+    "range": {
+      "startLine": 99,
+      "endLine": 138
+    },
+    "type": "definition",
+    "title": "Triangle Special Points: Circumcenter, Orthocenter, Centroid",
+    "content": "The circumcenter $O$ is computed via the explicit perpendicular bisector intersection formula, dividing by the denominator $d = 2[(A_x - C_x)(B_y - C_y) - (B_x - C_x)(A_y - C_y)]$, which equals twice the signed area and is nonzero by non-degeneracy. The orthocenter uses the elegant Euler relation $H = A + B + C - 2O$ instead of computing altitude intersections directly. The centroid is the standard average $(A + B + C)/3$. The `dist2` function provides Euclidean distance for the circumradius $R = |OA|$.",
+    "mathContext": "Circumcenter via perpendicular bisectors: $O_x = \\frac{(|A|^2 - |C|^2)(B_y - C_y) - (|B|^2 - |C|^2)(A_y - C_y)}{d}$. Orthocenter: $H = A + B + C - 2O$. Centroid: $G = (A+B+C)/3$. Circumradius: $R = |OA|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "perpendicular bisector",
+      "Euler line",
+      "circumscribed circle"
+    ],
+    "prerequisites": [
+      "coordinate geometry",
+      "perpendicular bisector intersection"
+    ]
+  },
+  {
+    "id": "ann-ftd-nine-point-defs",
+    "proofId": "feuerbachs-theorem-defs",
+    "range": {
+      "startLine": 143,
+      "endLine": 186
+    },
+    "type": "definition",
+    "title": "Nine-Point Circle: Center, Radius, and the 9 Points",
+    "content": "The nine-point center $N$ is the midpoint of the circumcenter and orthocenter: $N = (O + H)/2$. The nine-point radius is $R/2$. The 9 special points are defined: 3 side midpoints ($M_a, M_b, M_c$), 3 Euler midpoints (midpoints of $AH$, $BH$, $CH$ segments from vertices to orthocenter), and 3 altitude feet ($H_a, H_b, H_c$ as orthogonal projections onto opposite sides). The altitude foot formula uses the standard projection: for vertex $A$ onto line $BC$, $H_a = B + t(C-B)$ where $t = (A-B) \\cdot (C-B) / |BC|^2$.",
+    "mathContext": "Nine-point center: $N = (O + H)/2$. Nine-point radius: $R_9 = R/2$. Altitude foot: $H_a = B + \\frac{(A-B) \\cdot (C-B)}{|BC|^2}(C-B)$. The 9 points: $\\{M_a, M_b, M_c\\} \\cup \\{\\text{mid}(A,H), \\text{mid}(B,H), \\text{mid}(C,H)\\} \\cup \\{H_a, H_b, H_c\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "nine-point circle",
+      "orthogonal projection",
+      "altitude foot"
+    ],
+    "prerequisites": [
+      "midpoint formula",
+      "dot product",
+      "orthogonal projection"
+    ]
+  },
+  {
+    "id": "ann-ftd-incircle-excircles",
+    "proofId": "feuerbachs-theorem-defs",
+    "range": {
+      "startLine": 191,
+      "endLine": 252
+    },
+    "type": "definition",
+    "title": "Incircle, Excircles, and Tangency Definitions",
+    "content": "The incenter $I$ is the weighted average of vertices with weights equal to opposite side lengths: $I = (aA + bB + cC)/(a+b+c)$. The inradius is $r = \\Delta/s$ where $\\Delta$ is the area and $s$ the semiperimeter. Three excircle centers use signed weights (e.g., excenter opposite $A$ has weight $-a$ for vertex $A$), with exradii $r_A = \\Delta/(s-a)$. Internal tangency is defined as $|C_1 C_2| = |r_1 - r_2|$ and external tangency as $|C_1 C_2| = r_1 + r_2$. These definitions set up the Feuerbach tangency statement.",
+    "mathContext": "Incenter: $I = \\frac{aA + bB + cC}{a+b+c}$, inradius $r = \\Delta/s$. Excenter: $I_A = \\frac{-aA + bB + cC}{-a+b+c}$, exradius $r_A = \\Delta/(s-a)$. Internal tangency: $d(C_1, C_2) = |r_1 - r_2|$. External tangency: $d(C_1, C_2) = r_1 + r_2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "incircle",
+      "excircle",
+      "circle tangency",
+      "barycentric coordinates"
+    ],
+    "prerequisites": [
+      "triangle area",
+      "semiperimeter",
+      "weighted averages"
+    ]
+  },
+  {
+    "id": "ann-ftd-euler-line-proofs",
+    "proofId": "feuerbachs-theorem-defs",
+    "range": {
+      "startLine": 258,
+      "endLine": 372
+    },
+    "type": "concept",
+    "title": "Euler Line, Circumcenter Properties, and Nine-Point Membership Lemma",
+    "content": "This section establishes the theoretical foundation for nine-point circle membership. The Euler line relation $G = (2O + H)/3$ and the nine-point center's position on the Euler line both reduce to `ring` after unfolding definitions. The circumcenter equidistance proofs ($|OB|^2 = |OA|^2$ and $|OC|^2 = |OA|^2$) use the perpendicular bisector condition, which is linear in $O$ and hence verifiable by `field_simp + ring`. The key `ninepoint_membership` lemma factors out the common proof pattern: if $P - N = (O - V)/2$ for a vertex $V$, then $|NP|^2 = |OV|^2/4 = R^2/4$, so $|NP| = R/2$.",
+    "mathContext": "Euler line: $G = (2O + H)/3$. Perpendicular bisector condition (linear in $O$): $(B-A) \\cdot (B+A-2O) = 0 \\implies |OB|^2 = |OA|^2$. Nine-point membership: $P - N = (O - V)/2 \\implies |NP| = |OV|/2 = R/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler line",
+      "perpendicular bisector",
+      "circumcenter equidistance"
+    ],
+    "prerequisites": [
+      "dot product",
+      "field_simp tactic",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-ftd-midpoint-membership",
+    "proofId": "feuerbachs-theorem-defs",
+    "range": {
+      "startLine": 374,
+      "endLine": 441
+    },
+    "type": "insight",
+    "title": "Six Midpoints on the Nine-Point Circle",
+    "content": "All six midpoint membership proofs follow the same elegant pattern via `ninepoint_membership`. For side midpoints: $M_a - N = (O - A)/2$ (verified by `ring` after unfolding all definitions). For Euler midpoints: $\\text{mid}(A,H) - N = (A - O)/2$. In each case, the required squared-distance equality either follows by `ring` (when the reference vertex is $A$) or by invoking `circumcenter_equidist_sq_B/C` (when the reference vertex is $B$ or $C$). The factored lemma reduces each proof to just 3-4 lines.",
+    "mathContext": "Side midpoints: $M_a - N = (O-A)/2$, so $|M_a - N|^2 = |O-A|^2/4 = R^2/4$. Euler midpoints: $\\text{mid}(A,H) - N = (A-O)/2$, using $N = (O+H)/2$ and $H = A+B+C-2O$. For non-$A$ vertices, circumcenter equidistance $|OB|^2 = |OA|^2$ is needed.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nine-point circle",
+      "midpoint",
+      "circumcenter equidistance"
+    ],
+    "prerequisites": [
+      "ninepoint_membership lemma",
+      "circumcenter equidistance"
+    ]
+  },
+  {
+    "id": "ann-ftd-altitude-feet",
+    "proofId": "feuerbachs-theorem-defs",
+    "range": {
+      "startLine": 446,
+      "endLine": 576
+    },
+    "type": "concept",
+    "title": "Altitude Feet on the Nine-Point Circle (Heavy Computation)",
+    "content": "The altitude foot membership proofs are the most computationally expensive (requiring `maxHeartbeats 25600000`, about 4x the default). The strategy differs from the midpoint proofs: instead of using `ninepoint_membership`, they directly show $|H_a - N|^2 = R^2/4$ by comparing `dist2_sq`. After unfolding the altitude projection formula and all definitions, two denominators must be cleared: the side length squared $|BC|^2$ (from the projection) and the circumcenter denominator $d$. The `field_simp` tactic clears both, and `ring` verifies the resulting polynomial identity. Three helper lemmas (`bc_sq_ne_zero`, `ca_sq_ne_zero`, `ab_sq_ne_zero`) establish that side lengths are nonzero.",
+    "mathContext": "For altitude foot $H_a = B + \\frac{(A-B)\\cdot(C-B)}{|BC|^2}(C-B)$: after clearing $|BC|^2$ and the circumcenter denominator $d$, the identity $|H_a - N|^2 \\cdot |BC|^2 \\cdot d^2 = R^2 \\cdot |BC|^2 \\cdot d^2 / 4$ reduces to a polynomial identity in vertex coordinates, verified by `ring`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "altitude foot",
+      "orthogonal projection",
+      "field_simp",
+      "polynomial identity"
+    ],
+    "prerequisites": [
+      "projection formula",
+      "side length positivity",
+      "circumcenter denominator"
+    ]
+  },
+  {
+    "id": "ann-ftd-nine-all",
+    "proofId": "feuerbachs-theorem-defs",
+    "range": {
+      "startLine": 552,
+      "endLine": 576
+    },
+    "type": "insight",
+    "title": "The Nine-Point Circle Theorem: All 9 Points",
+    "content": "The capstone theorem `ninePoints_all_on_circle` assembles all 9 individual membership proofs into a single 9-fold conjunction. This is the formal statement that the nine-point circle passes through all 3 side midpoints, all 3 Euler midpoints, and all 3 altitude feet. The proof is simply the anonymous constructor applied to the 9 previously proved theorems.",
+    "mathContext": "For any non-degenerate triangle $ABC$, all of $\\{M_a, M_b, M_c, \\text{mid}(A,H), \\text{mid}(B,H), \\text{mid}(C,H), H_a, H_b, H_c\\}$ satisfy $d(N, P) = R/2$, where $N = (O+H)/2$ is the nine-point center.",
+    "significance": "key",
+    "relatedConcepts": [
+      "nine-point circle theorem",
+      "Euler circle"
+    ],
+    "prerequisites": [
+      "all 9 individual membership proofs"
+    ]
+  },
+  {
+    "id": "ann-ftd-numerical-verification",
+    "proofId": "feuerbachs-theorem-defs",
+    "range": {
+      "startLine": 581,
+      "endLine": 687
+    },
+    "type": "insight",
+    "title": "Numerical Verification: 3-4-5 Right Triangle",
+    "content": "The 3-4-5 right triangle $A=(0,0)$, $B=(3,0)$, $C=(0,4)$ serves as a concrete sanity check for all the coordinate formulas. Key computed values: area $= 6$, semiperimeter $= 6$, inradius $r = 1$, circumcenter $O = (3/2, 2)$ (midpoint of hypotenuse, as expected for a right triangle), circumradius $R = 5/2$ (half the hypotenuse), orthocenter $H = (0,0)$ (at the right-angle vertex), nine-point center $N = (3/4, 1)$, incenter $I = (1, 1)$. The Feuerbach tangency check confirms $|NI| = |(3/4, 1) - (1, 1)| = 1/4 = |5/4 - 1| = |R/2 - r|$, verifying internal tangency. The side length proofs use `Real.sqrt_sq` after showing the argument equals a perfect square.",
+    "mathContext": "3-4-5 right triangle: $R = 5/2$, $r = 1$, $N = (3/4, 1)$, $I = (1, 1)$. Feuerbach verification: $|NI| = \\sqrt{(1-3/4)^2 + (1-1)^2} = 1/4 = |5/4 - 1| = |R/2 - r|$, confirming internal tangency of the nine-point circle and incircle.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Feuerbach tangency",
+      "right triangle properties",
+      "numerical verification"
+    ],
+    "prerequisites": [
+      "Real.sqrt_sq",
+      "norm_num tactic"
+    ]
+  }
+]

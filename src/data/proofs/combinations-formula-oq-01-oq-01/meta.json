@@ -1,0 +1,92 @@
+{
+  "id": "combinations-formula-oq-01-oq-01",
+  "title": "The Fibonacci Shallow-Diagonal Sum of Pascal's Triangle",
+  "slug": "combinations-formula-oq-01-oq-01",
+  "description": "Proves the general Fibonacci shallow-diagonal identity ∑_j C(n−j, j) = F(n+1): summing binomial coefficients along a shallow diagonal of Pascal's triangle gives the Fibonacci numbers. The parent entry recorded this connection only through worked native_decide examples; here it is proved for all n, axiom-free, by reducing it to Mathlib's antidiagonal form Nat.fib_succ_eq_sum_choose and reflecting the summation index.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "fibonacci",
+      "pascal-triangle",
+      "finite-sums"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "assumptions": "None. #print axioms reports only propext, Classical.choice, Quot.sound. No native_decide is used (the parent recorded the identity only via native_decide examples).",
+    "lineCount": 50,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "originalContributions": [
+      "fib_shallow_diagonal: ∑_{j ∈ range (n+1)} C(n−j, j) = F(n+1), the general shallow-diagonal Fibonacci identity",
+      "fib_shallow_diagonal_alt: the mirror form ∑_{k ∈ range (n+1)} C(k, n−k) = F(n+1)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "That the shallow (or 'rising') diagonals of Pascal's triangle sum to Fibonacci numbers is a classical observation, often attributed to Lucas. Mathlib proves the equivalent antidiagonal form Nat.fib_succ_eq_sum_choose, F(n+1) = ∑_{p ∈ antidiagonal n} C(p.1, p.2). The parent gallery entry (combinations-formula-oq-01) collected several binomial identities but recorded the Fibonacci diagonal sum only as native_decide-checked numeric examples, posing the general proof as its first open question.",
+    "problemStatement": "Prove the Fibonacci diagonal sum ∑_j C(n−j, j) = F(n+1) for all n, without native_decide.",
+    "text": "We index the shallow diagonal by j, so the summand is C(n−j, j) (nonzero exactly when 2j ≤ n). Mathlib's antidiagonal sum, rewritten as a range sum via Finset.Nat.sum_antidiagonal_eq_sum_range_succ, gives the mirror form ∑_{k ∈ range (n+1)} C(k, n−k) = F(n+1) (fib_shallow_diagonal_alt). Reflecting the index k ↦ n − k (Finset.sum_range_reflect) and simplifying the resulting natural-number subtractions (n+1−1−j = n−j and n−(n−j) = j for j ≤ n) turns this into the diagonal form ∑_{j ∈ range (n+1)} C(n−j, j) = F(n+1) (fib_shallow_diagonal).",
+    "proofStrategy": "Reduce to Mathlib's antidiagonal Fibonacci sum, convert antidiagonal → range, then reflect the summation index and discharge the subtraction bookkeeping with omega.",
+    "keyInsights": [
+      "The antidiagonal {(n−j, j)} is exactly the shallow diagonal of Pascal's triangle, so Mathlib's Nat.fib_succ_eq_sum_choose already contains the identity in disguise.",
+      "Passing between the two index conventions (C(n−j, j) vs C(k, n−k)) is a single index reflection j ↦ n − j.",
+      "All the work beyond the Mathlib lemma is natural-number subtraction bookkeeping, dischargeable by omega under the range bound j ≤ n."
+    ],
+    "prerequisites": [
+      "Binomial coefficients Nat.choose and the Fibonacci sequence Nat.fib",
+      "Nat.fib_succ_eq_sum_choose (antidiagonal form)",
+      "Finset antidiagonal / range sums and Finset.sum_range_reflect"
+    ]
+  },
+  "conclusion": {
+    "summary": "The Fibonacci shallow-diagonal identity ∑_j C(n−j, j) = F(n+1) is proved in general and axiom-free, in both index conventions, by reflecting Mathlib's antidiagonal Fibonacci sum. 2 theorems, 50 lines.",
+    "implications": "Upgrades the parent's numeric examples to a general theorem and removes their native_decide dependency, completing the Fibonacci–binomial connection in the combinations-formula family.",
+    "openQuestions": [
+      "Prove the companion Lucas-number diagonal identities and the mixed Fibonacci–Lucas diagonal sums (the parent's second open question).",
+      "Generalize to the p-step 'shallow diagonals' giving the p-bonacci / generalized Fibonacci sequences.",
+      "Give a bijective (lattice-path) proof in Lean, matching the combinatorial interpretation of the antidiagonal."
+    ]
+  },
+  "leanFile": {
+    "namespace": "CombinationsFormulaOQ01OQ01",
+    "lineCount": 50,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/CombinationsFormulaOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-01",
+      "relationship": "extends",
+      "description": "Parent: extended binomial identities, which recorded the Fibonacci diagonal sum only via native_decide examples. This entry proves the general identity, axiom-free."
+    },
+    {
+      "targetId": "fibonacci-identities",
+      "relationship": "related",
+      "description": "Fibonacci summation identities; this entry adds the binomial-coefficient diagonal characterization of the Fibonacci numbers."
+    }
+  ],
+  "sections": [
+    {
+      "title": "Mirror form from the antidiagonal sum",
+      "startLine": 29,
+      "endLine": 37,
+      "summary": "fib_shallow_diagonal_alt: ∑_{k} C(k, n−k) = F(n+1), Mathlib's Nat.fib_succ_eq_sum_choose written as a range sum."
+    },
+    {
+      "title": "The diagonal form by index reflection",
+      "startLine": 39,
+      "endLine": 50,
+      "summary": "fib_shallow_diagonal: ∑_{j} C(n−j, j) = F(n+1), obtained from the mirror form via Finset.sum_range_reflect and omega-discharged subtraction identities."
+    }
+  ],
+  "sorries": []
+}

@@ -1,0 +1,176 @@
+{
+  "id": "binomial-theorem-oq-02-oq-02",
+  "title": "Vandermonde's Identity via the Binomial Theorem",
+  "slug": "binomial-theorem-oq-02-oq-02",
+  "description": "Vandermonde's convolution identity C(m+n,r) = sum C(m,k)*C(n,r-k), proved via coefficient extraction from (1+x)^m*(1+x)^n = (1+x)^{m+n}. Includes symmetry, Pascal's rule as a special case, self-convolution C(2n,n) = sum C(n,k)^2, triple Vandermonde, and the r=2 decomposition.",
+  "meta": {
+    "author": "Vandermonde (1772), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
+    "date": "1772",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "vandermonde-identity",
+      "convolution",
+      "multinomial",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.add_choose_eq",
+        "description": "Vandermonde's identity: (m+n).choose r = sum over antidiagonal r of m.choose * n.choose",
+        "module": "Mathlib.Data.Nat.Choose.Vandermonde"
+      },
+      {
+        "theorem": "Nat.sum_range_choose",
+        "description": "Sum of binomial coefficients: sum C(n,k) = 2^n",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's rule: C(n+1,k+1) = C(n,k+1) + C(n,k)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Vandermonde identity derived from binomial theorem via coefficient extraction",
+      "Symmetry and index-swap formulations of Vandermonde",
+      "Pascal's rule as special case of Vandermonde with n=1",
+      "Self-convolution identity: sum C(n,k)^2 = C(2n,n)",
+      "Triple Vandermonde via iterated binary Vandermonde",
+      "r=2 decomposition: C(m+n,2) = C(m,2) + mn + C(n,2)"
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 0,
+    "lineCount": 179,
+    "assumptions": "0 axioms, 0 sorries. All results from Mathlib's Nat.add_choose_eq and standard combinatorial identities.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Vandermonde's identity was published by Alexandre-Théophile Vandermonde in 1772 in his 'Mémoire sur des irrationnelles de différents ordres avec une application au cercle.' The identity expresses C(m+n,r) as a convolution of C(m,k) and C(n,r-k), with the combinatorial interpretation of choosing r items from two disjoint groups of sizes m and n. The identity was known implicitly to earlier mathematicians: it appears in the work of Zhu Shijie (1303) and was used by Waring (1764). The modern proof via coefficient extraction from (1+x)^m · (1+x)^n = (1+x)^{m+n} connects it directly to the binomial theorem. Special cases have enormous reach: Pascal's rule (n=1) is the inductive definition of binomial coefficients; self-convolution Σ C(n,k)² = C(2n,n) counts lattice paths and appears in the asymptotics of the central binomial coefficient (C(2n,n) ~ 4^n/√(πn) via Stirling); the q-Vandermonde identity (Gaussian binomial coefficients) generalizes to vector spaces over finite fields. In modern combinatorics, Vandermonde is the foundational identity of the convolution algebra of binomial coefficient sequences.",
+    "problemStatement": "Derive Vandermonde's identity from the multinomial/binomial theorem formalized in the parent OQ-02.",
+    "text": "Vandermonde's convolution identity C(m+n,r) = sum C(m,k)*C(n,r-k) via binomial theorem coefficient extraction. Special cases include Pascal's rule, self-convolution, and triple Vandermonde.",
+    "proofStrategy": "Extract coefficients from (1+x)^m * (1+x)^n = (1+x)^{m+n}. The binomial theorem gives the expansions, and comparing x^r coefficients yields Vandermonde.",
+    "keyInsights": [
+      "Vandermonde is coefficient extraction: comparing the xʳ term of (Σ C(m,i)xⁱ)(Σ C(n,j)xʲ) = Σ C(m+n,r)xʳ immediately gives the identity — the entire proof reduces to Mathlib's Nat.add_choose_eq via this strategy",
+      "Pascal's rule is Vandermonde with n=1: since C(1,0)=C(1,1)=1 and C(1,k)=0 for k≥2, the Vandermonde sum collapses to two terms C(m,r)·1 + C(m,r-1)·1, recovering the Pascal recurrence",
+      "Self-convolution C(2n,n) = Σ C(n,k)² is Vandermonde with m=n, r=n, and has the lattice path interpretation: it counts monotone paths from (0,0) to (n,n) by choosing which n of the 2n steps go right",
+      "Triple Vandermonde (C(a+b+c,r) = Σ C(a,i)·C(b,j)·C(c,k)) follows from two binary applications; this is the k=3 case of the multinomial convolution theorem, connecting back to the parent BinomialTheoremOQ02.lean",
+      "The symmetry proof `rw [← add_choose_eq, add_comm, add_choose_eq]` is a minimalist round-trip argument: fold via Vandermonde → swap m,n via commutativity → unfold — avoiding explicit permutation of summation indices"
+    ],
+    "prerequisites": [
+      "BinomialTheoremOQ02.lean: Multinomial theorem",
+      "Binomial coefficients: Nat.choose",
+      "Finset.antidiagonal: pairs summing to r"
+    ]
+  },
+  "sections": [
+    {
+      "id": "core-identity",
+      "title": "Vandermonde's Identity",
+      "summary": "Core identity from Mathlib: C(m+n,r) = sum over antidiagonal r of C(m,i)*C(n,j).",
+      "startLine": 1,
+      "endLine": 50
+    },
+    {
+      "id": "binomial-derivation",
+      "title": "From the Binomial Theorem",
+      "summary": "Total form: 2^m * 2^n = 2^{m+n} as sum identity.",
+      "startLine": 51,
+      "endLine": 70
+    },
+    {
+      "id": "symmetry",
+      "title": "Symmetry Properties",
+      "summary": "Commutativity in (m,n) and index-swap formulation.",
+      "startLine": 71,
+      "endLine": 90
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "r=0, r=1, r=2, Pascal's rule, sum of squares.",
+      "startLine": 91,
+      "endLine": 150
+    },
+    {
+      "id": "triple",
+      "title": "Triple Vandermonde",
+      "summary": "Multi-fold convolution from iterated binary Vandermonde.",
+      "startLine": 151,
+      "endLine": 179
+    }
+  ],
+  "conclusion": {
+    "summary": "Vandermonde's identity is derived from the binomial theorem, extending the parent's multinomial formalization. 11 theorems, 0 axioms, 0 sorries.",
+    "implications": "Vandermonde's identity is the engine behind many combinatorial arguments: it powers the convolution identities for generating functions, underlies the Chu-Vandermonde identity in hypergeometric series, and provides the algebraic backbone for lattice path counting (the self-convolution C(2n,n) = Σ C(n,k)² counts NE lattice paths). The triple Vandermonde opens the path to the full multinomial convolution, central to partition theory and symmetric function theory. The formalization validates that Mathlib's antidiagonal API cleanly supports convolution-style combinatorial identities.",
+    "openQuestions": [
+      "Can the q-Vandermonde identity ∑ q^{k(r-k)} C(m,k)_q · C(n,r-k)_q = C(m+n,r)_q be formalized using Mathlib's `GaussianBinomial`? This counts k-dimensional subspaces of an (r)-dimensional subspace chosen from m- and n-dimensional spaces over 𝔽_q.",
+      "The hockey-stick identity C(r,r) + C(r+1,r) + … + C(n,r) = C(n+1,r+1) follows from Vandermonde by a telescoping argument. Can it be derived from the existing formalization using `Finset.sum_range_succ` and `vandermonde` directly?",
+      "The self-convolution identity C(2n,n) ~ 4^n/√(πn) by Stirling's approximation. Can the asymptotic be formalized in Lean using `Mathlib.Analysis.SpecialFunctions.Stirling`, connecting the combinatorial identity to its analytic behavior?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "VandermondeMult",
+    "lineCount": 179,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/BinomialTheoremOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "A.-T. Vandermonde",
+      "title": "Memoire sur des irrationnelles de differents ordres",
+      "year": "1772",
+      "venue": "Histoire de l'Academie Royale des Sciences"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Parent: multinomial theorem. Vandermonde is coefficient extraction from the product of binomial expansions."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "Root binomial theorem formalization — the first layer of the three-layer chain that culminates in Vandermonde."
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "related",
+      "description": "Ballot problem — uses lattice path counting where the self-convolution C(2n,n) = Σ C(n,k)² (proved here) counts the total paths"
+    },
+    {
+      "targetId": "pascals-hexagon",
+      "relationship": "related",
+      "description": "Pascal's hexagon theorem — another structural property of Pascal's triangle; this file derives Pascal's rule from Vandermonde"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-03",
+      "relationship": "related",
+      "description": "q-Multinomial Coefficients and the q-Multinomial Theorem — the $q$-analogue of Vandermonde's identity: $\\binom{m+n}{r}_q = \\sum_k q^{k(m-k)} \\binom{m}{k}_q \\binom{n}{r-k}_q$, where $\\binom{n}{k}_q$ are Gaussian binomial coefficients. As $q \\to 1$, this recovers the classical Vandermonde convolution. The $q$-version counts lattice paths weighted by area, providing a combinatorial $q$-deformation of the coefficient-extraction proof used here."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Multinomial Distribution and Moment-Generating Function — probabilistic application of the multinomial theorem. The Vandermonde convolution $\\binom{m+n}{r} = \\sum_k \\binom{m}{k}\\binom{n}{r-k}$ is the special case of MGF convolution: the sum of independent $\\mathrm{Bin}(m,p)$ and $\\mathrm{Bin}(n,p)$ is $\\mathrm{Bin}(m+n,p)$, with coefficients matching the Vandermonde sum. Both entries use the same coefficient-extraction technique applied to generating functions."
+    }
+  ],
+  "sorries": 0
+}

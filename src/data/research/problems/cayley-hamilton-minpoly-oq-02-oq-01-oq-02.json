@@ -1,0 +1,97 @@
+{
+  "slug": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
+  "title": "Can we characterize exactly when minpoly is invariant under non-injective alg...",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can we characterize exactly when minpoly is invariant under non-injective alg....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-13T00:00:00Z",
+    "iteration": 3,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "DONE — formalization completed Session 1 (PR #16083, merged 2026-05-06). Gallery meta.json: status=verified, badge=verified, 0 sorries, 0 axioms, 9 theorems. This S3 syncs the stale research-JSON (was phase NEW / 'Begin exploration', lastUpdate 2026-05-05) to completed and corrects leanFiles (was a 24-file family dump not even including the actual proof file) to the single delivered file. No further work.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE 2026-05-06: 0 sorries, 0 axioms. minpoly K (f a) = minpoly K a ↔ aeval a (minpoly K (f a)) = 0. PR #16083.",
+    "builtItems": [
+      "minpoly_dvd_algHom: minpoly K (f a) ∣ minpoly K a for any algebra map",
+      "minpoly_eq_iff_aeval_zero: complete characterization theorem (CayleyHamiltonMinpolyOQ02OQ01OQ02.lean)",
+      "minpoly_natDegree_le: degree inequality for non-injective maps",
+      "injective_implies_criterion_holds: special case recovery"
+    ],
+    "insights": [
+      "The characterization uses mutual divisibility: always minpoly(fa)|minpoly(a); equality iff minpoly(a)|minpoly(fa) ↔ aeval a (minpoly(fa)) = 0",
+      "Both monic polynomials with mutual divisibility are equal via associated_of_dvd_dvd + eq_of_monic_of_associated",
+      "Injective case (minpoly.algHom_eq) is a special case: injective f always satisfies the aeval criterion",
+      "Non-injective maps can only shrink minpoly degree (proved: minpoly_natDegree_le)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton-minpoly-oq-01",
+    "cayley-hamilton-minpoly-oq-02",
+    "cayley-hamilton-minpoly-oq-02-oq-01",
+    "cayley-hamilton-minpoly-oq-02-oq-02",
+    "cayley-hamilton-minpoly-oq-02-oq-03",
+    "cayley-hamilton-minpoly-oq-03",
+    "cayley-hamilton-minpoly-oq-03-oq-01",
+    "cayley-hamilton-minpoly-oq-04",
+    "cayley-hamilton-minpoly-oq-05",
+    "cayley-hamilton-minpoly-oq-05-oq-01",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-02",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-03",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-05",
+    "cayley-hamilton-minpoly-oq-05-oq-02",
+    "cayley-hamilton-minpoly-oq-05-oq-02-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-05T02:57:44.795Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ02OQ01OQ02.lean",
+      "filename": "CayleyHamiltonMinpolyOQ02OQ01OQ02.lean",
+      "lineCount": 172,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ02OQ01OQ02.lean"
+    }
+  ]
+}

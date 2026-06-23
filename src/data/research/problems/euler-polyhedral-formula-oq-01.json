@@ -1,0 +1,98 @@
+{
+  "slug": "euler-polyhedral-formula-oq-01",
+  "title": "Planar Graph Embedding Formalization for Euler Formula",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For planar graph builds, V-E+F=2 is preserved by spanning-tree and cycle-edge construction; 5-degeneracy gives a six-color bound, and Euler edge bounds rule out K_5 and K_{3,3}.",
+    "plain": "Extends Euler's polyhedral formula V-E+F=2 to planar graph theory: spanning tree approach, graph degeneracy (5-degenerate), and the Six Color Theorem via degeneracy coloring.",
+    "whyMatters": [
+      "Euler's V-E+F relation becomes a working engine for planar graph coloring and nonplanarity results.",
+      "Degeneracy converts geometric embedding constraints into algorithmic color bounds.",
+      "The proof cluster is a useful bridge from polyhedra to planar graph theory and the six-color theorem."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`SpanningBuild.vertices`, `SpanningBuild.edges`, `SpanningBuild.faces`, and `SpanningBuild.eulerChar` define the planar-build bookkeeping.",
+      "`euler_spanning`, `buildPlanarGraph_counts`, `platonic_spanning_euler`, `face_count_formula`, and `face_from_euler` record Euler-characteristic consequences.",
+      "`KDegenerate`, `planar_five_degenerate`, `six_colorable_from_degeneracy`, `degeneracy_color_count`, and `planar_color_bound` connect planar edge bounds with coloring.",
+      "`edge_bound_simple`, `edge_bound_bipartite`, `k5_not_planar`, `k33_not_planar`, and `petersen_not_planar` package standard planar obstruction results."
+    ],
+    "open": [
+      "`EulerPolyhedralOQ01.lean` documents zero axioms and zero sorries; the parent `EulerPolyhedralFormula.lean` still has the general `euler_formula_axiom`."
+    ],
+    "goal": "Present the planar graph consequences as a clean axiom-free extension while distinguishing them from the older parent axiom."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-02-11T06:59:43.226Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "geometry",
+    "topology",
+    "graph-theory",
+    "planar-graphs",
+    "graph-coloring",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "euler-polyhedral-formula",
+    "euler-polyhedral-formula-oq-01",
+    "euler-polyhedral-formula-oq-01-oq-01",
+    "euler-polyhedral-formula-oq-01-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-11T07:03:36.101Z",
+  "lastUpdate": "2026-02-15T01:15:34.175Z",
+  "completed": "2026-02-15T01:15:34.175Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerPolyhedralFormula.lean",
+      "filename": "EulerPolyhedralFormula.lean",
+      "lineCount": 1093,
+      "theoremCount": 65,
+      "axiomCount": 1,
+      "defCount": 27,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormula.lean"
+    },
+    {
+      "path": "Proofs/EulerPolyhedralFormulaOQ01OQ02.lean",
+      "filename": "EulerPolyhedralFormulaOQ01OQ02.lean",
+      "lineCount": 142,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormulaOQ01OQ02.lean"
+    }
+  ]
+}

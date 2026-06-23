@@ -1,0 +1,156 @@
+[
+  {
+    "id": "ann-e330-header",
+    "proofId": "erdos-330",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Problem Overview: Minimal Bases with Positive Density",
+    "content": "**Erdős Problem #330** (Erdős–Nathanson, OPEN):\n\nDoes there exist a minimal asymptotic additive basis A of order h with positive upper density such that for every n ∈ A, the set of integers not representable from A \\ {n} also has positive upper density?\n\nThis asks whether minimality can be 'quantitatively strong' — not just qualitatively essential, but each element accounting for a positive proportion of representable integers.",
+    "mathContext": "An additive basis $A \\subseteq \\mathbb{N}$ of order $h$ represents all sufficiently large integers as sums of $\\le h$ elements. $A$ is minimal if removing any $n \\in A$ destroys the basis property. Problem #330 asks: can $A$ have $\\bar{d}(A) > 0$ and $\\bar{d}(\\{m : m \\text{ not representable from } A \\setminus \\{n\\}\\}) > 0$ for all $n \\in A$?",
+    "significance": "key",
+    "prerequisites": [
+      "additive basis definition",
+      "upper density $\\bar{d}(S) = \\limsup |S \\cap [1,n]|/n$",
+      "minimal basis definition",
+      "asymptotic vs exact basis distinction"
+    ],
+    "relatedConcepts": [
+      "additive basis",
+      "minimal basis",
+      "upper density",
+      "additive number theory",
+      "Erdős–Nathanson",
+      "Stöhr-Härtter theory"
+    ]
+  },
+  {
+    "id": "ann-e330-imports",
+    "proofId": "erdos-330",
+    "range": {
+      "startLine": 19,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Imports and Definitions Section Header",
+    "content": "Lines 19-21: three imports — `Mathlib.Tactic` (all tactics), `Mathlib.Data.Nat.Basic` (natural number API), `Mathlib.Data.Finset.Basic` (finite sets and sums). Line 23: `/-## Definitions -/` block comment marking the start of the six core definitions.",
+    "mathContext": "`Mathlib.Data.Finset.Basic` is needed for `Finset.univ.sum` used in `IsRepresentable`. The `Fin k → ℕ` sequences are indexed by `Fin k = {0,...,k-1}` and `Finset.univ.sum f` sums all values. No `open` statements — all names are used qualified.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib.Tactic",
+      "Finset.Basic",
+      "Fin k"
+    ],
+    "prerequisites": [
+      "Lean 4 import syntax",
+      "Mathlib structure"
+    ]
+  },
+  {
+    "id": "ann-e330-representable",
+    "proofId": "erdos-330",
+    "range": {
+      "startLine": 25,
+      "endLine": 33
+    },
+    "type": "definition",
+    "title": "Representability and Asymptotic Basis",
+    "content": "**IsRepresentable A h m:** m can be written as a sum of at most h elements from A (with repetition).\n\nFormally: there exists a sequence f : Fin k → ℕ with k ≤ h, all values in A, summing to m.\n\n**IsAsympBasis A h:** every sufficiently large integer is representable — there exists N₀ such that all m ≥ N₀ are representable.\n\n**Example:** The set of squares {0, 1, 4, 9, ...} is an asymptotic basis of order 4 (Lagrange's theorem).",
+    "mathContext": "$A$ is an asymptotic basis of order $h$ iff $\\exists N_0,\\, \\forall m \\ge N_0,\\, \\exists k \\le h,\\, f : [k] \\to A : \\sum_{i=1}^k f(i) = m$. Uses Fin k → ℕ (length-k sequences) and Finset.univ.sum. Lagrange's four-square theorem: squares form a basis of order 4.",
+    "significance": "key",
+    "prerequisites": [
+      "Fin k in Lean",
+      "Finset.univ.sum",
+      "Set membership A : Set ℕ",
+      "Waring's problem background"
+    ],
+    "relatedConcepts": [
+      "additive basis",
+      "Waring's problem",
+      "Lagrange's four-square theorem",
+      "Goldbach conjecture",
+      "Schnirelmann density"
+    ]
+  },
+  {
+    "id": "ann-e330-density",
+    "proofId": "erdos-330",
+    "range": {
+      "startLine": 35,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Upper Density",
+    "content": "**upperDensity S:** axiomatised as the upper asymptotic density of S ⊆ ℕ.\n\nProperties: 0 ≤ upperDensity(S) ≤ 1.\n\n**HasPosDensity A** means upperDensity(A) > 0.\n\nUpper density measures the 'thickness' of a set: d̄(S) = lim sup |S ∩ {1,...,n}| / n.",
+    "mathContext": "$\\bar{d}(S) = \\limsup_{n\\to\\infty} |S \\cap \\{1,\\ldots,n\\}|/n \\in [0,1]$. Axiomatized with upperDensity_nonneg and upperDensity_le_one. Upper (vs natural) density is used because $\\lim$ may not exist. HasPosDensity A ↔ $\\bar{d}(A) > 0$.",
+    "significance": "key",
+    "prerequisites": [
+      "lim sup definition",
+      "Set ℕ cardinality / counting",
+      "Real positivity 0 < x",
+      "axiom declarations for noncomputable density"
+    ],
+    "relatedConcepts": [
+      "upper density",
+      "asymptotic density",
+      "natural density",
+      "Schnirelmann density",
+      "Banach density"
+    ]
+  },
+  {
+    "id": "ann-e330-minimal",
+    "proofId": "erdos-330",
+    "range": {
+      "startLine": 43,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Minimal Basis and Unrepresentable Sets",
+    "content": "**IsMinimalBasis A h:** A is an asymptotic basis of order h, and removing any single element n ∈ A destroys the basis property.\n\n**unrepresentableWithout A n h:** the set of integers that become unrepresentable when n is removed from A.\n\nMinimal bases are extremal: every element is essential. The question is *how* essential — does removal affect a positive proportion of integers?",
+    "mathContext": "$A$ is minimal iff $A$ is a basis of order $h$ AND $\\forall n \\in A,\\, A \\setminus \\{n\\}$ is NOT a basis. $\\text{unrepresentableWithout}(A,n,h) = \\{m : m \\notin h\\text{-fold sumset of } A\\setminus\\{n\\}\\}$. Introduced by Stöhr (1955) and Härtter (1956).",
+    "significance": "key",
+    "prerequisites": [
+      "IsAsympBasis definition",
+      "Set.diff notation A \\ {n}",
+      "negation of IsAsympBasis",
+      "Set comprehension {m : Prop} in Lean"
+    ],
+    "relatedConcepts": [
+      "minimal basis",
+      "critical structure",
+      "extremal combinatorics",
+      "Stöhr-Härtter theory",
+      "essential elements"
+    ]
+  },
+  {
+    "id": "ann-e330-known-and-open-question",
+    "proofId": "erdos-330",
+    "range": {
+      "startLine": 53,
+      "endLine": 65
+    },
+    "type": "insight",
+    "title": "Known Results and the Open Question",
+    "content": "The Known Results section documents three key facts (as docstrings): (1) for a minimal basis, removing any element leaves infinitely many integers unrepresentable (immediate from the definition); (2) minimal bases of every order $h \\geq 2$ exist (Härtter 1956, Stöhr 1955); (3) minimal bases with positive density exist for every $h \\geq 2$ (Härtter-Stöhr). These are the weaker known results. **The open question** (Erdős #330, lines 62-65): does there exist a minimal basis $A$ of order $h$ with positive density such that for every $n \\in A$, the set `unrepresentableWithout(A, n, h)` also has positive upper density? A positive answer would show minimality is 'quantitatively essential' — each element critical for a positive proportion of all integers.",
+    "mathContext": "Hierarchy of conditions: (1) $A$ minimal (qualitative), (2) $A$ minimal + $\\bar{d}(A) > 0$ (Härtter-Stöhr, KNOWN), (3) $A$ minimal + $\\bar{d}(A) > 0$ + $\\forall n \\in A: \\bar{d}(\\text{unrepresentableWithout}(A,n,h)) > 0$ (Erdős #330, OPEN). Condition (3) is strictly stronger than (2). The open question asks whether the quantitative form of minimality is achievable simultaneously with positive density.",
+    "significance": "key",
+    "prerequisites": [
+      "IsMinimalBasis definition",
+      "HasPosDensity definition",
+      "unrepresentableWithout definition",
+      "Härtter 1956, Stöhr 1955 context"
+    ],
+    "relatedConcepts": [
+      "Härtter 1956",
+      "Stöhr 1955",
+      "strong minimality",
+      "open problem",
+      "Erdős–Nathanson",
+      "quantitative combinatorics"
+    ]
+  }
+]

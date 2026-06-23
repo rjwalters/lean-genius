@@ -1,0 +1,69 @@
+# Erdős #935 - Knowledge Base
+
+## Problem Statement
+
+Forum
+Favourites
+Tags
+More
+ Go
+ Go
+Dual View
+Random Solved
+Random Open
+
+For any integer $n=\prod p^{k_p}$ let $Q_2(n)$ be the powerful part of $n$, so that\[Q_2(n) = \prod_{\substack{p\\ k_p\geq 2}}p^{k_p}.\]Is it true that, for every $\epsilon>0$ and $\ell\geq 1$, if $n$ is sufficiently large then\[Q_2(n(n+1)\cdots(n+\ell))<n^{2+\epsilon}?\]If $\ell\geq 2$ then is\[\limsup_{n\to \infty}\frac{Q_2(n(n+1)\cdots(n+\ell))}{n^2}\]infinite?
+
+If $\ell\geq 2$ then is\[\lim_{n\to \infty}\frac{Q_2(n(n+1)\cdots(n+\ell))}{n^{\ell+1}}=0?\]
+
+
+
+Erd\H{o}s \cite{Er76d} writes that if this is true then it 'seems very difficult to prove'.
+
+A result of Mahler implies, for every $\ell\geq 1$,\[\limsup_{n\to \infty}\frac{Q_2(n(n+1)\cdots(n+\ell))}{n^2}\geq 1.\]All these questions can be asked replacing $Q_2$ by $Q_r$ for $r>2$, only keeping those prime powers with exponent $\geq r$.
+
+
+
+
+References
+
+
+[Er76d] Erd\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.
+
+
+Back to the problem
+
+## Status
+
+**Erdős Database Status**: OPEN
+
+**Tractability Score**: 4/10
+**Aristotle Suitable**: No
+
+## Tags
+
+- erdos
+
+## Related Problems
+
+- Problem #2000
+- Problem #83
+- Problem #888
+- Problem #1998
+- Problem #934
+- Problem #936
+- Problem #2
+- Problem #39
+- Problem #1
+
+## References
+
+- Er76d
+
+## Sessions
+
+(No research sessions yet)
+
+---
+
+*Generated from erdosproblems.com on 2026-01-15*

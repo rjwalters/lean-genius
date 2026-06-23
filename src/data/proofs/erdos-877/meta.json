@@ -1,0 +1,200 @@
+{
+  "id": "erdos-877",
+  "title": "Counting Maximal Sum-Free Subsets",
+  "slug": "erdos-877",
+  "description": "Let f_m(n) count maximal sum-free subsets A of {1,...,n}. Is f_m(n) = o(2^{n/2})? SOLVED: YES. Sharp bounds show f_m(n) = (C_n + o(1))2^{n/4} where C_n depends on n mod 4.",
+  "meta": {
+    "author": "Cameron-Erdős (problem), Łuczak-Schoen (solved), BLST (sharp bounds)",
+    "sourceUrl": "https://erdosproblems.com/877",
+    "date": "2001",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos877Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "sum-free-sets",
+      "counting",
+      "asymptotics"
+    ],
+    "badge": "axiom",
+    "sorries": 4,
+    "erdosNumber": 877,
+    "erdosUrl": "https://erdosproblems.com/877",
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_eq_zero",
+        "description": "Empty Finset characterization",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "isSumFree / isSumFree': two equivalent sum-free definitions",
+      "sumset: pairwise sumset via Finset.product",
+      "isMaximalSumFree: maximality under inclusion",
+      "f(n), f_m(n): counting functions via powerset filtering",
+      "odds_sum_free: concrete example proved by omega",
+      "upper_half_sum_free: parametric example proved by omega",
+      "f_m_le_f: every maximal sum-free set is sum-free",
+      "erdos_877_solved: combined resolution theorem"
+    ],
+    "axiomCount": 2,
+    "lineCount": 291,
+    "assumptions": "2 axioms: cameron_erdos_lower_bound, luczak_schoen_theorem. 4 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 6,
+    "additionalFiles": [
+      "Proofs/Erdos877ProblemAristotle.lean",
+      "Proofs/Erdos877Aristotle.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-748",
+      "relationship": "related",
+      "description": "Problem #748 asks about f(n), the count of all sum-free subsets. This problem asks about f_m(n), the count of maximal ones. The ratio f_m(n)/f(n) → 0 exponentially."
+    },
+    {
+      "targetId": "erdos-863",
+      "relationship": "technique",
+      "description": "Both problems study extremal counting in additive combinatorics, using container methods and structural decomposition."
+    }
+  ],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 26,
+      "endLine": 35,
+      "summary": "Imports `Finset.Basic/Card/Powerset`, `Set.Basic`, `Finpartition`, and `Asymptotics`. Uses $\\mathbb{Q}$ for asymptotic bounds.",
+      "mathContext": "Bound: Imports `Finset.Basic/Card/Powerset`, `Set.Basic`, `Finpartition`, and `Asymptotics`. Uses $\\mathbb{Q}$ for asymptotic bounds."
+    },
+    {
+      "id": "sum-free-sets",
+      "title": "Sum-Free Sets",
+      "startLine": 46,
+      "endLine": 79,
+      "summary": "Defines `isSumFree` ($\\forall a,b,c \\in A,\\ a \\neq b+c$), `sumset` ($A+A$), and `isSumFree'` ($A \\cap (A+A) = \\emptyset$). Proves odd numbers and upper half are sum-free.",
+      "mathContext": "Formal definition: Defines `isSumFree` ($\\forall a,b,c \\in A,\\ a \\neq b+c$), `sumset` ($A+A$), and `isSumFree'` ($A \\cap (A+A) = \\emptyset$). Proves odd numbers and upper half are sum-free."
+    },
+    {
+      "id": "maximal-sum-free",
+      "title": "Maximal Sum-Free Sets",
+      "startLine": 90,
+      "endLine": 107,
+      "summary": "Defines `isMaximalSumFree` (sum-free and no proper extension). States the maximality criterion: every excluded $x$ satisfies $x = a+b$, $a = x+b$, or $2x \\in A$.",
+      "mathContext": "Formal definition: Defines `isMaximalSumFree` (sum-free and no proper extension). States the maximality criterion: every excluded $x$ satisfies $x = a+b$, $a = x+b$, or $2x \\in A$."
+    },
+    {
+      "id": "counting-functions",
+      "title": "Counting Functions f(n) and f_m(n)",
+      "startLine": 117,
+      "endLine": 136,
+      "summary": "Defines $f(n)$ (all sum-free subsets) and $f_m(n)$ (maximal sum-free subsets) via `Finset.powerset.filter`. Proves $f_m(n) \\leq f(n)$.",
+      "mathContext": "Formal definition: Defines $f(n)$ (all sum-free subsets) and $f_m(n)$ (maximal sum-free subsets) via `Finset.powerset.filter`. Proves $f_m(n) \\leq f(n)$."
+    },
+    {
+      "id": "cameron-erdos-bound",
+      "title": "Cameron-Erdős Lower Bound",
+      "startLine": 143,
+      "endLine": 160,
+      "summary": "$f_m(n) > 2^{n/4}$ for $n \\geq 4$, via constructing exponentially many maximal sum-free sets from subsets of odd numbers.",
+      "mathContext": "$f_m(n) > $$2^{{n/4}$}$$ for $n \\geq 4$, via constructing exponentially many maximal sum-free sets from subsets of odd numbers."
+    },
+    {
+      "id": "luczak-schoen",
+      "title": "Łuczak-Schoen (2001): Main Question Resolved",
+      "startLine": 167,
+      "endLine": 180,
+      "summary": "$\\exists c < 1/2,\\ f_m(n) < 2^{cn}$. Resolves the main question: $f_m(n) = o(2^{n/2})$ is **YES**.",
+      "mathContext": "$\\exists c < 1/2,\\ f_m(n) < $$2^{{cn}$}$$. Resolves the main question: $f_m(n) = o($$2^{{n/2}$}$)$ is **YES**."
+    },
+    {
+      "id": "blst-sharp",
+      "title": "BLST Sharp Asymptotics (2015, 2018)",
+      "startLine": 193,
+      "endLine": 207,
+      "summary": "BLST 2015: $f_m(n) = 2^{(1/4+o(1))n}$ via the container method. BLST 2018: $f_m(n) = (C_n + o(1)) \\cdot 2^{n/4}$ with $C_n$ depending on $n \\bmod 4$.",
+      "mathContext": "BLST 2015: $f_m(n) = $$2^{{(1/4+o(1))n}$}$$ via the container method. BLST 2018: $f_m(n) = (C_n + o(1)) \\cdot $$2^{{n/4}$}$$ with $C_n$ depending on $n \\bmod 4$."
+    },
+    {
+      "id": "structure",
+      "title": "Structure and the Container Method",
+      "startLine": 209,
+      "endLine": 232,
+      "summary": "Explains the $1/4$ exponent (only $n/4$ free choices in typical maximal sets) and the hypergraph container method underlying the BLST proof.",
+      "mathContext": "Verified: Explains the $1/4$ exponent (only $n/4$ free choices in typical maximal sets) and the hypergraph container method underlying the BLST proof."
+    },
+    {
+      "id": "erdos-748",
+      "title": "Comparison with Erdős #748",
+      "startLine": 234,
+      "endLine": 253,
+      "summary": "$f(n) = \\Theta(2^{n/2})$ vs $f_m(n) = \\Theta(2^{n/4})$: maximality reduces the count exponentially. The ratio $f_m(n)/f(n) = \\Theta(2^{-n/4}) \\to 0$.",
+      "mathContext": "$f(n) = \\Theta($$2^{{n/2}$}$)$ vs $f_m(n) = \\Theta($$2^{{n/4}$}$)$: maximality reduces the count exponentially. The ratio $f_m(n)/f(n) = \\Theta($$2^{{-n/4}$}$) \\to 0$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Resolution",
+      "startLine": 256,
+      "endLine": 291,
+      "summary": "Combined `erdos_877_solved`: Łuczak-Schoen resolves the question, Cameron-Erdős gives the tight lower bound. Final `erdos_877` states $f_m(n) = \\Theta(2^{n/4})$.",
+      "mathContext": "Combined `erdos_877_solved`: Łuczak-Schoen resolves the question, Cameron-Erdős gives the tight lower bound. Final `erdos_877` states $f_m(n) = \\Theta($$2^{{n/4}$}$)$."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Sum-free sets (sets with no solution to a = b + c) are fundamental objects in additive combinatorics, studied since Schur (1916) and Erdős-Ko-Rado (1961). Cameron and Erdős studied both f(n), the count of all sum-free subsets of [n], and f_m(n), the count of maximal ones. They proved f_m(n) > 2^{n/4} using constructions from odd numbers, and asked whether f_m(n) = o(2^{n/2}). Łuczak and Schoen (2001) resolved this affirmatively, showing f_m(n) < 2^{cn} for some c < 1/2. Balogh, Liu, Sharifzadeh, and Treglown (BLST) then pinpointed the exact growth: f_m(n) = 2^{(1/4+o(1))n} (2015) and the sharp asymptotic f_m(n) = (C_n + o(1))·2^{n/4} with C_n depending on n mod 4 (2018). The BLST proofs use the hypergraph container method, one of the most powerful modern tools in combinatorics.",
+    "problemStatement": "Let f_m(n) count the number of maximal sum-free subsets of {1,...,n}. Estimate f_m(n) - is it true that f_m(n) = o(2^{n/2})?",
+    "text": "Let f_m(n) count maximal sum-free subsets A of {1,...,n}. Is f_m(n) = o(2^{n/2})? SOLVED: YES. Sharp bounds show f_m(n) = (C_n + o(1))2^{n/4} where C_n depends on n mod 4.",
+    "proofStrategy": "The formalization defines sum-free and maximal sum-free sets with two equivalent formulations, establishes counting functions f(n) and f_m(n) via powerset filtering, proves basic examples (odds, upper half), and axiomatizes the key results: Cameron-Erdős lower bound, Łuczak-Schoen upper bound, and BLST sharp asymptotics.",
+    "keyInsights": [
+      "**Sum-free characterization**: $A \\cap (A+A) = \\emptyset$ gives an elegant characterization; odd numbers and upper-half sets are canonical examples",
+      "**Maximality as saturation**: Every element outside a maximal sum-free set participates in a sum with the set, creating strong structural constraints",
+      "**The 1/4 exponent**: Only $\\sim n/4$ elements can be chosen freely in typical maximal sum-free sets, because maximality forces half of the $\\sim n/2$ odd numbers to be determined",
+      "**Container method**: The BLST proof partitions maximal sum-free sets into 'containers' of bounded size, yielding $f_m(n) \\leq 2^{o(n)} \\cdot 2^{n/4}$",
+      "**Exponential gap**: $f_m(n) = \\Theta(2^{n/4})$ vs $f(n) = \\Theta(2^{n/2})$ shows maximal sets are exponentially rare among all sum-free sets"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #877 is SOLVED. The answer to 'Is f_m(n) = o(2^{n/2})?' is YES. The count of maximal sum-free subsets satisfies f_m(n) = Θ(2^{n/4}), with sharp asymptotics f_m(n) = (C_n + o(1))2^{n/4} where C_n is an explicit constant depending on n mod 4. The formalization captures the full progression from Cameron-Erdős through BLST. 4 sorries remain.",
+    "implications": "This result reveals a striking gap between the count of all sum-free sets (~2^{n/2}) and maximal sum-free sets (~2^{n/4}). The container method developed for this problem has become one of the most widely used tools in modern combinatorics, with applications to Turán-type problems, Ramsey theory, and graph enumeration.",
+    "openQuestions": [
+      "What are the exact numerical values of C_0, C_1, C_2, C_3 in the BLST sharp bound?",
+      "Can the structure of maximal sum-free sets be characterized more precisely (e.g., typical set profiles)?",
+      "What about maximal sum-free sets in other groups: ℤ_n, ℤ_p, or general abelian groups?",
+      "Can the 4 remaining sorries (maximal_criterion, odds_construction, maximal_vs_all, erdos_877) be closed?",
+      "Is there a sharp threshold for the transition from f_m(n) ≈ f(n) to f_m(n) ≪ f(n) as the maximality constraint is relaxed?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Order.Partition.Finpartition",
+      "Mathlib.Analysis.Asymptotics.Asymptotics"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos877",
+    "lineCount": 291,
+    "axiomCount": 2,
+    "theoremCount": 9,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos877Problem.lean",
+    "sorries": 4,
+    "additionalFiles": [
+      "Proofs/Erdos877ProblemAristotle.lean",
+      "Proofs/Erdos877Aristotle.lean"
+    ]
+  },
+  "sorries": 4
+}

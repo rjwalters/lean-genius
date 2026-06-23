@@ -1,0 +1,109 @@
+{
+  "slug": "erdos-606-incomplete-01",
+  "title": "Erdős 606: Sylvester-Gallai via Kelly's Proof",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For any finite set of } \\geq 3 \\text{ points in } \\mathbb{R}^2 \\text{, not all collinear, there exists a line through exactly 2 of them.}",
+    "plain": "The Sylvester-Gallai theorem: given any finite set of ≥3 points in the plane, not all on a line, there exists a line through exactly 2 of them (an 'ordinary line').",
+    "whyMatters": [
+      "Classical result in combinatorial geometry",
+      "Kelly's 1948 extremal proof is elegant and formalizable",
+      "Foundational for combinatorial geometry results including Green-Tao's ordinary lines theorem"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "kelly_distance_lemma: geometric distance inequality proved by coordinate case analysis",
+      "sylvester_gallai: main theorem proved from Kelly's extremal argument",
+      "collinear_self_left: reflexivity of collinearity",
+      "collinear_comm: symmetry of collinearity base points"
+    ],
+    "open": [],
+    "goal": "Complete the Sylvester-Gallai formalization via Kelly's proof with 0 axioms and 0 sorries"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-13T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Proof complete: sylvester_gallai and kelly_distance_lemma both proved. 0 axioms, 0 sorries.",
+    "blockers": [],
+    "nextAction": "None - fully verified",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: sylvester_gallai and kelly_distance_lemma are both proved in Erdos606OQ03OQ03.lean. The primary file has 508 lines, 4 public theorem/lemma declarations, 5 defs, 0 axioms, and 0 sorries.",
+    "builtItems": [
+      "sylvester_gallai: proved main theorem using Kelly's extremal argument",
+      "hall3 helper: from ¬HasOrdinaryLine, every line through 2 pts has ≥3",
+      "F: filtered Finset of non-collinear triples (p,a,b) for min-distance argument",
+      "Finset.exists_min_image: used to extract minimizer of pointLineDistance",
+      "collinear_self_left: reflexivity lemma (no sorry)",
+      "collinear_comm: symmetry lemma (no sorry)",
+      "pointLineDistance: cross-product formula |det([b-a,p-a])|/|b-a|",
+      "IsOrdinaryLine: exactly 2 pts from S on the line",
+      "AllCollinear: all pts collinear definition"
+    ],
+    "insights": [
+      "Kelly's proof formalizes cleanly: contradiction via Finset.exists_min_image and the proved distance lemma",
+      "The formerly axiomatized geometric inequality is now proved by coordinate case analysis",
+      "Finset.one_lt_card gives distinct elements from card≥3 (via omega)",
+      "The AllCollinear negation pattern uses rcases ... with rfl | ⟨c, hcS, hnc⟩",
+      "hall3 extracted from ¬IsOrdinaryLine via simp+push_neg on the universally quantified conclusion",
+      "kelly_distance_lemma has signature: False conclusion, inputs are p,a,b,c + minimality condition",
+      "Coordinate proof of kelly_distance_lemma: h·(γ-α)/√(h²+γ²) < h iff (γ-α)² < h²+γ² iff α²-2αγ < h² iff α(α-2γ)≤0<h²"
+    ],
+    "mathlibGaps": [
+      "No major gaps - Real.sqrt, inner product space, Finset.exists_min_image all available"
+    ],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "completion",
+    "sylvester-gallai",
+    "kelly-proof"
+  ],
+  "relatedProofs": [
+    "erdos-6",
+    "erdos-60",
+    "erdos-606"
+  ],
+  "references": {
+    "papers": [
+      "Kelly, L.M. (1948). Solution to problem 4065. Amer. Math. Monthly 55, 28.",
+      "Sylvester, J.J. (1893). Mathematical question 11851. Educational Times 59.",
+      "Green, B. and Tao, T. (2013). On sets defining few ordinary lines. Discrete Comput. Geom."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Finset.exists_min_image",
+      "Real.sqrt_pos"
+    ]
+  },
+  "started": "2026-04-04T05:15:05.957Z",
+  "lastUpdate": "2026-04-14T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos606OQ03OQ03.lean",
+      "filename": "Erdos606OQ03OQ03.lean",
+      "lineCount": 508,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos606OQ03OQ03.lean"
+    }
+  ]
+}

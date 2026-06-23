@@ -1,0 +1,230 @@
+{
+  "id": "erdos-40",
+  "title": "Erdős Problem #40: Representation Function and Dense Sets",
+  "slug": "erdos-40",
+  "description": "For which g(N) → ∞ does |A ∩ {1,...,N}| >> N^{1/2}/g(N) imply limsup r_A(n) = ∞? Solving for any g → ∞ implies the Erdős–Turán conjecture (Problem #28). $500 bounty. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 40,
+    "status": "verified",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "additive-basis",
+      "representation-function",
+      "open"
+    ],
+    "proofRepoPath": "Proofs/Erdos40Problem.lean",
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/40",
+    "erdosUrl": "https://erdosproblems.com/40",
+    "axiomCount": 0,
+    "assumptions": "0 axiom(s) and 0 sorry(s). Fully verified.",
+    "lineCount": 291,
+    "badge": "mathlib",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 6
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "summary": "File header for Erdős #40 ($500 bounty): for which $g(N)\\to\\infty$ does $|A\\cap\\{1,\\dots,N\\}|\\gg N^{1/2}/g(N)$ force $\\limsup r_A(n)=\\infty$, where $r_A(n)$ counts representations $n=a+b$? Notes this strengthens the Erdős–Turán conjecture (#28), lists references, and imports the Mathlib set/cardinality/real-sqrt theory used.",
+      "startLine": 1,
+      "endLine": 28,
+      "mathContext": "$r_A(n)=|\\{(a,b)\\in A^2: a+b=n\\}|$. Problem #40 asks which density thresholds $N^{1/2}/g(N)$ force an unbounded representation function."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "summary": "Defines `repCount A n` (representations $n=a+b$ with $a\\le b$, via `Set.ncard`), `countingFn A N` ($|A\\cap\\{1,\\dots,N\\}|$), `IsAdditiveBasis2` (every large $n$ has $\\ge1$ representation), and `RepUnbounded` ($\\limsup r_A=\\infty$).",
+      "startLine": 29,
+      "endLine": 48,
+      "mathContext": "$r_A(n)$, the counting function $|A\\cap[1,N]|$, additive basis of order 2, and unbounded representation are the four primitives."
+    },
+    {
+      "id": "erdos-turan-28",
+      "title": "Erdős–Turán Conjecture (Problem #28)",
+      "summary": "Commentary framing the Erdős–Turán conjecture (Problem #28, OPEN): every additive basis of order 2 has an unbounded representation function. Stated as a hypothesis where needed rather than a global axiom.",
+      "startLine": 49,
+      "endLine": 54,
+      "mathContext": "Erdős–Turán (#28): additive basis of order 2 $\\Rightarrow$ $\\limsup r_A(n)=\\infty$."
+    },
+    {
+      "id": "problem-40-strengthened",
+      "title": "Problem #40: Strengthened Form",
+      "summary": "Defines `HasDensity A g` ($|A\\cap[1,N]|\\ge c\\sqrt N/g(N)$ eventually) and frames Problem #40: for which $g\\to\\infty$ does this density force unbounded representations? Kept as a hypothesis, not an axiom.",
+      "startLine": 55,
+      "endLine": 66,
+      "mathContext": "`HasDensity A g`: $|A\\cap[1,N]|\\ge c\\,\\sqrt N/g(N)$. The strongest form asks whether this holds for ALL $g\\to\\infty$."
+    },
+    {
+      "id": "proving-40-implies-28",
+      "title": "Proving #40 ⟹ #28",
+      "summary": "Proves the reduction `problem_40_implies_28`: if Problem #40 holds for every $g\\to\\infty$, then #28 follows (take $g(N)=N$, where $1\\ge\\sqrt N/N$ makes the density condition trivial for any basis). Supported by helper lemmas `rep_set_finite`, `basis_has_element`, and `countingFn_pos`.",
+      "startLine": 67,
+      "endLine": 121,
+      "mathContext": "Reduction: solving #40 for any single $g\\to\\infty$ already implies the Erdős–Turán conjecture #28."
+    },
+    {
+      "id": "known-partial-results",
+      "title": "Known Partial Results",
+      "summary": "Density bounds at the $N^{1/2}$ threshold. `SidonDensityBound` records the Sidon case (Lindström 1969). The core `b2g_counting_sq_bound` proves $k^2\\le 2g(2N-1)$ for $B_2[g]$ sets (fiber-decomposition by sum, splitting each fiber into $a\\le b$ / $a>b$ halves each bounded by $g$), yielding `b2g_density_bound`: $|A\\cap[1,N]|\\le 2(g+1)\\sqrt N$.",
+      "startLine": 122,
+      "endLine": 261,
+      "mathContext": "$B_2[g]$ sets ($r_A\\le g$) satisfy $|A\\cap[1,N]|\\le 2(g+1)\\sqrt N$ — the $N^{1/2}$ threshold is natural."
+    },
+    {
+      "id": "proved-properties",
+      "title": "Proved Properties",
+      "summary": "Definitional characterizations: `repUnbounded_iff`, `bounded_rep_not_unbounded` (a uniform bound $B$ on $r_A$ contradicts unboundedness), and `basis2_iff`.",
+      "startLine": 262,
+      "endLine": 284,
+      "mathContext": "Bounded representation $\\Rightarrow$ not `RepUnbounded`; the contrapositive of the Erdős–Turán target."
+    },
+    {
+      "id": "probabilistic-heuristic",
+      "title": "Probabilistic Heuristic",
+      "summary": "Commentary on the random-set heuristic: a random $A$ with $|A|\\sim N^{1/2}/g(N)$ has $\\mathbb{E}[r_A(n)]\\sim 1/g(N)^2\\to0$, so typical $n$ have no representation — but fluctuations may force occasional large values. Conjectured threshold $g(N)=(\\log N)^{1/2+\\varepsilon}$.",
+      "startLine": 285,
+      "endLine": 291,
+      "mathContext": "Heuristic: $\\mathbb{E}[r_A(n)]\\sim 1/g(N)^2$; the conjectured critical threshold is $g(N)=(\\log N)^{1/2+\\varepsilon}$."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed Problem #40 as a quantitative strengthening of the celebrated Erdős-Turán conjecture (Problem #28, 1941), which asks whether every additive basis of order 2 has unbounded representation function. The Erdős-Turán conjecture itself grew from Erdős and Pál Turán's foundational 1941 paper 'On a problem of Sidon in additive number theory,' which also established the $\\sqrt{N}$ density bound for Sidon sets. Problem #40 appeared in Erdős's later papers [Er95] and [Er97c] in the 1990s, carrying a $500 bounty — one of Erdős's highest prizes — reflecting both the problem's difficulty and its central position in additive combinatorics. The problem asks: what is the weakest density condition on a set $A$ that still forces $\\limsup r_A(n) = \\infty$? The $\\sqrt{N}$ threshold is natural because Sidon sets (where $r_A(n) \\leq 1$) achieve exactly this density. Lindström (1969) gave the sharp constant in the Sidon density bound. More recently, the study of $B_2[g]$ sets (bounded representation up to $g$) by Cilleruelo, Ruzsa, and Trujillo has refined our understanding of the density-representation tradeoff.",
+    "problemStatement": "For which functions $g(N) \\to \\infty$ is it true that $|A \\cap \\{1,\\ldots,N\\}| \\gg N^{1/2}/g(N)$ implies $\\limsup r_A(n) = \\infty$? The strongest form: does this hold for ALL $g \\to \\infty$?",
+    "text": "For which g(N) → ∞ does |A ∩ {1,...,N}| >> N^{1/2}/g(N) imply limsup r_A(n) = ∞? Solving for any g → ∞ implies the Erdős–Turán conjecture (Problem #28). $500 bounty. Status: OPEN.",
+    "proofStrategy": "The formalization builds the additive combinatorics infrastructure: representation count $r_A(n)$, counting function $A(N)$, and additive basis. It states Problem #40 in its strongest form (all $g \\to \\infty$) and proves the key logical implication to Problem #28. Sidon and $B_2[g]$ density bounds demonstrate the naturalness of the $\\sqrt{N}$ threshold. Probabilistic heuristics indicate the threshold function $g^*$ separating bounded from unbounded behavior lies near $g(N) \\sim (\\log N)^{1/2+\\epsilon}$.",
+    "keyInsights": [
+      "**Hierarchy of conjectures**: Problem #40 is strictly stronger than the Erdős-Turán conjecture (Problem #28) — it asks for unbounded representations under a weaker density hypothesis, with the implication $\\text{P40} \\Rightarrow \\text{P28}$ proved via the basis density lower bound $A(N) \\geq c\\sqrt{N}$",
+      "**$\\sqrt{N}$ as critical density**: Sidon sets have density exactly $(1+o(1))\\sqrt{N}$ and bounded $r_A(n) \\leq 1$, while additive bases have density $\\geq c\\sqrt{N}$ and are conjectured to have unbounded $r_A$. The problem asks whether slightly below $\\sqrt{N}$ still forces unboundedness",
+      "**$B_2[g]$ sets and the density-representation tradeoff**: Sets with $r_A(n) \\leq g$ satisfy $A(N) \\leq c_g\\sqrt{N}$, showing that bounded representation always implies the $\\sqrt{N}$ density barrier — the contrapositive suggests density above $\\sqrt{N}$ should break the barrier",
+      "**Probabilistic barrier**: Random sets of density $\\sqrt{N}/g(N)$ have $\\mathbb{E}[r_A(n)] \\sim 1/g(N)^2 \\to 0$, so the conjecture cannot hold via first-moment methods — it requires structural or second-moment arguments about large deviations",
+      "**$500 bounty reflects centrality**: This is among Erdős's highest-value bounties, signaling its importance as a bridge between density estimates and structural results in additive number theory"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #40 on the weakest density condition forcing unbounded sum representations. The file formalizes the representation count, additive basis, density condition, the strongest form of the conjecture (all $g \\to \\infty$), the implication to the Erdős-Turán conjecture, Sidon and $B_2[g]$ density bounds, and probabilistic heuristics. The $\\sqrt{N}$ density threshold emerges as the natural boundary, with Sidon sets on one side and additive bases on the other.",
+    "implications": "**Theoretical Significance**: Resolving Problem #40 would either prove the Erdős-Turán conjecture (if all $g \\to \\infty$ work) or identify a sharp phase transition in the density-representation relationship.\n\nThe problem connects to Fourier-analytic methods in additive combinatorics (via generating functions and exponential sums), the theory of Sidon and $B_h$ sets, and probabilistic combinatorics. Understanding the threshold function $g^*$ would illuminate the fundamental question of how density interacts with additive structure.",
+    "openQuestions": [
+      "Does the conjecture hold for $g(N) = (\\log N)^\\epsilon$ for any $\\epsilon > 0$? This would be a major advance toward the full conjecture.",
+      "Is there a counterexample set $A$ with $A(N) \\sim \\sqrt{N}/g(N)$ for some slowly growing $g$ where $r_A(n)$ stays bounded?",
+      "What Fourier-analytic or combinatorial methods can handle the regime $A(N) \\sim \\sqrt{N}/g(N)$ with $g \\to \\infty$? Standard circle method arguments require $A(N) \\geq c\\sqrt{N}$.",
+      "Can the threshold function $g^*$ be related to a natural arithmetic quantity, such as the density of primes in short intervals?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-41",
+      "relationship": "related",
+      "description": "Erdős Problem #41 also concerns additive bases and representation functions, exploring threshold densities for covering all sufficiently large integers. Both problems share the $\\sqrt{N}$ density landscape and ask how minimal density constraints force structural properties of the representation function."
+    },
+    {
+      "targetId": "erdos-43",
+      "relationship": "related",
+      "description": "Erdős Problem #43 on Sidon sets (B_2 sequences) directly underpins Problem #40: Sidon sets achieve density $\\approx \\sqrt{N}$ with $r_A(n) \\leq 1$, establishing the $\\sqrt{N}$ threshold as the natural boundary. The Erdős–Turán 1941 density bound for Sidon sets is precisely the extremal case that Problem #40 asks to push below."
+    },
+    {
+      "targetId": "erdos-47",
+      "relationship": "related",
+      "description": "Erdős Problem #47 concerns $B_h$ sets and multiplicities in sumsets. The $B_2[g]$ bound ($r_A(n) \\leq g \\Rightarrow A(N) \\leq c_g \\sqrt{N}$) formalized in Problem #40 is the direct generalization from Sidon sets ($g=1$) to bounded-multiplicity sets, and connects to the broader theory of $B_h$ sequences studied in Problem #47."
+    },
+    {
+      "targetId": "erdos-500",
+      "relationship": "related",
+      "description": "Erdős Problem #500, also carrying a high bounty, shares the theme of quantitative density conditions in additive number theory. Both problems reflect Erdős's program of identifying sharp numerical thresholds governing additive structure, and both remain open as of 2026."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "foundational",
+      "description": "The Szemerédi regularity lemma is a fundamental tool in additive combinatorics that provides structural decompositions of dense graphs. While Problem #40 concerns sumsets, the regularity approach to additive problems (via Fourier analysis on dense sets) represents the same lineage of ideas about density thresholds and structure, and regularity-type arguments are central to modern attacks on the Erdős–Turán conjecture."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The binomial theorem underlies the probabilistic random-set heuristic in Problem #40: the expected number of representations $\\mathbb{E}[r_A(n)]$ is computed by summing over pairs $(a, b)$ with each element independently included, giving a binomial expectation. The threshold density $\\sqrt{N}/g(N)$ is calibrated so that $\\mathbb{E}[r_A(n)] \\sim 1/g(N)^2 \\to 0$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Turán, Pál",
+      "title": "On a problem of Sidon in additive number theory, and on some related problems",
+      "year": "1941",
+      "venue": "Journal of the London Mathematical Society, vol. 16, pp. 212–215",
+      "note": "Foundational paper establishing the $\\sqrt{N}$ density bound for Sidon sets and introducing the Erdős–Turán conjecture (Problem #28) that Problem #40 strengthens"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problems and results on combinatorial number theory",
+      "year": "1995",
+      "venue": "The Mathematics of Paul Erdős, II (Graham and Nešetřil, eds.), Algorithms and Combinatorics vol. 14, Springer, pp. 3–35",
+      "note": "Contains [Er95]: Erdős's late formulation of Problem #40 with the $500 bounty, posing the density threshold question for all $g \\to \\infty$"
+    },
+    {
+      "authors": "Cilleruelo, Javier; Ruzsa, Imre Z.; Trujillo, Carlos",
+      "title": "Upper and lower bounds for finite $B_h[g]$ sequences",
+      "year": "2000",
+      "venue": "Journal of Number Theory, vol. 82, no. 2, pp. 229–255",
+      "note": "Establishes tight bounds on $A(N)$ for $B_2[g]$ sets (bounded multiplicity $r_A(n) \\leq g$), directly formalizing the density barrier $A(N) \\leq c_g \\sqrt{N}$ used in the Problem #40 formalization"
+    },
+    {
+      "authors": "Lindström, Bernt",
+      "title": "A remark on B_4 sequences",
+      "year": "1969",
+      "venue": "Journal of Combinatorial Theory, vol. 7, no. 3, pp. 276–277",
+      "note": "Provides the sharp constant in the Sidon density bound $|A \\cap \\{1,\\ldots,N\\}| \\leq (1+o(1))\\sqrt{N}$, establishing the extremal density that Problem #40's threshold $\\sqrt{N}/g(N)$ is measured against"
+    },
+    {
+      "authors": "Green, Ben; Ruzsa, Imre Z.",
+      "title": "Counting sumsets and sum-free sets modulo a prime",
+      "year": "2005",
+      "venue": "Studia Scientiarum Mathematicarum Hungarica, vol. 41, no. 3, pp. 285–293",
+      "note": "Illustrates Fourier-analytic and probabilistic methods for counting representations in sumsets, representing the modern circle-method and exponential-sum approach relevant to Problem #40's heuristic analysis"
+    },
+    "Erdős [Er95], [Er97c]",
+    "Erdős–Turán conjecture (Problem #28)",
+    "https://erdosproblems.com/40"
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "",
+    "lineCount": 291,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 6,
+    "mainTheorems": [
+      {
+        "name": "repUnbounded_iff",
+        "type": "equivalence",
+        "description": "Characterizes unbounded representation: ∀ B, ∃ n, repCount A n > B ↔ ¬∃ B, ∀ n, repCount A n ≤ B"
+      },
+      {
+        "name": "bounded_rep_not_unbounded",
+        "type": "original",
+        "description": "If repCount is bounded by B for all n, then the representation function is not unbounded"
+      },
+      {
+        "name": "basis2_iff",
+        "type": "equivalence",
+        "description": "Equivalence of two formulations of asymptotic basis of order 2"
+      }
+    ],
+    "path": "Proofs/Erdos40Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

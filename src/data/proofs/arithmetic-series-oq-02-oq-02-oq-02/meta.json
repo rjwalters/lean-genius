@@ -1,0 +1,185 @@
+{
+  "id": "arithmetic-series-oq-02-oq-02-oq-02",
+  "title": "Rising ⟷ Standard Vandermonde Connection",
+  "slug": "arithmetic-series-oq-02-oq-02-oq-02",
+  "description": "Connects the rising (parallel) Vandermonde convolution Σ_{i+j=n} C(a+i,a)·C(b+j,b) = C(a+b+n+1,a+b+1) to the standard Vandermonde Σ_j C(m,j)·C(s,r-j) = C(m+s,r). The standard form is re-derived in range-sum convention straight from Mathlib's Nat.add_choose_eq; the rising form is restated in pure Nat.choose form by reducing to the parent's inductively-proven parallel_vandermonde.",
+  "meta": {
+    "author": "Vandermonde (1772), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
+    "date": "1772",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ02OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "vandermonde",
+      "binomial-coefficients",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.add_choose_eq",
+        "description": "Standard Vandermonde over the antidiagonal: (m+s).choose r = Σ over antidiagonal of m.choose i * s.choose j",
+        "module": "Mathlib.Data.Nat.Choose.Vandermonde"
+      },
+      {
+        "theorem": "Finset.Nat.sum_antidiagonal_eq_sum_range_succ",
+        "description": "Reindexes an antidiagonal sum to a range sum Σ_{j ∈ range (r+1)}",
+        "module": "Mathlib.Algebra.BigOperators.NatAntidiagonal"
+      }
+    ],
+    "originalContributions": [
+      "standard_vandermonde: (m+s).choose r = Σ_{j ∈ range (r+1)} m.choose j * s.choose (r-j) — the standard Vandermonde reindexed from the antidiagonal to a range sum, with fixed upper indices",
+      "rising_vandermonde: Σ_{i ∈ range (n+1)} (a+i).choose a * (b+(n-i)).choose b = (a+b+n+1).choose (a+b+1) — the rising convolution in pure Nat.choose form, reduced to the parent's parallel_vandermonde"
+    ],
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "prerequisites": [
+      "Binomial coefficients",
+      "Vandermonde's convolution identity",
+      "Upper negation for binomial coefficients"
+    ],
+    "lineCount": 102,
+    "assumptions": "None. The two headline theorems are fully verified with 0 axioms and 0 sorries (the parent's parallel_vandermonde is itself axiom-free). The three concrete cross-checks use native_decide for numeric sanity only.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Vandermonde's convolution identity $\\sum_j \\binom{m}{j}\\binom{s}{r-j} = \\binom{m+s}{r}$, published by Alexandre-Théophile Vandermonde in 1772, is among the most fundamental binomial identities. It has two faces. The 'standard' form has fixed upper indices $m, s$. The 'rising' (or 'parallel') form sums products $\\binom{a+i}{a}\\binom{b+j}{b}$ whose upper indices co-vary with the summation index — this is the convolution of two negative-binomial (simplicial) sequences and arises naturally in lattice path enumeration. Over $\\mathbb{Z}$ the two are exactly the same identity viewed through upper negation $\\binom{a+i}{i} = (-1)^i\\binom{-a-1}{i}$, but over $\\mathbb{N}$ they look superficially different. This entry makes the relationship explicit, answering an open question posed by the parent 2D hockey stick entry.",
+    "problemStatement": "**Connecting the two Vandermonde forms.** The parent file proves the *rising* convolution\n\n$$\\sum_{i+j=n} \\binom{a+i}{a}\\binom{b+j}{b} = \\binom{a+b+n+1}{a+b+1}$$\n\nby induction. The open question asks: how does this relate to the *standard* Vandermonde\n\n$$\\sum_{j=0}^{r} \\binom{m}{j}\\binom{s}{r-j} = \\binom{m+s}{r}\\,?$$\n\nThis file records both in a common range-sum convention — the standard form straight from Mathlib's `Nat.add_choose_eq`, the rising form reduced to the parent's `parallel_vandermonde` — and documents the upper-negation chain that turns one into the other over $\\mathbb{Z}$.",
+    "text": "Connects the rising (parallel) Vandermonde convolution to the standard Vandermonde identity, recording both in a common range-sum form and documenting the upper-negation duality that links them.",
+    "proofStrategy": "**standard_vandermonde**: rewrite with `Nat.add_choose_eq` (which states the identity over the natural-number antidiagonal), then reindex the antidiagonal sum to `range (r+1)` via `Finset.Nat.sum_antidiagonal_eq_sum_range_succ`. **rising_vandermonde**: invoke the parent's `parallel_vandermonde`, unfold the `simplicial` wrapper, rewrite the right-hand-side index `a+b+n+1` as `n+(a+b+1)`, and match summands by commuting the additions inside each `Nat.choose`. The deeper $\\mathbb{Z}$ identification (upper negation applied twice, then standard Vandermonde at negative upper index) is verified term-by-term in an accompanying Python script but is not formalized: a fully formal $\\mathbb{Z}$ derivation needs the generalized binomial at negative upper index, which Mathlib's $\\mathbb{N}$-only `Nat.add_choose_eq` does not provide.",
+    "keyInsights": [
+      "The standard and rising Vandermonde are the *same* identity over $\\mathbb{Z}$, linked by upper negation $\\binom{a+i}{i} = (-1)^i\\binom{-a-1}{i}$: applying it twice turns the rising convolution into a standard Vandermonde at negative upper index $\\binom{-a-b-2}{n}$, which negates back to $\\binom{a+b+n+1}{n}$.",
+      "The distinction is purely a matter of which index is fixed: the standard form fixes the upper indices $m, s$; the rising form lets them co-vary as $a+i, b+j$ with the summation variable.",
+      "In generating-function language the rising convolution is $[x^n]\\,(1-x)^{-(a+1)}(1-x)^{-(b+1)}$, the $(1+x) \\leftrightarrow (1-x)^{-1}$ dual of the standard Vandermonde $[x^r]\\,(1+x)^m(1+x)^s$.",
+      "Mathlib supplies the standard form for free (`Nat.add_choose_eq`) but not the rising form — the rising convolution must be obtained by the parent's $\\mathbb{N}$-native induction, since the slick $\\mathbb{Z}$ upper-negation proof would require negative-upper-index binomials Mathlib lacks.",
+      "Combinatorially the rising form needs no generating function at all: $\\binom{a+i}{a}$ counts size-$i$ multisets from $a+1$ types (stars and bars), so $\\sum_{i+j=n}\\binom{a+i}{a}\\binom{b+j}{b}=\\binom{a+b+n+1}{a+b+1}$ says that choosing a size-$n$ multiset from $a+b+2$ types is the same as splitting the types into a first block of $a+1$ and a second block of $b+1$ and summing over how many of the $n$ picks fall in each block — a direct bijective reading of the convolution."
+    ],
+    "prerequisites": [
+      "Binomial coefficients",
+      "Vandermonde's convolution identity",
+      "Upper negation for binomial coefficients"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "States the open question (connect rising to standard Vandermonde), recalls the parent's parallel_vandermonde, and lays out the upper-negation chain that identifies the two forms over ℤ, with a note on why the ℕ-native route is taken.",
+      "mathContext": "Frames the duality: $\\sum_{i+j=n}\\binom{a+i}{a}\\binom{b+j}{b} = (-1)^n\\sum_{i+j=n}\\binom{-a-1}{i}\\binom{-b-1}{j} = (-1)^n\\binom{-a-b-2}{n} = \\binom{a+b+n+1}{n}$, equivalently $[x^n](1-x)^{-(a+1)}(1-x)^{-(b+1)}$."
+    },
+    {
+      "id": "setup",
+      "title": "Parent Import and Namespace Setup",
+      "startLine": 43,
+      "endLine": 54,
+      "summary": "`import Proofs.ArithmeticSeriesOQ02OQ02` to reuse the parent's parallel_vandermonde, `open Finset`, and `namespace ArithmeticSeriesOQ02OQ02OQ02` with `open ArithmeticSeriesOQ02OQ02` to bring the parent's results into scope. This establishes the dependency that lets the rising-form identity be derived against the standard form without re-proving the parent material.",
+      "mathContext": "Depends on the parent entry arithmetic-series-oq-02-oq-02 (the rising Vandermonde `parallel_vandermonde`), reused here rather than re-proved."
+    },
+    {
+      "id": "standard-vandermonde",
+      "title": "Standard Vandermonde (range form)",
+      "startLine": 55,
+      "endLine": 63,
+      "summary": "standard_vandermonde: (m+s).choose r = Σ_{j ∈ range (r+1)} m.choose j * s.choose (r-j). Mathlib's Nat.add_choose_eq reindexed from the antidiagonal to a range sum.",
+      "mathContext": "The classical Vandermonde with fixed upper indices: $\\binom{m+s}{r} = \\sum_{j=0}^{r}\\binom{m}{j}\\binom{s}{r-j}$. Mathlib states this over the antidiagonal; `Finset.Nat.sum_antidiagonal_eq_sum_range_succ` converts pairs $(i,j)$ with $i+j=r$ to $j \\in \\{0,\\ldots,r\\}$ with second index $r-j$."
+    },
+    {
+      "id": "rising-vandermonde",
+      "title": "Rising (Parallel) Vandermonde (pure Nat.choose form)",
+      "startLine": 69,
+      "endLine": 82,
+      "summary": "rising_vandermonde: Σ_{i ∈ range (n+1)} (a+i).choose a * (b+(n-i)).choose b = (a+b+n+1).choose (a+b+1). Restates the parent's parallel_vandermonde without the simplicial wrapper, matching summands by commuting additions.",
+      "mathContext": "The rising convolution with co-varying upper indices: $\\sum_{i=0}^{n}\\binom{a+i}{a}\\binom{b+(n-i)}{b} = \\binom{a+b+n+1}{a+b+1}$. The reduction unfolds `simplicial k n = (n+k).choose k`, rewrites $a+b+n+1 = n+(a+b+1)$, then matches terms via $\\binom{a+i}{a} = \\binom{i+a}{a}$ and $\\binom{b+(n-i)}{b} = \\binom{(n-i)+b}{b}$."
+    },
+    {
+      "id": "cross-checks",
+      "title": "Concrete Cross-Checks",
+      "startLine": 84,
+      "endLine": 102,
+      "summary": "Three native_decide examples confirming both forms numerically: the rising form at a=b=1, n=2 equals 10 = C(5,3), and the standard form at m=4, s=3, r=2 equals 21 = C(7,2).",
+      "mathContext": "Rising: $\\binom{1}{1}\\binom{3}{1}+\\binom{2}{1}\\binom{2}{1}+\\binom{3}{1}\\binom{1}{1} = 3+4+3 = 10 = \\binom{5}{3}$. Standard: $\\binom{7}{2} = 21 = \\sum_{j=0}^{2}\\binom{4}{j}\\binom{3}{2-j}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Two headline theorems, 0 sorries and 0 axioms: standard_vandermonde (Mathlib's Nat.add_choose_eq reindexed to a range sum) and rising_vandermonde (the parent's parallel_vandermonde restated in pure Nat.choose form). Together they place the two faces of Vandermonde's identity side by side in a common convention, and the header documents the upper-negation chain that identifies them over ℤ.",
+    "implications": "**Negative-binomial convolution**: the rising form is exactly the statement that the convolution of two negative-binomial sequences NB(a+1) * NB(b+1) is NB(a+b+2), the combinatorial heart of summing negative-binomial random variables. **Lattice paths**: fixing-vs-co-varying upper indices corresponds to two ways of marking a threshold crossing in monotone path counting. **Formalization gap**: the entry pinpoints a concrete Mathlib gap — there is no negative-upper-index binomial, so the elegant ℤ upper-negation proof of the rising form cannot be carried out formally and the ℕ-native induction of the parent is the simplest available route.",
+    "openQuestions": [
+      "Formalize the ℤ upper-negation derivation once Mathlib gains a generalized binomial coefficient with negative upper index, replacing the parent's induction with the two-line negation chain.",
+      "Give a direct combinatorial bijection between the lattice-path interpretations of the rising and standard forms, avoiding both induction and generating functions.",
+      "Formalize the generating-function identity (1-x)^{-(a+1)}(1-x)^{-(b+1)} = (1-x)^{-(a+b+2)} as coefficient extraction, mirroring the (1+x)^m(1+x)^s = (1+x)^{m+s} proof of the standard form."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry proving the rising (parallel) Vandermonde convolution by nested induction — this file restates it in pure Nat.choose form and connects it to the standard Vandermonde, answering the parent's open question #2"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "Vandermonde's convolution is a cornerstone binomial-coefficient identity; the rising and standard forms are dual coefficient extractions in the binomial / negative-binomial generating functions"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "Both forms are identities on C(n,k); the standard form is reindexed directly from Mathlib's antidiagonal statement of the choose convolution"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02",
+      "relationship": "ancestor",
+      "description": "The 1D hockey stick identity, the a=0 / b=0 degenerate case of the rising Vandermonde convolution restated here"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.ArithmeticSeriesOQ02OQ02"
+    ],
+    "opens": [
+      "Finset",
+      "ArithmeticSeriesOQ02OQ02"
+    ],
+    "namespace": "ArithmeticSeriesOQ02OQ02OQ02",
+    "lineCount": 102,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "standard_vandermonde",
+        "type": "original",
+        "description": "Standard Vandermonde in range form: (m+s).choose r = Σ_{j ∈ range (r+1)} m.choose j * s.choose (r-j), reindexed from Mathlib's Nat.add_choose_eq"
+      },
+      {
+        "name": "rising_vandermonde",
+        "type": "original",
+        "description": "Rising (parallel) Vandermonde in pure Nat.choose form: Σ_{i ∈ range (n+1)} (a+i).choose a * (b+(n-i)).choose b = (a+b+n+1).choose (a+b+1), reduced to the parent's parallel_vandermonde"
+      }
+    ],
+    "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Vandermonde, Alexandre-Théophile",
+      "title": "Mémoire sur des irrationnelles de différens ordres avec une application au cercle",
+      "year": "1772",
+      "venue": "Mémoires de l'Académie Royale des Sciences de Paris",
+      "note": "Original Vandermonde convolution identity Σ C(m,j)·C(s,r-j) = C(m+s,r)"
+    },
+    {
+      "authors": "Graham, Ronald L. and Knuth, Donald E. and Patashnik, Oren",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "note": "Section 5.1 develops upper negation and the rising/standard Vandermonde duality"
+    }
+  ],
+  "sorries": 0
+}

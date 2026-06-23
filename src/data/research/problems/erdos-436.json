@@ -1,0 +1,97 @@
+{
+  "slug": "erdos-436",
+  "title": "Consecutive kth power residues and Erdos 436",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "IsKthPowerResidue(r,k,p) := \\exists a, a^k \\equiv r\\pmod p;\\ AreConsecutiveKthResidues(r,k,m,p) asks r,\\ldots,r+m-1 to be kth-power residues, with LambdaFinite(k,m) recording bounded limsup behavior.",
+    "plain": "Backfill the Erdos 436 metadata around consecutive kth-power residues modulo primes, the formal LambdaFinite interface, checked small lambda values, Hildebrand/Graham-style axiom boundaries, and the remaining odd-k, m=3 problem.",
+    "whyMatters": [
+      "The problem packages a deep distribution question about power residues into finite runs modulo primes.",
+      "The Lean development contains useful first-principles residue infrastructure alongside explicitly axiom-backed global theorems.",
+      "The metadata needs to keep the solved m=2 direction and the open m=3 odd-k direction separate."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`IsKthPowerResidue`, `AreConsecutiveKthResidues`, `IsQuadraticResidue`, and `LambdaFinite` define the residue-run framework.",
+      "`zero_is_kth_power_residue`, `one_is_kth_power_residue`, `consecutive_shorten`, `consecutive_shift`, and `all_are_first_power_residues` give elementary infrastructure.",
+      "`erdos_436_question1`, `only_small_m_matters`, `quadratic_case_complete`, and `m_2_complete_picture` summarize the formalized solved directions.",
+      "`isSquare_to_kth_residue`, `not_kth_residue_to_not_isSquare`, `euler_criterion_backward`, and `qr_product_non_residues` add supporting quadratic-residue lemmas."
+    ],
+    "open": [
+      "`lambda_2_2`, `hildebrand_theorem`, `lambda_even_3_infinite`, and `graham_theorem` are axioms in `Erdos436Problem.lean`; the odd-k, m=3 Lambda question remains open."
+    ],
+    "goal": "Show the verified power-residue framework and clearly flag the global residue-run theorems that are recorded as axioms."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-27T22:18:02.333Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "power-residues",
+    "finite-fields",
+    "quadratic-residues",
+    "axiom-backed",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-43",
+    "erdos-436"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-27T22:18:02.333Z",
+  "lastUpdate": "2026-02-07T00:59:53.378Z",
+  "completed": "2026-02-07T00:59:53.378Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos436Improvements.lean",
+      "filename": "Erdos436Improvements.lean",
+      "lineCount": 158,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos436Improvements.lean"
+    },
+    {
+      "path": "Proofs/Erdos436Problem.lean",
+      "filename": "Erdos436Problem.lean",
+      "lineCount": 687,
+      "theoremCount": 45,
+      "axiomCount": 9,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos436Problem.lean"
+    }
+  ]
+}

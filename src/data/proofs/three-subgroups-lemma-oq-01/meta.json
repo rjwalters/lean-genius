@@ -1,0 +1,103 @@
+{
+  "id": "three-subgroups-lemma-oq-01",
+  "title": "Three Subgroups Lemma OQ-01: Normal-Subgroup Form via the Quotient",
+  "slug": "three-subgroups-lemma-oq-01",
+  "description": "The three subgroups lemma states that for subgroups H, K, L of a group G the three iterated commutators ⁅⁅H,K⁆,L⁆, ⁅⁅K,L⁆,H⁆, ⁅⁅L,H⁆,K⁆ are cyclically interchangeable modulo a normal subgroup N: if any two of them lie in N, so does the third. Mathlib records only the bottom case (N = ⊥): Subgroup.commutator_commutator_eq_bot_of_rotate, obtained from the Hall–Witt identity. This entry derives the classical ≤ N statement — the form actually used to build the lower central series and prove ⁅Gᵢ,Gⱼ⁆ ≤ G₍ᵢ₊ⱼ₎ — which Mathlib does not contain. The bridge is to pass to the quotient G ⧸ N: under the projection f = QuotientGroup.mk' N (whose kernel is exactly N), the inclusion X ≤ N is equivalent to X.map f = ⊥ (Subgroup.map_eq_bot_iff with QuotientGroup.ker_mk'), and map distributes over the commutator bracket (Subgroup.map_commutator). The three ≤ N hypotheses thereby become three = ⊥ statements in G ⧸ N, where Mathlib's lemma applies verbatim, and the conclusion pulls back along f. The entry packages the full cyclic symmetry (all three implications), the symmetric inner-bracket-first notation ⁅H,⁅K,L⁆⁆, the recovery of Mathlib's = ⊥ lemma as the case N = ⊥, and the standard corollary that if H commutes with both K and L modulo N then H commutes with ⁅K,L⁆ modulo N.",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Commutator.Basic",
+      "Mathlib.GroupTheory.QuotientGroup.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Subgroup"
+    ],
+    "namespace": "ThreeSubgroupsLemmaOQ01",
+    "lineCount": 130,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/ThreeSubgroupsLemmaOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Three_subgroups_lemma",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ThreeSubgroupsLemmaOQ01.lean",
+    "tags": [
+      "group-theory",
+      "commutator-subgroup",
+      "three-subgroups-lemma",
+      "hall-witt-identity",
+      "quotient-group",
+      "nilpotent-groups"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "relatedProblems": [],
+    "axiomCount": 0,
+    "lineCount": 130,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. All named theorems depend only on the foundational propext / Classical.choice / Quot.sound (verified with #print axioms). Mathlib contains the bottom case of the three subgroups lemma (Subgroup.commutator_commutator_eq_bot_of_rotate, the = ⊥ rotation from the Hall–Witt identity) but NOT the classical ≤ N form relative to an arbitrary normal subgroup N. The ≤ N statement, its full cyclic symmetry, the inner-bracket-first formulation, and the 'commutes-with-both-implies-commutes-with-the-commutator' corollary are the original content, derived by transporting the = ⊥ lemma across the quotient projection G ⧸ N via Subgroup.map_commutator, Subgroup.map_eq_bot_iff and QuotientGroup.ker_mk'.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The three subgroups lemma is a staple of commutator calculus, usually attributed to Philip Hall and used pervasively in the structure theory of nilpotent and solvable groups. Its standard proof rests on the Hall–Witt identity, a group-theoretic analogue of the Jacobi identity relating the three cyclic conjugated commutators ⁅⁅x,y⁻¹⁆,z⁆ˣ · ⁅⁅z,x⁻¹⁆,y⁆ᶻ · ⁅⁅y,z⁻¹⁆,x⁆ʸ = 1. The lemma's most important application is inductive: it powers the proof that the lower central series satisfies ⁅γᵢ(G), γⱼ(G)⁆ ≤ γ₍ᵢ₊ⱼ₎(G), the engine behind much of nilpotency theory. The version that this induction needs is precisely the relative form 'modulo a normal subgroup N', not the absolute N = ⊥ case.",
+    "problemStatement": "Let H, K, L, N be subgroups of a group G with N normal. Prove the three subgroups lemma in its normal-subgroup form:\n$$\\langle\\!\\langle H, K\\rangle\\!\\rangle_L \\le N \\;\\text{and}\\; \\langle\\!\\langle K, L\\rangle\\!\\rangle_H \\le N \\;\\Longrightarrow\\; \\langle\\!\\langle L, H\\rangle\\!\\rangle_K \\le N,$$\nwhere $\\langle\\!\\langle A, B\\rangle\\!\\rangle_C$ denotes the iterated commutator subgroup $\\lbrack\\lbrack A, B\\rbrack, C\\rbrack$. Equivalently: if any two of the three cyclic iterated commutators lie in the normal subgroup N, so does the third.",
+    "text": "Mathlib's Subgroup.commutator_commutator_eq_bot_of_rotate proves the bottom case: ⁅⁅H,K⁆,L⁆ = ⊥ and ⁅⁅K,L⁆,H⁆ = ⊥ imply ⁅⁅L,H⁆,K⁆ = ⊥. The classical statement relative to a normal subgroup N is absent. This entry supplies it by a clean quotient argument: the canonical projection f : G → G ⧸ N has kernel exactly N, so X ≤ N is the same as X.map f = ⊥; since map distributes over the commutator bracket, the three ≤ N hypotheses are exactly the = ⊥ hypotheses of Mathlib's lemma in the quotient group, and the conclusion transports back. The original mathematical content is the relative form together with its cyclic symmetry and the standard centralizing corollary.",
+    "proofStrategy": "The single working step is commutator_le_of_rotate. Rewrite each occurrence of `_ ≤ N` as `_ ≤ (QuotientGroup.mk' N).ker` using QuotientGroup.ker_mk', then as `(QuotientGroup.mk' N).map _ = ⊥` using Subgroup.map_eq_bot_iff. The simp lemma Subgroup.map_commutator pushes the projection through both brackets, turning each hypothesis and the goal into a statement about ⁅⁅map f H, map f K⁆, map f L⁆ etc. in G ⧸ N. At that point Subgroup.commutator_commutator_eq_bot_of_rotate closes the goal verbatim. The cyclic variants commutator_le_of_rotate₂/₃ are the same lemma with the arguments relabelled; commutator_le_of_rotate_symm rephrases it in the ⁅H,⁅K,L⁆⁆ notation by rewriting with Subgroup.commutator_comm. commutator_eq_bot_of_rotate specialises N = ⊥ (le_bot_iff). The corollary commutator_commutator_le_of_both observes that ⁅H,K⁆ ≤ N and ⁅H,L⁆ ≤ N force ⁅⁅H,K⁆,L⁆ ≤ ⁅N,L⁆ ≤ N and ⁅⁅L,H⁆,K⁆ ≤ ⁅N,K⁆ ≤ N (using commutator_mono and Subgroup.commutator_le_left, the containment ⁅N,·⁆ ≤ N for normal N), so the lemma delivers ⁅⁅K,L⁆,H⁆ = ⁅H,⁅K,L⁆⁆ ≤ N.",
+    "keyInsights": [
+      "**Quotient transport converts ≤ N into = ⊥**: the entire generalization rests on the equivalence X ≤ N ⟺ X.map (mk' N) = ⊥, valid because the kernel of the quotient projection is exactly N. The relative three subgroups lemma is therefore the absolute one read inside G ⧸ N — no new commutator combinatorics are needed.",
+      "**`map` commutes with the bracket**: Subgroup.map_commutator (map f ⁅A,B⁆ = ⁅map f A, map f B⁆) is what lets the projection slide through both nested commutators, so a single simp turns all three hypotheses and the goal into their quotient counterparts simultaneously.",
+      "**Mathlib stops at N = ⊥**: the Hall–Witt-derived lemma is stated only as an equality with the trivial subgroup. The form group theory actually uses for the lower central series — `≤ N` for a general normal N — is exactly the missing piece this entry fills, and it recovers Mathlib's lemma as the special case N = ⊥.",
+      "**A normal subgroup absorbs commutators**: the corollary uses that ⁅N, C⁆ ≤ N whenever N is normal (Subgroup.commutator_le_left). Combined with monotonicity of the bracket, an inclusion ⁅H,K⁆ ≤ N propagates into the iterated commutators, so 'H centralizes both K and L modulo N' really does force 'H centralizes ⁅K,L⁆ modulo N'."
+    ],
+    "prerequisites": [
+      "The commutator subgroup ⁅H,K⁆ and its monotonicity (Subgroup.commutator_mono), symmetry (Subgroup.commutator_comm), and the containment ⁅N,K⁆ ≤ N for normal N (Subgroup.commutator_le_left)",
+      "Mathlib's bottom-case three subgroups lemma Subgroup.commutator_commutator_eq_bot_of_rotate (from the Hall–Witt identity)",
+      "The quotient projection QuotientGroup.mk' N, its kernel QuotientGroup.ker_mk', and the map/kernel correspondence Subgroup.map_eq_bot_iff",
+      "That subgroup map distributes over the commutator bracket: Subgroup.map_commutator"
+    ]
+  },
+  "sections": [
+    {
+      "id": "normal-form",
+      "title": "The Normal-Subgroup Three Subgroups Lemma",
+      "startLine": 57,
+      "endLine": 66,
+      "mathContext": "$\\lbrack\\lbrack H,K\\rbrack,L\\rbrack \\le N$ and $\\lbrack\\lbrack K,L\\rbrack,H\\rbrack \\le N$ imply $\\lbrack\\lbrack L,H\\rbrack,K\\rbrack \\le N$.",
+      "summary": "commutator_le_of_rotate is the one substantive proof: it rewrites every `_ ≤ N` as `map (mk' N) _ = ⊥` (via QuotientGroup.ker_mk' and Subgroup.map_eq_bot_iff), pushes the projection through both brackets with Subgroup.map_commutator, and finishes with Mathlib's Subgroup.commutator_commutator_eq_bot_of_rotate inside the quotient G ⧸ N."
+    },
+    {
+      "id": "cyclic-symmetry",
+      "title": "Full Cyclic Symmetry",
+      "startLine": 68,
+      "endLine": 83,
+      "mathContext": "Invariance under $(H,K,L) \\mapsto (K,L,H)$ gives all three implications.",
+      "summary": "commutator_le_of_rotate₂ and commutator_le_of_rotate₃ are the two cyclic relabellings of the main lemma, so that any two of the three iterated commutators lying in N force the third. They reduce immediately to commutator_le_of_rotate with permuted arguments."
+    },
+    {
+      "id": "symmetric-notation",
+      "title": "Inner-Commutator-First Formulation",
+      "startLine": 85,
+      "endLine": 97,
+      "mathContext": "$\\lbrack L,\\lbrack H,K\\rbrack\\rbrack \\le N$ and $\\lbrack H,\\lbrack K,L\\rbrack\\rbrack \\le N$ imply $\\lbrack K,\\lbrack L,H\\rbrack\\rbrack \\le N$.",
+      "summary": "commutator_le_of_rotate_symm rephrases the lemma in the textbook bracket order ⁅H,⁅K,L⁆⁆. Because the bracket on subgroups is symmetric (Subgroup.commutator_comm), rewriting each commutator reduces it to the main lemma."
+    },
+    {
+      "id": "consistency-and-corollary",
+      "title": "Bottom Case and a Worked Consequence",
+      "startLine": 99,
+      "endLine": 128,
+      "mathContext": "$N = \\bot$ recovers Mathlib's lemma; $\\lbrack H,K\\rbrack \\le N \\wedge \\lbrack H,L\\rbrack \\le N \\Rightarrow \\lbrack H,\\lbrack K,L\\rbrack\\rbrack \\le N$.",
+      "summary": "commutator_eq_bot_of_rotate specialises N = ⊥ and reproduces Subgroup.commutator_commutator_eq_bot_of_rotate, confirming the generalization is faithful. commutator_commutator_le_of_both is the standard corollary: if H commutes with both K and L modulo the normal N, then H commutes with ⁅K,L⁆ modulo N, proved by forcing two iterated commutators into N (commutator_mono plus commutator_le_left) and invoking the lemma for the third."
+    }
+  ],
+  "conclusion": "The three subgroups lemma is formalised sorry-free and axiom-free in its classical normal-subgroup form ⁅⁅H,K⁆,L⁆ ≤ N ∧ ⁅⁅K,L⁆,H⁆ ≤ N ⟹ ⁅⁅L,H⁆,K⁆ ≤ N, which Mathlib does not record (it has only the N = ⊥ Hall–Witt case). The proof transports Mathlib's bottom-case lemma across the quotient projection G ⧸ N, using that subgroup map distributes over the commutator bracket and that the kernel of the projection is exactly N. The entry also packages the full cyclic symmetry, the symmetric ⁅H,⁅K,L⁆⁆ notation, the recovery of Mathlib's lemma as N = ⊥, and the centralizing corollary. A natural follow-up is the inductive payoff this form was built for: ⁅γᵢ(G), γⱼ(G)⁆ ≤ γ₍ᵢ₊ⱼ₎(G) for the lower central series, where the relative three subgroups lemma is applied at each step.",
+  "crossReferences": []
+}

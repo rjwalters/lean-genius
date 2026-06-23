@@ -1,0 +1,130 @@
+{
+  "slug": "angle-trisection-cos-20-gal-oq-01-oq-01",
+  "title": "Unify cos(20°) and cos(π/7) results into a single theorem parameterized by the Eisenstein prime",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in Galois theory: Unify cos(20°) and cos(π/7) results into a single theorem parameterized by the Eisenstein prime.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-21T12:53:48.288Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "galois-theory",
+    "algebra",
+    "eisenstein",
+    "angle-trisection"
+  ],
+  "relatedProofs": [
+    "angle-trisection",
+    "angle-trisection-cos-20-gal",
+    "angle-trisection-cos-20-gal-oq-01",
+    "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "angle-trisection-cos-20-gal-oq-01-oq-02",
+    "angle-trisection-cos-20-gal-oq-03",
+    "angle-trisection-cos-20-gal-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-21T12:53:48.288Z",
+  "lastUpdate": "2026-04-21T12:53:48.288Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/AngleTrisectionCos20Gal.lean",
+      "filename": "AngleTrisectionCos20Gal.lean",
+      "lineCount": 474,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20Gal.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01.lean",
+      "filename": "AngleTrisectionCos20GalOQ01.lean",
+      "lineCount": 416,
+      "theoremCount": 32,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01OQ01.lean",
+      "filename": "AngleTrisectionCos20GalOQ01OQ01.lean",
+      "lineCount": 183,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02.lean",
+      "filename": "AngleTrisectionCos20GalOQ01OQ02.lean",
+      "lineCount": 439,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ03.lean",
+      "filename": "AngleTrisectionCos20GalOQ03.lean",
+      "lineCount": 435,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ03.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ03OQ01.lean",
+      "filename": "AngleTrisectionCos20GalOQ03OQ01.lean",
+      "lineCount": 463,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ03OQ01.lean"
+    }
+  ]
+}

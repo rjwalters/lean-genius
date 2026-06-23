@@ -1,0 +1,159 @@
+{
+  "id": "conjugacy-class-equation-oq-01",
+  "title": "The Class Equation, Per Class: |conjugacy class| divides |G| via Orbit–Stabilizer for Conjugation",
+  "slug": "conjugacy-class-equation-oq-01",
+  "description": "The conjugacy class of an element g of a group G is exactly the orbit of g under the conjugation action of ConjAct G on G. Specializing the orbit–stabilizer theorem to this action gives the sharpest, per-class form of the class equation: |class(g)|·|C_G(g)| = |G|, hence |class(g)| = [G : C_G(g)] and, crucially, |class(g)| divides |G|. Mathlib already contains the orbit–stabilizer theorem (MulAction.index_stabilizer, Subgroup.index_mul_card), the bridge identifying the conjugation orbit with the conjugacy-class carrier (ConjAct.orbit_eq_carrier_conjClasses), the bridge identifying its stabilizer with the centralizer (ConjAct.stabilizer_eq_centralizer), and the summed class equation (Group.card_center_add_sum_card_noncenter_eq_card), but it does not package the clean per-class divisibility identity proved here — the arithmetic engine behind the class equation and its standard corollaries. The entry closes with a concrete instance: in S₃ = Equiv.Perm (Fin 3) (order 6), every conjugacy class has cardinality dividing 6.",
+  "meta": {
+    "author": "Classical group theory (Burnside, Frobenius); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Conjugacy_class#Conjugacy_class_equation",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "conjugacy-classes",
+      "class-equation",
+      "orbit-stabilizer",
+      "centralizer",
+      "conjact",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/ConjugacyClassEquationOQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MulAction.index_stabilizer",
+        "description": "(stabilizer G x).index = (orbit G x).ncard — the orbit–stabilizer theorem in index form; gives |class(g)| as the index of the conjugation-stabilizer",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Subgroup.index_mul_card",
+        "description": "H.index * Nat.card H = Nat.card G — Lagrange's theorem in index form; multiplies the class size by the centralizer order to recover |G|",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "ConjAct.orbit_eq_carrier_conjClasses",
+        "description": "orbit (ConjAct G) g = (ConjClasses.mk g).carrier — identifies the conjugation orbit of g with the carrier set of its conjugacy class",
+        "module": "Mathlib.GroupTheory.GroupAction.ConjAct"
+      },
+      {
+        "theorem": "ConjAct.stabilizer_eq_centralizer",
+        "description": "stabilizer (ConjAct G) g = centralizer {toConjAct g} — identifies the conjugation-stabilizer of g with the centralizer of g",
+        "module": "Mathlib.GroupTheory.GroupAction.ConjAct"
+      },
+      {
+        "theorem": "Nat.card_coe_set_eq",
+        "description": "Nat.card ↥s = s.ncard — converts between the subtype cardinality and the set cardinality of the conjugacy-class carrier",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      }
+    ],
+    "originalContributions": [
+      "conjClass_card_mul_card_centralizer: |class(g)|·|C_G(g)| = |G| — orbit–stabilizer specialized to the conjugation action ConjAct G ↷ G",
+      "conjClass_card_eq_index_centralizer: |class(g)| = [G : C_G(g)] — the conjugacy class size equals the index of the centralizer",
+      "conjClass_card_dvd_card: |class(g)| ∣ |G| — every conjugacy class size divides the group order (the per-class divisibility Mathlib does not state directly)",
+      "Concrete instance: every conjugacy class of Equiv.Perm (Fin 3) has cardinality dividing 6"
+    ],
+    "dateAdded": "2026-06-20",
+    "lineCount": 79,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count). The concrete example uses kernel decide (not native_decide) on Nat.factorial 3 = 6, so no Lean.ofReduceBool is introduced. The Nat.card-valued statements hold for any group; they are non-vacuous precisely for finite groups, where they recover the classical per-class class equation.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The class equation |G| = |Z(G)| + Σ [G : C_G(gᵢ)], summing the index of the centralizer over representatives of the noncentral conjugacy classes, is one of the central counting tools of finite group theory. It underlies Burnside's and Frobenius's results, the proof that p-groups have nontrivial center, the first Sylow theorem, and Cauchy's theorem. Its arithmetic engine is the observation that each conjugacy class is an orbit of the conjugation action, so by orbit–stabilizer its size divides |G| and equals the index of the centralizer of any of its elements.",
+    "problemStatement": "**Open Question (conjugacy-class-equation-oq-01)**: For a finite group G and g : G, prove that the conjugacy class of g has cardinality dividing |G|, equal to the index of the centralizer C_G(g), via the orbit–stabilizer theorem for the conjugation action ConjAct G ↷ G: |class(g)|·|C_G(g)| = |G|.\n\n**Result**: conjClass_card_mul_card_centralizer (|class(g)|·|C_G(g)| = |G|), conjClass_card_eq_index_centralizer (|class(g)| = [G : C_G(g)]), and conjClass_card_dvd_card (|class(g)| ∣ |G|). Mathlib provides orbit–stabilizer and the summed class equation but not this clean per-class divisibility identity.",
+    "text": "Let G be a group and g : G. The conjugacy class of g is the carrier of ConjClasses.mk g, equal to the orbit of g under ConjAct G acting on G by conjugation. Orbit–stabilizer for this action, together with the identification of the stabilizer with the centralizer, yields |class(g)|·|C_G(g)| = Nat.card G; hence |class(g)| equals the index of the centralizer and divides |G|. For G finite these are the classical statements; the concrete witness S₃ shows every class size divides 6.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. **Class = orbit.** ConjAct.orbit_eq_carrier_conjClasses identifies (ConjClasses.mk g).carrier with orbit (ConjAct G) g, so their cardinalities agree (via Nat.card_coe_set_eq linking Nat.card of the subtype to the set's ncard).\n\n2. **Class size = stabilizer index.** MulAction.index_stabilizer gives (stabilizer (ConjAct G) g).index = (orbit (ConjAct G) g).ncard, so |class(g)| = [stabilizer index].\n\n3. **Stabilizer = centralizer.** ConjAct.stabilizer_eq_centralizer rewrites the conjugation-stabilizer as the centralizer of g, giving conjClass_card_eq_index_centralizer.\n\n4. **Multiply by the centralizer order.** Subgroup.index_mul_card applied to the stabilizer subgroup of ConjAct G yields index · order = Nat.card (ConjAct G); transporting along the MulEquiv ConjAct.toConjAct gives Nat.card (ConjAct G) = Nat.card G, proving conjClass_card_mul_card_centralizer.\n\n5. **Divisibility.** conjClass_card_dvd_card is then immediate: |G| = |class(g)|·|C_G(g)| exhibits |class(g)| as a divisor.\n\n6. **Concrete instance.** Specializing to Equiv.Perm (Fin 3) and computing Nat.card = 3! = 6 (kernel decide) shows every conjugacy class size divides 6.",
+    "keyInsights": [
+      "**A conjugacy class is an orbit.** The single conceptual move is to view the conjugacy class of g as the orbit of g under the conjugation action ConjAct G ↷ G; every arithmetic property then follows from orbit–stabilizer.",
+      "**Stabilizer = centralizer.** Under conjugation the stabilizer of g is exactly its centralizer C_G(g), so the orbit–stabilizer product |orbit|·|stabilizer| = |G| becomes |class(g)|·|C_G(g)| = |G|.",
+      "**Per-class divisibility is the missing piece.** Mathlib records the orbit–stabilizer theorem and the *summed* class equation, but not the clean per-class statement |class(g)| ∣ |G| nor |class(g)| = [G : C_G(g)]; these are the lemmas one actually cites when applying the class equation.",
+      "**Stated with Nat.card, valid generally.** Using Nat.card and Subgroup.index, the identities hold for any group (vacuously when infinite) and recover the classical finite statements without carrying a Fintype instance — the concrete S₃ example supplies finiteness only where a numeric value is needed."
+    ],
+    "prerequisites": [
+      "The conjugation action ConjAct G ↷ G and ConjClasses (GroupAction/ConjAct.lean)",
+      "The orbit–stabilizer theorem in index form (MulAction.index_stabilizer, Subgroup.index_mul_card)",
+      "Centralizers and subgroup index (GroupTheory/Index.lean)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring stating the per-class class equation and listing the Mathlib vehicles. Mathlib import, open MulAction Subgroup ConjAct, namespace, and the variable {G : Type*} [Group G].",
+      "mathContext": "$|\\mathrm{class}(g)|\\cdot|C_G(g)| = |G|$, so $|\\mathrm{class}(g)| \\mid |G|$."
+    },
+    {
+      "id": "orbit-stabilizer",
+      "title": "Orbit–Stabilizer for Conjugation",
+      "startLine": 40,
+      "endLine": 56,
+      "summary": "conjClass_card_mul_card_centralizer: identify the class with the conjugation orbit, rewrite its size as the stabilizer index (index_stabilizer), identify the stabilizer with the centralizer (stabilizer_eq_centralizer), and apply index_mul_card transported along ConjAct.toConjAct.",
+      "mathContext": "$|\\mathrm{class}(g)|\\cdot|C_G(g)| = |G|$."
+    },
+    {
+      "id": "index-form",
+      "title": "Class Size = Index of the Centralizer",
+      "startLine": 58,
+      "endLine": 66,
+      "summary": "conjClass_card_eq_index_centralizer: |class(g)| = [G : C_G(g)], proved by rewriting through stabilizer_eq_centralizer, orbit_eq_carrier_conjClasses, and index_stabilizer.",
+      "mathContext": "$|\\mathrm{class}(g)| = [G : C_G(g)]$."
+    },
+    {
+      "id": "divisibility",
+      "title": "Per-Class Divisibility and a Concrete Instance",
+      "startLine": 68,
+      "endLine": 79,
+      "summary": "conjClass_card_dvd_card: |class(g)| ∣ |G| as a corollary of the product identity. The closing example specializes to Equiv.Perm (Fin 3) (order 6), showing every conjugacy class size divides 6.",
+      "mathContext": "$|\\mathrm{class}(g)| \\mid |G|$; in $S_3$ every class size divides $6$."
+    }
+  ],
+  "crossReferences": [],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) derivation of the per-class class equation: |class(g)|·|C_G(g)| = |G|, |class(g)| = [G : C_G(g)], and |class(g)| ∣ |G|, obtained by specializing the orbit–stabilizer theorem to the conjugation action ConjAct G ↷ G, with a concrete S₃ witness.",
+    "implications": "Supplies the per-class divisibility and centralizer-index identities that Mathlib leaves implicit between its orbit–stabilizer theorem and its summed class equation — the lemmas one cites directly when applying the class equation (e.g. to prove p-groups have nontrivial center or in Sylow theory).",
+    "openQuestions": [
+      "Assemble the full numeric class equation |G| = |Z(G)| + Σ [G : C_G(gᵢ)] over representatives of the noncentral classes directly from conjClass_card_eq_index_centralizer, and recover Group.card_center_add_sum_card_noncenter_eq_card as a corollary.",
+      "Deduce that a nontrivial finite p-group has nontrivial center by combining per-class divisibility with the observation that every noncentral class size is a positive power of p."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MulAction",
+      "Subgroup",
+      "ConjAct"
+    ],
+    "namespace": "ConjugacyClassEquationOQ01",
+    "lineCount": 79,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/ConjugacyClassEquationOQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": "2004",
+      "venue": "Wiley, §4.3 (The Class Equation)",
+      "note": "Standard reference for the conjugacy class equation and orbit–stabilizer for conjugation"
+    },
+    {
+      "authors": "Isaacs, I. Martin",
+      "title": "Finite Group Theory",
+      "year": "2008",
+      "venue": "AMS Graduate Studies in Mathematics 92",
+      "note": "Class equation and its applications to p-groups and Sylow theory"
+    }
+  ],
+  "sorries": 0
+}

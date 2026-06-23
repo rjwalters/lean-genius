@@ -1,0 +1,176 @@
+{
+  "id": "mantel-theorem-oq-04-oq-01",
+  "title": "The Turán Graph as a Complete r-Partite Graph for Arbitrary n",
+  "slug": "mantel-theorem-oq-04-oq-01",
+  "description": "A fully verified, axiom-free identification of Mathlib's Turán graph turanGraph n r with a genuine complete r-partite graph for every number of parts r and every n. This answers the general-r open question left by mantel-theorem-oq-04 (which proved only the r = 2 / complete-bipartite case): turanGraph n r ≃g completeMultipartiteGraph over the r residue classes mod r, where the j-th part is {v : Fin n | v % r = j}. The bijection is Equiv.sigmaFiberEquiv of the colouring v ↦ v % r, so 'lying in different parts' corresponds exactly to 'having different residues mod r', which is turanGraph adjacency. From the isomorphism the graph is shown to be complete multipartite (IsCompleteMultipartite). The exact part sizes are pinned down — the j-th part has cardinality (n + r − 1 − j) / r = ⌈(n − j)/r⌉, the balanced Turán sizes differing by at most one — via an explicit fibre bijection k ↦ r·k + j, and these sizes are verified to sum to n (the residue classes partition the vertices). Strictly generalizes Mathlib's equipartite-only completeEquipartiteGraph.turanGraph (which requires n = r·t with equal parts).",
+  "meta": {
+    "author": "lean-genius researcher agents, formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Tur%C3%A1n_graph",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "extremal-graph-theory",
+      "turan-graph",
+      "complete-multipartite",
+      "graph-isomorphism",
+      "residue-classes"
+    ],
+    "proofRepoPath": "Proofs/MantelTheoremOQ04OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.turanGraph",
+        "description": "The canonical (r+1)-clique-free Turán graph on Fin n with adjacency v % r ≠ w % r; turanGraph_adj is the adjacency lemma driving the map_rel_iff' check",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan"
+      },
+      {
+        "theorem": "SimpleGraph.completeMultipartiteGraph",
+        "description": "The complete multipartite graph comap Sigma.fst ⊤ on a dependent family of part types Σ i, V i (adjacency exactly between different part indices); its adjacency reduces via comap_adj and top_adj",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Maps"
+      },
+      {
+        "theorem": "SimpleGraph.IsCompleteMultipartite.comap",
+        "description": "Transports the IsCompleteMultipartite property backwards along a graph embedding; applied to the symm of the isomorphism to show turanGraph n r is complete multipartite",
+        "module": "Mathlib.Combinatorics.SimpleGraph.CompleteMultipartite"
+      },
+      {
+        "theorem": "Equiv.sigmaFiberEquiv",
+        "description": "The natural equivalence (Σ y, {x // f x = y}) ≃ α between the total space of fibres of f and its domain; with f = the residue colouring it supplies the iso's underlying bijection for free, sidestepping any dependent-Sigma / HEq reasoning",
+        "module": "Mathlib.Logic.Equiv.Sum"
+      },
+      {
+        "theorem": "Nat.le_div_iff_mul_le",
+        "description": "a ≤ b / r ↔ a * r ≤ b for 0 < r; used together with Nat.div_add_mod, Nat.mul_add_div, Nat.mul_add_mod to discharge every Fin-bound and round-trip obligation of the explicit fibre bijection",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "turanColor: the Turán colouring v ↦ v % r : Fin r whose colour classes are exactly the parts of the complete multipartite structure",
+      "turanGraphIsoCompleteMultipartite: the graph isomorphism completeMultipartiteGraph (fun j : Fin r => {v : Fin n // v % r = j}) ≃g turanGraph n r for arbitrary n and 0 < r, with Equiv.sigmaFiberEquiv of turanColor as the underlying bijection; carries 'different part' to 'different residue mod r'. Strictly generalizes Mathlib's equipartite completeEquipartiteGraph.turanGraph (which needs n = r·t with equal parts) to all n with balanced (unequal) parts",
+      "turanGraph_isCompleteMultipartite: turanGraph n r is complete multipartite (IsCompleteMultipartite) for 0 < r, obtained by transporting the canonical completeMultipartiteGraph.isCompleteMultipartite backwards along the isomorphism's embedding",
+      "turanResidueEquiv / card_turanResidue: an explicit bijection Fin ((n+r−1−j)/r) ≃ {v // v % r = j} (k ↦ r·k + j) proving the j-th part has exactly (n+r−1−j)/r = ⌈(n−j)/r⌉ vertices — the balanced Turán part sizes, any two differing by at most one",
+      "sum_turanResidueSize: ∑ j : Fin r, (n+r−1−j)/r = n, i.e. the r residue classes partition the n vertices / the balanced part sizes sum to n, derived from Fintype.card_sigma applied to the fibre equivalence",
+      "card_turanResidue_two: the r = 2 specialization recovering the ⌈n/2⌉ and ⌊n/2⌋ part sizes used in mantel-theorem-oq-04"
+    ],
+    "dateAdded": "2026-06-21",
+    "axiomCountNote": "0 axiom declarations, 0 sorries, 0 structure-encoded assumptions, no native_decide. All five results (#print axioms checked) depend only on propext/Classical.choice/Quot.sound, the foundational axioms the project does not count. The isomorphism and all cardinality identities are constructed and verified entirely from Mathlib's SimpleGraph, Equiv, and Nat divmod APIs."
+  },
+  "overview": {
+    "historicalContext": "The Turán graph T(n, r) — partition n vertices into r parts as equal as possible and join every cross pair — is the extremal graph of Turán's theorem (the unique K_{r+1}-free graph on n vertices with the maximum number of edges), generalizing Mantel's r = 2 triangle-free case. Mathlib defines it residue-theoretically as turanGraph n r on Fin n with v adjacent to w iff v % r ≠ w % r, which is convenient for clique-counting but hides the complete-multipartite structure. Mathlib supplies the identification with a complete multipartite graph only in the balanced equipartite case completeEquipartiteGraph r t ≃g turanGraph (r·t) r, which requires r ∣ n and all parts equal. The sibling entry mantel-theorem-oq-04 handled the unequal-parts phenomenon for r = 2 (parts ⌈n/2⌉, ⌊n/2⌋); its conclusion explicitly posed the general-r version as an open question. This entry settles it.",
+    "problemStatement": "Prove that Mathlib's Turán graph turanGraph n r is isomorphic to a genuine complete r-partite graph for every n (not only n divisible by r): exhibit the parts as the r residue classes mod r, establish that turanGraph n r is complete multipartite, and compute the exact (balanced) part sizes, verifying they sum to n.",
+    "proofStrategy": "Colour each vertex v : Fin n by its residue turanColor v = v % r : Fin r. The fibres of this colouring are the r residue classes {v // v % r = j}, and Equiv.sigmaFiberEquiv gives a canonical bijection (Σ j, fibre j) ≃ Fin n for free — crucially avoiding any hand-built dependent-Sigma inverse and the attendant HEq reasoning. Under this bijection the complete-multipartite adjacency 'different part index j ≠ j'' transports to 'different residue v % r ≠ w % r', which is exactly turanGraph adjacency, so the underlying equivalence is promoted to a graph isomorphism turanGraphIsoCompleteMultipartite by a one-line map_rel_iff' that rewrites comap_adj/top_adj and uses Fin.val injectivity on the residues. Completeness multipartiteness of turanGraph n r then follows by pulling IsCompleteMultipartite back along the isomorphism's embedding. For the exact part sizes, an explicit fibre bijection turanResidueEquiv : Fin ((n+r−1−j)/r) ≃ {v // v % r = j} sends k ↦ r·k + j; its four obligations (the Fin bound r·k+j < n, the residue (r·k+j) % r = j, and both round trips) reduce to linear divmod facts via Nat.le_div_iff_mul_le, Nat.mul_add_div, Nat.mul_add_mod and Nat.div_add_mod, closed by omega — after explicitly supplying the commutativity k·r = r·k that omega cannot infer between two variable factors. Finally Fintype.card_sigma applied to the fibre equivalence gives ∑ j, (n+r−1−j)/r = n.",
+    "keyInsights": [
+      "Realizing the parts as the fibres {v // v % r = j} of the residue colouring lets Equiv.sigmaFiberEquiv supply the vertex bijection for free, so the entire isomorphism collapses to a one-line adjacency check — no hand-built inverse, no HEq across dependent Sigma types.",
+      "'Different part' in the complete multipartite graph (j ≠ j') is definitionally 'different residue' (v % r ≠ w % r) because each vertex sits in the fibre of its own colour; this is precisely turanGraph adjacency, so adjacency preservation is immediate after comap_adj/top_adj.",
+      "Mathlib's equipartite completeEquipartiteGraph.turanGraph requires n = r·t with all parts equal; for general n the r residue classes have sizes ⌈(n−j)/r⌉ taking only the two consecutive values ⌈n/r⌉ and ⌊n/r⌋, so the parts are balanced but unequal — exactly the content that needed a fresh construction.",
+      "The exact part size (n+r−1−j)/r is obtained constructively from the explicit enumerating bijection k ↦ r·k + j rather than from a residue-counting lemma (which Mathlib does not provide in this form), and Fintype.card_sigma turns the single fibre equivalence into the partition identity ∑ sizes = n.",
+      "omega treats the products k·r and r·k as distinct opaque atoms because both factors are variables; supplying the commutativity equation by hand (Nat.mul_comm) is the small but essential step that lets the linear divmod bounds go through."
+    ]
+  },
+  "conclusion": {
+    "summary": "A complete, axiom-free and sorry-free realization of Mathlib's Turán graph turanGraph n r as a genuine complete r-partite graph for arbitrary n: the parts are the r residue classes mod r, the graph is shown to be complete multipartite, and the exact balanced part sizes (n+r−1−j)/r = ⌈(n−j)/r⌉ are computed and verified to sum to n. This answers the general-r open question posed by mantel-theorem-oq-04, of which the r = 2 complete-bipartite case was the special instance.",
+    "implications": "Provides a reusable bridge between Mathlib's residue-based turanGraph and the structural completeMultipartiteGraph / IsCompleteMultipartite API for every r and every n — a strict generalization of the equipartite-only completeEquipartiteGraph.turanGraph. The sigmaFiberEquiv-of-a-colouring pattern (parts as colour fibres) is a clean, HEq-free template for identifying any vertex-coloured graph with a complete multipartite graph; the constructive fibre enumeration gives a model for computing balanced residue-class cardinalities without a dedicated counting lemma.",
+    "openQuestions": [
+      "Combine turanGraphIsoCompleteMultipartite with Mathlib's chromatic-number results for completeMultipartiteGraph to conclude χ(turanGraph n r) = min(n, r) directly, and with the clique results to recover its K_{r+1}-freeness from the multipartite structure.",
+      "Derive the Turán edge count |E(turanGraph n r)| = (1 − 1/r)·n²/2 − (correction term) from the balanced part sizes (n+r−1−j)/r via the complete-multipartite edge formula ∑_{j<j'} sizeⱼ·sizeⱼ', closing the loop between this structural identification and the quantitative Turán bound."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "License and Imports",
+      "startLine": 1,
+      "endLine": 5,
+      "summary": "Apache-2.0 header and a single import of Mathlib, supplying the SimpleGraph turanGraph/completeMultipartiteGraph/IsCompleteMultipartite API, Equiv.sigmaFiberEquiv, and the Nat divmod lemmas.",
+      "mathContext": "Self-contained over Mathlib; no sibling-file dependency."
+    },
+    {
+      "id": "docstring",
+      "title": "Statement and Approach",
+      "startLine": 7,
+      "endLine": 38,
+      "summary": "Module docstring locating the result as the general-r generalization of the r = 2 complete-bipartite identification, explaining why Mathlib's equipartite isomorphism does not cover n ∤ r, and listing the four main results.",
+      "mathContext": "turanGraph n r ≃g completeMultipartiteGraph over residue classes mod r."
+    },
+    {
+      "id": "coloring",
+      "title": "The Turán Colouring",
+      "startLine": 40,
+      "endLine": 57,
+      "summary": "turanColor v = v % r : Fin r and the simp lemma turanColor_val exposing its underlying value as v % r; the colour classes are the parts of the multipartite structure.",
+      "mathContext": "v ↦ v % r : Fin n → Fin r."
+    },
+    {
+      "id": "iso",
+      "title": "The Complete Multipartite Isomorphism",
+      "startLine": 58,
+      "endLine": 74,
+      "summary": "turanGraphIsoCompleteMultipartite: the isomorphism completeMultipartiteGraph (fun j => {v // turanColor v = j}) ≃g turanGraph n r built on Equiv.sigmaFiberEquiv (turanColor …). The map_rel_iff' obligation rewrites comap_adj/top_adj and reduces both adjacencies to ↑j ≠ ↑j' via the fibre membership facts and Fin.ext.",
+      "mathContext": "$K(n_0,\\dots,n_{r-1}) \\cong \\mathrm{turanGraph}\\,n\\,r$, parts = residue classes."
+    },
+    {
+      "id": "is-multipartite",
+      "title": "turanGraph Is Complete Multipartite",
+      "startLine": 75,
+      "endLine": 82,
+      "summary": "turanGraph_isCompleteMultipartite: pulls IsCompleteMultipartite back from the canonical completeMultipartiteGraph along the symm of the isomorphism via IsCompleteMultipartite.comap.",
+      "mathContext": "$(\\mathrm{turanGraph}\\,n\\,r).\\mathrm{IsCompleteMultipartite}$ for $0 < r$."
+    },
+    {
+      "id": "part-sizes",
+      "title": "Exact Balanced Part Sizes",
+      "startLine": 83,
+      "endLine": 126,
+      "summary": "turanResidueEquiv: the explicit bijection Fin ((n+r−1−j)/r) ≃ {v // turanColor v = j}, k ↦ r·k + j, with all bounds and round trips reduced to linear divmod facts (Nat.le_div_iff_mul_le, Nat.mul_add_div, Nat.mul_add_mod, Nat.div_add_mod) and closed by omega after supplying k·r = r·k. card_turanResidue then reads off the part size (n+r−1−j)/r = ⌈(n−j)/r⌉.",
+      "mathContext": "$\\#\\{v : \\mathrm{Fin}\\,n \\mid v \\bmod r = j\\} = \\lceil (n-j)/r\\rceil$."
+    },
+    {
+      "id": "partition",
+      "title": "Sizes Sum to n and the r = 2 Case",
+      "startLine": 127,
+      "endLine": 147,
+      "summary": "sum_turanResidueSize: ∑ j, (n+r−1−j)/r = n via Fintype.card_sigma on the fibre equivalence (the residue classes partition the vertices). card_turanResidue_two specializes to r = 2, recovering the (n+1)/2 and n/2 part sizes of mantel-theorem-oq-04.",
+      "mathContext": "$\\sum_{j<r} \\lceil (n-j)/r\\rceil = n$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "mantel-theorem-oq-04",
+      "relationship": "extends",
+      "description": "mantel-theorem-oq-04 proved the r = 2 case (turanGraph n 2 ≃g K_{⌈n/2⌉,⌊n/2⌋}) and explicitly posed the general-r identification as an open question; this entry settles it for all r, recovering the r = 2 part sizes as card_turanResidue_two."
+    },
+    {
+      "targetId": "mantel-theorem",
+      "relationship": "related",
+      "description": "mantel-theorem proves the global edge bound ⌊n²/4⌋ and its tightness via turanGraph n 2; this entry exposes the complete-multipartite structure of the general Turán graph turanGraph n r underlying Turán's theorem."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Fintype",
+      "SimpleGraph"
+    ],
+    "namespace": "Mantel",
+    "lineCount": 147,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 3,
+    "path": "Proofs/MantelTheoremOQ04OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    "turanGraphIsoCompleteMultipartite",
+    "turanGraph_isCompleteMultipartite",
+    "card_turanResidue",
+    "sum_turanResidueSize"
+  ],
+  "sorries": 0
+}

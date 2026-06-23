@@ -1,0 +1,214 @@
+{
+  "slug": "shannon-entropy",
+  "title": "Shannon Entropy and Basic Properties",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "H(X) = -Σ p(x) log p(x); prove non-negativity, max entropy, Gibbs inequality",
+    "plain": "Formalize Shannon entropy and prove its fundamental properties: non-negativity, maximum entropy for uniform distribution, Gibbs inequality (KL divergence non-negativity), and the log-sum inequality.",
+    "whyMatters": [
+      "Foundation of information theory",
+      "Enables Shannon coding theorems",
+      "Bridge between CS and mathematics"
+    ]
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-21T21:00:00Z",
+    "iteration": 1,
+    "focus": "Proved entropy_nonneg and entropy_point_mass. Added KL divergence, conditional entropy, mutual information definitions. 6 sorries remain for deeper inequalities."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 0 sorries, 0 axioms, 459 lines. Proved log_sum_inequality via kl_term_bound rescaling. All 16 theorems fully verified.",
+    "builtItems": [
+      {
+        "name": "shannonEntropy",
+        "description": "Shannon entropy H(X) = -Σ p(x) log p(x)",
+        "proven": true
+      },
+      {
+        "name": "klDivergence",
+        "description": "KL divergence D(p||q) = Σ p(x) log(p(x)/q(x))",
+        "proven": true
+      },
+      {
+        "name": "conditionalEntropy",
+        "description": "H(X|Y) via joint distribution",
+        "proven": true
+      },
+      {
+        "name": "mutualInformation",
+        "description": "I(X;Y) = Σ p(x,y) log(p(x,y)/(p(x)p(y)))",
+        "proven": true
+      },
+      {
+        "name": "entropy_nonneg",
+        "description": "H(X) ≥ 0",
+        "proven": true
+      },
+      {
+        "name": "entropy_point_mass",
+        "description": "H(δ_a) = 0",
+        "proven": true
+      },
+      {
+        "name": "kl_term_bound",
+        "description": "Pointwise bound: p*log(p/q) >= p-q using log(x) <= x-1",
+        "proven": true
+      },
+      {
+        "name": "kl_divergence_nonneg",
+        "description": "KL divergence D(p||q) >= 0",
+        "proven": true
+      },
+      {
+        "name": "gibbs_inequality",
+        "description": "H(p) <= -Σ p(x) log q(x)",
+        "proven": true
+      },
+      {
+        "name": "entropy_le_log_card",
+        "description": "H(X) <= log|X| (max entropy for uniform)",
+        "proven": true
+      },
+      {
+        "name": "sum_prod_eq_nested",
+        "description": "Convert Σ_{α×β} to Σ_α Σ_β (product sum decomposition)",
+        "proven": true
+      },
+      {
+        "name": "marginal_pos_of_joint_pos",
+        "description": "p(x,y)>0 implies p_X(x)>0",
+        "proven": true
+      },
+      {
+        "name": "product_marginals_sum_one",
+        "description": "Σ_{x,y} p_X(x)·p_Y(y) = 1 when Σ p = 1",
+        "proven": true
+      },
+      {
+        "name": "mutual_info_nonneg",
+        "description": "I(X;Y) ≥ 0 via pointwise KL bound",
+        "proven": true
+      },
+      "Proved log_sum_inequality (ShannonEntropy.lean:225-277) — the last sorry in the file"
+    ],
+    "insights": [
+      "entropy_nonneg proof: each term -p(x)log(p(x)) ≥ 0 because 0 < p(x) ≤ 1 implies log(p(x)) ≤ 0",
+      "entropy_point_mass: when p concentrated at a, p(a)=1 so log(1)=0, all other terms vanish",
+      "Key remaining: Gibbs inequality needs Jensen's inequality on -log (convex function), or direct log-sum inequality",
+      "Mathlib has Real.log_nonpos, Finset.sum_nonpos — sufficient for basic proofs",
+      "Key inequality: Real.log_le_sub_one_of_pos gives log(x) <= x-1, foundation for KL divergence nonneg proof",
+      "kl_term_bound: multiply log(q/p) <= q/p - 1 by p to get p*log(p/q) >= p-q",
+      "KL nonneg: sum term-by-term bound p-q, then Σ(p-q) = 1-1 = 0",
+      "Gibbs from KL: decompose each KL term as (if p=0 then 0 else p*log p) - p*log q, use Finset.sum_sub_distrib",
+      "Max entropy: apply Gibbs with uniform q=1/|X|, factor constant log out of sum",
+      "sum_prod_eq_nested via Finset.univ_product_univ + Finset.sum_product converts between flat and nested sums",
+      "mutual_info_nonneg: same kl_term_bound technique, but p_Y(y) > 0 when p(x,y) > 0 since marginal sums include the joint",
+      "product_marginals_sum_one: uses Finset.sum_comm to swap sum order + factorization Σ(f·g) = (Σf)·(Σg) when one factor is constant per outer variable",
+      "log_sum_inequality proved by rescaling reference measure: define q_i = b_i * A/B so sum q_i = A, then kl_term_bound gives each excess term >= a_i - q_i, summing to 0"
+    ],
+    "nextSteps": [
+      "Gallery status upgraded to verified",
+      "File complete — no further work needed"
+    ]
+  },
+  "tags": [
+    "information-theory",
+    "analysis",
+    "probability",
+    "cs-math-bridge",
+    "marquee-phase-2"
+  ],
+  "started": "2026-03-21T21:00:00Z",
+  "lastUpdate": "2026-03-21T21:30:00Z",
+  "significance": 9,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonEntropy.lean",
+      "filename": "ShannonEntropy.lean",
+      "lineCount": 1196,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropy.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyAristotle.lean",
+      "filename": "ShannonEntropyAristotle.lean",
+      "lineCount": 122,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyAristotle.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyOQ01.lean",
+      "filename": "ShannonEntropyOQ01.lean",
+      "lineCount": 623,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyOQ01Aristotle.lean",
+      "filename": "ShannonEntropyOQ01Aristotle.lean",
+      "lineCount": 28,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropyOQ02.lean",
+      "filename": "ShannonEntropyOQ02.lean",
+      "lineCount": 383,
+      "theoremCount": 9,
+      "axiomCount": 3,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ02.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropySSA.lean",
+      "filename": "ShannonEntropySSA.lean",
+      "lineCount": 526,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSA.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropySSAAristotle.lean",
+      "filename": "ShannonEntropySSAAristotle.lean",
+      "lineCount": 74,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSAAristotle.lean"
+    }
+  ],
+  "relatedProofs": [
+    "shannon-entropy",
+    "shannon-entropy-oq-01",
+    "shannon-entropy-oq-02",
+    "shannon-entropy-oq-03"
+  ]
+}

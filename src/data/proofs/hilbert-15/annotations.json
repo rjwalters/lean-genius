@@ -1,0 +1,213 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "hilbert-15",
+    "range": {
+      "startLine": 9,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "Hilbert's 15th Problem — Historical Introduction",
+    "content": "The module docstring traces the history of Schubert's enumerative calculus from Schubert (1879) through its rigorous foundation via intersection theory. The three landmark enumerative results are stated: 2 lines meeting 4 lines, 3264 conics tangent to 5 conics, and 27 lines on a cubic surface. The resolution came through intersection theory on Grassmannians (Van der Waerden, Weil, 1930s), the Schubert basis theorem (Ehresmann, Chevalley, BGG), and the Littlewood-Richardson rule (Schützenberger, 1977). The formalization uses linear algebra for definitions and axiomatizes the algebraic geometry.",
+    "mathContext": "Schubert's calculus answers: given geometric constraints on linear subspaces, how many subspaces satisfy all constraints simultaneously? The answer is an intersection number $\\int_{\\text{Gr}(k,n)} \\sigma_{\\mu_1} \\cdot \\sigma_{\\mu_2} \\cdots \\sigma_{\\mu_r}$ computed in the cohomology ring $H^*(\\text{Gr}(k,n), \\mathbb{Z})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schubert calculus",
+      "enumerative geometry",
+      "intersection theory",
+      "Grassmannian"
+    ],
+    "prerequisites": [
+      "algebraic geometry",
+      "cohomology theory",
+      "linear algebra"
+    ]
+  },
+  {
+    "id": "ann-grassmannian",
+    "proofId": "hilbert-15",
+    "range": {
+      "startLine": 73,
+      "endLine": 105
+    },
+    "type": "definition",
+    "title": "The Grassmannian Gr(k,n)",
+    "content": "The Grassmannian is defined as the subtype of Submodule K (Fin n → K) with finrank equal to k. This linear-algebraic definition avoids the full machinery of algebraic geometry while capturing the essential structure. A CoeSort instance allows treating Grassmannian points as submodules, and grassmannian_rank witnesses the dimension constraint. Key examples: Gr(1,n) = projective (n-1)-space, Gr(2,4) = lines in P³, and the duality Gr(k,n) ≅ Gr(n-k,n).",
+    "mathContext": "$\\text{Gr}(k,n) = \\{V \\leq K^n : \\dim V = k\\}$. As a variety, $\\text{Gr}(k,n)$ has dimension $k(n-k)$. Its Plücker embedding $\\text{Gr}(k,n) \\hookrightarrow \\mathbb{P}(\\bigwedge^k K^n)$ realizes it as a projective variety of degree $\\frac{(k(n-k))!}{\\prod_{i=1}^{k} (n-k+i-1)!/(i-1)!}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Grassmannian",
+      "projective space",
+      "submodule",
+      "Plücker embedding"
+    ],
+    "prerequisites": [
+      "linear algebra",
+      "finrank",
+      "submodule theory"
+    ]
+  },
+  {
+    "id": "ann-lines",
+    "proofId": "hilbert-15",
+    "range": {
+      "startLine": 106,
+      "endLine": 142
+    },
+    "type": "theorem",
+    "title": "Lines in Projective 3-Space",
+    "content": "Lines in P³ are identified with points of Gr(2,4) via the abbreviation LineInP3. Two notions of intersection are defined: SubspacesMeet (nontrivial intersection V ⊓ W ≠ ⊥) and LinesMeet' (span has dimension < 4). The equivalence is axiomatized via linesMeet_iff_linesMeet'. The dimensional argument: two 2-planes in K⁴ generically span all 4 dimensions, but when they meet, their span drops to dimension 3.",
+    "mathContext": "Two lines $L_1, L_2 \\subset \\mathbb{P}^3$ intersect iff $\\dim(V_1 + V_2) < 4$, equivalently $\\dim(V_1 \\cap V_2) \\geq 1$, by the dimension formula $\\dim(V_1 + V_2) = \\dim V_1 + \\dim V_2 - \\dim(V_1 \\cap V_2) = 4 - \\dim(V_1 \\cap V_2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "projective geometry",
+      "incidence geometry",
+      "dimension formula",
+      "Plücker coordinates"
+    ],
+    "prerequisites": [
+      "Grassmannian definition",
+      "submodule lattice",
+      "finrank"
+    ]
+  },
+  {
+    "id": "ann-four-lines",
+    "proofId": "hilbert-15",
+    "range": {
+      "startLine": 143,
+      "endLine": 218
+    },
+    "type": "concept",
+    "title": "The Four Lines Theorem",
+    "content": "The central result: given 4 lines in general position in P³, exactly 2 lines meet all four. General position is defined via FourLinesGeneralPosition (no pair meets). IsTransversal requires meeting all four lines. The theorem is axiomatized in two forms: four_lines_theorem (existence of exactly 2 transversals) and transversal_count (ncard = 2). The proof sketch uses Bézout: lines meeting L₁ and L₂ form a quadric Q₁₂, similarly Q₃₄, and their intersection has degree 2·2 = 4, yielding exactly 2 transversal lines.",
+    "mathContext": "In $\\text{Gr}(2,4)$, the Schubert class $\\sigma_1$ represents lines meeting a fixed line. The four lines number is $\\sigma_1^4 = 2\\sigma_{22}$, where $\\sigma_{22}$ is the point class. Via Bézout: the loci of lines meeting $L_1 \\cap L_2$ and $L_3 \\cap L_4$ are quadric hypersurfaces in $\\text{Gr}(2,4)$, and $2 \\cdot 2 = 4$ counts degree with multiplicity, but only 2 are transversal lines.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bézout's theorem",
+      "quadric surface",
+      "regulus",
+      "transversal lines"
+    ],
+    "prerequisites": [
+      "Grassmannian",
+      "LinesMeet",
+      "algebraic geometry"
+    ]
+  },
+  {
+    "id": "ann-numbers",
+    "proofId": "hilbert-15",
+    "range": {
+      "startLine": 219,
+      "endLine": 250
+    },
+    "type": "concept",
+    "title": "Famous Schubert Numbers",
+    "content": "Four classical enumerative results are encoded as ℕ constants: schubertNumber_FourLines = 2, schubertNumber_CubicSurface = 27 (Cayley-Salmon, 1849), schubertNumber_FiveConics = 3264 (corrected from Steiner's erroneous 7776), and schubertNumber_FivePoints = 1. Each number is computed as an intersection product of Schubert classes in the appropriate moduli space.",
+    "mathContext": "The number 3264 (conics tangent to 5 conics) is computed in the Chow ring of the space of complete conics. Steiner's incorrect answer of 7776 = $6^5/6$ failed to account for degenerate conics (double lines). The number 27 (lines on a cubic) equals $\\int_{\\text{Gr}(2,4)} c_3(\\text{Sym}^3 S^*)$ where $S$ is the tautological bundle.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "27 lines",
+      "Cayley-Salmon theorem",
+      "Steiner problem",
+      "3264"
+    ],
+    "prerequisites": [
+      "enumerative geometry",
+      "intersection theory"
+    ]
+  },
+  {
+    "id": "ann-schubert-classes",
+    "proofId": "hilbert-15",
+    "range": {
+      "startLine": 251,
+      "endLine": 302
+    },
+    "type": "definition",
+    "title": "Schubert Varieties and Classes",
+    "content": "Partitions are formalized as weakly decreasing lists of naturals (Partition structure with Chain' constraint). Partition.fitsIn checks that parts fit in a k × (n-k) box. SchubertClass pairs a partition with a fitness proof. The Schubert basis theorem (axiomatized) states that Schubert classes indexed by fitting partitions form a basis for H*(Gr(k,n)), proved by Ehresmann (1934), Chevalley (1958), and BGG (1973) via different methods.",
+    "mathContext": "The Schubert variety $\\Omega_\\mu(F_\\bullet) = \\{V \\in \\text{Gr}(k,n) : \\dim(V \\cap F_{n-k+i-\\mu_i}) \\geq i\\}$ is a closed subvariety of codimension $|\\mu| = \\sum \\mu_i$. Its cohomology class $\\sigma_\\mu \\in H^{2|\\mu|}(\\text{Gr}(k,n))$ is independent of the flag $F_\\bullet$. The set $\\{\\sigma_\\mu : \\mu \\text{ fits in } k \\times (n-k)\\}$ is a free $\\mathbb{Z}$-basis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cohomology",
+      "Young diagrams",
+      "Schubert variety",
+      "flag variety"
+    ],
+    "prerequisites": [
+      "partition theory",
+      "algebraic topology",
+      "complete flags"
+    ]
+  },
+  {
+    "id": "ann-lr-rule",
+    "proofId": "hilbert-15",
+    "range": {
+      "startLine": 303,
+      "endLine": 356
+    },
+    "type": "concept",
+    "title": "Littlewood-Richardson Rule",
+    "content": "The multiplication formula σ_μ · σ_ν = Σ_ρ c^ρ_μν σ_ρ is axiomatized via littlewoodRichardsonCoeff (abstract ℕ-valued function on triples of partitions) and littlewood_richardson_rule (existence of expansion with correct sizes). Pieri's rule — the special case where one factor is a single-row partition — is axiomatized separately. The LR coefficients are computed combinatorially as the number of semistandard Young tableaux of skew shape ρ/μ with content ν satisfying the lattice word condition.",
+    "mathContext": "The Littlewood-Richardson coefficient $c^\\rho_{\\mu\\nu} = |\\{T \\in \\text{SSYT}(\\rho/\\mu, \\nu) : \\text{reverse reading word of } T \\text{ is a lattice word}\\}|$. Equivalently, $c^\\rho_{\\mu\\nu} = \\dim \\text{Hom}_{S_n}(V^\\rho, V^\\mu \\otimes V^\\nu)$ in representation theory. Pieri's special case: $\\sigma_\\mu \\cdot \\sigma_{(p)} = \\sum \\sigma_\\rho$ where $\\rho/\\mu$ is a horizontal strip of size $p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Littlewood-Richardson coefficients",
+      "Young tableaux",
+      "Pieri's rule",
+      "RSK correspondence"
+    ],
+    "prerequisites": [
+      "partition theory",
+      "Schubert classes",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-computation",
+    "proofId": "hilbert-15",
+    "range": {
+      "startLine": 357,
+      "endLine": 398
+    },
+    "type": "concept",
+    "title": "Four Lines via Schubert Calculus Computation",
+    "content": "The concrete partitions partition_1 = [1] and partition_22 = [2,2] are defined as Partition values. The key formula σ₁⁴ = 2·σ₂₂ is axiomatized as sigma1_fourth_power: the LR coefficient of (1) with (1) at (2,2) equals 2. The theorem four_lines_via_schubert confirms schubertNumber_FourLines = 2 by rfl. In Gr(2,4), partitions fit in a 2×2 box, giving 6 Schubert classes: σ_∅, σ₁, σ₂, σ₁₁, σ₂₁, σ₂₂.",
+    "mathContext": "In $H^*(\\text{Gr}(2,4))$: $\\sigma_1^2 = \\sigma_2 + \\sigma_{11}$, then $\\sigma_1^3 = \\sigma_1(\\sigma_2 + \\sigma_{11}) = \\sigma_{21} + \\sigma_{21} = 2\\sigma_{21}$, then $\\sigma_1^4 = 2\\sigma_1 \\cdot \\sigma_{21} = 2\\sigma_{22}$. The coefficient 2 is the four lines number.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schubert calculus computation",
+      "intersection product",
+      "Gr(2,4)"
+    ],
+    "prerequisites": [
+      "Schubert classes in Gr(2,4)",
+      "Littlewood-Richardson rule"
+    ]
+  },
+  {
+    "id": "ann-status",
+    "proofId": "hilbert-15",
+    "range": {
+      "startLine": 399,
+      "endLine": 453
+    },
+    "type": "concept",
+    "title": "Problem Status and Summary",
+    "content": "Documents the resolution timeline: Van der Waerden and Weil (1930s) connected Schubert calculus to cohomology, Ehresmann-Chevalley-BGG (1934-1973) proved the basis theorem, Schützenberger (1977) proved the LR rule, and Fulton (1984) provided complete intersection-theoretic foundations. The summary theorem hilbert_15_statement : schubertNumber_FourLines = 2 := rfl serves as a concrete verification. The #check section verifies all major definitions and theorems are well-formed.",
+    "mathContext": "Modern extensions include quantum cohomology (Gromov-Witten invariants counting rational curves), K-theoretic Schubert calculus (Grothendieck polynomials replacing Schur polynomials), and equivariant cohomology (double Schubert polynomials). These generalize the classical intersection numbers to richer invariants.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "intersection theory",
+      "Fulton",
+      "quantum cohomology",
+      "K-theory"
+    ],
+    "prerequisites": [
+      "all preceding results"
+    ]
+  }
+]

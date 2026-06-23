@@ -1,0 +1,260 @@
+{
+  "id": "schauder-fixed-point-oq-03-oq-01",
+  "title": "Kakutani from Brouwer via Approximate Selections",
+  "slug": "schauder-fixed-point-oq-03-oq-01",
+  "description": "Proves Kakutani's fixed point theorem from Brouwer's FPT using approximate continuous selections. Reduces the theorem to two independent axioms (Brouwer's FPT and existence of approximate selections); the previous sequential compactness axiom is now derived from Mathlib.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kakutani_fixed-point_theorem",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/SchauderFixedPointOQ03OQ01.lean",
+    "tags": [
+      "topology",
+      "fixed-point",
+      "brouwer",
+      "kakutani",
+      "game-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsCompact",
+        "description": "Compact sets in topological spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Convex",
+        "description": "Convex subsets of vector spaces",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      },
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Finite-dimensional Euclidean space",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      }
+    ],
+    "originalContributions": [
+      "IsGraphApproxSelection: Definition of ε-graph-approximate continuous selections (Cellina–Browder form)",
+      "brouwer_unit_ball: Brouwer's FPT on the closed unit ball in EuclideanSpace ℝ (Fin n) (AXIOMATIZED, S11.A strict-weakening 2026-05-09; replaces the previous brouwer_fpt axiom — strictly weaker mathematical commitment, identical axiom count)",
+      "exists_continuous_proj_convex: Continuous nearest-point retraction onto compact convex sets in EuclideanSpace (LEMMA, landed S14 — sorry-free)",
+      "brouwer_fpt: Brouwer's FPT for general compact convex S, derived from brouwer_unit_ball + exists_continuous_proj_convex via the nearest-point retraction reduction (THEOREM, body landed S13/2026-05-09 — no sorry in body; the exists_continuous_proj_convex helper it depends on landed S14 and is itself sorry-free, so the theorem is end-to-end sorry-free modulo the two axioms)",
+      "approx_selection_exists: UHC + convex → continuous ε-graph-approximate selections (AXIOMATIZED, Cellina–Browder form; pointwise form is provably false under USC alone — see S6 analysis)",
+      "uhc_local_thickening: S17 Cellina–Browder Step-1 scaffold (UHC at any open V = ε-thickening yields a local U where F maps into the thickening; proved from the UHC definition)",
+      "convex_combination_of_partition_in_S: S18a Step-4 helper (Convex.sum_mem + PartitionOfUnity API: weighted sums by a partition of unity stay in the convex target)",
+      "typeclass_witnesses_compact_subset: S18b typeclass instance plumbing for the eventual approx_selection_exists_proof — confirms CompactSpace/T2Space/NormalSpace/ParacompactSpace on ↥S are derivable from IsCompact S alone at the pinned Mathlib rev",
+      "exists_finite_subcover_for_uhc: S18c Cellina–Browder Steps 1–2 packaged together — pointwise UHC local thickening (uhc_local_thickening) plus CompactSpace.elim_nhds_subcover yield a ↥S-indexed open family U with a finite subcover s",
+      "exists_partition_subordinate_to_uhc_cover: S18d Cellina–Browder Step 3 — wraps the S18c open cover with a PartitionOfUnity (↥S) (↥S) Set.univ subordinate to U via PartitionOfUnity.exists_isSubordinate (NormalSpace + ParacompactSpace from CompactSpace; Set.univ closed)",
+      "exists_continuous_selection_with_witnesses: S18e Cellina–Browder Step 4 — packages the candidate continuous selection f : C(↥S, ↥S) defined by f x = ∑ᶠ i, ρ i x • (ysel i) for a chosen point selector ysel x ∈ F x, with continuity from PartitionOfUnity.IsSubordinate.continuous_finsum_smul and membership in S from convex_combination_of_partition_in_S; full witness bundle (U, ρ, ysel, the three S18d clauses, the explicit formula) exposed for the eventual S18f graph-bound proof",
+      "seq_compact_of_compact: Sequential compactness derived from Mathlib's IsCompact.isSeqCompact",
+      "approx_fixedpoint_implies_fixedpoint: Limit argument for approximate fixed points (proved)",
+      "kakutani_from_brouwer: Combines Brouwer + approximate selections to prove Kakutani (proved)",
+      "image_subtype_isClosed_of_isClosed_of_compact: S19 ACT step (a) closed-image helper for the §4.b Hilbert projection chain — bridges subtype-closedness (hF_closed : ∀ x, IsClosed (F x)) to ambient-space closedness (IsClosed (Subtype.val '' F x)) via Continuous.isClosedMap (Mathlib/Topology/Separation/Hausdorff.lean:664 at pinned rev 2df2f0150c). Generic in the ambient α — directly reusable; precondition for exists_norm_eq_iInf_of_complete_convex in the eventual approx_selection_exists_proof."
+    ],
+    "dateAdded": "2026-04-12",
+    "axiomCount": 2,
+    "lineCount": 1531,
+    "prerequisites": [
+      "Brouwer's fixed point theorem",
+      "Compact metric spaces",
+      "Convex sets in Euclidean space",
+      "Upper hemicontinuity"
+    ],
+    "assumptions": "Two axioms: (1) `brouwer_unit_ball` — Brouwer's FPT on the closed unit ball in EuclideanSpace ℝ (Fin n) (S11.A strict-weakening 2026-05-09: the previous axiom asserted FPT for any nonempty compact convex S; the unit-ball-only form is strictly weaker — identical axiom count, smaller mathematical commitment); (2) `approx_selection_exists` — existence of continuous ε-graph-approximate selections (Cellina–Browder form) for UHC maps with convex values. The general-compact-convex Brouwer form is recovered in-house as `theorem brouwer_fpt` via the nearest-point retraction reduction (S8/S11.A; S11.A.body landed S13/2026-05-09, so the theorem's body is sorry-free; the `exists_continuous_proj_convex` helper it depends on landed in S14 and is itself sorry-free, so `brouwer_fpt` is end-to-end machine-checked modulo the two axioms — see s11-strict-weakening-spec.md). Sequential compactness, previously a third axiom, is now derived from Mathlib. The combination argument and the limit lemma are fully proved. S6 analysis showed that the strictly stronger pointwise form `∀ x, ∃ y ∈ F x, dist (f x) y < ε` is FALSE under USC + convex values alone, so the selection axiom must be stated in the graph form; `kakutani_from_brouwer` threads a triangle-inequality `ε ↦ 2·(ε/2) = ε` step to recover the diagonal-distance witness expected by `approx_fixedpoint_implies_fixedpoint`.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 19,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Shizuo Kakutani proved his fixed point theorem in 1941, generalizing Brouwer's 1911 theorem from single-valued continuous functions to set-valued correspondences. Kakutani's original proof used simplicial approximation on triangulations of the domain, closely following the combinatorial flavor of Brouwer's proof via Sperner's lemma. The approach via approximate continuous selections was developed by Arrigo Cellina in 1969, who showed that partitions of unity could replace the triangulation machinery entirely, yielding a more analytic proof.\n\nThe theorem's greatest impact came through John Nash's 1950 proof of the existence of Nash equilibria in finite games. Nash applied Kakutani's theorem to the best-response correspondence: each player's set of optimal mixed strategies given others' strategies forms a nonempty, convex, compact set, and the correspondence is upper hemicontinuous — precisely Kakutani's conditions. This connection earned Nash the 1994 Nobel Prize in Economics and made Kakutani's theorem one of the most applied results in mathematical economics.\n\nThe factored proof presented here — separating Brouwer's FPT, approximate selections, and sequential compactness as independent axioms — reflects a modern pedagogical approach that clarifies which properties of the domain and the correspondence are responsible for each step of the argument.",
+    "problemStatement": "Prove Kakutani's finite-dimensional fixed point theorem from Brouwer's FPT:\n\nGiven: nonempty compact convex $S \\subseteq \\mathbb{R}^n$, UHC $F : S \\to 2^S$ with nonempty closed convex values.\nProve: $\\exists x \\in S$, $x \\in F(x)$.\n\nUsing: Brouwer's FPT + approximate selections + compactness.",
+    "text": "Outlines the proof of Kakutani's FPT from Brouwer using approximate continuous selections and compactness arguments.",
+    "proofStrategy": "The proof factors into three independent lemmas:\n\n1. **Brouwer's FPT**: Every continuous self-map of a compact convex set has a fixed point.\n2. **Approximate selections**: For UHC $F$ with convex values and $\\varepsilon > 0$, there exists continuous $f_\\varepsilon$ with $d(f_\\varepsilon(x), F(x)) < \\varepsilon$ for all $x$.\n3. **Sequential compactness**: Compact metric spaces are sequentially compact.\n\nCombination: Apply (2) with $\\varepsilon = 1/k$, then (1) to get approximate fixed points $x_k$, then (3) to extract $x_{k_j} \\to x^*$, then UHC to show $x^* \\in F(x^*)$.",
+    "keyInsights": [
+      "The proof avoids triangulation machinery by using approximate selections (Cellina 1969) — partitions of unity replace simplicial approximation, making the proof more analytic and less combinatorial",
+      "The three axioms factor the proof cleanly: Brouwer provides the topological fixed-point engine, approximate selections bridge single-valued and set-valued maps, and sequential compactness extracts the limit",
+      "Convexity is used twice in different roles: convexity of $S$ ensures Brouwer's FPT applies to each approximate selection, while convexity of $F(x)$ ensures the partition-of-unity construction stays inside the image sets",
+      "The limit argument is essentially a closed-graph argument: UHC with closed values means the graph of $F$ is closed in $S \\times S$, so limits of approximate fixed points are true fixed points",
+      "The main Mathlib infrastructure gap is the partition of unity construction — once available, Axiom 2 becomes a theorem and the proof becomes fully constructive modulo Brouwer"
+    ],
+    "prerequisites": [
+      "Brouwer's fixed point theorem",
+      "Compact metric spaces",
+      "Convex sets in Euclidean space",
+      "Upper hemicontinuity"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Module docstring explaining the proof strategy, status (2 axioms), the choice of graph-approximate selections (over the strictly stronger pointwise form, which is provably false under USC alone), references, and Lean imports."
+    },
+    {
+      "id": "definitions",
+      "title": "Part I: Set-Valued Map Definitions",
+      "startLine": 66,
+      "endLine": 163,
+      "summary": "Defines SetValuedMap (correspondence), IsFixedPoint ($x \\in F(x)$), and IsUpperHemicontinuous (preimages of open sets are open). Imported from the parent framework."
+    },
+    {
+      "id": "brouwer-axiom",
+      "title": "Part II: Axiom 1 — Brouwer's FPT (Closed Unit Ball)",
+      "startLine": 164,
+      "endLine": 329,
+      "summary": "Axiomatizes Brouwer's fixed point theorem on the closed unit ball of $\\mathbb{R}^n$ (`brouwer_unit_ball`) — the topological engine of the proof."
+    },
+    {
+      "id": "brouwer-theorem",
+      "title": "Brouwer's FPT on Compact Convex Sets (Theorem 1)",
+      "startLine": 330,
+      "endLine": 533,
+      "summary": "Derives Brouwer's FPT for an arbitrary compact convex subset of $\\mathbb{R}^n$ as a theorem (`brouwer_fpt`, formerly Axiom 1) from the closed-unit-ball axiom, via a projection/retraction argument (`exists_continuous_proj_convex`)."
+    },
+    {
+      "id": "approx-selection",
+      "title": "Axiom 2: Graph-Approximate Selections",
+      "startLine": 534,
+      "endLine": 1226,
+      "summary": "Defines IsGraphApproxSelection (Cellina–Browder form) and axiomatizes the existence of continuous $\\varepsilon$-graph-approximate selections for UHC maps with convex values. Docstring explains why the pointwise form is unprovable under USC + convex values alone (S6 counterexample) and develops the supporting scaffolds (partition of unity, Lebesgue number, thickening witnesses) for the graph form."
+    },
+    {
+      "id": "seq-compact-theorem",
+      "title": "Sequential Compactness (derived from Mathlib)",
+      "startLine": 1227,
+      "endLine": 1239,
+      "summary": "Sequential compactness in pseudo-metric spaces, derived in one line from Mathlib's `IsCompact.isSeqCompact`. Previously stated as Axiom 3."
+    },
+    {
+      "id": "structural-lemma",
+      "title": "Part III: Limit Argument — Approximate FPs Imply True FPs",
+      "startLine": 1240,
+      "endLine": 1373,
+      "summary": "Structural lemma abstracting the limit argument: if approximate fixed points exist for all $\\varepsilon > 0$, compactness and closedness yield a true fixed point. Fully proved using sequential compactness, the squeeze theorem, and a UHC closed-graph case split."
+    },
+    {
+      "id": "kakutani-proof",
+      "title": "Part IV: Kakutani's FPT from Brouwer",
+      "startLine": 1374,
+      "endLine": 1437,
+      "summary": "The main theorem combining the two axioms: call the graph-selection axiom with $\\varepsilon/2$, get a Brouwer fixed point, apply the triangle inequality to convert the $(\\varepsilon/2, \\varepsilon/2)$ graph witness into an $\\varepsilon$-diagonal witness, hand off to the limit lemma. Fully proved."
+    },
+    {
+      "id": "commentary",
+      "title": "Part V: Mathematical Commentary (Why This Matters)",
+      "startLine": 1438,
+      "endLine": 1470,
+      "summary": "Discussion of why the proof matters, Mathlib infrastructure gaps (partition of unity, general Brouwer), why the pointwise selection is unprovable, and alternative proof paths (simplicial approximation, Michael selection)."
+    },
+    {
+      "id": "summary-checks",
+      "title": "Summary and Type Checks",
+      "startLine": 1471,
+      "endLine": 1531,
+      "summary": "#check commands verifying the types of the main declarations."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "schauder-fixed-point-oq-03",
+      "relationship": "extends",
+      "description": "Parent framework: axiomatized Kakutani FPT for set-valued maps with UHC and convex values"
+    },
+    {
+      "targetId": "schauder-fixed-point",
+      "relationship": "related",
+      "description": "Schauder's theorem generalizes Brouwer to infinite dimensions — Kakutani further generalizes to set-valued maps"
+    },
+    {
+      "targetId": "schauder-fixed-point-oq-01",
+      "relationship": "related",
+      "description": "Schauder projection lemma: finite-dimensional approximation technique used in the infinite-dimensional generalization"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "uses",
+      "description": "Brouwer's FPT is Axiom 1 — the topological engine providing fixed points for each approximate selection"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-01",
+      "relationship": "related",
+      "description": "1D Brouwer via IVT — the simplest case of the fixed point theorem used as Axiom 1"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Borsuk-Ulam theorem — alternative topological route to Brouwer's FPT via the no-retraction theorem"
+    }
+  ],
+  "conclusion": {
+    "summary": "This file provides a modular proof framework for Kakutani's fixed point theorem from Brouwer's FPT using Cellina's approximate selection method. By factoring the proof into three independent axioms — Brouwer's FPT, existence of approximate selections, and sequential compactness — the framework cleanly separates topology, geometry, and analysis, with the combination argument requiring only standard metric-space calculations.",
+    "implications": "The approximate selection approach is more modular than Kakutani's original simplicial approximation and requires less Mathlib infrastructure (partitions of unity vs. triangulations). Once the partition of unity gap is filled, Axiom 2 becomes a theorem and only Brouwer remains as a genuine axiom. This factored architecture also suggests a path toward the infinite-dimensional Fan–Glicksberg theorem by replacing Brouwer with Schauder.",
+    "openQuestions": [
+      "Prove approx_selection_exists using partitions of unity — the main Mathlib infrastructure gap",
+      "Verify brouwer_fpt against Mathlib's Brouwer formalization for closed balls and extend to general compact convex sets",
+      "Extend to the infinite-dimensional Kakutani–Fan–Glicksberg theorem using Schauder's FPT in place of Brouwer's",
+      "Formalize the application to Nash equilibrium existence: verify that the best-response correspondence satisfies the Kakutani conditions"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Analysis.InnerProductSpace.Projection",
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.Analysis.Convex.Combination",
+      "Mathlib.Topology.MetricSpace.HausdorffDistance",
+      "Mathlib.Topology.PartitionOfUnity",
+      "Mathlib.Topology.Sequences",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology",
+      "Metric"
+    ],
+    "namespace": "KakutaniFromBrouwer",
+    "lineCount": 1531,
+    "axiomCount": 2,
+    "theoremCount": 19,
+    "definitionCount": 4,
+    "path": "Proofs/SchauderFixedPointOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "Ka41",
+      "citation": "Kakutani, S. (1941). A generalization of Brouwer's fixed point theorem. Duke Math. J. 8, 457-459.",
+      "type": "paper"
+    },
+    {
+      "key": "Ce69",
+      "citation": "Cellina, A. (1969). Approximation of set valued functions and fixed point theorems. Ann. Mat. Pura Appl. 82, 17-24.",
+      "type": "paper"
+    },
+    {
+      "key": "Na50",
+      "citation": "Nash, J. (1950). Equilibrium points in n-person games. Proc. Nat. Acad. Sci. 36, 48-49.",
+      "type": "paper"
+    },
+    {
+      "key": "AB06",
+      "citation": "Aliprantis, C. D. and Border, K. C. (2006). Infinite Dimensional Analysis, 3rd ed. Springer. Chapter 17: Fixed Point Theorems.",
+      "type": "book"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "kakutani_from_brouwer",
+      "type": "theorem",
+      "description": "Kakutani FPT from Brouwer + approximate selections + compactness",
+      "leanType": "Combination of Brouwer's FPT and approximate selections; the limit argument is encapsulated in approx_fixedpoint_implies_fixedpoint."
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,188 @@
+[
+  {
+    "id": "ann-210-header",
+    "proofId": "erdos-210",
+    "range": {
+      "startLine": 1,
+      "endLine": 40
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #210** asks about ordinary lines: lines passing through exactly 2 points of a finite configuration. The function f(n) = minimum ordinary lines for n non-collinear points. The problem spans 120 years: Sylvester conjectured f(n) ≥ 1 in 1893, Gallai proved it in 1944, Motzkin showed f(n) → ∞ in 1951, and Green-Tao resolved the asymptotics in 2013 with the tight bound f(n) ≥ n/2 for large even n.",
+    "mathContext": "f(n) = min ordinary lines over n-point non-collinear sets. f(n) ≥ n/2 for large even n (Green-Tao 2013, tight).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylvester-Gallai",
+      "Green-Tao-2013",
+      "ordinary-lines",
+      "discrete-geometry"
+    ],
+    "prerequisites": [
+      "ordinary lines through exactly two points of a point set",
+      "non-collinear finite point configurations in the plane",
+      "the Sylvester-Gallai problem and its history"
+    ]
+  },
+  {
+    "id": "ann-210-definitions",
+    "proofId": "erdos-210",
+    "range": {
+      "startLine": 42,
+      "endLine": 87
+    },
+    "type": "definition",
+    "title": "Geometric Definitions",
+    "content": "The foundational framework. **Point** abbreviates EuclideanSpace ℝ (Fin 2). **Collinear p q r** checks if r lies on the line through p and q via a scalar parameter t. **NotAllCollinear S** asserts three non-collinear points exist in S. **Line** is a structure with two distinct points. **IsOrdinaryLine S l** means l passes through exactly 2 points of S — no third point of S lies on l. **OrdinaryLineCount** and **f** are axiomatized since computing the exact minimum requires optimization over all configurations.",
+    "mathContext": "IsOrdinaryLine S l := l.p1 ∈ S ∧ l.p2 ∈ S ∧ ∀ p ∈ S, OnLine p l → p = l.p1 ∨ p = l.p2. f(n) := min OrdinaryLineCount over all valid S.",
+    "significance": "key",
+    "relatedConcepts": [
+      "EuclideanSpace",
+      "Finset",
+      "collinearity",
+      "incidence"
+    ],
+    "prerequisites": [
+      "EuclideanSpace ℝ (Fin 2) as the planar point type",
+      "collinearity via a scalar line parameter",
+      "Finset membership and incidence of points on lines"
+    ]
+  },
+  {
+    "id": "ann-210-sylvester-gallai",
+    "proofId": "erdos-210",
+    "range": {
+      "startLine": 89,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Sylvester-Gallai Theorem",
+    "content": "**sylvester_gallai** axiomatizes the foundational result: any finite non-collinear point set has at least one ordinary line. Conjectured by Sylvester in 1893 as 'Mathematical Question 11851', rediscovered by Erdős in 1933, proved by Gallai in 1944. The elegant proof: among all point-line pairs (p, l) with p ∈ S, p ∉ l, and l determined by two points of S, choose the pair minimizing distance. The minimizing line must be ordinary. **f_ge_one** is the immediate corollary: f(n) ≥ 1 for n ≥ 3.",
+    "mathContext": "sylvester_gallai : S.card ≥ 3 → NotAllCollinear S → ∃ ordinary line. f_ge_one : n ≥ 3 → f(n) ≥ 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylvester-1893",
+      "Gallai-1944",
+      "extremal-principle"
+    ],
+    "prerequisites": [
+      "the Sylvester-Gallai theorem on ordinary lines",
+      "the extremal minimum-distance point-line argument",
+      "deriving f(n) ≥ 1 as a corollary"
+    ]
+  },
+  {
+    "id": "ann-210-motzkin",
+    "proofId": "erdos-210",
+    "range": {
+      "startLine": 106,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Motzkin's Theorem and Divergence",
+    "content": "**motzkin_theorem** (1951) axiomatizes that f(n) → ∞. **f_tends_to_infinity** is a genuine Lean proof extracting the divergence from Motzkin's axiom: `obtain ⟨N, hN⟩ := (motzkin_theorem 3 (by norm_num)).2 M; exact ⟨N, hN⟩`. This answered the first part of Erdős's question affirmatively. Motzkin's original bound was f(n) ≥ c·log(n), much weaker than the eventual n/2 answer but a crucial qualitative breakthrough.",
+    "mathContext": "f_tends_to_infinity : ∀ M, ∃ N, ∀ n ≥ N, f(n) ≥ M. Proved from motzkin_theorem axiom.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Motzkin-1951",
+      "divergence",
+      "proved-theorem"
+    ],
+    "prerequisites": [
+      "Motzkin's theorem that ordinary line counts diverge",
+      "extracting a divergence statement from an axiom in Lean",
+      "the logarithmic lower bound f(n) ≥ c·log n"
+    ]
+  },
+  {
+    "id": "ann-210-intermediate-bounds",
+    "proofId": "erdos-210",
+    "range": {
+      "startLine": 120,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Kelly-Moser and Csima-Sawyer Bounds",
+    "content": "Two intermediate improvements. **kelly_moser** (1958): 7·f(n) ≥ 3n for n ≥ 3, giving f(n) ≥ 3n/7. This is tight for n = 7 (the Fano plane dual configuration). **csima_sawyer** (1993): 13·f(n) ≥ 6n for n ≥ 8, improving to f(n) ≥ 6n/13. Both are expressed using integer multiplications to avoid division in ℕ, a common formalization trick: 7·f(n) ≥ 3n is equivalent to f(n) ≥ 3n/7.",
+    "mathContext": "kelly_moser : n ≥ 3 → 7·f(n) ≥ 3n. csima_sawyer : n ≥ 8 → 13·f(n) ≥ 6n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kelly-Moser-1958",
+      "Csima-Sawyer-1993",
+      "Fano-plane"
+    ],
+    "prerequisites": [
+      "the Kelly-Moser bound 7·f(n) ≥ 3n",
+      "the Csima-Sawyer bound 13·f(n) ≥ 6n",
+      "encoding rational lower bounds via integer multiplication in ℕ"
+    ]
+  },
+  {
+    "id": "ann-210-green-tao",
+    "proofId": "erdos-210",
+    "range": {
+      "startLine": 132,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Green-Tao Theorem (2013)",
+    "content": "The resolution. **green_tao_even**: ∃ N₀, ∀ n ≥ N₀, Even n → 2·f(n) ≥ n, giving f(n) ≥ n/2 for large even n. **green_tao_odd**: ∃ N₀, ∀ n ≥ N₀, Odd n → f(n) ≥ 3·(n/4), giving f(n) ≥ 3⌊n/4⌋ for large odd n. **green_tao_even_tight**: the n/2 bound is achieved — there exist configurations with exactly n/2 ordinary lines. The proof used deep techniques from additive combinatorics, particularly the structure theory of sets defining few ordinary lines.",
+    "mathContext": "green_tao_even : ∃ N₀, ∀ n ≥ N₀, Even n → 2f(n) ≥ n. Tight: Böröczky construction achieves n/2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Green-Tao-2013",
+      "additive-combinatorics",
+      "tight-bound"
+    ],
+    "prerequisites": [
+      "the Green-Tao tight bound f(n) ≥ n/2 for large even n",
+      "the separate odd-n bound f(n) ≥ 3⌊n/4⌋",
+      "additive combinatorics and few-ordinary-line structure theory"
+    ]
+  },
+  {
+    "id": "ann-210-structure",
+    "proofId": "erdos-210",
+    "range": {
+      "startLine": 150,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Extremal Configurations and Structure Theory",
+    "content": "**BoroczykyConfiguration** defines configurations achieving the n/2 minimum: n/2 points on a circle and n/2 'at infinity' (via projective transformation). **small_n_values** gives exact values: f(3)=3, f(4)=3, f(5)=4, f(6)=3, f(7)=3. The Fano-dual configuration gives f(7)=3. **LiesOnCubic** is axiomatized as a Prop on PointSet, capturing that sets with few ordinary lines have algebraic structure. **structure_theorem**: if OrdinaryLineCount S < (1/2-ε)·|S|, then S lies on a cubic curve.",
+    "mathContext": "structure_theorem : OrdinaryLineCount S < (1/2-ε)·|S| → LiesOnCubic S. Böröczky achieves n/2 exactly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Boroczyky-construction",
+      "cubic-curves",
+      "algebraic-geometry"
+    ],
+    "prerequisites": [
+      "the Böröczky configuration achieving n/2 ordinary lines",
+      "exact small-n values such as f(7) = 3 via the Fano dual",
+      "the structure theorem placing extremal sets on a cubic curve"
+    ]
+  },
+  {
+    "id": "ann-210-summary",
+    "proofId": "erdos-210",
+    "range": {
+      "startLine": 183,
+      "endLine": 196
+    },
+    "type": "concept",
+    "title": "Summary Theorems",
+    "content": "Two summary theorems with genuine proofs. **erdos_210** combines three milestones: (1) Sylvester-Gallai, (2) Motzkin divergence (via f_tends_to_infinity), (3) Green-Tao even bound, proved by ⟨sylvester_gallai, f_tends_to_infinity, green_tao_even⟩. **erdos_210_summary** combines four quantitative bounds: Kelly-Moser, Csima-Sawyer, Green-Tao even, Green-Tao odd, proved by ⟨kelly_moser, csima_sawyer, green_tao_even, green_tao_odd⟩. Both are genuine Lean proofs using exact constructors.",
+    "mathContext": "erdos_210 : SylvesterGallai ∧ Divergence ∧ GreenTaoEven := ⟨...⟩. erdos_210_summary : KM ∧ CS ∧ GTE ∧ GTO := ⟨...⟩.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exact-constructor",
+      "solved",
+      "120-year-history"
+    ],
+    "prerequisites": [
+      "anonymous constructor proofs combining axiomatized milestones",
+      "the f_tends_to_infinity divergence lemma",
+      "the Kelly-Moser, Csima-Sawyer, and Green-Tao quantitative bounds"
+    ]
+  }
+]

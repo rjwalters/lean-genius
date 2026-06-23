@@ -1,0 +1,191 @@
+[
+  {
+    "id": "ann-908-1",
+    "proofId": "erdos-908",
+    "type": "concept",
+    "range": {
+      "startLine": 39,
+      "endLine": 47
+    },
+    "title": "Imports and Namespace Setup",
+    "content": "Imports measure theory (`AEMeasurableOrder`, `Lebesgue.Basic`), topology (`ContinuousAffineMap`), integration (`Integrals`), and algebra (`Group.Basic`). Opens `MeasureTheory` and `Set` namespaces. These provide `Measurable`, `volume` (Lebesgue measure), `Continuous`, and `Filter.Eventually` (for a.e. statements).",
+    "mathContext": "The formalization uses `Measurable` for Lebesgue measurability, `volume` for the Lebesgue measure $\\lambda$ on $\\mathbb{R}$, the `∀ᵐ x ∂volume` notation for 'for almost every $x$ with respect to $\\lambda$', and `Continuous` for topological continuity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Measurable",
+      "MeasureTheory.volume",
+      "Continuous",
+      "Filter.Eventually"
+    ],
+    "prerequisites": [
+      "Lean 4 type system",
+      "Mathlib measure theory"
+    ]
+  },
+  {
+    "id": "ann-908-2",
+    "proofId": "erdos-908",
+    "type": "definition",
+    "range": {
+      "startLine": 52,
+      "endLine": 64
+    },
+    "title": "Core Definitions: Measurable Differences, Additive, Rigid",
+    "content": "`HasMeasurableDifferences f`: for every $h > 0$, $x \\mapsto f(x+h) - f(x)$ is Lebesgue measurable. `IsAdditive h`: $h(x+y) = h(x) + h(y)$ for all $x, y$ (Cauchy's functional equation). `IsRigid r`: for every $h$, $r(x+h) = r(x)$ for a.e. $x$ (the exceptional null set may depend on $h$). These three predicates form the building blocks of the decomposition.",
+    "mathContext": "**Measurable differences:** $f \\in \\text{MD}$ iff $\\Delta_h f := x \\mapsto f(x+h) - f(x)$ is Lebesgue measurable for all $h > 0$. This is strictly weaker than $f$ being measurable: if $h$ is a discontinuous additive function (Hamel function), then $\\Delta_t h = h(t)$ is constant (hence measurable) but $h$ itself is non-measurable. **Additive:** Cauchy's equation $h(x+y) = h(x) + h(y)$. **Rigid:** $r(x+h) = r(x)$ $\\lambda$-a.e.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy functional equation",
+      "Lebesgue measurability",
+      "almost everywhere",
+      "translation invariance"
+    ],
+    "prerequisites": [
+      "Measurable",
+      "volume",
+      "Filter.Eventually"
+    ]
+  },
+  {
+    "id": "ann-908-3",
+    "proofId": "erdos-908",
+    "type": "concept",
+    "range": {
+      "startLine": 69,
+      "endLine": 80
+    },
+    "title": "Additive Functions: Zero and Negation",
+    "content": "`additive_zero` proves $h(0) = 0$ for additive $h$: from $h(0) = h(0+0) = h(0) + h(0)$, subtract to get $h(0) = 0$. `additive_neg` proves $h(-x) = -h(x)$: from $0 = h(0) = h(x + (-x)) = h(x) + h(-x)$. Both are verified proofs using `ring_nf`, `rw`, and `linarith`.",
+    "mathContext": "For any additive $h: \\mathbb{R} \\to \\mathbb{R}$: (1) $h(0) = h(0 + 0) = 2h(0)$, so $h(0) = 0$. (2) $0 = h(0) = h(x + (-x)) = h(x) + h(-x)$, so $h(-x) = -h(x)$. More generally, $h(nx) = nh(x)$ for $n \\in \\mathbb{Z}$, and by the rational linearity axiom, $h(qx) = qh(x)$ for $q \\in \\mathbb{Q}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ring_nf tactic",
+      "linarith tactic",
+      "group homomorphism"
+    ],
+    "prerequisites": [
+      "IsAdditive definition",
+      "basic algebra"
+    ]
+  },
+  {
+    "id": "ann-908-4",
+    "proofId": "erdos-908",
+    "type": "concept",
+    "range": {
+      "startLine": 82,
+      "endLine": 93
+    },
+    "title": "Additive Functions: Rational Linearity and Discontinuity",
+    "content": "Three axioms: `additive_linear_over_rationals` ($h(qx) = qh(x)$ for $q \\in \\mathbb{Q}$), `discontinuous_additive_exists` (there exist discontinuous additive functions, via Hamel bases), and `continuous_additive_characterization` (continuous additive $\\Rightarrow h(x) = cx$). These characterize the landscape of solutions to Cauchy's equation.",
+    "mathContext": "**Cauchy's equation** $h(x+y) = h(x) + h(y)$ has two types of solutions on $\\mathbb{R}$: (1) **Continuous:** $h(x) = cx$ for some $c \\in \\mathbb{R}$ (unique up to the constant). (2) **Discontinuous:** Constructed via a Hamel basis $B$ for $\\mathbb{R}$ over $\\mathbb{Q}$; define $h$ arbitrarily on $B$ and extend by $\\mathbb{Q}$-linearity. Such $h$ are **everywhere discontinuous** and **non-measurable** (their graph is dense in $\\mathbb{R}^2$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hamel basis",
+      "Axiom of Choice",
+      "Cauchy functional equation",
+      "rational linearity"
+    ],
+    "prerequisites": [
+      "IsAdditive",
+      "Continuous",
+      "vector space over Q"
+    ]
+  },
+  {
+    "id": "ann-908-5",
+    "proofId": "erdos-908",
+    "type": "concept",
+    "range": {
+      "startLine": 98,
+      "endLine": 106
+    },
+    "title": "Rigid Function Properties",
+    "content": "`rigid_continuous_is_constant` (axiom): if $r$ is rigid and continuous, then $r$ is constant. Since $r(x+h) = r(x)$ for a.e. $x$ and every $h$, and continuous functions are determined by their values on a dense set, $r$ must be constant. `rigid_has_measurable_differences` (axiom): rigid $r$ has measurable differences since $r(x+h) - r(x) = 0$ a.e., which equals the measurable constant $0$ function.",
+    "mathContext": "**Rigid + continuous $\\Rightarrow$ constant:** If $r(x+h) = r(x)$ $\\lambda$-a.e. for all $h$ and $r$ is continuous, then $r(x+h) = r(x)$ for ALL $x$ (by continuity), so $r$ is periodic with every period — hence constant. **Rigid $\\Rightarrow$ measurable differences:** $\\Delta_h r = 0$ $\\lambda$-a.e., and the zero function is measurable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "periodicity",
+      "continuity implies everywhere",
+      "null sets",
+      "Lebesgue measurability"
+    ],
+    "prerequisites": [
+      "IsRigid",
+      "Continuous",
+      "Measurable"
+    ]
+  },
+  {
+    "id": "ann-908-6",
+    "proofId": "erdos-908",
+    "type": "concept",
+    "range": {
+      "startLine": 117,
+      "endLine": 138
+    },
+    "title": "Laczkovich Decomposition and Uniqueness",
+    "content": "`laczkovich_decomposition` (axiom): every $f$ with measurable differences decomposes as $f = g + h + r$ with $g$ continuous, $h$ additive, $r$ rigid. This is the main theorem, resolving the de Bruijn-Erdős conjecture. `decomposition_uniqueness` (axiom): the decomposition is essentially unique — $g_1 - g_2$ is linear ($= cx$) and $r_1 = r_2$ a.e. The additive part is unique up to a linear function absorbed into the continuous part.",
+    "mathContext": "**Laczkovich's Theorem (1980):** $\\forall f: \\mathbb{R} \\to \\mathbb{R}$ with measurable differences, $\\exists g, h, r$ such that $f = g + h + r$, $g \\in C(\\mathbb{R})$, $h$ additive, $r$ rigid. **Uniqueness:** If $f = g_1 + h_1 + r_1 = g_2 + h_2 + r_2$, then $g_1 - g_2 = cx$ (linear) and $r_1 = r_2$ $\\lambda$-a.e. The proof uses Steinhaus's theorem and properties of measurable sets under translation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Steinhaus theorem",
+      "decomposition theorem",
+      "essential uniqueness",
+      "de Bruijn-Erdős conjecture"
+    ],
+    "prerequisites": [
+      "HasMeasurableDifferences",
+      "IsAdditive",
+      "IsRigid",
+      "Continuous"
+    ]
+  },
+  {
+    "id": "ann-908-7",
+    "proofId": "erdos-908",
+    "type": "concept",
+    "range": {
+      "startLine": 143,
+      "endLine": 175
+    },
+    "title": "Special Cases and Verification Theorems",
+    "content": "Four results: `measurable_decomposition` (axiom): if $f$ is measurable, the additive part vanishes ($f = g + r$). `baire_measurable_decomposition` (axiom): same for Baire measurable $f$. `continuous_has_measurable_differences` (verified): continuous $\\Rightarrow$ measurable differences, since $f(x+h) - f(x)$ is continuous hence measurable. `additive_has_measurable_differences` (verified): additive $\\Rightarrow$ measurable differences, since $f(x+h) - f(x) = f(h)$ is constant.",
+    "mathContext": "**Measurable $f \\Rightarrow h = 0$:** If $f$ is measurable, then $f - g$ is measurable for any continuous $g$, so the additive part $h$ must be measurable. But the only measurable additive function is $h(x) = cx$ (linear), which can be absorbed into $g$. **Continuous verification:** $\\Delta_h f = f(\\cdot + h) - f$ is continuous (composition/difference of continuous), hence measurable. **Additive verification:** $\\Delta_h f = f(h)$ is constant, hence trivially measurable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "measurable additive implies linear",
+      "continuous implies measurable",
+      "constant function measurability"
+    ],
+    "prerequisites": [
+      "Measurable",
+      "Continuous",
+      "IsAdditive",
+      "measurable_const"
+    ]
+  },
+  {
+    "id": "ann-908-8",
+    "proofId": "erdos-908",
+    "type": "concept",
+    "range": {
+      "startLine": 180,
+      "endLine": 190
+    },
+    "title": "Connection to Erdős Problem #907",
+    "content": "`erdos_907_related` formalizes Problem #907: if an additive function $h$ is bounded on some interval $[a,b]$ of positive length, then $h$ is continuous. The axiom `erdos_907_connection` asserts this holds. This connects to Problem #908 because the additive component in the decomposition may be discontinuous (when $f$ is non-measurable), and understanding when additivity forces continuity is precisely #907's question.",
+    "mathContext": "**Erdős #907:** If $h: \\mathbb{R} \\to \\mathbb{R}$ is additive and $|h(x)| \\leq M$ for $x \\in (a,b)$ with $a < b$, then $h$ is continuous (hence $h(x) = cx$). This is because bounded additive functions on an interval of positive measure must be measurable, and measurable additive functions are linear. The proof uses Steinhaus's theorem: $A - A$ contains an interval when $\\lambda(A) > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős Problem #907",
+      "bounded additive functions",
+      "Steinhaus theorem"
+    ],
+    "prerequisites": [
+      "IsAdditive",
+      "Continuous",
+      "Set.Ioo"
+    ]
+  }
+]

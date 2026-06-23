@@ -1,0 +1,129 @@
+{
+  "slug": "sperner-simplicial-instance-oq-04",
+  "title": "Build a Brouwer-fixed-point theorem on top of this: combine `interval_sperner...",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Build a Brouwer-fixed-point theorem on top of this: combine `interval_sperner....",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-15T07:11:09.265Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ACT (S1): formalized the interval-case continuous-coloring -> Sperner-coloring reduction; discrete sign-change theorem for real f proven on top of the existing discrete IVT. Continuous limit + n-d Brouwer remain open.",
+    "builtItems": [
+      "signColoring/meshPt + signColoring_apply/_zero/_self (SpernerSimplicialInstanceOQ04.lean): the continuous-coloring -> Sperner-coloring reduction in 1-d",
+      "exists_sign_change_cell (OQ04.lean): discrete IVT for real f -- for every mesh m>0 a width-1/m cell straddles a sign change, via OQ05Scarf1d.discrete_ivt_panchromatic_cell on the sign coloring",
+      "exists_sign_change_bracket (OQ04.lean): product form f(a)*f(b) <= 0 of the sign-change cell"
+    ],
+    "insights": [
+      "oq-04 decomposes into (a) discrete sign-change [DONE here, corollary of OQ05 discrete_ivt], (b) continuous 1-d IVT via mesh refinement + Bolzano-Weierstrass [moderate, ~150 lines], (c) n-d Brouwer via barycentric subdivision + sperner-ndim [>1000 lines, BLOCKED].",
+      "Sibling OQ05Scarf1d already proves the discrete IVT (discrete_ivt_panchromatic_cell, c0!=cm => exists panchromatic cell); oq-04 only adds the real-function reduction layer, not new combinatorics.",
+      "Discrete statement needs NO continuity: sign coloring c(j)=if f(j/m)<=0 then 0 else 1 has c(0)=0,c(m)=1 from f(0)<=0<f(1), and discrete_ivt yields a sign change. Continuity is only needed for the m->inf limit to an exact root.",
+      "Cert verify_sperner_oq04_bridge.py (transcendental root x-cos x, irrational cubic root, and a multi-root cubic): sign-change cell exists & brackets a true root for every mesh; |f(midpoint)| -> 0 at rate <= L*(1/m)."
+    ],
+    "mathlibGaps": [
+      "No packaged Sperner->Brouwer bridge in Mathlib; Brouwer exists but is not derived from a discrete Sperner lemma.",
+      "Continuous 1-d limit step needs tendsto_subseq_of_bounded (Bolzano-Weierstrass) + Continuous.continuousAt + sign-preservation; all in Mathlib, just unassembled here.",
+      "n-d barycentric subdivision / mesh-shrinking for the cube [0,1]^n is not available as reusable infra."
+    ],
+    "nextSteps": [
+      "ACT next: prove continuous 1-d IVT from exists_sign_change_bracket -- take a_m = meshPt m i_m (bracket left ends), extract convergent subsequence via tendsto_subseq_of_bounded on [0,1], pass continuity through to get f(x*)=0; use intermediate_value_Icc only as cross-check, not the derivation.",
+      "Then n-d: replace intervalTriangulation with sperner-ndim's d-simplex triangulation + barycentric refinement; the >1000-line blocked remainder -- keep BLOCKED until 1-d limit lands.",
+      "Build pending (docker backend blackout this session); file intentionally UNREGISTERED in Proofs.lean to avoid breaking auto-merge until CI verifies."
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "sperner-lemma",
+    "simplicial-complex",
+    "triangulation",
+    "pseudomanifold",
+    "cell-complex",
+    "bridge-construction",
+    "topology",
+    "seeker-selected",
+    "gallery-extracted",
+    "research"
+  ],
+  "relatedProofs": [
+    "sperner-simplicial-instance",
+    "sperner-simplicial-instance-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-15T07:11:09.265Z",
+  "lastUpdate": "2026-06-15",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/SpernerSimplicialInstance.lean",
+      "filename": "SpernerSimplicialInstance.lean",
+      "lineCount": 1040,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstance.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ01.lean",
+      "filename": "SpernerSimplicialInstanceOQ01.lean",
+      "lineCount": 147,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ01.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ05.lean",
+      "filename": "SpernerSimplicialInstanceOQ05.lean",
+      "lineCount": 186,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ05.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean",
+      "filename": "SpernerSimplicialInstanceOQ05Scarf1d.lean",
+      "lineCount": 299,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean"
+    }
+  ]
+}

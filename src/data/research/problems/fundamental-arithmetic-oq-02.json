@@ -1,0 +1,131 @@
+{
+  "slug": "fundamental-arithmetic-oq-02",
+  "title": "Failure of Unique Factorization in Z[√-5]",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "In Z[sqrt(-5)], 6 has two genuinely different factorizations, 6 = 2*3 = (1 + sqrt(-5))*(1 - sqrt(-5)), witnessed using the norm a^2 + 5*b^2.",
+    "plain": "Backfills metadata for the standard failure of unique factorization in Z[sqrt(-5)]. The Lean proof defines the ring and norm, verifies the two factorizations of 6, proves the relevant factors are nonunits, and shows the factorizations are genuinely different by a divisibility obstruction.",
+    "whyMatters": [
+      "Z[sqrt(-5)] is the textbook example showing why unique factorization is special rather than automatic.",
+      "The norm calculation gives a concrete algebraic-number-theory route to irreducibility and nondivisibility facts.",
+      "This entry connects the fundamental theorem of arithmetic with the need for ideals or stronger hypotheses in general rings."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`factorization_1` and `factorization_2` prove the two decompositions of 6 in Z[sqrt(-5)].",
+      "`norm_two`, `norm_three`, `norm_one_plus`, and `norm_one_minus` compute the key norms.",
+      "`two_not_unit`, `three_not_unit`, `one_plus_not_unit`, and `one_minus_not_unit` prove the listed factors are not units.",
+      "`two_irreducible` proves 2 is irreducible using norm constraints.",
+      "`two_not_dvd_one_plus` and `factorizations_essentially_different` show the factorizations are not the same up to the relevant divisibility relation.",
+      "The exact `FundamentalArithmeticOQ02.lean` file is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "A full class-group or ideals-based explanation of how unique factorization is repaired is beyond this exact counterexample entry."
+    ],
+    "goal": "Make the Z[sqrt(-5)] nonunique-factorization proof searchable with precise theorem names."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T13:49:26.404Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proof fully verified (0 sorries, 0 axioms, 193 lines, 17 theorems). Gallery data present. Fixed meta.json conclusion (was incorrectly stating 1 sorry).",
+    "builtItems": [],
+    "insights": [
+      "Parent file has 0 sorries, 0 axioms — fully verified",
+      "OQ-02 would need new file: define Z[√-5] ring, show 6 = 2*3 = (1+√-5)(1-√-5), prove 2 is irreducible but not prime",
+      "Mathlib has Zsqrtd (Z[√d]) type, and GaussInt. Could use Zsqrtd for Z[√-5]",
+      "Key Mathlib: Zsqrtd.norm, Zsqrtd.isPrime_iff for norm-based arguments"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Create FundamentalArithmeticOQ02.lean with Z[√-5] non-UFD proof",
+      "Use Mathlib Zsqrtd type with d = -5",
+      "Prove norm(a + b√-5) = a² + 5b², use it to show 2 and 3 are irreducible",
+      "Show (1+√-5)(1-√-5) = 6 = 2·3 with both being valid factorizations into irreducibles"
+    ]
+  },
+  "tags": [
+    "algebraic-number-theory",
+    "unique-factorization",
+    "ring-theory",
+    "norms",
+    "irreducibility",
+    "z-sqrt-minus-five",
+    "formalized"
+  ],
+  "relatedProofs": [
+    "fundamental-arithmetic",
+    "fundamental-arithmetic-oq-01",
+    "fundamental-arithmetic-oq-01-oq-01",
+    "fundamental-arithmetic-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T13:49:26.404Z",
+  "lastUpdate": "2026-03-30T16:05:00.000Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FundamentalArithmetic.lean",
+      "filename": "FundamentalArithmetic.lean",
+      "lineCount": 225,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmetic.lean"
+    },
+    {
+      "path": "Proofs/FundamentalArithmeticOQ01.lean",
+      "filename": "FundamentalArithmeticOQ01.lean",
+      "lineCount": 114,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmeticOQ01.lean"
+    },
+    {
+      "path": "Proofs/FundamentalArithmeticOQ01OQ01.lean",
+      "filename": "FundamentalArithmeticOQ01OQ01.lean",
+      "lineCount": 221,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmeticOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/FundamentalArithmeticOQ02.lean",
+      "filename": "FundamentalArithmeticOQ02.lean",
+      "lineCount": 193,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalArithmeticOQ02.lean"
+    }
+  ]
+}

@@ -1,0 +1,294 @@
+[
+  {
+    "id": "ann-e344-header",
+    "proofId": "erdos-344",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview: Subcomplete Sequences",
+    "content": "**Erdős Problem #344: SOLVED**\n\nIf A ⊆ ℕ has |A ∩ {1,...,N}| ≫ N^{1/2}, must P(A) (the set of all finite subset sums) contain an infinite arithmetic progression?\n\n**Answer:** YES (Szemerédi-Vu, 2006)\n\n**History:**\n- Folkman: Proved for N^{1/2+ε} density\n- Szemerédi-Vu: Proved for exact √N density\n- Open: Is √(2N) the optimal threshold?",
+    "mathContext": "This problem sits at the interface of additive combinatorics and density Ramsey theory. Given $A \\subseteq \\mathbb{N}$, the subset sum set $P(A) = \\{\\sum_{n \\in B} n : B \\subseteq A \\text{ finite}\\}$ encodes the additive structure of $A$. Subcompleteness asks whether $P(A)$ is 'large' in the sense of containing an infinite arithmetic progression $\\{a, a+d, a+2d, \\ldots\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete-sequences",
+      "subset-sums",
+      "arithmetic-progressions",
+      "density"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Set",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-e344-counting",
+    "proofId": "erdos-344",
+    "range": {
+      "startLine": 48,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "**countingFunction A N:**\n\n|A ∩ {1,...,N}| = number of elements of A up to N.\n\nThis measures the 'density' of A in the natural numbers.",
+    "mathContext": "The counting function $A(N) = |A \\cap \\{1, \\ldots, N\\}|$ is the standard tool for measuring the 'thickness' of an integer set. The asymptotic growth rate of $A(N)$ determines many additive properties of $A$. Here it is implemented as `(Finset.range (N+1)).filter (· ∈ A) |>.card`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density",
+      "asymptotic-analysis",
+      "counting"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Finset.filter",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-e344-subset-sums",
+    "proofId": "erdos-344",
+    "range": {
+      "startLine": 55,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Subset Sums P(A)",
+    "content": "**subsetSums A:**\n\nP(A) = {∑_{n ∈ B} n : B ⊆ A finite}\n\nThe set of all possible sums of finite subsets of A.",
+    "mathContext": "The subset sum set $P(A) = \\{\\sum_{n \\in B} n : B \\subseteq A, B \\text{ finite}\\}$ is a fundamental object in additive combinatorics. It is always closed under taking sub-subsets (if $s \\in P(A)$ via $B$, then any $B' \\subseteq B$ gives $\\sum B' \\in P(A)$). The question is how 'large' $P(A)$ can be as a function of the density of $A$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sumsets",
+      "additive-combinatorics",
+      "subset-sum-problem"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Set"
+    ]
+  },
+  {
+    "id": "ann-e344-arith-prog",
+    "proofId": "erdos-344",
+    "range": {
+      "startLine": 63,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Arithmetic Progression",
+    "content": "**arithmeticProgression a d:**\n\nThe infinite arithmetic progression {a, a+d, a+2d, ...} = {a + k·d : k ∈ ℕ}.",
+    "mathContext": "An infinite arithmetic progression $\\{a + kd : k \\in \\mathbb{N}\\}$ with $d > 0$ is an infinite set with constant gaps. Containing such a progression is a strong structural property of a set — it means the set has 'periodic' large-scale structure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "arithmetic-progressions",
+      "periodicity"
+    ],
+    "prerequisites": [
+      "infinite arithmetic progressions of the form a + k·d",
+      "indexing terms by the natural numbers k",
+      "positive common difference d giving constant gaps"
+    ]
+  },
+  {
+    "id": "ann-e344-subcomplete",
+    "proofId": "erdos-344",
+    "range": {
+      "startLine": 70,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Subcomplete Sets",
+    "content": "**IsSubcomplete A:**\n\nA is subcomplete if P(A) contains an infinite arithmetic progression {a, a+d, a+2d, ...} for some a, d with d > 0.\n\nThis is weaker than 'complete' (which requires P(A) to contain all large integers).",
+    "mathContext": "Subcompleteness means $\\exists a, d > 0$ such that $\\{a + kd : k \\in \\mathbb{N}\\} \\subseteq P(A)$. This is a natural weakening of completeness (where $P(A) \\supseteq \\{n : n \\geq N_0\\}$). The notion captures that $P(A)$ has significant additive structure without requiring it to represent every large integer.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete-sequences",
+      "arithmetic-progressions",
+      "additive-structure"
+    ],
+    "prerequisites": [
+      "arithmeticProgression",
+      "subsetSums"
+    ]
+  },
+  {
+    "id": "ann-e344-sqrt-density",
+    "proofId": "erdos-344",
+    "range": {
+      "startLine": 81,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Square Root Density",
+    "content": "**HasSquareRootDensity A:**\n\n∃ C > 0 such that |A ∩ {1,...,N}| ≥ C√N for all N.\n\nThis is the critical density threshold for subcompleteness.",
+    "mathContext": "The condition $A(N) \\geq C\\sqrt{N}$ for some $C > 0$ and all $N \\geq 1$ says that $A$ grows at least as fast as $\\sqrt{N}$. This is the exact threshold proved by Szemerédi and Vu: any set satisfying this condition is subcomplete. The formalization uses `Real.sqrt` from Mathlib.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density",
+      "growth-rate",
+      "threshold"
+    ],
+    "prerequisites": [
+      "countingFunction",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-e344-folkman-density",
+    "proofId": "erdos-344",
+    "range": {
+      "startLine": 90,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "Folkman Density",
+    "content": "**HasFolkmanDensity A:**\n\n∃ ε > 0, C > 0 such that |A ∩ {1,...,N}| ≥ C · N^{1/2+ε} for all N.\n\nSlightly stronger than square root density.",
+    "mathContext": "Folkman's density condition $A(N) \\geq C \\cdot N^{1/2+\\varepsilon}$ is strictly stronger than square root density because $N^{1/2+\\varepsilon} / \\sqrt{N} = N^{\\varepsilon} \\to \\infty$. The extra polynomial factor was needed in Folkman's original proof but was removed by Szemerédi and Vu.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density",
+      "Folkman",
+      "polynomial-growth"
+    ],
+    "prerequisites": [
+      "countingFunction"
+    ]
+  },
+  {
+    "id": "ann-e344-folkman-theorem",
+    "proofId": "erdos-344",
+    "range": {
+      "startLine": 109,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Folkman's Theorem",
+    "content": "**folkman_theorem:**\n\nIf |A ∩ {1,...,N}| ≫ N^{1/2+ε} for some ε > 0, then A is subcomplete.\n\nThis was the first result showing density implies subcompleteness. Axiomatized as it requires deep combinatorial arguments.",
+    "mathContext": "Folkman's theorem was the first to establish that sufficient density forces arithmetic structure in $P(A)$. The proof uses a greedy algorithm combined with counting arguments: if $A$ is dense enough, one can greedily select elements whose subset sums fill out an arithmetic progression. This was later superseded by the sharper Szemerédi-Vu result.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Folkman",
+      "density-threshold",
+      "greedy-algorithms"
+    ],
+    "prerequisites": [
+      "HasFolkmanDensity",
+      "IsSubcomplete"
+    ]
+  },
+  {
+    "id": "ann-e344-szemeredi-vu",
+    "proofId": "erdos-344",
+    "range": {
+      "startLine": 120,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Szemerédi-Vu Theorem (2006)",
+    "content": "**szemeredi_vu_2006:**\n\nIf |A ∩ {1,...,N}| ≫ N^{1/2} for all N, then A is subcomplete.\n\nThis proves Erdős's conjecture, removing the extra ε from Folkman's condition. Axiomatized: the proof requires sophisticated Fourier analysis.\n\nPublished in J. Amer. Math. Soc. (2006), 119-169.",
+    "mathContext": "The Szemerédi-Vu proof uses a combination of Fourier-analytic methods (exponential sums over subset sums), the Freiman-Ruzsa inverse theorem, and a structural decomposition of the set $A$. The key insight is that if $A$ has density $\\geq C\\sqrt{N}$, then the additive energy of $A$ is large enough to force $P(A)$ to contain long arithmetic progressions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemeredi",
+      "Vu",
+      "Fourier-analysis",
+      "additive-energy",
+      "Freiman-Ruzsa"
+    ],
+    "prerequisites": [
+      "HasSquareRootDensity",
+      "IsSubcomplete"
+    ]
+  },
+  {
+    "id": "ann-e344-optimality",
+    "proofId": "erdos-344",
+    "range": {
+      "startLine": 136,
+      "endLine": 145
+    },
+    "type": "concept",
+    "title": "Erdős's Optimality Example",
+    "content": "**erdos_optimality_example:**\n\n∃ A with |A ∩ {1,...,N}| < √(2N) that is NOT subcomplete.\n\nThis shows the threshold cannot be below √(2N). Axiomatized: the construction uses specific number-theoretic techniques.\n\nFrom Erdős (1961), Acta Arith.",
+    "mathContext": "Erdős constructed a set $A$ with $A(N) < \\sqrt{2N}$ for all $N$ whose subset sums avoid an arithmetic progression. The construction exploits the fact that if elements of $A$ grow sufficiently fast relative to their predecessors, the subset sums are too 'spread out' to contain a progression. This gives a lower bound $\\sqrt{2N}$ on any sufficient density threshold.",
+    "significance": "key",
+    "relatedConcepts": [
+      "optimality",
+      "counterexample",
+      "threshold-gap",
+      "lacunary-sets"
+    ],
+    "prerequisites": [
+      "countingFunction",
+      "IsSubcomplete",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-e344-complete",
+    "proofId": "erdos-344",
+    "range": {
+      "startLine": 160,
+      "endLine": 166
+    },
+    "type": "definition",
+    "title": "Complete Sequences",
+    "content": "**IsComplete A:**\n\n∃ N₀ such that every n ≥ N₀ is in P(A).\n\nComplete is stronger than subcomplete: all large integers are representable, not just an arithmetic progression.",
+    "mathContext": "A set $A$ is complete if $P(A) \\supseteq \\{n : n \\geq N_0\\}$ for some $N_0$. This is strictly stronger than subcompleteness: complete implies subcomplete (take $a = N_0, d = 1$) but not conversely. Complete sequences have been extensively studied; for example, Burr proved that any set with $A(N) \\geq (1+\\varepsilon)\\sqrt{2N}$ is complete.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete-sequences",
+      "representability",
+      "Burr"
+    ],
+    "prerequisites": [
+      "subsetSums"
+    ]
+  },
+  {
+    "id": "ann-e344-complete-implies",
+    "proofId": "erdos-344",
+    "range": {
+      "startLine": 173,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Complete Implies Subcomplete (Proved)",
+    "content": "**complete_implies_subcomplete:**\n\nIf A is complete, then A is subcomplete. The proof takes N₀ from completeness and constructs the arithmetic progression {N₀, N₀+1, N₀+2, ...} (d=1) inside P(A).\n\nThis is the only fully proved theorem in the file — all other major results are axiomatized.",
+    "mathContext": "The proof is constructive: given $N_0$ such that $\\forall n \\geq N_0, n \\in P(A)$, we witness the arithmetic progression with $a = N_0$ and $d = 1$. The key step is showing $a + k \\cdot 1 = N_0 + k \\geq N_0$, which follows by `omega`. This is a clean example of how completeness (a strong property) trivially implies subcompleteness (a weaker one).",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete-sequences",
+      "constructive-proof",
+      "omega-tactic"
+    ],
+    "prerequisites": [
+      "IsComplete",
+      "IsSubcomplete",
+      "arithmeticProgression"
+    ]
+  },
+  {
+    "id": "ann-e344-summary",
+    "proofId": "erdos-344",
+    "range": {
+      "startLine": 202,
+      "endLine": 207
+    },
+    "type": "concept",
+    "title": "Summary of Known Results",
+    "content": "**erdos_344_summary:**\n\n1. **Szemerédi-Vu:** √N density is sufficient for subcompleteness\n2. **Erdős:** √(2N) is necessary (counterexample below this)\n\nThe exact threshold in between remains open. The proof combines the two axiomatized results.",
+    "mathContext": "This summary theorem packages the two main results as a conjunction: $$(\\forall A, \\text{HasSquareRootDensity}(A) \\to \\text{IsSubcomplete}(A)) \\land (\\exists A, A(N) < \\sqrt{2N} \\land \\lnot\\text{IsSubcomplete}(A))$$ The gap between the sufficient condition $C\\sqrt{N}$ and the necessary condition $\\sqrt{2N}$ is the remaining open problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold",
+      "open-problem",
+      "summary"
+    ],
+    "prerequisites": [
+      "szemeredi_vu_2006",
+      "erdos_optimality_example"
+    ]
+  }
+]

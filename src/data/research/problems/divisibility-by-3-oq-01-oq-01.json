@@ -1,0 +1,136 @@
+{
+  "slug": "divisibility-by-3-oq-01-oq-01",
+  "title": "Can the truncation method be generalized to a single parametric theorem for a...",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formalization generalizing a known result in number theory: Can the truncation method be generalized to a single parametric theorem for a....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-02-21T19:21:07.134Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Problem: Can the Truncation Method Be Generalized?\n\n**ID**: divisibility-by-3-oq-01-oq-01\n**Status**: COMPLETE\n**Tier**: B\n**Significance**: 6/10 | **Tractability**: 6/10\n\n## Problem Statement\n\nCan the truncation method (remove last digit, add/subtract a multiple of it) be\ngeneralized to a single parametric theorem covering all divisors coprime to 10?\n\n**Answer: YES.** Two general theorems completely characterize all truncation rules.\n\n## Proof Location\n\n**File**: `proofs/Proofs/DivisibilityTruncationGeneral.lean`\n**Gallery**: `src/data/proofs/divisibility-truncation-general/`\n**Status**: 0 sorries, 0 axioms, builds in Docker (Mathlib v4.26.0, 3058 jobs)\n\n## Key Mathematical Content\n\n### Positive Osculator Theorem\nFor d coprime to 10 and d | 10c - 1:\n```\nd | n  ↔  d | (n/10 + c·(n%10))\n```\nExamples: d=13 c=4 (39=3·13), d=19 c=2 (19=1·19), d=3 c=1 (9=3·3)\n\n### Negative Osculator Theorem\nFor d coprime to 10 and d | 10c + 1:\n```\nd | n  ↔  d | (n/10 - c·(n%10))\n```\nExamples: d=7 c=2 (21=3·7), d=11 c=1 (11=1·11), d=17 c=5 (51=3·17)\n\n## Session 2026-02-21 (Session 1) - Complete Proof\n\n**Mode**: FRESH\n**Outcome**: completed\n\n### What I Did\n\n1. Identified the algebraic core: `10*(n/10 + c*(n%10)) = n + (10c-1)*(n%10)`\n2. Proved this via `linear_combination -hdiv` where `hdiv : n = 10*(n/10) + n%10`\n3. Used `IsCoprime.dvd_of_dvd_mul_left` to transfer divisibility through 10\n4. Created both positive and negative osculator variants\n5. Proved 11 corollaries for d ∈ {3,7,9,11,13,17,19,23,29,31,37}\n6. Built successfully in Docker (3058 jobs, 2.1s for target)\n\n### Key Insights\n\n- The key algebraic identity is: `10*(q + cr) = n + (10c-1)*r` where n=10q+r\n- `linear_combination -hdiv` elegantly proves this identity\n- `IsCoprime.dvd_of_dvd_mul_left` is the critical Mathlib lemma\n- The positive osculator c = (10⁻¹ mod d), negative c = ((-10)⁻¹ mod d)\n- Every d coprime to 10 has both positive and negative osculators\n- Type annotation: use `(d : ℤ) ∣ n` (not `d ∣ n`) to avoid ℕ/ℤ coercion issues\n\n### Files Modified\n\n- `proofs/Proofs/DivisibilityTruncationGeneral.lean` (created, 285 lines)\n- `src/data/proofs/divisibility-truncation-general/` (gallery entry created)\n\n### Next Steps\n\nNone - proof is complete. Extension ideas:\n- Unified single theorem with signed c ∈ ℤ (can subsume both cases)\n- Extension to multi-digit truncation (see DivisibilityByThreeOQ02.lean)\n- Extension to other bases\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "generalization",
+    "challenging",
+    "number-theory",
+    "divisibility",
+    "modular-arithmetic",
+    "extension",
+    "comprehensive"
+  ],
+  "relatedProofs": [
+    "divisibility-by-3",
+    "divisibility-by-3-oq-01",
+    "divisibility-by-3-oq-02",
+    "divisibility-by-3-oq-03",
+    "divisibility-by-3-oq-03-oq-02",
+    "divisibility-by-3-oq-04",
+    "divisibility-by-3-oq-04-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-21T19:21:07.134Z",
+  "lastUpdate": "2026-02-21T22:20:44.360Z",
+  "completed": "2026-02-21T22:20:44.360Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/DivisibilityBy3.lean",
+      "filename": "DivisibilityBy3.lean",
+      "lineCount": 236,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ02.lean",
+      "filename": "DivisibilityBy3OQ02.lean",
+      "lineCount": 163,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ03.lean",
+      "filename": "DivisibilityBy3OQ03.lean",
+      "lineCount": 271,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ03.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ03OQ02.lean",
+      "filename": "DivisibilityBy3OQ03OQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ04.lean",
+      "filename": "DivisibilityBy3OQ04.lean",
+      "lineCount": 230,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ04OQ02.lean",
+      "filename": "DivisibilityBy3OQ04OQ02.lean",
+      "lineCount": 229,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04OQ02.lean"
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "id": "erdos-318",
+  "title": "Erdős Problem #318: Signed Unit Fractions with Zero Sum",
+  "slug": "erdos-318",
+  "description": "Given A ⊆ ℕ and f:A→{±1}, must ∃ finite S ⊂ A with ∑f(n)/n = 0? YES for arithmetic progressions.",
+  "meta": {
+    "author": "Erdős-Straus (1975), Sattler (1975, 1982)",
+    "sourceUrl": "https://erdosproblems.com/318",
+    "date": "1982",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos318Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "unit-fractions",
+      "arithmetic-progressions",
+      "partially-solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 318,
+    "erdosUrl": "https://erdosproblems.com/318",
+    "erdosProblemStatus": "partially-solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Rat",
+        "description": "Rational number type",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "signedUnitSum definition: ∑f(n)/n over finite set",
+      "IsSignFunction definition: f takes values ±1",
+      "IsNonConstant definition: f takes both values on A",
+      "HasPropertyP1 definition: Property P₁ for sets",
+      "arithmeticProgression, positiveNaturals, oddNumbers definitions",
+      "erdos_straus_1975 axiom: ℕ has Property P₁",
+      "sattler_odd_1975 axiom: odd numbers have P₁",
+      "sattler_1982 axiom: arithmetic progressions have P₁",
+      "counterexampleSet: sets with one even fail P₁",
+      "positive_density_insufficient theorem",
+      "squaresExcludingOne definition and open conjecture",
+      "Connection to Egyptian fractions"
+    ],
+    "axiomCount": 5,
+    "lineCount": 409,
+    "assumptions": "5 axioms: erdos_straus_1975, sattler_odd_1975, sattler_1982, counterexample_fails_P1, squares_case_open.",
+    "theoremCount": 6,
+    "definitionCount": 14,
+    "additionalFiles": [
+      "Proofs/Erdos318Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Property P₁ and Signed Unit Fractions**\n\nThis problem traces back to Problem 387 in *Nieuw Archief voor Wiskunde*, solved independently by Erdős-Straus and Sattler in 1975.  The question belongs to the theory of Egyptian fractions — sums of distinct unit fractions $1/n$ — which has roots in the Rhind Mathematical Papyrus (c. 1650 BCE) but was revitalized by Erdős in the 20th century.\n\n**Historical Development**\n\n1. **1975 (Erdős-Straus):** Proved the natural numbers $\\mathbb{N}$ have Property $P_1$: every non-constant sign function $f : \\mathbb{N} \\to \\{\\pm 1\\}$ admits a finite subset $S$ with $\\sum_{n \\in S} f(n)/n = 0$.  Their proof uses a greedy construction: given $a$ with $f(a) = +1$ and $b$ with $f(b) = -1$, the difference $1/a - 1/b = (b-a)/(ab)$ can be decomposed into further unit fractions using the Erdős-Straus technique.\n\n2. **1975 (Sattler):** Extended $P_1$ to the odd numbers $\\{1, 3, 5, \\ldots\\}$, showing that even denominators are not required for cancellation.  This was non-trivial because restricting denominators constrains which rationals are representable.\n\n3. **1980 (Erdős-Graham):** In *Old and New Problems and Results in Combinatorial Number Theory*, Erdős and Graham posed the natural generalizations: does $P_1$ hold for arbitrary positive-density sets?  For the set of perfect squares?\n\n4. **1982 (Sattler):** Published two papers: (a) *On Erdős property $P_1$ for squarefree numbers* established $P_1$ for squarefree integers, and (b) *On Erdős property $P_1$ for arithmetical sequence* proved the definitive result that *every* infinite arithmetic progression has $P_1$.  Sattler also announced a proof for squares in the same papers, but this proof was never published.\n\n**The Counterexample**\n\nErdős observed that sets with exactly one even number fail $P_1$.  The argument is a $2$-adic valuation obstruction: if $S \\subseteq \\{\\text{odds}\\} \\cup \\{2m\\}$, any signed sum $\\sum f(n)/n$ has $v_2 = -v_2(2m) \\leq -1$ when $2m \\in S$ and $v_2 \\geq 0$ when $2m \\notin S$, so the sum is never zero.  This gives positive-density counterexamples (density $\\approx 1/2$), resolving the Erdős-Graham question negatively.\n\n**The Missing Proof for Squares**\n\nThe case of squares excluding 1 ($\\{4, 9, 16, 25, \\ldots\\}$) remains one of the tantalizing open problems in Egyptian fraction theory.  Sattler's announced but unpublished proof has led to speculation about whether a subtle error was discovered, or whether the proof was simply never written up.  The difficulty lies in the multiplicative structure of square denominators, which lack the linear regularity of arithmetic progressions.",
+    "problemStatement": "**Problem Statement (Partially Solved)**\n\nLet $A \\subseteq \\mathbb{N}$ be an infinite arithmetic progression and $f: A \\to \\{-1, 1\\}$ be a non-constant function. Must there exist a finite non-empty $S \\subset A$ such that\n$$\\sum_{n \\in S} \\frac{f(n)}{n} = 0?$$\n\n**Variations:**\n1. What if $A$ is an arbitrary set of positive density?\n2. What if $A$ is the set of squares excluding 1?\n\n**Answers:**\n- **Arithmetic progressions:** YES (Sattler 1982)\n- **Positive density:** NO — counterexamples exist\n- **Squares:** OPEN",
+    "text": "Given A ⊆ ℕ and f:A→{±1}, must ∃ finite S ⊂ A with ∑f(n)/n = 0? YES for arithmetic progressions.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization captures the complete landscape of Problem #318 in five stages:\n\n1. **Signed Sums (lines 50–70):** Define `signedUnitSum` computing $\\sum f(n)/n$ over finite sets in $\\mathbb{Q}$, along with `IsSignFunction` ($f(n) \\in \\{\\pm 1\\}$) and `IsNonConstant` (both values occur on $A$).  Working in $\\mathbb{Q}$ ensures exact arithmetic.\n\n2. **Property $P_1$ (lines 79–87):** Formalize `HasPropertyP1` as a $\\forall\\exists$ statement: for all non-constant sign functions, there exists a non-empty finite witness $S \\subseteq A$ with $\\texttt{signedUnitSum}(S, f) = 0$.  The `Finset`-to-`Set` coercion handles the type boundary.\n\n3. **Positive Results (lines 116–148):** Axiomatize the three known $P_1$ results (Erdős-Straus for $\\mathbb{N}$, Sattler for odds, Sattler for APs) and derive the main theorem as a direct instantiation.  Axiomatization is appropriate because the proofs require deep rational arithmetic infrastructure not yet available in Mathlib.\n\n4. **Counterexamples (lines 154–197):** Construct `counterexampleSet m` (odds $\\cup$ $\\{2m\\}$), prove it has positive density (with sorry for the counting argument), axiomatize that it fails $P_1$ (the $2$-adic valuation obstruction), and derive `positive_density_insufficient` as a constructive existence proof.\n\n5. **Open Problems (lines 203–231):** Define `squaresExcludingOne`, prove the need to exclude 1 via the Basel problem bound (with sorry), and record the conjecture as a `Prop` with an axiom marking it as open.",
+    "keyInsights": [
+      "**Property $P_1$ as a Zero-Sum Problem:** $P_1$ asks whether $0$ lies in the $\\{\\pm 1\\}$-span of $\\{1/n : n \\in A\\}$ — a finite linear algebra question over $\\mathbb{Q}$ with sign constraints.  This connects to zero-sum theory in additive combinatorics (Davenport constant, Erdős-Ginzburg-Ziv theorem).",
+      "**The $2$-adic Valuation Obstruction:** The counterexample works because a single even denominator $2m$ creates an isolated $v_2$-value that no combination of odd-denominator fractions can cancel.  This is a local ($p$-adic) obstruction to a global ($\\mathbb{Q}$) identity — a miniature version of the local-global principle.",
+      "**Arithmetic Structure Beats Density:** The counterexample set has density $\\approx 1/2$ yet fails $P_1$, while arithmetic progressions have density $1/d \\to 0$ yet satisfy $P_1$.  This shows that $P_1$ depends on arithmetic regularity (uniform spacing), not size.  The contrast echoes the Erdős-Turán conjecture where APs give structure beyond density.",
+      "**Why Exclude 1 for Squares:** By Euler's Basel result $\\sum_{k \\geq 1} 1/k^2 = \\pi^2/6$, we have $\\sum_{k \\geq 2} 1/k^2 = \\pi^2/6 - 1 < 1$.  So the sign function $f(1) = -1$, $f(k^2) = +1$ for $k \\geq 2$ has no zero-sum subset, since even using all positive terms cannot reach $1$.  Excluding $1$ is therefore necessary for $P_1$ to have a chance.",
+      "**Egyptian Fractions Lineage:** Property $P_1$ is the signed extension of Egyptian fraction theory.  The Erdős-Straus conjecture ($4/n = 1/a + 1/b + 1/c$) is a *positive* Egyptian fraction problem.  Croot (2003) proved that $\\mathbb{N}$ has property $P_k$ for all $k \\geq 1$ (using $1/n^k$), generalizing the 1975 result.",
+      "**Sattler's Missing Proof:** The squares case was announced as proven in 1982 but never published — a recurring phenomenon in mathematics (cf. Fermat's 'marvellous proof').  Whether the proof was incorrect, incomplete, or simply lost to the vicissitudes of academic publishing remains unknown.  This makes the squares case both an open mathematical problem and a historical mystery."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "States Erdős Problem #318 (signed unit fractions with zero sum, 'Property P₁'). For an infinite arithmetic progression $A$ and non-constant $f:A\\to\\{\\pm1\\}$, must some finite nonempty $S\\subseteq A$ have $\\sum_{n\\in S}f(n)/n=0$? Known: TRUE for $\\mathbb{N}$ (Erdős–Straus 1975), odds (Sattler 1975), all APs (Sattler 1982); FALSE for some positive-density sets; squares case OPEN. Imports Mathlib; opens `Finset`/`BigOperators`/`Real`.",
+      "mathContext": "Property P₁: non-constant $f:A\\to\\{\\pm1\\}$ admits finite nonempty $S$ with $\\sum_{n\\in S}f(n)/n=0$."
+    },
+    {
+      "id": "part1",
+      "title": "Part I: Signed Unit Fractions",
+      "startLine": 39,
+      "endLine": 66,
+      "summary": "Defines `signedUnitSum S f` ($\\sum_{n\\in S}f(n)/n\\in\\mathbb{Q}$), `IsSignFunction` ($f$ takes values $\\pm1$), and `IsNonConstant` ($f$ takes both signs on $A$).",
+      "mathContext": "$\\text{signedUnitSum}(S,f)=\\sum_{n\\in S}f(n)/n$; sign function $\\pm1$; non-constant on $A$."
+    },
+    {
+      "id": "part2",
+      "title": "Part II: Property P₁",
+      "startLine": 67,
+      "endLine": 83,
+      "summary": "Defines `HasPropertyP1 A`: every non-constant sign function on $A$ admits a finite nonempty $S\\subseteq A$ with signed unit sum zero.",
+      "mathContext": "`HasPropertyP1 A`: $\\forall$ non-constant $f,\\ \\exists S\\subseteq A$ finite, $\\sum_{n\\in S}f(n)/n=0$."
+    },
+    {
+      "id": "part3",
+      "title": "Part III: Arithmetic Progressions",
+      "startLine": 84,
+      "endLine": 106,
+      "summary": "Defines the sets `arithmeticProgression a d`, `positiveNaturals`, and `oddNumbers`.",
+      "mathContext": "$\\text{AP}(a,d)=\\{a+kd\\}$; $\\mathbb{N}^+$; odd numbers."
+    },
+    {
+      "id": "part4",
+      "title": "Part IV: Known Results",
+      "startLine": 107,
+      "endLine": 129,
+      "summary": "The literature results as AXIOMS: `erdos_straus_1975` ($\\mathbb{N}$ has P₁), `sattler_odd_1975` (odds have P₁), and `sattler_1982` (every infinite AP has P₁).",
+      "mathContext": "Axioms: $\\mathbb{N}$, odds, and all APs have Property P₁."
+    },
+    {
+      "id": "part5",
+      "title": "Part V: Main Theorem",
+      "startLine": 130,
+      "endLine": 144,
+      "summary": "PROVES `erdos_318_arithmetic_progression`: every infinite arithmetic progression has Property P₁ (the main question's YES answer, from `sattler_1982`).",
+      "mathContext": "Main result: every infinite AP has Property P₁."
+    },
+    {
+      "id": "part6",
+      "title": "Part VI: Positive Density — Counterexamples",
+      "startLine": 145,
+      "endLine": 228,
+      "summary": "Defines `hasPositiveDensity` and the `counterexampleSet m` (odds plus one even $2m$). PROVES `counterexample_positive_density` (density $\\geq1/4$, via counting odds $=(n+1)/2$). States the AXIOM `counterexample_fails_P1` (these sets lack P₁ — the lone even cannot cancel). PROVES `positive_density_insufficient` (positive density alone does not give P₁).",
+      "mathContext": "Odds $\\cup\\{2m\\}$: density $\\geq1/4$ but no P₁ — positive density insufficient."
+    },
+    {
+      "id": "part7",
+      "title": "Part VII: The Squares Question (OPEN)",
+      "startLine": 229,
+      "endLine": 298,
+      "summary": "Defines `squaresExcludingOne` ($\\{k^2:k\\geq2\\}$). PROVES `sum_reciprocal_squares_less_than_one` ($\\sum_{k\\geq2}1/k^2=\\pi^2/6-1<1$, via the Basel sum and $\\pi<3.15$) — the reason $1$ is excluded. Defines `erdos_318_squares_conjecture` and states the AXIOM `squares_case_open` (the squares case is unresolved; Sattler's announced proof never appeared).",
+      "mathContext": "$\\sum_{k\\geq2}1/k^2=\\pi^2/6-1<1$; squares-excluding-1 P₁ is OPEN."
+    },
+    {
+      "id": "part8",
+      "title": "Part VIII: Key Lemmas and Techniques",
+      "startLine": 299,
+      "endLine": 345,
+      "summary": "PROVES `zero_sum_integer_form` (clearing denominators: a zero signed unit sum becomes an integer equation $\\sum_{n\\in S}f(n)\\cdot(\\prod_{m\\in S}m)/n=0$, via exact division and ℤ→ℚ injectivity). Defines `parityObstruction` (the prime/parity obstruction explaining P₁ failures).",
+      "mathContext": "Common-denominator: $\\sum_{n\\in S}f(n)/n=0\\Rightarrow\\sum_n f(n)(\\prod_m m)/n=0$ in ℤ."
+    },
+    {
+      "id": "part9",
+      "title": "Part IX: Relationship to Egyptian Fractions",
+      "startLine": 346,
+      "endLine": 364,
+      "summary": "Defines `isEgyptianRepresentation` (a sum of unit fractions equals $q$) and `hasSignedZeroRepresentation` (a signed zero representation exists), relating P₁ to signed Egyptian-fraction decompositions.",
+      "mathContext": "P₁ $\\leftrightarrow$ existence of a signed Egyptian-fraction representation of $0$."
+    },
+    {
+      "id": "part10",
+      "title": "Part X: Main Results Summary",
+      "startLine": 365,
+      "endLine": 409,
+      "summary": "PROVES `erdos_318_summary`: APs satisfy P₁, $\\mathbb{N}$ satisfies P₁, odds satisfy P₁, but positive density is insufficient (some set lacks P₁). A closing comment records the mixed status (APs/positive-density SOLVED, squares OPEN).",
+      "mathContext": "Summary: APs/$\\mathbb{N}$/odds have P₁; positive density insufficient; squares OPEN."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #318 asks whether arithmetic progressions have Property $P_1$: every non-constant sign function $f:A \\to \\{\\pm 1\\}$ admits a finite zero-sum subset.  Sattler (1982) proved YES for all infinite arithmetic progressions, subsuming the earlier results of Erdős-Straus (1975, for $\\mathbb{N}$) and Sattler (1975, for odd numbers).  Erdős's counterexample — sets with exactly one even number — shows that positive density alone is insufficient, with a clean $2$-adic valuation obstruction.  The case of squares excluding 1 remains OPEN, with Sattler's announced but never published proof adding a historical mystery to the mathematical one.",
+    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Egyptian Fractions:** Property $P_1$ extends the ancient problem of representing rationals as unit fraction sums to the signed setting.  The Erdős-Straus conjecture ($4/n = 1/a + 1/b + 1/c$) and Croot's $P_k$ theorem (2003) are closely related.\n\n2. **Density vs Arithmetic Structure:** The sharp contrast between positive-density counterexamples and zero-density APs satisfying $P_1$ highlights a theme running through additive combinatorics: arithmetic regularity matters more than size.  This parallels the density-vs-structure dichotomy in Szemerédi's theorem.\n\n**3. $p$-adic Methods in Combinatorics:** The counterexample proof is a clean application of $2$-adic valuation to combinatorial number theory.  The parity obstruction concept generalizes: any prime $p$ that divides exactly one element of $A$ to a unique power creates a potential obstruction.\n\n4. **The Squares Mystery:** The unpublished Sattler proof for squares raises methodological questions.  The difficulty may stem from the multiplicative structure of $\\{k^2\\}$: unlike APs, squares have no common difference, and their prime factorizations interact in complex ways via LCM computations.\n\n5. **Zero-Sum Theory:** Property $P_1$ connects to zero-sum combinatorics (Erdős-Ginzburg-Ziv theorem, Davenport constant).  Both ask when structured subsets must contain elements summing to zero, though $P_1$ uses weighted sums $f(n)/n$ rather than unweighted.",
+    "openQuestions": [
+      "Does the set of squares excluding 1 have Property P₁? (The main remaining open case)",
+      "Characterize which infinite sets A ⊆ ℕ have Property P₁ — is there a clean necessary and sufficient condition?",
+      "Does the set of cubes {k³ : k ≥ 2}, or more generally {kᵐ : k ≥ 2} for m ≥ 2, have Property P₁?",
+      "Can zero-sum subsets be found algorithmically in polynomial time when they exist?",
+      "What is the relationship between Property P₁ and the Erdős-Straus conjecture (4/n = 1/a + 1/b + 1/c)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Nat.Prime.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos318",
+    "lineCount": 409,
+    "axiomCount": 5,
+    "theoremCount": 6,
+    "definitionCount": 14,
+    "path": "Proofs/Erdos318Problem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Erdos318Aristotle.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-284",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, unit-fractions"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,267 @@
+[
+  {
+    "id": "erdos-770-gcdpowerseq",
+    "proofId": "erdos-770",
+    "type": "definition",
+    "range": {
+      "startLine": 40,
+      "endLine": 41
+    },
+    "title": "GCD Power Sequence",
+    "content": "Defines `gcdPowerSeq n k` as the gcd of the sequence $2^n-1, 3^n-1, \\ldots, k^n-1$, computed via `Finset.fold Nat.gcd 0` over `Finset.Icc 2 k`. The identity element 0 is correct because $\\gcd(0, x) = x$ in Lean's `Nat.gcd`. When $k < 2$, the range is empty and the fold returns 0. This is the computational core: $h(n) = \\min\\{k : \\text{gcdPowerSeq}\\, n\\, k = 1\\}$.",
+    "mathContext": "$\\text{gcdPowerSeq}(n, k) = \\gcd(2^n - 1, 3^n - 1, \\ldots, k^n - 1)$ via $\\text{fold}_{a \\in [2,k]} \\gcd(\\cdot, a^n - 1)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.fold",
+      "Nat.gcd",
+      "Finset.Icc",
+      "gcd identity element"
+    ],
+    "prerequisites": [
+      "Nat.gcd properties",
+      "Finset.fold API",
+      "exponentiation"
+    ]
+  },
+  {
+    "id": "erdos-770-gcd-1-2",
+    "proofId": "erdos-770",
+    "type": "concept",
+    "range": {
+      "startLine": 46,
+      "endLine": 50
+    },
+    "title": "Base Case Computations (n = 1, 2)",
+    "content": "Verifies $\\gcd(2^1-1) = 1$ (trivially) and the $n=2$ case: $\\gcd(3) = 3$ at $k=2$, dropping to $\\gcd(3, 8) = 1$ at $k=3$. These establish $h(1) = 2$ and $h(2) = 3$, the two smallest values. Both $n+1 = 2$ and $n+1 = 3$ are prime, matching the Fermat characterization.",
+    "mathContext": "$h(1) = 2$: $\\gcd(2^1-1) = 1$; $h(2) = 3$: $\\gcd(3, 8) = 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "base cases",
+      "small primes"
+    ],
+    "prerequisites": [
+      "gcdPowerSeq definition"
+    ]
+  },
+  {
+    "id": "erdos-770-gcd-cascade-12",
+    "proofId": "erdos-770",
+    "type": "concept",
+    "range": {
+      "startLine": 78,
+      "endLine": 82
+    },
+    "title": "GCD Cascade at n = 12",
+    "content": "The most intricate computation: $\\gcd(2^{12}-1, 3^{12}-1) = \\gcd(4095, 531440) = 455 = 5 \\cdot 7 \\cdot 13$. Three Fermat primes contribute: $5$ (since $4 \\mid 12$), $7$ (since $6 \\mid 12$), and $13$ (since $12 \\mid 12$). As $k$ increases, factors are killed: by $k=7$ only 13 remains, and $k=13$ breaks it. This illustrates the 'layer cake' structure of shared factors.",
+    "mathContext": "$\\gcd_{a=2}^{3}(a^{12}-1) = 455 = 5 \\cdot 7 \\cdot 13 \\xrightarrow{k=7} 13 \\xrightarrow{k=13} 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat primes for n=12",
+      "factor cascade",
+      "native_decide"
+    ],
+    "prerequisites": [
+      "gcdPowerSeq",
+      "Fermat's little theorem"
+    ]
+  },
+  {
+    "id": "erdos-770-h-values",
+    "proofId": "erdos-770",
+    "type": "concept",
+    "range": {
+      "startLine": 84,
+      "endLine": 100
+    },
+    "title": "Verified h(n) for n = 1..12",
+    "content": "Proves $h(n)$ for each $n \\leq 12$ by exhibiting the minimal $k$ with $\\gcd = 1$. Each proof has two parts: (1) $\\gcd \\neq 1$ for all $k' < k$ (shared factors persist), and (2) $\\gcd = 1$ at $k$. The pattern emerges: $h(n) = n+1$ when $n+1$ is prime ($n = 1,2,4,6,10,12$) and $h(n) \\in \\{3, 5\\}$ when $n+1$ is composite. All proved via `native_decide` and `refine`.",
+    "mathContext": "$h = (2, 3, 3, 5, 3, 7, 3, 5, 3, 11, 5, 13)$ for $n = 1, \\ldots, 12$",
+    "significance": "key",
+    "relatedConcepts": [
+      "OEIS A263647",
+      "prime characterization",
+      "native_decide chains"
+    ],
+    "prerequisites": [
+      "gcdPowerSeq",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "erdos-770-h-prime-iff",
+    "proofId": "erdos-770",
+    "type": "concept",
+    "range": {
+      "startLine": 106,
+      "endLine": 110
+    },
+    "title": "h(n) = n+1 iff n+1 Prime (Verified)",
+    "content": "The $h(6) = 7$ computation exemplifies the prime characterization: $6 + 1 = 7$ is prime, so Fermat gives $7 \\mid a^6 - 1$ for all $a$ coprime to 7, meaning all terms $2^6-1, \\ldots, 6^6-1$ share the factor 7. But $7^6 \\equiv 0 \\pmod{7}$, so $7 \\nmid 7^6 - 1 = 117648$, and including $k = 7$ breaks the shared factor to give $\\gcd = 1$.",
+    "mathContext": "$h(6) = 7$: $7 \\mid a^6 - 1$ for $a = 2, \\ldots, 6$ (Fermat), but $7 \\nmid 7^6 - 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's little theorem",
+      "prime characterization",
+      "h(n) = n+1"
+    ],
+    "prerequisites": [
+      "Fermat mechanism",
+      "gcdPowerSeq"
+    ]
+  },
+  {
+    "id": "erdos-770-fermat-verify",
+    "proofId": "erdos-770",
+    "type": "concept",
+    "range": {
+      "startLine": 147,
+      "endLine": 164
+    },
+    "title": "Fermat's Little Theorem: Computational Verification",
+    "content": "Verifies the Fermat mechanism at primes $p = 3, 5, 7, 11, 13$: for each, confirms $p \\mid a^{p-1} - 1$ for all $2 \\leq a < p$ (the 'divides' part) and $p \\nmid p^{p-1} - 1$ (the 'breaks' part). This is proved computationally via `native_decide` rather than from Mathlib's `ZMod.pow_card_sub_one_eq_one`, providing concrete evidence for the abstract mechanism.",
+    "mathContext": "For $p$ prime: $p \\mid a^{p-1} - 1$ for $\\gcd(a,p) = 1$, but $p \\nmid p^{p-1} - 1$ since $p^{p-1} \\equiv 0 \\pmod{p}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's little theorem",
+      "native_decide",
+      "ZMod.pow_card_sub_one_eq_one"
+    ],
+    "prerequisites": [
+      "prime arithmetic",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "erdos-770-h-eq-3-pattern",
+    "proofId": "erdos-770",
+    "type": "concept",
+    "range": {
+      "startLine": 177,
+      "endLine": 191
+    },
+    "title": "Pattern: h(n) = 3 for Many n",
+    "content": "Demonstrates $h(n) = 3$ at 11 values: $n = 3, 5, 7, 9, 13, 14, 15, 17, 19, 21, 25$. This means $\\gcd(2^n-1, 3^n-1) = 1$ at these $n$ — the first two terms already have no common factor. The conjecture that $h(n) = 3$ for infinitely many $n$ is equivalent to asking whether $\\gcd(2^n-1, 3^n-1) = 1$ infinitely often, which connects to the coprimality of Mersenne-like sequences.",
+    "mathContext": "$h(n) = 3 \\iff \\gcd(2^n - 1, 3^n - 1) = 1$, verified at 11 values",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mersenne numbers",
+      "coprimality conjecture",
+      "density"
+    ],
+    "prerequisites": [
+      "gcdPowerSeq",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "erdos-770-h-gt-3-counter",
+    "proofId": "erdos-770",
+    "type": "concept",
+    "range": {
+      "startLine": 192,
+      "endLine": 198
+    },
+    "title": "Counterexamples: h(n) > 3",
+    "content": "Shows $h(n) > 3$ at $n = 4, 10, 11$: these have shared Fermat factors. At $n = 4$: $5 - 1 = 4 \\mid 4$, so $5 \\mid 2^4 - 1 = 15$ and $5 \\mid 3^4 - 1 = 80$. At $n = 10$: $11 - 1 = 10 \\mid 10$, so $11 \\mid 2^{10} - 1 = 1023$ and $11 \\mid 3^{10} - 1$. These illustrate why $h(n) > 3$ when there exists a prime $p > 3$ with $(p-1) \\mid n$.",
+    "mathContext": "$h(4) > 3$: $5 \\mid \\gcd(15, 80)$; $h(10) > 3$: $11 \\mid \\gcd(1023, 3^{10}-1)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fermat factors",
+      "shared divisors",
+      "obstruction to h(n)=3"
+    ],
+    "prerequisites": [
+      "Fermat mechanism",
+      "gcdPowerSeq"
+    ]
+  },
+  {
+    "id": "erdos-770-q1-density",
+    "proofId": "erdos-770",
+    "type": "concept",
+    "range": {
+      "startLine": 202,
+      "endLine": 206
+    },
+    "title": "Question 1: Density Existence",
+    "content": "Axiomatizes `erdos_770_density_exists`: does the natural density $\\delta_p = \\lim_{N \\to \\infty} \\frac{1}{N}|\\{n \\leq N : h(n) = p\\}|$ exist for every prime $p$? The formalization uses a placeholder `True` for the density limit (since Lean's natural density API is limited). The question connects to the distribution of $n$ such that no prime $q$ with $q-1 \\mid n$ exceeds $p$.",
+    "mathContext": "$\\delta_p = \\lim_{N \\to \\infty} \\frac{|\\{n \\leq N : h(n) = p\\}|}{N}$: does this limit exist?",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "Dirichlet density",
+      "smooth numbers"
+    ],
+    "prerequisites": [
+      "h(n) definition",
+      "density of arithmetic sets"
+    ]
+  },
+  {
+    "id": "erdos-770-q2-unbounded",
+    "proofId": "erdos-770",
+    "type": "concept",
+    "range": {
+      "startLine": 208,
+      "endLine": 211
+    },
+    "title": "Question 2: Unboundedness",
+    "content": "Axiomatizes `erdos_770_unbounded`: $\\forall M, \\exists n$ such that $\\gcd(2^n-1, \\ldots, M^n-1) \\neq 1$. This is equivalent to $\\liminf h(n) = \\infty$: for every bound $M$, there exist $n$ where $h(n) > M$. The formalization directly encodes the gcd condition rather than using liminf notation.",
+    "mathContext": "$\\liminf_{n \\to \\infty} h(n) = \\infty \\iff \\forall M,\\, \\exists n: \\gcd(2^n-1, \\ldots, M^n-1) > 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "liminf",
+      "unboundedness",
+      "Finset.Icc range"
+    ],
+    "prerequisites": [
+      "gcdPowerSeq",
+      "asymptotic behavior"
+    ]
+  },
+  {
+    "id": "erdos-770-q3-largest-prime",
+    "proofId": "erdos-770",
+    "type": "concept",
+    "range": {
+      "startLine": 213,
+      "endLine": 219
+    },
+    "title": "Question 3: Largest Prime Characterization",
+    "content": "Axiomatizes `erdos_770_largest_prime`: if $p$ is the largest prime with $(p-1) \\mid n$ and $p > n^\\varepsilon$, then $\\gcd(2^n-1, \\ldots, p^n-1) = 1$, i.e., $h(n) \\leq p$. This would mean that $h(n)$ is essentially determined by the largest Fermat prime for $n$. The condition $p > n^\\varepsilon$ excludes pathological cases where many small primes contribute.",
+    "mathContext": "$p$ largest prime with $(p-1) \\mid n$, $p > n^\\varepsilon \\implies h(n) \\leq p$",
+    "significance": "key",
+    "relatedConcepts": [
+      "largest prime factor",
+      "Fermat characterization",
+      "epsilon threshold"
+    ],
+    "prerequisites": [
+      "Fermat mechanism",
+      "prime factorization of n"
+    ]
+  },
+  {
+    "id": "erdos-770-stability",
+    "proofId": "erdos-770",
+    "type": "concept",
+    "range": {
+      "startLine": 225,
+      "endLine": 227
+    },
+    "title": "GCD Stability (Sorry)",
+    "content": "States `gcdPowerSeq_stable`: if $\\gcd(2^n-1, \\ldots, k^n-1) = 1$, then $\\gcd(2^n-1, \\ldots, j^n-1) = 1$ for all $j \\geq k$. This is the monotonicity of gcd: $\\gcd(1, x) = 1$ for any $x$, so adding terms cannot increase a gcd that has reached 1. The `sorry` likely needs `Finset.fold_subset` or induction on the interval extension from $[2,k]$ to $[2,j]$.",
+    "mathContext": "$\\gcd_{a=2}^{k}(a^n-1) = 1 \\implies \\gcd_{a=2}^{j}(a^n-1) = 1$ for $j \\geq k$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "gcd monotonicity",
+      "Finset.fold properties",
+      "sorry"
+    ],
+    "prerequisites": [
+      "gcdPowerSeq",
+      "gcd(1, x) = 1"
+    ]
+  }
+]

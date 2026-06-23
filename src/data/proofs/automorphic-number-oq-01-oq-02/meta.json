@@ -1,0 +1,170 @@
+{
+  "id": "automorphic-number-oq-01-oq-02",
+  "slug": "automorphic-number-oq-01-oq-02",
+  "title": "The Complementary Pairing of Automorphic Idempotents mod 10^k",
+  "description": "The parent entry counts the automorphic residues n²≡n (mod 10^k) — the idempotents of ZMod (10^k) — and the first follow-up explains the count as 2^ω(n). This entry describes their STRUCTURE rather than their number. First, the orthogonal-complement algebra of any commutative ring: if e is idempotent then so is 1-e, with e+(1-e)=1 and e·(1-e)=0. Second, the main pairing theorem: for k≥1 the four idempotents of ZMod (10^k) are exactly {0, 1, a, 1-a} for a nontrivial idempotent a (one of the classic …5/…6 automorphic numbers), and the two nontrivial residues a and 1-a are orthogonal complements — concretely 5+6=1 and 5·6=0 mod 10, 25+76=1 and 25·76=0 mod 100, 376+625=1 and 376·625=0 mod 1000. So the four residues split into the two complementary pairs {0,1} and {…5,…6}. Third, a last-digit uniqueness theorem: two automorphic residues mod 10^k whose difference is divisible by 10 (i.e. sharing their last digit) are equal — so each of the four residues has a distinct last digit and an automorphic number is pinned down by its final digit. The engine is the elementary identity (e-f)³=e-f for idempotents e,f (a difference of idempotents is tripotent), combined with the fact that an element of the nil ideal (10) of ZMod (10^k) is nilpotent; a tripotent nilpotent element is 0. This is exactly the uniqueness of idempotent lifts modulo a nil ideal, proved here from scratch with no Mathlib lifting lemma.",
+  "meta": {
+    "author": "Lean Genius Researcher-11",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AutomorphicNumberOQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "automorphic-numbers",
+      "idempotents",
+      "zmod",
+      "orthogonal-complement",
+      "nilpotent",
+      "idempotent-lifting",
+      "chinese-remainder-theorem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 212,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "assumptions": "None. 0 axioms, 0 sorries, no native_decide. The three `decide` calls are kernel decisions on concrete finite data (the complementary-pair identities 5+6=1, 5·6=0 in ZMod 10; 25+76=1, 25·76=0 in ZMod 100; 376+625=1, 376·625=0 in ZMod 1000). Results depend only on the standard foundational axioms propext / Classical.choice / Quot.sound. Builds on the verified parent entry AutomorphicNumberOQ01.lean, reusing its automorphic_idempotent_count (the count = 4) to extract a nontrivial idempotent.",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsNilpotent",
+        "description": "An element x with x^n = 0 for some n; the difference of two distinct idempotents lying in the nil ideal (10) of ZMod (10^k) is nilpotent",
+        "module": "Mathlib.RingTheory.Nilpotent.Defs"
+      },
+      {
+        "theorem": "ZMod.natCast_self",
+        "description": "(↑n : ZMod n) = 0; gives (10 : ZMod (10^k))^k = 0, the nilpotency of 10 that makes the kernel of reduction mod 10 a nil ideal",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset.card_le_card",
+        "description": "s ⊆ t → s.card ≤ t.card; combined with the parent's count = 4 and |{0,1}| = 2 it forces an idempotent outside {0,1} to exist",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.eq_of_subset_of_card_le",
+        "description": "s ⊆ t and t.card ≤ s.card give s = t; promotes {0,1,a,1-a} ⊆ S with both of card 4 to the set equality S = {0,1,a,1-a}",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "subsingleton_of_zero_eq_one",
+        "description": "0 = 1 in a ring forces it to be subsingleton; used to discharge the degenerate exponent-0 case when an idempotent is nilpotent",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      },
+      {
+        "theorem": "AutomorphicNumberOQ01.automorphic_idempotent_count",
+        "description": "The verified parent result that ZMod (10^k) has exactly 4 idempotents; the starting point for extracting the nontrivial complementary pair",
+        "module": "Proofs.AutomorphicNumberOQ01"
+      }
+    ],
+    "dateAdded": "2026-06-21",
+    "mathlib_version": "4.26.0"
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.AutomorphicNumberOQ01"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "AutomorphicNumberOQ01OQ02",
+    "lineCount": 212,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/AutomorphicNumberOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "automorphic_complementary_pair",
+      "type": "headline",
+      "statement": "0 < k → ∃ a b : ZMod (10^k), a*a=a ∧ b*b=b ∧ a≠0 ∧ a≠1 ∧ b≠0 ∧ b≠1 ∧ a+b=1 ∧ a*b=0 ∧ a≠b ∧ (univ.filter (e ↦ e*e=e)) = {0,1,a,b}",
+      "description": "The four idempotents of ZMod (10^k) are exactly {0, 1, a, 1-a} for a nontrivial idempotent a (a …5/…6 automorphic number). The two nontrivial residues are orthogonal complements: a+(1-a)=1 and a·(1-a)=0. So the residues split into the two complementary pairs {0,1} and {…5,…6}.",
+      "significance": "Upgrades the parent's bare count of 4 to a structural description: the automorphic residues are not four unrelated numbers but two complementary pairs, mirroring the Boolean-algebra structure of idempotents in a commutative ring."
+    },
+    {
+      "name": "same_last_digit",
+      "type": "headline",
+      "statement": "e*e=e → f*f=f → (10 : ZMod (10^k)) ∣ (e - f) → e = f",
+      "description": "Two automorphic residues mod 10^k that share their last digit (differ by a multiple of 10) are equal. Hence the four residues have four distinct last digits, and an automorphic number is determined by its final digit.",
+      "significance": "A concrete arithmetic consequence of uniqueness of idempotent lifts modulo the nil ideal (10): the last digit is a complete invariant of an automorphic residue."
+    },
+    {
+      "name": "idem_eq_of_sub_nilpotent",
+      "type": "core",
+      "statement": "e*e=e → f*f=f → IsNilpotent (e - f) → e = f",
+      "description": "Uniqueness of idempotent lifts modulo a nil ideal in any commutative ring: idempotents with nilpotent difference coincide. Proved from the tripotent identity (e-f)³=e-f — so (e-f)² is an idempotent that is also nilpotent, hence 0, forcing e-f = (e-f)³ = (e-f)·(e-f)² = 0.",
+      "significance": "The general ring-theoretic engine; specialized to ZMod (10^k) it yields the last-digit uniqueness theorem without invoking any Mathlib idempotent-lifting machinery."
+    },
+    {
+      "name": "idem_diff_cube",
+      "type": "core",
+      "statement": "e*e=e → f*f=f → (e - f)^3 = e - f",
+      "description": "A difference of idempotents in a commutative ring is tripotent. Proved by a single linear_combination of the two idempotency hypotheses.",
+      "significance": "The purely algebraic identity underlying uniqueness of idempotent lifts; the cube collapses back to the element itself."
+    },
+    {
+      "name": "compl_idem",
+      "type": "supporting",
+      "statement": "e*e=e → (1 - e)*(1 - e) = 1 - e",
+      "description": "The complement 1-e of an idempotent e is idempotent (any commutative ring).",
+      "significance": "Half of the orthogonal-complement algebra; makes 1-a a second idempotent once a is one."
+    },
+    {
+      "name": "mul_compl",
+      "type": "supporting",
+      "statement": "e*e=e → e*(1 - e) = 0",
+      "description": "An idempotent and its complement are orthogonal: their product vanishes.",
+      "significance": "The orthogonality a·(1-a)=0 of the nontrivial automorphic pair, e.g. 5·6=0 mod 10."
+    },
+    {
+      "name": "idem_nil_zero",
+      "type": "supporting",
+      "statement": "g*g=g → IsNilpotent g → g = 0",
+      "description": "An element that is simultaneously idempotent and nilpotent is zero (an idempotent satisfies g^(n)=g for n≥1, so a vanishing power forces g=0).",
+      "significance": "The step that converts the tripotent-plus-nilpotent (e-f)² into 0."
+    },
+    {
+      "name": "ten_pow_eq_zero",
+      "type": "supporting",
+      "statement": "(10 : ZMod (10^k))^k = 0",
+      "description": "10 is nilpotent in ZMod (10^k); a difference divisible by 10 is therefore nilpotent.",
+      "significance": "Identifies (10) as a nil ideal, the hypothesis that makes the last-digit theorem an instance of idempotent-lift uniqueness."
+    }
+  ],
+  "sections": [
+    {
+      "id": "complement-algebra",
+      "title": "Part I: Orthogonal-complement algebra",
+      "startLine": 45,
+      "endLine": 60,
+      "summary": "In any commutative ring R: compl_idem (1-e is idempotent when e is), mul_compl (e·(1-e)=0), add_compl (e+(1-e)=1). Each is a one-line linear_combination or ring identity.",
+      "mathContext": "The idempotents of a commutative ring form a Boolean algebra under meet = ·, join = e+f-ef, and complement 1-e; this part records the complement and orthogonality laws."
+    },
+    {
+      "id": "idempotent-lift-uniqueness",
+      "title": "Part II: Uniqueness of idempotent lifts modulo a nil ideal",
+      "startLine": 62,
+      "endLine": 103,
+      "summary": "idem_diff_cube: (e-f)³=e-f for idempotents (one linear_combination). idem_nil_zero: idempotent + nilpotent ⇒ 0. idem_eq_of_sub_nilpotent: if e-f is nilpotent then (e-f)² is idempotent (from the cube identity) and nilpotent, hence 0, so e-f=(e-f)³=(e-f)(e-f)²=0.",
+      "mathContext": "A difference of idempotents is tripotent; in the presence of nilpotency this collapses to equality, which is precisely the uniqueness of idempotent lifts over a nil ideal."
+    },
+    {
+      "id": "last-digit",
+      "title": "Part III: The last digit determines the residue",
+      "startLine": 105,
+      "endLine": 126,
+      "summary": "ten_pow_eq_zero: (10)^k=0 in ZMod (10^k) via ZMod.natCast_self. same_last_digit: a difference divisible by 10 is nilpotent (its k-th power vanishes), so idem_eq_of_sub_nilpotent forces equality — automorphic residues with the same last digit coincide.",
+      "mathContext": "The kernel of reduction ZMod (10^k) → ZMod 10 is the nil ideal (10); idempotents inject under reduction mod 10, so the last digit is a complete invariant."
+    },
+    {
+      "id": "complementary-pair",
+      "title": "Part IV: The complementary pairing of the four residues",
+      "startLine": 128,
+      "endLine": 195,
+      "summary": "automorphic_complementary_pair: the parent's count = 4 with |{0,1}| = 2 yields (card_le_card) an idempotent a ∉ {0,1}; its complement 1-a is the other nontrivial idempotent, with a+(1-a)=1, a·(1-a)=0, and a ≠ 1-a (else a=1). The four distinct idempotents 0,1,a,1-a fill the 4-element set, so the idempotent set equals {0,1,a,1-a}.",
+      "mathContext": "Beyond counting, the residues organize into two orthogonal complementary pairs {0,1} and {…5,…6}; the concrete examples 5/6, 25/76, 376/625 exhibit a+b=1, ab=0."
+    }
+  ]
+}

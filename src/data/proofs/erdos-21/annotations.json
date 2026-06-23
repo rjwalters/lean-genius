@@ -1,0 +1,278 @@
+[
+  {
+    "id": "ann-e21-header",
+    "proofId": "erdos-21",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #21**: Let f(n) be minimal such that there exists an intersecting family F of n-sets covering all (n-1)-sets. Is f(n) = O(n)?\n\n**Status**: SOLVED ($500 prize)\n**Solver**: Kahn (1994)\n\n**Key terminology**:\n- **Intersecting family**: Any two sets share at least one element\n- **Covers**: Every set of size ≤ n-1 is disjoint from at least one family member",
+    "mathContext": "This combines ideas from intersecting families (Erdős-Ko-Rado theorem) with covering properties from combinatorial geometry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intersecting-families",
+      "covering",
+      "projective-planes"
+    ],
+    "prerequisites": [
+      "intersecting families of sets",
+      "covering / transversal conditions",
+      "projective planes"
+    ]
+  },
+  {
+    "id": "ann-e21-background",
+    "proofId": "erdos-21",
+    "range": {
+      "startLine": 45,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Background on Covering Properties",
+    "content": "**The covering condition** is surprisingly strong:\n\nEvery set S with |S| ≤ n-1 must be disjoint from at least one family member.\n\n**Why this matters**:\n- Forces the family to be 'spread out' enough\n- Can't concentrate sets in a small region\n- The minimum size f(n) measures this spread",
+    "mathContext": "If S ⊆ A for all A ∈ F, then S witnesses non-coverage. The condition ensures no small set is contained in every family member.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "covering-codes",
+      "combinatorial-geometry",
+      "spread"
+    ],
+    "prerequisites": [
+      "covering codes and combinatorial geometry",
+      "the spread of a set system",
+      "covering properties"
+    ]
+  },
+  {
+    "id": "ann-e21-intersecting",
+    "proofId": "erdos-21",
+    "range": {
+      "startLine": 64,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "Intersecting Family",
+    "content": "**IsIntersecting F**: For all A, B ∈ F, we have A ∩ B ≠ ∅.\n\n```lean\ndef IsIntersecting (F : Finset (Finset α)) : Prop :=\n  ∀ A ∈ F, ∀ B ∈ F, (A ∩ B).Nonempty\n```\n\nAny two members share at least one element.",
+    "mathContext": "Classic Erdős-Ko-Rado theory studies maximum intersecting families. Here we want MINIMUM size with an additional covering property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos-ko-rado",
+      "Nonempty",
+      "pairwise-intersection"
+    ],
+    "prerequisites": [
+      "the Erdős–Ko–Rado theorem",
+      "pairwise-intersecting families",
+      "nonempty intersections"
+    ]
+  },
+  {
+    "id": "ann-e21-covers",
+    "proofId": "erdos-21",
+    "range": {
+      "startLine": 68,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Covers Small Sets",
+    "content": "**CoversSmallSets F n**: Every set S with |S| ≤ n-1 is disjoint from some A ∈ F.\n\n```lean\ndef CoversSmallSets (F : Finset (Finset α)) (n : ℕ) : Prop :=\n  ∀ S : Finset α, S.card ≤ n - 1 → ∃ A ∈ F, Disjoint A S\n```\n\nThis forces the family to 'reach everywhere'.",
+    "mathContext": "The disjointness condition means A ∩ S = ∅. Equivalently, for every small S, there's a family member avoiding S entirely.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Disjoint",
+      "covering-condition",
+      "universal-coverage"
+    ],
+    "prerequisites": [
+      "disjointness of sets",
+      "a family covering all small sets",
+      "universal coverage conditions"
+    ]
+  },
+  {
+    "id": "ann-e21-uniform",
+    "proofId": "erdos-21",
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Uniform Family",
+    "content": "**IsUniform F n**: All sets in F have exactly n elements.\n\n```lean\ndef IsUniform (F : Finset (Finset α)) (n : ℕ) : Prop :=\n  ∀ A ∈ F, A.card = n\n```\n\nAlso called an n-uniform hypergraph.",
+    "mathContext": "Uniformity simplifies the analysis. The covering condition for (n-1)-sets interacts cleanly with n-sets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "hypergraph",
+      "uniform-family",
+      "cardinality"
+    ],
+    "prerequisites": [
+      "k-uniform hypergraphs",
+      "families where all sets have the same size",
+      "cardinality constraints"
+    ]
+  },
+  {
+    "id": "ann-e21-coveringfamily",
+    "proofId": "erdos-21",
+    "range": {
+      "startLine": 77,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Covering Family Structure",
+    "content": "**CoveringFamily α n k**: A valid (n, k)-covering family with:\n- `family`: The Finset of Finsets\n- `intersecting`: All pairs intersect\n- `uniform`: All members have size n\n- `covers`: Covers all (n-1)-sets\n- `size`: Exactly k members\n\nThis bundles all constraints into one structure.",
+    "mathContext": "The structure pattern in Lean bundles data (the family) with proofs of properties. This is typical for mathematical objects with multiple constraints.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "structure",
+      "bundled-type",
+      "constraints"
+    ],
+    "prerequisites": [
+      "intersecting + covering families",
+      "bundling constraints into a structure",
+      "the covering-family object"
+    ]
+  },
+  {
+    "id": "ann-e21-function-f",
+    "proofId": "erdos-21",
+    "range": {
+      "startLine": 92,
+      "endLine": 102
+    },
+    "type": "concept",
+    "title": "The Function f(n)",
+    "content": "**axiom f (n : ℕ) : ℕ**\n\nf(n) = minimum size of a covering intersecting family of n-sets.\n\n**Axiomatized properties**:\n- `f_achievable`: Some family achieves f(n)\n- `f_minimal`: No smaller family exists\n\nThe exact computation is complex, so we axiomatize the minimum.",
+    "mathContext": "Axiomatizing f(n) rather than defining it constructively allows reasoning about its properties without computing exact values.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom",
+      "extremal-function",
+      "minimum"
+    ],
+    "prerequisites": [
+      "extremal (minimum) functions",
+      "the function f(n) for covering families",
+      "axiomatizing the extremal quantity"
+    ]
+  },
+  {
+    "id": "ann-e21-known-values",
+    "proofId": "erdos-21",
+    "range": {
+      "startLine": 104,
+      "endLine": 191
+    },
+    "type": "concept",
+    "title": "Known Exact Values",
+    "content": "**Computed values of f(n)**:\n\n| n | f(n) | Source |\n|---|------|--------|\n| 1 | 1 | trivial |\n| 2 | 3 | edges of triangle |\n| 3 | 6 | Tripathi 2014 |\n| 4 | 9 | Tripathi 2014 |\n| 5 | 13 | Barát-Wanless 2021 |\n| 6 | 13-18 | bounds only |\n\nThe values suggest f(n) ≈ 3n - O(1).",
+    "mathContext": "f(2) = 3: Three edges {a,b}, {b,c}, {a,c} of a triangle form the optimal family. For n = 3, 4, 5, computer-assisted proofs were needed.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "exact-values",
+      "computational-bounds",
+      "pattern"
+    ],
+    "prerequisites": [
+      "small exact values of f(n)",
+      "computational bounds",
+      "patterns in the data"
+    ]
+  },
+  {
+    "id": "ann-e21-erdos-lovasz-lower",
+    "proofId": "erdos-21",
+    "range": {
+      "startLine": 192,
+      "endLine": 223
+    },
+    "type": "concept",
+    "title": "Erdős-Lovász Lower Bound (1975)",
+    "content": "**axiom erdos_lovasz_lower_bound**: f(n) ≥ (8/3)n - 3\n\nThe lower bound (8/3)n ≈ 2.67n comes from a counting argument:\n\n1. Each element of the ground set appears in bounded many family members\n2. The covering condition requires enough 'spread'\n3. Combining gives f(n) ≥ (8/3)n - O(1)",
+    "mathContext": "The coefficient 8/3 emerges from optimizing a double counting argument. It's between 2 and 3, consistent with known values.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower-bound",
+      "counting-argument",
+      "coefficient"
+    ],
+    "prerequisites": [
+      "counting arguments",
+      "binomial coefficient estimates",
+      "the Erdős–Lovász lower bound"
+    ]
+  },
+  {
+    "id": "ann-e21-erdos-lovasz-upper",
+    "proofId": "erdos-21",
+    "range": {
+      "startLine": 225,
+      "endLine": 243
+    },
+    "type": "concept",
+    "title": "Erdős-Lovász Upper Bound (1975)",
+    "content": "**axiom erdos_lovasz_upper_bound**: f(n) ≤ C · n^(3/2) · log n\n\nThe original upper bound used projective plane constructions:\n\n- Lines of a projective plane form an intersecting family\n- Selecting O(n^(3/2) log n) lines suffices for coverage\n- This was the state of the art for 17 years!",
+    "mathContext": "Projective plane of order q has q²+q+1 lines, each with q+1 points. Taking n = q+1 gives natural constructions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "upper-bound",
+      "projective-plane",
+      "historical"
+    ],
+    "prerequisites": [
+      "projective planes of order q",
+      "constructing covering families",
+      "the Erdős–Lovász upper bound"
+    ]
+  },
+  {
+    "id": "ann-e21-kahn-1992",
+    "proofId": "erdos-21",
+    "range": {
+      "startLine": 245,
+      "endLine": 263
+    },
+    "type": "concept",
+    "title": "Kahn's First Improvement (1992)",
+    "content": "**axiom kahn_1992_bound**: f(n) ≤ C · n · log n\n\nKahn improved the upper bound using probabilistic methods:\n\n- Randomly select lines from a projective plane\n- Expected number needed is O(n log n)\n- The log factor comes from coupon collector-type analysis",
+    "mathContext": "The improvement from n^(3/2) log n to n log n is significant - nearly quadratic improvement in the polynomial factor.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "probabilistic-method",
+      "coupon-collector",
+      "improvement"
+    ],
+    "prerequisites": [
+      "the probabilistic method",
+      "the coupon-collector heuristic",
+      "Kahn's 1992 improvement"
+    ]
+  },
+  {
+    "id": "ann-e21-kahn-1994",
+    "proofId": "erdos-21",
+    "range": {
+      "startLine": 265,
+      "endLine": 273
+    },
+    "type": "concept",
+    "title": "Kahn's Resolution (1994) - Main Result",
+    "content": "**axiom kahn_1994_linear_bound**: f(n) ≤ C · n\n\n**This resolved the Erdős-Lovász conjecture!**\n\nKahn proved f(n) = O(n) using a refined probabilistic argument:\n1. More careful analysis of projective plane selection\n2. Eliminated the log factor\n3. The constant C is not optimal but finite\n\n**theorem conjecture_resolved : ErdosLovaszConjecture** ✓",
+    "mathContext": "The $500 Erdős prize was won for this result. Combined with lower bound (8/3)n, we have f(n) = Θ(n).",
+    "significance": "key",
+    "relatedConcepts": [
+      "resolution",
+      "linear-bound",
+      "erdos-prize"
+    ],
+    "prerequisites": [
+      "the linear bound f(n) = Θ(n)",
+      "probabilistic constructions",
+      "Kahn's 1994 resolution (Erdős prize)"
+    ]
+  }
+]

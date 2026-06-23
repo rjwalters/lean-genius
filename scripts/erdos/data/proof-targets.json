@@ -1,0 +1,6569 @@
+[
+  {
+    "number": 1,
+    "status": "open",
+    "prize": "$500",
+    "tags": [
+      "number theory",
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1.lean",
+    "theorems": [
+      "erdos_1",
+      "erdos_1.variants.weaker",
+      "erdos_1.variants.lb",
+      "erdos_1.variants.lb_strong",
+      "erdos_1.variants.real",
+      "erdos_1.variants.least_N_3",
+      "erdos_1.variants.least_N_5",
+      "erdos_1.variants.least_N_9"
+    ],
+    "categories": [
+      "research open, AMS 5 11",
+      "undergraduate, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research open, AMS 5 11",
+      "undergraduate, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/1"
+  },
+  {
+    "number": 12,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/12.lean",
+    "theorems": [
+      "isGood_example",
+      "erdos_12.parts.i",
+      "erdos_12.parts.ii",
+      "erdos_12.parts.iii",
+      "erdos_12.variants.erdos_sarkozy_density_0",
+      "erdos_12.variants.erdos_sarkozy",
+      "erdos_12.variants.example",
+      "erdos_12.variants.schoen",
+      "erdos_12.variants.baier"
+    ],
+    "categories": [
+      "undergraduate, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/12"
+  },
+  {
+    "number": 40,
+    "status": "open",
+    "prize": "$500",
+    "tags": [
+      "number theory",
+      "additive basis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/40.lean",
+    "theorems": [
+      "erdos_40",
+      "erdos_28_of_erdos_40"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "undergraduate, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/40"
+  },
+  {
+    "number": 42,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "sidon sets",
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/42.lean",
+    "theorems": [
+      "erdos_42",
+      "erdos_42.constructive",
+      "example_maximal_sidon",
+      "example_difference_set",
+      "maximal_sidon_contains_zero"
+    ],
+    "categories": [
+      "research open, AMS 5 11",
+      "research open, AMS 5 11",
+      "undergraduate, AMS 5 11",
+      "undergraduate, AMS 5 11",
+      "undergraduate, AMS 5 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/42"
+  },
+  {
+    "number": 44,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "sidon sets",
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/44.lean",
+    "theorems": [
+      "maxSidonSubsetCard_icc_bound",
+      "erdos_44",
+      "erdos_44.empty_start",
+      "example_sidon_set",
+      "sidon_set_lower_bound",
+      "greedy_sidon_construction"
+    ],
+    "categories": [
+      "undergraduate, AMS 5 11",
+      "research open, AMS 5 11",
+      "research open, AMS 5 11",
+      "undergraduate, AMS 5 11",
+      "undergraduate, AMS 5 11",
+      "undergraduate, AMS 5 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/44"
+  },
+  {
+    "number": 68,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/68.lean",
+    "theorems": [
+      "erdos_68",
+      "sum_factorial_inv_eq_geometric"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "undergraduate, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/68"
+  },
+  {
+    "number": 69,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/69.lean",
+    "theorems": [
+      "erdos_69",
+      "erdos_69.specialisation_of_erdos_257"
+    ],
+    "categories": [
+      "undergraduate, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/69"
+  },
+  {
+    "number": 257,
+    "status": "open",
+    "tags": [
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/257.lean",
+    "theorems": [
+      "erdos_257",
+      "erdos_257.variants.tsum_top_eq",
+      "erdos_257.variants.tsum_top"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "undergraduate, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/257"
+  },
+  {
+    "number": 295,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/295.lean",
+    "theorems": [
+      "erdos_295",
+      "erdos_295.variants.erdos_straus"
+    ],
+    "categories": [
+      "undergraduate, AMS 5 11",
+      "research open, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/295"
+  },
+  {
+    "number": 313,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/313.lean",
+    "theorems": [
+      "erdos_313_conjecture",
+      "erdos_313_solution_6_2_3",
+      "erdos_313_solution_42_2_3_7",
+      "erdos_313.variant.primary_pseudoperfect_are_infinite",
+      "exists_at_least_eight_primary_pseudoperfect"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "research open, AMS 11",
+      "undergraduate, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/313"
+  },
+  {
+    "number": 317,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/317.lean",
+    "theorems": [
+      "erdos_317",
+      "erdos_317.variants.claim2",
+      "erdos_317.variants.counterexample"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "undergraduate, AMS 11",
+      "graduate, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/317"
+  },
+  {
+    "number": 329,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/329.lean",
+    "theorems": [
+      "erdos_329",
+      "erdos_329.lower_bound",
+      "kruckeberg_1961",
+      "erdos_turan_1941",
+      "erdos_329.of_sub_perfectDifferenceSet",
+      "erdos_329.converse_implication",
+      "exists_sidon_pos_density"
+    ],
+    "categories": [
+      "research open, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research open, AMS 5 11",
+      "research open, AMS 5 11",
+      "undergraduate, AMS 5 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/329"
+  },
+  {
+    "number": 340,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "additive combinatorics",
+      "sidon sets"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/340.lean",
+    "theorems": [
+      "greedySidon_go_singleton_two",
+      "greedySidon_go_pair_three",
+      "greedySidon_zero",
+      "greedySidon_one",
+      "greedySidon_two",
+      "greedySidon_three",
+      "greedySidon_four",
+      "greedySidon_five",
+      "greedySidon_ten",
+      "erdos_340",
+      "erdos_340.variants.isTheta",
+      "erdos_340.variants.third",
+      "erdos_340.variants.sub_hasPosDensity",
+      "erdos_340.variants._22_mem_sub",
+      "erdos_340.variants._33_mem_sub",
+      "erdos_340.variants.cofinite_sub",
+      "erdos_340.variants.co_density_zero_sub"
+    ],
+    "categories": [
+      "test, AMS 5",
+      "test, AMS 5",
+      "test, AMS 5",
+      "test, AMS 5",
+      "test, AMS 5",
+      "test, AMS 5",
+      "test, AMS 5",
+      "test, AMS 5",
+      "test, AMS 5",
+      "research open, AMS 5",
+      "research open, AMS 5",
+      "undergraduate, AMS 5",
+      "research open, AMS 5",
+      "research solved, AMS 5",
+      "research open, AMS 5",
+      "research open, AMS 5",
+      "research open, AMS 5"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/340"
+  },
+  {
+    "number": 364,
+    "status": "verifiable",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/364.lean",
+    "theorems": [
+      "erdos_364",
+      "erdos_364.variants.strong",
+      "erdos_364.variants.weak"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "undergraduate, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/364"
+  },
+  {
+    "number": 366,
+    "status": "verifiable",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/366.lean",
+    "theorems": [
+      "erdos_366",
+      "exists_three_full_then_two_full",
+      "erdos_366.variant.three_two",
+      "erdos_366.variant.weaker"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "test, AMS 11",
+      "research open, AMS 11",
+      "undergraduate, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/366"
+  },
+  {
+    "number": 707,
+    "status": "disproved (Lean)",
+    "prize": "$1000",
+    "tags": [
+      "additive combinatorics",
+      "sidon sets"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/707.lean",
+    "theorems": [
+      "erdos_707",
+      "erdos_707.variants.prime_power",
+      "erdos_707.variants.prime",
+      "erdos_707.counterexample_prime",
+      "erdos_707.counterexample_mian_chowla",
+      "erdos_707.counterexample_hall",
+      "erdos_707.variants.perfect_difference_set_size_bound",
+      "erdos_707.variants.singer_construction",
+      "erdos_707.variants.example_sidon_set",
+      "erdos_707.variants.example_embedding",
+      "erdos_707.variants.small_sidon_sets"
+    ],
+    "categories": [
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "undergraduate, AMS 5 11",
+      "undergraduate, AMS 5 11",
+      "undergraduate, AMS 5 11",
+      "undergraduate, AMS 5 11",
+      "undergraduate, AMS 5 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/707"
+  },
+  {
+    "number": 786,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/786.lean",
+    "theorems": [
+      "erdos_786.parts.i",
+      "erdos_786.parts.ii",
+      "erdos_786.parts.i.example",
+      "erdos_786.parts.i.selfridge"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "undergraduate, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/786"
+  },
+  {
+    "number": 828,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/828.lean",
+    "theorems": [
+      "erdos_828",
+      "erdos_828.variants.lehmer_conjecture",
+      "erdos_828.variants.phi_dvd_self_iff_pow2_pow3"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "undergraduate, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/828"
+  },
+  {
+    "number": 859,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "divisors"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/859.lean",
+    "theorems": [
+      "erdos_859.variants.erdos_upper_lower_bounds",
+      "erdos_859"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "high_school, AMS 11",
+      "undergraduate, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/859"
+  },
+  {
+    "number": 918,
+    "status": "open",
+    "tags": [
+      "graph theory",
+      "chromatic number"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/918.lean",
+    "theorems": [
+      "erdos_918.parts.i",
+      "erdos_918.parts.ii",
+      "erdos_918.variants.all_subgraphs.parts.i",
+      "erdos_918.variants.all_subgraphs.parts.ii",
+      "erdos_918.variants.erdos_hajnal",
+      "erdos_918.variants.eq_aleph_0.parts.i",
+      "erdos_918.variants.eq_aleph_0_all_subgraphs.parts.i",
+      "erdos_918.variants.eq_aleph_0.parts.ii",
+      "erdos_918.variants.eq_aleph_0_all_subgraphs.parts.ii"
+    ],
+    "categories": [
+      "research open, AMS 5",
+      "research open, AMS 5",
+      "research open, AMS 5",
+      "research open, AMS 5",
+      "research solved, AMS 5",
+      "undergraduate, AMS 5",
+      "high_school, AMS 5",
+      "undergraduate, AMS 5",
+      "high_school, AMS 5"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/918"
+  },
+  {
+    "number": 945,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "divisors"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/945.lean",
+    "theorems": [
+      "erdos_945",
+      "erdos_945.variants.constant",
+      "erdos_945.equivalence",
+      "erdos_945.variants.lower_bound",
+      "erdos_945.variants.upper_bound"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "undergraduate, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/945"
+  },
+  {
+    "number": 1055,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1055.lean",
+    "theorems": [
+      "exists_p",
+      "erdos_1055",
+      "erdos_1055.variants.erdos_limit",
+      "erdos_1055.variants.selfridge_limit"
+    ],
+    "categories": [
+      "undergraduate, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/1055"
+  },
+  {
+    "number": 1056,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1056.lean",
+    "theorems": [
+      "erdos_1056",
+      "erdos_1056_k2",
+      "erdos_1056_k3",
+      "noll_simmons"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "undergraduate, AMS 11",
+      "undergraduate, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/1056"
+  },
+  {
+    "number": 1097,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1097.lean",
+    "theorems": [
+      "erdos_1097",
+      "erdos_1097.variants.weaker",
+      "erdos_1097.variants.lower_bound"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "undergraduate, AMS 11",
+      "undergraduate, AMS 11"
+    ],
+    "difficulty": "undergraduate",
+    "erdosUrl": "https://www.erdosproblems.com/1097"
+  },
+  {
+    "number": 3,
+    "status": "open",
+    "prize": "$5000",
+    "tags": [
+      "number theory",
+      "additive combinatorics",
+      "arithmetic progressions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/3.lean",
+    "theorems": [
+      "erdos_3"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/3"
+  },
+  {
+    "number": 4,
+    "status": "proved",
+    "prize": "$10000",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/4.lean",
+    "theorems": [
+      "erdos_4",
+      "erdos_4.variants.rankin"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/4"
+  },
+  {
+    "number": 6,
+    "status": "proved",
+    "prize": "$100",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/6.lean",
+    "theorems": [
+      "erdos_6",
+      "erdos_6.variants.increasing",
+      "erdos_6.variants.decreasing"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/6"
+  },
+  {
+    "number": 9,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "additive basis",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/9.lean",
+    "theorems": [
+      "erdos9A_contains_one",
+      "erdos9A_contains_three",
+      "erdos9A_not_contains_five",
+      "erdos_9_infinite",
+      "erdos_9"
+    ],
+    "categories": [
+      "test, AMS 5 11",
+      "test, AMS 5 11",
+      "test, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research open, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/9"
+  },
+  {
+    "number": 10,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "additive basis",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/10.lean",
+    "theorems": [
+      "erdos_10",
+      "erdos_10.variants.gallagher",
+      "erdos_10.variants.granville_soundararajan_odd",
+      "erdos_10.variants.grechuk_example",
+      "erdos_10.variants.two_pows",
+      "erdos_10.variants.gretchuk"
+    ],
+    "categories": [
+      "research open, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research open, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research open, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/10"
+  },
+  {
+    "number": 11,
+    "status": "falsifiable",
+    "tags": [
+      "number theory",
+      "additive basis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/11.lean",
+    "theorems": [
+      "erdos_11",
+      "erdos_11.variants.not_four_dvd",
+      "erdos_11.variants.two_pow_two",
+      "erdos_11.variants.finite_bound1",
+      "erdos_11.variants.finite_bound2",
+      "erdos_11.variants.granville_soundararajan"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/11"
+  },
+  {
+    "number": 14,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "sidon sets",
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/14.lean",
+    "theorems": [
+      "erdos_14a",
+      "erdos_14b"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/14"
+  },
+  {
+    "number": 17,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/17.lean",
+    "theorems": [
+      "erdos_17",
+      "erdos_17.variants.upper_BES",
+      "erdos_17.variants.upper_Elsholtz",
+      "isClusterPrime_97_isLeast_non_cluster"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "test, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/17"
+  },
+  {
+    "number": 20,
+    "status": "open",
+    "prize": "$1000",
+    "tags": [
+      "combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/20.lean",
+    "theorems": [
+      "isSunflowerWithKernel_empty",
+      "isSunflowerWithKernel_singleton",
+      "isSunflower_empty",
+      "isSunflower_singleton",
+      "f_0_1",
+      "erdos_20"
+    ],
+    "categories": [
+      "test, AMS 5",
+      "test, AMS 5",
+      "test, AMS 5",
+      "test, AMS 5",
+      "test, AMS 5",
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/20"
+  },
+  {
+    "number": 25,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/25.lean",
+    "theorems": [
+      "erdos_25"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/25"
+  },
+  {
+    "number": 26,
+    "status": "disproved (Lean)",
+    "tags": [
+      "number theory",
+      "divisors"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/26.lean",
+    "theorems": [
+      "not_isThick_of_finite",
+      "not_isThick_of_geom_one_lt",
+      "isThick_const",
+      "multiplesOf_eq_univ",
+      "isBehrend_of_contains_one",
+      "isWeaklyBehrend_of_ge_one",
+      "not_isWeaklyBehrend_of_neg",
+      "erdos_26",
+      "erdos_26.variants.rusza",
+      "erdos_26.variants.tenenbaum"
+    ],
+    "categories": [
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/26"
+  },
+  {
+    "number": 28,
+    "status": "open",
+    "prize": "$500",
+    "tags": [
+      "number theory",
+      "additive basis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/28.lean",
+    "theorems": [
+      "erdos_28"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/28"
+  },
+  {
+    "number": 30,
+    "status": "open",
+    "prize": "$1000",
+    "tags": [
+      "number theory",
+      "sidon sets",
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/30.lean",
+    "theorems": [
+      "erdos_30"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/30"
+  },
+  {
+    "number": 33,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "additive basis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/33.lean",
+    "theorems": [
+      "erdos_33",
+      "erdos_33.variants.one_mem_lowerBounds",
+      "erdos_33.variants.vanDoorn"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/33"
+  },
+  {
+    "number": 36,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/36.lean",
+    "theorems": [
+      "M_one",
+      "M_two",
+      "M_three",
+      "M_four",
+      "M_five",
+      "minimum_overlap.variants.lower.erdos_1955",
+      "minimum_overlap.variants.lower.scherk_1955",
+      "minimum_overlap.variants.lower.swierczkowski_1958",
+      "minimum_overlap.variants.lower.haugland_1996",
+      "minimum_overlap.variants.lower.white_2022",
+      "minimum_overlap.variants.upper.erdos_1955",
+      "minimum_overlap.variants.upper.MRS_1956",
+      "minimum_overlap.variants.upper.haugland_1996",
+      "minimum_overlap.variants.upper.haugland_2022",
+      "erdos_36.variants.lower",
+      "erdos_36.variants.upper",
+      "erdos_36.variants.exists",
+      "erdos_36"
+    ],
+    "categories": [
+      "test, AMS 5 11",
+      "test, AMS 5 11",
+      "test, AMS 5 11",
+      "test, AMS 5 11",
+      "test, AMS 5 11",
+      "graduate, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research open, AMS 5 11",
+      "research open, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research open, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/36"
+  },
+  {
+    "number": 38,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/38.lean",
+    "theorems": [
+      "erdos_38"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/38"
+  },
+  {
+    "number": 39,
+    "status": "open",
+    "prize": "$500",
+    "tags": [
+      "number theory",
+      "sidon sets",
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/39.lean",
+    "theorems": [
+      "erdos_39"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/39"
+  },
+  {
+    "number": 41,
+    "status": "open",
+    "prize": "$500",
+    "tags": [
+      "number theory",
+      "sidon sets",
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/41.lean",
+    "theorems": [
+      "erdos_41",
+      "erdos_41_i"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/41"
+  },
+  {
+    "number": 48,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/48.lean",
+    "theorems": [
+      "erdos_48"
+    ],
+    "categories": [
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/48"
+  },
+  {
+    "number": 51,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/51.lean",
+    "theorems": [
+      "erdos_51"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/51"
+  },
+  {
+    "number": 56,
+    "status": "disproved (Lean)",
+    "prize": "$10",
+    "tags": [
+      "number theory",
+      "intersecting family"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/56.lean",
+    "theorems": [
+      "maxWeaklyDivisible_zero",
+      "maxWeaklyDivisible_one",
+      "maxWeaklyDivisible_zero_k",
+      "firstPrimesMultiples_one_card_zero",
+      "firstPrimesMultiples_zero_k_card_zero",
+      "erdos_56"
+    ],
+    "categories": [
+      "API, AMS 11",
+      "API, AMS 11",
+      "API, AMS 11",
+      "API, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "API, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/56"
+  },
+  {
+    "number": 61,
+    "status": "open",
+    "tags": [
+      "graph theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/61.lean",
+    "theorems": [
+      "erdos_61",
+      "erdos_61.variants.erha89",
+      "erdos_61.variants.bnss23"
+    ],
+    "categories": [
+      "research open, AMS 05",
+      "research solved, AMS 05",
+      "research solved, AMS 05"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/61"
+  },
+  {
+    "number": 64,
+    "status": "falsifiable",
+    "prize": "$1000",
+    "tags": [
+      "graph theory",
+      "cycles"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/64.lean",
+    "theorems": [
+      "erdos_64"
+    ],
+    "categories": [
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/64"
+  },
+  {
+    "number": 66,
+    "status": "open",
+    "prize": "$500",
+    "tags": [
+      "number theory",
+      "additive basis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/66.lean",
+    "theorems": [
+      "erdos_66"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/66"
+  },
+  {
+    "number": 67,
+    "status": "proved",
+    "prize": "$500",
+    "tags": [
+      "discrepancy"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/67.lean",
+    "theorems": [
+      "erdos_67",
+      "erdos_67.variants.complex"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/67"
+  },
+  {
+    "number": 74,
+    "status": "open",
+    "prize": "$500",
+    "tags": [
+      "graph theory",
+      "chromatic number",
+      "cycles"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/74.lean",
+    "theorems": [
+      "SimpleGraph.edgeDistancesToBipartite_nonempty",
+      "SimpleGraph.subgraphEdgeDistsToBipartite_bddAbove",
+      "erdos_74",
+      "erdos_74.variants.sqrt"
+    ],
+    "categories": [
+      "test, AMS 5",
+      "test, AMS 5",
+      "research open, AMS 5",
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/74"
+  },
+  {
+    "number": 85,
+    "status": "falsifiable",
+    "tags": [
+      "graph theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/85.lean",
+    "theorems": [
+      "erdos_85"
+    ],
+    "categories": [
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/85"
+  },
+  {
+    "number": 89,
+    "status": "open",
+    "prize": "$500",
+    "tags": [
+      "geometry",
+      "distances"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/89.lean",
+    "theorems": [
+      "erdos_89",
+      "erdos_89.variants.n_dvd_log_n",
+      "provides",
+      "erdos_89.variants.implies_n_dvd_log_n"
+    ],
+    "categories": [
+      "research open, AMS 52",
+      "research solved, AMS 52",
+      "test, AMS 52"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/89"
+  },
+  {
+    "number": 90,
+    "status": "open",
+    "prize": "$500",
+    "tags": [
+      "geometry",
+      "distances"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/90.lean",
+    "theorems": [
+      "unitDistanceCounts_BddAbove",
+      "erdos_90"
+    ],
+    "categories": [
+      "test, AMS 52",
+      "research open, AMS 52"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/90"
+  },
+  {
+    "number": 92,
+    "status": "open",
+    "prize": "$500",
+    "tags": [
+      "geometry",
+      "distances"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/92.lean",
+    "theorems": [
+      "possible_f_values_BddAbove",
+      "erdos_92.variants.weak",
+      "erdos_92.variants.strong"
+    ],
+    "categories": [
+      "test, AMS 52",
+      "research open, AMS 52",
+      "research open, AMS 52"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/92"
+  },
+  {
+    "number": 97,
+    "status": "falsifiable",
+    "prize": "$100",
+    "tags": [
+      "geometry",
+      "distances",
+      "convex"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/97.lean",
+    "theorems": [
+      "erdos_97",
+      "erdos_97.variants.three_equidistant",
+      "erdos_97.variants.k_equidistant",
+      "erdos_97.variants.three_unit_distance",
+      "erdos_97.variants.three_unit_distance_cut_min"
+    ],
+    "categories": [
+      "research open, AMS 52",
+      "research solved, AMS 52",
+      "research open, AMS 52",
+      "research solved, AMS 52",
+      "research solved, AMS 52"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/97"
+  },
+  {
+    "number": 107,
+    "status": "falsifiable",
+    "prize": "$500",
+    "tags": [
+      "geometry",
+      "convex"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/107.lean",
+    "theorems": [
+      "erdos_107",
+      "nonempty_cardSet",
+      "f_zero_eq",
+      "f_three_eq",
+      "ersz_bounds",
+      "su_bound",
+      "hmpt_bound"
+    ],
+    "categories": [
+      "research open, AMS 52",
+      "research solved, AMS 52",
+      "test, AMS 52",
+      "test, AMS 52",
+      "research solved, AMS 52",
+      "research solved, AMS 52",
+      "research solved, AMS 52"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/107"
+  },
+  {
+    "number": 108,
+    "status": "open",
+    "tags": [
+      "graph theory",
+      "chromatic number",
+      "cycles"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/108.lean",
+    "theorems": [
+      "erdos_108"
+    ],
+    "categories": [
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/108"
+  },
+  {
+    "number": 109,
+    "status": "proved",
+    "tags": [
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/109.lean",
+    "theorems": [
+      "erdos_109"
+    ],
+    "categories": [
+      "research solved, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/109"
+  },
+  {
+    "number": 119,
+    "status": "open",
+    "prize": "$100",
+    "tags": [
+      "analysis",
+      "polynomials"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/119.lean",
+    "theorems": [
+      "erdos_119_1",
+      "erdos_119_2",
+      "erdos_119_3"
+    ],
+    "categories": [
+      "research solved, AMS 30",
+      "research solved, AMS 30",
+      "research open, AMS 30"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/119"
+  },
+  {
+    "number": 123,
+    "status": "open",
+    "prize": "$250",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/123.lean",
+    "theorems": [
+      "erdos_123",
+      "erdos_123.variants.erdos_lewin_3_5_7",
+      "erdos_123.variants.powers_2_3",
+      "erdos_123.variants.powers_2_3_5_snug"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/123"
+  },
+  {
+    "number": 124,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "base representations"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/124.lean",
+    "theorems": [
+      "erdos_124"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/124"
+  },
+  {
+    "number": 125,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "base representations"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/125.lean",
+    "theorems": [
+      "erdos_125"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/125"
+  },
+  {
+    "number": 126,
+    "status": "open",
+    "prize": "$250",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/126.lean",
+    "theorems": [
+      "erdos_126",
+      "erdos_126.variants.IsBigO",
+      "erdos_126.variants.isLittleO"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/126"
+  },
+  {
+    "number": 128,
+    "status": "falsifiable",
+    "prize": "$250",
+    "tags": [
+      "graph theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/128.lean",
+    "theorems": [
+      "erdos_128"
+    ],
+    "categories": [
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/128"
+  },
+  {
+    "number": 137,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/137.lean",
+    "theorems": [
+      "erdos_137",
+      "erdos_137.variants.perfect_power",
+      "erdos_137.multiple_powerful_factors"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/137"
+  },
+  {
+    "number": 138,
+    "status": "open",
+    "prize": "$500",
+    "tags": [
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/138.lean",
+    "theorems": [
+      "monoAP_guarantee_set_nonempty",
+      "monoAPNumber_two_one",
+      "monoAPNumber_two_two",
+      "erdos_138",
+      "erdos_138.variants.prime",
+      "erdos_138.variants.upper",
+      "erdos_138.variants.quotient",
+      "erdos_138.variants.difference",
+      "erdos_138.variants.dvd_two_pow"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/138"
+  },
+  {
+    "number": 139,
+    "status": "proved",
+    "prize": "$1000",
+    "tags": [
+      "additive combinatorics",
+      "arithmetic progressions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/139.lean",
+    "theorems": [
+      "erdos_139"
+    ],
+    "categories": [
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/139"
+  },
+  {
+    "number": 141,
+    "status": "open",
+    "tags": [
+      "additive combinatorics",
+      "primes",
+      "arithmetic progressions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/141.lean",
+    "theorems": [
+      "first_three_odd_primes",
+      "exists_three_consecutive_primes_in_ap",
+      "erdos_141",
+      "erdos_141.variant.first_cases",
+      "erdos_141.variant.eleven",
+      "erdos_141.variant.infinite_three",
+      "erdos_141.variant.infinite_general_case"
+    ],
+    "categories": [
+      "test, AMS 5 11",
+      "test, AMS 5 11",
+      "research open, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research open, AMS 5 11",
+      "research open, AMS 5 11",
+      "research open, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/141"
+  },
+  {
+    "number": 142,
+    "status": "open",
+    "prize": "$10000",
+    "tags": [
+      "additive combinatorics",
+      "arithmetic progressions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/142.lean",
+    "theorems": [
+      "erdos_142",
+      "erdos_142.variants.lower",
+      "erdos_142.variants.upper",
+      "erdos_142.variants.three"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/142"
+  },
+  {
+    "number": 143,
+    "status": "open",
+    "prize": "$500",
+    "tags": [
+      "primitive sets"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/143.lean",
+    "theorems": [
+      "erdos_143.parts.i",
+      "erdos_143.parts.ii"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/143"
+  },
+  {
+    "number": 145,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/145.lean",
+    "theorems": [
+      "erdos_145",
+      "erdos_145.variants.le_two",
+      "erdos_145.variants.le_three",
+      "erdos_145.variants.le_eleven_thirds"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/145"
+  },
+  {
+    "number": 152,
+    "status": "open",
+    "tags": [
+      "sidon sets"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/152.lean",
+    "theorems": [
+      "erdos_152",
+      "erdos_152.square"
+    ],
+    "categories": [
+      "research open, AMS 5",
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/152"
+  },
+  {
+    "number": 153,
+    "status": "open",
+    "tags": [
+      "sidon sets"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/153.lean",
+    "theorems": [
+      "erdos_153"
+    ],
+    "categories": [
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/153"
+  },
+  {
+    "number": 155,
+    "status": "open",
+    "tags": [
+      "additive combinatorics",
+      "sidon sets"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/155.lean",
+    "theorems": [
+      "erdos_155"
+    ],
+    "categories": [
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/155"
+  },
+  {
+    "number": 158,
+    "status": "open",
+    "tags": [
+      "sidon sets"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/158.lean",
+    "theorems": [
+      "erdos_158.B22",
+      "erdos_158.isSidon",
+      "erdos_158.isSidon"
+    ],
+    "categories": [
+      "API, AMS 5, simp",
+      "research open, AMS 5",
+      "research solved, AMS 5",
+      "research solved, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/158"
+  },
+  {
+    "number": 160,
+    "status": "open",
+    "tags": [
+      "additive combinatorics",
+      "arithmetic progressions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/160.lean",
+    "theorems": [
+      "erdos_160.known_upper",
+      "erdos_160.known_lower",
+      "erdos_160.better_upper",
+      "erdos_160.better_lower"
+    ],
+    "categories": [
+      "research solved, AMS 5 51",
+      "research solved, AMS 5 51",
+      "research open, AMS 5 51",
+      "research open, AMS 5 51"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/160"
+  },
+  {
+    "number": 168,
+    "status": "open",
+    "tags": [
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/168.lean",
+    "theorems": [
+      "erdos_168.parts.i",
+      "erdos_168.parts.ii",
+      "erdos_168.variants.limit_exists"
+    ],
+    "categories": [
+      "API, AMS 5 11",
+      "API, AMS 5 11",
+      "API, AMS 5 11",
+      "API, AMS 5 11",
+      "API, AMS 5 11",
+      "API, AMS 5 11",
+      "research open, AMS 11",
+      "research open, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/168"
+  },
+  {
+    "number": 170,
+    "status": "open",
+    "tags": [
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/170.lean",
+    "theorems": [],
+    "categories": [
+      "API, AMS 05",
+      "research open, AMS 05",
+      "research solved, AMS 05"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/170"
+  },
+  {
+    "number": 172,
+    "status": "open",
+    "tags": [
+      "additive combinatorics",
+      "ramsey theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/172.lean",
+    "theorems": [
+      "erdos_172"
+    ],
+    "categories": [
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/172"
+  },
+  {
+    "number": 188,
+    "status": "open",
+    "tags": [
+      "geometry",
+      "ramsey theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/188.lean",
+    "theorems": [
+      "erdos_188.nonempty",
+      "erdos_188.estimate",
+      "erdos_188"
+    ],
+    "categories": [
+      "research solved, AMS 5",
+      "research solved, AMS 5",
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/188"
+  },
+  {
+    "number": 189,
+    "status": "disproved (Lean)",
+    "tags": [
+      "geometry",
+      "ramsey theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/189.lean",
+    "theorems": [
+      "erdos_189",
+      "erdos_189.variants.square",
+      "erdos_189.variants.parallelogram"
+    ],
+    "categories": [
+      "research solved, AMS 5 51",
+      "research solved, AMS 5 51",
+      "research open, AMS 5 51"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/189"
+  },
+  {
+    "number": 196,
+    "status": "open",
+    "tags": [
+      "arithmetic progressions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/196.lean",
+    "theorems": [
+      "erdos_196"
+    ],
+    "categories": [
+      "research open, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/196"
+  },
+  {
+    "number": 198,
+    "status": "disproved (Lean)",
+    "tags": [
+      "additive combinatorics",
+      "sidon sets",
+      "arithmetic progressions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/198.lean",
+    "theorems": [
+      "erdos_198",
+      "erdos_198.variant_concrete"
+    ],
+    "categories": [
+      "research solved, AMS 5",
+      "research solved, AMS 5",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/198"
+  },
+  {
+    "number": 200,
+    "status": "open",
+    "tags": [
+      "primes",
+      "arithmetic progressions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/200.lean",
+    "theorems": [
+      "erdos_200",
+      "that",
+      "erdos_200.variants.upper"
+    ],
+    "categories": [
+      "research open, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/200"
+  },
+  {
+    "number": 203,
+    "status": "open",
+    "tags": [
+      "primes",
+      "covering systems"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/203.lean",
+    "theorems": [
+      "erdos_203"
+    ],
+    "categories": [
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/203"
+  },
+  {
+    "number": 208,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/208.lean",
+    "theorems": [
+      "erdos_208.i",
+      "erdos_208.ii",
+      "erdos_208.variants.log_bound"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/208"
+  },
+  {
+    "number": 212,
+    "status": "open",
+    "tags": [
+      "geometry",
+      "distances"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/212.lean",
+    "theorems": [
+      "erdos_212"
+    ],
+    "categories": [
+      "research open, AMS 52"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/212"
+  },
+  {
+    "number": 213,
+    "status": "open",
+    "tags": [
+      "geometry",
+      "distances"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/213.lean",
+    "theorems": [
+      "erdos_213",
+      "erdos_213.variants.KK08"
+    ],
+    "categories": [
+      "research open, AMS 52",
+      "research solved, AMS 52"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/213"
+  },
+  {
+    "number": 218,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/218.lean",
+    "theorems": [
+      "erdos_218.variants.le",
+      "erdos_218.variants.ge",
+      "erdos_218.variants.infinite_equal_prime_gap"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/218"
+  },
+  {
+    "number": 219,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "additive combinatorics",
+      "primes",
+      "arithmetic progressions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/219.lean",
+    "theorems": [
+      "primeArithmeticProgression_3_5_7",
+      "not_primeArithmeticProgression_1_2",
+      "empty_not_primeArithmeticProgression",
+      "erdos_219"
+    ],
+    "categories": [
+      "test, AMS 5 11",
+      "test, AMS 5 11",
+      "API, AMS 5 11",
+      "API, AMS 5 11",
+      "API, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/219"
+  },
+  {
+    "number": 228,
+    "status": "proved",
+    "tags": [
+      "analysis",
+      "polynomials"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/228.lean",
+    "theorems": [
+      "erdos_228"
+    ],
+    "categories": [
+      "research solved, AMS 5 12 41"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/228"
+  },
+  {
+    "number": 229,
+    "status": "proved (Lean)",
+    "tags": [
+      "analysis",
+      "iterated functions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/229.lean",
+    "theorems": [
+      "erdos_229",
+      "theorem_1"
+    ],
+    "categories": [
+      "research solved, AMS 30",
+      "research solved, AMS 30"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/229"
+  },
+  {
+    "number": 233,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/233.lean",
+    "theorems": [
+      "immediately",
+      "sum_of_squares_of_prime_gaps_lower_bound",
+      "erdos_233",
+      "erdos_233.variant"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/233"
+  },
+  {
+    "number": 234,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/234.lean",
+    "theorems": [
+      "erdos_234"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/234"
+  },
+  {
+    "number": 236,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/236.lean",
+    "theorems": [
+      "erdos_236"
+    ],
+    "categories": [
+      "research open, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/236"
+  },
+  {
+    "number": 238,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/238.lean",
+    "theorems": [
+      "erdos_238",
+      "erdos_238.variant"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/238"
+  },
+  {
+    "number": 242,
+    "status": "falsifiable",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/242.lean",
+    "theorems": [
+      "erdos_242",
+      "erdos_242_schinzel_generalization"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/242"
+  },
+  {
+    "number": 243,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/243.lean",
+    "theorems": [
+      "erdos_243"
+    ],
+    "categories": [
+      "research open, AMS 40"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/243"
+  },
+  {
+    "number": 244,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/244.lean",
+    "theorems": [
+      "erdos_244",
+      "erdos_244.variants.Romanoff"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/244"
+  },
+  {
+    "number": 245,
+    "status": "proved",
+    "tags": [
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/245.lean",
+    "theorems": [
+      "erdos_245",
+      "erdos_245.variants.exists_limit",
+      "erdos_245.variants.two"
+    ],
+    "categories": [
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/245"
+  },
+  {
+    "number": 247,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/247.lean",
+    "theorems": [
+      "erdos_247",
+      "erdos_247.variants.strong_condition"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/247"
+  },
+  {
+    "number": 248,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/248.lean",
+    "theorems": [
+      "erdos_248"
+    ],
+    "categories": [
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/248"
+  },
+  {
+    "number": 249,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/249.lean",
+    "theorems": [
+      "erdos_249"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/249"
+  },
+  {
+    "number": 250,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/250.lean",
+    "theorems": [
+      "erdos_250"
+    ],
+    "categories": [
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/250"
+  },
+  {
+    "number": 251,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/251.lean",
+    "theorems": [
+      "erdos_251"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/251"
+  },
+  {
+    "number": 252,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/252.lean",
+    "theorems": [
+      "erdos_252_0",
+      "erdos_252_1",
+      "erdos_252_2",
+      "erdos_252_3",
+      "erdos_252_4",
+      "erdos_252_ge_5",
+      "erdos_252.schinzel",
+      "erdos_252.prime_tuples"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/252"
+  },
+  {
+    "number": 253,
+    "status": "disproved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/253.lean",
+    "theorems": [
+      "erdos_253"
+    ],
+    "categories": [
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/253"
+  },
+  {
+    "number": 258,
+    "status": "open",
+    "tags": [
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/258.lean",
+    "theorems": [
+      "erdos_258",
+      "erdos_258.variants.Monotone",
+      "erdos_258.variants.Constant"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/258"
+  },
+  {
+    "number": 259,
+    "status": "proved",
+    "tags": [
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/259.lean",
+    "theorems": [
+      "erdos_259"
+    ],
+    "categories": [
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/259"
+  },
+  {
+    "number": 264,
+    "status": "open",
+    "tags": [
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/264.lean",
+    "theorems": [
+      "erdos_264.parts.i",
+      "erdos_264.parts.ii",
+      "erdos_264.variants.example",
+      "erdos_264.variants.ko_tao_neg",
+      "erdos_264.variants.ko_tao_pos"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/264"
+  },
+  {
+    "number": 266,
+    "status": "disproved",
+    "tags": [
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/266.lean",
+    "theorems": [
+      "erdos_266",
+      "erdos_266.variants.all_rationals"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/266"
+  },
+  {
+    "number": 267,
+    "status": "open",
+    "tags": [
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/267.lean",
+    "theorems": [
+      "erdos_267",
+      "erdos_267.variants.generalisation_ratio_limit_to_infinity",
+      "erdos_267.variants.specialization_pow_two",
+      "erdos_267.variants.fibonacci_inverse_sum"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/267"
+  },
+  {
+    "number": 268,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/268.lean",
+    "theorems": [
+      "erdos_268"
+    ],
+    "categories": [
+      "research solved, AMS 40 54"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/268"
+  },
+  {
+    "number": 269,
+    "status": "open",
+    "tags": [
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/269.lean",
+    "theorems": [
+      "erdos_269.variants.rational",
+      "erdos_269.variants.irrational",
+      "addresses",
+      "erdos_269.variant.infinite"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/269"
+  },
+  {
+    "number": 273,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "covering systems"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/273.lean",
+    "theorems": [
+      "erdos_273",
+      "erdos_273.variants.three"
+    ],
+    "categories": [
+      "research open, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/273"
+  },
+  {
+    "number": 274,
+    "status": "open",
+    "tags": [
+      "group theory",
+      "covering systems"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/274.lean",
+    "theorems": [
+      "erdos_274",
+      "erdos_274.variants.abelian",
+      "herzog_schonheim"
+    ],
+    "categories": [
+      "research open, AMS 20",
+      "research solved, AMS 20",
+      "research open, AMS 20"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/274"
+  },
+  {
+    "number": 276,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "covering systems"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/276.lean",
+    "theorems": [
+      "erdos_276"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/276"
+  },
+  {
+    "number": 283,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/283.lean",
+    "theorems": [
+      "on",
+      "erdos_283",
+      "erdos_283.variants.graham"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/283"
+  },
+  {
+    "number": 285,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/285.lean",
+    "theorems": [
+      "erdos_285",
+      "erdos_285.variants.lb"
+    ],
+    "categories": [
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/285"
+  },
+  {
+    "number": 288,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/288.lean",
+    "theorems": [
+      "erdos_288",
+      "erdos_288.variants.i2_card_eq_1",
+      "erdos_288.variants.k_intervals",
+      "erdos_288.variants.exists_k_gt_2"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/288"
+  },
+  {
+    "number": 289,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/289.lean",
+    "theorems": [
+      "erdos_289"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/289"
+  },
+  {
+    "number": 298,
+    "status": "proved (Lean)",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/298.lean",
+    "theorems": [
+      "erdos_298",
+      "erdos_298.variants.upper_density"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/298"
+  },
+  {
+    "number": 299,
+    "status": "disproved (Lean)",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/299.lean",
+    "theorems": [
+      "erdos_299",
+      "erdos_299.variants.density"
+    ],
+    "categories": [
+      "research solved, AMS 11 40",
+      "research solved, AMS 11 40"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/299"
+  },
+  {
+    "number": 303,
+    "status": "proved (Lean)",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/303.lean",
+    "theorems": [
+      "erdos_303"
+    ],
+    "categories": [
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/303"
+  },
+  {
+    "number": 304,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/304.lean",
+    "theorems": [
+      "erdos_304.variants.upper_1950",
+      "erdos_304.variants.lower_1950",
+      "erdos_304.variants.upper_1985",
+      "upper_bound"
+    ],
+    "categories": [
+      "API, simp, AMS 11",
+      "API, AMS 11",
+      "API, AMS 11",
+      "API, AMS 11",
+      "API, AMS 11",
+      "API, AMS 11",
+      "API, AMS 11",
+      "API, AMS 11",
+      "API, AMS 11",
+      "API, AMS 11",
+      "API, AMS 11",
+      "test, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/304"
+  },
+  {
+    "number": 306,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/306.lean",
+    "theorems": [
+      "erdos_306",
+      "erdos_306.variant.integer_three_primes"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/306"
+  },
+  {
+    "number": 307,
+    "status": "verifiable",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/307.lean",
+    "theorems": [
+      "erdos_307",
+      "erdos_307_coprime"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/307"
+  },
+  {
+    "number": 312,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/312.lean",
+    "theorems": [
+      "erdos_312"
+    ],
+    "categories": [
+      "research open, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/312"
+  },
+  {
+    "number": 316,
+    "status": "disproved (Lean)",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/316.lean",
+    "theorems": [
+      "erdos_316",
+      "erdos_316.variants.generalized"
+    ],
+    "categories": [
+      "research solved, AMS 5 11",
+      "high_school, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/316"
+  },
+  {
+    "number": 319,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/319.lean",
+    "theorems": [
+      "erdos_319",
+      "erdos_319.variants.isTheta",
+      "erdos_319.variants.isBigO",
+      "erdos_319.variants.isLittleO",
+      "erdos_319.variants.lb"
+    ],
+    "categories": [
+      "research open, AMS 5",
+      "research open, AMS 5",
+      "research open, AMS 5",
+      "research open, AMS 5",
+      "research solved, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/319"
+  },
+  {
+    "number": 321,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/321.lean",
+    "theorems": [
+      "erdos_321",
+      "erdos_321.variants.isTheta",
+      "erdos_321.variants.isBigO",
+      "erdos_321.variants.isLittleO",
+      "erdos_321.variants.lower",
+      "erdos_321.variants.upper"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/321"
+  },
+  {
+    "number": 324,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "powers"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/324.lean",
+    "theorems": [
+      "erdos_324",
+      "erdos_324.variant.quintic"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/324"
+  },
+  {
+    "number": 325,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "powers"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/325.lean",
+    "theorems": [
+      "erdos_325",
+      "erdos_325.variants.weaker",
+      "erdos_325.variants.wooley"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/325"
+  },
+  {
+    "number": 326,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "additive basis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/326.lean",
+    "theorems": [
+      "erdos_326",
+      "erdos_326.variants.eq"
+    ],
+    "categories": [
+      "research open, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/326"
+  },
+  {
+    "number": 330,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "additive basis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/330.lean",
+    "theorems": [
+      "erdos_330_statement"
+    ],
+    "categories": [
+      "research open, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/330"
+  },
+  {
+    "number": 332,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/332.lean",
+    "theorems": [
+      "erdos_332"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/332"
+  },
+  {
+    "number": 346,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "complete sequences"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/346.lean",
+    "theorems": [
+      "erdos_346",
+      "erdos_346.f_isLacunary",
+      "erdos_346.f_isAddStronglyCompleteNatSeq",
+      "erdos_346.f_not_isAddComplete",
+      "erdos_346.gt_goldenRatio_not_IsAddComplete",
+      "erdos_346.example"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/346"
+  },
+  {
+    "number": 347,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "complete sequences"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/347.lean",
+    "theorems": [
+      "erdos_347"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/347"
+  },
+  {
+    "number": 348,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "complete sequences"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/348.lean",
+    "theorems": [
+      "erdos_348"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/348"
+  },
+  {
+    "number": 349,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "complete sequences"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/349.lean",
+    "theorems": [
+      "erdos_349",
+      "complete_for_alpha_in_Ioo_one_to_goldenRatio",
+      "exists_t_for_k_disjoint_segments",
+      "erdos_349.variants.floor_3_halves_odd",
+      "erdos_349.variants.floor_3_halves_even"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/349"
+  },
+  {
+    "number": 350,
+    "status": "proved (Lean)",
+    "tags": [
+      "number theory",
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/350.lean",
+    "theorems": [
+      "decidableDistinctSubsetSums_1_2",
+      "distinctSubsetSums_1_2",
+      "DistinctSubsetSums_iff_DecidableDistinctSubsetSums",
+      "erdos_350",
+      "erdos_350.variants.strengthening"
+    ],
+    "categories": [
+      "test, AMS 5 11",
+      "test, AMS 5 11",
+      "API, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/350"
+  },
+  {
+    "number": 351,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "complete sequences"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/351.lean",
+    "theorems": [
+      "erdos_351",
+      "erdos_351.variants.X",
+      "erdos_351.variants.X_sq"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/351"
+  },
+  {
+    "number": 352,
+    "status": "open",
+    "tags": [
+      "geometry"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/352.lean",
+    "theorems": [
+      "erdos_352"
+    ],
+    "categories": [
+      "research open, AMS 51"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/352"
+  },
+  {
+    "number": 354,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/354.lean",
+    "theorems": [
+      "erdos_354.parts.i",
+      "erdos_354.parts.ii"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/354"
+  },
+  {
+    "number": 355,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "unit fractions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/355.lean",
+    "theorems": [
+      "erdos_355"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/355"
+  },
+  {
+    "number": 357,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/357.lean",
+    "theorems": [
+      "erdos_357.parts.i",
+      "erdos_357.parts.ii.bigO_version",
+      "erdos_357.parts.ii.bigO_version_symm",
+      "erdos_357.parts.ii.bigTheta_version",
+      "erdos_357.parts.ii.littleO_version",
+      "erdos_357.parts.ii.littleO_version_symm",
+      "erdos_357.variants.weisenberg",
+      "erdos_357.variants.infinite_set_lower_density",
+      "erdos_357.variants.infinite_set_density",
+      "erdos_357.variants.infinite_set_sum",
+      "erdos_357.variants.hegyvari",
+      "erdos_357.variants.monotone.parts.i",
+      "erdos_357.variants.monotone.parts.ii.bigO_version",
+      "erdos_357.variants.monotone.parts.ii.bigO_version_symm",
+      "erdos_357.variants.monotone.parts.ii.bigTheta_version",
+      "erdos_357.variants.monotone.parts.ii.littleO_version",
+      "erdos_357.variants.monotone.parts.ii.littleO_version_symm"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/357"
+  },
+  {
+    "number": 358,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "additive basis",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/358.lean",
+    "theorems": [
+      "f_id",
+      "erdos_358.parts.i",
+      "erdos_358.parts.ii",
+      "erdos_358.variants.prime_set",
+      "erdos_358.variants.prime_set_density_representation",
+      "erdos_358.variants.one_le"
+    ],
+    "categories": [
+      "high_school, AMS 5 11",
+      "research open, AMS 5 11",
+      "research open, AMS 5 11",
+      "research open, AMS 5 11",
+      "research open, AMS 5 11",
+      "research open, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/358"
+  },
+  {
+    "number": 359,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/359.lean",
+    "theorems": [
+      "erdos_359.parts.i",
+      "erdos_359.parts.ii",
+      "erdos_359.variants.isGoodFor_1_low_values",
+      "erdos_359.variants.isGoodFor_1_asymptotic"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "test, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/359"
+  },
+  {
+    "number": 361,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/361.lean",
+    "theorems": [
+      "erdos_361.bigO",
+      "erdos_361.bigTheta",
+      "erdos_361.smallO"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/361"
+  },
+  {
+    "number": 370,
+    "status": "proved (Lean)",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/370.lean",
+    "theorems": [
+      "erdos_370"
+    ],
+    "categories": [
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/370"
+  },
+  {
+    "number": 371,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/371.lean",
+    "theorems": [
+      "erdos_371"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/371"
+  },
+  {
+    "number": 373,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "factorials"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/373.lean",
+    "theorems": [
+      "erdos_373",
+      "erdos_373.variants.of_limit",
+      "erdos_373.variants.of_lower_bound",
+      "erdos_373.variants.maximal_solution",
+      "erdos_373.variants.suranyi"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/373"
+  },
+  {
+    "number": 376,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "binomial coefficients",
+      "base representations"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/376.lean",
+    "theorems": [
+      "erdos_376",
+      "erdos_376.variants.prime"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/376"
+  },
+  {
+    "number": 377,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "binomial coefficients"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/377.lean",
+    "theorems": [
+      "erdos_377",
+      "erdos_377.variants.limit.i",
+      "erdos_377.variants.limit.ii",
+      "erdos_377.variants.ae",
+      "erdos_377.variants.ub"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/377"
+  },
+  {
+    "number": 379,
+    "status": "proved (Lean)",
+    "tags": [
+      "number theory",
+      "binomial coefficients"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/379.lean",
+    "theorems": [
+      "erdos_379"
+    ],
+    "categories": [
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/379"
+  },
+  {
+    "number": 383,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/383.lean",
+    "theorems": [
+      "erdos_383"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/383"
+  },
+  {
+    "number": 386,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "binomial coefficients"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/386.lean",
+    "theorems": [
+      "erdos_386"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/386"
+  },
+  {
+    "number": 387,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "binomial coefficients"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/387.lean",
+    "theorems": [
+      "of",
+      "erdos_387",
+      "erdos_387.schinzel",
+      "erdos_387.easy",
+      "erdos_387.variant"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/387"
+  },
+  {
+    "number": 389,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/389.lean",
+    "theorems": [
+      "erdos_389",
+      "erdos_389.variants.mehta_four"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "high_school, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/389"
+  },
+  {
+    "number": 390,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "factorials"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/390.lean",
+    "theorems": [
+      "erdos_390_theta",
+      "erdos_390_equivalent"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/390"
+  },
+  {
+    "number": 392,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "factorials"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/392.lean",
+    "theorems": [
+      "erdos_392",
+      "erdos_392.variants.lower",
+      "erdos_392.variants.implication"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/392"
+  },
+  {
+    "number": 396,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "binomial coefficients"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/396.lean",
+    "theorems": [
+      "erdos_396"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/396"
+  },
+  {
+    "number": 397,
+    "status": "disproved (Lean)",
+    "tags": [
+      "number theory",
+      "binomial coefficients"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/397.lean",
+    "theorems": [
+      "erdos_397"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/397"
+  },
+  {
+    "number": 398,
+    "status": "falsifiable",
+    "tags": [
+      "number theory",
+      "factorials"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/398.lean",
+    "theorems": [
+      "erdos_398"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/398"
+  },
+  {
+    "number": 399,
+    "status": "disproved",
+    "tags": [
+      "number theory",
+      "factorials"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/399.lean",
+    "theorems": [
+      "erdos_399",
+      "erdos_399.variants.erdos_oblath",
+      "erdos_399.variants.pollack_shapiro",
+      "erdos_399.variants.cambie",
+      "erdos_399.variants.sum_two_squares"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/399"
+  },
+  {
+    "number": 402,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/402.lean",
+    "theorems": [
+      "erdos_402",
+      "erdos_402.variants.equality",
+      "erdos_402.variants.szegedy_zaharescu_weak"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/402"
+  },
+  {
+    "number": 406,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "base representations"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/406.lean",
+    "theorems": [
+      "erdos_406",
+      "erdos_406.variants.one_two"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/406"
+  },
+  {
+    "number": 409,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "iterated functions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/409.lean",
+    "theorems": [
+      "erdos_409.parts.i",
+      "erdos_409.termination",
+      "erdos_409.parts.i.variants.isTheta",
+      "erdos_409.parts.i.variants.isBigO",
+      "erdos_409.parts.i.variants.isLittleO",
+      "erdos_409.parts.ii",
+      "erdos_409.parts.iii",
+      "erdos_409.variants.sigma.parts.i",
+      "erdos_409.variants.sigma.termination",
+      "erdos_409.variants.sigma.parts.i.isTheta",
+      "erdos_409.variants.sigma.parts.i.isBigO",
+      "erdos_409.variants.sigma.parts.i.isLittleO",
+      "erdos_409.variants.sigma.parts.ii"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "test, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "test, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/409"
+  },
+  {
+    "number": 410,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "iterated functions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/410.lean",
+    "theorems": [
+      "erdos_410"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/410"
+  },
+  {
+    "number": 412,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "iterated functions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/412.lean",
+    "theorems": [
+      "erdos_412"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/412"
+  },
+  {
+    "number": 413,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "iterated functions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/413.lean",
+    "theorems": [
+      "erdos_413",
+      "erdos_413_hasPosDensity_barrier_expProd",
+      "erdos_413_bigOmega",
+      "erdos_413_bigOmega_largest_barrier_lt_100k",
+      "erdos_413_epsilon"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/413"
+  },
+  {
+    "number": 414,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "iterated functions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/414.lean",
+    "theorems": [
+      "erdos_414"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/414"
+  },
+  {
+    "number": 416,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/416.lean",
+    "theorems": [
+      "erdos_416.parts.i",
+      "erdos_416.parts.ii",
+      "erdos_416.variants.Pillai",
+      "erdos_416.variants.Erdos",
+      "erdos_416.variants.Maier_Pomerance",
+      "erdos_416.variants.Ford"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/416"
+  },
+  {
+    "number": 418,
+    "status": "proved (Lean)",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/418.lean",
+    "theorems": [
+      "erdos_418",
+      "erdos_418.variants.conditional",
+      "erdos_418.variants.sigma",
+      "erdos_418.variants.soln",
+      "erdos_418.variants.density"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/418"
+  },
+  {
+    "number": 421,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/421.lean",
+    "theorems": [
+      "erdos_421"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/421"
+  },
+  {
+    "number": 422,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/422.lean",
+    "theorems": [
+      "erdos_422",
+      "erdos_422.variants.surjective",
+      "erdos_422.variants.growth_rate",
+      "erdos_422.variants.eventually_const"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/422"
+  },
+  {
+    "number": 424,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/424.lean",
+    "theorems": [
+      "erdos_424"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/424"
+  },
+  {
+    "number": 427,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/427.lean",
+    "theorems": [
+      "erdos_427",
+      "erdos_427.shiu",
+      "erdos_427.of_shiu"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/427"
+  },
+  {
+    "number": 428,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/428.lean",
+    "theorems": [
+      "erdos_428"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/428"
+  },
+  {
+    "number": 434,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/434.lean",
+    "theorems": [
+      "erdos_434.parts.i",
+      "erdos_434.parts.ii"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/434"
+  },
+  {
+    "number": 442,
+    "status": "disproved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/442.lean",
+    "theorems": [
+      "erdos_442",
+      "with",
+      "erdos_442.variants.tao"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/442"
+  },
+  {
+    "number": 454,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/454.lean",
+    "theorems": [
+      "erdos_454",
+      "erdos_454.two_le_limsup"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/454"
+  },
+  {
+    "number": 455,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/455.lean",
+    "theorems": [
+      "erdos_455",
+      "erdos_455.liminf"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/455"
+  },
+  {
+    "number": 457,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/457.lean",
+    "theorems": [
+      "erdos_457",
+      "erdos_457.variants.qnk",
+      "erdos_457.variants.one_sub"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/457"
+  },
+  {
+    "number": 458,
+    "status": "falsifiable",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/458.lean",
+    "theorems": [
+      "erdos_458"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/458"
+  },
+  {
+    "number": 463,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/463.lean",
+    "theorems": [
+      "erdos_463"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/463"
+  },
+  {
+    "number": 469,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "divisors"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/469.lean",
+    "theorems": [
+      "erdos_469"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/469"
+  },
+  {
+    "number": 470,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "divisors"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/470.lean",
+    "theorems": [
+      "erdos_470.part1",
+      "erdos_470.part2",
+      "erdos_470.variants.weird_pos_density",
+      "erdos_470.variants.smallest_weird_eq_70",
+      "erdos_470.variants.prime_gap_imp_inf_prim_weird",
+      "erdos_470.variants.odd_weird_10_pow_21",
+      "erdos_470.variants.odd_weird_prime_div",
+      "erdos_470.variants.abundancy_index"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "high_school, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/470"
+  },
+  {
+    "number": 477,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/477.lean",
+    "theorems": [
+      "erdos_477",
+      "erdos_477.S_sq",
+      "erdos_477.degree_two_dvd_condition_b_ne_zero",
+      "erdos_477.X_pow_three",
+      "erdos_477.monomial"
+    ],
+    "categories": [
+      "research open, AMS 12",
+      "research solved, AMS 12",
+      "research solved, AMS 12",
+      "research open, AMS 12",
+      "research open, AMS 12"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/477"
+  },
+  {
+    "number": 479,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/479.lean",
+    "theorems": [
+      "erdos_479"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/479"
+  },
+  {
+    "number": 480,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/480.lean",
+    "theorems": [
+      "erdos_480",
+      "erdos_480.variants.chung_graham"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/480"
+  },
+  {
+    "number": 486,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primitive sets"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/486.lean",
+    "theorems": [
+      "erdos_486"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/486"
+  },
+  {
+    "number": 488,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/488.lean",
+    "theorems": [
+      "erdos_488"
+    ],
+    "categories": [
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/488"
+  },
+  {
+    "number": 494,
+    "status": "proved",
+    "tags": [
+      "analysis",
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/494.lean",
+    "theorems": [
+      "erdos_494.variant.k_eq_2_card_not_pow_two",
+      "erdos_494.variant.k_eq_2_card_pow_two",
+      "erdos_494.variant.k_eq_3_card_gt_6",
+      "erdos_494.variant.k_eq_4_card_gt_12",
+      "erdos_494.variant.card_divisible_by_prime_gt_k",
+      "erdos_494.variant.k_eq_card",
+      "erdos_494.variant.card_eq_2k",
+      "erdos_494.variant.gordon_fraenkel_straus",
+      "erdos_494.variant.product"
+    ],
+    "categories": [
+      "research solved, AMS 5",
+      "research solved, AMS 5",
+      "research solved, AMS 5",
+      "research solved, AMS 5",
+      "research solved, AMS 5",
+      "research solved, AMS 5",
+      "research solved, AMS 5",
+      "research solved, AMS 5",
+      "research solved, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/494"
+  },
+  {
+    "number": 495,
+    "status": "open",
+    "tags": [
+      "diophantine approximation",
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/495.lean",
+    "theorems": [
+      "erdos_495"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/495"
+  },
+  {
+    "number": 499,
+    "status": "proved (Lean)",
+    "tags": [
+      "combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/499.lean",
+    "theorems": [],
+    "categories": [
+      "research solved, AMS 15",
+      "research solved, AMS 15",
+      "research solved, AMS 15"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/499"
+  },
+  {
+    "number": 503,
+    "status": "open",
+    "tags": [
+      "geometry",
+      "distances"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/503.lean",
+    "theorems": [
+      "erdos_503",
+      "erdos_503.variants.R2",
+      "erdos_503.variants.R3",
+      "erdos_503.variants.upper_bound",
+      "erdos_503.variants.lower_bound"
+    ],
+    "categories": [
+      "research open, AMS 51",
+      "research solved, AMS 51",
+      "research solved, AMS 51",
+      "research solved, AMS 51",
+      "research solved, AMS 51"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/503"
+  },
+  {
+    "number": 508,
+    "status": "open",
+    "tags": [
+      "geometry",
+      "ramsey theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/508.lean",
+    "theorems": [
+      "HadwigerNelsonProblem",
+      "HadwigerNelsonAtLeastFive",
+      "HadwigerNelsonAtLeast4",
+      "HadwigerNelsonAtMostSeven",
+      "HadwigerNelsonAtLeastThree"
+    ],
+    "categories": [
+      "research open, AMS 52",
+      "research solved, AMS 52",
+      "research solved, AMS 5",
+      "high_school, AMS 52",
+      "high_school, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/508"
+  },
+  {
+    "number": 509,
+    "status": "open",
+    "tags": [
+      "analysis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/509.lean",
+    "theorems": [
+      "erdos_509",
+      "erdos_509.variants.Cartan_bound",
+      "erdos_509.variants.Pommerenke_bound",
+      "erdos_509.variants.Pommerenke_connected"
+    ],
+    "categories": [
+      "API, AMS 54",
+      "research open, AMS 30",
+      "research solved, AMS 30",
+      "research solved, AMS 30",
+      "research solved, AMS 30"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/509"
+  },
+  {
+    "number": 510,
+    "status": "open",
+    "tags": [
+      "analysis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/510.lean",
+    "theorems": [
+      "erdos_510"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/510"
+  },
+  {
+    "number": 513,
+    "status": "open",
+    "tags": [
+      "analysis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/513.lean",
+    "theorems": [
+      "erdos_513.sup",
+      "erdos_513.upper_bound",
+      "erdos_513.lower_bound"
+    ],
+    "categories": [
+      "research open, AMS 30",
+      "research solved, AMS 30",
+      "research solved, AMS 30"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/513"
+  },
+  {
+    "number": 516,
+    "status": "proved",
+    "tags": [
+      "analysis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/516.lean",
+    "theorems": [
+      "for",
+      "erdos_516.limsup_ratio_eq_one_of_hasFabryGaps_ofFiniteOrder",
+      "erdos_516.limsup_ratio_eq_one",
+      "erdos_516.limsup_ratio_eq_one_of_hasFejerGaps"
+    ],
+    "categories": [
+      "research solved, AMS 30",
+      "research solved, AMS 30",
+      "research open, AMS 30"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/516"
+  },
+  {
+    "number": 517,
+    "status": "open",
+    "tags": [
+      "analysis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/517.lean",
+    "theorems": [
+      "erdos_517.fabry",
+      "is",
+      "erdos_517.fejer"
+    ],
+    "categories": [
+      "research open, AMS 30",
+      "research solved, AMS 30"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/517"
+  },
+  {
+    "number": 520,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "probability"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/520.lean",
+    "theorems": [
+      "erdos_520"
+    ],
+    "categories": [
+      "research open, AMS 11 60"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/520"
+  },
+  {
+    "number": 522,
+    "status": "open",
+    "tags": [
+      "analysis",
+      "polynomials",
+      "probability"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/522.lean",
+    "theorems": [
+      "erdos_522",
+      "erdos_522.variants.number_real_roots",
+      "erdos_522.variants.yakir_solution"
+    ],
+    "categories": [
+      "research solved, AMS 12 60",
+      "research solved, AMS 12 60",
+      "research solved, AMS 12 60"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/522"
+  },
+  {
+    "number": 536,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/536.lean",
+    "theorems": [
+      "erdos_536"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/536"
+  },
+  {
+    "number": 541,
+    "status": "proved (Lean)",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/541.lean",
+    "theorems": [
+      "erdos_541",
+      "erdos_541.variants.general_moduli",
+      "erdos_541.variants.large_primes"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/541"
+  },
+  {
+    "number": 562,
+    "status": "open",
+    "tags": [
+      "graph theory",
+      "ramsey theory",
+      "hypergraphs"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/562.lean",
+    "theorems": [
+      "erdos_562"
+    ],
+    "categories": [
+      "research open, AMS 05"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/562"
+  },
+  {
+    "number": 564,
+    "status": "open",
+    "prize": "$500",
+    "tags": [
+      "graph theory",
+      "ramsey theory",
+      "hypergraphs"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/564.lean",
+    "theorems": [
+      "erdos_564"
+    ],
+    "categories": [
+      "research open, AMS 05"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/564"
+  },
+  {
+    "number": 566,
+    "status": "open",
+    "tags": [
+      "graph theory",
+      "ramsey theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/566.lean",
+    "theorems": [
+      "erdos_566"
+    ],
+    "categories": [
+      "research open, AMS 05"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/566"
+  },
+  {
+    "number": 567,
+    "status": "open",
+    "tags": [
+      "graph theory",
+      "ramsey theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/567.lean",
+    "theorems": [
+      "erdos_567_Q3",
+      "erdos_567_K33",
+      "erdos_567_H5"
+    ],
+    "categories": [
+      "research open, AMS 05",
+      "research open, AMS 05",
+      "research open, AMS 05"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/567"
+  },
+  {
+    "number": 587,
+    "status": "solved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/587.lean",
+    "theorems": [
+      "erdos_587.variants.nguyen_vu"
+    ],
+    "categories": [
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/587"
+  },
+  {
+    "number": 590,
+    "status": "proved",
+    "prize": "$250",
+    "tags": [
+      "set theory",
+      "ramsey theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/590.lean",
+    "theorems": [
+      "for",
+      "for",
+      "erdos_590",
+      "erdos_590.variants.two",
+      "erdos_590.variants.ge_three_false",
+      "erdos_590.variants.finite_cardinal"
+    ],
+    "categories": [
+      "research solved, AMS 3",
+      "research solved, AMS 3",
+      "research solved, AMS 3",
+      "research solved, AMS 3"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/590"
+  },
+  {
+    "number": 591,
+    "status": "open",
+    "prize": "$250",
+    "tags": [
+      "set theory",
+      "ramsey theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/591.lean",
+    "theorems": [
+      "erdos_591"
+    ],
+    "categories": [
+      "research open, AMS 3"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/591"
+  },
+  {
+    "number": 592,
+    "status": "open",
+    "prize": "$1000",
+    "tags": [
+      "set theory",
+      "ramsey theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/592.lean",
+    "theorems": [
+      "erdos_592"
+    ],
+    "categories": [
+      "research open, AMS 3"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/592"
+  },
+  {
+    "number": 598,
+    "status": "open",
+    "tags": [
+      "set theory",
+      "ramsey theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/598.lean",
+    "theorems": [
+      "erdos_598"
+    ],
+    "categories": [
+      "research open, AMS 03 05"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/598"
+  },
+  {
+    "number": 623,
+    "status": "open",
+    "tags": [
+      "set theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/623.lean",
+    "theorems": [
+      "erdos_623"
+    ],
+    "categories": [
+      "research open, AMS 3"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/623"
+  },
+  {
+    "number": 624,
+    "status": "open",
+    "tags": [
+      "combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/624.lean",
+    "theorems": [
+      "erdos_624"
+    ],
+    "categories": [
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/624"
+  },
+  {
+    "number": 645,
+    "status": "proved (Lean)",
+    "tags": [
+      "number theory",
+      "additive combinatorics",
+      "ramsey theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/645.lean",
+    "theorems": [
+      "erdos_645"
+    ],
+    "categories": [
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/645"
+  },
+  {
+    "number": 647,
+    "status": "verifiable",
+    "prize": "£25",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/647.lean",
+    "theorems": [
+      "erdos_647",
+      "erdos_647.variants.twenty_four",
+      "erdos_647.variants.lim",
+      "erdos_647.variants.infinite"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/647"
+  },
+  {
+    "number": 659,
+    "status": "proved",
+    "tags": [
+      "geometry",
+      "distances"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/659.lean",
+    "theorems": [
+      "erdos_659"
+    ],
+    "categories": [
+      "research open, AMS 52"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/659"
+  },
+  {
+    "number": 672,
+    "status": "verifiable",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/672.lean",
+    "theorems": [
+      "erdos_672"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/672"
+  },
+  {
+    "number": 677,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/677.lean",
+    "theorems": [
+      "erdos_677"
+    ],
+    "categories": [
+      "test, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/677"
+  },
+  {
+    "number": 678,
+    "status": "proved (Lean)",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/678.lean",
+    "theorems": [
+      "erdos_678"
+    ],
+    "categories": [
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/678"
+  },
+  {
+    "number": 680,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/680.lean",
+    "theorems": [
+      "erdos_680",
+      "erdos_680.variant"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/680"
+  },
+  {
+    "number": 681,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/681.lean",
+    "theorems": [
+      "erdos_681"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/681"
+  },
+  {
+    "number": 686,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/686.lean",
+    "theorems": [
+      "erdos_686"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/686"
+  },
+  {
+    "number": 689,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/689.lean",
+    "theorems": [
+      "erdos_689"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/689"
+  },
+  {
+    "number": 694,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/694.lean",
+    "theorems": [
+      "erdos_694",
+      "erdos_694.variants.carmichael",
+      "erdos_694.variants.inf_unique"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/694"
+  },
+  {
+    "number": 695,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/695.lean",
+    "theorems": [
+      "erdos_695",
+      "erdos_695.variant.upperBound"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/695"
+  },
+  {
+    "number": 699,
+    "status": "falsifiable",
+    "tags": [
+      "number theory",
+      "binomial coefficients"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/699.lean",
+    "theorems": [
+      "sylvester_schur",
+      "erdos_699",
+      "erdos_szekeres_strengthening"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/699"
+  },
+  {
+    "number": 705,
+    "status": "open",
+    "tags": [
+      "graph theory",
+      "chromatic number"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/705.lean",
+    "theorems": [
+      "erdos_705"
+    ],
+    "categories": [
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/705"
+  },
+  {
+    "number": 723,
+    "status": "falsifiable",
+    "tags": [
+      "combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/723.lean",
+    "theorems": [
+      "erdos_723",
+      "erdos_723.prime_pow_is_projplane_order",
+      "erdos_723.leq_11",
+      "erdos_723.eq_12",
+      "bruck_ryser"
+    ],
+    "categories": [
+      "research open, AMS 5",
+      "research solved, AMS 5",
+      "research solved, AMS 5",
+      "research open, AMS 5",
+      "research solved, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/723"
+  },
+  {
+    "number": 727,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "factorials"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/727.lean",
+    "theorems": [
+      "erdos_727",
+      "erdos_727_variants.k_2",
+      "erdos_727_variants.k_1",
+      "erdos_727_variants.k_1_2"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/727"
+  },
+  {
+    "number": 728,
+    "status": "proved (Lean)",
+    "tags": [
+      "number theory",
+      "factorials"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/728.lean",
+    "theorems": [
+      "erdos_728"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/728"
+  },
+  {
+    "number": 730,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "binomial coefficients",
+      "base representations"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/730.lean",
+    "theorems": [
+      "erdos_730",
+      "erdos_730.variants.explicit_pairs",
+      "erdos_730.variants.two_div_forall",
+      "erdos_730.variants.delta_ne_one"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "high_school, AMS 11",
+      "high_school, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/730"
+  },
+  {
+    "number": 741,
+    "status": "open",
+    "tags": [
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/741.lean",
+    "theorems": [
+      "erdos_741.density",
+      "erdos_741.basis"
+    ],
+    "categories": [
+      "research open, AMS 5",
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/741"
+  },
+  {
+    "number": 749,
+    "status": "open",
+    "tags": [
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/749.lean",
+    "theorems": [
+      "erdos_749"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/749"
+  },
+  {
+    "number": 757,
+    "status": "open",
+    "tags": [
+      "geometry",
+      "distances",
+      "sidon sets"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/757.lean",
+    "theorems": [
+      "erdos_757",
+      "erdos_757.lowerBound",
+      "erdos_757.upperBound"
+    ],
+    "categories": [
+      "research open, AMS 5",
+      "research solved, AMS 5",
+      "research solved, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/757"
+  },
+  {
+    "number": 779,
+    "status": "falsifiable",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/779.lean",
+    "theorems": [
+      "erdos_779"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/779"
+  },
+  {
+    "number": 817,
+    "status": "open",
+    "tags": [
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/817.lean",
+    "theorems": [
+      "erdos_817",
+      "erdos_817.variants.bdd_power"
+    ],
+    "categories": [
+      "research open, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/817"
+  },
+  {
+    "number": 822,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/822.lean",
+    "theorems": [
+      "erdos_822"
+    ],
+    "categories": [
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/822"
+  },
+  {
+    "number": 825,
+    "status": "open",
+    "prize": "$25",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/825.lean",
+    "theorems": [
+      "erdos_825",
+      "erdos_825.variants.necessary_cond"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/825"
+  },
+  {
+    "number": 826,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/826.lean",
+    "theorems": [
+      "erdos_826"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/826"
+  },
+  {
+    "number": 830,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/830.lean",
+    "theorems": [
+      "erdos_830.parts.i",
+      "erdos_830.parts.ii",
+      "erdos_830.variants.erdos",
+      "erdos_830.variants.pomerance",
+      "erdos_830.variants.pomerance_stronger"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/830"
+  },
+  {
+    "number": 845,
+    "status": "disproved (Lean)",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/845.lean",
+    "theorems": [
+      "erdos_845"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/845"
+  },
+  {
+    "number": 846,
+    "status": "open",
+    "tags": [
+      "geometry"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/846.lean",
+    "theorems": [
+      "erdos_846"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/846"
+  },
+  {
+    "number": 849,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "binomial coefficients"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/849.lean",
+    "theorems": [
+      "erdos_849"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/849"
+  },
+  {
+    "number": 850,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/850.lean",
+    "theorems": [
+      "erdos_850"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/850"
+  },
+  {
+    "number": 851,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/851.lean",
+    "theorems": [
+      "erdos_851.variants.romanoff",
+      "erdos_851"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/851"
+  },
+  {
+    "number": 853,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/853.lean",
+    "theorems": [
+      "erdos_853",
+      "erdos_853_strong"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/853"
+  },
+  {
+    "number": 868,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "additive basis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/868.lean",
+    "theorems": [
+      "erdos_868.parts.i",
+      "erdos_868.parts.ii",
+      "erdos_868.variants.fixed_",
+      "erdos_868.variants.Hartter_Nathanson"
+    ],
+    "categories": [
+      "research open, AMS 5 11",
+      "research open, AMS 5 11",
+      "research solved, AMS 5 11",
+      "research solved, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/868"
+  },
+  {
+    "number": 873,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/873.lean",
+    "theorems": [
+      "erdos_873"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/873"
+  },
+  {
+    "number": 881,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "additive basis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/881.lean",
+    "theorems": [
+      "erdos_881"
+    ],
+    "categories": [
+      "research open, AMS 5 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/881"
+  },
+  {
+    "number": 885,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "divisors"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/885.lean",
+    "theorems": [
+      "erdos_885",
+      "erdos_885.variants.k_eq_2",
+      "erdos_885.variants.k_eq_3",
+      "erdos_885.variants.k_eq_4"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/885"
+  },
+  {
+    "number": 888,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "squares"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/888.lean",
+    "theorems": [
+      "erdos_888",
+      "erdos_888_S",
+      "erdos_888_primes"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/888"
+  },
+  {
+    "number": 889,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/889.lean",
+    "theorems": [
+      "erdos_889",
+      "erdos_889.variants.v0_gt_1",
+      "erdos_889.variants.general",
+      "erdos_889.variants.v1_eq_1_finite",
+      "erdos_889.variants.V1_eq_1_finite"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/889"
+  },
+  {
+    "number": 893,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "divisors"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/893.lean",
+    "theorems": [
+      "erdos_893",
+      "erdos_893.variants.unbounded"
+    ],
+    "categories": [
+      "research open, AMS 5",
+      "research solved, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/893"
+  },
+  {
+    "number": 897,
+    "status": "disproved (Lean)",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/897.lean",
+    "theorems": [
+      "erdos_897.parts.i",
+      "erdos_897.parts.ii",
+      "erdos_897.variants.log_growth",
+      "erdos_897.variants.parts.i",
+      "erdos_897.variants.parts.ii"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/897"
+  },
+  {
+    "number": 899,
+    "status": "proved",
+    "tags": [
+      "additive combinatorics"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/899.lean",
+    "theorems": [
+      "erdos_899"
+    ],
+    "categories": [
+      "research solved, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/899"
+  },
+  {
+    "number": 906,
+    "status": "open",
+    "tags": [
+      "analysis",
+      "iterated functions"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/906.lean",
+    "theorems": [
+      "erdos_906"
+    ],
+    "categories": [
+      "research open, AMS 30"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/906"
+  },
+  {
+    "number": 913,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/913.lean",
+    "theorems": [
+      "erdos_913",
+      "erdos_913.variants.infinite_many_8p_sq_add_one_primes",
+      "erdos_913.variants.conditional"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/913"
+  },
+  {
+    "number": 930,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/930.lean",
+    "theorems": [
+      "erdos_930",
+      "erdos_930.variant.consecutive_strong",
+      "erdos_930.variant.consecutive_integers"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/930"
+  },
+  {
+    "number": 931,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/931.lean",
+    "theorems": [
+      "erdos_931",
+      "erdos_931.variants.additional_condition",
+      "erdos_931.variants.additional_condition_nonempty",
+      "erdos_931.variants.exists_prime"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/931"
+  },
+  {
+    "number": 932,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/932.lean",
+    "theorems": [
+      "erdos_932",
+      "erdos_932.variants.one_le"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/932"
+  },
+  {
+    "number": 936,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/936.lean",
+    "theorems": [
+      "erdos_936.variants.two_pow_add_one",
+      "erdos_936.variants.two_pow_sub_one",
+      "erdos_936.variants.factorial_add_one",
+      "erdos_936.variants.factorial_sub_one"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/936"
+  },
+  {
+    "number": 938,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/938.lean",
+    "theorems": [
+      "erdos_938"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/938"
+  },
+  {
+    "number": 939,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/939.lean",
+    "theorems": [
+      "erdos_939",
+      "erdos_939.variants.infinite",
+      "erdos_939.variants.triples",
+      "erdos_939.variants.examples",
+      "erdos_939.variants.seven",
+      "erdos_939.variants.eight",
+      "erdos_939.variants.euler"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/939"
+  },
+  {
+    "number": 940,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/940.lean",
+    "theorems": [
+      "erdos_940",
+      "erdos_940.variants.two",
+      "erdos_940.variants.three_cubes",
+      "erdos_940.variants.large_integers",
+      "erdos_940.variants.three_powerful"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/940"
+  },
+  {
+    "number": 942,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/942.lean",
+    "theorems": [
+      "erdos_942",
+      "erdos_942.variants.limsup",
+      "erdos_942.variants.density"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "graduate, AMS 11",
+      "graduate, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/942"
+  },
+  {
+    "number": 943,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/943.lean",
+    "theorems": [
+      "erdos_943"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/943"
+  },
+  {
+    "number": 944,
+    "status": "open",
+    "tags": [
+      "graph theory",
+      "chromatic number"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/944.lean",
+    "theorems": [
+      "erdos_944",
+      "erdos_944.variants.dirac_conjecture",
+      "erdos_944.variants.dirac_conjecture.k_eq_5",
+      "erdos_944.variants.dirac_conjecture.k_sub_one_not_prime",
+      "erdos_944.variants.dirac_conjecture.k_ge_five",
+      "erdos_944.dirac_conjecture.k_eq_four",
+      "erdos_944.variants.large_k_for_any_r"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/944"
+  },
+  {
+    "number": 946,
+    "status": "proved",
+    "tags": [
+      "number theory",
+      "divisors"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/946.lean",
+    "theorems": [
+      "erdos_946",
+      "erdos_946.variants.spiro_5040",
+      "erdos_946.variants.heathbrown_lower_bound",
+      "erdos_946.variants.hildebrand_lower_bound",
+      "erdos_946.variants.upper_bound"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/946"
+  },
+  {
+    "number": 949,
+    "status": "open",
+    "tags": [
+      "ramsey theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/949.lean",
+    "theorems": [
+      "erdos_949",
+      "erdos_949.variants.sidon"
+    ],
+    "categories": [
+      "research open, AMS 5",
+      "research solved, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/949"
+  },
+  {
+    "number": 952,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/952.lean",
+    "theorems": [
+      "erdos_952"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/952"
+  },
+  {
+    "number": 961,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/961.lean",
+    "theorems": [
+      "erdos_961.sylvester_schur",
+      "erdos_961.well_defined",
+      "erdos_961",
+      "erdos_961.erdos_upper_bound",
+      "erdos_961.jutila_ramachandra_shorey_upper_bound"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/961"
+  },
+  {
+    "number": 968,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/968.lean",
+    "theorems": [
+      "erdos_968",
+      "erdos_968.variants.sum_abs_diff_isTheta_log_sq",
+      "erdos_968.variants.decreasingSteps_hasPosDensity",
+      "erdos_968.variants.infinite_increasingTriples",
+      "erdos_968.variants.infinite_decreasingTriples"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/968"
+  },
+  {
+    "number": 971,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/971.lean",
+    "theorems": [
+      "erdos_971",
+      "erdos_971.variants.infinite_sequence",
+      "erdos_971.variants.many_small"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/971"
+  },
+  {
+    "number": 972,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/972.lean",
+    "theorems": [
+      "erdos_972"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/972"
+  },
+  {
+    "number": 975,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "divisors"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/975.lean",
+    "theorems": [
+      "erdos_975",
+      "erdos_975.variant.upper_bound",
+      "erdos_975.variant.lower_bound",
+      "erdos_975.variant.quadratic",
+      "erdos_975.variant.n2_plus_1_strong",
+      "erdos_975.variant.n2_plus_1"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/975"
+  },
+  {
+    "number": 979,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/979.lean",
+    "theorems": [
+      "erdos_979",
+      "erdos_979_k2",
+      "erdos_979_k3"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/979"
+  },
+  {
+    "number": 982,
+    "status": "falsifiable",
+    "tags": [
+      "geometry",
+      "convex",
+      "distances"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/982.lean",
+    "theorems": [
+      "erdos_982"
+    ],
+    "categories": [
+      "research open, AMS 52"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/982"
+  },
+  {
+    "number": 985,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/985.lean",
+    "theorems": [
+      "erdos_985",
+      "erdos_985.variants.two_three_five_primitive_root"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/985"
+  },
+  {
+    "number": 996,
+    "status": "open",
+    "tags": [
+      "analysis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/996.lean",
+    "theorems": [
+      "erdos_996.log3",
+      "is",
+      "erdos_996.log2"
+    ],
+    "categories": [
+      "research open, AMS 42",
+      "research solved, AMS 42"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/996"
+  },
+  {
+    "number": 1003,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1003.lean",
+    "theorems": [
+      "erdos_1003",
+      "erdos_1003.variants.Icc",
+      "erdos_1003.variants.eps87"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1003"
+  },
+  {
+    "number": 1004,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1004.lean",
+    "theorems": [
+      "erdos_1004",
+      "erdos_1004.EPS87_theorem"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1004"
+  },
+  {
+    "number": 1038,
+    "status": "open",
+    "tags": [
+      "analysis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1038.lean",
+    "theorems": [
+      "erdos_1038.inf",
+      "erdos_1038.inf_upperBound",
+      "erdos_1038.inf_lowerBound",
+      "erdos_1038.sup"
+    ],
+    "categories": [
+      "research open, AMS 28",
+      "research solved, AMS 28",
+      "research solved, AMS 28",
+      "research solved, AMS 28"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1038"
+  },
+  {
+    "number": 1041,
+    "status": "falsifiable",
+    "tags": [
+      "analysis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1041.lean",
+    "theorems": [
+      "exists_connected_component_contains_two_roots",
+      "erdos_1041"
+    ],
+    "categories": [
+      "research solved, AMS 32",
+      "research open, AMS 32"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1041"
+  },
+  {
+    "number": 1043,
+    "status": "disproved (Lean)",
+    "tags": [
+      "analysis"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1043.lean",
+    "theorems": [
+      "erdos_1043",
+      "erdos_1043.variants.weak"
+    ],
+    "categories": [
+      "research solved, AMS 28 30",
+      "research solved, AMS 28 30"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1043"
+  },
+  {
+    "number": 1051,
+    "status": "open",
+    "tags": [
+      "irrationality"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1051.lean",
+    "theorems": [
+      "erdos_1051",
+      "erdos_1051.rapid_growth"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1051"
+  },
+  {
+    "number": 1052,
+    "status": "open",
+    "prize": "$10",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1052.lean",
+    "theorems": [
+      "erdos_1052",
+      "even_of_isUnitaryPerfect",
+      "isUnitaryPerfect_6",
+      "isUnitaryPerfect_60",
+      "isUnitaryPerfect_90",
+      "isUnitaryPerfect_87360",
+      "isUnitaryPerfect_146361946186458562560000"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1052"
+  },
+  {
+    "number": 1054,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "divisors"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1054.lean",
+    "theorems": [
+      "erdos_1054.parts.i",
+      "erdos_1054.parts.ii",
+      "erdos_1054.parts.iii",
+      "f_undefined_at_2",
+      "f_undefined_at_3"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "high_school, AMS 11",
+      "high_school, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1054"
+  },
+  {
+    "number": 1059,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "primes"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1059.lean",
+    "theorems": [
+      "erdos_1059",
+      "allFactorialSubtractionsComposite_101",
+      "allFactorialSubtractionsComposite_211",
+      "notAllFactorialSubtractionsComposite_89",
+      "testFactorialsLessThanN"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1059"
+  },
+  {
+    "number": 1060,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1060.lean",
+    "theorems": [
+      "erdos_1060.bound_one",
+      "erdos_1060.bound_two"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1060"
+  },
+  {
+    "number": 1061,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1061.lean",
+    "theorems": [
+      "erdos_1061"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1061"
+  },
+  {
+    "number": 1062,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1062.lean",
+    "theorems": [
+      "erdos_1062.lower_bound",
+      "erdos_1062.lebensold_bounds",
+      "erdos_1062.limit_density"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1062"
+  },
+  {
+    "number": 1064,
+    "status": "proved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1064.lean",
+    "theorems": [
+      "erdos_1064",
+      "erdos_1064.variants.k2",
+      "erdos_1064.variants.general_function"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1064"
+  },
+  {
+    "number": 1065,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1065.lean",
+    "theorems": [
+      "erdos_1065a",
+      "erdos_1065b"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1065"
+  },
+  {
+    "number": 1068,
+    "status": "open",
+    "tags": [
+      "graph theory",
+      "set theory",
+      "chromatic number"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1068.lean",
+    "theorems": [
+      "erdos_1068"
+    ],
+    "categories": [
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1068"
+  },
+  {
+    "number": 1071,
+    "status": "open",
+    "tags": [
+      "geometry"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1071.lean",
+    "theorems": [
+      "erdos_1071a",
+      "erdos_1071b"
+    ],
+    "categories": [
+      "research solved, AMS 52",
+      "research open, AMS 52"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1071"
+  },
+  {
+    "number": 1072,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1072.lean",
+    "theorems": [
+      "erdos_1072a",
+      "erdos_1072b",
+      "erdos_1072a.variants.littleo"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1072"
+  },
+  {
+    "number": 1073,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1073.lean",
+    "theorems": [
+      "erdos_1073"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1073"
+  },
+  {
+    "number": 1074,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1074.lean",
+    "theorems": [
+      "erdos_1074.part8_i_i",
+      "erdos_1074.part_i_ii",
+      "erdos_1074.part_ii_i",
+      "erdos_1074.parts_ii_ii",
+      "erdos_1074.variants.mem_pillaiPrimes",
+      "erdos_1074.variants.EHSNumbers_infinite",
+      "erdos_1074.variants.PillaiPrimes_infinite",
+      "erdos_1074.variants.EHSNumbers_init",
+      "erdos_1074.variants.PillaiPrimes_init",
+      "erdos_1074.variants.EHSNumbers_one_half"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "test, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "test, AMS 11",
+      "test, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1074"
+  },
+  {
+    "number": 1077,
+    "status": "disproved",
+    "tags": [
+      "graph theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1077.lean",
+    "theorems": [
+      "erdos_1077"
+    ],
+    "categories": [
+      "research solved, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1077"
+  },
+  {
+    "number": 1080,
+    "status": "disproved (Lean)",
+    "tags": [
+      "graph theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1080.lean",
+    "theorems": [
+      "erdos_1080"
+    ],
+    "categories": [
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1080"
+  },
+  {
+    "number": 1084,
+    "status": "open",
+    "tags": [
+      "geometry",
+      "distances"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1084.lean",
+    "theorems": [
+      "erdos_1084_upper_d1",
+      "erdos_1084_easy_upper_d2",
+      "erdos_1084_upper_d2",
+      "erdos_1084_triangular_optimal_d2",
+      "erdos_1084_upper_lower_d3"
+    ],
+    "categories": [
+      "research solved, AMS 52",
+      "research solved, AMS 52",
+      "research solved, AMS 52",
+      "research open, AMS 52",
+      "research solved, AMS 52"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1084"
+  },
+  {
+    "number": 1085,
+    "status": "open",
+    "tags": [
+      "geometry",
+      "distances"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1085.lean",
+    "theorems": [
+      "erdos_1085_lower_d2",
+      "erdos_1085_upper_d2",
+      "erdos_1085_lower_d3",
+      "erdos_1085_upper_d3",
+      "erdos_1085_lower_d4_lenz",
+      "erdos_1085_upper_d4_erdos",
+      "erdos_1085_upper_lower_d5_odd"
+    ],
+    "categories": [
+      "research solved, AMS 52",
+      "research solved, AMS 52",
+      "research solved, AMS 52",
+      "research open, AMS 52",
+      "research solved, AMS 52",
+      "research solved, AMS 52",
+      "research solved, AMS 52"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1085"
+  },
+  {
+    "number": 1092,
+    "status": "open",
+    "tags": [
+      "geometry",
+      "chromatic number"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1092.lean",
+    "theorems": [
+      "f_asymptotic_2",
+      "f_asymptotic_general"
+    ],
+    "categories": [
+      "research open, AMS 5",
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1092"
+  },
+  {
+    "number": 1093,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "binomial coefficients"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1093.lean",
+    "theorems": [
+      "erdos_1093.parts.i",
+      "erdos_1093.parts.ii"
+    ],
+    "categories": [
+      "research open, AMS 5",
+      "research open, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1093"
+  },
+  {
+    "number": 1094,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "binomial coefficients"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1094.lean",
+    "theorems": [
+      "erdos_1094"
+    ],
+    "categories": [
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1094"
+  },
+  {
+    "number": 1095,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "binomial coefficients"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1095.lean",
+    "theorems": [
+      "erdos_1095_lower_solved",
+      "erdos_1095_upper_conjecture",
+      "erdos_1095_lower_conjecture",
+      "erdos_1095_log_equivalent"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1095"
+  },
+  {
+    "number": 1101,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1101.lean",
+    "theorems": [
+      "erdos_1101.polynomial",
+      "erdos_1101.subexponential"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1101"
+  },
+  {
+    "number": 1102,
+    "status": "solved",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1102.lean",
+    "theorems": [
+      "erdos_1102.density_zero_of_P",
+      "erdos_1102.exists_sequence_with_P",
+      "erdos_1102.upper_density_Q",
+      "erdos_1102.lower_density_Q_exists"
+    ],
+    "categories": [
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1102"
+  },
+  {
+    "number": 1104,
+    "status": "open",
+    "tags": [
+      "graph theory",
+      "chromatic number"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1104.lean",
+    "theorems": [
+      "erdos_1104_lower",
+      "erdos_1104_upper"
+    ],
+    "categories": [
+      "research solved, AMS 5",
+      "research solved, AMS 5"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1104"
+  },
+  {
+    "number": 1106,
+    "status": "open",
+    "tags": [
+      "number theory"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1106.lean",
+    "theorems": [
+      "erdos_1106",
+      "erdos_1106_k2"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1106"
+  },
+  {
+    "number": 1107,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "powerful"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1107.lean",
+    "theorems": [
+      "erdos_1107",
+      "erdos_1107.variants.two"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research solved, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1107"
+  },
+  {
+    "number": 1108,
+    "status": "open",
+    "tags": [
+      "number theory",
+      "factorials"
+    ],
+    "leanFile": "external/formal-conjectures/FormalConjectures/ErdosProblems/1108.lean",
+    "theorems": [
+      "erdos_1108.k_th_powers",
+      "erdos_1108.powerful_numbers"
+    ],
+    "categories": [
+      "research open, AMS 11",
+      "research open, AMS 11"
+    ],
+    "difficulty": "research",
+    "erdosUrl": "https://www.erdosproblems.com/1108"
+  }
+]

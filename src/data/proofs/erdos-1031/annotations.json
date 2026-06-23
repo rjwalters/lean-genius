@@ -1,0 +1,256 @@
+[
+  {
+    "id": "ann-1031-imports",
+    "proofId": "erdos-1031",
+    "range": {
+      "startLine": 15,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "Imports Mathlib's `SimpleGraph` (adjacency, subgraphs), `Finset` (finite sets for vertex subsets), `Real.Basic` and `Log.Basic` (for $\\log n$ bounds). Opens `Finset` and `Erdos1031` namespace.",
+    "significance": "supporting",
+    "mathContext": "The formalization needs Mathlib's `SimpleGraph` type for undirected graphs without loops, `Finset` for finite vertex subsets (cliques, independent sets), and real logarithms for the Ramsey-theoretic bounds on subgraph sizes.",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Finset",
+      "real logarithm",
+      "Ramsey theory"
+    ],
+    "prerequisites": [
+      "Lean 4 module imports",
+      "undirected graph (no loops)",
+      "natural logarithm of an integer"
+    ]
+  },
+  {
+    "id": "ann-1031-graphs",
+    "proofId": "erdos-1031",
+    "range": {
+      "startLine": 34,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "completeGraph and emptyGraph",
+    "content": "The **complete graph** $K_S = \\top$ (all pairs adjacent) and **empty graph** $\\overline{K}_S = \\bot$ (no edges) on a vertex set $S$.",
+    "significance": "key",
+    "mathContext": "Complete and empty graphs are the two 'trivial' graph structures. By Ramsey's theorem (1930), every 2-coloring of $K_n$ contains a monochromatic $K_k$ or $\\overline{K}_k$ for $k \\ge c \\log n$. Graphs avoiding both are the 'non-Ramsey' graphs central to this problem.",
+    "relatedConcepts": [
+      "complete graph",
+      "independent set",
+      "Ramsey's theorem",
+      "graph complement"
+    ],
+    "prerequisites": [
+      "SimpleGraph"
+    ]
+  },
+  {
+    "id": "ann-1031-trivial",
+    "proofId": "erdos-1031",
+    "range": {
+      "startLine": 48,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "isTrivialInduced, isIndependentSet, isClique",
+    "content": "An induced subgraph on $S$ is **trivial** if it is an independent set ($\\forall x,y \\in S,\\, x \\ne y \\Rightarrow \\neg G(x,y)$) or a clique ($\\forall x,y \\in S,\\, x \\ne y \\Rightarrow G(x,y)$). Theorem: `isTrivialInduced ↔ isIndependentSet ∨ isClique`.",
+    "significance": "key",
+    "mathContext": "The notion of 'trivial' induced subgraph captures the Ramsey dichotomy: every graph on $n$ vertices contains either a clique or independent set of size $\\ge \\frac{1}{2}\\log_2 n$ (Erdős 1947, probabilistic method). Erdős, Fajtlowicz, and Staton (1988) asked what non-trivial structure must appear when we forbid large trivial subgraphs.",
+    "relatedConcepts": [
+      "Ramsey dichotomy",
+      "clique number",
+      "independence number",
+      "Erdős-Fajtlowicz-Staton 1988"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "Finset"
+    ]
+  },
+  {
+    "id": "ann-1031-regular",
+    "proofId": "erdos-1031",
+    "range": {
+      "startLine": 72,
+      "endLine": 85
+    },
+    "type": "definition",
+    "title": "inducedDegree, isKRegularInduced, isNontrivialRegular",
+    "content": "The **induced degree** $\\deg_S(v) = |\\{u \\in S : G(v,u)\\}|$. An induced subgraph is **$k$-regular** if $\\deg_S(v) = k$ for all $v \\in S$, and **non-trivially regular** if regular but neither empty ($k=0$) nor complete ($k = |S|-1$).",
+    "significance": "key",
+    "mathContext": "The question of which regular subgraphs must appear in a graph is a classical topic in extremal graph theory. A $k$-regular graph on $m$ vertices has exactly $km/2$ edges. The Petersen graph (3-regular on 10 vertices) is the prototypical non-trivial regular graph. Erdős asked whether avoiding Ramsey-trivial structure forces non-trivial regularity.",
+    "relatedConcepts": [
+      "degree sequence",
+      "regular graph",
+      "Petersen graph",
+      "handshaking lemma"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "Finset.filter",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-1031-nonramsey",
+    "proofId": "erdos-1031",
+    "range": {
+      "startLine": 94,
+      "endLine": 101
+    },
+    "type": "definition",
+    "title": "noLargeTrivial and ramsey_trivial_bound",
+    "content": "**noLargeTrivial** $G$ $k$: no trivial induced subgraph of size $\\ge k$. The **Ramsey trivial bound** axiom: $\\exists c > 0$ such that every $n$-vertex graph has a trivial induced subgraph of size $\\ge c \\log n$.",
+    "significance": "key",
+    "mathContext": "By Ramsey's theorem, every graph on $n$ vertices contains a clique or independent set of size $\\ge \\frac{1}{2}\\log_2 n$. This is because $R(k,k) \\le 4^k$ (Erdős-Szekeres 1935), so $n \\ge 4^k$ guarantees a trivial subgraph of size $k$, i.e., $k \\ge \\log_4 n$. The constant $c = 1/2$ in base-2 logarithm suffices. Graphs where the largest trivial subgraph is only $O(\\log n)$ are called **non-Ramsey** or **Ramsey-extremal**.",
+    "relatedConcepts": [
+      "Ramsey number",
+      "Erdős-Szekeres bound",
+      "Ramsey-extremal graphs",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "isTrivialInduced",
+      "Ramsey's theorem"
+    ]
+  },
+  {
+    "id": "ann-1031-conjecture",
+    "proofId": "erdos-1031",
+    "range": {
+      "startLine": 110,
+      "endLine": 115
+    },
+    "type": "definition",
+    "title": "erdos_1031_conjecture",
+    "content": "The **Erdős-Fajtlowicz-Staton conjecture**: $\\exists c > 0$ such that every $n$-vertex graph with no trivial subgraph on $\\ge 10 \\log n$ vertices contains a non-trivially regular induced subgraph on $\\ge c \\log n$ vertices.",
+    "significance": "key",
+    "mathContext": "Erdős, Fajtlowicz, and Staton posed this in their 1988 paper on regular subgraphs of random graphs. The constant 10 in '$10 \\log n$' is a specific threshold; the key point is that avoiding trivial subgraphs of size $\\Theta(\\log n)$ should force non-trivial regular structure of size $\\Theta(\\log n)$. This is a structural Ramsey-type question: what must a graph contain when it avoids simple structure?",
+    "relatedConcepts": [
+      "structural Ramsey theory",
+      "Erdős-Fajtlowicz-Staton 1988",
+      "regular subgraph problem"
+    ],
+    "prerequisites": [
+      "noLargeTrivial",
+      "isNontrivialRegular"
+    ]
+  },
+  {
+    "id": "ann-1031-universality",
+    "proofId": "erdos-1031",
+    "range": {
+      "startLine": 124,
+      "endLine": 144
+    },
+    "type": "definition",
+    "title": "isInducedSubgraph, containsInduced, isKUniversal, promel_rodl",
+    "content": "**$k$-universality**: $G$ contains ALL graphs on $k$ vertices as induced subgraphs. **Prömel-Rödl theorem** (1999): for every $c > 0$, $\\exists c' > 0$ and $N$ such that for $n \\ge N$, any $n$-vertex graph with no trivial subgraph of size $\\ge c \\log n$ is $\\lfloor c' \\log n \\rfloor$-universal.",
+    "significance": "key",
+    "mathContext": "Hans Jürgen Prömel and Vojtěch Rödl proved this remarkable universality result in 'Non-Ramsey graphs are $c \\log n$-universal' (J. Combin. Theory Ser. A 88, 1999). The proof uses the **regularity lemma** and **graph counting**: a non-Ramsey graph must have sufficiently 'diverse' edge structure that it embeds all small graphs. This dramatically strengthens the original Erdős-Fajtlowicz-Staton question — not just regular subgraphs, but ALL subgraphs appear.",
+    "relatedConcepts": [
+      "graph universality",
+      "Szemerédi regularity lemma",
+      "induced subgraph",
+      "Prömel-Rödl 1999"
+    ],
+    "prerequisites": [
+      "noLargeTrivial",
+      "SimpleGraph",
+      "Equiv"
+    ]
+  },
+  {
+    "id": "ann-1031-solution",
+    "proofId": "erdos-1031",
+    "range": {
+      "startLine": 153,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "exists_nontrivial_regular, erdos_1031_solved, erdos_1031_via_promel_rodl",
+    "content": "The solution: (1) For $k \\ge 3$, non-trivial $k$-regular graphs exist on $\\le 2k$ vertices. (2) `erdos_1031_solved`: the conjecture is TRUE. (3) `erdos_1031_via_promel_rodl`: detailed derivation from universality — pick any non-trivial regular graph $H$ on $O(\\log n)$ vertices; by universality it appears as an induced subgraph.",
+    "significance": "key",
+    "mathContext": "The deduction from universality to regular subgraphs is straightforward: the cycle $C_k$ (which is 2-regular) exists on $k$ vertices for $k \\ge 3$, and is non-trivial. Any $\\lfloor c' \\log n \\rfloor$-universal graph contains $C_k$ as an induced subgraph for $k \\le c' \\log n$. More generally, $k$-regular graphs on $\\le 2k$ vertices exist by standard constructions (e.g., circulant graphs).",
+    "relatedConcepts": [
+      "cycle graph",
+      "circulant graph",
+      "universality implication"
+    ],
+    "prerequisites": [
+      "promel_rodl",
+      "isKUniversal",
+      "isNontrivialRegular"
+    ]
+  },
+  {
+    "id": "ann-1031-ramsey",
+    "proofId": "erdos-1031",
+    "range": {
+      "startLine": 181,
+      "endLine": 202
+    },
+    "type": "definition",
+    "title": "ramseyNumber, bounds, and ramsey_log_trivial",
+    "content": "$R(k,k) = \\min\\{n : \\text{every } n\\text{-vertex graph has trivial subgraph of size } k\\}$. Bounds: $2^{k/2} \\le R(k,k) \\le 4^k$. Consequence: every $n$-vertex graph has a trivial subgraph of size $\\ge \\frac{1}{2}\\log_4 n$.",
+    "significance": "key",
+    "mathContext": "The upper bound $R(k,k) \\le \\binom{2k-2}{k-1} \\le 4^k$ is due to Erdős and Szekeres (1935). The lower bound $R(k,k) \\ge 2^{k/2}$ is Erdős's 1947 probabilistic method — the first major application of random graphs. These bounds imply that $n$ vertices always yield a trivial subgraph of size $\\Theta(\\log n)$, making $\\log n$ the natural scale for the non-Ramsey threshold.",
+    "relatedConcepts": [
+      "Erdős-Szekeres 1935",
+      "probabilistic method",
+      "Ramsey number bounds",
+      "diagonal Ramsey"
+    ],
+    "prerequisites": [
+      "isTrivialInduced",
+      "ramseyNumber"
+    ]
+  },
+  {
+    "id": "ann-1031-nonramseydef",
+    "proofId": "erdos-1031",
+    "range": {
+      "startLine": 211,
+      "endLine": 219
+    },
+    "type": "definition",
+    "title": "isNonRamsey and nonRamsey_exist",
+    "content": "**isNonRamsey** $G$ $c$: the graph $G$ has `noLargeTrivial` of size $\\ge \\lceil c \\log n \\rceil$. Such graphs exist for large $n$ — this follows from probabilistic constructions (random graphs have clique and independence number $\\sim 2\\log_2 n$).",
+    "significance": "key",
+    "mathContext": "The random graph $G(n, 1/2)$ has both clique number and independence number $\\sim 2\\log_2 n$ with high probability (Erdős-Rényi, Bollobás-Erdős 1976). Thus random graphs are 'nearly non-Ramsey': their largest trivial subgraph is only $O(\\log n)$. Explicit constructions of non-Ramsey graphs are harder and connect to derandomization and Ramsey graph constructions (e.g., Frankl-Wilson 1981).",
+    "relatedConcepts": [
+      "random graph G(n,1/2)",
+      "clique number",
+      "Erdős-Rényi model",
+      "Frankl-Wilson construction"
+    ],
+    "prerequisites": [
+      "noLargeTrivial",
+      "isNonRamsey"
+    ]
+  },
+  {
+    "id": "ann-1031-universal-regular",
+    "proofId": "erdos-1031",
+    "range": {
+      "startLine": 228,
+      "endLine": 251
+    },
+    "type": "concept",
+    "title": "nonRamsey_universal and universal_has_regular",
+    "content": "**nonRamsey_universal**: derives universality directly from `promel_rodl`. **universal_has_regular**: any $k$-universal graph ($k \\ge 6$) contains a non-trivially regular induced subgraph on $\\ge 3$ vertices — because it contains $C_3$ (the triangle, which is 2-regular and non-trivial).",
+    "significance": "key",
+    "mathContext": "The theorem `nonRamsey_universal` is essentially a direct corollary of the Prömel-Rödl axiom, unwinding the `isNonRamsey` definition. The threshold $k \\ge 6$ in `universal_has_regular` is conservative: even $k \\ge 3$ suffices since $C_3$ is a non-trivial 2-regular graph on 3 vertices. The bound '$\\ge 3$' is weak; the actual guarantee is that regular subgraphs of size $\\Theta(\\log n)$ exist.",
+    "relatedConcepts": [
+      "triangle C₃",
+      "universality corollary",
+      "regular subgraph size"
+    ],
+    "prerequisites": [
+      "promel_rodl",
+      "isKUniversal",
+      "isNontrivialRegular"
+    ]
+  }
+]

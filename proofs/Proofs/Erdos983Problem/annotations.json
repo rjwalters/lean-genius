@@ -1,0 +1,83 @@
+[
+  {
+    "id": "def-prime-pi",
+    "proofId": "erdos-983",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "definition",
+    "title": "Prime Counting Function",
+    "content": "π(n) = number of primes ≤ n. The fundamental function in analytic number theory.",
+    "significance": "minor"
+  },
+  {
+    "id": "def-smooth",
+    "proofId": "erdos-983",
+    "range": { "startLine": 60, "endLine": 65 },
+    "type": "definition",
+    "title": "Smooth Numbers",
+    "content": "An integer m is P-smooth if all prime factors of m are in P. Central to factorization algorithms.",
+    "significance": "major"
+  },
+  {
+    "id": "def-f-function",
+    "proofId": "erdos-983",
+    "range": { "startLine": 87, "endLine": 94 },
+    "type": "definition",
+    "title": "The f Function",
+    "content": "f(k,n) = smallest r such that any k-subset of {1,...,n} can be covered by r primes (at least r elements are r-smooth).",
+    "significance": "major"
+  },
+  {
+    "id": "def-erdos-question",
+    "proofId": "erdos-983",
+    "range": { "startLine": 116, "endLine": 122 },
+    "type": "conjecture",
+    "title": "Erdős Question (Resolved)",
+    "content": "Does 2π(√n) - f(π(n)+1, n) → ∞ as n → ∞? This asks if the difference grows without bound.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-erdos-straus-main",
+    "proofId": "erdos-983",
+    "range": { "startLine": 136, "endLine": 147 },
+    "type": "theorem",
+    "title": "Erdős-Straus Main Result",
+    "content": "f(π(n)+1, n) = 2π(√n) + o(√n/(log n)^A) for any A > 0. The difference is sublinear, answering NO.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-erdos-straus-dense",
+    "proofId": "erdos-983",
+    "range": { "startLine": 162, "endLine": 170 },
+    "type": "theorem",
+    "title": "Dense Case Asymptotics",
+    "content": "f(cn, n) = log log n + (c₁ + o(1))√(2 log log n) for constant 0 < c < 1, where c₁ relates to normal CDF.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-two-pi-sqrt",
+    "proofId": "erdos-983",
+    "range": { "startLine": 196, "endLine": 206 },
+    "type": "insight",
+    "title": "Why 2π(√n) Appears",
+    "content": "The formula accounts for: π(√n) primes for small factors, plus π(√n) additional to handle products with one large prime factor.",
+    "significance": "minor"
+  },
+  {
+    "id": "insight-applications",
+    "proofId": "erdos-983",
+    "range": { "startLine": 219, "endLine": 247 },
+    "type": "insight",
+    "title": "Applications of Smooth Numbers",
+    "content": "Smooth numbers are fundamental to factorization algorithms (quadratic sieve, number field sieve) and affect cryptographic security.",
+    "significance": "minor"
+  },
+  {
+    "id": "summary",
+    "proofId": "erdos-983",
+    "range": { "startLine": 278, "endLine": 304 },
+    "type": "summary",
+    "title": "Problem Summary",
+    "content": "SOLVED: NO - The answer to Erdős's question is NO. Erdős-Straus (1970) proved f(π(n)+1, n) = 2π(√n) + o(√n/(log n)^A). The difference is small (sublinear), not tending to infinity.",
+    "significance": "major"
+  }
+]

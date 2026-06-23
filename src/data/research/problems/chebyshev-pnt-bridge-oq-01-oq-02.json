@@ -1,0 +1,80 @@
+{
+  "slug": "chebyshev-pnt-bridge-oq-01-oq-02",
+  "title": "Chebyshev Prime Bound via Nat.factorization_prod_pow_eq_self",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "-- Can central_binom_le_pow_prime_counting be proved via Nat.factorization_prod_pow_eq_self?",
+    "plain": "Can the product bound central_binom_le_pow_prime_counting (C(2n,n) ≤ (2n)^π(2n)) be proved by reconstructing the central binomial coefficient from its prime factorization using Nat.factorization_prod_pow_eq_self, rather than via the existing inequality chain? The Kummer theorem connection (v_p(C(2n,n)) = number of carries) is also relevant.",
+    "whyMatters": [
+      "Provides a more conceptual proof of the central Chebyshev bound",
+      "Demonstrates Nat.factorization tooling for analytic number theory",
+      "Would enrich the chebyshev-pnt-bridge gallery entry with an alternative proof path"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "central_binom_le_pow_prime_counting in ChebyshevPNTBridge.lean (verified, 0 sorries)",
+      "chebyshev_upper: π(n) * log 2 ≤ log n"
+    ],
+    "open": [
+      "Whether the factorization route gives a cleaner/shorter proof"
+    ],
+    "goal": "Prove or disprove that Nat.factorization_prod_pow_eq_self gives a cleaner proof of the central Chebyshev bound"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21",
+    "iteration": 1,
+    "focus": "Read ChebyshevPNTBridge.lean and check Mathlib for Nat.factorization_choose",
+    "blockers": [],
+    "nextAction": "Read proofs/Proofs/ChebyshevPNTBridge.lean, search for factorization + binomial lemmas",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Problem freshly selected. No prior research. Parent proof chebyshev-pnt-bridge is verified with 0 sorries.",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Read ChebyshevPNTBridge.lean",
+      "Search Mathlib for Nat.factorization_choose, Nat.centralBinom_factorization",
+      "Check if Kummer's theorem is formalized in Mathlib"
+    ],
+    "markdown": ""
+  },
+  "tags": [
+    "number-theory",
+    "analytic-number-theory",
+    "Chebyshev",
+    "Kummer",
+    "prime-counting",
+    "extension"
+  ],
+  "relatedProofs": [
+    "basel-problem",
+    "chebyshev-bounds",
+    "chebyshev-pnt-bridge",
+    "chebyshev-pnt-bridge-oq-01",
+    "chebyshev-pnt-bridge-oq-01-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "Chebyshev (1852): Mémoire sur les nombres premiers",
+      "Kummer (1852): Über die Ergänzungssätze..."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.NumberTheory.Primorial"
+    ]
+  },
+  "started": "2026-04-21",
+  "leanFiles": []
+}

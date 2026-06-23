@@ -1,0 +1,83 @@
+[
+  {
+    "id": "def-distance",
+    "proofId": "erdos-93",
+    "range": { "startLine": 45, "endLine": 58 },
+    "type": "definition",
+    "title": "Distance and Distinct Distances",
+    "content": "For points p, q in ℝ², the distance is sqrt((p₁-q₁)² + (p₂-q₂)²). The number of distinct distances is the cardinality of the set of positive pairwise distances.",
+    "significance": "major"
+  },
+  {
+    "id": "def-convex-position",
+    "proofId": "erdos-93",
+    "range": { "startLine": 64, "endLine": 81 },
+    "type": "definition",
+    "title": "Convex Position",
+    "content": "Points are in convex position if they form vertices of a convex polygon (no point lies in the convex hull of the others). Equivalently, they can be ordered with all interior angles < 180°.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-altman",
+    "proofId": "erdos-93",
+    "range": { "startLine": 87, "endLine": 102 },
+    "type": "theorem",
+    "title": "Altman's Theorem (1963)",
+    "content": "A convex n-gon has at least ⌊n/2⌋ distinct distances. The bound is achieved by regular polygons, which have exactly ⌊n/2⌋ distinct distances.",
+    "significance": "major"
+  },
+  {
+    "id": "proof-sketch",
+    "proofId": "erdos-93",
+    "range": { "startLine": 108, "endLine": 121 },
+    "type": "discussion",
+    "title": "Proof Sketch",
+    "content": "Consider consecutive vertices P₁,...,Pₙ. Distances from P₁ increase then decrease by convexity. Pigeonhole: if fewer than ⌊n/2⌋ distances, some distance repeats too often, violating convexity constraints.",
+    "significance": "minor"
+  },
+  {
+    "id": "stronger-variant",
+    "proofId": "erdos-93",
+    "range": { "startLine": 127, "endLine": 141 },
+    "type": "definition",
+    "title": "Stronger Variant (Problem #982)",
+    "content": "Does some vertex see at least ⌊n/2⌋ distinct distances? This is Problem #982 and remains OPEN.",
+    "significance": "major"
+  },
+  {
+    "id": "fishburn-conjecture",
+    "proofId": "erdos-93",
+    "range": { "startLine": 147, "endLine": 156 },
+    "type": "definition",
+    "title": "Fishburn's Conjecture",
+    "content": "The sum of R(x) (distinct distances from x) over all vertices is at least C(n,2). This would imply the stronger variant on average.",
+    "significance": "minor"
+  },
+  {
+    "id": "related-problems",
+    "proofId": "erdos-93",
+    "range": { "startLine": 162, "endLine": 179 },
+    "type": "discussion",
+    "title": "Related Problems",
+    "content": "Problem #1082: Szemerédi's generalization (no three collinear). Problem #660: General distinct distances. The general case (Guth-Katz) is much harder than the convex case.",
+    "significance": "minor"
+  },
+  {
+    "id": "examples",
+    "proofId": "erdos-93",
+    "range": { "startLine": 185, "endLine": 195 },
+    "type": "example",
+    "title": "Regular Polygon Examples",
+    "content": "Regular triangle: 1 distance. Square: 2 (side, diagonal). Pentagon: 2. Hexagon: 3. Each achieves exactly ⌊n/2⌋ distances.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-main-answer",
+    "proofId": "erdos-93",
+    "range": { "startLine": 201, "endLine": 229 },
+    "type": "theorem",
+    "title": "Main Result and Summary",
+    "content": "Erdős Problem #93 is SOLVED: Convex n-gon has ≥ ⌊n/2⌋ distinct distances (Altman 1963). The bound is tight. Open variants concern single-vertex counts and non-convex generalizations.",
+    "significance": "major"
+  }
+]

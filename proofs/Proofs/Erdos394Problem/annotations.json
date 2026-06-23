@@ -1,0 +1,92 @@
+[
+  {
+    "id": "def-consecutive-product",
+    "proofId": "erdos-394",
+    "range": { "startLine": 42, "endLine": 47 },
+    "type": "definition",
+    "title": "Product of k Consecutive Integers",
+    "content": "Defines m(m+1)(m+2)···(m+k-1), the product of k consecutive integers starting at m.",
+    "significance": "major"
+  },
+  {
+    "id": "def-t-function",
+    "proofId": "erdos-394",
+    "range": { "startLine": 49, "endLine": 56 },
+    "type": "definition",
+    "title": "The Function t_k(n)",
+    "content": "The least m ≥ 1 such that n divides the product of k consecutive integers starting at m.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-t2-prime",
+    "proofId": "erdos-394",
+    "range": { "startLine": 82, "endLine": 87 },
+    "type": "theorem",
+    "title": "t₂(p) for Primes",
+    "content": "For prime p, t₂(p) = p - 1. This is because p | (p-1)·p but p does not divide m(m+1) for m < p-1.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-trivial-lower",
+    "proofId": "erdos-394",
+    "range": { "startLine": 109, "endLine": 117 },
+    "type": "theorem",
+    "title": "Trivial Lower Bound",
+    "content": "Σ_{n≤x} t₂(n) ≫ x²/log x. Follows from PNT: ~x/log x primes up to x, each contributing p-1 ~ p.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-erdos-hall",
+    "proofId": "erdos-394",
+    "range": { "startLine": 129, "endLine": 139 },
+    "type": "theorem",
+    "title": "Erdős-Hall Upper Bound (1978)",
+    "content": "Σ_{n≤x} t₂(n) ≪ (log log log x / log log x) x². This is stronger than Erdős's original o(x²) conjecture.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-erdos-hall",
+    "proofId": "erdos-394",
+    "range": { "startLine": 153, "endLine": 161 },
+    "type": "conjecture",
+    "title": "Erdős-Hall Conjecture",
+    "content": "Σ_{n≤x} t₂(n) = o(x²/(log x)^c) for any c < log 2. This is stronger than what they proved and remains OPEN.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-hierarchy",
+    "proofId": "erdos-394",
+    "range": { "startLine": 184, "endLine": 193 },
+    "type": "conjecture",
+    "title": "Hierarchy Conjecture",
+    "content": "For k ≥ 2, is Σ_{n≤x} t_{k+1}(n) = o(Σ_{n≤x} t_k(n))? Asks whether larger k gives asymptotically smaller sums. OPEN.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-factorial-special",
+    "proofId": "erdos-394",
+    "range": { "startLine": 206, "endLine": 225 },
+    "type": "theorem",
+    "title": "Special Cases for Factorials",
+    "content": "t_{n-1}(n!) = 2 and t_{n-2}(n!) ≪ n (sharp for n = 2^r). Shows structure in factorial divisibility.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-selfridge",
+    "proofId": "erdos-394",
+    "range": { "startLine": 247, "endLine": 250 },
+    "type": "theorem",
+    "title": "Selfridge Result (n = 10)",
+    "content": "The strict decrease property (t_k(n!) < t_{k-1}(n!) - 1 for all 1 ≤ k < n) holds for n = 10.",
+    "significance": "minor"
+  },
+  {
+    "id": "summary-394",
+    "proofId": "erdos-394",
+    "range": { "startLine": 309, "endLine": 336 },
+    "type": "summary",
+    "title": "Problem Status Summary",
+    "content": "PARTIALLY SOLVED: Erdős-Hall proved the triple-log bound. Two questions remain OPEN: (1) polynomial improvement to x²/(log x)^c for c < log 2, and (2) the hierarchy conjecture for Σ t_{k+1}(n) vs Σ t_k(n).",
+    "significance": "major"
+  }
+]

@@ -1,0 +1,60 @@
+{
+  "slug": "euler-polyhedral-formula-oq-01-oq-01-oq-01",
+  "title": "The Discharging Base for Planar Graphs",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "A",
+  "tractability": 8,
+  "started": "2026-06-21T00:00:00.000Z",
+  "completed": "2026-06-21T00:00:00.000Z",
+  "lastUpdate": "2026-06-21T00:00:00.000Z",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\sum_{v}(6 - \\deg v) \\ge 12 \\text{ for planar } G \\text{ (i.e. } E \\le 3V-6).",
+    "plain": "Prove, axiom-free, the discharging-base inequality ∑(6 − deg v) ≥ 12 that underlies the Five Color Theorem's low-degree-vertex fact, and derive its sharpened consequences (≥2 vertices of degree ≤ 5, no minimum degree ≥ 6, average degree < 6).",
+    "whyMatters": []
+  },
+  "significance": 7,
+  "tags": [
+    "graph-theory",
+    "combinatorics",
+    "planar-graphs",
+    "discharging",
+    "coloring"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/PlanarGraphDischarging.lean",
+      "filename": "PlanarGraphDischarging.lean",
+      "lineCount": 206,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PlanarGraphDischarging.lean"
+    }
+  ],
+  "knowledge": {
+    "insights": [
+      "The charge 6 − deg(v) is the discrete Gauss–Bonnet curvature; handshaking + Euler force its total to the constant 6V − 2E ≥ 12.",
+      "The parent Five Color Theorem's exists_low_degree is the weakest corollary of the discharging base (positive total ⟹ positive term).",
+      "Separating the planarity-free charge identity from the planar inequality makes the equality/sharpness case (triangulations) fall out for free."
+    ],
+    "builtItems": [
+      "total_charge_eq: ∑(6 − deg v) = 6V − 2E (PlanarGraphDischarging.lean)",
+      "discharging_base: ∑(6 − deg v) ≥ 12 for planar graphs",
+      "exists_low_degree', two_low_degree, no_min_degree_six",
+      "sum_degrees_le, average_degree_lt_six, charge_eq_twelve_iff_triangulation"
+    ],
+    "mathlibGaps": [
+      "Mathlib has no planar-graph definition; the edge bound E ≤ 3V − 6 is taken as an explicit hypothesis (as in the parent file)."
+    ],
+    "nextSteps": [
+      "Push the low-degree count from ≥2 to the classical ≥3 via structural/recursive charge accounting.",
+      "Generalize the charge identity to surfaces of genus g via the Euler characteristic 2 − 2g."
+    ],
+    "progressSummary": "COMPLETE: discharging base ∑(6 − deg v) ≥ 12 proved axiom-free with sharpened consequences; 8 theorems, 0 axioms, 0 sorries."
+  },
+  "references": []
+}

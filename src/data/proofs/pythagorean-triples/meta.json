@@ -1,0 +1,216 @@
+{
+  "id": "pythagorean-triples",
+  "title": "Formula for Pythagorean Triples",
+  "slug": "pythagorean-triples",
+  "description": "All primitive Pythagorean triples (a,b,c) with a² + b² = c² are given by a = m² - n², b = 2mn, c = m² + n² for coprime m > n > 0.",
+  "meta": {
+    "author": "Ancient Babylonians (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pythagorean_triple",
+    "date": "~1800 BCE",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "geometry",
+      "classic",
+      "intermediate",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/PythagoreanTriples.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "PythagoreanTriple.isPrimitiveClassified_of_coprime",
+        "description": "Classification of primitive triples",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      },
+      {
+        "theorem": "PythagoreanTriple.classified",
+        "description": "General classification theorem",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      },
+      {
+        "theorem": "PythagoreanTriple.even_odd_of_coprime",
+        "description": "Parity constraint on coprime triples",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      },
+      {
+        "theorem": "PythagoreanTriple.mul",
+        "description": "Scaling preserves the Pythagorean property",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      }
+    ],
+    "originalContributions": [
+      "Bridge formalization connecting Mathlib's classification to pedagogical examples",
+      "Verification of classic triples (3,4,5), (5,12,13), (8,15,17), (7,24,25), (20,21,29)",
+      "Scaling examples (6,8,10) and (9,12,15)"
+    ],
+    "dateAdded": "2025-12-26",
+    "wiedijkNumber": 23,
+    "axiomCount": 0,
+    "lineCount": 260,
+    "assumptions": "0 axioms, 0 sorries. Core classification theorem derived from Mathlib's PythagoreanTriple module (isPrimitiveClassified_of_coprime, classified).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 15,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Pythagorean triple formula is one of the oldest results in mathematics, with roots stretching back nearly four millennia. The Plimpton 322 clay tablet (c. 1800 BCE), discovered in Iraq in 1922, contains a table of 15 Pythagorean triples including large examples like $(4601, 4800, 6649)$, demonstrating that Babylonian mathematicians understood the parametric generation of these triples long before Pythagoras.\n\nThe systematic study of the formula is traditionally attributed to Euclid, whose *Elements* (Book X, Lemma 1, c. 300 BCE) contains the first known proof that the parametric form $a = m^2 - n^2$, $b = 2mn$, $c = m^2 + n^2$ generates all primitive triples. Diophantus of Alexandria (c. 250 CE) further developed the theory in his *Arithmetica*, connecting it to rational points on the unit circle — the same geometric insight that underlies the modern proof.\n\nThe result appears as #23 on Freek Wiedijk's list of 100 greatest theorems, reflecting its foundational importance. The classification theorem connects number theory (coprimality, parity), algebra (polynomial identities), and geometry (the unit circle parametrization) in a single elegant statement. It also serves as the historical precursor to Fermat's Last Theorem: while $a^2 + b^2 = c^2$ has infinitely many integer solutions, Fermat conjectured (and Wiles proved in 1995) that $a^n + b^n = c^n$ has none for $n \\geq 3$.",
+    "problemStatement": "**Pythagorean Triples**:\n\nAll primitive Pythagorean triples have the form:\n- $a = m^2 - n^2$\n- $b = 2mn$\n- $c = m^2 + n^2$\n\nfor coprime $m > n > 0$ with $m - n$ odd.\n\nAll Pythagorean triples are scalar multiples $k \\cdot (a, b, c)$ of primitive triples.",
+    "text": "All primitive Pythagorean triples (a,b,c) with a² + b² = c² are given by a = m² - n², b = 2mn, c = m² + n² for coprime m > n > 0.",
+    "proofStrategy": "The formalization takes a two-pronged approach, leveraging Mathlib's `PythagoreanTriple` module.\n\n**Classification direction** (every primitive triple has this form): The proof uses `isPrimitiveClassified_of_coprime`, which internally relies on the rational parametrization of the unit circle. A rational point $(p/q, r/s)$ on $x^2 + y^2 = 1$ corresponds to the intersection of a line through $(-1, 0)$ with slope $t = n/m$. Clearing denominators yields the parametric formula. The coprimality condition $\\gcd(x, y) = 1$ ensures primitivity.\n\n**Generation direction** (the formula always produces valid triples): This is verified purely algebraically via the `ring` tactic, which automatically proves the polynomial identity $(m^2 - n^2)^2 + (2mn)^2 = (m^2 + n^2)^2$.\n\nThe formalization also includes concrete verifications of five classical triples using `norm_num` and demonstrates that scaling preserves the Pythagorean property.",
+    "keyInsights": [
+      "**Rational circle parametrization**: The formula arises from intersecting lines of rational slope $t = n/m$ through $(-1, 0)$ with the unit circle $x^2 + y^2 = 1$. This geometric construction is the prototype for the 'rational parametrization' technique used throughout algebraic geometry",
+      "**Polynomial identity at the core**: The verification $(m^2 - n^2)^2 + (2mn)^2 = (m^2 + n^2)^2$ is a pure ring identity, requiring no number-theoretic arguments. Lean's `ring` tactic proves it in one step, illustrating the power of decision procedures for polynomial arithmetic",
+      "**Coprimality and parity as essential constraints**: Without requiring $\\gcd(m, n) = 1$ and $m - n$ odd, the parametrization would produce non-primitive triples and miss the bijection. The `even_odd_of_coprime` theorem formalizes that exactly one leg of a primitive triple is even",
+      "**Scaling completes the classification**: Every Pythagorean triple is a scalar multiple of a primitive one, so the full classification reduces to classifying primitive triples. This factorization through GCD is a recurring pattern in Diophantine equations",
+      "**From Babylonian tablets to formal verification**: The same result computed by hand on clay tablets 3800 years ago is now machine-verified in Lean, demonstrating how formal proof assistants connect ancient mathematics to modern computer science"
+    ],
+    "prerequisites": [
+      "Number theory (primes, divisibility)",
+      "Geometry (Euclidean, combinatorial)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Documentation",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Imports Mathlib.NumberTheory.PythagoreanTriples and Mathlib.Tactic, with extensive documentation covering the parametric formula, proof strategy, and historical context (Plimpton 322, Wiedijk #23).",
+      "mathContext": "Sets up the formalization of the parametric formula $a = m^2 - n^2,\\; b = 2mn,\\; c = m^2 + n^2$ for primitive Pythagorean triples satisfying $a^2 + b^2 = c^2$ with $\\gcd(m,n) = 1$ and $m > n > 0$."
+    },
+    {
+      "id": "predicate",
+      "title": "The Pythagorean Triple Predicate",
+      "startLine": 50,
+      "endLine": 62,
+      "summary": "Introduces Mathlib's PythagoreanTriple predicate and verifies it unfolds to x * x + y * y = z * z via Iff.rfl.",
+      "mathContext": "Defines the predicate $\\texttt{PythagoreanTriple}(x, y, z) \\iff x^2 + y^2 = z^2$ over $\\mathbb{Z}$ and verifies definitional unfolding via $\\texttt{Iff.rfl}$."
+    },
+    {
+      "id": "parametric-formula",
+      "title": "Parametric Formula Classification",
+      "startLine": 63,
+      "endLine": 76,
+      "summary": "Documents IsPrimitiveClassified and IsClassified structures from Mathlib that formalize what it means for a triple to match the parametric form.",
+      "mathContext": "Describes the $\\texttt{IsPrimitiveClassified}$ structure: $\\exists\\, m > n > 0$ with $\\gcd(m,n) = 1$, $2 \\mid (m - n)$, such that $(a,b,c) = (m^2-n^2,\\, 2mn,\\, m^2+n^2)$ (up to sign/swap). The $\\texttt{IsClassified}$ structure adds a scalar factor $k$."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Classification Theorems",
+      "startLine": 77,
+      "endLine": 106,
+      "summary": "The central results: primitive_triples_are_classified (every coprime triple has parametric form) and all_triples_are_classified (every triple is a scaled parametric triple).",
+      "mathContext": "Proves two key theorems: (1) $\\gcd(a,b) = 1 \\wedge a^2+b^2=c^2 \\implies \\texttt{IsPrimitiveClassified}(a,b,c)$, and (2) $a^2+b^2=c^2 \\implies \\exists\\, k,\\, \\texttt{IsPrimitiveClassified}(a/k,\\, b/k,\\, c/k)$, i.e., every triple is $k \\cdot (m^2-n^2,\\, 2mn,\\, m^2+n^2)$."
+    },
+    {
+      "id": "verification",
+      "title": "Algebraic Verification",
+      "startLine": 107,
+      "endLine": 126,
+      "summary": "Proves the converse direction: the parametric formula always produces valid triples, verified via the ring tactic for both orderings of legs.",
+      "mathContext": "Proves the polynomial identity $(m^2 - n^2)^2 + (2mn)^2 = (m^2 + n^2)^2$ via the $\\texttt{ring}$ tactic, confirming that the parametric formula always produces valid triples for any $m, n \\in \\mathbb{Z}$."
+    },
+    {
+      "id": "examples",
+      "title": "Classical Examples",
+      "startLine": 127,
+      "endLine": 185,
+      "summary": "Verifies five classical Pythagorean triples: (3,4,5), (5,12,13), (8,15,17), (7,24,25), (20,21,29) with their corresponding (m,n) parameters.",
+      "mathContext": "Verifies $3^2+4^2=5^2$ with $(m,n)=(2,1)$, $5^2+12^2=13^2$ with $(m,n)=(3,2)$, $8^2+15^2=17^2$ with $(m,n)=(4,1)$, $7^2+24^2=25^2$ with $(m,n)=(4,3)$, and $20^2+21^2=29^2$ with $(m,n)=(5,2)$ via $\\texttt{norm\\_num}$."
+    },
+    {
+      "id": "properties",
+      "title": "Properties of Pythagorean Triples",
+      "startLine": 186,
+      "endLine": 202,
+      "summary": "Proves structural properties: symmetry of legs, the trivial (0,0,0) triple, and the parity constraint that primitive triples have one even and one odd leg.",
+      "mathContext": "Proves: (1) $a^2+b^2=c^2 \\iff b^2+a^2=c^2$ (symmetry), (2) $0^2+0^2=0^2$ (trivial triple), and (3) $\\gcd(a,b)=1 \\wedge a^2+b^2=c^2 \\implies 2 \\mid a \\oplus 2 \\mid b$ (exactly one leg is even)."
+    },
+    {
+      "id": "geometric",
+      "title": "Unit Circle Parametrization",
+      "startLine": 203,
+      "endLine": 232,
+      "summary": "Extended documentation explaining the geometric derivation of the formula via stereographic projection from (-1,0) on the unit circle, with full algebraic verification.",
+      "mathContext": "Derives the parametric formula geometrically: a line through $(-1, 0)$ with rational slope $t = n/m$ meets the unit circle $x^2+y^2=1$ at the rational point $\\left(\\frac{m^2-n^2}{m^2+n^2},\\, \\frac{2mn}{m^2+n^2}\\right)$. Clearing denominators yields the integer parametrization."
+    },
+    {
+      "id": "scaling",
+      "title": "Non-primitive Triples and Summary",
+      "startLine": 233,
+      "endLine": 260,
+      "summary": "Demonstrates that scaling preserves the Pythagorean property with examples (6,8,10) = 2×(3,4,5) and (9,12,15) = 3×(3,4,5), completing the classification.",
+      "mathContext": "Proves that if $a^2+b^2=c^2$ then $(ka)^2+(kb)^2=(kc)^2$ for any $k \\in \\mathbb{Z}$, with examples: $(6,8,10) = 2 \\cdot (3,4,5)$ and $(9,12,15) = 3 \\cdot (3,4,5)$. This completes the reduction of the general case to the primitive case."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides the complete classification of Pythagorean triples (Wiedijk #23): every primitive triple arises from the parametric formula with coprime parameters of opposite parity, and every triple is a scalar multiple of a primitive one. The proof leverages Mathlib's PythagoreanTriple module for the deep classification theorems while providing original algebraic verifications and five concrete examples.",
+    "implications": "**Theoretical Significance**: The Pythagorean triple formula is the simplest non-trivial case of Diophantine analysis — classifying all integer solutions to a polynomial equation.\n\nThe same techniques (rational parametrization, coprimality reduction, parity arguments) extend to classifying integer points on conics, and the failure of these techniques for higher-degree equations motivated centuries of research culminating in Fermat's Last Theorem. In computational number theory, the parametric formula provides an efficient algorithm for generating all triples up to a given bound.",
+    "openQuestions": [
+      "Can Lean verify the density result that the number of primitive Pythagorean triples with hypotenuse ≤ N is asymptotic to N/(2π)?",
+      "How does the Pythagorean triple formula generalize to Gaussian integers, where a² + b² = c² factors as (a + bi)(a - bi) = c²?",
+      "Can the rational circle parametrization approach be formalized in Lean for other Diophantine equations like x² + y² = p for primes p ≡ 1 (mod 4)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "extends",
+      "description": "FLT proves $a^n + b^n = c^n$ has no positive integer solutions for $n \\geq 3$. Pythagorean triples show the $n = 2$ case has infinitely many solutions — the complete parametrization here contrasts with FLT's impossibility."
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "The Pythagorean theorem $a^2 + b^2 = c^2$ is the geometric statement; this entry characterizes ALL integer solutions. The classification (m²-n², 2mn, m²+n²) is the number-theoretic complement to the geometric fact."
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The irrationality of $\\sqrt{2}$ is equivalent to $(1,1,\\sqrt{2})$ not being a Pythagorean triple. More generally, the study of which $\\sqrt{n}$ are irrational connects to which integers are sums of two squares."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-squares theorem ($p = a^2 + b^2$ iff $p \\equiv 1 \\pmod{4}$) is the prime-level analog: Pythagorean triples ask which integers are hypotenuses ($c = m^2 + n^2$), and the answer depends on the prime factorization via Fermat's criterion."
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "The GCD algorithm is essential for the classification: primitive Pythagorean triples require $\\gcd(m, n) = 1$ with $m, n$ of opposite parity. The reduction from general to primitive triples uses GCD."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PythagoreanTriples",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "PythagoreanTriplesFormula",
+    "lineCount": 260,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 0,
+    "path": "Proofs/PythagoreanTriples.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book X, Lemma 1 to Proposition 29",
+      "year": "~300 BCE",
+      "venue": "Alexandria",
+      "note": "Parametrization of Pythagorean triples: (m²-n², 2mn, m²+n²) for m > n > 0 coprime with opposite parity"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "pythagorean_triple_parametrization",
+      "type": "core",
+      "description": "All primitive Pythagorean triples are of the form (m^2-n^2, 2mn, m^2+n^2)",
+      "leanType": "primitive_triple a b c -> exists m n, a = m^2 - n^2 and b = 2*m*n and c = m^2 + n^2"
+    }
+  ],
+  "sorries": 0
+}

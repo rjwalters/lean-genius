@@ -1,0 +1,268 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Historical Introduction",
+    "content": "The Chinese Remainder Theorem dates to the 3rd-5th century CE, appearing in the Sunzi Suanjing.\n\nThe classic problem: 'Find N where N = 2 (mod 3), N = 3 (mod 5), N = 2 (mod 7).'\n\nAnswer: 23, unique modulo 105 = 3 * 5 * 7.",
+    "mathContext": "Find $N$ with $N \\equiv 2 \\pmod{3}$, $N \\equiv 3 \\pmod{5}$, $N \\equiv 2 \\pmod{7}$. Answer: $N = 23$ (mod $105$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sunzi Suanjing",
+      "Disquisitiones Arithmeticae",
+      "modular arithmetic",
+      "simultaneous congruences"
+    ],
+    "prerequisites": [
+      "modular arithmetic basics",
+      "Nat.ModEq"
+    ]
+  },
+  {
+    "id": "ann-existence",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 44,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "CRT Existence",
+    "content": "**Theorem**: For coprime m, n, any pair of congruences x = a (mod m), x = b (mod n) has a solution.\n\nThis uses Mathlib's `Nat.chineseRemainder`, which constructs the witness. The proof is a simple wrapper: destructure the result and repackage the two congruence witnesses.",
+    "mathContext": "$\\gcd(m, n) = 1 \\implies \\exists x,\\; x \\equiv a \\pmod{m} \\wedge x \\equiv b \\pmod{n}$. The witness is computed by `Nat.chineseRemainder`, which internally uses the extended Euclidean algorithm.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.chineseRemainder",
+      "coprimality",
+      "constructive witness",
+      "extended Euclidean algorithm"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "Nat.ModEq",
+      "Nat.chineseRemainder"
+    ]
+  },
+  {
+    "id": "ann-uniqueness",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 51,
+      "endLine": 58
+    },
+    "type": "concept",
+    "title": "CRT Uniqueness",
+    "content": "**Theorem**: The solution is unique modulo m * n.\n\nIf x1 = x2 = a (mod m) and x1 = x2 = b (mod n), then x1 = x2 (mod m*n).\n\n**Proof**: Both m and n divide (x1 - x2). Since gcd(m,n) = 1, their product m*n also divides (x1 - x2). The key step uses `modEq_and_modEq_iff_modEq_mul`, which encodes precisely this coprime divisibility principle.",
+    "mathContext": "$m \\mid (x_1 - x_2) \\wedge n \\mid (x_1 - x_2) \\wedge \\gcd(m,n)=1 \\implies mn \\mid (x_1 - x_2)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "uniqueness modulo product",
+      "coprime divisibility",
+      "Nat.modEq_and_modEq_iff_modEq_mul",
+      "Gauss's lemma"
+    ],
+    "prerequisites": [
+      "ann-existence",
+      "Nat.Coprime.mul_dvd_of_dvd_of_dvd",
+      "Nat.modEq_and_modEq_iff_modEq_mul"
+    ]
+  },
+  {
+    "id": "ann-bounded",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 60,
+      "endLine": 68
+    },
+    "type": "concept",
+    "title": "Bounded CRT Solution",
+    "content": "**Theorem**: The CRT solution can be chosen with x < m * n.\n\nThis strengthens the existence result by providing a canonical representative in {0, ..., mn-1}. The proof uses `Nat.chineseRemainder_lt_mul`, which guarantees the output of Mathlib's CRT is already reduced.",
+    "mathContext": "$\\gcd(m,n) = 1,\\; m > 0,\\; n > 0 \\implies \\exists! x < mn,\\; x \\equiv a \\pmod{m} \\wedge x \\equiv b \\pmod{n}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "canonical representative",
+      "reduced residue",
+      "Nat.chineseRemainder_lt_mul"
+    ],
+    "prerequisites": [
+      "Nat.chineseRemainder",
+      "Nat.pos_iff_ne_zero"
+    ]
+  },
+  {
+    "id": "ann-bezout",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 83,
+      "endLine": 103
+    },
+    "type": "insight",
+    "title": "Bézout Coefficients and Constructive Formula",
+    "content": "For coprime m, n, there exist integers u, v with:\n\nm*u + n*v = 1\n\nThese Bézout coefficients give the constructive solution formula:\n\nx = a*n*v + b*m*u\n\n**Verification**:\n- x = a*n*v + b*m*u = a*(1 - m*u) + ... = a (mod m)\n- Similarly x = b (mod n)\n\nThe `bezoutCoeffs` definition wraps `Nat.gcdA`/`Nat.gcdB`, while `bezout_coprime` specializes the identity to the coprime case where gcd = 1.",
+    "mathContext": "$mu + nv = 1 \\implies x = a \\cdot nv + b \\cdot mu$ satisfies both congruences. The coefficients come from `Nat.gcdA`, `Nat.gcdB` which implement the extended Euclidean algorithm.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bézout's identity",
+      "extended Euclidean algorithm",
+      "Nat.gcdA",
+      "Nat.gcdB",
+      "constructive algebra"
+    ],
+    "prerequisites": [
+      "Nat.gcd_eq_gcd_ab",
+      "Nat.Coprime"
+    ]
+  },
+  {
+    "id": "ann-sunzi",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 137,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "The Sunzi Problem and Examples",
+    "content": "The classic problem from the Sunzi Suanjing:\n\nx = 2 (mod 3), x = 3 (mod 5), x = 2 (mod 7)\n\nSolution: x = 23 (unique mod 105)\n\nVerification: 23 = 7*3 + 2 = 2 (mod 3), 23 = 4*5 + 3 = 3 (mod 5), 23 = 3*7 + 2 = 2 (mod 7).\n\nAdditional examples verify x = 17 for (1 mod 4, 2 mod 5) and x = 135 for (3 mod 11, 5 mod 13). All verifications use `native_decide` for computational checking.",
+    "mathContext": "$23 \\equiv 2 \\pmod{3},\\; 23 \\equiv 3 \\pmod{5},\\; 23 \\equiv 2 \\pmod{7}$; unique mod $105 = 3 \\times 5 \\times 7$. Also: $17 \\equiv 1 \\pmod{4},\\; 17 \\equiv 2 \\pmod{5}$; $135 \\equiv 3 \\pmod{11},\\; 135 \\equiv 5 \\pmod{13}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sunzi Suanjing",
+      "concrete verification",
+      "native_decide tactic",
+      "computational number theory"
+    ],
+    "prerequisites": [
+      "ann-existence",
+      "ann-uniqueness",
+      "Nat.Coprime"
+    ]
+  },
+  {
+    "id": "ann-three-moduli",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 170,
+      "endLine": 202
+    },
+    "type": "concept",
+    "title": "CRT for Three and Four Moduli",
+    "content": "**Extension**: CRT extends to any number of pairwise coprime moduli.\n\n**Algorithm (three moduli)**:\n1. Solve for first two moduli: x = a1 (mod m1), x = a2 (mod m2)\n2. Get intermediate solution y\n3. Solve: x = y (mod m1*m2), x = a3 (mod m3)\n4. Result is unique mod m1*m2*m3\n\n**Key step**: coprimality of the product m1*m2 with m3 follows from `Nat.Coprime.mul_left`. The factoring uses `Nat.ModEq.of_mul_right` and `of_mul_left` to extract individual congruences from the product congruence.\n\nUniqueness for three moduli iterates the two-moduli uniqueness proof.",
+    "mathContext": "Solve $x \\equiv a_i \\pmod{m_i}$ for $i = 1,2,3$ by iterating: first solve mod $m_1 m_2$, then combine with $m_3$. Coprimality: $\\gcd(m_1, m_3) = 1 \\wedge \\gcd(m_2, m_3) = 1 \\implies \\gcd(m_1 m_2, m_3) = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterative CRT",
+      "pairwise coprime",
+      "inductive generalization",
+      "Nat.Coprime.mul_left",
+      "Nat.ModEq.of_mul_right"
+    ],
+    "prerequisites": [
+      "ann-existence",
+      "ann-uniqueness",
+      "Nat.Coprime.mul_right",
+      "Nat.ModEq.of_mul_right"
+    ]
+  },
+  {
+    "id": "ann-rns",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 214,
+      "endLine": 238
+    },
+    "type": "insight",
+    "title": "Residue Number Systems",
+    "content": "**Application**: Any x < m1*m2*...*mk is uniquely determined by its residues.\n\nFor the Sunzi moduli (3, 5, 7) with product 105:\n- 23 is represented as (2, 3, 2)\n- 0 is represented as (0, 0, 0)\n- 104 is represented as (2, 4, 6)\n\nThe `rns_unique` theorem provides a concrete verification: any two numbers below 105 sharing the same residues mod 3, 5, 7 must be equal. The proof combines CRT uniqueness with `omega` to extract equality from the modular congruence and the bound.",
+    "mathContext": "$x \\mapsto (x \\bmod m_1, \\ldots, x \\bmod m_k)$ is a bijection $\\{0, \\ldots, M-1\\} \\simeq \\mathbb{Z}/m_1 \\times \\cdots \\times \\mathbb{Z}/m_k$ when the $m_i$ are pairwise coprime.",
+    "significance": "key",
+    "relatedConcepts": [
+      "residue number systems",
+      "parallel computing",
+      "ring isomorphism",
+      "bijection",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "ann-three-moduli",
+      "CRT uniqueness",
+      "Nat.ModEq"
+    ]
+  },
+  {
+    "id": "ann-four-moduli",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 285,
+      "endLine": 316
+    },
+    "type": "concept",
+    "title": "CRT for Four Moduli",
+    "content": "**crt_four**: Extends the iterative CRT to four pairwise coprime moduli. First solves the three-moduli problem, then combines with the fourth via `crt_exists` applied to (m1*m2*m3, m4).\n\n**crt_four_unique**: Uniqueness modulo m1*m2*m3*m4, proved by chaining two-moduli uniqueness three times: first combine m1,m2, then fold in m3, finally m4.\n\nThe coprimality of products is built from pairwise coprimality using `mul_left`: e.g., `(h14.mul_left h24).mul_left h34` shows gcd(m1*m2*m3, m4) = 1.\n\nThe concrete example (53 mod 210 = 2*3*5*7) at lines 370-381 verifies: 53 = 1 (mod 2), 53 = 2 (mod 3), 53 = 3 (mod 5), 53 = 4 (mod 7).",
+    "mathContext": "$\\exists! x < m_1 m_2 m_3 m_4,\\; x \\equiv a_i \\pmod{m_i}$ for $i=1,\\ldots,4$. Example: $53 \\equiv 1 \\pmod{2},\\; 53 \\equiv 2 \\pmod{3},\\; 53 \\equiv 3 \\pmod{5},\\; 53 \\equiv 4 \\pmod{7}$, unique mod $210$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inductive CRT generalization",
+      "pairwise coprimality of products",
+      "Nat.Coprime.mul_left",
+      "Nat.ModEq.of_mul_left"
+    ],
+    "prerequisites": [
+      "ann-three-moduli",
+      "crt_exists",
+      "Nat.Coprime.mul_left"
+    ]
+  },
+  {
+    "id": "ann-mod-preservation",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 324,
+      "endLine": 339
+    },
+    "type": "concept",
+    "title": "Modular Arithmetic Preservation",
+    "content": "Three theorems establishing that congruences are preserved under ring operations:\n\n- **modEq_add**: $a_1 \\equiv b_1 \\wedge a_2 \\equiv b_2 \\implies a_1 + a_2 \\equiv b_1 + b_2$ (mod m)\n- **modEq_mul**: $a_1 \\equiv b_1 \\wedge a_2 \\equiv b_2 \\implies a_1 a_2 \\equiv b_1 b_2$ (mod m)\n- **modEq_pow**: $a \\equiv b \\implies a^k \\equiv b^k$ (mod m)\n\nAll three are thin wrappers around Mathlib's `Nat.ModEq.add`, `.mul`, `.pow`. Together they show $\\mathbb{Z}/m\\mathbb{Z}$ is a ring — addition, multiplication, and exponentiation respect the equivalence relation.",
+    "mathContext": "Congruence modulo $m$ is a ring congruence: it respects $+$, $\\times$, and $(\\cdot)^k$. This is the algebraic foundation for computing in $\\mathbb{Z}/m\\mathbb{Z}$ and for the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ring congruence",
+      "quotient ring",
+      "Nat.ModEq.add",
+      "Nat.ModEq.mul",
+      "Nat.ModEq.pow"
+    ],
+    "prerequisites": [
+      "Nat.ModEq",
+      "ring axioms"
+    ]
+  },
+  {
+    "id": "ann-ring-iso",
+    "proofId": "chinese-remainder-constructive",
+    "range": {
+      "startLine": 390,
+      "endLine": 406
+    },
+    "type": "insight",
+    "title": "CRT as Ring Isomorphism and Injectivity",
+    "content": "**crt_injective**: If x, y < m*n have the same residues mod m and mod n, then x = y. This is the injectivity half of the CRT bijection $\\{0, \\ldots, mn-1\\} \\to \\mathbb{Z}/m \\times \\mathbb{Z}/n$. The proof combines coprime divisibility with `Nat.mod_eq_of_lt` to extract equality from congruence mod mn.\n\n**coprime_zero_congruence**: If m | x and n | x with gcd(m,n) = 1, then mn | x. This is the zero-congruence special case, a direct application of `modEq_and_modEq_iff_modEq_mul`.\n\nTogether with surjectivity (from `crt_bounded`), these establish the full CRT isomorphism: the residue map is a bijection, and by the modular arithmetic preservation theorems, it is a ring homomorphism.",
+    "mathContext": "Injectivity: $x, y < mn \\wedge x \\equiv y \\pmod{m} \\wedge x \\equiv y \\pmod{n} \\implies x = y$. Combined with surjectivity (from `crt_bounded`), this gives the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ring isomorphism",
+      "injectivity",
+      "surjectivity",
+      "CRT bijection",
+      "ZMod",
+      "Nat.mod_eq_of_lt"
+    ],
+    "prerequisites": [
+      "ann-uniqueness",
+      "ann-mod-preservation",
+      "Nat.modEq_and_modEq_iff_modEq_mul"
+    ]
+  }
+]

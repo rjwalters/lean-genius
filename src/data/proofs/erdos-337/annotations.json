@@ -1,0 +1,433 @@
+[
+  {
+    "id": "ann-337-header",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #337: Additive Bases and Sumset Growth**\n\nFor a sparse additive basis $A \\subseteq \\mathbb{N}$ with $|A \\cap [1,N]| = o(N)$, is $|A+A \\cap [1,N]|/|A \\cap [1,N]| \\to \\infty$?\n\n**Answer: NO** (Turjányi 1984). The ratio can stay bounded.\n\nReferences: [ErGr80], [Tu84], [RT85].",
+    "mathContext": "The problem connects additive basis theory (Waring-type problems) to sumset growth (Freiman-Ruzsa theory). The surprising counterexample shows these two areas interact non-trivially: being an additive basis constrains $A$ globally, but doesn't force local sumset expansion.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Additive bases",
+      "Sumsets",
+      "Sparse sets",
+      "Freiman-Ruzsa theory"
+    ],
+    "prerequisites": [
+      "Basic number theory",
+      "Asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-337-imports",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 33,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "Imports `Nat.Basic`, `Finset.Basic`, `Finset.Card`, `Set.Basic`, and `BigOperators`. Opens `Nat`, `Finset`, `Set` namespaces for cleaner notation. The `Erdos337` namespace encapsulates all definitions.",
+    "mathContext": "The formalization uses both `Set ℕ` (for the infinite sets in theoretical statements) and `Finset ℕ` (for computational counting). The `BigOperators` import enables summation notation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "Finset",
+      "Set"
+    ],
+    "prerequisites": [
+      "Lean import and open commands",
+      "Mathlib Finset and Set types",
+      "BigOperators summation notation"
+    ]
+  },
+  {
+    "id": "ann-337-counting",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 51,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "countingFunction",
+    "content": "**countingFunction A N** = $|A \\cap \\{1, \\ldots, N\\}|$\n\nCounts elements of $A$ in $[1,N]$ by filtering `Finset.range(N+1)` for membership in $A$ with $n \\geq 1$.",
+    "mathContext": "This is the counting function $A(N) = |A \\cap [1,N]|$ standard in additive number theory. For the primes, $A(N) \\sim N/\\ln N$ (Prime Number Theorem). For squares, $A(N) \\sim \\sqrt{N}$. For Sidon sets, $A(N) \\leq \\sqrt{N} + O(N^{1/4})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Counting function",
+      "Asymptotic density",
+      "Schnirelmann density"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Finset.filter",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-337-littleo",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 58,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "isLittleO",
+    "content": "**isLittleO f**: $f(N) = o(N)$ means $f(N)/N \\to 0$ as $N \\to \\infty$.\n\nFormalized as: $\\forall \\varepsilon > 0, \\exists N_0, \\forall N \\geq N_0, f(N) < \\varepsilon \\cdot N$.",
+    "mathContext": "The little-o notation captures 'asymptotically negligible' growth. A set $A$ is sparse iff $A(N) = o(N)$, meaning $A$ has natural density 0. Most interesting additive bases are sparse (e.g., squares with $A(N) \\sim \\sqrt{N}$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Asymptotic notation",
+      "Natural density",
+      "Sparse sets"
+    ],
+    "prerequisites": [
+      "Real number inequalities"
+    ]
+  },
+  {
+    "id": "ann-337-sparse",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 65,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "isSparse",
+    "content": "**isSparse A**: $|A \\cap [1,N]| = o(N)$. The set $A$ has natural density 0—its elements become increasingly rare among the natural numbers.",
+    "mathContext": "Sparsity is a necessary condition for the Erdős conjecture to be interesting: dense sets trivially have $|A+A \\cap [1,N]|/|A \\cap [1,N]|$ bounded (both are $\\Theta(N)$). The conjecture asks whether sparse bases must have expanding sumsets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Natural density",
+      "Counting function",
+      "Asymptotic density"
+    ],
+    "prerequisites": [
+      "isLittleO",
+      "countingFunction"
+    ]
+  },
+  {
+    "id": "ann-337-sumset",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 72,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "sumset",
+    "content": "**sumset A** = $A + A = \\{a+b : a,b \\in A\\}$\n\nThe pairwise sumset. Each element of $A+A$ is a sum of two (not necessarily distinct) elements from $A$.",
+    "mathContext": "The sumset $A+A$ is the central object in additive combinatorics. Freiman's theorem characterizes sets with $|A+A| \\leq K|A|$: they are 'essentially' generalized arithmetic progressions. The Plünnecke-Ruzsa inequality gives $|hA| \\leq (|A+A|/|A|)^h \\cdot |A|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Freiman's theorem",
+      "Plünnecke-Ruzsa inequality",
+      "Sumset"
+    ],
+    "prerequisites": [
+      "Set comprehension"
+    ]
+  },
+  {
+    "id": "ann-337-hfold",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 81,
+      "endLine": 85
+    },
+    "type": "definition",
+    "title": "hFoldSumset",
+    "content": "**hFoldSumset h A** = $hA$: the $h$-fold sumset, defined recursively.\n- $0 \\cdot A = \\{0\\}$\n- $1 \\cdot A = A$\n- $(h+1) \\cdot A = \\{a + t : a \\in A, t \\in hA\\}$",
+    "mathContext": "The $h$-fold sumset captures all sums of $h$ elements from $A$ (with repetition). For additive bases of order $h$, $hA$ contains all sufficiently large integers. The Ruzsa-Turjányi generalization shows $|hA \\cap [1,N]|/|A \\cap [1,N]|$ can also be bounded.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Iterated sumsets",
+      "Additive bases",
+      "Waring's problem"
+    ],
+    "prerequisites": [
+      "sumset",
+      "Pattern matching"
+    ]
+  },
+  {
+    "id": "ann-337-basis",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 97,
+      "endLine": 98
+    },
+    "type": "definition",
+    "title": "isAdditiveBasis",
+    "content": "**isAdditiveBasis h A**: $A$ is an additive basis of order $h$ if $h \\geq 1$ and every sufficiently large $n$ belongs to $hA$.\n\nThat is, $\\exists N_0, \\forall n \\geq N_0, n \\in hA$.",
+    "mathContext": "Classical examples: the natural numbers are a basis of order 1; squares form a basis of order 4 (Lagrange 1770); cubes form a basis of order 9 (Vinogradov 1935, improving Wieferich's bound); primes form an asymptotic basis of order 3 (Goldbach-Vinogradov). The minimal $h$ is called the Waring number for polynomial bases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Waring's problem",
+      "Lagrange's four-square theorem",
+      "Schnirelmann density"
+    ],
+    "prerequisites": [
+      "hFoldSumset"
+    ]
+  },
+  {
+    "id": "ann-337-finite-order",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 104,
+      "endLine": 105
+    },
+    "type": "definition",
+    "title": "isAdditiveBasisFiniteOrder",
+    "content": "**isAdditiveBasisFiniteOrder A**: $A$ is an additive basis of some finite order $h$. This is the hypothesis in the Erdős conjecture—we don't fix $h$.",
+    "mathContext": "By Schnirelmann's theorem, any set with positive Schnirelmann density is an additive basis of finite order. The converse fails: there exist bases with Schnirelmann density 0 (and natural density 0, i.e., sparse bases).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schnirelmann density",
+      "Additive bases"
+    ],
+    "prerequisites": [
+      "isAdditiveBasis"
+    ]
+  },
+  {
+    "id": "ann-337-conjecture",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 115,
+      "endLine": 118
+    },
+    "type": "definition",
+    "title": "erdosConjecture",
+    "content": "**erdosConjecture**: $\\forall A$ sparse basis, $\\forall M > 0, \\exists N_0, \\forall N \\geq N_0$:\n$$\\frac{|A+A \\cap [1,N]|}{|A \\cap [1,N]|} > M$$\n\nClaims the ratio grows without bound.",
+    "mathContext": "This is a universal quantification over all sparse bases—Turjányi's counterexample shows it fails for at least one such basis. The conjecture is natural: if $A$ is thin, adding all pairs should produce many new elements. The surprise is that collisions can prevent this.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sumset growth",
+      "Erdős conjecture"
+    ],
+    "prerequisites": [
+      "countingFunction",
+      "sumset",
+      "isSparse",
+      "isAdditiveBasisFiniteOrder"
+    ]
+  },
+  {
+    "id": "ann-337-turjanyi",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 124,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "turjanyi_counterexample",
+    "content": "**turjanyi_counterexample** (1984): $\\exists A$ sparse basis and $\\exists C > 0$ such that:\n$$\\frac{|A+A \\cap [1,N]|}{|A \\cap [1,N]|} < C \\quad \\forall N \\geq 1$$\n\nThe ratio stays bounded! This is the key witness disproving the conjecture.",
+    "mathContext": "Turjányi's construction [Tu84] builds $A$ so that the sumset $A+A$ has maximal overlap with $A$ itself. The bound $C$ is a universal constant independent of $N$. The construction exploits the fact that elements of $A+A$ exceeding $N$ are not counted in $|A+A \\cap [1,N]|$, so by concentrating sums above $N$, the visible sumset stays small.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Counterexample construction",
+      "Bounded ratio",
+      "Sumset collisions"
+    ],
+    "prerequisites": [
+      "erdosConjecture"
+    ]
+  },
+  {
+    "id": "ann-337-false",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 132,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "erdos_conjecture_false",
+    "content": "**erdos_conjecture_false**: $\\neg$ `erdosConjecture`\n\n**Lean proof by contradiction**: Assume the conjecture holds. Instantiate with $M = C+1$ (where $C$ is Turjányi's bound). For large $N$, the conjecture gives ratio $> C+1$, but the counterexample gives ratio $< C$. Contradiction via `linarith`.",
+    "mathContext": "This is one of the few theorems in the file with a complete Lean proof (not axiomatized). The contradiction argument is clean: the conjecture claims unbounded growth, but the counterexample provides a global upper bound $C$. Setting $M = C+1$ forces $C+1 < C$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Proof by contradiction",
+      "linarith tactic"
+    ],
+    "prerequisites": [
+      "turjanyi_counterexample",
+      "erdosConjecture"
+    ]
+  },
+  {
+    "id": "ann-337-generalized",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 153,
+      "endLine": 163
+    },
+    "type": "definition",
+    "title": "Ruzsa-Turjányi Generalization",
+    "content": "**generalizedConjecture h**: the $hA$ version of the conjecture.\n\n**ruzsa_turjanyi_generalization**: $\\neg$ `generalizedConjecture h` for all $h \\geq 2$.\n\nRuzsa and Turjányi (1985) showed the counterexample extends to all $h$-fold sumsets.",
+    "mathContext": "The generalization [RT85] shows the phenomenon is not specific to pairwise sums: for any fixed $h \\geq 2$, there exist sparse bases where $|hA \\cap [1,N]|/|A \\cap [1,N]|$ stays bounded. The construction modifies Turjányi's original example to handle iterated sumsets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "$h$-fold sumsets",
+      "Generalized conjecture"
+    ],
+    "prerequisites": [
+      "hFoldSumset",
+      "generalizedConjecture"
+    ]
+  },
+  {
+    "id": "ann-337-positive",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 176,
+      "endLine": 181
+    },
+    "type": "definition",
+    "title": "ruzsa_turjanyi_positive",
+    "content": "**ruzsa_turjanyi_positive**: For sparse bases:\n$$\\frac{|3A \\cap [1,3N]|}{|A \\cap [1,N]|} \\to \\infty$$\n\nThe **scaled** 3-fold version IS true. The scaling factor 3 matches the number of summands.",
+    "mathContext": "The scaling $[1,3N]$ (instead of $[1,N]$) captures all sums $a_1+a_2+a_3$ where each $a_i \\leq N$, ensuring no sums are 'lost' beyond the counting window. This is the key insight: the original conjecture fails because $A+A$ elements can exceed $N$ even when $A \\subseteq [1,N]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Scaled sumset ratio",
+      "Counting window"
+    ],
+    "prerequisites": [
+      "scaledSumsetRatio",
+      "hFoldSumset"
+    ]
+  },
+  {
+    "id": "ann-337-open",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 193,
+      "endLine": 203
+    },
+    "type": "definition",
+    "title": "scaledConjecture (OPEN)",
+    "content": "**scaledConjecture**: Does $|2A \\cap [1,2N]|/|A \\cap [1,N]| \\to \\infty$ for all sparse bases?\n\n**Status: OPEN** (Ruzsa-Turjányi conjecture)\n\nThe scaling factor 2 matches the 2-fold sumset $A+A$. This is the natural refinement of the disproved conjecture.",
+    "mathContext": "The 2-fold scaled version is strictly between the disproved conjecture ($[1,N]$, FALSE) and the proved 3-fold version ($[1,3N]$, TRUE). Its resolution would clarify the exact role of the counting window in sumset growth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Open conjectures",
+      "Scaled counting"
+    ],
+    "prerequisites": [
+      "sumset",
+      "countingFunction"
+    ]
+  },
+  {
+    "id": "ann-337-insight",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 217,
+      "endLine": 220
+    },
+    "type": "concept",
+    "title": "Why the Conjecture Fails",
+    "content": "**Key insight**: The sumset $A+A$ can have many **collisions**—different pairs $(a,b)$ and $(a',b')$ giving the same sum. This limits $|A+A|$ growth. Moreover, sums $a+b > N$ are invisible in $|A+A \\cap [1,N]|$, further reducing the counted sumset.",
+    "mathContext": "In additive combinatorics, sets with few collisions (small doubling) are well-understood via Freiman's theorem. But the Erdős conjecture asks about sets with MANY collisions. Turjányi's construction maximizes both collisions and the fraction of sums exceeding $N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sumset collisions",
+      "Small doubling",
+      "Freiman's theorem"
+    ],
+    "prerequisites": [
+      "sumset"
+    ]
+  },
+  {
+    "id": "ann-337-plunnecke",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 239,
+      "endLine": 241
+    },
+    "type": "concept",
+    "title": "plunnecke_ruzsa",
+    "content": "**plunnecke_ruzsa**: $|hA| \\leq |A|^h$ for finite sets.\n\nThe Plünnecke-Ruzsa inequality gives an UPPER bound on sumset size but no useful LOWER bound—this gap is exactly what allows bounded ratios.",
+    "mathContext": "The Plünnecke-Ruzsa inequality (Plünnecke 1970, Ruzsa 1989) is one of the most important tools in additive combinatorics. The precise form: if $|A+B| \\leq K|A|$, then $|hB - lB| \\leq K^{h+l}|A|$. Petridis (2012) gave a beautifully simple proof. The axiom here states a weaker version: $|hA| \\leq |A|^h$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Plünnecke-Ruzsa inequality",
+      "Petridis's proof",
+      "Doubling constant"
+    ],
+    "prerequisites": [
+      "hFoldSumset",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-337-powers2",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 259,
+      "endLine": 259
+    },
+    "type": "concept",
+    "title": "powers_of_two_not_basis",
+    "content": "**powers_of_two_not_basis**: $\\{2^k : k \\in \\mathbb{N}\\}$ is NOT an additive basis of any finite order.\n\nPowers of 2 are extremely sparse ($|A \\cap [1,N]| \\sim \\log_2 N$) but cannot represent all large integers.",
+    "mathContext": "Binary representations use each power of 2 at most once, but sums of $h$ powers of 2 (with repetition) can only represent numbers up to $h \\cdot 2^k$, which is too restrictive. In contrast, the primes (slightly denser at $N/\\ln N$) are conjectured to be a basis of order 2 (Goldbach).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Powers of 2",
+      "Binary representation",
+      "Non-basis"
+    ],
+    "prerequisites": [
+      "isAdditiveBasis"
+    ]
+  },
+  {
+    "id": "ann-337-squares",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 267,
+      "endLine": 267
+    },
+    "type": "concept",
+    "title": "squares_are_basis",
+    "content": "**squares_are_basis**: $\\{n^2 : n \\in \\mathbb{N}\\}$ is an additive basis of order 4.\n\nThis is Lagrange's four-square theorem (1770): every natural number is a sum of four squares.",
+    "mathContext": "Lagrange's theorem was the first result in Waring's problem. The squares are sparse ($|A \\cap [1,N]| \\sim \\sqrt{N} = o(N)$), making them a natural test case for Erdős's conjecture. For squares, $|A+A \\cap [1,N]|/|A \\cap [1,N]|$ does grow, so the squares are NOT a counterexample—Turjányi needed a more exotic construction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lagrange's theorem",
+      "Waring's problem",
+      "Squares"
+    ],
+    "prerequisites": [
+      "isAdditiveBasis"
+    ]
+  },
+  {
+    "id": "ann-337-summary",
+    "proofId": "erdos-337",
+    "range": {
+      "startLine": 276,
+      "endLine": 284
+    },
+    "type": "concept",
+    "title": "erdos_337_summary",
+    "content": "**erdos_337_summary**: Combines three results:\n1. $\\neg$ `erdosConjecture` (from `erdos_conjecture_false`)\n2. $\\forall h \\geq 2, \\neg$ `generalizedConjecture h` (from `ruzsa_turjanyi_generalization`)\n3. `scaledConjecture` (from `scaled_conjecture_open`)\n\nProved by `⟨erdos_conjecture_false, ..., scaled_conjecture_open⟩`.",
+    "mathContext": "The summary packages the complete picture: the original and generalized conjectures are both false, while the scaled conjecture (which is OPEN) is stated as an axiom. This gives a snapshot of the current state of knowledge on Problem #337.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary theorem",
+      "Complete resolution"
+    ],
+    "prerequisites": [
+      "erdos_conjecture_false",
+      "ruzsa_turjanyi_generalization",
+      "scaled_conjecture_open"
+    ]
+  }
+]

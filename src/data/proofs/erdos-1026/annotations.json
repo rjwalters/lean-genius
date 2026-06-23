@@ -1,0 +1,479 @@
+[
+  {
+    "id": "ann-e1026-realseq",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 55,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Real Sequence",
+    "content": "A **sequence of n real numbers** is a function Fin n → ℝ.\n\nThis represents x₁, x₂, ..., xₙ where each xᵢ is a real number.",
+    "mathContext": "A sequence $(x_1, \\ldots, x_n)$ is modeled as a function $\\text{Fin}\\, n \\to \\mathbb{R}$, where $\\text{Fin}\\, n = \\{0, 1, \\ldots, n-1\\}$. This is the standard Lean 4 representation for fixed-length sequences.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fin n",
+      "RealSeq",
+      "Function.Injective",
+      "distinct sequences"
+    ],
+    "prerequisites": [
+      "Fin type",
+      "ℝ (Mathlib.Data.Real.Basic)"
+    ]
+  },
+  {
+    "id": "ann-e1026-subsequence",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 58,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Subsequence",
+    "content": "A **subsequence** of length m from a sequence of length n is given by:\n\n- An index function `indices : Fin m → Fin n`\n- The constraint that indices is strictly monotonic\n\nThis ensures we pick m elements in their original order.",
+    "mathContext": "A subsequence of length $m$ is an injective order-preserving map $\\sigma: \\text{Fin}\\, m \\hookrightarrow \\text{Fin}\\, n$ with $i < j \\implies \\sigma(i) < \\sigma(j)$. Uses `StrictMono` from Mathlib, which encodes $\\forall a\\, b,\\; a < b \\to f(a) < f(b)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "StrictMono",
+      "Subsequence",
+      "index function",
+      "order-preserving injection"
+    ],
+    "prerequisites": [
+      "Mathlib.Order.Monotone.Basic (StrictMono)",
+      "Fin m → Fin n",
+      "structure syntax"
+    ]
+  },
+  {
+    "id": "ann-e1026-increasing",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 63,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Increasing Subsequence",
+    "content": "A subsequence is **increasing** if the values are strictly increasing:\n\ni < j implies x_{indices(i)} < x_{indices(j)}\n\nFormally: StrictMono (seq ∘ sub.indices).",
+    "mathContext": "An increasing subsequence satisfies $\\text{StrictMono}(\\text{seq} \\circ \\sigma)$, i.e., $i < j \\implies x_{\\sigma(i)} < x_{\\sigma(j)}$. Since $\\sigma$ is already strictly monotonic, the composition $\\text{seq} \\circ \\sigma$ being strictly monotonic means the values increase in the original order.",
+    "significance": "key",
+    "relatedConcepts": [
+      "StrictMono",
+      "IsIncreasing",
+      "LIS",
+      "longest increasing subsequence"
+    ],
+    "prerequisites": [
+      "Function.comp (∘)",
+      "StrictMono",
+      "Subsequence"
+    ]
+  },
+  {
+    "id": "ann-e1026-decreasing",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 67,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Decreasing Subsequence",
+    "content": "A subsequence is **decreasing** if values are strictly decreasing:\n\ni < j implies x_{indices(i)} > x_{indices(j)}\n\nNote: strictly decreasing, not just non-increasing.",
+    "mathContext": "Defined pointwise: $\\forall i\\, j : \\text{Fin}\\, m,\\; i < j \\to x_{\\sigma(j)} < x_{\\sigma(i)}$. Unlike `IsIncreasing` which uses `StrictMono`, this is defined explicitly — Lean's `StrictAnti` could also be used.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsDecreasing",
+      "StrictAnti",
+      "LDS",
+      "longest decreasing subsequence"
+    ],
+    "prerequisites": [
+      "Subsequence",
+      "strict inequality on ℝ"
+    ]
+  },
+  {
+    "id": "ann-e1026-monotonic",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 71,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Monotonic Subsequence",
+    "content": "A subsequence is **monotonic** if it is increasing OR decreasing.\n\nThis is the key property for the optimization problem: we want the maximum-sum monotonic subsequence.",
+    "mathContext": "$\\text{IsMonotonic}(\\text{seq}, \\sigma) \\iff \\text{IsIncreasing}(\\text{seq}, \\sigma) \\lor \\text{IsDecreasing}(\\text{seq}, \\sigma)$. The disjunction is non-exclusive (a length-1 subsequence is vacuously both).",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsMonotonic",
+      "IsIncreasing",
+      "IsDecreasing",
+      "Erdős-Szekeres theorem"
+    ],
+    "prerequisites": [
+      "IsIncreasing",
+      "IsDecreasing",
+      "Or (disjunction)"
+    ]
+  },
+  {
+    "id": "ann-e1026-subseqsum",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 75,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "Subsequence Sum and Total Sum",
+    "content": "The **sum of a subsequence** is:\n\nΣᵢ seq(indices(i))\n\nThe **total sum** is Σᵢ seq(i). Both are noncomputable (use `sSup` or Finset sums over ℝ).\n\nThe optimization problem: maximize subsequenceSum over all monotonic subsequences.",
+    "mathContext": "$\\text{subsequenceSum}(\\text{seq}, \\sigma) = \\sum_{i=0}^{m-1} x_{\\sigma(i)}$ and $\\text{totalSum}(\\text{seq}) = \\sum_{i=0}^{n-1} x_i$. Both use `Finset.sum` from `BigOperators`. Marked `noncomputable` because `ℝ` has no `DecidableEq` instance.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subsequenceSum",
+      "totalSum",
+      "Finset.sum",
+      "BigOperators",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "Mathlib.Algebra.BigOperators.Finprod",
+      "Finset.sum",
+      "noncomputable def"
+    ]
+  },
+  {
+    "id": "ann-e1026-erdos-szekeres",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 89,
+      "endLine": 106
+    },
+    "type": "concept",
+    "title": "Erdős-Szekeres Theorem and Square Corollary",
+    "content": "**Erdős-Szekeres (1935):**\n\nEvery sequence of (r-1)(s-1) + 1 distinct elements contains:\n- An increasing subsequence of length r, OR\n- A decreasing subsequence of length s\n\n**Corollary:** n² + 1 elements → monotonic subsequence of length n + 1.\n\nBoth are axiomatized — the classical proof uses a pigeonhole argument on (LIS, LDS) labels.",
+    "mathContext": "**Erdős-Szekeres**: For $n = (r-1)(s-1)+1$, any injective sequence $x: \\text{Fin}\\,n \\to \\mathbb{R}$ has an increasing subsequence of length $r$ or decreasing of length $s$. **Proof sketch**: assign each index the pair $(\\text{LIS ending here}, \\text{LDS ending here})$; by pigeonhole on $(r-1)(s-1)+1$ elements with at most $(r-1)(s-1)$ distinct pairs, two share a label, forcing an extension. **Corollary**: $k^2+1$ elements give monotonic length $\\geq k+1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos_szekeres",
+      "erdos_szekeres_square",
+      "Dilworth's theorem",
+      "LIS algorithms",
+      "Ramsey theory",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "Function.Injective",
+      "RealSeq",
+      "Subsequence",
+      "IsIncreasing",
+      "IsDecreasing",
+      "IsMonotonic"
+    ]
+  },
+  {
+    "id": "ann-e1026-decomposition",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 114,
+      "endLine": 121
+    },
+    "type": "theorem",
+    "title": "Monotonic Decomposition",
+    "content": "A **monotonic decomposition** partitions [1,n] into disjoint monotonic subsequences.\n\nThe structure tracks:\n- Number of parts (numParts)\n- Each part is a monotonic subsequence (Σ m, Subsequence n m)\n- Parts are disjoint (distinct indices across parts)\n- Parts cover all indices (every k : Fin n appears in some part)",
+    "mathContext": "A partition $\\{S_1, \\ldots, S_p\\}$ of $\\{0, \\ldots, n-1\\}$ where each $S_i$ is a monotonic subsequence. The `parts` field uses a dependent sigma type `Σ m, Subsequence n m` to allow parts of varying lengths. Disjointness: $i \\neq j \\implies \\forall k_1\\, k_2,\\; \\sigma_i(k_1) \\neq \\sigma_j(k_2)$. Covering: $\\forall k \\in \\text{Fin}\\, n,\\; \\exists i\\, m\\, h_m,\\; \\sigma_i(\\langle m, h_m \\rangle) = k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MonotonicDecomposition",
+      "Dilworth's theorem",
+      "partition",
+      "sigma type",
+      "chain decomposition"
+    ],
+    "prerequisites": [
+      "Σ (sigma type)",
+      "Fin numParts",
+      "IsMonotonic",
+      "Subsequence"
+    ]
+  },
+  {
+    "id": "ann-e1026-hanani",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 123,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Hanani's Theorem and Dilworth Bound",
+    "content": "**Hanani's Theorem (1957):**\n\nEvery sequence of n elements can be decomposed into at most (√2 + o(1))√n monotonic subsequences. More precisely: ⌈√(2n)⌉ parts suffice.\n\n**Dilworth-style bound:** At most 2√n parts (√n increasing + √n decreasing).\n\n**Consequence:** By pigeonhole, one part has sum ≥ totalSum / √(2n), giving the initial lower bound c ≥ 1/√2 ≈ 0.707.",
+    "mathContext": "**Hanani**: $\\exists$ decomposition with $p \\leq \\lceil\\sqrt{2n}\\rceil$ parts. The proof greedily extends the longest current monotonic run, using Erdős-Szekeres to bound how many runs are needed. **Dilworth bound**: Erdős-Szekeres gives LIS $\\geq \\sqrt{n}$ or LDS $\\geq \\sqrt{n}$; decompose into at most $\\sqrt{n}$ increasing chains (by Dilworth) plus $\\sqrt{n}$ decreasing chains.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hanani_decomposition",
+      "dilworth_bound",
+      "MonotonicDecomposition",
+      "Dilworth's theorem",
+      "greedy algorithm",
+      "Real.sqrt"
+    ],
+    "prerequisites": [
+      "MonotonicDecomposition",
+      "Real.sqrt",
+      "Function.Injective",
+      "Nat.sqrt"
+    ]
+  },
+  {
+    "id": "ann-e1026-maxsum",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 147,
+      "endLine": 158
+    },
+    "type": "definition",
+    "title": "Maximum Monotonic Sum and Normalized Ratio",
+    "content": "Three key definitions:\n\n- **maxMonotonicSumLength**: sup over monotonic subsequences of fixed length m\n- **maxMonotonicSum**: sup over ALL monotonic subsequences (any length)\n- **normalizedRatio**: (maxMonotonicSum · √n) / totalSum\n\nThe central question: what is inf{normalizedRatio} over all sequences?",
+    "mathContext": "$\\text{maxMonotonicSum}(\\text{seq}) = \\sup\\{\\sum x_{\\sigma(i)} : \\sigma \\text{ monotonic}\\}$. The normalized ratio $c_n = \\frac{\\text{maxMonotonicSum} \\cdot \\sqrt{n}}{\\text{totalSum}}$ measures how well a monotonic subsequence captures the total sum. The problem asks for $c = \\lim_{n\\to\\infty} \\inf_{\\text{seq}} c_n$. Uses `sSup` (conditional supremum) from `Mathlib.Order.ConditionallyCompleteLattice`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "maxMonotonicSum",
+      "maxMonotonicSumLength",
+      "normalizedRatio",
+      "sSup",
+      "ConditionallyCompleteLattice"
+    ],
+    "prerequisites": [
+      "sSup",
+      "Set comprehension",
+      "noncomputable def",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-e1026-hanani-bound",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 166,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "Hanani's Lower Bound: c ≥ 1/√2",
+    "content": "**Hanani's bound gives c ≥ 1/√2:**\n\nmaxMonotonicSum ≥ totalSum / (√2 · √n + 1)\n\nProof: Decompose into ≤ √(2n) parts. By pigeonhole (average argument), the maximum part sum ≥ totalSum / number_of_parts ≥ totalSum / (√2·√n + 1).",
+    "mathContext": "If $p \\leq \\sqrt{2n} + 1$ parts cover the sequence with total sum $S$, the largest part has sum $\\geq S/p \\geq S/(\\sqrt{2n}+1) \\approx S/(\\sqrt{2} \\cdot \\sqrt{n})$. Hence $c \\geq 1/\\sqrt{2} \\approx 0.707$. The $+1$ term arises from ceiling effects in Hanani's bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hanani_lower_bound",
+      "hanani_decomposition",
+      "pigeonhole principle",
+      "average argument"
+    ],
+    "prerequisites": [
+      "hanani_decomposition",
+      "maxMonotonicSum",
+      "totalSum",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-e1026-cambie",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 181,
+      "endLine": 185
+    },
+    "type": "concept",
+    "title": "Cambie's Upper Bound: c ≤ 1",
+    "content": "**Cambie showed c ≤ 1:**\n\nFor any ε > 0, there exist sequences where maxMonotonicSum ≤ (1+ε) · totalSum/√n.\n\nThe construction uses carefully interleaved increasing and decreasing blocks so that no single monotonic subsequence captures more than ~1/√n of the total sum.",
+    "mathContext": "The extremal construction: for large $n$, arrange $\\sqrt{n}$ blocks of size $\\sqrt{n}$, alternating between increasing and decreasing order, with values chosen so each block has equal sum. Any monotonic subsequence can take at most one element from each 'wrong-direction' block, limiting its sum to $\\approx S/\\sqrt{n}$. The existential quantifier $\\forall \\varepsilon > 0,\\; \\exists n,\\; \\exists \\text{seq}$ captures the asymptotic nature.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cambie_upper_bound",
+      "extremal construction",
+      "tightness",
+      "interleaved blocks"
+    ],
+    "prerequisites": [
+      "maxMonotonicSum",
+      "totalSum",
+      "Real.sqrt",
+      "Function.Injective"
+    ]
+  },
+  {
+    "id": "ann-e1026-weighted-es",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 193,
+      "endLine": 205
+    },
+    "type": "concept",
+    "title": "Weighted Erdős-Szekeres (Cambie's Conjecture)",
+    "content": "**Cambie's Conjecture (now Theorem):**\n\nIf x₁, ..., x_{k²} are distinct positive reals with Σxᵢ = 1, then there exists a monotonic subsequence with sum ≥ 1/k.\n\nThis is the weighted version of Erdős-Szekeres: instead of guaranteed *length* k+1, we get guaranteed *sum* 1/k. The classical ES follows by taking all weights equal (1/k²).",
+    "mathContext": "**Weighted ES**: For $n = k^2$ distinct positive reals with $\\sum x_i = 1$, $\\text{maxMonotonicSum} \\geq 1/k$. The classical ES is the special case $x_i = 1/k^2$ for all $i$: a monotonic subsequence of length $\\geq k+1$ has sum $\\geq (k+1)/k^2 > 1/k$. The weighted version is strictly stronger — it handles non-uniform weights where long subsequences might have small sum.",
+    "significance": "key",
+    "relatedConcepts": [
+      "weighted_erdos_szekeres",
+      "Cambie's conjecture",
+      "erdos_szekeres",
+      "weighted pigeonhole"
+    ],
+    "prerequisites": [
+      "RealSeq",
+      "totalSum",
+      "maxMonotonicSum",
+      "Function.Injective"
+    ]
+  },
+  {
+    "id": "ann-e1026-twy",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 207,
+      "endLine": 225
+    },
+    "type": "concept",
+    "title": "Tidor-Wang-Yang Theorem and Optimal Constant",
+    "content": "**Tidor-Wang-Yang (2016):** Proved the weighted Erdős-Szekeres theorem, confirming c = 1.\n\n**optimal_constant_is_one:** For any ε > 0 and sequence of positive reals, maxMonotonicSum ≥ (1-ε) · totalSum/√n.\n\nAlso proved independently by Wagner (2017) via tournament theory. The proof uses a clever inductive argument on the number of elements, refining the pigeonhole approach used for the weaker Hanani bound.",
+    "mathContext": "**Tidor-Wang-Yang proof sketch**: By induction on $k$. Partition elements into 'large' ($x_i \\geq 1/k^2$) and 'small'. Large elements: at most $k^2$ of them, classical ES gives monotonic length $\\geq k+1$, sum $\\geq (k+1) \\cdot 1/k^2 > 1/k$. Small elements: apply induction after renormalizing. **Optimal constant**: $\\forall \\varepsilon > 0,\\; \\forall n,\\; \\forall \\text{seq},\\; \\text{maxMonotonicSum} \\geq (1-\\varepsilon) \\cdot S/\\sqrt{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tidor_wang_yang",
+      "optimal_constant_is_one",
+      "Wagner's tournament proof",
+      "inductive argument",
+      "1-color avoiding paths"
+    ],
+    "prerequisites": [
+      "weighted_erdos_szekeres",
+      "maxMonotonicSum",
+      "totalSum",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-e1026-lis",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 233,
+      "endLine": 235
+    },
+    "type": "definition",
+    "title": "Longest Increasing Subsequence",
+    "content": "**LIS(seq)** = length of the longest increasing subsequence.\n\nClassically, LIS can be computed in O(n log n) time using patience sorting or binary search. Defined as sSup over all m with an increasing subsequence of length m.",
+    "mathContext": "$\\text{LIS}(x) = \\sup\\{m : \\exists \\sigma \\in \\text{Subseq}(n, m),\\; \\text{IsIncreasing}(x, \\sigma)\\}$. Uses `sSup` on $\\mathbb{N}$ (conditionally complete lattice). The O(n log n) patience sorting algorithm maintains piles and uses binary search for insertion.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LIS",
+      "patience sorting",
+      "Young tableaux",
+      "Robinson-Schensted correspondence",
+      "sSup"
+    ],
+    "prerequisites": [
+      "sSup on ℕ",
+      "IsIncreasing",
+      "Subsequence"
+    ]
+  },
+  {
+    "id": "ann-e1026-lds",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 237,
+      "endLine": 239
+    },
+    "type": "definition",
+    "title": "Longest Decreasing Subsequence",
+    "content": "**LDS(seq)** = length of the longest decreasing subsequence.\n\nBy symmetry (negating the sequence), LDS has the same algorithmic complexity as LIS: O(n log n).",
+    "mathContext": "$\\text{LDS}(x) = \\sup\\{m : \\exists \\sigma \\in \\text{Subseq}(n, m),\\; \\text{IsDecreasing}(x, \\sigma)\\}$. Equivalently, $\\text{LDS}(x) = \\text{LIS}(-x)$ where $(-x)_i = -x_i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LDS",
+      "LIS",
+      "sequence negation",
+      "symmetry"
+    ],
+    "prerequisites": [
+      "sSup on ℕ",
+      "IsDecreasing",
+      "Subsequence"
+    ]
+  },
+  {
+    "id": "ann-e1026-lis-lds",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 241,
+      "endLine": 249
+    },
+    "type": "concept",
+    "title": "LIS × LDS ≥ n and Longest Monotonic Bound",
+    "content": "**LIS · LDS ≥ n:** A consequence of Erdős-Szekeres. If LIS = r and LDS = s, then by Erdős-Szekeres the sequence has at most (r)(s) = rs elements (else we'd find longer monotonic subsequences), so rs ≥ n.\n\n**Corollary:** max(LIS, LDS) ≥ √n. The longest monotonic subsequence has length at least √n.\n\nThese are the *length* versions; the weighted ES gives the stronger *sum* version.",
+    "mathContext": "**Proof of LIS·LDS ≥ n**: By contradiction. If $\\text{LIS} = r$ and $\\text{LDS} = s$ with $rs < n$, assign each index $i$ the label $(\\ell_i, d_i)$ where $\\ell_i$ = LIS ending at $i$, $d_i$ = LDS ending at $i$. The map $i \\mapsto (\\ell_i, d_i)$ is injective (distinct elements), but the range has $\\leq rs < n$ elements — contradiction. **Corollary**: $\\max(r, s) \\geq \\sqrt{rs} \\geq \\sqrt{n}$ by AM-GM.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lis_lds_bound",
+      "longest_monotonic_bound",
+      "Erdős-Szekeres",
+      "AM-GM inequality",
+      "Nat.sqrt"
+    ],
+    "prerequisites": [
+      "LIS",
+      "LDS",
+      "erdos_szekeres",
+      "Function.Injective"
+    ]
+  },
+  {
+    "id": "ann-e1026-main",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 255,
+      "endLine": 268
+    },
+    "type": "concept",
+    "title": "Main Result: Erdős Problem #1026 Solved",
+    "content": "**Erdős Problem #1026: SOLVED**\n\nAnswer: The optimal constant is c = 1.\n\nThe theorem `erdos_1026` is a direct application of `tidor_wang_yang`: for any k ≥ 1 and sequence of k² distinct positive reals with total sum 1, maxMonotonicSum ≥ 1/k. The proof is a single function application — all mathematical content lives in the axiomatized Tidor-Wang-Yang theorem.",
+    "mathContext": "$\\text{erdos\\_1026} : \\forall k \\geq 1,\\; \\forall \\text{seq} : \\text{Fin}(k^2) \\to \\mathbb{R},\\; \\text{Injective}(\\text{seq}) \\to (\\forall i,\\; x_i > 0) \\to \\sum x_i = 1 \\to \\text{maxMonotonicSum}(\\text{seq}) \\geq 1/k$. Proof: `fun k hk seq hDistinct hPos hSum => tidor_wang_yang k hk seq hDistinct hPos hSum`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos_1026",
+      "tidor_wang_yang",
+      "weighted_erdos_szekeres",
+      "optimal constant c = 1"
+    ],
+    "prerequisites": [
+      "tidor_wang_yang",
+      "RealSeq",
+      "maxMonotonicSum",
+      "totalSum"
+    ]
+  },
+  {
+    "id": "ann-e1026-tight",
+    "proofId": "erdos-1026",
+    "range": {
+      "startLine": 270,
+      "endLine": 283
+    },
+    "type": "concept",
+    "title": "Tightness and Tournament Connection",
+    "content": "**Tightness (Cambie):** For any ε > 0, there exist sequences achieving maxMonotonicSum ≤ 1/k + ε, proving the bound cannot be improved.\n\n**Tournament connection (Wagner):** In a tournament on n players, the longest monotonic path has length ≥ √n. This gives an alternative proof of the Erdős-Szekeres-type bound. Wagner's 2017 proof uses tournament coloring to establish the weighted ES theorem independently of Tidor-Wang-Yang.",
+    "mathContext": "**Tightness**: $\\forall \\varepsilon > 0,\\; \\exists k_0,\\; \\forall k \\geq k_0,\\; \\exists \\text{seq with } \\sum x_i = 1$ and $\\text{maxMonotonicSum} \\leq 1/k + \\varepsilon$. **Tournament**: A complete directed graph (tournament) on $n$ vertices has a directed path of length $\\geq \\sqrt{n}$. Mapping sequence ordering to tournament edges: $i \\to j$ if $x_i < x_j$ (increasing) or $x_i > x_j$ (decreasing), monotonic subsequences become directed paths.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos_1026_tight",
+      "tournament_connection",
+      "cambie_upper_bound",
+      "Wagner's proof",
+      "directed paths in tournaments"
+    ],
+    "prerequisites": [
+      "erdos_1026",
+      "maxMonotonicSum",
+      "extremal combinatorics"
+    ]
+  }
+]

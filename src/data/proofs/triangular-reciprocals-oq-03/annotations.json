@@ -1,0 +1,224 @@
+[
+  {
+    "id": "ann-alt-tri-axioms-intro",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": {
+      "startLine": 31,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Axiomatized Alternating Harmonic Series",
+    "content": "The proof axiomatizes the alternating harmonic series because its convergence at the boundary $x = 1$ of the power series $\\log(1+x) = \\sum_{n=1}^\\infty (-1)^{n+1} x^n/n$ requires Abel's theorem on power series. Abel's theorem guarantees that if $\\sum a_n$ converges, then $\\lim_{x \\to 1^-} \\sum a_n x^n = \\sum a_n$. This theorem is not yet formalized in Mathlib, so the boundary values are taken as axioms.",
+    "mathContext": "$\\log(1+x) = \\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1} x^n}{n}$ for $|x| \\le 1$, $x \\neq -1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Abel's theorem",
+      "power series",
+      "radius of convergence",
+      "Mercator series"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "uniform convergence",
+      "power series"
+    ]
+  },
+  {
+    "id": "ann-alt-harmonic-axiom",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": {
+      "startLine": 31,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Alternating Harmonic Series Axiom",
+    "content": "The first axiom states $\\sum_{n=1}^\\infty (-1)^{n+1}/n = \\ln 2$. This is the Mercator series (1668) evaluated at $x=1$. The $n=0$ case is defined to be $0$ to handle the natural number indexing — the mathematical series starts at $n=1$. The sign pattern $(-1)^{n+1}$ ensures the first nonzero term ($n=1$) is positive.",
+    "mathContext": "$\\texttt{HasSum}\\; f\\; s$ means $\\sum_{n=0}^{\\infty} f(n) = s$ in the topology of $\\mathbb{R}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mercator series",
+      "natural logarithm",
+      "conditional convergence"
+    ],
+    "prerequisites": [
+      "HasSum API",
+      "topological convergence"
+    ]
+  },
+  {
+    "id": "ann-shifted-axiom",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": {
+      "startLine": 38,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Shifted Alternating Harmonic Series Axiom",
+    "content": "The second axiom states $\\sum_{n=1}^\\infty (-1)^{n+1}/(n+1) = 1 - \\ln 2$. This is the standard alternating harmonic series with the first term ($1$) removed and signs negated: removing $1$ from $\\ln 2$ gives $\\ln 2 - 1$, and negating yields $1 - \\ln 2$. Equivalently, $\\sum_{n=2}^\\infty (-1)^n / n = 1 - \\ln 2$.",
+    "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n+1} = \\frac{1}{2} - \\frac{1}{3} + \\frac{1}{4} - \\cdots = 1 - \\ln 2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "index shifting",
+      "series reindexing",
+      "conditional convergence"
+    ],
+    "prerequisites": [
+      "alternating harmonic series",
+      "series manipulation"
+    ]
+  },
+  {
+    "id": "ann-main-theorem-stmt",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": {
+      "startLine": 50,
+      "endLine": 58
+    },
+    "type": "concept",
+    "title": "Main Theorem Statement",
+    "content": "The main result: the alternating sum of reciprocals of triangular numbers equals $4\\ln 2 - 2$. Since the $n$-th triangular number is $T_n = n(n+1)/2$, we have $2/T_n = 2/(n(n+1))$, and the series computes $\\sum_{n=1}^\\infty (-1)^{n+1} \\cdot 2/(n(n+1))$. The value $4\\ln 2 - 2 \\approx 0.7726$ is transcendental (as a nonzero rational linear combination of $1$ and $\\ln 2$, where $\\ln 2$ is transcendental).",
+    "mathContext": "$\\sum_{n=1}^{\\infty} (-1)^{n+1} \\cdot \\frac{2}{n(n+1)} = 4\\ln 2 - 2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangular numbers",
+      "figurate number reciprocals",
+      "transcendental numbers"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "partial fractions"
+    ]
+  },
+  {
+    "id": "ann-partial-fractions",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": {
+      "startLine": 55,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "Partial Fraction Decomposition via funext",
+    "content": "The proof begins by showing pointwise equality: $(-1)^{n+1} \\cdot 2/(n(n+1)) = 2 \\cdot (-1)^{n+1}/n - 2 \\cdot (-1)^{n+1}/(n+1)$. This is established using `ext n` (function extensionality) with case splitting on $n = 0$. For $n \\neq 0$, `field_simp` clears denominators and `ring` verifies the algebraic identity. The `positivity` tactic proves $n + 1 \\neq 0$ automatically.",
+    "mathContext": "$\\frac{2}{n(n+1)} = \\frac{2}{n} - \\frac{2}{n+1}$ (partial fractions / telescoping decomposition)",
+    "significance": "key",
+    "relatedConcepts": [
+      "partial fractions",
+      "telescoping series",
+      "function extensionality"
+    ],
+    "prerequisites": [
+      "field_simp tactic",
+      "ring tactic",
+      "positivity tactic"
+    ]
+  },
+  {
+    "id": "ann-hassum-combination",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": {
+      "startLine": 72,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "Combining HasSum Results",
+    "content": "After rewriting, the proof combines the two axioms using `HasSum.mul_left` (scalar multiplication: if $\\sum f(n) = s$ then $\\sum c \\cdot f(n) = c \\cdot s$) and `HasSum.sub` (if $\\sum f(n) = s$ and $\\sum g(n) = t$, then $\\sum (f(n) - g(n)) = s - t$). The algebraic simplification $2 \\cdot \\ln 2 - 2 \\cdot (1 - \\ln 2) = 4\\ln 2 - 2$ is verified by `ring`.",
+    "mathContext": "$2 \\cdot \\ln 2 - 2(1 - \\ln 2) = 2\\ln 2 - 2 + 2\\ln 2 = 4\\ln 2 - 2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "linearity of summation",
+      "HasSum algebra",
+      "Mathlib infinite series API"
+    ],
+    "prerequisites": [
+      "HasSum.mul_left",
+      "HasSum.sub",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-tsum-version",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": {
+      "startLine": 81,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "tsum Formulation",
+    "content": "The `tsum` (topological sum) version restates the result using Lean's $\\sum'$ notation, which returns a real number rather than a `HasSum` proposition. This is derived directly via `HasSum.tsum_eq`, which extracts the value from a `HasSum` proof. The `tsum` form is often more convenient for downstream computation.",
+    "mathContext": "$\\texttt{tsum\\_eq}$ : if $\\texttt{HasSum}\\; f\\; s$ then $\\sum' f = s$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tsum API",
+      "topological sum",
+      "HasSum vs tsum"
+    ],
+    "prerequisites": [
+      "HasSum.tsum_eq"
+    ]
+  },
+  {
+    "id": "ann-corollary-unscaled",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": {
+      "startLine": 92,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Unscaled Corollary: Reciprocal Products",
+    "content": "This corollary divides the main result by 2 to obtain $\\sum_{n=1}^\\infty (-1)^{n+1}/(n(n+1)) = 2\\ln 2 - 1 \\approx 0.3863$. The proof extracts the factor of 2 using `const_smul` with $2^{-1}$, showing that $f(n) = 2^{-1} \\cdot (2 \\cdot g(n))$ pointwise. Since $1/(n(n+1)) = 1/(2T_n)$, this also gives the sum of alternating half-reciprocals of triangular numbers.",
+    "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n(n+1)} = 2\\ln 2 - 1 = \\frac{4\\ln 2 - 2}{2}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "scalar extraction",
+      "const_smul",
+      "triangular number reciprocals"
+    ],
+    "prerequisites": [
+      "HasSum.const_smul",
+      "main theorem"
+    ]
+  },
+  {
+    "id": "ann-summability",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": {
+      "startLine": 136,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Summability Result",
+    "content": "The summability of the alternating triangular reciprocal series follows directly from the existence of a `HasSum` proof via `HasSum.summable`. This is a standard Mathlib pattern: proving a concrete sum value is stronger than proving summability, so the latter comes for free.",
+    "mathContext": "$\\texttt{HasSum}\\; f\\; s \\implies \\texttt{Summable}\\; f$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "summability",
+      "HasSum implies Summable",
+      "absolute vs conditional convergence"
+    ],
+    "prerequisites": [
+      "HasSum.summable"
+    ]
+  },
+  {
+    "id": "ann-partial-sums",
+    "proofId": "triangular-reciprocals-oq-03",
+    "range": {
+      "startLine": 146,
+      "endLine": 156
+    },
+    "type": "insight",
+    "title": "Finite Partial Sum Verification",
+    "content": "Four partial sums are verified by `norm_num`: $S_1 = 1$, $S_2 = 2/3$, $S_3 = 5/6$, $S_4 = 11/15$. These oscillate around the limit $4\\ln 2 - 2 \\approx 0.7726$ — odd partial sums overshoot, even ones undershoot. This oscillation is characteristic of alternating series (guaranteed by the Leibniz alternating series test). The denominators $1, 3, 6, 15$ are related to products of consecutive integers.",
+    "mathContext": "$S_1 = 1 > 0.7726 > S_2 = \\tfrac{2}{3} < S_4 = \\tfrac{11}{15} < 0.7726 < S_3 = \\tfrac{5}{6}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Leibniz alternating series test",
+      "oscillating partial sums",
+      "norm_num tactic"
+    ],
+    "prerequisites": [
+      "norm_num tactic",
+      "alternating series convergence"
+    ]
+  }
+]

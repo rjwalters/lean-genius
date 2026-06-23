@@ -1,0 +1,232 @@
+[
+  {
+    "id": "ann-e206-header",
+    "proofId": "erdos-206",
+    "range": {
+      "startLine": 1,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #206: Eventually Greedy Egyptian Fractions**\n\n**Setup:** For x > 0, let R_n(x) be the best underapproximation using n distinct unit fractions (1/m_1 + ... + 1/m_n < x).\n\n**Question:** For almost all x, do best underapproximations eventually follow greedy choices?\n\n**Answer:** NO (Kovač 2024)\n\nThe set of eventually greedy x has Lebesgue measure ZERO. Despite this, no explicit non-greedy example is known.",
+    "mathContext": "This connects approximation theory, measure theory, and Diophantine approximation. The greedy algorithm's failure for generic numbers reveals deep structure in the space of Egyptian fraction representations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "Greedy algorithms",
+      "Measure theory",
+      "Diophantine approximation"
+    ],
+    "prerequisites": [
+      "Egyptian fractions as sums of distinct unit fractions",
+      "Lebesgue measure and sets of measure zero",
+      "greedy algorithms for fraction approximation"
+    ]
+  },
+  {
+    "id": "ann-e206-egyptian-fraction",
+    "proofId": "erdos-206",
+    "range": {
+      "startLine": 54,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Egyptian Fraction and Valid Denominators",
+    "content": "**EgyptianFraction S** computes the sum of unit fractions with denominators from a finite set S:\n  sum_{m in S} 1/m\n\n**Examples:**\n- {2, 3, 7} -> 1/2 + 1/3 + 1/7 = 41/42\n- {3, 4, 5} -> 1/3 + 1/4 + 1/5 = 47/60\n\n**validDenominators** ensures all denominators are positive. These representations date to ancient Egyptian papyri.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Unit fractions",
+      "Finite sums",
+      "Ancient mathematics"
+    ],
+    "mathContext": "See annotation content for formal details of egyptian fraction and valid denominators",
+    "prerequisites": [
+      "unit fractions of the form 1/m",
+      "summation over a finite set of denominators",
+      "rational arithmetic with common denominators"
+    ]
+  },
+  {
+    "id": "ann-e206-R-function",
+    "proofId": "erdos-206",
+    "range": {
+      "startLine": 65,
+      "endLine": 81
+    },
+    "type": "concept",
+    "title": "Best Underapproximation R_n(x)",
+    "content": "**R n x** is the maximum sum of n distinct unit fractions below x, axiomatized with three key properties:\n\n1. **R_less_than_target**: R_n(x) < x (strict underapproximation)\n2. **R_monotone**: R_n(x) <= R_{n+1}(x) (more terms help)\n3. **R_nonneg**: R_n(x) >= 0 (sums of positive terms)\n\n**Example:** R_1(1) = 1/2 (largest unit fraction below 1).\n\nAxiomatized because the full definition involves maximizing over all n-element subsets of positive integers.",
+    "mathContext": "The existence of R_n(x) follows from compactness: there are finitely many n-element subsets of {1, ..., N} for each bound N, and the supremum is achieved.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Optimization",
+      "Finite sets",
+      "Supremum"
+    ],
+    "prerequisites": [
+      "supremum over finite n-element subsets of positive integers",
+      "strict underapproximation R_n(x) < x",
+      "monotonicity of approximations as terms increase"
+    ]
+  },
+  {
+    "id": "ann-e206-eventually-greedy",
+    "proofId": "erdos-206",
+    "range": {
+      "startLine": 85,
+      "endLine": 98
+    },
+    "type": "definition",
+    "title": "Eventually Greedy Property",
+    "content": "**EventuallyGreedy x:** x is eventually greedy if there exists N such that for all n >= N:\n  R_{n+1}(x) = R_n(x) + 1/m\nwhere m is the smallest valid denominator (the greedy choice).\n\n**EventuallyGreedySet** = { x > 0 : EventuallyGreedy x }.\n\n**Intuition:** After some point, the optimal strategy coincides with the simple greedy approach. The question is whether this happens for 'most' real numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Greedy algorithms",
+      "Eventual behavior",
+      "Optimal strategies"
+    ],
+    "mathContext": "See annotation content for formal details of eventually greedy property",
+    "prerequisites": [
+      "greedy choice of the smallest valid denominator",
+      "eventual behavior governed by a threshold N",
+      "recurrence R_{n+1}(x) = R_n(x) + 1/m"
+    ]
+  },
+  {
+    "id": "ann-e206-curtiss-erdos",
+    "proofId": "erdos-206",
+    "range": {
+      "startLine": 102,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Curtiss and Erdős: Early Positive Results",
+    "content": "**curtiss_theorem (1922):** x = 1 is eventually greedy. The first result of this type.\n\n**erdos_unit_fractions (1950):** For all positive m, x = 1/m is eventually greedy.\n\n**nathanson_theorem (2023):** a/b is eventually greedy when a | b+1.\n\nExamples of Nathanson's condition: 1/2 (1|3), 2/5 (2|6), 3/8 (3|9).\n\nThese results suggested the conjecture might be true, but Kovač showed it fails for almost all x.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Unit fractions",
+      "Divisibility conditions",
+      "Historical progress"
+    ],
+    "mathContext": "See annotation content for formal details of curtiss and erdős: early positive results",
+    "prerequisites": [
+      "eventually greedy approximations of unit fractions 1/m",
+      "divisibility condition a divides b+1 for rationals a/b",
+      "Curtiss (1922), Erdős (1950), and Nathanson (2023) results"
+    ]
+  },
+  {
+    "id": "ann-e206-chu",
+    "proofId": "erdos-206",
+    "range": {
+      "startLine": 117,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Chu's Extension (2023)",
+    "content": "**chu_extension:** There exists a predicate P on pairs (a, b) such that:\n1. P(a, b) implies a/b is eventually greedy\n2. P extends Nathanson's condition: a | b+1 implies P(a, b)\n\nChu found a broader class of rationals with the greedy property, providing the most general sufficient condition before Kovač's negative result.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sufficient conditions",
+      "Rational arithmetic"
+    ],
+    "mathContext": "See annotation content for formal details of chu's extension (2023)",
+    "prerequisites": [
+      "sufficient conditions for the eventually greedy property",
+      "predicates on numerator-denominator pairs (a, b)",
+      "extending Nathanson's divisibility condition"
+    ]
+  },
+  {
+    "id": "ann-e206-kovac",
+    "proofId": "erdos-206",
+    "range": {
+      "startLine": 125,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "Kovač's Theorem (2024) - The Main Result",
+    "content": "**kovac_theorem:** volume(EventuallyGreedySet) = 0\n\nThe set of x that are eventually greedy has Lebesgue measure zero.\n\n**Impact:** This DISPROVES Erdős's conjecture in the strongest possible way. Not only is it false for 'some' x, it fails for almost ALL x.\n\n**almost_all_not_greedy:** The complement (non-greedy numbers) has full measure.\n\n**erdos_206_answer:** Restates Kovač's theorem as the answer to Problem #206.",
+    "mathContext": "Kovač's proof uses measure-theoretic arguments to show that the set where greedy behavior persists is negligible. The result is non-constructive - it doesn't exhibit any specific non-greedy number.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "Measure zero",
+      "Non-constructive existence"
+    ],
+    "prerequisites": [
+      "Lebesgue measure zero of the eventually greedy set",
+      "full-measure complement of non-greedy numbers",
+      "non-constructive measure-theoretic existence"
+    ]
+  },
+  {
+    "id": "ann-e206-open-questions",
+    "proofId": "erdos-206",
+    "range": {
+      "startLine": 149,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "Open Questions",
+    "content": "**all_rationals_eventually_greedy:** Is every positive rational x eventually greedy?\nKnown for specific classes but unresolved in general.\n\n**explicit_nongreedy_example_exists:** Can we construct an explicit x that is NOT eventually greedy?\n\nDespite Kovač proving almost all x are non-greedy, no concrete example exists. Erdős and Graham claimed it is 'not difficult' to construct one, but never gave a proof. This highlights the gap between existence and construction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Constructive mathematics",
+      "Explicit examples",
+      "Rational numbers"
+    ],
+    "mathContext": "See annotation content for formal details of open questions",
+    "prerequisites": [
+      "eventually greedy property for positive rationals",
+      "gap between existence and explicit construction",
+      "the Erdős-Graham claim of an easy counterexample"
+    ]
+  },
+  {
+    "id": "ann-e206-counterexample",
+    "proofId": "erdos-206",
+    "range": {
+      "startLine": 166,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "The 11/24 Example",
+    "content": "**non_greedy_at_step_two:** Greedy fails at step 2 for 11/24:\n\nR_1(11/24) = 1/3 (largest unit fraction below 11/24)\nR_2(11/24) = 1/4 + 1/5 = 0.45\n\nIf greedy continued from 1/3: need 1/m < 11/24 - 1/3 = 1/8, so m >= 9.\nGreedy gives 1/3 + 1/9 = 4/9 ≈ 0.444.\nBut 1/4 + 1/5 = 0.45 > 0.444.\n\nThis shows optimal ≠ greedy at finite steps, but doesn't preclude eventual greedy behavior.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Counterexamples",
+      "Finite steps",
+      "Optimal vs greedy"
+    ],
+    "mathContext": "See annotation content for formal details of the 11/24 example",
+    "prerequisites": [
+      "greedy versus optimal underapproximation at finite steps",
+      "computing R_1 and R_2 for 11/24",
+      "the residual 11/24 - 1/3 = 1/8 forcing m >= 9"
+    ]
+  },
+  {
+    "id": "ann-e206-sylvester",
+    "proofId": "erdos-206",
+    "range": {
+      "startLine": 184,
+      "endLine": 194
+    },
+    "type": "definition",
+    "title": "Egyptian Fraction Existence and Sylvester's Algorithm",
+    "content": "**egyptian_fraction_exists:** Every positive rational has an Egyptian fraction representation.\n\n**sylvesterStep:** Implements one step of Sylvester's greedy algorithm:\n1. Given x with 0 < x < 1\n2. Compute m = ceil(1/x)\n3. Return (m, x - 1/m)\n\nIterating this produces a finite Egyptian fraction representation for any rational. The algorithm always terminates but may not produce the shortest representation.",
+    "mathContext": "Sylvester's algorithm (1880) is the standard greedy Egyptian fraction algorithm. It is guaranteed to terminate for rationals because the numerator strictly decreases at each step.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Greedy algorithms",
+      "Sylvester's algorithm",
+      "Rational representations"
+    ],
+    "prerequisites": [
+      "Sylvester's greedy algorithm for Egyptian fractions",
+      "the step m = ceil(1/x) with remainder x - 1/m",
+      "termination via strictly decreasing numerator"
+    ]
+  }
+]

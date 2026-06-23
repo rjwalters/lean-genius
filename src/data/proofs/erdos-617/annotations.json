@@ -1,0 +1,190 @@
+[
+  {
+    "id": "ann-617-overview",
+    "proofId": "erdos-617",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #617: Balanced Colourings of Complete Graphs**\n\nThis problem asks whether a strong uniformity condition on edge colourings of complete graphs can hold. A balanced r-colouring of K_n means every induced K_{r+1} uses all r colours on its edges. The Erdős-Gyárfás conjecture (1999) asserts that no balanced r-colouring of K_{r²+1} exists when r ≥ 3.\n\n**Status:** OPEN in general. Proved for r=3 (K₁₀) and r=4 (K₁₇) by Erdős-Gyárfás. False for r=2 (the Petersen graph complement gives a balanced 2-colouring of K₅).\n\n**Key insight:** The threshold r²+1 is sharp — K_{r²} CAN be balanced for infinitely many r, so the single extra vertex is what forces non-existence.",
+    "mathContext": "∀ r ≥ 3, ∀ c : K_{r²+1} → Fin r, ∃ S ⊆ V with |S| = r+1 and some colour missing from edges(S)",
+    "significance": "key",
+    "relatedConcepts": [
+      "edge colouring",
+      "Ramsey theory",
+      "balanced colourings",
+      "complete graphs"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "Ramsey theory",
+      "extremal combinatorics"
+    ]
+  },
+  {
+    "id": "ann-617-definitions",
+    "proofId": "erdos-617",
+    "range": {
+      "startLine": 39,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Graph and Colouring Primitives",
+    "content": "**Complete Graph, Edges, and Colourings**\n\nThe formalization builds from three primitives:\n\n- **CompleteGraph n:** The complete graph on Fin n, where Adj v w iff v ≠ w\n- **Edge n:** An unordered pair {v, w} ⊆ Fin n with card = 2\n- **EdgeColouring n r:** A function from edges to Fin r (assigning one of r colours)\n\nThese are concrete, computable definitions that work well with Lean's type system. The vertex set Fin n is finite and decidable, making the combinatorial arguments cleaner.",
+    "mathContext": "K_n on vertex set {0, ..., n-1} with r-coloured edges",
+    "significance": "key",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Fin",
+      "edge colouring"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "Mathlib SimpleGraph API",
+      "finite types"
+    ]
+  },
+  {
+    "id": "ann-617-colours",
+    "proofId": "erdos-617",
+    "range": {
+      "startLine": 62,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "Colour Coverage in Cliques",
+    "content": "**Colours Used in Induced Subgraphs**\n\nThe central definitions for the conjecture:\n\n- **InducedClique n k:** A subset S ⊆ Fin n with |S| = k, representing an induced K_k\n- **coloursUsed c S:** The set of colours appearing on edges within S (axiomatized)\n- **usesAllColours c S:** Every colour in {0,...,r-1} appears on some edge of S\n- **missesColour c S:** At least one colour is absent from the edges of S\n\nThe coloursUsed function is axiomatized rather than defined computationally because extracting the 2-element subsets of a finset and mapping through the edge type requires substantial finset infrastructure.",
+    "mathContext": "coloursUsed(c, S) = {c(e) : e ∈ E(K_S)} ⊆ Fin r",
+    "significance": "key",
+    "relatedConcepts": [
+      "induced subgraph",
+      "colour spectrum",
+      "Finset.image"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "finite set theory",
+      "Mathlib Finset library",
+      "Lean 4 axiom declarations"
+    ]
+  },
+  {
+    "id": "ann-617-balanced",
+    "proofId": "erdos-617",
+    "range": {
+      "startLine": 95,
+      "endLine": 109
+    },
+    "type": "definition",
+    "title": "Balanced and Non-Balanced Colourings",
+    "content": "**The Balance Property**\n\nIsBalanced n r c holds when EVERY induced K_{r+1} in K_n uses all r colours. This is an extremely strong uniformity condition — it requires that no matter which r+1 vertices you pick, every colour appears on at least one edge among them.\n\nIsNotBalanced is the negation: there EXISTS some induced K_{r+1} missing at least one colour. The conjecture asserts that IsNotBalanced always holds for K_{r²+1} when r ≥ 3.",
+    "mathContext": "IsBalanced ⟺ ∀ S with |S| = r+1, coloursUsed(c,S) = {0,...,r-1}",
+    "significance": "key",
+    "relatedConcepts": [
+      "balance condition",
+      "uniformity",
+      "edge colouring"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "first-order logic"
+    ]
+  },
+  {
+    "id": "ann-617-conjecture",
+    "proofId": "erdos-617",
+    "range": {
+      "startLine": 111,
+      "endLine": 127
+    },
+    "type": "definition",
+    "title": "The Erdős-Gyárfás Conjecture",
+    "content": "**Formal Statement of the Conjecture**\n\nErdosGyarfasConjecture states: for all r ≥ 3, every r-colouring of K_{r²+1} is not balanced. The equivalent formulation ErdosGyarfasEquivalent says: for all r ≥ 3, no balanced r-colouring of K_{r²+1} exists.\n\nThe r² + 1 vertex count is crucial — it's the smallest number of vertices where balance should be impossible, since K_{r²} CAN be balanced.",
+    "mathContext": "∀ r ≥ 3, ¬∃ balanced r-colouring of K_{r²+1}",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Gyárfás conjecture",
+      "threshold",
+      "complete graph"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "first-order logic"
+    ]
+  },
+  {
+    "id": "ann-617-known",
+    "proofId": "erdos-617",
+    "range": {
+      "startLine": 129,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Known Cases: r = 3 and r = 4",
+    "content": "**Solved Cases (Erdős-Gyárfás 1999)**\n\nThe conjecture is proved for r = 3 and r = 4:\n\n- **r = 3:** Every 3-colouring of K₁₀ has a K₄ missing a colour. A K₄ has 6 edges; balance requires each colour to appear exactly twice. The counting argument shows this is impossible across all K₄ subgraphs of K₁₀.\n\n- **r = 4:** Every 4-colouring of K₁₇ has a K₅ missing a colour. A K₅ has 10 edges; the argument is similar but more involved.\n\nThe general case r ≥ 5 remains open — the counting arguments become harder to control.",
+    "mathContext": "r_3_solved : ∀ c, IsNotBalanced 10 3 c; r_4_solved : ∀ c, IsNotBalanced 17 4 c",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting argument",
+      "K₁₀",
+      "K₁₇"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "double counting arguments",
+      "graph theory"
+    ]
+  },
+  {
+    "id": "ann-617-counterexamples",
+    "proofId": "erdos-617",
+    "range": {
+      "startLine": 145,
+      "endLine": 162
+    },
+    "type": "concept",
+    "title": "Boundary Cases and Counterexamples",
+    "content": "**Why r ≥ 3 and r²+1 Are Both Necessary**\n\nTwo counterexamples show the conjecture's hypotheses are tight:\n\n- **r = 2 fails:** The Petersen graph complement provides a balanced 2-colouring of K₅. Every triangle uses both colours, so the balance condition is satisfied. This shows r ≥ 3 is necessary.\n\n- **K_{r²} can be balanced:** For infinitely many r, balanced r-colourings of K_{r²} exist. This shows the +1 in r²+1 is essential — you need that one extra vertex to force non-balance.",
+    "mathContext": "∃ balanced 2-colouring of K₅; ∃ r ≥ 3 with balanced r-colouring of K_{r²}",
+    "significance": "key",
+    "relatedConcepts": [
+      "Petersen graph",
+      "tightness",
+      "counterexample"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "algebraic graph theory"
+    ]
+  },
+  {
+    "id": "ann-617-summary",
+    "proofId": "erdos-617",
+    "range": {
+      "startLine": 180,
+      "endLine": 202
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**Complete Summary of Known Results**\n\nThe summary theorem erdos_617_summary bundles the three main known results into a single conjunction:\n1. Every 3-colouring of K₁₀ is not balanced (r=3 case)\n2. Every 4-colouring of K₁₇ is not balanced (r=4 case)\n3. A balanced 2-colouring of K₅ exists (r=2 counterexample)\n\nThe general conjecture for r ≥ 5 remains one of the notable open problems in edge-colouring theory.",
+    "mathContext": "erdos_617_summary : (∀ c, ¬balanced 10 3 c) ∧ (∀ c, ¬balanced 17 4 c) ∧ (∃ c, balanced 5 2 c)",
+    "significance": "key",
+    "relatedConcepts": [
+      "open conjecture",
+      "edge colouring",
+      "summary"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "Lean 4 proposition logic"
+    ]
+  }
+]

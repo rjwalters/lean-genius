@@ -1,0 +1,144 @@
+{
+  "slug": "intermediate-value-theorem-oq-02",
+  "title": "Constructive Content of IVT",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "For continuous f on [a,b] with f(a) ≤ 0 ≤ f(b), for any ε > 0, bisection produces x ∈ [a,b] with |f(x)| < ε",
+    "plain": "The constructive content of the Intermediate Value Theorem: bisection provides an algorithm to compute approximate roots to any desired precision. Rather than just asserting existence (∃ x, f(x) = 0), this formalization constructs the root via bisection and proves convergence.",
+    "whyMatters": [
+      "Bridges classical existence proof with constructive computation",
+      "Formalizes one of the most fundamental numerical algorithms",
+      "Demonstrates how uniform continuity on compact sets yields convergence"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Bisection algorithm preserves interval ordering",
+      "Interval width halves each step: (b-a)/2^n",
+      "Sign invariant maintained through all bisection steps",
+      "Left endpoint non-decreasing, right endpoint non-increasing",
+      "Approximate IVT: for any ε > 0, bisection finds x with |f(x)| < ε",
+      "Uniqueness of zero for strictly monotone functions",
+      "Width convergence to zero"
+    ],
+    "open": [],
+    "goal": "Fully verified constructive IVT via bisection"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-19T08:13:01.847Z",
+    "iteration": 1,
+    "focus": "Complete formalization achieved",
+    "blockers": [],
+    "nextAction": "None - proof is complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full constructive IVT formalization with 13 theorems, 0 sorries, 0 axioms. Bisection algorithm with width bounds, sign preservation, containment, approximate IVT, and monotone uniqueness.",
+    "builtItems": [
+      "proofs/Proofs/IntermediateValueTheoremOQ02.lean: 243 lines, 13 theorems, 3 definitions",
+      "bisectStep/bisect/bisectMid definitions for bisection algorithm",
+      "approx_ivt: main theorem - approximate root finding via uniform continuity",
+      "monotone_ivt_unique: uniqueness for strictly monotone functions",
+      "constructive_ivt_summary: combined result packaging all three properties"
+    ],
+    "insights": [
+      "bisectStep must inline midpoint computation (no let binding) to enable split_ifs tactic",
+      "bisect_left_mono and bisect_right_mono require ordering hypothesis p.1 ≤ p.2",
+      "Key proof technique: uniform continuity on compact [a,b] gives δ for any ε, then choose n so (b-a)/2^n < δ",
+      "exists_pow_lt_of_lt_one provides the Archimedean step for choosing n",
+      "Docker build from worktree requires running worktree's own docker-build.sh script"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "topology",
+    "constructive"
+  ],
+  "relatedProofs": [
+    "intermediate-value-theorem",
+    "intermediate-value-theorem-oq-01",
+    "intermediate-value-theorem-oq-02",
+    "intermediate-value-theorem-oq-02-oq-03",
+    "intermediate-value-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Topology.Order.IntermediateValue",
+      "Mathlib.Topology.UniformSpace.Compact"
+    ]
+  },
+  "started": "2026-03-19T08:13:01.847Z",
+  "lastUpdate": "2026-03-19T08:13:01.847Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/IntermediateValueTheorem.lean",
+      "filename": "IntermediateValueTheorem.lean",
+      "lineCount": 222,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheorem.lean"
+    },
+    {
+      "path": "Proofs/IntermediateValueTheoremOQ01.lean",
+      "filename": "IntermediateValueTheoremOQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/IntermediateValueTheoremOQ02.lean",
+      "filename": "IntermediateValueTheoremOQ02.lean",
+      "lineCount": 244,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/IntermediateValueTheoremOQ02OQ03.lean",
+      "filename": "IntermediateValueTheoremOQ02OQ03.lean",
+      "lineCount": 309,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/IntermediateValueTheoremOQ03.lean",
+      "filename": "IntermediateValueTheoremOQ03.lean",
+      "lineCount": 144,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/IntermediateValueTheoremOQ03.lean"
+    }
+  ]
+}

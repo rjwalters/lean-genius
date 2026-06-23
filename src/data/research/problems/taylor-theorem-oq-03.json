@@ -1,0 +1,105 @@
+{
+  "slug": "taylor-theorem-oq-03",
+  "title": "Exponential Taylor series convergence and Euler-number bounds",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For every real x, prove Summable (fun n => x^n/n!) and Real.exp x = sum' n, x^n/n!, derive partial-sum and remainder convergence, and prove the explicit Euler-number tail bound |e - sum_{k<n} 1/k!| <= 3/n! for n>=1.",
+    "plain": "Backfill the exp-series metadata around the Lean proof: summability, tsum and HasSum forms, partial-sum convergence, Lagrange remainder, Euler-number series, the 3/n! approximation bound, and simple consequences such as e>2.",
+    "whyMatters": [
+      "Taylor series convergence is a central analysis example with a clean Lean bridge to Mathlib's exponential series.",
+      "The explicit Euler-number tail estimate gives a concrete error bound, not just abstract convergence.",
+      "The file is a fully verified analysis slice with zero axioms and zero sorries."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`exp_series_summable`, `exp_tsum`, `exp_hasSum`, `exp_partial_sum_tendsto`, and `exp_remainder_tendsto_zero` establish the exponential power-series interface.",
+      "`iteratedDeriv_exp` and `exp_lagrange_remainder` connect the proof to Taylor's theorem and Lagrange remainder form.",
+      "`euler_number_series`, `euler_tsum`, `euler_partial_sum_tendsto`, and `euler_approx_error` prove the Euler-number series and the explicit 3/n! tail bound.",
+      "`exp_infinite_radius`, `exp_one_gt_two`, and `exp_five_term` record radius and numerical consequences."
+    ],
+    "open": [
+      "`TaylorTheoremOQ03.lean` has zero active axioms and zero sorries.",
+      "The file focuses on the exponential series; broader Taylor-theorem automation and other functions remain outside this slice."
+    ],
+    "goal": "Surface the verified exp-series and Euler-number error-bound anchors for gallery/search metadata."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-22T09:13:15-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: taylor-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "analysis",
+    "taylor-series",
+    "exponential",
+    "euler-number",
+    "fully-verified"
+  ],
+  "relatedProofs": [
+    "taylor-theorem",
+    "taylor-theorem-oq-02",
+    "taylor-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-22T16:23:16.662Z",
+  "lastUpdate": "2026-03-22T16:23:16.672Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/TaylorTheorem.lean",
+      "filename": "TaylorTheorem.lean",
+      "lineCount": 203,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheorem.lean"
+    },
+    {
+      "path": "Proofs/TaylorTheoremOQ02.lean",
+      "filename": "TaylorTheoremOQ02.lean",
+      "lineCount": 219,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/TaylorTheoremOQ03.lean",
+      "filename": "TaylorTheoremOQ03.lean",
+      "lineCount": 269,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ03.lean"
+    }
+  ]
+}

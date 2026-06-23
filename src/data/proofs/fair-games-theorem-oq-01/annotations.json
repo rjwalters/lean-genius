@@ -1,0 +1,223 @@
+[
+  {
+    "id": "ann-gamblers-ruin-structure",
+    "proofId": "fair-games-theorem-oq-01",
+    "range": {
+      "startLine": 53,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "GamblersRuin Structure",
+    "content": "The `GamblersRuin` structure encodes a symmetric random walk on the integers with absorbing barriers at 0 and $N$, starting at position $k$ with $0 < k < N$ and $N \\geq 2$. The constraint $N \\geq 2$ ensures the game is nontrivial (at least one interior position exists). This is the standard setup from Feller (1968) for the classical Gambler's Ruin problem, where a gambler with initial fortune $k$ plays a fair game against an opponent with fortune $N - k$.",
+    "mathContext": "$0 < k < N$, $N \\geq 2$, absorbing barriers at $\\{0, N\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "random walk",
+      "absorbing barrier",
+      "stopping time"
+    ],
+    "prerequisites": [
+      "Nat",
+      "structure"
+    ]
+  },
+  {
+    "id": "ann-ost-linear",
+    "proofId": "fair-games-theorem-oq-01",
+    "range": {
+      "startLine": 90,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Optional Stopping Theorem for the Linear Martingale",
+    "content": "The identity process $X_n$ is a martingale for the symmetric random walk. By the Optional Stopping Theorem, $E[X_T] = E[X_0] = k$. Since the stopped position $X_T \\in \\{0, N\\}$, the equation $P(\\text{win}) \\cdot N + P(\\text{lose}) \\cdot 0 = k$ yields $P(\\text{win}) = k/N$. This was previously an axiom in the formalization but is now proved directly from the definition of `ruinProbWin` via `div_mul_cancel`.",
+    "mathContext": "$E[X_T] = P(\\text{win}) \\cdot N = k$, so $P(\\text{win}) = k/N$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Optional Stopping Theorem",
+      "martingale",
+      "Doob"
+    ],
+    "prerequisites": [
+      "ruinProbWin",
+      "div_mul_cancel"
+    ]
+  },
+  {
+    "id": "ann-probabilities-sum-one",
+    "proofId": "fair-games-theorem-oq-01",
+    "range": {
+      "startLine": 103,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "Ruin Probabilities Sum to One (Axiom Elimination)",
+    "content": "The fact that $P(\\text{win}) + P(\\text{lose}) = 1$ means the random walk reaches a barrier with probability 1, i.e., ruin is almost sure. The algebraic proof reduces to showing $k/N + (N-k)/N = N/N = 1$. In the previous version of this formalization, this was an axiom. Eliminating it makes the proof fully self-contained and axiom-free, which is a significant improvement for formal verification.",
+    "mathContext": "$\\frac{k}{N} + \\frac{N-k}{N} = \\frac{N}{N} = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "almost sure termination",
+      "probability axioms",
+      "axiom elimination"
+    ],
+    "prerequisites": [
+      "add_div",
+      "div_self"
+    ]
+  },
+  {
+    "id": "ann-quadratic-martingale",
+    "proofId": "fair-games-theorem-oq-01",
+    "range": {
+      "startLine": 141,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "Expected Ruin Time via the Quadratic Martingale",
+    "content": "The process $M_n = X_n^2 - n$ is a martingale because $E[X_{n+1}^2 | \\mathcal{F}_n] = X_n^2 + 1$ for the symmetric walk. Applying OST gives $E[X_T^2 - T] = E[X_0^2 - 0] = k^2$. Since $E[X_T^2] = P(\\text{win}) \\cdot N^2 = (k/N) \\cdot N^2 = kN$, we obtain $E[T] = kN - k^2 = k(N-k)$. This elegant technique of extracting information from different martingales is a hallmark of Doob's martingale theory.",
+    "mathContext": "$E[T] = E[X_T^2] - k^2 = kN - k^2 = k(N-k)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic martingale",
+      "Optional Stopping Theorem",
+      "expected value"
+    ],
+    "prerequisites": [
+      "expected_squared_at_ruin",
+      "ruinProbWin"
+    ]
+  },
+  {
+    "id": "ann-amgm-bound",
+    "proofId": "fair-games-theorem-oq-01",
+    "range": {
+      "startLine": 173,
+      "endLine": 181
+    },
+    "type": "insight",
+    "title": "AM-GM Bound on Expected Ruin Time",
+    "content": "The AM-GM inequality gives $k(N-k) \\leq (N/2)^2 = N^2/4$, with equality when $k = N/2$ (starting at the midpoint). The proof uses the non-negativity of $(N - 2k)^2 \\geq 0$, which expands to $N^2 - 4kN + 4k^2 \\geq 0$, yielding $kN - k^2 \\leq N^2/4$. This bound reveals that the worst-case expected ruin time is quadratic in $N$, and starting near the center maximizes the expected duration of play.",
+    "mathContext": "$k(N-k) \\leq \\left(\\frac{N}{2}\\right)^2$ since $(N - 2k)^2 \\geq 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "AM-GM inequality",
+      "optimization",
+      "quadratic bound"
+    ],
+    "prerequisites": [
+      "sq_nonneg",
+      "nlinarith"
+    ]
+  },
+  {
+    "id": "ann-harmonic-property",
+    "proofId": "fair-games-theorem-oq-01",
+    "range": {
+      "startLine": 230,
+      "endLine": 239
+    },
+    "type": "insight",
+    "title": "Harmonic Property and Discrete Laplacian",
+    "content": "The identity $E[T|k] = 1 + (E[T|k-1] + E[T|k+1])/2$ expresses that the expected ruin time satisfies the discrete harmonic equation with a constant forcing term. The '1' accounts for the current step, and the average of neighbors reflects the equal probability of stepping up or down. This connects gambler's ruin to potential theory: $E[T|k]$ is a discrete harmonic function on $\\{1, \\ldots, N-1\\}$ with boundary values $E[T|0] = E[T|N] = 0$.",
+    "mathContext": "$E[T|k] = 1 + \\frac{E[T|k-1] + E[T|k+1]}{2}$ (discrete Laplacian equation)",
+    "significance": "key",
+    "relatedConcepts": [
+      "discrete harmonic function",
+      "potential theory",
+      "Laplacian"
+    ],
+    "prerequisites": [
+      "push_cast",
+      "ring"
+    ]
+  },
+  {
+    "id": "ann-biased-walk",
+    "proofId": "fair-games-theorem-oq-01",
+    "range": {
+      "startLine": 302,
+      "endLine": 349
+    },
+    "type": "definition",
+    "title": "Biased Random Walk and the Odds Ratio",
+    "content": "The `BiasedGamblersRuin` structure generalizes to asymmetric walks where $P(+1) = p$ and $P(-1) = q = 1-p$ with $p \\neq 1/2$. The fundamental parameter is the odds ratio $r = q/p$. When $r < 1$ (favorable game, $p > 1/2$), the gambler has an edge; when $r > 1$ (unfavorable, $p < 1/2$), the house has the advantage. The ruin probability $(1 - r^k)/(1 - r^N)$ comes from the exponential martingale $r^{X_n}$, which replaces the linear martingale of the fair case.",
+    "mathContext": "$r = q/p$, $P(\\text{win}) = \\frac{1 - r^k}{1 - r^N}$ when $r \\neq 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential martingale",
+      "odds ratio",
+      "biased random walk"
+    ],
+    "prerequisites": [
+      "BiasedGamblersRuin",
+      "div_pos"
+    ]
+  },
+  {
+    "id": "ann-house-advantage",
+    "proofId": "fair-games-theorem-oq-01",
+    "range": {
+      "startLine": 374,
+      "endLine": 389
+    },
+    "type": "concept",
+    "title": "House Advantage: Unfavorable Win Probability < 1",
+    "content": "When $p < 1/2$ (the house has an edge), the win probability is strictly less than 1. The proof shows that $r > 1$ implies $r^k < r^N$ (since $k < N$), making the numerator $1 - r^k$ larger in magnitude than would give probability 1. The denominator $1 - r^N$ is negative (since $r^N > 1$), requiring careful sign analysis. As $N \\to \\infty$, $P(\\text{win}) \\to 0$ exponentially fast in $N$, meaning ruin is virtually certain against an infinitely wealthy house even with a tiny disadvantage.",
+    "mathContext": "$p < 1/2 \\Rightarrow r > 1 \\Rightarrow P(\\text{win}) < 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "house edge",
+      "casino mathematics",
+      "exponential decay"
+    ],
+    "prerequisites": [
+      "pow_lt_pow_right",
+      "div_lt_one_of_neg"
+    ]
+  },
+  {
+    "id": "ann-decay-rate-positive",
+    "proofId": "fair-games-theorem-oq-01",
+    "range": {
+      "startLine": 411,
+      "endLine": 425
+    },
+    "type": "concept",
+    "title": "Exponential Decay Rate: cos(pi/N) is Positive",
+    "content": "The dominant eigenvalue of the transition matrix for the absorbed random walk is $\\cos(\\pi/N)$, which governs the tail behavior $P(T > t) \\sim C \\cdot \\cos(\\pi/N)^t$. For $N \\geq 3$, the angle $\\pi/N \\in (0, \\pi/2)$ lies in the first quadrant where cosine is positive. The proof applies `Real.cos_pos_of_mem_Ioo` after verifying that $-\\pi/2 < \\pi/N < \\pi/2$ via the bound $N \\geq 3 > 2$. This eigenvalue arises from the spectral decomposition of the tridiagonal transition matrix.",
+    "mathContext": "$N \\geq 3 \\Rightarrow \\pi/N \\in (0, \\pi/2) \\Rightarrow \\cos(\\pi/N) > 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "spectral analysis",
+      "transition matrix",
+      "eigenvalue"
+    ],
+    "prerequisites": [
+      "Real.cos_pos_of_mem_Ioo",
+      "Real.pi_pos"
+    ]
+  },
+  {
+    "id": "ann-decay-rate-lt-one",
+    "proofId": "fair-games-theorem-oq-01",
+    "range": {
+      "startLine": 427,
+      "endLine": 441
+    },
+    "type": "concept",
+    "title": "Decay Rate Strictly Less Than 1: Genuine Exponential Decay",
+    "content": "The proof that $\\cos(\\pi/N) < 1$ for $N \\geq 3$ ensures genuine exponential decay rather than mere sub-exponential behavior. The argument is indirect: if $\\cos(\\pi/N) = 1$, then by the Pythagorean identity $\\sin^2(\\pi/N) + \\cos^2(\\pi/N) = 1$, we would need $\\sin(\\pi/N) = 0$. But $\\pi/N \\in (0, \\pi)$ for $N \\geq 2$, where sine is strictly positive, giving a contradiction. Combined with positivity, this establishes $\\cos(\\pi/N) \\in (0,1)$, so $\\cos(\\pi/N)^t \\to 0$ geometrically.",
+    "mathContext": "$\\cos(\\pi/N) < 1$ via contradiction with $\\sin(\\pi/N) > 0$ and the Pythagorean identity",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pythagorean identity",
+      "exponential decay",
+      "spectral gap"
+    ],
+    "prerequisites": [
+      "Real.sin_sq_add_cos_sq",
+      "Real.sin_pos_of_pos_of_lt_pi",
+      "Real.cos_le_one"
+    ]
+  }
+]

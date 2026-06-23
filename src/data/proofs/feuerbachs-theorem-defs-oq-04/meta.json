@@ -1,0 +1,151 @@
+{
+  "id": "feuerbachs-theorem-defs-oq-04",
+  "title": "Feuerbach's Theorem: Mathlib Sphere Formulation",
+  "slug": "feuerbachs-theorem-defs-oq-04",
+  "description": "Bridges the gallery's coordinate-based nine-point circle proofs to Mathlib's abstract EuclideanSpace and Metric.sphere types. Proves all nine special points of a triangle lie on a Metric.sphere via a toEuclidean embedding and bridge lemma. 12 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-04-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FeuerbachsTheoremDefsOQ04.lean",
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ],
+    "tags": [
+      "geometry",
+      "feuerbach",
+      "nine-point-circle",
+      "euclidean-space",
+      "mathlib",
+      "api-bridge",
+      "sphere"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-22",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Inherits from FeuerbachsTheoremDefs.lean which is also 0-sorry.",
+    "lineCount": 190,
+    "theoremCount": 12,
+    "definitionCount": 1,
+    "originalContributions": [
+      "toEuclidean : Point → EuclideanSpace ℝ (Fin 2) — embedding from coordinate plane to Mathlib's abstract 2D space",
+      "toEuclidean_dist: bridge lemma dist(toEuclidean P)(toEuclidean Q) = dist2 P Q (proved via EuclideanSpace.norm_eq)",
+      "mem_sphere_iff_dist2: reformulation of circle membership as Metric.sphere membership",
+      "9 individual nine-point membership theorems restated with Mathlib sphere types",
+      "ninePoints_all_on_sphere: all 9 special points lie on a single Mathlib Metric.sphere"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Feuerbach's theorem (1822) states that the nine-point circle of any triangle is internally tangent to the incircle and externally tangent to all three excircles. The nine-point circle (Euler circle, Feuerbach circle) passes through nine special points: the three side midpoints, the three altitude feet, and the three midpoints of vertex-to-orthocenter segments.\n\nThis gallery entry addresses a formalization question: the existing FeuerbachsTheoremDefs.lean uses a coordinate API (Point = ℝ×ℝ, dist2) that predates Mathlib's abstract geometry infrastructure. This new file provides a clean bridge, showing the two formulations are equivalent and expressing all nine-point circle results in Mathlib's preferred EuclideanSpace + Metric.sphere language.",
+    "problemStatement": "The nine-point circle of a triangle passes through nine specific points. In the gallery's coordinate API:\n- Center: $N = $ ninePointCenter (midpoint of orthocenter and circumcenter)\n- Radius: $R_9 = R/2$ where $R$ is the circumradius\n- Membership: `dist2 N P = R_9`\n\nThe **OQ-04 task**: reformulate this as Mathlib sphere membership:\n- `toEuclidean P ∈ Metric.sphere (toEuclidean N) R_9`\n\nvia a bridge lemma `dist (toEuclidean P) (toEuclidean Q) = dist2 P Q`.",
+    "text": "A 155-line file creating a Mathlib-compatible formulation of the nine-point circle. Defines toEuclidean : ℝ² → EuclideanSpace ℝ (Fin 2) mapping (x,y) to ![x,y]. Proves the bridge lemma using EuclideanSpace.norm_eq + Fin.sum_univ_two to reduce the EuclideanSpace distance to a sum of two terms, then ring for sign symmetry. All 9 nine-point membership theorems (midpoints of sides, altitude feet, orthocenter midpoints) are reformulated as Metric.sphere membership using the bridge lemma and existing proofs from FeuerbachsTheoremDefs.",
+    "proofStrategy": "Two-step strategy:\n1. **Bridge lemma** (toEuclidean_dist): Show `dist (![P.1,P.2]) (![Q.1,Q.2]) = Real.sqrt ((Q.1-P.1)²+(Q.2-P.2)²)` by: (a) rewrite via `dist_eq_norm` and `EuclideanSpace.norm_eq` to get sqrt of a sum; (b) split sum with `Fin.sum_univ_two`; (c) reduce vector components with `Pi.sub_apply` + `Matrix.cons_val_zero/one`; (d) close with `ring` using `(x-y)²=(y-x)²`.\n2. **Membership reformulation**: Each `midpoint_X_on_sphere` proof rewrites the `Metric.sphere` membership using `mem_sphere_iff_dist2`, then delegates to the existing `midpoint_X_on_ninePointCircle` proof.",
+    "keyInsights": [
+      "The `toEuclidean` bridge is essentially the identity map — `EuclideanSpace ℝ (Fin 2)` is definitionally `Fin 2 → ℝ`, and `![P.1, P.2]` creates the corresponding function. The bridge lemma makes this explicit.",
+      "`EuclideanSpace.norm_eq` expresses the norm as `Real.sqrt (∑ i, ‖x i‖²)`. For ℝ-valued components, `‖x i‖ = |x i|` and `|x i|² = x i²`, giving the standard Euclidean norm formula.",
+      "All nine reformulated theorems are immediate corollaries of the bridge lemma — their proofs are 3-line reductions to the existing coordinate-based proofs.",
+      "`Metric.sphere center r = {x | dist x center = r}` is the standard abstract sphere. The nine-point circle theorem in this form is directly compatible with Mathlib's geometry API for potential future Mathlib contribution.",
+      "The `noncomputable section` is required because `EuclideanSpace ℝ (Fin 2)` involves classical real-number operations. The bridge pattern is entirely definitional — `toEuclidean` is `noncomputable def`, but the proof terms themselves are classical propositions verified by `ring` and `simp`."
+    ],
+    "prerequisites": [
+      "FeuerbachsTheoremDefs.lean — coordinate-based nine-point circle proofs",
+      "EuclideanSpace ℝ (Fin 2) — Mathlib's abstract 2D Euclidean space",
+      "Metric.sphere — abstract sphere via metric space distance",
+      "EuclideanSpace.norm_eq — norm formula for EuclideanSpace",
+      "Fin.sum_univ_two — splitting Finset.sum over Fin 2"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring explaining the API bridge purpose, imports Mathlib and FeuerbachsTheoremDefs, opens relevant namespaces, and marks the section as noncomputable.",
+      "mathContext": "The `noncomputable section` is required because `EuclideanSpace ℝ (Fin 2)` involves classical real analysis (norms, sqrt). The `open FeuerbachsTheorem` brings in the `Triangle` type and coordinate-based theorems from the parent file."
+    },
+    {
+      "id": "bridge",
+      "title": "Part I: Bridge Infrastructure",
+      "startLine": 47,
+      "endLine": 82,
+      "summary": "Defines toEuclidean embedding and proves the bridge lemma connecting Mathlib dist to custom dist2.",
+      "mathContext": "`toEuclidean P = ![P.1, P.2] : EuclideanSpace ℝ (Fin 2)`. Bridge lemma: `dist (toEuclidean P) (toEuclidean Q) = dist2 P Q`, proved by `rw [dist_eq_norm, EuclideanSpace.norm_eq]` then `Fin.sum_univ_two` + `Pi.sub_apply` + `ring`."
+    },
+    {
+      "id": "nine-points",
+      "title": "Part II: Nine-Point Circle Membership (Mathlib Sphere)",
+      "startLine": 84,
+      "endLine": 135,
+      "summary": "Reformulates all 9 nine-point circle membership theorems as Metric.sphere membership using the bridge lemma.",
+      "mathContext": "Each theorem: `toEuclidean T.point ∈ Metric.sphere (toEuclidean T.ninePointCenter) T.ninePointRadius`. Proof: `rw [mem_sphere_iff_dist2]; exact existing_theorem T`."
+    },
+    {
+      "id": "combined",
+      "title": "Part III: Combined Nine-Point Circle Theorem",
+      "startLine": 137,
+      "endLine": 155,
+      "summary": "All 9 points lie on the Mathlib sphere simultaneously.",
+      "mathContext": "`ninePoints_all_on_sphere` proves the conjunction via `List.mem_cons` case analysis, delegating each case to the individual membership theorems."
+    },
+    {
+      "id": "namespace-end",
+      "title": "Namespace Close",
+      "startLine": 157,
+      "endLine": 190,
+      "summary": "End of the FeuerbachsTheoremDefsOQ04 namespace and the noncomputable section.",
+      "mathContext": "The `end FeuerbachsTheoremDefsOQ04` and `end` close the namespace and noncomputable section, making all 12 theorems available under the `FeuerbachsTheoremDefsOQ04` prefix for import by downstream proofs."
+    }
+  ],
+  "conclusion": {
+    "summary": "Successfully bridges the gallery's coordinate-based Feuerbach formalization to Mathlib's abstract EuclideanSpace and Metric.sphere types. The 155-line file provides 12 theorems (1 bridge lemma + 9 individual memberships + 1 combined + 1 corollary), all with 0 sorries, showing full compatibility between the two formulations.",
+    "implications": "**Mathlib alignment**: The reformulation expresses the nine-point circle theorem using Mathlib's preferred geometry types, making it a candidate for Mathlib contribution after appropriate abstraction.\n\n**API bridge pattern**: The `toEuclidean` + bridge lemma approach can be applied to other gallery proofs using the custom coordinate API (FeuerbachsTheorem.lean, FeuerbachsTheoremOQ01.lean, etc.).\n\n**Incircle tangency**: The next step is to reformulate the incircle tangency (`feuerbach_incircle_distance`) using Mathlib's tangent sphere condition, which would complete the Mathlib reformulation of the full Feuerbach theorem.",
+    "openQuestions": [
+      "Reformulate the incircle tangency theorem using Mathlib's sphere tangency: `Metric.sphere (toEuclidean N) R₉ ∩ Metric.sphere (toEuclidean I) r = {toEuclidean F}` where F is the Feuerbach point.",
+      "Prove the result using Mathlib's EuclideanGeometry.sphere type (the affine geometry version) rather than Metric.sphere, enabling connection to Mathlib's incircle/circumcircle formalism.",
+      "Contribute the nine-point circle theorem to Mathlib using this Mathlib-compatible formulation as the starting point."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "feuerbachs-theorem-defs",
+      "relationship": "extends",
+      "description": "reformulates all results from FeuerbachsTheoremDefs.lean using Mathlib's abstract geometry types"
+    },
+    {
+      "targetId": "feuerbachs-theorem",
+      "relationship": "related",
+      "description": "the full Feuerbach theorem including incircle tangency, which this bridge enables reformulating"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib", "Proofs.FeuerbachsTheoremDefs"],
+    "opens": ["FeuerbachsTheorem", "Real", "EuclideanGeometry"],
+    "namespace": "FeuerbachsTheoremDefsOQ04",
+    "lineCount": 190,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 1,
+    "path": "Proofs/FeuerbachsTheoremDefsOQ04.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "toEuclidean_dist",
+      "type": "lemma",
+      "description": "Bridge lemma: dist in EuclideanSpace equals dist2 in coordinate API",
+      "leanType": "dist (toEuclidean P) (toEuclidean Q) = dist2 P Q"
+    },
+    {
+      "name": "ninePoints_all_on_sphere",
+      "type": "core",
+      "description": "All 9 nine-point circle points lie on a Mathlib Metric.sphere",
+      "leanType": "∀ p ∈ [nine points], p ∈ Metric.sphere (toEuclidean T.ninePointCenter) T.ninePointRadius"
+    }
+  ],
+  "sorries": 0
+}

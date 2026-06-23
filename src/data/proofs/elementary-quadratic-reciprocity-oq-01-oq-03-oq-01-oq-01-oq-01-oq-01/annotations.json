@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-eqr-oq010301010101-bridge",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 84, "endLine": 89 },
+    "type": "theorem",
+    "title": "The p-multiplication bridge",
+    "content": "mul_p_eq_zero_iff: in ℤ/pⁿ⁺¹, p·z = 0 iff z reduces to 0 in ℤ/pⁿ — both express pⁿ ∣ z.val. Proof writes z = ↑n (natCast surjective) and applies ZMod.natCast_eq_zero_iff to both sides, then cancels one factor of p (Nat.mul_dvd_mul_iff_left). This single fact, promoted to p·u = p·v ⟺ castHom u = castHom v, drives both the injectivity of the non-unit isomorphism and its intertwining with the a-action."
+  },
+  {
+    "id": "ann-eqr-oq010301010101-nonunitsfun",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 129, "endLine": 131 },
+    "type": "definition",
+    "title": "The maximal ideal as p·(lift y)",
+    "content": "nonUnitsFun sends y : ℤ/pⁿ to the non-unit p·(lift y) of ℤ/pⁿ⁺¹. Every non-unit of ℤ/pⁿ⁺¹ is a multiple of p (the maximal ideal (p)), and p·(anything) is never a unit (not_isUnit_mul_p, via ZMod.isUnit_iff_coprime), so this lands in the non-units. It is the forward map of the additive isomorphism (p) ≅ ℤ/pⁿ that turns the non-unit block into a smaller copy of the whole problem."
+  },
+  {
+    "id": "ann-eqr-oq010301010101-bijective",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 133, "endLine": 154 },
+    "type": "theorem",
+    "title": "Bijectivity by injectivity and counting",
+    "content": "nonUnitsFun_bijective: injective via the bridge (p·↑y.val = p·↑y'.val forces y = y' after reducing mod pⁿ), and surjective by cardinality — the non-units of ℤ/pⁿ⁺¹ number pⁿ⁺¹ − φ(pⁿ⁺¹) = pⁿ⁺¹ − pⁿ(p−1) = pⁿ (Fintype.card_subtype_compl, ZMod.card_units_eq_totient, Nat.totient_prime_pow_succ), matching |ℤ/pⁿ|. No explicit inverse is needed (Fintype.bijective_iff_injective_and_card)."
+  },
+  {
+    "id": "ann-eqr-oq010301010101-recursion",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 180, "endLine": 257 },
+    "type": "theorem",
+    "title": "The block recursion sign_ringMulPerm_succ",
+    "content": "The heart of the file. ringMulPerm a preserves IsUnit (a is a unit; IsUnit.mul_iff), so Equiv.Perm.sign_subtypeCongr factors sign(ringMulPerm a) = sign(units block)·sign(non-unit block). The units block is transported (sign_eq_sign_of_equiv along the units↔IsUnit-subtype equiv) to sign(Equiv.mulLeft a) = legendreSym p (a mod p) — the parent units-level lemma. The non-unit block is transported along the p·(lift y) bijection to sign(ringMulPerm ā) on ℤ/pⁿ⁻¹; the required intertwining μ(ā·y) = a·μ(y) is exactly the p-multiplication bridge."
+  },
+  {
+    "id": "ann-eqr-oq010301010101-headline",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 267, "endLine": 320 },
+    "type": "theorem",
+    "title": "Prime-power Zolotarev: legendre power and Jacobi form",
+    "content": "sign_ringMulPerm_eq_legendre_pow inducts the one-step recursion on the exponent to get sign(ringMulPerm a on ℤ/pⁿ) = legendreSym p (a mod p)ⁿ (base case n = 1: the non-unit block is the singleton {0}, sign 1). jacobiSym_prime_pow proves J(A | pⁿ) = (legendreSym p A)ⁿ via jacobiSym.mul_right, and sign_ringMulPerm_eq_jacobiSym packages the headline as the Jacobi symbol J(a | pⁿ) — closing the prime-power case of the Frobenius/Zolotarev identity."
+  }
+]

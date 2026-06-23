@@ -1,0 +1,93 @@
+{
+  "slug": "erdos-1055",
+  "title": "Erdős #1055",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "A prime $p$ is in class $1$ if the only prime divisors of $p+1$ are $2$ or $3$. In general, a prime $p$ is in class $r$ if every prime factor of $p+1$ is in some class $\\leq r-1$, with equality for at least one prime factor.\n\nAre there infinitely many primes in each class? If $p_r$ is the least prime in class $r$, then how does $p_r^{1/r}$ behave?\n\n\n\nA classification due to Erd\\H{o}s and Selfridge. It is easy to prove that the number of primes $\\leq n$ in class $r$ is at most $n^{o(1)}$.\n\nThe sequence $p_r$ begins $2,13,37,73,1021$ (A005113 in the OEIS). Erd\\H{o}s thought $p_r^{1/r}\\to \\infty$, while Selfridge thought it quite likely to be bounded.\n\nA similar question can be asked replacing $p+1$ with $p-1$.\n\nThis is problem A18 in Guy's collection \\cite{Gu04}.",
+    "plain": "A prime $p$ is in class $1$ if the only prime divisors of $p+1$ are $2$ or $3$. In general, a prime $p$ is in class $r$ if every prime factor of $p+1$ is in some class $\\leq r-1$, with equality for at least one prime factor.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-15T14:31:40.057Z",
+    "iteration": 3,
+    "focus": "Erdos1055Problem.lean is axiomatized: 0 sorries, 2 axioms (infinitely_many_in_each_class, class_density_subpolynomial), 255 LOC. Both remaining axioms are open conjectures or known-but-hard-to-formalize results.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Fixed critical inconsistency — Erdős/Selfridge contradictory axioms converted to defs with mutual exclusivity proof. 2 axioms remain (infinitely_many_in_each_class, class_density_subpolynomial). 0 sorries.",
+    "builtItems": [
+      "def primeClass: WF recursion via termination_by p (replaces fuel-based primeClassAux)",
+      "lemma nonSmooth_factor_lt: q < p for nonSmooth prime factors of p+1 (fully proved)",
+      "theorem primeClass_pos_of_prime: primeClass p >= 1 for primes (proved)",
+      "theorem class_of_factor_lt: structural - reduced to foldl bound sorry",
+      "private foldl_max_ge_init, foldl_max_ge_of_mem: helper lemmas (term-mode)",
+      "All native_decide class values verified (class 1-5, OEIS A005113)",
+      "erdos_selfridge_mutex: proved the competing Erdős/Selfridge conjectures are mutually exclusive",
+      "Eliminated 2 axioms by converting to defs (4→2 axioms)"
+    ],
+    "insights": [
+      "class_of_factor_lt needs fuel convergence: primeClassAux 30 p ≥ 1 + primeClassAux 29 q from definition, but primeClass q = primeClassAux 30 q needs to equal primeClassAux 29 q",
+      "For prime p≥5 (odd), p+1 is even, so nonSmooth prime factors q of p+1 satisfy q ≤ (p+1)/2 < p",
+      "primeClassAux f p ≤ f for all f,p (bounded by fuel) — needed for convergence argument",
+      "Fix options: (1) prove convergence by strong induction on p, (2) refactor to well-founded recursion, (3) add convergence hypothesis",
+      "primeClassWF: well-founded definition using termination_by p, avoids fuel convergence entirely",
+      "nonSmooth_factor_lt proved: for prime p, any nonSmooth prime factor q of (p+1) satisfies q < p",
+      "class_of_factor_lt_wf fully proved for primeClassWF (0 sorries)",
+      "Fuel-based class_of_factor_lt cannot be proved without fuel convergence (primeClassAux 29 q = primeClassAux 30 q)",
+      "primeClassWF.eq_1 is the auto-generated equation lemma for WF unfolding",
+      "WF recursion eliminates fuel limitation entirely - class_of_factor_lt no longer needs fuel convergence",
+      "foldl with have proof term is definitionally equal to version without have, but Lean type checker needs explicit help to see this",
+      "CRITICAL: erdos_growth_conjecture and selfridge_bounded_conjecture are CONTRADICTORY when combined with infinitely_many_in_each_class. Having both as axioms made False provable.",
+      "Fixed by converting both competing conjectures to defs and adding erdos_selfridge_mutex theorem proving their mutual exclusivity via Nat.find on the least prime in class r"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1055 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA prime $p$ is in class $1$ if the only prime divisors of $p+1$ are $2$ or $3$. In general, a prime $p$ is in class $r$ if every prime factor of $p+1$ is in some class $\\leq r-1$, with equality for at least one prime factor.\n\nAre there infinitely many primes in each class? If $p_r$ is the least prime in class $r$, then how does $p_r^{1/r}$ behave?\n\n\n\nA classification due to Erd\\H{o}s and Selfridge. It is easy to prove that the number of primes $\\leq n$ in class $r$ is at most $n^{o(1)}$.\n\nThe sequence $p_r$ begins $2,13,37,73,1021$ (A005113 in the OEIS). Erd\\H{o}s thought $p_r^{1/r}\\to \\infty$, while Selfridge thought it quite likely to be bounded.\n\nA similar question can be asked replacing $p+1$ with $p-1$.\n\nThis is problem A18 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1054\n- Problem #1056\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-105",
+    "erdos-1055"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T14:31:40.058Z",
+  "lastUpdate": "2026-05-17T18:05:00.000Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1055Problem.lean",
+      "filename": "Erdos1055Problem.lean",
+      "lineCount": 255,
+      "theoremCount": 32,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1055Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,216 @@
+[
+  {
+    "id": "ann-cyclotomic-setup",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 42,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Cyclotomic Field Infrastructure",
+    "content": "Establishes that $\\mathbb{Q}(\\zeta_n)$ is a Galois extension of $\\mathbb{Q}$ with $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$ (Euler's totient). All three results come directly from Mathlib's `IsCyclotomicExtension` API. The `abstractZeta` definition uses Mathlib's canonical primitive $n$-th root of unity, which is essential for `fromZetaAut` compatibility.",
+    "mathContext": "$[\\mathbb{Q}(\\zeta_n) : \\mathbb{Q}] = \\varphi(n)$; $\\zeta_n$ is a primitive $n$-th root of unity",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclotomic extension",
+      "Euler totient",
+      "Galois extension",
+      "primitive root of unity"
+    ],
+    "prerequisites": [
+      "IsCyclotomicExtension",
+      "Polynomial.cyclotomic.irreducible_rat",
+      "Module.finrank"
+    ]
+  },
+  {
+    "id": "ann-conj-aut",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 63,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Complex Conjugation Automorphism",
+    "content": "Defines $\\sigma : \\mathbb{Q}(\\zeta_n) \\to \\mathbb{Q}(\\zeta_n)$ as the automorphism sending $\\zeta_n \\mapsto \\zeta_n^{-1}$. This is the algebraic analogue of complex conjugation: since $|\\zeta_n| = 1$, we have $\\overline{\\zeta_n} = \\zeta_n^{-1}$. Constructed via `fromZetaAut` with the inverse primitive root, which gives the action on $\\zeta$ immediately from the spec.",
+    "mathContext": "$\\sigma(\\zeta_n) = \\zeta_n^{-1} = \\overline{\\zeta_n}$ (complex conjugation on the unit circle)",
+    "significance": "key",
+    "relatedConcepts": [
+      "complex conjugation",
+      "AlgEquiv",
+      "fromZetaAut",
+      "unit circle"
+    ],
+    "prerequisites": [
+      "IsCyclotomicExtension.fromZetaAut",
+      "IsPrimitiveRoot.inv"
+    ]
+  },
+  {
+    "id": "ann-conj-ne-one",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 90
+    },
+    "type": "concept",
+    "title": "Conjugation is Non-Trivial for n >= 3",
+    "content": "Proves $\\sigma \\neq \\text{id}$ when $n \\geq 3$. The key idea: if $\\sigma = \\text{id}$ then $\\zeta_n^{-1} = \\zeta_n$, so $\\zeta_n^2 = 1$, meaning $\\text{ord}(\\zeta_n) \\mid 2$. But $\\text{ord}(\\zeta_n) = n \\geq 3$, contradiction. This argument elegantly uses the order of a primitive root to derive a numerical impossibility ($n \\mid 2$ fails for $n \\geq 3$).",
+    "mathContext": "$n \\geq 3 \\implies \\sigma \\neq \\text{id}$, because $\\zeta_n = \\zeta_n^{-1}$ would force $n \\mid 2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "order of elements",
+      "primitive roots",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "orderOf_dvd_of_pow_eq_one",
+      "IsPrimitiveRoot.eq_orderOf"
+    ]
+  },
+  {
+    "id": "ann-conj-sq",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 94,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "Conjugation Squares to Identity",
+    "content": "Proves $\\sigma^2 = \\text{id}$ via the Galois group isomorphism $\\text{Aut}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^*$. The automorphism $\\sigma$ corresponds to $-1 \\in (\\mathbb{Z}/n\\mathbb{Z})^*$ (shown by computing that $\\zeta_n^{u+1} = 1$ forces $n \\mid (u+1)$, hence $u = -1 \\pmod{n}$). Since $(-1)^2 = 1$ in the group, $\\sigma^2 = \\text{id}$. This is the deepest technical result, using the full power of `autEquivPow`.",
+    "mathContext": "$\\sigma \\leftrightarrow -1 \\in (\\mathbb{Z}/n\\mathbb{Z})^*$ via $\\text{autEquivPow}$; $(-1)^2 = 1$ gives $\\sigma^2 = \\text{id}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "autEquivPow",
+      "Galois group isomorphism",
+      "ZMod units",
+      "group algebra"
+    ],
+    "prerequisites": [
+      "IsCyclotomicExtension.autEquivPow",
+      "ZMod.val_lt",
+      "eq_neg_iff_add_eq_zero"
+    ]
+  },
+  {
+    "id": "ann-order-two",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 122,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Order Exactly 2",
+    "content": "Combines $\\sigma \\neq \\text{id}$ and $\\sigma^2 = \\text{id}$ to conclude $\\text{ord}(\\sigma) = 2$ using Mathlib's `orderOf_eq_prime`. This is the crux needed for the fixed field argument: the subgroup $\\langle \\sigma \\rangle$ has order 2, so the fixed field has index 2.",
+    "mathContext": "$\\sigma \\neq 1$ and $\\sigma^2 = 1 \\implies \\text{ord}(\\sigma) = 2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "order of automorphism",
+      "prime order elements",
+      "fixed field index"
+    ],
+    "prerequisites": [
+      "orderOf_eq_prime",
+      "conjAut_ne_one",
+      "conjAut_sq"
+    ]
+  },
+  {
+    "id": "ann-fixed-field",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 133,
+      "endLine": 166
+    },
+    "type": "definition",
+    "title": "Fixed Field of Complex Conjugation",
+    "content": "Defines $H = \\langle \\sigma \\rangle$ as the cyclic subgroup of $\\text{Aut}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q})$ generated by conjugation, proves $|H| = 2$ from conjAut_orderOf, defines the maximal real subfield $F = K^H$ via IntermediateField.fixedField, and derives $[F:\\mathbb{Q}] = \\varphi(n)/2$ via the tower law $\\varphi(n) = [K:F] \\cdot [F:\\mathbb{Q}] = 2 \\cdot [F:\\mathbb{Q}]$.",
+    "mathContext": "$H = \\langle \\sigma \\rangle \\leq \\text{Aut}(K/\\mathbb{Q})$, $|H| = 2$; $[K^H : \\mathbb{Q}] = \\varphi(n)/2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Galois correspondence",
+      "fixed field",
+      "maximal real subfield",
+      "tower law"
+    ],
+    "prerequisites": [
+      "Subgroup.zpowers",
+      "IntermediateField.fixedField"
+    ]
+  },
+  {
+    "id": "ann-alpha-field",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 168,
+      "endLine": 377
+    },
+    "type": "concept",
+    "title": "Alpha Field: ζ + ζ⁻¹ Generates the Maximal Real Subfield",
+    "content": "Defines $\\alpha = \\zeta_n + \\zeta_n^{-1}$ and proves $\\mathbb{Q}(\\alpha) = K^H$ (the fixed field of conjugation), with $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$.\n\nThe proof strategy: (1) $\\zeta_n$ satisfies $X^2 - \\alpha X + 1 = 0$ over $\\mathbb{Q}(\\alpha)$, so $[K:\\mathbb{Q}(\\alpha)] \\leq 2$. (2) $\\alpha = \\zeta + \\zeta^{-1}$ is fixed by conjugation ($\\sigma(\\alpha) = \\zeta^{-1} + \\zeta = \\alpha$), so $\\mathbb{Q}(\\alpha) \\subseteq K^H$. (3) By the tower law: $\\varphi(n) = [K:\\mathbb{Q}] = [K:\\mathbb{Q}(\\alpha)] \\cdot [\\mathbb{Q}(\\alpha):\\mathbb{Q}]$. Since $[K:\\mathbb{Q}(\\alpha)] \\leq 2$ and $[K:K^H] = |H| = 2$, we get $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$ by sandwiching between $\\leq$ and $\\geq$ bounds.\n\nThis 200-line section is the technical heart of the file, establishing the degree computation that drives Gauss-Wantzel.",
+    "mathContext": "$\\alpha = \\zeta_n + \\zeta_n^{-1}$; $\\zeta_n^2 - \\alpha\\zeta_n + 1 = 0$; $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$. The equality $\\mathbb{Q}(\\alpha) = K^H$ follows from $\\alpha \\in K^H$ and the degree matching.",
+    "significance": "key",
+    "relatedConcepts": [
+      "maximal real subfield",
+      "fixed field",
+      "quadratic extension",
+      "degree sandwich argument",
+      "tower law"
+    ],
+    "prerequisites": [
+      "IntermediateField.adjoin",
+      "Module.finrank_mul_finrank",
+      "IntermediateField.fixedField"
+    ]
+  },
+  {
+    "id": "ann-axiom-bridge",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 379,
+      "endLine": 511
+    },
+    "type": "insight",
+    "title": "Bridge to cos(2π/n): Eliminating All Axioms",
+    "content": "Transfers the abstract result $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$ (where $\\alpha = \\zeta_n + \\zeta_n^{-1}$) to the concrete cos(2π/n). The key steps: (1) embed the cyclotomic field into $\\mathbb{C}$ via the canonical embedding, (2) show that $\\alpha$ maps to $2\\cos(2\\pi/n)$ under this embedding (using Euler's formula: $e^{2\\pi i/n} + e^{-2\\pi i/n} = 2\\cos(2\\pi/n)$), (3) transfer the degree computation to $[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\varphi(n)/2$, and (4) prove cos(2π/n) is algebraic over $\\mathbb{Q}$.\n\nThis section eliminates the last formerly-axiomatized results (`maximal_real_subfield_degree`, `cos_minimal_poly_degree`, `cos_extension_is_galois`), achieving 0 axioms.",
+    "mathContext": "$\\alpha = \\zeta_n + \\zeta_n^{-1} \\mapsto e^{2\\pi i/n} + e^{-2\\pi i/n} = 2\\cos(2\\pi/n)$. Hence $[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\varphi(n)/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's formula",
+      "canonical embedding",
+      "algebraicity",
+      "axiom elimination",
+      "finrank transfer"
+    ],
+    "prerequisites": [
+      "Complex.exp_mul_I",
+      "IsAlgebraic",
+      "IntermediateField.finrank"
+    ]
+  },
+  {
+    "id": "ann-chebyshev-conjugates",
+    "proofId": "angle-trisection-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 542,
+      "endLine": 739
+    },
+    "type": "concept",
+    "title": "Chebyshev Polynomials and Galois Conjugates of cos(2π/n)",
+    "content": "Proves the algebraic Chebyshev identity $T_k((x + x^{-1})/2) = (x^k + x^{-k})/2$ by strong induction on $k$, using the recurrence $T_{k+1}(t) = 2t \\cdot T_k(t) - T_{k-1}(t)$. This identity is then used to show that for coprime $k$ and $n$, $\\cos(2k\\pi/n)$ is a root of $\\text{minpoly}(\\mathbb{Q}, \\cos(2\\pi/n))$ — i.e., the Galois conjugates of $\\cos(2\\pi/n)$ are exactly $\\{\\cos(2k\\pi/n) : \\gcd(k,n) = 1\\}$.\n\nThe Chebyshev approach is more elementary than direct cyclotomic polynomial manipulation, leveraging the three-term recurrence and the connection $T_k(\\cos\\theta) = \\cos(k\\theta)$ to avoid explicit Galois group computations.",
+    "mathContext": "Chebyshev: $T_k(\\cos\\theta) = \\cos(k\\theta)$. Algebraic form: $T_k((x+x^{-1})/2) = (x^k + x^{-k})/2$. For $(k,n) = 1$: $\\text{minpoly}(\\mathbb{Q}, \\cos(2\\pi/n))(\\cos(2k\\pi/n)) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chebyshev polynomials",
+      "three-term recurrence",
+      "Galois conjugates",
+      "strong induction",
+      "coprimality"
+    ],
+    "prerequisites": [
+      "Polynomial.Chebyshev.T",
+      "minpoly.aeval",
+      "IsCoprime"
+    ]
+  }
+]

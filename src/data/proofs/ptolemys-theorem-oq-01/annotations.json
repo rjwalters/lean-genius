@@ -1,0 +1,170 @@
+[
+  {
+    "id": "ann-ptol-oq01-01",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Module Overview: Ptolemy Inequality with Concyclicity Characterization",
+    "content": "This file completes the concyclicity characterization of Ptolemy's theorem in \u2102. Building on `PtolemysComplexProof.lean` (inequality + proportionality) and `PtolemysComplexProofOQ01.lean` (SameRay biconditional), this file provides the geometric/trigonometric connection: for four unit-circle points in CCW order, the Ptolemy ratio is a positive real. The proof is self-contained via trig identities, requiring no inscribed angle theorem.",
+    "mathContext": "Key chain: concyclic CCW \u2192 Ptolemy ratio > 0 \u2192 SameRay \u2192 Ptolemy equality. This file proves the first arrow; PtolemysComplexProofOQ01 proves the second.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Ptolemy's theorem",
+      "complex exponential",
+      "concyclicity",
+      "sum-to-product identities"
+    ],
+    "prerequisites": [
+      "PtolemysComplexProof",
+      "PtolemysComplexProofOQ01",
+      "trigonometric addition formulas"
+    ]
+  },
+  {
+    "id": "ann-ptol-oq01-01b",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": {
+      "startLine": 51,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Unit Circle Conjugation and Ptolemy Ratio Reality",
+    "content": "For unit-circle points (\u2016z\u2016 = 1), the complex conjugate satisfies conj(z) = z\u207b\u00b9 because z\u00b7conj(z) = normSq(z) = 1. This section uses this to prove the Ptolemy ratio R = (z\u2082-z\u2083)(z\u2081-z\u2084)/((z\u2081-z\u2082)(z\u2083-z\u2084)) is always real when all four points lie on the unit circle.\n\nThe proof strategy: show conj(R) = R, which means R \u2208 \u211d. After substituting conj(z\u1d62) = z\u1d62\u207b\u00b9 throughout, `field_simp` collapses the inverses and `ring` closes the resulting algebraic identity. This establishes that R is real before analyzing its sign \u2014 the positivity for CCW order is established in the next section.",
+    "mathContext": "For $z$ on the unit circle: $|z|^2 = z \\bar{z} = 1$, so $\\bar{z} = z^{-1}$. The Ptolemy ratio $R = \\frac{(z_2-z_3)(z_1-z_4)}{(z_1-z_2)(z_3-z_4)}$ satisfies $\\bar{R} = R$ because applying conjugation to all $z_i \\mapsto z_i^{-1}$ and simplifying yields the same expression. Hence $R \\in \\mathbb{R}$ for any four unit-circle points, regardless of their order.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Complex.normSq",
+      "starRingEnd",
+      "field_simp",
+      "unit circle conjugation",
+      "real-valued cross-ratio"
+    ],
+    "prerequisites": [
+      "Complex.normSq_eq_abs",
+      "Complex.conj_eq_inv_of_norm_one"
+    ]
+  },
+  {
+    "id": "ann-ptol-oq01-02",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": {
+      "startLine": 128,
+      "endLine": 195
+    },
+    "type": "insight",
+    "title": "exp_diff_factor: The Exponential Difference Factorization",
+    "content": "Proves exp(i\u03b1) - exp(i\u03b2) = 2\u00b7I\u00b7sin((\u03b1-\u03b2)/2)\u00b7exp(i(\u03b1+\u03b2)/2). The proof uses Complex.ext to split into real and imaginary parts, then applies product-to-sum identities: cos \u03b1 - cos \u03b2 = -2\u00b7sin((\u03b1-\u03b2)/2)\u00b7sin((\u03b1+\u03b2)/2) (proved from cos_add/cos_sub by ring), and sin \u03b1 - sin \u03b2 = 2\u00b7sin((\u03b1-\u03b2)/2)\u00b7cos((\u03b1+\u03b2)/2) (from sin_add/sin_sub by ring). The helper lemmas exp_mul_I_re and exp_mul_I_im compute the real/imaginary parts of exp(i\u03b8) from Complex.exp_re/im.",
+    "mathContext": "The factorization is the key algebraic tool. It can also be derived from the sin definition: sin \u03b3 = (exp(i\u03b3) - exp(-i\u03b3))/(2i), giving exp(i\u03b3) - exp(-i\u03b3) = 2i\u00b7sin(\u03b3), and then factoring out exp(i(\u03b1+\u03b2)/2). The product-to-sum approach avoids needing this definition directly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.exp_re",
+      "Complex.exp_im",
+      "product-to-sum identities",
+      "Complex.ext"
+    ],
+    "prerequisites": [
+      "Real.cos_add",
+      "Real.cos_sub",
+      "Real.sin_add",
+      "Real.sin_sub"
+    ]
+  },
+  {
+    "id": "ann-ptol-oq01-03",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": {
+      "startLine": 213,
+      "endLine": 310
+    },
+    "type": "insight",
+    "title": "ptolemy_ratio_pos_of_ccw: Positivity via Sign Analysis",
+    "content": "The main new theorem. For four unit-circle points z_j = exp(i\u03b8_j) in CCW order (\u03b8\u2081 < \u03b8\u2082 < \u03b8\u2083 < \u03b8\u2084 < \u03b8\u2081 + 2\u03c0), exhibits t = sin((\u03b8\u2082-\u03b8\u2083)/2)\u00b7sin((\u03b8\u2081-\u03b8\u2084)/2) / (sin((\u03b8\u2081-\u03b8\u2082)/2)\u00b7sin((\u03b8\u2083-\u03b8\u2084)/2)) and proves 0 < t and (z\u2082-z\u2083)(z\u2081-z\u2084) = t\u00b7(z\u2081-z\u2082)(z\u2083-z\u2084). Positivity: all four half-angle differences lie in (-\u03c0,0) by CCW ordering, so all four sines are negative, making products positive. The algebraic equality follows from applying exp_diff_factor to all four chord differences, then noting E\u2082\u2083\u00b7E\u2081\u2084 = E\u2081\u2082\u00b7E\u2083\u2084 = exp(i(\u03b8\u2081+\u03b8\u2082+\u03b8\u2083+\u03b8\u2084)/2), and closing with push_cast + ring.",
+    "mathContext": "For the CCW order: (\u03b8\u2082-\u03b8\u2083)/2 \u2208 (-\u03c0,0) since \u03b8\u2082 < \u03b8\u2083 and \u03b8\u2083-\u03b8\u2082 < 2\u03c0; similarly for the other three. Real.sin_pos_of_pos_of_lt_pi gives sin(\u03b8) > 0 for \u03b8 \u2208 (0,\u03c0), applied to -argument to get sin < 0. The exp phase identity E\u2082\u2083\u00b7E\u2081\u2084 = E\u2081\u2082\u00b7E\u2083\u2084 follows from adding exponents: (\u03b8\u2082+\u03b8\u2083)/2 + (\u03b8\u2081+\u03b8\u2084)/2 = (\u03b8\u2081+\u03b8\u2082+\u03b8\u2083+\u03b8\u2084)/2 = (\u03b8\u2081+\u03b8\u2082)/2 + (\u03b8\u2083+\u03b8\u2084)/2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sin_neg_of_neg_of_neg_pi_lt",
+      "mul_pos_of_neg_of_neg",
+      "Complex.exp_add",
+      "div_mul_cancel\u2080"
+    ],
+    "prerequisites": [
+      "exp_diff_factor",
+      "Real.sin_pos_of_pos_of_lt_pi",
+      "IsCCWOrder"
+    ]
+  },
+  {
+    "id": "ann-ptol-oq01-04",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": {
+      "startLine": 311,
+      "endLine": 380
+    },
+    "type": "insight",
+    "title": "ptolemy_equality_for_unit_circle_ccw and ptolemy_equality_for_concyclic",
+    "content": "ptolemy_equality_for_unit_circle_ccw follows immediately from ptolemy_ratio_pos_of_ccw (gets t > 0) and ptolemy_equality_of_proportional (t \u2265 0 \u2192 equality). ptolemy_equality_for_concyclic normalizes concyclic points to the unit circle via w_i = (z_i - c)/r, applies the unit circle result, then uses ptolemy_iff_normalized (Ptolemy equality is invariant under translation and positive scaling) to transfer back.",
+    "mathContext": "ptolemy_iff_normalized is proved by showing (z_i-z_j)/r differs from z_i-z_j only by a factor of 1/r, so the Ptolemy inequality scales uniformly by 1/r\u00b2 on both sides.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ptolemy_equality_of_proportional",
+      "ptolemy_iff_normalized",
+      "IsConcyclic\u2084"
+    ],
+    "prerequisites": [
+      "ptolemy_ratio_pos_of_ccw",
+      "PtolemysComplexProof.ptolemy_equality_of_proportional"
+    ]
+  },
+  {
+    "id": "ann-ptol-oq01-05",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": {
+      "startLine": 388,
+      "endLine": 430
+    },
+    "type": "insight",
+    "title": "ptolemy_equality_for_concyclic: From the Unit Circle to Every Circle",
+    "content": "This is the file's capstone, generalizing the unit-circle result to four points on an arbitrary circle. `IsConcyclic\u2084 z\u2081 z\u2082 z\u2083 z\u2084` asserts a common center c and radius r > 0 with \u2016z\u1d62 - c\u2016 = r. The theorem extracts that witness with classical choice (`hcyc.choose`, `hcyc.choose_spec`), normalizes each point to w\u1d62 = (z\u1d62 - c)/r on the unit circle via `concyclic_normalize_to_unit`, applies `ptolemy_equality_for_unit_circle_ccw` to the normalized points, and transfers the equality back to the originals with `ptolemy_iff_normalized`. The crucial fact making this work is that Ptolemy's relation is invariant under similarity transformations: the normalization map z \u21a6 (z - c)/r is a translation followed by a positive scaling, and every term of the identity is a product of two distances, so both sides scale by exactly 1/r\u00b2 and the equation is preserved.",
+    "mathContext": "The similarity z \u21a6 (z-c)/r sends a circle of radius r to the unit circle. Each Ptolemy term \u2016z\u1d62-z\u2c7c\u2016\u00b7\u2016z\u2096-z\u2097\u2016 transforms as $\\frac{|z_i-z_j|}{r}\\cdot\\frac{|z_k-z_l|}{r} = \\frac{1}{r^2}|z_i-z_j||z_k-z_l|$, so the full identity $|z_1-z_3||z_2-z_4| = |z_1-z_2||z_3-z_4| + |z_2-z_3||z_1-z_4|$ is homogeneous of degree 2 and invariant under the normalization. Reducing to the unit circle therefore loses no generality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "concyclicity",
+      "similarity invariance",
+      "classical choice (Exists.choose)",
+      "affine normalization",
+      "homogeneous relation"
+    ],
+    "prerequisites": [
+      "ptolemy_equality_for_unit_circle_ccw",
+      "concyclic_normalize_to_unit",
+      "ptolemy_iff_normalized"
+    ]
+  },
+  {
+    "id": "ann-ptol-oq01-06",
+    "proofId": "ptolemys-theorem-oq-01",
+    "range": {
+      "startLine": 431,
+      "endLine": 470
+    },
+    "type": "concept",
+    "title": "Summary: The Four-Way Equivalence and a Mathlib Maintenance Note",
+    "content": "`ptolemy_ineq_summary` re-exports the unconditional Ptolemy inequality \u2016z\u2081-z\u2083\u2016\u00b7\u2016z\u2082-z\u2084\u2016 \u2264 \u2016z\u2081-z\u2082\u2016\u00b7\u2016z\u2083-z\u2084\u2016 + \u2016z\u2082-z\u2083\u2016\u00b7\u2016z\u2081-z\u2084\u2016 from `PtolemysComplexProof`, so the inequality and its equality case live in one place. The numerical example blocks (a unit square giving equality, and {0,1,2,i} giving strict inequality) were removed at Mathlib v4.26.0 because the `Complex.abs` / `Complex.norm_eq_abs` API they relied on was refactored \u2014 an honest maintenance note that does not affect the named theorems' verification status (still 0 sorries, 0 axioms). The closing summary records the full characterization: for four points in convex position, (1) Ptolemy equality, (2) `SameRay \u211d ((z\u2081-z\u2082)(z\u2083-z\u2084)) ((z\u2082-z\u2083)(z\u2081-z\u2084))`, (3) the cross-ratio R = (z\u2082-z\u2083)(z\u2081-z\u2084)/((z\u2081-z\u2082)(z\u2083-z\u2084)) being a positive real, and (4) concyclicity in CCW order are all equivalent. This file supplies the arrows (4 \u2192 3 \u2192 2 \u2192 1) and the reality of R; the reverse arrow (1 \u2192 4) is the standing open question.",
+    "mathContext": "The four conditions form an equivalence only on the convex (CCW) stratum; the hypotheses `hdenom \u2260 0` and `hnumer \u2260 0` exclude the degenerate cases where two of the four points coincide. The SameRay formulation (condition 2) is the most robust: it stays meaningful even when R is not defined because a denominator vanishes.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "four-way equivalence",
+      "SameRay",
+      "cross-ratio",
+      "Ptolemy inequality",
+      "Mathlib API churn"
+    ],
+    "prerequisites": [
+      "ptolemy_inequality",
+      "PtolemysComplexProofOQ01 (SameRay characterization)"
+    ]
+  }
+]

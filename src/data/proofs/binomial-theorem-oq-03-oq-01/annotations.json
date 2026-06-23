@@ -1,0 +1,83 @@
+[
+  {
+    "id": "moments-context",
+    "proofId": "binomial-theorem-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "concept",
+    "title": "From Probabilistic to Combinatorial Moments",
+    "content": "The parent derives the binomial distribution's mean and variance by weighting C(n,k) with pᵏ(1-p)ⁿ⁻ᵏ. Setting p = 1 strips away the probability and leaves the bare counting sums Σ k·C(n,k), Σ k(k-1)·C(n,k), Σ k²·C(n,k). These are exactly the derivatives of the generating function (1+x)ⁿ = Σ C(n,k)xᵏ evaluated at x = 1 — but the whole computation is done over ℕ, with no analysis, using one absorption identity. Mathlib stops at the zeroth moment Σ C(n,k) = 2ⁿ; these higher moments are new.",
+    "mathContext": "$\\sum_k k\\binom{n}{k} = n2^{n-1}$, $\\sum_k k(k-1)\\binom{n}{k} = n(n-1)2^{n-2}$, $\\sum_k k^2\\binom{n}{k} = n(n+1)2^{n-2}$ — the values of $\\frac{d}{dx}, \\frac{d^2}{dx^2}, (x\\frac{d}{dx})^2$ applied to $(1+x)^n$ at $x = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial moments",
+      "generating functions",
+      "absorption identity",
+      "binomial distribution mean and variance"
+    ],
+    "prerequisites": [
+      "Nat.choose binomial coefficients",
+      "Σ C(n,k) = 2ⁿ (Nat.sum_range_choose)",
+      "the binomial theorem"
+    ]
+  },
+  {
+    "id": "first-moment-absorption",
+    "proofId": "binomial-theorem-oq-03-oq-01",
+    "range": { "startLine": 45, "endLine": 62 },
+    "type": "technique",
+    "title": "First Moment via a Single Absorption Step",
+    "content": "Peeling the k = 0 term (which vanishes) and reindexing k ↦ k+1 turns every summand into (k+1)·C(n+1,k+1), which absorption rewrites as (n+1)·C(n,k). The constant (n+1) factors out and the remaining Σ C(n,k) = 2ⁿ finishes the job. The subtraction-free succ form is proved first; the headline n·2ⁿ⁻¹ follows by splitting on whether n is zero.",
+    "mathContext": "$\\sum_{k=0}^{n+1} k\\binom{n+1}{k} = \\sum_{k=0}^{n}(k+1)\\binom{n+1}{k+1} = (n+1)\\sum_{k=0}^{n}\\binom{n}{k} = (n+1)2^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "absorption identity (k+1)C(n+1,k+1) = (n+1)C(n,k)",
+      "index shift Finset.sum_range_succ'",
+      "first moment / mean"
+    ],
+    "prerequisites": [
+      "BinomialTheoremOQ03.absorption",
+      "Finset.sum_range_succ'",
+      "Finset.mul_sum"
+    ]
+  },
+  {
+    "id": "second-factorial-double-absorption",
+    "proofId": "binomial-theorem-oq-03-oq-01",
+    "range": { "startLine": 70, "endLine": 97 },
+    "type": "technique",
+    "title": "Second Factorial Moment via Double Absorption",
+    "content": "Two low-index terms (k = 0 and k = 1) vanish because of the k(k-1) weight. Peeling both and shifting the index by two turns each summand into (k+2)(k+1)·C(n+2,k+2), which double absorption collapses to (n+2)(n+1)·C(n,k). The descending-factorial weight k(k-1) is what makes both boundary terms drop out cleanly and is the integer counterpart of the second derivative.",
+    "mathContext": "$\\sum_{k} k(k-1)\\binom{n+2}{k} = (n+2)(n+1)\\sum_k \\binom{n}{k} = (n+2)(n+1)2^n$, i.e. $\\sum_k k(k-1)\\binom{n}{k} = n(n-1)2^{n-2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "double absorption",
+      "falling factorial weights",
+      "second factorial moment E[X(X-1)]"
+    ],
+    "prerequisites": [
+      "BinomialTheoremOQ03.double_absorption",
+      "truncated natural subtraction",
+      "Finset.sum_range_succ' applied twice"
+    ]
+  },
+  {
+    "id": "second-moment-splitting",
+    "proofId": "binomial-theorem-oq-03-oq-01",
+    "range": { "startLine": 103, "endLine": 138 },
+    "type": "insight",
+    "title": "k² = k(k-1) + k Assembles the Ordinary Second Moment",
+    "content": "The ordinary second moment is not proved from scratch: the pointwise identity k² = k(k-1) + k — valid for every natural k, including k = 0 under truncated subtraction — lets Σ k²·C(n,k) be split into the second factorial moment plus the first moment, giving n(n-1)2ⁿ⁻² + n·2ⁿ⁻¹ = n(n+1)2ⁿ⁻². The headline form needs n ≥ 2: at n = 1 the truncated exponent 2¹⁻² = 2⁰ = 1 makes the formula give 2 instead of the true value 1 — the same edge case that forces the parent's variance to assume n ≥ 2.",
+    "mathContext": "$k^2 = k(k-1) + k \\Rightarrow \\sum_k k^2\\binom{n}{k} = n(n-1)2^{n-2} + n2^{n-1} = n(n+1)2^{n-2}$ for $n \\ge 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "factorial-moment to ordinary-moment conversion",
+      "Stirling numbers of the second kind",
+      "variance decomposition E[X²] = E[X(X-1)] + E[X]"
+    ],
+    "prerequisites": [
+      "sum_id_mul_choose_succ",
+      "sum_descFactorial_mul_choose_succ",
+      "Finset.sum_add_distrib"
+    ]
+  }
+]

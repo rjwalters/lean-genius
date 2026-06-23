@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-qdet3-block3-def",
+    "proofId": "cramers-rule-oq-01-oq-02-oq-01",
+    "range": { "startLine": 52, "endLine": 72 },
+    "type": "definition",
+    "title": "Complementary 2×2 Submatrix via Fin.succAbove",
+    "content": "Defines `block3 A i j` as `A.submatrix (Fin.succAbove i) (Fin.succAbove j)`: the $2 \\times 2$ matrix obtained from a $3 \\times 3$ matrix by deleting row $i$ and column $j$. The key insight is that `Fin.succAbove i : Fin 2 → Fin 3` skips index $i$, selecting the two remaining indices. This makes the 12 entry lemmas all definitionally true (`rfl`), since `Fin.succAbove` evaluates explicitly on `Fin 2` and `Fin 3`.",
+    "mathContext": "The complementary minor $M^{ij}$ of a matrix $A$ is the submatrix formed by removing row $i$ and column $j$. Its determinant is the minor used in cofactor expansion. In Lean 4, `Fin.succAbove i k` is defined as `k` if `k < i` and `k + 1` otherwise, which is decidable and reduces to concrete values for small `Fin` types.",
+    "significance": "key",
+    "relatedConcepts": ["Fin.succAbove", "Matrix.submatrix", "complementary minor", "cofactor"],
+    "prerequisites": ["Fin.succAbove definition", "Matrix.submatrix"]
+  },
+  {
+    "id": "ann-qdet3-minor-dets",
+    "proofId": "cramers-rule-oq-01-oq-02-oq-01",
+    "range": { "startLine": 74, "endLine": 87 },
+    "type": "concept",
+    "title": "Three Minor Determinant Formulas",
+    "content": "Proves the determinants of the three diagonal complementary minors: $\\det(M^{00}) = A_{11}A_{22} - A_{12}A_{21}$, $\\det(M^{11}) = A_{00}A_{22} - A_{02}A_{20}$, $\\det(M^{22}) = A_{00}A_{11} - A_{01}A_{10}$. These are the standard $2 \\times 2$ determinants after identifying the surviving entries. Over a non-commutative division ring, the formula $ad - bc$ still applies via `Matrix.det_fin_two`.",
+    "mathContext": "The minor determinants are the denominators in the quasideterminant formula $|A|_{ij} = \\det(A) / \\det(M^{ij})$. These three correspond to positions $(0,0)$, $(1,1)$, $(2,2)$; the six off-diagonal minors are analogous but with sign corrections.",
+    "significance": "supporting",
+    "relatedConcepts": ["Matrix.det_fin_two", "cofactor expansion", "minor determinant"],
+    "prerequisites": ["block3 entry lemmas", "Matrix.det_fin_two"]
+  },
+  {
+    "id": "ann-qdet3-field-def",
+    "proofId": "cramers-rule-oq-01-oq-02-oq-01",
+    "range": { "startLine": 102, "endLine": 116 },
+    "type": "definition",
+    "title": "Field Quasideterminant: det/minor Ratio",
+    "content": "Defines `qdet3 A i j = A.det / (block3 A i j).det` over a field $F$. The core identity `qdet3_mul_minor_eq_det` then follows immediately from `div_mul_cancel₀`: since $\\det(A) / \\det(M^{ij}) \\cdot \\det(M^{ij}) = \\det(A)$ whenever the minor is nonzero. This is the commutative version of the Gelfand-Retakh theorem.",
+    "mathContext": "Over a commutative field, the quasideterminant $|A|_{ij}$ equals $\\det(A) / \\text{minor}(A,i,j)$ where minor$(A,i,j) = \\det(M^{ij})$. This is equivalent to the Laplace expansion: $\\det(A) = |A|_{ij} \\cdot \\det(M^{ij})$ (no summation; just one term after fixing the pivot position). For the classical $3 \\times 3$ determinant, $\\det(A) = \\sum_j (-1)^{i+j} A_{ij} \\cdot \\det(M^{ij})$; the quasideterminant isolates the $i=j$ diagonal term.",
+    "significance": "key",
+    "relatedConcepts": ["div_mul_cancel₀", "commutative reduction", "Laplace expansion"],
+    "prerequisites": ["block3_det lemmas", "Field typeclass"]
+  },
+  {
+    "id": "ann-qdet3-schur-expand",
+    "proofId": "cramers-rule-oq-01-oq-02-oq-01",
+    "range": { "startLine": 151, "endLine": 168 },
+    "type": "insight",
+    "title": "Schur Complement Expansion of qdet₃ A 0 0",
+    "content": "Proves the Schur expansion:\n$$|A|_{00} = A_{00} - \\frac{A_{01}A_{22} - A_{02}A_{21}}{\\det(M^{00})} \\cdot A_{10} - \\frac{A_{02}A_{11} - A_{01}A_{12}}{\\det(M^{00})} \\cdot A_{20}$$\nThis is the matrix product $A_{00} - [A_{01},A_{02}] \\cdot (M^{00})^{-1} \\cdot [A_{10};A_{20}]$ written in coordinates, where $(M^{00})^{-1}$ is the $2\\times 2$ inverse via the adjugate formula. The proof uses `field_simp` to clear denominators and `ring` to verify the resulting polynomial identity.",
+    "mathContext": "The Schur complement expansion is the key recursive formula: the $3\\times 3$ quasideterminant is $a_{00}$ minus a Schur correction. In the $2\\times 2$ case, $|A|_{00} = a_{00} - a_{01} \\cdot a_{11}^{-1} \\cdot a_{10}$. In $3\\times 3$, the scalar $a_{11}^{-1}$ is replaced by the $2\\times 2$ matrix inverse $(M^{00})^{-1}$. The non-commutative $n\\times n$ formula is $|A|_{ij} = a_{ij} - (\\text{row}_i \\setminus a_{ij}) \\cdot (A^{ij})^{-1} \\cdot (\\text{col}_j \\setminus a_{ij})$.",
+    "significance": "key",
+    "relatedConcepts": ["Schur complement", "matrix inverse", "field_simp + ring", "recursive formula"],
+    "prerequisites": ["det_fin_three", "block3_00_det", "qdet3 definition"]
+  },
+  {
+    "id": "ann-qdet3-nc-def",
+    "proofId": "cramers-rule-oq-01-oq-02-oq-01",
+    "range": { "startLine": 188, "endLine": 210 },
+    "type": "definition",
+    "title": "Non-Commutative (0,0)-Quasideterminant via Iterated Schur",
+    "content": "Defines `schurComp3 A = A_{11} - A_{12} \\cdot (A_{22})^{-1} \\cdot A_{21}` (the quasideterminant of `block3 A 0 0` at position $(0,0)$) and `qdet3_00_nc A = A_{00} - [A_{01},A_{02}] \\cdot (M^{00})^{-\\text{Schur}} \\cdot [A_{10};A_{20}]^T$ where $(M^{00})^{-\\text{Schur}}$ is the explicit Schur complement inverse:\n$$\\begin{pmatrix} q^{-1} & -(q^{-1} A_{12} d^{-1}) \\\\ -(d^{-1} A_{21} q^{-1}) & d^{-1} + d^{-1} A_{21} q^{-1} A_{12} d^{-1} \\end{pmatrix}$$\nwhere $q = \\text{schurComp3}(A)$ and $d = A_{22}$. This is the `schurInv` formula from CramersRuleOQ01OQ02.lean, applied to `block3 A 0 0`.",
+    "mathContext": "The Schur complement inverse is the non-commutative matrix inverse for $2\\times 2$ matrices: if $M = [[M_{00},M_{01}],[M_{10},M_{11}]]$ has $M_{11} \\neq 0$ and $|M|_{00} \\neq 0$, then $M^{-1}$ is exactly this matrix. The recursive structure is: $|A|_{00}$ uses $(M^{00})^{-1}$, which uses $|M^{00}|_{00} = $ schurComp3, which is a $2\\times 2$ quasideterminant from the base theory.",
+    "significance": "key",
+    "relatedConcepts": ["Schur complement inverse", "DivisionRing", "recursive quasideterminant", "iterated Schur"],
+    "prerequisites": ["schurInv from CramersRuleOQ01OQ02", "DivisionRing typeclass"]
+  },
+  {
+    "id": "ann-qdet3-consistency",
+    "proofId": "cramers-rule-oq-01-oq-02-oq-01",
+    "range": { "startLine": 237, "endLine": 252 },
+    "type": "insight",
+    "title": "Consistency: Non-Commutative Reduces to Field Formula",
+    "content": "Proves `qdet3_00_nc_eq_qdet3`: over a field $F$ with $A_{22} \\neq 0$ and $q = A_{11} - A_{12}(A_{22})^{-1}A_{21} \\neq 0$, the non-commutative definition equals the det-ratio definition. The proof is `field_simp; ring` after unfolding all definitions. The hypothesis $q \\neq 0$ is needed to interpret $q^{-1}$ as the field inverse (not a formal symbol).",
+    "mathContext": "This is the main theorem of the Gelfand-Retakh theory at $n=3$: the two a priori different definitions (ratio formula vs. Schur complement recursion) coincide over commutative fields. Over non-commutative division rings, only the Schur complement definition is available, but over fields both agree. The algebraic identity being verified is a polynomial/rational identity in the 9 entries of $A$.",
+    "significance": "key",
+    "relatedConcepts": ["field_simp + ring", "commutative reduction", "Gelfand-Retakh theorem"],
+    "prerequisites": ["qdet3_00_nc_unfold", "qdet3 definition", "block3_00_det", "det_fin_three"]
+  },
+  {
+    "id": "ann-qdet3-cramer",
+    "proofId": "cramers-rule-oq-01-oq-02-oq-01",
+    "range": { "startLine": 268, "endLine": 278 },
+    "type": "concept",
+    "title": "3×3 Cramer's Rule via Matrix.cramer",
+    "content": "Proves `cramer_rule_3x3`: for an invertible $3\\times 3$ matrix $A$ (i.e., $\\det(A) \\neq 0$) and any vector $b$, the vector $x = \\det(A)^{-1} \\cdot A.\\text{cramer}(b)$ satisfies $Ax = b$. The proof chain is: `mulVec_smul` (linearity), `Matrix.mulVec_cramer` (the core Mathlib lemma), `smul_smul` (scalar multiplication), and `inv_mul_cancel` (since $\\det(A)^{-1} \\cdot \\det(A) = 1$).",
+    "mathContext": "Mathlib's `Matrix.cramer A b` is defined as `fun i => (A.updateColumn i b).det`, the column-replacement determinant formula. The identity `A.mulVec (A.cramer b) = A.det • b` is `Matrix.mulVec_cramer`. Our lemma normalizes by $\\det(A)^{-1}$ to get an actual solution.",
+    "significance": "supporting",
+    "relatedConcepts": ["Matrix.cramer", "Matrix.mulVec_cramer", "Cramer's rule", "det_ne_zero"],
+    "prerequisites": ["Matrix.mulVec_cramer", "inv_mul_cancel"]
+  },
+  {
+    "id": "ann-qdet3-recurrence-summary",
+    "proofId": "cramers-rule-oq-01-oq-02-oq-01",
+    "range": { "startLine": 297, "endLine": 308 },
+    "type": "insight",
+    "title": "Recurrence Summary: Three Facts in One",
+    "content": "The summary theorem `qdet3_recurrence_summary` packages the three key facts as a conjunction:\n1. `qdet3_00_nc A = qdet3 A 0 0` — consistency\n2. `qdet3 A 0 0 * (block3 A 0 0).det = A.det` — core identity\n3. `schurComp3 A = (block3 A 0 0) 0 0 - (block3 A 0 0) 0 1 * ((block3 A 0 0) 1 1)⁻¹ * (block3 A 0 0) 1 0` — schurComp3 is qdet00 of block3 (rfl)\nTogether these confirm the Gelfand-Retakh recursive principle at $n=3$: the $3\\times 3$ quasideterminant is defined by the $2\\times 2$ quasideterminant of the complementary minor, which itself reduces to scalar inversion.",
+    "mathContext": "The recursive principle generalizes inductively: $|A|_{ij}^{(n)} = a_{ij} - \\text{row}_{i\\neq j}^A \\cdot (A^{ij})^{-1}_{\\text{Schur}} \\cdot \\text{col}_{j\\neq i}^A$ where $(A^{ij})^{-1}_{\\text{Schur}}$ uses $(n-1)\\times(n-1)$ quasideterminants, and so on down to scalar inverses. This file verifies the $n=3$ step, with $n=2$ covered by CramersRuleOQ01OQ02.lean.",
+    "significance": "key",
+    "relatedConcepts": ["Gelfand-Retakh recursion", "Schur complement cascade", "inductive quasideterminant definition"],
+    "prerequisites": ["qdet3_00_nc_eq_qdet3", "qdet3_mul_minor_eq_det", "schurComp3_eq_qdet00_block"]
+  }
+]

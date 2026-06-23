@@ -1,0 +1,88 @@
+{
+  "slug": "szemeredi-full-oq-02",
+  "title": "Szemerédi's Theorem: Uniform Sets Not Containing k-AP Are o(N) Dense",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Szemerédi's Theorem: Uniform Sets Not Containing k-AP Are o(N) Dense.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-22T13:03:46.383Z",
+    "iteration": 1,
+    "focus": "Complete: SzemerediFullOQ02.lean has 0 sorries; gallery meta in sync (axiomatized, axiomCount=1).",
+    "blockers": [],
+    "nextAction": "None — work complete. Future work (Gowers U^2 infrastructure) tracked in mathlibGaps.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: SzemerediFullOQ02.lean built (118 lines, 0 sorries, 1 axiom inherited from szemeredi_k_ge_4). All k ≥ 1: szemeredi_vanishing_density proved via Filter.Tendsto. k=3: ap_free_density_isLittleO_k3 via Mathlib rothNumberNat_isLittleO_id. PR created.",
+    "builtItems": [
+      "szemeredi_vanishing_density: Filter.Tendsto formulation for all k ≥ 1 (SzemerediFullOQ02.lean:43)",
+      "ap_free_density_isLittleO_k3: IsLittleO for k=3 sequences via isLittleO_iff_tendsto (SzemerediFullOQ02.lean:72)",
+      "roth_density_isLittleO: alias for Mathlib rothNumberNat_isLittleO_id (SzemerediFullOQ02.lean:66)",
+      "szemeredi_density_full: main theorem alias (SzemerediFullOQ02.lean:101)"
+    ],
+    "insights": [
+      "Mathlib has rothNumberNat_isLittleO_id in Corner.Roth.lean — the o(N) density bound for k=3 is already in Mathlib",
+      "div_lt_iff is renamed to div_lt_iff₀ in Lean 4 Mathlib",
+      "IsLittleO and Filter.Tendsto are connected via isLittleO_iff_tendsto — zero case needs A 0 ⊆ range 0 = ∅",
+      "Gowers U^{k-1} norm formulation (stronger than density-zero) is BLOCKED — Gowers norms not in Mathlib 4.26",
+      "ap_free_density_bound from SzemerediTheorem → Filter.Tendsto: use max N₀ 1 to ensure N > 0 for div_lt_iff₀"
+    ],
+    "mathlibGaps": [
+      "Gowers U^k norm infrastructure: ~1000 lines needed for U^{k-1} formulation of density bound",
+      "Hypergraph regularity for k≥4 case of szemeredi_k_ge_4 axiom"
+    ],
+    "nextSteps": [
+      "Build Gowers U^2 norm infrastructure for k=3 Fourier-analysis density proof (long-term)",
+      "Monitor Mathlib PRs for hypergraph regularity to eliminate szemeredi_k_ge_4 axiom"
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "arithmetic-progressions",
+    "szemeredi",
+    "density",
+    "regularity"
+  ],
+  "relatedProofs": [
+    "szemeredi-full",
+    "szemeredi-full-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-22T13:03:46.383Z",
+  "lastUpdate": "2026-04-27T23:36:00.000Z",
+  "significance": 8,
+  "tractability": 3,
+  "leanFiles": [
+    {
+      "path": "Proofs/SzemerediFullOQ02.lean",
+      "filename": "SzemerediFullOQ02.lean",
+      "lineCount": 119,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediFullOQ02.lean"
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "proofId": "euler-totient",
+  "reviewDate": "2026-03-24T16:00:00Z",
+  "reviewer": "peer-reviewer-1",
+
+  "overallAssessment": {
+    "grade": "B-",
+    "oneLiner": "A well-organized pedagogical showcase of Mathlib's Euler theorem API, with honest 'mathlib' badge but inflated originalContributions claims for what are predominantly one-line wrappers.",
+    "tier": "B",
+    "tierJustification": "All five named theorems compile without sorries or axioms, but the core mathematical content (euler_totient, fermat_little_theorem_full, totient_prime, totient_prime_pow) consists of single Mathlib API calls. Only fermat_little_theorem has a multi-step proof (3-line substitution). The file is a curated Mathlib interface, not an independent formalization."
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "EulerTotient.lean, overall structure",
+      "finding": "The proof file is exceptionally well-organized as a pedagogical progression: Euler's theorem (general) -> Fermat corollary (prime specialization) -> Full Fermat (unconditional) -> totient value examples -> non-coprime counterexample -> totient properties. This logical flow from general to specific, with concrete examples and a counterexample showing why the hypothesis matters, is a model for how a gallery entry should be structured. The counterexample at line 117 (2^phi(4) != 1 mod 4) is a particularly effective teaching device.",
+      "recommendation": "Preserve this structure as a template for other number-theory entries."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json badge field; annotations et-counterexample, et-fermat-full",
+      "finding": "The badge is honestly set to 'mathlib' rather than 'original' or 'verified', correctly signaling the proof's reliance on Mathlib. The annotations add genuine mathematical value beyond the Lean source: the Carmichael function context in et-counterexample and the Frobenius endomorphism explanation in et-fermat-full are accurate and go beyond what the code alone communicates.",
+      "recommendation": "No change needed. The badge honesty is exemplary."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions, items 1, 3, 4, 5, 6, 7",
+      "finding": "Seven items are listed as 'original contributions,' but the vast majority are one-line Mathlib calls or trivial computations. Specifically: (1) 'Euler's theorem via ZMod.pow_totient' is the single call `ZMod.pow_totient a` at line 58. (3) 'Fermat's full form a^p = a via ZMod.pow_card' is the single call `ZMod.pow_card a` at line 82. (4) 'Totient value examples verified by rfl' are `rfl` computations (lines 89-104). (5) 'Euler's theorem examples verified by native_decide' are `native_decide` calls (lines 107-113). (6) 'Non-coprime counterexample' is a single `native_decide` at line 117. (7) 'Totient of prime power formula' is the single call `Nat.totient_prime_pow hp hk` at line 130. Only item (2), 'Fermat's Little Theorem as corollary via totient_prime,' involves genuine multi-step reasoning (lines 71-74).",
+      "recommendation": "Reframe originalContributions to distinguish between 'original proof steps' and 'pedagogical curation.' For example: 'Derives Fermat's Little Theorem as a 3-line corollary of Euler's theorem' is an accurate original contribution claim. 'Curates Mathlib's ZMod.pow_totient with pedagogical examples and counterexample' is an accurate curation claim. Items 4-7 should be described as 'pedagogical examples' rather than 'contributions.'"
+    },
+    {
+      "severity": "minor",
+      "category": "overclaim",
+      "location": "annotations.json et-totient-prime (line 124-125) and et-totient-prime-pow (line 128-130), significance field",
+      "finding": "Both annotations are marked significance: 'key', but each is a one-line Mathlib wrapper. `totient_prime` at line 124-125 is literally `Nat.totient_prime hp` and `totient_prime_pow` at line 128-130 is `Nat.totient_prime_pow hp hk`. These are re-exports of Mathlib API with no additional reasoning. 'supporting' would be more accurate.",
+      "recommendation": "Change significance from 'key' to 'supporting' for both et-totient-prime and et-totient-prime-pow annotations."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json sections, imports section (startLine 1, endLine 53) vs main-theorem section (startLine 44, endLine 59)",
+      "finding": "The 'imports' section claims lines 1-53 and the 'main-theorem' section claims lines 44-59, creating a 10-line overlap (lines 44-53). Lines 44-49 contain the section docstring for the main theorem, which arguably belongs to the main-theorem section rather than imports.",
+      "recommendation": "Adjust the imports section endLine to 41 (the blank line before the namespace close / section docstring) and the main-theorem section startLine to 42 or 44."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json mathlibDependencies vs EulerTotient.lean docstring line 32",
+      "finding": "The Lean file's docstring at line 32 lists 'ZMod.unitOfCoprime' as a Mathlib dependency, but this function is never actually called in any proof body. The meta.json mathlibDependencies correctly omits it. The inconsistency is between the Lean docstring and the actual code, not within the gallery metadata itself.",
+      "recommendation": "Remove 'ZMod.unitOfCoprime' from the Lean file docstring at line 32, since it is not used in any proof. Alternatively, add a note that it is the mechanism by which coprimality gives a unit, even though the proofs access it indirectly."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json overview.historicalContext, RSA paragraph",
+      "finding": "The historical context describes RSA encryption in detail, including the encryption/decryption formulas. While mathematically correct and relevant, this is disproportionate: the Lean file does not formalize any aspect of RSA, and the RSA connection is purely narrative. The context is accurate but could set expectations that the formalization touches RSA.",
+      "recommendation": "No action required -- the context is accurate and the connection is well-known. Optionally, a brief qualifier like 'While not formalized here, this theorem underlies RSA...' would sharpen precision."
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Rewrite originalContributions in meta.json to distinguish genuine proof steps from pedagogical curation. Keep 'Derives Fermat's Little Theorem as corollary' as a contribution; reframe Mathlib wrappers and rfl/native_decide examples as 'pedagogical curation' rather than 'original contributions.'",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Downgrade significance of et-totient-prime and et-totient-prime-pow annotations from 'key' to 'supporting,' since both are single-line Mathlib re-exports.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Fix section line-range overlap: imports section endLine should be ~41 and main-theorem startLine should be ~42 to avoid the 10-line overlap at lines 44-53.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Remove 'ZMod.unitOfCoprime' from the Lean docstring (line 32) since it is not invoked in any proof body, or add a clarifying note about its indirect role.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "medium",
+      "target": "researcher",
+      "description": "Consider adding substantive content: formalize the multiplicative property phi(mn) = phi(m)*phi(n) for coprime m,n, or the divisor sum identity n = sum_{d|n} phi(d). Either would elevate the entry from pure Mathlib curation to containing genuine original proof work.",
+      "status": "open"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 4,
+    "originalityAccuracy": 5,
+    "completeness": 9,
+    "framingPrecision": 7,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 8,
+    "overall": 6.8
+  },
+
+  "suggestedBestFraming": "A pedagogically structured Mathlib interface presenting Euler's theorem (via ZMod.pow_totient) alongside Fermat's Little Theorem as a 3-line corollary, totient properties, computational examples, and a non-coprime counterexample -- all fully verified with zero sorries and zero axioms."
+}

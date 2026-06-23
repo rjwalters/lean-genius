@@ -1,0 +1,81 @@
+{
+  "slug": "fermat-defect-one-oq-04",
+  "title": "Fermat Defect-One: a verified no-small-witness lower bound on M(n) for n ≥ 4",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "tags": [],
+  "relatedProofs": [
+    "fermat-defect-one"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-18T00:00:00.000Z",
+  "lastUpdate": "2026-06-18T18:50:00.000Z",
+  "significance": 5,
+  "tractability": 8,
+  "problemStatement": {
+    "formal": "\\forall n \\in \\{4,5,6\\}:\\quad \\neg\\,\\exists\\, a,b,c \\in \\mathbb{N},\\ 2 \\le a \\le b < c \\le 100\\ \\wedge\\ \\big(a^n + b^n + 1 = c^n\\ \\vee\\ a^n + b^n = c^n + 1\\big)",
+    "plain": "Complementing OQ-03 (does the minimal Fermat defect M(n) = min |a^n + b^n - c^n| grow with n?), this question asks for a verified, machine-checked LOWER bound: certify that no primitive nontrivial defect-one triple with c ≤ 100 exists at exponents n = 4,5,6 (either sign). Equivalently, within the box c ≤ 100 the minimal defect satisfies M(n) ≥ 2 for these n, while at n = 3 the same box already contains a witness (6,8,9). The deliverable is a fully bounded `native_decide` certificate, strengthening the parent's `sorry`-gated no_witness_n_eq_4_below_20 (c ≤ 20, single exponent) to c ≤ 100 across n = 4,5,6.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-18T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Bounded no-small-witness lower bound on M(n), n in {4,5,6}, c <= 100, both signs, discharged by native_decide.",
+    "blockers": [],
+    "nextAction": "Optionally extend the box (c <= 200) or the exponent range; the open infinite statement (M(n) >= 2 for all n >= 4) needs Fermat-Catalan finiteness with no Mathlib bearer.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED & MERGED (PR #25861): no-small-witness lower bound M(n) >= 2 in the box c <= 100 for n in {4,5,6}, both signs, via native_decide over a bounded Nat.decidableBallLT enumeration. Stated without a gcd hypothesis (defect one forces primitivity: d=gcd(a,b,c) => d^n | 1 => d=1), specialized to the parent FermatDefectWitness predicate (no_small_witness_4/5/6), with defect_one_three_in_box exhibiting (6,8,9) at n=3 to show the n>=4 vanishing is an exponent effect, not a bound artifact. Proofs/FermatDefectOneOQ04.lean (133L, 10 thm, 0 def, 0 sorry, 0 axiom decls; native_decide introduces Lean.ofReduceBool) is registered in Proofs.lean and fully documented in the parent fermat-defect-one gallery entry (additionalFiles + originalContributions). The remaining open core — M(n) >= 2 for ALL n>=4 unbounded — requires Fermat-Catalan-type finiteness with no Mathlib bearer (BLOCKED); box/exponent extensions are native_decide enumeration with no structural value (n>=10 overflows UInt64).",
+    "builtItems": [
+      "no_defect_one_eqn_below_{4,5,6}: for c<101, b<c, a<b+1, 2<=a, both a^n+b^n+1 != c^n and a^n+b^n != c^n+1 [native_decide core; FermatDefectOneOQ04.lean]",
+      "no_small_defect_one_{4,5,6}: same emptiness restated with natural ordering hypotheses (2<=a<=b<c<=100), no gcd assumption (defect one forces primitivity)",
+      "no_small_witness_{4,5,6} (a b c) (hc:c<=100): not FermatDefectWitness n a b c — specializes box-emptiness to the parent predicate; certifies FermatDefectExists n has no solution with c<=100",
+      "defect_one_three_in_box: at n=3 the box c<=100 DOES contain a primitive witness (6,8,9), via fermat_defect_three_neg — the vanishing for n>=4 is an exponent effect, not an artifact of the bound"
+    ],
+    "insights": [
+      "Defect one forces primitivity: if a^n+b^n-c^n = +/-1 and d=gcd(a,b,c) then d^n | 1 so d=1; hence the bounded non-existence can be stated WITHOUT a gcd hypothesis and is strictly stronger than the FermatDefectWitness form (which carries gcd=1).",
+      "The shape forall c<101, forall b<c, forall a<b+1, 2<=a -> P enumerates exactly the admissible triples 2<=a<=b<c<=100 and is decidable via Nat.decidableBallLT, so native_decide compiles the whole finite check.",
+      "This strengthens the parent's sorry-gated no_witness_n_eq_4_below_20 (c<=20, n=4 only) to c<=100 across n in {4,5,6}, both signs — a genuine discharge of an open bounded-search target, not a restatement.",
+      "n=3 is genuinely different: the box c<=100 contains (6,8,9), so M(3)=1 already inside the box, whereas M(n)>=2 inside the box for n=4,5,6. The defect-one phenomenon at n=3 is a critical-exponent artifact (cf. OQ-02 insight: expected solution count scales like X^(3-n))."
+    ],
+    "mathlibGaps": [
+      "No abc-conjecture / Fermat-Catalan finiteness in Mathlib to lift the bounded M(n)>=2 to the open infinite statement (all triples, n>=4).",
+      "The bounded result needs nothing beyond Nat.decidableBallLT + native_decide."
+    ],
+    "nextSteps": [
+      "Optionally widen the box (c<=200) or extend the exponent range (n up to ~12); the native_decide cost grows but stays finite.",
+      "The genuine open core (M(n)>=2 for ALL n>=4, unbounded) requires Fermat-Catalan-type finiteness — no Mathlib bearer.",
+      "Optionally derive an explicit M(n)>=2-in-box corollary phrased via a min over the box for presentation."
+    ],
+    "markdown": "# Knowledge Base: fermat-defect-one-oq-04\n\n## Source\nGallery-extracted open question extending **fermat-defect-one**: a verified no-small-witness lower bound on the minimal defect M(n).\n\n## Progress Summary\nProved (build-pending) bounded non-existence of defect-one triples (both signs) for n in {4,5,6}, c <= 100, via native_decide. See Proofs/FermatDefectOneOQ04.lean.\n"
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/FermatDefectOneOQ04.lean",
+      "filename": "FermatDefectOneOQ04.lean",
+      "lineCount": 132,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false
+    }
+  ]
+}

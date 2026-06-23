@@ -1,0 +1,214 @@
+{
+  "slug": "shannon-channel-coding-oq-02-oq-01",
+  "title": "Fano's Inequality via Conditional Entropy Bridge",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\u2200 pXY : \u03b1\u00d7\u03b2 \u2192 \u211d, 0 \u2264 pXY \u2192 \u2211 pXY = 1 \u2192 FanoInequality.conditionalEntropy pXY = InformationTheory.conditionalEntropy pXY \u2227 conditionalEntropy pXY \u2264 h P_e + P_e * log(|\u03b1| - 1)",
+    "plain": "Bridge the self-contained Fano proof (OQ-03) to the project's standard conditional entropy, and derive Fano's inequality from it.",
+    "whyMatters": [
+      "Eliminates the fano_inequality axiom from ShannonChannelCoding.lean",
+      "Confirms that two independently developed conditional entropy definitions agree",
+      "Documents and provides fix for ShannonEntropy.lean strong_subadditivity bug"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "conditional_entropy_defs_agree: FanoInequality.conditionalEntropy = InformationTheory.conditionalEntropy (by rfl)",
+      "fano_from_oq03 and fano_from_oq03_std bridge OQ03 Fano to the project-standard conditional entropy signature",
+      "fano_inequality_proved dispatches the parent fano_inequality signature",
+      "Parent ShannonChannelCoding.lean.fano_inequality is now a theorem delegating to fano_inequality_proved"
+    ],
+    "open": [],
+    "goal": "ACHIEVED: parent fano_inequality axiom eliminated. Slug closed."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-12T03:43:26Z",
+    "iteration": 3,
+    "focus": "Slug mission complete: parent ShannonChannelCoding.lean.fano_inequality is a theorem delegating to FanoFromConditionalEntropy.fano_inequality_proved. Metadata refreshed on 2026-05-18; extractor axiomCount for OQ02OQ01.lean is 1 because a commented code block starts with axiom, while the file header records 0 actual axioms.",
+    "blockers": [],
+    "nextAction": "None for this slug; future work belongs to sibling parent-axiom integration tasks.",
+    "attemptCounts": {
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Fano bridge remains closed. Metadata sync 2026-05-18 refreshed the broad 11-file ShannonChannelCoding leanFiles set. OQ02OQ01.lean is human-semantically 0 actual axioms and 0 sorries, but extractor axiomCount is 1 because it counts the commented code-block line 'axiom fano_inequality ...'.",
+    "builtItems": [
+      "ShannonChannelCodingOQ02OQ01.lean:49 conditional_entropy_defs_agree (proved by rfl)",
+      "ShannonChannelCodingOQ02OQ01.lean:68 fano_from_oq03 (delegates to OQ-03's fano_theorem)",
+      "ShannonChannelCodingOQ02OQ01.lean:143 fano_trivial_singleton (Unit-specific edge case)",
+      "ShannonChannelCodingOQ02OQ01.lean:201 fano_from_oq03_std (project-standard conditional entropy signature)",
+      "ShannonChannelCodingOQ02OQ01.lean:216 fano_singleton_card_one (any 1-element Fintype)",
+      "ShannonChannelCodingOQ02OQ01.lean:288 fano_inequality_proved (dispatcher; parent-axiom signature)",
+      "ShannonChannelCoding.lean:201 fano_inequality (now theorem, was axiom; PR #17796)",
+      "Gallery entry: src/data/proofs/shannon-channel-coding-oq-02-oq-01/"
+    ],
+    "insights": [
+      "FanoInequality.conditionalEntropy and InformationTheory.conditionalEntropy are definitionally equal (same formula) \u2014 bridge proved by `rfl`",
+      "Generalizing fano_trivial_singleton from Unit to arbitrary 1-element Fintype required Subsingleton.elim + Finset.sum_eq_single collapse, not Fintype.equivFin",
+      "Case-split on Fintype.card \u03b1 (=0 contradicts hsum=1; =1 uses fano_singleton_card_one; \u22652 uses fano_from_oq03_std) cleanly recovers the parent axiom signature with no cardinality hypothesis",
+      "ShannonEntropy.lean line 811 root cause (historical): sum order mismatch (\u2211 y \u2211 z \u2211 x vs \u2211 x \u2211 y \u2211 z) made linarith fail syntactically; fixed in PR #16334",
+      "Extractor axiomCount for OQ02OQ01.lean includes a commented code-block axiom line; do not confuse it with an actual Lean axiom declaration."
+    ],
+    "mathlibGaps": [
+      "(Historical, resolved) Finset.sum_comm interaction with conditional expressions needed care in strong_subadditivity"
+    ],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: shannon-channel-coding-oq-02-oq-01\n\n**Status: COMPLETED 2026-05-12** (PR #17796 discharged parent axiom). See research/problems/shannon-channel-coding-oq-02-oq-01/knowledge.md for full session history.\n\n## Summary\n\nBridge slug connecting OQ-03's self-contained Fano inequality to the project-standard `InformationTheory.conditionalEntropy`. The two conditional-entropy definitions are definitionally equal (proved by `rfl`), so OQ-03's `fano_theorem` lifts directly to the standard signature. Combined with the trivial |\u03b1|=1 case (`fano_singleton_card_one`), the dispatcher `fano_inequality_proved` discharges the parent's `fano_inequality` axiom exactly. Upstream blocker (ShannonEntropy.lean strong_subadditivity, line 811 linarith failure) was independently fixed in PR #16334. Parent integration shipped in PR #17796.\n"
+  },
+  "tags": [
+    "information-theory",
+    "entropy",
+    "channel-coding",
+    "fano",
+    "bridge"
+  ],
+  "relatedProofs": [
+    "shannon-channel-coding",
+    "shannon-channel-coding-oq-02",
+    "shannon-channel-coding-oq-02-oq-01",
+    "shannon-channel-coding-oq-02-oq-03",
+    "shannon-channel-coding-oq-02-oq-04",
+    "shannon-channel-coding-oq-03",
+    "shannon-channel-coding-oq-04",
+    "shannon-channel-coding-oq-04-oq-01",
+    "shannon-channel-coding-oq-04-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-04T00:00:00-07:00",
+  "significance": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonChannelCoding.lean",
+      "filename": "ShannonChannelCoding.lean",
+      "lineCount": 556,
+      "theoremCount": 16,
+      "axiomCount": 3,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCoding.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ02.lean",
+      "filename": "ShannonChannelCodingOQ02.lean",
+      "lineCount": 298,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
+      "filename": "ShannonChannelCodingOQ02OQ01.lean",
+      "lineCount": 313,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ02OQ01Aristotle.lean",
+      "filename": "ShannonChannelCodingOQ02OQ01Aristotle.lean",
+      "lineCount": 112,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ02OQ03.lean",
+      "filename": "ShannonChannelCodingOQ02OQ03.lean",
+      "lineCount": 163,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ02OQ04.lean",
+      "filename": "ShannonChannelCodingOQ02OQ04.lean",
+      "lineCount": 249,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ03.lean",
+      "filename": "ShannonChannelCodingOQ03.lean",
+      "lineCount": 665,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ03.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ03Aristotle.lean",
+      "filename": "ShannonChannelCodingOQ03Aristotle.lean",
+      "lineCount": 105,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ04.lean",
+      "filename": "ShannonChannelCodingOQ04.lean",
+      "lineCount": 225,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ04.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ04OQ01.lean",
+      "filename": "ShannonChannelCodingOQ04OQ01.lean",
+      "lineCount": 127,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ04OQ01OQ01.lean",
+      "filename": "ShannonChannelCodingOQ04OQ01OQ01.lean",
+      "lineCount": 103,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ04OQ01OQ01.lean"
+    }
+  ],
+  "lastUpdate": "2026-05-18T00:00:00.000Z"
+}

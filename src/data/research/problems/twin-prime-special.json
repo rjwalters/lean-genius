@@ -1,0 +1,107 @@
+{
+  "slug": "twin-prime-special",
+  "title": "Twin Primes Modular Structure",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall p > 3: \\text{TwinPrime}(p) \\implies p \\equiv 5 \\pmod{6}",
+    "plain": "All twin prime pairs (p, p+2) with p > 3 satisfy p ≡ 5 (mod 6), meaning they have the form (6k-1, 6k+1). This is a provable structural result, unlike the conjecture about infinitely many twin primes.",
+    "whyMatters": [
+      "Proves a concrete structural theorem about twin primes without depending on the open infinitude conjecture",
+      "Demonstrates prime divisibility and modular arithmetic arguments in Lean",
+      "Shows how arithmetic constraints force twin prime pairs greater than 3 into the form (6k-1, 6k+1)"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Nat.Prime and the needed divisibility lemmas are available in Mathlib",
+      "Primes greater than 3 are congruent to 1 or 5 modulo 6",
+      "`twin_prime_mod_six`: if p > 3 and (p, p+2) are both prime, then p ≡ 5 mod 6",
+      "`twin_prime_form`: twin primes greater than 3 have the form (6k-1, 6k+1)",
+      "Lean verifies example twin prime pairs (3,5), (5,7), (11,13), (17,19), (29,31), and (41,43)"
+    ],
+    "open": [
+      "The twin prime conjecture, asserting infinitely many twin prime pairs, remains unsolved and is only stated as an axiom"
+    ],
+    "goal": "Define twin prime pairs and prove the modulo-6 structure theorem for pairs (p, p+2) with p > 3."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2025-12-31T16:00:00-08:00",
+    "iteration": 1,
+    "focus": "Completed deep dive: formalized the twin-prime pair predicate, verified examples, and proved the modulo-6 structure theorem in proofs/Proofs/TwinPrimes.lean.",
+    "blockers": [],
+    "nextAction": "No immediate proof work for the structural theorem; future work would separate the open infinitude conjecture from completed structural results in downstream presentations.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved the twin-prime modulo-6 structure theorem in Lean. The file defines `IsTwinPrimePair`, verifies six example twin prime pairs, proves `prime_mod_six`, `twin_prime_mod_six`, and `twin_prime_form`, and records the infinite twin-prime conjecture only as an unsolved axiom.",
+    "builtItems": [
+      {
+        "name": "IsTwinPrimePair p",
+        "description": "p and p+2 are both prime",
+        "proven": true
+      },
+      {
+        "name": "TwinPrimeConjecture",
+        "description": "formal statement that infinitely many twin prime pairs exist",
+        "proven": false
+      },
+      {
+        "name": "twin_prime_conjecture",
+        "description": "axiom recording the unsolved twin prime conjecture",
+        "proven": false
+      },
+      {
+        "name": "prime_mod_six",
+        "description": "for p > 3 prime, p ≡ 1 or 5 mod 6",
+        "proven": true
+      },
+      {
+        "name": "twin_prime_mod_six",
+        "description": "for p > 3, a twin prime pair (p, p+2) forces p ≡ 5 mod 6",
+        "proven": true
+      },
+      {
+        "name": "twin_prime_form",
+        "description": "twin primes greater than 3 have the form (6k-1, 6k+1)",
+        "proven": true
+      }
+    ],
+    "insights": [
+      "The completed result is a structural theorem about existing twin prime pairs, not a proof of the twin prime conjecture.",
+      "The proof splits primes greater than 3 into the two residue classes 1 and 5 modulo 6.",
+      "The p ≡ 1 mod 6 case is eliminated because p+2 would be divisible by 3 and greater than 3, contradicting primality.",
+      "`Nat.Prime.eq_one_or_self_of_dvd` and `Nat.dvd_of_mod_eq_zero` provide the core divisibility exclusion pattern.",
+      "Six small twin prime examples were verified in Lean: (3,5), (5,7), (11,13), (17,19), (29,31), and (41,43)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Keep the twin prime conjecture marked as open/axiomatized wherever this result is reused.",
+      "Use `proofs/Proofs/TwinPrimes.lean` as the source file for any gallery or downstream metadata refresh."
+    ],
+    "markdown": "# Knowledge Base: Twin Primes in Special Forms\n\n## Progress Summary\n\n**Date**: 2025-12-31\n**Phase**: DEEP DIVE (completed)\n**Result**: Successful - proved structure theorem\n\n## What We've Built\n\n### Formal Definitions\n- `IsTwinPrimePair p` - p and p+2 are both prime\n- `TwinPrimeConjecture` - infinitely many twin prime pairs exist\n\n### Verified Examples (in Lean)\n- (3, 5) ✓\n- (5, 7) ✓\n- (11, 13) ✓\n- (17, 19) ✓\n- (29, 31) ✓\n- (41, 43) ✓\n\n### Theorems Proven\n\n1. **`prime_mod_six`**: For p > 3 prime, p ≡ 1 or 5 (mod 6)\n\n2. **`twin_prime_mod_six`** (Main result):\n   For p > 3, if (p, p+2) are both prime, then p ≡ 5 (mod 6)\n\n3. **`twin_prime_form`** (Corollary):\n   Twin primes > 3 have the form (6k-1, 6k+1) for some k ≥ 1\n\n4. **Non-twin proofs**: 0, 1, 2 cannot start twin prime pairs\n\n### Axiom Stated\n- `twin_prime_conjecture` - the unsolved conjecture\n\n## Technical Insights\n\n### The Proof Strategy\n\nThe structure theorem follows from modular arithmetic:\n\n1. All primes > 3 satisfy p ≡ 1 or 5 (mod 6)\n2. If p ≡ 1 (mod 6), then p + 2 ≡ 3 (mod 6)\n3. But 3 | (p + 2) means p + 2 can't be prime (unless = 3)\n4. Therefore p ≡ 5 (mod 6)\n\n### Key Lemmas Used\n- `Nat.Prime.eq_one_or_self_of_dvd` - if p prime and d | p, then d = 1 or d = p\n- `Nat.dvd_of_mod_eq_zero` - divisibility from mod = 0\n\n### Proof Pattern for Divisibility Exclusion\n```lean\ntheorem prime_gt_three_not_div_three (p : ℕ) (hp : Nat.Prime p) (h3 : p > 3) : ¬ 3 ∣ p := by\n  intro hdiv\n  have h3' : 3 = p := (Nat.Prime.eq_one_or_self_of_dvd hp 3 hdiv).resolve_left (by decide)\n  omega\n```\n\n## What Mathlib Has vs. Lacks\n\n| Component | Status |\n|-----------|--------|\n| `Nat.Prime` | ✓ In Mathlib |\n| `Nat.Prime.eq_one_or_self_of_dvd` | ✓ In Mathlib |\n| Modular arithmetic | ✓ In Mathlib |\n| `Bertrand.exists_prime_lt_and_le_two_mul` | ✓ In Mathlib |\n| Twin prime definition | ✗ Defined by us |\n| Twin prime structure theorem | ✗ Proved by us |\n| Twin prime conjecture | ✗ Unsolved |\n\n## Value Assessment\n\nThis proof is valuable because:\n1. **Non-trivial structure theorem** - genuinely interesting result\n2. **Clean modular arithmetic** - showcases proof technique\n3. **Complete examples** - verified 6 twin prime pairs\n4. **Proper formalization** - twin prime definition for future use\n5. **Documents the unsolved** - conjecture stated as axiom\n\n## Comparison: SURVEY vs DEEP DIVE\n\n| Aspect | If we did SURVEY | What we did (DEEP DIVE) |\n|--------|------------------|-------------------------|\n| Definition | ✓ | ✓ |\n| Examples | Maybe 1-2 | 6 verified |\n| Structure theorem | Stated only | **Fully proved** |\n| Time spent | ~30 min | ~1 hour |\n| Mathematical value | Low | **Medium** |\n\nThe DEEP DIVE was worthwhile because the structure theorem is a real result, not just bookkeeping.\n\n## File Location\n\n`proofs/Proofs/TwinPrimes.lean`\n\n## References\n\n- [Twin prime conjecture - Wikipedia](https://en.wikipedia.org/wiki/Twin_prime)\n- [Google DeepMind Formal Conjectures](https://reservoir.lean-lang.org/@google-deepmind/formal_conjectures)\n"
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "twin-primes",
+    "modular-arithmetic"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2025-12-31T16:00:00-08:00",
+  "completed": "2025-12-31T17:00:00-08:00",
+  "significance": 5,
+  "tractability": 8
+}

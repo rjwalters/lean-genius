@@ -1,0 +1,134 @@
+[
+  {
+    "id": "ann-992-header",
+    "proofId": "erdos-992",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #992: Discrepancy of Sequences mod 1**\n\nFor an integer sequence x₁ < x₂ < ⋯ and almost all α ∈ [0,1], how large can the discrepancy D(N) be?\n\nD(N) = max_{I ⊆ [0,1]} |#{n ≤ N : {αxₙ} ∈ I} - |I|·N|\n\n**Status:** OPEN\n\n**Known:** D(N) ≪ √N·(log N)^{3/2} (Baker 1981)\n**Conjectured:** D(N) ≪ √N·(log N)^{o(1)} or even √N·(log log N)^{O(1)}\n\nThe gap between (log N)^{3/2} and o(1) is substantial. For lacunary sequences, the stronger bound is known (Erdős-Gál).",
+    "mathContext": "Discrepancy measures deviation from uniform distribution. The 'almost all α' means the result holds for Lebesgue-a.e. α ∈ [0,1].",
+    "significance": "key",
+    "relatedConcepts": [
+      "Discrepancy theory",
+      "Uniform distribution mod 1",
+      "Metric number theory"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-992-definitions",
+    "proofId": "erdos-992",
+    "range": {
+      "startLine": 39,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Core Definitions",
+    "content": "**StrictlyIncreasingSeq(x)** — x(n) < x(n+1) for all n.\n\n**frac(t)** = t - ⌊t⌋ — the fractional part, always in [0,1).\n\n**countInInterval(x, α, N, a, b)** — count of n ≤ N with {αxₙ} ∈ [a,b). Uses Finset.filter on Finset.range N.\n\n**discrepancy(x, α, N)** = sup over intervals I ⊆ [0,1] of |count - |I|·N|. Defined via sSup over the set of deviations for all valid intervals [a,b) ⊆ [0,1].\n\nThe discrepancy captures the worst-case deviation from uniform distribution across all intervals.",
+    "mathContext": "The supremum definition matches the classical definition of star discrepancy D*(N). The 'almost all α' statements use MeasureTheory.ae (∀ᵐ α ∂volume.restrict [0,1]).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Star discrepancy",
+      "Finset.filter",
+      "sSup"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-992-bounds",
+    "proofId": "erdos-992",
+    "range": {
+      "startLine": 73,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Known Upper Bounds",
+    "content": "**erdos_koksma_cassels** (1949-50): D(N) ≤ C·√N·(log N)^{5/2} for a.e. α. The first metric result on discrepancy of lacunary-like sequences.\n\n**baker_1981**: D(N) ≤ C·√N·(log N)^{3/2} for a.e. α. The current best general bound, improving the exponent from 5/2 to 3/2.\n\nBoth use the ∀ᵐ quantifier from Mathlib's measure theory library to express 'for almost all α ∈ [0,1]'.\n\nBaker's improvement used refined estimates on exponential sums and the Erdős-Turán inequality.",
+    "mathContext": "The improvement from (log N)^{5/2} to (log N)^{3/2} was substantial but still far from the conjectured o(1). No further improvement has been made since 1981.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Baker's method",
+      "Exponential sums",
+      "Erdős-Turán inequality"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-992-lacunary",
+    "proofId": "erdos-992",
+    "range": {
+      "startLine": 91,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Lacunary Sequences",
+    "content": "**Lacunary(x, λ):** x(n+1)/x(n) > λ > 1 for all n — the sequence grows at least geometrically.\n\n**erdos_gal_lacunary:** For lacunary sequences, D(N) ≤ C·√N·(log log N)^k for a.e. α.\n\nThis is much stronger than Baker's general bound: (log log N)^k versus (log N)^{3/2}. For example, at N = 10^6: (log N)^{3/2} ≈ 51, but log log N ≈ 2.6.\n\nThe Erdős-Gál result supports the conjecture that the general bound should also be subpolynomial in log N.",
+    "mathContext": "Lacunary sequences have strong independence properties that make exponential sum estimates much easier. The question is whether these estimates can be extended to all sequences.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lacunary sequences",
+      "Independence",
+      "Exponential sums"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-992-conjectures",
+    "proofId": "erdos-992",
+    "range": {
+      "startLine": 106,
+      "endLine": 124
+    },
+    "type": "definition",
+    "title": "The Main Conjectures",
+    "content": "**conjecture_log_subpolynomial:** For all ε > 0, D(N) ≤ C_ε·√N·(log N)^ε for a.e. α. This says (log N)^{o(1)} — any power of log N, no matter how small.\n\n**conjecture_loglog_polynomial:** D(N) ≤ C·√N·(log log N)^k for a.e. α. This is stronger — polynomial in log log N rather than subpolynomial in log N.\n\nBoth conjectures are defined as Prop (not asserted as axioms) since they remain OPEN. The second conjecture matches the known lacunary case.",
+    "mathContext": "The hierarchy of conjectured bounds: (log N)^{3/2} (known) > (log N)^{o(1)} (weak conjecture) > (log log N)^{O(1)} (strong conjecture).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Open conjectures",
+      "Asymptotic bounds",
+      "Subpolynomial growth"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-992-examples",
+    "proofId": "erdos-992",
+    "range": {
+      "startLine": 137,
+      "endLine": 156
+    },
+    "type": "definition",
+    "title": "Examples",
+    "content": "**naturalSeq** = id — the sequence 1, 2, 3, ... The simplest strictly increasing sequence.\n\n**powersOfTwo(n)** = 2^n — lacunary with λ = 2. Since it's lacunary, the stronger loglog bound applies.\n\n**powers_of_two_bound:** D(N) ≤ C·√N·(log log N)^k for powers of 2 and a.e. α.\n\nThese examples illustrate the gap: for x_n = n (not lacunary), only Baker's (log N)^{3/2} is known. For x_n = 2^n (lacunary), the much stronger (log log N)^k applies.",
+    "mathContext": "The contrast between general and lacunary sequences is the central tension of Problem #992.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Examples",
+      "Gap between bounds"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-992-summary",
+    "proofId": "erdos-992",
+    "range": {
+      "startLine": 158,
+      "endLine": 162
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_992_summary** (PROVED): Combines two key results:\n1. Baker's bound: D(N) ≪ √N·(log N)^{3/2} for all sequences and a.e. α\n2. Erdős-Gál: D(N) ≪ √N·(log log N)^k for lacunary sequences and a.e. α\n\nProof: ⟨baker_1981, erdos_gal_lacunary⟩\n\nThe summary captures the complete picture: the best general bound and the special lacunary bound. The conjectures ask whether the lacunary bound extends to all sequences.",
+    "mathContext": "Both conjuncts are instantiated from the axiomatized results. The summary theorem is proved, not axiomatized.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary theorems",
+      "Known results",
+      "Open problem formalization"
+    ],
+    "prerequisites": []
+  }
+]

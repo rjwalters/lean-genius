@@ -1,0 +1,217 @@
+{
+  "id": "central-limit-theorem-oq-03",
+  "title": "Categorical Structure of Distributions Under Convolution",
+  "slug": "central-limit-theorem-oq-03",
+  "description": "Formalizes the commutative monoid structure of probability distributions under convolution, with the CLT interpreted as convergence to the Gaussian fixed point. Includes a domain-of-attraction formalization and (in the OQ02 companion) infinite-divisibility infrastructure; Cramér's indecomposability theorem is discussed as context but is not formalized.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Central_limit_theorem",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/CentralLimitTheoremOQ03.lean",
+    "tags": [
+      "probability",
+      "category-theory",
+      "convolution",
+      "clt",
+      "monoid",
+      "gaussian",
+      "extension",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.Measure.dirac",
+        "description": "Dirac delta measure at a point.",
+        "module": "Mathlib.MeasureTheory.Measure.Dirac"
+      },
+      {
+        "theorem": "IsProbabilityMeasure",
+        "description": "Typeclass for probability measures (total mass 1).",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      }
+    ],
+    "originalContributions": [
+      "Commutative monoid structure of ProbMeasure under convolution (axiomatized, assembled in convolution_monoid_summary)",
+      "Convolution power with proved distribution law convPow_add (proved by induction)",
+      "CLT as convergence in the convolution monoid (domain of attraction), derived from the clt_convergence axiom",
+      "Infinite divisibility (OQ02 companion): the IsInfDivisible predicate with proved closure under convolution (infDivisible_convolution) and convolution powers (infDivisible_convPow), forming a submonoid",
+      "Lévy–Khintchine representation (OQ02 companion) stated as an axiom (levy_khintchine) with derived characterizations of infinitely divisible distributions"
+    ],
+    "historicalContext": "The algebraic structure of probability distributions under convolution has been studied since Lévy (1925). Cramér's theorem (1936) revealed that the Gaussian is 'indecomposable' in this structure, and the CLT can be interpreted as a convergence statement in the convolution monoid.",
+    "axiomCount": 25,
+    "lineCount": 241,
+    "assumptions": "25 axiom declarations across the chain: 14 in main file CentralLimitTheoremOQ03.lean (convolution, convolution_assoc, convolution_dirac_left, convolution_dirac_right, convolution_comm, charFun, charFun_convolution, charFun_dirac_zero, mean, variance, standardGaussian, gaussian_variance, normalizedConvPow, clt_convergence) and 11 in companion CentralLimitTheoremOQ03OQ02.lean (convolution, convolution_assoc, convolution_comm, convolution_dirac_right, charFun, charFun_convolution, charFun_dirac_zero, standardGaussian, standardGaussian_infDivisible, levyKhintchineExponent, levy_khintchine). Eight names are duplicated across main and OQ02 — they are independent declarations per module. Companions OQ01 and OQ01Aristotle declare no axioms (OQ01 carries 2 sorries; OQ01Aristotle carries 4 sorries — Aristotle scaffolding). See Lean sources for complete statements.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 5,
+    "additionalFiles": [
+      "Proofs/CentralLimitTheoremOQ03OQ01.lean",
+      "Proofs/CentralLimitTheoremOQ03OQ01Aristotle.lean",
+      "Proofs/CentralLimitTheoremOQ03OQ02.lean"
+    ]
+  },
+  "sections": [
+    {
+      "id": "prob-measure",
+      "title": "Probability Measure Type",
+      "summary": "Defines ProbMeasure wrapping Mathlib's Measure R with IsProbabilityMeasure constraint, and diracProb for Dirac delta measures.",
+      "startLine": 35,
+      "endLine": 48,
+      "mathContext": "$\\text{ProbMeasure}(\\mathbb{R})$: measures $\\mu$ with $\\mu(\\mathbb{R}) = 1$. Dirac measure: $\\delta_a(B) = \\mathbf{1}_B(a)$. These form the objects of the convolution monoid."
+    },
+    {
+      "id": "convolution",
+      "title": "Convolution Operation",
+      "summary": "Axiomatizes convolution of probability measures and its preservation of the probability measure property.",
+      "startLine": 49,
+      "endLine": 61,
+      "mathContext": "$(\\mu * \\nu)(B) = \\int\\int \\mathbf{1}_B(x+y)\\, d\\mu(x)\\, d\\nu(y)$. Convolution of probability measures is again a probability measure: $(\\mu * \\nu)(\\mathbb{R}) = 1$."
+    },
+    {
+      "id": "monoid",
+      "title": "Monoid Structure",
+      "summary": "Axioms for the commutative monoid: associativity, left/right identity (Dirac at 0), commutativity.",
+      "startLine": 62,
+      "endLine": 81,
+      "mathContext": "$(\\text{ProbMeasure}(\\mathbb{R}), *, \\delta_0)$ is a commutative monoid: $\\mu * (\\nu * \\rho) = (\\mu * \\nu) * \\rho$ (associativity), $\\mu * \\delta_0 = \\mu$ (identity), $\\mu * \\nu = \\nu * \\mu$ (commutativity)."
+    },
+    {
+      "id": "conv-pow",
+      "title": "Convolution Powers",
+      "summary": "Defines convPow mu n recursively, proves convPow_zero, convPow_one, and the distribution law convPow_add by induction.",
+      "startLine": 82,
+      "endLine": 114,
+      "mathContext": "$\\mu^{*n} = \\underbrace{\\mu * \\cdots * \\mu}_{n}$: $\\mu^{*0} = \\delta_0$, $\\mu^{*1} = \\mu$. Distribution of $S_n = X_1 + \\cdots + X_n$ is $\\mu^{*n}$ when $X_i \\sim \\mu$ i.i.d."
+    },
+    {
+      "id": "char-fun",
+      "title": "Characteristic Functions",
+      "summary": "Axiomatizes the characteristic function, proves it is a monoid homomorphism (charFun_convolution, charFun_dirac_zero), and derives charFun_convPow.",
+      "startLine": 115,
+      "endLine": 145,
+      "mathContext": "$\\hat{\\mu}(t) = \\int e^{itx}\\, d\\mu(x)$ is a monoid homomorphism: $\\widehat{\\mu * \\nu}(t) = \\hat{\\mu}(t) \\cdot \\hat{\\nu}(t)$, $\\hat{\\delta}_0(t) = 1$. This linearizes convolution into pointwise multiplication."
+    },
+    {
+      "id": "normalization-clt",
+      "title": "Normalization and the CLT",
+      "summary": "Axiomatizes normalization, mean, variance, the standard Gaussian, and the CLT as convergence of normalized convolution powers.",
+      "startLine": 146,
+      "endLine": 190,
+      "mathContext": "Normalization: $\\mu_n = T_{1/\\sqrt{n}} \\mu^{*n}$ where $T_c$ rescales. **CLT**: $\\mu_n \\xrightarrow{w} \\Phi$ (standard Gaussian) when $\\mu$ has mean 0 and variance 1. $\\hat{\\Phi}(t) = e^{-t^2/2}$."
+    },
+    {
+      "id": "gaussian-fixed-point",
+      "title": "Gaussian as Fixed Point",
+      "summary": "Defines the domain of attraction and proves the CLT as DOA membership (from the clt_convergence axiom) and that the Gaussian lies in its own domain of attraction. Gaussian stability and Cramér's indecomposability theorem appear only as commentary docstrings — neither is declared as an axiom or theorem in the source.",
+      "startLine": 191,
+      "endLine": 214,
+      "mathContext": "$\\Phi^{*n}_{\\text{normalized}} = \\Phi$ for all $n$ — the Gaussian is a fixed point of the CLT normalization. **Cramér**: $\\mu * \\nu = \\Phi \\Rightarrow \\mu, \\nu$ both Gaussian (indecomposability)."
+    },
+    {
+      "id": "categorical-perspective",
+      "title": "Categorical Perspective",
+      "summary": "Domain of attraction definition, CLT as DOA membership, Gaussian in its own DOA, DOA closure under convolution.",
+      "startLine": 215,
+      "endLine": 241,
+      "mathContext": "**Domain of attraction**: $\\mu \\in \\text{DOA}(\\Phi) \\iff T_{1/\\sqrt{n}}\\mu^{*n} \\to \\Phi$. CLT says finite-variance distributions are in $\\text{DOA}(\\Phi)$. Infinite variance leads to stable distributions $S_\\alpha$ with $\\alpha < 2$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary of Algebraic Structure",
+      "summary": "Packages all four monoid axioms into convolution_monoid_summary theorem.",
+      "startLine": 241,
+      "endLine": 241,
+      "mathContext": "Convolution monoid $(\\text{ProbMeasure}, *, \\delta_0)$ with characteristic function homomorphism $\\hat{\\cdot}: (\\text{ProbMeasure}, *) \\to (C_b, \\cdot)$, CLT as convergence $\\mu_n \\to \\Phi$, and Gaussian as fixed point/attractor."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The algebraic structure of probability distributions under convolution has deep roots in mathematics. Fourier (1822) and Laplace (1812) implicitly used the fact that convolution corresponds to multiplication of transforms. Lévy (1925) made the convolution monoid structure explicit in his systematic study of probability distributions, showing that characteristic functions (Fourier transforms) provide a homomorphism from the convolution monoid to the multiplicative monoid of complex-valued functions.\n\nThe Central Limit Theorem, first proved rigorously by Lindeberg (1922) and Lévy (1925), has a beautiful algebraic interpretation: the Gaussian distribution is the unique \"attractor\" of the normalization-convolution iteration. Every distribution with finite nonzero variance converges to the Gaussian under repeated convolution and renormalization—a fixed-point phenomenon.\n\nCramér's theorem (1936) revealed further algebraic structure: the Gaussian is \"indecomposable\" (prime) in the convolution monoid. If $X + Y$ is Gaussian with $X, Y$ independent, then both $X$ and $Y$ must be Gaussian. This is the analogue of primality in the integers, but for the convolution algebra of probability distributions.",
+    "problemStatement": "**Open Question #3 from the CLT gallery:**\n\nWhat algebraic/categorical structure do probability distributions carry under convolution, and how does the CLT fit into this structure?\n\n**Answer:** Probability distributions on $\\mathbb{R}$ form a commutative monoid $(\\text{ProbMeasure}, *, \\delta_0)$. The CLT states that every finite-variance distribution lies in the **domain of attraction** of the Gaussian: normalized convolution powers $\\frac{X_1 + \\cdots + X_n - n\\mu}{\\sigma\\sqrt{n}} \\to N(0,1)$. The Gaussian is both a fixed point of this iteration and indecomposable (Cramér's theorem).",
+    "text": "Formalizes the commutative monoid structure of probability distributions under convolution, with the CLT interpreted as convergence to the Gaussian fixed point. Includes a domain-of-attraction formalization and (in the OQ02 companion) infinite-divisibility infrastructure; Cramér's indecomposability theorem is discussed as context but is not formalized.",
+    "proofStrategy": "The formalization builds the algebraic structure in layers:\n\n1. **Type definitions** (§1–2): Wrap Mathlib's `Measure R` as `ProbMeasure`, axiomatize convolution\n2. **Monoid axioms** (§3): Associativity, identity ($\\delta_0$), commutativity\n3. **Convolution powers** (§4): Define $\\mu^{*n}$ recursively, prove the distribution law $\\mu^{*(m+n)} = \\mu^{*m} * \\mu^{*n}$ by induction\n4. **Characteristic functions** (§5): Axiomatize $\\varphi_\\mu(t) = \\int e^{itx} d\\mu$, prove it's a monoid homomorphism, derive $\\varphi_{\\mu^{*n}} = \\varphi_\\mu^n$\n5. **CLT** (§6–7): Axiomatize normalization and the Gaussian, state the CLT as domain-of-attraction convergence, axiomatize Gaussian stability and Cramér's theorem\n6. **Categorical assembly** (§8–9): Define domain of attraction, prove CLT as DOA membership, DOA closure under convolution",
+    "keyInsights": [
+      "Characteristic functions provide a monoid homomorphism from $(\\text{ProbMeasure}, *)$ to $(\\mathbb{C}^{\\mathbb{R}}, \\cdot)$: $\\varphi_{\\mu * \\nu} = \\varphi_\\mu \\cdot \\varphi_\\nu$, reducing convolution to pointwise multiplication",
+      "The distribution law $\\mu^{*(m+n)} = \\mu^{*m} * \\mu^{*n}$ is the probability analogue of the law of exponents, proved by a clean induction using associativity",
+      "The CLT is a fixed-point theorem: the Gaussian is the unique attractor of the map $\\mu \\mapsto \\text{normalize}(\\mu^{*n})$ as $n \\to \\infty$",
+      "Cramér's theorem (1936) says the Gaussian is \"prime\" in the convolution monoid: if $\\mu * \\nu$ is Gaussian, both $\\mu$ and $\\nu$ must be Gaussian—analogous to primality of integers",
+      "The domain of attraction is closed under convolution: if $\\mu, \\nu$ are attracted to the Gaussian, so is $\\mu * \\nu$, giving the DOA an algebraic structure of its own"
+    ],
+    "prerequisites": [
+      "Probability theory (random variables, expectation, variance)",
+      "Measure theory (convergence in distribution, characteristic functions)",
+      "Functional analysis (weak convergence, Prohorov's theorem)"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization establishes the commutative monoid structure of probability distributions under convolution (via axioms assembled in convolution_monoid_summary), with characteristic functions as a homomorphism and convolution powers obeying the distribution law. The CLT is stated as domain-of-attraction convergence to the Gaussian and obtained from the clt_convergence axiom. The key independently proved results are convPow_add and charFun_convPow (plus the OQ02 companion's infinite-divisibility lemmas). Gaussian stability and Cramér's indecomposability theorem are mentioned in commentary only — neither is declared as an axiom or theorem in the Lean source, so neither is formalized.",
+    "implications": "**Theoretical Significance**: **Connections to Broader Mathematics**\n\n1. **Functional Analysis:** The convolution monoid embeds into the Banach algebra $L^1(\\mathbb{R})$, connecting probability theory to harmonic analysis and the theory of Banach algebras\n2. **Stable Distributions:** The Gaussian is just one member of the family of $\\alpha$-stable distributions (Lévy, Gnedenko-Kolmogorov), each with its own domain of attraction.\n\nThe full classification involves the Lévy-Khintchine representation\n3. **Information Theory:** The CLT is closely related to the entropy power inequality: convolution increases entropy, and the Gaussian maximizes entropy for given variance\n4. **Category Theory:** The convolution monoidal structure makes the category of probability measures a symmetric monoidal category, with the CLT describing the behavior of the tensor power functor\n5. **Free Probability:** Voiculescu's free CLT replaces convolution with free convolution, with the semicircle distribution replacing the Gaussian as the attractor—an entirely parallel algebraic story.",
+    "openQuestions": [
+      "Can the Gnedenko-Kolmogorov classification of domains of attraction for all stable distributions be formalized?",
+      "Can the infinitely divisible distributions (those with n-th convolution roots for all n) be characterized in Lean?",
+      "Can Mathlib's measure convolution be connected to our axiomatized ProbMeasure convolution to reduce the axiom count?",
+      "Can the Lévy-Khintchine representation theorem be formalized to classify all infinitely divisible distributions?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.MeasureSpace",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.Probability.Independence.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Filter"
+    ],
+    "namespace": "CentralLimitTheoremOQ03",
+    "lineCount": 241,
+    "axiomCount": 14,
+    "theoremCount": 8,
+    "definitionCount": 5,
+    "path": "Proofs/CentralLimitTheoremOQ03.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/CentralLimitTheoremOQ03OQ01.lean",
+      "Proofs/CentralLimitTheoremOQ03OQ01Aristotle.lean",
+      "Proofs/CentralLimitTheoremOQ03OQ02.lean"
+    ]
+  },
+  "references": [
+    {
+      "authors": "H. Cramér",
+      "title": "Über eine Eigenschaft der normalen Verteilungsfunktion",
+      "year": "1936",
+      "venue": "Mathematische Zeitschrift",
+      "note": "If X+Y is Gaussian with X,Y independent, then X and Y are Gaussian"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: What Happens When Variance is Infinite?"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: The Gnedenko-Kolmogorov Domain of Attraction Theorem"
+    },
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Lévy-Khintchine Representation: Triplets, Decomposition, and"
+    }
+  ],
+  "sorries": 0
+}

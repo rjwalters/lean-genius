@@ -1,0 +1,318 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Introduction and Historical Context",
+    "content": "Vieta's formulas establish a fundamental correspondence between the coefficients of a polynomial and symmetric functions of its roots. For a monic polynomial of degree n with roots r_1, ..., r_n, the k-th coefficient (from the top) equals (-1)^k times the k-th elementary symmetric polynomial of the roots.\n\nFrancois Viete (Franciscus Vieta, 1540-1603) was a French lawyer and mathematician who transformed algebra from a rhetorical discipline into a symbolic one. His 1591 treatise *In artem analyticem isagoge* was the first to systematically use letters for both unknowns (vowels) and known quantities (consonants). The root-coefficient relations appeared posthumously in *De aequationum recognitione et emendatione tractatus duo* (1615), edited by Alexander Anderson.\n\nViete's innovation was not merely notational. By treating coefficients as abstract symbols rather than specific numbers, he could state universal relationships between roots and coefficients -- making it possible, for the first time, to study polynomial equations as a class rather than case-by-case. This abstraction directly enabled Isaac Newton's extension to power sums (Newton's identities, 1666), Lagrange's work on permutation groups of roots (1770-71), and ultimately Galois's theory of solvability by radicals (1832).",
+    "mathContext": "For monic $p(x) = x^n + a_{n-1}x^{n-1} + \\cdots + a_0$ with roots $r_1, \\ldots, r_n$:\n$$a_{n-k} = (-1)^k e_k(r_1, \\ldots, r_n)$$\nwhere $e_k = \\sum_{1 \\le i_1 < \\cdots < i_k \\le n} r_{i_1} \\cdots r_{i_k}$ is the $k$-th elementary symmetric polynomial.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Viete",
+      "elementary symmetric polynomials",
+      "polynomial roots",
+      "symbolic algebra",
+      "Newton's identities"
+    ],
+    "prerequisites": [
+      "polynomial definition and degree",
+      "roots of polynomials (Polynomial.IsRoot)",
+      "elementary symmetric functions"
+    ],
+    "crossReferences": [
+      {
+        "targetId": "abel-ruffini",
+        "relationship": "foundational",
+        "description": "Vieta's insight that coefficients are symmetric functions of roots is the conceptual seed of Galois theory, which leads to the Abel-Ruffini impossibility result for degree >= 5"
+      },
+      {
+        "targetId": "fundamental-theorem-algebra",
+        "relationship": "prerequisite",
+        "description": "The FTA guarantees that every polynomial of degree n over C has exactly n roots (counted with multiplicity), which is necessary for Vieta's formulas to produce a complete set of relations"
+      }
+    ]
+  },
+  {
+    "id": "ann-quadratic",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 29,
+      "endLine": 44
+    },
+    "type": "concept",
+    "title": "Vieta's Formula (Quadratic Case)",
+    "content": "**Theorem** (`vieta_quadratic`): If x is a root of x^2 - bx + c = 0, then there exists another root y such that:\n- y^2 - by + c = 0 (y is also a root)\n- x + y = b (sum of roots equals the negated coefficient of x, with sign adjustment for the standard form x^2 - bx + c)\n- x * y = c (product of roots equals the constant term)\n\nThis is a direct application of Mathlib's `vieta_formula_quadratic`. The proof proceeds by constructing y = b - x, then verifying the three properties via ring arithmetic.\n\nThe quadratic case is pedagogically central because it captures the full pattern in its simplest form: given any quadratic x^2 + px + q = 0 with roots r, s, we have r + s = -p and rs = q. The sign convention used here (x^2 - bx + c) absorbs the minus sign into b, so the sum is simply b rather than -p.\n\nThis result is the algebraic backbone of the quadratic formula: if r + s = b and rs = c, then the discriminant b^2 - 4c = (r - s)^2 determines whether the roots are real and distinct, real and equal, or complex conjugate.",
+    "mathContext": "`vieta_formula_quadratic`: $x^2 - bx + c = 0$ with $x$ a root $\\Rightarrow \\exists y,\\; y^2 - by + c = 0 \\wedge x + y = b \\wedge xy = c$.\n\nEquivalently, for $x^2 + px + q = 0$: $e_1(r,s) = r + s = -p$ and $e_2(r,s) = rs = q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic equations",
+      "sum of roots",
+      "product of roots",
+      "vieta_formula_quadratic",
+      "discriminant"
+    ],
+    "prerequisites": [
+      "Polynomial.IsRoot",
+      "Mathlib.RingTheory.Polynomial.Vieta",
+      "CommRing typeclass"
+    ],
+    "crossReferences": [
+      {
+        "targetId": "elementary-quadratic-reciprocity",
+        "relationship": "related",
+        "description": "Quadratic residues and reciprocity connect to the discriminant of quadratic polynomials, which is determined by the Vieta relations e_1^2 - 4e_2"
+      }
+    ]
+  },
+  {
+    "id": "ann-example-5-6",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 54,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Example: x^2 - 5x + 6 = 0",
+    "content": "The polynomial x^2 - 5x + 6 = (x - 2)(x - 3) has roots 2 and 3.\n\nVerification via Vieta's formulas:\n- Sum: e_1 = 2 + 3 = 5, and indeed the coefficient of x is -5 = -e_1 (in standard form x^2 - bx + c, b = 5)\n- Product: e_2 = 2 * 3 = 6, matching the constant term c = 6\n\nDirect root check:\n- 2^2 - 5(2) + 6 = 4 - 10 + 6 = 0\n- 3^2 - 5(3) + 6 = 9 - 15 + 6 = 0\n\nIn the Lean formalization, these equalities are proved by `rfl` (definitional equality in Z) and `norm_num` (for the root checks), demonstrating that Lean's kernel can verify concrete arithmetic instances of the general theorem.",
+    "mathContext": "$x^2 - 5x + 6 = (x-2)(x-3)$; $e_1(2,3) = 5$, $e_2(2,3) = 6$. Verified by `rfl` and `norm_num`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "factorization",
+      "verification",
+      "norm_num tactic",
+      "rfl (definitional equality)"
+    ],
+    "prerequisites": [
+      "vieta_quadratic theorem",
+      "integer arithmetic in Lean"
+    ]
+  },
+  {
+    "id": "ann-example-negative-roots",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 68,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Example: Negative Roots and Sign Convention",
+    "content": "The polynomial x^2 + x - 6 = 0 has roots -3 and 2, illustrating how Vieta's formulas handle negative roots.\n\nRewriting in standard form x^2 - bx + c: here b = -1 (since the coefficient of x is +1 = -(-1)) and c = -6.\n\nVerification:\n- Sum: (-3) + 2 = -1 = b (indeed, in x^2 - (-1)x + (-6), the sum of roots is b = -1)\n- Product: (-3)(2) = -6 = c\n\nThis example is important because it shows that Vieta's formulas work uniformly over any commutative ring, not just for positive roots. The formalization in Lean uses the CommRing typeclass, ensuring the result applies to Z, Q, R, C, and any other commutative ring.",
+    "mathContext": "$x^2 + x - 6 = x^2 - (-1)x + (-6)$; roots $r = -3, s = 2$ give $e_1 = -1$ and $e_2 = -6$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sign conventions",
+      "CommRing generality",
+      "negative roots"
+    ],
+    "prerequisites": [
+      "vieta_quadratic",
+      "integer arithmetic"
+    ]
+  },
+  {
+    "id": "ann-cubic-example",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 79,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Example: Cubic with Roots 1, 2, 3",
+    "content": "The polynomial x^3 - 6x^2 + 11x - 6 = (x-1)(x-2)(x-3) has roots 1, 2, 3.\n\nAll three elementary symmetric polynomials are verified:\n- e_1 = 1 + 2 + 3 = 6 (coefficient of x^2 is -e_1 = -6)\n- e_2 = 1*2 + 1*3 + 2*3 = 2 + 3 + 6 = 11 (coefficient of x is +e_2 = 11)\n- e_3 = 1*2*3 = 6 (constant term is -e_3 = -6)\n\nThe alternating sign pattern is visible: coefficients are -6, +11, -6, corresponding to -e_1, +e_2, -e_3. In general, the coefficient of x^(n-k) is (-1)^k * e_k.\n\nNote that e_1 = e_3 = 6 is a coincidence for this particular set of roots, not a general pattern. The formalization verifies all three root conditions using norm_num and all three Vieta relations using rfl.",
+    "mathContext": "$(x-1)(x-2)(x-3) = x^3 - 6x^2 + 11x - 6$:\n$e_1 = 6,\\; e_2 = 11,\\; e_3 = 6$.\nCoefficients: $[x^2] = -e_1 = -6$, $[x^1] = +e_2 = 11$, $[x^0] = -e_3 = -6$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cubic polynomials",
+      "elementary symmetric e_1, e_2, e_3",
+      "alternating sign pattern",
+      "norm_num verification"
+    ],
+    "prerequisites": [
+      "Vieta quadratic case",
+      "Multiset.esymm definition"
+    ],
+    "crossReferences": [
+      {
+        "targetId": "solution-of-cubic",
+        "relationship": "related",
+        "description": "Cardano's cubic formula uses Vieta's formulas in reverse: the Tschirnhaus substitution x = t - e_1/3 eliminates the x^2 term, reducing to the depressed cubic t^3 + pt + q = 0"
+      }
+    ]
+  },
+  {
+    "id": "ann-general",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 101,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "General Vieta Relation (Arbitrary Degree)",
+    "content": "**Theorem** (`vieta_polynomial_coeff`): For a polynomial p over an integral domain with roots forming a multiset S of cardinality equal to the degree:\n\n  p.coeff(k) = p.leadingCoeff * (-1)^(deg - k) * esymm(S, deg - k)\n\nwhere esymm(S, j) is the j-th elementary symmetric polynomial evaluated on the multiset S of roots.\n\nThe hypothesis `card(roots p) = natDegree p` ensures the polynomial splits completely -- all roots lie in the base ring. Over algebraically closed fields (like C), this is automatic by the Fundamental Theorem of Algebra.\n\n**Monic simplification** (`vieta_monic_coeff`): When p is monic (leadingCoeff = 1), the formula simplifies to:\n\n  p.coeff(k) = (-1)^(deg - k) * esymm(S, deg - k)\n\nThe monic case is proved by a one-line rewrite substituting leadingCoeff = 1 and applying one_mul. This captures the essence of Vieta's formulas in their cleanest form.\n\nMathlib's `Multiset.esymm` computes elementary symmetric polynomials on multisets (rather than lists or sets), which naturally handles repeated roots without special cases.",
+    "mathContext": "`coeff_eq_esymm_roots_of_card`: For $p \\in R[X]$ with $|\\text{roots}(p)| = \\deg(p)$ and $k \\le \\deg(p)$:\n$$p_k = \\text{lc}(p) \\cdot (-1)^{n-k} \\cdot e_{n-k}(r_1, \\ldots, r_n)$$\nMonic case ($\\text{lc} = 1$): $p_k = (-1)^{n-k} e_{n-k}(r_1, \\ldots, r_n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Multiset.esymm",
+      "coeff_eq_esymm_roots_of_card",
+      "IsDomain",
+      "monic polynomials",
+      "polynomial splitting"
+    ],
+    "prerequisites": [
+      "Multiset.esymm definition",
+      "Polynomial.coeff and Polynomial.roots",
+      "Polynomial.Monic",
+      "IsDomain typeclass"
+    ],
+    "crossReferences": [
+      {
+        "targetId": "fundamental-theorem-algebra",
+        "relationship": "prerequisite",
+        "description": "The FTA guarantees card(roots p) = natDegree p over C, making the splitting hypothesis automatic for complex polynomials"
+      },
+      {
+        "targetId": "cayley-hamilton",
+        "relationship": "related",
+        "description": "The Cayley-Hamilton theorem states that a matrix satisfies its own characteristic polynomial; Vieta's formulas applied to the characteristic polynomial relate its coefficients (trace, determinant) to eigenvalues"
+      }
+    ]
+  },
+  {
+    "id": "ann-monic-quadratic",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 130,
+      "endLine": 134
+    },
+    "type": "concept",
+    "title": "Monic Quadratic Expansion",
+    "content": "**Formula** (`monic_quadratic_vieta`):\n  (x - r_1)(x - r_2) = x^2 - (r_1 + r_2)x + r_1 * r_2\n\nThis identity, valid in any commutative ring, directly exhibits Vieta's formulas for degree 2 as a consequence of polynomial multiplication. The coefficient of x is -(sum of roots) and the constant term is the product of roots.\n\nThe proof is a single application of the `ring` tactic, which verifies polynomial identities via normalization in commutative ring theory. The `ring` tactic works by reducing both sides to a canonical multivariate polynomial form and checking syntactic equality -- a decision procedure for commutative ring identities.\n\nThis explicit expansion serves a pedagogical purpose: it shows that Vieta's formulas are not deep theorems but rather immediate consequences of the distributive law. The power of Vieta's formulas lies not in their proof but in their conceptual role -- they reveal that coefficients encode symmetric information about roots.",
+    "mathContext": "For $R$ a `CommRing`: $\\forall x,\\, (x - r_1)(x - r_2) = x^2 - (r_1 + r_2)x + r_1 r_2$. Proved by the `ring` tactic (commutative ring normalization).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "factored form",
+      "ring tactic",
+      "CommRing typeclass",
+      "polynomial expansion"
+    ],
+    "prerequisites": [
+      "CommRing R",
+      "ring tactic",
+      "polynomial multiplication"
+    ]
+  },
+  {
+    "id": "ann-monic-cubic",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 136,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Monic Cubic Expansion",
+    "content": "**Formula** (`monic_cubic_vieta`):\n  (x - r_1)(x - r_2)(x - r_3) = x^3 - (r_1 + r_2 + r_3)x^2 + (r_1*r_2 + r_1*r_3 + r_2*r_3)x - r_1*r_2*r_3\n\nThe alternating sign pattern (-1)^k before each elementary symmetric polynomial is now fully visible:\n- x^2 coefficient: -e_1 = -(r_1 + r_2 + r_3)\n- x^1 coefficient: +e_2 = +(r_1*r_2 + r_1*r_3 + r_2*r_3)\n- x^0 coefficient: -e_3 = -(r_1*r_2*r_3)\n\nThe sign pattern arises combinatorially: when expanding (x - r_1)(x - r_2)(x - r_3), each factor contributes either x (with coefficient +1) or -r_i. The coefficient of x^(3-k) collects all terms where exactly k factors contributed -r_i, giving (-1)^k times the sum over all k-element subsets.\n\nAs with the quadratic case, the `ring` tactic handles the verification automatically.",
+    "mathContext": "$(x-r_1)(x-r_2)(x-r_3) = x^3 - e_1 x^2 + e_2 x - e_3$ where:\n$e_1 = r_1 + r_2 + r_3$, $e_2 = r_1 r_2 + r_1 r_3 + r_2 r_3$, $e_3 = r_1 r_2 r_3$.\nAlternating signs: $(-1)^k e_k$ for the coefficient of $x^{n-k}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cubic polynomials",
+      "alternating signs",
+      "elementary symmetric e_1, e_2, e_3",
+      "combinatorial interpretation"
+    ],
+    "prerequisites": [
+      "monic_quadratic_vieta",
+      "ring tactic",
+      "CommRing R"
+    ],
+    "crossReferences": [
+      {
+        "targetId": "general-quartic",
+        "relationship": "extends",
+        "description": "Ferrari's quartic solution uses a resolvent cubic whose coefficients are Vieta-related to the original quartic's roots; the cubic expansion pattern is essential for analyzing the resolvent"
+      }
+    ]
+  },
+  {
+    "id": "ann-sign-pattern",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 143,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Sign Pattern and (-1)^k Identity",
+    "content": "The sign pattern in Vieta's formulas is formalized via the identity (-1)^k * (-1)^k = 1 (`neg_one_pow_sq`), which captures the key algebraic fact that the sign alternation is self-inverse.\n\nThe deeper interpretation: expanding the product (x - r_1)(x - r_2)...(x - r_n), the coefficient of x^(n-k) arises from choosing exactly k of the n factors to contribute their -r_i term (and the remaining n-k factors contribute x). There are C(n,k) such choices, each contributing (-1)^k times a product of k roots. Summing over all choices gives (-1)^k * e_k.\n\nThis combinatorial interpretation connects Vieta's formulas to the binomial theorem and to the generating function identity:\n  prod_{i=1}^{n} (1 + r_i * t) = sum_{k=0}^{n} e_k(r_1,...,r_n) * t^k\n\nSetting t = -1/x and multiplying through by x^n recovers the polynomial prod(x - r_i).",
+    "mathContext": "`neg_one_pow_sq`: $(-1)^k \\cdot (-1)^k = 1$ for all $k \\in \\mathbb{N}$.\n\nGenerating function: $\\prod_{i=1}^{n}(1 + r_i t) = \\sum_{k=0}^{n} e_k \\cdot t^k$, which yields Vieta via $t = -1/x$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sign alternation",
+      "binomial theorem",
+      "generating functions",
+      "combinatorial interpretation"
+    ],
+    "prerequisites": [
+      "integer exponentiation",
+      "pow_add and pow_mul lemmas"
+    ]
+  },
+  {
+    "id": "ann-historical-note",
+    "proofId": "vietas-formulas",
+    "range": {
+      "startLine": 166,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "Historical Note and Downstream Impact",
+    "content": "The closing historical commentary traces the lineage from Vieta to modern algebra:\n\n1. **Viete (1591-1615)**: First systematic symbolic algebra; root-coefficient relations\n2. **Newton (1666)**: Newton's identities relating power sums p_k = sum(r_i^k) to elementary symmetric polynomials e_k via the recursion p_k - e_1*p_{k-1} + e_2*p_{k-2} - ... + (-1)^{k-1}*k*e_k = 0\n3. **Lagrange (1770-71)**: Studied permutations of roots that preserve rational functions of coefficients -- the first explicit connection between symmetric functions and permutation groups\n4. **Galois (1832)**: Recognized that the Galois group of a polynomial permutes its roots while fixing all symmetric functions of those roots (i.e., the coefficients) -- establishing that solvability by radicals corresponds to solvability of the Galois group\n\nThe formalization in this file connects directly to the gallery's Abel-Ruffini entry, which formalizes the endpoint of this historical arc: the proof that no radical formula exists for the general quintic, because S_5 is not a solvable group.",
+    "mathContext": "Newton's identities: $p_k = e_1 p_{k-1} - e_2 p_{k-2} + \\cdots + (-1)^{k-1} k e_k$ where $p_k = \\sum r_i^k$ and $e_k$ are elementary symmetric polynomials. The Galois group $\\text{Gal}(p) \\hookrightarrow S_n$ acts on roots while fixing the $e_k$ (coefficients).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Newton's identities",
+      "Lagrange resolvents",
+      "Galois theory",
+      "solvability by radicals",
+      "symmetric group"
+    ],
+    "prerequisites": [
+      "Vieta's formulas (general case)",
+      "basic group theory"
+    ],
+    "crossReferences": [
+      {
+        "targetId": "abel-ruffini",
+        "relationship": "foundational",
+        "description": "The Abel-Ruffini theorem is the historical and logical culmination of the ideas initiated by Vieta's formulas: coefficients as symmetric functions implies Galois group embeds in S_n, and S_5 is not solvable"
+      },
+      {
+        "targetId": "inverse-galois",
+        "relationship": "related",
+        "description": "The Inverse Galois Problem asks which groups arise as Galois groups of polynomials over Q; Vieta's formulas constrain the coefficients of any polynomial realizing a given group"
+      },
+      {
+        "targetId": "de-moivre",
+        "relationship": "related",
+        "description": "De Moivre's formula for roots of unity provides the simplest example of Vieta's formulas in action: the n-th roots of unity have e_1 = 0, e_2 = 0, ..., e_{n-1} = 0, e_n = (-1)^{n+1}"
+      },
+      {
+        "targetId": "sum-of-kth-powers",
+        "relationship": "extends",
+        "description": "Newton's identities (extending Vieta's) express power sums of roots in terms of elementary symmetric polynomials, directly linking to formulas for sums of k-th powers"
+      },
+      {
+        "targetId": "fermat-two-squares",
+        "relationship": "related",
+        "description": "The factorization of x^2 + y^2 over the Gaussian integers, and the resulting norm identities, are instances of Vieta-type relations for quadratic forms"
+      },
+      {
+        "targetId": "cramers-rule",
+        "relationship": "related",
+        "description": "Cramer's rule and Vieta's formulas both connect to determinants: the resultant of two polynomials (a determinant) vanishes iff they share a root, and Vieta's formulas express each coefficient as a determinant-like symmetric function"
+      }
+    ]
+  }
+]

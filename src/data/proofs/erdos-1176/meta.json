@@ -1,0 +1,206 @@
+{
+  "id": "erdos-1176",
+  "title": "Erdős Problem #1176: Edge Coloring and Vertex Color Classes",
+  "slug": "erdos-1176",
+  "description": "For a graph G with chromatic number ℵ₁, can we edge-color with ℵ₁ colors so that in every proper countable vertex coloring, some vertex class sees all edge colors?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1176",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1176Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "graph-theory",
+      "set-theory",
+      "ramsey-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1176,
+    "erdosUrl": "https://erdosproblems.com/1176",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Ordinal",
+        "description": "From Mathlib.SetTheory.Cardinal.Ordinal",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cofinality",
+        "description": "From Mathlib.SetTheory.Cardinal.Cofinality",
+        "module": "Mathlib.SetTheory.Cardinal.Cofinality"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Combinatorics.SimpleGraph.Basic",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsProperVertexColoring",
+      "IsCardColorable",
+      "chromaticNumber",
+      "EdgeColoring",
+      "allEdgeColors",
+      "edgeColorsSeen",
+      "HasDominationProperty",
+      "ErdosProblem1176",
+      "aleph0_lt_aleph1",
+      "not_aleph0_colorable_of_chi_aleph1",
+      "not_nat_colorable_of_chi_aleph1",
+      "hajnal_komjath_consistency_witness",
+      "StrongDominationProperty",
+      "strong_implies_domination",
+      "edgeColorClass"
+    ],
+    "axiomCount": 1,
+    "lineCount": 225,
+    "assumptions": "1 axiom: hajnal_komjath_consistency_witness (consistency of positive answer to Erdős #1176 under set-theoretic forcing, Hajnal-Komlós). 0 sorries.",
+    "theoremCount": 6,
+    "definitionCount": 11
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1176 was posed by Paul Erdős, Fred Galvin, and András Hajnal (referenced as [Va99, 7.93]). It asks whether every graph with chromatic number $\\aleph_1$ admits an edge coloring with $\\aleph_1$ colors such that any proper countable vertex coloring has a color class meeting all edge colors. The problem sits at the intersection of infinite graph theory, infinite combinatorics, and set theory.\n\nThe key known result is due to András Hajnal and Péter Komjáth, who proved the consistency of a positive answer: using set-theoretic forcing, they showed it is consistent with ZFC that such an edge coloring exists for every graph with $\\chi(G) = \\aleph_1$. This raises the intriguing possibility that the statement may be independent of ZFC — true in some models and false in others — placing it alongside famous independence results like the Continuum Hypothesis.\n\nThe problem is closely related to Erdős #919 (chromatic numbers on ordinal products), Erdős #83 (coloring problems for infinite graphs), and Erdős #888 (related partition problems). The interplay between vertex and edge colorings on uncountable-chromatic graphs connects to deep questions in partition calculus, a field developed extensively by Erdős, Rado, and their collaborators from the 1950s onward.",
+    "problemStatement": "Let $G$ be a graph with $\\chi(G) = \\aleph_1$. Is it true that there exists a coloring of the edges with $\\aleph_1$ many colors such that, in any countable proper coloring of the vertices, there exists a vertex color class containing all edge colors?",
+    "text": "For a graph G with chromatic number ℵ₁, can we edge-color with ℵ₁ colors so that in every proper countable vertex coloring, some vertex class sees all edge colors?",
+    "proofStrategy": "The formalization proceeds in 9 parts across 224 lines. Parts 1-2 establish cardinal-valued graph coloring definitions and edge colorings using Sym2 V. Part 3 defines the domination property — the central concept asking whether some vertex color class 'sees' all edge colors. Part 4 states the formal conjecture. Part 5 proves structural results: graphs with $\\chi(G) = \\aleph_1$ cannot be countably colored. Part 6 axiomatizes the Hajnal-Komjáth consistency result. Parts 7-8 explore variants (strong domination, partition calculus reformulation). Part 9 summarizes the open status.",
+    "keyInsights": [
+      "The problem may be independent of ZFC: Hajnal and Komjáth proved consistency of a positive answer via forcing, but no ZFC proof or refutation is known, suggesting possible independence like the Continuum Hypothesis.",
+      "The domination property creates a surprising tension between countable (vertex) and uncountable (edge) partitions: despite $\\aleph_1$ edge colors vastly outnumbering the countable vertex colors, the conjecture asserts a single countable vertex class can 'see' all uncountable edge colors.",
+      "The formalization uses cardinal-valued chromatic numbers ($\\chi(G) = \\inf\\{\\kappa : G$ is $\\kappa$-colorable$\\}$) rather than natural-number-valued ones, enabling treatment of uncountable chromatic numbers via Mathlib's cardinal arithmetic.",
+      "The structural result $\\chi(G) = \\aleph_1 \\implies$ no proper $\\mathbb{N}$-coloring exists is proved cleanly using `ciInf₂_le` and the strict inequality $\\aleph_0 < \\aleph_1$, showing that any countable vertex coloring must fail to be proper.",
+      "Two reformulations — strong domination (every nonempty class sees all colors) and domination via color classes (some class intersects every nonempty edge color class) — illuminate different structural aspects and connect to infinite partition calculus."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Graph theory (vertices, edges, colorings)",
+      "Set theory and cardinality",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-imports",
+      "title": "Problem Statement and Imports",
+      "summary": "Documentation header stating the open problem of Erdős, Galvin, and Hajnal with known results by Hajnal-Komjáth, followed by Mathlib imports for cardinal arithmetic and graph theory.",
+      "startLine": 1,
+      "endLine": 39,
+      "mathContext": "Mathematical content: Documentation header stating the open problem of Erdős, Galvin, and Hajnal with known results by Hajnal-Komjáth, followed by Mathlib imports for cardinal arithmetic and graph theory."
+    },
+    {
+      "id": "coloring-definitions",
+      "title": "Graph Coloring Definitions",
+      "summary": "Defines proper vertex coloring, cardinal colorability ($\\kappa$-colorable), and the chromatic number $\\chi(G)$ as a cardinal infimum. Uses type parameters for color types to handle uncountable cardinalities.",
+      "startLine": 40,
+      "endLine": 64,
+      "mathContext": "Defines proper vertex coloring, cardinal colorability ($\\kappa$-colorable), and the chromatic number $\\chi(G)$ as a cardinal infimum."
+    },
+    {
+      "id": "edge-coloring",
+      "title": "Edge Colorings",
+      "summary": "Defines edge colorings as functions from Sym2 V to a color type C, along with the set of all colors used on actual edges of G.",
+      "startLine": 65,
+      "endLine": 80,
+      "mathContext": "Formal definition: Defines edge colorings as functions from Sym2 V to a color type C, along with the set of all colors used on actual edges of G."
+    },
+    {
+      "id": "domination-property",
+      "title": "The Domination Property",
+      "summary": "Defines edge colors seen by a vertex class and the domination property: for every proper $\\mathbb{N}$-coloring, some vertex class sees all edge colors. This is the central concept of the problem.",
+      "startLine": 81,
+      "endLine": 101,
+      "mathContext": "Formal definition: Defines edge colors seen by a vertex class and the domination property: for every proper $\\mathbb{N}$-coloring, some vertex class sees all edge colors. This is the central concept of the problem."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Formal Conjecture",
+      "summary": "States ErdosProblem1176: for every $G$ with $\\chi(G) = \\aleph_1$, there exists an edge coloring with $\\aleph_1$ colors having the domination property.",
+      "startLine": 102,
+      "endLine": 116,
+      "mathContext": "Mathematical content: States ErdosProblem1176: for every $G$ with $\\chi(G) = \\aleph_1$, there exists an edge coloring with $\\aleph_1$ colors having the domination property."
+    },
+    {
+      "id": "structural-results",
+      "title": "Structural Results",
+      "summary": "Proves that $\\aleph_0 < \\aleph_1$, that $\\chi(G) = \\aleph_1$ implies not $\\aleph_0$-colorable, and not $\\mathbb{N}$-colorable. These establish that any countable vertex coloring on such a graph must be improper.",
+      "startLine": 117,
+      "endLine": 147,
+      "mathContext": "Proves that $\\aleph_0 < \\aleph_1$, that $\\chi(G) = \\aleph_1$ implies not $\\aleph_0$-colorable, and not $\\mathbb{N}$-colorable."
+    },
+    {
+      "id": "consistency-result",
+      "title": "Hajnal-Komjáth Consistency Result",
+      "summary": "Axiomatizes the metamathematical result that ErdosProblem1176 is consistent with ZFC, using an axiom since forcing results cannot be directly expressed in Lean's object language.",
+      "startLine": 148,
+      "endLine": 162,
+      "mathContext": "Axiomatized: Axiomatizes the metamathematical result that ErdosProblem1176 is consistent with ZFC, using an axiom since forcing results cannot be directly expressed in Lean's object language."
+    },
+    {
+      "id": "variants",
+      "title": "Strong Domination and Partition Calculus",
+      "summary": "Defines StrongDominationProperty (every nonempty class sees all colors) and DominationViaColorClasses (reformulation via edge color class intersection), connecting the problem to infinite partition calculus.",
+      "startLine": 163,
+      "endLine": 209,
+      "mathContext": "Defines StrongDominationProperty (every nonempty class sees all colors) and DominationViaColorClasses (reformulation via edge color class intersection), connecting the problem to infinite partition calculus."
+    },
+    {
+      "id": "summary",
+      "title": "Formal Summary",
+      "summary": "Derives the problem from the Hajnal-Komjáth axiom and states the open ZFC version with a sorry, capturing the metamathematical distinction between consistency and provability.",
+      "startLine": 210,
+      "endLine": 223,
+      "mathContext": "Axiomatized: Derives the problem from the Hajnal-Komjáth axiom and states the open ZFC version with a sorry, capturing the metamathematical distinction between consistency and provability."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1176 in 224 lines of Lean 4, encoding the question of whether graphs with chromatic number $\\aleph_1$ admit edge colorings whose color structure dominates all countable vertex colorings. The formalization includes cardinal-valued chromatic number definitions, the domination property, structural consequences of uncountable chromatic number, the Hajnal-Komjáth consistency axiom, and two reformulations connecting to partition calculus.",
+    "implications": "**Theoretical Significance**: The formalization highlights the deep connections between infinite graph coloring and set-theoretic independence.\n\nThe Hajnal-Komjáth consistency result suggests the problem may join the ranks of statements independent of ZFC. The partition calculus reformulation connects vertex-edge coloring interactions to the broader Erdős-Rado partition calculus framework, which has been central to infinite combinatorics since the 1950s.",
+    "openQuestions": [
+      "Is ErdosProblem1176 provable in ZFC, or is it independent? A negative consistency result (showing the negation is also consistent) would establish full independence.",
+      "Does the strong domination property (every nonempty vertex class sees all edge colors) hold consistently, or is it strictly stronger than the original?",
+      "Can the result be generalized to graphs with $\\chi(G) = \\aleph_\\alpha$ for higher alephs, or is $\\aleph_1$ special?",
+      "What is the relationship to Erdős #919 (chromatic numbers of ordinal products) and #888 — do solutions transfer between these problems?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Set",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos1176",
+    "lineCount": 225,
+    "axiomCount": 1,
+    "theoremCount": 6,
+    "definitionCount": 11,
+    "path": "Proofs/Erdos1176Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1174",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, graph-theory, open, ramsey-theory"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,202 @@
+[
+  {
+    "id": "ann-e1oq04-dss-def",
+    "proofId": "erdos-1-oq-04",
+    "range": {
+      "startLine": 23,
+      "endLine": 32
+    },
+    "type": "definition",
+    "title": "Distinct Subset Sums and Its Decidability",
+    "content": "`hasDistinctSubsetSums A` says that whenever two subsets S, T ⊆ A have the same sum, they are equal — i.e. all 2^|A| subset sums are distinct. The accompanying `Decidable` instance reduces this universally-quantified statement over subsets to a finite check: quantify S and T over `A.powerset` instead of over arbitrary finsets. This is what makes the small-case witnesses below provable by `native_decide`: the predicate is computable by enumerating the powerset and comparing all pairwise sums.",
+    "mathContext": "For A with |A| = n there are 2^n subsets; `hasDistinctSubsetSums` asks the sum map 2^A → ℕ to be injective. The powerset reformulation has the same truth value but is `Decidable`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distinct subset sums",
+      "decidability",
+      "Finset.powerset",
+      "Erdős Problem #1"
+    ],
+    "prerequisites": [
+      "Finsets and powersets in Lean 4",
+      "Decidable instances"
+    ]
+  },
+  {
+    "id": "ann-e1oq04-achieves-def",
+    "proofId": "erdos-1-oq-04",
+    "range": {
+      "startLine": 35,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "achievesDistinctSums: Formalizing f(n)",
+    "content": "`achievesDistinctSums n N` holds when there exists an n-element set A of positive integers, each at most N, with distinct subset sums. The extremal quantity of Erdős Problem #1, f(n), is the least N for which `achievesDistinctSums n N` is true. Phrasing the problem existentially (rather than fixing a particular set) is what lets a single witness establish an upper bound f(n) ≤ N, and lets the unachievability half of the Conway-Guy conjecture be stated as a negation.",
+    "mathContext": "f(n) = min { N : achievesDistinctSums n N }. An upper bound f(n) ≤ N needs one witness set; a lower bound f(n) > N − 1 needs ¬achievesDistinctSums n (N − 1).",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function f(n)",
+      "existential bound",
+      "distinct subset sums"
+    ],
+    "prerequisites": [
+      "existential quantification over Finsets"
+    ]
+  },
+  {
+    "id": "ann-e1oq04-small-cases",
+    "proofId": "erdos-1-oq-04",
+    "range": {
+      "startLine": 42,
+      "endLine": 55
+    },
+    "type": "tactic",
+    "title": "Small-Case Witnesses via native_decide",
+    "content": "Each concrete set — {1}, {1,2}, {1,2,4}, {3,5,6,7}, and the Conway-Guy set {6,9,11,12,13} — is shown to have distinct subset sums by `native_decide`, which compiles the powerset check to native code and evaluates it. {1,2,4} is the powers-of-two (binary) construction; {3,5,6,7} and {6,9,11,12,13} are the genuinely smaller Conway-Guy extremal sets for n = 4 and n = 5. These are the load-bearing computations behind the f(n) upper bounds; the trust here is `Lean.ofReduceBool` (kernel-checked native reduction), not a mathematical axiom.",
+    "mathContext": "{3,5,6,7} has max 7 < 8 = 2^3, and {6,9,11,12,13} has max 13 < 16 = 2^4 — each beats the binary bound 2^{n-1} for its n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "Conway-Guy sets",
+      "OEIS A005318",
+      "Lean.ofReduceBool"
+    ],
+    "prerequisites": [
+      "native_decide and the reduceBool trust model"
+    ]
+  },
+  {
+    "id": "ann-e1oq04-f-witnesses",
+    "proofId": "erdos-1-oq-04",
+    "range": {
+      "startLine": 58,
+      "endLine": 76
+    },
+    "type": "theorem",
+    "title": "Verified Minima f(1)=1 through f(5)≤13",
+    "content": "Each `achievesDistinctSums` goal is discharged by supplying the witness set together with its four obligations: cardinality n, positivity of every element, the bound a ≤ N, and the distinct-subset-sum property (the `native_decide` facts above). f(1)=1 and f(2)=2 are exact; f(3)≤4, f(4)≤7, f(5)≤13 are upper bounds matching OEIS A005318. The structure `⟨set, card, positivity, bound, dss⟩` is the existential witness for `achievesDistinctSums`.",
+    "mathContext": "A005318 begins 0,1,2,4,7,13; the entries f(1)..f(5) here realize its values 1,2,4,7,13 as achievable largest elements.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal sets",
+      "OEIS A005318",
+      "existential witnesses"
+    ],
+    "prerequisites": [
+      "anonymous constructor for ∃",
+      "omega for arithmetic side goals"
+    ]
+  },
+  {
+    "id": "ann-e1oq04-conwayguy-seq",
+    "proofId": "erdos-1-oq-04",
+    "range": {
+      "startLine": 89,
+      "endLine": 99
+    },
+    "type": "definition",
+    "title": "The Conway-Guy Sequence (OEIS A005318)",
+    "content": "`conwayGuySeq` tabulates the conjectured minima 0,1,2,4,7,13,24,44,84 for n ≤ 8 and returns 0 beyond. The true generator is the greedy recurrence a_k = a_{k-1} + ⌈S_{k-1}/2⌉ (S = running sum), but the rational ceiling and the carried partial sums make a direct ℕ-recursion awkward, so the verified finite range is hardcoded. This explicit enumeration is appropriate for a sequence whose general optimality is still open.",
+    "mathContext": "A005318: a_n/2^n = 1/2, 1/2, 1/2, 7/16, 13/32, 3/8, 11/32, 21/64, … → ≈0.2201, a constant-factor improvement over the binary bound 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "OEIS A005318",
+      "greedy construction",
+      "Conway-Guy"
+    ],
+    "prerequisites": [
+      "pattern-matching definitions in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-e1oq04-conjecture",
+    "proofId": "erdos-1-oq-04",
+    "range": {
+      "startLine": 103,
+      "endLine": 106
+    },
+    "type": "warning",
+    "title": "The Open Conway-Guy Conjecture — Stated, Not Proved",
+    "content": "`conwayGuyConjecture` asserts, for every n ≥ 1, both that a_n is achievable (`achievesDistinctSums n (conwayGuySeq n)`) and that a_n − 1 is not. This is the optimality claim: the Conway-Guy values are the exact minima f(n). It is a `Prop` definition only — never an `axiom`, never closed by `sorry`. The gallery entry proves the *achievability* (upper-bound) half for small n and the universal binary bound, but makes NO claim about the *unachievability* (lower-bound) half. Keeping the optimality open as an unproved `Prop` is exactly what lets the file be honestly `verified` with 0 axioms.",
+    "mathContext": "Lunnon (1988) verified optimality for n ≤ 24 by exhaustive search; a general proof is open. The negation ¬achievesDistinctSums n (a_n − 1) is the hard, unproved direction.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "open conjecture",
+      "optimality",
+      "axiom integrity",
+      "Conway-Guy"
+    ],
+    "prerequisites": [
+      "Prop vs. proof distinction",
+      "negation of existentials"
+    ]
+  },
+  {
+    "id": "ann-e1oq04-geom-helpers",
+    "proofId": "erdos-1-oq-04",
+    "range": {
+      "startLine": 111,
+      "endLine": 124
+    },
+    "type": "lemma",
+    "title": "Geometric-Sum Bound: High Bit Dominates",
+    "content": "`geom_sum_two` proves ∑_{i<n} 2^i + 1 = 2^n, and `sum_pow_lt_of_subset_range` deduces that any subset of {2^0,…,2^{n-1}} sums to strictly less than 2^n. This is the arithmetic heart of binary uniqueness: a single high power 2^n cannot be matched by any combination of strictly lower powers. The proof is a clean induction plus `omega`, with no `native_decide`.",
+    "mathContext": "∑_{i<n} 2^i = 2^n − 1, so the maximum subset sum of the first n powers of two is 2^n − 1 < 2^n.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "geometric series",
+      "binary representation",
+      "Finset.sum_le_sum_of_subset"
+    ],
+    "prerequisites": [
+      "induction on ℕ",
+      "omega"
+    ]
+  },
+  {
+    "id": "ann-e1oq04-binary-inj",
+    "proofId": "erdos-1-oq-04",
+    "range": {
+      "startLine": 134,
+      "endLine": 170
+    },
+    "type": "lemma",
+    "title": "sum_pow_two_inj: Uniqueness of Binary Representation",
+    "content": "The structural core: if two exponent sets S, T ⊆ {0,…,n−1} give equal sums ∑ 2^i, then S = T. The induction peels off the top exponent n. If n is in both, erase it from each and apply the induction hypothesis. If n is in exactly one set, the geometric-sum bound forces a contradiction — 2^n exceeds the entire complementary sum, so the high bit cannot be matched. If n is in neither, both sets live in range n and the hypothesis applies directly. This is uniqueness of positional (binary) notation proved from first principles, with no `decide`.",
+    "mathContext": "Equivalently: the map (S ⊆ {0,…,n−1}) ↦ ∑_{i∈S} 2^i is injective — the binary expansion of an integer below 2^n is unique.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "binary representation",
+      "injectivity",
+      "Finset.add_sum_erase",
+      "structural induction"
+    ],
+    "prerequisites": [
+      "induction with case splits",
+      "Finset.erase / insert_erase"
+    ]
+  },
+  {
+    "id": "ann-e1oq04-powers-dss",
+    "proofId": "erdos-1-oq-04",
+    "range": {
+      "startLine": 174,
+      "endLine": 226
+    },
+    "type": "theorem",
+    "title": "powers_of_two_dss: The Computation-Free Upper Bound f(n) ≤ 2^{n-1}",
+    "content": "The headline result: the set {2^0,…,2^{n-1}} is an n-element set of positive integers bounded by 2^n − 1 with distinct subset sums. Cardinality follows from injectivity of i ↦ 2^i; the bound from 2^i < 2^n for i < n. The distinct-subset-sum property is proved by transporting subset sums of the actual set to sums over exponent subsets (`Finset.sum_image` plus injectivity of i ↦ 2^i), then invoking `sum_pow_two_inj`. Crucially this is proved for ALL n with NO `native_decide` — a single induction replaces the unbounded family of finite checks, giving the universal binary bound f(n) ≤ 2^{n-1} that Conway-Guy improves upon.",
+    "mathContext": "{1,2,4,…,2^{n-1}} realizes binary representation; its largest element is 2^{n-1}, so f(n) ≤ 2^{n-1}. Conway-Guy's a_n/2^n → ≈0.2201 beats this constant.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "binary representation",
+      "distinct subset sums",
+      "Finset.sum_image",
+      "Nat.pow_right_injective"
+    ],
+    "prerequisites": [
+      "Finset.image and card_image_of_injective",
+      "transporting sums along injections"
+    ]
+  }
+]

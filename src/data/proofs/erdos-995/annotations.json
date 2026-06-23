@@ -1,0 +1,375 @@
+[
+  {
+    "id": "ann-995-preamble",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "File Preamble: Problem Statement and Mathlib Imports",
+    "content": "Docstring introduces Erdős Problem #995 on lacunary sums $\\sum_{k \\leq N} f(\\{\\alpha n_k\\})$. States the open conjecture $S_N = o(N\\sqrt{\\log\\log N})$ and both known bounds: the existential lower bound from Erdős (1949) involving $(\\log\\log N)^{1/2-\\varepsilon}$, and the universal upper bound involving $(\\log N)^{1/2+\\varepsilon}$. Imports Mathlib.Analysis.SpecialFunctions.Log.Basic (for $\\log$), Mathlib.MeasureTheory.Measure.Lebesgue.Basic (for Lebesgue measure, $\\forall^{\\mathrm{m}} \\alpha$), Mathlib.MeasureTheory.Function.L2Space (for $L^2([0,1])$ functions), and basic real/natural number libraries. Opens MeasureTheory and Real namespaces for concise notation.",
+    "mathContext": "The problem sits at the interface of harmonic analysis ($\\sum e(\\alpha n_k)$ Weyl sums), probability (LIL, CLT for quasi-independent variables), and ergodic theory (Birkhoff averages along subsequences). The 75-year gap between $(\\log\\log N)^{1/2}$ and $(\\log N)^{1/2}$ is one of the longest-standing open problems in metric number theory.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "metric number theory",
+      "Weyl sums",
+      "LIL",
+      "ergodic theory",
+      "Mathlib imports"
+    ],
+    "prerequisites": [
+      "metric number theory",
+      "Lebesgue measure and almost-everywhere statements",
+      "harmonic analysis on the circle"
+    ]
+  },
+  {
+    "id": "ann-995-frac",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 40,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "frac",
+    "content": "Fractional part: frac(x) = x - ⌊x⌋, the value in [0,1) representing x modulo 1.",
+    "mathContext": "The fractional part map $x \\mapsto \\{x\\} = x - \\lfloor x \\rfloor$ is the canonical projection $\\mathbb{R} \\to \\mathbb{R}/\\mathbb{Z} \\cong [0,1)$. For irrational $\\alpha$, the sequence $\\{\\alpha\\}, \\{2\\alpha\\}, \\{3\\alpha\\}, \\ldots$ is equidistributed by Weyl's theorem (1916). For lacunary sequences, $\\{\\alpha n_k\\}$ inherits stronger independence properties — the terms behave almost like i.i.d. uniform random variables on $[0,1)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Weyl equidistribution",
+      "floor function",
+      "mod 1 arithmetic",
+      "circle rotation"
+    ],
+    "prerequisites": [
+      "floor function",
+      "modular arithmetic on the reals"
+    ]
+  },
+  {
+    "id": "ann-995-lacunary",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 44,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "IsLacunary and IsLacunarySeq",
+    "content": "A sequence is lacunary with ratio q if n_{k+1} ≥ q·n_k for all k, where q > 1. This means the sequence grows at least exponentially.",
+    "mathContext": "Lacunary (or Hadamard gap) sequences were introduced by Hadamard in his study of power series convergence (1892). The gap condition $n_{k+1}/n_k \\geq q > 1$ ensures exponential growth: $n_k \\geq n_1 \\cdot q^{k-1}$. This exponential spacing destroys correlations between $\\cos(2\\pi n_k \\alpha)$ for different $k$ — the Fourier coefficients of $f(\\{\\alpha n_k\\})$ become nearly orthogonal. This 'quasi-independence' is formalized in Kac's CLT (1946): $\\sum \\cos(2\\pi n_k \\alpha)/\\sqrt{N} \\to \\mathcal{N}(0, 1/2)$ in distribution. The lacunarity ratio $q$ can be arbitrarily close to 1; even $q = 1 + \\varepsilon$ suffices for most results.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hadamard gap condition",
+      "exponential growth",
+      "quasi-independence",
+      "Kac CLT",
+      "power series convergence"
+    ],
+    "prerequisites": [
+      "exponential growth of sequences",
+      "Hadamard gap condition",
+      "power series convergence theory"
+    ]
+  },
+  {
+    "id": "ann-995-sum",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 52,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "lacunarySum",
+    "content": "The sum ∑_{k≤N} f({α n_k}): for each k, compute the fractional part of α·n_k, apply f, and sum over k from 1 to N.",
+    "mathContext": "This sum is the core object of study: an ergodic sum along the subsequence $\\{n_k\\}$ of the dynamical system $T_\\alpha: x \\mapsto x + \\alpha \\pmod{1}$ on the circle $\\mathbb{R}/\\mathbb{Z}$. Birkhoff's ergodic theorem (1931) guarantees that $(1/N)\\sum f(\\{\\alpha n_k\\}) \\to \\int_0^1 f$ for a.e. $\\alpha$, so the sum grows like $N \\cdot \\int f + o(N)$. The problem concerns the fluctuation term: how fast does $|\\sum f(\\{\\alpha n_k\\}) - N\\int f|$ grow? For mean-zero $f$ ($\\int f = 0$), this is the full sum. The `Finset.range N` formulation computes $\\sum_{k=0}^{N-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Birkhoff ergodic theorem",
+      "ergodic sum",
+      "irrational rotation",
+      "Finset.sum",
+      "Finset.range"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Finset.range",
+      "frac"
+    ]
+  },
+  {
+    "id": "ann-995-conjecture",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 60,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "ErdosConjecture and ErdosQuestion",
+    "content": "The conjecture: for a.e. α, the sum is o(N √(log log N)). The question asks if this holds for all lacunary sequences and L² functions.",
+    "mathContext": "The conjecture $o(N\\sqrt{\\log\\log N})$ corresponds precisely to the scale of the Law of the Iterated Logarithm (LIL). For independent random variables $X_k$ with variance $\\sigma^2$, the LIL (Khintchine 1924) says $\\limsup S_N / \\sqrt{2N\\sigma^2 \\log \\log N} = 1$ a.s. Since lacunary sums mimic independent sums, Erdős conjectured that the LIL-scale bound holds. The measure-theoretic 'almost all $\\alpha$' formulation uses $\\forall^{\\text{m}} \\alpha \\partial(\\text{volume.restrict}(\\text{Set.Icc}\\; 0\\; 1))$, asserting the statement for Lebesgue-a.e. $\\alpha \\in [0,1]$. The `ErdosQuestion` universally quantifies over all lacunary sequences and $L^2$ functions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Law of the Iterated Logarithm",
+      "Khintchine",
+      "almost everywhere",
+      "MeasureTheory.ae",
+      "little-o notation"
+    ],
+    "prerequisites": [
+      "Lebesgue measure on [0,1]",
+      "Law of the Iterated Logarithm",
+      "little-o asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-995-lower",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 81,
+      "endLine": 88
+    },
+    "type": "concept",
+    "title": "Erdős Lower Bound (1949)",
+    "content": "Erdős constructed a lacunary sequence and f ∈ L² such that limsup of the sum divided by N(log log N)^{1/2-ε} is infinite for a.e. α.",
+    "mathContext": "In 'On the strong law of large numbers' (1949), Erdős constructed specific lacunary sequences where the sum $\\sum f(\\{\\alpha n_k\\})$ exceeds $N(\\log\\log N)^{1/2-\\varepsilon}$ infinitely often for a.e. $\\alpha$. The construction exploits resonances between the lacunary ratios and the Fourier coefficients of $f$. The $\\limsup = \\top$ formulation (using the extended real line $\\overline{\\mathbb{R}}$) means the ratio $|S_N| / (N(\\log\\log N)^{1/2-\\varepsilon})$ is unbounded along a subsequence. This shows the sum must grow at least as fast as $N(\\log\\log N)^{1/2-\\varepsilon}$, ruling out any bound better than $O(N(\\log\\log N)^{1/2})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.limsup",
+      "extended reals",
+      "constructive lower bound",
+      "resonance",
+      "Fourier coefficients"
+    ],
+    "prerequisites": [
+      "limit superior",
+      "Fourier analysis",
+      "constructive lower bound techniques"
+    ]
+  },
+  {
+    "id": "ann-995-upper",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 103,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Erdős Upper Bound",
+    "content": "For every lacunary sequence and L² function, the sum is o(N(log N)^{1/2+ε}) for a.e. α. This is a universal upper bound.",
+    "mathContext": "The upper bound $o(N(\\log N)^{1/2+\\varepsilon})$ is proved using second-moment methods and exponential sum estimates. The key input is that for lacunary $\\{n_k\\}$, the Weyl sums $|\\sum e(\\alpha n_k)|^2$ have controlled second moments over $\\alpha \\in [0,1]$. The proof uses Parseval's identity and the near-orthogonality of exponentials at lacunary frequencies. The $(\\log N)^{1/2+\\varepsilon}$ factor arises from the maximal inequality needed to pass from $L^2$ bounds to almost sure bounds. This is universal — it holds for ALL lacunary sequences and ALL $L^2$ functions, unlike the lower bound which is existential.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Weyl sums",
+      "Parseval identity",
+      "maximal inequality",
+      "second moment method",
+      "exponential sums"
+    ],
+    "prerequisites": [
+      "second moment method",
+      "exponential sum estimates",
+      "maximal inequalities"
+    ]
+  },
+  {
+    "id": "ann-995-gap",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 128,
+      "endLine": 132
+    },
+    "type": "concept",
+    "title": "The Bounds Gap",
+    "content": "Lower bound has (log log N)^{1/2}, upper has (log N)^{1/2}. Since log log N grows much slower than log N, the gap is enormous. The axioms bound_gap_lower_exists and bound_gap_upper_universal formalize the existential/universal asymmetry.",
+    "mathContext": "The gap between $(\\log\\log N)^{1/2}$ and $(\\log N)^{1/2}$ is qualitatively immense: at $N = 10^{10^{10}}$, $\\log N \\approx 2.3 \\times 10^{10}$ while $\\log\\log N \\approx 23.8$. So $(\\log N)^{1/2} \\approx 151{,}000$ while $(\\log\\log N)^{1/2} \\approx 4.9$ — a factor of $30{,}000$. Closing this gap has resisted 75+ years of effort. The existential lower bound ($\\exists f, n$) vs universal upper bound ($\\forall f, n$) structure means the true answer could depend on the specific lacunary sequence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated logarithm",
+      "existential vs universal bounds",
+      "open problem",
+      "metric number theory"
+    ],
+    "prerequisites": [
+      "iterated logarithm comparison",
+      "lower and upper bound axioms",
+      "lacunary sequence definition"
+    ]
+  },
+  {
+    "id": "ann-995-exponent-gap",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 135,
+      "endLine": 142
+    },
+    "type": "concept",
+    "title": "exponent_gap (Proved)",
+    "content": "For N ≥ 3, log(log N) < log N. This formalizes the quantitative gap between the lower and upper bounds.",
+    "mathContext": "The proof uses $\\log N < N$ (from `Real.log_le_sub_one_of_pos`) and monotonicity of log: since $\\log N > 1$ for $N \\geq 3$, we get $\\log(\\log N) < \\log(N)$. While trivial mathematically, it formalizes the key qualitative fact: the lower bound scale $(\\log\\log N)^{1/2}$ is strictly smaller than the upper bound scale $(\\log N)^{1/2}$, confirming the gap is genuine. Originally proved by Aristotle (automated proof search).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.log_le_sub_one_of_pos",
+      "Real.log_lt_log",
+      "Real.log_pos",
+      "monotonicity of log"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "Real.log_pos",
+      "Real.log_le_sub_one_of_pos"
+    ]
+  },
+  {
+    "id": "ann-995-geometric",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 151,
+      "endLine": 157
+    },
+    "type": "concept",
+    "title": "geometric_is_lacunary (Proved)",
+    "content": "The geometric sequence 2^k is lacunary with q = 2. Proof: 2^{k+1} = 2·2^k ≥ 2·2^k.",
+    "mathContext": "The sequence $2^k$ is the prototypical lacunary sequence, central to the study of Walsh series and dyadic analysis. For $f(x) = \\cos(2\\pi x)$, the lacunary sum $\\sum \\cos(2\\pi \\cdot 2^k \\cdot \\alpha)$ is a lacunary trigonometric series — Salem and Zygmund (1954) proved the CLT for such sums. The proof uses `constructor + norm_num + ring_nf`, verifying $q = 2 > 1$ and $2^{k+1} = 2 \\cdot 2^k$ as a Lean computation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Walsh series",
+      "dyadic analysis",
+      "Salem-Zygmund",
+      "geometric sequence",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "Nat.pow",
+      "IsLacunary"
+    ]
+  },
+  {
+    "id": "ann-995-powers3",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 162,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "powers3_lacunary (Proved)",
+    "content": "Powers of 3 are lacunary with q = 3: 3^{k+1} = 3·3^k.",
+    "mathContext": "The sequence $3^k$ has lacunarity ratio $q = 3$, stronger than $2^k$. For the specific function $f(x) = \\cos(2\\pi x)$, the sum $\\sum \\cos(2\\pi \\cdot 3^k \\cdot \\alpha)$ connects to the Weierstrass function $\\sum 3^{-s \\cdot k} \\cos(2\\pi \\cdot 3^k \\cdot \\alpha)$, whose non-differentiability (for $s < 1$) reflects the wildness of lacunary trigonometric sums. The problem of determining the Hausdorff dimension of the graph of such functions remains active.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Weierstrass function",
+      "Hausdorff dimension",
+      "nowhere differentiable functions",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "Nat.pow",
+      "IsLacunary"
+    ]
+  },
+  {
+    "id": "ann-995-fib",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 171,
+      "endLine": 174
+    },
+    "type": "definition",
+    "title": "Fibonacci Sequence",
+    "content": "The Fibonacci sequence is eventually lacunary with q ≈ φ = (1+√5)/2 ≈ 1.618, the golden ratio.",
+    "mathContext": "The Fibonacci sequence $F_k$ satisfies $F_{k+1}/F_k \\to \\varphi = (1+\\sqrt{5})/2 \\approx 1.618$, so it is eventually lacunary with any $q < \\varphi$. This is the 'least lacunary' natural example — the ratio is as close to 1 as possible for a sequence satisfying a linear recurrence. The fractional parts $\\{\\alpha F_k\\}$ have special structure connected to continued fraction theory: when $\\alpha = 1/\\varphi$, they are maximally non-equidistributed (the 'three-distance' phenomenon).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "golden ratio",
+      "continued fractions",
+      "three-distance theorem",
+      "linear recurrence",
+      "Zeckendorf representation"
+    ],
+    "prerequisites": [
+      "Nat.add",
+      "Nat.succ"
+    ]
+  },
+  {
+    "id": "ann-995-slln",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 186,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "SLLN Connection",
+    "content": "For mean-zero f and lacunary n, the sum has variance ~ N, behaving like a random walk with √N typical fluctuations.",
+    "mathContext": "The SLLN connection (Erdős 1949) shows that lacunary sums obey $(1/N)\\sum f(\\{\\alpha n_k\\}) \\to \\int_0^1 f$ a.s. — the ergodic average converges. The variance $\\text{Var}(S_N) \\sim cN$ (where $c = \\|f\\|_2^2$) gives $\\sqrt{N}$ as the typical scale of fluctuations by Chebyshev. The axiom formalizes the $C\\sqrt{N}$ bound, which is the 'zeroth-order' estimate. The full problem asks about the precise iterated-logarithm correction beyond $\\sqrt{N}$: is $|S_N| \\sim \\sqrt{N \\log\\log N}$ (LIL) or could it be as large as $\\sqrt{N \\log N}$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "Strong Law of Large Numbers",
+      "Chebyshev inequality",
+      "variance",
+      "random walk",
+      "ergodic convergence"
+    ],
+    "prerequisites": [
+      "MeasureTheory.ae",
+      "Real.sqrt",
+      "lacunarySum",
+      "IsLacunarySeq"
+    ],
+    "crossReferences": [
+      {
+        "targetProofId": "laws-of-large-numbers",
+        "relationship": "generalizes",
+        "description": "Classical SLLN for independent random variables — lacunary sums satisfy an analogous law due to quasi-independence"
+      }
+    ]
+  },
+  {
+    "id": "ann-995-refined",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 198,
+      "endLine": 202
+    },
+    "type": "definition",
+    "title": "Erdős's Refined Conjecture",
+    "content": "Erdős (1964) conjectured the upper bound can be improved from (log N)^{1/2+ε} to (log log N)^{1/2+ε}, matching the lower bound.",
+    "mathContext": "In his 1964 Diophantine approximation paper, Erdős stated his belief that the lower bound gives the correct order. The refined conjecture $|S_N| = O(N(\\log\\log N)^{1/2+\\varepsilon})$ for a.e. $\\alpha$ would match the LIL prediction and show that lacunary sums truly behave like independent sums at the finest scale. This would require proving that the Weyl sum maximal function has a sub-logarithmic bound — a major challenge in harmonic analysis. Partial results by Berkes (1975) and Aistleitner-Berkes (2010) improved the upper bound but the full gap remains.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Weyl sum maximal function",
+      "Diophantine approximation",
+      "LIL prediction",
+      "Berkes",
+      "Aistleitner"
+    ],
+    "prerequisites": [
+      "IsLacunarySeq",
+      "MeasureTheory.ae",
+      "Real.log",
+      "lacunarySum"
+    ]
+  },
+  {
+    "id": "ann-995-statement",
+    "proofId": "erdos-995",
+    "range": {
+      "startLine": 209,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "erdos_995_statement (Proved)",
+    "content": "Main statement combining: (1) existence of examples reaching the lower bound, (2) universal upper bound for all lacunary sequences.",
+    "mathContext": "The main theorem is a conjunction of two axioms: `bound_gap_lower_exists ∧ bound_gap_upper_universal`. This captures the complete known state of Erdős Problem #995: there exist 'bad' lacunary sequences where the sum grows as fast as $N(\\log\\log N)^{1/2-\\varepsilon}$, and all lacunary sequences have sums bounded by $o(N(\\log N)^{1/2+\\varepsilon})$. The proof is trivially $\\langle\\text{bound\\_gap\\_lower\\_exists}, \\text{bound\\_gap\\_upper\\_universal}\\rangle$, packaging the axioms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "And.intro",
+      "axiom packaging",
+      "state-of-the-art formalization"
+    ],
+    "prerequisites": [
+      "bound_gap_lower_exists",
+      "bound_gap_upper_universal"
+    ]
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "def-primitive-set",
+    "proofId": "erdos-164",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "definition",
+    "title": "Primitive Set",
+    "content": "A set A ⊆ ℕ is primitive if no member divides another. Equivalently, it forms an antichain in the divisibility poset.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-primes-primitive",
+    "proofId": "erdos-164",
+    "range": { "startLine": 71, "endLine": 78 },
+    "type": "theorem",
+    "title": "Primes Form a Primitive Set",
+    "content": "The set of prime numbers is primitive because if p | q for primes p, q, then p = q (by definition of prime).",
+    "significance": "minor"
+  },
+  {
+    "id": "def-sum-function",
+    "proofId": "erdos-164",
+    "range": { "startLine": 97, "endLine": 111 },
+    "type": "definition",
+    "title": "The Sum Σ 1/(n log n)",
+    "content": "For n ≥ 2, define f(n) = 1/(n log n). The primitive sum of a set A is the sum Σ_{n ∈ A} f(n), defined as the supremum of finite sums.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-erdos-convergence",
+    "proofId": "erdos-164",
+    "range": { "startLine": 117, "endLine": 128 },
+    "type": "theorem",
+    "title": "Erdős Convergence Theorem (1935)",
+    "content": "For any primitive set A, the sum Σ 1/(n log n) converges to a finite value. This was proved by Erdős in 1935.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-lichtman",
+    "proofId": "erdos-164",
+    "range": { "startLine": 134, "endLine": 146 },
+    "type": "theorem",
+    "title": "Lichtman's Theorem (2023)",
+    "content": "The primes maximize Σ 1/(n log n) among all primitive sets. Moreover, the primes are the unique maximizer.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-primes-atoms",
+    "proofId": "erdos-164",
+    "range": { "startLine": 152, "endLine": 167 },
+    "type": "insight",
+    "title": "Why Primes Are Special",
+    "content": "Primes are the 'atoms' of multiplicative structure - every integer > 1 has unique prime factorization. This makes primes extremal for many properties of primitive sets.",
+    "significance": "minor"
+  },
+  {
+    "id": "related-sums",
+    "proofId": "erdos-164",
+    "range": { "startLine": 173, "endLine": 190 },
+    "type": "discussion",
+    "title": "Related Sums and Densities",
+    "content": "Similar questions arise for other sums like Σ 1/(n(log n)^{1+ε}). The Besicovitch density of any primitive set is 0.",
+    "significance": "minor"
+  },
+  {
+    "id": "proof-strategy",
+    "proofId": "erdos-164",
+    "range": { "startLine": 196, "endLine": 207 },
+    "type": "discussion",
+    "title": "Lichtman's Proof Strategy",
+    "content": "The proof uses a comparison argument showing that replacing non-primes with primes increases the sum, leveraging the multiplicative structure of integers.",
+    "significance": "minor"
+  },
+  {
+    "id": "def-maximized-by-primes",
+    "proofId": "erdos-164",
+    "range": { "startLine": 213, "endLine": 229 },
+    "type": "definition",
+    "title": "Functions Maximized by Primes",
+    "content": "A function g: ℕ → ℝ is 'maximized by primes' if for any primitive set A, the sum Σ g(n) over A is at most the sum over primes. The function 1/(n log n) has this property.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-main-result",
+    "proofId": "erdos-164",
+    "range": { "startLine": 235, "endLine": 261 },
+    "type": "theorem",
+    "title": "Main Result and Summary",
+    "content": "Erdős Problem #164 is SOLVED: The primes uniquely maximize Σ 1/(n log n) among all primitive sets (Lichtman 2023).",
+    "significance": "major"
+  }
+]

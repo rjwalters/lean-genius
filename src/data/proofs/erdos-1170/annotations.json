@@ -1,0 +1,258 @@
+[
+  {
+    "id": "ann-e1170-ordinal-setup",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 45,
+      "endLine": 52,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "Defines the three key ordinals: $\\omega_1 = \\aleph_1\\text{.ord}$, $\\omega_2 = \\aleph_2\\text{.ord}$, and $\\omega_1^2 = \\omega_1 \\cdot \\omega_1$. These are declared `noncomputable` because the initial ordinal function `Cardinal.ord` is noncomputable in Lean 4. The ordinals are all in universe 0, matching Lean's representation of classical set theory.",
+    "type": "definition",
+    "importance": "medium",
+    "mathContext": "$\\omega_\\alpha$ denotes the initial ordinal of cardinality $\\aleph_\\alpha$. We have $\\omega_1 = \\aleph_1\\text{.ord}$, $\\omega_2 = \\aleph_2\\text{.ord}$, and $\\omega_1^2 = \\omega_1 \\cdot \\omega_1$ (ordinal multiplication).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "initial ordinal",
+      "aleph number",
+      "ordinal arithmetic",
+      "noncomputable definition"
+    ],
+    "prerequisites": [
+      "ordinal numbers",
+      "cardinal-ordinal correspondence",
+      "well-ordering"
+    ]
+  },
+  {
+    "id": "ann-e1170-balanced-def",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 58,
+      "endLine": 73,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "**Constructive definition** of the balanced partition relation $\\alpha \\to (\\beta)^2_2$. Instead of an opaque axiom, this defines the relation via strictly increasing ordinal embeddings: there exists $g$ mapping $[0,\\beta)$ into $[0,\\alpha)$ preserving order, with all pairs monochromatic. This replaces the original axiom and makes the mathematical content transparent to Lean's type checker.",
+    "type": "insight",
+    "importance": "high",
+    "mathContext": "$\\alpha \\to (\\beta)^2_2$ means: for every $f : [\\alpha]^2 \\to 2$, there exist $g : \\beta \\to \\alpha$ strictly increasing and $c \\in \\{0,1\\}$ such that $f(g(i), g(j)) = c$ for all $i < j < \\beta$. The image $g[\\beta]$ is a homogeneous set of order type $\\beta$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "partition relation",
+      "order-preserving embedding",
+      "homogeneous set",
+      "arrow notation"
+    ],
+    "prerequisites": [
+      "ordinal arithmetic",
+      "Ramsey theory basics",
+      "well-ordered sets"
+    ]
+  },
+  {
+    "id": "ann-e1170-polarized-def",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 75,
+      "endLine": 90,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "**Constructive definition** of the polarized partition relation $\\alpha \\to (\\beta, \\gamma)^2$. The disjunction captures the asymmetry: either a 0-monochromatic embedding of length $\\beta$ exists, or a 1-monochromatic embedding of length $\\gamma$. This is strictly weaker than the balanced relation when $\\beta \\neq \\gamma$, since different targets are allowed for different colors.",
+    "type": "insight",
+    "importance": "high",
+    "mathContext": "$\\alpha \\to (\\beta, \\gamma)^2$ means: for every $f : [\\alpha]^2 \\to 2$, either there exists a 0-homogeneous set of order type $\\beta$, or a 1-homogeneous set of order type $\\gamma$. Note that $\\alpha \\to (\\beta)^2_2$ implies $\\alpha \\to (\\beta, \\beta)^2$ but not vice versa.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polarized partition relation",
+      "asymmetric Ramsey property",
+      "Erdos-Rado partition calculus"
+    ],
+    "prerequisites": [
+      "partition relations",
+      "ordinal embeddings",
+      "disjunctive normal form"
+    ]
+  },
+  {
+    "id": "ann-e1170-balanced-implies-polarized",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 96,
+      "endLine": 103,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "**Proved** (was axiom). The proof uses `fin_cases c` to split on the color of the homogeneous set: if $c = 0$, we take the left disjunct; if $c = 1$, the right. The embedding and its properties transfer directly. This is a structural observation that the balanced relation is strictly stronger than the polarized relation.",
+    "type": "concept",
+    "importance": "medium",
+    "mathContext": "If $\\alpha \\to (\\beta)^2_2$ holds, then $\\alpha \\to (\\beta, \\beta)^2$ holds. Proof: given a homogeneous set of color $c$, take the left or right disjunct depending on whether $c = 0$ or $c = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "case analysis",
+      "fin_cases tactic",
+      "logical implication between partition relations"
+    ],
+    "prerequisites": [
+      "balanced partition relation",
+      "polarized partition relation",
+      "Fin 2 type"
+    ]
+  },
+  {
+    "id": "ann-e1170-mono-target",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 105,
+      "endLine": 113,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "**Target monotonicity**: if $\\alpha \\to (\\beta)^2_2$ and $\\beta' \\le \\beta$, then $\\alpha \\to (\\beta')^2_2$. The proof restricts the embedding's domain from $\\beta$ to $\\beta'$ by using transitivity of $<$ with $\\le$. This is a standard structural fact about partition relations.",
+    "type": "concept",
+    "importance": "medium",
+    "mathContext": "Monotonicity in the target: $\\alpha \\to (\\beta)^2_2 \\wedge \\beta' \\le \\beta \\implies \\alpha \\to (\\beta')^2_2$. Intuitively, if we can find a large homogeneous set, we can always take a smaller initial segment.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "restriction of embeddings",
+      "ordinal inequality"
+    ],
+    "prerequisites": [
+      "partition relations",
+      "ordinal ordering"
+    ]
+  },
+  {
+    "id": "ann-e1170-mono-source",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 115,
+      "endLine": 122,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "**Source monotonicity**: if $\\alpha \\to (\\beta)^2_2$ and $\\alpha \\le \\alpha'$, then $\\alpha' \\to (\\beta)^2_2$. The proof reuses the same embedding $g$, noting that $g(i) < \\alpha \\le \\alpha'$ for all $i$. A larger source ordinal can only make the partition property easier to satisfy.",
+    "type": "concept",
+    "importance": "medium",
+    "mathContext": "Monotonicity in the source: $\\alpha \\to (\\beta)^2_2 \\wedge \\alpha \\le \\alpha' \\implies \\alpha' \\to (\\beta)^2_2$. Coloring a larger set with 2 colors is at least as hard as coloring a smaller one, so partition properties are preserved upward in the source.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "ordinal comparison",
+      "transitivity of strict order"
+    ],
+    "prerequisites": [
+      "partition relations",
+      "ordinal ordering"
+    ]
+  },
+  {
+    "id": "ann-e1170-problem-statement",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 128,
+      "endLine": 136,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "The main problem statement: `erdos1170_property` asserts $\\forall \\alpha < \\omega_2,\\; \\omega_2 \\to (\\alpha)^2_2$. This is the property whose *consistency* Erdos asked about. The formalization captures the property itself; the metamathematical question of whether it is consistent with ZFC is not expressible in Lean's object language.",
+    "type": "concept",
+    "importance": "high",
+    "mathContext": "Erdos Problem #1170 asks: is it consistent with ZFC that $\\omega_2 \\to (\\alpha)^2_2$ for every $\\alpha < \\omega_2$? This would mean $\\omega_2$ has the maximal 2-color partition property for pairs below its own cardinality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "consistency statement",
+      "metamathematics",
+      "ZFC independence",
+      "large cardinal axioms"
+    ],
+    "prerequisites": [
+      "partition calculus",
+      "forcing",
+      "consistency and independence"
+    ]
+  },
+  {
+    "id": "ann-e1170-laver-axiom",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 142,
+      "endLine": 152,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "**The sole remaining axiom.** Laver's 1982 result is a deep independence/forcing result: using iterated forcing with large cardinals, it is consistent that for all $\\alpha < \\omega_2$, the polarized relation $\\omega_2 \\to (\\omega_1^2 + 1, \\alpha)^2$ holds. This cannot be proved from ZFC alone -- it genuinely requires the `axiom` keyword. The target $\\omega_1^2 + 1$ in the first coordinate is the strongest known consistent bound.",
+    "type": "insight",
+    "importance": "high",
+    "mathContext": "Laver (1982) proved: $\\text{Con}(\\text{ZFC} + \\text{large cardinals}) \\implies \\text{Con}(\\text{ZFC} + \\forall \\alpha < \\omega_2,\\; \\omega_2 \\to (\\omega_1^2 + 1, \\alpha)^2)$. The proof uses a countable support iteration of Sacks forcing of length $\\omega_2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Laver forcing",
+      "iterated forcing",
+      "large cardinals",
+      "Sacks forcing",
+      "consistency strength"
+    ],
+    "prerequisites": [
+      "forcing",
+      "iterated forcing",
+      "large cardinal axioms",
+      "ordinal partition calculus"
+    ]
+  },
+  {
+    "id": "ann-e1170-omega1sq-proof",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 163,
+      "endLine": 170,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "**Proved** (was axiom). Key cardinal arithmetic chain: $\\text{card}(\\omega_1^2) = \\text{card}(\\omega_1) \\cdot \\text{card}(\\omega_1) = \\aleph_1 \\cdot \\aleph_1 = \\aleph_1 < \\aleph_2$. Uses `Cardinal.lt_ord` (initial ordinal characterization), `Ordinal.card_mul` (cardinality of ordinal product), `Cardinal.mul_eq_self` (infinite cardinal idempotence: $\\kappa^2 = \\kappa$ for infinite $\\kappa$), and `Cardinal.aleph_lt_aleph`.",
+    "type": "concept",
+    "importance": "high",
+    "mathContext": "$\\omega_1^2 < \\omega_2$ because $|\\omega_1^2| = |\\omega_1| \\cdot |\\omega_1| = \\aleph_1 \\cdot \\aleph_1 = \\aleph_1 < \\aleph_2 = |\\omega_2|$. The crucial step is infinite cardinal idempotence: $\\aleph_1^2 = \\aleph_1$, which follows from the axiom of choice via Hessenberg's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cardinal arithmetic",
+      "infinite cardinal idempotence",
+      "Hessenberg's theorem",
+      "initial ordinal",
+      "aleph hierarchy"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "ordinal-cardinal correspondence",
+      "axiom of choice"
+    ]
+  },
+  {
+    "id": "ann-e1170-structural-obs",
+    "proofId": "erdos-1170",
+    "range": {
+      "startLine": 172,
+      "endLine": 184,
+      "startColumn": 0,
+      "endColumn": 0
+    },
+    "content": "Two structural observations connecting the pieces: (1) `laver_gives_omega1Sq_partition` instantiates Laver's axiom at $\\alpha = \\omega_1$ to obtain $\\omega_2 \\to (\\omega_1^2 + 1, \\omega_1)^2$. (2) `erdos1170_implies_laver_special` shows the full balanced property implies the polarized property with equal targets for every $\\alpha < \\omega_2$, demonstrating that Erdos's question is strictly stronger than Laver's result.",
+    "type": "concept",
+    "importance": "medium",
+    "mathContext": "From Laver's axiom at $\\alpha = \\omega_1$: $\\omega_2 \\to (\\omega_1^2 + 1, \\omega_1)^2$. Conversely, if $\\omega_2 \\to (\\alpha)^2_2$ for all $\\alpha < \\omega_2$, then in particular $\\omega_2 \\to (\\alpha, \\alpha)^2$ for all such $\\alpha$, which is a symmetric polarized relation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "instantiation",
+      "logical consequence",
+      "symmetric vs asymmetric partition relations"
+    ],
+    "prerequisites": [
+      "polarized partition relation",
+      "balanced partition relation"
+    ]
+  }
+]

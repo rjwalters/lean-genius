@@ -1,0 +1,184 @@
+[
+  {
+    "id": "ann-e586-context",
+    "proofId": "erdos-586",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Problem Statement, History, and Imports",
+    "content": "Erdos Problem #586 (Schinzel's question) asks: is there a covering system whose moduli form an antichain under divisibility? A covering system is a finite collection $\\{a_i \\pmod{n_i}\\}$ such that every integer belongs to at least one class. The antichain condition requires that no $n_i$ divides $n_j$ for $i \\neq j$. BBMST (2022) proved the answer is NO -- any system with antichain moduli must leave a positive fraction of integers uncovered. Imports full Mathlib for finite sets, integer arithmetic, and filtering.",
+    "mathContext": "$\\{a_i \\pmod{n_i}\\}_{i=1}^k$ covers $\\mathbb{Z}$ and $n_i \\nmid n_j$ for $i \\neq j$? NO.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering systems",
+      "divisibility antichain",
+      "Erdos covering problem"
+    ],
+    "prerequisites": [
+      "Finset.image",
+      "Finset.filter",
+      "integer modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e586-congruence",
+    "proofId": "erdos-586",
+    "range": {
+      "startLine": 34,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Residue Classes and Congruence Classes",
+    "content": "Defines `ResidueClass a n` as $\\{x \\in \\mathbb{Z} : x \\equiv a \\pmod{n}\\}$ using the `%` operator. The `CongruenceClass` structure bundles a residue $a$, a modulus $n > 0$, and a positivity proof. `toSet` converts to the underlying set. The residue class $a \\pmod{n}$ contains exactly $1/n$ of the integers in any sufficiently long interval, which is the basis for density arguments.",
+    "mathContext": "$a \\pmod{n} = \\{x \\in \\mathbb{Z} : x \\bmod n = a \\bmod n\\}$; density $= 1/n$ in $[1, N]$ as $N \\to \\infty$",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "residue classes",
+      "natural density"
+    ],
+    "prerequisites": [
+      "Int.emod",
+      "structure with proof fields"
+    ]
+  },
+  {
+    "id": "ann-e586-covering",
+    "proofId": "erdos-586",
+    "range": {
+      "startLine": 52,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Covering Systems",
+    "content": "Defines `CoveringSystem` as a nonempty `Finset CongruenceClass`. `moduli` extracts the multiset of moduli via `Finset.image`. `covers S x` checks if $x$ belongs to any class in $S$. `IsCovering S` requires every integer to be covered: $\\forall x \\in \\mathbb{Z},\\, \\exists c \\in S,\\, x \\in c.\\text{toSet}$. The simplest covering system is $\\{0 \\pmod{2}, 1 \\pmod{2}\\}$ with non-antichain moduli $\\{2, 2\\}$.",
+    "mathContext": "$S = \\{a_1 \\pmod{n_1}, \\ldots, a_k \\pmod{n_k}\\}$; $\\text{IsCovering}(S) \\iff \\mathbb{Z} = \\bigcup_{i=1}^k (a_i + n_i\\mathbb{Z})$",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering systems",
+      "congruence class union",
+      "Helly property"
+    ],
+    "prerequisites": [
+      "Finset.Nonempty",
+      "Finset.image",
+      "existential quantifier"
+    ]
+  },
+  {
+    "id": "ann-e586-antichain",
+    "proofId": "erdos-586",
+    "range": {
+      "startLine": 73,
+      "endLine": 94
+    },
+    "type": "definition",
+    "title": "Antichain Condition and Schinzel's Question",
+    "content": "Defines `Divides a b` as $a \\mid b \\lor b \\mid a$ (comparability), `IsAntichain M` requiring no two distinct elements are comparable (for all $a \\neq b \\in M$: $a \\nmid b$ and $b \\nmid a$), `HasAntichainModuli S` applying this to the moduli set. `schinzel_question` existentially asks for a covering system with antichain moduli. In the divisibility poset $(\\mathbb{N}^+, \\mid)$, antichains are sets like $\\{6, 10, 15\\}$ where no element divides another.",
+    "mathContext": "$M$ is an antichain in $(\\mathbb{N}^+, \\mid)$ iff $\\forall a, b \\in M,\\, a \\neq b \\implies a \\nmid b \\wedge b \\nmid a$",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility poset",
+      "Dilworth's theorem",
+      "antichain in partial order"
+    ],
+    "prerequisites": [
+      "Nat.dvd",
+      "Finset membership",
+      "conjunction"
+    ]
+  },
+  {
+    "id": "ann-e586-bbmst",
+    "proofId": "erdos-586",
+    "range": {
+      "startLine": 96,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "BBMST Theorem: No Antichain Covering Systems",
+    "content": "Two axiomatized formulations of the main result. `bbmst_theorem`: $\\neg\\text{schinzel\\_question}$ -- no covering system with antichain moduli exists. `covering_implies_comparable`: every covering system has at least two comparable moduli ($\\exists a, b \\in \\text{moduli}(S)$ with $a \\neq b$ and $a \\mid b \\lor b \\mid a$). The BBMST proof (2022) established this as part of their resolution of the Erdos covering problem, using probabilistic and analytic sieving methods to show that antichain moduli cannot achieve full coverage.",
+    "mathContext": "$\\nexists S:\\; \\text{IsCovering}(S) \\wedge \\text{HasAntichainModuli}(S)$; equivalently: $\\text{IsCovering}(S) \\implies \\exists n_i \\mid n_j$",
+    "significance": "key",
+    "relatedConcepts": [
+      "BBMST theorem",
+      "Erdos covering problem",
+      "structural necessity of divisibility"
+    ],
+    "prerequisites": [
+      "schinzel_question",
+      "CoveringSystem.moduli"
+    ]
+  },
+  {
+    "id": "ann-e586-density",
+    "proofId": "erdos-586",
+    "range": {
+      "startLine": 109,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Density Bounds: The Heart of the Proof",
+    "content": "Defines `uncoveredDensity S` as $1 - \\sum_{c \\in S} 1/n_c$ (a heuristic upper bound on coverage density via inclusion-exclusion). Axiomatizes `bbmst_density_bound`: for antichain moduli, the uncovered density is strictly positive. `antichain_not_covering` follows: antichain moduli cannot cover all integers. The density argument is the technical core -- in a covering system, $\\sum 1/n_i \\ge 1$ is necessary but not sufficient; the antichain condition prevents the classes from overlapping enough to achieve equality.",
+    "mathContext": "$\\delta(S) = 1 - \\sum_{i=1}^k 1/n_i$; antichain moduli $\\implies \\delta(S) > 0 \\implies \\text{not covering}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "inclusion-exclusion",
+      "sieving inequalities"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Real division",
+      "positivity"
+    ]
+  },
+  {
+    "id": "ann-e586-general",
+    "proofId": "erdos-586",
+    "range": {
+      "startLine": 126,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "k-Covering Generalization",
+    "content": "Defines `IsKCovering S k` requiring every integer to be covered by at least $k$ classes (using `Finset.filter` and `card \\ge k`). `antichain_k_covering_question k` asks for such a system with antichain moduli. Axiomatizes `no_antichain_k_covering`: no $k$-covering with antichain moduli exists for any $k \\ge 1$. This follows from the density bound: if the uncovered density is positive for 1-coverage, it remains positive for $k$-coverage by a multiplicative argument.",
+    "mathContext": "$\\forall k \\ge 1:\\; \\nexists S:\\; \\text{IsKCovering}(S, k) \\wedge \\text{HasAntichainModuli}(S)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "k-fold covering",
+      "multiplicity in covering systems",
+      "density generalization"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.card",
+      "Nat.le"
+    ]
+  },
+  {
+    "id": "ann-e586-summary",
+    "proofId": "erdos-586",
+    "range": {
+      "startLine": 142,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Summary: Three Key Results",
+    "content": "The proved `erdos_586_summary` bundles: (1) $\\neg\\text{schinzel\\_question}$ (no antichain covering exists), (2) antichain moduli $\\implies$ positive uncovered density, (3) antichain moduli $\\implies$ not a covering. Proved by `\\langle \\text{bbmst\\_theorem}, \\text{bbmst\\_density\\_bound}, \\text{antichain\\_not\\_covering} \\rangle`. These three results capture the logical chain: density bound $\\implies$ not covering $\\implies$ Schinzel's question has negative answer.",
+    "mathContext": "$\\neg\\text{schinzel\\_question} \\wedge (\\text{antichain} \\implies \\delta > 0) \\wedge (\\text{antichain} \\implies \\neg\\text{covering})$",
+    "significance": "key",
+    "relatedConcepts": [
+      "combined theorem",
+      "logical chain",
+      "problem resolution"
+    ],
+    "prerequisites": [
+      "bbmst_theorem",
+      "bbmst_density_bound",
+      "antichain_not_covering"
+    ]
+  }
+]

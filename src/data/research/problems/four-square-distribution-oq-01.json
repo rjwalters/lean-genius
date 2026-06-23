@@ -1,0 +1,258 @@
+{
+  "slug": "four-square-distribution-oq-01",
+  "title": "Jacobi's Four-Square Formula r₄(n) = 8·σ*(n) in Lean 4",
+  "phase": "BLOCKED",
+  "status": "blocked",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall n \\in \\mathbb{Z}_{\\geq 1},\\ \\#\\{(a,b,c,d) \\in \\mathbb{Z}^4 : a^2+b^2+c^2+d^2 = n\\} = 8 \\sum_{d \\mid n,\\ 4 \\nmid d} d",
+    "plain": "Formalize Jacobi's classical 1834 theorem: for every n ≥ 1, the count r₄(n) of integer 4-tuples (a,b,c,d) with a²+b²+c²+d² = n equals 8·σ*(n), where σ*(n) is the sum of divisors of n not divisible by 4.",
+    "whyMatters": [
+      "Bridges combinatorics (sum-of-squares counting) with analytic number theory (modular forms / Eisenstein series).",
+      "First foundational arithmetic identity to bridge Mathlib's existing JacobiTheta / EisensteinSeries machinery to a classical concrete result.",
+      "Cross-validates the gallery's combinatorial type-decomposition work in `four-square-distribution`."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lagrange (1770): every n ≥ 0 is a sum of four squares — Mathlib `Nat.sum_four_squares`.",
+      "Jacobi (1834): r₄(n) = 8 σ*(n) for n ≥ 1 — pencil-and-paper, not yet formalized.",
+      "Type decomposition for n ≤ 10 — `four-square-distribution` gallery (verified, 38 theorems, 0 axioms).",
+      "Numerical verification of Jacobi's formula for n = 1..10 from three independent definitions — this file (`FourSquareDistributionOQ01.lean`)."
+    ],
+    "open": [
+      "Replace `axiom jacobi_r4_formula` with a Lean theorem.",
+      "Develop q-expansion infrastructure for `jacobiTheta` in Mathlib.",
+      "Identify `jacobiTheta τ ^ 4` as a weight-2 Eisenstein-series combination on Γ₀(4)."
+    ],
+    "goal": "Replace the axiom `jacobi_r4_formula` with a fully proved theorem in Lean 4."
+  },
+  "currentState": {
+    "phase": "BLOCKED",
+    "since": "2026-05-08",
+    "iteration": 31,
+    "focus": "S27 MIGRATION COMPLETE (researcher-2, PR #22949, merged 2026-06-13): FourSquareDistributionOQ01.lean migrated v4.25.x -> v4.26.0. The 87-error `ord_compl` / `Nat.ord_*` / `Nat.divisors_prime` API-drift regression that prior sessions flagged as a doctor/mechanic blocker is RESOLVED in-file via a compat-notation shim + camelCase wrappers (clears ~34 sites, 0 call-site edits) plus shiftedRange / split_ifs / List.nodup_range fixes; researcher-2 reports a clean Docker build (3061 jobs, 0 errors, 0 sorries, single axiom `jacobi_r4_formula` unchanged). Gallery meta re-synced post-migration (S30 PR #23082, researcher-4): meta.json / Lean source / state.md now agree at 2932 LOC / 128 theorems / 10 defs / 1 axiom / 0 sorries. The slug is in a clean, healthy state. Forward research work: Part-34 `combinedStabilizer_card v = z! * prod m_k! * 2^z` (PR #18549 PREP; bearers per PR #18695 audit) as the third stabilizer count toward axiom-free `8 | r4Count`, gated on Docker for verification; the open `jacobi_r4_formula` axiom remains the deep MATH blocker (needs Mathlib q-expansion / Eisenstein machinery, out of scope until upstream lands).",
+    "blockers": [
+      "Mathlib q-expansion machinery for `jacobiTheta` is absent (no Fourier-coefficient extraction lemma for the upper-half-plane theta function).",
+      "Mathlib Eisenstein-coefficient identification absent (needed to identify θ⁴ with E₂(τ) − 4·E₂(4τ) up to normalization).",
+      "Hurwitz-quaternion alternative is also blocked upstream — no Hurwitz-integer arithmetic in Mathlib.",
+      "Local Docker build verification: the `proofs/.lake` self-referential symlink in this fork forces a fresh Mathlib clone per build (~45 min cold), and the host Docker daemon is currently down (2026-06-13 blackout). Further ACT (Part 34) and re-verification of the cumulative S5 -> S27 build are build-pending until a stable Docker window; per #22949's nextAction, re-verify once Docker is back."
+    ],
+    "nextAction": "S32 BLOCKED-PROPAGATION (researcher-5, 2026-06-14): the S31 BLOCKED decision (state.md) was never propagated to this JSON gate (status was still `active`/`phase ACT`) or the candidate pool (`in-progress`), so claim-random kept re-serving the slug during the Docker blackout despite no actionable work. Set status=blocked / phase=BLOCKED here and in the pool. Build-free re-audit confirmed gallery meta is CLEAN (2932 LOC, theoremCount 142 [intentional inclusive count incl private/protected/noncomputable per PR #23460; col-0 theorem|lemma = 128], 10 defs, 1 axiom, 0 sorries; 32 sections contiguous L60–2932). Both work items remain un-actionable: Part-34 verification is Docker-gated and the `jacobi_r4_formula` axiom needs upstream Mathlib q-expansion machinery. Unblock once Docker is back / upstream lands. PRIOR: S30 STATE-SYNC complete: gallery meta.json is re-synced to the post-migration Lean source (2932 LOC / 128 col-0 theorems / 1 axiom `jacobi_r4_formula` / 0 sorries; meta.json, source, and state.md now agree). The v4.26.0 migration (#22949) is Docker BUILD-VERIFY clean (3061 jobs, 0 errors). Forward ACT — Part-34 `combinedStabilizer_card v = z! * prod m_k! * 2^z` (PR #18549 PREP) as the third stabilizer count toward an axiom-free `8 | r4Count` — is Docker-gated and DEFERRED: the host Docker daemon is DOWN (2026-06-13 blackout, `docker info` times out), so no build/verify route is currently available. The deep MATH blocker (`jacobi_r4_formula` axiom) remains open pending Mathlib q-expansion / Eisenstein-coefficient infrastructure. Resume Part-34 verification once Docker is back up.",
+    "attemptCounts": {
+      "total": 26,
+      "currentApproach": 6,
+      "approachesTried": 1
+    },
+    "lastUpdate": "2026-06-14T17:00:00Z"
+  },
+  "knowledge": {
+    "progressSummary": "S27 MIGRATION+BUILD-VERIFY (researcher-2, 2026-06-12): FourSquareDistributionOQ01.lean migrated v4.25.x->v4.26.0 and now builds clean (3061 jobs, 0 errors, 0 sorries, 1 axiom). 87 error lines fixed via ord_proj/ord_compl compat-notation shim + Nat.ord_* camelCase wrappers, hp.divisors, Nat.zero_le for split_ifs, simp[hk_zero] for odd-case ord_compl, List.nodup_range arity, and a shiftedRange root-cause fix (Int.ofNat def to avoid the coercion-induced bind/do split, + Int.ofNat_eq_natCast for omega). +39/-22 LOC; 0 math content change.\n\nSTATE-SYNC + build-verification (this PR, researcher-10, 2026-05-13): catches state.md up to PRs #18418/#18549/#18640/#18695 (4 missing entries) and surfaces 87-error Mathlib v4.26.0 ord_compl regression on origin/main via docker-build. Doctor/mechanic-scope. S18c-orbit-precursor-3 ACT (PR #18640, 2026-05-13): Part 33 permStabilizer_card via DomMulAct, +46 LOC. S18c-orbit PREP (PR #18549, researcher-10, 2026-05-13): combined-stabilizer `z! · ∏ m_k! · 2^z` + 11-case enumeration confirming v₂(|Stab|) ≤ 4 in every (zero-pattern, partition) class. S18c-orbit-precursor-3 PREP (PR #18418, 2026-05-13): perm-stab design locked to `DomMulAct.stabilizer_card'` bearer. S18c-orbit Mathlib audit (PR #18695, researcher-5, 2026-05-13): phantom-lemma audit catching 3 phantom citations + 2 path errors in #18549. S17 (PR #17677, merged 2026-05-11): canonical σ*-side uniqueness reduces axiom to needing 3 hypotheses + 8∣r4Count. S18 spec (PR #17688, merged): 3-stage decomposition for axiom-free 8∣r4Count. S18a (PR #17702, merged ~80 lines Part 27): structural foldl ↔ nested-sum bridge for r4Count, route-agnostic between D₄/(ℤ/2)⁴ ⋊ S₄ orbit decompositions. S18b (this PR, ~70 lines Part 28): shiftedRange ↔ Finset.Icc bridges; innermost-level Finset.card substitution for the 4th-coord filter-length of r4Count_eq_nested_sum. Outer-three-layer nested-sum → Finset.product re-bundling + the orbit-decomposition defer to S18c.",
+    "builtItems": [
+      "S18 spec: research/problems/four-square-distribution-oq-01/s18-eight-divisibility-spec.md (416 lines) — analysis-only spec for axiom-free `8 ∣ r4Count n`.",
+      "sigmaStar (def): Jacobi's modified divisor sum at FourSquareDistributionOQ01.lean:74",
+      "jacobiR4 (def): 8 * sigmaStar n at FourSquareDistributionOQ01.lean:90",
+      "shiftedRange (def): integer range [-n, n] at FourSquareDistributionOQ01.lean:108",
+      "r4Count (def): brute-force enumeration at FourSquareDistributionOQ01.lean:116",
+      "sigmaOne (def, S2): standard divisor sum Σ_{d|n} d at FourSquareDistributionOQ01.lean:223",
+      "sigmaFourDvd (def, S2): Σ_{d|n, 4∣d} d at FourSquareDistributionOQ01.lean:234",
+      "sigmaStar_1 .. sigmaStar_10: σ*(n) values verified by native_decide",
+      "jacobiR4_1 .. jacobiR4_10: 8·σ*(n) values verified by native_decide",
+      "r4Count_1 .. r4Count_10: brute-force counts verified",
+      "jacobi_holds_1 .. jacobi_holds_10: r4Count n = jacobiR4 n for n = 1..10",
+      "distribution_matches_jacobi_*: bridge to FourSquareDistribution's type decomposition",
+      "jacobi_r4_formula (axiom): the open target, ∀ n > 0, r4Count n = jacobiR4 n",
+      "S2 sigmaStar_add_sigmaFourDvd: σ*(n) + sigmaFourDvd(n) = σ(n) at line ~239",
+      "S2 sigmaStar_eq_sigmaOne_of_not_four_dvd: 4∤n → σ*(n) = σ(n) at line ~248",
+      "S2 sigmaStar_eq_sigmaOne_of_odd: 2∤n → σ*(n) = σ(n) at line ~257",
+      "S2 divisors_filter_four_dvd_eq_image: bijection 4∣n → divisors filter / image at line ~264",
+      "S2 sigmaFourDvd_of_four_dvd: 4∣n → sigmaFourDvd(n) = 4·σ(n/4) at line ~292",
+      "S2 sigmaStar_of_four_dvd: 4∣n → σ*(n) + 4·σ(n/4) = σ(n) at line ~319 [main contribution]",
+      "S2 sigmaOne_1, _2, _4, _8, _12, _16: σ values for cross-checks",
+      "S2 four cross-check examples for n = 4, 8, 12, 16; one for odd n = 15",
+      "S3 not_four_dvd_prime_pow_of_ne_two: prime p != 2 => no power p^k divisible by 4 — FourSquareDistributionOQ01.lean ~370",
+      "S3 sigmaStar_prime_pow_of_odd_prime: sigmaStar(p^k) = sigmaOne(p^k) for odd prime p — FourSquareDistributionOQ01.lean ~388",
+      "S3 cross-checks: (3,2), (5,1), (7,0) prime-power examples — inline `example` blocks",
+      "S4 divisors_two_mul_of_odd: (2n).divisors = n.divisors u n.divisors.image(*2) for n odd — FourSquareDistributionOQ01.lean ~417",
+      "S4 disjoint_divisors_image_two_of_odd: n.divisors disjoint from n.divisors.image(*2) for n odd — FourSquareDistributionOQ01.lean ~440",
+      "S4 sigmaOne_two_mul_of_odd: sigma(2n) = 3*sigma(n) for n odd — FourSquareDistributionOQ01.lean ~454",
+      "S4 sigmaStar_two_mul_of_odd: sigma*(2n) = 3*sigma(n) for n odd — FourSquareDistributionOQ01.lean ~467",
+      "S4 sigmaOne_four_mul_of_odd: sigma(4n) = 7*sigma(n) for n odd via 2-adic-valuation 3-piece partition — FourSquareDistributionOQ01.lean ~480",
+      "S4 sigmaStar_four_mul_of_odd: sigma*(4n) = 3*sigma(n) for n odd — FourSquareDistributionOQ01.lean ~563",
+      "S4 cross-checks: 7 example blocks for n in {1,3,5,9} (2n) and {1,3,5} (4n) — inline examples",
+      "S5 sigmaOne_eq_arithmeticSigmaOne (theorem): bridges sigmaOne to Mathlib ArithmeticFunction.sigma 1 — FourSquareDistributionOQ01.lean ~620",
+      "S5 sigmaOne_mul_of_coprime (theorem): sigma(mn) = sigma(m)*sigma(n) for Coprime m n — FourSquareDistributionOQ01.lean ~628",
+      "S5 not_two_dvd_of_coprime_two_dvd_left (private): Coprime m n + 2|m -> 2 not | n — FourSquareDistributionOQ01.lean ~656",
+      "S5 coprime_four_of_not_two_dvd (private): 2 not | n -> Coprime 4 n — FourSquareDistributionOQ01.lean ~664",
+      "S5 not_four_dvd_mul_of_coprime (private): Coprime m n + 4 not | m + 4 not | n -> 4 not | m*n — FourSquareDistributionOQ01.lean ~672",
+      "S5 coprime_div_four_of_dvd_left/right (private): Coprime preserved under m/4 — FourSquareDistributionOQ01.lean ~691",
+      "S5 sigmaStar_mul_of_coprime (theorem): sigma*(mn) = sigma*(m)*sigma*(n) for Coprime m n, m,n>0 — FourSquareDistributionOQ01.lean ~712 [main S5 contribution]",
+      "S5 sum_two_pow_eq (private): geometric series sum 2^i = 2^(j+1) - 1 — FourSquareDistributionOQ01.lean ~800",
+      "S5 sigmaOne_two_pow (private): sigma(2^k) = 2^(k+1) - 1 via sigma_apply_prime_pow — FourSquareDistributionOQ01.lean ~810",
+      "S5 sigmaStar_two_pow (theorem): sigma*(2^k) = 3 for k >= 1 [closes p=2 prime-power case] — FourSquareDistributionOQ01.lean ~822",
+      "S5 cross-checks: 4 examples for sigma*(2^k) at k=1,2,3,5; 5 examples for sigma*-mult at (3,5),(2,3),(4,3),(8,5),(9,5) — inline examples",
+      "S5 sigmaStar_two_pow_mul_odd (theorem, Part 15): for 1 <= k, m odd, 0 < m: sigma*(2^k * m) = 3 * sigma(m). Proof: 4 rewrites combining Coprime (2^k) m via Nat.Prime.coprime_iff_not_dvd Nat.prime_two + Nat.Coprime.pow_left k, then sigmaStar_mul_of_coprime, sigmaStar_two_pow, sigmaStar_eq_sigmaOne_of_odd. — FourSquareDistributionOQ01.lean ~898",
+      "S5 jacobiR4_two_pow_mul_odd (theorem, Part 15): for 1 <= k, m odd, 0 < m: jacobiR4(2^k * m) = 24 * sigma(m). Two lines: unfold + rewrite + ring. — FourSquareDistributionOQ01.lean ~922",
+      "S5 cross-validation examples (Part 15): 8 examples — 6 sigmaStar checks at (k=1,m=1),(k=2,m=1),(k=1,m=3),(k=3,m=1),(k=1,m=5),(k=3,m=5); 2 jacobiR4 checks at (k=3,m=1),(k=3,m=5). All by sigmaStar_two_pow_mul_odd / jacobiR4_two_pow_mul_odd.",
+      "S6 sigmaStar_decomp (theorem, Part 16): 0 < m → ¬ 2 ∣ m → sigmaStar (2^k * m) = (if k = 0 then 1 else 3) * sigmaOne m — FourSquareDistributionOQ01.lean ~1001",
+      "S6 jacobiR4_decomp (theorem, Part 16): same with constants 8/24 — FourSquareDistributionOQ01.lean ~1014",
+      "S7 sigmaStar_exists_decomp_of_pos (theorem, Part 17): 0 < n → ∃ k m, 0 < m ∧ ¬ 2 ∣ m ∧ n = 2^k * m ∧ sigmaStar n = (if k = 0 then 1 else 3) * sigmaOne m — FourSquareDistributionOQ01.lean ~1071 [main S7 contribution]",
+      "S7 jacobiR4_exists_decomp_of_pos (theorem, Part 17): same for jacobiR4 with constants 8/24 — FourSquareDistributionOQ01.lean ~1086",
+      "S7 cross-validation examples (Part 17): 4 examples — sigmaStar_exists at n ∈ {1, 9, 40}, jacobiR4_exists at n = 40. All by sigmaStar_exists_decomp_of_pos / jacobiR4_exists_decomp_of_pos with `(by decide : 0 < n)`.",
+      "r4Count_factorization_form (Part 19, FourSquareDistributionOQ01.lean lines 1235-1242, S9 PR #17347): For 0 < n, r4Count n = (if 2 ∣ n then 24 else 8) · sigmaOne (ord_compl[2] n). Proof: rw [jacobi_r4_formula n hn]; exact jacobiR4_factorization_form hn. 4 cross-validation example blocks for n ∈ {1, 9, 2, 8} confirming closed form on r4Count.",
+      "S10 jacobiR4_mul_of_coprime (theorem, Part 20, axiom-free): Coprime m n → 0 < m → 0 < n → 8·jacobiR4(m·n) = jacobiR4 m · jacobiR4 n. Proof: unfold jacobiR4; rw [sigmaStar_mul_of_coprime]; ring. — FourSquareDistributionOQ01.lean ~1300",
+      "S10 r4Count_mul_of_coprime (theorem, Part 20): Coprime m n → 0 < m → 0 < n → 8·r4Count(m·n) = r4Count m · r4Count n. Proof chains jacobi_r4_formula on (m·n), m, n with jacobiR4_mul_of_coprime. — FourSquareDistributionOQ01.lean ~1318",
+      "S10 r4Count_two_pow_mul_odd (theorem, Part 20): 1 ≤ k → ¬ 2 ∣ m → 0 < m → r4Count(2^k · m) = 24·σ(m). Chains jacobi_r4_formula with Part 15 jacobiR4_two_pow_mul_odd. — FourSquareDistributionOQ01.lean ~1336",
+      "S10 cross-validation examples (Part 20): 4 jacobiR4 examples at coprime pairs (2,3),(2,5),(3,5),(3,7); 2 r4Count examples at (k=3,m=1) (≡ r4(8)=24) and (k=3,m=5) (≡ r4(40)=144).",
+      "S11 sigmaStar_pos (theorem, Part 21, axiom-free): 0 < n → 0 < sigmaStar n. Proof via Finset.single_le_sum on the term d=1 ∈ n.divisors (using 4 ∤ 1). — FourSquareDistributionOQ01.lean ~1400",
+      "S11 sigmaStar_one_le (theorem, Part 21): 0 < n → 1 ≤ sigmaStar n — restated form. — FourSquareDistributionOQ01.lean ~1415",
+      "S11 eight_dvd_jacobiR4 (theorem, Part 21, axiom-free): 8 ∣ jacobiR4 n for all n — definitional unfold + dvd_mul_right. — FourSquareDistributionOQ01.lean ~1419",
+      "S11 jacobiR4_eight_le (theorem, Part 21, axiom-free): 0 < n → 8 ≤ jacobiR4 n — via sigmaStar_pos + omega on the unfolded definition. — FourSquareDistributionOQ01.lean ~1426",
+      "S11 jacobiR4_pos (theorem, Part 21, axiom-free): 0 < n → 0 < jacobiR4 n — via lt_of_lt_of_le with 0 < 8 ≤ jacobiR4 n. — FourSquareDistributionOQ01.lean ~1432",
+      "S11 r4Count_eight_le (theorem, Part 21): 0 < n → 8 ≤ r4Count n — via jacobi_r4_formula + jacobiR4_eight_le. — FourSquareDistributionOQ01.lean ~1439",
+      "S11 r4Count_pos (theorem, Part 21): 0 < n → 0 < r4Count n — Lagrange-style positivity via Jacobi's formula. — FourSquareDistributionOQ01.lean ~1450",
+      "S11 eight_dvd_r4Count (theorem, Part 21): 0 < n → 8 ∣ r4Count n — pins the universal factor of 8 from sign-flip × permutation symmetry. — FourSquareDistributionOQ01.lean ~1461",
+      "S11 sigmaStar_odd_prime (theorem, Part 21, axiom-free): p prime, p ≠ 2 → σ*(p) = p + 1. Proof: divisors of prime p are {1, p}, neither divisible by 4 (since p prime, p ≠ 2 ⟹ ¬ 2 ∣ p, so ¬ 4 ∣ p). Uses Nat.divisors_prime + Finset.sum_insert + Finset.sum_singleton. — FourSquareDistributionOQ01.lean ~1470",
+      "S11 jacobiR4_odd_prime (theorem, Part 21, axiom-free): p prime, p ≠ 2 → jacobiR4(p) = 8·(p+1). Proof: unfold + sigmaStar_odd_prime. — FourSquareDistributionOQ01.lean ~1494",
+      "S11 r4Count_odd_prime (theorem, Part 21): p prime, p ≠ 2 → r4Count(p) = 8·(p+1). Closed form for r₄ on odd-prime arguments via jacobi_r4_formula + jacobiR4_odd_prime. — FourSquareDistributionOQ01.lean ~1505",
+      "S11 cross-validation examples (Part 21): 13 example blocks — sigmaStar_pos at n=1; sigmaStar_one_le at n=8; jacobiR4_eight_le at n=8; eight_dvd_jacobiR4 at n=7; sigmaStar_odd_prime at p ∈ {3, 5, 7}; jacobiR4_odd_prime at p ∈ {3, 5, 7, 11, 13}. The p ∈ {11, 13} cases predict beyond Part 1's n ≤ 10 numerical envelope without extending the brute-force enumeration.",
+      "S18a (Part 27): foldl_indicator_eq_add_filter_length — counting-fold ↔ filter-length, pure List/foldl utility (FourSquareDistributionOQ01.lean:2236)",
+      "S18a (Part 27): foldl_constant_shift_eq — additive-fold ↔ map+sum, pure foldl utility (FourSquareDistributionOQ01.lean:2255)",
+      "S18a (Part 27): foldl_4nest_indicator_eq_nested_sum — generic 4-nested foldl over same list ↔ triple-nested map+sum with innermost filter-length (FourSquareDistributionOQ01.lean:2275)",
+      "S18a (Part 27): r4Count_eq_nested_sum — Sublemma 3.1 (List form): r4Count n equals triple-nested List.sum over shiftedRange n with innermost filter-length on 4th coordinate (FourSquareDistributionOQ01.lean:2333)",
+      "S18b (Part 28): shiftedRange_nodup — the integer list [-n, …, n] is Nodup via List.Nodup.map + List.nodup_range (FourSquareDistributionOQ01.lean:2371)",
+      "S18b (Part 28): shiftedRange_toFinset_eq_Icc — (shiftedRange n).toFinset = Finset.Icc (-(n:ℤ)) n; backward witnesses x via (x+n).toNat using Int.toNat_of_nonneg (FourSquareDistributionOQ01.lean:2381)",
+      "S18b (Part 28): shiftedRange_filter_length_eq_Icc_card — for decidable q, ((shiftedRange n).filter (decide ∘ q)).length = ((Finset.Icc (-n) n).filter q).card; plugs the innermost level of r4Count_eq_nested_sum into Finset.card form (FourSquareDistributionOQ01.lean:2406)",
+      "S18c-framework (Part 29): `SignFlip := Fin 4 → Bool`, `applyFlip`, `sumSq`, `sumSq_applyFlip`, `sumSq_reindex`, `applyFlip_zero`, `applyFlip_involutive`, `applyFlip_eq_iff`, `applyFlip_bijective`, `Fintype.card SignFlip = 16`, `orbitCard_dvd_eight_of_pos_target_decl` — `FourSquareDistributionOQ01.lean`, ~140 lines, 0 axioms, 0 sorries. Standalone sign-flip half of the (ℤ/2)⁴ ⋊ S₄ orbit-decomposition route to `8 ∣ r4Count n`.",
+      "S18c-permutation (Part 30): `applyPerm σ v := v ∘ σ.symm`, `applyPerm_apply`, `applyPerm_one`, `applyPerm_mul` (left-action composition law), `sumSq_applyPerm` (key invariance via `sumSq_reindex`), `applyPerm_inv_apply`, `applyPerm_bijective`, `applyPerm_eq_iff` (stabilizer characterisation), `Fintype.card (Equiv.Perm (Fin 4)) = 24` — `FourSquareDistributionOQ01.lean`, ~90 lines, 0 axioms, 0 sorries. Coordinate-permutation half of the (ℤ/2)⁴ ⋊ S₄ orbit-decomposition route to `8 ∣ r4Count n`."
+    ],
+    "insights": [
+      "S18 spec (researcher-4, 2026-05-11): Decomposed the path to axiom-free `8 ∣ r4Count n` for `n > 0` into 3 sub-deliverables S18a/b/c (~370 lines total). Documents 1 viable route ((ℤ/2)⁴ ⋊ S₄ 384-element group action — orbit sizes always divisible by 8 for n > 0) and 1 failed route (D₄ — υ involution fixes (a, b, 0, 0) solutions, blocking freeness). S18 is contingent on S13 modular-form route remaining inaccessible (Mathlib still lacks EisensteinSeries.E2_qExpansion).",
+      "S18 spec: The bottleneck for S18a is reformulating `r4Count` from a 4-deep `List.foldl` to a `Finset.card` over `Finset.Icc (-(n : ℤ)) n`-product — ~80 lines of Lean by induction on the foldl's `R := shiftedRange n`. Sublemmas 3.2–3.5 (involutions and their commutation) are mechanical (~75 lines combined).",
+      "The factor 8 = 2³ in Jacobi's formula corresponds to the order-2³ stabilizer that always acts trivially on a sum-of-four-squares signature.",
+      "The 4-divisibility constraint in σ*(n) is precisely what makes the formula consistent for n divisible by 4; e.g. r₄(4) = 24 and σ*(4) = 1+2 = 3.",
+      "The same number r₄(n) is computed three different ways here for n = 1..10 (brute enumeration, divisor sum, and parent's type decomposition), all agreeing — providing strong cross-validation.",
+      "Mathlib has sufficient infrastructure for stating Jacobi's formula but lacks the q-expansion / Eisenstein-coefficient bridge needed to prove it.",
+      "Hurwitz-quaternion alternative route: the classical algebraic proof works in the Hurwitz order ℋ = ℤ[i,j,k,(1+i+j+k)/2] ⊂ ℍ. Each n with the correct r₄(n) count corresponds bijectively (modulo unit groups) to factorizations in ℋ. This route avoids analysis but is also gated on Mathlib infrastructure — there is no Hurwitz-integer arithmetic, no division algorithm in ℋ, and no left/right ideal theory for non-commutative orders. So the algebraic path saves analysis but does not save formalization labor.",
+      "Native_decide envelope: `r4Count n` enumerates `(2n+1)⁴` integer 4-tuples; at n=10 this is 21⁴ ≈ 194,481, comfortably tractable for the kernel. Extending verification to n=11..15 would push to 23⁴..31⁴ ≈ 280k..924k enumerations — still feasible but with non-trivial Docker compile-time growth and diminishing research value (each new value is a single redundant data point rather than evidence toward the general formula).",
+      "Provenance: the bootstrap commit landed on 2026-05-06; gallery enrichment (annotations PR #16682) and cross-reference wiring (PR #16678 + reciprocal back-refs in `four-square-distribution` / `lagrange-four-squares`) followed on 2026-05-07. Research JSON reconciliation (PR #16700) aligned the research workflow's ACT phase with the gallery's terminal axiomatized state — but S2 (2026-05-07) reopens ACT with axiom-free structural progress.",
+      "S2: σ* admits a complete reformulation in terms of Mathlib's standard divisor sum σ — σ*(n) = σ(n) when 4∤n, σ*(n) = σ(n) − 4·σ(n/4) when 4∣n. This reduces the remaining proof obligation from 'reason about the indicator 4∣d' to 'reason about σ', a function for which Mathlib already provides multiplicativity (Nat.Coprime.sum_divisors_mul), prime-power closed forms, and Eisenstein-series identities.",
+      "S2: the bijection divisors_filter_four_dvd_eq_image — divisors of n that are divisible by 4, in bijection with divisors of n/4 via e ↔ 4·e — is the key lemma. Provable by ext + Nat.mul_dvd_mul_iff_left.",
+      "S3: For prime p != 2 and any k, 4 not divides p^k. Proof: 2 = sqrt(4) | p^k -> 2 | p (Nat.Prime.dvd_of_dvd_pow) -> p = 2 (since p prime, only divisors are 1 and p, and 2 != 1).",
+      "S3: For odd prime p, sigma*(p^k) collapses to sigmaOne(p^k) since the 4-divisibility filter vacuously fires. Combined with Mathlib's sigma_one_apply_prime_pow (sigma 1 (p^i) = sum_{k=0}^{i} p^k), we get the closed form sigma*(p^k) = 1 + p + p^2 + ... + p^k for odd prime p.",
+      "Architecture: the sigma*-side prep is now complete for odd-prime targets. The eventual r4(p^k) work (gated on q-expansion) just needs Mathlib's sigma machinery. The p = 2 case still requires sigma(2^k) - 4*sigma(2^(k-2)) = 3, a separate small calc.",
+      {
+        "insight": "S4: For n odd, sigma*(2n) = sigma*(4n) = 3*sigma(n) — same factor of 3 regardless of which power of 2 (>= 1) multiplies the odd part. This explains a Jacobi-data pattern: sigma*(2)=sigma*(4)=sigma*(8)=3, all giving 8*sigma*(2^k) = 24 = r4(2^k) for k=1,2,3. The general identity is sigma*(2^k * m) = 3*sigma(m) for k >= 1, m odd; S4 proves k in {1,2}, k>=3 follows similarly via sigmaStar_of_four_dvd recursion.",
+        "source": "S4 doubled-odd proofs"
+      },
+      {
+        "insight": "S4: The Finset proof technique scales — divisors_two_mul_of_odd (2-piece) and divisors_four_mul_of_odd (3-piece) decompose (2^k * n).divisors by 2-adic valuation. The k-th case needs a (k+1)-piece partition by v_2(d) in {0, 1, ..., k}. Disjointness is automatic from oddness of n; surjectivity uses Nat.Prime.coprime_iff_not_dvd on prime 2.",
+        "source": "S4 partition technique"
+      },
+      {
+        "insight": "S4 closes most of the sigma*-side preparation: combined with S3 (odd prime powers) and S2 (4-divisibility), sigma*(2^k * p^j) for prime p odd, k in {0,1,2}, j >= 0 is now fully reduced to Mathlib sigma. Only the multiplicativity bridge sigma*(m*n) = sigma*(m)*sigma*(n)/sigma*(gcd) for coprime m,n with at least one even and another component remains for general n; this is the natural S5 target.",
+        "source": "S4 architecture review"
+      },
+      {
+        "insight": "S5: sigma* is multiplicative at coprime arguments — sigma*(mn) = sigma*(m)*sigma*(n) when gcd(m,n)=1, m,n>0. The case split on 4|m / 4|n is essential: by coprimality, both cannot be divisible by 4. The two-symmetry-cases B and the no-four case C are pure sigma-multiplicativity; only case A (4|m) requires the Part 6 structural identity. Even there, the algebra reduces to (a + 4b)*c = a*c + 4*b*c, closed by Nat.add_right_cancel after sharing the +4*sigma(m/4)*sigma(n) term.",
+        "source": "S5 sigmaStar_mul_of_coprime"
+      },
+      {
+        "insight": "S5: sigma*(2^k) = 3 for k >= 1, sigma*(2^0) = sigma*(1) = 1. The divisors of 2^k for k >= 1 are {1, 2, 4, ..., 2^k}; only 1 and 2 escape the 4-divisibility filter. Proven via partition identity sigma*(2^k) + sigmaFourDvd(2^k) = sigma(2^k), with sigmaFourDvd(2^k) = 4*sigma(2^(k-2)) (Part 6) and sigma(2^j) = 2^(j+1) - 1 (geometric sum, via Mathlib sigma_apply_prime_pow). The k=1 case must be handled separately since 4 does not divide 2 = 2^1; native_decide handles it.",
+        "source": "S5 sigmaStar_two_pow"
+      },
+      {
+        "insight": "S5 architectural conclusion: sigma* is now COMPLETELY characterised by its prime-power values. For n = 2^a * prod p_i^{e_i} with p_i odd: sigma*(n) = sigma*(2^a) * prod sigma*(p_i^{e_i}) = (a=0: 1; a>=1: 3) * prod sigma(p_i^{e_i}). The sigma-side is in Mathlib (sigma_apply_prime_pow). The remaining bottleneck is therefore strictly the modular-form bridge for r4(n): once Mathlib gains q-expansion for jacobiTheta, no further sigma*-side work is required.",
+        "source": "S5 architecture review"
+      },
+      "**S5 — complete σ* characterisation by 2-adic decomposition**: With S5 sigmaStar_two_pow_mul_odd plus S2 sigmaStar_eq_sigmaOne_of_odd, σ*(n) is now expressible by a single two-case rule keyed only on whether 2 | n: σ*(odd m) = σ(m); σ*(n) = 3·σ(odd_part(n)) when v₂(n) ≥ 1. The σ*-side of Jacobi r₄ is fully reduced to one σ-value computation on the odd part of n.",
+      "**S7 — n-keyed existential closed form**: Mathlib already supplies the 2-adic decomposition existentially via `Nat.exists_eq_pow_mul_and_not_dvd` (`Mathlib.Data.Nat.Factorization.Basic`). Wrapping S6 `sigmaStar_decomp` with this lemma packages the σ*-side as a single existential statement keyed on n alone — `0 < n → ∃ k m, 0 < m ∧ ¬ 2 ∣ m ∧ n = 2^k * m ∧ sigmaStar n = (if k = 0 then 1 else 3) * sigmaOne m`. Two-line proof: `Nat.exists_eq_pow_mul_and_not_dvd hn.ne' 2 (by decide)` for the decomposition, derive `m > 0` from `n > 0` and `n = 2^k * m`, apply S6. The dual existential for `jacobiR4` is a one-line corollary from the σ* version. Net effect: downstream modular-form work needs no caller-supplied (k, m); the existential delivers them automatically.",
+      "**S7 — what remains**: The constructive (non-existential) form is the natural next step — `sigmaStar n = (if 2 ∣ n then 3 else 1) * sigmaOne (n / 2^(n.factorization 2))` for n > 0. This requires Mathlib API for `Nat.factorization`, `Nat.ord_proj_mul_ord_compl_eq_self`, and `Nat.not_dvd_ord_compl` (all in `Mathlib.Data.Nat.Factorization.Basic`). The proof is approximately 6–10 lines and is independent of the modular-form bridge.",
+      "S9 (researcher-11, 2026-05-08): r4Count Eisenstein-coefficient closed form added as Part 19. Theorem r4Count_factorization_form: 0 < n → r4Count n = (if 2 ∣ n then 24 else 8) · σ(ord_compl[2] n). One-line corollary chaining jacobi_r4_formula axiom with S8 jacobiR4_factorization_form. Honestly modest: corollary not structural reduction, axiom count unchanged. What it adds is the canonical interface theorem in the shape Mathlib q-expansion of θ⁴ will produce when it lands. Once Mathlib gains qExpansion machinery for jacobiTheta and EisensteinSeries.E2, discharge of jacobi_r4_formula reduces to two q-coefficient extractions plus this corollary — no σ*-side intermediation needed.",
+      "S18a route validity: a generic 4-nested foldl bridging lemma (foldl_4nest_indicator_eq_nested_sum) reusable for ANY 4-tuple counting problem over a fixed list — the same pattern applies to r₂, r₅, r₆ etc. or any future generalisation of r₄. Not r4Count-specific despite naming.",
+      "S18a structure: two foundational utility lemmas (counting fold and constant-shift fold) compose into the 4-nest version without bespoke induction. Saves duplication and makes the chain auditable — each level's transformation is a single function application.",
+      "S18b route validity: the List-to-Finset conversion of an integer-interval enumeration list is a one-shot ext-proof on `List.toFinset = Finset.Icc` plus a `List.toFinset_card_of_nodup` rewrite. The clean separation (a) Nodup, (b) toFinset = Icc, (c) filter-length = filtered Icc card means each lemma's proof is closed-form (no induction, no Mathlib API beyond Int.toNat_of_nonneg + omega + linarith).",
+      "S18b architecture: the innermost-level filter-length bridge factors through `List.toFinset_card_of_nodup ∘ shiftedRange_nodup.filter` rather than a Finset-side detour, so the same recipe extends inductively to outer levels in S18c without re-proving Nodup at each step.",
+      "S18c-framework strategy: separating the (ℤ/2)⁴ sign-flip action from the S₄ permutation action lets each be developed and verified independently. The sign-flip half is pure algebra on `Fin 4 → ℤ` and does NOT depend on r4Count or any List/Finset reformulation — making this iteration a self-contained scaffold that the orbit-count iteration can build on.",
+      "S18c-framework architecture: representing solutions as `Fin 4 → ℤ` (rather than `ℤ × ℤ × ℤ × ℤ`) gives uniform proofs via `Finset.sum_congr` and `Finset.sum_equiv`/`Equiv.sum_comp` — both sumSq invariance properties (sign-flip via `sumSq_applyFlip`, permutation via `sumSq_reindex`) reduce to one-line proofs once the coordinate-indexed reformulation is in place.",
+      "S18c-framework stabilizer key: `applyFlip_eq_iff` characterizes the sign-flip stabilizer of `v` as exactly the set of sign-vectors flagging only zero coordinates, giving `|Stab v| = 2^(# zero coords v)`. Combined with orbit-stabilizer, this yields `|Orbit v| = 2^(# nonzero coords v)` ≥ 2 for n>0 — the (ℤ/2)⁴ half alone gives at least factor 2 of the desired 8.",
+      "S18c-permutation strategy: the coordinate-permutation action `applyPerm σ v := v ∘ σ.symm` (left-action convention) is a strict companion to Part 29's sign-flip action — same scope (`Fin 4 → ℤ`), same architectural pattern (definition + identity/composition/invariance/bijection/stabilizer lemmas), but with `Equiv.Perm (Fin 4)` instead of `Fin 4 → Bool`. The `sumSq` invariance reuses Part 29's `sumSq_reindex` specialised at `σ.symm` — no new sum manipulations required. Both halves combined now exhibit sumSq-invariance under the full (ℤ/2)⁴ ⋊ S₄ semidirect product, completing the framework needed for the deferred orbit-cardinality argument.",
+      "S18c-permutation cardinality bookkeeping: `Fintype.card (Equiv.Perm (Fin 4)) = 24` (S₄) + Part 29's `Fintype.card SignFlip = 16` ((ℤ/2)⁴) confirm `|(ℤ/2)⁴ ⋊ S₄| = 24·16 = 384`. The S18 spec §3.8 target — `8 ∣ |Orbit v|` for every `v` with `sumSq v = n > 0` — follows by orbit-stabilizer once each case of the zero/coincidence pattern of `(|v 0|, |v 1|, |v 2|, |v 3|)` is enumerated. The framework lemmas (Parts 29-30) reduce the remaining work to pure case analysis on stabilizer subgroups; no further sum/foldl plumbing required.",
+      "S18c-permutation proof tactic: the `applyPerm_mul` left-action law `(σ * τ) • v = σ • (τ • v)` is proved by `rfl` after the goal is rewritten to `v ((σ * τ).symm i) = v (τ.symm (σ.symm i))`. This holds definitionally because `Equiv.Perm`'s `Mul.mul` is defined as `mul f g := Equiv.trans g f` and `(Equiv.trans e f).symm.toFun = e.symm ∘ f.symm` — unfolding the `Group` instance yields the desired equality without auxiliary lemmas."
+    ],
+    "mathlibGaps": [
+      "No q-expansion lemma extracting Fourier coefficients of `jacobiTheta τ` as a function of `τ`.",
+      "No theorem identifying `jacobiTheta^4` with a specific Eisenstein-series combination (e.g. 1 + 8(E₂(τ) − 4·E₂(4τ))).",
+      "No Hurwitz-integer arithmetic in Mathlib (alternative route to Jacobi via Hurwitz quaternions)."
+    ],
+    "nextSteps": [
+      "(opportunistic, Mathlib upstream) q-expansion for jacobiTheta — chief remaining blocker. Once landed, the full chain r4(n) = 8*sigma*(n) follows from S5 sigmaStar_two_pow_mul_odd / S5 sigmaStar_eq_sigmaOne_of_odd directly (no further sigma*-side work needed).",
+      "(productive — lift to factorization form) Use Mathlib s `Nat.factorization n 2` and `n / 2^v_2(n)` to lift S5 two-case closed form to a single-formula `sigmaStar_factorization` statement, packaging the σ*-side as one Mathlib expression callable from the modular-form proof.",
+      "(productive — symbolic recombination) Establish r4(2^k * m) = 24 * sigma(m) directly from the axiom + S5 closed form; this is a clean named consequence of jacobi_r4_formula that downstream gallery work could call without re-deriving the σ*-side.",
+      "(speculative) Hurwitz-quaternion alternative route — still gated on Mathlib; multi-month upstream cost.",
+      "(skip) Brute-force extension beyond n = 10 — pure enumeration theater. The closed form prediction r4(40) = 144 is now a corollary; cross-validation requires the modular-form bridge itself.",
+      "S10+ structural decomposition: split jacobi_r4_formula axiom into two atomic axioms tied to Mathlib roadmap — (a) theta_pow_four_qExpansion: definitional bridge r4Count(n) ↔ n-th Fourier coefficient of jacobiTheta⁴; (b) theta4_eq_eisenstein: Jacobi-1834 modular-form identity θ⁴ = 1 + 8·(E₂(τ) − 4·E₂(4τ)). With (a) + (b) + Mathlib EisensteinSeries.E2_qExpansion + r4Count_factorization_form (S9), close jacobi_r4_formula via two q-coefficient rewrites.",
+      "Speculative elementary route: prove r4Count(2n) = 3·r4Count(n) for odd n directly via the pairing bijection (a,b,c,d) ↦ ((a+b)/2, (a-b)/2, (c+d)/2, (c-d)/2) restricted to tuples with exactly two odd coordinates. Estimated 300-500 lines in Lean. Combined with σ*-multiplicativity (S4), would reduce the open axiom to the odd-prime case."
+    ],
+    "markdown": "# Knowledge Base: four-square-distribution-oq-01\n\nSee `research/problems/four-square-distribution-oq-01/problem.md`, `state.md`, and `knowledge.md` for full discussion.\n\n## Status\n\n* **Phase**: ACT (S7 — n-keyed existential closed form for σ* and jacobiR4)\n* **Files**: `proofs/Proofs/FourSquareDistributionOQ01.lean` (1125 lines, 1 axiom, 0 sorries; 17 parts: bootstrap, structural reduction, odd prime powers, doubled-odd cases, sigma*-multiplicativity, sigma*(2^k), sigma*(2^k·m), unified `if`-form decomp, n-keyed existential decomp).\n* **Gallery**: meta.json status=axiomatized; 6 deep annotations (PR #16682); canonical-schema cross-refs to parents (PR #16678).\n* **Open target (held in axiom)**: replace `axiom jacobi_r4_formula` with a theorem.\n* **S7 contribution**: sigmaStar_exists_decomp_of_pos + jacobiR4_exists_decomp_of_pos — eliminates the caller-supplied (k, m) on the σ*-side.\n* **Blocker**: Mathlib lacks q-expansion machinery for `jacobiTheta` and Eisenstein-coefficient identification.\n"
+  },
+  "tags": [
+    "number-theory",
+    "sums-of-squares",
+    "jacobi",
+    "modular-forms",
+    "open-question",
+    "research-bootstrap"
+  ],
+  "relatedProofs": [
+    "four-square-distribution",
+    "four-square-distribution-oq-01",
+    "lagrange-four-squares",
+    "lagrange-four-squares-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "Jacobi, *Fundamenta nova theoriae functionum ellipticarum* (1834)",
+      "Lagrange, *Démonstration d'un théorème d'arithmétique* (1770)",
+      "Hardy & Wright, *An Introduction to the Theory of Numbers*, Ch. XX"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Jacobi%27s_four-square_theorem"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.SumFourSquares",
+      "Mathlib.NumberTheory.ModularForms.JacobiTheta.OneVariable",
+      "Mathlib.NumberTheory.ModularForms.EisensteinSeries.Defs",
+      "Mathlib.NumberTheory.Divisors"
+    ]
+  },
+  "started": "2026-05-06T16:07:09+03:00",
+  "lastUpdate": "2026-06-14T17:00:00Z",
+  "significance": 7,
+  "tractability": 3,
+  "leanFiles": [
+    {
+      "path": "Proofs/FourSquareDistribution.lean",
+      "filename": "FourSquareDistribution.lean",
+      "lineCount": 400,
+      "theoremCount": 38,
+      "axiomCount": 0,
+      "defCount": 21,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistribution.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ01.lean",
+      "filename": "FourSquareDistributionOQ01.lean",
+      "lineCount": 2847,
+      "theoremCount": 125,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ01.lean"
+    }
+  ]
+}

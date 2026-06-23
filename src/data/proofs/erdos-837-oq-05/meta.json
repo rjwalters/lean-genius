@@ -1,0 +1,125 @@
+{
+  "id": "erdos-837-oq-05",
+  "title": "Hypergraph Density Jumps: Liminf Formulation",
+  "slug": "erdos-837-oq-05",
+  "description": "Strengthens the IsDensityJump definition from Erdős #837 to use Filter.liminf, encoding the full quantitative statement about sequences of k-uniform hypergraphs with jumping density.",
+  "meta": {
+    "author": "Erdős, Simonovits (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://erdosproblems.com/837",
+    "date": "1974",
+    "status": "axiomatized",
+    "tags": [
+      "combinatorics",
+      "density",
+      "hypergraphs",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/Erdos837ProblemOQ05.lean",
+    "badge": "axiom",
+    "sorries": 1,
+    "axiomCount": 1,
+    "assumptions": "1 axiom (erdos_stone_simonovits): A_2 = {1-1/m : m ≥ 1}. 1 sorry (zero_is_jump): 0 ∈ A_k requires supersaturation argument.",
+    "axioms": [
+      "erdos_stone_simonovits: densityJumpSetLiminf 2 = {1-1/m : m ≥ 1} (Erdős-Stone-Simonovits theorem)"
+    ],
+    "originalContributions": [
+      "IsDensityJumpLiminf: proper formulation using Filter.liminf",
+      "Relationship to parent's placeholder definition",
+      "Turán density definition and basic properties",
+      "Formal statement of A_2 characterization"
+    ],
+    "dateAdded": "2026-04-13",
+    "lineCount": 149,
+    "theoremCount": 5,
+    "definitionCount": 3,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The theory of graph density jumps begins with Turán's theorem (1941), which identified the densest K_{r+1}-free graph. Erdős and Stone (1946) then proved a sweeping generalization: for any graph F with chromatic number r+1, the extremal density is π(F) = 1-1/r. This means that graphs with density slightly exceeding 1-1/r must contain F as a subgraph — and graphs whose density oscillates with liminf just above 1-1/r must have dense subgraphs. The set of these 'threshold' values A_2 = {1-1/m : m ≥ 1} was completely characterized: these are exactly the density jump values for graphs.\n\nErdős and Simonovits (1974) formalized the notion of density jumps for k-uniform hypergraphs. A value α is a density jump for k-uniform hypergraphs (α ∈ A_k) if there exists β > α such that any sequence of k-uniform hypergraphs with liminf density exceeding α must contain subhypergraphs with liminf density at least β. Equivalently, there is no sequence of hypergraphs 'converging' to density α from below with no denser subhypergraph — the density must 'jump' past α. For k=2, A_2 = {1-1/m : m ≥ 1} follows from Erdős-Stone.\n\nFor k ≥ 3, the characterization of A_k is entirely open. Frankl and Füredi (1984) showed that 0 < α < 2/9 implies α ∉ A_3 (no density jumps in the lower range for 3-uniform hypergraphs), but the structure above 2/9 is largely unknown. Razborov's flag algebra method (2007) provided new techniques for computing hypergraph Turán densities, but has not resolved the A_3 characterization. This formalization (OQ-05) strengthens the definition of density jump using Lean's Filter.liminf to properly capture the sequence-based formulation, enabling future formalizations of specific results about A_3.",
+    "problemStatement": "**OQ-05**: Strengthen the `IsDensityJump` definition to use Lean's `Filter.liminf`, encoding the full quantitative statement from the combinatorics literature.",
+    "proofStrategy": "Define `IsDensityJumpLiminf` using `Filter.liminf` and `Filter.Tendsto` to properly capture diverging vertex counts and density bounds. Show it implies the original placeholder definition. State the Erdős-Stone-Simonovits characterization of A_2.",
+    "keyInsights": [
+      "The density jump property is naturally expressed using liminf of sequences, which Lean's Filter library handles via Filter.liminf : (ℕ → ℝ) → Filter ℕ → ℝ.",
+      "The subhypergraph condition is encoded via vertex/edge count bounds in the simplified counting model.",
+      "The density jump set A_2 = {0, 1/2, 2/3, 3/4, ...} has an important gap structure: consecutive jumps 1-1/m and 1-1/(m+1) are separated by 1/(m(m+1)) → 0. Any hypergraph density in the 'gap' (1-1/m, 1-1/(m+1)) is not a jump for k=2 — sequences with density in this range need not have denser subhypergraphs. For k≥3, the structure of gaps in A_k is completely unknown.",
+      "The Filter.liminf formulation is essential: without liminf, one might only consider convergent density sequences, missing cases where density oscillates. A sequence with densities alternating between 0.3 and 0.7 has liminf 0.3, so a jump condition at α=0.2 would apply to it. Using plain lim or ∀ε would give incorrect results for non-convergent sequences.",
+      "The Filter.liminf formulation is essential for hypergraph density problems because extremal sequences often oscillate between regimes — the threshold condition must hold for all sufficiently large subhypergraphs, not just along convergent subsequences, so liminf captures the worst-case lower bound on eventual density."
+    ],
+    "prerequisites": [
+      "Filter.liminf from Mathlib.Order.LiminfLimsup",
+      "Hypergraph density and Turán theory basics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "strengthened-def",
+      "title": "Section I: Strengthened Definition",
+      "startLine": 40,
+      "endLine": 71,
+      "summary": "Defines IsDensityJumpLiminf using Filter.liminf and Filter.Tendsto, and the corresponding densityJumpSetLiminf."
+    },
+    {
+      "id": "relationship",
+      "title": "Section II: Relationship to Original",
+      "startLine": 72,
+      "endLine": 83,
+      "summary": "Shows the strengthened definition implies the original placeholder."
+    },
+    {
+      "id": "ess-theorem",
+      "title": "Section III: A_2 Characterization",
+      "startLine": 84,
+      "endLine": 105,
+      "summary": "Defines Turán densities 1-1/m, proves they're in [0,1), axiomatizes A_2 = {1-1/m}."
+    },
+    {
+      "id": "properties",
+      "title": "Section IV: Properties",
+      "startLine": 106,
+      "endLine": 122,
+      "summary": "States 0 ∈ A_k (sorry: needs supersaturation) and A_k ⊆ [0,1)."
+    },
+    {
+      "id": "open-problem",
+      "title": "Section V: The Open Problem and Verification",
+      "startLine": 123,
+      "endLine": 149,
+      "summary": "Marks the characterization of A_3 as open and lists #check verification commands.",
+      "mathContext": "The open problem: characterize densityJumpSetLiminf 3, i.e., determine which values α ∈ [0,1) are density jump values for 3-uniform hypergraphs."
+    }
+  ],
+  "conclusion": {
+    "summary": "Answers OQ-05 affirmatively: IsDensityJump can be strengthened using Filter.liminf to encode the full sequence-based formulation from the combinatorics literature.",
+    "openQuestions": [
+      "Prove zero_is_jump using a supersaturation argument — requires formalizing the Kruskal-Katona theorem or Erdős-Simonovits supersaturation in Mathlib",
+      "Formalize the subhypergraph relation properly using typed hypergraph structures (e.g., extending Mathlib's SimpleGraph)",
+      "What is A_3? Is A_3 countable? Does A_3 contain non-Turán values? (Erdős #837, open since 1974)",
+      "Does the Frankl-Füredi non-jump result (A_3 ∩ (0, 2/9) = ∅) have a Lean formalization?"
+    ],
+    "implications": "Establishes the proper mathematical definition of density jumps using Lean's Filter.liminf, replacing a placeholder with the actual combinatorics formulation from Erdős-Simonovits (1974). The formalization captures the essential asymptotic nature of density jumps — that the property is about eventual behavior of sequences, not pointwise bounds. This provides the correct foundation for future work on Erdős #837, including formalizations of A_2 = {1-1/m} from the Erdős-Stone-Simonovits theorem and any partial results on A_3."
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-837",
+      "relationship": "extends",
+      "description": "Strengthens the density jump definition from the parent"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Order.LiminfLimsup",
+      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Tactic",
+      "Proofs.Erdos837Problem"
+    ],
+    "namespace": "Erdos837OQ05",
+    "lineCount": 149,
+    "axiomCount": 1,
+    "theoremCount": 5,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos837ProblemOQ05.lean",
+    "sorries": 1
+  },
+  "sorries": 1
+}

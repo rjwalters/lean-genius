@@ -1,0 +1,185 @@
+[
+  {
+    "id": "ann-e276-imports",
+    "proofId": "erdos-276",
+    "range": {
+      "startLine": 20,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Imports",
+    "content": "Imports Mathlib's **Nat.Basic**, **GCD.Basic**, **Prime.Basic**, and **Tactic** for natural number arithmetic, greatest common divisors, primality predicates, and general proof tactics.",
+    "significance": "supporting",
+    "mathContext": "The formalization needs `Nat.Composite` (a number with a nontrivial factorization), `Nat.Coprime` ($\\gcd(a,b) = 1$), `Nat.Prime`, and divisibility (`∣`). These are all in the imported modules.",
+    "relatedConcepts": [
+      "natural number arithmetic",
+      "GCD",
+      "primality",
+      "divisibility"
+    ],
+    "prerequisites": [
+      "Mathlib basics"
+    ]
+  },
+  {
+    "id": "ann-e276-lucas-sequence",
+    "proofId": "erdos-276",
+    "range": {
+      "startLine": 27,
+      "endLine": 29
+    },
+    "type": "definition",
+    "title": "Lucas Sequence",
+    "content": "**IsLucasSequence a** asserts $a(n+2) = a(n+1) + a(n)$ for all $n$. This is the Fibonacci recurrence with arbitrary initial conditions $a(0)$ and $a(1)$. The classical Fibonacci sequence has $a(0) = 0, a(1) = 1$.",
+    "mathContext": "The recurrence $a_{n+2} = a_{n+1} + a_n$ generates a linear recurrence sequence. Over $\\mathbb{Z}$, such sequences are periodic modulo any $m > 0$ (Pisano periods), which is the key property exploited by covering congruence constructions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fibonacci sequence",
+      "linear recurrence",
+      "Pisano period",
+      "generalized Fibonacci"
+    ],
+    "prerequisites": [
+      "natural number arithmetic",
+      "recurrence relations"
+    ]
+  },
+  {
+    "id": "ann-e276-primefree",
+    "proofId": "erdos-276",
+    "range": {
+      "startLine": 31,
+      "endLine": 33
+    },
+    "type": "definition",
+    "title": "Primefree Sequence",
+    "content": "**IsPrimefree a** asserts that every term $a(k)$ is composite. This is the central condition: can a Fibonacci-like recurrence produce only composite values despite having no common factor?",
+    "mathContext": "A natural number $n$ is composite ($n.\\mathrm{Composite}$) if $n > 1$ and $n$ is not prime, i.e., $n = ab$ with $1 < a, b < n$. The condition $\\forall k,\\, a(k).\\mathrm{Composite}$ is extremely strong: it means the sequence avoids all primes and also avoids $0$ and $1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "composite number",
+      "prime avoidance",
+      "density of primes in sequences"
+    ],
+    "prerequisites": [
+      "Nat.Composite",
+      "prime numbers"
+    ]
+  },
+  {
+    "id": "ann-e276-no-universal-divisor",
+    "proofId": "erdos-276",
+    "range": {
+      "startLine": 35,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "No Universal Divisor",
+    "content": "**HasNoUniversalDivisor a** asserts $\\forall d > 1,\\, \\exists k,\\, d \\nmid a(k)$. This excludes trivial constructions where all terms share a common factor, which would make every term composite but uninteresting.",
+    "mathContext": "If $\\gcd(a_0, a_1) = d > 1$, then $d \\mid a_k$ for all $k$ (by induction on the recurrence), so every $a_k \\geq d > 1$, and if $a_k$ is composite, it is so trivially. The no-universal-divisor condition forces the more challenging situation where compositeness arises from the recurrence structure itself, not from a shared factor.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greatest common divisor",
+      "coprimality",
+      "trivial vs nontrivial composites"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "GCD",
+      "natural number properties"
+    ]
+  },
+  {
+    "id": "ann-e276-existence",
+    "proofId": "erdos-276",
+    "range": {
+      "startLine": 45,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "Existence of Primefree Lucas Sequence (Graham 1964)",
+    "content": "**erdos_276_existence**: There exists a Lucas sequence that is both primefree and has no universal divisor. Resolved by Graham (1964) using covering congruences. The deeper question of whether covering congruences are the only mechanism remains open.",
+    "mathContext": "The axiom states $\\exists a : \\mathbb{N} \\to \\mathbb{N},\\; \\mathrm{IsLucasSequence}(a) \\wedge \\mathrm{IsPrimefree}(a) \\wedge \\mathrm{HasNoUniversalDivisor}(a)$. Graham's explicit construction used starting values with 34 digits. Vsemirnov (2004) reduced the starting values to 12 digits: $a_0 = 106276436867$, $a_1 = 35256392432$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering congruences",
+      "Graham's construction",
+      "explicit construction"
+    ],
+    "prerequisites": [
+      "IsLucasSequence",
+      "IsPrimefree",
+      "HasNoUniversalDivisor"
+    ]
+  },
+  {
+    "id": "ann-e276-graham",
+    "proofId": "erdos-276",
+    "range": {
+      "startLine": 55,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Graham's Construction with Coprime Initial Terms",
+    "content": "**graham_construction**: There exist coprime composites $a_0, a_1$ generating a primefree Lucas sequence. Coprimality of the initial terms is the strongest form of the no-universal-divisor condition.",
+    "mathContext": "The axiom strengthens erdos_276_existence by requiring $\\gcd(a_0, a_1) = 1$. Since any common divisor of $a_0$ and $a_1$ divides all subsequent terms (by the recurrence), coprimality is equivalent to $\\mathrm{HasNoUniversalDivisor}$ for the GCD. Graham's construction explicitly produces such coprime initial values.",
+    "significance": "key",
+    "relatedConcepts": [
+      "coprimality",
+      "initial conditions",
+      "GCD propagation"
+    ],
+    "prerequisites": [
+      "IsLucasSequence",
+      "IsPrimefree",
+      "Nat.Coprime"
+    ]
+  },
+  {
+    "id": "ann-e276-coprime-necessary",
+    "proofId": "erdos-276",
+    "range": {
+      "startLine": 61,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Divisor Propagation in Lucas Sequences",
+    "content": "**coprime_necessary**: If $d \\mid a_0$ and $d \\mid a_1$, then $d \\mid a_k$ for all $k$. This shows that a common factor of the initial terms persists throughout the sequence, making coprimality a necessary condition for nontrivial primefree sequences.",
+    "mathContext": "The proof is by induction: if $d \\mid a_n$ and $d \\mid a_{n+1}$, then $d \\mid (a_{n+1} + a_n) = a_{n+2}$. This is a direct consequence of divisibility being closed under addition. The contrapositive: if we want $\\mathrm{HasNoUniversalDivisor}$, we need $\\gcd(a_0, a_1) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "induction",
+      "divisibility under addition",
+      "GCD propagation"
+    ],
+    "prerequisites": [
+      "IsLucasSequence",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-e276-covering-system",
+    "proofId": "erdos-276",
+    "range": {
+      "startLine": 71,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Covering System Mechanism",
+    "content": "**covering_system_mechanism**: There exists a finite set $S$ of primes such that for any coprime primefree Lucas sequence, every term is divisible by some prime in $S$. This captures the covering congruence structure: the Pisano periods of the primes in $S$ form a covering system over the natural numbers.",
+    "mathContext": "The axiom formalizes the covering congruence mechanism: $\\exists S \\subseteq \\{\\text{primes}\\},\\; \\forall a,\\; \\mathrm{IsLucas}(a) \\wedge \\mathrm{Coprime}(a_0, a_1) \\wedge \\mathrm{Primefree}(a) \\Rightarrow \\forall k,\\, \\exists p \\in S,\\, p \\mid a_k$. The Lucas sequence is periodic mod $p$ with period $\\pi(p)$ (the Pisano period). If the residue classes $\\{k : p \\mid a_k\\}$ for $p \\in S$ form a covering system, then every position $k$ has some $p \\in S$ dividing $a_k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering system",
+      "Pisano period",
+      "finite prime sets",
+      "residue classes"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Nat.Prime",
+      "IsLucasSequence",
+      "IsPrimefree"
+    ]
+  }
+]

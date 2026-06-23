@@ -1,0 +1,320 @@
+[
+  {
+    "id": "ann-612-header",
+    "proofId": "erdos-612",
+    "range": {
+      "startLine": 26,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Imports and Namespace Setup",
+    "content": "Imports the full Mathlib library and opens key namespaces: Finset (finite sets for degree computation), Function (basic function operations), and SimpleGraph (the graph type and adjacency relation). The formalization works over a finite decidable vertex type V, which allows computational definitions like minDegree to evaluate via Finset.min'.",
+    "mathContext": "The problem studies the relationship $D \\le \\alpha(r) \\cdot n/d + O(1)$ for $K_r$-free connected graphs, where $D$ is diameter, $n = |V|$, $d = \\delta(G)$ is minimum degree, and $\\alpha(r)$ depends on the excluded clique size.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib SimpleGraph",
+      "Fintype",
+      "Filter.atTop"
+    ],
+    "prerequisites": [
+      "Lean 4 type theory",
+      "Mathlib graph library"
+    ]
+  },
+  {
+    "id": "ann-612-diameter",
+    "proofId": "erdos-612",
+    "range": {
+      "startLine": 36,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Graph Diameter",
+    "content": "The diameter $D(G)$ is the maximum shortest-path distance between any two vertices. Defined as `sorry` here because computing diameter requires the graph distance function from Mathlib's connectivity module. For connected graphs, $D < \\infty$; for disconnected graphs, the diameter is conventionally infinite. Diameter is the fundamental quantity this problem studies — the conjecture bounds $D$ in terms of $n$ and $d$.",
+    "mathContext": "The **diameter** of a connected graph $G$ is $D(G) = \\max_{u,v \\in V} d_G(u,v)$ where $d_G(u,v)$ is the length of the shortest $u$-$v$ path. For a graph with $n$ vertices and minimum degree $d$, the trivial bound is $D \\le n - 1$ (path graph). The basic bound $D \\le 3n/(d+1) + O(1)$ significantly improves this.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph distance",
+      "shortest path",
+      "eccentricity",
+      "radius"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Connected",
+      "shortest path distance"
+    ],
+    "leanSymbol": "diameter"
+  },
+  {
+    "id": "ann-612-min-degree",
+    "proofId": "erdos-612",
+    "range": {
+      "startLine": 40,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Minimum Degree",
+    "content": "The minimum degree $\\delta(G) = \\min_{v \\in V} \\deg(v)$ is computed by taking the image of the degree function over all vertices and finding the minimum. Higher minimum degree means every vertex has many neighbors, which creates 'shortcuts' and reduces diameter. The interplay between $\\delta(G)$ and $D(G)$ is the core of Problem #612.",
+    "mathContext": "The **minimum degree** $\\delta(G) = \\min_{v \\in V} \\deg_G(v)$. By the handshaking lemma, $\\sum_v \\deg(v) = 2|E|$, so $|E| \\ge n\\delta/2$. Higher minimum degree forces more edges, which creates shorter paths between vertices. The basic bound $D \\le 3n/(\\delta+1)$ quantifies this: doubling $\\delta$ roughly halves $D$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "average degree",
+      "maximum degree",
+      "regular graphs",
+      "handshaking lemma"
+    ],
+    "prerequisites": [
+      "SimpleGraph.degree",
+      "Finset.min'"
+    ],
+    "leanSymbol": "minDegree"
+  },
+  {
+    "id": "ann-612-k-free",
+    "proofId": "erdos-612",
+    "range": {
+      "startLine": 44,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Clique-Free and Triangle-Free Graphs",
+    "content": "A graph is $K_r$-free if it contains no complete subgraph on $r$ vertices. Formally: no subset $S \\subseteq V$ with $|S| = r$ has all pairs adjacent. Triangle-free ($K_3$-free) is the most-studied special case. By the Turán theorem, a $K_r$-free graph on $n$ vertices has at most $(1 - 1/(r-1)) \\cdot n^2/2$ edges. Fewer cliques means sparser local structure, which intuitively should increase diameter — the conjecture quantifies this tension.",
+    "mathContext": "A graph $G$ is **$K_r$-free** if $\\omega(G) < r$, where $\\omega(G)$ is the clique number. By **Turán's theorem**, $|E(G)| \\le (1 - 1/(r-1))n^2/2$ for $K_r$-free $G$. The **Ramsey number** $R(r,r)$ guarantees that large enough graphs contain either $K_r$ or an independent set of size $r$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "clique number",
+      "Ramsey theory",
+      "chromatic number"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "SimpleGraph.Adj",
+      "complete subgraph"
+    ],
+    "leanSymbol": "IsKFree"
+  },
+  {
+    "id": "ann-612-basic-bound",
+    "proofId": "erdos-612",
+    "range": {
+      "startLine": 53,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Basic Diameter Bound (Erdős-Pach-Pollack-Tuza 1989)",
+    "content": "The foundational result: any connected graph on $n$ vertices with minimum degree $d$ has diameter $D \\le 3n/(d+1) + O(1)$. The coefficient 3 is the baseline that the clique-free conjectures attempt to improve. The proof uses a BFS argument: from any vertex $v$, the $d+1$ neighbors of $v$ reach at least $(d+1)$ vertices at distance 1, and by expansion, the ball of radius $r$ around $v$ grows until it covers all $n$ vertices.",
+    "mathContext": "**Erdős-Pach-Pollack-Tuza (1989)**: For any connected graph $G$ on $n$ vertices with $\\delta(G) \\ge d$, $D(G) \\le \\frac{3n}{d+1} + O(1)$. The coefficient 3 comes from a careful BFS counting argument. This is tight for certain graph constructions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "BFS diameter bound",
+      "expansion",
+      "neighborhood growth"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Connected",
+      "diameter",
+      "minDegree"
+    ],
+    "leanSymbol": "basic_diameter_bound"
+  },
+  {
+    "id": "ann-612-alpha-2r",
+    "proofId": "erdos-612",
+    "range": {
+      "startLine": 64,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "Coefficient Functions and Divisibility",
+    "content": "The original conjectured coefficient for $K_{2r}$-free graphs is $\\alpha_{2r} = 2(r-1)(3r+2)/(2r^2-1)$. For $r=2$: $\\alpha_4 = 16/7 \\approx 2.29$; for $r=3$: $\\alpha_6 = 44/17 \\approx 2.59$. As $r \\to \\infty$, $\\alpha_{2r} \\to 3$. The divisibility condition $(r-1)(3r+2) \\mid d$ was required to avoid boundary effects in the original proof attempt.",
+    "mathContext": "The coefficient $\\alpha_{2r} = \\frac{2(r-1)(3r+2)}{2r^2-1}$ satisfies $\\alpha_{2r} < 3$ for all $r \\ge 2$ and $\\lim_{r \\to \\infty} \\alpha_{2r} = 3$. Similarly, $\\alpha_{2r+1} = (3r-1)/r = 3 - 1/r$. Both are less than the basic bound's coefficient of 3, reflecting the expected diameter improvement from forbidding cliques.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic coefficient",
+      "divisibility condition",
+      "Turán-type bound"
+    ],
+    "prerequisites": [
+      "real division",
+      "natural number division"
+    ],
+    "leanSymbol": "alpha_2r"
+  },
+  {
+    "id": "ann-612-conjecture1",
+    "proofId": "erdos-612",
+    "range": {
+      "startLine": 72,
+      "endLine": 102
+    },
+    "type": "definition",
+    "title": "Original Conjectures 1 and 2 (DISPROVED)",
+    "content": "The two original conjectures of Erdős-Pach-Pollack-Tuza (1989). Conjecture 1: for $K_{2r}$-free graphs with $(r-1)(3r+2) \\mid d$, $D \\le \\alpha_{2r} \\cdot n/d + O(1)$. Conjecture 2: for $K_{2r+1}$-free graphs with $(3r-1) \\mid d$, $D \\le \\alpha_{2r+1} \\cdot n/d + O(1)$. Both were disproved for $r \\ge 2$ by Czabarka-Singgih-Székely (2021). The base case $r = 1$ (triangle-free) survives for Conjecture 1.",
+    "mathContext": "**Conjecture 1**: $K_{2r}$-free $\\implies D \\le \\frac{2(r-1)(3r+2)}{2r^2-1} \\cdot \\frac{n}{d} + O(1)$ (DISPROVED for $r \\ge 2$). **Conjecture 2**: $K_{2r+1}$-free $\\implies D \\le \\frac{3r-1}{r} \\cdot \\frac{n}{d} + O(1)$ (DISPROVED for $r \\ge 2$). These represent precise predictions that turned out to be too optimistic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős conjecture",
+      "disproven conjecture",
+      "extremal graph theory"
+    ],
+    "prerequisites": [
+      "IsKFree",
+      "diameter",
+      "minDegree",
+      "alpha_2r"
+    ],
+    "leanSymbol": "OriginalConjecture1"
+  },
+  {
+    "id": "ann-612-counterexample",
+    "proofId": "erdos-612",
+    "range": {
+      "startLine": 106,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Counterexamples (Czabarka-Singgih-Székely 2021)",
+    "content": "For $r \\ge 2$, explicit graph families are constructed with $K_{2r}$-free property but diameter exceeding the conjectured bound. The counterexample diameter is $D = (6r-5)n/((2r-1)d + 2r-3) + O(1)$, which for large $d$ exceeds $\\alpha_{2r} \\cdot n/d$ since $(6r-5)/(2r-1) > \\alpha_{2r}$ for $r \\ge 2$. The theorem `original_conjecture1_false` uses these counterexamples to derive $\\neg\\text{OriginalConjecture1}(r)$ for $r \\ge 2$.",
+    "mathContext": "**Czabarka-Singgih-Székely (2021)**: For $r \\ge 2$, there exist $K_{2r}$-free connected graphs with $D = \\frac{(6r-5)n}{(2r-1)d + 2r-3} + O(1)$. Since $\\frac{6r-5}{2r-1} > \\frac{2(r-1)(3r+2)}{2r^2-1}$ for $r \\ge 2$, this exceeds the conjectured bound asymptotically. The construction uses iterated blow-ups of specific base graphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample construction",
+      "blow-up graph",
+      "Filter.atTop",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "OriginalConjecture1",
+      "Filter.atTop",
+      "counterexample_diameter"
+    ],
+    "leanSymbol": "counterexample_exists"
+  },
+  {
+    "id": "ann-612-triangle-free",
+    "proofId": "erdos-612",
+    "range": {
+      "startLine": 127,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Triangle-Free Base Case (Valid)",
+    "content": "The base case $r = 1$ (triangle-free, $K_3$-free) remains true: $D \\le 5n/(2d) + O(1)$. The coefficient $5/2 = 2.5$ is strictly less than the general bound's coefficient of 3, confirming that triangle-freeness does reduce diameter. The proof uses the fact that in a triangle-free graph, neighborhoods of adjacent vertices are disjoint, which accelerates BFS expansion. The theorem `conjecture1_base_case` establishes that OriginalConjecture1(1) holds.",
+    "mathContext": "**Triangle-free bound**: For connected triangle-free graphs, $D \\le \\frac{5n}{2\\delta} + O(1)$. The coefficient $5/2$ arises because in a triangle-free graph, if $u \\sim v$, then $N(u) \\cap N(v) = \\emptyset$, so $|N(u) \\cup N(v)| \\ge 2\\delta$. This faster expansion gives a stronger diameter bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle-free graph",
+      "neighborhood disjointness",
+      "BFS expansion",
+      "Mantel's theorem"
+    ],
+    "prerequisites": [
+      "IsTriangleFree",
+      "diameter",
+      "minDegree",
+      "OriginalConjecture1"
+    ],
+    "leanSymbol": "triangle_free_diameter"
+  },
+  {
+    "id": "ann-612-amended-conj",
+    "proofId": "erdos-612",
+    "range": {
+      "startLine": 143,
+      "endLine": 171
+    },
+    "type": "definition",
+    "title": "Amended Conjecture: (3 - 2/k) Coefficient",
+    "content": "After the original conjectures were disproved, Czabarka-Singgih-Székely proposed a simpler amended conjecture: for $K_{k+1}$-free graphs, $D \\le (3 - 2/k) \\cdot n/d + O(1)$. The coefficient $(3 - 2/k)$ is cleaner than the original — no divisibility conditions, monotonically increasing in $k$. For $k=2$: coefficient $2$ (but actual triangle-free bound is $5/2$, so the amended conjecture is NOT tight). For $k=3$: $7/3 \\approx 2.33$. As $k \\to \\infty$: coefficient $\\to 3$, matching the general bound.",
+    "mathContext": "**Amended Conjecture**: For $K_{k+1}$-free connected graphs, $D \\le (3 - 2/k) \\cdot n/\\delta + O(1)$. Key values: $k=2$ gives coefficient $2$; $k=3$ gives $7/3$; $k=4$ gives $5/2$. The limit $\\lim_{k \\to \\infty}(3 - 2/k) = 3$ recovers the unrestricted bound. The theorems `amended_k2`, `amended_k3` verify specific values, and `amended_limit` proves the convergence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotone coefficient",
+      "asymptotic limit",
+      "Filter.Tendsto",
+      "nhds"
+    ],
+    "prerequisites": [
+      "IsKFree",
+      "diameter",
+      "minDegree",
+      "real arithmetic"
+    ],
+    "leanSymbol": "AmendedConjecture"
+  },
+  {
+    "id": "ann-612-colorable",
+    "proofId": "erdos-612",
+    "range": {
+      "startLine": 175,
+      "endLine": 203
+    },
+    "type": "concept",
+    "title": "Verified Cases and Further Counterexamples",
+    "content": "The amended conjecture is verified for $k = 3$ ($K_4$-free) IF the graph is 3-colorable, and for $k = 4$ ($K_5$-free) IF 4-colorable. The colorability assumption is non-trivial — it is strictly stronger than $K_{k+1}$-freeness (a $K_4$-free graph need not be 3-colorable, by Mycielski's construction). Critically, Cambie and Jooken (2025) found $K_4$-free graphs WITHOUT 3-colorability that violate the amended conjecture, showing the colorability assumption cannot be dropped.",
+    "mathContext": "The **chromatic number** $\\chi(G)$ satisfies $\\chi(G) \\le \\omega(G)$ is FALSE in general (Mycielski graphs have $\\omega = 2$ but arbitrarily large $\\chi$). So $K_{k+1}$-free does NOT imply $k$-colorable. The verified cases assume $\\chi(G) \\le k$, which is stronger than $\\omega(G) \\le k$. **Cambie-Jooken (2025)**: There exist $K_4$-free graphs where $D > (7/3)n/d + O(1)$, disproving the amended conjecture without the colorability assumption.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "Mycielski construction",
+      "graph coloring",
+      "perfect graphs"
+    ],
+    "prerequisites": [
+      "AmendedConjecture",
+      "IsKFree",
+      "graph colorability"
+    ],
+    "leanSymbol": "amended_k3_colorable"
+  },
+  {
+    "id": "ann-612-special-graphs",
+    "proofId": "erdos-612",
+    "range": {
+      "startLine": 207,
+      "endLine": 241
+    },
+    "type": "concept",
+    "title": "Special Graph Classes and Moore Bound",
+    "content": "Verification for standard graph families. **Path** $P_n$: $D = n-1$, $\\delta = 1$, the extremal case (maximum diameter for given $n$). **Cycle** $C_n$: $D = \\lfloor n/2 \\rfloor$, $\\delta = 2$, diameter halved by the cycle's shortcut. **Complete graph** $K_n$: $D = 1$, $\\delta = n-1$, the opposite extreme. **Complete bipartite** $K_{m,n}$: $D = 2$, $\\delta = \\min(m,n)$. The **Moore bound** connects diameter and degree: a graph with diameter $D$ and degree $d$ has at most $1 + d + d(d-1) + \\cdots + d(d-1)^{D-1}$ vertices. Graphs achieving this bound are called Moore graphs.",
+    "mathContext": "The **Moore bound**: $n \\le 1 + d\\sum_{i=0}^{D-1}(d-1)^i = 1 + d \\cdot \\frac{(d-1)^D - 1}{d-2}$ for $d \\ge 3$. **Moore graphs** (equality cases) exist only for $D = 1$ ($K_{d+1}$), $D = 2$ (Petersen, Hoffman-Singleton, and possibly $d = 57$), or $d = 2$ (odd cycles). The degree-diameter problem asks for the largest graph with given $d$ and $D$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Moore graph",
+      "Petersen graph",
+      "Hoffman-Singleton graph",
+      "degree-diameter problem"
+    ],
+    "prerequisites": [
+      "diameter",
+      "minDegree",
+      "specific graph families"
+    ],
+    "leanSymbol": "path_diameter"
+  },
+  {
+    "id": "ann-612-main",
+    "proofId": "erdos-612",
+    "range": {
+      "startLine": 245,
+      "endLine": 268
+    },
+    "type": "concept",
+    "title": "Main Status: Partially Disproved",
+    "content": "The summary theorem `erdos_612_status` bundles three results: (1) the base case $r = 1$ (OriginalConjecture1(1)) holds, (2) all higher cases $r \\ge 2$ are false ($\\neg$OriginalConjecture1($r$)), and (3) the triangle-free diameter bound exists. The proof combines `conjecture1_base_case`, `original_conjecture1_false`, and `triangle_free_diameter`. This captures the complete status: the problem is partially disproved but the correct coefficient for general $K_{k+1}$-free graphs remains unknown.",
+    "mathContext": "**Status summary**: (1) $K_3$-free: $D \\le 5n/(2\\delta) + O(1)$ (TRUE). (2) $K_{2r}$-free, $r \\ge 2$: original bound DISPROVED. (3) Amended conjecture $(3-2/k)$: partially verified under colorability, but also has counterexamples. The exact optimal coefficient $\\alpha^*(k)$ such that $D \\le \\alpha^*(k) \\cdot n/\\delta + O(1)$ for $K_{k+1}$-free graphs is still unknown for $k \\ge 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "problem status",
+      "partial disproof",
+      "open coefficient"
+    ],
+    "prerequisites": [
+      "conjecture1_base_case",
+      "original_conjecture1_false",
+      "triangle_free_diameter"
+    ],
+    "leanSymbol": "erdos_612_status"
+  }
+]

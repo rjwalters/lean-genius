@@ -1,0 +1,150 @@
+{
+  "id": "erdos-33",
+  "title": "Erdős #33: Additive Complements of Squares",
+  "slug": "erdos-33",
+  "description": "For sets A such that every integer is n² + a for some a ∈ A, what is the minimum possible density? Best known: liminf ≥ 4/π ≈ 1.273 and limsup ≤ 2φ^(5/2) ≈ 6.66.",
+  "meta": {
+    "author": "Moser (1965), Cilleruelo (1993), Van Doorn (limsup bound)",
+    "sourceUrl": "https://erdosproblems.com/33",
+    "date": "1965-2001",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos33Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "squares",
+      "density",
+      "number-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 33,
+    "erdosUrl": "https://erdosproblems.com/33",
+    "erdosProblemStatus": "open",
+    "axiomCount": 1,
+    "lineCount": 172,
+    "prerequisites": [
+      "Perfect squares and their distribution",
+      "Additive complements",
+      "Waring's problem for squares",
+      "Asymptotic density"
+    ],
+    "assumptions": "1 axiom: cilleruelo_habsieger_lower_bound. 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "This problem concerns 'additive complements of squares' - sets A ⊆ ℕ such that every natural number can be written as n² + a for some a ∈ A. Erdős asked: how sparse can such a set be?\n\nMoser (1965) proved the first quantitative lower bound: liminf |A ∩ {1,...,N}|/√N > 1.06. This was improved by Cilleruelo (1993), Habsieger (1995), and Balasubramanian-Ramana (2001) to the current best bound of 4/π ≈ 1.273.\n\nFor upper bounds, Van Doorn constructed a set achieving limsup ≤ 2φ^(5/2) ≈ 6.66 where φ is the golden ratio. The exact minimum of the limsup remains open.",
+    "problemStatement": "Let A ⊆ ℕ be such that every integer can be written as n² + a for some a ∈ A and n ≥ 0. What is the smallest possible value of limsup |A ∩ {1,...,N}|/√N? Is liminf |A ∩ {1,...,N}|/√N > 1?\n\n**Status**: Partially solved. Best bounds: liminf ≥ 4/π ≈ 1.273, limsup ≤ 2φ^(5/2) ≈ 6.66. Exact minimum OPEN.",
+    "text": "For sets A such that every integer is n² + a for some a ∈ A, what is the minimum possible density? Best known: liminf ≥ 4/π ≈ 1.273 and limsup ≤ 2φ^(5/2) ≈ 6.66.",
+    "proofStrategy": "The formalization defines additive complements of squares and the normalized density function |A ∩ {1,...,N}|/√N. A single axiom is used:\n\n1. **Best known lower bound** (axiomatized): liminf ≥ 4/π (Cilleruelo–1993, Habsieger–1995, Balasubramanian-Ramana–2001)\n\nMoser's earlier 1.06 lower bound and Van Doorn's limsup construction are described in docstrings as historical and expository context but are not separately axiomatized in this formalization. We also prove the golden ratio satisfies φ² = φ + 1 and derive that liminf > 1 from the 4/π bound.",
+    "keyInsights": [
+      "**Additive complement**: A set A 'completes' the squares if every integer is a square plus something from A",
+      "**Why √N normalization?**: Squares grow like n², so up to N there are ~√N squares. A complementing set needs ~√N elements per interval",
+      "**The 4/π bound**: Arises from Fourier analysis and Jacobi theta functions - the distribution of quadratic residues modulo n",
+      "**Golden ratio appearance**: Van Doorn's construction uses Fibonacci-like patterns, naturally involving φ = (1+√5)/2",
+      "**Gap remains**: Between 4/π ≈ 1.27 (lower) and 2φ^(5/2) ≈ 6.66 (upper) - the exact minimum is unknown"
+    ],
+    "prerequisites": [
+      "Perfect squares and their distribution",
+      "Additive complements",
+      "Waring's problem for squares",
+      "Asymptotic density"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 38,
+      "endLine": 55,
+      "summary": "Defines additive complements of squares, counting function, and normalized density"
+    },
+    {
+      "id": "existence",
+      "title": "Existence Results",
+      "startLine": 56,
+      "endLine": 65,
+      "summary": "Erdős: such sets exist with finite limsup > 1"
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds on liminf",
+      "startLine": 66,
+      "endLine": 91,
+      "summary": "Historical: Moser's 1.06 lower bound (docstring at lines 68–72, not axiomatized). Axiomatized: cilleruelo_habsieger_lower_bound — liminf ≥ 4/π (lines 80–82). Proved: four_over_pi_approx showing 4/π > 1.27 (lines 85–90)."
+    },
+    {
+      "id": "golden-ratio",
+      "title": "Golden Ratio and Van Doorn",
+      "startLine": 92,
+      "endLine": 114,
+      "summary": "Defines goldenRatio = (1 + √5)/2 (line 95). Proves goldenRatio_squared: φ² = φ + 1 (lines 98–102). Defines vanDoornConstant = 2φ^(5/2) (line 105). Van Doorn's limsup ≤ 2φ^(5/2) construction is described in a docstring (lines 107–113) but is not axiomatized."
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "startLine": 115,
+      "endLine": 172,
+      "summary": "Exact minimum of limsup, whether liminf can equal 1"
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #33 on additive complements of squares - sets A where every integer is n² + a for some a ∈ A. The formalization includes the Moser and Cilleruelo-Habsieger lower bounds on liminf, Van Doorn's upper bound on limsup, and proves the golden ratio identity used in the construction.",
+    "implications": "This problem connects additive number theory with the distribution of quadratic residues. The appearance of 4/π suggests deep connections to harmonic analysis, while the golden ratio bound hints at optimal greedy algorithms and Fibonacci-like structures.",
+    "openQuestions": [
+      "What is the exact minimum value of limsup |A ∩ {1,...,N}|/√N?",
+      "Can the 4/π lower bound on liminf be improved?",
+      "Is there a connection between the optimal liminf and limsup for a single set A?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Set",
+      "Filter",
+      "Real",
+      "Topology"
+    ],
+    "namespace": "Erdos33",
+    "lineCount": 172,
+    "axiomCount": 1,
+    "theoremCount": 4,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos33Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-31",
+      "relationship": "specializes",
+      "description": "Problem #31 asks about additive complements in general; Problem #33 specializes to complements of the sequence of perfect squares"
+    },
+    {
+      "targetId": "erdos-32",
+      "relationship": "related",
+      "description": "Problem #32 asks about complements of primes. Problems #31-33 form a trio: general complements, complements of primes, complements of squares"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Nathanson, Melvyn B.",
+      "title": "Additive bases with many representations",
+      "year": "1989",
+      "venue": "Acta Arithmetica, vol. 52, pp. 399–406",
+      "note": "Studied additive complements and representations for specific sequences including squares"
+    },
+    {
+      "authors": "Lagrange, Joseph-Louis",
+      "title": "Démonstration d'un théorème d'arithmétique",
+      "year": "1770",
+      "venue": "Nouveaux Mémoires de l'Académie royale des Sciences de Berlin",
+      "note": "Proved every positive integer is a sum of four squares — the classical result on squares as an additive basis"
+    }
+  ],
+  "sorries": 0
+}

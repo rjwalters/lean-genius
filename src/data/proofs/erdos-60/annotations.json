@@ -1,0 +1,364 @@
+[
+  {
+    "id": "ann-60-imports",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 36,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "**Mathlib Import and Namespace Setup**\n\nImports the full Mathlib library for access to `SimpleGraph`, `Fintype`, `Finset`, and related combinatorial infrastructure. Opens `Set`, `SimpleGraph`, and `Finset` namespaces for concise notation. The variable block introduces a finite vertex type `V` with decidable equality.",
+    "significance": "supporting",
+    "mathContext": "The `SimpleGraph` type in Mathlib represents undirected graphs without self-loops as symmetric irreflexive relations on the vertex type. The `Fintype` constraint ensures the vertex set is finite, enabling cardinality computations via `Fintype.card`.",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Fintype",
+      "decidable equality",
+      "namespace"
+    ],
+    "prerequisites": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ]
+  },
+  {
+    "id": "ann-60-c4-copy",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "IsC4Copy",
+    "content": "**4-Cycle Copy:** A tuple $(a, b, c, d)$ of 4 distinct vertices forming a cycle $a$-$b$-$c$-$d$-$a$ with all four edges present and the two diagonal pairs $(a,c)$ and $(b,d)$ distinct.\n\nThe distinctness conditions prevent degenerate cases: 6 pairwise inequalities ensure all four vertices are different, and the 4 adjacency conditions ensure the cycle exists in $G$.",
+    "significance": "key",
+    "mathContext": "A 4-cycle $C_4$ (also called a **quadrilateral**) is the unique graph on 4 vertices with 4 edges forming a single cycle. In Turan theory, $C_4$ is one of the most studied forbidden subgraphs because its extremal number $\\text{ex}(n; C_4)$ involves algebraic constructions (projective planes).",
+    "relatedConcepts": [
+      "4-cycle",
+      "quadrilateral",
+      "subgraph copy",
+      "graph homomorphism"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "vertex distinctness"
+    ]
+  },
+  {
+    "id": "ann-60-c4-copies",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 54,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "C4Copies",
+    "content": "**Set of All $C_4$ Copies:** The set of ordered 4-tuples $(a, b, c, d)$ forming 4-cycles in $G$.\n\nEach unlabeled $C_4$ corresponds to exactly 8 ordered tuples: 4 cyclic rotations $\\times$ 2 reflections. This overcounting is corrected by `countC4`.",
+    "significance": "supporting",
+    "mathContext": "The distinction between labeled and unlabeled copies is standard in subgraph counting. For $C_4$, the automorphism group is the dihedral group $D_4$ of order 8, so each unlabeled copy yields exactly 8 labeled copies as ordered 4-tuples.",
+    "relatedConcepts": [
+      "labeled vs unlabeled copies",
+      "dihedral group D_4",
+      "automorphism group",
+      "subgraph counting"
+    ],
+    "prerequisites": [
+      "IsC4Copy"
+    ]
+  },
+  {
+    "id": "ann-60-count-c4",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 59,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "countC4",
+    "content": "**$C_4$ Count:** The number of distinct (unlabeled) 4-cycles in $G$, computed as $|\\text{C4Copies}(G)|/8$.\n\nThis is the quantity that the supersaturation conjecture bounds from below. The division by 8 accounts for the $|\\text{Aut}(C_4)| = 8$ symmetries of the labeled 4-cycle.",
+    "significance": "key",
+    "mathContext": "Subgraph counting via labeled copies modulo automorphisms is a standard technique in extremal graph theory. For $C_4$, the count can also be expressed as $\\sum_{\\{u,v\\}} \\binom{|N(u) \\cap N(v)|}{2}$ where the sum is over non-adjacent pairs, connecting to the codegree function.",
+    "relatedConcepts": [
+      "subgraph count",
+      "codegree",
+      "common neighbors",
+      "Aut(C_4)"
+    ],
+    "prerequisites": [
+      "C4Copies",
+      "Set.ncard"
+    ]
+  },
+  {
+    "id": "ann-60-ex-c4",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 67,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "exC4 (Turan Number)",
+    "content": "**Turan Number $\\text{ex}(n; C_4)$:** The maximum number of edges in an $n$-vertex graph containing no 4-cycle.\n\nAxiomatized as a function $\\mathbb{N} \\to \\mathbb{N}$. The exact value is known for projective plane orders: $\\text{ex}(q^2+q+1; C_4) = \\frac{1}{2}q(q+1)^2$ when a projective plane of order $q$ exists.",
+    "significance": "key",
+    "mathContext": "The Turan number $\\text{ex}(n; H)$ is the central quantity in extremal graph theory. For $C_4$, the determination of $\\text{ex}(n; C_4) \\sim \\frac{1}{2}n^{3/2}$ involves deep connections to incidence geometry: the **Kővári-Sós-Turán theorem** gives the upper bound, while **polarity graphs** of projective planes achieve the lower bound (Reiman 1958, Brown 1966).",
+    "relatedConcepts": [
+      "Turán number",
+      "extremal number",
+      "Kővári-Sós-Turán",
+      "forbidden subgraph"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "C4-free graph"
+    ]
+  },
+  {
+    "id": "ann-60-ex-asymptotic",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 73,
+      "endLine": 74
+    },
+    "type": "concept",
+    "title": "ex(n; C_4) Asymptotics",
+    "content": "**Reiman-KST Asymptotics:** $\\text{ex}(n; C_4) = \\frac{1}{2}(1 + o(1))n^{3/2}$.\n\nThe **upper bound** $\\text{ex}(n; C_4) \\leq \\frac{1}{2}n^{3/2} + O(n)$ follows from Kővári-Sós-Turán (1954). The **lower bound** $\\text{ex}(n; C_4) \\geq \\frac{1}{2}n^{3/2} - O(n)$ comes from polarity graphs of projective planes (Reiman 1958). Together they pin down the leading term.",
+    "significance": "key",
+    "mathContext": "The Kővári-Sós-Turán theorem bounds the number of edges in a $K_{s,t}$-free bipartite graph. Since $C_4 = K_{2,2}$, the $K_{2,2}$-free bound gives $\\text{ex}(n; C_4) = O(n^{3/2})$. The matching lower bound from algebraic constructions shows this is tight up to lower-order terms.",
+    "relatedConcepts": [
+      "Kővári-Sós-Turán theorem",
+      "Reiman bound",
+      "polarity graph",
+      "bipartite Turán"
+    ],
+    "prerequisites": [
+      "exC4"
+    ]
+  },
+  {
+    "id": "ann-60-exceeds-turan",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 91,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "ExceedsTuranC4",
+    "content": "**Exceeds Turan Threshold:** A graph $G$ on $n$ vertices has more than $\\text{ex}(n; C_4)$ edges.\n\nBy definition of the Turan number, such a graph must contain at least one $C_4$. The supersaturation problem asks: how many more?",
+    "significance": "key",
+    "mathContext": "The transition from 'at least one copy' to 'many copies' is the essence of supersaturation. The Erdős-Simonovits supersaturation theorem shows that exceeding $\\text{ex}(n; H)$ by a constant factor forces a positive fraction of all possible $H$-copies. For $C_4$, the conjecture asks for a much more precise bound at the exact threshold.",
+    "relatedConcepts": [
+      "supersaturation threshold",
+      "Turán number",
+      "forbidden subgraph",
+      "extremal transition"
+    ],
+    "prerequisites": [
+      "exC4",
+      "SimpleGraph.edgeSet.ncard"
+    ]
+  },
+  {
+    "id": "ann-60-conjecture",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 105,
+      "endLine": 107
+    },
+    "type": "definition",
+    "title": "Erdős Problem 60 Conjecture (OPEN)",
+    "content": "**Supersaturation Conjecture (OPEN):** There exists $c > 0$ such that every $n$-vertex graph with $> \\text{ex}(n; C_4)$ edges contains $\\geq c \\cdot n^{1/2}$ copies of $C_4$.\n\nThe conjectured bound $\\Omega(n^{1/2})$ is believed to be tight: near-extremal perturbations of polarity graphs suggest exactly this order of magnitude. Remarkably, even the weaker statement that $\\geq 2$ copies are forced remains open.",
+    "significance": "key",
+    "mathContext": "The $n^{1/2}$ bound is motivated by counting arguments: if the graph has $\\frac{1}{2}n^{3/2} + 1$ edges, the extra edge creates new common-neighbor pairs, each potentially contributing a $C_4$. The expected number of new $C_4$'s from a single extra edge in a dense graph is $\\Theta(n^{1/2})$.",
+    "relatedConcepts": [
+      "supersaturation",
+      "Turán threshold",
+      "extremal stability",
+      "C_4 counting"
+    ],
+    "prerequisites": [
+      "ExceedsTuranC4",
+      "countC4"
+    ]
+  },
+  {
+    "id": "ann-60-proj-plane",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 112,
+      "endLine": 113
+    },
+    "type": "definition",
+    "title": "IsProjectivePlaneOrder",
+    "content": "**Projective Plane Order:** $n = q^2 + q + 1$ for some $q$.\n\nFor prime power $q$, projective planes of order $q$ exist (Desarguesian planes), and their polarity graphs are $C_4$-free with exactly $\\text{ex}(n; C_4)$ edges. The existence of projective planes of non-prime-power order is a major open problem.",
+    "significance": "supporting",
+    "mathContext": "A projective plane of order $q$ has $q^2 + q + 1$ points and $q^2 + q + 1$ lines, with each point on $q + 1$ lines and each line containing $q + 1$ points. The polarity graph has vertices = points and edges = incident point-image pairs under a polarity, yielding a $C_4$-free graph because two points determine at most one line.",
+    "relatedConcepts": [
+      "projective plane",
+      "Desarguesian plane",
+      "polarity graph",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "finite projective geometry"
+    ]
+  },
+  {
+    "id": "ann-60-he-ma-yang",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 128,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "He-Ma-Yang Theorem (2021)",
+    "content": "**Partial Result (He-Ma-Yang 2021):** For $n = q^2 + q + 1$ with $q$ even, every graph with $> \\text{ex}(n; C_4)$ edges contains $\\Omega(n^{1/2})$ copies of $C_4$.\n\nThis confirms the supersaturation conjecture for these specific values of $n$. The even-$q$ condition is crucial: it ensures the polarity graph has a particular algebraic structure (symplectic polarity) that allows the counting argument to work.",
+    "significance": "key",
+    "mathContext": "He, Ma, and Yang's proof exploits the structure of extremal $C_4$-free graphs for even prime power orders: the unique extremal graph is the Erdős-Rényi polarity graph, and any graph with one more edge can be analyzed via its deviation from this structure. The even condition relates to the existence of absolute points in the polarity.",
+    "relatedConcepts": [
+      "He-Ma-Yang theorem",
+      "symplectic polarity",
+      "extremal uniqueness",
+      "supersaturation partial result"
+    ],
+    "prerequisites": [
+      "IsEvenProjectivePlaneOrder",
+      "exC4",
+      "countC4"
+    ]
+  },
+  {
+    "id": "ann-60-at-least-one",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 138,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "At Least One C_4",
+    "content": "**Trivial Lower Bound:** Exceeding $\\text{ex}(n; C_4)$ guarantees $\\geq 1$ copy of $C_4$.\n\nThis follows directly from the definition of the Turan number: $\\text{ex}(n; C_4)$ is the maximum edge count achievable with zero $C_4$'s. Any graph with more edges must contain at least one.",
+    "significance": "supporting",
+    "mathContext": "This trivial bound highlights the gap in our knowledge: we can guarantee 1 copy but not 2. The jump from 1 to 2 copies is surprisingly difficult because removing a single $C_4$ (4 edges) from a graph with $\\text{ex}(n; C_4) + 1$ edges might leave a graph that is still above the Turan number.",
+    "relatedConcepts": [
+      "Turán number definition",
+      "trivial supersaturation",
+      "removal lemma"
+    ],
+    "prerequisites": [
+      "ExceedsTuranC4",
+      "countC4"
+    ]
+  },
+  {
+    "id": "ann-60-two-copies",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 145,
+      "endLine": 147
+    },
+    "type": "definition",
+    "title": "Two-Copies Conjecture (OPEN)",
+    "content": "**Weaker Open Problem:** Does exceeding $\\text{ex}(n; C_4)$ always force $\\geq 2$ copies of $C_4$?\n\nErdős and Simonovits highlighted this as a remarkable gap: we cannot even prove that a single extra edge above the Turan number forces a second 4-cycle. This is strictly weaker than the $\\Omega(n^{1/2})$ conjecture.",
+    "significance": "key",
+    "mathContext": "The difficulty stems from the structure of near-extremal $C_4$-free graphs. Adding one edge to an extremal graph creates at least one $C_4$, but removing the vertices of that $C_4$ changes the graph in ways that make it hard to guarantee a second disjoint $C_4$. The problem is related to the uniqueness (or non-uniqueness) of extremal graphs.",
+    "relatedConcepts": [
+      "open problem",
+      "extremal stability",
+      "C_4 multiplicity",
+      "graph removal"
+    ],
+    "prerequisites": [
+      "exC4",
+      "countC4"
+    ]
+  },
+  {
+    "id": "ann-60-es-supersaturation",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 161,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Erdős-Simonovits Supersaturation",
+    "content": "**General Supersaturation Theorem:** For any $\\varepsilon > 0$, there exists $\\delta > 0$ such that any $n$-vertex graph with $\\geq (1+\\varepsilon) \\cdot \\text{ex}(n; C_4)$ edges contains $\\geq \\delta \\cdot n^2$ copies of $C_4$.\n\nThis gives a **quadratic** lower bound but only when the edge count exceeds the Turan number by a **constant factor** $(1+\\varepsilon)$. Problem 60 asks about the harder case of exceeding by just 1 edge.",
+    "significance": "key",
+    "mathContext": "The Erdős-Simonovits supersaturation theorem (1966/1983) applies to all graphs $H$: if $|E(G)| \\geq (1+\\varepsilon)\\text{ex}(n; H)$, then $G$ contains $\\Omega(n^{|V(H)|})$ copies of $H$. For $C_4$, this yields $\\Omega(n^2)$ unlabeled copies when exceeding by a constant factor.",
+    "relatedConcepts": [
+      "Erdős-Simonovits supersaturation",
+      "constant-factor threshold",
+      "density version",
+      "Turán density"
+    ],
+    "prerequisites": [
+      "exC4",
+      "countC4"
+    ]
+  },
+  {
+    "id": "ann-60-polarity-graph",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 174,
+      "endLine": 176
+    },
+    "type": "concept",
+    "title": "Polarity Graph Existence",
+    "content": "**Extremal Construction:** For prime power $q$, there exists a $C_4$-free graph on $q^2+q+1$ vertices with exactly $\\text{ex}(q^2+q+1; C_4)$ edges.\n\nThis is the **polarity graph** of the Desarguesian projective plane $\\text{PG}(2, q)$: vertices are points, two points are adjacent iff one lies on the polar line of the other. The $C_4$-freeness follows from the projective plane axiom that two points determine a unique line.",
+    "significance": "key",
+    "mathContext": "The polarity graph construction is one of the few cases where the Turan number is determined exactly for infinitely many $n$. For $q$ prime, the polarity graph of $\\text{PG}(2, q)$ has $\\frac{1}{2}q(q+1)^2$ edges. For $q$ even, there are no absolute points, making the graph regular of degree $q+1$.",
+    "relatedConcepts": [
+      "polarity graph",
+      "projective plane PG(2,q)",
+      "C_4-free construction",
+      "algebraic extremal graph"
+    ],
+    "prerequisites": [
+      "IsProjectivePlaneOrder",
+      "exC4"
+    ]
+  },
+  {
+    "id": "ann-60-partial-result",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 181,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Partial Result: Even q",
+    "content": "**Verified Lean Proof:** For any even $q$, $n = q^2 + q + 1$ is an even projective plane order.\n\nThis is a simple structural lemma establishing that the He-Ma-Yang hypothesis is satisfiable. The proof is by direct construction: $\\langle q, \\text{heven}, \\text{rfl}\\rangle$.",
+    "significance": "supporting",
+    "mathContext": "This connects the abstract predicate `IsEvenProjectivePlaneOrder` to concrete values. For example, $q = 2$ gives $n = 7$ (the Fano plane), $q = 4$ gives $n = 21$, $q = 8$ gives $n = 73$, etc.",
+    "relatedConcepts": [
+      "even prime power",
+      "Fano plane",
+      "projective plane order"
+    ],
+    "prerequisites": [
+      "IsEvenProjectivePlaneOrder"
+    ]
+  },
+  {
+    "id": "ann-60-aristotle-proofs",
+    "proofId": "erdos-60",
+    "range": {
+      "startLine": 329,
+      "endLine": 363
+    },
+    "type": "concept",
+    "title": "conjecture_implies_two_copies (Aristotle)",
+    "content": "**Aristotle-Proved Theorem:** The supersaturation conjecture implies the two-copies conjecture.\n\nThis was proved automatically by Aristotle's proof search. The proof works by contraposition: if the two-copies conjecture fails, there is a graph with $> \\text{ex}(n; C_4)$ edges but $< 2$ copies of $C_4$, which contradicts the $\\Omega(n^{1/2})$ lower bound for large $n$. The proof constructs an explicit star graph as a witness and uses `grind` for the final combinatorial step.",
+    "significance": "key",
+    "mathContext": "This implication is logically straightforward but the formal proof requires careful handling of the quantitative bounds. For sufficiently large $n$, $c \\cdot n^{1/2} \\geq 2$, so the conjecture's guarantee of $\\geq c \\cdot n^{1/2}$ copies implies $\\geq 2$ copies. Aristotle's proof handles the technical details including the existence of appropriate graph constructions.",
+    "relatedConcepts": [
+      "logical implication",
+      "proof by contraposition",
+      "Aristotle proof search",
+      "automated theorem proving"
+    ],
+    "prerequisites": [
+      "erdos_60_conjecture",
+      "two_copies_conjecture"
+    ]
+  }
+]

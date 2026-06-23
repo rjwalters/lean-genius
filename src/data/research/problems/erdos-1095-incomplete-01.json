@@ -1,0 +1,102 @@
+{
+  "slug": "erdos-1095-incomplete-01",
+  "title": "Complete proof of Erdős Problem #1095: The Erdős-Selfridge Function",
+  "phase": "SURVEYED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "g(k) := \\min \\{n > k+1 : \\text{every prime factor of } \\binom{n}{k} \\text{ exceeds } k\\}",
+    "plain": "Estimate the Erdős-Selfridge function g(k): the smallest n > k+1 such that every prime factor of the binomial coefficient C(n,k) is greater than k. Concrete values: g(2)=6, g(3)=g(4)=7, g(5)=23, g(6)=143.",
+    "whyMatters": [
+      "Probes the interplay between binomial coefficients and prime factorization at the boundary of computability.",
+      "The conjecture log g(k) ~ k/log k (Erdős-Lacampagne-Selfridge 1993) is a sharp version of the bound problem and remains open.",
+      "Connects to Sylvester-Schur theorem and arithmetic of factorials (binomial coefficients of small arguments cannot be smooth)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lower bound: g(k) >> exp(c·(log k)²) (Konyagin 1999, Bull. London Math. Soc. 31)",
+      "Upper bound: g(k) <= exp((1+o(1))·k) (Ecklund-Erdős-Selfridge 1974, Math. Comp. 28)",
+      "Concrete values: g(2)=6, g(3)=7, g(4)=7, g(5)=23, g(6)=143 (formalized as theorems in Erdos1095Problem.lean)"
+    ],
+    "open": [
+      "Sharp asymptotic: log g(k) ~ k/log k (Erdős-Lacampagne-Selfridge 1993 conjecture)",
+      "Closing the gap between Konyagin lower bound exp((log k)²) and EES upper bound exp(k)"
+    ],
+    "goal": "Eliminate axioms g, g_gt, g_spec, g_minimal by building g constructively via Nat.find on the (decidable) condition (n > k+1 ∧ binomIsKRough n k); requires proving existence first via Kummer/Sylvester-Schur in Mathlib."
+  },
+  "currentState": {
+    "phase": "SURVEYED",
+    "since": "2026-03-28T20:57:10.257Z",
+    "iteration": 3,
+    "focus": "No separate Lean file for incomplete-01 workstream; the main Erdos1095Problem.lean has 7 axioms (g, g_gt, g_spec, g_minimal + 3 deep bounds: ees_lower_bound, ees_upper_bound, konyagin_lower_bound) and 181 LOC. Parent erdos-1095 gallery is axiomatized.",
+    "blockers": [],
+    "nextAction": "Either (a) merge this workstream into erdos-1095 since no separate file exists, or (b) build Erdos1095Incomplete01.lean with the bound-strengthening axiom that is currently encoded only as comments.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: erdos-1095-incomplete-01 has no dedicated Lean file. Main file Erdos1095Problem.lean has 7 axioms (4 for g + 3 deep bounds) and the concrete-value theorems g_two through g_six. Prior progressSummary claimed 0 axioms which contradicts grep -c \"^axiom \" output (7). This workstream slug appears to be a planning artifact; either merge into erdos-1095 or scope a concrete bound-strengthening file.",
+    "builtItems": [
+      "Proved g_two : g 2 = 6",
+      "Proved g_three : g 3 = 7",
+      "Proved g_four : g 4 = 7",
+      "Proved g_five : g 5 = 23",
+      "Proved g_ge_k_plus_two",
+      "Proved binomIsKRough_23_5 (helper)",
+      "Proved gFunc_exists theorem (was axiom) — 0 axioms now",
+      "Defined smoothProd, mod_pred_of_dvd_succ, mod_ge_of_dvd_succ_pow, carry_free_of_mod_ge helper lemmas"
+    ],
+    "insights": [
+      "Core issue: g(k) definition uses sorry in Nat.find existence proof",
+      "Need to show: ∃ n > k+1, all prime factors of C(n,k) > k",
+      "Simple witness k!+k+1 does NOT obviously work (C(p,k) can have small factors)",
+      "Ecklund-Erdos-Selfridge 1974 proved existence, but the proof is non-trivial",
+      "10 axioms: 5 deep bounds (EES, Konyagin, LCM, ELS), 5 concrete values (g(2)=3,...,g(6)=143)",
+      "Concrete values g(2)=3, g(3)=7 are verifiable: C(3,2)=3 (only factor 3>2), C(7,3)=35=5*7 (both>3)",
+      "The 3 sorries are actually 1 sorry repeated 3 times (same existence proof)",
+      "Fix priority: prove existence → this eliminates all 3 sorries at once",
+      "CRITICAL BUG FIXED: concrete value axioms were INCONSISTENT with code definition (n > k+1), could prove False",
+      "Correct values: g(2)=6, g(3)=7, g(4)=7, g(5)=23 — old axioms g(2)=3, g(4)=23 etc. were wrong",
+      "Witness k!+k+1 was wrong: C(29,4) has factor 3<=4",
+      "Refactored to axiomatized g: 4 specification axioms replace buggy Nat.find definition",
+      "g(5)=23 proved by ruling out n=7..22 via interval_cases + prime factor checks",
+      "Existence of g(k) proved via carry-free base-p construction: for each prime p<=k, the witness n=2P-1 has all base-p digits dominating those of k",
+      "Key lemma: if p^a|(n+1) with p^a>k, then n%p^i >= k%p^i for all i, giving zero carries by Kummer",
+      "Imported KummerTheoremOQ03 for choose_coprime_of_no_carries; no new axioms needed"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove existence of g(k) constructively to eliminate 4 axioms for g",
+      "Check if Mathlib has Lucas/Kummer theorem for binomial coefficients",
+      "Compute and prove g(6) from axioms"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "binomial-coefficients",
+    "prime-factors",
+    "smooth-numbers",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-109",
+    "erdos-1095"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T20:57:10.257Z",
+  "lastUpdate": "2026-05-17T18:00:00.000Z",
+  "significance": 6,
+  "tractability": 5
+}

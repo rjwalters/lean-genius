@@ -1,0 +1,146 @@
+[
+  {
+    "id": "ann-611-header",
+    "proofId": "erdos-611",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Statement and Setup",
+    "content": "The module docstring introduces Erdős Problem #611: two questions about clique transversals in graphs where all maximal cliques are large.\n\nA **clique transversal** $\\tau(G)$ is the minimum number of vertices needed to intersect every maximal clique. The two questions ask: (1) if all maximal cliques have size $\\geq cn$, is $\\tau(G) = o_c(n)$? (2) What threshold $k_c(n)$ on clique size forces $\\tau(G) < (1-c)n$?\n\nKnown results are documented: the Erdős-Gallai-Tuza lower bound $k_c(n) \\geq n^{c'/\\log\\log n}$, the square-root bound $\\tau(G) \\leq n - \\sqrt{kn}$ when all cliques have size $\\geq k$, and the Bollobás-Erdős threshold for $\\tau(G) = 1$.\n\nImports all of Mathlib and opens `Finset`, `Function`, and `SimpleGraph`.",
+    "mathContext": "Clique transversal: $\\tau(G) = \\min\\{|T| : T \\cap C \\neq \\emptyset \\text{ for all maximal cliques } C\\}$.\n\nTwo questions: (1) $\\omega(G) \\geq cn \\implies \\tau(G) = o(n)$? (2) What is $k_c(n)$ with $\\omega(G) \\geq k_c(n) \\implies \\tau(G) < (1-c)n$?",
+    "significance": "supporting",
+    "prerequisites": [
+      "SimpleGraph",
+      "Fintype",
+      "clique transversal"
+    ],
+    "relatedConcepts": [
+      "clique transversal number",
+      "maximal clique",
+      "Erdős-Gallai-Tuza bound",
+      "Bollobás-Erdős threshold"
+    ]
+  },
+  {
+    "id": "ann-611-defs",
+    "proofId": "erdos-611",
+    "range": {
+      "startLine": 32,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Core Definitions: Cliques, Transversals, and Clique Size Predicates",
+    "content": "**IsClique** $G$ $S$: all pairs in $S$ are adjacent. **IsMaximalClique**: clique with no proper clique superset. **maximalCliques**: all maximal cliques via filter over Finset.univ.\n\n**IsCliqueTransversal** $G$ $T$: $T \\cap C \\neq \\emptyset$ for every maximal clique $C$.\n\n**cliqueTransversalNumber** $\\tau(G)$: minimum size of a clique transversal (sorry — definition incomplete).\n\n**AllCliquesLarge** $G$ $k$: every maximal clique has $\\geq k$ vertices.\n\n**AllCliquesLinear** $G$ $c$: $0 < c \\leq 1$ and every maximal clique has $\\geq cn$ vertices.",
+    "mathContext": "The clique transversal number $\\tau(G)$ is the minimum number of vertices needed to 'hit' every maximal clique. This is a vertex cover problem restricted to the clique hypergraph. For $K_n$, $\\tau = 1$ (one vertex hits the unique clique). For $K_{n/2, n/2}$, $\\tau = n/2$ (each edge is a maximal clique). The predicate AllCliquesLinear captures the regime where cliques are guaranteed to be large relative to $n$, which intuitively should force small transversals since large cliques must overlap extensively by pigeonhole arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "clique hypergraph",
+      "vertex cover",
+      "maximal cliques",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Finset",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-611-questions",
+    "proofId": "erdos-611",
+    "range": {
+      "startLine": 73,
+      "endLine": 112
+    },
+    "type": "concept",
+    "title": "The Two Questions: Sublinear τ from Linear Cliques, and the Threshold Function k_c(n)",
+    "content": "**Question 1** (Question1_LinearCliques): if all maximal cliques have size $\\geq cn$, is $\\tau(G) = o_c(n)$? Formalized: $\\forall \\varepsilon > 0, \\exists N$ such that $|V| \\geq N \\Rightarrow \\tau(G) < \\varepsilon n$.\n\n**Answer**: YES — the EGT bound gives $\\tau \\leq (1 - \\sqrt{c})n$.\n\n**Question 2** (Question2_ThresholdEstimate): estimate $k_c(n)$, the minimum $k$ such that all cliques of size $\\geq k$ forces $\\tau < (1-c)n$.\n\n**Known**: $k_c(n) \\geq n^{c'/\\log \\log n}$ (grows very slowly). Upper bounds poorly understood.",
+    "mathContext": "Question 1 asks whether linear clique size forces sublinear transversal number. The answer is affirmative with the explicit bound $\\tau \\leq (1 - \\sqrt{c})n$, which is sublinear in the sense that $\\tau/n \\leq 1 - \\sqrt{c} < 1$, though it's $\\Theta(n)$ rather than $o(n)$. The subtlety is that 'sublinear' here means $\\tau < n$ by a constant factor, not $\\tau = o(n)$ in the strict sense. Question 2 is the deeper problem: for a target ratio $1 - c$, what minimum clique size $k_c(n)$ achieves it? The lower bound $n^{c'/\\log \\log n}$ grows faster than any constant but slower than $n^\\varepsilon$ for any $\\varepsilon > 0$ — a remarkable intermediate growth rate from probabilistic constructions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold functions",
+      "asymptotic growth rates",
+      "sublinear bounds",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "Filter.atTop",
+      "nhds",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-611-egt",
+    "proofId": "erdos-611",
+    "range": {
+      "startLine": 114,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Erdős-Gallai-Tuza Bound and Threshold Lower Bound",
+    "content": "**erdos_gallai_tuza_large_cliques** (axiom): if every clique has size $\\geq k$, then $\\tau(G) \\leq n - \\sqrt{kn}$.\n\n**linear_cliques_sublinear**: for $k = cn$, $\\tau \\leq n - \\sqrt{cn^2} = (1 - \\sqrt{c})n$ (sorry).\n\n**question1_positive**: consequence — $\\tau < n$ for any $c > 0$ (sorry).\n\n**threshold_lower_bound** (axiom): $k_c(n) \\geq n^{c'/\\log \\log n}$.\n\n**threshold_grows_slowly**: for any $\\varepsilon > 0$, eventually $k_c(n) \\leq n^\\varepsilon$ (sorry).",
+    "mathContext": "The EGT bound $\\tau \\leq n - \\sqrt{kn}$ is proved by a greedy/pigeonhole argument: if a transversal $T$ has size $\\tau$, the remaining $n - \\tau$ vertices are not in $T$, yet each maximal clique has $\\geq k$ vertices, of which at least one must be in $T$. The overlap between cliques and $T$ constrains $\\tau$ via a counting argument involving the $\\sqrt{kn}$ term. The lower bound $k_c(n) \\geq n^{c'/\\log \\log n}$ comes from random graph constructions: $G(n, p)$ with carefully chosen $p$ has maximal cliques of size $\\sim \\log n / \\log(1/p)$ while the transversal number can be controlled. The double-logarithmic exponent $c'/\\log \\log n$ reflects the relationship between clique size in random graphs and the chromatic/transversal structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy algorithms",
+      "probabilistic method",
+      "random graph clique size",
+      "double logarithmic growth"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "Filter.atTop",
+      "AllCliquesLarge"
+    ]
+  },
+  {
+    "id": "ann-611-bollobas",
+    "proofId": "erdos-611",
+    "range": {
+      "startLine": 154,
+      "endLine": 191
+    },
+    "type": "concept",
+    "title": "Bollobás-Erdős Threshold for τ = 1 and Special Cases",
+    "content": "**bollobas_erdos_threshold** $n = n + 3 - 2\\sqrt{n}$: the critical clique size for $\\tau = 1$.\n\n**bollobas_erdos_tau_one** (axiom): all cliques $\\geq n + 3 - 2\\sqrt{n} \\Rightarrow \\tau = 1$. A single vertex hits every maximal clique.\n\n**bollobas_erdos_optimal** (axiom): the threshold is tight — reducing by any $\\varepsilon$ allows $\\tau \\geq 2$.\n\n**complete_graph_tau**: $\\tau(K_n) = 1$ (sorry). **complete_bipartite_tau**: $\\tau(K_{n/2,n/2}) = n/2$ (sorry). **turan_graph_tau**: $\\tau(T(n,r))$ analysis (sorry).",
+    "mathContext": "The Bollobás-Erdős threshold $n + 3 - 2\\sqrt{n}$ for $\\tau = 1$ is a beautiful exact result. When every clique has $\\geq n + 3 - 2\\sqrt{n}$ vertices, any two cliques must share at least one vertex (by a counting argument: two cliques of this size in an $n$-vertex graph must overlap). The '3' is exact and arises from the extremal construction: a graph where two cliques of size $n + 2 - 2\\sqrt{n}$ can be arranged to be almost disjoint. The complete bipartite graph $K_{n/2, n/2}$ is the extreme opposite: clique size 2 (every edge is maximal) and $\\tau = n/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Helly property",
+      "clique intersection",
+      "exact thresholds",
+      "extremal constructions"
+    ],
+    "prerequisites": [
+      "bollobas_erdos_threshold",
+      "IsMaximalClique",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-611-probabilistic",
+    "proofId": "erdos-611",
+    "range": {
+      "startLine": 193,
+      "endLine": 245
+    },
+    "type": "concept",
+    "title": "Probabilistic Lower Bounds, Relation to #610, and Problem Status",
+    "content": "**random_graph_clique_transversal** (axiom): random graphs witness $k_c(n) \\geq n^{c/\\log \\log n}$ — there exist graphs with cliques of this size yet $\\tau \\geq (1-c-0.01)n$.\n\n**refines_610**: Problem #611 refines #610 by adding clique size constraints; the $k = 2$ case recovers #610's bound (sorry).\n\n**erdos_611_status**: combines linear_cliques_sublinear ($\\tau \\leq (1-\\sqrt{c})n$) with threshold_lower_bound ($k_c(n) \\geq n^{c'/\\log \\log n}$). Q1 answered, Q2 partially open.",
+    "mathContext": "The probabilistic construction works as follows: in $G(n, p)$ with $p = n^{-\\alpha}$ for suitable $\\alpha$, maximal cliques have size $\\Theta(1/\\alpha)$ for constant $\\alpha$, but for $\\alpha$ depending on $n$ (specifically $\\alpha \\sim 1/\\log \\log n$), cliques grow as $n^{c/\\log \\log n}$. Meanwhile, the independence number (and thus the transversal complement) is large: $\\alpha(G) \\approx cn$ with high probability, implying $\\tau \\geq (1-c)n$ since the complement of any transversal must avoid some clique. This shows the lower bound on $k_c(n)$ is essentially tight in order of magnitude.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Rényi random graphs",
+      "independence number",
+      "probabilistic method",
+      "Problem #610"
+    ],
+    "prerequisites": [
+      "Filter.atTop",
+      "random_graph_clique_transversal",
+      "erdos_611_status"
+    ]
+  }
+]

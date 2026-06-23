@@ -1,0 +1,146 @@
+[
+  {
+    "id": "ann-minkowski-chain",
+    "proofId": "minkowski-fundamental-theorem-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 55
+    },
+    "type": "insight",
+    "title": "The Geometry-to-Algebra Chain",
+    "content": "The file header documents the full geometry-of-numbers proof chain for the class number bound, which is formalized in Mathlib's `CanonicalEmbedding.ConvexBody` module. The five steps are: (1) embed K into $\\mathbb{R}^n$ via all Archimedean completions; (2) an ideal $I \\subseteq \\mathcal{O}_K$ becomes a lattice with covolume $2^{-r_2}\\sqrt{|\\mathrm{disc}(K)|}\\cdot \\mathrm{Nm}(I)$; (3) construct the cross-polytope $B(t) = \\{\\sum|x_i| + 2\\sum|z_j| \\leq t\\}$; (4) apply Minkowski's convex body theorem to find $\\alpha \\in I$, $\\alpha \\neq 0$; (5) bound $|\\mathrm{Nm}(\\alpha)| \\leq M(K) \\cdot \\mathrm{Nm}(I)$, so $\\alpha I^{-1}$ is a bounded-norm representative of the inverse class.",
+    "mathContext": "$M(K) = \\left(\\frac{4}{\\pi}\\right)^{r_2} \\cdot \\frac{n!}{n^n} \\cdot \\sqrt{|\\mathrm{disc}(K)|}$, with $n = [K:\\mathbb{Q}]$, $r_1$ real and $r_2$ complex embedding pairs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Minkowski embedding",
+      "canonical embedding",
+      "class group",
+      "geometry of numbers",
+      "cross-polytope"
+    ],
+    "prerequisites": [
+      "NumberField",
+      "minkowski-fundamental-theorem",
+      "lattice covolume"
+    ]
+  },
+  {
+    "id": "ann-inferinstance",
+    "proofId": "minkowski-fundamental-theorem-oq-02",
+    "range": {
+      "startLine": 61,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "Class Group Finiteness and Positivity",
+    "content": "The theorems `classGroup_finite` and `classNumber_pos` are proved by `inferInstance` and direct Mathlib invocation respectively. This is the 'tip of the iceberg' pattern: Mathlib's `instFintypeClassGroup` instance encapsulates hundreds of lines of formalization (the canonical embedding, ideal lattice theory, and the Minkowski bound application) in a single typeclass resolution. The gallery's role is to surface and document these results. The class number $h(K) = |\\mathrm{Cl}(K)| \\geq 1$ because the trivial class (principal ideals) always exists.",
+    "mathContext": "$\\mathrm{Cl}(\\mathcal{O}_K) = \\text{Fintype}$ (typeclass) and $h(K) = |\\mathrm{Cl}(K)| \\geq 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "typeclass instances",
+      "Fintype",
+      "inferInstance",
+      "class number"
+    ],
+    "prerequisites": [
+      "instFintypeClassGroup",
+      "NumberField.classNumber_pos"
+    ]
+  },
+  {
+    "id": "ann-pid-criterion",
+    "proofId": "minkowski-fundamental-theorem-oq-02",
+    "range": {
+      "startLine": 77,
+      "endLine": 88
+    },
+    "type": "insight",
+    "title": "Class Number 1 as PID Criterion",
+    "content": "The equivalence $h(K) = 1 \\iff \\mathcal{O}_K$ is a PID connects the abstract group-theoretic invariant to a concrete algebraic property. The class group $\\mathrm{Cl}(K)$ measures failure of unique factorization: it is trivial precisely when every ideal is principal. For imaginary quadratic fields $\\mathbb{Q}(\\sqrt{-d})$, Heegner-Stark proved that $h = 1$ only for $d \\in \\{1,2,3,7,11,19,43,67,163\\}$ — making the PID criterion a powerful tool. For practical computation, one checks all prime ideals of norm $\\leq M(K)$.",
+    "mathContext": "$h(K) = 1 \\iff \\mathcal{O}_K$ is a PID $\\iff$ every ideal of $\\mathcal{O}_K$ is principal. Example: $\\mathbb{Z}[\\sqrt{-5}]$ has $h = 2$ since $(2, 1+\\sqrt{-5})$ is not principal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "PID",
+      "class group",
+      "unique factorization",
+      "Heegner-Stark theorem",
+      "imaginary quadratic fields"
+    ],
+    "prerequisites": [
+      "classNumber_eq_one_iff",
+      "IsPrincipalIdealRing"
+    ]
+  },
+  {
+    "id": "ann-minkowski-bound-formula",
+    "proofId": "minkowski-fundamental-theorem-oq-02",
+    "range": {
+      "startLine": 28,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "The Minkowski Bound Formula",
+    "content": "The bound $M(K) = (4/\\pi)^{r_2} \\cdot (n!/n^n) \\cdot \\sqrt{|\\mathrm{disc}(K)|}$ arises from optimizing the convex body shape: the cross-polytope $\\{\\sum|x_i| + 2\\sum|z_j| \\leq t\\}$ has volume $2^{r_1}(\\pi/2)^{r_2} t^n/n!$. Setting this equal to $2^n$ times the lattice covolume and solving for the norm bound yields $M(K)$. The factor $(4/\\pi)^{r_2}$ reflects the complex embeddings ($\\mathbb{C} \\cong \\mathbb{R}^2$ contributes $\\pi$ to the unit ball volume), and $n!/n^n \\sim \\sqrt{2\\pi n}/e^n$ by Stirling. For quadratic fields: $M(\\mathbb{Q}(\\sqrt{d})) = \\frac{2}{\\pi}\\sqrt{|d|}$ (imaginary) or $\\frac{1}{2}\\sqrt{d}$ (real).",
+    "mathContext": "$M(K) = \\left(\\frac{4}{\\pi}\\right)^{r_2} \\frac{n!}{n^n} \\sqrt{|\\Delta_K|}$. For $K = \\mathbb{Q}(\\sqrt{-163})$: $M \\approx 5.3$, so checking primes $\\leq 5$ proves $h = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Minkowski embedding",
+      "discriminant",
+      "cross-polytope volume",
+      "Stirling's approximation"
+    ],
+    "prerequisites": [
+      "nrRealPlaces",
+      "nrComplexPlaces",
+      "discr",
+      "mixedEmbedding.minkowskiBound"
+    ]
+  },
+  {
+    "id": "ann-rat-case",
+    "proofId": "minkowski-fundamental-theorem-oq-02",
+    "range": {
+      "startLine": 90,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "The Rational Case: $h(\\mathbb{Q}) = 1$ and $\\mathbb{Z}$ is a PID",
+    "content": "For $K = \\mathbb{Q}$: $n = 1$, $r_1 = 1$, $r_2 = 0$, $|\\mathrm{disc}(\\mathbb{Q})| = 1$, so $M(\\mathbb{Q}) = (1!/1^1) \\cdot 1 = 1$. The only integral ideal of $\\mathbb{Z}$ with norm $\\leq 1$ is $\\mathbb{Z}$ itself (the unit ideal), which is principal. Hence every ideal class is trivial, giving $h(\\mathbb{Q}) = 1$. The corollary `rat_integers_isPID` follows by rewriting with the PID criterion. This validates the entire framework on the simplest case.",
+    "mathContext": "$M(\\mathbb{Q}) = 1$. Only ideal with $\\mathrm{Nm}(I) \\leq 1$ is $\\mathbb{Z}$. So $h(\\mathbb{Q}) = 1$ and $\\mathbb{Z}$ is a PID.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Rat.classNumber_eq",
+      "IsPrincipalIdealRing",
+      "fundamental theorem of arithmetic"
+    ],
+    "prerequisites": [
+      "rat_classNumber_eq_one",
+      "classNumber_one_iff_PID"
+    ]
+  },
+  {
+    "id": "ann-closing-summary",
+    "proofId": "minkowski-fundamental-theorem-oq-02",
+    "range": {
+      "startLine": 108,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Closing: Five Verified Theorems and Mathlib Pointers",
+    "content": "The closing comment catalogues the five fully verified theorems (0 sorries, 0 axioms) exposed as gallery aliases, and points to the two Mathlib modules that underpin this file. The deep formalization lives in `CanonicalEmbedding.ConvexBody`: the theorem `exists_ne_zero_mem_ideal_of_norm_le` is where Minkowski's convex body theorem is actually applied — it constructs a nonzero element of bounded norm in any ideal class, bridging the geometric argument (volume of $B(t)$ versus lattice covolume of $\\sigma(I)$) to the algebraic conclusion (bounded norm ideal in every class $\\Rightarrow$ finitely many classes).",
+    "mathContext": "Five theorems: $|\\mathrm{Cl}(\\mathcal{O}_K)| < \\infty$; $h(K) \\geq 1$; $h(K)=1 \\iff \\mathcal{O}_K$ PID; $h(\\mathbb{Q})=1$; $\\mathbb{Z}$ PID. All via Mathlib's `NumberField.ClassNumber` and `mixedEmbedding.exists_ne_zero_mem_ideal_of_norm_le`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib alias pattern",
+      "instFintypeClassGroup",
+      "exists_ne_zero_mem_ideal_of_norm_le",
+      "minkowskiBound"
+    ],
+    "prerequisites": [
+      "classGroup_finite",
+      "classNumber_one_iff_PID",
+      "rat_classNumber_eq_one",
+      "rat_integers_isPID"
+    ]
+  }
+]

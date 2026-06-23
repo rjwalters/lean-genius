@@ -1,0 +1,308 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-134",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 46
+    },
+    "title": "Problem Overview and Setup",
+    "content": "**Erdős Problem #134: Triangle-Free Graphs with Diameter 2**\n\nAsks whether triangle-free graphs with max degree < n^{1/2-ε} can be extended to diameter-2 triangle-free graphs by adding few edges. SOLVED by Alon with O(n^{2-ε}) edges, much stronger than the original δn² conjecture.\n\nThe imports bring in Mathlib's `SimpleGraph` for graph adjacency, `Walk` for path connectivity, `Fintype.card` for vertex counting, and `Real.rpow` for degree bounds involving real exponents. The variable section declares `V` as a finite type with decidable equality — the vertex set of all graphs in the formalization.",
+    "mathContext": "The file imports `Mathlib.Combinatorics.SimpleGraph.Basic` (graph adjacency, `Adj`, `neighborFinset`), `Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph` (walks, `Walk`, `Walk.length`), `Mathlib.Data.Fintype.Card` (`Fintype.card` for |V|), `Mathlib.Data.Real.Basic` (ℝ), and `Mathlib.Analysis.SpecialFunctions.Pow.Real` (`Real.rpow` for n^{1/2-ε}). The namespace is `Erdos134` with `open SimpleGraph`. The implicit variable section `{V : Type*} [Fintype V] [DecidableEq V]` makes all definitions polymorphic over finite vertex types.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Triangle-free graphs",
+      "Graph diameter",
+      "Extremal graph theory"
+    ],
+    "prerequisites": [
+      "Graph theory basics",
+      "Fintype",
+      "Real exponentiation"
+    ]
+  },
+  {
+    "id": "ann-has-triangle",
+    "proofId": "erdos-134",
+    "type": "definition",
+    "range": {
+      "startLine": 51,
+      "endLine": 56
+    },
+    "title": "Triangle in a Graph",
+    "content": "**HasTriangle(G):** Three vertices u, v, w form a triangle (K₃) if all three edges u-v, v-w, u-w exist and all three vertices are distinct. This existential definition checks for any K₃ subgraph.",
+    "mathContext": "`HasTriangle (G : SimpleGraph V) : Prop` is defined as `∃ u v w : V, u ≠ v ∧ v ≠ w ∧ u ≠ w ∧ G.Adj u v ∧ G.Adj v w ∧ G.Adj u w`. The six-way conjunction ensures three distinct vertices with all three edges present. Since `SimpleGraph.Adj` is symmetric and irreflexive by definition, the distinctness conditions `u ≠ v`, etc., are needed to prevent degenerate cases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complete subgraph K₃",
+      "Turán's theorem",
+      "Forbidden subgraphs"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "Existential quantification"
+    ]
+  },
+  {
+    "id": "ann-triangle-free",
+    "proofId": "erdos-134",
+    "type": "definition",
+    "range": {
+      "startLine": 58,
+      "endLine": 63
+    },
+    "title": "Triangle-Free Graph",
+    "content": "**IsTriangleFree(G) = ¬HasTriangle G:** A graph is triangle-free if no three vertices form a complete subgraph. This is the core constraint that must be preserved when adding edges to achieve diameter 2 — the tension between adding enough edges for connectivity while avoiding triangles drives the entire problem.",
+    "mathContext": "`IsTriangleFree (G : SimpleGraph V) : Prop := ¬ HasTriangle G`. This is the negation of the existential — equivalently, `∀ u v w, ¬(u ≠ v ∧ v ≠ w ∧ u ≠ w ∧ G.Adj u v ∧ G.Adj v w ∧ G.Adj u w)`. By Mantel's theorem (1907), triangle-free graphs on n vertices have at most ⌊n²/4⌋ edges, achieved by the complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "Mantel's theorem",
+      "Ramsey theory",
+      "Extremal graph theory"
+    ],
+    "prerequisites": [
+      "Negation of existential",
+      "K₃-free graphs"
+    ]
+  },
+  {
+    "id": "ann-degree-defs",
+    "proofId": "erdos-134",
+    "type": "definition",
+    "range": {
+      "startLine": 65,
+      "endLine": 77
+    },
+    "title": "Vertex Degree and Maximum Degree",
+    "content": "**vertexDegree(G, v):** The number of neighbors of v, computed as `(G.neighborFinset v).card`.\n\n**maxDegree(G):** The maximum degree over all vertices, computed as the supremum of vertexDegree over `Finset.univ`. The conjecture requires maxDegree(G) < n^{1/2-ε}, a subpolynomial bound relative to the vertex count.",
+    "mathContext": "`vertexDegree (G : SimpleGraph V) (v : V) : ℕ := (G.neighborFinset v).card` uses `SimpleGraph.neighborFinset` which requires `[DecidableRel G.Adj]` — here inferred from `[DecidableEq V]`. Both `vertexDegree` and `maxDegree` are `noncomputable` since `neighborFinset` depends on classical decidability. `maxDegree` uses `Finset.sup Finset.univ (fun v => vertexDegree G v)` — the supremum over the universal finite set, which returns 0 (⊥) for empty types.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kővári-Sós-Turán theorem",
+      "Degree sequence",
+      "neighborFinset",
+      "Finset.sup"
+    ],
+    "prerequisites": [
+      "SimpleGraph.neighborFinset",
+      "Finset.card",
+      "Finset.sup"
+    ]
+  },
+  {
+    "id": "ann-diameter-2",
+    "proofId": "erdos-134",
+    "type": "definition",
+    "range": {
+      "startLine": 79,
+      "endLine": 99
+    },
+    "title": "Paths and Diameter at Most 2",
+    "content": "**hasPathOfLength(G, u, v, k):** There exists a walk of length exactly k from u to v.\n\n**hasDiameter2(G):** Every pair of distinct vertices is connected by a path of length 1 (adjacent) or 2 (common neighbor). This is equivalent to requiring the graph's diameter is at most 2.\n\n**edgeCount(G):** The total number of edges, computed as `G.edgeFinset.card`.",
+    "mathContext": "`hasPathOfLength (G : SimpleGraph V) (u v : V) (k : ℕ) : Prop := ∃ (p : G.Walk u v), p.length = k` uses `SimpleGraph.Walk` — an inductive type of paths with `Walk.length` counting edges. `hasDiameter2` requires `∀ u v, u ≠ v → hasPathOfLength G u v 1 ∨ hasPathOfLength G u v 2` — either directly adjacent (length 1) or connected via a common neighbor (length 2). `edgeCount` uses `G.edgeFinset.card` where `edgeFinset` is the finite set of `Sym2 V` elements corresponding to edges. All three are `noncomputable`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Graph diameter",
+      "SimpleGraph.Walk",
+      "Common neighbors",
+      "edgeFinset"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Walk",
+      "Walk.length",
+      "Sym2",
+      "edgeFinset"
+    ]
+  },
+  {
+    "id": "ann-extension-defs",
+    "proofId": "erdos-134",
+    "type": "definition",
+    "range": {
+      "startLine": 101,
+      "endLine": 128
+    },
+    "title": "Graph Extension Framework",
+    "content": "**isSupergraph(G, G'):** Every edge of G is also in G' — the extension preserves all original edges.\n\n**addedEdges(G, G'):** The number of new edges, computed as `(G'.edgeFinset \\ G.edgeFinset).card`.\n\n**extendableToDiameter2WithBudget(G, k):** The central predicate — ∃ G' ⊇ G with IsTriangleFree(G'), hasDiameter2(G'), and addedEdges(G, G') ≤ k. This captures the precise question: can we achieve diameter 2 while staying triangle-free within a given edge budget?",
+    "mathContext": "`isSupergraph (G G' : SimpleGraph V) : Prop := ∀ u v, G.Adj u v → G'.Adj u v` encodes edge containment as a pointwise implication on adjacency. `addedEdges` uses `Finset.sdiff` (set difference `\\`) on edge finsets. `extendableToDiameter2WithBudget (G : SimpleGraph V) (k : ℕ) : Prop` packages the four conditions (supergraph, triangle-free, diameter-2, budget) in a single existential over `G' : SimpleGraph V`. The budget bound `addedEdges G G' ≤ k` uses `≤` on ℕ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Supergraph",
+      "Edge budget",
+      "Finset.sdiff",
+      "Graph augmentation"
+    ],
+    "prerequisites": [
+      "edgeFinset",
+      "Finset.sdiff",
+      "Finset.card",
+      "Existential quantification"
+    ]
+  },
+  {
+    "id": "ann-conjecture",
+    "proofId": "erdos-134",
+    "type": "concept",
+    "range": {
+      "startLine": 130,
+      "endLine": 147
+    },
+    "title": "Erdős-Gyárfás Conjecture",
+    "content": "**erdosGyarfasConjecture:** The formal statement quantifies over all ε, δ > 0 and asserts existence of N such that for all n ≥ N, all triangle-free graphs G on n vertices with maxDegree(G) < n^{1/2-ε} are extendable with budget ⌊δn²⌋.\n\nThe formalization uses `Fintype.card V` for n, `Real.rpow` for the exponent 1/2 - ε, and `Nat.floor` for converting the real budget δn² to a natural number. The nested universal quantifiers (ε, δ, V, G) make this a Π₃ statement in arithmetic.",
+    "mathContext": "`erdosGyarfasConjecture : Prop` is a `def` (not axiom) quantifying `∀ ε δ : ℝ, ε > 0 → δ > 0 → ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V], Fintype.card V ≥ N → ...`. The degree bound uses `(maxDegree G : ℝ) < (Fintype.card V : ℝ) ^ ((1 : ℝ) / 2 - ε)` with `ℕ → ℝ` coercion and `Real.rpow` (via `^` notation). The edge budget uses `⌊δ * (Fintype.card V : ℝ) ^ 2⌋₊` — the natural number floor `Nat.floor` applied to the real expression.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Phase transitions",
+      "Real.rpow",
+      "Nat.floor"
+    ],
+    "prerequisites": [
+      "Real exponentiation",
+      "Floor function",
+      "Type-polymorphic quantification"
+    ]
+  },
+  {
+    "id": "ann-weak-result",
+    "proofId": "erdos-134",
+    "type": "concept",
+    "range": {
+      "startLine": 149,
+      "endLine": 167
+    },
+    "title": "Erdős-Gyárfás Original Weak Result",
+    "content": "**erdos_gyarfas_weak:** The conjecture holds when maxDegree(G) ≤ C · log n / log log n for any constant C. This is exponentially weaker than n^{1/2-ε} — it only handles extremely sparse graphs where the maximum degree grows as slowly as an iterated logarithm.\n\nThe gap between log n / log log n and n^{1/2-ε} represents a vast improvement achieved by Alon's probabilistic methods.",
+    "mathContext": "`axiom erdos_gyarfas_weak` takes `C : ℝ, C > 0` and `δ : ℝ, δ > 0`, then asserts the extension result under the weaker bound `(maxDegree G : ℝ) ≤ C * Real.log n / Real.log (Real.log n)`. Uses `let n := Fintype.card V` for readability. The degree bound `C · log n / log log n` uses `Real.log` (natural logarithm). This axiom is not used in the main proof — it serves as historical context.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Iterated logarithm",
+      "Real.log",
+      "Historical results"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "Asymptotic comparison"
+    ]
+  },
+  {
+    "id": "ann-simonovits",
+    "proofId": "erdos-134",
+    "type": "concept",
+    "range": {
+      "startLine": 169,
+      "endLine": 183
+    },
+    "title": "Simonovits Counterexample",
+    "content": "**simonovits_counterexample:** For large enough C, there exist triangle-free graphs with maxDegree ≤ C√n that cannot be extended to diameter-2 triangle-free with δn² edges for any δ. This shows the exponent 1/2 is sharp — the ε gap below 1/2 in the conjecture is necessary.\n\nThe counterexample demonstrates a phase transition: below √n degree, extension is cheap; at √n, it becomes expensive.",
+    "mathContext": "`axiom simonovits_counterexample` asserts `∃ C : ℝ, C > 0 ∧ ∀ δ : ℝ, δ > 0 → ∀ᶠ (n : ℕ) in Filter.atTop, ...`. The `∀ᶠ ... in Filter.atTop` idiom (from `Mathlib.Order.Filter.AtTopBot`) means 'for all sufficiently large n'. The degree bound uses `C * Real.sqrt n` instead of `rpow` for the exact threshold. The existential `∃ (V : Type*) (_ : Fintype V) (_ : DecidableEq V)` constructs the vertex type witnessing the counterexample.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Phase transition",
+      "Sharp threshold",
+      "Filter.atTop",
+      "Real.sqrt"
+    ],
+    "prerequisites": [
+      "Filter.eventually",
+      "Filter.atTop",
+      "Existential over types"
+    ]
+  },
+  {
+    "id": "ann-alon-theorem",
+    "proofId": "erdos-134",
+    "type": "concept",
+    "range": {
+      "startLine": 185,
+      "endLine": 213
+    },
+    "title": "Alon's Theorem and Its Consequence",
+    "content": "**alon_theorem:** For any ε > 0, there exist C > 0 and N such that for n ≥ N, any triangle-free G with maxDegree < n^{1/2-ε} extends to diameter-2 triangle-free with ≤ ⌈Cn^{2-ε}⌉ edges. This is MUCH stronger than δn² since n^{2-ε}/n² = n^{-ε} → 0.\n\n**alon_implies_conjecture:** States that alon_theorem implies erdosGyarfasConjecture. Axiomatized rather than proved, though the implication is straightforward: O(n^{2-ε}) ≤ δn² for large n.",
+    "mathContext": "`axiom alon_theorem` asserts `∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V], ...` with budget `⌈C * (n : ℝ) ^ (2 - ε)⌉₊` using `Nat.ceil` (ceiling function `⌈·⌉₊`). `axiom alon_implies_conjecture : erdosGyarfasConjecture` directly asserts the conjecture as true, used by `erdos_134_solved`. The implication from `alon_theorem` to the conjecture requires showing `⌈Cn^{2-ε}⌉₊ ≤ ⌊δn²⌋₊` for large n, which follows from `n^{2-ε}/n² = n^{-ε} → 0`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Probabilistic method",
+      "Nat.ceil",
+      "Asymptotic domination",
+      "Quantitative improvement"
+    ],
+    "prerequisites": [
+      "Nat.ceil",
+      "Real.rpow",
+      "Asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-critical-exponent",
+    "proofId": "erdos-134",
+    "type": "insight",
+    "range": {
+      "startLine": 215,
+      "endLine": 225
+    },
+    "title": "Critical Exponent 1/2",
+    "content": "**Phase Transition at n^{1/2}:** The exponent 1/2 marks a sharp threshold:\n- Below 1/2 - ε: Extension possible with o(n²) edges (Alon)\n- At 1/2 with large constant: Extension may need Ω(n²) edges (Simonovits)\n\nThis phase transition is reminiscent of other thresholds in extremal graph theory. The ε gap is essential — it provides the 'room' for probabilistic arguments to work.",
+    "mathContext": "Commentary section (no Lean declarations). The threshold at n^{1/2} arises because in a triangle-free graph, each vertex's neighborhood is an independent set. With degree d, adding an edge to a neighbor of v risks creating a triangle only if both endpoints are adjacent to v. When d ≈ √n, the probability of triangle creation during random extension transitions from negligible to significant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Phase transitions in graphs",
+      "Sharp thresholds",
+      "Bollobás threshold phenomena"
+    ],
+    "prerequisites": [
+      "Threshold phenomena",
+      "Extremal graph theory"
+    ]
+  },
+  {
+    "id": "ann-common-neighbor",
+    "proofId": "erdos-134",
+    "type": "definition",
+    "range": {
+      "startLine": 227,
+      "endLine": 245
+    },
+    "title": "Common Neighbor Property and Diameter Equivalence",
+    "content": "**commonNeighborProperty(G):** Every pair of non-adjacent vertices has a common neighbor w with w ≠ u, w ≠ v, G.Adj u w, and G.Adj w v.\n\n**diameter2_equiv** (axiom): For connected graphs, hasDiameter2(G) ↔ commonNeighborProperty(G). This equivalence converts the global diameter condition into a local condition that's easier to verify during graph extension.",
+    "mathContext": "`commonNeighborProperty (G : SimpleGraph V) : Prop := ∀ u v : V, u ≠ v → ¬G.Adj u v → ∃ w : V, w ≠ u ∧ w ≠ v ∧ G.Adj u w ∧ G.Adj w v`. The four-way conjunction on the witness w ensures a proper common neighbor (not equal to either endpoint, adjacent to both). `axiom diameter2_equiv (G : SimpleGraph V) (hConn : G.Connected) : hasDiameter2 G ↔ commonNeighborProperty G` requires the hypothesis `G.Connected` (from `SimpleGraph.Connected`) since disconnected graphs have infinite diameter.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "SimpleGraph.Connected",
+      "Iff",
+      "Neighborhood intersection"
+    ],
+    "prerequisites": [
+      "Graph connectivity",
+      "Biconditional",
+      "Neighborhood intersection"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "erdos-134",
+    "type": "concept",
+    "range": {
+      "startLine": 247,
+      "endLine": 270
+    },
+    "title": "Main Results: erdos_134_solved and erdos_134_main",
+    "content": "**erdos_134_solved** (PROVED): Derives `erdosGyarfasConjecture` directly from `alon_implies_conjecture`. A one-line proof establishing the conjecture is true.\n\n**erdos_134_main** (PROVED): Packages both results as a conjunction:\n1. The conjecture is true (from alon_implies_conjecture)\n2. The stronger O(n^{2-ε}) bound (from alon_theorem)\n\nThe proof uses `constructor` to split the conjunction, then `obtain ⟨C, hC, N, hN⟩ := alon_theorem ε hε` to destructure Alon's theorem and extract the constants. These are the only two proved (non-axiom) theorems in the file.",
+    "mathContext": "`theorem erdos_134_solved : erdosGyarfasConjecture := alon_implies_conjecture` is a direct application of the axiom — a one-term proof. `theorem erdos_134_main` proves `erdosGyarfasConjecture ∧ (∀ ε : ℝ, ε > 0 → ∃ C N, ...)` via `constructor` (splits `And`), then `exact alon_implies_conjecture` for the left branch and `obtain ⟨C, hC, N, hN⟩ := alon_theorem ε hε` followed by `exact ⟨C, N, hN⟩` for the right branch. The `obtain` tactic destructures the existential from `alon_theorem`, discarding the positivity proof `hC` since it's not needed for the final statement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "And.intro",
+      "obtain destructuring",
+      "constructor tactic",
+      "Axiom application"
+    ],
+    "prerequisites": [
+      "And.intro",
+      "obtain",
+      "Existential elimination"
+    ]
+  }
+]

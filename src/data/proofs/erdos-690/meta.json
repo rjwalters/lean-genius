@@ -1,0 +1,166 @@
+{
+  "id": "erdos-690",
+  "title": "Unimodality of k-th Prime Factor Density",
+  "slug": "erdos-690",
+  "description": "Is d_k(p), the density of integers whose k-th smallest prime factor is p, unimodal in p? Cambie: YES for k ≤ 3, NO for 4 ≤ k ≤ 20. Erdős expected NO.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/690",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos690Problem.lean",
+    "tags": [
+      "erdos",
+      "number theory",
+      "prime factors",
+      "density",
+      "unimodality",
+      "analytic number theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 690,
+    "erdosUrl": "https://erdosproblems.com/690",
+    "erdosProblemStatus": "open",
+    "axiomCount": 8,
+    "lineCount": 171,
+    "assumptions": "8 axioms: kthPrimeFactorDensity (density function), d1_at_2/d1_at_3/d1_at_5 (density values), d1_strictly_decreasing (classical), cambie_unimodal_k2/k3 (Cambie 2025), cambie_not_unimodal (4<=k<=20). d1_unimodal PROVED from d1_strictly_decreasing.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11,
+    "definitionCount": 3
+  },
+  "sections": [
+    {
+      "id": "file-header",
+      "title": "Problem Statement and Background",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Module docstring introducing Problem #690: is $d_k(p)$ unimodal in $p$? Cites Cambie's resolution (YES for $k \\le 3$, NO for $k \\ge 4$) and Erdős's observations on typical vs. modal $k$-th prime factors.",
+      "mathContext": "Module docstring introducing Problem #690: is $d_k(p)$ unimodal in $p$? Cites Cambie's resolution (YES for $k \\le 3$, NO for $k \\ge 4$) and Erdős's observations on typical vs. modal $k$-th prime factors."
+    },
+    {
+      "id": "imports",
+      "title": "Library Imports",
+      "startLine": 21,
+      "endLine": 22,
+      "summary": "Imports Mathlib's prime number API ($\\text{Nat.Prime}$, $\\text{Nat.factors}$) and tactics for defining the $k$-th smallest prime factor via sorted factor lists.",
+      "mathContext": "Mathematical content: Imports Mathlib's prime number API ($\\text{Nat.Prime}$, $\\text{Nat.factors}$) and tactics for defining the $k$-th smallest prime factor via sorted factor lists."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 28,
+      "endLine": 47,
+      "summary": "Defines the $k$-th smallest prime factor via sorted factorization, the level set $A_k(p) = \\{n : p_k(n) = p\\}$, the axiomatized density $d_k(p)$, and unimodality on primes (existence of a peak prime $p^*$).",
+      "mathContext": "Defines the $k$-th smallest prime factor via sorted factorization, the level set $A_k(p) = \\{n : p_k(n) = p\\}$, the axiomatized density $d_k(p)$, and unimodality on primes (existence of a peak prime $p^*$)."
+    },
+    {
+      "id": "cambie-unimodal",
+      "title": "Cambie's Unimodality Results (k ≤ 3)",
+      "startLine": 53,
+      "endLine": 64,
+      "summary": "Cambie (2025) proved $d_k(p)$ is unimodal for $k = 1, 2, 3$. The $k = 1$ case is classical ($d_1$ is strictly decreasing); $k = 2, 3$ require delicate inclusion-exclusion analysis.",
+      "mathContext": "Mathematical content: Cambie (2025) proved $d_k(p)$ is unimodal for $k = 1, 2, 3$. The $k = 1$ case is classical ($d_1$ is strictly decreasing); $k = 2, 3$ require delicate inclusion-exclusion analysis."
+    },
+    {
+      "id": "cambie-non-unimodal",
+      "title": "Cambie's Non-Unimodality (k ≥ 4) and Answer",
+      "startLine": 65,
+      "endLine": 75,
+      "summary": "Cambie proved $d_k(p)$ is NOT unimodal for $4 \\le k \\le 20$, confirming Erdős's expectation. The answer to Problem #690 is **NO**: unimodality fails for $k = 4$, giving a concrete counterexample.",
+      "mathContext": "Mathematical content: Cambie proved $d_k(p)$ is NOT unimodal for $4 \\le k \\le 20$, confirming Erdős's expectation. The answer to Problem #690 is **NO**: unimodality fails for $k = 4$, giving a concrete counterexample."
+    },
+    {
+      "id": "erdos-observations",
+      "title": "Erdős's Observations",
+      "startLine": 81,
+      "endLine": 99,
+      "summary": "The typical $k$-th prime factor is $\\sim e^{e^k}$ (doubly exponential) while the mode of $d_k$ is $\\sim e^{(1+o(1))k}$ (singly exponential). The divisor analogue (non-unimodal) provided heuristic evidence.",
+      "mathContext": "The typical $k$-th prime factor is $\\sim e^{e^k}$ (doubly exponential) while the mode of $d_k$ is $\\sim e^{(1+o(1))k}$ (singly exponential)."
+    },
+    {
+      "id": "special-k1",
+      "title": "Special Case: k = 1",
+      "startLine": 105,
+      "endLine": 120,
+      "summary": "Explicit formula $d_1(p) = (1/p)\\prod_{q < p}(1 - 1/q)$: $d_1(2) = 1/2$, $d_1(3) = 1/6$. The function $d_1$ is strictly decreasing in $p$, hence trivially unimodal with peak at $p = 2$.",
+      "mathContext": "Mathematical content: Explicit formula $d_1(p) = (1/p)\\prod_{q < p}(1 - 1/q)$: $d_1(2) = 1/2$, $d_1(3) = 1/6$. The function $d_1$ is strictly decreasing in $p$, hence trivially unimodal with peak at $p = 2$."
+    },
+    {
+      "id": "summary-theorem",
+      "title": "Complete Summary",
+      "startLine": 121,
+      "endLine": 134,
+      "summary": "Combines all results: $d_k$ unimodal for $k = 1, 2, 3$ and not unimodal for $k = 4$. The threshold is exactly $k = 3/4$: the transition from regular to irregular shape of prime factor densities.",
+      "mathContext": "Mathematical content: Combines all results: $d_k$ unimodal for $k = 1, 2, 3$ and not unimodal for $k = 4$. The threshold is exactly $k = 3/4$: the transition from regular to irregular shape of prime factor densities."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this question in 1979 (paper Er79e) as part of his investigation into the distribution of prime factors. The background involves the Hardy-Ramanujan theorem (1917) that most integers have about log log n prime factors, and the Erdős-Kac theorem (1940) giving the Gaussian distribution of ω(n). Erdős observed that the typical k-th prime factor p_k(n) satisfies log log p_k(n) → k for almost all n, giving p_k(n) ~ exp(exp(k)) — a doubly exponential growth. However, the density d_k(p) peaks at a much smaller prime, around exp((1+o(1))k). This discrepancy between the typical value and the mode suggested subtle behavior. Erdős believed unimodality should fail for large k but could only prove the analogous result for divisors. The question remained open for over 45 years until Cambie (2025, arXiv:2501.10333) resolved it completely for k ≤ 20: unimodal for k ≤ 3, not unimodal for 4 ≤ k ≤ 20. The threshold at k = 3/4 is sharp, and the non-unimodality for k ≥ 4 is believed to persist for all larger k.",
+    "problemStatement": "For fixed $k \\ge 1$, is the function $d_k(p) = \\lim_{N \\to \\infty} \\frac{1}{N}|\\{n \\le N : p_k(n) = p\\}|$ unimodal in the prime $p$? That is, does $d_k$ first increase then decrease along the prime sequence?",
+    "text": "Is d_k(p), the density of integers whose k-th smallest prime factor is p, unimodal in p? Cambie: YES for k ≤ 3, NO for 4 ≤ k ≤ 20. Erdős expected NO.",
+    "proofStrategy": "The formalization defines the k-th smallest prime factor using Mathlib's Nat.factors, axiomatizes the density function d_k(p) and unimodality on primes. Cambie's results are axiomatized for k ≤ 3 (unimodal) and 4 ≤ k ≤ 20 (not unimodal). The answer NO is proved formally from the k = 4 case. Erdős's observations on typical vs. modal behavior and the divisor analogue provide context.",
+    "keyInsights": [
+      "**Sharp threshold at k = 3/4**: Cambie proved $d_k$ is unimodal for $k \\le 3$ and not unimodal for $k \\ge 4$, giving a clean phase transition in the regularity of prime factor densities",
+      "**Typical vs. modal discrepancy**: The typical $k$-th prime factor is $\\sim e^{e^k}$ while the mode of $d_k$ is $\\sim e^{(1+o(1))k}$ — a doubly-exponential vs. singly-exponential gap that explains the subtlety",
+      "**d₁ is explicitly computable**: $d_1(p) = (1/p)\\prod_{q<p}(1-1/q) \\sim e^{-\\gamma}/(p\\log p)$ by Mertens, giving a strictly decreasing (trivially unimodal) density",
+      "**Divisor analogue predicted the answer**: Erdős could prove non-unimodality for the $k$-th smallest divisor directly, providing strong heuristic evidence for the prime factor case",
+      "**Interference causes non-unimodality**: For $k \\ge 4$, contributions from different prime combinations to $d_k(p)$ interfere, creating local minima that break the single-peaked shape"
+    ],
+    "prerequisites": [
+      "**Prime factorization and ordered prime factors**: The canonical factorization of $n$ into primes via Nat.factors, and the notion of the $k$-th smallest prime factor $p_k(n)$ obtained by sorting the prime factor list. Familiarity with multiplicity in factorizations.",
+      "**Natural density of arithmetic sets**: The asymptotic density $d(A) = \\lim_{N \\to \\infty} |A \\cap [1,N]| / N$ for sets $A \\subseteq \\mathbb{N}$, including when such limits exist and basic inclusion-exclusion for density computations.",
+      "**Hardy-Ramanujan and Erdos-Kac theorems**: The Hardy-Ramanujan theorem (1917) that $\\omega(n) \\sim \\log \\log n$ for almost all $n$, and the Erdos-Kac theorem (1940) giving the Gaussian distribution of $\\omega(n)$ with mean and variance $\\log \\log n$.",
+      "**Mertens' theorems on prime reciprocals**: Mertens' estimates $\\sum_{p \\le x} 1/p = \\log \\log x + M + o(1)$ and $\\prod_{p \\le x}(1 - 1/p) \\sim e^{-\\gamma}/\\log x$, which underlie the explicit formula $d_1(p) = (1/p)\\prod_{q < p}(1 - 1/q)$."
+    ]
+  },
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #690 on the unimodality of k-th prime factor densities. Cambie's 2025 resolution gives a complete answer: YES for k ≤ 3, NO for k ≥ 4. The formalization includes the constructive proof that the answer is NO (via the k = 4 counterexample), Erdős's observations on typical vs. modal behavior, and explicit formulas for d₁.",
+    "implications": "The sharp threshold at k = 3/4 reveals a phase transition in the regularity of prime factor distributions. This connects to broader questions in probabilistic number theory about when additive-function statistics behave smoothly versus exhibiting oscillatory behavior, and to the Erdős-Kac philosophy of treating arithmetic functions as random variables.",
+    "openQuestions": [
+      "Is d_k(p) non-unimodal for ALL k ≥ 4, or only for k ≤ 20 as Cambie verified?",
+      "How many local maxima does d_k have for large k? Does the number of peaks grow with k?",
+      "What is the asymptotic shape of d_k(p) for large k — can it be described by a known distribution?",
+      "Is there a unified analytic explanation for the threshold at k = 3/4?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 171,
+    "axiomCount": 8,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos690Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Erdős (1979): Some unconventional problems in number theory (Er79e)",
+    "Cambie (2025): Unimodality of the k-th prime factor density, arXiv:2501.10333",
+    "Hardy & Ramanujan (1917): The normal number of prime factors of a number n",
+    "Erdős & Kac (1940): The Gaussian law of errors in the theory of additive number theoretic functions",
+    "Mertens (1874): prime reciprocal sum asymptotics",
+    "https://erdosproblems.com/690"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-10",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number theory"
+    },
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number theory"
+    },
+    {
+      "targetId": "erdos-488",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number theory"
+    }
+  ],
+  "sorries": 0
+}

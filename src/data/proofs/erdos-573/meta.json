@@ -1,0 +1,202 @@
+{
+  "id": "erdos-573",
+  "title": "Erdős Problem #573: Extremal Numbers for {C₃, C₄}-free Graphs",
+  "slug": "erdos-573",
+  "description": "Is ex(n; {C₃, C₄}) ~ (n/2)^(3/2)? OPEN. Asks whether forbidding triangles along with 4-cycles gives asymptotic (n/2)^(3/2).",
+  "meta": {
+    "author": "Erdős-Simonovits (problem)",
+    "sourceUrl": "https://erdosproblems.com/573",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos573Problem.lean",
+    "tags": [
+      "erdos",
+      "extremal-graph-theory",
+      "turan",
+      "forbidden-cycles",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 573,
+    "erdosUrl": "https://erdosproblems.com/573",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real number type for asymptotics",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Nat.Basic",
+        "description": "Natural number basics",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of triangle-free and C₄-free predicates",
+      "Definition of extremal function ex(n; {C₃, C₄})",
+      "KST bound documented as commentary; extremal function `exC4 : ℕ → ℕ` is axiomatized (not the bound)",
+      "Erdős-Simonovits equality documented as commentary; extremal function `exC4C5 : ℕ → ℕ` is axiomatized (not the equality)",
+      "Conjecture formalized as asymptotic statement",
+      "Upper and lower bound structure",
+      "Projective plane construction reference"
+    ],
+    "dateAdded": "2026-01-19",
+    "axiomCount": 5,
+    "lineCount": 177,
+    "assumptions": "5 axioms: exC3C4, exC4, exC3C4_le_exC4, exC4C5, exC3C4_lower_bound. 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős and Simonovits and concerns the Turán-type extremal function for graphs forbidding both triangles (C₃) and 4-cycles (C₄). The celebrated Kővári-Sós-Turán theorem from 1954 established that ex(n; C₄) ~ (1/2)n^(3/2). Erdős and Simonovits proved that ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n). This problem asks whether forbidding triangles instead of 5-cycles gives the same (n/2)^(3/2) asymptotic.\n\nThe question is subtle: while ex(n; {C₃, C₄}) ≤ ex(n; C₄) trivially, the conjectured asymptotic (n/2)^(3/2) is smaller than (1/2)n^(3/2) by a factor of √2. This would mean the triangle-free constraint actually reduces the leading constant.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nIs it true that ex(n; {C₃, C₄}) ~ (n/2)^(3/2)?\n\nHere ex(n; F) denotes the maximum number of edges in an n-vertex graph containing no subgraph isomorphic to any graph in F.\n\n**Known bounds:**\n- Upper: ex(n; {C₃, C₄}) ≤ ex(n; C₄) ≤ (1/2)n^(3/2) + O(n)\n- Lower: ex(n; {C₃, C₄}) ≥ c·n^(3/2) for some c > 0",
+    "text": "Is ex(n; {C₃, C₄}) ~ (n/2)^(3/2)? OPEN. Asks whether forbidding triangles along with 4-cycles gives asymptotic (n/2)^(3/2).",
+    "proofStrategy": "The formalization defines the key predicates (triangle-free, C₄-free) and the extremal functions. The extremal functions `exC4` and `exC4C5` are axiomatized as abstract natural number functions; the KST bound `ex(n; C₄) ≤ (1/2)n^(3/2)` and the Erdős-Simonovits equality `ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n)` are documented in docstring commentary only — neither is declared as an axiom or theorem. The conjecture is formalized as an asymptotic statement using ε-δ form. The problem remains OPEN.",
+    "keyInsights": [
+      "**Extremal function:** ex(n; F) = max edges in n-vertex F-free graph",
+      "**KST bound:** ex(n; C₄) ~ (1/2)n^(3/2) is tight",
+      "**The gap:** (n/2)^(3/2) = (1/2√2)n^(3/2), smaller by factor √2",
+      "**Bipartite constructions:** Projective plane incidence graphs are {C₃, C₄}-free",
+      "**Related results:** ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n) is known"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Extremal graph theory (Turán-type problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 45,
+      "endLine": 70,
+      "summary": "Triangle-free, C₄-free, and {C₃, C₄}-free predicates",
+      "mathContext": "Mathematical content: Triangle-free, C₄-free, and {C₃, C₄}-free predicates"
+    },
+    {
+      "id": "edge-counting",
+      "title": "Edge Counting",
+      "startLine": 71,
+      "endLine": 76,
+      "summary": "Edge count for simple graphs",
+      "mathContext": "Mathematical content: Edge count for simple graphs"
+    },
+    {
+      "id": "extremal-function",
+      "title": "Extremal Function",
+      "startLine": 77,
+      "endLine": 94,
+      "summary": "Definition of ex(n; {C₃, C₄}) and ex(n; C₄) with trivial bound",
+      "mathContext": "Formal definition: Definition of ex(n; {C₃, C₄}) and ex(n; C₄) with trivial bound"
+    },
+    {
+      "id": "kst-theorem",
+      "title": "Kővári-Sós-Turán Theorem",
+      "startLine": 95,
+      "endLine": 102,
+      "summary": "KST bound `ex(n; C₄) ≤ (1/2)n^(3/2) + O(n)` documented in docstring commentary only; the bound is NOT declared as an axiom or theorem. This section also contains `axiom exC4C5 : ℕ → ℕ` (the extremal function for {C₄, C₅}-free graphs).",
+      "mathContext": "KST bound (commentary only); `axiom exC4C5 : ℕ → ℕ` declared here"
+    },
+    {
+      "id": "erdos-simonovits",
+      "title": "Erdős-Simonovits Result",
+      "startLine": 103,
+      "endLine": 110,
+      "summary": "The Erdős-Simonovits equality `ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n)` is documented in docstring commentary only; no axiom or theorem is declared in this section.",
+      "mathContext": "Docstring commentary only; no Lean declaration in this section"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 111,
+      "endLine": 121,
+      "summary": "Formal statement: ex(n; {C₃, C₄}) ~ (n/2)^(3/2)",
+      "mathContext": "Mathematical content: Formal statement: ex(n; {C₃, C₄}) ~ (n/2)^(3/2)"
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 122,
+      "endLine": 131,
+      "summary": "Upper and lower bounds on ex(n; {C₃, C₄})",
+      "mathContext": "Bound: Upper and lower bounds on ex(n; {C₃, C₄})"
+    },
+    {
+      "id": "constructions",
+      "title": "Special Constructions",
+      "startLine": 132,
+      "endLine": 143,
+      "summary": "Polarity graphs and projective plane constructions",
+      "mathContext": "Mathematical content: Polarity graphs and projective plane constructions"
+    },
+    {
+      "id": "asymptotic-gap",
+      "title": "The Asymptotic Gap",
+      "startLine": 144,
+      "endLine": 152,
+      "summary": "Gap between C₄-free and {C₃,C₄}-free leading constants",
+      "mathContext": "Mathematical content: Gap between C₄-free and {C₃,C₄}-free leading constants"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 153,
+      "endLine": 177,
+      "summary": "Main theorems: erdos_573 and erdos_573_summary",
+      "mathContext": "Verified: Main theorems: erdos_573 and erdos_573_summary"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #573 remains OPEN. It asks whether ex(n; {C₃, C₄}) ~ (n/2)^(3/2), meaning the extremal number of edges in {C₃, C₄}-free graphs has asymptotic (n/2)^(3/2). While we know ex(n; C₄) ~ (1/2)n^(3/2) from Kővári-Sós-Turán and ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n) from Erdős-Simonovits, the case {C₃, C₄} remains unresolved.",
+    "implications": "This problem probes the fine structure of extremal graph theory. The question of whether the triangle constraint reduces the leading constant (from 1/2 to 1/(2√2)) reveals deep connections between different forbidden subgraph conditions.",
+    "openQuestions": [
+      "Determine the exact asymptotic constant for ex(n; {C₃, C₄})",
+      "Relationship between odd cycle exclusion and even cycle exclusion",
+      "Optimal constructions for {C₃, C₄}-free graphs",
+      "General theory for ex(n; {C_3, C_4, ..., C_{2k}})"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos573",
+    "lineCount": 177,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos573Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1092",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, open"
+    },
+    {
+      "targetId": "erdos-128",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, open"
+    }
+  ],
+  "sorries": 0
+}

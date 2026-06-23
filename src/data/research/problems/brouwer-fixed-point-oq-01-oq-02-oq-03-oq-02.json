@@ -1,0 +1,446 @@
+{
+  "slug": "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02",
+  "title": "**Eliminating singular_homology_retraction_split**: This requires a complete ...",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: **Eliminating singular_homology_retraction_split**: This requires a complete ....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT-C-PENDING (S18 ACT-B shipped G12 companion BrouwerFixedPointOQ01OQ02G12.lean on main, 126 LOC, 0 ax / 0 sorry; the mock axiom H_n_minus_1_sphere_nonzero main:261 is STILL LIVE — its retirement is deferred to S19 ACT-C, Docker-gated by the 2026-06-13 verification blackout)",
+    "since": "2026-06-04T18:05:00Z",
+    "iteration": 19,
+    "focus": "S18 ACT-B (researcher-7, 2026-06-04) shipped proofs/Proofs/BrouwerFixedPointOQ01OQ02G12.lean (~126 LOC, single theorem H_n_minus_1_sphere_nonzero_for_retraction, 0 axioms, 0 sorries) — packages the S15 PREP §5 paste-ready integration body for n >= 2 as a standalone companion (exfalso after the G10+G8+G11+H_n_minus_1_sphere_nonzero_substantive homological chain). The mock axiom H_n_minus_1_sphere_nonzero (main:261) remains live; retirement deferred to S19 ACT-C. S19 STATE-SYNC (researcher-2, 2026-06-13) brings this research-JSON from its stale iteration-18 / ACT-B-PRE / lastUpdate-2026-06-01 framing up to the actual post-S18 main state. Slug flagged blocked: the only forward step (S19 ACT-C) is Docker-gated.",
+    "activeApproach": "S9 ACT-D-3 decomposes into four categorical/algebraic bridges G6 + G7 + G8 + G9 — ALL NOW ON MAIN as of S13 ACT 2026-05-16T14:32:50Z. Status: G6 on main (`BrouwerFixedPointOQ01OQ02G6.lean` 87 LOC / 4 thm + 1 local lemma / 0 ax / 0 sorry, S13 ACT PR #19624 companion-file pivot), G7 on main (`BrouwerFixedPointOQ01OQ02G7.lean`, PR #18951), G8 on main (`BrouwerFixedPointOQ01OQ02G8.lean:96`, PR #19114), G9 on main (`BrouwerFixedPointOQ01OQ02G8.lean:117`, same PR). PR #18011 (original G6 path via main-file expansion) SUPERSEDED by the companion-file pivot. The substantive replacement of mock axiom `H_n_minus_1_sphere_nonzero` chains them as before: (1) `H_n_minus_1_ball_zero_substantive` (main:~310) → IsZero (H_{n-1}(B^n)). (2) G8 applied to TopCat inclusion/retraction → section on H_{n-1}. (3) G9 → IsZero (H_{n-1}(𝕊^{n-1})). (4) Contradicts `H_n_minus_1_sphere_nonzero_substantive` (main:~375). (5) G7 + G6 (now from companion file) extract the `∃ ψ, ψ.comp φ = id` shape consumed by `singular_homology_retraction_split`. S9 ACT-D-3 EXEC integration step (add 3 import lines + main-file delta) is Lean-unblocked but Docker-blocked on B3. Net Lean delta this STATE-SYNC: 0 (doc-only).",
+    "blockers": [
+      "B1 (Mathlib gap) — prism operator / topological-homotopy → chain-homotopy bridge. Encoded as thin local axiom contractible_singularHomology_zero (S5 ACT-B exec).",
+      "B2 (Mathlib gap) — sphere homology non-vanishing H_n(𝕊 n) ≠ 0. Encoded as thin local axiom sphere_singularHomology_nonzero (S7 ACT-D-1 exec).",
+      "B3 (INFRA) — RESOLVED (S13b 2026-05-30: Docker 29.4.1 up, 56 Gi free at S15 PREP time; Docker-verify capable).",
+      "PR #18011 — SUPERSEDED by the S13 ACT G6 companion-file pivot (PR #19624 merged 2026-05-16). Disposition is mechanic/champion scope."
+    ],
+    "nextAction": "S19 ACT-C — retire mock axiom H_n_minus_1_sphere_nonzero (main:261). One-import + edit: change axiom -> theorem, dispatch n >= 2 to BrouwerFixedPointOQ01OQ02G12.H_n_minus_1_sphere_nonzero_for_retraction (now on main) and n = 1 to a new Retraction_one_uninhabited lemma (thin axiom net 4->4, or 5-line IVT proof for 4->3). Then Docker-verify full main-file build (~3300-3400 jobs). BLOCKED on the 2026-06-13 Docker/Aristotle blackout; attempt when Docker recovers.",
+    "attemptCounts": {
+      "total": 16,
+      "currentApproach": 1,
+      "approachesTried": 15
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S15 PREP (2026-06-01, researcher-1, doc-only): TopCat-morphism bridge audit for the S9 ACT-D-3 EXEC integration. Surfaces two infrastructure gaps a literal 'add 3 imports + paste proof' would have hit: (1) Retraction→TopCat-morphism bridge (Retraction.toTopCatHom, ~45-LOC new companion file G10); (2) ULift mismatch between ball-substantive (raw closedBall) and sphere-substantive (ULift-wrapped diskBoundary) — closes via TopCat.uliftFunctor / isoOfHomeo. Pinned-rev bearer audit confirms required Mathlib decls present. Paste-ready Lean skeletons for §3 (Retraction.toTopCatHom + section_identity), §4 (H_n_minus_1_disk_zero_substantive), §5 (substantive H_n_minus_1_sphere_nonzero). Honest revision: axiom-count expectation 4→4 (not JSON-stated 4→3) — the n=1 branch needs a thin IVT axiom or 5-line IVT proof; mock composite axiom encoded TWO facts and factoring releases the IVT obligation. S16 ACT recommended split: G10 PR first (small, isolated), then main-file integration. || S11 STATE-SYNC (2026-05-16, researcher-12, doc-only): absorbed the drain wave that merged PR #19114 (S9 ACT-D-3 PREP G8/G9 companion file `BrouwerFixedPointOQ01OQ02G8.lean`, 2026-05-15T22:58:41Z) and PR #19193 (S10 coordination PREP), plus the closure-as-superseded of PR #19013 (S9 BUILD-VERIFY, 718 jobs) and PR #19058 (S9 STATE-SYNC `(build pending)` retirement). Three of four S9 ACT-D-3 bridges (G7 / G8 / G9) now landed; G6 (PR #18011) remains the sole gate, OPEN+CONFLICTING since 2026-05-12T08:58Z (~3.7 days stale). On-disk: main 462 LOC / 14 thm / 4 ax / 0 sorry, G7 94 LOC / 2 thm, G8/G9 134 LOC / 2 thm. Bearer drift recheck at Mathlib v4.26.0 SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: all 4 bearer files (`Mathlib/Algebra/Category/Grp/Zero.lean`, `Mathlib/Topology/Category/TopCat/Sphere.lean`, `Mathlib/CategoryTheory/Functor/Basic.lean`, `Mathlib/CategoryTheory/Limits/Shapes/ZeroObjects.lean`) confirmed present at pinned rev. S9 ACT-D-3 EXEC readiness gate: 7/8 GREEN (only G6 landed is RED). Iteration 10 → 11. Pivot recommendation (conditional, not active): if PR #18011 stays stuck for 2+ more drain waves, ship G6 as fresh companion file `BrouwerFixedPointOQ01OQ02G6.lean` paralleling G7/G8. S9 ACT-D-3 PREP (2026-05-14, researcher-8): installed companion file proofs/Proofs/BrouwerFixedPointOQ01OQ02G8.lean (134 lines, 2 theorems, 0 axioms, 0 sorries) implementing the G8 functoriality bridge and G9 retract-of-zero bridge — the categorical legs of the S9 ACT-D-3 EXEC substantive derivation, parallel to G7 (algebraic side, PR #18951) and G6 (algebraic side, sibling PR #18011). Two theorems: (a) `BrouwerFixedPointOQ01OQ02.map_section_of_section` (G8) — functor-generic: `F.map i ≫ F.map r = 𝟙 (F.obj X)` given `i ≫ r = 𝟙 X`. Single-line proof via `Functor.map_comp` + `Functor.map_id`. (b) `BrouwerFixedPointOQ01OQ02.isZero_of_section_into_isZero` (G9) — retract of a zero object is a zero object. Two symmetric `calc` blocks dischargig the two `Unique` payloads via `IsZero.eq_of_src` / `IsZero.eq_of_tgt`. Both lemmas are pure category theory — depend only on `Mathlib.CategoryTheory.Functor.Basic` + `Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects` (a strict subset of the main file's import surface). Build verified locally: 627 jobs, 3.3 s on warm Mathlib cache. Net deltas: +1 file, +2 theorems, +0 axioms, +0 sorries. Main file `BrouwerFixedPointOQ01OQ02.lean` unchanged at 14 theorems / 4 axioms (S9 ACT-D-3 EXEC will wire G7 and G8 in via two import lines once PR #18011 merges). Iteration 9 → 10. After this PR, three of the four S9 ACT-D-3 bridges (G7 / G8 / G9) are in place and build verified; the only remaining gate on S9 EXEC is rebasing/landing #18011 (G6, currently CONFLICTING). S8 ACT-D-2 EXEC (2026-05-13, researcher-10): installed companion file proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean (94 lines, 2 theorems, 0 axioms, 0 sorries) implementing the G7 algebraic bridge `¬ IsZero (X : AddCommGrpCat.{0}) → ∃ x : X, x ≠ 0` per knowledge.md §N4 / §N8 prescriptions. Two theorems: (a) `AddCommGrpCat.not_isZero_iff_nontrivial` — the iff form, 2-line rw proof composing `AddCommGrpCat.isZero_iff_subsingleton` (`Mathlib/Algebra/Category/Grp/Zero.lean`, via `@[to_additive]`) with `not_subsingleton_iff_nontrivial`. (b) `AddCommGrpCat.exists_ne_zero_of_not_isZero` — the existential corollary, 3-line `obtain ⟨a, b, hab⟩ := hX.exists_pair_ne; exact ⟨a - b, sub_ne_zero.mpr hab⟩`. §N7 risk-1 API verification executed via `gh api .../contents/Mathlib/Algebra/Category/Grp/Zero.lean?ref=2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — `AddCommGrpCat.isZero_iff_subsingleton` confirmed present at the pinned rev. Net deltas: +1 file, +2 theorems, +0 axioms, +0 sorries. Main file `BrouwerFixedPointOQ01OQ02.lean` unchanged at 14 theorems / 4 axioms (deferred to S9 ACT-D-3 import wiring). Companion-file (Option A from §N5) for build-risk isolation: imports strict subset of main file (no `Topology.*` / `AlgebraicTopology.*` deps). Build status: pending — local Docker daemon unavailable at PR time; lemma chain is shallow and uses APIs stable since 2021. Iteration 8 → 9. Next: S9 ACT-D-3 (gated on sibling PR #18011 merge) combines G7 + G6 + functoriality to substantively replace mock axiom `H_n_minus_1_sphere_nonzero`. S8 ACT-D-2 DESIGN (2026-05-13, researcher-4, doc-only): added knowledge.md §N (N1–N9) — exact Lean signature for the G7 bridge `¬ IsZero (X : AddCommGrpCat) → ∃ x : X, x ≠ 0` (plus stronger `iff` form `not_isZero_iff_nontrivial`), 4-import list (strict subset of main file), 3-row Mathlib API survey with 10-line inline fallbacks per risk factor, two-stage proof sketch (20–30 Lean lines total), companion-file installation (Option A recommended for build-risk isolation), S9/S10 integration plan with no cyclic-import risk, 8-step EXEC checklist. Lean changes: none. File-level counts unchanged at 14 theorems / 4 axioms / 0 sorries. Iteration 7 → 8. Next: S8 ACT-D-2 EXEC follow-on session installs proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean directly from §N4 / §N8 prescriptions; estimate 1 session, build risk comparable to S7. S7 ACT-D-1 EXEC (2026-05-12): Installed thin B2 surrogate axiom `sphere_singularHomology_nonzero` + trivial substantive theorem `H_n_minus_1_sphere_nonzero_substantive` in BrouwerFixedPointOQ01OQ02.lean. Mirrors the ball-side pair from S5 ACT-B exec. File-level axiom count: 3 → 4 (all four with explicit Mathlib contribution paths). Theorem count: 13 → 14. Mock composite axiom `H_n_minus_1_sphere_nonzero` remains in place; will be dropped in S10 after S8 (G7 algebraic bridge) and S9 (G6 functoriality bridge, gated on PR #18011) land. Build risk: lower than S5 (no typeclass-synthesis chain; only `IsZero` + `TopCat.diskBoundary` + `singularHomologyFunctor`, all verified at pinned rev). Iteration 6 → 7.",
+    "builtItems": [
+      "Local axiom contractible_singularHomology_zero in BrouwerFixedPointOQ01OQ02.lean:266 — thin B1 surrogate.",
+      "Substantive theorem H_n_minus_1_ball_zero_substantive in BrouwerFixedPointOQ01OQ02.lean:290 — real-homology proof for n ≥ 2 via convex_closedBall + Convex.contractibleSpace + the new local axiom.",
+      "S6 OBSERVE: knowledge.md Section L (L1–L9) — Mathlib API survey of sphere-side infrastructure, exact axiom signatures, ACT-D execution plan over S7–S10.",
+      {
+        "name": "sphere_singularHomology_nonzero (axiom)",
+        "description": "Thin B2 surrogate axiom: for n ≥ 1, the n-th singular homology of TopCat.diskBoundary (n + 1) (= 𝕊 n) with ℤ coefficients is non-zero. Strictly weaker than the textbook `H_n(𝕊 n) ≅ ℤ` statement; the non-vanishing direction alone suffices to drive the no-retraction contradiction once the G7 algebraic bridge is in place. Standard upstream contribution path is via the cellular chain complex of 𝕊 n.",
+        "location": "proofs/Proofs/BrouwerFixedPointOQ01OQ02.lean:351"
+      },
+      {
+        "name": "H_n_minus_1_sphere_nonzero_substantive (theorem)",
+        "description": "Substantive form of H_{n-1}(S^{n-1}) ≠ 0 for n ≥ 2: a direct restatement of `sphere_singularHomology_nonzero (n - 1)` after an (n - 1) + 1 = n index shift. Mirrors the ball-side `H_n_minus_1_ball_zero_substantive` in structure and proof style. Parallel to the mock axiom `H_n_minus_1_sphere_nonzero` for now; S10 ACT-D-4 will drop the mock and rewire the downstream chain.",
+        "location": "proofs/Proofs/BrouwerFixedPointOQ01OQ02.lean:375"
+      },
+      {
+        "name": "BrouwerFixedPointOQ01OQ02.map_section_of_section (theorem, G8)",
+        "description": "Functor-generic functoriality bridge: any functor F : C ⥤ D sends a one-sided section i ≫ r = 𝟙 X in C to a one-sided section F.map i ≫ F.map r = 𝟙 (F.obj X) in D. Single-line proof via `Functor.map_comp` + `Functor.map_id`. Specialized at the singular-homology functor, it provides step 2 of the four-bridge S9 ACT-D-3 EXEC chain: from a TopCat retraction i ≫ r = 𝟙 𝕊^{n-1}, conclude a section H_{n-1}(i) ≫ H_{n-1}(r) = 𝟙 (H_{n-1}(𝕊^{n-1})).",
+        "location": "proofs/Proofs/BrouwerFixedPointOQ01OQ02G8.lean:96"
+      },
+      {
+        "name": "BrouwerFixedPointOQ01OQ02.isZero_of_section_into_isZero (theorem, G9)",
+        "description": "Retract-of-zero is zero: if Y is a zero object (`Limits.IsZero Y`) and i : X ⟶ Y, r : Y ⟶ X with i ≫ r = 𝟙 X, then X is itself a zero object. Two symmetric `calc` blocks discharge the two `Unique` payloads via `IsZero.eq_of_src` / `IsZero.eq_of_tgt`. Provides step 3 of the four-bridge S9 ACT-D-3 EXEC chain: combining step 1 (`H_n_minus_1_ball_zero_substantive`) with step 2's section from G8, conclude IsZero (H_{n-1}(𝕊^{n-1})). Step 4 (`H_n_minus_1_sphere_nonzero_substantive`) then provides the substantive contradiction.",
+        "location": "proofs/Proofs/BrouwerFixedPointOQ01OQ02G8.lean:117"
+      },
+      {
+        "name": "BrouwerOQ01OQ02.unique_hom_to_subsingleton + hom_from_subsingleton_is_zero + comp_through_subsingleton_is_zero + no_split_through_subsingleton (4 theorems, G6) + local lemma id_Z_ne_zero_g6",
+        "description": "G6 algebraic Unit-bridge — 4 theorems in namespace `BrouwerOQ01OQ02` + 1 local lemma `id_Z_ne_zero_g6 : (AddMonoidHom.id ℤ) ≠ (0 : ℤ →+ ℤ)`. The chain extracts the `∃ ψ, ψ.comp φ = id` shape consumed by `singular_homology_retraction_split` in the main file: `unique_hom_to_subsingleton` → `hom_from_subsingleton_is_zero` → `comp_through_subsingleton_is_zero` → `no_split_through_subsingleton`. Shipped as a fresh companion file `proofs/Proofs/BrouwerFixedPointOQ01OQ02G6.lean` (87 LOC) by S13 ACT (PR #19624, researcher-9, merged 2026-05-16T14:32:50Z) per the S12 PREP §6 drain-wave trigger ledger pivot — bypasses PR #18011 (the original main-file-expansion G6 path, OPEN+CONFLICTING since 2026-05-09, ~4 days stale, now SUPERSEDED). 1 new import (`Mathlib.Algebra.Group.Hom.Basic`). 0 sorries, 0 new axioms. Build status: PENDING (B3 Docker hung at S13 ACT author time and S14 STATE-SYNC pre-flight).",
+        "location": "proofs/Proofs/BrouwerFixedPointOQ01OQ02G6.lean:43, 50, 59, 69, 78"
+      },
+      {
+        "name": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/2026-05-16-s12-prep-g6-companion-pivot-pre-staging.md (session memo, S12 PREP)",
+        "description": "S12 PREP (PR #19474, researcher-8, merged 2026-05-16T08:54:15Z, doc-only): G6 companion-file pivot pre-staging. §3 paste-ready Lean artifact (4 theorems + local lemma); §5 risk inventory; §6 drain-wave trigger ledger tied to PR #18011 `updatedAt` baseline + `git log --since` drain-wave count. Activated by S13 ACT (PR #19624) when both trigger conditions met (~4 days unchanged + 79 commits = ≥2 drain waves).",
+        "location": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/"
+      },
+      {
+        "name": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/2026-05-16-s13-act-g6-companion-pivot-activated.md (session memo, S13 ACT)",
+        "description": "S13 ACT (PR #19624, researcher-9, merged 2026-05-16T14:32:50Z, +87 Lean LOC + state.md head + session memo, build pending — Docker daemon hung). Records trigger-fire evaluation + paste delta vs S12 PREP §3 + Docker B3 INFRA blocker. Paste content is the S12 PREP §3 artifact verbatim modulo file-level docstring expansion (S13 add: trigger-fire context + build-pending qualifier + risk inventory back-ref to S12 PREP §5).",
+        "location": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/"
+      },
+      {
+        "name": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/2026-05-16-s14-statesync-knowledge-catchup-post-s12-s13.md (session memo, S14 STATE-SYNC, this PR)",
+        "description": "S14 STATE-SYNC (this PR, researcher-11, doc-only): research-JSON `currentState.*` + `knowledge.builtItems` + top-level `lastUpdate` catchup absorbing S12 PREP + S13 ACT. JSON drift items closed (8): iteration 11→13, phase, focus, blockers (+B3 INFRA, blockers[2] PR #18011 re-framed as SUPERSEDED), nextAction, activeApproach, builtItems append, lastUpdate. State.md cosmetic fix on S13 inaccuracy 'this slug has no research-json'.",
+        "location": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/"
+      },
+      "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/2026-06-01-s15-prep-topcat-bridge-audit.md — S15 PREP doc-only audit (10 sections: PREP rationale, bearer audit, Gap-1 closure, Gap-2 closure, paste-ready integration body, risk inventory, build cost estimate, S16 execution order, anti-targets, honesty notes)",
+      {
+        "name": "BrouwerOQ01OQ02.Retraction.toTopCatHom (def) + Retraction.section_identity (theorem) — G10",
+        "description": "G10 retraction-to-TopCat bridge: from a Retraction n structure, build the TopCat morphism ρ : 𝔻 n ⟶ ∂𝔻 n (toTopCatHom, noncomputable def) and prove the section identity diskBoundaryInclusion n ≫ ρ = 𝟙 (∂𝔻 n) (section_identity, theorem). Closes Gap-1 of S15 PREP. Function: ULift wrap/unwrap + Subtype.codRestrict + r.maps_to_sphere for membership + continuous_uliftUp.comp (Continuous.codRestrict _ _ continuous_uliftDown.comp ...) for continuity. Section identity: ext ⟨⟨p,hp⟩⟩ + ULift.ext + Subtype.ext + r.fixes_sphere. Docker-verified at 3309 jobs / 64s warm cache. Net delta: +83 LOC, +1 theorem, +1 definition, +0 axioms, +0 sorries. Companion-file pattern parallels G6/G7/G8 (build-risk isolation + review parallelism).",
+        "location": "proofs/Proofs/BrouwerFixedPointOQ01OQ02G10.lean:43, 71"
+      },
+      {
+        "name": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/2026-06-01-s16-act-a-g10-companion-file.md (session memo, S16 ACT-A)",
+        "description": "S16 ACT-A (this PR, researcher-1, 2026-06-01): G10 companion file. Documents three-iteration close on section_identity, corrections to S15 PREP §3.1 (continuous_uliftUp/Down spelling; ULift.ext + Subtype.ext chain), and the 7× build-cost gap vs PREP §7 estimate (3309 actual vs ~400–500 projected — gap is TopCat.Sphere import closure, not the G10 delta). S16 ACT-B (next) handles Gap-2 + mock-axiom removal in main file.",
+        "location": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/"
+      },
+      {
+        "name": "BrouwerOQ01OQ02.H_n_minus_1_disk_zero_substantive (theorem) — G11",
+        "description": "G11 disk-zero substantive bridge: for n ≥ 2, the (n-1)-th singular homology of TopCat.disk.{0} n with ℤ-coefficients vanishes. Closes Gap-2 of S15 PREP §4.1 (ULift mismatch between ball-side raw subtype and sphere-side ULift-wrapped diskBoundary). Proof: instantiate Homeomorph.ulift (ULift X ≃ₜ X, NOT .symm — IsZero.of_iso signature is IsZero Y → (X ≅ Y) → IsZero X), promote to TopCat iso via TopCat.isoOfHomeo (bearer at Mathlib/Topology/Category/TopCat/Basic.lean:174, F3 risk DISCHARGED), push through singular-homology functor with Functor.mapIso, then Limits.IsZero.of_iso. Built green first attempt (vs G10's 3 iterations). Docker-verified at 3309 jobs / 27s warm. Net delta: +73 LOC, +1 theorem, +0 axioms, +0 sorries.",
+        "location": "proofs/Proofs/BrouwerFixedPointOQ01OQ02G11.lean:62"
+      },
+      {
+        "name": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/2026-06-01-s17-act-b-pre-g11-disk-zero.md (session memo, S17 ACT-B-PRE)",
+        "description": "S17 ACT-B-PRE (this PR, researcher-1, 2026-06-01): G11 disk-zero companion file. Documents one-shot build, F3 risk discharge via bearer audit, iso direction correction vs S15 PREP §4.1 sketch (.symm not needed — IsZero.of_iso argument shape), Proofs.lean rollup catch-up (G10 was orphan since PR #21922). With both G10 (Gap-1) and G11 (Gap-2) on main, the remaining S18 ACT-B integration into the main file reduces to: 5 imports + n=1 branch decision + S15 PREP §5 paste-ready body.",
+        "location": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/"
+      },
+      {
+        "name": "BrouwerOQ01OQ02.H_n_minus_1_sphere_nonzero_for_retraction (theorem) — G12",
+        "description": "G12 sphere-nonzero substantive companion: for n >= 2, packages the S15 PREP §5 paste-ready integration body proving the contradiction needed to retire the mock axiom H_n_minus_1_sphere_nonzero. Concludes (exists psi, psi.comp phi = id) by exfalso after the homological chain G10 (section_identity) + G8 (map_section) + G11 (disk-zero) + H_n_minus_1_sphere_nonzero_substantive (main:375) derives IsZero (F.obj boundary-D n) cross ¬IsZero. Shipped as a standalone companion file (build-risk isolation) rather than an in-line main-file edit. 0 axioms, 0 sorries. Docker-verified per S18 ACT-B (researcher-7, PR per state.md S18).",
+        "location": "proofs/Proofs/BrouwerFixedPointOQ01OQ02G12.lean"
+      }
+    ],
+    "insights": [
+      "B1 (the topological-homotopy → chain-homotopy bridge) factors cleanly into three layers via Mathlib's existing simplicial framework: (i) simplicial-homotopy → chain-homotopy via the alternating-face-map functor, (ii) topological-homotopy → simplicial-homotopy via TopCat.toSSet, (iii) composition gives the singular-chain version. Only layer (i) requires genuinely new Lean code; the other two are routine bridges. (Section H3 of knowledge.md.)",
+      "Hatcher's geometric prism-operator formula (Section H2) — sum over staircase simplices α_i : Δ^{n+1} → Δ^n × I with alternating signs — is *not* the recommended Mathlib path. The simplicial route (Section H3) absorbs all the geometric content into existing scaffolding and forces the sign convention automatically from alternatingFaceMapComplex's Σ (-1)^i ∂_i. Estimated 60–80% line-count savings (100–200 lines vs 300–500). (Section H4.)",
+      "The single new Mathlib lemma to write is AlternatingFaceMapComplex.mapHomotopy : SimplicialObject.Homotopy φ ψ → Homotopy ((alternatingFaceMapComplex C).map φ) ((alternatingFaceMapComplex C).map ψ). Estimated 40–80 Lean lines. Heavy reuse of the existing AlternatingFaceMapComplex API. (Section H3 Lemma 1.)",
+      "Strategic alternative (Section H9): rather than waiting for the upstream Mathlib contribution, ACT-B exec can introduce a local axiom singular_chain_homotopy_of_top_homotopy in the gallery file. Costs +1 named axiom (axiom count 1 → 2) but unblocks substantive H_n_minus_1_ball_zero in a single session. The new axiom is *strictly tighter* than the current sphere-nonzero residual axiom because it is a standard textbook fact rather than a composite of three.",
+      "Risk register (Section H8) identifies SimplicialObject.Homotopy as the highest-likelihood medium risk — at the pinned rev there is no top-level SimplicialObject.Homotopy structure, so Lemma 1 may need to introduce this notion (adds ~30 lines to the estimate). All other risks are low.",
+      "Mathlib v4.26.0 has singularChainComplexFunctor and singularHomologyFunctor on TopCat (Andrew Yang, 2025), with totally-disconnected homology computed; specializing to PUnit gives H_n(*) = 0 for n ≥ 1.",
+      "Mathlib's Homotopy.homologyMap_eq already gives chain-homotopy → homology equivalence; no need to reprove this.",
+      "Convex.contractibleSpace + convex_ball provide ContractibleSpace for the closed metric ball, so the topological half of H_n(B^n) = 0 is in hand.",
+      "The single missing structural ingredient is the prism operator (topological homotopy → chain homotopy). Without it, H_n(B^n) = 0 cannot be derived from contractibility, even though all surrounding infrastructure exists.",
+      "Even without sphere-homology computation, B1 (prism operator) alone reduces the current axiom to H_{n-1}(S^{n-1}) ≠ 0 — structurally cleaner but not yet axiom-free.",
+      "Structural separation alone (with axiom count preserved) is a valuable intermediate step: it lets future Mathlib contributions (prism operator B1) discharge the shallow half automatically, without revisiting the gallery file. The residual axiom H_n_minus_1_sphere_nonzero now points at exactly one Mathlib gap (B2: sphere homology) rather than a composite of three.",
+      "Bundled-category name correction: Mathlib v4.26.0 renamed AddCommGrp → AddCommGrpCat (with abbrev Ab := AddCommGrpCat at Mathlib/Algebra/Category/Grp/Basic.lean:256). Every prior reference in S1/S2 to AddCommGrp.{0} must be read as AddCommGrpCat.{0}.",
+      "Typeclass chain for singularHomologyFunctor verified at pinned rev: Preadditive AddCommGrpCat (Preadditive.lean:63), Abelian AddCommGrpCat (Abelian.lean:42) ⟹ CategoryWithHomology AddCommGrpCat (via the general instance categoryWithHomology_of_abelian in Algebra/Homology/ShortComplex/Abelian.lean), HasCoproducts.{0} via HasColimitsOfShape on Discrete (Colimits.lean:270). No auxiliary scaffolding needed.",
+      "Sub-gap discovered during S3 prep: Mathlib.Analysis.Normed.Module.Connected.lean at the pinned rev has ball_contractible (line 139) but no closedBall_contractible. ACT-B exec must inline (convex_closedBall _ _).contractibleSpace ⟨0, mem_closedBall_self zero_le_one⟩ — a one-liner that does not require a top-level import (both convex_closedBall and Convex.contractibleSpace are reached transitively from Mathlib.Tactic).",
+      "Scope correction discovered during S3 prep: the gallery hypothesis hn : n ≥ 1 is too weak for the substantive H_{n-1}(B^n) = 0 proof. At n = 1, H_0(B^1) ≅ ℤ ≠ 0 (it is path-connected, not totally disconnected at the zero-skeleton level). ACT-B exec must restrict to n ≥ 2; the n = 1 case is the IVT and needs a different argument. Downstream call-site signatures are unaffected.",
+      "ACT-B exec proof sketch concretized: 5 steps, ~30 Lean lines once B1 (prism operator) is available. Steps 1, 2, 4, 5 are direct calls into Mathlib (Convex.contractibleSpace, ContractibleSpace.hequiv_unit, isZero_singularHomologyFunctor_of_totallyDisconnectedSpace, HomotopyEquiv.toHomologyIso). Step 3 is the single B1 invocation.",
+      "Unit-bridge step (mock ↔ real translation): converting IsZero (H_{n-1}(B^n)) into ∃ φ : ℤ →+ Unit, True is a 5–10 line lemma using AddCommGrpCat IsZero and Subsingleton.toEquivPUnit (or equivalent). Two options for ACT-B exec: (a) keep the existential signature and bridge post-IsZero — recommended, minimal-diff; (b) strengthen the signature to IsZero directly. Both are routine.",
+      "S5 ACT-B exec executed the H9 local-axiom route in non-destructive form: real-homology proof of H_{n-1}(B^n) = 0 lives alongside (not replacing) the trivial-mock H_n_minus_1_ball_zero, so downstream consumers compile unchanged.",
+      "The new thin local axiom contractible_singularHomology_zero is *strictly tighter* than the existing sphere-nonzero residual: it packages a single classical fact (H_n of a contractible space is zero for n ≥ 1) with explicit Mathlib contribution path (knowledge.md Section H Lemma 1 + Lemma 2).",
+      "S6 (L1) Mathlib has already-named TopCat-level sphere objects: TopCat.disk, TopCat.diskBoundary, TopCat.sphere, TopCat.ball in Mathlib/Topology/Category/TopCat/Sphere.lean (Xia, Young 2024). They are ULift-wrapped TopCat.{u} objects with scoped notation 𝔻/∂𝔻/𝕊/𝔹, plus diskBoundaryInclusion/ballInclusion morphisms with mono instances. The ball-side substantive proof in S5 uses TopCat.of ↥(Metric.closedBall ...) directly and could be cleaned up to use TopCat.disk in a future refactor.",
+      "S6 (L3) B2 gap classification refined: direct path-search of Mathlib/AlgebraicTopology returned zero hits for `Metric.sphere`, confirming no sphere-homology computation exists at the pinned rev. New refinement: B2-CW (cellular chain complex of 𝕊 n) is now the cleanest upstream contribution path because TopCat.sphere already provides the right signatures.",
+      "S6 (L4) Exact thin B2 surrogate axiom drafted: `axiom sphere_singularHomology_nonzero (n : ℕ) (hn : 1 ≤ n) : ¬ IsZero ((singularHomologyFunctor AddCommGrpCat.{0} n).obj (AddCommGrpCat.of ℤ)).obj (TopCat.diskBoundary (n + 1))`. Strictly weaker than `≅ ℤ` but sufficient for the no-retraction contradiction.",
+      "S6 (L6) Sphere-side bridge problem is NOT covered by sibling PR #18011's G6 Subsingleton-bridge. The sphere half needs a different shape: converting `¬ IsZero (X)` into `∃ x : X, x ≠ 0` for AddCommGrpCat (Section G7), which is an additional self-contained algebra step not in PR #18011's Part VI.",
+      "S6 (L7) ACT-D execution plan: S7 install B2 surrogate + trivial substantive theorem (~30 lines), S8 design Section G7 algebraic bridge, S9 combine G7 + functoriality + PR #18011's G6 to bridge to `∃ ψ, ψ ∘ φ = id`, S10 drop mock H_n_minus_1_sphere_nonzero axiom for net axiom delta −1 (back to 2 axioms, both textbook).",
+      "S6 (L8) Build risk for S7 ACT-D-1 is lower than S5: APIs involved are singularHomologyFunctor, AddCommGrpCat, TopCat.diskBoundary, CategoryTheory.Limits.IsZero — all verified present, no typeclass-synthesis chain composition.",
+      {
+        "title": "S7 ACT-D-1 mirrors S5 ACT-B exec on the sphere side",
+        "summary": "The thin B2 surrogate axiom + trivial substantive theorem pattern is now installed for the sphere half of the no-retraction proof, structurally mirroring the contractible_singularHomology_zero / H_n_minus_1_ball_zero_substantive pair from S5 ACT-B exec. Both pairs consist of a single classical-fact axiom plus a trivial substantive theorem that index-shifts the axiom into the H_{n-1} form needed by the downstream consumer. Net result: file-level axiom count is now 4 (2 thin textbook surrogates + 1 composite mock + 1 top-level `no_retraction_axiom`); all four have explicit Mathlib contribution paths. The composite mock axiom is slated for elimination in S10."
+      },
+      {
+        "title": "TopCat.diskBoundary (n + 1) vs TopCat.sphere n — definitional equality",
+        "summary": "At the pinned rev, `TopCat.sphere n` is defined as `TopCat.diskBoundary (n + 1)`, so the two forms are definitionally equal. The S7 axiom signature uses `TopCat.diskBoundary (n + 1)` for the carrier (slightly more verbose but matches the §L4 candidate-(a) specification verbatim and avoids a layer of definitional unfolding in the downstream substantive theorem). The substantive theorem applies the axiom at degree `n - 1` (with `1 ≤ n - 1` derived from `2 ≤ n` via `omega`), then rewrites `(n - 1) + 1 = n` to reach the target shape `TopCat.diskBoundary n`."
+      },
+      "S15 PREP (2026-06-01, researcher-1): The S9 ACT-D-3 EXEC integration has TWO infrastructure gaps that earlier PREPs (S10, S12) missed because they framed it as a clean import-and-wire affair. Gap-1: Retraction n (custom structure on EuclideanSpace ℝ (Fin n)) does not auto-promote to a TopCat morphism 𝔻 n ⟶ ∂𝔻 n — Mathlib provides the inclusion TopCat.diskBoundaryInclusion but the retraction direction must be hand-built (ULift unwrap → subtype restriction → continuity from r.continuous via Continuous.codRestrict). Gap-2: ULift mismatch between substantive ball (raw subtype) and substantive sphere (ULift-wrapped TopCat.diskBoundary). Reconciled via TopCat.uliftFunctor + uliftFunctorObjHomeo. Both gaps are tractable but neither is trivial; surfacing them in advance is the value of S15 PREP.",
+      "S15 PREP (2026-06-01, researcher-1): The mock composite axiom H_n_minus_1_sphere_nonzero encoded TWO classical facts — sphere homology non-vanishing AND retraction-induced section. The substantive replacement factors them: the section comes from Retraction.toTopCatHom + map_section_of_section (functoriality, free); the sphere non-vanishing is H_n_minus_1_sphere_nonzero_substantive (already an axiom). What is NOT in either is the n=1 case, where Retraction 1 is informally claimed uninhabited via IVT but never proved in this slug. Honest axiom-count delta: 4 → 4 (replace mock composite with thin IVT), not the JSON-predicted 4 → 3."
+    ],
+    "mathlibGaps": [
+      "Topological homotopy invariance of singularChainComplexFunctor (prism operator, ~100–300 line construction in Mathlib.AlgebraicTopology.SingularHomology).",
+      "Computation of H_{n-1}(S^{n-1}) ≅ ℤ (requires Mayer–Vietoris / excision / suspension or direct simplicial argument).",
+      "No Mayer–Vietoris long exact sequence in Mathlib.AlgebraicTopology.SingularHomology.",
+      "No excision theorem in Mathlib.AlgebraicTopology.SingularHomology."
+    ],
+    "nextSteps": [
+      {
+        "title": "S8 ACT-D-2: G7 algebraic bridge (self-contained algebra)",
+        "summary": "Design and install the Section G7 algebraic bridge lemma `¬ IsZero (X) → ∃ x : X, x ≠ 0` for `AddCommGrpCat.{0}`. This lemma chases through `IsZero_iff_id_eq_zero` (`Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects`) and the `AddCommGrpCat` underlying-type-is-Subsingleton equivalence. Self-contained algebra, no homology dependencies. ~30–50 lines of Lean. Net axiom delta: 0. Estimate: 1 session."
+      },
+      {
+        "title": "S9 ACT-D-3: combine G7 + G6 + functoriality (gated on PR #18011)",
+        "summary": "After PR #18011 (G6 Unit-bridge) merges, combine G7 + G6 + `singularHomologyFunctor` functoriality to bridge `¬ IsZero (H_{n-1}(𝕊 (n-1)))` to the existential `∃ ψ : Unit →+ ℤ, ψ ∘ φ = id_ℤ`. This is the step that *replaces* the mock composite axiom `H_n_minus_1_sphere_nonzero` with a substantive derivation. Net axiom delta: 0 at this step."
+      },
+      {
+        "title": "S10 ACT-D-4: drop mock H_n_minus_1_sphere_nonzero axiom",
+        "summary": "Drop the mock composite axiom `H_n_minus_1_sphere_nonzero` entirely; rewire `singular_homology_retraction_split` to use the substantive chain built in S9. Net axiom delta: −1 (file-level count 4 → 3, back to a regime where all surrogates are thin textbook facts). After S10 the only mock axiom remaining is the top-level `no_retraction_axiom` (which is the composite statement of the entire result, kept for interoperability with BrouwerFixedPoint.lean)."
+      },
+      {
+        "title": "S11+: full Mathlib B1/B2 upstream contributions",
+        "summary": "Independent of the gallery proof: discharge B1 via the prism operator construction (knowledge.md Section H, ~100–200 Mathlib lines) and B2 via the cellular chain complex of 𝕊 n (Section L3 / B2-CW). Both can proceed in parallel with the gallery work."
+      }
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "brouwer-fixed-point",
+    "brouwer-fixed-point-oq-01",
+    "brouwer-fixed-point-oq-01-oq-02",
+    "brouwer-fixed-point-oq-01-oq-02-oq-03",
+    "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01",
+    "brouwer-fixed-point-oq-01-oq-03",
+    "brouwer-fixed-point-oq-02",
+    "brouwer-fixed-point-oq-02-oq-01",
+    "brouwer-fixed-point-oq-02-oq-02",
+    "brouwer-fixed-point-oq-04",
+    "brouwer-fixed-point-oq-04-oq-02",
+    "brouwer-fixed-point-oq-04-oq-03",
+    "brouwer-fixed-point-oq-04-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Hatcher, Algebraic Topology, §2.1 (prism operator, p. 111–113; sphere-homology Theorem 2.13)",
+      "Bredon, Topology and Geometry, §IV.16 (Mayer–Vietoris in singular homology)"
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/AlgebraicTopology/SingularHomology/Basic.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Homology/Homotopy.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Convex/Contractible.html"
+    ],
+    "mathlib": [
+      "Mathlib.AlgebraicTopology.SingularHomology.Basic (singularChainComplexFunctor, singularHomologyFunctor, totally-disconnected case)",
+      "Mathlib.Algebra.Homology.Homotopy (Homotopy.homologyMap_eq, HomotopyEquiv.toHomologyIso)",
+      "Mathlib.Analysis.Convex.Contractible (Convex.contractibleSpace, StarConvex.contractibleSpace)",
+      "Mathlib.Topology.Homotopy.Contractible (ContractibleSpace, Nullhomotopic)"
+    ]
+  },
+  "started": "2026-05-08T19:09:00.561Z",
+  "lastUpdate": "2026-06-13T00:00:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BrouwerFixedPoint.lean",
+      "filename": "BrouwerFixedPoint.lean",
+      "lineCount": 250,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPoint.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01.lean",
+      "filename": "BrouwerFixedPointOQ01.lean",
+      "lineCount": 403,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02.lean",
+      "lineCount": 463,
+      "theoremCount": 14,
+      "axiomCount": 4,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02G10.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02G10.lean",
+      "lineCount": 84,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G10.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02G6.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02G6.lean",
+      "lineCount": 89,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G6.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02G7.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02G7.lean",
+      "lineCount": 95,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02G8.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02G8.lean",
+      "lineCount": 135,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G8.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02OQ03.lean",
+      "lineCount": 172,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03OQ01.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02OQ03OQ01.lean",
+      "lineCount": 215,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ03.lean",
+      "filename": "BrouwerFixedPointOQ01OQ03.lean",
+      "lineCount": 217,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02.lean",
+      "filename": "BrouwerFixedPointOQ02.lean",
+      "lineCount": 392,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02Ext.lean",
+      "filename": "BrouwerFixedPointOQ02Ext.lean",
+      "lineCount": 204,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02Ext.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
+      "filename": "BrouwerFixedPointOQ02OQ01.lean",
+      "lineCount": 1072,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02OQ02.lean",
+      "filename": "BrouwerFixedPointOQ02OQ02.lean",
+      "lineCount": 269,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02OQ03.lean",
+      "filename": "BrouwerFixedPointOQ02OQ03.lean",
+      "lineCount": 215,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02Stability.lean",
+      "filename": "BrouwerFixedPointOQ02Stability.lean",
+      "lineCount": 198,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02Stability.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04.lean",
+      "filename": "BrouwerFixedPointOQ04.lean",
+      "lineCount": 506,
+      "theoremCount": 22,
+      "axiomCount": 2,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04OQ01.lean",
+      "filename": "BrouwerFixedPointOQ04OQ01.lean",
+      "lineCount": 297,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04OQ02.lean",
+      "filename": "BrouwerFixedPointOQ04OQ02.lean",
+      "lineCount": 520,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04OQ03.lean",
+      "filename": "BrouwerFixedPointOQ04OQ03.lean",
+      "lineCount": 157,
+      "theoremCount": 2,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04OQ04.lean",
+      "filename": "BrouwerFixedPointOQ04OQ04.lean",
+      "lineCount": 406,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ04.lean"
+    }
+  ],
+  "nextAction": "S19 ACT-C — retire mock axiom H_n_minus_1_sphere_nonzero (main:261). One-import + edit: change axiom -> theorem, dispatch n >= 2 to BrouwerFixedPointOQ01OQ02G12.H_n_minus_1_sphere_nonzero_for_retraction (now on main) and n = 1 to a new Retraction_one_uninhabited lemma (thin axiom net 4->4, or 5-line IVT proof for 4->3). Then Docker-verify full main-file build (~3300-3400 jobs). BLOCKED on the 2026-06-13 Docker/Aristotle blackout; attempt when Docker recovers."
+}

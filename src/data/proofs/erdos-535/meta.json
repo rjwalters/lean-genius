@@ -1,0 +1,189 @@
+{
+  "id": "erdos-535",
+  "title": "Erdős Problem #535: GCD-Free r-Subsets",
+  "slug": "erdos-535",
+  "description": "For r ≥ 3, estimate f_r(N): the maximum size of A ⊆ {1,...,N} with no r elements having equal pairwise gcds. Known: N^{1/2+o(1)} upper (Abbott-Hanson), N^{c/log log N} lower (Erdős). Gap remains open.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/535",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos535Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "gcd",
+      "extremal-combinatorics",
+      "sunflower",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 535,
+    "erdosUrl": "https://erdosproblems.com/535",
+    "erdosProblemStatus": "open",
+    "axiomCount": 2,
+    "lineCount": 211,
+    "assumptions": "2 axioms: abbott_hanson_upper_bound, erdos_lower_bound. 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #535** connects number theory to extremal combinatorics through $\\gcd$-defined hypergraphs. The function $f_r(N)$ measures the maximum size of a subset $A \\subseteq \\{1, \\ldots, N\\}$ such that no $r$ elements share the same pairwise $\\gcd$.\n\nErdős first studied this in 1964 in his paper 'On a problem in elementary number theory and a combinatorial problem,' establishing both the first non-trivial upper bound $f_r(N) \\leq N^{3/4+o(1)}$ via double-counting arguments, and the lower bound $f_3(N) > N^{c/\\log \\log N}$ using multiplicative constructions with smooth numbers. Abbott and Hanson (1970) improved the upper bound to $f_r(N) \\leq N^{1/2+o(1)}$ in *Bull. London Math. Soc.*, using the insight that $\\gcd$-cliques correspond to cliques in auxiliary graphs, then applying Turán's theorem.\n\nThe gap between the polynomial upper bound $N^{1/2}$ and the quasi-polynomial lower bound $N^{c/\\log \\log N}$ is enormous — it spans the entire range between polynomial and sub-polynomial growth rates. Erdős conjectured that the lower bound is tight: $f_r(N) \\leq N^{c/\\log \\log N}$. This conjecture would follow from a strengthened version of the Erdős-Rado Sunflower Lemma (1960), specifically removing the factorial factor from the sunflower bound. The recent breakthrough by Alweiss, Lovett, Wu, and Zhang (2020) on the sunflower conjecture, improving the bound to $(C \\log k)^k$, represents significant progress but does not yet resolve Problem #535.",
+    "problemStatement": "For $r \\geq 3$, let $f_r(N)$ denote the maximum size of $A \\subseteq \\{1, \\ldots, N\\}$ such that no $r$ elements $a_1, \\ldots, a_r \\in A$ satisfy $\\gcd(a_i, a_j) = d$ for all $i \\neq j$ (no $r$-element $d$-clique). Estimate $f_r(N)$.\n\n**Status: OPEN** — gap between $N^{1/2+o(1)}$ (upper) and $N^{c/\\log \\log N}$ (lower).",
+    "text": "For r ≥ 3, estimate f_r(N): the maximum size of A ⊆ {1,...,N} with no r elements having equal pairwise gcds. Known: N^{1/2+o(1)} upper (Abbott-Hanson), N^{c/log log N} lower (Erdős). Gap remains open.",
+    "proofStrategy": "**Formalization Structure:**\n\n1. **Definitions (lines 43–64):** `HasNoRGCDSubset` and `HasNoGCDClique` capture the $\\gcd$-clique-free property; `f(r, N)` is the extremal function via `sSup`.\n\n2. **Upper Bounds (lines 66–110):** The trivial bound $f_r(N) \\leq N$ (lines 66–75) and Erdős's $N^{3/4+o(1)}$ (1964) (lines 76–85) are discussed in docstring comments but not axiomatized. Abbott-Hanson's $N^{1/2+o(1)}$ (1970) is axiomatized via `abbott_hanson_upper_bound` (line 91); `exponent_improvement` verifies $3/4 > 1/2$.\n\n3. **Lower Bound (lines 112–126):** Erdős's quasi-polynomial construction $f_3(N) > N^{c/\\log \\log N}$.\n\n4. **Conjecture and Sunflower (lines 128–162):** `ErdosConjecture` and the reduction to a stronger Sunflower Lemma.\n\n5. **Summary (lines 192–220):** Conjunction of Abbott-Hanson and Erdős bounds.",
+    "keyInsights": [
+      "**Turán-type Hypergraph Problem:** $f_r(N)$ is the independence number of the $r$-uniform $\\gcd$-hypergraph on $\\{1, \\ldots, N\\}$, connecting number-theoretic structure to combinatorial extremal theory",
+      "**Polynomial vs Quasi-Polynomial Gap:** The upper bound $N^{1/2+o(1)}$ and lower bound $N^{c/\\log \\log N}$ differ by an enormous factor — one of the widest open gaps in combinatorial number theory",
+      "**Sunflower Reduction:** Viewing integers via their prime factor sets, $\\gcd$-cliques correspond to sunflowers, so the conjecture $f_r(N) \\leq N^{c/\\log \\log N}$ would follow from removing the factorial in the Erdős-Rado bound",
+      "**Additive-Multiplicative Dichotomy:** The fundamental barrier: $\\gcd$ is multiplicative but cardinality counting is additive, preventing direct application of either additive or multiplicative number theory tools",
+      "**Smooth Number Constructions:** The lower bound uses numbers with $\\leq k$ prime factors (smooth numbers) for $k \\sim \\log \\log N$, exploiting the multiplicative structure to avoid $\\gcd$-cliques while maximizing set size"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Imports and Setup",
+      "summary": "File header stating Erdős #535 (GCD-free r-subsets): estimate f_r(N), the largest A ⊆ {1,...,N} with no r elements sharing a common pairwise gcd. Records the known bounds, Erdős's conjecture, the sunflower connection, and the Mathlib imports.",
+      "startLine": 1,
+      "endLine": 42,
+      "mathContext": "Open problem: bound f_r(N) for r ≥ 3. Upper N^{1/2+o(1)} (Abbott-Hanson 1970), lower N^{c/log log N} (Erdős 1964)."
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Part 1: Basic Definitions",
+      "summary": "Defines HasNoRGCDSubset and the alternative HasNoGCDClique predicates, IsSubsetOfInterval, and f r N as the supremum of |A| over subsets of {1,...,N} avoiding an r-element common-pairwise-gcd set.",
+      "startLine": 43,
+      "endLine": 65,
+      "mathContext": "f(r,N) = sSup { |A| : A ⊆ {1,...,N}, no r elements of A share a common pairwise gcd d }."
+    },
+    {
+      "id": "trivial-bounds",
+      "title": "Part 2: Trivial Bounds",
+      "summary": "Expository: the trivial bound f_r(N) ≤ N, and why r = 2 is degenerate so r ≥ 3 is the interesting regime.",
+      "startLine": 66,
+      "endLine": 75,
+      "mathContext": "Trivial range f_r(N) ≤ N; r = 2 is impossible, so the problem starts at r ≥ 3."
+    },
+    {
+      "id": "erdos-upper-1964",
+      "title": "Part 3: Erdős's Original Upper Bound (1964)",
+      "summary": "Expository note on Erdős's first non-trivial upper bound f_r(N) ≤ N^{3/4+o(1)}, later superseded by Abbott-Hanson.",
+      "startLine": 76,
+      "endLine": 85,
+      "mathContext": "Erdős (1964): f_r(N) ≤ N^{3/4+o(1)}, the first sub-linear upper bound."
+    },
+    {
+      "id": "abbott-hanson-upper",
+      "title": "Part 4: Abbott-Hanson Upper Bound (1970)",
+      "summary": "States abbott_hanson_upper_bound as an axiom (f_r(N) ≤ C·N^{1/2+ε} for r ≥ 3) and proves exponent_improvement (3/4 > 1/2) by norm_num, recording that this is the best known upper bound.",
+      "startLine": 86,
+      "endLine": 104,
+      "mathContext": "Abbott-Hanson (1970): for r ≥ 3, ∃ C>0 such that ∀ε>0, eventually f_r(N) ≤ C·N^{1/2+ε}."
+    },
+    {
+      "id": "erdos-lower-1964",
+      "title": "Part 5: Erdős's Lower Bound (1964)",
+      "summary": "States erdos_lower_bound as an axiom: f_3(N) > N^{c/log log N} for some c > 0, a quasi-polynomial lower bound growing slower than N^ε yet faster than any poly-log.",
+      "startLine": 105,
+      "endLine": 120,
+      "mathContext": "Erdős (1964): ∃ c>0, eventually f_3(N) > N^{c/log log N}."
+    },
+    {
+      "id": "the-gap",
+      "title": "Part 6: The Gap Between Bounds",
+      "summary": "Describes the enormous gap between the polynomial upper bound N^{1/2+o(1)} and the quasi-polynomial lower bound, and defines ErdosConjecture asserting the lower bound is essentially tight.",
+      "startLine": 121,
+      "endLine": 139,
+      "mathContext": "ErdosConjecture: ∀ r≥3, eventually f_r(N) ≤ C·N^{c/log log N}, which would close the gap to quasi-polynomial."
+    },
+    {
+      "id": "sunflower-connection",
+      "title": "Part 7: Connection to Sunflower Problem",
+      "summary": "Expository: a strengthened sunflower conjecture (removing the k! factor from the Erdős-Rado bound) would imply Erdős's conjecture for this problem; cross-references Problems #20 and #536.",
+      "startLine": 140,
+      "endLine": 153,
+      "mathContext": "A sunflower conjecture without the k! Erdős-Rado factor would resolve the f_r(N) conjecture."
+    },
+    {
+      "id": "small-cases",
+      "title": "Part 8: Small Cases and Examples",
+      "summary": "Expository: exact small values such as f_3(6)=4 ({1,2,3,5}) and f_3(10)=5, and why the primes-plus-one set {1} ∪ {p ≤ N} (size ≈ N/log N) is worse than the lower bound.",
+      "startLine": 154,
+      "endLine": 164,
+      "mathContext": "Worked small cases: f_3(6)=4, f_3(10)=5; the prime-based construction is suboptimal."
+    },
+    {
+      "id": "proof-techniques",
+      "title": "Part 9: Proof Techniques",
+      "summary": "Expository survey of the three main methods: counting (Erdős), gcd-graph Turán bounds (Abbott-Hanson), and multiplicative constructions for lower bounds, plus the additive-multiplicative dichotomy that makes the problem hard.",
+      "startLine": 165,
+      "endLine": 182,
+      "mathContext": "Methods: pair-counting, Turán-type clique bounds on the gcd graph, and multiplicative/sieve constructions."
+    },
+    {
+      "id": "summary",
+      "title": "Part 10: Summary",
+      "summary": "Proves erdos_535_summary, bundling the Abbott-Hanson upper bound and the Erdős lower bound into a single conjunction discharged from the two stated axioms; restates the OPEN status and conjecture.",
+      "startLine": 183,
+      "endLine": 211,
+      "mathContext": "erdos_535_summary: conjunction of the Abbott-Hanson upper and Erdős lower bounds, proved from the two axioms."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #535 asks for the order of $f_r(N)$, the maximum size of a $\\gcd$-clique-free subset of $\\{1, \\ldots, N\\}$. The problem remains **OPEN** with one of the widest gaps in combinatorial number theory: upper bound $N^{1/2+o(1)}$ (Abbott-Hanson 1970) vs lower bound $N^{c/\\log \\log N}$ (Erdős 1964). Erdős conjectured the lower bound is tight, which would follow from removing the factorial factor in the Erdős-Rado Sunflower Lemma.",
+    "implications": "**Connections across the gallery:**\n\n- **[Sunflower Conjecture](/proofs/erdos-20):** Problem #535 reduces directly to a strengthened sunflower bound — viewing integers by prime factor multisets, $\\gcd$-cliques become sunflowers\n- **[GCD Algorithm](/proofs/gcd-algorithm):** The foundational $\\gcd$ computation underlying the clique-free condition\n- **[Primitive Roots](/proofs/primitive-roots):** Multiplicative structure of $(\\mathbb{Z}/p\\mathbb{Z})^*$ informs the smooth number constructions used in the lower bound\n- **[Erdős #221](/proofs/erdos-221):** Parallel use of primitive roots and multiplicative order for constructing sparse sets with prescribed arithmetic properties\n- **[Erdős #452](/proofs/erdos-452):** Shares the extremal combinatorics framework — bounding sets satisfying prime-factor conditions\n\nProgress on this problem would advance understanding of multiplicative structure in extremal combinatorics, with implications for the Sunflower Conjecture and Turán-type hypergraph theory.",
+    "openQuestions": [
+      "Is $f_r(N) \\leq N^{c/\\log \\log N}$? (Erdős's conjecture — would close the polynomial/quasi-polynomial gap)",
+      "Can the Alweiss-Lovett-Wu-Zhang sunflower bound $(C \\log k)^k$ be strengthened to remove the log factor, implying the conjecture?",
+      "What is the optimal constant $c$ in the lower bound $f_3(N) > N^{c/\\log \\log N}$?",
+      "Can the Abbott-Hanson exponent $1/2$ be improved, even to $1/2 - \\varepsilon$?",
+      "Does the answer depend on $r$, or is the growth rate of $f_r(N)$ independent of $r \\geq 3$?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos535",
+    "lineCount": 211,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos535Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-302",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, number-theory, open"
+    },
+    {
+      "targetId": "erdos-534",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, gcd, number-theory"
+    },
+    {
+      "targetId": "erdos-539",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: gcd, number-theory, open"
+    }
+  ],
+  "sorries": 0
+}

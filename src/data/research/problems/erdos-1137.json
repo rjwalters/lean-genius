@@ -1,0 +1,125 @@
+{
+  "slug": "erdos-1137",
+  "title": "Erdős #1137: Consecutive Prime Gap Products",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let p_n be the nth prime and d_n = p_{n+1} - p_n. Does max_{n < x} (d_n * d_{n-1}) / (max_{n < x} d_n)^2 tend to 0 as x tends to infinity?",
+    "plain": "Do record-sized prime gaps tend to occur in isolation rather than next to another gap of comparable size?",
+    "plainEnglish": "Do record-sized prime gaps tend to occur in isolation rather than next to another gap of comparable size?",
+    "whyMatters": [
+      "Tests correlation between adjacent prime gaps, not only the size of individual gaps.",
+      "Matches probabilistic expectations from prime-gap models such as Cramer-style heuristics.",
+      "The Lean file now proves substantial prime-gap infrastructure while leaving the main limit as the sole axiom."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Prime enumeration, positivity, parity, and the first four prime gaps are proved.",
+      "`erdosRatio_le_one` proves the ratio is bounded by 1 for x >= 2.",
+      "`primeGap_unbounded` is proved using factorial composites and the Nat.nth/Nat.count Galois connection.",
+      "`maxGap_tendsto_atTop` is proved from unbounded prime gaps.",
+      "`maxGap_mono` proves monotonicity of the maximum-gap function."
+    ],
+    "open": [
+      "The main limit conjecture `erdos_1137`: the adjacent-record-gap ratio tends to 0.",
+      "Quantitative rates or extensions to longer strings of adjacent gaps."
+    ],
+    "goal": "Keep the single remaining axiom focused on the open limit statement after the prime-gap infrastructure proofs."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 3,
+    "focus": "The file has one active axiom (`erdos_1137`), 0 sorries, and already proves unbounded prime gaps plus `maxGap_tendsto_atTop`.",
+    "blockers": [
+      "The main adjacent-gap correlation limit remains an open analytic number theory statement."
+    ],
+    "nextAction": "Search for weaker unconditional bounds on `erdosRatio` or formalize probabilistic/heuristic consequences separately from the theorem.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "CURRENT: 23 theorem/lemma declarations, 3 definitions, 1 axiom (`erdos_1137`), 0 sorries. `maxGap_tendsto_atTop` is already proved from factorial-composite prime-gap unboundedness; only the main ratio limit remains axiomatized.",
+    "builtItems": [
+      "`primeGap`, `maxGap`, and `erdosRatio`",
+      "Small prime-gap computations and parity/positivity lemmas",
+      "`erdosRatio_le_one`",
+      "`dvd_factorial` and `not_prime_factorial_add`",
+      "`primeGap_unbounded`",
+      "`maxGap_tendsto_atTop` and `maxGap_mono`"
+    ],
+    "insights": [
+      "d_0 = 1 is the unique initial odd gap; all later prime gaps are even and at least 2.",
+      "`erdosRatio_le_one` follows from both adjacent factors being bounded by `maxGap x`.",
+      "`dvd_factorial` and `not_prime_factorial_add` build long prime-free intervals.",
+      "`primeGap_unbounded` converts those composite intervals into large prime gaps using Nat.nth/Nat.count.",
+      "`maxGap_tendsto_atTop` is no longer a next step; it is proved."
+    ],
+    "mathlibGaps": [
+      "No direct nth_prime_one theorem in Mathlib (proved via Nat.nth_count + decide)",
+      "Nat.even_sub signature should be verified against current Mathlib version"
+    ],
+    "nextSteps": [
+      "Develop weaker unconditional estimates for adjacent large gaps.",
+      "Keep `erdos_1137` as the single axiom unless a true analytic proof is added.",
+      "Avoid reintroducing stale sorry/axiom counts in generated metadata."
+    ],
+    "markdown": "# Erdős #1137 - Knowledge Base\n\n## Problem Statement\n\nLet $d_n = p_{n+1} - p_n$, where $p_n$ is the $n$th prime. Is it true that\n$$\\frac{\\max_{n<x} d_n d_{n-1}}{(\\max_{n<x} d_n)^2} \\to 0$$\nas $x \\to \\infty$?\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Reference**: [Va99, §1.2]\n\n**Tractability Score**: 6/10 (open conjecture, but basic properties provable)\n**Aristotle Suitable**: Partially (basic lemmas yes, main conjecture no)\n\n## Session 1 (2026-03-23, researcher-5)\n\n**Decision**: DEEP DIVE\n**Outcome**: Created complete formalization with 17 theorems proved\n\nKey results:\n- Defined primeGap, maxGap, erdosRatio\n- Proved gap positivity, parity, and specific values\n- Stated main conjecture as axiom\n- Created gallery entry\n\n## Tags\n\n- erdos\n- number-theory\n- prime-gaps\n- analytic-number-theory\n\n## Related Problems\n\n- Erdős #6 (Cramér's conjecture on maximal prime gaps)\n- PrimeGapBounds.lean (Bertrand postulate infrastructure)\n\n## References\n\n- [Va99] Varga (1999), Survey §1.2\n- Cramér, H. (1936). On the order of magnitude of the difference between consecutive prime numbers.\n- Google DeepMind formal-conjectures: FormalConjectures/ErdosProblems/1137.lean\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "prime-gaps",
+    "analytic-number-theory",
+    "open"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-113",
+    "erdos-1136",
+    "erdos-1137",
+    "erdos-6",
+    "prime-gap-bounds"
+  ],
+  "references": {
+    "papers": [
+      "Varga (1999), Survey §1.2",
+      "Cramer, H. (1936). On the order of magnitude of the difference between consecutive prime numbers."
+    ],
+    "urls": [
+      "https://erdosproblems.com/1137",
+      "https://github.com/google-deepmind/formal-conjectures/blob/main/FormalConjectures/ErdosProblems/1137.lean"
+    ],
+    "mathlib": [
+      "Nat.nth_strictMono",
+      "Nat.nth_prime_zero_eq_two",
+      "Nat.nth_count",
+      "Nat.Prime.eq_one_or_self_of_dvd",
+      "Nat.even_sub"
+    ]
+  },
+  "started": "2026-01-15T15:52:59.263Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1137Problem.lean",
+      "filename": "Erdos1137Problem.lean",
+      "lineCount": 322,
+      "theoremCount": 23,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1137Problem.lean"
+    }
+  ]
+}

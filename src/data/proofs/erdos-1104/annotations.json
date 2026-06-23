@@ -1,0 +1,203 @@
+[
+  {
+    "id": "erdos-1104-imports",
+    "proofId": "erdos-1104",
+    "type": "concept",
+    "range": {
+      "startLine": 19,
+      "endLine": 24
+    },
+    "title": "Mathlib Imports",
+    "content": "Imports SimpleGraph.Basic and SimpleGraph.Clique for graph structure and triangle-freeness (CliqueFree 3), SimpleGraph.Coloring for chromatic number and colorability, Real.Basic and Log.Basic for the asymptotic bounds involving √(n/log n), and Tactic for automation.",
+    "mathContext": "The formalization uses $\\chi(G)$ (chromatic number), $\\operatorname{CliqueFree}(G, 3)$ (triangle-freeness), and $\\sqrt{n / \\log n}$ from Mathlib's real analysis library.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "SimpleGraph.chromaticNumber",
+      "SimpleGraph.CliqueFree",
+      "Real.sqrt",
+      "Real.log"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib graph theory",
+      "Mathlib real analysis"
+    ]
+  },
+  {
+    "id": "erdos-1104-trianglefree-def",
+    "proofId": "erdos-1104",
+    "type": "definition",
+    "range": {
+      "startLine": 28,
+      "endLine": 38
+    },
+    "title": "Core Definitions: Triangle-Free and f(n)",
+    "content": "IsTriangleFree wraps CliqueFree 3, asserting no 3-clique exists. The function triangleFreeMaxChi computes f(n) = sup{χ(G) : G triangle-free on Fin n} via sSup over the set of achievable chromatic numbers. This is noncomputable since it requires enumerating all graphs on n vertices.",
+    "mathContext": "$$f(n) = \\sup\\{\\chi(G) : G \\text{ is triangle-free on } n \\text{ vertices}\\} = \\sup\\{k \\in \\mathbb{N} : \\exists G \\text{ triangle-free on Fin } n,\\; \\chi(G) = k\\}$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "SimpleGraph.CliqueFree",
+      "sSup",
+      "noncomputable",
+      "chromatic number"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "supremum of natural numbers"
+    ]
+  },
+  {
+    "id": "erdos-1104-basic-props",
+    "proofId": "erdos-1104",
+    "type": "insight",
+    "range": {
+      "startLine": 40,
+      "endLine": 107
+    },
+    "title": "Basic Properties of f(n)",
+    "content": "Several foundational results are proved: every graph on Fin n is n-colorable (via the identity coloring), so f(n) ≤ n; the empty graph is triangle-free and 1-chromatic, giving f(n) ≥ 1 for n ≥ 1; f(0) = 0 and f(1) ≤ 1 are established exactly. The proof that f(n) ≥ 1 has one sorry related to showing the empty graph's chromatic number is exactly 1 (requires detailed Mathlib API work).",
+    "mathContext": "Proved: $f(0) = 0$, $f(1) \\leq 1$, and $f(n) \\leq n$ for all $n$. The bound $f(n) \\leq n$ follows from $\\chi(G) \\leq |V(G)|$ for any graph $G$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "SimpleGraph.chromaticNumber_le_card",
+      "SimpleGraph.colorable_of_fintype",
+      "Nat.sSup_le"
+    ],
+    "prerequisites": [
+      "graph coloring basics",
+      "supremum properties"
+    ]
+  },
+  {
+    "id": "erdos-1104-ramsey-duality",
+    "proofId": "erdos-1104",
+    "type": "insight",
+    "range": {
+      "startLine": 116,
+      "endLine": 121
+    },
+    "title": "Ramsey Duality and Kim's Bound",
+    "content": "The key structural insight: f(n) ≥ k if and only if R(3,k) ≤ n, where R(3,k) is the diagonal Ramsey number. Kim (1995) proved R(3,k) = Θ(k²/log k) using a semi-random (triangle-free) process, which was later refined by Bohman (2009) and Fiz Pontiveros–Griffiths–Morris (2020). Inverting R(3,k) = Θ(k²/log k) gives f(n) = Θ(√(n/log n)). The Ramsey bound is axiomatized with constants c₁, c₂.",
+    "mathContext": "$$f(n) \\geq k \\iff R(3,k) \\leq n \\qquad\\text{and}\\qquad R(3,k) = \\Theta\\!\\left(\\frac{k^2}{\\log k}\\right)$$\nInverting: $k = \\Theta(\\sqrt{n/\\log n})$, so $f(n) = \\Theta(\\sqrt{n/\\log n})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number R(3,k)",
+      "Kim's semi-random method",
+      "Bohman's triangle-free process"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "erdos-1104-lower-bound",
+    "proofId": "erdos-1104",
+    "type": "insight",
+    "range": {
+      "startLine": 129,
+      "endLine": 135
+    },
+    "title": "Lower Bound (Hefty-Horn-King-Pfender 2025)",
+    "content": "Hefty, Horn, King, and Pfender (2025) proved f(n) ≥ (1−o(1))√(n/log n), achieving the constant 1 in the lower bound. This improved the implicit constant from Kim (1995) and the triangle-free process analyses. The construction uses probabilistic methods to build triangle-free graphs with high chromatic number.",
+    "mathContext": "$$\\forall\\, \\varepsilon > 0,\\; \\exists\\, N_0 :\\; \\forall\\, n \\geq N_0,\\quad f(n) \\geq (1 - \\varepsilon)\\sqrt{\\frac{n}{\\log n}}$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "triangle-free process",
+      "Lovász Local Lemma"
+    ],
+    "prerequisites": [
+      "probabilistic combinatorics",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "erdos-1104-upper-bound",
+    "proofId": "erdos-1104",
+    "type": "insight",
+    "range": {
+      "startLine": 137,
+      "endLine": 142
+    },
+    "title": "Upper Bound (Davies-Illingworth 2022)",
+    "content": "Davies and Illingworth (2022) proved f(n) ≤ (2+o(1))√(n/log n), giving the best known upper bound with constant 2. Their method improves on the classical Ramsey upper bound approach by directly analyzing the fractional chromatic number and applying entropy compression techniques.",
+    "mathContext": "$$\\forall\\, \\varepsilon > 0,\\; \\exists\\, N_0 :\\; \\forall\\, n \\geq N_0,\\quad f(n) \\leq (2 + \\varepsilon)\\sqrt{\\frac{n}{\\log n}}$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "fractional chromatic number",
+      "entropy compression",
+      "independent set density"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "erdos-1104-exact-constant",
+    "proofId": "erdos-1104",
+    "type": "concept",
+    "range": {
+      "startLine": 144,
+      "endLine": 150
+    },
+    "title": "The Exact Constant Problem",
+    "content": "The remaining open question: determine the constant c* such that f(n) ~ c*√(n/log n). The formalization states this as the existence of c with |f(n) − c√(n/log n)| ≤ ε√(n/log n) for large n. The constant is known to lie in [1, 2]. Erdős speculated it might be √2, related to the density of the triangle-free process.",
+    "mathContext": "$$\\exists\\, c^* :\\; f(n) \\sim c^* \\sqrt{\\frac{n}{\\log n}} \\qquad\\text{with}\\quad 1 \\leq c^* \\leq 2$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic constant",
+      "triangle-free process density",
+      "Ramsey number constants"
+    ],
+    "prerequisites": [
+      "asymptotic equivalence",
+      "Erdős Problem 1104 bounds"
+    ]
+  },
+  {
+    "id": "erdos-1104-edge-variant",
+    "proofId": "erdos-1104",
+    "type": "definition",
+    "range": {
+      "startLine": 152,
+      "endLine": 174
+    },
+    "title": "Edge Variant g(m)",
+    "content": "The edge variant g(m) = max{χ(G) : G triangle-free with m edges} has order Θ((m/(log m)²)^{1/3}). The upper bound constant 3^{5/3} comes from Davies–Illingworth (2022); the lower bound from Kim's construction (1995). This variant is useful because edge count is a more refined measure of graph density than vertex count.",
+    "mathContext": "$$g(m) = \\Theta\\!\\left(\\left(\\frac{m}{(\\log m)^2}\\right)^{1/3}\\right) \\quad\\text{with upper constant}\\; 3^{5/3} \\approx 6.24$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge density",
+      "graph density measures",
+      "cube-root scaling"
+    ],
+    "prerequisites": [
+      "triangle-free graphs",
+      "asymptotic bounds"
+    ]
+  },
+  {
+    "id": "erdos-1104-mycielski",
+    "proofId": "erdos-1104",
+    "type": "concept",
+    "range": {
+      "startLine": 176,
+      "endLine": 196
+    },
+    "title": "Mycielski Construction",
+    "content": "The Mycielski graph M_k is a classical construction of triangle-free graphs with chromatic number exactly k. Starting from K₁, each step adds a 'shadow' vertex for each existing vertex plus one universal vertex, preserving triangle-freeness while increasing the chromatic number by 1. M_k has 3·2^{k−2} − 1 vertices for k ≥ 2. This gives the weak lower bound f(3·2^{k−2} − 1) ≥ k, which grows as f(n) ≥ Ω(log n / log log n)—far weaker than the true Θ(√(n/log n)) bound from probabilistic methods.",
+    "mathContext": "Mycielski: $|V(M_k)| = 3 \\cdot 2^{k-2} - 1$ for $k \\geq 2$, so $f(3 \\cdot 2^{k-2} - 1) \\geq k$. Inverting: $f(n) \\geq \\Omega(\\log n)$, which is exponentially weaker than $\\Theta(\\sqrt{n/\\log n})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mycielski graph",
+      "triangle-free construction",
+      "chromatic number growth"
+    ],
+    "prerequisites": [
+      "graph constructions",
+      "chromatic number"
+    ]
+  }
+]

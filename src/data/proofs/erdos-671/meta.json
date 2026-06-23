@@ -1,0 +1,259 @@
+{
+  "id": "erdos-671",
+  "title": "Erdos Problem #671: Lagrange Interpolation Convergence",
+  "slug": "erdos-671",
+  "description": "Can Lagrange interpolation converge at points where the Lebesgue function diverges? Two open questions with $250 prize. Bernstein (1931) and Erdos-Vertesi (1980) established fundamental divergence results.",
+  "meta": {
+    "author": "Erdos-Vertesi (1980 divergence), Bernstein (1931 Lebesgue divergence)",
+    "sourceUrl": "https://erdosproblems.com/671",
+    "date": "1980",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos671Problem.lean",
+    "tags": [
+      "erdos",
+      "analysis",
+      "interpolation",
+      "approximation-theory",
+      "lebesgue-function",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 7,
+    "erdosNumber": 671,
+    "erdosUrl": "https://erdosproblems.com/671",
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$250",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.eval",
+        "description": "Polynomial evaluation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Polynomials.Basic"
+      },
+      {
+        "theorem": "ContinuousMap",
+        "description": "Continuous functions on compact sets",
+        "module": "Mathlib.Topology.ContinuousFunction.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Filter.limsup",
+        "description": "Limit superior for divergence",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "InterpolationPoints structure: n distinct points in [-1,1]",
+      "lagrangeBasis definition: Lagrange basis polynomials p_i^n",
+      "lagrangeInterp definition: interpolation operator L^n f",
+      "lagrangeBasis_sum_one (proved): partition of unity via root counting",
+      "lebesgueFunction definition: lambda_n(x) = sum |p_i(x)|",
+      "lebesgueConstant definition: Lambda_n = max lambda_n(x)",
+      "lebesgueFunction_ge_one (proved): lambda_n(x) >= 1 for n >= 1",
+      "lagrangeInterp_degree (proved): interpolant has degree <= n-1",
+      "chebyshevNodes.distinct (proved): cos strict anti-monotonicity",
+      "equidistantNodes.in_interval and distinct (proved): arithmetic bounds",
+      "bernstein theorem: divergence at some point (sorry)",
+      "erdos_vertesi theorem: a.e. divergence for some f (sorry)",
+      "Question1 definition: convergence despite local divergence (subtype formulation)",
+      "Question2 definition: convergence despite universal divergence (subtype formulation)",
+      "q2_implies_q1 (proved): Question2 implies Question1",
+      "q2_fails_implies (proved): negation gives explicit divergence",
+      "faber theorem: no universal convergent sequence (sorry)",
+      "MainConjecture definition: Q1 iff Q2?"
+    ],
+    "axiomCount": 3,
+    "lineCount": 397,
+    "assumptions": "3 axiom(s) and 7 sorry(s). See the Lean source for details.",
+    "theoremCount": 15,
+    "definitionCount": 13,
+    "additionalFiles": [
+      "Proofs/Erdos671Aristotle.lean",
+      "Proofs/Erdos671ProblemAristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdos Problem #671**\n\nThis is a deep problem in approximation theory about the relationship between the Lebesgue function and Lagrange interpolation convergence.\n\n**Key History:**\n- 1931: Bernstein proves lambda_n(x) diverges at some point for any interpolation scheme\n- 1980: Erdos and Vertesi prove that for any points, some continuous f has |L^n f(x)| -> infinity a.e.\n- Present: Questions 1 and 2 remain open with $250 prize\n\n**Mathematical Context:**\nThe Lebesgue function lambda_n(x) = sum |p_i^n(x)| controls interpolation error: the error is bounded by (1 + Lambda_n) times the best polynomial approximation. When Lambda_n grows, uniform convergence fails. The questions ask whether *pointwise* convergence can still occur when lambda_n diverges.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nGiven points $a_i^n \\in [-1,1]$, define Lagrange basis polynomials $p_i^n$ and interpolation $L^n f(x) = \\sum f(a_i^n) p_i^n(x)$. The Lebesgue function is $\\lambda_n(x) = \\sum |p_i^n(x)|$.\n\n**Question 1:** Does there exist points such that for every continuous $f$, there exists $x$ with $\\limsup \\lambda_n(x) = \\infty$ yet $L^n f(x) \\to f(x)$?\n\n**Question 2:** Can $\\lambda_n(x) \\to \\infty$ for ALL $x$, yet for every continuous $f$, some $x$ has $L^n f(x) \\to f(x)$?\n\n**Prize: $250**",
+    "text": "Can Lagrange interpolation converge at points where the Lebesgue function diverges? Two open questions with $250 prize. Bernstein (1931) and Erdos-Vertesi (1980) established fundamental divergence results.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Structures:** Define InterpolationPoints, PointSequence for varying n.\n\n2. **Lagrange Basis:** Define p_i^n and prove interpolation properties.\n\n3. **Lebesgue Function:** Define lambda_n(x) and the Lebesgue constant Lambda_n.\n\n4. **Classical Theorems:** State Bernstein (1931) and Erdos-Vertesi (1980) as sorried theorems.\n\n5. **The Questions:** Define Question1 and Question2 formally as Prop.\n\n6. **Special Cases:** Chebyshev nodes (optimal) and equidistant nodes (bad).\n\n7. **Main Conjecture:** The relationship between Q1 and Q2.\n\nThe questions are axiomatized since they remain open.",
+    "keyInsights": [
+      "**Lebesgue Function:** lambda_n(x) = sum |p_i(x)| controls how errors propagate from data to interpolant",
+      "**Bernstein's Theorem:** For ANY choice of nodes, lambda_n diverges at some point - uniform convergence always fails somewhere",
+      "**Erdos-Vertesi:** Even stronger - for any nodes, some continuous f diverges almost everywhere under L^n",
+      "**Chebyshev Nodes:** x_k = cos((2k-1)pi/2n) minimize Lambda_n to O(log n) - the best possible",
+      "**Equidistant Nodes:** Equally-spaced points cause Lambda_n to grow exponentially (Runge phenomenon)",
+      "**Q1 vs Q2:** Q2 implies Q1 trivially. The main conjecture asks if they're equivalent."
+    ],
+    "prerequisites": [
+      "Polynomial interpolation (Lagrange basis)",
+      "Approximation theory (best polynomial approximation $E_n(f)$)",
+      "Lebesgue function and Lebesgue constant",
+      "Measure theory (Lebesgue measure, a.e. convergence)",
+      "Continuous functions on compact intervals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header: Statement and Questions",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "States Erdős Problem #671 (Lagrange interpolation convergence, OPEN, $250 prize). For nodes $a_i^n\\in[-1,1]$ define Lagrange basis polynomials $p_i^n$, the interpolation operator $L^n$, and the Lebesgue function $\\lambda_n(x)=\\sum_i|p_i^n(x)|$. Q1: is there a node sequence where for every continuous $f$ some $x$ has $\\limsup\\lambda_n(x)=\\infty$ yet $L^nf(x)\\to f(x)$? Q2: same with $\\limsup\\lambda_n(x)=\\infty$ for ALL $x$. Known: Bernstein (1931), Erdős–Vértesi (1980). Imports Mathlib.",
+      "mathContext": "$\\lambda_n(x)=\\sum_i|p_i^n(x)|$ (Lebesgue function); $L^nf(x)=\\sum_i f(a_i)p_i^n(x)$. Both questions OPEN."
+    },
+    {
+      "id": "basic-defs",
+      "title": "Part I: Basic Definitions",
+      "startLine": 31,
+      "endLine": 68,
+      "summary": "Defines the `InterpolationPoints n` structure (distinct nodes in $[-1,1]$), `PointSequence`, and the Lagrange basis `lagrangeBasis pts i` $=\\prod_{j\\neq i}\\frac{X-a_j}{a_i-a_j}$. PROVES the defining interpolation properties `lagrangeBasis_self` ($p_i(a_i)=1$) and `lagrangeBasis_other` ($p_i(a_j)=0$ for $j\\neq i$).",
+      "mathContext": "$p_i^n(x)=\\prod_{j\\neq i}\\frac{x-a_j}{a_i-a_j}$; $p_i(a_i)=1$, $p_i(a_j)=0$."
+    },
+    {
+      "id": "interpolation",
+      "title": "Part II: Lagrange Interpolation",
+      "startLine": 69,
+      "endLine": 114,
+      "summary": "Defines the interpolation operator `lagrangeInterp pts f x` $=\\sum_i f(a_i)p_i(x)$. PROVES `lagrangeInterp_at_node` ($L^nf(a_i)=f(a_i)$) and `lagrangeInterp_degree` ($L^nf$ agrees with a polynomial of degree $\\leq n-1$, via natDegree bounds on the basis product).",
+      "mathContext": "$L^nf(x)=\\sum_i f(a_i)p_i(x)$; interpolates at nodes; degree $\\leq n-1$."
+    },
+    {
+      "id": "lebesgue-function",
+      "title": "Part III: The Lebesgue Function",
+      "startLine": 115,
+      "endLine": 190,
+      "summary": "Defines `lebesgueFunction pts x` $=\\sum_i|p_i(x)|$ and `lebesgueConstant` $=\\sup_{x\\in[-1,1]}\\lambda_n(x)$. PROVES the private partition-of-unity lemma `lagrangeBasis_sum_one` ($\\sum_i p_i(x)=1$, via a degree-$\\leq n-1$ polynomial with $n$ roots being zero) and `lebesgueFunction_ge_one` ($\\lambda_n(x)\\geq1$, from $|\\sum p_i|\\leq\\sum|p_i|$). A note records the error bound $|L^nf-f|\\leq(1+\\Lambda_n)\\cdot E_n(f)$.",
+      "mathContext": "$\\sum_i p_i(x)=1$ (partition of unity) $\\Rightarrow\\lambda_n(x)\\geq1$; $\\Lambda_n=\\max_{[-1,1]}\\lambda_n$."
+    },
+    {
+      "id": "bernstein",
+      "title": "Part IV: Bernstein's Theorem",
+      "startLine": 191,
+      "endLine": 208,
+      "summary": "Defines `LebesgueUnbounded` ($\\limsup\\lambda_n(x)=\\infty$). States Bernstein's 1931 theorem `bernstein` (some $x_0$ has unbounded Lebesgue function — `sorry`) and `lebesgueConstant_growth` ($\\Lambda_n\\geq(2/\\pi)\\log n - 1$ — `sorry`). A note records that Chebyshev nodes attain the optimal $\\sim(2/\\pi)\\log n$ growth.",
+      "mathContext": "Bernstein: $\\exists x_0,\\ \\limsup_n\\lambda_n(x_0)=\\infty$. $\\Lambda_n\\geq(2/\\pi)\\log n - 1$."
+    },
+    {
+      "id": "erdos-vertesi",
+      "title": "Part V: Erdős-Vértesi Theorem",
+      "startLine": 209,
+      "endLine": 223,
+      "summary": "Defines `InterpUnbounded` ($|L^nf(x)|\\to\\infty$ frequently). States the Erdős–Vértesi 1980 theorem `erdos_vertesi`: for any nodes there is a continuous $f$ with $|L^nf(x)|\\to\\infty$ for a.e. $x$ (`sorry`). A note: divergence is generic (Baire category).",
+      "mathContext": "Erdős–Vértesi: $\\exists f\\in C[-1,1]$ with $|L^nf(x)|\\to\\infty$ for a.e. $x$."
+    },
+    {
+      "id": "question1",
+      "title": "Part VI: Question 1",
+      "startLine": 224,
+      "endLine": 235,
+      "summary": "Formalizes `Question1`: there is a node sequence such that for every continuous $f$ some $x$ has $\\limsup\\lambda_n(x)=\\infty$ yet $L^nf(x)\\to f(x)$. Declared OPEN via the axiom `question1_open`.",
+      "mathContext": "Q1: $\\exists$ seq, $\\forall f\\,\\exists x$: $\\lambda_n(x)$ unbounded $\\wedge\\ L^nf(x)\\to f(x)$."
+    },
+    {
+      "id": "question2",
+      "title": "Part VII: Question 2",
+      "startLine": 236,
+      "endLine": 255,
+      "summary": "Formalizes `Question2`: a node sequence with $\\limsup\\lambda_n(x)=\\infty$ for ALL $x\\in[-1,1]$, yet for every continuous $f$ some $x$ has $L^nf(x)\\to f(x)$. Declared OPEN via the axiom `question2_open`. PROVES `q2_implies_q1` (Question 2 is strictly stronger).",
+      "mathContext": "Q2 (all-$x$ unboundedness) $\\Rightarrow$ Q1."
+    },
+    {
+      "id": "special-sequences",
+      "title": "Part VIII: Special Point Sequences",
+      "startLine": 256,
+      "endLine": 318,
+      "summary": "Concrete node families. Defines `chebyshevNodes` ($x_k=\\cos\\frac{(2k+1)\\pi}{2n}$) and `equidistantNodes` ($x_k=-1+2k/(n-1)$), each with the distinctness obligation FULLY PROVED (via injectivity of $\\cos$ on $[0,\\pi]$ / linear node spacing). States `equidistant_diverges` ($\\Lambda_n\\geq2^{n-1}/n^2$ for equidistant nodes — `sorry`).",
+      "mathContext": "Chebyshev $x_k=\\cos\\frac{(2k+1)\\pi}{2n}$; equidistant $x_k=-1+\\frac{2k}{n-1}$ with $\\Lambda_n\\geq2^{n-1}/n^2$."
+    },
+    {
+      "id": "convergence-conditions",
+      "title": "Part IX: Convergence Conditions",
+      "startLine": 319,
+      "endLine": 327,
+      "summary": "A docstring summarizing classical convergence criteria: uniform convergence iff $\\Lambda_n\\cdot\\omega(f,1/n)\\to0$; Lipschitz functions converge when $\\Lambda_n=O(\\log n)$; analytic functions converge for any node sequence. No declarations.",
+      "mathContext": "Uniform $L^nf\\to f$ iff $\\Lambda_n\\,\\omega(f,1/n)\\to0$; analytic $f$ always converge."
+    },
+    {
+      "id": "pointwise-uniform",
+      "title": "Part X: Pointwise vs Uniform Convergence",
+      "startLine": 328,
+      "endLine": 338,
+      "summary": "States Faber's theorem `faber`: no node sequence yields convergence for all continuous $f$ (`sorry`). A note contrasts pointwise vs uniform convergence.",
+      "mathContext": "Faber: no node sequence gives convergence for every $f\\in C[-1,1]$."
+    },
+    {
+      "id": "measure-theoretic",
+      "title": "Part XI: Measure-Theoretic Aspects",
+      "startLine": 339,
+      "endLine": 354,
+      "summary": "States two measure-theoretic results (both `sorry`): `positive_measure_divergence` (for some $f$, the divergence set has positive measure) and `full_measure_convergence` (for some sequence and $f$, the convergence set has full measure).",
+      "mathContext": "Divergence on positive-measure sets vs convergence on full-measure sets (both stated, sorry)."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part XII: The Main Conjecture",
+      "startLine": 355,
+      "endLine": 377,
+      "summary": "Defines `MainConjecture` ($\\text{Question1}\\leftrightarrow\\text{Question2}$), declared OPEN via the axiom `main_conjecture_open`. PROVES `q2_fails_implies`: if Question 2 fails, then every all-$x$-unbounded sequence admits a continuous $f$ with no convergence point.",
+      "mathContext": "Main conjecture: Q1 $\\leftrightarrow$ Q2 (open). $\\neg$Q2 $\\Rightarrow$ full divergence for some $f$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 378,
+      "endLine": 397,
+      "summary": "Closing docstring recapping the problem (OPEN, $250 prize), the two questions, the known Bernstein/Erdős–Vértesi results, and the key remaining sorries (`bernstein`, `erdos_vertesi`) and open-question axioms (`question1_open`, `question2_open`).",
+      "mathContext": "Recap: 7 sorries (classical/measure results) + 3 axioms (the open questions/conjecture)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #671 asks two profound questions about Lagrange interpolation: can convergence occur where the Lebesgue function (which controls error) diverges? Despite Bernstein's and Erdos-Vertesi's negative results about universal behavior, the questions about pointwise convergence remain open with a $250 prize.",
+    "implications": "**Theoretical Significance**: **Significance in Approximation Theory**\n\n1. **Error Control:** Resolution would clarify when Lebesgue function divergence truly prevents convergence\n\n2. **Node Selection:** Would inform optimal choice of interpolation nodes\n\n**3. Pointwise vs Uniform:** Highlights the gap between pointwise and uniform convergence theory\n\n4. **Measure Theory Connection:** Connects approximation theory with measure-theoretic questions\n\n5. **Computational Implications:** Would impact numerical analysis algorithms.",
+    "openQuestions": [
+      "Question 1: Can L^n f(x) -> f(x) at points where lambda_n(x) -> infinity? ($250)",
+      "Question 2: Can lambda_n(x) -> infinity everywhere yet still have some convergence?",
+      "Is Question 1 equivalent to Question 2?",
+      "What is the measure of convergence/divergence sets for typical f?",
+      "Do there exist 'optimal' point sequences for the questions?"
+    ]
+  },
+  "leanFile": {
+    "imports": [],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 397,
+    "axiomCount": 3,
+    "theoremCount": 15,
+    "definitionCount": 13,
+    "sorries": 7,
+    "path": "Proofs/Erdos671Problem.lean",
+    "additionalFiles": [
+      "Proofs/Erdos671Aristotle.lean",
+      "Proofs/Erdos671ProblemAristotle.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1130",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, approximation-theory, interpolation, lebesgue-function"
+    },
+    {
+      "targetId": "erdos-1132",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, interpolation, lebesgue-function, open"
+    },
+    {
+      "targetId": "erdos-1131",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: approximation-theory, interpolation, open"
+    }
+  ],
+  "sorries": 7
+}

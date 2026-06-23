@@ -1,0 +1,163 @@
+{
+  "id": "newton-power-sum-identities-oq-01-oq-01",
+  "title": "Newton's Identities in Degrees 4 and 5: Explicit Power-Sum Closed Forms",
+  "slug": "newton-power-sum-identities-oq-01-oq-01",
+  "description": "Newton's identities express the power sums pₖ = ∑ᵢ Xᵢᵏ of finitely many variables in terms of the elementary symmetric polynomials eⱼ. Mathlib proves the general recurrence MvPolynomial.psum_eq_mul_esymm_sub_sum, namely pₖ = (-1)^{k+1}·k·eₖ - ∑_{0<i<k} (-1)^i·eᵢ·p_{k-i}, but does not record the explicit closed forms in low degree. The parent entry (newton-power-sum-identities-oq-01) unrolled the recurrence for k = 1, 2, 3; this child continues the identical method two further rungs to obtain p₄ = e₁⁴ - 4e₁²e₂ + 2e₂² + 4e₁e₃ - 4e₄ and p₅ = e₁⁵ - 5e₁³e₂ + 5e₁e₂² + 5e₁²e₃ - 5e₂e₃ - 5e₁e₄ + 5e₅, valid as identities in MvPolynomial σ R for any finite index type σ and any commutative ring R. The finite inner index sets of the recurrence ({(1,3),(2,2),(3,1)} at k=4 and {(1,4),(2,3),(3,2),(4,1)} at k=5) are computed by omega and the results closed by ring after substituting the lower identities. The entry is self-contained: degrees 1, 2, 3 are restated and reproved.",
+  "meta": {
+    "author": "Isaac Newton (Arithmetica Universalis, 1707) / classical theory of symmetric functions; formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Newton%27s_identities",
+    "date": "1707",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "symmetric-functions",
+      "newton-identities",
+      "power-sums",
+      "elementary-symmetric-polynomials",
+      "mvpolynomial",
+      "commutative-ring",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/NewtonPowerSumIdentitiesOQ01OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MvPolynomial.psum_eq_mul_esymm_sub_sum",
+        "description": "The Newton recurrence pₖ = (-1)^{k+1}·k·eₖ - ∑_{0<i<k}(-1)^i·eᵢ·p_{k-i} (for 0 < k); the engine that is unrolled at k = 4 and k = 5",
+        "module": "Mathlib.RingTheory.MvPolynomial.Symmetric.NewtonIdentities"
+      },
+      {
+        "theorem": "MvPolynomial.psum_one",
+        "description": "psum σ R 1 = ∑ᵢ Xᵢ — used together with esymm_one to give the base identity p₁ = e₁",
+        "module": "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs"
+      },
+      {
+        "theorem": "MvPolynomial.esymm_one",
+        "description": "esymm σ R 1 = ∑ᵢ Xᵢ — matches psum_one to establish p₁ = e₁",
+        "module": "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs"
+      },
+      {
+        "theorem": "Finset.sum_insert / Finset.sum_pair / Finset.sum_singleton",
+        "description": "Evaluate the recurrence's finite inner sums over the explicit three- and four-element index sets by peeling elements off the literal Finset",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.mem_antidiagonal",
+        "description": "Membership in the ℕ-antidiagonal, reducing the inner index set {a ∈ antidiagonal k | 0 < a.1 < k} to a linear-arithmetic condition discharged by omega",
+        "module": "Mathlib.Algebra.Order.Antidiag.Nat"
+      }
+    ],
+    "originalContributions": [
+      "psum_four_eq: p₄ = e₁⁴ - 4e₁²e₂ + 2e₂² + 4e₁e₃ - 4e₄ — the degree-4 Newton identity, unrolled from the Mathlib recurrence over the inner index set {(1,3),(2,2),(3,1)}",
+      "psum_five_eq: p₅ = e₁⁵ - 5e₁³e₂ + 5e₁e₂² + 5e₁²e₃ - 5e₂e₃ - 5e₁e₄ + 5e₅ — the degree-5 Newton identity, unrolled over {(1,4),(2,3),(3,2),(4,1)}; these explicit closed forms are not stated in Mathlib, which carries only the general recurrence",
+      "Self-contained restatement and reproof of the degree-1,2,3 identities (psum_one_eq, psum_two_eq, psum_three_eq) so the file stands alone"
+    ],
+    "dateAdded": "2026-06-20",
+    "lineCount": 124,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). The uses of decide prove pair-inequality side conditions ((1,3) ∉ {…} etc.) by kernel reduction, not native_decide, so no Lean.ofReduceBool is introduced.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Newton's identities (also called the Newton–Girard formulae) relate the two most fundamental bases of the ring of symmetric functions: the power sums pₖ = ∑ xᵢᵏ and the elementary symmetric polynomials eⱼ = ∑_{i₁<···<iⱼ} xᵢ₁···xᵢⱼ. They were stated by Newton in his Arithmetica Universalis (1707) and earlier by Girard (1629), and are the computational backbone of Galois theory, the theory of resultants, and the conversion between the characteristic polynomial of a matrix and its traces of powers. While the degree 1–3 identities appear most often, the degree-4 and degree-5 formulas are exactly what is needed for sums of fourth and fifth powers of the roots of a quartic or quintic in terms of its coefficients, and for the trace-power-to-coefficient conversion of 4×4 and 5×5 matrices.",
+    "problemStatement": "**Open Question (newton-power-sum-identities-oq-01-oq-01)**: Extend the explicit low-degree Newton identities (parent: k = 1, 2, 3) two further rungs, deriving the degree-4 and degree-5 closed forms for the power sums pₖ = ∑ᵢ Xᵢᵏ in terms of the elementary symmetric polynomials eⱼ over a commutative ring.\n\n**Result**: psum_four_eq (p₄ = e₁⁴ - 4e₁²e₂ + 2e₂² + 4e₁e₃ - 4e₄) and psum_five_eq (p₅ = e₁⁵ - 5e₁³e₂ + 5e₁e₂² + 5e₁²e₃ - 5e₂e₃ - 5e₁e₄ + 5e₅), obtained by unrolling Mathlib's general Newton recurrence MvPolynomial.psum_eq_mul_esymm_sub_sum, which does not itself record these closed forms.",
+    "text": "Let σ be a finite index type and R a commutative ring. For the elementary symmetric polynomials eⱼ = MvPolynomial.esymm σ R j and power sums pₖ = MvPolynomial.psum σ R k = ∑ᵢ Xᵢᵏ in MvPolynomial σ R, one has p₄ = e₁⁴ - 4e₁²e₂ + 2e₂² + 4e₁e₃ - 4e₄ and p₅ = e₁⁵ - 5e₁³e₂ + 5e₁e₂² + 5e₁²e₃ - 5e₂e₃ - 5e₁e₄ + 5e₅. These hold for every finite σ; when card σ < k the higher eⱼ vanish, so e.g. with a single variable p₄ = e₁⁴ and p₅ = e₁⁵.",
+    "proofStrategy": "**Proof Strategy.**\n\nThe file first restates and reproves the degree-1,2,3 identities (psum_one_eq, psum_two_eq, psum_three_eq) exactly as in the parent, then advances two rungs.\n\n4. p₄ = e₁⁴ - 4e₁²e₂ + 2e₂² + 4e₁e₃ - 4e₄ (psum_four_eq): apply the Newton recurrence at k = 4. Its inner sum ranges over {a ∈ antidiagonal 4 | 0 < a.1 < 4}; an omega-discharged set equality shows this is {(1,3),(2,2),(3,1)}. Peel the three terms with two Finset.sum_insert (the disjointness side goals (1,3) ∉ {(2,2),(3,1)} and (2,2) ∉ {(3,1)} closed by decide) and Finset.sum_singleton, substitute the degree-3, 2, 1 identities, and close with push_cast; ring (which evaluates the (-1)^i signs and integer casts).\n\n5. p₅ = e₁⁵ - 5e₁³e₂ + 5e₁e₂² + 5e₁²e₃ - 5e₂e₃ - 5e₁e₄ + 5e₅ (psum_five_eq): apply the recurrence at k = 5. The inner index set {a ∈ antidiagonal 5 | 0 < a.1 < 5} is {(1,4),(2,3),(3,2),(4,1)} (again by omega), peeled by three Finset.sum_insert and a Finset.sum_singleton into the four terms (-1)^i·eᵢ·p_{5-i}. Substitute the degree-4,3,2,1 identities and finish with push_cast; ring.",
+    "keyInsights": [
+      "**The recurrence keeps specializing cleanly.** Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum gives Newton's law for all k; each explicit low-degree formula comes from evaluating its finite inner sum over a tiny, omega-computable index set and substituting the already-established lower identities — a uniform descent that does not get harder as the degree grows.",
+      "**The index sets remain pure linear arithmetic.** {a ∈ antidiagonal k | 0 < a.1 < k} reduces, via mem_antidiagonal and mem_Ioo, to {(i,j) | i+j=k, 0<i<k}, which omega resolves to {(1,3),(2,2),(3,1)} for k=4 and {(1,4),(2,3),(3,2),(4,1)} for k=5 — no Finset computation or decide on the polynomial ring is needed; decide is used only for the trivial pair-disjointness side goals of sum_insert.",
+      "**Identities, not equalities of numbers.** The results live in MvPolynomial σ R, so they are universal symmetric-function identities; specializing the variables recovers the relations for ∑xᵢ⁴ and ∑xᵢ⁵ in terms of the coefficients of any quartic or quintic.",
+      "**New beyond Mathlib.** Mathlib records the recurrence but not the explicit closed forms p₄ and p₅; this entry supplies them as reusable lemmas, extending the parent's degree-1,2,3 coverage."
+    ],
+    "prerequisites": [
+      "The parent entry newton-power-sum-identities-oq-01 (degrees 1, 2, 3)",
+      "The definitions MvPolynomial.psum and MvPolynomial.esymm (Symmetric/Defs.lean)",
+      "The Newton recurrence MvPolynomial.psum_eq_mul_esymm_sub_sum (Symmetric/NewtonIdentities.lean)",
+      "Finset.antidiagonal over ℕ and the big-operator lemmas Finset.sum_singleton, Finset.sum_pair, Finset.sum_insert"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring stating Newton's recurrence, the parent's degree-1,2,3 forms, and the two new closed forms p₄ and p₅ to be derived, with the validity for any finite σ (higher eⱼ vanishing when card σ < k). The Mathlib import, the open Finset, the namespace, and the variables (σ finite, R a commutative ring).",
+      "mathContext": "$p_k = (-1)^{k+1} k\\,e_k - \\sum_{0<i<k} (-1)^i e_i\\, p_{k-i}$."
+    },
+    {
+      "id": "degrees-one-two-three",
+      "title": "Degrees 1–3 (restated): p₁, p₂, p₃",
+      "startLine": 45,
+      "endLine": 77,
+      "summary": "psum_one_eq, psum_two_eq, psum_three_eq: the parent's three identities reproved verbatim so the file is self-contained — base case from psum_one/esymm_one, then the recurrence at k = 2, 3 with omega-computed inner sets {(1,1)} and {(1,2),(2,1)}.",
+      "mathContext": "$p_1 = e_1,\\quad p_2 = e_1^2 - 2e_2,\\quad p_3 = e_1^3 - 3e_1 e_2 + 3e_3$."
+    },
+    {
+      "id": "degree-four",
+      "title": "Degree 4: p₄ = e₁⁴ - 4e₁²e₂ + 2e₂² + 4e₁e₃ - 4e₄",
+      "startLine": 79,
+      "endLine": 97,
+      "summary": "psum_four_eq: apply the recurrence at k = 4, reduce its inner index set to {(1,3),(2,2),(3,1)} via an omega-proved set equality, evaluate by two Finset.sum_insert plus Finset.sum_singleton, substitute the degree-3, 2, 1 identities, and close with push_cast; ring.",
+      "mathContext": "$p_4 = e_1^4 - 4e_1^2 e_2 + 2e_2^2 + 4e_1 e_3 - 4e_4$."
+    },
+    {
+      "id": "degree-five",
+      "title": "Degree 5: p₅ = e₁⁵ - 5e₁³e₂ + 5e₁e₂² + 5e₁²e₃ - 5e₂e₃ - 5e₁e₄ + 5e₅",
+      "startLine": 99,
+      "endLine": 124,
+      "summary": "psum_five_eq: apply the recurrence at k = 5, reduce its inner index set to {(1,4),(2,3),(3,2),(4,1)} via omega, evaluate by three Finset.sum_insert plus Finset.sum_singleton, substitute the degree-4,3,2,1 identities, and finish with push_cast; ring.",
+      "mathContext": "$p_5 = e_1^5 - 5e_1^3 e_2 + 5e_1 e_2^2 + 5e_1^2 e_3 - 5e_2 e_3 - 5e_1 e_4 + 5e_5$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "newton-power-sum-identities-oq-01",
+      "relation": "parent",
+      "description": "Parent entry deriving the degree-1,2,3 Newton identities by the same unrolling of MvPolynomial.psum_eq_mul_esymm_sub_sum; this entry continues to degrees 4 and 5."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) derivation of the degree-4 and degree-5 Newton identities p₄ = e₁⁴ - 4e₁²e₂ + 2e₂² + 4e₁e₃ - 4e₄ and p₅ = e₁⁵ - 5e₁³e₂ + 5e₁e₂² + 5e₁²e₃ - 5e₂e₃ - 5e₁e₄ + 5e₅ as universal identities in MvPolynomial σ R, obtained by unrolling Mathlib's general Newton recurrence and substituting the lower identities (also reproved here for self-containment).",
+    "implications": "Extends the parent's degree-1,2,3 closed forms to degrees 4 and 5, supplying reusable lemmas for converting between power sums and elementary symmetric polynomials (equivalently between traces of powers and coefficients of a characteristic polynomial) at the degrees relevant to quartic and quintic root-power sums.",
+    "openQuestions": [
+      "Derive the degree-6 identity p₆ = e₁⁶ - 6e₁⁴e₂ + 9e₁²e₂² - 2e₂³ + 6e₁³e₃ - 12e₁e₂e₃ + 3e₃² - 6e₁²e₄ + 6e₂e₄ + 6e₁e₅ - 6e₆ by the same unrolling (inner index set {(1,5),(2,4),(3,3),(4,2),(5,1)}).",
+      "Prove the dual (reverse) Newton identities expressing each eₖ as a polynomial in the power sums (k! eₖ = det of a Toeplitz matrix in the pᵢ), valid over a ℚ-algebra."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "NewtonPowerSumOQ01",
+    "lineCount": 124,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/NewtonPowerSumIdentitiesOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Newton, Isaac",
+      "title": "Arithmetica Universalis",
+      "year": "1707",
+      "venue": "",
+      "note": "Classical source of the identities relating power sums and elementary symmetric polynomials"
+    },
+    {
+      "authors": "Mead, D. G.",
+      "title": "Newton's Identities",
+      "year": "1992",
+      "venue": "The American Mathematical Monthly 99(8), 749–751",
+      "note": "Modern exposition and proofs of the Newton–Girard formulae"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,13 @@
+# Aristotle run artifacts
+
+This directory holds per-run artifacts written by
+`scripts/aristotle/write-run-artifact.sh` after each Aristotle attempt on a
+Tier-3 (open-conjecture) target. See `research/SORRY-CLASSIFICATION.md` for
+the schema and policy.
+
+Layout:
+  research/aristotle-runs/<slug>/<YYYY-MM-DDTHH-MMZ>/
+    config.json
+    transcript.log
+    final-state.lean   (optional)
+    summary.md

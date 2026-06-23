@@ -1,0 +1,31 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01",
+  "title": "Base case of Frobenius/Zolotarev: sign(x ↦ a·x on ℤ/p) = (a/p)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "The whole-field sign equals the units sign because 0 is a fixed point of multiplication-by-a (Equiv.Perm.sign_subtypePerm): this fixed-point bridge is exactly the glue the parent oq-01-oq-03 named as its remaining step.",
+      "unitsEquivNeZero : (ℤ/p)ˣ ≃ {x : ℤ/p // x ≠ 0} identifies the nonzero-restriction of ringMulPerm a with the units permutation mulPerm a; sign_eq_sign_of_equiv transports the sign.",
+      "Units-level Zolotarev needs only two generator facts: a single (p-1)-cycle has sign -1 (p-1 even), and a generator of a cyclic group of even order is a non-square (orderOf u² = orderOf u / gcd(orderOf u,2)).",
+      "legendreSym p a is definitionally quadraticChar (ℤ/p) a, so the Legendre formulation follows from the quadratic-character one via a val-cast round-trip.",
+      "The grandparent ElementaryQuadraticReciprocityOQ01 is bit-rotted against Mathlib 4.26.0 (forward references + deprecations), so the units-level lemma had to be re-established self-contained."
+    ],
+    "builtItems": [
+      "sign_ringMulPerm_eq_sign_mulPerm (Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01.lean:122) — the fixed-point bridge",
+      "generator_not_isSquare (…:184), sign_mulPerm_generator (…:171) — generator base values",
+      "sign_mulPerm_eq_quadraticChar (…:227) — units-level Zolotarev, self-contained",
+      "sign_ringMulPerm_eq_legendre (…:262) — the base case",
+      "sign_ringMulPerm_eq_legendre_mul (…:283) — two-prime Jacobi value, closing the loop"
+    ],
+    "mathlibGaps": [
+      "No Zolotarev / sign-of-mulLeft = quadraticChar characterization exists in Mathlib; it must be built from cycle-sign and quadraticChar primitives."
+    ],
+    "nextSteps": [
+      "Iterate sign_ringMulPerm_mul_of_odd over the prime factorization for all squarefree odd n.",
+      "Handle prime-power factors p^e (e ≥ 2) for the full Frobenius statement.",
+      "Repair the bit-rotted grandparent ElementaryQuadraticReciprocityOQ01 (Mechanic task)."
+    ],
+    "progressSummary": "COMPLETE: base case proved unconditionally, axiom-free; loop closed for two-prime squarefree odd modulus."
+  }
+}

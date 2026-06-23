@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "proofId": "dissection-of-cubes-oq-01",
+  "reviewDate": "2026-03-23T23:00:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "B-",
+    "oneLiner": "Genuine original proof work extending Wiedijk #82 with a clean open question formalization, but 'verified' status is misleading — the theorems depend transitively on 2 axioms in the imported DissectionOfCubes.lean and the covering constraint is trivially True.",
+    "tier": "B",
+    "tierJustification": "Tier B: Formalized using Mathlib with imported axiom-dependent base. The file's own proofs are genuine multi-step Lean reasoning (not wrappers), but the foundation — dissection_of_cubes — depends on 2 axioms (smaller_cube_above_axiom, all_different_implies_long_chains_axiom) in the parent file. Additionally, CubeDissection.covers_unit_cube is defined as True, so results apply to any disjoint arrangement of cubes, not actual dissections."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "DissectionOfCubesOQ01.lean lines 128-150 (at_least_two_colliding_cubes)",
+      "finding": "The main theorem at_least_two_colliding_cubes is the file's strongest formal contribution. It's a ~20-line proof using a calc chain: extract collision pair from every_dissection_has_collision, show both cubes belong to collidingCubes (with Ne.symm and .symm for the symmetric case), then use Finset.card_pair and Finset.card_le_card to establish card ≥ 2. This is genuine multi-step Lean reasoning with non-trivial symmetry handling — not a Mathlib wrapper.",
+      "recommendation": "Preserve and highlight. This proof demonstrates real combinatorial reasoning in Lean."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "DissectionOfCubesOQ01.lean lines 56-58, 86-88, 123-125, 174-175 (definitions)",
+      "finding": "The original definitions are well-designed: IsCollisionPair cleanly captures the collision relation, sizeClass uses Classical.decEq appropriately, collidingCubes provides the right abstraction for the quantitative question, and HasMinimalCollision (collidingCubes.card = 2) is an elegant formalization of the open question. The definitions build on each other logically and are reusable.",
+      "recommendation": "Preserve. These definitions form a clean API for studying collision properties of cube dissections."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "DissectionOfCubesOQ01.lean lines 152-241 (sections 4-6)",
+      "finding": "The open question is well-motivated: the lower bound of 2 is proved, the trivial upper bound (all cubes colliding in uniform dissections) is noted, the geometric difficulty (covers_unit_cube placeholder) is honestly acknowledged, and the 2D contrast (squared squares exist but cubed cubes don't) provides illuminating context. The commentary about Littlewood's cascade adds genuine geometric intuition.",
+      "recommendation": "Preserve. The open question framing is a model for how to present formally stated conjectures."
+    },
+    {
+      "severity": "major",
+      "category": "overclaim",
+      "location": "meta.json status: 'verified', badge: 'verified', assumptions: 'Fully verified. 0 axioms, 0 sorries.'",
+      "finding": "The meta.json claims full verification, but the file's theorems depend transitively on 2 axioms in DissectionOfCubes.lean: smaller_cube_above_axiom (line 206 of base) and all_different_implies_long_chains_axiom (line 221 of base). The proof chain is: at_least_two_colliding_cubes → every_dissection_has_collision → dissection_of_cubes → all_different_implies_long_chains → all_different_implies_long_chains_axiom (axiom). The file itself honestly acknowledges this in section 7 (lines 267-272), creating a contradiction between the metadata and the file content.",
+      "recommendation": "Change status to 'axiomatized', badge to 'axiom'. Update axiomCount to 2 (inherited). Update assumptions to: 'This file has 0 direct axioms, but depends transitively on 2 axioms in DissectionOfCubes.lean: smaller_cube_above_axiom (smallest cube on floor has smaller cubes above) and all_different_implies_long_chains_axiom (all-different sizes implies arbitrarily long decreasing chains).'"
+    },
+    {
+      "severity": "moderate",
+      "category": "gap",
+      "location": "DissectionOfCubes.lean line 139 (covers_unit_cube : True)",
+      "finding": "The CubeDissection structure has covers_unit_cube : True as a placeholder for the actual covering constraint. This means any finite set of pairwise-disjoint cubes inside [0,1]³ qualifies as a 'CubeDissection', even if they don't actually cover the unit cube. The theorems in OQ01 therefore prove properties of arbitrary disjoint cube arrangements, not necessarily actual dissections. The file acknowledges this (line 180-182) but the meta.json description doesn't note it.",
+      "recommendation": "Add a note in the meta.json assumptions field: 'The covering constraint covers_unit_cube is a placeholder (True) in CubeDissection — results apply to any set of pairwise-disjoint cubes inside the unit cube, not just actual dissections.'"
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "meta.json relatedProofs",
+      "finding": "The relatedProofs array mixes formats: first element is an object {id: 'dissection-of-cubes', relationship: '...'} while the remaining elements are plain strings. This is inconsistent and likely causes JSON schema validation issues.",
+      "recommendation": "Use consistent format — either all objects or all strings."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "DissectionOfCubesOQ01.lean lines 276-279",
+      "finding": "Three #check debug commands left at end of file.",
+      "recommendation": "Remove."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json crossReferences: euler-polyhedral-formula",
+      "finding": "The cross-reference to euler-polyhedral-formula is tenuous: 'Both entries concern geometric decomposition and counting arguments.' Many proofs concern counting arguments; this doesn't indicate a meaningful mathematical relationship. The other two cross-references (dissection-of-cubes and mathematical-induction) are reasonable.",
+      "recommendation": "Consider removing or replacing with a more relevant cross-reference (e.g., a combinatorial geometry entry if one exists)."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Change status from 'verified' to 'axiomatized' and badge from 'verified' to 'axiom'. The file's theorems depend transitively on 2 axioms in DissectionOfCubes.lean. Update axiomCount to 2 (inherited) and rewrite the assumptions field to document the transitive dependency.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Add note about covers_unit_cube : True placeholder to meta.json assumptions. Results apply to disjoint cube arrangements, not just actual dissections. This limitation is already acknowledged in the Lean file but not in the metadata.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Fix relatedProofs array format: first element is an object while others are strings. Standardize to all strings.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Remove #check debug lines at end of file (lines 276-279).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Review euler-polyhedral-formula cross-reference — the connection is tenuous. Consider replacing with a more relevant entry.",
+      "status": "resolved"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 7,
+    "originalityAccuracy": 7,
+    "completeness": 7,
+    "framingPrecision": 6,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 6,
+    "overall": 6.8
+  },
+  "suggestedBestFraming": "An original extension of Wiedijk #82 (impossibility of perfect cube dissections) proving a quantitative lower bound: every nonempty cube dissection has at least 2 cubes sharing the same size. The file introduces clean definitions for collision pairs, size classes, and colliding cubes, with a genuine multi-step proof. The open question — whether exactly 2 is achievable — is formally stated. Results are axiom-dependent through the imported base file (2 axioms for the geometric descent argument) and the covering constraint is a placeholder."
+}

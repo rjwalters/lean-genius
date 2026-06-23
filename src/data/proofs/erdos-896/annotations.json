@@ -1,0 +1,254 @@
+[
+  {
+    "id": "ann-896-1",
+    "proofId": "erdos-896",
+    "type": "concept",
+    "range": {
+      "startLine": 21,
+      "endLine": 23
+    },
+    "title": "Imports and Setup",
+    "content": "Imports `Finset.Basic` for finite set operations (product, filter, image, card), `Real.Basic` for the real logarithm in asymptotic bounds, and `Tactic` for proof automation. These provide the computational infrastructure for defining representation counts and the analytic framework for Van Doorn's bounds.",
+    "mathContext": "The formalization uses `Finset.product` ($A \\times^s B$) to enumerate all pairs, `Finset.filter` to select those with a given product, and `Finset.image` to project onto products. The real-valued bounds use `Real.log` for $\\log N$ and real exponentiation for $(\\log N)^\\delta$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.product",
+      "Finset.filter",
+      "Real.log",
+      "Finset.card"
+    ],
+    "prerequisites": [
+      "Lean 4 type system",
+      "Mathlib Finset API"
+    ]
+  },
+  {
+    "id": "ann-896-2",
+    "proofId": "erdos-896",
+    "type": "definition",
+    "range": {
+      "startLine": 29,
+      "endLine": 36
+    },
+    "title": "Representation Count and Unique Products",
+    "content": "`reprCount A B m` counts the number of pairs $(a, b) \\in A \\times B$ with $ab = m$, computed as the cardinality of the filtered product set. `uniqueProductCount A B` is $F(A,B)$: the number of products $m$ in the image of $A \\times B$ under multiplication that have exactly one representation ($\\text{reprCount} = 1$). Both are marked `noncomputable` due to the decidability requirements of filtering.",
+    "mathContext": "$\\text{reprCount}(A, B, m) = |\\{(a,b) \\in A \\times B : ab = m\\}|$ and $F(A,B) = |\\{m \\in A \\cdot B : \\text{reprCount}(A,B,m) = 1\\}|$. These are the central objects: $F$ counts products with **unique factorization** within the given sets. For random $A, B \\subseteq [N]$ of size $\\sqrt{N}$, most products have $\\sim \\log N$ representations by divisor estimates.",
+    "significance": "key",
+    "relatedConcepts": [
+      "representation function",
+      "multiplicative energy",
+      "product set",
+      "Finset.filter"
+    ],
+    "prerequisites": [
+      "Finset.product",
+      "Finset.image",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-896-3",
+    "proofId": "erdos-896",
+    "type": "definition",
+    "range": {
+      "startLine": 38,
+      "endLine": 40
+    },
+    "title": "Subsets of Range Predicate",
+    "content": "`SubsetsOfRange A B N` asserts that both $A$ and $B$ are subsets of $\\{1, \\ldots, N\\}$, formalized using `Finset.Icc 1 N`. This constrains the optimization problem to bounded integer sets, which is essential for the asymptotic framework where bounds are expressed in terms of $N$.",
+    "mathContext": "$A, B \\subseteq \\{1, \\ldots, N\\} = \\text{Finset.Icc}\\; 1\\; N$. The constraint $a, b \\geq 1$ ensures products $ab \\geq 1$, and $a, b \\leq N$ bounds products to $[1, N^2]$. The number of possible products is at most $N^2$, providing the trivial upper bound $F(A,B) \\leq N^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.Icc",
+      "bounded optimization",
+      "product set size"
+    ],
+    "prerequisites": [
+      "Finset membership",
+      "natural number intervals"
+    ]
+  },
+  {
+    "id": "ann-896-4",
+    "proofId": "erdos-896",
+    "type": "concept",
+    "range": {
+      "startLine": 47,
+      "endLine": 60
+    },
+    "title": "Maximum Unique Products and Problem Statement",
+    "content": "`maxUniqueProducts N` is axiomatized as a function $\\mathbb{N} \\to \\mathbb{N}$ representing $\\max_{A,B \\subseteq [N]} F(A,B)$. The axiom `maxUniqueProducts_achieved` guarantees the maximum is attained. `ErdosProblem896` formalizes the conjecture that the true order is $\\Theta(N^2/\\log N)$: there exist constants $C_1, C_2 > 0$ such that $C_1 N^2/\\log N \\leq \\max F \\leq C_2 N^2/\\log N$ for all $N \\geq 2$.",
+    "mathContext": "$\\text{ErdosProblem896} :\\equiv \\exists C_1, C_2 > 0,\\; \\forall N \\geq 2: C_1 \\frac{N^2}{\\log N} \\leq \\max_{A,B} F(A,B) \\leq C_2 \\frac{N^2}{\\log N}$. This is the **exact order conjecture**: $\\max F(A,B) = \\Theta(N^2/\\log N)$. Currently only the lower bound direction is established by Van Doorn.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic order",
+      "extremal function",
+      "Theta notation",
+      "existential quantification"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "SubsetsOfRange",
+      "uniqueProductCount"
+    ]
+  },
+  {
+    "id": "ann-896-5",
+    "proofId": "erdos-896",
+    "type": "definition",
+    "range": {
+      "startLine": 75,
+      "endLine": 90
+    },
+    "title": "Van Doorn's Bounds",
+    "content": "`VanDoornLowerBound` asserts that for any $\\varepsilon > 0$, eventually $(1 - \\varepsilon)N^2/\\log N \\leq \\max F(A,B)$. `VanDoornUpperBound` gives the complementary bound $\\max F \\leq C \\cdot N^2/(\\log N)^\\delta \\cdot (\\log\\log N)^{3/2}$ where $\\delta = 1 - (1 + \\log\\log 2)/\\log 2 \\approx 0.086$. The axiom `van_doorn_bounds` asserts both hold. The key gap: the lower bound has exponent $1$ on $\\log N$, while the upper bound has exponent only $\\approx 0.086$.",
+    "mathContext": "**Lower:** $\\max F \\geq (1 - \\varepsilon)\\frac{N^2}{\\log N}$ for $N \\geq N_0(\\varepsilon)$. **Upper:** $\\max F \\leq C \\frac{N^2}{(\\log N)^{\\delta}(\\log\\log N)^{3/2}}$ where $\\delta = 1 - \\frac{1 + \\log\\log 2}{\\log 2} \\approx 0.086$. The exponent $\\delta$ arises from the distribution of the divisor function $d(n)$: the number of $n \\leq N^2$ with $d(n) = 1$ in a product set is controlled by $\\sum_{n} \\mathbf{1}_{d_{A,B}(n)=1}$, which relates to sieve-theoretic estimates.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic bounds",
+      "divisor function",
+      "sieve methods",
+      "logarithmic density"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "real exponentiation",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-896-6",
+    "proofId": "erdos-896",
+    "type": "concept",
+    "range": {
+      "startLine": 97,
+      "endLine": 105
+    },
+    "title": "Trivial Upper Bound (Verified)",
+    "content": "`uniqueProductCount_le_product` proves $F(A,B) \\leq |A| \\cdot |B|$ by a three-step calculation: (1) filtering can only reduce cardinality (`card_filter_le`), (2) the image has at most as many elements as the domain (`card_image_le`), (3) $|A \\times^s B| = |A| \\cdot |B|$ (`card_product`). This is the only non-trivial verified proof in the file.",
+    "mathContext": "$F(A,B) = |\\{m : \\text{reprCount}(A,B,m) = 1\\}| \\leq |\\text{image}(A \\times B)| \\leq |A \\times B| = |A| \\cdot |B|$. For $A, B \\subseteq [N]$, this gives $F(A,B) \\leq N^2$. The interesting question is how much better than $N^2$ we can do — the answer is $\\Theta(N^2/\\log N)$, saving a logarithmic factor.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_filter_le",
+      "Finset.card_image_le",
+      "Finset.card_product",
+      "calc proof"
+    ],
+    "prerequisites": [
+      "uniqueProductCount definition",
+      "Finset cardinality lemmas"
+    ]
+  },
+  {
+    "id": "ann-896-7",
+    "proofId": "erdos-896",
+    "type": "concept",
+    "range": {
+      "startLine": 110,
+      "endLine": 111
+    },
+    "title": "Commutativity of Unique Products",
+    "content": "The axiom `uniqueProductCount_comm` states $F(A,B) = F(B,A)$. This follows from commutativity of multiplication: the bijection $(a,b) \\mapsto (b,a)$ maps $A \\times B$ to $B \\times A$ while preserving products $ab = ba$, so representation counts and hence unique product counts agree. Axiomatized because the formal bijection argument requires careful handling of Finset operations.",
+    "mathContext": "$F(A,B) = F(B,A)$ since $ab = ba$ for all $a, b \\in \\mathbb{N}$. The bijection $\\phi: A \\times B \\to B \\times A$ given by $\\phi(a,b) = (b,a)$ satisfies $\\pi \\circ \\phi = \\pi$ where $\\pi(a,b) = ab$, so $\\text{reprCount}(A,B,m) = \\text{reprCount}(B,A,m)$ for all $m$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "commutativity of multiplication",
+      "Finset bijection",
+      "symmetry in extremal problems"
+    ],
+    "prerequisites": [
+      "uniqueProductCount",
+      "reprCount",
+      "Nat.mul_comm"
+    ]
+  },
+  {
+    "id": "ann-896-8",
+    "proofId": "erdos-896",
+    "type": "concept",
+    "range": {
+      "startLine": 114,
+      "endLine": 116
+    },
+    "title": "Empty Set Base Case",
+    "content": "`uniqueProductCount_empty_left` proves $F(\\emptyset, B) = 0$ by simplification: the product $\\emptyset \\times^s B = \\emptyset$, so there are no products at all. This is a verified base case establishing the boundary behavior of $F$.",
+    "mathContext": "$F(\\emptyset, B) = |\\{m \\in \\emptyset \\cdot B : \\text{reprCount}(\\emptyset, B, m) = 1\\}| = |\\emptyset| = 0$. Combined with commutativity, this gives $F(A, \\emptyset) = 0$ as well.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.empty",
+      "simp tactic",
+      "base case"
+    ],
+    "prerequisites": [
+      "uniqueProductCount",
+      "Finset.product empty"
+    ]
+  },
+  {
+    "id": "ann-896-9",
+    "proofId": "erdos-896",
+    "type": "concept",
+    "range": {
+      "startLine": 128,
+      "endLine": 132
+    },
+    "title": "Exact Order Conjecture",
+    "content": "`ExactOrderConjecture` states that $\\max F(A,B) = \\Theta(N^2/\\log N)$: there exist constants $C_1, C_2 > 0$ such that $C_1 N^2/\\log N \\leq \\max F \\leq C_2 N^2/\\log N$ for all $N \\geq 2$. This is equivalent to `ErdosProblem896` and asserts that Van Doorn's lower bound captures the correct order of magnitude.",
+    "mathContext": "If the conjecture holds, then $\\max F(A,B) \\asymp \\frac{N^2}{\\log N}$, meaning the Van Doorn upper bound exponent $\\delta \\approx 0.086$ should be improvable to $1$. Equivalently, the conjectured upper bound $F(A,B) \\leq C N^2/\\log N$ would mean that for **any** $A, B \\subseteq [N]$, most products $ab$ have multiple representations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Theta notation",
+      "asymptotic tightness",
+      "Erdős multiplication table"
+    ],
+    "prerequisites": [
+      "VanDoornLowerBound",
+      "VanDoornUpperBound",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-896-10",
+    "proofId": "erdos-896",
+    "type": "concept",
+    "range": {
+      "startLine": 136,
+      "endLine": 141
+    },
+    "title": "Van Doorn Implies Lower Bound",
+    "content": "`van_doorn_implies_lower` extracts the lower bound from `VanDoornLowerBound`: given the full bound statement, one can produce the asymptotic lower bound for any $\\varepsilon > 0$. The proof is the identity function — `VanDoornLowerBound` already has the required form. This theorem clarifies the logical structure: the lower bound half of the conjecture is already established.",
+    "mathContext": "$\\text{VanDoornLowerBound} \\implies \\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: (1-\\varepsilon)\\frac{N^2}{\\log N} \\leq \\max F$. This is a direct implication (the conclusion is syntactically identical to the hypothesis), included to highlight that the lower bound direction of the conjecture is resolved.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "logical implication",
+      "asymptotic lower bound",
+      "identity proof"
+    ],
+    "prerequisites": [
+      "VanDoornLowerBound definition"
+    ]
+  },
+  {
+    "id": "ann-896-11",
+    "proofId": "erdos-896",
+    "type": "concept",
+    "range": {
+      "startLine": 144,
+      "endLine": 146
+    },
+    "title": "Summary Theorem",
+    "content": "`erdos_896_summary` combines both of Van Doorn's bounds into a single statement: `VanDoornLowerBound ∧ VanDoornUpperBound`. The proof extracts directly from the `van_doorn_bounds` axiom. This serves as the file's main result, packaging the state of knowledge: the lower bound $(1+o(1))N^2/\\log N$ and the upper bound $N^2/(\\log N)^{0.086} \\cdot (\\log\\log N)^{3/2}$.",
+    "mathContext": "$\\text{erdos\\_896\\_summary}: \\text{VanDoornLowerBound} \\wedge \\text{VanDoornUpperBound}$. The conjunction captures the current state of the art: the order is pinned between $N^2/\\log N$ and $N^2/(\\log N)^{0.086}$, with the exact exponent on $\\log N$ being the central open question.",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem synthesis",
+      "conjunction",
+      "state of the art"
+    ],
+    "prerequisites": [
+      "van_doorn_bounds",
+      "VanDoornLowerBound",
+      "VanDoornUpperBound"
+    ]
+  }
+]

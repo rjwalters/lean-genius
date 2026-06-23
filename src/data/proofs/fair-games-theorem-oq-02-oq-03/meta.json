@@ -1,0 +1,190 @@
+{
+  "id": "fair-games-theorem-oq-02-oq-03",
+  "title": "Variance of the Gambler's Ruin Stopping Time via a Quartic Martingale",
+  "slug": "fair-games-theorem-oq-02-oq-03",
+  "description": "Derives the closed-form variance Var(τ) = (1/3)·k(N−k)(N²−2Nk+2k²−2) of the gambler's-ruin stopping time for the simple symmetric random walk. The quartic martingale Q(n,s)=s⁴−6ns²+3n²+2n and the cubic martingale Y(n,s)=s³−3ns are shown to satisfy the pointwise martingale step-mean identity, and optional stopping (supplied as hypotheses) is combined algebraically to cancel the hitting weight W and yield the variance. Fully machine-checked (0 sorries, 0 axioms).",
+  "meta": {
+    "author": "Researcher (lean-genius); classical result, cf. Feller Vol. 1 §XIV.2",
+    "sourceUrl": null,
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FairGamesTheoremOQ02OQ03.lean",
+    "tags": [
+      "probability",
+      "martingale",
+      "random-walk",
+      "gamblers-ruin",
+      "optional-stopping",
+      "variance",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "The quartic martingale value Q(n,s) = s⁴ − 6ns² + 3n² + 2n and the proof that its symmetric step-mean ½·Q(n+1,s+1) + ½·Q(n+1,s−1) equals Q(n,s) — the pointwise form of E[M_{n+1} | S_n = s] = M_n",
+      "The cubic martingale value Y(n,s) = s³ − 3ns with its step-mean identity, used to pin down the hitting weight W = E[τ·𝟙_{S_τ=N}]",
+      "The hitting-weight lemma: the cubic optional-stopping equation k³ = N²k − 3NW forces 3NW = k(N−k)(N+k)",
+      "The variance closed-form lemma: combining the cubic and quartic optional-stopping equations algebraically cancels W and yields Var(τ) = (1/3)·k(N−k)(N²−2Nk+2k²−2)",
+      "A degenerate consistency check (k=1, N=2 ⇒ τ ≡ 1 ⇒ Var = 0)"
+    ],
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "lineCount": 157,
+    "assumptions": "Fully machine-checked: every theorem compiles with 0 sorries and 0 axioms. The headline variance formula is derived from the two optional-stopping equations — the cubic relation k³ = N²k − 3NW and the quartic relation k⁴ = N³k − 6N²W + 3·E[τ²] + 2·E[τ] — which are supplied as explicit hypotheses (hcubic, hquartic) of `variance_closed_form`. These hypotheses encode Doob's optional stopping theorem applied to the cubic and quartic martingales for the simple symmetric walk together with the boundary law S_τ ∈ {0,N}, P(S_τ=N)=k/N. Their measure-theoretic derivation inside Mathlib's probability filtration is NOT part of this file; it is the remaining open frontier. What is proved here is (a) that Q and Y genuinely satisfy the martingale step-mean identities, and (b) that, given the optional-stopping equations, the variance closed form follows by exact polynomial algebra with W eliminated.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The gambler's-ruin problem — a gambler starting with capital k bets on fair coin flips until reaching N (win) or 0 (ruin) — is one of the oldest problems in probability, studied by Pascal, Fermat, and Huygens in the 17th century and given its modern martingale treatment by Doob. The expected duration E[τ] = k(N−k) is classical and follows from the quadratic martingale S_n² − n via optional stopping. The variance of the stopping time is markedly less elementary: it requires controlling the fourth moment of the walk, which in turn forces a higher-degree martingale and an auxiliary computation of the barrier-weighted hitting time W = E[τ·𝟙_{S_τ=N}]. Feller (Vol. 1, §XIV.2) records the moment machinery; the explicit quartic-martingale route used here mirrors the standard derivation of higher moments of absorption times for the simple symmetric random walk.",
+    "problemStatement": "For the simple symmetric random walk S_n on {0, 1, …, N} started at S_0 = k, with absorbing barriers at 0 and N and stopping time τ = inf{n : S_n ∈ {0, N}}, determine the variance of τ. The mean is the classical E[τ] = k(N−k). Show that\n\n$$\\mathrm{Var}(\\tau) = \\tfrac{1}{3}\\,k(N-k)\\,(N^2 - 2Nk + 2k^2 - 2).$$",
+    "text": "This 157-line, fully machine-checked file isolates and proves the algebraic engine behind the variance of the gambler's-ruin stopping time. It introduces two polynomial martingale values for the simple symmetric walk: the quartic Q(n,s) = s⁴ − 6ns² + 3n² + 2n and the cubic Y(n,s) = s³ − 3ns. For each it proves the symmetric step-mean identity ½·F(n+1,s+1) + ½·F(n+1,s−1) = F(n,s), which is exactly the pointwise martingale property E[F_{n+1} | S_n = s] = F_n when the increment is uniform on {+1,−1}. It then records the boundary values of Q (at time 0, at the lower barrier s=0, at the upper barrier s=N). The probabilistic payoff is packaged as two algebraic lemmas. `hitting_weight` takes the cubic optional-stopping equation k³ = N²k − 3NW as a hypothesis and concludes 3NW = k(N−k)(N+k), pinning down the hitting weight W. `variance_closed_form` takes both the cubic and the quartic optional-stopping equations as hypotheses and, via a single `linear_combination`, eliminates W entirely to produce 3·(E[τ²] − E[τ]²) = k(N−k)(N²−2Nk+2k²−2). A degenerate check confirms the formula returns 0 in the one-step case k=1, N=2. The optional-stopping equations themselves — the bridge from the martingale identities to expectations over the random-walk filtration — are inputs, not outputs, of this file; that measure-theoretic lifting is the stated open frontier.",
+    "proofStrategy": "**Two polynomial martingales + optional stopping, with W eliminated by algebra**:\n\n1. Verify Q(n,s) = s⁴ − 6ns² + 3n² + 2n is a martingale value: ½·Q(n+1,s+1) + ½·Q(n+1,s−1) = Q(n,s) (proved by `ring`).\n2. Verify Y(n,s) = s³ − 3ns is a martingale value by the same symmetric step-mean identity.\n3. Apply Doob's optional stopping (as a hypothesis) to Y at τ: with E[S_τ³] = N²k and E[τ·S_τ] = NW for S_τ ∈ {0,N}, P(S_τ=N)=k/N, this gives k³ = N²k − 3NW, hence W = k(N²−k²)/(3N).\n4. Apply optional stopping (as a hypothesis) to Q at τ: with E[S_τ⁴] = N³k and E[τ·S_τ²] = N²W and E[τ] = k(N−k), this gives k⁴ = N³k − 6N²W + 3·E[τ²] + 2·E[τ].\n5. Substitute the cubic relation into the quartic equation; W cancels, leaving Var(τ) = E[τ²] − E[τ]² = (1/3)·k(N−k)(N²−2Nk+2k²−2).",
+    "keyInsights": [
+      "**A degree-4 stopping-time moment needs a degree-4 martingale.** Just as E[τ] = k(N−k) comes from the quadratic martingale S_n² − n, the variance needs the quartic Q(n,s) = s⁴ − 6ns² + 3n² + 2n. The coefficients are forced by demanding the symmetric step-mean identity, which the file proves by `ring`.",
+      "**The fourth moment cannot be reached without the third.** Optional stopping of Q involves the cross term E[τ·S_τ²], which introduces the barrier-weighted hitting time W = E[τ·𝟙_{S_τ=N}]. W is not directly available, so an auxiliary cubic martingale Y(n,s) = s³ − 3ns is introduced solely to pin it down: its optional-stopping equation gives W = k(N²−k²)/(3N).",
+      "**W cancels.** The decisive structural fact is that the unknown hitting weight W appears in both optional-stopping equations and is eliminated by a single linear combination (`linear_combination -hquartic + 2*N*hcubic`), so the final variance formula is W-free and depends only on k and N.",
+      "**Honest separation of algebra from analysis.** The file proves the martingale identities outright but takes the optional-stopping equations as hypotheses. This cleanly delimits what is machine-checked (the polynomial identities and the W-elimination algebra) from what still requires Mathlib's probability filtration (Doob's optional stopping for these specific martingales).",
+      "**Consistency at the boundary.** The degenerate case k=1, N=2 forces τ ≡ 1 deterministically, so Var(τ) = 0; the closed form returns (1/3)·1·1·(4−4+2−2) = 0, a non-trivial check that the polynomial in N and k is correct."
+    ],
+    "prerequisites": [
+      "Simple symmetric random walk and its increments (uniform on {+1, −1})",
+      "Martingales and the pointwise conditional-expectation identity E[F_{n+1} | S_n = s] = F_n",
+      "Doob's optional stopping theorem (used as an input here)",
+      "Gambler's ruin: absorbing barriers, E[τ] = k(N−k), boundary law P(S_τ=N) = k/N",
+      "Polynomial algebra over ℝ (the `ring` and `linear_combination` tactics)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Problem statement and the quartic martingale",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Sets up the variance computation for the simple symmetric random walk Gambler's Ruin stopping time τ. The mean E[τ] = k(N−k) is already proven in FairGamesTheoremOQ02 via the quadratic martingale Sₙ²−n; the variance needs the quartic martingale Mₙ = Sₙ⁴ − 6nSₙ² + 3n² + 2n. The algebraic prerequisite is the symmetric step-mean equality ½·Q(n+1,s+1) + ½·Q(n+1,s−1) = Q(n,s), the pointwise form of the martingale identity E[M_{n+1} | Sₙ=s] = Mₙ for increments uniform on {+1,−1}.",
+      "mathContext": "Mₙ = Sₙ⁴ − 6nSₙ² + 3n² + 2n; step-mean identity ½Q(n+1,s+1)+½Q(n+1,s−1)=Q(n,s) ⇔ E[M_{n+1}|Sₙ=s]=Mₙ; baseline E[τ]=k(N−k) from the quadratic martingale."
+    },
+    {
+      "id": "strategy",
+      "title": "Strategy: two-martingale optional stopping for Var(τ)",
+      "startLine": 21,
+      "endLine": 51,
+      "summary": "The derivation roadmap. Doob optional stopping on the quartic martingale gives k⁴ = E[Sτ⁴] − 6E[τ·Sτ²] + 3E[τ²] + 2E[τ], whose only unknown beyond E[τ²] is the weighted hitting time W = E[τ·𝟙_{Sτ=N}]. W is pinned by an auxiliary cubic martingale Yₙ = Sₙ³ − 3nSₙ: optional stopping yields k³ = N²k − 3NW, so W = k(N−k)(N+k)/(3N). Substituting back eliminates W and gives the closed form Var(τ) = (1/3)·k(N−k)(N²−2Nk+2k²−2) (sanity-checked at k=1,N=2 ⇒ 0). The two optional-stopping equations are flagged as the only measure-theoretic inputs still awaiting a faithful lift into the random-walk filtration.",
+      "mathContext": "Quartic OST: k⁴ = N³k − 6N²W + 3E[τ²] + 2E[τ]; cubic martingale Yₙ=Sₙ³−3nSₙ gives k³ = N²k − 3NW ⇒ W = k(N−k)(N+k)/(3N); closed form Var(τ) = (1/3)·k(N−k)(N²−2Nk+2k²−2)."
+    },
+    {
+      "id": "quartic-martingale",
+      "title": "The Quartic Martingale and Its Step-Mean Identity",
+      "startLine": 55,
+      "endLine": 98,
+      "summary": "Defines quarticMartingaleValue Q(n,s) = s⁴ − 6ns² + 3n² + 2n and proves the symmetric step-mean identity ½·Q(n+1,s+1) + ½·Q(n+1,s−1) = Q(n,s), plus its boundary values at time 0, at s=0, at s=N, and an increment-sum corollary.",
+      "mathContext": "The step-mean identity is the pointwise martingale property E[M_{n+1} | S_n = s] = M_n for the simple symmetric walk; it is proved purely by `ring`. The boundary lemmas supply Q(0,s)=s⁴ (so M_0=k⁴), Q(n,0)=3n²+2n, Q(n,N)=N⁴−6nN²+3n²+2n."
+    },
+    {
+      "id": "cubic-martingale",
+      "title": "The Cubic Martingale and the Hitting Weight",
+      "startLine": 100,
+      "endLine": 130,
+      "summary": "Defines cubicMartingaleValue Y(n,s) = s³ − 3ns, proves its step-mean identity and Y(0,s)=s³, and derives the hitting-weight lemma: the cubic optional-stopping equation k³ = N²k − 3NW forces 3NW = k(N−k)(N+k).",
+      "mathContext": "The cubic martingale exists solely to determine W = E[τ·𝟙_{S_τ=N}], the barrier-weighted hitting time appearing in the quartic optional-stopping equation. Its optional stopping gives W = k(N²−k²)/(3N)."
+    },
+    {
+      "id": "variance",
+      "title": "The Closed-Form Variance",
+      "startLine": 132,
+      "endLine": 156,
+      "summary": "The main lemma variance_closed_form combines the cubic and quartic optional-stopping equations (as hypotheses) via a single linear_combination, cancelling W to give 3·(E[τ²] − E[τ]²) = k(N−k)(N²−2Nk+2k²−2); a degenerate lemma checks the formula returns 0 for k=1, N=2.",
+      "mathContext": "Var(τ) = E[τ²] − E[τ]² with E[τ] = k(N−k). The elimination `linear_combination -hquartic + 2*N*hcubic` cancels W and the cross moments, leaving a polynomial in N and k. The degenerate check (τ ≡ 1 when k=1, N=2) confirms Var = 0."
+    }
+  ],
+  "conclusion": {
+    "summary": "A 157-line, fully machine-checked formalization of the algebraic core of the gambler's-ruin variance. It proves that the quartic value Q(n,s) = s⁴ − 6ns² + 3n² + 2n and the cubic value Y(n,s) = s³ − 3ns are martingale values for the simple symmetric walk (the symmetric step-mean identities hold by `ring`), and that, given the cubic and quartic optional-stopping equations, the unknown hitting weight W cancels to yield Var(τ) = (1/3)·k(N−k)(N²−2Nk+2k²−2). The optional-stopping equations are supplied as hypotheses; deriving them inside Mathlib's probability filtration is the stated open frontier.",
+    "implications": "**Answers a posed open question.** The parent entry fair-games-theorem-oq-02 explicitly asks for the variance of the gambler's-ruin stopping time and whether it can be derived from a martingale; this file supplies the closed form and the martingale route.\n\n**Reusable moment machinery.** The pattern — a degree-2m martingale to reach the 2m-th moment of the absorption time, with lower-degree martingales pinning down the cross moments — generalizes to higher moments of τ and to other one-dimensional absorbing walks.\n\n**Clean analysis/algebra boundary.** By taking optional stopping as a hypothesis, the file makes precise exactly which step still needs Mathlib's `MeasureTheory`/`Probability` machinery, turning a vague 'formalize the variance' goal into a single concrete obligation.",
+    "openQuestions": [
+      "Derive the two optional-stopping equations (cubic: k³ = N²k − 3NW; quartic: k⁴ = N³k − 6N²W + 3E[τ²] + 2E[τ]) inside Mathlib's probability filtration, by lifting Q and Y to discrete-time martingales adapted to the random-walk filtration and invoking Mathlib's optional stopping theorem (`MeasureTheory.submartingale`/`Martingale.optionalStopping`-style results), thereby discharging the hypotheses of `variance_closed_form`.",
+      "Generalize to the biased walk P(+1)=p ≠ 1/2: the martingale values are no longer the symmetric Q and Y, and the variance picks up p-dependence. What are the analogous degree-3 and degree-4 martingale polynomials, and does W still cancel?",
+      "Compute the third central moment (skewness) of τ by the same route, using a sextic martingale together with the cubic and quartic ones; does the hierarchy of hitting weights continue to cancel?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fair-games-theorem-oq-02",
+      "relationship": "answers",
+      "description": "Answers the open question posed in fair-games-theorem-oq-02 asking for the variance of the gambler's-ruin stopping time and whether it can be obtained from a martingale. The mean E[τ] = k(N−k) proved there (via the quadratic martingale S_n² − n) is the E[τ] used in the quartic optional-stopping equation here."
+    },
+    {
+      "targetId": "fair-games-theorem",
+      "relationship": "extends",
+      "description": "Extends the Fair Games / Gambler's Ruin family from ruin probabilities and the expected duration to the second moment of the stopping time."
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "related",
+      "description": "Both analyze the simple symmetric random walk via combinatorial/martingale identities; the ballot problem counts paths staying above a barrier while this entry computes moments of the absorption time."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. 1",
+      "year": "1968",
+      "venue": "Wiley, 3rd edition, Chapter XIV (Random Walk and Ruin Problems), §XIV.2",
+      "note": "Standard reference for the moment computations of the gambler's-ruin absorption time, including the higher martingales used to reach E[τ²]"
+    },
+    {
+      "authors": "Doob, Joseph L.",
+      "title": "Stochastic Processes",
+      "year": "1953",
+      "venue": "Wiley",
+      "note": "Optional stopping theorem for martingales, the analytic input (taken as a hypothesis here) that converts the polynomial martingale identities into equations among expectations"
+    },
+    {
+      "authors": "Williams, David",
+      "title": "Probability with Martingales",
+      "year": "1991",
+      "venue": "Cambridge University Press",
+      "note": "Modern martingale treatment of gambler's ruin and optional stopping, including the S_n² − n martingale for E[τ]"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "FairGamesOQ02OQ03",
+    "lineCount": 157,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "mainTheorems": [
+      {
+        "name": "variance_closed_form",
+        "line": 141,
+        "statement": "3 * (Eτ2 - (k * (N - k)) ^ 2) = k * (N - k) * (N ^ 2 - 2 * N * k + 2 * k ^ 2 - 2)",
+        "description": "Given the cubic and quartic optional-stopping equations as hypotheses, the hitting weight W cancels and the variance Var(τ) = E[τ²] − E[τ]² equals (1/3)·k(N−k)(N²−2Nk+2k²−2)"
+      },
+      {
+        "name": "quarticMartingaleValue_step_mean",
+        "line": 66,
+        "statement": "(quarticMartingaleValue (n + 1) (s + 1) + quarticMartingaleValue (n + 1) (s - 1)) / 2 = quarticMartingaleValue n s",
+        "description": "The symmetric step-mean identity for Q(n,s) = s⁴ − 6ns² + 3n² + 2n — the pointwise martingale property E[M_{n+1} | S_n = s] = M_n"
+      },
+      {
+        "name": "cubicMartingaleValue_step_mean",
+        "line": 110,
+        "statement": "(cubicMartingaleValue (n + 1) (s + 1) + cubicMartingaleValue (n + 1) (s - 1)) / 2 = cubicMartingaleValue n s",
+        "description": "The symmetric step-mean identity for Y(n,s) = s³ − 3ns, the auxiliary martingale used to compute the hitting weight W"
+      },
+      {
+        "name": "hitting_weight",
+        "line": 127,
+        "statement": "3 * (N * W) = k * (N - k) * (N + k)",
+        "description": "From the cubic optional-stopping equation k³ = N²k − 3NW, derives 3NW = k(N−k)(N+k), i.e. W = k(N²−k²)/(3N)"
+      }
+    ],
+    "path": "Proofs/FairGamesTheoremOQ02OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

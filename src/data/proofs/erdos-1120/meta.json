@@ -1,0 +1,242 @@
+{
+  "id": "erdos-1120",
+  "title": "Erdős Problem #1120: Shortest Path in Polynomial Sublevel Sets",
+  "slug": "erdos-1120",
+  "description": "For monic f of degree n with roots in the unit disk, what is the shortest path in {|f(z)| ≤ 1} from 0 to |z| = 1? Conjectured to grow to infinity with n.",
+  "meta": {
+    "author": "Erdős (via Halász Problem 4.22)",
+    "sourceUrl": "https://erdosproblems.com/1120",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1120Problem.lean",
+    "tags": [
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "path-length",
+      "geometry"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1120,
+    "erdosUrl": "https://erdosproblems.com/1120",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-15",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex",
+        "description": "Complex number type",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real number type",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Defined UnitRootedPoly (monic polynomial with roots in unit disk)",
+      "Defined sublevelSet E = {z : |f(z)| ≤ 1}",
+      "Defined shortestPathLength and worstCasePathLength",
+      "Axiomatized main conjecture (erdos_1120_conjecture): worstCasePathLength n → ∞",
+      "Axiomatized Erdős growth conjecture (erdos_growth_bound): worstCasePathLength n ≤ C·n",
+      "Documented (docstring only, not axiomatized): trivial lower bound, Clunie-Netanyahu existence theorem, and connection to Problem #1041"
+    ],
+    "axiomCount": 2,
+    "lineCount": 183,
+    "assumptions": "2 axioms: erdos_1120_conjecture, erdos_growth_bound. 0 sorries.",
+    "theoremCount": 14,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "This problem appears as Problem 4.22 in Halasz's collection of problems attributed to Erdos, concerning the geometry of polynomial lemniscates — the level curves $\\{|f(z)| = c\\}$ of polynomials in the complex plane. The study of lemniscates dates back to Jakob Bernoulli (1694) and has deep connections to potential theory: the sublevel set $E = \\{|f(z)| \\le 1\\}$ is precisely the set where the logarithmic potential $\\frac{1}{n}\\log|f(z)|$ is non-positive.\n\nClunie and Netanyahu proved the fundamental existence result: for any monic polynomial $f$ of degree $n \\ge 1$ with roots in the closed unit disk, a continuous path from $0$ to $|z| = 1$ always exists within $E$. This is non-trivial because the sublevel set can a priori be highly disconnected near the unit circle when roots cluster along arcs.\n\nErdos conjectured that the worst-case shortest path length $W(n) = \\sup_f \\ell(f)$ tends to infinity with $n$, but slowly — perhaps at most linearly. For $f(z) = z^n$, $E$ is the unit disk and $\\ell = 1$, giving the trivial lower bound $W(n) \\ge 1$. When roots concentrate near the unit circle, the lemniscate develops thin passages and bottlenecks that force any path to wind through narrow corridors, potentially making $\\ell$ much larger. The problem remains open and is connected to Problem #1041 on covering properties of polynomial sublevel sets.",
+    "problemStatement": "Let $f$ be a monic polynomial of degree $n$ with all roots in the closed unit disk $\\overline{\\mathbb{D}}$. Define the sublevel set $E = \\{z \\in \\mathbb{C} : |f(z)| \\le 1\\}$. What is the length of the shortest path in $E$ from $z = 0$ to $|z| = 1$? Does the worst case $W(n) = \\sup_f \\ell(f)$ tend to $\\infty$ as $n \\to \\infty$?",
+    "text": "For monic f of degree n with roots in the unit disk, what is the shortest path in {|f(z)| ≤ 1} from 0 to |z| = 1? Conjectured to grow to infinity with n.",
+    "proofStrategy": "The formalization defines `UnitRootedPoly n` as a structure with `roots : Fin n → ℂ` and the constraint $|r_i| \\le 1$, then builds the polynomial via $f(z) = \\prod(z - r_i)$. The sublevel set is $E = \\{z : |f(z)| \\le 1\\}$. The shortest path length $\\ell(f)$ is defined as $\\inf\\{L : \\exists \\gamma \\subset E,\\; \\gamma(0) = 0,\\; |\\gamma(1)| = 1\\}$, and $W(n) = \\sup_f \\ell(f)$.\n\nProved results include: $0 \\in E$ (since $|f(0)| = \\prod|r_i| \\le 1$), the $f(z) = z^n$ case ($E = \\overline{\\mathbb{D}}$), the degree-1 case ($E$ is a shifted disk), and the unimodular case ($|f(0)| = 1$). The conjectures ($W(n) \\to \\infty$ and $W(n) \\le Cn$) and the Clunie-Netanyahu existence theorem are stated as axioms.",
+    "prerequisites": [
+      "Complex analysis: polynomial evaluation, modulus, and the geometry of the unit disk",
+      "Potential theory: logarithmic potentials, Green's functions, and capacity of compact sets in the plane",
+      "Lemniscate geometry: topology of polynomial sublevel sets and their connected components",
+      "Path length and rectifiable curves in metric spaces"
+    ],
+    "keyInsights": [
+      "For $f(z) = z^n$, the sublevel set is exactly the unit disk and the shortest path has length 1 — this is the trivial lower bound $W(n) \\ge 1$.",
+      "The Clunie-Netanyahu existence theorem guarantees that a path from $0$ to $|z| = 1$ within $E$ always exists, making $\\ell(f)$ well-defined. This relies on the connectivity structure of polynomial lemniscates.",
+      "When roots cluster near arcs of the unit circle, the lemniscate $E$ develops thin necks of width $\\sim e^{-cn}$ that force paths to traverse long narrow corridors — this 'bottleneck phenomenon' is expected to drive $W(n) \\to \\infty$.",
+      "Unimodular root configurations (all $|r_i| = 1$) place the origin on the boundary of $E$, making it the most constrained starting point. These are the expected extremal cases for the longest shortest paths.",
+      "The problem connects to potential theory: $E = \\{z : \\frac{1}{n}\\log|f(z)| \\le 0\\}$ is a sublevel set of the Green's function for $\\mathbb{C} \\setminus E$, linking polynomial geometry to electrostatic equilibrium.",
+      "Erdos's linear upper bound conjecture $W(n) \\le Cn$ suggests the path length cannot grow faster than the degree, reflecting a balance between topological complexity and the polynomial's algebraic structure."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header and Problem Description",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Module docstring stating the problem, known results (Clunie-Netanyahu, trivial bound), status (OPEN), and references to erdosproblems.com and Halasz Problem 4.22.",
+      "mathContext": "Bound: Module docstring stating the problem, known results (Clunie-Netanyahu, trivial bound), status (OPEN), and references to erdosproblems.com and Halasz Problem 4.22."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 29,
+      "endLine": 55,
+      "summary": "Defines `UnitRootedPoly` (monic polynomial with unit-disk roots), `polyVal` (product-form evaluation), `sublevelSet` (the lemniscate $E$), `shortestPathLength` (infimum of path lengths in $E$), and `worstCasePathLength` (supremum over all polynomials).",
+      "mathContext": "Defines `UnitRootedPoly` (monic polynomial with unit-disk roots), `polyVal` (product-form evaluation), `sublevelSet` (the lemniscate $E$), `shortestPathLength` (infimum of path lengths in $E$), and `worstCasePathLength` (supremum over all polynomials)."
+    },
+    {
+      "id": "f-at-zero",
+      "title": "Properties of f(0)",
+      "startLine": 57,
+      "endLine": 83,
+      "summary": "Proves $f(0) = \\prod(-r_i)$, $|f(0)| = \\prod|r_i| \\le 1$, and therefore $0 \\in E$ for all unit-rooted polynomials, establishing well-posedness of the path problem.",
+      "mathContext": "Verified: Proves $f(0) = \\prod(-r_i)$, $|f(0)| = \\prod|r_i| \\le 1$, and therefore $0 \\in E$ for all unit-rooted polynomials, establishing well-posedness of the path problem."
+    },
+    {
+      "id": "z-to-n-case",
+      "title": "The Case f(z) = z^n",
+      "startLine": 85,
+      "endLine": 105,
+      "summary": "Shows that when all roots are 0, $E$ is the closed unit disk. The proof that $|z|^n \\le 1 \\iff |z| \\le 1$ establishes the trivial case where $\\ell = 1$.",
+      "mathContext": "Verified: Shows that when all roots are 0, $E$ is the closed unit disk. The proof that $|z|^n \\le 1 \\iff |z| \\le 1$ establishes the trivial case where $\\ell = 1$."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "startLine": 107,
+      "endLine": 122,
+      "summary": "Proves nonemptiness of $E$, unwraps the membership condition, and handles the degree-0 edge case ($E = \\mathbb{C}$).",
+      "mathContext": "Verified: Proves nonemptiness of $E$, unwraps the membership condition, and handles the degree-0 edge case ($E = \\mathbb{C}$)."
+    },
+    {
+      "id": "degree-one",
+      "title": "Degree 1: Single Root Case",
+      "startLine": 124,
+      "endLine": 136,
+      "summary": "For $f(z) = z - r$, shows $E = \\overline{B}(r, 1)$ is a shifted disk. Proves $0 \\in E$ since $|r| \\le 1$.",
+      "mathContext": "Verified: For $f(z) = z - r$, shows $E = \\overline{B}(r, 1)$ is a shifted disk. Proves $0 \\in E$ since $|r| \\le 1$."
+    },
+    {
+      "id": "unimodular",
+      "title": "|f(0)| Properties and Unimodular Case",
+      "startLine": 138,
+      "endLine": 149,
+      "summary": "Proves $|f(0)| \\le 1$ in general and $|f(0)| = 1$ for unimodular roots (all $|r_i| = 1$), identifying the boundary case that produces extremal configurations.",
+      "mathContext": "Verified: Proves $|f(0)| \\le 1$ in general and $|f(0)| = 1$ for unimodular roots (all $|r_i| = 1$), identifying the boundary case that produces extremal configurations."
+    },
+    {
+      "id": "conjectures",
+      "title": "Main Conjectures and Known Results",
+      "startLine": 151,
+      "endLine": 161,
+      "summary": "Axiomatizes `erdos_1120_conjecture` ($W(n) \\to \\infty$) and `erdos_growth_bound` ($W(n) \\le Cn$). Three surrounding docstrings note the trivial lower bound and Clunie-Netanyahu existence theorem (not axiomatized as Lean declarations).",
+      "mathContext": "Axioms: `erdos_1120_conjecture` and `erdos_growth_bound`. Docstring-only: trivial lower bound (W(n)≥1) and Clunie–Netanyahu existence theorem."
+    },
+    {
+      "id": "main-open-problem",
+      "title": "Main Open Problem Statement",
+      "startLine": 163,
+      "endLine": 181,
+      "summary": "`erdos_1120_main` theorem: conjunction of `erdos_1120_conjecture` and `erdos_growth_bound`, proved by `⟨erdos_1120_conjecture, erdos_growth_bound⟩`.",
+      "mathContext": "`erdos_1120_main` theorem combining both axioms into a single Prop via exact ⟨...⟩."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdos Problem #1120 on the geometry of polynomial lemniscates. The shortest path from the origin to the unit circle within the sublevel set $E = \\{|f(z)| \\le 1\\}$ is always at least 1 (the $z^n$ case) and always finite (Clunie-Netanyahu), but whether the worst case $W(n)$ diverges remains open. The file proves concrete properties — $0 \\in E$, the $z^n$ case, the degree-1 shifted disk — and states the main conjectures as axioms.",
+    "implications": "**Theoretical Significance**: A resolution would illuminate the relationship between algebraic complexity (polynomial degree) and geometric complexity (path length) in the complex plane.\n\nThe problem connects to potential theory (Green's functions and equilibrium measures), approximation theory (polynomial lemniscates as approximation domains), and computational geometry (algorithms for navigating sublevel sets). Understanding the extremal root configurations would also advance the theory of polynomial inequalities on lemniscates.",
+    "openQuestions": [
+      "Does $W(n) \\to \\infty$ as $n \\to \\infty$? This is the main open conjecture.",
+      "What is the growth rate of $W(n)$ — logarithmic, polynomial, or linear as Erdos conjectured?",
+      "Which root configurations maximize $\\ell(f)$? Are the extremal polynomials related to Chebyshev polynomials or Fekete points?",
+      "Is there an explicit family of polynomials $f_n$ witnessing $\\ell(f_n) \\to \\infty$?",
+      "What is the connection to the capacity and transfinite diameter of the lemniscate $\\{|f(z)| \\le 1\\}$?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1041",
+      "relationship": "companion",
+      "description": "The most directly linked problem: #1041 asks whether a path of length less than 2 always exists within {|f(z)| < 1} connecting two roots of a unit-disk-rooted monic polynomial. Both problems concern path geometry in polynomial sublevel sets; #1041 gives an upper bound on path length while #1120 asks whether the infimal path length to the unit circle diverges with degree."
+    },
+    {
+      "targetId": "erdos-1040",
+      "relationship": "related",
+      "description": "Problem #1040 studies the transfinite diameter and Lebesgue measure of sublevel sets {|f(z)| < 1}, connecting lemniscate geometry to potential theory via equilibrium measures and logarithmic capacity. The capacity of the lemniscate is the same quantity that controls the Green's function appearing in the path-length problem, making the two problems parts of the same potential-theoretic story."
+    },
+    {
+      "targetId": "erdos-1042",
+      "relationship": "related",
+      "description": "Problem #1042 counts connected components of polynomial lemniscates {|f(z)| < 1}. The Clunie-Netanyahu existence theorem used in #1120 relies on the connectivity structure of the sublevel set E: knowing how components merge as roots cluster near the unit circle is essential for bounding path lengths through narrow bottlenecks."
+    },
+    {
+      "targetId": "erdos-114",
+      "relationship": "thematic",
+      "description": "Problem #114 asks whether the arc length of the level curve {|p(z)| = 1} is maximized by z^n - 1 among monic degree-n polynomials. Both problems concern extremal geometry of polynomial lemniscates; #114 optimizes boundary arc length while #1120 optimizes interior path length to the unit circle, and both expect z^n (or z^n - 1) to be near-extremal."
+    },
+    {
+      "targetId": "erdos-1115",
+      "relationship": "analogous",
+      "description": "Problem #1115 asks for the growth rate of paths to infinity along which an entire function of finite order grows slowly (analogous to shortest paths in sublevel sets for entire rather than polynomial functions). Both probe how efficiently one can traverse regions where a complex function stays bounded, and results for entire functions (Gol'dberg-Eremenko disproof) inform expectations for the polynomial case."
+    },
+    {
+      "targetId": "erdos-509",
+      "relationship": "related",
+      "description": "Problem #509 asks whether the sublevel set {|f(z)| ≤ 1} of a degree-n monic polynomial can always be covered by discs with total radius ≤ 2 (Cartan's lemma gives total radius ≤ 2e). Disc-cover bounds on the sublevel set directly constrain the geometry through which any path from 0 to |z| = 1 must navigate, providing complementary estimates to the path-length problem."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Clunie, James; Netanyahu, Elisha",
+      "title": "On Distances Between the Origin and the Zeros of Polynomials",
+      "year": "1967",
+      "venue": "American Mathematical Monthly, 74(6), 672–673",
+      "note": "Proves the existence of a continuous path from 0 to |z| = 1 inside the sublevel set {|f(z)| ≤ 1} for any monic polynomial with roots in the closed unit disk. Axiomatized in the Lean formalization."
+    },
+    {
+      "authors": "Halász, Gábor",
+      "title": "Problems in Function Theory (Problem 4.22)",
+      "year": "1992",
+      "venue": "In: Proceedings of the Conference on Approximation Theory, Budapest",
+      "note": "Original source of Erdős Problem #1120 as listed by Halász; attributes the path-length conjecture (W(n) → ∞) to Erdős."
+    },
+    {
+      "authors": "Pommerenke, Christian",
+      "title": "On the Coefficients and Zeros of a Polynomial",
+      "year": "1959",
+      "venue": "Journal of the London Mathematical Society, 34, 480–488",
+      "note": "Establishes foundational results on the geometry of polynomial lemniscates and the distribution of zeros relative to level curves, underpinning the bottleneck analysis relevant to this problem."
+    },
+    {
+      "authors": "Ransford, Thomas",
+      "title": "Potential Theory in the Complex Plane",
+      "year": "1995",
+      "venue": "Cambridge University Press, London Mathematical Society Student Texts 28",
+      "note": "Comprehensive reference for logarithmic potential theory, Green's functions, and transfinite diameter — the tools connecting lemniscate path geometry to equilibrium measure and capacity, central to the open questions of #1120."
+    },
+    {
+      "authors": "Erdős, Paul; Herzog, Fritz; Piranian, George",
+      "title": "Metric Properties of Polynomials",
+      "year": "1958",
+      "venue": "Journal d'Analyse Mathématique, 6, 125–148",
+      "note": "Systematic study of metric and geometric properties of polynomial lemniscates including connectivity, arc length, and sublevel set structure; directly motivates the cluster of Erdős problems from #1038–#1048 including #1120."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": "Erdos1120",
+    "lineCount": 183,
+    "axiomCount": 2,
+    "theoremCount": 14,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos1120Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

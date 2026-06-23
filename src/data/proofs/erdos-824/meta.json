@@ -1,0 +1,200 @@
+{
+  "id": "erdos-824",
+  "title": "Erdős Problem #824: Coprime Pairs with Equal Sum of Divisors",
+  "slug": "erdos-824",
+  "description": "Let h(x) count coprime pairs (a, b) with σ(a) = σ(b). Is h(x) > x^{2-o(1)}? Known: h(x)/x → ∞ (Pollack-Pomerance 2016).",
+  "meta": {
+    "author": "Erdős (1974), Pollack-Pomerance (2016 partial results)",
+    "sourceUrl": "https://erdosproblems.com/824",
+    "date": "1974",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos824Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "sum-of-divisors",
+      "coprimality",
+      "counting-functions",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 824,
+    "erdosUrl": "https://erdosproblems.com/824",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Set of divisors of n",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of a function",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sigma definition: sum of divisors function",
+      "SigmaEqual definition: pairs with equal σ values",
+      "IsCoprimeSigmaEqualPair definition: coprime σ-equal pairs",
+      "h counting function: number of valid pairs up to x",
+      "h_superlinear axiom: h(x)/x → ∞ (Pollack-Pomerance 2016)",
+      "StrongConjecture definition: h(x) > x^{2-ε}",
+      "IsSquarefree definition: no repeated prime factors",
+      "WeisenbergCondition definition: eliminating trivial duplicates",
+      "IsUntouchable definition: not in range of s(n)"
+    ],
+    "axiomCount": 1,
+    "lineCount": 238,
+    "assumptions": "1 axiom: h_superlinear. 0 sorries.",
+    "theoremCount": 5,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "The sum of divisors function σ(n) = Σ_{d|n} d is one of the most classical functions in number theory, studied since antiquity in connection with perfect numbers (σ(n) = 2n) and amicable pairs. Erdős Problem #824 asks about the density of coprime pairs (a, b) with gcd(a,b) = 1 and σ(a) = σ(b). The coprimality constraint is crucial: without it, one could manufacture σ-equal pairs by multiplying both arguments by common factors.\n\nErdős (1974) proved limsup h(x)/x = ∞, showing that the ratio of coprime σ-equal pairs to x is unbounded. Pollack and Pomerance (2016) strengthened this to h(x)/x → ∞ — not just that the ratio occasionally exceeds any bound, but that it eventually stays above any bound. Their result appears in Trans. Amer. Math. Soc. Ser. B and uses deep results on the distribution of values of σ.\n\nThe strong conjecture asks whether h(x) > x^{2-o(1)}, meaning coprime σ-equal pairs are nearly as common as all pairs (since h(x) ≤ x² trivially). The gap between the known linear-surpassing growth and the conjectured near-quadratic growth is enormous: we don't even know h(x) > x^{1.01} for large x. Closing this gap would require fundamentally new understanding of σ-value collisions among coprime arguments.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $h(x)$ count the number of pairs $(a, b)$ with $1 \\leq a < b < x$ such that $\\gcd(a, b) = 1$ and $\\sigma(a) = \\sigma(b)$.\n\n**Question:** Is it true that $h(x) > x^{2-o(1)}$?\n\n**Known Results:**\n- $h(x)/x \\to \\infty$ (Pollack-Pomerance 2016)\n- $h(x) \\leq x^2$ (trivial upper bound)\n\n**Gap:** We don't even know $h(x) > x^{1.01}$ for large $x$. The conjecture would imply nearly quadratic growth.",
+    "text": "Let h(x) count coprime pairs (a, b) with σ(a) = σ(b). Is h(x) > x^{2-o(1)}? Known: h(x)/x → ∞ (Pollack-Pomerance 2016).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define the sum-of-divisors function σ and the counting function h(x) for coprime σ-equal pairs.\n\n2. **Key Properties:** Prove basic facts about σ (σ(1) = 1, σ(n) ≥ n+1 for n > 1).\n\n3. **Known Results:** Axiomatize Erdős's 1974 result and the Pollack-Pomerance 2016 strengthening.\n\n4. **The Conjecture:** State the strong conjecture h(x) > x^{2-ε} precisely.\n\n5. **Variants:** Include the squarefree variant and Weisenberg's stronger condition.",
+    "keyInsights": [
+      "**Sum of Divisors σ(n):** The sum of all positive divisors of n. For example, σ(12) = 1+2+3+4+6+12 = 28.",
+      "**Coprimality Constraint:** Requiring gcd(a,b) = 1 eliminates 'trivial' pairs like (n·d₁, n·d₂).",
+      "**Linear Growth Surpassed:** h(x)/x → ∞ means pairs grow faster than x, but we don't know by how much.",
+      "**Quadratic Gap:** Between the known h(x) > Cx and conjectured h(x) > x^{2-ε} lies an enormous gap.",
+      "**Example Pair:** σ(14) = σ(15) = 24, and gcd(14,15) = 1, so (14,15) is a valid coprime σ-equal pair.",
+      "**Related to Untouchables:** Numbers not in the range of s(n) = σ(n) - n relate to σ-value distribution."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "divisor-sum",
+      "title": "Sum of Divisors Function",
+      "summary": "Definition of σ(n) and basic properties",
+      "startLine": 43,
+      "endLine": 82,
+      "mathContext": "Formal definition: Definition of σ(n) and basic properties"
+    },
+    {
+      "id": "coprime-pairs",
+      "title": "Coprime σ-Equal Pairs",
+      "summary": "Definition of the counting function h(x)",
+      "startLine": 83,
+      "endLine": 115,
+      "mathContext": "Formal definition: Definition of the counting function h(x)"
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "summary": "h_superlinear axiom encoding Pollack-Pomerance 2016 superlinear growth",
+      "startLine": 116,
+      "endLine": 134,
+      "mathContext": "Mathematical content: h_superlinear axiom encoding Pollack-Pomerance 2016 superlinear growth"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "Strong conjecture h(x) > x^{2-o(1)} and upper bound",
+      "startLine": 135,
+      "endLine": 157,
+      "mathContext": "Bound: Strong conjecture h(x) > x^{2-o(1)} and upper bound"
+    },
+    {
+      "id": "coprimality",
+      "title": "Why Coprimality Matters",
+      "summary": "Example coprime σ-equal pair (14, 15)",
+      "startLine": 158,
+      "endLine": 172,
+      "mathContext": "Mathematical content: Example coprime σ-equal pair (14, 15)"
+    },
+    {
+      "id": "variants",
+      "title": "Related Variants",
+      "summary": "Squarefree and Weisenberg variants",
+      "startLine": 173,
+      "endLine": 200,
+      "mathContext": "Mathematical content: Squarefree and Weisenberg variants"
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Problems",
+      "summary": "Untouchable numbers",
+      "startLine": 201,
+      "endLine": 211
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_824_summary combining superlinear growth and conjecture",
+      "startLine": 212,
+      "endLine": 238,
+      "mathContext": "Mathematical content: erdos_824_summary combining superlinear growth and conjecture"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #824 asks whether coprime pairs with equal sum of divisors are nearly as common as all pairs. The counting function h(x) is known to grow faster than linear (Pollack-Pomerance 2016), but the strong conjecture h(x) > x^{2-o(1)} remains open. The gap between known and conjectured bounds is enormous.",
+    "implications": "**Theoretical Significance**: **Implications for Number Theory**\n\n1. **Divisor Function Statistics:** Understanding h(x) reveals how often σ takes the same value on coprime arguments.\n\n**2. Multiplicative Structure:** The coprimality constraint probes the multiplicative structure of σ-equal pairs.\n\n3. **Density Questions:** This is part of a broader program on the distribution and collisions of arithmetic functions.\n\n4. **Amicable Connections:** Related to questions about amicable and sociable numbers.",
+    "openQuestions": [
+      "Does h(x) > x^{1+δ} hold for any fixed δ > 0?",
+      "What is the true growth rate of h(x)?",
+      "How does the squarefree variant compare to the coprime variant?",
+      "Can the Weisenberg condition significantly reduce the count?",
+      "What fraction of σ-values are achieved by coprime pairs?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators",
+      "Filter"
+    ],
+    "namespace": "Erdos824",
+    "lineCount": 238,
+    "axiomCount": 1,
+    "theoremCount": 5,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos824Problem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Erdos824ProblemProvable.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1049",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, number-theory"
+    },
+    {
+      "targetId": "erdos-1053",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisor-function, number-theory"
+    },
+    {
+      "targetId": "erdos-1057",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: counting-functions, number-theory"
+    }
+  ],
+  "sorries": 0
+}

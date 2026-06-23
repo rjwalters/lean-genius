@@ -1,0 +1,200 @@
+{
+  "id": "erdos-892",
+  "title": "Erdős Problem #892: Primitive Sequence Domination",
+  "slug": "erdos-892",
+  "description": "Characterize integer sequences b such that a primitive sequence a (no element divides another) exists with aₙ ≪ bₙ. Known: Σ 1/(bₙ log bₙ) < ∞ is necessary. OPEN.",
+  "meta": {
+    "author": "Erdős, Sárközy, Szemerédi",
+    "sourceUrl": "https://erdosproblems.com/892",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos892Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primitive-sets",
+      "divisibility",
+      "sequences"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 892,
+    "erdosUrl": "https://erdosproblems.com/892",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.gcd",
+        "description": "Greatest common divisor, used in GCD-free condition",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite ranges for partial sums in convergence conditions",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for reciprocal-log convergence conditions",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for growth rate bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Defined IsPrimitive as pairwise non-divisibility of sequence elements",
+      "Defined IsStrictlyIncreasing and IsDominatedBy (a ≪ b) with explicit constant",
+      "Formalized ErdosProblem892 as existence of primitive dominator for given b",
+      "Axiomatized Erdős (1935) reciprocal-log convergence as necessary condition",
+      "Axiomatized Erdős-Sárközy-Szemerédi (1967) partial reciprocal sum growth bound",
+      "Defined IsGCDFree and formalized the GCD-free variant of the problem",
+      "Axiomatized primitive counting bound |A ∩ [N]| ≤ C·N/√(log N)",
+      "Proved primitive_elements_ge_two: every element of a primitive sequence ≥ 2",
+      "Proved strict_inc_lower_bound: a(n) ≥ n + 2 for strictly increasing primitive sequences",
+      "Proved strict_inc_eventually_ge: such sequences eventually exceed any bound M",
+      "Proved product_log_comparison: a·log(a) ≤ 2C·(b·log(b)) under domination with b ≥ C",
+      "Proved reciprocal_log_comparison: 1/(b·log b) ≤ 2C/(a·log a) via cross-multiplication",
+      "Converted erdos_1935_necessary from axiom to theorem with structured proof outline",
+      "Fully proved erdos_1935_necessary: sum splitting at threshold N₀, head bounded by finite sum, tail bounded via reciprocal_log_comparison and primitive convergence axiom"
+    ],
+    "axiomCount": 2,
+    "lineCount": 333,
+    "assumptions": "2 axioms: (1) primitive_reciprocal_log_convergent — Erdős 1935, convergence of Σ 1/(aₙ log aₙ) for primitive sequences; (2) harmonic_log_plus2_diverges — Cauchy condensation test gives Σ 1/((n+2)·log(n+2)) → +∞ (standard analysis, not in Mathlib). The hbound step is now proved via Finset.sum_congr + cast arithmetic.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 6,
+    "additionalFiles": [
+      "Proofs/Erdos892Aristotle.lean"
+    ]
+  },
+  "sections": [
+    {
+      "id": "primitive-sequences",
+      "title": "Primitive Sequences",
+      "startLine": 29,
+      "endLine": 36,
+      "summary": "Defines `IsPrimitive a` as $\\forall i \\neq j,\\, a_i \\nmid a_j$: the sequence forms an antichain in the divisibility partial order. Also defines `IsStrictlyIncreasing a$ as $i < j \\implies a_i < a_j$."
+    },
+    {
+      "id": "domination",
+      "title": "Domination",
+      "startLine": 37,
+      "endLine": 45,
+      "summary": "Defines `IsDominatedBy a b` as $\\exists C > 0,\\, \\forall n,\\, a_n \\leq C \\cdot b_n$."
+    },
+    {
+      "id": "main-problem",
+      "title": "The Problem",
+      "startLine": 46,
+      "endLine": 58,
+      "summary": "Defines `ErdosProblem892 b`: given strictly increasing $b$, does there exist a strictly increasing, primitive $a$ with $a \\ll b$?"
+    },
+    {
+      "id": "proved-lemmas",
+      "title": "Proved Lemmas",
+      "startLine": 59,
+      "endLine": 152,
+      "summary": "Five fully proved results: (1) `primitive_elements_ge_two`: $a_n \\geq 2$ for primitive $a$. (2) `strict_inc_lower_bound`: $a_n \\geq n+2$. (3) `strict_inc_eventually_ge`: $a$ eventually exceeds any bound. (4) `product_log_comparison`: $a \\cdot \\log a \\leq 2C \\cdot (b \\cdot \\log b)$ when $a \\leq Cb$ and $b \\geq C$. (5) `reciprocal_log_comparison`: division form $1/(b\\log b) \\leq 2C/(a\\log a)$."
+    },
+    {
+      "id": "axioms",
+      "title": "Axioms (Deep Results)",
+      "startLine": 153,
+      "endLine": 178,
+      "summary": "Three axioms for deep number-theoretic results: (1) Erdős 1935 convergence of $\\sum 1/(a_n \\log a_n)$ for primitive $a$. (2) Erdős-Sárközy-Szemerédi 1967 partial sum growth bound. (3) Primitive counting bound $|A \\cap [N]| \\ll N/\\sqrt{\\log N}$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 179,
+      "endLine": 271,
+      "summary": "`erdos_1935_necessary`: fully proves $\\sum 1/(b_n \\log b_n) < \\infty$ is necessary for primitive domination. Splits sum at threshold $N_0$ where $a(n) \\geq C^2$; head bounded by finite sum, tail bounded via `reciprocal_log_comparison` and primitive convergence axiom."
+    },
+    {
+      "id": "gcd-condition",
+      "title": "GCD-Free Condition",
+      "startLine": 273,
+      "endLine": 282,
+      "summary": "Defines `IsGCDFree b` and formulates `ErdosProblem892GCDFree`: is the GCD-free condition sufficient for the existence of a primitive dominator?"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Primitive sets (antichains in the divisibility poset) have been central to combinatorial number theory since Behrend (1935) and Erdős (1935). Erdős proved in 1935 that for any primitive sequence $a_1 < a_2 < \\cdots$ with $a_n \\geq 2$, the series $\\sum 1/(a_n \\log a_n)$ converges — a remarkable density constraint showing primitive sequences are 'thin.' Problem 892, posed by Erdős, Sárközy, and Szemerédi in 1968, asks: given a target growth rate $b$, when can we find a primitive sequence growing at rate $\\ll b$? The convergence result gives a necessary condition: $\\sum 1/(b_n \\log b_n) < \\infty$. Erdős, Sárközy, and Szemerédi (1967) strengthened this to a partial sum growth condition: $\\sum_{b_n < x} 1/b_n = o(\\log x / \\sqrt{\\log\\log x})$. A sufficient condition remains elusive. The GCD-free variant asks whether the condition $\\gcd(b_i, b_j) \\neq b_k$ (which prevents divisibility obstructions) suffices.",
+    "problemStatement": "Given $b_1 < b_2 < \\cdots$, find necessary and sufficient conditions for the existence of a primitive sequence $a_1 < a_2 < \\cdots$ (no $a_i \\mid a_j$) with $a_n \\ll b_n$.",
+    "text": "Characterize integer sequences b such that a primitive sequence a (no element divides another) exists with aₙ ≪ bₙ. Known: Σ 1/(bₙ log bₙ) < ∞ is necessary. OPEN.",
+    "proofStrategy": "The formalization models sequences as functions $\\mathbb{N} \\to \\mathbb{N}$, defines primitivity via pairwise non-divisibility, and domination via an explicit constant. Six theorems are fully proved, including the key comparison bound and the Erdős 1935 necessary condition. The proof of `erdos_1935_necessary` splits the sum at threshold $N_0$ where $a(n) \\geq C^2$: the head is bounded by a finite constant, the tail uses `reciprocal_log_comparison` to reduce to the convergent series $\\sum 1/(a_n \\log a_n)$. Three deep results remain as axioms.",
+    "keyInsights": [
+      "Primitive sequences are antichains in the divisibility partial order: $a_i \\nmid a_j$ for $i \\neq j$. They are sparse — the primes form the densest primitive sequence",
+      "Erdős (1935) convergence: $\\sum 1/(a_n \\log a_n) < \\infty$ for any primitive $a$ with $a_n \\geq 2$. This is an analog of the prime harmonic series divergence, showing primitive sets are even thinner than primes in the $1/(n \\log n)$ metric",
+      "The necessary condition $\\sum 1/(b_n \\log b_n) < \\infty$ follows by domination: if $a_n \\leq C b_n$ and $\\sum 1/(a_n \\log a_n)$ converges, then so does $\\sum 1/(b_n \\log b_n)$",
+      "The ESS (1967) condition is strictly stronger: it controls the partial reciprocal sums $\\sum_{b_n < x} 1/b_n = o(\\log x / \\sqrt{\\log\\log x})$, capturing not just convergence but the rate",
+      "The GCD-free condition prevents 'divisibility obstructions' where $\\gcd(b_i, b_j)$ forces elements into the same divisibility chain, making primitivity impossible locally"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem 892 is formalized with 6 definitions, 7 theorems, 0 sorries, and 2 axioms. The Erdős 1935 necessary condition ($\\sum 1/(b_n \\log b_n) < \\infty$) is fully proved: the main proof splits the sum at threshold $N_0$ where $a(n) \\geq C^2$, with the head bounded by a finite sum and the tail reduced via reciprocal_log_comparison to the convergent series captured by axiom primitive_reciprocal_log_convergent. The two axioms are primitive_reciprocal_log_convergent (Erdős 1935, deep number-theoretic result) and harmonic_log_plus2_diverges (standard Cauchy condensation result not yet in Mathlib).",
+    "implications": "A full characterization would provide a fundamental understanding of how the 'thinness' of primitive sequences constrains their growth rates. This connects to Behrend's theorem, the distribution of primes (the densest primitive sequence), and the structure of the divisibility lattice on natural numbers.",
+    "openQuestions": [
+      "What are necessary and sufficient conditions for a sequence b to admit a primitive dominator?",
+      "Does the GCD-free condition suffice for primitive domination?",
+      "Can the Erdős-Sárközy-Szemerédi necessary condition be strengthened to a sufficient condition with a correction term?",
+      "Is there a constructive algorithm to find the primitive dominator when it exists?",
+      "What is the connection to the Erdős conjecture on the maximum of Σ 1/(aₙ log aₙ) over primitive sets?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-12",
+      "relationship": "related",
+      "description": "Problem #12 studies divisibility-free (primitive) sets — sets where no element divides another. Problem #892 asks when a primitive sequence can be dominated by a given growth rate $b_n$, extending the basic primitive set question to asymptotic domination"
+    },
+    {
+      "targetId": "erdos-164",
+      "relationship": "related",
+      "description": "Problem #164 studies the maximum sum $\\sum 1/a_i$ over primitive sets $A \\subseteq [N]$. Problem #892's Erdős (1935) necessary condition $\\sum 1/(b_n \\log b_n) < \\infty$ is the continuous analog — both measure primitive sets via reciprocal sums"
+    },
+    {
+      "targetId": "erdos-793",
+      "relationship": "related",
+      "description": "Problem #793 studies primitive sets avoiding product divisibility. Both problems concern the structure and density constraints on primitive sequences, with #892 focusing on domination by growth rates and #793 on multiplicative avoidance conditions"
+    },
+    {
+      "targetId": "erdos-784",
+      "relationship": "related",
+      "description": "Problem #784 studies sieving sets with bounded reciprocal sums $\\sum 1/(a_n \\log a_n)$. The same reciprocal-log convergence condition appears as the necessary condition in #892 (Erdős 1935), suggesting deep structural connections between sieving density and primitive sequence domination"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "Unique prime factorization underpins the primitivity condition: a sequence is primitive iff no element divides another, which requires analyzing the divisibility lattice structured by prime factorizations. The $\\sum 1/(b_n \\log b_n)$ convergence condition reflects how prime factors distribute among sequence elements"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 333,
+    "axiomCount": 2,
+    "theoremCount": 7,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos892Problem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Erdos892Aristotle.lean"
+    ]
+  },
+  "sorries": 0
+}

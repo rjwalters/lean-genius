@@ -1,0 +1,137 @@
+[
+  {
+    "id": "keith-ann-intro",
+    "proofId": "keith-number-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Keith Numbers and the Smallest Case",
+    "content": "A **Keith number** (or *repfigit*, for 'repetitive Fibonacci-like digit') is an $n$-digit number $N \\ge 10$ that reappears in the sequence generated from its own decimal digits: seed the sequence with the $n$ digits of $N$ (most-significant first) and let each later term be the sum of the previous $n$ terms.\n\nFor $14$ the digits are $1, 4$ and the order-2 recurrence runs $1, 4, 5, 9, 14$ (since $1+4=5$, $4+5=9$, $5+9=14$), so $14$ is Keith. The smaller two-digit numbers overshoot: $10 \\to 1,0,1,1,2,3,5,8,13,21$; $11 \\to 1,1,2,3,5,8,13$; $12 \\to 1,2,3,5,8,13$; $13 \\to 1,3,4,7,11,18$. Single-digit numbers are excluded by definition, so **14 is the smallest Keith number** (OEIS A007629).",
+    "mathContext": "The goal is `IsLeast {n | IsKeith n} 14`. Mathlib has no Keith/repfigit predicate, so the entry both introduces `IsKeith` and settles the minimal case.",
+    "significance": "key",
+    "prerequisites": [
+      "decimal digit representations",
+      "Fibonacci-like linear recurrences"
+    ],
+    "relatedConcepts": [
+      "Keith number",
+      "repfigit",
+      "Fibonacci recurrence",
+      "OEIS A007629"
+    ]
+  },
+  {
+    "id": "keith-ann-digits",
+    "proofId": "keith-number-oq-01",
+    "range": {
+      "startLine": 31,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Kernel-Reducible Decimal Digits",
+    "content": "`lsdDigits fuel n` peels the least-significant decimal digits of `n` by **structural recursion on `fuel`**, and `msdDigits n = (lsdDigits n n).reverse` returns the digits most-significant first (so `msdDigits 14 = [1, 4]`). Fuel `n` always suffices, since a positive integer has at most `n` decimal digits.\n\nThe custom function is deliberate: Mathlib's `Nat.digits` is defined by **well-founded** recursion and does not reliably reduce under kernel `decide`. The fuel-bounded structural version keeps the whole decision procedure kernel-reducible, which is what makes the final result axiom-free.",
+    "mathContext": "$\\mathrm{msdDigits}(N)$ is the seed window of the Keith recurrence. Choosing a kernel-reducible digit function is the design pivot that avoids `native_decide` (and hence the `Lean.ofReduceBool` axiom).",
+    "significance": "supporting",
+    "prerequisites": [
+      "structural vs well-founded recursion",
+      "decimal expansions"
+    ],
+    "relatedConcepts": [
+      "Nat.digits",
+      "structural recursion",
+      "kernel reduction"
+    ]
+  },
+  {
+    "id": "keith-ann-reaches",
+    "proofId": "keith-number-oq-01",
+    "range": {
+      "startLine": 44,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Sliding Window and Reachability",
+    "content": "`step w = w.tail ++ [w.sum]` advances the length-$n$ Keith window by one term: it drops the oldest entry and appends the sum of the current window. `reaches target fuel w` then iterates `step`, summing the window each round — returning `true` the instant the sum **equals** `target`, `false` if it **overshoots**, and recursing otherwise with one unit less `fuel`.\n\nThe early exit is justified by monotonicity: once the window is fixed-length and positive the running sum strictly increases, so an overshoot can never recover. A fuel bound of `40` comfortably exceeds the number of steps any two- or three-digit candidate requires.",
+    "mathContext": "This is the order-$n$ Keith recurrence realised as a length-$n$ sliding window. Reachability of the seed value $N$ is exactly the defining condition for $N$ to be a Keith number.",
+    "significance": "key",
+    "prerequisites": [
+      "linear recurrences",
+      "list operations (tail, append, sum)",
+      "monotone termination arguments"
+    ],
+    "relatedConcepts": [
+      "sliding window",
+      "fuel-bounded recursion",
+      "Keith recurrence"
+    ]
+  },
+  {
+    "id": "keith-ann-predicate",
+    "proofId": "keith-number-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "The Keith Predicate, Made Decidable",
+    "content": "`IsKeith n := 10 ≤ n ∧ reaches n 40 (msdDigits n) = true` packages the two-digit lower bound with the reachability condition. The accompanying `DecidablePred IsKeith` instance is assembled from the decidability of `10 ≤ n` and of the `Bool` equality `reaches … = true`.\n\nDecidability is the linchpin: it lets *both* membership (`IsKeith 14`) and the minimality quantifier (`∀ n < 14, ¬ IsKeith n`) be discharged by kernel `decide` with no hand-written case analysis.",
+    "mathContext": "The `10 ≤ n` clause encodes 'at least two digits', excluding single-digit numbers from the Keith definition.",
+    "significance": "supporting",
+    "prerequisites": [
+      "DecidablePred",
+      "decidability of bounded quantifiers"
+    ],
+    "relatedConcepts": [
+      "Decidable",
+      "decide tactic",
+      "Nat.decidableBallLT"
+    ]
+  },
+  {
+    "id": "keith-ann-decide-facts",
+    "proofId": "keith-number-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 73
+    },
+    "type": "theorem",
+    "content": "The two facts that the headline theorem rests on are each closed by a bare `decide`. `keith_fourteen : IsKeith 14` evaluates the decidable predicate at a single point — the kernel reduces `reaches 14 40 (msdDigits 14)` along the window $1,4 \\to 5 \\to 9 \\to 14$ and confirms the hit. `not_keith_below_fourteen : ∀ n < 14, ¬ IsKeith n` is a *bounded* universal, decidable through Mathlib's `Nat.decidableBallLT`, so `decide` checks all of $n = 0,\\dots,13$ at once: $n < 10$ fail the `10 ≤ n` clause, and $10,11,12,13$ each overshoot. Because this is kernel `decide` (not `native_decide`), the evaluation happens in the trusted kernel and introduces no `Lean.ofReduceBool` axiom — the two lemmas, and everything built on them, stay axiom-free.",
+    "title": "Membership and the Lower Bound, by `decide`",
+    "mathContext": "$\\texttt{IsKeith}\\,14$ and $\\forall n<14,\\ \\neg\\,\\texttt{IsKeith}\\,n$ — a point evaluation and a bounded $\\forall$, both decidable and kernel-reduced.",
+    "significance": "supporting",
+    "prerequisites": [
+      "kernel decide vs native_decide",
+      "Nat.decidableBallLT (bounded ∀ decidability)"
+    ],
+    "relatedConcepts": [
+      "decide tactic",
+      "bounded quantifier",
+      "axiom-free decision procedure"
+    ]
+  },
+  {
+    "id": "keith-ann-smallest",
+    "proofId": "keith-number-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 82
+    },
+    "type": "theorem",
+    "title": "14 is the Least Keith Number",
+    "content": "`smallest_keith : IsLeast {n : ℕ | IsKeith n} 14` is the headline result. It combines two `decide`-proved facts: `keith_fourteen : IsKeith 14` (membership, witnessed by $1,4,5,9,14$) and `not_keith_below_fourteen : ∀ n < 14, ¬ IsKeith n` (the lower bound, a finite check over $10,11,12,13$ since smaller numbers are excluded by `10 ≤ n`).\n\n`IsLeast S a` asserts both `a ∈ S` and that `a` lower-bounds `S`; here that is precisely the statement that 14 is the smallest Keith number. The whole proof is axiom-free.",
+    "mathContext": "$\\mathrm{IsLeast}(\\{n \\mid \\mathrm{IsKeith}\\,n\\}, 14)$ means $14$ is Keith and no smaller natural number is — the minimal element of OEIS A007629.",
+    "significance": "key",
+    "prerequisites": [
+      "IsLeast",
+      "kernel decide",
+      "proof by contradiction on a bounded range"
+    ],
+    "relatedConcepts": [
+      "IsLeast",
+      "least element",
+      "decidable minimality"
+    ]
+  }
+]

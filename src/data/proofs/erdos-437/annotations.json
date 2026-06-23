@@ -1,0 +1,433 @@
+[
+  {
+    "id": "ann-e437-header",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #437: Square Partial Products**\n\nGiven a strictly increasing sequence 1 ≤ a₁ < a₂ < ... < aₖ ≤ x, we form partial products:\n- a₁\n- a₁·a₂\n- a₁·a₂·a₃\n- ...\n- a₁·a₂·...·aₖ\n\n**Question:** How many can be perfect squares? Can there be > x^(1-ε) for any ε > 0?\n\n**Answer: YES**\n\nPrecise bounds established by Bui-Pratt-Zaharescu and Tao.",
+    "mathContext": "This connects to Siegel's theorem on elliptic curves and the theory of hyperelliptic curves.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Perfect squares",
+      "Elliptic curves",
+      "Siegel's theorem"
+    ],
+    "prerequisites": [
+      "Perfect squares",
+      "Partial products",
+      "Asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e437-strictly-inc",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 42,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Strictly Increasing Sequences",
+    "content": "**IsStrictlyIncreasing:**\n\nA list where each element is strictly less than the next:\n```lean\ndef IsStrictlyIncreasing (a : List ℕ) : Prop :=\n  a.Chain' (· < ·)\n```\n\nThis uses List.Chain' which checks pairwise relations through the list.",
+    "significance": "key",
+    "mathContext": "A list $[a_1, a_2, \\ldots, a_k]$ with $1 \\leq a_1 < a_2 < \\cdots < a_k \\leq x$. The strict ordering ensures distinct elements and at most $x$ terms. `List.Chain'` checks that each consecutive pair satisfies $a_i < a_{i+1}$.",
+    "relatedConcepts": [
+      "List.Chain'",
+      "Strictly increasing sequences",
+      "Finite sequences"
+    ],
+    "prerequisites": [
+      "List.Chain'",
+      "Nat ordering"
+    ]
+  },
+  {
+    "id": "ann-e437-partial-products",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 56,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Partial Products",
+    "content": "**partialProducts:**\n\nThe cumulative products of a sequence:\n```lean\ndef partialProducts (a : List ℕ) : List ℕ :=\n  a.scanl (· * ·) 1 |>.tail\n```\n\n**Example:** [2, 3, 5] → [2, 6, 30]\n\nThe scanl operation accumulates products, and we drop the initial 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prefix products",
+      "Cumulative operations"
+    ],
+    "mathContext": "$P_j = \\prod_{i=1}^{j} a_i$ for $j = 1, \\ldots, k$. Computed via `List.scanl` with multiplication and initial value 1, then dropping the leading 1. Example: $[2, 3, 5] \\mapsto [2, 6, 30]$. The question is how many $P_j$ can be perfect squares.",
+    "prerequisites": [
+      "List.scanl",
+      "List.tail",
+      "Nat multiplication"
+    ]
+  },
+  {
+    "id": "ann-e437-is-square",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 74,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Perfect Square Predicate",
+    "content": "**isSquare:**\n\nA number is a perfect square if it equals m² for some m:\n```lean\ndef isSquare (n : ℕ) : Prop := ∃ m : ℕ, m * m = n\n```\n\n**Examples:** 1, 4, 9, 16, 25, 36, ...",
+    "significance": "key",
+    "mathContext": "$n$ is a perfect square if $n = m^2$ for some $m \\in \\mathbb{N}$. The set of perfect squares $\\{0, 1, 4, 9, 16, 25, \\ldots\\}$ has density $\\sim 1/\\sqrt{x}$ among integers up to $x$. For computational checking: $n$ is square iff $\\lfloor\\sqrt{n}\\rfloor^2 = n$.",
+    "relatedConcepts": [
+      "Nat.sqrt",
+      "Perfect squares",
+      "Square-free numbers"
+    ],
+    "prerequisites": [
+      "Nat multiplication",
+      "Existential quantification"
+    ]
+  },
+  {
+    "id": "ann-e437-square-count",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 90,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "Square Count",
+    "content": "**squareCount:**\n\nCounts how many partial products are perfect squares:\n```lean\ndef squareCount (a : List ℕ) : ℕ :=\n  (partialProducts a).filter (fun n => Nat.sqrt n * Nat.sqrt n = n) |>.length\n```\n\nWe use the computational test: n is square iff √n · √n = n.",
+    "significance": "key",
+    "mathContext": "$S(a) = |\\{j : P_j = \\prod_{i=1}^{j} a_i \\text{ is a perfect square}\\}|$. Computed by filtering partial products through the test $\\lfloor\\sqrt{n}\\rfloor \\cdot \\lfloor\\sqrt{n}\\rfloor = n$ and counting. This is the quantity we want to maximize over all valid sequences.",
+    "relatedConcepts": [
+      "List.filter",
+      "Counting function",
+      "Extremal combinatorics"
+    ],
+    "prerequisites": [
+      "partialProducts",
+      "Nat.sqrt",
+      "List.filter",
+      "List.length"
+    ]
+  },
+  {
+    "id": "ann-e437-l-function",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 110,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "L(x) - Maximum Square Count",
+    "content": "**L(x):**\n\nThe maximum number of square partial products over all valid sequences:\n```lean\ndef L (x : ℕ) : ℕ :=\n  sSup { k : ℕ | ∃ a : List ℕ, IsValidSequence a x ∧ squareCount a = k }\n```\n\nL(x) is the central object of study. The problem asks about its asymptotic behavior.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal problems",
+      "Supremum"
+    ],
+    "prerequisites": [
+      "squareCount",
+      "IsValidSequence",
+      "sSup",
+      "Set comprehension"
+    ],
+    "mathContext": "(x) = \\max\\{S(a) : a = [a_1, \\ldots, a_k], 1 \\leq a_1 < \\cdots < a_k \\leq x\\}$ where (a) = |\\{j : \\prod_{i=1}^{j} a_i \\text{ is a perfect square}\\}|$. This extremal function captures the maximum number of square partial products achievable. Defined via $\\sup$ over a bounded set of natural numbers."
+  },
+  {
+    "id": "ann-e437-u-function",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 124,
+      "endLine": 130
+    },
+    "type": "definition",
+    "title": "The u(x) Scale",
+    "content": "**u(x):**\n\nThe natural scaling function:\n```lean\ndef u (x : ℕ) : ℝ :=\n  Real.sqrt (Real.log x * Real.log (Real.log x))\n```\n\nu(x) = √(log x · log log x) grows very slowly - between log log x and √(log x).\n\nThis scale appears in the precise bounds on L(x).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Iterated logarithm",
+      "Subexponential growth"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "Real.log",
+      "Iterated logarithm"
+    ],
+    "mathContext": "(x) = \\sqrt{\\log x \\cdot \\log\\log x}$. This function interpolates between $\\log\\log x$ and $\\sqrt{\\log x}$: specifically $\\log\\log x \\ll u(x) \\ll \\sqrt{\\log x}$. It appears as the natural scale in the exponent of the precise bounds on (x)/x$."
+  },
+  {
+    "id": "ann-e437-trivial-bound",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 135,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Trivial Upper Bound",
+    "content": "**L_le_x:**\n\nL(x) ≤ x:\n```lean\naxiom L_le_x : ∀ x : ℕ, x ≥ 2 → L x ≤ x\n```\n\n**Reason:** A sequence has at most x elements (since each aᵢ ≤ x and they're distinct), so at most x partial products exist.",
+    "significance": "supporting",
+    "mathContext": "$L(x) \\leq x$ since a sequence in $\\{1, \\ldots, x\\}$ has at most $x$ distinct elements, hence at most $x$ partial products. This is the trivial bound; the interesting question is how close to $x$ the count $L(x)$ can get.",
+    "relatedConcepts": [
+      "Trivial bounds",
+      "Pigeonhole",
+      "Upper bound"
+    ],
+    "prerequisites": [
+      "L function",
+      "Sequence length bound"
+    ]
+  },
+  {
+    "id": "ann-e437-siegel",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 141,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "o(x) via Siegel's Theorem",
+    "content": "**L_little_o_x:**\n\nL(x) = o(x), meaning L(x)/x → 0:\n```lean\naxiom L_little_o_x :\n  ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ x ≥ N, (L x : ℝ) < ε * x\n```\n\n**Proof idea:** Erdős-Graham note this is 'trivial' using Siegel's theorem that elliptic curves have finitely many integral points. Each constraint adds an elliptic curve condition.",
+    "mathContext": "Siegel's theorem (1929) is a deep result in arithmetic geometry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Siegel's theorem",
+      "Integral points",
+      "Elliptic curves",
+      "Diophantine geometry"
+    ],
+    "prerequisites": [
+      "Elliptic curves over Q",
+      "Integral points",
+      "Little-o notation"
+    ]
+  },
+  {
+    "id": "ann-e437-conjecture",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 155,
+      "endLine": 161
+    },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "**erdos437Conjecture:**\n\nFor any ε > 0, L(x) > x^(1-ε) for large x:\n```lean\ndef erdos437Conjecture : Prop :=\n  ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ x ≥ N, (L x : ℝ) > (x : ℝ)^(1 - ε)\n```\n\n**Intuition:** Although L(x)/x → 0, it does so extremely slowly - slower than any power x^(-ε).",
+    "significance": "key",
+    "mathContext": "$\\forall \\varepsilon > 0, \\exists N, \\forall x \\geq N: L(x) > x^{1-\\varepsilon}$. This says $L(x)$ decays subpolynomially: $L(x)/x \\to 0$ but slower than any $x^{-\\varepsilon}$. Equivalently, $\\log L(x) / \\log x \\to 1$ as $x \\to \\infty$.",
+    "relatedConcepts": [
+      "Subpolynomial decay",
+      "Asymptotic density",
+      "Almost-linear growth"
+    ],
+    "prerequisites": [
+      "L function",
+      "Real.rpow",
+      "Limit definition"
+    ]
+  },
+  {
+    "id": "ann-e437-solved",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 162,
+      "endLine": 167
+    },
+    "type": "concept",
+    "title": "Problem Solved",
+    "content": "**erdos_437:**\n\nThe conjecture is TRUE:\n```lean\naxiom erdos_437 : erdos437Conjecture\n```\n\n**Proved by:** Bui, Pratt, and Zaharescu (2024) using techniques from the theory of hyperelliptic curves and integral points.",
+    "significance": "key",
+    "mathContext": "Axiomatized: `erdos_437 : erdos437Conjecture`. Bui, Pratt, Zaharescu (2024) proved this using systematic analysis of integral points on families of hyperelliptic curves $y^2 = \\prod_{i \\in S} a_i$ for subsets $S$.",
+    "relatedConcepts": [
+      "Axiomatized results",
+      "Hyperelliptic curves",
+      "Recent solutions"
+    ],
+    "prerequisites": [
+      "erdos437Conjecture"
+    ]
+  },
+  {
+    "id": "ann-e437-lower-bound",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 172,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Lower Bound on L(x)",
+    "content": "**L_lower_bound:**\n\nL(x) ≥ x · exp(-(√2 + o(1)) · u(x)):\n```lean\naxiom L_lower_bound :\n  ∀ ε > 0, ∃ N, ∀ x ≥ N,\n    (L x : ℝ) ≥ x * Real.exp (-(Real.sqrt 2 + ε) * u x)\n```\n\nThe constant √2 ≈ 1.414 appears in the exponent. This gives the constructive lower bound.",
+    "mathContext": "Established by Tao's analysis of the Bui-Pratt-Zaharescu result.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Constructive bounds",
+      "Subexponential decay",
+      "Tao's analysis"
+    ],
+    "prerequisites": [
+      "L function",
+      "u function",
+      "Real.exp",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-e437-upper-bound",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 182,
+      "endLine": 191
+    },
+    "type": "concept",
+    "title": "Upper Bound on L(x)",
+    "content": "**L_upper_bound:**\n\nL(x) ≤ x · exp(-(1/√2 + o(1)) · u(x)):\n```lean\naxiom L_upper_bound :\n  ∀ ε > 0, ∃ N, ∀ x ≥ N,\n    (L x : ℝ) ≤ x * Real.exp (-(1 / Real.sqrt 2 - ε) * u x)\n```\n\nThe constant 1/√2 ≈ 0.707 < √2 means the upper bound decays slower (larger L) than the lower bound. Gap between √2 and 1/√2 remains.",
+    "significance": "key",
+    "mathContext": "$L(x) \\leq x \\cdot \\exp(-(1/\\sqrt{2} + o(1)) \\cdot u(x))$. The constant $1/\\sqrt{2} \\approx 0.707$ is smaller than $\\sqrt{2} \\approx 1.414$ in the lower bound, so the upper bound decays more slowly (allows larger $L$). The gap between $\\sqrt{2}$ and $1/\\sqrt{2}$ in the exponent constant is the remaining open problem.",
+    "relatedConcepts": [
+      "Upper bound",
+      "Constant gap",
+      "Open problem"
+    ],
+    "prerequisites": [
+      "L function",
+      "u function",
+      "Real.exp"
+    ]
+  },
+  {
+    "id": "ann-e437-siegel-consequence",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 196,
+      "endLine": 203
+    },
+    "type": "concept",
+    "title": "Siegel's Theorem Consequence",
+    "content": "**siegel_theorem_consequence:**\n\nFrom Siegel's theorem, L(x) < x for all x:\n```lean\naxiom siegel_theorem_consequence :\n  ∀ x : ℕ, x ≥ 2 → ∃ C : ℝ, C < x ∧ (L x : ℝ) ≤ C\n```\n\n**Siegel's Theorem (1929):** An elliptic curve E/ℚ has only finitely many integral points. This constrains how partial products can simultaneously be squares.",
+    "mathContext": "A fundamental theorem in Diophantine geometry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Effective Siegel theorem",
+      "Finite integral points",
+      "Diophantine constraints"
+    ],
+    "prerequisites": [
+      "Siegel's theorem",
+      "Hyperelliptic curves",
+      "Finite vs infinite sets"
+    ]
+  },
+  {
+    "id": "ann-e437-hyperelliptic",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 204,
+      "endLine": 214
+    },
+    "type": "concept",
+    "title": "Hyperelliptic Curves Connection",
+    "content": "**hyperelliptic_connection:**\n\nThe problem reduces to counting integral points on hyperelliptic curves:\n```lean\naxiom hyperelliptic_connection :\n  ∀ a, IsStrictlyIncreasing a →\n  ∃ curve_degree ≥ 3, squareCount a ≤ a.length\n```\n\n**Key insight:** If a₁·a₂·...·aⱼ = y² and a₁·...·aₖ = z² (j < k), then we get a relation on a hyperelliptic curve y² = f(x). Bui-Pratt-Zaharescu analyze these systematically.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Algebraic curves",
+      "Integral points"
+    ],
+    "mathContext": "If $P_j = y_j^2$ and $P_k = z_k^2$ for $j < k$, then $a_{j+1} \\cdots a_k = z_k^2/y_j^2$, giving a point on the curve $Y^2 = a_{j+1} \\cdots a_k \\cdot X^2$ (or more generally a hyperelliptic curve $Y^2 = f(X)$ with $\\deg f \\geq 3$). Counting integral points on these curves controls $S(a)$.",
+    "prerequisites": [
+      "Hyperelliptic curves",
+      "Integral points",
+      "squareCount"
+    ]
+  },
+  {
+    "id": "ann-e437-powers-example",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 219,
+      "endLine": 228
+    },
+    "type": "concept",
+    "title": "Powers of Four Example",
+    "content": "**powers_of_four_all_squares:**\n\nIf aᵢ = 4^i, then all partial products are squares:\n```lean\ntheorem powers_of_four_all_squares :\n  ∀ k ≥ 1, squareCount [4, 16, 64, ...] = k - 1\n```\n\n**Verification:**\n- 4 = 2²\n- 4·16 = 64 = 8²\n- 4·16·64 = 4096 = 64²\n\nThis shows we can get many squares with the right sequence.",
+    "significance": "supporting",
+    "mathContext": "The sequence $a_i = 4^i$: all partial products $P_j = 4^{1+2+\\cdots+j} = 4^{j(j+1)/2} = (2^{j(j+1)/2})^2$ are perfect squares (since $j(j+1)/2$ is always an integer). This gives $S(a) = k$ for a $k$-element sequence, but the elements grow exponentially, so they only fit in $\\{1, \\ldots, x\\}$ for $k \\approx \\log_4 x$.",
+    "relatedConcepts": [
+      "Geometric sequences",
+      "Triangular numbers",
+      "Exponential growth"
+    ],
+    "prerequisites": [
+      "partialProducts",
+      "squareCount",
+      "Power sequences"
+    ]
+  },
+  {
+    "id": "ann-e437-growth-rate",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 243,
+      "endLine": 264
+    },
+    "type": "concept",
+    "title": "Growth Rate",
+    "content": "**L_growth_rate:**\n\nL(x)/x decays like exp(-Θ(√(log x · log log x))):\n```lean\ntheorem L_growth_rate :\n  ∀ ε > 0, ∃ N, ∀ x ≥ N,\n    exp(-(√2+ε)u(x)) ≤ L(x)/x ≤ exp(-(1/√2-ε)u(x))\n```\n\nThis is slower than any polynomial decay (x^(-ε)) but faster than logarithmic decay.",
+    "significance": "key",
+    "mathContext": "$\\exp(-(\\sqrt{2}+\\varepsilon) u(x)) \\leq L(x)/x \\leq \\exp(-(1/\\sqrt{2}-\\varepsilon) u(x))$ where $u(x) = \\sqrt{\\log x \\cdot \\log\\log x}$. The ratio $L(x)/x$ decays like $\\exp(-\\Theta(\\sqrt{\\log x \\cdot \\log\\log x}))$, which is subpolynomial (slower than $x^{-\\varepsilon}$) but superlogarithmic (faster than $(\\log x)^{-c}$).",
+    "relatedConcepts": [
+      "Precise asymptotics",
+      "Theta notation",
+      "Subpolynomial decay"
+    ],
+    "prerequisites": [
+      "L_lower_bound",
+      "L_upper_bound",
+      "u function"
+    ]
+  },
+  {
+    "id": "ann-e437-beats-power",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 265,
+      "endLine": 272
+    },
+    "type": "concept",
+    "title": "L(x) Beats Any Power",
+    "content": "**L_beats_power:**\n\nL(x) > x^(1-ε) for any ε:\n```lean\ntheorem L_beats_power (ε : ℝ) (hε : ε > 0) :\n  ∃ N, ∀ x ≥ N, (L x : ℝ) > (x : ℝ)^(1 - ε) :=\n  erdos_437 ε hε\n```\n\nThis is the main consequence: despite L(x) = o(x), it's still larger than any x^(1-ε).",
+    "significance": "key",
+    "mathContext": "$L(x) > x^{1-\\varepsilon}$ for all $\\varepsilon > 0$ and large $x$. Proof: $L(x)/x \\geq \\exp(-(\\sqrt{2}+\\varepsilon')u(x))$ and $u(x)/\\log x \\to 0$, so $\\exp(-c \\cdot u(x)) > \\exp(-\\varepsilon \\log x) = x^{-\\varepsilon}$ eventually. This is the main consequence answering Erdos #437 affirmatively.",
+    "relatedConcepts": [
+      "Main theorem",
+      "Power comparison",
+      "Erdos conjecture verification"
+    ],
+    "prerequisites": [
+      "erdos_437",
+      "L_lower_bound"
+    ]
+  },
+  {
+    "id": "ann-e437-summary",
+    "proofId": "erdos-437",
+    "range": {
+      "startLine": 277,
+      "endLine": 284
+    },
+    "type": "concept",
+    "title": "Summary",
+    "content": "**erdos_437_summary:**\n\nCombines all main results:\n```lean\ntheorem erdos_437_summary :\n  erdos437Conjecture ∧\n  (∀ ε > 0, ∃ N, ∀ x ≥ N, L(x) < ε·x) ∧\n  (∀ ε > 0, ∃ N, ∀ x ≥ N, L(x) > x^(1-ε))\n```\n\n**Summary:**\n1. YES, we can have > x^(1-ε) square partial products\n2. But L(x) = o(x) (from Siegel)\n3. Precise rate: L(x) ≈ x·exp(-c·√(log x·log log x))",
+    "significance": "key",
+    "mathContext": "Three-part summary: (1) $L(x) > x^{1-\\varepsilon}$ for all $\\varepsilon > 0$ (Erdos #437 affirmative); (2) $L(x) = o(x)$ (Siegel); (3) $L(x) \\asymp x \\cdot \\exp(-\\Theta(\\sqrt{\\log x \\cdot \\log\\log x}))$ (Bui-Pratt-Zaharescu + Tao). The exact constant in the exponent remains open: lower bound $\\sqrt{2}$, upper bound $1/\\sqrt{2}$.",
+    "relatedConcepts": [
+      "Complete characterization",
+      "Open constant problem",
+      "Three-part theorem"
+    ],
+    "prerequisites": [
+      "erdos_437",
+      "L_little_o_x",
+      "L_growth_rate"
+    ]
+  }
+]

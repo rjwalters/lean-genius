@@ -1,0 +1,74 @@
+[
+  {
+    "id": "def-gcd-intersecting",
+    "proofId": "erdos-534",
+    "range": { "startLine": 46, "endLine": 48 },
+    "type": "definition",
+    "title": "GCD-Intersecting Set",
+    "content": "A set A where gcd(a,b) > 1 for all distinct a, b ∈ A. Every pair shares a common factor greater than 1.",
+    "significance": "major"
+  },
+  {
+    "id": "def-max-function",
+    "proofId": "erdos-534",
+    "range": { "startLine": 53, "endLine": 56 },
+    "type": "definition",
+    "title": "Maximum GCD-Intersecting Size",
+    "content": "maxGCDIntersecting(N) is the largest size of a GCD-intersecting subset of {1,...,N} that contains N.",
+    "significance": "major"
+  },
+  {
+    "id": "constr-p-multiples",
+    "proofId": "erdos-534",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "construction",
+    "title": "Multiples of Smallest Prime",
+    "content": "Taking all multiples of the smallest prime factor p gives a GCD-intersecting set of size N/p.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-original-false",
+    "proofId": "erdos-534",
+    "range": { "startLine": 96, "endLine": 98 },
+    "type": "theorem",
+    "title": "Original Conjecture False",
+    "content": "The Erdős-Graham conjecture that max is N/p or #{even numbers sharing factor with N} is FALSE. Ahlswede-Khachatrian found counterexamples.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-ak-theorem",
+    "proofId": "erdos-534",
+    "range": { "startLine": 115, "endLine": 121 },
+    "type": "theorem",
+    "title": "Ahlswede-Khachatrian Theorem",
+    "content": "The maximum is achieved by integers divisible by elements from {2q₁,...,2qⱼ, q₁⋯qⱼ} for optimal j depending on N.",
+    "significance": "major"
+  },
+  {
+    "id": "case-prime-power",
+    "proofId": "erdos-534",
+    "range": { "startLine": 133, "endLine": 136 },
+    "type": "theorem",
+    "title": "Prime Power Case",
+    "content": "When N = p^k, the maximum is p^{k-1}. All elements must be divisible by p.",
+    "significance": "minor"
+  },
+  {
+    "id": "insight-ekr",
+    "proofId": "erdos-534",
+    "range": { "startLine": 170, "endLine": 174 },
+    "type": "insight",
+    "title": "Erdős-Ko-Rado Connection",
+    "content": "GCD > 1 is the arithmetic analogue of 'shares an element' in set intersection problems. This is an Erdős-Ko-Rado type result for integers.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-characterization",
+    "proofId": "erdos-534",
+    "range": { "startLine": 199, "endLine": 209 },
+    "type": "theorem",
+    "title": "Complete Characterization",
+    "content": "Original conjecture is false, correct answer involves optimal j choice from the prime factorization structure.",
+    "significance": "major"
+  }
+]

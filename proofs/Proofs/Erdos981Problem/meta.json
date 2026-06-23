@@ -1,0 +1,17 @@
+{
+  "problem_number": 981,
+  "title": "Character Sum Stabilization Threshold",
+  "status": "solved",
+  "solvers": ["Elliott (1969)"],
+  "source_url": "https://erdosproblems.com/981",
+  "overview": "Let f_ε(p) be the smallest m such that |Σ_{n≤N} (n/p)| < εN for all N ≥ m, where (n/p) is the Legendre symbol. Prove Σ_{p<x} f_ε(p) ~ c_ε · x/log x.",
+  "sections": [],
+  "conclusion": "SOLVED by Elliott (1969, Indag. Math.). The sum of stabilization thresholds over primes follows the Prime Number Theorem form x/log x. Character sums exhibit cancellation due to equidistribution of quadratic residues.",
+  "references": [
+    "[El69] Elliott, 'A conjecture of Erdős concerning character sums', Indag. Math. (1969)",
+    "[Er65b] Original problem statement",
+    "[TaZh25] Tang-Zhang (2025) - Alternative formulation"
+  ],
+  "related_problems": [],
+  "tags": ["number-theory", "character-sums", "legendre-symbol", "prime-number-theorem", "solved"]
+}

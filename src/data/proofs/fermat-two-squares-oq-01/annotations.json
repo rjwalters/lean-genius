@@ -1,0 +1,385 @@
+[
+  {
+    "id": "ann-euler-identity-statement",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 30,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Euler's Four-Square Identity",
+    "content": "The four-square identity states that the product of two sums of four squares is itself a sum of four squares. Euler discovered this in 1748, nearly a century before Hamilton invented quaternions. The identity is proved here over an arbitrary commutative ring using Lean's `ring` tactic, which verifies the polynomial equality automatically. The eight output terms are precisely the components of the Hamilton quaternion product $(a + bi + cj + dk)(x + yi + zj + wk)$.",
+    "mathContext": "$(a^2+b^2+c^2+d^2)(x^2+y^2+z^2+w^2) = (ax-by-cz-dw)^2 + (ay+bx+cw-dz)^2 + (az-bw+cx+dy)^2 + (aw+bz-cy+dx)^2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "quaternion norm",
+      "Euler identity",
+      "ring tactic",
+      "multiplicative forms"
+    ],
+    "prerequisites": [
+      "commutative ring",
+      "polynomial identity"
+    ]
+  },
+  {
+    "id": "ann-lipschitz-quat-def",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 49,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Lipschitz Quaternion Integer Structure",
+    "content": "Defines Lipschitz quaternion integers as four-tuples of integers $(a, b, c, d) \\in \\mathbb{Z}^4$, representing $q = a + bi + cj + dk$. Named after Rudolf Lipschitz, who studied integer quaternions in 1886. Unlike Hurwitz quaternions (which allow half-integer coordinates like $\\frac{1}{2}(1+i+j+k)$), Lipschitz quaternions form a ring but not a Euclidean domain.",
+    "mathContext": "$\\mathbb{Z}[i,j,k] = \\{a + bi + cj + dk : a,b,c,d \\in \\mathbb{Z}\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "quaternion algebra",
+      "Lipschitz integers",
+      "Hurwitz quaternions",
+      "integer lattice"
+    ],
+    "prerequisites": [
+      "ring theory",
+      "quaternions"
+    ]
+  },
+  {
+    "id": "ann-norm-sq",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Quaternion Squared Norm",
+    "content": "The squared norm of a Lipschitz quaternion $q = a + bi + cj + dk$ is $N(q) = a^2 + b^2 + c^2 + d^2$. This is the quaternion analogue of the Gaussian integer norm $|z|^2 = a^2 + b^2$ for $z = a + bi$. The norm takes values in $\\mathbb{Z}_{\\geq 0}$ and is a positive-definite quadratic form on $\\mathbb{Z}^4$.",
+    "mathContext": "$N(q) = |q|^2 = a^2 + b^2 + c^2 + d^2 = q \\bar{q}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "quadratic form",
+      "positive definite",
+      "Gaussian integer norm"
+    ],
+    "prerequisites": [
+      "inner product",
+      "quadratic forms"
+    ]
+  },
+  {
+    "id": "ann-hamilton-product",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Hamilton Product (Quaternion Multiplication)",
+    "content": "Defines the Hamilton product on Lipschitz quaternions using the relations $i^2 = j^2 = k^2 = ijk = -1$. Unlike complex multiplication, this product is non-commutative: $ij = k$ but $ji = -k$. The four components of the product are exactly the bilinear forms appearing in Euler's four-square identity, revealing that Euler had implicitly discovered quaternion multiplication 95 years before Hamilton.",
+    "mathContext": "$q_1 q_2 = (a_1 a_2 - b_1 b_2 - c_1 c_2 - d_1 d_2) + (a_1 b_2 + b_1 a_2 + c_1 d_2 - d_1 c_2)i + \\cdots$",
+    "significance": "key",
+    "relatedConcepts": [
+      "non-commutative algebra",
+      "Hamilton's quaternions",
+      "division algebra",
+      "bilinear forms"
+    ],
+    "prerequisites": [
+      "ring theory",
+      "non-commutative multiplication"
+    ]
+  },
+  {
+    "id": "ann-norm-multiplicativity",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 67,
+      "endLine": 75
+    },
+    "type": "insight",
+    "title": "Quaternion Norm Multiplicativity",
+    "content": "Proves $N(q_1 q_2) = N(q_1) N(q_2)$, establishing that the quaternion norm is a multiplicative function. This is Euler's four-square identity rewritten in algebraic language. The proof unfolds definitions and applies `ring`. This multiplicativity is the key algebraic fact that makes Lagrange's theorem possible: since the norm of a product equals the product of norms, the set of integers expressible as sums of four squares is closed under multiplication.",
+    "mathContext": "$N(q_1 q_2) = N(q_1) \\cdot N(q_2)$, equivalently $|q_1 q_2|^2 = |q_1|^2 |q_2|^2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "composition algebra",
+      "norm form",
+      "multiplicative function",
+      "Hurwitz theorem"
+    ],
+    "prerequisites": [
+      "quaternion algebra",
+      "ring homomorphism"
+    ]
+  },
+  {
+    "id": "ann-conjugation",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 77,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Quaternion Conjugation and Norm Identity",
+    "content": "Defines the quaternion conjugate $\\bar{q} = a - bi - cj - dk$ and proves that $q \\bar{q}$ is a real quaternion (zero imaginary parts) equal to $N(q)$. This mirrors the complex number identity $z\\bar{z} = |z|^2$. The conjugation is an anti-involution: $\\overline{q_1 q_2} = \\bar{q_2} \\bar{q_1}$ (order reversal), reflecting the non-commutativity of quaternions.",
+    "mathContext": "$q \\bar{q} = a^2 + b^2 + c^2 + d^2 = N(q)$, with $\\bar{q} = a - bi - cj - dk$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "anti-involution",
+      "complex conjugation",
+      "norm via conjugation"
+    ],
+    "prerequisites": [
+      "conjugation",
+      "involution"
+    ]
+  },
+  {
+    "id": "ann-lagrange-main",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 105
+    },
+    "type": "insight",
+    "title": "Lagrange's Four Squares Theorem (Main Statement)",
+    "content": "States and proves that every natural number $n$ is a sum of four squares: $n = a^2 + b^2 + c^2 + d^2$ for some $a, b, c, d \\in \\mathbb{N}$. This is entry #19 on Wiedijk's list of 100 Greatest Theorems. The proof delegates to Mathlib's `Nat.sum_four_squares`, which combines Euler's identity (reducing to primes) with Minkowski's geometry of numbers or an infinite descent argument for the prime case.",
+    "mathContext": "$\\forall n \\in \\mathbb{N}, \\exists a, b, c, d \\in \\mathbb{N}: n = a^2 + b^2 + c^2 + d^2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Waring's problem",
+      "Wiedijk 100 theorems",
+      "sum of squares",
+      "geometry of numbers"
+    ],
+    "prerequisites": [
+      "Euler's identity",
+      "descent method",
+      "prime decomposition"
+    ]
+  },
+  {
+    "id": "ann-int-version",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 107,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "Integer Coercion of Four Squares",
+    "content": "Lifts the natural number four-squares result to integers via `push_cast`. This is a standard Lean technique: prove a result for natural numbers, then coerce to integers. The `push_cast` tactic moves the coercion inside arithmetic operations, enabling `ring` to close the goal.",
+    "mathContext": "$\\forall n \\in \\mathbb{N}, \\exists a, b, c, d \\in \\mathbb{Z}: a^2 + b^2 + c^2 + d^2 = n$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "type coercion",
+      "push_cast tactic",
+      "natural to integer embedding"
+    ],
+    "prerequisites": [
+      "Lean type theory",
+      "coercion"
+    ]
+  },
+  {
+    "id": "ann-quat-norm-interpretation",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 115,
+      "endLine": 119
+    },
+    "type": "insight",
+    "title": "Every Natural as a Quaternion Norm",
+    "content": "Repackages Lagrange's theorem in quaternion language: every natural number is the squared norm of some Lipschitz quaternion. This connects number theory to algebra, showing that the norm map $N: \\mathbb{Z}[i,j,k] \\to \\mathbb{Z}_{\\geq 0}$ is surjective. This perspective is central to the algebraic theory of quadratic forms and the classification of lattices.",
+    "mathContext": "$\\forall n \\in \\mathbb{N}, \\exists q \\in \\mathbb{Z}[i,j,k]: N(q) = n$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "surjectivity of norm",
+      "lattice theory",
+      "quadratic forms over integers"
+    ],
+    "prerequisites": [
+      "Lipschitz quaternions",
+      "Lagrange's theorem"
+    ]
+  },
+  {
+    "id": "ann-brahmagupta-fibonacci",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 125,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Brahmagupta-Fibonacci Identity",
+    "content": "Proves the two-square identity: $(a^2+b^2)(c^2+d^2) = (ac+bd)^2 + (ad-bc)^2$. This is the norm multiplicativity of the Gaussian integers $\\mathbb{Z}[i]$: $|z_1 z_2|^2 = |z_1|^2 |z_2|^2$ where $z_1 = a + bi$, $z_2 = c + di$. Brahmagupta discovered this identity in 628 CE, over a millennium before Gauss. It is the $n=2$ case of the composition of quadratic forms.",
+    "mathContext": "$(a^2 + b^2)(c^2 + d^2) = (ac + bd)^2 + (ad - bc)^2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gaussian integers",
+      "norm multiplicativity",
+      "composition of forms",
+      "Brahmagupta identity"
+    ],
+    "prerequisites": [
+      "complex numbers",
+      "Gaussian integers"
+    ]
+  },
+  {
+    "id": "ann-two-squares-closed",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 135,
+      "endLine": 145
+    },
+    "type": "concept",
+    "title": "Closure of Two-Square Sums Under Multiplication",
+    "content": "Proves the existential form: if $m$ and $n$ are each sums of two squares, then so is $mn$. The proof extracts witnesses, applies the Brahmagupta-Fibonacci identity, and uses `natAbs` to convert back from integers to naturals. The `zify` tactic coerces to $\\mathbb{Z}$ where `sq_abs` and `ring` can work.",
+    "mathContext": "If $m = a^2 + b^2$ and $n = c^2 + d^2$, then $mn = (ac+bd)^2 + (ad-bc)^2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multiplicative closure",
+      "zify tactic",
+      "natAbs"
+    ],
+    "prerequisites": [
+      "Brahmagupta-Fibonacci identity"
+    ]
+  },
+  {
+    "id": "ann-four-squares-closed",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 147,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Closure of Four-Square Sums Under Multiplication",
+    "content": "The existential four-square closure theorem: if $m$ and $n$ are each sums of four squares, so is $mn$. This is the critical step in reducing Lagrange's theorem to primes. The proof constructs witnesses using quaternion multiplication components and simplifies via `sq_abs` and `ring`. Combined with the fact that 0 and 1 are trivially sums of four squares, this shows the set of four-square sums is a multiplicative submonoid of $\\mathbb{N}$.",
+    "mathContext": "If $m = a^2+b^2+c^2+d^2$ and $n = x^2+y^2+z^2+w^2$, then $mn$ is also a sum of four squares",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative submonoid",
+      "reduction to primes",
+      "Euler identity application"
+    ],
+    "prerequisites": [
+      "Euler's four-square identity",
+      "quaternion multiplication"
+    ]
+  },
+  {
+    "id": "ann-three-squares-obstruction",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 169,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "Three-Squares Obstruction Examples",
+    "content": "Demonstrates that certain numbers require all four squares. Legendre proved in 1798 that $n$ is a sum of three squares if and only if $n$ is NOT of the form $4^a(8b+7)$. The examples 7, 15, 23, 28 all satisfy this obstruction: $7 = 8 \\cdot 0 + 7$, $15 = 8 \\cdot 1 + 7$, $23 = 8 \\cdot 2 + 7$, $28 = 4 \\cdot 7$. Each is verified as a sum of four squares by `norm_num`.",
+    "mathContext": "$n \\neq \\sum_{i=1}^{3} x_i^2 \\iff n = 4^a(8b+7)$ for some $a, b \\geq 0$ (Legendre, 1798)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Legendre's three-square theorem",
+      "quadratic residues mod 8",
+      "form obstruction"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "quadratic residues"
+    ]
+  },
+  {
+    "id": "ann-fermat-two-squares-char",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 185,
+      "endLine": 201
+    },
+    "type": "insight",
+    "title": "Fermat's Two-Squares Characterization",
+    "content": "Proves the full characterization: a prime $p$ is a sum of two squares if and only if $p \\not\\equiv 3 \\pmod{4}$. The forward direction uses exhaustive modular arithmetic (squares mod 4 are 0 or 1, so $a^2 + b^2 \\pmod{4} \\in \\{0, 1, 2\\}$, never 3). The reverse delegates to Mathlib's `Nat.Prime.sq_add_sq`, which uses Zagier's involution proof or a descent on Gaussian integers.",
+    "mathContext": "$p$ prime: $\\exists a,b: p = a^2 + b^2 \\iff p \\not\\equiv 3 \\pmod{4}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's theorem on sums of two squares",
+      "quadratic residues mod 4",
+      "Zagier's one-sentence proof",
+      "Gaussian primes"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "modular arithmetic",
+      "quadratic residues"
+    ]
+  },
+  {
+    "id": "ann-every-prime-four-sq",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 203,
+      "endLine": 207
+    },
+    "type": "insight",
+    "title": "Universal Four-Squares for Primes",
+    "content": "Highlights the contrast between the two-squares and four-squares cases: while only primes $p \\equiv 1 \\pmod{4}$ (and $p = 2$) are sums of two squares, EVERY prime is a sum of four squares. This universality is what makes Lagrange's theorem stronger. The algebraic reason: $\\mathbb{H}$ (quaternions) is a division algebra, so the norm form $a^2+b^2+c^2+d^2$ represents all positive integers, while $\\mathbb{C}$ (complex numbers) with norm $a^2+b^2$ cannot.",
+    "mathContext": "$\\forall p \\text{ prime}, \\exists a,b,c,d: p = a^2 + b^2 + c^2 + d^2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "universal quadratic form",
+      "division algebra",
+      "Frobenius theorem"
+    ],
+    "prerequisites": [
+      "Lagrange's theorem",
+      "Fermat's theorem"
+    ]
+  },
+  {
+    "id": "ann-three-not-two",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 209,
+      "endLine": 218
+    },
+    "type": "insight",
+    "title": "3 is Not a Sum of Two Squares but Is a Sum of Four",
+    "content": "The concrete witness that four squares are strictly more powerful than two: $3 \\equiv 3 \\pmod{4}$, so by Fermat's characterization, 3 is not a sum of two squares. The proof of impossibility is by exhaustive case analysis: since $a^2 + b^2 = 3$ requires $a, b \\leq 1$ (by `nlinarith`), we check all four cases with `interval_cases`. Yet $3 = 1^2 + 1^2 + 1^2 + 0^2$ is a sum of four squares, demonstrating Lagrange's universality.",
+    "mathContext": "$3 \\neq a^2 + b^2$ for any $a, b \\in \\mathbb{N}$, but $3 = 1^2 + 1^2 + 1^2 + 0^2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat obstruction",
+      "exhaustive case analysis",
+      "interval_cases tactic"
+    ],
+    "prerequisites": [
+      "Fermat's two-squares theorem",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "fermat-two-squares-oq-01",
+    "range": {
+      "startLine": 224,
+      "endLine": 234
+    },
+    "type": "concept",
+    "title": "Verified Decomposition Examples",
+    "content": "Concrete verified examples illustrating both two-square and four-square representations. $5 = 1^2 + 2^2$ and $13 = 2^2 + 3^2$ are sums of two squares (both primes $\\equiv 1 \\pmod{4}$). $100 = 6^2 + 8^2$ illustrates that composites can also be two-square sums ($100 = 4 \\cdot 25$, and both 4 and 25 are sums of two squares). $42 = 1^2 + 1^2 + 2^2 + 6^2$ requires at least three squares ($42 = 2 \\cdot 3 \\cdot 7$, and $7 \\equiv 3 \\pmod{4}$).",
+    "mathContext": "$5 = 1^2 + 2^2$, $13 = 2^2 + 3^2$, $100 = 6^2 + 8^2$, $42 = 1^2 + 1^2 + 2^2 + 6^2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "representation numbers",
+      "Jacobi four-square theorem",
+      "norm_num tactic"
+    ],
+    "prerequisites": [
+      "Sum Of Squares",
+      "Prime Decomposition",
+      "Modular Arithmetic"
+    ]
+  }
+]

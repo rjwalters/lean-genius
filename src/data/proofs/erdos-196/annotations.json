@@ -1,0 +1,294 @@
+[
+  {
+    "id": "erdos-196-imports",
+    "proofId": "erdos-196",
+    "type": "concept",
+    "range": {
+      "startLine": 21,
+      "endLine": 25
+    },
+    "title": "Library Imports and Setup",
+    "content": "Imports Mathlib for equivalences (bijections on $\\mathbb{N}$), monotonicity, and tactics. The `abbrev Perm := \\mathbb{N} \\equiv \\mathbb{N}$` encodes permutations as bijections.",
+    "mathContext": "A permutation $\\pi: \\mathbb{N} \\to \\mathbb{N}$ is formalized as `Perm := ℕ ≃ ℕ`, an equivalence type ensuring bijectivity. `Logic.Equiv.Basic` provides the $\\equiv$ type and `Order.Monotone.Basic` provides `StrictMono`/`StrictAnti` for index monotonicity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "bijection",
+      "equivalence type",
+      "monotone functions"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib equivalence types"
+    ]
+  },
+  {
+    "id": "erdos-196-ap-defs",
+    "proofId": "erdos-196",
+    "type": "definition",
+    "range": {
+      "startLine": 33,
+      "endLine": 42
+    },
+    "title": "Arithmetic Progressions (3, 4, 5-term)",
+    "content": "Defines $k$-term APs via constant difference: IsAP3$(a,b,c)$: $b-a = c-b$ with $a < b < c$. IsAP4 adds a fourth term, IsAP5 extends to five. These are the core combinatorial objects.",
+    "mathContext": "IsAP4$(a,b,c,d)$: $b - a = c - b = d - c$ with $a < b < c < d$. The common difference $d = b - a$ determines the AP. IsAP5$(a,b,c,d,e)$: IsAP4$(a,b,c,d) \\wedge d - c = e - d \\wedge d < e$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "common difference",
+      "Szemerédi's theorem"
+    ],
+    "prerequisites": [
+      "natural number subtraction",
+      "strict ordering"
+    ]
+  },
+  {
+    "id": "erdos-196-monotone-ap",
+    "proofId": "erdos-196",
+    "type": "definition",
+    "range": {
+      "startLine": 47,
+      "endLine": 60
+    },
+    "title": "Monotone $k$-APs in Permutations",
+    "content": "HasMonotone$k$AP$(\\pi)$ requires indices $i_1, \\ldots, i_k$ that are either all increasing or all decreasing, with values $\\pi(i_1), \\ldots, \\pi(i_k)$ forming a $k$-AP. The monotonicity of indices distinguishes this from APs in arbitrary subsequences.",
+    "mathContext": "HasMonotone4AP$(\\pi)$: $\\exists i < j < k < l$ (or $i > j > k > l$) with IsAP4$(\\pi(i), \\pi(j), \\pi(k), \\pi(l))$. The index monotonicity means the AP values appear in natural reading order (left-to-right or right-to-left) in the permutation sequence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotone subsequences",
+      "permutation patterns",
+      "Erdős–Szekeres theorem"
+    ],
+    "prerequisites": [
+      "IsAP4",
+      "Perm type",
+      "index ordering"
+    ]
+  },
+  {
+    "id": "erdos-196-conjecture",
+    "proofId": "erdos-196",
+    "type": "concept",
+    "range": {
+      "startLine": 66,
+      "endLine": 67
+    },
+    "title": "Erdős Problem 196 — The Open Conjecture",
+    "content": "Every permutation of $\\mathbb{N}$ contains a monotone 4-term AP. This sits at the critical threshold: $k = 3$ is proved and $k = 5$ is disproved. The conjecture has resisted all approaches since 1977.",
+    "mathContext": "erdos_196_conjecture: $\\forall \\pi: \\mathbb{N} \\equiv \\mathbb{N},$ HasMonotone4AP$(\\pi)$. Axiomatized as the open problem. The gap between $k = 3$ (forced) and $k = 5$ (avoidable) makes $k = 4$ a sharp threshold question.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey-type threshold",
+      "unavoidable patterns",
+      "permutation combinatorics"
+    ],
+    "prerequisites": [
+      "HasMonotone4AP",
+      "Perm"
+    ]
+  },
+  {
+    "id": "erdos-196-degs3",
+    "proofId": "erdos-196",
+    "type": "concept",
+    "range": {
+      "startLine": 72,
+      "endLine": 73
+    },
+    "title": "DEGS Theorem: $k = 3$ Always Exists",
+    "content": "Davis, Entringer, Graham, and Simmons (1977) proved that every permutation of $\\mathbb{N}$ contains a monotone 3-term AP. The proof uses a compactness argument: any infinite permutation contains arbitrarily long monotone subsequences, and among three consecutive terms of a monotone subsequence, one finds a 3-AP.",
+    "mathContext": "degs_3ap_theorem: $\\forall \\pi: \\mathbb{N} \\equiv \\mathbb{N},$ HasMonotone3AP$(\\pi)$. This follows from the infinite Ramsey theorem or by direct pigeonhole on residues modulo the common difference.",
+    "significance": "key",
+    "relatedConcepts": [
+      "DEGS 1977",
+      "Ramsey theory",
+      "compactness argument"
+    ],
+    "prerequisites": [
+      "HasMonotone3AP",
+      "infinite pigeonhole"
+    ]
+  },
+  {
+    "id": "erdos-196-degs5",
+    "proofId": "erdos-196",
+    "type": "concept",
+    "range": {
+      "startLine": 76,
+      "endLine": 77
+    },
+    "title": "DEGS Construction: $k = 5$ Avoidable",
+    "content": "DEGS (1977) constructed an explicit permutation of $\\mathbb{N}$ avoiding all monotone 5-term APs. The construction interleaves blocks of integers in a pattern that breaks any potential 5-AP while preserving the bijection property.",
+    "mathContext": "degs_5ap_counterexample: $\\exists \\pi: \\mathbb{N} \\equiv \\mathbb{N}, \\neg$HasMonotone5AP$(\\pi)$. The construction is recursive: partition $\\mathbb{N}$ into blocks and permute within/between blocks to prevent 5-term monotone APs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit construction",
+      "AP avoidance",
+      "block interleaving"
+    ],
+    "prerequisites": [
+      "HasMonotone5AP",
+      "permutation construction"
+    ]
+  },
+  {
+    "id": "erdos-196-implication",
+    "proofId": "erdos-196",
+    "type": "concept",
+    "range": {
+      "startLine": 80,
+      "endLine": 89
+    },
+    "title": "4-AP Conjecture Implies 3-AP Theorem",
+    "content": "If every permutation has a monotone 4-AP, then every permutation has a monotone 3-AP. Proved by extracting three terms from the 4-AP. This is a non-trivial Lean proof using `omega` for the arithmetic.",
+    "mathContext": "conjecture_implies_3ap: $(\\forall \\pi,$ HasMonotone4AP$(\\pi)) \\implies \\forall \\pi,$ HasMonotone3AP$(\\pi)$. Given indices $i < j < k < l$ with IsAP4$(\\pi(i), \\pi(j), \\pi(k), \\pi(l))$, take the first three to get IsAP3$(\\pi(i), \\pi(j), \\pi(k))$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "implication hierarchy",
+      "AP truncation",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "HasMonotone4AP",
+      "HasMonotone3AP",
+      "IsAP4 structure"
+    ]
+  },
+  {
+    "id": "erdos-196-parity-defs",
+    "proofId": "erdos-196",
+    "type": "definition",
+    "range": {
+      "startLine": 94,
+      "endLine": 99
+    },
+    "title": "Odd and Even Common Difference",
+    "content": "A 4-AP has odd (resp. even) common difference if $(b - a) \\bmod 2 = 1$ (resp. $0$). This parity distinction is the key structural reduction discovered by LeSaulnier and Vijay.",
+    "mathContext": "IsAP4OddCD$(a,b,c,d)$: IsAP4$(a,b,c,d) \\wedge (b - a) \\bmod 2 = 1$. IsAP4EvenCD$(a,b,c,d)$: IsAP4$(a,b,c,d) \\wedge (b - a) \\bmod 2 = 0$. Every 4-AP falls into exactly one category.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity analysis",
+      "modular arithmetic",
+      "structural dichotomy"
+    ],
+    "prerequisites": [
+      "IsAP4",
+      "natural number modular arithmetic"
+    ]
+  },
+  {
+    "id": "erdos-196-lv-odd",
+    "proofId": "erdos-196",
+    "type": "concept",
+    "range": {
+      "startLine": 103,
+      "endLine": 106
+    },
+    "title": "LeSaulnier–Vijay: Odd-CD 4-APs Avoidable",
+    "content": "LeSaulnier and Vijay (2011) constructed a permutation avoiding all monotone 4-APs with odd common difference. This dramatically narrows the open problem: to prove the conjecture, one need only show that even-CD 4-APs cannot be avoided.",
+    "mathContext": "lesaulnier_vijay_odd_avoidable: $\\exists \\pi, \\neg\\exists i < j < k < l:$ IsAP4OddCD$(\\pi(i), \\pi(j), \\pi(k), \\pi(l))$. The construction separates odd and even integers in a careful pattern that disrupts odd-CD APs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LeSaulnier–Vijay 2011",
+      "parity reduction",
+      "structural avoidance"
+    ],
+    "prerequisites": [
+      "IsAP4OddCD",
+      "permutation construction"
+    ]
+  },
+  {
+    "id": "erdos-196-parity-thm",
+    "proofId": "erdos-196",
+    "type": "concept",
+    "range": {
+      "startLine": 109,
+      "endLine": 114
+    },
+    "title": "Parity Dichotomy",
+    "content": "Every 4-AP has either odd or even common difference. Combined with LeSaulnier–Vijay, this shows the conjecture reduces to forcing even-CD 4-APs. Proved by case analysis on $(b-a) \\bmod 2$.",
+    "mathContext": "ap4_parity: IsAP4$(a,b,c,d) \\implies$ IsAP4OddCD$(a,b,c,d) \\lor$ IsAP4EvenCD$(a,b,c,d)$. Proved by `by_cases hp : (b - a) % 2 = 1`. This is a constructive proof in Lean using `omega`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exhaustive case analysis",
+      "constructive proof",
+      "modular dichotomy"
+    ],
+    "prerequisites": [
+      "IsAP4",
+      "IsAP4OddCD",
+      "IsAP4EvenCD"
+    ]
+  },
+  {
+    "id": "erdos-196-equiv-even",
+    "proofId": "erdos-196",
+    "type": "concept",
+    "range": {
+      "startLine": 118,
+      "endLine": 124
+    },
+    "title": "Equivalence to Even-CD Forcing",
+    "content": "The conjecture is equivalent to: every permutation avoiding odd-CD monotone 4-APs must contain an even-CD monotone 4-AP. This structural reduction is the deepest known simplification of the problem.",
+    "mathContext": "conjecture_equiv_even_forced: $(\\forall \\pi,$ HasMonotone4AP$(\\pi)) \\iff \\forall \\pi, (\\neg\\exists$ odd-CD 4-AP$) \\implies \\exists$ even-CD 4-AP. The backward direction is the heart of the equivalence: if odd-CD 4-APs can be avoided, even-CD 4-APs must compensate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "logical equivalence",
+      "problem reduction",
+      "structural forcing"
+    ],
+    "prerequisites": [
+      "ap4_parity",
+      "lesaulnier_vijay_odd_avoidable"
+    ]
+  },
+  {
+    "id": "erdos-196-non-ext",
+    "proofId": "erdos-196",
+    "type": "concept",
+    "range": {
+      "startLine": 130,
+      "endLine": 134
+    },
+    "title": "Non-Extendability Constraint",
+    "content": "If a permutation avoids monotone 4-APs, then every 3-AP $(\\pi(i), \\pi(j), \\pi(k))$ is non-extendable: the value $\\pi(k) + d$ (where $d$ is the common difference) cannot appear at any later monotone index.",
+    "mathContext": "non_extendable_constraint: $\\neg$HasMonotone4AP$(\\pi) \\implies \\forall i < j < k$ with IsAP3$(\\pi(i), \\pi(j), \\pi(k)), \\forall l > k: \\pi(l) \\neq \\pi(k) + (\\pi(j) - \\pi(i))$. Each 3-AP forbids one value at all future positions, creating cumulative constraints.",
+    "significance": "key",
+    "relatedConcepts": [
+      "forbidden extensions",
+      "density argument",
+      "cumulative constraints"
+    ],
+    "prerequisites": [
+      "HasMonotone4AP",
+      "IsAP3"
+    ]
+  },
+  {
+    "id": "erdos-196-erdos-szekeres",
+    "proofId": "erdos-196",
+    "type": "concept",
+    "range": {
+      "startLine": 141,
+      "endLine": 145
+    },
+    "title": "Erdős–Szekeres Theorem",
+    "content": "Every sequence of $(r-1)(s-1)+1$ distinct numbers contains a monotone increasing subsequence of length $r$ or a monotone decreasing one of length $s$. This guarantees long monotone subsequences but gives no control over arithmetic progression structure.",
+    "mathContext": "erdos_szekeres: $n > (r-1)(s-1) \\implies \\forall$ injective seq$: \\text{Fin}\\,n \\to \\mathbb{N}$, $\\exists$ StrictMono indices of length $r$ with StrictMono(seq $\\circ$ indices) or StrictAnti indices of length $s$ with StrictAnti(seq $\\circ$ indices).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős–Szekeres 1935",
+      "longest increasing subsequence",
+      "Dilworth's theorem",
+      "monotone subsequences"
+    ],
+    "prerequisites": [
+      "StrictMono",
+      "StrictAnti",
+      "Fin type",
+      "Injective"
+    ]
+  }
+]

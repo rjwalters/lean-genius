@@ -1,0 +1,263 @@
+{
+  "id": "fourier-series-oq-02-oq-03-oq-02",
+  "title": "Sharp Constants for Analytic (Exponential) Fourier Decay",
+  "slug": "fourier-series-oq-02-oq-03-oq-02",
+  "description": "For periodic functions analytic on a strip of width delta, Fourier coefficients decay exponentially at rate e^{-2*pi*delta*|n|/T}. Formalizes the sharp constant, the Paley-Wiener characterization, and comparison with polynomial (Holder) decay.",
+  "meta": {
+    "author": "Paley-Wiener theory, formalized as Lean 4 axiomatization",
+    "date": "1934",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FourierSeriesOQ02OQ03OQ02.lean",
+    "tags": [
+      "analysis",
+      "fourier-analysis",
+      "exponential-decay",
+      "complex-analysis",
+      "paley-wiener",
+      "sharp-constants"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "axiomCount": 3,
+    "theoremCount": 11,
+    "lineCount": 427,
+    "mathlibDependencies": [
+      {
+        "theorem": "fourierCoeff",
+        "description": "Fourier coefficients on AddCircle T",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "Real.exp_pos",
+        "description": "Exponential function is positive",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      }
+    ],
+    "originalContributions": [
+      "Definition of strip analyticity for periodic functions (IsStripAnalytic)",
+      "Definition of the sharp constant K(f) via supremum over Fourier modes",
+      "Axiomatization of contour-shifting decay, rate sharpness, and Paley-Wiener converse",
+      "Structural theorems: monotonicity in strip width, comparison with Holder decay",
+      "Poisson kernel example with explicit strip width computation"
+    ],
+    "dateAdded": "2026-03-28",
+    "prerequisites": [
+      "Complex contour integration (Cauchy theorem for periodic domains)",
+      "Paley-Wiener theory for periodic functions",
+      "Weierstrass uniform convergence theorem",
+      "Fourier coefficient infrastructure from Mathlib"
+    ],
+    "assumptions": "3 axioms: (1) contour_shift_decay: contour-shifting gives exponential Fourier decay for strip-analytic functions; (2) rate_is_sharp: the exponential rate 2*pi*delta/T cannot be improved; (3) paley_wiener_converse: exponential decay of Fourier coefficients implies strip analyticity. Plus 2 sorry lemmas for structural results (exponential-polynomial dominance comparison).",
+    "relatedProblems": [
+      {
+        "id": "fourier-series-oq-02-oq-03",
+        "relationship": "Extends the sharp constant analysis from polynomial (Holder) to exponential (analytic) decay"
+      },
+      {
+        "id": "fourier-series-oq-02",
+        "relationship": "Parent: Holder decay bounds O(1/|n|^alpha), which this generalizes to exponential"
+      },
+      {
+        "id": "fourier-series",
+        "relationship": "Root: the main Fourier series formalization"
+      }
+    ],
+    "definitionCount": 4,
+    "additionalFiles": [
+      "Proofs/FourierSeriesOQ02OQ03OQ02Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The connection between analyticity and exponential Fourier decay was established by Paley and Wiener (1934) in their foundational work on Fourier transforms in the complex domain. The key insight is that holomorphic extension to a strip allows contour shifting, which introduces an exponential damping factor. This is the periodic analog of the Paley-Wiener theorem for the Fourier transform on the real line. The Paley-Wiener theorem has become a cornerstone of harmonic analysis: it characterizes the class of Fourier transforms of compactly supported or exponentially decaying functions in terms of analytic extension. Carleman (1944) extended the framework to distributions, and the theorem plays central roles in signal processing (bandlimited signals), PDE theory (propagation of analyticity), and spectral theory. The open question in this gallery series concerns the sharp constant in the periodic version and whether exponential decay gives a complete characterization of strip analyticity.",
+    "problemStatement": "**Question**: For periodic functions analytic on a strip of width delta, Fourier coefficients decay like e^{-2*pi*delta*|n|/T}. What is the sharp constant, and does exponential decay characterize strip analyticity?\n\n**Answer**: The constant M_delta(f) (strip boundary norm) is sharp and cannot be improved. Exponential decay completely characterizes strip analyticity (Paley-Wiener converse).",
+    "text": "Formalizes the exponential decay of Fourier coefficients for periodic functions that extend holomorphically to a strip. The main results are: (1) contour-shifting gives the decay bound |c_n| <= M * e^{-2*pi*delta*|n|/T}, (2) the rate is sharp (achieved by functions with poles on the strip boundary), (3) exponential decay characterizes strip analyticity (Paley-Wiener converse). Structural properties include monotonicity in strip width, absolute convergence, and comparison with polynomial Holder decay.",
+    "proofStrategy": "The contour-shifting technique: for n > 0, shift the integration contour from Im z = 0 to Im z = delta - epsilon. By Cauchy's theorem (vertical edges cancel by periodicity), this introduces a factor e^{-2*pi*n*(delta-epsilon)/T}. Taking epsilon to 0 gives the exponential bound.",
+    "keyInsights": [
+      "Strip width delta for analytic functions plays the same structural role as Holder exponent alpha for continuous functions, but gives exponentially faster decay",
+      "The sharp constant K(f) = sup_n |c_n| * e^{2*pi*delta*|n|/T} equals the strip boundary norm when the boundary is a natural boundary",
+      "The Paley-Wiener characterization is a complete equivalence: strip analyticity <=> exponential Fourier decay, with the strip width determined by the decay rate",
+      "The Poisson kernel P_r(x) = sum r^|n| e^{inx} achieves exact exponential decay with strip width -T*ln(r)/(2*pi)",
+      "The Lean formalization uses `Complex.abs_exp_ofReal_mul_I` and custom contour-shifting arguments since Mathlib lacks a direct Paley-Wiener API — the proof must build the analytic machinery from scratch using `HasSum` and `Complex.differentiableAt`"
+    ],
+    "prerequisites": [
+      "Complex contour integration",
+      "Fourier coefficients on the additive circle",
+      "Holomorphic function theory (Cauchy, Weierstrass)",
+      "Comparison between exponential and polynomial decay"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Docstring on the research question (sharp constant K and rate for exponential Fourier decay of strip-analytic functions, |ĉ_n| ≤ K·e^{−2πδ|n|/T}), the contour-shifting proof technique, and context vs the polynomial/Hölder OQ-02 results. Imports Mathlib Fourier/AddCircle machinery; sets T with Fact (0 < T)."
+    },
+    {
+      "id": "strip-analyticity",
+      "title": "§ 1. Analytic Functions on a Strip",
+      "startLine": 60,
+      "endLine": 84,
+      "summary": "Defines IsStripAnalytic (strip width, integrability, exponential decay) and stripNorm (infimum of valid constants).",
+      "mathContext": "f is strip-analytic of width delta if it extends holomorphically to {z : |Im z| < delta}"
+    },
+    {
+      "id": "decay-bound",
+      "title": "§ 2. The Exponential Decay Bound (Axiomatized)",
+      "startLine": 85,
+      "endLine": 108,
+      "summary": "Axiomatizes the contour-shifting decay bound: |c_n| <= M * e^{-2*pi*delta*|n|/T}.",
+      "mathContext": "Shift contour to Im z = delta - epsilon, Cauchy's theorem cancels vertical edges"
+    },
+    {
+      "id": "structural",
+      "title": "§ 3. Structural Properties of Exponential Decay",
+      "startLine": 109,
+      "endLine": 189,
+      "summary": "exp_decay_pos, exp_decay_le_one, wider_strip_faster_decay (monotone in δ), exp_decay_summable (the ℤ-series ∑ e^{−c|n|} converges via geometric comparison), and exp_decay_abs_convergence (exponential coefficient decay ⟹ absolute convergence of the Fourier series).",
+      "mathContext": "Wider strip => faster decay; exponential decay => absolute convergence"
+    },
+    {
+      "id": "sharpness",
+      "title": "§ 4. Sharpness of the Exponential Rate",
+      "startLine": 190,
+      "endLine": 212,
+      "summary": "axiom rate_is_sharp: the rate 2πδ/T cannot be improved — for every ε > 0 there is a strip-δ function whose coefficients are ≥ C·e^{−2π(δ+ε)|n|/T} for cofinitely many n (extremal f = 1/(cosh(2πz/T) − cosh(2πδ/T)) with poles on the strip boundary)."
+    },
+    {
+      "id": "paley-wiener",
+      "title": "§ 5. Paley-Wiener Characterization (Converse)",
+      "startLine": 213,
+      "endLine": 231,
+      "summary": "axiom paley_wiener_converse: if |ĉ_n| = O(e^{−c|n|}) then f extends holomorphically to the strip of width cT/(2π) — combined with the § 2 bound this gives the full characterization strip-analytic δ ⟺ O(e^{−2πδ|n|/T})."
+    },
+    {
+      "id": "sharp-constant",
+      "title": "§ 6. The Sharp Constant for a Given Function",
+      "startLine": 232,
+      "endLine": 324,
+      "summary": "sharpConstant δ f = ⨆_{n≠0} ‖ĉ_n‖·e^{2πδ|n|/T}, with sharpConstant_is_bound (it is a valid decay constant, via le_ciSup with a BddAbove witness from IsStripAnalytic) and sharpConstant_optimal (it is the smallest valid bound, via ciSup_le).",
+      "mathContext": "K(f) = sup_n |c_n| * e^{2*pi*delta*|n|/T}"
+    },
+    {
+      "id": "comparison",
+      "title": "§ 7. Comparison with Polynomial (Hölder) Decay",
+      "startLine": 325,
+      "endLine": 348,
+      "summary": "exp_dominates_polynomial (exponential decay eventually beats any C/|n|^α) and analytic_hierarchy (strip-analytic ⟹ summable against every polynomial weight |n|^α) — both stated with the standard exp-beats-polynomial argument left as sorry (the file's 2 sorries).",
+      "mathContext": "e^{-c|n|} = o(|n|^{-alpha}) for any alpha"
+    },
+    {
+      "id": "examples",
+      "title": "§ 8. Examples",
+      "startLine": 349,
+      "endLine": 383,
+      "summary": "The Poisson kernel (poissonKernelStripWidth, poissonKernel_strip_positive — explicit strip width −T·ln r/(2π) for 0<r<1, coefficients r^|n|, sharp constant 1) and trig_poly_vacuous (degree-N trigonometric polynomials satisfy the bound vacuously beyond |n| > N).",
+      "mathContext": "P_r has strip width -T*ln(r)/(2*pi) and coefficients c_n = r^|n|"
+    },
+    {
+      "id": "roadmap",
+      "title": "§ 9. What Remains to Formalize",
+      "startLine": 384,
+      "endLine": 427,
+      "summary": "Roadmap docstring: axiom-elimination plan for the three axioms (contour integration on periodic domains for contour_shift_decay; extremal-function construction for rate_is_sharp; uniform-convergence Paley-Wiener for the converse) and the sorry-elimination list, with line estimates (~800–1100 lines total)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the framework for exponential Fourier decay on periodic functions, extending the polynomial (Holder) decay theory. Three axioms capture the core analytic content, with a detailed roadmap for elimination.",
+    "implications": "The Paley-Wiener characterization provides a powerful criterion: checking exponential Fourier decay is equivalent to verifying strip analyticity, connecting discrete (spectral) and continuous (complex-analytic) perspectives.",
+    "openQuestions": [
+      "Can the contour-shifting argument be fully formalized using Mathlib's complex integration? The rectangular contour + periodicity cancellation is the key step",
+      "Can the extremal functions (cosh-based) be constructed explicitly and their Fourier coefficients computed in Lean?",
+      "How does the sharp constant behave as the strip width approaches the natural boundary? Does it blow up?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Paley, Raymond E. A. C.; Wiener, Norbert",
+      "title": "Fourier Transforms in the Complex Domain",
+      "year": "1934",
+      "venue": "American Mathematical Society Colloquium Publications, vol. 19",
+      "note": "Foundational work establishing the connection between Fourier decay and complex analyticity"
+    },
+    {
+      "authors": "Katznelson, Yitzhak",
+      "title": "An Introduction to Harmonic Analysis",
+      "year": "2004",
+      "venue": "Cambridge University Press, 3rd edition, Chapter VI",
+      "note": "Comprehensive treatment of Fourier decay under regularity assumptions, including the analytic case"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fourier-series-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Extends sharp constant analysis from polynomial (Holder alpha) to exponential (strip width delta) regime"
+    },
+    {
+      "targetId": "fourier-series-oq-02",
+      "relationship": "generalizes",
+      "description": "The exponential decay bound generalizes the Holder decay O(1/|n|^alpha) to the analytic regime"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "extends",
+      "description": "Root Fourier series formalization; this explores the strongest possible coefficient decay"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.Analysis.Fourier.FourierTransform",
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Complex",
+      "AddCircle",
+      "Filter"
+    ],
+    "namespace": "FourierAnalyticDecay",
+    "lineCount": 427,
+    "structureCount": 0,
+    "axiomCount": 3,
+    "theoremCount": 11,
+    "lemmaCount": 0,
+    "definitionCount": 4,
+    "substantiveTheoremCount": 3,
+    "trivialSpecializations": 2,
+    "mainTheorems": [
+      {
+        "name": "contour_shift_decay",
+        "type": "core (axiom)",
+        "description": "Exponential decay of Fourier coefficients for strip-analytic functions"
+      },
+      {
+        "name": "paley_wiener_converse",
+        "type": "core (axiom)",
+        "description": "Exponential Fourier decay implies strip analyticity"
+      },
+      {
+        "name": "rate_is_sharp",
+        "type": "key (axiom)",
+        "description": "The exponential decay rate cannot be improved"
+      }
+    ],
+    "path": "Proofs/FourierSeriesOQ02OQ03OQ02.lean",
+    "sorries": 2,
+    "additionalFiles": [
+      "Proofs/FourierSeriesOQ02OQ03OQ02Aristotle.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "contour_shift_decay",
+      "type": "core",
+      "description": "Exponential Fourier decay for strip-analytic periodic functions"
+    }
+  ],
+  "sorries": 2
+}

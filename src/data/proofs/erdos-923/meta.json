@@ -1,0 +1,193 @@
+{
+  "id": "erdos-923",
+  "title": "Triangle-Free Subgraphs with High Chromatic Number",
+  "slug": "erdos-923",
+  "description": "For every k, is there f(k) such that graphs with chromatic number ≥ f(k) contain triangle-free subgraphs with chromatic number ≥ k? Answer: YES (Rödl, 1977).",
+  "meta": {
+    "author": "Rödl",
+    "sourceUrl": "https://erdosproblems.com/923",
+    "date": "1977",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos923Problem.lean",
+    "additionalFiles": [
+      "Proofs/GraphCore.lean"
+    ],
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "triangle-free",
+      "Ramsey-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 923,
+    "erdosUrl": "https://erdosproblems.com/923",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type (symmetric irreflexive relation)",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Coloring",
+        "description": "Proper graph colorings",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      },
+      {
+        "theorem": "SimpleGraph.Subgraph",
+        "description": "Subgraph infrastructure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
+      }
+    ],
+    "originalContributions": [
+      "chromaticNumber and related definitions",
+      "emptyGraph_triangleFree theorem (proved)",
+      "towerFunction with computed examples via native_decide",
+      "Summary theorem combining Rödl's theorem with tower bound"
+    ],
+    "axiomCount": 2,
+    "lineCount": 230,
+    "assumptions": "2 axioms: rodl_1977, rodl_bound. 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Jan Mycielski stunned graph theorists in 1955 by constructing triangle-free graphs with arbitrarily high chromatic number. The Mycielski construction $M_k$ satisfies $\\chi(M_k) = k$ while being completely triangle-free, shattering the intuition that high chromatic number requires dense local structure like triangles.\n\nPaul Erdős posed Problem #923 in 1969 [Er69b]: if a graph has VERY high chromatic number, must it contain a triangle-free subgraph with moderately high chromatic number? This asks a deeper structural question: whether the chromatic complexity of a graph must 'spread' beyond its triangles.\n\nVojtěch Rödl proved YES in a remarkably concise one-page paper in *Proc. Amer. Math. Soc.* **64** (1977), 370--371. The proof uses Ramsey-theoretic edge partitioning: color the edges of the high-chromatic graph based on their triangle participation, then apply Ramsey's theorem to extract a monochromatic triangle-free subgraph retaining high $\\chi$. The threshold $f(k)$ is necessarily a tower of 2s of height $\\sim k$, reflecting the iterated application of Ramsey bounds. This tower growth connects to broader phenomena in combinatorics where Ramsey-theoretic arguments inherently produce tower-type quantitative bounds (cf. Hales-Jewett, Szemerédi regularity lemma).\n\nThe result was later generalized by Rödl himself to $H$-free subgraphs for any bipartite $H$, connecting to Problem #108 (the general girth-chromatic question) and the Erdős-Hajnal conjecture on structured subgraphs in high-chromatic graphs.",
+    "problemStatement": "**Problem**: Is it true that, for every $k$, there is some $f(k)$ such that if $\\chi(G) \\geq f(k)$ then $G$ contains a triangle-free subgraph with $\\chi \\geq k$?\n\n**Answer**: YES (Rödl, 1977). The function $f(k) \\leq \\text{tower}(O(k))$, a tower of exponentials of height linear in $k$.",
+    "text": "For every k, is there f(k) such that graphs with chromatic number ≥ f(k) contain triangle-free subgraphs with chromatic number ≥ k? Answer: YES (Rödl, 1977).",
+    "proofStrategy": "Rödl's proof works by Ramsey-theoretic edge partitioning. Given a graph $G$ with $\\chi(G) \\geq f(k)$, partition its edges into classes based on triangle structure. By Ramsey's theorem, one class contains a subgraph with high chromatic number. If this class is triangle-free, we are done; otherwise, iterate. Each iteration requires exponentiating the chromatic number threshold, leading to the tower-type bound $f(k) \\leq \\text{tower}(Ck)$. The formalization axiomatizes Rödl's theorem and the tower bound, with `emptyGraph_triangleFree` and tower function computations as the verified components.",
+    "keyInsights": [
+      "**Tower-type threshold**: The function $f(k) \\leq \\text{tower}(O(k))$ grows as an iterated exponential, reflecting the depth of Ramsey-theoretic arguments. Each 'level' of the tower corresponds to one application of Ramsey's theorem in Rödl's proof.",
+      "**Mycielski's revelation**: Triangle-free graphs can have $\\chi$ as large as desired (Mycielski 1955), so the problem is non-trivial — it's not asking whether triangle-free subgraphs exist (they always do: take $\\bot$), but whether they can retain high $\\chi$.",
+      "**Chromatic complexity spreads**: High $\\chi$ cannot be 'concentrated' in triangles. Even after removing all edges participating in triangles, the resulting graph can still have moderately high $\\chi$.",
+      "**Bipartite generalization**: The result extends to $H$-free subgraphs for any bipartite graph $H$, via the Kővári-Sós-Turán theorem and bipartite Ramsey numbers. The non-bipartite case is harder and connects to Problem #108.",
+      "**Connection to Ramsey numbers**: The proof fundamentally relies on $R(3,t) = \\Theta(t^2/\\log t)$ (Kim 1995), with iterated applications producing the tower growth. This illustrates how polynomial Ramsey bounds compose into tower-type bounds."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 36,
+      "endLine": 46,
+      "summary": "Imports `SimpleGraph.Basic`, `SimpleGraph.Coloring`, `SimpleGraph.Subgraph` from Mathlib plus the in-repo `Proofs.GraphCore` (which supplies `chromaticNumber` and `IsKColorable`). Opens `Nat`, `GraphCore`, and `SimpleGraph` (hiding Mathlib's `chromaticNumber`).",
+      "mathContext": "Imports `SimpleGraph.Basic`, `SimpleGraph.Coloring`, `SimpleGraph.Subgraph` from Mathlib plus the in-repo `Proofs.GraphCore` (which supplies `chromaticNumber` and `IsKColorable`). Opens `Nat`, `GraphCore`, and `SimpleGraph` (hiding Mathlib's `chromaticNumber`)."
+    },
+    {
+      "id": "chromatic-defs",
+      "title": "Graph Colorings and Chromatic Number",
+      "startLine": 47,
+      "endLine": 57,
+      "summary": "Defines `HasChromaticNumberAtLeast G k := chromaticNumber G ≥ k`. The underlying `chromaticNumber` and `IsKColorable` definitions are imported from `Proofs.GraphCore`; this section only adds the ≥-flavored predicate used to state Rödl's theorem.",
+      "mathContext": "Defines `HasChromaticNumberAtLeast G k := chromaticNumber G ≥ k`. The underlying `chromaticNumber` and `IsKColorable` definitions are imported from `Proofs.GraphCore`; this section only adds the ≥-flavored predicate used to state Rödl's theorem."
+    },
+    {
+      "id": "triangle-free",
+      "title": "Triangle-Free Graphs",
+      "startLine": 58,
+      "endLine": 84,
+      "summary": "Defines `HasTriangle` ($\\exists$ three pairwise adjacent vertices) and `IsTriangleFree` ($\\neg\\text{HasTriangle}$). Proves `emptyGraph_triangleFree`: $\\bot$ is triangle-free via `push_neg` and `bot_adj`.",
+      "mathContext": "Defines `HasTriangle` ($\\exists$ three pairwise adjacent vertices) and `IsTriangleFree` ($\\neg\\text{HasTriangle}$). Proves `emptyGraph_triangleFree`: $\\bot$ is triangle-free via `push_neg` and `bot_adj`."
+    },
+    {
+      "id": "subgraphs",
+      "title": "Subgraphs",
+      "startLine": 85,
+      "endLine": 97,
+      "summary": "Defines `IsSpanningSubgraph` ($E(H) \\subseteq E(G)$, same vertices). Subgraph monotonicity ($\\chi(H) \\leq \\chi(G)$) is described in a docstring only — no axiom or theorem is declared in this section, and there is no `inducedSubgraph` definition.",
+      "mathContext": "Formal definition: `IsSpanningSubgraph`. The subgraph-monotonicity property is described in docstring only; no `inducedSubgraph` definition or χ-monotonicity axiom exists in this file."
+    },
+    {
+      "id": "mycielski",
+      "title": "Mycielski's Construction",
+      "startLine": 98,
+      "endLine": 104,
+      "summary": "Docstring section describing Mycielski's 1955 theorem ($\\forall k,\\, \\exists G$ triangle-free with $\\chi(G) \\geq k$) and the Mycielskian construction $\\mu(G)$. No `mycielski_*` axiom or theorem is declared in this file.",
+      "mathContext": "Docstring-only context: Mycielski's 1955 theorem and the Mycielskian construction $\\mu(G)$. Not formalized — no axiom or theorem declared in this section."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Rödl's Theorem",
+      "startLine": 105,
+      "endLine": 135,
+      "summary": "Axiomatizes Rödl (1977): $\\forall k,\\, \\exists f_k$ such that $\\chi(G) \\geq f_k \\Rightarrow G$ has a triangle-free spanning subgraph with $\\chi \\geq k$. The corollary `erdos_923_true := rodl_1977` gives the formal answer to Problem #923.",
+      "mathContext": "Axiomatizes Rödl (1977): $\\forall k,\\, \\exists f_k$ such that $\\chi(G) \\geq f_k \\Rightarrow G$ has a triangle-free spanning subgraph with $\\chi \\geq k$."
+    },
+    {
+      "id": "bounds",
+      "title": "Tower Function Bounds",
+      "startLine": 136,
+      "endLine": 170,
+      "summary": "Defines $\\text{tower}(0) = 1$, $\\text{tower}(n+1) = 2^{\\text{tower}(n)}$. Verifies values $1, 2, 4, 16, 65536$ computationally. Axiomatizes $f(k) \\leq \\text{tower}(C \\cdot k)$ for a universal constant $C$.",
+      "mathContext": "Defines $\\text{tower}(0) = 1$, $\\text{tower}(n+1) = 2^{\\text{tower}(n)}$. Verifies values $1, 2, 4, 16, 65536$ computationally. Axiomatizes $f(k) \\leq \\text{tower}(C \\cdot k)$ for a universal constant $C$."
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalizations",
+      "startLine": 171,
+      "endLine": 193,
+      "summary": "Defines `HFreeSubgraphProblem` for arbitrary forbidden subgraph $H$. Rödl's generalization (the $H$-free version for bipartite $H$) is described in a docstring only — no axiom or theorem is declared. Connects to Erdős Problem #108.",
+      "mathContext": "Defines `HFreeSubgraphProblem` for arbitrary forbidden subgraph $H$. Rödl's bipartite-$H$ generalization appears in docstring only; not formalized as an axiom or theorem."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 194,
+      "endLine": 230,
+      "summary": "The summary theorem `erdos_923_summary` packages both Rödl's qualitative result (YES) and quantitative bound ($\\text{tower}(O(k))$) as a conjunction, proved by `⟨rodl_1977, rodl_bound⟩`.",
+      "mathContext": "The summary theorem `erdos_923_summary` packages both Rödl's qualitative result (YES) and quantitative bound ($\\text{tower}($O(k)$)$) as a conjunction, proved by `⟨rodl_1977, rodl_bound⟩`."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #923 was proved by Vojtěch Rödl in 1977: for every $k$, there exists a tower-type threshold $f(k)$ such that any graph with $\\chi(G) \\geq f(k)$ contains a triangle-free spanning subgraph with $\\chi \\geq k$. The formalization axiomatizes Rödl's theorem and the tower bound, with the empty graph triangle-freeness and tower function computations as fully verified components.",
+    "implications": "**Theoretical Significance**: This result demonstrates that chromatic complexity is not concentrated in triangles — it must spread throughout the graph's structure.\n\nThe tower-type bound reflects fundamental limits in Ramsey theory and connects to broad phenomena: Szemerédi's regularity lemma, the Hales-Jewett theorem, and other results where iterated Ramsey arguments produce tower-type quantitative bounds. The generalization to bipartite $H$ extends the structural theory to forbidden subgraph problems.",
+    "openQuestions": [
+      "What is the optimal constant $C$ in $f(k) \\leq \\text{tower}(Ck)$? Is $C = 1$ achievable?",
+      "Can the result be extended to ALL graphs $H$ (not just bipartite)? For non-bipartite $H$ like $K_4$ or odd cycles $C_{2t+1}$, the problem connects to Erdős Problem #108.",
+      "Is the tower-type growth of $f(k)$ necessary, or could $f(k)$ grow as a polynomial or exponential in $k$ for the triangle-free case?",
+      "Can the Lean axioms `rodl_1977` and `rodl_bound` be replaced by fully verified proofs using Mathlib's graph coloring infrastructure?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Problem #108 generalizes #923 from triangle-free to high-girth subgraphs: for any g, does high χ(G) force a subgraph with girth ≥ g and high χ? Rödl's bipartite generalization partially addresses this.",
+      "targetId": "erdos-108"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both concern structural properties of graphs — Ramsey theory guarantees unavoidable substructures, connecting to the structural constraints studied here"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos923",
+    "lineCount": 230,
+    "axiomCount": 2,
+    "theoremCount": 3,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos923Problem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/GraphCore.lean"
+    ]
+  },
+  "sorries": 0
+}

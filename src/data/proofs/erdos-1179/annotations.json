@@ -1,0 +1,327 @@
+[
+  {
+    "id": "ann-e1179-header",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Problem Overview: Uniform Subset Sum Representations",
+    "content": "**Erdős Problem #1179** concerns the function $g_\\varepsilon(N)$: the minimal $k$ such that a random $k$-subset of any abelian group of order $N$ has $\\varepsilon$-uniform representation counts with high probability.\n\nThe representation function $F_A(g) = |\\{S \\subseteq A : \\sum_{x \\in S} x = g\\}|$ counts how many subsets of $A$ sum to each group element $g$. $\\varepsilon$-uniformity means all counts are within $\\varepsilon$ of the expected value $2^k/N$.\n\n**Status: PROVED.** $g_\\varepsilon(N) = (1 + o_\\varepsilon(1))\\log_2 N$, combining the trivial lower bound with the Erdős-Hall (1976) upper bound.",
+    "mathContext": "The problem asks for the threshold $k$ at which the random subset sum distribution becomes approximately uniform. This is a question about the concentration of a random combinatorial measure around its mean $2^k/N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive combinatorics",
+      "probabilistic method",
+      "representation function",
+      "uniform distribution"
+    ],
+    "prerequisites": [
+      "finite abelian groups",
+      "subset sums",
+      "probability theory"
+    ]
+  },
+  {
+    "id": "ann-e1179-reprCount",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 51,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "reprCount: The Representation Function",
+    "content": "**Definition** (`reprCount A g`): The number of subsets $S \\subseteq A$ with $\\sum_{x \\in S} x = g$.\n\nComputed as `(A.powerset.filter (fun S => S.sum id = g)).card`. This is the discrete analogue of a convolution: $F_A = 1_A * 1_A * \\cdots * 1_A$ ($|A|$ times) in the group ring, where $*$ denotes additive convolution.\n\nMarked `noncomputable` because `filter` on `powerset` requires `DecidableEq` and enumerating $2^{|A|}$ subsets.",
+    "mathContext": "Via Fourier analysis: $\\hat{F}_A(\\chi) = \\prod_{a \\in A}(1 + \\chi(a))$ for characters $\\chi$ of $G$. The uniform distribution has $\\hat{F}(\\chi) = 0$ for $\\chi \\neq 1$ and $\\hat{F}(1) = 2^k/N$. Deviation from uniformity is controlled by $\\max_{\\chi \\neq 1} |\\hat{F}_A(\\chi)|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset sum",
+      "convolution",
+      "powerset",
+      "Fourier analysis on groups"
+    ],
+    "prerequisites": [
+      "Finset.powerset",
+      "AddCommGroup",
+      "group ring"
+    ]
+  },
+  {
+    "id": "ann-e1179-expectedReprCount",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 56,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "expectedReprCount: The Target Value",
+    "content": "**Definition** (`expectedReprCount k N`): The expected representation count $2^k/N$.\n\nIf $|A| = k$ and all $2^k$ subsets summed to distinct elements (impossible when $2^k > N$), each element would have exactly $2^k/N$ representations. $\\varepsilon$-uniformity means each count is within $\\varepsilon$ of this target.",
+    "mathContext": "By `total_reprCount`, $\\sum_g F_A(g) = 2^k$. If $|G| = N$, the average is $2^k/N$. For $k \\approx \\log_2 N$, this average is $\\approx 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "expected value",
+      "uniform distribution",
+      "average representation"
+    ],
+    "prerequisites": [
+      "reprCount definition",
+      "group order"
+    ]
+  },
+  {
+    "id": "ann-e1179-IsEpsUniform",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 63,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "IsEpsUniform: The Central Property",
+    "content": "**Definition** (`IsEpsUniform A ε`): $\\forall g \\in G,\\, |F_A(g) - 2^k/N| \\leq \\varepsilon \\cdot 2^k/N$.\n\nThis is the *discrepancy condition*: every group element has approximately the expected number of subset sum representations. The multiplicative form $|F_A(g)/\\mu - 1| \\leq \\varepsilon$ (where $\\mu = 2^k/N$) shows this is a relative error bound.\n\nFor $\\varepsilon < 1$, this implies $F_A(g) > 0$ for all $g$, so the set spans $G$ (connecting to Problem #543).",
+    "mathContext": "In terms of the $L^\\infty$ norm on $G$: $\\|F_A - \\mu\\|_\\infty \\leq \\varepsilon \\mu$ where $\\mu = 2^k/N$ is the uniform measure. Via Parseval, this relates to $\\|\\hat{F}_A\\|_2$ and character sums.",
+    "significance": "key",
+    "relatedConcepts": [
+      "discrepancy",
+      "relative error",
+      "uniform distribution",
+      "L-infinity norm"
+    ],
+    "prerequisites": [
+      "reprCount",
+      "expectedReprCount",
+      "absolute value"
+    ]
+  },
+  {
+    "id": "ann-e1179-total",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 72,
+      "endLine": 73
+    },
+    "type": "concept",
+    "title": "Total Representation Count",
+    "content": "**Axiom** (`total_reprCount`): $\\sum_{g \\in G} F_A(g) = 2^{|A|}$.\n\nEach of the $2^{|A|}$ subsets of $A$ sums to exactly one element of $G$, so the representation counts form a partition of $2^{|A|}$. This is the 'conservation law' for representations: the total is determined by $|A|$, independent of the group structure.",
+    "mathContext": "This is the counting identity $\\sum_{g \\in G} |\\{S \\subseteq A : \\sum S = g\\}| = |\\mathcal{P}(A)| = 2^{|A|}$. It follows from the fact that the map $S \\mapsto \\sum S$ is a function from $\\mathcal{P}(A)$ to $G$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition of subsets",
+      "counting identity",
+      "conservation law"
+    ],
+    "prerequisites": [
+      "reprCount definition",
+      "power set cardinality"
+    ]
+  },
+  {
+    "id": "ann-e1179-empty-cases",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 76,
+      "endLine": 81
+    },
+    "type": "concept",
+    "title": "Empty Set Base Cases",
+    "content": "**Axioms**: `reprCount_empty_zero` ($F_\\emptyset(0) = 1$) and `reprCount_empty_nonzero` ($F_\\emptyset(g) = 0$ for $g \\neq 0$).\n\nThe empty set $A = \\emptyset$ has exactly one subset (the empty set $\\emptyset$), which sums to $0$. So $F_\\emptyset(0) = 1$ and $F_\\emptyset(g) = 0$ for $g \\neq 0$. These are the base cases for inductive arguments.",
+    "mathContext": "The identity: $F_\\emptyset = \\delta_0$ (Dirac delta at the identity of $G$). This is the 'initial condition' for the convolution recurrence $F_{A \\cup \\{a\\}} = F_A + F_A(\\cdot - a)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "base case",
+      "Dirac delta",
+      "empty sum convention"
+    ],
+    "prerequisites": [
+      "reprCount definition",
+      "empty set"
+    ]
+  },
+  {
+    "id": "ann-e1179-gEps",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 89,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "gEps: The Threshold Function",
+    "content": "**Axioms** (`gEps ε N`) and (`gEps_pos`): The function $g_\\varepsilon(N)$ is the minimal $k$ such that a random $k$-subset of any abelian group of order $N$ has $\\varepsilon$-uniform representations with high probability.\n\nAxiomatized because the definition involves: (1) quantification over all abelian groups of order $N$, (2) probability over random subsets, and (3) asymptotic convergence. The positivity axiom ensures $g_\\varepsilon(N) \\geq 1$ for valid parameters.\n\nThis is the central object of the problem: Erdős asks for the asymptotic behavior of $g_\\varepsilon(N)$.",
+    "mathContext": "$g_\\varepsilon(N) = \\min\\{k : \\Pr[\\text{random } A \\subseteq G, |A|=k, \\text{IsEpsUniform}(A,\\varepsilon)] \\to 1\\}$ where the probability is uniform over $k$-subsets and the condition holds for all $G$ with $|G| = N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold function",
+      "probabilistic method",
+      "minimax",
+      "high probability"
+    ],
+    "prerequisites": [
+      "IsEpsUniform",
+      "probability theory",
+      "abelian groups"
+    ]
+  },
+  {
+    "id": "ann-e1179-lower-bound",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 104,
+      "endLine": 105
+    },
+    "type": "concept",
+    "title": "Trivial Lower Bound: g_ε(N) ≥ log₂ N",
+    "content": "**Axiom** (`trivial_lower_bound`): $g_\\varepsilon(N) \\geq \\log_2 N$ for all $0 < \\varepsilon < 1$.\n\n**Proof:** If $k < \\log_2 N$ then $2^k < N$, so $\\sum_g F_A(g) = 2^k < N$. By pigeonhole, some $g$ has $F_A(g) = 0$, while $\\varepsilon$-uniformity requires $F_A(g) \\geq (1-\\varepsilon) \\cdot 2^k/N > 0$. Contradiction.\n\nThis bound is tight up to lower-order terms: the main theorem shows $g_\\varepsilon(N) \\sim \\log_2 N$.",
+    "mathContext": "Information-theoretic bound: to represent $N$ elements, we need $\\geq \\log_2 N$ bits of 'entropy'. Each element of $A$ provides one bit (include/exclude in subset), so $|A| \\geq \\log_2 N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting argument",
+      "pigeonhole principle",
+      "information-theoretic bound"
+    ],
+    "prerequisites": [
+      "total_reprCount",
+      "IsEpsUniform",
+      "logarithm"
+    ]
+  },
+  {
+    "id": "ann-e1179-erdos-renyi",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 114,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Erdős-Rényi Upper Bound (1965)",
+    "content": "**Axiom** (`erdos_renyi_upper`): $\\exists C > 0,\\, \\forall N \\geq 2,\\, g_\\varepsilon(N) \\leq 2\\log_2 N + C$.\n\n**Proof technique (second moment method):** For random $A$ with $|A| = k \\approx 2\\log_2 N$:\n- $\\mathbb{E}[F_A(g)] = 2^k/N \\approx N$ (large)\n- $\\text{Var}[F_A(g)] = O(\\mathbb{E}[F_A(g)]^2 / N)$\n\nBy Chebyshev, $F_A(g)$ concentrates around its mean. The factor 2 comes from the variance requiring $2^k \\gg N^2$ for concentration, i.e., $k \\gg 2\\log_2 N$.",
+    "mathContext": "Second moment method: $\\Pr[|X - \\mu| \\geq t] \\leq \\text{Var}(X)/t^2$. For $X = F_A(g)$, the variance involves correlations between subsets $S, S'$ with $\\sum S = \\sum S' = g$, controlled by $|S \\cap S'|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "second moment method",
+      "Chebyshev inequality",
+      "variance",
+      "Erdős-Rényi"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "second moment method",
+      "reprCount"
+    ]
+  },
+  {
+    "id": "ann-e1179-erdos-hall",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 124,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Erdős-Hall Upper Bound (1976)",
+    "content": "**Axiom** (`erdos_hall_upper`): $g_\\varepsilon(N) \\leq (1 + C \\cdot \\frac{\\log\\log\\log N}{\\log\\log N}) \\cdot \\log_2 N$.\n\nThis improves the leading coefficient from 2 (Erdős-Rényi) to $1 + o(1)$.\n\n**Proof technique (character sums):** The deviation $F_A(g) - 2^k/N$ is expressed via Fourier inversion on $G$:\n$$F_A(g) - 2^k/N = \\frac{1}{N} \\sum_{\\chi \\neq 1} \\overline{\\chi(g)} \\prod_{a \\in A}(1 + \\chi(a))$$\nBounding $|\\prod_{a \\in A}(1+\\chi(a))|$ for non-trivial characters $\\chi$ gives the result. The triple-logarithmic error comes from large deviation estimates.",
+    "mathContext": "Fourier analysis on $G$: the character group $\\hat{G}$ has $|\\hat{G}| = N$. For random $A$, $\\mathbb{E}[\\prod_{a \\in A}(1+\\chi(a))] = 0$ for $\\chi \\neq 1$ (cancellation). Large deviation bounds on the product give the $\\log\\log\\log N/\\log\\log N$ error.",
+    "significance": "key",
+    "relatedConcepts": [
+      "character sums",
+      "Fourier analysis on groups",
+      "large deviation",
+      "Erdős-Hall"
+    ],
+    "prerequisites": [
+      "character theory",
+      "Fourier inversion",
+      "large deviation bounds"
+    ]
+  },
+  {
+    "id": "ann-e1179-main",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 135,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Main Asymptotic: g_ε(N) ~ log₂ N",
+    "content": "**Axiom** (`main_asymptotic`): $\\forall \\delta > 0,\\, \\exists N_0,\\, \\forall N \\geq N_0,\\, |g_\\varepsilon(N)/\\log_2 N - 1| < \\delta$.\n\nThis is the complete answer to Erdős Problem #1179: $g_\\varepsilon(N) \\sim \\log_2 N$ as $N \\to \\infty$. It follows from combining the trivial lower bound ($\\geq \\log_2 N$) with the Erdős-Hall upper bound ($\\leq (1+o(1))\\log_2 N$).\n\nThe $\\varepsilon$-$\\delta$ formulation captures the limit: $g_\\varepsilon(N)/\\log_2 N \\to 1$.",
+    "mathContext": "Asymptotic equivalence: $g_\\varepsilon(N) = (1 + o_\\varepsilon(1))\\log_2 N$ means the ratio converges to 1. The rate of convergence depends on $\\varepsilon$ through the Erdős-Hall error term $O_\\varepsilon(\\log\\log\\log N / \\log\\log N)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic equivalence",
+      "o-notation",
+      "limit",
+      "threshold"
+    ],
+    "prerequisites": [
+      "trivial_lower_bound",
+      "erdos_hall_upper",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-e1179-spanning",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 147,
+      "endLine": 151
+    },
+    "type": "concept",
+    "title": "Uniform Implies Spanning (Connection to #543)",
+    "content": "**Axiom** (`uniform_implies_spanning`): If $A$ is $\\varepsilon$-uniform (with $\\varepsilon < 1$ and $|A| \\geq \\lceil\\log_2 N\\rceil$), then $F_A(g) \\geq 1$ for all $g \\in G$.\n\n**Proof:** $\\varepsilon$-uniformity gives $F_A(g) \\geq (1-\\varepsilon) \\cdot 2^k/N$. Since $k \\geq \\log_2 N$, we have $2^k \\geq N$, so $(1-\\varepsilon) \\cdot 2^k/N \\geq 1 - \\varepsilon > 0$. Since $F_A(g)$ is a natural number, $F_A(g) \\geq 1$.\n\nThis shows Problem #1179 (uniformity) is strictly stronger than Problem #543 (spanning).",
+    "mathContext": "The hierarchy: uniformity $\\Rightarrow$ spanning $\\Rightarrow$ non-trivial representation. Problem #543 shows spanning requires $\\log_2 N + \\Theta(\\log\\log N)$, while #1179 shows uniformity only requires $(1+o(1))\\log_2 N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "spanning",
+      "Problem #543",
+      "coupon collector",
+      "minimum vs average"
+    ],
+    "prerequisites": [
+      "IsEpsUniform",
+      "reprCount",
+      "integer rounding"
+    ]
+  },
+  {
+    "id": "ann-e1179-mono",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 156,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Monotonicity in ε",
+    "content": "**Axiom** (`gEps_mono`): $\\varepsilon_1 \\leq \\varepsilon_2 \\Rightarrow g_{\\varepsilon_1}(N) \\geq g_{\\varepsilon_2}(N)$.\n\nTighter tolerance (smaller $\\varepsilon$) requires more elements (larger $k$). This is because $\\varepsilon_1$-uniformity implies $\\varepsilon_2$-uniformity when $\\varepsilon_1 \\leq \\varepsilon_2$, so the threshold is non-increasing in $\\varepsilon$.",
+    "mathContext": "The function $\\varepsilon \\mapsto g_\\varepsilon(N)$ is non-increasing. The main asymptotic $g_\\varepsilon(N) \\sim \\log_2 N$ holds for each fixed $\\varepsilon \\in (0,1)$, with the rate of convergence depending on $\\varepsilon$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "tolerance parameter",
+      "nested events"
+    ],
+    "prerequisites": [
+      "gEps definition",
+      "implication of uniformity"
+    ]
+  },
+  {
+    "id": "ann-e1179-summary",
+    "proofId": "erdos-1179",
+    "range": {
+      "startLine": 171,
+      "endLine": 176
+    },
+    "type": "concept",
+    "title": "Summary Theorem: Lower Bound + Main Asymptotic",
+    "content": "**Theorem** (`erdos_1179_summary`): Combines the lower bound and main asymptotic:\n\n1. $\\forall N \\geq 2,\\, g_\\varepsilon(N) \\geq \\log_2 N$\n2. $g_\\varepsilon(N)/\\log_2 N \\to 1$ as $N \\to \\infty$\n\nProved from `trivial_lower_bound` and `main_asymptotic`. The contrast with Problem #543 is noted: spanning needs $\\log_2 N + \\Theta(\\log\\log N)$, but the extra $\\log\\log N$ is NOT needed for approximate uniformity.",
+    "mathContext": "The complete picture: $\\log_2 N \\leq g_\\varepsilon(N) \\leq (1 + C_\\varepsilon \\frac{\\log\\log\\log N}{\\log\\log N})\\log_2 N$. The lower bound is tight: $g_\\varepsilon(N)/\\log_2 N \\to 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "summary",
+      "sandwich theorem",
+      "asymptotic equivalence"
+    ],
+    "prerequisites": [
+      "trivial_lower_bound",
+      "main_asymptotic"
+    ]
+  }
+]

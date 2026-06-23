@@ -1,0 +1,412 @@
+[
+  {
+    "id": "ann-613-header",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős #613:** Graph decomposition and size Ramsey numbers.\n\n**Question:** Can graphs with $\\binom{2n+1}{2} - \\binom{n}{2} - 1$ edges decompose into bipartite + bounded-degree?\n\n**Answer:** NO — DISPROVED by Pikhurko.\n- $n = 3, 4$: Holds\n- $n = 5$: First counterexample (Lean-verified by Tao)\n\n**Bounds:** $n^2 + 0.577\\,n^{3/2} < \\hat{r}(K_{1,n}, \\mathcal{F}) < n^2 + \\sqrt{2}\\,n^{3/2} + n$",
+    "mathContext": "The size Ramsey number $\\hat{r}(H, \\mathcal{F})$ asks for the minimum number of edges $m$ such that every graph on $m$ edges either contains $H$ as a subgraph or belongs to family $\\mathcal{F}$. Here $H = K_{1,n}$ (star) and $\\mathcal{F}$ is the family of graphs containing an odd cycle. The conjecture $\\hat{r}(K_{1,n}, \\mathcal{F}) = \\binom{2n+1}{2} - \\binom{n}{2}$ was disproved by Pikhurko.",
+    "significance": "key",
+    "relatedConcepts": [
+      "size Ramsey number",
+      "graph decomposition",
+      "bipartite graphs",
+      "odd cycles",
+      "extremal graph theory"
+    ],
+    "prerequisites": [
+      "Ramsey theory fundamentals",
+      "graph theory basics",
+      "bipartite graph characterization"
+    ]
+  },
+  {
+    "id": "ann-613-critical",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 33,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Critical Edge Count",
+    "content": "`criticalEdgeCount n = C(2n+1,2) - C(n,2) - 1`\n\nThis is one less than the conjectured size Ramsey number. The question asks: with this many edges, can we always decompose?\n\nFor $n=5$: $\\binom{11}{2} - \\binom{5}{2} - 1 = 55 - 10 - 1 = 44$ edges.",
+    "mathContext": "The critical edge count is $\\binom{2n+1}{2} - \\binom{n}{2} - 1 = \\frac{(2n+1)(2n)}{2} - \\frac{n(n-1)}{2} - 1 = \\frac{3n^2 + n}{2} - 1$. This simplifies to roughly $\\frac{3}{2}n^2$ for large $n$. The conjecture asserts that $\\hat{r} - 1$ edges always suffice for decomposition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial coefficient",
+      "edge threshold",
+      "extremal number"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "combinatorial identities"
+    ]
+  },
+  {
+    "id": "ann-613-bipartite",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 50,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Bipartite Graphs",
+    "content": "A graph is **bipartite** iff it has no odd cycles. Equivalently, $G$ is bipartite iff $\\chi(G) \\le 2$.\n\nBipartite graphs can be 2-colored: vertices split into two groups with edges only between groups. By König's theorem (1931), this is equivalent to having no odd cycle as a subgraph.",
+    "mathContext": "A graph $G = (V, E)$ is bipartite iff there exists a partition $V = A \\sqcup B$ with every edge having one endpoint in $A$ and one in $B$. This is equivalent to $G$ containing no cycle $C_{2k+1}$ for any $k \\ge 1$. The formalization uses Mathlib's `SimpleGraph.IsBipartite`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "König's theorem",
+      "odd cycle",
+      "2-colorability"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "cycle detection"
+    ]
+  },
+  {
+    "id": "ann-613-decomp",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 66,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Decomposition Property",
+    "content": "`HasDecomposition G n` means $G = H_1 \\cup H_2$ where:\n- $H_1$ is bipartite (chromatic number $\\le 2$)\n- $H_2$ has $\\Delta(H_2) < n$ (max degree bounded)\n\nThe bipartite part absorbs the 'structured' edges while the bounded-degree part handles the 'noise'. This is a partition of the edge set, not the vertex set.",
+    "mathContext": "The decomposition asserts $E(G) = E(H_1) \\sqcup E(H_2)$ where $H_1$ is bipartite and $\\Delta(H_2) < n$. This relates to Ramsey-type partitioning: in any 2-coloring of edges, one color class avoids odd cycles and the other avoids stars $K_{1,n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "edge partition",
+      "graph union",
+      "maximum degree",
+      "Ramsey partition"
+    ],
+    "prerequisites": [
+      "graph decomposition",
+      "maximum degree",
+      "bipartite characterization"
+    ]
+  },
+  {
+    "id": "ann-613-conjecture",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 75,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "Original Conjecture",
+    "content": "**Conjecture (DISPROVED):**\n\nFor $n \\ge 3$, any graph with $\\text{criticalEdgeCount}(n)$ edges has the decomposition property.\n\nThis is equivalent to $\\hat{r}(K_{1,n}, \\mathcal{F}) = \\binom{2n+1}{2} - \\binom{n}{2}$.",
+    "mathContext": "The conjecture states $\\forall n \\ge 3,\\, \\forall G$ with $|E(G)| = \\binom{2n+1}{2} - \\binom{n}{2} - 1$, $G$ admits a decomposition $G = H_1 \\cup H_2$ with $H_1$ bipartite and $\\Delta(H_2) < n$. The Lean formalization quantifies universally over all types $V$ with `Fintype` and `DecidableEq` instances.",
+    "significance": "key",
+    "relatedConcepts": [
+      "size Ramsey number",
+      "Erdős conjecture",
+      "graph partition"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "graph decomposition",
+      "universal quantification in Lean"
+    ]
+  },
+  {
+    "id": "ann-613-star",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 84,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "Star Graph K_{1,n}",
+    "content": "The **star graph** $K_{1,n}$ has one center vertex adjacent to $n$ leaves. A graph contains $K_{1,n}$ as a subgraph iff some vertex has degree $\\ge n$.\n\nStars are extremal for Turán-type problems: $\\text{ex}(N, K_{1,n}) = \\lfloor (n-1)N/2 \\rfloor$. They appear naturally in size Ramsey theory because detecting a star requires only checking maximum degree.",
+    "mathContext": "$K_{1,n}$ is the complete bipartite graph with parts of size 1 and $n$. The containment condition $K_{1,n} \\subseteq G$ is equivalent to $\\Delta(G) \\ge n$. The `ContainsStar` predicate formalizes this via `∃ v : V, n ≤ G.degree v`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete bipartite graph",
+      "maximum degree",
+      "Turán number",
+      "subgraph containment"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "degree sequences"
+    ]
+  },
+  {
+    "id": "ann-613-size-ramsey",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 97,
+      "endLine": 107
+    },
+    "type": "definition",
+    "title": "Size Ramsey Number",
+    "content": "$\\hat{r}(H, \\mathcal{F})$ = minimum number of edges $m$ such that any graph $G$ with $|E(G)| \\ge m$ either contains $H$ as a subgraph or has property from $\\mathcal{F}$.\n\nHere $H = K_{1,n}$ and $\\mathcal{F}$ = non-bipartite graphs. Introduced by Erdős, Faudree, Rousseau, and Schelp (1978) as an edge-minimization variant of classical Ramsey numbers.",
+    "mathContext": "The size Ramsey number $\\hat{r}(H_1, H_2) = \\min\\{|E(G)| : G \\to (H_1, H_2)\\}$ where $G \\to (H_1, H_2)$ means every 2-coloring of $E(G)$ yields a monochromatic $H_1$ or $H_2$. For paths, Erdős conjectured and Beck (1983) proved $\\hat{r}(P_n, P_n) = O(n)$. For stars vs odd cycles, the problem is more delicate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number",
+      "Erdős–Faudree–Rousseau–Schelp",
+      "Beck's theorem",
+      "edge Ramsey theory"
+    ],
+    "prerequisites": [
+      "classical Ramsey theory",
+      "Ramsey numbers $R(s,t)$",
+      "graph coloring"
+    ]
+  },
+  {
+    "id": "ann-613-pikhurko-lower",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 108,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "Pikhurko's Lower Bound",
+    "content": "**Lower bound:** $\\hat{r}(K_{1,n}, \\mathcal{F}) > n^2 + 0.577\\,n^{3/2}$\n\nSince the conjectured value $\\binom{2n+1}{2} - \\binom{n}{2} \\approx n^2 + n$, and $0.577\\,n^{3/2} \\gg n$ for large $n$, this disproves the conjecture asymptotically. The constant $0.577 \\approx 1/\\sqrt{3}$ arises from a probabilistic construction.",
+    "mathContext": "Pikhurko showed $\\hat{r}(K_{1,n}, \\mathcal{F}) > n^2 + c\\,n^{3/2}$ for some $c > 1/2$. The proof constructs a random bipartite graph with carefully chosen parameters, then shows that removing edges to reduce max degree below $n$ forces the remaining graph to contain an odd cycle. The axiom states $\\exists c > 0.5$ such that the bound holds for all $n \\ge 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "random graph construction",
+      "asymptotic bounds"
+    ],
+    "prerequisites": [
+      "probabilistic combinatorics",
+      "asymptotic analysis",
+      "random graphs"
+    ]
+  },
+  {
+    "id": "ann-613-pikhurko-upper",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 114,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Pikhurko's Upper Bound",
+    "content": "**Upper bound:** $\\hat{r}(K_{1,n}, \\mathcal{F}) < n^2 + \\sqrt{2}\\,n^{3/2} + n$\n\nCombined with the lower bound: $\\hat{r} = n^2 + \\Theta(n^{3/2})$. The coefficient of $n^{3/2}$ lies in $(0.577, \\sqrt{2}) \\approx (0.577, 1.414)$. Determining the exact coefficient remains open.",
+    "mathContext": "The upper bound uses an explicit decomposition argument: given any graph $G$ with at least $n^2 + \\sqrt{2}\\,n^{3/2} + n$ edges, one can greedily extract a bipartite subgraph $H_1$ such that the remainder $H_2 = G \\setminus H_1$ has $\\Delta(H_2) < n$. The key inequality is $|E(G)| - \\text{ex}(|V|, \\text{odd cycle}) < n \\cdot |V| / 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy algorithm",
+      "Turán-type bound",
+      "extremal number for odd cycles"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "Turán's theorem",
+      "greedy decomposition"
+    ]
+  },
+  {
+    "id": "ann-613-false",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 119,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Conjecture is FALSE",
+    "content": "`original_conjecture_false : ¬OriginalConjecture`\n\nThe decomposition property fails for some graphs with the critical edge count. This is a **complete disproof** — the negation of a universal statement, proved by exhibiting a counterexample (via `tao_counterexample_n5`).",
+    "mathContext": "The theorem states $\\neg\\bigl(\\forall n \\ge 3,\\, \\forall G,\\, |E(G)| = \\text{criticalEdgeCount}(n) \\Rightarrow \\text{HasDecomposition}(G, n)\\bigr)$. This is logically equivalent to $\\exists n \\ge 3,\\, \\exists G$ with $|E(G)| = \\text{criticalEdgeCount}(n)$ and $\\neg\\text{HasDecomposition}(G, n)$, which is witnessed at $n = 5$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "negation of universal statement",
+      "counterexample",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "logic",
+      "constructive existence proofs"
+    ]
+  },
+  {
+    "id": "ann-613-tao",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 125,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Tao's Lean Verification",
+    "content": "**Tao's counterexample at $n = 5$:**\n\nThere exists a graph on 44 edges that CANNOT be decomposed into bipartite + max-degree-4. This was **formally verified in Lean** — one of the first Erdős disproofs with computer verification!\n\nThe counterexample graph has $|V| > 11 = 2(5)+1$, consistent with Faudree's partial result showing the conjecture holds when $|V| = 2n+1$.",
+    "mathContext": "The axiom asserts $\\exists V, G : \\text{SimpleGraph}\\,V$ with $|E(G)| = 44$ and $\\neg\\text{HasDecomposition}(G, 5)$. The Lean-verified counterexample is an explicit finite graph. Since $\\binom{11}{2} - \\binom{5}{2} - 1 = 44$, this means 44 edges is exactly the critical count for $n = 5$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "formal verification",
+      "counterexample construction",
+      "computer-assisted proof"
+    ],
+    "prerequisites": [
+      "Lean 4 proof assistant",
+      "formal methods",
+      "finite graph enumeration"
+    ]
+  },
+  {
+    "id": "ann-613-smallest",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 131,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Smallest Counterexample",
+    "content": "$n = 5$ is the **smallest counterexample**.\n\n- $n = 3$: 17 edges, conjecture HOLDS\n- $n = 4$: 29 edges, conjecture HOLDS\n- $n = 5$: 44 edges, conjecture FAILS\n\nThe transition from true to false happens exactly at $n = 5$. The theorem combines `n3_holds`, `n4_holds` with `tao_counterexample_n5`.",
+    "mathContext": "The theorem is a conjunction: $\\bigl(\\forall n < 5,\\, n \\ge 3 \\Rightarrow \\text{conjecture holds at } n\\bigr) \\wedge \\bigl(\\exists G,\\, |E(G)| = 44 \\wedge \\neg\\text{HasDecomposition}(G, 5)\\bigr)$. Only $n \\in \\{3, 4\\}$ satisfy both $n < 5$ and $n \\ge 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "small case verification",
+      "threshold phenomenon",
+      "phase transition"
+    ],
+    "prerequisites": [
+      "case analysis",
+      "exhaustive verification"
+    ]
+  },
+  {
+    "id": "ann-613-faudree",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 144,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Faudree's Partial Result",
+    "content": "**Faudree (unpublished):** If $|V| = 2n + 1$ exactly, the conjecture HOLDS.\n\nCounterexamples require more vertices! With exactly $2n+1$ vertices and the critical edge count, decomposition is always possible. This reveals that vertex count, not just edge count, controls decomposability. The result uses the tight relationship between edge density and structure in small graphs.",
+    "mathContext": "The axiom states $\\forall n \\ge 3,\\, \\forall G : \\text{SimpleGraph}(\\text{Fin}(2n+1))$, if $|E(G)| = \\text{criticalEdgeCount}(n)$ then $\\text{HasDecomposition}(G, n)$. The proof exploits the fact that a graph on $2n+1$ vertices with $\\binom{2n+1}{2} - \\binom{n}{2} - 1$ edges has density $1 - \\frac{\\binom{n}{2} + 1}{\\binom{2n+1}{2}} \\to 3/4$ as $n \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "vertex count constraint",
+      "graph density",
+      "extremal structure"
+    ],
+    "prerequisites": [
+      "graph density",
+      "Turán-type results"
+    ]
+  },
+  {
+    "id": "ann-613-vertex-matters",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 151,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Vertex Count Matters",
+    "content": "The same edge count behaves differently depending on vertex count:\n\n- $|V| = 2n + 1$: Decomposition exists (Faudree)\n- $|V| > 2n + 1$: Counterexamples possible (Pikhurko)\n\nThis is a clean demonstration that **edge density alone doesn't determine decomposability**. The proof at $n = 5$ uses `faudree_partial` and `tao_counterexample_n5` as witnesses.",
+    "mathContext": "The theorem proves $\\exists n \\ge 3$ such that (1) $\\forall G : \\text{SimpleGraph}(\\text{Fin}(2n+1)),\\, |E(G)| = \\text{criticalEdgeCount}(n) \\Rightarrow \\text{HasDecomposition}(G, n)$ and (2) $\\exists V, G$ with $|E(G)| = \\text{criticalEdgeCount}(n) \\wedge \\neg\\text{HasDecomposition}(G, n)$. Lean verifies this at $n = 5$ using `norm_num` and the axioms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "edge density vs vertex count",
+      "structural graph theory",
+      "extremal examples"
+    ],
+    "prerequisites": [
+      "Faudree's result",
+      "Tao's counterexample"
+    ]
+  },
+  {
+    "id": "ann-613-gap",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 166,
+      "endLine": 186
+    },
+    "type": "definition",
+    "title": "Gap Analysis",
+    "content": "The gap between Pikhurko's bounds:\n\n$(\\sqrt{2} - 0.577) \\cdot n^{3/2} + n \\approx 0.84\\,n^{3/2}$\n\nThis gap grows as $n^{3/2}$, so the relative error $\\frac{\\text{gap}}{\\hat{r}} \\sim \\frac{0.84\\,n^{3/2}}{n^2} = \\frac{0.84}{n^{1/2}} \\to 0$, but the absolute error grows without bound.",
+    "mathContext": "The function `boundGap n = (\\sqrt{2} - 0.577) \\cdot n^{3/2} + n` measures the width of the interval containing $\\hat{r}(K_{1,n}, \\mathcal{F})$. The theorem `gap_growth` shows $c_1 n^{3/2} \\le \\text{boundGap}(n) \\le c_2 n^{3/2}$ for constants $c_1, c_2 > 0$, confirming $\\Theta(n^{3/2})$ growth.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "big-Theta notation",
+      "error bounds"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-613-ramsey-connection",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 187,
+      "endLine": 199
+    },
+    "type": "definition",
+    "title": "Connection to Classical Ramsey",
+    "content": "The classical Ramsey number $R(s,t)$ is the minimum $n$ such that any 2-coloring of $K_n$ yields a monochromatic $K_s$ or $K_t$. The size Ramsey number replaces vertex count with edge count.\n\nThe theorem `size_ramsey_generalizes` shows $\\hat{r}(K_{1,s}, \\mathcal{F}) \\le \\binom{R(s,t)}{2}$: the complete graph on $R(s,t)$ vertices trivially works.",
+    "mathContext": "Since $K_{R(s,t)}$ has $\\binom{R(s,t)}{2}$ edges and any 2-coloring yields monochromatic $K_s \\supseteq K_{1,s}$ or $K_t \\supseteq C_{2k+1}$ (for $t \\ge 3$), we get the trivial upper bound $\\hat{r} \\le \\binom{R(s,t)}{2}$. Size Ramsey numbers are interesting precisely because they can be much smaller than this bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Ramsey number",
+      "complete graph",
+      "trivial upper bound"
+    ],
+    "prerequisites": [
+      "Ramsey's theorem",
+      "complete graphs",
+      "binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-613-n3",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 200,
+      "endLine": 241
+    },
+    "type": "concept",
+    "title": "n = 3 Case",
+    "content": "For $n = 3$: $\\text{criticalEdgeCount}(3) = \\binom{7}{2} - \\binom{3}{2} - 1 = 21 - 3 - 1 = 17$.\n\nEvery graph with 17 edges CAN be decomposed into a bipartite part (no odd cycles) and a part with max degree $< 3$ (i.e., every vertex has degree $\\le 2$, so the bounded part is a union of paths and even cycles).",
+    "mathContext": "The statement is $\\forall V, G : \\text{SimpleGraph}\\,V,\\, |E(G)| = 17 \\Rightarrow \\text{HasDecomposition}(G, 3)$. A graph with $\\Delta(H_2) < 3$ means $H_2$ is a union of paths and cycles — a very restricted structure. This small case can be verified by exhaustive analysis.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "small case verification",
+      "path-cycle decomposition",
+      "max degree 2 graphs"
+    ],
+    "prerequisites": [
+      "graph structure theory",
+      "degree-bounded graphs"
+    ]
+  },
+  {
+    "id": "ann-613-main",
+    "proofId": "erdos-613",
+    "range": {
+      "startLine": 242,
+      "endLine": 260
+    },
+    "type": "concept",
+    "title": "Main Status Theorem",
+    "content": "**Erdős Problem #613: DISPROVED**\n\n1. **Original conjecture:** FALSE (Pikhurko)\n2. **Small cases $n = 3, 4$:** TRUE\n3. **First counterexample:** $n = 5$ (Tao, Lean-verified)\n4. **Restricted case $|V| = 2n+1$:** TRUE (Faudree)\n5. **Asymptotic:** $\\hat{r} = n^2 + \\Theta(n^{3/2})$, not $n^2 + O(n)$\n\nThis is a rare, clean disproof of an Erdős conjecture with formal verification.",
+    "mathContext": "The theorem `erdos_613_status` is a conjunction: $\\neg\\text{OriginalConjecture} \\wedge \\bigl(\\forall n \\in \\{3,4\\},\\, \\text{conjecture holds}\\bigr) \\wedge \\bigl(\\exists G,\\, |E(G)| = 44 \\wedge \\neg\\text{HasDecomposition}(G,5)\\bigr)$. The proof uses `original_conjecture_false`, `n3_holds`, `n4_holds`, `tao_counterexample_n5`, and `fin_cases` for the finset membership.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems catalog",
+      "disproved conjectures",
+      "formal mathematics"
+    ],
+    "prerequisites": [
+      "all preceding results",
+      "Lean `fin_cases` tactic"
+    ]
+  }
+]

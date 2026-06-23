@@ -1,0 +1,181 @@
+{
+  "id": "erdos-533",
+  "title": "Erdős Problem #533: Triangle-Free Subsets in K₅-Free Dense Graphs",
+  "slug": "erdos-533",
+  "description": "Must a K₅-free graph on n vertices with ≥ δn² edges contain a triangle-free subset of ≫ n vertices? True for δ > 1/16 (EHSSS). Fails for K₇ at δ = 1/4 (Erdős–Rogers). Open.",
+  "meta": {
+    "author": "Erdős, Hajnal, Simonovits, Sós, Szemerédi",
+    "sourceUrl": "https://erdosproblems.com/533",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos533Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "extremal-graph-theory",
+      "ramsey-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 533,
+    "erdosUrl": "https://erdosproblems.com/533",
+    "erdosProblemStatus": "open",
+    "axiomCount": 3,
+    "lineCount": 371,
+    "assumptions": "3 axioms: ehsss_result (EHSSS partial result for delta>1/16), k4_free_triangle_free_subset (K4-free case for all delta>0), turan_k5_free (Turán bound: K5-free has ≤ 3n²/8 edges). erdos_533_conjecture converted from axiom to def (open conjecture should not be axiom-asserted). Neighborhood structure and K4-free neighborhood lemma proved.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 27,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "This problem lies at the intersection of extremal graph theory and Ramsey theory. Erdős and his collaborators investigated how the exclusion of a complete subgraph K_r forces structural properties in dense graphs. By Turán's theorem (1941), a K₅-free graph on n vertices has at most 3n²/8 edges. The deeper question is whether K₅-freeness, combined with sufficient density, forces the existence of large subgraphs with even stronger properties—specifically, triangle-freeness. Erdős, Hajnal, Simonovits, Sós, and Szemerédi (EHSSS) proved this for edge density δ > 1/16 using the Szemerédi regularity lemma. The result was shown to hold for all δ > 0 when K₅ is replaced by K₄. However, the Erdős–Rogers construction (1962) shows the result fails for K₇-free graphs at density 1/4, establishing a phase transition somewhere between K₄ and K₇. Problem 533 asks whether K₅ falls on the 'good' side of this transition.",
+    "problemStatement": "For every δ > 0, does every K₅-free graph on n vertices with at least δn² edges contain a triangle-free induced subgraph on Ω_δ(n) vertices?",
+    "text": "Must a K₅-free graph on n vertices with ≥ δn² edges contain a triangle-free subset of ≫ n vertices? True for δ > 1/16 (EHSSS). Fails for K₇ at δ = 1/4 (Erdős–Rogers). Open.",
+    "proofStrategy": "The formalization defines simple graphs via a symmetric irreflexive adjacency structure on Fin n, with cliques, triangle-freeness, and edge counting as derived predicates. The EHSSS partial result (δ > 1/16), the K₄-free analogue (all δ > 0), and the Erdős–Rogers K₇ counterexample are recorded as axioms. The full conjecture for K₅ and all δ > 0 is stated with the quantifier structure ∀ δ > 0, ∃ c > 0 such that every K₅-free graph with ≥ δn² edges has a triangle-free subset of size ≥ cn.",
+    "keyInsights": [
+      "**Phase transition**: The result is true for K₄-free (all δ) but false for K₇-free (at δ = 1/4), making K₅ and K₆ the critical boundary cases",
+      "**Regularity method**: The EHSSS proof uses the Szemerédi regularity lemma—the density threshold δ > 1/16 is an artifact of the regularity approximation",
+      "**Turán bound constraint**: K₅-freeness limits density to δ ≤ 3/8 by Turán's theorem, so the problem lives in the range 0 < δ ≤ 3/8",
+      "**Blow-up obstruction**: The Erdős-Rogers K₇ counterexample uses iterated Ramsey blow-ups that force triangles in every large subset while avoiding K₇",
+      "**Linear vs sublinear**: The conjecture asks for a triangle-free subset of linear size Ω(n), not just ω(1)—a much stronger structural guarantee"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Extremal graph theory (Turán-type problems)",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "problem-statement",
+      "title": "Problem Statement and References",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Erdős #533: if a graph G on n vertices is K₅-free and has at least δn² edges (any δ > 0), must G contain a triangle-free induced subgraph on ≫_δ n vertices? Records the known results — true for δ > 1/16 (Erdős–Hajnal–Simonovits–Sós–Szemerédi), true for K₄-free at all δ > 0, and false for K₇-free at δ = 1/4 (Erdős–Rogers). Status: OPEN.",
+      "mathContext": "Does $K_5$-freeness plus edge density $\\delta n^2$ force a triangle-free induced subgraph on $\\gg_\\delta n$ vertices? Open for $0 < \\delta \\le 1/16$."
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 19,
+      "endLine": 49,
+      "summary": "Defines the bespoke SGraph structure (adjacency with symmetry and irreflexivity), IsClique / HasClique, the InducedSubgraph, IsTriangleFree (no 3 distinct mutually-adjacent vertices), and the noncomputable edgeCount as the cardinality of the filtered set of strictly-ordered adjacent pairs.",
+      "mathContext": "$\\mathrm{edgeCount}(G) = |\\{(i,j) : i < j,\\ G.\\mathrm{adj}\\,i\\,j\\}|$; a set $S$ is triangle-free when no three distinct vertices of $S$ are pairwise adjacent."
+    },
+    {
+      "id": "simplegraph-bridge",
+      "title": "SimpleGraph Bridge",
+      "startLine": 50,
+      "endLine": 63,
+      "summary": "Bridges the bespoke SGraph to Mathlib's SimpleGraph via SGraph.toSimpleGraph (adjacency carried verbatim, symmetry and looplessness reused), with a defeq simp lemma identifying the two adjacency relations. This unlocks Mathlib's clique, independent-set, and Ramsey-theory API.",
+      "mathContext": "$G \\mapsto G.\\mathrm{toSimpleGraph}$ is the identity on adjacency, so all Mathlib graph lemmas apply to SGraph."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 64,
+      "endLine": 210,
+      "summary": "Foundational clique and triangle-free lemmas: empty/singleton/pair triviality, subset-closure of both properties, clique monotonicity (hasClique_mono) and its contrapositive upward-closure (not_hasClique_mono), the trivial bound edgeCount ≤ n², and the tight bound edgeCount ≤ n(n-1)/2 proved via the private lemma card_strict_upper_tri (off-diagonal split plus swap symmetry). Concludes that K₅-free implies K₇-free, so the Erdős–Rogers K₇-free counterexample does not obstruct #533.",
+      "mathContext": "Maximum edge count $n(n-1)/2$ via $|\\{i<j\\}| = \\tfrac12|\\{i\\ne j\\}|$; clique-freeness is upward closed, so $\\neg K_5 \\Rightarrow \\neg K_7$."
+    },
+    {
+      "id": "neighborhood-structure",
+      "title": "Neighborhood Structure",
+      "startLine": 211,
+      "endLine": 268,
+      "summary": "Defines the open neighborhood and degree, then proves the pivotal structural fact: a clique contained in N(v) extends to a clique containing v (clique_in_neighborhood_extends), hence in a K₅-free graph every vertex neighborhood is K₄-free (neighborhood_k4_free / neighborhood_hasClique_4_false). This is the local reduction from K₅-freeness to K₄-freeness driving the proposed strategy.",
+      "mathContext": "If $S \\subseteq N(v)$ is a clique then $S \\cup \\{v\\}$ is a clique, so a $K_4$ in $N(v)$ would give a $K_5$ in $G$; thus $N(v)$ is $K_4$-free."
+    },
+    {
+      "id": "turan-bounds",
+      "title": "Turán-Type Bounds",
+      "startLine": 269,
+      "endLine": 287,
+      "summary": "Axiomatizes Turán's theorem for K₅-free graphs — edgeCount ≤ (3/8)n², tight at the balanced complete 4-partite graph T(n,4) — and derives density_bound_k5_free: the density parameter satisfies δ ≤ 3/8, so Problem 533 need only be settled for δ ∈ (0, 3/8].",
+      "mathContext": "Turán: a $K_{r+1}$-free graph has $\\le (1-1/r)n^2/2$ edges; for $r=4$ this is $(3/8)n^2$, forcing $\\delta \\le 3/8$."
+    },
+    {
+      "id": "known-partial-results",
+      "title": "Known Partial Results",
+      "startLine": 288,
+      "endLine": 306,
+      "summary": "Encodes the two deep extremal-graph-theory inputs as axioms: the Erdős–Hajnal–Simonovits–Sós–Szemerédi result (for δ > 1/16, a K₅-free δ-dense graph has a triangle-free subset of size ≥ (δ/2)n) and the K₄-free result (for all δ > 0, a K₄-free δ-dense graph has a linear-size triangle-free subset).",
+      "mathContext": "EHSSS handles $\\delta > 1/16$ under $K_5$-freeness; the $K_4$-free case is known for every $\\delta > 0$."
+    },
+    {
+      "id": "partial-resolution",
+      "title": "Partial Resolution",
+      "startLine": 307,
+      "endLine": 331,
+      "summary": "Combines the axioms to resolve Problem 533 in two regimes: erdos_533_for_large_delta proves it for δ > 1/16 with constant c = δ/2 (from EHSSS), and erdos_533_for_k4_free settles all δ > 0 for the stronger K₄-free hypothesis. The remaining open gap is 0 < δ ≤ 1/16 with only K₅-freeness.",
+      "mathContext": "For $\\delta > 1/16$ take $c = \\delta/2$; the $K_4$-free hypothesis closes all $\\delta > 0$. Open: $0 < \\delta \\le 1/16$."
+    },
+    {
+      "id": "strategy",
+      "title": "Strategy: Neighborhood Approach",
+      "startLine": 332,
+      "endLine": 355,
+      "summary": "Outlines the proposed proof route: extract a high-degree vertex (average degree ≥ 2δn), use that its neighborhood is K₄-free, and apply the K₄-free result inside N(v). Identifies step 4 — controlling the edge density within N(v) — as the core difficulty. Includes the supporting bound degree_le (every degree ≤ n - 1).",
+      "mathContext": "Average degree $\\ge 2\\delta n$ yields a vertex $v$ with $\\deg(v) \\ge 2\\delta n$ and $K_4$-free $N(v)$; the open obstacle is the induced density inside $N(v)$."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "startLine": 356,
+      "endLine": 371,
+      "summary": "States the conjecture as a Prop erdos_533_conjecture δ (deliberately not an axiom, to avoid assuming the unknown): there exists c > 0 such that every K₅-free graph on n vertices with at least δn² edges has a triangle-free induced subgraph on ≥ c·n vertices.",
+      "mathContext": "$\\forall \\delta>0,\\ \\exists c>0$: every $K_5$-free $G$ with $\\ge \\delta n^2$ edges has a triangle-free induced subgraph of size $\\ge cn$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem 533 tests whether K₅-freeness is strong enough to force large triangle-free subsets at all positive densities. The EHSSS result handles δ > 1/16, K₄-free graphs work for all δ, but K₇-free graphs fail at δ = 1/4. The problem asks whether K₅ lies on the 'good' side of this phase transition.",
+    "implications": "**Theoretical Significance**: Resolution would clarify the relationship between clique exclusion and structured subgraph extraction.\n\nAn affirmative answer would strengthen connections between the Szemerédi regularity lemma, Ramsey-Turán theory, and the Erdős-Hajnal conjecture. A negative answer would require novel dense graph constructions.",
+    "openQuestions": [
+      "Does the result extend to all δ > 0 for K₅-free graphs?",
+      "What about K₆-free graphs — does the result hold for all δ > 0?",
+      "Can the EHSSS δ > 1/16 threshold be lowered for K₅-free graphs?",
+      "What is the optimal dependence of c(δ) on δ as δ → 0?",
+      "Is there a connection to the Erdős-Hajnal conjecture on polynomial-size cliques or independent sets?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 371,
+    "axiomCount": 3,
+    "theoremCount": 27,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos533Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Erdős–Hajnal–Simonovits–Sós–Szemerédi: δ > 1/16 case",
+    "K₄-free case for all δ > 0",
+    "Erdős–Rogers: K₇-free counterexample at δ = 1/4 (1962)",
+    "Szemerédi regularity lemma",
+    "Turán's theorem",
+    "https://erdosproblems.com/533"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1014",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-graph-theory, open"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, ramsey-theory"
+    }
+  ],
+  "sorries": 0
+}

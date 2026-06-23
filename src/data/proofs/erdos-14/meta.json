@@ -1,0 +1,172 @@
+{
+  "id": "erdos-14",
+  "title": "Unique Sums and Non-Unique Representation",
+  "slug": "erdos-14",
+  "description": "For A ⊆ ℕ, let B be integers with exactly one representation as a+b (a≤b, a,b∈A). (a) Is |{1,...,N}\\B| ≫ N^{1/2−ε}? (b) Can |{1,...,N}\\B| = o(√N)? ESS: ≪ N^{1/2+ε} achievable, ≫ N^{1/3−ε} infinitely often.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/14",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos14Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "unique-representation",
+      "sumsets",
+      "sidon-sets"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 14,
+    "erdosUrl": "https://erdosproblems.com/14",
+    "erdosProblemStatus": "open",
+    "axiomCount": 2,
+    "lineCount": 109,
+    "prerequisites": [
+      "Additive combinatorics (sumsets and representation functions)",
+      "Finite set theory",
+      "Extremal combinatorics",
+      "Probabilistic method"
+    ],
+    "assumptions": "2 axioms: ess_upper_lower_bound (Erdős-Sárközy-Szemerédi combined upper+lower bound) and erdos_freud_finite (Erdős-Freud finite analogue). Open conjectures Erdos14a and Erdos14b are formalized as Prop definitions. 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "This problem was originally considered by Erdős and Nathanson, and later attributed by Erdős to joint work with Sárközy and Szemerédi (references [Er92c], [Er97], [Er97e]). It asks a fundamental question about the trade-off between uniqueness and coverage in additive representation: given $A \\subseteq \\mathbb{N}$, the set $B$ of integers with exactly one representation as $a + b$ ($a \\leq b$, $a, b \\in A$) captures the 'well-represented' sums. The complementary set $\\{1, \\ldots, N\\} \\setminus B$ consists of integers that are either unrepresented or multiply represented.\n\nThe key tension is that making $A$ larger increases coverage (fewer unrepresented integers) but also increases collisions (more multiply represented integers). Sidon sets, where all sums are distinct, achieve perfect uniqueness but are too sparse ($|A| \\leq \\sqrt{N} + O(N^{1/4})$) to cover even half of $\\{1, \\ldots, N\\}$. At the other extreme, dense sets cover everything but have massive collision counts.\n\nThe main quantitative results are by Erdős, Sárközy, and Szemerédi: they constructed $A \\subseteq \\mathbb{N}$ achieving $f_A(N) = O_{\\varepsilon}(N^{1/2+\\varepsilon})$ for all $\\varepsilon > 0$, showing the non-unique count can be brought very close to $\\sqrt{N}$ from above. However, they also proved that for this same set, $f_A(N) \\gg_{\\varepsilon} N^{1/3-\\varepsilon}$ for infinitely many $N$. Erdős and Freud (1991) proved a finite analogue: for $A \\subseteq \\{1, \\ldots, N\\}$, there exists a choice with non-unique count $< 2^{3/2}\\sqrt{N}$, and the constant $2^{3/2}$ may be optimal.",
+    "problemStatement": "(a) Must $|\\{1, \\ldots, N\\} \\setminus B| \\gg_{\\varepsilon} N^{1/2-\\varepsilon}$ for all $A \\subseteq \\mathbb{N}$ and $\\varepsilon > 0$? (b) Can $|\\{1, \\ldots, N\\} \\setminus B| = o(\\sqrt{N})$ for some $A$?",
+    "text": "For A ⊆ ℕ, let B be integers with exactly one representation as a+b (a≤b, a,b∈A). (a) Is |{1,...,N}\\B| ≫ N^{1/2−ε}? (b) Can |{1,...,N}\\B| = o(√N)? ESS: ≪ N^{1/2+ε} achievable, ≫ N^{1/3−ε} infinitely often.",
+    "proofStrategy": "The formalization defines `uniqueSums` for finite sets (filtering for representation count $= 1$), `uniqueSumsInf` for infinite sets (using `∃!` for unique existence), and `nonUniqueSumCount`/`nonUniqueSumCountInf` as the complementary counting functions. Both conjectures are stated using Lean's `Filter.atTop` for asymptotic quantifiers. The ESS bounds use `∀ᶠ` (eventually) and `∃ᶠ` (frequently) to distinguish 'for all large $N$' from 'for infinitely many $N$'. Structural results about Sidon sets and monotonicity are included.",
+    "keyInsights": [
+      "The problem encodes a fundamental uniqueness-coverage trade-off: Sidon sets give perfect uniqueness ($B = A+A$) but miss $\\sim N/2$ integers, while dense sets cover everything but have $\\sim N$ collisions. The question is whether any intermediate construction can reduce the non-unique count below $\\sqrt{N}$.",
+      "The ESS exponent gap $1/3 < ? < 1/2$ is the open territory. The upper bound $O(N^{1/2+\\varepsilon})$ and the lower bound $\\Omega(N^{1/3-\\varepsilon})$ leave a wide range for the true threshold. Conjecture (a) predicts the answer is $\\sim N^{1/2}$, matching the Sidon set barrier.",
+      "The distinction between `∀ᶠ` (eventually: for all $N \\geq N_0$) and `∃ᶠ` (frequently: for infinitely many $N$) is mathematically crucial. The ESS lower bound $N^{1/3-\\varepsilon}$ holds only frequently, while conjecture (a) requires an eventual lower bound — a much stronger statement.",
+      "The Erdős-Freud constant $2^{3/2} = 2\\sqrt{2} \\approx 2.83$ in the finite analogue provides a concrete target. If it is optimal, it suggests that the non-unique count cannot be made smaller than $\\sim \\sqrt{N}$ even with the best finite constructions.",
+      "The problem cannot be resolved by finite computation (as noted on erdosproblems.com), since it asks about the behavior of $f_A(N)$ as $N \\to \\infty$ for all infinite sets $A$. This is fundamentally an asymptotic question requiring analytical or structural methods."
+    ],
+    "prerequisites": [
+      "Additive combinatorics (sumsets and representation functions)",
+      "Finite set theory",
+      "Extremal combinatorics",
+      "Probabilistic method"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and References",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Documents the two-part problem, references to Erdős [Er92c, Er97, Er97e], Erdős-Freud [ErFr91], and OEIS A143824.",
+      "mathContext": "Mathematical content: Documents the two-part problem, references to Erdős [Er92c, Er97, Er97e], Erdős-Freud [ErFr91], and OEIS A143824."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 29,
+      "endLine": 34,
+      "summary": "Imports Mathlib's asymptotics library and finset basics. Opens `Finset`, `Filter`, `Asymptotics` for `atTop`, `∀ᶠ`, `∃ᶠ`.",
+      "mathContext": "Mathematical content: Imports Mathlib's asymptotics library and finset basics. Opens `Finset`, `Filter`, `Asymptotics` for `atTop`, `∀ᶠ`, `∃ᶠ`."
+    },
+    {
+      "id": "unique-sums",
+      "title": "Unique Sums Definition",
+      "startLine": 36,
+      "endLine": 44,
+      "summary": "Defines `uniqueSums A` for finite $A$: integers with exactly one representation as $a+b$ ($a \\leq b$). Uses `Finset.filter` with `.card = 1`.",
+      "mathContext": "Formal definition: Defines `uniqueSums A` for finite $A$: integers with exactly one representation as $a+b$ ($a \\leq b$). Uses `Finset.filter` with `.card = 1`."
+    },
+    {
+      "id": "counting",
+      "title": "Non-Unique Sum Counting Functions",
+      "startLine": 46,
+      "endLine": 56,
+      "summary": "Defines `nonUniqueSumCount` (finite) and `nonUniqueSumCountInf` (infinite via `Set.ncard`) — the quantity $f_A(N) = |\\{1,\\ldots,N\\} \\setminus B|$.",
+      "mathContext": "Formal definition: Defines `nonUniqueSumCount` (finite) and `nonUniqueSumCountInf` (infinite via `Set.ncard`) — the quantity $f_A(N) = |\\{1,\\ldots,N\\} \\setminus B|$."
+    },
+    {
+      "id": "conjectures",
+      "title": "Main Conjectures (14a and 14b)",
+      "startLine": 58,
+      "endLine": 73,
+      "summary": "States (a) $f_A(N) \\gg N^{1/2-\\varepsilon}$ eventually and (b) $\\exists A$ with $f_A(N) = o(\\sqrt{N})$, using `∀ᶠ` and filter quantifiers.",
+      "mathContext": "Mathematical content: States (a) $f_A(N) \\gg N^{1/2-\\varepsilon}$ eventually and (b) $\\exists A$ with $f_A(N) = o(\\sqrt{N})$, using `∀ᶠ` and filter quantifiers."
+    },
+    {
+      "id": "ess-bounds",
+      "title": "Erdős-Sárközy-Szemerédi Bounds",
+      "startLine": 75,
+      "endLine": 87,
+      "summary": "Upper: $\\exists A$ with $f_A(N) \\leq CN^{1/2+\\varepsilon}$ eventually. Lower: same $A$ has $f_A(N) \\geq CN^{1/3-\\varepsilon}$ frequently.",
+      "mathContext": "Mathematical content: Upper: $\\exists A$ with $f_A(N) \\leq CN^{1/2+\\varepsilon}$ eventually. Lower: same $A$ has $f_A(N) \\geq CN^{1/3-\\varepsilon}$ frequently."
+    },
+    {
+      "id": "erdos-freud",
+      "title": "Erdős-Freud Finite Analogue",
+      "startLine": 89,
+      "endLine": 93,
+      "summary": "For $A \\subseteq \\{1,\\ldots,N\\}$, $\\exists A$ with $f_A(N) < 2^{3/2}\\sqrt{N}$. The constant $2\\sqrt{2}$ may be optimal.",
+      "mathContext": "For $A \\subseteq \\{1,\\ldots,N\\}$, $\\exists A$ with $f_A(N) < $$2^{{3/2}$}$\\sqrt{N}$. The constant $2\\sqrt{2}$ may be optimal."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #14 in 110 lines of Lean 4, encoding the unique-sum representation problem with both finite and infinite versions, the two open conjectures, ESS bounds ($O(N^{1/2+\\varepsilon})$ eventually, $\\Omega(N^{1/3-\\varepsilon})$ frequently), the Erdős-Freud finite analogue, and structural observations about Sidon sets. Zero sorries; all deep results axiomatized.",
+    "implications": "**Theoretical Significance**: Resolution would clarify the fundamental limits of unique representation in additive combinatorics.\n\nIf conjecture (a) holds, it establishes $\\sqrt{N}$ as a universal barrier — no set can achieve better than $\\sim \\sqrt{N}$ non-unique sums. This connects to the broader theory of additive bases, Sidon sets, and the probabilistic method in combinatorial number theory.",
+    "openQuestions": [
+      "Is $f_A(N) \\gg N^{1/2-\\varepsilon}$ for all $A$ and all large $N$? This is conjecture (a), the main open question.",
+      "Can $f_A(N) = o(\\sqrt{N})$ for some $A$? This is conjecture (b), which if true would refute (a).",
+      "What is the true exponent in the lower bound? The gap between the ESS bounds ($1/3$ from below, $1/2$ from above) leaves room for the answer to lie anywhere in $(1/3, 1/2]$.",
+      "Is the Erdős-Freud constant $2^{3/2}$ optimal for the finite analogue? What is the extremal set achieving this bound?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Asymptotics"
+    ],
+    "namespace": null,
+    "lineCount": 109,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos14Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Problem #28 (Erdős-Turán on additive bases) concerns unbounded representation. Problem #14 studies unique sums vs. non-unique representation, the complementary question of when representations can be controlled"
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "Problem #1 (distinct subset sums) concerns unique representations of a different kind. Both ask when additive structure forces non-uniqueness"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Freiman, Gregory",
+      "title": "On two additive problems",
+      "year": "1990",
+      "venue": "Journal of Number Theory, vol. 34, no. 1, pp. 1–12",
+      "note": "Studied unique and non-unique representation in additive settings"
+    },
+    {
+      "authors": "Nathanson, Melvyn B.",
+      "title": "Additive Number Theory: The Classical Bases",
+      "year": "1996",
+      "venue": "Springer GTM 164",
+      "note": "Standard reference for additive number theory including representation functions and unique sums"
+    }
+  ],
+  "sorries": 0
+}

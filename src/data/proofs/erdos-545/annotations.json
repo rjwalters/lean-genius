@@ -1,0 +1,202 @@
+[
+  {
+    "id": "erdos-545-imports",
+    "proofId": "erdos-545",
+    "type": "concept",
+    "range": {
+      "startLine": 29,
+      "endLine": 34
+    },
+    "title": "Mathlib Imports",
+    "content": "Imports Mathlib's SimpleGraph (adjacency, cliques), Finset basics, binomial coefficients (Nat.Choose), and general tactics. SimpleGraph.Clique provides the clique predicate used in the Ramsey number definition, while Nat.Choose gives $\\binom{n}{2}$ for the edge decomposition.",
+    "mathContext": "Requires $\\text{SimpleGraph}$, $\\text{Finset.card}$, $\\text{Nat.choose}$ for graph structure, edge counting, and the binomial decomposition $m = \\binom{n}{2} + t$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simple graphs",
+      "finite sets",
+      "binomial coefficients"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib SimpleGraph"
+    ]
+  },
+  {
+    "id": "erdos-545-edge-count",
+    "proofId": "erdos-545",
+    "type": "definition",
+    "range": {
+      "startLine": 41,
+      "endLine": 48
+    },
+    "title": "Edge Count and No Isolated Vertices",
+    "content": "edgeCount G computes $|E(G)|$ as the cardinality of the edge finset. NoIsolatedVertices G requires every vertex to have at least one neighbor. Both are needed to state the problem: the conjecture concerns graphs with exactly $m$ edges and no isolated vertices, since isolated vertices don't affect the Ramsey number but inflate the vertex count.",
+    "mathContext": "$\\text{edgeCount}(G) = |E(G)|$; $\\text{NoIsolatedVertices}(G) \\iff \\forall v,\\; \\exists w,\\; G.\\text{Adj}\\,v\\,w$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "graph edge set",
+      "minimum degree",
+      "graph invariants"
+    ],
+    "prerequisites": [
+      "SimpleGraph.edgeFinset",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "erdos-545-coloring",
+    "proofId": "erdos-545",
+    "type": "definition",
+    "range": {
+      "startLine": 52,
+      "endLine": 62
+    },
+    "title": "Edge Colorings and Monochromatic Cliques",
+    "content": "EdgeColoring n is a function $\\text{Fin}\\,n \\to \\text{Fin}\\,n \\to \\text{Bool}$ representing a 2-coloring of $K_n$'s edges. IsValidColoring requires symmetry ($c(i,j) = c(j,i)$) and irreflexivity ($c(i,i) = \\text{false}$). IsMonochromaticClique c S b holds when all edges within $S$ have color $b$. These definitions set up the combinatorial framework for Ramsey theory: we seek monochromatic structures in arbitrary 2-colorings.",
+    "mathContext": "$c : \\text{Fin}\\,n \\times \\text{Fin}\\,n \\to \\{0,1\\}$ with $c(i,j) = c(j,i)$ and $c(i,i) = 0$; $\\text{MonoClique}(c, S, b) \\iff \\forall i \\neq j \\in S,\\; c(i,j) = b$",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph coloring",
+      "Ramsey theory",
+      "complete graphs"
+    ],
+    "prerequisites": [
+      "Fin n",
+      "Bool",
+      "Finset"
+    ]
+  },
+  {
+    "id": "erdos-545-ramsey-def",
+    "proofId": "erdos-545",
+    "type": "definition",
+    "range": {
+      "startLine": 64,
+      "endLine": 80
+    },
+    "title": "Ramsey Numbers $R(k)$ and $R(G)$",
+    "content": "ramseyNumber k is $R(k)$, the minimum $n$ such that every valid 2-coloring of $K_n$ contains a monochromatic $K_k$. Defined via Nat.find with an existence witness $2^k$ (sorry). ramseyNumberGraph G generalizes to arbitrary graphs: the minimum $n$ such that every 2-coloring of $K_n$ contains a monochromatic copy of $G$. The graph version has a definition sorry since formalizing graph homomorphisms requires substantial infrastructure.",
+    "mathContext": "$R(k) = \\min\\{n : \\forall c \\text{ valid 2-coloring of } K_n,\\; \\exists S \\subseteq V,\\; |S| = k,\\; S \\text{ monochromatic}\\}$; $R(G) = \\min\\{n : \\forall c,\\; K_n \\supseteq \\text{mono copy of } G\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey numbers",
+      "extremal graph theory",
+      "graph homomorphisms"
+    ],
+    "prerequisites": [
+      "Nat.find",
+      "IsMonochromaticClique",
+      "EdgeColoring"
+    ]
+  },
+  {
+    "id": "erdos-545-max-complete",
+    "proofId": "erdos-545",
+    "type": "definition",
+    "range": {
+      "startLine": 84,
+      "endLine": 104
+    },
+    "title": "Maximally Complete Graph and the Erdos-Graham Conjecture",
+    "content": "The edge decomposition writes $m = \\binom{n}{2} + t$ with $0 \\leq t < n$: the unique way to express $m$ edges as a complete graph $K_n$ plus $t$ extra edges. The maximally complete graph $H_m$ is $K_n$ with a new vertex connected to $t$ vertices of $K_n$, i.e., $K_n \\vee \\overline{K_t}$ (join with an independent set). The Erdos-Graham conjecture states $R(G) \\leq R(H_m)$ for all $m$-edge graphs $G$ without isolated vertices. decomposeEdges and maximallyCompleteGraph both have sorries due to the non-trivial construction.",
+    "mathContext": "$m = \\binom{n}{2} + t,\\; 0 \\leq t < n$; $H_m = K_n + K_{1,t}$; conjecture: $\\forall G$ with $|E(G)| = m,\\; R(G) \\leq R(H_m)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph joins",
+      "extremal graphs",
+      "binomial decomposition"
+    ],
+    "prerequisites": [
+      "decomposeEdges",
+      "ramseyNumberGraph",
+      "edgeCount"
+    ]
+  },
+  {
+    "id": "erdos-545-counterexamples",
+    "proofId": "erdos-545",
+    "type": "insight",
+    "range": {
+      "startLine": 106,
+      "endLine": 124
+    },
+    "title": "Counterexamples and the Asymptotic Conjecture",
+    "content": "The conjecture fails for $m \\in \\{2, 3, 4, 5, 7, 8, 9\\}$ — for these edge counts, there exist graphs $G$ with $R(G) > R(H_m)$. Note the gap: $m = 6 = \\binom{4}{2}$ (a complete graph) is not a counterexample, consistent with the idea that 'complete-like' graphs are the hardest. The axiom counterexamples_exist formalizes this. The corrected asymptotic conjecture ErdosGrahamConjectureAsymptotic posits $\\exists M$ such that the inequality holds for all $m \\geq M$. This remains open — even the existence of such an $M$ is unknown.",
+    "mathContext": "$\\forall m \\in \\{2,3,4,5,7,8,9\\},\\; \\exists G,\\; |E(G)| = m \\wedge R(G) > R(H_m)$; asymptotic: $\\exists M,\\; \\forall m \\geq M,\\; \\forall G,\\; R(G) \\leq R(H_m)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "small case analysis",
+      "asymptotic conjectures",
+      "threshold phenomena"
+    ],
+    "prerequisites": [
+      "SmallCounterexamples",
+      "ErdosGrahamConjecture"
+    ]
+  },
+  {
+    "id": "erdos-545-sudakov",
+    "proofId": "erdos-545",
+    "type": "insight",
+    "range": {
+      "startLine": 126,
+      "endLine": 137
+    },
+    "title": "Sudakov's Upper Bound (2011)",
+    "content": "Benny Sudakov proved that $R(G) \\leq 2^{C\\sqrt{m}}$ for some absolute constant $C > 0$ and any graph $G$ with $m$ edges. This is weaker than the Erdos-Graham conjecture (which would give $R(G) \\leq R(H_m)$, with $R(H_m)$ depending on the specific structure of $H_m$) but holds universally. The proof uses the dependent random choice technique combined with the Kovari-Sos-Turan theorem. This theorem has a sorry.",
+    "mathContext": "$\\exists C > 0,\\; \\forall G \\text{ with } m \\text{ edges},\\; R(G) \\leq 2^{C\\sqrt{m}}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "dependent random choice",
+      "Kovari-Sos-Turan theorem",
+      "universal Ramsey bounds"
+    ],
+    "prerequisites": [
+      "ramseyNumberGraph",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "erdos-545-classical",
+    "proofId": "erdos-545",
+    "type": "concept",
+    "range": {
+      "startLine": 139,
+      "endLine": 165
+    },
+    "title": "Classical Ramsey Numbers and Bounds",
+    "content": "The file records four classical Ramsey values: $R(1) = 1$ (trivial), $R(2) = 2$ (any edge is monochromatic), $R(3) = 6$ (the party problem — any 2-coloring of $K_6$ contains a monochromatic triangle), and $R(4) = 18$ (Greenwood-Gleason 1955). Two quantitative bounds follow: the probabilistic lower bound $R(k) \\geq 2^{k/2}$ (Erdos 1947, the first application of the probabilistic method) and the pigeonhole upper bound $R(k) \\leq 4^k$ (from the recurrence $R(k) \\leq 2R(k-1)$). All have sorries.",
+    "mathContext": "$R(1) = 1$, $R(2) = 2$, $R(3) = 6$, $R(4) = 18$; $2^{k/2} \\leq R(k) \\leq 4^k$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "probabilistic method",
+      "pigeonhole principle",
+      "Ramsey number computation"
+    ],
+    "prerequisites": [
+      "ramseyNumber"
+    ]
+  },
+  {
+    "id": "erdos-545-monotonicity",
+    "proofId": "erdos-545",
+    "type": "concept",
+    "range": {
+      "startLine": 167,
+      "endLine": 185
+    },
+    "title": "Edge Monotonicity and Subgraph Bounds",
+    "content": "Two monotonicity results: (1) if $G \\subseteq H$ (same vertex set, $G$'s edges are a subset of $H$'s), then $R(G) \\leq R(H)$, since any monochromatic copy of $H$ contains a monochromatic copy of $G$; (2) if $G$ is isomorphic to a subgraph of $H$, then $R(G) \\leq R(H)$, by composing the embedding with the containment. These are fundamental properties that underpin the Erdos-Graham conjecture: it asks which specific graph maximizes $R(G)$ for a given edge count. Both have sorries.",
+    "mathContext": "$G \\subseteq H \\implies R(G) \\leq R(H)$; $G \\hookrightarrow H \\implies R(G) \\leq R(H)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "graph monotonicity",
+      "graph embeddings",
+      "Ramsey monotonicity"
+    ],
+    "prerequisites": [
+      "ramseyNumberGraph",
+      "Function.Injective"
+    ]
+  }
+]

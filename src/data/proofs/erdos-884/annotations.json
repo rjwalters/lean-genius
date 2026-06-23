@@ -1,0 +1,193 @@
+[
+  {
+    "id": "ann-e884-header",
+    "proofId": "erdos-884",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #884** asks whether the all-pairs divisor gap sum is bounded by the consecutive-pairs sum. For divisors d₁ < ··· < d_t of n, compare Σ_{i<j} 1/(d_j-d_i) with 1 + Σ_i 1/(d_{i+1}-d_i). The question is whether an absolute constant C suffices.",
+    "mathContext": "From [Er98], related to Problem #144. The left side has O(τ²) terms, the right has O(τ) terms. Tao has indicated the problem appears tractable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisors",
+      "gap sums",
+      "harmonic sums",
+      "Problem #144"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e884-divisor-list",
+    "proofId": "erdos-884",
+    "range": {
+      "startLine": 38,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Divisor Lists and Accessors",
+    "content": "**divisorList(n)** produces the sorted list of divisors using Mathlib's `Nat.divisors.sort`. **numDivisors** gives τ(n), the divisor count. **divisor(n,i)** provides 0-indexed access. Axioms ensure strict sorting and correct membership.",
+    "mathContext": "Uses Finset.sort for ordering. divisorList_sorted ensures d_1 < d_2 < ··· < d_t. mem_divisorList_iff characterizes membership as d | n ∧ d > 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.divisors",
+      "sorted list",
+      "divisor function τ"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e884-gaps",
+    "proofId": "erdos-884",
+    "range": {
+      "startLine": 109,
+      "endLine": 115
+    },
+    "type": "definition",
+    "title": "Divisor Gap Functions",
+    "content": "**consecutiveGap(n,i)** = d_{i+1} - d_i measures adjacent divisor gaps. **generalGap(n,i,j)** = d_j - d_i measures arbitrary divisor gaps. Both are positive for n > 1, guaranteed by axioms.",
+    "mathContext": "Every general gap is a sum of consecutive gaps by telescoping: d_j - d_i = Σ_{k=i}^{j-1} (d_{k+1} - d_k). This is the structural key to the conjecture: general gaps are larger, so their reciprocals are smaller.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisor gaps",
+      "telescoping",
+      "positivity"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e884-allpairs",
+    "proofId": "erdos-884",
+    "range": {
+      "startLine": 137,
+      "endLine": 142
+    },
+    "type": "definition",
+    "title": "All-Pairs Sum",
+    "content": "**allPairsSum(n)** = Σ_{0≤i<j<τ(n)} 1/(d_j - d_i), implemented as a nested Finset.sum using Finset.Ioo for the inner index. This sum has C(τ(n), 2) terms — quadratic in the number of divisors.",
+    "mathContext": "Uses Finset.range for i and Finset.Ioo(i, τ(n)) for j > i. The division by generalGap converts to ℝ. For n = 6 with divisors [1,2,3,6], the sum is 1/1 + 1/2 + 1/5 + 1/1 + 1/4 + 1/3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum",
+      "pair counting",
+      "harmonic sums"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e884-consecutive",
+    "proofId": "erdos-884",
+    "range": {
+      "startLine": 144,
+      "endLine": 148
+    },
+    "type": "definition",
+    "title": "Consecutive-Pairs Sum",
+    "content": "**consecutivePairsSum(n)** = Σ_{0≤i<τ(n)-1} 1/(d_{i+1} - d_i), summing only over adjacent divisors. This sum has τ(n) - 1 terms — linear in the number of divisors.",
+    "mathContext": "For primes p with divisors [1, p], this equals 1/(p-1). For n = 6 with divisors [1,2,3,6], it is 1/1 + 1/1 + 1/3 = 7/3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "consecutive gaps",
+      "linear sum",
+      "comparison baseline"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e884-conjecture",
+    "proofId": "erdos-884",
+    "range": {
+      "startLine": 152,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Main Conjecture (OPEN)",
+    "content": "**ErdosConjecture884**: ∃ C > 0 such that for all n > 1, allPairsSum(n) ≤ C·(1 + consecutivePairsSum(n)). Axiomatized because the problem is open.",
+    "mathContext": "The conjecture asserts that the quadratic-many terms in the all-pairs sum are controlled by the linear-many terms in the consecutive sum, with a universal constant. The '+1' handles the case when consecutivePairsSum is small.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem",
+      "absolute constant",
+      "divisor gap inequality"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e884-properties",
+    "proofId": "erdos-884",
+    "range": {
+      "startLine": 164,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Basic Properties",
+    "content": "**Both sums are non-negative** (axiomatized). **consecutivePairsSum_num_terms** proves the term count equals τ(n) - 1 using simp — one of two genuine proofs in the file.",
+    "mathContext": "Nonnegativity follows from the fact that each term 1/(d_j - d_i) is positive. The term count simp proof: (Finset.range (τ(n) - 1)).card = τ(n) - 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nonnegativity",
+      "term counting",
+      "simp"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e884-examples",
+    "proofId": "erdos-884",
+    "range": {
+      "startLine": 187,
+      "endLine": 245
+    },
+    "type": "concept",
+    "title": "Examples: Primes and n = 6",
+    "content": "**For primes**: divisors are [1, p], so both sums equal 1/(p-1) — the conjecture holds trivially with C = 1. **For n = 6**: divisors are [1, 2, 3, 6] with 4 divisors and 6 gap pairs.",
+    "mathContext": "prime_case_equality: allPairsSum(p) = consecutivePairsSum(p) for prime p. The prime case is the simplest verification of the conjecture.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime case",
+      "verification",
+      "divisors of 6"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e884-structural",
+    "proofId": "erdos-884",
+    "range": {
+      "startLine": 257,
+      "endLine": 281
+    },
+    "type": "concept",
+    "title": "Structural Lemmas",
+    "content": "**gap_lower_bound**: d_j - d_i ≥ d_{i+1} - d_i since divisors are sorted. This is why the conjecture is plausible: general gaps are at least as large as their constituent consecutive gaps. **numDivisors_mul_coprime**: τ(mn) = τ(m)·τ(n) for coprime m, n.",
+    "mathContext": "The gap bound follows from the sorted divisor sequence: d_j ≥ d_{i+1} implies d_j - d_i ≥ d_{i+1} - d_i. Multiplicativity of τ affects how many gap terms exist for composite numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "gap bounds",
+      "multiplicativity",
+      "plausibility argument"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e884-connections",
+    "proofId": "erdos-884",
+    "range": {
+      "startLine": 390,
+      "endLine": 398
+    },
+    "type": "concept",
+    "title": "Connections and Verification",
+    "content": "**divisorHarmonicSum**: σ_{-1}(n) = Σ_{d|n} 1/d, a related but distinct sum over divisors. **erdos_884_statement**: proved by rfl, confirming the formal definition matches the informal statement exactly.",
+    "mathContext": "The rfl proof shows ErdosConjecture884 is definitionally equal to its expanded form. The harmonic divisor sum σ_{-1}(n) is related but different — it sums over divisor values, not divisor gaps.",
+    "significance": "key",
+    "relatedConcepts": [
+      "σ_{-1}(n)",
+      "definitional equality",
+      "rfl proof"
+    ],
+    "prerequisites": []
+  }
+]

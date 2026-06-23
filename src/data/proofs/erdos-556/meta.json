@@ -1,0 +1,199 @@
+{
+  "id": "erdos-556",
+  "title": "Erdős Problem #556: 3-Color Ramsey Number for Cycles",
+  "slug": "erdos-556",
+  "description": "Show that R(C_n;3) ≤ 4n-3, where R(G;3) is the 3-color Ramsey number. PROVED: bound is tight for odd n (KSS 2005), and R(C_n;3) = 2n for even n (Benevides-Skokan 2009).",
+  "meta": {
+    "author": "Bondy-Erdős (conjecture), Łuczak (1999), KSS (2005), Benevides-Skokan (2009)",
+    "sourceUrl": "https://erdosproblems.com/556",
+    "date": "2009",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos556Problem.lean",
+    "tags": [
+      "erdos",
+      "ramsey-theory",
+      "cycles",
+      "graph-coloring",
+      "extremal-combinatorics",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 556,
+    "erdosUrl": "https://erdosproblems.com/556",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type for cycle graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Nat.find",
+        "description": "Minimum element with property for Ramsey number definition",
+        "module": "Mathlib.Data.Nat.Find"
+      },
+      {
+        "theorem": "Odd",
+        "description": "Odd number predicate for dichotomy",
+        "module": "Mathlib.Data.Nat.Parity"
+      },
+      {
+        "theorem": "Even",
+        "description": "Even number predicate for dichotomy",
+        "module": "Mathlib.Data.Nat.Parity"
+      }
+    ],
+    "originalContributions": [
+      "EdgeColoring3 definition: 3-coloring of complete graph edges",
+      "cycleGraph definition: cycle graph C_n on n vertices",
+      "IsMonochromaticCycle definition: all edges same color",
+      "R_cycle_3 definition: 3-color Ramsey number for cycles",
+      "bondy_erdos_conjecture axiom: R(C_n;3) ≤ 4n - 3",
+      "kss_2005_upper_odd axiom: exact upper bound for odd n",
+      "kss_2005_lower_odd axiom: exact lower bound for odd n",
+      "R_cycle_odd_exact theorem: R(C_n;3) = 4n-3 for large odd n",
+      "benevides_skokan_2009 axiom: R(C_n;3) = 2n for large even n",
+      "erdos_556 theorem: complete resolution"
+    ],
+    "axiomCount": 4,
+    "lineCount": 189,
+    "assumptions": "4 axioms: bondy_erdos_conjecture, kss_2005_upper_odd, kss_2005_lower_odd, benevides_skokan_2009. 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "**The 3-Color Ramsey Number for Cycles**\n\nBondy and Erdős conjectured that R(C_n;3) ≤ 4n - 3, where R(G;3) is the minimum m such that any 3-coloring of K_m contains a monochromatic copy of G.\n\n**Historical Development:**\n- **Bondy-Erdős:** Original conjecture R(C_n;3) ≤ 4n - 3\n- **Łuczak (1999):** Proved R(C_n;3) ≤ (4+o(1))n; improved to (3+o(1))n for even n\n- **Kohayakawa-Simonovits-Skokan (2005):** Exact bound 4n-3 for large odd n\n- **Benevides-Skokan (2009):** Exact bound R(C_n;3) = 2n for large even n\n\nThe problem is completely resolved with a beautiful dichotomy: odd and even cycles have dramatically different Ramsey numbers!",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet $R(G;3)$ denote the minimal $m$ such that if the edges of $K_m$ are 3-colored, there must be a monochromatic copy of $G$.\n\n**Conjecture:** $R(C_n;3) \\leq 4n - 3$\n\n**Result:** PROVED, with exact values:\n- Odd $n$ (large): $R(C_n;3) = 4n - 3$ (tight!)\n- Even $n$ (large): $R(C_n;3) = 2n$\n\nThe bound 4n-3 is best possible for odd n.",
+    "text": "Show that R(C_n;3) ≤ 4n-3, where R(G;3) is the 3-color Ramsey number. PROVED: bound is tight for odd n (KSS 2005), and R(C_n;3) = 2n for even n (Benevides-Skokan 2009).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define edge colorings, cycle graphs, and monochromatic embeddings\n\n2. **Ramsey Number:** Define R_cycle_3(n) as the minimum m with the Ramsey property\n\n3. **Historical Bounds:** Axiomatize Łuczak's asymptotic results (1999)\n\n4. **Exact Bounds:** Axiomatize KSS (2005) for odd cycles, Benevides-Skokan (2009) for even\n\n5. **Small Cases:** R(C_3;3) = 17, R(C_4;3) = 8, R(C_5;3) = 17\n\n6. **Main Theorem:** Combine all results into erdos_556",
+    "keyInsights": [
+      "**Parity Dichotomy:** Odd cycles need 4n-3 vertices; even cycles need only 2n vertices",
+      "**Bound is Tight:** For odd n, 4n-3 is best possible (the conjecture was exact!)",
+      "**Even Cycles are Easier:** R(C_n;3) = 2n for even n, much smaller than 4n-3",
+      "**Regularity Method:** Proofs use Szemerédi Regularity Lemma and Blow-up Lemma",
+      "**Small Cases Match:** R(C_3;3) = 17 = 4(3)-3+8 (triangle is special), R(C_5;3) = 17 = 4(5)-3 ✓",
+      "**Parity Constraints:** Odd cycle length interacts with 3-colorings differently than even"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 33,
+      "endLine": 65,
+      "summary": "Edge colorings, cycle graphs, monochromatic cycles, and R(C_n;3) definition.",
+      "mathContext": "$R(C_n; 3) = \\min\\{m : \\forall$ 3-colorings of $K_m$, $\\exists$ monochromatic $C_n\\}$. Edge colorings use `Fin 3` for 3 colors."
+    },
+    {
+      "id": "bondy-erdos",
+      "title": "The Bondy-Erdős Conjecture",
+      "startLine": 66,
+      "endLine": 79,
+      "summary": "The original conjecture R(C_n;3) ≤ 4n - 3.",
+      "mathContext": "Bondy-Erdős conjecture: $R(C_n; 3) \\leq 4n - 3$ for all $n \\geq 3$."
+    },
+    {
+      "id": "luczak-1999",
+      "title": "Łuczak's Result (1999)",
+      "startLine": 80,
+      "endLine": 94,
+      "summary": "Asymptotic bounds (4+o(1))n for all n, (3+o(1))n for even n.",
+      "mathContext": "Łuczak (1999): $R(C_n; 3) \\leq (4 + o(1))n$; for even $n$: $R(C_n; 3) \\leq (3 + o(1))n$."
+    },
+    {
+      "id": "kss-2005",
+      "title": "Exact Bound for Odd Cycles (KSS 2005)",
+      "startLine": 95,
+      "endLine": 119,
+      "summary": "R(C_n;3) = 4n - 3 for sufficiently large odd n.",
+      "mathContext": "KSS (2005): for large odd $n$, $R(C_n; 3) = 4n - 3$. Both upper and lower bounds are tight."
+    },
+    {
+      "id": "benevides-skokan",
+      "title": "Exact Bound for Even Cycles (2009)",
+      "startLine": 120,
+      "endLine": 135,
+      "summary": "R(C_n;3) = 2n for sufficiently large even n.",
+      "mathContext": "Benevides-Skokan (2009): for large even $n$, $R(C_n; 3) = 2n$. Dramatically smaller than the odd case ($4n - 3$)."
+    },
+    {
+      "id": "dichotomy",
+      "title": "Why the Dichotomy?",
+      "startLine": 136,
+      "endLine": 153,
+      "summary": "Structural reasons why odd and even cycles behave differently.",
+      "mathContext": "Odd $C_n$ is not bipartite ($\\chi = 3$); even $C_n$ is bipartite ($\\chi = 2$). In 3-colorings, bipartite graphs embed more easily, explaining the $2n$ vs $4n-3$ gap."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "startLine": 154,
+      "endLine": 172,
+      "summary": "R(C_3;3) = 17, R(C_4;3) = 8, R(C_5;3) = 17.",
+      "mathContext": "$R(C_3; 3) = R(K_3; 3) = 17$ (Schur number + 1). $R(C_4; 3) = 8 = 2 \\cdot 4$. $R(C_5; 3) = 17 = 4 \\cdot 5 - 3$."
+    },
+    {
+      "id": "regularity-method",
+      "title": "The Regularity Method",
+      "startLine": 173,
+      "endLine": 189,
+      "summary": "Szemerédi Regularity Lemma and Blow-up Lemma in proofs.",
+      "mathContext": "Szemerédi Regularity Lemma partitions $V(K_m)$ into $\\varepsilon$-regular pairs. Blow-up Lemma embeds $C_n$ into the regular cluster graph. Both are key tools in modern Ramsey theory."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #556 asked to prove R(C_n;3) ≤ 4n - 3. The conjecture is PROVED with complete resolution: for large odd n, R(C_n;3) = 4n - 3 exactly (KSS 2005); for large even n, R(C_n;3) = 2n (Benevides-Skokan 2009). The odd/even dichotomy is striking—odd cycles require roughly twice as many vertices!",
+    "implications": "**Theoretical Significance**: **Implications for Ramsey Theory**\n\n1. **Parity Matters:** The odd/even dichotomy shows parity is crucial in cycle Ramsey numbers\n\n**2. Regularity Method Power:** Szemerédi's method provides exact bounds, not just asymptotics\n\n3. **3 Colors vs 2:** 3-coloring requires significantly more vertices than 2-coloring\n\n4. **Tight Bounds Achievable:** Many Ramsey problems have exact answers, not just bounds.",
+    "openQuestions": [
+      "What are the exact values for small n (both odd and even)?",
+      "Can the proofs be made more elementary (without regularity)?",
+      "What about 4-color Ramsey numbers for cycles?",
+      "What about cycles in hypergraphs?",
+      "What happens for non-diagonal Ramsey numbers R(C_m, C_n; 3)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Fin.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos556",
+    "lineCount": 189,
+    "axiomCount": 4,
+    "theoremCount": 3,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos556Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-609",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: cycles, extremal-combinatorics, graph-coloring, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-136",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-coloring, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-191",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: graph-coloring, ramsey-theory, solved"
+    }
+  ],
+  "sorries": 0
+}

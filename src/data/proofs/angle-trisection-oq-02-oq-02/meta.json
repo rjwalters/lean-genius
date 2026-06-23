@@ -1,0 +1,192 @@
+{
+  "id": "angle-trisection-oq-02-oq-02",
+  "title": "Gauss-Wantzel Theorem: n-gon Constructibility",
+  "slug": "angle-trisection-oq-02-oq-02",
+  "description": "The Gauss-Wantzel theorem: a regular n-gon is constructible by compass and straightedge if and only if φ(n) is a power of 2, equivalently n = 2^a · p₁ · … · pₘ where p₁, …, pₘ are distinct Fermat primes. Proved: Fermat prime recognition, φ(p) = 2^(2^k) for Fermat primes, and constructibility/non-constructibility for all regular polygons up to 17 sides. Axiomatized: the cyclotomic field degree connection.",
+  "meta": {
+    "author": "Gauss (1796), Wantzel (1837); Lean formalization by researcher-3",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_polygon",
+    "date": "1796-2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ02.lean",
+    "tags": [
+      "angle-trisection",
+      "gauss-wantzel",
+      "fermat-primes",
+      "euler-totient",
+      "constructibility",
+      "n-gon",
+      "galois-theory",
+      "geometry"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "assumptions": "One axiom: gauss_wantzel_theorem — the cyclotomic field degree connection cos(2π/n) constructible ↔ φ(n) is a power of 2. This requires cyclotomic field theory and connecting geometric constructibility to field extensions.",
+    "originalContributions": [
+      "IsFermatPrime: all five known Fermat primes (3, 5, 17, 257, 65537) formally verified",
+      "fermat_prime_totient_is_pow_two: φ(p) is a power of 2 for any Fermat prime",
+      "Constructibility of 3, 4, 5, 6, 15, 17, 51, 85, 257, 65537-gons",
+      "Non-constructibility of 7, 9, 11, 13-gons (φ not a power of 2)",
+      "pow_two_bound: key helper for bounding the exponent in impossibility proofs"
+    ],
+    "lineCount": 285,
+    "theoremCount": 29,
+    "defCount": 3,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "On 30 March 1796, the 19-year-old Carl Friedrich Gauss woke up and, before getting out of bed, discovered that the regular 17-gon is constructible by compass and straightedge — a result that had eluded geometers for two millennia. This was his first major mathematical discovery, and he was so delighted that he decided to become a mathematician rather than a philologist. Gauss proved the sufficiency direction: if φ(n) is a power of 2, then the n-gon is constructible. The necessity (if constructible then φ(n) = 2^k) was proved by Pierre Wantzel in 1837 using his algebraic characterization of constructibility. Fermat had conjectured in 1640 that all numbers of the form 2^(2^n) + 1 are prime, but Euler disproved this in 1732 by factoring F₅ = 4294967297 = 641 × 6700417. No Fermat primes beyond F₄ = 65537 have been found in nearly 300 years, though it remains unknown whether there are finitely or infinitely many. The complete list of known constructible prime-sided polygons is {3, 5, 17, 257, 65537}.",
+    "problemStatement": "Characterize all n ≥ 3 for which the regular n-gon is constructible by compass and straightedge in terms of the arithmetic of n.",
+    "text": "The Gauss-Wantzel theorem gives a complete answer: a regular n-gon is constructible iff φ(n) is a power of 2, iff n = 2^a · p₁ · … · pₘ where p₁, …, pₘ are distinct Fermat primes (primes of the form 2^(2^k) + 1). The known Fermat primes are F₀=3, F₁=5, F₂=17, F₃=257, F₄=65537; it is unknown whether more exist.",
+    "proofStrategy": "The key chain: n-gon constructible ↔ cos(2π/n) constructible over ℚ ↔ [ℚ(cos(2π/n)):ℚ] is a power of 2 ↔ φ(n)/2 is a power of 2 ↔ φ(n) is a power of 2. The last equivalence uses the multiplicativity of φ and the formula φ(p^k) = p^(k-1)(p-1).",
+    "keyInsights": [
+      "Fermat primes p = 2^(2^k) + 1 satisfy φ(p) = p - 1 = 2^(2^k), a power of 2 — this is precisely why they yield constructible polygons",
+      "If an odd prime q appears squared in n (q² | n), then φ(q²) = q(q-1) contains the odd factor q, making φ(n) not a power of 2 and the n-gon non-constructible",
+      "Products of distinct Fermat primes have totient equal to a product of powers of 2 (hence a power of 2), so products like 15=3·5, 51=3·17, 85=5·17 yield constructible polygons",
+      "The non-constructibility proofs use bounded exhaustion: compute φ(n) = m by native_decide, bound k ≤ e via pow_two_bound, then use interval_cases to check all candidates",
+      "The gauss_wantzel_theorem is the single axiom: it captures the cyclotomic field degree formula [ℚ(cos(2π/n)):ℚ] = φ(n)/2, which requires ~200 lines of Mathlib glue to prove from first principles"
+    ],
+    "prerequisites": [
+      "Euler's totient function and its multiplicativity",
+      "Fermat primes: definition and known instances (3, 5, 17, 257, 65537)",
+      "Compass-and-straightedge constructibility and its algebraic characterization",
+      "Cyclotomic fields and field extension degrees",
+      "Galois theory: constructible iff field degree is a power of 2"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "gauss_wantzel_theorem",
+      "type": "axiom",
+      "description": "The regular n-gon is constructible iff phi(n) is a power of 2",
+      "leanType": "axiom: constructible_ngon n <-> IsPowerOfTwo (Nat.totient n)"
+    },
+    {
+      "name": "fermat_prime_totient_is_pow_two",
+      "type": "core",
+      "description": "For any Fermat prime p, phi(p) is a power of 2",
+      "leanType": "IsFermatPrime p -> IsPowerOfTwo (Nat.totient p)"
+    },
+    {
+      "name": "constructible_17gon",
+      "type": "core",
+      "description": "The regular 17-gon is constructible (Gauss 1796)",
+      "leanType": "constructible_ngon 17"
+    },
+    {
+      "name": "not_constructible_7gon",
+      "type": "core",
+      "description": "The regular 7-gon is not constructible",
+      "leanType": "not_constructible_ngon 7"
+    },
+    {
+      "name": "pow_two_bound",
+      "type": "supporting",
+      "description": "Key helper for bounding k in impossibility proofs: if 2^k = m then k <= log2(m)",
+      "leanType": "2 ^ k = m -> k <= Nat.log2 m"
+    }
+  ],
+  "sections": [
+    {
+      "id": "fermat",
+      "title": "Fermat Primes",
+      "summary": "IsFermatPrime definition, verification of F₀–F₄, φ(p) = 2^(2^k) proved",
+      "startLine": 55,
+      "endLine": 115,
+      "mathContext": "For p = 2^(2^k) + 1 prime: φ(p) = p-1 = 2^(2^k), a power of 2"
+    },
+    {
+      "id": "main",
+      "title": "Main Theorem (Axiomatized)",
+      "summary": "gauss_wantzel_theorem: constructible n-gon ↔ φ(n) = 2^k",
+      "startLine": 118,
+      "endLine": 145,
+      "mathContext": "Axiom connects geometric constructibility to cyclotomic field degrees"
+    },
+    {
+      "id": "constructible",
+      "title": "Constructible Polygons",
+      "summary": "3, 4, 5, 6, 15, 17, 51, 85, 257, 65537-gons proved constructible",
+      "startLine": 148,
+      "endLine": 200,
+      "mathContext": "Each: verify φ(n) = 2^k by native_decide, apply gauss_wantzel_theorem"
+    },
+    {
+      "id": "nonconstructible",
+      "title": "Non-Constructible Polygons",
+      "summary": "7, 9, 11, 13-gons proved non-constructible",
+      "startLine": 203,
+      "endLine": 260,
+      "mathContext": "Each: φ(n) = m not a power of 2; bound k by pow_two_bound then interval_cases"
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "summary": "Totient of powers of 2, Gauss's 1796 result, product formula example",
+      "startLine": 263,
+      "endLine": 285,
+      "mathContext": "φ(2^k) = 2^(k-1), φ(3)·φ(5) = 8 = 2^3 illustrating the product structure"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Gauss-Wantzel theorem is formalized with 0 sorries and 1 axiom (the cyclotomic field connection). All five known Fermat primes are verified, constructibility is established for 10 specific polygon sizes, and non-constructibility is proved for 4 sizes.",
+    "implications": "The theorem shows that constructible polygons are completely determined by Fermat primes. Whether infinitely many constructible primes exist depends on whether there are infinitely many Fermat primes — a major open problem (no new Fermat primes have been found since F₄ = 65537 in 1732).",
+    "openQuestions": [
+      "Are there infinitely many Fermat primes? (Main open problem)",
+      "Full proof of the cyclotomic field degree formula [ℚ(cos(2π/n)):ℚ] = φ(n)/2",
+      "Extend to complex constructibility (not just real cos(2π/n))"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "child-of",
+      "description": "Extends OQ-02's Galois criterion to the specific case of regular polygons",
+      "targetId": "angle-trisection-oq-02"
+    },
+    {
+      "relationship": "sibling",
+      "description": "OQ-01 gives the necessary degree condition; OQ-02-OQ-02 gives the exact characterization",
+      "targetId": "angle-trisection-oq-01"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 285,
+    "path": "Proofs/AngleTrisectionOQ02OQ02.lean",
+    "axiomCount": 1,
+    "sorries": 0,
+    "definitionCount": 3,
+    "theoremCount": 29
+  },
+  "references": [
+    {
+      "authors": [
+        "C. F. Gauss"
+      ],
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig",
+      "note": "Section VII: Gauss proved that regular n-gons are constructible when n is a Fermat prime or a product of distinct Fermat primes times a power of 2. He famously constructed the regular 17-gon (1796), establishing the first new constructible polygon since antiquity."
+    },
+    {
+      "authors": [
+        "P. L. Wantzel"
+      ],
+      "title": "Recherches sur les moyens de reconnaître si un problème de Géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées, vol. 2, pp. 366–372",
+      "note": "Completed the Gauss-Wantzel theorem by proving the converse: a regular n-gon is constructible ONLY IF n has the required Fermat prime factorization. The criterion is: n-gon is constructible iff φ(n) is a power of 2."
+    },
+    {
+      "authors": [
+        "M. Aigner",
+        "G. M. Ziegler"
+      ],
+      "title": "Proofs from THE BOOK",
+      "year": "2018",
+      "venue": "Springer, 6th edition",
+      "note": "Chapter 1: includes the Gauss-Wantzel theorem and Gauss's construction of the 17-gon as a paradigmatic example of the connection between number theory and geometry."
+    }
+  ],
+  "sorries": 0
+}

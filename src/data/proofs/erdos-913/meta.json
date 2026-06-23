@@ -1,0 +1,165 @@
+{
+  "id": "erdos-913",
+  "title": "Erdős Problem #913: Distinct Exponents in n(n+1) Factorizations",
+  "slug": "erdos-913",
+  "description": "Are there infinitely many n such that in n(n+1) = ∏ pᵢ^kᵢ, all exponents kᵢ are distinct? Conditionally true if infinitely many primes p have 8p²-1 prime (via exponents {1,2,3}). OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/913",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos913Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-factorization",
+      "consecutive-integers"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 913,
+    "erdosUrl": "https://erdosproblems.com/913",
+    "erdosProblemStatus": "open",
+    "axiomCount": 1,
+    "lineCount": 344,
+    "assumptions": "1 axiom: infinite_8p_sq_minus_1_primes (Bunyakovsky-type conjecture: infinitely many primes p with 8p²-1 also prime). Both conditional results (8p²-1 path and Mersenne path) and all exponent structure lemmas are fully proved.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 16,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "This problem appears in Erdős's 1982 collection [Er82c, p.28], part of his extensive study of the multiplicative structure of products of consecutive integers. The question connects to a deep theme in number theory: understanding the exponent structure of $n(n+1)$. Since $\\gcd(n, n+1) = 1$, the prime factorizations of $n$ and $n+1$ are completely independent, and the exponents in $n(n+1)$ are the disjoint union of exponents from each factor. The conditional approach via $n = 8p^2 - 1$ was identified as a natural path, producing the clean exponent pattern $\\{1, 2, 3\\}$. This connects to the Bunyakovsky conjecture (1857) and the more quantitative Bateman-Horn conjecture (1962) on prime values of polynomials. The problem illustrates a common theme in Erdős's work: reducing a seemingly difficult number-theoretic question to a (conjecturally true but currently unproven) statement about prime values of a specific polynomial.",
+    "problemStatement": "Are there infinitely many $n$ such that if $n(n+1) = \\prod p_i^{k_i}$ is the prime factorization, then all exponents $k_i$ are distinct?",
+    "text": "Are there infinitely many n such that in n(n+1) = ∏ pᵢ^kᵢ, all exponents kᵢ are distinct? Conditionally true if infinitely many primes p have 8p²-1 prime (via exponents {1,2,3}). OPEN.",
+    "proofStrategy": "The formalization uses Mathlib's `Nat.factorization` (a `Finsupp ℕ ℕ` mapping primes to their exponents) and `Set.InjOn` to define the distinct-exponent property. The main conjecture `ErdosProblem913` asserts `DistinctExponentSet.Infinite`. Two independent conditional proofs are provided: (1) the 8p²-1 path reduces to PrimePairs8.Infinite, with the fully proved `exponent_structure` theorem confirming the prime factor set is exactly $\\{8p^2-1, p, 2\\}$ with exponents $\\{1, 2, 3\\}$; (2) the Mersenne path shows that for Mersenne primes $2^k - 1$, the exponents are $\\{1, k\\}$, automatically distinct. The sole axiom is the open Bunyakovsky-type hypothesis.",
+    "keyInsights": [
+      "For $n = 8p^2 - 1$ with both $p$ and $8p^2 - 1$ prime, we get $n(n+1) = (8p^2-1)^1 \\cdot p^2 \\cdot 2^3$ with exponents $\\{1, 2, 3\\}$—the simplest possible distinct triple",
+      "Coprimality $\\gcd(n, n+1) = 1$ is crucial: it means the factorizations of $n$ and $n+1$ are independent, so exponents come from the disjoint union of each factor's exponents",
+      "Mersenne-like numbers $n = 2^k - 1$ (when prime) give $n(n+1) = (2^k-1) \\cdot 2^k$ with exponents $\\{1, k\\}$—automatically distinct, providing a conditional infinite family from Mersenne prime infinitude",
+      "The hypothesis that $8x^2 - 1$ takes infinitely many prime values at prime arguments is a special case of the Bunyakovsky conjecture, which remains open for all degree $\\geq 2$ polynomials",
+      "The reduction from the original problem to a Bunyakovsky-type statement illustrates Erdős's methodological insight: hard existence questions often reduce to prime distribution conjectures",
+      "The factorization $8p^2 = (8p^2-1) + 1$ exploits the structure of $n(n+1)$ as consecutive integers to engineer a specific exponent pattern"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-913-header",
+      "title": "Problem Overview and Imports",
+      "startLine": 17,
+      "endLine": 26,
+      "summary": "Imports Mathlib's `Nat.factorization`, `Nat.Prime`, `Finsupp`, `Set.Finite`, and `Tactic` modules needed for formalizing the prime factorization and set infinitude machinery.",
+      "mathContext": "Mathematical content: Imports Mathlib's `Nat.factorization`, `Nat.Prime`, `Finsupp`, `Set.Finite`, and `Tactic` modules needed for formalizing the prime factorization and set infinitude machinery."
+    },
+    {
+      "id": "sec-913-definitions",
+      "title": "Distinct Exponent Property",
+      "startLine": 27,
+      "endLine": 46,
+      "summary": "Defines HasDistinctExponents via Set.InjOn of Nat.factorization on primeFactors. The DistinctExponentSet collects all n satisfying this property.",
+      "mathContext": "Formal definition: Defines HasDistinctExponents via Set.InjOn of Nat.factorization on primeFactors. The DistinctExponentSet collects all n satisfying this property."
+    },
+    {
+      "id": "sec-913-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 47,
+      "endLine": 56,
+      "summary": "States ErdosProblem913 as DistinctExponentSet.Infinite—the claim that infinitely many n have distinct exponents in n(n+1).",
+      "mathContext": "Mathematical content: States ErdosProblem913 as DistinctExponentSet.Infinite—the claim that infinitely many n have distinct exponents in n(n+1)."
+    },
+    {
+      "id": "sec-913-hypothesis",
+      "title": "The 8p²-1 Prime Hypothesis",
+      "startLine": 57,
+      "endLine": 69,
+      "summary": "Defines PrimePairs8 = {p : p prime ∧ 8p²-1 prime} and axiomatizes its infinitude as a Bunyakovsky-type hypothesis (the sole axiom: infinite_8p_sq_minus_1_primes at line 69).",
+      "mathContext": "Formal definition: Defines PrimePairs8 = {p : p prime ∧ 8p²-1 prime} and axiomatizes its infinitude as a Bunyakovsky-type hypothesis."
+    },
+    {
+      "id": "sec-913-conditional-proof",
+      "title": "8p²-1 Conditional Proof",
+      "startLine": 70,
+      "endLine": 199,
+      "summary": "Fully proved conditional: PrimePairs8.Infinite ⟹ DistinctExponentSet.Infinite. Includes the proved exponent_structure theorem (prime factor set is {8p²-1, p, 2}), factorization value computations (exponents 1, 2, 3), and the Set.Infinite.image argument via injectivity of p ↦ 8p²-1.",
+      "mathContext": "Core proof: For each prime p ∈ PrimePairs8 \\ {2}, n = 8p²-1 gives n(n+1) = (8p²-1)¹·p²·2³ with all exponents distinct. The exponent_structure theorem proves the prime factors are exactly {8p²-1, p, 2}, using coprimality of consecutive integers and Mathlib's factorization API."
+    },
+    {
+      "id": "sec-913-examples",
+      "title": "Known Examples",
+      "startLine": 200,
+      "endLine": 258,
+      "summary": "Six proved concrete examples: n = 3 (exponents {2,1}), n = 7 ({3,1}), n = 8 ({3,2}), n = 31 ({5,1}), n = 71 ({3,2,1} — the 8p²-1 instance with p=3), n = 127 ({7,1}). All verified via native_decide.",
+      "mathContext": "Concrete witnesses: Each example uses hasDistinctExponents_of_primeFactors_pair or _triple with native_decide to verify the prime factor sets and exponent distinctness computationally."
+    },
+    {
+      "id": "sec-913-bunyakovsky",
+      "title": "Connection to Bunyakovsky Conjecture",
+      "startLine": 259,
+      "endLine": 272,
+      "summary": "Identifies Bunyakovsky8 = PrimePairs8.Infinite as a special case of the Bunyakovsky/Bateman-Horn conjectures for f(x) = 8x²-1.",
+      "mathContext": "Mathematical content: The hypothesis that 8x²-1 takes infinitely many prime values at prime arguments is a special case of the Bunyakovsky conjecture (1857), which remains open for all degree ≥ 2 polynomials."
+    },
+    {
+      "id": "sec-913-mersenne",
+      "title": "Mersenne Prime Conditional",
+      "startLine": 273,
+      "endLine": 342,
+      "summary": "Second independent conditional path: if infinitely many Mersenne primes exist, Erdős #913 is true. For k ≥ 2 with 2^k-1 prime, n = 2^k-1 gives n(n+1) = (2^k-1)·2^k with exponents {1,k}, automatically distinct. Includes proved hasDistinctExponents_mersenne and erdos_913_conditional_mersenne theorems.",
+      "mathContext": "Independent conditional: Mersenne primes provide a completely separate path — neither the Bunyakovsky nor Mersenne hypothesis implies the other, yet both suffice for the conjecture."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #913 asks whether infinitely many $n$ have all distinct exponents in the prime factorization of $n(n+1)$. Two independent conditional proofs are fully machine-checked: (1) the 8p²-1 path yields exponents $\\{1, 2, 3\\}$ from a Bunyakovsky-type hypothesis, and (2) the Mersenne path yields exponents $\\{1, k\\}$ from infinitely many Mersenne primes. The sole axiom is the open Bunyakovsky-type conjecture. 0 sorries.",
+    "implications": "**Theoretical Significance**: Either a proof of the Bunyakovsky conjecture for $f(x) = 8x^2 - 1$ or a proof that infinitely many Mersenne primes exist would immediately resolve this problem.\n\nThe two independent conditional paths illustrate how questions about the multiplicative structure of consecutive integers reduce to prime distribution conjectures. The coprimality of $n$ and $n+1$ provides a powerful structural tool, allowing independent control over the exponent patterns of each factor.",
+    "openQuestions": [
+      "Is the set PrimePairs8 = {p prime : 8p²-1 prime} infinite? This Bunyakovsky-type conjecture is believed true but unproven for any degree ≥ 2 polynomial.",
+      "Are there unconditional proofs not relying on the Bunyakovsky conjecture? Could sieve methods or the circle method establish the existence of infinitely many such n?",
+      "What is the density of n with distinct exponents in n(n+1)? The Bateman-Horn conjecture predicts PrimePairs8 has density ~C/log²N, suggesting a sparse but infinite set.",
+      "Can the exponent pattern {1, 2, 3} be replaced by {1, 2, 3, 4} or longer sequences? This would require finding n(n+1) with 4+ distinct primes all having different exponents.",
+      "What fraction of Mersenne primes (if infinitely many exist) yield examples via the n = 2^k - 1 construction?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-933",
+      "relationship": "related",
+      "description": "Smooth part of n(n+1): both problems study the prime factorization structure of products of consecutive integers"
+    },
+    {
+      "targetId": "erdos-931",
+      "relationship": "related",
+      "description": "Same prime factor sets in consecutive products; related multiplicative structure of consecutive blocks"
+    },
+    {
+      "targetId": "erdos-928",
+      "relationship": "related",
+      "description": "Consecutive smooth numbers; shares the theme of prime factor constraints on consecutive integers"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finsupp.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos913",
+    "lineCount": 344,
+    "axiomCount": 1,
+    "theoremCount": 16,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos913Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

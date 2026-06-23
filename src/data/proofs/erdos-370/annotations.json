@@ -1,0 +1,188 @@
+[
+  {
+    "id": "ann-e370-aristotle",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 1,
+      "endLine": 10
+    },
+    "type": "concept",
+    "title": "Aristotle Attribution",
+    "content": "This proof was processed by the Aristotle (Harmonic) proof search system. Aristotle successfully proved 4 theorems automatically: `steinerberger_succ` (the key identity $n+1 = m^2$), `n63_sqrt_smooth` and `n64_sqrt_smooth` (the worked example), and `example_63` (combining both). Several other declarations failed to load due to Aristotle parser limitations (namespace issues).",
+    "mathContext": "Aristotle proved: $n = m^2 - 1 \\Rightarrow n+1 = m^2$, $\\operatorname{gpf}(63) = 7 < \\sqrt{63}$, $\\operatorname{gpf}(64) = 2 < \\sqrt{64}$, using `norm_num`, `nlinarith`, `omega`, and `Real.sqrt_lt_sqrt`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proof search",
+      "automated verification",
+      "Aristotle Harmonic"
+    ],
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "norm_num",
+      "nlinarith"
+    ]
+  },
+  {
+    "id": "ann-e370-header",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 40,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Imports and Namespace Setup",
+    "content": "Imports the full Mathlib library and opens the `Nat`, `Finset`, and `BigOperators` namespaces. The full Mathlib import provides access to `Real.sqrt`, `Set.Infinite`, and arithmetic function infrastructure needed for the formalization.",
+    "mathContext": "Opens `Nat` for natural number operations, `Finset` for finite sets, and `BigOperators` for $\\prod$ notation used in the formalization.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib imports",
+      "namespace management"
+    ],
+    "prerequisites": [
+      "Lean 4 import system"
+    ]
+  },
+  {
+    "id": "ann-e370-gpf",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 50,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Greatest Prime Factor: Axiomatization",
+    "content": "The **greatest prime factor** $\\operatorname{gpf}(n)$ is axiomatized as a function `gpf : N -> N` with 6 properties: (1) $\\operatorname{gpf}(n) = 0$ for $n \\leq 1$, (2) $\\operatorname{gpf}(n) \\mid n$ for $n > 1$, (3) $\\operatorname{gpf}(n)$ is prime for $n > 1$, (4) $\\operatorname{gpf}(p) = p$ for primes, (5) $\\operatorname{gpf}(p^k) = p$ for prime powers, (6) $\\operatorname{gpf}(mn) \\leq \\max(\\operatorname{gpf}(m), \\operatorname{gpf}(n))$. This axiomatization captures the essential behavior while sidestepping Mathlib's `primeFactors` API variations.",
+    "mathContext": "$\\operatorname{gpf}(n) = \\max\\{p : p \\text{ prime}, p \\mid n\\}$ for $n > 1$; $\\operatorname{gpf}(n) = 0$ for $n \\leq 1$. The product bound $\\operatorname{gpf}(mn) \\leq \\max(\\operatorname{gpf}(m), \\operatorname{gpf}(n))$ is key for the Steinerberger construction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factorization",
+      "greatest prime factor",
+      "multiplicative functions",
+      "axiom system"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "divisibility",
+      "Mathlib primeFactors"
+    ]
+  },
+  {
+    "id": "ann-e370-smooth",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 75,
+      "endLine": 90
+    },
+    "type": "lemma",
+    "title": "Smooth Number Predicates",
+    "content": "Three definitions build the problem hierarchy: (1) **$B$-smooth** (`IsSmooth`): $\\operatorname{gpf}(n) \\leq B$, meaning all prime factors are $\\leq B$. (2) **sqrt-smooth** (`IsSqrtSmooth`): $\\operatorname{gpf}(n) < \\sqrt{n}$, using real-valued casting `(gpf n : R) < Real.sqrt n`. (3) **ConsecutiveSqrtSmooth**: both $n$ and $n+1$ are sqrt-smooth. Note that sqrt-smooth implies $n$ is composite with at least two prime factors.",
+    "mathContext": "$\\text{IsSmooth}(B, n) :\\Leftrightarrow \\operatorname{gpf}(n) \\leq B$; $\\text{IsSqrtSmooth}(n) :\\Leftrightarrow \\operatorname{gpf}(n) < \\sqrt{n}$; $\\text{ConsecutiveSqrtSmooth}(n) :\\Leftrightarrow \\text{IsSqrtSmooth}(n) \\wedge \\text{IsSqrtSmooth}(n+1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "B-smooth number",
+      "friable number",
+      "square root bound",
+      "real casting"
+    ],
+    "prerequisites": [
+      "gpf axioms",
+      "Real.sqrt",
+      "natural-to-real casting"
+    ]
+  },
+  {
+    "id": "ann-e370-construction",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 92,
+      "endLine": 109
+    },
+    "type": "definition",
+    "title": "Steinerberger Construction: n = m^2 - 1",
+    "content": "The central construction: $n = m^2 - 1 = (m-1)(m+1)$ (difference of squares). This gives $n + 1 = m^2$, so $\\operatorname{gpf}(n+1) = \\operatorname{gpf}(m)$. If $m$ is a power of 2, then $\\operatorname{gpf}(m^2) = 2 < m = \\sqrt{m^2}$, automatically making $n+1$ sqrt-smooth. For $n$ itself, we need $\\operatorname{gpf}((m-1)(m+1)) < m \\approx \\sqrt{n}$, requiring both $m-1$ and $m+1$ to have only small prime factors. The factorization identity is axiomatized since Lean's natural subtraction complicates $m^2 - 1$ when $m < 2$.",
+    "mathContext": "$\\text{SteinerbergerConstruction}(m) = m^2 - 1 = (m-1)(m+1)$, $n + 1 = m^2$, $\\operatorname{gpf}(n+1) = \\operatorname{gpf}(m)$. The `steinerberger_succ` identity is verified by Aristotle using `nlinarith` and `omega`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "difference of squares",
+      "factorization",
+      "constructive proof"
+    ],
+    "prerequisites": [
+      "gpf axioms",
+      "natural subtraction",
+      "Lean arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e370-example63",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 111,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Worked Examples: n=63 and n=224",
+    "content": "Two verified examples of the Steinerberger construction:\n\n**n = 63** ($m = 8 = 2^3$): $63 = 7 \\times 3^2$, so $\\operatorname{gpf}(63) = 7 < \\sqrt{63} \\approx 7.94$. And $64 = 2^6$, so $\\operatorname{gpf}(64) = 2 < \\sqrt{64} = 8$. Both conditions verified by Aristotle using `Real.sqrt_lt_sqrt`.\n\n**n = 224** ($m = 15$): $224 = 2^5 \\times 7$, $\\operatorname{gpf}(224) = 7 < \\sqrt{224} \\approx 14.97$. And $225 = 15^2 = (3 \\times 5)^2$, $\\operatorname{gpf}(225) = 5 < 15$.\n\n`ValidSteinerbergerM` additionally requires $m-1$ and $m+1$ to be composite.",
+    "mathContext": "$\\operatorname{gpf}(63) = 7 < 7.94 \\approx \\sqrt{63}$; $\\operatorname{gpf}(64) = 2 < 8 = \\sqrt{64}$. Proved using `Real.sqrt_sq` and `Real.sqrt_lt_sqrt` with gpf values from axioms `gpf_63 = 7` and `gpf_64 = 2`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "concrete verification",
+      "norm_num",
+      "sqrt comparison",
+      "Aristotle proof"
+    ],
+    "prerequisites": [
+      "gpf_63 axiom",
+      "gpf_64 axiom",
+      "Real.sqrt_lt_sqrt"
+    ]
+  },
+  {
+    "id": "ann-e370-main",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 158,
+      "endLine": 201
+    },
+    "type": "concept",
+    "title": "Main Theorem: Infinitely Many Solutions (sorry'd)",
+    "content": "**erdos_370_infinitely_many**: The set $\\{n : \\text{ConsecutiveSqrtSmooth}(n)\\}$ is infinite. **erdos_370**: There exists an injective function $f : \\mathbb{N} \\to \\mathbb{N}$ with $\\text{ConsecutiveSqrtSmooth}(f(k))$ for all $k$. Both statements are **sorry'd** --- the proof would require showing infinitely many valid $m$ exist (e.g., $m = 2^k$ for suitable $k$, where both $2^k - 1$ and $2^k + 1$ have small prime factors). Aristotle failed to load these due to namespace issues.",
+    "mathContext": "$|\\{n \\in \\mathbb{N} : \\operatorname{gpf}(n) < \\sqrt{n} \\wedge \\operatorname{gpf}(n+1) < \\sqrt{n+1}\\}| = \\infty$. Two formulations: `Set.Infinite` and injective function encoding.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.Infinite",
+      "injective function",
+      "infinitude",
+      "sorry"
+    ],
+    "prerequisites": [
+      "ConsecutiveSqrtSmooth",
+      "Steinerberger construction",
+      "infinitely many valid m"
+    ]
+  },
+  {
+    "id": "ann-e370-pomerance",
+    "proofId": "erdos-370",
+    "range": {
+      "startLine": 203,
+      "endLine": 255
+    },
+    "type": "concept",
+    "title": "Pomerance's Density Perspective",
+    "content": "**Pomerance's observation**: Replacing the exponent $1/2$ with $1/\\sqrt{e} - \\varepsilon \\approx 0.6065 - \\varepsilon$ makes the statement true by a density argument. The **Dickman-de Bruijn function** $\\rho(u)$ gives the density of $u$-smooth numbers: $\\rho(u) = 1$ for $u \\leq 1$, satisfying the delay-differential equation $u\\rho'(u) = -\\rho(u-1)$. At $u = \\sqrt{e}$, $\\rho(\\sqrt{e}) = 1/2$, so half of all integers are $\\sqrt{e}$-smooth, making consecutive pairs abundant. The formalization defines `PomeranceExponent = 1/sqrt(e)` and axiomatizes a weak Dickman density result. This explains why the original problem with exponent $1/2$ requires constructive methods: sqrt-smooth numbers have density 0.",
+    "mathContext": "$\\rho(u) = $ density of $\\{n : \\operatorname{gpf}(n) \\leq n^{1/u}\\}$; $\\rho(\\sqrt{e}) = 1/2$; $\\text{PomeranceExponent} = 1/\\sqrt{e} \\approx 0.6065$. The Dickman function satisfies $\\rho(2) = 1 - \\ln 2 \\approx 0.307$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dickman function",
+      "smooth number density",
+      "critical exponent",
+      "delay-differential equation"
+    ],
+    "prerequisites": [
+      "asymptotic density",
+      "real analysis",
+      "smooth number theory"
+    ]
+  }
+]

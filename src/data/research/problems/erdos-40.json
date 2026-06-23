@@ -1,0 +1,217 @@
+{
+  "slug": "erdos-40",
+  "title": "Erdős #40",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "For what functions $g(N)\\to \\infty$ is it true that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\frac{N^{1/2}}{g(N)}\\]implies $\\limsup 1_A\\ast 1_A(n)=\\infty$? This is a stronger form of the Erdős-Turán conjecture [28] (since establishing this for any function $g(N)\\to \\infty$ would imply a positive solution to [28]). View the LaTeX source",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-27T00:00:00+00:00",
+    "iteration": 4,
+    "focus": "Gallery formalization complete: Erdos40Problem.lean is verified (0 axioms, 0 sorries, badge 'mathlib'). The open conjecture itself remains unsolved ($500 bounty).",
+    "blockers": [],
+    "nextAction": "None — the formalization framework is done. Solving the underlying conjecture is beyond current scope.",
+    "attemptCounts": {
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 0 axioms, 0 sorries. Converted unused sidon_density_bound axiom to def.",
+    "builtItems": [
+      "bounded_rep_not_unbounded: contrapositive of unboundedness — if rep ≤ B for all n then ¬RepUnbounded",
+      "Removed random_heuristic and threshold_heuristic (were axiom : True, now comments)",
+      "repUnbounded_iff and basis2_iff: definition unfoldings for API",
+      "problem_40_implies_28 (PROVED) — if #40 holds for any g→∞ then #28 holds, via g(N)=N and countingFn≥1",
+      "rep_set_finite, basis_has_element, countingFn_pos (helper lemmas)",
+      "Removed 2 unused open-conjecture axioms (erdos_turan_conjecture, erdos_40_conjecture)",
+      "b2g_density_bound: axiom -> theorem via counting lemma + sqrt arithmetic (Erdos40Problem.lean:147)",
+      "b2g_counting_sq_bound: counting lemma (sorry) for k^2 <= 2g(2N-1)",
+      "Converted sidon_density_bound from axiom to def SidonDensityBound"
+    ],
+    "insights": [
+      "random_heuristic and threshold_heuristic were literally True — pure comment axioms adding to count for zero value",
+      "problem_40_implies_28 requires showing a basis of order 2 has density ≥ N^{1/2}/g(N) for some g→∞; argument: use g(N)=N, then density condition becomes trivial since basis is infinite",
+      "Sidon set bound axiom is a classical result — likely not in Mathlib but deep",
+      "The $500 prize is for the strongest form (all g→∞); weaker forms may be approachable",
+      "problem_40_implies_28 proof: take g(N)=N, basis gives countingFn≥1≥√N/N for large N",
+      "Both open-conjecture axioms were completely unused by any theorem - pure documentation artifacts",
+      "The 2 remaining axioms (sidon_density_bound, b2g_density_bound) are known results provable via counting arguments",
+      "b2g proof chain: k^2 <= 2g(2N-1) <= 4gN <= 4(g+1)^2*N, then sqrt gives k <= 2(g+1)*sqrt(N)",
+      "Counting lemma needs: Finset pair counting via swap injection + fiber decomposition by sum + repCount bound",
+      "sidon_density_bound converted from axiom to def (was unused in all proofs)",
+      "File is now fully verified: 0 axioms, 0 sorries"
+    ],
+    "mathlibGaps": [
+      "Set.ncard reasoning needed for counting function properties",
+      "No Sidon set machinery in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove sidon_density_bound via counting: Sidon pairs give injective sum map, bound by range {2,...,2N}",
+      "Prove b2g_density_bound: generalize Sidon argument with multiplicity g",
+      "Both proofs need Finset/Set.ncard machinery for pair counting"
+    ],
+    "markdown": "# Erdős #40 - Knowledge Base\n\n## Problem Statement\n\nFor what functions $g(N)\\to \\infty$ is it true that\\[\\lvert A\\cap \\{1,\\ldots,N\\}\\rvert \\gg \\frac{N^{1/2}}{g(N)}\\]implies $\\limsup 1_A\\ast 1_A(n)=\\infty$? This is a stronger form of the Erdős-Turán conjecture [28] (since establishing this for any function $g(N)\\to \\infty$ would imply a positive solution to [28]). View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $500\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #2\n- Problem #28\n- Problem #39\n- Problem #41\n- Problem #1\n\n## References\n\n- Er95\n- Er97c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-40",
+    "erdos-400",
+    "erdos-401",
+    "erdos-402",
+    "erdos-403",
+    "erdos-404",
+    "erdos-405",
+    "erdos-406",
+    "erdos-407",
+    "erdos-408",
+    "erdos-409"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T06:58:30.838Z",
+  "lastUpdate": "2026-04-27T00:00:00+00:00",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos400Problem.lean",
+      "filename": "Erdos400Problem.lean",
+      "lineCount": 172,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos400Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos401Problem.lean",
+      "filename": "Erdos401Problem.lean",
+      "lineCount": 320,
+      "theoremCount": 20,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos401Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos402Problem.lean",
+      "filename": "Erdos402Problem.lean",
+      "lineCount": 694,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos402Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos403Problem.lean",
+      "filename": "Erdos403Problem.lean",
+      "lineCount": 340,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos403Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos404Problem.lean",
+      "filename": "Erdos404Problem.lean",
+      "lineCount": 311,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos404Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos405Problem.lean",
+      "filename": "Erdos405Problem.lean",
+      "lineCount": 300,
+      "theoremCount": 15,
+      "axiomCount": 3,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos405Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos406Problem.lean",
+      "filename": "Erdos406Problem.lean",
+      "lineCount": 273,
+      "theoremCount": 14,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos406Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos407Problem.lean",
+      "filename": "Erdos407Problem.lean",
+      "lineCount": 220,
+      "theoremCount": 7,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos407Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos408Problem.lean",
+      "filename": "Erdos408Problem.lean",
+      "lineCount": 397,
+      "theoremCount": 15,
+      "axiomCount": 5,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos408Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos409Problem.lean",
+      "filename": "Erdos409Problem.lean",
+      "lineCount": 425,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos409Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos40Problem.lean",
+      "filename": "Erdos40Problem.lean",
+      "lineCount": 292,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos40Problem.lean"
+    }
+  ]
+}

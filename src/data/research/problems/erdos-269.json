@@ -1,0 +1,90 @@
+{
+  "slug": "erdos-269",
+  "title": "Erdős #269",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $P$ be a finite set of primes with $\\lvert P\\rvert \\geq 2$ and let $\\{a_1<a_2<\\cdots\\}=\\{ n\\in \\mathbb{N} : \\textrm{if }p\\mid n\\textrm{ then }p\\in P\\}$. Is the sum\\[\\sum_{n=1}^\\infty \\frac{1}{[a_1,\\ldots,a_n]},\\]where $[a_1,\\ldots,a_n]$ is the lowest common multiple of $a_1,\\ldots,a_n$, irrational?\n\n\n\nIf $P$ is infinite this sum is always irrational (in \\cite{Er88c} Erd\\H{o}s says this is a 'simple exercise').\n\nThis problem was asked by Erd\\H{o}s in a letter to the editor written January 1st 1973 in issue 12 of the Fibonacci Quarterly, 1974, p. 335. In that letter he says that he can prove the sum is irrational if duplicate summands are removed.",
+    "plain": "Let $P$ be a finite set of primes with $\\lvert P\\rvert \\geq 2$ and let $\\{a_1<a_2<\\cdots\\}=\\{ n\\in \\mathbb{N} : \\textrm{if }p\\mid n\\textrm{ then }p\\in P\\}$. Is the sum\\[\\sum_{n=1}^\\infty \\frac{1}{[a_1,\\ldots,a_n]},\\]where $[a_1,\\ldots,a_n]$ is the lowest common multiple of $a_1,\\ldots,a_n$, irrational?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-12T22:30:27.389Z",
+    "iteration": 3,
+    "focus": "Surveyed; problem essentially complete with appropriate axiomatization. Added one routine structural lemma.",
+    "blockers": [],
+    "nextAction": "Move to other problems. Future deep work: formalize the infinite-P case using irrationality criterion + p-adic estimates (substantial multi-session effort).",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ROUTINE: Added pow_isPSmooth structural lemma. Total: 15T, 3A (all appropriate), 0S, 303 lines. No further axiom elimination possible — the three remaining axioms (erdos_269 finite OPEN, erdos_269_infinite, erdos_269_distinct) require deep analytic infrastructure beyond Mathlib.",
+    "builtItems": [
+      "theorem smoothSeq_zero (Nat.nth_count proof, 8 lines)",
+      "Fixed one_isPSmooth (2 lines, simpler proof)",
+      "Fixed partialLcm_succ, erdos_269_equivalent, lcmPadicVal",
+      "partialLcm_dvd_succ: L_n | L_{n+1} (Nat.dvd_lcm_left)",
+      "smoothSeq_dvd_partialLcm: a_k | L_n for k < n (Finset.dvd_lcm)",
+      "pow_isPSmooth (Erdos269Problem.lean:~78): p^k is P-smooth for prime p ∈ P and k ≥ 1 (structural building block for P infinite ⇒ {a_n} infinite). Adds 1 theorem (14→15), 16 lines (287→303). Axiom count unchanged (3) — no further reduction possible per prior session."
+    ],
+    "insights": [
+      "smoothSeq_zero provable: 1 is min P-smooth number (count 1 = 0 since IsPSmooth P 0 fails)",
+      "Need infinite set proof: P contains prime p → p^k are all P-smooth",
+      "partialLcm_succ may need Nat.lcm_comm instead of ring",
+      "smoothSeq_zero proved via Nat.nth_count + Nat.count_succ: count at 1 is 0 since IsPSmooth P 0 is false (0>0 fails)",
+      "one_isPSmooth simplified: absurd (Nat.le_of_dvd) (not_le_of_lt hp.one_lt)",
+      "partialLcm_succ fixed: lcm_insert now unconditional in Mathlib, use _root_.lcm_comm",
+      "Multiple pre-existing Mathlib API breakages fixed (deprecated range_succ, padicValNat, docstring syntax)",
+      "erdos_269_infinite: described as simple exercise but requires irrationality criterion + p-adic analysis — too deep for single session",
+      "erdos_269_distinct: proven by Erdős but formalizing the proof needs real analysis infrastructure",
+      "All 3 remaining axioms are appropriate: no further elimination possible",
+      "partialLcm_pos requires infinite P-smooth set hypothesis (smoothSeq can be 0 for empty P)"
+    ],
+    "mathlibGaps": [
+      "Nat.nth computation for noncomputable predicates requires count/nth reasoning"
+    ],
+    "nextSteps": [],
+    "markdown": "# Erdős #269 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $P$ be a finite set of primes with $\\lvert P\\rvert \\geq 2$ and let $\\{a_1<a_2<\\cdots\\}=\\{ n\\in \\mathbb{N} : \\textrm{if }p\\mid n\\textrm{ then }p\\in P\\}$. Is the sum\\[\\sum_{n=1}^\\infty \\frac{1}{[a_1,\\ldots,a_n]},\\]where $[a_1,\\ldots,a_n]$ is the lowest common multiple of $a_1,\\ldots,a_n$, irrational?\n\n\n\nIf $P$ is infinite this sum is always irrational (in \\cite{Er88c} Erd\\H{o}s says this is a 'simple exercise').\n\nThis problem was asked by Erd\\H{o}s in a letter to the editor written January 1st 1973 in issue 12 of the Fibonacci Quarterly, 1974, p. 335. In that letter he says that he can prove the sum is irrational if duplicate summands are removed.\n\n\n\n\nReferences\n\n\n[Er88c] Erd\\\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #268\n- Problem #270\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er88c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-26",
+    "erdos-269"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T22:30:27.390Z",
+  "lastUpdate": "2026-04-27T17:15:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos269Problem.lean",
+      "filename": "Erdos269Problem.lean",
+      "lineCount": 304,
+      "theoremCount": 15,
+      "axiomCount": 3,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos269Problem.lean"
+    }
+  ]
+}

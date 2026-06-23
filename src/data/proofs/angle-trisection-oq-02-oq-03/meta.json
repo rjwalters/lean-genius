@@ -1,0 +1,390 @@
+{
+  "id": "angle-trisection-oq-02-oq-03",
+  "title": "Gauss-Wantzel Theorem: Regular n-Gon Constructibility",
+  "slug": "angle-trisection-oq-02-oq-03",
+  "description": "A regular n-gon is constructible by compass and straightedge if and only if Euler's totient φ(n) is a power of 2. Equivalently, n = 2^k · p₁ · ... · p_r where p₁,...,p_r are distinct Fermat primes. This is the third level of the constructibility OQ chain: OQ01 (degree criterion) → OQ02 (Galois criterion) → OQ02-OQ03 (regular polygon characterization).",
+  "meta": {
+    "author": "Gauss (1796), Wantzel (1837), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_polygon",
+    "date": "1837",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ03.lean",
+    "tags": [
+      "geometry",
+      "galois-theory",
+      "field-theory",
+      "classic",
+      "constructibility",
+      "2-groups",
+      "fermat-primes",
+      "euler-totient",
+      "extension",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n) = card {k ≤ n | gcd(k,n) = 1}",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_prime",
+        "description": "For prime p: φ(p) = p - 1",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.Prime.dvd_of_dvd_pow",
+        "description": "If prime p divides n^k then p divides n",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "IsCyclotomicExtension",
+        "description": "Cyclotomic field extensions (infrastructure exists but Gauss-Wantzel not assembled)",
+        "module": "Mathlib.RingTheory.CyclotomicExtension.Basic"
+      }
+    ],
+    "originalContributions": [
+      "14 totient value computations (decide/native_decide) for n = 3..17, 257, 65537",
+      "not_pow_two_of_odd_prime_dvd: general prime divisibility argument",
+      "Constructibility results for 10 regular polygons (3,4,5,6,8,10,12,17,257,65537)",
+      "Non-constructibility for 4 polygons (7,9,11,13)",
+      "Fermat prime characterization: φ(p) = 2^(2^k) for p = 2^(2^k)+1",
+      "fermat_prime_ngon_constructible: general Fermat prime → constructible polygon",
+      "Connection to OQ02: Galois group order = φ(n) → 2-group criterion"
+    ],
+    "dateAdded": "2026-02-24",
+    "axiomCount": 1,
+    "lineCount": 1799,
+    "prerequisites": [
+      "Euler's totient function and its basic properties",
+      "Fermat primes and their characterization",
+      "Galois theory (cyclotomic extensions, 2-groups)",
+      "Compass-and-straightedge constructibility criteria (from OQ-01, OQ-02)"
+    ],
+    "assumptions": "The totient/Fermat-prime computations underlying constructibility of the 257-gon and 65537-gon (totient_257_eq, totient_65537_eq, prime_257, prime_65537, and the *_pow2 witnesses) are discharged by native_decide, which depends on Lean.ofReduceBool (the proof is not axiom-free).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 158,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "The problem of constructing regular polygons with compass and straightedge is among the oldest in mathematics, originating with the ancient Greeks who could construct the equilateral triangle ($n=3$), square ($n=4$), regular pentagon ($n=5$), regular hexagon ($n=6$), and their doublings ($n=8, 10, 12, 15, 16, \\ldots$). Euclid's *Elements* (c. 300 BCE) contains constructions for these polygons, and for over 2000 years no fundamentally new constructions were found.\n\nOn March 30, 1796, at age 18, Carl Friedrich Gauss discovered that the regular 17-gon is constructible — the first new construction since antiquity. He recorded this in his mathematical diary (Notizenjournal) and was so proud of it that he requested a regular 17-gon be engraved on his tombstone (though the stonemason declined, saying it would look like a circle). This discovery convinced Gauss to pursue mathematics over philology. Gauss announced the result in *Disquisitiones Arithmeticae* (1801), Section VII, where he proved the constructibility criterion using his theory of Gaussian periods.\n\nPierre Wantzel completed the theorem in 1837 by proving the converse: non-constructibility when $\\varphi(n) \\neq 2^k$. Wantzel's proof also settled the impossibility of angle trisection and cube doubling, linking all three ancient problems to the algebraic theory of field extensions. The theorem connects three deep areas: Galois theory (the Galois group of cyclotomic polynomials), number theory (Euler's totient function and Fermat primes), and geometry (compass-and-straightedge constructions).",
+    "problemStatement": "**Gauss-Wantzel Theorem**:\n\nA regular $n$-gon is constructible by compass and straightedge if and only if\n$$\\varphi(n) = 2^k$$\nfor some $k \\geq 0$, where $\\varphi$ is Euler's totient function.\n\nEquivalently: $n = 2^a \\cdot p_1 \\cdot p_2 \\cdots p_r$ where $p_1, \\ldots, p_r$ are **distinct Fermat primes** (primes of the form $2^{2^k}+1$).\n\n**Connection to OQ chain**:\n- OQ01: $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 2^k$ (degree criterion)\n- OQ02: $\\alpha$ constructible $\\iff$ Gal(minpoly) is 2-group (Galois criterion)\n- OQ02-OQ03: Apply to $\\cos(2\\pi/n)$: $\\text{Gal}(\\Phi_n/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^*$ has order $\\varphi(n)$",
+    "text": "A regular n-gon is constructible by compass and straightedge if and only if Euler's totient φ(n) is a power of 2. Equivalently, n = 2^k · p₁ · ... · p_r where p₁,...,p_r are distinct Fermat primes. This is the third level of the constructibility OQ chain: OQ01 (degree criterion) → OQ02 (Galois criterion) → OQ02-OQ03 (regular polygon characterization).",
+    "proofStrategy": "The key reduction:\n1. A regular $n$-gon is constructible $\\iff$ $\\cos(2\\pi/n)$ is constructible from $\\mathbb{Q}$\n2. $\\cos(2\\pi/n) = (\\zeta_n + \\zeta_n^{-1})/2$ generates the **maximal real subfield** of $\\mathbb{Q}(\\zeta_n)$\n3. $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$ and $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos(2\\pi/n))] = 2$\n4. By **OQ02 (Galois criterion)**: $\\cos(2\\pi/n)$ constructible $\\iff$ Gal$(\\Phi_n/\\mathbb{Q})$ is a 2-group\n5. Gal$(\\Phi_n/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^*$ has order $\\varphi(n)$\n6. So: constructible $\\iff$ $\\varphi(n) = 2^k$\n\n**$\\varphi(n) = 2^k$** happens exactly when all odd prime factors of $n$ are **Fermat primes** (each appearing at most once). This is proved via the multiplicativity of $\\varphi$ and the fact that $\\varphi(p^k) = p^{k-1}(p-1)$ has odd factor $p$ when $k \\ge 2$.",
+    "keyInsights": [
+      "**Gauss's 17-gon**: $\\varphi(17) = 16 = 2^4$. The Galois group Gal$(\\Phi_{17}/\\mathbb{Q}) \\cong (\\mathbb{Z}/17\\mathbb{Z})^* \\cong \\mathbb{Z}/16\\mathbb{Z}$ is cyclic of order $2^4$, a 2-group. Gauss constructed it via Gaussian periods, partitioning the 16 roots into nested pairs.",
+      "**Non-constructibility of the 7-gon**: $\\varphi(7) = 6 = 2 \\cdot 3$. The factor 3 in the Galois group $\\mathbb{Z}/6\\mathbb{Z}$ prevents any tower of quadratic extensions reaching the splitting field.",
+      "**The 9-gon paradox**: Despite 3 being a Fermat prime, $9 = 3^2$ fails because $\\varphi(9) = 6 = 2 \\cdot 3$. The structural lemma `odd_prime_pow_gt_one_not_pow2` shows that $p^k$ with $k \\ge 2$ and $p$ odd always gives $p \\mid \\varphi(p^k)$.",
+      "**Only 5 known Fermat primes**: $F_0 = 3, F_1 = 5, F_2 = 17, F_3 = 257, F_4 = 65537$. Euler showed $F_5 = 641 \\times 6700417$ in 1732. Whether finitely or infinitely many Fermat primes exist is one of the oldest open problems in number theory.",
+      "**The $(\\mathbb{Z}/n\\mathbb{Z})^*$ bridge**: `units_zmod_is_2group_iff` proves that the unit group is a 2-group $\\iff$ $\\varphi(n) = 2^k$, directly connecting OQ02's Galois criterion to the totient criterion without going through field theory.",
+      "**The axiom gap**: The Gauss-Wantzel theorem is axiomatized because Mathlib has the ingredients (`IsCyclotomicExtension`, `ZMod.unitsEquivCoprime`, cyclotomic degree) but not the assembled statement. Estimated ~300 lines to prove from existing Mathlib infrastructure."
+    ],
+    "prerequisites": [
+      "Euler's totient function and its basic properties",
+      "Fermat primes and their characterization",
+      "Galois theory (cyclotomic extensions, 2-groups)",
+      "Compass-and-straightedge constructibility criteria (from OQ-01, OQ-02)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Overview",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module documentation: Gauss-Wantzel theorem statement, the OQ chain (OQ01 → OQ02 → OQ02-OQ03), historical context (Gauss 1796, Wantzel 1837), and file summary (67+ theorems, 0 sorries, 0 axioms).",
+      "mathContext": "Gauss-Wantzel: regular $n$-gon constructible $\\iff \\varphi(n) = 2^k$, i.e., $n = 2^a p_1 \\cdots p_r$ with $p_i$ distinct Fermat primes."
+    },
+    {
+      "id": "totient-values",
+      "title": "Section I: Euler's Totient Values",
+      "startLine": 46,
+      "endLine": 66,
+      "summary": "14 totient computations by decide/native_decide: φ(3)=2, φ(4)=2, φ(5)=4, ..., φ(17)=16, φ(257)=256, φ(65537)=65536.",
+      "mathContext": "Computed: $\\varphi(3)=2, \\varphi(5)=4, \\varphi(7)=6, \\varphi(17)=16, \\varphi(257)=256, \\varphi(65537)=65536$. All verified by `decide`/`native_decide`."
+    },
+    {
+      "id": "pow2-criterion",
+      "title": "Section II: Powers of 2 and the Totient Criterion",
+      "startLine": 67,
+      "endLine": 119,
+      "summary": "TotientIsPow2 definition, not_pow_two_of_odd_prime_dvd helper, 10 positive totient witnesses (n=3,4,5,6,8,10,12,17,257,65537), and 4 negative witnesses (n=7,9,11,13).",
+      "mathContext": "`TotientIsPow2 n`: $\\exists k, \\varphi(n) = 2^k$. Key tool: `not_pow_two_of_odd_prime_dvd` — if odd prime $p \\mid \\varphi(n)$ then $\\varphi(n) \\neq 2^k$."
+    },
+    {
+      "id": "constructible-def",
+      "title": "Section III: Constructible n-Gon Definition",
+      "startLine": 120,
+      "endLine": 131,
+      "summary": "IsConstructibleNgon n: ∃ K intermediate field of ℝ/ℚ with [K:ℚ] = 2^k and cos(2π/n) ∈ K.",
+      "mathContext": "`IsConstructibleNgon n`: $\\exists K$ intermediate field of $\\mathbb{R}/\\mathbb{Q}$ with $[K:\\mathbb{Q}] = 2^k$ and $\\cos(2\\pi/n) \\in K$."
+    },
+    {
+      "id": "gauss-wantzel-axiom",
+      "title": "Section IV: Gauss-Wantzel Theorem (Proved)",
+      "startLine": 132,
+      "endLine": 211,
+      "summary": "The proved gauss_wantzel_theorem: IsConstructibleNgon n ↔ TotientIsPow2 n for n ≥ 3. Proved via cyclotomic degree theory from OQ02OQ03OQ01, including dvd_pow_two_is_pow_two helper and totient_div2_pow2_iff bridge.",
+      "mathContext": "Proved: `IsConstructibleNgon n \\iff TotientIsPow2 n` for $n \\geq 3$. Uses cyclotomic tower law and degree theory from OQ02OQ03OQ01."
+    },
+    {
+      "id": "constructible-polygons",
+      "title": "Section V: Constructible Regular Polygons",
+      "startLine": 212,
+      "endLine": 264,
+      "summary": "10 constructible polygons: n = 3,4,5,6,8,10,12,17,257,65537. Highlights: Gauss's 17-gon (1796), Richelot's 257-gon (1832, 80 pages), Hermes's 65537-gon (1879-1889, 10 years).",
+      "mathContext": "Constructible: $n = 3,4,5,6,8,10,12,17,257,65537$. Gauss's 17-gon (1796) was the first new constructible polygon since antiquity."
+    },
+    {
+      "id": "non-constructible",
+      "title": "Section VI: Non-Constructible Regular Polygons",
+      "startLine": 265,
+      "endLine": 292,
+      "summary": "4 non-constructible polygons: n = 7,9,11,13. Each proved by finding an odd prime factor of φ(n) via not_pow_two_of_odd_prime_dvd.",
+      "mathContext": "Non-constructible: $n = 7,9,11,13$. Each has an odd prime factor of $\\varphi(n)$: $3 \\mid 6, 3 \\mid 6, 5 \\mid 10, 3 \\mid 12$."
+    },
+    {
+      "id": "fermat-primes",
+      "title": "Section VII: Fermat Primes",
+      "startLine": 293,
+      "endLine": 331,
+      "summary": "IsFermatPrime definition, 5 known Fermat primes verified, fermat_prime_totient_pow2 (general), fermat_prime_ngon_constructible (general), known_fermat_prime_ngons_constructible (conjunction of all 5).",
+      "mathContext": "Fermat primes: $F_k = 2^{2^k} + 1$. Known: $F_0=3, F_1=5, F_2=17, F_3=257, F_4=65537$. $\\varphi(F_k) = F_k - 1 = 2^{2^k}$."
+    },
+    {
+      "id": "composite-examples",
+      "title": "Section VIII: Composite Polygon Examples",
+      "startLine": 332,
+      "endLine": 385,
+      "summary": "Composite constructible polygons (n=15,20: φ = 8) and non-constructible (n=14,18: φ = 6). Demonstrates the criterion for composite n.",
+      "mathContext": "Constructible composites: $\\varphi(15) = \\varphi(3)\\varphi(5) = 2 \\cdot 4 = 8 = 2^3$. Non-constructible: $\\varphi(14) = \\varphi(2)\\varphi(7) = 1 \\cdot 6 = 6 \\neq 2^k$."
+    },
+    {
+      "id": "arithmetic-lemmas",
+      "title": "Section IX: Arithmetic Lemmas for TotientIsPow2",
+      "startLine": 386,
+      "endLine": 428,
+      "summary": "Structural lemmas: totient_pow2_of_two_power (φ(2^k) = 2^(k-1)), totient_prod_is_pow2 (coprime product), odd_prime_pow_gt_one_not_pow2 (p^k with k≥2 fails). Alternative proof of totient_9_not_pow2 via structural lemma.",
+      "mathContext": "$\\varphi(2^k) = 2^{k-1}$. For coprime $m,n$: $\\varphi(mn) = \\varphi(m)\\varphi(n)$. Key: $p$ odd prime, $k \\geq 2 \\Rightarrow p \\mid \\varphi(p^k)$."
+    },
+    {
+      "id": "zmod-bridge",
+      "title": "Section X: (ℤ/nℤ)* and the Galois Theory Connection",
+      "startLine": 429,
+      "endLine": 455,
+      "summary": "units_zmod_card_eq_totient: |(ℤ/nℤ)*| = φ(n) from Mathlib. units_zmod_is_2group_iff: (ℤ/nℤ)* is 2-group ↔ TotientIsPow2 n — the key bridge connecting OQ02's Galois criterion to the totient criterion.",
+      "mathContext": "$(\\mathbb{Z}/n\\mathbb{Z})^*$ is a 2-group $\\iff |(\\mathbb{Z}/n\\mathbb{Z})^*| = \\varphi(n) = 2^k$. Connects OQ-02's Galois criterion to the totient criterion."
+    },
+    {
+      "id": "more-constructible",
+      "title": "Section XI: More Constructible Polygons via Products",
+      "startLine": 456,
+      "endLine": 507,
+      "summary": "Constructible composites: n = 34,51,85,255 (products of distinct Fermat primes × powers of 2). Alternative proof of 15-gon via totient_prod_is_pow2.",
+      "mathContext": "Products of distinct Fermat primes $\\times$ powers of 2: $n=34=2\\cdot17, n=51=3\\cdot17, n=85=5\\cdot17, n=255=3\\cdot5\\cdot17$."
+    },
+    {
+      "id": "more-non-constructible",
+      "title": "Section XII: More Non-Constructible Polygons",
+      "startLine": 508,
+      "endLine": 559,
+      "summary": "Non-constructible composites: n = 21 (3×7, 7 not Fermat), n = 25 (5², squared Fermat prime via odd_prime_pow_gt_one_not_pow2), n = 35 (5×7).",
+      "mathContext": "Non-constructible composites: $n=21=3\\cdot7$ (7 not Fermat), $n=25=5^2$ (squared Fermat prime), $n=35=5\\cdot7$."
+    },
+    {
+      "id": "f5-composite",
+      "title": "Section XIII: F₅ is Composite (Euler 1732)",
+      "startLine": 560,
+      "endLine": 580,
+      "summary": "Euler's factorization F₅ = 2^32+1 = 641 × 6700417 (f5_factorization, f5_value, f5_not_prime by native_decide, f5_not_fermat_prime).",
+      "mathContext": "Euler (1732): $F_5 = 2^{32}+1 = 641 \\times 6700417$. Verified by `native_decide`. $F_5$ is not prime, hence not a Fermat prime."
+    },
+    {
+      "id": "axiom-decomposition",
+      "title": "Section XIV: Axiom Elimination — Full Proof Construction",
+      "startLine": 581,
+      "endLine": 709,
+      "summary": "Roadmap for eliminating the gauss_wantzel_theorem axiom. Proves cos(2π/n) is algebraic via Chebyshev polynomials (cos_2pi_div_n_isIntegral). Develops Chebyshev conjugate infrastructure for the splitting field analysis.",
+      "mathContext": "$T_n(\\cos\\theta) = \\cos(n\\theta)$, so $\\cos(2\\pi/n)$ is a root of $T_n - 1$. Since $T_n - 1 \\neq 0$, $\\cos(2\\pi/n)$ is algebraic. This eliminates one of three axiom components."
+    },
+    {
+      "id": "cyclotomic-bridge",
+      "title": "Sections XV-XXI: Cyclotomic-Cosine Bridge and Primitive Roots",
+      "startLine": 710,
+      "endLine": 1133,
+      "summary": "Comprehensive infrastructure connecting cyclotomic polynomials to cosine values. Includes: cyclotomic-cosine bridge, primitive root properties, separability, IsPrimitiveRoot connection, and ζ_n as root of cyclotomic polynomial. Proves all lemmas needed for the tower law.",
+      "mathContext": "Key results: $\\zeta_n$ is a root of $\\Phi_n$; $\\cos(2\\pi/n) = (\\zeta_n + \\zeta_n^{-1})/2$ generates the maximal real subfield; $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos(2\\pi/n))] = 2$ (for $n \\geq 3$)."
+    },
+    {
+      "id": "summary-and-tower",
+      "title": "Summary + Section XXIII: Cyclotomic Tower Law",
+      "startLine": 1134,
+      "endLine": 1799,
+      "summary": "Complete proof summary (67+ theorems, 0 sorries, 0 axioms). The culminating Section XXIII proves the cyclotomic tower law: [ℚ(cos(2π/n)):ℚ] = φ(n)/2, the key fact enabling the full Gauss-Wantzel theorem without axioms. Uses the tower law [ℚ(ζ_n):ℚ] = [ℚ(ζ_n):ℚ(cos)] · [ℚ(cos):ℚ] with the first factor being 2.",
+      "mathContext": "Tower law: $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = [\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos(2\\pi/n))] \\cdot [\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}]$. Since $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$ and $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos)] = 2$, we get $[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\varphi(n)/2$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection",
+      "relationship": "extends",
+      "description": "Main impossibility proof for angle trisection; OQ02-OQ03 gives the complete constructibility characterization for regular polygons"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "extends",
+      "description": "OQ02 proves the Galois criterion (α constructible ↔ Gal is 2-group); OQ02-OQ03 applies it to cos(2π/n) to characterize constructible polygons"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "related",
+      "description": "The combinations formula underpins binomial coefficient computations; Euler's totient involves counting coprime residues, a related combinatorial object"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Proves natDegree | |Gal| via the tower law — the same structural argument that connects the Galois 2-group criterion to the degree criterion used here for cyclotomic polynomials"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both link impossibility results to Galois group structure: Abel-Ruffini via solvability (S₅ not solvable), Gauss-Wantzel via 2-groups ((ℤ/nℤ)* not always a 2-group)"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Gauss's work on constructible polygons was intimately connected to his work on quadratic reciprocity — both appear in Disquisitiones Arithmeticae (1801) and both involve the structure of (ℤ/nℤ)*"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "The cyclotomic Galois groups Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)* are concrete realizations of finite abelian groups — the abelian case of the inverse Galois problem, resolved by Kronecker-Weber"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's totient function $\\varphi(n)$ is the central object: the Gauss-Wantzel theorem states that the regular $n$-gon is constructible $\\iff \\varphi(n) = 2^k$. The totient's multiplicativity ($\\varphi(mn) = \\varphi(m)\\varphi(n)$ for coprime $m,n$) and the formula $\\varphi(p^k) = p^{k-1}(p-1)$ are the arithmetic engine of the characterization"
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "Primitive roots establish that $(\\mathbb{Z}/p\\mathbb{Z})^{\\times}$ is cyclic of order $p-1$. The Gauss-Wantzel proof uses: (1) the cyclotomic Galois group $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ has order $\\varphi(n)$, and (2) Gauss's construction of the 17-gon used the 2-group structure of $(\\mathbb{Z}/17\\mathbb{Z})^{\\times} \\cong \\mathbb{Z}/16\\mathbb{Z}$"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's formula expresses the $n$th roots of unity $\\zeta_n = e^{2\\pi i/n}$ that generate cyclotomic extensions. The entire Gauss-Wantzel framework rests on $\\cos(2\\pi/n) = (\\zeta_n + \\zeta_n^{-1})/2$, connecting the geometric quantity (polygon vertex) to the algebraic quantity (cyclotomic field element)"
+    },
+    {
+      "targetId": "kroneckers-jugendtraum",
+      "relationship": "extends",
+      "description": "Kronecker-Weber theorem: every abelian extension of $\\mathbb{Q}$ is contained in a cyclotomic field $\\mathbb{Q}(\\zeta_n)$. Since constructible numbers generate abelian extensions (2-groups are abelian), all constructible numbers lie in cyclotomic fields — the Gauss-Wantzel criterion determines exactly which cyclotomic fields contain the cosines needed for polygon construction"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "The tower law $[L:F] = [L:K] \\cdot [K:F]$ (a consequence of Lagrange's theorem) drives the key computation: $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = [\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos(2\\pi/n))] \\cdot [\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}]$, yielding $[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\varphi(n)/2$"
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "application",
+      "description": "Specific application of the Gauss-Wantzel non-constructibility direction: the regular 18-gon is NOT constructible (this file proves it, since $18 = 2 \\cdot 3^2$ and $3^2$ is not a Fermat prime), equivalently $\\cos(20°) = \\cos(2\\pi/18)$ is not constructible. The companion entry `angle-trisection-cos-20-gal` provides the Galois group calculation $|\\text{Gal}(8X^3-6X-1/\\mathbb{Q})| = 3$ that underlies the OQ-02 machinery for this specific case."
+    },
+    {
+      "targetId": "angle-trisection-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 proves the necessary degree criterion (constructible $\\Rightarrow$ degree divides $2^n$); this file provides the full Gauss-Wantzel theorem including the explicit totient criterion. Together they form a complete hierarchy: OQ-01 (degree necessary condition) $\\subset$ OQ-02 (Galois 2-group biconditional) $\\supset$ OQ-02-OQ-03 (explicit $\\varphi(n) = 2^k$ characterization for regular polygons)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves 67+ theorems about regular polygon constructibility with 0 sorries and 0 axioms — all former axioms have been eliminated. The file demonstrates constructibility for 16 polygons ($n = 3, 4, 5, 6, 8, 10, 12, 15, 17, 20, 34, 51, 85, 255, 257, 65537$) and non-constructibility for 9 ($n = 7, 9, 11, 13, 14, 18, 21, 25, 35$), with structural arithmetic lemmas connecting the totient criterion to Fermat primes and the $(\\mathbb{Z}/n\\mathbb{Z})^*$ 2-group condition.",
+    "implications": "**Classical geometry meets modern algebra**: The Gauss-Wantzel theorem is a landmark result connecting Euclidean geometry (compass-and-straightedge constructions) to abstract algebra (Galois theory, group theory, number theory). This formalization makes the connections machine-checkable.\n\n**The $(\\mathbb{Z}/n\\mathbb{Z})^*$ bridge**: The proved equivalence `units_zmod_is_2group_iff` directly connects the Galois-theoretic 2-group condition from OQ02 to the number-theoretic totient criterion, without going through field extension arguments.\n\n**Arithmetic completeness**: The combination of `totient_prod_is_pow2` (coprime products preserve pow2 totients), `totient_pow2_of_two_power` ($\\varphi(2^k) = 2^{k-1}$), and `odd_prime_pow_gt_one_not_pow2` ($p^k$ with $k \\ge 2$ fails) provides the complete arithmetic characterization: $\\varphi(n) = 2^k$ iff $n = 2^a p_1 \\cdots p_r$ with $p_i$ distinct Fermat primes.\n\n**Related gallery entries**: See [angle-trisection](/proofs/angle-trisection) for the base impossibility proof and [angle-trisection-oq-02](/proofs/angle-trisection-oq-02) for the Galois criterion.",
+    "openQuestions": [
+      "[RESOLVED] The Gauss-Wantzel theorem is now fully proved from Mathlib's cyclotomic infrastructure — the file grew to 1799 lines eliminating all axioms via Chebyshev polynomials, cyclotomic tower law, and primitive root theory.",
+      "Are there any Fermat primes beyond $F_4 = 65537$? This is one of the oldest open problems in number theory. If the answer is no, then the complete list of constructible regular $n$-gons with $n$ odd and prime is: 3, 5, 17, 257, 65537.",
+      "Can explicit compass-and-straightedge constructions for the 17-gon (Gauss's Gaussian periods method) or 257-gon (Richelot's method) be formalized in Lean 4 as sequences of geometric operations?",
+      "The connection between constructible polygons and the discrete Fourier transform (DFT): the $n$-th roots of unity form a group under multiplication, and the FFT algorithm exploits the 2-power structure. Can this connection be formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.AngleTrisectionOQ02OQ03OQ01"
+    ],
+    "opens": [
+      "Polynomial",
+      "IntermediateField"
+    ],
+    "namespace": "AngleTrisectionOQ02OQ03",
+    "mainTheorems": [
+      {
+        "name": "gauss_wantzel_theorem",
+        "type": "core",
+        "description": "A regular n-gon is constructible by compass and straightedge iff Euler's totient phi(n) is a power of 2",
+        "leanType": "(n : ℕ) → (hn : 3 ≤ n) → IsConstructibleNgon n ↔ TotientIsPow2 n"
+      },
+      {
+        "name": "units_zmod_is_2group_iff",
+        "type": "key",
+        "description": "The unit group (Z/nZ)* is a 2-group iff phi(n) is a power of 2, bridging OQ02's Galois criterion to the totient criterion",
+        "leanType": "(n : ℕ) → [NeZero n] → IsPGroup 2 (ZMod n)ˣ ↔ TotientIsPow2 n"
+      },
+      {
+        "name": "cos_2pi_div_n_isIntegral",
+        "type": "key",
+        "description": "cos(2pi/n) is integral (algebraic) over Q, proved via Chebyshev polynomials",
+        "leanType": "(n : ℕ) → (hn : 1 ≤ n) → IsIntegral ℚ (Real.cos (2 * Real.pi / ↑n))"
+      },
+      {
+        "name": "minpoly_cos_natDegree_eq",
+        "type": "key",
+        "description": "The minimal polynomial of cos(2pi/n) over Q has degree phi(n)/2",
+        "leanType": "(n : ℕ) → (hn : 3 ≤ n) → (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).natDegree = Nat.totient n / 2"
+      },
+      {
+        "name": "galois_conjugate_count",
+        "type": "key",
+        "description": "The number of distinct Galois conjugates cos(2k*pi/n) with gcd(k,n)=1 equals phi(n)/2",
+        "leanType": "(n : ℕ) → (hn : 3 ≤ n) → Finset.card (Finset.image (fun k => Real.cos (2 * ↑k * Real.pi / ↑n)) (Finset.filter (fun k => Nat.Coprime k n) (Finset.range n))) = Nat.totient n / 2"
+      },
+      {
+        "name": "fermat_prime_ngon_constructible",
+        "type": "supporting",
+        "description": "Every Fermat prime p >= 3 yields a constructible regular p-gon",
+        "leanType": "(p : ℕ) → (hp : IsFermatPrime p) → (h3 : 3 ≤ p) → IsConstructibleNgon p"
+      }
+    ],
+    "lineCount": 1799,
+    "axiomCount": 0,
+    "theoremCount": 158,
+    "definitionCount": 5,
+    "path": "Proofs/AngleTrisectionOQ02OQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig",
+      "note": "Section VII proves the constructibility of the regular 17-gon using Gaussian periods — the result that convinced Gauss to pursue mathematics"
+    },
+    {
+      "authors": "Wantzel, Pierre Laurent",
+      "title": "Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées",
+      "note": "Proved the converse: non-constructibility when φ(n) ≠ 2^k, completing the characterization"
+    },
+    {
+      "authors": "Cox, David A.",
+      "title": "Galois Theory",
+      "year": "2012",
+      "venue": "Wiley, 2nd edition",
+      "note": "Chapter 16 covers the Gauss-Wantzel theorem with complete proofs connecting cyclotomic fields, Galois groups, and constructibility"
+    }
+  ],
+  "sorries": 0
+}

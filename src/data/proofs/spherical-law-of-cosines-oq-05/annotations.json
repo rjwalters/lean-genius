@@ -1,0 +1,234 @@
+[
+  {
+    "id": "ann-header-haversine",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 1,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "OQ-05: the haversine formula",
+    "content": "The haversine formula $\\text{hav}(c) = \\text{hav}(a-b) + \\sin(a)\\sin(b)\\text{hav}(C)$, where $\\text{hav}(\\theta) := \\sin^2(\\theta/2)$, is the numerically stable reformulation of the spherical law of cosines used in navigation and GPS great-circle distance computations. The standard $\\arccos(\\cos a \\cos b + \\sin a \\sin b \\cos C)$ form suffers from catastrophic cancellation for small distances; the haversine form remains well-conditioned because $\\text{hav}$ is the half-angle squared sine. This file scaffolds the formal definitions and proves the pure algebraic identity; the `SphericalTriangle` version is recorded as a `sorry` pending the conversion of the parent's projection-inner-product form into the trigonometric form (deferred to S2).",
+    "mathContext": "$\\text{hav}(c) = \\text{hav}(a-b) + \\sin(a)\\sin(b)\\,\\text{hav}(C)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "spherical law of cosines",
+      "half-angle identity",
+      "great-circle distance",
+      "numerical stability",
+      "Inman 1835 navigation tables"
+    ],
+    "prerequisites": [
+      "Parent spherical-law-of-cosines (SphericalTriangle, arcLength, projectPerp, angleC)",
+      "Real-analysis half-angle identities"
+    ]
+  },
+  {
+    "id": "ann-haversine-def",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 96,
+      "endLine": 124
+    },
+    "type": "definition",
+    "title": "haversine function and the half-angle identity",
+    "content": "`noncomputable def haversine (θ : ℝ) : ℝ := Real.sin (θ/2) ^ 2`. The half-angle identity `haversine θ = (1 - Real.cos θ) / 2` is proved by combining `Real.cos_two_mul (θ/2) : cos(2·(θ/2)) = 2·cos²(θ/2) - 1` with `Real.sin_sq_add_cos_sq (θ/2)` and the trivial `2·(θ/2) = θ` to get `cos θ = 1 - 2·sin²(θ/2)`. Two equivalent restatements `two_haversine_eq` and `cos_eq_one_sub_two_haversine` are also recorded for use in algebraic manipulations.",
+    "mathContext": "$\\sin^2(\\theta/2) = \\frac{1 - \\cos\\theta}{2}$ (half-angle identity)",
+    "significance": "key",
+    "relatedConcepts": [
+      "double-angle formula for cosine",
+      "Pythagorean identity",
+      "power-reduction formulas"
+    ],
+    "prerequisites": [
+      "Real.cos_two_mul",
+      "Real.sin_sq_add_cos_sq"
+    ]
+  },
+  {
+    "id": "ann-haversine-range",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 125,
+      "endLine": 149
+    },
+    "type": "definition",
+    "title": "Elementary properties of the haversine",
+    "content": "The haversine maps $\\mathbb{R}$ to $[0, 1]$ on the principal range: `haversine_nonneg` (from `sq_nonneg`), `haversine_le_one` (from `Real.neg_one_le_cos` via the half-angle form), `haversine_zero` (from `Real.sin_zero`), `haversine_pi` (from `Real.cos_pi = -1`), and `haversine_neg` (even-function: $\\text{hav}(-\\theta) = \\text{hav}(\\theta)$, from `Real.cos_neg`). All proofs are immediate from the half-angle identity.",
+    "mathContext": "$\\text{hav} : \\mathbb{R} \\to [0, 1]$, with $\\text{hav}(0) = 0$, $\\text{hav}(\\pi) = 1$, $\\text{hav}(-\\theta) = \\text{hav}(\\theta)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "even functions",
+      "range of squared sine"
+    ],
+    "prerequisites": [
+      "haversine_eq_one_sub_cos_div_two",
+      "Real.neg_one_le_cos",
+      "Real.cos_neg",
+      "sq_nonneg"
+    ]
+  },
+  {
+    "id": "ann-haversine-algebraic",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 150,
+      "endLine": 204
+    },
+    "type": "insight",
+    "title": "Algebraic haversine formula (proved unconditionally)",
+    "content": "`haversine_formula_algebraic`: given the spherical law of cosines as a real-number hypothesis `cos c = cos a · cos b + sin a · sin b · cos C`, the haversine identity `hav c = hav(a-b) + sin a · sin b · hav C` follows by linear arithmetic from `Real.cos_sub a b : cos(a-b) = cos a · cos b + sin a · sin b` and the half-angle identity. The converse `cos_form_of_haversine_formula` shows the two forms are equivalent. Both are pure-algebra restatements; no spherical geometry enters.",
+    "mathContext": "The identity is algebraically equivalent to SLC; conversion is a half-angle calculation: $(1 - \\cos c)/2 = (1 - \\cos(a-b))/2 + \\sin a \\sin b (1 - \\cos C)/2$, which after expansion via $\\cos(a-b) = \\cos a \\cos b + \\sin a \\sin b$ gives $\\cos c = \\cos a \\cos b + \\sin a \\sin b \\cos C$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.cos_sub (planar subtraction formula)",
+      "spherical law of cosines",
+      "algebraic equivalence of formulations"
+    ],
+    "prerequisites": [
+      "haversine_eq_one_sub_cos_div_two",
+      "Real.cos_sub"
+    ]
+  },
+  {
+    "id": "ann-haversine-triangle-open",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 205,
+      "endLine": 353
+    },
+    "type": "insight",
+    "title": "Haversine formula for SphericalTriangle (closed at S2)",
+    "content": "`haversine_formula` proves $\\text{hav}(t.\\text{sideC}) = \\text{hav}(t.\\text{sideB} - t.\\text{sideA}) + \\sin(t.\\text{sideB}) \\cdot \\sin(t.\\text{sideA}) \\cdot \\text{hav}(t.\\text{angleC})$ for a parent-file `SphericalTriangle`. Closed at S2: the bridge to `haversine_formula_algebraic` converts the parent's `⟨projectPerp t.A t.C, projectPerp t.B t.C⟩` (from `spherical_law_of_cosines_trig`) into the trigonometric form `sin(t.sideB) · sin(t.sideA) · cos(t.angleC)` via `inner_projectPerp_eq_sin_sin_cos_angleC`. On the non-degenerate branch (both projections nonzero) this follows from `norm_projectPerp_eq_sin` (parent file) plus the `cos = ⟨·,·⟩/(‖·‖·‖·‖)` identity; the degenerate branch coincides with $\\sin(t.\\text{sideA}) \\cdot \\sin(t.\\text{sideB}) = 0$, so the cross-term vanishes uniformly.",
+    "mathContext": "The part deferred past S1 was *only* the projection-to-trigonometric-angle conversion; the algebraic identity was already proved unconditionally. Both are now closed, so the SphericalTriangle form holds with no hypothesis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "projectPerp (parent file)",
+      "angleC (parent file, defined via arccos with degenerate fallback)",
+      "norm_projectPerp_eq_sin (parent file)"
+    ],
+    "prerequisites": [
+      "haversine_formula_algebraic",
+      "Parent: spherical_law_of_cosines_trig",
+      "Parent: norm_projectPerp_eq_sin"
+    ]
+  },
+  {
+    "id": "ann-specialised",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 354,
+      "endLine": 377
+    },
+    "type": "insight",
+    "title": "Specialised corollaries",
+    "content": "`haversine_formula_holds_when_sin_sideA_zero`: the haversine formula holds at parameter values where $\\sin a = 0$ (i.e. $a \\in \\pi\\mathbb{Z}$) — both sides reduce to the same algebraic identity, which is precisely `haversine_formula_algebraic` (the hypothesis already covers degeneracy). `haversine_sub_comm`: $\\text{hav}(a-b) = \\text{hav}(b-a)$, justified by `haversine_neg` (the haversine is even).",
+    "mathContext": "Together with `haversine_neg`, these record the algebraic symmetries that make the haversine identity invariant under swapping the roles of sides A and B.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "degeneracy handling",
+      "swap-symmetry of spherical triangles"
+    ],
+    "prerequisites": [
+      "haversine_formula_algebraic",
+      "haversine_neg",
+      "spherical-triangle parity (`Real.sin_int_mul_pi`)"
+    ]
+  },
+  {
+    "id": "ann-inverse-haversine-s3",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 378,
+      "endLine": 473
+    },
+    "type": "theorem",
+    "title": "Inverse haversine formula and great-circle distance (S3)",
+    "content": "Part VII closes the navigation pipeline by inverting `haversine` on the principal arc-length range `[0, π]`. Two facts justify the inversion: (i) on `[0, π]` we have `θ/2 ∈ [0, π/2]`, where `sin(θ/2) ≥ 0`, so `√(haversine θ) = √(sin²(θ/2)) = sin(θ/2)` via `Real.sqrt_sq`; (ii) on `[-π/2, π/2]`, `Real.arcsin_sin` gives `arcsin(sin x) = x`, so applying it at `x = θ/2` yields `θ = 2·arcsin(√(haversine θ))`. The parent's `arcLength_nonneg` and `arcLength_le_pi` lift this general identity to each side of a `SphericalTriangle` (`sideA`, `sideB`, `sideC`), and composing with the S2 forward `haversine_formula` produces the canonical navigation identity `sideC_eq_great_circle_haversine`: `c = 2·arcsin(√(hav(a−b) + sin(a)·sin(b)·hav(C)))`. This is the form actually computed in GPS / navigation libraries, and the formal proof now exists end-to-end (forward S2 + inverse S3) without ever invoking `Real.arccos` near 1.",
+    "mathContext": "**General:** $\\theta \\in [0, \\pi] \\implies \\theta = 2\\arcsin\\!\\bigl(\\sqrt{\\operatorname{hav}\\theta}\\bigr)$.\\\\ **Triangle (sideC):** $t.\\text{sideC} = 2\\arcsin\\!\\bigl(\\sqrt{\\operatorname{hav}(t.\\text{sideC})}\\bigr)$.\\\\ **Navigation identity:** $t.\\text{sideC} = 2\\arcsin\\!\\bigl(\\sqrt{\\operatorname{hav}(t.\\text{sideB} - t.\\text{sideA}) + \\sin(t.\\text{sideB})\\sin(t.\\text{sideA})\\operatorname{hav}(t.\\text{angleC})}\\bigr)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arcsin range and bijection on [-π/2, π/2]",
+      "square root of a square = absolute value",
+      "great-circle distance computation",
+      "navigation/GPS pipelines",
+      "principal arc-length range [0, π]"
+    ],
+    "prerequisites": [
+      "Real.sin_nonneg_of_nonneg_of_le_pi",
+      "Real.sqrt_sq",
+      "Real.arcsin_sin",
+      "Parent arcLength_nonneg, arcLength_le_pi",
+      "S2 haversine_formula"
+    ]
+  },
+  {
+    "id": "ann-strict-mono-s4",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 474,
+      "endLine": 573
+    },
+    "type": "theorem",
+    "title": "Strict monotonicity, injectivity & navigation uniqueness (S4)",
+    "content": "Establishes that `haversine` is strictly monotone increasing on the principal arc-length range `[0, π]` (`haversine_strictMonoOn_Icc_zero_pi`), via `Real.strictAntiOn_cos` and the half-angle identity `haversine = (1 - cos)/2`. Strict monotonicity yields injectivity (`haversine_injOn_Icc_zero_pi`) and the order/equality iff-lemmas (`haversine_lt_haversine_iff_lt`, `haversine_eq_haversine_iff_eq`). These give *navigation uniqueness*: two spherical-triangle sides with equal haversine are equal (`sideC_eq_of_haversine_sideC_eq` and the `sideA`/`sideB` analogues), so the inverse recovery `c = 2·arcsin(√(hav c))` is well-defined as a function on `[0, π]`.",
+    "mathContext": "$\\text{hav}$ strictly increasing on $[0,\\pi]$ $\\Rightarrow$ injective $\\Rightarrow$ the navigation map $(a,b,C) \\mapsto c$ is single-valued.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.strictAntiOn_cos",
+      "StrictMonoOn / InjOn",
+      "well-definedness of inverse functions",
+      "great-circle distance recovery"
+    ],
+    "prerequisites": [
+      "haversine_eq_one_sub_cos_div_two",
+      "eq_two_arcsin_sqrt_haversine (S3 inverse)"
+    ]
+  },
+  {
+    "id": "ann-bijection-s5",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 574,
+      "endLine": 639
+    },
+    "type": "theorem",
+    "title": "The haversine bijection [0, π] ≃ [0, 1] (S5)",
+    "content": "Completes the bijection picture: S4 gave injectivity (via strict monotonicity); this part proves surjectivity onto `[0, 1]` (`haversine_surjOn`) and assembles the bijection (`haversine_bijOn`, `haversine_image_Icc`). Surjectivity is *constructive* and needs no intermediate-value argument: for any target `y ∈ [0, 1]`, the explicit preimage `2·arcsin(√y)` lies in `[0, π]` (`two_arcsin_sqrt_mem_Icc`) and maps to `y` (`haversine_two_arcsin_sqrt`), since `sin(arcsin(√y)) = √y` and `(√y)² = y`. So the forward haversine and the inverse `2·arcsin(√·)` are mutually inverse bijections between `[0, π]` and `[0, 1]` — the exact range statement underlying navigation recovery.",
+    "mathContext": "$\\text{hav} : [0,\\pi] \\xrightarrow{\\;\\sim\\;} [0,1]$ with explicit inverse $y \\mapsto 2\\arcsin(\\sqrt{y})$; $\\text{hav}(2\\arcsin\\sqrt{y}) = y$ for $y \\in [0,1]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "BijOn / SurjOn / MapsTo",
+      "constructive surjectivity (explicit preimage)",
+      "Real.arcsin / Real.sin_arcsin",
+      "principal range of arc length"
+    ],
+    "prerequisites": [
+      "ann-strict-mono-s4 (injectivity)",
+      "eq_two_arcsin_sqrt_haversine (S3)"
+    ]
+  },
+  {
+    "id": "ann-summary-tabular",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 640,
+      "endLine": 689
+    },
+    "type": "concept",
+    "title": "Status Summary: 37 proved, 0 sorries, 0 axioms (verified)",
+    "content": "Part XI is a tabular accounting of the file's contents, mirrored in `meta.json`'s `theoremCount: 37`, `definitionCount: 1`, `sorries: 0`, `axiomCount: 0`. The proved results span: the half-angle bridge; range/sign/parity of `haversine`; the algebraic identity in both directions; the `SphericalTriangle` form (S2 bridge); the inverse formula and great-circle corollaries (S3); strict monotonicity / injectivity / navigation-uniqueness (S4); and the `[0, π] ≃ [0, 1]` bijection (S5). The table makes the S1→S5 development explicit for downstream automation (Aristotle/Mechanic) and for human auditors checking axiom-integrity claims — every row is PROVED, with no remaining `sorry`.",
+    "mathContext": "Status field semantics (per axiom-integrity policy): $\\texttt{status: verified}$, $\\texttt{sorries: 0}$, $\\texttt{axiomCount: 0}$, $\\texttt{badge: original}$. The lone S1 `sorry` (the SphericalTriangle conversion) was discharged at S2, and the file is Docker-verified end-to-end.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "gallery status taxonomy (verified vs axiomatized vs formalized)",
+      "axiom-integrity audit",
+      "end-to-end Docker verification",
+      "open-question slug bookkeeping"
+    ],
+    "prerequisites": [
+      "axiom-integrity policy (CLAUDE.md)",
+      "meta.json status/badge/axiomCount conventions"
+    ]
+  }
+]

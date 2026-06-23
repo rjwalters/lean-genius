@@ -1,0 +1,258 @@
+{
+  "id": "erdos-232",
+  "title": "Erdos Problem #232: Density of Unit-Distance Avoiding Sets",
+  "slug": "erdos-232",
+  "description": "What is the maximum upper density of a measurable set in R^2 with no two points at distance 1? Is m_1 <= 1/4? SOLVED: Yes, m_1 <= 0.247 < 1/4.",
+  "meta": {
+    "author": "Moser (1966), Ambrus et al. (2023)",
+    "sourceUrl": "https://erdosproblems.com/232",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos232Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "measure-theory",
+      "unit-distance-graphs",
+      "density"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 232,
+    "erdosUrl": "https://erdosproblems.com/232",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean n-space as inner product space",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Metric.closedBall",
+        "description": "Closed balls in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Real.pi",
+        "description": "The constant pi",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "euclideanDist definition: distance in R^2",
+      "IsUnitDistance definition: points at distance exactly 1",
+      "IsUnitDistanceFree definition: no unit distance pairs",
+      "unitDistanceFree_iff theorem: equivalent formulations",
+      "ballR definition: closed ball of radius R",
+      "upperDensity definition: asymptotic density",
+      "maxDensity definition: supremum over unit-distance-free sets",
+      "croft_lower_bound axiom: 0.22936 (Croft 1967)",
+      "ambrus_et_al_upper_bound axiom: 0.247 (2023)",
+      "erdos_232_solution theorem: m_1 < 1/4",
+      "unitDistanceGraphAdj definition: unit distance graph",
+      "chromatic_density_connection: relation to chromatic number"
+    ],
+    "relatedProblems": [
+      {
+        "id": "unit-distance-independence",
+        "relationship": "Chromatic number of the plane (Hadwiger-Nelson) problem and unit-distance graph independence theory"
+      }
+    ],
+    "axiomCount": 2,
+    "lineCount": 346,
+    "assumptions": "2 axioms: croft_lower_bound (Croft lower bound for the problem), ambrus_et_al_upper_bound (Ambrus et al. upper bound). 0 sorries.",
+    "theoremCount": 12,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "**Moser's Problem on Unit-Distance-Avoiding Sets**\n\nLeo Moser posed this problem in 1966 in his collection of 'poorly formulated unsolved problems of combinatorial geometry,' a deliberately provocative title for a set of deceptively deep questions. The problem asks: given a measurable subset $A \\subseteq \\mathbb{R}^2$ containing no two points at Euclidean distance 1, how large can $A$ be in the sense of asymptotic upper density?\n\n**Early Progress (1960s-1970s):**\nThe trivial upper bound $m_1 \\leq 1/2$ follows from a translation argument: for any unit vector $u$, the sets $A$ and $A + u$ must be disjoint, so their combined density cannot exceed 1. For lower bounds, the hexagonal lattice construction -- placing open discs of radius $1/2$ at vertices of a suitably spaced hexagonal lattice -- achieves density $\\pi/(8\\sqrt{3}) \\approx 0.2267$. H.T. Croft improved this in 1967 to $m_1 \\geq 0.22936$ using a modified annular construction.\n\n**Stagnation (1970s-2020s):**\nFor over 50 years, neither the lower bound of 0.22936 nor the trivial upper bound of 1/2 was improved. The problem attracted attention because of its connection to the Hadwiger-Nelson problem (chromatic number of the plane), but the analytic techniques needed for the upper bound seemed out of reach.\n\n**Breakthrough (2023):**\nAmbrus, Csiszarik, Matolcsi, Varga, and Zsamboki proved $m_1 \\leq 0.247$ using Fourier-analytic methods inspired by Delsarte's linear programming bound from coding theory. Their approach studies the autocorrelation of the indicator function $\\mathbf{1}_A$ and exploits the vanishing of its Fourier transform on the unit circle. This definitively answered Erdos's question: YES, $m_1 \\leq 1/4$.\n\n**Current Status:** SOLVED. Best bounds: $0.22936 \\leq m_1 \\leq 0.247$, a gap of only $\\approx 0.018$. The exact value remains unknown.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nFor $A \\subset \\mathbb{R}^2$ define the upper density:\n$$\\overline{\\delta}(A) = \\limsup_{R \\to \\infty} \\frac{\\lambda(A \\cap B_R)}{\\lambda(B_R)}$$\n\nwhere $\\lambda$ is Lebesgue measure and $B_R$ is the ball of radius $R$.\n\nEstimate $m_1 = \\sup \\overline{\\delta}(A)$ over all measurable $A$ with no two points at distance 1.\n\n**Question:** Is $m_1 \\leq 1/4$?\n\n**Answer:** YES. $m_1 \\leq 0.247 < 1/4$ (Ambrus et al., 2023).\n\n**Current Best Bounds:**\n$$0.22936 \\leq m_1 \\leq 0.247$$",
+    "text": "What is the maximum upper density of a measurable set in R^2 with no two points at distance 1? Is m_1 <= 1/4? SOLVED: Yes, m_1 <= 0.247 < 1/4.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization models the problem in Lean 4 using Mathlib's Euclidean space and measure theory infrastructure.\n\n1. **Euclidean Setup:** The type `EuclideanSpace R (Fin 2)` provides $\\mathbb{R}^2$ with its Euclidean metric. `euclideanDist` wraps Mathlib's `dist`, and `IsUnitDistance` is the predicate $d(p,q) = 1$.\n\n2. **Unit-Distance-Free Sets:** Two equivalent formulations are given: `IsUnitDistanceFree` (unit distance implies equality) and `IsUnitDistanceFree'` (distinct points have non-unit distance). Their equivalence is proved by contraposition in `unitDistanceFree_iff`.\n\n3. **Measure Theory:** `ballR R` defines the closed ball $\\overline{B}(0, R)$ via `closedBall`, and `lebesgue_ball_area` axiomatizes $\\lambda(B_R) = \\pi R^2$. The `upperDensity` function models $\\overline{\\delta}(A)$ (with a placeholder definition).\n\n4. **Bounds Hierarchy:** The formalization builds up from the trivial bound ($m_1 \\leq 1/2$) through the hexagonal and Croft constructions ($m_1 \\geq 0.22936$) to the breakthrough upper bound ($m_1 \\leq 0.247$). Each bound is axiomatized since the proofs require analytic techniques beyond current Lean capabilities.\n\n5. **Main Theorem:** `erdos_232_solution` derives $m_1 < 1/4$ via a `calc` chain: $m_1 \\leq 0.247 < 1/4$, where `norm_num` handles the arithmetic.\n\n6. **Graph-Theoretic Connection:** The unit distance graph is defined, and the link between $m_1$ and the chromatic number $\\chi(\\mathbb{R}^2)$ is formalized.",
+    "keyInsights": [
+      "**Translation Argument:** For any unit vector $u$, the sets $A$ and $A + u$ are disjoint by the unit-distance-free condition. Since Lebesgue measure is translation-invariant, $\\overline{\\delta}(A) + \\overline{\\delta}(A+u) \\leq 1$, giving $m_1 \\leq 1/2$. This elegant argument shows the problem is non-trivial only below 1/2.",
+      "**Hexagonal Optimality:** The hexagonal lattice achieves the densest circle packing in the plane (Thue, 1910; Fejes Toth, 1940), so placing discs of radius $1/2$ on such a lattice is the natural first construction. The resulting density $\\pi/(8\\sqrt{3})$ is a consequence of the kissing number 6 in $\\mathbb{R}^2$.",
+      "**Fourier-Analytic Breakthrough:** The Ambrus et al. proof exploits the fact that if $A$ is unit-distance-free, then the autocorrelation $f(x) = \\int \\mathbf{1}_A(t) \\mathbf{1}_A(t+x) \\, dt$ vanishes for $\\|x\\| = 1$. Their linear programming bound, inspired by Delsarte's method in coding theory, optimizes over admissible functions to derive $m_1 \\leq 0.247$.",
+      "**Chromatic Number Link:** Since each color class in a proper coloring of the unit distance graph is unit-distance-free, we have $m_1 \\geq 1/\\chi(\\mathbb{R}^2)$. The bound $m_1 < 1/4$ implies $\\chi \\geq 5$, independently confirming de Grey's 2018 graph-theoretic lower bound.",
+      "**Croft's Annular Refinement:** By using annular regions instead of full discs, Croft squeezed out extra density. The annuli $\\{x : r_1 < \\|x - c\\| < r_2\\}$ with $r_2 - r_1 < 1$ avoid unit distances internally while covering more area per lattice cell than discs of radius $1/2$.",
+      "**Persistent Gap:** Despite 60 years of work, the exact value of $m_1$ is unknown. The gap $[0.22936, 0.247]$ of width $\\approx 0.018$ awaits either improved constructions or sharper LP bounds. Whether $m_1$ is rational or algebraic is completely open."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Asymptotic density and counting"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview and Problem Statement",
+      "summary": "File header and problem statement for Erdős #232: estimating $m_1 = \\sup \\overline{\\delta}(A)$ over measurable unit-distance-free sets $A \\subseteq \\mathbb{R}^2$, where $\\overline{\\delta}$ is asymptotic upper density. Records the affirmative answer to \"is $m_1 \\leq 1/4$?\" — Ambrus–Csiszárik–Matolcsi–Varga–Zsámboki (2023) proved $m_1 \\leq 0.247$ — the historical bounds (Moser, hexagonal lattice, Croft 1967), imports, and the `Erdos232` namespace.",
+      "startLine": 1,
+      "endLine": 47,
+      "mathContext": "File header and problem statement for Erdős #232: estimating $m_1 = \\sup \\overline{\\delta}(A)$ over measurable unit-distance-free sets $A \\subseteq \\mathbb{R}^2$, where $\\overline{\\delta}$ is asymptotic upper density. Records the affirmative answer to \"is $m_1 \\leq 1/4$?\" — Ambrus–Csiszárik–Matolcsi–Varga–Zsámboki (2023) proved $m_1 \\leq 0.247$ — the historical bounds (Moser, hexagonal lattice, Croft 1967), imports, and the `Erdos232` namespace."
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines `euclideanDist` as a wrapper around Mathlib's `dist` for $\\mathbb{R}^2$, and `IsUnitDistance` as the predicate that two points have distance exactly 1.",
+      "startLine": 48,
+      "endLine": 65,
+      "mathContext": "Formal definition: Defines `euclideanDist` as a wrapper around Mathlib's `dist` for $\\mathbb{R}^2$, and `IsUnitDistance` as the predicate that two points have distance exactly 1."
+    },
+    {
+      "id": "unit-distance-free",
+      "title": "Unit-Distance Avoiding Sets",
+      "summary": "Introduces two equivalent definitions of unit-distance-free sets (`IsUnitDistanceFree` and `IsUnitDistanceFree'`) and proves their equivalence via `unitDistanceFree_iff` using contraposition.",
+      "startLine": 66,
+      "endLine": 94,
+      "mathContext": "Formal definition: Introduces two equivalent definitions of unit-distance-free sets (`IsUnitDistanceFree` and `IsUnitDistanceFree'`) and proves their equivalence via `unitDistanceFree_iff` using contraposition."
+    },
+    {
+      "id": "balls-measure",
+      "title": "Balls and Lebesgue Measure",
+      "summary": "Defines `ballR R` as the closed ball of radius $R$ at the origin and axiomatizes the area formula $\\lambda(B_R) = \\pi R^2$.",
+      "startLine": 95,
+      "endLine": 120,
+      "mathContext": "Defines `ballR R` as the closed ball of radius $R$ at the origin and axiomatizes the area formula $\\lambda(B_R) = \\$\\pi$ R^2$."
+    },
+    {
+      "id": "upper-density",
+      "title": "Upper Density",
+      "summary": "Defines the asymptotic upper density $\\overline{\\delta}(A) = \\limsup_{R \\to \\infty} \\lambda(A \\cap B_R)/\\lambda(B_R)$ with a placeholder implementation, and axiomatizes its boundedness ($[0,1]$) and monotonicity.",
+      "startLine": 121,
+      "endLine": 141,
+      "mathContext": "Defines the asymptotic upper density $\\overline{\\delta}(A) = \\limsup_{R \\to \\infty} \\lambda(A \\cap B_R)/\\lambda(B_R)$ with a placeholder implementation, and axiomatizes its boundedness ($[0,1]$) and monotonicity."
+    },
+    {
+      "id": "max-density",
+      "title": "Maximum Density m_1",
+      "summary": "Defines $m_1 = \\sup\\{\\overline{\\delta}(A) : A \\text{ unit-distance-free}\\}$ using Mathlib's `sSup` and axiomatizes $0 \\leq m_1 \\leq 1$.",
+      "startLine": 142,
+      "endLine": 155,
+      "mathContext": "Defines $m_1 = \\sup\\{\\overline{\\$\\delta$}(A) : A \\text{ unit-distance-free}\\}$ using Mathlib's `sSup` and axiomatizes $0 \\leq m_1 \\leq 1$."
+    },
+    {
+      "id": "trivial-bound",
+      "title": "Trivial Upper Bound",
+      "summary": "Axiomatizes the translation argument giving $m_1 \\leq 1/2$ and formalizes the key lemma `translation_disjoint`: $A \\cap (A + u) = \\emptyset$ for unit $u$.",
+      "startLine": 156,
+      "endLine": 183,
+      "mathContext": "Axiomatized: Axiomatizes the translation argument giving $m_1 \\leq 1/2$ and formalizes the key lemma `translation_disjoint`: $A \\cap (A + u) = \\emptyset$ for unit $u$."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds (Constructions)",
+      "summary": "Axiomatizes the hexagonal lattice lower bound $m_1 \\geq \\pi/(8\\sqrt{3}) \\approx 0.2267$ and Croft's refinement $m_1 \\geq 0.22936$ from 1967.",
+      "startLine": 184,
+      "endLine": 199,
+      "mathContext": "Axiomatizes the hexagonal lattice lower bound $m_1 \\geq \\$\\pi$/(8\\sqrt{3}) \\approx 0.2267$ and Croft's refinement $m_1 \\geq 0.22936$ from 1967."
+    },
+    {
+      "id": "solution",
+      "title": "The Solution",
+      "summary": "Axiomatizes the Ambrus et al. (2023) upper bound $m_1 \\leq 0.247$ and derives the main result $m_1 < 1/4$ via `calc` with `norm_num`, plus the weak bound $m_1 \\leq 1/4$ via `linarith`.",
+      "startLine": 200,
+      "endLine": 233,
+      "mathContext": "Axiomatized: Axiomatizes the Ambrus et al. (2023) upper bound $m_1 \\leq 0.247$ and derives the main result $m_1 < 1/4$ via `calc` with `norm_num`, plus the weak bound $m_1 \\leq 1/4$ via `linarith`."
+    },
+    {
+      "id": "bounds-summary",
+      "title": "Current Bounds Summary",
+      "summary": "Combines the lower and upper bounds into `current_bounds`: $0.22936 \\leq m_1 \\leq 0.247$, and computes the explicit gap $0.247 - 0.22936 = 0.01764$ via `norm_num`.",
+      "startLine": 234,
+      "endLine": 250,
+      "mathContext": "Bound: Combines the lower and upper bounds into `current_bounds`: $0.22936 \\leq m_1 \\leq 0.247$, and computes the explicit gap $0.247 - 0.22936 = 0.01764$ via `norm_num`."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Proves the empty set and singletons are unit-distance-free (by vacuity and uniqueness) and that open balls of radius $1/2$ are unit-distance-free (via the triangle inequality).",
+      "startLine": 251,
+      "endLine": 291,
+      "mathContext": "Verified: Proves the empty set and singletons are unit-distance-free (by vacuity and uniqueness) and that open balls of radius $1/2$ are unit-distance-free (via the triangle inequality)."
+    },
+    {
+      "id": "chromatic-connection",
+      "title": "Connection to Chromatic Number",
+      "summary": "Defines the unit distance graph adjacency and proves unit-distance-free sets are independent sets. Axiomatizes $4 \\leq \\chi(\\mathbb{R}^2) \\leq 7$ with $m_1 \\leq 1/\\chi$, connecting the density problem to the Hadwiger-Nelson problem.",
+      "startLine": 292,
+      "endLine": 319,
+      "mathContext": "Defines the unit distance graph adjacency and proves unit-distance-free sets are independent sets. Axiomatizes $4 \\leq \\chi(\\mathbb{R}^2) \\leq 7$ with $m_1 \\leq 1/\\chi$, connecting the density problem to the Hadwiger-Nelson problem."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Packages all main results into `erdos_232_summary`: the affirmative answer $m_1 \\leq 1/4$ together with the precise bounds $0.22936 \\leq m_1 \\leq 0.247$.",
+      "startLine": 320,
+      "endLine": 346,
+      "mathContext": "Bound: Packages all main results into `erdos_232_summary`: the affirmative answer $m_1 \\leq 1/4$ together with the precise bounds $0.22936 \\leq m_1 \\leq 0.247$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #232 asks whether the maximum upper density $m_1$ of unit-distance-free sets in $\\mathbb{R}^2$ satisfies $m_1 \\leq 1/4$. The problem is SOLVED: Ambrus et al. (2023) proved $m_1 \\leq 0.247 < 1/4$ using Fourier-analytic methods inspired by Delsarte's LP bound from coding theory. Combined with Croft's 1967 lower bound of 0.22936, the best known bounds are $0.22936 \\leq m_1 \\leq 0.247$.",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Hadwiger-Nelson Problem:** The bound $m_1 < 1/4$ implies $\\chi(\\mathbb{R}^2) \\geq 5$, independently confirming de Grey's 2018 graph-theoretic lower bound via a completely different (measure-theoretic) approach.\n\n2. **Coding Theory Crossover:** The Ambrus et al. proof adapts Delsarte's linear programming method, originally developed for error-correcting codes and sphere packings, to a continuous geometric setting -- demonstrating the power of Fourier duality in combinatorial geometry.\n\n3. **Higher Dimensions:** The analogous quantity $m_d$ for $\\mathbb{R}^d$ is studied but less well understood. In $\\mathbb{R}^1$, $m_1 = 1/2$ exactly (alternating intervals of length $1/2$).\n\nThe techniques of Ambrus et al. extend to higher dimensions but with weaker bounds.\n\n4. **Measure vs. Topology:** The problem highlights the distinction between topological and measure-theoretic density. A set can be topologically dense (open and dense) while having small Lebesgue density, and vice versa.\n\n5. **Open Gap:** The exact value of $m_1$ (within $[0.22936, 0.247]$) remains one of the central open problems in combinatorial geometry. Determining whether $m_1$ is algebraic or transcendental is completely open.",
+    "openQuestions": [
+      "What is the exact value of $m_1$? Is it algebraic or transcendental?",
+      "What is the optimal unit-distance-free construction achieving density $m_1$?",
+      "Can the Ambrus et al. upper bound of 0.247 be improved using higher-order LP relaxations?",
+      "What are the analogous optimal densities $m_d$ in dimensions $d \\geq 3$?",
+      "Does the relationship $m_1 = 1/\\chi(\\mathbb{R}^2)$ hold exactly, or is there a strict gap?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Measure.MeasureSpace",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Analysis.Normed.Group.Basic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Set",
+      "Metric",
+      "Filter"
+    ],
+    "namespace": "Erdos232",
+    "lineCount": 346,
+    "axiomCount": 2,
+    "theoremCount": 12,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos232Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1066",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, unit-distance-graphs"
+    },
+    {
+      "targetId": "erdos-953",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, measure-theory"
+    }
+  ],
+  "references": [
+    {
+      "key": "Br05h",
+      "authors": [
+        "P. Brass",
+        "W. Moser",
+        "J. Pach"
+      ],
+      "title": "Research Problems in Discrete Geometry",
+      "venue": "Springer-Verlag",
+      "year": "2005",
+      "note": "Comprehensive reference for measure-theoretic combinatorial geometry problems"
+    }
+  ],
+  "sorries": 0
+}

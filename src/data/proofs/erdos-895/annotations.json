@@ -1,0 +1,503 @@
+[
+  {
+    "id": "ann-e895-imports",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 32,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "**`import Mathlib`** imports all of Mathlib — pragmatic for a WIP formalization, avoiding careful dependency management.\n\n**`open Finset SimpleGraph`** brings `SimpleGraph.Adj`, `Finset.card`, and related names into scope without qualification.\n\nThis file uses `SimpleGraph (Fin n)` as the graph type, connecting Mathlib's graph API to the combinatorial problem.",
+    "mathContext": "Lean's `SimpleGraph α` is an undirected, loopless graph: a symmetric, irreflexive relation `Adj : α → α → Prop`. For `α = Fin n`, vertices are $\\{0, 1, \\ldots, n-1\\}$ (the problem uses $\\{1, \\ldots, n\\}$, offset by 1).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "SimpleGraph in Mathlib",
+      "Finset API",
+      "Fin n type"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib structure",
+      "open command in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-e895-graph-interval",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 36,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Graph Definitions: completeGraphOn and GraphOnInterval",
+    "content": "**`completeGraphOn n`:** The complete graph $K_n$ as `⊤` — the maximal element of the `SimpleGraph (Fin n)` lattice (every pair of distinct vertices adjacent).\n\n**`GraphOnInterval n`:** An `abbrev` (transparent alias) for `SimpleGraph (Fin n)`. Using `Fin n` ensures vertices are exactly 0, 1, ..., n-1 (interpreted as 1, ..., n).\n\n`abbrev` vs `def`: terms of type `GraphOnInterval n` unfold transparently, avoiding explicit casting.",
+    "mathContext": "The complete graph `⊤ : SimpleGraph (Fin n)` satisfies `(⊤).Adj a b ↔ a ≠ b`. The `abbrev` keyword makes `GraphOnInterval` a transparent alias: `G : GraphOnInterval n` and `G : SimpleGraph (Fin n)` are definitionally interchangeable without coercions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "complete graph K_n",
+      "SimpleGraph lattice (⊤)",
+      "abbrev vs def in Lean 4",
+      "Fin n"
+    ],
+    "prerequisites": [
+      "SimpleGraph type class",
+      "lattice structure on graphs",
+      "abbrev transparency in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-e895-independent-triple",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Independent Triple: Three Pairwise Non-Adjacent Vertices",
+    "content": "Three vertices $a, b, c$ form an **independent set** if no two are adjacent:\n\n`IsIndependentTriple G a b c ≡ ¬G.Adj a b ∧ ¬G.Adj b c ∧ ¬G.Adj a c`\n\nAll three pairs are checked. Since `SimpleGraph` is symmetric (`G.Adj a b ↔ G.Adj b a`), checking one direction per pair suffices.",
+    "mathContext": "An **independent set** $I \\subseteq V(G)$ satisfies $\\forall u, v \\in I, u \\neq v: \\neg G.\\text{Adj}(u,v)$. For three vertices, this is exactly the three-pair check. The **independence number** $\\alpha(G) = \\max\\{|I| : I \\text{ independent}\\}$. By Ramsey theory: $\\alpha(G) \\geq 3$ for any triangle-free $G$ on $\\geq 6$ vertices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "independent set",
+      "independence number α(G)",
+      "SimpleGraph.Adj symmetry",
+      "clique number ω(G)"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "And (∧) in Lean 4",
+      "independence number definition"
+    ]
+  },
+  {
+    "id": "ann-e895-triangle-free",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 48,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Triangle-Free Graph",
+    "content": "A graph is **triangle-free** if it contains no 3-clique:\n\n`IsTriangleFree G ≡ ∀ a b c : Fin n, ¬(G.Adj a b ∧ G.Adj b c ∧ G.Adj a c)`\n\nTriangle-free graphs have structural constraints that force large independent sets. By Ramsey ($R(3,3) = 6$), triangle-free graphs on $n \\geq 6$ vertices have $\\alpha(G) \\geq 3$. By Mantel, they have $\\leq n^2/4$ edges.",
+    "mathContext": "By **Ramsey theory**: $R(3,3) = 6$, so any graph on $\\geq 6$ vertices has either a triangle or an independent set of size 3. Hence triangle-free graphs on $n \\geq 6$ have $\\alpha(G) \\geq 3$. More precisely (Ajtai-Komlós-Szemerédi 1980): $\\alpha(G) \\geq c\\sqrt{n \\log n}$ for triangle-free $G$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "Turán's theorem",
+      "independence number",
+      "Mantel's theorem",
+      "R(3,3)=6"
+    ],
+    "prerequisites": [
+      "triangle (3-clique)",
+      "SimpleGraph.Adj",
+      "Ramsey number R(3,3)",
+      "Turán's theorem"
+    ]
+  },
+  {
+    "id": "ann-e895-additive-triple",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 54,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Additive Triple (Schur Triple)",
+    "content": "An **additive triple** is $(a, b, c) \\in (\\text{Fin}\\,n)^3$ with $a.\\text{val} + b.\\text{val} = c.\\text{val}$ and $a.\\text{val} > 0$, $b.\\text{val} > 0$.\n\nAlso called **Schur triples** in additive combinatorics. The positivity conditions exclude $0 + 0 = 0$. Working with `.val` coerces from `Fin n` to ℕ for arithmetic.",
+    "mathContext": "**Schur's theorem (1916)**: For any $k$-coloring of $\\{1, \\ldots, S(k)\\}$, there is a monochromatic triple $(a, b, a+b)$. The positivity $a.val > 0, b.val > 0$ corresponds to $a, b \\geq 1$ in the problem's $\\{1,\\ldots,n\\}$ indexing (accounting for the Lean 0-indexed `Fin n`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schur's theorem",
+      "Schur numbers",
+      "sum-free sets",
+      "Fin.val coercion",
+      "Ramsey-type results"
+    ],
+    "prerequisites": [
+      "Fin n and .val coercion",
+      "Schur's theorem (1916)",
+      "additive combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e895-main-predicate",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 58,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "HasIndependentAdditiveTriple: The Central Predicate",
+    "content": "The key predicate: does $G$ contain $a, b, a+b$ that are pairwise non-adjacent?\n\n`HasIndependentAdditiveTriple G = ∃ a b c : Fin n, IsAdditiveTriple a b c ∧ IsIndependentTriple G a b c`\n\nCombines **arithmetic** ($a + b = c$) with **graph-theoretic** ($a, b, c$ mutually non-adjacent) structure.",
+    "mathContext": "$\\text{HasIndependentAdditiveTriple}(G) \\iff \\exists a,b,c \\in \\text{Fin}\\,n: (a.val+b.val=c.val) \\land (\\neg G.\\text{Adj}(a,b)) \\land (\\neg G.\\text{Adj}(b,c)) \\land (\\neg G.\\text{Adj}(a,c))$. The arithmetic constraint selects a Schur triple; the graph constraint requires it to lie in an independent set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential witnesses",
+      "Schur triples",
+      "independent sets",
+      "combined arithmetic-graph predicates"
+    ],
+    "prerequisites": [
+      "IsAdditiveTriple",
+      "IsIndependentTriple",
+      "∃ in Lean 4",
+      "And (∧)"
+    ]
+  },
+  {
+    "id": "ann-e895-conjecture",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 64,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Erdős Problem #895: The Conjecture",
+    "content": "**The Conjecture:**\n\n`erdos895Conjecture = ∃ N : ℕ, ∀ n ≥ N, ∀ G : GraphOnInterval n, IsTriangleFree G → HasIndependentAdditiveTriple G`\n\nThere exists a threshold $N$ such that all triangle-free graphs on $\\geq N$ vertices contain an independent additive triple. Barber proved $N = 18$.",
+    "mathContext": "This is a **Ramsey-type** existence statement: $\\exists N \\in \\mathbb{N}, \\forall n \\geq N$: all triangle-free graphs on $n$ vertices have an arithmetic-independent structure. The small value $N = 18$ is surprising — such threshold results often have thresholds in the thousands.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey-type threshold results",
+      "triangle-free graphs",
+      "HasIndependentAdditiveTriple",
+      "existential thresholds"
+    ],
+    "prerequisites": [
+      "∃ N (existential threshold)",
+      "∀ n ≥ N",
+      "triangle-free graphs",
+      "Ramsey theory"
+    ]
+  },
+  {
+    "id": "ann-e895-threshold",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 70,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "The Sharp Threshold: n = 18",
+    "content": "**`erdos895Threshold : ℕ := 18`**\n\nThe threshold is sharp: $n = 18$ is the smallest value where the result universally holds.\n- For $n \\geq 18$: every triangle-free graph has an independent additive triple\n- For $n = 17$: a counterexample (triangle-free, no independent additive triple) exists",
+    "mathContext": "The threshold 18 was determined by Barber's SAT computation — checking all triangle-free graphs on 1 to 17 vertices (finite but exponentially large search space) and finding a counterexample only for $n \\leq 17$. The 'phase transition' at $n = 18$ is an exact combinatorial boundary.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SAT verification",
+      "phase transitions in combinatorics",
+      "sharp Ramsey-type bounds",
+      "extremal graphs"
+    ],
+    "prerequisites": [
+      "Lean 4 def for constants",
+      "SAT verification methods",
+      "sharpness in Ramsey theory"
+    ]
+  },
+  {
+    "id": "ann-e895-barber",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 75,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Barber's Theorem (2015): Main Computational Result",
+    "content": "**Ben Barber's Result:** For all $n \\geq 18$ and every triangle-free graph $G$ on $\\text{Fin}\\,n$, `HasIndependentAdditiveTriple G`.\n\nVerified computationally via SAT: encode the negation as Boolean satisfiability (variables for edges, clauses for triangle-freeness and absence of independent additive triples), then check UNSAT for each $n \\geq 18$.\n\nThe `sorry` represents this deep computational result.",
+    "mathContext": "SAT encoding: Boolean variables $e_{ij}$ for edges; clauses $\\neg e_{ab} \\lor \\neg e_{bc} \\lor \\neg e_{ac}$ (triangle-freeness) for all triples; and for each potential triple $(a,b,a+b)$: $e_{a,b} \\lor e_{b,a+b} \\lor e_{a,a+b}$ (NOT independent). UNSAT of this formula means no triangle-free graph avoids all independent additive triples.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SAT solvers",
+      "UNSAT certificates",
+      "Boolean satisfiability encoding",
+      "sorry in Lean 4"
+    ],
+    "prerequisites": [
+      "SAT solver encoding of graphs",
+      "Boolean satisfiability",
+      "sorry placeholder in Lean 4",
+      "Ben Barber 2015"
+    ]
+  },
+  {
+    "id": "ann-e895-main-result",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 80,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "erdos_895: The Conjecture Proved",
+    "content": "**`erdos_895 : erdos895Conjecture`**\n\nProved cleanly: `use 18; exact barber_theorem`\n- `use 18`: instantiates the existential witness $N = 18$\n- `exact barber_theorem`: the remaining goal is exactly barber_theorem\n\n**Erdős Problem #895: SOLVED.** The conjecture is TRUE with threshold $N = 18$.",
+    "mathContext": "After `use 18`, the goal becomes `∀ n ≥ 18, ∀ G: GraphOnInterval n, IsTriangleFree G → HasIndependentAdditiveTriple G` — which is precisely `barber_theorem`. This is the canonical Lean pattern for proving `∃ N, P N` by providing a witness and reducing to a named theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "use tactic",
+      "exact tactic",
+      "barber_theorem",
+      "erdos895Conjecture",
+      "∃ introduction"
+    ],
+    "prerequisites": [
+      "use tactic in Lean 4",
+      "exact tactic",
+      "existential introduction",
+      "barber_theorem"
+    ]
+  },
+  {
+    "id": "ann-e895-counterexample",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 87,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "Counterexample for n=17 and Sharpness of Threshold",
+    "content": "**`counterexample_17`:** There exists a triangle-free graph on 17 vertices with no independent additive triple — verified by Barber's SAT computation.\n\n**`threshold_sharp`:** Packages both directions:\n1. $\\forall n \\geq 18$: result holds (barber_theorem)\n2. $\\exists G$ on 17: triangle-free AND no independent additive triple (counterexample_17)\n\nProved: `exact ⟨barber_theorem, counterexample_17⟩`",
+    "mathContext": "The sharpness theorem `threshold_sharp` is the conjunction `P ∧ Q` where `P = barber_theorem` and `Q = counterexample_17`. The `⟨·,·⟩` syntax is Lean's `And.intro`. The counterexample graph for $n = 17$ is a specific SAT-found triangle-free graph on $\\{1, \\ldots, 17\\}$ with no three independent vertices forming an additive triple.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexamples in combinatorics",
+      "SAT-found extremal structures",
+      "And.intro",
+      "threshold sharpness"
+    ],
+    "prerequisites": [
+      "sorry placeholder",
+      "And.intro (⟨·,·⟩)",
+      "GraphOnInterval 17",
+      "SAT counterexample construction"
+    ]
+  },
+  {
+    "id": "ann-e895-ramsey",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 100,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Ramsey R(3,3) = 6: Classical Foundation",
+    "content": "**`ramsey_3_3`:** Any symmetric 2-coloring of $K_6$ contains a monochromatic triangle.\n\nFormally: for any symmetric `c : Fin 6 → Fin 6 → Fin 2`, there exist distinct $a, b, d$ with $c(a,b) = c(b,d) = c(a,d)$.\n\nThis underpins the independence bound: triangle-free graphs have large independent sets, whose arithmetic structure is the content of Problem #895.",
+    "mathContext": "$R(3,3) = 6$ (Frank Ramsey, 1930): the smallest $n$ such that any 2-coloring of $K_n$ has a monochromatic triangle. Proof by pigeonhole: fix $v \\in K_6$ (degree 5); by pigeonhole $\\geq 3$ edges from $v$ have the same color. Those 3 endpoints: if any adjacent (same color) → monochromatic triangle with $v$; otherwise all three form a same-color independent set (but both colors form triangles by R(3,3)=6). The Lean formulation uses `Fin 6 → Fin 6 → Fin 2` for 2-coloring.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Ramsey numbers R(s,t)",
+      "pigeonhole principle",
+      "monochromatic triangles",
+      "2-colorings as Fin 2"
+    ],
+    "prerequisites": [
+      "Ramsey number definition",
+      "K₆ complete graph",
+      "2-coloring as Fin 6 → Fin 2",
+      "pigeonhole principle"
+    ]
+  },
+  {
+    "id": "ann-e895-independence-bound",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 106,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Independence Bound: α(G) ≥ √n for Triangle-Free Graphs",
+    "content": "**`triangleFree_independence_bound`:** Every triangle-free $G$ on $n$ vertices has an independent set of size $\\geq \\sqrt{n}$.\n\n`∃ S : Finset (Fin n), S.card ≥ Nat.sqrt n ∧ ∀ a b ∈ S, a ≠ b → ¬G.Adj a b`\n\nThis follows from Ramsey bounds. The $\\sqrt{n}$ guarantee gives the arithmetic search space needed for Problem #895.",
+    "mathContext": "Ajtai-Komlós-Szemerédi (1980): triangle-free graphs on $n$ vertices have $\\alpha(G) \\geq c\\sqrt{n \\log n}$. The weaker bound $\\alpha(G) \\geq \\sqrt{n}$ follows from $R(3,k) \\leq Ck^2/\\log k$: if $\\alpha(G) < \\sqrt{n}$, the Ramsey bound would force a triangle, contradiction. `Nat.sqrt n` in Lean is $\\lfloor\\sqrt{n}\\rfloor$ (integer square root).",
+    "significance": "key",
+    "relatedConcepts": [
+      "independence number α(G)",
+      "Ajtai-Komlós-Szemerédi theorem (1980)",
+      "Ramsey bounds",
+      "Nat.sqrt",
+      "Finset.card"
+    ],
+    "prerequisites": [
+      "independence number",
+      "Ramsey number R(3,k)",
+      "Nat.sqrt in Lean 4",
+      "Finset-based independence"
+    ]
+  },
+  {
+    "id": "ann-e895-sum-free",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 113,
+      "endLine": 115
+    },
+    "type": "definition",
+    "title": "Sum-Free Sets: No Schur Triples Within",
+    "content": "A set $S$ is **sum-free** if it contains no Schur triple:\n\n`IsSumFree S = ∀ a b : ℕ, a ∈ S → b ∈ S → a + b ∉ S`\n\nProblem #895 asks for the OPPOSITE in the independent set: finding an independent set that IS a Schur triple (a, b, a+b all non-adjacent). Sum-free sets avoid additive closure; Problem #895 seeks additive closure within independent sets.",
+    "mathContext": "A set $S \\subseteq \\{1,\\ldots,n\\}$ is sum-free if $\\forall a, b \\in S: a+b \\notin S$. The maximum density of a sum-free subset of $\\{1,\\ldots,n\\}$ is $\\approx n/3$ (upper third $\\{\\lceil n/3 \\rceil+1,\\ldots,n\\}$). **Schur's theorem**: no sum-free $k$-coloring of $\\{1,\\ldots,n\\}$ exists for $n > S(k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schur numbers",
+      "additive combinatorics",
+      "partition regularity",
+      "sum-free density"
+    ],
+    "prerequisites": [
+      "sum-free set definition",
+      "Schur's theorem (1916)",
+      "Schur numbers S(k)"
+    ]
+  },
+  {
+    "id": "ann-e895-schur",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 117,
+      "endLine": 125
+    },
+    "type": "definition",
+    "title": "Schur Numbers and S(2) = 4",
+    "content": "**`schurNumber k`:** The largest $n$ such that $\\{1,\\ldots,n\\}$ can be $k$-colored avoiding monochromatic Schur triples.\n\nKnown values: $S(1)=1$, $S(2)=4$, $S(3)=13$, $S(4)=44$, $S(5)=160$ (Heule 2017 — 800-core, 14.8 TB SAT proof).\n\n**`schur_2`:** $S(2) = 4$. Lean definition uses `sSup` (supremum) over valid $n$ values — `noncomputable` since `sSup` over ℕ is undecidable.",
+    "mathContext": "`schurNumber k = sSup {n | ∃ c: ℕ → Fin k, ∀ a b ≤ n, a+b ≤ n → ¬(c a = c b ∧ c b = c(a+b))}`. For $S(2)=4$: color $1,2$ with 0 and $3,4$ with 1 — no monochromatic triple. But for $\\{1,\\ldots,5\\}$, any 2-coloring has a monochromatic triple (e.g., $c(1)=c(4)=0, c(2)=c(3)=1$ gives $c(1)=c(2+3-wrong...)$ — any coloring fails).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schur's theorem",
+      "sSup in Mathlib",
+      "noncomputable definitions",
+      "Heule 2017 SAT",
+      "partition regularity"
+    ],
+    "prerequisites": [
+      "sSup (supremum) in Lean 4",
+      "noncomputable in Lean 4",
+      "k-coloring as Fin k",
+      "Schur's theorem and numbers"
+    ]
+  },
+  {
+    "id": "ann-e895-hindman",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 137,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "Hindman Sets: All Finite Sub-Sums of a Base",
+    "content": "**`hindmanSet base`:** The set of all nonempty finite sub-sums of `base`:\n\n`{s | ∃ T : Finset ℕ, T ⊆ base ∧ T.Nonempty ∧ T.sum id = s}`\n\nExample: `hindmanSet {1, 2} = {1, 2, 3}` (singletons give 1, 2; pair gives 3).\n\n**Hindman's Theorem (1974):** For any finite coloring of ℕ, some color class contains an infinite Hindman set (all finite sums of some infinite base).",
+    "mathContext": "**Hindman's Theorem** (proved via ultrafilters by Galvin-Glazer, or combinatorially by Hindman): for any $k$-coloring of $\\mathbb{N}$, $\\exists$ infinite $B$ such that $\\{\\sum_{x \\in T} x : T \\subseteq B, T \\text{ finite}, T \\neq \\emptyset\\}$ is monochromatic. These are **IP sets** (idempotent polynomial). Hajnal's conjecture asks for a GRAPH analog: an independent set containing a finite Hindman structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hindman's theorem (1974)",
+      "IP sets",
+      "partition regularity",
+      "ultrafilter methods",
+      "Finset.sum id"
+    ],
+    "prerequisites": [
+      "Hindman's theorem (1974)",
+      "IP sets",
+      "Finset.sum id",
+      "Set comprehension { | }"
+    ]
+  },
+  {
+    "id": "ann-e895-hajnal",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 141,
+      "endLine": 146
+    },
+    "type": "theorem",
+    "title": "Hajnal's Conjecture: Independent Hindman Sets (OPEN)",
+    "content": "**`hajnalConjecture`:** $\\exists N$ such that for all triangle-free $G$ on $n \\geq N$ vertices, there exists a base `base` with $\\geq 2$ elements where ALL finite sub-sums form an independent set.\n\nThis dramatically strengthens Problem #895: instead of one triple $(a, b, a+b)$, an entire Hindman structure must be independent. Status: **OPEN** as of 2026.",
+    "mathContext": "`hajnalConjecture` = $\\exists N, \\forall n \\geq N, \\forall G \\text{ triangle-free}: \\exists \\text{base} \\subseteq \\text{Fin}\\,n, |\\text{base}| \\geq 2 \\land \\text{hindmanSet}(\\text{base}) \\text{ is independent in } G$. The `base.image (·.val)` coerces `Fin n → ℕ` for the `hindmanSet`. The gap: Problem #895 (proved, $N=18$) vs Hajnal's conjecture (open) measures the difficulty of finding unbounded arithmetic structure in independent sets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hindman's theorem",
+      "independent Hindman sets",
+      "open conjectures",
+      "Finset.image",
+      "Fin.val"
+    ],
+    "prerequisites": [
+      "hindmanSet definition",
+      "Finset.image",
+      "Fin.val coercion",
+      "open conjectures in formal math"
+    ]
+  },
+  {
+    "id": "ann-e895-hajnal-open",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 148,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Hajnal's Conjecture is OPEN: rfl Placeholder",
+    "content": "**`hajnal_conjecture_open : hajnalConjecture ↔ hajnalConjecture := by rfl`**\n\nA tautology by reflexivity — makes no mathematical claim. This is the project's convention for documenting open problems: a compilable file entry that clearly marks the problem as unresolved while preserving its formal statement.",
+    "mathContext": "`Iff.rfl : P ↔ P` holds for any proposition by reflexivity of $\\leftrightarrow$. The `rfl` tactic applies this automatically. The pattern `theorem X : P ↔ P := by rfl` is a placeholder: it compiles, documents the statement, but proves nothing. Compare with `sorry` (which also compiles but admits unprovable goals) — `rfl` on a tautology is entirely sound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Iff.rfl",
+      "reflexivity of ↔",
+      "open problem documentation",
+      "placeholder theorems vs sorry"
+    ],
+    "prerequisites": [
+      "Iff.rfl",
+      "rfl tactic in Lean 4",
+      "open vs proved in formal math"
+    ]
+  },
+  {
+    "id": "ann-e895-mantel",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 154,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "Mantel's Theorem and Dense Triangle-Free Graphs",
+    "content": "**`mantel_theorem`:** A triangle-free graph on $n$ vertices has $\\leq n^2/4$ edges: `G.edgeFinset.card ≤ n^2 / 4`.\n\n**`dense_triangleFree_independence`:** Dense triangle-free graphs (with $\\geq n^2/5$ edges) have independent sets of size $\\geq n/3$.\n\n`K_{n/2, n/2}` achieves exactly $n^2/4$ edges (complete bipartite, triangle-free).",
+    "mathContext": "**Mantel (1907)**: $|E(G)| \\leq n^2/4$ for triangle-free $G$. Proof: $\\sum_{(u,v) \\in E} (\\deg u + \\deg v) \\leq n \\cdot |E|$ (each vertex appears in $\\deg v$ edge pairs), but $= \\sum_v \\deg(v)^2 \\geq 2|E|^2/n$ by Cauchy-Schwarz, so $|E| \\leq n^2/4$. `G.edgeFinset.card` counts the unordered edge set of a `SimpleGraph` in Mathlib. Note: `n^2 / 4` uses natural number division.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "extremal graph theory",
+      "SimpleGraph.edgeFinset",
+      "K_{n/2,n/2}",
+      "Cauchy-Schwarz"
+    ],
+    "prerequisites": [
+      "Mantel's theorem (1907)",
+      "Turán's theorem",
+      "SimpleGraph.edgeFinset in Mathlib",
+      "natural number division (n^2/4)"
+    ]
+  },
+  {
+    "id": "ann-e895-summary",
+    "proofId": "erdos-895",
+    "range": {
+      "startLine": 176,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "erdos_895_summary: Main Results Packaged",
+    "content": "**`erdos_895_summary`:** The capstone theorem packaging:\n1. `∀ n ≥ 18, ∀ G: IsTriangleFree G → HasIndependentAdditiveTriple G` (the main result)\n2. `erdos895Threshold = 18` (the explicit threshold value)\n\nProved by `exact ⟨barber_theorem, rfl⟩`:\n- `barber_theorem` proves the main result\n- `rfl` proves `erdos895Threshold = 18` by definitional reduction ($18 = 18$)",
+    "mathContext": "The `And.intro ⟨barber_theorem, rfl⟩` pattern: `rfl` closes `erdos895Threshold = 18` because `erdos895Threshold` was defined as `18` by `def erdos895Threshold : ℕ := 18` — so Lean's kernel unfolds both sides to `18 = 18 → rfl`. This packages both the theorem and the threshold value into a single named result for easy citation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "And.intro",
+      "rfl (definitional equality)",
+      "barber_theorem",
+      "erdos895Threshold",
+      "capstone theorems"
+    ],
+    "prerequisites": [
+      "And.intro (⟨·,·⟩)",
+      "rfl tactic",
+      "erdos895Threshold definition",
+      "barber_theorem"
+    ]
+  }
+]

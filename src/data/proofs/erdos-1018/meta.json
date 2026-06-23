@@ -1,0 +1,256 @@
+{
+  "id": "erdos-1018",
+  "title": "Erdős Problem #1018: Non-Planar Subgraphs in Dense Graphs",
+  "slug": "erdos-1018",
+  "description": "For ε > 0, does every graph with n vertices and n^(1+ε) edges contain a non-planar subgraph on O_ε(1) vertices? Kostochka-Pyber (1988) proved yes: such graphs contain K₅ subdivisions on constantly many vertices.",
+  "meta": {
+    "author": "Kostochka-Pyber (1988)",
+    "sourceUrl": "https://erdosproblems.com/1018",
+    "date": "1988",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1018Problem.lean",
+    "tags": [
+      "graph-theory",
+      "planar-graphs",
+      "erdos",
+      "topological-graph-theory",
+      "extremal-combinatorics"
+    ],
+    "badge": "axiom",
+    "sorries": 7,
+    "erdosNumber": 1018,
+    "erdosUrl": "https://erdosproblems.com/1018",
+    "erdosProblemStatus": "solved",
+    "relatedProblems": [
+      "erdos-52",
+      "erdos-945"
+    ],
+    "axiomCount": 14,
+    "lineCount": 260,
+    "assumptions": "14 axioms across the chain: the main file `Proofs/Erdos1018Problem.lean` declares 7 (K5_nonplanar, K33_nonplanar, kuratowski_theorem, kostochka_pyber, constant_grows, planar_linear_bound, kostochka_pyber_explicit), and `Proofs/Stubs/Erdos1018Problem.lean` re-declares the same 7 (byte-identical duplicate); the Lean kernel treats each declaration site as a distinct assumption. K5_nonplanar: K₅ is non-planar. K33_nonplanar: K₃,₃ is non-planar. kuratowski_theorem: non-planar iff contains K₅ or K₃,₃ subdivision. kostochka_pyber: ε-dense graphs contain K₅ subdivisions on ≤ C(ε) vertices (1988). constant_grows: C(ε) → ∞ as ε → 0. planar_linear_bound: planar graphs have ≤ 3n−6 edges. kostochka_pyber_explicit: polynomial bound in 1/ε. 7 sorries in the main file (incomplete topological and density definitions).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 15,
+    "additionalFiles": [
+      "Proofs/Erdos1018Aristotle.lean",
+      "Proofs/Stubs/Erdos1018Aristotle.lean",
+      "Proofs/Stubs/Erdos1018Problem.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Planarity, Density, and Topological Obstructions**\n\nThe study of planar graphs has deep roots: Euler's formula (1752) implies that planar graphs on $n \\ge 3$ vertices have at most $3n - 6$ edges—a linear bound. Kuratowski (1930) characterized non-planarity: a graph is non-planar if and only if it contains a subdivision of $K_5$ or $K_{3,3}$. Wagner (1937) proved the equivalent minor characterization.\n\nErdős asked a quantitative refinement: if a graph has $n^{1+\\varepsilon}$ edges (super-linear density), must non-planarity be concentrated in a *small* subgraph? Specifically, does there exist a constant $C_\\varepsilon$, depending only on $\\varepsilon$ and not on $n$, such that every such graph contains a non-planar subgraph on at most $C_\\varepsilon$ vertices?\n\n**Kostochka and Pyber (1988)** resolved this affirmatively, proving that graphs with $n^{1+\\varepsilon}$ edges contain $K_5$ subdivisions on $O_\\varepsilon(1)$ vertices. Their proof uses the probabilistic method combined with extremal graph theory. Mader (1967) had earlier shown that the Turán number for $K_t$ subdivisions is $O(t\\sqrt{\\log t} \\cdot n)$, establishing a linear threshold for topological containment. The Kostochka-Pyber result goes further by bounding the *size* of the subdivision found.\n\nErdős also observed that $C_\\varepsilon \\to \\infty$ as $\\varepsilon \\to 0$: as the density approaches linear, non-planarity becomes more diffuse and cannot be localized to a small subgraph. This tradeoff between density and obstruction size is a recurring theme in extremal graph theory.",
+    "problemStatement": "**Problem Statement**\n\nLet ε > 0. Is there a constant C_ε such that, for all large n, every graph on n vertices with at least n^(1+ε) edges must contain a non-planar subgraph on at most C_ε vertices?\n\n**Status**: SOLVED (Kostochka-Pyber 1988)\n\n**Answer**: YES. Dense graphs contain K₅ subdivisions with O_ε(1) vertices.\n\n**Note**: Erdős observed C_ε → ∞ as ε → 0 (sparser graphs hide non-planarity in larger structures).",
+    "text": "A formalization of Erdős Problem #1018 in 261 lines with 7 axioms, 7 sorries, and 15 definitions. The file formalizes the graph-theoretic framework (edge count, density, planarity, Kuratowski's characterization, induced subgraphs) and the main question: for $\\varepsilon > 0$, does every $n$-vertex graph with $n^{1+\\varepsilon}$ edges contain a non-planar subgraph on $O_\\varepsilon(1)$ vertices? The Kostochka-Pyber (1988) positive resolution is axiomatized, with the quantitative bound $C_\\varepsilon = \\lceil 1/\\varepsilon^2 \\rceil$ and the Mader Turán number $\\text{ex}(n, TK_5) = O(n)$ as key supporting axioms. The density-size tradeoff $C_\\varepsilon \\to \\infty$ as $\\varepsilon \\to 0$ is formalized via Mathlib's `Filter.Tendsto`.",
+    "proofStrategy": "**Proof Approach (Kostochka-Pyber)**\n\n1. **Density Threshold**: Graphs with n^(1+ε) edges are 'super-linearly dense'.\n\n2. **Finding Structure**: Use probabilistic or extremal methods to find vertices of high degree.\n\n3. **K₅ Subdivision**: High-degree vertices connect through short paths, forming a K₅ subdivision.\n\n4. **Bounding Size**: The total vertices used (5 branch vertices + path vertices) is O_ε(1).\n\n**Key Insight**: Super-linear edge density forces enough local structure that K₅ subdivisions must appear in bounded-size subgraphs.",
+    "keyInsights": [
+      "**Linear planarity threshold**: Euler's formula gives $|E| \\le 3n - 6$ for planar graphs, so the density exponent $1 + \\varepsilon$ with $\\varepsilon > 0$ is the precise threshold where planarity breaks down",
+      "**Kostochka-Pyber theorem**: Dense graphs ($n^{1+\\varepsilon}$ edges) contain $K_5$ subdivisions on $O_\\varepsilon(1)$ vertices—this is stronger than just finding any non-planar subgraph, it finds a specific obstruction",
+      "**Density-size tradeoff**: $C_\\varepsilon \\to \\infty$ as $\\varepsilon \\to 0^+$, meaning sparser graphs hide their non-planarity in progressively larger substructures—a quantitative form of the intuition that 'barely super-linear' graphs are almost planar locally",
+      "**Probabilistic method**: The proof samples random vertex subsets to reduce the graph while preserving density, then applies extremal arguments (Mader-type) to find $K_5$ subdivisions in the reduced graph",
+      "**Kuratowski reduction**: By Kuratowski's theorem, finding any non-planar subgraph reduces to finding $K_5$ or $K_{3,3}$ subdivisions, and the explicit $C_\\varepsilon \\sim 1/\\varepsilon^2$ bound quantifies the size of these obstructions"
+    ],
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics and number theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "graph-basics",
+      "title": "Graph Basics",
+      "summary": "Defines $\\text{edgeCount}(G) = |E(G)|$ and $\\text{vertexCount} = |V|$ for simple graphs on finite vertex types with decidable adjacency.",
+      "startLine": 14,
+      "endLine": 37,
+      "mathContext": "$|E(G)| = |\\{\\{u,v\\} : G.\\text{Adj}\\,u\\,v\\}|$ for `SimpleGraph V` with `[Fintype V]` and `[DecidableRel G.Adj]`. The edge count is half the degree sum by the handshaking lemma: $|E| = \\frac{1}{2}\\sum_{v} \\deg(v)$."
+    },
+    {
+      "id": "dense-graphs",
+      "title": "Dense Graphs",
+      "summary": "Defines $\\text{isDense}(G, \\varepsilon) \\iff |E(G)| \\ge n^{1+\\varepsilon}$, the super-linear density threshold separating planar-possible from forced-non-planar regimes.",
+      "startLine": 38,
+      "endLine": 47,
+      "mathContext": "$\\text{isDense}(G, \\varepsilon) :\\equiv |E(G)| \\geq \\lceil n^{1+\\varepsilon} \\rceil$ where $n = |V|$. For $\\varepsilon = 0$ this is linear density (planar graphs can have this many edges); for $\\varepsilon > 0$ this exceeds the Euler bound $3n - 6$ for large $n$, forcing non-planarity."
+    },
+    {
+      "id": "planar-graphs",
+      "title": "Planar Graphs",
+      "summary": "Abstract $\\text{isPlanar}$ definition (sorry) and $\\text{isNonPlanar} = \\neg\\text{isPlanar}$. Full definition requires topological embedding theory.",
+      "startLine": 48,
+      "endLine": 62,
+      "mathContext": "A graph $G$ is planar if it can be embedded in $\\mathbb{R}^2$ without edge crossings. Formally: $\\exists f : V \\to \\mathbb{R}^2$ injective, with edges mapped to Jordan arcs intersecting only at endpoints. The definition is left as `sorry` since Lean/Mathlib lacks topological planarity."
+    },
+    {
+      "id": "kuratowski",
+      "title": "Complete Graphs and Kuratowski's Theorem",
+      "summary": "Defines $K_n$, $K_{m,n}$, graph subdivisions, and axiomatizes Kuratowski (1930): non-planar $\\iff$ contains $\\text{TK}_5$ or $\\text{TK}_{3,3}$.",
+      "startLine": 63,
+      "endLine": 104,
+      "mathContext": "Kuratowski (1930): $G$ is non-planar $\\iff$ $G$ contains a subdivision of $K_5$ or $K_{3,3}$. A subdivision $TK_t$ replaces each edge of $K_t$ with a path; the 'branch vertices' (original $K_t$ vertices) and 'path vertices' together form the subdivision. Wagner (1937) proved the equivalent minor characterization."
+    },
+    {
+      "id": "subgraphs",
+      "title": "Induced Subgraphs",
+      "summary": "Defines $G[S]$ (induced subgraph on $S \\subseteq V$) and $\\text{hasSmallNonPlanarSubgraph}(G, k) \\iff \\exists |S| \\le k$ with $G[S]$ non-planar.",
+      "startLine": 105,
+      "endLine": 120,
+      "mathContext": "$G[S] = (S, \\{\\{u,v\\} \\in E(G) : u, v \\in S\\})$ is the induced subgraph on vertex subset $S$. The predicate $\\text{hasSmallNonPlanarSubgraph}(G, k) :\\equiv \\exists S \\subseteq V,\\, |S| \\leq k \\wedge \\neg\\text{isPlanar}(G[S])$ captures Erdős's question."
+    },
+    {
+      "id": "main-question",
+      "title": "The Main Question",
+      "summary": "Formalizes Erdős's question: $\\forall \\varepsilon > 0,\\; \\exists C_\\varepsilon$ such that $|E| \\ge n^{1+\\varepsilon} \\implies$ non-planar subgraph on $\\le C_\\varepsilon$ vertices.",
+      "startLine": 121,
+      "endLine": 136,
+      "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists C_\\varepsilon \\in \\mathbb{N},\\, \\forall G$ with $|V(G)| = n$ and $|E(G)| \\geq n^{1+\\varepsilon}$: $\\exists S \\subseteq V(G)$ with $|S| \\leq C_\\varepsilon$ and $G[S]$ non-planar. The constant $C_\\varepsilon$ depends only on $\\varepsilon$, not on $n$."
+    },
+    {
+      "id": "kostochka-pyber",
+      "title": "Kostochka-Pyber Theorem (1988)",
+      "summary": "Axiomatizes the solution: dense graphs contain $K_5$ subdivisions on $O_\\varepsilon(1)$ vertices. Derives $\\text{erdos\\_1018\\_solved}$ from this.",
+      "startLine": 137,
+      "endLine": 167,
+      "mathContext": "Kostochka-Pyber (1988): $|E(G)| \\geq n^{1+\\varepsilon} \\Rightarrow G$ contains a $TK_5$ on at most $C_\\varepsilon$ vertices. The proof finds high-degree vertices whose neighborhoods have enough common adjacencies to form short connecting paths, yielding a $K_5$ subdivision. Since $TK_5$ is non-planar (by Kuratowski), this resolves Erdős's question."
+    },
+    {
+      "id": "constant-grows",
+      "title": "The Constant $C_\\varepsilon$ Grows",
+      "summary": "States $\\lim_{\\varepsilon \\to 0^+} C_\\varepsilon = \\infty$: sparser graphs hide non-planarity in larger substructures.",
+      "startLine": 168,
+      "endLine": 185,
+      "mathContext": "$C_\\varepsilon \\to \\infty$ as $\\varepsilon \\to 0^+$: formalized using `Filter.Tendsto`. The explicit bound $C_\\varepsilon = \\lceil 1/\\varepsilon^2 \\rceil$ shows the divergence rate. Intuitively, as density approaches linear ($\\varepsilon \\to 0$), the non-planar obstruction must involve more vertices because the graph is 'almost planar' locally."
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Graph Theory Connection",
+      "summary": "Euler bound $|E| \\le 3n-6$ for planar graphs and the consequence that $n^{1+\\varepsilon} > 3n-6$ forces the whole graph to be non-planar.",
+      "startLine": 186,
+      "endLine": 204,
+      "mathContext": "Euler's formula: $|V| - |E| + |F| = 2$ for connected planar graphs, giving $|E| \\leq 3|V| - 6$ (since each face has $\\geq 3$ boundary edges). For $\\varepsilon > 0$ and $n$ large enough, $n^{1+\\varepsilon} > 3n - 6$, so the *whole graph* is non-planar. The non-trivial content of Erdős's question is finding a *small* non-planar subgraph."
+    },
+    {
+      "id": "quantitative",
+      "title": "Quantitative Bounds and Turán Numbers",
+      "summary": "Explicit bound $C_\\varepsilon = \\lceil 1/\\varepsilon^2 \\rceil$, Turán number $\\text{ex}(n, \\text{TK}_5) = O(n)$ by Mader, and dense graphs exceeding the Turán threshold.",
+      "startLine": 205,
+      "endLine": 260,
+      "mathContext": "Mader (1967): $\\text{ex}(n, TK_t) = O(t\\sqrt{\\log t} \\cdot n)$, so for $t = 5$: $\\text{ex}(n, TK_5) = O(n)$. Since $n^{1+\\varepsilon} \\gg O(n)$ for large $n$, dense graphs vastly exceed the Turán threshold for $K_5$ subdivisions. The explicit bound $C_\\varepsilon = \\lceil 1/\\varepsilon^2 \\rceil$ quantifies the subdivision size."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1018 asked whether dense graphs (n^(1+ε) edges) must contain non-planar subgraphs of bounded size. Kostochka and Pyber (1988) proved yes: such graphs contain K₅ subdivisions on O_ε(1) vertices. The bound C_ε grows as ε → 0, reflecting that sparser graphs hide non-planarity in larger structures.",
+    "implications": "1. **Topological Graph Theory**: Quantifies how density forces non-planar structure\n\n**2. Extremal Combinatorics**: Connects edge density to topological properties\n\n3. **Kuratowski Theory**: Shows obstructions appear in bounded-size subgraphs\n\n4. **Algorithmic Applications**: Bounds on finding non-planar subgraphs.",
+    "openQuestions": [
+      "What is the optimal bound on C_ε as a function of ε?",
+      "Can similar results be proved for other surfaces (torus, etc.)?",
+      "What about finding K₃,₃ subdivisions specifically?",
+      "How does the result extend to hypergraphs?",
+      "What is the computational complexity of finding the small non-planar subgraph?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "technique",
+      "description": "The probabilistic method used in Kostochka-Pyber (1988) shares roots with Ramsey theory; both study unavoidable substructures in dense combinatorial objects."
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related-problem",
+      "description": "Erdős Problem #1 on graph coloring illustrates the broader program of finding unavoidable substructures in graphs with prescribed density or chromatic properties."
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "related-problem",
+      "description": "Erdős Problem #1009 on graph density and subgraph containment is closely related to the extremal graph theory framework underlying the Kostochka-Pyber result."
+    },
+    {
+      "targetId": "erdos-1015",
+      "relationship": "related-problem",
+      "description": "Erdős Problem #1015 involves topological graph theory questions similar in spirit to the planarity obstruction theme of Problem #1018."
+    },
+    {
+      "targetId": "erdos-1017",
+      "relationship": "sibling",
+      "description": "Erdős Problem #1017 is a neighboring problem in the Erdős problem collection sharing the extremal combinatorics and density-forcing theme."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "technique",
+      "description": "Szemerédi's Regularity Lemma is a fundamental tool in extremal graph theory; the density regime n^(1+ε) studied in Problem #1018 connects naturally to regularity-based decompositions."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "A. V. Kostochka",
+        "L. Pyber"
+      ],
+      "title": "Small topological complete subgraphs of 'dense' graphs",
+      "year": "1988",
+      "venue": "Combinatorica",
+      "note": "Proves the main result of Erdős Problem #1018: graphs with n^(1+ε) edges contain K₅ subdivisions on O_ε(1) vertices."
+    },
+    {
+      "authors": [
+        "W. Mader"
+      ],
+      "title": "Homomorphieeigenschaften und mittlere Kantendichte von Graphen",
+      "year": "1967",
+      "venue": "Mathematische Annalen",
+      "note": "Established that the Turán number for K_t subdivisions is O(t√(log t) · n), a key precursor to the Kostochka-Pyber result."
+    },
+    {
+      "authors": [
+        "K. Kuratowski"
+      ],
+      "title": "Sur le problème des courbes gauches en topologie",
+      "year": "1930",
+      "venue": "Fundamenta Mathematicae",
+      "note": "The foundational characterization of planar graphs: a graph is planar if and only if it contains no subdivision of K₅ or K_{3,3}."
+    },
+    {
+      "authors": [
+        "P. Erdős",
+        "M. Simonovits"
+      ],
+      "title": "A limit theorem in graph theory",
+      "year": "1966",
+      "venue": "Studia Scientiarum Mathematicarum Hungarica",
+      "note": "Foundational work on extremal graph theory and Turán-type problems underlying the density threshold analysis in Problem #1018."
+    },
+    {
+      "authors": [
+        "N. Alon",
+        "J. H. Spencer"
+      ],
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "venue": "Wiley (4th edition)",
+      "note": "Standard reference for the probabilistic method techniques used in the Kostochka-Pyber proof and related extremal graph theory results."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Fintype.Basic"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos1018",
+    "lineCount": 260,
+    "axiomCount": 7,
+    "theoremCount": 4,
+    "definitionCount": 15,
+    "path": "Proofs/Erdos1018Problem.lean",
+    "sorries": 7,
+    "additionalFiles": [
+      "Proofs/Erdos1018Aristotle.lean",
+      "Proofs/Stubs/Erdos1018Aristotle.lean",
+      "Proofs/Stubs/Erdos1018Problem.lean"
+    ]
+  },
+  "sorries": 7
+}

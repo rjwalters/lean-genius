@@ -1,0 +1,170 @@
+[
+  {
+    "id": "ann-534-1",
+    "proofId": "erdos-534",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #534: Maximum GCD-Intersecting Sets**\n\nWhat is the largest $A \\subseteq \\{1,\\ldots,N\\}$ containing $N$ with $\\gcd(a,b) > 1$ for all distinct $a,b \\in A$? This is an arithmetic version of Erdős-Ko-Rado intersecting family problems, where $\\gcd > 1$ replaces 'shares a set element'. The original Erdős-Graham conjecture was WRONG — Ahlswede and Khachatrian found a counterexample (1992) and proved the correct characterization (1996) using optimal families based on the prime factorization of $N$.",
+    "mathContext": "Maximize |A| subject to A ⊆ {1,...,N}, N ∈ A, and ∀ a b ∈ A, a ≠ b → Nat.gcd a b > 1",
+    "significance": "key",
+    "prerequisites": [
+      "Nat.gcd",
+      "Finset",
+      "Nat.Prime",
+      "Nat.minFac"
+    ],
+    "relatedConcepts": [
+      "Erdős-Ko-Rado theorem",
+      "intersecting families",
+      "GCD",
+      "extremal number theory"
+    ]
+  },
+  {
+    "id": "ann-534-2",
+    "proofId": "erdos-534",
+    "range": {
+      "startLine": 35,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Core Definitions",
+    "content": "**interval N**: The set $\\{1,\\ldots,N\\}$ constructed via `Finset.range N` with a `+1` shift embedding, avoiding zero. **IsGCDIntersecting A**: For all distinct $a,b \\in A$, $\\gcd(a,b) > 1$ — every pair shares a common prime factor. This is the arithmetic analog of the 'intersecting' property in classical extremal set theory. **ContainsN A N**: The constraint $N \\in A$, ensuring the target number is included. **maxGCDIntersecting N**: The supremum of achievable cardinalities of GCD-intersecting subsets of $\\{1,\\ldots,N\\}$ containing $N$, defined via `sSup`.",
+    "mathContext": "interval N = (Finset.range N).map ⟨(· + 1), ...⟩\nIsGCDIntersecting A ↔ ∀ a b ∈ A, a ≠ b → Nat.gcd a b > 1\nmaxGCDIntersecting N = sSup {k | ∃ A ⊆ interval N, N ∈ A ∧ IsGCDIntersecting A ∧ A.card = k}",
+    "significance": "key",
+    "prerequisites": [
+      "Finset.range",
+      "Finset.map",
+      "Nat.gcd",
+      "sSup"
+    ],
+    "relatedConcepts": [
+      "interval sets",
+      "pairwise property",
+      "extremal function"
+    ]
+  },
+  {
+    "id": "ann-534-3",
+    "proofId": "erdos-534",
+    "range": {
+      "startLine": 52,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Simple Constructions",
+    "content": "**multiplesOfSmallestPrime N**: All multiples of $p = \\text{minFac}(N)$ in $\\{1,\\ldots,N\\}$, giving a set of size $\\lfloor N/p \\rfloor$. Since every element is divisible by $p$, all pairs share the common factor $p$, making this GCD-intersecting. **evenMultiplesSharing N**: Even numbers in $\\{1,\\ldots,N\\}$ that also share a factor with $N$. All pairs have $\\gcd \\geq 2$ since both are even. These two constructions represent the candidates from the original (incorrect) Erdős-Graham conjecture: the maximum was conjectured to be $\\max(N/p, |\\text{evenMultiplesSharing}(N)|)$.",
+    "mathContext": "multiplesOfSmallestPrime N = (interval N).filter (fun n => N.minFac ∣ n)\nevenMultiplesSharing N = (interval N).filter (fun n => 2 ∣ n ∧ Nat.gcd n N > 1)\nmultiples_of_p_size: card = N / N.minFac\nmultiples_of_p_intersecting: IsGCDIntersecting (multiplesOfSmallestPrime N)",
+    "significance": "key",
+    "prerequisites": [
+      "interval",
+      "Nat.minFac",
+      "Finset.filter",
+      "IsGCDIntersecting"
+    ],
+    "relatedConcepts": [
+      "multiples",
+      "prime factorization",
+      "lower bound constructions"
+    ]
+  },
+  {
+    "id": "ann-534-4",
+    "proofId": "erdos-534",
+    "range": {
+      "startLine": 75,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Original Conjecture (WRONG)",
+    "content": "**OriginalConjecture**: Erdős and Graham conjectured that the maximum GCD-intersecting set size equals $\\max(\\lfloor N/p \\rfloor, |\\text{evenMultiplesSharing}(N)|)$, where $p$ is the smallest prime factor of $N$. **original_conjecture_false**: This is FALSE — Ahlswede and Khachatrian (1992) found counterexamples where the Ahlswede-Khachatrian optimal family construction exceeds both candidates. **counterexample_exists**: Witnesses a specific $N > 1$ where $\\text{maxGCDIntersecting}(N) > \\max(N/p, |\\text{evenMultiplesSharing}(N)|)$. This failure motivated the search for the correct, more complex characterization.",
+    "mathContext": "OriginalConjecture ↔ ∀ N > 1, maxGCDIntersecting N = max (N / N.minFac) (evenMultiplesSharing N).card\noriginal_conjecture_false : ¬OriginalConjecture\ncounterexample_exists : ∃ N > 1, maxGCDIntersecting N > max (N / N.minFac) (evenMultiplesSharing N).card",
+    "significance": "key",
+    "prerequisites": [
+      "maxGCDIntersecting",
+      "multiplesOfSmallestPrime",
+      "evenMultiplesSharing"
+    ],
+    "relatedConcepts": [
+      "counterexample",
+      "disproved conjecture",
+      "extremal bounds"
+    ]
+  },
+  {
+    "id": "ann-534-5",
+    "proofId": "erdos-534",
+    "range": {
+      "startLine": 91,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "Ahlswede-Khachatrian Theorem (1996)",
+    "content": "**optimalFamily N j primes**: Integers in $\\{1,\\ldots,N\\}$ divisible by at least one of $2q_1, \\ldots, 2q_j$ or by the product $q_1 \\cdot q_2 \\cdots q_j$, where $q_1 < \\cdots < q_j$ are prime factors of $N$. The $2q_i$ terms capture multiples of even numbers divisible by $q_i$; the product term captures multiples of the full product. The construction balances between using more $2q_i$ factors (larger $j$, more multiples per factor but larger product) and fewer (smaller $j$, fewer factors but smaller product with more multiples).\n\n**ahlswede_khachatrian_theorem**: For every $N > 1$, there exists an optimal $j$ and a list of prime factors of $N$ such that $\\text{maxGCDIntersecting}(N)$ equals the size of the corresponding optimal family. This completely characterizes the answer to Erdős Problem #534.",
+    "mathContext": "optimalFamily N j primes = (interval N).filter (fun n => (primes.take j).map (2*·)).any (·∣n) ∨ (primes.take j).foldl (·*·) 1 ∣ n)\nahlswede_khachatrian_theorem : ∀ N > 1, ∃ j primes, (∀ p ∈ primes, p.Prime ∧ p ∣ N) ∧ maxGCDIntersecting N = (optimalFamily N j primes).card",
+    "significance": "key",
+    "prerequisites": [
+      "optimalFamily",
+      "interval",
+      "maxGCDIntersecting",
+      "List.take",
+      "List.foldl"
+    ],
+    "relatedConcepts": [
+      "optimal construction",
+      "Ahlswede-Khachatrian",
+      "prime factorization structure",
+      "EKR-type characterization"
+    ]
+  },
+  {
+    "id": "ann-534-6",
+    "proofId": "erdos-534",
+    "range": {
+      "startLine": 110,
+      "endLine": 120
+    },
+    "type": "concept",
+    "title": "Special Cases",
+    "content": "**prime_power_case**: For $N = p^k$ (prime power), $\\text{maxGCDIntersecting}(p^k) = p^{k-1}$. Since $N$ has only one prime factor $p$, every element of $A$ must be divisible by $p$. There are exactly $p^{k-1}$ multiples of $p$ in $\\{1,\\ldots,p^k\\}$, and they form a GCD-intersecting set.\n\n**two_times_prime_case**: For $N = 2p$ (odd prime $p$), $\\text{maxGCDIntersecting}(2p) = 2$. Any element sharing a factor with $N = 2p$ must be even or divisible by $p$. But even numbers not divisible by $p$ are coprime to odd multiples of $p$, so the only valid set is $\\{2p\\}$ plus one partner that shares a factor with $2p$, giving size 2.",
+    "mathContext": "prime_power_case : ∀ p k, p.Prime → k ≥ 1 → maxGCDIntersecting (p^k) = p^(k-1)\ntwo_times_prime_case : ∀ p, p.Prime → p > 2 → maxGCDIntersecting (2*p) = 2",
+    "significance": "key",
+    "prerequisites": [
+      "maxGCDIntersecting",
+      "Nat.Prime",
+      "prime power arithmetic"
+    ],
+    "relatedConcepts": [
+      "prime powers",
+      "degenerate cases",
+      "structural characterization"
+    ]
+  },
+  {
+    "id": "ann-534-7",
+    "proofId": "erdos-534",
+    "range": {
+      "startLine": 122,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_534_summary**: Packages the three central results into a single conjunction: (1) the Erdős-Graham conjecture is false (`original_conjecture_false`), (2) a concrete counterexample exists (`counterexample_exists`), and (3) the correct Ahlswede-Khachatrian characterization holds for all $N > 1$ (`ahlswede_khachatrian_theorem`). The proof is a direct construction from the three axioms via `⟨_, _, _⟩`.",
+    "mathContext": "erdos_534_summary : ¬OriginalConjecture ∧ (∃ N > 1, ...) ∧ (∀ N > 1, ∃ j primes, ...)\nProof: exact ⟨original_conjecture_false, counterexample_exists, ahlswede_khachatrian_theorem⟩",
+    "significance": "key",
+    "prerequisites": [
+      "original_conjecture_false",
+      "counterexample_exists",
+      "ahlswede_khachatrian_theorem"
+    ],
+    "relatedConcepts": [
+      "proof packaging",
+      "summary theorem",
+      "axiom assembly"
+    ]
+  }
+]

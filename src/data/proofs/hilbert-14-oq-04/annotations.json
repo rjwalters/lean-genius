@@ -1,0 +1,142 @@
+[
+  {
+    "id": "hilbert-14-oq-04-header",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 3,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "OQ-04 Framing: From an Unformalizable Meta-Question to a Concrete Target",
+    "content": "The docstring is explicit that the headline OQ-04 — the existence of *uniform effective algorithms* for finite generation of non-reductive invariant rings — is not expressible as a single Lean theorem, since it quantifies over infinite classes of groups. Rather than state a vacuous placeholder, the file scaffolds the algorithmically refinable sibling target: **Hilbert finiteness** for invariant rings of finite-group linear actions on `MvPolynomial`. The docstring pins the exact proof architecture as a chain of five Mathlib bearers (`Algebra.IsInvariant`, `IsInvariant.isIntegral`, `FiniteType.of_restrictScalars_finiteType`, `IsIntegral.finite`, and Artin-Tate `fg_of_fg_of_fg`), all signatures fixed at the v4.26.0 lake SHA. The Scope block draws the IN/OUT line honestly: the qualitative finiteness is proved; Noether's degree bound (`gens ⊆ deg ≤ |G|`), Weitzenböck's locally nilpotent derivations, and the Nagata counterexample are all deferred. This is a model of recording an open question's *formalizable shadow* without overclaiming the question itself.",
+    "mathContext": "OQ-04 (uniform algorithms over infinite group classes) is not a single Lean statement; the formalizable shadow is $R^G$ finitely generated for each finite $G$ — the qualitative half of Noether 1916.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hilbert's 14th problem",
+      "non-reductive invariant theory",
+      "Noether's finiteness theorem (1916)",
+      "Nagata counterexample",
+      "formalizable vs unformalizable open questions"
+    ],
+    "prerequisites": [
+      "invariant rings R^G",
+      "finite generation of k-algebras",
+      "Mathlib invariant-theory API"
+    ]
+  },
+  {
+    "id": "hilbert-14-oq-04-isinvariant",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 42,
+      "endLine": 49
+    },
+    "type": "insight",
+    "title": "Fixed-Points Subalgebra is G-Invariant",
+    "content": "Registers the Algebra.IsInvariant instance for the fixed-points subalgebra B = FixedPoints.subalgebra k R G inside R. The witness is definitional: any b ∈ R that is fixed by every g already lies in the image of B's inclusion, so the membership obligation is discharged by ⟨⟨b, hb⟩, rfl⟩. This instance is the entry point that lets the downstream integrality and Artin-Tate machinery fire automatically.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fixed points",
+      "invariant subring",
+      "typeclass instance",
+      "Algebra.IsInvariant"
+    ],
+    "mathContext": "$B = R^G = \\{b \\in R : g\\cdot b = b \\ \\forall g \\in G\\}$; the IsInvariant predicate holds definitionally."
+  },
+  {
+    "id": "hilbert-14-oq-04-integral",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 51,
+      "endLine": 58
+    },
+    "type": "insight",
+    "title": "Integrality of R over the Invariant Subring",
+    "content": "Records Algebra.IsIntegral (R^G) R via Mathlib's Algebra.IsInvariant.isIntegral. The mathematical content is the orbit polynomial: for r ∈ R the product ∏_{g∈G}(X − g·r) is monic of degree |G|, and its coefficients are the elementary symmetric functions of the orbit, which are G-invariant and therefore live in R^G. Hence every element of R is integral over R^G — the engine of the whole finiteness argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "integral extension",
+      "orbit polynomial",
+      "elementary symmetric functions",
+      "monic polynomial"
+    ],
+    "mathContext": "$r$ is a root of $\\prod_{g\\in G}(X - g\\cdot r)$, monic of degree $|G|$ with coefficients in $R^G$."
+  },
+  {
+    "id": "hilbert-14-oq-04-main",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 60,
+      "endLine": 99
+    },
+    "type": "theorem",
+    "title": "Hilbert Finiteness: R^G is a Finitely Generated k-Algebra",
+    "content": "The headline result hilbert_finiteness: the invariant subring R^G = FixedPoints.subalgebra k (MvPolynomial (Fin n) k) G is Algebra.FiniteType over k for any finite group G. This is the qualitative half of Emmy Noether's 1916 theorem, proved with 0 sorries and 0 axioms. The quantitative degree bound (generators in degree ≤ |G|) is deferred.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite generation",
+      "Noether 1916",
+      "Hilbert's 14th problem",
+      "invariant theory"
+    ],
+    "mathContext": "$R^G$ is finitely generated as a $k$-algebra — the positive finite-group case of Hilbert's 14th problem."
+  },
+  {
+    "id": "hilbert-14-oq-04-artin-tate",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 84,
+      "endLine": 98
+    },
+    "type": "insight",
+    "title": "The Artin-Tate Tower Argument",
+    "content": "The proof works the tower k → R^G → R. Restrict-scalars upgrades the automatic Algebra.FiniteType k R to Algebra.FiniteType (R^G) R; combined with integrality this yields Module.Finite (R^G) R, hence R is a finitely generated R^G-module (fg_top). With k → R algebra-f.g. and the inclusion R^G ↪ R injective, the Artin-Tate lemma fg_of_fg_of_fg forces the intermediate subalgebra k → R^G to be finitely generated; Subalgebra.fg_iff_finiteType translates this back to Algebra.FiniteType k (R^G).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Artin-Tate lemma",
+      "tower of algebras",
+      "module finiteness",
+      "restrict scalars"
+    ],
+    "mathContext": "Tower $k \\to R^G \\to R$: $k\\to R$ algebra-f.g. and $R$ a f.g. $R^G$-module $\\Rightarrow k \\to R^G$ finitely generated."
+  },
+  {
+    "id": "hilbert-14-oq-04-context",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 60,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "Why the Finite Case is the Tame Case",
+    "content": "Hilbert's 14th problem has a famously mixed answer: finitely generated for reductive groups (Hilbert, Weyl) but not in general (Nagata's 1959 unipotent counterexample). Finite groups sit squarely on the positive side — Noether settled them in 1916. The orbit-polynomial route used here is characteristic-free, sidestepping the Reynolds averaging operator that breaks in the modular case (when char k divides |G|).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hilbert's 14th problem",
+      "reductive groups",
+      "Nagata counterexample",
+      "modular invariant theory"
+    ],
+    "mathContext": "Finite $\\Rightarrow$ f.g. invariants (Noether); unipotent $\\not\\Rightarrow$ f.g. (Nagata 1959)."
+  },
+  {
+    "id": "hilbert-14-oq-04-setup",
+    "proofId": "hilbert-14-oq-04",
+    "range": {
+      "startLine": 3,
+      "endLine": 40
+    },
+    "type": "concept",
+    "title": "Scope: From the OQ-04 Meta-Question to a Formalizable Sibling",
+    "content": "The docstring is careful about what is and is not being proved. OQ-04 itself — the existence of *effective uniform algorithms* for finite generation of *non-reductive* invariant rings — is not expressible as a single Lean theorem, since it quantifies over infinite classes of groups. This file instead formalizes the algorithmically refinable sibling: Hilbert finiteness for finite-group linear actions on `MvPolynomial`, the qualitative half of Noether 1916. The proof is a pinned chain of five Mathlib bearers (`Algebra.IsInvariant`, `.isIntegral`, `Algebra.FiniteType.of_restrictScalars_finiteType`, `Algebra.IsIntegral.finite`, and Artin-Tate `fg_of_fg_of_fg`), all signatures fixed at v4.26.0. The `variable` block sets the stage: a field `k`, finitely many indeterminates `Fin n`, a finite group `G` acting `MulSemiringAction`-ly on `MvPolynomial (Fin n) k`, with `SMulCommClass` ensuring the action is `k`-linear. Explicitly out of scope: Noether's degree bound (deg ≤ |G|), Weitzenböck/locally-nilpotent derivations, and the Nagata counterexample.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hilbert's 14th problem",
+      "Noether 1916",
+      "MulSemiringAction",
+      "SMulCommClass",
+      "Mathlib bearer chain"
+    ],
+    "mathContext": "Setup: $G$ finite acting $k$-linearly on $R = k[x_0,\\dots,x_{n-1}]$; goal $R^G$ finitely generated over $k$. The OQ-04 meta-conjecture (uniform algorithms, non-reductive case) is not a single formalizable statement."
+  }
+]

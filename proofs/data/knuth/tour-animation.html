@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tour (t) — The Unique Minimum Oblique Knight's Tour</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #0a0a0c;
+      --bg-board: #12121a;
+      --grid-line: rgba(255, 255, 255, 0.06);
+      --square-light: #1a1a24;
+      --square-dark: #14141c;
+      --path-color: #4a9eff;
+      --path-glow: rgba(74, 158, 255, 0.4);
+      --knight-color: #fff;
+      --oblique-color: #ff6b4a;
+      --oblique-glow: rgba(255, 107, 74, 0.6);
+      --text-primary: #e8e8ec;
+      --text-secondary: rgba(255, 255, 255, 0.5);
+      --accent: #4a9eff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-deep);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      overflow-x: hidden;
+    }
+
+    /* Subtle background pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 80%, rgba(74, 158, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 107, 74, 0.02) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .attribution {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 1rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    main {
+      display: flex;
+      gap: 3rem;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .board-container {
+      position: relative;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      width: 480px;
+      height: 480px;
+      background: var(--bg-board);
+      border: 1px solid var(--grid-line);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.02),
+        0 20px 60px -10px rgba(0, 0, 0, 0.5),
+        inset 0 0 80px rgba(0, 0, 0, 0.3);
+    }
+
+    .square {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: transparent;
+      transition: all 0.3s ease;
+    }
+
+    .square.light { background: var(--square-light); }
+    .square.dark { background: var(--square-dark); }
+
+    .square.visited {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .square.current {
+      background: var(--path-color);
+      box-shadow: 0 0 30px var(--path-glow);
+    }
+
+    .square.oblique {
+      position: relative;
+    }
+
+    .square.oblique::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 2px solid var(--oblique-color);
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .square.oblique.active::after {
+      opacity: 1;
+      animation: pulse-oblique 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-oblique {
+      0%, 100% { box-shadow: 0 0 10px var(--oblique-glow); }
+      50% { box-shadow: 0 0 25px var(--oblique-glow); }
+    }
+
+    /* SVG path overlay */
+    .path-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .path-line {
+      fill: none;
+      stroke: var(--path-color);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 6px var(--path-glow));
+    }
+
+    .path-line.closing {
+      stroke-dasharray: 4 4;
+      opacity: 0.5;
+    }
+
+    /* Knight piece */
+    .knight {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      transform: translate(-50%, -50%);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 10;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+    }
+
+    .knight svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Coordinate labels */
+    .coords {
+      position: absolute;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+    }
+
+    .coords.files {
+      bottom: -1.5rem;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-around;
+      padding: 0 20px;
+    }
+
+    .coords.ranks {
+      top: 0;
+      bottom: 0;
+      left: -1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      padding: 20px 0;
+    }
+
+    /* Controls panel */
+    .panel {
+      background: rgba(18, 18, 26, 0.8);
+      border: 1px solid var(--grid-line);
+      padding: 2rem;
+      width: 280px;
+      backdrop-filter: blur(10px);
+    }
+
+    .panel h2 {
+      font-size: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--grid-line);
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    button {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      background: transparent;
+      border: 1px solid var(--grid-line);
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      background: rgba(74, 158, 255, 0.1);
+      border-color: var(--accent);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg-deep);
+    }
+
+    .speed-control {
+      margin-bottom: 1.5rem;
+    }
+
+    .speed-control label {
+      display: block;
+      font-size: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 4px;
+      -webkit-appearance: none;
+      background: var(--grid-line);
+      border-radius: 2px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      background: var(--accent);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .stats {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+    }
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--grid-line);
+    }
+
+    .stat:last-child {
+      border-bottom: none;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+    }
+
+    .stat-value {
+      color: var(--text-primary);
+    }
+
+    .stat-value.highlight {
+      color: var(--oblique-color);
+    }
+
+    .legend {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--grid-line);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    .legend-dot.path { background: var(--path-color); }
+    .legend-dot.oblique {
+      background: transparent;
+      border: 2px solid var(--oblique-color);
+    }
+
+    /* Mathematical insight section */
+    .insight {
+      max-width: 800px;
+      margin-top: 3rem;
+      padding: 2rem;
+      background: rgba(18, 18, 26, 0.5);
+      border: 1px solid var(--grid-line);
+      text-align: center;
+    }
+
+    .insight p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+
+    .insight strong {
+      color: var(--text-primary);
+    }
+
+    .insight em {
+      color: var(--oblique-color);
+      font-style: italic;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .board {
+        width: min(90vw, 480px);
+        height: min(90vw, 480px);
+      }
+
+      .panel {
+        width: min(90vw, 320px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Tour <em>(t)</em></h1>
+    <p class="subtitle">
+      The unique closed knight's tour with exactly four oblique turns—<br>
+      the minimum possible on an 8×8 board
+    </p>
+    <p class="attribution">Knuth · TAOCP Vol. 4 · Fig. A-19(t)</p>
+  </header>
+
+  <main>
+    <div class="board-container">
+      <div class="coords files">
+        <span>a</span><span>b</span><span>c</span><span>d</span>
+        <span>e</span><span>f</span><span>g</span><span>h</span>
+      </div>
+      <div class="coords ranks">
+        <span>8</span><span>7</span><span>6</span><span>5</span>
+        <span>4</span><span>3</span><span>2</span><span>1</span>
+      </div>
+      <div class="board" id="board"></div>
+      <svg class="path-overlay" id="pathOverlay" viewBox="0 0 480 480"></svg>
+      <div class="knight" id="knight">
+        <svg viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 10C32.5 10 38 18 38 28C38 38 32.5 40 22 40C11.5 40 7 38 7 28C7 18 11.5 10 22 10Z" fill="#1a1a24" stroke="white" stroke-width="1.5"/>
+          <path d="M14 28C14 28 16 18 22 14C28 18 30 28 30 28" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M17 22L15 25M27 22L29 25" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="18" cy="20" r="1.5" fill="white"/>
+          <circle cx="26" cy="20" r="1.5" fill="white"/>
+          <path d="M19 32C19 32 22 34 25 32" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Controls</h2>
+      <div class="controls">
+        <button id="playBtn">Play</button>
+        <button id="stepBtn">Step</button>
+        <button id="resetBtn">Reset</button>
+      </div>
+
+      <div class="speed-control">
+        <label>Animation Speed</label>
+        <input type="range" id="speedSlider" min="100" max="1000" value="400">
+      </div>
+
+      <h2>Statistics</h2>
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-label">Move</span>
+          <span class="stat-value" id="moveCount">0 / 64</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Position</span>
+          <span class="stat-value" id="currentPos">a1</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Oblique Turns</span>
+          <span class="stat-value highlight" id="obliqueCount">0 / 4</span>
+        </div>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-dot path"></div>
+          <span>Knight's path</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot oblique"></div>
+          <span>Oblique turn (>90°)</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="insight">
+    <p>
+      Among the <strong>13,267,364,410,532</strong> closed knight's tours on an 8×8 board,
+      only <em>four</em> achieve the minimum of 4 oblique turns—and these four are
+      related by the symmetries of the square. This tour is <em>essentially unique</em>.
+    </p>
+  </div>
+
+  <script>
+    // Tour (t) - The unique minimum oblique knight's tour
+    const TOUR = [
+      [0, 0], [2, 1], [4, 0], [6, 1], [7, 3], [6, 5], [7, 7], [5, 6],
+      [3, 7], [1, 6], [0, 4], [2, 3], [1, 1], [3, 0], [4, 2], [6, 3],
+      [7, 1], [5, 0], [3, 1], [1, 0], [0, 2], [1, 4], [0, 6], [2, 7],
+      [3, 5], [5, 4], [7, 5], [6, 7], [4, 6], [3, 4], [5, 3], [7, 2],
+      [6, 0], [4, 1], [2, 0], [0, 1], [1, 3], [2, 5], [4, 4], [3, 2],
+      [5, 1], [7, 0], [6, 2], [7, 4], [6, 6], [4, 7], [2, 6], [0, 7],
+      [1, 5], [0, 3], [2, 2], [4, 3], [5, 5], [3, 6], [1, 7], [0, 5],
+      [2, 4], [4, 5], [5, 7], [7, 6], [6, 4], [5, 2], [3, 3], [1, 2]
+    ];
+
+    // Positions where oblique turns occur (at corners)
+    const OBLIQUE_POSITIONS = new Set([0, 6, 41, 47]);
+    const OBLIQUE_SQUARES = [[0, 0], [7, 7], [7, 0], [0, 7]];
+
+    const board = document.getElementById('board');
+    const knight = document.getElementById('knight');
+    const pathOverlay = document.getElementById('pathOverlay');
+    const playBtn = document.getElementById('playBtn');
+    const stepBtn = document.getElementById('stepBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const speedSlider = document.getElementById('speedSlider');
+    const moveCountEl = document.getElementById('moveCount');
+    const currentPosEl = document.getElementById('currentPos');
+    const obliqueCountEl = document.getElementById('obliqueCount');
+
+    let currentStep = 0;
+    let isPlaying = false;
+    let animationTimer = null;
+    let pathPoints = [];
+    const squares = [];
+
+    // Initialize board
+    function initBoard() {
+      for (let row = 0; row < 8; row++) {
+        for (let col = 0; col < 8; col++) {
+          const square = document.createElement('div');
+          const isLight = (row + col) % 2 === 0;
+          square.className = `square ${isLight ? 'light' : 'dark'}`;
+          square.dataset.row = row;
+          square.dataset.col = col;
+
+          // Mark oblique squares
+          if (OBLIQUE_SQUARES.some(([r, c]) => r === row && c === col)) {
+            square.classList.add('oblique');
+          }
+
+          board.appendChild(square);
+          squares.push(square);
+        }
+      }
+    }
+
+    // Get square element by position
+    function getSquare(row, col) {
+      return squares[row * 8 + col];
+    }
+
+    // Get pixel position for knight
+    function getPosition(row, col) {
+      const squareSize = 60;
+      return {
+        x: col * squareSize + squareSize / 2,
+        y: row * squareSize + squareSize / 2
+      };
+    }
+
+    // Convert position to chess notation
+    function toNotation(row, col) {
+      const file = String.fromCharCode(97 + col);
+      const rank = 8 - row;
+      return `${file}${rank}`;
+    }
+
+    // Update path SVG
+    function updatePath() {
+      if (pathPoints.length < 2) {
+        pathOverlay.innerHTML = '';
+        return;
+      }
+
+      let d = `M ${pathPoints[0].x} ${pathPoints[0].y}`;
+      for (let i = 1; i < pathPoints.length; i++) {
+        d += ` L ${pathPoints[i].x} ${pathPoints[i].y}`;
+      }
+
+      // Add closing line if tour complete
+      let closingPath = '';
+      if (currentStep === 64) {
+        const first = pathPoints[0];
+        const last = pathPoints[pathPoints.length - 1];
+        closingPath = `<path class="path-line closing" d="M ${last.x} ${last.y} L ${first.x} ${first.y}"/>`;
+      }
+
+      pathOverlay.innerHTML = `<path class="path-line" d="${d}"/>${closingPath}`;
+    }
+
+    // Move to next step
+    function step() {
+      if (currentStep >= 64) {
+        pause();
+        return;
+      }
+
+      const [row, col] = TOUR[currentStep];
+      const pos = getPosition(row, col);
+
+      // Move knight
+      knight.style.left = `${pos.x}px`;
+      knight.style.top = `${pos.y}px`;
+
+      // Update path
+      pathPoints.push(pos);
+      updatePath();
+
+      // Mark square as visited
+      const square = getSquare(row, col);
+      square.classList.add('visited');
+      square.textContent = currentStep + 1;
+
+      // Update current marker
+      squares.forEach(s => s.classList.remove('current'));
+      square.classList.add('current');
+
+      // Activate oblique markers
+      if (OBLIQUE_POSITIONS.has(currentStep)) {
+        square.classList.add('active');
+      }
+
+      // Update stats
+      currentStep++;
+      updateStats();
+    }
+
+    // Update statistics display
+    function updateStats() {
+      moveCountEl.textContent = `${currentStep} / 64`;
+
+      if (currentStep > 0) {
+        const [row, col] = TOUR[currentStep - 1];
+        currentPosEl.textContent = toNotation(row, col);
+      } else {
+        currentPosEl.textContent = '—';
+      }
+
+      const obliquesSoFar = [...OBLIQUE_POSITIONS].filter(p => p < currentStep).length;
+      obliqueCountEl.textContent = `${obliquesSoFar} / 4`;
+    }
+
+    // Play animation
+    function play() {
+      if (currentStep >= 64) {
+        reset();
+      }
+      isPlaying = true;
+      playBtn.textContent = 'Pause';
+      playBtn.classList.add('active');
+      animate();
+    }
+
+    // Pause animation
+    function pause() {
+      isPlaying = false;
+      playBtn.textContent = 'Play';
+      playBtn.classList.remove('active');
+      if (animationTimer) {
+        clearTimeout(animationTimer);
+        animationTimer = null;
+      }
+    }
+
+    // Animate steps
+    function animate() {
+      if (!isPlaying || currentStep >= 64) {
+        pause();
+        return;
+      }
+      step();
+      const speed = 1100 - speedSlider.value;
+      animationTimer = setTimeout(animate, speed);
+    }
+
+    // Reset to beginning
+    function reset() {
+      pause();
+      currentStep = 0;
+      pathPoints = [];
+
+      // Reset squares
+      squares.forEach(square => {
+        square.classList.remove('visited', 'current', 'active');
+        square.textContent = '';
+      });
+
+      // Reset knight position
+      const [row, col] = TOUR[0];
+      const pos = getPosition(row, col);
+      knight.style.left = `${pos.x}px`;
+      knight.style.top = `${pos.y}px`;
+
+      // Clear path
+      updatePath();
+      updateStats();
+    }
+
+    // Event listeners
+    playBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        pause();
+      } else {
+        play();
+      }
+    });
+
+    stepBtn.addEventListener('click', () => {
+      pause();
+      step();
+    });
+
+    resetBtn.addEventListener('click', reset);
+
+    speedSlider.addEventListener('input', () => {
+      // Speed change takes effect on next step
+    });
+
+    // Initialize
+    initBoard();
+    reset();
+  </script>
+</body>
+</html>

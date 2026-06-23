@@ -1,0 +1,107 @@
+{
+  "slug": "erdos-951",
+  "title": "Erdős #951",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $1<a_1<\\cdots$ be a sequence of real numbers such that\\[\\left\\lvert \\prod_i a_i^{k_i}-\\prod_j a_j^{\\ell_j}\\right\\rvert \\geq 1\\]for every distinct pair of non-negative finitely supported integer tuples $k_i,\\ell_j\\geq 0$. Is it true that\\[\\#\\{ a_i \\leq x\\} \\leq \\pi(x)?\\]\n\n\n\nErd\\H{o}s says this question was asked 'during [his] lecture at Queens College [by] one member of the audience (perhaps S. Shapiro)'. Such a sequence of $a_i$ is sometimes called a set of Beurling prime numbers.\n\nBeurling conjectured that if the number of reals in $[1,x]$ of the form $\\prod a_i^{k_i}$ is $x+o(\\log x)$ then the $a_i$ must be the sequence of primes.",
+    "plain": "Let $1<a_1<\\cdots$ be a sequence of real numbers such that\\[\\left\\lvert \\prod_i a_i^{k_i}-\\prod_j a_j^{\\ell_j}\\right\\rvert \\geq 1\\]for every distinct pair of non-negative finitely supported integer tuples $k_i,\\ell_j\\geq 0$. Is it true that\\[\\#\\{ a_i \\leq x\\} \\leq \\pi(x)?\\]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-04T00:00:00Z",
+    "iteration": 4,
+    "focus": "S4 (researcher-1, 2026-06-04): ACT. Sharpened the trivial-bound chain. Added beurling_a_zero_ge_two (a_0 ≥ 2 derived from WellSeparatedProducts, not assumed), beurling_linear_growth_strong (a_n ≥ n + 2), and beurlingPi_le_floor_pred (π_a(x) ≤ ⌊x⌋₊ - 1, unconditional, mirroring beurlingPi_le_floor with the strengthened growth). File 285 → 339 lines; theoremCount 12 → 15; 0 axioms, 0 sorries. Build verification deferred to Mechanic/Auditor (local Docker daemon in I/O-error state, same precedent as szemeredi-theorem-oq-01 S3).",
+    "blockers": [
+      "Local Docker daemon I/O-error state prevents on-host `./proofs/scripts/docker-build.sh Proofs.Erdos951Problem` invocation — Mechanic / Auditor verify post-merge"
+    ],
+    "nextAction": "(1) Mechanic / Auditor: Docker-build Proofs.Erdos951Problem and confirm 15 theorems, 0 axioms, 0 sorries. (2) Researcher (long-horizon): refine sharpened trivial bound `⌊x⌋ - 1` toward a sublinear bound (would require a density-increment argument, multi-week scale). (3) Researcher (short-horizon): investigate whether well-separation forces a_0 to be a positive integer ≥ 2 (apply WellSeparatedProducts to single 0 k for various k).",
+    "attemptCounts": {
+      "total": 4,
+      "currentApproach": 2,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PARTIAL RESULTS: trivial-bound chain extended to π_a(x) ≤ ⌊x⌋₊ - 1 via the derivable lemma a_0 ≥ 2 (from WellSeparatedProducts alone). File: 0 axioms, 0 sorries, 15 theorems, 10 defs, 339 lines. Main conjecture (π_a(x) ≤ π(x), open) is not pursued directly — these are SURVEY-tier improvements within the trivial-bound regime.",
+    "builtItems": [
+      "Proved primeSeq_isPrime helper theorem (Nat.nth_mem_of_infinite)",
+      "Proved primeSeq_strictly_increasing from Nat.nth_strictMono",
+      "Proved primeSeq_gt_one from Nat.Prime.one_lt",
+      "Removed false powersOfTwo section with documented counterexample",
+      "Fixed primePi definition to count primes ≤ x correctly",
+      "Proved primeSeq_strictly_increasing via Nat.nth_strictMono",
+      "Proved primeSeq_gt_one via Nat.Prime.one_lt",
+      "Proved actualPrimes_counting via Galois connection + Set.ncard_coe_Finset",
+      "Removed false powersOfTwo axioms (counterexample: k={0↦2}, ℓ={1↦1})",
+      "Fixed primePi: primeCounting counts ≤ n, so no +1 needed",
+      "Proved primeSeq_well_separated via factorization_prod_at helper + FTA injectivity",
+      "Converted beurlings_conjecture axiom → def (Prop not asserted)",
+      "factorization_prod_at: Finset.induction + Nat.factorization_mul/pow/prime",
+      "beurling_linear_growth: a_n ≥ a_0 + n (extracted from local lemma to top-level, by induction on beurling_consec_gap)",
+      "beurlingPi_le_floor: π_a(x) ≤ ⌊x⌋₊ (trivial upper bound, partial result toward erdos951_conjecture; verified via Set.ncard_le_ncard + Finset.range)",
+      "Refactored beurlingPi_finite to use beurling_linear_growth (shorter proof)",
+      "S4 (researcher-1, 2026-06-04): beurling_a_zero_ge_two (a_0 ≥ 2 from WellSeparatedProducts applied to 0 vs Finsupp.single 0 1)",
+      "S4 (researcher-1, 2026-06-04): beurling_linear_growth_strong (a_n ≥ n + 2, by linarith combining the two prior lemmas)",
+      "S4 (researcher-1, 2026-06-04): beurlingPi_le_floor_pred (sharpened trivial bound π_a(x) ≤ ⌊x⌋₊ - 1, unconditional via Nat truncated subtraction)"
+    ],
+    "insights": [
+      "primeSeq_strictly_increasing proved via Nat.nth_strictMono + Nat.infinite_setOf_prime",
+      "primeSeq_gt_one proved via Nat.Prime.one_lt + Nat.nth_mem_of_infinite",
+      "powersOfTwo is NOT a valid Beurling prime sequence: counterexample k={0↦2} and ℓ={1↦1} both give product 4",
+      "primePi definition had off-by-one error: primeCounting counts primes < n, not ≤ n; fixed to primeCounting(⌊x⌋₊ + 1)",
+      "primeSeq_well_separated is correct (products of distinct primes are distinct integers by FTA) but needs formal unique factorization proof",
+      "actualPrimes_counting is correct with fixed primePi: uses Galois connection nth/count (Nat.lt_nth_iff_count_lt)",
+      "primeCounting n = #{primes ≤ n} = count Prime (n+1). Verified via primeCounting 10 = 4",
+      "Galois connection: n < count p m ↔ nth p n < m (Nat.lt_nth_iff_count_lt)",
+      "primeSeq_well_separated proof: (1) factor prod at nth prime = exponent via FTA, (2) cast ℕ→ℝ preserving distinctness, (3) distinct naturals have |a-b|≥1",
+      "beurlings_conjecture was never used as a proof term — safe to convert axiom→def without breaking anything",
+      "Trivial bound ⌊x⌋ is achievable from well-separation alone; the gap to conjectured π(x) ~ x/log x is the actual mathematical content of Erdős 951",
+      "Linear growth a_n > 1 + n follows from a_n ≥ a_0 + n (beurling_linear_growth) + a_0 > 1 (all_gt_one 0)",
+      "Set inclusion {n | a_n ≤ x} ⊆ Finset.range ⌊x⌋₊ via Nat.le_floor + Nat.lt_of_succ_le; cardinality from Set.ncard_coe_Finset + Finset.card_range",
+      "a_0 ≥ 2 is derivable (not assumed): WellSeparatedProducts on 0 (empty product = 1) vs Finsupp.single 0 1 (product = a_0) forces |1 - a_0| ≥ 1, combined with a_0 > 1 gives a_0 ≥ 2",
+      "Sharpened a_n ≥ n + 2 (linarith from beurling_linear_growth + beurling_a_zero_ge_two) lets the trivial bound improve by 1 (⌊x⌋₊ → ⌊x⌋₊ - 1), which is the maximum that can be extracted from the linear-growth lemma chain alone"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #951 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1<a_1<\\cdots$ be a sequence of real numbers such that\\[\\left\\lvert \\prod_i a_i^{k_i}-\\prod_j a_j^{\\ell_j}\\right\\rvert \\geq 1\\]for every distinct pair of non-negative finitely supported integer tuples $k_i,\\ell_j\\geq 0$. Is it true that\\[\\#\\{ a_i \\leq x\\} \\leq \\pi(x)?\\]\n\n\n\nErd\\H{o}s says this question was asked 'during [his] lecture at Queens College [by] one member of the audience (perhaps S. Shapiro)'. Such a sequence of $a_i$ is sometimes called a set of Beurling prime numbers.\n\nBeurling conjectured that if the number of reals in $[1,x]$ of the form $\\prod a_i^{k_i}$ is $x+o(\\log x)$ then the $a_i$ must be the sequence of primes.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #950\n- Problem #952\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-9",
+    "erdos-95",
+    "erdos-951"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T12:22:36.006Z",
+  "lastUpdate": "2026-06-04T00:00:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos951Problem.lean",
+      "filename": "Erdos951Problem.lean",
+      "lineCount": 339,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos951Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+{
+  "id": "erdos-354",
+  "title": "Erdős Problem #354: Completeness of Binary Floor Sequences",
+  "slug": "erdos-354",
+  "description": "Let α, β > 0 with α/β irrational. Is the multiset {⌊2ᵏα⌋} ∪ {⌊2ᵏβ⌋} complete (representing all large integers)? OPEN in general.",
+  "meta": {
+    "author": "Graham (1971), Hegyvári (1989), Jiang-Ma (2024), Fang-He (2025)",
+    "sourceUrl": "https://erdosproblems.com/354",
+    "date": "1971",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos354Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "representation",
+      "floor-function",
+      "additive-combinatorics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 354,
+    "erdosUrl": "https://erdosproblems.com/354",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.floor",
+        "description": "Floor function for reals",
+        "module": "Mathlib.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Irrational numbers",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sums over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Definition of FloorSeq and floorSeqTerm",
+      "Definition of IsRepresentable for sum representations",
+      "Definition of IsComplete (all large integers representable)",
+      "Definition of IsDyadicRational (m/2ⁿ form)",
+      "Hegyvári's positive result (dyadic + non-dyadic → complete)",
+      "Hegyvári's negative result (α ≥ 2, β = 2ᵏα → not complete)",
+      "Van Doorn's result (α < 2 < β < 3 → complete)",
+      "Recent Jiang-Ma and Fang-He negative results",
+      "Generalized conjecture for base γ ∈ (1, 2)"
+    ],
+    "axiomCount": 1,
+    "lineCount": 185,
+    "assumptions": "1 axiom: hegyvari_not_complete (Hegyváry — for α≥2 and k≥1, the sequence ⌊α^k·α⌋ is not a complete sequence). 0 sorries.",
+    "theoremCount": 1,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "**Graham (1971)** first posed this question about representing integers using floor sequences. The problem connects representation theory with Diophantine approximation.\n\n**Hegyvári (1989)** made major progress:\n- POSITIVE: Complete when α is dyadic rational and β is not\n- NEGATIVE: Not complete when α ≥ 2 and β = 2ᵏα\n\n**Recent work**:\n- **Jiang-Ma (2024)** and **Fang-He (2025)** extended negative results to 1 < α < 2\n- **Van Doorn** proved completeness for α < 2 < β < 3\n\n**Measure theory**: Hegyvári (1991, 1994) proved continuum cardinality results about exceptional pairs.",
+    "problemStatement": "Define the **floor sequence** for α > 0: {⌊α⌋, ⌊2α⌋, ⌊4α⌋, ...} = {⌊2ᵏα⌋ : k ∈ ℕ}.\n\n**Definition**: The multiset {⌊2ᵏα⌋} ∪ {⌊2ᵏβ⌋} is **complete** if every sufficiently large n can be written as:\n  n = Σₛ∈S ⌊2ˢα⌋ + Σₜ∈T ⌊2ᵗβ⌋\nfor some finite sets S, T ⊆ ℕ.\n\n**Erdős Problem #354 (OPEN)**: Is completeness guaranteed when α/β is irrational?\n\n**Answer**: NO in full generality (counterexamples exist). The refined question asks for precise conditions.",
+    "text": "Let α, β > 0 with α/β irrational. Is the multiset {⌊2ᵏα⌋} ∪ {⌊2ᵏβ⌋} complete (representing all large integers)? OPEN in general.",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Core definitions**: FloorSeq, floorSeqTerm, IsRepresentable, IsComplete\n\n2. **Structural definitions**: IsDyadicRational, HasIrrationalRatio\n\n3. **Known results**: Hegyvári's theorems as axioms\n\n4. **Counterexamples**: The conjecture fails when β = 2ᵏα\n\n5. **Generalizations**: Base γ ∈ (1, 2) version",
+    "keyInsights": [
+      "**Dyadic vs non-dyadic**: Dyadic rationals (m/2ⁿ) give periodic behavior in base-2 representations, enabling coverage arguments.",
+      "**Alignment kills completeness**: When β = 2ᵏα, the sequences are 'too aligned' and miss residue classes.",
+      "**Separation helps**: Van Doorn's α < 2 < β < 3 condition ensures the sequences interleave well.",
+      "**Ceiling variant always works**: If either α or β is non-dyadic, ceiling functions give completeness.",
+      "**Measure-theoretic view**: 'Most' pairs (α, β) give completeness in a measure-theoretic sense."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 34,
+      "endLine": 66,
+      "summary": "FloorSeq, floorSeqTerm, IsRepresentable, IsComplete, IsDyadicRational.",
+      "mathContext": "Mathematical content: FloorSeq, floorSeqTerm, IsRepresentable, IsComplete, IsDyadicRational."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 67,
+      "endLine": 86,
+      "summary": "Non-negativity, unboundedness, eventual monotonicity.",
+      "mathContext": "Bound: Non-negativity, unboundedness, eventual monotonicity."
+    },
+    {
+      "id": "hegyvari",
+      "title": "Hegyvári's Results (1989)",
+      "startLine": 87,
+      "endLine": 109,
+      "summary": "Positive result for dyadic + non-dyadic; negative result for α ≥ 2, β = 2ᵏα.",
+      "mathContext": "Positive result for dyadic + non-dyadic; negative result for α $\\geq$ 2, β = 2ᵏα."
+    },
+    {
+      "id": "van-doorn",
+      "title": "Van Doorn's Result",
+      "startLine": 110,
+      "endLine": 122,
+      "summary": "Completeness when α < 2 < β < 3.",
+      "mathContext": "Mathematical content: Completeness when α < 2 < β < 3."
+    },
+    {
+      "id": "recent-negative",
+      "title": "Recent Negative Results",
+      "startLine": 123,
+      "endLine": 139,
+      "summary": "Jiang-Ma (2024) and Fang-He (2025) extensions.",
+      "mathContext": "Mathematical content: Jiang-Ma (2024) and Fang-He (2025) extensions."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 140,
+      "endLine": 177,
+      "summary": "The general question and its known falsity; refined conjecture.",
+      "mathContext": "Mathematical content: The general question and its known falsity; refined conjecture."
+    },
+    {
+      "id": "representation",
+      "title": "Representation Properties",
+      "startLine": 178,
+      "endLine": 185,
+      "summary": "Zero representable, term representability, closure under addition.",
+      "mathContext": "Mathematical content: Zero representable, term representability, closure under addition."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #354 about completeness of binary floor sequences. The original conjecture (irrational ratio implies completeness) is FALSE in general, as shown by Hegyvári's counterexamples. However, many special cases are solved: dyadic + non-dyadic is complete, α < 2 < β < 3 is complete, and ceiling functions always work for non-dyadic parameters.",
+    "implications": "This problem connects additive number theory to Diophantine approximation and measure theory. Understanding which integer sequences can represent all large integers has applications in coding theory and computational number theory.",
+    "openQuestions": [
+      "Precise characterization of (α, β) pairs giving completeness",
+      "Is non-dyadic + irrational ratio sufficient for completeness?",
+      "What happens for base γ ∈ (1, 2)?",
+      "Density of exceptional pairs (α, β) that fail completeness"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "BigOperators",
+      "Real"
+    ],
+    "namespace": "Erdos354",
+    "lineCount": 185,
+    "axiomCount": 1,
+    "theoremCount": 1,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos354Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-1103",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    },
+    {
+      "targetId": "erdos-1107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    }
+  ],
+  "sorries": 0
+}

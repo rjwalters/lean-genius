@@ -1,0 +1,236 @@
+{
+  "id": "triangular-reciprocals",
+  "title": "Sum of Reciprocals of Triangular Numbers",
+  "slug": "triangular-reciprocals",
+  "description": "The sum of reciprocals of triangular numbers equals 2: ∑(2/(n(n+1))) = 2. A beautiful telescoping series result.",
+  "meta": {
+    "author": "Classical (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Triangular_number",
+    "date": "Classical",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "series",
+      "combinatorics",
+      "classic",
+      "intermediate",
+      "wiedijk",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/TriangularNumberReciprocals.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "tsum",
+        "description": "Topological sum of infinite series",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Real.summable_nat_rpow_inv",
+        "description": "p-series convergence for comparison test",
+        "module": "Mathlib.Analysis.PSeries"
+      }
+    ],
+    "originalContributions": [
+      "Telescoping series proof",
+      "Connection to triangular numbers",
+      "Comparison test convergence",
+      "Unscaled corollary (sum = 1)"
+    ],
+    "dateAdded": "2025-12-26",
+    "wiedijkNumber": 42,
+    "axiomCount": 0,
+    "lineCount": 308,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Triangular numbers T_n = n(n+1)/2 are among the oldest objects in number theory, studied by the Pythagoreans (~500 BCE) who arranged pebbles in triangular patterns. The figurate number tradition continued through Nicomachus of Gerasa (c. 100 AD) and Theon of Smyrna (c. 130 AD). The telescoping technique underlying this proof traces to Leibniz (1673), who computed ∑1/(n(n+1)) = 1 as one of the earliest evaluated infinite series — predating the Euler–Mengoli resolution of the Basel problem by decades. The result that ∑1/T_n = 2 follows immediately by the factor-of-2 relationship 1/T_n = 2/(n(n+1)). This is Wiedijk's 100 Theorems #42.",
+    "problemStatement": "**Sum of Triangular Reciprocals**:\n\n$$\\sum_{n=1}^{\\infty} \\frac{1}{T_n} = \\sum_{n=1}^{\\infty} \\frac{2}{n(n+1)} = 2$$\n\nwhere $T_n = n(n+1)/2$ is the nth triangular number.",
+    "text": "The sum of reciprocals of triangular numbers equals 2: ∑(2/(n(n+1))) = 2. A beautiful telescoping series result.",
+    "proofStrategy": "Use partial fractions: 2/(n(n+1)) = 2(1/n - 1/(n+1)). The series telescopes to 2·1 = 2. Convergence is established via comparison with the p-series ∑1/n² (p = 2 > 1).",
+    "keyInsights": [
+      "Partial fractions convert products in denominators to differences — the identity 1/(n(n+1)) = 1/n - 1/(n+1) is the prototype of all telescoping arguments",
+      "The epsilon-N convergence proof shows 2/(n+1) → 0 by choosing N = ⌈2/ε⌉ + 1, making the analysis entirely constructive",
+      "Summability uses the comparison test against the p-series ∑1/n² (p = 2 > 1), connecting figurate number reciprocals to the analytic theory of Dirichlet series",
+      "The factor-of-2 relationship 1/T_n = 2/(n(n+1)) means ∑1/T_n = 2 and ∑1/(n(n+1)) = 1 are the same result in different clothing — both are proved here",
+      "Consecutive integers n(n+1) are always even, so division by 2 in T_n = n(n+1)/2 is exact over ℕ — the Lean proof verifies this divisibility explicitly"
+    ],
+    "prerequisites": [
+      "Mathematical analysis",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction and Historical Context",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module documentation: states the identity ∑2/(n(n+1)) = 2, describes the telescoping approach, historical context of triangular numbers from the Pythagoreans, and Mathlib dependencies.",
+      "mathContext": "The identity $\\sum_{n=1}^{\\infty} \\frac{2}{n(n+1)} = 2$ is proved via telescoping: partial fractions give $\\frac{2}{n(n+1)} = \\frac{2}{n} - \\frac{2}{n+1}$, so partial sums collapse to $2 - \\frac{2}{N+1} \\to 2$. The $n$-th triangular number is $T_n = \\frac{n(n+1)}{2}$."
+    },
+    {
+      "id": "triangular-def",
+      "title": "Triangular Number Definition",
+      "startLine": 53,
+      "endLine": 63,
+      "summary": "Defines T_n = n(n+1)/2 as a natural number function. Values: 1, 3, 6, 10, 15, ... formed by summing consecutive naturals.",
+      "mathContext": "The $n$-th triangular number $T_n = \\frac{n(n+1)}{2} = \\sum_{k=1}^{n} k$ counts objects in a triangular array. First values: $T_1 = 1$, $T_2 = 3$, $T_3 = 6$, $T_4 = 10$, $T_5 = 15$."
+    },
+    {
+      "id": "partial-fractions",
+      "title": "Partial Fraction Decomposition",
+      "startLine": 64,
+      "endLine": 91,
+      "summary": "Two forms of the key identity: 2/(n(n+1)) = 2/n - 2/(n+1) and 1/(n(n+1)) = 1/n - 1/(n+1). Proved by field_simp and ring after establishing non-zero denominators via positivity.",
+      "mathContext": "The partial fraction identities $\\frac{2}{n(n+1)} = \\frac{2}{n} - \\frac{2}{n+1}$ and $\\frac{1}{n(n+1)} = \\frac{1}{n} - \\frac{1}{n+1}$ hold for $n \\geq 1$. Both are verified by $\\mathrm{field\\_simp}$ after establishing $n \\neq 0$ and $n+1 \\neq 0$."
+    },
+    {
+      "id": "telescoping",
+      "title": "Finite Telescoping Sum",
+      "startLine": 92,
+      "endLine": 131,
+      "summary": "Proves ∑_{k=1}^{n} 2/(k(k+1)) = 2 - 2/(n+1) by induction on n. The base case is norm_num; the inductive step uses field_simp and ring after careful Finset.Icc manipulation.",
+      "mathContext": "By induction on $n$: $\\sum_{k=1}^{n} \\frac{2}{k(k+1)} = 2 - \\frac{2}{n+1}$. Base case $n=1$: $\\frac{2}{1 \\cdot 2} = 1 = 2 - \\frac{2}{2}$. Inductive step: adding $\\frac{2}{(n+1)(n+2)}$ to $2 - \\frac{2}{n+1}$ gives $2 - \\frac{2}{n+2}$ by algebraic simplification."
+    },
+    {
+      "id": "convergence",
+      "title": "Series Convergence",
+      "startLine": 132,
+      "endLine": 169,
+      "summary": "Establishes Summable for both 1/(n(n+1)) and 2/(n(n+1)). Uses comparison test: 1/(n(n+1)) ≤ 1/n², and the p-series ∑1/n² converges via Real.summable_nat_rpow_inv.",
+      "mathContext": "Convergence via comparison: $\\frac{1}{n(n+1)} \\leq \\frac{1}{n^2}$ for $n \\geq 1$, and the $p$-series $\\sum_{n=1}^{\\infty} \\frac{1}{n^p}$ converges for $p > 1$ (here $p = 2$). Thus $\\mathrm{Summable}\\,(\\lambda\\, n,\\, \\frac{2}{n(n+1)})$ is established by the comparison test."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: HasSum and tsum",
+      "startLine": 170,
+      "endLine": 248,
+      "summary": "The core result: HasSum for ∑2/(n(n+1)) = 2. Converts to sequential convergence via hasSum_iff_tendsto_nat_of_nonneg, then uses the Metric.tendsto_atTop ε-N definition with N = ⌈2/ε⌉ + 1. Also provides tsum version.",
+      "mathContext": "The main theorem: $\\mathrm{HasSum}\\,(\\lambda\\, n,\\, \\frac{2}{n(n+1)})\\; 2$. The proof converts to sequential convergence: for all $\\varepsilon > 0$, choosing $N = \\lceil 2/\\varepsilon \\rceil + 1$ ensures $|s_N - 2| = \\frac{2}{N+1} < \\varepsilon$. The $\\mathrm{tsum}$ version gives $\\sum_{n=1}^{\\infty} \\frac{2}{n(n+1)} = 2$."
+    },
+    {
+      "id": "corollary",
+      "title": "Corollary: Unscaled Sum Equals 1",
+      "startLine": 249,
+      "endLine": 266,
+      "summary": "Derives ∑1/(n(n+1)) = 1 by dividing the main result by 2. Uses HasSum.div_const and algebraic simplification.",
+      "mathContext": "Dividing by $2$: $\\sum_{n=1}^{\\infty} \\frac{1}{n(n+1)} = \\frac{1}{2} \\cdot 2 = 1$. This is Leibniz's 1673 result, one of the earliest evaluated infinite series. Uses $\\mathrm{HasSum.div\\_const}$ to derive $\\mathrm{HasSum}\\,(\\lambda\\, n,\\, \\frac{1}{n(n+1)})\\; 1$."
+    },
+    {
+      "id": "triangular-connection",
+      "title": "Connection to Triangular Numbers",
+      "startLine": 267,
+      "endLine": 292,
+      "summary": "Proves 1/T_n = 2/(n(n+1)) by showing n(n+1) is always even (case split on parity of n), then field_simp and linarith.",
+      "mathContext": "Since $T_n = \\frac{n(n+1)}{2}$, we have $\\frac{1}{T_n} = \\frac{2}{n(n+1)}$. The division is exact over $\\mathbb{N}$ because $n(n+1)$ is always even: if $n$ is even then $2 \\mid n$; if $n$ is odd then $2 \\mid (n+1)$. Hence $\\sum_{n=1}^{\\infty} \\frac{1}{T_n} = 2$."
+    },
+    {
+      "id": "examples",
+      "title": "Pedagogical Examples",
+      "startLine": 293,
+      "endLine": 308,
+      "summary": "Computes T_1 = 1, T_2 = 3, T_3 = 6, T_4 = 10, T_5 = 15 via native_decide. Exports main theorems with #check.",
+      "mathContext": "Verified computations: $T_1 = 1$, $T_2 = 3$, $T_3 = 6$, $T_4 = 10$, $T_5 = 15$, checked via $\\mathrm{native\\_decide}$. These confirm the formula $T_n = \\frac{n(n+1)}{2}$ for small values and export the main theorems for downstream use."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "Both are classical infinite series with exact closed-form sums. The geometric series sum(r^n) = 1/(1-r) and sum(2/(n(n+1))) = 2 are paradigmatic examples of convergent series."
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "related",
+      "description": "Triangular numbers T(n) = n(n+1)/2 are partial sums of the arithmetic series 1 + 2 + ... + n. The reciprocal sum inverts this relationship."
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The harmonic series sum(1/n) diverges, but sum(2/(n(n+1))) converges to 2. The key difference is the extra factor 1/(n+1) which provides sufficient decay via telescoping."
+    },
+    {
+      "targetId": "triangular-reciprocals-oq-01",
+      "relationship": "extended-by",
+      "description": "Extends the triangular case to general k-gonal (figurate) numbers: it formalizes the telescoping partial-fraction identity for triangular reciprocals, proves convergence of the square-reciprocal sum by p-series comparison, and includes the identity that every hexagonal number is triangular."
+    },
+    {
+      "targetId": "triangular-reciprocals-oq-02",
+      "relationship": "extended-by",
+      "description": "Generalizes the closed form along a different axis: for every k ≥ 1, ∑_{n≥1} 1/(n(n+k)) = H_k/k where H_k is the k-th harmonic number. The triangular case ∑ 2/(n(n+1)) = 2 here is the k=1 instance (Leibniz identity)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The telescoping series identity ∑1/T_n = 2 is fully verified, including convergence via comparison with the p-series, the epsilon-N limit argument, and the connection between triangular numbers and the product n(n+1).",
+    "implications": "**Theoretical Significance**: The telescoping technique generalizes to ∑1/(n(n+k)) via partial fractions with k terms, extending to all figurate number reciprocals (pentagonal, hexagonal, etc.).\n\nThe comparison test framework connects these sums to p-series theory. Leibniz's 1673 evaluation of this series was a milestone in the development of calculus and infinite series theory.",
+    "openQuestions": [
+      "Generalize to higher figurate numbers: ∑1/P_n where P_n is the nth k-gonal number",
+      "Formalize the connection to the digamma function: ∑1/(n(n+k)) = H_k/k where H_k is a harmonic number",
+      "Prove the alternating version: ∑(-1)^{n+1}·2/(n(n+1)) = 4·ln(2) - 2"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Analysis.Normed.Group.InfiniteSum",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "TriangularNumberReciprocals",
+    "lineCount": 308,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/TriangularNumberReciprocals.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Graham, Ronald L.; Knuth, Donald E.; Patashnik, Oren",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "venue": "Addison-Wesley, 2nd edition",
+      "note": "Treatment of sums involving triangular numbers and their reciprocals via partial fractions"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sum_reciprocals_triangular",
+      "type": "core",
+      "description": "Sum of reciprocals of triangular numbers: ∑ 2/(n(n+1)) = 2 (Wiedijk #42), proved via telescoping and an ε-N limit argument",
+      "leanType": "HasSum (fun n : ℕ => if n = 0 then 0 else (2 : ℝ) / ((n : ℝ) * (n + 1))) 2"
+    },
+    {
+      "name": "tsum_reciprocals_triangular",
+      "type": "corollary",
+      "description": "The tsum form of the main theorem: ∑' 2/(n(n+1)) = 2",
+      "leanType": "∑' n : ℕ, (if n = 0 then 0 else (2 : ℝ) / ((n : ℝ) * (n + 1))) = 2"
+    },
+    {
+      "name": "sum_reciprocals_one",
+      "type": "corollary",
+      "description": "Unscaled corollary: ∑ 1/(n(n+1)) = 1",
+      "leanType": "HasSum (fun n : ℕ => if n = 0 then 0 else (1 : ℝ) / ((n : ℝ) * (n + 1))) 1"
+    },
+    {
+      "name": "reciprocal_triangular",
+      "type": "supporting",
+      "description": "Connection to triangular numbers: 1/T_n = 2/(n(n+1)), verifying exact division by 2",
+      "leanType": "(n : ℕ) → (hn : n ≠ 0) → (1 : ℝ) / (triangular n) = 2 / (n * (n + 1))"
+    }
+  ],
+  "sorries": 0
+}

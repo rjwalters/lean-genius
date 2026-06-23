@@ -1,0 +1,199 @@
+[
+  {
+    "id": "ann-e152-header",
+    "proofId": "erdos-152",
+    "range": {
+      "startLine": 1,
+      "endLine": 13
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Header documenting Erdős Problem #152 on isolated elements in Sidon sumsets. For large finite Sidon sets $A$, the sumset $A + A$ is known to have $n(n+1)/2$ elements (where $n = |A|$), fitting inside an interval of length $\\sim 2n^2$. The question is whether many elements of $A + A$ are isolated — having no neighbors in the sumset. The stronger form conjectures $\\gg n^2$ isolated elements.",
+    "mathContext": "For a Sidon set $A$ with $|A| = n$, the sumset $A + A \\subseteq [2\\min A, 2\\max A]$ has exactly $\\binom{n+1}{2}$ elements in an interval of length $\\sim 2n^2$. The density is $\\binom{n+1}{2} / (2n^2) \\approx 1/4$, so roughly 3/4 of the interval is not covered. The conjecture asks how many covered points are completely surrounded by gaps.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B₂ sequences",
+      "sumset structure",
+      "gap distribution"
+    ],
+    "prerequisites": [
+      "Sidon set definition",
+      "sumset notation"
+    ]
+  },
+  {
+    "id": "ann-e152-imports",
+    "proofId": "erdos-152",
+    "range": {
+      "startLine": 15,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Imports",
+    "content": "Imports Mathlib's Sidon set library (`Combinatorics.Additive.Sidon`), pointwise finset operations for $A + A$, and filter basics for the infinite version. Opens `Pointwise` for the `+` notation on finsets.",
+    "mathContext": "Uses `Finset.Pointwise` for $A + A = \\{a + b : a \\in A,\\, b \\in A\\}$. The Sidon property from Mathlib states that the sumset map $(a,b) \\mapsto a+b$ is injective on unordered pairs.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib.Combinatorics.Additive.Sidon",
+      "Finset.Pointwise"
+    ],
+    "prerequisites": [
+      "Finset pointwise operations"
+    ]
+  },
+  {
+    "id": "erdos-152-sidon",
+    "proofId": "erdos-152",
+    "type": "definition",
+    "range": {
+      "startLine": 24,
+      "endLine": 35
+    },
+    "title": "Sidon Sets and Sumsets",
+    "content": "Defines `IsSidonFinset A`: all pairwise sums are distinct, i.e., $a_1 + b_1 = a_2 + b_2$ implies $\\{a_1, b_1\\} = \\{a_2, b_2\\}$. Also defines `sumsetFinset A = A + A` using Mathlib's pointwise addition. The Sidon property ensures $|A + A| = \\binom{n+1}{2}$ (every unordered pair gives a distinct sum).",
+    "mathContext": "$A$ is Sidon $\\iff \\forall a_1, b_1, a_2, b_2 \\in A,\\, a_1 + b_1 = a_2 + b_2 \\implies \\{a_1, b_1\\} = \\{a_2, b_2\\}$. Equivalently, the representation function $r(n) = |\\{(a,b) : a \\leq b,\\, a+b = n,\\, a,b \\in A\\}|$ satisfies $r(n) \\leq 1$ for all $n$. The sumset $A + A = \\{a + b : a, b \\in A\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "B₂ sequences",
+      "representation function",
+      "distinct pairwise sums"
+    ],
+    "prerequisites": [
+      "Finset operations",
+      "set equality"
+    ]
+  },
+  {
+    "id": "erdos-152-isolated",
+    "proofId": "erdos-152",
+    "type": "definition",
+    "range": {
+      "startLine": 37,
+      "endLine": 49
+    },
+    "title": "Isolated Elements and Their Count",
+    "content": "An element $s \\in A + A$ is isolated if $s - 1 \\notin A + A$ and $s + 1 \\notin A + A$ — it has no sumset neighbors. `isolatedCount A` counts these elements via `Finset.filter`. Isolated elements represent the most extreme form of sparsity in the sumset: not just gaps, but completely surrounded by gaps.",
+    "mathContext": "$\\text{IsIsolated}(A, s) \\iff s \\in A + A \\wedge (s-1) \\notin A + A \\wedge (s+1) \\notin A + A$. The isolated count is $I(A) = |\\{s \\in A + A : s \\pm 1 \\notin A + A\\}|$. For $A = \\{0, 1, 3, 5, 11\\}$ (a Sidon set), $A + A = \\{0,1,2,3,4,6,8,12,14,16,22\\}$ and the isolated elements are $\\{8, 22\\}$ (for example).",
+    "significance": "key",
+    "relatedConcepts": [
+      "gap structure",
+      "isolated points in sets",
+      "discrete topology"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "membership testing"
+    ]
+  },
+  {
+    "id": "erdos-152-conjecture",
+    "proofId": "erdos-152",
+    "type": "concept",
+    "range": {
+      "startLine": 51,
+      "endLine": 60
+    },
+    "title": "Erdős Problem 152: Weak Form",
+    "content": "The weak form of the conjecture: for any $M \\geq 1$, all sufficiently large Sidon sets have at least $M$ isolated elements. This says the isolated count grows without bound as the Sidon set grows. Formalized with a $\\forall M,\\, \\exists N_0$ quantifier structure — the threshold $N_0$ depends on $M$.",
+    "mathContext": "$\\text{ErdosProblem152}: \\forall M \\in \\mathbb{N},\\, \\exists N_0,\\, \\forall A$ Sidon with $|A| \\geq N_0,\\, I(A) \\geq M$. This is equivalent to: $\\lim_{n \\to \\infty} \\inf\\{I(A) : A \\text{ Sidon},\\, |A| = n\\} = \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divergence conditions",
+      "extremal Sidon sets",
+      "sumset gap growth"
+    ],
+    "prerequisites": [
+      "quantifier structure",
+      "Sidon set growth"
+    ]
+  },
+  {
+    "id": "erdos-152-strong",
+    "proofId": "erdos-152",
+    "type": "concept",
+    "range": {
+      "startLine": 62,
+      "endLine": 72
+    },
+    "title": "Strong Form: $\\gg |A|^2$ Isolated Elements",
+    "content": "The stronger conjecture: $I(A) \\geq c \\cdot |A|^2$ for some absolute constant $c > 0$. Since $|A + A| = \\binom{|A|+1}{2} \\sim |A|^2/2$, this says a positive fraction of the sumset is isolated. This is a much stronger statement than the weak form — it gives the exact growth rate rather than just divergence.",
+    "mathContext": "$\\exists c > 0,\\, \\forall A$ Sidon: $I(A) \\geq c \\cdot |A|^2$. Since $|A + A| = |A|(|A|+1)/2$, this means $I(A)/|A+A| \\geq 2c/(1 + 1/|A|) \\to 2c$, i.e., at least a fraction $2c$ of all sumset elements are isolated.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear proportion",
+      "sumset density",
+      "quadratic growth"
+    ],
+    "prerequisites": [
+      "Sidon sumset size",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "erdos-152-sumset-size",
+    "proofId": "erdos-152",
+    "type": "concept",
+    "range": {
+      "startLine": 74,
+      "endLine": 88
+    },
+    "title": "Sumset Size and Range Bounds",
+    "content": "Two fundamental facts about Sidon sumsets: (1) $|A + A| = n(n+1)/2$ since the Sidon property ensures all sums are distinct, and (2) $\\max A \\geq n^2 - n + 1$ since the elements must be spread out enough to avoid sum collisions. Together, these show the sumset has $\\sim n^2/2$ elements in an interval of length $\\sim 2n^2$, giving density $\\sim 1/4$.",
+    "mathContext": "If $A$ is Sidon with $|A| = n$: $|A + A| = \\binom{n+1}{2} = n(n+1)/2$. Also $\\max A \\geq n^2 - n + 1$ (since $A \\subseteq \\{0, \\ldots, N\\}$ requires $N \\geq n^2 - n$ for the Sidon property). The sumset density in $[2\\min A, 2\\max A]$ is $\\frac{n(n+1)/2}{2(\\max A - \\min A)} \\approx \\frac{1}{4}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon set counting",
+      "combinatorial identity",
+      "minimum range bounds"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "Sidon set density bounds"
+    ]
+  },
+  {
+    "id": "erdos-152-pigeonhole",
+    "proofId": "erdos-152",
+    "type": "concept",
+    "range": {
+      "startLine": 90,
+      "endLine": 99
+    },
+    "title": "Pigeonhole Gap Existence",
+    "content": "A basic result: for Sidon sets of size $\\geq 5$, there is at least one isolated element. This follows from the pigeonhole principle: $n(n+1)/2$ sumset elements in an interval of length $\\sim 2n^2$ cannot all be consecutive, so gaps must exist, and some sumset elements must be isolated. This is the starting point — the conjecture asks for much more.",
+    "mathContext": "The sumset $A + A$ has $n(n+1)/2$ elements in $[2\\min A, 2\\max A]$, an interval of length $\\leq 2(n^2 - n)$. Since $n(n+1)/2 < 2(n^2 - n)$ for $n \\geq 5$, there are at least $2(n^2-n) - n(n+1)/2 = (3n^2 - 5n)/2$ gaps. Not all gaps create isolated elements, but at least one does.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "gap counting",
+      "existence proofs"
+    ],
+    "prerequisites": [
+      "pigeonhole principle",
+      "interval counting"
+    ]
+  },
+  {
+    "id": "erdos-152-infinite",
+    "proofId": "erdos-152",
+    "type": "concept",
+    "range": {
+      "startLine": 101,
+      "endLine": 109
+    },
+    "title": "Infinite Sidon Set Version",
+    "content": "The analogous question for infinite Sidon sets: if $A \\subset \\mathbb{N}$ is an infinite Sidon set and $A_N = A \\cap [1, N]$, does the isolated count of $A_N + A_N$ tend to infinity as $N \\to \\infty$? This is potentially easier than the finite version since infinite Sidon sets have additional structural constraints (e.g., $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$).",
+    "mathContext": "$\\text{ErdosProblem152Infinite}: \\forall A \\subset \\mathbb{N}$ infinite Sidon, $\\forall M,\\, \\exists N_0,\\, I(A \\cap [1,N_0]) \\geq M$. The truncation $A_N$ is itself a finite Sidon set of growing size, so the finite conjecture would imply this.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite Sidon sets",
+      "truncation arguments",
+      "asymptotic behavior"
+    ],
+    "prerequisites": [
+      "infinite set truncation",
+      "Filter.atTop"
+    ]
+  }
+]

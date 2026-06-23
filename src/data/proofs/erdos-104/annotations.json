@@ -1,0 +1,500 @@
+[
+  {
+    "id": "ann-104-imports",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 1,
+      "endLine": 34
+    },
+    "type": "concept",
+    "title": "Imports and Problem Overview",
+    "content": "Module documentation for Erdős Problem #104 on unit circles through three points. The problem asks: given n points in ℝ², how many unit circles contain at least 3 points? The trivial bound is O(n²), Elekes showed Ω(n^{3/2}) is achievable, and the conjecture is O(n^{3/2}). Imports Mathlib for EuclideanSpace, Finset, and Set operations.",
+    "mathContext": "For a finite point set $P \\subset \\mathbb{R}^2$ with $|P| = n$, let $f_3(P)$ denote the number of distinct unit circles containing at least 3 points of $P$. The problem asks for the maximum order of $f_3(P)$ over all $n$-point sets. Known: $\\Omega(n^{3/2}) \\leq \\max_P f_3(P) \\leq O(n^2)$. Conjecture: $\\max_P f_3(P) = O(n^{3/2})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "unit circles",
+      "incidence geometry",
+      "point configurations",
+      "Erdős problems"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "finite point sets",
+      "circle determination"
+    ]
+  },
+  {
+    "id": "ann-104-point",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 47,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Point Type",
+    "content": "Points are elements of the 2-dimensional Euclidean space ℝ², defined as EuclideanSpace ℝ (Fin 2). This provides the inner product, norm, and metric structure needed for distance computations and circle definitions.",
+    "mathContext": "Points $p \\in \\mathbb{R}^2$ with the standard Euclidean metric $d(p,q) = \\|p - q\\|_2 = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean space",
+      "inner product space",
+      "Fin 2"
+    ],
+    "prerequisites": [
+      "EuclideanSpace",
+      "normed space"
+    ]
+  },
+  {
+    "id": "ann-104-dist",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 50,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Euclidean Distance",
+    "content": "The Euclidean distance dist(p, q) = ‖p - q‖ between two points. This determines which pairs can share a unit circle: two points lie on a common unit circle if and only if their distance is at most 2.",
+    "mathContext": "$d(p,q) = \\|p - q\\|$. Two points lie on a common unit circle iff $d(p,q) \\leq 2$. When $d < 2$, there are exactly 2 such circles; when $d = 2$, exactly 1; when $d > 2$, none. The centers lie on the perpendicular bisector of $\\overline{pq}$ at distance $\\sqrt{1 - d^2/4}$ from it.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclidean distance",
+      "unit circle determination",
+      "perpendicular bisector"
+    ],
+    "prerequisites": [
+      "norm",
+      "subtraction in vector space"
+    ]
+  },
+  {
+    "id": "ann-104-circle",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 54,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Unit Circle",
+    "content": "A unit circle is a structure determined by its center point in ℝ². The circle itself is {p : dist(p, center) = 1}. Since the radius is always 1, the circle is uniquely determined by the center.",
+    "mathContext": "$C(a) = \\{p \\in \\mathbb{R}^2 : \\|p - a\\| = 1\\}$ for center $a \\in \\mathbb{R}^2$. The set of all unit circles forms a 2-parameter family (parameterized by the center coordinates), isomorphic to $\\mathbb{R}^2$ itself.",
+    "significance": "key",
+    "relatedConcepts": [
+      "circle",
+      "center",
+      "radius 1"
+    ],
+    "prerequisites": [
+      "Point",
+      "structure definition"
+    ]
+  },
+  {
+    "id": "ann-104-oncircle",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 58,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Point on Circle",
+    "content": "The incidence relation OnCircle p c holds when dist(p, c.center) = 1. This is the fundamental relation between points and unit circles that the problem counts.",
+    "mathContext": "$p \\in C(a) \\iff \\|p - a\\| = 1$. The number of incidences $I(P, \\mathcal{C}) = |\\{(p, C) : p \\in P, C \\in \\mathcal{C}, p \\in C\\}|$ is the key quantity in Szemerédi-Trotter type bounds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "incidence relation",
+      "point-circle membership"
+    ],
+    "prerequisites": [
+      "dist",
+      "UnitCircle"
+    ]
+  },
+  {
+    "id": "ann-104-pointset",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 68,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Point Set",
+    "content": "A finite set of points in the plane, defined as Finset Point. The cardinality |P| = n is the main parameter in all bounds.",
+    "mathContext": "$P \\subset \\mathbb{R}^2$ with $|P| = n < \\infty$. All extremal quantities are functions of $n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite set",
+      "cardinality",
+      "point configuration"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Point"
+    ]
+  },
+  {
+    "id": "ann-104-contains",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 71,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Circle Contains k Points",
+    "content": "A circle 'contains k points' from P if at least k points of P lie on it. Defined by filtering P to those on the circle and checking cardinality ≥ k. We care about k ≥ 3 (a 'rich' circle).",
+    "mathContext": "A unit circle $C$ is $k$-rich with respect to $P$ if $|P \\cap C| \\geq k$. The problem focuses on 3-rich circles. The count $f_k(P) = |\\{C : |P \\cap C| \\geq k\\}|$ generalizes to arbitrary $k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rich circle",
+      "incidence threshold",
+      "k-rich"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "cardinality"
+    ]
+  },
+  {
+    "id": "ann-104-through3",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 75,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "Unit Circles Through 3 Points",
+    "content": "The set of all unit circles containing at least 3 points from P. This is the central object: the problem asks how large this set can be as a function of |P| = n.",
+    "mathContext": "$\\mathcal{C}_3(P) = \\{C \\text{ unit circle} : |P \\cap C| \\geq 3\\}$. The problem asks: $\\max_{|P|=n} |\\mathcal{C}_3(P)| = ?$",
+    "significance": "key",
+    "relatedConcepts": [
+      "3-rich circles",
+      "extremal count"
+    ],
+    "prerequisites": [
+      "CircleContainsKPoints",
+      "UnitCircle"
+    ]
+  },
+  {
+    "id": "ann-104-count",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 79,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "Circle Count",
+    "content": "The cardinality of the set of 3-rich unit circles, computed using Set.ncard. For finite point sets P, this set is always finite since each unit circle is determined by its center and there are finitely many candidate centers.",
+    "mathContext": "$f_3(P) = |\\mathcal{C}_3(P)|$. The extremal function $f(n) = \\max_{|P|=n} f_3(P)$ is the subject of the conjecture: $f(n) = \\Theta(n^{3/2})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.ncard",
+      "extremal function",
+      "growth rate"
+    ],
+    "prerequisites": [
+      "unitCirclesThrough3"
+    ]
+  },
+  {
+    "id": "ann-104-twocircles",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 89,
+      "endLine": 90
+    },
+    "type": "concept",
+    "title": "Two Points, Two Circles",
+    "content": "Two distinct points at distance d < 2 determine exactly 2 unit circles passing through both. The centers lie on the perpendicular bisector of the segment pq, at distance √(1 - d²/4) on each side. This is the geometric foundation for the double-counting argument.",
+    "mathContext": "For $0 < d(p,q) < 2$, the two unit circle centers are $m \\pm h\\hat{n}$ where $m$ is the midpoint, $\\hat{n}$ is the unit normal to $\\overline{pq}$, and $h = \\sqrt{1 - d^2/4}$. As $d \\to 2$, $h \\to 0$ and the two circles merge.",
+    "significance": "key",
+    "relatedConcepts": [
+      "circle determination",
+      "perpendicular bisector",
+      "geometric construction"
+    ],
+    "prerequisites": [
+      "dist",
+      "OnCircle",
+      "UnitCircle"
+    ]
+  },
+  {
+    "id": "ann-104-onecircle",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 91,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Two Points, One Circle",
+    "content": "Two points at distance exactly 2 determine a unique unit circle: the center is their midpoint. This is the degenerate case where the two circles from the d < 2 case merge into one.",
+    "mathContext": "When $d(p,q) = 2$, the unique center is $a = (p+q)/2$ with $\\|p - a\\| = \\|q - a\\| = 1$. The two points are diametrically opposite on this circle.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "degenerate case",
+      "diameter",
+      "midpoint"
+    ],
+    "prerequisites": [
+      "dist",
+      "OnCircle"
+    ]
+  },
+  {
+    "id": "ann-104-nocircle",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 149,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Two Points, No Circle",
+    "content": "Two points at distance > 2 cannot both lie on any unit circle. The triangle inequality forces the center to be within distance 1 of each point, so the points must be within distance 2.",
+    "mathContext": "If $\\|p - a\\| = \\|q - a\\| = 1$, then $d(p,q) \\leq \\|p - a\\| + \\|a - q\\| = 2$ by the triangle inequality. So $d(p,q) > 2$ implies no common unit circle exists.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "triangle inequality",
+      "impossibility"
+    ],
+    "prerequisites": [
+      "dist",
+      "OnCircle"
+    ]
+  },
+  {
+    "id": "ann-104-trivial",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 171,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "Trivial Upper Bound",
+    "content": "At most n(n-1) unit circles with 3+ points from an n-point set. Each such circle contains at least one pair; each pair determines at most 2 unit circles; there are C(n,2) pairs. This gives 2·C(n,2) = n(n-1).",
+    "mathContext": "$f_3(P) \\leq 2\\binom{n}{2} = n(n-1)$. Each 3-rich circle contains a pair $(p,q) \\in \\binom{P}{2}$, and each pair is on at most 2 unit circles. This is the $O(n^2)$ baseline.",
+    "significance": "key",
+    "relatedConcepts": [
+      "double counting",
+      "pair bound",
+      "trivial bound"
+    ],
+    "prerequisites": [
+      "countUnitCircles3",
+      "two_points_two_circles"
+    ]
+  },
+  {
+    "id": "ann-104-harborth",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 173,
+      "endLine": 174
+    },
+    "type": "concept",
+    "title": "Harborth-Mengersen Bound",
+    "content": "Refinement of the trivial bound to n(n-1)/3 for n ≥ 3. Each 3-rich circle contains at least C(3,2) = 3 pairs of points, so the total pair-circle incidences counted with multiplicity is at least 3·f₃(P). Since the total is at most 2·C(n,2), we get f₃(P) ≤ n(n-1)/3.",
+    "mathContext": "Each 3-rich circle contains $\\geq 3$ pairs from $P$. Total pair-circle incidences: $\\sum_{C \\text{ 3-rich}} \\binom{|P \\cap C|}{2} \\geq 3 f_3(P)$. But also $\\leq 2\\binom{n}{2}$ (each pair on $\\leq 2$ circles). So $f_3(P) \\leq \\frac{2\\binom{n}{2}}{3} = \\frac{n(n-1)}{3}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Harborth-Mengersen",
+      "refined counting",
+      "pair multiplicity"
+    ],
+    "prerequisites": [
+      "trivial_upper_bound"
+    ]
+  },
+  {
+    "id": "ann-104-elekes",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 181,
+      "endLine": 182
+    },
+    "type": "concept",
+    "title": "Elekes Lower Bound",
+    "content": "Elekes (1984) constructed n-point sets achieving Ω(n^{3/2}) 3-rich unit circles, showing the conjectured O(n^{3/2}) bound would be tight. The construction uses a grid-like structure on a circle, exploiting lattice point arrangements.",
+    "mathContext": "Elekes showed $f(n) = \\max_{|P|=n} f_3(P) \\geq cn^{3/2}$ for some $c > 0$. The construction places points on intersections of carefully chosen grid lines with circles, creating many triple incidences. This matches the conjectured upper bound up to constants.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Elekes construction",
+      "lower bound",
+      "grid construction",
+      "lattice points"
+    ],
+    "prerequisites": [
+      "countUnitCircles3",
+      "PointSet"
+    ]
+  },
+  {
+    "id": "ann-104-linear",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 183,
+      "endLine": 184
+    },
+    "type": "concept",
+    "title": "Linear Lower Bound",
+    "content": "A simple Ω(n) lower bound: place n points on a circle of radius 1. Then many unit circles pass through 3 or more of these points, giving at least cn 3-rich circles.",
+    "mathContext": "For $n$ points on the unit circle, each triple of points at appropriate angular separations lies on a common unit circle. A careful count gives $\\Omega(n)$ such 3-rich circles.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simple construction",
+      "points on circle"
+    ],
+    "prerequisites": [
+      "countUnitCircles3"
+    ]
+  },
+  {
+    "id": "ann-104-conjecture",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 191,
+      "endLine": 194
+    },
+    "type": "definition",
+    "title": "Main Conjecture",
+    "content": "The Erdős conjecture: there exists a constant C > 0 such that countUnitCircles3(P) ≤ C · |P|^{3/2} for all finite point sets P. Combined with Elekes's lower bound, this would determine the exact growth rate as Θ(n^{3/2}). Erdős offered $100 for a proof.",
+    "mathContext": "$f_3(P) \\leq C n^{3/2}$ for universal constant $C > 0$. This is equivalent to: the number of unit circles with $\\geq 3$ incidences among $n$ points is $O(n^{3/2})$. Combined with Elekes: $f(n) = \\Theta(n^{3/2})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős conjecture",
+      "O(n^{3/2})",
+      "extremal bound"
+    ],
+    "prerequisites": [
+      "countUnitCircles3"
+    ]
+  },
+  {
+    "id": "ann-104-weak",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 196,
+      "endLine": 202
+    },
+    "type": "definition",
+    "title": "Weak Conjecture",
+    "content": "A weaker statement: the count is o(n²), meaning for any ε > 0, there exists C such that f₃(P) ≤ C · n^{2-ε} for all n-point sets P. Even this weaker form is open — no one has improved the trivial O(n²) bound.",
+    "mathContext": "$f_3(P) = o(n^2)$: $\\forall \\varepsilon > 0, \\exists C, \\forall P, f_3(P) \\leq C n^{2-\\varepsilon}$. This is strictly weaker than $O(n^{3/2})$ since $3/2 < 2 - \\varepsilon$ for $\\varepsilon < 1/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "weak conjecture",
+      "o(n²)",
+      "subquadratic"
+    ],
+    "prerequisites": [
+      "countUnitCircles3"
+    ]
+  },
+  {
+    "id": "ann-104-implies",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 204,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Strong Implies Weak",
+    "content": "The O(n^{3/2}) conjecture implies the o(n²) conjecture, since n^{3/2} < n^{2-ε} for any ε < 1/2 and sufficiently large n. The proof uses a calc block with one sorry for the asymptotic comparison.",
+    "mathContext": "$n^{3/2} \\leq n^{2-\\varepsilon}$ iff $n^{3/2 - (2-\\varepsilon)} = n^{\\varepsilon - 1/2} \\leq 1$, which holds for large $n$ when $\\varepsilon < 1/2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "implication",
+      "asymptotic comparison"
+    ],
+    "prerequisites": [
+      "erdos104Conjecture",
+      "erdos104WeakConjecture"
+    ]
+  },
+  {
+    "id": "ann-104-incidence",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 298,
+      "endLine": 300
+    },
+    "type": "definition",
+    "title": "Incidence Count",
+    "content": "The total number of (point, circle) incidence pairs where the point lies on the circle. Szemerédi-Trotter type bounds on this quantity are the main tool for attacking the conjecture.",
+    "mathContext": "$I(P, \\mathcal{C}) = |\\{(p, C) : p \\in P, C \\in \\mathcal{C}, p \\in C\\}|$. For algebraic curves of bounded degree, Pach-Sharir proved $I(P, \\mathcal{C}) = O(|P|^{2/3}|\\mathcal{C}|^{2/3} + |P| + |\\mathcal{C}|)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "incidence count",
+      "Szemerédi-Trotter",
+      "point-curve incidences"
+    ],
+    "prerequisites": [
+      "OnCircle",
+      "PointSet"
+    ]
+  },
+  {
+    "id": "ann-104-st",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 302,
+      "endLine": 303
+    },
+    "type": "concept",
+    "title": "Circle Incidence Bound",
+    "content": "The Szemerédi-Trotter type bound for circles (due to Clarkson et al.): I(P, C) ≤ O(|P|^{2/3}|C|^{2/3} + |P| + |C|). This is the standard incidence bound for algebraic curves of bounded degree and is a key tool in incidence geometry.",
+    "mathContext": "$I(P, \\mathcal{C}) \\leq C(|P|^{2/3}|\\mathcal{C}|^{2/3} + |P| + |\\mathcal{C}|)$. For circles, the Szemerédi-Trotter bound applies since circles are algebraic curves of degree 2. If all circles are 3-rich, then $I \\geq 3|\\mathcal{C}|$, giving $3|\\mathcal{C}| \\leq C(n^{2/3}|\\mathcal{C}|^{2/3} + n + |\\mathcal{C}|)$, which yields $|\\mathcal{C}| = O(n^2)$ — matching the trivial bound but not improving it.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi-Trotter theorem",
+      "Clarkson et al.",
+      "incidence bound",
+      "algebraic curves"
+    ],
+    "prerequisites": [
+      "incidenceCount"
+    ]
+  },
+  {
+    "id": "ann-104-max",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 311,
+      "endLine": 313
+    },
+    "type": "definition",
+    "title": "Maximum Unit Circles",
+    "content": "The extremal function f(n) = max over all n-point sets P of the number of 3-rich unit circles. Defined as sSup of achievable counts. This is OEIS sequence A003829.",
+    "mathContext": "$f(n) = \\max_{|P|=n} f_3(P)$. Known values: $f(3) = 1$, $f(4) = 4$, $f(5) = 8$, $f(6) = 13$. The conjecture is $f(n) = \\Theta(n^{3/2})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "OEIS A003829",
+      "maximum count"
+    ],
+    "prerequisites": [
+      "countUnitCircles3"
+    ]
+  },
+  {
+    "id": "ann-104-values",
+    "proofId": "erdos-104",
+    "range": {
+      "startLine": 315,
+      "endLine": 321
+    },
+    "type": "concept",
+    "title": "Known Values",
+    "content": "Exact values of f(n) for small n: f(3) = 1 (three non-collinear points determine at most 1 circumscribed unit circle), f(4) = 4, f(5) = 8, f(6) = 13. These values appear in OEIS A003829 and were computed by exhaustive search over point configurations.",
+    "mathContext": "$f(3) = 1$: any 3 points at pairwise distance $\\leq 2$ lie on at most one unit circle (the circumscribed circle, if its radius happens to be 1). $f(4) = 4$: achieved by vertices of a regular triangle plus its center, for example.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "small cases",
+      "OEIS",
+      "exhaustive computation"
+    ],
+    "prerequisites": [
+      "maxUnitCircles"
+    ]
+  }
+]

@@ -1,0 +1,249 @@
+[
+  {
+    "id": "ann-792-header",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #792** asks about guaranteed sum-free subsets in finite integer sets. A set B is sum-free if no element equals the sum of two others (a + b != c for all a, b, c in B). The function f(n) measures the minimum size of the largest sum-free subset guaranteed in any n-element set. This is a cornerstone problem in additive combinatorics, appearing as Problem 1 on Ben Green's open problems list.",
+    "mathContext": "The problem connects to Ramsey theory through Schur numbers: Schur's theorem says for any r-coloring of [1,n], some color class contains a, b, c with a + b = c. Sum-free sets are related but consider subsets rather than colorings.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive combinatorics",
+      "Ramsey theory",
+      "Schur numbers"
+    ],
+    "prerequisites": [
+      "additive combinatorics",
+      "number theory",
+      "extremal set theory"
+    ]
+  },
+  {
+    "id": "ann-792-sumfree-def",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 37,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Core Definitions",
+    "content": "Four definitions establish the framework: **SumFree(B)** for infinite sets, **SumFreeFinset(B)** for finite sets, **IsSumFreeSubset(B, A)** for the subset relation, and **maxSumFreeSize(A)** for the maximum sum-free subset cardinality. Together these precisely capture the sum-free subset problem.",
+    "mathContext": "Equivalently, B is sum-free iff B ∩ (B + B) = ∅, where B + B = {a + b : a, b ∈ B} is the sumset.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sumset",
+      "finite sets",
+      "subset"
+    ],
+    "prerequisites": [
+      "set theory",
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "finite combinatorics"
+    ]
+  },
+  {
+    "id": "ann-792-f-axiom",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 55,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Axiomatized f(n)",
+    "content": "**f(n)** is axiomatized with three properties: (1) **f** maps ℕ → ℕ, (2) **f_spec** guarantees every n-element set has a sum-free subset of size ≥ f(n), (3) **f_tight** ensures extremal sets exist achieving exactly f(n). This captures f as the extremal function without needing to construct it.",
+    "mathContext": "The axiomatization avoids the need for a constructive definition of the infimum over all n-element sets, which would require complex set theory machinery.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "axiomatization",
+      "infimum"
+    ],
+    "prerequisites": [
+      "Lean 4 axiom declarations",
+      "extremal combinatorics",
+      "mathematical logic"
+    ]
+  },
+  {
+    "id": "ann-792-erdos-bound",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 68,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "Erdős Lower Bound",
+    "content": "**erdos_lower_bound**: Erdős (1965) proved f(n) >= n/3 using the 'middle third' construction. For any set, taking elements in the middle third of the range avoids most sums.",
+    "mathContext": "If elements are ordered a₁ < ... < aₙ, taking those in (aₙ/3, 2aₙ/3] tends to avoid sums since a + b > 2aₙ/3 when both are in the middle third.",
+    "significance": "key",
+    "relatedConcepts": [
+      "middle third",
+      "construction"
+    ],
+    "prerequisites": [
+      "additive combinatorics",
+      "elementary number theory",
+      "combinatorial constructions"
+    ]
+  },
+  {
+    "id": "ann-792-ak-bound",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 71,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "Alon-Kleitman Bound",
+    "content": "**alon_kleitman_bound**: Alon and Kleitman (1990) improved to f(n) >= (n+1)/3. A refinement of Erdős's bound using probabilistic arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "improvement",
+      "lower bound"
+    ],
+    "mathContext": "See annotation content for formal details of alon-kleitman bound",
+    "prerequisites": [
+      "probabilistic method",
+      "additive combinatorics",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-792-bourgain-bound",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 74,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "Bourgain Bound",
+    "content": "**bourgain_bound**: Bourgain (1997) proved f(n) >= (n+2)/3. Another incremental improvement showing the difficulty of improving beyond n/3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bourgain",
+      "lower bound"
+    ],
+    "mathContext": "See annotation content for formal details of bourgain bound",
+    "prerequisites": [
+      "additive combinatorics",
+      "harmonic analysis",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-792-bedert-bound",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 77,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "Bedert Bound (2025)",
+    "content": "**bedert_bound**: Bedert (2025) achieved the current best lower bound: f(n) >= n/3 + c·log log n for some constant c > 0. This breaks the n/3 + O(1) barrier and shows the second-order term grows (slowly) to infinity.",
+    "mathContext": "The log log n term is extremely slow-growing (log log 10^10 ≈ 3.4), but it represents genuine progress on the second-order asymptotics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "second-order term",
+      "logarithm"
+    ],
+    "prerequisites": [
+      "additive combinatorics",
+      "asymptotic analysis",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-792-egm-bound",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 83,
+      "endLine": 85
+    },
+    "type": "concept",
+    "title": "Eberhard-Green-Manners Upper Bound",
+    "content": "**egm_upper_bound**: Eberhard, Green, and Manners (2014) proved f(n) <= n/3 + o(n). For any ε > 0, eventually f(n) <= n/3 + εn. This shows the main term n/3 is optimal.",
+    "mathContext": "The o(n) upper bound leaves a large gap with Bedert's log log n lower bound. Closing this gap is the main open question.",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper bound",
+      "o(n)"
+    ],
+    "prerequisites": [
+      "additive combinatorics",
+      "asymptotic analysis",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-792-asymptotic",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 87,
+      "endLine": 88
+    },
+    "type": "concept",
+    "title": "Asymptotic Limit",
+    "content": "**f_asymptotic**: As n → ∞, we have f(n)/n → 1/3. This is a consequence of the upper and lower bounds sandwiching f(n) near n/3.",
+    "mathContext": "Uses Filter.Tendsto with the atTop filter to express the limit. The limiting density 1/3 is now established.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limit",
+      "asymptotic density"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "limits and filters",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "ann-792-constructions",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 92,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Constructions",
+    "content": "Two key constructions: **interval_sum_free** shows [n, 2n-1] is sum-free (since a + b ≥ 2n > 2n-1), and **middle_third_construction** shows every set has a sum-free subset of size ≥ |A|/3, proving Erdős's original lower bound constructively.",
+    "mathContext": "For n=5, the interval [5,9] = {5,6,7,8,9} is sum-free: smallest sum is 5+5=10 > 9.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval",
+      "construction",
+      "middle third"
+    ],
+    "prerequisites": [
+      "elementary number theory",
+      "combinatorial constructions",
+      "Lean 4 tactic mode"
+    ]
+  },
+  {
+    "id": "ann-792-summary",
+    "proofId": "erdos-792",
+    "range": {
+      "startLine": 102,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Summary Theorems",
+    "content": "Two proved theorems: **erdos_792_bounds** combines the Bedert lower bound and EGM upper bound into one statement, proved directly from the axioms. **erdos_792_lower_bound_chain** shows the chain of lower bounds, derived from the Erdős axiom. These are the only non-axiom theorems, demonstrating that the bounds compose correctly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "summary",
+      "bounds composition"
+    ],
+    "mathContext": "See annotation content for formal details of summary theorems",
+    "prerequisites": [
+      "mathematical logic",
+      "Lean 4 tactic mode",
+      "order relations"
+    ]
+  }
+]

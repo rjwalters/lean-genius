@@ -1,0 +1,324 @@
+{
+  "id": "cauchy-schwarz",
+  "title": "Cauchy-Schwarz Inequality",
+  "slug": "cauchy-schwarz",
+  "description": "Fully verified formalization of the Cauchy-Schwarz inequality in three forms: abstract inner product (via Mathlib), two-variable algebraic (via Lagrange identity), and finite sums (via EuclideanSpace embedding). Includes equality characterization (linear dependence) and applications to the triangle inequality and correlation bound.",
+  "meta": {
+    "author": "Cauchy, Schwarz (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality",
+    "date": "1821",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "linear-algebra",
+      "classic",
+      "intermediate",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/CauchySchwarz.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "abs_real_inner_le_norm",
+        "description": "Cauchy-Schwarz for real inner products",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "EuclideanSpace.inner_eq_star_dotProduct",
+        "description": "Inner product equals dot product in Euclidean space",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "sq_nonneg",
+        "description": "Non-negativity of squares",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      },
+      {
+        "theorem": "real_inner_self_eq_norm_sq",
+        "description": "⟨v, v⟩ = ‖v‖² for real inner product spaces",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "norm_inner_eq_norm_iff",
+        "description": "Equality characterization: |⟨u,v⟩| = ‖u‖·‖v‖ iff linearly dependent",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "norm_add_sq_real",
+        "description": "‖u + v‖² = ‖u‖² + 2⟨u,v⟩ + ‖v‖² expansion",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical wrapper of Mathlib's abs_real_inner_le_norm for the inner product form",
+      "Squared form via sq_le_sq' and real_inner_self_eq_norm_sq",
+      "Two-variable algebraic proof via Lagrange identity",
+      "Two-variable equality characterization via sq_eq_zero_iff",
+      "Finite sum form via EuclideanSpace embedding",
+      "Equality iff linear dependence via norm_inner_eq_norm_iff",
+      "Triangle inequality derived from Cauchy-Schwarz",
+      "Correlation coefficient bound as application"
+    ],
+    "mathlib_version": "4.26.0",
+    "relatedProblems": [
+      {
+        "id": "cauchy-schwarz-integral",
+        "relationship": "The integral (Bunyakovsky-Schwarz) version extends Cauchy-Schwarz from finite sums to L² inner products: (∫fg)² ≤ (∫f²)(∫g²)"
+      },
+      {
+        "id": "triangle-inequality",
+        "relationship": "The triangle inequality ‖u+v‖ ≤ ‖u‖+‖v‖ is derived as a corollary of Cauchy-Schwarz in this formalization"
+      },
+      {
+        "id": "amgm-inequality",
+        "relationship": "AM-GM inequality is another fundamental inequality; Cauchy-Schwarz can be derived from AM-GM and vice versa in certain settings"
+      },
+      {
+        "id": "cauchy-schwarz-oq-01",
+        "relationship": "Sub-entry extending Cauchy-Schwarz to additional forms or applications"
+      },
+      {
+        "id": "cauchy-schwarz-oq-03",
+        "relationship": "Sub-entry exploring generalizations such as Hölder's inequality"
+      },
+      {
+        "id": "cauchy-schwarz-oq-04",
+        "relationship": "Sub-entry strengthening equality condition with exact proportionality constant"
+      }
+    ],
+    "dateAdded": "2025-12-26",
+    "wiedijkNumber": 78,
+    "axiomCount": 0,
+    "lineCount": 231,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "**Origins and Multiple Discoverers**\n\nThe Cauchy-Schwarz inequality has been independently discovered at least three times. **Augustin-Louis Cauchy** first proved the discrete (finite sum) version in his 1821 *Cours d'Analyse*, establishing $(\\sum a_i b_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ for real sequences. **Viktor Bunyakovsky** extended this to integrals in 1859, proving $\\left(\\int fg\\right)^2 \\leq \\int f^2 \\int g^2$. **Hermann Amandus Schwarz** independently proved the integral version in 1885 for the specific context of surface area minimization.\n\n**Modern Significance**\n\nThe inequality is arguably the single most important inequality in mathematics. It underpins the triangle inequality in normed spaces, the definition of angle between vectors, the Pearson correlation coefficient in statistics, the Heisenberg uncertainty principle in quantum mechanics, and concentration inequalities in probability theory. It appears as #78 on **Freek Wiedijk**'s list of 100 theorems formalized in proof assistants.\n\n**The Quadratic Argument**\n\nThe standard modern proof considers $0 \\leq \\|u - tv\\|^2 = \\|u\\|^2 - 2t\\langle u,v\\rangle + t^2\\|v\\|^2$ as a quadratic in $t$, whose non-negative discriminant yields $\\langle u,v\\rangle^2 \\leq \\|u\\|^2\\|v\\|^2$. The elementary two-variable proof uses the **Lagrange identity**: $(a_1^2+a_2^2)(b_1^2+b_2^2) - (a_1b_1+a_2b_2)^2 = (a_1b_2-a_2b_1)^2 \\geq 0$.",
+    "problemStatement": "**Cauchy-Schwarz Inequality**\n\nFor vectors $u, v$ in a real inner product space:\n$$|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$$\n\nFor sequences $a, b : \\text{Fin}\\,n \\to \\mathbb{R}$:\n$$(\\sum_i a_i b_i)^2 \\leq (\\sum_i a_i^2)(\\sum_i b_i^2)$$\n\nEquality holds if and only if $u$ and $v$ are linearly dependent.",
+    "text": "The Lean formalization presents Cauchy-Schwarz in three complementary forms. The abstract inner product version applies Mathlib's abs_real_inner_le_norm directly. The two-variable algebraic form gives an independent proof via the Lagrange identity, using sq_nonneg and nlinarith to show (a1*b2 - a2*b1)^2 >= 0. The finite sum form embeds sequences into EuclideanSpace via inner_eq_star_dotProduct, bridging abstract and concrete representations. Equality is characterized as linear dependence using norm_inner_eq_norm_iff. Two applications are derived as corollaries: the triangle inequality (via norm_add_sq_real expansion) and the correlation coefficient bound |rho| <= 1 (via div_le_one). All 9 theorems are fully verified with zero axioms across 231 lines.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Abstract form:** Apply Mathlib's `abs_real_inner_le_norm` for $|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$.\n2. **Squared form:** Derive $\\langle u,v\\rangle^2 \\leq \\langle u,u\\rangle\\langle v,v\\rangle$ via `sq_le_sq'` and `real_inner_self_eq_norm_sq`.\n3. **Two-variable case:** Direct algebraic proof using the Lagrange identity $(a_1b_2-a_2b_1)^2 \\geq 0$ via `sq_nonneg` and `nlinarith`.\n4. **Finite sum form:** Embed sequences into `EuclideanSpace \\mathbb{R} (\\text{Fin}\\,n)` and apply the squared inner product form.\n5. **Equality:** Characterize equality as linear dependence using `norm_inner_eq_norm_iff`.\n6. **Applications:** Derive triangle inequality and correlation bound as corollaries.",
+    "keyInsights": [
+      "**Lagrange Identity:** The two-variable proof reveals that the 'gap' $(a_1^2+a_2^2)(b_1^2+b_2^2) - (a_1b_1+a_2b_2)^2 = (a_1b_2-a_2b_1)^2$ is a perfect square, making non-negativity trivial.",
+      "**Euclidean Space Bridge:** The finite sum form is derived by embedding sequences into `EuclideanSpace`, using `inner_eq_star_dotProduct` to connect abstract inner products with concrete sums $\\sum a_i b_i$.",
+      "**Equality = Linear Dependence:** The geometric content: $|\\langle u,v\\rangle| = \\|u\\|\\|v\\|$ iff $u = cv$ for some scalar $c$, i.e., the vectors point in the same or opposite directions.",
+      "**Triangle Inequality Derivation:** Cauchy-Schwarz immediately implies $\\|u+v\\| \\leq \\|u\\|+\\|v\\|$ by expanding $\\|u+v\\|^2$ and bounding the cross term $\\langle u,v\\rangle \\leq \\|u\\|\\|v\\|$.",
+      "**Correlation Bound:** Dividing both sides by $\\|u\\|\\|v\\|$ gives $|\\rho| \\leq 1$, the fundamental bound on the Pearson correlation coefficient in statistics.",
+      "**Abstract Inner Product Spaces:** The Lean proof works in any `InnerProductSpace` over ℝ or ℂ, not just finite-dimensional Euclidean space. The `EuclideanSpace` embedding is needed only for the finite sum form `∑ aᵢbᵢ` — the abstract inner product form `inner_mul_le_norm_mul_iff` is already in Mathlib.",
+      "**Sesquilinearity in the Complex Case:** Over ℂ, the Cauchy-Schwarz inequality takes the form $|\\langle u,v\\rangle|^2 \\leq \\langle u,u\\rangle \\cdot \\langle v,v\\rangle$. The Lean formalization uses `abs_inner_le_norm` from `Mathlib.Analysis.InnerProductSpace.Basic`, which handles both real and complex cases uniformly via the conjugate-linear second argument."
+    ],
+    "prerequisites": [
+      "Mathematical analysis",
+      "Linear algebra"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "summary": "Imports `InnerProductSpace.Basic`, `InnerProductSpace.PiL2` (for `EuclideanSpace`), `BigOperators.Ring.Finset` (for $\\sum$), and general tactics.",
+      "startLine": 1,
+      "endLine": 50,
+      "mathContext": "Provides `InnerProductSpace ℝ F` (real inner product spaces), `EuclideanSpace ℝ (Fin n)` ($\\mathbb{R}^n$ with standard inner product), and `∑` notation over finite sets."
+    },
+    {
+      "id": "inner-product-form",
+      "title": "Inner Product Form",
+      "summary": "States and proves $|\\langle u,v\\rangle_{\\mathbb{R}}| \\leq \\|u\\|\\|v\\|$ via `abs_real_inner_le_norm`. Also derives the squared form $\\langle u,v\\rangle^2 \\leq \\langle u,u\\rangle\\langle v,v\\rangle$.",
+      "startLine": 51,
+      "endLine": 80,
+      "mathContext": "$|\\langle u,v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$ and equivalently $\\langle u,v \\rangle^2 \\leq \\langle u,u \\rangle \\langle v,v \\rangle$ since $\\|u\\|^2 = \\langle u,u \\rangle$."
+    },
+    {
+      "id": "two-variable",
+      "title": "Two-Variable Algebraic Form",
+      "summary": "Elementary proof of $(a_1b_1+a_2b_2)^2 \\leq (a_1^2+a_2^2)(b_1^2+b_2^2)$ using the Lagrange identity $(a_1b_2-a_2b_1)^2 \\geq 0$, plus the equality characterization $a_1b_2 = a_2b_1$.",
+      "startLine": 81,
+      "endLine": 115,
+      "mathContext": "Lagrange identity: $(a_1^2+a_2^2)(b_1^2+b_2^2) - (a_1b_1+a_2b_2)^2 = (a_1b_2-a_2b_1)^2 \\geq 0$."
+    },
+    {
+      "id": "finite-sum",
+      "title": "Finite Sum Form",
+      "summary": "Proves $(\\sum a_ib_i)^2 \\leq (\\sum a_i^2)(\\sum b_i^2)$ by embedding into `EuclideanSpace $\\mathbb{R}$ (Fin $n$)` and the non-squared form via `Real.sqrt_le_sqrt`.",
+      "startLine": 116,
+      "endLine": 158,
+      "mathContext": "$(\\sum_{i=1}^n a_ib_i)^2 \\leq (\\sum_{i=1}^n a_i^2)(\\sum_{i=1}^n b_i^2)$ — the classical Cauchy inequality for finite sums."
+    },
+    {
+      "id": "equality",
+      "title": "Equality Characterization",
+      "summary": "Proves $|\\langle u,v\\rangle| = \\|u\\|\\|v\\| \\iff \\exists c: u = cv$ for nonzero vectors, using `norm_inner_eq_norm_iff` and `inner_smul_left`.",
+      "startLine": 159,
+      "endLine": 180,
+      "mathContext": "$|\\langle u,v\\rangle| = \\|u\\|\\|v\\| \\iff \\exists c \\in \\mathbb{R}: u = cv$ — equality iff vectors are collinear."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "summary": "Numerical verifications: strict inequality $(196 < 200)$ for non-proportional vectors, equality $(100 = 100)$ for proportional vectors $(1,2)$ and $(2,4)$, and $\\mathbb{R}^2$ specialization.",
+      "startLine": 181,
+      "endLine": 197,
+      "mathContext": "Strict: $(1 \\cdot 2 + 3 \\cdot 4)^2 = 196 < 200 = (1^2+3^2)(2^2+4^2)$. Equality: $(1 \\cdot 2 + 2 \\cdot 4)^2 = 100 = (1^2+2^2)(2^2+4^2)$ because $(2,4) = 2(1,2)$."
+    },
+    {
+      "id": "triangle",
+      "title": "Application: Triangle Inequality",
+      "summary": "Derives $\\|u+v\\|^2 \\leq (\\|u\\|+\\|v\\|)^2$ from Cauchy-Schwarz via `norm_add_sq_real` expansion and $\\langle u,v\\rangle \\leq |\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$.",
+      "startLine": 198,
+      "endLine": 213,
+      "mathContext": "$\\|u+v\\|^2 = \\|u\\|^2 + 2\\langle u,v\\rangle + \\|v\\|^2 \\leq \\|u\\|^2 + 2\\|u\\|\\|v\\| + \\|v\\|^2 = (\\|u\\|+\\|v\\|)^2$"
+    },
+    {
+      "id": "correlation",
+      "title": "Application: Correlation Bound",
+      "summary": "Proves $|\\langle u,v\\rangle|/(\\|u\\|\\|v\\|) \\leq 1$ for nonzero vectors via `div_le_one`, giving the mathematical foundation for $|\\rho| \\leq 1$.",
+      "startLine": 214,
+      "endLine": 231,
+      "mathContext": "The Pearson correlation coefficient $\\rho(X,Y) = \\text{Cov}(X,Y)/(\\sigma_X \\sigma_Y) = \\langle X - \\bar{X}, Y - \\bar{Y} \\rangle / (\\|X - \\bar{X}\\| \\cdot \\|Y - \\bar{Y}\\|)$ is bounded by $|\\rho| \\leq 1$ as a direct consequence of Cauchy-Schwarz in the $L^2$ inner product space. Equality $|\\rho| = 1$ iff $Y$ is a linear function of $X$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "cauchy-schwarz-integral",
+      "relationship": "extends",
+      "description": "The Bunyakovsky-Schwarz integral inequality extends Cauchy-Schwarz from finite sums to L² inner products: (∫fg)² ≤ (∫f²)(∫g²). This formalization proves the measure-theoretic version."
+    },
+    {
+      "proofId": "triangle-inequality",
+      "relationship": "proves",
+      "description": "The triangle inequality ‖u+v‖ ≤ ‖u‖+‖v‖ is derived as a direct corollary of Cauchy-Schwarz in both formalizations, demonstrating the foundational role of Cauchy-Schwarz in normed space theory."
+    },
+    {
+      "proofId": "amgm-inequality",
+      "relationship": "related",
+      "description": "AM-GM and Cauchy-Schwarz are the two most fundamental inequalities in analysis. Cauchy-Schwarz for n=2 can be derived from AM-GM applied to a²/b² + b²/a², and conversely."
+    },
+    {
+      "proofId": "hurwitz-theorem",
+      "relationship": "related",
+      "description": "Hurwitz's theorem on normed division algebras (ℝ, ℂ, ℍ, 𝕆) relies on the inner product space structure where Cauchy-Schwarz is the fundamental inequality."
+    },
+    {
+      "proofId": "amgm-inequality-oq-03",
+      "relationship": "related",
+      "description": "For equal weights, the power mean inequality M₁ ≤ M₂ is equivalent to Cauchy-Schwarz: (∑wᵢzᵢ)² ≤ ∑wᵢzᵢ². Cauchy-Schwarz is the p=2 case of the general power mean monotonicity chain"
+    },
+    {
+      "proofId": "amgm-inequality-oq-02",
+      "relationship": "related",
+      "description": "The Cauchy-Schwarz sum n·∑xᵢ² ≥ (∑xᵢ)² is the key engine in the Maclaurin M₁²≥M₂ proof — directly connecting Cauchy-Schwarz to the elementary symmetric polynomial hierarchy"
+    },
+    {
+      "proofId": "cauchy-schwarz-oq-01",
+      "relationship": "extended-by",
+      "description": "Extends Cauchy-Schwarz to complex inner product spaces using $|\\langle u,v \\rangle_{\\mathbb{C}}| \\leq \\|u\\|\\|v\\|$ — answering the open question about complex generalization"
+    },
+    {
+      "proofId": "cauchy-schwarz-oq-03",
+      "relationship": "extended-by",
+      "description": "Hölder's inequality $|\\sum a_i b_i| \\leq (\\sum |a_i|^p)^{1/p}(\\sum |b_i|^q)^{1/q}$ for $1/p + 1/q = 1$ — Cauchy-Schwarz is the $p = q = 2$ case"
+    },
+    {
+      "proofId": "cauchy-schwarz-oq-04",
+      "relationship": "extended-by",
+      "description": "Strengthens the equality characterization to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$ when $u = cv$ — answering the resolved open question"
+    },
+    {
+      "proofId": "randomized-maxcut",
+      "relationship": "related",
+      "description": "The randomized MAX-CUT approximation algorithm uses semidefinite programming relaxations where Cauchy-Schwarz bounds constrain the objective function. The Goemans-Williamson 0.878-approximation ratio arises from analyzing $\\arccos(\\langle v_i, v_j \\rangle)$ subject to Cauchy-Schwarz constraints"
+    },
+    {
+      "proofId": "law-of-cosines",
+      "relationship": "related",
+      "description": "The law of cosines $\\|u-v\\|^2 = \\|u\\|^2 + \\|v\\|^2 - 2\\|u\\|\\|v\\|\\cos\\theta$ defines the angle $\\theta$ between vectors via $\\cos\\theta = \\langle u,v\\rangle/(\\|u\\|\\|v\\|)$. Cauchy-Schwarz $|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$ is precisely the statement that $|\\cos\\theta| \\leq 1$, ensuring the angle is well-defined"
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization presents the Cauchy-Schwarz inequality in three forms: abstract inner product ($|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$), elementary two-variable (via the Lagrange identity), and finite sum (via EuclideanSpace embedding). It includes complete equality characterization (linear dependence) and two applications: the triangle inequality and the correlation coefficient bound. All proofs are complete with zero sorries.",
+    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **Foundation for Normed Spaces:** The triangle inequality, derived here as a corollary, is the key axiom for normed vector spaces and metric spaces.\n\n2. **Quantum Mechanics:** The Heisenberg uncertainty principle $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$ is a consequence of Cauchy-Schwarz applied to wave functions in $L^2$.\n\n**3. Statistics:** The bound $|\\rho| \\leq 1$ on the Pearson correlation coefficient, proved here, is fundamental to regression analysis and hypothesis testing.\n\n4. **Functional Analysis:** Cauchy-Schwarz ensures that inner product spaces are normed spaces, enabling the Hilbert space theory underlying modern analysis.\n\n5. **Machine Learning:** Cosine similarity $\\cos\\theta = \\langle u,v\\rangle/(\\|u\\|\\|v\\|)$ is well-defined precisely because Cauchy-Schwarz guarantees $|\\cos\\theta| \\leq 1$.",
+    "openQuestions": [
+      "Can Hölder's inequality $|\\sum a_ib_i| \\leq (\\sum |a_i|^p)^{1/p}(\\sum |b_i|^q)^{1/q}$ (for $1/p+1/q=1$) be formalized as a generalization, recovering Cauchy-Schwarz as the $p=q=2$ case? See `cauchy-schwarz-oq-03`.",
+      "Can the Cauchy-Schwarz inequality be extended to operator norms? For bounded operators $A, B$ on a Hilbert space, $|\\langle Au, Bv\\rangle| \\leq \\|A\\|\\|B\\|\\|u\\|\\|v\\|$ is a natural generalization.",
+      "Does the finite sum form have a Lean proof that avoids the EuclideanSpace embedding, working directly with Finset.sum? Such a proof would be more elementary but likely more verbose."
+    ]
+  },
+  "references": [
+    {
+      "authors": [
+        "A.-L. Cauchy"
+      ],
+      "title": "Cours d'Analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "venue": "Paris",
+      "note": "First proof of the discrete (finite sum) version of the inequality"
+    },
+    {
+      "authors": [
+        "V. Y. Bunyakovsky"
+      ],
+      "title": "Sur quelques inégalités concernant les intégrales ordinaires et les intégrales aux différences finies",
+      "year": "1859",
+      "venue": "Mémoires de l'Académie Impériale des Sciences de St.-Pétersbourg",
+      "note": "Extension to integrals"
+    },
+    {
+      "authors": [
+        "H. A. Schwarz"
+      ],
+      "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung",
+      "year": "1885",
+      "venue": "Acta Societatis Scientiarum Fennicae",
+      "note": "Independent proof of the integral version"
+    },
+    {
+      "authors": [
+        "J. M. Steele"
+      ],
+      "title": "The Cauchy-Schwarz Master Class",
+      "year": "2004",
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive treatment of Cauchy-Schwarz and related inequalities"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CauchySchwarz",
+    "lineCount": 231,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarz.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "cauchy_schwarz_inner",
+      "type": "core",
+      "description": "|<u,v>| <= ||u|| * ||v|| in real inner product spaces",
+      "leanType": "[InnerProductSpace R E] -> (u v : E) -> |inner u v| <= norm(u) * norm(v)"
+    },
+    {
+      "name": "cauchy_schwarz_sum",
+      "type": "wrapper",
+      "description": "Finite sum form: (sum a_i*b_i)^2 <= (sum a_i^2)*(sum b_i^2)",
+      "leanType": "(a b : Fin n -> R) -> (sum (a i * b i))^2 <= (sum (a i^2)) * (sum (b i^2))"
+    },
+    {
+      "name": "cauchy_schwarz_two_eq_iff",
+      "type": "bridge",
+      "description": "Equality iff a1*b2 = a2*b1 (proportionality characterization)",
+      "leanType": "(a1 a2 b1 b2 : R) -> (a1*b1 + a2*b2)^2 = (a1^2 + a2^2)*(b1^2 + b2^2) <-> a1*b2 = a2*b1"
+    }
+  ],
+  "sorries": 0
+}

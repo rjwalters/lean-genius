@@ -1,0 +1,240 @@
+[
+  {
+    "id": "erdos-667-context",
+    "proofId": "erdos-667",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "title": "Problem Overview: Clique Density Exponent",
+    "content": "**Erdos Problem 667** studies the function **c(p, q)**, the polynomial exponent governing how large a clique is guaranteed in any n-vertex graph where every p-subset spans at least q edges. The central question is whether c(p, q) is **strictly increasing** in q for 1 <= q <= C(p-1, 2) + 1. The formalization builds up from graph-theoretic foundations through the extremal function H(n; p, q) to the limiting exponent and its known bounds, proving several structural consequences.",
+    "mathContext": "This problem sits at the intersection of Ramsey theory and extremal graph theory. When q = 1 the condition 'every p-set spans at least 1 edge' is equivalent to having no independent set of size p, reducing to classical Ramsey. As q increases toward C(p-1, 2) + 1, the condition forces progressively denser local structure until the graph must be complete. The question is whether each incremental edge requirement genuinely improves the global clique guarantee.",
+    "relatedConcepts": [
+      "extremal graph theory",
+      "Ramsey theory",
+      "clique numbers",
+      "graph density"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "extremal combinatorics",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "erdos-667-edge-count",
+    "proofId": "erdos-667",
+    "type": "definition",
+    "range": {
+      "startLine": 43,
+      "endLine": 52
+    },
+    "title": "Edge Count and Density Condition",
+    "content": "**edgeCount G S** counts the number of edges that graph G induces on a vertex subset S, computed by filtering ordered pairs and dividing by 2. **HasDensity G p q** then asserts that every p-element subset of vertices spans at least q edges -- the **local density condition** that drives the entire problem.",
+    "mathContext": "The (p, q)-density condition is a uniform local constraint: it says every small neighbourhood looks sufficiently dense. This is much stronger than a global edge density requirement, because it forbids sparse pockets. The interplay between local density constraints and global structure (large cliques) is the heart of the Erdos-Faudree-Rousseau-Schelp programme.",
+    "relatedConcepts": [
+      "induced subgraph density",
+      "local-to-global principles",
+      "Ramsey multiplicity"
+    ],
+    "significance": "supporting",
+    "prerequisites": [
+      "graph theory",
+      "finite set combinatorics",
+      "Lean 4 syntax"
+    ]
+  },
+  {
+    "id": "erdos-667-clique-guarantee",
+    "proofId": "erdos-667",
+    "type": "definition",
+    "range": {
+      "startLine": 61,
+      "endLine": 64
+    },
+    "title": "Clique Guarantee H(n; p, q)",
+    "content": "**cliqueGuarantee n p q** is the largest m such that every n-vertex graph satisfying the **(p, q)-density** condition must contain a complete subgraph K_m. It is axiomatized with key structural properties: **positivity** (H >= 1 for non-empty graphs), **monotonicity** in both n and q, and the bound H <= n.",
+    "mathContext": "H(n; p, q) is a Ramsey-type extremal function. It generalises the classical Ramsey number R(p, m), which corresponds to the case q = 1. The function captures how much additional local density (measured by q) translates into guaranteed global structure (a large clique). Its polynomial growth rate in n is captured by the exponent c(p, q).",
+    "relatedConcepts": [
+      "Ramsey-type functions",
+      "extremal functions",
+      "clique number guarantees"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "monotonic functions",
+      "Lean 4 axioms"
+    ]
+  },
+  {
+    "id": "erdos-667-boundary-values",
+    "proofId": "erdos-667",
+    "type": "insight",
+    "range": {
+      "startLine": 84,
+      "endLine": 98
+    },
+    "title": "Boundary Values of H",
+    "content": "At the **maximum density** q = C(p-1, 2) + 1, every p-set is a complete graph, forcing G itself to be complete, so H(n; p, q_max) = n. At the **minimum** q = 0 there is no constraint, so H(n; p, 0) = 1 (the trivial clique). These endpoints anchor the interpolation that c(p, q) navigates.",
+    "mathContext": "The maximum value q = C(p-1, 2) + 1 equals the number of edges in K_{p-1} plus one, which forces every p-set to contain all possible edges. By induction this forces the entire graph to be complete. This clean boundary behaviour -- c(p, 0) = 0 and c(p, q_max) = 1 -- makes the strict monotonicity question precise: does the exponent truly increase at every intermediate step?",
+    "relatedConcepts": [
+      "complete graphs",
+      "Turan-type problems",
+      "boundary analysis"
+    ],
+    "significance": "supporting",
+    "prerequisites": [
+      "graph theory",
+      "binomial coefficients",
+      "mathematical induction"
+    ]
+  },
+  {
+    "id": "erdos-667-cpq",
+    "proofId": "erdos-667",
+    "type": "concept",
+    "range": {
+      "startLine": 106,
+      "endLine": 108
+    },
+    "title": "Exponent c(p, q)",
+    "content": "**cpq p q** = lim inf log(H(n; p, q)) / log(n) as n tends to infinity. This **rational-valued exponent** captures the polynomial rate at which the clique guarantee grows with n. It satisfies 0 <= c(p, q) <= 1 and is weakly increasing in q.",
+    "mathContext": "The exponent c(p, q) compresses the asymptotic behaviour of H into a single number. When c(p, q) = alpha, it means H(n; p, q) grows roughly as n^alpha. The choice of lim inf (rather than lim) is technically important because the limit may not exist for all parameter values, though it is expected to exist in the cases of interest.",
+    "relatedConcepts": [
+      "polynomial growth exponents",
+      "lim inf",
+      "asymptotic analysis"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis",
+      "limits and lim inf",
+      "logarithms"
+    ]
+  },
+  {
+    "id": "erdos-667-ramsey-bounds",
+    "proofId": "erdos-667",
+    "type": "insight",
+    "range": {
+      "startLine": 125,
+      "endLine": 131
+    },
+    "title": "Ramsey Bounds for c(p, 1)",
+    "content": "When q = 1, the density condition simply forbids independent sets of size p, reducing to classical Ramsey theory. The known bounds give **1/(p-1) <= c(p, 1) <= 2/(p+1)**. This interval narrows as p grows, but pinning down the exact value of c(p, 1) remains open.",
+    "mathContext": "The lower bound 1/(p-1) comes from the standard probabilistic Ramsey lower bound: R(p, m) >= c * m^{p-1}, giving H(n; p, 1) >= n^{1/(p-1)}. The upper bound 2/(p+1) is Shearer's entropy-based result for off-diagonal Ramsey numbers. The gap between these bounds is one of the central open questions in Ramsey theory even for the case q = 1.",
+    "relatedConcepts": [
+      "off-diagonal Ramsey numbers",
+      "probabilistic lower bounds",
+      "entropy methods"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "Ramsey theory",
+      "probabilistic method",
+      "entropy methods",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "erdos-667-efrs",
+    "proofId": "erdos-667",
+    "type": "insight",
+    "range": {
+      "startLine": 137,
+      "endLine": 140
+    },
+    "title": "Erdos-Faudree-Rousseau-Schelp Bound",
+    "content": "**EFRS** proved that c(p, C(p-1, 2)) <= 1/2: even at the **second-to-last** density level, the exponent is at most 1/2. Since c(p, C(p-1, 2) + 1) = 1, this establishes a **strict jump** at the top of the q-range and provides the key evidence for strict monotonicity.",
+    "mathContext": "The EFRS bound is remarkable because it shows a discontinuity-like phenomenon: c(p, q) must jump from at most 1/2 to exactly 1 in a single step. This means the last edge requirement (going from C(p-1, 2) to C(p-1, 2) + 1 edges per p-set) has a dramatic effect on global structure, transitioning from sub-polynomial to linear clique guarantees.",
+    "relatedConcepts": [
+      "EFRS theorem",
+      "phase transitions",
+      "extremal density thresholds"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "extremal graph theory",
+      "Ramsey theory",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "erdos-667-proved-theorems",
+    "proofId": "erdos-667",
+    "type": "insight",
+    "range": {
+      "startLine": 148,
+      "endLine": 184
+    },
+    "title": "Proved Structural Consequences",
+    "content": "Five theorems are formally proved from the axioms: (1) **cpq_range** shows c(p, 1) <= 1 and c(p, q_max) = 1; (2) **cpq_strict_at_top** proves strict increase at the last step; (3) **cpq_pos_at_one** shows c(p, 1) > 0 for p >= 3; (4) **cpq_mono_q_general** extends weak monotonicity to arbitrary q1 <= q2; (5) **cpq_ramsey_interval** packages the Ramsey bounds into an interval.",
+    "mathContext": "These proved results establish the structural scaffolding around the conjecture. The strict increase at the top (via EFRS + boundary value) shows that strict monotonicity holds for at least the last step. The positivity result c(p, 1) > 0 ensures the exponent is non-trivial at the bottom. What remains open is the full strict monotonicity for every consecutive pair of q-values.",
+    "relatedConcepts": [
+      "formal proof",
+      "structural lemmas",
+      "Lean 4 tactics"
+    ],
+    "significance": "supporting",
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "real analysis",
+      "Ramsey theory",
+      "order theory"
+    ]
+  },
+  {
+    "id": "erdos-667-small-cases",
+    "proofId": "erdos-667",
+    "type": "concept",
+    "range": {
+      "startLine": 186,
+      "endLine": 215
+    },
+    "title": "Small Cases: p = 3 and p = 4",
+    "content": "For **p = 3**, q ranges over {1, 2} and the conjecture reduces to c(3, 1) < c(3, 2) = 1, which is proved using the Ramsey upper bound 2/(p+1) = 1/2 < 1. For **p = 4**, q ranges over {1, 2, 3, 4}, and the EFRS bound gives c(4, 3) <= 1/2 with c(4, 4) = 1, proving strict increase at the top.",
+    "mathContext": "The p = 3 case is fully resolved: there is only one step to check, and the Ramsey bound makes it immediate. The p = 4 case is partially resolved -- strict increase is known at the last step but not verified for the intermediate steps q = 1 to q = 2 or q = 2 to q = 3. These small cases illustrate how the difficulty concentrates in the middle of the q-range.",
+    "relatedConcepts": [
+      "small parameter verification",
+      "case analysis",
+      "native_decide tactic"
+    ],
+    "significance": "supporting",
+    "prerequisites": [
+      "graph theory",
+      "case analysis",
+      "Lean 4 tactic mode",
+      "binomial coefficients"
+    ]
+  },
+  {
+    "id": "erdos-667-conjecture",
+    "proofId": "erdos-667",
+    "type": "concept",
+    "range": {
+      "startLine": 221,
+      "endLine": 226
+    },
+    "title": "The Main Conjecture (Erdos Problem 667)",
+    "content": "**ErdosProblem667** asserts that for all p >= 3 and all q with 1 <= q < C(p-1, 2) + 1, we have c(p, q) < c(p, q+1). Each additional edge per p-set **strictly improves** the clique guarantee exponent. The formalization also includes **erdos667_weak_evidence** showing c(p, 1) < 1 = c(p, q_max) and a **summary theorem** packaging all known results.",
+    "mathContext": "The conjecture asks for a fine-grained understanding of how local density translates to global structure. If true, it would mean there are no 'plateaus' in the function q -> c(p, q): every additional local edge requirement, no matter how small relative to the total, has a measurable global effect. This would be a deep structural result about the geometry of dense graphs.",
+    "relatedConcepts": [
+      "strict monotonicity",
+      "density-structure trade-offs",
+      "open Erdos problems"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "extremal graph theory",
+      "Ramsey theory",
+      "real analysis",
+      "Lean 4 syntax"
+    ]
+  }
+]

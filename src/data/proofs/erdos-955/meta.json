@@ -1,0 +1,255 @@
+{
+  "id": "erdos-955",
+  "title": "Erdős Problem #955: Sum of Proper Divisors and Density",
+  "slug": "erdos-955",
+  "description": "If A ⊂ ℕ has density 0, must s⁻¹(A) also have density 0, where s(n) is the sum of proper divisors? Proved for primes (Pollack), sums of two squares (Troupe), and sparse sets (PPT). General case OPEN.",
+  "meta": {
+    "author": "Erdős-Granville-Pomerance-Spiro (1990)",
+    "sourceUrl": "https://erdosproblems.com/955",
+    "date": "1990",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos955Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisor-functions",
+      "density",
+      "arithmetic-functions",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 955,
+    "erdosUrl": "https://erdosproblems.com/955",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Set of divisors",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Nat.properDivisors",
+        "description": "Proper divisors (excluding n)",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Limits at infinity",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sigma: Sum of all divisors",
+      "s: Sum of proper divisors s(n) = σ(n) - n",
+      "IsPerfect, IsDeficient, IsAbundant: Classifications",
+      "HasDensity, HasZeroDensity: Natural density definitions",
+      "preimage_s: Definition of s⁻¹(A)",
+      "EGPSConjecture: Main conjecture statement",
+      "IsUntouchable: Numbers not in range of s",
+      "pollack_primes: Result for prime set",
+      "troupe_two_squares: Result for sums of squares",
+      "ppt_bound: Threshold x^{1/2+o(1)}",
+      "sparse_sets_work: Corollary of PPT"
+    ],
+    "dateAdded": "2026-01-19",
+    "axiomCount": 2,
+    "assumptions": "2 axiom declarations: ppt_bound (Pollack-Pomerance-Thompson 2018: if |A cap [1,x]| <= x^{1/2+o(1)} then s^{-1}(A) has density 0), erdos_955_summary (combined partial results: primes, sums of two squares, sparse sets). Former axioms s_eq_s_alt, six_perfect, twentyeight_perfect, forward_fails, erdos_1973_empty_preimage, two_untouchable, five_untouchable, pollack_primes, troupe_many_factors, troupe_two_squares, s_bound now proved as theorems or definitions.",
+    "lineCount": 192,
+    "theoremCount": 2,
+    "definitionCount": 14
+  },
+  "overview": {
+    "historicalContext": "The sum of proper divisors $s(n) = \\sigma(n) - n$ (the aliquot sum) has been studied since antiquity in connection with perfect numbers—integers where $s(n) = n$, such as 6 and 28. Pythagoras and Euclid investigated these, and Euler proved that all even perfect numbers have the form $2^{p-1}(2^p - 1)$ where $2^p - 1$ is a Mersenne prime.\n\nThe modern question about density preservation under $s$ was formulated by Erdős, Granville, Pomerance, and Spiro in their influential 1990 paper on iterates of arithmetic functions. The EGPS conjecture asks: if $A \\subset \\mathbb{N}$ has natural density 0, must $s^{-1}(A) = \\{n : s(n) \\in A\\}$ also have density 0? This is a question about the \"regularity\" of the arithmetic function $s$—whether it distributes values uniformly enough that sparse target sets cannot attract a dense set of inputs.\n\nSubstantial partial progress has been made. Pollack (2014) proved the conjecture for $A$ = primes, using deep results on the distribution of $s(n)$ modulo primes. Troupe (2020) extended this to $A$ = sums of two squares. Pollack, Pomerance, and Thompson (2018) proved the conjecture for all sets with $|A \\cap [1,x]| \\leq x^{1/2+o(1)}$, identifying the threshold exponent $1/2$ as critical. The general case remains open after over 35 years.\n\nStrikingly, the forward direction behaves differently: there exist density-0 sets $A$ whose image $s(A)$ has positive density. Additionally, the existence of untouchable numbers (integers $k$ with $s^{-1}(\\{k\\}) = \\emptyset$, such as 2 and 5) shows that even positive-density sets can have empty preimages. The conjecture concerns only the backward direction: does sparse target force sparse fiber?\n\n**Status**: OPEN — The EGPS conjecture is unresolved in full generality.",
+    "problemStatement": "**Problem (OPEN)**\n\nLet $s(n) = \\sigma(n) - n$ be the sum of proper divisors.\n\n**Conjecture (EGPS 1990):** If $A \\subset \\mathbb{N}$ has natural density $0$, then $s^{-1}(A) = \\{n : s(n) \\in A\\}$ must also have density $0$.\n\n**Known Results:**\n- True for $A$ = primes (Pollack 2014)\n- True for $A$ = integers with many prime factors (Troupe 2015)\n- True for $A$ = sums of two squares (Troupe 2020)\n- True if $|A \\cap [1,x]| \\leq x^{1/2+o(1)}$ (PPT 2018)\n\n**Contrasts:**\n- $s(A)$ can have positive density even if $A$ has density 0\n- $s^{-1}(A)$ can be empty even if $A$ has positive density (untouchable numbers)",
+    "text": "If A ⊂ ℕ has density 0, must s⁻¹(A) also have density 0, where s(n) is the sum of proper divisors? Proved for primes (Pollack), sums of two squares (Troupe), and sparse sets (PPT). General case OPEN.",
+    "proofStrategy": "**Formalization Strategy**\n\nThe Lean file builds up the framework for the EGPS conjecture:\n\n1. **Divisor sums**: Defines $\\sigma(n)$ via Mathlib's `Nat.divisors` and $s(n) = \\sigma(n) - n$ as the aliquot sum, with an alternative definition via `Nat.properDivisors`\n2. **Number classifications**: Defines perfect ($s(n) = n$), deficient ($s(n) < n$), and abundant ($s(n) > n$) numbers, with 6 and 28 as perfect examples\n3. **Natural density**: Defines the counting function $|A \\cap [1,x]|$, density $d(A) = \\lim_{x \\to \\infty} |A \\cap [1,x]|/x$, and zero/positive density predicates\n4. **Preimage**: Defines $s^{-1}(A) = \\{n : s(n) \\in A\\}$ as a set-theoretic preimage\n5. **EGPS conjecture**: Formally states $\\forall A, d(A) = 0 \\Rightarrow d(s^{-1}(A)) = 0$\n6. **Contrasts**: Axiomatizes the forward failure (density amplification) and untouchable numbers\n7. **Partial results**: Axiomatizes Pollack (primes), Troupe (sums of two squares), and PPT (sparse sets)\n8. **PPT threshold**: The critical exponent $1/2$: any set growing like $x^{1/2+o(1)}$ satisfies the conjecture\n9. **Growth bound**: $s(n) \\leq n(2 + \\log\\log n)$ explains why the threshold is $1/2$",
+    "keyInsights": [
+      "The aliquot sum $s(n) = \\sigma(n) - n$ encodes the divisor structure of $n$, and its preimage fibers $s^{-1}(\\{k\\})$ reveal how arithmetic structure constrains which values are achievable",
+      "The EGPS conjecture is a regularity statement: $s$ distributes its values \"uniformly enough\" that sparse targets cannot attract dense fibers—a far stronger claim than just saying $s$ is surjective",
+      "The forward direction fails dramatically: semiprimes $pq$ have density 0 but $s(pq) = 1 + p + q$ covers a positive-density set, showing $s$ can amplify density in the forward direction",
+      "Untouchable numbers (2, 5, 52, 88, ...) show the converse also fails: positive-density target sets can have empty preimages, since some values are never achieved by $s$",
+      "The PPT threshold exponent $1/2$ arises from $s(n) \\leq n \\cdot O(\\log\\log n)$: since $s$ maps $[1,x]$ into $[1, O(x \\log\\log x)]$, sets growing slower than $\\sqrt{x}$ in the range cannot capture enough fibers",
+      "Each partial result (primes, sums of two squares, sparse sets) requires completely different analytic techniques, suggesting no simple unified approach exists"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring documenting the problem statement, background, and references; 5 Mathlib imports covering required modules; `open` declarations (Nat Finset Real Filter); namespace `Erdos955`",
+      "mathContext": "Let s(n) = σ(n) - n = Σ_{d|n, d<n} d be the sum of proper divisors. If A ⊂ ℕ has density 0, then s⁻¹(A) must also have density 0."
+    },
+    {
+      "id": "divisor-function",
+      "title": "The Sum of Proper Divisors Function",
+      "summary": "Defines $\\sigma(n) = \\sum_{d | n} d$ using Mathlib's `Nat.divisors`, then the aliquot sum $s(n) = \\sigma(n) - n$. An alternative definition `s_alt` sums directly over `Nat.properDivisors`, and an axiom asserts the two definitions agree for $n > 0$.",
+      "startLine": 38,
+      "endLine": 58,
+      "mathContext": "Defines $\\sigma(n) = \\sum_{d | n} d$ using Mathlib's `Nat.divisors`, then the aliquot sum $s(n) = \\sigma(n) - n$. An alternative definition `s_alt` sums directly over `Nat.properDivisors`, and an axiom asserts the two definitions agree for $n > 0$."
+    },
+    {
+      "id": "perfect-numbers",
+      "title": "Perfect, Deficient, and Abundant Numbers",
+      "summary": "Classifies natural numbers by comparing $s(n)$ with $n$: perfect ($s(n) = n$), deficient ($s(n) < n$), and abundant ($s(n) > n$). The first two perfect numbers, 6 and 28, are classical examples known since antiquity.",
+      "startLine": 59,
+      "endLine": 75,
+      "mathContext": "Classifies natural numbers by comparing $s(n)$ with $n$: perfect ($s(n) = n$), deficient ($s(n) < n$), and abundant ($s(n) > n$). The first two perfect numbers, 6 and 28, are classical examples known since antiquity."
+    },
+    {
+      "id": "density",
+      "title": "Natural Density",
+      "summary": "Defines the counting function $|A \\cap [1,x]|$ via `Finset.range.filter`, then natural density as the limit $\\lim_{x \\to \\infty} |A \\cap [1,x]|/x = d$. Introduces `HasZeroDensity` and `HasPositiveDensity` predicates. Uses Mathlib's `Filter.atTop` for the limit formulation.",
+      "startLine": 76,
+      "endLine": 94,
+      "mathContext": "Defines the counting function $|A \\cap [1,x]|$ via `Finset.range.filter`, then natural density as the limit $\\lim_{x \\to \\infty} |A \\cap [1,x]|/x = d$."
+    },
+    {
+      "id": "preimage",
+      "title": "The Preimage s⁻¹(A)",
+      "summary": "Defines the set-theoretic preimage $s^{-1}(A) = \\{n \\in \\mathbb{N} : s(n) \\in A\\}$. This is the central object of the EGPS conjecture: the question is whether $d(A) = 0$ forces $d(s^{-1}(A)) = 0$.",
+      "startLine": 95,
+      "endLine": 102,
+      "mathContext": "Formal definition: Defines the set-theoretic preimage $s^{-1}(A) = \\{n \\in \\mathbb{N} : s(n) \\in A\\}$. This is the central object of the EGPS conjecture: the question is whether $d(A) = 0$ forces $d(s^{-1}(A)) = 0$."
+    },
+    {
+      "id": "egps-conjecture",
+      "title": "The EGPS Conjecture",
+      "summary": "Formally states the Erdős-Granville-Pomerance-Spiro conjecture as $\\forall A \\subset \\mathbb{N}, d(A) = 0 \\Rightarrow d(s^{-1}(A)) = 0$. This is Problem #955 in the Erdős Problems database and remains OPEN after 35+ years.",
+      "startLine": 103,
+      "endLine": 112,
+      "mathContext": "Formally states the Erdős-Granville-Pomerance-Spiro conjecture as $\\forall A \\subset \\mathbb{N}, d(A) = 0 \\Rightarrow d(s^{-1}(A)) = 0$."
+    },
+    {
+      "id": "contrasts",
+      "title": "Contrasting Behaviors",
+      "summary": "Documents two striking contrasts via docstrings: (1) Forward failure—there exist density-0 sets $A$ with $s(A)$ having positive density (e.g., semiprimes). (2) Empty preimages—untouchable numbers like 2 and 5 are never values of $s(n)$, so even large target sets can have empty fibers. Defines `IsUntouchable k` as $\\neg\\exists n > 0, s(n) = k$.",
+      "startLine": 113,
+      "endLine": 136,
+      "mathContext": "Documents two striking contrasts via docstrings: (1) Forward failure—there exist density-0 sets $A$ with $s(A)$ having positive density (e.g., semiprimes). (2) Empty preimages—untouchable numbers like 2 and 5 are never values of $s(n)$, so even large target sets can have empty fibers."
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "summary": "Documents three key partial results via docstrings: Pollack (2014) proved the conjecture for $A$ = primes using modular distribution of $s(n)$. Troupe (2015) handled integers with many prime factors. Troupe (2020) proved the case $A$ = sums of two squares, exploiting the known density $\\sim x/\\sqrt{\\log x}$ and multiplicative structure. Also defines `IsSumOfTwoSquares`.",
+      "startLine": 137,
+      "endLine": 162,
+      "mathContext": "Documents three key partial results via docstrings: Pollack (2014) proved the conjecture for $A$ = primes using modular distribution of $s(n)$. Troupe (2020) proved the case $A$ = sums of two squares, exploiting the known density $\\sim x/\\sqrt{\\log x}$ and multiplicative structure."
+    },
+    {
+      "id": "ppt-bound",
+      "title": "The PPT Bound",
+      "summary": "Axiomatizes the Pollack-Pomerance-Thompson (2018) threshold: the conjecture holds for all sets $A$ with $|A \\cap [1,x]| \\leq x^{1/2+o(1)}$. The theorem `sparse_sets_work` is a direct corollary. Closing the gap between this threshold and general density-0 sets is the main open challenge.",
+      "startLine": 163,
+      "endLine": 180,
+      "mathContext": "Axiomatizes the Pollack-Pomerance-Thompson (2018) threshold: the conjecture holds for all sets $A$ with $|A \\cap [1,x]| \\leq x^{1/2+o(1)}$. The theorem `sparse_sets_work` is a direct corollary."
+    },
+    {
+      "id": "growth-bound",
+      "title": "Growth Bound on s(n)",
+      "summary": "Documents $s(n) \\leq n(2 + \\log\\log n)$ via a docstring, explaining why the PPT threshold is $1/2$: since $s$ maps $[1,x]$ into $[1, O(x \\log\\log x)]$, sets growing slower than $\\sqrt{x}$ in the range are too sparse to capture enough preimages.",
+      "startLine": 181,
+      "endLine": 190,
+      "mathContext": "Documents $s(n) \\leq n(2 + \\log\\log n)$ via a docstring, explaining why the PPT threshold is $1/2$: since $s$ maps $[1,x]$ into $[1, O(x \\log\\log x)]$, sets growing slower than $\\sqrt{x}$ in the range are too sparse to capture enough preimages."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Combines all partial results into `erdos_955_summary` and the main theorem `erdos_955`: the conjecture holds for primes, sums of two squares, and sets growing like $x^{1/2+o(1)}$. The general case remains OPEN.",
+      "startLine": 191,
+      "endLine": 191,
+      "mathContext": "Combines all partial results into `erdos_955_summary` and the main theorem `erdos_955`: the conjecture holds for primes, sums of two squares, and sets growing like $x^{1/2+o(1)}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the full state of knowledge on Erdős Problem #955: the EGPS conjecture that zero-density sets have zero-density preimages under $s(n) = \\sigma(n) - n$. It formalizes the conjecture, the striking asymmetry between forward and backward density preservation, the three main partial results (Pollack for primes, Troupe for sums of two squares, PPT for sparse sets), the critical threshold exponent $1/2$, and the growth bound $s(n) \\leq n \\cdot O(\\log\\log n)$ that explains this threshold.",
+    "implications": "1. **Arithmetic Function Regularity**: A resolution would establish a deep regularity property of the divisor function—that $s$ distributes values uniformly enough to prevent density concentration in fibers\n\n2. **Multiplicative Number Theory**: The partial results each exploit specific multiplicative structure (primes, sums of two squares), suggesting the full conjecture requires understanding the distribution of $s(n)$ in arithmetic progressions\n\n**3. Density Preservation**: The problem connects to broader questions about which arithmetic functions preserve asymptotic density under preimages, a theme in probabilistic number theory\n\n4. **Untouchable Numbers**: Understanding the fiber structure of $s$ would illuminate which integers are untouchable and how the untouchable numbers are distributed\n\n5. **Iterative Dynamics**: The original EGPS paper studied iterates $s^{(k)}(n)$; resolving the single-step conjecture would be a crucial first step toward understanding the dynamical behavior of repeated application of $s$.",
+    "openQuestions": [
+      "Does the EGPS conjecture hold for all density-0 sets A? This is the main open question after 35+ years",
+      "Is the PPT exponent 1/2 sharp, or can the threshold be improved toward general density-0 sets?",
+      "Can the partial results (primes, sums of two squares, sparse sets) be unified into a general approach?",
+      "What is the distribution of s(n) in arithmetic progressions? This would likely be key to a general proof",
+      "For the iterates s^(k)(n), does density preservation hold for all k ≥ 1?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos955",
+    "lineCount": 192,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "definitionCount": 14,
+    "path": "Proofs/Erdos955Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "EGPS90",
+      "citation": "Erdős, P., Granville, A., Pomerance, C., and Spiro, C. (1990). On the normal behavior of the iterates of some arithmetic functions. Analytic Number Theory (Allerton Park, IL, 1989), Progress in Mathematics 85, Birkhäuser, 165-204.",
+      "type": "paper"
+    },
+    {
+      "key": "Po14b",
+      "citation": "Pollack, P. (2014). Some arithmetic properties of the sum of proper divisors and the sum of prime factors. Illinois Journal of Mathematics, 58(1), 125-147.",
+      "type": "paper"
+    },
+    {
+      "key": "Tr20",
+      "citation": "Troupe, L. (2020). On the number of prime factors of values of the sum-of-proper-divisors function. Journal of Number Theory, 208, 189-206.",
+      "type": "paper"
+    },
+    {
+      "key": "PPT18",
+      "citation": "Pollack, P., Pomerance, C., and Thompson, L. (2018). Divisor-sum fibers. Mathematika, 64(2), 330-342.",
+      "type": "paper"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1064",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-functions, density, number-theory"
+    },
+    {
+      "targetId": "erdos-278",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, open"
+    },
+    {
+      "targetId": "erdos-330",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, open"
+    }
+  ],
+  "sorries": 0
+}

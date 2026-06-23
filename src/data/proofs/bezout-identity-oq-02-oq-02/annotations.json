@@ -1,0 +1,186 @@
+[
+  {
+    "id": "ann-iscop-as-bezout",
+    "proofId": "bezout-identity-oq-02-oq-02",
+    "range": {
+      "startLine": 3,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "IsCoprime IS the Abstract Bézout Condition",
+    "content": "The module docstring establishes the key insight: `IsCoprime a b` in Lean is *defined* as `∃ u v, u*a + v*b = 1` — this is precisely the Bézout identity with no special ring structure required. The proof hierarchy flows from most general to most specific: CommRing (ring axioms only) → IsBezout (every pair-generated ideal is principal) → EuclideanDomain (algorithmic gcd) → DecompositionMonoid (irreducible ↔ prime). The Mathlib API chain is: `IsBezout.span_pair_isPrincipal` → `IsRelPrime.isCoprime` → `euclids_lemma_ring`.",
+    "mathContext": "The abstract framework: $\\text{IsCoprime}(a,b) \\equiv \\exists u,v,\\; ua + vb = 1$ (Bézout identity). This holds in any commutative ring. The typeclass hierarchy: $$\\text{EuclideanDomain} \\to \\text{PrincipalIdealRing} \\to \\text{IsBezout} \\to \\text{CommRing}.$$ Each level adds more structure, but Euclid's lemma holds already at `CommRing` level given `IsCoprime`. `IsBezout R` means $\\forall a,b \\in R$, the ideal $(a,b) = \\langle d \\rangle$ is principal — this is what allows converting arithmetic coprimality (`IsRelPrime`) to algebraic coprimality (`IsCoprime`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsCoprime",
+      "IsBezout",
+      "IsRelPrime",
+      "EuclideanDomain",
+      "typeclass hierarchy",
+      "abstract Bézout condition"
+    ],
+    "prerequisites": [
+      "IsCoprime definition in Mathlib",
+      "IsBezout typeclass",
+      "Ideal.span {x,y} principal",
+      "Mathlib.RingTheory.Bezout"
+    ]
+  },
+  {
+    "id": "ann-euclids-ring",
+    "proofId": "bezout-identity-oq-02-oq-02",
+    "range": {
+      "startLine": 63,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "euclids_lemma_ring: Universal Euclid's Lemma via linear_combination",
+    "content": "`euclids_lemma_ring` is the master theorem: in any `CommRing R`, if `IsCoprime a b` and `a ∣ b * c`, then `a ∣ c`. The 3-line proof: obtain Bézout coefficients `u, v` from `IsCoprime` (so `u*a + v*b = 1`), obtain divisibility witness `k` (so `b*c = a*k`), then the explicit witness `u*c + v*k` satisfies `c = a*(u*c + v*k)` verified by `linear_combination v * hk - c * huv`. The `euclids_lemma_ring'` variant handles `a ∣ c*b` by commutativity.",
+    "mathContext": "**Proof arithmetic**: Given $ua + vb = 1$ and $bc = ak$, verify $c = a(uc + vk)$: $$a(uc + vk) = a \\cdot uc + a \\cdot vk = (ua)c + v(ak) = (ua)c + v(bc) = (ua + vb)c = 1 \\cdot c = c.$$ The `linear_combination` tactic automates this: `v * hk - c * huv` encodes $v(bc - ak) - c(ua + vb - 1) = 0 \\Rightarrow c - a(uc + vk) = 0$. No ring structure beyond `CommRing` is needed — the proof is purely axiomatic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear_combination tactic",
+      "IsCoprime witness",
+      "divisibility witness",
+      "ring identity",
+      "CommRing axioms"
+    ],
+    "prerequisites": [
+      "IsCoprime (obtain u v huv)",
+      "linear_combination tactic",
+      "dvd_intro (exact ⟨_, _⟩)"
+    ]
+  },
+  {
+    "id": "ann-isbezout-forward",
+    "proofId": "bezout-identity-oq-02-oq-02",
+    "range": {
+      "startLine": 95,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "IsBezout Bridge: span_pair_isPrincipal Converts IsRelPrime to IsCoprime",
+    "content": "`isBezout_relPrime_to_isCoprime` proves `IsRelPrime a b → IsCoprime a b` in any IsBezout ring. The key is `haveI := IsBezout.span_pair_isPrincipal a b` which installs the instance `Submodule.IsPrincipal (Ideal.span {a, b})` — exactly what `IsRelPrime.isCoprime` requires. This single `haveI` is the entire bridge from arithmetic coprimality to algebraic Bézout coefficients. `euclids_lemma_isbezout` then chains: `IsRelPrime → IsCoprime → euclids_lemma_ring`.",
+    "mathContext": "The algebraic meaning: In a Bézout ring, every ideal $(a, b)$ is principal: $(a,b) = (d)$ for some $d$. If $a$ and $b$ are coprime (no non-unit common divisor), then $d = 1$, so $1 \\in (a,b)$, meaning $\\exists u,v,\\; ua + vb = 1$. Lean's typeclass mechanism: `IsBezout.span_pair_isPrincipal a b : Submodule.IsPrincipal (Ideal.span {a, b})` provides the instance that `IsRelPrime.isCoprime` uses as an implicit argument. The `haveI` tactic introduces it locally.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsBezout.span_pair_isPrincipal",
+      "IsRelPrime.isCoprime",
+      "Submodule.IsPrincipal",
+      "haveI tactic",
+      "Ideal.span"
+    ],
+    "prerequisites": [
+      "IsBezout typeclass",
+      "IsRelPrime definition",
+      "Submodule.IsPrincipal",
+      "Mathlib.RingTheory.Bezout"
+    ]
+  },
+  {
+    "id": "ann-coprime-to-relprime",
+    "proofId": "bezout-identity-oq-02-oq-02",
+    "range": {
+      "startLine": 109,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "IsCoprime → IsRelPrime: Divisibility of the Bézout Sum",
+    "content": "`isCoprime_to_relPrime` proves the converse direction in ANY CommRing (no IsBezout needed): if `IsCoprime a b` and `d ∣ a` and `d ∣ b`, then `d` is a unit. Proof: `d ∣ u*a` and `d ∣ v*b` by `dvd_mul_of_dvd_right`, so `d ∣ u*a + v*b = 1` by `dvd_add`. Then `isUnit_of_dvd_one` concludes. Combined with `isBezout_relPrime_to_isCoprime`, this gives `isBezout_coprime_iff`: in IsBezout rings, IsCoprime ↔ IsRelPrime.",
+    "mathContext": "**Direction**: $IsCoprime(a,b) \\Rightarrow IsRelPrime(a,b)$. Proof: if $d \\mid a$ and $d \\mid b$, then $d \\mid ua + vb = 1$ (since $d$ divides any linear combination). Hence $d$ is a unit. This direction uses no special structure — it's a universal fact about rings. The biconditional `IsCoprime ↔ IsRelPrime` in IsBezout rings is the algebraic core of Bézout's identity: the existence of Bézout coefficients is equivalent to gcd(a,b) = 1 (i.e., every common divisor is a unit).",
+    "significance": "key",
+    "relatedConcepts": [
+      "dvd_mul_of_dvd_right",
+      "dvd_add",
+      "isUnit_of_dvd_one",
+      "IsCoprime ↔ IsRelPrime",
+      "Bézout's identity"
+    ],
+    "prerequisites": [
+      "dvd_add (Mathlib)",
+      "isUnit_of_dvd_one",
+      "IsCoprime definition",
+      "IsRelPrime definition"
+    ]
+  },
+  {
+    "id": "ann-decomp-monoid",
+    "range": {
+      "startLine": 145,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "DecompositionMonoid: Irreducible ↔ Prime as Abstract Euclid's Lemma",
+    "mathContext": "In abstract algebra: $p$ is **prime** if $p \\mid ab \\Rightarrow p \\mid a$ or $p \\mid b$. $p$ is **irreducible** if $p = ab \\Rightarrow$ a or b is a unit. These coincide in UFDs (unique factorization domains) and more generally in **GCD domains** and **Bézout domains**. Lean's `DecompositionMonoid` captures exactly this property. For ℤ: primes are ±2, ±3, ±5, ... and irreducibles coincide. For ℤ[i]: Gaussian primes are (1+i), 2+i, 3, 3+2i, ... and again irreducible = prime. The typeclass `DecompositionMonoid` is Lean's way of saying 'every element factors'.",
+    "significance": "key",
+    "relatedConcepts": [
+      "DecompositionMonoid",
+      "irreducible_iff_prime",
+      "CancelCommMonoidWithZero",
+      "Prime.dvd_or_dvd",
+      "UFD vs GCD domain"
+    ],
+    "prerequisites": [
+      "DecompositionMonoid typeclass",
+      "Irreducible definition",
+      "Prime definition",
+      "irreducible_iff_prime (Mathlib)"
+    ],
+    "proofId": "bezout-identity-oq-02-oq-02",
+    "content": "Part IV covers `DecompositionMonoid` — the typeclass that gives `irreducible_iff_prime`. In a `CancelCommMonoidWithZero` that is also a `DecompositionMonoid` (which ℤ, k[X], ℤ[i] all are), `irred_iff_prime_decomp` is a direct alias for `irreducible_iff_prime`. `euclids_lemma_irreducible` then uses this iff to convert `Irreducible p` to `Prime p` and apply `.dvd_or_dvd`: if p is irreducible and `p ∣ a*b`, then `p ∣ a ∨ p ∣ b`."
+  },
+  {
+    "id": "ann-instances",
+    "range": {
+      "startLine": 176,
+      "endLine": 221
+    },
+    "type": "concept",
+    "title": "One Proof, Three Rings: ℤ, k[X], ℤ[i] are All One-Liners",
+    "mathContext": "The typeclass instances used: $\\mathbb{Z}$: `IsBezout ℤ` (ℤ is a PID, every ideal is principal), `DecompositionMonoid ℤ` (ℤ is a UFD). $k[X]$ over field $k$: `EuclideanDomain (Polynomial k)` (polynomial division algorithm), hence `IsBezout`. $\\mathbb{Z}[i]$: `EuclideanDomain GaussianInt` (norm function $N(a+bi) = a^2+b^2$), hence `IsBezout`. Explicit Bézout coefficient example in ℤ: $\\text{IsCoprime}(3, 7)$ via $(3,7) = (5 \\cdot 3 + (-2) \\cdot 7 = 1)$: `⟨5, -2, by norm_num⟩`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "typeclass inference",
+      "EuclideanDomain instances",
+      "GaussianInt",
+      "Polynomial field",
+      "inferInstance",
+      "IsBezout instances"
+    ],
+    "prerequisites": [
+      "GaussianInt.instEuclideanDomain",
+      "Polynomial.instEuclideanDomain",
+      "Int.instEuclideanDomain",
+      "norm_num for IsCoprime witnesses"
+    ],
+    "proofId": "bezout-identity-oq-02-oq-02",
+    "content": "Part V provides `euclids_lemma_int`, `euclids_lemma_poly`, `euclids_lemma_gaussian` — all three are syntactically identical: `euclids_lemma_ring hcop hdvd`. The typeclass inference system handles the rest: ℤ satisfies `CommRing ℤ` (obvious), `Polynomial k` over a field satisfies `CommRing (Polynomial k)`, and `GaussianInt` satisfies `CommRing GaussianInt`. The `inferInstance` examples confirm the full hierarchy: each has `EuclideanDomain` → `IsBezout` instances resolvable by Lean automatically."
+  },
+  {
+    "id": "ann-uniform-principle",
+    "range": {
+      "startLine": 244,
+      "endLine": 285
+    },
+    "type": "concept",
+    "title": "The Uniform Proof Table: How Each Ring Establishes IsCoprime",
+    "mathContext": "**Term-mode proof** (lines 250-253): `euclids_lemma_explicit u v huv k hk` takes Bézout coefficients and divisibility witness as explicit arguments, returning `⟨u * c + v * k, by linear_combination v * hk - c * huv⟩`. This is the 'pre-abstracted' form showing no magic is happening — just algebraic manipulation. The `#check` commands at lines 279-283 confirm all theorem types are well-formed. The `IsRelPrime (3 : ℤ) 7` example at line 273-277 shows how to prove arithmetic coprimality directly: compute $3 \\cdot 5 + 7 \\cdot (-2) = 1$, so any common divisor divides 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "term-mode proof",
+      "uniform proof principle",
+      "IsCoprime witnesses",
+      "norm_num",
+      "ring identity verification",
+      "#check"
+    ],
+    "prerequisites": [
+      "euclids_lemma_ring",
+      "linear_combination",
+      "IsRelPrime proof pattern",
+      "Nat.Coprime.isCoprime"
+    ],
+    "proofId": "bezout-identity-oq-02-oq-02",
+    "content": "Part VI culminates with the uniform principle: `euclids_lemma_uniform` is an alias for `euclids_lemma_ring`, and `euclids_lemma_explicit` is a term-mode proof that makes the ring identity completely transparent. The docstring includes a table: ℤ gets `IsCoprime` via `Nat.Coprime.isCoprime` or Bézout algorithm; k[X] via EuclideanDomain; ℤ[i] via Gaussian integer Euclidean algorithm; IsBezout rings via `isBezout_relPrime_to_isCoprime`; EuclideanDomains via `EuclideanDomain.isCoprime_of_dvd`. The verification section confirms `inferInstance` resolves all typeclasses and the IsRelPrime example for (3,7) in ℤ is proved explicitly."
+  }
+]

@@ -1,0 +1,219 @@
+{
+  "id": "erdos-203",
+  "title": "Erdos Problem #203: Covering Systems and Prime Avoidance",
+  "slug": "erdos-203",
+  "description": "Is there an integer m >= 1 with (m, 6) = 1 such that none of 2^k * 3^l * m + 1 are prime, for any k, l >= 0?",
+  "meta": {
+    "author": "Erdos",
+    "sourceUrl": "https://erdosproblems.com/203",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos203Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "covering-systems",
+      "sierpinski",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 203,
+    "erdosUrl": "https://erdosproblems.com/203",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality of natural numbers",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Int.ModEq",
+        "description": "Modular equivalence for integers",
+        "module": "Mathlib.Data.Int.ModEq"
+      }
+    ],
+    "originalContributions": [
+      "candidateNumber definition: 2^k * 3^l * m + 1",
+      "AvoidsPrimes definition: m coprime to 6 with no prime candidates",
+      "ErdosConjecture203 definition: existence of avoiding m",
+      "IsSierpinskiNumber definition: classical Sierpinski numbers",
+      "selfridge_sierpinski: the known smallest Sierpinski number",
+      "IsCoveringSystem definition: covering congruences",
+      "PrimeCovering definition: prime-associated covering system",
+      "Covers2D, IsCoveringSystem2D definitions: two-dimensional covering systems",
+      "ExtendedDivisibility definition: primes dividing 2^a * 3^b - 1",
+      "avoiding_is_sierpinski theorem: every prime-avoiding m is a Sierpinski number",
+      "coprime_6_equiv theorem: coprime to 6 iff coprime to 2 and 3",
+      "base_case theorem: m + 1 must not be prime",
+      "one_fails, five_fails theorems: counterexamples",
+      "IsGeneralizedAvoiding definition: multi-prime generalization",
+      "erdos_203_statement theorem: formal main statement"
+    ],
+    "axiomCount": 1,
+    "lineCount": 390,
+    "assumptions": "Depends on Lean.ofReduceBool: the Selfridge supporting result selfridge_sierpinski_is_sierpinski (78557 is a Sierpiński number) is proved via covering_prime, which discharges its divisibility and period facts with `native_decide` (7 calls). native_decide trusts the compiler's kernel reduction and so introduces the Lean.ofReduceBool axiom (the proof is not axiom-free). No literal `axiom` declarations and 0 sorries. The main Erdős #203 conjecture (ErdosConjecture203) remains OPEN and is stated, not proved.",
+    "theoremCount": 44,
+    "definitionCount": 13
+  },
+  "overview": {
+    "historicalContext": "Erdos posed this problem in 1980 with Graham [ErGr80, p. 27]. It generalizes the Sierpinski problem, which asks for odd m such that 2^k * m + 1 is never prime for any k >= 0.\n\nThe classical Sierpinski problem was solved: Selfridge (1962) showed 78557 is Sierpinski, using covering systems. The Sierpinski Problem (finding the smallest such number) remains open, with candidates being eliminated by the 'Seventeen or Bust' project.\n\nProblem 203 extends this to expressions involving both powers of 2 and 3, making the covering system approach much more complex.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nIs there an integer m >= 1 with gcd(m, 6) = 1 such that none of 2^k * 3^l * m + 1 are prime, for any k, l >= 0?\n\n**Background:**\n- Extends Sierpinski numbers to two-base expressions\n- Connected to covering systems of congruences\n- The two-dimensional nature makes this much harder than the classical case",
+    "text": "Is there an integer m >= 1 with (m, 6) = 1 such that none of 2^k * 3^l * m + 1 are prime, for any k, l >= 0?",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Candidates:** Define candidateNumber(m, k, l) = 2^k * 3^l * m + 1\n\n2. **Avoidance:** AvoidsPrimes(m) requires coprimality and no prime candidates\n\n3. **Sierpinski:** Formalize classical Sierpinski numbers for comparison\n\n4. **Covering Systems:** Define covering systems and their connection to Sierpinski\n\n5. **Extended Problem:** Formalize the two-dimensional covering challenge",
+    "keyInsights": [
+      "**Sierpinski Connection:** The problem generalizes Sierpinski numbers to 2^k * 3^l factors",
+      "**Covering Systems:** Classical Sierpinski proofs use covering systems with primes dividing 2^n - 1",
+      "**Two-Dimensional:** The k, l parameters make the covering system approach much harder",
+      "**Selfridge's Number:** 78557 is the smallest known Sierpinski number",
+      "**Small Cases Fail:** m = 1, 5, ... quickly produce primes"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections":   [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring for Erdős Problem #203 (the Sierpiński/covering-system question: which $k$ make $k\\cdot2^n+1$ composite for all $n$) and imports."
+    },
+    {
+      "id": "definitions",
+      "title": "Part 1: Basic Definitions",
+      "startLine": 27,
+      "endLine": 38,
+      "summary": "Core definitions: `candidateNumber`, `AvoidsPrimes`, and `AvoidingSet`."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part 2: The Main Conjecture",
+      "startLine": 39,
+      "endLine": 54,
+      "summary": "`ErdosConjecture203` (the main statement) and `conjecture_equiv` (an equivalent formulation)."
+    },
+    {
+      "id": "sierpinski",
+      "title": "Part 3: Sierpinski Numbers",
+      "startLine": 55,
+      "endLine": 128,
+      "summary": "`IsSierpinskiNumber`, `SierpinskiSet`, and the Selfridge result: 78557 is a Sierpiński number (`selfridge_sierpinski`, `selfridge_sierpinski_is_sierpinski`) proved via the covering system $\\{3,5,7,13,19,37,73\\}$ of period 36, with power-periodicity and modular divisibility-transfer lemmas. Also `sierpinski_exists` and `sierpinski_necessary_not_sufficient`."
+    },
+    {
+      "id": "covering",
+      "title": "Part 4: Covering Systems",
+      "startLine": 129,
+      "endLine": 140,
+      "summary": "`IsCoveringSystem` and `PrimeCovering`: the covering-system framework underlying Sierpiński numbers."
+    },
+    {
+      "id": "extended",
+      "title": "Part 5: The Extended Problem — 2D Covering Systems",
+      "startLine": 141,
+      "endLine": 155,
+      "summary": "`ExtendedDivisibility`, `Covers2D`, and `IsCoveringSystem2D`: the two-dimensional generalization."
+    },
+    {
+      "id": "small-cases",
+      "title": "Part 6: Small Cases and Constraints",
+      "startLine": 156,
+      "endLine": 304,
+      "summary": "Small-case analysis and constraints: `coprime_6_equiv`, `base_case`, candidate positivity/recurrence (`candidate_pos/_base/_k1/_l1`), and concrete elimination lemmas (`one_fails`, `five_fails`, `seven_fails`, …) — the bulk of the proved content, previously partly hidden by section drift."
+    },
+    {
+      "id": "relationship",
+      "title": "Part 7: Relationship between Sierpinski and Problem 203",
+      "startLine": 305,
+      "endLine": 343,
+      "summary": "Links the avoiding-set problem to Sierpiński numbers: `avoiding_implies_sierpinski_like`, `avoiding_implies_base3_like`, `coprime6_implies_odd`, `avoiding_is_sierpinski`, and `problem203_stronger_than_sierpinski`."
+    },
+    {
+      "id": "candidate-growth",
+      "title": "Part 8: Candidate Growth",
+      "startLine": 344,
+      "endLine": 353,
+      "summary": "`candidate_ge_succ`: monotone growth of the candidate numbers."
+    },
+    {
+      "id": "generalizations",
+      "title": "Part 9: Generalized Problems",
+      "startLine": 354,
+      "endLine": 375,
+      "summary": "`IsGeneralizedAvoiding` and monotonicity lemmas `candidate_mono_k`, `candidate_mono_l`."
+    },
+    {
+      "id": "status",
+      "title": "Part 10: Problem Status",
+      "startLine": 376,
+      "endLine": 390,
+      "summary": "`erdos_203_statement`: the formal problem-status statement summarizing what is proved and what remains open."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #203 asks whether there exists an integer m coprime to 6 such that 2^k * 3^l * m + 1 is never prime for any k, l >= 0. This generalizes Sierpinski numbers to two prime bases. The problem remains OPEN.",
+    "implications": "A positive answer would extend covering system techniques to two-dimensional lattices of exponents. A negative answer would establish fundamental limitations on prime avoidance.",
+    "openQuestions": [
+      "Does such an m exist?",
+      "Can covering systems be extended to handle 2^k * 3^l factors?",
+      "What is the relationship to the Sierpinski problem?",
+      "Are there analogues for other pairs of primes?",
+      "What computational bounds have been established?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos203",
+    "lineCount": 390,
+    "axiomCount": 0,
+    "theoremCount": 44,
+    "definitionCount": 13,
+    "path": "Proofs/Erdos203Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, number-theory, open, primes"
+    },
+    {
+      "targetId": "erdos-1141",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, primes"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, primes"
+    }
+  ],
+  "references": [
+    {
+      "key": "Ik85",
+      "authors": [
+        "H. Iwaniec"
+      ],
+      "title": "Rosser's sieve",
+      "venue": "Acta Arithmetica",
+      "year": "1980",
+      "volume": "36",
+      "pages": "171-202",
+      "note": "Modern sieve methods relevant to prime gap and prime pattern problems"
+    }
+  ],
+  "sorries": 0
+}

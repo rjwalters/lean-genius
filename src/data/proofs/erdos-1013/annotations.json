@@ -1,0 +1,251 @@
+[
+  {
+    "id": "erdos-1013-ann-trianglefree",
+    "proofId": "erdos-1013",
+    "range": {
+      "startLine": 32,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "Triangle-Free Graph",
+    "content": "A graph is triangle-free if it contains no clique of size 3, i.e., no three mutually adjacent vertices. This local constraint is the structural condition that makes achieving high chromatic number require many vertices. The tension between forbidding triangles and forcing high chromatic number is the core of Erdos Problem #1013.",
+    "mathContext": "A graph $G$ is triangle-free if $\\omega(G) \\leq 2$, equivalently $G$ is $K_3$-free. Ramsey theory shows $R(3,k) = \\Theta(k^2/\\log k)$, which is intimately connected to $h_3(k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "clique number",
+      "Ramsey number R(3,k)",
+      "K_r-free graphs",
+      "Zykov construction"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory"
+    ]
+  },
+  {
+    "id": "erdos-1013-ann-coloring",
+    "proofId": "erdos-1013",
+    "range": {
+      "startLine": 38,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Proper k-Coloring",
+    "content": "A proper $k$-coloring assigns one of $k$ colors to each vertex so that adjacent vertices receive distinct colors. The chromatic number $\\chi(G)$ is the minimum $k$ for which a proper $k$-coloring exists. For triangle-free graphs, Brooks's theorem gives $\\chi(G) \\leq \\Delta(G)$ when $G$ is not an odd cycle.",
+    "mathContext": "A proper $k$-coloring is a function $f: V(G) \\to [k]$ with $f(u) \\neq f(v)$ whenever $uv \\in E(G)$. The chromatic number $\\chi(G) = \\min\\{k : G$ has a proper $k$-coloring$\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "chromatic number",
+      "Brooks's theorem",
+      "list coloring",
+      "fractional chromatic number"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "vertex coloring"
+    ]
+  },
+  {
+    "id": "erdos-1013-ann-threshold",
+    "proofId": "erdos-1013",
+    "range": {
+      "startLine": 47,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "h_3(k) -- Triangle-Free Chromatic Threshold",
+    "content": "The central quantity: $h_3(k)$ is the smallest $n$ such that there exists a triangle-free graph on $n$ vertices with $\\chi \\geq k$. Equivalently, $h_3(k) - 1$ is the largest $n$ for which every triangle-free graph on $n$ vertices is $(k-1)$-colorable. This function captures the quantitative relationship between the triangle-free constraint and chromatic number.",
+    "mathContext": "$h_3(k) = \\min\\{n \\in \\mathbb{N} : \\exists G \\text{ on } n \\text{ vertices, } K_3\\text{-free, } \\chi(G) \\geq k\\}$. Known: $h_3(k) = \\Theta(k^2 \\log k)$ with constant in $[1/2, 1]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey multiplicity",
+      "off-diagonal Ramsey numbers",
+      "chromatic threshold function"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "chromatic number",
+      "extremal graph theory"
+    ]
+  },
+  {
+    "id": "erdos-1013-ann-asymptotic",
+    "proofId": "erdos-1013",
+    "range": {
+      "startLine": 55,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "Asymptotic Conjecture: h_3(k) ~ c*k^2*log k",
+    "content": "Erdos conjectured that $h_3(k) / (k^2 \\log k)$ converges to a constant $c > 0$. The known bounds place $c \\in [1/2, 1]$. Determining the exact value of $c$ would resolve this problem. The lower bound $c \\geq 1/2$ comes from probabilistic arguments related to $R(3,k)$, while the upper bound $c \\leq 1$ comes from explicit algebraic constructions.",
+    "mathContext": "$\\lim_{k \\to \\infty} h_3(k) / (k^2 \\log k) = c$ for some $c \\in [1/2, 1]$. The Ramsey number $R(3,k) = \\Theta(k^2/\\log k)$ implies $h_3(k) \\geq (1/2 - o(1))k^2 \\log k$ via Ramsey-theoretic duality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic formula",
+      "Ramsey-chromatic duality",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "Ramsey theory",
+      "probabilistic combinatorics"
+    ]
+  },
+  {
+    "id": "erdos-1013-ann-ratio",
+    "proofId": "erdos-1013",
+    "range": {
+      "startLine": 63,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Ratio Convergence: h_3(k+1)/h_3(k) -> 1",
+    "content": "Erdos asked whether the ratio $h_3(k+1)/h_3(k)$ converges to 1, meaning the threshold grows smoothly without large jumps between consecutive chromatic numbers. If $h_3(k) \\sim c \\cdot k^2 \\log k$, then the ratio would be $(1 + 1/k)^2 \\cdot (1 + o(1)) \\to 1$, so this is weaker than the asymptotic conjecture.",
+    "mathContext": "$\\lim_{k \\to \\infty} h_3(k+1)/h_3(k) = 1$. This follows from $h_3(k) \\sim ck^2 \\log k$ but is potentially easier to prove independently.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth growth",
+      "regular variation",
+      "ratio test"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "erdos-1013-ann-lower",
+    "proofId": "erdos-1013",
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "Lower Bound: (1/2 - o(1))*k^2*log k",
+    "content": "The probabilistic lower bound: no triangle-free graph on fewer than approximately $k^2 \\log k / 2$ vertices can have chromatic number $k$. This is connected to the Ramsey number $R(3,k) = \\Theta(k^2/\\log k)$: a triangle-free graph on $n$ vertices has independence number $\\alpha \\geq c\\sqrt{n \\log n}$ by the Ramsey bound, so $\\chi \\leq n/\\alpha$, giving $n \\geq c^2 k^2 \\log k$ for $\\chi = k$.",
+    "mathContext": "$h_3(k) \\geq (1/2 - \\varepsilon)k^2 \\log k$ for all $k \\geq K(\\varepsilon)$. The key input is $R(3,k) \\leq (1+o(1))k^2/(2\\log k)$, proved by Shearer (1983) using entropy methods.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number R(3,k)",
+      "Shearer's bound",
+      "independence number",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "probabilistic combinatorics",
+      "entropy methods"
+    ]
+  },
+  {
+    "id": "erdos-1013-ann-upper",
+    "proofId": "erdos-1013",
+    "range": {
+      "startLine": 80,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Upper Bound: (1 + o(1))*k^2*log k",
+    "content": "Explicit constructions of triangle-free graphs achieve chromatic number $k$ on $(1+o(1))k^2 \\log k$ vertices. This uses algebraic constructions based on Cayley graphs over finite fields or random algebraic constructions, showing that the lower bound is tight up to the constant factor.",
+    "mathContext": "$h_3(k) \\leq (1+\\varepsilon)k^2 \\log k$ for all $k \\geq K(\\varepsilon)$. Combined with the lower bound, $h_3(k) = \\Theta(k^2 \\log k)$ with constant $c \\in [1/2, 1]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cayley graphs",
+      "finite field constructions",
+      "Kwan-Sudakov",
+      "algebraic graph theory"
+    ],
+    "prerequisites": [
+      "algebraic graph theory",
+      "finite fields",
+      "explicit constructions"
+    ]
+  },
+  {
+    "id": "erdos-1013-ann-graver-yackel",
+    "proofId": "erdos-1013",
+    "range": {
+      "startLine": 86,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Graver-Yackel Bound (1968)",
+    "content": "The first quantitative lower bound on $h_3(k)$: Graver and Yackel (1968) showed $h_3(k) \\gg k^2 \\log k / \\log \\log k$ using probabilistic deletion. This was later improved to the current $(1/2 - o(1))k^2 \\log k$ bound via the connection to $R(3,k)$.",
+    "mathContext": "$h_3(k) \\geq c \\cdot k^2 \\cdot \\frac{\\log k}{\\log \\log k}$ for some $c > 0$ and all large $k$. This was the state of the art from 1968 until the Ramsey-theoretic improvements.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "probabilistic deletion",
+      "first moment method",
+      "early Ramsey bounds"
+    ],
+    "prerequisites": [
+      "probabilistic method",
+      "graph theory"
+    ]
+  },
+  {
+    "id": "erdos-1013-ann-monotonicity",
+    "proofId": "erdos-1013",
+    "range": {
+      "startLine": 94,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "Monotonicity of h_3",
+    "content": "The threshold $h_3$ is non-decreasing: higher chromatic number requires at least as many vertices. If a triangle-free graph on $n$ vertices has $\\chi \\geq k$, then it also has $\\chi \\geq j$ for $j \\leq k$, so $h_3(j) \\leq h_3(k)$.",
+    "mathContext": "$j \\leq k \\implies h_3(j) \\leq h_3(k)$. This follows from the definition since $\\chi \\geq k \\implies \\chi \\geq j$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone functions",
+      "threshold functions"
+    ],
+    "prerequisites": [
+      "order theory"
+    ]
+  },
+  {
+    "id": "erdos-1013-ann-small",
+    "proofId": "erdos-1013",
+    "range": {
+      "startLine": 98,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Small Cases and Extremal Graphs",
+    "content": "The small values are $h_3(1) = 1$, $h_3(2) = 2$, $h_3(3) = 5$ (the 5-cycle $C_5$), and $h_3(4) = 11$ (the Grotzsch graph). The $C_5$ is the smallest odd cycle and the unique smallest triangle-free graph with $\\chi = 3$. The Grotzsch graph, with 11 vertices and 20 edges, is the smallest triangle-free graph with $\\chi = 4$. These are Mycielski graphs $M_3$ and $M_4$.",
+    "mathContext": "$h_3(3) = 5$ ($C_5$), $h_3(4) = 11$ (Grotzsch graph $\\cong M_4$). The sequence continues: $h_3(5) = 22$ (OEIS A292528). Each Mycielski graph $M_k$ has $3 \\cdot 2^{k-2} - 1$ vertices.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mycielski graphs",
+      "Grotzsch graph",
+      "5-cycle",
+      "OEIS A292528"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "extremal graph theory"
+    ]
+  },
+  {
+    "id": "erdos-1013-ann-mycielski",
+    "proofId": "erdos-1013",
+    "range": {
+      "startLine": 119,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Mycielski's Construction: Finiteness of h_3(k)",
+    "content": "Jan Mycielski (1955) proved that for every $k \\geq 2$, there exists a triangle-free graph with chromatic number $k$, establishing that $h_3(k)$ is finite. The Mycielski graph $M_k$ is built inductively: $M_2 = K_2$, and $M_{k+1}$ is obtained from $M_k$ by adding a 'shadow' vertex for each original vertex plus one universal vertex. This preserves triangle-freeness while increasing the chromatic number by 1.",
+    "mathContext": "The Mycielski graph $M_k$ has $|V(M_k)| = 3 \\cdot 2^{k-2} - 1$ vertices, is $K_3$-free, and satisfies $\\chi(M_k) = k$. The growth $|V(M_k)| = \\Theta(2^k)$ is exponential, far from the optimal $\\Theta(k^2 \\log k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mycielski construction",
+      "inductive graph constructions",
+      "Zykov construction"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "inductive constructions"
+    ]
+  }
+]

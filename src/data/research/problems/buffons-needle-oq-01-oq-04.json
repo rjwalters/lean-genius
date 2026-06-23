@@ -1,0 +1,201 @@
+{
+  "slug": "buffons-needle-oq-01-oq-04",
+  "title": "Buffon's Coin and Planar Convex Bodies",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For a planar convex body } K \\text{ dropped with random position and orientation onto parallel lines spaced } d \\text{ apart, prove } \\mathbb{E}[\\#\\text{ line crossings by } K] = \\operatorname{perimeter}(K)/(\\pi d)\\text{, or a Lean-suitable scoped variant.}",
+    "plain": "Extend the Buffon's needle/noodle formalization from one-dimensional curves to two-dimensional objects such as coins or convex bodies, relating expected line crossings to perimeter via Cauchy's mean-width formula.",
+    "whyMatters": [
+      "Connects the Buffon's Needle gallery chain to probability and integral geometry.",
+      "Bridges the Smooth Noodle and 3D Noodle variants with convex-body mean-width methods."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`buffons-needle` is identified as the foundational classical gallery result.",
+      "`buffons-needle-oq-01` is identified as the Buffon-Barbier C1-curve / Smooth Noodle branch.",
+      "`buffons-needle-oq-02` is identified as the 3D Buffon's Noodle parallel-planes branch."
+    ],
+    "open": [
+      "The 2D coin or convex-body generalization has empty local knowledge and no recorded research attempts.",
+      "Mathlib support for Crofton or Cauchy mean-width lemmas has not yet been surveyed.",
+      "The proof route remains undecided between discretizing into needles with linearity of expectation and formalizing Cauchy's perimeter/mean-width formula directly."
+    ],
+    "goal": "Scope and formalize the Buffon's coin / planar convex-body crossing expectation, centered on expected crossings = perimeter(K)/(pi*d), without assuming unavailable convex-geometry infrastructure."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-05T19:30:47-07:00",
+    "iteration": 1,
+    "focus": "Initial OBSERVE-stage understanding from the selection report; the concrete target is Buffon's coin / planar convex-body crossings.",
+    "blockers": [],
+    "nextAction": "Survey the related Buffon's Needle gallery proofs and check Mathlib for Crofton or Cauchy mean-width support before choosing a proof route.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Only selection-stage context is available locally. No proof attempts are recorded; the problem remains in OBSERVE with zero attempts.",
+    "builtItems": [],
+    "insights": [
+      "The selection report names the problem as generalizing Buffon's needle to Buffon's coin and other 2D objects.",
+      "The intended identity for a convex body K is expected crossings = perimeter(K)/(pi*d).",
+      "The problem is selected for domain diversity in probability and integral geometry, with significance 6/10 and tractability 6/10."
+    ],
+    "mathlibGaps": [
+      "Availability of Crofton's formula or Cauchy's mean-width formula in Mathlib is unknown.",
+      "Support needed for planar convex bodies, perimeter, random orientation, and expected crossing counts has not been assessed."
+    ],
+    "nextSteps": [
+      "Survey `buffons-needle-oq-01` and `buffons-needle-oq-02` for reusable measure-theoretic and integral-geometry infrastructure.",
+      "Search Mathlib around Haar measure and inner-product-space APIs for Crofton or Cauchy-adjacent lemmas.",
+      "Decide whether to attack the problem by discretization into needles plus linearity of expectation or by formalizing Cauchy's mean-width formula."
+    ],
+    "markdown": "# Knowledge Base: buffons-needle-oq-01-oq-04\n\n## Problem Understanding\n\nThe selection report names this as a generalization of Buffon's needle to Buffon's coin, 2D convex bodies, and beyond. The proposed target identity is that for a convex planar body K dropped with random position and orientation onto parallel lines spaced d apart, the expected number of line crossings is perimeter(K)/(pi*d).\n\n## Local Evidence\n\n`state.md` records the problem in OBSERVE phase with zero attempts, no active approach, and no blockers. `problem.md` and `knowledge.md` still contain only template text, so there is no local evidence of proof progress beyond selection-stage framing.\n\n## Related Gallery Chain\n\nThe selection report points to `buffons-needle` as the foundational classical result, `buffons-needle-oq-01` as the Buffon-Barbier C1-curve / Smooth Noodle branch, and `buffons-needle-oq-02` as the 3D Buffon's Noodle parallel-planes extension.\n\n## Open Technical Questions\n\nMathlib support for Crofton's formula or Cauchy's mean-width formula has not been surveyed. The first real decision is whether to reduce the body to many needle-like pieces and use linearity of expectation, or to formalize the perimeter/mean-width identity directly.\n"
+  },
+  "tags": [
+    "probability",
+    "integral-geometry",
+    "convex-geometry",
+    "measure-theory",
+    "buffons-needle"
+  ],
+  "relatedProofs": [
+    "buffons-needle",
+    "buffons-needle-oq-01",
+    "buffons-needle-oq-01-oq-01",
+    "buffons-needle-oq-01-oq-01-oq-01",
+    "buffons-needle-oq-01-oq-01-oq-04",
+    "buffons-needle-oq-01-oq-02",
+    "buffons-needle-oq-02",
+    "buffons-needle-oq-02-oq-01",
+    "buffons-needle-oq-02-oq-02",
+    "buffons-needle-oq-02-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-06T03:14:36.235Z",
+  "lastUpdate": "2026-04-12T21:07:23.995Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BuffonsNeedle.lean",
+      "filename": "BuffonsNeedle.lean",
+      "lineCount": 267,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedle.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01.lean",
+      "filename": "BuffonsNeedleOQ01.lean",
+      "lineCount": 251,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01.lean",
+      "filename": "BuffonsNeedleOQ01OQ01.lean",
+      "lineCount": 391,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01OQ01.lean",
+      "filename": "BuffonsNeedleOQ01OQ01OQ01.lean",
+      "lineCount": 224,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04.lean",
+      "filename": "BuffonsNeedleOQ01OQ01OQ04.lean",
+      "lineCount": 568,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ02.lean",
+      "filename": "BuffonsNeedleOQ01OQ02.lean",
+      "lineCount": 326,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02.lean",
+      "filename": "BuffonsNeedleOQ02.lean",
+      "lineCount": 263,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ01.lean",
+      "filename": "BuffonsNeedleOQ02OQ01.lean",
+      "lineCount": 310,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ02.lean",
+      "filename": "BuffonsNeedleOQ02OQ02.lean",
+      "lineCount": 377,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ03.lean",
+      "filename": "BuffonsNeedleOQ02OQ03.lean",
+      "lineCount": 285,
+      "theoremCount": 27,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ03.lean"
+    }
+  ]
+}

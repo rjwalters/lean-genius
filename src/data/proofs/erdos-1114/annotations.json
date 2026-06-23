@@ -1,0 +1,254 @@
+[
+  {
+    "id": "ann-e1114-header",
+    "proofId": "erdos-1114",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1114: Monotonicity of Critical Point Gaps**\n\nGiven a polynomial f whose roots are equally spaced (arithmetic progression), what can we say about the critical points of f'? Erdős conjectured that the gaps between consecutive critical points increase as we move outward from the center.\n\n**Key idea:** If f has roots at 0, 1, 2, 3, 4 (an AP with d=1), then f' has 4 critical points. The gaps between these critical points are smallest in the middle and largest at the edges.\n\n**Status:** PROVED by Bálint (1960). Lorch (1976) generalized to higher derivatives.",
+    "mathContext": "This connects polynomial root theory with derivative behavior. By Rolle's theorem, between any two consecutive roots of f there is a root of f'. The special structure of AP roots forces a monotonicity pattern on these critical point gaps.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rolle's theorem",
+      "polynomial derivatives",
+      "arithmetic progressions"
+    ],
+    "prerequisites": [
+      "polynomial algebra",
+      "real analysis",
+      "calculus"
+    ]
+  },
+  {
+    "id": "ann-e1114-imports",
+    "proofId": "erdos-1114",
+    "range": {
+      "startLine": 33,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "**Imports from Mathlib:**\n\n- `Polynomial.Basic` — Core polynomial type and operations\n- `Polynomial.Derivative` — Formal differentiation of polynomials\n- `Data.Real.Basic` — The real number field ℝ\n- `Analysis.Calculus.MeanValue` — Mean value theorem and Rolle's theorem",
+    "mathContext": "These imports provide the type Polynomial ℝ, polynomial evaluation, root predicates, and the analytical foundation (Rolle's theorem) needed for the formalization.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "polynomial algebra",
+      "real analysis"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "ann-e1114-aproots",
+    "proofId": "erdos-1114",
+    "range": {
+      "startLine": 44,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "IsAPRoots — Arithmetic Progression Roots",
+    "content": "**IsAPRoots** defines a sequence of roots forming an arithmetic progression.\n\nGiven n+1 roots indexed by Fin (n+1), they must satisfy:\n- The common difference d > 0\n- Each root is roots(i) = a₀ + i·d\n\nFor example, with a₀ = 1 and d = 2: roots are 1, 3, 5, 7, ... — equally spaced.",
+    "mathContext": "An arithmetic progression with first term a₀ and common difference d > 0 gives roots a₀, a₀+d, a₀+2d, ..., a₀+nd. The positivity of d ensures the roots are strictly increasing.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progressions",
+      "polynomial roots",
+      "Fin type"
+    ],
+    "prerequisites": [
+      "sequences and series",
+      "Lean 4 type theory",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "ann-e1114-hasaproots",
+    "proofId": "erdos-1114",
+    "range": {
+      "startLine": 51,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "HasAPRoots — Polynomial with AP Roots",
+    "content": "**HasAPRoots** connects a polynomial f to having arithmetic progression roots.\n\nRequires:\n1. Common difference d > 0\n2. f has degree exactly n\n3. Each a₀ + i·d is a root of f\n\nThis means f(x) = c·(x - a₀)(x - (a₀+d))···(x - (a₀+nd)) for some nonzero constant c.",
+    "mathContext": "A polynomial of degree n with n+1 roots (counting the AP structure) is fully determined up to a scalar multiple. The IsRoot predicate from Mathlib checks that f.eval(a₀ + i·d) = 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial degree",
+      "IsRoot",
+      "factored form"
+    ],
+    "prerequisites": [
+      "polynomial algebra",
+      "field theory",
+      "Lean 4 syntax"
+    ]
+  },
+  {
+    "id": "ann-e1114-rolle",
+    "proofId": "erdos-1114",
+    "range": {
+      "startLine": 64,
+      "endLine": 80
+    },
+    "type": "concept",
+    "title": "Rolle's Theorem Gives Critical Points",
+    "content": "**rolle_gives_critical_points** axiomatizes a consequence of Rolle's theorem.\n\nFor a polynomial with n+1 AP roots, f' has exactly n distinct real roots (critical points), and:\n- The critical points are strictly increasing: c(i) < c(j) when i < j\n- Each critical point lies between consecutive roots: a₀ + i·d < c(i) < a₀ + (i+1)·d\n\nThis is a standard application of Rolle's theorem: between any two consecutive roots of a differentiable function, there's a point where the derivative is zero.",
+    "mathContext": "Rolle's theorem states that if f is continuous on [a,b], differentiable on (a,b), and f(a) = f(b), then there exists c ∈ (a,b) with f'(c) = 0. Applied to consecutive roots of f, this gives one critical point in each inter-root interval.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rolle's theorem",
+      "critical points",
+      "intermediate value theorem"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "differential calculus",
+      "polynomial algebra"
+    ]
+  },
+  {
+    "id": "ann-e1114-gap",
+    "proofId": "erdos-1114",
+    "range": {
+      "startLine": 86,
+      "endLine": 91
+    },
+    "type": "definition",
+    "title": "Gap — Distance Between Consecutive Critical Points",
+    "content": "**Gap** measures the distance between consecutive critical points.\n\nGap(c, i) = c(i+1) - c(i)\n\nSince the critical points are strictly increasing, all gaps are positive. The main theorem concerns how these gaps vary as we move outward from the center.",
+    "mathContext": "The Gap function maps Fin(n-1) → ℝ since there are n-1 gaps between n critical points. The index arithmetic uses omega to verify the bounds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "consecutive differences",
+      "monotonicity",
+      "Fin arithmetic"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "Lean 4 type theory",
+      "order theory"
+    ]
+  },
+  {
+    "id": "ann-e1114-midpoint",
+    "proofId": "erdos-1114",
+    "range": {
+      "startLine": 93,
+      "endLine": 105
+    },
+    "type": "definition",
+    "title": "Midpoint and Distance from Midpoint",
+    "content": "**Midpoint** is the center of the root interval: m = a₀ + n·d/2.\n\n**DistFromMidpoint** measures how far each critical point is from this center: |c(i) - m|.\n\nThese definitions are essential for stating the main theorem: gaps increase as DistFromMidpoint increases.",
+    "mathContext": "For an arithmetic progression a₀, a₀+d, ..., a₀+nd, the midpoint is (a₀ + a₀+nd)/2 = a₀ + nd/2. By symmetry of the root configuration, the critical points are approximately symmetric about this midpoint.",
+    "significance": "key",
+    "relatedConcepts": [
+      "symmetry",
+      "absolute value",
+      "midpoint formula"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "Euclidean geometry",
+      "absolute value and metrics"
+    ]
+  },
+  {
+    "id": "ann-e1114-balint",
+    "proofId": "erdos-1114",
+    "range": {
+      "startLine": 111,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Bálint's Theorem (1960) — Main Result",
+    "content": "**balint_theorem** is the central result of Erdős Problem #1114.\n\nFor n ≥ 2 critical points with d > 0:\nIf critical point i is closer to the midpoint than critical point j (in terms of DistFromMidpoint), then Gap(i) < Gap(j).\n\n**In words:** The farther a critical point is from the center, the larger the gap to its neighbor. Gaps increase outward.",
+    "mathContext": "Bálint's proof exploits the symmetry of the polynomial f(x) = ∏(x - (a₀ + kd)). The logarithmic derivative f'/f = Σ 1/(x - (a₀+kd)) has convexity properties that force the critical points to be more tightly packed near the center.",
+    "significance": "key",
+    "relatedConcepts": [
+      "gap monotonicity",
+      "convexity",
+      "logarithmic derivative"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "complex analysis",
+      "convex analysis"
+    ]
+  },
+  {
+    "id": "ann-e1114-symmetric",
+    "proofId": "erdos-1114",
+    "range": {
+      "startLine": 130,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "Symmetric Formulation",
+    "content": "**balint_symmetric** gives an alternative formulation: the outermost gap is at least as large as the middle gap.\n\nFor n ≥ 3 critical points: Gap(0) ≥ Gap(n/2 - 1).\n\nThis captures the key implication: gaps at the endpoints dominate gaps at the center.",
+    "mathContext": "This is a corollary of the main theorem. Since c(0) is farthest from the midpoint (among the left-side critical points) and c(n/2-1) is closest, the gap ordering follows directly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "corollary",
+      "endpoint behavior",
+      "U-shape pattern"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "order theory",
+      "polynomial algebra"
+    ]
+  },
+  {
+    "id": "ann-e1114-quartic",
+    "proofId": "erdos-1114",
+    "range": {
+      "startLine": 144,
+      "endLine": 151
+    },
+    "type": "concept",
+    "title": "Quartic Case (n = 4)",
+    "content": "**quartic_gap_property** gives the explicit statement for the quartic case.\n\nWith 5 AP roots, f' has 4 critical points c₁ < c₂ < c₃ < c₄, giving 3 gaps:\n- g₁ = c₂ - c₁ (left outer)\n- g₂ = c₃ - c₂ (middle)\n- g₃ = c₄ - c₃ (right outer)\n\nResult: g₁ > g₂ AND g₃ > g₂ — both outer gaps exceed the middle gap.",
+    "mathContext": "The quartic case is the simplest non-trivial instance. With 4 critical points there are exactly 3 gaps, and the theorem reduces to showing the middle gap is the smallest.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "quartic polynomials",
+      "special cases",
+      "concrete verification"
+    ],
+    "prerequisites": [
+      "polynomial algebra",
+      "differential calculus",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-e1114-lorch",
+    "proofId": "erdos-1114",
+    "range": {
+      "startLine": 157,
+      "endLine": 167
+    },
+    "type": "concept",
+    "title": "Lorch's Generalization (1976)",
+    "content": "**lorch_higher_derivatives** extends Bálint's result to higher derivatives.\n\nFor the k-th derivative f⁽ᵏ⁾ (with k < n), the zeros also exhibit outward gap monotonicity. The axiom asserts existence of n-k ordered critical points of f⁽ᵏ⁾ with the same monotonicity property.\n\nThis shows the gap monotonicity pattern persists through repeated differentiation.",
+    "mathContext": "Lorch's 1976 paper generalized from f' to arbitrary f⁽ᵏ⁾. Since each differentiation reduces the number of zeros by one (by Rolle), f⁽ᵏ⁾ has n-k zeros, and the gap monotonicity continues to hold for each derivative level.",
+    "significance": "key",
+    "relatedConcepts": [
+      "higher derivatives",
+      "iterated Rolle",
+      "Lorch 1976"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "differential calculus",
+      "polynomial algebra"
+    ]
+  }
+]

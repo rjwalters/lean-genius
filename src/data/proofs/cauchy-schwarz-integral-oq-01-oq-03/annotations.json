@@ -1,0 +1,219 @@
+[
+  {
+    "id": "ann-cs-oq03-setup",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03",
+    "range": {
+      "startLine": 47,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Namespace and Variable Context",
+    "content": "The file opens `MeasureTheory`, `ENNReal`, `NNReal`, and `Real` namespaces to bring standard measure-theory and extended-real notation into scope. The `scoped InnerProductSpace` open makes inner product bracket notation `⟪·,·⟫` available. The single variable declaration `{α : Type*} [MeasurableSpace α] {μ : Measure α}` fixes a general measurable space that is shared across all theorems — avoiding repetition in each statement.",
+    "mathContext": "The ambient space $(\\alpha, \\mu)$ is a general measurable space with $\\sigma$-algebra and measure, not assumed to be $\\sigma$-finite or probability. All six theorems hold in this generality.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "measurable space",
+      "sigma-algebra",
+      "Borel measure",
+      "ENNReal"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "sigma-algebras",
+      "Lean 4 type class system"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-conjugate-pair",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03",
+    "range": {
+      "startLine": 72,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Hölder Conjugate Pair (p=2, q=2)",
+    "content": "This helper theorem establishes that the exponents $p = q = 2$ satisfy the Hölder conjugate condition $1/p + 1/q = 1$. It uses `Real.HolderConjugate.conjExponent` — the Mathlib API for conjugate exponents — and then identifies `conjExponent 2 = 2` by numerical computation. The result `holder_conj_2_2 : Real.HolderConjugate 2 2` is used as a witness in `cauchy_schwarz_complex_from_holder` to extract Cauchy-Schwarz as the $p = q = 2$ case of Hölder.",
+    "mathContext": "Hölder conjugate: $p$ and $q$ satisfy $\\frac{1}{p} + \\frac{1}{q} = 1$. For $p = q = 2$: $\\frac{1}{2} + \\frac{1}{2} = 1$. ✓",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hölder conjugate",
+      "conjugate exponents",
+      "Lp spaces"
+    ],
+    "prerequisites": [
+      "Hölder's inequality",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-main-theorem",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03",
+    "range": {
+      "startLine": 78,
+      "endLine": 98
+    },
+    "type": "insight",
+    "title": "The Core Theorem: Hölder for Any NormedField",
+    "content": "This is the mathematical heart of the file. `holder_normedField_lintegral` proves Hölder's inequality for functions taking values in *any* `NormedField 𝕜`, whether ℝ, ℂ, or any valued field. The proof has two steps: (1) rewrite `‖f(a)·g(a)‖₊` as `‖f(a)‖₊ · ‖g(a)‖₊` using `nnnorm_mul` — which holds because `NormedField` requires multiplicativity of the norm by definition; (2) apply `ENNReal.lintegral_mul_le_Lp_mul_Lq` to the resulting product of nnnorms. The entire proof is 5 lines, identical in structure to the real-only proof in `CauchySchwarzIntegralOQ01.lean` but now valid over any valued field.",
+    "mathContext": "$$\\int_\\alpha^- \\|f \\cdot g\\|_+ \\, d\\mu \\leq \\left(\\int_\\alpha^- \\|f\\|_+^p \\, d\\mu\\right)^{1/p} \\cdot \\left(\\int_\\alpha^- \\|g\\|_+^q \\, d\\mu\\right)^{1/q}$$ for $f, g : \\alpha \\to \\mathbb{k}$ where $\\mathbb{k}$ is any `NormedField`. The key step uses $\\|x \\cdot y\\|_+ = \\|x\\|_+ \\cdot \\|y\\|_+$ (nnnorm_mul).",
+    "significance": "key",
+    "relatedConcepts": [
+      "NormedField",
+      "nnnorm_mul",
+      "ENNReal Hölder",
+      "extended Lebesgue integral",
+      "Lp spaces"
+    ],
+    "prerequisites": [
+      "Hölder's inequality",
+      "measure theory",
+      "NormedField algebra",
+      "ENNReal arithmetic"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-nnnorm-pipeline",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03",
+    "range": {
+      "startLine": 91,
+      "endLine": 97
+    },
+    "type": "concept",
+    "title": "The nnnorm → NNReal → ENNReal Pipeline",
+    "content": "The coercion chain `‖f a‖₊ : ℝ≥0∞` converts the `NNReal`-valued nnnorm into an `ENNReal` value suitable for the Lebesgue integral. This is done via `ENNReal.coe_mul` and `nnnorm_mul`. The `simp_rw [hmul]` rewrites the integrand, and then `hf.nnnorm.coe_nnreal_ennreal` provides the `AEMeasurable` evidence that `a ↦ (‖f a‖₊ : ℝ≥0∞)` is measurable — required by `ENNReal.lintegral_mul_le_Lp_mul_Lq`.",
+    "mathContext": "$\\|f(a) \\cdot g(a)\\|_+ = \\|f(a)\\|_+ \\cdot \\|g(a)\\|_+$ where $\\|\\cdot\\|_+ : \\mathbb{k} \\to \\mathbb{R}_{\\geq 0}$ is the nnnorm. After coercion: $(\\|f(a)\\|_+ : \\mathbb{R}_{\\geq 0}^\\infty) \\cdot (\\|g(a)\\|_+ : \\mathbb{R}_{\\geq 0}^\\infty)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "NNReal",
+      "ENNReal",
+      "AEMeasurable",
+      "coercion",
+      "simp_rw"
+    ],
+    "prerequisites": [
+      "Lean 4 coercions",
+      "measure theory",
+      "non-negative reals"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-complex-corollary",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03",
+    "range": {
+      "startLine": 103,
+      "endLine": 113
+    },
+    "type": "insight",
+    "title": "Complex Hölder: A One-Line Corollary",
+    "content": "The theorem `holder_complex_lintegral` is the direct answer to the open question OQ-01-OQ-03. Its proof body is a single term: `holder_normedField_lintegral hpq hf hg` with `𝕜 = ℂ` inferred automatically. This brevity is mathematically honest — ℂ is a NormedField (a typeclass instance Mathlib provides), so the abstract theorem applies immediately. No new ideas, no new tactics: the complex case really is no harder than the real case once the right abstraction is chosen.",
+    "mathContext": "For $f, g : \\alpha \\to \\mathbb{C}$ and conjugate $(p, q)$: $$\\int^- \\|fg\\|_+ \\leq \\left(\\int^- \\|f\\|_+^p\\right)^{1/p} \\cdot \\left(\\int^- \\|g\\|_+^q\\right)^{1/q}$$ Proof: ℂ is a NormedField, so `holder_normedField_lintegral` applies directly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complex numbers",
+      "NormedField",
+      "typeclass inference",
+      "corollary"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "Hölder's inequality",
+      "NormedField typeclass"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-cauchy-schwarz-p2",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03",
+    "range": {
+      "startLine": 119,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Cauchy-Schwarz as the p=q=2 Case of Complex Hölder",
+    "content": "The Cauchy-Schwarz inequality is Hölder's inequality for the special exponent pair $p = q = 2$. Here `cauchy_schwarz_complex_from_holder` makes this explicit: it applies `holder_complex_lintegral` with the witness `holder_conj_2_2`. The resulting bound is $\\int^- \\|fg\\|_+ \\leq (\\int^- \\|f\\|_+^2)^{1/2} \\cdot (\\int^- \\|g\\|_+^2)^{1/2}$, which is Cauchy-Schwarz in the nnnorm/lintegral form for complex functions.",
+    "mathContext": "Cauchy-Schwarz: $$\\int_\\alpha^- \\|f \\cdot g\\|_+ \\, d\\mu \\leq \\left(\\int_\\alpha^- \\|f\\|_+^2 \\, d\\mu\\right)^{1/2} \\cdot \\left(\\int_\\alpha^- \\|g\\|_+^2 \\, d\\mu\\right)^{1/2}$$ This is Hölder with $p = q = 2$ and the Hölder conjugate condition $\\frac{1}{2} + \\frac{1}{2} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "Hölder's inequality",
+      "Lp spaces",
+      "p=q=2"
+    ],
+    "prerequisites": [
+      "Hölder's inequality",
+      "complex measure theory"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-l2-inner-product",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03",
+    "range": {
+      "startLine": 134,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "Cauchy-Schwarz in L² Inner Product Form",
+    "content": "These two theorems give Cauchy-Schwarz in the Hilbert space form $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$ for the complex L² space. The approach is entirely different from the Hölder route: it uses `norm_inner_le_norm` — a Mathlib theorem valid for any inner product space — directly. Since `Lp ℂ 2 μ` is automatically a complex inner product space via Mathlib's instance hierarchy, no manual work is needed. The second theorem `cauchy_schwarz_L2_complex_integral` bridges from the inner product `⟪f, g⟫_ℂ` to the explicit integral form using `L2.inner_def`.",
+    "mathContext": "For $f, g \\in L^2(\\mu, \\mathbb{C})$: $$|\\langle f, g \\rangle_{L^2}| \\leq \\|f\\|_{L^2} \\cdot \\|g\\|_{L^2}$$ where $\\langle f, g \\rangle_{L^2} = \\int \\langle f(a), g(a) \\rangle_{\\mathbb{C}} \\, d\\mu(a) = \\int \\overline{f(a)} \\cdot g(a) \\, d\\mu(a)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "L2 space",
+      "inner product space",
+      "Hilbert space",
+      "norm_inner_le_norm",
+      "Cauchy-Schwarz"
+    ],
+    "prerequisites": [
+      "Hilbert spaces",
+      "L2 spaces",
+      "complex inner products",
+      "Mathlib instance hierarchy"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-minkowski",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03",
+    "range": {
+      "startLine": 158,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "Minkowski's Inequality for Complex L²",
+    "content": "Minkowski's inequality (triangle inequality in Lp) for the complex L² space is immediate: since `Lp ℂ 2 μ` is a `NormedAddCommGroup`, `norm_add_le` gives $\\|f + g\\| \\leq \\|f\\| + \\|g\\|$. This is the limiting case of Minkowski's inequality (which in general requires Hölder). In L² it reduces to the basic norm triangle inequality, requiring no integration theory. The brevity of this proof illustrates how Mathlib's typeclass hierarchy encapsulates classical functional analysis.",
+    "mathContext": "Minkowski: $\\|f + g\\|_{L^2} \\leq \\|f\\|_{L^2} + \\|g\\|_{L^2}$. General Minkowski for $L^p$: $\\|f + g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$, proved via Hölder. For $L^2$: follows from the inner product space structure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Minkowski's inequality",
+      "triangle inequality",
+      "NormedAddCommGroup",
+      "L2 space"
+    ],
+    "prerequisites": [
+      "Lp spaces",
+      "normed groups",
+      "triangle inequality"
+    ]
+  },
+  {
+    "id": "ann-cs-oq03-real-corollary",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-03",
+    "range": {
+      "startLine": 169,
+      "endLine": 180
+    },
+    "type": "insight",
+    "title": "Real Hölder as a Special Case — Retroactive Generalization",
+    "content": "The final theorem recovers the real-valued Hölder inequality from OQ01 as a special case of the abstract NormedField result. This is mathematically significant: it shows that the OQ01 proof technique was already pointing toward the right abstraction. The proof is again one line (`holder_normedField_lintegral hpq hf hg` with `𝕜 = ℝ`), since ℝ is a NormedField. More broadly, this establishes a clean proof hierarchy: the NormedField theorem is the 'mother' theorem, with real and complex cases as immediate corollaries.",
+    "mathContext": "Since $\\mathbb{R}$ is a `NormedField` (with $\\|x \\cdot y\\| = |x| \\cdot |y|$), the abstract theorem gives: $$\\int^- \\|fg\\|_+ \\leq \\left(\\int^- \\|f\\|_+^p\\right)^{1/p} \\cdot \\left(\\int^- \\|g\\|_+^q\\right)^{1/q}$$ for $f, g : \\alpha \\to \\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "real analysis",
+      "NormedField",
+      "hierarchy of generalizations",
+      "retroactive abstraction"
+    ],
+    "prerequisites": [
+      "real Hölder inequality",
+      "NormedField typeclass"
+    ]
+  }
+]

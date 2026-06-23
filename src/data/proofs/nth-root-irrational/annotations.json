@@ -1,0 +1,204 @@
+[
+  {
+    "id": "ann-nrt-imports",
+    "proofId": "nth-root-irrational",
+    "range": {
+      "startLine": 8,
+      "endLine": 10
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "Three key imports: `Mathlib.NumberTheory.Real.Irrational` for `irrational_nrt_of_notint_nrt`, `Mathlib.Analysis.SpecialFunctions.Pow.Real` for real-valued power operations (`rpow`), and `Mathlib.Tactic` for proof automation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "rpow",
+      "irrational_nrt_of_notint_nrt"
+    ],
+    "mathContext": "See annotation content for formal details of mathlib imports",
+    "prerequisites": [
+      "Lean Mathlib Library",
+      "Irrational Numbers",
+      "Real Power Function"
+    ]
+  },
+  {
+    "id": "ann-nrt-def",
+    "proofId": "nth-root-irrational",
+    "range": {
+      "startLine": 50,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "The nth Root Function",
+    "content": "We define `nthRoot n m = m^(1/n)` as a real number using Lean's real-valued power (`rpow`). The function is `noncomputable` because real arithmetic is not constructive.",
+    "mathContext": "The definition uses `(m : \\mathbb{R})^{1/(n : \\mathbb{R})}`. For $n \\geq 1$ and $m \\geq 0$, this gives the unique non-negative real $n$-th root of $m$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rpow",
+      "noncomputable",
+      "nth root"
+    ],
+    "prerequisites": [
+      "Real rpow",
+      "nth Roots",
+      "Noncomputable Definitions"
+    ]
+  },
+  {
+    "id": "ann-nrt-pow",
+    "proofId": "nth-root-irrational",
+    "range": {
+      "startLine": 58,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Power Identity: (m^(1/n))^n = m",
+    "content": "The fundamental identity connecting the nth root back to the original value. The proof uses `rpow_natCast` to convert between natural number and real exponents, then `rpow_mul` to simplify $(m^{1/n})^n = m^{n/n} = m^1 = m$.",
+    "mathContext": "The key step is `rpow_mul`: $(m^a)^b = m^{ab}$ for $m \\geq 0$. Applied with $a = 1/n$ and $b = n$, we get $m^{(1/n) \\cdot n} = m^1 = m$. The `positivity` tactic proves $m \\geq 0$ automatically.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rpow_mul",
+      "rpow_natCast",
+      "positivity"
+    ],
+    "prerequisites": [
+      "Real Power Laws",
+      "Natural Cast Exponents",
+      "Positivity Tactic"
+    ]
+  },
+  {
+    "id": "ann-nrt-not-int",
+    "proofId": "nth-root-irrational",
+    "range": {
+      "startLine": 70,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Not-an-Integer Lemma",
+    "content": "If $m$ is not a perfect $n$-th power, then $m^{1/n}$ is not an integer. The proof is by contrapositive: if $m^{1/n} = k$ for some integer $k$, then raising both sides to the $n$-th power gives $k^n = m$, contradicting the hypothesis.",
+    "mathContext": "The `exact_mod_cast` tactic handles the coercion from $\\mathbb{R}$ to $\\mathbb{Z}$: since $(m^{1/n})^n = m$ in $\\mathbb{R}$ and $m^{1/n} = k \\in \\mathbb{Z}$, we get $k^n = m$ in $\\mathbb{Z}$.",
+    "significance": "key",
+    "prerequisites": [
+      "ann-nrt-pow"
+    ],
+    "relatedConcepts": [
+      "contrapositive",
+      "exact_mod_cast",
+      "coercion"
+    ]
+  },
+  {
+    "id": "ann-nrt-general",
+    "proofId": "nth-root-irrational",
+    "range": {
+      "startLine": 92,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "General Irrationality Theorem",
+    "content": "**The main result**: For $n \\geq 2$ and any $m$, if no integer $k$ satisfies $k^n = m$, then $m^{1/n}$ is irrational. This single theorem subsumes $\\sqrt{2}$, $\\sqrt{3}$, $\\sqrt[3]{2}$, $\\sqrt[4]{2}$, and infinitely more.",
+    "mathContext": "The proof applies `irrational_nrt_of_notint_nrt` from Mathlib, which states: if $x^n = m$ (power identity), $x \\notin \\mathbb{Z}$ (not-an-integer), and $n > 0$, then $x$ is irrational. Our two lemmas provide exactly these conditions.",
+    "significance": "key",
+    "prerequisites": [
+      "ann-nrt-pow",
+      "ann-nrt-not-int"
+    ],
+    "relatedConcepts": [
+      "irrational_nrt_of_notint_nrt",
+      "general theorem",
+      "subsumption"
+    ]
+  },
+  {
+    "id": "ann-nrt-cube-pattern",
+    "proofId": "nth-root-irrational",
+    "range": {
+      "startLine": 109,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Odd Power Bounds: 2 is Not a Perfect Cube",
+    "content": "For odd powers like cubes, the proof strategy is: (1) Show $k > 0$ since odd powers of non-positive integers are non-positive, contradicting $k^3 = 2 > 0$. (2) Show $k < 2$ since $2^3 = 8 > 2$. (3) Conclude $k = 1$, but $1^3 = 1 \\neq 2$.",
+    "mathContext": "The `nlinarith` tactic handles polynomial arithmetic after expanding $k^3 = k \\cdot k \\cdot k$ via `ring`. The expansion is necessary because `nlinarith` works with products but not directly with powers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "nlinarith",
+      "ring",
+      "bounds checking",
+      "interval analysis"
+    ],
+    "prerequisites": [
+      "Perfect Powers",
+      "Integer Bounds",
+      "nlinarith Tactic"
+    ]
+  },
+  {
+    "id": "ann-nrt-sq-pattern",
+    "proofId": "nth-root-irrational",
+    "range": {
+      "startLine": 164,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Even Power Bounds: 2 is Not a Perfect Square",
+    "content": "For even powers, we use `Int.natAbs_sq` to convert from $\\mathbb{Z}$ to $\\mathbb{N}$. Since $(|k|)^2 = k^2$ always, we get $(|k|)^2 = 2$ in $\\mathbb{N}$. Then: $|k| \\leq 1$ since $2^2 = 4 > 2$, and `interval_cases` checks $|k| \\in \\{0, 1\\}$.",
+    "mathContext": "The key insight: for even powers, $k^n = |k|^n$, so we can work in $\\mathbb{N}$ where bounds are simpler. `Int.natAbs_sq` provides this bridge. The `interval_cases` tactic exhaustively checks all natural numbers in the bounded range.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Int.natAbs_sq",
+      "interval_cases",
+      "omega",
+      "natAbs reduction"
+    ],
+    "prerequisites": [
+      "Absolute Value Squaring",
+      "interval_cases Tactic",
+      "Natural Number Coercion"
+    ]
+  },
+  {
+    "id": "ann-nrt-corollaries",
+    "proofId": "nth-root-irrational",
+    "range": {
+      "startLine": 232,
+      "endLine": 275
+    },
+    "type": "concept",
+    "title": "Concrete Corollaries",
+    "content": "Each specific irrationality result is a one-line application of the general theorem: `irrational_nthRoot n m (by norm_num) <not_perfect_power_proof>`. The pattern is completely uniform across square roots, cube roots, fourth roots, and fifth roots.",
+    "significance": "supporting",
+    "prerequisites": [
+      "ann-nrt-general"
+    ],
+    "relatedConcepts": [
+      "norm_num",
+      "one-line proof",
+      "uniform pattern"
+    ],
+    "mathContext": "See annotation content for formal details of concrete corollaries"
+  },
+  {
+    "id": "ann-nrt-converse",
+    "proofId": "nth-root-irrational",
+    "range": {
+      "startLine": 277,
+      "endLine": 293
+    },
+    "type": "concept",
+    "title": "Converse: Perfect Powers Have Integer Roots",
+    "content": "For completeness, we prove that if $m = k^n$, then $m^{1/n} = k$. Combined with the main theorem, this gives the full characterization: $m^{1/n} \\in \\mathbb{Q}$ if and only if $m$ is a perfect $n$-th power.",
+    "mathContext": "The proof mirrors the forward direction: unfold, use `Nat.cast_pow` and `rpow_mul`, then simplify. The examples verify $\\sqrt{4} = 2$, $\\sqrt[3]{8} = 2$, $\\sqrt[3]{27} = 3$, $\\sqrt[4]{16} = 2$.",
+    "significance": "key",
+    "prerequisites": [
+      "ann-nrt-general"
+    ],
+    "relatedConcepts": [
+      "characterization",
+      "converse",
+      "if and only if"
+    ]
+  }
+]

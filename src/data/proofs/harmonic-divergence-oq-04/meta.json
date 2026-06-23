@@ -1,0 +1,167 @@
+{
+  "id": "harmonic-divergence-oq-04",
+  "title": "Generalizing Oresme: The Cauchy Condensation Test",
+  "slug": "harmonic-divergence-oq-04",
+  "description": "The Cauchy condensation test completely characterizes convergence/divergence for monotone decreasing nonneg sequences, generalizing Oresme's 14th-century grouping argument for the harmonic series.",
+  "meta": {
+    "author": "Cauchy (1821), Oresme (~1350)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HarmonicDivergenceOQ04.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "divergence",
+      "convergence",
+      "condensation-test",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-03-29",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "summable_condensed_iff_of_nonneg",
+        "description": "Cauchy condensation test for nonneg real sequences",
+        "module": "Mathlib.Analysis.PSeries"
+      },
+      {
+        "theorem": "not_summable_const_of_ne_zero",
+        "description": "Constant nonzero sequence is not summable",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "not_summable_one_div_natCast",
+        "description": "Harmonic series diverges",
+        "module": "Mathlib.Analysis.PSeries"
+      }
+    ],
+    "originalContributions": [
+      "cauchy_condensation_test: wrapped Mathlib iff for Summable f ↔ Summable condensed",
+      "cauchy_condensation_diverges: contrapositive form for divergence",
+      "one_div_antitone: 1/n is antitone for positive n",
+      "condensed_harmonic_diverges: Σ 2^k/2^k = Σ 1 diverges",
+      "oresme_via_condensation: Oresme's result as condensation special case",
+      "condensation_iff_summable: the complete characterization statement"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries.",
+    "lineCount": 106,
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Nicole Oresme (~1350) proved the harmonic series diverges by grouping terms: the second group contains 1/3+1/4 ≥ 1/2, the third has 1/5+...+1/8 ≥ 1/2, and each subsequent group of 2^k consecutive terms sums to at least 1/2 — so the total exceeds arbitrarily large multiples of 1/2. Oresme published this in 'Quaestiones super geometriam Euclidis', making it the oldest known proof of divergence of a series. Augustin-Louis Cauchy (1821) recognized this grouping as a general principle in his landmark 'Cours d'analyse de l'École Royale Polytechnique': for any nonneg antitone sequence f, the partial sums Σ f(n) grow without bound if and only if the condensed sums Σ 2^k·f(2^k) do. This transforms Oresme's ad hoc grouping into an exact biconditional characterization valid for p-series, logarithmic series, and entire hierarchies of borderline convergence rates.",
+    "problemStatement": "Can Oresme's grouping argument be generalized to characterize all divergent series with terms decreasing to zero?\n\n**Answer: Yes.** The Cauchy condensation test provides a complete biconditional characterization.",
+    "text": "The Cauchy condensation test generalizes Oresme's grouping argument to a complete characterization of convergence for monotone decreasing nonneg sequences.",
+    "proofStrategy": "1. Wrap Mathlib's `summable_condensed_iff_of_nonneg` as the Cauchy condensation test.\n2. Show Oresme's harmonic divergence follows: f(n)=1/n gives condensed series Σ 2^k/2^k = Σ 1, which diverges.\n3. Verify concordance with Mathlib's direct `not_summable_one_div_natCast`.",
+    "keyInsights": [
+      "**Oresme = Condensation**: Oresme's grouping is exactly the condensation test for f(n)=1/n. The condensed series Σ 2^k·(1/2^k) = Σ 1 trivially diverges.",
+      "**Complete Characterization**: The condensation test is an exact biconditional, not just a sufficient condition. Any nonneg antitone sequence can be tested this way.",
+      "**Broad Applications**: Applies to p-series (1/n^p), log-harmonic (1/(n log n)), iterated logarithms, and all other monotone decreasing sequences.",
+      "**Simplification Power**: Reduces subtle convergence questions to checking geometric-type series.",
+      "**Mathlib Concordance**: The proof cross-checks two independent Mathlib paths to the same result: `oresme_via_condensation` (via the condensation test) and `harmonic_diverges_mathlib` (Mathlib's `not_summable_one_div_natCast`). Both conclude Σ 1/n diverges, and the Lean type-checker verifies they agree — a machine-checked consistency proof that formal duplicates catch errors in either direction."
+    ],
+    "prerequisites": [
+      "Real analysis (series convergence)",
+      "Basic topology (summability, limits)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Minimal Dependencies",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Imports only Mathlib.Analysis.PSeries and Mathlib.Topology.Algebra.InfiniteSum.Basic, reflecting the minimal footprint of the condensation-test approach. Opens Finset, Filter, Topology, BigOperators, Real.",
+      "mathContext": "The two imports supply exactly three Mathlib theorems used in the proof: `summable_condensed_iff_of_nonneg`, `not_summable_one_div_natCast`, and `not_summable_const_of_ne_zero`."
+    },
+    {
+      "id": "condensation-biconditional",
+      "title": "The Cauchy Condensation Test",
+      "startLine": 27,
+      "endLine": 51,
+      "summary": "States the Cauchy condensation test: Summable f ↔ Summable (2^k · f(2^k)) for nonneg antitone f. Includes contrapositive form for divergence.",
+      "mathContext": "For $f : \\mathbb{N} \\to \\mathbb{R}$ with $f \\geq 0$ and $f$ antitone on positives: $\\sum f(n)$ converges $\\iff$ $\\sum 2^k f(2^k)$ converges."
+    },
+    {
+      "id": "monotone-prerequisites",
+      "title": "Helper Lemmas: Nonnegativity and Antitonicity",
+      "startLine": 53,
+      "endLine": 75,
+      "summary": "Proves one_div_nonneg_nat (1/n ≥ 0), one_div_antitone (m ≤ n → 1/n ≤ 1/m for positive m), and condensed_harmonic_diverges (Σ 2^k/2^k = Σ 1 diverges via field_simp + not_summable_const_of_ne_zero).",
+      "mathContext": "The antitonicity of $1/n$: $m \\leq n \\Rightarrow 1/n \\leq 1/m$ for $m > 0$. Proved via `div_le_div_iff` then `Nat.cast_le`. The condensed simplification: $2^k \\cdot (1/2^k) = 1$ by `field_simp`."
+    },
+    {
+      "id": "oresme-derivation",
+      "title": "Oresme's Divergence via Condensation",
+      "startLine": 76,
+      "endLine": 87,
+      "summary": "oresme_via_condensation derives harmonic divergence via the condensation test. harmonic_diverges_mathlib cross-checks with Mathlib's independent not_summable_one_div_natCast.",
+      "mathContext": "Chain: $1/n \\geq 0$ (antitone) + condensed series = $\\sum 1$ (diverges) $\\Rightarrow \\sum 1/n$ diverges. Mathlib's `not_summable_one_div_natCast` independently confirms the same conclusion."
+    },
+    {
+      "id": "characterization-applications",
+      "title": "Complete Characterization and Applications",
+      "startLine": 88,
+      "endLine": 106,
+      "summary": "condensation_iff_summable restates the test as an exact biconditional for the general case. Documents applications to p-series, log-harmonic (1/(n log n)), and iterated logarithm hierarchies.",
+      "mathContext": "p-series: condensed of $1/n^p$ is $\\sum 2^{k(1-p)}$, geometric ratio $2^{1-p}$, converges iff $p > 1$. Log-harmonic: condensed of $1/(n \\log n)$ is $\\sum 1/k$ (harmonic, diverges). Iterated logs give a complete convergence hierarchy."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Oresme, Nicole",
+      "title": "Quaestiones super geometriam Euclidis",
+      "year": "~1350",
+      "note": "First proof of harmonic series divergence via grouping argument"
+    },
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Cours d'analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "note": "Generalization to the condensation test for monotone sequences"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "generalizes",
+      "description": "Generalizes Oresme's harmonic divergence proof to a complete characterization via condensation"
+    },
+    {
+      "targetId": "harmonic-divergence-oq-01",
+      "relationship": "sibling",
+      "description": "Both explore extensions of harmonic series theory: OQ-01 studies the Euler-Mascheroni constant, OQ-04 studies the generalized condensation test"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Cauchy condensation test completely answers OQ-04: Oresme's grouping argument generalizes to an exact biconditional characterization of convergence for all monotone decreasing nonneg sequences. The formalization wraps Mathlib's condensation test and demonstrates Oresme's result as a special case.",
+    "implications": "Any convergence question about monotone decreasing nonneg sequences reduces to checking the condensed series Σ 2^k·f(2^k), which is typically simpler to analyze.",
+    "openQuestions": [
+      "Can the condensation test be extended to non-monotone sequences with controlled oscillation?",
+      "What is the optimal rate of convergence for condensation approximation of partial sums?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "BigOperators",
+      "Topology",
+      "Real"
+    ],
+    "namespace": "HarmonicDivergenceOQ04",
+    "lineCount": 106,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/HarmonicDivergenceOQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

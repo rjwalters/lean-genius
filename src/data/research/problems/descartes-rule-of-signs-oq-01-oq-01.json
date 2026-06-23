@@ -1,0 +1,170 @@
+{
+  "slug": "descartes-rule-of-signs-oq-01-oq-01",
+  "title": "Can the parity result be proved using Mathlib's existing complex root theory ...",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-29T01:17:00Z",
+    "iteration": 1,
+    "focus": "Complex root theory approach to Descartes parity",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 10 theorems, 0 axioms. Conjugate root theorem, non-real pairing, parity connection. Factoring approach more direct.",
+    "builtItems": [
+      "eval_conj_eq_conj_eval: p(z̄) = p̄(z) for real polynomials",
+      "isRoot_conj_of_isRoot: conjugate root theorem",
+      "nonreal_roots_paired: non-real roots come in pairs",
+      "parity_of_real_roots: real root count parity = degree parity",
+      "cubic/quartic_real_root_parity: concrete examples"
+    ],
+    "insights": [
+      "Conjugate root theorem commutes evaluation with conjugation",
+      "Non-real roots pair up → even count → parity preserved",
+      "Complex approach is pedagogically clear but factoring is more direct for Lean",
+      "Existing proof in OQ01 already solves this via factoring out X^m"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": ""
+  },
+  "tags": [],
+  "relatedProofs": [
+    "descartes-rule-of-signs",
+    "descartes-rule-of-signs-oq-01",
+    "descartes-rule-of-signs-oq-01-oq-01",
+    "descartes-rule-of-signs-oq-01-oq-02",
+    "descartes-rule-of-signs-oq-02",
+    "descartes-rule-of-signs-oq-02-oq-01",
+    "descartes-rule-of-signs-oq-02-oq-01-oq-02",
+    "descartes-rule-of-signs-oq-03",
+    "descartes-rule-of-signs-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T22:57:01.595Z",
+  "lastUpdate": "2026-06-14T01:14:16Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/DescartesRuleOfSigns.lean",
+      "filename": "DescartesRuleOfSigns.lean",
+      "lineCount": 577,
+      "theoremCount": 35,
+      "axiomCount": 8,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSigns.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ01.lean",
+      "lineCount": 1075,
+      "theoremCount": 30,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ01.lean",
+      "lineCount": 155,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ02.lean",
+      "lineCount": 272,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ02.lean",
+      "lineCount": 699,
+      "theoremCount": 30,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02OQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ02OQ01.lean",
+      "lineCount": 240,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ02OQ01OQ02.lean",
+      "lineCount": 459,
+      "theoremCount": 26,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ03.lean",
+      "filename": "DescartesRuleOfSignsOQ03.lean",
+      "lineCount": 441,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ03.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ04.lean",
+      "filename": "DescartesRuleOfSignsOQ04.lean",
+      "lineCount": 496,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ04.lean"
+    }
+  ]
+}

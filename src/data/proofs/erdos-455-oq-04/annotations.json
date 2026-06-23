@@ -1,0 +1,269 @@
+[
+  {
+    "id": "ann-erdos-455-oq-04-has-ap-gaps",
+    "proofId": "erdos-455-oq-04",
+    "range": {
+      "startLine": 50,
+      "endLine": 54
+    },
+    "type": "concept",
+    "title": "HasAPGaps: Signed Second-Difference Equals d",
+    "content": "The predicate `HasAPGaps (q : ℕ → ℕ) (d : ℤ)` captures sequences whose signed second-difference is constantly d. Specifically, for every n ∈ ℕ, the ℤ-valued expression q(n+2) - 2·q(n+1) + q(n) equals d. This is the discrete-derivative analog of 'second derivative equals d': if Δq(n) := q(n+1) - q(n), then Δ(Δq)(n) = q(n+2) - 2q(n+1) + q(n) = d, so the first-differences themselves form an arithmetic progression with common difference d. Special cases: d = 0 ⟺ q is arithmetic (linear in n); d > 0 ⟺ q is super-linear with quadratic growth Θ(n²·d/2).",
+    "mathContext": "$\\text{HasAPGaps}\\,q\\,d \\iff \\forall n \\in \\mathbb{N},\\ (q(n+2) - 2 q(n+1) + q(n))_{\\mathbb{Z}} = d$. The ℕ→ℤ coercion is necessary because $d$ can be negative and the binary subtractions are not closed in $\\mathbb{N}$. Equivalent reformulation: $\\Delta^2 q = d$ where $\\Delta$ is the forward-difference operator. Closed-form: $q(n) = q(0) + n \\Delta q(0) + \\binom{n}{2} d$, exhibiting the quadratic growth in the d > 0 regime.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "discrete-derivative",
+      "second-difference operator",
+      "arithmetic progression",
+      "quadratic-growth sequences",
+      "ℕ to ℤ coercion"
+    ],
+    "prerequisites": [
+      "Elementary arithmetic on ℕ and ℤ",
+      "Discrete-derivative / forward-difference operator $\\Delta q(n) = q(n+1) - q(n)$",
+      "Subtraction on ℕ is truncated — motivates the ℤ coercion in the signed second-difference",
+      "Lean 4 `Prop`-valued universal definitions"
+    ]
+  },
+  {
+    "id": "ann-erdos-455-oq-04-ap-gap-prime-seq",
+    "proofId": "erdos-455-oq-04",
+    "range": {
+      "startLine": 56,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "APGapPrimeSeq: Strictly Monotone All-Prime AP-Gap Sequences",
+    "content": "The structure `APGapPrimeSeq (d : ℤ)` bundles three pieces of data: a sequence `seq : ℕ → ℕ`, a `StrictMono` proof of strict monotonicity, an `allPrime` proof that every term is a Nat.Prime, and an `apGaps` proof of `HasAPGaps seq d`. This is the **infinite-length** version — distinct from the bridge theorems' **finite-length** prime prefixes (which use existential statements like `∀ n < k, (q n).Prime` rather than full `∀ n`). For d = 0, `APGapPrimeSeq 0` is **not instantiable** (a strictly-increasing arithmetic progression in ℕ can have at most finitely many prime terms by density arguments). For d > 0, instantiability is conjectural and tied to Bunyakovsky's conjecture.",
+    "mathContext": "$\\text{APGapPrimeSeq}\\,d = \\{\\text{StrictMono}\\,q\\} \\times \\{\\forall n, \\text{Nat.Prime}\\,(q\\,n)\\} \\times \\{\\text{HasAPGaps}\\,q\\,d\\}$. Non-instantiability for $d = 0$: a linear sequence $q(n) = a + n g$ with $g > 0$ has prime values at finitely many $n$ by the density of primes; specifically, $q(n) = a + ng$ is divisible by $a + (a \\bmod g) g / \\gcd(a, g)$ at infinitely many places, hitting composites. Instantiability for $d > 0$ would imply a quadratic polynomial $f(n) = f_0 + f_1 n + \\frac{d}{2} n^2$ is prime for **all** $n \\in \\mathbb{N}$ — strictly stronger than Bunyakovsky (which only asks for prime values at infinitely many $n$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite vs finite prime prefixes",
+      "structure type in Lean 4",
+      "Bunyakovsky conjecture",
+      "density of primes",
+      "Heegner / Stark-Baker class number 1"
+    ],
+    "prerequisites": [
+      "Lean 4 `structure` declarations and projection accessors",
+      "Mathlib `StrictMono` (strictly-increasing functions on `ℕ`)",
+      "Mathlib `Nat.Prime` primality predicate",
+      "Bundle / record types vs proposition types in dependent type theory",
+      "Awareness that a non-constant arithmetic progression in ℕ cannot contain only primes (Dirichlet density argument)"
+    ]
+  },
+  {
+    "id": "ann-erdos-455-oq-04-euler-poly",
+    "proofId": "erdos-455-oq-04",
+    "range": {
+      "startLine": 63,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Euler's Prime-Generating Polynomial",
+    "content": "Defines `eulerPoly : ℕ → ℕ` as `n ↦ n² + n + 41` — the 254-year-old prime-generating polynomial Euler observed (1772) produces 40 consecutive primes 41, 43, 47, 53, 61, 71, 83, …, 1601 for n ∈ {0, 1, …, 39}. This remains the record for prime-prefix length over quadratic polynomials with second-difference 2 (the d = 2 record). Heuristic explanation: $n^2 + n + 41 \\equiv 0 \\pmod{p}$ has solutions iff the discriminant $1 - 4 \\cdot 41 = -163$ is a quadratic residue mod $p$; since $\\mathbb{Q}(\\sqrt{-163})$ has class number 1 (Heegner-Stark-Baker), the local densities of small prime divisors are minimized, leading to many prime values in a row.",
+    "mathContext": "Euler's polynomial $f(n) = n^2 + n + 41$ has discriminant $\\Delta = 1 - 4 \\cdot 41 = -163$. The class number $h(-163) = 1$ (one of only nine class-1 imaginary-quadratic fields: $\\mathbb{Q}(\\sqrt{-d})$ for $d \\in \\{1, 2, 3, 7, 11, 19, 43, 67, 163\\}$ — the Heegner numbers). Class number 1 minimizes the small-prime obstruction: for $p < \\sqrt{163}/2 \\approx 6.39$, $-163$ is a non-residue mod $p$ for $p \\in \\{3, 5\\}$, so $f(n) \\not\\equiv 0 \\pmod p$ for those small primes, preventing many small-prime divisors. The shift $n \\mapsto n - 40$ yields $f(n - 40) = n^2 - 79 n + 1601$, an equivalent length-40 record by translation symmetry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Heegner numbers",
+      "class number of imaginary-quadratic fields",
+      "quadratic residues and prime-density obstructions",
+      "Hardy-Littlewood Conjecture F",
+      "Bunyakovsky conjecture"
+    ],
+    "prerequisites": [
+      "Quadratic polynomials over ℤ and their value tables",
+      "Discriminant of a quadratic ($b^2 - 4ac$) and its sign",
+      "Quadratic residues mod $p$ and the Legendre symbol",
+      "(Optional) Heegner-Stark-Baker theorem: only nine class-number-1 imaginary quadratic fields",
+      "`Nat.Prime` decidability for explicit small naturals"
+    ]
+  },
+  {
+    "id": "ann-erdos-455-oq-04-euler-has-ap-gaps",
+    "proofId": "erdos-455-oq-04",
+    "range": {
+      "startLine": 67,
+      "endLine": 73
+    },
+    "type": "tactic",
+    "title": "Euler Polynomial AP-Gap Verification: push_cast + ring",
+    "content": "The proof of `eulerPoly_hasAPGaps : HasAPGaps eulerPoly 2` is dispatched in four tactic lines: `intro n`, `unfold eulerPoly`, `push_cast`, `ring`. The `push_cast` tactic pushes ℕ→ℤ coercions through arithmetic operations (transforming `((n+2)^2 + (n+2) + 41 : ℤ) - 2 * ((n+1)^2 + (n+1) + 41 : ℤ) + (n^2 + n + 41 : ℤ)` into a ℤ-polynomial after casts are normalized), and `ring` decides the resulting integer-polynomial equality (the LHS simplifies to 2, matching the RHS of `HasAPGaps eulerPoly 2`). No new lemmas are introduced; the proof reduces entirely to commutative-ring arithmetic.",
+    "mathContext": "Computation: $f(n+2) - 2 f(n+1) + f(n)$ where $f(n) = n^2 + n + 41$ gives $(n+2)^2 + (n+2) + 41 - 2((n+1)^2 + (n+1) + 41) + (n^2 + n + 41) = (n^2 + 4n + 4 + n + 2 + 41) - 2(n^2 + 2n + 1 + n + 1 + 41) + n^2 + n + 41 = (n^2 + 5n + 47) - (2 n^2 + 6 n + 86) + (n^2 + n + 41) = (n^2 - 2 n^2 + n^2) + (5n - 6n + n) + (47 - 86 + 41) = 0 + 0 + 2 = 2$. The `ring` tactic discharges this collapse-to-constant step automatically.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "push_cast tactic",
+      "ring tactic",
+      "ℕ to ℤ coercion",
+      "polynomial identities in commutative rings",
+      "second-difference of quadratics"
+    ],
+    "prerequisites": [
+      "Lean 4 tactic mode and the `unfold`/`intro` tactics",
+      "`push_cast` semantics: rewriting `((x : ℕ) : ℤ)` patterns inside arithmetic expressions",
+      "`ring` decision procedure on `CommRing` and `CommSemiring`",
+      "Closure of ℤ under subtraction (motivates choosing ℤ over ℕ for the goal)"
+    ]
+  },
+  {
+    "id": "ann-erdos-455-oq-04-length-40-witness",
+    "proofId": "erdos-455-oq-04",
+    "range": {
+      "startLine": 75,
+      "endLine": 81
+    },
+    "type": "tactic",
+    "title": "Length-40 Prime Prefix: interval_cases + native_decide",
+    "content": "The theorem `exists_length40_apGapPrimeSeq` packages Euler's 40 consecutive primes as a `∃ q : ℕ → ℕ, HasAPGaps q 2 ∧ ∀ n < 40, (q n).Prime` witness. The proof: refine with `⟨eulerPoly, eulerPoly_hasAPGaps, ?_⟩` discharges the existential and the AP-gap clause; the remaining goal `∀ n < 40, (eulerPoly n).Prime` is dispatched by `interval_cases n` (case-splits on the 40 values $n = 0, 1, \\ldots, 39$) followed by `<;> (unfold eulerPoly; native_decide)` (each branch unfolds and runs a primality test on the literal value, e.g., `Nat.Prime 41`, `Nat.Prime 43`, ..., `Nat.Prime 1601`). `native_decide` compiles the decidability witness to native code for fast verification.",
+    "mathContext": "The forty consecutive prime values: $f(0) = 41$, $f(1) = 43$, $f(2) = 47$, $f(3) = 53$, $f(4) = 61$, $f(5) = 71$, $f(6) = 83$, $f(7) = 97$, $f(8) = 113$, $f(9) = 131$, $f(10) = 151$, $f(11) = 173$, $f(12) = 197$, $f(13) = 223$, $f(14) = 251$, $f(15) = 281$, $f(16) = 313$, $f(17) = 347$, $f(18) = 383$, $f(19) = 421$, $f(20) = 461$, $f(21) = 503$, $f(22) = 547$, $f(23) = 593$, $f(24) = 641$, $f(25) = 691$, $f(26) = 743$, $f(27) = 797$, $f(28) = 853$, $f(29) = 911$, $f(30) = 971$, $f(31) = 1033$, $f(32) = 1097$, $f(33) = 1163$, $f(34) = 1231$, $f(35) = 1301$, $f(36) = 1373$, $f(37) = 1447$, $f(38) = 1523$, $f(39) = 1601$. Note $f(40) = 1681 = 41^2$, where the prime-prefix breaks (since $40^2 + 40 + 41 = 41 \\cdot 41$). The break at $n = 41$ is even more dramatic: $f(41) = 41^2 + 41 + 41 = 41 \\cdot 43$, also composite.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval_cases tactic",
+      "native_decide tactic",
+      "Nat.Prime decidability",
+      "computational verification",
+      "Euler's polynomial breakdown at n = 40"
+    ],
+    "prerequisites": [
+      "`interval_cases n` tactic — case-splits a bounded `ℕ` into a finite list of literal subgoals",
+      "`native_decide` tactic — discharges decidable propositions by compiling to native code (faster than `decide` on large terms)",
+      "`Decidable (Nat.Prime n)` instance for explicit literal naturals",
+      "`refine ⟨_, _, ?_⟩` anonymous constructor with placeholder for residual goal"
+    ]
+  },
+  {
+    "id": "ann-erdos-455-oq-04-green-tao-axiom",
+    "proofId": "erdos-455-oq-04",
+    "range": {
+      "startLine": 83,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Green-Tao Theorem (2008): Axiomatized for d = 0",
+    "content": "The axiom `greenTao_finitary : ∀ k, ∃ a g, 0 < g ∧ ∀ n < k, Nat.Prime (a + n·g)` encodes Green-Tao 2008 in its finitary form: for every length k, there exist k primes in arithmetic progression with positive common difference. This is a **proved theorem** (Green-Tao earned Tao the 2006 Fields Medal en route to its 2008 Annals publication), but Mathlib v4.26.0 does not yet contain the ~30-page formalization. The axiomatization is **provenance-preserving**: explicitly named with citation in the docstring, and accompanied by a sorry-free, axiom-free k = 5 cross-check witness `exists_apGap_zero_length_5_witness` (the AP 5, 11, 17, 23, 29) for sanity.",
+    "mathContext": "**Green-Tao 2008**: $\\forall k \\geq 1,\\ \\exists\\,a, g \\in \\mathbb{N}_{>0}\\ \\text{such that}\\ a, a + g, a + 2g, \\ldots, a + (k-1) g\\ \\text{are all prime}$. Proof structure (Annals of Math 167(2), 481-547): (1) **Szemerédi's theorem** (1975): every set of positive upper density in $\\mathbb{N}$ contains arbitrarily long APs. (2) **Transference principle** (Green-Tao 2008): every set of positive **relative** density in a 'sufficiently pseudorandom' majorant inherits Szemerédi's conclusion. (3) **Goldston-Yıldırım sieve** (2005): the primes have positive relative density in a sufficiently pseudorandom majorant (the GY 'almost-prime' weight). Combining (1)+(2)+(3) gives Green-Tao for the primes. **Mathlib status (v4.26.0)**: Szemerédi 1975 is not formalized; the transference principle is not formalized; the GY sieve is not formalized. Mathlib has **Dirichlet's theorem** (`Mathlib/NumberTheory/LSeries/PrimesInAP.lean`) — infinitely many primes in a residue class — but this is qualitatively much weaker.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Green-Tao theorem (2008)",
+      "Szemerédi's theorem (1975)",
+      "transference principle",
+      "Goldston-Yıldırım sieve",
+      "Dirichlet's theorem on primes in AP",
+      "axiom integrity policy"
+    ],
+    "prerequisites": [
+      "Definition of an arithmetic progression $a, a+g, a+2g, \\ldots$ in ℕ",
+      "Concept of an axiom in Lean 4 (`axiom` declaration introduces an unproved constant)",
+      "Awareness of Mathlib's coverage frontier — what is and is not formalized at v4.26.0",
+      "(Optional) Sketch of the Green-Tao 2008 proof structure (Szemerédi + transference + GY sieve)",
+      "Project axiom-integrity policy: every `axiom` must cite its provenance and be tracked in `meta.axiomCount`"
+    ]
+  },
+  {
+    "id": "ann-erdos-455-oq-04-green-tao-bridge",
+    "proofId": "erdos-455-oq-04",
+    "range": {
+      "startLine": 103,
+      "endLine": 114
+    },
+    "type": "tactic",
+    "title": "Green-Tao Bridge: obtain + push_cast + ring",
+    "content": "The bridge theorem `exists_apGap_zero_of_length (k : ℕ) : ∃ q : ℕ → ℕ, HasAPGaps q 0 ∧ ∀ n < k, (q n).Prime` connects `greenTao_finitary` to the slug's `HasAPGaps` predicate. Proof: `obtain ⟨a, g, _hg, hp⟩ := greenTao_finitary k` unpacks the axiom's triple `(a, g, primality)`, then refine the sequence `fun n => a + n·g` as the witness, with `hp` discharging primality. The `HasAPGaps q 0` clause is dispatched in two lines: `intro n; push_cast; ring` — the second-difference of a linear sequence is identically zero, which `ring` decides after `push_cast` pushes the ℕ→ℤ coercion through the arithmetic.",
+    "mathContext": "Bridge computation: for $q(n) = a + n g$, the signed second-difference is $(a + (n+2) g) - 2 (a + (n+1) g) + (a + ng) = a + ng + 2g - 2 a - 2 ng - 2g + a + ng = (a - 2 a + a) + (ng - 2 ng + ng) + (2g - 2g) = 0 + 0 + 0 = 0$, so `HasAPGaps q 0` holds. The `push_cast` step is required because `HasAPGaps` is stated in ℤ (signed differences), while `a, n, g, q n` are all ℕ-typed; `push_cast` rewrites the goal to a ℤ-polynomial in $a, n, g$, which `ring` then collapses.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "obtain tactic for axiom-triple unpacking",
+      "push_cast tactic",
+      "ring tactic",
+      "linear sequences have zero second-difference",
+      "bridge architecture for raw axiom → predicate form"
+    ],
+    "prerequisites": [
+      "`obtain ⟨...⟩ := h` destructuring on existentials and conjunctions",
+      "Anonymous-constructor `refine ⟨_, _, _⟩` for sigma / and / exists goals",
+      "`push_cast` and `ring` (same as `eulerPoly_hasAPGaps`)",
+      "Identification: 'AP with common difference $g$' = 'linear sequence $a + ng$' = 'second-difference 0'",
+      "Lambda-syntax `fun n => a + n * g` for in-line ℕ→ℕ functions"
+    ]
+  },
+  {
+    "id": "ann-erdos-455-oq-04-k5-witness",
+    "proofId": "erdos-455-oq-04",
+    "range": {
+      "startLine": 116,
+      "endLine": 124
+    },
+    "type": "tactic",
+    "title": "k = 5 Cross-Check Witness: 5, 11, 17, 23, 29",
+    "content": "The theorem `exists_apGap_zero_length_5_witness : ∃ a g : ℕ, 0 < g ∧ ∀ n < 5, Nat.Prime (a + n·g)` provides a concrete k = 5 witness for the Green-Tao d = 0 statement — **sorry-free and axiom-free**, independent of `greenTao_finitary`. The witness is `(a, g) = (5, 6)`: the AP 5, 11, 17, 23, 29 with common difference 6 gives five primes. Proof: `refine ⟨5, 6, by decide, ?_⟩` provides the existentials and dispatches `0 < 6` by `decide`; the remaining `∀ n < 5, Nat.Prime (5 + n · 6)` is handled by `intro n hn; interval_cases n <;> decide` — case-split on $n \\in \\{0, 1, 2, 3, 4\\}$ and primality-test each of 5, 11, 17, 23, 29 via `decide`.",
+    "mathContext": "The k = 5 prime AP $5, 11, 17, 23, 29$ has common difference $g = 6$ (the smallest possible after $g = 2$ AP $3, 5, 7$ and $g = 4$ AP $3, 7, 11$). For a length-k AP of primes with common difference $g$, we need $g$ divisible by all primes $p < k$ (else two terms are congruent mod $p$); for $k = 5$, this requires $g$ divisible by 2 and 3, i.e., $g \\in \\{6, 12, 18, \\ldots\\}$. The witness $g = 6$ achieves the minimum. For larger $k$: $k = 6 \\implies g \\geq 30$; the AP $7, 37, 67, 97, 127, 157$ at $g = 30$ works. For $k = 10$: $g \\geq 210$; the AP $199, 409, 619, 829, 1039, 1249, 1459, 1669, 1879, 2089$ at $g = 210$ works (Lander-Parkin 1967).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "small-case verification",
+      "decide tactic for Nat.Prime",
+      "interval_cases tactic",
+      "primorial as common-difference requirement",
+      "Lander-Parkin (1967) length-10 prime AP"
+    ],
+    "prerequisites": [
+      "`decide` tactic — invokes the kernel `Decidable` instance reduction",
+      "`interval_cases n` for $n < k$ when $k$ is a small literal",
+      "Divisibility argument: in any length-$k$ prime AP with common difference $g$ and smallest term $> k$, $g$ must be divisible by every prime $p < k$",
+      "Primorial $p_k\\#$ as the natural lower bound for the common difference of a length-$k$ prime AP",
+      "(Optional) Existence of much longer prime APs: Green-Tao gives all $k$; the longest explicitly known is length 27 (PrimeGrid AP27, 2019)"
+    ]
+  },
+  {
+    "id": "ann-erdos-455-oq-04-bunyakovsky-axiom",
+    "proofId": "erdos-455-oq-04",
+    "range": {
+      "startLine": 126,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "Bunyakovsky Conjecture (1857): Axiomatized for d > 0 in F5 Predicate Form",
+    "content": "The axiom `bunyakovsky_finitary : ∀ k d, 0 < d → ∃ q : ℕ → ℕ, StrictMono q ∧ (∀ n < k, (q n).Prime) ∧ HasAPGaps q d` encodes Bunyakovsky's 1857 conjecture restricted to the AP-gap quadratic specialization (second-difference d). The conjecture remains **open** since 1857; the simplest non-trivial case $f(n) = n^2 + 1$ — does it take infinitely many prime values? — is unresolved. The F5 **predicate-form** signature (directly returning the bridge tuple `⟨q, StrictMono, prime prefix, HasAPGaps⟩`) is a deliberate choice over the raw-triple F1 form `∃ q₀ g₀, ∀ n < k, Nat.Prime (q₀ + n g₀ + (n(n-1)/2) d.toNat)`: F5 sidesteps the ℤ-cast bookkeeping for the binomial coefficient and makes downstream bridges one-line restatements. **Epistemic asymmetry with Green-Tao**: Green-Tao (d = 0) is a **proved** theorem absent from Mathlib; Bunyakovsky (d > 0) is a **genuine open conjecture**. Kept as separate axiom to preserve provenance per the slug's axiom-integrity policy.",
+    "mathContext": "**Bunyakovsky (1857)**: every **irreducible** integer polynomial $f \\in \\mathbb{Z}[x]$ with positive leading coefficient and $\\gcd(f(0), f(1), f(2), \\ldots) = 1$ takes infinitely many prime values. **Hardy-Littlewood Conjecture F (1923)** is the quantitative refinement specifying the asymptotic density $|\\{n \\leq N : f(n)\\ \\text{prime}\\}| \\sim \\frac{C(f)}{\\deg f} \\cdot \\frac{N}{\\log N}$ for an explicit constant $C(f)$. **Specialization to AP-gap d > 0**: a sequence $q(n)$ with second-difference $d$ has closed form $q(n) = q_0 + n g_0 + \\binom{n}{2} d$, a quadratic polynomial. So 'arbitrarily long prime prefixes' of AP-gap-d sequences = 'arbitrarily long prime prefixes' of quadratic polynomials with second-difference d. **Open status**: Bunyakovsky in **full generality** is open; Bunyakovsky **restricted to length k for every k** (the finitary statement we axiomatize) is also open (it is weaker than full Bunyakovsky, but no proof is known). The 40-prime Euler record gives the current best lower bound at d = 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bunyakovsky conjecture (1857)",
+      "Hardy-Littlewood Conjecture F",
+      "irreducible integer polynomials and prime values",
+      "open vs proved axioms (provenance)",
+      "F1 vs F5 axiom signature design",
+      "axiom integrity policy"
+    ],
+    "prerequisites": [
+      "Irreducibility of polynomials over $\\mathbb{Z}$ and the `gcd` of polynomial values",
+      "Distinction between **proved** theorems (Green-Tao) and **open** conjectures (Bunyakovsky) when both are encoded as `axiom`",
+      "Predicate (F5) vs raw-triple (F1) axiom signature design — F5 returns the bridge tuple, F1 returns the data triple",
+      "ℤ-to-ℕ truncation via `Int.toNat` (and why the F1 form would force `d.toNat` casts on the binomial)",
+      "Bridge architecture: separating the axiom from the slug's predicate-form data types"
+    ]
+  },
+  {
+    "id": "ann-erdos-455-oq-04-bunyakovsky-bridge",
+    "proofId": "erdos-455-oq-04",
+    "range": {
+      "startLine": 151,
+      "endLine": 164
+    },
+    "type": "tactic",
+    "title": "Bunyakovsky Bridge: One-Line Restatement (F5 Form)",
+    "content": "The bridge theorem `exists_apGapPrimeSeq_of_length_d_pos (k : ℕ) (d : ℤ) (hd : 0 < d) : ∃ q : ℕ → ℕ, StrictMono q ∧ (∀ n < k, (q n).Prime) ∧ HasAPGaps q d` is a **one-line proof**: `bunyakovsky_finitary k d hd`. No `obtain` unpacking is needed because the F5 axiom signature returns the desired tuple directly. The asymmetry with `exists_apGap_zero_of_length` (the d = 0 bridge, which DOES use `obtain` + `push_cast; ring`) reflects the deliberate F5 vs F1 design choice. If Bunyakovsky had been encoded F1-style as `∃ q₀ g₀, …, ∀ n < k, Nat.Prime (q₀ + n g₀ + (n(n-1)/2) d.toNat)`, the bridge would have required ℤ-cast bookkeeping for the binomial coefficient (`(n(n-1)/2 : ℕ).cast` to ℤ, push_cast normalization, etc.) — F5 sidesteps all of that.",
+    "mathContext": "Comparison of axiom signatures and bridge complexities: **F1 (raw triple)**: `∃ q₀ g₀ : ℕ, ∀ n < k, Nat.Prime (q₀ + n g₀ + (n (n-1) / 2) d.toNat)`. Bridge: unpack q₀, g₀; define `q(n) = q₀ + n g₀ + (n(n-1)/2) d.toNat`; prove `StrictMono q` (need `0 < g₀` and `0 < d`); prove `HasAPGaps q d` (cast ℕ→ℤ and `push_cast; ring`). **F5 (predicate form)**: `∃ q : ℕ → ℕ, StrictMono q ∧ (∀ n < k, (q n).Prime) ∧ HasAPGaps q d`. Bridge: one-line restatement `bunyakovsky_finitary k d hd`. The F5 form pre-bundles the cast-free bridge tuple, so the slug's data types `HasAPGaps`/`APGapPrimeSeq` (which are stated in ℤ) connect to the axiom without intermediary cast manipulation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "F1 vs F5 axiom signature design",
+      "ℤ-cast bookkeeping avoidance",
+      "predicate form vs raw-triple form",
+      "bridge architecture for axiom → predicate connectivity"
+    ],
+    "prerequisites": [
+      "Term-mode proofs in Lean 4 — `theorem h : P := proof_term` (vs tactic-mode `by ...`)",
+      "Recognition that an axiom of statement $P$ is itself a proof of $P$, so `bunyakovsky_finitary k d hd : P` closes a goal of shape $P$ directly",
+      "Comparison of F5 (predicate-form) vs F1 (raw-triple) axiom designs and their downstream bridge-complexity trade-offs",
+      "Binomial coefficient $\\binom{n}{2} = n(n-1)/2$ and its ℕ-vs-ℤ representation issues"
+    ]
+  }
+]

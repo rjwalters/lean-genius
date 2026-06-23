@@ -1,0 +1,149 @@
+[
+  {
+    "id": "ann-hgcd-overview",
+    "proofId": "binary-gcd-oq-03-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "Schönhage's HGCD: Scope and Mathematical Setting",
+    "content": "This file formalizes **Schönhage's recursive half-GCD (HGCD)** algorithm — the standard method for computing GCDs of large integers (thousands of bits, as in RSA key generation and elliptic curve cryptography).\n\nThe mathematical challenge: Euclid's algorithm requires $O(n^2)$ bit operations for $n$-bit integers. Knuth–Schönhage reduces this to $O(M(n) \\log n)$ by replacing Euclid steps with matrix multiplications. The key idea: instead of reducing one pair $(a,b)$ to $(b, a \\bmod b)$ per Euclidean step, compute a *cofactor matrix* $M$ that performs $\\Theta(n)$ Euclidean steps at once, then evaluate $M \\cdot (a,b)^T$ with one $O(M(n))$ matrix-vector product.\n\nSchönhage's recursion amplifies this: recurse on the top half of the bits to get $M_1$, apply $M_1$ to the full inputs, then recurse again. Two levels give $O(n)$ steps per call; $O(\\log n)$ recursion depth gives the $O(M(n) \\log n)$ total.\n\n**This file's scope**: GCD-preservation correctness (Parts I–IV) and size-reduction infrastructure (Parts V–IX). The bit-complexity $O(M(n) \\log n)$ is deferred (requires Mathlib fast-multiplication model not yet formalized).",
+    "mathContext": "Let $M(n)$ be the cost of multiplying two $n$-bit integers. Using Schönhage-Strassen FFT multiplication, $M(n) = O(n \\log n \\log \\log n)$. Knuth's Lehmer algorithm reduces GCD cost to $O(M(n) \\log n)$; with $M(n) = O(n \\log n \\log\\log n)$, total GCD cost is $O(n \\log^2 n \\log\\log n)$. For RSA key sizes ($n \\approx 4096$ bits), this is orders of magnitude faster than $O(n^2)$ Euclidean GCD.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclidean algorithm",
+      "Lehmer's GCD algorithm",
+      "cofactor matrices",
+      "fast integer multiplication",
+      "GMP mpn_hgcd"
+    ],
+    "prerequisites": [
+      "Euclidean algorithm and GCD theory",
+      "matrix multiplication and determinants",
+      "bit complexity analysis",
+      "BinaryGcdOQ03 (Lehmer hybrid, parent file)"
+    ]
+  },
+  {
+    "id": "ann-hgcd-composition",
+    "proofId": "binary-gcd-oq-03-oq-02",
+    "range": {
+      "startLine": 61,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "Composition Law: cofactor_mul_apply",
+    "content": "**`cofactor_mul_apply`** establishes that `CofactorMatrix.mul` is compatible with the `apply` action on pairs: $(M \\cdot N)(a,b) = M(N(a,b))$.\n\nThis is the algebraic foundation that makes the HGCD recursion structurally valid: when the algorithm computes $M_2 \\cdot M_1$ as the combined reduction, the pair output equals $M_2$ applied to the output of $M_1$. Without this law, the compositional correctness argument would have no algebraic basis.\n\nThe proof is a single line by `ring` over the four matrix entries, confirming that `CofactorMatrix.mul` is defined as standard matrix multiplication and `apply` as standard matrix-vector multiplication.\n\n**Why this matters for GCD preservation**: if each of $M_1$ and $M_2$ preserves GCD, their composition $M_2 \\cdot M_1$ also preserves GCD — but only because the action on pairs is exactly matrix composition.",
+    "mathContext": "Explicitly: $(M \\cdot N)(a,b)^T = M \\cdot (N \\cdot (a,b)^T)$, the associativity of matrix multiplication. The `ring` proof verifies $(M.\\alpha \\cdot (N.\\alpha \\cdot a + N.\\beta \\cdot b) + M.\\beta \\cdot (N.\\gamma \\cdot a + N.\\delta \\cdot b) = (M.\\alpha N.\\alpha + M.\\beta N.\\gamma) a + (M.\\alpha N.\\beta + M.\\beta N.\\delta) b,\\; \\ldots)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "matrix multiplication associativity",
+      "group action composition",
+      "cofactor matrices (BinaryGcdOQ03)"
+    ],
+    "prerequisites": [
+      "CofactorMatrix.mul definition (BinaryGcdOQ03)",
+      "CofactorMatrix.apply definition",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-hgcd-definition",
+    "proofId": "binary-gcd-oq-03-oq-02",
+    "range": {
+      "startLine": 74,
+      "endLine": 158
+    },
+    "type": "definition",
+    "title": "Fuel-Indexed HGCD Definition",
+    "content": "**`hgcdMatrix fuel a b`** is Schönhage's recursive HGCD, indexed by a *fuel* parameter to ensure Lean's termination checker accepts the definition without well-founded recursion on input size.\n\nThe recursion:\n1. **Base** (`fuel = 0`): return identity $I$\n2. **Small inputs** (`max a b < 64`): delegate to `lehmerCofactors`\n3. **Large inputs**: shift $s = \\lceil \\log_2(\\max(a,b))/2 \\rceil$; compute $M_1 = \\text{hgcd}(a/2^s, b/2^s)$; apply $M_1$ to $(a,b)$ to get $(u,v)$; compute $M_2 = \\text{hgcd}(|u|,|v|)$; return $M_2 \\cdot M_1$\n\n**Fuel vs well-founded**: the recursive calls on $(a/2^s, b/2^s)$ and $(|u|,|v|)$ require a termination argument based on bit-size decrease. Fuel decouples correctness proofs from termination analysis. The reduction lemmas `hgcdMatrix_succ` and `hgcdMatrix_zero` expose the recursion equation explicitly, allowing proofs to `rw` rather than `unfold` (more fragile).",
+    "mathContext": "$s = \\lceil (1 + \\lfloor\\log_2(\\max a b)\\rfloor)/2 \\rceil$, so $2^s \\approx \\sqrt{\\max(a,b)}$ and $a/2^s$ has roughly $n/2$ bits when $a$ has $n$ bits. After applying $M_1$: $(u,v) = M_1(a,b)$ has $\\max(|u|,|v|) < 2^{n/2+3}$ (the size-reduction bound in Part IX). The second subproblem $(|u|,|v|)$ thus has half the bit-size, giving $O(\\log n)$ recursion depth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fuel-indexed totality",
+      "well-founded recursion in Lean 4",
+      "Schönhage's algorithm",
+      "hgcdThreshold, hgcdShift"
+    ],
+    "prerequisites": [
+      "Lean 4 structural recursion on ℕ",
+      "Nat.log definition in Mathlib",
+      "lehmerCofactors (BinaryGcdOQ03)",
+      "CofactorMatrix.mul"
+    ]
+  },
+  {
+    "id": "ann-hgcd-det-gcd",
+    "proofId": "binary-gcd-oq-03-oq-02",
+    "range": {
+      "startLine": 160,
+      "endLine": 245
+    },
+    "type": "insight",
+    "title": "GCD Correctness: Determinant ±1 and GCD Preservation",
+    "content": "Two core correctness theorems:\n\n**`hgcdMatrix_det_unit`** (lines 160–199): $\\det(\\text{hgcdMatrix}\\; f\\; a\\; b) = \\pm 1$ for all fuel, inputs. Proved by fuel induction:\n- Base: identity has $\\det = 1$\n- Leaf (small inputs): `lehmerCofactors_det_unit` (BinaryGcdOQ03)\n- Recursive step: $\\det(M_2 \\cdot M_1) = \\det(M_2) \\cdot \\det(M_1) = (\\pm 1)(\\pm 1) = \\pm 1$\n\n**`hgcdMatrix_preserves_gcd`** (lines 200–245): applying the HGCD matrix preserves $\\gcd$: $\\gcd(M(a,b)^T) = \\gcd(a,b)$. Follows from the determinant invariant via `gcd_cofactor_eq` (BinaryGcdOQ03): any unimodular matrix preserves GCDs.\n\n**`hgcdMatrixOf_preserves_gcd`**: the top-level entry point also preserves GCD. This is the operational correctness statement: iterating the algorithm eventually reaches $(\\gcd(a,b), 0)$.",
+    "mathContext": "$\\det(M) = \\pm 1 \\Rightarrow \\gcd(M(a,b)^T) = \\gcd(a,b)$. Proof: any common divisor $d \\mid (Ma,Mb)$ satisfies $d \\mid \\det(M) \\cdot a = \\pm a$ (Cramer's rule) and similarly $d \\mid \\pm b$, so $d \\mid \\gcd(a,b)$. Conversely $\\gcd(a,b) \\mid a, b \\Rightarrow \\gcd(a,b) \\mid Ma, Mb$. Hence $\\gcd(Ma,Mb) = \\gcd(a,b)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unimodular matrices",
+      "Cramer's rule",
+      "GCD-preserving linear maps",
+      "gcd_cofactor_eq (BinaryGcdOQ03)"
+    ],
+    "prerequisites": [
+      "BinaryGcdOQ03: CofactorMatrix, lehmerCofactors_det_unit, gcd_cofactor_eq",
+      "Int determinant multiplicativity",
+      "induction on fuel"
+    ]
+  },
+  {
+    "id": "ann-hgcd-entry-bounds",
+    "proofId": "binary-gcd-oq-03-oq-02",
+    "range": {
+      "startLine": 246,
+      "endLine": 622
+    },
+    "type": "concept",
+    "title": "Size-Reduction Infrastructure: Row Convention and Entry Bounds",
+    "content": "Parts V.5 and VI build infrastructure for the size-reduction proof.\n\n**Row-convention invariant** (lines 246–438): The Lehmer step maintains $(a_0, b_0) \\cdot M = (\\hat{a}, \\hat{b})$ in the row convention. `lehmerCofactors_invariant` proves this is preserved across all Lehmer inner steps. `lehmerCofactors_id_apply_le` adds residue monotonicity: $\\max(\\hat{a}', \\hat{b}') \\leq \\max(\\hat{a}, \\hat{b})$.\n\n**The convention dichotomy**: the column convention $(M \\cdot (a,b)^T)$ tracks the current pair for GCD preservation; the row convention $((a_0,b_0) \\cdot M)$ tracks the initial pair for size reduction. They agree on determinant-based theorems but diverge on state tracking — this is a genuine obstruction in the formalization.\n\n**Cramer identity and entry bounds** (lines 439–622): `row_vec_cramer` derives $a_0 = \\pm(\\hat{a} \\cdot M.\\delta - \\hat{b} \\cdot M.\\gamma)$ from the row invariant. Combined with the EvenPattern/OddPattern alternating signs from Lehmer steps, all entries satisfy $|M_{ij}| \\leq \\max(a_0, b_0)$.",
+    "mathContext": "Row-convention: right-multiplying the accumulation matrix by the step matrix $S_q = \\begin{pmatrix}0&1\\\\1&-q\\end{pmatrix}$ shifts $(a_0,b_0) \\cdot M$ to the next pair. Cramer: if $(a_0,b_0) \\cdot M = (\\hat a,\\hat b)$ and $\\det M = \\delta\\alpha - \\gamma\\beta = \\pm 1$, then $a_0(\\pm 1) = \\hat a \\delta - \\hat b \\gamma$, so $|\\alpha|,|\\beta|,|\\gamma|,|\\delta| \\leq \\max(a_0,b_0)$ (since $|\\hat a|,|\\hat b| \\leq \\max(a_0,b_0)$ by residue monotonicity).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cramer's rule",
+      "row vs column convention dichotomy",
+      "Lehmer step sign patterns",
+      "Stehlé-Zimmermann (2004)"
+    ],
+    "prerequisites": [
+      "lehmerInnerStep (BinaryGcdOQ03)",
+      "Int.natAbs arithmetic",
+      "alternating Lehmer step structure"
+    ]
+  },
+  {
+    "id": "ann-hgcd-sorry",
+    "proofId": "binary-gcd-oq-03-oq-02",
+    "range": {
+      "startLine": 786,
+      "endLine": 935
+    },
+    "type": "insight",
+    "title": "The Open Sorry: Quotient Stability for Recursive Size Reduction",
+    "content": "The single sorry is at the **recursive case of `hgcdMatrix_joint_bound`** (Part IX). This theorem would state: for sufficient fuel, the HGCD output $(u,v) = M(a,b)$ and matrix entries all satisfy $\\max(|u|,|v|) \\leq 2^{s+3}$ where $s = \\text{hgcdShift}(a,b)$.\n\n**What's proved**: base cases (Lehmer leaf) and the column-convention counterexample showing the bound fails without the row convention. Parts VIII establishes the induction prerequisites: $s \\geq 1$ for large inputs and the strict decrease $a/2^s < a$.\n\n**The missing piece** is *quotient stability* (Stehlé-Zimmermann 2004, §3–4): the Euclidean quotients from the top-half approximation $(a/2^s, b/2^s)$ must match those from the full pair $(a,b)$ for the first $O(n/2)$ steps. This requires approximately 200 lines of new Lean infrastructure.\n\n**Why it's hard**: quotient stability is a delicate approximation argument bounding how far the remainder sequences of $(a/2^s, b/2^s)$ and $(a,b)$ diverge due to bit-truncation errors. The key lemma is Stehlé–Zimmermann's Theorem 4: 'the first $k$ quotients match' under a mild divisibility condition.",
+    "mathContext": "Quotient stability (informal): if $a = 2^s a_H + e_a$, $b = 2^s b_H + e_b$ with $|e_a|,|e_b| < 2^s$, and the HGCD of $(a_H, b_H)$ computes quotients $q_1,\\ldots,q_k$, then the Euclidean algorithm on $(a,b)$ starts with the same quotients. This holds for $k = O(n/2)$ quotients when $s = \\lceil n/2 \\rceil$ — see Stehlé-Zimmermann Theorem 4. With quotient stability, the perturbation bound (Part VII) gives $|M_1(a,b) - 2^s \\cdot M_1(a_H,b_H)| \\leq 2 \\cdot C \\cdot 2^s$ where $C \\leq \\max(a,b)$, completing the recursive case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quotient stability",
+      "Stehlé-Zimmermann algorithm (2004)",
+      "Euclidean continued fractions",
+      "half-GCD bit complexity"
+    ],
+    "prerequisites": [
+      "Euclidean quotients and remainders",
+      "perturbation bounds (Part VII)",
+      "entry bounds (Part VI)",
+      "Nat.div truncation"
+    ]
+  }
+]

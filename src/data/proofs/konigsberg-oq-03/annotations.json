@@ -1,0 +1,241 @@
+[
+  {
+    "id": "module-context",
+    "proofId": "konigsberg-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Research Framing: Two Frontiers Beyond the Finite Graph Theorem",
+    "content": "This file occupies a precise niche in the Königsberg cluster: it asks whether Euler's 1736 theorem — *a connected graph has an Eulerian circuit iff every vertex has even degree* — extends to two fundamentally different generalizations. The two parts of the file are mathematically independent but both motivated by the same parent result.\n\n**Part I** (hypergraphs): Relax the constraint that edges connect exactly 2 vertices. Edges can now be $r$-element subsets for arbitrary $r$. The Euler circuit question becomes dramatically harder: for $r \\geq 3$, Lonc and Naroski (2010) proved the problem NP-complete. The structural contrast is sharp — the $r = 2$ to $r = 3$ jump crosses the P/NP boundary.\n\n**Part II** (infinite graphs): Allow the vertex set to be countably infinite. The degree condition survives for locally finite graphs (every vertex has finitely many neighbors), but the general case requires the Erdős-Grünwald-Weiszfeld theorem (1936), which imposes an additional even-cut condition on finite edge cuts. This is a *positive* extension: the theorem says Euler paths exist under checkable conditions.\n\nThe file is a specification document that names the open problems with their known complexity. The import of `Proofs.Konigsberg` makes the verified parent theorem available; the comment on line 12 makes this dependency explicit, though it is not invoked in this stub.",
+    "mathContext": "Parent theorem (Euler 1736, formalized in Konigsberg.lean): $G$ connected $\\Rightarrow$ ($G$ has Eulerian circuit $\\iff$ every vertex has even degree). This file asks: does this hold for (1) $r$-uniform hypergraphs and (2) countably infinite graphs? The answers are structurally different: (1) No simple condition suffices for $r \\geq 3$ (NP-complete), and (2) Yes, with an additional even-cut condition (EGW 1936).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euler's theorem 1736",
+      "Königsberg bridges",
+      "hypergraph Euler tour",
+      "infinite Euler path",
+      "NP-complete decision problem",
+      "locally finite graph",
+      "Erdős-Grünwald-Weiszfeld theorem",
+      "Lonc-Naroski 2010",
+      "stub formalization",
+      "P/NP boundary"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "Königsberg bridges problem",
+      "NP-completeness"
+    ]
+  },
+  {
+    "id": "r-uniform-hypergraph",
+    "proofId": "konigsberg-oq-03",
+    "range": {
+      "startLine": 24,
+      "endLine": 27
+    },
+    "type": "definition",
+    "title": "r-Uniform Hypergraph Structure",
+    "content": "`RUniformHypergraph V r` defines an $r$-uniform hypergraph: a collection of `edges` (Finsets of vertices) where every edge has exactly $r$ elements (`uniform : ∀ e ∈ edges, e.card = r`). For $r = 2$, this recovers ordinary undirected graphs (edges are 2-element sets). For $r = 3$, edges are triangles (3-element subsets), and so on.\n\nThe type `edges : Set (Finset V)` (not `Finset (Finset V)`) is deliberate: it allows infinitely many edges while keeping each edge finite. This is why `hyperDegree` is `noncomputable` — counting edges via `Set.card` or `Finset.filter` over a `Set` requires classical reasoning. An alternative with `Finset (Finset V)` would force a finite hypergraph and permit computable degrees, but at the cost of excluding infinite hypergraphs needed for the EGW theorem context.\n\nNotable examples of $r$-uniform hypergraphs: complete $r$-uniform hypergraphs $K_n^r$ (all $r$-element subsets of $[n]$, with $\\binom{n}{r}$ edges); Steiner triple systems $S(2, 3, n)$ (3-uniform, every pair in exactly one edge); Fano plane $PG(2,2)$ (7 vertices, 7 triples, each pair in exactly one edge).",
+    "mathContext": "A hypergraph is $r$-uniform if every hyperedge contains exactly $r$ vertices. Complete $r$-uniform hypergraphs $K_n^r$ play the role of $K_n$ in hypergraph theory. Steiner systems $S(t, k, n)$ are $k$-uniform hypergraphs with additional regularity: every $t$-element subset of vertices appears in exactly one edge. The sunflower lemma (Erdős-Ko-Rado 1961) controls intersection patterns in $r$-uniform hypergraphs and is foundational in combinatorics and complexity theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hypergraph",
+      "uniform-hypergraph",
+      "Finset",
+      "graph-generalization",
+      "Steiner system",
+      "complete r-uniform hypergraph",
+      "sunflower lemma",
+      "hypergraph coloring",
+      "Set (Finset V) type design",
+      "noncomputable def"
+    ],
+    "prerequisites": [
+      "Set and Finset in Lean",
+      "graph theory basics",
+      "hypergraph theory"
+    ]
+  },
+  {
+    "id": "hyper-degree-def",
+    "proofId": "konigsberg-oq-03",
+    "range": {
+      "startLine": 29,
+      "endLine": 32
+    },
+    "type": "definition",
+    "title": "Vertex Degree in a Hypergraph",
+    "content": "`hyperDegree H v` counts the number of edges in hypergraph `H` that contain vertex `v`. The implementation uses `Finset.univ.filter (fun e => v ∈ e ∧ (e : Finset V) ∈ H.edges)` to count: iterate over all Finsets of $V$ (requires `[Fintype V]`) and filter those that are in `H.edges` and contain `v`. The `noncomputable` attribute arises because `H.edges` is a `Set`, so membership in `H.edges` is a `Prop` — the `Finset.filter` requires `Decidable`, which is not generally available.\n\nBeyond vertex degree, $r$-uniform hypergraph theory uses *link degree* (codegree): $d(u,v) = |\\{e \\in E : u,v \\in e\\}|$ counts edges containing both $u$ and $v$. For a Steiner triple system, $d(u,v) = 1$ for all pairs. For an Euler tour, the relevant condition involves the *transition system* at each vertex, which counts compatible pairs of edges through $v$.\n\nThe necessary condition for an Euler tour: $(r-1) \\mid \\text{deg}(v)$ for all $v$. Intuitively, every time the tour enters vertex $v$ via one edge (using $r-1$ 'exit slots'), it must exit via another (using $r-1$ 'entry slots'). This gives divisibility by $r-1$, not $2$ as in the graph case. But this condition is not sufficient for $r \\geq 3$.",
+    "mathContext": "For $r = 2$, `hyperDegree H v` equals the usual graph degree. Generalized handshaking lemma: $\\sum_v \\text{deg}(v) = r \\cdot |E|$. Necessary Euler tour condition: $(r-1) \\mid \\text{deg}(v)$ for all $v$. Link degree (codegree): $d(u,v) = |\\{e : u,v \\in e\\}|$ — for $r = 2$, $d(u,v) \\in \\{0,1\\}$ (simple graph). In $\\lambda$-designs, $d(u,v) = \\lambda$ for all pairs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "degree-condition",
+      "handshaking-lemma",
+      "Finset.filter",
+      "Fintype",
+      "link degree",
+      "codegree",
+      "λ-design",
+      "noncomputable def",
+      "classical reasoning",
+      "transition system"
+    ],
+    "prerequisites": [
+      "RUniformHypergraph",
+      "Finset operations",
+      "Fintype typeclass"
+    ]
+  },
+  {
+    "id": "has-euler-tour-stub",
+    "proofId": "konigsberg-oq-03",
+    "range": {
+      "startLine": 34,
+      "endLine": 41
+    },
+    "type": "insight",
+    "title": "HasEulerTour Stub and the NP-Completeness Barrier",
+    "content": "`HasEulerTour` is defined for $r = 2$ hypergraphs (ordinary graphs) as `True` — a placeholder acknowledging that the correct definition reduces to the standard Eulerian circuit condition in this case. The immediately following docstring (lines 40-41) documents the key obstruction for $r \\geq 3$: Lonc and Naroski (2010) proved that determining whether an $r$-uniform hypergraph has an Euler tour is NP-complete for any fixed $r \\geq 3$.\n\nThe NP-hardness argument uses a reduction from 3-dimensional matching (3DM): an $r = 3$ Euler tour exists iff the hypergraph's 'transition system' — the collection of pairs of hyperedges sharing a vertex — admits a perfect matching, and this matching problem is NP-complete in general. The degree condition $(r-1) \\mid \\text{deg}(v)$ is necessary but no polynomial-time checkable condition is sufficient.\n\nThe $r = 2 \\to r = 3$ jump is the sharpest possible complexity jump: from linear time (check connectivity + parity in $O(|V|+|E|)$) to NP-complete. This is part of a broader pattern in combinatorics where classical P-time graph problems become NP-hard when edges gain dimension (hypergraph graph coloring, hypergraph matching, hypergraph independent set all jump from P to NP-hard at $r = 3$).",
+    "mathContext": "Lonc-Naroski (2010): For $r \\geq 3$, deciding $\\exists$ Euler tour in an $r$-uniform hypergraph is NP-complete. Reduction from 3-dimensional matching. The $r = 2$ case is in P: check connectivity + all degrees even (linear time). The P/NP boundary at $r = 3$ is sharp.",
+    "significance": "key",
+    "relatedConcepts": [
+      "NP-completeness",
+      "transition-system",
+      "3-dimensional-matching",
+      "complexity-theory",
+      "P/NP boundary",
+      "polynomial-time reduction",
+      "3-SAT",
+      "k-regular hypergraph",
+      "decision problem",
+      "Euler tour existence"
+    ],
+    "prerequisites": [
+      "NP-completeness",
+      "polynomial-time reductions",
+      "r-uniform hypergraphs"
+    ]
+  },
+  {
+    "id": "infinite-graph-def",
+    "proofId": "konigsberg-oq-03",
+    "range": {
+      "startLine": 43,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Infinite Graph via Adjacency Relation",
+    "content": "`InfiniteGraph V` represents an undirected graph (possibly infinite) on vertex type `V` via a symmetric, loopless adjacency relation `adj : V → V → Prop`. The three fields encode exactly the axioms of an undirected simple graph: `adj` (the edge relation), `symm` (undirectedness), and `loopless` (no self-loops).\n\nThis design differs from Mathlib's `SimpleGraph V`, which also represents infinite graphs via `adj : V → V → Prop` with the same three axioms — the structures are isomorphic. However, `SimpleGraph` has an extensive Mathlib API (neighbor sets, degree, path types, connectivity) while `InfiniteGraph` is a local stub. The primary motivation for the local definition is to pair with `infiniteDegree` (valued in `ℕ∞`) and the `HasInfiniteEulerPath`/`HasOneWayEulerPath` stubs without depending on Mathlib's path API.\n\nKönig's infinity lemma (an infinite, locally finite tree has an infinite path) is a foundational result in infinite graph theory. It follows from compactness and is formalized in Mathlib as `Tree.exists_inf_path_of_locallyFinite`. The Erdős-Grünwald-Weiszfeld theorem can be seen as an Euler-path analogue of König's lemma — both construct infinite traversals from local finiteness conditions.",
+    "mathContext": "Infinite graph theory distinguishes: (1) locally finite graphs (every vertex has finite degree), (2) graphs with infinite-degree vertices, (3) uncountable graphs. For (1), the finite Euler theorem generalizes. For (2), the EGW theorem adds the even-cut condition. For (3), even connectedness is subtle. `Prop`-valued `adj` avoids computational issues with infinite neighborhoods that arise with `Finset`-based APIs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mathlib SimpleGraph",
+      "adjacency-relation",
+      "locally-finite-graph",
+      "Erdos-Grunwald-Weiszfeld",
+      "König's infinity lemma",
+      "graph ends",
+      "Freudenthal compactification",
+      "directed infinite graph",
+      "infinite path",
+      "compactness argument"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Prop vs Finset in Lean",
+      "Mathlib SimpleGraph API"
+    ]
+  },
+  {
+    "id": "infinite-degree-def",
+    "proofId": "konigsberg-oq-03",
+    "range": {
+      "startLine": 48,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Vertex Degree in ℕ∞ for Infinite Graphs",
+    "content": "`infiniteDegree G v` computes the degree of vertex `v` in `InfiniteGraph G`, valued in `ℕ∞` (extended naturals, `WithTop ℕ`). The implementation uses `Set.toFinite {w | G.adj v w}` to get a finiteness proof (classical), then `.toFinset.card` to count neighbors.\n\nThere is a subtlety: `Set.toFinite` is a classical proof that any set is finite, which is only true in constructive mathematics for finite sets. In Lean 4 with classical logic, `Set.toFinite S` always succeeds and returns a finiteness proof — but `.toFinset.card` then counts elements of the `Finset` corresponding to `S`. For infinite sets `S`, this `Finset` would be empty (the finset-from-finiteness construction via `Set.Finite.toFinset` only works if the set is truly finite). The practical effect: `infiniteDegree G v` returns a `ℕ∞` value that is finite iff the neighborhood `{w | G.adj v w}` is genuinely finite, and `[DecidableEq V]` is needed for the membership check in `toFinset`.\n\nFor the EGW theorem, the relevant dichotomy is: vertices with $\\deg(v) < \\infty$ (locally finite) vs. $\\deg(v) = \\infty$ (non-locally-finite). The theorem treats these cases differently.",
+    "mathContext": "The extended naturals `ℕ∞ = ℕ ∪ {\\infty}` (Lean: `WithTop ℕ`) are the right codomain for degree in infinite graphs. The EGW theorem distinguishes locally finite graphs (all degrees in $\\mathbb{N}$) from non-locally-finite graphs (some degree = $\\infty$), with the even-cut condition (ii) being trivial in the locally finite case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "WithTop ℕ",
+      "ℕ∞",
+      "locally-finite-graph",
+      "Set.toFinite",
+      "DecidableEq",
+      "Set.Finite.toFinset",
+      "classical reasoning",
+      "graph ends theory",
+      "vertex degree infinite graph"
+    ],
+    "prerequisites": [
+      "InfiniteGraph",
+      "WithTop ℕ in Mathlib",
+      "Set.toFinite API"
+    ]
+  },
+  {
+    "id": "euler-path-stubs",
+    "proofId": "konigsberg-oq-03",
+    "range": {
+      "startLine": 53,
+      "endLine": 65
+    },
+    "type": "insight",
+    "title": "Two Stub Definitions and the EGW Theorem Statement",
+    "content": "Lines 53-65 contain two stub definitions and the embedded statement of the Erdős-Grünwald-Weiszfeld theorem.\n\n`HasInfiniteEulerPath` (line 55) represents a two-way infinite Euler path: a bi-infinite sequence of vertices (indexed by $\\mathbb{Z}$) traversing every edge exactly once. This requires a foundational definition of infinite paths not yet in Mathlib — the companion file `KonigsbergOQ03OQ02.lean` provides it via `BiInfiniteWalk`.\n\n`HasOneWayEulerPath` (line 64) represents a one-way infinite Euler path: a sequence indexed by $\\mathbb{N}$ starting from a vertex $v_0$ and covering every edge exactly once. This corresponds to the Erdős-Grünwald-Weiszfeld (EGW) theorem's positive case for graphs with one 'odd' vertex (in the infinite-degree generalization).\n\nThe docstring (lines 58-61) states the EGW theorem itself: a connected countable graph has an Euler path iff (1) at most 2 vertices have odd degree, and (2) every finite edge cut has even cardinality. Condition (2) is automatic for locally finite graphs but is a genuine topological constraint when some vertex has infinite degree — it says that at infinity, edges cannot accumulate in a one-sided way. The even-cut condition is equivalent to saying the graph's *end space* (in the Freudenthal compactification sense) has no isolated topological features blocking Euler traversal.",
+    "mathContext": "Erdős-Grünwald-Weiszfeld (1936): A connected countable graph $G$ has an Eulerian path iff: (i) $|\\{v : \\deg(v) \\text{ odd}\\}| \\leq 2$, and (ii) every finite edge cut has even cardinality. For locally finite $G$, (ii) is automatic; for non-locally-finite $G$, (ii) captures a topological constraint at infinity related to graph ends.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bi-infinite walk",
+      "one-way Euler path",
+      "Erdos-Grunwald-Weiszfeld",
+      "countable graph",
+      "Stream'",
+      "edge-cut",
+      "BiInfiniteWalk",
+      "Freudenthal compactification",
+      "graph ends",
+      "topological Euler path"
+    ],
+    "prerequisites": [
+      "InfiniteGraph",
+      "HasInfiniteEulerPath semantics",
+      "konigsberg-oq-03-oq-02"
+    ]
+  },
+  {
+    "id": "locally-finite-chinese-postman",
+    "proofId": "konigsberg-oq-03",
+    "range": {
+      "startLine": 67,
+      "endLine": 74
+    },
+    "type": "concept",
+    "title": "Locally Finite Criterion and Chinese Postman in Infinite Graphs",
+    "content": "Lines 67-73 document two additional mathematical facts via comments.\n\n**Locally finite case (lines 67-69)**: For graphs where every vertex has finite degree (locally finite), the EGW theorem simplifies to the same criterion as the finite case: an Eulerian path exists iff at most 2 vertices have odd degree and the graph is connected. The even-cut condition (ii) of EGW becomes automatic when all degrees are finite because every finite edge cut in a locally finite graph can be analyzed via finite subgraphs — the 'at infinity' obstruction cannot arise.\n\n**Chinese Postman Problem (lines 70-73)**: The Chinese Postman (or Route Inspection) Problem asks for a minimum-weight closed walk covering every edge at least once. For finite graphs, it is solvable in polynomial time by the Edmonds-Johnson algorithm (1973): augment $G$ by adding minimum-weight perfect matching on the odd-degree vertices (using Edmond's Blossom algorithm for weighted matching), then find an Eulerian circuit in the augmented graph. Total running time $O(n^3)$. For infinite graphs, the optimal solution may not exist because no *finite* closed walk can cover infinitely many edges — the problem requires the theory of infinite walks and transfinite induction to even state properly. For countable graphs satisfying EGW conditions, the 'Chinese Postman tour' becomes an infinite Euler path, and cost minimization requires ordinal-valued objectives.",
+    "mathContext": "Chinese Postman (Edmonds-Johnson 1973): minimum-weight perfect matching on $\\{v : \\deg(v) \\text{ odd}\\}$ + Eulerian circuit in augmented graph. Running time $O(n^3)$ via Blossom algorithm. Equivalent to solving a minimum-weight T-join problem (a T-join is a set of edges whose odd-degree vertices are exactly $T$). Infinite case: requires walks indexed by ordinals or $\\omega$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "locally-finite-graph",
+      "Chinese Postman Problem",
+      "Edmonds-Johnson algorithm",
+      "transfinite induction",
+      "Blossom algorithm",
+      "T-join problem",
+      "minimum-weight matching",
+      "route inspection",
+      "Euler tour construction",
+      "ordinal-valued cost"
+    ],
+    "prerequisites": [
+      "locally finite graph",
+      "minimum-weight perfect matching",
+      "Eulerian circuit existence"
+    ]
+  }
+]

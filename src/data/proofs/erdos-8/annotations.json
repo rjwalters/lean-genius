@@ -1,0 +1,207 @@
+[
+  {
+    "id": "ann-e8-header",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #8: Does every finite coloring of the integers admit a covering system with monochromatic moduli? DISPROVED by Hough (2015). The density version (logarithmic tail density implies covering moduli) is also false.",
+    "significance": "key",
+    "mathContext": "See annotation content for formal details of problem overview",
+    "relatedConcepts": [
+      "ring theory",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "covering systems of congruences",
+      "modular arithmetic",
+      "Lean formalization of number-theoretic objects"
+    ]
+  },
+  {
+    "id": "ann-e8-covering",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 34,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Covering System Definitions",
+    "content": "A **covering system** is a finite collection of congruence classes (residue r mod m) that covers every integer. `CoveringSystem.moduli` extracts the set of moduli, and `hasDistinctModuli` requires all moduli to be different.",
+    "mathContext": "Covering systems are central in combinatorial number theory. The simplest example: {0 mod 2, 1 mod 3, 5 mod 6} covers all integers. Erdős problems #2, #7, and #8 all concern covering systems.",
+    "significance": "key",
+    "relatedConcepts": [
+      "congruence classes",
+      "modular arithmetic",
+      "covering systems"
+    ],
+    "prerequisites": [
+      "congruence classes a mod n",
+      "modular arithmetic",
+      "covering systems (every integer covered)"
+    ]
+  },
+  {
+    "id": "ann-e8-coloring",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 61,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "Colorings and Monochromaticity",
+    "content": "A **k-coloring** assigns each positive integer one of k colors (`ℕ → Fin k`). A set is **monochromatic** if all elements share the same color. The key predicate `hasMonochromaticModuli` asks whether a covering system's moduli are all one color.",
+    "mathContext": "This connects covering systems to Ramsey theory: the question asks whether a monochromatic structure (covering moduli) must exist in any finite coloring, analogous to Ramsey's theorem guaranteeing monochromatic cliques.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "graph coloring",
+      "monochromatic sets"
+    ],
+    "prerequisites": [
+      "finite colorings of the moduli",
+      "Ramsey theory",
+      "monochromatic substructures"
+    ]
+  },
+  {
+    "id": "ann-e8-conjecture",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 79,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "Erdős-Graham Conjecture (DISPROVED)",
+    "content": "`erdos_graham_conjecture`: For any k ≥ 2 and any k-coloring, there exists a covering system with monochromatic moduli. `erdos_8_disproved`: The negation — some coloring defeats all covering systems. Erdős and Graham expected the conjecture to be true.",
+    "mathContext": "The conjecture would have been a Ramsey-type result for covering systems, paralleling how Ramsey's theorem guarantees monochromatic cliques. Its failure shows covering systems lack this Ramsey property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Graham",
+      "counterexample",
+      "existential vs universal"
+    ],
+    "prerequisites": [
+      "covering systems and colorings",
+      "the Erdős–Graham conjecture",
+      "existential vs universal statements"
+    ]
+  },
+  {
+    "id": "ann-e8-hough",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 97,
+      "endLine": 122
+    },
+    "type": "concept",
+    "title": "Hough's Minimum Modulus Bound",
+    "content": "**Hough (2015)**: Every covering system with distinct moduli has minimum modulus ≤ 616,000. This is THE key structural result. Also includes the Balister et al. refinement (same bound formalized). The `minModulus` function uses `Finset.min'` on the moduli set.",
+    "mathContext": "The minimum modulus problem was open since Erdős first posed it. Hough's proof uses probabilistic methods and the Lovász Local Lemma. This bound implies covering systems must 'start small' — they cannot avoid low moduli.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimum modulus problem",
+      "Lovász Local Lemma",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "the minimum modulus problem",
+      "the Lovász Local Lemma",
+      "the probabilistic method (Hough's bound)"
+    ]
+  },
+  {
+    "id": "ann-e8-counterexample",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 124,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Counterexample and Resolution",
+    "content": "**Hough's Construction**: Color each n < 10^18 with a distinct color, all larger integers one additional color. Any covering system needs a small modulus (≤ 616,000), so its moduli span multiple colors — never monochromatic. `erdos_8_resolution` axiomatizes the disproof; `erdos_8_false` derives ¬erdos_graham_conjecture by contradiction.",
+    "mathContext": "The gap 10^18 >> 616,000 ensures enough distinct colors. The proof of `erdos_8_false` is a clean 4-line tactic proof: assume the conjecture, extract the counterexample coloring, apply the conjecture to get a covering, then derive contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit construction",
+      "proof by contradiction",
+      "pigeonhole"
+    ],
+    "prerequisites": [
+      "explicit covering-system constructions",
+      "proof by contradiction",
+      "the pigeonhole principle"
+    ]
+  },
+  {
+    "id": "ann-e8-density",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 156,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Density Version (DISPROVED)",
+    "content": "`HasLogDensityTail A`: the harmonic sum ∑_{a > N, a ∈ A} 1/a grows at least as fast as c·log N. `density_conjecture`: this tail density implies A contains covering moduli. `density_conjecture_false`: also DISPROVED by Hough.",
+    "mathContext": "Erdős and Graham conjectured that sets with sufficiently thick harmonic tails must contain covering moduli. This would have generalized the coloring version. Hough's minimum modulus bound defeats both versions simultaneously.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic series",
+      "density conditions",
+      "tail sums"
+    ],
+    "prerequisites": [
+      "the harmonic series Σ1/n",
+      "density conditions on moduli",
+      "tail-sum estimates"
+    ]
+  },
+  {
+    "id": "ann-e8-bottleneck",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 182,
+      "endLine": 206
+    },
+    "type": "insight",
+    "title": "The Bottleneck Argument",
+    "content": "The minimum modulus bound creates a structural bottleneck: (1) coverings must include small moduli ≤ 616,000, (2) color small numbers distinctly, (3) any covering's moduli span multiple colors, (4) no monochromatic covering possible. `bottleneck_counterexample` axiomatizes this: the minimum modulus bound implies existence of a defeating coloring.",
+    "mathContext": "This argument pattern — a structural constraint (small moduli required) combined with a tailored coloring — is characteristic of constructions in additive combinatorics where structure theorems enable explicit counterexamples.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structural argument",
+      "bottleneck",
+      "extremal construction"
+    ],
+    "prerequisites": [
+      "structural / extremal constructions",
+      "the bottleneck argument",
+      "limits on monochromatic coverings"
+    ]
+  },
+  {
+    "id": "ann-e8-summary",
+    "proofId": "erdos-8",
+    "range": {
+      "startLine": 230,
+      "endLine": 235
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "`erdos_8_summary`: combines both disproofs into one statement: ¬erdos_graham_conjecture ∧ ¬density_conjecture. Proved by `⟨erdos_8_false, density_conjecture_false⟩`, cleanly packaging both negative results.",
+    "significance": "key",
+    "relatedConcepts": [
+      "summary theorem",
+      "conjunction introduction"
+    ],
+    "mathContext": "See annotation content for formal details of summary theorem",
+    "prerequisites": [
+      "the disproved Erdős–Graham conjecture",
+      "combining the partial results",
+      "conjunction of the established facts"
+    ]
+  }
+]

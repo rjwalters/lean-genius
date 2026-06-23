@@ -1,0 +1,122 @@
+{
+  "id": "partition-theorem-oq-01-oq-01",
+  "title": "Rogers-Ramanujan identities: computational verification for n ≤ 8 (native_decide)",
+  "description": "Can the Rogers-Ramanujan identities be proved via q-series in Lean using PowerSeries from Mathlib?",
+  "source": {
+    "proofId": "partition-theorem-oq-01",
+    "proofTitle": "Rogers-Ramanujan and Schur Partition Identities",
+    "type": "open-question"
+  },
+  "category": "extension",
+  "tractability": "challenging",
+  "tags": [
+    "combinatorics",
+    "number-theory",
+    "partitions",
+    "rogers-ramanujan",
+    "schur",
+    "research",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "partition-theorem",
+    "partition-theorem-oq-01",
+    "partition-theorem-oq-01-oq-01",
+    "partition-theorem-oq-03"
+  ],
+  "status": "completed",
+  "selectedDate": "2026-04-12",
+  "selectedBy": "seeker",
+  "leanFiles": [
+    {
+      "path": "Proofs/PartitionTheorem.lean",
+      "filename": "PartitionTheorem.lean",
+      "lineCount": 282,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheorem.lean"
+    },
+    {
+      "path": "Proofs/PartitionTheoremOQ01.lean",
+      "filename": "PartitionTheoremOQ01.lean",
+      "lineCount": 3553,
+      "theoremCount": 129,
+      "axiomCount": 3,
+      "defCount": 40,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PartitionTheoremOQ01OQ01.lean",
+      "filename": "PartitionTheoremOQ01OQ01.lean",
+      "lineCount": 72,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PartitionTheoremOQ03.lean",
+      "filename": "PartitionTheoremOQ03.lean",
+      "lineCount": 63,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/PartitionTheoremOQ04.lean",
+      "filename": "PartitionTheoremOQ04.lean",
+      "lineCount": 546,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/PartitionTheoremOQ04Aristotle.lean",
+      "filename": "PartitionTheoremOQ04Aristotle.lean",
+      "lineCount": 47,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ04Aristotle.lean"
+    }
+  ],
+  "slug": "partition-theorem-oq-01-oq-01",
+  "phase": "COMPLETED",
+  "started": "2026-04-13",
+  "lastUpdate": "2026-06-13",
+  "knowledge": {
+    "insights": [
+      "Scope of this sub-question is the COMPUTATIONAL VERIFICATION of RR1/RR2 for small n, not the general q-series proof (which lives in parent OQ-01).",
+      "rr1GapPartitions/rr2GapPartitions/rr1Mod5Partitions/rr2Mod5Partitions are computable (Finset.filter over Nat.Partition), so native_decide discharges each concrete n.",
+      "The general Rogers-Ramanujan identities (Rogers 1894, Ramanujan 1913) remain AXIOMATIZED in parent OQ-01 (rogers_ramanujan_first/second); the parent axiom-elimination roadmap is at step 8/9 (gap-side generating function unbuilt)."
+    ],
+    "builtItems": [
+      "proofs/Proofs/PartitionTheoremOQ01OQ01.lean: rr1_n0..rr1_n8, rr2_n0..rr2_n8 (18 native_decide theorems) + rr_both_verified_through_8 (interval_cases) — 0 sorries, gallery status=verified.",
+      "src/data/proofs/partition-theorem-oq-01-oq-01/meta.json (verified, badge=mathlib, axiomCount=0)."
+    ],
+    "mathlibGaps": [
+      "No q-series / q-Pochhammer / Jacobi triple product / Rogers-Ramanujan continued fraction in Mathlib — required for the general gap-side generating function (parent roadmap step 8).",
+      "General RR proof needs Bailey chain or Garsia-Milne bijective involution machinery (>1000 lines); effectively blocked for the general statement, hence parent axiomatization."
+    ],
+    "nextSteps": [
+      "This sub-question (n≤8 verification) is COMPLETE; no further work needed here.",
+      "General q-series proof is tracked in parent partition-theorem-oq-01 (build gap-side GF, roadmap steps 8-9) — pursue there, not in this child slug."
+    ],
+    "progressSummary": "COMPLETE: n≤8 computational verification of RR1/RR2 gallery-verified (0 sorries, 0 axioms in this file). General q-series proof remains axiomatized in parent OQ-01 (gap-side GF, roadmap step 8/9)."
+  }
+}

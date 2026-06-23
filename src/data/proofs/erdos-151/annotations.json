@@ -1,0 +1,222 @@
+[
+  {
+    "id": "ann-e151-header",
+    "proofId": "erdos-151",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #151** (Erdős–Gallai, OPEN):\n\nFor a graph G on n vertices, is τ(G) ≤ n − H(n), where τ(G) is the clique transversal number and H(n) is the maximum independent set size guaranteed in every triangle-free graph on n vertices?\n\n**Known:** τ(G) ≤ n − √n (easy), and H(n) ≥ √n by Ramsey theory. Even the K₄-free case is open.",
+    "mathContext": "Erdős called this conjecture 'perhaps completely wrongheaded,' indicating uncertainty about its truth. The problem connects clique covering, Ramsey theory, and independent sets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "clique transversal",
+      "Ramsey theory",
+      "independent set"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Ramsey numbers"
+    ],
+    "tags": [
+      "erdos",
+      "open-problem",
+      "clique-transversal",
+      "ramsey"
+    ]
+  },
+  {
+    "id": "ann-e151-axioms",
+    "proofId": "erdos-151",
+    "range": {
+      "startLine": 24,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Graph Properties (Axiomatised)",
+    "content": "**Axiomatised predicates:**\n\n- `vertexCount G` — number of vertices\n- `IsClique G C` / `IsMaximalClique G C` — clique and maximality predicates\n- `IsIndependent G I` — independent set predicate\n- `IsTriangleFree G` / `IsK4Free G` — graph structure constraints\n\nThese are axiomatised since the Lean formalization works with abstract graph types rather than Mathlib's SimpleGraph.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "axiom",
+      "graph theory",
+      "Mathlib"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "tags": [
+      "axiomatization",
+      "graph-predicates",
+      "infrastructure"
+    ],
+    "mathContext": "See annotation content for formal details of graph properties (axiomatised)"
+  },
+  {
+    "id": "ann-e151-transversal",
+    "proofId": "erdos-151",
+    "range": {
+      "startLine": 51,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Clique Transversal Number τ(G)",
+    "content": "**IsCliqueTransversal G T:** T intersects every maximal clique of size ≥ 2.\n\n**cliqueTransversal G = τ(G):** the minimum size of such a transversal.\n\nTwo axioms establish that τ(G) is both achievable (some T of size τ exists) and minimal (no smaller T works).\n\nIntuitively: τ(G) measures how many vertices you need to 'break' all maximal cliques.",
+    "mathContext": "The clique transversal number is dual to the clique cover number. It measures the minimum vertex set needed to intersect every maximal clique.",
+    "significance": "key",
+    "relatedConcepts": [
+      "transversal",
+      "clique",
+      "vertex cover"
+    ],
+    "prerequisites": [
+      "IsMaximalClique",
+      "Finset",
+      "cliqueTransversal"
+    ],
+    "tags": [
+      "clique-transversal",
+      "definition",
+      "minimum-cover"
+    ]
+  },
+  {
+    "id": "ann-e151-H",
+    "proofId": "erdos-151",
+    "range": {
+      "startLine": 70,
+      "endLine": 89
+    },
+    "type": "axiom",
+    "title": "Triangle-Free Independence Number H(n)",
+    "content": "**triangleFreeIndep n = H(n):** the max k such that every triangle-free graph on n vertices has an independent set of size ≥ k.\n\n**Key properties:**\n- H(n) ≥ √n (Ramsey lower bound: R(3,k) grows, so triangle-free graphs have large independent sets)\n- H(n) ≤ n (trivial)\n\nH(n) is the 'Ramsey guarantee' for triangle-free graphs.",
+    "mathContext": "By Ramsey theory, R(3,t) ~ t²/log t, so every triangle-free graph on n vertices has α(G) ≥ c√(n log n). The exact value of H(n) depends on the Ramsey function R(3,·).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number",
+      "independent set",
+      "triangle-free graph"
+    ],
+    "prerequisites": [
+      "IsTriangleFree",
+      "IsIndependent",
+      "Ramsey theory"
+    ],
+    "tags": [
+      "ramsey-function",
+      "triangle-free",
+      "independence-number"
+    ]
+  },
+  {
+    "id": "ann-e151-proved-lemmas",
+    "proofId": "erdos-151",
+    "range": {
+      "startLine": 90,
+      "endLine": 132
+    },
+    "type": "concept",
+    "title": "Proved Infrastructure Lemmas",
+    "content": "**Six proved results:**\n\n1. **cliqueTransversal_nonneg:** 0 ≤ τ(G) (trivially from ℕ)\n2. **empty_transversal_iff:** ∅ is a transversal iff all maximal cliques have size < 2\n3. **conjecture_implies_easy_bound:** the conjecture implies the easier τ ≤ n − √n\n4. **triangleFree_isK4Free:** triangle-free ⟹ K₄-free (axiomatised)\n5. **complement_of_indep_is_transversal:** V \\ I is a transversal when I is independent\n\nThese form the logical backbone connecting the definitions to the conjecture.",
+    "mathContext": "The complement-of-independent-set argument is the key structural insight: if I is independent, then every maximal clique must contain at least one vertex outside I.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structural proof",
+      "independent set",
+      "complement"
+    ],
+    "prerequisites": [
+      "IsCliqueTransversal",
+      "IsIndependent"
+    ],
+    "tags": [
+      "infrastructure-lemmas",
+      "complement-argument",
+      "proved"
+    ]
+  },
+  {
+    "id": "ann-e151-easy-bound",
+    "proofId": "erdos-151",
+    "range": {
+      "startLine": 133,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "Easy Bound: τ(G) ≤ n − √n",
+    "content": "**clique_transversal_easy_bound:**\n\nEvery n-vertex graph has τ(G) ≤ n − √n.\n\n**Proof idea:** Take a maximum independent set I in G. Then V \\ I is a clique transversal of size n − α(G). Since every graph has α(G) ≥ √n (by Ramsey: R(ω,t) bounds), we get τ ≤ n − √n.\n\nThe conjecture strengthens √n to H(n) ≥ √n.",
+    "mathContext": "This is the baseline result against which Problem #151 is compared. The conjecture asks for a tighter bound using the exact Ramsey function for triangle-free graphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey bound",
+      "independent set",
+      "clique transversal"
+    ],
+    "prerequisites": [
+      "cliqueTransversal",
+      "triangleFreeIndep"
+    ],
+    "tags": [
+      "easy-bound",
+      "ramsey",
+      "baseline-result"
+    ]
+  },
+  {
+    "id": "ann-e151-conjecture",
+    "proofId": "erdos-151",
+    "range": {
+      "startLine": 139,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "Erdős Problem #151 (OPEN)",
+    "content": "**ErdosProblem151:** τ(G) ≤ n − H(n) for every n-vertex graph G.\n\n**Special cases:**\n- Triangle-free graphs: trivially true (H(n) ≤ α(G) for triangle-free G)\n- K₄-free case: even this restriction remains open\n\n**erdos_151_K4free_open** formalises that the K₄-free case is nontrivial: proving it for K₄-free graphs would already be a significant advance.\n\nErdős noted this might be 'completely wrongheaded,' expressing doubt about the conjecture's truth.",
+    "mathContext": "The conjecture interpolates between Ramsey theory (bounding H(n)) and graph structure (bounding τ(G)). The difficulty is that τ and α are not directly related for general graphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem",
+      "K₄-free graphs",
+      "Erdős–Gallai conjecture"
+    ],
+    "prerequisites": [
+      "cliqueTransversal",
+      "triangleFreeIndep",
+      "vertexCount"
+    ],
+    "tags": [
+      "open-conjecture",
+      "erdos-gallai",
+      "k4-free"
+    ]
+  },
+  {
+    "id": "ann-e151-summary",
+    "proofId": "erdos-151",
+    "range": {
+      "startLine": 165,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Corollaries and Summary",
+    "content": "**conjecture_strengthens_easy_bound:** H(n) ≥ √n, so the conjecture is indeed stronger than the easy bound.\n\n**conjecture_reformulation:** If the conjecture holds, then τ(G) + H(n) ≤ n (additive reformulation).\n\n**erdos_151_summary** combines:\n1. The easy bound τ ≤ n − √n\n2. H(n) ≥ √n\n3. The conjecture implies the easy bound\n\nThis provides a clean summary of the current state of knowledge.",
+    "mathContext": "The reformulation τ + H ≤ n is a partition-type inequality: the graph's 'clique vulnerability' plus the Ramsey guarantee for triangle-free graphs cannot exceed the vertex count.",
+    "significance": "key",
+    "relatedConcepts": [
+      "summary theorem",
+      "reformulation",
+      "state of knowledge"
+    ],
+    "prerequisites": [
+      "ErdosProblem151",
+      "clique_transversal_easy_bound"
+    ],
+    "tags": [
+      "summary",
+      "reformulation",
+      "corollaries"
+    ]
+  }
+]

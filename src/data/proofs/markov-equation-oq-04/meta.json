@@ -1,0 +1,72 @@
+{
+  "id": "markov-equation-oq-04",
+  "title": "Markov Triples Are Pairwise Coprime",
+  "slug": "markov-equation-oq-04",
+  "description": "An axiom-free proof that the three coordinates of every positive Markov triple x² + y² + z² = 3xyz are pairwise coprime. Rather than a fresh descent, the result is an invariance argument over the Markov tree of Proofs/MarkovEquation.lean: pairwise coprimality holds at the root (1,1,1), and each generating move — a transposition or a Vieta jump z ↦ 3xy − z — preserves it, because 3xy − z = −z + x·(3y) = −z + y·(3x) shifts a coordinate by a multiple of each of the other two, leaving gcd(x, 3xy−z) = gcd(x, z) and gcd(y, 3xy−z) = gcd(y, z). Coprimality therefore propagates from the root to the whole tree along the reachability relation. Consequences: all three pairwise gcds equal 1, and no two coordinates of a Markov triple share the factor 2, i.e. at most one Markov number in a triple is even.",
+  "meta": {
+    "author": "Markov theory (classical); formalization original to Lean Genius",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MarkovCoprime.lean",
+    "tags": [
+      "number-theory",
+      "diophantine-equations",
+      "markov-equation",
+      "coprimality",
+      "vieta-jumping",
+      "markov-tree"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-22",
+    "lineCount": 165,
+    "originalContributions": [
+      "Coprime3: pairwise-coprimality predicate on triples ℤ × ℤ × ℤ, aligned with the Step/Reachable move relation",
+      "coprime_fst_vieta / coprime_snd_vieta: a Vieta jump z ↦ 3xy − z leaves coprimality with the jumped coordinate unchanged (gcd(x, 3xy−z) = gcd(x, z) and gcd(y, 3xy−z) = gcd(y, z))",
+      "coprime3_of_step: every generating move (two transpositions and the Vieta jump) preserves pairwise coprimality in both directions, since each move is an involution",
+      "coprime3_of_isMarkov: pairwise coprimality propagates from the root (1,1,1) to every positive Markov triple via head-induction on the reachability path from markov_classification",
+      "markov_coprime: headline theorem — every positive Markov triple is pairwise coprime over ℤ",
+      "markov_gcd_eq_one: the three pairwise gcds of a Markov triple all equal 1",
+      "not_two_dvd_both / markov_at_most_one_even / markov_not_both_even: no two coordinates share the factor 2 — at most one Markov number per triple is even"
+    ],
+    "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound. No native_decide is used. The proof imports the verified classification (markov_classification, Step, Reachable) from the parent entry Proofs/MarkovEquation.lean.",
+    "theoremCount": 13,
+    "definitionCount": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "markov-equation",
+      "relationship": "extends",
+      "description": "Builds directly on the parent's tree classification: markov_classification gives a reachability path from any positive Markov triple to the root (1,1,1), and pairwise coprimality is shown to be invariant along the Step relation (transpositions + Vieta jumps), so it transports from the root to the whole tree."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Markov numbers — coordinates of the triples solving x² + y² + z² = 3xyz — carry rich arithmetic structure beyond the tree shape itself. A basic, classical such property is that within any triple the three numbers are pairwise coprime; it underlies, for instance, the reduction theory of the associated indefinite binary quadratic forms and the standard normalizations in work on the Markov uniqueness conjecture. The fact is usually stated in passing as 'obviously the entries of a Markov triple are coprime'; here it is given a clean machine-checked proof as a structural invariant of the Markov tree.",
+    "problemStatement": "Show that for every positive integer solution (x, y, z) of x² + y² + z² = 3xyz, the three coordinates are pairwise coprime: gcd(x,y) = gcd(y,z) = gcd(x,z) = 1. Deduce that at most one coordinate of any Markov triple is even.",
+    "proofStrategy": "An invariance argument over the Markov tree rather than a new descent. (1) Pairwise coprimality holds at the root (1,1,1). (2) Each generating move preserves it: transpositions only permute the three coprimality statements, and the Vieta jump z ↦ 3xy − z leaves gcd(x, ·) and gcd(y, ·) with the jumped coordinate unchanged because 3xy − z = −z + x·(3y) = −z + y·(3x) differs from −z by a multiple of x and of y. (3) Each move is its own inverse, so coprimality is preserved along the reachability relation in both directions. Since markov_classification (parent entry) reaches the root from any positive triple, head-induction on that path pushes coprimality from (1,1,1) back to the given triple.",
+    "keyInsights": [
+      "Coprimality with the jumped coordinate is a Vieta invariant. The Vieta partner 3xy − z is congruent to −z modulo both x and y (3xy ≡ 0 mod x and mod y), so IsCoprime x (3xy − z) ↔ IsCoprime x z and IsCoprime y (3xy − z) ↔ IsCoprime y z. These two `IsCoprime.add_mul_left_right_iff`/`neg_right_iff` equivalences are the entire arithmetic content.",
+      "The proof needs no infinite descent of its own. The parent file already supplies a reachability path to (1,1,1); coprimality is simply transported along it. Because the moves are involutions, the same preservation lemma works in the 'backward' direction required by ReflTransGen.head_induction_on.",
+      "Pairwise coprimality immediately yields the parity statement: 2 is not a unit in ℤ, so IsCoprime a b forbids 2 | a and 2 | b simultaneously (IsCoprime.isUnit_of_dvd' would make 2 a unit). Hence at most one coordinate of a Markov triple is even — consistent with the triples (1,1,1), (1,1,2), (1,2,5), (1,5,13), (2,5,29), … in which the even entries are isolated.",
+      "Stating the predicate on the product type ℤ × ℤ × ℤ (Coprime3) is what makes the induction line up cleanly with the Step/Reachable infrastructure, avoiding any higher-order unification trouble in the head-induction."
+    ]
+  },
+  "conclusion": {
+    "summary": "A 0-axiom, 0-sorry formalization (165 lines, 13 theorems, 1 definition) proving that every positive Markov triple is pairwise coprime, together with the gcd-form and the parity corollary that at most one coordinate is even. The proof reuses the parent's verified tree classification and reduces the whole statement to the single observation that a Vieta jump shifts a coordinate by a multiple of the other two.",
+    "implications": "Pairwise coprimality is a basic normalization used throughout Markov theory and the study of the Lagrange spectrum; isolating it as an invariant of the move relation shows how arithmetic properties of Markov triples can be read off the tree structure without re-running descent. The same template (verify at the root, check preservation under each move, transport along reachability) applies to other tree-invariant properties — e.g. parity patterns or congruence conditions of Markov numbers.",
+    "openQuestions": [
+      "Which exact residue/parity pattern do the three coordinates of a Markov triple realize (e.g. the standard fact that each triple has the parity profile odd-odd-even up to the root), proved as a tree invariant in the same style?",
+      "Markov uniqueness conjecture: does the largest coordinate determine the triple? Pairwise coprimality is one of the standard hypotheses in attacks on this still-open problem, but the conjecture itself is not addressed here."
+    ]
+  },
+  "leanFile": {
+    "lineCount": 165,
+    "axiomCount": 0,
+    "path": "Proofs/MarkovCoprime.lean",
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 13
+  },
+  "sorries": 0
+}

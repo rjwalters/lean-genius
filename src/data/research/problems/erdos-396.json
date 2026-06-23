@@ -1,0 +1,91 @@
+{
+  "slug": "erdos-396",
+  "title": "Erdős #396",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Is it true that for every $k$ there exists $n$ such that\\[\\prod_{0\\leq i\\leq k}(n-i) \\mid \\binom{2n}{n}?\\]\n\n\n\nErd\\H{o}s and Graham write that $n+1$ always divides $\\binom{2n}{n}$ (indeed $\\frac{1}{n+1}\\binom{2n}{n}$ is the $n$th Catalan number), but it is quite rare that $n$ divides $\\binom{2n}{n}$.\n\nPomerance \\cite{Po14} has shown that for any $k\\geq 0$ there are infinitely many $n$ such that $n-k\\mid\\binom{2n}{n}$, although the set of such $n$ has upper density $<1/3$. Pomerance also shows that the set of $n$ such that\\[\\prod_{1\\leq i\\leq k}(n+i)\\mid \\binom{2n}{n}\\]has density $1$.\n\nThe smallest $n$ for each $k$ are listed as A375077 on the OEIS.",
+    "plain": "Is it true that for every $k$ there exists $n$ such that\\[\\prod_{0\\leq i\\leq k}(n-i) \\mid \\binom{2n}{n}?\\]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-05T01:55:00Z",
+    "iteration": 3,
+    "focus": "Stated Erdős–Graham conjecture as a Prop using descFactorial, eliminated meaningless placeholder axiom, proved k=0 and k=1 witnesses.",
+    "blockers": [],
+    "nextAction": "Attempt k=2 witness (smallest n with n(n-1)(n-2) | C(2n,n) is non-obvious; search up to ~50) or prove descProduct/centralBinom identities that reduce the conjecture to a Pomerance-style density argument.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "FORMALIZED: 4 theorems, 2 lemmas, 2 defs, 3 examples, 0 axioms, 0 sorries. The Erdős–Graham descending-factorial conjecture is now a Prop (Erdos396.Conjecture). k=0 and k=1 cases proved with n=2. Placeholder smallest_witness axiom removed (axiom count 1→0). Counterexample 3∤C(6,3)=20 demonstrates the k=0 slice is non-trivial.",
+    "builtItems": [
+      "Confirmed catalan_divisibility uses Nat.succ_dvd_centralBinom.",
+      "Confirmed n_divides_rarely is an empty-set/True witness, not a density theorem.",
+      "Confirmed smallest_witness is the only axiom and currently has no stated witness property.",
+      "Defined descProduct n k = n.descFactorial (k+1) matching the problem statement ∏_{i=0..k}(n-i).",
+      "Stated Erdos396.Conjecture : ∀ k, ∃ n > k, descProduct n k ∣ centralBinom n.",
+      "Proved conjecture_holds_for_zero and conjecture_holds_for_one (both witness n=2) via decide.",
+      "Proved n_not_always_dvd_centralBinom with counterexample n=3 (since 3∤20=C(6,3)).",
+      "Eliminated placeholder axiom smallest_witness (had no specification, contributed no math content).",
+      "Replaced True-tautology theorem n_divides_rarely with the real counterexample n_not_always_dvd_centralBinom."
+    ],
+    "insights": [
+      "The descending-factorial conjecture is not yet formalized as a theorem or definition beyond comments.",
+      "Pomerance density results are not represented in Lean.",
+      "The next useful metadata-aligned step is to define the product/divisibility predicate before naming witnesses.",
+      "Pomerance (2014) proves the k=0 statement (set of n with n∣C(2n,n) is infinite, upper density <1/3); formalizing this requires the upper-density infrastructure not yet present.",
+      "The Nat-truncated subtraction in Nat.descFactorial forces a k<n side condition; otherwise descFactorial n (k+1)=0 trivially divides anything.",
+      "n=2 is a small simultaneous witness for both k=0 and k=1: descFactorial 2 1 = 2 and descFactorial 2 2 = 2*1 = 2, both divide centralBinom 2 = 6.",
+      "Empirical search up to n=13 finds no k=2 witness (n(n-1)(n-2)∤C(2n,n) for n∈[3,13]). Pomerance does not give an explicit upper bound on the smallest k=2 witness."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Search for the smallest k=2 witness empirically (extend small-case computation past n=13).",
+      "Express the conjecture via the identity descFactorial n (k+1) = (k+1)! * n.choose (k+1) to expose the factorial/binomial structure.",
+      "Add a companion file targeting Aristotle with routine descFactorial/choose identities; main conjecture remains open."
+    ],
+    "markdown": "# Erdős #396 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $k$ there exists $n$ such that\\[\\prod_{0\\leq i\\leq k}(n-i) \\mid \\binom{2n}{n}?\\]\n\n\n\nErd\\H{o}s and Graham write that $n+1$ always divides $\\binom{2n}{n}$ (indeed $\\frac{1}{n+1}\\binom{2n}{n}$ is the $n$th Catalan number), but it is quite rare that $n$ divides $\\binom{2n}{n}$.\n\nPomerance \\cite{Po14} has shown that for any $k\\geq 0$ there are infinitely many $n$ such that $n-k\\mid\\binom{2n}{n}$, although the set of such $n$ has upper density $<1/3$. Pomerance also shows that the set of $n$ such that\\[\\prod_{1\\leq i\\leq k}(n+i)\\mid \\binom{2n}{n}\\]has density $1$.\n\nThe smallest $n$ for each $k$ are listed as A375077 on the OEIS.\n\n\n\n\nReferences\n\n\n[Po14] Pomerance, C., Divisors of the middle binomial coefficient. American Mathematical Monthly (2014).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #3\n- Problem #395\n- Problem #397\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n- Po14\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-39",
+    "erdos-396"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T02:35:40.568Z",
+  "lastUpdate": "2026-06-05T01:55:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos396Problem.lean",
+      "filename": "Erdos396Problem.lean",
+      "lineCount": 102,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396Problem.lean"
+    }
+  ]
+}

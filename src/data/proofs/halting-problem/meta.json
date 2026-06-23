@@ -1,0 +1,273 @@
+{
+  "id": "halting-problem",
+  "title": "Undecidability of the Halting Problem",
+  "slug": "halting-problem",
+  "description": "Turing's 1936 proof that no algorithm can determine whether an arbitrary program halts, establishing fundamental limits on computation using the diagonal argument.",
+  "meta": {
+    "author": "Alan Turing (1936)",
+    "date": "1936",
+    "status": "verified",
+    "tags": [
+      "computability",
+      "undecidability",
+      "diagonalization",
+      "classic",
+      "intermediate"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "Self-contained formalization of the diagonal argument's logical core (zero imports)",
+      "Models halting oracles abstractly as Boolean functions to isolate the self-referential contradiction",
+      "Demonstrates pure logical reasoning in Lean"
+    ],
+    "dateAdded": "2025-12-21",
+    "prerequisites": [
+      "Computability theory and Turing machines",
+      "Decidability predicates in Lean",
+      "Proof by contradiction (diagonal argument)",
+      "Function types and higher-order functions"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None at the logical level: fully verified with 0 axioms and 0 sorries. Scope note: halting oracles are modeled as arbitrary Boolean functions (Nat → Nat → Bool) with no computability constraint and no execution model, so the theorems formalize the diagonalization schema (`!(H n n) ≠ H n n` and equivalents), which holds for every function H — not a computation-theoretic undecidability theorem. The genuine statement 'no total computable function decides halting' requires a model of computation (e.g. Mathlib's `Nat.Partrec` / `ComputablePred`) and the encodability of the diagonal program; it is not formalized here.",
+    "proofRepoPath": "Proofs/HaltingProblem.lean",
+    "additionalFiles": [
+      "Proofs/RelativizedHalting.lean",
+      "Proofs/RelativizedHaltingBridge.lean"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 172,
+    "theoremCount": 5,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Alan Turing published this groundbreaking result in 1936, the same paper where he introduced the Turing machine model of computation. Working independently from Alonzo Church (who proved an equivalent result using lambda calculus), Turing established that there are fundamental limits to what can be computed.\n\nThe halting problem was the first concrete example of an undecidable problem, and it remains the canonical example in computer science education. The proof technique - diagonalization - connects deeply to Cantor's work on uncountability (1891) and Godel's incompleteness theorems (1931).\n\nThe practical implications are profound: no static analysis tool can perfectly detect all infinite loops, no compiler can optimize away all non-terminating code, and no verification system can automatically prove termination for all programs.",
+    "problemStatement": "Theorem (Turing, 1936): The halting problem is undecidable.\n\nMore precisely: there is no algorithm $H$ that, given the description of a program $P$ and input $I$, correctly determines whether $P$ halts on $I$:\n\n$$\\nexists H : \\text{Program} \\times \\text{Input} \\to \\{\\text{halts}, \\text{loops}\\}$$\n\nsuch that $H(P, I) = \\text{halts}$ if and only if $P(I)$ terminates.",
+    "text": "Turing's 1936 proof is the founding result of computability theory: no algorithm can decide, for an arbitrary program $P$ and input $I$, whether $P(I)$ terminates. The proof is a master class in the **diagonal argument** — the same logical move that Cantor used to show $|\\mathbb{R}| > |\\mathbb{N}|$ and Gödel used to construct unprovable sentences.\n\nThe construction is disarmingly simple: assume oracle $H$ exists, define a diagonal program $D(n) = \\neg H(n,n)$ (halt iff the oracle says loop), then ask what $H(D,D)$ must be. Either answer yields an immediate contradiction. The proof needs no topology, no algebra, no Mathlib — just natural numbers, booleans, and boolean negation.\n\nThis Lean formalization captures the **logical core** of the argument — the self-referential diagonalization schema — with **zero imports**. Halting oracles are modeled abstractly as Boolean functions $H : \\mathbb{N} \\to \\mathbb{N} \\to \\text{Bool}$ with no computability constraint, so the five theorems proved (`diagonal_differs`, `no_halting_oracle`, `halting_undecidable`, `no_self_halting_decider`, `halting_problem_undecidable`) formalize the self-referential contradiction $\\neg H(n,n) \\neq H(n,n)$ — a fact that holds for *every* function $H$ — rather than a full computation-model-based undecidability theorem. Turning this schema into genuine undecidability additionally requires a model of program execution and the fact that the diagonal program is itself encodable (the step Turing supplied via the universal machine); that step is outside the scope of this file.",
+    "proofStrategy": "The proof uses diagonalization, similar to Cantor's proof of uncountability:\n\n1. Assume we have a halting oracle $H(p, i)$ that correctly decides if program $p$ halts on input $i$\n2. Construct a diagonal program $D$ that:\n   - Takes a program code $n$ as input\n   - Runs $H(n, n)$ to check if program $n$ halts on itself\n   - Does the opposite: loops if $H$ says halt, halts if $H$ says loop\n3. Apply $D$ to its own code: what does $H(D, D)$ return?\n   - If $H(D, D) = \\text{halts}$: then $D(D)$ loops (by construction)\n   - If $H(D, D) = \\text{loops}$: then $D(D)$ halts (by construction)\n4. Contradiction: $H$ cannot correctly predict $D$'s behavior on itself\n\nThe key insight is self-reference: any decision procedure can be turned against itself.",
+    "keyInsights": [
+      "**Self-Reference + Negation:** Define $D(n) = \\neg H(n, n)$. Applying $D$ to its own code: $D(D) = \\neg H(D, D)$. If $H$ is correct, then $H(D,D) = \\text{halts} \\iff D(D)$ halts $\\iff D(D)$ loops — direct contradiction. No cleverness can escape this logical trap.",
+      "**The Diagonal is an Explicit Witness:** The proof is constructive: given *any* proposed oracle $H$, we immediately exhibit the specific behavior $D = \\text{diagonalBehavior}(H)$ on which $H$ must fail. This is stronger than a mere existence proof — it names the counterexample.",
+      "**Logical, Not Computational:** No amount of computational power, time, or cleverness can solve the halting problem. The impossibility is a *logical* self-referential contradiction, not a resource bottleneck. A quantum computer, oracle machine, or infinite memory cannot help — any such system could itself be diagonalized.",
+      "**Cantor's Diagonal in Disguise:** The proof is precisely Cantor's 1891 diagonalization applied to the enumeration of programs. The halting oracle $H$ is a purported bijection from $\\mathbb{N}$ to behaviors; the diagonal produces a behavior outside the range. Turing's achievement was recognizing this abstract argument applies to computation.",
+      "**Rice's Theorem Generalization:** ANY non-trivial semantic property of programs is undecidable. If property $P$ holds for some programs and fails for others, then $\\{n : \\text{program } n \\text{ has property } P\\}$ is undecidable. The halting problem is the simplest case; Rice's theorem shows it is universal.",
+      "**Zero-Import Proof:** The formalization requires no Mathlib, no imports at all — only Lean's built-in `Nat`, `Bool`, and Boolean negation. This isolates the purely logical character of undecidability: it is independent of any mathematical library or axiom system beyond the minimal logic of a proof assistant."
+    ],
+    "prerequisites": [
+      "Computability theory and Turing machines",
+      "Decidability predicates in Lean",
+      "Proof by contradiction (diagonal argument)",
+      "Function types and higher-order functions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Definitions",
+      "startLine": 21,
+      "endLine": 33,
+      "summary": "Defines halting oracles as functions from (program, input) pairs to Bool, and the diagonal behavior that negates the oracle's self-prediction.",
+      "mathContext": "$$H : \\mathbb{N} \\times \\mathbb{N} \\to \\{\\text{true}, \\text{false}\\}, \\quad D(n) = \\lnot H(n, n)$$"
+    },
+    {
+      "id": "diagonal-lemma",
+      "title": "The Diagonal Differs",
+      "startLine": 35,
+      "endLine": 43,
+      "summary": "Proves the key lemma: the diagonal behavior always differs from the oracle's prediction at self-application points.",
+      "mathContext": "$$\\forall n,\\; D(n) \\neq H(n, n) \\quad \\text{(the diagonal always disagrees)}$$"
+    },
+    {
+      "id": "main-theorem",
+      "title": "No Correct Oracle",
+      "startLine": 45,
+      "endLine": 76,
+      "summary": "Proves that no oracle can correctly predict the diagonal program's behavior, by deriving a contradiction from either prediction.",
+      "mathContext": "$$H(d, d) = \\text{true} \\Rightarrow D(d) = \\text{false}, \\quad H(d, d) = \\text{false} \\Rightarrow D(d) = \\text{true} \\quad \\Rightarrow\\!\\Leftarrow$$"
+    },
+    {
+      "id": "undecidability",
+      "title": "Halting Undecidable",
+      "startLine": 78,
+      "endLine": 97,
+      "summary": "Restates the result using logical equivalence: no Boolean oracle can be consistent with its own diagonal flip at a self-application point.",
+      "mathContext": "$$\\forall H\\, c,\\; \\neg\\big((H(c,c){=}\\text{true} \\iff D(c){=}\\text{true}) \\wedge (H(c,c){=}\\text{false} \\iff D(c){=}\\text{false})\\big), \\quad D(c)=\\lnot H(c,c).$$ This is the abstract diagonalization schema. The computation-model statement $\\nexists H.\\ \\forall p\\, i.\\ H(p,i){=}\\text{true} \\iff P_p(i){\\downarrow}$ is the mathematical target but is **not** formalized here — $H$ is an arbitrary Boolean function with no link to program execution."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 120,
+      "endLine": 131,
+      "summary": "Final statement: for any halting oracle, the diagonal program provides an explicit counterexample.",
+      "mathContext": "$$\\forall H.\\; \\exists d.\\; H(d, d) \\neq D(d) \\quad \\text{(explicit counterexample via diagonalization)}$$"
+    },
+    {
+      "id": "main-summary",
+      "title": "Full Undecidability Theorem and Diagonalization Visualization",
+      "startLine": 132,
+      "endLine": 172,
+      "summary": "States $\text{halting\\_problem\\_undecidable}$: for any halting oracle $H$, there exists a behavior that $H$ fails to predict on some code. The diagonal construction visualizes the 2D table of program behaviors, flipping the diagonal to create an impossible row. Verification section with $\texttt{\\#check}$ on all key theorems.",
+      "mathContext": "Main result: $\forall H : \text{HaltingOracle}, \\exists b : \text{Behavior}, \forall c : \\mathbb{N}, H(c,c) \neq b(c)$. The diagonal argument pattern unifies halting undecidability with Cantor, Godel, Russell, and Tarski."
+    }
+  ],
+  "conclusion": {
+    "summary": "The undecidability of the halting problem is one of the most important results in mathematics and computer science. Using the elegant technique of diagonalization, Turing showed in 1936 that computation has inherent logical limits — some questions about programs cannot be answered algorithmically, regardless of how powerful or clever the algorithm.\n\nThe Lean formalization makes this precise in the starkest possible way: with **zero external dependencies**, using only Lean's built-in booleans and natural numbers, we construct an explicit counterexample to any proposed halting oracle. Given any $H : \\mathbb{N} \\to \\mathbb{N} \\to \\text{Bool}$, the diagonal behavior $D(n) = \\neg H(n,n)$ is a concrete program behavior that $H$ must get wrong — not at some abstract future input, but precisely at the self-application point $H(D, D)$.\n\nThis is not a failure of our current algorithms; it is a fundamental logical barrier, as inescapable as Russell's paradox or Gödel's incompleteness. The diagonalization technique — self-reference plus negation — is one of the deepest and most broadly applicable ideas in all of mathematics.",
+    "implications": "**Theoretical Significance**: The halting problem has profound implications across computer science and logic:\n\n1. **Static Analysis Limits** — No tool can detect all bugs, infinite loops, or security vulnerabilities. Every static analyser must either miss some problems (incompleteness) or report false positives (unsoundness).\n\n2. **Rice's Theorem** — Generalizes halting: any non-trivial semantic property of programs is undecidable. You can't build a perfect \"does this program do X?\" checker for any non-trivial X.\n\n3. **Verification Limits** — Fully automatic program verification is impossible. Interactive theorem provers require human guidance precisely because termination and correctness are undecidable.\n\n4. **Compiler Optimizations** — Some optimizations (like removing all unreachable code) are undecidable in general. Compilers use conservative approximations: they miss some safe optimizations to remain sound.\n\n5. **The Church-Turing Thesis** — This result helped establish that Turing machines capture our intuitive notion of 'algorithm'. The undecidability is about *any* mechanical procedure, not just Turing machines. Church's equivalent result via lambda calculus confirmed this formalism-independence.\n\n6. **Arithmetical Hierarchy** — The halting set $K = \\{n : \\text{program } n \\text{ halts on } n\\}$ is $\\Sigma^0_1$-complete: it is recursively enumerable but not decidable, and every r.e. set reduces to it. This places the halting problem precisely in the Kleene-Post hierarchy of undecidable problems.",
+    "openQuestions": [
+      "What is the computational complexity of approximating the halting problem?",
+      "How do real-world static analyzers balance precision and recall?",
+      "Can interactive systems (human + machine) solve undecidable problems?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "technique",
+      "description": "Both use the diagonal argument: Cantor constructs a real not in any enumeration, Turing constructs a program that any halting oracle gets wrong. Turing's proof is a computability-theoretic incarnation of Cantor's set-theoretic argument — the halting set is the effective analog of a non-enumerable set"
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Both are impossibility results about formal reasoning via self-reference. Gödel shows no consistent system proves all truths; Turing shows no algorithm decides all halting questions. They are logically equivalent: the halting problem can encode Gödel sentences, and incompleteness follows from undecidability"
+    },
+    {
+      "targetId": "godel-second-incompleteness-oq02",
+      "relationship": "complementary",
+      "description": "**Gödel's Second Incompleteness Theorem — the *self-consistency* analogue of this entry's *self-halting* undecidability.** This entry proves no Turing machine $M$ can decide whether arbitrary $(M', x)$ halts; `godel-second-incompleteness-oq02` proves no consistent formal system $T$ (satisfying the Hilbert-Bernays-Löb derivability conditions) can prove its own consistency statement $\\operatorname{Con}(T)$. **Why this is the natural pair**: both rely on the same self-referential diagonal structure but applied to different relations — this entry's diagonalization constructs a program $D$ that *contradicts* any putative halting oracle's verdict on $D$ itself; `godel-second-incompleteness-oq02`'s diagonalization constructs the Gödel sentence $G_T \\equiv \\neg \\operatorname{Prov}_T(G_T)$ (already in `godel-incompleteness` / `godel-first-incompleteness-oq01`) and then applies the formalized first-incompleteness derivation *inside* $T$ to derive $\\operatorname{Con}(T) \\to G_T$, which combined with the unprovability of $G_T$ from $T$'s consistency forces $\\operatorname{Con}(T)$ unprovable in $T$. **The Löb-style derivability conditions** in `godel-second-incompleteness-oq02` (D1: $T \\vdash \\varphi \\Rightarrow T \\vdash \\operatorname{Prov}_T(\\varphi)$; D2: $T \\vdash \\operatorname{Prov}_T(\\varphi \\to \\psi) \\to (\\operatorname{Prov}_T(\\varphi) \\to \\operatorname{Prov}_T(\\psi))$; D3: $T \\vdash \\operatorname{Prov}_T(\\varphi) \\to \\operatorname{Prov}_T(\\operatorname{Prov}_T(\\varphi))$) are the *formal-system analogue* of this entry's universal-machine assumption: a universal Turing machine $U$ can simulate any $M$ on $x$ (the computability analogue of D1: $T$ proves what it proves), and the halting-decision oracle assumption is the analogue of $T \\vdash \\operatorname{Con}(T)$. **Computability vs. provability**: this entry's halting undecidability is the *external* impossibility (no halting oracle exists); Gödel II is the *internal* impossibility (the system cannot verify its own consistency). The Halting Problem $\\Leftrightarrow$ $\\Sigma_1^0$-completeness of provability-from-PA (Davis 1958), making the two undecidability/unprovability statements *technically equivalent* via the standard $\\operatorname{Prov}_{\\text{PA}} \\leftrightarrow$ 'TM halts' encoding. **The existing `godel-incompleteness` cross-reference** captures the first-incompleteness pairing (truth vs. provability); this addition captures the *second*-incompleteness pairing (provability vs. self-provability), completing the trio Halting Problem / Gödel I / Gödel II of *self-referential limitative theorems*."
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "extends",
+      "description": "Matiyasevich's theorem (1970) reduces the halting problem to Diophantine equations: a set is recursively enumerable iff it is Diophantine. This means the undecidability of the halting problem implies no algorithm can decide whether arbitrary polynomial equations have integer solutions — resolving Hilbert's 10th problem negatively"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Both are impossibility results about natural-seeming procedures: Abel-Ruffini shows no radical formula solves all quintics, the halting problem shows no algorithm decides all programs. Both reveal fundamental limits of 'finite symbolic methods' — radicals in one case, algorithms in the other"
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "thematic",
+      "description": "Both prove that a natural class of problems has no universal solution within a given framework: compass-straightedge cannot trisect all angles, algorithms cannot decide all halting questions. Both disprove the existence of a universal method by exhibiting specific unsolvable instances"
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "foundational",
+      "description": "The proof that the halting problem is undecidable uses proof by contradiction (assume a halting oracle exists, then construct a paradoxical program). The construction relies on the recursive nature of programs — the ability of programs to call themselves — which is the computational analog of induction"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "Gödel numbering — encoding programs as natural numbers — relies on unique prime factorization to make the encoding injective. The halting problem's undecidability applies to any system that can enumerate programs, and the standard enumeration uses Gödel-style numbering based on the fundamental theorem of arithmetic"
+    },
+    {
+      "targetId": "russell-1-plus-1",
+      "relationship": "related",
+      "description": "Russell's paradox ($R = \\{x : x \\notin x\\}$) and the halting problem use the same self-referential trick: construct an entity that contradicts its own classification. The halting problem asks 'does H(H) halt?' paralleling Russell's 'does R contain itself?' — both are diagonal arguments about self-application"
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "thematic",
+      "description": "Both illustrate fundamental limits of formal methods: the halting problem shows some questions about programs are algorithmically undecidable, while CH shows some questions about sets are axiomatically independent. Both demonstrate that natural mathematical questions can fall outside the reach of specific formal frameworks"
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "foundational",
+      "description": "Cantor's theorem ($|A| < |\\mathcal{P}(A)|$) is the prototype of the diagonal argument that Turing adapted for the halting problem. The halting problem's proof constructs a 'paradoxical program' $D(x) = $ 'run forever if $H(x,x)$ says halt, else halt' — this is exactly Cantor's diagonal set $\\{x : x \\notin f(x)\\}$ applied to the halting oracle $H$"
+    },
+    {
+      "targetId": "p-vs-np",
+      "relationship": "related",
+      "description": "The halting problem proves absolute undecidability (no algorithm decides all instances), while P vs NP asks about efficient decidability (can NP problems be solved in polynomial time?). The halting problem's diagonal argument shows some problems are not decidable at all; P $\\neq$ NP would show some decidable problems are not efficiently decidable — a finer gradation of computational impossibility"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Turing, Alan M.",
+      "title": "On Computable Numbers, with an Application to the Entscheidungsproblem",
+      "year": "1936",
+      "venue": "Proceedings of the London Mathematical Society, s2-42(1), pp. 230-265",
+      "note": "Foundational paper introducing Turing machines and proving the undecidability of the halting problem via diagonalization"
+    },
+    {
+      "authors": "Sipser, Michael",
+      "title": "Introduction to the Theory of Computation",
+      "year": "2012",
+      "venue": "Cengage Learning, 3rd edition",
+      "note": "Chapter 4 gives a modern treatment of the halting problem, its proof via diagonalization, and consequences including Rice's theorem"
+    },
+    {
+      "authors": "Church, Alonzo",
+      "title": "An Unsolvable Problem of Elementary Number Theory",
+      "year": "1936",
+      "venue": "American Journal of Mathematics 58(2), 345-363",
+      "note": "Independently proved the undecidability of the Entscheidungsproblem using lambda calculus — Church and Turing proved equivalent results using different formalisms of computability, establishing the Church-Turing thesis"
+    },
+    {
+      "authors": "Davis, Martin",
+      "title": "Computability and Unsolvability",
+      "year": "1958",
+      "venue": "McGraw-Hill (reprinted Dover, 1982)",
+      "note": "Classic textbook treatment of recursion theory including detailed analysis of the halting problem, Rice's theorem, and the arithmetical hierarchy"
+    },
+    {
+      "authors": "Rice, Henry Gordon",
+      "title": "Classes of Recursively Enumerable Sets and Their Decision Problems",
+      "year": "1953",
+      "venue": "Transactions of the American Mathematical Society, vol. 74, pp. 358–366",
+      "note": "Rice's theorem: every non-trivial semantic property of programs is undecidable. This is the most powerful generalization of the halting problem — it shows that undecidability is not a quirk of the halting predicate but a universal feature of program behavior"
+    },
+    {
+      "authors": "Hodges, Andrew",
+      "title": "Alan Turing: The Enigma",
+      "year": "1983",
+      "venue": "Simon & Schuster (updated edition 2014)",
+      "note": "Definitive biography of Turing covering both his mathematical contributions (the halting problem, Turing machines, the Entscheidungsproblem) and his wartime codebreaking work at Bletchley Park"
+    },
+    {
+      "authors": "Rogers, Hartley Jr.",
+      "title": "Theory of Recursive Functions and Effective Computability",
+      "year": "1967",
+      "venue": "McGraw-Hill (reprinted MIT Press, 1987)",
+      "note": "Graduate-level reference for recursion theory: covers the halting problem, the arithmetical hierarchy, the recursion theorem, and Post's problem — the standard for the full theory of computability"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 172,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "lemmaCount": 0,
+    "imports": [],
+    "opens": [],
+    "path": "Proofs/HaltingProblem.lean",
+    "sorries": 0,
+    "definitionCount": 3,
+    "additionalFiles": [
+      "Proofs/RelativizedHalting.lean",
+      "Proofs/RelativizedHaltingBridge.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "diagonal_differs",
+      "type": "key",
+      "description": "The diagonal behavior differs from every oracle prediction at the self-application point",
+      "leanType": "(H : HaltingOracle) -> (n : Nat) -> diagonalBehavior H n != H n n"
+    },
+    {
+      "name": "no_halting_oracle",
+      "type": "core",
+      "description": "No oracle can correctly predict the diagonal behavior",
+      "leanType": "forall H : HaltingOracle, forall c : Nat, not (H correctly predicts diagonalBehavior H at c)"
+    },
+    {
+      "name": "halting_problem_undecidable",
+      "type": "synthesis",
+      "description": "The halting problem is undecidable: for any oracle, a counterexample exists",
+      "leanType": "forall H : HaltingOracle, exists b : Behavior, forall c : Nat, H c c != b c"
+    }
+  ],
+  "sorries": 0
+}

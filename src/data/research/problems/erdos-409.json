@@ -1,0 +1,106 @@
+{
+  "slug": "erdos-409",
+  "title": "Erdős #409",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "How many iterations of $n\\mapsto \\phi(n)+1$ are needed before a prime is reached? Can infinitely many $n$ reach the same prime? What is the density of $n$ which reach any fixed prime?\n\n\n\nA problem of Finucane. One can also ask similar questions about $n\\mapsto \\sigma(n)-1$: do iterates of this always reach a prime? If so, how soon? (It is easily seen that iterates of this cannot reach the same prime infinitely often, since they are non-decreasing.)\n\nThis problem is somewhat ambiguously phrased. Let $F(n)$ count the number of iterations of $n\\mapsto \\phi(n)+1$ before reaching a prime. The number of iterations required is A039651 in the OEIS.\n\nCambie notes in the comments that $F(n)=o(n)$ is trivial, and $F(n)=1$ infinitely often. Presumably the intended question is to find 'good' upper bounds for $F(n)$.\n\nThis is discussed in problem B41 of Guy's collection \\cite{Gu04}.",
+    "plain": "How many iterations of $n\\mapsto \\phi(n)+1$ are needed before a prime is reached? Can infinitely many $n$ reach the same prime? What is the density of $n$ which reach any fixed prime?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T02:38:27.586Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 16 theorems proved, 0 sorries, 2 axioms (both genuinely open). Added F(n)<=n-2 bound and phi(n)>=2 helper. Strengthened sigma_growing.",
+    "builtItems": [
+      "Proved sigma_variant_question (was trivially True placeholder)",
+      "Proved four_to_three via native_decide",
+      "Fixed two_fixed_point proof (simp->native_decide)",
+      "Fixed sigma_growing syntax (Finset pipeline operator)",
+      "Proved prime_zero_iterations: set S={0} since iterate(p,0)=p is prime, csSup_singleton gives 0",
+      "Proved one_iteration_criterion: fixed bug (added ¬n.Prime), set S={0,1}, csSup_pair gives 1",
+      "Proved sigma_growing: {1,n}⊆divisors gives σ(n)≥1+n, hence σ(n)-1≥n via omega",
+      "Added helper lemmas totientIterate_zero, totientIterate_one",
+      "Switched to import Mathlib for csSup_singleton/csSup_pair access",
+      "Removed stale import Mathlib.Order.Filter.AtTopBot",
+      "Proved iterate_decreasing via Finset reasoning (0 and minFac non-coprime)",
+      "Proved iteration_terminates via strong induction on iterate_decreasing",
+      "Proved totient_plus_one_odd from Nat.totient_even + Even.add_one",
+      "theorem one_iteration_infinite: {n>1 | (phi(n)+1).Prime}.Infinite via odd primes image (Erdos409Problem.lean:271-291)",
+      "theorem totient_ge_two: phi(n) >= 2 for n >= 3, via Nat.totient_even + Nat.totient_pos",
+      "theorem iteration_reaches_prime_in: F(n) <= n-2 for all n > 1, by strong induction",
+      "Strengthened sigma_growing: removed unnecessary not-prime hypothesis (holds for all n > 1)"
+    ],
+    "insights": [
+      "sigma_variant_question was a trivially True placeholder axiom",
+      "four_to_three is a computation: phi(4)+1 = 2+1 = 3, proved by native_decide",
+      "iterate_decreasing needs Nat.totient = n-1 iff prime (converse direction) - exact Mathlib lemma name unclear",
+      "totient_plus_one_odd needs Nat.totient_even which may have different API in this Mathlib version",
+      "Nat.totient simp lemma does not fully reduce for n=2 in Mathlib v4.26.0 - use native_decide instead",
+      "Nat.totient_lt gives phi(n) < n for n > 1 (strict bound exists in Mathlib)",
+      "Finset.card_pair + card_le_card pattern proves set has >= 2 elements",
+      "Function.iterate_succ (not iterate_succ!) gives f^[k+1] n = f^[k] (f n)",
+      "Nat.minFac_prime + minFac_dvd key for composite characterization",
+      "csSup_singleton and csSup_pair are the key lemmas for sSup-based stopping time proofs",
+      "Set equality approach (show S = explicit set, then rewrite) is cleaner than upper/lower bound reasoning for sSup",
+      "one_iteration_criterion had a bug: claimed F(n)=1 for all n>1 with φ(n)+1 prime, but F(p)=0 for primes. Fixed by adding ¬n.Prime hypothesis",
+      "sigma_growing holds for all n>1 (not just composites) since σ(n)≥1+n whenever 1≠n are both divisors",
+      "one_iteration_infinite is PROVABLE (not open): for odd prime p, phi(2p)=phi(2)*phi(p)=1*(p-1)=p-1, so phi(2p)+1=p is prime",
+      "Key Mathlib API: Nat.coprime_two_left.mpr, Nat.Prime.odd_of_ne_two, Nat.totient_mul, Nat.totient_prime, Set.Infinite.image",
+      "Remaining 3 axioms are all genuinely open parts of Erdos 409 (upper bound, basin infinity, density)",
+      "F(n) <= n-2 follows cleanly by strong induction: composites have T(n) > 1 (phi >= 2) and T(n) < n",
+      "phi(n) >= 2 for n >= 3 follows elegantly from evenness (Nat.totient_even) + positivity (Nat.totient_pos)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #409 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow many iterations of $n\\mapsto \\phi(n)+1$ are needed before a prime is reached? Can infinitely many $n$ reach the same prime? What is the density of $n$ which reach any fixed prime?\n\n\n\nA problem of Finucane. One can also ask similar questions about $n\\mapsto \\sigma(n)-1$: do iterates of this always reach a prime? If so, how soon? (It is easily seen that iterates of this cannot reach the same prime infinitely often, since they are non-decreasing.)\n\nThis problem is somewhat ambiguously phrased. Let $F(n)$ count the number of iterations of $n\\mapsto \\phi(n)+1$ before reaching a prime. The number of iterations required is A039651 in the OEIS.\n\nCambie notes in the comments that $F(n)=o(n)$ is trivial, and $F(n)=1$ infinitely often. Presumably the intended question is to find 'good' upper bounds for $F(n)$.\n\nThis is discussed in problem B41 of Guy's collection \\cite{Gu04}.\n\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #408\n- Problem #410\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-40",
+    "erdos-409"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T02:38:27.586Z",
+  "lastUpdate": "2026-03-13T07:52:17.047Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos409Problem.lean",
+      "filename": "Erdos409Problem.lean",
+      "lineCount": 425,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos409Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,393 @@
+[
+  {
+    "id": "ann-877-imports",
+    "proofId": "erdos-877",
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports Finset.Basic/Card for set operations, Set.Basic for set theory, Finpartition for structural decomposition, and Analysis.Asymptotics for asymptotic notation. The formalization uses Finset ℕ for finite sets and ℚ for asymptotic bounds.",
+    "range": {
+      "startLine": 26,
+      "endLine": 35
+    },
+    "significance": "supporting",
+    "mathContext": "The choice of $\\mathbb{Q}$ for asymptotic statements avoids the complications of $\\mathbb{R}$ in Lean while preserving the essential content. The `Asymptotics` import provides the big-O/little-o framework, though the actual statements use explicit $\\varepsilon$-$\\delta$ formulations.",
+    "relatedConcepts": [
+      "Finset operations",
+      "asymptotic analysis",
+      "rational arithmetic"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics"
+    ]
+  },
+  {
+    "id": "ann-877-1",
+    "proofId": "erdos-877",
+    "type": "definition",
+    "title": "Sum-Free Set",
+    "content": "A set A is sum-free if there are no solutions to a = b + c with a, b, c in A. This is the fundamental notion: no element of A is the sum of two others. The formalization uses a universal quantifier over triples.",
+    "range": {
+      "startLine": 46,
+      "endLine": 47
+    },
+    "significance": "key",
+    "mathContext": "A set $A \\subseteq \\mathbb{N}$ is sum-free if $A \\cap (A + A) = \\emptyset$, where $A + A = \\{a + b : a, b \\in A\\}$. Sum-free sets are central to additive combinatorics. The maximum sum-free subset of $[n]$ has size $\\lceil n/2 \\rceil$ (achieved by all odd numbers or the upper half). Schur (1916) proved that $[n]$ cannot be partitioned into finitely many sum-free sets for large $n$.",
+    "relatedConcepts": [
+      "additive combinatorics",
+      "Schur numbers",
+      "sumset",
+      "Erdős-Ko-Rado"
+    ],
+    "prerequisites": [
+      "Finset"
+    ]
+  },
+  {
+    "id": "ann-877-2",
+    "proofId": "erdos-877",
+    "type": "definition",
+    "title": "Sumset A + A",
+    "content": "The sumset A + A consists of all pairwise sums a + b where a, b are in A. Defined using Finset.product and image. Sum-free means A ∩ (A + A) = ∅, the disjoint sumset characterization.",
+    "range": {
+      "startLine": 53,
+      "endLine": 57
+    },
+    "significance": "key",
+    "mathContext": "The sumset $A + A = \\{a + b : a, b \\in A\\}$ is a fundamental object in additive combinatorics. By the Cauchy-Davenport theorem (for $\\mathbb{Z}_p$) and Plünnecke-Ruzsa inequality, the size of $A + A$ is controlled by the additive structure of $A$. The alternative definition `isSumFree'` via `Disjoint A (sumset A)` provides the cleaner formulation $A \\cap (A+A) = \\emptyset$.",
+    "relatedConcepts": [
+      "Cauchy-Davenport theorem",
+      "Plünnecke-Ruzsa inequality",
+      "additive energy"
+    ],
+    "prerequisites": [
+      "Finset.product",
+      "Finset.image"
+    ]
+  },
+  {
+    "id": "ann-877-3",
+    "proofId": "erdos-877",
+    "type": "concept",
+    "title": "Odd Numbers Are Sum-Free",
+    "content": "The set {1, 3, 5, 7, 9} is sum-free because odd + odd = even, so no odd number can be the sum of two odd numbers. Proved by simp and omega on the finite example.",
+    "range": {
+      "startLine": 63,
+      "endLine": 66
+    },
+    "significance": "supporting",
+    "mathContext": "More generally, the odd numbers in $[n]$ form a sum-free set of size $\\lceil n/2 \\rceil$. This construction is fundamental: subsets of odds yield the $2^{n/4}$ lower bound for $f_m(n)$. The parity argument ($\\text{odd} + \\text{odd} = \\text{even}$) is the simplest example of using modular arithmetic to construct sum-free sets.",
+    "relatedConcepts": [
+      "parity argument",
+      "modular sum-free sets",
+      "odd numbers"
+    ],
+    "prerequisites": [
+      "isSumFree"
+    ]
+  },
+  {
+    "id": "ann-877-4",
+    "proofId": "erdos-877",
+    "type": "concept",
+    "title": "Upper Half Is Sum-Free",
+    "content": "The set {⌊n/2⌋+1, ..., n} is sum-free because the smallest possible sum exceeds n. Proved using omega after extracting bounds from the hypothesis.",
+    "range": {
+      "startLine": 73,
+      "endLine": 79
+    },
+    "significance": "key",
+    "mathContext": "If all elements satisfy $a \\geq n/2 + 1$, then any sum $b + c \\geq 2(n/2 + 1) = n + 2 > n$, so the sum cannot be in $[n]$. This 'large elements' construction generalizes: for any $A \\subseteq \\{\\lfloor n/3 \\rfloor + 1, \\ldots, n\\}$, we have $A$ sum-free iff $A \\subseteq \\{\\lfloor n/2 \\rfloor + 1, \\ldots, n\\}$.",
+    "relatedConcepts": [
+      "large set construction",
+      "sum-free lower bound",
+      "interval arithmetic"
+    ],
+    "prerequisites": [
+      "isSumFree"
+    ]
+  },
+  {
+    "id": "ann-877-5",
+    "proofId": "erdos-877",
+    "type": "definition",
+    "title": "Maximal Sum-Free Set",
+    "content": "A sum-free set A ⊆ {0,...,n} is maximal if adding any element x not in A would create a sum. Formalized as: A ⊆ range(n+1), isSumFree A, and for all x in range(n+1) \\ A, insert x A is not sum-free.",
+    "range": {
+      "startLine": 90,
+      "endLine": 93
+    },
+    "significance": "key",
+    "mathContext": "Maximality is a strong constraint: a maximal sum-free set $A$ must satisfy that for every $x \\notin A$, either $x = a + b$ for some $a, b \\in A$, or $a = x + b$ for some $a, b \\in A$, or $2x \\in A$. This forces $A$ to be 'saturated' — every element outside $A$ interacts with $A$ through a sum relation. The count $f_m(n)$ of maximal sum-free sets is much smaller than $f(n)$ of all sum-free sets.",
+    "relatedConcepts": [
+      "maximal independent set",
+      "saturated structure",
+      "extremal counting"
+    ],
+    "prerequisites": [
+      "isSumFree",
+      "Finset.range"
+    ]
+  },
+  {
+    "id": "ann-877-6",
+    "proofId": "erdos-877",
+    "type": "concept",
+    "title": "Maximality Criterion",
+    "content": "For maximal sum-free A, every excluded x satisfies one of three conditions: x = a + b, or a = x + b, or 2x ∈ A. Has a sorry — the proof requires case analysis on what makes insert x A not sum-free.",
+    "range": {
+      "startLine": 101,
+      "endLine": 107
+    },
+    "significance": "key",
+    "mathContext": "The three cases correspond to the three ways $x$ can participate in a sum relation with $A$: (1) $x$ is a sum of two elements of $A$; (2) $x$ plus an element of $A$ gives another element of $A$; (3) $x + x$ is in $A$ (the 'doubling' case). This trichotomy is essential for understanding the structural constraints on maximal sum-free sets.",
+    "relatedConcepts": [
+      "sum-free extension",
+      "saturation criterion",
+      "forbidden sums"
+    ],
+    "prerequisites": [
+      "isMaximalSumFree",
+      "isSumFree"
+    ]
+  },
+  {
+    "id": "ann-877-7",
+    "proofId": "erdos-877",
+    "type": "definition",
+    "title": "f(n) — Count of All Sum-Free Subsets",
+    "content": "f(n) counts all sum-free subsets of {0,...,n}, defined by filtering the powerset of range(n+1) by isSumFree. Cameron-Erdős conjectured f(n) = Θ(2^{n/2}), now proven.",
+    "range": {
+      "startLine": 117,
+      "endLine": 118
+    },
+    "significance": "key",
+    "mathContext": "The Cameron-Erdős conjecture $f(n) = \\Theta(2^{n/2})$ was proved independently by Green (2004) and Sapozhenko (2003). The lower bound $f(n) \\geq 2^{\\lfloor n/2 \\rfloor}$ comes from subsets of odd numbers. The upper bound requires the container method or regularity arguments.",
+    "relatedConcepts": [
+      "Cameron-Erdős conjecture",
+      "Green's theorem",
+      "container method"
+    ],
+    "prerequisites": [
+      "isSumFree",
+      "Finset.powerset"
+    ]
+  },
+  {
+    "id": "ann-877-8",
+    "proofId": "erdos-877",
+    "type": "definition",
+    "title": "f_m(n) — Count of Maximal Sum-Free Subsets",
+    "content": "f_m(n) counts maximal sum-free subsets of {0,...,n}. This is the central quantity in Problem #877. Defined by filtering the powerset by isMaximalSumFree.",
+    "range": {
+      "startLine": 124,
+      "endLine": 125
+    },
+    "significance": "key",
+    "mathContext": "$f_m(n) = |\\{A \\subseteq [n] : A \\text{ is maximal sum-free}\\}|$ is the main counting function. The question $f_m(n) = o(2^{n/2})$ asks whether maximality dramatically reduces the count compared to $f(n) = \\Theta(2^{n/2})$. The answer is yes: $f_m(n) = \\Theta(2^{n/4})$, an exponential reduction.",
+    "relatedConcepts": [
+      "extremal counting",
+      "maximal structures",
+      "exponential enumeration"
+    ],
+    "prerequisites": [
+      "isMaximalSumFree",
+      "Finset.powerset"
+    ]
+  },
+  {
+    "id": "ann-877-9",
+    "proofId": "erdos-877",
+    "type": "concept",
+    "title": "Cameron-Erdős Lower Bound: f_m(n) > 2^{n/4}",
+    "content": "For n ≥ 4, f_m(n) > 2^{n/4}. Axiomatized because the proof constructs exponentially many distinct maximal sum-free sets from subsets of odd numbers, requiring careful analysis of extension to maximal sets.",
+    "range": {
+      "startLine": 143,
+      "endLine": 144
+    },
+    "significance": "key",
+    "mathContext": "The construction takes subsets $S$ of the odd numbers in $[n/2]$ (about $n/4$ odd numbers), extends each to a maximal sum-free set, and shows distinct $S$ yield distinct maximal sets. Since there are $2^{n/4}$ such subsets $S$, this gives $f_m(n) \\geq 2^{n/4}$. Combined with BLST, this means the exponent $1/4$ is tight.",
+    "relatedConcepts": [
+      "constructive lower bounds",
+      "extension to maximal sets",
+      "odd number subsets"
+    ],
+    "prerequisites": [
+      "f_m",
+      "isMaximalSumFree"
+    ]
+  },
+  {
+    "id": "ann-877-10",
+    "proofId": "erdos-877",
+    "type": "concept",
+    "title": "Łuczak-Schoen (2001) — Upper Bound Resolves Main Question",
+    "content": "There exists c < 1/2 such that f_m(n) < 2^{cn} for all n ≥ 1. This resolves the Cameron-Erdős question: f_m(n) = o(2^{n/2}) is TRUE. Axiomatized because the proof uses structural analysis and graph coloring arguments.",
+    "range": {
+      "startLine": 167,
+      "endLine": 168
+    },
+    "significance": "key",
+    "mathContext": "Łuczak and Schoen [LuSc01] proved $f_m(n) < 2^{cn}$ for some $c < 1/2$ using a structural decomposition: each maximal sum-free set has a 'core' of bounded complexity, and the extension from core to full set has limited freedom. The exact value of $c$ was later improved to $1/4 + o(1)$ by BLST.",
+    "relatedConcepts": [
+      "structural decomposition",
+      "graph coloring bounds",
+      "exponential counting"
+    ],
+    "prerequisites": [
+      "f_m"
+    ]
+  },
+  {
+    "id": "ann-877-11",
+    "proofId": "erdos-877",
+    "type": "concept",
+    "title": "Main Question Resolved: f_m(n) = o(2^{n/2})",
+    "content": "Direct application of the Łuczak-Schoen theorem to confirm the main question. The proof is a single line: exact luczak_schoen_theorem.",
+    "range": {
+      "startLine": 174,
+      "endLine": 176
+    },
+    "significance": "key",
+    "mathContext": "The one-line resolution `exact luczak_schoen_theorem` demonstrates the formalization pattern: deep results are axiomatized, then the problem statement follows immediately. The existence of $c < 1/2$ with $f_m(n) < 2^{cn}$ directly implies $f_m(n)/2^{n/2} \\to 0$.",
+    "relatedConcepts": [
+      "problem resolution",
+      "little-o notation",
+      "exponential growth rates"
+    ],
+    "prerequisites": [
+      "luczak_schoen_theorem"
+    ]
+  },
+  {
+    "id": "ann-877-12",
+    "proofId": "erdos-877",
+    "type": "concept",
+    "title": "BLST 2015: f_m(n) = 2^{(1/4+o(1))n}",
+    "content": "Balogh-Liu-Sharifzadeh-Treglown (2015) proved the exponent is exactly 1/4: for any ε > 0, eventually 2^{(1/4-ε)n} < f_m(n) < 2^{(1/4+ε)n}. Axiomatized using an ε-δ formulation.",
+    "range": {
+      "startLine": 194,
+      "endLine": 196
+    },
+    "significance": "key",
+    "mathContext": "The BLST 2015 result $f_m(n) = 2^{(1/4+o(1))n}$ uses the **hypergraph container method** of Balogh-Morris-Samotij and Saxton-Thomason. The key idea: maximal sum-free sets are contained in a small number of 'containers' $\\mathcal{C}_1, \\ldots, \\mathcal{C}_m$ where $m = 2^{o(n)}$ and each $|\\mathcal{C}_i| \\leq n/4 + o(n)$.",
+    "relatedConcepts": [
+      "hypergraph container method",
+      "Balogh-Morris-Samotij",
+      "Saxton-Thomason"
+    ],
+    "prerequisites": [
+      "f_m",
+      "cameron_erdos_lower_bound"
+    ]
+  },
+  {
+    "id": "ann-877-13",
+    "proofId": "erdos-877",
+    "type": "concept",
+    "title": "BLST 2018: Sharp Bound f_m(n) = (C_n+o(1))·2^{n/4}",
+    "content": "The sharp asymptotic: f_m(n) = (C_n + o(1)) · 2^{n/4} where C_n is an explicit constant depending only on n mod 4. This gives the exact leading constant, not just the exponent.",
+    "range": {
+      "startLine": 203,
+      "endLine": 206
+    },
+    "significance": "key",
+    "mathContext": "The BLST 2018 refinement determines the leading constant $C_n$ in $f_m(n) \\sim C_n \\cdot 2^{n/4}$. The constant depends on $n \\bmod 4$ because the structure of maximal sum-free sets changes with $n$'s residue class. The formalization captures the periodicity via `n % 4 = m % 4 → C n = C m`.",
+    "relatedConcepts": [
+      "sharp asymptotics",
+      "periodic constants",
+      "residue class structure"
+    ],
+    "prerequisites": [
+      "f_m",
+      "blst_2015"
+    ]
+  },
+  {
+    "id": "ann-877-14",
+    "proofId": "erdos-877",
+    "type": "insight",
+    "title": "Why the Exponent Is 1/4",
+    "content": "The 1/4 exponent arises because only about n/4 elements can be chosen freely in typical maximal sum-free sets. The odds give ~n/2 elements, but the maximality constraint forces about half of these to be determined by the rest.",
+    "range": {
+      "startLine": 234,
+      "endLine": 240
+    },
+    "significance": "key",
+    "mathContext": "Start with the $\\sim n/2$ odd numbers in $[n]$. A sum-free subset $S$ of odds can be extended to a maximal sum-free set. But the extension is essentially determined by $S$, and the 'independent choices' within the odds number $\\sim n/4$ (half the odds are constrained by maximality). This gives $f_m(n) \\approx 2^{n/4}$.",
+    "relatedConcepts": [
+      "degrees of freedom",
+      "constraint propagation",
+      "independent choices"
+    ],
+    "prerequisites": [
+      "isMaximalSumFree",
+      "cameron_erdos_lower_bound"
+    ]
+  },
+  {
+    "id": "ann-877-15",
+    "proofId": "erdos-877",
+    "type": "insight",
+    "title": "Container Method Application",
+    "content": "The BLST proof uses the hypergraph container method: maximal sum-free sets are contained in a small number of 'containers', each with limited freedom for element choices. This general technique has revolutionized extremal counting problems.",
+    "range": {
+      "startLine": 242,
+      "endLine": 248
+    },
+    "significance": "key",
+    "mathContext": "The **container method** (Balogh-Morris-Samotij 2015, Saxton-Thomason 2015) provides a general framework: for any hypergraph $H$ with few edges relative to vertices, the independent sets of $H$ can be partitioned into 'containers' of bounded size. Applied here: the hypergraph has vertex set $[n]$ and edges $\\{a,b,c\\}$ with $a + b = c$.",
+    "relatedConcepts": [
+      "hypergraph containers",
+      "independent set counting",
+      "regularity method"
+    ],
+    "prerequisites": [
+      "blst_2015"
+    ]
+  },
+  {
+    "id": "ann-877-16",
+    "proofId": "erdos-877",
+    "type": "insight",
+    "title": "Comparison with Erdős #748",
+    "content": "Problem #748 asks about f(n), all sum-free sets (not just maximal). The ratio f_m(n)/f(n) → 0 exponentially: f(n) = Θ(2^{n/2}) while f_m(n) = Θ(2^{n/4}). Maximal sets are exponentially rare among all sum-free sets.",
+    "range": {
+      "startLine": 254,
+      "endLine": 259
+    },
+    "significance": "key",
+    "mathContext": "The Cameron-Erdős conjecture $f(n) = \\Theta(2^{n/2})$ was proved by Green (2004) and Sapozhenko (2003). Combined with $f_m(n) = \\Theta(2^{n/4})$, we get $f_m(n)/f(n) = \\Theta(2^{-n/4}) \\to 0$ exponentially.",
+    "relatedConcepts": [
+      "Cameron-Erdős conjecture",
+      "Green's theorem",
+      "exponential gap"
+    ],
+    "prerequisites": [
+      "f",
+      "f_m"
+    ]
+  },
+  {
+    "id": "ann-877-solved",
+    "proofId": "erdos-877",
+    "type": "concept",
+    "title": "Erdős #877 Solved: Combined Resolution",
+    "content": "Combined statement: the main question is resolved (Łuczak-Schoen) AND the sharp lower bound holds (Cameron-Erdős). Proof is exact ⟨luczak_schoen_theorem, cameron_erdos_lower_bound⟩.",
+    "range": {
+      "startLine": 286,
+      "endLine": 291
+    },
+    "significance": "key",
+    "mathContext": "The combined theorem `erdos_877_solved` packages both the upper bound (resolving the question) and the lower bound (showing tightness). The structure `⟨luczak_schoen_theorem, cameron_erdos_lower_bound⟩` demonstrates that the formalization captures the complete resolution.",
+    "relatedConcepts": [
+      "problem resolution",
+      "tight bounds",
+      "axiomatic formalization"
+    ],
+    "prerequisites": [
+      "luczak_schoen_theorem",
+      "cameron_erdos_lower_bound"
+    ]
+  }
+]

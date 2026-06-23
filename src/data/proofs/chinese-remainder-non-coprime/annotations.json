@@ -1,0 +1,262 @@
+[
+  {
+    "id": "ann-nc-intro",
+    "proofId": "chinese-remainder-non-coprime",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Non-Coprime CRT Introduction",
+    "content": "The classical CRT requires gcd(m,n) = 1. This file removes that restriction.\n\nThe key question becomes: when does x = a (mod m), x = b (mod n) have a solution?\n\nAnswer: exactly when gcd(m,n) | (a-b). Solutions are unique modulo lcm(m,n) rather than m*n. This is the complete solvability criterion for simultaneous linear congruences, generalizing the classical theorem where coprimality guarantees automatic solvability.",
+    "mathContext": "Solvability criterion: $\\gcd(m,n) \\mid (a-b)$. Uniqueness modulus: $\\text{lcm}(m,n) = mn/\\gcd(m,n)$ rather than $mn$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "generalized CRT",
+      "Ore's theorem (1952)",
+      "non-coprime moduli",
+      "compatibility condition"
+    ],
+    "prerequisites": [
+      "classical CRT",
+      "gcd and lcm",
+      "Int.ModEq"
+    ]
+  },
+  {
+    "id": "ann-nc-lcm-dvd",
+    "proofId": "chinese-remainder-non-coprime",
+    "range": {
+      "startLine": 40,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "LCM Divisibility Lift",
+    "content": "**Theorem** (int_natCast_lcm_dvd): If m | d and n | d in Z, then lcm(m,n) | d.\n\nThis lifts Nat.lcm_dvd to the integers via `Int.natCast_dvd`. The lift is necessary because the main theorems work over Z (using `Int.ModEq` / `ZMOD`) rather than Nat, since subtraction a - b requires integer arithmetic.",
+    "mathContext": "$m \\mid d \\wedge n \\mid d \\implies \\text{lcm}(m,n) \\mid d$ in $\\mathbb{Z}$; lifted from `Nat.lcm_dvd` via `Int.natCast_dvd`",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.lcm_dvd",
+      "Int.natCast_dvd",
+      "integer lift",
+      "universal property of LCM"
+    ],
+    "prerequisites": [
+      "Nat.lcm_dvd",
+      "Int.natCast_dvd"
+    ]
+  },
+  {
+    "id": "ann-nc-lcm-combine",
+    "proofId": "chinese-remainder-non-coprime",
+    "range": {
+      "startLine": 48,
+      "endLine": 73
+    },
+    "type": "concept",
+    "title": "LCM Congruence Combining (Full Iff)",
+    "content": "Four theorems establishing the LCM characterization of combined congruences:\n\n1. **modEq_lcm_of_modEq**: forward direction — a = b (mod m) and a = b (mod n) implies a = b (mod lcm(m,n))\n2. **modEq_left_of_modEq_lcm**: converse left — uses `Nat.dvd_lcm_left`\n3. **modEq_right_of_modEq_lcm**: converse right — uses `Nat.dvd_lcm_right`\n4. **modEq_lcm_iff**: the full iff, packaging all three\n\nThis is the non-coprime replacement for `modEq_and_modEq_iff_modEq_mul`. The key difference: lcm(m,n) replaces m*n as the combining modulus.",
+    "mathContext": "$a \\equiv b \\pmod{m} \\wedge a \\equiv b \\pmod{n} \\iff a \\equiv b \\pmod{\\text{lcm}(m,n)}$. The forward direction uses `int_natCast_lcm_dvd`; the converses use divisibility of lcm by its factors.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LCM characterization",
+      "combining congruences",
+      "Nat.dvd_lcm_left",
+      "Nat.dvd_lcm_right",
+      "modEq_and_modEq_iff_modEq_mul"
+    ],
+    "prerequisites": [
+      "ann-nc-lcm-dvd",
+      "Int.modEq_iff_dvd",
+      "Nat.dvd_lcm_left"
+    ]
+  },
+  {
+    "id": "ann-nc-necessity",
+    "proofId": "chinese-remainder-non-coprime",
+    "range": {
+      "startLine": 81,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Necessity of GCD Condition",
+    "content": "**Theorem** (noncoprime_crt_necessary): If x = a (mod m) and x = b (mod n) has a solution, then gcd(m,n) | (a-b).\n\n**Proof**: From x = a (mod m) we get m | (a-x), so gcd(m,n) | (a-x) (since gcd divides m). Similarly gcd(m,n) | (b-x). By `dvd_sub`, gcd(m,n) | ((a-x) - (b-x)) = (a-b). The `sub_sub_sub_cancel_right` simplification cleans up the algebra.",
+    "mathContext": "$\\exists x$ solving the system $\\implies \\gcd(m,n) \\mid (a - b)$. Key step: $\\gcd(m,n) \\mid m \\mid (a-x)$ and $\\gcd(m,n) \\mid n \\mid (b-x)$, so $\\gcd(m,n) \\mid (a-b)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "necessity",
+      "obstruction",
+      "gcd divisibility",
+      "dvd_sub",
+      "Nat.gcd_dvd_left"
+    ],
+    "prerequisites": [
+      "Int.modEq_iff_dvd",
+      "Nat.gcd_dvd_left",
+      "dvd_sub"
+    ]
+  },
+  {
+    "id": "ann-nc-sufficiency",
+    "proofId": "chinese-remainder-non-coprime",
+    "range": {
+      "startLine": 96,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "Sufficiency via Bezout Construction",
+    "content": "**Theorem** (noncoprime_crt_sufficient): If gcd(m,n) | (a-b), then the system has a solution.\n\n**Construction**: Set g = gcd(m,n), m' = m/g, n' = n/g. Since gcd(m',n') = 1 (by `Nat.coprime_div_gcd_div_gcd`), Bezout gives m'*s + n'*t = 1.\n\nWith a - b = g*k, the solution is x = a + m*(-k*s).\n\n**Verification**:\n- x = a (mod m): immediate since m | m*(-k*s)\n- x = b (mod n): the subtle case. Uses calc block: b - x = b - a - m'*g*(-k*s) = -g*k + m'*g*k*s = g*k*(m'*s - 1) = g*k*(-(n'*t)) = n'*g*(-k*t), which is divisible by n = n'*g.\n\nThe 5-step calc chain is the heart of the proof, converting the algebraic identity into a divisibility statement.",
+    "mathContext": "Set $g = \\gcd(m,n)$, $m' = m/g$, $n' = n/g$ with $\\gcd(m', n') = 1$. Bézout: $m's + n't = 1$. Solution: $x = a + m(-ks)$ where $a - b = gk$. Verification of $n \\mid (b-x)$ uses $b - x = n'g(-kt)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bezout's identity",
+      "reduced moduli",
+      "coprime_div_gcd_div_gcd",
+      "calc block",
+      "constructive witness"
+    ],
+    "prerequisites": [
+      "Nat.coprime_div_gcd_div_gcd",
+      "Int.gcd_eq_gcd_ab",
+      "ann-nc-necessity"
+    ]
+  },
+  {
+    "id": "ann-nc-iff",
+    "proofId": "chinese-remainder-non-coprime",
+    "range": {
+      "startLine": 163,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Complete Solvability Characterization",
+    "content": "**Theorem** (noncoprime_crt_iff): The system has a solution iff gcd(m,n) | (a-b).\n\nCombines necessity and sufficiency into a single iff statement. This is the definitive form of the non-coprime CRT: a simple, decidable criterion for solvability of simultaneous linear congruences.",
+    "mathContext": "$\\exists x,\\; x \\equiv a \\pmod{m} \\wedge x \\equiv b \\pmod{n} \\iff \\gcd(m,n) \\mid (a-b)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "characterization theorem",
+      "iff",
+      "decidability",
+      "complete criterion"
+    ],
+    "prerequisites": [
+      "ann-nc-necessity",
+      "ann-nc-sufficiency"
+    ]
+  },
+  {
+    "id": "ann-nc-uniqueness",
+    "proofId": "chinese-remainder-non-coprime",
+    "range": {
+      "startLine": 176,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Uniqueness Modulo LCM",
+    "content": "**Theorem** (noncoprime_crt_unique): Any two solutions agree modulo lcm(m,n).\n\n**Proof**: If x1 and x2 both solve the system, then x1 = x2 (mod m) and x1 = x2 (mod n). By the LCM combining lemma (modEq_lcm_of_modEq), x1 = x2 (mod lcm(m,n)).\n\nNote: lcm(m,n) = mn/gcd(m,n) <= m*n with equality iff gcd(m,n) = 1. So non-coprime CRT gives a strictly tighter uniqueness bound when the moduli share factors.",
+    "mathContext": "$x_1 \\equiv x_2 \\pmod{\\text{lcm}(m,n)}$; note $\\text{lcm}(m,n) = mn/\\gcd(m,n) \\leq mn$, with equality iff $\\gcd(m,n) = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "uniqueness",
+      "lcm vs product",
+      "tighter bound",
+      "modEq_lcm_of_modEq"
+    ],
+    "prerequisites": [
+      "ann-nc-lcm-combine"
+    ]
+  },
+  {
+    "id": "ann-nc-classical",
+    "proofId": "chinese-remainder-non-coprime",
+    "range": {
+      "startLine": 193,
+      "endLine": 212
+    },
+    "type": "insight",
+    "title": "Classical CRT as Special Case",
+    "content": "Three theorems recovering the classical CRT:\n\n1. **classical_crt_from_general**: When gcd(m,n) = 1, solvability is automatic since 1 | (a-b) always.\n2. **coprime_lcm_eq_mul**: lcm(m,n) = m*n when coprime, via `Nat.Coprime.lcm_eq_mul`.\n3. **noncoprime_crt_specializes**: Combines both into a conjunction.\n\nThis demonstrates that the non-coprime version is a true generalization: it contains the classical CRT as the special case where the compatibility condition is trivially satisfied.",
+    "mathContext": "$\\gcd(m,n) = 1 \\implies$ solvability automatic ($1 \\mid$ everything) and $\\text{lcm}(m,n) = mn$, recovering the classical theorem exactly",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "classical CRT",
+      "special case",
+      "generalization",
+      "Nat.Coprime.lcm_eq_mul"
+    ],
+    "prerequisites": [
+      "ann-nc-iff",
+      "ann-nc-uniqueness",
+      "Nat.Coprime.lcm_eq_mul"
+    ]
+  },
+  {
+    "id": "ann-nc-three-moduli",
+    "proofId": "chinese-remainder-non-coprime",
+    "range": {
+      "startLine": 220,
+      "endLine": 239
+    },
+    "type": "concept",
+    "title": "Extension to Three Non-Coprime Moduli",
+    "content": "Two theorems extending the non-coprime CRT to three moduli:\n\n1. **noncoprime_crt_three_necessary**: If a simultaneous solution exists for three moduli, then all three pairwise gcd conditions hold: gcd(m_i, m_j) | (a_i - a_j). Each pairwise condition follows directly from `noncoprime_crt_necessary` applied to the relevant pair.\n\n2. **noncoprime_crt_three_unique**: Two solutions agree modulo lcm(lcm(m1, m2), m3). The proof iterates `modEq_lcm_of_modEq` twice: first combine m1 and m2, then fold in m3.\n\nNote: pairwise conditions are necessary but may not be sufficient for three non-coprime moduli — sufficiency requires an additional compatibility check.",
+    "mathContext": "Necessary conditions: $\\gcd(m_i, m_j) \\mid (a_i - a_j)$ for all $i \\neq j$. Uniqueness: $x_1 \\equiv x_2 \\pmod{\\text{lcm}(\\text{lcm}(m_1, m_2), m_3)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pairwise conditions",
+      "iterated LCM",
+      "multi-moduli extension",
+      "necessary vs sufficient"
+    ],
+    "prerequisites": [
+      "ann-nc-necessity",
+      "ann-nc-lcm-combine",
+      "modEq_lcm_of_modEq"
+    ]
+  },
+  {
+    "id": "ann-nc-lcm-product",
+    "proofId": "chinese-remainder-non-coprime",
+    "range": {
+      "startLine": 245,
+      "endLine": 254
+    },
+    "type": "insight",
+    "title": "LCM-Product Relationship",
+    "content": "Two theorems relating the LCM bound to the naive product bound:\n\n1. **lcm_dvd_mul**: lcm(m,n) always divides m*n. Proof: m*n is a common multiple of both m and n, so the least common multiple divides it.\n\n2. **noncoprime_tighter_bound**: The non-coprime CRT gives uniqueness mod lcm(m,n), which is at least as tight as mod m*n. This is a restatement of `noncoprime_crt_unique` emphasizing the improvement over the naive bound.\n\nWhen gcd(m,n) > 1, the improvement is strict: lcm(m,n) = mn/gcd(m,n) < mn.",
+    "mathContext": "$\\text{lcm}(m,n) \\mid mn$ always. When $\\gcd(m,n) = g > 1$: $\\text{lcm}(m,n) = mn/g < mn$, giving a strictly tighter uniqueness modulus.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "lcm-product identity",
+      "tighter bounds",
+      "dvd_mul_right",
+      "dvd_mul_left"
+    ],
+    "prerequisites": [
+      "Nat.lcm_dvd",
+      "ann-nc-uniqueness"
+    ]
+  },
+  {
+    "id": "ann-nc-examples",
+    "proofId": "chinese-remainder-non-coprime",
+    "range": {
+      "startLine": 260,
+      "endLine": 295
+    },
+    "type": "concept",
+    "title": "Concrete Examples",
+    "content": "Five verified examples demonstrating the theory:\n\n1. x = 1 (mod 6), x = 3 (mod 4): gcd(6,4) = 2 | (1-3) = -2. Solution x = 7, unique mod lcm(6,4) = 12. Verified: 7 + 12 = 19 also works.\n2. x = 1 (mod 6), x = 2 (mod 4): gcd(6,4) = 2, but 2 does not divide (1-2) = -1. NO SOLUTION. Demonstrates necessity.\n3. x = 3 (mod 6), x = 5 (mod 10): gcd(6,10) = 2 | (3-5) = -2. Solution x = 15, unique mod lcm(6,10) = 30.\n4. x = 0 (mod 4), x = 0 (mod 6): Trivial case, x = 0 mod lcm(4,6) = 12.\n5. x = 2 (mod 3), x = 3 (mod 5): Classical coprime case, x = 8 mod lcm(3,5) = 15.\n\nAll verifications use `decide` for computational checking.",
+    "mathContext": "Example 2 demonstrates necessity: $\\gcd(6,4) = 2 \\nmid (1-2) = -1$, so no solution exists. Example 5 shows the classical coprime case reduces correctly.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "concrete verification",
+      "solvable vs unsolvable",
+      "decide tactic",
+      "coprime reduction"
+    ],
+    "prerequisites": [
+      "ann-nc-iff"
+    ]
+  }
+]

@@ -1,0 +1,86 @@
+{
+  "id": "four-color-theorem-oq-02",
+  "name": "Minimal unavoidable reducible configurations",
+  "parentId": "four-color-theorem",
+  "status": "completed",
+  "problemStatement": {
+    "formal": "Survey known bounds and formal placeholders around the minimum size of unavoidable reducible configuration sets used in computer-assisted proofs of the Four Color Theorem.",
+    "plain": "Record what is known about how small an unavoidable reducible configuration set for the Four Color Theorem can be, including the RSST 633-configuration proof and the lack of a tight lower bound.",
+    "whyMatters": [
+      "Keeps the gallery entry honest about being a survey rather than a new human-readable Four Color proof.",
+      "Connects the formal Lean stub to the historical computer-assisted proof strategy.",
+      "Separates known configuration counts from the still-open minimality question."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "The Robertson-Sanders-Seymour-Thomas proof uses an unavoidable set of 633 reducible configurations.",
+      "A lower bound of at least 10 configurations is recorded in the survey entry.",
+      "The Lean development contains concrete data types for the survey, but not a full reducibility checker."
+    ],
+    "open": [
+      "The exact minimum size of an unavoidable reducible configuration set is not known.",
+      "A fully formal, human-readable Four Color proof remains outside this entry.",
+      "Bridging the survey data to a verified reducibility-checking pipeline is future work."
+    ],
+    "goal": "Represent the minimal-configuration question as a bounded survey entry while keeping the full Four Color proof and reducibility machinery explicitly out of scope."
+  },
+  "knowledge": {
+    "score": 4,
+    "insights": [
+      "RSST: 633 configs",
+      "Lower bound ≥10",
+      "No tight lower bound known"
+    ],
+    "builtItems": [
+      "FourColorTheoremOQ02.lean: 110 lines, 3 axioms"
+    ],
+    "progressSummary": "COMPLETED: Survey."
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/FourColorTheorem.lean",
+      "filename": "FourColorTheorem.lean",
+      "lineCount": 295,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourColorTheorem.lean"
+    },
+    {
+      "path": "Proofs/FourColorTheoremOQ01.lean",
+      "filename": "FourColorTheoremOQ01.lean",
+      "lineCount": 459,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourColorTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/FourColorTheoremOQ02.lean",
+      "filename": "FourColorTheoremOQ02.lean",
+      "lineCount": 87,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourColorTheoremOQ02.lean"
+    }
+  ],
+  "relatedProofs": [
+    "four-color-theorem",
+    "four-color-theorem-oq-01",
+    "four-color-theorem-oq-02"
+  ],
+  "tags": [
+    "graph-theory",
+    "combinatorics",
+    "computer-assisted-proof",
+    "four-color-theorem"
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "proofId": "triangular-reciprocals",
+  "reviewDate": "2026-03-24T00:00:00Z",
+  "reviewer": "peer-reviewer",
+  "overallAssessment": {
+    "grade": "B+",
+    "oneLiner": "A well-structured, fully verified formalization of Wiedijk #42 with genuine proof substance and good pedagogy, marred by a few metadata inaccuracies.",
+    "tier": "A",
+    "tierJustification": "Tier A: All 9 theorems are fully proved with no sorries, no axioms, and no structure-encoded assumptions. The main theorem (HasSum via epsilon-N), the finite telescoping induction, the summability comparison, and the triangular number connection all contain multi-step proofs with substantive Lean reasoning. This is a complete formalization, not an axiomatized scaffold."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "sum_reciprocals_triangular, lines 188-245",
+      "finding": "The main theorem is a genuinely substantive 57-line proof. It constructs partial sums over Finset.range, converts to sequential convergence via hasSum_iff_tendsto_nat_of_nonneg, and carries out an explicit epsilon-N argument with witness N = ceil(2/epsilon) + 1. The estimation chain (lines 234-245) using ring_nf, abs_neg, div_lt_iff, and linarith is carefully done. This is not a Mathlib wrapper -- it is real formalized analysis.",
+      "recommendation": "Preserve this as the centerpiece of the entry."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "reciprocal_triangular, lines 273-294",
+      "finding": "The connection between triangular numbers and the series is proved via an explicit parity case split showing n(n+1) is always even. This is a nice number-theoretic argument that bridges the combinatorial definition (T_n = n(n+1)/2) with the analytic result. The interplay between natural number division and real-valued reciprocals is handled carefully.",
+      "recommendation": "Preserve. This theorem justifies the title's claim about triangular numbers."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "finite_sum_reciprocals, lines 108-133",
+      "finding": "The finite telescoping sum is proved by induction with careful Finset.Icc manipulation, including explicit proof that Icc 1 (m+1) = Icc 1 m union {m+1} and disjointness. This is a pedagogically valuable demonstration of how to work with Lean's finite sum library.",
+      "recommendation": "Preserve. Good example of induction over Finset ranges."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "meta.json mathlibDependencies, Finset.sum_range_sub",
+      "finding": "meta.json lists Finset.sum_range_sub as a Mathlib dependency, and the Lean file docstring (line 44) also lists it. However, this lemma is never called in any proof body. The proof performs telescoping by manual induction (finite_sum_reciprocals, line 108) rather than using Mathlib's built-in telescoping identity. A grep confirms the only occurrence is in the docstring comment at line 44.",
+      "recommendation": "Remove Finset.sum_range_sub from mathlibDependencies in meta.json. Update the Lean docstring (line 44) to describe the actual approach (induction-based telescoping) rather than citing an unused Mathlib lemma."
+    },
+    {
+      "severity": "moderate",
+      "category": "precision",
+      "location": "Lean file docstring, line 24",
+      "finding": "The Lean file's module docstring states convergence is established 'via comparison with the geometric series.' The actual code (line 158) uses comparison with the p-series sum(1/n^2) via Real.summable_nat_rpow_inv, not the geometric series. The p-series and geometric series are different objects. meta.json overview.proofStrategy correctly says 'comparison with the p-series,' so this is an inconsistency between the Lean docstring and the gallery metadata.",
+      "recommendation": "Change line 24 of the Lean file from 'comparison with the geometric series' to 'comparison with the p-series.' This aligns the Lean documentation with both the actual code and meta.json."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json lineCount vs actual file",
+      "finding": "meta.json reports lineCount: 305 and leanFile.lineCount: 305. The actual file is 308 lines (verified with wc -l). The discrepancy is 3 lines.",
+      "recommendation": "Update both lineCount fields to 308."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json sections 'examples', endLine 305",
+      "finding": "The 'examples' section lists endLine: 305, but the file has content through line 308 (the 'end TriangularNumberReciprocals' statement is at line 308, with #check statements at lines 303-306). The section range should extend to capture all content.",
+      "recommendation": "Update the examples section endLine to 308, or add a note that the namespace close at line 308 is excluded."
+    },
+    {
+      "severity": "minor",
+      "category": "overclaim",
+      "location": "annotations.json, ann-main-theorem",
+      "finding": "The annotation claims this is 'a rare example of a completely explicit analytic proof in Lean.' While the epsilon-N argument is indeed fully explicit, explicit analytic proofs in Lean/Mathlib are not rare -- many convergence proofs provide concrete witnesses. The claim overstates the unusualness.",
+      "recommendation": "Soften to something like 'a clean example of a fully explicit epsilon-N convergence argument in Lean' without the 'rare' qualifier."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json originalContributions",
+      "finding": "The label 'Telescoping series proof' is slightly imprecise. The proof does not use Mathlib's built-in telescoping lemma (Finset.sum_range_sub); it proves the telescoping property from scratch by induction. This is actually a stronger contribution than the label suggests. Similarly, 'Comparison test convergence' understates that the proof manually establishes the bound 1/(n(n+1)) <= 1/n^2 rather than calling a prepackaged comparison lemma.",
+      "recommendation": "Consider more precise labels such as 'Induction-based telescoping proof (not using Finset.sum_range_sub)' and 'Manual comparison test with p-series bound.' These better distinguish the work from simple Mathlib wrapper calls."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Remove Finset.sum_range_sub from mathlibDependencies in meta.json. It is listed as a dependency but never used in any proof body -- the telescoping is done by manual induction. Update the Lean file docstring at line 44 to match.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "researcher",
+      "description": "Fix the Lean file docstring at line 24: change 'comparison with the geometric series' to 'comparison with the p-series' to match the actual code (Real.summable_nat_rpow_inv at line 158).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Update meta.json lineCount from 305 to 308 (both top-level and leanFile.lineCount). Update the examples section endLine from 305 to 308.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Soften the 'rare example' claim in annotations.json ann-main-theorem. Change 'a rare example of a completely explicit analytic proof in Lean' to 'a clean example of a fully explicit epsilon-N convergence argument in Lean.'",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Consider refining originalContributions labels in meta.json to better reflect that the telescoping is done by manual induction (not using Finset.sum_range_sub) and the comparison test manually establishes the bound.",
+      "status": "resolved"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 8,
+    "originalityAccuracy": 7,
+    "completeness": 9,
+    "framingPrecision": 7,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 7,
+    "overall": 7.7
+  },
+  "suggestedBestFraming": "A complete, sorry-free Lean 4 formalization of Wiedijk #42: the sum of reciprocals of triangular numbers equals 2. The proof constructs the telescoping identity by induction, establishes convergence via comparison with the p-series, and carries out an explicit epsilon-N limit argument, all building on Mathlib's infinite sum infrastructure."
+}

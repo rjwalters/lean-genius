@@ -1,0 +1,123 @@
+[
+  {
+    "id": "second-moment-context",
+    "proofId": "combinations-formula-oq-07-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 74
+    },
+    "type": "concept",
+    "title": "Weighting the Sum of Squares by k²: A Second Moment",
+    "content": "The parent proves the central sum of squares C(2n,n) = ∑_{k=0}^{n} C(n,k)², and OQ-03 weighted it by k to obtain the first moment. This follow-up weights each term by k². The result, ∑ k²·C(n,k)² = n²·C(2n−2,n−1) (equivalently 2·(2n−1)·∑ k²·C(n,k)² = n³·C(2n,n) for n ≥ 1), is a second-moment identity: reading p_k = C(n,k)²/C(2n,n) as the hypergeometric distribution on {0,…,n}, the weighted sum is its raw second moment, and together with OQ-03's mean n/2 it pins down the variance n²/(4(2n−1)). The proof needs nothing beyond the absorption identity and the parent sum of squares one order down.",
+    "mathContext": "$\\sum_{k=0}^{n} k^2\\binom{n}{k}^2 = n^2\\binom{2n-2}{n-1}$. With $p_k = \\binom{n}{k}^2/\\binom{2n}{n}$ the hypergeometric law, the mean is $n/2$ (OQ-03) and the variance is $\\dfrac{n^2}{4(2n-1)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum of squares of binomial coefficients",
+      "second moment / weighted sum",
+      "hypergeometric variance",
+      "absorption identity",
+      "central binomial coefficient"
+    ],
+    "prerequisites": [
+      "Nat.choose binomial coefficients",
+      "the absorption identity k·C(n,k) = n·C(n−1,k−1)",
+      "the parent identity C(2n,n) = ∑ C(n,k)²"
+    ]
+  },
+  {
+    "id": "absorption-thm",
+    "proofId": "combinations-formula-oq-07-oq-04",
+    "range": {
+      "startLine": 83,
+      "endLine": 88
+    },
+    "type": "theorem",
+    "title": "Squared Absorption",
+    "content": "mul_sq_choose_sq establishes k²·C(n,k)² = n²·C(n−1,k−1)² for 1 ≤ k ≤ n. It squares the committee-chair identity k·C(n,k) = n·C(n−1,k−1) (proved as mul_choose_eq in the OQ-01 sibling) and distributes the square over each product (mul_pow). This single rewrite is the engine of the second moment: it trades a k²-weighted square of C(n,k) for an unweighted square of C(n−1,k−1), demoting the binomial index by one and absorbing both factors of k into the constant n².",
+    "mathContext": "From $k\\binom{n}{k} = n\\binom{n-1}{k-1}$, squaring gives $k^2\\binom{n}{k}^2 = n^2\\binom{n-1}{k-1}^2$. The weight $k^2$ is absorbed entirely into $n^2$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "absorption / committee-chair identity",
+      "mul_pow",
+      "binomial index shift",
+      "squaring an identity termwise"
+    ],
+    "prerequisites": [
+      "the absorption identity k·C(n,k) = n·C(n−1,k−1)",
+      "distributing a square over a product"
+    ]
+  },
+  {
+    "id": "second-moment-thm",
+    "proofId": "combinations-formula-oq-07-oq-04",
+    "range": {
+      "startLine": 94,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "The Second-Moment Closed Form",
+    "content": "sum_sq_weighted_sq proves ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1). The k=0 term carries weight k²=0, so Finset.sum_range_succ' peels it off and reindexes k ↦ k−1, after which 1 ≤ k holds for every remaining summand and mul_sq_choose_sq rewrites each to (m+1)²·C(m,j)² (with n = m+1). Pulling out the constant (Finset.mul_sum) leaves (m+1)²·∑_j C(m,j)², which the parent central_binom_eq_sum_sq at order m turns into (m+1)²·C(2m,m) = n²·C(2n−2,n−1). The case n=0 is immediate.",
+    "mathContext": "$\\sum_k k^2\\binom{n}{k}^2 = n^2\\sum_j \\binom{n-1}{j}^2 = n^2\\binom{2(n-1)}{n-1}$, using $\\sum_j\\binom{m}{j}^2 = \\binom{2m}{m}$ from the parent at $m = n-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_range_succ'",
+      "Finset.mul_sum",
+      "central_binom_eq_sum_sq (parent)",
+      "reindexing a finite sum",
+      "absorption"
+    ],
+    "prerequisites": [
+      "linearity of finite sums",
+      "the squared absorption identity above",
+      "the parent sum of squares identity"
+    ]
+  },
+  {
+    "id": "recurrence-thm",
+    "proofId": "combinations-formula-oq-07-oq-04",
+    "range": {
+      "startLine": 117,
+      "endLine": 130
+    },
+    "type": "theorem",
+    "title": "The Binomial Recurrence",
+    "content": "central_binom_recurrence proves n·C(2n,n) = 2·(2n−1)·C(2n−2,n−1) for n ≥ 1, the bridge to the central-binomial form. It chains two facts: the halving C(2n,n) = 2·C(2n−1,n−1) (OQ-03's central_binom_two_mul_pred), and one absorption step n·C(2n−1,n) = (2n−1)·C(2n−2,n−1) on the top Pascal row (mul_choose_eq with parameters 2n−1, n). The two central entries C(2n−1,n−1) and C(2n−1,n) are equated by Nat.choose_symm, after which the absorption supplies the (2n−1) factor.",
+    "mathContext": "$n\\binom{2n}{n} = 2n\\binom{2n-1}{n-1} = 2n\\binom{2n-1}{n} = 2(2n-1)\\binom{2n-2}{n-1}$, the last step by absorption on the top row.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "central_binom_two_mul_pred (OQ-03 halving)",
+      "mul_choose_eq (OQ-01 absorption)",
+      "Nat.choose_symm",
+      "central binomial recurrence"
+    ],
+    "prerequisites": [
+      "the halving C(2n,n) = 2·C(2n−1,n−1)",
+      "the absorption identity",
+      "binomial symmetry"
+    ]
+  },
+  {
+    "id": "central-binom-form-thm",
+    "proofId": "combinations-formula-oq-07-oq-04",
+    "range": {
+      "startLine": 136,
+      "endLine": 144
+    },
+    "type": "theorem",
+    "title": "The Central-Binomial Form",
+    "content": "two_mul_pred_mul_sum_sq proves 2·(2n−1)·∑_{k=0}^{n} k²·C(n,k)² = n³·C(2n,n) for n ≥ 1. It substitutes the second-moment closed form n²·C(2n−2,n−1) and rewrites 2·(2n−1)·C(2n−2,n−1) as n·C(2n,n) via the binomial recurrence, leaving n²·(n·C(2n,n)) = n³·C(2n,n). This mirrors OQ-03's first-moment form 2·∑ k·C(n,k)² = n·C(2n,n), expressing the second moment directly through the central binomial coefficient. The numeric checks confirm ∑_{k=0}^{3} k²·C(3,k)² = 54 = 9·C(4,2) and 2·5·54 = 540 = 27·C(6,3).",
+    "mathContext": "$2(2n-1)\\sum_k k^2\\binom{n}{k}^2 = 2(2n-1)\\,n^2\\binom{2n-2}{n-1} = n^2\\cdot n\\binom{2n}{n} = n^3\\binom{2n}{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "central_binom_recurrence",
+      "the second-moment closed form",
+      "first-moment analogue (OQ-03)",
+      "central binomial coefficient"
+    ],
+    "prerequisites": [
+      "the second-moment closed form",
+      "the binomial recurrence",
+      "ring arithmetic over ℕ"
+    ]
+  }
+]

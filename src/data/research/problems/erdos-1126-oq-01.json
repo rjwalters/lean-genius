@@ -1,0 +1,121 @@
+{
+  "slug": "erdos-1126-oq-01",
+  "title": "Can the de Bruijn-Jurkat theorem be extended to other functional equations, s...",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Can the de Bruijn-Jurkat theorem (almost additive → additive a.e.) be extended to multiplicative, Jensen, and derivation functional equations? We formalize the extensions and prove key structural connections.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-24T00:48:59.906Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Formalized extensions of de Bruijn-Jurkat to multiplicative, Jensen, and derivation equations. 12 theorems (all proved, 0 sorry), 6 axioms, 388 lines. The former almost-Jensen a.e.-doubling reduction is now axiom ae_double_of_almost_jensen; log_of_mul_is_additive is proved directly.",
+    "builtItems": [
+      "IsJensen definition in Erdos1126OQ01Problem.lean",
+      "IsMultiplicative definition in Erdos1126OQ01Problem.lean",
+      "IsDerivation definition in Erdos1126OQ01Problem.lean",
+      "jensen_implies_shifted_additive (proved)",
+      "additive_plus_const_is_jensen (proved)",
+      "jensen_iff_additive_shifted (proved)",
+      "mul_func_one (proved)",
+      "mul_func_sq (proved)",
+      "derivation_at_one (proved)",
+      "derivation_sq (proved)",
+      "derivation_pow (proved by induction)",
+      "stability_paradigm_summary (proved from axioms)",
+      "Gallery entry at src/data/proofs/erdos-1126-oq-01/"
+    ],
+    "insights": [
+      "Jensen equation is exactly equivalent to additivity modulo constants (proved both directions)",
+      "Multiplicative stability reduces to additive stability via logarithmic conjugation",
+      "Derivation power rule d(x^n) = n*x^(n-1)*d(x) proved by induction",
+      "All algebraic functional equations exhibit a.e. stability (Ger 1979, Járai 2005)",
+      "Continuous derivations on R are trivially zero, unlike continuous additive functions"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "No remaining sorries; log_of_mul_is_additive proved, almost-Jensen a.e. reduction encoded as axiom ae_double_of_almost_jensen",
+      "Create Aristotle companion file for routine lemmas",
+      "Connect to Mathlib ConvexOn for Jensen-convexity relationship"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "analysis",
+    "functional-equations",
+    "measure-theory",
+    "cauchy-equation",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-112",
+    "erdos-1126",
+    "erdos-1126-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.906Z",
+  "lastUpdate": "2026-03-24T06:50:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1126OQ01Aristotle.lean",
+      "filename": "Erdos1126OQ01Aristotle.lean",
+      "lineCount": 45,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1126OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1126OQ01Problem.lean",
+      "filename": "Erdos1126OQ01Problem.lean",
+      "lineCount": 473,
+      "theoremCount": 13,
+      "axiomCount": 5,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1126OQ01Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1126Problem.lean",
+      "filename": "Erdos1126Problem.lean",
+      "lineCount": 158,
+      "theoremCount": 6,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1126Problem.lean"
+    }
+  ]
+}

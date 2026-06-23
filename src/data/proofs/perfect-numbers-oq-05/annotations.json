@@ -1,0 +1,68 @@
+[
+  {
+    "id": "perfect-numbers-oq-05-module-header",
+    "proofId": "perfect-numbers-oq-05",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "title": "Module Header: Prime Powers and the Deficiency Classification",
+    "content": "A positive integer $n$ is **deficient** when $\\sigma(n) < 2n$, equivalently when its proper divisors sum to strictly less than $n$. This classification (deficient / perfect / abundant) goes back to Nicomachus of Gerasa (c. 100 AD).\n\nPrime powers are the simplest infinite family of deficient numbers. The divisors of $p^k$ are exactly $1, p, p^2, \\dots, p^k$, so\n$$\\sigma(p^k) = 1 + p + \\cdots + p^k = \\frac{p^{k+1}-1}{p-1},$$\nwhich is always *just short* of $2p^k$. The deficiency is the elementary geometric fact that the lower tail $1 + p + \\cdots + p^{k-1}$ is strictly smaller than the single top term $p^k$ (for $p \\ge 2$):\n$$\\sigma(p^k) = \\underbrace{(1 + p + \\cdots + p^{k-1})}_{< \\,p^k} + p^k < p^k + p^k = 2p^k.$$\n\n**What was missing.** The existing gallery family had only the $k=1$ case (`prime_is_deficient`), the closed-form sum (`sigma_prime_pow`), and a few *specific* deficient numbers proved by `native_decide` (which trusts the compiler, `Lean.ofReduceBool`). This file supplies the **general, all-$k$ theorem** with a uniform geometric-series proof, fully kernel-checked with **0 axioms**."
+  },
+  {
+    "id": "perfect-numbers-oq-05-geomsum",
+    "proofId": "perfect-numbers-oq-05",
+    "type": "theorem",
+    "range": {
+      "startLine": 53,
+      "endLine": 63
+    },
+    "title": "The Geometric Heart: Lower Tail Below the Top Term",
+    "content": "`geomSum_prime_pow_lt`: for a prime $p$ and any $k$, $\\sum_{j < k} p^j < p^k$.\n\nThis is the engine of every deficiency statement in the file. It is a one-line instance of Mathlib's **`Nat.geomSum_lt`**:\n$$2 \\le m \\;\\land\\; (\\forall j \\in s,\\ j < n) \\;\\Rightarrow\\; \\sum_{j \\in s} m^j < m^n.$$\nHere $m = p$ (with $p \\ge 2$ from `hp.two_le`), $s = \\mathrm{range}\\,k$, and $n = k$; every index $j \\in \\mathrm{range}\\,k$ satisfies $j < k$ by `Finset.mem_range`. Internally `Nat.geomSum_lt` routes through the closed form $(p^k-1)/(p-1)$ and the bound $(p^k-1)/(p-1) \\le p^k - 1 < p^k$.\n\nThe inequality is strict and uniform in $k$ — no case analysis, no computation."
+  },
+  {
+    "id": "perfect-numbers-oq-05-sigma-form",
+    "proofId": "perfect-numbers-oq-05",
+    "type": "theorem",
+    "range": {
+      "startLine": 65,
+      "endLine": 78
+    },
+    "title": "Sum-of-Divisors Form: σ(pᵏ) < 2·pᵏ",
+    "content": "`sigma_one_prime_pow_lt`: $\\sigma(p^k) < 2p^k$ for prime $p$ and any $k$.\n\n**Proof.** Rewrite $\\sigma(p^k)$ with Mathlib's `sigma_one_apply_prime_pow` to $\\sum_{j \\in \\mathrm{range}(k+1)} p^j$, then peel the top term $p^k$ with `Finset.sum_range_succ`, leaving the lower tail $\\sum_{j \\in \\mathrm{range}\\,k} p^j$. The geometric heart bounds that tail by $p^k$, and `omega` closes\n$$(\\text{lower tail}) + p^k < 2p^k \\quad\\text{from}\\quad (\\text{lower tail}) < p^k.$$\nNo `native_decide`: the bound is derived, so the result is kernel-checked with 0 axioms."
+  },
+  {
+    "id": "perfect-numbers-oq-05-proper-divisors",
+    "proofId": "perfect-numbers-oq-05",
+    "type": "theorem",
+    "range": {
+      "startLine": 80,
+      "endLine": 88
+    },
+    "title": "Proper-Divisor Form: The Parts Are Smaller Than the Whole",
+    "content": "`sum_properDivisors_pow_lt`: the proper divisors of $p^k$ — namely $1, p, \\dots, p^{k-1}$ — sum to strictly less than $p^k$.\n\nThis is the most concrete face of deficiency: a number exceeds the sum of its own proper divisors. The proof rewrites the proper-divisor sum with `Nat.sum_properDivisors_prime_pow` (which identifies $\\sum_{d \\mid p^k,\\, d < p^k} d = \\sum_{j \\in \\mathrm{range}\\,k} p^j$) and applies the geometric heart directly."
+  },
+  {
+    "id": "perfect-numbers-oq-05-headline",
+    "proofId": "perfect-numbers-oq-05",
+    "type": "theorem",
+    "range": {
+      "startLine": 90,
+      "endLine": 108
+    },
+    "title": "Headline: Every Prime Power is Deficient",
+    "content": "`IsDeficient n := σ(n) < 2n` (identical to `SumOfDivisors.IsDeficient`, restated for self-containment).\n\n`prime_pow_is_deficient`: for every prime $p$ and every $k$, `IsDeficient (p^k)` — definitionally the $\\sigma$-form. This single statement captures the entire infinite family $\\{p^k\\}$ at once.\n\n`isDeficient_iff_sum_properDivisors_lt` bridges the two standard definitions of deficiency — $\\sigma(n) < 2n$ versus proper divisors summing below $n$ — via `Nat.sum_divisors_eq_sum_properDivisors_add_self` and `omega`, holding for all $n$ (including $n = 0$)."
+  },
+  {
+    "id": "perfect-numbers-oq-05-corollaries",
+    "proofId": "perfect-numbers-oq-05",
+    "type": "theorem",
+    "range": {
+      "startLine": 110,
+      "endLine": 142
+    },
+    "title": "Corollaries: k = 1 and Concrete Instances Without native_decide",
+    "content": "`prime_is_deficient`: the classical $k=1$ case ($\\sigma(p) = p + 1 < 2p$), recovered as a one-line corollary (`simpa` with `pow_one`).\n\nThe concrete instances $8 = 2^3$, $16 = 2^4$, $9 = 3^2$, $81 = 3^4$, $2187 = 3^7$ are each a **substitution into the general theorem** — `prime_pow_is_deficient 2 3 (by norm_num)`, etc. The existing family proved analogous instances by `native_decide` (trusting the compiler via `Lean.ofReduceBool`); here the same numbers are certified by a uniform argument, so every named instance is kernel-checked with **0 axioms**."
+  }
+]

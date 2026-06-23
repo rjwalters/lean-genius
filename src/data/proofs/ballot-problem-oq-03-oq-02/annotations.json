@@ -1,0 +1,411 @@
+[
+  {
+    "id": "ann-lgv-lpath",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 82,
+      "endLine": 110
+    },
+    "type": "definition",
+    "title": "Lattice Path Foundations",
+    "content": "Defines lattice paths as `List Bool` (false = East, true = North), then restricts to `PathMN m n`—the subtype of paths with exactly $m$ East steps and $n$ North steps (length $m+n$). The `Fintype` instance for `PathMN` is constructed by equivalence with `{ v : Vector Bool (m+n) // v.countP East = m }`, enabling later cardinality arguments. The `pathCount` function gives the number of paths from $(0,a)$ to $(m,b)$ as $\\binom{m+(b-a)}{m}$.",
+    "mathContext": "$|\\mathrm{PathMN}(m,n)| = \\binom{m+n}{m}$ — choosing which $m$ of $m+n$ steps go East",
+    "significance": "key",
+    "relatedConcepts": [
+      "lattice path",
+      "binomial coefficient",
+      "Fintype",
+      "subtype"
+    ],
+    "prerequisites": [
+      "List.countP",
+      "Nat.choose",
+      "Fintype equivalence"
+    ]
+  },
+  {
+    "id": "ann-lgv-nonintersect",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 116,
+      "endLine": 222
+    },
+    "type": "definition",
+    "title": "Column-Based Non-Intersection Predicate",
+    "content": "Defines non-intersection of two lattice paths via column analysis. `northBeforeEast l k` counts North steps before the $k$-th East step, tracking the y-coordinate at each column entry. `colYRange l y₀ x` gives the set of y-values path $l$ visits in column $x$. Two paths are `NonIntersecting` if their column ranges are disjoint at every column and their final y-coordinates differ. This column-by-column approach is the geometric foundation for the GV involution's 'first crossing point'.",
+    "mathContext": "Paths $P_1, P_2$ are non-intersecting if $\\mathrm{colYRange}(P_1, y_1, x) \\cap \\mathrm{colYRange}(P_2, y_2, x) = \\emptyset$ for all $0 \\leq x < m$",
+    "significance": "key",
+    "relatedConcepts": [
+      "lattice path intersection",
+      "Gessel-Viennot involution",
+      "column decomposition"
+    ],
+    "prerequisites": [
+      "northBeforeEast recursion",
+      "Set.Disjoint"
+    ]
+  },
+  {
+    "id": "ann-lgv-config",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 228,
+      "endLine": 251
+    },
+    "type": "definition",
+    "title": "LGVConfig and Path Tuples",
+    "content": "The `LGVConfig r` structure encodes an r×r LGV problem: grid width $m$, strictly increasing source positions $a_1 < \\cdots < a_r$, strictly increasing target positions $b_1 < \\cdots < b_r$, with $a_i \\leq b_i$. `PathTuple cfg` is the dependent product $(i : \\mathrm{Fin}\\, r) \\to \\mathrm{PathMN}\\, m\\, (b_i - a_i)$. The strict monotonicity conditions are essential: they guarantee that non-identity permutation paths must cross, enabling the GV involution.",
+    "mathContext": "$\\mathrm{LGVConfig}(r) = (m, (a_i)_{i=1}^r, (b_i)_{i=1}^r)$ with $a_1 < \\cdots < a_r$, $b_1 < \\cdots < b_r$, $a_i \\leq b_i$",
+    "significance": "key",
+    "relatedConcepts": [
+      "strict monotonicity",
+      "dependent type",
+      "Fin r",
+      "path tuple"
+    ],
+    "prerequisites": [
+      "StrictMono",
+      "PathMN",
+      "Fintype of dependent products"
+    ]
+  },
+  {
+    "id": "ann-lgv-pathmatrix",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 257,
+      "endLine": 261
+    },
+    "type": "concept",
+    "title": "The Path Weight Matrix",
+    "content": "Defines the $r \\times r$ integer matrix $M_{i,j} = \\binom{m + (b_j - a_i)}{m}$, where entry $(i,j)$ counts lattice paths from source $i$ to target $j$. This is the matrix whose determinant the LGV lemma evaluates. Casting to $\\mathbb{Z}$ (not $\\mathbb{N}$) is necessary because the determinant involves signs from permutations.",
+    "mathContext": "$M_{i,j} = \\binom{m + (b_j - a_i)}{m} = $ number of paths from $(0, a_i)$ to $(m, b_j)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Matrix.det",
+      "Leibniz formula",
+      "path counting matrix"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "Matrix.of",
+      "integer casting"
+    ]
+  },
+  {
+    "id": "ann-lgv-permtuples",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 267,
+      "endLine": 289
+    },
+    "type": "concept",
+    "title": "Permutation Path Tuples and Signed Counts",
+    "content": "`PermPathTuple cfg σ` is the type of path tuples where path $i$ goes from source $i$ to target $\\sigma(i)$. The `signedPermCount` multiplies $\\mathrm{sign}(\\sigma)$ by the product of binomial coefficients $\\prod_i \\binom{m + (b_{\\sigma(i)} - a_i)}{m}$. When $\\sigma = \\mathrm{id}$, this gives the unsigned count of identity path tuples. The key insight is that $\\det M = \\sum_\\sigma \\mathrm{sign}(\\sigma) \\cdot |\\mathrm{PermPathTuple}(\\sigma)|$.",
+    "mathContext": "$\\mathrm{signedPermCount}(\\sigma) = \\mathrm{sgn}(\\sigma) \\cdot \\prod_{i=1}^r \\binom{m + (b_{\\sigma(i)} - a_i)}{m}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Equiv.Perm",
+      "permutation sign",
+      "Leibniz expansion"
+    ],
+    "prerequisites": [
+      "Equiv.Perm.sign",
+      "Fintype.card of dependent product"
+    ]
+  },
+  {
+    "id": "ann-lgv-swaptails",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 296,
+      "endLine": 338
+    },
+    "type": "concept",
+    "title": "Tail-Swap Operation and Sign Reversal",
+    "content": "The `swapTailsAt` operation takes two paths and a split index $k$, swapping their suffixes after position $k$. Two length-preservation theorems confirm this produces valid paths. The critical `gessel_viennot_transposition_sign` theorem proves that composing a transposition $(i, \\sigma(i))$ with $\\sigma$ reverses the permutation sign: $\\mathrm{sign}((i\\;\\sigma(i)) \\circ \\sigma) = -\\mathrm{sign}(\\sigma)$. This sign reversal is what causes the pairwise cancellation in the determinant expansion.",
+    "mathContext": "$\\mathrm{sgn}((i\\;\\sigma(i)) \\cdot \\sigma) = \\mathrm{sgn}((i\\;\\sigma(i))) \\cdot \\mathrm{sgn}(\\sigma) = (-1) \\cdot \\mathrm{sgn}(\\sigma)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "sign-reversing involution",
+      "transposition",
+      "List.take",
+      "List.drop"
+    ],
+    "prerequisites": [
+      "Equiv.Perm.sign_swap",
+      "map_mul",
+      "List.length_append"
+    ]
+  },
+  {
+    "id": "ann-lgv-firstnonfixed",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 345,
+      "endLine": 378
+    },
+    "type": "definition",
+    "title": "First Non-Fixed Point of a Permutation",
+    "content": "Four lemmas about `firstNonFixed σ`—the smallest index $i$ with $\\sigma(i) \\neq i$. The key result `firstNonFixed_lt_image` proves $i < \\sigma(i)$: since $\\sigma$ fixes all $j < i$, the image $\\sigma(i)$ cannot equal any smaller index (by injectivity) nor $i$ itself (by definition), so $\\sigma(i) > i$. This ordering is essential for the GV involution: it guarantees the path from the lower source crosses the path from the higher source.",
+    "mathContext": "For $\\sigma \\neq \\mathrm{id}$, let $i = \\min\\{j : \\sigma(j) \\neq j\\}$. Then $\\sigma(j) = j$ for $j < i$ and $\\sigma(i) > i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "permutation cycle structure",
+      "Finset.min'",
+      "injectivity argument"
+    ],
+    "prerequisites": [
+      "Equiv.Perm",
+      "Finset.filter",
+      "Equiv.ext"
+    ]
+  },
+  {
+    "id": "ann-lgv-algebraic-bridge",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 446,
+      "endLine": 599
+    },
+    "type": "insight",
+    "title": "Algebraic Bridge: det = Signed Permutation Sum",
+    "content": "Two theorems completing the algebraic half of the LGV proof. `permPathTuple_card` shows $|\\mathrm{PermPathTuple}(\\sigma)| = \\prod_i \\binom{m + (b_{\\sigma(i)} - a_i)}{m}$ using `Fintype.card_pi` and `pathMN_card`. Then `det_pathMatrix_eq_signed_sum` proves $\\det M = \\sum_\\sigma \\mathrm{sgn}(\\sigma) \\cdot |\\mathrm{PermPathTuple}(\\sigma)|$ by matching the Leibniz formula (via $\\det M^T$) with the combinatorial counting. This bridges linear algebra to combinatorics.",
+    "mathContext": "$\\det M = \\sum_{\\sigma \\in S_r} \\mathrm{sgn}(\\sigma) \\prod_{i=1}^r M_{i,\\sigma(i)} = \\sum_\\sigma \\mathrm{sgn}(\\sigma) \\cdot |\\mathrm{PermPathTuple}(\\sigma)|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Leibniz formula",
+      "Matrix.det_apply",
+      "Matrix.det_transpose",
+      "Fintype.card_pi"
+    ],
+    "prerequisites": [
+      "pathMN_card",
+      "Matrix.det_apply",
+      "permPathTuple_card"
+    ]
+  },
+  {
+    "id": "ann-lgv-tagged-tuples",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 611,
+      "endLine": 648
+    },
+    "type": "definition",
+    "title": "Tagged Path Tuples (Sigma Type)",
+    "content": "Defines `TaggedPathTuple` as $\\Sigma_{\\sigma} \\mathrm{PermPathTuple}(\\sigma)$ — the disjoint union of all $\\sigma$-path tuples over all permutations. This is the domain on which the GV involution operates. Key definitions: `taggedWeight` extracts $\\mathrm{sgn}(\\sigma)$ as the signed weight, `sum_tagged_eq_sum_perm` reformulates the tagged sum as $\\sum_\\sigma \\mathrm{sgn}(\\sigma) \\cdot |\\mathrm{PermPathTuple}(\\sigma)|$ (the Leibniz determinant expansion at the element level), and `IsGVFixedPoint` characterizes fixed points as identity-permutation tuples that are non-intersecting — exactly the objects counted by niTupleCount.",
+    "mathContext": "$\\mathrm{TaggedPathTuple} = \\coprod_{\\sigma \\in S_r} \\mathrm{PermPathTuple}(\\sigma)$. The GV involution acts on the cancellable subset (complement of fixed points), pairing tuples with opposite sign.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sigma type",
+      "sign-reversing involution",
+      "Leibniz formula",
+      "disjoint union"
+    ],
+    "prerequisites": [
+      "PermPathTuple",
+      "Equiv.Perm.sign",
+      "Fintype.sum_sigma"
+    ]
+  },
+  {
+    "id": "ann-lgv-wellformed",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 745,
+      "endLine": 825
+    },
+    "type": "concept",
+    "title": "Well-Formedness and Non-Identity Crossing",
+    "content": "Defines `wellFormed`: every source-target pair is reachable ($a_i \\leq b_j$ for all $i,j$), equivalent to $a_r \\leq b_1$ when both sequences are strictly monotone. Then proves two key structural results: (1) `perm_ne_one_has_inversion` — any non-identity permutation $\\sigma$ creates an inversion when composed with a strictly monotone function $f$, i.e., $\\exists i < j$ with $f(\\sigma(j)) < f(\\sigma(i))$; (2) `nonid_perm_paths_cross` — for any non-identity $\\sigma$-path tuple, some pair of paths must cross, using the inversion to set up the lattice_paths_must_cross hypothesis. This is the combinatorial core showing that only identity path tuples can be non-intersecting.",
+    "mathContext": "For $\\sigma \\neq \\mathrm{id}$: $\\exists i < j$ with $b_{\\sigma(j)} < b_{\\sigma(i)}$. Then path $P_i: (0, a_i) \\to (m, b_{\\sigma(i)})$ starts below $P_j$ but ends above it, so they must cross by the discrete IVT.",
+    "significance": "key",
+    "relatedConcepts": [
+      "well-formedness",
+      "permutation inversion",
+      "crossing argument",
+      "strict monotonicity"
+    ],
+    "prerequisites": [
+      "lattice_paths_must_cross",
+      "firstNonFixed",
+      "LGVConfig"
+    ]
+  },
+  {
+    "id": "ann-lgv-prefix-lemmas",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 840,
+      "endLine": 1078
+    },
+    "type": "concept",
+    "title": "Column Entry Prefix Lemmas",
+    "content": "A suite of technical lemmas establishing that lattice path column entries depend only on the prefix before the crossing point. `take_at_column_entry` (40-line induction) proves that the first $(x + \\mathrm{colEntry}(l, x))$ elements of a path contain exactly $x$ East steps — the foundation of the tail-swap construction. `take_east_count_within_column` (78 lines) generalizes this to positions within a column. These lemmas ensure that when paths are split and tails swapped, the resulting paths still have correct East-step counts and valid column entries at all points before the crossing.",
+    "mathContext": "For path $P$ with $\\geq x$ East steps: $|\\{\\text{East steps in } P[0..x{+}\\mathrm{colEntry}(P,x)]\\}| = x$. This means the prefix up to column entry $x$ captures exactly $x$ East steps — enabling clean tail-swap at column boundaries.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prefix preservation",
+      "column entry",
+      "East step count",
+      "list induction"
+    ],
+    "prerequisites": [
+      "northBeforeEast",
+      "colEntry",
+      "List.take",
+      "List.countP"
+    ]
+  },
+  {
+    "id": "ann-lgv-canonical-crossing",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 1079,
+      "endLine": 1530
+    },
+    "type": "concept",
+    "title": "Canonical Crossing Selection via Nat.find",
+    "content": "The deterministic heart of the GV involution. Defines `crossingCode` which encodes a crossing 4-tuple $(c, y, i, j)$ as a single natural number $n = c \\cdot B r^2 + y \\cdot r^2 + i \\cdot r + j$ (where $B$ is a $y$-coordinate bound). Applies `Nat.find` to select the lexicographically minimal crossing, yielding `canonCrossN`. Accessor functions (`canonCol`, `canonY`, `canonI`, `canonJ`) extract the 4-tuple components. Includes `northThenEastPath` — the canonical all-North-then-all-East path used in the involution construction — and extensive verification that the encoding/decoding round-trips correctly. The lex-minimum selection is critical for the involution being self-inverse: both the original and swapped tuples must select the same canonical crossing.",
+    "mathContext": "Crossing code: $n = c \\cdot Br^2 + y \\cdot r^2 + i \\cdot r + j$, minimized via $\\mathrm{Nat.find}$. This yields the lex-minimum $(c, y, i, j)$ where paths $P_i$ and $P_j$ share the point $(c, y)$, ensuring the involution is canonical.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.find",
+      "lexicographic order",
+      "canonical selection",
+      "encoding/decoding",
+      "well-ordering principle"
+    ],
+    "prerequisites": [
+      "pathsSharePoint",
+      "crossingCode_exists",
+      "northThenEastPath"
+    ]
+  },
+  {
+    "id": "ann-lgv-tailswap-assembly",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 1531,
+      "endLine": 1797
+    },
+    "type": "concept",
+    "title": "Tail-Swap Construction and Involution Assembly",
+    "content": "Constructs the actual GV involution `gvCanonInv`. Given a cancellable tagged tuple $(\\sigma, \\vec{P})$, it: (1) extracts the canonical crossing $(c, y, i, j)$; (2) splits paths $P_i$ and $P_j$ at their column-$c$, height-$y$ entry point via `splitPosAt`; (3) swaps their tails to form new paths $P_i'$ and $P_j'$; (4) proves the swapped paths have correct lengths and East-step counts (so they're valid PathMN elements); (5) composes with the transposition $(i\\;j)$ applied to $\\sigma$ to form the output tagged tuple $((i\\;j) \\circ \\sigma, \\vec{P'})$. The key preservation theorems — `splitPos_east_eq` (both split positions have the same East count) and `tailSwap_n_ci`/`tailSwap_n_cj` (swapped paths land in the correct PathMN type) — ensure type-correctness. Properties `gvCanon_sign_reversal` (sign flips) and `gvCanon_no_fixed` (no fixed points on cancellable tuples) are proved; `gvCanon_membership` (118 lines, FULLY PROVED) shows the image is again cancellable.",
+    "mathContext": "$\\iota(\\sigma, \\vec{P}) = ((i\\;j) \\circ \\sigma, \\vec{P'})$ where $P'_k = \\begin{cases} P_i[0..s_i] \\mathbin{\\|} P_j[s_j..] & k = i \\\\ P_j[0..s_j] \\mathbin{\\|} P_i[s_i..] & k = j \\\\ P_k & \\text{otherwise} \\end{cases}$ with $s_i, s_j$ the split positions at the canonical crossing $(c, y)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tail-swap involution",
+      "PathMN type preservation",
+      "split position",
+      "transposition composition",
+      "sign reversal"
+    ],
+    "prerequisites": [
+      "canonCol",
+      "canonY",
+      "canonI",
+      "canonJ",
+      "splitPosAt",
+      "List.take",
+      "List.drop"
+    ]
+  },
+  {
+    "id": "ann-lgv-self-inverse",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 1888,
+      "endLine": 2091
+    },
+    "type": "concept",
+    "title": "Self-Inverse Proof and Final Cancellation",
+    "content": "The remaining gap and final assembly. `canonCrossN_preserved` (sorry, line 1982) would show that the canonical crossing code is the same for the original and swapped tuples — essential because the involution must select the same crossing point in both directions. `gvCanon_self_inverse` (sorry, line 1989) would combine this with double tail-swap = identity and $(i\\;j)^2 = \\mathrm{id}$ to show $\\iota^2 = \\mathrm{id}$. The proved `cancellable_sum_eq_zero` applies Mathlib's `Finset.sum_involution` to the canonical involution, yielding zero signed sum over cancellable tuples. `gv_involution_cancellation` then adds back the fixed-point contribution (non-intersecting identity tuples) to get $\\mathrm{niTupleCount} = \\det M$. The file concludes with corollaries: determinant non-negativity, $r=1$ vacuous NI, and an applications survey.",
+    "mathContext": "The 2 remaining sorries: (1) $\\mathrm{canonCrossN}(\\iota(t)) = \\mathrm{canonCrossN}(t)$ — prefix preservation ensures the lex-minimum crossing is invariant; (2) $\\iota(\\iota(t)) = t$ — double tail-swap recovers original paths since $\\mathrm{swap}^2 = \\mathrm{id}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_involution",
+      "self-inverse",
+      "prefix preservation",
+      "cancellation lemma"
+    ],
+    "prerequisites": [
+      "gvCanon_membership",
+      "gvCanon_sign_reversal",
+      "gvCanon_no_fixed"
+    ]
+  },
+  {
+    "id": "ann-lgv-main-theorem",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 1798,
+      "endLine": 1835
+    },
+    "type": "insight",
+    "title": "The r×r LGV Lemma (Main Result)",
+    "content": "The theorem `gv_involution_cancellation` proves that the signed sum collapses to the non-intersecting count: $\\sum_\\sigma \\mathrm{sgn}(\\sigma) |\\mathrm{PermPathTuple}(\\sigma)| = |\\mathrm{NI\\_tuples}|$, using `Finset.sum_involution` applied to the canonical GV involution. This is the combinatorial heart—the GV involution pairs each $\\sigma$-tuple with a $(i\\;\\sigma(i)) \\circ \\sigma$-tuple of opposite sign, cancelling all contributions except non-intersecting identity tuples. The main theorem `lgv_lemma_rxr` then follows in two lines: $\\mathrm{niTupleCount} = \\det M$ by chaining the algebraic bridge with the GV cancellation.",
+    "mathContext": "$|\\{\\text{NI tuples}\\}| = \\det\\bigl[\\binom{m + (b_j - a_i)}{m}\\bigr]_{i,j=1}^r$",
+    "significance": "key",
+    "relatedConcepts": [
+      "sign-reversing involution",
+      "determinantal identity",
+      "Lindström's lemma"
+    ],
+    "prerequisites": [
+      "det_pathMatrix_eq_signed_sum",
+      "gv_involution_cancellation"
+    ]
+  },
+  {
+    "id": "ann-lgv-crossing-lemma",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 655,
+      "endLine": 735
+    },
+    "type": "insight",
+    "title": "Crossing Lemma (Discrete Intermediate Value Theorem)",
+    "content": "The theorem `lattice_paths_must_cross` proves that if two monotone lattice paths start with $y_1 < y_2$ but end with $y_1 + n_1 > y_2 + n_2$, there must exist a column $c < m$ where the lower path's $y$-coordinate catches up to the upper path's. The proof constructs the set $S = \\{x \\leq m : y_1 + \\mathrm{colEntry}(P_1, x) < y_2 + \\mathrm{colEntry}(P_2, x)\\}$, shows $0 \\in S$ (from the starting condition) and $m \\notin S$ (from the ending condition), then takes $c = \\max(S)$ via `Finset.max'` to get the crossing column. This is a discrete analogue of the continuous intermediate value theorem, specialized to lattice path geometry.",
+    "mathContext": "If $y_1 < y_2$ and $y_1 + n_1 > y_2 + n_2$, then $\\exists\\, c < m$ such that $y_1 + \\mathrm{colEntry}(P_1, c) \\geq y_2 + \\mathrm{colEntry}(P_2, c)$, i.e., the paths share a column entry height.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intermediate value theorem",
+      "Finset.max'",
+      "lattice path crossing",
+      "monotone function"
+    ],
+    "prerequisites": [
+      "colEntry_mono",
+      "colEntry_le_north",
+      "Finset.max'",
+      "Nat.lt_of_lt_of_le"
+    ]
+  },
+  {
+    "id": "ann-lgv-corollaries",
+    "proofId": "ballot-problem-oq-03-oq-02",
+    "range": {
+      "startLine": 1836,
+      "endLine": 1885
+    },
+    "type": "concept",
+    "title": "Corollaries and Applications",
+    "content": "Three corollaries: (1) `niTupleCount_nonneg`: the NI count is trivially non-negative as a natural number; (2) `pathMatrix_det_nonneg`: the determinant is non-negative (since it equals a count); (3) `isNonIntersecting_of_r_one`: for $r=1$, every path tuple is vacuously non-intersecting. The `lgv_universality` theorem restates the lemma for all $r$. The docstring on the applications theorem surveys four major consequences: Schur polynomials (Jacobi-Trudi), Catalan numbers, Aztec diamond tilings, and plane partitions.",
+    "mathContext": "$\\det M \\geq 0$ since $\\det M = \\mathrm{niTupleCount} \\in \\mathbb{N}$. For $r=1$, every singleton path tuple is vacuously non-intersecting, so $\\mathrm{niTupleCount} = \\binom{m + (b_1-a_1)}{m}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Schur polynomial",
+      "Catalan number",
+      "Aztec diamond",
+      "plane partition",
+      "MacMahon formula"
+    ],
+    "prerequisites": [
+      "lgv_lemma_rxr",
+      "Int.natCast_nonneg",
+      "Fin.elim0"
+    ]
+  }
+]

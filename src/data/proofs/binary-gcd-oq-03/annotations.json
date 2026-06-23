@@ -1,0 +1,279 @@
+[
+  {
+    "id": "ann-bgcd03-docstring",
+    "proofId": "binary-gcd-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Module Overview: Lehmer-Schönhage Hybrid GCD",
+    "content": "The module header describes Lehmer's 1938 insight: the leading digits of $a$ and $b$ determine the first several Euclidean quotients, so we can batch many full-precision steps into one cheap matrix-vector multiply. Schönhage's 1971 recursive refinement achieves $O(M(n) \\log n)$ bit complexity. The references span the historical arc: Lehmer's original paper, Schönhage's fast variant, Knuth's TAOCP Algorithm L, and the GMP library's production implementation.",
+    "mathContext": "Lehmer's observation: if $a = \\hat{a} \\cdot 2^s + r_a$ and $b = \\hat{b} \\cdot 2^s + r_b$ with $\\hat{a}, \\hat{b}$ fitting in $w$ bits, then the first $\\sim w$ quotients of $\\gcd(a,b)$ equal those of $\\gcd(\\hat{a}, \\hat{b})$, each representable as a $2 \\times 2$ matrix product.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean algorithm",
+      "matrix representation of GCD steps",
+      "bit complexity"
+    ],
+    "prerequisites": [
+      "Euclidean algorithm",
+      "GCD properties"
+    ]
+  },
+  {
+    "id": "ann-bgcd03-cofactor-matrix",
+    "proofId": "binary-gcd-oq-03",
+    "range": {
+      "startLine": 40,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "CofactorMatrix: Tracking Euclidean Steps as 2×2 Matrices",
+    "content": "CofactorMatrix is a structure with four integer fields $(\\alpha, \\beta, \\gamma, \\delta)$ representing the accumulated effect of Euclidean quotient steps. The identity matrix $I$ corresponds to zero steps, multiplication composes step sequences, and application maps $(a, b) \\mapsto (\\alpha a + \\beta b, \\gamma a + \\delta b)$. Two key properties are proved: $\\det(I) = 1$ and $\\det(MN) = \\det(M) \\cdot \\det(N)$, the latter by `ring`.",
+    "mathContext": "After $k$ Euclidean steps with quotients $q_1, \\ldots, q_k$, the cofactor matrix is $M = \\prod_{i=1}^k \\begin{pmatrix} 0 & 1 \\\\ 1 & -q_i \\end{pmatrix}$, satisfying $M \\cdot \\binom{a}{b} = \\binom{a'}{b'}$ where $(a', b')$ is the state after $k$ steps.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "extended Euclidean algorithm",
+      "continued fraction matrices",
+      "unimodular matrices"
+    ],
+    "prerequisites": [
+      "matrix multiplication",
+      "determinant",
+      "Lean 4 structures"
+    ]
+  },
+  {
+    "id": "ann-bgcd03-cramers-rule",
+    "proofId": "binary-gcd-oq-03",
+    "range": {
+      "startLine": 82,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "dvd_of_det_unit: Cramer's Rule for Divisibility",
+    "content": "The core lemma: if $\\det(M) = \\pm 1$ and $d$ divides both entries of $M \\cdot (a, b)$, then $d$ divides both $a$ and $b$. The proof constructs the inverse via Cramer's rule: $a = \\delta u - \\beta v$ and $b = \\alpha v - \\gamma u$ (up to $\\det$). Since $\\det = \\pm 1$, the factor vanishes. The case split on $\\det = 1$ vs $\\det = -1$ uses `dvd_neg` for the sign flip. This is a foundational result in lattice theory: unimodular transformations preserve the lattice of common divisors.",
+    "mathContext": "Cramer's rule: $M^{-1} = \\frac{1}{\\det M} \\begin{pmatrix} \\delta & -\\beta \\\\ -\\gamma & \\alpha \\end{pmatrix}$. When $\\det M = \\pm 1$, $M^{-1}$ has integer entries, so $d \\mid M(a,b) \\implies d \\mid (a,b)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cramer's rule",
+      "unimodular matrices",
+      "dvd_sub",
+      "dvd_neg",
+      "lattice theory"
+    ],
+    "prerequisites": [
+      "integer divisibility",
+      "linear algebra over Z",
+      "case analysis"
+    ]
+  },
+  {
+    "id": "ann-bgcd03-gcd-invariance",
+    "proofId": "binary-gcd-oq-03",
+    "range": {
+      "startLine": 113,
+      "endLine": 158
+    },
+    "type": "insight",
+    "title": "gcd_cofactor_eq: The Heart of Lehmer's Algorithm",
+    "content": "The main GCD invariance theorem: $\\gcd(\\alpha a + \\beta b, \\gamma a + \\delta b) = \\gcd(a, b)$ when $\\det = \\pm 1$. The proof uses `Nat.dvd_antisymm` with two directions. Forward: $\\gcd(u, v)$ divides both $u$ and $v$, so by `dvd_of_det_unit` it divides $a$ and $b$, hence divides $\\gcd(a, b)$. Backward: $\\gcd(a, b)$ divides $a$ and $b$, so it divides the linear combinations $u$ and $v$, hence divides $\\gcd(u, v)$. This clean antisymmetry argument avoids working with the Int.gcd API directly.",
+    "mathContext": "$\\gcd(\\alpha a + \\beta b, \\gamma a + \\delta b) = \\gcd(a, b)$ for $\\alpha\\delta - \\beta\\gamma = \\pm 1$. Proof: both sides divide each other. Forward uses the integer inverse ($\\det = \\pm 1$); backward uses linearity of divisibility.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.dvd_antisymm",
+      "Int.gcd_dvd_left",
+      "Int.dvd_gcd",
+      "common_divisors_preserved"
+    ],
+    "prerequisites": [
+      "dvd_of_det_unit",
+      "Nat.dvd_gcd",
+      "Int.gcd API"
+    ]
+  },
+  {
+    "id": "ann-bgcd03-lehmer-step",
+    "proofId": "binary-gcd-oq-03",
+    "range": {
+      "startLine": 176,
+      "endLine": 218
+    },
+    "type": "definition",
+    "title": "Lehmer Inner Loop: Cofactor Accumulation on Approximations",
+    "content": "lehmerInnerStep performs one Euclidean step on small approximations $(\\hat{a}, \\hat{b})$ while accumulating the cofactor matrix. The step matrix $S_q = [[0,1],[1,-q]]$ represents $(a,b) \\to (b, a - qb)$, so $M' = M \\cdot S_q$. The formulas $\\alpha' = \\beta$, $\\beta' = \\alpha - q\\beta$, $\\gamma' = \\delta$, $\\delta' = \\gamma - q\\delta$ come from this product. The safety check ($r = 0$ terminates) prevents overshooting — in practice, Lehmer's algorithm has a more sophisticated crossing check ensuring the quotient is valid for the full-precision inputs.",
+    "mathContext": "The Euclidean step matrix $S_q = \\begin{pmatrix} 0 & 1 \\\\ 1 & -q \\end{pmatrix}$ has $\\det(S_q) = 0 \\cdot (-q) - 1 \\cdot 1 = -1$. The accumulated matrix $M' = M \\cdot S_q$ satisfies $\\det(M') = \\det(M) \\cdot (-1) = -\\det(M)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "euclidStepMatrix",
+      "lehmerCofactors",
+      "Option monad for early termination"
+    ],
+    "prerequisites": [
+      "CofactorMatrix",
+      "Euclidean quotient",
+      "Nat.div and mod"
+    ]
+  },
+  {
+    "id": "ann-bgcd03-det-preservation",
+    "proofId": "binary-gcd-oq-03",
+    "range": {
+      "startLine": 227,
+      "endLine": 253
+    },
+    "type": "concept",
+    "title": "Determinant Alternation: det = ±1 by Induction",
+    "content": "lehmerInnerStep_det proves each step flips the determinant sign: $\\det(M') = -\\det(M)$. lehmerCofactors_det_unit then proves the full invariant by induction on fuel: starting from $\\det(I) = 1$, the determinant alternates $1, -1, 1, \\ldots$, always remaining $\\pm 1$. The inductive step case-splits on the step outcome (none → unchanged, some → apply flip). This is the safety certificate that Lehmer steps preserve GCD.",
+    "mathContext": "Since $\\det(S_{q_i}) = -1$ for each step, after $k$ steps: $\\det(M) = \\det(I) \\cdot (-1)^k = (-1)^k \\in \\{\\pm 1\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction on fuel",
+      "determinant sign alternation",
+      "invariant maintenance"
+    ],
+    "prerequisites": [
+      "lehmerInnerStep_det",
+      "CofactorMatrix.det_id",
+      "induction"
+    ]
+  },
+  {
+    "id": "ann-bgcd03-euclidean-gcd",
+    "proofId": "binary-gcd-oq-03",
+    "range": {
+      "startLine": 258,
+      "endLine": 285
+    },
+    "type": "concept",
+    "title": "Euclidean GCD: The Small-Input Fallback",
+    "content": "euclidGcd implements the standard Euclidean algorithm with well-founded recursion on $b$ (termination via $a \\bmod b < b$). The correctness proof euclidGcd_eq_gcd uses strong induction on $b$: the base case $b = 0$ gives $\\gcd(a, 0) = a$; the inductive step uses $\\gcd(b, a \\bmod b) = \\gcd(a, b)$ (the Euclidean recurrence). The auxiliary lemma gcd_mod_eq rewrites Mathlib's `Nat.gcd_rec` into the needed form.",
+    "mathContext": "The Euclidean recurrence: $\\gcd(a, b) = \\gcd(b, a \\bmod b)$ for $b > 0$, with $\\gcd(a, 0) = a$. Termination: $a \\bmod b < b$ ensures strict decrease.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "well-founded recursion",
+      "Nat.gcd_rec",
+      "Nat.mod_lt",
+      "termination_by"
+    ],
+    "prerequisites": [
+      "Nat.gcd",
+      "well-founded recursion in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-bgcd03-top-bits",
+    "proofId": "binary-gcd-oq-03",
+    "range": {
+      "startLine": 292,
+      "endLine": 306
+    },
+    "type": "definition",
+    "title": "topBits: Extracting the Lehmer Approximation",
+    "content": "topBits extracts the top $w$ bits of $n$ by computing the bit length $\\lceil \\log_2 n \\rceil + 1$ and right-shifting by $\\text{bits} - w$. The approximation theorem topBits_approx proves $n = \\hat{n} \\cdot 2^s + n \\bmod 2^s$, which is just the division algorithm for powers of 2. In practice, aligned extraction (same shift for both $a$ and $b$) ensures the quotient structure is preserved.",
+    "mathContext": "For $n$ with $\\ell$ bits and $w < \\ell$: $\\hat{n} = \\lfloor n / 2^{\\ell - w} \\rfloor$ has exactly $w$ bits, and $n = \\hat{n} \\cdot 2^{\\ell-w} + (n \\bmod 2^{\\ell-w})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.log",
+      "bit-shifting",
+      "Nat.div_add_mod"
+    ],
+    "prerequisites": [
+      "binary representation",
+      "Nat.log API"
+    ]
+  },
+  {
+    "id": "ann-bgcd03-hybrid",
+    "proofId": "binary-gcd-oq-03",
+    "range": {
+      "startLine": 313,
+      "endLine": 370
+    },
+    "type": "definition",
+    "title": "lehmerGcd: The Complete Hybrid Algorithm",
+    "content": "The full algorithm: lehmerReduce performs one Lehmer step (extract top bits, accumulate cofactors on approximations, apply to full-precision input) with Euclidean fallback when Lehmer makes no progress ($M = I$). lehmerGcd wraps this in a fuel-limited loop, dispatching to euclidGcd for small inputs (below lehmerThreshold = 64). The fuel $a + b + 1$ ensures termination since each step reduces $a + b$. The `Nat.gcd` fallback at fuel 0 is sound but unreachable in practice.",
+    "mathContext": "The hybrid dispatches: $\\max(a,b) < T \\implies$ Euclidean; otherwise Lehmer reduction. Each Lehmer step extracts $w$-bit approximations, runs $O(w)$ cheap Euclidean steps, and applies the result in one matrix-vector multiply, reducing $a + b$ by a factor of $\\sim 2^w$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fuel-based termination",
+      "lehmerReduce",
+      "algorithm dispatching"
+    ],
+    "prerequisites": [
+      "lehmerCofactors",
+      "euclidGcd",
+      "topBits",
+      "CofactorMatrix.apply"
+    ]
+  },
+  {
+    "id": "ann-bgcd03-verification",
+    "proofId": "binary-gcd-oq-03",
+    "range": {
+      "startLine": 395,
+      "endLine": 417
+    },
+    "type": "concept",
+    "title": "Computational Verification Examples",
+    "content": "Concrete examples verify the algorithm components: euclidGcd on classic inputs ($\\gcd(89, 55) = 1$ — consecutive Fibonacci numbers, the worst case for Euclidean), cofactor matrix determinants, top-bit extraction ($\\text{topBits}(1000, 8) = (125, 3)$ since $1000 = 125 \\cdot 2^3$), and the determinant ±1 invariant of lehmerCofactors on the Fibonacci pair (89, 55). All verified by native_decide.",
+    "mathContext": "$\\gcd(89, 55) = 1$ since $89$ and $55$ are consecutive Fibonacci numbers ($F_{11}$ and $F_{10}$), which require the maximum number of Euclidean steps (Lamé's theorem).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fibonacci numbers",
+      "Lamé's theorem",
+      "worst-case Euclidean"
+    ],
+    "prerequisites": [
+      "euclidGcd",
+      "lehmerCofactors",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "ann-bgcd03-cofactor-bridge",
+    "proofId": "binary-gcd-oq-03",
+    "range": {
+      "startLine": 423,
+      "endLine": 431
+    },
+    "type": "concept",
+    "title": "cofactor_apply_gcd: Connecting Theory to Algorithm",
+    "content": "This theorem bridges the abstract GCD invariance (gcd_cofactor_eq, stated in terms of raw integers $\\alpha, \\beta, \\gamma, \\delta$) with the concrete CofactorMatrix structure. It rewrites the CofactorMatrix.det hypothesis into the scalar form needed by gcd_cofactor_eq. This is the key connector: it allows the algorithm (which manipulates CofactorMatrix values) to invoke the mathematical theorem (which speaks in terms of integer determinants).",
+    "mathContext": "For $M = \\begin{pmatrix} \\alpha & \\beta \\\\ \\gamma & \\delta \\end{pmatrix}$ with $\\det(M) = \\pm 1$: $\\gcd(M \\cdot (a, b)) = \\gcd(a, b)$. This specializes `gcd_cofactor_eq` to the `CofactorMatrix` type.",
+    "significance": "key",
+    "relatedConcepts": [
+      "type bridging",
+      "gcd_cofactor_eq",
+      "CofactorMatrix.det"
+    ],
+    "prerequisites": [
+      "gcd_cofactor_eq",
+      "CofactorMatrix"
+    ]
+  },
+  {
+    "id": "ann-bgcd03-step-count",
+    "proofId": "binary-gcd-oq-03",
+    "range": {
+      "startLine": 438,
+      "endLine": 488
+    },
+    "type": "insight",
+    "title": "Step Count and Complexity Summary",
+    "content": "lehmerCofactorSteps counts the Euclidean steps batched in one Lehmer iteration, and lehmerCofactorSteps_pos proves at least 1 step occurs when progress is made. The summary documents the complexity improvement: each Lehmer step performs $O(w)$ cheap single-precision steps, reducing the full-precision input by $\\sim 2^w$, giving $O(n^2/w)$ total bit operations vs $O(n^2)$ for plain Euclidean. Schönhage's recursive variant achieves $O(M(n) \\log n)$ via half-GCD.",
+    "mathContext": "Plain Euclidean: $O(n^2)$ bit operations for $n$-bit inputs. Lehmer: $O(n^2/w)$ where $w$ is the word size. Schönhage HGCD: $O(M(n) \\log n)$ where $M(n)$ is the multiplication cost. With FFT multiplication, this is $O(n \\log^2 n \\log \\log n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bit complexity",
+      "Lamé's theorem",
+      "Schönhage HGCD",
+      "GMP implementation tiers"
+    ],
+    "prerequisites": [
+      "Euclidean algorithm complexity",
+      "fast multiplication"
+    ]
+  }
+]

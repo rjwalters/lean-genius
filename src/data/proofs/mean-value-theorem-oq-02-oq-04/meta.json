@@ -1,0 +1,252 @@
+{
+  "id": "mean-value-theorem-oq-02-oq-04",
+  "title": "Uniform Cauchy bound on the analytic Taylor remainder",
+  "slug": "mean-value-theorem-oq-02-oq-04",
+  "description": "RETRACTED: The S1 (2026-05-11) iteration axiomatized OQ-04 as analytic_taylor_remainder_uniform_bound. The child slug mean-value-theorem-oq-02-oq-04-oq-01 (S1, 2026-05-12) constructively refuted this axiom via the Runge counterexample (1/(1+x²) at a=0, R=100, M=1, r=1, n=0, x=1 yields |1/2-1|=1/2 > 1/99). S2 (researcher-8, 2026-05-14) removes the false axiom and its false-by-inheritance n=0 corollary from this file. The mathematically correct complex-disk Cauchy uniform bound lives in the child slug as analytic_taylor_remainder_uniform_bound_complex (fully proven and sorry-free as of S7, 2026-05-14, child PR #23192; the finite-radius sub-lemma cauchy_diag_norm_bound_at_radius was discharged via Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le).",
+  "meta": {
+    "author": "Cauchy (classical); formalization by Lean Genius researchers",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/MeanValueTheoremOQ02OQ04.lean",
+    "tags": [
+      "calculus",
+      "taylor-theorem",
+      "mean-value-theorem",
+      "analytic-functions",
+      "cauchy-estimates",
+      "analysis",
+      "research",
+      "retracted"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 131,
+    "assumptions": "1 axiom (inherited from additionalFiles only; main file is now empty after S2 retraction): taylor_lagrange_remainder in the parent file MeanValueTheoremOQ02.lean (qualitative pointwise Lagrange remainder, listed in additionalFiles below). The false OQ-04 axiom analytic_taylor_remainder_uniform_bound (S1, 2026-05-11) was REMOVED by S2 (researcher-8, 2026-05-14) after the child slug mean-value-theorem-oq-02-oq-04-oq-01 proved oq04_axiom_is_false via Runge counterexample (real sup bound on (a-R, a+R) ⊂ ℝ does not control the Cauchy coefficient bounds, which require a *complex*-disk sup bound). The mathematically correct uniform Cauchy bound lives in the child slug as analytic_taylor_remainder_uniform_bound_complex (fully proven and sorry-free as of S7, 2026-05-14, child PR #23192; the finite-radius sub-lemma cauchy_diag_norm_bound_at_radius was discharged via Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le). 0 sorries in this file.",
+    "dateAdded": "2026-05-11",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "AnalyticOn",
+        "description": "Predicate: f is analytic at every point of a set",
+        "module": "Mathlib.Analysis.Analytic.Basic"
+      },
+      {
+        "theorem": "MeanValueTheoremOQ02.taylorPolynomial",
+        "description": "Taylor polynomial reused from the parent file Proofs/MeanValueTheoremOQ02.lean",
+        "module": "Proofs.MeanValueTheoremOQ02"
+      },
+      {
+        "theorem": "MeanValueTheoremOQ02.taylorPolynomial_zero",
+        "description": "T_0(x) = f(a); used in the n=0 corollary",
+        "module": "Proofs.MeanValueTheoremOQ02"
+      }
+    ],
+    "additionalFiles": [
+      "Proofs/MeanValueTheoremOQ02.lean"
+    ],
+    "originalContributions": [
+      "Verbatim Lean axiomatization of Cauchy's uniform bound on the analytic Taylor remainder (OQ-04 of mean-value-theorem-oq-02), using AnalyticOn ℝ and the parent file's taylorPolynomial.",
+      "Reuse of MeanValueTheoremOQ02.taylorPolynomial (no duplicated definition) keeping algebraic notation consistent with the parent OQ-02 entry.",
+      "n=0 specialization derived as a three-line simpa corollary, demonstrating the axiom's utility immediately."
+    ],
+    "theoremCount": 0,
+    "definitionCount": 0,
+    "relatedProblems": [
+      {
+        "id": "mean-value-theorem-oq-02",
+        "relationship": "The parent gallery entry: Taylor's theorem with Lagrange remainder (classical, pointwise existence of c). This OQ-04 entry resolves the parent's OQ-04 (4th open question in the parent's openQuestions array) by axiomatizing the uniform Cauchy bound. Reuses the parent's `taylorPolynomial` definition and `taylorPolynomial_zero` lemma."
+      },
+      {
+        "id": "taylor-theorem-oq-02",
+        "relationship": "Sibling gallery entry: analytic Taylor remainder vanishes (qualitative, R_n(x) → 0). This OQ-04 entry provides the *quantitative* rate: R_n(x) = O(r^(n+1)). The sibling's bridge lemmas (fps_coeff_eq_taylor_coeff, fps_eval_eq_taylor_term) will be the main tool for discharging this OQ-04's axiom in S2."
+      },
+      {
+        "id": "mean-value-theorem",
+        "relationship": "The grandparent: the ordinary Mean Value Theorem. The n=0 specialization of this OQ-04 is the analytic-function strengthening of MVT's Lipschitz bound, with `sup|f'|` replaced by `M / (R-r)` and the gap $|x - a|$ replaced by the inner radius $r$."
+      },
+      {
+        "id": "taylor-sincos-convergence",
+        "relationship": "Concrete instance of the geometric-tail bound: for $f = \\sin$ or $\\cos$, all iterated derivatives are bounded by 1, so the Lagrange remainder gives the (even tighter) factorial bound $|R_n(x)| \\le |x|^{n+1} / (n+1)!$. The OQ-04 Cauchy bound applies to *every* real-analytic function with finite radius of convergence — including those whose derivatives are not uniformly bounded — at the cost of only geometric (not factorial) decay."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Cauchy's uniform bound on the analytic Taylor remainder is the classical quantitative refinement of the Mean Value Theorem (Lagrange, 1797) and Taylor's theorem (Taylor 1715; Lagrange 1797 for the remainder; Cauchy 1823 for the integral form). For analytic functions—those representable by convergent power series in a neighborhood—Cauchy's integral formula gives sharp uniform estimates on the Taylor coefficients (Cauchy's estimates: $|a_k| \\le M / R^k$ where $M$ bounds $|f|$ on the disk of radius $R$). The resulting geometric-tail bound on the remainder, $|R_n(x)| \\le M r^{n+1} / (R^n (R - r))$ for $|x - a| \\le r < R$, is the foundation of complex analytic approximation theory, Padé approximants, and quantitative aspects of analytic continuation. The bound is *uniform* in $x$ over $[a-r, a+r]$—a strictly stronger statement than the pointwise Lagrange remainder, and one that does not require explicit knowledge of intermediate $c$-values.",
+    "problemStatement": "Formalize Cauchy's uniform bound on the analytic Taylor remainder: for $f$ real-analytic on the open interval $(a - R, a + R)$ with uniform sup bound $|f y| \\le M$ on that interval, and any $0 < r < R$, prove\n  $|f(x) - T_n f(a)(x)| \\le M \\cdot r^{n+1} / (R - r)$\nfor every $x \\in [a-r, a+r]$ and every $n \\in \\mathbb{N}$. Here $T_n f(a)(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x-a)^k$ is the Taylor polynomial.",
+    "proofStrategy": "RETRACTED. The S1 strategy axiomatized the uniform bound on the *real* interval, with a planned S2 discharge via `HasFPowerSeriesOnBall`. Child slug `mean-value-theorem-oq-02-oq-04-oq-01` (S1, 2026-05-12) proved this approach mathematically untenable: the real-analytic + real-sup-bound hypothesis admits the Runge counterexample $f(x) = 1/(1 + x^2)$, which is real-analytic on $(-100, 100)$ with $|f| \\le 1$ but has only complex radius of convergence $1$ (poles at $\\pm i$). The corrected statement (in the child file) replaces the real sup bound with a *complex*-disk sup bound, which yields the Cauchy coefficient estimates $\\|a_k\\| \\le M / R^k$ and the geometric-tail bound. S2 (researcher-8, 2026-05-14) removes the false axiom and its false-by-inheritance n=0 corollary from this file; the corrected statement and its proof live in `Proofs/MeanValueTheoremOQ02OQ04OQ01.lean` (fully proven and sorry-free as of S7, 2026-05-14, child PR #23192).",
+    "keyInsights": [
+      "**Cauchy's bound is uniform; Lagrange's is pointwise**: The parent OQ-02 entry's `taylor_lagrange_remainder` axiom gives an *existential* statement (∃ c ∈ (a,b), error = f^(n+1)(c)/(n+1)! · (b-a)^(n+1)) at a single point. This OQ-04 entry strengthens that to a *uniform* bound over $[a-r, a+r]$, with the right-hand side independent of $x$—essential for series convergence, error envelope analysis, and uniform polynomial approximation.",
+      "**Dependence on $M$, not derivatives**: The Lagrange remainder bound depends on $f^{(n+1)}(c)$ at some intermediate point $c$, requiring control of $(n+1)$-st derivatives. Cauchy's bound depends only on $M = \\sup |f|$ on a *larger* ball of radius $R > r$. This trades higher derivative control for a margin in the ball radius (the gap $R - r$), reflecting how Cauchy's bounds extract derivative information from the analytic-function holomorphicity-on-the-disk hypothesis.",
+      "**Geometric tail factor $r/(R-r)$**: The bound is $M \\cdot r^{n+1} / (R - r)$, geometric in $n$ when $r < R$. As $r \\downarrow 0$, the bound vanishes; as $r \\uparrow R$, it blows up. This $r/(R-r)$ shape is characteristic of analytic-function Taylor convergence and recurs in the analysis of Padé approximants, Tchebyshev polynomials, and complex polynomial interpolation.",
+      "**Connecting to qualitative `taylor_remainder_tendsto_zero`**: The sibling entry `taylor-theorem-oq-02` proves that for analytic functions, the Taylor remainder vanishes ($R_n(x) \\to 0$ as $n \\to \\infty$). This OQ-04 entry's bound is the *rate* of that convergence: $r^{n+1} \\to 0$ exponentially when $r < R$, which makes the convergence in the sibling entry's `tendsto` explicitly *geometric*.",
+      "**The real-line vs. complex-disk asymmetry**: Cauchy's bound is genuinely a *complex-analytic* statement — it follows from the contour integral $f^{(k)}(a) = \\frac{k!}{2\\pi i}\\oint_{|z-a|=R} \\frac{f(z)}{(z-a)^{k+1}}\\,dz$, which requires $f$ to extend holomorphically to a complex disk of radius $R$. The real-line formulation in this file is the *consequence* of complex analyticity restricted to $\\mathbb{R}$. Mathlib's `AnalyticOn ℝ` predicate hides this passage to the complex world (via `RestrictScalars` and `Complex.analytic_iff_locally_real_analytic`), but the proof discharge in S2 will likely need to lift to the complex plane to access Cauchy's integral formula machinery — a structural cost not visible at the statement level.",
+      "**Hypothesis-bundle minimality**: The axiom requires `0 < R`, `0 ≤ M`, `AnalyticOn ℝ f (Ioo (a-R) (a+R))`, a uniform sup bound on the open interval, `0 < r < R`, and `x ∈ Icc (a-r) (a+r)`. None of these is redundant: dropping `0 < r` leaves the right-hand side $M \\cdot 0 / (R - 0) = 0$ which fails for non-constant $f$; dropping $r < R$ admits $r = R$, where $R - r = 0$ and the bound diverges; dropping the uniform sup bound is what distinguishes Cauchy bounds from the local pointwise Lagrange bound. The corollary `analytic_remainder_zero_bound` inherits every hypothesis unchanged, confirming the bundle's minimality at $n = 0$."
+    ],
+    "prerequisites": [
+      "Real-analytic functions and power series convergence",
+      "Cauchy's integral formula and Cauchy's coefficient estimates (complex analysis)",
+      "Taylor polynomial: $T_n f(a)(x) = \\sum_{k=0}^n \\frac{f^{(k)}(a)}{k!}(x-a)^k$",
+      "Geometric series convergence and tail bounds",
+      "Mathlib `AnalyticOn ℝ` and `HasFPowerSeriesOnBall` API",
+      "The parent file `MeanValueTheoremOQ02.taylorPolynomial` definition (reused here)"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "analytic_taylor_remainder_uniform_bound",
+      "type": "RETRACTED-axiom",
+      "description": "RETRACTED in S2 (researcher-8, 2026-05-14). The S1 axiomatization of the OQ-04 statement was constructively refuted by the child slug mean-value-theorem-oq-02-oq-04-oq-01 via the Runge counterexample (theorem oq04_axiom_is_false in MeanValueTheoremOQ02OQ04OQ01.lean §2). Root cause: a real sup bound on (a-R, a+R) ⊂ ℝ does not control Cauchy coefficient bounds; the corrected statement requires a *complex*-disk sup bound and lives in the child file as analytic_taylor_remainder_uniform_bound_complex (fully proven and sorry-free as of S7, 2026-05-14, child PR #23192; the finite-radius sub-lemma cauchy_diag_norm_bound_at_radius was discharged via Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le). This entry retained for historical/audit purposes only."
+    },
+    {
+      "name": "analytic_remainder_zero_bound",
+      "type": "RETRACTED-theorem",
+      "description": "RETRACTED in S2 (researcher-8, 2026-05-14). The S1 n=0 specialization of the (now-refuted) OQ-04 axiom inherits the same Runge counterexample: at (f, a, R, M, r, x) = (1/(1+x²), 0, 100, 1, 1, 1), the LHS |f(1) - f(0)| = 1/2 violates the claimed bound 1/99 = 1·1/(100-1). This corollary is therefore also false. Removed from the file."
+    }
+  ],
+  "references": [
+    {
+      "type": "research-paper",
+      "citation": "Cauchy, A.-L. (1823). \"Résumé des leçons données à l'École royale polytechnique sur le calcul infinitésimal, Tome premier.\" Imprimerie royale, Paris.",
+      "relevance": "Original source of Cauchy's integral form of the Taylor remainder and the coefficient estimates |a_k| ≤ M/R^k that underlie the uniform remainder bound axiomatized in this file. The geometric-tail bound R_n(x) = O((r/R)^(n+1)) is derived directly from these estimates."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Lagrange, J.-L. (1797). \"Théorie des fonctions analytiques.\" Imprimerie de la République, Paris.",
+      "relevance": "Original source of the Lagrange form of the Taylor remainder (used in the parent entry mean-value-theorem-oq-02). The Lagrange remainder is pointwise existential (some intermediate c), contrasted in this OQ-04 entry with Cauchy's uniform analytic bound."
+    },
+    {
+      "type": "textbook",
+      "citation": "Ahlfors, L.V. (1979). \"Complex Analysis,\" 3rd ed. McGraw-Hill. §2.3 (Cauchy's integral formula) and §5.1 (Power series).",
+      "relevance": "Standard modern treatment of Cauchy's integral formula and the coefficient estimates that prove the OQ-04 bound. The textbook's derivation of the geometric tail estimate is essentially the S2 discharge strategy for the axiom in this file."
+    },
+    {
+      "type": "textbook",
+      "citation": "Rudin, W. (1976). \"Principles of Mathematical Analysis,\" 3rd ed. McGraw-Hill. §8.4 (Taylor's theorem) and Chapter 10 (Functions of several variables).",
+      "relevance": "Standard real-analysis treatment of Taylor's theorem with both Lagrange and integral remainder forms. Useful for connecting the real-line OQ-04 statement to the broader real-analysis context."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.Analysis.Analytic.Basic\" — `AnalyticOn`, `HasFPowerSeriesOnBall`, `FormalMultilinearSeries`. (accessed 2026)",
+      "relevance": "The Mathlib API on which the S2 axiom discharge will be built: AnalyticOn ℝ is the hypothesis, HasFPowerSeriesOnBall + Cauchy coefficient bounds + tsum_geometric_of_lt_one are the discharge tools."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Proofs.MeanValueTheoremOQ02\" — `taylorPolynomial`, `taylorPolynomial_zero`. (this repository, accessed 2026)",
+      "relevance": "The parent gallery file's Taylor polynomial definition and n=0 specialization lemma, both reused directly in this OQ-04 entry. Reuse keeps the gallery's algebraic notation consistent and avoids duplicate definitions."
+    }
+  ],
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports: Mathlib and the Parent OQ-02 File",
+      "startLine": 1,
+      "endLine": 2,
+      "summary": "Two imports survive the S2 retraction. `import Mathlib` provides the analytic-function infrastructure (`AnalyticOn ℝ`, `HasFPowerSeriesOnBall`, `Set.Ioo`, `Set.Icc`) that the (now-removed) S1 axiom used. `import Proofs.MeanValueTheoremOQ02` exposes `taylorPolynomial` and `taylorPolynomial_zero` from the parent slug; the S1 iteration reused these without duplicating definitions, and the imports are kept after retraction so that any future S≥3 restoration starts from a stable surface."
+    },
+    {
+      "id": "docstring-oq04-question",
+      "title": "Docstring §1: The OQ-04 Question (as originally posed)",
+      "startLine": 4,
+      "endLine": 12,
+      "summary": "Records OQ-04 verbatim from the parent slug: is there a uniform error bound `|f(x) − T_n f(a)(x)| ≤ M · r^(n+1) / (R − r)` for `f` analytic on \"the disk of radius `R > r`\" with sup bound `M`? The pedagogical motivation is to upgrade the Lagrange remainder (pointwise existential) to a *uniform* bound on `[a-r, a+r]` with a right-hand side independent of any intermediate `c` — the form needed for series convergence and uniform polynomial approximation."
+    },
+    {
+      "id": "docstring-runge-refutation",
+      "title": "Docstring §2: Runge Counterexample and Refutation",
+      "startLine": 14,
+      "endLine": 39,
+      "summary": "Records the constructive refutation by the child slug `mean-value-theorem-oq-02-oq-04-oq-01`. Witness `(f, a, R, M, r, n, x) = (1/(1+x²), 0, 100, 1, 1, 0, 1)`: `|f(1) - f(0)| = 1/2` violates the claimed bound `1/99` by ~50×. The root cause named in the docstring is the **Runge phenomenon** — a real sup bound on a real interval does not control complex Cauchy coefficients when the *complex* radius of convergence is smaller than the real interval radius (here ρ=1 ≪ R=100 because `1/(1+x²)` has complex poles at ±i)."
+    },
+    {
+      "id": "docstring-s2-action",
+      "title": "Docstring §3: S2 Action and False-Witness Elimination",
+      "startLine": 41,
+      "endLine": 67,
+      "summary": "Records the S2 (researcher-8, 2026-05-14) removal of both the S1 axiom `analytic_taylor_remainder_uniform_bound` and its false-by-inheritance n=0 corollary `analytic_remainder_zero_bound`. The deletion eliminates a gallery-integrity hazard: while both this file's axiom and the child slug's `oq04_axiom_is_false` were importable together, any downstream consumer could derive `False`. Cross-references the corrected complex-disk form `analytic_taylor_remainder_uniform_bound_complex` (in the child file), which strengthens the hypothesis to `HasFPowerSeriesOnBall f p a R` on a complex disk and is fully proven and sorry-free (the sub-lemma `cauchy_diag_norm_bound_at_radius` was discharged at S7, 2026-05-14, child PR #23192)."
+    },
+    {
+      "id": "docstring-bookkeeping",
+      "title": "Docstring §4: Gallery Integrity Bookkeeping",
+      "startLine": 69,
+      "endLine": 75,
+      "summary": "Itemizes the numeric deltas: `axiomCount: 1 → 0` (false S1 axiom removed; the meta.json still reports `axiomCount: 1` because the parent file's true `taylor_lagrange_remainder` axiom is inherited via `additionalFiles`), `theoremCount: 1 → 0` (n=0 corollary removed), `sorries: 0` (unchanged), `definitionCount: 0` (unchanged), `lineCount: 173 → ~90` (estimate; actual current line count is 128 — the docstring grew slightly past the initial S2 estimate)."
+    },
+    {
+      "id": "docstring-siblings-and-path",
+      "title": "Docstring §5: Sibling Connections and Path Forward",
+      "startLine": 77,
+      "endLine": 102,
+      "summary": "Locates this slug in the OQ-tree. Parent `mean-value-theorem-oq-02` (Lagrange remainder, unchanged) provides `taylorPolynomial` and the true qualitative Lagrange-remainder axiom. Child `mean-value-theorem-oq-02-oq-04-oq-01` carries both the refutation and the corrected complex-disk Cauchy bound. Cousin `taylor-theorem-oq-02` proves the qualitative `R_n(x) → 0` for analytic `f`, which does *not* depend on a real sup bound and is therefore unaffected by Runge. The closing \"path forward\" picks option (a): keep this file as a doc-only retraction record for permanent pedagogical/audit value."
+    },
+    {
+      "id": "docstring-references",
+      "title": "Docstring §6: References (Runge 1901 and Cross-File Pointers)",
+      "startLine": 104,
+      "endLine": 111,
+      "summary": "Two intra-repository pointers (child file §2 for the refutation theorem `oq04_axiom_is_false`, §3 for the corrected statement) plus Runge's 1901 paper (\"Über empirische Funktionen und die Interpolation zwischen äquidistanten Ordinaten,\" Z. Math. Phys. 46, 224-243). Runge's original motivation was numerical interpolation divergence on equidistant nodes — the same complex-vs-real gap that breaks the S1 axiom."
+    },
+    {
+      "id": "namespace-setup",
+      "title": "Intentionally Empty Namespace (S2 Retraction)",
+      "startLine": 114,
+      "endLine": 128,
+      "summary": "Declares the `MeanValueTheoremOQ02OQ04` namespace with an inline comment repeating the retraction record next to the code. No axioms, theorems, definitions, or sorries. The namespace is kept (rather than deleted with the file) for three reasons: (1) import stability — `import Proofs.MeanValueTheoremOQ02OQ04` continues to compile; (2) identifier reservation — `MeanValueTheoremOQ02OQ04.analytic_taylor_remainder_uniform_bound` now elaborates to `unknown identifier`, surfacing any accidental dependence; (3) gallery slug stability — the audit trail of the refutation is preserved at this slug. Consumers should `import Proofs.MeanValueTheoremOQ02OQ04OQ01` for the corrected complex-disk form."
+    }
+  ],
+  "conclusion": {
+    "summary": "**RETRACTED.** The S1 iteration (researcher-3, 2026-05-11) axiomatized Cauchy's uniform Taylor remainder bound on the *real* interval $(a − R, a + R) ⊂ \\mathbb{R}$ as `analytic_taylor_remainder_uniform_bound`. The S1-child slug `mean-value-theorem-oq-02-oq-04-oq-01` (researcher-6, 2026-05-12) constructively refuted this axiom via the Runge counterexample $f(x) = 1/(1 + x^2)$: the function is real-analytic on $(-100, 100)$ with $|f| \\le 1$, yet $|f(1) - f(0)| = 1/2$ violates the claimed bound $1/99$. S2 (researcher-8, 2026-05-14) removed the false axiom and its false-by-inheritance $n = 0$ corollary; the file is now a doc-only retraction stub. The mathematically correct complex-disk form lives in the child file as `analytic_taylor_remainder_uniform_bound_complex`, fully proven and sorry-free as of S7 (2026-05-14, child PR #23192) after the finite-radius sub-lemma `cauchy_diag_norm_bound_at_radius` was discharged.",
+    "implications": "**Quantitative vs. qualitative remainder behavior**: The sibling gallery entry `taylor-theorem-oq-02` proves $R_n(x) \\to 0$ for analytic $f$; this OQ-04 entry provides the *rate*: $R_n(x) = O(r^{n+1})$ uniformly. The geometric rate is the foundation of quantitative analytic approximation theory.\n\n**Foundation for complex analysis**: Cauchy's bound is the real-line transcription of the standard complex-disk bound that follows from Cauchy's integral formula. The complex version unifies analytic continuation, Padé approximants, and the analysis of singularities at the boundary of the disk of analyticity. A future S≥$N$ iteration could connect this real-line bound to the complex version via real-to-complex analyticity lifting.\n\n**Resolving the axiom**: The discharge path is via Mathlib's `HasFPowerSeriesOnBall` API + Cauchy's coefficient estimate `‖p k‖ \\le M / R^k` + the geometric series tail $\\sum_{k > n} (r/R)^k = (r/R)^{n+1} / (1 - r/R)$. The bridge between `iteratedDeriv` and the power series coefficient $p_k$ is already developed in the sibling entry `taylor-theorem-oq-02` (`fps_coeff_eq_taylor_coeff`).",
+    "openQuestions": [
+      "**Resolved (negatively) by the child slug**: Can the S1 axiom `analytic_taylor_remainder_uniform_bound` (real-interval form) be discharged? NO — the child slug `mean-value-theorem-oq-02-oq-04-oq-01` proved it false via the Runge counterexample. The S1 hypothesis bundle (real `AnalyticOn ℝ` + real sup bound) is provably insufficient for Cauchy's geometric-tail bound.",
+      "**Resolved positively by the child slug**: Can the *complex-disk* version `analytic_taylor_remainder_uniform_bound_complex` be discharged? YES — fully proven and sorry-free in the child file at Mathlib v4.26.0. The discharge uses `HasFPowerSeriesOnBall` + Cauchy's coefficient estimate `‖p k‖ ≤ M / R^k` + `tsum_geometric_of_lt_one`.",
+      "**Resolved (S7, 2026-05-14, child PR #23192)**: The finite-radius sub-lemma `cauchy_diag_norm_bound_at_radius` — formerly the only `sorry` between the gallery and a fully verified complex-disk Cauchy uniform Taylor remainder bound — was discharged via Mathlib's `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le`. The gallery now carries a complete (sorry-free) formalization of OQ-04 in its mathematically correct form.",
+      "Can the bound be tightened or extended? (a) The constant `M / (R − r)` is sharp at `n = 0` (matches Cauchy's integral formula directly) but loose for `n ≥ 1` — a sharper bound `M · (r/R)^(n+1) / (1 − r/R)` is sometimes used. (b) Does the bound extend to bounded-derivative (not analytic) functions? Bernstein-type bounds exist but have a different shape (no `R − r` denominator)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "mean-value-theorem-oq-02",
+      "relationship": "parent-problem",
+      "description": "The parent gallery entry: Taylor's theorem with Lagrange remainder (classical, pointwise existence of c). This OQ-04 slug attempted to resolve the parent's 4th open question by axiomatizing the uniform Cauchy bound on the *real* interval (S1, 2026-05-11); the attempt was constructively refuted (Runge counterexample), so this slug is now a retraction record. The parent's `taylor_lagrange_remainder` qualitative axiom is unaffected."
+    },
+    {
+      "targetId": "mean-value-theorem-oq-02-oq-04-oq-01",
+      "relationship": "child-correction",
+      "description": "The child slug that constructively refuted this slug's S1 axiom via the Runge counterexample (theorem `oq04_axiom_is_false`, §2) *and* states/proves the mathematically correct complex-disk form (`analytic_taylor_remainder_uniform_bound_complex`, §3, fully proven and sorry-free at Mathlib v4.26.0 as of S7, 2026-05-14, child PR #23192). Consumers seeking the Cauchy uniform Taylor remainder bound should import `Proofs.MeanValueTheoremOQ02OQ04OQ01` directly — *not* this slug, which is intentionally empty post-retraction."
+    },
+    {
+      "targetId": "taylor-theorem-oq-02",
+      "relationship": "complementary",
+      "description": "Sibling gallery entry: analytic Taylor remainder vanishes (qualitative, R_n(x) → 0). This OQ-04 entry provides the *quantitative* rate: R_n(x) = O(r^(n+1)). The sibling's bridge lemmas (fps_coeff_eq_taylor_coeff, fps_eval_eq_taylor_term) will be the main tool for discharging this OQ-04's axiom in S2."
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "ancestor",
+      "description": "The grandparent: the ordinary Mean Value Theorem. The n=0 specialization of this OQ-04 is the analytic-function strengthening of MVT's Lipschitz bound, with `sup|f'|` replaced by `M / (R-r)` and the gap $|x - a|$ replaced by the inner radius $r$."
+    },
+    {
+      "targetId": "taylor-sincos-convergence",
+      "relationship": "related",
+      "description": "Concrete instance of the geometric-tail bound: for $f = \\sin$ or $\\cos$, all iterated derivatives are bounded by 1, so the Lagrange remainder gives the (even tighter) factorial bound $|R_n(x)| \\le |x|^{n+1} / (n+1)!$. The OQ-04 Cauchy bound applies to *every* real-analytic function with finite radius of convergence — including those whose derivatives are not uniformly bounded — at the cost of only geometric (not factorial) decay."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.MeanValueTheoremOQ02"
+    ],
+    "opens": [],
+    "namespace": "MeanValueTheoremOQ02OQ04",
+    "lineCount": 131,
+    "axiomCount": 0,
+    "theoremCount": 0,
+    "definitionCount": 0,
+    "path": "Proofs/MeanValueTheoremOQ02OQ04.lean",
+    "sorries": 0,
+    "mainTheorems": [],
+    "additionalFiles": [
+      "Proofs/MeanValueTheoremOQ02.lean"
+    ]
+  }
+}

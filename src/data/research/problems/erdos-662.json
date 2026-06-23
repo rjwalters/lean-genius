@@ -1,0 +1,106 @@
+{
+  "slug": "erdos-662",
+  "title": "Erdős #662",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Consider the triangular lattice with minimal distance between two points $1$. Denote by $f(t)$ the number of distances from any points $\\leq t$. For example $f(1)=6$, $f(\\sqrt{3})=12$, and $f(3)=18$.\n\nLet $x_1,\\ldots,x_n\\in \\mathbb{R}^2$ be such that $d(x_i,x_j)\\geq 1$ for all $i\\neq j$. Is it true that, provided $n$ is sufficiently large depending on $t$, the number of distances $d(x_i,x_j)\\leq t$ is less than or equal to $f(t)$ with equality perhaps only for the triangular lattice?\n\nIn particular, is it true that the number of distances $\\leq \\sqrt{3}-\\epsilon$ is less than $1$?\n\n\n\nA problem of Erd\\H{o}s, Lov\\'{a}sz, and Vesztergombi.\n\nThis is essentially verbatim the problem description in \\cite{Er97e}, but this does not make sense as written; there must be at least one typo. Suggestions about what this problem intends are welcome.\n\nErd\\H{o}s also goes on to write 'Perhaps the following stronger conjecture holds: Let $t_1<t_2<\\cdots$ be the set of distances occurring in the triangular lattice. $t_1=1$ $t_2=\\sqrt{3}$ $t_3=3$ $t_4=5$ etc. Is it true that there is an $\\epsilon_n$ so that for every set $y_1,\\ldots,$ with $d(y_i,y_j)\\geq 1$ the number of distances $d(y_i,y_j)<t_n$ is less than $f(t_n)$?'\n\nAgain, this is nonsense interpreted literally; I am not sure what Erd\\H{o}s intended.",
+    "plain": "Consider the triangular lattice with minimal distance between two points $1$. Denote by $f(t)$ the number of distances from any points $\\leq t$. For example $f(1)=6$, $f(\\sqrt{3})=12$, and $f(3)=18$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-01-13T18:22:04.304Z",
+    "iteration": 3,
+    "focus": "Gallery already at max potential: 0 sorries, 1 axiom (erdos_662_lattice_optimal — main open conjecture, unprovable). All supporting work (kissing_number_2d, contact_number_3n, etc.) is fully proved. Pool entry marked completed 2026-04-27 by researcher-4.",
+    "blockers": [],
+    "nextAction": "Problem at maximum formalization potential — only axiom is the open conjecture.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 1A appropriate (erdos_662_lattice_optimal open conjecture), 9T proved, 0S.",
+    "builtItems": [
+      {
+        "name": "triLatticeNorm",
+        "type": "def",
+        "description": "a² + ab + b² norm for triangular lattice"
+      },
+      {
+        "name": "triLatticeCountInt",
+        "type": "def",
+        "description": "Computable lattice point count"
+      },
+      {
+        "name": "triangularLatticeCount",
+        "type": "def",
+        "description": "Real-valued lattice count via floor"
+      },
+      {
+        "name": "triLatticeCountInt_one",
+        "type": "theorem",
+        "description": "triLatticeCountInt 1 = 6"
+      },
+      {
+        "name": "triLatticeCountInt_three",
+        "type": "theorem",
+        "description": "triLatticeCountInt 3 = 12"
+      }
+    ],
+    "insights": [
+      "All triangular lattice norms a²+ab+b² are integers → f(t) = countInt(⌊t²⌋)",
+      "native_decide efficiently verifies small lattice point counts",
+      "unit_neighbor_bound (2D kissing number) provable via angular packing but needs trig from Mathlib",
+      "kissing_number_2d proof requires Complex.arg parametrization + angular pigeonhole on 6 sectors of width π/3",
+      "Key Mathlib lemmas available: Real.cos_pi_div_three, Real.strictAntiOn_cos, Real.cos_sub — all used elsewhere in codebase",
+      "Proof sketch: (1) map unit vectors to Complex.arg ∈ (-π,π], (2) pigeonhole 7+ vectors into 6 bins of width π/3, (3) same-bin vectors have |Δθ|<π/3 so dot product > cos(π/3) = 1/2, contradiction",
+      "The argmax-to-hexagon-vertex approach FAILS: two vectors close to same vertex can have angle up to 2π/3, giving dot product as low as -1/2",
+      "Algebraic (Gram matrix) approaches fail: Tr(G²) ≥ n²/2 gives Σ(v·w)² ≥ n(n-2)/4 = 35/4 for n=7, but constraint v·w ≤ 1/2 doesn't bound |v·w| ≤ 1/2 (antipodal pairs have dot=-1), so Σ(v·w)² can reach C(7,2)=21, no contradiction",
+      "Verified: algebraic approach with Cauchy-Schwarz on eigenvalues also fails — rank-2 PSD matrix with diagonal 1 and off-diagonal ≤ 1/2 exists for n=7 when negative entries are allowed",
+      "Bin definition challenge: 6 half-open sectors [kπ/3, (k+1)π/3) need algebraic characterization. Using y > √3/2, y < -√3/2, and x vs ±1/2 comparisons works but boundary handling at the 6 hexagonal directions (1/2, √3/2) etc. is fiddly"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #662 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nConsider the triangular lattice with minimal distance between two points $1$. Denote by $f(t)$ the number of distances from any points $\\leq t$. For example $f(1)=6$, $f(\\sqrt{3})=12$, and $f(3)=18$.\n\nLet $x_1,\\ldots,x_n\\in \\mathbb{R}^2$ be such that $d(x_i,x_j)\\geq 1$ for all $i\\neq j$. Is it true that, provided $n$ is sufficiently large depending on $t$, the number of distances $d(x_i,x_j)\\leq t$ is less than or equal to $f(t)$ with equality perhaps only for the triangular lattice?\n\nIn particular, is it true that the number of distances $\\leq \\sqrt{3}-\\epsilon$ is less than $1$?\n\n\n\nA problem of Erd\\H{o}s, Lov\\'{a}sz, and Vesztergombi.\n\nThis is essentially verbatim the problem description in \\cite{Er97e}, but this does not make sense as written; there must be at least one typo. Suggestions about what this problem intends are welcome.\n\nErd\\H{o}s also goes on to write 'Perhaps the following stronger conjecture holds: Let $t_1<t_2<\\cdots$ be the set of distances occurring in the triangular lattice. $t_1=1$ $t_2=\\sqrt{3}$ $t_3=3$ $t_4=5$ etc. Is it true that there is an $\\epsilon_n$ so that for every set $y_1,\\ldots,$ with $d(y_i,y_j)\\geq 1$ the number of distances $d(y_i,y_j)<t_n$ is less than $f(t_n)$?'\n\nAgain, this is nonsense interpreted literally; I am not sure what Erd\\H{o}s intended.\n\n\n\n\nReferences\n\n\n[Er97e] Erd\\H{o}s, Paul, Some of my favourite unsolved problems. Math. Japon. (1997), 527-537.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #661\n- Problem #663\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er97e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-6",
+    "erdos-66",
+    "erdos-662"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T18:22:04.304Z",
+  "lastUpdate": "2026-03-26T18:00:00Z",
+  "significance": 5,
+  "tractability": 3,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos662Problem.lean",
+      "filename": "Erdos662Problem.lean",
+      "lineCount": 376,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos662Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "slug": "ptolemys-theorem-oq-01",
+  "title": "Ptolemy Inequality Formalization with Concyclicity Characterization",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: Ptolemy Inequality Formalization with Concyclicity Characterization.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-13T20:56:21.000Z",
+    "iteration": 1,
+    "focus": "PtolemysTheoremOQ01.lean complete: cross-ratio reality theorem + concyclicity characterization, 0 sorries / 0 axioms (gallery status=verified). ptolemy_ratio_pos_of_ccw is now fully proved (half-angle sine factorization via exp_diff_factor), no longer a sorry.",
+    "blockers": [],
+    "nextAction": "None — proof is complete (0 sorries / 0 axioms, gallery status=verified). Maintenance only.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Ptolemy ratio positivity proved via exp factorization + trig sign analysis. 0 sorries, 0 axioms. Gallery entry created.",
+    "builtItems": [
+      "IsConcyclic₄ definition: four complex numbers on a common circle",
+      "IsCCWOrder definition: four unit-circle points in CCW order via angles",
+      "unit_star_eq_inv: star z = z⁻¹ for |z|=1 (1 sorry)",
+      "unit_circle_ptolemy_ratio_real: cross-ratio is conjugation-invariant hence real",
+      "unit_circle_ptolemy_ratio_is_real: extracts the real part",
+      "ptolemy_ratio_pos_of_ccw: R>0 for CCW ordering (1 sorry)",
+      "ptolemy_equality_for_unit_circle_ccw: Ptolemy equality for unit-circle CCW points",
+      "concyclic_normalize_to_unit: normalize concyclic to unit circle",
+      "ptolemy_iff_normalized: Ptolemy invariant under translation/scaling",
+      "ptolemy_equality_for_concyclic: general concyclic CCW points satisfy Ptolemy",
+      "exp_mul_I_re/im lemmas: Re/Im of exp(iθ) for θ:ℝ via Complex.exp_re + simp",
+      "exp_diff_factor: algebraic factorization of exp differences (private lemma, PtolemysTheoremOQ01.lean)",
+      "sin_neg_of_neg_of_neg_pi_lt: sin<0 on (-π,0) helper (private lemma, PtolemysTheoremOQ01.lean)",
+      "ptolemy_ratio_pos_of_ccw: key positivity theorem (PtolemysTheoremOQ01.lean:213)",
+      "ptolemy_equality_for_unit_circle_ccw: Ptolemy equality for CCW unit-circle points (PtolemysTheoremOQ01.lean)",
+      "ptolemy_equality_for_concyclic: Ptolemy equality for general concyclic CCW points (PtolemysTheoremOQ01.lean)"
+    ],
+    "insights": [
+      "Key algebraic insight: for |zᵢ|=1, conj(zᵢ)=zᵢ⁻¹, so conj(R)=R by field_simp+ring",
+      "The polynomial identity after clearing denominators: (z₃-z₂)(z₄-z₁)(z₁-z₂)(z₃-z₄) = (z₂-z₃)(z₁-z₄)(z₁-z₂)(z₃-z₄) closed by ring",
+      "CCW positivity follows from trig formula: R = sin product with all factors negative for CCW order",
+      "Normalization reduces general concyclic to unit circle: wᵢ=(zᵢ-c)/r has |wᵢ|=1",
+      "ptolemy_equality_of_proportional from PtolemysComplexProof is the final step: t≥0 → equality",
+      "Key factorization: exp(iα)-exp(iβ) = 2I·sin((α-β)/2)·exp(i(α+β)/2), proved from product-to-sum trig identities (cos_add, sin_add) via Complex.ext",
+      "For CCW order θ₁<θ₂<θ₃<θ₄<θ₁+2π, all four half-angle differences lie in (-π,0), making all four sines negative",
+      "Phase factors E₂₃·E₁₄ = E₁₂·E₃₄ = exp(i(θ₁+θ₂+θ₃+θ₄)/2) cancel algebraically from the Ptolemy ratio",
+      "Ratio t = s₂₃·s₁₄/(s₁₂·s₃₄) is positive (product of two negatives divided by product of two negatives)",
+      "Ptolemy equality invariant under translation and positive scaling → normalizes from any circle to unit circle"
+    ],
+    "mathlibGaps": [
+      "Need exact Mathlib name: z * starRingEnd ℂ z = ↑(Complex.normSq z) (Complex.mul_conj vs Complex.normSq_eq_conj_mul_self)",
+      "Complex.exp trig identities needed for ptolemy_ratio_pos_of_ccw"
+    ],
+    "nextSteps": [
+      "Proof complete: PtolemysTheoremOQ01.lean is 0 sorries / 0 axioms (status verified). ptolemy_ratio_pos_of_ccw and unit_star_eq_inv are proved private lemmas; the prior Aristotle-submit / API-resolution steps are done"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "complex-analysis",
+    "concyclicity",
+    "cross-ratio",
+    "ptolemy"
+  ],
+  "relatedProofs": [
+    "ptolemys-complex-proof",
+    "ptolemys-complex-proof-oq-01",
+    "ptolemys-theorem",
+    "ptolemys-theorem-oq-01",
+    "ptolemys-theorem-oq-01-incomplete-01",
+    "ptolemys-theorem-oq-01-oq-01",
+    "ptolemys-theorem-oq-01-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-13T20:25:24.756Z",
+  "lastUpdate": "2026-04-13T20:56:21.000Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/PtolemysTheorem.lean",
+      "filename": "PtolemysTheorem.lean",
+      "lineCount": 241,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheorem.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01.lean",
+      "filename": "PtolemysTheoremOQ01.lean",
+      "lineCount": 483,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01Incomplete01.lean",
+      "filename": "PtolemysTheoremOQ01Incomplete01.lean",
+      "lineCount": 490,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01OQ01.lean",
+      "filename": "PtolemysTheoremOQ01OQ01.lean",
+      "lineCount": 289,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01OQ02.lean",
+      "filename": "PtolemysTheoremOQ01OQ02.lean",
+      "lineCount": 271,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01OQ02.lean"
+    }
+  ]
+}

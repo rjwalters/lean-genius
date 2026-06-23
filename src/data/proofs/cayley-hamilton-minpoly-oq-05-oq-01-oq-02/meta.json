@@ -1,0 +1,222 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-02",
+  "title": "Cyclic Vectors Have Full Lebesgue Measure",
+  "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-02",
+  "description": "For a nonderogatory matrix M over the reals, the set of non-cyclic vectors has Lebesgue measure zero. The non-cyclic vectors lie in a finite union of proper subspaces (cofactor kernels), each of which is null by Mathlib's addHaar_submodule. Thus almost every vector is cyclic.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Nonderogatory_matrix",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean",
+    "tags": [
+      "linear-algebra",
+      "measure-theory",
+      "minimal-polynomial",
+      "cyclic-vector",
+      "lebesgue-measure",
+      "haar-measure",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Measure.addHaar_submodule",
+        "description": "Proper submodules of finite-dimensional real vector spaces have Haar measure zero",
+        "module": "Mathlib.MeasureTheory.Measure.Haar.NormedSpace"
+      },
+      {
+        "theorem": "minpoly.aeval",
+        "description": "Minimal polynomial annihilates its element",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "minpoly.dvd",
+        "description": "Minpoly divides any annihilating polynomial",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "UniqueFactorizationMonoid.normalizedFactors",
+        "description": "Multiset of normalized irreducible factors",
+        "module": "Mathlib.RingTheory.UniqueFactorizationDomain.NormalizedFactors"
+      },
+      {
+        "theorem": "EuclideanDomain.gcd_eq_gcd_ab",
+        "description": "Bezout's identity for GCD in Euclidean domains",
+        "module": "Mathlib.RingTheory.EuclideanDomain"
+      },
+      {
+        "theorem": "measure_biUnion_finset_le",
+        "description": "Measure of finite union is at most sum of measures",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      }
+    ],
+    "originalContributions": [
+      "non_cyclic_measure_zero: Non-cyclic vectors for a nonderogatory real matrix have Lebesgue measure zero (0 sorries)",
+      "cyclic_vectors_ae: Almost every vector is cyclic (measure-theoretic formulation via ae)",
+      "non_cyclic_mem_cofactorKernel: Non-cyclic vectors lie in cofactor kernels of irreducible factors",
+      "cofactorKernel_ne_top: Each cofactor kernel is a proper submodule",
+      "volume_submodule_eq_zero: Proper submodules of real vector spaces have volume zero"
+    ],
+    "dateAdded": "2026-03-28",
+    "prerequisites": [
+      "Minimal polynomials and the Cayley-Hamilton theorem",
+      "Unique factorization in polynomial rings over fields",
+      "Bezout's identity in Euclidean domains",
+      "Lebesgue/Haar measure on finite-dimensional real vector spaces",
+      "Measure zero for proper submodules"
+    ],
+    "relatedProblems": [
+      {
+        "id": "cayley-hamilton-minpoly-oq-05-oq-01",
+        "relationship": "Parent: existence of cyclic vectors for nonderogatory matrices"
+      },
+      {
+        "id": "cayley-hamilton-minpoly-oq-05",
+        "relationship": "Grandparent: minimal polynomial reduction in K-algebras"
+      },
+      {
+        "id": "cayley-hamilton-minpoly",
+        "relationship": "Root: Cayley-Hamilton and minimal polynomials"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 270,
+    "assumptions": "",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "The question 'how many cyclic vectors are there?' naturally follows the existential result. Over the reals or complex numbers, the answer is 'almost all of them' in the measure-theoretic sense. The non-cyclic vectors form a finite union of proper linear subspaces (the cofactor kernels), which is a closed algebraic set of strictly lower dimension. By a classical result in geometric measure theory, proper linear subspaces of finite-dimensional real vector spaces have Lebesgue measure zero. This connects the algebraic structure theory (irreducible factorization of the minimal polynomial) to measure-theoretic genericity.",
+    "problemStatement": "Prove that for a nonderogatory matrix M over the reals, the set of non-cyclic vectors has Lebesgue measure zero, i.e., almost every vector in R^n is a cyclic vector for M.",
+    "proofStrategy": "Step 1: Show that every non-cyclic vector lies in some cofactor kernel ker((mu/q)(M)) for an irreducible factor q of the minimal polynomial (via the GCD/Bezout argument from the parent proof). Step 2: Each cofactor kernel is a proper linear submodule. Step 3: Apply Mathlib's addHaar_submodule to conclude each has Lebesgue measure zero. Step 4: The finite union of null sets is null, so the non-cyclic set has measure zero.",
+    "keyInsights": [
+      "The structural decomposition from the existential proof (non-cyclic subset of finite union of proper subspaces) directly yields the measure-zero result when combined with Haar measure theory",
+      "Mathlib's addHaar_submodule provides the key bridge: proper submodules of finite-dimensional real vector spaces are null sets under any additive Haar measure (including Lebesgue measure)",
+      "The proof factors cleanly into an algebraic part (non-cyclic containment in cofactor kernels) and a measure-theoretic part (proper subspaces are null), connected by the submodule structure",
+      "The ae (almost everywhere) formulation gives the most natural statement: for a nonderogatory real matrix, the property of being a cyclic vector holds almost surely",
+      "The number of cofactor kernels equals the number of distinct irreducible factors of the minimal polynomial, so the non-cyclic set is a union of at most deg(mu) proper subspaces -- matrices with highly reducible minimal polynomials have more 'obstacles' to cyclicity, yet these obstacles remain measure-zero regardless of their count"
+    ],
+    "prerequisites": [
+      "Nonderogatory matrices and cyclic vectors (parent proof OQ-05-OQ-01)",
+      "Unique factorization and irreducible decomposition in polynomial rings",
+      "Bezout's identity and GCD in Euclidean domains",
+      "Lebesgue/Haar measure on finite-dimensional vector spaces"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Module Header and Definitions",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring states the goal (cyclic vectors of a nonderogatory real matrix have full Lebesgue measure) and the three-step strategy, followed by the namespace setup and the SECTION I definitions IsCyclicVector and IsNonderogatory for real matrices, consistent with the parent proof.",
+      "mathContext": "IsCyclicVector M v: no nonzero polynomial of degree < n annihilates v under M. IsNonderogatory M: minpoly = charpoly."
+    },
+    {
+      "id": "cofactor-kernels",
+      "title": "Cofactor Kernels and Properness",
+      "startLine": 41,
+      "endLine": 108,
+      "summary": "Defines cofactorKernel M q = ker((mu/q)(M)) and proves each is a proper submodule when q is an irreducible factor of the minimal polynomial.",
+      "mathContext": "For irreducible $q | \\mu$, the cofactor $\\mu/q$ has degree $< n = \\deg(\\mu)$, so $(\\mu/q)(M) \\neq 0$ by minimality, hence $\\ker((\\mu/q)(M)) \\subsetneq \\mathbb{R}^n$."
+    },
+    {
+      "id": "gcd-annihilation",
+      "title": "GCD Annihilation via Bezout",
+      "startLine": 109,
+      "endLine": 137,
+      "summary": "If p(M)v = 0, then gcd(p, minpoly)(M)v = 0 via Bezout's identity.",
+      "mathContext": "$d = \\gcd(p, \\mu) = ap + b\\mu$, so $d(M)v = a(M)p(M)v + b(M)\\mu(M)v = 0$."
+    },
+    {
+      "id": "non-cyclic-containment",
+      "title": "Non-Cyclic Vectors Lie in Cofactor Kernels",
+      "startLine": 138,
+      "endLine": 212,
+      "summary": "Proves the structural heart: if v is not cyclic, there exists an irreducible factor q of mu such that v lies in cofactorKernel M q.",
+      "mathContext": "If $v$ is not cyclic, $\\exists p \\neq 0$ with $\\deg(p) < n$ and $p(M)v = 0$. Then $d = \\gcd(p,\\mu)$ properly divides $\\mu$, $\\mu = ds$, $s$ has an irreducible factor $q$, and $(\\mu/q)(M)v = 0$."
+    },
+    {
+      "id": "measure-theory",
+      "title": "Proper Subspaces Have Measure Zero",
+      "startLine": 213,
+      "endLine": 224,
+      "summary": "Applies Mathlib's addHaar_submodule: proper submodules of finite-dimensional real vector spaces have Lebesgue measure (volume) zero.",
+      "mathContext": "The Lebesgue measure on $\\mathbb{R}^n$ is an additive Haar measure. Proper submodules (= proper linear subspaces) are closed sets of lower dimension, hence have Haar measure zero."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems: Measure Zero and Almost Everywhere",
+      "startLine": 225,
+      "endLine": 270,
+      "summary": "Assembles the pieces: non_cyclic_measure_zero shows the non-cyclic set has measure zero via subset monotonicity + finite subadditivity. cyclic_vectors_ae gives the ae formulation.",
+      "mathContext": "$\\mu(\\{v : \\neg \\text{cyclic}\\}) \\leq \\mu(\\bigcup_q \\ker((\\mu/q)(M))) \\leq \\sum_q \\mu(\\ker((\\mu/q)(M))) = 0$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete proof that cyclic vectors for nonderogatory real matrices have full Lebesgue measure. The proof combines the algebraic structure theory (irreducible factorization, GCD annihilation) with Haar measure theory to give a measure-theoretic strengthening of the existential result.",
+    "implications": "This answers the open question from the parent proof (OQ-05-OQ-01): the set of cyclic vectors is not merely nonempty but is 'generic' in the measure-theoretic sense. Combined with the Zariski-open interpretation, this confirms that cyclic vectors form a dense, full-measure subset of the vector space.",
+    "openQuestions": [
+      "Extend to complex matrices: the same argument works over C with Lebesgue measure on C^n, since proper complex subspaces also have real codimension >= 2",
+      "Quantify the Hausdorff dimension of the non-cyclic set: it lies in a finite union of real codimension >= 1 subspaces, so its Hausdorff dimension is at most n-1",
+      "For random matrices (e.g., Gaussian entries), what is the probability that M is nonderogatory? Combined with this result, this would give the probability that a random (M,v) pair has v cyclic for M"
+    ]
+  },
+  "status": "verified",
+  "badge": "mathlib",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "MeasureTheory",
+      "Measure"
+    ],
+    "namespace": "CyclicVectorMeasure",
+    "lineCount": 270,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 3,
+    "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "relationship": "extends",
+      "description": "Extends the existential cyclic vector result to a measure-theoretic statement: not only does a cyclic vector exist, but almost every vector is cyclic"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05",
+      "relationship": "extends",
+      "description": "Grandparent entry on minimal polynomial reduction in K-algebras"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "uses",
+      "description": "Cayley-Hamilton theorem provides integrality of matrices, enabling minpoly.monic"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hoffman, Kenneth; Kunze, Ray",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "Prentice-Hall, 2nd edition",
+      "note": "Standard reference for nonderogatory matrices and cyclic vectors (Chapter 7)"
+    },
+    {
+      "authors": "Mattila, Pertti",
+      "title": "Geometry of Sets and Measures in Euclidean Spaces",
+      "year": "1995",
+      "venue": "Cambridge University Press",
+      "note": "Reference for Haar measure and dimension theory of subsets of R^n"
+    }
+  ],
+  "sorries": 0
+}

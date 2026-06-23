@@ -1,0 +1,225 @@
+[
+  {
+    "id": "ann-archimedes-header",
+    "proofId": "area-of-circle-oq-03-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 16
+    },
+    "type": "concept",
+    "title": "Historical and Mathematical Context",
+    "content": "This module formalizes Archimedes' bounds on π from his treatise 'Measurement of a Circle' (c. 250 BCE). Archimedes used inscribed and circumscribed regular 96-gons to trap π between 223/71 and 22/7. Both bounds are fully verified using Mathlib's `pi_gt_d4` ($3.1415 < \\pi$) and `pi_lt_d4` ($\\pi < 3.1416$), which provide sufficient precision since $223/71 \\approx 3.14085 < 3.1415$ and $3.1416 < 22/7 \\approx 3.14286$.",
+    "mathContext": "$\\frac{223}{71} < \\pi < \\frac{22}{7}$, equivalently $3 + \\frac{10}{71} < \\pi < 3 + \\frac{1}{7}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "method of exhaustion",
+      "Niven integral",
+      "half-angle formulas",
+      "interval arithmetic"
+    ],
+    "prerequisites": [
+      "trigonometric bounds",
+      "Taylor series",
+      "Lebesgue integration"
+    ]
+  },
+  {
+    "id": "ann-lower-bound-proof",
+    "proofId": "area-of-circle-oq-03-oq-02",
+    "range": {
+      "startLine": 28,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Archimedes' Lower Bound (Verified)",
+    "content": "The lower bound $223/71 < \\pi$ is proved from Mathlib's `pi_gt_d4` ($3.1415 < \\pi$). Since $223/71 \\approx 3.14084 < 3.1415$, we have $223/71 < 3.1415 < \\pi$ by transitivity. The arithmetic inequality $223/71 < 3.1415$ is discharged by `norm_num`, and `linarith` chains the two inequalities.",
+    "mathContext": "$\\frac{223}{71} < 3.1415 < \\pi$",
+    "significance": "key",
+    "relatedConcepts": [
+      "pi approximation",
+      "norm_num tactic",
+      "linarith tactic"
+    ],
+    "prerequisites": [
+      "Real.pi_gt_d4"
+    ]
+  },
+  {
+    "id": "ann-upper-bound-proof",
+    "proofId": "area-of-circle-oq-03-oq-02",
+    "range": {
+      "startLine": 35,
+      "endLine": 40
+    },
+    "type": "concept",
+    "title": "Archimedes' Upper Bound (Verified)",
+    "content": "The upper bound $\\pi < 22/7$ is proved from Mathlib's `pi_lt_d4` ($\\pi < 3.1416$). Since $3.1416 < 22/7 \\approx 3.14286$, we have $\\pi < 3.1416 < 22/7$ by transitivity. The Dalzell–Niven integral $\\int_0^1 t^4(1-t)^4/(1+t^2)\\,dt = 22/7 - \\pi$ provides an alternative elegant proof, but the `pi_lt_d4` approach is simpler.",
+    "mathContext": "$\\pi < 3.1416 < \\frac{22}{7}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "pi approximation",
+      "Niven integral",
+      "norm_num tactic",
+      "linarith tactic"
+    ],
+    "prerequisites": [
+      "Real.pi_lt_d4"
+    ]
+  },
+  {
+    "id": "ann-combined-bounds",
+    "proofId": "area-of-circle-oq-03-oq-02",
+    "range": {
+      "startLine": 46,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Combined Bounds via Anonymous Constructor",
+    "content": "The combined theorem packages both axioms into a single conjunction using Lean's anonymous constructor syntax `⟨_, _⟩`. This is a standard pattern for combining related results into a single statement that can be destructured by downstream theorems.",
+    "mathContext": "$\\frac{223}{71} < \\pi \\wedge \\pi < \\frac{22}{7}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjunction introduction",
+      "anonymous constructor",
+      "term-mode proof"
+    ],
+    "prerequisites": [
+      "Anonymous Constructor Syntax",
+      "Logical Conjunction",
+      "Term-Mode Proofs"
+    ]
+  },
+  {
+    "id": "ann-traditional-forms",
+    "proofId": "area-of-circle-oq-03-oq-02",
+    "range": {
+      "startLine": 50,
+      "endLine": 58
+    },
+    "type": "insight",
+    "title": "Traditional Formulations via norm_num",
+    "content": "Archimedes' bounds are often stated as $3 + 10/71 < \\pi < 3 + 1/7$ rather than as improper fractions. These theorems establish the equivalence using `norm_num` for the arithmetic identity ($3 + 10/71 = 223/71$) and `linarith` to chain with the axiom. This demonstrates Lean's strength at verified arithmetic: the equality $3 + 10/71 = 223/71$ is not merely claimed but machine-checked.",
+    "mathContext": "$3 + \\frac{10}{71} = \\frac{223}{71}$ and $3 + \\frac{1}{7} = \\frac{22}{7}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_num tactic",
+      "linarith tactic",
+      "mixed number representation"
+    ],
+    "prerequisites": [
+      "rational arithmetic"
+    ]
+  },
+  {
+    "id": "ann-gap-computation",
+    "proofId": "area-of-circle-oq-03-oq-02",
+    "range": {
+      "startLine": 60,
+      "endLine": 61
+    },
+    "type": "insight",
+    "title": "Exact Gap: 1/497",
+    "content": "The gap between Archimedes' bounds is exactly $1/497 \\approx 0.00201$, proved entirely by `norm_num`. This means Archimedes achieved better than 0.1% relative accuracy using only geometric methods — remarkable for 250 BCE. The computation $22/7 - 223/71 = (22 \\cdot 71 - 223 \\cdot 7)/(7 \\cdot 71) = (1562 - 1561)/497 = 1/497$ is verified mechanically.",
+    "mathContext": "$\\frac{22}{7} - \\frac{223}{71} = \\frac{1562 - 1561}{497} = \\frac{1}{497}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "approximation theory",
+      "error analysis",
+      "norm_num decision procedure"
+    ],
+    "prerequisites": [
+      "rational arithmetic"
+    ]
+  },
+  {
+    "id": "ann-error-bound",
+    "proofId": "area-of-circle-oq-03-oq-02",
+    "range": {
+      "startLine": 63,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Error Bounds via Linear Arithmetic",
+    "content": "Both error inequalities ($\\pi - 223/71 < 1/497$ and $22/7 - \\pi < 1/497$) follow from the combined bounds and the gap computation by pure linear arithmetic. The `obtain` tactic destructures the conjunction, and `linarith` closes both goals using the chain of inequalities. This is a clean example of deriving quantitative error estimates from bounding intervals.",
+    "mathContext": "$\\pi - \\frac{223}{71} < \\frac{1}{497}$ and $\\frac{22}{7} - \\pi < \\frac{1}{497}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interval arithmetic",
+      "error propagation",
+      "linarith tactic"
+    ],
+    "prerequisites": [
+      "linear arithmetic",
+      "conjunction elimination"
+    ]
+  },
+  {
+    "id": "ann-22-7-error",
+    "proofId": "area-of-circle-oq-03-oq-02",
+    "range": {
+      "startLine": 69,
+      "endLine": 72
+    },
+    "type": "insight",
+    "title": "22/7 Overestimate Bound",
+    "content": "The familiar approximation $\\pi \\approx 22/7$ overestimates by less than $3/1000 = 0.003$. This is proved by chaining $22/7 - \\pi < 1/497$ with $1/497 < 3/1000$ (the latter by `norm_num`). The result quantifies the quality of the most commonly used rational approximation of $\\pi$.",
+    "mathContext": "$\\frac{22}{7} - \\pi < \\frac{3}{1000}$, i.e., $22/7$ approximates $\\pi$ to within $0.3\\%$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rational approximation",
+      "continued fractions",
+      "Diophantine approximation"
+    ],
+    "prerequisites": [
+      "archimedes_error_bound"
+    ]
+  },
+  {
+    "id": "ann-inscribed-polygon",
+    "proofId": "area-of-circle-oq-03-oq-02",
+    "range": {
+      "startLine": 78,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "General Inscribed Polygon Bound (Sorry-Free)",
+    "content": "The key geometric fact underlying Archimedes' method: for any regular $n$-gon inscribed in a unit circle, the half-perimeter $n \\sin(\\pi/n)$ is strictly less than $\\pi$. This is the fully formal, sorry-free heart of the proof. The argument uses `Real.sin_lt` ($\\sin x < x$ for $x > 0$) to get $\\sin(\\pi/n) < \\pi/n$, then multiplies both sides by $n > 0$. The `field_simp` tactic cancels $n$ in $n \\cdot (\\pi/n) = \\pi$. As $n \\to \\infty$, $n\\sin(\\pi/n) \\to \\pi$ (the limit definition of $\\pi$ via arc length).",
+    "mathContext": "$n \\sin\\!\\left(\\frac{\\pi}{n}\\right) < \\pi$ for all $n \\geq 1$, with $\\lim_{n \\to \\infty} n \\sin(\\pi/n) = \\pi$",
+    "significance": "key",
+    "relatedConcepts": [
+      "method of exhaustion",
+      "inscribed polygon",
+      "sin x < x",
+      "arc length",
+      "isoperimetric inequality"
+    ],
+    "prerequisites": [
+      "Real.sin_lt",
+      "Real.pi_pos",
+      "positivity tactic",
+      "field_simp tactic"
+    ]
+  },
+  {
+    "id": "ann-summary-theorem",
+    "proofId": "area-of-circle-oq-03-oq-02",
+    "range": {
+      "startLine": 95,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Summary Packaging Theorem",
+    "content": "A summary theorem bundling all three main results: Archimedes' bounds, the exact gap, and the general polygon bound. The universally quantified polygon bound is wrapped in a lambda to match the required signature. This pattern provides a single entry point for downstream consumers of the entire formalization.",
+    "mathContext": "$(\\frac{223}{71} < \\pi < \\frac{22}{7}) \\wedge (\\frac{22}{7} - \\frac{223}{71} = \\frac{1}{497}) \\wedge (\\forall n \\geq 1,\\; n\\sin(\\pi/n) < \\pi)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "theorem packaging",
+      "API design in formal proofs"
+    ],
+    "prerequisites": [
+      "archimedes_bounds",
+      "archimedes_gap",
+      "inscribed_half_perimeter_lt_pi"
+    ]
+  }
+]

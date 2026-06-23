@@ -1,0 +1,111 @@
+[
+  {
+    "id": "ann-zeta-reg-definition",
+    "proofId": "arithmetic-series-oq-03",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Regularization, Not Summation",
+    "content": "`regularizedPowerSum p` is *defined* to be `riemannZeta (-(p : ℂ))`. This is the crux of the '1 + 2 + 3 + ⋯ = -1/12' statement: it is not a claim about the limit of partial sums (which diverge to +∞), but the value of the analytically continued zeta function at s = -p. The Dirichlet series ζ(s) = ∑ n^{-s} converges only for Re s > 1; Mathlib's `riemannZeta` is its meromorphic continuation to all of ℂ, and we read off the regularized value at the negative integer -p.",
+    "mathContext": "$$\\zeta(s) = \\sum_{n=1}^{\\infty} n^{-s} \\quad (\\mathrm{Re}\\,s > 1), \\qquad \\text{continued to } \\zeta : \\mathbb{C}\\setminus\\{1\\} \\to \\mathbb{C}.$$\nThe regularized value of $\\sum_{n\\ge 1} n^p$ is $\\zeta(-p)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "analytic continuation",
+      "Dirichlet series",
+      "divergent series",
+      "zeta regularization"
+    ],
+    "prerequisites": [
+      "riemannZeta",
+      "meromorphic continuation"
+    ]
+  },
+  {
+    "id": "ann-zeta-reg-bernoulli-formula",
+    "proofId": "arithmetic-series-oq-03",
+    "range": {
+      "startLine": 75,
+      "endLine": 80
+    },
+    "type": "technique",
+    "title": "The One Lemma Behind Every Value",
+    "content": "The headline ζ(-1) = -1/12 is obtained by specializing Mathlib's `riemannZeta_neg_nat_eq_bernoulli` to k = 1, giving ζ(-1) = (-1)^1 · B₂ / 2. After rewriting the cast ((1:ℕ):ℂ) = 1, the tactic `norm_num [bernoulli_two]` substitutes B₂ = 1/6 and computes -(1/6)/2 = -1/12. The same lemma drives ζ(-3) = 1/120 (with B₄ = -1/30) and the rationality theorem; only the Bernoulli arithmetic and cast bookkeeping differ.",
+    "mathContext": "$$\\zeta(-k) = \\frac{(-1)^k B_{k+1}}{k+1}, \\qquad \\zeta(-1) = \\frac{-B_2}{2} = \\frac{-1/6}{2} = -\\frac{1}{12}.$$",
+    "significance": "core",
+    "relatedConcepts": [
+      "Bernoulli numbers",
+      "functional equation",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "riemannZeta_neg_nat_eq_bernoulli",
+      "bernoulli_two"
+    ]
+  },
+  {
+    "id": "ann-zeta-reg-bernoulli-four",
+    "proofId": "arithmetic-series-oq-03",
+    "range": {
+      "startLine": 63,
+      "endLine": 65
+    },
+    "type": "technique",
+    "title": "Two Bernoulli Conventions",
+    "content": "Mathlib ships `bernoulli'_four : B'₄ = -1/30` (the +1/2 convention) but the zeta value formula uses `bernoulli` (the -1/2 convention). The helper `bernoulli_four` transports the value via `bernoulli_eq_bernoulli'_of_ne_one`, which states the signed and unsigned Bernoulli numbers agree for every index n ≠ 1. Since 4 ≠ 1, B₄ = B'₄ = -1/30. The two conventions differ only at index 1 (B₁ = -1/2 vs B'₁ = +1/2), corresponding to summing over k ∈ {0,…,n-1} vs {1,…,n}.",
+    "mathContext": "$$B_n = B'_n \\text{ for } n \\ne 1, \\qquad B_1 = -\\tfrac12,\\ B'_1 = +\\tfrac12.$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bernoulli numbers",
+      "sign conventions"
+    ],
+    "prerequisites": [
+      "bernoulli_eq_bernoulli'_of_ne_one",
+      "bernoulli'_four"
+    ]
+  },
+  {
+    "id": "ann-zeta-reg-trivial-zeros",
+    "proofId": "arithmetic-series-oq-03",
+    "range": {
+      "startLine": 103,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "The Trivial Zeros as an Infinite Family",
+    "content": "`regularizedPowerSum_even` proves ζ(-2k) = 0 for every k ≥ 1 — so all the even-power divergent series 1+4+9+⋯, 1+16+81+⋯, … regularize to 0. The proof writes k = n+1 and applies `riemannZeta_neg_two_mul_nat_add_one n`, matching the casts with `push_cast; ring`. These are exactly the *trivial zeros* of ζ; their non-trivial counterparts on the critical line Re s = 1/2 are the subject of the Riemann Hypothesis.",
+    "mathContext": "$$\\zeta(-2) = \\zeta(-4) = \\zeta(-6) = \\cdots = 0.$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "trivial zeros",
+      "Riemann Hypothesis",
+      "functional equation"
+    ],
+    "prerequisites": [
+      "riemannZeta_neg_two_mul_nat_add_one"
+    ]
+  },
+  {
+    "id": "ann-zeta-reg-rationality",
+    "proofId": "arithmetic-series-oq-03",
+    "range": {
+      "startLine": 116,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Every Regularized Value Is Rational",
+    "content": "`regularizedPowerSum_rational` exhibits, for each p, an explicit rational q = (-1)^p B_{p+1}/(p+1) with ζ(-p) = q. After applying the value formula, `push_cast; ring` checks that the complex value equals the cast of q. This rationality is the negative-integer mirror of ζ(2k) ∈ π^{2k}·ℚ and contrasts sharply with the conjectural transcendence of the odd values ζ(2k+1).",
+    "mathContext": "$$\\zeta(-p) = \\frac{(-1)^p B_{p+1}}{p+1} \\in \\mathbb{Q} \\quad \\text{for all } p \\in \\mathbb{N}.$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "rationality",
+      "Bernoulli numbers",
+      "transcendence of odd zeta values"
+    ],
+    "prerequisites": [
+      "riemannZeta_neg_nat_eq_bernoulli",
+      "push_cast"
+    ]
+  }
+]

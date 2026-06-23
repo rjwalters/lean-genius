@@ -1,0 +1,89 @@
+{
+  "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+  "title": "Can the factorization bridge be proved without Finset",
+  "phase": "NEW",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can the factorization bridge be proved without Finset.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-05T02:57:44.794Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 268-line proof, 0 sorries, 0 axioms. Factorization bridge proved via UFD multiset induction. Gallery entry created.",
+    "builtItems": [
+      "nonderogatory_has_cyclic_vector: main theorem (CayleyHamiltonCyclicVectorAllFields.lean:189)",
+      "nonderogatory_has_cyclic_vector_finite: finite field corollary (line 213)",
+      "cyclic_iff_not_killed_below_degree: characterization (line 221)",
+      "monic_factored_form (private): factorization bridge (line 155)",
+      "finset_factorization_from_multiset (private): UFD multiset → Fin-indexed (line 117)"
+    ],
+    "insights": [
+      "monic_factored_form proved via UniqueFactorizationMonoid + recursive Finset-indexed grouping of irreducibles from multiset",
+      "finset_factorization_from_multiset: uses decidable equality on K[X] to group repeated irreducibles with their exponents",
+      "Proof works over any field including finite fields — never invokes |K| > n",
+      "CayleyHamiltonCyclicVectorAllFields.lean has 0 real sorries (all sorry-mentions are in comments describing v1 vs v2)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-cyclic-vector-all-fields"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-05T02:57:44.793Z",
+  "lastUpdate": "2026-05-05T02:57:44.793Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFields.lean",
+      "lineCount": 269,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFields.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsAristotle.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsAristotle.lean",
+      "lineCount": 133,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsAristotle.lean"
+    }
+  ]
+}

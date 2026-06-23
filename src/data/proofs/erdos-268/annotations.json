@@ -1,0 +1,487 @@
+[
+  {
+    "id": "ann-268-header",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Problem Statement and Background",
+    "content": "Erdős Problem #268 asks about the topology of a number-theoretically defined subset of ℝᵈ. Given an infinite set A ⊆ ℕ with convergent harmonic subseries Σ_{n∈A} 1/n < ∞, form the d-dimensional point whose i-th coordinate is the shifted sum Σ_{n∈A} 1/(n+i). The set X of all such points, as A ranges over all qualifying infinite subsets, is a priori a complicated fractal-like object. The surprise is that X has nonempty interior — it contains a genuine open ball in ℝᵈ.",
+    "mathContext": "The constraint $\\sum_{n \\in A} \\frac{1}{n} < \\infty$ with $A$ infinite forces $A$ to be very sparse: by the Cauchy condensation test, $A$ must have natural density 0 and even counting function $A(x) = o(x/\\log x)$. Examples include $A = \\{n^2\\}$ (where $\\sum 1/n^2 = \\pi^2/6$) and $A = \\{2^k\\}$ (where $\\sum 1/2^k = 1$). Despite this restrictive sparsity condition, the resulting set $X_d$ has nonempty interior in $\\mathbb{R}^d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic series",
+      "convergent subseries",
+      "interior of sets",
+      "topological dimension",
+      "natural density"
+    ],
+    "prerequisites": [
+      "summability",
+      "metric topology",
+      "Euclidean space"
+    ]
+  },
+  {
+    "id": "ann-268-answer",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 14,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Answer: YES for All Dimensions",
+    "content": "The answer is YES for all dimensions d ≥ 1. The problem was solved in stages: Erdős and Straus proved the d=2 case (date uncertain, likely 1960s–70s). The d=3 case remained open for decades until Kovač (2024) gave an explicit construction of an open ball inside X₃. Shortly after, Kovač and Tao (2024) proved the general result for all d ≥ 1 using a connection to Ahmes series (Egyptian fraction representations). Their key insight was that the structure of achievable harmonic subseries sums is rich enough to fill out open regions via a careful density argument.",
+    "mathContext": "The main result: for all $d \\ge 1$, $\\operatorname{int}(X_d) \\neq \\emptyset$ where $X_d = \\{(\\sum_{n \\in A} \\frac{1}{n}, \\ldots, \\sum_{n \\in A} \\frac{1}{n+d-1}) : A \\subseteq \\mathbb{N},\\; |A| = \\infty,\\; \\sum_{n \\in A} \\frac{1}{n} < \\infty\\}$. Equivalently, $X_d$ contains a metric ball $B(c, r) \\subseteq X_d$ for some center $c \\in \\mathbb{R}^d$ and radius $r > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ahmes series",
+      "Egyptian fractions",
+      "Kovač-Tao theorem",
+      "metric ball",
+      "topological interior"
+    ],
+    "prerequisites": [
+      "metric space topology",
+      "tprime summation",
+      "harmonic subseries"
+    ]
+  },
+  {
+    "id": "ann-268-convergent-def",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "Convergent Harmonic Subseries",
+    "content": "HasConvergentHarmonicSubseries defines when a set A ⊆ ℕ has a finite harmonic subseries sum. It uses Mathlib's Summable predicate applied to the function n ↦ 1/n restricted to A. Since the full harmonic series Σ 1/n diverges (proved by Oresme c. 1350), this condition forces A to be 'thin' — it cannot contain arithmetic progressions of bounded gap, for instance. The Lean definition uses the subtype A to index the sum, which is the standard Mathlib pattern for subseries.",
+    "mathContext": "$\\text{HasConvergentHarmonicSubseries}(A) \\;\\Leftrightarrow\\; \\sum_{n \\in A} \\frac{1}{n} < \\infty \\;\\Leftrightarrow\\; \\text{Summable}(\\lambda\\, n : A,\\; 1/n)$. By comparison with integrals, if $A(x) = |A \\cap [1, x]|$, convergence requires $\\sum_{n=1}^{\\infty} A(n)/(n \\cdot (n+1))$ to converge, which constrains the growth of $A(x)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic series divergence",
+      "Summable",
+      "comparison test",
+      "natural density zero",
+      "Cauchy condensation"
+    ],
+    "prerequisites": [
+      "Summable",
+      "tsum",
+      "harmonic series"
+    ]
+  },
+  {
+    "id": "ann-268-shifted-sum",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 45,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Shifted Harmonic Sum",
+    "content": "The shifted harmonic sum Σ_{n∈A} 1/(n+k) replaces each term 1/n with 1/(n+k). For k=0 this recovers the original harmonic subseries. The key observation is that shifting by k produces a coherent family of sums: the d-tuple (Σ 1/n, Σ 1/(n+1), ..., Σ 1/(n+d-1)) encodes how the 'weight' of the set A is distributed across different scales. Each shift dampens larger elements less and smaller elements more, creating a non-trivial coupling between coordinates.",
+    "mathContext": "$\\text{shiftedHarmonicSum}(A, k) = \\sum_{n \\in A} \\frac{1}{n + k} = \\sum_{n \\in A} \\frac{1}{n} \\cdot \\frac{n}{n+k}$. The ratio $\\frac{n}{n+k} \\to 1$ as $n \\to \\infty$, so the shifted sum is asymptotically close to the original for large elements of $A$, but differs for small elements. This means two sets $A, B$ with the same harmonic sum can produce different shifted sums.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tsum",
+      "shift operator",
+      "asymptotic comparison",
+      "coordinate coupling"
+    ],
+    "prerequisites": [
+      "summability",
+      "comparison test",
+      "tsum convergence"
+    ]
+  },
+  {
+    "id": "ann-268-finite-convergent",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 49,
+      "endLine": 54
+    },
+    "type": "concept",
+    "title": "Finite Sets Have Convergent Subseries",
+    "content": "Any finite set A trivially has a convergent harmonic subseries — a finite sum of positive reals is always finite. This theorem is marked sorry; the proof would use Mathlib's summable_of_finite or show that the tsum over a finite set equals a Finset.sum, which is always well-defined. The interesting case for Problem #268 is infinite sets, which is why harmonicPointSet requires A.Infinite.",
+    "mathContext": "If $|A| < \\infty$, then $\\sum_{n \\in A} \\frac{1}{n}$ is a finite sum of positive reals, hence convergent. In Lean, this follows from the fact that `Summable` holds for any function on a finite type.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite summability",
+      "Finset.sum",
+      "summable_of_finite"
+    ],
+    "prerequisites": [
+      "Summable",
+      "Set.Finite"
+    ]
+  },
+  {
+    "id": "ann-268-shifted-summable",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 55,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Shifted Series Also Converge",
+    "content": "If Σ 1/n converges over A, then Σ 1/(n+k) also converges for any fixed shift k. This is essential for the well-definedness of harmonicPoint: all d coordinates must be finite. The proof uses the comparison test since 1/(n+k) ≤ 1/n for all n ≥ 1 and k ≥ 0. This sorry could likely be resolved by Aristotle using Mathlib's Summable.of_nonneg_of_le.",
+    "mathContext": "For $n \\ge 1$ and $k \\ge 0$: $\\frac{1}{n+k} \\le \\frac{1}{n}$. By the comparison test, $\\text{Summable}(\\lambda\\, n : A,\\; 1/n) \\Rightarrow \\text{Summable}(\\lambda\\, n : A,\\; 1/(n+k))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "comparison test",
+      "Summable.of_nonneg_of_le",
+      "well-definedness",
+      "dominated convergence"
+    ],
+    "prerequisites": [
+      "Summable",
+      "comparison test",
+      "HasConvergentHarmonicSubseries"
+    ]
+  },
+  {
+    "id": "ann-268-harmonic-point",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 98,
+      "endLine": 101
+    },
+    "type": "definition",
+    "title": "The Harmonic Point Construction",
+    "content": "Given a set A and dimension d, the harmonic point maps each coordinate index i ∈ Fin d to the shifted sum with shift i. The resulting point in ℝᵈ encodes the 'harmonic profile' of A at d consecutive shifts. This is a noncomputable definition because it relies on tsum (which uses Classical.choice to select the limit). The point lies in Fin d → ℝ, Lean's representation of ℝᵈ.",
+    "mathContext": "$\\text{harmonicPoint}(d, A) = (x_0, x_1, \\ldots, x_{d-1})$ where $x_i = \\sum_{n \\in A} \\frac{1}{n + i}$. The map $A \\mapsto \\text{harmonicPoint}(d, A)$ is the central object: $X_d$ is its image over all infinite $A$ with convergent harmonic sum.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fin d → ℝ",
+      "noncomputable",
+      "tsum",
+      "harmonic profile",
+      "point construction"
+    ],
+    "prerequisites": [
+      "shiftedHarmonicSum",
+      "shifted_summable",
+      "Fin"
+    ]
+  },
+  {
+    "id": "ann-268-point-set",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 102,
+      "endLine": 118
+    },
+    "type": "definition",
+    "title": "The Point Set X and Alternative Characterization",
+    "content": "harmonicPointSet d defines the set X ⊆ ℝᵈ as the image of the harmonicPoint map over all infinite A with convergent sum. The alternative harmonicPointSet' inlines all definitions for compatibility with formal-conjectures repositories. The theorem harmonicPointSet_eq proves they are extensionally equal by unfolding definitions — one of the few fully proved results in the file.",
+    "mathContext": "$X_d = \\{\\text{harmonicPoint}(d, A) : A \\subseteq \\mathbb{N},\\; |A| = \\infty,\\; \\sum_{n \\in A} 1/n < \\infty\\} \\subseteq \\mathbb{R}^d$. The equivalence $X_d = X_d'$ is proved by `ext` and `simp`, showing the two formulations are definitionally equal after unfolding.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set-builder notation",
+      "image of a map",
+      "extensional equality",
+      "formal-conjectures compatibility"
+    ],
+    "prerequisites": [
+      "harmonicPoint",
+      "HasConvergentHarmonicSubseries",
+      "Set.Infinite"
+    ]
+  },
+  {
+    "id": "ann-268-main-theorem",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 126,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Main Result: Interior is Nonempty",
+    "content": "The axiom erdos_268_solved states that the interior of X_d is nonempty for all d. This is the core mathematical content. The derived theorem contains_open_ball reformulates this as the existence of a specific center and radius, using Mathlib's characterization of interior points in metric spaces: x ∈ int(S) iff there exists r > 0 with B(x,r) ⊆ S. This derivation is fully proved (no sorry) and demonstrates genuine deduction from the axiom.",
+    "mathContext": "The axiom: $\\forall d,\\; \\operatorname{int}(X_d) \\neq \\emptyset$. The derivation: $\\operatorname{int}(X_d) \\neq \\emptyset \\Rightarrow \\exists x \\in \\operatorname{int}(X_d) \\Rightarrow \\exists U \\text{ open},\\; x \\in U \\subseteq X_d \\Rightarrow \\exists r > 0,\\; B(x, r) \\subseteq X_d$. The proof uses `mem_interior`, `Metric.isOpen_iff`, and function composition to chain these implications.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interior",
+      "Metric.isOpen_iff",
+      "mem_interior",
+      "open ball",
+      "axiomatization"
+    ],
+    "prerequisites": [
+      "metric space topology",
+      "interior definition",
+      "harmonicPointSet"
+    ]
+  },
+  {
+    "id": "ann-268-erdos-straus",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 161,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Erdős-Straus Theorem (d=2)",
+    "content": "The 2-dimensional case was the first solved: the set of points (Σ 1/n, Σ 1/(n+1)) as A ranges over infinite convergent subseries has nonempty interior in ℝ². Erdős and Straus proved this using properties of the digamma function ψ(x) = (Γ'/Γ)(x), since the shifted sums Σ 1/(n+k) are related to differences of ψ-values. The sorry in dim2_point_form is for showing the concrete matrix notation matches the function definition.",
+    "mathContext": "The Erdős-Straus result: $\\operatorname{int}(X_2) \\neq \\emptyset$ where $X_2 = \\{(\\sum_{n \\in A} 1/n,\\; \\sum_{n \\in A} 1/(n+1)) : A \\text{ infinite with conv. sum}\\}$. The connection to the digamma function: $\\psi(x+1) - \\psi(x) = 1/x$, so $\\sum_{n \\in A} 1/n = \\sum_{n \\in A} (\\psi(n+1) - \\psi(n))$, a telescoping-like structure that aids the topological analysis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "digamma function",
+      "Erdős-Straus",
+      "2-dimensional case",
+      "Matrix.of notation",
+      "telescoping sums"
+    ],
+    "prerequisites": [
+      "harmonicPointSet",
+      "interior",
+      "special functions"
+    ]
+  },
+  {
+    "id": "ann-268-kovac",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 184,
+      "endLine": 196
+    },
+    "type": "concept",
+    "title": "Kovač's Theorem (d=3) with Explicit Ball",
+    "content": "Kovač (2024) proved the 3-dimensional case with a constructive approach: he computed a specific center point and radius such that the metric ball lies entirely within X₃. This is stronger than mere existence — it gives quantitative geometric information. The placeholder values kovacBallCenter = (1.5, 1.2, 1.0) and kovacBallRadius = 0.01 stand in for Kovač's actual computed values. The axiom kovac_explicit_ball captures the containment B(c, r) ⊆ X₃.",
+    "mathContext": "Kovač's constructive result: $\\exists c \\in \\mathbb{R}^3,\\; \\exists r > 0$ (both explicitly computed) such that $B(c, r) \\subseteq X_3$. The center $c$ lies in the interior of the region of achievable harmonic profiles. The radius $r$ is small but positive, giving a quantitative lower bound on the 'thickness' of $X_3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "constructive proof",
+      "explicit ball",
+      "Metric.ball",
+      "quantitative topology"
+    ],
+    "prerequisites": [
+      "harmonicPointSet",
+      "Metric.ball",
+      "kovac_3d"
+    ]
+  },
+  {
+    "id": "ann-268-kovac-tao",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 197,
+      "endLine": 203
+    },
+    "type": "concept",
+    "title": "Kovač-Tao General Dimension Result",
+    "content": "Kovač and Tao (2024) proved the full result for all d ≥ 1. Their proof connects harmonic subseries to Ahmes series (Egyptian fraction representations). An Ahmes series is Σ 1/nₖ where the nₖ are distinct positive integers — exactly a harmonic subseries. They showed that the set of achievable Ahmes sums has enough structure to guarantee interior in all dimensions. The theorem kovac_tao_general simply invokes the axiom erdos_268_solved, recording that the general result subsumes all special cases. AhmesSeries is defined as a synonym for harmonicSubseriesSum.",
+    "mathContext": "The Kovač-Tao theorem: $\\forall d \\ge 1,\\; \\operatorname{int}(X_d) \\neq \\emptyset$. Their proof strategy: show that for any target point $y$ near the center of $X_d$, one can construct an infinite set $A$ with $\\sum_{n \\in A} 1/(n+i) \\approx y_i$ for all $0 \\le i < d$ simultaneously. The Ahmes series connection: $\\sum_{n \\in A} 1/n$ is an Egyptian fraction representation, and the classical theory of such representations (going back to the Rhind Papyrus, c. 1650 BCE) provides density results.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ahmes series",
+      "Egyptian fractions",
+      "Rhind Papyrus",
+      "simultaneous approximation",
+      "density of representations"
+    ],
+    "prerequisites": [
+      "erdos_268_solved",
+      "harmonicPointSet",
+      "AhmesSeries"
+    ]
+  },
+  {
+    "id": "ann-268-nonempty",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 751,
+      "endLine": 761
+    },
+    "type": "concept",
+    "title": "X is Non-empty",
+    "content": "The set X is non-empty because infinite sets with convergent harmonic subseries exist. The canonical example is the set of perfect squares: Σ 1/n² = π²/6 (Basel problem, Euler 1734). The proof is marked sorry but would construct such a set and verify it satisfies the defining conditions. Note that non-emptiness also follows from the stronger main theorem (nonempty interior implies nonempty), but a direct proof is mathematically cleaner.",
+    "mathContext": "Non-emptiness: $X_d \\neq \\emptyset$. Proof: take $A = \\{n^2 : n \\ge 1\\}$. Then $A$ is infinite and $\\sum_{n \\in A} 1/n = \\sum_{k=1}^{\\infty} 1/k^2 = \\pi^2/6 < \\infty$. Hence $\\text{harmonicPoint}(d, A) \\in X_d$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Basel problem",
+      "perfect squares",
+      "existence proof",
+      "set non-emptiness"
+    ],
+    "prerequisites": [
+      "harmonicPointSet",
+      "squaresSet",
+      "squares_convergent"
+    ]
+  },
+  {
+    "id": "ann-268-path-connected",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 762,
+      "endLine": 827
+    },
+    "type": "concept",
+    "title": "Path-Connectedness and Density",
+    "content": "X is path-connected (sorry), meaning any two points can be joined by a continuous curve within X. Intuitively, given sets A and B, one can continuously interpolate by gradually 'swapping' elements — removing elements of A and adding elements of B while maintaining convergence at each step. The density result harmonicPointSet_dense_somewhere shows X is dense in its own interior, which is partially proved from the main axiom using isOpen_interior.",
+    "mathContext": "Path-connectedness: $\\forall x, y \\in X_d,\\; \\exists \\gamma : [0,1] \\to X_d$ continuous with $\\gamma(0) = x,\\; \\gamma(1) = y$. The density result: $\\exists U \\subseteq \\mathbb{R}^d$ open and nonempty with $\\overline{X_d \\cap U} \\supseteq U$. The partial proof constructs $U = \\operatorname{int}(X_d)$ and uses $\\operatorname{int}(X_d) \\subseteq X_d$ to show density within the interior.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "path-connectedness",
+      "continuous interpolation",
+      "dense subset",
+      "interior",
+      "isOpen_interior"
+    ],
+    "prerequisites": [
+      "harmonicPointSet",
+      "IsPathConnected",
+      "Dense",
+      "erdos_268_solved"
+    ]
+  },
+  {
+    "id": "ann-268-coordinate-decreasing",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 832,
+      "endLine": 864
+    },
+    "type": "concept",
+    "title": "Coordinates Are Strictly Decreasing",
+    "content": "The coordinates of any harmonic point are strictly decreasing: the 0th coordinate (Σ 1/n) exceeds the 1st (Σ 1/(n+1)), which exceeds the 2nd (Σ 1/(n+2)), etc. This follows from the term-by-term inequality 1/(n+i) > 1/(n+j) for i < j and n ∈ A, combined with A being infinite (so infinitely many strict inequalities contribute). The corollary first_coordinate_largest records that coordinate 0 dominates all others.",
+    "mathContext": "For $i < j$ and $A$ infinite with convergent sum: $\\sum_{n \\in A} \\frac{1}{n+i} > \\sum_{n \\in A} \\frac{1}{n+j}$. Proof: each term satisfies $\\frac{1}{n+i} > \\frac{1}{n+j}$ strictly, and the sum over infinitely many positive strict inequalities preserves strict inequality. Consequence: the map $i \\mapsto x_i$ is strictly decreasing, so $X_d$ lies in the cone $\\{x : x_0 > x_1 > \\cdots > x_{d-1}\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "term-by-term comparison",
+      "strict inequality for sums",
+      "monotone coordinates",
+      "cone constraint"
+    ],
+    "prerequisites": [
+      "shiftedHarmonicSum",
+      "tsum_lt_tsum",
+      "Set.Infinite"
+    ]
+  },
+  {
+    "id": "ann-268-positive",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 740,
+      "endLine": 750
+    },
+    "type": "concept",
+    "title": "All Coordinates Are Positive",
+    "content": "Every coordinate of a harmonic point is strictly positive for nonempty A, since each term 1/(n+k) > 0 and A is nonempty. This means X lies entirely in the open positive orthant (0,∞)ᵈ. Combined with the decreasing property, this constrains X to a relatively small region of ℝᵈ — making the nonempty interior result all the more remarkable.",
+    "mathContext": "For $A \\neq \\emptyset$ and any $i < d$: $x_i = \\sum_{n \\in A} \\frac{1}{n+i} > 0$ since each summand is positive and at least one term contributes. Combined with decreasing coordinates: $X_d \\subseteq \\{x \\in \\mathbb{R}^d : x_0 > x_1 > \\cdots > x_{d-1} > 0\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positive orthant",
+      "tsum_pos",
+      "geometric constraint",
+      "open cone"
+    ],
+    "prerequisites": [
+      "shiftedHarmonicSum",
+      "Set.Nonempty",
+      "tsum positivity"
+    ]
+  },
+  {
+    "id": "ann-268-projection",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 868,
+      "endLine": 871
+    },
+    "type": "definition",
+    "title": "Dimension Monotonicity via Projection",
+    "content": "The projection map from ℝ^{d₂} to ℝ^{d₁} (for d₁ ≤ d₂) takes the first d₁ coordinates. Since the same set A generates both the d₁-dimensional and d₂-dimensional harmonic points, projecting X_{d₂} to the first d₁ coordinates lands in X_{d₁}. This means 'having nonempty interior in high dimensions implies having nonempty interior in lower dimensions' — the d₁-dimensional result follows from the d₂-dimensional one by projection.",
+    "mathContext": "The projection $\\pi_{d_1, d_2} : \\mathbb{R}^{d_2} \\to \\mathbb{R}^{d_1}$ defined by $\\pi(x)_i = x_i$ for $i < d_1$ satisfies $\\pi(X_{d_2}) \\subseteq X_{d_1}$. Proof: if $x = \\text{harmonicPoint}(d_2, A) \\in X_{d_2}$, then $\\pi(x) = \\text{harmonicPoint}(d_1, A)$ by definition of the coordinate map. Since open maps preserve interior, $\\operatorname{int}(X_{d_2}) \\neq \\emptyset \\Rightarrow \\operatorname{int}(X_{d_1}) \\neq \\emptyset$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "coordinate projection",
+      "image of sets",
+      "open maps",
+      "dimension reduction"
+    ],
+    "prerequisites": [
+      "harmonicPoint",
+      "harmonicPointSet",
+      "Fin.castLE"
+    ]
+  },
+  {
+    "id": "ann-268-squares",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 882,
+      "endLine": 883
+    },
+    "type": "definition",
+    "title": "Squares Example: A = {n²}",
+    "content": "The set of perfect squares {1, 4, 9, 16, ...} provides a canonical example of an infinite set with convergent harmonic subseries. The sum Σ 1/n² = π²/6 ≈ 1.6449 was computed by Euler in 1734 (the Basel problem). The convergence follows from comparison with the integral ∫ 1/x² dx = 1. The resulting squaresPoint gives a specific element of X whose coordinates are the generalized sums Σ 1/(n²+k).",
+    "mathContext": "$A = \\{n^2 : n \\ge 1\\}$. Then $\\sum_{n \\in A} 1/n = \\sum_{k=1}^{\\infty} 1/k^2 = \\frac{\\pi^2}{6}$. The shifted sums: $\\sum_{k=1}^{\\infty} \\frac{1}{k^2 + j}$ for $j = 0, 1, \\ldots, d-1$. These can be expressed in terms of the digamma function: $\\sum_{k=1}^{\\infty} \\frac{1}{k^2 + j} = \\frac{1}{2\\sqrt{-j}}(\\psi(1 + \\sqrt{-j}) - \\psi(1 - \\sqrt{-j}))$ by partial fractions (for $j > 0$, involving complex arithmetic).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Basel problem",
+      "Euler",
+      "perfect squares",
+      "convergent p-series",
+      "digamma function"
+    ],
+    "prerequisites": [
+      "HasConvergentHarmonicSubseries",
+      "harmonicPoint",
+      "p-series convergence"
+    ]
+  },
+  {
+    "id": "ann-268-powers2",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 718,
+      "endLine": 720
+    },
+    "type": "definition",
+    "title": "Powers of 2 Example: A = {2ᵏ}",
+    "content": "The set of powers of 2 provides another explicit example. The sum Σ 1/2ᵏ = 1 is a geometric series. This gives a harmonic point whose first coordinate is exactly 1. Unlike the squares example where the sum involves π, the powers-of-2 sums are rational or have simple closed forms. The convergence is much faster (exponential vs polynomial), illustrating the wide range of admissible sets A.",
+    "mathContext": "$A = \\{2^k : k \\ge 0\\} = \\{1, 2, 4, 8, \\ldots\\}$. Then $\\sum_{n \\in A} 1/n = \\sum_{k=0}^{\\infty} 1/2^k = 2$ (geometric series with ratio $1/2$). The shifted sums: $\\sum_{k=0}^{\\infty} \\frac{1}{2^k + j}$ converge even faster. For $j = 1$: $\\frac{1}{2} + \\frac{1}{3} + \\frac{1}{5} + \\frac{1}{9} + \\cdots$, which has no simple closed form but converges rapidly.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "geometric series",
+      "exponential convergence",
+      "powers of 2",
+      "lacunary series"
+    ],
+    "prerequisites": [
+      "HasConvergentHarmonicSubseries",
+      "geometric series formula"
+    ]
+  },
+  {
+    "id": "ann-268-summary",
+    "proofId": "erdos-268",
+    "range": {
+      "startLine": 918,
+      "endLine": 978
+    },
+    "type": "concept",
+    "title": "Summary and Key Axiom",
+    "content": "The file formalizes Erdős Problem #268 in 242 lines of Lean 4 with 12 sorries and 4 axioms. The axioms capture the main result (erdos_268_solved), the 2D case (erdos_straus_2d), the 3D case with explicit ball (kovac_3d, kovac_explicit_ball). The sorry count reflects technical lemmas about summability and geometric properties that are provable from Mathlib but require careful manipulation of tsum inequalities. The key genuine proof is contains_open_ball, which derives the metric-ball reformulation from the interior axiom.",
+    "mathContext": "The formalization structure: axioms for deep analytical results ($\\operatorname{int}(X_d) \\neq \\emptyset$), genuine proofs for logical deductions (interior $\\Rightarrow$ open ball), and sorries for Mathlib-level technical lemmas (summability, comparison). The 12 sorries break down as: 2 summability lemmas, 1 set equivalence, 1 path-connectedness, 1 density, 2 coordinate properties, 1 projection, 2 convergence examples, 1 dimension-2 form, 1 non-emptiness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiomatization strategy",
+      "sorry classification",
+      "Aristotle candidates",
+      "formalization completeness"
+    ],
+    "prerequisites": [
+      "all previous sections"
+    ]
+  }
+]

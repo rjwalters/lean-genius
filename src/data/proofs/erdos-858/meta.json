@@ -1,0 +1,192 @@
+{
+  "id": "erdos-858",
+  "title": "Erdős Problem #858: Avoiding Multiplicative Relations with Large Prime Factors",
+  "slug": "erdos-858",
+  "description": "For A ⊆ {1,...,N} with no at=b where a,b ∈ A and smallest prime factor of t > a, estimate max (1/log N) Σ_{n∈A} 1/n. SOLVED: The maximum is o(1) as N → ∞, proved by Alexander (1966) and Erdős-Sárközi-Szemerédi (1968).",
+  "meta": {
+    "author": "Paul Erdős",
+    "sourceUrl": "https://erdosproblems.com/858",
+    "date": "1966",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos858Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primitive-sets",
+      "multiplicative-structure",
+      "density"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 858,
+    "erdosUrl": "https://erdosproblems.com/858",
+    "erdosProblemStatus": "solved",
+    "axiomCount": 1,
+    "lineCount": 348,
+    "assumptions": "1 axiom: alexander_1966. 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #858 concerns sets $A \\subseteq \\{1,\\ldots,N\\}$ where no element $at = b$ holds with $a,b \\in A$ and $\\text{spf}(t) > a$ (spf = smallest prime factor). This is a weakening of the **primitive set condition** (no element divides another). The **weighted reciprocal sum** $(1/\\log N) \\sum_{n \\in A} 1/n$ is the quantity of interest. **Alexander** (1966, *Acta Arithmetica*) first proved this sum is $o(1)$; **Erdős–Sárközi–Szemerédi** (1968, *J. London Math. Soc.*) gave an independent proof by different methods. For the stronger primitive condition, **Behrend** (1935) showed the quantitative bound $O(1/\\sqrt{\\log\\log N})$. The problem is fully resolved: the maximum is $o(1)$, with no known sharp quantitative bound for the weaker condition.",
+    "problemStatement": "Let A ⊆ {1, ..., N} be such that there is no solution to at = b with a, b ∈ A and the smallest prime factor of t is > a. Estimate the maximum of (1/log N) · Σ_{n ∈ A} 1/n.",
+    "text": "For A ⊆ {1,...,N} with no at=b where a,b ∈ A and smallest prime factor of t > a, estimate max (1/log N) Σ_{n∈A} 1/n. SOLVED: The maximum is o(1) as N → ∞, proved by Alexander (1966) and Erdős-Sárközi-Szemerédi (1968).",
+    "proofStrategy": "The formalization defines the multiplicative condition (no at=b with spf(t) > a), primitive sets, and the weighted reciprocal sum. Alexander's (1966) result is stated as an axiom showing the maximum is o(1). Erdős-Sárközi-Szemerédi's (1968) independent proof and Behrend's (1935) stronger bound for primitive sets are mentioned in docstrings for context only.",
+    "keyInsights": [
+      "The condition spf(t) > a is weaker than primitivity (a ∤ b)",
+      "Primitive sets satisfy this condition automatically",
+      "The weighted sum (1/log N) Σ 1/n = o(1) for sets satisfying the condition",
+      "For primitive sets, Behrend showed the stronger bound O(1/√(log log N))",
+      "Example: integers in [√N, N] divisible by primes > √N satisfy the condition"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring (lines 1–31) stating Erdős Problem #858: for A ⊆ {1,…,N} with no solution to a·t = b (a,b ∈ A, smallest prime factor of t > a), the normalized reciprocal sum (1/log N)·Σ_{n∈A} 1/n is o(1) as N → ∞. Records the history (Alexander 1966; Erdős–Sárközi–Szemerédi 1968; Behrend's 1935 primitive-set bound O(1/√(log log N))) and references. Six Mathlib imports (lines 33–38) supply primes, factorization, finsets, and real-log, then `namespace Erdos858`."
+    },
+    {
+      "id": "part-1-smallest-prime-factor",
+      "title": "Part I: Smallest Prime Factor",
+      "startLine": 44,
+      "endLine": 78,
+      "summary": "Defines `smallestPrimeFactor n` as `n.minFac` for n > 1 (else 0) and proves three basic facts: it divides n (`smallestPrimeFactor_dvd`), is prime (`smallestPrimeFactor_prime`), and is ≥ 2 (`smallestPrimeFactor_ge_two`), all by reduction to Mathlib's `Nat.minFac` lemmas."
+    },
+    {
+      "id": "part-2-multiplicative-condition",
+      "title": "Part II: The Multiplicative Condition",
+      "startLine": 79,
+      "endLine": 125,
+      "summary": "Defines the avoidance condition two ways: `SatisfiesCondition` (no a·t = b with spf(t) > a) and the divisibility form `SatisfiesCondition'` (a ∣ b, a < b ⇒ spf(b/a) ≤ a). `condition_equiv` proves them equivalent for sets of positive integers, noting the equivalence breaks at 0 ∈ A (one side vacuously false, the other vacuously true)."
+    },
+    {
+      "id": "part-3-primitive-sets",
+      "title": "Part III: Primitive Sets",
+      "startLine": 126,
+      "endLine": 150,
+      "summary": "Defines `IsPrimitive A` (no element divides another) and proves `primitive_satisfies_condition`: every primitive set satisfies the multiplicative condition, since a ∣ b in a primitive set forces a = b, hence t = 1, contradicting t > 1."
+    },
+    {
+      "id": "part-4-weighted-reciprocal-sum",
+      "title": "Part IV: The Weighted Reciprocal Sum",
+      "startLine": 151,
+      "endLine": 191,
+      "summary": "Defines `reciprocalSum A = Σ_{n∈A, n>0} 1/n` and the normalized `weightedSum A N = reciprocalSum A / log N` (0 when N ≤ 1). Proves both are nonnegative (`reciprocalSum_nonneg` via `Finset.sum_nonneg`/positivity; `weightedSum_nonneg` for N ≥ 2 via `div_nonneg` and `Real.log_nonneg`)."
+    },
+    {
+      "id": "part-5-range-constraint",
+      "title": "Part V: The Range Constraint",
+      "startLine": 192,
+      "endLine": 205,
+      "summary": "Defines `InRange A N`: every n ∈ A satisfies 1 ≤ n ≤ N, encoding A ⊆ {1,…,N}. A docstring notes the reciprocal sum is then bounded by the harmonic number H_N."
+    },
+    {
+      "id": "part-6-alexander",
+      "title": "Part VI: Alexander's Result (1966)",
+      "startLine": 206,
+      "endLine": 228,
+      "summary": "States Alexander's 1966 theorem as the `axiom alexander_1966`: for every ε > 0 there is N₀ such that every in-range A satisfying the condition has weightedSum A N < ε for N ≥ N₀. The wrapper `max_weighted_sum_little_o` re-exposes it as the o(1) bound on the maximum."
+    },
+    {
+      "id": "part-7-esz-1968",
+      "title": "Part VII: Erdős-Sárközi-Szemerédi (1968)",
+      "startLine": 229,
+      "endLine": 237,
+      "summary": "Documentation block recording the independent 1968 proof of the same o(1) result by Erdős, Sárközi, and Szemerédi (J. London Math. Soc.), using different methods. No new Lean declaration."
+    },
+    {
+      "id": "part-8-behrend",
+      "title": "Part VIII: Behrend's Bound for Primitive Sets (1935)",
+      "startLine": 238,
+      "endLine": 248,
+      "summary": "Documentation block recording Behrend's 1935 sharper bound O(1/√(log log N)) for the reciprocal sum of primitive sets — a stronger conclusion under the stronger primitivity hypothesis. No new Lean declaration."
+    },
+    {
+      "id": "part-9-example-construction",
+      "title": "Part IX: Example Construction",
+      "startLine": 249,
+      "endLine": 282,
+      "summary": "Defines `exampleSet N` — integers in [√N, N] divisible by some prime p > √N — as a set achieving a relatively large weighted sum while satisfying the condition, and proves `exampleSet_in_range` that it lies in {1,…,N}."
+    },
+    {
+      "id": "part-10-solution",
+      "title": "Part X: Erdős Problem #858 Solution",
+      "startLine": 283,
+      "endLine": 305,
+      "summary": "States the main result `erdos_858_solution`: for in-range A satisfying the condition, weightedSum A N is eventually < ε, i.e. o(1) as N → ∞. Proved by invoking `alexander_1966`, attributing the result to Alexander (1966) and Erdős–Sárközi–Szemerédi (1968)."
+    },
+    {
+      "id": "part-11-relationship-143",
+      "title": "Part XI: Relationship to Problem #143",
+      "startLine": 306,
+      "endLine": 319,
+      "summary": "Records that #858 is a weaker variant of the primitive-set problem #143 — the condition permits some divisibility relations (small-prime-factor multipliers) — and proves `weaker_than_primitive` (primitivity ⇒ the condition) as the formal link."
+    },
+    {
+      "id": "part-12-summary",
+      "title": "Part XII: Summary",
+      "startLine": 320,
+      "endLine": 348,
+      "summary": "Closing summary docstring and the theorem `erdos_858_summary`, which bundles the two headline facts — the condition is weaker than primitivity, and the weighted sum is o(1) — into a single conjunction, certifying the problem SOLVED. Closes `namespace Erdos858`."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #858 is SOLVED. For A ⊆ {1,...,N} satisfying the multiplicative condition (no at=b with spf(t) > a), the maximum of (1/log N) Σ_{n∈A} 1/n is o(1). This was proved independently by Alexander (1966) and Erdős-Sárközi-Szemerédi (1968).",
+    "implications": "The result shows that sets avoiding multiplicative relations with large prime factors are sparse in a specific sense. This relates to the study of primitive sets and multiplicative number theory.",
+    "openQuestions": [
+      "What is the precise rate of decay of the maximum?",
+      "Can the gap between this o(1) bound and Behrend's O(1/√(log log N)) be characterized?",
+      "What is the structure of extremal sets achieving near-maximum sums?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos858",
+    "lineCount": 348,
+    "axiomCount": 1,
+    "theoremCount": 12,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos858Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-143",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, primitive-sets"
+    },
+    {
+      "targetId": "erdos-786",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, multiplicative-structure, number-theory"
+    },
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,262 @@
+[
+  {
+    "id": "ann-constructible-def",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 46,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Inductive Definition of Constructible Numbers",
+    "content": "Defines `IsConstructible` as an inductive proposition on ℂ. The `rational` constructor says every element in the image of the canonical map ℚ → ℂ is constructible. The `sqrt_ext` constructor says: if β is constructible and α = b + β where β² is constructible and b is constructible, then α is constructible. This directly encodes the geometric fact that each compass-and-straightedge step introduces at most one square root.",
+    "mathContext": "The constructible numbers are the smallest subfield of $\\mathbb{C}$ containing $\\mathbb{Q}$ and closed under taking square roots. Equivalently, $\\alpha$ is constructible iff $\\alpha \\in F_n$ for some tower $\\mathbb{Q} = F_0 \\subset F_1 \\subset \\cdots \\subset F_n$ with $[F_{i+1}:F_i] \\leq 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "field extension",
+      "quadratic extension",
+      "algebraic number",
+      "tower of fields"
+    ],
+    "prerequisites": [
+      "algebraMap",
+      "Set.range",
+      "inductive types in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-constructible-basics",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 58,
+      "endLine": 68
+    },
+    "type": "concept",
+    "title": "Basic Constructible Numbers",
+    "content": "Proves that all rationals, 0, and 1 are constructible. These follow directly from the `rational` constructor of `IsConstructible`, since `algebraMap ℚ ℂ q` lies in the image of the canonical embedding ℚ → ℂ.",
+    "mathContext": "$\\mathbb{Q} \\subseteq \\text{Constructible numbers}$. The proofs are trivial: $0 = \\mathrm{algebraMap}(0)$, $1 = \\mathrm{algebraMap}(1)$, and every $q \\in \\mathbb{Q}$ is in the image of $\\mathrm{algebraMap}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rational numbers",
+      "algebraMap",
+      "base case"
+    ],
+    "prerequisites": [
+      "algebraMap ℚ ℂ"
+    ]
+  },
+  {
+    "id": "ann-quadratic-extension",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 74,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Quadratic Extension Predicate",
+    "content": "Defines `IsQuadraticExtension F K` as the predicate `Module.finrank F K = 2`. This captures the algebraic translation of a single compass-and-straightedge step: adjoining a square root creates a degree-2 extension.",
+    "mathContext": "$[K:F] = 2$ means $K = F(\\sqrt{d})$ for some $d \\in F$ that is not a perfect square. Each such extension corresponds to one compass-and-straightedge step.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Module.finrank",
+      "field extension degree",
+      "simple extension"
+    ],
+    "prerequisites": [
+      "Module.finrank",
+      "Field",
+      "Algebra"
+    ]
+  },
+  {
+    "id": "ann-double-quadratic",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 84,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Tower Law for Double Quadratic Extensions",
+    "content": "Proves `finrank_of_double_quadratic`: if $[K:F] = 2$ and $[L:K] = 2$ then $[L:F] = 4 = 2^2$. The proof rewrites $4 = 2 \\times 2$ via `norm_num`, substitutes the hypotheses, and applies `Module.finrank_mul_finrank` (the tower law) from Mathlib. The `IsScalarTower F K L` instance ensures the algebra structures are compatible.",
+    "mathContext": "The tower law: $[L:F] = [L:K] \\cdot [K:F]$. For quadratic extensions: $[L:F] = 2 \\cdot 2 = 4 = 2^2$. More generally, a tower of $n$ quadratic extensions has degree $2^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tower law",
+      "Module.finrank_mul_finrank",
+      "IsScalarTower",
+      "multiplicativity of degree"
+    ],
+    "prerequisites": [
+      "Module.finrank",
+      "IsScalarTower",
+      "tower law for field extensions"
+    ]
+  },
+  {
+    "id": "ann-degree-power-of-two",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 109,
+      "endLine": 110
+    },
+    "type": "definition",
+    "title": "Degree Power of Two Predicate",
+    "content": "Defines `DegreePowerOfTwo p` as the proposition that the natural degree of polynomial `p` equals $2^k$ for some natural number $k$. This is the formal statement of Wantzel's necessary condition: constructible numbers have minimal polynomials whose degree is a power of 2.",
+    "mathContext": "$\\mathrm{DegreePowerOfTwo}(p) \\iff \\exists k \\in \\mathbb{N},\\; \\mathrm{natDegree}(p) = 2^k$. Wantzel's theorem: $\\alpha$ constructible $\\Rightarrow \\mathrm{DegreePowerOfTwo}(\\mathrm{minpoly}(\\mathbb{Q}, \\alpha))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natDegree",
+      "minimal polynomial",
+      "Wantzel's criterion",
+      "power of 2"
+    ],
+    "prerequisites": [
+      "Polynomial.natDegree",
+      "Nat.pow"
+    ]
+  },
+  {
+    "id": "ann-not-constructible-bridge",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 115,
+      "endLine": 119
+    },
+    "type": "insight",
+    "title": "Non-Constructibility Bridge Theorem",
+    "content": "States `not_constructible_of_bad_degree`: if polynomial p is irreducible and its degree is not a power of 2, then no root of p in ℂ is constructible. This is the key bridge connecting the abstract `IsConstructible` definition to the concrete degree criterion. The sorry reflects that proving this requires showing (1) the degree of the minimal polynomial equals `[ℚ(α):ℚ]` and (2) constructibility forces this degree to divide $2^n$.",
+    "mathContext": "$p$ irreducible $\\wedge \\neg\\mathrm{DegreePowerOfTwo}(p) \\Rightarrow \\forall \\alpha \\in \\mathbb{C},\\; p(\\alpha) = 0 \\Rightarrow \\neg\\mathrm{IsConstructible}(\\alpha)$. This is the contrapositive of Wantzel's necessary condition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Irreducible",
+      "Polynomial.aeval",
+      "contrapositive",
+      "degree of minimal polynomial"
+    ],
+    "prerequisites": [
+      "irreducible polynomials",
+      "field extension degree",
+      "IsConstructible definition"
+    ]
+  },
+  {
+    "id": "ann-cube-root-2",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 125,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "Non-Constructibility of ∛2",
+    "content": "Three results about $x^3 - 2$: (1) `cube_root_2_minpoly_irred` states irreducibility (sorry — provable by Eisenstein at $p=2$ or by the rational root theorem), (2) `cube_root_2_degree` proves the degree is 3 using `natDegree_X_pow_sub_C`, and (3) `three_not_pow_two` proves $3 \\neq 2^k$ for any $k$ by `interval_cases` (checking $k = 0, 1$ and noting $2^k \\geq 4$ for $k \\geq 2$).",
+    "mathContext": "$x^3 - 2$ is irreducible over $\\mathbb{Q}$ by Eisenstein's criterion at $p = 2$: $2 \\mid (-2)$, $2 \\nmid 1$ (leading coefficient), $4 \\nmid (-2)$ (constant term). Therefore $[\\mathbb{Q}(\\sqrt[3]{2}):\\mathbb{Q}] = 3$, and since $3 \\neq 2^k$, $\\sqrt[3]{2}$ is not constructible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Eisenstein criterion",
+      "rational root theorem",
+      "cube root of 2",
+      "doubling the cube"
+    ],
+    "prerequisites": [
+      "Polynomial.natDegree",
+      "irreducibility criteria",
+      "interval_cases tactic"
+    ]
+  },
+  {
+    "id": "ann-cos20-polynomial",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 140,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Non-Constructibility of cos(20°)",
+    "content": "Proves that $8x^3 - 6x - 1$ (the minimal polynomial of $\\cos(20°)$) has degree not a power of 2. The degree computation `cos20_minpoly_degree` is sorry'd; `cos20_degree_not_pow_two` then applies the same `interval_cases` argument as for $x^3 - 2$.",
+    "mathContext": "From the triple angle formula $\\cos(3\\theta) = 4\\cos^3(\\theta) - 3\\cos(\\theta)$ with $\\theta = 20°$: $\\cos(60°) = 1/2 = 4x^3 - 3x$, giving $8x^3 - 6x - 1 = 0$ where $x = \\cos(20°)$. This cubic is irreducible over $\\mathbb{Q}$, so $[\\mathbb{Q}(\\cos 20°):\\mathbb{Q}] = 3 \\neq 2^k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triple angle formula",
+      "Chebyshev polynomial T₃",
+      "cos(20°)",
+      "angle trisection"
+    ],
+    "prerequisites": [
+      "trigonometric identities",
+      "polynomial degree",
+      "irreducibility"
+    ]
+  },
+  {
+    "id": "ann-three-impossibilities",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 155,
+      "endLine": 177
+    },
+    "type": "insight",
+    "title": "The Three Classical Impossibilities",
+    "content": "Derives the three classical impossibility results as definitional unfoldings: `angle_trisection_impossible_degree` is exactly `cos20_degree_not_pow_two`, `doubling_cube_impossible_degree` is exactly `three_not_pow_two`, and `regular_7gon_impossible_degree` (sorry) would follow from the same argument applied to $8x^3 + 4x^2 - 4x - 1$. The naming convention emphasizes that these are *degree arguments*, not the full non-constructibility proofs (which also need the bridge theorem).",
+    "mathContext": "All three reduce to: the minimal polynomial has degree 3, and $3 \\neq 2^k$. For the regular 7-gon: $\\cos(2\\pi/7)$ satisfies $8x^3 + 4x^2 - 4x - 1 = 0$, obtained from the minimal polynomial of $\\zeta_7 + \\zeta_7^{-1}$ where $\\zeta_7 = e^{2\\pi i/7}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "angle trisection",
+      "doubling the cube",
+      "regular 7-gon",
+      "cyclotomic polynomial"
+    ],
+    "prerequisites": [
+      "DegreePowerOfTwo",
+      "cos20_degree_not_pow_two",
+      "three_not_pow_two"
+    ]
+  },
+  {
+    "id": "ann-two-group",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 191,
+      "endLine": 192
+    },
+    "type": "definition",
+    "title": "2-Group Predicate",
+    "content": "Defines `IsTwoGroup G` as the proposition that the cardinality of finite group G is a power of 2. This is the group-theoretic predicate needed for the full Wantzel-Galois characterization: α is constructible iff Gal(minpoly(ℚ,α)) is a 2-group.",
+    "mathContext": "$\\mathrm{IsTwoGroup}(G) \\iff \\exists k,\\; |G| = 2^k$. A 2-group is equivalently a $p$-group for $p = 2$. Every 2-group is solvable (since $p$-groups are nilpotent), which connects to the Galois-theoretic construction of the quadratic tower.",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-group",
+      "Sylow theorems",
+      "solvable group",
+      "nilpotent group"
+    ],
+    "prerequisites": [
+      "Fintype.card",
+      "Group",
+      "Nat.pow"
+    ]
+  },
+  {
+    "id": "ann-wantzel-galois",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 195,
+      "endLine": 199
+    },
+    "type": "insight",
+    "title": "The Wantzel-Galois Theorem",
+    "content": "States the full characterization: α is constructible iff Gal(minpoly(ℚ,α)) is a 2-group. This is the deepest result in the file (sorry), requiring (→) that each quadratic extension contributes a factor of 2 to the Galois group order, and (←) the Galois correspondence to build an explicit tower of quadratic subextensions from the 2-group structure of the Galois group.",
+    "mathContext": "$\\alpha$ constructible $\\iff |\\mathrm{Gal}(\\mathrm{minpoly}(\\mathbb{Q}, \\alpha))| = 2^k$. The (←) direction uses: every 2-group has a composition series with factors $\\mathbb{Z}/2\\mathbb{Z}$, and by the Galois correspondence, each factor corresponds to a quadratic intermediate extension.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Galois correspondence",
+      "composition series",
+      "Polynomial.Gal",
+      "constructibility criterion"
+    ],
+    "prerequisites": [
+      "Galois theory",
+      "Polynomial.Gal",
+      "IsTwoGroup",
+      "IsConstructible"
+    ]
+  }
+]

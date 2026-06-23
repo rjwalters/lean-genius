@@ -1,0 +1,249 @@
+[
+  {
+    "id": "erdos-46-imports",
+    "proofId": "erdos-46",
+    "type": "concept",
+    "range": {
+      "startLine": 14,
+      "endLine": 19
+    },
+    "title": "Imports and Namespace",
+    "content": "Imports `Finset.Basic` for finite sets, `Rat.Defs` for rational arithmetic, `Filter.Basic` for infinitary statements, and `Tactic` for proof automation. Opens `Finset` namespace.",
+    "mathContext": "The formalization uses `Finset ℕ` for the finite set of denominators and `ℚ` for rational sums. The sum $\\sum_{n \\in S} 1/n$ is computed as `S.sum (fun n => (1 : ℚ) / n)` over rationals to avoid integer division issues.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset",
+      "Rat",
+      "Filter"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib"
+    ]
+  },
+  {
+    "id": "erdos-46-header",
+    "proofId": "erdos-46",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 12
+    },
+    "title": "Problem Overview: Monochromatic Egyptian Fractions",
+    "content": "**Erdős Problem 46** asks whether every finite colouring of $\\mathbb{N}$ contains a monochromatic Egyptian fraction representation of 1: a set $S \\subseteq \\{n \\ge 2\\}$ with $\\sum_{n \\in S} 1/n = 1$ where all elements share the same colour. Croot proved this affirmatively, showing infinitely many disjoint such solutions exist.",
+    "mathContext": "This is a **partition regularity** problem at the intersection of **Ramsey theory** and **additive number theory**. The classical example $1/2 + 1/3 + 1/6 = 1$ shows that such representations exist. The question is whether they persist under arbitrary finite partitions, analogous to how Rado's theorem characterizes partition-regular linear equations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Partition regularity",
+      "Egyptian fractions",
+      "Ramsey theory",
+      "Rado's theorem"
+    ],
+    "prerequisites": [
+      "Natural numbers",
+      "Finite colourings",
+      "Rational arithmetic"
+    ]
+  },
+  {
+    "id": "erdos-46-unit-fraction",
+    "proofId": "erdos-46",
+    "type": "definition",
+    "range": {
+      "startLine": 25,
+      "endLine": 26
+    },
+    "title": "Unit Fraction Representation",
+    "content": "**IsUnitFractionRepr $S$**: $(\\forall n \\in S,\\, n \\ge 2) \\wedge \\sum_{n \\in S} 1/n = 1$. An **Egyptian fraction representation** of 1 using distinct denominators $\\ge 2$.",
+    "mathContext": "The condition $n \\ge 2$ excludes the trivial singleton $\\{1\\}$ (since $1/1 = 1$). Egyptian fraction representations are studied extensively: every positive rational has infinitely many such representations (by the greedy algorithm or Sylvester's expansion). The set of representations of 1 is infinite and has rich combinatorial structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "Sylvester expansion",
+      "Unit fractions",
+      "Finset.sum"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Rat",
+      "Finset.sum"
+    ]
+  },
+  {
+    "id": "erdos-46-rat-repr",
+    "proofId": "erdos-46",
+    "type": "definition",
+    "range": {
+      "startLine": 29,
+      "endLine": 30
+    },
+    "title": "Rational Fraction Representation",
+    "content": "**IsRatFractionRepr $S$ $q$**: generalizes to $\\sum_{n \\in S} 1/n = q$ for any positive rational $q$. Supports the Erdős–Graham extension of the problem.",
+    "mathContext": "The generalization from $q = 1$ to arbitrary $q \\in \\mathbb{Q}_{>0}$ follows from Croot's infinitely-many result: given $q = p/r$, one can combine $p$ disjoint monochromatic representations of $1$ and then adjust denominators, or use the fact that sufficiently many unit fractions can approximate any rational.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Graham conjecture",
+      "Rational representation",
+      "Generalization"
+    ],
+    "prerequisites": [
+      "IsUnitFractionRepr",
+      "Rat"
+    ]
+  },
+  {
+    "id": "erdos-46-colouring",
+    "proofId": "erdos-46",
+    "type": "definition",
+    "range": {
+      "startLine": 35,
+      "endLine": 40
+    },
+    "title": "Finite Colouring and Monochromaticity",
+    "content": "**FiniteColouring $r$** $= \\mathbb{N} \\to \\text{Fin}\\, r$: an $r$-colouring of the naturals. **IsMonochromatic $c$ $S$**: $\\exists \\text{col},\\, \\forall n \\in S,\\, c(n) = \\text{col}$ — all elements receive the same colour.",
+    "mathContext": "The standard Ramsey-theoretic setup. Using `Fin r` ensures exactly $r$ colours. The key question is whether the **Egyptian fraction equation** $\\sum 1/n_i = 1$ is **partition-regular** — i.e., whether every finite partition of $\\mathbb{N}$ contains a monochromatic solution. Rado's theorem characterizes which *linear* equations are partition-regular, but $\\sum 1/n_i = 1$ is non-linear.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fin",
+      "Partition regularity",
+      "Ramsey theory",
+      "Rado's theorem"
+    ],
+    "prerequisites": [
+      "Fin",
+      "Finset"
+    ]
+  },
+  {
+    "id": "erdos-46-main",
+    "proofId": "erdos-46",
+    "type": "definition",
+    "range": {
+      "startLine": 46,
+      "endLine": 48
+    },
+    "title": "Erdős Problem 46 (Croot's Theorem)",
+    "content": "**ErdosProblem46**: $\\forall r \\ge 1,\\, \\forall c : \\mathbb{N} \\to \\text{Fin}\\, r,\\, \\exists S: \\text{IsUnitFractionRepr}(S) \\wedge \\text{IsMonochromatic}(c, S)$. Egyptian fraction representations of 1 are partition-regular. Formalized as a `Prop` (not proved in Lean).",
+    "mathContext": "Croot's proof uses the **density Hales–Jewett theorem** (a deep result in Ramsey theory) combined with careful counting of Egyptian fraction representations. The key insight is that among integers in $[N, 2N]$, there are enough subsets summing to 1 (as unit fractions) that a pigeonhole argument forces a monochromatic solution. The proof is non-constructive and gives no explicit bounds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Croot's theorem",
+      "Density Hales–Jewett",
+      "Partition regularity",
+      "Pigeonhole"
+    ],
+    "prerequisites": [
+      "IsUnitFractionRepr",
+      "IsMonochromatic",
+      "FiniteColouring"
+    ]
+  },
+  {
+    "id": "erdos-46-infinite",
+    "proofId": "erdos-46",
+    "type": "definition",
+    "range": {
+      "startLine": 51,
+      "endLine": 54
+    },
+    "title": "Infinitely Many Disjoint Solutions",
+    "content": "**ErdosProblem46_infinitely_many**: for any $N$, there exists a monochromatic representation with all terms $> N$. This gives infinitely many pairwise disjoint monochromatic solutions.",
+    "mathContext": "The strengthening from 'one solution' to 'infinitely many disjoint solutions' follows by iterating: after finding a solution using terms in $[2, N_1]$, apply the theorem again to the colouring restricted to $(N_1, \\infty)$. Disjointness is automatic since each solution uses terms above the previous threshold. This is essential for deriving the rational generalization.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Infinite iteration",
+      "Disjoint solutions",
+      "Threshold argument"
+    ],
+    "prerequisites": [
+      "ErdosProblem46",
+      "IsUnitFractionRepr"
+    ]
+  },
+  {
+    "id": "erdos-46-rational",
+    "proofId": "erdos-46",
+    "type": "definition",
+    "range": {
+      "startLine": 60,
+      "endLine": 66
+    },
+    "title": "Erdős–Graham Rational Generalization",
+    "content": "**ErdosGraham_rational**: $\\forall q \\in \\mathbb{Q}_{>0},\\, \\forall r,\\, \\forall c: \\exists S: \\text{IsRatFractionRepr}(S, q) \\wedge \\text{IsMonochromatic}(c, S)$. The axiom **rational_from_infinite** asserts this follows from the infinitely-many version.",
+    "mathContext": "The reduction uses that any $q > 0$ can be written as a finite sum of values $1/n$ with $n \\ge 2$. Given infinitely many disjoint monochromatic representations of $1$, one selects enough of them and adjusts to represent $q$. The axiom bridges the gap without formalizing this combinatorial argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Graham conjecture",
+      "Axiom bridge",
+      "Scaling argument"
+    ],
+    "prerequisites": [
+      "ErdosProblem46_infinitely_many",
+      "IsRatFractionRepr"
+    ]
+  },
+  {
+    "id": "erdos-46-empty",
+    "proofId": "erdos-46",
+    "type": "concept",
+    "range": {
+      "startLine": 71,
+      "endLine": 73
+    },
+    "title": "Empty Set Not a Representation",
+    "content": "**not_unitFractionRepr_empty**: $\\neg\\text{IsUnitFractionRepr}(\\emptyset)$ since $\\sum_{n \\in \\emptyset} 1/n = 0 \\ne 1$. Proved by `simp`.",
+    "mathContext": "A structural sanity check: the empty sum is $0$, not $1$. This grounds the formalization by showing representations must be non-trivial.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Empty sum",
+      "Sanity check"
+    ],
+    "prerequisites": [
+      "IsUnitFractionRepr",
+      "Finset.sum_empty"
+    ]
+  },
+  {
+    "id": "erdos-46-singleton",
+    "proofId": "erdos-46",
+    "type": "concept",
+    "range": {
+      "startLine": 76,
+      "endLine": 76
+    },
+    "title": "Singleton Not a Representation",
+    "content": "**not_unitFractionRepr_singleton**: $\\neg\\text{IsUnitFractionRepr}(\\{n\\})$ for any $n$. Axiomatized — since $n \\ge 2$ implies $1/n \\le 1/2 < 1$.",
+    "mathContext": "For $n \\ge 2$, $1/n \\le 1/2 < 1$, so no singleton gives sum $1$. The minimum representation has 3 terms (e.g., $1/2 + 1/3 + 1/6 = 1$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Singleton",
+      "Minimum representation size"
+    ],
+    "prerequisites": [
+      "IsUnitFractionRepr"
+    ]
+  },
+  {
+    "id": "erdos-46-basic-lemmas",
+    "proofId": "erdos-46",
+    "type": "concept",
+    "range": {
+      "startLine": 79,
+      "endLine": 84
+    },
+    "title": "Monochromaticity Properties and Cardinality Bound",
+    "content": "**mono_one_colour**: any set is monochromatic under a 1-colouring ($r = 1$). **mono_subset**: subsets of monochromatic sets are monochromatic. **unitFractionRepr_card_ge_two**: representations have $|S| \\ge 2$ (axiomatized).",
+    "mathContext": "The 1-colouring case is trivial since `Fin 1` has only one element (`0`). The subset lemma is standard Ramsey theory: colour is inherited. The cardinality bound $|S| \\ge 2$ follows from the empty and singleton exclusions. Together these lemmas establish the basic framework for the partition regularity statement.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fin.eq_zero",
+      "Subset inheritance",
+      "Cardinality bound"
+    ],
+    "prerequisites": [
+      "IsMonochromatic",
+      "FiniteColouring",
+      "IsUnitFractionRepr"
+    ]
+  }
+]

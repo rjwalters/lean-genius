@@ -1,0 +1,150 @@
+{
+  "id": "erdos-409",
+  "title": "Totient Iteration to Primes",
+  "slug": "erdos-409",
+  "description": "How many iterations of n mapsto phi(n) + 1 are needed before reaching a prime? F(n) = o(n) trivially; can infinitely many n reach the same prime? What is the density of n reaching a fixed prime? A problem of Finucane.",
+  "meta": {
+    "author": "Erdos, Graham, Finucane",
+    "sourceUrl": "https://erdosproblems.com/409",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos409Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "euler-totient",
+      "iteration",
+      "primes",
+      "dynamical-systems"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 409,
+    "erdosUrl": "https://erdosproblems.com/409",
+    "erdosProblemStatus": "open",
+    "axiomCount": 0,
+    "assumptions": "None. All results are fully proved. 19 theorems including: iterate_decreasing, iteration_terminates, iteration_reaches_prime_in (F(n) ≤ n−2), iteration_reaches_prime_half (F(n) ≤ n/2), sigma_prime_fixed (σ(p)−1=p), sigma_composite_growth (σ(n)−1>n for composite), one_iteration_infinite, and more. Open conjecture; supporting lemmas fully verified.",
+    "lineCount": 424,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 18,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "This problem originates with Finucane and was popularized by Erdos and Graham in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 81). The map $T(n) = \\varphi(n) + 1$ defines a discrete dynamical system on the positive integers: since $\\varphi(n) < n - 1$ for composite $n > 1$, each application strictly decreases the value until a prime fixed point is reached ($T(p) = p$ for primes $p$). The iteration count $F(n) = \\min\\{k \\geq 0 : T^k(n) \\text{ is prime}\\}$ appears as OEIS A039651. Cambie noted that $F(n) = o(n)$ is trivial but the true growth rate remains unknown --- heuristically $F(n) = O(\\log n)$ since $\\varphi(n)/n$ has mean value $6/\\pi^2 \\approx 0.608$, suggesting each step reduces $n$ by a constant factor. Guy discusses the problem in UPINT (B41). The companion problem replacing $\\varphi$ by $\\sigma$ (sum of divisors) yields $n \\mapsto \\sigma(n) - 1$, which is non-decreasing for composites, making termination at a prime an entirely separate open question related to aliquot sequences and the Catalan--Dickson conjecture.",
+    "problemStatement": "Let $T(n) = \\varphi(n) + 1$ and $F(n) = \\min\\{k \\geq 0 : T^k(n) \\text{ is prime}\\}$. (i) Estimate $F(n)$: prove $F(n) = o(n)$ and find sharper bounds. (ii) Does there exist a prime $p$ such that $\\{n : \\exists k,\\; T^k(n) = p\\}$ is infinite? (iii) For each prime $p$, does $\\{n \\leq N : \\exists k,\\; T^k(n) = p\\}/N$ converge as $N \\to \\infty$?",
+    "text": "How many iterations of n mapsto phi(n) + 1 are needed before reaching a prime? F(n) = o(n) trivially; can infinitely many n reach the same prime? What is the density of n reaching a fixed prime? A problem of Finucane.",
+    "proofStrategy": "We formalize the totient-plus-one map $T$, its iterates $T^k$, the stopping-time function $F(n)$, termination via descent on composites, the three open questions as axioms, and basic structural results including the sigma variant $n \\mapsto \\sigma(n) - 1$.",
+    "keyInsights": [
+      "**Fixed-point characterization**: $T(p) = \\varphi(p) + 1 = p$ for primes, so primes are exactly the fixed points of $T$, and $F(p) = 0$",
+      "**Strict descent on composites**: For composite $n > 1$, $\\varphi(n) + 1 < n$ since $\\varphi(n) \\leq n(1 - 1/p)$ for any prime divisor $p$, ensuring the orbit terminates by well-ordering",
+      "**Parity constraint**: For $n \\geq 3$, $\\varphi(n)$ is even, so $T(n) = \\varphi(n) + 1$ is odd --- the orbit enters odd integers after at most one step, and can only terminate at odd primes (except for the fixed point 2)",
+      "**Heuristic logarithmic bound**: Since the average value of $\\varphi(n)/n$ is $6/\\pi^2$, each step typically multiplies by $\\approx 0.608$, suggesting $F(n) = O(\\log n)$ rather than the trivial $o(n)$",
+      "**Sigma variant divergence**: The companion map $n \\mapsto \\sigma(n) - 1$ satisfies $\\sigma(n) - 1 \\geq n$ for composites, creating a fundamentally different (non-decreasing) dynamical system where termination is not guaranteed"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections":   [
+    {
+      "id": "header",
+      "title": "Header, Context, and Imports",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module docstring for Erdős Problem #409 (iterating $n \\mapsto \\varphi(n)+1$, the number of steps $F(n)$ to reach a prime fixed point), key context, references, and imports."
+    },
+    {
+      "id": "core-defs",
+      "title": "Core Definitions",
+      "startLine": 29,
+      "endLine": 42,
+      "summary": "`totientPlusOne` ($n \\mapsto \\varphi(n)+1$), `totientIterate` (its $k$-fold iterate), and `iterationsToFirst` (the step count $F(n)$ to the first prime)."
+    },
+    {
+      "id": "termination",
+      "title": "Termination and Descent",
+      "startLine": 43,
+      "endLine": 129,
+      "summary": "`iterate_decreasing` and `iteration_terminates`: the iteration strictly descends until it reaches a prime, so $F(n)$ is well-defined."
+    },
+    {
+      "id": "main-questions",
+      "title": "Main Questions",
+      "startLine": 130,
+      "endLine": 145,
+      "summary": "States the three open questions as docstrings on the density theorem `erdos_409_density`: Part (i) estimate $F(n)$ (asymptotically $o(n)$), Part (ii) infinitely many $n$ reaching the same prime, Part (iii) the natural density of basins reaching a fixed prime $p$."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 146,
+      "endLine": 226,
+      "summary": "Fixed-point characterization `totientPlusOne_eq_self_iff_prime` (fixed points are exactly the primes), iterate base cases (`totientIterate_zero/_one`), `prime_zero_iterations`, `one_iteration_criterion`, and parity (`totient_plus_one_odd`)."
+    },
+    {
+      "id": "sigma-variant",
+      "title": "Sigma Variant: n ↦ σ(n) − 1",
+      "startLine": 227,
+      "endLine": 312,
+      "summary": "The $\\sigma$-variant of the iteration: `sigma_growing`, `sigma_prime_fixed` (primes are fixed), and `sigma_composite_growth`."
+    },
+    {
+      "id": "quantitative-bound",
+      "title": "Quantitative Bound: F(n) ≤ n − 2",
+      "startLine": 313,
+      "endLine": 389,
+      "summary": "`totient_ge_two`, `iteration_reaches_prime_in`, and `iteration_reaches_prime_half`: explicit upper bounds on the number of iterations to reach a prime."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases and Fixed Points",
+      "startLine": 390,
+      "endLine": 424,
+      "summary": "Concrete small cases: `two_fixed_point`, `four_to_three`, and `one_iteration_infinite` (infinitely many $n$ reach a prime in a single step)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdos Problem #409 on the discrete dynamical system $T(n) = \\varphi(n) + 1$ and the stopping time $F(n)$ to reach a prime. The three parts --- asymptotic bounds on $F(n)$, existence of infinite basins, and natural densities --- probe the interplay between Euler's totient function and prime distribution. The sigma variant $n \\mapsto \\sigma(n) - 1$ provides a contrasting dynamical system where orbits grow rather than descend.",
+    "implications": "**Theoretical Significance**: Understanding the iteration dynamics of $T(n) = \\varphi(n) + 1$ connects the multiplicative structure of $\\varphi$ (via Euler's product formula) to the additive structure of primes.\n\nThe basin densities $\\alpha(p)$, if they exist, would give a 'probability distribution' over primes determined purely by the totient function. The sigma variant connects to the Catalan--Dickson conjecture on aliquot sequences.",
+    "openQuestions": [
+      "Is $F(n) = O(\\log n)$? Can one prove any bound sharper than $F(n) = o(n)$?",
+      "Does every prime have an infinite basin of attraction under $T$, or only finitely many primes?",
+      "Do the basin densities $\\alpha(p) = \\lim_{N} |\\{n \\leq N : \\exists k,\\; T^k(n) = p\\}|/N$ exist, and do they sum to 1?",
+      "Does the sigma variant $n \\mapsto \\sigma(n) - 1$ ever reach a prime from a composite starting value?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Nat"
+    ],
+    "namespace": null,
+    "lineCount": 424,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos409Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-412",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: dynamical-systems, iteration, number-theory"
+    },
+    {
+      "targetId": "erdos-1059",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
+    },
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, primes"
+    }
+  ],
+  "sorries": 0
+}

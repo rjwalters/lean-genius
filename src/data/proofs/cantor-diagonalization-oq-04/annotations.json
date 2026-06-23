@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ann-codes-endomorphisms",
+    "proofId": "cantor-diagonalization-oq-04",
+    "range": {
+      "startLine": 58,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "CodesEndomorphisms Structure",
+    "content": "The key abstraction: a type $Y$ codes its own endomorphisms when $Y \\to Y$ retracts into $Y$. The structure packages encode $: (Y \\to Y) \\to Y$, decode $: Y \\to (Y \\to Y)$, and the retraction law decode $\\circ$ encode $= \\text{id}$. This is the retraction analogue of surjectivity of decode.",
+    "mathContext": "In categorical terms, $Y^Y$ retracts onto $Y$ means there exist morphisms encode $: Y^Y \\to Y$ and decode $: Y \\to Y^Y$ with decode $\\circ$ encode $= \\text{id}_{Y^Y}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "retraction",
+      "section",
+      "cartesian closed category",
+      "exponential object"
+    ],
+    "prerequisites": [
+      "function spaces",
+      "right inverses"
+    ]
+  },
+  {
+    "id": "ann-lawvere-retraction",
+    "proofId": "cantor-diagonalization-oq-04",
+    "range": {
+      "startLine": 87,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "Lawvere Fixed-Point Theorem (Retraction Version)",
+    "content": "The main theorem: if $Y$ codes its endomorphisms, every $f : Y \\to Y$ has a fixed point. The diagonal construction $g(y) = f(\\text{decode}(y)(y))$ is encoded to $y_0 = \\text{encode}(g)$. The retract property gives $\\text{decode}(y_0) = g$, so $g(y_0) = f(g(y_0))$.",
+    "mathContext": "Given CodesEndomorphisms $Y$ and $f : Y \\to Y$, the fixed point is $g(y_0)$ where $g(y) = f(\\text{decode}(y)(y))$ and $y_0 = \\text{encode}(g)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lawvere fixed-point theorem",
+      "diagonal argument",
+      "self-application"
+    ],
+    "prerequisites": [
+      "CodesEndomorphisms structure"
+    ]
+  },
+  {
+    "id": "ann-surjection-bridge",
+    "proofId": "cantor-diagonalization-oq-04",
+    "range": {
+      "startLine": 126,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Surjections Induce Retractions",
+    "content": "The bridge between OQ03 (surjection) and OQ04 (retraction): if decode is surjective, choice provides encode as a right inverse, yielding a CodesEndomorphisms instance. This shows the retraction version generalizes the surjection version.",
+    "mathContext": "If $e : Y \\to (Y \\to Y)$ is surjective, set encode$(f) = $ choose$(\\exists y, e(y) = f)$. Then $e(\\text{encode}(f)) = f$ by choose_spec.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom of choice",
+      "surjection",
+      "right inverse",
+      "section"
+    ],
+    "prerequisites": [
+      "surjectivity",
+      "classical choice"
+    ]
+  },
+  {
+    "id": "ann-y-combinator",
+    "proofId": "cantor-diagonalization-oq-04",
+    "range": {
+      "startLine": 217,
+      "endLine": 227
+    },
+    "type": "concept",
+    "title": "Y Combinator Extraction",
+    "content": "The fixed-point theorem constructively extracts the Y combinator: $Y(f) = g(\\text{encode}(g))$ where $g(y) = f(\\text{decode}(y)(y))$. In the untyped lambda calculus where $Y \\cong Y \\to Y$, this is exactly Curry's Y combinator. The proof that $f(Y(f)) = Y(f)$ is a one-liner from the retract property.",
+    "mathContext": "yCombinator $c$ $f = g(\\text{encode}(g))$ satisfies $f(Y(f)) = Y(f)$, making fixed points explicit rather than existential.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Y combinator",
+      "fixed-point combinator",
+      "lambda calculus",
+      "recursive definitions"
+    ],
+    "prerequisites": [
+      "CodesEndomorphisms",
+      "Lawvere fixed-point theorem"
+    ]
+  },
+  {
+    "id": "ann-diagonal-tracking",
+    "proofId": "cantor-diagonalization-oq-04",
+    "range": {
+      "startLine": 241,
+      "endLine": 248
+    },
+    "type": "insight",
+    "title": "Diagonal Tracking Property",
+    "content": "The diagonal map $d(y) = \\text{decode}(y)(y)$ has a universal tracking property: for every endomorphism $g$, there exists $y_0$ with $d(y_0) = g(y_0)$. This explains why no enumeration can avoid the diagonal -- every function is tracked somewhere.",
+    "mathContext": "$\\forall g : Y \\to Y,\\; \\exists y_0,\\; d(y_0) = g(y_0)$ where $y_0 = \\text{encode}(g)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "diagonal argument",
+      "tracking",
+      "enumeration impossibility"
+    ],
+    "prerequisites": [
+      "CodesEndomorphisms",
+      "retract property"
+    ]
+  }
+]

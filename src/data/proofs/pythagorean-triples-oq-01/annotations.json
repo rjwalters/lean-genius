@@ -1,0 +1,302 @@
+[
+  {
+    "id": "counting-functions",
+    "proofId": "pythagorean-triples-oq-01",
+    "type": "definition",
+    "range": {
+      "startLine": 69,
+      "endLine": 88
+    },
+    "title": "Counting Functions and the Density Constant",
+    "content": "Defines `primitiveTripleCount(N)` as the cardinality of parameter pairs $(m,n)$ with $0 < n < m$, $\\gcd(m,n) = 1$, $m - n$ odd, and $m^2 + n^2 \\le N$. Also defines the asymptotic density constant $1/(2\\pi)$. The counting function is noncomputable because it filters over a decidable but large product set.",
+    "mathContext": "$\\text{primitiveTripleCount}(N) = \\#\\{(m,n) : 0 < n < m,\\ \\gcd(m,n)=1,\\ 2 \\nmid (m-n),\\ m^2+n^2 \\le N\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclid's parametrization of Pythagorean triples",
+      "cardinality of filtered finite sets",
+      "asymptotic density"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.card",
+      "Nat.Coprime"
+    ]
+  },
+  {
+    "id": "parity-analysis",
+    "proofId": "pythagorean-triples-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 110,
+      "endLine": 152
+    },
+    "title": "Parity Classification of Coprime Pairs",
+    "content": "Establishes that coprime pairs $(m,n)$ fall into exactly three parity classes: even-odd (EO), odd-even (OE), and odd-odd (OO). Both-even is impossible by coprimality (any common factor of 2 contradicts $\\gcd = 1$). The primitive condition $m \\not\\equiv n \\pmod{2}$ selects exactly EO and OE, excluding OO. This classification is the combinatorial foundation of the 2/3 parity correction factor.",
+    "mathContext": "$\\gcd(m,n)=1 \\Rightarrow \\neg(2 \\mid m \\wedge 2 \\mid n)$, so coprime pairs partition into EO $\\cup$ OE $\\cup$ OO",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity",
+      "coprimality",
+      "partition of finite sets",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "Nat.even_or_odd",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "three-factor-decomposition",
+    "proofId": "pythagorean-triples-oq-01",
+    "type": "insight",
+    "range": {
+      "startLine": 154,
+      "endLine": 183
+    },
+    "title": "Three-Factor Decomposition: πN/8 × 6/π² × 2/3 = N/(2π)",
+    "content": "The density $N/(2\\pi)$ decomposes into three independent factors from different areas of mathematics: (1) sector area gives $\\pi N/8$ lattice points (geometry), (2) coprime density gives fraction $6/\\pi^2$ (analytic number theory via $\\zeta(2) = \\pi^2/6$), (3) parity correction gives fraction $2/3$ (combinatorics). The algebraic identity is verified by `field_simp; ring`.",
+    "mathContext": "$\\frac{\\pi N}{8} \\cdot \\frac{6}{\\pi^2} \\cdot \\frac{2}{3} = \\frac{N}{2\\pi}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "Euler product",
+      "Riemann zeta function",
+      "Gauss circle problem"
+    ],
+    "prerequisites": [
+      "Real.pi_pos",
+      "field_simp",
+      "ring"
+    ]
+  },
+  {
+    "id": "computational-verification",
+    "proofId": "pythagorean-triples-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 184,
+      "endLine": 221
+    },
+    "title": "Computational Verification via native_decide",
+    "content": "Verifies the counting function for small values using Lean's `native_decide` tactic, which compiles the decidable computation to native code. The values $\\text{count}(5)=1$, $\\text{count}(13)=2$, $\\text{count}(25)=4$, $\\text{count}(50)=7$, $\\text{count}(100)=16$ track the predicted $N/(2\\pi)$ closely. This provides a sanity check that the formalized definitions match the intended mathematical objects.",
+    "mathContext": "$\\text{count}(N) \\approx N/(2\\pi) \\approx 0.159N$: values 1, 2, 4, 7, 16 for $N = 5, 13, 25, 50, 100$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decidable computation",
+      "native code compilation",
+      "empirical verification"
+    ],
+    "prerequisites": [
+      "native_decide",
+      "Decidable instances for Nat.Coprime"
+    ]
+  },
+  {
+    "id": "sector-partition",
+    "proofId": "pythagorean-triples-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 376,
+      "endLine": 460
+    },
+    "title": "Coprime Sector Partition and Parity Fractions",
+    "content": "Proves the fundamental partition: $\\text{coprimeInSectorCount}(N) = \\text{primitiveTripleCount}(N) + \\text{bothOddCoprimeCount}(N)$. The proof constructs a disjoint union of filtered Finsets and shows the odd-difference filter and its complement partition the coprime sector. Computational checks confirm the partition for small $N$ and show the parity fraction approaching $2/3$.",
+    "mathContext": "$C(N) = P(N) + B(N)$ where $C$ = coprime count, $P$ = primitive count, $B$ = both-odd count",
+    "significance": "key",
+    "relatedConcepts": [
+      "disjoint union",
+      "partition identity",
+      "asymptotic fraction"
+    ],
+    "prerequisites": [
+      "Finset.card_union_of_disjoint",
+      "Finset.disjoint_filter"
+    ]
+  },
+  {
+    "id": "density-axioms",
+    "proofId": "pythagorean-triples-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 490,
+      "endLine": 530
+    },
+    "title": "Three Density Axioms from Analytic Number Theory",
+    "content": "The three axioms encode deep analytic number theory results: (1) sector lattice point density $\\pi/8$ from the Gauss circle problem, (2) coprime fraction $6/\\pi^2$ from Möbius inversion and the Euler product for $\\zeta(2)$, (3) both-odd fraction $1/3$ from equidistribution of parity classes. The third axiom is shown equivalent to the 2/3 primitive fraction via `parity_axiom_equivalent`. Full proofs would require sieve methods or complex analysis beyond current Mathlib.",
+    "mathContext": "$\\frac{\\text{sector}(N)}{N} \\to \\frac{\\pi}{8}$, $\\frac{\\text{coprime}(N)}{\\text{sector}(N)} \\to \\frac{6}{\\pi^2}$, $\\frac{\\text{bothOdd}(N)}{\\text{coprime}(N)} \\to \\frac{1}{3}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gauss circle problem",
+      "Möbius function",
+      "Euler product",
+      "Basel problem",
+      "Riemann zeta function"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "atTop",
+      "nhds"
+    ]
+  },
+  {
+    "id": "main-density-theorem",
+    "proofId": "pythagorean-triples-oq-01",
+    "type": "insight",
+    "range": {
+      "startLine": 531,
+      "endLine": 587
+    },
+    "title": "Main Asymptotic Result: primitiveTripleCount(N)/N → 1/(2π)",
+    "content": "The central theorem derives the asymptotic density from the three axioms by telescoping: $\\frac{\\text{count}}{N} = \\frac{\\text{count}}{\\text{coprime}} \\cdot \\frac{\\text{coprime}}{\\text{sector}} \\cdot \\frac{\\text{sector}}{N}$. Each factor has a known limit, and the product of limits gives $\\frac{2}{3} \\cdot \\frac{6}{\\pi^2} \\cdot \\frac{\\pi}{8} = \\frac{1}{2\\pi}$. The telescoping requires showing denominators are eventually nonzero (from growth lemmas).",
+    "mathContext": "$\\lim_{N \\to \\infty} \\frac{\\text{primitiveTripleCount}(N)}{N} = \\frac{1}{2\\pi}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "telescoping product",
+      "limit of product",
+      "Filter.Tendsto.mul"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "Filter.tendsto_congr'",
+      "field_simp"
+    ]
+  },
+  {
+    "id": "parity-involution",
+    "proofId": "pythagorean-triples-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 814,
+      "endLine": 917
+    },
+    "title": "The Parity Involution (m,n) ↔ (m, m−n)",
+    "content": "The map $(m,n) \\mapsto (m, m-n)$ is the key bijective technique. It preserves coprimality (any common divisor of $m$ and $m-n$ also divides $n$), swaps parity of the second coordinate (odd $\\leftrightarrow$ even when $m$ is odd), and is an involution ($m - (m-n) = n$). Applied to Finsets via `Finset.card_bij`, it proves $|\\text{OE}(K)| = |\\text{OO}(K)|$ exactly for all $K$.",
+    "mathContext": "$(m,n) \\mapsto (m, m-n)$: $\\gcd(m,n)=1 \\Rightarrow \\gcd(m,m-n)=1$, swaps OE $\\leftrightarrow$ OO",
+    "significance": "key",
+    "relatedConcepts": [
+      "involution",
+      "bijective proof",
+      "Finset.card_bij",
+      "coprimality preservation"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "Finset.card_bij",
+      "omega"
+    ]
+  },
+  {
+    "id": "column-decomposition",
+    "proofId": "pythagorean-triples-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 918,
+      "endLine": 1138
+    },
+    "title": "Row-Level Parity Decomposition",
+    "content": "For each fixed $m$, the coprime residues $\\{n : 0 < n < m, \\gcd(m,n)=1\\}$ are analyzed by parity. When $m$ is even, all coprime $n$ must be odd (giving only EO pairs). When $m$ is odd, the involution $n \\mapsto m-n$ bijects even and odd coprime residues. This row-level analysis is the bridge between the pointwise involution and the global column-sum decomposition.",
+    "mathContext": "For odd $m \\ge 3$: $|\\{n < m : \\gcd(m,n)=1, 2 \\mid n\\}| = |\\{n < m : \\gcd(m,n)=1, 2 \\nmid n\\}|$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euler totient function",
+      "coprime residues",
+      "local-global principle"
+    ],
+    "prerequisites": [
+      "Finset.card_bij",
+      "Nat.Coprime"
+    ]
+  },
+  {
+    "id": "eo-coprime-density",
+    "proofId": "pythagorean-triples-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 1138,
+      "endLine": 2029
+    },
+    "title": "EO Coprime Density via GCD Halving and Column Sums",
+    "content": "The deepest technical section proves that the EO (even-odd) coprime density can be analyzed via GCD halving: $\\gcd(2k, n) = 1$ iff $\\gcd(k,n) = 1$ and $n$ is odd. This connects the EO count to the standard coprime count with a parity filter. The column-sum decomposition separates contributions from even $m$ (all coprime pairs are EO) and odd $m$ (involution splits equally), ultimately supporting the 1/3 bothOdd fraction.",
+    "mathContext": "$\\gcd(2k, n) = 1 \\iff \\gcd(k,n)=1 \\wedge 2 \\nmid n$; column sums: $\\sum_m C_m = \\sum_{m\\ \\text{even}} C_m^{\\text{EO}} + \\sum_{m\\ \\text{odd}} (C_m^{\\text{OE}} + C_m^{\\text{OO}})$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "GCD properties",
+      "column decomposition",
+      "parity sieve",
+      "inclusion-exclusion"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "Finset.sum",
+      "Finset.card_bij"
+    ]
+  },
+  {
+    "id": "mathlib-parametrization",
+    "proofId": "pythagorean-triples-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 606,
+      "endLine": 660
+    },
+    "title": "Connection to Mathlib's PythagoreanTriple.IsPrimitiveClassified",
+    "content": "Links the counting function to Mathlib's canonical parametrization via PythagoreanTriple.IsPrimitiveClassified. This confirms the counting function counts the mathematically correct objects: every primitive Pythagorean triple $(a,b,c)$ with $a^2+b^2=c^2$, $\\gcd(a,b,c)=1$ corresponds to a unique parameter pair $(m,n)$ counted by primitiveTripleCount. The bridge validates the formalization against Mathlib's established number theory.",
+    "mathContext": "Mathlib's parametrization: primitive $(a,b,c)$ with $a^2+b^2=c^2$ $\\leftrightarrow$ $(m,n)$ with $m>n>0$, $\\gcd(m,n)=1$, $m \\not\\equiv n \\pmod{2}$, via $a=m^2-n^2$, $b=2mn$, $c=m^2+n^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclid's parametrization",
+      "bijective correspondence",
+      "Mathlib integration"
+    ],
+    "prerequisites": [
+      "PythagoreanTriple",
+      "PythagoreanTriple.IsPrimitiveClassified"
+    ]
+  },
+  {
+    "id": "additional-axioms",
+    "proofId": "pythagorean-triples-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 2029,
+      "endLine": 2120
+    },
+    "title": "Additional Axioms: r₂ and Landau Counting",
+    "content": "Four additional axioms encode deeper analytic number theory: (1) r₂ positivity criterion — the number of representations of $n$ as a sum of two squares is positive iff all prime factors $\\equiv 3 \\pmod{4}$ appear to even powers, (2) r₂ average order — $\\sum_{n \\le N} r_2(n) \\sim \\pi N$, (3) Landau two-squares counting — $\\#\\{n \\le N : r_2(n) > 0\\} \\sim C \\cdot N/\\sqrt{\\ln N}$ (the Landau-Ramanujan theorem), and (4) primitive-by-leg density. These support alternative approaches and extensions of the main result.",
+    "mathContext": "$r_2(n) = \\#\\{(a,b) \\in \\mathbb{Z}^2 : a^2 + b^2 = n\\}$; Landau-Ramanujan: $\\#\\{n \\le N : r_2(n) > 0\\} \\sim \\frac{C \\cdot N}{\\sqrt{\\ln N}}$ where $C = \\frac{1}{\\sqrt{2}} \\prod_{p \\equiv 3 \\pmod{4}} (1 - p^{-2})^{-1/2}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sum-of-two-squares theorem",
+      "Landau-Ramanujan constant",
+      "r₂ arithmetic function"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "sieve methods",
+      "Dirichlet series"
+    ]
+  },
+  {
+    "id": "monotonicity-growth",
+    "proofId": "pythagorean-triples-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 222,
+      "endLine": 375
+    },
+    "title": "Monotonicity and Growth of Counting Functions",
+    "content": "Establishes that all counting functions are monotone non-decreasing: if $M \\le N$, then $\\text{count}(M) \\le \\text{count}(N)$. Also proves that the intermediate coprime sector count tends to infinity ($\\text{coprimeInSectorCount}(N) \\to \\infty$), which is needed for the telescoping ratio argument — you cannot divide by the coprime count unless it is eventually nonzero.",
+    "mathContext": "$M \\le N \\Rightarrow \\text{primitiveTripleCount}(M) \\le \\text{primitiveTripleCount}(N)$; $\\text{coprimeInSectorCount}(N) \\to \\infty$ as $N \\to \\infty$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.card_le_card",
+      "Filter.Tendsto.atTop",
+      "monotone function"
+    ],
+    "prerequisites": [
+      "Finset.card_le_card",
+      "Finset.filter_subset"
+    ]
+  }
+]

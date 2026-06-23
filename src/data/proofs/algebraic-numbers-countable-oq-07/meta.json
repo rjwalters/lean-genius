@@ -1,0 +1,211 @@
+{
+  "id": "algebraic-numbers-countable-oq-07",
+  "title": "The Algebraic Reals are Lebesgue-Null: Almost Every Real is Transcendental",
+  "slug": "algebraic-numbers-countable-oq-07",
+  "description": "Supplies the measure-theoretic pillar of the smallness trichotomy for the algebraic numbers. The companion entries prove the algebraic reals are countable (cardinality) and meagre (Baire category); this entry proves they are Lebesgue-null (measure zero) — a countable set is null because Lebesgue measure has no atoms. Dually, the transcendentals have full measure: almost every real number is transcendental. Includes a measure-theoretic existence proof of transcendentals (any positive-measure set contains one) and the complex analogue. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlgebraicRealsNull.lean",
+    "tags": [
+      "set-theory",
+      "measure-theory",
+      "lebesgue-measure",
+      "algebraic-numbers",
+      "transcendental-numbers",
+      "almost-everywhere",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 205,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "dateAdded": "2026-06-21",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Countable.measure_zero",
+        "description": "A countable set is null for any measure without atoms. Combined with the parent's countability of the algebraic reals, this directly yields the headline algebraic_reals_null and algebraic_complex_null.",
+        "module": "Mathlib.MeasureTheory.Measure.NoAtoms"
+      },
+      {
+        "theorem": "Real.noAtoms_volume",
+        "description": "Lebesgue measure on ℝ has no atoms (every singleton is null), the atomlessness hypothesis that powers Set.Countable.measure_zero.",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Complex.volume_preserving_equiv_real_prod",
+        "description": "The identification ℂ ≃ᵐ ℝ × ℝ is measure-preserving; used to transport singletons and establish NoAtoms (volume : Measure ℂ) for the complex case.",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Complex"
+      },
+      {
+        "theorem": "compl_mem_ae_iff",
+        "description": "A set is conull iff its complement is null; converts algebraic_reals_null into the almost-everywhere statement ae_transcendental.",
+        "module": "Mathlib.MeasureTheory.Measure.Typeclasses.NoAtoms"
+      }
+    ],
+    "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions. No `native_decide` is used. The core result `algebraic_reals_null` is a one-liner: the countability of the algebraic reals is imported from the parent `AlgebraicNumbersCountable.algebraic_reals_countable`, and `Set.Countable.measure_zero` (with Mathlib's atomless `Real.noAtoms_volume`) upgrades countable to null. The file's independent content is the measure-theoretic packaging (conull/ae/interval/existence corollaries) and the `NoAtoms (volume : Measure ℂ)` instance transported through `Complex.volume_preserving_equiv_real_prod`. `#print axioms` reports only propext, Classical.choice, Quot.sound — no `Lean.ofReduceBool`, no `sorryAx`.",
+    "originalContributions": [
+      "algebraic_reals_null: volume {x : ℝ | IsAlgebraic ℚ x} = 0 — the algebraic reals have Lebesgue measure zero",
+      "algebraicRealsOfBoundedDegree_null: each bounded-degree stratum of algebraic reals is null",
+      "compl_transcendental_eq_algebraic: the complement of the transcendentals is exactly the algebraic reals",
+      "transcendental_reals_conull: the transcendentals are conull (their complement has measure zero)",
+      "ae_transcendental: almost every real number is transcendental (∀ᵐ x ∂volume, Transcendental ℚ x)",
+      "algebraic_inter_interval_null: the algebraic reals contribute zero measure to any interval",
+      "transcendental_full_on_interval: the transcendentals fill almost all of any interval Ioo a b, with full measure ofReal (b − a)",
+      "exists_transcendental_of_pos_measure: any set of positive Lebesgue measure contains a transcendental number — a measure-theoretic existence proof",
+      "exists_transcendental_mem_Ioo: every nondegenerate interval contains a transcendental number",
+      "NoAtoms (volume : Measure ℂ): the planar Lebesgue measure has no atoms (transported via ℂ ≃ᵐ ℝ × ℝ)",
+      "algebraic_complex_null: the complex algebraic numbers have planar Lebesgue measure zero",
+      "ae_transcendental_complex: almost every complex number is transcendental"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Cantor's 1874 theorem that the algebraic numbers are countable already implies, by cardinality alone, that 'almost every' real number is transcendental — there are only ℵ₀ algebraic reals against 𝔠 = 2^ℵ₀ reals. But 'almost every' has three independent precise meanings, and cardinality is only one of them. A subset of ℝ can be 'small' in the sense of cardinality (countable), in the sense of Baire category (meagre / first category), or in the sense of measure (Lebesgue-null). These three notions are genuinely independent: there exist meagre sets of full measure and null sets of second category, so no two of the three imply each other.\n\nThe algebraic reals happen to be small in all three senses simultaneously, and the gallery already records two of the three pillars. The companion entry `algebraic-numbers-countable` establishes the cardinality pillar (countable, ℵ₀ < 𝔠) and `algebraic-reals-meager` establishes the Baire-category pillar (meagre, hence the transcendentals are comeagre and dense). Both of those entries explicitly point at the third, measure-theoretic, pillar — 'the algebraic reals are Lebesgue-null' — but leave it unformalized. This entry closes that gap.\n\nThe measure-theoretic statement is the easiest of the three to prove once Cantor's countability is in hand: a countable set is null for any measure that puts no mass on individual points, and Lebesgue measure on ℝ is exactly such a measure (it has no atoms). So 'almost every real is transcendental' holds in the measure sense — the strongest everyday meaning of 'almost every' — and not merely in the cardinality sense.",
+    "problemStatement": "**Open question (measure pillar)**: The algebraic reals are known to be countable (`algebraic-numbers-countable`) and meagre (`algebraic-reals-meager`). Complete the smallness trichotomy by proving they are also **Lebesgue-null**, and dually that the transcendental reals have **full measure** — so that 'almost every real is transcendental' holds in the measure-theoretic sense, not just the cardinality sense.\n\n**Main theorem**: `volume {x : ℝ | IsAlgebraic ℚ x} = 0`. Equivalently, `∀ᵐ x ∂volume, Transcendental ℚ x`.",
+    "proofStrategy": "The argument is short and rests on one structural fact about Lebesgue measure.\n\n**Step 1 — atoms.** Lebesgue measure `volume` on ℝ has no atoms: every singleton has measure zero. This is the Mathlib instance `Real.noAtoms_volume`, and the general lemma `Set.Countable.measure_zero` upgrades it to: any countable set is null.\n\n**Step 2 — algebraic reals are null.** The parent entry proves `{x : ℝ | IsAlgebraic ℚ x}` is countable (`AlgebraicNumbersCountable.algebraic_reals_countable`). Combining with Step 1 gives `algebraic_reals_null`.\n\n**Step 3 — transcendentals are conull.** `Transcendental ℚ x` is by definition `¬ IsAlgebraic ℚ x`, so the transcendentals are the set-complement of the algebraic reals. Their complement therefore has measure zero (`transcendental_reals_conull`), which is exactly the almost-everywhere statement `ae_transcendental` via `compl_mem_ae_iff`.\n\n**Step 4 — interval and existence consequences.** Inside any interval the algebraic part is still null, so the transcendentals carry the full measure `ofReal (b − a)` of the interval (`transcendental_full_on_interval`, via `measure_diff_null`). A clean structural corollary: any set of positive measure must contain a transcendental, since otherwise it would be a subset of a null set (`exists_transcendental_of_pos_measure`).\n\n**Step 5 — complex case.** The same argument runs on ℂ once one knows `volume` on ℂ has no atoms. This is obtained by transporting a singleton `{z}` through the measure-preserving identification `ℂ ≃ᵐ ℝ × ℝ` (`Complex.volume_preserving_equiv_real_prod`); its image is a single point of ℝ × ℝ, which is null because the planar Lebesgue measure has no atoms (a product of atomless measures is atomless).",
+    "keyInsights": [
+      "The three notions of smallness — countable (cardinality), meagre (Baire category), and null (Lebesgue measure) — are logically independent in general, so each requires its own proof. The algebraic reals happen to be small in all three senses, and this entry supplies the one (measure) that was missing from the gallery.",
+      "Countable ⟹ null is not automatic for an arbitrary measure: it requires the measure to be atomless (no point masses). Lebesgue measure qualifies (`Real.noAtoms_volume`), so the implication goes through via `Set.Countable.measure_zero`. For a measure with atoms (e.g. a Dirac mass), a countable set can have positive measure.",
+      "`Transcendental ℚ x` unfolds definitionally to `¬ IsAlgebraic ℚ x`, so the transcendentals are literally the set-complement of the algebraic reals. This makes the conull/almost-everywhere statements immediate from the null statement via `compl_mem_ae_iff`.",
+      "The existence corollary `exists_transcendental_of_pos_measure` is a third, measure-theoretic, proof that transcendentals exist — alongside Cantor's counting argument (cardinality) and Liouville's explicit construction (analysis). The proof is purely negative: a set with no transcendental would sit inside the null algebraic set, forcing its measure to be zero.",
+      "The complex analogue needs `NoAtoms (volume : Measure ℂ)`, which is not a single named Mathlib instance for ℂ but follows by transporting singletons through the measure-preserving `ℂ ≃ᵐ ℝ × ℝ` to the planar measure, where atomlessness comes from `Measure.prod` of two atomless factors."
+    ],
+    "prerequisites": [
+      "AlgebraicNumbersCountable: the parent entry — countability of the algebraic reals and complex algebraic numbers",
+      "Set.Countable.measure_zero: a countable set is null for any atomless measure",
+      "Real.noAtoms_volume: Lebesgue measure on ℝ has no atoms",
+      "compl_mem_ae_iff: sᶜ ∈ ae μ ↔ μ s = 0 — the bridge from measure-zero to almost-everywhere",
+      "measure_diff_null: removing a null set does not change a set's measure",
+      "Complex.volume_preserving_equiv_real_prod: ℂ ≃ᵐ ℝ × ℝ is measure preserving"
+    ],
+    "furtherWork": "Natural follow-ups: (1) Strengthen to a quantitative statement — the Hausdorff dimension of the algebraic reals is 0 (a countable set has dimension 0), refining 'measure zero'. (2) Liouville numbers give an explicit comeagre but measure-zero set of transcendentals; contrasting that null-but-comeagre set with this entry's conull transcendentals sharpens the independence of category and measure. (3) Formalize the three-way independence directly by exhibiting a meagre set of full measure inside ℝ. (4) Establish the same null result for algebraic numbers in higher-dimensional ℝⁿ or for the ring of algebraic integers inside the adeles."
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Imports (Lebesgue measure on ℝ and ℂ, NoAtoms typeclass, the parent countability entry), the module docstring stating the open question and the cardinality/category/measure trichotomy, the list of main results, and the namespace with opens (MeasureTheory, Set).",
+      "mathContext": "Open question: complete the smallness trichotomy by proving the algebraic reals are Lebesgue-null."
+    },
+    {
+      "id": "section-1-algebraic-null",
+      "title": "§1. The Algebraic Reals are Null",
+      "startLine": 70,
+      "endLine": 80,
+      "summary": "`algebraic_reals_null`: volume {x : ℝ | IsAlgebraic ℚ x} = 0, from countability (parent) + atomless Lebesgue measure. `algebraicRealsOfBoundedDegree_null`: each bounded-degree stratum is null as a subset.",
+      "mathContext": "A countable set is null for the atomless Lebesgue measure: $\\mathrm{vol}\\{x : \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x\\} = 0$."
+    },
+    {
+      "id": "section-2-conull-transcendentals",
+      "title": "§2. The Transcendentals are Conull",
+      "startLine": 81,
+      "endLine": 117,
+      "summary": "`compl_transcendental_eq_algebraic`: the complement of the transcendentals is the algebraic reals. `transcendental_reals_conull`: the transcendentals have conull complement. `ae_transcendental`: almost every real is transcendental.",
+      "mathContext": "$\\{x : \\mathrm{Transcendental}_\\mathbb{Q}\\,x\\}^c = \\{x : \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x\\}$ is null, so a.e. $x$ is transcendental."
+    },
+    {
+      "id": "section-3-intervals",
+      "title": "§3. Transcendentals Fill Almost All of Every Interval",
+      "startLine": 118,
+      "endLine": 143,
+      "summary": "`algebraic_inter_interval_null`: algebraic reals contribute zero measure to any interval. `transcendental_full_on_interval`: the transcendental part of Ioo a b has the full measure ofReal (b − a), via measure_diff_null.",
+      "mathContext": "$\\mathrm{vol}(\\mathrm{Ioo}\\,a\\,b \\cap \\{\\text{transcendental}\\}) = \\mathrm{ofReal}(b-a)$."
+    },
+    {
+      "id": "section-4-existence",
+      "title": "§4. Measure-Theoretic Existence of Transcendentals",
+      "startLine": 144,
+      "endLine": 168,
+      "summary": "`exists_transcendental_of_pos_measure`: any positive-measure set contains a transcendental (else it would be a subset of the null algebraic set). `exists_transcendental_mem_Ioo`: the special case for intervals.",
+      "mathContext": "$0 < \\mathrm{vol}(s) \\implies \\exists x \\in s,\\ \\mathrm{Transcendental}_\\mathbb{Q}\\,x$."
+    },
+    {
+      "id": "section-5-complex",
+      "title": "§5. The Complex Algebraic Numbers are Null",
+      "startLine": 169,
+      "endLine": 205,
+      "summary": "Local instance `NoAtoms (volume : Measure ℂ)` by transporting singletons through ℂ ≃ᵐ ℝ × ℝ. `algebraic_complex_null`: complex algebraic numbers have planar measure zero. `ae_transcendental_complex`: almost every complex number is transcendental.",
+      "mathContext": "$\\mathrm{vol}\\{z : \\mathbb{C} \\mid \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,z\\} = 0$ via the atomless planar Lebesgue measure."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry completes the smallness trichotomy for the algebraic numbers by supplying its measure-theoretic pillar: the algebraic reals (and complex algebraic numbers) have Lebesgue measure zero, so almost every real (and complex) number is transcendental. The proof is short — a countable set is null because Lebesgue measure is atomless — but it records the one of the three independent smallness notions (cardinality, Baire category, measure) that was missing from the gallery. All 11 theorems are proved with 0 sorries and 0 axioms.",
+    "implications": "With this entry, the gallery records all three senses in which 'almost every real is transcendental': cardinality (ℵ₀ < 𝔠, parent entry), Baire category (the transcendentals are comeagre, `algebraic-reals-meager`), and measure (the transcendentals are conull, this entry). Because the three notions are logically independent, each is a genuinely separate theorem, and only by proving all three is the statement 'the algebraic reals are negligible' established in every standard sense.\n\nThe measure-theoretic existence corollary adds a third route to the existence of transcendentals — any positive-measure set contains one — complementing Cantor's counting proof and Liouville's explicit construction. This is the prototype of a probabilistic/measure-theoretic existence argument: a randomly chosen real (uniform on any interval) is transcendental with probability one.",
+    "openQuestions": [
+      "Refine 'measure zero' to 'Hausdorff dimension zero': a countable set has Hausdorff dimension 0, which is strictly stronger than Lebesgue-null. Formalizing $\\dim_H\\{x : \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x\\} = 0$ would sharpen this entry and connect to the fractal-geometry hierarchy of negligible sets.",
+      "Exhibit the independence of category and measure directly using transcendentals: the Liouville numbers are a comeagre (residual) set that is nonetheless Lebesgue-null, while this entry's transcendentals are conull. Formalizing both inside one file would demonstrate that 'comeagre' and 'conull' are incomparable notions of largeness even within the transcendentals.",
+      "Generalize to ℝⁿ and ℂⁿ: the set of points with at least one algebraic coordinate is null in ℝⁿ, and the algebraic points (all coordinates algebraic) are countable hence null. State and prove the n-dimensional version, where 'almost every point has all coordinates transcendental and algebraically independent'.",
+      "Probabilistic phrasing: for any atomless Borel probability measure μ on ℝ (e.g. a Gaussian), the algebraic reals are still μ-null, so a μ-random real is almost surely transcendental. The present proof already works verbatim for any atomless measure — formalize the general `[NoAtoms μ]` statement and specialize to named distributions."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "extends",
+      "description": "The parent entry proves the algebraic reals are countable (the cardinality pillar of smallness). This entry consumes that countability theorem directly (`algebraic_reals_countable`) and upgrades it to the measure pillar: countable ⟹ null because Lebesgue measure is atomless. Together they give two of the three independent senses in which the algebraic reals are negligible."
+    },
+    {
+      "targetId": "algebraic-reals-meager",
+      "relationship": "complementary",
+      "description": "Provides the Baire-category pillar of the same smallness trichotomy: the algebraic reals are meagre (first category) and the transcendentals are comeagre (residual), hence dense. This entry provides the measure pillar (null / conull). The two are logically independent — meagre does not imply null and vice versa — so both are needed to establish that the algebraic reals are small in every standard sense. The `algebraic-reals-meager` docstring explicitly names 'the algebraic reals are Lebesgue-null' as the measure-theoretic counterpart, which this entry formalizes."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-02-oq-03",
+      "relationship": "complementary",
+      "description": "Computes the exact cardinality of the transcendental reals: #transcendentals = 𝔠 = 2^ℵ₀ (the cardinality version of 'almost every real is transcendental'). This entry gives the measure version of the same slogan: the transcendentals are conull. The two together show the transcendentals are large in both the cardinality and the measure senses, while the algebraic reals are small in both."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "complementary",
+      "description": "Liouville's 1844 explicit construction of a transcendental number. This entry instead proves transcendentals exist by measure (`exists_transcendental_of_pos_measure`): any positive-measure set contains one, without naming it. Liouville numbers are themselves a striking foil — they form a comeagre but measure-zero set of transcendentals, contrasting with this entry's conull set of transcendentals, illustrating that Baire category and Lebesgue measure are independent notions of largeness."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "complementary",
+      "description": "Hermite's 1873 proof that e is transcendental names a single concrete transcendental. This entry proves almost every real is transcendental without exhibiting any. The contrast mirrors the classical division of labour: constructive transcendence proofs (Hermite, Lindemann, Liouville) name specific numbers, while cardinality, category, and measure arguments show the transcendentals are abundant without naming one."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/AlgebraicRealsNull.lean",
+    "lineCount": 205,
+    "theoremCount": 11,
+    "axiomCount": 0,
+    "definitionCount": 0,
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": [
+        "G. Cantor"
+      ],
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 77, pp. 258–262",
+      "note": "Cantor's original countability theorem for the algebraic numbers, which (with the atomlessness of Lebesgue measure) yields the measure-zero result formalized here."
+    },
+    {
+      "authors": [
+        "J. C. Oxtoby"
+      ],
+      "title": "Measure and Category: A Survey of the Analogies between Topological and Measure Spaces",
+      "year": "1980",
+      "venue": "Springer, Graduate Texts in Mathematics 2",
+      "note": "The classic reference on the independence and analogy between Baire category and Lebesgue measure, the conceptual backdrop for the smallness trichotomy this entry completes."
+    },
+    {
+      "authors": [
+        "W. Rudin"
+      ],
+      "title": "Real and Complex Analysis",
+      "year": "1987",
+      "venue": "McGraw-Hill",
+      "note": "Standard source for the fact that countable subsets of ℝ are Lebesgue-null and for the atomlessness of Lebesgue measure."
+    }
+  ],
+  "sorries": 0
+}

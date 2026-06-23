@@ -1,0 +1,416 @@
+[
+  {
+    "id": "ann-erdos106-oq02-header",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 22,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Rotated vs Axis-Parallel: The Last Barrier",
+    "content": "After BKU (2024) solved the axis-parallel case of Erdős #106, the remaining question is whether allowing rotation gives strictly better packings. This file formalizes the infrastructure to state and reason about this question.",
+    "mathContext": "The axis-parallel problem: pack n unit squares in [0,1]² with sides parallel to the axes, maximize total side-length. BKU proved g(k²+1) = k. The rotated problem: same but squares may be rotated. f_rot(n) ≥ g(n) trivially; the question is whether strict inequality holds.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "erdos-106 (axis-parallel formalization)",
+      "Cauchy-Schwarz bound",
+      "BKU 2024 theorem",
+      "square packing"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "rotation matrices",
+      "set containment and disjointness"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-rotated-def",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 34,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "RotatedSquare: Parametrized by Center, Side, Angle",
+    "content": "The RotatedSquare structure captures a square by its center, side length, and rotation angle. The interior is defined by rotating the test point back to the axis-parallel frame: p is inside iff rotating (p - center) by -θ lands in (-s/2, s/2)².",
+    "mathContext": "RotatedSquare: center $(c_x, c_y) \\in \\mathbb{R}^2$, side $s > 0$, angle $\\theta \\in \\mathbb{R}$. Interior: $\\{p \\mid |r_x| < s/2 \\wedge |r_y| < s/2\\}$ where $(r_x, r_y) = R_{-\\theta}(p - c)$ and $R_{-\\theta}$ is rotation by $-\\theta$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rotation matrix",
+      "def RotatedSquare.interior",
+      "def RotatedSquare.closure'",
+      "def RotatedSquare.DisjointInteriors"
+    ],
+    "prerequisites": [
+      "2D rotation matrices",
+      "set-builder notation",
+      "abs in ℝ"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-interior-def",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 43,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Interior via Inverse Rotation: Coordinate Formula",
+    "content": "The interior formula rotates the displacement vector (dx, dy) = p - center by angle -θ via the 2×2 matrix: rx = dx·cos θ + dy·sin θ, ry = -dx·sin θ + dy·cos θ. These are the standard rotation-matrix components for angle -θ, verifiable by noting cos(-θ) = cos θ and sin(-θ) = -sin θ.",
+    "mathContext": "$r_x = \\Delta x \\cos\\theta + \\Delta y \\sin\\theta$, $r_y = -\\Delta x \\sin\\theta + \\Delta y \\cos\\theta$. This is rotation by $-\\theta$: the point is in the interior iff $|r_x| < s/2$ and $|r_y| < s/2$, i.e., it lies in the $(-s/2, s/2)^2$ axis-aligned box.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.cos",
+      "Real.sin",
+      "rotation matrix formula",
+      "def RotatedSquare.closure'"
+    ],
+    "prerequisites": [
+      "2×2 rotation matrix",
+      "cos(-θ) = cos θ, sin(-θ) = -sin θ",
+      "2D geometry"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-packings-def",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 88,
+      "endLine": 119
+    },
+    "type": "definition",
+    "title": "GeneralPacking and g(n)/f_rot(n) as Suprema",
+    "content": "GeneralPacking is a Fin n-indexed family with containment (closure ⊆ [0,1]²) and pairwise disjoint interiors. AxisParallelPacking extends it with angle=0. The objective functions f_rot and g_ap are defined as suprema of achievable sum-sets — this is the standard real-analysis approach when explicit maxima may not be attained.",
+    "mathContext": "$f_{\\text{rot}}(n) = \\sup\\{\\sum_i s_i \\mid (S_i) \\text{ is a GeneralPacking}\\}$, $g(n) = \\sup$ over AxisParallelPacking. The supremum is used rather than maximum since it's unclear whether the sup is attained (compactness arguments would be needed).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sSup",
+      "BddAbove",
+      "Nonempty",
+      "structure GeneralPacking",
+      "structure AxisParallelPacking"
+    ],
+    "prerequisites": [
+      "Lean structures with extends",
+      "Finset.sum",
+      "sSup in ℝ (conditional completeness)"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-subset",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 133,
+      "endLine": 138
+    },
+    "type": "insight",
+    "title": "Axis-Parallel ⊆ General: Trivial Direction via rfl",
+    "content": "achievable_sums_subset proves that every axis-parallel packing is a general packing, so all achievable AP sums are also achievable as general sums. This immediately gives g(n) ≤ f_rot(n) via csSup monotonicity (proved in g_ap_le_f_rot at line 369). The proof is trivially one line: P.toGeneralPacking inherits from AxisParallelPacking extends GeneralPacking.",
+    "mathContext": "$\\{s \\mid \\exists P : \\text{AP}(n), P.\\text{sum} = s\\} \\subseteq \\{s \\mid \\exists P : \\text{Gen}(n), P.\\text{sum} = s\\}$. Combined with $\\text{sSup}$ monotonicity, this gives $g(n) \\leq f_{\\text{rot}}(n)$. The actual inequality is in theorem g_ap_le_f_rot (line 369) using csSup_le_csSup.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structure extends",
+      "csSup_le_csSup",
+      "theorem g_ap_le_f_rot",
+      "set subset"
+    ],
+    "prerequisites": [
+      "Lean structure inheritance",
+      "sSup monotonicity on sets"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-area-axioms",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 148,
+      "endLine": 156
+    },
+    "type": "warning",
+    "title": "The Three Area Axioms: Cauchy-Schwarz Upper Bound f_rot(n) ≤ √n",
+    "content": "Three of the file's five axioms live here. rotated_square_area states that a rotated square of side s has measure s² (rotation is measure-preserving). f_rot_bounded asserts the Cauchy-Schwarz consequence f_rot(n) ≤ √n, and f_rot_mono asserts monotonicity. These encode the analytic upper bound rather than re-proving Lebesgue invariance under rotation and the full Cauchy-Schwarz/area argument from scratch. Together with bku_theorem_ap (line 513) and f_rot_2 (line 608), the file declares exactly 5 axioms — matching axiomCount in meta.json.",
+    "mathContext": "Disjointness + containment give $\\sum_i s_i^2 \\le 1$ (areas fit in the unit square). Cauchy-Schwarz: $(\\sum_i s_i)^2 \\le n \\sum_i s_i^2 \\le n$, hence $f_{\\text{rot}}(n) \\le \\sqrt{n}$. Rotation invariance of Lebesgue measure justifies $\\mathrm{vol}(\\text{interior}) = s^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom rotated_square_area",
+      "axiom f_rot_bounded",
+      "axiom f_rot_mono",
+      "Cauchy-Schwarz inequality",
+      "MeasureTheory.volume"
+    ],
+    "prerequisites": [
+      "Lebesgue measure invariance under isometry",
+      "Cauchy-Schwarz inequality",
+      "monotonicity of suprema"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-midpoint-lemmas",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 158,
+      "endLine": 272
+    },
+    "type": "lemma",
+    "title": "Edge-Midpoint Membership: Geometry Reduced to Coordinates",
+    "content": "The AxiomElimination section eliminates what would otherwise be axioms by computing with the four edge midpoints explicitly. center_in_closure and the four midpoint_*_mem_closure lemmas show that the center and the points c ± (s/2)(cos θ, sin θ), c ± (s/2)(-sin θ, cos θ) all lie in the closure — verified by the Pythagorean identity collapsing the rotated coordinates to exactly ±s/2 or 0. side_mul_abs_cos_le_one and side_mul_abs_sin_le_one then deduce s|cos θ| ≤ 1 and s|sin θ| ≤ 1 from the fact that opposite midpoints, being in [0,1]², differ in a coordinate by exactly s cos θ (resp. s sin θ).",
+    "mathContext": "For the +cos midpoint, $r_x = h\\cos^2\\theta + h\\sin^2\\theta = h = s/2$ and $r_y = 0$, so it lies on the boundary. Opposite midpoints have x-coordinates $c_1 \\pm (s/2)\\cos\\theta$; both in $[0,1]$ forces $|s\\cos\\theta| = |(c_1 + \\tfrac{s}{2}\\cos\\theta) - (c_1 - \\tfrac{s}{2}\\cos\\theta)| \\le 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "private lemma center_in_closure",
+      "private lemma midpoint_pos_cos_mem_closure",
+      "private lemma side_mul_abs_cos_le_one",
+      "Real.sin_sq_add_cos_sq",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "Pythagorean identity sin²+cos²=1",
+      "rotation-matrix coordinates",
+      "abs_le and linear arithmetic"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-side-sqrt2",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 273,
+      "endLine": 287
+    },
+    "type": "theorem",
+    "title": "side ≤ √2: Key Geometric Bound via Edge Midpoints",
+    "content": "side_le_sqrt_two proves that any square contained in [0,1]² has side ≤ √2 (regardless of rotation). Combining s|cos θ| ≤ 1 and s|sin θ| ≤ 1 from the midpoint lemmas, the Pythagorean identity gives s² = s²(cos²θ + sin²θ) ≤ (s cos θ)² + (s sin θ)² ≤ 2. This is the per-square bound that makes the achievable-sum set bounded above (next lemma).",
+    "mathContext": "Opposite edge midpoints: $c \\pm (s/2)(\\cos\\theta, \\sin\\theta)$. Both in $[0,1]^2$ forces $s|\\cos\\theta| \\leq 1$ and $s|\\sin\\theta| \\leq 1$. Then $s^2 = s^2(\\cos^2\\theta + \\sin^2\\theta) \\leq (s\\cos\\theta)^2 + (s\\sin\\theta)^2 \\leq 2$, so $s \\le \\sqrt 2$. The diagonal of a unit square is $\\sqrt 2$, so this bound is sharp.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sin_sq_add_cos_sq",
+      "private lemma side_mul_abs_cos_le_one",
+      "private lemma f_rot_set_bddAbove",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "Pythagorean identity sin²+cos²=1",
+      "containment implies coordinate bounds",
+      "sq_abs"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-bddabove",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 289,
+      "endLine": 301
+    },
+    "type": "lemma",
+    "title": "Achievable Sums Bounded by n√2",
+    "content": "f_rot_set_bddAbove shows the set of achievable general-packing sums is bounded above by n·√2 — simply sum the per-square bound side ≤ √2 over the n squares. This crude bound (weaker than the axiom f_rot(n) ≤ √n) is exactly what is needed to invoke conditional-supremum lemmas like le_csSup and csSup_le_csSup: the supremum defining f_rot is over a bounded-above set, so it is well-behaved.",
+    "mathContext": "$\\sum_{i} s_i \\le \\sum_{i} \\sqrt 2 = n\\sqrt 2$. BddAbove of the achievable set is the technical hypothesis required for $\\sup$ to satisfy $a \\le \\sup S$ (via le_csSup) and monotonicity (csSup_le_csSup). The tighter $\\sqrt n$ bound remains an axiom; only boundedness is needed for the order-theory.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "BddAbove",
+      "Finset.sum_le_sum",
+      "le_csSup",
+      "theorem side_le_sqrt_two"
+    ],
+    "prerequisites": [
+      "conditional completeness of ℝ",
+      "Finset.sum monotonicity",
+      "bounded-above sets"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-grid-nonempty",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 303,
+      "endLine": 376
+    },
+    "type": "theorem",
+    "title": "Explicit Constructions: Nonemptiness and g(n) ≤ f_rot(n)",
+    "content": "g_ap_set_nonempty builds a concrete witness — n axis-parallel squares of side 1/(n+1) placed in a row along the bottom of [0,1]² — proving the achievable AP-sum set is nonempty (needed before taking its supremum). With boundedness (previous lemma) and nonemptiness in hand, g_ap_le_f_rot derives g(n) ≤ f_rot(n) from csSup_le_csSup applied to the subset relation, and g_ap_bounded chains this with the f_rot ≤ √n axiom to get g(n) ≤ √n with no extra assumptions.",
+    "mathContext": "Witness: squares centered at $\\left(\\tfrac{2i+1}{2(n+1)}, \\tfrac{1}{2(n+1)}\\right)$ with side $\\tfrac{1}{n+1}$, $\\theta = 0$. Containment and disjointness are discharged by interval arithmetic on the x-ranges. Then $g(n) = \\sup S_{\\text{AP}} \\le \\sup S_{\\text{Gen}} = f_{\\text{rot}}(n) \\le \\sqrt n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "private lemma g_ap_set_nonempty",
+      "theorem g_ap_le_f_rot",
+      "theorem g_ap_bounded",
+      "csSup_le_csSup",
+      "Set.Nonempty"
+    ],
+    "prerequisites": [
+      "explicit packing construction",
+      "interval arithmetic (div_le_one, nlinarith)",
+      "supremum monotonicity"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-perfect-square",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 378,
+      "endLine": 504
+    },
+    "type": "theorem",
+    "title": "Exact Values at Perfect Squares: g(k²) = f_rot(k²) = k",
+    "content": "The heart of the proved content. g_ap_perfect_square constructs the k×k grid of side-1/k squares (indexed by i ↦ (i mod k, i div k)) and shows its side-sum is exactly k, matching the √(k²) = k upper bound — so g(k²) = k. The disjointness argument splits on whether two cells share a column (then rows differ, giving y-separation) or differ in column (x-separation). f_rot_perfect_square then squeezes f_rot(k²) between the √(k²) = k upper bound and the g(k²) = k lower bound, proving f_rot(k²) = k. This is why rotation provably cannot help at perfect squares.",
+    "mathContext": "Grid: cell $i$ at center $\\left(\\tfrac{2(i\\bmod k)+1}{2k}, \\tfrac{2(i\\div k)+1}{2k}\\right)$, side $1/k$. Sum $= k^2 \\cdot \\tfrac{1}{k} = k$. Upper bound $g(k^2) \\le \\sqrt{k^2} = k$ gives $g(k^2) = k$ by antisymmetry. Squeeze: $k = g(k^2) \\le f_{\\text{rot}}(k^2) \\le \\sqrt{k^2} = k$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "theorem g_ap_perfect_square",
+      "theorem f_rot_perfect_square",
+      "Nat.div_add_mod",
+      "le_antisymm",
+      "Real.sqrt_sq"
+    ],
+    "prerequisites": [
+      "grid indexing via div/mod",
+      "antisymmetry of ≤ on ℝ",
+      "the √n upper bound axiom"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-bku-derived",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 508,
+      "endLine": 536
+    },
+    "type": "theorem",
+    "title": "BKU Axiom and Derived Bounds at k²+1",
+    "content": "bku_theorem_ap encodes the Baek–Koizumi–Ueoro (2024) breakthrough as an axiom: for axis-parallel packings, g(k²+1) = k (one extra square cannot raise the optimal side-sum past k). The derived theorems package the f_rot consequences: f_rot(k²+1) ≥ k (at least as good as axis-parallel, via monotonicity from f_rot(k²) = k) and f_rot(k²+1) ≤ √(k²+1). These bracket f_rot at the first non-perfect-square value, where rotation could in principle help.",
+    "mathContext": "BKU: $g(k^2+1) = k$. Derived: $f_{\\text{rot}}(k^2+1) \\ge f_{\\text{rot}}(k^2) = k$ (monotone) and $f_{\\text{rot}}(k^2+1) \\le \\sqrt{k^2+1}$. So $k \\le f_{\\text{rot}}(k^2+1) \\le \\sqrt{k^2+1}$, a gap of less than 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom bku_theorem_ap",
+      "theorem f_rot_lower_k2_plus_1",
+      "theorem f_rot_upper_k2_plus_1",
+      "theorem f_rot_mono"
+    ],
+    "prerequisites": [
+      "BKU 2024 result (axiom)",
+      "monotonicity of f_rot",
+      "square-root estimates"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-open-question",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 538,
+      "endLine": 555
+    },
+    "type": "definition",
+    "title": "The Open Question: rotationHelps vs rotationNeverHelps",
+    "content": "rotationHelps := ∃ n, f_rot n > g_ap n (rotation strictly improves). axisParallelSuboptimal restricts the witness to n ≥ 2. rotationNeverHelps := ∀ n, f_rot n = g_ap n (rotation never helps). Since g_ap ≤ f_rot is proved, rotationNeverHelps is precisely equality everywhere, and it is the logical complement of rotationHelps. The Erdős problem is to determine which holds — no example of rotationHelps is currently known.",
+    "mathContext": "We have $g(n) \\leq f_{\\text{rot}}(n)$ always (proved). rotationNeverHelps would mean equality everywhere. Since $f_{\\text{rot}}(k^2) = g(k^2) = k$ at perfect squares, any rotation advantage must occur at non-perfect-square n, with n=k²+1 being the most interesting case.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "def rotationHelps",
+      "def axisParallelSuboptimal",
+      "def rotationNeverHelps",
+      "theorem agree_at_perfect_squares"
+    ],
+    "prerequisites": [
+      "f_rot and g_ap definitions",
+      "agreement at perfect squares (proved)",
+      "BKU theorem (axiom)"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-bridge",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 557,
+      "endLine": 579
+    },
+    "type": "insight",
+    "title": "BKU Bridge: rotationNeverHelps + BKU → Full Erdős Conjecture",
+    "content": "bku_and_no_rotation_implies_general (with helper rotation_never_helps_implies_conjecture) proves: if rotation never helps (f_rot = g globally), then the full Erdős conjecture erdos106GeneralConjecture, namely f_rot(k²+1) = k, follows from the BKU axis-parallel result g(k²+1) = k. The proof is one rewrite: rw [h] converts the f_rot question into a g question, then bku_theorem_ap closes it. This is the key decomposition separating a geometric question from a combinatorial one.",
+    "mathContext": "Chain: rotationNeverHelps $\\Rightarrow$ $f_{\\text{rot}}(k^2+1) = g(k^2+1) = k$ (BKU). The general problem factors into a geometric part (does rotation help?) and a combinatorial part (axis-parallel packing). BKU resolved the combinatorial part; the geometric part remains open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom bku_theorem_ap",
+      "def rotationNeverHelps",
+      "def erdos106GeneralConjecture",
+      "theorem rotation_never_helps_implies_conjecture"
+    ],
+    "prerequisites": [
+      "axiom bku_theorem_ap (BKU 2024)",
+      "def rotationNeverHelps",
+      "theorem f_rot_perfect_square"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-agreement",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 581,
+      "endLine": 615
+    },
+    "type": "theorem",
+    "title": "Agreement at Small n and All Perfect Squares",
+    "content": "A cluster of agreement results pinning down where rotation provably cannot help: agree_at_1 (f_rot(1) = g(1) = 1), agree_at_perfect_squares (f_rot(k²) = g(k²) = k, restating the squeeze), and rotation_cant_help_at_perfect_square. The fifth axiom f_rot_2 encodes Erdős's original n = 2 argument (two disjoint squares in the unit square sum to ≤ 1), and no_rotation_help_at_2 derives f_rot(2) = g(2) = 1 by recognizing 2 = 1²+1 and applying BKU. So rotation is known to not help on {0, 1, 2} ∪ {k²}.",
+    "mathContext": "$f_{\\text{rot}}(1) = g(1) = 1$; $f_{\\text{rot}}(k^2) = g(k^2) = k$; $f_{\\text{rot}}(2) = 1 = g(2)$ via $2 = 1^2+1$ and BKU. These mark out the values at which the dichotomy is already resolved in favor of 'rotation does not help here'.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "theorem agree_at_1",
+      "theorem agree_at_perfect_squares",
+      "axiom f_rot_2",
+      "theorem no_rotation_help_at_2"
+    ],
+    "prerequisites": [
+      "f_rot_perfect_square",
+      "BKU theorem (axiom)",
+      "Erdős n=2 argument (axiom f_rot_2)"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-dichotomy",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 617,
+      "endLine": 700
+    },
+    "type": "theorem",
+    "title": "Boundary n = 0 and the Clean Dichotomy",
+    "content": "The empty packing (Fin 0 → RotatedSquare) gives achievable-sum set {0}, so f_rot(0) = g(0) = 0 unconditionally (f_rot_zero, g_ap_zero, agree_at_0). rotation_helps_iff_not_never_helps establishes that rotationHelps and rotationNeverHelps are exact logical complements — the proof uses lt_of_le_of_ne with the proved g_ap ≤ f_rot to turn an inequality witness into a strict one. axisParallelSuboptimal_iff_rotationHelps then shows the 'witness ≥ 2' form is equivalent to the unrestricted form, using agree_at_0 and agree_at_1 to interval_cases away n ∈ {0, 1}.",
+    "mathContext": "Empty packing: $\\sum_{i \\in \\text{Fin } 0} s_i = 0$, so the achievable set is $\\{0\\}$ and $f_{\\text{rot}}(0) = g(0) = 0$. Dichotomy: rotationHelps $\\leftrightarrow \\neg$rotationNeverHelps. Any witness $n$ with $f_{\\text{rot}}(n) > g(n)$ must have $n \\ge 2$ since equality is forced at $0$ and $1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "theorem f_rot_zero",
+      "theorem agree_at_0",
+      "theorem rotation_helps_iff_not_never_helps",
+      "theorem axisParallelSuboptimal_iff_rotationHelps",
+      "lt_of_le_of_ne"
+    ],
+    "prerequisites": [
+      "empty Fin 0 sums",
+      "law of excluded middle (push_neg)",
+      "interval_cases"
+    ]
+  },
+  {
+    "id": "ann-erdos106-oq02-tight-bounds",
+    "proofId": "erdos-106-oq-02",
+    "range": {
+      "startLine": 702,
+      "endLine": 745
+    },
+    "type": "theorem",
+    "title": "Rotation Benefit Lives in [0, 1): A Sharp Quantitative Bound",
+    "content": "The file's most distinctive proved result. sqrt_k2_plus_1_lt_k_succ shows √(k²+1) < k+1 (since (k+1)² = k²+2k+1 > k²+1), so f_rot_k2_plus1_lt_k_succ gives f_rot(k²+1) < k+1. Combined with f_rot(k²+1) ≥ k, this places f_rot(k²+1) in the half-open interval [k, k+1) (f_rot_k2_plus1_range). The benefit theorems conclude rotation_effect_unit_interval: the rotation advantage f_rot(k²+1) − g(k²+1) lies in [0, 1). So even if rotation helps, it can never gain a whole extra unit of side-length — it can at best shave into the gap below the next integer.",
+    "mathContext": "$(k+1)^2 = k^2 + 2k + 1 > k^2 + 1$ for $k \\ge 1$, so $\\sqrt{k^2+1} < k+1$. Hence $k \\le f_{\\text{rot}}(k^2+1) < k+1$, i.e. $f_{\\text{rot}}(k^2+1) \\in [k, k+1)$. With $g(k^2+1) = k$ (BKU), the benefit $f_{\\text{rot}}(k^2+1) - g(k^2+1) \\in [0, 1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem sqrt_k2_plus_1_lt_k_succ",
+      "theorem f_rot_k2_plus1_range",
+      "theorem rotation_benefit_lt_one",
+      "theorem rotation_effect_unit_interval",
+      "Set.Ico"
+    ],
+    "prerequisites": [
+      "monotonicity of √ (Real.sqrt_lt_sqrt)",
+      "the BKU axiom g(k²+1) = k",
+      "membership in half-open intervals"
+    ]
+  }
+]

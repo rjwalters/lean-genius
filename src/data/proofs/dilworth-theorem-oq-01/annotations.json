@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-background",
+    "proofId": "dilworth-theorem-oq-01",
+    "range": { "startLine": 1, "endLine": 42 },
+    "type": "concept",
+    "title": "Dilworth–Mirsky Duality and Its Two Halves",
+    "content": "In a partial order, a **chain** is a set of pairwise comparable elements and an **antichain** a set of pairwise incomparable ones. Dilworth (1950): the minimum number of chains covering a finite poset equals the maximum antichain size. Mirsky (1971): the dual, minimum antichains covering equals maximum chain length. Each is a min–max theorem with an *easy* inequality (one pigeonhole line) and a *hard* inequality (the bound is attained). This file formalizes both easy directions over an arbitrary `PartialOrder`, with no finiteness beyond the `Finset`s involved.",
+    "mathContext": "Dilworth: $\\min\\#\\text{chain cover} = \\max |A|$. Mirsky: $\\min\\#\\text{antichain cover} = \\max |C|$.",
+    "significance": "key",
+    "relatedConcepts": ["partial order", "min–max duality", "chain cover", "antichain cover"],
+    "prerequisites": ["order theory", "posets"]
+  },
+  {
+    "id": "ann-chain-def",
+    "proofId": "dilworth-theorem-oq-01",
+    "range": { "startLine": 49, "endLine": 51 },
+    "type": "definition",
+    "title": "Chain on a Finset",
+    "content": "`IsChainOn C` says all members of the Finset `C` are pairwise comparable. The instance-implicit binders `⦃x⦄` make the predicate convenient to apply with membership proofs. This is the local, Finset-level notion (rather than Mathlib's set-level `IsChain`), chosen so cardinalities and pigeonhole apply directly.",
+    "mathContext": "$\\forall x, y \\in C,\\ x \\le y \\ \\vee\\ y \\le x.$",
+    "significance": "supporting",
+    "relatedConcepts": ["chain", "comparability", "Finset"],
+    "prerequisites": ["partial orders"]
+  },
+  {
+    "id": "ann-antichain-def",
+    "proofId": "dilworth-theorem-oq-01",
+    "range": { "startLine": 53, "endLine": 56 },
+    "type": "definition",
+    "title": "Antichain on a Finset",
+    "content": "`IsAntichainOn A` encodes incomparability of distinct elements as the contrapositive-friendly form: any two comparable members are *equal*. Writing it as `x ≤ y → x = y` (rather than `x ≠ y → ¬(x ≤ y) ∧ ¬(y ≤ x)`) keeps the predicate in a shape that feeds directly into the equality conclusion of the fundamental lemma.",
+    "mathContext": "$\\forall x, y \\in A,\\ x \\le y \\implies x = y.$",
+    "significance": "key",
+    "relatedConcepts": ["antichain", "incomparability", "Finset"],
+    "prerequisites": ["partial orders"]
+  },
+  {
+    "id": "ann-fundamental",
+    "proofId": "dilworth-theorem-oq-01",
+    "range": { "startLine": 58, "endLine": 66 },
+    "type": "theorem",
+    "title": "Chain ∩ Antichain Is a Subsingleton",
+    "content": "The single fact behind both inequalities: if `x` and `y` belong to both a chain `C` and an antichain `A`, they are equal. Being in the chain, they are comparable; being in the antichain, comparability forces equality. The proof is a two-line `rcases` on the comparability disjunction, applying the antichain property in each branch (`.symm` in the reversed case).",
+    "mathContext": "$x, y \\in C \\cap A \\implies x = y,\\quad\\text{i.e. } |C \\cap A| \\le 1.$",
+    "significance": "critical",
+    "relatedConcepts": ["subsingleton", "comparability", "intersection bound"],
+    "prerequisites": ["case analysis", "partial orders"]
+  },
+  {
+    "id": "ann-dilworth-easy",
+    "proofId": "dilworth-theorem-oq-01",
+    "range": { "startLine": 68, "endLine": 96 },
+    "type": "theorem",
+    "title": "Dilworth, Easy Direction: |A| ≤ |𝒞|",
+    "content": "If a family of chains `𝒞` covers an antichain `A`, then `|A| ≤ |𝒞|`. The proof selects, for each `a ∈ A`, a covering chain `f a ∈ 𝒞` (using `Classical` choice via a dependent `if`, defaulting to `∅`). The selection map is injective: if `f x = f y` then `x, y` share a chain *and* lie in the antichain, so the fundamental lemma forces `x = y`. `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` then rules out `|𝒞| < |A|` — two distinct elements would collide.",
+    "mathContext": "$\\mathcal{C} \\text{ covers } A \\implies |A| \\le |\\mathcal{C}|.$",
+    "significance": "critical",
+    "relatedConcepts": ["pigeonhole principle", "injective selection", "Finset.exists_ne_map_eq_of_card_lt_of_maps_to", "axiom of choice"],
+    "prerequisites": ["pigeonhole principle", "Finset cardinality", "classical choice"]
+  },
+  {
+    "id": "ann-mirsky-easy",
+    "proofId": "dilworth-theorem-oq-01",
+    "range": { "startLine": 98, "endLine": 125 },
+    "type": "theorem",
+    "title": "Mirsky, Easy Direction: |C| ≤ |𝒜|",
+    "content": "The dual: if a family of antichains `𝒜` covers a chain `C`, then `|C| ≤ |𝒜|`. The argument is *identical* to Dilworth's with the roles of chain and antichain swapped — the same selection-plus-pigeonhole structure, invoking the same `chain_antichain_inter_subsingleton` with its two chain/antichain arguments exchanged. This self-duality is the structural reason the two theorems travel together.",
+    "mathContext": "$\\mathcal{A} \\text{ covers } C \\implies |C| \\le |\\mathcal{A}|.$",
+    "significance": "key",
+    "relatedConcepts": ["duality", "pigeonhole principle", "Mirsky's theorem"],
+    "prerequisites": ["pigeonhole principle", "Finset cardinality"]
+  },
+  {
+    "id": "ann-choice-technique",
+    "proofId": "dilworth-theorem-oq-01",
+    "range": { "startLine": 76, "endLine": 91 },
+    "type": "tactic",
+    "title": "From a Cover Hypothesis to a Choice Function",
+    "content": "The shared mechanism of both proofs. The cover hypothesis only asserts *existence* of a containing chain per element (`∃ C ∈ 𝒞, a ∈ C`); to run pigeonhole one needs an actual function. `classical` plus the dependent-if `fun a => if h : ∃ C ∈ 𝒞, a ∈ C then h.choose else ∅` materializes that choice, with `dif_pos` recovering `f a = h.choose` and `h.choose_spec` supplying both `f a ∈ 𝒞` and `a ∈ f a`. `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` is then the pigeonhole that produces the colliding pair killed by the fundamental lemma. The identical block reappears verbatim in the Mirsky proof with `𝒜` for `𝒞`.",
+    "mathContext": "$f(a) := \\text{a chosen } C \\in \\mathcal{C} \\text{ with } a \\in C;\\ |A| > |\\mathcal{C}| \\Rightarrow \\exists\\, x \\ne y,\\ f(x) = f(y).$",
+    "significance": "supporting",
+    "relatedConcepts": ["classical choice", "dependent if-then-else", "Exists.choose", "pigeonhole principle"],
+    "prerequisites": ["classical logic in Lean", "Finset cardinality"]
+  }
+]

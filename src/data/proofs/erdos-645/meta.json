@@ -1,0 +1,191 @@
+{
+  "id": "erdos-645",
+  "title": "Erdős Problem #645: Monochromatic AP with Large Difference",
+  "slug": "erdos-645",
+  "description": "If ℕ is 2-colored, must there exist a monochromatic 3-term arithmetic progression x, x+d, x+2d such that d > x? This is a strengthening of van der Waerden's theorem requiring the common difference to exceed the first term.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/645",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos645Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "ramsey-theory",
+      "arithmetic-progressions",
+      "van-der-waerden",
+      "coloring",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 645,
+    "erdosUrl": "https://erdosproblems.com/645",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Bool",
+        "description": "Boolean type for 2-colorings",
+        "module": "Mathlib.Data.Bool.Basic"
+      },
+      {
+        "theorem": "Nat.lt_of_lt_of_le",
+        "description": "Transitivity of < and ≤",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Fin",
+        "description": "Finite types for indexing AP terms",
+        "module": "Mathlib.Logic.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of monochromatic 3-term arithmetic progressions",
+      "Definition of the Erdős condition: 0 < x ∧ x < d",
+      "Statement of Erdős #645 as erdos_645_statement",
+      "Connection to van der Waerden's theorem",
+      "Examples: colorByParity and colorByThreshold",
+      "Generalization to k-APs (erdos_645_generalized)",
+      "Finite version formulation (finiteErdos645)"
+    ],
+    "axiomCount": 1,
+    "lineCount": 251,
+    "assumptions": "1 axiom: erdos645_threshold (a ℕ-valued threshold constant placeholder for N₀, not an assertion that the conjecture holds). 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 12
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #645 is a beautiful question about the structure of arithmetic progressions in Ramsey theory. While **van der Waerden's theorem** (1927) guarantees that any 2-coloring of ℕ contains arbitrarily long monochromatic arithmetic progressions, it says nothing about the relationship between the first term and common difference.\n\nErdős asked whether we can always find a monochromatic 3-AP where the 'jump' (common difference d) exceeds the 'start' (first term x). This is a structural constraint beyond mere existence.\n\nThe answer is **YES** (established in the mathematical literature by combinatorial methods). This Lean file formalizes the problem statement and proves that Erdős #645 implies van der Waerden's theorem for 2-colorings, but does not include a machine-checked proof of the conjecture itself.",
+    "problemStatement": "**Erdős Problem #645**: If ℕ is 2-colored, must there exist a monochromatic three-term arithmetic progression $x, x+d, x+2d$ such that $d > x$?\n\n**Mathematical status**: Solved (YES, per combinatorial literature). **Lean formalization status**: Statement formalized; machine-checked proof not yet included in this file.\n\n**Conjecture**: For any 2-coloring $c : \\mathbb{N} \\to \\{0, 1\\}$, there exist $x, d \\in \\mathbb{N}$ with:\n- $x > 0$ (first term is positive)\n- $d > x$ (difference exceeds first term)\n- $c(x) = c(x+d) = c(x+2d)$ (all three terms have the same color)\n\n**Examples satisfying $d > x$**:\n- $(1, 3, 5)$: $x = 1$, $d = 2$, so $d > x$ ✓\n- $(2, 7, 12)$: $x = 2$, $d = 5$, so $d > x$ ✓\n- $(3, 10, 17)$: $x = 3$, $d = 7$, so $d > x$ ✓",
+    "text": "If ℕ is 2-colored, must there exist a monochromatic 3-term arithmetic progression x, x+d, x+2d such that d > x? This is a strengthening of van der Waerden's theorem requiring the common difference to exceed the first term.",
+    "proofStrategy": "**Note**: This Lean file formalizes the statement of Erdős #645 and proves that it implies van der Waerden's theorem (erdos_645_implies_vdw), but does not contain a machine-checked proof of the conjecture itself. The following is an informal sketch of the known mathematical proof:\n\n1. **Key Observation**: If we color small numbers, eventually the pigeonhole principle forces repeated patterns that create the desired progression.\n\n2. **Consider initial segments**: Look at how {1, 2, 3, ..., N} can be 2-colored. For sufficiently large N, avoiding all monochromatic 3-APs with d > x becomes impossible.\n\n3. **Case analysis**: Either:\n   - Many numbers share the same color and form suitable APs, or\n   - The alternating pattern forces a specific structure that contains the desired progression\n\n4. **Pigeonhole on pairs**: Among numbers with the same color, pairs (a, b) with certain properties must exist, forcing a third term to complete the AP.\n\nThe finitary Ramsey approach shows that some explicit N₀ exists such that any 2-coloring of [1, N₀] contains the required progression.",
+    "keyInsights": [
+      "**Beyond van der Waerden**: Van der Waerden's theorem guarantees monochromatic APs of any length, but doesn't constrain d vs x. Erdős's question adds a structural requirement that's surprisingly still satisfiable.",
+      "**The d > x constraint is meaningful**: For example, (3, 5, 7) has d = 2 < x = 3, so it doesn't satisfy Erdős's condition. The constraint forces the progression to 'jump' far.",
+      "**Colorings can't avoid large jumps**: Any attempt to 2-color ℕ while avoiding monochromatic 3-APs with large difference eventually fails. The combinatorial structure is too constrained.",
+      "**Connection to Ramsey theory**: This is part of the broader study of what structures must appear in any partition of ℕ. Like van der Waerden's theorem, it shows arithmetic structure is unavoidable.",
+      "**Natural generalization to k-APs**: One can ask the same question for longer progressions: does every 2-coloring have a monochromatic k-AP with d > x?",
+      "**Finite threshold exists**: There exists some N₀ such that any 2-coloring of {1, ..., N₀} already contains the desired progression. Finding this N₀ exactly is a harder combinatorial problem."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-context",
+      "title": "Module Header and Context",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring (Erdős #645: monochromatic 3-AP with d > x, SOLVED), imports, and namespace"
+    },
+    {
+      "id": "background",
+      "title": "Arithmetic Progressions and Colorings",
+      "startLine": 27,
+      "endLine": 73,
+      "summary": "`is3AP`, `AP3terms`, `isMonochromatic`/`isMonochromatic'`, and the `monochromatic_iff` equivalence"
+    },
+    {
+      "id": "erdos-condition",
+      "title": "The Erdős Condition: d > x",
+      "startLine": 74,
+      "endLine": 94,
+      "summary": "`erdosCondition` (0 < x ∧ x < d): the difference exceeds the first term, with worked examples"
+    },
+    {
+      "id": "main-statement",
+      "title": "Main Statement",
+      "startLine": 95,
+      "endLine": 122,
+      "summary": "`erdos_645_statement` and `erdos_645_explicit` formulations plus the `erdos_645_equiv` bridge"
+    },
+    {
+      "id": "proof-sketch",
+      "title": "Proof Sketch",
+      "startLine": 123,
+      "endLine": 144,
+      "summary": "Informal pigeonhole / finitary Ramsey proof sketch and the Main Theorem docstring"
+    },
+    {
+      "id": "why-interesting",
+      "title": "Why This Is Interesting",
+      "startLine": 145,
+      "endLine": 173,
+      "summary": "Relation to van der Waerden: `vanDerWaerden_2_3` and `erdos_645_implies_vdw`"
+    },
+    {
+      "id": "concrete-examples",
+      "title": "Concrete Examples",
+      "startLine": 174,
+      "endLine": 200,
+      "summary": "`colorByParity` and `colorByThreshold` example colorings witnessing the statement"
+    },
+    {
+      "id": "generalizations",
+      "title": "Generalization Questions",
+      "startLine": 201,
+      "endLine": 226,
+      "summary": "`erdos_645_generalized` k-AP version and open generalization questions"
+    },
+    {
+      "id": "finite-version",
+      "title": "The Finite Version",
+      "startLine": 227,
+      "endLine": 251,
+      "summary": "`finiteErdos645 N` and the threshold axiom `erdos645_threshold`"
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #645, which asks whether every 2-coloring of ℕ contains a monochromatic 3-term arithmetic progression x, x+d, x+2d where the common difference d exceeds the first term x. The answer is YES (known from the mathematical literature). This file formalizes the statement, proves definitional equivalences, and shows the problem implies van der Waerden's theorem; a machine-checked proof of the conjecture is not yet included.",
+    "implications": "**Theoretical Significance**: This problem illustrates how Ramsey theory constrains the structure of colorings.\n\nEven with the additional requirement d > x, monochromatic progressions cannot be avoided. The result connects to broader questions about density and structure in arithmetic combinatorics.",
+    "openQuestions": [
+      "What is the smallest N₀ such that every 2-coloring of {1, ..., N₀} contains a monochromatic 3-AP with d > x?",
+      "Does the statement generalize to r-colorings for r > 2?",
+      "For which α > 0 can we always find a monochromatic 3-AP with d > αx?",
+      "Does the k-AP version hold: for any k ≥ 3, is there a monochromatic k-AP with d > x?",
+      "What is the density of valid progressions in any 2-coloring?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Bool.Basic",
+      "Mathlib.Logic.Basic",
+      "Mathlib.Tactic.Common"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos645",
+    "lineCount": 251,
+    "axiomCount": 1,
+    "theoremCount": 3,
+    "definitionCount": 12,
+    "path": "Proofs/Erdos645Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-966",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, solved, van-der-waerden"
+    },
+    {
+      "targetId": "erdos-138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
+    },
+    {
+      "targetId": "erdos-176",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,216 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-02-oq-01",
+  "title": "Minimal Polynomial Generalization to K-Algebras",
+  "slug": "cayley-hamilton-minpoly-oq-02-oq-01",
+  "description": "A formal proof that the minimal polynomial is invariant under K-algebra isomorphisms and injective K-algebra homomorphisms. Matrix similarity is shown to be a special case: conjugation by an invertible matrix defines an AlgEquiv, and the abstract result from Mathlib immediately yields minpoly(P⁻¹AP) = minpoly(A).",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ02OQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "abstract-algebra",
+      "minimal-polynomial",
+      "k-algebras",
+      "algebra-equivalence",
+      "algebra-homomorphism",
+      "matrices",
+      "similarity",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "minpoly.algEquiv_eq",
+        "description": "The minimal polynomial is invariant under K-algebra equivalences: minpoly K (φ x) = minpoly K x for φ : S ≃ₐ[K] T",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "minpoly.algHom_eq",
+        "description": "The minimal polynomial is invariant under injective K-algebra homomorphisms",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "Polynomial.aeval_algHom_apply",
+        "description": "Polynomial evaluation commutes with algebra homomorphisms: aeval (φ x) p = φ (aeval x p)",
+        "module": "Mathlib.RingTheory.Polynomial.Basic"
+      },
+      {
+        "theorem": "AlgEquiv.ofAlgHom",
+        "description": "Constructs an algebra equivalence from two algebra homomorphisms that compose to the identity",
+        "module": "Mathlib.Algebra.Algebra.Equiv"
+      },
+      {
+        "theorem": "Units.mul_inv / Units.inv_mul",
+        "description": "P * P⁻¹ = 1 and P⁻¹ * P = 1 for units",
+        "module": "Mathlib.Algebra.Group.Units"
+      }
+    ],
+    "originalContributions": [
+      "conjAlgEquiv: conjugation by invertible matrix P as a K-algebra automorphism (AlgEquiv, not just AlgHom)",
+      "conjAlgEquiv_trans: composition of conjugation is conjugation by the product",
+      "Bridge connecting Mathlib's abstract minpoly invariance to concrete matrix similarity"
+    ],
+    "dateAdded": "2026-03-07",
+    "relatedProblems": [
+      {
+        "id": "cayley-hamilton-minpoly-oq-02",
+        "relationship": "Parent: proved minpoly similarity from scratch using minpoly.unique; this file derives it as a corollary of abstract theory"
+      },
+      {
+        "id": "cayley-hamilton-minpoly",
+        "relationship": "Uses the same minimal polynomial infrastructure at the abstract K-algebra level"
+      },
+      {
+        "id": "cayley-hamilton",
+        "relationship": "Foundational: Cayley-Hamilton provides integrality of matrices, enabling minpoly theory"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 217,
+    "assumptions": "0 axioms, 0 sorries. Abstract minpoly invariance derived from Mathlib's minpoly.algEquiv_eq and minpoly.algHom_eq. Original contribution is the conjAlgEquiv construction connecting abstract theory to matrix similarity.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "**Minimal Polynomial as a K-Algebra Invariant**\n\nThe minimal polynomial $\\mu_x$ of an element $x$ in a $K$-algebra $R$ is the monic generator of the ideal $\\ker(\\text{ev}_x : K[X] \\to R)$. A natural question is: if $\\varphi : R \\xrightarrow{\\sim} S$ is a $K$-algebra isomorphism, does $\\mu_{\\varphi(x)} = \\mu_x$?\n\nThe answer is YES, and it follows from a simple observation: polynomial evaluation commutes with algebra homomorphisms. If $\\varphi$ is a $K$-algebra map, then $\\text{ev}_{\\varphi(x)}(p) = \\varphi(\\text{ev}_x(p))$ for any $p \\in K[X]$. So if $\\mu_x$ annihilates $x$, it also annihilates $\\varphi(x)$, and vice versa when $\\varphi$ is injective.\n\nMatrix similarity ($B = P^{-1}AP$) is a special case: the conjugation map $A \\mapsto P^{-1}AP$ is a $K$-algebra automorphism of $M_n(K)$. By the abstract result, similar matrices share the same minimal polynomial.\n\nThis formalization upgrades the conjugation from an AlgHom (as in OQ-02) to an AlgEquiv (the correct abstraction), and derives the matrix result as a one-line corollary of Mathlib's `minpoly.algEquiv_eq`.",
+    "problemStatement": "**Theorem**: For any $K$-algebra isomorphism $\\varphi : R \\xrightarrow{\\sim} S$ and any element $x \\in R$:\n$$\\text{minpoly}(K, \\varphi(x)) = \\text{minpoly}(K, x)$$\n\nMore generally, this holds for any injective $K$-algebra homomorphism. As a corollary, similar matrices $B = P^{-1}AP$ have the same minimal polynomial.",
+    "text": "A formal proof that the minimal polynomial is invariant under K-algebra isomorphisms and injective K-algebra homomorphisms. Matrix similarity is shown to be a special case: conjugation by an invertible matrix defines an AlgEquiv, and the abstract result from Mathlib immediately yields minpoly(P⁻¹AP) = minpoly(A).",
+    "proofStrategy": "The proof has two main components:\n\n1. **Abstract theory** (from Mathlib): `minpoly.algEquiv_eq` and `minpoly.algHom_eq` establish that minimal polynomials are invariant under algebra isomorphisms and injective algebra homomorphisms.\n\n2. **Concrete construction**: We build `conjAlgEquiv P : Matrix n n K ≃ₐ[K] Matrix n n K` as a proper algebra equivalence (not just an endomorphism), with forward map $A \\mapsto P^{-1}AP$ and inverse $A \\mapsto PAP^{-1}$. The matrix similarity result follows by applying the abstract theorem to this AlgEquiv.\n\nAdditional corollaries show that subalgebra inclusions preserve minpoly, and that similar matrices are indistinguishable to any injective algebra homomorphism.",
+    "keyInsights": [
+      "The minimal polynomial is a K-algebra invariant, not merely a matrix invariant — it is preserved by any injective K-algebra homomorphism",
+      "Matrix conjugation A ↦ P⁻¹AP is an AlgEquiv (algebra automorphism), not just an AlgHom — this is the correct abstraction",
+      "The matrix similarity result from OQ-02 (proved from scratch) becomes a one-line corollary of the abstract Mathlib result",
+      "Subalgebra inclusions preserve minpoly: the minpoly computed within a subalgebra agrees with the full algebra",
+      "Composition of conjugations satisfies conjAlgEquiv(P).trans(conjAlgEquiv(Q)) = conjAlgEquiv(PQ), making P ↦ conjAlgEquiv P a group homomorphism"
+    ],
+    "prerequisites": [
+      "Linear algebra (characteristic polynomial, eigenvalues)",
+      "Ring theory (polynomial rings, minimal polynomial)",
+      "Module theory (finitely generated modules over PIDs)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-setup",
+      "title": "Module Header and Variable Declarations",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Documents the open question origin (generalizing minimal polynomial theory from matrices to abstract K-algebras) and the affirmative answer via Mathlib's minpoly.algEquiv_eq. Imports Mathlib and declares the field variable K used throughout the formalization.",
+      "mathContext": "Generalizing minimal polynomial theory from matrices to abstract $K$-algebras. The key insight: similarity invariance of $\\text{minpoly}$ follows from the abstract result that algebra isomorphisms preserve minimal polynomials."
+    },
+    {
+      "id": "abstract-theory",
+      "title": "Abstract Theory from Mathlib",
+      "startLine": 28,
+      "endLine": 64,
+      "summary": "Re-exports Mathlib's minpoly.algEquiv_eq and minpoly.algHom_eq as named theorems for the generalization to K-algebras.",
+      "mathContext": "Re-exports Mathlib's `minpoly.algEquiv_eq`: for an algebra isomorphism $\\varphi: A \\xrightarrow{\\sim} B$, $\\text{minpoly}_K(\\varphi(a)) = \\text{minpoly}_K(a)$. This is the abstract generalization of similarity invariance."
+    },
+    {
+      "id": "conjugation-algequiv",
+      "title": "Conjugation as an AlgEquiv",
+      "startLine": 65,
+      "endLine": 121,
+      "summary": "Constructs conjAlgEquiv P : Matrix n n K ≃ₐ[K] Matrix n n K with forward map A ↦ P⁻¹AP and inverse A ↦ PAP⁻¹. Upgrades the AlgHom from OQ-02 to a proper AlgEquiv.",
+      "mathContext": "Constructs `conjAlgEquiv P`: the conjugation map $A \\mapsto P^{-1}AP$ as a $K$-algebra automorphism of $M_n(K)$, for invertible $P$. Forward: $A \\mapsto P^{-1}AP$, inverse: $A \\mapsto PAP^{-1}$."
+    },
+    {
+      "id": "main-results",
+      "title": "Matrix Similarity via Abstract Theory",
+      "startLine": 122,
+      "endLine": 138,
+      "summary": "minpoly_similar_via_abstract and minpoly_conj_inv_via_abstract: matrix similarity preserves minpoly, derived as corollaries of minpoly.algEquiv_eq.",
+      "mathContext": "Matrix similarity preserves minimal polynomials: $\\text{minpoly}_K(P^{-1}AP) = \\text{minpoly}_K(A)$. Derived by applying the abstract `minpoly.algEquiv_eq` to `conjAlgEquiv P`."
+    },
+    {
+      "id": "applications",
+      "title": "Applications and Corollaries",
+      "startLine": 139,
+      "endLine": 217,
+      "summary": "Additional results: minpoly invariance under arbitrary algebra automorphisms, subalgebra inclusions, injective algebra homomorphisms. Also proves conjAlgEquiv_trans showing composition of conjugations.",
+      "mathContext": "Extensions: minpoly invariance under arbitrary algebra automorphisms (not just conjugation), subalgebra inclusions, and tensor products — all following from the abstract Mathlib infrastructure."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization answers the open question definitively: YES, minimal polynomial theory generalizes from matrices to abstract K-algebras. Mathlib's minpoly.algEquiv_eq proves invariance under algebra isomorphisms, and even under any injective algebra homomorphism. Matrix similarity is a special case where conjugation defines an AlgEquiv. All results compile with 0 sorries.",
+    "implications": "**Theoretical Significance**: **Mathematical Significance**\n\n1. **K-Algebra Invariant**: The minimal polynomial is fundamentally an invariant of K-algebra elements, not of matrices. Any injective algebra map preserves it.\n\n2. **Abstraction Hierarchy**: The progression OQ-02 → OQ-02-OQ-01 demonstrates a key proof pattern: concrete matrix results become one-line corollaries when lifted to the abstract algebra level.\n\n**3. AlgEquiv vs AlgHom**: Upgrading conjugation from AlgHom to AlgEquiv is not just aesthetics — it enables direct application of Mathlib's AlgEquiv-specific results and makes the invertibility of the map explicit.\n\n4. **Subalgebra Independence**: The minpoly of an element is independent of which subalgebra you compute it in, as long as the inclusion is injective. This is important for representation theory.\n\n5. **Group Homomorphism**: The map P ↦ conjAlgEquiv P is a group homomorphism from the unit group to the automorphism group, connecting group theory with algebra theory.",
+    "openQuestions": [
+      "Can the Skolem-Noether theorem be formalized: every K-algebra automorphism of Mat(n,K) is inner (i.e., conjugation by some invertible matrix)?",
+      "Can we characterize exactly when minpoly is invariant under non-injective algebra homomorphisms?",
+      "Can we formalize the relationship between minpoly invariance and the representation theory of algebras?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "MinpolyKAlgebra",
+    "lineCount": 217,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/CayleyHamiltonMinpolyOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "Uses the same minimal polynomial infrastructure at the abstract K-algebra level"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Foundational: Cayley-Hamilton provides integrality of matrices, enabling minpoly theory"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Cayley, A.",
+      "title": "A Memoir on the Theory of Matrices",
+      "year": "1858",
+      "venue": "Philosophical Transactions of the Royal Society of London, 148, 17–37",
+      "note": "Original paper introducing the Cayley-Hamilton theorem; the minimal polynomial divides the characteristic polynomial, making this the foundational result that enables minimal polynomial theory for matrices"
+    },
+    {
+      "authors": "Jacobson, N.",
+      "title": "Basic Algebra II",
+      "year": "1989",
+      "venue": "W. H. Freeman, 2nd edition",
+      "note": "Develops minimal polynomial theory for elements of K-algebras (not just matrices), establishing invariance under algebra isomorphisms; the abstract treatment that this Lean formalization formalizes via minpoly.algEquiv_eq"
+    },
+    {
+      "authors": "Lang, S.",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer, Graduate Texts in Mathematics, Vol. 211, revised 3rd edition",
+      "note": "Chapter XIV treats the minimal polynomial as a K-algebra invariant and proves that similar matrices share the same minimal polynomial; Chapter II develops the algebra homomorphism framework used in the AlgEquiv construction"
+    },
+    {
+      "authors": "Atiyah, M. F. and Macdonald, I. G.",
+      "title": "Introduction to Commutative Algebra",
+      "year": "1969",
+      "venue": "Addison-Wesley",
+      "note": "Chapter 5 develops the theory of integral elements and minimal polynomials in ring extensions; the abstract framework connecting polynomial evaluation with algebra homomorphisms (aeval_algHom_apply) is implicit throughout"
+    },
+    {
+      "authors": "Noether, E.",
+      "title": "Hyperkomplexe Größen und Darstellungstheorie",
+      "year": "1929",
+      "venue": "Mathematische Zeitschrift, 30(1), 641–692",
+      "note": "Establishes that K-algebra automorphisms of matrix algebras Mat(n,K) are all inner (Skolem-Noether theorem); directly implies that matrix conjugation A ↦ P⁻¹AP is an algebra automorphism, the key construction in conjAlgEquiv"
+    }
+  ],
+  "sorries": 0
+}

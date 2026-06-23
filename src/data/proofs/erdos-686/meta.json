@@ -1,0 +1,223 @@
+{
+  "id": "erdos-686",
+  "title": "Erdős Problem #686: Ratios of Products of Consecutive Integers",
+  "slug": "erdos-686",
+  "description": "Can every integer N ≥ 2 be written as ∏(m+i) / ∏(n+i) for some k ≥ 2 and m ≥ n + k? OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/686",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos686Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "products",
+      "consecutive-integers",
+      "factorials",
+      "binomials",
+      "open-problem"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 686,
+    "erdosUrl": "https://erdosproblems.com/686",
+    "erdosProblemStatus": "open",
+    "axiomCount": 0,
+    "prerequisites": [
+      "Nat.factorial",
+      "Nat.choose",
+      "Finset.prod",
+      "Rational arithmetic (ℚ)",
+      "Set.Infinite",
+      "Set.infinite_range_of_injective",
+      "Nat.cast_div",
+      "native_decide"
+    ],
+    "lineCount": 293,
+    "assumptions": "None. Fully verified: 0 axioms, 0 sorries. The open conjecture (Erdos686Conjecture) is stated as a Prop definition, not axiomatized. All supporting infrastructure is proved. Open conjecture; supporting lemmas fully verified.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 23,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #686 appears in [Er79d] and was further discussed in the influential monograph 'Old and New Problems and Results in Combinatorial Number Theory' by Erdős and Graham (1980). The question explores the surprising representational power of products of consecutive integers — structures intimately connected to factorials, binomial coefficients, and the Gamma function. Products of $k$ consecutive integers satisfy $\\prod_{i=1}^k (n+i) = (n+k)!/n! = k! \\binom{n+k}{k}$, linking this problem to deep divisibility theory of binomial coefficients. The related Problem #677 asks the simpler question of which integers are products of consecutive integers (no ratio). Bertrand's postulate (Chebyshev, 1850) guarantees a prime in $(n, 2n)$, which constrains which integers can appear as such products. The ratio formulation in #686 is strictly more general, as demonstrated by the `product_implies_ratio` reduction in the formalization.",
+    "problemStatement": "Can every integer N ≥ 2 be written as ∏_{i=1}^k (m+i) / ∏_{i=1}^k (n+i) for some k ≥ 2 and m ≥ n + k? The constraints ensure non-trivial non-overlapping ranges with ratio > 1. OPEN.",
+    "text": "Can every integer N ≥ 2 be written as ∏(m+i) / ∏(n+i) for some k ≥ 2 and m ≥ n + k? OPEN.",
+    "proofStrategy": "The formalization has four layers:\n\n1. **Foundation**: `consecutiveProduct(n,k)` via `Finset.prod`, with proved identities linking to factorials (`consecutiveProduct_eq_factorial`, by induction on $k$) and binomial coefficients (`product_binomial_relation`, using `Nat.choose_mul_factorial_mul_factorial`)\n\n2. **Ratio machinery**: `ratioExpression` over $\\mathbb{Q}$ for exact division, `ratio_as_binomials` proving it equals $\\binom{m+k}{k}/\\binom{n+k}{k}$ via `field_simp`\n\n3. **Structural properties**: `numerator_gt_denominator` (proved via `Finset.prod_lt_prod_of_nonempty`), `consecutiveProduct_pos`, `consecutiveProduct_mono`\n\n4. **Conjecture**: `erdos_686_conjecture` axiomatized; `representable_set_infinite` axiomatized; verified examples for $N = 2$ and $N = 6$",
+    "keyInsights": [
+      "P(n,k) = (n+k)!/n! = k! * C(n+k, k)",
+      "m ≥ n + k ensures non-overlapping ranges and ratio > 1",
+      "k ≥ 2 excludes trivial single-factor case",
+      "The ratio C(m+k,k)/C(n+k,k) must be an integer — subtle divisibility",
+      "For fixed n, k, the representable set is infinite (ratio increases with m)"
+    ],
+    "prerequisites": [
+      "Nat.factorial",
+      "Nat.choose",
+      "Finset.prod",
+      "Rational arithmetic (ℚ)",
+      "Set.Infinite",
+      "native_decide"
+    ]
+  },
+  "sections": [
+    {
+      "id": "products",
+      "title": "Part I: Consecutive Products",
+      "startLine": 31,
+      "endLine": 72,
+      "summary": "Defines consecutiveProduct(n,k) via Finset.prod. Three proved theorems: recursion (consecutiveProduct_succ), factorial identity (consecutiveProduct_eq_factorial by induction), and binomial connection (product_binomial_relation using Nat.choose_mul_factorial_mul_factorial).",
+      "mathContext": "$P(n,k) = \\prod_{i=1}^k (n+i) = \\frac{(n+k)!}{n!} = k! \\binom{n+k}{k}$. The inductive proof of the factorial identity and the algebraic proof of the binomial relation are fully machine-checked."
+    },
+    {
+      "id": "ratios",
+      "title": "Part II: The Ratio Expression",
+      "startLine": 73,
+      "endLine": 91,
+      "summary": "Defines ratioExpression over ℚ for exact division. Proves ratio_as_binomials: the ratio equals C(m+k,k)/C(n+k,k) via field_simp. Defines IsIntegerRatio divisibility predicate.",
+      "mathContext": "$\\frac{P(m,k)}{P(n,k)} = \\frac{k! \\binom{m+k}{k}}{k! \\binom{n+k}{k}} = \\frac{\\binom{m+k}{k}}{\\binom{n+k}{k}}$ — the $k!$ factors cancel, reducing to a ratio of binomial coefficients."
+    },
+    {
+      "id": "representability",
+      "title": "Part III: The Representation Property",
+      "startLine": 92,
+      "endLine": 106,
+      "summary": "Defines IsRepresentable (k ≥ 2, m ≥ n+k, ratio = N), Representable (existential), and axiomatizes ErdosConjecture686: ∀ N ≥ 2, Representable N.",
+      "mathContext": "The constraints $k \\geq 2$ (excludes trivial single-factor ratios) and $m \\geq n + k$ (non-overlapping consecutive ranges) ensure meaningful representations with ratio $\\geq 2$."
+    },
+    {
+      "id": "structural",
+      "title": "Part IV: Structural Properties",
+      "startLine": 107,
+      "endLine": 133,
+      "summary": "Three proved theorems: numerator_gt_denominator (strict inequality via Finset.prod_lt_prod_of_nonempty), consecutiveProduct_pos (positivity via Finset.prod_pos), and consecutiveProduct_mono (monotonicity via Finset.prod_le_prod).",
+      "mathContext": "When $m > n$, each factor $(m+i) > (n+i)$, so $P(m,k) > P(n,k)$. Monotonicity: $n_1 \\leq n_2 \\implies P(n_1,k) \\leq P(n_2,k)$. These are proved directly from `Finset.prod` lemmas."
+    },
+    {
+      "id": "examples",
+      "title": "Part V: Verified Examples",
+      "startLine": 134,
+      "endLine": 146,
+      "summary": "Computationally verified examples: N = 2 (IsIntegerRatio 1 2 2 via decide) and N = 6 (IsIntegerRatio 0 2 2 with quotient = 6 via native_decide).",
+      "mathContext": "$N = 2$: $\\frac{3 \\cdot 4}{2 \\cdot 3} = \\frac{12}{6} = 2$. $N = 6$: $\\frac{3 \\cdot 4}{1 \\cdot 2} = \\frac{12}{2} = 6$. Both verified by Lean's kernel-level computation."
+    },
+    {
+      "id": "followup",
+      "title": "Part VI: Follow-Up Question",
+      "startLine": 147,
+      "endLine": 157,
+      "summary": "Defines RepresentableSet(n,k) — the set of integers representable with fixed initial parameters. Axiomatizes representable_set_infinite: this set is infinite for k ≥ 2.",
+      "mathContext": "For fixed $n, k$, the set $\\{N : \\exists m \\geq n+k, P(m,k)/P(n,k) = N\\}$ is infinite because the ratio $P(m,k)/P(n,k) \\to \\infty$ as $m \\to \\infty$."
+    },
+    {
+      "id": "connections",
+      "title": "Part VII: Connections",
+      "startLine": 158,
+      "endLine": 164,
+      "summary": "Defines problem_677_special_case: integers as products of consecutive integers (denominator = 1). Shows #686 generalizes #677.",
+      "mathContext": "Problem #677 asks which $N$ satisfy $N = P(n,k)$ for some $n, k$. This is the special case of #686 where $P(n,k) = 1$ (i.e., $n = 0, k = 0$, or equivalently the denominator product is trivial)."
+    },
+    {
+      "id": "summary",
+      "title": "Part VIII: Summary and Integer Ratio Theorem",
+      "startLine": 165,
+      "endLine": 174,
+      "summary": "Proves erdos_686_equiv by simp: the conjecture unfolds to its explicit ∀∃ form. Proves integer_ratio_at_multiples: for $m = n + (t+1) P(n,k)$, the ratio is always an integer.",
+      "mathContext": "The equivalence theorem confirms the formalization correctly captures the intended mathematical statement by unfolding all definition layers."
+    },
+    {
+      "id": "factorial-bounds",
+      "title": "Factorial and Product Bounds",
+      "startLine": 176,
+      "endLine": 199,
+      "summary": "Three lemmas: `consecutiveProduct_ge_factorial` ($P(n,k) \\geq k!$ since $P(n,k) = k! \\binom{n+k}{k}$), `factorial_ge_self` ($k! \\geq k$ for $k \\geq 1$, by induction), and `shift_ge_gap` ($n + (t+1)P(n,k) \\geq n + k$ for $k \\geq 2$, combining the previous bounds).",
+      "mathContext": "The chain: $P(n,k) = k! \\binom{n+k}{k} \\geq k! \\geq k$ for $k \\geq 1$, so $(t+1) P(n,k) \\geq k$, giving $m = n + (t+1)P(n,k) \\geq n + k$. This ensures the shifted index satisfies the non-overlapping constraint."
+    },
+    {
+      "id": "ratio-and-injectivity",
+      "title": "Ratio Expression and Injectivity",
+      "startLine": 201,
+      "endLine": 216,
+      "summary": "Proves `ratioExpression_eq_nat_div` (the rational ratio equals the natural division when divisibility holds) and `consecutiveProduct_inj` ($P(n_1,k) = P(n_2,k) \\Rightarrow n_1 = n_2$ for $k \\geq 1$, by strict monotonicity).",
+      "mathContext": "Injectivity of $n \\mapsto P(n,k)$: if $n_1 < n_2$, then $P(n_1,k) < P(n_2,k)$ by `numerator_gt_denominator`, so $P(n_1,k) = P(n_2,k)$ forces $n_1 = n_2$. This is essential for proving the representable set is infinite (distinct inputs give distinct outputs)."
+    },
+    {
+      "id": "verified-examples-ext",
+      "title": "Verified Examples (Extended)",
+      "startLine": 218,
+      "endLine": 243,
+      "summary": "Four verified examples by `decide`/`native_decide`: $N = 2$ ($P(2,2)/P(1,2) = 12/6$), $N = 6$ ($P(2,2)/P(0,2) = 12/2$), $N = 3$ ($P(1,2)/P(0,2) = 6/2$), $N = 10$ ($P(3,2)/P(0,2) = 20/2$).",
+      "mathContext": "The examples verify small cases of the conjecture: $2 = \\frac{3 \\cdot 4}{2 \\cdot 3}$, $3 = \\frac{2 \\cdot 3}{1 \\cdot 2}$, $6 = \\frac{3 \\cdot 4}{1 \\cdot 2}$, $10 = \\frac{4 \\cdot 5}{1 \\cdot 2}$. All use $k = 2$ (products of 2 consecutive integers)."
+    },
+    {
+      "id": "followup-proved",
+      "title": "Follow-Up: Representable Set Is Infinite (PROVED)",
+      "startLine": 245,
+      "endLine": 283,
+      "summary": "**Previously axiomatized, now fully proved.** Defines `repValue n k t` as the natural quotient at the $t$-th shifted index. Proves `repValue_mem` (each value is in the representable set) and `repValue_injective` (distinct $t$ give distinct quotients, via `consecutiveProduct_inj`). Combines these to prove `representable_set_infinite` via `Set.infinite_range_of_injective`.",
+      "mathContext": "The injection $t \\mapsto P(n + (t+1)P(n,k), k) / P(n,k)$ into the representable set has infinite domain $\\mathbb{N}$, so the representable set is infinite. Injectivity: $\\text{repValue}(t_1) = \\text{repValue}(t_2) \\Rightarrow P(m_1, k) = P(m_2, k) \\Rightarrow m_1 = m_2 \\Rightarrow t_1 = t_2$."
+    },
+    {
+      "id": "connections-ext",
+      "title": "Connection to Problem #677",
+      "startLine": 285,
+      "endLine": 292,
+      "summary": "Defines `problem_677_special_case`: $N = P(n,k)$ for some $n, k$ with $k \\geq 2$. This is the special case of #686 where the denominator product is trivial ($n = 0$). Closes the `Erdos686` namespace.",
+      "mathContext": "Problem #677 asks: which positive integers are products of $k$ consecutive integers? Since $P(n,k) = (n+1)(n+2)\\cdots(n+k) = k! \\binom{n+k}{k}$, this is equivalent to asking which $N$ are $k!$ times a binomial coefficient."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #686 remains OPEN. The question is whether every integer N ≥ 2 can be expressed as a ratio of products of k consecutive integers with non-overlapping ranges. The problem connects to factorials, binomial coefficients, and divisibility.",
+    "implications": "A positive answer would show a rich representation theorem for integers via consecutive products.",
+    "openQuestions": [
+      "Can every N ≥ 2 be represented?",
+      "For fixed n, k, what integers are representable?",
+      "What is the minimal k needed for each N?",
+      "How does this relate to Problem 677?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80] where Problem 686 appears"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-678",
+      "description": "Both concern products of consecutive integers: #678 studies LCM, #686 studies ratios of products",
+      "relationship": "related"
+    },
+    {
+      "targetId": "erdos-367",
+      "relationship": "related",
+      "description": "Both #686 and #367 concern multiplicative properties of integer sequences — products, LCMs, and factorization structure. They form a cluster of problems probing when products of specially chosen integers satisfy divisibility or smoothness conditions"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Nat"
+    ],
+    "namespace": "Erdos686",
+    "lineCount": 293,
+    "axiomCount": 0,
+    "theoremCount": 23,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos686Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

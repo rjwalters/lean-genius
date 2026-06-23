@@ -1,0 +1,139 @@
+{
+  "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02",
+  "slug": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GeometricSeriesOQ07OQ01OQ01OQ01"
+    ],
+    "opens": [
+      "Finset",
+      "GeometricSeriesOQ07OQ01OQ01OQ01"
+    ],
+    "namespace": "GeometricSeriesOQ07OQ01OQ01OQ01OQ02",
+    "lineCount": 246,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "path": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "title": "The Explicit Formula for the Eulerian Numbers: ⟨n,k⟩ = ∑ᵢ (−1)ⁱ·C(n+1,i)·(k+1−i)ⁿ",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "geometric-series",
+      "eulerian-numbers",
+      "explicit-formula",
+      "inclusion-exclusion",
+      "binomial-coefficients",
+      "finite-differences",
+      "descent-statistic",
+      "induction",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 246,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "eulerian_eq_explicit: THE MAIN RESULT — the classical closed form for the combinatorial Eulerian numbers built in the parent entry, ⟨n,k⟩ = ∑_{i=0}^{k} (−1)ⁱ·C(n+1,i)·(k+1−i)ⁿ (an identity of integers). This is the explicit inclusion–exclusion formula that answers the general open question recorded by the sibling oq-01, which had only computed the low columns k = 0,1,2. Mathlib has neither the Eulerian numbers nor this formula, so both the statement and the proof are built here on top of the parent's eulerian triangle.",
+      "eulerianExplicit_succ_succ: the key recurrence — the alternating binomial sum eulerianExplicit obeys the very triangle recurrence that defines the Eulerian numbers, eulerianExplicit (n+1) (k+1) = (k+2)·eulerianExplicit n (k+1) + (n−k)·eulerianExplicit n k (over ℤ, with honest integer subtraction). Its proof is a finite-difference computation: split C(n+2,i) by Pascal's rule, reindex the shifted sum via Finset.sum_range_succ', and collapse the two defect sums with the absorption identities; the residual row-n sums cancel exactly.",
+      "absorb_up / absorb_down: the two binomial absorption identities over ℤ driving the collapse, C(n+1,j+1)·(j+1) = (n+1)·C(n,j) and C(n+1,i)·(n+1−i) = (n+1)·C(n,i). The downward identity is stated for all i (both sides vanishing for i > n) and is derived from the upward one by the symmetry C(n,n−i) = C(n,i), sidestepping any direct factorial manipulation; both are transferred to ℤ so the per-term collapse is closed by linear_combination without truncated subtraction.",
+      "base_row_sum: the n = 0 base row ∑_{i<k+2} (−1)ⁱ·C(1,i) = 0, the alternating sum that makes eulerianExplicit 0 (k+1) vanish (matching ⟨0,k+1⟩ = 0), proved by a short induction peeling the vanishing tail C(1,i) = 0 for i ≥ 2.",
+      "Matching argument: with the recurrence and base row in hand, a single induction on n identifies eulerianExplicit with the parent's combinatorial eulerian; the truncated natural subtraction (n−k : ℕ) of the Eulerian recurrence is reconciled with the integer (n−k : ℤ) of eulerianExplicit_succ_succ precisely on the diagonal-vanishing locus, using the parent's ⟨n,k⟩ = 0 for n < k."
+    ],
+    "prerequisites": [
+      "Parent: geometric-series-oq-07-oq-01-oq-01-oq-01 (the combinatorial Eulerian numbers) — supplies the eulerian triangle, its recurrence eulerian_succ_succ, the base values eulerian_zero_succ / eulerian_succ_zero, and the diagonal vanishing eulerian_eq_zero_of_lt reused here",
+      "Mathlib's Nat.choose with Pascal's rule (Nat.choose_succ_succ), the binomial absorption identity (Nat.add_one_mul_choose_eq), and the symmetry Nat.choose_symm, plus Nat.choose_eq_zero_of_lt for the degenerate range",
+      "Casting ℕ identities to ℤ (Nat.cast_sub, push_cast) so the alternating-sum manipulations carry honest integer subtraction and the per-term steps close by linear_combination",
+      "Finset reindexing: Finset.sum_range_succ', Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.mul_sum, Finset.sum_eq_zero"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.add_one_mul_choose_eq",
+        "description": "The binomial absorption identity (n+1)·C(n,k) = C(n+1,k+1)·(k+1). Cast to ℤ this is absorb_up, and via the symmetry C(n,n−i)=C(n,i) it also yields absorb_down; together they collapse the two defect sums to a common row-n alternating sum that cancels in eulerianExplicit_succ_succ.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's rule (n+1).choose (k+1) = n.choose k + n.choose (k+1). Used (over ℤ) to split C(n+2,j+1) into C(n+1,j) + C(n+1,j+1), the Pascal step that turns the order-(n+1) Eulerian sum into S1 − S2.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_symm",
+        "description": "The binomial symmetry n.choose (n−k) = n.choose k (for k ≤ n). Lets absorb_down be deduced from absorb_up by reflecting the index, avoiding a separate factorial computation.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_succ'",
+        "description": "Peels the first term of a range sum with an index shift, ∑_{i<n+1} f i = ∑_{i<n} f (i+1) + f 0. Drives the reindexing that exposes the vanishing i=0 boundary term in the Pascal step and in the upward collapse.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "GeometricSeriesOQ07OQ01OQ01OQ01.eulerian",
+        "description": "The parent's from-scratch combinatorial Eulerian-number triangle ⟨n,k⟩ with its recurrence eulerian_succ_succ and diagonal vanishing eulerian_eq_zero_of_lt. Reused verbatim so this entry only adds the explicit formula, not the underlying combinatorial object.",
+        "module": "Proofs.GeometricSeriesOQ07OQ01OQ01OQ01"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-01",
+      "question": "Use the explicit formula to prove non-negativity and the descent interpretation directly: show ∑_{i=0}^{k} (−1)ⁱ·C(n+1,i)·(k+1−i)ⁿ ≥ 0 and equals the number of permutations of {1,…,n} with exactly k descents, connecting the integer inclusion–exclusion count proved here to the surjection/cell-count combinatorial model.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-02",
+      "question": "Derive the palindromy ⟨n,k⟩ = ⟨n,n−1−k⟩ from the explicit formula by the substitution i ↦ n+1−i in the alternating sum, giving an analytic proof complementary to the coefficient-extraction proof of palindromy elsewhere in the Eulerian lineage.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent (the combinatorial Eulerian numbers). The parent defines the Eulerian-number triangle ⟨n,k⟩ from the recurrence and identifies it with the coefficients of the Eulerian polynomial. This entry proves the explicit inclusion–exclusion closed form ⟨n,k⟩ = ∑ᵢ (−1)ⁱ·C(n+1,i)·(k+1−i)ⁿ for those numbers, reusing the parent's eulerian, eulerian_succ_succ and eulerian_eq_zero_of_lt."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Sibling that answered the parent's row-sum open question and computed the low columns k = 0,1,2 of the Eulerian triangle, explicitly recording the GENERAL explicit formula as its follow-up open question. This entry settles that general case: the binomial recurrence W(n+1,k+1) = (k+2)·W n (k+1) + (n−k)·W n k it flagged is exactly eulerianExplicit_succ_succ proved here."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling under the same parent. oq-03 proves Worpitzky's identity nᵐ = ∑ⱼ ⟨m,j⟩·C(n+j,m) — the change of basis from powers to shifted binomials. The explicit formula proved here is the inverse direction (recovering each ⟨n,k⟩ as an alternating binomial sum of powers); the two are finite-difference duals."
+    }
+  ],
+  "references": [
+    {
+      "title": "Concrete Mathematics (Eulerian numbers, the explicit formula, the descent statistic)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for the Eulerian-number triangle recurrence and the explicit closed form ⟨n,k⟩ = ∑_{i} (−1)ⁱ·C(n+1,i)·(k+1−i)ⁿ used here."
+    },
+    {
+      "title": "Mathlib4: Data.Nat.Choose.Basic",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Pascal's rule (Nat.choose_succ_succ), the binomial absorption identity (Nat.add_one_mul_choose_eq), and the symmetry (Nat.choose_symm) powering the absorption lemmas absorb_up / absorb_down."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Building on the parent entry's from-scratch combinatorial Eulerian numbers ⟨n,k⟩, this entry proves their classical explicit (inclusion–exclusion) closed form as an identity of integers: ⟨n,k⟩ = ∑_{i=0}^{k} (−1)ⁱ·C(n+1,i)·(k+1−i)ⁿ. This answers the general open question flagged by the sibling oq-01, which had only computed the columns k = 0,1,2. The strategy is to define the alternating binomial sum eulerianExplicit and show it satisfies the very triangle recurrence that defines the Eulerian numbers: eulerianExplicit_succ_succ proves eulerianExplicit (n+1)(k+1) = (k+2)·eulerianExplicit n (k+1) + (n−k)·eulerianExplicit n k by splitting C(n+2,i) with Pascal's rule, reindexing via Finset.sum_range_succ', and collapsing the two defect sums with the binomial absorption identities absorb_up [C(n+1,j+1)·(j+1) = (n+1)·C(n,j)] and absorb_down [C(n+1,i)·(n+1−i) = (n+1)·C(n,i)] — the leftover row-n sums cancel exactly. With the base row ∑_{i<k+2}(−1)ⁱ·C(1,i) = 0 in hand, a single induction on n matches eulerianExplicit to the parent's eulerian, the truncated subtraction (n−k : ℕ) being reconciled with the integer (n−k : ℤ) on the diagonal-vanishing locus via ⟨n,k⟩ = 0 for n < k. 246 lines, 4 theorems, 1 definition, 0 axioms, 0 sorries; everything depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "The explicit formula gives each Eulerian number as a finite alternating sum of powers — the inverse change of basis to Worpitzky's identity (the sibling oq-03), which writes powers in the shifted-binomial basis. Concretely it is the (n+1)-st finite difference of the monomial tⁿ, and it makes manifest that the ⟨n,k⟩ are integers (and, with a sign argument, non-negative) even though they are defined by a recurrence. Because the proof needs only Pascal's rule, two absorption identities, and the parent's triangle, it is a reusable, Mathlib-free addition to the Eulerian-number theory developed in this gallery, and its reusable lemma eulerianExplicit_succ_succ supplies the binomial recurrence the sibling oq-01 left open.",
+    "openQuestions": [
+      "Use the explicit formula to prove non-negativity and the descent interpretation of ⟨n,k⟩ directly via inclusion–exclusion / surjection counting.",
+      "Derive the palindromy ⟨n,k⟩ = ⟨n,n−1−k⟩ from the explicit formula by the substitution i ↦ n+1−i, an analytic complement to the coefficient-extraction proof."
+    ]
+  }
+}

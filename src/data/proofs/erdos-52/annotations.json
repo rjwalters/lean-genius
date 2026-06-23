@@ -1,0 +1,214 @@
+[
+  {
+    "id": "erdos-52-imports",
+    "proofId": "erdos-52",
+    "type": "concept",
+    "range": {
+      "startLine": 14,
+      "endLine": 20
+    },
+    "title": "Imports and Dependencies",
+    "content": "Imports from Mathlib: basic integer and natural number arithmetic, Finset for finite sets and their cardinalities, Finset.Image for mapping operations over finite sets, and real number basics for exponent bounds. These provide the infrastructure for defining sumsets, product sets, and stating asymptotic growth conjectures.",
+    "mathContext": "The formalization works in $\\mathbb{Z}$ (integers) with finite subsets modeled as `Finset ℤ`. Cardinalities live in $\\mathbb{N}$, while exponent bounds require coercion to $\\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset",
+      "Mathlib",
+      "type coercion"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "erdos-52-defs",
+    "proofId": "erdos-52",
+    "type": "definition",
+    "range": {
+      "startLine": 26,
+      "endLine": 36
+    },
+    "title": "Sumset, Product Set, and Sum-Product Maximum",
+    "content": "Three core definitions: sumset $A$ computes $A + A = \\{a + b : a, b \\in A\\}$ via the Cartesian product $A \\times A$ followed by an image map. productset $A$ computes $A \\cdot A = \\{a \\cdot b : a, b \\in A\\}$ analogously. sumProductMax takes $\\max(|A+A|, |A \\cdot A|)$, the central quantity in the conjecture. Note these are multisets collapsed to sets — distinct sums/products only.",
+    "mathContext": "$A + A := \\{a + b : a, b \\in A\\}$, $A \\cdot A := \\{a \\cdot b : a, b \\in A\\}$, $\\text{spMax}(A) := \\max(|A+A|, |A \\cdot A|)$. The sumset always satisfies $|A| \\leq |A+A| \\leq |A|^2$, with equality on the left for arithmetic progressions and on the right for Sidon-like sets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Minkowski sum",
+      "multiplicative structure",
+      "additive energy",
+      "Plünnecke–Ruzsa inequality"
+    ],
+    "prerequisites": [
+      "finite set theory",
+      "Cartesian product",
+      "image of a function"
+    ]
+  },
+  {
+    "id": "erdos-52-conjecture",
+    "proofId": "erdos-52",
+    "type": "concept",
+    "range": {
+      "startLine": 42,
+      "endLine": 52
+    },
+    "title": "Erdős Problem 52: The Sum-Product Conjecture",
+    "content": "The Erdős–Szemerédi conjecture (1983): for every $\\varepsilon > 0$, there exists $C > 0$ such that for all finite $A \\subset \\mathbb{Z}$ with $|A| \\geq 2$, $\\max(|A+A|, |A \\cdot A|) \\geq C \\cdot |A|^{2-\\varepsilon}$. This is one of the most important open problems in additive combinatorics, with a $250 Erdős prize. The conjecture asserts that no finite set can simultaneously have both small additive and small multiplicative structure — a profound dichotomy between addition and multiplication.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\ \\exists C > 0,\\ \\forall A \\subset \\mathbb{Z},\\ |A| \\geq 2 \\Rightarrow \\max(|A+A|, |A \\cdot A|) \\geq C \\cdot |A|^{2-\\varepsilon}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Szemerédi conjecture",
+      "additive structure vs multiplicative structure",
+      "sum-product phenomenon",
+      "Freiman's theorem"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "additive combinatorics basics",
+      "finite set cardinality"
+    ]
+  },
+  {
+    "id": "erdos-52-es-theorem",
+    "proofId": "erdos-52",
+    "type": "concept",
+    "range": {
+      "startLine": 58,
+      "endLine": 64
+    },
+    "title": "Erdős–Szemerédi Theorem (1983)",
+    "content": "The foundational result by Erdős and Szemerédi (1983): there exists an absolute constant $c > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ for all finite $A \\subset \\mathbb{Z}$ with $|A| \\geq 2$. Their original proof used the Szemerédi–Trotter incidence theorem and gave $c = 1/31$. Nathanson and Ford later obtained $c = 1/15$. This broke the linear barrier and launched the entire sum-product research program.",
+    "mathContext": "$\\exists c > 0,\\ \\forall A \\subset \\mathbb{Z},\\ |A| \\geq 2 \\Rightarrow \\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$. Original exponent: $1 + 1/31$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi–Trotter theorem",
+      "incidence geometry",
+      "crossing number inequality",
+      "sum-product in finite fields"
+    ],
+    "prerequisites": [
+      "combinatorial geometry",
+      "incidence bounds",
+      "crossing number lemma"
+    ]
+  },
+  {
+    "id": "erdos-52-bloom",
+    "proofId": "erdos-52",
+    "type": "concept",
+    "range": {
+      "startLine": 70,
+      "endLine": 77
+    },
+    "title": "Bloom's 2025 Bound",
+    "content": "Bloom (2025) proved the current best exponent for the sum-product problem: $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1270/951 - o(1)}$ where $1270/951 \\approx 1.3354$. This improved on a long series of results: Elekes (1997, exponent 5/4), Solymosi (2009, exponent 4/3), Konyagin–Shkredov (2016, exponent 4/3 + 5/9813), and Rudnev–Stevens (2022, exponent 1334/1000). Each improvement required new geometric or algebraic techniques.",
+    "mathContext": "$\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1270/951 - o(1)}$, where $\\frac{1270}{951} \\approx 1.3354$. The progression of exponents: $1 + \\frac{1}{31}$ (1983) $\\to \\frac{5}{4}$ (1997) $\\to \\frac{4}{3}$ (2009) $\\to 1.3354$ (2025).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Elekes' geometric method",
+      "Solymosi's multiplicative energy argument",
+      "Konyagin–Shkredov refinement",
+      "point-line incidences"
+    ],
+    "prerequisites": [
+      "multiplicative energy",
+      "Szemerédi–Trotter theorem",
+      "additive energy"
+    ]
+  },
+  {
+    "id": "erdos-52-trivial-lower",
+    "proofId": "erdos-52",
+    "type": "concept",
+    "range": {
+      "startLine": 83,
+      "endLine": 91
+    },
+    "title": "Trivial Lower Bounds on Sumset and Product Set",
+    "content": "Two elementary bounds: $|A| \\leq |A+A|$ (since $a + \\min(A)$ gives $|A|$ distinct sums) and $|A| \\leq |A \\cdot A|$ when $0 \\notin A$ and $|A| \\geq 2$ (since multiplication by a fixed nonzero element is injective). The product set lower bound requires excluding zero because $0 \\cdot a = 0$ for all $a$, collapsing the product set. These are tight for arithmetic and geometric progressions respectively.",
+    "mathContext": "$|A| \\leq |A + A|$ for nonempty $A$. $|A| \\leq |A \\cdot A|$ when $0 \\notin A$ and $|A| \\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "injective maps",
+      "arithmetic progressions",
+      "geometric progressions",
+      "doubling constant"
+    ],
+    "prerequisites": [
+      "injective function properties",
+      "finite set cardinality"
+    ]
+  },
+  {
+    "id": "erdos-52-trivial-upper",
+    "proofId": "erdos-52",
+    "type": "concept",
+    "range": {
+      "startLine": 93,
+      "endLine": 98
+    },
+    "title": "Trivial Upper Bounds",
+    "content": "Both $|A+A| \\leq |A|^2$ and $|A \\cdot A| \\leq |A|^2$ since each set is the image of $A \\times A$ under a binary operation. These upper bounds are rarely tight: equality in the sumset requires all pairwise sums to be distinct (a Sidon set property), while equality in the product set requires all pairwise products to be distinct (a multiplicative Sidon set). Together with the lower bounds, we have $|A| \\leq \\text{spMax}(A) \\leq |A|^2$, and the conjecture asserts spMax is near the upper extreme.",
+    "mathContext": "$|A+A| \\leq |A|^2$ and $|A \\cdot A| \\leq |A|^2$, giving $|A| \\leq \\max(|A+A|, |A \\cdot A|) \\leq |A|^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B_2 sets",
+      "multiplicative Sidon sets",
+      "Cauchy–Davenport theorem"
+    ],
+    "prerequisites": [
+      "image cardinality bounds",
+      "Cartesian product"
+    ]
+  },
+  {
+    "id": "erdos-52-mfold",
+    "proofId": "erdos-52",
+    "type": "theorem",
+    "range": {
+      "startLine": 104,
+      "endLine": 122
+    },
+    "title": "Higher-Fold Sumset, Product Set, and Generalized Conjecture",
+    "content": "Recursive definitions of $m$-fold sumset $mA$ (all sums of $m$ elements from $A$, with repetition) and $m$-fold product set $A^m$ (all products of $m$ elements from $A$). Base cases: $0A = \\{0\\}$ and $A^0 = \\{1\\}$. The generalized sum-product conjecture states $\\max(|mA|, |A^m|) \\geq C \\cdot |A|^{m - \\varepsilon}$ for $m \\geq 2$. For $m = 2$, this recovers Erdős Problem 52. The recursive construction via $mA = (m{-}1)A + A$ mirrors the Plünnecke–Ruzsa inequality framework.",
+    "mathContext": "$mA := \\underbrace{A + A + \\cdots + A}_{m \\text{ times}}$, $A^m := \\underbrace{A \\cdot A \\cdots A}_{m \\text{ times}}$. Conjecture: $\\max(|mA|, |A^m|) \\geq C \\cdot |A|^{m - \\varepsilon}$ for $m \\geq 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated sumsets",
+      "Plünnecke–Ruzsa inequality",
+      "polynomial growth",
+      "small doubling"
+    ],
+    "prerequisites": [
+      "recursive definitions",
+      "iterated operations on sets",
+      "Plünnecke's theorem"
+    ]
+  },
+  {
+    "id": "erdos-52-connection",
+    "proofId": "erdos-52",
+    "type": "concept",
+    "range": {
+      "startLine": 128,
+      "endLine": 135
+    },
+    "title": "Connection to Erdős Problem 53",
+    "content": "Erdős Problem 52 (pairwise sums and products) is closely related to Problem 53, which asks about sums and products of *distinct subsets*. Chang (2003) resolved Problem 53 using the Balog–Szemerédi–Gowers theorem and Freiman's theorem: if $|A+A|$ or $|A \\cdot A|$ is large, then $A$ generates many distinct subset sums or products. The formalization states a weak implication: $(|A+A| + |A \\cdot A|) \\geq |A|$, a consequence of the trivial lower bounds. The full relationship involves deeper structural dichotomies between additive and multiplicative structure.",
+    "mathContext": "Problem 53: For every $k$, sufficiently large $A$ has $\\geq |A|^k$ integers expressible as sums or products of distinct elements. Chang (2003) proved this using the Balog–Szemerédi–Gowers theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Balog–Szemerédi–Gowers theorem",
+      "Freiman's theorem",
+      "subset sums",
+      "Chang's theorem"
+    ],
+    "prerequisites": [
+      "Erdős Problem 53",
+      "structural additive combinatorics",
+      "Freiman's theorem"
+    ]
+  }
+]

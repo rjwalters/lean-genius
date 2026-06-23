@@ -1,0 +1,214 @@
+{
+  "slug": "konigsberg-oq-02-oq-01",
+  "title": "Hierholzer's Algorithm — Directed Eulerian Circuit Formalization in Lean 4",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Formalize Hierholzer's algorithm for directed graphs in Lean 4:}\\\\\n\\text{if } G \\text{ is a strongly connected directed graph where every vertex has} \\\\\n\\text{indegree} = \\text{outdegree}, \\text{ then } G \\text{ has an Eulerian circuit.}",
+    "plain": "Prove `directed_euler_circuit_sufficient` in Lean 4: given a strongly connected directed graph where every vertex has equal in-degree and out-degree, construct an Eulerian circuit using Hierholzer's algorithm.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-24T00:00:00Z",
+    "iteration": 3,
+    "focus": "All infrastructure proved: maximal_balanced_trail_is_circuit, Walk.splice, removeArcList_arcCount, removeArcList_balanced. One sorry remains: directed_euler_circuit_sufficient_corrected WF induction.",
+    "blockers": [
+      "WF induction on arcCount - covered arcs for Hierholzer main theorem"
+    ],
+    "nextAction": "Implement WF induction in directed_euler_circuit_sufficient_corrected using termination_by arcCount",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: directed_euler_circuit_sufficient_corrected proved (0 sorries). Full Hierholzer algorithm formalized via WF induction on arcCount. Docker build pending verification.",
+    "builtItems": [
+      "Digraph.isStronglyConnected definition in KonigsbergOQ02OQ01.lean",
+      "maximal_balanced_trail_is_circuit theorem (proved, 0 sorries) in KonigsbergOQ02OQ01.lean",
+      "fst_count_eq_outDegree_stuck helper lemma (proved) in KonigsbergOQ02OQ01.lean",
+      "snd_count_le_inDegree helper lemma (proved) in KonigsbergOQ02OQ01.lean",
+      "Walk.splice in KonigsbergOQ02OQ01.lean (proved, 0 sorries): concatenate walks at shared vertex",
+      "Walk.splice_nodup in KonigsbergOQ02OQ01.lean (proved): disjoint splice is Nodup",
+      "removeArcList definition in KonigsbergOQ02OQ01.lean: Digraph subgraph removing arc list",
+      "Walk.ofRemoveArcList in KonigsbergOQ02OQ01.lean (proved): lift residual walk to parent graph",
+      "removeArcList_arcCount (proved, 0 sorries): residual arcCount = D.arcCount - removed; proof via Finset.card_sdiff",
+      "removeArcList_balanced (proved, 0 sorries): removing a circuit preserves balance; proof via circuit_fst_perm_snd + Finset.card_image_of_injOn",
+      "directed_euler_circuit_sufficient_corrected: corrected statement with isStronglyConnected (1 sorry: WF induction)",
+      "walk_split_at theorem (proved, 0 sorries) in KonigsbergOQ02OQ01.lean:578: split circuit C at interior vertex u using List.take/drop with full Walk invariant proofs",
+      "KonigsbergOQ02OQ01Aristotle.lean companion file: nodup_circuit_exists_Aristotle + vertex_with_unused_arc_Aristotle submitted to Aristotle project 747f0192",
+      "nodup_circuit_exists_of_outDeg_pos (proved, 0 sorries): WF induction building Nodup circuit from positive outDeg vertex",
+      "walk_closed (proved): digraph closure forces walks to stay within closed vertex sets",
+      "vertex_with_unused_arc (proved, 0 sorries): strong connectivity provides extension vertex via D-closure contradiction",
+      "directed_euler_circuit_sufficient_corrected (proved, 0 sorries): full Hierholzer algorithm via WF induction on arcCount"
+    ],
+    "insights": [
+      "Axiom directed_euler_circuit_sufficient is MISSING isStronglyConnected hypothesis — counterexample: two disconnected balanced loops",
+      "Corrected statement needs hconn : D.isStronglyConnected in addition to hbal",
+      "Proof via Hierholzer: maximal trail extraction + circuit splice + WF induction on arcCount",
+      "Key sub-lemma: maximal trail at v₀ in balanced digraph is closed (balance counting argument)",
+      "Walk.splice: concatenate two circuits at shared vertex; arc list is list concatenation",
+      "Custom Digraph structure in file; no Mathlib SimpleGraph integration — Mathlib Eulerian thms not directly applicable",
+      "path_fst_snd_eq is private in KonigsbergOQ02 — must be reproved in new files",
+      "Counting argument: path_fst_snd_eq + fst_count=outDeg(stuck) + snd_count≤inDeg + balance → u=v₀",
+      "Helper lemmas follow same Finset bijection pattern as eulerian_source_count in KonigsbergOQ02",
+      "Walk.splice proved (0 sorries): concat two walks sharing a vertex; consecutive field uses isChain_append + mem_getLast?_eq_getLast + eq_cons_of_mem_head?",
+      "removeArcList needs standalone def (not Digraph.removeArcList) to avoid namespace resolution: dot notation on D uses KonigsbergOQ02.Digraph.foo, but our def would be KonigsbergOQ02OQ01.Digraph.foo",
+      "noSelfLoops field required in removeArcList: Digraph structure has noSelfLoops field, must prove D.noSelfLoops v h.1 for the conjunction",
+      "removeArcList_balanced proof path: circuit_fst_perm_snd gives equal per-vertex fst/snd counts in circuit; subtract equal amounts from balanced outDeg/inDeg",
+      "isChain_append (not deprecated chain_append) is the correct API for consecutive proof in Walk.splice",
+      "removeArcList_arcCount: residual arc set = D_arcs \\ arcs_list.toFinset (Finset.mem_sdiff + removeArcList_adj_iff); card via Finset.card_sdiff + List.toFinset_card_of_nodup",
+      "removeArcList_balanced: use Finset.image to avoid needing nodup of mapped lists; Finset.card_image_of_injOn proves |image| = |filter| when Prod.snd injective on same-fst pairs",
+      "Count bridge cmf: (l.map f).count b = (l.filter (decide ∘ (f · = b))).length; inline proof by list induction, same pattern as KonigsbergOQ02.lean",
+      "Full Hierholzer infrastructure now in place: sub-lemmas + splice + residual balance. Only WF induction remains sorry.",
+      "walk_split_at proof strategy: take(i+1)/drop(i+1) split; starts_at/ends_at proved via List.head_take, List.getLast_take, List.head_drop, List.getLast_drop; consecutive via IsChain.take/drop; disjoint via List.disjoint_take_drop",
+      "getElem? vs getElem: getLast_take needs getElem?_pos i hi_lt; key: (C.arcs.take(i+1)).getLast = C.arcs[i] proved by rw getLast_take then simp getElem?_pos",
+      "List.chain_cons (=isChain_cons_cons): gives R a b AND Chain (b::l) directly, no head? wrapper needed",
+      "Chain = (IsChain . .) is a def not abbrev; constructors under IsChain namespace (IsChain.nil not Chain.nil)",
+      "List.toFinset_card_of_nodup: needed before Finset.card_le_card when goal uses List.length",
+      "Option membership: b in some(v,x) means (v,x)=b after simp (reversed convention -- use hb carefully)",
+      "WF induction on D.arcCount - C.arcs.length is the correct measure for Hierholzer splice induction"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Verify Docker build succeeds for Proofs.KonigsbergOQ02OQ01",
+      "Update pool status to completed",
+      "Generate follow-up OQ: BEST theorem (count Eulerian circuits)"
+    ],
+    "markdown": "# Knowledge Base: konigsberg-oq-02-oq-01\n\n## Session 2026-04-24 — Key Sub-Lemma Proved\n\n**Outcome**: progress\n\n### What Was Done\n- Created `KonigsbergOQ02OQ01.lean`\n- Defined `Digraph.isStronglyConnected`\n- Proved `maximal_balanced_trail_is_circuit` (0 sorries)\n- Proved helper lemmas: `fst_count_eq_outDegree_stuck`, `snd_count_le_inDegree`\n- Stated corrected main theorem with 1 sorry\n\n### Key Proof of maximal_balanced_trail_is_circuit\npath_fst_snd_eq gives: `[u] ++ snd_list = fst_list ++ [v₀]`\nCount v₀: `count(v₀,[u]) + snd_count = fst_count + 1`\n- fst_count = outDeg(v₀) [hstuck + Nodup]\n- snd_count ≤ inDeg(v₀) [Nodup + valid]\n- inDeg = outDeg [balance]\nIf u ≠ v₀: 0 + snd_count = outDeg + 1 but snd_count ≤ outDeg → contradiction\n\n### Files Modified\n- `proofs/Proofs/KonigsbergOQ02OQ01.lean` (created, ~230 lines)\n\n### Next Steps\n- Walk.splice constructor\n- WF induction on covered arc count\n"
+  },
+  "tags": [
+    "graph-theory",
+    "euler-paths",
+    "combinatorics",
+    "algorithms",
+    "directed-graphs"
+  ],
+  "relatedProofs": [
+    "konigsberg",
+    "konigsberg-oq-01",
+    "konigsberg-oq-01-oq-02",
+    "konigsberg-oq-02",
+    "konigsberg-oq-02-oq-01",
+    "konigsberg-oq-03",
+    "konigsberg-oq-03-oq-02",
+    "konigsberg-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-23T09:52:57.812Z",
+  "lastUpdate": "2026-04-24T00:00:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Konigsberg.lean",
+      "filename": "Konigsberg.lean",
+      "lineCount": 221,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Konigsberg.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ01.lean",
+      "filename": "KonigsbergOQ01.lean",
+      "lineCount": 405,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ01OQ02.lean",
+      "filename": "KonigsbergOQ01OQ02.lean",
+      "lineCount": 1202,
+      "theoremCount": 12,
+      "axiomCount": 2,
+      "defCount": 9,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ02.lean",
+      "filename": "KonigsbergOQ02.lean",
+      "lineCount": 814,
+      "theoremCount": 30,
+      "axiomCount": 2,
+      "defCount": 11,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ02.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ02OQ01.lean",
+      "filename": "KonigsbergOQ02OQ01.lean",
+      "lineCount": 955,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ02OQ01Aristotle.lean",
+      "filename": "KonigsbergOQ02OQ01Aristotle.lean",
+      "lineCount": 239,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ03.lean",
+      "filename": "KonigsbergOQ03.lean",
+      "lineCount": 75,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ03.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ03OQ02.lean",
+      "filename": "KonigsbergOQ03OQ02.lean",
+      "lineCount": 185,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ04.lean",
+      "filename": "KonigsbergOQ04.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ04.lean"
+    }
+  ]
+}

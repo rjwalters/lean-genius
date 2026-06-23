@@ -1,0 +1,205 @@
+{
+  "id": "erdos-999",
+  "title": "Erdős Problem #999: The Duffin-Schaeffer Conjecture",
+  "slug": "erdos-999",
+  "description": "For any f: ℕ → ℕ, almost all α have infinitely many coprime approximations |α - p/q| < f(q)/q iff ∑ φ(q)·f(q)/q = ∞. SOLVED by Koukoulopoulos-Maynard (2020) after 79 years!",
+  "meta": {
+    "author": "Duffin-Schaeffer (1941), Erdős (partial), Koukoulopoulos-Maynard (2020)",
+    "sourceUrl": "https://erdosproblems.com/999",
+    "date": "2020",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos999Problem.lean",
+    "tags": [
+      "erdos",
+      "diophantine-approximation",
+      "metric-number-theory",
+      "measure-theory",
+      "eulers-totient",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 999,
+    "erdosUrl": "https://erdosproblems.com/999",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "MeasureTheory.volume",
+        "description": "Lebesgue measure for almost-all formulation",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      }
+    ],
+    "originalContributions": [
+      "eulerPhi: wrapper for Nat.totient",
+      "IsApproximable: coprime rational approximation within f(q)/q",
+      "IsInfinitelyApproximable: approximable for infinitely many q",
+      "DuffinSchaefferSum: partial sums of φ(q)·f(q)/q",
+      "SeriesDiverges/SeriesConverges: divergence/convergence conditions",
+      "AlmostAll: measure-theoretic 'almost all' on [0,1]",
+      "DuffinSchaefferConjecture: the full equivalence statement",
+      "easy_direction: approximable → divergence (Borel-Cantelli, documented not a Lean axiom)",
+      "hard_direction: divergence → approximable (documented not a Lean axiom)",
+      "ErdosCondition: f(q)·q bounded special case",
+      "erdos_bounded_case: Erdős's partial result (documented not a Lean axiom)",
+      "koukoulopoulos_maynard_2020 axiom: the full conjecture (2020)",
+      "duffin_schaeffer_theorem: named version from the axiom",
+      "convergence_case: convergence implies almost none (documented not a Lean axiom)",
+      "zero_one_law axiom: dichotomy for approximability",
+      "continued_fraction_case: f(q)=1 gives almost all (documented not a Lean axiom)",
+      "khintchine_theorem: monotone case (1924, documented not a Lean axiom)",
+      "LimsupSet: the set of infinitely approximable reals",
+      "erdos_999_summary: proved conjunction of main results"
+    ],
+    "axiomCount": 2,
+    "lineCount": 147,
+    "assumptions": "2 axioms: koukoulopoulos_maynard_2020, zero_one_law. 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 12
+  },
+  "overview": {
+    "historicalContext": "The Duffin-Schaeffer conjecture (1941) was one of the most famous open problems in metric number theory for nearly 80 years. It generalizes Khintchine's theorem (1924) to non-monotone approximation functions. Erdős proved the special case where f(q)·q is bounded. The easy direction (approximability implies divergence) follows from Borel-Cantelli. The hard direction was finally proved by Koukoulopoulos and Maynard in 2020, published in the Annals of Mathematics. Their proof introduced a remarkable new method combining graph theory and sieve techniques to estimate the measure of limsup sets, going far beyond standard Borel-Cantelli and resolving a problem that had resisted all previous attempts since Duffin and Schaeffer first formulated it.",
+    "problemStatement": "For any function f: ℕ → ℕ, the following are equivalent: (1) For almost all α ∈ [0,1], there exist infinitely many coprime pairs (p,q) with |α - p/q| < f(q)/q; (2) The series ∑_{q≥1} φ(q)·f(q)/q diverges. Here φ is Euler's totient function.",
+    "text": "For any f: ℕ → ℕ, almost all α have infinitely many coprime approximations |α - p/q| < f(q)/q iff ∑ φ(q)·f(q)/q = ∞. SOLVED by Koukoulopoulos-Maynard (2020) after 79 years!",
+    "proofStrategy": "The formalization defines approximability, the Duffin-Schaeffer sum, and the divergence/convergence conditions. The two Lean axioms are koukoulopoulos_maynard_2020 (the hard direction) and zero_one_law. Supporting results (easy direction, Erdős's partial result, convergence case, continued fractions, Khintchine's theorem) are documented in the file but not stated as Lean axioms. The summary theorem proves the conjunction of the main results.",
+    "keyInsights": [
+      "The coprimality condition (p,q)=1 is essential - without it, the equivalence fails",
+      "The φ(q) factor counts reduced fractions with denominator q",
+      "Easy direction: Borel-Cantelli shows approximability implies divergence",
+      "Hard direction: Required 79 years and graph-theoretic innovations by Koukoulopoulos-Maynard",
+      "Zero-one law: Either almost all or almost no reals are infinitely approximable",
+      "Generalizes Khintchine (1924) to non-monotone approximation functions"
+    ],
+    "prerequisites": [
+      "Measure theory (Lebesgue measure, Hausdorff dimension)",
+      "Real analysis (Borel sets, sigma-algebras)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 45,
+      "endLine": 57,
+      "summary": "Euler's totient, approximability, and infinite approximability.",
+      "mathContext": "Mathematical content: Euler's totient, approximability, and infinite approximability."
+    },
+    {
+      "id": "divergence-condition",
+      "title": "The Divergence Condition",
+      "startLine": 58,
+      "endLine": 71,
+      "summary": "The Duffin-Schaeffer sum and divergence/convergence conditions.",
+      "mathContext": "Mathematical content: The Duffin-Schaeffer sum and divergence/convergence conditions."
+    },
+    {
+      "id": "measure-theory",
+      "title": "Measure-Theoretic Formulation",
+      "startLine": 72,
+      "endLine": 85,
+      "summary": "Almost all, almost none, and the measure-theoretic setup.",
+      "mathContext": "Mathematical content: Almost all, almost none, and the measure-theoretic setup."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Duffin-Schaeffer Conjecture",
+      "startLine": 86,
+      "endLine": 94,
+      "summary": "The conjecture statement, easy direction, and hard direction.",
+      "mathContext": "Mathematical content: The conjecture statement, easy direction, and hard direction."
+    },
+    {
+      "id": "erdos-partial",
+      "title": "Erdős's Partial Result",
+      "startLine": 95,
+      "endLine": 101,
+      "summary": "Erdős proved the case when f(q)·q is bounded.",
+      "mathContext": "Bound: Erdős proved the case when f(q)·q is bounded."
+    },
+    {
+      "id": "koukoulopoulos-maynard",
+      "title": "Koukoulopoulos-Maynard Theorem (2020)",
+      "startLine": 102,
+      "endLine": 111,
+      "summary": "The full conjecture proved after 79 years.",
+      "mathContext": "Mathematical content: The full conjecture proved after 79 years."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences",
+      "startLine": 112,
+      "endLine": 121,
+      "summary": "Convergence case, zero-one law, continued fractions.",
+      "mathContext": "Mathematical content: Convergence case, zero-one law, continued fractions."
+    },
+    {
+      "id": "khintchine",
+      "title": "Khintchine's Theorem",
+      "startLine": 122,
+      "endLine": 130,
+      "summary": "The 1924 result for monotone functions and the limsup set.",
+      "mathContext": "Mathematical content: The 1924 result for monotone functions and the limsup set."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 131,
+      "endLine": 147,
+      "summary": "The erdos_999_summary theorem combining the conjecture and zero-one law.",
+      "mathContext": "Mathematical content: The erdos_999_summary theorem combining the conjecture and zero-one law."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #999 (the Duffin-Schaeffer conjecture) is SOLVED. Koukoulopoulos and Maynard (2020) proved that for any f: ℕ → ℕ, almost all reals have infinitely many coprime rational approximations with error < f(q)/q if and only if ∑ φ(q)·f(q)/q = ∞. This landmark result in metric number theory took 79 years to prove.",
+    "implications": "This result settles a fundamental question in Diophantine approximation: exactly when can 'typical' real numbers be well-approximated by rationals? It provides a complete characterization via a simple divergence condition, extending Khintchine's classical theorem.",
+    "openQuestions": [
+      "Effective versions: explicit bounds on the exceptional set",
+      "Higher-dimensional analogues (simultaneous approximation)",
+      "Quantitative forms of the theorem",
+      "Connections to other problems in metric number theory"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos999",
+    "lineCount": 147,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "definitionCount": 12,
+    "path": "Proofs/Erdos999Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-206",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, measure-theory, solved"
+    },
+    {
+      "targetId": "erdos-1001",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: diophantine-approximation, measure-theory"
+    },
+    {
+      "targetId": "erdos-1118",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: measure-theory, solved"
+    }
+  ],
+  "sorries": 0
+}

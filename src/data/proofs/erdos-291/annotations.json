@@ -1,0 +1,233 @@
+[
+  {
+    "id": "ann-291-header",
+    "proofId": "erdos-291",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Harmonic Number Divisibility: Problem Overview",
+    "content": "Erdős Problem #291 asks about the GCD structure of harmonic numbers. Writing $H_n = 1 + 1/2 + \\cdots + 1/n = a_n/L_n$ where $L_n = \\text{lcm}(1, \\ldots, n)$, the question is: do both $\\gcd(a_n, L_n) = 1$ and $\\gcd(a_n, L_n) > 1$ occur infinitely often? Part 2 ($\\gcd > 1$) is trivially YES via Wolstenholme's theorem; Part 1 ($\\gcd = 1$) remains OPEN, connected to Schanuel's conjecture in transcendence theory.",
+    "mathContext": "$H_n = \\sum_{k=1}^n \\frac{1}{k} = \\frac{a_n}{L_n}$ where $L_n = \\text{lcm}(1, \\ldots, n)$. Key criterion: $p \\mid \\gcd(a_n, L_n) \\iff p \\mid \\text{num}(H_k)$ where $k$ is the leading base-$p$ digit of $n$. Wolstenholme: $p^2 \\mid \\text{num}(H_{p-1})$ for $p \\ge 5$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic numbers",
+      "Wolstenholme's theorem",
+      "Schanuel's conjecture",
+      "p-adic valuation"
+    ],
+    "prerequisites": [
+      "number theory",
+      "GCD and LCM",
+      "base representations",
+      "p-adic analysis"
+    ]
+  },
+  {
+    "id": "ann-291-definitions",
+    "proofId": "erdos-291",
+    "range": {
+      "startLine": 44,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Core Definitions: L_n, H_n, a_n, and the GCD",
+    "content": "Defines the fundamental objects. $L(n) = \\text{lcm}(1, 2, \\ldots, n)$ via iterated lcm over a Finset. $H(n) = \\sum_{k=1}^n 1/k$ as a rational number. The numerator $a(n) = H_n \\cdot L_n$ as a natural number (since $k \\mid L_n$ for all $k \\le n$, this product is always an integer). The key quantity $\\text{harmonicGCD}(n) = \\gcd(a_n, L_n)$.",
+    "mathContext": "$L(n) = \\text{lcm}(1, \\ldots, n)$. $H(n) = \\sum_{k=1}^n k^{-1} \\in \\mathbb{Q}$. $a(n) = H_n \\cdot L_n \\in \\mathbb{Z}$ (since each $k^{-1} \\cdot L_n \\in \\mathbb{Z}$). $\\text{harmonicGCD}(n) = \\gcd(a_n, L_n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LCM",
+      "harmonic numbers",
+      "Bernoulli numbers"
+    ],
+    "prerequisites": [
+      "rational arithmetic",
+      "GCD",
+      "finite sums"
+    ]
+  },
+  {
+    "id": "ann-291-problem",
+    "proofId": "erdos-291",
+    "range": {
+      "startLine": 75,
+      "endLine": 98
+    },
+    "type": "definition",
+    "title": "The Problem Statement: Two Infinitude Questions",
+    "content": "Formalizes both parts of Problem #291. `question_part1`: the set $\\{n : \\gcd(a_n, L_n) = 1\\}$ is infinite. `question_part2`: the set $\\{n : \\gcd(a_n, L_n) > 1\\}$ is infinite. The full conjecture `erdos291Statement` is their conjunction. Part 2 is proved in this formalization; Part 1 remains open.",
+    "mathContext": "$\\text{question\\_part1}: |\\{n : \\gcd(a_n, L_n) = 1\\}| = \\infty$. $\\text{question\\_part2}: |\\{n : \\gcd(a_n, L_n) > 1\\}| = \\infty$. The full problem asks for both.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinitude of sets",
+      "density",
+      "natural density"
+    ],
+    "prerequisites": [
+      "set theory",
+      "infinite sets"
+    ]
+  },
+  {
+    "id": "ann-291-steinerberger",
+    "proofId": "erdos-291",
+    "range": {
+      "startLine": 99,
+      "endLine": 192
+    },
+    "type": "concept",
+    "title": "Steinerberger's Criterion and Wolstenholme's Theorem",
+    "content": "The key theorem `steinerberger_criterion`: if the leading digit of $n$ in base $p$ equals $p - 1$, then $p \\mid \\gcd(a_n, L_n)$. This is actually proved (not axiomatized!) from two ingredients: the `divisibility_characterization` (relating divisibility to numerators of partial harmonic sums) and Wolstenholme's theorem ($p^2 \\mid \\text{num}(H_{p-1})$ for $p \\ge 5$). The case $p = 3$ is handled by direct computation: $H_2 \\cdot 2! = 3$, divisible by 3.",
+    "mathContext": "Wolstenholme (1862): $p^2 \\mid \\text{num}(H_{p-1})$ for prime $p \\ge 5$. Characterization: $p \\mid \\gcd(a_n, L_n) \\iff p \\mid \\text{num}(H_k \\cdot k!)$ where $k = $ leading digit of $n$ in base $p$. Combined: leading digit $p-1 \\Rightarrow p \\mid \\gcd$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wolstenholme's theorem",
+      "leading digits",
+      "base-p representations",
+      "Wolstenholme primes"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "divisibility",
+      "harmonic numbers modulo primes"
+    ]
+  },
+  {
+    "id": "ann-291-heuristic",
+    "proofId": "erdos-291",
+    "range": {
+      "startLine": 193,
+      "endLine": 246
+    },
+    "type": "concept",
+    "title": "Heuristic Analysis and Why Part 1 is Hard",
+    "content": "Shiu (2016) gave a heuristic argument that $\\#\\{n \\le x : \\gcd(a_n, L_n) = 1\\} \\sim x/\\log x$, suggesting Part 1 is true but with density 0. The idea: for $\\gcd = 1$, we need $n$'s leading digit in base $p$ to avoid giving $p \\mid \\gcd$ for every prime $p \\le n$. Since these conditions are 'almost independent' across primes, the probability is $\\prod_p (1 - 1/p) \\sim 1/\\log n$ by Mertens' theorem. Wu-Yan (2022) proved conditionally (on Schanuel's conjecture) that the density of $\\gcd > 1$ is 1.",
+    "mathContext": "Heuristic: $\\Pr[\\gcd(a_n, L_n) = 1] \\approx \\prod_{p \\le n} (1 - \\Pr[p \\mid \\gcd]) \\sim \\prod_{p \\le n} (1 - 1/p) \\sim 2e^{-\\gamma}/\\log n$ by Mertens. Wu-Yan: assuming $\\{1/\\log p : p \\text{ prime}\\}$ are $\\mathbb{Q}$-linearly independent (from Schanuel), density of $\\gcd > 1$ is 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mertens' theorem",
+      "Schanuel's conjecture",
+      "natural density",
+      "independence heuristics"
+    ],
+    "prerequisites": [
+      "prime distribution",
+      "density of sets",
+      "Euler-Mascheroni constant"
+    ]
+  },
+  {
+    "id": "ann-291-structural",
+    "proofId": "erdos-291",
+    "range": {
+      "startLine": 247,
+      "endLine": 373
+    },
+    "type": "concept",
+    "title": "Structural Properties of L_n and H_n",
+    "content": "Proves foundational properties. For $L_n$: computed values $L(0)=1, L(1)=1, L(2)=2, \\ldots, L(6)=60$; positivity $L(n) > 0$; divisibility $L(n) \\mid n!$; and $k \\mid L(n)$ for $1 \\le k \\le n$. For $H_n$: computed values $H(1)=1, H(2)=3/2, \\ldots, H(6)=49/20$; recurrence $H(n+1) = H(n) + 1/(n+1)$; positivity; strict monotonicity; and monotonicity. Also proves $H_n \\cdot L_n \\ge 0$ and $H_n \\cdot L_n = \\sum_{k=1}^n L_n/k$.",
+    "mathContext": "$L(n) \\mid n!$ (since each $k \\le n$ divides both $L(n)$ and $n!$). $H(n+1) = H(n) + \\frac{1}{n+1}$. $H_n \\cdot L_n = \\sum_{k=1}^n \\frac{L_n}{k} \\in \\mathbb{Z}$. Computed: $L(6) = 60$, $H(6) = 49/20$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LCM and factorial",
+      "harmonic series",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "induction",
+      "rational arithmetic"
+    ]
+  },
+  {
+    "id": "ann-291-small-examples",
+    "proofId": "erdos-291",
+    "range": {
+      "startLine": 374,
+      "endLine": 431
+    },
+    "type": "concept",
+    "title": "Computed GCD Values: First Occurrence at n=6",
+    "content": "Proves exact GCD values by computation. $\\gcd(a_n, L_n) = 1$ for $n = 1, 2, 3, 4, 5$ and $\\gcd = 3$ at $n = 6$ (the first occurrence of $\\gcd > 1$). Extended examples: $\\gcd = 3$ for $n = 7, 8$ (all have leading digit 2 in base 3) and $\\gcd = 1$ for $n = 9, 10$. Total: 7 values with $\\gcd = 1$ found among $n \\le 10$.",
+    "mathContext": "$n = 6$: $a_6 = H_6 \\cdot L_6 = (49/20) \\cdot 60 = 147$, $\\gcd(147, 60) = 3$. The leading digit of 6 in base 3 is 2 $= 3 - 1$. $n = 9$: $a_9 = 7129$, $\\gcd(7129, 2520) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "computed examples",
+      "native_decide",
+      "concrete verification"
+    ],
+    "prerequisites": [
+      "harmonic number computation",
+      "GCD computation"
+    ]
+  },
+  {
+    "id": "ann-291-leading-digit",
+    "proofId": "erdos-291",
+    "range": {
+      "startLine": 432,
+      "endLine": 614
+    },
+    "type": "concept",
+    "title": "Leading Digit Theory and Infinite Families",
+    "content": "Develops the theory of leading digits in base $p$. The key structural result `leadingDigit_pm1_times_pow`: for any $p > 1$ and $k \\ge 0$, $\\text{ld}((p-1) \\cdot p^k, p) = p - 1$, because $(p-1) \\cdot p^k$ in base $p$ is the digit $p-1$ followed by $k$ zeros. Combined with Steinerberger: $p \\mid \\gcd(a_{(p-1)p^k}, L_{(p-1)p^k})$ for any prime $p \\ge 3$. This gives infinite families for $p = 3$ ($\\{2 \\cdot 3^k\\}$) and $p = 5$ ($\\{4 \\cdot 5^k\\}$).",
+    "mathContext": "$(p-1) \\cdot p^k$ in base $p$: $\\underbrace{(p-1)}_{\\text{leading}} \\underbrace{00\\ldots0}_{k \\text{ zeros}}$. General theorem: $p \\mid \\gcd(a_{(p-1)p^k}, L_{(p-1)p^k})$ for prime $p \\ge 3$, $k \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "base representations",
+      "digit extraction",
+      "exponential families"
+    ],
+    "prerequisites": [
+      "base-p arithmetic",
+      "induction",
+      "division algorithm"
+    ]
+  },
+  {
+    "id": "ann-291-part2-proof",
+    "proofId": "erdos-291",
+    "range": {
+      "startLine": 641,
+      "endLine": 698
+    },
+    "type": "concept",
+    "title": "Part 2 Proved: Infinitely Many n with gcd > 1",
+    "content": "The theorem `part2_trivially_true` proves Part 2 using the infinite family $\\{2 \\cdot 3^k : k \\ge 1\\}$. For each such $n$, $\\text{ld}(n, 3) = 2 = 3 - 1$, so $3 \\mid \\gcd(a_n, L_n)$ by Steinerberger. An alternate proof `part2_via_five` uses $\\{4 \\cdot 5^k\\}$. The summary theorem `erdos_291` packages Part 2 as the proved component.",
+    "mathContext": "$\\{2 \\cdot 3^k : k \\ge 1\\} \\subseteq \\{n : \\gcd(a_n, L_n) > 1\\}$ is infinite. Proof: $k \\mapsto 2 \\cdot 3^{k+1}$ is injective and $3 \\mid \\gcd$ at each point. Similarly $\\{4 \\cdot 5^k\\}$ provides a second family with $5 \\mid \\gcd$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite families",
+      "constructive proofs",
+      "Set.infinite_of_injective_forall_mem"
+    ],
+    "prerequisites": [
+      "Steinerberger criterion",
+      "injective functions",
+      "infinite sets"
+    ]
+  },
+  {
+    "id": "ann-291-zmod",
+    "proofId": "erdos-291",
+    "range": {
+      "startLine": 808,
+      "endLine": 932
+    },
+    "type": "insight",
+    "title": "ZMod Computations and Concrete Evidence for Part 1",
+    "content": "Computations in $\\mathbb{Z}/p\\mathbb{Z}$ verify that $\\sum_{k=1}^{p-1} k^{-1} \\equiv 0 \\pmod{p}$ for $p = 3, 5, 7, 11, 13$. This is a consequence of the bijection $k \\mapsto k^{-1}$ on $(\\mathbb{Z}/p\\mathbb{Z})^*$ and the sum $\\sum_{k=1}^{p-1} k = p(p-1)/2 \\equiv 0$ for odd $p$. The theorem `seven_gcd_one_values` assembles 7 concrete values ($n = 1, 2, 3, 4, 5, 9, 10$) where $\\gcd = 1$, providing computational evidence for Part 1.",
+    "mathContext": "In $\\mathbb{Z}/p\\mathbb{Z}$: $\\sum_{k=1}^{p-1} k^{-1} = \\sum_{k=1}^{p-1} k = \\frac{p(p-1)}{2} \\equiv 0$ for odd $p$. This is related to but weaker than Wolstenholme ($p^2$ divisibility requires deeper analysis). Evidence: 7 values with $\\gcd = 1$ in $[1, 10]$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "Wilson's theorem",
+      "finite field inverses"
+    ],
+    "prerequisites": [
+      "ZMod arithmetic",
+      "Fermat's little theorem"
+    ]
+  }
+]

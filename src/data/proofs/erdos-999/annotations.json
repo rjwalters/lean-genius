@@ -1,0 +1,137 @@
+[
+  {
+    "id": "ann-e999-header",
+    "proofId": "erdos-999",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #999: The Duffin-Schaeffer Conjecture**\n\nFor any f: ℕ → ℕ, these are equivalent:\n1. Almost all α have infinitely many coprime (p,q) with |α - p/q| < f(q)/q\n2. ∑ φ(q)·f(q)/q = ∞\n\n**Status:** SOLVED (Koukoulopoulos-Maynard, 2020)\n\nThis was one of the most famous open problems in metric number theory, open for 79 years (1941-2020). It generalizes Khintchine's theorem to non-monotone approximation functions.",
+    "mathContext": "The conjecture connects two seemingly different conditions: a measure-theoretic statement about 'almost all' reals and an arithmetic series involving Euler's totient. The φ(q) factor accounts for the coprimality requirement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Diophantine approximation",
+      "Euler's totient",
+      "Borel-Cantelli lemma",
+      "Metric number theory"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e999-definitions",
+    "proofId": "erdos-999",
+    "range": {
+      "startLine": 45,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Core Definitions",
+    "content": "**eulerPhi n:** Wrapper for Nat.totient — counts integers ≤ n coprime to n. Appears in the Duffin-Schaeffer sum because φ(q)/q measures the density of reduced fractions with denominator q.\n\n**IsApproximable α f q:** There exists coprime p with |α - p/q| < f(q)/q. The coprimality condition (p,q)=1 is essential — without it, the equivalence fails.\n\n**IsInfinitelyApproximable α f:** Approximable for infinitely many q. Formalized as ∀ N, ∃ q > N with IsApproximable α f q.",
+    "mathContext": "The coprimality constraint distinguishes this from Khintchine's setup. Without it, the same rational p/q appears with every multiple denominator, inflating the count.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.totient",
+      "Coprimality",
+      "Int.gcd"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e999-ds-sum",
+    "proofId": "erdos-999",
+    "range": {
+      "startLine": 58,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "Duffin-Schaeffer Sum and Divergence",
+    "content": "**DuffinSchaefferSum f N:** The partial sum ∑_{q=0}^{N} φ(q) · f(q) / q.\n\n**SeriesDiverges f:** The sum grows without bound — ∀ M, ∃ N with DuffinSchaefferSum f N > M.\n\n**SeriesConverges f:** The sum is bounded — ∃ L, ∀ N, DuffinSchaefferSum f N ≤ L.\n\nDivergence vs. convergence of this series completely determines the approximation behavior.",
+    "mathContext": "The Duffin-Schaeffer sum is the natural analogue of the Khintchine series ∑ f(q)/q, corrected by the factor φ(q)/q to account for coprimality. For monotone f, both series have the same convergence behavior.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Partial sums",
+      "Series divergence",
+      "Finset.range"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e999-measure",
+    "proofId": "erdos-999",
+    "range": {
+      "startLine": 72,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Measure-Theoretic Formulation",
+    "content": "**AlmostAll P:** Property P holds on a co-null subset of [0,1] — there exists S with P on S and volume(Icc 0 1 \\ S) = 0.\n\n**AlmostAllApproximable f:** Almost all α are infinitely f-approximable.\n\n**AlmostNoneApproximable f:** Almost no α is infinitely f-approximable.\n\nThe conjecture says: SeriesDiverges f ↔ AlmostAllApproximable f.",
+    "mathContext": "Using Lebesgue measure on [0,1] is standard in metric number theory. The 'almost all' quantifier means the exceptional set has measure zero.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MeasureTheory.volume",
+      "Lebesgue measure",
+      "Co-null sets"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e999-conjecture",
+    "proofId": "erdos-999",
+    "range": {
+      "startLine": 86,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "The Duffin-Schaeffer Conjecture and Both Directions",
+    "content": "**DuffinSchaefferConjecture:** ∀ f, SeriesDiverges f ↔ AlmostAllApproximable f.\n\n**easy_direction:** AlmostAllApproximable f → SeriesDiverges f. Follows from the Borel-Cantelli lemma — if the sum converges, the limsup set has measure zero.\n\n**hard_direction:** SeriesDiverges f → AlmostAllApproximable f. This is the actual conjecture, open for 79 years. The difficulty is that approximation sets for different q can overlap in complex ways, preventing direct Borel-Cantelli application.",
+    "mathContext": "The easy direction is a standard measure theory argument. The hard direction required Koukoulopoulos and Maynard to develop new graph-theoretic techniques on the 'GCD graph' to handle the overlaps.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Borel-Cantelli lemma",
+      "Biconditional",
+      "GCD graph"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e999-erdos-km",
+    "proofId": "erdos-999",
+    "range": {
+      "startLine": 101,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "Erdős's Partial Result and Koukoulopoulos-Maynard",
+    "content": "**ErdosCondition f:** ∃ C, ∀ q, f(q) · q ≤ C — the approximation function decays at least as fast as 1/q.\n\n**erdos_bounded_case:** The conjecture holds when f·q is bounded. Erdős proved this special case.\n\n**koukoulopoulos_maynard_2020:** The full DuffinSchaefferConjecture. Published in Annals of Mathematics 192(1), 251-307.\n\n**duffin_schaeffer_theorem:** Named version, defined as koukoulopoulos_maynard_2020.",
+    "mathContext": "Erdős's partial result handles the 'bounded' case where approximation intervals are uniformly small. The full conjecture allows f to be arbitrary, making overlap analysis much harder. Koukoulopoulos-Maynard's proof introduced the 'compression' technique on GCD graphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős partial results",
+      "Annals of Mathematics",
+      "GCD graph compression"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e999-consequences",
+    "proofId": "erdos-999",
+    "range": {
+      "startLine": 121,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "Consequences and Related Results",
+    "content": "**convergence_case:** If the series converges, almost no α is infinitely approximable.\n\n**zero_one_law:** For any f, either almost all or almost none are approximable — no intermediate case. This follows from the Duffin-Schaeffer theorem: divergence gives 'all', convergence gives 'none'.\n\n**continued_fraction_case:** f(q) = 1 gives almost all approximable. This is the classical continued fraction result.\n\n**khintchine_theorem:** For monotone decreasing f, ∑ f(q)/q = ∞ ↔ almost all approximable. The 1924 precursor that Duffin-Schaeffer generalizes.\n\n**LimsupSet f:** The set { α | IsInfinitelyApproximable α f } — the 'limsup' of approximation events.",
+    "mathContext": "The zero-one law is a striking dichotomy: there is no function f for which exactly half of all reals are infinitely approximable. Khintchine's theorem requires monotonicity, which Duffin-Schaeffer removes at the cost of replacing ∑ f(q)/q with ∑ φ(q)·f(q)/q.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zero-one laws",
+      "Continued fractions",
+      "Khintchine's theorem",
+      "Limsup sets"
+    ],
+    "prerequisites": []
+  }
+]

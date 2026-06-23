@@ -1,0 +1,192 @@
+[
+  {
+    "id": "ann-zeta-imports",
+    "proofId": "basel-problem-oq-01",
+    "range": {
+      "startLine": 37,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Mathlib Imports for Series and Number Theory",
+    "content": "The file imports six Mathlib modules. `Mathlib.Analysis.PSeries` provides `Real.summable_nat_rpow_inv` (the p-series criterion: ∑ 1/n^p converges iff p > 1). `Mathlib.NumberTheory.ZetaValues` provides `hasSum_zeta_two` (ζ(2) = π²/6) and `hasSum_zeta_four` (ζ(4) = π⁴/90) — these are used as upper bounds for ζ(5). `Mathlib.Topology.Algebra.InfiniteSum.Basic` supplies `hasSum_ite_eq` (the indicator function has sum equal to the pointed value). `Mathlib.Topology.Algebra.InfiniteSum.Order` provides `hasSum_le` (comparison of infinite sums). `Mathlib.NumberTheory.Real.Irrational` gives the `Irrational` predicate used in the Apéry/Rivoal/Zudilin axioms.",
+    "mathContext": "The p-series criterion: $\\sum_{n=1}^\\infty \\frac{1}{n^p}$ converges if and only if $p > 1$. For $p=5$: summable. Note that in Lean, $\\sum' n : \\mathbb{N}, 1/n^5$ includes the $n=0$ term, which is $0$ by Lean's division-by-zero convention, so this equals $\\sum_{n=1}^\\infty 1/n^5 = \\zeta(5)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "p-series",
+      "Irrational predicate",
+      "hasSum",
+      "tsum notation"
+    ],
+    "prerequisites": [
+      "Lean 4 infinite sums (tsum)",
+      "p-series convergence",
+      "Riemann zeta function"
+    ]
+  },
+  {
+    "id": "ann-zeta-def-convergence",
+    "proofId": "basel-problem-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "zetaFive: Definition and Summability via P-Series",
+    "content": "The `zetaFive` definition uses `∑' n : ℕ, 1 / n^5` (Lean's `tsum` notation for unconditional convergence in complete topological groups). The `noncomputable` keyword is needed because real number computations are not computable in Lean's type theory. The summability proof `summable_one_div_pow_five` applies `Real.summable_nat_rpow_inv` (which proves summability for `rpow` form, i.e. $n^{-p}$ with $p > 1$) and then uses `convert` to bridge the difference between the `rpow` and natural number `HPow.hPow` forms. The `term_nonneg` lemma proves $1/n^5 \\geq 0$ using the `positivity` tactic.",
+    "mathContext": "The Dirichlet series $\\zeta(s) = \\sum_{n=1}^\\infty n^{-s}$ converges absolutely for $\\text{Re}(s) > 1$. For $s=5$: $\\zeta(5) = 1 + \\frac{1}{32} + \\frac{1}{243} + \\cdots \\approx 1.0369$. The p-series criterion is a special case of the integral test: $\\sum 1/n^p$ converges iff $\\int_1^\\infty 1/x^p dx < \\infty$ iff $p > 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "noncomputable definition",
+      "tsum vs sum",
+      "rpow vs pow",
+      "positivity tactic"
+    ],
+    "prerequisites": [
+      "Lean 4 tsum notation",
+      "Real.summable_nat_rpow_inv",
+      "type conversion in Lean"
+    ]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "basel-problem-oq-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Lower Bound ζ(5) ≥ 1 via Indicator Function Trick",
+    "content": "The theorem `zetaFive_ge_one` proves $\\zeta(5) \\geq 1$ using a non-obvious Mathlib API pattern. The natural approach would be to use `sum_le_tsum` (extract the $n=1$ term), but this lemma is not available for ℝ in Mathlib v4.26.0 (only for `ENNReal`). Instead, the proof uses `hasSum_ite_eq (1 : ℕ) (1 : ℝ)` which shows that the sum of the indicator function at 1 equals 1. Then `hasSum_le` compares termwise: at $n=1$, the actual term $1/1^5 = 1$ matches the indicator; for all other $n$, the actual term is nonneg while the indicator is 0. This is a key Mathlib idiom for lower-bounding infinite sums in ℝ when `sum_le_tsum` is unavailable.",
+    "mathContext": "Indicator function approach: $\\sum_{n=0}^\\infty \\mathbf{1}_{\\{1\\}}(n) = 1$. Comparing termwise: $1/n^5 \\geq \\mathbf{1}_{\\{1\\}}(n)$ for all $n$ (equals 1 at $n=1$, otherwise 0 vs nonneg). By `hasSum_le`: $1 \\leq \\zeta(5)$. The key insight: work with HasSum structures directly for comparison arguments in ℝ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hasSum_ite_eq",
+      "hasSum_le",
+      "indicator function",
+      "lower bound for tsum"
+    ],
+    "prerequisites": [
+      "hasSum vs tsum in Mathlib",
+      "Lean 4 split_ifs tactic",
+      "indicator function idiom"
+    ]
+  },
+  {
+    "id": "ann-upper-bounds",
+    "proofId": "basel-problem-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Upper Bounds via Term-by-Term Comparison with ζ(4) and ζ(2)",
+    "content": "The upper bounds use `hasSum_le` with the known sums $\\zeta(4) = \\pi^4/90$ and $\\zeta(2) = \\pi^2/6$. The key lemma `pow_succ_le_of_ge_one` proves $n^k \\leq n^{k+1}$ for $n \\geq 1$ by multiplying both sides of $n^k \\geq 0$ by $n \\geq 1$. This lemma is applied repeatedly: $1/n^5 \\leq 1/n^4$ follows from $n^4 \\leq n^5$ via `one_div_le_one_div_of_le`; for the weaker bound the chain $n^2 \\leq n^3 \\leq n^4 \\leq n^5$ gives $1/n^5 \\leq 1/n^2$. The $n=0$ case is handled separately since both the $n^k$ and denominator expressions equal 0 by Lean's convention.",
+    "mathContext": "Term-by-term comparison: for $n \\geq 1$, $1/n^5 \\leq 1/n^4$ (since $n^4 \\leq n^5$). Thus $\\zeta(5) \\leq \\zeta(4) = \\pi^4/90 \\approx 1.0823$. Similarly $\\zeta(5) \\leq \\zeta(2) = \\pi^2/6 \\approx 1.6449$. The actual value $\\zeta(5) \\approx 1.0369$ is much closer to $\\zeta(4)$ than to $\\zeta(2)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "hasSum_zeta_four",
+      "hasSum_zeta_two",
+      "one_div_le_one_div_of_le",
+      "comparison test"
+    ],
+    "prerequisites": [
+      "hasSum_le for upper bounds",
+      "Mathlib ZetaValues module",
+      "pow monotonicity"
+    ]
+  },
+  {
+    "id": "ann-open-conjecture",
+    "proofId": "basel-problem-oq-01",
+    "range": {
+      "startLine": 135,
+      "endLine": 151
+    },
+    "type": "concept",
+    "title": "The Open Conjecture: ζ(5) Irrational (sorry — genuine open problem)",
+    "content": "The theorem `zeta_five_irrational` formally states the open conjecture `Irrational zetaFive` with a `sorry` proof — representing genuine mathematical ignorance, not a gap in formalization. The `Irrational x` predicate in Mathlib means $x$ cannot be written as a ratio of integers. Apéry's 1978 proof of $\\zeta(3)$ irrationality used a specific hypergeometric series whose denominators (when cleared of factors of $n^3$) grow slowly enough to violate the rationality criterion. No analogous series is known for $\\zeta(5)$. The value $\\zeta(5) \\approx 1.0369$ is extremely close to 1, making it particularly difficult to distinguish from simple fractions numerically.",
+    "mathContext": "Irrationality criterion (Legendre): $x \\in \\mathbb{R}$ is irrational if $\\exists$ infinitely many $p/q \\in \\mathbb{Q}$ with $|x - p/q| < 1/q^2$. Apéry proved $\\zeta(3)$ irrational by finding rationals $p_n/q_n$ with $|\\zeta(3) - p_n/q_n| < q_n^{-\\mu}$ ($\\mu > 1$) where the $q_n$ grow like $(1+\\sqrt{2})^{4n}$ — fast but controlled. For $\\zeta(5)$, no such approximation sequence is known.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Irrational predicate",
+      "Apéry's method",
+      "sorry in Lean",
+      "hypergeometric series"
+    ],
+    "prerequisites": [
+      "Irrational predicate in Mathlib",
+      "Apéry's theorem",
+      "irrationality criteria"
+    ]
+  },
+  {
+    "id": "ann-axiomatized-theorems",
+    "proofId": "basel-problem-oq-01",
+    "range": {
+      "startLine": 152,
+      "endLine": 186
+    },
+    "type": "insight",
+    "title": "Axiomatized Landmark Theorems: Apéry, Rivoal, Zudilin",
+    "content": "Three landmark theorems are axiomatized here, since their proofs require sophisticated methods not yet in Mathlib. `apery_theorem` states $\\zeta(3)$ is irrational — Apéry's 1978 result that shocked the mathematical community. `rivoal_theorem` formalizes the set $\\{k : \\mathbb{N} \\mid \\text{Irr}(\\zeta(2k+1))\\}$ as infinite (using `Set.Infinite`). `zudilin_theorem` is the disjunctive statement that at least one of $\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)$ is irrational, encoded as a four-way `∨`. The `axiom` keyword in Lean 4 allows postulating propositions without proof — appropriate here for theorems whose proofs require Padé approximants and hypergeometric identities beyond current Mathlib scope.",
+    "mathContext": "Rivoal (2000): $|\\{k \\leq n : \\zeta(2k+1) \\notin \\mathbb{Q}\\}| \\geq \\frac{1 + o(1)}{2} \\log(2n+1)$. So asymptotically half of all odd zeta values are irrational. Zudilin (2001) improved to: at least one of $\\{\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)\\}$ is irrational. Both proofs use linear independence criteria for hypergeometric series evaluated at rational points.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lean 4 axiom declaration",
+      "Set.Infinite",
+      "Apéry's theorem",
+      "Rivoal 2000",
+      "Zudilin 2001"
+    ],
+    "prerequisites": [
+      "Lean 4 axiom keyword",
+      "Set.Infinite in Mathlib",
+      "Padé approximants"
+    ]
+  },
+  {
+    "id": "ann-consequences",
+    "proofId": "basel-problem-oq-01",
+    "range": {
+      "startLine": 191,
+      "endLine": 222
+    },
+    "type": "concept",
+    "title": "Consequences: Formal Witnesses and Non-Rationality Results",
+    "content": "The consequences section derives useful results from the axiomatized theorems using standard Lean 4 tactics. `exists_irrational_odd_zeta` uses `Set.Infinite.nonempty` to extract an element from Rivoal's infinite set. `not_all_of_four_rational` uses `rcases zudilin_theorem with h | h | h | h` to case-split on the four-way disjunction and apply each component of the negation hypothesis to reach a contradiction. `zudilin_witness` constructs an explicit existential: it matches on each case of `zudilin_theorem` and pairs the irrational value with its membership in `{5, 7, 9, 11}`, using `by decide` for the membership proofs.",
+    "mathContext": "From `zudilin_theorem`: $\\text{Irr}(\\zeta(5)) \\vee \\text{Irr}(\\zeta(7)) \\vee \\text{Irr}(\\zeta(9)) \\vee \\text{Irr}(\\zeta(11))$. The negation $\\neg(\\text{Irr}(\\zeta(5))) \\wedge \\neg(\\text{Irr}(\\zeta(7))) \\wedge \\neg(\\text{Irr}(\\zeta(9))) \\wedge \\neg(\\text{Irr}(\\zeta(11)))$ combined with the disjunction gives a contradiction via modus tollens applied four times.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Set.Infinite.nonempty",
+      "rcases on disjunctions",
+      "by decide for Finset"
+    ],
+    "prerequisites": [
+      "Lean 4 rcases tactic",
+      "Set.Infinite API in Mathlib",
+      "Finset membership decidability"
+    ]
+  },
+  {
+    "id": "ann-research-summary",
+    "proofId": "basel-problem-oq-01",
+    "range": {
+      "startLine": 228,
+      "endLine": 243
+    },
+    "type": "insight",
+    "title": "Summary Theorem: Complete Formal Knowledge About ζ(5)",
+    "content": "The `zetaFive_research_summary` theorem bundles the five proved properties into a single conjunction: summability, positivity, lower bound $\\geq 1$, and two upper bounds. The proof is the tuple `⟨summable_one_div_pow_five, zetaFive_pos, zetaFive_ge_one, zetaFive_le_zeta_four, zetaFive_le_zeta_two⟩`. This serves as a 'checkpoint theorem' documenting the complete state of formal knowledge: everything that can be proved about $\\zeta(5)$ without resolving the irrationality conjecture is captured here. The single remaining sorry (`zeta_five_irrational`) represents the entire open question.",
+    "mathContext": "Complete formal knowledge: $\\zeta(5) \\in [1, \\pi^4/90]$ where $\\pi^4/90 \\approx 1.0823$. True value: $\\zeta(5) = \\sum_{n=1}^\\infty n^{-5} = 1 + 1/32 + 1/243 + 1/1024 + \\cdots \\approx 1.0369$. The gap between the proved bounds and the open question: irrationality of $\\zeta(5)$ requires a fundamentally new technique beyond current mathematics, not merely more careful Lean formalization.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjunction introduction",
+      "summary theorems in Lean",
+      "open problem formalization"
+    ],
+    "prerequisites": [
+      "conjunction and And.intro in Lean 4",
+      "Irrational vs transcendental distinction"
+    ]
+  }
+]

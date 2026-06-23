@@ -1,0 +1,217 @@
+[
+  {
+    "id": "ann-725-header",
+    "proofId": "erdos-725",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #725** asks for an asymptotic formula for the number of $k \\times n$ Latin rectangles. The Erdős-Kaplansky formula $L(k,n) \\sim e^{-\\binom{k}{2}} (n!)^k$ holds for $k \\leq n^{1/3-o(1)}$. The general case for $k = \\Theta(n)$ remains **OPEN**.",
+    "mathContext": "A Latin rectangle is a $k \\times n$ array filled with $n$ symbols where each row is a permutation of $\\{1, \\ldots, n\\}$ and each column has no repeated entries. The counting function $L(k,n)$ measures the number of such arrays, connecting to permanents, derangements, and asymptotic combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "latin-squares",
+      "permanents",
+      "derangements",
+      "asymptotic-enumeration",
+      "inclusion-exclusion"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "permutations",
+      "asymptotic-analysis"
+    ]
+  },
+  {
+    "id": "ann-725-latin",
+    "proofId": "erdos-725",
+    "range": {
+      "startLine": 40,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "LatinRectangle and LatinSquare",
+    "content": "A $k \\times n$ Latin rectangle is formalized as a structure with entries forming a $k \\times n$ array where each row is a bijection (`Function.Bijective`) of `Fin n`, and each column is injective (`Function.Injective`). When $k = n$, this specializes to a Latin square.",
+    "mathContext": "The structure `LatinRectangle k n` captures the two defining properties: `row_perm` ensures each row is a permutation of $\\{0, \\ldots, n-1\\}$, and `col_injective` ensures no column repeats. The bijectivity of rows implies each symbol appears exactly once per row, while column injectivity allows at most one occurrence per column.",
+    "significance": "key",
+    "relatedConcepts": [
+      "permutation-groups",
+      "latin-squares",
+      "orthogonal-latin-squares",
+      "quasigroups"
+    ],
+    "prerequisites": [
+      "Function.Bijective",
+      "Function.Injective",
+      "Fin"
+    ]
+  },
+  {
+    "id": "ann-725-L",
+    "proofId": "erdos-725",
+    "range": {
+      "startLine": 49,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "L(k,n), factorial, choose2",
+    "content": "The counting function $L(k,n)$ is defined as the cardinality of the set of all functions $f : \\text{Fin}\\, k \\to \\text{Fin}\\, n \\to \\text{Fin}\\, n$ satisfying both the row-bijective and column-injective constraints. The helper functions `factorial` and `choose2` compute $n!$ and $\\binom{k}{2} = k(k-1)/2$ for the Erdős-Kaplansky formula.",
+    "mathContext": "$L(k,n) = |\\{f : [k] \\times [n] \\to [n] \\mid \\forall i,\\, f(i,\\cdot) \\in S_n,\\; \\forall j,\\, f(\\cdot,j)\\text{ injective}\\}|$. The factorial $n! = \\prod_{i=1}^{n} i$ counts unconstrained permutations, and $\\binom{k}{2}$ appears in the exponential correction factor.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card",
+      "symmetric-group",
+      "binomial-coefficient"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Function.Bijective",
+      "Function.Injective"
+    ]
+  },
+  {
+    "id": "ann-725-formula",
+    "proofId": "erdos-725",
+    "range": {
+      "startLine": 67,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "ErdosKaplanskyFormula and InEKRegime",
+    "content": "The Erdős-Kaplansky formula computes the asymptotic value $e^{-\\binom{k}{2}} \\cdot (n!)^k$. The factor $(n!)^k$ counts $k$ unconstrained row permutations; the exponential $e^{-\\binom{k}{2}}$ corrects for the probability that columns remain collision-free. The regime `InEKRegime` requires $k = o((\\log n)^{3/2 - \\varepsilon})$.",
+    "mathContext": "The heuristic behind the formula: if each of $k$ rows is a random permutation of $[n]$, the probability that column $j$ has no repeated entry among rows $i_1, i_2$ is approximately $1 - 1/n$. Summing over $\\binom{k}{2}$ pairs and using independence gives $\\Pr[\\text{no collision}] \\approx (1-1/n)^{\\binom{k}{2}} \\approx e^{-\\binom{k}{2}/n}$. When $k$ is small enough, the total correction is $e^{-\\binom{k}{2}}$ (after normalization).",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic-expansion",
+      "Poisson-approximation",
+      "inclusion-exclusion"
+    ],
+    "prerequisites": [
+      "Real.exp",
+      "asymptotic-analysis",
+      "probability-heuristic"
+    ]
+  },
+  {
+    "id": "ann-725-ek",
+    "proofId": "erdos-725",
+    "range": {
+      "startLine": 76,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "Erdős-Kaplansky (1946)",
+    "content": "The foundational 1946 result: for $k = o((\\log n)^{3/2 - \\varepsilon})$, the ratio $L(k,n) / [e^{-\\binom{k}{2}} (n!)^k] \\to 1$ as $n \\to \\infty$. This was the first rigorous asymptotic formula for Latin rectangle counting, proved using a careful inclusion-exclusion argument over column collisions.",
+    "mathContext": "Erdős and Kaplansky used a sieve method: define bad events $B_{i_1,i_2,j}$ = 'rows $i_1, i_2$ agree in column $j$'. The inclusion-exclusion over these $\\binom{k}{2} \\cdot n$ events, combined with moment bounds showing higher-order terms are negligible when $k$ is small, yields the asymptotic. The regime $k = o((\\log n)^{3/2-\\varepsilon})$ ensures the error terms vanish.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sieve-methods",
+      "inclusion-exclusion",
+      "asymptotic-enumeration",
+      "moment-method"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "Real.exp",
+      "asymptotics"
+    ]
+  },
+  {
+    "id": "ann-725-yamamoto",
+    "proofId": "erdos-725",
+    "range": {
+      "startLine": 93,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "Yamamoto (1951)",
+    "content": "Yamamoto extended the Erdős-Kaplansky formula to the much larger regime $k \\leq n^{1/3 - o(1)}$, a dramatic improvement from $k = o((\\log n)^{3/2})$. The same formula $e^{-\\binom{k}{2}} (n!)^k$ holds asymptotically throughout this extended range.",
+    "mathContext": "The `InYamamotoRegime` condition formalizes $k \\leq n^{1/3 - o(1)}$ using a function $f(n) \\to 0$ with $k(n) \\leq n^{1/3 - f(n)}$. Yamamoto's proof refined the error estimates using permanent bounds and combinatorial identities, showing that the inclusion-exclusion corrections remain negligible even when $k$ grows polynomially in $n$ (up to exponent $1/3$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "permanent-bounds",
+      "asymptotic-regime-extension",
+      "polynomial-growth"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "nhds",
+      "InEKRegime"
+    ]
+  },
+  {
+    "id": "ann-725-perm",
+    "proofId": "erdos-725",
+    "range": {
+      "startLine": 108,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Permanent Methods and Godsil-McKay Bounds",
+    "content": "The permanent $\\text{perm}(A) = \\sum_{\\sigma \\in S_n} \\prod_{i} A_{i,\\sigma(i)}$ sums over all permutations, always with positive sign (unlike the determinant). Godsil and McKay (1990) showed that $L(k,n)$ can be expressed as a permanent of a specific $0\\text{-}1$ matrix, and established two-sided bounds: $c_1 \\cdot e^{-\\binom{k}{2}} (n!)^k \\leq L(k,n) \\leq c_2 \\cdot e^{-\\binom{k}{2}} (n!)^k$ for constants $c_1, c_2 > 0$.",
+    "mathContext": "The permanent connection arises because extending a $(k-1) \\times n$ Latin rectangle by one row requires choosing a permutation avoiding all values already in each column. This is equivalent to computing the permanent of the $n \\times n$ matrix $A$ where $A_{ij} = 1$ if symbol $j$ has not appeared in column $i$. The Godsil-McKay bounds use van der Waerden's inequality (proved by Egorychev and Falikman in 1981) as a key tool.",
+    "significance": "key",
+    "relatedConcepts": [
+      "matrix-permanent",
+      "van-der-Waerden-conjecture",
+      "doubly-stochastic-matrices",
+      "0-1-matrices"
+    ],
+    "prerequisites": [
+      "Equiv.Perm",
+      "Finset.sum",
+      "Finset.prod",
+      "linear-algebra"
+    ]
+  },
+  {
+    "id": "ann-725-exact",
+    "proofId": "erdos-725",
+    "range": {
+      "startLine": 122,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Known Exact Values",
+    "content": "Several exact formulas are known for small $k$: $L(1,n) = n!$ (the first row can be any permutation). $L(2,n) = n! \\cdot D(n)$ where $D(n) = n! \\sum_{i=0}^{n} (-1)^i / i!$ counts derangements — the second row must be a derangement of the first. For Latin squares, $L(n,n) \\leq \\prod_{i=1}^{n} (i+1)!$. The OEIS sequence A001009 provides computed values like $L(3,4) = 3456$.",
+    "mathContext": "The derangement connection for $L(2,n)$: after fixing the first row as the identity permutation (WLOG, by symmetry dividing by $n!$), the second row must avoid $\\sigma(j) = j$ for all $j$, i.e., be a derangement. The classical formula $D(n) = n! \\sum_{k=0}^{n} \\frac{(-1)^k}{k!} \\approx n!/e$ gives $L(2,n) \\approx (n!)^2/e$, consistent with $e^{-\\binom{2}{2}} (n!)^2 = (n!)^2/e$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "derangements",
+      "inclusion-exclusion",
+      "OEIS",
+      "latin-squares"
+    ],
+    "prerequisites": [
+      "factorial",
+      "derangement-formula",
+      "Finset.prod"
+    ]
+  },
+  {
+    "id": "ann-725-open",
+    "proofId": "erdos-725",
+    "range": {
+      "startLine": 144,
+      "endLine": 150
+    },
+    "type": "theorem",
+    "title": "GeneralAsymptotic and ExtendedConjecture",
+    "content": "`GeneralAsymptotic` asks for any function $f(k,n)$ with $L(k,n)/f(k,n) \\to 1$ for all $k \\leq n$. `ExtendedConjecture` specifically conjectures that the Erdős-Kaplansky formula $e^{-\\binom{k}{2}} (n!)^k$ remains valid when $k/n \\to c$ for $0 < c < 1$. Both remain **OPEN** beyond the Yamamoto regime $k \\leq n^{1/3-o(1)}$.",
+    "mathContext": "For $k = \\Theta(n)$, the Erdős-Kaplansky heuristic breaks down because the column collision events are no longer approximately independent. The regime $k > n^{1/3}$ requires handling strong correlations between column constraints. McKay and Wanless (2005) made progress for $k = o(n^{6/7})$, but the general case with $k$ proportional to $n$ remains open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open-problems",
+      "asymptotic-regimes",
+      "correlation-inequalities",
+      "McKay-Wanless"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "nhds",
+      "ErdosKaplanskyFormula"
+    ]
+  }
+]

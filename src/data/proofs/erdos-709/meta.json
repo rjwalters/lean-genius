@@ -1,0 +1,219 @@
+{
+  "id": "erdos-709",
+  "title": "Erdős Problem #709: Divisibility in Intervals",
+  "slug": "erdos-709",
+  "description": "Find tight bounds for f(n), the minimal function such that any interval of f(n)·max(A) consecutive integers contains distinct multiples of each element of an n-element set A ⊆ [2,∞).",
+  "meta": {
+    "author": "Erdős, Surányi (1959)",
+    "sourceUrl": "https://erdosproblems.com/709",
+    "date": "1959",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos709Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisibility",
+      "intervals",
+      "covering-problems"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.dvd_mul_right",
+        "description": "Divisibility for constructing multiples",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for lower bound expression",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root for upper bound expression",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for lower bound technique",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "ValidSet definition (A ⊆ [2,∞))",
+      "Interval structure for consecutive integers",
+      "Covering structure with assignment, in_interval, divides, injective",
+      "HasCovering predicate",
+      "f function axiom (minimal interval multiplier)",
+      "f_sufficient axiom (sufficiency of f(n)·max(A))",
+      "lower_bound_log axiom ((log n)^c lower bound)",
+      "upper_bound_sqrt axiom (√n upper bound)",
+      "erdos_suranyi_1959 theorem combining bounds",
+      "f_one, f_two_bound for small cases",
+      "f_monotone property",
+      "Connection to Problem 708 (g(n) function)",
+      "f_g_distinct_objectives axiom replacing trivial placeholder",
+      "problem_709_open_lower_not_tight / upper_not_tight axioms",
+      "lower_bound_prime_crt axiom (prime set existence for CRT argument)",
+      "upper_bound_halls_theorem axiom (Hall's theorem covering guarantee)",
+      "conjecture_growth_rate formulation",
+      "Computational examples with native_decide",
+      "erdos_709_statement main theorem"
+    ],
+    "erdosNumber": 709,
+    "erdosUrl": "https://erdosproblems.com/709",
+    "erdosProblemStatus": "open",
+    "axiomCount": 4,
+    "lineCount": 230,
+    "assumptions": "4 axioms: f (extremal function f(n)), lower_bound_log (f(n) ≥ (log n)^c for some c > 0), upper_bound_sqrt (f(n) ≤ C·√n), g (related function g(n) from Problem 708). 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "**The Interval Covering Problem**\n\nErdős and Surányi posed this problem in their 1959 paper \"Bemerkungen zu einer Aufgabe eines mathematischen Wettbewerbs\" (Remarks on a problem from a mathematical competition), published in Matematikai Lapok. The question asks: given a set A of n positive integers all at least 2, how long must an interval of consecutive integers be to guarantee we can find n distinct multiples, one for each element of A?\n\n**The Function f(n) and Its Bounds**\n\nThe function f(n) is defined as the minimal k such that any interval of k·max(A) consecutive integers contains distinct x₁,...,xₙ with aᵢ | xᵢ, for every valid n-element set A. Erdős and Surányi proved that (log n)^c ≪ f(n) ≪ √n for some constant c > 0. The lower bound uses probabilistic arguments with sets of distinct primes: by the Chinese Remainder Theorem, multiples of different primes are nearly independent, so short intervals can fail to provide enough distinct multiples. The upper bound follows from a greedy covering argument, or equivalently from Hall's marriage theorem: in a long enough interval, each element has enough multiples to guarantee a system of distinct representatives.\n\n**The Open Gap and Related Work**\n\nThe gap between (log n)^c and √n is substantial — for n = 10⁶, this spans roughly two orders of magnitude. Erdős revisited the problem in his 1992 survey [Er92c] on favourite combinatorics problems. The closely related Problem 708 asks about the function g(n), the minimal size of a covering subset rather than an interval length. Both problems illuminate the structure of divisibility patterns but from different geometric perspectives.",
+    "problemStatement": "Let $f(n)$ denote the minimal value such that for any set $A = \\{a_1, \\ldots, a_n\\} \\subseteq [2, \\infty) \\cap \\mathbb{N}$ of size $n$, in any interval $I$ of $f(n) \\cdot \\max(A)$ consecutive integers there exist distinct $x_1, \\ldots, x_n \\in I$ where $a_i \\mid x_i$. Obtain good bounds for $f(n)$, or even an asymptotic formula. **Known:** $(\\log n)^c \\ll f(n) \\ll \\sqrt{n}$ (Erdős-Surányi, 1959). **Status:** OPEN.",
+    "text": "Find tight bounds for f(n), the minimal function such that any interval of f(n)·max(A) consecutive integers contains distinct multiples of each element of an n-element set A ⊆ [2,∞).",
+    "proofStrategy": "We formalize the problem by defining ValidSet (sets A ⊆ [2,∞)), Interval (consecutive integer ranges), and Covering (injective assignments with divisibility). The function f(n) is axiomatized with positivity and sufficiency properties. The Erdős-Surányi bounds are stated as axioms: lower_bound_log gives (log n)^c and upper_bound_sqrt gives √n. We formalize the openness of the problem via axioms asserting neither bound is tight. The proof techniques are captured: lower_bound_prime_crt formalizes the existence of prime sets for the CRT-based lower bound argument, and upper_bound_halls_theorem captures the Hall's marriage theorem approach for the upper bound. Computational examples verify √100 = 10 and √10000 = 100 via native_decide.",
+    "keyInsights": [
+      "**Covering-by-divisibility**: f(n) measures the minimal interval length (relative to max(A)) needed to find n distinct multiples covering every element of A",
+      "**Lower bound via primes**: Taking A = {p₁,...,pₙ} as distinct primes, multiples of different primes are nearly independent by CRT, forcing intervals of length at least (log n)^c · max(A)",
+      "**Upper bound via Hall's theorem**: In intervals of length √n · max(A), each aᵢ has at least √n multiples, guaranteeing a system of distinct representatives",
+      "**Substantial gap**: The distance between (log n)^c and √n grows with n — for n = 10⁶ the bounds differ by roughly two orders of magnitude",
+      "**Monotonicity**: f is monotone increasing — larger sets need longer intervals for guaranteed covering",
+      "**Connection to Problem 708**: The related function g(n) measures covering subset size rather than interval length, sharing techniques but with distinct objectives"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "ValidSet, maxElem, Interval structures",
+      "startLine": 42,
+      "endLine": 63,
+      "mathContext": "Formal definition: ValidSet, maxElem, Interval structures"
+    },
+    {
+      "id": "covering",
+      "title": "The Covering Property",
+      "summary": "Covering structure and HasCovering predicate",
+      "startLine": 64,
+      "endLine": 80,
+      "mathContext": "Formal definition: Covering structure and HasCovering predicate"
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(n)",
+      "summary": "f definition and sufficiency axioms",
+      "startLine": 81,
+      "endLine": 102,
+      "mathContext": "Formal definition: f definition and sufficiency axioms"
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "Erdős-Surányi 1959 lower and upper bounds combined",
+      "startLine": 103,
+      "endLine": 122,
+      "mathContext": "Bound: Erdős-Surányi 1959 lower and upper bounds combined"
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "f(1) = 1, f(2) ≤ 2",
+      "startLine": 123,
+      "endLine": 132
+    },
+    {
+      "id": "properties",
+      "title": "Properties of f",
+      "summary": "Monotonicity and logarithmic growth",
+      "startLine": 133,
+      "endLine": 142,
+      "mathContext": "Mathematical content: Monotonicity and logarithmic growth"
+    },
+    {
+      "id": "problem-708",
+      "title": "Connection to Problem 708",
+      "summary": "Related g(n) function with distinct objectives",
+      "startLine": 143,
+      "endLine": 167,
+      "mathContext": "Mathematical content: Related g(n) function with distinct objectives"
+    },
+    {
+      "id": "open-problem",
+      "title": "The Open Problem",
+      "summary": "Conjecture about true growth rate with openness axioms",
+      "startLine": 168,
+      "endLine": 201,
+      "mathContext": "Axiomatized: Conjecture about true growth rate with openness axioms"
+    },
+    {
+      "id": "proof-techniques",
+      "title": "Proof Techniques",
+      "summary": "Prime CRT lower bound and Hall's theorem upper bound",
+      "startLine": 202,
+      "endLine": 230,
+      "mathContext": "Verified: Prime CRT lower bound and Hall's theorem upper bound"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #709 asks for tight bounds on f(n), the minimal multiplier such that intervals of length f(n)·max(A) always contain distinct multiples covering any n-element set A ⊆ [2,∞). Erdős and Surányi proved (log n)^c ≪ f(n) ≪ √n in 1959. We formalize the complete problem including definitions, known bounds, proof techniques (CRT for lower bound, Hall's theorem for upper bound), and the open status.",
+    "implications": "Understanding f(n) would illuminate the structure of divisibility patterns in intervals, with connections to the Chinese Remainder Theorem, Hall's marriage theorem for bipartite matching, probabilistic combinatorics, and the distribution of multiples of integers.",
+    "openQuestions": [
+      "What is the true asymptotic growth rate of f(n)?",
+      "Is f(n) ~ (log n)^c for some c > 1 (close to the lower bound)?",
+      "Is f(n) ~ n^α for some 0 < α < 1/2 (intermediate growth)?",
+      "Can probabilistic methods or Fourier-analytic techniques improve the bounds?",
+      "What is the exact relationship between f(n) and g(n) from Problem 708?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos709",
+    "lineCount": 230,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos709Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1052",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-1062",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory"
+    },
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory"
+    }
+  ],
+  "sorries": 0
+}

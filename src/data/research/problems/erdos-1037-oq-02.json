@@ -1,0 +1,119 @@
+{
+  "slug": "erdos-1037-oq-02",
+  "title": "Can similar counterexamples be constructed for higher multiplicity bounds, ma...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Can similar counterexamples be constructed for higher multiplicity bounds, ma....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-30T01:04:30.788Z",
+    "iteration": 1,
+    "focus": "Proving sorries and fixing incorrect theorem statements",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Added multiplicity_k_bound (general pigeonhole n ≤ k·distinctDegreeCount for arbitrary k, generalizing the k=2 case in limited_multiplicity_bound). Recorded general_bound_conjecture_informally_false noting that cambieConstant (3/4) > generalMultiplicityBound 2 (2/3) numerically refutes the k → k/(k+1) extrapolation at k=2; a full universe-polymorphic Lean disproof from cambieChanHunter_construction is deferred (Type vs Type* matching). As part of the same patch, repaired pre-existing Mathlib v4.26.0 drift across Erdos1037Problem.lean and Erdos1037Aristotle.lean (vertexCount/maxTrivialSize G arguments, noncomputable on ℝ-valued constants, fiberwise rewrite of pigeonhole proofs, SimpleGraph.notMem_neighborFinset_self rename, degree_lt_card replacement, orphan docstring cleanup). Both files now Docker-build clean (7743 jobs, 0 sorries).",
+    "builtItems": [
+      "Proved counterexample_works in Erdos1037Problem.lean:129",
+      "Proved erdos_1037_disproved in Erdos1037Problem.lean:282",
+      "Proved degree_bound in Erdos1037Problem.lean:217",
+      "Proved limited_multiplicity_bound (corrected) in Erdos1037Problem.lean:188",
+      "Proved distinct_degree_count_le_vertex_count in Erdos1037Problem.lean:230",
+      "Fixed generalBoundConjecture definition in Erdos1037Problem.lean:259",
+      "Proved degree_diversity_no_ramsey_help: fixed statement to use existential C matching construction axiom",
+      "Proved cambie_is_optimal: construction achieves (3/4)n ≥ (3/4-ε)n for any ε>0, n≥4",
+      "Added multiplicity_k_bound in Erdos1037Problem.lean: n ≤ k · distinctDegreeCount whenever multiplicity ≤ k, via Finset.card_eq_sum_card_fiberwise",
+      "Added general_bound_conjecture_informally_false alias for cambie_beats_general capturing the k = 2 numerical refutation",
+      "Rewrote limited_multiplicity_bound using the same fiberwise technique (was broken by Finset.card_biUnion API change to Set.PairwiseDisjoint)",
+      "Made vertexCount and maxTrivialSize take G explicitly so call sites typecheck; cambieConstant / optimalDistinctBound / generalMultiplicityBound marked noncomputable",
+      "Repaired Erdos1037Aristotle.lean: pigeonhole_distinct_count, limited_mult_bound_from_pigeonhole rewritten fiberwise; degree_le_card_sub_one and degree_range no longer depend on the removed SimpleGraph.degree_lt_card",
+      "Docker build now clean for Proofs.Erdos1037Problem and Proofs.Erdos1037Aristotle (7743 jobs each, 0 sorries, 3 axioms)"
+    ],
+    "insights": [
+      "counterexample_works proved from cambieChanHunter_construction axiom with n=4",
+      "erdos_1037_disproved proved from counterexample_works with ε=1/8",
+      "degree_bound proved trivially from G.degree_lt_card + omega",
+      "limited_multiplicity_bound was FALSE (claimed distinct≤(n+2)/2, but distinct can be n-1). Fixed to correct lower bound: n≤2*distinct (pigeonhole)",
+      "max_distinct_with_limited_mult was FALSE (claimed distinct≤3n/4+2, wrong direction). Replaced with correct distinct≤n",
+      "generalBoundConjecture had invalid O(1) Lean syntax causing sorry. Fixed with existential constant C",
+      "degree_diversity_no_ramsey_help NOT provable from axiom (specific constant 10, but axiom gives existential C)",
+      "cambie_is_optimal is a deep asymptotic result needing additional infrastructure",
+      "The construction axiom works for all n≥4, making cambie_is_optimal immediate (not truly asymptotic)",
+      "degree_diversity_no_ramsey_help: fixed statement to use existential C and real-valued bound, proved from construction axiom with n=4",
+      "cambie_is_optimal: proved directly — construction gives (3/4)n ≥ (3/4-ε)n for any ε>0, n≥4",
+      "Lean 4 variable inclusion does NOT include explicit-binder variables that are not literally referenced in a def body — `def vertexCount : ℕ := Fintype.card V` does not expose G; explicit `(G : SimpleGraph V)` parameter is needed to make calls like `vertexCount G` typecheck",
+      "Finset.card_biUnion in v4.26.0 expects Set.PairwiseDisjoint (which prints as Function.onFun Disjoint), not the historical `∀ x ∈ s, ∀ y ∈ s, x ≠ y → Disjoint (t x) (t y)` shape. Finset.card_eq_sum_card_fiberwise is a cleaner replacement for partitioning-by-fiber proofs",
+      "SimpleGraph.degree_lt_card no longer exists; bound `G.degree v ≤ Fintype.card V - 1` via `G.neighborFinset v ⊆ Finset.univ.erase v` instead",
+      "SimpleGraph.not_mem_neighborFinset_self deprecated in favor of notMem_neighborFinset_self"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Complete the universe-polymorphic disproof of generalBoundConjecture by ULift-wrapping the V from cambieChanHunter_construction or by reformulating the conjecture over `Type 0`",
+      "Strengthen cambieChanHunter_construction axiom to an asymptotic statement (∃ N, ∀ n ≥ N, ...) so cambie_is_optimal becomes genuinely asymptotic rather than n ≥ 4-uniform",
+      "Investigate whether the analog of cambieConstant for multiplicity k is (2k - 1)/(2k) or some larger fraction — multiplicity_k_bound gives n ≤ k · distinctDegreeCount as the pigeonhole lower bound but no upper bound is known"
+    ]
+  },
+  "tags": [
+    "graph-theory",
+    "degree-sequences",
+    "erdos",
+    "ramsey-theory",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-103",
+    "erdos-1037"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T01:04:30.788Z",
+  "lastUpdate": "2026-06-05T16:00:00Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1037Aristotle.lean",
+      "filename": "Erdos1037Aristotle.lean",
+      "lineCount": 130,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1037Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1037Problem.lean",
+      "filename": "Erdos1037Problem.lean",
+      "lineCount": 325,
+      "theoremCount": 12,
+      "axiomCount": 3,
+      "defCount": 20,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1037Problem.lean"
+    }
+  ]
+}

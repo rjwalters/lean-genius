@@ -1,0 +1,191 @@
+{
+  "id": "erdos-915",
+  "title": "Erdős Problem #915: Disjoint Paths in Graphs",
+  "slug": "erdos-915",
+  "description": "Must a graph with 1+n(m-1) vertices and 1+nC(m,2) edges contain two vertices connected by m disjoint paths? The Bollobás-Erdős conjecture (1962) is TRUE for vertex-disjoint paths when m ≤ 4 (Bártfai, Bollobás), FALSE for m ≥ 5 (Leonard 1973, Mader 1973), and TRUE for edge-disjoint paths for all m ≥ 2 with ℓ_m(n) = ⌊m(n-1)/2 + 1⌋ (Mader 1973).",
+  "meta": {
+    "author": "Bollobás-Erdős (1962), Bártfai (1960), Leonard (1973), Mader (1973), Sørensen-Thomassen (1974)",
+    "sourceUrl": "https://erdosproblems.com/915",
+    "date": "1962",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos915Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "connectivity",
+      "disjoint-paths",
+      "extremal-graph-theory",
+      "partially-solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 915,
+    "erdosUrl": "https://erdosproblems.com/915",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure and adjacency",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Walk",
+        "description": "Graph walks, paths, and connectivity",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for vertex and edge counting",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "choose",
+        "description": "Binomial coefficients C(m,2) in conjecture statement",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Asymptotic filter for Leonard's lower bound",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "Path structure for graph paths with vertex list and walk proof",
+      "VertexDisjoint and EdgeDisjoint predicates on internal vertices/edges",
+      "HasMVertexDisjointPaths, HasMEdgeDisjointPaths via Fin m indexed families",
+      "ContainsMVertexDisjointPair, ContainsMEdgeDisjointPair existential definitions",
+      "k and ell axiomatized extremal functions",
+      "BollobasErdosConjecture formal statement with choose",
+      "extremal_construction definition (n copies of K_m sharing a vertex)",
+      "k_2, bartfai_k3_even/odd, bollobas_k4 explicit formulas",
+      "leonard_counterexample: 57-vertex, 141-edge disproof for m = 5",
+      "leonard_lower_bound: asymptotic lower bound with Filter.atTop",
+      "sorensen_thomassen_k5: exact formula k_5(n) = ⌊8n/3⌋ - 3",
+      "mader_disproof: vertex-disjoint conjecture false for m ≥ 6",
+      "mader_edge_disjoint: complete solution ℓ_m(n) = ⌊m(n-1)/2 + 1⌋",
+      "EdgeDisjointConjecture definition and edge_disjoint_solved theorem",
+      "leonard_small_m, leonard_ell5, leonard_ell6 specific ℓ_m values",
+      "mader_degree_condition: stronger edge-disjoint sufficient condition",
+      "three_connected_conjecture with 3-connectivity hypothesis",
+      "erdos_915_summary combining all four main results"
+    ],
+    "axiomCount": 8,
+    "lineCount": 186,
+    "assumptions": "8 axioms: k, ell, conjecture_m2, conjecture_m3, conjecture_m4, conjecture_false_m5, conjecture_false_large_m, mader_edge_disjoint. See Lean source for complete statements.",
+    "theoremCount": 3,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "The Bollobás-Erdős conjecture (1962) is a landmark problem in extremal graph theory concerning the minimum number of edges needed to guarantee m disjoint paths between some pair of vertices. The problem connects to Menger's theorem, which equates the maximum number of disjoint paths to the minimum cut size. The natural extremal construction consists of n copies of K_m sharing a single vertex, which has 1 + (m-1)n vertices and 1 + C(m,2)n edges but contains no m vertex-disjoint paths between any pair.\n\nThe conjecture was gradually resolved over more than a decade. Bártfai (1960) settled the m = 3 case before the general conjecture was even formulated. Bollobás (1966) proved the m = 4 case, the last positive result. Then Leonard (1973) disproved the vertex-disjoint conjecture for m = 5 with an explicit 57-vertex counterexample matching the conjectured parameters exactly. Mader (1973) independently disproved all m ≥ 6 via asymptotic arguments. Sørensen and Thomassen (1974) found the exact formula k_5(n) = ⌊8n/3⌋ - 3 for n ≥ 13, showing the true threshold exceeds the conjectured 5n/2 by a factor of 16/15.\n\nRemarkably, while the vertex-disjoint version fails for m ≥ 5, Mader (1973) proved that the edge-disjoint analogue holds for all m ≥ 2 with the exact formula ℓ_m(n) = ⌊m(n-1)/2 + 1⌋. This complete dichotomy between vertex-disjoint and edge-disjoint paths is one of the most striking phenomena in extremal graph theory. Sørensen and Thomassen also showed that the vertex-disjoint conjecture holds for 3-connected graphs, indicating that the counterexamples must exploit low-connectivity structure.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $G$ be a graph with $1 + n(m-1)$ vertices and $1 + n\\binom{m}{2}$ edges. Must $G$ contain two vertices connected by $m$ disjoint paths?\n\n**For Vertex-Disjoint Paths ($k_m$):**\n- TRUE for $m = 2, 3, 4$ (Bártfai 1960, Bollobás 1966)\n- FALSE for $m = 5$: Leonard (1973) gave a counterexample with 57 vertices and 141 edges\n- FALSE for $m \\geq 6$: Mader (1973) showed $k_m(n)$ exceeds $(m/2)n + C$ for any constant $C$\n- $k_5(n) = \\lfloor 8n/3 \\rfloor - 3$ for $n \\geq 13$ (Sørensen-Thomassen 1974)\n\n**For Edge-Disjoint Paths ($\\ell_m$):**\n- TRUE for all $m \\geq 2$ (Mader 1973)\n- $\\ell_m(n) = \\lfloor m(n-1)/2 + 1 \\rfloor$",
+    "text": "Must a graph with 1+n(m-1) vertices and 1+nC(m,2) edges contain two vertices connected by m disjoint paths? The Bollobás-Erdős conjecture (1962) is TRUE for vertex-disjoint paths when m ≤ 4 (Bártfai, Bollobás), FALSE for m ≥ 5 (Leonard 1973, Mader 1973), and TRUE for edge-disjoint paths for all m ≥ 2 with ℓ_m(n) = ⌊m(n-1)/2 + 1⌋ (Mader 1973).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Path and Disjointness Structures (lines 42-84):**\n   - `Path G u v`: vertex list with adjacency proof\n   - `VertexDisjoint`: no shared internal vertices\n   - `EdgeDisjoint`: no shared edges (checking both orientations)\n   - `HasMVertexDisjointPaths` / `HasMEdgeDisjointPaths`: Fin m indexed families\n   - `ContainsMVertexDisjointPair` / `ContainsMEdgeDisjointPair`: existential over vertex pairs\n\n2. **Extremal Functions (lines 86-102):**\n   - `k m n` and `ell m n` axiomatized (computing exact extremal thresholds is beyond Mathlib)\n   - `ell_le_k`: vertex-disjoint implies edge-disjoint\n\n3. **The Conjecture and Construction (lines 104-125):**\n   - `BollobasErdosConjecture m`: k_m(1 + (m-1)n) = 1 + C(m,2)n\n   - `extremal_construction`: lower bound witness\n\n4. **Small Cases TRUE (lines 127-149):**\n   - Explicit formulas: k_2(n) = n, k_3 parity split, k_4(n) = 2n-1\n   - `conjecture_small_m`: conjunction for m = 2, 3, 4\n\n5. **Disproof for m ≥ 5 (lines 151-195):**\n   - `leonard_counterexample`: 57 vertices, 141 edges, no 5 vertex-disjoint paths\n   - `leonard_lower_bound`: asymptotic with Filter.atTop\n   - `sorensen_thomassen_k5`: exact formula 8n/3 - 3\n   - `mader_disproof`: m ≥ 6 general disproof\n\n6. **Edge-Disjoint Solution (lines 197-226):**\n   - `mader_edge_disjoint`: ℓ_m(n) = m(n-1)/2 + 1\n   - `edge_disjoint_solved`: proves EdgeDisjointConjecture\n\n7. **Summary (lines 278-292):**\n   - `erdos_915_summary`: four-part conjunction covering all results",
+    "keyInsights": [
+      "**Two Interpretations:** The problem bifurcates into vertex-disjoint (k_m) and edge-disjoint (ℓ_m) versions with fundamentally different answers — the conjecture is partially false for vertex-disjoint but completely true for edge-disjoint",
+      "**Small m Works:** For m = 2, 3, 4, the vertex-disjoint conjecture holds, with explicit formulas k_2(n) = n, k_3 with parity cases, and k_4(n) = 2n - 1",
+      "**Leonard's Counterexample:** A specific graph with 57 vertices and 141 edges disproves the m = 5 case — this is an exact counterexample since the conjecture predicts k_5(57) = 141",
+      "**Coefficient Gap:** For m = 5, the actual growth rate is 8/3 ≈ 2.667 per vertex, strictly larger than the conjectured 5/2 = 2.5, showing the extremal construction is not tight",
+      "**Edge-Disjoint Completely Solved:** Mader (1973) proved ℓ_m(n) = ⌊m(n-1)/2 + 1⌋ for all m ≥ 2, confirming the conjecture in the edge-disjoint setting",
+      "**3-Connected Rescue:** Sørensen-Thomassen showed the vertex-disjoint conjecture holds for 3-connected graphs, indicating the counterexamples exploit low connectivity"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Extremal graph theory (Turán-type problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Path, VertexDisjoint, EdgeDisjoint, HasMVertexDisjointPaths, HasMEdgeDisjointPaths, ContainsMVertexDisjointPair, ContainsMEdgeDisjointPair",
+      "startLine": 38,
+      "endLine": 85,
+      "mathContext": "Mathematical content: Path, VertexDisjoint, EdgeDisjoint, HasMVertexDisjointPaths, HasMEdgeDisjointPaths, ContainsMVertexDisjointPair, ContainsMEdgeDisjointPair"
+    },
+    {
+      "id": "functions",
+      "title": "The Functions k_m(n) and ℓ_m(n)",
+      "summary": "Axiomatized extremal functions k, ell, and ell_le_k ordering",
+      "startLine": 86,
+      "endLine": 103,
+      "mathContext": "Axiomatized: Axiomatized extremal functions k, ell, and ell_le_k ordering"
+    },
+    {
+      "id": "conjecture",
+      "title": "The Bollobás-Erdős Conjecture",
+      "summary": "BollobasErdosConjecture definition and extremal_construction lower bound",
+      "startLine": 104,
+      "endLine": 126,
+      "mathContext": "Formal definition: BollobasErdosConjecture definition and extremal_construction lower bound"
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases: Conjecture TRUE for m ≤ 4",
+      "summary": "k_2, bartfai_k3_even/odd, bollobas_k4, conjecture_m2/m3/m4, conjecture_small_m",
+      "startLine": 127,
+      "endLine": 150,
+      "mathContext": "Mathematical content: k_2, bartfai_k3_even/odd, bollobas_k4, conjecture_m2/m3/m4, conjecture_small_m"
+    },
+    {
+      "id": "disproof",
+      "title": "The Disproof for m ≥ 5",
+      "summary": "leonard_counterexample, leonard_lower_bound, sorensen_thomassen_k5, mader_disproof, conjecture_false_m5, conjecture_false_large_m",
+      "startLine": 151,
+      "endLine": 186,
+      "mathContext": "Verified: leonard_counterexample, leonard_lower_bound, sorensen_thomassen_k5, mader_disproof, conjecture_false_m5, conjecture_false_large_m"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #915 (Bollobás-Erdős Conjecture, 1962) asks about the minimum edges needed to guarantee m disjoint paths between some vertex pair in a graph. The vertex-disjoint version is TRUE for m ≤ 4 (Bártfai, Bollobás) but FALSE for m ≥ 5 — Leonard (1973) gave an explicit 57-vertex counterexample for m = 5, and Mader (1973) disproved all m ≥ 6. The edge-disjoint version is TRUE for all m ≥ 2, with the exact formula ℓ_m(n) = ⌊m(n-1)/2 + 1⌋ (Mader 1973). The formalization captures all results as axioms with the summary theorem combining them.",
+    "implications": "**Theoretical Significance**: **Connections to Graph Connectivity**\n\n1. **Menger's Theorem:** The max number of disjoint u-v paths equals the min vertex/edge cut, providing the theoretical foundation for disjoint path problems\n\n2. **Extremal Graph Theory:** The problem is a Turán-type question: what is the minimum edge density guaranteeing a specific connectivity property?\n\n**3. Vertex vs Edge Disjointness:** The gap between k_m and ℓ_m for m ≥ 5 reveals that vertex-disjoint paths are structurally harder to force than edge-disjoint paths\n\n4. **3-Connected Rescue:** The conjecture holding for 3-connected graphs (Sørensen-Thomassen) shows counterexamples must exploit low connectivity (cut vertices or 2-vertex cuts)\n\n5. **Growth Rate Phenomenon:** For m = 5, k_5(n) ∼ 8n/3 vs the conjectured 5n/2, a ratio of 16/15 — the extremal construction is asymptotically not tight.",
+    "openQuestions": [
+      "Find exact formulas for k_m(n) for m ≥ 6 analogous to Sørensen-Thomassen's k_5 result",
+      "Characterize graphs achieving the k_m threshold (extremal graphs)",
+      "Determine the exact asymptotic growth rate of k_m(n)/n as m → ∞",
+      "Study the Bollobás-Erdős question for directed graphs",
+      "Investigate the gap between k_m and ℓ_m quantitatively for large m"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Choose.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos915",
+    "lineCount": 186,
+    "axiomCount": 8,
+    "theoremCount": 3,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos915Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1011",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-1033",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
+    },
+    {
+      "targetId": "erdos-1034",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-graph-theory, graph-theory"
+    }
+  ],
+  "sorries": 0
+}

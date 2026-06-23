@@ -1,0 +1,250 @@
+[
+  {
+    "id": "erdos-406-header",
+    "proofId": "erdos-406",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "title": "Problem Background and Imports",
+    "content": "Erdős Problem #406 asks whether only finitely many powers of 2 have base-3 representations using only digits 0 and 1. Such numbers are simultaneously powers of 2 and sums of distinct powers of 3, living at the intersection of two multiplicatively independent exponential sequences. Only three examples are known: $1 = 2^0$, $4 = 2^2 = 1 + 3$, and $256 = 2^8 = 1 + 3 + 9 + 243$. Saye (2022) verified no further examples exist for $2^n$ with $n \\leq 5.9 \\times 10^{21}$. The file imports `Nat.Digits` for base-$b$ digit extraction, `Nat.Prime.Basic` for primality, `List.Basic` for digit list operations, and `Tactic` for general proof automation.",
+    "mathContext": "\\#\\{k \\in \\mathbb{N} : \\text{digits}_3(2^k) \\subseteq \\{0,1\\}\\} < \\infty\\;?: The problem sits at the intersection of S-unit equations (Evertse-Schlickewei), the ABC conjecture, Ridout's theorem on p-adic approximation, and linear forms in logarithms (Baker's theorem). The difficulty arises from the multiplicative independence of 2 and 3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "S-unit-equations",
+      "ABC-conjecture",
+      "multiplicative-independence",
+      "Cantor-set"
+    ],
+    "prerequisites": [
+      "base-b-digit-representations",
+      "powers-of-2",
+      "Nat.digits"
+    ]
+  },
+  {
+    "id": "erdos-406-digit-01",
+    "proofId": "erdos-406",
+    "type": "definition",
+    "range": {
+      "startLine": 25,
+      "endLine": 27
+    },
+    "title": "HasOnlyDigits01Base3",
+    "content": "Predicate asserting that all base-3 digits of $n$ belong to $\\{0, 1\\}$. Equivalently, $n$ is a sum of distinct powers of 3 (a 'ternary-sparse' or 'Cantor set integer'). The definition uses `Nat.digits 3 n` which returns the little-endian list of base-3 digits. These numbers form an integer analogue of the middle-thirds Cantor set: just as Cantor set points have ternary expansions using only 0 and 2 (or equivalently 0 and 1 after rescaling), these integers have ternary expansions using only 0 and 1.",
+    "mathContext": "\\text{HasOnlyDigits01Base3}(n) \\;\\Leftrightarrow\\; \\forall\\, d \\in \\text{digits}_3(n),\\; d \\in \\{0, 1\\}: Lean: def HasOnlyDigits01Base3 (n : ℕ) : Prop := ∀ d ∈ Nat.digits 3 n, d = 0 ∨ d = 1. These numbers are exactly sums of distinct powers of 3, analogous to how binary numbers correspond to sums of distinct powers of 2. There are 2^k such numbers below 3^k.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cantor-set",
+      "ternary-representation",
+      "subset-sum",
+      "carry-free-addition"
+    ],
+    "prerequisites": [
+      "Nat.digits",
+      "base-3-representation"
+    ]
+  },
+  {
+    "id": "erdos-406-digit-12",
+    "proofId": "erdos-406",
+    "type": "definition",
+    "range": {
+      "startLine": 30,
+      "endLine": 31
+    },
+    "title": "HasOnlyDigits12Base3",
+    "content": "Predicate asserting that all base-3 digits of $n$ belong to $\\{1, 2\\}$. This defines 'ternary-dense' numbers — every ternary digit position is nonzero, so the number is at least $(3^k - 1)/2$ for a $k$-digit representation. The digits $\\{1, 2\\}$ condition means $n$ has no ternary digit equal to 0, i.e., $n$ is not divisible by 3 at any 'level' of its ternary decomposition.",
+    "mathContext": "\\text{HasOnlyDigits12Base3}(n) \\;\\Leftrightarrow\\; \\forall\\, d \\in \\text{digits}_3(n),\\; d \\in \\{1, 2\\}: Lean: def HasOnlyDigits12Base3 (n : ℕ) : Prop := ∀ d ∈ Nat.digits 3 n, d = 1 ∨ d = 2. These numbers avoid the digit 0, making them 'dense' in the sense that every ternary position contributes to the value.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ternary-representation",
+      "digit-constraint",
+      "dense-representation"
+    ],
+    "prerequisites": [
+      "Nat.digits",
+      "base-3-representation"
+    ]
+  },
+  {
+    "id": "erdos-406-ternary-sparse",
+    "proofId": "erdos-406",
+    "type": "definition",
+    "range": {
+      "startLine": 34,
+      "endLine": 35
+    },
+    "title": "ternarySparse: Powers of 2 with Digits {0,1}",
+    "content": "The set $\\{n \\in \\mathbb{N} : n = 2^k \\text{ for some } k \\text{ and } \\text{digits}_3(n) \\subseteq \\{0,1\\}\\}$. This is the intersection of two exponentially growing but multiplicatively independent sets: powers of 2 and sums of distinct powers of 3. The central conjecture is that this intersection is finite. The S-unit equation reformulation is: $2^k = \\varepsilon_1 \\cdot 3^{a_1} + \\varepsilon_2 \\cdot 3^{a_2} + \\cdots$ with $\\varepsilon_i \\in \\{0, 1\\}$ has finitely many solutions.",
+    "mathContext": "\\text{ternarySparse} = \\{2^k : k \\in \\mathbb{N},\\; \\text{digits}_3(2^k) \\subseteq \\{0,1\\}\\}: Lean: def ternarySparse : Set ℕ := { n | ∃ k : ℕ, n = 2 ^ k ∧ HasOnlyDigits01Base3 n }. The S-unit reformulation connects to the Evertse theorem: the equation x₁ + x₂ + ... + xₙ = 0 in {2,3}-units has finitely many non-degenerate solutions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "S-unit-equations",
+      "Evertse-theorem",
+      "multiplicative-independence",
+      "Cantor-set-integers"
+    ],
+    "prerequisites": [
+      "HasOnlyDigits01Base3",
+      "powers-of-2"
+    ]
+  },
+  {
+    "id": "erdos-406-ternary-dense",
+    "proofId": "erdos-406",
+    "type": "definition",
+    "range": {
+      "startLine": 38,
+      "endLine": 39
+    },
+    "title": "ternaryDense: Powers of 2 with Digits {1,2}",
+    "content": "The set of powers of 2 whose base-3 representation uses only digits 1 and 2. The variant conjecture asserts that $2^{15} = 32768$ is the largest member. In base 3, $32768 = 1122221122_3$. Note that avoiding the digit 0 in base 3 is equivalent to requiring that $n$ is not divisible by 3 at any level of its ternary decomposition.",
+    "mathContext": "\\text{ternaryDense} = \\{2^k : k \\in \\mathbb{N},\\; \\text{digits}_3(2^k) \\subseteq \\{1,2\\}\\}: Lean: def ternaryDense : Set ℕ := { n | ∃ k : ℕ, n = 2 ^ k ∧ HasOnlyDigits12Base3 n }. The variant condition (no digit 0) is in some sense dual to the main condition (no digit 2).",
+    "significance": "key",
+    "relatedConcepts": [
+      "digit-constraint",
+      "ternary-representation",
+      "variant-conjecture"
+    ],
+    "prerequisites": [
+      "HasOnlyDigits12Base3",
+      "powers-of-2"
+    ]
+  },
+  {
+    "id": "erdos-406-conjecture",
+    "proofId": "erdos-406",
+    "type": "concept",
+    "range": {
+      "startLine": 43,
+      "endLine": 45
+    },
+    "title": "Main Conjecture: Finiteness of ternarySparse",
+    "content": "Erdős Problem #406: the set `ternarySparse` is finite. This is equivalent to asking whether there are only finitely many $k$ such that $2^k$ can be written as a sum of distinct powers of 3. The problem remains OPEN despite Saye's massive computational verification. A positive answer would follow from sufficiently strong forms of the ABC conjecture. The formalization states this as a `Prop` definition rather than a theorem, reflecting the open status.",
+    "mathContext": "\\text{ternarySparse.Finite} \\;\\Leftrightarrow\\; \\#\\{k : 2^k = \\sum_{i \\in S} 3^i,\\; S \\text{ finite, distinct}\\} < \\infty: Lean: def ErdosProblem406 : Prop := ternarySparse.Finite. Stated as a Prop definition rather than a theorem, since the problem is open. The ABC conjecture would imply that for large k, the radical of 2^k times its ternary representation forces more than two distinct digits.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open-problem",
+      "ABC-conjecture",
+      "S-unit-equations",
+      "Set.Finite"
+    ],
+    "prerequisites": [
+      "ternarySparse",
+      "Set.Finite"
+    ]
+  },
+  {
+    "id": "erdos-406-variant",
+    "proofId": "erdos-406",
+    "type": "concept",
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    },
+    "title": "Variant: $2^{15}$ is the Largest with Digits {1,2}",
+    "content": "The variant conjecture states that $2^{15} = 32768$ is the greatest power of 2 whose base-3 representation uses only digits 1 and 2. In base 3, $32768 = 1122221122_3$. This is formalized as: $2^k \\in \\text{ternaryDense} \\implies 2^k \\leq 2^{15}$. Both conjectures (main and variant) are supported by Saye's computation, since no counterexamples exist for $n \\leq 5.9 \\times 10^{21}$.",
+    "mathContext": "2^k \\in \\text{ternaryDense} \\;\\Rightarrow\\; k \\leq 15: Lean: def ErdosProblem406_variant : Prop := ∀ k : ℕ, 2 ^ k ∈ ternaryDense → 2 ^ k ≤ 2 ^ 15. Also open, supported by Saye's computation. The bound k ≤ 15 is equivalent to 2^k ≤ 32768.",
+    "significance": "key",
+    "relatedConcepts": [
+      "variant-conjecture",
+      "digit-constraint",
+      "computational-evidence"
+    ],
+    "prerequisites": [
+      "ternaryDense"
+    ]
+  },
+  {
+    "id": "erdos-406-examples",
+    "proofId": "erdos-406",
+    "type": "concept",
+    "range": {
+      "startLine": 55,
+      "endLine": 62
+    },
+    "title": "The Three Known Examples",
+    "content": "The three known elements of ternarySparse, axiomatized:\n\n- $1 = 2^0$: base-3 representation $[1]$, trivially using only $\\{0,1\\}$ digits.\n- $4 = 2^2 = 1 + 3$: base-3 representation $[1, 1]_3 = 3^0 + 3^1$. Sum of two consecutive powers of 3.\n- $256 = 2^8 = 1 + 3 + 9 + 243$: base-3 representation $[1, 1, 1, 0, 0, 1]_3 = 3^0 + 3^1 + 3^2 + 3^5$. Sum of four powers of 3 from six ternary digit positions.\n\nThe gap from $2^8 = 256$ to Saye's verified range ($2^n$ for $n \\leq 5.9 \\times 10^{21}$) with no new examples is astronomically large, providing overwhelming evidence for finiteness.",
+    "mathContext": "1 = 2^0 = 3^0, \\quad 4 = 2^2 = 3^0 + 3^1, \\quad 256 = 2^8 = 3^0 + 3^1 + 3^2 + 3^5: All three are axiomatized rather than proved; they could be verified by native_decide or norm_num on digit computation. The decomposition 256 = 1 + 3 + 9 + 243 uses four powers of 3, and the 'missing' powers 3^3 = 27 and 3^4 = 81 correspond to digit 0 positions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "known-solutions",
+      "ternary-decomposition",
+      "power-of-3-sum"
+    ],
+    "prerequisites": [
+      "ternarySparse",
+      "Nat.digits"
+    ]
+  },
+  {
+    "id": "erdos-406-saye",
+    "proofId": "erdos-406",
+    "type": "concept",
+    "range": {
+      "startLine": 66,
+      "endLine": 71
+    },
+    "title": "Saye's Massive Computation (2022)",
+    "content": "Saye (2022) verified computationally that for all $16 \\leq n \\leq 5.9 \\times 10^{21}$, the number $2^n$ contains all three ternary digits $\\{0, 1, 2\\}$. This eliminates membership in both ternarySparse and ternaryDense for this enormous range. The verification uses an efficient incremental algorithm: rather than computing the full number $2^n$ (which would have $\\sim 10^{21}$ digits), Saye's method tracks only the base-3 digits of $2^n$ by incrementally multiplying the ternary representation by 2. This axiom captures both the $\\{0,1\\}$ and $\\{1,2\\}$ exclusions as a conjunction.",
+    "mathContext": "\\forall\\, n \\in [16,\\, 5.9 \\times 10^{21}],\\; \\{0,1,2\\} \\subseteq \\text{digits}_3(2^n): Lean: axiom saye_computation : ∀ n : ℕ, 16 ≤ n → n ≤ 59 * 10 ^ 20 → ¬HasOnlyDigits01Base3 (2 ^ n) ∧ ¬HasOnlyDigits12Base3 (2 ^ n). The bound 59 * 10^20 approximates 5.9 × 10²¹. Axiomatized as computational evidence from R. Saye, 'On the ternary digits of powers of 2', 2022.",
+    "significance": "key",
+    "relatedConcepts": [
+      "computational-verification",
+      "incremental-algorithm",
+      "ternary-digit-extraction"
+    ],
+    "prerequisites": [
+      "HasOnlyDigits01Base3",
+      "HasOnlyDigits12Base3"
+    ]
+  },
+  {
+    "id": "erdos-406-sum-of-powers",
+    "proofId": "erdos-406",
+    "type": "concept",
+    "range": {
+      "startLine": 75,
+      "endLine": 78
+    },
+    "title": "Digits {0,1} = Sum of Distinct Powers of 3",
+    "content": "Numbers with base-3 digits in $\\{0, 1\\}$ are exactly the sums of distinct powers of 3, i.e., subset sums of the geometric progression $\\{1, 3, 9, 27, \\ldots\\}$. This is the integer analogue of the Cantor set: the middle-thirds Cantor set consists of real numbers in $[0,1]$ whose ternary expansion avoids the digit 2, while these integers avoid the digit 2 (and have no fractional part). The question thus becomes: which powers of 2 are subset sums of powers of 3?",
+    "mathContext": "\\text{HasOnlyDigits01Base3}(n) \\;\\Leftrightarrow\\; \\exists\\, S \\subseteq \\mathbb{N} \\text{ (finite, distinct)},\\; n = \\sum_{i \\in S} 3^i: Lean: axiom digits01_sum_of_powers (n : ℕ) (h : HasOnlyDigits01Base3 n) : ∃ S : Finset ℕ, n = S.sum (3 ^ ·). The Cantor set connection: these are integers whose 'address' in the ternary tree visits only left (0) or middle (1) branches, never right (2).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cantor-set",
+      "subset-sum",
+      "geometric-progression",
+      "Finset.sum"
+    ],
+    "prerequisites": [
+      "HasOnlyDigits01Base3",
+      "Finset",
+      "geometric-series"
+    ]
+  },
+  {
+    "id": "erdos-406-zero",
+    "proofId": "erdos-406",
+    "type": "concept",
+    "range": {
+      "startLine": 80,
+      "endLine": 82
+    },
+    "title": "Zero Has Only Digits {0,1} (Vacuous)",
+    "content": "The base-3 representation of 0 is the empty list (`Nat.digits 3 0 = []`), so the predicate $\\forall d \\in \\text{digits}_3(0),\\; d \\in \\{0,1\\}$ is vacuously true. This is a boundary case establishing the predicate's behavior at 0. Note that 0 is not a power of 2 (since $2^k \\geq 1$ for all $k \\geq 0$), so this does not affect the ternarySparse set. Could be proved by `simp [HasOnlyDigits01Base3, Nat.digits]`.",
+    "mathContext": "\\text{HasOnlyDigits01Base3}(0) \\;\\text{(vacuously true: } \\text{digits}_3(0) = [] \\text{)}: Lean: axiom zero_hasOnlyDigits01 : HasOnlyDigits01Base3 0. Vacuously true since Nat.digits 3 0 = []. Axiomatized rather than proved, but could be discharged by simp.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "vacuous-truth",
+      "empty-list",
+      "boundary-case"
+    ],
+    "prerequisites": [
+      "HasOnlyDigits01Base3",
+      "Nat.digits"
+    ]
+  }
+]

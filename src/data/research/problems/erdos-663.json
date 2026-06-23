@@ -1,0 +1,96 @@
+{
+  "slug": "erdos-663",
+  "title": "Erdos #663",
+  "phase": "OBSERVE",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $k\\geq 2$ and $q(n,k)$ denote the least prime which does not divide $\\prod_{1\\leq i\\leq k}(n+i)$. Is it true that, if $k$ is fixed and $n$ is sufficiently large, we have\\[q(n,k)<(1+o(1))\\log n?\\]\n\n\n\nA problem of Erd\\H{o}s and Pomerance.\n\nThe bound $q(n,k)<(1+o(1))k\\log n$ is easy. It may be true this improved bound holds even up to $k=o(\\log n)$.\n\nA heuristic argument in favour of this is provided by Tao in the comments.\n\nSee also [457].",
+    "plain": "Let $k\\geq 2$ and $q(n,k)$ denote the least prime which does not divide $\\prod_{1\\leq i\\leq k}(n+i)$. Is it true that, if $k$ is fixed and $n$ is sufficiently large, we have\\[q(n,k)<(1+o(1))\\log n?\\]",
+    "whyMatters": [
+      "The least prime missing from a block of consecutive integers measures how completely short intervals cover small prime divisors.",
+      "The formalization turns the missing-prime function into a concrete Nat.find object with prime, nondivisibility, and minimality properties.",
+      "It connects elementary product divisibility to the sharper asymptotic Erdos-Pomerance prediction."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "There exists a prime that does not divide the product of k consecutive shifted terms, using infinitude of primes.",
+      "The smallestMissingPrime function is defined by Nat.find and proved prime, nondividing, and least among such primes.",
+      "Small primes p <= k divide the consecutive product, so the smallest missing prime is greater than k (Lean: q_gt_k).",
+      "The main-implies-weak bridge and monotonicity scaffolding are formalized without axioms."
+    ],
+    "open": [
+      "The main Erdos-Pomerance conjecture remains open: for fixed k and large n, q(n,k) < (1 + o(1)) log n.",
+      "The easier bound q(n,k) < (1 + o(1)) k log n is noted but not proved in this file.",
+      "The possible extension to k = o(log n) remains heuristic/open."
+    ],
+    "goal": "Backfill the verified smallest-missing-prime infrastructure and clearly separate it from the unresolved asymptotic bound."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-13T18:22:04.304Z",
+    "iteration": 2,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: All 4 axioms eliminated (4A→0A). File is now fully verified: 0 axioms, 0 sorries.",
+    "builtItems": [
+      "PROVED q_gt_k from other axioms (7A→6A)",
+      "PROVED exists_prime_not_dvd_consecutiveProduct (existence via infinitude of primes)",
+      "DEFINED smallestMissingPrime via Nat.find (was axiom)",
+      "PROVED smallestMissingPrime_prime from Nat.find_spec",
+      "PROVED smallestMissingPrime_not_dvd from Nat.find_spec",
+      "PROVED smallestMissingPrime_least from Nat.find_min"
+    ],
+    "insights": [
+      "q_gt_k follows from smallestMissingPrime_not_dvd + small_prime_divides_product — proved (7A→6A).",
+      "small_prime_divides_product itself is provable (pigeonhole on consecutive integers) but needs ~15 lines.",
+      "All 4 axioms eliminated via Nat.find: smallestMissingPrime now defined concretely using infinitude of primes + Nat.find, properties proved from Nat.find_spec and Nat.find_min."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdos #663 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and $q(n,k)$ denote the least prime which does not divide $\\prod_{1\\leq i\\leq k}(n+i)$. Is it true that, if $k$ is fixed and $n$ is sufficiently large, we have\\[q(n,k)<(1+o(1))\\log n?\\]\n\n\n\nA problem of Erd\\H{o}s and Pomerance.\n\nThe bound $q(n,k)<(1+o(1))k\\log n$ is easy. It may be true this improved bound holds even up to $k=o(\\log n)$.\n\nA heuristic argument in favour of this is provided by Tao in the comments.\n\nSee also [457].\n\n\nBack to the problem\n\n## Status\n\n**Erdos Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #457\n- Problem #662\n- Problem #664\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- BEGL96\n- Er97e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "prime-gaps",
+    "consecutive-products"
+  ],
+  "relatedProofs": [
+    "erdos-6",
+    "erdos-66",
+    "erdos-663"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T18:22:04.304Z",
+  "lastUpdate": "2026-03-13T07:52:17.050Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos663Problem.lean",
+      "filename": "Erdos663Problem.lean",
+      "lineCount": 180,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos663Problem.lean"
+    }
+  ]
+}

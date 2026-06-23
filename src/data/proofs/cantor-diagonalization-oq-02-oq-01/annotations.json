@@ -1,0 +1,244 @@
+[
+  {
+    "id": "ann-oq02oq01-preamble",
+    "proofId": "cantor-diagonalization-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Imports and Namespace Setup",
+    "content": "Imports Mathlib's cardinal-ordinal theory (`SetTheory.Cardinal.Ordinal`), cofinality theory (`SetTheory.Cardinal.Cofinality`), and ordinal arithmetic. Opens the `Cardinal` and `Ordinal` namespaces for convenient access to `aleph`, `ord`, `cof`, etc.",
+    "mathContext": "The key Mathlib modules provide: `Cardinal.aleph` (the $\\alpha \\mapsto \\aleph_\\alpha$ function), `Cardinal.aleph_lt_aleph` (order characterization), `Cardinal.isRegular_aleph_one` (regularity of $\\aleph_1$), `Cardinal.card_ord` and `Cardinal.lt_ord` (cardinal-ordinal bridge).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "cardinal arithmetic",
+      "ordinal arithmetic"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "ann-oq02oq01-strictmono",
+    "proofId": "cantor-diagonalization-oq-02-oq-01",
+    "range": {
+      "startLine": 32,
+      "endLine": 34
+    },
+    "type": "concept",
+    "title": "Strict Monotonicity of the Aleph Function",
+    "content": "**theorem aleph_strictMono**: The map $\\alpha \\mapsto \\aleph_\\alpha$ is strictly monotone.\n\n**Proof**: Unfolds to `Cardinal.aleph_lt_aleph.mpr` — Mathlib already knows that $\\aleph_\\alpha < \\aleph_\\beta \\iff \\alpha < \\beta$.",
+    "mathContext": "Strict monotonicity of the aleph function is equivalent to the statement that the aleph sequence has no repeated values: distinct ordinal indices give distinct infinite cardinals. This is a consequence of the definition $\\aleph_{\\alpha+1} = \\aleph_\\alpha^+$ (successor cardinal) and the limit case $\\aleph_\\lambda = \\sup_{\\alpha < \\lambda} \\aleph_\\alpha$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "aleph function",
+      "strict monotonicity",
+      "cardinal hierarchy"
+    ],
+    "prerequisites": [
+      "ordinal ordering",
+      "Cardinal.aleph_lt_aleph"
+    ]
+  },
+  {
+    "id": "ann-oq02oq01-successor",
+    "proofId": "cantor-diagonalization-oq-02-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 39
+    },
+    "type": "concept",
+    "title": "Aleph Successor Inequality",
+    "content": "**theorem aleph_lt_aleph_succ**: $\\aleph_\\alpha < \\aleph_{\\alpha+1}$ for all ordinals $\\alpha$.\n\n**Proof**: Applies `aleph_strictMono` to `Order.lt_succ α`.",
+    "mathContext": "This is the defining property of the cardinal successor: $\\aleph_{\\alpha+1}$ is the smallest cardinal strictly greater than $\\aleph_\\alpha$. There are no cardinals between $\\aleph_\\alpha$ and $\\aleph_{\\alpha+1}$, which is the generalized continuum hypothesis's starting point.",
+    "significance": "key",
+    "relatedConcepts": [
+      "successor cardinal",
+      "cardinal gap",
+      "GCH"
+    ],
+    "prerequisites": [
+      "aleph_strictMono",
+      "Order.lt_succ"
+    ]
+  },
+  {
+    "id": "ann-oq02oq01-injective",
+    "proofId": "cantor-diagonalization-oq-02-oq-01",
+    "range": {
+      "startLine": 41,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Aleph Injectivity",
+    "content": "**theorem aleph_injective**: The aleph function is injective (one-to-one).\n\n**Proof**: Follows from strict monotonicity via `StrictMono.injective`.",
+    "mathContext": "Injectivity is a standard consequence of strict monotonicity for any function on a totally ordered domain. Combined with the fact that every infinite cardinal is some $\\aleph_\\alpha$, this shows the aleph function is a bijection between ordinals and infinite cardinals.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "injectivity",
+      "StrictMono.injective",
+      "cardinal enumeration"
+    ],
+    "prerequisites": [
+      "aleph_strictMono"
+    ]
+  },
+  {
+    "id": "ann-oq02oq01-chain",
+    "proofId": "cantor-diagonalization-oq-02-oq-01",
+    "range": {
+      "startLine": 45,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "Concrete Chain: $\\aleph_0 < \\aleph_1 < \\aleph_2$",
+    "content": "**theorem aleph_chain_012**: $\\aleph_0 < \\aleph_1$ and $\\aleph_1 < \\aleph_2$.\n\n**Proof**: Direct application of `aleph_lt_aleph` with `norm_num` to discharge $0 < 1$ and $1 < 2$.",
+    "mathContext": "$\\aleph_0 = |\\mathbb{N}|$ is the cardinality of the naturals. $\\aleph_1$ is the first uncountable cardinal. $\\aleph_2$ is the second. The Continuum Hypothesis asserts $2^{\\aleph_0} = \\aleph_1$; its negation would place $|\\mathbb{R}|$ strictly between $\\aleph_1$ and some larger aleph.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "aleph-0",
+      "aleph-1",
+      "aleph-2",
+      "continuum hypothesis"
+    ],
+    "prerequisites": [
+      "Cardinal.aleph_lt_aleph",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-oq02oq01-regular",
+    "proofId": "cantor-diagonalization-oq-02-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Regularity of $\\aleph_1$",
+    "content": "**theorem aleph1_regular**: $\\aleph_1$ is a regular cardinal.\n\n**Proof**: Directly invokes Mathlib's `Cardinal.isRegular_aleph_one`.",
+    "mathContext": "A cardinal $\\kappa$ is **regular** if $\\text{cof}(\\kappa) = \\kappa$: it cannot be expressed as a union of fewer than $\\kappa$ sets each of size less than $\\kappa$. $\\aleph_1$ is regular because any countable union of countable sets is countable. Not all alephs are regular — $\\aleph_\\omega = \\sup_n \\aleph_n$ is singular since $\\text{cof}(\\aleph_\\omega) = \\omega < \\aleph_\\omega$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "regular cardinal",
+      "singular cardinal",
+      "cofinality"
+    ],
+    "prerequisites": [
+      "Cardinal.IsRegular",
+      "Cardinal.isRegular_aleph_one"
+    ]
+  },
+  {
+    "id": "ann-oq02oq01-cofinality",
+    "proofId": "cantor-diagonalization-oq-02-oq-01",
+    "range": {
+      "startLine": 59,
+      "endLine": 68
+    },
+    "type": "concept",
+    "title": "Cofinality of $\\omega_1$",
+    "content": "**theorem cof_ord_aleph1**: $\\text{cof}(\\omega_1) = \\aleph_1$.\n\nThe cofinality equals the cardinal itself (regularity in ordinal form).\n\n**theorem cof_ord_aleph1_uncountable**: $\\aleph_0 < \\text{cof}(\\omega_1)$.\n\nCombines `cof_ord_aleph1` with $\\aleph_0 < \\aleph_1$.",
+    "mathContext": "Cofinality $\\text{cof}(\\alpha)$ is the smallest order type of a cofinal subset of $\\alpha$. For $\\omega_1$, this means there is no countable sequence $\\alpha_1 < \\alpha_2 < \\cdots$ of countable ordinals with $\\sup_n \\alpha_n = \\omega_1$. This is equivalent to: a countable union of countable ordinals is countable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cofinality",
+      "cofinal subset",
+      "club sets"
+    ],
+    "prerequisites": [
+      "Ordinal.cof",
+      "Cardinal.IsRegular.cof_eq"
+    ]
+  },
+  {
+    "id": "ann-oq02oq01-succ-aleph0",
+    "proofId": "cantor-diagonalization-oq-02-oq-01",
+    "range": {
+      "startLine": 74,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "$\\aleph_1$ as Successor Cardinal",
+    "content": "**theorem aleph1_eq_succ_aleph0**: $\\aleph_1 = \\text{succ}(\\aleph_0)$.\n\n**Proof**: Rewrites $1 = \\text{succ}(0)$ as ordinals, then applies `Cardinal.aleph_succ`.",
+    "mathContext": "The successor cardinal $\\kappa^+$ is the smallest cardinal strictly greater than $\\kappa$. Thus $\\aleph_1 = \\aleph_0^+$: there is no cardinal $\\kappa$ with $\\aleph_0 < \\kappa < \\aleph_1$. Whether $2^{\\aleph_0} = \\aleph_0^+$ (the Continuum Hypothesis) is independent of ZFC.",
+    "significance": "key",
+    "relatedConcepts": [
+      "successor cardinal",
+      "cardinal successor",
+      "continuum hypothesis"
+    ],
+    "prerequisites": [
+      "Cardinal.aleph_succ",
+      "ordinal successor"
+    ]
+  },
+  {
+    "id": "ann-oq02oq01-countable-char",
+    "proofId": "cantor-diagonalization-oq-02-oq-01",
+    "range": {
+      "startLine": 80,
+      "endLine": 88
+    },
+    "type": "concept",
+    "title": "Characterization of Countable Cardinals",
+    "content": "**theorem lt_aleph1_iff_le_aleph0**: $\\kappa < \\aleph_1 \\iff \\kappa \\leq \\aleph_0$.\n\nA cardinal is below $\\aleph_1$ if and only if it is at most $\\aleph_0$ (i.e., countable).\n\n**theorem card_lt_aleph1_countable**: Direct corollary extracting the forward direction.",
+    "mathContext": "This equivalence is the cardinal-theoretic definition of 'countable': $\\kappa$ is countable iff $\\kappa \\leq \\aleph_0$ iff $\\kappa < \\aleph_1$. The proof reduces to `Order.lt_succ_iff` via the successor characterization $\\aleph_1 = \\text{succ}(\\aleph_0)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "countable",
+      "countable cardinal",
+      "Order.lt_succ_iff"
+    ],
+    "prerequisites": [
+      "aleph1_eq_succ_aleph0",
+      "Order.lt_succ_iff"
+    ]
+  },
+  {
+    "id": "ann-oq02oq01-ordinal-props",
+    "proofId": "cantor-diagonalization-oq-02-oq-01",
+    "range": {
+      "startLine": 94,
+      "endLine": 112
+    },
+    "type": "concept",
+    "title": "Ordinal Properties of $\\omega_1$",
+    "content": "**theorem card_ord_aleph1**: $|(\\aleph_1).\\text{ord}| = \\aleph_1$.\n\n**theorem omega_lt_ord_aleph1**: $\\omega < \\omega_1$ ($\\aleph_0$'s ordinal is below $\\aleph_1$'s ordinal).\n\n**theorem lt_ord_aleph1_iff**: $\\alpha < \\omega_1 \\iff |\\alpha| \\leq \\aleph_0$.\nAn ordinal is below $\\omega_1$ if and only if it is countable.\n\n**theorem ord_aleph1_not_countable**: $\\omega_1$ itself is not countable.",
+    "mathContext": "These theorems bridge the cardinal and ordinal hierarchies. $\\omega_1 = (\\aleph_1).\\text{ord}$ is the **initial ordinal** of cardinality $\\aleph_1$: the smallest ordinal whose underlying set has cardinality $\\aleph_1$. The characterization $\\alpha < \\omega_1 \\iff |\\alpha| \\leq \\aleph_0$ is the ordinal-theoretic definition of $\\omega_1$ as the first uncountable ordinal. The proof of `lt_ord_aleph1_iff` combines `Cardinal.lt_ord` (the cardinal-ordinal bridge) with `lt_aleph1_iff_le_aleph0`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "initial ordinal",
+      "omega-1",
+      "cardinal-ordinal bridge"
+    ],
+    "prerequisites": [
+      "Cardinal.card_ord",
+      "Cardinal.lt_ord",
+      "Cardinal.ord_lt_ord"
+    ]
+  },
+  {
+    "id": "ann-oq02oq01-summary",
+    "proofId": "cantor-diagonalization-oq-02-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 128
+    },
+    "type": "insight",
+    "title": "Summary Conjunction",
+    "content": "**theorem omega1_properties_summary**: Bundles four independent properties into a single conjunction:\n1. $\\aleph_\\alpha < \\aleph_{\\alpha+1}$ for all $\\alpha$ (aleph hierarchy)\n2. $\\aleph_1$ is regular\n3. $\\text{cof}(\\omega_1) > \\aleph_0$ (uncountable cofinality)\n4. $\\omega < \\omega_1$\n\nThis provides a complete, citable characterization of $\\omega_1$'s fundamental properties.",
+    "mathContext": "The conjunction packages the results for reuse. In set-theoretic combinatorics, these four properties are the standard toolkit for working with $\\omega_1$: the hierarchy ensures distinctness, regularity enables diagonal arguments, uncountable cofinality blocks countable approximations, and $\\omega < \\omega_1$ anchors the relationship to finite/countable mathematics.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "summary",
+      "conjunction",
+      "omega-1 toolkit"
+    ],
+    "prerequisites": [
+      "all preceding theorems"
+    ]
+  }
+]

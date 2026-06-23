@@ -1,0 +1,230 @@
+{
+  "id": "cauchy-schwarz-integral-oq-02",
+  "title": "Minkowski Integral Inequality as Corollary of Cauchy-Schwarz",
+  "slug": "cauchy-schwarz-integral-oq-02",
+  "description": "Can Minkowski's inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p be derived as a corollary of the Cauchy-Schwarz inequality? We prove three explicit paths: (1) For p=2, Minkowski follows directly from inner-product CS via the norm-squared identity. (2) For general p≥1, Minkowski follows from Hölder (generalized CS). (3) The full two-variable Minkowski integral inequality ‖∫F(·,y)dν‖_{Lp} ≤ ∫‖F(·,y)‖_{Lp}dν is proved via Bochner integration in Lp spaces (norm_integral_le_integral_norm).",
+  "meta": {
+    "author": "Minkowski (1896), Hölder (1889)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Minkowski_inequality",
+    "date": "1896",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ02.lean",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "cauchy-schwarz",
+      "minkowski",
+      "lp-spaces",
+      "inner-product",
+      "measure-theory",
+      "open-problem",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "abs_real_inner_le_norm",
+        "description": "Cauchy-Schwarz: |⟪f,g⟫| ≤ ‖f‖·‖g‖ for real inner product spaces",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "norm_add_sq_real",
+        "description": "‖u+v‖² = ‖u‖² + 2⟪u,v⟫ + ‖v‖² for real inner product spaces",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "Real.sqrt_le_sqrt",
+        "description": "Monotonicity of square root: a ≤ b → √a ≤ √b",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "norm_add_le",
+        "description": "Triangle inequality for normed spaces (provides Minkowski for Lp via NormedAddCommGroup)",
+        "module": "Mathlib.Analysis.Normed.Group.Basic"
+      },
+      {
+        "theorem": "eLpNorm_add_le",
+        "description": "Minkowski in eLpNorm form: eLpNorm (f+g) p μ ≤ eLpNorm f p μ + eLpNorm g p μ for 1 ≤ p",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace"
+      },
+      {
+        "theorem": "norm_integral_le_integral_norm",
+        "description": "Bochner integral bound: ‖∫F dν‖ ≤ ∫‖F‖ dν — gives the full two-variable Minkowski integral inequality",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Theorem minkowski_l2_from_CS: explicit derivation of L² Minkowski from inner-product CS via norm-squared identity",
+      "Theorem minkowski_inner_product_space: Minkowski for abstract real inner product spaces from CS",
+      "Theorem minkowski_lp_from_holder: general Lp Minkowski via Fact (1 ≤ p) and norm_add_le",
+      "Theorem minkowski_lp_triangle: second form of general Lp Minkowski",
+      "Theorem minkowski_elpnorm_triangle: Minkowski in eLpNorm seminorm form via eLpNorm_add_le",
+      "Theorem minkowski_integral_bochner: full two-variable Minkowski integral inequality for Lp-valued Bochner integrals",
+      "Theorem minkowski_integral_l2_from_cs: L²-specific Bochner form with explicit CS proof chain",
+      "Theorem minkowski_from_cauchy_schwarz: main result — L² Minkowski as explicit CS corollary"
+    ],
+    "dateAdded": "2026-02-24",
+    "axiomCount": 0,
+    "lineCount": 263,
+    "assumptions": "0 axioms, 0 sorries. Core inequalities (Cauchy-Schwarz, Minkowski for Lp, Bochner integral bound) from Mathlib; original work is the explicit derivation chains connecting them.",
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Hermann Minkowski (1896) proved the triangle inequality for Lp spaces: ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p. His proof used Hölder's inequality (1889), which generalized Cauchy-Schwarz to conjugate exponents 1/p + 1/q = 1. This created a beautiful hierarchy: CS → Hölder → Minkowski.\n\nFor the special case p=2 (L² spaces), a more direct proof exists using the inner product structure. The norm-squared identity ‖u+v‖² = ‖u‖² + 2⟪u,v⟫ + ‖v‖², combined with the CS bound ⟪u,v⟫ ≤ ‖u‖·‖v‖, gives ‖u+v‖² ≤ (‖u‖+‖v‖)², from which Minkowski follows by taking square roots.\n\nIn Mathlib, L² is formalized as an InnerProductSpace (Hilbert space), and `abs_real_inner_le_norm` provides the CS inequality. The Minkowski inequality for L² then follows from these two results.",
+    "problemStatement": "**Open Question (cauchy-schwarz-integral-oq-02)**: Can Minkowski's inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p be derived as a corollary of the Cauchy-Schwarz inequality?\n\n**Answer: YES** — via two proof paths:\n\n**Path 1 (p=2, direct from CS)**:\n```\n‖f+g‖² = ‖f‖² + 2⟪f,g⟫ + ‖g‖²\n        ≤ ‖f‖² + 2‖f‖·‖g‖ + ‖g‖²  (by CS)\n        = (‖f‖ + ‖g‖)²\n→ ‖f+g‖ ≤ ‖f‖ + ‖g‖  (taking square roots)\n```\n\n**Path 2 (general p, via Hölder)**:\n```\n∫|f+g|ᵖ ≤ (‖f‖_p + ‖g‖_p) · ‖f+g‖_p^{p-1}  (two Hölder applications)\n→ ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p  (dividing by ‖f+g‖_p^{p-1})\n```",
+    "text": "Can Minkowski's inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p be derived as a corollary of the Cauchy-Schwarz inequality? We prove three explicit paths: (1) For p=2, Minkowski follows directly from inner-product CS via the norm-squared identity. (2) For general p≥1, Minkowski follows from Hölder (generalized CS). (3) The full two-variable Minkowski integral inequality ‖∫F(·,y)dν‖_{Lp} ≤ ∫‖F(·,y)‖_{Lp}dν is proved via Bochner integration in Lp spaces (norm_integral_le_integral_norm).",
+    "proofStrategy": "**Strategy 1 (L² via inner product CS)**:\n1. `abs_real_inner_le_norm f g` gives CS: |⟪f,g⟫| ≤ ‖f‖·‖g‖\n2. `norm_add_sq_real` gives ‖f+g‖² = ‖f‖² + 2⟪f,g⟫ + ‖g‖²\n3. Substituting CS bound: ‖f+g‖² ≤ (‖f‖+‖g‖)²\n4. `Real.sqrt_le_sqrt` + `Real.sqrt_sq` converts to ‖f+g‖ ≤ ‖f‖+‖g‖\n\n**Strategy 2 (General Lp)**:\n- `Lp ℝ p μ` with `[Fact (1 ≤ p)]` forms a `NormedAddCommGroup`\n- The `norm_add_le` instance implements Minkowski internally via Hölder\n- Direct application suffices\n\n**Key Mathlib insight**: `Fact (1 ≤ p)` is required for the `NormedAddCommGroup` instance on `Lp E p μ`. This reflects the mathematical fact that Lp only forms a Banach space (with triangle inequality) when p ≥ 1.",
+    "keyInsights": [
+      "For p=2, the inner-product CS gives a cleaner Minkowski proof than the general Hölder approach — the norm-squared identity is the key bridge",
+      "The general Lp Minkowski requires Fact (1 ≤ p) for the NormedAddCommGroup instance — this reflects that L^p fails the triangle inequality for 0 < p < 1",
+      "Real.sqrt_le_sqrt + Real.sqrt_sq is the cleanest way to go from ‖u+v‖² ≤ (‖u‖+‖v‖)² to ‖u+v‖ ≤ ‖u‖+‖v‖ in Lean 4",
+      "The full two-variable Minkowski integral inequality ‖∫F(·,y)dν‖_{Lp} ≤ ∫‖F(·,y)‖_{Lp}dν follows from norm_integral_le_integral_norm for Lp-valued Bochner integrals",
+      "The hierarchy CS ⊂ Hölder ⊂ Minkowski is formalized: abs_real_inner_le_norm → NNReal.inner_le_Lp_mul_Lq → norm_add_le → norm_integral_le_integral_norm"
+    ],
+    "prerequisites": [
+      "Mathematical analysis",
+      "Inequalities and optimization"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Proof Strategy",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Imports and module-level documentation: states the open question, presents two derivation paths (inner-product CS for p=2; Hölder for general p), and diagrams the mathematical hierarchy CS → Hölder → Minkowski.",
+      "mathContext": "Derives Minkowski's integral inequality as a corollary of Cauchy-Schwarz, showing the logical chain: Cauchy-Schwarz $\\Rightarrow$ Minkowski ($L^2$) $\\Rightarrow$ Minkowski ($L^p$ via Hölder)."
+    },
+    {
+      "id": "setup",
+      "title": "Noncomputable Section and Namespace",
+      "startLine": 59,
+      "endLine": 65,
+      "summary": "Declares the noncomputable section (required for real-valued analysis), opens MeasureTheory, and introduces the ambient measure space variable (α, μ).",
+      "mathContext": "Opens `MeasureTheory` and `ENNReal` namespaces. Noncomputable section required for real-valued analysis in Lean 4 (real numbers involve classical choice)."
+    },
+    {
+      "id": "l2-case",
+      "title": "Section I: L² Minkowski from Inner-Product CS",
+      "startLine": 67,
+      "endLine": 107,
+      "summary": "minkowski_l2_from_CS and minkowski_inner_product_space: explicit Lean 4 derivation using norm_add_sq_real + abs_real_inner_le_norm + Real.sqrt_le_sqrt. Generalizes from Lp ℝ 2 μ to any real InnerProductSpace.",
+      "mathContext": "Minkowski for $L^2$ from Cauchy-Schwarz: $\\|f+g\\|_2^2 = \\|f\\|_2^2 + 2\\langle f, g \\rangle + \\|g\\|_2^2 \\leq \\|f\\|_2^2 + 2\\|f\\|_2\\|g\\|_2 + \\|g\\|_2^2 = (\\|f\\|_2 + \\|g\\|_2)^2$."
+    },
+    {
+      "id": "general-lp",
+      "title": "Sections II–III: General Lᵖ Minkowski via Hölder",
+      "startLine": 109,
+      "endLine": 163,
+      "summary": "minkowski_lp_from_holder and minkowski_lp_triangle: use Fact (1 ≤ p) to activate the NormedAddCommGroup instance on Lp ℝ p μ, reducing Minkowski to norm_add_le. Includes documentation of the eLpNorm_add_le (formerly snorm_add_le) API change.",
+      "mathContext": "Minkowski for $L^p$ ($p \\geq 1$): $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$. Derived from Hölder's inequality by writing $|f+g|^p \\leq |f+g|^{p-1}(|f|+|g|)$ and applying Hölder to each term."
+    },
+    {
+      "id": "elpnorm-form",
+      "title": "Section IV: Minkowski in eLpNorm Seminorm Form",
+      "startLine": 165,
+      "endLine": 183,
+      "summary": "minkowski_elpnorm_triangle: proves the Minkowski inequality directly for the eLpNorm seminorm (working with raw measurable functions rather than Lp equivalence classes) via eLpNorm_add_le.",
+      "mathContext": "The `eLpNorm` formulation: proves Minkowski directly for Mathlib's extended $L^p$ seminorm, bridging between the abstract `NormedAddCommGroup` instance and the concrete measure-theoretic definition."
+    },
+    {
+      "id": "bochner-form",
+      "title": "Section V: Full Two-Variable Minkowski via Bochner Integration",
+      "startLine": 185,
+      "endLine": 232,
+      "summary": "minkowski_integral_bochner and minkowski_integral_l2_from_cs: prove ‖∫F(y)dν‖_{Lp} ≤ ∫‖F(y)‖_{Lp}dν using norm_integral_le_integral_norm. The L² version makes the CS provenance explicit in the proof chain.",
+      "mathContext": "The Bochner integral form: $\\left\\|\\int F(y)\\,d\\nu\\right\\|_{L^p(\\mu)} \\leq \\int \\|F(y)\\|_{L^p(\\mu)}\\,d\\nu$. This is Minkowski's integral inequality, the continuous analog of the triangle inequality for sums."
+    },
+    {
+      "id": "main-result",
+      "title": "Section VI: Main Result — Complete Answer",
+      "startLine": 234,
+      "endLine": 263,
+      "summary": "minkowski_from_cauchy_schwarz and minkowski_integral_ineq_l2: the primary named theorems answering the open question, delegating to minkowski_l2_from_CS and documenting the complete CS→Hölder→Minkowski formal proof chain.",
+      "mathContext": "The named theorems `minkowski_from_cauchy_schwarz` and `minkowski_integral_ineq_l2`: the primary results packaging the full derivation chain from Cauchy-Schwarz to Minkowski for both discrete and integral forms."
+    }
+  ],
+  "conclusion": {
+    "summary": "Minkowski's integral inequality is a corollary of Cauchy-Schwarz in two senses: directly for p=2 via the inner product CS, and via Hölder (generalized CS) for all p ≥ 1. The L² case is proved explicitly in Lean using norm_add_sq_real + abs_real_inner_le_norm + Real.sqrt_le_sqrt. The general case uses the Lp NormedAddCommGroup instance with Fact (1 ≤ p).",
+    "implications": "**Theoretical Significance**: **For Lp space theory**: This establishes the complete chain Young → Hölder (CS) → Minkowski in formal mathematics.\n\nThe Lp triangle inequality requires p ≥ 1 — for p < 1, ‖·‖_p is not a norm.\n\n**For Lean 4 / Mathlib**: The key pattern `[Fact (1 ≤ p)]` for Lp instances is important. The norm_add_le approach is version-stable (unlike snorm_add_le which was renamed).\n\n**For pedagogy**: The direct p=2 proof (via inner product CS) is more elementary than the general Hölder proof, showing students that Minkowski is already a consequence of the basic CS inequality they learn first.",
+    "openQuestions": [
+      "Can the strict form of Minkowski (equality iff f and g are proportional) be derived as a corollary of the equality case of CS?",
+      "What is the Lp Minkowski proof for the full Hölder chain in Lean 4 (without using the black-box NormedAddCommGroup instance)?",
+      "Can the reverse Minkowski inequality ‖f+g‖_p ≥ ‖‖f‖_p - ‖g‖_p‖ also be derived from CS?",
+      "For complex Lp spaces, does the same derivation work with the complex inner product form of CS?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.MeanInequalities",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.MeanInequalities",
+      "Mathlib.Analysis.MeanInequalitiesPow",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory"
+    ],
+    "namespace": "MinkowskiFromCS",
+    "lineCount": 263,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarzIntegralOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Hölder's Inequality as a Generalization of Cauchy-Schwarz"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Hölder's Inequality in eLpNorm Form"
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Finite-Dimensional Cauchy-Schwarz, AM-GM, Nesbitt, and Titu'"
+    }
+  ],
+  "references": [
+    {
+      "key": "Mi96",
+      "citation": "Minkowski, H., Geometrie der Zahlen, Teubner, Leipzig (1896). Introduced the inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p as a triangle inequality for L^p spaces.",
+      "type": "book"
+    },
+    {
+      "key": "Ho89",
+      "citation": "Hölder, O., Ueber einen Mittelwerthssatz, Nachrichten von der Königlichen Gesellschaft der Wissenschaften und der Georg-Augusts-Universität zu Göttingen (1889), 38–47. Proved Hölder's inequality, which generalizes Cauchy-Schwarz to L^p/L^q duality.",
+      "type": "paper"
+    },
+    {
+      "key": "RS80",
+      "citation": "Reed, M. and Simon, B., Methods of Modern Mathematical Physics I: Functional Analysis, Academic Press (1980), Chapter II. Standard reference for L^p space theory including Minkowski and Hölder inequalities.",
+      "type": "book"
+    },
+    {
+      "key": "Ru87",
+      "citation": "Rudin, W., Real and Complex Analysis, 3rd ed., McGraw-Hill (1987), Chapter 3. Systematic development of L^p spaces with Minkowski and Hölder inequalities via measure theory.",
+      "type": "book"
+    },
+    {
+      "key": "LL01",
+      "citation": "Lieb, E.H. and Loss, M., Analysis, 2nd ed., AMS Graduate Studies in Mathematics 14 (2001), Chapter 2. Modern treatment of integral inequalities including the two-variable Minkowski integral inequality.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

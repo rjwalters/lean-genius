@@ -1,0 +1,172 @@
+[
+  {
+    "id": "ann-chebyshev-sequence-design",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": {
+      "startLine": 60,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Chebyshev Sequence Design: Clearing √5 Denominators",
+    "content": "The sequence cosThreeFifthsSeq is engineered so that d_n = 5^n · 2cos(n·arccos(3/5)) is always an integer, despite cos(arccos(3/5)) = 3/5 being rational with denominator 5. Multiplying by 5^n clears all denominators from the Chebyshev evaluation: the recurrence d_{n+2} = 6d_{n+1} - 25d_n has integer coefficients 6 = 2·(6/5)·5 and 25 = 5². This parallels nivenSeq in OQ02, where multiplying by 3^n cleared the 1/3 denominator from arccos(1/3).",
+    "mathContext": "For cos θ = 3/5, the Chebyshev recurrence 2cos((n+2)θ) = 2cosθ · 2cos((n+1)θ) − 2cos(nθ) gives: 5^{n+2} · 2cos((n+2)θ) = 6 · [5^{n+1} · 2cos((n+1)θ)] − 25 · [5^n · 2cos(nθ)]. The key: 5^{n+2} · 2cosθ = 5^{n+2} · 6/5 = 6 · 5^{n+1}, so all factors of 5 cancel into integer coefficients.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chebyshev polynomials",
+      "Niven's theorem",
+      "integer sequences",
+      "arccos(3/5)"
+    ],
+    "prerequisites": [
+      "DissectionOfCubesOQ02.lean nivenSeq",
+      "Trigonometric addition formulas"
+    ]
+  },
+  {
+    "id": "ann-mod5-argument",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": {
+      "startLine": 83,
+      "endLine": 112
+    },
+    "type": "concept",
+    "title": "Mod-5 Divisibility: Parallel to OQ02's Mod-3 Argument",
+    "content": "The proof that 5 ∤ cosThreeFifthsSeq n exactly mirrors the proof that 3 ∤ nivenSeq n in OQ02. The recurrence d_{n+2} = 6d_{n+1} − 25d_n reduces mod 5 to d_{n+2} ≡ d_{n+1} (mod 5) — since 6 ≡ 1 and 25 ≡ 0. So the non-divisibility propagates: from 5 ∤ d_n and 5 ∤ d_{n+1}, we derive 5 ∤ d_{n+2}. The base: d_0 = 2, d_1 = 6 — neither divisible by 5.",
+    "mathContext": "If 5 | d_{n+2} = 6d_{n+1} − 25d_n, then since 5 | 25d_n we get 5 | 6d_{n+1}. Since gcd(5,6) = 1 (5 is prime, 5 ∤ 6), we get 5 | d_{n+1} — contradicting the inductive hypothesis. The proof uses `Prime (5 : ℤ)` and `Prime.dvd_or_dvd` to factor the divisibility.",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "prime divisibility",
+      "strong induction"
+    ],
+    "prerequisites": [
+      "Prime.dvd_or_dvd",
+      "Int.Prime"
+    ]
+  },
+  {
+    "id": "ann-half-angle-identity",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": {
+      "startLine": 196,
+      "endLine": 228
+    },
+    "type": "concept",
+    "title": "Half-Angle Identity: 2·arccos(1/√5) = arccos(-3/5)",
+    "content": "The proof computes cos(2·arccos(1/√5)) = 2·(1/√5)² − 1 = 2/5 − 1 = −3/5, then uses Real.arccos_cos to identify the angle: since 2·arccos(1/√5) ∈ [0, π] (because arccos(1/√5) ≤ π/2, which holds since 1/√5 ≥ 0), and its cosine equals −3/5, it must equal arccos(−3/5). The key Mathlib fact: arccos_le_pi_div_two says arccos x ≤ π/2 iff x ≥ 0.",
+    "mathContext": "Proof: arccos_cos(h₁: 0 ≤ 2θ)(h₂: 2θ ≤ π): arccos(cos(2θ)) = 2θ. With 2θ = 2·arccos(1/√5): need 0 ≤ 2·arccos(1/√5) (trivial by nonnegativity of arccos) and 2·arccos(1/√5) ≤ π (from arccos(1/√5) ≤ π/2 since 1/√5 ≥ 0). Then cos(2·arccos(1/√5)) = 2(1/√5)² − 1 = −3/5 (using √5·√5 = 5).",
+    "significance": "key",
+    "relatedConcepts": [
+      "double-angle formula",
+      "arccos_cos",
+      "arccos_le_pi_div_two",
+      "inverse trigonometry"
+    ],
+    "prerequisites": [
+      "Real.arccos_cos",
+      "Real.arccos_le_pi_div_two",
+      "Real.mul_self_sqrt"
+    ]
+  },
+  {
+    "id": "ann-irrationality-chain",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": {
+      "startLine": 229,
+      "endLine": 260
+    },
+    "type": "insight",
+    "title": "Chain of Irrational Angles: 3/5 → 1/√5 → -1/√5",
+    "content": "The irrationality propagates through a three-step chain. First, arccos(3/5)/π ∉ ℚ (proved via cosThreeFifthsSeq). Second, if arccos(1/√5)/π = r ∈ ℚ, then arccos(3/5)/π = 1 − 2r ∈ ℚ (using 2·arccos(1/√5) = π − arccos(3/5)), contradiction. Third, if arccos(-1/√5)/π = r ∈ ℚ, then arccos(1/√5)/π = 1 − r ∈ ℚ (using arccos(-x) = π − arccos(x)), contradiction. Each step is a simple rational arithmetic consequence.",
+    "mathContext": "Chain: arccos(3/5)/π ∉ ℚ → arccos(1/√5)/π ∉ ℚ → arccos(-1/√5)/π ∉ ℚ. The implications use: (1) 2·arccos(1/√5) + arccos(3/5) = π [half-angle identity + arccos_neg], (2) arccos(-1/√5) + arccos(1/√5) = π [arccos_neg]. If any of the latter were rational p/q ∈ ℚ, rationality propagates back to arccos(3/5)/π ∉ ℚ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arccos_neg",
+      "irrationality propagation",
+      "rational arithmetic"
+    ],
+    "prerequisites": [
+      "arccos_three_fifths_irrational",
+      "two_arccos_sqrt5_eq",
+      "Real.arccos_neg"
+    ]
+  },
+  {
+    "id": "ann-classification-table",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": {
+      "startLine": 356,
+      "endLine": 395
+    },
+    "type": "insight",
+    "title": "Complete Platonic Solid Classification",
+    "content": "The theorem cube_isolated_dehn_invariant packages the complete 5-solid classification into a single conjunction. The cube (12 edges, π/2 dihedral) has D = 0; all other Platonic solids have D ≠ 0. The tetrahedron and octahedron results come from OQ02OQ02; the dodecahedron is new in this file; the icosahedron uses the axiomatized angle irrationality. The classification has an immediate geometric consequence: no scissors-congruence exists between the cube and any other Platonic solid.",
+    "mathContext": "Five Platonic solids (V-E+F = 2): Cube (8-12+6=2, π/2), Tetrahedron (4-6+4=2, arccos(1/3)), Octahedron (6-12+8=2, arccos(-1/3)), Dodecahedron (20-30+12=2, arccos(-1/√5)), Icosahedron (12-30+20=2, arccos(-√5/3)). All non-cube angles are irrational multiples of π, giving nonzero Dehn invariants. The cube's angle π/2 = (1/2)π is rational, giving D = 0.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Platonic solids",
+      "Dehn invariant",
+      "scissors congruence",
+      "Hilbert's third problem"
+    ],
+    "prerequisites": [
+      "cube_dehn_zero",
+      "tet_dehn_ne_zero",
+      "oct_dehn_ne_zero",
+      "dod_dehn_ne_zero",
+      "ico_dehn_ne_zero"
+    ]
+  },
+  {
+    "id": "ann-irrationality-proof",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": {
+      "startLine": 112,
+      "endLine": 177
+    },
+    "type": "concept",
+    "title": "Irrationality by Contradiction: Cosine Identity Forces 5 | d_q",
+    "content": "The theorem `cosThreeFifthsSeq_eq_cos` proves by strong induction that d_n = 5^n · 2cos(n·arccos(3/5)). The base cases are d_0 = 2 = 5^0 · 2cos(0) and d_1 = 6 = 5·(6/5). The inductive step rewrites the recurrence d_{n+2} = 6d_{n+1} - 25d_n using the Chebyshev addition formula cos((m+2)θ) = 2cosθ·cos((m+1)θ) - cos(mθ) via `cos_step`. Then `arccos_three_fifths_irrational` proves irrationality by contradiction: if arccos(3/5)/π = p/q ∈ ℚ, then d_q = 5^q · 2cos(q·arccos(3/5)) = 5^q · 2cos(pπ) = ±2·5^q, which means 5 | d_q. But `five_ndvd_cosThreeFifthsSeq` gives 5 ∤ d_q — contradiction.",
+    "mathContext": "Key chain: $d_q = 5^q \\cdot 2\\cos(q \\cdot \\arccos(3/5)) = 5^q \\cdot 2\\cos(p\\pi) = \\pm 2 \\cdot 5^q$. Then $5^q \\mid d_q$ since $d_q = \\pm 2 \\cdot 5^q$ and $q \\geq 1$. Contradiction with $5 \\nmid d_n$ for all $n$. The proof uses `cos_int_mul_pi` to compute $\\cos(p\\pi) = (-1)^{|p|}$ and `exact_mod_cast` to convert the real equation to an integer equation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Niven's theorem",
+      "proof by contradiction",
+      "cos_int_mul_pi",
+      "exact_mod_cast",
+      "strong induction"
+    ],
+    "prerequisites": [
+      "cosThreeFifthsSeq_eq_cos",
+      "five_ndvd_cosThreeFifthsSeq",
+      "Real.cos_arccos",
+      "cos_step"
+    ]
+  },
+  {
+    "id": "ann-dehn-from-infinite-order",
+    "proofId": "dissection-of-cubes-oq-04",
+    "range": {
+      "startLine": 256,
+      "endLine": 318
+    },
+    "type": "concept",
+    "title": "Nonzero Dehn Invariant from Infinite-Order Angle Class",
+    "content": "The passage from angle irrationality to nonzero Dehn invariant uses the same two-step argument for both the dodecahedron and icosahedron. Step 1 (`dodAngle_infinite_order`, `icoAngle_infinite_order`): angle irrationality implies the class [θ] ∈ ℝ/πℤ has infinite order. Proof: if n·[θ] = 0 in ℝ/πℤ, then there exists m ∈ ℤ with n·θ = m·π, so θ/π = m/n ∈ ℚ — contradicting irrationality. Step 2 (`dod_dehn_ne_zero`, `ico_dehn_ne_zero`): the edge term (30a) ⊗ [θ] ≠ 0 in ℝ ⊗_ℤ (ℝ/πℤ) via `tmul_infinite_order_ne_zero` (the ℝ-flatness axiom). The icosahedron version uses the axiomatized `icoAngle_irrational`; the dodecahedron version uses the proved `dodAngle_irrational`.",
+    "mathContext": "Infinite order: if $n \\cdot [\\theta] = 0$ in $\\mathbb{R}/\\pi\\mathbb{Z}$ with $n \\neq 0$, then $n\\theta = m\\pi$ for some $m \\in \\mathbb{Z}$, so $\\theta/\\pi = m/n \\in \\mathbb{Q}$ — contradiction. Nonzero Dehn: $\\ell \\otimes [\\theta] = 0$ in $\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$ would imply $[\\theta]$ has finite order (by flatness), but it doesn't.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite order",
+      "ℝ/πℤ",
+      "tensor product",
+      "flatness",
+      "tmul_infinite_order_ne_zero"
+    ],
+    "prerequisites": [
+      "dodAngle_irrational",
+      "icoAngle_irrational",
+      "tmul_infinite_order_ne_zero",
+      "zsmul_eq_zero_iff"
+    ]
+  }
+]

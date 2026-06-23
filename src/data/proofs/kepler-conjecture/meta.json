@@ -1,0 +1,198 @@
+{
+  "id": "kepler-conjecture",
+  "title": "Kepler Conjecture: Sphere Packing",
+  "slug": "kepler-conjecture",
+  "description": "The face-centered cubic lattice achieves the maximum sphere packing density of π/(3√2). Part of Hilbert's 18th Problem, proven by Hales (1998) and formally verified by Flyspeck (2014).",
+  "meta": {
+    "author": "Thomas Hales (1998)",
+    "date": "1998",
+    "status": "axiomatized",
+    "tags": [
+      "geometry",
+      "combinatorics",
+      "hilbert-problems",
+      "advanced"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.pi",
+        "description": "The constant π, used in density formulas",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function, used in √2 and √3 for density values",
+        "module": "Mathlib.Data.Real.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "Hexagonal packing density π/(2√3) with positivity proof",
+      "Thue's theorem axiomatized (2D optimal packing)",
+      "FCC density π/(3√2) with positivity proof and numerical bounds",
+      "Kepler conjecture statement axiomatized with PackingDensity abstraction",
+      "E₈ lattice density π⁴/384 with Viazovska's theorem axiomatized",
+      "Density comparison chain proved: 2D > 3D > 8D"
+    ],
+    "dateAdded": "2025-12-29",
+    "hilbertNumber": 18,
+    "proofRepoPath": "Proofs/KeplerConjecture.lean",
+    "axiomCount": 10,
+    "lineCount": 430,
+    "assumptions": "10 axioms: hexagonalDensity2D_lt_one, thues_theorem, fccDensity_lt_one, and 7 more. See Lean source for complete statements.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 13
+  },
+  "overview": {
+    "historicalContext": "In 1611, Johannes Kepler conjectured that the face-centered cubic arrangement — the way grocers stack oranges — achieves the maximum possible density for packing congruent spheres in three-dimensional space. This seemingly simple question resisted proof for nearly 400 years.\n\nCarl Friedrich Gauss (1831) proved the weaker result that FCC is optimal among lattice packings, where sphere centers form a regular lattice. Axel Thue (1892) solved the two-dimensional analogue, showing that hexagonal packing is optimal for disks in the plane, with a rigorous proof later completed by László Fejes Tóth (1940).\n\nThe full Kepler Conjecture was finally proven by Thomas Hales in 1998, using a computer-assisted approach. The proof, spanning 250+ pages of mathematics and 40,000+ lines of computer code, reduced the problem to verifying approximately 5000 linear programming problems via a Delaunay star decomposition. After a four-year review by 12 referees, the proof was published in the Annals of Mathematics in 2005, though the referees noted they were '99% certain' of correctness — prompting Hales to pursue formal verification.\n\nThe Flyspeck project (2014) formally verified Hales' proof in HOL Light, making it the first major computer-assisted proof to receive full formal verification. In 2016, Maryna Viazovska solved the sphere packing problem in dimension 8 (E₈ lattice) and, with collaborators, dimension 24 (Leech lattice), using a groundbreaking technique based on modular forms. She received the 2022 Fields Medal for this work.",
+    "problemStatement": "**Theorem (Kepler-Hales):** The maximum density for sphere packing in ℝ³ is π/(3√2) ≈ 74.05%, achieved by the face-centered cubic lattice.",
+    "text": "The face-centered cubic lattice achieves the maximum sphere packing density of π/(3√2). Part of Hilbert's 18th Problem, proven by Hales (1998) and formally verified by Flyspeck (2014).",
+    "proofStrategy": "The formalization is structured in seven parts. Part 1 defines sphere volume, disk area, and the PackingDensity structure (density in [0,1]). Part 2 covers 2D packing: the hexagonal density π/(2√3) with positivity proof, kissing number 6, and Thue's optimality theorem (axiomatized). Part 3 defines the FCC density π/(3√2) with positivity proof, alternative representation π√2/6, kissing number 12, and numerical bounds (0.74, 0.75). Part 4 axiomatizes the Kepler conjecture and Gauss's lattice theorem. Part 5 introduces higher dimensions: E₈ density π⁴/384 and Viazovska's theorem. Part 6 documents applications. Part 7 proves the density comparison chain 2D > 3D > 8D via axiomatized numerical inequalities.",
+    "keyInsights": [
+      "The PackingDensity structure (0 ≤ δ ≤ 1) provides a clean type-theoretic abstraction that unifies packing density comparisons across dimensions",
+      "The Kepler Conjecture is the first major theorem whose proof was formally verified after computer-assisted discovery — pioneering a new paradigm in mathematical proof",
+      "FCC and HCP achieve the same density π/(3√2) despite different stacking patterns (ABCABC vs ABAB), reflecting the non-uniqueness of optimal packings",
+      "Viazovska's dimension 8 proof introduced a revolutionary technique — constructing optimal auxiliary functions from modular forms — that has no analogue in dimension 3",
+      "The density comparison 2D > 3D > 8D reflects the curse of dimensionality: the ratio of sphere volume to ambient space decreases rapidly with dimension",
+      "The 400-year gap between conjecture (1611) and proof (1998) illustrates how geometric intuition can be correct long before rigorous verification is possible"
+    ],
+    "prerequisites": [
+      "Geometry (Euclidean, combinatorial)",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring",
+      "startLine": 5,
+      "endLine": 65,
+      "summary": "Historical introduction covering Kepler (1611), Gauss (1831), Thue (1892), Hales (1998), Flyspeck (2014), and Viazovska (2016). Lists formalization status and references.",
+      "mathContext": "Introduces the sphere packing problem: maximize the packing density $\\delta = \\lim_{R \\to \\infty} \\frac{\\text{Vol}(\\bigcup B_i \\cap B(0,R))}{\\text{Vol}(B(0,R))}$ in $\\mathbb{R}^3$. The conjectured optimum is $\\delta_{\\text{FCC}} = \\frac{\\pi}{3\\sqrt{2}} \\approx 0.7405$."
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Part 1: Basic Definitions",
+      "startLine": 77,
+      "endLine": 98,
+      "summary": "Defines sphereVolume (4/3)πr³, diskArea πr², and PackingDensity structure with 0 ≤ density ≤ 1 invariants.",
+      "mathContext": "Defines $V_{\\text{sphere}}(r) = \\frac{4}{3}\\pi r^3$, $A_{\\text{disk}}(r) = \\pi r^2$, and the $\\texttt{PackingDensity}$ structure with field $\\delta \\in [0, 1]$ satisfying $0 \\leq \\delta$ and $\\delta \\leq 1$."
+    },
+    {
+      "id": "hexagonal-2d",
+      "title": "Part 2: Hexagonal Packing (2D)",
+      "startLine": 103,
+      "endLine": 158,
+      "summary": "Defines hexagonalDensity2D = π/(2√3), proves positivity, axiomatizes < 1, defines kissingNumber2D = 6, and axiomatizes Thue's optimality theorem via Voronoi cell argument.",
+      "mathContext": "Defines $\\delta_{\\text{hex}} = \\frac{\\pi}{2\\sqrt{3}} \\approx 0.9069$, proves $\\delta_{\\text{hex}} > 0$, axiomatizes $\\delta_{\\text{hex}} < 1$. Sets kissing number $\\tau_2 = 6$. Axiomatizes Thue's theorem: $\\forall\\, \\delta,\\; \\delta \\leq \\delta_{\\text{hex}}$ (hexagonal packing is optimal in $\\mathbb{R}^2$)."
+    },
+    {
+      "id": "fcc-3d",
+      "title": "Part 3: FCC Lattice (3D)",
+      "startLine": 164,
+      "endLine": 240,
+      "summary": "Defines fccDensity = π/(3√2) with positivity proof, alternative fccDensityAlt = π√2/6, kissingNumber3D = 12, and axiomatized numerical bounds 0.74 < δ < 0.75.",
+      "mathContext": "Defines $\\delta_{\\text{FCC}} = \\frac{\\pi}{3\\sqrt{2}}$ with alternative form $\\frac{\\pi\\sqrt{2}}{6}$. Proves $\\delta_{\\text{FCC}} > 0$. Sets kissing number $\\tau_3 = 12$. Axiomatizes bounds $0.74 < \\delta_{\\text{FCC}} < 0.75$."
+    },
+    {
+      "id": "kepler-conjecture",
+      "title": "Part 4: The Kepler Conjecture",
+      "startLine": 246,
+      "endLine": 291,
+      "summary": "Axiomatizes kepler_conjecture (all packings ≤ fccDensity), proves fcc_is_optimal_3D, and axiomatizes gauss_lattice_theorem (lattice-only version).",
+      "mathContext": "Axiomatizes the Kepler conjecture: $\\forall\\, \\delta \\in \\texttt{PackingDensity},\\; \\delta \\leq \\delta_{\\text{FCC}}$. Proves $\\delta_{\\text{FCC}}$ is an optimal $\\texttt{PackingDensity}$. Axiomatizes Gauss's lattice theorem: $\\forall$ lattice packings $\\Lambda$, $\\delta(\\Lambda) \\leq \\delta_{\\text{FCC}}$."
+    },
+    {
+      "id": "higher-dimensions",
+      "title": "Part 5: Higher Dimensions",
+      "startLine": 296,
+      "endLine": 350,
+      "summary": "Defines e8Density = π⁴/384 with positivity proof, kissing numbers k(8) = 240, k(24) = 196560, and axiomatizes viazovska_theorem_8d.",
+      "mathContext": "Defines $\\delta_{E_8} = \\frac{\\pi^4}{384} \\approx 0.2537$ with positivity proof. Sets kissing numbers $\\tau_8 = 240$ and $\\tau_{24} = 196560$. Axiomatizes Viazovska's theorem: $\\forall$ packings in $\\mathbb{R}^8$, $\\delta \\leq \\delta_{E_8}$."
+    },
+    {
+      "id": "applications",
+      "title": "Part 6: Applications",
+      "startLine": 356,
+      "endLine": 374,
+      "summary": "Documents applications to error-correcting codes (E₈, Leech lattice), crystallography (FCC metals), digital communications (Shannon bounds), and computational geometry.",
+      "mathContext": "Discusses applications: the $E_8$ and Leech lattices yield optimal error-correcting codes with minimum distance $d_{\\min}$; FCC structure explains close-packed metals (Cu, Al, Au); sphere packing bounds connect to Shannon channel capacity $C = W \\log_2(1 + S/N)$."
+    },
+    {
+      "id": "density-comparison",
+      "title": "Part 7: Density Comparison",
+      "startLine": 380,
+      "endLine": 430,
+      "summary": "Axiomatizes hexagonal_gt_fcc and fcc_gt_e8, then proves density_decreases_with_dimension: δ₂D > δ₃D > δ₈D. Exports section verifies all major results.",
+      "mathContext": "Axiomatizes $\\delta_{\\text{hex}} > \\delta_{\\text{FCC}}$ and $\\delta_{\\text{FCC}} > \\delta_{E_8}$, then proves the chain $\\frac{\\pi}{2\\sqrt{3}} > \\frac{\\pi}{3\\sqrt{2}} > \\frac{\\pi^4}{384}$, i.e., optimal packing density decreases: $\\delta_2 > \\delta_3 > \\delta_8$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Kepler Conjecture is proven: the FCC lattice achieves the maximum sphere packing density π/(3√2) ≈ 74.05% in ℝ³. The formalization covers the 2D hexagonal optimality (Thue), 3D FCC optimality (Hales/Flyspeck), and 8D E₈ optimality (Viazovska), establishing the density comparison chain across dimensions.",
+    "implications": "**Theoretical Significance**: Hales' proof pioneered the paradigm of formally verified computer-assisted mathematics.\n\nThe Flyspeck project demonstrated that even proofs too large for human verification can be machine-checked, inspiring similar formal verification efforts (e.g., Gonthier's proof of the Four Color Theorem in Coq). Sphere packing theory connects to error-correcting codes, crystallography, and signal processing, with the E₈ and Leech lattices being among the most important discrete structures in mathematics.",
+    "openQuestions": [
+      "What is the optimal sphere packing density in dimensions 4, 5, 6, 7, and 9-23?",
+      "Is there a proof of the Kepler Conjecture that does not require computer assistance?",
+      "Can Viazovska's modular forms technique be extended to other dimensions, or are 8 and 24 fundamentally special?",
+      "What is the optimal packing density for non-spherical objects (ellipsoids, tetrahedra) in ℝ³?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Fellow Hilbert problem — both are fundamental questions about geometric/algebraic structure that required centuries to resolve",
+      "targetId": "hilbert-17"
+    },
+    {
+      "relationship": "Fellow Hilbert problem — Problem 15 involves counting geometric configurations while Problem 18 involves optimizing geometric arrangements",
+      "targetId": "hilbert-15"
+    },
+    {
+      "relationship": "The sphere packing problem connects to algebraic structures (lattices, root systems) whose theory builds on fundamental algebraic closure results",
+      "targetId": "fundamental-theorem-algebra"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Data.Real.Sqrt"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "KeplerConjecture",
+    "lineCount": 430,
+    "axiomCount": 10,
+    "theoremCount": 6,
+    "definitionCount": 13,
+    "path": "Proofs/KeplerConjecture.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Hales, Thomas C.",
+      "title": "A proof of the Kepler conjecture",
+      "year": "2005",
+      "venue": "Annals of Mathematics 162(3), 1065–1185",
+      "note": "Computer-assisted proof that FCC packing achieves maximum density π/(3√2) ≈ 74.05% — verified by the Flyspeck project in 2014"
+    },
+    {
+      "authors": "Hales, Thomas C. et al.",
+      "title": "A Formal Proof of the Kepler Conjecture",
+      "year": "2017",
+      "venue": "Forum of Mathematics, Pi 5, e2",
+      "note": "The complete formal verification in HOL Light (Flyspeck project) — eliminating all doubts about the computer-assisted proof"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "kepler_conjecture",
+      "type": "core",
+      "description": "FCC/HCP sphere packing achieves maximum density pi/(3*sqrt(2))",
+      "leanType": "sphere_packing P -> density P <= pi / (3 * Real.sqrt 2)"
+    }
+  ],
+  "sorries": 0
+}

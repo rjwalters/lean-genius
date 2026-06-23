@@ -1,0 +1,221 @@
+{
+  "id": "erdos-344",
+  "title": "Subcomplete Sequences and Arithmetic Progressions",
+  "slug": "erdos-344",
+  "description": "If A ⊆ ℕ has counting function |A ∩ {1,...,N}| ≫ N^{1/2}, must the subset sums P(A) contain an infinite arithmetic progression? Solved by Szemerédi-Vu (2006).",
+  "meta": {
+    "author": "Paul Erdős",
+    "sourceUrl": "https://erdosproblems.com/344",
+    "date": "2026-03-12",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos344Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "complete-sequences",
+      "arithmetic-progressions",
+      "subset-sums"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 344,
+    "erdosUrl": "https://erdosproblems.com/344",
+    "erdosProblemStatus": "solved",
+    "solvedBy": "Szemerédi, E. and Vu, V.",
+    "solvedYear": 2006,
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.range",
+        "description": "Finite sets of naturals up to N",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root on reals",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Set",
+        "description": "Basic set operations",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Asymptotics",
+        "description": "Asymptotic notation for growth rates",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      }
+    ],
+    "originalContributions": [
+      "Lean formalization of subcomplete sequence definitions",
+      "Formal statement of Szemerédi-Vu theorem (2006)",
+      "Density condition hierarchy (Folkman → square root → optimal)",
+      "Constructive proof that complete implies subcomplete",
+      "Open conjecture about optimal √(2N) threshold"
+    ],
+    "dateAdded": "2026-01-19",
+    "axiomCount": 2,
+    "lineCount": 207,
+    "assumptions": "2 axioms: szemeredi_vu_2006, erdos_optimality_example. 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in the 1960s, asking whether moderate density ($\\sqrt{N}$) suffices for subcompleteness. The problem has roots in the classical study of complete sequences by Sprague (1937) and Folkman (1966). Folkman first proved that density $N^{1/2+\\varepsilon}$ suffices, using a greedy selection argument. The problem remained open for 40 years until Szemerédi and Vu (2006) proved the sharp result using Fourier-analytic methods and the Freiman-Ruzsa inverse theorem from additive combinatorics. Erdős himself showed in 1962 that the threshold cannot go below $\\sqrt{2N}$ by constructing an explicit counterexample, leaving the gap between $\\sqrt{N}$ and $\\sqrt{2N}$ as an open problem.",
+    "problemStatement": "If A ⊆ ℕ is a set of integers such that |A ∩ {1,...,N}| ≫ N^{1/2} for all N, must A be subcomplete? That is, must the set of all finite subset sums P(A) = {∑_{n ∈ B} n : B ⊆ A finite} contain an infinite arithmetic progression?",
+    "text": "If A ⊆ ℕ has counting function |A ∩ {1,...,N}| ≫ N^{1/2}, must the subset sums P(A) contain an infinite arithmetic progression? Solved by Szemerédi-Vu (2006).",
+    "proofStrategy": "The Szemerédi-Vu proof uses sophisticated Fourier analysis and additive combinatorics. The formalization captures the key definitions and states the main theorems as axioms, along with the related results and open conjectures. The only constructive proof is complete_implies_subcomplete, which witnesses the arithmetic progression {N₀, N₀+1, ...} inside P(A) when A is complete.",
+    "keyInsights": [
+      "A set is 'subcomplete' if its subset sums contain an infinite arithmetic progression — weaker than completeness but still a strong structural property",
+      "Square root density (≫ √N) is the critical threshold for subcompleteness, proved by Szemerédi-Vu using Fourier analysis and additive energy estimates",
+      "Folkman proved a weaker version with density N^{1/2+ε}, using greedy selection — the extra ε was an artifact of his method",
+      "The optimal threshold lies in the gap [√N, √(2N)]: Erdős's 1962 counterexample shows √(2N) is necessary, but the exact constant is unknown",
+      "The hierarchy complete ⊃ subcomplete is strict: the formalization proves complete → subcomplete constructively using d=1"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 44,
+      "endLine": 76,
+      "summary": "Core definitions: counting function, subset sums, arithmetic progressions, and subcomplete sets",
+      "mathContext": "Defines $A(N) = |A \\cap \\{1,\\ldots,N\\}|$ via `Finset.range` and `filter`, subset sums $P(A)$ as $\\{\\sum_{n \\in B} n : B \\subseteq A\\}$, and subcompleteness as $\\exists a,d > 0, \\{a + kd\\} \\subseteq P(A)$."
+    },
+    {
+      "id": "density-conditions",
+      "title": "Density Conditions",
+      "startLine": 77,
+      "endLine": 104,
+      "summary": "Square root density, Folkman density, and optimal density conditions",
+      "mathContext": "Three density levels: $A(N) \\geq C\\sqrt{N}$ (square root), $A(N) \\geq CN^{1/2+\\varepsilon}$ (Folkman), and $A(N) \\geq \\sqrt{2N}$ (optimal). The hierarchy is Folkman ⊂ square root ⊂ optimal, with each level corresponding to a different theorem."
+    },
+    {
+      "id": "folkman",
+      "title": "Folkman's Result",
+      "startLine": 105,
+      "endLine": 115,
+      "summary": "Folkman's theorem for N^{1/2+ε} density",
+      "mathContext": "Folkman's 1966 result $\\text{HasFolkmanDensity}(A) \\to \\text{IsSubcomplete}(A)$ is described in a documentation comment but is **not** declared as an axiom or theorem — only the predicate `HasFolkmanDensity` is defined. Folkman's original proof was the first to show density forces arithmetic structure in subset sums."
+    },
+    {
+      "id": "szemeredi-vu",
+      "title": "Szemerédi-Vu Theorem",
+      "startLine": 116,
+      "endLine": 131,
+      "summary": "The main result proving Erdős's conjecture",
+      "mathContext": "Axiomatized as `szemeredi_vu_2006`: $\\text{HasSquareRootDensity}(A) \\to \\text{IsSubcomplete}(A)$. Published in JAMS 2006, this removed the $\\varepsilon$ from Folkman's condition using Fourier analysis and the Freiman-Ruzsa inverse theorem."
+    },
+    {
+      "id": "open-conjecture",
+      "title": "Open Conjecture",
+      "startLine": 132,
+      "endLine": 155,
+      "summary": "The optimal density conjecture and Erdős's counterexample",
+      "mathContext": "Erdős's 1962 counterexample shows $\\exists A$ with $A(N) < \\sqrt{2N}$ and $\\lnot\\text{IsSubcomplete}(A)$. The `OptimalDensityConjecture` asks whether $A(N) \\geq \\sqrt{2N}$ suffices. The gap between $C\\sqrt{N}$ (sufficient) and $\\sqrt{2N}$ (necessary) remains open."
+    },
+    {
+      "id": "related-concepts",
+      "title": "Related Concepts",
+      "startLine": 156,
+      "endLine": 190,
+      "summary": "Complete sequences, complete_implies_subcomplete theorem, and density hierarchy",
+      "mathContext": "Defines `IsComplete` ($P(A) \\supseteq \\{n \\geq N_0\\}$) and proves `complete_implies_subcomplete` constructively by witnessing the AP with $a = N_0, d = 1$. Also documents in source comments `folkman_implies_sqrt_density` (no Lean declaration exists): the technical lemma $N^{1/2+\\varepsilon} \\geq C\\sqrt{N}$ for large $N$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 191,
+      "endLine": 207,
+      "summary": "Summary combining Szemerédi-Vu theorem and Erdős optimality example",
+      "mathContext": "The theorem `erdos_344_summary` packages both main results as a conjunction, combining `szemeredi_vu_2006` and `erdos_optimality_example` into a single statement that captures the current state of knowledge."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #344 was solved by Szemerédi and Vu in 2006. They proved that square root density |A ∩ {1,...,N}| ≫ N^{1/2} is sufficient to guarantee that the subset sums contain an infinite arithmetic progression. The optimal threshold √(2N) remains open.",
+    "implications": "This result has deep connections to additive combinatorics, Fourier analysis, and the structure of sumsets. It improved upon Folkman's earlier result requiring slightly higher density, and established √N as a fundamental threshold in the theory of subset sums.",
+    "openQuestions": [
+      "Is the exact threshold √(2N)? (Erdős showed this would be best possible)",
+      "Can the Fourier-analytic methods of Szemerédi-Vu be formalized in Lean?",
+      "What is the structure of the arithmetic progressions in P(A) — can the common difference d be bounded?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos344",
+    "lineCount": 207,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos344Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Szemerédi, E. and Vu, V.",
+      "title": "Long arithmetic progressions in sumsets: thresholds and bounds",
+      "year": "2006",
+      "venue": "J. Amer. Math. Soc. 19(1), 119-169",
+      "note": "Main result: √N density suffices for subcompleteness"
+    },
+    {
+      "authors": "Erdős, P.",
+      "title": "On the representation of large integers as sums of distinct summands taken from a fixed set",
+      "year": "1962",
+      "venue": "Acta Arith. 7, 345-354",
+      "note": "Optimality example: A with A(N) < √(2N) and ¬IsSubcomplete(A)"
+    },
+    {
+      "authors": "Folkman, J.",
+      "title": "On the representation of integers as sums of distinct terms from a fixed sequence",
+      "year": "1966",
+      "venue": "Canad. J. Math. 18, 643-655",
+      "note": "First density result: N^{1/2+ε} suffices"
+    },
+    {
+      "authors": "Erdős, P. and Graham, R.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "Problem 344 statement (p.54)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-253",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, number-theory, subset-sums"
+    },
+    {
+      "targetId": "erdos-345",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complete-sequences, number-theory, subset-sums"
+    },
+    {
+      "targetId": "erdos-347",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complete-sequences, number-theory, subset-sums"
+    }
+  ],
+  "sorries": 0
+}

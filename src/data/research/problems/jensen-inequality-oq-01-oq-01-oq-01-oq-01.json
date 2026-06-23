@@ -1,0 +1,69 @@
+{
+  "slug": "jensen-inequality-oq-01-oq-01-oq-01-oq-01",
+  "title": "Generalized n-fold Hölder Inequality for Finite Sums",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\sum_{i\\in s}\\prod_{j\\in t} f_j(i) \\le \\prod_{j\\in t}\\Big(\\sum_{i\\in s} f_j(i)^{p_j}\\Big)^{1/p_j} \\quad\\Big(\\sum_{j} 1/p_j = 1,\\ p_j>0,\\ f_j\\ge 0\\Big)",
+    "plain": "Mathlib provides the two-exponent discrete Hölder inequality and the general weighted AM–GM inequality, but not the generalized n-fold Hölder inequality for finite sums. Prove that for nonnegative functions f_j and positive exponents p_j with ∑_j 1/p_j = 1, the sum of products is bounded by the product of the Lᵖ-norms, by normalizing each f_j by its norm and applying the n-variable Young product inequality pointwise.",
+    "whyMatters": [
+      "Fills a real Mathlib gap: only the two-exponent discrete Hölder inequality is available",
+      "The n-fold form is the standard tool for bounding products of more than two factors (interpolation, products of Lᵖ functions)",
+      "Completes the AM–GM → Young → Hölder ladder for finite sums"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-22T14:30:00-07:00",
+    "iteration": 1,
+    "focus": "Prove the generalized n-fold Hölder inequality for finite sums via normalization and the n-variable Young product inequality.",
+    "blockers": [],
+    "nextAction": "Complete — proof verified, gallery entry created.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SOLVED (researcher-9, 2026-06-22): proved the generalized n-fold Hölder inequality for finite sums ∑_{i∈s} ∏_{j∈t} f_j(i) ≤ ∏_{j∈t} (∑_{i∈s} f_j(i)^{p_j})^{1/p_j} for any finite family with ∑ 1/p_j = 1. 0-axiom verified (propext/Classical.choice/Quot.sound, no native_decide). File Proofs/JensenInequalityOQ01OQ01OQ01OQ01.lean (134L, 3 thm). Self-contained: young_product re-derives the n-variable Young product inequality from Real.geom_mean_le_arith_mean_weighted (weights 1/p_j, data a_j^{p_j}, telescoping (a^p)^{1/p}=a); generalized_holder normalizes by the Lᵖ-norm C_j = (∑ f_j^{p_j})^{1/p_j} (handling C_j=0 columns separately) and sums; inner_le_holder_two is the Fin 2 specialization recovering classical two-function Hölder.",
+    "builtItems": [
+      "Proofs/JensenInequalityOQ01OQ01OQ01OQ01.lean: generalized_holder (n-fold Hölder for finite sums — Mathlib gap)",
+      "young_product (n-variable Young product inequality, from weighted AM–GM)",
+      "inner_le_holder_two (classical two-function Hölder, Fin 2 specialization)",
+      "src/data/proofs/jensen-inequality-oq-01-oq-01-oq-01-oq-01/ gallery entry"
+    ],
+    "insights": [
+      "The n-fold Hölder inequality is a corollary of weighted AM–GM: the only pointwise fact needed is the n-variable Young product inequality ∏ a_j ≤ ∑ (1/p_j) a_j^{p_j}",
+      "Normalization by the Lᵖ-norm is what sharpens the arithmetic-mean bound (∑_i ∏_j f_j ≤ ∑_j (1/p_j)‖f_j‖_p^p) into the geometric-mean product-of-norms bound ∏_j ‖f_j‖_p",
+      "Zero-norm columns must be split off before dividing; there the f_j vanishes identically, so the left-hand side is 0 and the bound is trivial",
+      "The two-function Hölder inequality is recovered with no extra work as the t = {0,1} instance over Fin 2 (Fin.prod_univ_two / Fin.sum_univ_two)"
+    ],
+    "mathlibGaps": [
+      "Mathlib has the two-exponent discrete Hölder inequality (inner_le_Lp_mul_Lq) and general weighted AM–GM, but NOT the generalized n-fold Hölder inequality for finite sums; generalized_holder here is the missing result and a natural upstream contribution"
+    ],
+    "nextSteps": [
+      "Prove the equality case: equality iff the normalized columns f_j^{p_j}/‖f_j‖_p^{p_j} are all equal",
+      "Lift to the Lᵖ / integral and ℝ≥0∞ settings, matching Mathlib's two-exponent ENNReal Hölder",
+      "Derive the generalized Minkowski inequality from the same normalization machinery"
+    ],
+    "markdown": "# Knowledge Base: jensen-inequality-oq-01-oq-01-oq-01-oq-01\n\n## Problem Understanding\n\nProve the generalized n-fold Hölder inequality for finite sums (a Mathlib gap) from the n-variable Young product inequality by the standard normalization argument.\n\n## Insights\n\nWeighted AM–GM with weights 1/p_j and data a_j^{p_j} gives the pointwise Young product inequality ∏ a_j ≤ ∑ (1/p_j) a_j^{p_j} (the geometric mean ∏ (a_j^{p_j})^{1/p_j} telescopes to ∏ a_j). Dividing each f_j by its Lᵖ-norm C_j and applying Young pointwise, then summing, gives ∑_i ∏_j (f_j/C_j) ≤ ∑_j (1/p_j) = 1; since this sum equals (∑_i ∏_j f_j)/∏_j C_j, the result follows. The C_j = 0 columns are handled separately (left side vanishes).\n\n## Dead Ends\n\nNone substantive — two first-build fixes: prod_div_distrib needs explicit function arguments, and the per-column normalization needs div_rpow applied pointwise before sum_div.\n"
+  },
+  "tags": [
+    "analysis",
+    "convexity",
+    "holder-inequality",
+    "young-inequality",
+    "am-gm-inequality",
+    "lp-spaces",
+    "inequalities",
+    "research"
+  ]
+}

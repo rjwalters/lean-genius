@@ -1,0 +1,90 @@
+{
+  "slug": "erdos-461",
+  "title": "Erdős #461",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $s_t(n)$ be the $t$-smooth component of $n$ - that is, the product of all primes $p$ (with multiplicity) dividing $n$ such that $p<t$. Let $f(n,t)$ count the number of distinct possible values for $s_t(m)$ for $m\\in [n+1,n+t]$. Is it true that\\[f(n,t)\\gg t\\](uniformly, for all $t$ and $n$)?\n\n\n\nErd\\H{o}s and Graham report they can show\\[f(n,t) \\gg \\frac{t}{\\log t}.\\]",
+    "plain": "Let $s_t(n)$ be the $t$-smooth component of $n$ - that is, the product of all primes $p$ (with multiplicity) dividing $n$ such that $p<t$. Let $f(n,t)$ count the number of distinct possible values for $s_t(m)$ for $m\\in [n+1,n+t]$. Is it true that\\[f(n,t)\\gg t\\](uniformly, for all $t$ and $n$)?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-13T04:11:10.512Z",
+    "iteration": 4,
+    "focus": "Infrastructure building: structural theorems for smooth components",
+    "blockers": [],
+    "nextAction": "Continue ACT: prove next infrastructure lemma (factor count bounds, smoothDistinctCount lower bounds for small t). ErdosProblem461 main conjecture (f(n,t) ≫ t) remains open; Erdős–Graham axiom captures best known unconditional bound (t/log t). S4 STATE-SYNC catchup (2026-05-16, doc-only, ~7 weeks after PR #4902): bootstraps state.md from seeker-init NEW stub to ACT reflecting actual 19T/1A/0S infrastructure state.",
+    "attemptCounts": {
+      "total": 6,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Added 3 structural theorems (15→18T). Multiplicativity, unit characterization, divisibility. 1A deep (unchanged).",
+    "builtItems": [
+      "Assessment: 1A deep, well-developed file",
+      "smoothComponent_prime_ge: clean corollary for primes ≥ t",
+      "smoothComponent_id_of_smooth: identity when all factors < t",
+      "smoothComponent_id_of_lt: identity when n < t (all factors trivially bounded)",
+      "smoothDistinctCount_pos: count ≥ 1 for non-empty intervals (t ≥ 1)",
+      "smoothDistinctCount_t_le_one: count ≤ 1 for trivial smoothness bound (t ≤ 1)",
+      "smoothComponent_mul: multiplicativity for any m,n ≠ 0 (no coprimality needed)",
+      "smoothComponent_eq_one_iff: characterization of unit smooth components",
+      "smoothComponent_dvd_mul_left: divisibility corollary"
+    ],
+    "insights": [
+      "1 axiom (erdos_graham_lower — deep). 10T, 0S. Clean.",
+      "smoothComponent_id_of_lt via Nat.le_of_dvd: prime factor p ≤ n < t gives p < t",
+      "smoothDistinctCount bounded: 0 (t=0) ≤ count ≤ t, with count ≥ 1 for t ≥ 1 and count ≤ 1 for t ≤ 1",
+      "Next infrastructure: smoothComponent_mul (multiplicativity for coprime inputs) needs Nat.factors_mul perm lemma from Mathlib",
+      "smoothComponent_mul proved: fully multiplicative via Nat.factors_mul permutation",
+      "smoothComponent_eq_one_iff: 1 iff no prime factor < t, via List.dvd_prod contradiction",
+      "smoothComponent_dvd_mul_left: smooth component divides product smooth component"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove smoothComponent_mul: multiplicativity for coprime inputs (needs List.Perm infrastructure for Nat.factors_mul)",
+      "erdos_graham_lower axiom is deep — stays as axiom"
+    ],
+    "markdown": "# Erdős #461 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $s_t(n)$ be the $t$-smooth component of $n$ - that is, the product of all primes $p$ (with multiplicity) dividing $n$ such that $p<t$. Let $f(n,t)$ count the number of distinct possible values for $s_t(m)$ for $m\\in [n+1,n+t]$. Is it true that\\[f(n,t)\\gg t\\](uniformly, for all $t$ and $n$)?\n\n\n\nErd\\H{o}s and Graham report they can show\\[f(n,t) \\gg \\frac{t}{\\log t}.\\]\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #460\n- Problem #462\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-46",
+    "erdos-461"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T04:11:10.512Z",
+  "lastUpdate": "2026-05-16T18:58:37Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos461Problem.lean",
+      "filename": "Erdos461Problem.lean",
+      "lineCount": 281,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos461Problem.lean"
+    }
+  ]
+}

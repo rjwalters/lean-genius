@@ -1,0 +1,184 @@
+{
+  "id": "erdos-292",
+  "title": "Erdős Problem #292: Egyptian Fractions Summing to 1",
+  "slug": "erdos-292",
+  "description": "Let A be the set of n such that there exist 1 ≤ m₁ < ... < mₖ = n with Σ(1/mᵢ) = 1. Does A have density 1? YES (Martin 2000).",
+  "meta": {
+    "author": "Paul Erdős, Straus",
+    "sourceUrl": "https://erdosproblems.com/292",
+    "date": "2000",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos292Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "density",
+      "unit-fractions"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 292,
+    "erdosUrl": "https://erdosproblems.com/292",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Rat",
+        "description": "Rational numbers for unit fractions",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sums over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits and convergence for density",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "EgyptianFraction definition: finite set of reciprocals summing to r",
+      "setA definition: integers that can be max denominator summing to 1",
+      "inSetA definition: alternative ordered sequence definition",
+      "straus_multiplication_closure axiom: A is closed under multiplication",
+      "prime_powers_not_in_A axiom: prime powers are excluded from A",
+      "two_not_in_A theorem: 2 ∉ A (from prime power exclusion)",
+      "four_not_in_A theorem: 4 ∉ A (from prime power exclusion)",
+      "primes_not_in_A theorem: all primes are excluded",
+      "setB definition: complement B = ℕ \\ A",
+      "hasNaturalDensity definition: natural density of a set",
+      "martin_main_theorem axiom: A has density 1",
+      "erdosStrausConjecture definition: 4/n = 1/a + 1/b + 1/c"
+    ],
+    "axiomCount": 3,
+    "lineCount": 150,
+    "assumptions": "3 axioms: straus_multiplication_closure (Straus: set A is closed under multiplication), prime_powers_not_in_A (prime powers not in A), martin_main_theorem (Martin main theorem — A has natural density 1). 0 sorries.",
+    "theoremCount": 5,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #292** concerns Egyptian fractions - sums of distinct unit fractions.\n\n**Historical Development:**\n- **Straus:** Observed that A is closed under multiplication\n- **Early observation:** A does not contain any prime power\n- **van Doorn:** If n ∈ A (n > 1) then 2n ∈ A\n- **Martin (2000):** Proved A has density 1 and characterized the complement B\n\n**Key Insight:** The complement B consists essentially of small multiples of prime powers, and |B ∩ [1,x]|/x ~ (log log x)/(log x), which tends to 0.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $A$ be the set of $n \\in \\mathbb{N}$ such that there exist $1 \\leq m_1 < \\cdots < m_k = n$ with $\\sum \\frac{1}{m_i} = 1$.\n\nIn other words: which integers can appear as the largest denominator in an Egyptian fraction representation of 1?\n\n**Question:** Does A have density 1?\n\n**Answer:** YES (Martin 2000)\n\n**Known Properties:**\n- A is closed under multiplication (Straus)\n- Prime powers are not in A\n- If n ∈ A (n > 1) then 2n ∈ A\n- Complement B has density ~ (log log x)/(log x)",
+    "text": "Let A be the set of n such that there exist 1 ≤ m₁ < ... < mₖ = n with Σ(1/mᵢ) = 1. Does A have density 1? YES (Martin 2000).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Egyptian Fractions:** Define Egyptian fraction representations and the set A.\n\n2. **Structural Properties:** Axiomatize Straus's multiplication closure and prime power exclusion.\n\n3. **Natural Density:** Define natural density using Filter.Tendsto.\n\n4. **Martin's Theorem:** Axiomatize that A has density 1 and B has density ~ (log log x)/(log x).\n\n5. **Examples:** Include small examples of elements in A and B.",
+    "keyInsights": [
+      "**Closure Under Multiplication:** If n, m ∈ A then nm ∈ A. This gives many elements from few.",
+      "**Prime Power Exclusion:** No prime power p^k can be in A - a strong structural constraint.",
+      "**Doubling Property:** If n ∈ A (n > 1) then 2n ∈ A, since 1/2 + Σ 1/(2mᵢ) = 1.",
+      "**Smallest Element:** 6 is the smallest element of A greater than 1 (1/2 + 1/3 + 1/6 = 1).",
+      "**Complement Structure:** B consists of small multiples of prime powers.",
+      "**Density Decay:** |B ∩ [1,x]|/x ~ (log log x)/(log x) → 0 as x → ∞."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
+  },
+  "sections": [
+    {
+      "id": "egyptian-fractions",
+      "title": "Egyptian Fractions",
+      "summary": "Definition of Egyptian fractions and set A",
+      "startLine": 38,
+      "endLine": 62,
+      "mathContext": "Formal definition: Definition of Egyptian fractions and set A"
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "Small examples: 6 and 12 are in A",
+      "startLine": 63,
+      "endLine": 72,
+      "mathContext": "Mathematical content: Small examples: 6 and 12 are in A"
+    },
+    {
+      "id": "straus-closure",
+      "title": "Straus's Multiplication Closure",
+      "summary": "A is closed under multiplication",
+      "startLine": 73,
+      "endLine": 86,
+      "mathContext": "Mathematical content: A is closed under multiplication"
+    },
+    {
+      "id": "prime-powers",
+      "title": "Prime Powers Not in A",
+      "summary": "All prime powers are excluded from A, with specific cases for 2, 4, and all primes",
+      "startLine": 87,
+      "endLine": 111,
+      "mathContext": "Mathematical content: All prime powers are excluded from A, with specific cases for 2, 4, and all primes"
+    },
+    {
+      "id": "doubling",
+      "title": "Doubling Property",
+      "summary": "If n ∈ A then 2n ∈ A",
+      "startLine": 112,
+      "endLine": 119
+    },
+    {
+      "id": "complement",
+      "title": "The Complement Set B",
+      "summary": "Structure and density of B = ℕ \\ A",
+      "startLine": 120,
+      "endLine": 140,
+      "mathContext": "Structure and density of B = $\\mathbb{N}$ \\ A"
+    },
+    {
+      "id": "martin-theorem",
+      "title": "Martin's Main Theorem",
+      "summary": "A has density 1, B has density 0",
+      "startLine": 141,
+      "endLine": 150,
+      "mathContext": "Mathematical content: A has density 1, B has density 0"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #292 asks whether the set A of integers that can be the largest denominator in an Egyptian fraction summing to 1 has density 1. Martin (2000) proved YES: A has density 1. The complement B consists of small multiples of prime powers, with |B ∩ [1,x]|/x ~ (log log x)/(log x).",
+    "implications": "**Theoretical Significance**: **Implications for Number Theory**\n\n1. **Egyptian Fractions:** Almost all integers can be the largest denominator in a unit fraction representation of 1.\n\n**2. Multiplicative Structure:** Straus's closure under multiplication is key to understanding A.\n\n3. **Prime Power Obstruction:** The exclusion of prime powers provides a complete characterization of what's not in A.\n\n4. **Density Results:** Martin's precise asymptotics for B are a model of density analysis.",
+    "openQuestions": [
+      "Can we efficiently compute Egyptian fraction decompositions with given max denominator?",
+      "What is the structure of minimal-length representations for n ∈ A?",
+      "Connections to the Erdős-Straus conjecture (4/n = 1/a + 1/b + 1/c)?",
+      "Analogous problems for sums to other rationals?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset"
+    ],
+    "opens": [],
+    "namespace": "Erdos292",
+    "lineCount": 150,
+    "axiomCount": 3,
+    "theoremCount": 5,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos292Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-298",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-299",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-310",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, egyptian-fractions, number-theory, unit-fractions"
+    }
+  ],
+  "sorries": 0
+}

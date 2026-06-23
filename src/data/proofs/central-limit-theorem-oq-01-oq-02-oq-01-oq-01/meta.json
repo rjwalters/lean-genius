@@ -1,0 +1,147 @@
+{
+  "id": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+  "title": "Gaussian Characteristic Function exp(iμt − σ²t²/2)",
+  "slug": "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+  "description": "Formalizes the Gaussian characteristic function φ(t) = exp(iμt − σ²t²/2) and its algebraic properties: modulus decay, product formula for independent sums, conjugate symmetry, standardization scaling, and Gaussian stability under the CLT. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Fourier, Lévy",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean",
+    "tags": [
+      "probability",
+      "complex-analysis",
+      "fourier",
+      "CLT",
+      "characteristic-function",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 176,
+    "assumptions": "0 axioms, 0 sorries. All properties proved from Complex.exp algebra.",
+    "dateAdded": "2026-04-12",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Gaussian characteristic function definition and basic properties (proved)",
+      "Modulus |φ(t)| = exp(-σ²t²/2) with strict decay for σ²>0 (proved)",
+      "Product formula φ₁·φ₂ = φ_{sum} encoding independence (proved)",
+      "Power formula for n iid copies (proved)",
+      "Conjugate symmetry φ(-t) = conj(φ(t)) (proved)",
+      "Scaling and standardization relationships (proved)",
+      "CLT Gaussian stability: Sₙ/√n ~ N(0,1) via char fn (proved)"
+    ],
+    "theoremCount": 14,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The **characteristic function** $\\varphi_X(t) = \\mathbb{E}[e^{itX}]$ is the Fourier transform of a probability distribution, analogous to the moment generating function but defined for all distributions. It was systematically developed by Paul Lévy (1925) as the central tool in his rigorous proof of the Central Limit Theorem and the theory of stable distributions.\n\nFor the Gaussian distribution $N(\\mu, \\sigma^2)$, the characteristic function takes the closed form $\\varphi(t) = \\exp(i\\mu t - \\sigma^2 t^2/2)$, which can be computed by completing the square in the Gaussian integral. This formula encodes all moments: differentiating at $t=0$ gives $\\mathbb{E}[X^k]$ in terms of $\\mu$ and $\\sigma$.\n\nThe **product formula** $\\varphi_{X+Y}(t) = \\varphi_X(t)\\cdot\\varphi_Y(t)$ for independent $X, Y$ follows from $\\mathbb{E}[e^{it(X+Y)}] = \\mathbb{E}[e^{itX}]\\mathbb{E}[e^{itY}]$ when $X, Y$ are independent. For Gaussians, this product formula reduces to simple exponential addition: $\\exp(a)\\cdot\\exp(b) = \\exp(a+b)$, making the sum-of-parameters rule $\\mu \\mapsto \\mu_1+\\mu_2$, $\\sigma^2 \\mapsto \\sigma_1^2+\\sigma_2^2$ immediate.\n\n**Lévy's continuity theorem** (the deep result this file builds toward) states that pointwise convergence of characteristic functions implies weak convergence of distributions. Together with the product formula, this gives the CLT: for iid $X_i$ with mean $\\mu$ and variance $\\sigma^2$, the char fn of $(S_n - n\\mu)/(\\sigma\\sqrt{n})$ converges pointwise to $e^{-t^2/2}$.",
+    "problemStatement": "Formalize the Gaussian characteristic function φ(t) = exp(iμt - σ²t²/2) and prove its fundamental algebraic properties: (1) φ(0) = 1, (2) |φ(t)| = exp(-σ²t²/2), (3) the product formula for independent sums, (4) conjugate symmetry, (5) the connection to the CLT via Gaussian stability.",
+    "proofStrategy": "Define gaussianCharFn as Complex.exp applied to the Gaussian exponent iμt - σ²t²/2. All properties follow from algebraic manipulation of Complex.exp, using exp_add for the product formula, abs_exp for the modulus, and field_simp/ring for the CLT scaling argument.",
+    "keyInsights": [
+      "The product formula φ_{μ₁,σ₁²}·φ_{μ₂,σ₂²} = φ_{μ₁+μ₂,σ₁²+σ₂²} is the characteristic-function encoding of the fact that independent Gaussians sum to a Gaussian. It follows directly from exp(a)·exp(b) = exp(a+b) plus algebraic simplification.",
+      "The modulus |φ(t)| = exp(-σ²t²/2) shows the characteristic function is strictly less than 1 for t ≠ 0 when σ² > 0. This Gaussian envelope is the characteristic function of the centered distribution — the mean μ only affects the phase.",
+      "Gaussian stability under the CLT: if X₁,...,Xₙ are iid N(0,1), then Sₙ/√n has characteristic function exp(-n·(t/√n)²/2) = exp(-t²/2), which is again N(0,1). This uses √n² = n.",
+      "The conjugate symmetry φ(-t) = conj(φ(t)) is equivalent to the distribution being real-valued (supported on ℝ, not ℂ).",
+      "The exponent's decomposition into real part -σ²t²/2 (variance damping) and imaginary part μt (mean oscillation) reveals that the characteristic function encodes the mean as phase and variance as decay rate — a duality central to why Gaussian distributions are stable under convolution and why the CLT limit is universal."
+    ],
+    "prerequisites": [
+      "Complex exponential function (Mathlib.Analysis.SpecialFunctions.Complex.Analytic)",
+      "Complex arithmetic and conjugation",
+      "Real square root (Real.sqrt)",
+      "Basic probability: characteristic functions as Fourier transforms"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "§1: Definition and Basic Properties",
+      "startLine": 26,
+      "endLine": 56,
+      "summary": "Defines gaussianCharFn and proves φ(0) = 1, real/imaginary parts of the exponent.",
+      "mathContext": "$\\varphi(t) = \\exp(i\\mu t - \\sigma^2 t^2/2)$. At $t=0$: $\\varphi(0) = \\exp(0) = 1$. The exponent has $\\Re = -\\sigma^2 t^2/2$ (damping) and $\\Im = \\mu t$ (oscillation)."
+    },
+    {
+      "id": "modulus",
+      "title": "§2: Modulus and Phase",
+      "startLine": 58,
+      "endLine": 82,
+      "summary": "Proves |φ(t)| = exp(-σ²t²/2), strict decay for σ²>0, and unit modulus for point masses.",
+      "mathContext": "$|\\varphi(t)| = |\\exp(z)| = \\exp(\\Re(z)) = \\exp(-\\sigma^2 t^2/2)$. For $\\sigma^2 > 0$ and $t \\neq 0$: $-\\sigma^2 t^2/2 < 0$ so $|\\varphi(t)| < 1$."
+    },
+    {
+      "id": "product",
+      "title": "§3: Product Formula (Independent Sum)",
+      "startLine": 84,
+      "endLine": 104,
+      "summary": "Product and power formulas encoding that independent Gaussian sums are Gaussian.",
+      "mathContext": "$\\varphi_{\\mu_1,\\sigma_1^2} \\cdot \\varphi_{\\mu_2,\\sigma_2^2} = \\varphi_{\\mu_1+\\mu_2,\\sigma_1^2+\\sigma_2^2}$ from $\\exp(a)\\exp(b) = \\exp(a+b)$."
+    },
+    {
+      "id": "symmetry",
+      "title": "§4: Symmetry Properties",
+      "startLine": 106,
+      "endLine": 122,
+      "summary": "Conjugate symmetry φ(-t) = conj(φ(t)) and real-valuedness for centered Gaussians.",
+      "mathContext": "$\\varphi(-t) = \\overline{\\varphi(t)}$ because the Gaussian density is real-valued."
+    },
+    {
+      "id": "scaling",
+      "title": "§5: Scaling and Standardization",
+      "startLine": 124,
+      "endLine": 148,
+      "summary": "Standard Gaussian φ(t) = exp(-t²/2) and scaling relationship φ_{0,σ²}(t) = φ_{0,1}(σt).",
+      "mathContext": "Standardization: $(X-\\mu)/\\sigma \\sim N(0,1)$ gives $\\varphi_{0,1}(t) = \\exp(-t^2/2)$."
+    },
+    {
+      "id": "clt",
+      "title": "§6: CLT Connection",
+      "startLine": 150,
+      "endLine": 170,
+      "summary": "Gaussian stability: Sₙ/√n ~ N(0,1) via characteristic function algebra.",
+      "mathContext": "$\\varphi_{0,n}(t/\\sqrt{n}) = \\exp(-n \\cdot t^2/(2n)) = \\exp(-t^2/2) = \\varphi_{0,1}(t)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Gaussian characteristic function φ(t) = exp(iμt - σ²t²/2) is fully formalized with 14 theorems covering: basic properties, modulus decay, product formula for independent sums, power formula, conjugate symmetry, scaling, and CLT stability. All 0 axioms, 0 sorries.",
+    "openQuestions": [
+      "Can Lévy's continuity theorem be formalized to complete the CLT proof: pointwise convergence of characteristic functions implies convergence in distribution?",
+      "Can the moment-generating function M(t) = exp(μt + σ²t²/2) be similarly formalized and connected to the characteristic function via analytic continuation?"
+    ],
+    "implications": "The characteristic function approach is the modern standard for proving the CLT. The product formula directly encodes independence, and the Gaussian stability theorem shows that normalization Sₙ/√n preserves the standard Gaussian — the simplest case of the CLT."
+  },
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem-oq-01-oq-02-oq-01",
+      "relationship": "parent-problem",
+      "description": "Extends the Gaussian exponent arithmetic to the full characteristic function"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "ancestor",
+      "description": "Root CLT formalization"
+    }
+  ],
+  "references": [
+    {
+      "author": "Lévy, P.",
+      "title": "Calcul des probabilités",
+      "year": 1925,
+      "note": "Introduced the characteristic function approach to the CLT"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "CentralLimitTheoremOQ01OQ02OQ01OQ01",
+    "lineCount": 176,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 2,
+    "path": "Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

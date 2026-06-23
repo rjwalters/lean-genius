@@ -1,0 +1,197 @@
+{
+  "id": "erdos-97",
+  "title": "Erdős Problem #97: Equidistant Vertices in Convex Polygons",
+  "slug": "erdos-97",
+  "description": "Does every convex polygon have a vertex with no other 4 vertices equidistant from it?",
+  "meta": {
+    "author": "Erdős (1946); Danzer counterexample (1987); Fishburn-Reeds (1992)",
+    "sourceUrl": "https://erdosproblems.com/97",
+    "date": "1946",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos97Problem.lean",
+    "tags": [
+      "erdos",
+      "convex-polygon",
+      "equidistant",
+      "unit-distance",
+      "conjecture"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 97,
+    "erdosUrl": "https://erdosproblems.com/97",
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": "$100",
+    "dateAdded": "2026-01-13",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝ^n with norm",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filter elements of a Finset",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "convexHull",
+        "description": "Convex hull of a set",
+        "module": "Mathlib.Analysis.Convex.Hull"
+      }
+    ],
+    "originalContributions": [
+      "Definition of hasKEquidistantAt for k-equidistant neighbors",
+      "Definition of hasKEquidistantProperty for sets",
+      "Definition of hasKUnitDistanceProperty for unit distances",
+      "Definition of isConvexPosition for convex polygons",
+      "Erdos97Question: the k = 4 open problem",
+      "Axioms for Danzer and Fishburn-Reeds counterexamples",
+      "GeneralKConjecture: does any k work?",
+      "Connection to unit distance bounds"
+    ],
+    "axiomCount": 4,
+    "lineCount": 163,
+    "assumptions": "4 axioms: danzer_counterexample, fishburn_reeds_example, fishburn_reeds_minimal, no_bound_without_convexity. 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 6,
+    "additionalFiles": [
+      "Proofs/Stubs/Erdos97Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős originally conjectured (1946) that every convex polygon has a vertex with no other 3 vertices equidistant from it. Danzer disproved this with a 9-point counterexample where every vertex has exactly 3 vertices equidistant from it.\n\nThe problem was then raised for k = 4: does every convex polygon have a vertex with no other 4 vertices equidistant? This remains open.\n\nFishburn and Reeds (1992) found an even stronger example: a convex 20-gon where every vertex has 3 vertices at UNIT distance (not just equidistant at varying radii). They also proved 20 is minimal for this property.",
+    "problemStatement": "**Erdős Problem #97 (OPEN for k = 4)**\n\nDoes every convex polygon have a vertex with no other 4 vertices equidistant from it?\n\n**Solved Variants**:\n- k = 3: NO (Danzer's 9-point counterexample)\n- k = 3 unit distance: NO (Fishburn-Reeds 20-point example)\n\n**Open Questions**:\n- The k = 4 case\n- Does any k work?\n\n**Prize**: $100",
+    "text": "Does every convex polygon have a vertex with no other 4 vertices equidistant from it?",
+    "proofStrategy": "We formalize the key concepts and counterexamples:\n\n1. **hasKEquidistantAt**: k points at same distance from a vertex\n\n2. **hasKEquidistantProperty**: k-equidistant from every vertex\n\n3. **isConvexPosition**: vertices of a convex polygon\n\n4. **Erdos97Question**: the open k = 4 question\n\n5. **danzerCounterexample** (axiom): 9-point convex with 3-equidistant\n\n6. **fishburnReedsExample** (axiom): 20-point with 3 unit-distance",
+    "keyInsights": [
+      "**Convexity is crucial**: Without convexity, hypercube graphs give arbitrarily high equidistance.",
+      "**Danzer's surprise**: A 9-point convex polygon can have 3 equidistant from every vertex.",
+      "**Equidistant vs unit distance**: Fishburn-Reeds strengthened Danzer by using fixed unit distance.",
+      "**Connection to #96**: If k = 4 holds, it bounds unit distances in convex polygons.",
+      "**The general k question**: Even the existence of any working k is unknown."
+    ],
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Number theory (primes, divisibility, arithmetic functions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module documentation, Mathlib imports, ℝ² abbreviation, and namespace setup."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 37,
+      "endLine": 59,
+      "summary": "Definitions of HasNEquidistantPointsAt, HasNEquidistantProperty, and HasNUnitDistanceProperty."
+    },
+    {
+      "id": "main-question",
+      "title": "Main Conjecture",
+      "startLine": 60,
+      "endLine": 75,
+      "summary": "Erdos97Conjecture: every convex polygon fails the 4-equidistant property (OPEN)."
+    },
+    {
+      "id": "danzer",
+      "title": "Danzer's Counterexample",
+      "startLine": 76,
+      "endLine": 113,
+      "summary": "Axiom for Danzer's 9-point counterexample (k = 3 FALSE) and formal proof that the k = 3 conjecture fails."
+    },
+    {
+      "id": "fishburn-reeds",
+      "title": "Fishburn-Reeds Results",
+      "startLine": 115,
+      "endLine": 133,
+      "summary": "Axioms for the Fishburn-Reeds 20-gon (3 unit-distance neighbors) and its minimality."
+    },
+    {
+      "id": "general-k",
+      "title": "General k Conjecture",
+      "startLine": 134,
+      "endLine": 163,
+      "summary": "GeneralKConjecture, main_implies_general theorem, and no_bound_without_convexity axiom."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #97 about equidistant vertices in convex polygons. The original k = 3 conjecture was disproved by Danzer (1987), but the k = 4 case remains open. The problem connects to unit distance bounds and convex geometry.",
+    "implications": "This problem shows that convex polygon geometry is surprisingly rich. Understanding equidistance bounds would have implications for the unit distance problem in convex sets.",
+    "openQuestions": [
+      "Does every convex polygon have a vertex with no 4 equidistant vertices?",
+      "Does any k work for all convex polygons?",
+      "What is the minimum n for a convex n-gon with 4-equidistant at every vertex?",
+      "Can Danzer's construction be extended to k = 4?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "EuclideanGeometry"
+    ],
+    "namespace": "Erdos97",
+    "lineCount": 163,
+    "axiomCount": 4,
+    "theoremCount": 2,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos97Problem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Stubs/Erdos97Aristotle.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-92",
+      "relationship": "related",
+      "description": "Both concern the geometry of convex polygons — #92 studies equidistant points, #97 asks whether every convex polygon has a vertex with no 4 equidistant vertices"
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "foundational",
+      "description": "The triangle inequality underpins the distance-based definitions in Problem #97 — equidistance conditions on convex polygon vertices are constrained by metric geometry"
+    }
+  ],
+  "references": [
+    {
+      "key": "Br05b",
+      "authors": "Brass, Peter; Moser, William; Pach, János",
+      "title": "Research Problems in Discrete Geometry",
+      "venue": "Springer-Verlag, New York",
+      "year": "2005",
+      "note": "Comprehensive reference for equidistant point problems in convex position"
+    },
+    {
+      "authors": "Danzer, Ludwig",
+      "title": "Finite point-sets on S² with minimum distance as large as possible",
+      "year": "1987",
+      "venue": "Discrete Mathematics, vol. 60, pp. 3–66",
+      "note": "Constructed the 9-point convex polygon counterexample disproving Erdős's original k=3 conjecture"
+    },
+    {
+      "authors": "Fishburn, Peter C.; Reeds, James A.",
+      "title": "Unit distances between vertices of a convex polygon",
+      "year": "1992",
+      "venue": "Computational Geometry, vol. 2, pp. 81–91",
+      "note": "Constructed a 20-point convex polygon where every vertex has at least 3 other vertices at unit distance"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "On sets of distances of n points",
+      "year": "1946",
+      "venue": "American Mathematical Monthly, vol. 53, pp. 248–250",
+      "note": "Original paper raising the question of equidistant points in convex position, foundational for the distinct distances problem"
+    }
+  ],
+  "sorries": 0
+}

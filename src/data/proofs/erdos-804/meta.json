@@ -1,0 +1,181 @@
+{
+  "id": "erdos-804",
+  "title": "Erdős Problem #804: Independent Sets in Locally Independent Graphs",
+  "slug": "erdos-804",
+  "description": "If every induced subgraph on m vertices has independent set ≥ log n, how large must the global independent set be? The conjectured bounds n^(1/2-o(1)) and (log n)³ were DISPROVED by Alon-Sudakov (2007).",
+  "meta": {
+    "author": "Erdős-Hajnal (problem), Alon-Sudakov (2007 resolution)",
+    "sourceUrl": "https://erdosproblems.com/804",
+    "date": "2007",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos804Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "independent-sets",
+      "extremal-combinatorics",
+      "ramsey-theory",
+      "disproved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 804,
+    "erdosUrl": "https://erdosproblems.com/804",
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph type for vertex-edge structures",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset.sup",
+        "description": "Supremum over finite sets for independence number",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for asymptotic statements",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "IsIndependent definition: no adjacent pairs in vertex set",
+      "independenceNumber definition: α(G) as maximum independent set",
+      "HasLocalIndependence definition: (m,k)-local independence property",
+      "empty_is_independent theorem: basic proof that ∅ is independent",
+      "erdos_hajnal_conjecture_1_false axiom: f((log n)², n) ≱ n^(1/2-o(1))",
+      "erdos_hajnal_conjecture_2_false axiom: f((log n)³, n) ≯ (log n)³",
+      "alon_sudakov_upper_bound_1 axiom: upper bound for (log n)² case",
+      "alon_sudakov_lower_bound_1 axiom: lower bound with log log n factor",
+      "alon_sudakov_tight_bound_2 axiom: tight bounds for (log n)³ case",
+      "erdos_804 theorem: main disproof combining both conjectures",
+      "erdos_804_resolution theorem: full resolution with Alon-Sudakov bounds"
+    ],
+    "axiomCount": 5,
+    "lineCount": 244,
+    "assumptions": "5 axioms: erdos_hajnal_conjecture_1_false, erdos_hajnal_conjecture_2_false, alon_sudakov_upper_bound_1, and 2 more. See Lean source for complete statements.",
+    "theoremCount": 3,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #804** was posed by Erdős and Hajnal as part of their study of local-to-global structure in graphs. The question asks: if every small induced subgraph has a good independent set, how good must the global independent set be?\n\n**Historical Development:**\n- **1991 (Erdős [Er91]):** Posed the problem with conjectured bounds.\n- **2007 (Alon-Sudakov [AlSu07]):** Completely resolved both questions in the NEGATIVE. The conjectured bounds were far too optimistic.\n\n**Key Insight:** Local independent set structure does NOT propagate as strongly to global structure as Erdős and Hajnal expected. The true bounds involve an extra log log n factor in the denominator.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $f(m, n)$ be maximal such that any graph on $n$ vertices in which every induced subgraph on $m$ vertices has an independent set of size $\\geq \\log n$ must contain an independent set of size $\\geq f(n)$.\n\n**Questions:**\n1. Is $f((\\log n)^2, n) \\geq n^{1/2 - o(1)}$?\n2. Is $f((\\log n)^3, n) \\gg (\\log n)^3$?\n\n**Answers: BOTH NO!** (Alon-Sudakov, 2007)\n\n**True Bounds:**\n$$\\frac{(\\log n)^2}{\\log \\log n} \\ll f((\\log n)^2, n) \\ll (\\log n)^2$$\n$$f((\\log n)^3, n) \\asymp \\frac{(\\log n)^2}{\\log \\log n}$$",
+    "text": "If every induced subgraph on m vertices has independent set ≥ log n, how large must the global independent set be? The conjectured bounds n^(1/2-o(1)) and (log n)³ were DISPROVED by Alon-Sudakov (2007).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Definitions:** Define independent sets, independence number α(G), and local independence property.\n\n2. **False Conjectures:** Axiomatize that both Erdős-Hajnal conjectures are false.\n\n3. **True Bounds:** Axiomatize Alon-Sudakov's upper and lower bounds showing the correct answer involves (log n)² / log log n.\n\n4. **Main Theorems:** Combine the disproof and resolution into proved summary theorems.",
+    "keyInsights": [
+      "**Local vs Global:** Having large independent sets in ALL small subgraphs doesn't force a proportionally large global independent set.",
+      "**Conjecture 1 Failed:** f((log n)², n) ≈ (log n)² / log log n, NOT n^(1/2-o(1)). The true bound is polylogarithmic, not polynomial!",
+      "**Conjecture 2 Failed:** f((log n)³, n) ≈ (log n)² / log log n, NOT (log n)³. Going from m = (log n)² to m = (log n)³ doesn't help much.",
+      "**Random Graphs:** Dense random graphs provide counterexamples — they have good local structure but limited global independent sets.",
+      "**Log Log Factor:** The mysterious log log n divisor appears in both tight bounds, reflecting subtle structure.",
+      "**Related Problem #805:** Similar questions answered by the same Alon-Sudakov techniques."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "independent-sets",
+      "title": "Independent Sets in Graphs",
+      "summary": "Definition of independent sets and independence number α(G).",
+      "startLine": 42,
+      "endLine": 70
+    },
+    {
+      "id": "f-function",
+      "title": "The Function f(m, n)",
+      "summary": "Local independence property definition capturing the core question.",
+      "startLine": 71,
+      "endLine": 85
+    },
+    {
+      "id": "conjectures",
+      "title": "Erdős-Hajnal's Conjectures",
+      "summary": "The two conjectured bounds, both disproved by Alon-Sudakov.",
+      "startLine": 86,
+      "endLine": 121
+    },
+    {
+      "id": "alon-sudakov",
+      "title": "Alon-Sudakov's Resolution (2007)",
+      "summary": "Upper and lower bounds establishing the true answer: Θ((log n)² / log log n).",
+      "startLine": 122,
+      "endLine": 175
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_804 theorem showing both conjectures false.",
+      "startLine": 176,
+      "endLine": 203
+    },
+    {
+      "id": "resolution",
+      "title": "Full Resolution",
+      "summary": "erdos_804_resolution combining disproof with precise Alon-Sudakov bounds.",
+      "startLine": 204,
+      "endLine": 244
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #804 asked two questions about how local independent set structure propagates globally. Both conjectures were DISPROVED by Alon and Sudakov (2007). The true bounds are (log n)² / log log n, far smaller than the conjectured n^(1/2-o(1)) and (log n)³. This demonstrates that local structure doesn't force global structure as strongly as intuition suggests.",
+    "implications": "**Theoretical Significance**: **Implications for Extremal Graph Theory**\n\n1. **Local-Global Gap:** The gap between local and global independent set structure is larger than expected.\n\n**2. Polylogarithmic vs Polynomial:** The true answer is polylogarithmic, not polynomial in n.\n\n3. **Log Log Factor:** The mysterious log log n appears in tight bounds, a common phenomenon in extremal combinatorics.\n\n4. **Random Constructions:** Random graphs continue to provide extremal examples.",
+    "openQuestions": [
+      "What is the exact leading constant in f((log n)², n)?",
+      "Can the construction be made explicit (non-random)?",
+      "What happens for other values of m between (log n)² and (log n)³?",
+      "How does this relate to the (different) Erdős-Hajnal conjecture on forbidden induced subgraphs?",
+      "What are the algorithmic implications for finding independent sets?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Order.Filter.AtTopBot"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Set",
+      "Filter",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos804",
+    "lineCount": 244,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos804Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-615",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: disproved, extremal-combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-183",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: extremal-combinatorics, graph-theory, ramsey-theory"
+    }
+  ],
+  "sorries": 0
+}

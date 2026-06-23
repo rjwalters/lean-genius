@@ -1,0 +1,287 @@
+[
+  {
+    "id": "ann-305-1",
+    "proofId": "erdos-305",
+    "range": {
+      "startLine": 53,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Egyptian Fraction",
+    "content": "**isEgyptianFraction S** means S is a valid set of denominators for an Egyptian fraction (all positive). Egyptian fractions date to ancient Egypt (Rhind Papyrus, c. 1650 BCE).",
+    "mathContext": "An Egyptian fraction is a sum $\\frac{1}{n_1} + \\frac{1}{n_2} + \\cdots + \\frac{1}{n_k}$ with $1 \\leq n_1 < n_2 < \\cdots < n_k$. The predicate `isEgyptianFraction S` checks $\\forall n \\in S, n \\geq 1$. The distinctness of denominators is implicit in using $\\texttt{Finset}$ (sets have no duplicates).",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit fractions",
+      "Rhind Papyrus",
+      "rational representation",
+      "distinct denominators"
+    ],
+    "prerequisites": [
+      "finite sets",
+      "rational arithmetic"
+    ]
+  },
+  {
+    "id": "ann-305-2",
+    "proofId": "erdos-305",
+    "range": {
+      "startLine": 60,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Unit Fraction Sum",
+    "content": "**unitFractionSum S** computes ∑_{n ∈ S} 1/n. This is the value represented by the Egyptian fraction with denominators in S.",
+    "mathContext": "The sum $\\sum_{n \\in S} \\frac{1}{n}$ is computed over $\\mathbb{Q}$ for exact arithmetic. The guard `if n = 0 then 0` handles the degenerate case, though `isEgyptianFraction` ensures $n \\geq 1$. This rational-valued sum is central to all statements about Egyptian fraction representations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sum",
+      "rational arithmetic",
+      "harmonic partial sums"
+    ],
+    "prerequisites": [
+      "finite sums",
+      "rational numbers"
+    ]
+  },
+  {
+    "id": "ann-305-3",
+    "proofId": "erdos-305",
+    "range": {
+      "startLine": 68,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Egyptian Representation",
+    "content": "**isEgyptianRepresentation S a b** means S gives an Egyptian fraction equal to a/b. Every rational 0 < a/b < 1 has such a representation.",
+    "mathContext": "The predicate requires $a < b$, $b > 0$, all denominators positive, and $\\sum_{n \\in S} 1/n = a/b$ (exact equality in $\\mathbb{Q}$). The existence of such $S$ for all valid $(a,b)$ follows from the Fibonacci-Sylvester greedy algorithm, which terminates because the numerator strictly decreases at each step.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy algorithm",
+      "Sylvester-Fibonacci expansion",
+      "existence of representations"
+    ],
+    "prerequisites": [
+      "rational arithmetic",
+      "well-ordering"
+    ]
+  },
+  {
+    "id": "ann-305-4",
+    "proofId": "erdos-305",
+    "range": {
+      "startLine": 76,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Existence Theorem",
+    "content": "**egyptian_representation_exists** guarantees every positive rational < 1 has an Egyptian fraction representation. This follows from the greedy algorithm (Fibonacci-Sylvester).",
+    "mathContext": "For $0 < a < b$, the greedy algorithm produces a representation by repeatedly choosing $n = \\lceil b/a \\rceil$. The remainder $a/b - 1/n = (an - b)/(bn)$ has strictly smaller numerator $an - b < a$, so the process terminates in at most $a$ steps. This was known to Fibonacci (1202) in the Liber Abaci.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fibonacci's Liber Abaci",
+      "Sylvester's algorithm",
+      "termination proof"
+    ],
+    "prerequisites": [
+      "well-founded recursion",
+      "rational arithmetic"
+    ]
+  },
+  {
+    "id": "ann-305-5",
+    "proofId": "erdos-305",
+    "range": {
+      "startLine": 87,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Maximum Denominator",
+    "content": "**maxDenominator S** returns the largest element of S. The problem asks: what is the minimum possible maximum denominator?",
+    "mathContext": "Defined as $\\texttt{Finset.sup}\\;S\\;\\texttt{id}$, which returns $\\max(S)$ (or $0$ if $S$ is empty). The minimax quantity $D(a,b) = \\min_S \\max(S)$ over all Egyptian representations $S$ of $a/b$ is the central optimization problem: how small can the largest denominator be?",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sup",
+      "minimax optimization",
+      "combinatorial optimization"
+    ],
+    "prerequisites": [
+      "lattice theory",
+      "finite sets"
+    ]
+  },
+  {
+    "id": "ann-305-6",
+    "proofId": "erdos-305",
+    "range": {
+      "startLine": 114,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "D(b) Function",
+    "content": "**D_b b** = max_{1 ≤ a < b} D(a,b) is the worst-case minimum maximum denominator for fractions with denominator b. This is the central quantity in Erdős Problem #305.",
+    "mathContext": "$D(b) = \\max_{1 \\leq a < b} D(a,b)$ measures the hardest fraction with denominator $b$. For prime $p$, the fraction $(p-1)/p$ is particularly hard because $p$ divides the denominator of any unit fraction $1/n$ only when $p | n$, forcing $D(p) \\gg p \\log p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "worst-case analysis",
+      "prime hardness",
+      "Egyptian fraction complexity"
+    ],
+    "prerequisites": [
+      "maximization",
+      "number theory"
+    ]
+  },
+  {
+    "id": "ann-305-7",
+    "proofId": "erdos-305",
+    "range": {
+      "startLine": 127,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Trivial Lower Bound",
+    "content": "**D_b_lower_trivial**: D(b) ≥ b for b ≥ 2. The fraction (b-1)/b requires denominator at least b in any representation.",
+    "mathContext": "For $(b-1)/b$, any Egyptian fraction $\\sum 1/n_i = (b-1)/b$ must include some $n_i \\leq b$, since the sum of all unit fractions $1/n$ for $n > b$ is less than $\\int_b^\\infty 1/x\\,dx$ which is insufficient. More precisely, $\\sum_{n > b} 1/n$ diverges but the finite partial sums grow too slowly.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "lower bound",
+      "trivial obstruction"
+    ],
+    "prerequisites": [
+      "basic arithmetic"
+    ]
+  },
+  {
+    "id": "ann-305-8",
+    "proofId": "erdos-305",
+    "range": {
+      "startLine": 135,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Prime Lower Bound",
+    "content": "**D_prime_lower**: D(p) ≫ p log p for prime p. This shows the (log b)¹ factor is necessary, making the conjecture sharp up to o(1) in the exponent.",
+    "mathContext": "For prime $p$, representing $(p-1)/p = \\sum 1/n_i$ requires all $n_i$ to be multiples of $p$ (for the sum to have $p$ in the denominator). Writing $n_i = p m_i$, we need $\\sum 1/m_i = (p-1)/1$, which requires $\\max(m_i) \\gg p-1$ terms from the harmonic series $H_N \\sim \\log N$. Hence $\\max(n_i) = p \\cdot \\max(m_i) \\gg p \\log p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime divisibility",
+      "harmonic sum lower bound",
+      "sharpness of conjecture"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "harmonic numbers"
+    ]
+  },
+  {
+    "id": "ann-305-9",
+    "proofId": "erdos-305",
+    "range": {
+      "startLine": 143,
+      "endLine": 145
+    },
+    "type": "concept",
+    "title": "Bleicher-Erdős Bound",
+    "content": "**bleicher_erdos_bound** (1976): D(b) ≪ b(log b)². This was the first strong upper bound, initiating the modern study of this problem.",
+    "mathContext": "Bleicher and Erdős (1976) proved $D(b) \\leq C \\cdot b (\\log b)^2$. The gap between this $O(b(\\log b)^2)$ upper bound and the $\\Omega(b \\log b)$ lower bound is one factor of $\\log b$, which Erdős conjectured could be reduced to $(\\log b)^{o(1)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "first upper bound",
+      "greedy algorithm analysis",
+      "gap in bounds"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "greedy algorithm"
+    ]
+  },
+  {
+    "id": "ann-305-10",
+    "proofId": "erdos-305",
+    "range": {
+      "startLine": 152,
+      "endLine": 155
+    },
+    "type": "concept",
+    "title": "Yokota's Bound",
+    "content": "**yokota_bound** (1988): D(b) ≪ b(log b)(log log b)⁴(log log log b)². This solved Erdős #305 by showing D(b) ≪ b(log b)^{1+o(1)}.",
+    "mathContext": "Yokota proved $D(b) \\leq C \\cdot b \\cdot \\log b \\cdot (\\log\\log b)^4 (\\log\\log\\log b)^2$. Since $(\\log\\log b)^4 (\\log\\log\\log b)^2 = (\\log b)^{o(1)}$, this confirms $D(b) \\ll b(\\log b)^{1+o(1)}$, solving the conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated logarithms",
+      "o(1) in exponent",
+      "refined greedy analysis"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "iterated logarithm growth"
+    ]
+  },
+  {
+    "id": "ann-305-11",
+    "proofId": "erdos-305",
+    "range": {
+      "startLine": 161,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "Liu-Sawhney Bound",
+    "content": "**liu_sawhney_bound** (2024): D(b) ≪ b(log b)(log log b)³(log log log b)^{O(1)}. Improved Yokota's bound using additive combinatorics techniques.",
+    "mathContext": "Liu and Sawhney (2024) improved the iterated log exponent from 4 to 3 by connecting Egyptian fractions to additive combinatorics: dense subsets of $\\{1, \\ldots, N\\}$ with large harmonic sum contain subsets summing to 1. This is a unit fraction analogue of the Erdős-Ginzburg-Ziv theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive combinatorics",
+      "dense subset summing to 1",
+      "state of the art"
+    ],
+    "prerequisites": [
+      "additive combinatorics",
+      "harmonic analysis"
+    ]
+  },
+  {
+    "id": "ann-305-12",
+    "proofId": "erdos-305",
+    "range": {
+      "startLine": 177,
+      "endLine": 179
+    },
+    "type": "definition",
+    "title": "Erdős Conjecture",
+    "content": "**erdos305Conjecture**: Is D(b) ≪ b(log b)^{1+o(1)}? This asks if the exponent 1 on log b is essentially optimal, with only subpolynomial correction.",
+    "mathContext": "Formalized as $\\forall \\epsilon > 0, \\exists C > 0, \\forall b \\geq 2: D(b) \\leq C \\cdot b \\cdot (\\log b)^{1+\\epsilon}$, which is equivalent to $D(b) = b (\\log b)^{1+o(1)}$ given the lower bound $D(p) \\gg p \\log p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sharp conjecture",
+      "o(1) correction",
+      "asymptotic optimality"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "quantifier ordering"
+    ]
+  },
+  {
+    "id": "ann-305-13",
+    "proofId": "erdos-305",
+    "range": {
+      "startLine": 186,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Solution",
+    "content": "**erdos_305_solved** proves the conjecture. Since (log log b)^k = (log b)^{o(1)}, Yokota's bound confirms D(b) ≪ b(log b)^{1+o(1)}.",
+    "mathContext": "The proof requires showing $(\\log\\log b)^4 (\\log\\log\\log b)^2 \\leq (\\log b)^\\epsilon$ for any $\\epsilon > 0$ and sufficiently large $b$. This follows from $\\log\\log b = o((\\log b)^\\delta)$ for any $\\delta > 0$. The `sorry` reflects the technicality of formalizing iterated logarithm asymptotics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated logarithm asymptotics",
+      "o(1) exponent",
+      "reduction to Yokota"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "iterated logarithm"
+    ]
+  }
+]

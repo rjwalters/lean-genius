@@ -1,0 +1,141 @@
+[
+  {
+    "id": "ann-1007-overview",
+    "proofId": "erdos-1007",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős #1007 asks for the minimum edges in a 4-dimensional graph. Graph dimension, introduced by Erdős, Harary, and Tutte (1965), is the smallest $n$ such that the graph embeds in $\\mathbb{R}^n$ with all edges having unit length. The answer is 9 edges, achieved uniquely by $K_{3,3}$. Erdős posed this question to Alexander Soifer in January 1992.\n\nThe module docstring provides full context: the dimension ladder ($K_2 \\to 1$, $K_3 \\to 2$, $K_4 \\to 3$), the surprising break at dimension 4 (the minimum is $K_{3,3}$, not $K_5$), House's (2013) resolution, and Chaffee-Noble's (2016) dimension-5 extension.",
+    "mathContext": "$\\dim(G) = \\min\\{d : G \\text{ embeds in } \\mathbb{R}^d \\text{ with all edges unit length}\\}$. The problem: find $e(4) = \\min\\{|E(G)| : \\dim(G) = 4\\}$. Answer: $e(4) = 9$, achieved uniquely by $K_{3,3}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph dimension",
+      "unit-distance embedding",
+      "bipartite graphs",
+      "distance geometry"
+    ],
+    "prerequisites": [
+      "graph theory (vertices, edges, bipartite graphs)",
+      "Euclidean distance in $\\mathbb{R}^n$"
+    ]
+  },
+  {
+    "id": "ann-1007-embedding",
+    "proofId": "erdos-1007",
+    "range": {
+      "startLine": 49,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Unit Distance Embedding and Graph Dimension",
+    "content": "A unit distance embedding places vertices in $\\mathbb{R}^n$ so every edge has Euclidean length exactly 1. The `UnitDistanceEmbedding` structure captures the embedding function `embed : V → Fin n → ℝ` and the constraint `unit_edges` that $\\sqrt{\\sum_i (f(u)_i - f(v)_i)^2} = 1$ for all adjacent pairs.\n\nThe axiom `hasUnitEmbedding_exists` guarantees every finite graph admits a unit embedding in some dimension — in principle, $n$ vertices can always be embedded in $\\mathbb{R}^n$ using scaled standard basis vectors. This enables `graphDimension` to be defined as `Nat.find (hasUnitEmbedding_exists V adj)`, the minimum $d$ with a unit embedding.",
+    "mathContext": "$f: V \\to \\mathbb{R}^n$ with $\\|f(u) - f(v)\\|_2 = 1$ for all edges $(u,v)$. The axiom: $\\forall V\\,[\\text{Fintype}\\,V],\\, \\forall \\text{adj},\\, \\exists n,\\, \\text{hasUnitEmbedding}\\,V\\,\\text{adj}\\,n$. Then $\\dim(G) = \\text{Nat.find}(\\ldots)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclidean distance",
+      "unit-distance graph",
+      "Nat.find",
+      "rigidity theory"
+    ],
+    "prerequisites": [
+      "Euclidean geometry in $\\mathbb{R}^n$",
+      "Lean 4 structures and axioms",
+      "real-valued square roots"
+    ]
+  },
+  {
+    "id": "ann-1007-bipartite",
+    "proofId": "erdos-1007",
+    "range": {
+      "startLine": 75,
+      "endLine": 87
+    },
+    "type": "definition",
+    "title": "Complete Bipartite Graphs",
+    "content": "$K_{m,n}$ is the complete bipartite graph: $m$ vertices on one side, $n$ on the other, with all $m \\cdot n$ cross-edges present. The formalization represents the vertex set as `Fin m ⊕ Fin n` (disjoint union), with adjacency holding between different parts (`Sum.inl` and `Sum.inr`) and never within a part.\n\n$K_{3,3}$ has $3 + 3 = 6$ vertices and $3 \\times 3 = 9$ edges. The tautological theorem `completeBipartite_edge_count` states $m \\cdot n = m \\cdot n$ — a placeholder for the more substantive fact that the formalized adjacency relation produces exactly $mn$ edges.",
+    "mathContext": "$K_{m,n}$ on $\\text{Fin}\\,m \\oplus \\text{Fin}\\,n$: $\\text{adj}(\\text{inl}\\,i, \\text{inr}\\,j) = \\text{True}$, $\\text{adj}(\\text{inl}\\,i, \\text{inl}\\,j) = \\text{False}$. $|E(K_{3,3})| = 9$, $|V(K_{3,3})| = 6$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bipartite graph",
+      "complete bipartite graph",
+      "Kuratowski's theorem",
+      "Sum type"
+    ],
+    "prerequisites": [
+      "graph theory (bipartite graphs)",
+      "Lean 4 sum types (⊕)"
+    ]
+  },
+  {
+    "id": "ann-1007-known",
+    "proofId": "erdos-1007",
+    "range": {
+      "startLine": 89,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Known Dimensions",
+    "content": "The complete graphs form a dimension ladder via regular simplex geometry: $K_3$ (equilateral triangle) embeds in $\\mathbb{R}^2$, $K_4$ (regular tetrahedron) in $\\mathbb{R}^3$. In general, the regular $n$-simplex has $n+1$ vertices at unit distance in $\\mathbb{R}^n$, so $\\dim(K_{n+1}) = n$.\n\n$K_{3,3}$ breaks this simplex pattern: it is not a complete graph, yet its dimension (4) exceeds what a 6-vertex complete graph $K_6$ would naively suggest ($\\dim(K_6) = 5$). The bipartite structure creates different distance constraints than the complete structure.",
+    "mathContext": "$\\dim(K_3) = 2$, $\\dim(K_4) = 3$, $\\dim(K_{n+1}) = n$ via regular $n$-simplex. $\\dim(K_{3,3}) = 4$ despite $|V(K_{3,3})| = 6$ — the bipartite structure reduces edges ($9 < \\binom{6}{2} = 15$) while maintaining high dimension.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "regular simplex",
+      "complete graph",
+      "dimension ladder",
+      "distance geometry"
+    ],
+    "prerequisites": [
+      "Euclidean geometry (simplices)",
+      "graph theory (complete graphs)"
+    ]
+  },
+  {
+    "id": "ann-1007-main",
+    "proofId": "erdos-1007",
+    "range": {
+      "startLine": 102,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Main Result: 9 Edges Minimum (House 2013)",
+    "content": "House (2013) proved two results, both axiomatized here:\n\n1. **Lower bound** (`min_edges_dimension_4`): Every graph with $\\dim(G) = 4$ has $|E(G)| \\geq 9$. The proof shows that graphs with 8 or fewer edges have enough degrees of freedom to admit unit-distance embeddings in $\\mathbb{R}^3$.\n\n2. **Uniqueness** (`k33_unique_minimum`): If $\\dim(G) = 4$ and $|E(G)| = 9$, then $G \\cong K_{3,3}$. This is formalized as the existence of an equivalence $f : V \\simeq \\text{Fin}\\,3 \\oplus \\text{Fin}\\,3$ such that $\\text{adj}(u,v) \\iff \\text{completeBipartiteAdj}(f(u), f(v))$.\n\nThe proved theorem `k33_has_9_edges : 3 * 3 = 9` (by `norm_num`) verifies the edge count.",
+    "mathContext": "Axiom 1: $\\dim(G) = 4 \\Rightarrow |\\{(u,v) : \\text{adj}(u,v) \\land u < v\\}| \\geq 9$. Axiom 2: $\\dim(G) = 4 \\land |E(G)| = 9 \\Rightarrow \\exists f : V \\simeq \\text{Fin}\\,3 \\oplus \\text{Fin}\\,3,\\, \\forall u\\,v,\\, \\text{adj}(u,v) \\iff \\text{completeBipartiteAdj}(f(u), f(v))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal graph theory",
+      "graph isomorphism",
+      "uniqueness results",
+      "unit-distance rigidity"
+    ],
+    "prerequisites": [
+      "graph theory (edge counting, isomorphism)",
+      "Lean 4 equivalences (≃)"
+    ]
+  },
+  {
+    "id": "ann-1007-dim5",
+    "proofId": "erdos-1007",
+    "range": {
+      "startLine": 123,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Dimension 5 Extension (Chaffee-Noble 2016)",
+    "content": "Chaffee and Noble (2016) extended the analysis to dimension 5: the minimum is 15 edges, achieved by both $K_6$ and the tripartite graph $K_{1,3,3}$. The axiom `min_edges_dimension_5` states the lower bound; the proved theorem `k6_has_15_edges : Nat.choose 6 2 = 15` (via `native_decide`) verifies the edge count of $K_6$.\n\nUnlike dimension 4, the minimizer at dimension 5 is not unique — two non-isomorphic graphs achieve it. This suggests the classification of minimum-edge $d$-dimensional graphs becomes increasingly complex with $d$.",
+    "mathContext": "Axiom: $\\dim(G) = 5 \\Rightarrow |E(G)| \\geq 15$. $|E(K_6)| = \\binom{6}{2} = 15$. $|E(K_{1,3,3})| = 1 \\cdot 3 + 1 \\cdot 3 + 3 \\cdot 3 = 15$. Both $K_6$ and $K_{1,3,3}$ achieve $\\dim = 5$ with 15 edges.",
+    "significance": "key",
+    "relatedConcepts": [
+      "dimension 5",
+      "complete graph K₆",
+      "tripartite graph",
+      "native_decide tactic"
+    ],
+    "prerequisites": [
+      "graph theory (multipartite graphs)",
+      "Nat.choose"
+    ]
+  }
+]

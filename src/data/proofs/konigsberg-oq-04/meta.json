@@ -1,0 +1,127 @@
+{
+  "id": "konigsberg-oq-04",
+  "title": "Counting Eulerian Circuits: The BEST Theorem",
+  "slug": "konigsberg-oq-04",
+  "description": "Formalizes the BEST theorem framework for counting directed Eulerian circuits, demonstrates the decision-vs-counting complexity gap, and verifies the formula on concrete examples (C3 and bidirectional K3).",
+  "meta": {
+    "author": "de Bruijn, van Aardenne-Ehrenfest, Smith, Tutte (1951)",
+    "date": "1951",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/KonigsbergOQ04.lean",
+    "tags": [
+      "graph-theory",
+      "euler-circuits",
+      "counting-complexity",
+      "best-theorem",
+      "arborescences"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-03-30",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: best_theorem (the BEST theorem counting directed Eulerian circuits via Matrix Tree Theorem; axiomatized pending Mathlib formalization of the arborescence-bijection proof).",
+    "lineCount": 338,
+    "theoremCount": 9,
+    "definitionCount": 11
+  },
+  "overview": {
+    "historicalContext": "The BEST theorem (de Bruijn, van Aardenne-Ehrenfest, Smith, Tutte, 1951) gives an exact formula for counting directed Eulerian circuits in a connected balanced digraph. The acronym honors the four collaborators: de Bruijn (B), van Aardenne-Ehrenfest (E — Tatyana van Aardenne-Ehrenfest, who independently arrived at the result), Smith (S — Cedric Smith, graph theorist), and Tutte (T — Sir William Tutte, best known for the Four Color Theorem and Tutte's theorem on perfect matchings). The theorem combines two deep results: Kirchhoff's Matrix Tree Theorem (1847) for counting arborescences via determinants of the directed Laplacian, and a bijective argument relating Eulerian circuits to pairs of (arborescence, permutation of non-last arcs).\n\nAn unexpected and beautiful application of the BEST theorem is the exact counting of de Bruijn sequences. A de Bruijn sequence of order $n$ is a cyclic binary string of length $2^n$ in which every $n$-bit string appears as a substring exactly once. In 1946, de Bruijn proved that the number of distinct binary de Bruijn sequences of order $n$ is $2^{2^{n-1}-n}$. This formula follows directly from the BEST theorem applied to the de Bruijn digraph $D_n$: vertices are $(n-1)$-bit strings, arcs are $n$-bit strings, and each Eulerian circuit in $D_n$ corresponds bijectively to a distinct de Bruijn sequence. The BEST theorem thus converts the combinatorial problem of sequence counting into a matrix determinant computation.\n\nThe theorem is remarkable for revealing a polynomial-time algorithm for directed Eulerian circuit counting, while the undirected analog was later shown to be #P-complete by Brightwell and Winkler (2005) — one of the sharpest known gaps between directed and undirected graph algorithms.",
+    "problemStatement": "Formalize the BEST theorem framework: define Eulerian circuits and arborescences for directed graphs, state the counting formula $\\text{ec}(D,w) = d^+(w) \\cdot t_w \\cdot \\prod_v (d^+(v)-1)!$, and verify it on concrete examples.",
+    "proofStrategy": "The formalization axiomatizes the BEST theorem (whose full proof requires the Matrix Tree Theorem) and builds around it: (1) define Eulerian circuits as closed walks using every arc exactly once; (2) define arborescences via a parent function with reachability to root; (3) verify the formula on $C_3$ (expected count 1) and bidirectional $K_3$ (expected count 6); (4) formalize the complexity gap between decision (polynomial via balance check) and counting.",
+    "keyInsights": [
+      "The BEST theorem factors Eulerian circuit count into three independent terms: d+(w) choices for the first arc, t_w arborescences for the last-exit structure, and ∏(d+(v)-1)! local permutations — a beautiful separation of global and local structure",
+      "Arborescences are elegantly encoded as parent functions π: V → V with π(w) = w, valid arcs, and reachability — avoiding explicit tree data structures entirely",
+      "The cycle exclusion argument for K3 arborescences is the most interesting proof: if π(B) = C and π(C) = B, iterating π from B oscillates between {B,C} forever, never reaching root A",
+      "The decision-vs-counting complexity gap is striking: deciding existence of Eulerian circuits is O(|V|), directed counting is polynomial (via BEST + MTT), but undirected counting is #P-complete (Brightwell-Winkler 2005)",
+      "The concrete verifications on C3 (ec = 1) and bidirectional K3 (ec = 6) are dispatched by native_decide, demonstrating Lean's ability to verify combinatorial computations"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Eulerian Circuits and Arborescences",
+      "startLine": 30,
+      "endLine": 67,
+      "summary": "Defines Eulerian circuits as closed walks using every arc exactly once, and arborescences as parent functions with root reachability."
+    },
+    {
+      "id": "best-theorem",
+      "title": "The BEST Theorem (Axiomatized)",
+      "startLine": 69,
+      "endLine": 91,
+      "summary": "States the BEST theorem: ec(D,w) = d+(w) · t_w · ∏(d+(v)-1)!, axiomatized due to dependence on the Matrix Tree Theorem."
+    },
+    {
+      "id": "c3-verification",
+      "title": "Verification on C3 (Directed Triangle)",
+      "startLine": 93,
+      "endLine": 135,
+      "summary": "Constructs the unique Eulerian circuit A→B→C→A, exhibits the unique arborescence, and verifies BEST gives ec = 1."
+    },
+    {
+      "id": "k3-verification",
+      "title": "Verification on Bidirectional K3",
+      "startLine": 137,
+      "endLine": 262,
+      "summary": "Defines complete bidirectional K3, enumerates all 3 arborescences (with cycle exclusion proof), and verifies BEST gives ec = 6."
+    },
+    {
+      "id": "complexity-gap",
+      "title": "Decision vs. Counting Complexity",
+      "startLine": 264,
+      "endLine": 338,
+      "summary": "Formalizes decidability of Eulerian circuit existence via balance checking, and documents the directed/undirected counting complexity gap."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the BEST theorem framework in Lean 4 for counting directed Eulerian circuits. The theorem is axiomatized (requiring the Matrix Tree Theorem for a full proof) and verified on two concrete examples: $C_3$ (unique circuit) and bidirectional $K_3$ (6 circuits). The cycle exclusion argument for arborescence completeness on $K_3$ is a notable proof. The decision-vs-counting complexity gap is documented.",
+    "implications": "The BEST theorem demonstrates that directed Eulerian circuit counting is polynomial, contrasting with the #P-completeness of undirected counting. This is one of the sharpest known complexity separations between directed and undirected graph problems. A full formalization would require the Matrix Tree Theorem, connecting to Kirchhoff's work and algebraic graph theory.",
+    "openQuestions": [
+      "Can the Matrix Tree Theorem be formalized in Lean 4 using Mathlib's linear algebra and determinant API, enabling a proof of the BEST theorem?",
+      "Can the arborescence enumeration be automated for arbitrary graphs using decidable instance search?",
+      "Can the #P-completeness of undirected Eulerian circuit counting be stated formally, requiring a formalization of Turing machines and counting complexity?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "konigsberg",
+      "relationship": "extends",
+      "description": "Root: Königsberg bridge problem and Euler's theorem on existence of Eulerian paths — the balance condition formalized there is exactly the hypothesis that BEST requires"
+    },
+    {
+      "targetId": "konigsberg-oq-01",
+      "relationship": "complementary",
+      "description": "Proves Eulerian circuit existence and non-existence for concrete graph families ($C_4$, $C_5$, $K_4$). The balance-check decision procedure formalized in this entry's complexity section directly applies to those concrete graphs — but BEST goes further and counts how many circuits exist, not just whether they exist"
+    },
+    {
+      "targetId": "konigsberg-oq-02",
+      "relationship": "complementary",
+      "description": "Proves the directed Euler theorem: a digraph has an Eulerian circuit iff every vertex has in-degree = out-degree (balance), and an Eulerian path iff exactly one vertex has out-degree minus in-degree = 1. This is the existence criterion that BEST's hypothesis requires — and which the complexity section of this entry formalizes as an $O(|V|)$ decidable check"
+    },
+    {
+      "targetId": "konigsberg-oq-02-oq-01",
+      "relationship": "complementary",
+      "description": "Hierholzer's algorithm: given existence is guaranteed by the balance condition, Hierholzer's algorithm constructs an Eulerian circuit in linear time. This entry counts circuits; Hierholzer constructs one. Together they address the full algorithmic picture: existence (konigsberg-oq-02), construction (konigsberg-oq-02-oq-01), counting (this entry)"
+    },
+    {
+      "targetId": "konigsberg-oq-03",
+      "relationship": "complementary",
+      "description": "Generalizes Euler circuits to $r$-uniform hypergraphs (NP-complete for $r \\geq 3$) and infinite graphs (Erdős-Grünwald-Weiszfeld). The BEST theorem applies only to directed finite balanced graphs — these extensions explore what happens when those constraints are relaxed"
+    },
+    {
+      "targetId": "burnside-counting",
+      "relationship": "related",
+      "description": "Burnside's orbit-counting lemma (number of orbits = average fixed points) is another exact combinatorial counting formula. Both BEST and Burnside convert counting problems into algebraic computations: BEST uses the Matrix Tree Theorem determinant, Burnside uses group-action fixed-point sums. Both reveal surprising polynomial-time structure in counting problems that seem exponential at first glance"
+    }
+  ],
+  "leanFile": {
+    "namespace": "KonigsbergOQ04",
+    "lineCount": 338,
+    "axiomCount": 1,
+    "theoremCount": 9,
+    "definitionCount": 11,
+    "path": "Proofs/KonigsbergOQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

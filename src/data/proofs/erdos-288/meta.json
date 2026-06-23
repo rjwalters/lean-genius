@@ -1,0 +1,206 @@
+{
+  "id": "erdos-288",
+  "title": "Erdős Problem #288: Integer Harmonic Sums Over Interval Pairs",
+  "slug": "erdos-288",
+  "description": "Are there only finitely many pairs of intervals (I₁, I₂) such that Σ_{I₁} 1/n + Σ_{I₂} 1/n is a positive integer? Example: 1/3+1/4+1/5+1/6+1/20 = 1. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/288",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos288Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "harmonic-sums",
+      "unit-fractions",
+      "intervals",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 288,
+    "erdosUrl": "https://erdosproblems.com/288",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-02-06",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets (used for harmonic interval sums)",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Set.Finite",
+        "description": "Finiteness predicate on sets (used for the main conjecture)",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "harmonicInterval definition over ℚ using Finset.sum",
+      "IntervalPair type and pairSum, IsIntegerSum predicates",
+      "integerSumPairs set definition and ErdosConjecture288 as Set.Finite",
+      "Singleton and k-interval variant definitions",
+      "erdos_288_statement proved by simp",
+      "erdos_288_summary combining statement and conjecture",
+      "Proved harmonicInterval_singleton via Finset.Icc_self and dif_pos",
+      "Proved harmonicInterval_pos via Finset.sum_pos with inv_pos",
+      "Proved harmonicInterval_from_one via Finset.sum_congr with dif_pos",
+      "Proved harmonicInterval_ge_inv_first via Finset.single_le_sum (lower bound H(a,b) >= 1/a)",
+      "Proved example_sum_one by reducing Finset.Icc and norm_num",
+      "Proved example_sum_one_v2: H(2,3) + H(6,6) = 1 (second verified example)"
+    ],
+    "axiomCount": 1,
+    "prerequisites": [
+      "Rational number arithmetic (ℚ)",
+      "Harmonic series and partial sums",
+      "Egyptian fraction representations",
+      "Set finiteness (Set.Finite in Lean 4)",
+      "Finset.sum over intervals"
+    ],
+    "lineCount": 215,
+    "assumptions": "1 axiom (erdos_288: the main open conjecture, load-bearing), 0 sorries. Removed 2 unused variant conjectures.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #288, from the 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' by Erdős and Graham [ErGr80], concerns a striking number-theoretic finiteness question. The problem belongs to the rich tradition of Egyptian fraction problems going back to ancient Egypt (the Rhind Papyrus, c. 1650 BCE), where fractions were represented as sums of distinct unit fractions.\n\nThe key example $1/3 + 1/4 + 1/5 + 1/6 + 1/20 = 1$ shows that the harmonic sums $H(3,6) + H(20,20) = 1$ achieve an integer value using two intervals $[3,6]$ and $[20,20]$. Erdős asked whether such decompositions are essentially finite in number.\n\nThe problem is open even in the restricted case where the second interval is a singleton (i.e., $|I_2| = 1$), and Erdős conjectured it extends to any $k$ intervals. It connects to the Erdős-Graham conjecture (proved by Croot 2003) that for any partition of $\\{2, 3, \\ldots\\}$ into finitely many sets, at least one set contains a subset whose reciprocals sum to 1.",
+    "problemStatement": "Is it true that there are only finitely many pairs of intervals I₁, I₂ such that Σ_{n₁ ∈ I₁} 1/n₁ + Σ_{n₂ ∈ I₂} 1/n₂ is a positive integer? OPEN.",
+    "text": "Are there only finitely many pairs of intervals (I₁, I₂) such that Σ_{I₁} 1/n + Σ_{I₂} 1/n is a positive integer? Example: 1/3+1/4+1/5+1/6+1/20 = 1. OPEN.",
+    "proofStrategy": "The formalization defines harmonicInterval over ℚ, IntervalPair, the integer sum condition, and the main conjecture as Set.Finite. Variants for singleton I₂ and k-interval generalization are axiomatized. The equivalence theorem is proved by simp.",
+    "keyInsights": [
+      "Harmonic sums over intervals are rational numbers; the question is when they sum to integers",
+      "The known example 1/3+1/4+1/5+1/6+1/20 = 1 uses intervals [3,6] and [20,20]",
+      "The problem is open even when I₂ has a single element",
+      "A natural generalization asks about k intervals for any k",
+      "Connected to Egyptian fraction representations and unit fractions"
+    ],
+    "prerequisites": [
+      "Rational number arithmetic (ℚ)",
+      "Harmonic series and partial sums",
+      "Egyptian fraction representations",
+      "Set finiteness (Set.Finite in Lean 4)",
+      "Finset.sum over intervals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "harmonic-sums",
+      "title": "Part I: Harmonic Sums Over Intervals",
+      "startLine": 30,
+      "endLine": 48,
+      "summary": "Defines harmonicInterval(a,b) as Σ 1/n over ℚ using Finset.Icc, IntervalPair type, pairSum (combined harmonic sum), and IsIntegerSum predicate."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part II: The Main Conjecture",
+      "startLine": 49,
+      "endLine": 65,
+      "summary": "Defines integerSumPairs set and ErdosConjecture288 as Set.Finite integerSumPairs. The conjecture is axiomatized via erdos_288."
+    },
+    {
+      "id": "example",
+      "title": "Part III: The Known Examples",
+      "startLine": 66,
+      "endLine": 94,
+      "summary": "Two verified examples: example_sum_one (H(3,6)+H(20,20)=1) and example_sum_one_v2 (H(2,3)+H(6,6)=1)."
+    },
+    {
+      "id": "singleton-variant",
+      "title": "Part IV: Variant — Single Element I₂",
+      "startLine": 96,
+      "endLine": 107,
+      "summary": "Defines singletonPairs (restricted to |I₂|=1). Axiom erdos_288_singleton: the finiteness conjecture remains open even in this restricted case."
+    },
+    {
+      "id": "k-intervals",
+      "title": "Part V: Variant — k Intervals",
+      "startLine": 109,
+      "endLine": 127,
+      "summary": "Defines kIntervalSum (Σ over Fin k → ℕ+ × ℕ+) and kIntervalPairs. Axiom erdos_288_k_intervals: generalization conjectured for all k."
+    },
+    {
+      "id": "properties",
+      "title": "Part VI: Properties of Harmonic Sums",
+      "startLine": 129,
+      "endLine": 180,
+      "summary": "Four proved properties: harmonicInterval_singleton (H(a,a)=1/a), harmonicInterval_pos (positivity), harmonicInterval_from_one (harmonic number form), harmonicInterval_ge_inv_first (lower bound H(a,b)>=1/a)."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary",
+      "startLine": 182,
+      "endLine": 215,
+      "summary": "erdos_288_statement proved by simp (unfolds to Set.Finite). erdos_288_summary packages the equivalence. Problem remains OPEN."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #288 asks whether only finitely many interval pairs have integer harmonic sums. The problem is open even for singleton second intervals, and the k-interval generalization is also conjectured.",
+    "implications": "Resolution would clarify the arithmetic of harmonic sums and connect to Egyptian fraction theory and Diophantine equations.",
+    "openQuestions": [
+      "Are there only finitely many interval pairs with integer harmonic sum?",
+      "Is it true even when |I₂| = 1?",
+      "Does the finiteness hold for k intervals for any k?",
+      "What are all solutions beyond the known example?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-285",
+      "relationship": "related",
+      "description": "Both concern Egyptian fraction decompositions: #285 studies asymptotics of Egyptian fraction representations, #288 asks about finiteness of interval-based decompositions"
+    },
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Both involve unit fractions and intervals: #286 concerns unit fractions in short intervals, #288 asks when harmonic sums over interval pairs yield integers"
+    },
+    {
+      "targetId": "erdos-289",
+      "relationship": "related",
+      "description": "Closely related problem about unit fractions from disjoint intervals — same family of Erdős-Graham number theory questions about structured unit fraction sums"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "uses",
+      "description": "The divergence of the harmonic series is foundational context: harmonic partial sums H(1,n) grow without bound, making the finiteness question for integer values nontrivial"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.PNat.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Order.Interval.Finset.Nat",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos288",
+    "lineCount": 215,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos288Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "[ErGr80] where Problem 288 appears; includes the example H(3,6) + H(20,20) = 1"
+    },
+    {
+      "authors": "Guy, Richard K.",
+      "title": "Unsolved Problems in Number Theory",
+      "year": "2004",
+      "venue": "Springer, 3rd edition",
+      "note": "Section D11 discusses Egyptian fractions and integer harmonic sum problems"
+    }
+  ],
+  "sorries": 0
+}

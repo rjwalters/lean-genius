@@ -1,0 +1,224 @@
+{
+  "id": "picks-theorem-oq-01-oq-01-oq-01",
+  "title": "Pick's Theorem via Primitive Triangulation + GCD Boundary Count (S4-prep: Translation Invariance)",
+  "slug": "picks-theorem-oq-01-oq-01-oq-01",
+  "description": "S2 OBSERVE for the open question of whether Pick's theorem (Area = I + B/2 - 1) can be derived in Lean by combining (a) the primitive-triangulation result of PicksTheoremOQ01OQ01 (every lattice triangle decomposes into exactly |det| primitive sub-triangles) and (b) the GCD boundary-count formula of PicksTheoremOQ02 (the segment from (0,0) to (a,b) has gcd(a,b)+1 lattice points). S1 scaffolded the bridge data structures + algebraic identity + Pick-formula verification on three concrete triangles. S2 adds a decidable definition of the *real* strictly-interior lattice-point count (via cross-product orientation test on a bounding-box Finset) and verifies the base-case agreement realInteriorCount = pickInterior on the unit, 2-by-1, and 3-by-3 triangles — closing the base case of the future Pick induction. S4-prep adds a full translation-invariance section: a `translate` operation on triangles together with lemmas proving every Pick quantity (det, twiceArea, edgeGCD, boundaryCount, pickInterior, pickInteriorNum) is unchanged by a lattice shift, that the StrictInterior orientation predicate transports under back-shift, and — the substantive result — that realInteriorCount is translation-invariant via an explicit Finset bijection (realInterior_translate / realInteriorCount_translate). The capstone pick_agrees_translate_iff shows Pick's agreement is itself translation-invariant, so it suffices to prove Pick's theorem at a single canonical anchor position. Unlike the S2 native_decide agreements (three concrete triangles), these hold for every lattice triangle and every shift.",
+  "meta": {
+    "author": "Lean Genius Research (researcher-4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pick%27s_theorem",
+    "date": "2026-05-12",
+    "status": "axiomatized",
+    "badge": "axiom",
+    "proofRepoPath": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
+    "axiomCount": 1,
+    "sorries": 0,
+    "theoremCount": 63,
+    "definitionCount": 27,
+    "lineCount": 1249,
+    "tags": [
+      "number-theory",
+      "geometry",
+      "lattice",
+      "picks-theorem",
+      "triangulation",
+      "gcd",
+      "determinant",
+      "cross-product",
+      "decidable-geometry",
+      "translation-invariance",
+      "research-scaffold"
+    ],
+    "assumptions": "0 literal `axiom` declarations and 0 sorries. The credited base-case agreement theorems (unitTriangle_pick_agrees, triangle_2_1_pick_agrees, triangle_3_3_pick_agrees, plus the concrete twiceArea/boundaryCount/realInteriorCount facts) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this entry is therefore `axiomatized` with meta.axiomCount 1 (`Lean.ofReduceBool`). leanFile.axiomCount stays 0 (it counts literal `axiom` declarations only). The ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted. The general primitive-triangle and translation-invariance results in this file do not rely on native_decide.",
+    "imports": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Data.Int.Interval",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Prod",
+      "Mathlib.Tactic"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Pick's theorem (Georg Alexander Pick, 1899) computes the area of a lattice polygon by counting interior and boundary lattice points: A = I + B/2 - 1. The classical proof has two ingredients. (1) Primitive triangulation: every lattice triangle decomposes into |det T| sub-triangles, each of area 1/2. (2) GCD boundary count: the lattice points on the segment from (x1,y1) to (x2,y2) number gcd(|x2-x1|, |y2-y1|) + 1. Both ingredients are independently verified in this project (PicksTheoremOQ01OQ01.lean and PicksTheoremOQ02.lean, respectively). The open question asked whether they compose into a Lean-formalized Pick's theorem. The answer is yes in principle; this S1 OBSERVE scaffolds the bridge.",
+    "problemStatement": "Bridge data: for a lattice triangle T = ⟨v1, v2, v3⟩ with vi : ℤ², define twiceArea(T) = |det(T)| where det is the 2D cross product (v2 - v1) × (v3 - v1); boundaryCount(T) = gcd(|Δx_01|, |Δy_01|) + gcd(|Δx_12|, |Δy_12|) + gcd(|Δx_20|, |Δy_20|) summed over the three edges; pickInterior(T) = twiceArea/2 - boundaryCount/2 + 1 (Pick's formula for I). Goal: prove pickInterior T agrees with the true number of interior lattice points of T, by induction on the primitive-triangulation count |det T|.",
+    "proofStrategy": "S1 OBSERVE establishes the data-level bridge: mirror the LatticeTriangle structure, define twiceArea / edgeGCD / boundaryCount / pickInterior / pickInteriorNum, prove the cleared-denominator identity (Section III), and verify the formula on three small examples (unit triangle (I=0,B=3,2A=1), 2-by-1 triangle (I=0,B=4,2A=2), 3-by-3 triangle (I=1,B=9,2A=9)). The remaining work for future sessions: (S2) define the true interior-point count; (S3) prove pickInterior agrees with it on primitive triangles (base case); (S4) prove the additivity lemma for primitive sub-triangles sharing an edge; (S5) close the induction via PicksTheoremOQ01OQ01.exists_primitive_triangulation.",
+    "keyInsights": [
+      "Both ingredients are already verified in the project: PicksTheoremOQ01OQ01 (primitive triangulation, 11 theorems, 0 axioms) and PicksTheoremOQ02 (GCD boundary count, 13 theorems, 0 axioms). The remaining work is purely compositional — wire them together.",
+      "Pick's formula has two natural forms. The rational form pickInterior = (twiceArea - boundaryCount)/2 + 1 is cleanest as a definition but introduces division by 2. The cleared form pickInteriorNum = twiceArea - boundaryCount + 2 stays in ℤ and is much easier for inductive proofs. The identity 2·pickInterior = pickInteriorNum is the bridge between them.",
+      "Boundary count via GCD has a subtle endpoint-sharing accounting: each edge has gcd(|Δx|, |Δy|) + 1 lattice points, but a triangle's three vertices are each shared between two edges. So B = Σ (gcd + 1) - 3 = Σ gcd. This is why boundaryCount is defined as the bare sum of three GCDs (no +1, no -3).",
+      "The bridge requires translation invariance of the GCD count: PicksTheoremOQ02 only handles segments from (0,0) to (a,b) with a, b : ℕ, but a triangle's edges can be in any direction. The reduction to the canonical form uses translation (subtract endpoints) and reflection (take absolute values of differences), both of which preserve GCD.",
+      "**S2's same-sign cross-product test** is the standard discrete point-in-triangle predicate: a point p is strictly interior iff all three cyclic cross products cross2(v_i, v_{i+1}, p) share the same strict sign. Two disjuncts (all > 0, all < 0) handle both orientations of T uniformly — essential because the LatticeTriangle structure carries no canonical orientation. Decidability follows immediately from decidability of integer inequalities, which is what makes `native_decide` viable for the agreement theorems.",
+      "**Bounding-box reduction makes the interior-count finite.** A lattice triangle has only finitely many interior lattice points, but the obvious definition (intersect with ℤ²) gives an infinite ambient set. Filtering `Finset.Icc T.xmin T.xmax ×ˢ Finset.Icc T.ymin T.ymax` reduces this to a small concrete Finset (e.g. 16 points for the 3-by-3 test triangle), making `realInteriorCount` not only well-defined but kernel-evaluable — which is exactly what `native_decide` exploits to discharge the S2 base-case agreement theorems in milliseconds.",
+      "The remaining mathematical content is the additivity step: when two primitive triangles share an edge, the interior count of the union equals the sum minus the shared-edge interior count. This is where the GCD count interacts non-trivially with the triangulation structure."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 102,
+      "summary": "Imports Mathlib.Data.Int.GCD, Mathlib.Data.Nat.GCD.Basic, Mathlib.Tactic. The module docstring lays out the bridge from PicksTheoremOQ01OQ01 (primitive triangulation) + PicksTheoremOQ02 (GCD boundary count) to Pick's theorem, and explains the S1 OBSERVE scope (bridge data + algebraic identity + three concrete examples)."
+    },
+    {
+      "id": "mirror-definitions",
+      "title": "Mirror Definitions (LatticeTriangle, det)",
+      "startLine": 103,
+      "endLine": 125,
+      "summary": "Re-declares LatticeTriangle (structure with v1, v2, v3 : ℤ²) and LatticeTriangle.det (the 2D cross product = twice the signed area) in this namespace. Adds LatticeTriangle.NonDegenerate (det ≠ 0). Keeping the file self-contained avoids cross-file import cycles."
+    },
+    {
+      "id": "bridge-data",
+      "title": "Bridge Data Structures",
+      "startLine": 126,
+      "endLine": 165,
+      "summary": "Defines twiceArea (= |det T|), edgeDelta i (the pair (|Δx_i|, |Δy_i|) for edge i), edgeGCD i (the GCD), boundaryCount (sum over three edges), pickInterior (Pick's formula as a rational), and pickInteriorNum (cleared-denominator integer form). Edges indexed 0:v1→v2, 1:v2→v3, 2:v3→v1."
+    },
+    {
+      "id": "algebraic-identity",
+      "title": "Algebraic Bridge Identity",
+      "startLine": 166,
+      "endLine": 196,
+      "summary": "Proves two_mul_pickInterior (2 · pickInterior T = pickInteriorNum T, the bridge between rational and integer forms) and pick_formula_cleared (twiceArea = 2·pickInterior + boundaryCount - 2, the cleared form of Pick's formula). Both proofs use push_cast + ring."
+    },
+    {
+      "id": "test-triangle-1",
+      "title": "Test Triangle 1: Unit Right Triangle",
+      "startLine": 197,
+      "endLine": 220,
+      "summary": "Verifies unitTriangle = ⟨(0,0), (1,0), (0,1)⟩ has twiceArea = 1, boundaryCount = 3, pickInterior = 0, pickInteriorNum = 0. All via native_decide + norm_num. Pick's formula 0 + 3/2 - 1 = 1/2 = Area ✓."
+    },
+    {
+      "id": "test-triangle-2",
+      "title": "Test Triangle 2: 2-by-1 Right Triangle",
+      "startLine": 221,
+      "endLine": 240,
+      "summary": "Verifies triangle_2_1 = ⟨(0,0), (2,0), (0,1)⟩ has twiceArea = 2, boundaryCount = 4, pickInterior = 0. Pick's formula 0 + 4/2 - 1 = 1 = Area ✓. (Interior point count is 0 — the (1,0) midpoint sits on the boundary, not the interior.)"
+    },
+    {
+      "id": "test-triangle-3",
+      "title": "Test Triangle 3: 3-by-3 Right Triangle",
+      "startLine": 241,
+      "endLine": 263,
+      "summary": "Verifies triangle_3_3 = ⟨(0,0), (3,0), (0,3)⟩ has twiceArea = 9, boundaryCount = 9, pickInterior = 1. Pick's formula 1 + 9/2 - 1 = 9/2 = Area ✓. (The unique interior lattice point is (1,1); the boundary points are (0,0), (1,0), (2,0), (3,0), (0,1), (0,2), (0,3), (2,1), (1,2) — total 9.)"
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Cleared-Form Sanity Checks",
+      "startLine": 264,
+      "endLine": 294,
+      "summary": "Three corollaries unitTriangle_pick_cleared / triangle_2_1_pick_cleared / triangle_3_3_pick_cleared apply pick_formula_cleared to each test triangle, plus three pickInterior_nonneg lemmas confirm the formula does return a non-negative value (i.e., a valid interior-point count) for each case."
+    },
+    {
+      "id": "real-interior-defs",
+      "title": "S2 §VI: Real Strictly-Interior Count (decidable cross-product test + bounding-box Finset)",
+      "startLine": 296,
+      "endLine": 350,
+      "summary": "Defines `cross2 a b p` (the 2D cross product of (b-a) and (p-a)), `LatticeTriangle.StrictInterior` (same-sign cross-product test with both orientations as a ∨), and the bounding-box machinery (`xmin`/`xmax`/`ymin`/`ymax`/`boundingBox` as `Finset.Icc × Finset.Icc`). The `Decidable` instance for StrictInterior is derived by `infer_instance` from decidability of integer inequalities. `realInterior = boundingBox.filter StrictInterior` extracts the strictly-interior lattice points as a Finset; `realInteriorCount = realInterior.card` is the geometric quantity Pick's formula targets.",
+      "mathContext": "$\\mathrm{cross2}(a, b, p) = (b_1 - a_1)(p_2 - a_2) - (p_1 - a_1)(b_2 - a_2)$. $\\mathrm{StrictInterior}(T, p) \\iff$ all three cyclic cross products $\\mathrm{cross2}(v_i, v_{i+1}, p)$ share the same strict sign. $\\mathrm{realInteriorCount}(T) = |\\{p \\in \\mathrm{Icc}(\\min, \\max)^2 : \\mathrm{StrictInterior}(T, p)\\}|$."
+    },
+    {
+      "id": "base-case-agreement",
+      "title": "S2 §VII: Base-Case Agreement realInteriorCount = pickInterior on test triangles",
+      "startLine": 352,
+      "endLine": 425,
+      "summary": "Three agreement theorems closing the base case of the future Pick induction: `unitTriangle_pick_agrees`, `triangle_2_1_pick_agrees`, `triangle_3_3_pick_agrees` each prove `(realInteriorCount T : ℚ) = pickInterior T` via `native_decide` (for the count) + `norm_num` (for the rational equality). The 3-by-3 case is the first non-trivial witness: the unique interior point (1,1) satisfies all three cross-product positivity conditions, and no other point in the 4×4 bounding box does. Together, these provide Pick's theorem as a verified computation on three triangles and establish the agreement that S3+ must lift to all primitive triangles via an additivity lemma.",
+      "mathContext": "$\\mathrm{realInteriorCount}(T_1) = 0 = \\mathrm{pickInterior}(T_1)$ (unit); $\\mathrm{realInteriorCount}(T_2) = 0 = \\mathrm{pickInterior}(T_2)$ (2-by-1); $\\mathrm{realInteriorCount}(T_3) = 1 = \\mathrm{pickInterior}(T_3)$ (3-by-3, interior point $(1,1)$)."
+    },
+    {
+      "id": "primitive-no-interior",
+      "title": "Section VIII (S3-prep): Primitive Case twiceArea = 1 ⇒ realInteriorCount = 0",
+      "startLine": 426,
+      "endLine": 502,
+      "summary": "Generalizes the concrete base cases to all primitive triangles. `cross2_partition_sum` (partition-sum identity): the three edge cross-products of `T` against any lattice point `p` sum to `T.det` — the discrete analogue of signed-area additivity under triangulation. `primitive_realInteriorCount_zero`: for a primitive triangle (`twiceArea = 1`), the `StrictInterior` predicate fails at every lattice point, so `realInteriorCount T = 0`. Closes with a sanity check reconciling the general statement against the S2 unit-triangle computation.",
+      "mathContext": "Partition-sum: $\\mathrm{cross2}(v_1,v_2,p) + \\mathrm{cross2}(v_2,v_3,p) + \\mathrm{cross2}(v_3,v_1,p) = \\det T$ for all $p$ (proved by `ring` after unfolding). For a primitive triangle $\\det T = \\pm 1$, so the three nonnegative sub-area cross-products cannot all be strictly positive — hence no $p$ is strictly interior and $I(T) = 0$, the geometric half of the primitive base case."
+    },
+    {
+      "id": "primitive-pickinterior-zero",
+      "title": "Section IX (S3a-plus): Primitive Case — pickInterior = 0 via Edge GCDs",
+      "startLine": 503,
+      "endLine": 646,
+      "summary": "The algebraic half of the primitive base case: shows the Pick formula also returns 0 on primitive triangles. Cyclic determinant factorisation relating each edge cross-product to `T.det`; `primitive ⇒ every edge GCD is 1` (each edge of a primitive triangle is itself primitive); boundary count `= 3` (only the three vertices); hence `pickInterior T = 0`. Concludes with the primitive base-case agreement `realInteriorCount = pickInterior` (both 0) and a sanity check against the unit triangle.",
+      "mathContext": "For a primitive triangle, each edge vector $(a,b)$ satisfies $\\gcd(a,b) = 1$ (else the edge cross-product would force $|\\det T| > 1$), so each edge contributes $\\gcd + 1 = 2$ endpoints with no interior points; the boundary count is $B = 3$. Pick's cleared form $2A = 2I + B - 2$ with $2A = 1$... gives $I = 0$, matching the geometric count — the two halves agree on every primitive triangle."
+    },
+    {
+      "id": "lattice-segment-points",
+      "title": "Section VIII (S3b-act-1): ℤ-anchored Lattice Segment Points",
+      "startLine": 647,
+      "endLine": 721,
+      "summary": "Infrastructure for the non-primitive case: an ℤ-anchored parametrisation of the lattice points lying on a triangle edge. Establishes how interior lattice points of a segment from one vertex to the next are enumerated by integer multiples of the edge's primitive direction vector — the prerequisite for detecting edge-interior witnesses when an edge has GCD ≥ 2.",
+      "mathContext": "A segment from $u$ to $v$ with edge vector $d = v - u$ and $g = \\gcd(d)$ has exactly $g - 1$ strictly-interior lattice points, namely $u + k\\cdot(d/g)$ for $1 \\le k \\le g - 1$. This ℤ-anchored description is the building block for the Case (a) edge-interior witness and its converse."
+    },
+    {
+      "id": "edge-interior-witness",
+      "title": "Section IX (S3b-act-2): Edge-Interior Witness for edgeGCD ≥ 2 (Case a)",
+      "startLine": 722,
+      "endLine": 858,
+      "summary": "`exists_nonvertex_lattice_point` (Case a): when edge `i` of `T` has `edgeGCD i ≥ 2`, there exists a non-vertex lattice point strictly interior to that edge — an explicit witness via the ℤ-anchored parametrisation of Section VIII (S3b-act-1). This is the forward direction of the edge-interior characterisation and a prerequisite for the full Pick induction (S3b PREP §4.1).",
+      "mathContext": "If $\\gcd(d) = g \\ge 2$ for edge vector $d$, the point $u + (d/g)$ is a lattice point strictly between the endpoints $u$ and $v$ (since $1 \\le 1 \\le g - 1$), witnessing that the edge carries boundary lattice points beyond its two vertices — exactly the obstruction to primitivity that the induction must subdivide away."
+    },
+    {
+      "id": "no-edge-interior-primitive",
+      "title": "Section XI (S3b-act-3): No Edge-Interior Witness When edgeGCD = 1, and Characterisation",
+      "startLine": 859,
+      "endLine": 1047,
+      "summary": "The converse: when edge `i` of `T` has `edgeGCD i = 1`, no lattice point is strictly interior to that edge (`no_strict_edge_interior_of_edgeGCD_eq_one`). Combined with the Section IX (S3b-act-2) witness, this yields a full characterisation of edge-interior witnesses: an edge carries a non-vertex lattice point iff its GCD is ≥ 2. This pins down the boundary-point count of each edge exactly, completing the GCD ↔ boundary-count bridge.",
+      "mathContext": "$\\gcd(d) = 1 \\iff$ the only lattice points on the edge are its two endpoints. Together with Case (a), edge $i$ has $\\mathrm{edgeGCD}\\,i \\ge 2 \\iff \\exists$ a strictly-interior lattice point on edge $i$ — so the boundary count $B = \\sum_i \\mathrm{edgeGCD}\\,i$ counts exactly the lattice points on $\\partial T$, the input Pick's formula needs."
+    },
+    {
+      "id": "translation-invariance",
+      "title": "Section XII (S4-prep): Translation Invariance of the Pick Bridge",
+      "startLine": 1048,
+      "endLine": 1249,
+      "summary": "A `translate` operation on triangles plus a battery of invariance lemmas. Algebraic invariances: `det`, `twiceArea`, `edgeGCD`, `boundaryCount`, `pickInterior`, `pickInteriorNum` are all unchanged by a lattice shift (proved by `ring`/`simp`). Geometric invariance: the `StrictInterior` orientation predicate transports under back-shift, and the bounding box shifts coordinate-wise. The substantive result `realInteriorCount_translate` proves `realInteriorCount` is translation-invariant via an explicit Finset bijection (`realInterior_translate`). Capstone `pick_agrees_translate_iff`: Pick's agreement is itself translation-invariant, so it suffices to prove Pick's theorem at a single canonical anchor. Unlike the S2 `native_decide` agreements (three concrete triangles), these hold for every lattice triangle and every shift.",
+      "mathContext": "For a shift $t \\in \\mathbb{Z}^2$ and the map $T \\mapsto T + t$: every Pick quantity is invariant ($\\det(T+t) = \\det T$, $B(T+t) = B(T)$, etc.), and $I(T+t) = I(T)$ via the bijection $p \\mapsto p + t$ on the strictly-interior Finset. Hence $\\big(\\mathrm{realInteriorCount}(T+t) = \\mathrm{pickInterior}(T+t)\\big) \\iff \\big(\\mathrm{realInteriorCount}(T) = \\mathrm{pickInterior}(T)\\big)$ — reducing the open induction to a single canonical position per congruence class."
+    }
+  ],
+  "conclusion": {
+    "summary": "S2 OBSERVE extends the S1 bridge with a decidable definition of the real strictly-interior lattice-point count (`realInteriorCount` via a same-sign cross-product test on a bounding-box Finset) and proves base-case agreement `realInteriorCount T = pickInterior T` on the unit, 2-by-1, and 3-by-3 test triangles. The base case is then generalized to all primitive triangles (S3-prep/S3a-plus: `realInteriorCount = pickInterior = 0` whenever `twiceArea = 1`), the GCD ↔ edge-boundary-point characterisation is established (S3b-act-1/2/3), and the whole Pick bridge is shown translation-invariant (S4-prep). Total file footprint: 27 definitions and 63 theorems. Sorry-free with 0 literal axiom declarations, 1249 lines; the concrete base-case agreement theorems use `native_decide`, which adds `Lean.ofReduceBool` to `#print axioms` (see assumptions), so the entry is `axiomatized` rather than fully axiom-free.",
+    "implications": "S2 closes the base-case agreement: the Pick formula does compute the true strictly-interior lattice-point count on three primitive and near-primitive triangles. Combined with S1's algebraic identity `2A = 2I + B − 2`, the bridge is now bidirectional — Pick's formula in cleared-denominator form is the natural induction target, with each primitive triangle contributing `(twiceArea, boundaryCount, pickInteriorNum) = (1, 3, 0)`, and the next sessions need only establish that the additivity step preserves Σ pickInteriorNum across primitive-triangulation joins.",
+    "openQuestions": [
+      "S3: Lift the base-case agreement from concrete triangles to all primitive (|det| = 1) lattice triangles. The unit-triangle case is dischargeable by direct enumeration of the bounding box; the general primitive case requires showing that any primitive triangle is `Affine`-equivalent (over ℤ²) to a small reference triangle, OR a direct argument via the cross-product orientation theorem.",
+      "S4: Prove the additivity lemma: when two lattice triangles T₁, T₂ share an edge with no interior lattice points (i.e., the edge has gcd = 1), the interior counts satisfy `realInteriorCount(T₁ ∪ T₂) = realInteriorCount T₁ + realInteriorCount T₂ + (boundary points strictly on the shared edge)`. The `pick_formula_cleared` identity already gives the analogous statement for `pickInterior`, so the work is purely on the `realInteriorCount` side.",
+      "S5: Close the induction by combining S3 + S4 with `PicksTheoremOQ01OQ01.exists_primitive_triangulation` to derive Pick's formula for arbitrary non-degenerate lattice triangles. Extension to general lattice polygons reduces by ear-clipping (standard, but a separate scaffold)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "picks-theorem-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Provides exists_primitive_triangulation, the inductive backbone for the bridge: every non-degenerate lattice triangle has a primitive triangulation of length |det T|."
+    },
+    {
+      "targetId": "picks-theorem-oq-02",
+      "relationship": "depends-on",
+      "description": "Provides card_segmentPoints (segment from (0,0) to (a,b) has gcd(a,b) + 1 lattice points), the building block for the boundaryCount definition in this file."
+    },
+    {
+      "targetId": "picks-theorem",
+      "relationship": "targets",
+      "description": "This file targets the picks_theorem axiom: combining its two ingredients (primitive triangulation + GCD boundary count) plus the S3+ additivity lemma should remove the axiom in a future iteration."
+    },
+    {
+      "targetId": "picks-theorem-oq-01",
+      "relationship": "grandparent",
+      "description": "Sets the overall strategy (triangulate into primitives and inductively combine); this file specializes to the lattice-triangle case and supplies the bridge to OQ-02's GCD boundary formula."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
+    "lineCount": 1249,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 63,
+    "definitionCount": 27,
+    "imports": [
+      "import Mathlib.Data.Int.GCD",
+      "import Mathlib.Data.Int.Interval",
+      "import Mathlib.Data.Nat.GCD.Basic",
+      "import Mathlib.Data.Finset.Prod",
+      "import Mathlib.Tactic"
+    ],
+    "namespace": "PicksTheoremOQ01OQ01OQ01"
+  },
+  "sorries": 0
+}

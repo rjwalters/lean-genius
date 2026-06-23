@@ -1,0 +1,190 @@
+{
+  "version": 1,
+  "proofId": "dissection-of-cubes-oq-02",
+  "reviewDate": "2026-03-25T00:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "C+",
+    "oneLiner": "Contains a genuinely impressive Niven's theorem proof via Chebyshev recurrence, but the surrounding Hilbert's Third Problem framework is scaffolding with placeholder definitions and hypothesis-encoded assumptions, while meta.json misrepresents this as a fully verified unconditional result.",
+    "tier": "B",
+    "tierJustification": "The Niven's theorem component (arccos(1/3)/π is irrational) is fully proved with original multi-step reasoning. The geometric framework connecting this to Hilbert's Third Problem is scaffolded: ScissorsCongruent is a placeholder, Dehn's theorem is encoded as a hypothesis, and the Dehn-Sydler statement proves True. Tier B because the core number theory is genuine, but the geometric bridge is not formalized.",
+    "stratification": {
+      "proved": [
+        "nivenSeq recurrence definition and properties",
+        "three_ndvd_nivenSeq (3 does not divide c_k)",
+        "cos_step (Chebyshev cosine recurrence)",
+        "nivenSeq_eq_cos (linking integer sequence to cosine)",
+        "cos_nat_mul_pi, cos_int_mul_pi",
+        "tetrahedron_angle_irrational_pi (star result: arccos(1/3)/π ∉ ℚ)",
+        "cube_angle_rational_pi",
+        "cube_dehn_zero, tetrahedron_dehn_nonzero, dehn_obstruction",
+        "polygon_dehn_zero (2D Bolyai-Gerwien analog)"
+      ],
+      "axiomatized": [
+        "Dehn's theorem (encoded as hypothesis h_dehn_thm in hilbert_third_problem, not as axiom)"
+      ],
+      "elementary": [
+        "ScissorsCongruent definition (∃ n, True — placeholder)",
+        "scissors_congruent_refl/symm (vacuous given placeholder definition)",
+        "dehn_theorem_simplified (literally modus ponens)",
+        "dehn_sydler_statement (proves True)",
+        "cube_angle_approx (rfl)",
+        "nivenSeq_zero/one/succ_succ (rfl)"
+      ],
+      "assessment": "The file has a strong proved core (Niven's theorem, ~150 lines of original number theory) surrounded by scaffolding that looks like content but adds no mathematical substance; the narrative in meta.json blurs this boundary by presenting the whole entry as uniformly verified."
+    }
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "tetrahedron_angle_irrational_pi, lines 194-233",
+      "finding": "The complete proof that arccos(1/3)/π is irrational via Chebyshev recurrence is genuinely impressive. The proof defines the nivenSeq recurrence (c₀=2, c₁=2, c_{k+2}=2c_{k+1}-9c_k), proves 3∤c_k by induction with a clean modular arithmetic argument, establishes the cosine link via cos_step and nivenSeq_eq_cos, and derives the contradiction. This is ~150 lines of non-trivial, self-contained, original formalized number theory.",
+      "recommendation": "Preserve and highlight this as the entry's primary contribution."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Lean file docstrings throughout",
+      "finding": "The inline documentation in the Lean file is excellent. The docstring for hilbert_third_problem honestly states 'The hypothesis h_dehn_thm encodes Dehn's theorem applied to this specific case.' The informal proof sketch before the Niven's theorem section (lines 84-95) clearly explains the strategy before the formal version. The Part VI commentary on the 2D/3D dimensional contrast is pedagogically valuable.",
+      "recommendation": "Preserve this documentation quality. It is more honest than the meta.json framing."
+    },
+    {
+      "severity": "major",
+      "category": "overclaim",
+      "location": "meta.json: status, badge, assumptions, conclusion",
+      "finding": "meta.json declares status 'verified', badge 'original', and assumptions 'None. Fully verified with 0 axioms and 0 sorries.' The conclusion says 'Fully verified formalization of the Dehn invariant approach to Hilbert's Third Problem.' While technically true about sorry/axiom counts, this is misleading: the main theorem hilbert_third_problem (line 293) takes Dehn's theorem as an explicit hypothesis (h_dehn_thm). The file does NOT prove Hilbert's Third Problem unconditionally — it proves that IF Dehn's theorem holds, THEN the cube and tetrahedron are not scissors congruent. The ScissorsCongruent definition is ∃ n, True (a placeholder), so even the conditional result operates over a vacuous definition.",
+      "recommendation": "Change status to 'axiomatized'. Update assumptions to 'Dehn\\'s theorem (scissors congruence preserves the Dehn invariant) is assumed as an explicit hypothesis; ScissorsCongruent is a placeholder definition.' Reframe the conclusion around what IS proved: the Niven's theorem result and invariant separation."
+    },
+    {
+      "severity": "major",
+      "category": "filler",
+      "location": "dehn_sydler_statement, line 341-343",
+      "finding": "This theorem is declared as the Dehn-Sydler theorem but its body is 'True := trivial'. It contributes zero mathematical content. The surrounding comment block provides historical context, but the formal content is pure filler.",
+      "recommendation": "Either remove the theorem entirely (keep the comment as documentation) or convert to an explicit axiom if the intent is to state the theorem for downstream use. Currently it's a misleading formal artifact."
+    },
+    {
+      "severity": "major",
+      "category": "filler",
+      "location": "ScissorsCongruent, lines 55-56",
+      "finding": "ScissorsCongruent is defined as ∃ (n : ℕ), True — trivially true for ALL type pairs. The subsequent reflexivity and symmetry proofs (lines 59-64) are vacuous since the definition is a tautology. The annotations describe this as 'the central equivalence relation studied in Hilbert's Third Problem' and discuss isometries and polyhedral decomposition, but the definition encodes none of this.",
+      "recommendation": "Either remove the definition and its vacuous properties, or replace with a meaningful axiomatized definition using structures. The current state misleads readers into thinking scissors congruence has been formalized."
+    },
+    {
+      "severity": "moderate",
+      "category": "filler",
+      "location": "dehn_theorem_simplified, lines 273-277",
+      "finding": "This theorem takes its conclusion as a hypothesis. The proof body is 'h_dehn_preserved h_dehn_P' — literally modus ponens. It is labeled as 'Dehn's Theorem (simplified)' but proves nothing about Dehn's theorem; it's a tautology of propositional logic.",
+      "recommendation": "Remove or rename. If keeping, rename to something like 'dehn_invariant_modus_ponens' and update the docstring to not claim this is Dehn's theorem."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions",
+      "finding": "The originalContributions list includes 6 items but does not mention the actual star contribution: the complete Niven's theorem proof via Chebyshev recurrence (nivenSeq, three_ndvd_nivenSeq, nivenSeq_eq_cos, tetrahedron_angle_irrational_pi). Instead it highlights cube_dehn_zero (3-line proof) and dehn_obstruction (trivial conjunction). The 6th item is 'Comprehensive documentation' which is not a formalization contribution.",
+      "recommendation": "Rewrite originalContributions to lead with: 'Complete proof that arccos(1/3)/π is irrational via Chebyshev polynomial recurrence (Niven\\'s theorem)'. Demote or remove trivial items like dehn_obstruction."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "annotations.json: ann-tetra-angle",
+      "finding": "The annotation says 'states (with sorry) that this is NOT a rational multiple of π' but tetrahedron_angle_irrational_pi is fully proved with no sorry. This appears to be a stale reference from an earlier version of the file.",
+      "recommendation": "Update to: 'Proves that arccos(1/3)/π is irrational via the Chebyshev recurrence argument, completing the invariant separation.'"
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "meta.json sections: dehn-theorem (line range 114-127) and hilbert (line range 128-150)",
+      "finding": "Section 'dehn-theorem' says 'This sorry requires proving additivity' and section 'hilbert' says 'The main hilbert_third_problem theorem (sorry) would follow.' Neither theorem has a sorry in the current code — they use hypothesis encoding instead. These descriptions are stale.",
+      "recommendation": "Update section descriptions to reflect current code: dehn_theorem_simplified is modus ponens with a hypothesis, and hilbert_third_problem takes Dehn's theorem as an explicit hypothesis."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "meta.json sections: line ranges throughout",
+      "finding": "Section 'angles' (lines 66-85) claims to cover the Niven's theorem proof but ends at line 85, well before the proof starts. Section 'dehn' (lines 86-113) starts at the Niven's theorem comment block but claims to be about the Dehn invariant. The actual Niven's proof (lines 84-233) — the file's most substantial section — has no dedicated section entry at all.",
+      "recommendation": "Add a dedicated 'niven' section (approximately lines 80-233) for the Chebyshev recurrence proof. Adjust 'angles' to end before the Niven proof and 'dehn' to start after it."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json overview.proofStrategy",
+      "finding": "The proof strategy says 'conclude by Dehn's theorem that scissors congruent polyhedra have equal Dehn invariant, so the cube and tetrahedron cannot be scissors congruent' without noting that Dehn's theorem is assumed as a hypothesis rather than proved.",
+      "recommendation": "Add a qualifier: '...Dehn's theorem (assumed as a hypothesis in this formalization) that scissors congruent polyhedra have equal Dehn invariant...'"
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json overview.keyInsights[1]",
+      "finding": "States 'The cube is the only Platonic solid whose dihedral angle is a rational multiple of π (by Niven's theorem).' This is correct mathematically but the file only proves this for the tetrahedron's angle, not for all Platonic solids. The octahedron and icosahedron angles are defined but their irrationality is not proved.",
+      "recommendation": "Qualify as: 'Among the Platonic solids, the cube is the only one whose dihedral angle is a rational multiple of π — this file proves it for the tetrahedron; the other cases follow from Niven's theorem.'"
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Update meta.json status from 'verified' to 'axiomatized'. Update assumptions field to: 'Dehn's theorem (scissors congruence preserves the Dehn invariant) is encoded as an explicit hypothesis; ScissorsCongruent uses a placeholder definition.' Update badge from 'original' to 'axiom'.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Rewrite originalContributions to lead with the Niven's theorem proof as the primary contribution. Remove 'Comprehensive documentation' and trivial items (dehn_obstruction).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Rewrite conclusion to accurately reflect what is proved: the Niven's theorem result and invariant separation, with the Hilbert's Third Problem connection being conditional on Dehn's theorem.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Fix stale annotations: update ann-tetra-angle to remove 'with sorry' reference; update section descriptions for dehn-theorem and hilbert to reflect hypothesis encoding instead of sorry.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Add a dedicated section entry for the Niven's theorem / Chebyshev recurrence proof (approximately lines 80-233). Adjust adjacent section line ranges.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-6",
+      "priority": "medium",
+      "target": "researcher",
+      "description": "Remove dehn_sydler_statement (proves True) or convert to an explicit axiom with proper documentation. Remove dehn_theorem_simplified (modus ponens) or rename to avoid claiming it is Dehn's theorem.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-7",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Replace placeholder ScissorsCongruent definition (∃ n, True) with a meaningful axiomatized definition, or remove it entirely if the entry is reframed around the Niven's theorem contribution rather than Hilbert's Third Problem.",
+      "status": "open"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 7,
+    "originalityAccuracy": 6,
+    "completeness": 6,
+    "framingPrecision": 5,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 5,
+    "epistemicCoherence": 6,
+    "overall": 6.1
+  },
+
+  "suggestedBestFraming": "Formalizes a complete proof that arccos(1/3)/π is irrational via Chebyshev polynomial recurrence (Niven's theorem), establishing that the cube and regular tetrahedron have different simplified Dehn invariants — the core number-theoretic obstruction in Hilbert's Third Problem. The connection to scissors congruence via Dehn's theorem is stated as a conditional result."
+}

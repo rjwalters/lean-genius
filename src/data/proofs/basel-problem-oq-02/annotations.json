@@ -1,0 +1,414 @@
+[
+  {
+    "id": "ann-oq02-zetavalue-def",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 36,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Zeta Value Definition",
+    "content": "Defines $\\zeta(s)$ as a tsum over natural numbers: `zetaValue s = ∑' n, 1 / n^s`. This is a clean Lean representation where the $n=0$ term vanishes (since $0^s = 0$ for $s > 0$, making $1/0^s$ undefined but handled by Lean's division-by-zero convention). The definition is `noncomputable` because real number arithmetic in Lean is noncomputable by default.",
+    "mathContext": "$\\zeta(s) = \\sum_{n=1}^{\\infty} \\frac{1}{n^s} = \\texttt{tsum}\\left(n \\mapsto \\frac{1}{n^s}\\right)$ where the $n=0$ term is $0$ by convention.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riemann zeta function",
+      "p-series",
+      "tsum",
+      "noncomputable definition"
+    ],
+    "prerequisites": [
+      "infinite series convergence",
+      "Lean 4 noncomputable declarations"
+    ]
+  },
+  {
+    "id": "ann-oq02-zeta-two",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 41,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Basel Problem: ζ(2) = π²/6",
+    "content": "Derives $\\zeta(2) = \\pi^2/6$ directly from Mathlib's `hasSum_zeta_two`. The proof pattern is elegant: unfold the tsum definition, then extract the equality from the HasSum witness using `.tsum_eq`. This is the celebrated Basel problem, first solved by Euler in 1734 using a daring manipulation of infinite products that he later justified rigorously.",
+    "mathContext": "$\\zeta(2) = \\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Basel problem",
+      "Euler's formula for even zeta values",
+      "HasSum"
+    ],
+    "prerequisites": [
+      "Fourier analysis (historical proof)",
+      "Euler product formula"
+    ]
+  },
+  {
+    "id": "ann-oq02-zeta-four",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 45,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "ζ(4) = π⁴/90",
+    "content": "Derives $\\zeta(4) = \\pi^4/90$ from Mathlib's `hasSum_zeta_four`, following the same pattern as $\\zeta(2)$. These are the only two even zeta values currently in Mathlib — higher values $\\zeta(6), \\zeta(8), \\ldots$ follow the same Bernoulli number formula but aren't yet formalized.",
+    "mathContext": "$\\zeta(4) = \\sum_{n=1}^{\\infty} \\frac{1}{n^4} = \\frac{\\pi^4}{90}$. General: $\\zeta(2k) = (-1)^{k+1} \\frac{(2\\pi)^{2k} B_{2k}}{2(2k)!}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bernoulli numbers",
+      "even zeta values",
+      "HasSum"
+    ],
+    "prerequisites": [
+      "Bernoulli number formulas"
+    ]
+  },
+  {
+    "id": "ann-oq02-lindemann",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 53,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "Lindemann's Theorem (Axiomatized)",
+    "content": "Axiomatizes Lindemann's 1882 theorem: $\\pi$ is transcendental over $\\mathbb{Q}$. This is a consequence of the deeper Lindemann-Weierstrass theorem (if $\\alpha_1, \\ldots, \\alpha_n$ are algebraic and linearly independent over $\\mathbb{Q}$, then $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent). Applied with $\\alpha = i\\pi$ and $e^{i\\pi} = -1$, this gives transcendence of $\\pi$. Not yet in Mathlib v4.26.0, so it must be axiomatized.",
+    "mathContext": "$\\pi \\notin \\overline{\\mathbb{Q}}$, i.e., $\\pi$ is not a root of any nonzero polynomial with rational coefficients.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lindemann-Weierstrass theorem",
+      "transcendental number theory",
+      "algebraic numbers",
+      "Hermite's theorem on e"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "algebraic vs transcendental numbers",
+      "exponential function"
+    ]
+  },
+  {
+    "id": "ann-oq02-apery",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 59,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "Apery's Theorem (Axiomatized)",
+    "content": "Axiomatizes Roger Apery's celebrated 1978 result: $\\zeta(3)$ is irrational. Apery stunned the mathematical community by constructing two rapidly converging sequences of rationals whose limit is $\\zeta(3)$, with convergence fast enough to establish irrationality via a criterion of Nesterenko. The proof was initially met with skepticism at the Journees Arithmetiques in Marseille, until van der Poorten and Cohen verified the details.",
+    "mathContext": "$\\zeta(3) = \\sum_{n=1}^{\\infty} \\frac{1}{n^3} \\approx 1.202\\ldots \\notin \\mathbb{Q}$. Apery's key identity: $\\zeta(3) = \\frac{5}{2} \\sum_{n=1}^{\\infty} \\frac{(-1)^{n-1}}{n^3 \\binom{2n}{n}}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Apery's constant",
+      "irrationality measure",
+      "Nesterenko's criterion",
+      "hypergeometric series"
+    ],
+    "prerequisites": [
+      "convergence of series",
+      "irrationality criteria",
+      "binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-oq02-transcendence-conj",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 68,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "Transcendence Conjecture for Odd Zeta Values",
+    "content": "Defines the transcendence conjecture as a Lean `Prop`: all $\\zeta(2k+1)$ for $k \\geq 1$ are transcendental. This is far beyond current techniques — we cannot even prove transcendence of $\\zeta(3)$, the most accessible case. The conjecture is parametrized by $k \\geq 1$, covering $\\zeta(3), \\zeta(5), \\zeta(7), \\ldots$",
+    "mathContext": "$\\forall k \\geq 1,\\; \\zeta(2k+1) \\notin \\overline{\\mathbb{Q}}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "transcendental number theory",
+      "Schanuel's conjecture",
+      "periods"
+    ],
+    "prerequisites": [
+      "algebraic number theory",
+      "transcendence degree"
+    ]
+  },
+  {
+    "id": "ann-oq02-irrationality-conj",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 74,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "Irrationality Conjecture for Odd Zeta Values",
+    "content": "Defines the weaker irrationality conjecture: all $\\zeta(2k+1)$ are irrational. While we know infinitely many are irrational (Rivoal 2000), we cannot prove irrationality for any specific $\\zeta(2k+1)$ beyond $\\zeta(3)$. The gap between this conjecture and the transcendence conjecture is enormous.",
+    "mathContext": "$\\forall k \\geq 1,\\; \\zeta(2k+1) \\notin \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrationality proofs",
+      "Apery's theorem",
+      "Rivoal's theorem"
+    ],
+    "prerequisites": [
+      "algebraic number theory"
+    ]
+  },
+  {
+    "id": "ann-oq02-trans-implies-irr",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 80,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "Transcendence Implies Irrationality",
+    "content": "Sorry-free proof that the transcendence conjecture implies the irrationality conjecture, using Mathlib's `Transcendental.irrational`. This is the top link in the implication chain: every transcendental number is irrational (by contrapositive, since rationals are algebraic).",
+    "mathContext": "If $\\alpha$ is transcendental then $\\alpha$ is irrational (contrapositive: $\\mathbb{Q} \\subset \\overline{\\mathbb{Q}}$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Transcendental.irrational",
+      "implication hierarchy"
+    ],
+    "prerequisites": [
+      "basic algebra"
+    ]
+  },
+  {
+    "id": "ann-oq02-conj-apery",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 86,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Conjecture Specializes to Apery",
+    "content": "Specializes the irrationality conjecture at $k=1$ to recover Apery's theorem: $\\zeta(2 \\cdot 1 + 1) = \\zeta(3)$ is irrational. Uses `le_rfl` to discharge the $1 \\leq 1$ side condition. A pure structural argument with no mathematical content beyond universal instantiation.",
+    "mathContext": "$\\zeta(2 \\cdot 1 + 1) = \\zeta(3)$, so the conjecture at $k=1$ gives $\\zeta(3) \\notin \\mathbb{Q}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "universal instantiation",
+      "specialization"
+    ],
+    "prerequisites": [
+      "basic logic"
+    ]
+  },
+  {
+    "id": "ann-oq02-apery-weaker",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 92,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "Conjecture Gives Both ζ(3) and ζ(5) Irrational",
+    "content": "Further demonstrates the conjecture's strength by extracting both $\\zeta(3)$ and $\\zeta(5)$ irrationality as a conjunction. Uses `omega` to discharge the $1 \\leq 2$ condition for $k=2$.",
+    "mathContext": "$\\zeta(3) \\notin \\mathbb{Q} \\wedge \\zeta(5) \\notin \\mathbb{Q}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjunction introduction",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "basic logic"
+    ]
+  },
+  {
+    "id": "ann-oq02-even-odd-contrast",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 105,
+      "endLine": 106
+    },
+    "type": "concept",
+    "title": "The Even/Odd Divide",
+    "content": "Defines `even_zeta_rational_multiple`: $\\zeta(2k) = q \\cdot \\pi^{2k}$ for some nonzero rational $q$. This captures Euler's discovery that even zeta values are rational multiples of powers of $\\pi$. The contrast with odd values is profound: no odd zeta value has any known closed form involving $\\pi$ or other standard constants. Zagier called this divide 'one of the most tantalizing mysteries in number theory.'",
+    "mathContext": "$\\zeta(2k) = q_k \\cdot \\pi^{2k}$ where $q_k = (-1)^{k+1} \\frac{B_{2k}}{2(2k)!} \\cdot 2^{2k} \\in \\mathbb{Q}^{\\times}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's formula",
+      "Bernoulli numbers",
+      "periods",
+      "multiple zeta values"
+    ],
+    "prerequisites": [
+      "Bernoulli numbers",
+      "functional equation of zeta"
+    ]
+  },
+  {
+    "id": "ann-oq02-zeta-two-trans",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 113,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "ζ(2) Transcendence (Sorry Target)",
+    "content": "Asserts $\\zeta(2)$ is transcendental with sorry on the algebraic manipulation. The proof strategy: $\\zeta(2) = \\pi^2/6$, so if $\\zeta(2)$ were algebraic, then $\\pi^2 = 6\\zeta(2)$ would be algebraic (algebraic numbers form a field), hence $\\pi$ would be algebraic — contradicting Lindemann. The sorry is on the Mathlib gap: closure of algebraic numbers under field operations and $n$th roots.",
+    "mathContext": "$\\pi^2/6$ algebraic $\\Rightarrow$ $\\pi^2$ algebraic $\\Rightarrow$ $\\pi$ algebraic $\\Rightarrow$ contradiction with Lindemann.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "algebraic closure",
+      "field extensions",
+      "Aristotle proof search"
+    ],
+    "prerequisites": [
+      "field theory",
+      "algebraic number theory"
+    ]
+  },
+  {
+    "id": "ann-oq02-zeta-four-trans",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 123,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "ζ(4) Transcendence (Sorry Target)",
+    "content": "Same argument as $\\zeta(2)$ transcendence, now for $\\zeta(4) = \\pi^4/90$. Both sorry targets await Mathlib's algebraic closure API — specifically that rational multiples of transcendental powers remain transcendental. These are prime candidates for Aristotle automated proof search.",
+    "mathContext": "$\\pi^4/90$ algebraic $\\Rightarrow$ $\\pi$ algebraic $\\Rightarrow$ contradiction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "algebraic closure",
+      "Aristotle proof search"
+    ],
+    "prerequisites": [
+      "field theory"
+    ]
+  },
+  {
+    "id": "ann-oq02-rivoal",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 136,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Rivoal's Theorem (Axiomatized)",
+    "content": "Axiomatizes Tanguy Rivoal's breakthrough 2000 result: the set of $k$ such that $\\zeta(2k+1)$ is irrational is infinite. Rivoal's proof uses very-well-poised hypergeometric series to construct explicit linear forms in odd zeta values. The precise quantitative result is stronger: $\\dim_\\mathbb{Q} \\langle 1, \\zeta(3), \\zeta(5), \\ldots, \\zeta(s) \\rangle \\geq \\frac{1+o(1)}{1+\\log 2} \\log s$. The formalization uses `Set.Infinite` for cleaner compositionality.",
+    "mathContext": "$\\{k \\in \\mathbb{N} \\mid k \\geq 1 \\wedge \\zeta(2k+1) \\notin \\mathbb{Q}\\}$ is infinite.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hypergeometric series",
+      "linear independence",
+      "Ball-Rivoal method",
+      "Set.Infinite"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "Pade approximation"
+    ]
+  },
+  {
+    "id": "ann-oq02-zudilin",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 142,
+      "endLine": 144
+    },
+    "type": "concept",
+    "title": "Zudilin's Theorem (Axiomatized)",
+    "content": "Axiomatizes Wadim Zudilin's 2001 refinement: at least one of $\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)$ is irrational. Formalized as a 4-way `Or` disjunction. Zudilin narrowed Rivoal's infinite existential to a finite explicit set by optimizing hypergeometric parameters. The gap between this and proving irrationality of any single $\\zeta(2k+1)$ for $k \\geq 2$ remains one of the most frustrating barriers in the field.",
+    "mathContext": "$\\zeta(5) \\notin \\mathbb{Q} \\vee \\zeta(7) \\notin \\mathbb{Q} \\vee \\zeta(9) \\notin \\mathbb{Q} \\vee \\zeta(11) \\notin \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zudilin's refinement",
+      "Ball-Rivoal method",
+      "well-poised hypergeometric series"
+    ],
+    "prerequisites": [
+      "hypergeometric series",
+      "Pade approximation"
+    ]
+  },
+  {
+    "id": "ann-oq02-conj-rivoal",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 150,
+      "endLine": 157
+    },
+    "type": "concept",
+    "title": "Conjecture Implies Rivoal",
+    "content": "Sorry-free proof that the irrationality conjecture subsumes Rivoal's theorem. Uses `Set.infinite_of_injective_forall_mem` with the injection $n \\mapsto n+1$: if every $\\zeta(2(n+1)+1)$ is irrational, the set of witnesses is infinite. This is a clean structural argument using Mathlib's set-theoretic infrastructure rather than manual cardinality reasoning.",
+    "mathContext": "If $f: \\mathbb{N} \\to S$ is injective and $\\text{ran}(f) \\subseteq S$, then $S$ is infinite. Here $f(n) = n+1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Set.infinite_of_injective_forall_mem",
+      "cardinality arguments",
+      "structural proofs"
+    ],
+    "prerequisites": [
+      "set theory in Lean",
+      "injection-based infinity proofs"
+    ]
+  },
+  {
+    "id": "ann-oq02-conj-zudilin",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 160,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Conjecture Implies Zudilin",
+    "content": "Shows the irrationality conjecture implies Zudilin's theorem by providing the first disjunct: $\\zeta(5)$ is irrational (specializing at $k=2$). Uses `Or.inl` to inhabit the 4-way disjunction. The simplest theorem in the file, but structurally important for the implication hierarchy.",
+    "mathContext": "$\\zeta(5) \\notin \\mathbb{Q} \\Rightarrow \\zeta(5) \\notin \\mathbb{Q} \\vee \\cdots \\vee \\zeta(11) \\notin \\mathbb{Q}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "disjunction introduction",
+      "Or.inl",
+      "logical weakening"
+    ],
+    "prerequisites": [
+      "propositional logic"
+    ]
+  },
+  {
+    "id": "ann-oq02-all-known",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 170,
+      "endLine": 180
+    },
+    "type": "insight",
+    "title": "The Grand Unification Theorem",
+    "content": "The culminating result `conjecture_implies_all_known`: the transcendence conjecture alone recovers Apery's theorem, Rivoal's theorem, and Zudilin's theorem as corollaries. Derived sorry-free by first passing through the irrationality conjecture and then applying the three specialization theorems. This demonstrates the transcendence conjecture as a single organizing principle subsuming all partial results accumulated over 1978-2001.",
+    "mathContext": "$\\text{TransConj} \\Rightarrow \\zeta(3) \\notin \\mathbb{Q} \\;\\wedge\\; |\\{k : \\zeta(2k+1) \\notin \\mathbb{Q}\\}| = \\infty \\;\\wedge\\; (\\zeta(5) \\notin \\mathbb{Q} \\vee \\cdots \\vee \\zeta(11) \\notin \\mathbb{Q})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unification of results",
+      "implication hierarchy",
+      "conjecture strength"
+    ],
+    "prerequisites": [
+      "all prior sections"
+    ]
+  },
+  {
+    "id": "ann-oq02-status",
+    "proofId": "basel-problem-oq-02",
+    "range": {
+      "startLine": 185,
+      "endLine": 185
+    },
+    "type": "concept",
+    "title": "Problem Status: OPEN",
+    "content": "A simple string recording the problem status. No odd zeta value is known to be transcendental as of 2026. Even the most accessible case, $\\zeta(3)$ transcendence, appears to require fundamentally new techniques beyond current methods.",
+    "mathContext": "Status: OPEN. Best known: $\\zeta(3) \\notin \\mathbb{Q}$ (Apery 1978).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "open problems in number theory"
+    ],
+    "prerequisites": [
+      "Odd Zeta Values",
+      "Irrationality vs Transcendence",
+      "Open Problems in Number Theory"
+    ]
+  }
+]

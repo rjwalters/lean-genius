@@ -1,0 +1,187 @@
+[
+  {
+    "id": "ann-sbp-header",
+    "proofId": "schroeder-bernstein-oq-01",
+    "range": {
+      "startLine": 14,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "OQ-01: Categorical Characterization of the Schroeder-Bernstein Property",
+    "content": "The classical Schroeder-Bernstein theorem says Set has the Schroeder-Bernstein property (SBP): mutual injections imply bijection. The categorical generalization asks the same for an arbitrary category, with monomorphisms in place of injections and isomorphism in place of bijection. Banaschewski and Brummer (1986) gave a sufficient 'retraction condition' but the full characterization — necessary AND sufficient axioms for SBP — remains open in categorical foundations. This file does NOT solve that open question. Instead it builds a six-theorem positive/negative corpus locating SBP among Mathlib's categorical primitives: three concrete witnesses (Type, Discrete α, ¬TopCat), two vacuous abstract sufficient conditions ([IsDiscrete C], [IsGroupoid C] — both force Mono = Iso), and one genuinely non-vacuous abstract sufficient condition (full+faithful+monomorphism-preserving forgetful — narrow but admits non-iso monos). 353 lines, 0 sorries, 0 axioms.",
+    "mathContext": "A category $\\mathcal{C}$ has the **Schroeder-Bernstein property** (SBP) iff for all $X, Y \\in \\mathrm{Ob}(\\mathcal{C})$, $(\\exists\\, m : X \\hookrightarrow Y\\, \\text{mono}) \\wedge (\\exists\\, n : Y \\hookrightarrow X\\, \\text{mono}) \\Rightarrow X \\cong Y$. Classical SBP holds in $\\mathbf{Set}$ (Bernstein 1898), $\\sigma$-complete Boolean algebras (Sikorski 1948), Hilbert spaces (trivially). Classical SBP fails in $\\mathbf{Grp}$ (Bumby 1965), $\\mathbf{Ban}$ (Gowers 1996), commutative rings, and $\\mathbf{Top}$ — the [0,1] vs (0,1) failure formalized in this file.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Schroeder-Bernstein theorem",
+      "monomorphism",
+      "categorical isomorphism",
+      "Banaschewski-Brummer retraction condition",
+      "concrete category",
+      "fully faithful functor"
+    ],
+    "prerequisites": [
+      "Lean 4 + Mathlib category theory",
+      "classical Schroeder-Bernstein on sets",
+      "concrete category framework"
+    ]
+  },
+  {
+    "id": "ann-hasSBP-definition",
+    "proofId": "schroeder-bernstein-oq-01",
+    "range": {
+      "startLine": 92,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "The `HasSBP` Predicate",
+    "content": "Defines `HasSBP (C : Type*) [Category C] : Prop := ∀ X Y : C, (∃ m : X ⟶ Y, Mono m) → (∃ n : Y ⟶ X, Mono n) → Nonempty (X ≅ Y)`. The categorical generalization of mutual-injections-imply-bijection: instead of injective functions we require monomorphisms (categorical injections), and instead of a bijection we conclude existence of an isomorphism. The `Nonempty` wrapper sidesteps universe issues with `Exists` over a Type-valued iso.",
+    "mathContext": "Formally: $\\mathrm{HasSBP}(\\mathcal{C}) \\iff \\forall\\, X, Y \\in \\mathrm{Ob}(\\mathcal{C}),\\; (X \\hookrightarrow_{\\text{mono}} Y) \\wedge (Y \\hookrightarrow_{\\text{mono}} X) \\Rightarrow X \\cong Y$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Mono (CategoryTheory.Mono)",
+      "Iso (CategoryTheory.Iso)",
+      "Nonempty (Lean wrapper)"
+    ],
+    "prerequisites": [
+      "CategoryTheory.Category typeclass",
+      "Mono and Iso predicates in Mathlib"
+    ]
+  },
+  {
+    "id": "ann-hasSBP-Type",
+    "proofId": "schroeder-bernstein-oq-01",
+    "range": {
+      "startLine": 98,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "S2/S3 — `Type u` has SBP",
+    "content": "Bridges classical Schroeder-Bernstein into the categorical setting. The three-step tactic: (1) `mono_iff_injective` converts each categorical mono to a `Function.Injective` underlying function; (2) `Function.Embedding.antisymm` runs the classical Schroeder-Bernstein on the resulting `Function.Embedding`s, yielding a Type-equivalence `e`; (3) `Equiv.toIso` promotes `e` to a categorical iso. Non-vacuous witness: the inclusion `{ n // n ∈ s } ↪ ℕ` is a non-iso mono in Type.",
+    "mathContext": "In $\\mathbf{Type}\\,u$, $\\mathrm{Mono}(f) \\iff \\mathrm{Injective}(f)$. The classical Schroeder-Bernstein on type embeddings is $(\\alpha \\hookrightarrow \\beta) \\wedge (\\beta \\hookrightarrow \\alpha) \\Rightarrow \\alpha \\simeq \\beta$, formalized as `Function.Embedding.antisymm` in Mathlib's `SetTheory/Cardinal/SchroederBernstein.lean`. The categorical iso is then $e.\\mathrm{toIso}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "mono_iff_injective in Type",
+      "Function.Embedding.antisymm",
+      "Equiv.toIso"
+    ],
+    "prerequisites": [
+      "Function.Injective",
+      "classical Schroeder-Bernstein on type embeddings"
+    ]
+  },
+  {
+    "id": "ann-hasSBP-Discrete",
+    "proofId": "schroeder-bernstein-oq-01",
+    "range": {
+      "startLine": 112,
+      "endLine": 124
+    },
+    "type": "theorem",
+    "title": "S4 — `Discrete α` has SBP (vacuous concrete)",
+    "content": "The Mathlib instance making every morphism in `Discrete α` an iso fires automatically, so `asIso m` on the first supplied mono witnesses the required iso directly. The second mono hypothesis is unused — a diagnostic of vacuousness: any category whose Hom-sets are at most one element forces Mono = Iso, so SBP holds trivially. This is a concrete vacuous instance; it is later abstracted by `hasSBP_of_isDiscrete` to all `[IsDiscrete C]`.",
+    "mathContext": "$\\mathrm{Discrete}\\,\\alpha$ has $\\mathrm{Hom}(a, b) = \\{a = b\\}$, so every morphism is automatically an isomorphism. SBP holds vacuously.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Discrete category",
+      "vacuous theorem",
+      "Mono = Iso collapse"
+    ],
+    "prerequisites": [
+      "Discrete α construction",
+      "asIso bridge"
+    ]
+  },
+  {
+    "id": "ann-not-hasSBP-TopCat",
+    "proofId": "schroeder-bernstein-oq-01",
+    "range": {
+      "startLine": 126,
+      "endLine": 193
+    },
+    "type": "theorem",
+    "title": "S5 — `¬ HasSBP TopCat` via the [0,1] vs (0,1) counterexample",
+    "content": "Constructs two private continuous injections — `fHom : [0,1] → (0,1)` via $x \\mapsto (x+1)/4$ (range $[1/4, 1/2] \\subset (0,1)$) and `gHom : (0,1) → [0,1]` (inclusion) — promoted to TopCat monomorphisms via `TopCat.mono_iff_injective`. Suppose HasSBP TopCat held; then we obtain a homeomorphism `[0,1] ≅ (0,1)` and transfer compactness from `[0,1]` to `(0,1)` via `Homeomorph.compactSpace`. `isCompact_Ioo_iff` then forces $1 \\le 0$, contradiction. This is the corpus's NEGATIVE anchor: any future sufficient condition `P` must satisfy `¬ P TopCat`.",
+    "mathContext": "Classical topological failure of SBP: $[0,1]$ and $(0,1)$ admit mutual continuous injections but are not homeomorphic — $[0,1]$ is compact (Heine-Borel via `CompactIccSpace`), $(0,1)$ is not (since $1 > 0$). The compression $f(x) = (x+1)/4$ lands in $[1/4, 1/2] \\subset (0,1)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "TopCat.mono_iff_injective",
+      "Homeomorph.compactSpace",
+      "isCompact_Ioo_iff",
+      "[0,1] vs (0,1) counterexample"
+    ],
+    "prerequisites": [
+      "TopCat fundamentals",
+      "compactness in topological spaces"
+    ]
+  },
+  {
+    "id": "ann-hasSBP-of-isDiscrete",
+    "proofId": "schroeder-bernstein-oq-01",
+    "range": {
+      "startLine": 195,
+      "endLine": 226
+    },
+    "type": "theorem",
+    "title": "S6 — `[IsDiscrete C] → HasSBP C` (vacuous abstract)",
+    "content": "Abstracts `hasSBP_Discrete` beyond `C = Discrete α` to any Mathlib `[IsDiscrete C]` instance. `IsDiscrete C` asserts (a) Hom-sets have at most one morphism and (b) any morphism `f : X ⟶ Y` forces `X = Y`. The Mathlib instance `isIso_of_isDiscrete` makes every morphism iso, so the proof is one tactic line: `exact ⟨asIso m⟩`. Vacuous (forces Mono = Iso) but extends the formal scope to `Discrete C` of any C, plus any other future `IsDiscrete` instances.",
+    "mathContext": "`IsDiscrete C` is the Mathlib typeclass asserting that C has at-most-one morphisms between objects AND that those morphisms are object-equality witnesses. Together these collapse $\\mathrm{Mono}(C) = \\mathrm{Iso}(C)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsDiscrete typeclass",
+      "isIso_of_isDiscrete",
+      "vacuous sufficient condition"
+    ],
+    "prerequisites": [
+      "Discrete category framework",
+      "Mathlib's IsDiscrete typeclass"
+    ]
+  },
+  {
+    "id": "ann-hasSBP-of-isGroupoid",
+    "proofId": "schroeder-bernstein-oq-01",
+    "range": {
+      "startLine": 228,
+      "endLine": 266
+    },
+    "type": "theorem",
+    "title": "S11 — `[IsGroupoid C] → HasSBP C` (vacuous-but-broadening)",
+    "content": "Broadens the `IsDiscrete` regime to all groupoids. `IsGroupoid.all_isIso` makes every morphism iso; proof is again `exact ⟨asIso m⟩`. The new instance space includes fundamental groupoids $\\Pi_1(X)$ of topological spaces, Brandt groupoids, action groupoids, and `EssGroupoid` of any category. Still vacuous (forces Mono = Iso) but the broadening is strict — most groupoids are not discrete. Sanity vs S5: `TopCat` is not a groupoid (the continuous inclusion `(0,1) ↪ [0,1]` has no continuous inverse), so this hypothesis correctly excludes `TopCat`.",
+    "mathContext": "A **groupoid** is a category in which every morphism is an isomorphism. Strictly broader than discrete categories (which are also groupoids but trivially so). Examples: $\\Pi_1(X)$, $\\mathrm{EssGroupoid}$, action groupoids of group actions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsGroupoid typeclass",
+      "IsGroupoid.all_isIso",
+      "fundamental groupoid",
+      "EssGroupoid"
+    ],
+    "prerequisites": [
+      "groupoid definition",
+      "Mathlib's IsGroupoid typeclass"
+    ]
+  },
+  {
+    "id": "ann-hasSBP-of-fullFaithful-forget",
+    "proofId": "schroeder-bernstein-oq-01",
+    "range": {
+      "startLine": 268,
+      "endLine": 351
+    },
+    "type": "theorem",
+    "title": "S12 — `(forget C).Full + Faithful + PreservesMono → HasSBP C` (first genuinely non-vacuous)",
+    "content": "The corpus's first sufficient condition that does NOT force Mono = Iso. Under `[HasForget C][(forget C).Full][(forget C).Faithful][(forget C).PreservesMonomorphisms]`: step (1) `(forget C).PreservesMonomorphisms` + `mono_iff_injective` (Type) converts each C-mono to a `Function.Injective` underlying map; step (2) `Function.Embedding.antisymm` yields a Type-equivalence `e`; step (3) `Functor.FullyFaithful.ofFullyFaithful (forget C) |>.preimageIso e.toIso` pulls the Type-iso back to a C-iso via the fully-faithful forgetful. NON-vacuous witness: on Type, the embedding `Set.Subtype.val : { n // n ∈ s } ↪ ℕ` is a non-iso mono — yet the proof above produces the required iso. NARROW: `(forget C).Full` essentially restricts C to a full subcategory of Type, excluding `Grp`, `TopCat`, `Ring`, `ModuleCat`. The next horizon is non-vacuous-AND-broader: Path D.ii orbit construction or Path E Banaschewski-Brümmer retraction condition.",
+    "mathContext": "If $U = \\mathrm{forget}\\,\\mathcal{C} : \\mathcal{C} \\to \\mathbf{Type}$ is full, faithful, and preserves monos, then any pair of mutual $\\mathcal{C}$-monos $X \\hookrightarrow Y, Y \\hookrightarrow X$ pushes down to mutual injections $UX \\hookrightarrow UY, UY \\hookrightarrow UX$; classical Schroeder-Bernstein gives $UX \\simeq UY$; the iso $UX \\cong UY$ in $\\mathbf{Type}$ then lifts to $X \\cong Y$ in $\\mathcal{C}$ via $U$'s fully-faithful reflection of isos (`Functor.FullyFaithful.preimageIso`).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "HasForget / concrete category",
+      "Functor.Full and Functor.Faithful",
+      "Functor.FullyFaithful.preimageIso",
+      "PreservesMonomorphisms",
+      "fully-faithful concrete category"
+    ],
+    "prerequisites": [
+      "concrete category framework",
+      "fully-faithful functors and reflection of isos",
+      "Function.Embedding.antisymm"
+    ]
+  }
+]

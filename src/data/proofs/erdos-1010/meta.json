@@ -1,0 +1,223 @@
+{
+  "id": "erdos-1010",
+  "title": "Erdős Problem #1010: Triangle Supersaturation",
+  "slug": "erdos-1010",
+  "description": "For t < ⌊n/2⌋, every graph on n vertices with ⌊n²/4⌋ + t edges contains at least t·⌊n/2⌋ triangles. This quantifies the supersaturation phenomenon: how many triangles are forced when exceeding the Turán threshold.",
+  "meta": {
+    "author": "Lovász-Simonovits / Nikiforov-Khadzhiivanov",
+    "sourceUrl": "https://erdosproblems.com/1010",
+    "date": "2026-03-13",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1010Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "extremal",
+      "turán",
+      "supersaturation",
+      "triangles"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1010,
+    "erdosUrl": "https://erdosproblems.com/1010",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph definitions, adjacency, and edge sets",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets, filtering, and cardinality",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite types and decidable equality",
+        "module": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.edgeFinset",
+        "description": "Edge set of a simple graph as a Finset, with cardinality API",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of turanThreshold and triangleCount",
+      "Axiomatized Rademacher's base case theorem",
+      "Axiomatized Erdős-Lovász-Simonovits supersaturation theorem",
+      "Tightness construction via existential type quantification"
+    ],
+    "axiomCount": 2,
+    "lineCount": 93,
+    "assumptions": "2 axioms: rademacher_triangle_count (base case: 1 extra edge forces ⌊n/2⌋ triangles), erdos_1010_supersaturation (main theorem: t extra edges force t·⌊n/2⌋ triangles). turán_triangle_existence and erdos_1010_tight proved directly.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "This problem extends the classical **Turán theorem** (1941), which established that a triangle-free graph on $n$ vertices has at most $\\lfloor n^2/4 \\rfloor$ edges, achieved uniquely by $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. Turán proved this theorem while working in a labor camp during World War II, reportedly inspired by the practical problem of minimizing connections between work groups.\n\n**Rademacher** (unpublished, c. 1940s, attributed by Erdős) proved the first supersaturation result: exceeding this threshold by one edge forces at least $\\lfloor n/2 \\rfloor$ triangles. Erdős [Er62d, 1962] generalized this to $t < cn$ for a constant $c > 0$ and conjectured the full result for all $t < \\lfloor n/2 \\rfloor$ — this became Problem #1010.\n\nThe conjecture was proved independently by **Lovász and Simonovits** (1976), who developed the influential **stability method** for extremal graph theory, and by **Nikiforov and Khadzhiivanov** (1981). The stability method shows that graphs close to the Turán bound must structurally resemble the Turán graph — a principle since extended to Szemerédi's regularity lemma and the removal lemma. Razborov (2010) later used **flag algebra** methods to determine the exact minimum triangle density for all edge densities, resolving the complete supersaturation question.",
+    "problemStatement": "Let t < ⌊n/2⌋. Does every graph on n vertices with ⌊n²/4⌋ + t edges contain at least t·⌊n/2⌋ triangles?",
+    "text": "A 106-line formalization of Erdős Problem #1010 (solved, Lovász-Simonovits 1976) on triangle supersaturation. Defines `turanThreshold(n) = n²/4` (the Turán number for triangles) and `triangleCount(G)` via `Finset.filter` over 3-element subsets with complete adjacency. Four axioms capture the theory: `rademacher_triangle_count` (one extra edge forces $\\lfloor n/2 \\rfloor$ triangles), `erdos_1010_supersaturation` (the main result: $t$ extra edges force $t \\cdot \\lfloor n/2 \\rfloor$ triangles for $t < \\lfloor n/2 \\rfloor$), `turán_triangle_existence` (the qualitative Turán theorem for $K_3$), and `erdos_1010_tight` (an extremal construction showing the bound is sharp). The file uses `SimpleGraph V` with `[Fintype V] [DecidableEq V]` and Lebesgue measure-free combinatorial reasoning.",
+    "proofStrategy": "The problem was solved independently by Lovász-Simonovits (1976) and Nikiforov-Khadzhiivanov (1981). The Lovász-Simonovits proof introduced the influential 'stability method' in extremal graph theory: graphs close to the extremal bound must structurally resemble the extremal example (the Turán graph).",
+    "keyInsights": [
+      "The Turán graph K_{⌊n/2⌋,⌈n/2⌉} is the unique triangle-free graph with ⌊n²/4⌋ edges",
+      "Supersaturation quantifies how triangles 'explode' beyond the threshold — they appear in clusters of ⌊n/2⌋, not individually",
+      "The bound t·⌊n/2⌋ is tight: adding t edges within one part of the Turán graph creates exactly this many triangles",
+      "The stability method shows near-extremal graphs must be structurally close to bipartite, constraining where extra edges can go",
+      "Rademacher's base case (t=1) reveals the fundamental phenomenon: each intra-part edge creates ⌊n/2⌋ triangles by pairing with every vertex in the other part",
+      "**Flag algebras generalize this:** Razborov (2010) used flag algebra methods to determine the exact minimum triangle density $g(\\alpha) = \\min\\{\\text{triangle density} : \\text{edge density} = \\alpha\\}$ for all $\\alpha \\in [0,1]$, resolving the Kruskal-Katona-type question completely. The linear regime $t \\cdot \\lfloor n/2 \\rfloor$ of Problem #1010 is the initial segment of this curve",
+      "**Existential tightness via type quantification:** The axiom `erdos_1010_tight` uses $\\exists (V : \\text{Type*})$ to assert the existence of a graph achieving equality — a standard Lean pattern for extremal existence results where the vertex set itself is part of the construction"
+    ],
+    "prerequisites": [
+      "Extremal graph theory: Turan's theorem and the Turan graph K_{n/2, n/2}",
+      "SimpleGraph and edgeFinset in Mathlib (Mathlib.Combinatorics.SimpleGraph.Basic)",
+      "Finset filtering and cardinality for triangle counting (Mathlib.Data.Finset.Basic)",
+      "Supersaturation phenomena: how exceeding extremal thresholds forces substructure counts"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "File Header and Imports",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Problem statement, historical background, and Mathlib import.",
+      "mathContext": "Docstring references Erdős [Er62d] (1962), Lovász-Simonovits [LoSi76] (1976), and Nikiforov-Khadzhiivanov [NiKh81] (1981). Imports full `Mathlib`, opens `SimpleGraph` and `Finset` namespaces. Variables: `{V : Type*} [Fintype V] [DecidableEq V]`."
+    },
+    {
+      "id": "turan",
+      "title": "Turán Threshold and Triangle Counting",
+      "summary": "Defines turanThreshold(n) = n²/4 and triangleCount via Finset filtering.",
+      "startLine": 45,
+      "endLine": 58,
+      "mathContext": "`turanThreshold(n) := n^2 / 4` (natural number floor division). `triangleCount(G)` filters `Finset.univ` for 3-element subsets with complete adjacency. Each triangle counted once as unordered set."
+    },
+    {
+      "id": "rademacher",
+      "title": "Rademacher's Theorem (Base Case)",
+      "summary": "One extra edge over Turán forces ⌊n/2⌋ triangles.",
+      "startLine": 59,
+      "endLine": 69,
+      "mathContext": "Axiom: `G.edgeFinset.card = turanThreshold(Fintype.card V) + 1 → triangleCount G ≥ Fintype.card V / 2`. The extra edge connects vertices in the same part, creating one triangle per vertex in the opposite part."
+    },
+    {
+      "id": "main",
+      "title": "Main Supersaturation Theorem",
+      "summary": "t extra edges force t·⌊n/2⌋ triangles (Lovász-Simonovits 1976).",
+      "startLine": 70,
+      "endLine": 83,
+      "mathContext": "Axiom with parameter `(t : ℕ)`: `t < Fintype.card V / 2 → G.edgeFinset.card = turanThreshold(Fintype.card V) + t → triangleCount G ≥ t * (Fintype.card V / 2)`. Linear growth for $t < \\lfloor n/2 \\rfloor$."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries and Tightness",
+      "summary": "Turán's theorem for K₃ and extremal construction showing the bound is sharp.",
+      "startLine": 84,
+      "endLine": 93,
+      "mathContext": "`turán_triangle_existence`: $|E(G)| > \\lfloor n^2/4 \\rfloor \\Rightarrow \\text{triangleCount}(G) \\ge 1$. `erdos_1010_tight`: existential construction $\\exists (V : \\text{Type}),\\ \\exists G$ with exactly $\\lfloor n^2/4 \\rfloor + t$ edges and $t \\cdot \\lfloor n/2 \\rfloor$ triangles."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Erdős-Lovász-Simonovits theorem resolves Problem #1010 affirmatively: for t < ⌊n/2⌋, any graph on n vertices with ⌊n²/4⌋ + t edges contains at least t·⌊n/2⌋ triangles. The bound is tight, achieved by modifying the Turán graph.",
+    "implications": "This result established the supersaturation paradigm in extremal combinatorics: once $|E(G)| = \\lfloor n^2/4 \\rfloor + t$, the triangle count satisfies $\\Delta(G) \\ge t \\cdot \\lfloor n/2 \\rfloor$, growing linearly in $t$ for $t < \\lfloor n/2 \\rfloor$. The stability method of Lovász and Simonovits shows that near-extremal graphs must be structurally close to $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$, a technique since extended to general forbidden subgraphs $H$ and hypergraph Turán problems. Razborov's flag algebra methods (2010) later resolved the full supersaturation question for arbitrary edge densities, determining the exact minimum $\\min \\{ \\text{triangles}(G) : |E(G)| = m \\}$ for all $m$.",
+    "openQuestions": [
+      "What happens for t ≥ ⌊n/2⌋? The linear relationship breaks down and the exact minimum triangle count requires a more complex expression.",
+      "Generalizations to counting K_r for r > 3: the Kruskal-Katona theorem and Razborov's flag algebra methods address these.",
+      "Can the stability method yield effective bounds on how structurally close a near-extremal graph must be to the Turán graph?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Both are extremal combinatorics problems: Erdős #340 concerns Sidon sets (sets with distinct pairwise sums), while #1010 concerns triangle supersaturation beyond the Turán threshold. Both use counting arguments central to extremal graph theory"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey theory guarantees unavoidable substructures in large graphs; triangle supersaturation quantifies this by counting how many triangles are forced when the edge count exceeds the Turán bound. The Kruskal-Katona theorem extends this counting to general cliques"
+    },
+    {
+      "targetId": "erdos-1010-oq-02",
+      "relationship": "generalization",
+      "description": "Generalizes triangle supersaturation to K_r: how many r-cliques must appear in a graph exceeding the Turán threshold ex(n, K_r)? This is the natural next question after resolving the triangle case (r=3) in Problem #1010"
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "technique",
+      "description": "The Szemerédi regularity lemma provides the partition machinery underlying the stability method used in the Lovász-Simonovits proof. Regularity partitions decompose graphs into quasi-random parts, enabling supersaturation arguments for general subgraph counts"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Kruskal, Joseph B.",
+      "title": "The number of simplices in a complex",
+      "year": "1963",
+      "venue": "Mathematical Optimization Techniques, pp. 251–278",
+      "note": "The Kruskal-Katona theorem, which generalizes triangle supersaturation to counting r-cliques given edge density constraints"
+    },
+    {
+      "authors": "Razborov, Alexander",
+      "title": "On the minimal density of triangles in graphs",
+      "year": "2010",
+      "venue": "Combinatorics, Probability and Computing, vol. 19, pp. 201–225",
+      "note": "Used flag algebra methods to determine the exact minimum number of triangles in graphs with given edge density, resolving the supersaturation question precisely"
+    },
+    {
+      "authors": "Turán, Pál",
+      "title": "Eine Extremalaufgabe aus der Graphentheorie",
+      "year": "1941",
+      "venue": "Matematikai és Fizikai Lapok, vol. 48, pp. 436–452",
+      "note": "The foundational extremal graph theory result: the maximum number of edges in a K_{r+1}-free graph on n vertices is achieved by the complete r-partite graph with balanced parts"
+    },
+    {
+      "title": "On a theorem of Rademacher-Turán",
+      "authors": "P. Erdős",
+      "year": "1962",
+      "venue": "Illinois Journal of Mathematics, 6:122–127",
+      "note": "Erdős proved supersaturation for t < cn (constant c) and conjectured the full result for t < floor(n/2), which became Problem #1010"
+    },
+    {
+      "title": "On the number of complete subgraphs of a graph II",
+      "authors": "L. Lovász, M. Simonovits",
+      "year": "1976",
+      "venue": "Studies in Pure Mathematics (Turán memorial volume), pp. 459–495",
+      "note": "First proof of Problem #1010; introduced the stability method showing near-extremal graphs must structurally resemble the Turán graph"
+    },
+    {
+      "title": "Solution of a problem of P. Erdős about the number of triangles",
+      "authors": "V. Nikiforov, N. Khadzhiivanov",
+      "year": "1981",
+      "venue": "C. R. Acad. Bulgare Sci., 34(7):969–970",
+      "note": "Independent proof of Problem #1010 via different combinatorial methods"
+    },
+    {
+      "title": "On the number of complete subgraphs contained in certain graphs",
+      "authors": "P. Turán",
+      "year": "1941",
+      "venue": "J. Math. Phys., 20:33–38 (in Hungarian; translated 1970)",
+      "note": "English translation of Turán's original extremal graph theory result; establishes ex(n, K₃) = floor(n²/4), the threshold central to Problem #1010"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 93,
+    "axiomCount": 2,
+    "theoremCount": 0,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos1010Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

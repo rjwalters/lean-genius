@@ -1,0 +1,321 @@
+[
+  {
+    "id": "ann-module-overview",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Goal: The First Stirling Correction, Axiom-Free",
+    "content": "This file refines the bare Stirling approximation n! ~ √(2πn)(n/e)^n by formalizing the first correction factor (1 + 1/(12n) + O(1/n²)) and using it to discharge an error-bound axiom in the companion file StirlingFormula.lean. The classical coefficients of the Stirling series arise from the Euler-Maclaurin summation formula applied to log(n!) = Σ_{k=1}^n log(k), giving the k-th coefficient B_{2k}/(2k(2k−1)) in terms of Bernoulli numbers. Mathlib, however, builds stirlingSeq from the Wallis product rather than Euler-Maclaurin, so this file develops a self-contained telescoping argument that avoids Bernoulli-number infrastructure entirely. The entire development is machine-checked with 0 sorries and 0 axioms.",
+    "mathContext": "$n! \\sim \\sqrt{2\\pi n}\\left(\\frac{n}{e}\\right)^n\\left(1 + \\frac{1}{12n} + \\frac{1}{288n^2} - \\frac{139}{51840 n^3} + \\cdots\\right)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "asymptotic expansion",
+      "Euler-Maclaurin formula",
+      "Wallis product",
+      "Bernoulli numbers"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "factorials"
+    ]
+  },
+  {
+    "id": "ann-coefficients",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Stirling Series Coefficients from Bernoulli Numbers",
+    "content": "The Stirling series coefficients a_0=1, a_1=1/12, a_2=1/288, a_3=−139/51840 are defined by cases (defaulting to 0 for k ≥ 4, since only the first few are needed here). They arise from the Euler-Maclaurin formula applied to log(n!): the k-th coefficient involves the Bernoulli number B_{2k} via a_k = B_{2k}/(2k(2k−1)). For k=1: B_2 = 1/6, so a_1 = (1/6)/2 = 1/12; for k=2: B_4 = −1/30 enters a higher-order combination giving the positive 1/288. The three theorems stirlingCoeff_zero/one/two confirm the values hold definitionally (rfl).",
+    "mathContext": "$a_k = \\frac{B_{2k}}{2k(2k-1)}$; $a_1 = \\frac{B_2}{2} = \\frac{1/6}{2} = \\frac{1}{12}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bernoulli numbers",
+      "Euler-Maclaurin formula",
+      "asymptotic series",
+      "Riemann zeta function"
+    ],
+    "prerequisites": [
+      "Bernoulli numbers B_{2k}",
+      "Euler-Maclaurin formula"
+    ]
+  },
+  {
+    "id": "ann-partial-expansion",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 59,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Truncated Stirling Series: stirlingPartial",
+    "content": "stirlingPartial k n = Σ_{i=0}^{k-1} a_i / n^i is the expansion truncated at k terms. For k=1 it is the constant 1 (the bare Stirling approximation); for k=2 it is 1 + 1/(12n) (the first correction). stirlingPartial_one and stirlingPartial_two are proved by unfolding Finset.sum via Finset.sum_range_succ and closing with ring. This truncation is the standard way to phrase an O(1/n^k) asymptotic as an explicit rational approximant.",
+    "mathContext": "$S_k(n) = \\sum_{i=0}^{k-1} \\frac{a_i}{n^i}$; $S_1(n) = 1$, $S_2(n) = 1 + \\frac{1}{12n}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "asymptotic expansion",
+      "big-O notation",
+      "Finset.sum",
+      "truncated series"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Finset.sum_range_succ"
+    ]
+  },
+  {
+    "id": "ann-log-cubic",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 77,
+      "endLine": 149
+    },
+    "type": "insight",
+    "title": "Sharp Log Bound (Cubic) via Derivative Monotonicity",
+    "content": "log_one_plus_le_cubic proves log(1+x) ≤ x − x²/2 + x³/3 for x > 0, the third-order truncation of the alternating Mercator series. The proof is the workhorse technique reused throughout the file: set g(t) = (polynomial) − log(1+t), show g(0) = 0, compute g'(t) = 1 − t + t² − 1/(1+t) = t³/(1+t) ≥ 0 using HasDerivAt for each summand, conclude g is MonotoneOn [0,∞) via monotoneOn_of_deriv_nonneg, hence g(x) ≥ g(0) = 0. The algebraic identity 1 − t + t² − 1/(1+t) = t³/(1+t) (closed by field_simp; ring) is what makes the derivative manifestly nonnegative.",
+    "mathContext": "$g(t)=t-\\tfrac{t^2}{2}+\\tfrac{t^3}{3}-\\log(1+t),\\quad g'(t)=\\frac{t^3}{1+t}\\ge 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mercator series",
+      "derivative monotonicity",
+      "HasDerivAt",
+      "monotoneOn_of_deriv_nonneg"
+    ],
+    "prerequisites": [
+      "differentiation of log",
+      "monotonicity from nonnegative derivative"
+    ]
+  },
+  {
+    "id": "ann-log-quartic",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 151,
+      "endLine": 214
+    },
+    "type": "insight",
+    "title": "Sharp Log Bound (Quartic Lower Bound)",
+    "content": "log_one_plus_ge_quartic proves x − x²/2 + x³/3 − x⁴/4 ≤ log(1+x) for x > 0 — the fourth-order truncation, which bounds log from below (truncating the alternating series after an even-power term undershoots). Same recipe as the cubic bound: f(t) = log(1+t) − (polynomial), f(0) = 0, and f'(t) = 1/(1+t) − (1 − t + t² − t³) = t⁴/(1+t) ≥ 0. Pairing the cubic upper bound with this quartic lower bound sandwiches log(1+1/k) tightly enough to pin the leading 1/(12k²) behaviour of the Stirling step.",
+    "mathContext": "$f(t)=\\log(1+t)-\\left(t-\\tfrac{t^2}{2}+\\tfrac{t^3}{3}-\\tfrac{t^4}{4}\\right),\\quad f'(t)=\\frac{t^4}{1+t}\\ge 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "alternating series bounds",
+      "derivative monotonicity",
+      "two-sided estimate"
+    ],
+    "prerequisites": [
+      "differentiation of log",
+      "monotonicity from nonnegative derivative"
+    ]
+  },
+  {
+    "id": "ann-log-quintic",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 215,
+      "endLine": 300
+    },
+    "type": "insight",
+    "title": "Sharp Log Bound (Quintic) — Toolkit for the Next Correction",
+    "content": "log_one_plus_le_quintic proves log(1+x) ≤ x − x²/2 + x³/3 − x⁴/4 + x⁵/5 for x > 0, the fifth-order upper bound (added in iteration 5). It follows the identical derivative-monotonicity pattern, powered by the algebraic identity 1 − t + t² − t³ + t⁴ = (1+t⁵)/(1+t), which makes g'(t) = t⁵/(1+t) ≥ 0. This bound is not needed for the 1/(12n) correction proved here; it is infrastructure for a future iteration targeting the second Stirling coefficient 1/(288n²), where a finer step estimate d_k = 1/(12k²) + 1/(120k⁴) + (lower order) is required.",
+    "mathContext": "$1 - t + t^2 - t^3 + t^4 = \\frac{1+t^5}{1+t}\\implies g'(t)=\\frac{t^5}{1+t}\\ge 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "alternating series bounds",
+      "second Stirling correction",
+      "geometric series identity"
+    ],
+    "prerequisites": [
+      "differentiation of log",
+      "polynomial identities"
+    ]
+  },
+  {
+    "id": "ann-step-formula",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 301,
+      "endLine": 374
+    },
+    "type": "insight",
+    "title": "The Telescoping Step d_k = (k + 1/2)·log(1 + 1/k) − 1",
+    "content": "stirling_step_formula is the structural heart of the proof. It rewrites the consecutive difference d_k = log(stirlingSeq k) − log(stirlingSeq(k+1)) into the closed form (k + 1/2)·log(1 + 1/k) − 1. The proof unfolds stirlingSeq k = k!/[√(2k)·(k/e)^k], expands its log via log_div, log_mul, log_sqrt, log_pow, log_exp into log(k!) − (1/2)log(2k) − k(log k − 1), does the same for k+1, and cancels using log((k+1)!) = log(k!) + log(k+1) and log(1+1/k) = log(k+1) − log(k). After all cancellations both sides reduce to (k+1/2)(log(k+1) − log k) − 1, closed by ring. This converts the global limit log(stirlingSeq n) − log √π into a telescoping series Σ_{k≥n} d_k.",
+    "mathContext": "$d_k = \\log(\\mathrm{stirlingSeq}\\,k) - \\log(\\mathrm{stirlingSeq}(k{+}1)) = \\left(k + \\tfrac12\\right)\\log\\!\\left(1 + \\tfrac1k\\right) - 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "telescoping series",
+      "logarithm arithmetic",
+      "stirlingSeq",
+      "Wallis product"
+    ],
+    "prerequisites": [
+      "Real.log_mul / log_div / log_pow",
+      "factorial recurrence"
+    ]
+  },
+  {
+    "id": "ann-step-bounds",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 376,
+      "endLine": 411
+    },
+    "type": "insight",
+    "title": "Sandwiching the Step: 1/(12k²) ± Lower Order",
+    "content": "stirling_step_upper and stirling_step_lower feed the log bounds into the step formula. Substituting x = 1/k into log_one_plus_le_cubic gives the upper bound d_k ≤ 1/(12k²) + 1/(6k³); substituting into log_one_plus_ge_quartic gives the lower bound 1/(12k²) − 1/(12k³) − 1/(8k⁴) ≤ d_k. The leading term 1/(12k²) is the source of the 1/(12n) correction once summed. Each bound is established by multiplying the log estimate by (k + 1/2) ≥ 0 (mul_le_mul_of_nonneg_left) and simplifying the rational expression with field_simp; ring.",
+    "mathContext": "$\\frac{1}{12k^2} - \\frac{1}{12k^3} - \\frac{1}{8k^4} \\le d_k \\le \\frac{1}{12k^2} + \\frac{1}{6k^3}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "two-sided bound",
+      "monotone multiplication",
+      "leading-order asymptotics"
+    ],
+    "prerequisites": [
+      "mul_le_mul_of_nonneg_left",
+      "field_simp"
+    ]
+  },
+  {
+    "id": "ann-telescoping-lemmas",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 413,
+      "endLine": 494
+    },
+    "type": "insight",
+    "title": "Telescoping Arithmetic Lemmas",
+    "content": "Five elementary rational inequalities convert the per-step bounds into differences of a 'potential' function so the partial sums telescope. For example inv_sq_le_telescope shows 1/(12k²) ≤ 1/(12(k−1)) − 1/(12k) (equivalently k(k−1) ≤ k²), and inv_quad_le_telescope shows 1/(8k⁴) ≤ 1/(24(k−1)³) − 1/(24k³) using the identity k⁴ − (k+3)(k−1)³ = 6k² − 8k + 3 = (2k−1)² + 2(k−1)² ≥ 0. Each is reduced to nonnegativity of an explicit polynomial numerator via field_simp and discharged with nlinarith/positivity. These are the gears that make the next section's induction collapse to a closed form.",
+    "mathContext": "$\\frac{1}{12k^2} \\le \\frac{1}{12(k-1)} - \\frac{1}{12k},\\qquad \\frac{1}{8k^4} \\le \\frac{1}{24(k-1)^3} - \\frac{1}{24k^3}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "telescoping sums",
+      "potential function",
+      "nlinarith",
+      "rational inequalities"
+    ],
+    "prerequisites": [
+      "field_simp",
+      "nlinarith",
+      "positivity"
+    ]
+  },
+  {
+    "id": "ann-partial-sums",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 496,
+      "endLine": 555
+    },
+    "type": "insight",
+    "title": "Closed-Form Partial Sum Bounds by Induction",
+    "content": "log_stirlingSeq_partial_upper and log_stirlingSeq_partial_lower bound the finite telescoped sum log(stirlingSeq n) − log(stirlingSeq(n+L)) for all L, by induction on L. The upper bound is the telescoping potential F(k) = 1/(12(k−1)) + 1/(12(k−1)²) evaluated at the endpoints: the sum ≤ F(n) − F(n+L). The lower bound uses G(k) = 1/(12k) − 1/(24(k−1)²) − 1/(24(k−1)³). The inductive step splits off the last term d_{n+L}, bounds it via the step inequalities, and folds in the telescoping lemmas; push_cast and add_assoc normalization align the Nat/Real casts so linarith can close each step.",
+    "mathContext": "$\\log\\frac{\\mathrm{stirlingSeq}\\,n}{\\mathrm{stirlingSeq}(n{+}L)} \\le \\frac{1}{12(n-1)} + \\frac{1}{12(n-1)^2} - F(n{+}L)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mathematical induction",
+      "telescoping",
+      "partial sums"
+    ],
+    "prerequisites": [
+      "induction on ℕ",
+      "push_cast"
+    ]
+  },
+  {
+    "id": "ann-first-correction",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 557,
+      "endLine": 802
+    },
+    "type": "insight",
+    "title": "Main Theorem: Stirling's First Correction (fully proved, C = 2)",
+    "content": "stirling_first_correction proves |stirlingSeq(n)/√π − (1 + 1/(12n))| ≤ 2/n² for all n ≥ 2 — fully machine-checked, with no remaining sorry. Earlier annotations of this entry described it as an unproved theorem 'requiring Euler-Maclaurin'; that is now obsolete. The proof takes L = log(stirlingSeq n) − log √π ≥ 0 and observes L = Σ_{k≥n} d_k via the telescoping step and the limit stirlingSeq(n+M) → √π (tendsto_stirlingSeq_sqrt_pi). Taking limits of the partial-sum bounds (le_of_tendsto', with each residual tail driven to 0 by Tendsto.div_atTop) sandwiches L between explicit rational functions of n. Since exp(L) = stirlingSeq n / √π, the result follows from Real.exp_bound at degree 2 — |exp L − (1+L)| ≤ 3L²/4 when |L| ≤ 1 — combined with L² ≤ 1/n² (from 0 ≤ L ≤ 1/n) and the algebraic comparison L − 1/(12n) ≤ 1/(2n²), giving the total bound 5/(4n²) ≤ 2/n².",
+    "mathContext": "$\\left|\\frac{\\mathrm{stirlingSeq}(n)}{\\sqrt{\\pi}} - \\left(1 + \\frac{1}{12n}\\right)\\right| \\le \\frac{2}{n^2},\\quad n \\ge 2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "telescoping series",
+      "Real.exp_bound",
+      "le_of_tendsto'",
+      "Tendsto.div_atTop",
+      "Taylor remainder"
+    ],
+    "prerequisites": [
+      "Stirling.tendsto_stirlingSeq_sqrt_pi",
+      "limits of sequences",
+      "exp/log inverse"
+    ]
+  },
+  {
+    "id": "ann-two-term",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 804,
+      "endLine": 839
+    },
+    "type": "concept",
+    "title": "Two-Term Expansion of n! Directly",
+    "content": "stirling_two_term_expansion restates the first correction for n! itself: |n!/[√(2πn)·(n/e)^n] − (1 + 1/(12n))| ≤ C/n² for n ≥ 2. It is derived from stirling_first_correction by the single identity n!/[√(2πn)·(n/e)^n] = stirlingSeq(n)/√π, which follows from the factorization √(2πn) = √(2n)·√π (Real.sqrt_mul) and rearranging the division. This is the reader-facing form of the result, expressed in the classical Stirling variables rather than Mathlib's normalized stirlingSeq.",
+    "mathContext": "$\\sqrt{2\\pi n} = \\sqrt{2n}\\cdot\\sqrt{\\pi}\\;\\Longrightarrow\\; \\frac{n!}{\\sqrt{2\\pi n}(n/e)^n} = \\frac{\\mathrm{stirlingSeq}(n)}{\\sqrt{\\pi}}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Stirling's approximation",
+      "Real.sqrt_mul",
+      "normalization"
+    ],
+    "prerequisites": [
+      "Real.sqrt_mul",
+      "algebraic rearrangement"
+    ]
+  },
+  {
+    "id": "ann-error-bound",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 841,
+      "endLine": 869
+    },
+    "type": "concept",
+    "title": "Error Bound that Replaces an Axiom",
+    "content": "error_bound_from_correction shows stirlingSeq(n)/√π − 1 ≤ 1/n for n ≥ 2, which is the statement axiomatized as stirling_error_bound_ge_2 in StirlingFormula.lean. Given the first correction, decompose the LHS as (stirlingSeq(n)/√π − (1 + 1/(12n))) + 1/(12n); the first summand is ≤ 1/n² and the residual reduces to showing 1/n − (1/n² + 1/(12n)) = (11n − 12)/(12n²) ≥ 0 for n ≥ 2 — a purely algebraic fact closed by field_simp, ring and nlinarith. This is the payoff: the correction term turns a previously assumed bound into a theorem.",
+    "mathContext": "$\\frac{1}{n} - \\left(\\frac{1}{n^2} + \\frac{1}{12n}\\right) = \\frac{11n - 12}{12n^2} \\ge 0 \\text{ for } n \\ge 2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "axiom elimination",
+      "error bound",
+      "nlinarith",
+      "proof-by-assuming pattern"
+    ],
+    "prerequisites": [
+      "field_simp",
+      "nlinarith",
+      "positivity"
+    ]
+  },
+  {
+    "id": "ann-numerical-summary",
+    "proofId": "stirling-formula-oq-01",
+    "range": {
+      "startLine": 871,
+      "endLine": 915
+    },
+    "type": "concept",
+    "title": "Numerical Checks and Development Notes",
+    "content": "Two norm_num examples anchor the correction numerically: at n=10, 1 + 1/120 = 121/120 ≈ 1.00833 (the true ratio is ≈ 1.00834, so the O(1/n²) error is ≈ 3.5×10⁻⁶); at n=100, 1 + 1/1200 = 1201/1200. The closing comment block records the development history — session 2026-05-06 reached 0 sorries by discharging the upper-half Taylor bound via Real.exp_bound, and iteration 5 (2026-05-08) added the quintic log bound as scaffolding for the future 1/(288n²) term. The file as a whole stands at 0 sorries, 0 axioms.",
+    "mathContext": "$n=10:\\; 1 + \\tfrac{1}{120} = \\tfrac{121}{120} \\approx 1.00833;\\quad \\text{true} \\approx 1.00834$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "numerical verification",
+      "relative error",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "norm_num"
+    ]
+  }
+]

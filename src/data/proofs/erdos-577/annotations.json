@@ -1,0 +1,336 @@
+[
+  {
+    "id": "ann-577-imports",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 28,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports `SimpleGraph.Basic` for the graph type, `SimpleGraph.Connectivity.Subgraph` and `SimpleGraph.Subgraph` for subgraph operations, and `Fintype.Card` for finite cardinality. Opens the `SimpleGraph` namespace for convenient access to adjacency, degree, and related definitions.",
+    "significance": "supporting",
+    "mathContext": "Lean's `SimpleGraph V` represents undirected simple graphs on vertex type $V$. The `Fintype V` and `DecidableEq V` instances ensure the vertex set is finite with decidable equality, and `DecidableRel G.Adj` makes adjacency decidable — all necessary for computing degrees and enumerating subsets.",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Fintype",
+      "DecidableRel"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "SimpleGraph.Basic"
+    ]
+  },
+  {
+    "id": "ann-577-mindegree",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 45,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Minimum Degree",
+    "content": "The **minimum degree** $\\delta(G)$ is the smallest vertex degree in $G$, computed as `Finset.min'` over the image of the degree function on all vertices. The proof that the image is nonempty uses `Finset.univ_nonempty` — every `Fintype` has a nonempty universe.",
+    "significance": "key",
+    "mathContext": "The minimum degree $\\delta(G) = \\min_{v \\in V} \\deg(v)$ is the fundamental parameter in extremal graph theory. Dirac's theorem (1952) states that $\\delta(G) \\geq n/2$ implies Hamiltonicity. The Erdős-Faudree conjecture uses $\\delta(G) \\geq 2k$ on $4k$ vertices — exactly the Dirac threshold — to guarantee cycle partitions.",
+    "relatedConcepts": [
+      "Dirac's theorem",
+      "degree sequence",
+      "Finset.min'"
+    ],
+    "prerequisites": [
+      "SimpleGraph.degree",
+      "Finset.min'",
+      "Fintype"
+    ]
+  },
+  {
+    "id": "ann-577-fourcycle",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 52,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "FourCycle Structure",
+    "content": "A **4-cycle** (quadrilateral, $C_4$) in $G$ is formalized as a structure with four distinct vertices $v_1, v_2, v_3, v_4$ and four edges forming a cycle: $v_1v_2, v_2v_3, v_3v_4, v_4v_1$. The distinctness condition requires all $\\binom{4}{2} = 6$ pairwise inequalities.",
+    "significance": "key",
+    "mathContext": "The 4-cycle $C_4$ is the shortest even cycle. In the Erdős-Faudree conjecture, we partition the vertex set into copies of $C_4$. The structure representation (vs. a subgraph embedding) makes vertex-disjointness easy to check via the `vertices` function. The distinctness conjunction encodes that the cycle visits 4 genuinely different vertices.",
+    "relatedConcepts": [
+      "cycle graph C₄",
+      "quadrilateral",
+      "graph cycle"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "vertex distinctness"
+    ]
+  },
+  {
+    "id": "ann-577-vertices",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 64,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Vertex Set of a 4-Cycle",
+    "content": "The **vertex set** of a 4-cycle is the finset $\\{v_1, v_2, v_3, v_4\\}$. This explicit set representation enables checking vertex-disjointness of two cycles via `Finset.Disjoint`.",
+    "significance": "supporting",
+    "mathContext": "Using `Finset` rather than `Set` for the vertex set provides decidable membership and disjointness, which is essential for the `PairwiseDisjoint` predicate. The finset has cardinality exactly 4 due to the distinctness conditions in `FourCycle`.",
+    "relatedConcepts": [
+      "Finset",
+      "vertex set",
+      "decidable membership"
+    ],
+    "prerequisites": [
+      "FourCycle",
+      "Finset insertion"
+    ]
+  },
+  {
+    "id": "ann-577-disjoint",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 68,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Vertex-Disjoint 4-Cycles",
+    "content": "Two 4-cycles are **vertex-disjoint** if their vertex sets are disjoint: $\\{v_1, v_2, v_3, v_4\\} \\cap \\{w_1, w_2, w_3, w_4\\} = \\emptyset$. This uses Lean's `Disjoint` on finsets, which is decidable.",
+    "significance": "key",
+    "mathContext": "Vertex-disjointness is the essential structural property for cycle partitions: $k$ vertex-disjoint $C_4$'s on $4k$ vertices form a perfect partition where every vertex belongs to exactly one cycle. This is stronger than edge-disjointness and is what the Erdős-Faudree conjecture requires.",
+    "relatedConcepts": [
+      "Finset.Disjoint",
+      "cycle partition",
+      "vertex covering"
+    ],
+    "prerequisites": [
+      "FourCycle.vertices",
+      "Disjoint"
+    ]
+  },
+  {
+    "id": "ann-577-pairwise",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 72,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Pairwise Vertex-Disjoint Collection",
+    "content": "A collection of 4-cycles is **pairwise vertex-disjoint** if any two distinct cycles in the collection share no vertices. Formalized as: $\\forall c_1, c_2 \\in \\text{cycles},\\; c_1 \\neq c_2 \\Rightarrow \\text{Disjoint}(c_1.\\text{vertices}, c_2.\\text{vertices})$.",
+    "significance": "key",
+    "mathContext": "Pairwise disjointness of $k$ cycles on $4k$ vertices implies a perfect covering: every vertex belongs to exactly one $C_4$. This is the 'partition' property that distinguishes the Erdős-Faudree conjecture from mere existence of a single $C_4$.",
+    "relatedConcepts": [
+      "pairwise disjoint",
+      "perfect partition",
+      "graph decomposition"
+    ],
+    "prerequisites": [
+      "DisjointFourCycles",
+      "Finset membership"
+    ]
+  },
+  {
+    "id": "ann-577-conjecture",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 85,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "Erdős-Faudree Conjecture",
+    "content": "The **Erdős-Faudree Conjecture** (1985): For $k > 0$, if $|V| = 4k$ and every vertex has degree $\\geq 2k$, then $G$ contains $k$ pairwise vertex-disjoint 4-cycles. The degree condition $2k = n/2$ is exactly the Dirac threshold.",
+    "significance": "key",
+    "mathContext": "This conjecture belongs to the 'cycle partition' family in extremal graph theory. Erdős and Faudree proposed it as the $C_4$ case of a general program asking: what minimum degree forces a partition into copies of a given graph $H$? The formalization universally quantifies over all vertex types $V$ and all graphs $G$, making it a statement about all finite simple graphs meeting the hypotheses.",
+    "relatedConcepts": [
+      "Dirac threshold",
+      "cycle partition conjecture",
+      "El-Zahar's conjecture"
+    ],
+    "prerequisites": [
+      "minDegree",
+      "PairwiseDisjoint",
+      "FourCycle"
+    ]
+  },
+  {
+    "id": "ann-577-wang",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 104,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Wang's Theorem (2010)",
+    "content": "**Wang's Theorem**: The Erdős-Faudree conjecture is TRUE. Axiomatized as `wang_theorem : ErdosFaudreeConjecture`. Wang's 45-page proof analyzes minimal counterexamples using neighborhood structure analysis, greedy cycle extraction with careful bookkeeping, and contradiction arguments.",
+    "significance": "key",
+    "mathContext": "Hong Wang's proof appeared in Graphs and Combinatorics (2010), pp. 833–877. The proof strategy is: assume a minimal counterexample $G$ exists (fewest vertices among all counterexamples), then analyze the neighborhood structure of high-degree vertices to greedily extract vertex-disjoint $C_4$'s. The minimality allows strong structural conclusions that eventually yield a contradiction.",
+    "relatedConcepts": [
+      "minimal counterexample",
+      "structural graph theory",
+      "greedy extraction"
+    ],
+    "prerequisites": [
+      "ErdosFaudreeConjecture"
+    ]
+  },
+  {
+    "id": "ann-577-solved",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 107,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "Erdős-Faudree Conjecture: SOLVED",
+    "content": "Direct application of `wang_theorem`: the Erdős-Faudree conjecture holds. This is a trivial wrapper (`erdos_faudree_solved := wang_theorem`) that makes the resolution explicit.",
+    "significance": "supporting",
+    "mathContext": "The definitional equality `erdos_faudree_solved := wang_theorem` witnesses that the conjecture is a theorem. In the gallery, this serves as the canonical reference point for the resolution of Erdős Problem #577.",
+    "relatedConcepts": [
+      "definitional proof",
+      "axiom application"
+    ],
+    "prerequisites": [
+      "wang_theorem"
+    ]
+  },
+  {
+    "id": "ann-577-base",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 118,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Base Case: k = 1",
+    "content": "For $k=1$: a graph on 4 vertices with $\\delta(G) \\geq 2$ contains a 4-cycle. With 4 vertices each having degree $\\geq 2$, the graph is Hamiltonian — and a Hamiltonian cycle on 4 vertices IS a 4-cycle. Derived from Wang's theorem with $k=1$.",
+    "significance": "supporting",
+    "mathContext": "The $k=1$ case is essentially Dirac's theorem on 4 vertices: $\\delta(G) \\geq n/2 = 2$ on $n=4$ vertices guarantees a Hamiltonian cycle, which is a $C_4$. The Lean proof applies `wang_theorem` with $k=1$, simplifies $4 \\cdot 1 = 4$ and $2 \\cdot 1 = 2$, then extracts a single cycle from the resulting 1-element collection.",
+    "relatedConcepts": [
+      "Dirac's theorem",
+      "Hamiltonian cycle",
+      "base case"
+    ],
+    "prerequisites": [
+      "wang_theorem",
+      "norm_num",
+      "Finset.choose"
+    ]
+  },
+  {
+    "id": "ann-577-sharp",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 133,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Sharpness of Degree Bound",
+    "content": "The degree bound $2k$ is **sharp**: for every $k > 0$, there exists a graph on $4k$ vertices with $\\delta(G) = 2k-1$ (one less than the threshold) that contains NO $k$ vertex-disjoint 4-cycles. This shows the conjecture's hypothesis cannot be weakened.",
+    "significance": "key",
+    "mathContext": "Sharpness results are crucial in extremal graph theory — they show the threshold is exact, not just sufficient. The counterexample for $\\delta = 2k-1$ can be constructed as carefully balanced constructions where removing one degree of freedom prevents a perfect $C_4$-partition. The existential quantification over $V$, $G$, and instances reflects that the counterexample is a specific graph.",
+    "relatedConcepts": [
+      "extremal sharpness",
+      "threshold function",
+      "counterexample construction"
+    ],
+    "prerequisites": [
+      "ErdosFaudreeConjecture",
+      "PairwiseDisjoint"
+    ]
+  },
+  {
+    "id": "ann-577-dirac",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 145,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "Connection to Dirac's Theorem",
+    "content": "**Dirac's theorem (1952)**: A graph on $n \\geq 3$ vertices with $\\delta(G) \\geq n/2$ is Hamiltonian. Wang's result is a 'partition' refinement: instead of one large Hamiltonian cycle, the same degree condition guarantees many small disjoint cycles that together cover all vertices.",
+    "significance": "key",
+    "mathContext": "Dirac's theorem is the foundational result in Hamiltonian graph theory. The condition $\\delta(G) \\geq n/2$ is the 'Dirac threshold' that appears throughout extremal graph theory. The Erdős-Faudree conjecture asks: at the same threshold, can we not only traverse all vertices in one cycle, but partition them into $C_4$'s? This is a strictly stronger structural conclusion.",
+    "relatedConcepts": [
+      "Dirac's theorem",
+      "Hamiltonian cycle",
+      "Ore's theorem"
+    ],
+    "prerequisites": [
+      "Dirac's theorem",
+      "Hamiltonian cycle",
+      "Minimum degree"
+    ]
+  },
+  {
+    "id": "ann-577-elzahar",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 150,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "El-Zahar's Conjecture",
+    "content": "**El-Zahar's conjecture (1984)**: If $G$ has $n_1 + \\cdots + n_k$ vertices with $\\delta(G) \\geq \\lceil n_i/2 \\rceil$ for each $i$, then $G$ contains vertex-disjoint cycles of lengths $n_1, \\ldots, n_k$. Wang's theorem is the special case $n_1 = \\cdots = n_k = 4$.",
+    "significance": "key",
+    "mathContext": "El-Zahar's conjecture unifies the Corrádi-Hajnal theorem ($n_i = 3$), the Erdős-Faudree conjecture ($n_i = 4$), and Dirac's theorem ($k=1$, one long cycle). The general conjecture remains open, though many special cases have been resolved. It represents the ultimate generalization of 'minimum degree forces cycle partitions.'",
+    "relatedConcepts": [
+      "El-Zahar's conjecture",
+      "generalized cycle partition",
+      "Dirac-type conditions"
+    ],
+    "prerequisites": [
+      "El-Zahar's conjecture",
+      "Vertex-disjoint cycles",
+      "Corrádi–Hajnal theorem"
+    ]
+  },
+  {
+    "id": "ann-577-corradi",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 156,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Corrádi-Hajnal Theorem",
+    "content": "**Corrádi-Hajnal theorem (1963)**: If $G$ has $3k$ vertices and $\\delta(G) \\geq 2k$, then $G$ contains $k$ vertex-disjoint triangles ($C_3$'s). This is the triangle analog of Wang's theorem and was the first result in the cycle partition program.",
+    "significance": "supporting",
+    "mathContext": "The Corrádi-Hajnal theorem was the first Dirac-type cycle partition result, predating the Erdős-Faudree conjecture by 22 years. Note the degree condition: $\\delta(G) \\geq 2k$ on $3k$ vertices gives $\\delta(G) \\geq 2n/3$, which is *above* the Dirac threshold $n/2$. For 4-cycles on $4k$ vertices, $\\delta(G) \\geq 2k = n/2$ is exactly the Dirac threshold — making the Erdős-Faudree result tighter.",
+    "relatedConcepts": [
+      "Corrádi-Hajnal theorem",
+      "triangle partition",
+      "cycle partition program"
+    ],
+    "prerequisites": [
+      "Corrádi–Hajnal theorem",
+      "Vertex-disjoint triangles",
+      "Minimum degree threshold"
+    ]
+  },
+  {
+    "id": "ann-577-technique",
+    "proofId": "erdos-577",
+    "range": {
+      "startLine": 169,
+      "endLine": 175
+    },
+    "type": "concept",
+    "title": "Wang's Proof Technique",
+    "content": "Axiomatized placeholder (`wang_proof_technique : True`) documenting Wang's proof approach: (1) assume a minimal counterexample, (2) analyze neighborhood structures of high-degree vertices, (3) use greedy extraction with careful bookkeeping, (4) derive contradiction.",
+    "significance": "supporting",
+    "mathContext": "The minimal counterexample method is standard in extremal graph theory. Wang's 45-page proof is notable for its length and technical difficulty — the neighborhood analysis requires tracking many cases of how vertices can be distributed among potential 4-cycles. This complexity is why the conjecture remained open for 25 years (1985–2010).",
+    "relatedConcepts": [
+      "minimal counterexample",
+      "neighborhood analysis",
+      "greedy algorithm"
+    ],
+    "prerequisites": [
+      "Minimal counterexample method",
+      "Neighborhood analysis",
+      "Greedy extraction"
+    ]
+  }
+]

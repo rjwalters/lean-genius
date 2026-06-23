@@ -1,0 +1,74 @@
+{
+  "slug": "erdos-465-incomplete-01",
+  "title": "Complete proof of Erdős Problem #465: Points with Distances Avoiding Integers",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "COMPLETED: Both sorry statements filled — first_conjecture_holds and second_conjecture_holds now genuinely proved.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "first_conjecture_holds: Sárközy bound implies N(X,δ)=o(X) via explicit X₀ = exp(exp(C·δ⁻³/ε))+1",
+      "second_conjecture_holds: Konyagin bound implies N(X,δ)<X^{1/2+ε} via rpow algebra with X₀ = (C+1)^(1/ε)"
+    ],
+    "open": [],
+    "goal": "Eliminate all 2 sorries in Erdos465Problem.lean"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T20:00:00Z",
+    "iteration": 1,
+    "focus": "Proved both remaining sorries.",
+    "blockers": [],
+    "nextAction": "None — complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved 2 sorries → 0 sorries. first_conjecture_holds uses double-exp X₀ and log(log X) > K chain via Real.log_lt_log + Real.log_exp. second_conjecture_holds uses rpow_mul + field_simp to show (C+1)^(1/ε)^ε = C+1, then rpow_le_rpow for base monotonicity.",
+    "builtItems": [
+      "Proved first_conjecture_holds: log(log X) divergence argument with explicit X₀",
+      "Proved second_conjecture_holds: rpow algebra showing C < X^ε for large X",
+      "Both proofs follow existing codebase patterns (cf. Erdos382Problem.lean)"
+    ],
+    "insights": [
+      "For asymptotic corollaries, choose X₀ = f(constants) where f inverts the relevant growth function",
+      "rpow_mul + field_simp pattern handles (a^(1/b))^b = a cleanly (used in Erdos382)",
+      "div_mul_cancel₀ with mul_comm handles ε*(K/ε) = K cancellation for log arguments"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "combinatorics",
+    "diophantine-approximation",
+    "distances",
+    "solved",
+    "incomplete",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-46",
+    "erdos-465",
+    "erdos-466"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T19:55:00Z",
+  "lastUpdate": "2026-03-28T20:00:00Z",
+  "significance": 5,
+  "tractability": 6
+}

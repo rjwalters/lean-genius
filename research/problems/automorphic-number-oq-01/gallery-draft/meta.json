@@ -1,0 +1,128 @@
+{
+  "id": "automorphic-number-oq-01",
+  "title": "Automorphic Numbers: the Four Idempotents Modulo 10^k",
+  "slug": "automorphic-number-oq-01",
+  "description": "A k-digit number is automorphic when its square ends in the same k digits (5, 6, 25, 76, 376, 625, ...). Such residues are exactly the idempotents of ZMod (10^k). For every k >= 1 the ring ZMod (10^k) has exactly four idempotents: 0, 1, and the two non-trivial automorphic numbers. The proof combines the local structure of ZMod (p^k) (only trivial idempotents) with the Chinese Remainder factorization 10^k = 2^k * 5^k.",
+  "meta": {
+    "author": "Folklore (recreational number theory)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Automorphic_number",
+    "date": "1750",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AutomorphicNumberOQ01.lean",
+    "tags": [
+      "number-theory",
+      "digits",
+      "automorphic",
+      "idempotent",
+      "chinese-remainder-theorem",
+      "zmod",
+      "p-adic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.chineseRemainder",
+        "description": "Ring isomorphism ZMod (m*n) ≃+* ZMod m × ZMod n for coprime m, n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff",
+        "description": "(a : ZMod n) = 0 ↔ n ∣ a, the bridge between modular equations and divisibility",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime.dvd_of_dvd_mul_right",
+        "description": "Coprime k n → k ∣ m * n → k ∣ m; isolates a prime power onto one factor",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Fintype.card_prod",
+        "description": "card (α × β) = card α * card β, used to multiply the per-prime counts",
+        "module": "Mathlib.Data.Fintype.Prod"
+      }
+    ],
+    "originalContributions": [
+      "Identification of automorphic residues mod 10^k with idempotents of ZMod (10^k)",
+      "Elementary proof that ZMod (p^k) (p prime, k >= 1) has only the trivial idempotents 0 and 1, via the coprimality of n and n-1",
+      "Count of exactly two idempotents in each prime-power factor (idem_card_prime_pow)",
+      "Transport of the idempotent subtype across a ring isomorphism (idemCongr) and the componentwise splitting across a product ring (idemProd)",
+      "Main theorem: ZMod (10^k) has exactly four idempotents for every k >= 1, via the Chinese Remainder factorization 10^k = 2^k * 5^k",
+      "Decidable verification of the classical small automorphic numbers 5, 6 (mod 10) and 25, 76 (mod 100)"
+    ],
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "lineCount": 176,
+    "assumptions": "None. Fully machine-checked with no axioms and no sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Numbers whose squares end in the number itself were noted in recreational arithmetic for centuries; the terminology 'automorphic' (or 'curious' / 'circular') dates to the early 20th century. In the decimal system the non-trivial automorphic numbers form two families that grow one digit at a time (5, 25, 625, 0625, 90625, ... and 6, 76, 376, 9376, ...), a phenomenon explained by Hensel's lemma: they are the two idempotents of the 10-adic integers other than 0 and 1. The finite analogue studied here is the ring ZMod (10^k).",
+    "problemStatement": "A natural number $n$ with at most $k$ digits is **automorphic** modulo $10^k$ when $n^2 \\equiv n \\pmod{10^k}$, i.e. the last $k$ digits of $n^2$ reproduce $n$. Reducing modulo $10^k$, automorphic residues are exactly the **idempotents** of the ring $\\mathbb{Z}/10^k\\mathbb{Z}$ (elements with $e^2 = e$). The theorem proved here is that for every $k \\ge 1$ this ring has **exactly four** idempotents: $0$, $1$, and two non-trivial complementary automorphic numbers.",
+    "text": "An idempotent of $\\mathbb{Z}/10^k\\mathbb{Z}$ is precisely an automorphic residue. We count them in two stages. First, for a prime $p$ and $k \\ge 1$, the ring $\\mathbb{Z}/p^k\\mathbb{Z}$ has only the trivial idempotents $0$ and $1$: writing an idempotent as $e = (n \\bmod p^k)$ with $0 \\le n < p^k$, the relation $e^2 = e$ becomes $p^k \\mid n(n-1)$, and since consecutive integers are coprime the whole prime power must divide either $n$ or $n-1$, forcing $n \\in \\{0,1\\}$. Second, because $10^k = 2^k \\cdot 5^k$ with $\\gcd(2^k, 5^k) = 1$, the Chinese Remainder Theorem gives a ring isomorphism $\\mathbb{Z}/10^k\\mathbb{Z} \\cong \\mathbb{Z}/2^k\\mathbb{Z} \\times \\mathbb{Z}/5^k\\mathbb{Z}$. Idempotents are preserved by ring isomorphisms and split componentwise across a product, so the number of idempotents is $2 \\times 2 = 4$.",
+    "proofStrategy": "**Step 1 - Local triviality (`idem_eq_zero_or_one`).** Represent an idempotent of $\\mathbb{Z}/p^k\\mathbb{Z}$ by its canonical lift $n < p^k$. Casting $e^2 = e$ back to $\\mathbb{N}$ gives $p^k \\mid n^2 - n = n(n-1)$. A case split on $p \\mid n$ uses $\\gcd(p^k, n-1) = 1$ (resp. $\\gcd(p^k, n) = 1$) together with `Nat.Coprime.dvd_of_dvd_mul_right/left` to push the entire prime power onto a single factor; the bound $n < p^k$ then forces $n = 0$ or $n = 1$.\n\n**Step 2 - Per-prime count (`idem_card_prime_pow`).** The idempotent set of $\\mathbb{Z}/p^k\\mathbb{Z}$ equals $\\{0, 1\\}$, which has cardinality $2$ since the ring is non-trivial ($p^k > 1$).\n\n**Step 3 - Transport lemmas.** `idemCongr` sends idempotents to idempotents across a ring isomorphism (using $f(e)^2 = f(e^2) = f(e)$), giving an equivalence of idempotent subtypes; `idemProd` splits an idempotent $(a,b)$ of $R \\times S$ into the pair $(a,b)$ of component idempotents.\n\n**Step 4 - Assembly (`automorphic_idempotent_count`).** Rewrite $10^k = 2^k 5^k$, apply `ZMod.chineseRemainder` through `idemCongr`, split through `idemProd`, and finish with `Fintype.card_prod` and the per-prime count $2 \\cdot 2 = 4$.",
+    "keyInsights": [
+      "Automorphic-mod-10^k is literally idempotency in ZMod (10^k); the digit description and the algebraic description coincide.",
+      "ZMod (p^k) is a local ring, so it has no idempotents other than 0 and 1 - this is the source of the factor 2 per prime.",
+      "The count is multiplicative over the prime-power factorization of the modulus: ZMod n has 2^{omega(n)} idempotents, and 10 = 2 * 5 has two prime factors, giving 4.",
+      "Counting via the idempotent subtype (rather than a Finset filter) lets Fintype.card_congr transport the count cleanly across the Chinese Remainder isomorphism.",
+      "The two non-trivial idempotents are complementary: they sum to 1 mod 10^k, matching the classical pairing 5/6, 25/76, 625/376, ..."
+    ],
+    "prerequisites": [
+      "Modular arithmetic and the ring ZMod n",
+      "Idempotent elements of a commutative ring (e^2 = e)",
+      "The Chinese Remainder Theorem as a ring isomorphism",
+      "Coprimality of consecutive integers and prime-power divisibility"
+    ]
+  },
+  "sections": [
+    {
+      "id": "local-triviality",
+      "title": "Idempotents of a prime power are trivial",
+      "startLine": 48,
+      "endLine": 101,
+      "summary": "For p prime and k >= 1, every idempotent of ZMod (p^k) is 0 or 1.",
+      "mathContext": "From $e^2 = e$ one gets $p^k \\mid n(n-1)$ for the lift $n < p^k$. Since $\\gcd(n, n-1) = 1$, the prime power divides a single factor, so $n \\in \\{0, 1\\}$."
+    },
+    {
+      "id": "per-prime-count",
+      "title": "Two idempotents per prime power",
+      "startLine": 104,
+      "endLine": 124,
+      "summary": "The idempotent set of ZMod (p^k) is {0, 1}, of cardinality 2.",
+      "mathContext": "The filter of idempotents equals $\\{0,1\\}$; the ring is non-trivial because $p^k > 1$, so $0 \\ne 1$ and the count is exactly $2$."
+    },
+    {
+      "id": "transport",
+      "title": "Idempotents across isomorphisms and products",
+      "startLine": 126,
+      "endLine": 143,
+      "summary": "idemCongr transports idempotents across a ring isomorphism; idemProd splits an idempotent of a product into a pair.",
+      "mathContext": "$f(e)^2 = f(e^2) = f(e)$ shows ring homomorphisms preserve idempotency; in $R \\times S$ multiplication is componentwise, so $(a,b)$ is idempotent iff $a$ and $b$ are."
+    },
+    {
+      "id": "main-count",
+      "title": "Exactly four idempotents modulo 10^k",
+      "startLine": 145,
+      "endLine": 163,
+      "summary": "Via 10^k = 2^k * 5^k and the Chinese Remainder Theorem, the count is 2 * 2 = 4.",
+      "mathContext": "$\\mathbb{Z}/10^k\\mathbb{Z} \\cong \\mathbb{Z}/2^k\\mathbb{Z} \\times \\mathbb{Z}/5^k\\mathbb{Z}$; idempotents transport and split, and `Fintype.card_prod` gives $2 \\cdot 2 = 4$."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete automorphic numbers",
+      "startLine": 165,
+      "endLine": 174,
+      "summary": "Decidable checks that 5, 6 are automorphic mod 10 and 25, 76 are automorphic mod 100.",
+      "mathContext": "$5^2 = 25$, $6^2 = 36$, $25^2 = 625$, $76^2 = 5776$ - each ends in the original digits, i.e. $e^2 = e$ in the corresponding ZMod."
+    }
+  ],
+  "conclusion": {
+    "summary": "For every k >= 1 the ring ZMod (10^k) has exactly four idempotents - equivalently, exactly four automorphic residues modulo 10^k: 0, 1, and the two non-trivial complementary automorphic numbers. The result is proved with no axioms and no sorries by combining the local triviality of idempotents in each prime-power factor with the Chinese Remainder factorization 10^k = 2^k * 5^k.",
+    "implications": "**1. Multiplicativity.** The same argument shows ZMod n has exactly $2^{\\omega(n)}$ idempotents, where $\\omega(n)$ is the number of distinct prime factors; the four idempotents mod $10^k$ reflect the two primes $2$ and $5$.\n\n**2. p-adic limit.** As $k \\to \\infty$ the two non-trivial idempotents stabilize digit-by-digit into the two non-trivial idempotents of the 10-adic integers $\\mathbb{Z}_{10} \\cong \\mathbb{Z}_2 \\times \\mathbb{Z}_5$, which is the rigorous form of the 'infinite automorphic numbers' ...90625 and ...09376.\n\n**3. Constructive content.** The Chinese Remainder isomorphism is explicit, so the proof not only counts but locates the idempotents: the non-trivial ones are the CRT preimages of (1,0) and (0,1).",
+    "futureDirections": "Make the two non-trivial idempotents explicit via Hensel lifting of x^2 = x from mod 10 to mod 10^k, and generalize the count to an arbitrary base b in place of 10 (the answer is 2^{omega(b)} idempotents)."
+  },
+  "crossReferences": []
+}

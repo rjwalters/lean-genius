@@ -1,0 +1,137 @@
+{
+  "id": "binomial-theorem-oq-02-oq-01-oq-03",
+  "title": "Multinomial Covariance: Cov(Xᵢ, Xⱼ) = -n·pᵢ·pⱼ",
+  "slug": "binomial-theorem-oq-02-oq-01-oq-03",
+  "description": "Proves that the covariance of distinct components in a multinomial distribution equals -n·pᵢ·pⱼ, and as a key intermediate result, the mean E[Xᵢ] = n·pᵢ. The proof uses fiber grouping, the marginal PMF formula from BinomialTheoremOQ02OQ01OQ02, and the binomial mean from BinomialTheoremOQ03. The cross-moment E[XᵢXⱼ] = n(n-1)pᵢpⱼ is proved via bivariate MGF differentiation. All 7 theorems fully machine-verified with 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ03.lean",
+    "tags": [
+      "probability",
+      "multinomial distribution",
+      "covariance",
+      "negative correlation",
+      "mean",
+      "moments",
+      "fiber grouping",
+      "combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 392,
+    "assumptions": "None. All 7 theorems (normalization, mean, cross-moment, covariance) are fully machine-verified with 0 sorries and 0 axioms.",
+    "theoremCount": 7,
+    "mathlib_version": "4.26.0",
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The multinomial distribution traces to Jacob Bernoulli's *Ars Conjectandi* (1713) and was studied extensively by Abraham de Moivre and later Laplace as a natural generalization of the binomial. Its covariance structure became central with Karl Pearson's landmark 1900 paper introducing the chi-squared goodness-of-fit test: the asymptotic distribution of $\\chi^2 = \\sum_i (O_i - E_i)^2/E_i$ depends on the multinomial covariance matrix $\\Sigma = n(\\text{diag}(p) - pp^T)$, whose off-diagonal entries are precisely $-np_ip_j$. R.A. Fisher refined this theory in the 1920s while developing maximum likelihood estimation and contingency table analysis. For $(X_1, \\ldots, X_k) \\sim \\text{Multinomial}(n, p_1, \\ldots, p_k)$, the negative covariance $\\text{Cov}(X_i, X_j) = -np_ip_j$ for $i \\neq j$ reflects the fundamental constraint $\\sum X_l = n$: if more trials yield outcome $i$, fewer must yield outcome $j$. The Lean formalization machine-checks the fiber-grouping argument used to compute $E[X_i] = np_i$ — a technique that reduces the multinomial mean to the binomial mean via the marginal PMF.",
+    "problemStatement": "For $(X_1, \\ldots, X_k) \\sim \\text{Multinomial}(n, p_1, \\ldots, p_k)$ with $\\sum p_i = 1$, prove that $\\text{Cov}(X_i, X_j) = -np_ip_j$ for distinct $i \\neq j$.",
+    "text": "Proves the multinomial covariance formula $\\text{Cov}(X_i, X_j) = -np_ip_j$ with all 7 theorems fully machine-verified. The mean $E[X_i] = np_i$ is proved via fiber grouping. The cross-moment $E[X_iX_j] = n(n-1)p_ip_j$ is proved via bivariate MGF differentiation using HasDerivAt. The covariance then follows by ring arithmetic: $E[X_iX_j] - E[X_i]E[X_j] = n(n-1)p_ip_j - n^2p_ip_j = -np_ip_j$.",
+    "proofStrategy": "The mean proof uses the `sum_fiberwise_of_maps_to` lemma to group the multinomial sum by the value of $k(i_0) = j$, reducing each fiber to a scalar multiple of the marginal PMF $P(X_{i_0}=j) = \\binom{n}{j}p_{i_0}^j(1-p_{i_0})^{n-j}$ (from BinomialTheoremOQ02OQ01OQ02), then recognizing the resulting sum as the binomial mean $\\sum_j j \\cdot \\text{binomPMF}(n,p,j) = np$ (from BinomialTheoremOQ03). The covariance then follows by linearity and ring arithmetic from the cross-moment and the mean.",
+    "keyInsights": [
+      "The mean proof reduces to binomial_mean via the fiber grouping technique: ∑_k k(i₀)·P(k) = ∑_j j·P(X_{i₀}=j) = n·p(i₀)",
+      "The covariance formula is -npᵢpⱼ because E[XᵢXⱼ] = n(n-1)pᵢpⱼ while E[Xᵢ]·E[Xⱼ] = n²pᵢpⱼ, so Cov = -npᵢpⱼ",
+      "The cross-moment E[XᵢXⱼ] = n(n-1)pᵢpⱼ can be proved by differentiating the joint MGF (∑ P(k)·(1+a)^{k(i)}·(1+b)^{k(j)} = (1+pᵢa+pⱼb)^n) twice using HasDerivAt",
+      "The negative correlation arises from the hard constraint ∑ Xₗ = n: winning observations in category i must come at the expense of other categories",
+      "multinomial_covariance is fully proved in terms of multinomial_cross_moment — the algebraic reduction is complete",
+      "The covariance matrix $\\Sigma = n(\\text{diag}(p) - pp^T)$ is necessarily singular (rank $k-1$) because $\\sum_i X_i = n$ forces all variation into the constraint hyperplane; this singularity is why the chi-squared statistic has $k-1$ degrees of freedom rather than $k$"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header: Covariance of Multinomial Components",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports five Mathlib modules and two parent proof files (BinomialTheoremOQ02OQ01OQ02 for the marginal PMF, BinomialTheoremOQ03 for the binomial mean). The docblock states the open question, the answer (Cov(Xᵢ,Xⱼ) = -npᵢpⱼ), the intuition (fixed total forces negative correlation), and a three-step proof strategy: mean via fiber grouping, cross-moment via MGF differentiation (sorry), and covariance by ring arithmetic."
+    },
+    {
+      "id": "setup",
+      "title": "Multinomial PMF and Normalization",
+      "startLine": 53,
+      "endLine": 72,
+      "summary": "Defines multinomialProb (identical to BinomialTheoremOQ02OQ01OQ02.multinomialProb via definitional equality) and proves multinomialProb_sum_one (normalization ∑ P(k) = 1 when ∑ p(i) = 1) by delegation to the parent file's theorem."
+    },
+    {
+      "id": "mean",
+      "title": "Mean E[Xᵢ] = n·pᵢ (Complete Proof)",
+      "startLine": 73,
+      "endLine": 136,
+      "summary": "Proves multinomial_mean: ∑_k k(i₀)·P(k) = n·p(i₀). The proof uses sum_fiberwise_of_maps_to to group the sum by value j = k(i₀), then on each fiber: (1) replaces k(i₀) with j using exact_mod_cast, (2) applies multinomial_marginal_pmf from OQ02 to get the binomial PMF formula, (3) applies binomial_mean_all (which extends BinomialTheoremOQ03.binomial_mean to the n=0 case). Private helpers: binomial_mean_all (handles n=0 via rcases) and binomPMF_eq (unfolds binomPMF)."
+    },
+    {
+      "id": "cross-moment",
+      "title": "Cross-Moment E[XᵢXⱼ] = n(n-1)pᵢpⱼ (Complete Proof)",
+      "startLine": 137,
+      "endLine": 332,
+      "summary": "multinomial_cross_moment: E[XᵢXⱼ] = n(n−1)pᵢpⱼ for i ≠ j, by bivariate MGF differentiation. The full proof (lines 137–332) establishes the MGF identity ∑_k P(k)(1+a)^{k_i}(1+b)^{k_j} = (1+pᵢa+pⱼb)^n (via the parent multinomial_mgf_real), then differentiates in a at 0 (hstep1) to get n·pᵢ·(1+pⱼb)^{n−1}, and in b at 0 (hstep2) to reach n(n−1)pᵢpⱼ — all via HasDerivAt.sum and chain-rule lemmas."
+    },
+    {
+      "id": "covariance",
+      "title": "Main Theorem: Cov(Xᵢ,Xⱼ) = -npᵢpⱼ",
+      "startLine": 333,
+      "endLine": 370,
+      "summary": "multinomial_covariance: Cov(Xᵢ,Xⱼ) = −n·pᵢ·pⱼ for i ≠ j. Expands (k_i·k_j − E[Xᵢ]E[Xⱼ])·P(k) via sub_mul/sum_sub_distrib, evaluates the normalization sum (n·pᵢ·n·pⱼ) and the cross moment (n(n−1)pᵢpⱼ), and closes by ring: n(n−1)pᵢpⱼ − n²pᵢpⱼ = −npᵢpⱼ."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 371,
+      "endLine": 392,
+      "summary": "Closing docstring recording the four proved results (multinomialProb_sum_one, multinomial_mean, multinomial_cross_moment, multinomial_covariance — 0 axioms, 0 sorries) and the algebraic identity Cov = E[XᵢXⱼ] − E[Xᵢ]E[Xⱼ] = −npᵢpⱼ underlying the negative correlation."
+    }
+  ],
+  "conclusion": {
+    "summary": "All 7 theorems fully proved (0 sorries, 0 axioms): `multinomialProb_sum_one` (normalization), `multinomial_mean` (E[Xᵢ] = npᵢ via fiber grouping), `multinomial_cross_moment` (E[XᵢXⱼ] = n(n-1)pᵢpⱼ via bivariate MGF differentiation), and `multinomial_covariance` (Cov = E[XᵢXⱼ] - E[Xᵢ]E[Xⱼ] = n(n-1)pᵢpⱼ - n²pᵢpⱼ = -npᵢpⱼ by ring arithmetic).",
+    "implications": "The negative covariance -npᵢpⱼ is foundational in multivariate statistics: it determines the covariance matrix of the multinomial distribution (diagonal Var(Xᵢ) = npᵢ(1-pᵢ), off-diagonal Cov(Xᵢ,Xⱼ) = -npᵢpⱼ), which is used in the asymptotic chi-squared distribution of goodness-of-fit statistics, the delta method for functions of multinomial proportions, and the analysis of categorical data in contingency tables.",
+    "openQuestions": [
+      "Formalize the full multinomial covariance matrix $\\Sigma_{ij} = n(\\delta_{ij}p_i - p_ip_j)$ as a Mathlib matrix, prove it is positive semi-definite on the hyperplane $\\{x : \\sum x_i = 0\\}$ (equivalently, that $\\Sigma$ has eigenvalues $np_i$ with eigenvectors orthogonal to $(1,\\ldots,1)$), and connect to the chi-squared asymptotic theory",
+      "Prove the multinomial CLT: $n^{-1/2}(X_1 - np_1, \\ldots, X_k - np_k) \\xrightarrow{d} \\mathcal{N}(0, \\Sigma)$ as $n \\to \\infty$, using the formalized covariance matrix as input to a multivariate characteristic function argument"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/BinomialTheoremOQ02OQ01OQ03.lean",
+    "theorems": [
+      "multinomialProb_sum_one",
+      "multinomial_mean",
+      "multinomial_cross_moment",
+      "multinomial_covariance"
+    ],
+    "lineCount": 392,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 7
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Proves the multinomial MGF formula used in the cross-moment proof sketch"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Provides multinomial_marginal_pmf used in the mean proof, and multinomialProb_sum_one used in normalization"
+    },
+    {
+      "targetId": "binomial-theorem-oq-03",
+      "relationship": "related",
+      "description": "Provides binomial_mean and binomPMF used in the mean proof"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "related",
+      "description": "The multinomial theorem formalization underlying all results"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-01",
+      "relationship": "related",
+      "description": "PMF.multinomial integration with Mathlib — another application of the multinomial distribution infrastructure"
+    }
+  ],
+  "sorries": 0
+}

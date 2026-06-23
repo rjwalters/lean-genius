@@ -1,0 +1,196 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "legendre-partial",
+    "range": {
+      "startLine": 1,
+      "endLine": 16
+    },
+    "type": "concept",
+    "title": "Introduction and Imports",
+    "content": "The file opens with a module docstring introducing Legendre's conjecture (1798): for every positive integer $n$, there exists a prime $p$ with $n^2 < p < (n+1)^2$. This is one of the oldest open problems in number theory, now over 225 years old. The file takes a computational verification approach, confirming the conjecture for $n = 1$ through $20$ using explicit prime witnesses checked by `native_decide`.\n\nThe single import `Mathlib.Tactic` provides `native_decide` (kernel-level decision procedure for decidable propositions), `Nat.Prime` (primality predicate), and basic arithmetic lemmas. No heavy Mathlib infrastructure is needed because the proofs are purely computational — each case reduces to checking three decidable conditions: primality, lower bound, upper bound.",
+    "mathContext": "Legendre's conjecture: $\\forall n \\geq 1, \\exists p \\in \\mathbb{P}: n^2 < p < (n+1)^2$. The interval $(n^2, (n+1)^2)$ has length $2n$, which grows without bound, making the conjecture plausible by the Prime Number Theorem: the expected number of primes in the interval is approximately $\\frac{2n}{\\ln(n^2)} = \\frac{n}{\\ln n} \\to \\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Legendre's conjecture",
+      "prime gaps",
+      "consecutive perfect squares",
+      "native_decide",
+      "computational verification"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "perfect squares",
+      "Lean 4 import system"
+    ]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "legendre-partial",
+    "range": {
+      "startLine": 18,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "Formal Definitions: LegendreAt, LegendreConjecture, legendreWitness",
+    "content": "Three definitions formalize the conjecture at increasing levels of generality:\n\n1. **`LegendreAt n`**: The conjecture holds for a specific $n$ — there exists a prime $p$ with $n^2 < p < (n+1)^2$. This is the unit of work: each verified case proves `LegendreAt k` for a specific $k$.\n\n2. **`LegendreConjecture`**: The universal quantification $\\forall n \\geq 1, \\text{LegendreAt}(n)$ — the full conjecture. Stated as a separate `def` to allow referencing it as a type.\n\n3. **`legendreWitness n p`**: A helper that unpacks the existential — $p$ is prime, $n^2 < p$, and $p < (n+1)^2$. This makes the witness structure explicit for readability.\n\nThe separation between `LegendreAt` (single case) and `LegendreConjecture` (all cases) is a common formalization pattern for conjectures verified only partially: one can prove `LegendreAt k` for specific $k$ values without committing to the full conjecture.",
+    "mathContext": "$\\text{LegendreAt}(n) :\\equiv \\exists p \\in \\mathbb{N},\\; \\text{Prime}(p) \\land n^2 < p \\land p < (n+1)^2$.\n\n$\\text{LegendreConjecture} :\\equiv \\forall n \\geq 1,\\; \\text{LegendreAt}(n)$.\n\nNote the strict inequalities: the boundary values $n^2$ and $(n+1)^2$ are excluded. Since $n^2$ and $(n+1)^2$ are perfect squares and hence composite for $n \\geq 2$, the strict inequalities don't lose generality (except at $n = 1$ where $1 = 1^2$ is excluded correctly as a non-prime).",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential quantifier",
+      "universal quantifier",
+      "partial verification",
+      "Nat.Prime",
+      "conjecture formalization"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "first-order logic",
+      "Lean 4 def vs theorem"
+    ]
+  },
+  {
+    "id": "ann-verified-cases-header",
+    "proofId": "legendre-partial",
+    "range": {
+      "startLine": 37,
+      "endLine": 44
+    },
+    "type": "concept",
+    "title": "Verified Cases: Methodology",
+    "content": "The section docstring explains the verification methodology: for each $n$ from 1 to 20, we provide an explicit prime witness $p$ and verify three conditions via `native_decide`:\n1. $p$ is prime (`Nat.Prime p`)\n2. $n^2 < p$ (lower bound)\n3. $p < (n+1)^2$ (upper bound)\n\n`native_decide` compiles the proposition to native code and evaluates it, making primality testing and arithmetic comparisons essentially free for these small numbers. This is vastly faster than `decide` (which interprets in the kernel) for numbers of this size.",
+    "mathContext": "The proof term `⟨p, by native_decide⟩` constructs an existential witness: the anonymous constructor `⟨p, proof⟩` provides the witness $p$ and `native_decide` discharges the conjunction $\\text{Prime}(p) \\land n^2 < p \\land p < (n+1)^2$ by computation. Lean's kernel accepts `native_decide` proofs by reducing to `Decidable` instances.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "decidable propositions",
+      "anonymous constructor",
+      "computational verification"
+    ],
+    "prerequisites": [
+      "Lean 4 tactics",
+      "Decidable typeclass",
+      "existential witnesses"
+    ]
+  },
+  {
+    "id": "ann-first-decade",
+    "proofId": "legendre-partial",
+    "range": {
+      "startLine": 48,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "First Decade: Cases n = 1 through 10",
+    "content": "The first ten verified cases, each a one-liner `⟨witness, by native_decide⟩`. The comments list all primes in each interval, while the proof uses the smallest prime as witness:\n\n| $n$ | Interval $(n^2, (n+1)^2)$ | Gap | Primes in interval | Witness |\n|-----|--------------------------|-----|--------------------|---------|\n| 1 | $(1, 4)$ | 2 | 2, 3 | 2 |\n| 2 | $(4, 9)$ | 4 | 5, 7 | 5 |\n| 3 | $(9, 16)$ | 6 | 11, 13 | 11 |\n| 4 | $(16, 25)$ | 8 | 17, 19, 23 | 17 |\n| 5 | $(25, 36)$ | 10 | 29, 31 | 29 |\n| 6 | $(36, 49)$ | 12 | 37, 41, 43, 47 | 37 |\n| 7 | $(49, 64)$ | 14 | 53, 59, 61 | 53 |\n| 8 | $(64, 81)$ | 16 | 67, 71, 73, 79 | 67 |\n| 9 | $(81, 100)$ | 18 | 83, 89, 97 | 83 |\n| 10 | $(100, 121)$ | 20 | 101, 103, 107, 109, 113 | 101 |\n\nNotice that the number of primes in each interval generally increases as $n$ grows, consistent with the Prime Number Theorem's prediction of $\\sim n/\\ln n$ primes.",
+    "mathContext": "For each $n$, the interval $(n^2, (n+1)^2)$ has length $(n+1)^2 - n^2 = 2n$. By the Prime Number Theorem, the expected number of primes in $(n^2, (n+1)^2)$ is approximately $\\int_{n^2}^{(n+1)^2} \\frac{dt}{\\ln t} \\approx \\frac{2n}{2\\ln n} = \\frac{n}{\\ln n}$, which grows without bound. For $n = 10$: gap $= 20$, expected primes $\\approx 10/\\ln 10 \\approx 4.3$, actual = 5.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime counting function",
+      "Prime Number Theorem",
+      "native_decide",
+      "explicit witnesses"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "native_decide tactic",
+      "anonymous constructor syntax"
+    ]
+  },
+  {
+    "id": "ann-second-decade",
+    "proofId": "legendre-partial",
+    "range": {
+      "startLine": 78,
+      "endLine": 105
+    },
+    "type": "concept",
+    "title": "Second Decade: Cases n = 11 through 20",
+    "content": "The second batch of verified cases follows the same pattern. The intervals grow wider (gap $= 2n$) and contain more primes:\n\n| $n$ | Interval | Gap | Primes | Witness |\n|-----|----------|-----|--------|---------|\n| 11 | $(121, 144)$ | 22 | 127, 131, 137, 139 | 127 |\n| 12 | $(144, 169)$ | 24 | 149, 151, 157, 163, 167 | 149 |\n| 13 | $(169, 196)$ | 26 | 173, 179, 181, 191, 193 | 173 |\n| 14 | $(196, 225)$ | 28 | 197, 199, 211, 223 | 197 |\n| 15 | $(225, 256)$ | 30 | 227, 229, 233, 239, 241, 251 | 227 |\n| 16 | $(256, 289)$ | 32 | 257, 263, 269, 271, 277, 281, 283 | 257 |\n| 17 | $(289, 324)$ | 34 | 293, 307, 311, 313, 317 | 293 |\n| 18 | $(324, 361)$ | 36 | 331, 337, 347, 349, 353, 359 | 331 |\n| 19 | $(361, 400)$ | 38 | 367, 373, 379, 383, 389, 397 | 367 |\n| 20 | $(400, 441)$ | 40 | 401, 409, 419, 421, 431, 433, 439 | 401 |\n\nFor $n = 16$, the interval $(256, 289)$ contains 7 primes — the most in this range. Interestingly, $n = 14$ has only 4 primes despite a gap of 28, illustrating that prime distribution is irregular even within predictable intervals. Note that several witnesses (e.g., 197 for $n = 14$, 257 for $n = 16$, 401 for $n = 20$) are just one more than $n^2$, showing that primes can cluster near perfect squares.",
+    "mathContext": "The observation that witnesses like $197 = 14^2 + 1$ and $257 = 16^2 + 1$ are of the form $n^2 + 1$ connects to another famous open problem: are there infinitely many primes of the form $n^2 + 1$? This is a special case of Bunyakovsky's conjecture (1857), which itself is a special case of the Bateman-Horn conjecture. Friedlander and Iwaniec (1998) proved the weaker result that $a^2 + b^4$ represents infinitely many primes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "primes near squares",
+      "Bunyakovsky conjecture",
+      "prime counting",
+      "irregular prime distribution"
+    ],
+    "prerequisites": [
+      "LegendreAt definition",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "ann-summary-table",
+    "proofId": "legendre-partial",
+    "range": {
+      "startLine": 107,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Summary Table and Additional Properties",
+    "content": "A doc comment presents the complete witness table for all 20 verified cases, providing a bird's-eye view of the verification. The table reveals a pattern: the smallest prime witness in $(n^2, (n+1)^2)$ tends to be close to $n^2$ — typically within $n$ of the left endpoint. This is consistent with Cramér's conjecture (1936): the largest prime gap below $x$ is $O((\\log x)^2)$, which for $x = n^2$ gives gaps of $O((\\log n)^2) \\ll n = $ half the interval length.\n\nThe 'Additional Properties' section header introduces the gap formula theorem that follows.",
+    "mathContext": "Cramér's conjecture (1936): $\\limsup_{n \\to \\infty} \\frac{p_{n+1} - p_n}{(\\log p_n)^2} = 1$, where $p_n$ is the $n$-th prime. If true, the largest gap near $n^2$ is $O((\\log n^2)^2) = O(4(\\log n)^2)$, which is much smaller than the interval length $2n$. This explains why the witnesses are always found quickly near the left endpoint. Granville (1995) conjectured a refined version with constant $2e^{-\\gamma} \\approx 1.1229$ instead of 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cramér's conjecture",
+      "prime gap distribution",
+      "Granville's refinement",
+      "witness table"
+    ],
+    "prerequisites": [
+      "prime gaps",
+      "logarithmic estimates"
+    ]
+  },
+  {
+    "id": "ann-gap-formula",
+    "proofId": "legendre-partial",
+    "range": {
+      "startLine": 138,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Gap Formula: Linear Growth of Interval Length",
+    "content": "**`square_gap_linear`**: $(n+1)^2 = n^2 + 2n + 1$, proved by `ring`. This identity shows that the gap between consecutive perfect squares grows linearly: the interval $(n^2, (n+1)^2)$ has length exactly $2n$.\n\nThis linear growth is key to understanding why Legendre's conjecture is weaker than Bertrand's postulate: Bertrand guarantees a prime in $(n, 2n)$ (interval length $n$), while Legendre asks for a prime in $(n^2, (n+1)^2)$ (interval length $2n$). Near $x = n^2$, the Legendre interval has length $2\\sqrt{x}$, while the Bertrand interval starting at $x$ has length $x$. So Legendre asks for primes in a much shorter interval relative to the numbers involved.",
+    "mathContext": "$(n+1)^2 - n^2 = 2n + 1 - 1 = 2n$ (open interval length). Relative to $n^2$: the interval has relative length $\\frac{2n}{n^2} = \\frac{2}{n} \\to 0$. By the Prime Number Theorem, the prime density near $n^2$ is $\\frac{1}{\\ln(n^2)} = \\frac{1}{2\\ln n}$. Expected primes in $(n^2, (n+1)^2) \\approx \\frac{2n}{2\\ln n} = \\frac{n}{\\ln n} \\to \\infty$, so heuristically the conjecture should hold.\n\nThe `ring` tactic proves the identity by normalizing both sides to the same polynomial normal form — no axioms or external lemmas needed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ring tactic",
+      "gap analysis",
+      "Bertrand's postulate comparison",
+      "prime density"
+    ],
+    "prerequisites": [
+      "polynomial identity",
+      "ring tactic",
+      "Prime Number Theorem (heuristic)"
+    ]
+  },
+  {
+    "id": "ann-conjecture-axiom",
+    "proofId": "legendre-partial",
+    "range": {
+      "startLine": 141,
+      "endLine": 165
+    },
+    "type": "insight",
+    "title": "The Full Conjecture as an Axiom",
+    "content": "The full Legendre conjecture is stated as an `axiom` because the general case remains unproven since 1798. This is the formalization's honest declaration: we can verify finite cases but cannot prove the universal statement.\n\nUsing `axiom` rather than `sorry` is semantically correct: the conjecture is believed true and treated as an assumption when needed by downstream theorems, but it is clearly marked as unproven. The `axiomCount: 1` in the metadata reflects this single assumption.\n\nThe closing commentary summarizes the verification: 20 cases confirmed with explicit witnesses, the gap formula proved, and the full conjecture stated. The note that the conjecture 'is believed true but unproven since 1798' places it in the pantheon of long-standing open problems alongside Goldbach's conjecture (1742, 283 years open) and the twin prime conjecture (antiquity).\n\n**Best known unconditional result** toward Legendre: Baker, Harman, and Pintz (2001) proved there is always a prime in $(x, x + x^{0.525})$ for sufficiently large $x$. Setting $x = n^2$, this gives a prime in $(n^2, n^2 + n^{1.05})$, which is a much shorter interval than $(n^2, (n+1)^2) = (n^2, n^2 + 2n)$. So the BHP result is actually stronger than Legendre's conjecture for large $n$ — but only asymptotically, and with an ineffective constant.",
+    "mathContext": "Hierarchy of prime gap conjectures (strongest to weakest):\n\n1. **Cramér's conjecture**: gap $\\leq C(\\ln p_n)^2$ — implies all below\n2. **Oppermann's conjecture**: prime in $(n^2, n^2 + n)$ AND $(n^2 + n, (n+1)^2)$\n3. **Legendre's conjecture**: prime in $(n^2, (n+1)^2)$\n4. **Andrica's conjecture**: $\\sqrt{p_{n+1}} - \\sqrt{p_n} < 1$ — equivalent to Legendre\n5. **Brocard's conjecture**: at least 4 primes between $p_n^2$ and $p_{n+1}^2$ for $n \\geq 2$\n6. **Bertrand's postulate**: prime in $(n, 2n)$ — PROVED (Chebyshev 1852)\n\n`axiom legendre_conjecture : LegendreConjecture` introduces a new axiom into Lean's logical foundation. This is tracked and reported so users know exactly what assumptions the formalization rests on.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom declaration",
+      "open conjecture",
+      "Baker-Harman-Pintz theorem",
+      "Oppermann's conjecture",
+      "Andrica's conjecture",
+      "Cramér's conjecture"
+    ],
+    "prerequisites": [
+      "Lean 4 axiom keyword",
+      "LegendreConjecture definition",
+      "prime gap conjectures"
+    ]
+  }
+]

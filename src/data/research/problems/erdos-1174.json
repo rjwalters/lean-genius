@@ -1,0 +1,97 @@
+{
+  "slug": "erdos-1174",
+  "title": "Erdős #1174",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(a) Is there a K4-free graph whose every countable edge-coloring has a monochromatic triangle? (b) Is there a graph with no K_aleph1 whose every countable edge-coloring has a monochromatic K_aleph0?",
+    "plain": "Can highly clique-restricted graphs still force monochromatic cliques under countably many edge colors?",
+    "whyMatters": [
+      "This is an Erdos-Hajnal Ramsey question at the boundary between graph structure and set theory.",
+      "The finite and infinite parts ask how much clique-freeness is compatible with countable-color Ramsey behavior.",
+      "The Lean file currently supplies clean definitions and a sanity-check theorem rather than deep consistency machinery."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lean defines clique, K4-free, cardinal-clique-free, monochromatic triangle, monochromatic countable clique, and the finite/infinite Erdos-Hajnal properties.",
+      "The statements `erdos_1174a` and `erdos_1174b` formalize the two existence questions.",
+      "Lean proves `complete_graph_not_k4free`, showing the complete graph is excluded by the finite constraint."
+    ],
+    "open": [
+      "Both ZFC existence questions remain open in this file.",
+      "Shelah consistency, Nesetril-Rodl finite-color context, and Ramsey theorem discussion are comments only, not Lean theorems.",
+      "The file currently has definitions and one theorem, with no active axioms or sorries."
+    ],
+    "goal": "Present this entry as a definition/context formalization until the known consistency and finite-color theorems are made into Lean declarations."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-15T17:01:06.708Z",
+    "iteration": 1,
+    "focus": "Metadata now describes the two Erdos-Hajnal graph questions, the formal definitions, and the lone theorem without claiming Shelah or Ramsey results are proved in Lean.",
+    "blockers": [
+      "Known consistency results are not formalized as Lean theorems.",
+      "The current file proves only the complete-graph K4 obstruction."
+    ],
+    "nextAction": "A useful next slice would add formal statements for the finite-color Nesetril-Rodl context or Shelah consistency results before using them as proof anchors.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1174 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "ramsey-theory",
+    "set-theory",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-117",
+    "erdos-1174"
+  ],
+  "references": {
+    "papers": [
+      "Shelah consistency results for Erdos-Hajnal graph properties",
+      "Nesetril-Rodl finite-color Ramsey context"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1174"
+    ],
+    "mathlib": [
+      "SimpleGraph",
+      "Cardinal.aleph"
+    ]
+  },
+  "started": "2026-01-15T17:01:06.708Z",
+  "lastUpdate": "2026-03-13T07:52:17.059Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1174Problem.lean",
+      "filename": "Erdos1174Problem.lean",
+      "lineCount": 232,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1174Problem.lean"
+    }
+  ]
+}

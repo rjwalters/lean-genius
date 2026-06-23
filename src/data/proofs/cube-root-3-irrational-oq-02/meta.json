@@ -1,0 +1,176 @@
+{
+  "id": "cube-root-3-irrational-oq-02",
+  "title": "∛3 Irrationality: Eisenstein Criterion Proof",
+  "slug": "cube-root-3-irrational-oq-02",
+  "description": "Proves ∛3 is irrational via Eisenstein's irreducibility criterion: X³−3 is irreducible over ℚ (Eisenstein at p=3), so it has no rational roots. If ∛3=q∈ℚ then q³=3, making q a rational root of X³−3. Contradiction. A more algebraically systematic approach than the direct integer-bounds proof.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "date": "2026-04-13",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CubeRoot3IrrationalOQ02.lean",
+    "tags": [
+      "irrationality",
+      "number-theory",
+      "polynomial-theory",
+      "eisenstein",
+      "cube-roots",
+      "irreducibility"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-13",
+    "axiomCount": 0,
+    "assumptions": "None — fully verified. Depends on CubeRoot2IrrationalOQ03 for eisenstein_X_pow_sub_of_sqfree_factor.",
+    "lineCount": 123,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "originalContributions": [
+      "X3_sub_3_irred: X³−3 is irreducible over ℚ (instance of Eisenstein general theorem)",
+      "X3_sub_3_no_rat_root: X³−3 has no rational roots (from irreducibility + degree argument)",
+      "cbrt3_irrational_via_eisenstein: ∛3 is irrational via the algebraic approach"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The irrationality of ∛3 was known to ancient mathematicians, though the systematic algebraic approach used here is a 19th-century development. The Greek tradition treated each irrational case ad hoc: Theaetetus (c. 369 BC, as reported in Plato's Theaetetus) showed √n is irrational for every non-square integer n ≤ 17 by geometric incommensurability arguments. The cube-root case requires harder integer arithmetic and was likely handled by similar exhaustion.\n\nThe modern algebraic approach via polynomial irreducibility belongs to the Berlin school of the 1840s. **Theodor Schönemann** published the criterion in 1846 (Crelle's Journal 32, p. 100), and **Gotthold Eisenstein** rediscovered and popularized it in his 1850 paper «Über die Irreduktibilität und einige andere Eigenschaften der Gleichung» (Crelle's Journal 39, p. 160–179). Eisenstein, a prodigy who died at 29 in 1852, was a favorite of Gauss; the criterion is sometimes called the Schönemann–Eisenstein theorem.\n\nThe statement: if a prime p divides every non-leading coefficient of an integer polynomial, p does not divide the leading coefficient, and p² does not divide the constant term, then the polynomial is irreducible over ℤ — and hence over ℚ by **Gauss's lemma** (1801, Disquisitiones Arithmeticae §42), which states that a primitive polynomial is ℤ-irreducible iff it is ℚ-irreducible. For X³−3 at p=3: 3 ∣ −3 (constant), 9 ∤ −3, 3 ∤ 1 (leading). Three trivial divisibility checks replace the classical case analysis. The same criterion proves irreducibility of cyclotomic polynomials Φₚ(X) = (Xᵖ−1)/(X−1) at any prime p (after the substitution X ↦ X+1), making Eisenstein indispensable for Galois theory.",
+    "problemStatement": "**Open Question OQ-02 from cube-root-3-irrational**:\n\nThe gallery already has `CubeRoot3Irrational.lean` which proves ∛3 is irrational via `irrational_nrt_of_notint_nrt` — an existence argument checking no perfect cube equals 3. The open question: can we give a more algebraically systematic proof using Eisenstein's irreducibility criterion?\n\n**This file answers yes**: X³−3 is irreducible → no rational roots → ∛3 ∉ ℚ.",
+    "proofStrategy": "**Three steps:**\n\n1. **Eisenstein irreducibility** (`X3_sub_3_irred`): Apply `eisenstein_X_pow_sub_of_sqfree_factor 3 3 3` from `CubeRoot2IrrationalOQ03`. The prime p=3 divides 3 (constant term) but 9 ∤ 3, and 3 ∤ 1 (leading coefficient). Therefore X³−3 is irreducible over ℚ.\n\n2. **No rational roots** (`X3_sub_3_no_rat_root`): If q:ℚ is a root, then (X−Cq) | (X³−3). By irreducibility, either (X−Cq) is a unit (impossible: natDegree=1≠0) or R is a unit (then natDegree 3 = 1+0 = 1, contradiction). Uses `natDegree_eq_zero_of_isUnit`.\n\n3. **Irrationality** (`cbrt3_irrational_via_eisenstein`): Suppose ∛3 = q ∈ ℚ. Then q³ = 3 (by rpow arithmetic), so q is a root of X³−3. But X³−3 has no rational roots. Contradiction.",
+    "keyInsights": [
+      "Eisenstein at p=3 is immediate: the three conditions norm_num to True in one line via eisenstein_X_pow_sub_of_sqfree_factor from CubeRoot2IrrationalOQ03",
+      "The irreducibility → no rational roots argument uses `natDegree_eq_zero_of_isUnit` which was already available in the gallery",
+      "The rpow arithmetic `((3:ℝ)^(1/3))^3 = 3` uses the same Real.rpow_mul pattern as all the other cube root files",
+      "The key advantage over the direct proof: Eisenstein simultaneously shows X³−3 has NO rational roots, not just that ∛3 is not an integer — a strictly stronger algebraic statement",
+      "**The two-case structure is canonical for irreducible polynomials**: The proof of 'irreducible → no roots' uses `Irreducible.isUnit_or_isUnit` to split on which factor is a unit. Case `inl` (X−Cq is a unit) is contradicted by natDegree=1≠0. Case `inr` (cofactor R is a unit) gives natDegree(X³−3) = natDegree(X−Cq) + 0 = 1, contradicting natDegree=3. This two-case pattern is the universal argument: any irreducible polynomial of degree ≥ 2 has no roots in its coefficient field.",
+      "**Eisenstein's strength over the Rational Root Theorem**: The Rational Root Theorem (test all p/q with p∣3 and q∣1) also disproves rational roots of X³−3, but only ad hoc — it must be reapplied for each new polynomial. Eisenstein proves irreducibility, which automatically rules out roots in *every* algebraic-degree-1 element. This is why Eisenstein is the canonical tool for Galois-theoretic arguments (showing minimal polynomials have a target degree), while the Rational Root Theorem suffices only for the single 'no rational roots' question."
+    ],
+    "prerequisites": [
+      "CubeRoot2IrrationalOQ03.lean: eisenstein_X_pow_sub_of_sqfree_factor general theorem",
+      "Polynomial ring theory: dvd_iff_isRoot, Irreducible.isUnit_or_isUnit, natDegree_eq_zero_of_isUnit",
+      "Real.rpow_mul for ((3:ℝ)^(1/3))^3 = 3"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-imports",
+      "title": "Imports and Mathematical Strategy",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "File header explaining the three-step Eisenstein strategy: (1) irreducibility, (2) no rational roots, (3) irrationality. Imports CubeRoot2IrrationalOQ03 (for eisenstein_X_pow_sub_of_sqfree_factor) and Mathlib.Data.Real.Irrational. Opens Polynomial namespace.",
+      "mathContext": "The key import: `eisenstein_X_pow_sub_of_sqfree_factor n m p hn hp hdvd hndvd hm : Irreducible (X^n - C(m:ℚ))` when p|m but p²∤m. Gauss's lemma is built into the Mathlib version."
+    },
+    {
+      "id": "sec-irred",
+      "title": "PART 1: X³−3 is Irreducible over ℚ",
+      "startLine": 34,
+      "endLine": 49,
+      "summary": "X3_sub_3_irred: Irreducible (X^3 - C 3 : ℚ[X]). Single-line proof applying eisenstein_X_pow_sub_of_sqfree_factor 3 3 3 with five norm_num side conditions.",
+      "mathContext": "Eisenstein conditions for $X^3 - 3$ at $p = 3$: (1) $2 \\leq 3$, (2) $\\text{Nat.Prime}\\,3$, (3) $3 \\mid 3$ (constant), (4) $\\neg\\,9 \\mid 3$, (5) $3 \\neq 0$."
+    },
+    {
+      "id": "sec-no-rat-root-setup",
+      "title": "PART 2a: Divisibility and Degree Setup",
+      "startLine": 50,
+      "endLine": 71,
+      "summary": "First half of X3_sub_3_no_rat_root: establishes (X−Cq)∣(X³−3) via dvd_iff_isRoot.mpr, destructures into cofactor R, and proves natDegree(X³−3)=3 via natDegree_sub_eq_left_of_natDegree_lt.",
+      "mathContext": "$\\deg(X^3) = 3 > 0 = \\deg(C\\,3)$, so $\\deg(X^3 - C\\,3) = 3$ via `natDegree_sub_eq_left_of_natDegree_lt` with `natDegree_pow` and `natDegree_X`."
+    },
+    {
+      "id": "sec-no-rat-root-cases",
+      "title": "PART 2b: isUnit_or_isUnit Case Analysis",
+      "startLine": 72,
+      "endLine": 88,
+      "summary": "Second half: cases X3_sub_3_irred.isUnit_or_isUnit hR. Case inl: X−Cq is a unit, natDegree=1≠0 (omega). Case inr: cofactor R is a unit, natDegree(X³−3)=1+0=1≠3 (norm_num).",
+      "mathContext": "Irreducibility splits $X^3 - 3 = (X-q) \\cdot R$. \\textbf{inl}: $\\deg(X-q) = 0 \\neq 1$ (omega). \\textbf{inr}: $\\deg(X^3-3) = \\deg(X-q) + 0 = 1 \\neq 3$ (norm\\_num). Both cases give contradiction."
+    },
+    {
+      "id": "sec-irrational",
+      "title": "PART 3: Irrationality via Eisenstein",
+      "startLine": 89,
+      "endLine": 123,
+      "summary": "cbrt3_irrational_via_eisenstein: Irrational ((3:ℝ)^(1/3:ℝ)). Four-step proof: intro ⟨q,hq⟩, derive q³=3 via rpow_mul, cast to ℚ via exact_mod_cast, show q is a root, apply X3_sub_3_no_rat_root.",
+      "mathContext": "The rpow step: $((3)^{1/3})^3 = 3^{(1/3)\\cdot 3} = 3^1 = 3$ via `Real.rpow_mul` (requires $3 \\geq 0$). Cast: $(q : \\mathbb{R})^3 = 3 \\Rightarrow q^3 = 3 : \\mathbb{Q}$ by `exact_mod_cast`."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cube-root-3-irrational",
+      "relationship": "extends",
+      "description": "Parent proof using irrational_nrt_of_notint_nrt. This file gives a more algebraic proof via Eisenstein and polynomial irreducibility, proving the strictly stronger statement that X³−3 has no rational roots at all."
+    },
+    {
+      "targetId": "cube-root-2-irrational",
+      "relationship": "thematic",
+      "description": "Sibling cube-root irrationality. The general Eisenstein lemma `eisenstein_X_pow_sub_of_sqfree_factor` used here lives in `CubeRoot2IrrationalOQ03.lean` (no standalone gallery entry yet) — that file proves the same template for X^n−m whenever m has a squarefree prime factor p. ∛2 follows from this template at p=2, m=2."
+    },
+    {
+      "targetId": "cube-root-3-irrational-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Child: builds on X3_sub_3_irred to derive the field extension degree [ℚ(∛3):ℚ] = 3 via `adjoin_nthRoot_finrank`. The irreducibility of X³−3 makes it the minimal polynomial of ∛3 over ℚ (up to monic association), and minimal-polynomial degree equals the field extension degree."
+    },
+    {
+      "targetId": "cube-root-3-irrational-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Child: uses [ℚ(∛3):ℚ] = 3 to prove {1, ∛3, (∛3)²} is ℚ-linearly independent. The minimal-polynomial argument forces any ℚ-linear dependence among {1, α, α²} (where α = ∛3) to come from a degree ≤ 2 annihilating polynomial — but minpoly has degree 3, so no such polynomial exists."
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "thematic",
+      "description": "AngleTrisection also uses Eisenstein irreducibility (for 8X³−6X+1, after rescaling X ↦ Y/2 to get Y³−3Y−1, then translating to a form Eisenstein applies to). Same algebraic technique applied to a different polynomial in the impossibility proof — the minimal polynomial of cos(20°) has degree 3 over ℚ, but compass-and-straightedge constructible numbers have minimal-polynomial degree a power of 2."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "thematic",
+      "description": "Eisenstein's criterion is the standard tool for constructing irreducible polynomials of arbitrary degree, which are used to exhibit field extensions with prescribed Galois groups. The Abel–Ruffini construction of explicit polynomials of degree 5 with Galois group S₅ (hence unsolvable by radicals) typically begins with an Eisenstein-irreducible quintic."
+    }
+  ],
+  "conclusion": {
+    "summary": "∛3 is irrational via the Eisenstein criterion: X³−3 irreducible (Eisenstein at p=3) → no rational roots → ∛3 ∉ ℚ. Three theorems, 0 sorries, 0 axioms.",
+    "implications": "**Algebraic strength**: The Eisenstein approach proves the stronger statement that X³−3 has NO rational roots at all, not just that ∛3 is not an integer. This means 3^(1/3)·ω and 3^(1/3)·ω² (complex cube roots of unity) are also not rational — trivially, but the irreducibility argument handles all roots uniformly. More importantly, irreducibility makes X³−3 the **minimal polynomial** of ∛3 over ℚ, which immediately yields [ℚ(∛3):ℚ] = 3 (formalized in the OQ-01 child file).\n\n**Generalizability**: The exact same proof (via eisenstein_X_pow_sub_of_sqfree_factor) works for any X^n − m where m has a prime factor p with p|m but p²∤m. This is the systematic algebraic condition for irrationality of n-th roots, and underwrites the Mathlib infrastructure for adjoining n-th roots in general.\n\n**Comparison with the Rational Root Theorem**: The Rational Root Theorem gives a quicker disproof of rational roots of X³−3 (test ±1, ±3), but only ad hoc. Eisenstein is the only method that simultaneously proves irreducibility — which is what Galois-theoretic arguments require, since the minimal polynomial of α determines the entire field extension ℚ(α).",
+    "openQuestions": [
+      "Can [ℚ(∛3):ℚ] = 3 be derived as a corollary? Resolved in child `cube-root-3-irrational-oq-02-oq-01` via `adjoin_nthRoot_finrank 3 3 3 = 3`, building directly on `X3_sub_3_irred` proved here.",
+      "Is {1, ∛3, (∛3)²} linearly independent over ℚ? Resolved in child `cube-root-3-irrational-oq-02-oq-02` via a minimal-polynomial degree argument — any ℚ-linear dependence among {1, α, α²} would give a degree-≤2 polynomial vanishing at α = ∛3, contradicting deg(minpoly ℚ ∛3) = 3.",
+      "Can the converse be proved: if X^n−m is irreducible over ℚ, then m is not a perfect n-th power? Half of the converse holds trivially (a perfect n-th power gives a rational root, so X^n−m is reducible by Eisenstein-style descent). The interesting refinement: when is X^n−m irreducible? The full classical answer (Vahlen–Capelli / Lang Algebra VI.9.1): X^n−a is irreducible over a field K iff a is not a p-th power in K for any prime p dividing n, AND when 4∣n, a ∉ −4·K⁴. The 4∣n caveat is essential and historically delicate.",
+      "Does the Eisenstein approach extend to **non-prime** radicands? For example, X^n − 6 is Eisenstein-irreducible at p=2 or p=3 (both work, since 2∣6, 4∤6, and 3∣6, 9∤6). What about X^n − 30? Eisenstein applies at p=2, 3, or 5 — any squarefree m gives an Eisenstein-irreducible X^n − m. The criterion fails for m = 4, 8, 9, 12 (all containing a p² factor); these require Vahlen–Capelli."
+    ]
+  },
+  "leanFile": {
+    "lineCount": 123,
+    "path": "Proofs/CubeRoot3IrrationalOQ02.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 3
+  },
+  "references": [
+    {
+      "authors": "T. Schönemann",
+      "title": "Von denjenigen Moduln, welche Potenzen von Primzahlen sind",
+      "year": "1846",
+      "note": "First publication of the irreducibility criterion (Crelle's Journal 32, p. 100), four years before Eisenstein's rediscovery; the criterion is sometimes called the Schönemann–Eisenstein theorem."
+    },
+    {
+      "authors": "G. Eisenstein",
+      "title": "Über die Irreductibilität und einige andere Eigenschaften der Gleichung, von welcher die Theilung der ganzen Lemniscate abhängt",
+      "year": "1850",
+      "note": "Eisenstein's independent presentation (Crelle's Journal 39, p. 160–179), which generalized Schönemann's result and applied it to the lemniscate-division equation; this is the version that became canonical."
+    },
+    {
+      "authors": "C. F. Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "note": "§42 contains Gauss's Lemma: a primitive integer polynomial is ℤ-irreducible iff ℚ-irreducible. This is the bridge that makes Eisenstein over ℤ extend to ℚ."
+    },
+    {
+      "authors": "S. Lang",
+      "title": "Algebra (revised 3rd ed.)",
+      "year": "2002",
+      "note": "Chapter VI §9 contains the Vahlen–Capelli theorem characterizing irreducibility of X^n − a in full generality, including the subtle 4∣n case."
+    },
+    {
+      "authors": "Mathlib Contributors",
+      "title": "Polynomial.irreducible_of_eisenstein_criterion",
+      "year": "2024",
+      "note": "Mathlib implementation of Eisenstein's criterion used in CubeRoot2IrrationalOQ03"
+    }
+  ],
+  "sorries": 0
+}

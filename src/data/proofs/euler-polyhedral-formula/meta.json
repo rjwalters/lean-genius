@@ -1,0 +1,293 @@
+{
+  "id": "euler-polyhedral-formula",
+  "title": "Euler's Polyhedral Formula",
+  "slug": "euler-polyhedral-formula",
+  "description": "Euler's polyhedral formula V-E+F=2 (Wiedijk #13), proved constructively via structural induction on polyhedra built from a tetrahedron. Includes complete Platonic solid classification (only 5 exist), K₅/K₃,₃ non-planarity proofs, minimum degree bounds via Mathlib's handshaking lemma, genus generalization V-E+F=2-2g, and Descartes' angular deficiency connection.",
+  "meta": {
+    "wiedijkNumber": 13,
+    "author": "Leonhard Euler (pedagogical formalization)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler_characteristic",
+    "date": "1758",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/EulerPolyhedralFormula.lean",
+    "tags": [
+      "topology",
+      "geometry",
+      "polyhedra",
+      "wiedijk-100",
+      "euler-characteristic"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure for modeling polyhedra",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Sum_degrees_eq_twice_card_edges",
+        "description": "Handshaking lemma: sum of degrees = 2|E|",
+        "module": "Mathlib.Combinatorics.SimpleGraph.DegreeSum"
+      }
+    ],
+    "originalContributions": [
+      "Axiom-free constructive proof of V-E+F=2 via ConstructiblePoly structural induction",
+      "Complete Platonic solid classification from Schläfli inequality (exactly 5 solutions)",
+      "K₅ and K₃,₃ non-planarity via edge bounds (both PolyhedralGraph and SimpleGraph versions)",
+      "Minimum degree bound using Mathlib's handshaking lemma"
+    ],
+    "dateAdded": "2025-12-27",
+    "axiomCount": 1,
+    "lineCount": 1092,
+    "assumptions": "1 axiom (euler_formula_axiom: V-E+F=2 for PolyhedralGraph, needed because Mathlib lacks planarity). The constructive ConstructiblePoly proof is axiom-free.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 65,
+    "definitionCount": 33
+  },
+  "overview": {
+    "historicalContext": "Euler discovered this formula in 1758 while studying polyhedra, though René Descartes had noticed a closely related result in 1639 (remaining unpublished until 1860). The formula V - E + F = 2 is one of the most beautiful results in mathematics, connecting three apparently unrelated counts — vertices, edges, and faces — through a single universal constant.\n\nCauchy provided the first rigorous proof in 1813 using triangulation, reducing a general polyhedron to the sphere. Legendre gave an independent spherical geometry proof the same year. The formula is equivalent to the topological statement that every convex polyhedron is homeomorphic to a sphere, whose Euler characteristic χ = 2. Poincaré generalized this in 1895 to all compact orientable surfaces: χ = 2 − 2g for genus g, founding algebraic topology. The Euler characteristic became the first example of a topological invariant preserved under continuous deformation.",
+    "problemStatement": "**Theorem (Euler, 1758)**: For any convex polyhedron with V vertices, E edges, and F faces:\n\n$$V - E + F = 2$$\n\nThis is Wiedijk's 100 Theorems #13 and represents a fundamental topological invariant.",
+    "text": "A 1092-line formalization of Euler's polyhedral formula V-E+F=2 (Wiedijk #13) with 65 theorems, 33 definitions, 1 axiom, 0 sorries. The core result is proved axiom-free by constructive induction on `ConstructiblePoly` (tetrahedron base case, edge/face subdivision steps). Includes complete Platonic solid classification via Schläfli inequality, K₅ and K₃,₃ non-planarity via edge bounds, minimum degree bounds using Mathlib's handshaking lemma, genus generalization V-E+F=2-2g with K₇-on-torus embedding, and Descartes' angular deficiency connection.",
+    "proofStrategy": "**Proof by Constructive Induction (Edge/Face Subdivision)**:\n\n1. **Base Case**: The tetrahedron has V=4, E=6, F=4, so 4 - 6 + 4 = 2\n2. **Inductive Step**: Build all polyhedra from the tetrahedron via two operations:\n   - `subdivideEdge`: Insert a vertex on an edge, splitting it in two (V+1, E+1, F unchanged)\n   - `subdivideFace`: Insert an edge across a face, splitting it in two (V unchanged, E+1, F+1)\n3. Both operations preserve V - E + F\n4. By structural induction on ConstructiblePoly, all constructible polyhedra have V - E + F = 2",
+    "keyInsights": [
+      "**Topological Invariant:** $\\chi = V - E + F$ depends only on the surface type, not the triangulation. Any two triangulations of the sphere give $\\chi = 2$. This is the simplest example of a topological invariant — a quantity unchanged by continuous deformation.",
+      "**Genus Generalization:** $V - E + F = 2 - 2g$ for compact orientable surfaces of genus $g$. Sphere ($g=0$): $\\chi = 2$. Torus ($g=1$): $\\chi = 0$. Double torus ($g=2$): $\\chi = -2$. The genus counts 'handles' on the surface.",
+      "**Constructive Induction:** The proof builds all polyhedra from a tetrahedron ($V=4, E=6, F=4, \\chi=2$) via `subdivideEdge` ($V+1, E+2, F+1$: $\\Delta\\chi = 0$) and `subdivideFace` ($V, E+1, F+1$: $\\Delta\\chi = 0$). Both operations preserve $\\chi$.",
+      "**Platonic Solid Bound:** The Schläfli inequality $2p + 2q > pq$ (from Euler + double counting: $pF = 2E = qV$) limits $\\{p,q\\}$-regular polyhedra to exactly 5 solutions: $\\{3,3\\}, \\{3,4\\}, \\{4,3\\}, \\{3,5\\}, \\{5,3\\}$ — the tetrahedron, octahedron, cube, icosahedron, dodecahedron.",
+      "**Beyond Polyhedra:** $\\chi$ connects to algebraic topology: $\\chi = \\sum(-1)^k \\text{rank}(H_k)$ (alternating sum of Betti numbers), linking combinatorial counting to homology groups — the Euler-Poincaré theorem."
+    ],
+    "prerequisites": [
+      "Point-set topology",
+      "Geometry (Euclidean, combinatorial)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring (what the file proves, the constructive-induction approach, axiom status, and references) followed by imports and the `EulerPolyhedral` namespace declaration.",
+      "mathContext": "Euler's polyhedral formula $V - E + F = 2$ (Wiedijk #13)."
+    },
+    {
+      "id": "part1-polyhedral-structure",
+      "title": "Part 1: Polyhedral Graph Structure (Axiomatic)",
+      "startLine": 47,
+      "endLine": 65,
+      "summary": "Defines the `PolyhedralGraph` structure — the 'weak' representation recording only V, E, F counts (with the bounds 4 ≤ V, 4 ≤ F, 6 ≤ E) but no topological structure — and `eulerCharacteristic G = V - E + F`. Because this carries no embedding data, the formula must be axiomatized for this representation (Part 5).",
+      "mathContext": "$\\chi(G) = V - E + F$ on the count-only `PolyhedralGraph`; the lack of topological structure forces the single axiom."
+    },
+    {
+      "id": "part2-constructible",
+      "title": "Part 2: Constructible Polyhedra (Axiom-Free Proof)",
+      "startLine": 66,
+      "endLine": 287,
+      "summary": "Defines `ConstructiblePoly` inductively from a tetrahedron via `subdivideEdge` (V+1, E+1, F unchanged) and `subdivideFace` (V, E+1, F+1). Proves `euler_constructible`: V-E+F=2 by structural induction with base case 4-6+4=2. Also proves edge bounds (E ≤ 3V-6, E ≤ 3F-6).",
+      "mathContext": "The key insight: both subdivision operations preserve $\\chi = V - E + F$. subdivideEdge adds a vertex and splits an edge ($\\Delta V = +1, \\Delta E = +1, \\Delta F = 0$). subdivideFace adds an edge connecting two vertices, splitting a face ($\\Delta V = 0, \\Delta E = +1, \\Delta F = +1$). Since $\\Delta\\chi = 0$ for both, $\\chi = 2$ propagates from the tetrahedron to all constructible polyhedra."
+    },
+    {
+      "id": "part3-platonic",
+      "title": "Part 3: Platonic Solids (Axiomatic Verification)",
+      "startLine": 288,
+      "endLine": 356,
+      "summary": "Constructs all five Platonic solids as `PolyhedralGraph` instances with explicit VEF counts (tetrahedron 4-6-4, cube 8-12-6, octahedron 6-12-8, dodecahedron 20-30-12, icosahedron 12-30-20) and verifies V-E+F=2 for each.",
+      "mathContext": "The five Platonic solids are the only convex polyhedra with congruent regular polygon faces meeting the same number at each vertex: $\\{3,3\\}$ (tetrahedron), $\\{4,3\\}$ (cube), $\\{3,4\\}$ (octahedron), $\\{5,3\\}$ (dodecahedron), $\\{3,5\\}$ (icosahedron)."
+    },
+    {
+      "id": "part4-5-axiom",
+      "title": "Parts 4-5: Edge Operations and Axiomatic Formula",
+      "startLine": 357,
+      "endLine": 396,
+      "summary": "Part 4: `edge_removal_invariant` and `edge_contraction_invariant` prove chi-preservation for reduction operations. Part 5: `euler_formula_axiom` (the single axiom) and the main `euler_polyhedral_formula` restatement V-E+F=2.",
+      "mathContext": "The axiom `euler_formula_axiom` bridges the gap between the constructive proof (which works for `ConstructiblePoly`) and general polyhedral graphs. Mathlib lacks formal planarity definitions, so this axiom is needed for the general `PolyhedralGraph` representation."
+    },
+    {
+      "id": "part6-applications",
+      "title": "Part 6: Applications — Edge Bounds, K5, K3,3",
+      "startLine": 397,
+      "endLine": 451,
+      "summary": "Derives `edge_vertex_bound` (E ≤ 3V-6) and `edge_face_bound` (E ≤ 3F-6) from Euler's formula. Proves K5 non-planarity (`k5_not_planar`: 10 > 3·5-6=9) and K3,3 non-planarity (`k33_not_planar`: 9 > 2·6-4=8 via the bipartite bound).",
+      "mathContext": "K5 has $V=5, E=10$: since $E = 10 > 9 = 3V - 6$, K5 violates the edge bound and is non-planar. K3,3 has $V=6, E=9$: since K3,3 is bipartite (no triangles), the tighter bound $E \\leq 2V - 4 = 8$ applies, and $E = 9 > 8$."
+    },
+    {
+      "id": "part7-topology",
+      "title": "Part 7: Connection to Topology",
+      "startLine": 452,
+      "endLine": 462,
+      "summary": "Proves `euler_is_invariant`: any two polyhedral graphs have the same Euler characteristic, since both equal 2 by the formula — exhibiting χ as a topological invariant independent of the particular polyhedron. Closes the `EulerPolyhedral` namespace.",
+      "mathContext": "$\\chi(G_1) = \\chi(G_2) = 2$ for all polyhedral graphs $G_1, G_2$: the Euler characteristic depends only on topological type, not on the specific triangulation."
+    },
+    {
+      "id": "part8-simplegraph",
+      "title": "Part 8: SimpleGraph Bridge",
+      "startLine": 463,
+      "endLine": 612,
+      "summary": "Connects the custom `PolyhedralGraph` to Mathlib's `SimpleGraph` via `PlanarEmbedding` structure. Proves `euler_for_planar_graph`, `edge_bound_planar`, and `exists_vertex_degree_le_five` using Mathlib's `sum_degrees_eq_twice_card_edges` (handshaking lemma). Reproofs K5/K3,3 non-planarity in the SimpleGraph framework.",
+      "mathContext": "The minimum degree bound proof: assume all degrees $\\geq 6$, then by handshaking $\\sum \\deg(v) = 2E$, so $6V \\leq 2E$, hence $3V \\leq E$. But Euler gives $E \\leq 3V - 6$, so $3V \\leq 3V - 6$ — contradiction. Therefore some vertex has degree $\\leq 5$."
+    },
+    {
+      "id": "part9-genus",
+      "title": "Part 9: Genus Generalization",
+      "startLine": 613,
+      "endLine": 707,
+      "summary": "`SurfaceEmbedding` structure for genus-g surfaces with V-E+F=2-2g. Defines `EulerGenus` structure, proves K7 embeds on the torus (genus 1), and derives surface-specific edge bounds. Computes the genus of complete graphs.",
+      "mathContext": "The Euler-Poincaré formula: for a surface of genus $g$ (number of handles), $V - E + F = 2 - 2g = \\chi$. A sphere has $g=0$, a torus has $g=1$ ($\\chi=0$). K7 embeds on the torus: $V=7, E=21, F=14$, and $7-21+14=0=2-2\\cdot1$."
+    },
+    {
+      "id": "part10-trees",
+      "title": "Part 10: Constructible Tree Formula",
+      "startLine": 708,
+      "endLine": 803,
+      "summary": "Defines `ConstructibleTree` inductively (single vertex + edge attachment). Proves the tree formula V=E+1 by structural induction: a tree is a polyhedron with F=1 (one face, the exterior), so V-E+1=2 gives V=E+1.",
+      "mathContext": "A tree on $V$ vertices has $E = V - 1$ edges. This follows from Euler: a connected planar graph with one face has $V - E + 1 = 2$, so $E = V - 1$."
+    },
+    {
+      "id": "part11-degree",
+      "title": "Part 11: Average Degree Bound for Planar Graphs",
+      "startLine": 804,
+      "endLine": 840,
+      "summary": "`PlanarDegree` namespace: proves average degree < 6 for planar graphs and that every planar graph has a vertex of degree ≤ 5, using Mathlib's handshaking lemma.",
+      "mathContext": "For a planar graph: $\\bar{d} = 2E/V \\leq 2(3V-6)/V = 6 - 12/V < 6$. Since average degree $< 6$, some vertex must have degree $\\leq 5$."
+    },
+    {
+      "id": "part12-descartes",
+      "title": "Part 12: Descartes' Theorem on Total Angular Deficiency",
+      "startLine": 841,
+      "endLine": 881,
+      "summary": "Proves `descartes_euler`: total angular deficiency of a convex polyhedron equals $4\\pi$. For regular polyhedra, `regular_descartes` gives $V(2\\pi - q\\alpha) = 4\\pi$ where $q$ faces meet at each vertex with face angle $\\alpha$.",
+      "mathContext": "At each vertex of a convex polyhedron, the angular deficiency is $\\delta_v = 2\\pi - \\sum \\text{(face angles at } v\\text{)}$. Descartes' theorem: $\\sum_v \\delta_v = 4\\pi = 2\\pi\\chi$. This is the discrete analog of the Gauss-Bonnet theorem $\\int_S K\\,dA = 2\\pi\\chi(S)$."
+    },
+    {
+      "id": "part13-dual",
+      "title": "Part 13: Dual Graph Properties",
+      "startLine": 882,
+      "endLine": 927,
+      "summary": "`DualGraph` namespace: defines `dual` (swap V and F), proves `dual_euler` (dual preserves Euler characteristic), `dual_involutive` (dual of dual is original), and `dual_platonic` (dual of Platonic solid is Platonic).",
+      "mathContext": "The dual of a polyhedron swaps vertices and faces: $V^* = F, E^* = E, F^* = V$. Since $V-E+F = V^*-E^*+F^*$, the Euler characteristic is preserved. The cube ($\\{4,3\\}$) and octahedron ($\\{3,4\\}$) are dual pairs; the dodecahedron ($\\{5,3\\}$) and icosahedron ($\\{3,5\\}$) are dual pairs; the tetrahedron ($\\{3,3\\}$) is self-dual."
+    },
+    {
+      "id": "part14-classification",
+      "title": "Part 14: Classification of Platonic Solids",
+      "startLine": 928,
+      "endLine": 1092,
+      "summary": "Complete classification: the Schlafli inequality ($pq < 2p + 2q$) is proved via `nlinarith` from the edge formula. `interval_cases` enumerates all $(p,q)$ with $p,q \\geq 3$ satisfying the inequality to yield exactly 5 solutions. `platonic_all_exist` constructs all 5 explicitly. Proves VEF counts are uniquely determined.",
+      "mathContext": "A convex polyhedron with regular $p$-gon faces, $q$ meeting at each vertex, has $E = pF/2 = qV/2$. Combined with $V-E+F=2$: $V = 4p/(2(p+q)-pq)$. For positive $V$: $pq < 2(p+q)$, i.e., $(p-2)(q-2) < 4$. With $p,q \\geq 3$: only $(3,3),(3,4),(4,3),(3,5),(5,3)$ — the five Platonic solids."
+    }
+  ],
+  "conclusion": {
+    "summary": "Euler's polyhedral formula V - E + F = 2 is a cornerstone of topology and geometry. It reveals that three apparently independent quantities (vertices, edges, faces) are constrained by the topological structure of the surface.",
+    "implications": "**Theoretical Significance**: The Euler characteristic was the first topological invariant discovered, leading to the development of algebraic topology. It has applications in graph theory, geometry, and physics, and generalizes via the Euler-Poincaré formula to higher dimensions.",
+    "openQuestions": [
+      "Full formalization of planar graph embedding in Lean",
+      "Formalization of the Gauss-Bonnet theorem relating curvature to Euler characteristic"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Elementa doctrinae solidorum",
+      "year": "1758",
+      "venue": "Novi Commentarii Academiae Scientiarum Petropolitanae 4, 109–140",
+      "note": "Original statement of V - E + F = 2 for convex polyhedra"
+    },
+    {
+      "authors": "Lakatos, Imre",
+      "title": "Proofs and Refutations",
+      "year": "1976",
+      "venue": "Cambridge University Press",
+      "note": "Famous philosophical analysis of the history and proof of Euler's formula, using it to illustrate the nature of mathematical discovery"
+    },
+    {
+      "authors": "Richeson, David S.",
+      "title": "Euler's Gem: The Polyhedron Formula and the Birth of Topology",
+      "year": "2008",
+      "venue": "Princeton University Press",
+      "note": "Comprehensive history of Euler's formula from its discovery through its role in founding topology. Covers Descartes' anticipation, Euler's proof, Cauchy's rigorous version, and the generalization to the Euler characteristic of surfaces and manifolds"
+    },
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Recherches sur les polyèdres",
+      "year": "1813",
+      "venue": "Journal de l'École Polytechnique, vol. 9, pp. 68–86",
+      "note": "First rigorous proof of Euler's formula, using the method of removing faces one at a time while tracking V - E + F. This 'shelling' argument became the standard proof technique and established the formula's topological (rather than merely geometric) nature"
+    },
+    {
+      "authors": "Cromwell, Peter R.",
+      "title": "Polyhedra",
+      "year": "1997",
+      "venue": "Cambridge University Press",
+      "note": "Detailed mathematical treatment of polyhedra including multiple proofs of Euler's formula, its generalizations to non-convex polyhedra and higher-dimensional polytopes, and connections to graph planarity via Kuratowski's theorem"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "foundational",
+      "description": "Euler's formula $V - E + F = 2$ is the starting point for the Four Color Theorem's discharging method: assigning charge $6 - \\deg(v)$ to vertices yields total charge 12 (from Euler), forcing low-degree vertices and hence reducible configurations."
+    },
+    {
+      "targetId": "konigsberg",
+      "relationship": "foundational",
+      "description": "Both are founding results of graph theory by Euler. Königsberg (1736) introduced graph-theoretic thinking; the polyhedral formula (1758) introduced the topological invariant $V - E + F = 2$ that became the Euler characteristic."
+    },
+    {
+      "targetId": "platonic-solids",
+      "relationship": "related",
+      "description": "Euler's formula constrains the possible regular polyhedra: combining $V - E + F = 2$ with regularity conditions ($p$ faces meet at each vertex, each face has $q$ edges) yields only 5 solutions — the Platonic solids."
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Both are 'Euler formulas' connecting fundamental mathematical objects. Euler's identity $e^{i\\pi} + 1 = 0$ bridges analysis and algebra; the polyhedral formula $V - E + F = 2$ bridges combinatorics and topology. Both reveal deep structural constraints — the identity relates five fundamental constants, the polyhedral formula constrains the combinatorics of surfaces."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees every polynomial of degree $n$ has $n$ roots in $\\mathbb{C}$, which is equivalent to the fact that $\\mathbb{C}$ has Euler characteristic 0 (as a Riemann surface). The Euler characteristic $\\chi = V - E + F$ generalizes from polyhedra to all surfaces: $\\chi(S^2) = 2$ (Euler's formula), $\\chi(\\mathbb{T}^2) = 0$ (torus), $\\chi(S_g) = 2 - 2g$ (genus $g$). FTA's root count is constrained by $\\chi$ via the Riemann-Hurwitz formula."
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The area formula $A = \\pi r^2$ and Euler's polyhedral formula both connect geometry to combinatorics/analysis. The Gauss-Bonnet theorem unifies them: for a surface $S$, $\\int_S K\\,dA = 2\\pi\\chi(S)$, where $K$ is Gaussian curvature and $\\chi$ is the Euler characteristic. For the sphere, $\\chi = 2$ gives $\\int K\\,dA = 4\\pi$ — recovering the surface area $4\\pi r^2$. Euler's discrete formula $V - E + F = 2$ is the combinatorial version."
+    },
+    {
+      "targetId": "friendship-theorem",
+      "relationship": "related",
+      "description": "Both are graph-theoretic results where simple counting constraints force global structure. Euler's formula constrains edge/face/vertex counts of planar graphs (average degree $< 6$); the friendship theorem forces a universal vertex from a local common-neighbor condition. The friendship theorem's spectral proof uses eigenvalue analysis that parallels spectral approaches to the Euler characteristic."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "SimpleGraph",
+      "Finset",
+      "EulerPolyhedral",
+      "EulerPolyhedral"
+    ],
+    "namespace": "EulerPolyhedral",
+    "lineCount": 1092,
+    "axiomCount": 1,
+    "theoremCount": 65,
+    "definitionCount": 33,
+    "path": "Proofs/EulerPolyhedralFormula.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "euler_formula",
+      "type": "core",
+      "description": "V - E + F = 2 for convex polyhedra",
+      "leanType": "convex_polyhedron P -> vertices P - edges P + faces P = 2"
+    }
+  ],
+  "sorries": 0
+}

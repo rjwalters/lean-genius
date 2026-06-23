@@ -1,0 +1,268 @@
+[
+  {
+    "id": "ann-823-imports",
+    "proofId": "erdos-823",
+    "range": {
+      "startLine": 28,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib's `ArithmeticFunction` (for $\\sigma$ and $\\varphi$), `Topology.Basic` and `Topology.Instances.Real` (for filter-based convergence $n_k/m_k \\to \\alpha$), and opens `ArithmeticFunction`, `Filter`, `Topology` namespaces. The convergence is formalized via Lean's `Tendsto` and `atTop` filter rather than $\\varepsilon$-$N$ definitions.",
+    "mathContext": "Uses `ArithmeticFunction.sigma 1` for $\\sigma(n) = \\sum_{d \\mid n} d$ and `Filter.Tendsto` for $\\lim_{k \\to \\infty} n_k/m_k = \\alpha$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib ArithmeticFunction",
+      "filter convergence",
+      "topological limits"
+    ],
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib topology",
+      "Mathlib number theory"
+    ]
+  },
+  {
+    "id": "ann-823-sigma",
+    "proofId": "erdos-823",
+    "range": {
+      "startLine": 44,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Sum of Divisors Function",
+    "content": "Defines $\\sigma(n) = \\texttt{ArithmeticFunction.sigma 1 n}$, the sum of all positive divisors of $n$. The parameter $1$ in `sigma 1` refers to the $k$-th power divisor sum $\\sigma_k(n) = \\sum_{d \\mid n} d^k$; setting $k = 1$ gives the classical sum of divisors. Key values: $\\sigma(1) = 1$, $\\sigma(p) = p + 1$ for primes, $\\sigma(p^k) = (p^{k+1} - 1)/(p - 1)$.",
+    "mathContext": "$\\sigma(n) = \\sum_{d \\mid n} d$. For prime powers: $\\sigma(p^k) = 1 + p + p^2 + \\cdots + p^k = \\frac{p^{k+1} - 1}{p - 1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisor sum",
+      "multiplicative function",
+      "arithmetic function"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "ann-823-multiplicative",
+    "proofId": "erdos-823",
+    "range": {
+      "startLine": 61,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Multiplicativity of σ",
+    "content": "Axiomatizes $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for coprime $m, n$. This is the **key structural property** enabling Pollack's construction: by choosing coprime building blocks with controlled $\\sigma$ values, one can construct $\\sigma$-pairs with any desired ratio. Multiplicativity follows from the Chinese Remainder Theorem applied to the divisor lattice.",
+    "mathContext": "$\\gcd(m, n) = 1 \\implies \\sigma(mn) = \\sigma(m) \\cdot \\sigma(n)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative function",
+      "Chinese Remainder Theorem",
+      "coprimality"
+    ],
+    "prerequisites": [
+      "sum of divisors",
+      "coprime integers"
+    ]
+  },
+  {
+    "id": "ann-823-sigmapair",
+    "proofId": "erdos-823",
+    "range": {
+      "startLine": 71,
+      "endLine": 80
+    },
+    "type": "theorem",
+    "title": "σ-Pairs and Converging Sequences",
+    "content": "Defines `IsSigmaPair n m` ($\\sigma(n) = \\sigma(m)$) and `SigmaSequenceConvergingTo α`: existence of sequences $n_k, m_k \\geq 1$ with $\\sigma(n_k) = \\sigma(m_k)$ and $n_k/m_k \\to \\alpha$. The convergence uses Lean's `Tendsto` with `atTop` and neighborhood filter $\\mathcal{N}(\\alpha)$. The condition $\\alpha \\geq 1$ is WLOG: if $\\alpha < 1$, swap $n$ and $m$.",
+    "mathContext": "$\\text{IsSigmaPair}(n, m) \\iff \\sigma(n) = \\sigma(m)$. $\\text{SigmaSequenceConvergingTo}(\\alpha) \\iff \\exists (n_k), (m_k),\\; \\sigma(n_k) = \\sigma(m_k) \\wedge n_k/m_k \\to \\alpha$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "σ-pairs",
+      "sequence convergence",
+      "ratio limits"
+    ],
+    "prerequisites": [
+      "sum of divisors",
+      "topological convergence"
+    ]
+  },
+  {
+    "id": "ann-823-pollack",
+    "proofId": "erdos-823",
+    "range": {
+      "startLine": 88,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "Pollack's Theorem (2015) and Main Result (Proved)",
+    "content": "Axiomatizes Pollack's 2015 theorem and **proves** `erdos_823_solved` as a direct corollary. Pollack's proof constructs sequences by exploiting: (1) the abundance of $\\sigma$-pairs (many $n \\neq m$ with $\\sigma(n) = \\sigma(m)$), (2) multiplicativity to scale pairs to desired ratios, and (3) a density argument showing the achievable ratios are dense in $[1, \\infty)$. The proof appeared in *Remarks on fibers of the sum-of-divisors function* (Mathematika, 2015).",
+    "mathContext": "$\\forall \\alpha \\geq 1,\\; \\exists (n_k), (m_k) \\text{ with } \\sigma(n_k) = \\sigma(m_k) \\text{ and } n_k/m_k \\to \\alpha$. Proved by `intro _; obtain ... := pollack_2015 α hα; exact ⟨...⟩`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pollack",
+      "sequence construction",
+      "multiplicative scaling"
+    ],
+    "prerequisites": [
+      "σ-pairs",
+      "multiplicativity of σ",
+      "filter convergence"
+    ]
+  },
+  {
+    "id": "ann-823-examples",
+    "proofId": "erdos-823",
+    "range": {
+      "startLine": 107,
+      "endLine": 129
+    },
+    "type": "insight",
+    "title": "Concrete σ-Pair Examples",
+    "content": "Three families of $\\sigma$-pairs illustrating different phenomena. **Consecutive integers**: $\\sigma(14) = \\sigma(15) = 24$ (ratio $14/15 \\approx 0.93$) and $\\sigma(957) = \\sigma(958)$ (ratio $\\approx 0.999$). **Non-consecutive**: $\\sigma(206) = \\sigma(210) = 432$ (ratio $\\approx 0.981$). The $14, 15$ pair works because $14 = 2 \\cdot 7$ gives $\\sigma = 3 \\cdot 8 = 24$ and $15 = 3 \\cdot 5$ gives $\\sigma = 4 \\cdot 6 = 24$. Such coincidences are not rare: Erdős and Pomerance showed that the number of $n \\leq x$ with $\\sigma(n) = \\sigma(n+1)$ is $\\gg x/(\\log x)^c$.",
+    "mathContext": "$\\sigma(14) = (1+2)(1+7) = 24 = (1+3)(1+5) = \\sigma(15)$. $\\sigma(206) = \\sigma(210) = 432$. $\\sigma(957) = \\sigma(958)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "σ-coincidences",
+      "consecutive integers",
+      "multiplicative structure"
+    ],
+    "prerequisites": [
+      "sum of divisors",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "ann-823-phi",
+    "proofId": "erdos-823",
+    "range": {
+      "startLine": 137,
+      "endLine": 158
+    },
+    "type": "definition",
+    "title": "Euler Totient Analogy",
+    "content": "Defines $\\varphi(n) = \\texttt{ArithmeticFunction.totient n}$ and axiomatizes the 'easy' analogous result for $\\varphi$. Erdős noted that $\\varphi$-pairs are far more abundant than $\\sigma$-pairs because $\\varphi(n) = \\varphi(2n)$ for all odd $n$ (since $\\varphi(2) = 1$). This gives trivial $\\varphi$-pairs at any ratio: take $n_k = 2^{a_k} p$ and $m_k = 2^{b_k} p$ for appropriate $a_k, b_k$. Examples: $\\varphi(1) = \\varphi(2) = 1$, $\\varphi(3) = \\varphi(4) = \\varphi(6) = 2$.",
+    "mathContext": "$\\varphi(n) = |\\{k \\leq n : \\gcd(k, n) = 1\\}|$. For odd $n$: $\\varphi(2n) = \\varphi(2)\\varphi(n) = \\varphi(n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler totient",
+      "φ-pairs",
+      "multiplicative functions"
+    ],
+    "prerequisites": [
+      "totient function",
+      "coprimality"
+    ]
+  },
+  {
+    "id": "ann-823-fiber",
+    "proofId": "erdos-823",
+    "range": {
+      "startLine": 164,
+      "endLine": 176
+    },
+    "type": "definition",
+    "title": "σ-Fibers and Their Properties",
+    "content": "Defines `sigmaFiber m` = $\\sigma^{-1}(m) = \\{n : \\sigma(n) = m\\}$ and axiomatizes three structural properties: (1) $\\sigma^{-1}(24) \\ni 14, 15$, (2) fibers can be arbitrarily large ($\\forall K,\\; \\exists m,\\; |\\sigma^{-1}(m)| \\geq K$), (3) every sufficiently large even number is a $\\sigma$-value. The large fiber property follows from multiplicativity: for any prime $p$, the values $\\sigma(p^k) = (p^{k+1}-1)/(p-1)$ are distinct, so multiplying by coprime factors with matching $\\sigma$ grows fiber sizes.",
+    "mathContext": "$\\sigma^{-1}(m) = \\{n \\in \\mathbb{N} : \\sigma(n) = m\\}$. $|\\sigma^{-1}(m)|$ is unbounded. Every large even number is in $\\text{Im}(\\sigma)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fiber",
+      "preimage",
+      "σ-value distribution"
+    ],
+    "prerequisites": [
+      "sum of divisors",
+      "set cardinality"
+    ]
+  },
+  {
+    "id": "ann-823-density",
+    "proofId": "erdos-823",
+    "range": {
+      "startLine": 183,
+      "endLine": 194
+    },
+    "type": "concept",
+    "title": "Density Results for σ-Values",
+    "content": "Two density axioms: (1) the set of $\\sigma$-values has **positive lower density** ($\\exists c > 0,\\; |\\{m \\leq N : \\sigma^{-1}(m) \\neq \\emptyset\\}| \\geq cN$), and (2) the set of $\\sigma$-values with **multiple preimages** also has positive density. These results go back to Erdős (1959) and Pomerance. The positive density of multi-preimage values is precisely what enables Pollack's construction: it ensures enough $\\sigma$-pairs exist to approximate any ratio.",
+    "mathContext": "$|\\{m \\leq N : \\sigma^{-1}(m) \\neq \\emptyset\\}| \\geq cN$ and $|\\{m \\leq N : |\\sigma^{-1}(m)| \\geq 2\\}| \\geq cN$ for constants $c > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "σ-value distribution",
+      "counting arguments"
+    ],
+    "prerequisites": [
+      "σ-fibers",
+      "asymptotic density"
+    ]
+  },
+  {
+    "id": "ann-823-computations",
+    "proofId": "erdos-823",
+    "range": {
+      "startLine": 201,
+      "endLine": 213
+    },
+    "type": "concept",
+    "title": "Computational Examples and Perfect Numbers",
+    "content": "Verified computations via `native_decide`: $\\sigma(p) = p + 1$ for $p = 2, 3, 5, 7$ (primes), $\\sigma(6) = 12$ and $\\sigma(28) = 56$ (perfect numbers, $\\sigma(n) = 2n$), and integer ratio $14000/15 = 933$. The perfect number examples connect to the Euclid-Euler theorem: $n$ is an even perfect number iff $n = 2^{p-1}(2^p - 1)$ with $2^p - 1$ prime (Mersenne prime).",
+    "mathContext": "$\\sigma(2) = 3$, $\\sigma(3) = 4$, $\\sigma(5) = 6$, $\\sigma(7) = 8$. $\\sigma(6) = 12 = 2 \\cdot 6$, $\\sigma(28) = 56 = 2 \\cdot 28$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "perfect numbers",
+      "Mersenne primes",
+      "native_decide"
+    ],
+    "prerequisites": [
+      "sum of divisors",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "ann-823-keyinsight",
+    "proofId": "erdos-823",
+    "range": {
+      "startLine": 224,
+      "endLine": 228
+    },
+    "type": "concept",
+    "title": "Abundance of σ-Pairs",
+    "content": "Axiomatizes that infinitely many $\\sigma$-pairs $(n, m)$ with $n \\neq m$ exist. This is the fundamental fact enabling Pollack's construction. The proof that $\\sigma$-pairs are infinite uses the pigeonhole principle on the fibers: since $|\\sigma^{-1}(m)| \\geq 2$ for positive-density many $m$, there are infinitely many $m$ with at least two preimages, yielding infinitely many pairs.",
+    "mathContext": "$\\exists (n_k, m_k)_{k \\geq 1},\\; n_k \\neq m_k \\wedge \\sigma(n_k) = \\sigma(m_k)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "infinite σ-pairs",
+      "fiber counting"
+    ],
+    "prerequisites": [
+      "σ-fibers",
+      "density of multi-preimage values"
+    ]
+  },
+  {
+    "id": "ann-823-summary",
+    "proofId": "erdos-823",
+    "range": {
+      "startLine": 259,
+      "endLine": 268
+    },
+    "type": "concept",
+    "title": "Complete Statement (Proved)",
+    "content": "**Verified proof** combining the main theorem and the $\\varphi$-analogue into a single conjunction. Proved by extracting the Pollack result for $\\sigma$ and the Erdős remark for $\\varphi$: `exact ⟨fun α hα => erdos_823_solved α hα, fun α hα => let ⟨n, m, _, hphi, hconv⟩ := erdos_phi_easy α hα; ⟨n, m, hphi, hconv⟩⟩`. This packages the complete resolution of Problem #823.",
+    "mathContext": "$(\\forall \\alpha \\geq 1,\\; \\text{SigmaSequenceConvergingTo}(\\alpha)) \\wedge (\\forall \\alpha \\geq 1,\\; \\exists (n_k), (m_k),\\; \\varphi(n_k) = \\varphi(m_k) \\wedge n_k/m_k \\to \\alpha)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem packaging",
+      "σ-φ duality",
+      "complete resolution"
+    ],
+    "prerequisites": [
+      "Pollack's theorem",
+      "Erdős φ remark"
+    ]
+  }
+]

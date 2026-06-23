@@ -1,0 +1,98 @@
+{
+  "slug": "sqrt2-irrational-oq-03",
+  "title": "Irrationality of nth Roots of Non-Perfect Powers",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "Prove Irrational (Real.sqrt 2), develop supporting parity and coprimality lemmas, and extend square-root irrationality to natural numbers that are not perfect squares.",
+    "plain": "Formalize the classical irrationality proof for sqrt 2 and its square-root generalizations: sqrt 3, sqrt 5, sqrt 6, sqrt 7, and sqrt n whenever n is not a perfect square.",
+    "whyMatters": [
+      "The sqrt 2 proof is the canonical example of proof by contradiction using parity and coprime numerator-denominator form.",
+      "The nonsquare characterization explains why the argument works beyond 2.",
+      "The axiom-style companion file makes the elementary parity structure explicit for educational and proof-gallery use."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "The classic Lean/Mathlib theorem Irrational (Real.sqrt 2) is exposed and connected to parity lemmas (Lean: irrational_sqrt_two_classic).",
+      "Elementary parity definitions and lemmas for Even/Odd, squares, and coprime-style contradiction are formalized in the companion file (Lean: Even, Odd, even_or_odd, even_of_sq_even, sqrt2_irrational).",
+      "Additional square-root irrationality examples are proved for 3, 5, 6, and 7 (Lean: irrational_sqrt_three, irrational_sqrt_five, irrational_sqrt_six, irrational_sqrt_seven).",
+      "The general square-root result says sqrt n is irrational whenever n is not a perfect square (Lean: irrational_sqrt_of_not_square)."
+    ],
+    "open": [
+      "Despite the current problem title mentioning nth roots of non-perfect powers, the attached Lean evidence for this entry covers square roots and the nonsquare criterion; broader nth-root results are documented separately in nth-root-irrational and nth-root-irrational-oq-01."
+    ],
+    "goal": "Document the verified sqrt 2 proof and the square-root nonsquare generalization without overstating the attached Lean evidence."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-02-06T19:32:14.363Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Problem: Irrationality of nth Roots of Non-Perfect Powers\n\n**ID**: sqrt2-irrational-oq-03\n**Status**: COMPLETE\n**Tier**: B → A (upgraded on completion)\n**Significance**: 7/10 | **Tractability**: 7/10\n\n## Problem Statement\n\nFor any integers n ≥ 2 and m ≥ 1, if m is not a perfect nth power (no integer k\nsatisfies k^n = m), then the nth root m^(1/n) is irrational.\n\nThis is the natural generalization of the classical √2 irrationality proof to all roots.\n\n## Proof Location\n\n**File**: `proofs/Proofs/NthRootIrrational.lean`\n**Gallery**: `src/data/proofs/nth-root-irrational/`\n**Status**: 0 sorries, 0 axioms, builds in Docker (Mathlib v4.26.0)\n\n## Key Approach\n\nUses Mathlib's `irrational_nrt_of_notint_nrt` with a 3-step pattern:\n1. Power identity: (m^(1/n))^n = m\n2. Not-an-integer: m^(1/n) ∉ ℤ when m is not a perfect nth power (by contrapositive)\n3. Conclude via `irrational_nrt_of_notint_nrt`\n\n## Session 2026-02-08 (Session 1) - Complete Proof via Mathlib\n\n**Mode**: FRESH\n**Outcome**: completed\n\n### What I Did\n\n- Created `proofs/Proofs/NthRootIrrational.lean` with general theorem + 15 corollaries\n- Built general theorem `irrational_nthRoot` using `irrational_nrt_of_notint_nrt`\n- Proved \"not a perfect power\" lemmas for: 2,3,5 (squares), 2,3,5 (cubes), 2,3 (4th powers), 2 (5th powers)\n- Proved corollaries: √2,√3,√5, ∛2,∛3,∛5, ⁴√2,⁴√3, ⁵√2\n- Fixed /-! docstrings → /- for Aristotle parser compatibility\n- Created gallery entry `src/data/proofs/nth-root-irrational/`\n\n### Key Findings\n\n- `irrational_nrt_of_notint_nrt` (Mathlib.NumberTheory.Real.Irrational) is the key tool\n- For odd powers: k ≤ 0 implies k^n ≤ 0, contradicting k^n = m > 0\n- For even powers: Int.natAbs_sq reduces to natural number case where bounds are simpler\n- `nlinarith` handles polynomial bounds (k ≥ 2 → k^n ≥ 2^n)\n- `interval_cases` resolves bounded integer case analysis elegantly\n\n### Files Modified\n\n- `proofs/Proofs/NthRootIrrational.lean` (created)\n- `src/data/proofs/nth-root-irrational/` (gallery entry, created)\n\n### Next Steps\n\nNone - proof is complete.\n\n## Session 2026-02-21 (Session 2) - Housekeeping\n\n**Mode**: FRESH (re-claimed because pool showed available)\n**Outcome**: completed\n\n### What I Did\n\n- Rediscovered proof was already complete (NthRootIrrational.lean, 0 sorries)\n- Gallery entry confirmed complete (src/data/proofs/nth-root-irrational/)\n- Updated candidate pool to mark as completed\n- Created this knowledge.md\n\n### Key Findings\n\n- Problem was completed 2026-02-08 but pool entry wasn't updated\n- The src/data/research/problems/sqrt2-irrational-oq-03.json was deleted in commit feeb8c1c9 as part of format migration, but pool wasn't updated\n"
+  },
+  "tags": [
+    "number-theory",
+    "irrationality",
+    "sqrt2",
+    "square-roots",
+    "perfect-squares",
+    "parity",
+    "seeker-selected",
+    "generalization"
+  ],
+  "relatedProofs": [
+    "sqrt2-from-axioms",
+    "sqrt2-irrational"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-08T07:34:07.912Z",
+  "completed": "2026-02-08T07:34:07.912Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Sqrt2Irrational.lean",
+      "filename": "Sqrt2Irrational.lean",
+      "lineCount": 223,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2Irrational.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2IrrationalFromAxioms.lean",
+      "filename": "Sqrt2IrrationalFromAxioms.lean",
+      "lineCount": 236,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2IrrationalFromAxioms.lean"
+    }
+  ]
+}

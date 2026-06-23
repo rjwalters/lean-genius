@@ -1,0 +1,242 @@
+{
+  "id": "sqrt2-minpoly",
+  "title": "Minimal Polynomial of √2 over ℚ",
+  "slug": "sqrt2-minpoly",
+  "description": "A complete Lean 4 proof that the minimal polynomial of √2 over ℚ is X² - 2, with corollaries on algebraic degree and field extension structure.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "algebraic-number-theory",
+      "minimal-polynomial",
+      "sqrt2",
+      "irreducibility",
+      "eisenstein",
+      "field-extensions"
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/Sqrt2Minpoly.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 140,
+    "dateAdded": "2026-04-22",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
+        "description": "Eisenstein irreducibility criterion for polynomials over rings",
+        "module": "Mathlib.RingTheory.EisensteinCriterion"
+      },
+      {
+        "theorem": "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+        "description": "Gauss's lemma: primitive polynomial irreducible over ℤ iff irreducible over ℚ",
+        "module": "Mathlib.RingTheory.Polynomial.Gauss"
+      },
+      {
+        "theorem": "minpoly.eq_of_irreducible_of_monic",
+        "description": "Characterization of minimal polynomial via irreducibility and root",
+        "module": "Mathlib.RingTheory.Algebraic.Basic"
+      },
+      {
+        "theorem": "Real.sq_sqrt",
+        "description": "(√x)² = x for x ≥ 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "IntermediateField.adjoin.finrank",
+        "description": "Degree of a simple algebraic extension equals the degree of the minimal polynomial",
+        "module": "Mathlib.FieldTheory.Adjoin"
+      },
+      {
+        "theorem": "irrational_sqrt_two",
+        "description": "√2 is irrational (used for the rationality corollary)",
+        "module": "Mathlib.Data.Real.Irrational"
+      }
+    ],
+    "originalContributions": [
+      "Complete Eisenstein-based irreducibility proof for X² - 2 over ℤ and ℚ",
+      "Clean Gauss lemma transfer from ℤ to ℚ irreducibility",
+      "Minimal polynomial identification: minpoly ℚ (√2) = X² - 2",
+      "Algebraic degree theorem: natDegree(minpoly ℚ √2) = 2",
+      "Field extension degree: [ℚ(√2) : ℚ] = 2"
+    ],
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The concept of a minimal polynomial emerged from Évariste Galois's revolutionary work on the solvability of polynomial equations (1832). Galois recognized that the algebraic relationships between the roots of a polynomial — encoded by what we now call minimal polynomials — determine whether the equation is solvable by radicals. Although Galois did not use modern terminology, his manuscripts implicitly relied on the notion of the degree of an algebraic element over its base field.\n\nRichard Dedekind (1871) gave the first rigorous formulation of algebraic extensions and minimal polynomials in his supplement to Dirichlet's *Vorlesungen über Zahlentheorie*. Dedekind's framework established that for a field extension $K \\subseteq L$ and an algebraic element $\\alpha \\in L$, the minimal polynomial $\\text{minpoly}_K(\\alpha)$ is the unique monic irreducible polynomial of smallest degree in $K[X]$ having $\\alpha$ as a root.\n\nFor $\\alpha = \\sqrt{2}$ and $K = \\mathbb{Q}$, the minimal polynomial is $X^2 - 2$ — one of the foundational examples in algebraic number theory:\n- It explains *why* $\\sqrt{2}$ is irrational: a rational number $q$ has $\\text{minpoly}_{\\mathbb{Q}}(q) = X - q$ (degree 1), while $\\sqrt{2}$ has degree-2 minimal polynomial\n- It establishes that $\\mathbb{Q}(\\sqrt{2})$ is a real quadratic field — the simplest non-trivial number field — with ring of integers $\\mathbb{Z}[\\sqrt{2}]$ and Galois group $\\text{Gal}(\\mathbb{Q}(\\sqrt{2})/\\mathbb{Q}) \\cong \\mathbb{Z}/2\\mathbb{Z}$\n- It is the prototype for all quadratic extensions: $\\mathbb{Q}(\\sqrt{d})$ for squarefree $d \\neq 1$ has minimal polynomial $X^2 - d$\n\nThe proof connects three classical tools: Eisenstein's irreducibility criterion (Ferdinand Eisenstein, 1850), Gauss's lemma on primitive polynomials (Carl Friedrich Gauss, *Disquisitiones Arithmeticae*, 1801), and Dedekind's tower law for field extension degrees.",
+    "problemStatement": "Given the real number $\\alpha = \\sqrt{2}$, determine the minimal polynomial of $\\alpha$ over the rational field $\\mathbb{Q}$.\n\nThat is, find the unique monic polynomial $p \\in \\mathbb{Q}[X]$ of minimal degree such that:\n1. $p(\\sqrt{2}) = 0$\n2. $p$ is irreducible over $\\mathbb{Q}$\n\n**Answer**: $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{2}) = X^2 - 2$.",
+    "text": "We prove that the minimal polynomial of √2 over ℚ is X² - 2. The proof establishes irreducibility via Eisenstein's criterion and transfers the result from ℤ to ℚ via Gauss's lemma.",
+    "proofStrategy": "**Three-step characterization**:\n\nTo show $p = X^2 - 2$ equals $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{2})$, we verify three properties:\n\n1. **Root witness**: $(\\sqrt{2})^2 - 2 = 2 - 2 = 0$, so $\\sqrt{2}$ is a root of $p$.\n\n2. **Irreducibility** (Eisenstein at $p = 2$): Work over $\\mathbb{Z}$ first:\n   - Leading coefficient $1 \\notin (2)$\n   - Constant term $-2 \\equiv 0 \\pmod{2}$, so $2 \\mid (-2)$\n   - The constant term is NOT divisible by $4$: $4 \\nmid 2$\n   - Middle coefficient $0 \\equiv 0 \\pmod{2}$ ✓\n   By Eisenstein, $X^2 - 2$ is irreducible over $\\mathbb{Z}$. Gauss's lemma transfers this to $\\mathbb{Q}$.\n\n3. **Monic**: The leading coefficient of $X^2 - 2$ is $1$.\n\nBy `minpoly.eq_of_irreducible_of_monic`, these three properties characterize the minimal polynomial.",
+    "keyInsights": [
+      "Eisenstein's criterion at p=2 directly applies: 2∣2 (constant term) but 4∤2, and 2∤1 (leading coefficient)",
+      "Gauss's lemma is essential for transferring ℤ-irreducibility to ℚ-irreducibility: a primitive ℤ-polynomial is irreducible over ℤ iff it is irreducible over ℚ",
+      "The minimal polynomial characterization theorem (minpoly.eq_of_irreducible_of_monic) requires exactly three inputs: irreducibility, root, and monic — all verified here",
+      "The degree-2 minimal polynomial immediately implies [ℚ(√2):ℚ] = 2, making this a proper quadratic extension",
+      "The same technique (Eisenstein at p=prime, Gauss lemma) proves minpoly ℚ (∛2) = X³-2, minpoly ℚ (∜2) = X⁴-2, etc."
+    ],
+    "prerequisites": [
+      "Polynomial ring theory (ℤ[X], ℚ[X])",
+      "Ring ideals and primality",
+      "Eisenstein irreducibility criterion",
+      "Gauss's lemma (primitive polynomials)",
+      "Algebraic extensions and minimal polynomials",
+      "Basic real analysis (√2 ≥ 0, (√2)² = 2)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Imports and Proof Overview",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Imports Mathlib, opens polynomial and field extension namespaces, sets elaboration budget, and documents the three-step proof strategy.",
+      "mathContext": "`open Polynomial IntermediateField` brings $\\mathbb{Q}[X]$ notation, `minpoly`, `aeval`, `Module.finrank`, and adjoin notation $\\mathbb{Q}\\!\\langle\\sqrt{2}\\rangle$ into scope. `set_option maxHeartbeats 800000` raises the elaboration budget to accommodate the Eisenstein criterion's `interval_cases` computation over coefficient indices."
+    },
+    {
+      "id": "eisenstein-int",
+      "title": "Eisenstein Irreducibility over ℤ",
+      "startLine": 44,
+      "endLine": 68,
+      "summary": "X² - 2 is irreducible over ℤ by the Eisenstein criterion at p = 2.",
+      "mathContext": "Eisenstein at $p=2$: the ideal $(2) \\subset \\mathbb{Z}$ is prime, $1 \\notin (2)$ (leading coeff), $-2 \\in (2)$ (constant term), $-2 \\notin (4) = (2)^2$, and $X^2-2$ is primitive. All Eisenstein conditions satisfied."
+    },
+    {
+      "id": "gauss-transfer",
+      "title": "Transfer to ℚ via Gauss's Lemma",
+      "startLine": 70,
+      "endLine": 79,
+      "summary": "Transfer ℤ-irreducibility to ℚ-irreducibility using Gauss's lemma.",
+      "mathContext": "Gauss's Lemma: a primitive polynomial over $\\mathbb{Z}$ is irreducible over $\\mathbb{Z}$ iff it is irreducible over $\\mathbb{Q}$. Since $X^2 - 2$ is monic (hence primitive) and irreducible over $\\mathbb{Z}$, it is irreducible over $\\mathbb{Q}$."
+    },
+    {
+      "id": "root-witness",
+      "title": "Root Witness and Integrality",
+      "startLine": 81,
+      "endLine": 93,
+      "summary": "√2 satisfies X² - 2 = 0, making it algebraic over ℚ.",
+      "mathContext": "The identity $(\\sqrt{2})^2 = 2$ (from `Real.sq_sqrt`) gives $\\text{aeval}(\\sqrt{2}, X^2-2) = (\\sqrt{2})^2 - 2 = 0$. This also establishes that $\\sqrt{2}$ is algebraic (integral) over $\\mathbb{Q}$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Minimal Polynomial",
+      "startLine": 97,
+      "endLine": 110,
+      "summary": "minpoly ℚ (√2) = X² - 2 by the three-way characterization.",
+      "mathContext": "Applies `minpoly.eq_of_irreducible_of_monic` with: (1) irreducibility of $X^2-2$ over $\\mathbb{Q}$, (2) $\\sqrt{2}$ as a root, (3) $X^2-2$ is monic. The result follows that $X^2-2$ equals the minimal polynomial."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences: Degree and Extension",
+      "startLine": 112,
+      "endLine": 140,
+      "summary": "Algebraic degree 2, extension degree [ℚ(√2):ℚ] = 2, irrationality.",
+      "mathContext": "From the minimal polynomial: (1) $\\deg(\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{2})) = 2$ — the algebraic degree; (2) $[\\mathbb{Q}(\\sqrt{2}):\\mathbb{Q}] = 2$ — $\\sqrt{2}$ generates a proper quadratic extension; (3) $\\sqrt{2} \\notin \\mathbb{Q}$ — a degree-1 minimal polynomial would contradict degree 2."
+    }
+  ],
+  "conclusion": {
+    "summary": "We have proved that $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{2}) = X^2 - 2$ with zero axioms and zero sorry placeholders. The proof combines Eisenstein's criterion at $p = 2$, Gauss's lemma, and the three-property characterization of minimal polynomials to deliver a complete machine-verified result.",
+    "implications": "The identification $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{2}) = X^2 - 2$ is the prototype for algebraic number theory. It shows that $\\mathbb{Q}(\\sqrt{2})$ is a real quadratic field — the simplest non-trivial number field — isomorphic to $\\mathbb{Q}[X]/(X^2 - 2)$ as a 2-dimensional $\\mathbb{Q}$-vector space with basis $\\{1, \\sqrt{2}\\}$. The Galois group $\\text{Gal}(\\mathbb{Q}(\\sqrt{2})/\\mathbb{Q}) \\cong \\mathbb{Z}/2\\mathbb{Z}$ is the smallest non-trivial Galois group, with the unique non-trivial automorphism $\\sqrt{2} \\mapsto -\\sqrt{2}$. This degree-2 result also underpins the classical quadratic formula: every degree-2 polynomial over $\\mathbb{Q}$ splits over an extension of degree $\\leq 2$. More broadly, the Eisenstein + Gauss technique demonstrated here generalizes to show that $X^n - p$ is irreducible over $\\mathbb{Q}$ for any prime $p$, proving the existence of arbitrarily high-degree algebraic extensions.",
+    "openQuestions": [
+      "Generalize: $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt{n}) = X^2 - n$ for any non-perfect-square $n$. This follows from the same Eisenstein argument at any prime factor $p$ of $n$ with $p \\mid n$ but $p^2 \\nmid n$.",
+      "Generalize: $\\text{minpoly}_{\\mathbb{Q}}(\\sqrt[k]{m}) = X^k - m$ for suitable $m, k$ (e.g., $m$ has a prime factor $p$ with $p \\mid m$ but $p^2 \\nmid m$, and $k$ is prime). Can this be formalized parametrically in Lean?",
+      "What is the class number of $\\mathbb{Q}(\\sqrt{2})$? The ring of integers $\\mathbb{Z}[\\sqrt{2}]$ is a PID (class number 1) — can this be proved in Lean using the Minkowski bound and the norm $N(a + b\\sqrt{2}) = a^2 - 2b^2$?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "parent",
+      "description": "Irrationality of √2 — motivating result; degree-2 minpoly implies irrationality",
+      "targetId": "sqrt2-irrational"
+    },
+    {
+      "relationship": "sibling",
+      "description": "Irrationality of ∛2 — analogous Eisenstein argument at p=2 for X³-2 over ℤ",
+      "targetId": "cube-root-2-irrational"
+    },
+    {
+      "relationship": "generalization",
+      "description": "General irrationality of nth roots: m^(1/n) is irrational when m is not a perfect nth power — the Eisenstein+Gauss technique here specializes to this case with n=2, m=2",
+      "targetId": "nth-root-irrational"
+    },
+    {
+      "relationship": "sibling",
+      "description": "Minimal polynomial in the matrix context — same annihilator-of-evaluation notion applied to matrices rather than algebraic numbers",
+      "targetId": "cayley-hamilton-minpoly"
+    },
+    {
+      "relationship": "extension",
+      "description": "√2+√3 is irrational — builds on the degree-2 extensions ℚ(√2) and ℚ(√3); its minimal polynomial over ℚ is X⁴-10X²+1 (degree 4)",
+      "targetId": "sqrt2-plus-sqrt3-irrational"
+    },
+    {
+      "targetId": "sqrt2-minpoly-oq-01",
+      "relationship": "extended-by",
+      "description": "Generalizes from √2 to √n for ALL non-perfect-square n: minpoly ℚ(√n) = X² − n, including cases where Eisenstein's criterion fails (n=8, n=27)."
+    },
+    {
+      "targetId": "sqrt2-minpoly-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends to k-th roots: minpoly ℚ(m^(1/k)) = Xᵏ − m via Eisenstein when m has a prime p with p∣m but p²∤m, with degree and field-extension theorems."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig: Gerh. Fleischer",
+      "note": "Section VII: 'Equations defining sections of a circle.' Contains Gauss's lemma on content-multiplicativity of primitive polynomials, the foundational result used to transfer ℤ-irreducibility to ℚ-irreducibility (Part I of this proof)"
+    },
+    {
+      "authors": "Eisenstein, Ferdinand Gotthold Max",
+      "title": "Über die Irreductibilität und einige andere Eigenschaften der Gleichung...",
+      "year": "1850",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 39",
+      "note": "Contains the Eisenstein irreducibility criterion: the main tool for proving X²-2 is irreducible over ℤ (Part I of this proof). Applied here at p=2 with the condition 2∣(-2) but 4∤(-2)"
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra (3rd ed.)",
+      "year": "2002",
+      "venue": "Graduate Texts in Mathematics, vol. 211. Springer",
+      "note": "Standard reference for minimal polynomials (Ch. V), Gauss's lemma (Ch. IV §2), Eisenstein's criterion (Ch. IV §3), and simple algebraic extensions [K(α):K] = deg(minpoly_K(α)). The three-property characterization of minimal polynomials is proved in Chapter V."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/Sqrt2Minpoly.lean",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 140,
+    "mainTheorem": "minpoly_sqrt_two",
+    "namespace": "Sqrt2Minpoly",
+    "definitionCount": 0,
+    "theoremCount": 9,
+    "additionalFiles": [
+      "Proofs/Sqrt2MinpolyOQ03.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "Sqrt2Minpoly.minpoly_sqrt_two",
+      "statement": "minpoly ℚ (Real.sqrt 2) = X ^ 2 - C 2",
+      "description": "The minimal polynomial of √2 over ℚ is X² - 2"
+    },
+    {
+      "name": "Sqrt2Minpoly.irred_X_sq_sub_two",
+      "statement": "Irreducible (X ^ 2 - C (2 : ℚ) : ℚ[X])",
+      "description": "X² - 2 is irreducible over ℚ"
+    },
+    {
+      "name": "Sqrt2Minpoly.sqrt_two_minpoly_natDegree",
+      "statement": "(minpoly ℚ (Real.sqrt 2)).natDegree = 2",
+      "description": "The algebraic degree of √2 over ℚ is 2"
+    },
+    {
+      "name": "Sqrt2Minpoly.adjoin_sqrt_two_finrank",
+      "statement": "Module.finrank ℚ ℚ⟮Real.sqrt 2⟯ = 2",
+      "description": "The field extension ℚ(√2)/ℚ has degree 2"
+    }
+  ],
+  "sorries": 0
+}

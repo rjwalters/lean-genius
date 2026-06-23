@@ -1,0 +1,177 @@
+{
+  "id": "gcd-algorithm-oq-04",
+  "title": "EuclideanDomain GCD vs GCDMonoid: Coherence and Normalization",
+  "slug": "gcd-algorithm-oq-04",
+  "description": "Proves that the GCD from `EuclideanDomain` (Euclidean algorithm) and from `GCDMonoid` (normalization-based) are coherent in Lean 4/Mathlib. The key structural fact: `EuclideanDomain.gcdMonoid` is a `def` (not an `instance`) — it must be activated with `letI`. Under this activation, both GCDs are definitionally equal. For concrete types like ℤ, the two GCDs are merely associated (not equal), since GCDMonoid.gcd normalizes to a non-negative value while EuclideanDomain.gcd may be negative.",
+  "meta": {
+    "author": "Lean Genius (formalized in Lean 4)",
+    "date": "2026-04-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GcdAlgorithmOQ04.lean",
+    "tags": [
+      "algebra",
+      "gcd",
+      "euclidean-domain",
+      "gcd-monoid",
+      "typeclass-coherence",
+      "type-theory",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All results fully machine-verified.",
+    "lineCount": 186,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "dateAdded": "2026-04-21",
+    "originalContributions": [
+      "euclidean_gcd_satisfies_gcdMonoid_axioms: explicit proof that EuclideanDomain.gcd satisfies all 3 GCDMonoid axioms",
+      "euclidean_gcd_eq_gcdMonoid_gcd_via_def: definitional equality (rfl) when using EuclideanDomain.gcdMonoid",
+      "gcdMonoid_via_def_dvd_gcd_iff: universal property of GCDMonoid.gcd under the activated def",
+      "int_euclidean_gcd_associated_gcdMonoid: EuclideanDomain.gcd is associated to GCDMonoid.gcd for ℤ",
+      "Four-part structure: GCDMonoid axioms, GCDMonoid instance, Integer normalization, Type hierarchy"
+    ],
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "EuclideanDomain typeclass and Euclidean GCD algorithm",
+      "GCDMonoid typeclass with normalization",
+      "Associated elements and units in commutative rings",
+      "letI for activating non-instance defs"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Euclidean algorithm is one of humanity's oldest recorded algorithms, appearing in Euclid's *Elements* (c. 300 BCE, Book VII, Propositions 1–2) for natural numbers and generalized by Euclid to line segments. For two millennia it remained a computational procedure, not a structural theory. The algebraic turn came in the 19th century: Gauss introduced the Gaussian integers ℤ[i] and showed GCD computations work there too (1832); Dedekind and Kronecker developed ideal theory, distinguishing rings where GCDs exist from those where only ideals play that role; and Emmy Noether's 1920s axiomatization gave us the modern hierarchy — unique factorization domain, principal ideal domain, Euclidean domain. This hierarchy is precisely what Lean 4's typeclass hierarchy encodes: `EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid`. The Lean-specific wrinkle — that `EuclideanDomain.gcdMonoid` is a `def`, not an `instance` — reflects a deep design tension: the typeclass system must avoid diamond inheritance conflicts (multiple paths to `GCDMonoid`) while preserving the mathematical fact that every Euclidean domain has a GCD. Mathlib resolves this by making the canonical construction explicit, requiring `letI` to activate it. This proof resolves the coherence question precisely: definitional equality when `gcdMonoid` is activated via `letI`, and mere association (differing by a unit ±1) for concrete types like ℤ where a different normalized GCDMonoid instance is installed.",
+    "problemStatement": "For a type R with [EuclideanDomain R] [DecidableEq R], prove that EuclideanDomain.gcd and GCDMonoid.gcd are coherent: (1) when EuclideanDomain.gcdMonoid is activated via letI, they are definitionally equal; (2) for ℤ (where a different GCDMonoid instance is installed), they are merely associated.",
+    "keyInsights": [
+      "EuclideanDomain.gcdMonoid is a def, not an instance — requires explicit letI activation to avoid diamond conflicts in the typeclass system",
+      "Under letI := EuclideanDomain.gcdMonoid R, GCDMonoid.gcd = EuclideanDomain.gcd by rfl (definitional equality, not just propositional)",
+      "For ℤ, GCDMonoid.gcd = ↑(Int.gcd) (always ≥ 0); EuclideanDomain.gcd can be negative — they are associated but not equal",
+      "Association bridges the gap: Int.natAbs_euclideanDomain_gcd + Int.associated_iff_natAbs establish that both GCDs represent the same mathematical GCD up to sign",
+      "The algebraic hierarchy EuclideanDomain → GCDMonoid → UFD + IsBezout shows why the gcdMonoid def is mathematically important, not just a technical artifact"
+    ],
+    "proofStrategy": "Four-part structure: (I) prove EuclideanDomain.gcd satisfies GCDMonoid axioms via dvd_gcd and gcd_dvd_left/right; (II) activate EuclideanDomain.gcdMonoid with letI, establish definitional equality by rfl; (III) for ℤ, use Int.natAbs_euclideanDomain_gcd and Int.associated_iff_natAbs to prove association; (IV) show the type hierarchy consequences (UFD, Bézout)."
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Overview: Two GCD Hierarchies",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring explaining the two GCD hierarchies (EuclideanDomain vs GCDMonoid), the critical structural fact that EuclideanDomain.gcdMonoid is a def not an instance, and the coherence question. Lists key Mathlib facts. Imports Mathlib and opens EuclideanDomain namespace.",
+      "mathContext": "Two Mathlib GCD hierarchies for ℤ: (1) `EuclideanDomain` computes `gcd a b` via the Euclidean algorithm recursively (terminating because the Euclidean valuation decreases); (2) `GCDMonoid` axiomatizes `gcd a b` as a least common divisor satisfying `gcd_dvd_left`, `gcd_dvd_right`, and `dvd_gcd`. The key fact: `EuclideanDomain.gcdMonoid` is a `def`, not a `[instance]` — Lean's typeclass system can only use it after explicit activation via `letI := EuclideanDomain.gcdMonoid`. The module explores when the two GCDs agree (definitionally, via `rfl`) and when they only associate (for ℤ, where GCDMonoid normalizes to non-negative)."
+    },
+    {
+      "id": "euclidean-gcd-axioms",
+      "title": "Part I: GCDMonoid Divisibility Axioms",
+      "startLine": 54,
+      "endLine": 89,
+      "summary": "Proves that EuclideanDomain.gcd satisfies all three GCDMonoid axioms without needing a GCDMonoid instance.",
+      "mathContext": "Five theorems: gcd ∣ a, gcd ∣ b, universal property d ∣ a ∧ d ∣ b → d ∣ gcd, biconditional form, and all three axioms together. All proofs are direct applications of EuclideanDomain.gcd_dvd_left, gcd_dvd_right, dvd_gcd."
+    },
+    {
+      "id": "gcdmonoid-instance",
+      "title": "Part II: GCDMonoid Instance from EuclideanDomain",
+      "startLine": 91,
+      "endLine": 115,
+      "summary": "Establishes coherence: when EuclideanDomain.gcdMonoid is activated via letI, the two GCDs are definitionally equal.",
+      "mathContext": "euclidean_gcd_eq_gcdMonoid_gcd_via_def: EuclideanDomain.gcd a b = GCDMonoid.gcd a b by rfl under letI. This works because EuclideanDomain.gcdMonoid defines gcd := EuclideanDomain.gcd."
+    },
+    {
+      "id": "integer-normalization",
+      "title": "Part III: Integer Normalization",
+      "startLine": 117,
+      "endLine": 151,
+      "summary": "For ℤ, EuclideanDomain.gcd and GCDMonoid.gcd are associated (not equal). Verified via Int.natAbs.",
+      "mathContext": "GCDMonoid.gcd for ℤ uses Int.gcd (always ≥ 0). EuclideanDomain.gcd can be negative. Key: (EuclideanDomain.gcd a b).natAbs = Int.gcd a b (Mathlib lemma Int.natAbs_euclideanDomain_gcd). From this, Associated (EuclideanDomain.gcd a b) (GCDMonoid.gcd a b) via Int.associated_iff_natAbs."
+    },
+    {
+      "id": "type-hierarchy",
+      "title": "Part IV: Type Hierarchy",
+      "startLine": 153,
+      "endLine": 184,
+      "summary": "Shows that EuclideanDomain.gcdMonoid enables UniqueFactorizationMonoid and IsBezout as downstream instances.",
+      "mathContext": "Under letI := EuclideanDomain.gcdMonoid R, inferInstance derives both UniqueFactorizationMonoid R and IsBezout R, demonstrating the full algebraic hierarchy consequence."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "extends",
+      "description": "Parent proof: Euclidean algorithm for natural numbers — the foundational algorithm whose typeclass incarnation this proof analyzes"
+    },
+    {
+      "targetId": "gcd-algorithm-oq-01",
+      "relationship": "related",
+      "description": "Average-case and worst-case complexity of the Euclidean algorithm (Lamé's theorem) — complements this proof by analyzing the algorithm's computational efficiency"
+    },
+    {
+      "targetId": "gcd-algorithm-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Binet's formula and Lamé's 5-digit bound — explores Fibonacci numbers as worst-case inputs for the Euclidean algorithm"
+    },
+    {
+      "targetId": "gcd-algorithm-oq-02",
+      "relationship": "related",
+      "description": "Binary GCD (Stein's algorithm) — an alternative algorithm also provable correct, raising the same EuclideanDomain vs GCDMonoid coherence question"
+    },
+    {
+      "targetId": "binary-gcd",
+      "relationship": "related",
+      "description": "Binary GCD — computable GCD algorithm using bit operations; same algebraic coherence questions apply"
+    }
+  ],
+  "conclusion": {
+    "summary": "EuclideanDomain.gcd and GCDMonoid.gcd are coherent in Lean 4/Mathlib: definitionally equal when EuclideanDomain.gcdMonoid is activated, and merely associated for concrete types like ℤ. The distinction arises from normalization: GCDMonoid normalizes to a canonical representative, while EuclideanDomain.gcd follows the raw algorithm output.",
+    "implications": "This formalization resolves a practical confusion when working with GCDs in Lean 4: why does `GCDMonoid.gcd` and `EuclideanDomain.gcd` sometimes give different results for the same inputs? The answer is normalization. The proof shows that the structural relationship is clean: definitional equality under the explicit gcdMonoid def, with a clear association theorem for concrete types.",
+    "openQuestions": [
+      "For polynomial rings $k[X]$ over a field $k$ (another EuclideanDomain), the GCDMonoid instance comes from UFD theory rather than EuclideanDomain.gcdMonoid. Can the normalization map — choosing a monic representative — be given a canonical algebraic characterization in terms of the field's multiplicative structure?",
+      "Is there a refined typeclass `NormalizedEuclideanDomain` that enforces a canonical normalization for EuclideanDomain.gcd directly (so `gcd` always produces non-negative or monic outputs), eliminating the need for a separate GCDMonoid instance on concrete types and the `letI` workaround?",
+      "The association theorem `int_euclidean_gcd_associated_gcdMonoid` holds because units of ℤ are exactly ±1. For polynomial rings over infinite fields, the unit group is all nonzero scalars — does the analogous association theorem still give a useful characterization of when two GCDs represent the 'same' element?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Mathlib Community",
+      "title": "Mathlib4: EuclideanDomain",
+      "note": "EuclideanDomain.gcdMonoid definition and Int.natAbs_euclideanDomain_gcd"
+    },
+    {
+      "authors": "Mathlib Community",
+      "title": "Mathlib4: GCDMonoid",
+      "note": "GCDMonoid typeclass with normalization axioms"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["EuclideanDomain"],
+    "namespace": "GcdAlgorithmOQ04",
+    "lineCount": 186,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/GcdAlgorithmOQ04.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "euclidean_gcd_satisfies_gcdMonoid_axioms",
+      "type": "core",
+      "description": "EuclideanDomain.gcd satisfies all three GCDMonoid axioms simultaneously",
+      "leanType": "∀ [EuclideanDomain R] [DecidableEq R] (a b : R), EuclideanDomain.gcd a b ∣ a ∧ EuclideanDomain.gcd a b ∣ b ∧ (∀ d : R, d ∣ a → d ∣ b → d ∣ EuclideanDomain.gcd a b)"
+    },
+    {
+      "name": "euclidean_gcd_eq_gcdMonoid_gcd_via_def",
+      "type": "core",
+      "description": "Under EuclideanDomain.gcdMonoid, both GCDs are definitionally equal",
+      "leanType": "∀ [EuclideanDomain R] [DecidableEq R] (a b : R), letI : GCDMonoid R := EuclideanDomain.gcdMonoid R; EuclideanDomain.gcd a b = GCDMonoid.gcd a b"
+    },
+    {
+      "name": "int_euclidean_gcd_associated_gcdMonoid",
+      "type": "core",
+      "description": "For ℤ, EuclideanDomain.gcd and GCDMonoid.gcd are associated",
+      "leanType": "∀ (a b : ℤ), Associated (EuclideanDomain.gcd a b) (GCDMonoid.gcd a b)"
+    }
+  ],
+  "sorries": 0
+}

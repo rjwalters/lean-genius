@@ -1,0 +1,294 @@
+{
+  "id": "erdos-1141",
+  "title": "Erdős Problem #1141: Coprime-Square Subtraction Primes",
+  "slug": "erdos-1141",
+  "description": "Are there infinitely many n such that n - k² is prime for all k with gcd(n, k) = 1 and k² < n? SOLVED (Alexeev-Putterman-Sawhney-Sellke-Valiant 2026): NO, only finitely many such n exist, for any fixed a in n - ak². Short deduction from Pollack's theorem on small prime quadratic residues.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1141",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1141Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "computational",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1141,
+    "erdosUrl": "https://erdosproblems.com/1141",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate and basic lemmas",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality (gcd = 1) and related lemmas",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite sets {0, ..., n-1} for bounded quantification",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "LocallyFiniteOrder",
+        "description": "Finite intervals in ordered types, used for Finset.range decidability",
+        "module": "Mathlib.Order.LocallyFiniteOrder"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "Core tactics including decide, native_decide, omega, simp",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "IsErdos1141Good",
+      "isErdos1141Good_iff_unbounded",
+      "good_implies_pred_prime",
+      "good_ge4_even",
+      "all_known_good",
+      "classification_100",
+      "good_count_100",
+      "good_not_prime_ge5",
+      "good_odd_eq_three",
+      "good_coprime3_sub9_prime"
+    ],
+    "axiomCount": 2,
+    "lineCount": 210,
+    "assumptions": "2 assumptions: (1) the axiom erdos_1141_finitely_many (the finiteness theorem of Alexeev-Putterman-Sawhney-Sellke-Valiant 2026, arXiv:2604.06609; proved via Pollack's theorem but not yet formalized in Mathlib), and (2) Lean.ofReduceBool, introduced by native_decide. The computational results — including the named contributions all_known_good (all 41 OEIS A214583 values), classification_100, and good_count_100, plus the small-case good_*/not_good_* examples and knownGoodValues_length — are discharged by native_decide, which trusts the compiler's kernel reduction. All structural results (good_implies_pred_prime, good_ge4_even, good_not_prime_ge5, good_odd_eq_three, good_coprime3_sub9_prime, isErdos1141Good_iff_unbounded) are fully proved with no native_decide.",
+    "theoremCount": 35,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1141 asks whether infinitely many natural numbers n have the property that n - k² is prime for every k coprime to n with k² < n. The problem connects primality testing to quadratic residues and coprimality structure, sitting at the intersection of additive and multiplicative number theory.\n\nThe known good values form OEIS sequence A214583, comprising 41 terms: 3, 4, 6, 8, 12, ..., 930, 1722. Strikingly, all known good values except 3 are even, and many are highly composite numbers (24, 30, 60, 90, 180, 252, 360, 570). This pattern has a natural explanation: highly composite n have small Euler totient ratio φ(n)/n, meaning fewer coprime k values, and hence fewer simultaneous primality conditions to satisfy.\n\nAn exhaustive computational search found no further good values between 1722 and 10^10. ChatGPT-Tang proved that the counting function satisfies #{n ≤ N : IsGood(n)} = O(N^{1/2+o(1)}), providing a density bound consistent with finiteness. The problem was **SOLVED in 2026** by Alexeev, Putterman, Sawhney, Sellke, and Valiant (arXiv:2604.06609), who proved that for each fixed a ≥ 1, only finitely many n satisfy the analogous property for n - ak². Their proof is a short deduction from Pollack's 2017 theorem on small prime quadratic residues; the result is ineffective (no explicit bound on the largest good n) due to Siegel's theorem.",
+    "problemStatement": "**Erdős Problem #1141**:\n\nAre there infinitely many $n$ such that $n - k^2$ is prime for all $k$ with $\\gcd(n, k) = 1$ and $k^2 < n$?\n\n**Formally**: Does the set $\\{n \\in \\mathbb{N} : \\forall k,\\; \\gcd(n,k) = 1 \\wedge k^2 < n \\Rightarrow (n - k^2) \\text{ is prime}\\}$ have infinitely many elements?",
+    "text": "Are there infinitely many n such that n - k² is prime for all k with gcd(n, k) = 1 and k² < n?",
+    "proofStrategy": "The formalization defines the Erdős-1141 property using bounded quantification over Finset.range for decidability, proves equivalence with the unbounded formulation, verifies all 41 known OEIS A214583 values via `all_known_good`, provides a complete classification of good values up to 100, and proves structural constraints: good n ≥ 4 are even, n-1 must be prime, no prime ≥ 5 is good, 3 is the unique odd good value, and good n coprime to 3 forces n-9 prime. The finiteness theorem (the 2026 solution by Alexeev et al.) is axiomatized as `erdos_1141_finitely_many`, since the underlying proof via Pollack's theorem has not yet been formalized in Mathlib.",
+    "keyInsights": [
+      "**Highly composite advantage**: Good values cluster among highly composite numbers because these have the fewest coprime residues (low φ(n)/n ratio), minimizing the number of independent primality conditions n - k² must satisfy.",
+      "**Necessary condition: n - 1 prime**: Every good n ≥ 2 must have n - 1 prime (from k = 1). This immediately excludes most n and explains why good values are always one more than a prime.",
+      "**Decidability via Finset.range**: The bounded quantifier formulation makes IsErdos1141Good decidable, enabling Lean's `decide` and `native_decide` tactics to computationally verify or refute the property for specific n — a powerful technique for concrete number theory.",
+      "**The 1722 gap (now resolved)**: No good values exist between 1722 and 10^10 (a ratio of ~6 million). This enormous gap strongly suggested finiteness, which was confirmed by Alexeev et al. (2026): the sequence is provably finite, and 1722 is computationally the largest known good value for a=1.",
+      "**Density bound O(N^{1/2+o(1)})**: ChatGPT-Tang's result bounds the counting function, showing good values are very sparse. This is the best theoretical evidence toward finiteness, though it does not rule out infinitely many extremely sparse terms."
+    ],
+    "prerequisites": [
+      "Prime numbers and primality testing",
+      "Quadratic residues and Goldbach-type questions",
+      "Coprimality ($\\\\gcd(n,k) = 1$)",
+      "Decidable bounded quantification in Lean",
+      "OEIS sequences and computational verification"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "summary": "Erdős #1141: are there infinitely many n such that n−k² is prime for all k with gcd(n,k)=1 and k²<n? Documents the known good values (OEIS A214583, largest 1722) and the 2026 resolution (Alexeev–Putterman–Sawhney–Sellke–Valiant): only finitely many such n exist.",
+      "startLine": 1,
+      "endLine": 25,
+      "mathContext": "Erdős #1141: are there infinitely many n such that n−k² is prime for all k with gcd(n,k)=1 and k²<n? Documents the known good values (OEIS A214583, largest 1722) and the 2026 resolution (Alexeev–Putterman–Sawhney–Sellke–Valiant): only finitely many such n exist."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "summary": "Imports Mathlib for the number-theoretic and decidability machinery used throughout.",
+      "startLine": 26,
+      "endLine": 27,
+      "mathContext": "Imports Mathlib for the number-theoretic and decidability machinery used throughout."
+    },
+    {
+      "id": "core-def",
+      "title": "Core Definition",
+      "summary": "Defines IsErdos1141Good n (n−k² is prime for every coprime k with k²<n) and proves isErdos1141Good_iff_unbounded relating it to the unbounded-set formulation of the conjecture.",
+      "startLine": 28,
+      "endLine": 49,
+      "mathContext": "Defines IsErdos1141Good n (n−k² is prime for every coprime k with k²<n) and proves isErdos1141Good_iff_unbounded relating it to the unbounded-set formulation of the conjecture."
+    },
+    {
+      "id": "positive-examples",
+      "title": "Computational Verification of Small Examples",
+      "summary": "Verifies via decide that the small known good values satisfy the property: good_3, good_4, good_6, good_8, good_12, good_14, good_18, good_20.",
+      "startLine": 50,
+      "endLine": 75,
+      "mathContext": "Verifies via decide that the small known good values satisfy the property: good_3, good_4, good_6, good_8, good_12, good_14, good_18, good_20."
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples",
+      "summary": "Verifies values that do NOT satisfy the property: not_good_5, not_good_7, not_good_9, not_good_10, not_good_16.",
+      "startLine": 76,
+      "endLine": 92,
+      "mathContext": "Verifies values that do NOT satisfy the property: not_good_5, not_good_7, not_good_9, not_good_10, not_good_16."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties",
+      "summary": "Edge cases and structural lemmas: good_0, not_good_1, not_good_2, good_implies_pred_prime (a good n forces n−1 or related predecessors prime), and good_ge4_even (good values ≥ 4 are even).",
+      "startLine": 93,
+      "endLine": 120,
+      "mathContext": "Edge cases and structural lemmas: good_0, not_good_1, not_good_2, good_implies_pred_prime (a good n forces n−1 or related predecessors prime), and good_ge4_even (good values ≥ 4 are even)."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Open Conjecture (Finiteness)",
+      "summary": "States the headline result as the axiom erdos_1141_finitely_many: only finitely many good n exist (Alexeev et al. 2026, deduced ineffectively from Pollack's theorem via Siegel).",
+      "startLine": 121,
+      "endLine": 129,
+      "mathContext": "States the headline result as the axiom erdos_1141_finitely_many: only finitely many good n exist (Alexeev et al. 2026, deduced ineffectively from Pollack's theorem via Siegel)."
+    },
+    {
+      "id": "known-finite-results",
+      "title": "Known Finite Results",
+      "summary": "Defines knownGoodValues (the 41-term list ending at 1722) and proves knownGoodValues_length recording its cardinality.",
+      "startLine": 130,
+      "endLine": 140,
+      "mathContext": "Defines knownGoodValues (the 41-term list ending at 1722) and proves knownGoodValues_length recording its cardinality."
+    },
+    {
+      "id": "large-examples",
+      "title": "Larger Verified Examples (native_decide)",
+      "summary": "Verifies larger known good values using native_decide for speed: good_24, good_30, good_60, good_90, good_110, good_198, good_252, good_570, good_1722.",
+      "startLine": 141,
+      "endLine": 169,
+      "mathContext": "Verifies larger known good values using native_decide for speed: good_24, good_30, good_60, good_90, good_110, good_198, good_252, good_570, good_1722."
+    },
+    {
+      "id": "unified-verification",
+      "title": "Unified Verification",
+      "summary": "all_known_good: a single theorem confirming every entry of knownGoodValues satisfies IsErdos1141Good.",
+      "startLine": 170,
+      "endLine": 174,
+      "mathContext": "all_known_good: a single theorem confirming every entry of knownGoodValues satisfies IsErdos1141Good."
+    },
+    {
+      "id": "classification",
+      "title": "Complete Classification to n = 100",
+      "summary": "Defines goodValuesUpTo100 and proves classification_100 (the good values below 100 are exactly the listed ones) and good_count_100 (their count).",
+      "startLine": 175,
+      "endLine": 188,
+      "mathContext": "Defines goodValuesUpTo100 and proves classification_100 (the good values below 100 are exactly the listed ones) and good_count_100 (their count)."
+    },
+    {
+      "id": "structural-corollaries",
+      "title": "Structural Corollaries",
+      "summary": "Further corollaries on the structure of good values: good_not_prime_ge5, good_odd_eq_three (the only odd good value is 3), and good_coprime3_sub9_prime.",
+      "startLine": 189,
+      "endLine": 210,
+      "mathContext": "Further corollaries on the structure of good values: good_not_prime_ge5, good_odd_eq_three (the only odd good value is 3), and good_coprime3_sub9_prime."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1141 has been SOLVED. Alexeev, Putterman, Sawhney, Sellke, and Valiant (2026, arXiv:2604.06609) proved that for each fixed a ≥ 1, only finitely many n satisfy Pa(n) (i.e., n - ak² is prime for all k with (k,n)=1 and ak² < n). The proof is a short deduction from Pollack's theorem (2017) on small prime quadratic residues: for large n, there exists a small prime p with ax² ≡ n (mod p) solvable, and the resulting set S of coprime k values forces n - ak² = p for multiple k, a contradiction. The result is ineffective due to Siegel's theorem. Computational evidence suggests 1722 is the largest good value for a=1. The proof was generated by an internal AI model at OpenAI; ChatGPT-5.4 Pro also solved it independently in all 5 attempts.",
+    "implications": "The resolution confirms the long-suspected finiteness of OEIS A214583 and generalizes it to all quadratic offsets n - ak². The ineffectivity (via Siegel's theorem) means no explicit bound on the largest good value is known, though computationally 1722 appears to be the maximum for a=1. The short proof from Pollack's theorem illustrates how modern analytic number theory results on small prime residues can settle classical Erdős problems.",
+    "openQuestions": [
+      "Can the result be made effective — i.e., can an explicit bound on the largest good n be computed?",
+      "What is the exact set of good values for a=2, a=3, etc.?",
+      "Is there a characterization of good values in terms of their prime factorization structure beyond 'highly composite'?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "structural-sibling",
+      "description": "Erdős #1140 asks the same question but with 2x² instead of k² (restricted to coprime k). Epure-Gica disproved infinitude for that variant, making it a resolved counterpart to this open problem. The contrast illustrates how small structural changes to the subtraction formula can shift the problem from open to resolved.",
+      "targetId": "erdos-1140"
+    },
+    {
+      "relationship": "structural-sibling",
+      "description": "Erdős #1142 replaces the coprime-square condition with powers of 2: n − 2^k prime for all 1 < 2^k < n. The known values (up to 105) are even sparser than OEIS A214583, and the problem is likewise unresolved. Both problems share the same skeleton — requiring n minus every element of a structured set to be prime simultaneously.",
+      "targetId": "erdos-1142"
+    },
+    {
+      "relationship": "thematic",
+      "description": "Erdős #1059 asks whether infinitely many primes p satisfy p − k! composite for all k with k! < p. The flavor is dual: #1141 demands primality of n − k² for all eligible k, while #1059 demands compositeness of p − k!. Both are open problems where a universal primality/compositeness condition over a structured set forces the candidate values to be extremely rare.",
+      "targetId": "erdos-1059"
+    },
+    {
+      "relationship": "thematic",
+      "description": "Erdős #680 asks about the least prime factor of integers near n exceeding k² + 1. This problem directly involves the interplay between squares and prime factors, touching the same quadratic-prime boundary that defines the good values in #1141. Both problems concern how quadratic growth interacts with primality constraints.",
+      "targetId": "erdos-680"
+    },
+    {
+      "relationship": "thematic",
+      "description": "Erdős #17 on cluster primes asks whether every even n ≤ p − 3 is a difference of two primes ≤ p. The structural idea of representing integers as differences involving primes — and asking which n make this universal — parallels the coprime-square subtraction property. Both probe universality-of-primeness questions over finite ranges.",
+      "targetId": "erdos-17"
+    },
+    {
+      "relationship": "methodological",
+      "description": "Erdős #203 on covering systems and prime avoidance asks whether covering congruences can block all primality. Covering systems are a key tool for proving that sequences of the form n − f(k) contain no primes; they provide one potential route to showing the good-value sequence in #1141 is finite by constructing a covering for large n.",
+      "targetId": "erdos-203"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "Problems in number theory and combinatorics",
+      "venue": "Proceedings of the Sixth Manitoba Conference on Numerical Mathematics",
+      "year": "1976",
+      "pages": "35–58",
+      "note": "Original source for many Erdős problems in this family, including the coprime-square subtraction problem."
+    },
+    {
+      "authors": [
+        "ChatGPT-Tang"
+      ],
+      "title": "Density bound for OEIS A214583: #{n ≤ N : IsErdos1141Good(n)} = O(N^{1/2+o(1)})",
+      "venue": "erdosproblems.com comment / informal communication",
+      "year": "2023",
+      "url": "https://erdosproblems.com/1141",
+      "note": "Establishes the best known upper bound on the counting function, showing the good values are sub-square-root sparse."
+    },
+    {
+      "authors": [
+        "A. Epure",
+        "A. Gica"
+      ],
+      "title": "On a conjecture of Erdős concerning primes of the form n − 2x²",
+      "venue": "Journal of Number Theory",
+      "year": "2022",
+      "note": "Disproves the analogous conjecture for Erdős Problem #1140 (n − 2x² prime for all x), giving a cautionary precedent that the sequence in #1141 may also be finite."
+    },
+    {
+      "authors": [
+        "OEIS Foundation"
+      ],
+      "title": "Sequence A214583: Numbers n such that n - k^2 is prime for all k with gcd(n,k)=1 and k^2 < n",
+      "venue": "The On-Line Encyclopedia of Integer Sequences",
+      "year": "2012",
+      "url": "https://oeis.org/A214583",
+      "note": "Documents all 41 known good values, the 10^10 search bound, and references to related computational work."
+    },
+    {
+      "authors": [
+        "P. Erdős",
+        "R. L. Graham"
+      ],
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "venue": "Monographies de L'Enseignement Mathématique, vol. 28, Université de Genève",
+      "year": "1980",
+      "note": "Canonical reference for Erdős problems of this type; provides context for simultaneous primality conditions and their expected rarity."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 210,
+    "axiomCount": 1,
+    "theoremCount": 35,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos1141Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

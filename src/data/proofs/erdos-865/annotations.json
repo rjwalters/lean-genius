@@ -1,0 +1,117 @@
+[
+  {
+    "id": "ann-e865-header",
+    "proofId": "erdos-865",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview: Pairwise Sums in Dense Sets",
+    "content": "**Erdős Problem #865** asks: if A ⊆ {1,...,N} has at least (5/8)N + C elements, must there exist distinct a, b, c ∈ A with a+b, a+c, b+c ∈ A? The threshold 5/8 is conjectured to be **optimal**, achieved by the construction [N/8, N/4] ∪ [N/2, N]. The problem is **OPEN**.\n\nMore generally, the Erdős-Sós conjecture gives the threshold f_k(N) ~ (1/2)(1 + Σ 1/4^r)N for k elements with all pairwise sums in A. The only proven upper bound is the weaker f_k(N) ≤ (2/3 - ε_k)N from Choi-Erdős-Szemerédi (1975).",
+    "mathContext": "The problem connects additive combinatorics with density arguments. The key quantity f_k(N) is the minimum |A| guaranteeing k elements with all C(k,2) pairwise sums in A. For k=3, f_3(N)/N → 5/8 is conjectured but only f_3(N)/N ≤ 2/3 - ε is known.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Additive combinatorics",
+      "Density theorems",
+      "Ramsey theory",
+      "Sum-free sets"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e865-predicates",
+    "proofId": "erdos-865",
+    "range": {
+      "startLine": 35,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Core Predicates",
+    "content": "Three predicates formalize the problem:\n\n**HasPairwiseSumTriple(A)**: ∃ distinct a, b, c ∈ A with a+b, a+c, b+c all in A. This is the k=3 case of the general problem.\n\n**HasSumPair(A)**: ∃ distinct a, b ∈ A with a+b ∈ A. The k=2 case, solved classically.\n\n**HasKPairwiseSums(A, k)**: ∃ k distinct elements in A with all C(k,2) pairwise sums in A. The general case for the Erdős-Sós conjecture.",
+    "mathContext": "The distinctness conditions are essential: without them, the problem is trivial (any element a satisfies a+a = 2a). The existential quantification over subsets S ⊆ A with |S| = k in HasKPairwiseSums generalizes cleanly to all k.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset membership",
+      "Existential quantification",
+      "Pairwise sums"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e865-threshold",
+    "proofId": "erdos-865",
+    "range": {
+      "startLine": 58,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Threshold Functions and Erdős-Sós Formula",
+    "content": "**threshold(k, N)** is axiomatized as the minimum subset size guaranteeing k elements with all pairwise sums in A. This is axiomatized rather than computed because decidability of HasKPairwiseSums is unavailable.\n\n**conjecturedThreshold(k, N)** = (1/2)(1 + Σ_{r=1}^{k-2} 1/4^r) · N is the Erdős-Sós formula. For k=3, this gives (1/2)(1 + 1/4) · N = **(5/8)N**.",
+    "mathContext": "The Erdős-Sós formula arises from a probabilistic heuristic: adding the rth element to a partial set of r-1 elements has a 'collision probability' of roughly 1/4^r for avoiding pairwise sums. The product of survival probabilities gives the threshold.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Threshold functions",
+      "Erdős-Sós conjecture",
+      "Rational arithmetic"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e865-k3",
+    "proofId": "erdos-865",
+    "range": {
+      "startLine": 85,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "The k=3 Case: 5/8 Conjecture and Lower Bound",
+    "content": "**k3_conjecture** states the main conjecture: ∃ C such that |A| ≥ (5/8)N + C forces a pairwise sum triple.\n\n**lowerBoundConstruction(N)** = [N/8, N/4] ∪ [N/2, N] is the extremal example showing 5/8 is best possible. **lower_bound_no_triple** axiomatizes that this construction has no triple. **lower_bound_size** axiomatizes that its size is approximately 5N/8.\n\n**k3_optimal_threshold** asserts f_3(N)/N → 5/8, combining the upper and lower bounds.",
+    "mathContext": "The lower bound construction works because: elements from [N/8, N/4] have pairwise sums ≤ N/2, elements from [N/2, N] have pairwise sums ≥ N, and cross sums from one interval to the other land in the gap (N/4+N/2, N/4+N) = (3N/4, 5N/4), which partially overlaps [N/2, N] but not enough to form a complete triple.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lower bound constructions",
+      "Extremal examples",
+      "Gap arguments"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e865-general",
+    "proofId": "erdos-865",
+    "range": {
+      "startLine": 117,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Erdős-Sós Conjecture and Limiting Behavior",
+    "content": "**erdos_sos_conjecture** states that f_k(N) ~ conjecturedThreshold(k, N) for all k ≥ 2. The specific threshold values are: k=2: 1/2, k=3: 5/8, k=4: 21/32, k=5: 85/128.\n\n**threshold_converges_to_two_thirds** captures the limiting behavior: as k → ∞, the Erdős-Sós threshold approaches 2/3. This follows from the geometric series Σ 1/4^r = 1/3, giving (1/2)(1 + 1/3) = 2/3.",
+    "mathContext": "The convergence to 2/3 is elegant: the sum Σ_{r=1}^{k-2} 1/4^r = (1 - 1/4^{k-2})/3 → 1/3 as k → ∞. So the threshold (1/2)(1 + 1/3) = 2/3 is the universal upper limit for the density needed to force pairwise sum configurations of any size.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Geometric series",
+      "Asymptotic density",
+      "Limiting thresholds"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e865-ces",
+    "proofId": "erdos-865",
+    "range": {
+      "startLine": 141,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Choi-Erdős-Szemerédi Upper Bound (1975)",
+    "content": "**choi_erdos_szemeredi_bound** is the strongest proven result: for each k ≥ 3, there exists ε_k > 0 such that f_k(N) ≤ (2/3 - ε_k)N for large N. This is weaker than the conjectured 5/8 for k=3.\n\n**ces_weaker_than_conjecture** verifies 5/8 < 2/3 by norm_num, confirming the CES bound doesn't resolve the sharp threshold.",
+    "mathContext": "Since 5/8 = 0.625 < 0.667 = 2/3, the CES bound gives a density strictly above the conjectured threshold. Closing this gap — from 2/3 - ε down to 5/8 — is the core open challenge. The exact value of ε_3 is not known precisely.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Proven bounds",
+      "Density gap",
+      "Additive combinatorics"
+    ],
+    "prerequisites": []
+  }
+]

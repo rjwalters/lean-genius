@@ -1,0 +1,151 @@
+{
+  "slug": "denumerability-rationals-oq-01",
+  "title": "The Cardinality Gap: ℚ, ℝ, and the Continuum Hypothesis",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{CH} \\iff \\neg\\exists\\kappa : \\text{Cardinal},\\, \\aleph_0 < \\kappa < \\mathfrak{c}",
+    "plain": "Starting from the denumerability of ℚ (|ℚ| = ℵ₀), what cardinals lie between |ℚ| and |ℝ|? This is exactly the Continuum Hypothesis, proved independent of ZFC by Gödel and Cohen.",
+    "whyMatters": [
+      "The denumerability of the rationals is the entry point to the hierarchy of infinite cardinalities.",
+      "The continuum hypothesis asks whether any cardinal lies strictly between countable infinity and the continuum.",
+      "The Lean entry separates formal cardinal consequences from axiomatized independence facts."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`rationals_denumerable`, `rationals_countable`, `exists_surjection_nat_to_rat`, and `exists_injection_rat_to_nat` package the parent denumerability result.",
+      "`decodeNatToRat`, `encodeRatToNat`, `decode_encode`, and `encode_decode` expose explicit encode/decode infrastructure.",
+      "`card_rat_eq_aleph0` records the cardinality of the rationals.",
+      "`ContinuumHypothesis` and related cardinal statements frame the gap between `aleph_0` and the continuum."
+    ],
+    "open": [
+      "`DenumerabilityRationalsOQ01.lean` has two axioms for the Godel/Cohen independence inputs; it has zero sorries."
+    ],
+    "goal": "Backfill the cardinal-gap metadata while making the independence axioms visible."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-03T15:47:17-07:00",
+    "iteration": 1,
+    "focus": "Complete: proof builds with 0 sorries, 2 axioms (independence)",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: DenumerabilityRationalsOQ01.lean builds with 0 sorries, 2 axioms. 14 theorems, 270 lines.",
+    "builtItems": [
+      "DenumerabilityRationalsOQ01.lean: 14 theorems, 2 defs, 0 sorries, 2 axioms",
+      "Gallery: src/data/proofs/denumerability-rationals-oq-01/meta.json"
+    ],
+    "insights": [
+      "CH ↔ no intermediate cardinal between ℵ₀ and 𝔠",
+      "ℵ₁ = Order.succ ℵ₀ via Cardinal.aleph_succ + Cardinal.aleph_zero",
+      "|𝒫(ℚ)| = 𝔠 via Cardinal.mk_set + Cardinal.two_power_aleph0",
+      "Independence: 2 axioms (Gödel + Cohen)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: denumerability-rationals-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "set-theory",
+    "cardinality",
+    "continuum-hypothesis",
+    "independence-results",
+    "wiedijk-100",
+    "denumerability",
+    "axiom-backed"
+  ],
+  "relatedProofs": [
+    "denumerability-rationals",
+    "denumerability-rationals-oq-01",
+    "denumerability-rationals-oq-02",
+    "denumerability-rationals-oq-02-oq-02",
+    "denumerability-rationals-oq-03",
+    "denumerability-rationals-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T15:47:17-07:00",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/DenumerabilityRationals.lean",
+      "filename": "DenumerabilityRationals.lean",
+      "lineCount": 192,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationals.lean"
+    },
+    {
+      "path": "Proofs/DenumerabilityRationalsOQ01.lean",
+      "filename": "DenumerabilityRationalsOQ01.lean",
+      "lineCount": 271,
+      "theoremCount": 15,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationalsOQ01.lean"
+    },
+    {
+      "path": "Proofs/DenumerabilityRationalsOQ02.lean",
+      "filename": "DenumerabilityRationalsOQ02.lean",
+      "lineCount": 238,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationalsOQ02.lean"
+    },
+    {
+      "path": "Proofs/DenumerabilityRationalsOQ02OQ02.lean",
+      "filename": "DenumerabilityRationalsOQ02OQ02.lean",
+      "lineCount": 217,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationalsOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/DenumerabilityRationalsOQ03.lean",
+      "filename": "DenumerabilityRationalsOQ03.lean",
+      "lineCount": 601,
+      "theoremCount": 30,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationalsOQ03.lean"
+    },
+    {
+      "path": "Proofs/DenumerabilityRationalsOQ04.lean",
+      "filename": "DenumerabilityRationalsOQ04.lean",
+      "lineCount": 143,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DenumerabilityRationalsOQ04.lean"
+    }
+  ]
+}

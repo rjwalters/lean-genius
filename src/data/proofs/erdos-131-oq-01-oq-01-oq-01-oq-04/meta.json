@@ -1,0 +1,206 @@
+{
+  "id": "erdos-131-oq-01-oq-01-oq-01-oq-04",
+  "slug": "erdos-131-oq-01-oq-01-oq-01-oq-04",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos131DavenportRank2",
+    "lineCount": 180,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos131DavenportRank2.lean",
+    "sorries": 0
+  },
+  "title": "The Rank-2 Davenport Lower Bound D(ℤ/aℤ ⊕ ℤ/bℤ) ≥ a + b − 1 (Erdős #131)",
+  "description": "The elementary, axiom-free half of Olson's rank-2 Davenport constant: D(ℤ/aℤ ⊕ ℤ/bℤ) ≥ a + b − 1. The witness is the extremal sequence (1,0) repeated a−1 times followed by (0,1) repeated b−1 times (length a+b−2), which has no nonempty zero-sum subsequence — each coordinate sum is a block cardinality bounded below the modulus, forced to 0. Combined with upward-closure of the Davenport-length set, this rules out every length ≤ a+b−2. The diagonal corollary gives D(ℤ/nℤ ⊕ ℤ/nℤ) ≥ 2n−1. Answers the rank-2 lower-bound open question of the cyclic-constant entry. Fully verified, 0 axioms, 0 sorries; the matching upper bound (Olson) is left open as it is absent from Mathlib.",
+  "overview": {
+    "historicalContext": "The Davenport constant D(G) — the least d such that every length-d sequence over a finite abelian group G has a nonempty zero-sum subsequence — is elementary for cyclic groups (D(ℤ/nℤ) = n) but becomes genuinely deep at higher rank. The landmark result is John Olson's theorem (1969): for the rank-2 group ℤ/aℤ ⊕ ℤ/bℤ with a ∣ b, D = a + b − 1, and more generally D(G) = 1 + ∑(nᵢ − 1) for p-groups. Olson's UPPER bound is a substantial combinatorial argument (via the group ring / polynomial method); the LOWER bound, by contrast, is an explicit extremal construction and is completely elementary. The general lower bound D(ℤ/n₁ ⊕ ⋯ ⊕ ℤ/n_k) ≥ 1 + ∑(nᵢ − 1) holds for all finite abelian groups, but equality can FAIL for rank ≥ 4 (the first counterexamples are due to Baayen and to van Emde Boas–Kruyswijk in the late 1960s), making the exact determination of D(G) a still-open problem in general. This entry formalizes the elementary lower half for rank 2, breaking the Erdős #131 Davenport line out of the cyclic regime.",
+    "problemStatement": "Prove that the Davenport constant of ℤ/aℤ ⊕ ℤ/bℤ is at least a + b − 1: if d is the least length such that every length-d sequence over the group has a nonempty zero-sum subsequence (IsLeast (DavenportSet (ZMod a × ZMod b)) d), then a + b − 1 ≤ d. This is the elementary, unconditional half of Olson's D(ℤ/aℤ ⊕ ℤ/bℤ) = a + b − 1 (for a ∣ b) and answers the rank-2 lower-bound open question posed by the cyclic-constant companion entry.",
+    "proofStrategy": "Exhibit a single long zero-sum-free sequence. The witness is the concatenation of two coordinate blocks: e₁ = (1,0) repeated a−1 times, then e₂ = (0,1) repeated b−1 times, of length (a−1)+(b−1) = a+b−2. For any nonempty index set s, the first coordinate of ∑_{i∈s} witness equals (|s ∩ block₁| : ZMod a) and the second equals (|s ∩ block₂| : ZMod b) (computed via Prod.fst_sum/snd_sum and Finset.sum_boole). Vanishing forces a ∣ |s∩block₁| with |s∩block₁| ≤ a−1 and b ∣ |s∩block₂| with |s∩block₂| ≤ b−1, so both cardinalities are 0 (Nat.not_dvd_of_pos_of_lt); since the two blocks partition s (filter_card_add_filter_neg_card_eq_card), s = ∅ — contradicting nonemptiness. Hence a+b−2 ∉ DavenportSet. Upward-closure of the Davenport set (davenport_set_mono, via restriction to a prefix with Fin.castLE and re-embedding the witness subset with Fin.castLEEmb) then rules out every length ≤ a+b−2, giving d ≥ a+b−1.",
+    "keyInsights": [
+      "The lower bound is where the Davenport constant is EASY and the upper bound is where it is HARD — the opposite intuition from many extremal problems. A lower bound on a 'least length forcing a property' just needs one long counterexample sequence, here the explicit coordinate-block witness.",
+      "The witness encodes the additive structure of the direct sum coordinate-by-coordinate: a−1 copies of the first generator can never sum to a multiple of a, and likewise for the second — and the two coordinates are independent, so a zero sum requires each block contribution to vanish separately.",
+      "Upward closure of the Davenport-length set is the lemma that turns a single fixed-length witness into a bound on ALL shorter lengths: restrict any longer sequence to its first m entries (Fin.castLE) and re-embed the zero-sum subset (Fin.castLEEmb, sum preserved by Finset.sum_map). Without it, the witness would only refute one specific length.",
+      "Working over the abstract product ZMod a × ZMod b (and a group-agnostic HasZeroSumSubseq / DavenportSet) keeps the infrastructure reusable: the same block-cardinality argument generalizes verbatim to D(ℤ/n₁ ⊕ ⋯ ⊕ ℤ/n_k) ≥ 1 + ∑(nᵢ − 1) for any rank.",
+      "Only the elementary half is formalized: a + b − 1 is sharp by Olson, but his matching upper bound is a substantial result absent from Mathlib, so the entry honestly isolates the deep half as an open question rather than claiming the exact constant."
+    ]
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos131DavenportRank2.lean",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "erdos-problems",
+      "erdos-131",
+      "davenport-constant",
+      "zero-sum-free",
+      "zero-sum-subsequence",
+      "non-cyclic-group",
+      "rank-two",
+      "olson-theorem",
+      "isleast",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 180,
+    "theoremCount": 4,
+    "definitionCount": 3,
+    "badge": "original",
+    "originalContributions": [
+      "davenport_rank2_lower: the headline result — the Davenport constant of the rank-2 group ℤ/aℤ ⊕ ℤ/bℤ is at least a + b − 1. Formalized as: if d is the least length such that every length-d sequence over ℤ/aℤ ⊕ ℤ/bℤ has a nonempty zero-sum subsequence (IsLeast (DavenportSet (ZMod a × ZMod b)) d), then a + b − 1 ≤ d. This is the elementary, unconditional HALF of Olson's theorem D(ℤ/aℤ ⊕ ℤ/bℤ) = a + b − 1 (for a ∣ b); the matching upper bound is a substantial combinatorial theorem that is NOT in Mathlib. The cyclic case D(ℤ/nℤ) = n is elementary (companion entry); rank ≥ 2 is where the Davenport constant becomes non-trivial, and this entry breaks into that regime axiom-free. It answers the rank-2 lower-bound part of the open question posed by the cyclic-constant entry (erdos-131-oq-01-oq-01-oq-01-oq-03-oq-01).",
+      "davenport_rank2_witness: the extremal construction and its key property — the standard sequence consisting of e₁ = (1,0) repeated a − 1 times followed by e₂ = (0,1) repeated b − 1 times (length (a−1)+(b−1) = a+b−2) has NO nonempty zero-sum subsequence. Proof: a nonempty index set s splits as s₁ (the e₁-block) and s₂ (the e₂-block); the two coordinates of ∑_{i∈s} witness a b i are (|s₁| : ZMod a) and (|s₂| : ZMod b) (computed via Prod.fst_sum / Prod.snd_sum and Finset.sum_boole). Vanishing forces a ∣ |s₁| with 0 ≤ |s₁| ≤ a−1 and b ∣ |s₂| with 0 ≤ |s₂| ≤ b−1, hence |s₁| = |s₂| = 0 and s = ∅. The block-size bounds use an injection of each block into Finset.range via Fin.val (resp. Fin.val − (a−1)).",
+      "davenport_set_mono: the Davenport set {m | every length-m sequence has a nonempty zero-sum subsequence} is upward closed — m ≤ m' and m ∈ DavenportSet G ⟹ m' ∈ DavenportSet G. Proof: restrict a length-m' sequence to its first m entries via Fin.castLE, obtain a zero-sum subset in Fin m, and re-embed it into Fin m' along the order embedding Fin.castLEEmb, with Finset.sum_map preserving the sum. This monotonicity is exactly what converts the single extremal witness of length a+b−2 into the lower bound a+b−1 on the LEAST Davenport length.",
+      "davenport_rank2_diag_lower: the diagonal special case D(ℤ/nℤ ⊕ ℤ/nℤ) ≥ 2n − 1, an immediate corollary. This bound is sharp — Olson's theorem gives D(ℤ/nℤ ⊕ ℤ/nℤ) = 2n − 1 — and exhibits the gap with the cyclic constant: the rank-2 diagonal group has Davenport constant 2n − 1, nearly double the cyclic n.",
+      "HasZeroSumSubseq and DavenportSet: the group-agnostic predicate ‘a sequence has a nonempty zero-sum subsequence’ and the Davenport-length set, both stated for an arbitrary AddCommMonoid, generalizing the ZMod-n-only definitions of the cyclic companion to the multi-rank setting needed here."
+    ],
+    "prerequisites": [
+      "Prod.fst_sum / Prod.snd_sum (Mathlib): the coordinate projections commute with finite sums, (∑ i ∈ s, f i).1 = ∑ i ∈ s, (f i).1 and likewise for .2; this is what decomposes a zero-sum over ℤ/aℤ ⊕ ℤ/bℤ into two coordinatewise cardinality conditions.",
+      "Finset.sum_boole (Mathlib): ∑ x ∈ s, (if p x then 1 else 0) = (s.filter p).card; identifies each coordinate sum of the witness with the size of the corresponding block restricted to s.",
+      "ZMod.natCast_eq_zero_iff (Mathlib): (k : ZMod n) = 0 ↔ n ∣ k; turns the vanishing of each coordinate (a block cardinality mod a or mod b) into a divisibility, which with the block-size bound forces the cardinality to 0.",
+      "Fin.castLEEmb / Finset.sum_map (Mathlib): the order embedding Fin m ↪ Fin m' and sum-preservation under Finset.map; the mechanism of the upward-closure lemma davenport_set_mono.",
+      "Finset.card_le_card_of_injOn and Finset.filter_card_add_filter_neg_card_eq_card (Mathlib): bound each block cardinality by injecting into Finset.range, and recombine the two complementary blocks back into s.card."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Prod.fst_sum",
+        "description": "(∑ i ∈ s, f i).1 = ∑ i ∈ s, (f i).1 (and Prod.snd_sum for .2). Decomposes a zero-sum over the product group ℤ/aℤ ⊕ ℤ/bℤ into two independent coordinate conditions, the heart of davenport_rank2_witness.",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.sum_boole",
+        "description": "∑ x ∈ s, (if p x then 1 else 0) = ↑(s.filter p).card. Evaluates each coordinate of the witness sum as the size of the e₁- or e₂-block of s.",
+        "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff",
+        "description": "(k : ZMod n) = 0 ↔ n ∣ k. With 0 ≤ |block| ≤ n − 1 this forces each block cardinality to 0, hence s empty.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset.sum_map",
+        "description": "Sum over a mapped Finset equals the sum of the precomposition. Used with the embedding Fin.castLEEmb to re-embed a zero-sum subset of a prefix into the full index set, proving davenport_set_mono.",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.filter_card_add_filter_neg_card_eq_card",
+        "description": "(s.filter p).card + (s.filter (¬ p ·)).card = s.card. Recombines the e₁- and e₂-blocks (which partition s) so that both being empty forces s.card = 0.",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-01",
+      "question": "The matching upper bound D(ℤ/aℤ ⊕ ℤ/bℤ) ≤ a + b − 1 (for a ∣ b) — Olson's theorem — would complete the rank-2 Davenport constant. Mathlib lacks it. Is there an elementary, axiom-free Lean proof of the rank-2 upper bound (e.g. via the Davenport-constant induction on |G|, or via the group-ring / Olson polynomial-method argument), or does it genuinely require infrastructure beyond the prefix-sum pigeonhole that settles the cyclic case?",
+      "significance": "high"
+    },
+    {
+      "id": "erdos-131-oq-01-oq-01-oq-01-oq-04-oq-02",
+      "question": "The construction here generalizes verbatim to give the Olson–Davenport lower bound D(ℤ/n₁ ⊕ ⋯ ⊕ ℤ/n_k) ≥ 1 + Σ(nᵢ − 1) for arbitrary rank k, by concatenating the k coordinate blocks. Formalizing this for a general indexed direct sum ⨁ᵢ ℤ/nᵢ requires summing over Σ-types / Fin k indexed coordinates rather than a fixed product — what is the cleanest Lean encoding (DirectSum, Π-types, or Fin k → ℤ/nᵢ) that keeps the block-cardinality argument as elementary as the rank-2 case?",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-131-oq-01-oq-01-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "Answers the rank-2 lower-bound part of that entry's open question erdos-131-oq-01-oq-01-oq-01-oq-03-oq-01. The cyclic-constant entry proved D(ℤ/nℤ) = n exactly (the elementary case) and asked whether the prefix-sum pigeonhole could be lifted to the rank-2 constant a + b − 1. Here we settle the LOWER bound D(ℤ/aℤ ⊕ ℤ/bℤ) ≥ a + b − 1 unconditionally via the explicit e₁/e₂ extremal sequence plus upward closure of the Davenport set, reusing the same sequence-level HasZeroSumSubseq / IsLeast packaging now generalized to an arbitrary additive group."
+    },
+    {
+      "targetId": "erdos-131",
+      "relationship": "extends",
+      "description": "Extends the additive-combinatorial machinery of the parent Erdős #131 study into the non-cyclic regime: the rank-2 Davenport constant a + b − 1 (lower half, axiom-free) is the next invariant beyond the cyclic D(ℤ/nℤ) = n that governs structural size bounds, and is supplied as reusable Lean infrastructure Mathlib lacks."
+    }
+  ],
+  "references": [
+    {
+      "title": "On some problems in combinatorial number theory",
+      "author": "Paul Erdős",
+      "year": "1975",
+      "venue": "Er75b",
+      "description": "Erdős's problem #131 on non-dividing sets; the Davenport constant is the additive-combinatorial invariant behind the per-element size bounds, here studied in rank 2."
+    },
+    {
+      "title": "A combinatorial problem on finite Abelian groups, I",
+      "author": "John E. Olson",
+      "year": "1969",
+      "venue": "J. Number Theory 1, 8–10",
+      "description": "Olson's theorem: for a ∣ b, D(ℤ/aℤ ⊕ ℤ/bℤ) = a + b − 1, and D(G) for p-groups. This entry formalizes the elementary lower bound a + b − 1; Olson supplies the deep matching upper bound."
+    },
+    {
+      "title": "A combinatorial problem on finite Abelian groups, II",
+      "author": "John E. Olson",
+      "year": "1969",
+      "venue": "J. Number Theory 1, 195–199",
+      "description": "Continuation establishing the Davenport constant of p-groups via the group-algebra / polynomial method; context for the higher-rank upper bounds posed in the open questions."
+    },
+    {
+      "title": "Zero-sum problems in finite abelian groups: a survey",
+      "author": "Weidong Gao, Alfred Geroldinger",
+      "year": "2006",
+      "venue": "Expo. Math. 24, 337–369",
+      "description": "Comprehensive survey of the Davenport constant D(G), the EGZ constant, and the standard extremal constructions; the rank-2 lower-bound sequence e₁^{a−1} e₂^{b−1} formalized here is the textbook witness."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Docstring: Why Rank 2 Is the Interesting Regime",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Explains that cyclic Davenport constants are elementary (D(ℤ/nℤ) = n, companion file) but rank ≥ 2 is where the theory becomes non-trivial. States Olson's theorem D(ℤ/aℤ ⊕ ℤ/bℤ) = a + b − 1 (a ∣ b), notes its upper half is a substantial result absent from Mathlib, and that this file formalizes the elementary lower half. Lists the components: group-agnostic definitions, upward closure, the extremal witness, the lower bound, and the diagonal corollary.",
+      "mathContext": "Olson: $D(\\mathbb{Z}/a\\mathbb{Z} \\oplus \\mathbb{Z}/b\\mathbb{Z}) = a+b-1$ for $a\\mid b$; the lower bound $\\ge a+b-1$ is elementary, the upper bound is deep."
+    },
+    {
+      "id": "definitions",
+      "title": "HasZeroSumSubseq and DavenportSet (Group-Agnostic)",
+      "startLine": 48,
+      "endLine": 63,
+      "summary": "Defines HasZeroSumSubseq f for f : Fin m → G over any AddCommMonoid G (some nonempty index set sums to 0), and DavenportSet G = {m | every length-m sequence has the property}. The Davenport constant is the least element of this set. Phrasing for arbitrary G makes the infrastructure reusable across cyclic, rank-2, and higher-rank cases.",
+      "mathContext": "$\\mathrm{DavenportSet}(G) = \\{m : \\forall f : \\mathrm{Fin}\\,m\\to G,\\ \\exists s\\ne\\varnothing,\\ \\sum_{i\\in s} f(i) = 0\\}$."
+    },
+    {
+      "id": "upward-closure",
+      "title": "davenport_set_mono: The Davenport Set Is Upward Closed",
+      "startLine": 65,
+      "endLine": 77,
+      "summary": "If m ∈ DavenportSet G and m ≤ m', then m' ∈ DavenportSet G. Restrict a length-m' sequence to its first m entries via Fin.castLE, obtain a zero-sum subset s : Finset (Fin m), and re-embed it into Fin m' with the order embedding Fin.castLEEmb; Finset.sum_map preserves the sum. This is what lets a single fixed-length witness rule out all shorter lengths.",
+      "mathContext": "$m\\le m'$ and $m\\in\\mathrm{DavenportSet}\\Rightarrow m'\\in\\mathrm{DavenportSet}$, via prefix restriction (Fin.castLE) and subset re-embedding (Fin.castLEEmb)."
+    },
+    {
+      "id": "witness",
+      "title": "witness / davenport_rank2_witness: The Extremal Zero-Sum-Free Sequence",
+      "startLine": 79,
+      "endLine": 153,
+      "summary": "witness a b is (1,0) repeated a−1 times then (0,1) repeated b−1 times (length a+b−2). davenport_rank2_witness proves it has no nonempty zero-sum subsequence: the two coordinates of ∑_{i∈s} are the block cardinalities |s∩block₁| mod a and |s∩block₂| mod b (Prod.fst_sum/snd_sum + Finset.sum_boole); each is bounded by a−1, b−1, so divisibility forces both to 0 (Nat.not_dvd_of_pos_of_lt). Since the blocks partition s, s = ∅, contradiction. The card bounds use Finset.card_le_card_of_injOn into range.",
+      "mathContext": "$\\mathrm{witness}$ length $a+b-2$; $(\\sum_{i\\in s})_1 = (|s\\cap B_1|\\bmod a),\\ (\\sum_{i\\in s})_2 = (|s\\cap B_2|\\bmod b)$; both $=0$ force $|s\\cap B_1|=|s\\cap B_2|=0$."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "davenport_rank2_lower and the Diagonal Corollary",
+      "startLine": 155,
+      "endLine": 180,
+      "summary": "davenport_rank2_lower: if d is the least Davenport length, then a+b−1 ≤ d. By contradiction, d ≤ a+b−2 would (by upward closure) put a+b−2 in the Davenport set, contradicting the witness. davenport_rank2_diag_lower specializes a = b = n to D(ℤ/nℤ ⊕ ℤ/nℤ) ≥ 2n−1 (sharp by Olson, upper half not formalized).",
+      "mathContext": "$d\\le a+b-2 \\Rightarrow a+b-2\\in\\mathrm{DavenportSet}$ (upward closure), contradicting the witness; hence $d\\ge a+b-1$. Diagonal: $\\ge 2n-1$."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The Davenport constant of the rank-2 group ℤ/aℤ ⊕ ℤ/bℤ is at least a + b − 1 (davenport_rank2_lower): if d is the least length such that every length-d sequence over the group has a nonempty zero-sum subsequence, then a + b − 1 ≤ d. The proof combines two pieces. (1) davenport_rank2_witness: the extremal sequence e₁=(1,0) repeated a−1 times then e₂=(0,1) repeated b−1 times (length a+b−2) has no nonempty zero-sum subsequence — its two coordinate sums over any nonempty index set s are the block cardinalities |s₁| (mod a) and |s₂| (mod b), each bounded by a−1, b−1 and hence forced to 0 by ZMod.natCast_eq_zero_iff, so s is empty. (2) davenport_set_mono: the Davenport-length set is upward closed (restrict a longer sequence to a prefix via Fin.castLE, re-embed the zero-sum subset via Fin.castLEEmb), so the single witness of length a+b−2 rules out every length ≤ a+b−2. The diagonal corollary davenport_rank2_diag_lower gives D(ℤ/nℤ ⊕ ℤ/nℤ) ≥ 2n − 1. 180 lines, 4 theorems, 3 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This breaks the Erdős #131 Davenport line out of the elementary cyclic regime into rank 2, where the constant is genuinely non-trivial. The bound a + b − 1 is sharp by Olson's theorem (the upper half, a substantial result absent from Mathlib), so the entry formalizes exactly the elementary, unconditional half and isolates the deep half as an open question. The reusable infrastructure — a group-agnostic HasZeroSumSubseq / DavenportSet, the upward-closure lemma, and the coordinatewise block-cardinality technique — generalizes verbatim to the Olson–Davenport lower bound 1 + Σ(nᵢ − 1) for arbitrary rank, the next target posed in the open questions.",
+    "openQuestions": [
+      "Is there an elementary, axiom-free Lean proof of the matching upper bound D(ℤ/aℤ ⊕ ℤ/bℤ) ≤ a + b − 1 (Olson's theorem, for a ∣ b)? Mathlib lacks it; candidate routes are the Davenport-constant induction on |G| or the group-ring / Olson polynomial-method argument — or does it genuinely require infrastructure beyond the prefix-sum pigeonhole that settles the cyclic case?",
+      "The witness construction generalizes verbatim to the general lower bound D(ℤ/n₁ ⊕ ⋯ ⊕ ℤ/n_k) ≥ 1 + ∑(nᵢ − 1) for arbitrary rank k by concatenating k coordinate blocks. What is the cleanest Lean encoding of the indexed direct sum (DirectSum, Π-types, or Fin k → ℤ/nᵢ) that keeps the block-cardinality argument as elementary as the rank-2 case?",
+      "For rank ≥ 4 the lower bound 1 + ∑(nᵢ − 1) can be strict (D(G) is genuinely larger). Can the gap be formalized for a concrete counterexample group, making precise where the elementary construction stops being optimal?",
+      "Could the group-agnostic HasZeroSumSubseq / DavenportSet definitions and upward-closure lemma be upstreamed to Mathlib as the foundation of a general Davenport-constant API, with the cyclic value and this rank-2 lower bound as the first instances?"
+    ]
+  }
+}

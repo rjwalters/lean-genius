@@ -1,0 +1,171 @@
+[
+  {
+    "id": "ann-ceva-mp-01-header",
+    "proofId": "cevas-theorem-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Mass Point Geometry: A Constructive Algebraic Certificate for Ceva's Theorem",
+    "content": "This file formalizes the mass point geometry approach to Ceva's theorem, answering open question OQ-04 from the base cevas-theorem entry. Mass point geometry assigns positive real masses to triangle vertices, and the induced cevian ratios automatically satisfy the Ceva condition. The biconditional is proved constructively in both directions with 0 sorries.",
+    "mathContext": "**Mass points**: assign $m_A, m_B, m_C > 0$ to vertices. **Induced ratios**: $d = m_C/(m_B + m_C)$, $e = m_A/(m_C + m_A)$, $f = m_B/(m_A + m_B)$. **Ceva condition**: $d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$. The 'algebraic miracle' is that both products equal $m_A m_B m_C / ((m_B+m_C)(m_C+m_A)(m_A+m_B))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "mass point geometry",
+      "Ceva's theorem",
+      "barycentric coordinates",
+      "center of mass"
+    ],
+    "prerequisites": [
+      "field_simp",
+      "nlinarith",
+      "div_pos"
+    ]
+  },
+  {
+    "id": "ann-ceva-mp-02-struct",
+    "proofId": "cevas-theorem-oq-04",
+    "range": {
+      "startLine": 38,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "MassPoint Structure and Cevian Ratio Functions",
+    "content": "The MassPoint structure packages three positive real masses $m_A, m_B, m_C$ with positivity proofs. The cevian ratio functions $r_D = m_C/(m_B+m_C)$, $r_E = m_A/(m_C+m_A)$, $r_F = m_B/(m_A+m_B)$ give each cevian foot's position on its respective side. Derived positivity lemmas show that sums like $m_B + m_C > 0$ are positive, ensuring the ratio denominators are nonzero.",
+    "mathContext": "**Structure**: `MassPoint` with fields `mA mB mC : ℝ` and proofs `hA : 0 < mA`, `hB : 0 < mB`, `hC : 0 < mC`. **Ratios**: $r_D(\\text{mp}) = \\frac{m_C}{m_B + m_C}$, $r_E(\\text{mp}) = \\frac{m_A}{m_C + m_A}$, $r_F(\\text{mp}) = \\frac{m_B}{m_A + m_B}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MassPoint",
+      "rD",
+      "rE",
+      "rF",
+      "div_pos"
+    ],
+    "prerequisites": [
+      "Lean 4 structure syntax",
+      "div_pos",
+      "add_pos"
+    ]
+  },
+  {
+    "id": "ann-ceva-mp-03-bounds",
+    "proofId": "cevas-theorem-oq-04",
+    "range": {
+      "startLine": 64,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Positivity, Bounds, and Complement Lemmas",
+    "content": "The ratios $r_D, r_E, r_F$ are shown to lie in $(0,1)$: positivity from div_pos, upper bound from the numerator being strictly less than the denominator. The complement lemmas express $1 - r_D = m_B/(m_B+m_C)$, $1 - r_E = m_C/(m_C+m_A)$, $1 - r_F = m_A/(m_A+m_B)$, proved by `field_simp` + `ring`. These complements are essential for the main Ceva identity.",
+    "mathContext": "$0 < r_D < 1$ since $0 < m_C < m_B + m_C$. **Complements**: $1 - r_D = \\frac{m_B}{m_B + m_C}$, $1 - r_E = \\frac{m_C}{m_C + m_A}$, $1 - r_F = \\frac{m_A}{m_A + m_B}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity",
+      "bounds",
+      "field_simp",
+      "ring"
+    ],
+    "prerequisites": [
+      "div_pos",
+      "div_lt_one",
+      "sub_div"
+    ]
+  },
+  {
+    "id": "ann-ceva-mp-04-identity",
+    "proofId": "cevas-theorem-oq-04",
+    "range": {
+      "startLine": 103,
+      "endLine": 115
+    },
+    "type": "insight",
+    "title": "The Algebraic Miracle: ceva_identity",
+    "content": "The key theorem: for any mass assignment, $r_D \\cdot r_E \\cdot r_F = (1-r_D)(1-r_E)(1-r_F)$. After substituting the ratio definitions and complements, both sides become $m_A m_B m_C / ((m_B+m_C)(m_C+m_A)(m_A+m_B))$ — the numerators $m_C \\cdot m_A \\cdot m_B$ and $m_B \\cdot m_C \\cdot m_A$ are equal by commutativity of multiplication. Lean's `field_simp` clears all denominators and verifies the polynomial identity.",
+    "mathContext": "$$r_D \\cdot r_E \\cdot r_F = \\frac{m_C \\cdot m_A \\cdot m_B}{(m_B+m_C)(m_C+m_A)(m_A+m_B)} = (1-r_D)(1-r_E)(1-r_F)$$ The equality holds because $m_C \\cdot m_A \\cdot m_B = m_B \\cdot m_C \\cdot m_A$ by commutativity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ceva_identity",
+      "commutativity",
+      "field_simp",
+      "algebraic identity"
+    ],
+    "prerequisites": [
+      "field_simp",
+      "ring",
+      "mul_comm"
+    ]
+  },
+  {
+    "id": "ann-ceva-mp-05-converse",
+    "proofId": "cevas-theorem-oq-04",
+    "range": {
+      "startLine": 117,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Constructive Converse: Mass Assignment from Ceva Condition",
+    "content": "Given $d, e, f \\in (0,1)$ satisfying $d \\cdot e \\cdot f = (1-d)(1-e)(1-f)$, an explicit mass assignment is constructed: $m_A = 1$, $m_C = (1-e)/e$, $m_B = (1-e)(1-d)/(ed)$. Verification that $r_D = d$ and $r_E = e$ follows by `field_simp` + `ring`; $r_F = f$ requires the Ceva condition and is proved via `nlinarith`.",
+    "mathContext": "**Construction**: $m_A = 1$, $m_C = \\frac{1-e}{e}$, $m_B = \\frac{(1-e)(1-d)}{ed}$. **Verification**: $r_D = \\frac{m_C}{m_B + m_C} = d$ (by ring), $r_E = \\frac{m_A}{m_C + m_A} = e$ (by ring), $r_F = \\frac{m_B}{m_A + m_B} = f$ (requires $def = (1-d)(1-e)(1-f)$ via nlinarith).",
+    "significance": "key",
+    "relatedConcepts": [
+      "masses_from_ceva",
+      "constructive proof",
+      "nlinarith",
+      "field_simp"
+    ],
+    "prerequisites": [
+      "div_pos",
+      "field_simp",
+      "ring",
+      "nlinarith"
+    ]
+  },
+  {
+    "id": "ann-ceva-mp-06-bicon",
+    "proofId": "cevas-theorem-oq-04",
+    "range": {
+      "startLine": 158,
+      "endLine": 210
+    },
+    "type": "insight",
+    "title": "Biconditional, Lever Arm Balance, and Telescoping Product",
+    "content": "The biconditional `mass_point_iff` states: $d \\cdot e \\cdot f = (1-d)(1-e)(1-f) \\iff \\exists\\,\\text{mp},\\; r_D = d \\wedge r_E = e \\wedge r_F = f$. The lever arm balance `ratio_balance` shows $r_D/(1-r_D) = m_C/m_B$, the physical interpretation of center of mass. The product `ceva_ratio_product_one` shows $(m_C/m_B) \\cdot (m_A/m_C) \\cdot (m_B/m_A) = 1$ by telescoping cancellation.",
+    "mathContext": "**Biconditional**: Ceva condition $\\iff$ mass point witness exists. **Lever arm**: $\\frac{BD}{DC} = \\frac{r_D}{1-r_D} = \\frac{m_C}{m_B}$. **Telescoping**: $\\frac{m_C}{m_B} \\cdot \\frac{m_A}{m_C} \\cdot \\frac{m_B}{m_A} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "mass_point_iff",
+      "ratio_balance",
+      "ceva_ratio_product_one",
+      "telescoping"
+    ],
+    "prerequisites": [
+      "Iff.intro",
+      "div_div_cancel",
+      "mul_assoc"
+    ]
+  },
+  {
+    "id": "ann-ceva-mp-07-centroid",
+    "proofId": "cevas-theorem-oq-04",
+    "range": {
+      "startLine": 212,
+      "endLine": 242
+    },
+    "type": "concept",
+    "title": "Centroid Example and Summary Theorem",
+    "content": "Equal masses $m_A = m_B = m_C = 1$ yield $r_D = r_E = r_F = 1/2$, confirming that the centroid (intersection of medians) corresponds to equal mass distribution. The Ceva condition $(1/2)^3 = (1/2)^3$ is trivially satisfied. The summary theorem `ceva_mass_point_summary` packages all three main results: ceva_identity, mass_point_iff, and ceva_ratio_product_one.",
+    "mathContext": "**Centroid**: $m_A = m_B = m_C \\Rightarrow d = e = f = 1/2$. Check: $(1/2)^3 = (1/2)^3$ $\\checkmark$. **Incenter**: $m_A = a$, $m_B = b$, $m_C = c$ (side lengths) gives cevian ratios for angle bisectors.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "centroid",
+      "equal masses",
+      "incenter",
+      "ceva_mass_point_summary"
+    ],
+    "prerequisites": [
+      "norm_num",
+      "exact ⟨...⟩"
+    ]
+  }
+]

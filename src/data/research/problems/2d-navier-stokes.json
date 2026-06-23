@@ -1,0 +1,55 @@
+{
+  "slug": "2d-navier-stokes",
+  "title": "2D Navier-Stokes Global Existence (Ladyzhenskaya)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "S",
+  "path": "full",
+  "problemStatement": {
+    "formal": "2D incompressible Navier-Stokes has global smooth solutions for all smooth initial data",
+    "plain": "The 2D Navier-Stokes equations have global existence and uniqueness of smooth solutions (Ladyzhenskaya 1969). Unlike 3D (Millennium Prize), this IS proven.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "The entry records the two-dimensional Ladyzhenskaya global-existence case as covered by NavierStokes.lean.",
+      "The 2D enstrophy bound is recorded as proved.",
+      "Exponential decay under a Poincare inequality is recorded as proved.",
+      "The metadata explicitly separates the proven 2D case from the open 3D Millennium Prize problem."
+    ],
+    "open": [
+      "The 3D Navier-Stokes existence and smoothness problem remains open.",
+      "Sorries and conditional structures in the shared Lean file are associated with the 3D side, not the 2D summary here."
+    ],
+    "goal": "Represent the proven 2D global-existence result while keeping the unresolved 3D theory clearly out of scope."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-20T10:35:00Z",
+    "iteration": 1,
+    "focus": "Survey: covered in NavierStokes.lean (20,150 lines total). 2D result is genuinely proven (not conditional)."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 2D global existence proved in NavierStokes.lean. Ladyzhenskaya (1969) result formalized with enstrophy bound and exponential decay. Gallery entry exists.",
+    "builtItems": [
+      "NavierStokes.lean: 20,150 lines covering both 2D (proven) and 3D (conditional)",
+      "2D global existence: genuinely proven, no axioms needed",
+      "2D enstrophy bound: proven",
+      "2D exponential decay under Poincaré inequality: proven",
+      "Gallery entry exists with comprehensive meta.json"
+    ],
+    "insights": [
+      "2D Navier-Stokes is PROVEN (Ladyzhenskaya 1969) — contrast with 3D (Millennium Prize, open)",
+      "2D works because enstrophy (integral of vorticity squared) is bounded — fails in 3D due to vortex stretching",
+      "The key is dimension: in 2D, vorticity is a scalar; in 3D, it's a vector that can stretch",
+      "File has 43 sorries but these are in the 3D (conditional) parts, not the 2D parts",
+      "3D results use NSAxioms structure (equivalent to axiom declarations)"
+    ],
+    "nextSteps": []
+  },
+  "tags": ["pde", "fluid-dynamics", "navier-stokes", "2d", "proven"],
+  "started": "2026-03-20T10:35:00Z",
+  "lastUpdate": "2026-03-20T10:35:00Z",
+  "significance": 8,
+  "tractability": 8
+}

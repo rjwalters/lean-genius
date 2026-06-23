@@ -1,0 +1,187 @@
+{
+  "id": "erdos-305",
+  "title": "Maximum Denominator in Egyptian Fraction Representations",
+  "slug": "erdos-305",
+  "description": "For integers 1 ≤ a < b, let D(a,b) be the minimum maximum denominator needed to represent a/b as an Egyptian fraction. Is D(b) = max_a D(a,b) bounded by b(log b)^{1+o(1)}? Solved by Yokota (1988), improved by Liu-Sawhney (2024).",
+  "meta": {
+    "author": "Yokota, Liu-Sawhney",
+    "sourceUrl": "https://erdosproblems.com/305",
+    "date": "1988",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos305Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "unit-fractions",
+      "greedy-algorithm"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "erdosNumber": 305,
+    "erdosUrl": "https://erdosproblems.com/305",
+    "erdosProblemStatus": "solved",
+    "relatedProblems": [
+      {
+        "id": "erdos-304",
+        "relationship": "Sibling problem on the minimum number of terms N(b) in Egyptian fractions (complexity rather than max denominator)"
+      },
+      {
+        "id": "erdos-306",
+        "relationship": "Sibling problem on Egyptian fractions with semiprime denominator constraints"
+      },
+      {
+        "id": "erdos-307",
+        "relationship": "Prime reciprocal products ∑1/p · ∑1/q = 1, extending Egyptian fraction structure to primes"
+      },
+      {
+        "id": "erdos-308",
+        "relationship": "Bounded denominator representability: smallest integer not expressible as unit fraction sum from {1,...,N}"
+      },
+      {
+        "id": "erdos-309",
+        "relationship": "Counting representable integers from unit fractions, F(N) = Θ(log N) via Yokota-Croot"
+      },
+      {
+        "id": "erdos-300",
+        "relationship": "Maximum subsets avoiding unit fraction sum equal to 1 (Liu-Sawhney 2024)"
+      },
+      {
+        "id": "harmonic-divergence",
+        "relationship": "Foundational result H_n ~ log n explaining why logarithms appear in D(b) bounds"
+      },
+      {
+        "id": "prime-reciprocal-divergence",
+        "relationship": "Euler's theorem ∑1/p = ∞, underlying the prime structure in Egyptian fraction bounds"
+      }
+    ],
+    "axiomCount": 1,
+    "lineCount": 186,
+    "assumptions": "1 axiom(s) and 1 sorry(s).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "**Egyptian Fractions: From the Rhind Papyrus to Modern Additive Combinatorics**\n\nEgyptian fractions—sums of distinct unit fractions—are among the oldest objects in mathematics. The Rhind Mathematical Papyrus (c. 1650 BCE) contains extensive tables decomposing fractions 2/n into sums of unit fractions, showing the ancient Egyptians' systematic approach to this representation.\n\n**The Algorithmic Foundation**\n\nFibonacci rediscovered the greedy algorithm in his Liber Abaci (1202): to represent a/b, subtract the largest unit fraction 1/⌈b/a⌉ ≤ a/b and recurse. J.J. Sylvester independently studied this algorithm in 1880, proving termination. While the greedy algorithm always works, it can produce exponentially large denominators.\n\n**The Modern Problem (Bleicher-Erdős 1976)**\n\nBleicher and Erdős initiated the systematic study of D(b), proving D(b) ≪ b(log b)². The lower bound D(p) ≫ p log p for primes (from the harmonic sum argument: representing (p-1)/p requires multiples of p whose reciprocals sum to (p-1)/p²) showed the (log b)¹ factor is necessary. Erdős conjectured that D(b) ≪ b(log b)^{1+o(1)}.\n\n**The Solution and Improvements**\n\nYokota (1988) proved D(b) ≪ b(log b)(log log b)⁴(log log log b)², confirming the conjecture since iterated logarithms are (log b)^{o(1)}. Liu and Sawhney (2024) improved this to (log log b)³(log log log b)^{O(1)} using deep connections to additive combinatorics—specifically, showing that dense subsets of integers with large harmonic sums must contain subsets summing exactly to 1.",
+    "problemStatement": "For integers 1 ≤ a < b, let D(a,b) be the minimal maximum denominator in any Egyptian fraction representation of a/b. Define D(b) = max_{1 ≤ a < b} D(a,b). Is it true that D(b) ≪ b(log b)^{1+o(1)}?",
+    "text": "For integers 1 ≤ a < b, let D(a,b) be the minimum maximum denominator needed to represent a/b as an Egyptian fraction. Is D(b) = max_a D(a,b) bounded by b(log b)^{1+o(1)}? Solved by Yokota (1988), improved by Liu-Sawhney (2024).",
+    "proofStrategy": "**Yokota's Approach (1988)**\n\nYokota refined the Bleicher-Erdős greedy analysis by:\n1. Carefully tracking prime factorization of remainders during greedy expansion\n2. Using smooth number estimates to bound the maximum denominator at each step\n3. Controlling the iterated logarithmic factors through number-theoretic sieve methods\n\n**Liu-Sawhney's Improvement (2024)**\n\nLiu and Sawhney introduced additive combinatorics:\n1. Connected Egyptian fractions to the question: when does a dense set contain a subset summing to 1?\n2. Proved that A ⊆ [1,N] with ∑1/n ≥ (log N)^{4/5+o(1)} contains such a subset\n3. Used this threshold result to optimize the greedy algorithm's choice of denominators\n4. Reduced the iterated log exponent from 4 to 3\n\n**Lower Bound (Primes)**\n\nFor prime p, representing (p-1)/p requires all denominators to be multiples of p (since otherwise the sum has denominator coprime to p). Writing n_i = pm_i, we need ∑1/m_i ≈ 1, requiring max(m_i) ≈ exp(1) via harmonic sums, giving max(n_i) ≈ p · exp(1) ≈ p log p.",
+    "keyInsights": [
+      "The greedy (Fibonacci-Sylvester) algorithm guarantees existence of representations but can produce exponentially large denominators — optimizing over all representations is the key challenge",
+      "The lower bound D(p) ≫ p log p for primes comes from harmonic sum constraints: representing (p-1)/p forces all denominators to be multiples of p, and the harmonic series ∑1/k ~ log k controls how many multiples are needed",
+      "Iterated logarithm factors (log log b)^k are (log b)^{o(1)} for any k, so Yokota's bound with (log log b)⁴ confirms the conjecture — the challenge is reducing k, not eliminating it",
+      "Liu-Sawhney's 2024 breakthrough connects Egyptian fractions to additive combinatorics via dense subset summing problems, reducing the exponent from 4 to 3",
+      "The connection to perfect numbers (1 = 1/2 + 1/3 + 1/6 corresponds to 6 being perfect) reveals deep structural links between Egyptian fractions and divisor theory"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-setup",
+      "title": "Module Header and Problem Context",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Documents Erdős Problem #305 on bounding D(b), the maximum denominator in optimal Egyptian fraction representations. Traces the history from Bleicher-Erdős (1976) through Yokota (1988) to Liu-Sawhney (2024). Imports Mathlib for Finset, arithmetic, and order theory."
+    },
+    {
+      "id": "egyptian-basics",
+      "title": "Egyptian Fractions",
+      "summary": "Defines isEgyptianFraction (all denominators ≥ 1), unitFractionSum (∑1/n over ℚ), isEgyptianRepresentation (S represents a/b), and axiomatizes existence via the Fibonacci-Sylvester algorithm.",
+      "startLine": 44,
+      "endLine": 78
+    },
+    {
+      "id": "d-functions",
+      "title": "The D(a,b) and D(b) Functions",
+      "summary": "Defines maxDenominator (Finset.sup), D_ab (minimax over representations — partially defined with Nat.find), D_ab_value (axiom for proper minimality), and D_b (max over numerators 1 ≤ a < b).",
+      "startLine": 79,
+      "endLine": 118
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "summary": "Four key bounds axiomatized: trivial D(b) ≥ b, prime lower bound D(p) ≫ p log p, Bleicher-Erdős D(b) ≪ b(log b)², Yokota D(b) ≪ b(log b)(log log b)⁴(log log log b)², and Liu-Sawhney D(b) ≪ b(log b)(log log b)³. Plus the conjecture formalization and solution (sorry for asymptotic comparison).",
+      "startLine": 119,
+      "endLine": 186
+    },
+    {
+      "id": "greedy",
+      "title": "The Greedy Algorithm",
+      "summary": "Implements greedyStep (ceiling division + remainder computation), axiomatizes termination, and demonstrates suboptimality via the 2/9 = 1/5 + 1/45 vs 1/6 + 1/18 example.",
+      "startLine": 186,
+      "endLine": 186
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #305 was solved by Yokota (1988) who proved D(b) ≪ b(log b)(log log b)⁴(log log log b)², confirming D(b) ≪ b(log b)^{1+o(1)}. Liu-Sawhney (2024) improved the bound to (log log b)³(log log log b)^{O(1)} using additive combinatorics.",
+    "implications": "1. **Optimal Denomination Growth**: The result shows that Egyptian fraction representations require denominators only slightly larger than b log b — the logarithmic factor is necessary (from the prime lower bound) but essentially sufficient\n\n2. **Additive Combinatorics Connection**: Liu-Sawhney's approach reveals that Egyptian fraction bounds are intimately connected to the Erdős-Ginzburg-Ziv problem for unit fractions — when must dense sets contain subsets summing to 1?\n\n**3. Algorithmic Implications**: While computing D(a,b) exactly is hard, the existence results guarantee polynomial-sized representations, informing algorithm design for fraction decomposition\n\n4. **Harmonic Series Structure**: The pervasive role of harmonic sums H_n ~ log n connects this problem to analytic number theory and explains the universality of logarithmic factors in Egyptian fraction theory\n\n5. **Historical Continuity**: This problem spans from ancient Egyptian mathematics (c. 1650 BCE) through Fibonacci (1202) to modern additive combinatorics (2024), demonstrating remarkable continuity in number theory.",
+    "openQuestions": [
+      "Can the bound be improved to D(b) ≪ b(log b)(log log b)^{1+o(1)}, reducing the exponent further?",
+      "What is the exact constant in the lower bound D(p) ≫ p log p for primes?",
+      "Is computing D(a,b) NP-hard, or is there a polynomial-time algorithm?",
+      "What are the optimal bounds for restricted Egyptian fractions (odd denominators, prime denominators)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos305",
+    "lineCount": 186,
+    "axiomCount": 1,
+    "theoremCount": 3,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos305Problem.lean",
+    "sorries": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-304",
+      "relationship": "related",
+      "description": "Sibling problem on the minimum number of terms N(b) in Egyptian fractions (complexity rather than max denominator)"
+    },
+    {
+      "targetId": "erdos-306",
+      "relationship": "related",
+      "description": "Sibling problem on Egyptian fractions with semiprime denominator constraints"
+    },
+    {
+      "targetId": "erdos-307",
+      "relationship": "related",
+      "description": "Prime reciprocal products ∑1/p · ∑1/q = 1, extending Egyptian fraction structure to primes"
+    },
+    {
+      "targetId": "erdos-308",
+      "relationship": "related",
+      "description": "Bounded denominator representability: smallest integer not expressible as unit fraction sum from {1,...,N}"
+    },
+    {
+      "targetId": "erdos-309",
+      "relationship": "related",
+      "description": "Counting representable integers from unit fractions, F(N) = Θ(log N) via Yokota-Croot"
+    },
+    {
+      "targetId": "erdos-300",
+      "relationship": "related",
+      "description": "Maximum subsets avoiding unit fraction sum equal to 1 (Liu-Sawhney 2024)"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "Foundational result H_n ~ log n explaining why logarithms appear in D(b) bounds"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Euler's theorem ∑1/p = ∞, underlying the prime structure in Egyptian fraction bounds"
+    }
+  ],
+  "sorries": 1
+}

@@ -1,0 +1,290 @@
+[
+  {
+    "id": "ann-hall-subgroup-def",
+    "proofId": "lagrange-theorem-oq-03",
+    "range": {
+      "startLine": 51,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Hall Subgroup: The Coprimality Condition",
+    "content": "A Hall subgroup is defined by a single elegant condition: the order of H and its index [G:H] are coprime. This is precisely the condition gcd(|H|, |G|/|H|) = 1. Unlike Sylow subgroups (which require prime-power order), Hall subgroups allow any factorization of |G| into coprime parts. The definition captures exactly which divisors of |G| are guaranteed to yield subgroups in solvable groups.",
+    "mathContext": "\\gcd(|H|, [G:H]) = 1",
+    "significance": "key",
+    "relatedConcepts": [
+      "coprimality",
+      "subgroup index",
+      "Sylow subgroup"
+    ],
+    "prerequisites": [
+      "Lagrange's theorem",
+      "greatest common divisor"
+    ]
+  },
+  {
+    "id": "ann-trivial-hall",
+    "proofId": "lagrange-theorem-oq-03",
+    "range": {
+      "startLine": 60,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Trivial Subgroup is Always Hall",
+    "content": "The trivial subgroup {e} has order 1, which is coprime to every natural number. This makes it a Hall subgroup of any finite group. Though a degenerate case, it establishes the base case for the theory and confirms that the definition is non-vacuous. The proof reduces to the fact that gcd(1, n) = 1 for all n.",
+    "mathContext": "\\gcd(1, [G:\\{e\\}]) = 1",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trivial subgroup",
+      "coprimality"
+    ],
+    "prerequisites": [
+      "Trivial Subgroup",
+      "Coprimality",
+      "Greatest Common Divisor"
+    ]
+  },
+  {
+    "id": "ann-product-formula",
+    "proofId": "lagrange-theorem-oq-03",
+    "range": {
+      "startLine": 73,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Product Formula: Lagrange's Core Identity",
+    "content": "The identity |G| = |H| * [G:H] is the fundamental factorization underlying both Lagrange's theorem and Hall's theorem. It says the group order factors as the product of a subgroup's order and its index. For Hall theory, this factorization is meaningful because the two factors are coprime, giving a unique way to split |G| into the 'Hall part' and its complement.",
+    "mathContext": "|G| = |H| \\times [G:H]",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange's theorem",
+      "subgroup index",
+      "coset counting"
+    ],
+    "prerequisites": [
+      "finite group",
+      "cosets"
+    ]
+  },
+  {
+    "id": "ann-sylow-hall",
+    "proofId": "lagrange-theorem-oq-03",
+    "range": {
+      "startLine": 84,
+      "endLine": 93
+    },
+    "type": "insight",
+    "title": "Sylow Subgroups as Special Hall Subgroups",
+    "content": "Every Sylow p-subgroup is a Hall subgroup. If P is a Sylow p-subgroup with |P| = p^k where p^k exactly divides |G|, then [G:P] = |G|/p^k has no factor of p, so gcd(p^k, [G:P]) = 1. This reveals Hall's theorem as a vast generalization of Sylow's first theorem: Sylow handles prime-power divisors, while Hall handles arbitrary coprime factorizations in solvable groups.",
+    "mathContext": "|P| = p^k \\mid |G| \\implies \\gcd(p^k, [G:P]) = 1",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylow theorems",
+      "prime-power order",
+      "p-group"
+    ],
+    "prerequisites": [
+      "Sylow's first theorem",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "ann-hall-existence",
+    "proofId": "lagrange-theorem-oq-03",
+    "range": {
+      "startLine": 98,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "Hall's Existence Theorem (1928)",
+    "content": "The central result: in a finite solvable group G, for every Hall divisor m of |G| (meaning m divides |G| and gcd(m, |G|/m) = 1), there exists a subgroup of order m. The proof by Philip Hall uses strong induction on |G|, exploiting the fact that solvable groups have non-trivial normal abelian subgroups obtained from the derived series. This is stated as an axiom here because the full inductive proof is beyond routine Mathlib formalization.",
+    "mathContext": "G \\text{ solvable}, \\; m \\mid |G|, \\; \\gcd(m, |G|/m) = 1 \\implies \\exists H \\leq G, \\; |H| = m",
+    "significance": "key",
+    "relatedConcepts": [
+      "solvable group",
+      "derived series",
+      "strong induction"
+    ],
+    "prerequisites": [
+      "solvable groups",
+      "Lagrange's theorem",
+      "coprimality"
+    ]
+  },
+  {
+    "id": "ann-hall-conjugacy",
+    "proofId": "lagrange-theorem-oq-03",
+    "range": {
+      "startLine": 109,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Hall's Conjugacy Theorem: Uniqueness Up to Conjugation",
+    "content": "Hall's theorem is actually stronger than mere existence: any two Hall subgroups of the same order in a solvable group are conjugate, meaning K = gHg^{-1} for some g in G. This parallels Sylow's second theorem (all Sylow p-subgroups are conjugate) and means Hall subgroups are unique up to inner automorphism. Combined with existence, this gives a complete structural characterization.",
+    "mathContext": "|H| = |K|, \\; H,K \\text{ Hall} \\implies \\exists g \\in G, \\; K = gHg^{-1}",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjugacy",
+      "inner automorphism",
+      "Sylow's second theorem"
+    ],
+    "prerequisites": [
+      "Hall's existence theorem",
+      "conjugate subgroups"
+    ]
+  },
+  {
+    "id": "ann-normal-hall-unique",
+    "proofId": "lagrange-theorem-oq-03",
+    "range": {
+      "startLine": 134,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Normal Hall Subgroups are Unique",
+    "content": "When a Hall subgroup H is also normal, conjugacy forces uniqueness: any other Hall subgroup K of the same order satisfies K = gHg^{-1} = H (since normality means gHg^{-1} = H for all g). The proof carefully unfolds the conjugation map, using normality in both directions to show the map from H to itself is surjective. This is the group-theoretic analogue of how a normal Sylow subgroup is the unique Sylow p-subgroup.",
+    "mathContext": "H \\trianglelefteq G, \\; H \\text{ Hall}, \\; |K| = |H| \\implies K = H",
+    "significance": "key",
+    "relatedConcepts": [
+      "normal subgroup",
+      "conjugation",
+      "characteristic subgroup"
+    ],
+    "prerequisites": [
+      "Hall's conjugacy theorem",
+      "normal subgroup definition"
+    ]
+  },
+  {
+    "id": "ann-a4-counterexample",
+    "proofId": "lagrange-theorem-oq-03",
+    "range": {
+      "startLine": 164,
+      "endLine": 192
+    },
+    "type": "insight",
+    "title": "The A4 Counterexample: Why Solvability Matters",
+    "content": "The alternating group A_4 (order 12) provides the classic counterexample to the converse of Lagrange's theorem. Although 6 divides 12, A_4 has no subgroup of order 6. The key observation is that 6 is NOT a Hall divisor of 12: gcd(6, 12/6) = gcd(6, 2) = 2, so the coprimality condition fails. Hall's theorem correctly predicts this, since it only guarantees subgroups for Hall divisors. Interestingly, A_4 is solvable, so Hall subgroups do exist for its actual Hall divisors (1, 3, 4, 12).",
+    "mathContext": "6 \\mid 12 = |A_4|, \\; \\gcd(6, 2) = 2 \\neq 1, \\; \\nexists H \\leq A_4 \\text{ with } |H| = 6",
+    "significance": "key",
+    "relatedConcepts": [
+      "alternating group",
+      "converse of Lagrange",
+      "3-cycles in A4"
+    ],
+    "prerequisites": [
+      "Lagrange's theorem",
+      "alternating group structure"
+    ]
+  },
+  {
+    "id": "ann-index-two-hall",
+    "proofId": "lagrange-theorem-oq-03",
+    "range": {
+      "startLine": 198,
+      "endLine": 207
+    },
+    "type": "concept",
+    "title": "Index-2 Subgroups and the Hall Condition",
+    "content": "A subgroup of index 2 is Hall precisely when its order is odd. Since the index is 2, the coprimality condition becomes gcd(|H|, 2) = 1, which means |H| must be odd. This gives a simple criterion: in a group of order 2k with k odd, any index-2 subgroup is automatically a Hall subgroup. The proof uses the characterization of coprimality with 2 via non-divisibility by the prime 2.",
+    "mathContext": "[G:H] = 2, \\; 2 \\nmid |H| \\implies \\gcd(|H|, 2) = 1",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "index-2 subgroup",
+      "normal subgroup",
+      "parity"
+    ],
+    "prerequisites": [
+      "subgroup index",
+      "coprimality with primes"
+    ]
+  },
+  {
+    "id": "ann-hall-generalizes-sylow",
+    "proofId": "lagrange-theorem-oq-03",
+    "range": {
+      "startLine": 219,
+      "endLine": 227
+    },
+    "type": "concept",
+    "title": "The Sylow-Hall Hierarchy",
+    "content": "Hall's theorem strictly generalizes Sylow's first theorem for solvable groups. Sylow guarantees subgroups of prime-power order p^k (where p^k exactly divides |G|), while Hall guarantees subgroups whose order is any product of prime powers forming a coprime part of |G|. For example, in a solvable group of order 60 = 2^2 * 3 * 5, Sylow gives subgroups of order 4, 3, and 5, while Hall additionally gives subgroups of order 12, 15, 20, and 60.",
+    "mathContext": "p^k \\mid |G|, \\; \\gcd(p^k, |G|/p^k) = 1 \\implies \\exists H \\leq G, \\; |H| = p^k",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sylow's first theorem",
+      "prime-power factorization",
+      "pi-subgroup"
+    ],
+    "prerequisites": [
+      "Hall's existence theorem",
+      "Sylow's theorems"
+    ]
+  },
+  {
+    "id": "ann-coprimality-infrastructure",
+    "proofId": "lagrange-theorem-oq-03",
+    "range": {
+      "startLine": 285,
+      "endLine": 297
+    },
+    "type": "concept",
+    "title": "Coprimality Infrastructure for Hall Divisors",
+    "content": "Three utility lemmas establishing the algebraic properties of Hall divisors: (1) $m \\cdot (n/m) = n$ when $m \\mid n$ (the complementary factorization), (2) coprimality is symmetric for Hall divisors ($\\gcd(m, n/m) = 1 \\iff \\gcd(n/m, m) = 1$), and (3) the complementary factor $n/m$ also divides $n$. These are the basic arithmetic facts needed to manipulate Hall divisors in group-theoretic arguments.",
+    "mathContext": "$m \\mid n \\implies m \\cdot (n/m) = n$, $\\gcd(m, n/m) = 1 \\iff \\gcd(n/m, m) = 1$, and $m \\mid n \\implies (n/m) \\mid n$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "divisibility",
+      "coprimality",
+      "natural number division"
+    ],
+    "prerequisites": [
+      "Nat.div_mul_cancel",
+      "Nat.Coprime.symm"
+    ]
+  },
+  {
+    "id": "ann-schur-zassenhaus",
+    "proofId": "lagrange-theorem-oq-03",
+    "range": {
+      "startLine": 308,
+      "endLine": 348
+    },
+    "type": "concept",
+    "title": "Schur-Zassenhaus: Normal Hall Subgroups Have Complements",
+    "content": "The Schur-Zassenhaus theorem states that a normal subgroup $N \\trianglelefteq G$ with $\\gcd(|N|, [G:N]) = 1$ has a complement $K$ satisfying $NK = G$ and $N \\cap K = \\{1\\}$. Unlike Hall's full theorem, Schur-Zassenhaus does not require solvability — normality suffices. The proof uses Mathlib's `Subgroup.exists_right_complement'_of_coprime`. Additional lemmas show the complement satisfies $|N| \\cdot |K| = |G|$ and that when combined with Hall's conjugacy theorem, the normal Hall subgroup is the unique subgroup of its order.",
+    "mathContext": "$N \\trianglelefteq G$, $\\gcd(|N|, [G:N]) = 1 \\implies \\exists K \\leq G: NK = G, \\; N \\cap K = \\{1\\}$, $|N| \\cdot |K| = |G|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "complement subgroup",
+      "semidirect product",
+      "normal Hall subgroup"
+    ],
+    "prerequisites": [
+      "Subgroup.exists_right_complement'_of_coprime",
+      "IsHallSubgroup",
+      "Subgroup.Normal"
+    ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "lagrange-theorem-oq-03",
+    "range": {
+      "startLine": 362,
+      "endLine": 369
+    },
+    "type": "concept",
+    "title": "Summary: Hall Extends Lagrange",
+    "content": "The summary theorem bundles the two core facts: (1) Lagrange's theorem — $|H|$ divides $|G|$ for any subgroup $H \\leq G$, proved by converting between `Fintype.card` and `Nat.card` to apply Mathlib's `Subgroup.card_subgroup_dvd_card`; and (2) the counterexample witness — $6 \\mid 12 = |A_4|$, demonstrated using the previously proved `a4_card` and `six_dvd_twelve`. Together these frame the narrative: Lagrange gives divisibility, but the converse requires Hall's coprimality condition.",
+    "mathContext": "$\\forall H \\leq G, \\; |H| \\mid |G|$ and $6 \\mid |A_4| = 12$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lagrange's theorem",
+      "A4 counterexample",
+      "Hall's theorem"
+    ],
+    "prerequisites": [
+      "Subgroup.card_subgroup_dvd_card",
+      "a4_card"
+    ]
+  }
+]

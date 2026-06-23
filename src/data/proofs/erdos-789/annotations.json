@@ -1,0 +1,206 @@
+[
+  {
+    "id": "ann-789-header",
+    "proofId": "erdos-789",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #789**: Estimate h(n), the maximal size of a sum-length-free subset B of any n-element set A ⊆ ℤ. A set B is sum-length-free if equal sums must use equal numbers of terms. Known bounds: (n log n)^{1/3} ≪ h(n) ≪ √n. The gap between exponents 1/3 and 1/2 remains OPEN.",
+    "mathContext": "Posed by Erdős in 1962, with bounds improved by Straus (1966, upper) and Choi (1974, lower). Related to Problems 186 and 874.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sum-free sets",
+      "Sidon sets",
+      "Additive combinatorics"
+    ],
+    "prerequisites": [
+      "Additive Combinatorics",
+      "Sum-Free Sets",
+      "Asymptotic Notation"
+    ]
+  },
+  {
+    "id": "ann-789-sumrep",
+    "proofId": "erdos-789",
+    "range": {
+      "startLine": 45,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Sum Representations and Sum-Length-Free",
+    "content": "**SumRep B**: A multiset of terms from B, with length (number of terms) and value (sum). **SumLengthFree B**: For any two sum representations with equal values, their lengths must be equal. This is weaker than Sidon (which requires the actual terms to match).",
+    "mathContext": "SumLengthFree $B$: $\\sum_{i=1}^k b_i = \\sum_{j=1}^\\ell c_j$ with $b_i, c_j \\in B$ $\\implies$ $k = \\ell$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Multiset",
+      "Sum representations",
+      "Sidon property"
+    ],
+    "prerequisites": [
+      "Multiset",
+      "Finset",
+      "Int"
+    ]
+  },
+  {
+    "id": "ann-789-h",
+    "proofId": "erdos-789",
+    "range": {
+      "startLine": 66,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "The Function h(n)",
+    "content": "**h(n)** = max |B| such that B ⊆ A is sum-length-free for any n-element set A ⊆ ℤ. Axiomatized with h_pos (h(n) > 0 for n ≥ 1) and h_achievable (the max is achieved).",
+    "mathContext": "This is an extremal function: for every n-element set A, we can always find a sum-length-free subset of size at least h(n).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal functions",
+      "Guaranteed subsets"
+    ],
+    "prerequisites": [
+      "Extremal Set Theory",
+      "Integer Subsets",
+      "Maximization Over Sets"
+    ]
+  },
+  {
+    "id": "ann-789-upper",
+    "proofId": "erdos-789",
+    "range": {
+      "startLine": 83,
+      "endLine": 97
+    },
+    "type": "concept",
+    "title": "Upper Bounds",
+    "content": "**Erdős (1962)**: h(n) ≪ n^{5/6}, the first upper bound. **Straus (1966)**: h(n) ≪ √n, a dramatic improvement using counting arguments on sum representations. This is the best known upper bound and matches the Sidon set bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Straus",
+      "Counting arguments",
+      "Best known bounds"
+    ],
+    "mathContext": "See annotation content for formal details of upper bounds",
+    "prerequisites": [
+      "Counting Arguments",
+      "Sum Representations",
+      "Big-O Notation"
+    ]
+  },
+  {
+    "id": "ann-789-lower",
+    "proofId": "erdos-789",
+    "range": {
+      "startLine": 103,
+      "endLine": 120
+    },
+    "type": "concept",
+    "title": "Lower Bounds",
+    "content": "**Erdős (1962)**: h(n) ≫ n^{1/3} via a probabilistic construction using fractional parts {αa} for random α. **Erdős-Choi (1974)**: h(n) ≫ (n log n)^{1/3}, refining the probabilistic argument with Diophantine approximation. This is the best known lower bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Probabilistic method",
+      "Fractional parts",
+      "Diophantine approximation"
+    ],
+    "mathContext": "See annotation content for formal details of lower bounds",
+    "prerequisites": [
+      "Probabilistic Method",
+      "Fractional Parts",
+      "Diophantine Approximation"
+    ]
+  },
+  {
+    "id": "ann-789-combined",
+    "proofId": "erdos-789",
+    "range": {
+      "startLine": 126,
+      "endLine": 132
+    },
+    "type": "concept",
+    "title": "Combined Bounds",
+    "content": "**combined_bounds**: (n log n)^{1/3} ≪ h(n) ≪ √n. Proved by combining erdos_choi_1974_lower and straus_1966_upper. At n = 10^6: lower ≈ 239, upper = 1000 — a substantial gap.",
+    "mathContext": "$(n \\log n)^{1/3} \\ll h(n) \\ll \\sqrt{n}$; the gap between exponents $1/3$ and $1/2$ is the core open question",
+    "significance": "key",
+    "relatedConcepts": [
+      "gap between bounds",
+      "open problem",
+      "exponent improvement"
+    ],
+    "prerequisites": [
+      "erdos_choi_1974_lower",
+      "straus_1966_upper"
+    ]
+  },
+  {
+    "id": "ann-789-sidon",
+    "proofId": "erdos-789",
+    "range": {
+      "startLine": 138,
+      "endLine": 153
+    },
+    "type": "definition",
+    "title": "Connection to Sidon Sets",
+    "content": "**IsSidonSet B**: Distinct pairwise sums (a+b = c+d implies {a,b} = {c,d}). Sidon implies sum-length-free, so the max Sidon subset (≈ √n by Erdős-Turán) gives a lower bound for h(n). But Straus's upper bound √n shows they grow at the same rate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B₂ sequences",
+      "Erdős-Turán"
+    ],
+    "mathContext": "See annotation content for formal details of connection to sidon sets",
+    "prerequisites": [
+      "Sidon Sets",
+      "Pairwise Sums",
+      "Erdős-Turán Bound"
+    ]
+  },
+  {
+    "id": "ann-789-examples",
+    "proofId": "erdos-789",
+    "range": {
+      "startLine": 159,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Computational Examples",
+    "content": "**√1000 = 31** and **√1000000 = 1000** verified via native_decide, illustrating the scale of bounds at moderate n. At n = 1000: lower ≈ 19, upper ≈ 32. At n = 10^6: lower ≈ 239, upper = 1000.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "Numerical verification"
+    ],
+    "mathContext": "See annotation content for formal details of computational examples",
+    "prerequisites": [
+      "Integer Square Root",
+      "native_decide",
+      "Numerical Verification"
+    ]
+  },
+  {
+    "id": "ann-789-main",
+    "proofId": "erdos-789",
+    "range": {
+      "startLine": 196,
+      "endLine": 203
+    },
+    "type": "concept",
+    "title": "Main Theorem",
+    "content": "**erdos_789**: The main theorem combines lower bound (n log n)^{1/3} and upper bound √n. Proved by exact ⟨erdos_choi_1974_lower, straus_1966_upper⟩. Problem remains OPEN — the true growth rate of h(n) is unknown.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary",
+      "Open problem",
+      "State of the art"
+    ],
+    "mathContext": "See annotation content for formal details of main theorem",
+    "prerequisites": [
+      "Upper And Lower Bounds",
+      "Open Problems",
+      "Asymptotic Estimates"
+    ]
+  }
+]

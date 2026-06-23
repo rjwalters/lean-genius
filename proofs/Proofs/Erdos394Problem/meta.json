@@ -1,0 +1,16 @@
+{
+  "problem_number": 394,
+  "title": "Divisibility by Consecutive Integer Products",
+  "status": "partially_solved",
+  "solvers": ["Erdős-Hall (1978)"],
+  "source_url": "https://erdosproblems.com/394",
+  "overview": "Let t_k(n) denote the least m such that n | m(m+1)(m+2)···(m+k-1). Is Σ_{n≤x} t₂(n) ≪ x²/(log x)^c for some c > 0? For k ≥ 2, is Σ_{n≤x} t_{k+1}(n) = o(Σ_{n≤x} t_k(n))?",
+  "sections": [],
+  "conclusion": "PARTIALLY SOLVED: Erdős-Hall (1978) proved Σ t₂(n) ≪ (log log log x / log log x) x². OPEN: The stronger conjecture Σ t₂(n) ≪ x²/(log x)^c for c < log 2 remains unproved. The hierarchy conjecture (Question 2) is also open. Special cases: t_{n-1}(n!) = 2, t_{n-2}(n!) ≪ n.",
+  "references": [
+    "Erdős-Hall (1978) - 'On some unconventional problems on divisors'",
+    "Erdős-Graham (1980) - 'Old and new problems in combinatorial number theory'"
+  ],
+  "related_problems": [],
+  "tags": ["number-theory", "divisibility", "consecutive-integers", "asymptotics", "partially-solved"]
+}

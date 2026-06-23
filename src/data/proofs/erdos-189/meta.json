@@ -1,0 +1,159 @@
+{
+  "id": "erdos-189",
+  "title": "Erdős Problem #189: Rectangles of Every Area in Colored Planes",
+  "slug": "erdos-189",
+  "description": "If the plane is finitely colored, must some color class contain rectangle vertices of every area? Disproved by Kovač (2023) with a 25-coloring.",
+  "meta": {
+    "author": "Kovač (2023)",
+    "sourceUrl": "https://erdosproblems.com/189",
+    "date": "2023",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos189Problem.lean",
+    "tags": [
+      "erdos",
+      "ramsey-theory",
+      "combinatorial-geometry",
+      "coloring"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 189,
+    "erdosUrl": "https://erdosproblems.com/189",
+    "erdosProblemStatus": "disproved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝ² for point geometry",
+        "module": "Mathlib.Analysis.InnerProductSpace.EuclideanDist"
+      },
+      {
+        "theorem": "inner",
+        "description": "Inner product for perpendicularity",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Clean formalization of the rectangle coloring problem",
+      "Statement of Kovač's counterexample as axiom with full derivation",
+      "Related results: Graham's triangle theorem, square/parallelogram variants"
+    ],
+    "axiomCount": 1,
+    "lineCount": 145,
+    "assumptions": "1 axiom: kovac_counterexample. 0 sorries.",
+    "theoremCount": 1,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Graham in his 1980 paper 'On partitions of Eⁿ'. Graham had shown that for right-angled triangles, the answer is YES: any finite coloring of ℝ² has a color class containing right-angled triangle vertices of every area. He asked whether the same holds for rectangles.\n\nThe problem remained open for over 40 years until Kovač's elegant resolution in 2023. Using a surprisingly simple construction, Kovač provided an explicit 25-coloring of ℝ² such that no single color class contains the vertices of any rectangle with area 1. This definitively answers the question: NO, rectangles do not have this property.\n\nThe analogous question for parallelograms remains open as of 2025.",
+    "problemStatement": "**Question**: If $\\mathbb{R}^2$ is finitely coloured, must there exist some colour class which contains the vertices of a rectangle of every area?\n\n**Answer**: NO (Kovač 2023)\n\nKovač constructed an explicit 25-coloring where no color class contains rectangle vertices of area 1.",
+    "text": "If the plane is finitely colored, must some color class contain rectangle vertices of every area? Disproved by Kovač (2023) with a 25-coloring.",
+    "proofStrategy": "The formalization defines the key concepts (finite coloring, rectangle, area) and states the Erdős problem as a Prop. We then axiomatize Kovač's counterexample: there exists a 25-coloring with no monochromatic rectangle of area 1. From this axiom, we derive that the Erdős statement is false. The actual construction is not formalized since it requires measure-theoretic machinery for Jordan measurable sets.",
+    "keyInsights": [
+      "**Rectangles vs Triangles**: Graham showed triangles have the 'every area' property, but rectangles do not. The extra constraint of perpendicular sides matters — the right angle gives rigidity that allows coloring-based avoidance.",
+      "**25 colors suffice**: Kovač's counterexample uses 25 colors — remarkably few for such a strong negative result. The bound 25 = 5² suggests a product construction involving two independent 5-colorings of two independent directions.",
+      "**Jordan measurable regions**: Each color class in Kovač's construction forms a Jordan measurable set (boundary has Lebesgue measure zero), showing the counterexample is quite 'nice' topologically and not just a pathological measure-theoretic construction.",
+      "**Open parallelogram case**: Whether parallelograms (without the right angle constraint) have the 'every area' property remains unsolved as of 2025 — dropping right angles changes the problem fundamentally since parallelogram areas depend on the determinant, not the product of orthogonal lengths.",
+      "**Ramsey-type dichotomy**: The result illustrates how geometric constraints (right angles vs arbitrary angles) create sharp Ramsey-theoretic boundaries. For convex shapes in general, the presence or absence of 'every area' colorability depends on the symmetry group of the shape, connecting to Euclidean harmonic analysis."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Ramsey theory (partition regularity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 31,
+      "endLine": 69,
+      "summary": "Definitions for finite coloring, rectangle, area, and the problem statement"
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result (Disproof)",
+      "startLine": 70,
+      "endLine": 100,
+      "summary": "Kovač's counterexample and derivation that the statement is false"
+    },
+    {
+      "id": "related",
+      "title": "Related Results: Graham's Triangle Theorem",
+      "startLine": 101,
+      "endLine": 128,
+      "summary": "Graham (1980) proved that for right-angled triangles, any finite coloring has a color class containing triangles of every area. This contrasts with the rectangle case."
+    },
+    {
+      "id": "open-problems",
+      "title": "Open Problem: Parallelograms",
+      "startLine": 129,
+      "endLine": 142,
+      "summary": "Whether parallelograms (dropping the right-angle constraint) have the 'every area' property remains open as of 2025."
+    },
+    {
+      "id": "historical",
+      "title": "Historical Context: 43 Years Open",
+      "startLine": 143,
+      "endLine": 145,
+      "summary": "The problem was open for 43 years (1980-2023). Graham showed triangles YES and rhombuses NO; rectangles were unknown until Kovač's 2023 counterexample."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #189 and its resolution: Kovač (2023) disproved the conjecture by constructing a 25-coloring of ℝ² where no color class contains rectangle vertices of area 1. The theorem `erdos_189_is_false` derives this from the axiomatized counterexample.",
+    "implications": "This result shows a fundamental asymmetry between triangles and rectangles in Ramsey-type coloring problems. The geometric constraint of perpendicularity significantly affects which area-universality properties hold.",
+    "openQuestions": [
+      "Does the analogous statement hold for parallelograms?",
+      "What is the minimum number of colors needed for a counterexample?",
+      "Can the counterexample be made with simpler (e.g., polygonal) color regions?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Affine",
+      "EuclideanGeometry"
+    ],
+    "namespace": "Erdos189",
+    "lineCount": 145,
+    "axiomCount": 1,
+    "theoremCount": 1,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos189Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-1105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: coloring, ramsey-theory"
+    },
+    {
+      "targetId": "erdos-172",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: coloring, ramsey-theory"
+    }
+  ],
+  "references": [
+    {
+      "key": "GRS90e",
+      "authors": [
+        "R.L. Graham",
+        "B.L. Rothschild",
+        "J.H. Spencer"
+      ],
+      "title": "Ramsey Theory",
+      "venue": "Wiley-Interscience, New York",
+      "year": "1990",
+      "edition": "2nd",
+      "note": "Standard reference for geometric Ramsey problems"
+    }
+  ],
+  "sorries": 0
+}

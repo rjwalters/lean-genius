@@ -1,0 +1,272 @@
+[
+  {
+    "id": "ann-e1140-header",
+    "proofId": "erdos-1140",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #1140 asks whether infinitely many n exist such that n - 2x² is prime for all x with 2x² < n. The answer is NO: Epure and Gica (2010) proved only finitely many such n exist. The complete list is {2, 5, 7, 13, 31, 61, 181, 199} with at most one additional exception in the n ≡ 3 (mod 4) case.",
+    "mathContext": "Define $\\texttt{AllShiftsArePrime}(n) \\iff \\forall x \\in \\mathbb{N},\\; 2x^2 < n \\implies n - 2x^2 \\text{ is prime}$. The number of constraints grows as $\\lfloor\\sqrt{n/2}\\rfloor$, so for large $n$ we need $\\sim \\sqrt{n/2}$ values to simultaneously be prime — a condition that becomes exponentially unlikely by the prime number theorem ($\\Pr[k \\text{ prime}] \\approx 1/\\log k$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime numbers",
+      "quadratic forms",
+      "modular arithmetic",
+      "sieve methods"
+    ],
+    "prerequisites": [
+      "prime number theorem",
+      "quadratic residues",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e1140-import",
+    "proofId": "erdos-1140",
+    "range": {
+      "startLine": 24,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "Imports Nat.Prime.Basic for primality, Nat.Basic for arithmetic, and Finset.Basic for the finite set of known values. The namespace Erdos1140 scopes all definitions.",
+    "mathContext": "The formalization uses Mathlib's $\\texttt{Nat.Prime}$ predicate: $p$ is prime iff $p \\geq 2$ and its only divisors are $1$ and $p$. The $\\texttt{Finset}$ type provides decidable membership for the known values $\\{2, 5, 7, 13, 31, 61, 181, 199\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.Prime",
+      "Finset",
+      "namespace"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib imports"
+    ]
+  },
+  {
+    "id": "ann-e1140-predicate",
+    "proofId": "erdos-1140",
+    "range": {
+      "startLine": 34,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "AllShiftsArePrime",
+    "content": "AllShiftsArePrime n means n - 2x² is prime for every x with 2x² < n. For n = 13: x ∈ {0, 1, 2} gives 13, 11, 5 — all prime. The constraint 2x² < n ensures we don't subtract more than n.",
+    "mathContext": "The predicate $\\forall x : \\mathbb{N},\\; 2x^2 < n \\to \\texttt{Nat.Prime}(n - 2x^2)$ quantifies over $x \\in \\{0, 1, \\ldots, \\lfloor\\sqrt{(n-1)/2}\\rfloor\\}$. Note $x = 0$ gives $n$ itself, so $n$ must be prime. The quadratic shifts $n, n-2, n-8, n-18, n-32, \\ldots$ must ALL be prime simultaneously — an extremely restrictive joint condition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "universal quantifier",
+      "primality",
+      "quadratic polynomial values"
+    ],
+    "prerequisites": [
+      "natural number subtraction",
+      "primality"
+    ]
+  },
+  {
+    "id": "ann-e1140-known-values",
+    "proofId": "erdos-1140",
+    "range": {
+      "startLine": 38,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "KnownValues",
+    "content": "The known values satisfying AllShiftsArePrime: {2, 5, 7, 13, 31, 61, 181, 199}. These were found by exhaustive computation and proved to be (essentially) complete by Epure-Gica.",
+    "mathContext": "The set $\\{2, 5, 7, 13, 31, 61, 181, 199\\}$ has a striking pattern: the gaps $3, 2, 6, 18, 30, 120, 18$ are irregular, and the values are all prime (since $x = 0$ forces $n$ to be prime). The largest value $199$ requires checking $x \\in \\{0, \\ldots, 9\\}$: $199, 197, 191, 181, 167, 149, 127, 101, 71, 37$ — all prime.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset",
+      "exhaustive computation",
+      "prime enumeration"
+    ],
+    "prerequisites": [
+      "finite sets",
+      "primality checking"
+    ]
+  },
+  {
+    "id": "ann-e1140-n2",
+    "proofId": "erdos-1140",
+    "range": {
+      "startLine": 45,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "n = 2 Verified",
+    "content": "Computationally verified: only x = 0 applies (since 2·1² = 2 ≮ 2), and 2 - 0 = 2 is prime. The proof uses simp to simplify the constraint and omega to close the goal.",
+    "mathContext": "For $n = 2$: the only $x$ with $2x^2 < 2$ is $x = 0$, giving $2 - 0 = 2$ which is prime. The proof is $\\texttt{simp at hx; omega}$: first simplify $2 \\cdot x^2 < 2$ to $x = 0$, then close by $\\texttt{omega}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simp tactic",
+      "omega tactic",
+      "base case"
+    ],
+    "prerequisites": [
+      "Lean proof tactics"
+    ]
+  },
+  {
+    "id": "ann-e1140-n5-n7-n13",
+    "proofId": "erdos-1140",
+    "range": {
+      "startLine": 51,
+      "endLine": 64
+    },
+    "type": "concept",
+    "title": "n = 5, 7, 13 Verified",
+    "content": "Three more verified cases using interval_cases (which enumerates all valid x) and decide (which checks primality by computation). n=5: {5,3}; n=7: {7,5}; n=13: {13,11,5} — all prime.",
+    "mathContext": "The $\\texttt{interval\\_cases}$ tactic: given $2x^2 < n$, derives $x \\in \\{0, \\ldots, \\lfloor\\sqrt{(n-1)/2}\\rfloor\\}$ and creates one goal per value. Then $\\texttt{decide}$ evaluates $\\texttt{Nat.Prime}(n - 2x^2)$ by computation. For $n = 13$: $x = 0 \\to 13$ (prime), $x = 1 \\to 11$ (prime), $x = 2 \\to 5$ (prime).",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval_cases tactic",
+      "decide tactic",
+      "computational verification"
+    ],
+    "prerequisites": [
+      "Lean 4 tactics",
+      "decidable primality"
+    ]
+  },
+  {
+    "id": "ann-e1140-n4-fails",
+    "proofId": "erdos-1140",
+    "range": {
+      "startLine": 66,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "n = 4 Counterexample",
+    "content": "Verified counterexample: 4 - 2·0² = 4 is not prime (4 = 2²). The proof provides x = 0 as witness, uses simp to compute 4 - 0 = 4, and derives a contradiction from the assumption that 4 is prime.",
+    "mathContext": "The proof is by contradiction: assume $\\texttt{AllShiftsArePrime}(4)$, instantiate with $x = 0$ (since $0 < 4$) to get $\\texttt{Nat.Prime}(4)$, then $\\texttt{simp}$ reduces this to $\\texttt{False}$ since $4 = 2 \\times 2$ is composite. This demonstrates that not all $n$ satisfy the property — a warm-up for the full disproof.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "compositeness",
+      "counterexample"
+    ],
+    "prerequisites": [
+      "negation introduction",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-e1140-epure-gica-mod1",
+    "proofId": "erdos-1140",
+    "range": {
+      "startLine": 76,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "Epure-Gica: n ≡ 1 (mod 4)",
+    "content": "Axiom from Epure-Gica (2010), Theorem 4.1: when n ≡ 1 (mod 4), the only values satisfying AllShiftsArePrime are {5, 13, 61, 181}. The proof uses quadratic residue analysis modulo small primes to eliminate all but finitely many candidates.",
+    "mathContext": "For $n \\equiv 1 \\pmod{4}$: the values $n - 2x^2$ cycle through specific residue classes mod small primes. For example, $n \\equiv 1 \\pmod{3}$ and $x \\equiv 1 \\pmod{3}$ gives $n - 2x^2 \\equiv 1 - 2 \\equiv -1 \\equiv 2 \\pmod{3}$. Combining residue constraints from primes $3, 5, 7, \\ldots$ via the Chinese Remainder Theorem creates a sieve that leaves only $\\{5, 13, 61, 181\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic residues",
+      "Chinese Remainder Theorem",
+      "prime sieve",
+      "modular constraints"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "quadratic reciprocity",
+      "Finset membership"
+    ]
+  },
+  {
+    "id": "ann-e1140-epure-gica-mod3",
+    "proofId": "erdos-1140",
+    "range": {
+      "startLine": 81,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "Epure-Gica: n ≡ 3 (mod 4)",
+    "content": "Axiom from Epure-Gica (2010): when n ≡ 3 (mod 4), only {7, 31, 199} satisfy AllShiftsArePrime, with at most one additional exception. The proof relies on Mollin-Williams (1989) results on class numbers of imaginary quadratic fields Q(√(-2n)).",
+    "mathContext": "The case $n \\equiv 3 \\pmod{4}$ is deeper because it connects to class numbers of $\\mathbb{Q}(\\sqrt{-2n})$. Mollin and Williams (1989) showed that if $n - 2x^2$ is prime for all valid $x$, then the class number $h(-8n)$ satisfies strong constraints. By Siegel's theorem, $h(-D) \\to \\infty$ as $D \\to \\infty$, so only finitely many $n$ can satisfy these constraints. The 'at most one exception' arises from an ineffective constant in Siegel's bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "class number",
+      "imaginary quadratic field",
+      "Siegel's theorem",
+      "Mollin-Williams"
+    ],
+    "prerequisites": [
+      "algebraic number theory",
+      "class field theory",
+      "L-functions"
+    ]
+  },
+  {
+    "id": "ann-e1140-even-case",
+    "proofId": "erdos-1140",
+    "range": {
+      "startLine": 88,
+      "endLine": 94
+    },
+    "type": "concept",
+    "title": "Even Case: Fully Proved",
+    "content": "For even n > 2: n - 2·0² = n is even and greater than 2, hence not prime. This eliminates half of all natural numbers. The proof extracts the x = 0 case, uses simp to compute n - 0 = n, then derives that a prime cannot be divisible by 2 and greater than 2.",
+    "mathContext": "The proof chain: $2 \\mid n$ and $n > 2$ imply $n$ is composite (the only even prime is $2$). Since $\\texttt{AllShiftsArePrime}(n)$ requires $n - 2 \\cdot 0^2 = n$ to be prime, we get $\\texttt{Nat.Prime}(n)$ contradicting compositeness. Formally: $\\texttt{Nat.Prime.not\\_dvd\\_one}$ applied to the prime $n$ and divisor $2$ (adjusted by omega).",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity argument",
+      "elimination",
+      "Nat.Prime.not_dvd_one"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "primality",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-e1140-finiteness",
+    "proofId": "erdos-1140",
+    "range": {
+      "startLine": 100,
+      "endLine": 105
+    },
+    "type": "concept",
+    "title": "Finiteness Axiom",
+    "content": "The core axiom: ∃ B, ∀ n > B, ¬AllShiftsArePrime n. There exists a bound beyond which no n satisfies the property. This packages the Epure-Gica results (mod 1, mod 3, and even cases) into a single finiteness statement.",
+    "mathContext": "Taking $B = 199$ (the largest known value): $\\forall n > 199, \\neg\\texttt{AllShiftsArePrime}(n)$. This combines three cases: even $n > 2$ fail by the even\\_case theorem, $n \\equiv 1 \\pmod{4}$ with $n > 181$ fail by epure\\_gica\\_mod\\_1, and $n \\equiv 3 \\pmod{4}$ with $n > 199$ fail by epure\\_gica\\_mod\\_3 (modulo the possible exception).",
+    "significance": "key",
+    "relatedConcepts": [
+      "finiteness",
+      "existential bound",
+      "case exhaustion"
+    ],
+    "prerequisites": [
+      "Epure-Gica results",
+      "even case elimination"
+    ]
+  },
+  {
+    "id": "ann-e1140-main",
+    "proofId": "erdos-1140",
+    "range": {
+      "startLine": 107,
+      "endLine": 112
+    },
+    "type": "concept",
+    "title": "erdos_1140: DISPROVED (Fully Proved)",
+    "content": "The main theorem: ¬(∀ N, ∃ n > N, AllShiftsArePrime n) — there do NOT exist infinitely many such n. The proof assumes infinitely many exist, extracts the bound B from erdos_1140_finite, finds n > B with the property (contradicting finiteness), and derives ⊥.",
+    "mathContext": "The proof is a clean application of the Archimedean principle: assume $\\forall N, \\exists n > N, \\texttt{AllShiftsArePrime}(n)$. From the finiteness axiom, obtain $B$ with $\\forall n > B, \\neg\\texttt{AllShiftsArePrime}(n)$. Instantiate the assumption with $N = B$ to get $n > B$ with $\\texttt{AllShiftsArePrime}(n)$. Then $\\texttt{hB}(n)(\\text{by omega})(\\text{hn'})$ gives $\\bot$. This is one of the fully-proved theorems in the file.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "Archimedean property",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "erdos_1140_finite axiom",
+      "propositional logic"
+    ]
+  }
+]

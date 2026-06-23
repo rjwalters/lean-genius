@@ -1,0 +1,146 @@
+[
+  {
+    "id": "ann-1011-overview",
+    "proofId": "erdos-1011",
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Problem Overview: Triangles in Graphs with High Chromatic Number",
+    "content": "Erdős Problem #1011 asks for the threshold f_r(n): the minimum number of edges such that every n-vertex graph with at least f_r(n) edges and chromatic number ≥ r must contain a triangle. Known exact values exist for r = 2 (Turán), r = 3 (Erdős-Gallai), and r = 4 (RWWY 2024). The general asymptotic involves the function g(r), which remains open.",
+    "mathContext": "This problem sits at the intersection of extremal graph theory (Turán-type problems) and chromatic graph theory. Adding the chromatic number constraint χ ≥ r changes the problem fundamentally: bipartite graphs (χ = 2) are always triangle-free, so the constraint χ ≥ 3 already eliminates many triangle-free graphs. The interplay between edge density and chromatic structure is the central theme.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal-graph-theory",
+      "chromatic-number",
+      "Turan-theorem",
+      "triangle-free-graphs"
+    ],
+    "prerequisites": [
+      "graph triangle (K_3 subgraph)",
+      "asymptotic threshold functions",
+      "graph coloring and chromatic number ≥ r"
+    ]
+  },
+  {
+    "id": "ann-1011-definitions",
+    "proofId": "erdos-1011",
+    "range": {
+      "startLine": 38,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "Core Definitions and Threshold Function",
+    "content": "HasTriangle checks for three mutually adjacent distinct vertices. The chromatic number is defined as sInf of valid coloring sizes. The threshold function f(r,n) is the minimum m such that every n-vertex graph with ≥ m edges and χ ≥ r contains a triangle. Its well-definedness (existence of such m) is axiomatized.",
+    "mathContext": "The definition of f uses sInf over a set of natural numbers satisfying a universal property over all graphs. This is well-defined because the set is nonempty (the trivially large value n(n-1)/2 + 1 works, since the complete graph has χ = n and certainly contains triangles) and bounded below by 0. The Fintype constraint on V ensures we work with finite graphs throughout.",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasTriangle",
+      "chromaticNumber",
+      "sInf",
+      "threshold-function"
+    ],
+    "prerequisites": [
+      "infimum (sInf) over a set of naturals",
+      "Fintype and finite simple graphs",
+      "axiomatized well-definedness (nonempty bounded-below set)"
+    ]
+  },
+  {
+    "id": "ann-1011-turan",
+    "proofId": "erdos-1011",
+    "range": {
+      "startLine": 80,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Turán's Theorem: The Case r = 2",
+    "content": "f_2(n) = ⌊n²/4⌋ + 1: any graph with more than n²/4 edges contains a triangle (no chromatic constraint needed since r = 2 is trivially satisfied). The Turán graph T(n,2) — the balanced complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} — achieves exactly n²/4 edges, is bipartite (χ = 2), and is triangle-free.",
+    "mathContext": "Turán's theorem (1941) is one of the foundational results of extremal graph theory. For r = 2, the chromatic constraint χ ≥ 2 is automatically satisfied by any graph with at least one edge. The Turán graph is the unique extremal graph, demonstrating the tightness of the bound. The formula turanNumber(n) = n²/4 uses integer division, which matches ⌊n²/4⌋.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turan-theorem",
+      "Turan-graph",
+      "complete-bipartite",
+      "extremal-graph"
+    ],
+    "prerequisites": [
+      "floor function and integer division ⌊n²/4⌋",
+      "balanced complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉}",
+      "uniqueness of the extremal Turán graph"
+    ]
+  },
+  {
+    "id": "ann-1011-small-r",
+    "proofId": "erdos-1011",
+    "range": {
+      "startLine": 100,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Exact Values for r = 3 and r = 4",
+    "content": "Erdős-Gallai (1962): f_3(n) = ⌊(n-1)²/4⌋ + 2. The pattern shows that higher chromatic constraint reduces the threshold. Ren-Wang-Wang-Yang (2024): f_4(n) = ⌊(n-3)²/4⌋ + 6 for n ≥ 150. The formula f_r(n) = ⌊(n-g(r))²/4⌋ + h(r) is emerging, where g(r) is the key quantity.",
+    "mathContext": "The f_3 threshold ⌊(n-1)²/4⌋ + 2 is strictly less than the Turán number ⌊n²/4⌋ + 1 for n ≥ 4, reflecting that χ ≥ 3 is a genuinely stronger constraint. The r = 4 result took over 60 years after r = 3, illustrating the difficulty of exact results. The n ≥ 150 restriction in the RWWY theorem reflects computational and case-analysis barriers at small n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdos-Gallai",
+      "RWWY-theorem",
+      "exact-threshold",
+      "small-cases"
+    ],
+    "prerequisites": [
+      "vertex-deletion shift in extremal formulas ⌊(n-c)²/4⌋",
+      "threshold parameters g(r) and h(r)",
+      "large-n restrictions from finite case analysis"
+    ]
+  },
+  {
+    "id": "ann-1011-simonovits",
+    "proofId": "erdos-1011",
+    "range": {
+      "startLine": 126,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Simonovits Asymptotic and Bounds on g(r)",
+    "content": "Simonovits established f_r(n) = n²/4 - g(r)·n/2 + O(1), reducing the problem to understanding g(r). The function g(r) measures the maximum 'distance from bipartiteness' of triangle-free graphs with χ ≥ r. Current bounds: (1/2 - o(1))r² log r ≤ g(r) ≤ (2 + o(1))r² log r, a factor-of-4 gap. The gap theorem g_bounds_gap packages both bounds.",
+    "mathContext": "The Simonovits asymptotic shows that f_r(n) deviates from the Turán number n²/4 by a linear correction g(r)·n/2. The function g(r) encodes the extremal structure of triangle-free high-chromatic graphs. The lower bound (Davies-Illingworth 2022) uses χ-Ramsey techniques, while the upper bound (HHKP 2025) leverages recent breakthroughs on R(3,k) by Mattheus-Verstraëte. Closing the constant factor between 1/2 and 2 is the main open question.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Simonovits-asymptotic",
+      "distance-from-bipartite",
+      "Davies-Illingworth",
+      "HHKP"
+    ],
+    "prerequisites": [
+      "big-O / o(1) asymptotic notation",
+      "off-diagonal Ramsey numbers R(3,k)",
+      "χ-Ramsey lower-bound techniques"
+    ]
+  },
+  {
+    "id": "ann-1011-monotonicity",
+    "proofId": "erdos-1011",
+    "range": {
+      "startLine": 167,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Monotonicity and Special Values",
+    "content": "Three monotonicity axioms: f_r(n) increases in n, decreases in r, and g(r) increases in r. Special values: g(2) = 0 (bipartite graphs are bipartite), g(3) = 1 (odd cycle removal), g(4) = 3 (Grötzsch-type constructions). These ground the abstract theory in computable examples.",
+    "mathContext": "f_r(n) decreasing in r is the key structural property: higher chromatic number is a stronger constraint on the graph, so fewer edges suffice to force a triangle. The special values of g(r) give concrete instances: g(3) = 1 means every triangle-free graph with χ ≥ 3 can be made bipartite by removing one vertex. The Grötzsch graph (11 vertices, χ = 4, triangle-free) witnesses g(4) ≥ 3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotonicity",
+      "Grotzsch-graph",
+      "odd-cycle",
+      "bipartite-vertex-deletion"
+    ],
+    "prerequisites": [
+      "monotonicity of parameterized bounds",
+      "Grötzsch graph (triangle-free, χ = 4)",
+      "odd cycles and bipartite-vertex-deletion distance"
+    ]
+  }
+]

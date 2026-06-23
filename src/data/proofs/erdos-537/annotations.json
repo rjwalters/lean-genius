@@ -1,0 +1,317 @@
+[
+  {
+    "id": "ann-537-imports",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 28,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports Mathlib.Data.Nat.Prime.Basic (primality predicates), Mathlib.Data.Nat.Squarefree (squarefree condition), Mathlib.Data.Finset.Basic (finite set operations for counting), and Mathlib.Data.Real.Basic (real number arithmetic for density). Together these provide the infrastructure for formalizing multiplicative number theory and density arguments.",
+    "mathContext": "The `Squarefree n` predicate from Mathlib asserts $\\forall p,\\; p^2 \\nmid n$. The `Nat.Prime p` predicate gives $p \\geq 2$ and $p$ has no proper divisors. The `Filter.atTop` from `Data.Real.Basic` enables asymptotic density statements: $\\liminf_{N \\to \\infty} |A \\cap [1,N]|/N > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Squarefree",
+      "Nat.Prime",
+      "Filter.atTop",
+      "Finset"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Squarefree"
+    ]
+  },
+  {
+    "id": "ann-537-1",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 43,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Positive Lower Density",
+    "content": "A set A ⊆ ℕ has positive lower density if liminf |A ∩ [1,N]| / N > 0. Formalized using Filter.atTop: there exists ε > 0 such that eventually (for large N) the ratio exceeds ε. This is the key density property of Ruzsa's counterexample set.",
+    "mathContext": "$\\text{HasPositiveDensity}(A) \\iff \\exists \\varepsilon > 0,\\; \\forall^\\infty N,\\; |A \\cap [1,N]|/N \\geq \\varepsilon$. This is the **lower asymptotic density** $\\underline{d}(A) > 0$. For lacunary squarefree numbers, the density can be estimated via an Euler product: $\\underline{d}(S) = \\prod_p (1 + 1/p) \\cdot \\prod_{\\text{small } p} (\\text{correction})$, giving a positive constant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower asymptotic density",
+      "Euler product",
+      "Filter.atTop",
+      "natural density"
+    ],
+    "prerequisites": [
+      "Filter.atTop",
+      "Nat.card",
+      "Finset.Icc"
+    ]
+  },
+  {
+    "id": "ann-537-2",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 50,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Dense Subset",
+    "content": "A finite set A ⊆ {1,...,N} is ε-dense if |A| ≥ εN. This is the finite version of positive density used in the conjecture statement: the conjecture claims that any ε-dense subset must contain the target pattern.",
+    "mathContext": "$\\text{IsDenseSubset}(A, N, \\varepsilon) \\iff A \\subseteq [1, N] \\wedge |A| \\geq \\varepsilon N$. This is a uniform density condition: every large enough interval contains $\\geq \\varepsilon$ fraction of elements from $A$. The Ruzsa set restricted to $(N/2, N]$ is $\\varepsilon/2$-dense in that interval for suitable $\\varepsilon$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite density",
+      "Szemerédi regularity",
+      "density increment"
+    ],
+    "prerequisites": [
+      "Finset.Icc",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-537-3",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 57,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Three Equal Prime Products Pattern",
+    "content": "The pattern: three elements a₁, a₂, a₃ ∈ A and three distinct primes p₁, p₂, p₃ with a₁p₁ = a₂p₂ = a₃p₃. This is a multiplicative Ramsey-type condition asking whether dense sets must contain this specific multiplicative coincidence. The common product n = a₁p₁ = a₂p₂ = a₃p₃ must be divisible by three distinct primes, each paired with a different element of A.",
+    "mathContext": "$\\text{HasThreeEqualPrimeProducts}(A) \\iff \\exists a_1, a_2, a_3 \\in A,\\; \\exists p_1 < p_2 < p_3 \\text{ prime},\\; a_1 p_1 = a_2 p_2 = a_3 p_3$. The common value $n = a_i p_i$ satisfies $p_1 p_2 p_3 \\mid n$ (since the $p_i$ are distinct primes and $p_i \\mid a_j p_j = n$). This forces $n$ to have rich multiplicative structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative pattern",
+      "Ramsey-type condition",
+      "prime divisors",
+      "common multiple"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Finset"
+    ]
+  },
+  {
+    "id": "ann-537-4",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 73,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Erdős #537 Conjecture (FALSE)",
+    "content": "The FALSE conjecture: for every ε > 0 and sufficiently large N, any A ⊆ {1,...,N} with |A| ≥ εN contains three equal prime products. This is a density Ramsey-type statement asserting that density forces multiplicative coincidences. Disproved by Ruzsa's lacunary squarefree construction.",
+    "mathContext": "$\\text{Erdos537Conjecture} : \\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0,\\; \\forall A \\subseteq [1,N],\\; |A| \\geq \\varepsilon N \\implies \\text{HasThreeEqualPrimeProducts}(A)$. This is analogous to **Szemerédi's theorem** (density $\\implies$ arithmetic progressions) but for a multiplicative pattern. Unlike Szemerédi's theorem, this conjecture is FALSE.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi's theorem",
+      "density Ramsey theory",
+      "multiplicative combinatorics"
+    ],
+    "prerequisites": [
+      "IsDenseSubset",
+      "HasThreeEqualPrimeProducts"
+    ]
+  },
+  {
+    "id": "ann-537-5",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 86,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "Lacunary Squarefree Numbers",
+    "content": "A squarefree number n = p₁···pᵣ (with p₁ < ··· < pᵣ) is lacunary if consecutive primes satisfy pᵢ₊₁ > 2pᵢ. The 'lacunary' condition means the prime factors grow exponentially: p₁ < p₂ < 4p₁ < p₃ < 8p₁ < ···. This gap property is the key to Ruzsa's construction.",
+    "mathContext": "$\\text{IsLacunarySquarefree}(n) \\iff \\text{Squarefree}(n) \\wedge \\forall p < q \\text{ consecutive prime divisors of } n,\\; q > 2p$. The gap condition ensures prime factors grow at least geometrically with ratio $> 2$. For $n = p_1 \\cdots p_r$ with $p_1 < \\cdots < p_r$ lacunary, $n > p_1 \\cdot 2p_1 \\cdot 4p_1 \\cdots = p_1^r \\cdot 2^{r(r-1)/2}$, limiting the number of prime factors to $r = O(\\log n / \\log \\log n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squarefree number",
+      "lacunary sequence",
+      "prime gap",
+      "multiplicative structure"
+    ],
+    "prerequisites": [
+      "Squarefree",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-537-6",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 95,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "Ruzsa Set",
+    "content": "S = {n ∈ ℕ : n is lacunary squarefree}. This is Ruzsa's counterexample set: it has positive density (many numbers satisfy the lacunary squarefree condition) but avoids the three equal prime products pattern (the gap property creates an obstruction).",
+    "mathContext": "$\\text{RuzsaSet} = \\{n \\in \\mathbb{N} : \\text{IsLacunarySquarefree}(n)\\}$. The positive density follows from the observation that 'most' squarefree numbers have well-separated prime factors. More precisely, the density of squarefree numbers is $6/\\pi^2 \\approx 0.608$, and the lacunary condition removes only a small fraction of these.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ruzsa construction",
+      "counterexample set",
+      "squarefree density"
+    ],
+    "prerequisites": [
+      "IsLacunarySquarefree",
+      "Set ℕ"
+    ]
+  },
+  {
+    "id": "ann-537-7",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 102,
+      "endLine": 102
+    },
+    "type": "concept",
+    "title": "Ruzsa Set Has Positive Density",
+    "content": "The lacunary squarefree numbers have positive lower density. Axiomatized since the proof requires careful counting: one must show that the lacunary condition excludes only a vanishing fraction of squarefree numbers. The density of squarefree numbers is 6/π², and the lacunary condition preserves a positive fraction.",
+    "mathContext": "$\\underline{d}(\\text{RuzsaSet}) > 0$. The proof estimates the density via an Euler product argument: the probability that a random number $n$ is squarefree with all consecutive prime factors having ratio $> 2$ is $\\prod_p (1 - 1/p^2) \\cdot (\\text{correction for lacunary condition}) > 0$. The squarefree density $6/\\pi^2$ is reduced but remains positive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "Euler product",
+      "squarefree density",
+      "sieve methods"
+    ],
+    "prerequisites": [
+      "HasPositiveDensity",
+      "RuzsaSet"
+    ]
+  },
+  {
+    "id": "ann-537-8",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 130,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Ratio Bound Theorem",
+    "content": "If a₂ > a₃ both lie in the interval (N/2, N], then a₂/a₃ ∈ (1, 2). This is the only fully proved theorem in the file (no sorry). The proof uses the interval containment: a₂ ≤ N and a₃ > N/2 give a₂/a₃ < N/(N/2) = 2. The bound a₂ > a₃ gives the lower bound > 1.",
+    "mathContext": "For $a_2, a_3 \\in (N/2, N]$ with $a_2 > a_3$: $1 < a_2/a_3 < N/(N/2) = 2$. The proof works in $\\mathbb{Q}$: `one_lt_div` gives $a_2/a_3 > 1$ from $a_2 > a_3 > 0$, and `div_lt_iff` with $a_2 \\leq N$ and $a_3 > N/2$ gives $a_2/a_3 < 2$ via `linarith`. This interval constraint is incompatible with the gap property $p_3/p_2 > 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval arithmetic",
+      "ratio bound",
+      "linarith",
+      "Rat"
+    ],
+    "prerequisites": [
+      "Nat.cast_lt",
+      "div_lt_iff"
+    ]
+  },
+  {
+    "id": "ann-537-9",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 149,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Ruzsa Contradiction",
+    "content": "The heart of the disproof: if three equal prime products exist in the Ruzsa set restricted to (N/2, N], we get a contradiction. The argument: WLOG a₂ > a₃, then p₂ < p₃ (since a₂p₂ = a₃p₃). Since p₂, p₃ are consecutive prime divisors of a₁ (both divide a₁p₁ = a₂p₂ = a₃p₃), the gap property gives p₃ > 2p₂, i.e., p₃/p₂ > 2. But p₃/p₂ = a₂/a₃ < 2 by the ratio bound. Contradiction.",
+    "mathContext": "The contradiction chain: $a_2 p_2 = a_3 p_3$ with $a_2 > a_3$ implies $p_2 < p_3$. Since $p_2 p_3 \\mid a_1 p_1 = a_2 p_2$ and $a_1$ is lacunary squarefree, $p_2$ and $p_3$ are consecutive prime divisors of some element, giving $p_3 > 2p_2$. But $p_3/p_2 = a_2/a_3 \\in (1, 2)$. The interval $(1,2) \\cap (2, \\infty) = \\emptyset$ gives $\\bot$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "gap property",
+      "ratio incompatibility"
+    ],
+    "prerequisites": [
+      "IsLacunarySquarefree",
+      "ratio_bound"
+    ]
+  },
+  {
+    "id": "ann-537-10",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 166,
+      "endLine": 175
+    },
+    "type": "concept",
+    "title": "No Three Products in Ruzsa Set",
+    "content": "The Ruzsa set restricted to (N/2, N] has no three equal prime products. Proved by destructuring the HasThreeEqualPrimeProducts hypothesis and applying ruzsa_contradiction. Uses Finset.mem_filter and Finset.mem_Ioc to extract the membership and lacunary squarefree conditions.",
+    "mathContext": "$\\forall N > 0,\\; \\neg\\text{HasThreeEqualPrimeProducts}(\\text{RuzsaSet} \\cap (N/2, N])$. The proof destructs the existential $\\exists a_i, p_i$ and applies `ruzsa_contradiction` with the extracted conditions. The `simp only [Finset.mem_filter, Finset.mem_Ioc]` step converts Finset membership into the conjunction of interval containment and lacunary squarefree property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.mem_filter",
+      "existential elimination",
+      "negation proof"
+    ],
+    "prerequisites": [
+      "ruzsa_contradiction",
+      "HasThreeEqualPrimeProducts"
+    ]
+  },
+  {
+    "id": "ann-537-11",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 181,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "Erdős #537 Disproved",
+    "content": "The main theorem: ¬Erdos537Conjecture. The proof assumes the conjecture and derives a contradiction: Ruzsa's set is dense enough to trigger the conjecture's conclusion but has no three equal prime products. Contains 1 sorry for the final bookkeeping step connecting the density of the Ruzsa set in (N/2, N] to the IsDenseSubset predicate.",
+    "mathContext": "$\\neg\\text{Erdos537Conjecture}$: the proof proceeds by contradiction. Assuming the conjecture, for $\\varepsilon$ from `ruzsa_set_positive_density` and $N = \\max(N_0, N_1) + 1$, the Ruzsa set restricted to $(N/2, N]$ is $\\varepsilon/2$-dense (by `ruzsa_set_large_intersection`) and thus must contain three equal prime products (by the conjecture). But `ruzsa_no_three_products` says it doesn't. The `sorry` is for the final technical step converting between the two density formulations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "counterexample",
+      "density argument"
+    ],
+    "prerequisites": [
+      "ruzsa_set_positive_density",
+      "ruzsa_no_three_products",
+      "Erdos537Conjecture"
+    ]
+  },
+  {
+    "id": "ann-537-12",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 262,
+      "endLine": 262
+    },
+    "type": "concept",
+    "title": "Erdős 537 Main Statement",
+    "content": "The clean statement: ¬Erdos537Conjecture, defined as erdos_537 := erdos_537_disproved. This is the formal answer to Problem #537: the conjecture is FALSE.",
+    "mathContext": "$\\text{erdos\\_537} : \\neg\\text{Erdos537Conjecture}$, a direct alias for `erdos_537_disproved`. The naming convention `erdos_NNN` provides a uniform interface for the gallery to identify the main result of each Erdős problem formalization.",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem alias",
+      "main result",
+      "gallery convention"
+    ],
+    "prerequisites": [
+      "erdos_537_disproved"
+    ]
+  },
+  {
+    "id": "ann-537-13",
+    "proofId": "erdos-537",
+    "range": {
+      "startLine": 269,
+      "endLine": 274
+    },
+    "type": "concept",
+    "title": "Summary: Disproof with Density Witness",
+    "content": "The summary theorem: ¬Erdos537Conjecture ∧ HasPositiveDensity RuzsaSet. Packages the disproof together with the fact that the Ruzsa set is a valid counterexample (it has positive density). Proved by the anonymous constructor ⟨erdos_537, ruzsa_set_positive_density⟩.",
+    "mathContext": "$\\text{erdos\\_537\\_summary} : \\neg\\text{Erdos537Conjecture} \\wedge \\text{HasPositiveDensity}(\\text{RuzsaSet})$. The conjunction asserts both that the conjecture fails and that the counterexample has the required density property. This is the complete resolution: the Ruzsa set simultaneously satisfies the hypothesis (positive density) and violates the conclusion (no three equal prime products).",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjunction",
+      "counterexample witness",
+      "completeness of disproof"
+    ],
+    "prerequisites": [
+      "erdos_537",
+      "ruzsa_set_positive_density"
+    ]
+  }
+]

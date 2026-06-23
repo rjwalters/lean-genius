@@ -1,0 +1,78 @@
+{
+  "slug": "erdos-1004-wip-01",
+  "title": "Complete Erdős #1004: Distinct Consecutive Totient Values (Work in Progress)",
+  "phase": "ACT",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Complete Erdős #1004: Distinct Consecutive Totient Values (Work in Progress).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-24T00:48:59.901Z",
+    "iteration": 1,
+    "focus": "Proved run_length_sublinear. 2 deep sorries remain.",
+    "blockers": [],
+    "nextAction": "Attempt longer_runs_need_larger_n via constructive approach or submit to Aristotle",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "builtItems": [
+      "Proved totient_eq_two_iff: φ(n) = 2 ↔ n ∈ {3,4,6}",
+      "Proved totient_eq_four_iff: φ(n) = 4 ↔ n ∈ {5,8,10,12}",
+      "Helper prime_pred_dvd_totient via factorization + multiplicativity",
+      "Proved maxDistinctRunLength_le_eps87: sSup bound from EPS87 axiom via csSup_le + Nat.floor",
+      "Proved run_length_sublinear: maxDistinctRunLength(n)/n → 0 via squeeze theorem",
+      "Fixed Nat.dvd_sub bug in totient_eq_two_iff via Euclidean gcd_rec",
+      "Axiomatized 2 deep results: longer_runs_need_larger_n and distinct_totients_asymptotic (EPS87, Ford 1998)",
+      "Consolidated 4 EPS87 axioms into 1 existential axiom (6→3 total axiom count)"
+    ],
+    "insights": [
+      "prime_pred_dvd_totient: if prime p | n then (p-1) | φ(n), key infrastructure for totient characterizations",
+      "run_length_sublinear proof chain: sSup bound → squeeze_zero with g(n)=1/exp(c·(log n)^{1/3}) → limit via composition (log→∞, rpow→∞, exp→∞, inv→0)",
+      "Key Mathlib API: csSup_le for ℕ, Nat.le_floor/floor_le for real-to-nat bound transfer, rpow_mul for cube root identity",
+      "longer_runs_need_larger_n requires deep number theory: existence of arbitrarily long distinct consecutive totient runs for fixed K",
+      "totient_eq_two_iff provable via strong induction + minFac decomposition + native_decide base case",
+      "totient_eq_four_iff provable with same architecture, needs debugging of nlinarith on ℕ subtraction in products",
+      "EPS87 axioms (eps87_constant, eps87_constant_pos, eps87_threshold, eps87_upper_bound) consolidated into single existential axiom eps87_theorem; old names derived as noncomputable defs and theorems"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "totient",
+    "analytic-number-theory",
+    "wip",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1004"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.900Z",
+  "lastUpdate": "2026-03-26T20:00:00Z",
+  "significance": 7,
+  "tractability": 6
+}

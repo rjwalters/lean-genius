@@ -1,0 +1,508 @@
+[
+  {
+    "id": "erdos-70-imports",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 27,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Imports and Namespaces",
+    "content": "Imports the full Mathlib library and opens `Set`, `Cardinal`, `Ordinal` namespaces. This gives access to cardinal arithmetic ($2^{\\aleph_0}$), ordinal operations ($\\omega + n$, $\\omega^2$), and the `Finset` API.",
+    "significance": "supporting",
+    "mathContext": "The formalization uses `Cardinal.continuum`, `Ordinal.omega0`, `Cardinal.aleph0`, and `Ordinal.card` from Mathlib to connect ordinals, cardinals, and set-theoretic partition relations.",
+    "relatedConcepts": [
+      "Cardinal",
+      "Ordinal",
+      "Finset"
+    ],
+    "prerequisites": [
+      "Mathlib"
+    ]
+  },
+  {
+    "id": "erdos-70-coloring",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 36,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "Coloring of n-Element Subsets",
+    "content": "Defines **Coloring S n k** as a function from $n$-element subsets of $S$ (as subtypes) to $\\text{Fin}(k)$ colors. This is the basic object of partition calculus.",
+    "significance": "key",
+    "mathContext": "A $k$-coloring of $[S]^n$ is a function $c: \\binom{S}{n} \\to k$. The partition arrow $\\kappa \\to (\\alpha, \\beta)_k^n$ asks what monochromatic subsets are guaranteed to exist for any such coloring.",
+    "relatedConcepts": [
+      "Finset",
+      "Fin",
+      "partition calculus",
+      "Ramsey theory"
+    ],
+    "prerequisites": [
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "erdos-70-nsubsets",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 40,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "n-Element Subsets",
+    "content": "Defines **nSubsets S n** as the set of all Finsets of S with cardinality exactly n. This is $[S]^n = \\{t \\subseteq S \\mid |t| = n\\}$.",
+    "significance": "supporting",
+    "mathContext": "The set $[S]^n$ of $n$-element subsets is the domain of colorings in partition calculus. For the problem, $n = 3$ (3-element subsets).",
+    "relatedConcepts": [
+      "Finset.card",
+      "Set.setOf",
+      "binomial coefficient"
+    ],
+    "prerequisites": [
+      "Finset",
+      "DecidableEq"
+    ]
+  },
+  {
+    "id": "erdos-70-homogeneous",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 46,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Homogeneous Set",
+    "content": "Defines **IsHomogeneous H n c i**: all $n$-subsets of $H$ receive color $i$ under coloring $c$. This is the Ramsey-theoretic notion of a monochromatic set.",
+    "significance": "key",
+    "mathContext": "A set $H \\subseteq S$ is $i$-homogeneous for coloring $c: [S]^n \\to k$ if $c(t) = i$ for all $t \\in [H]^n$. The partition arrow guarantees either a large color-0 homogeneous set or a finite color-1 homogeneous set.",
+    "relatedConcepts": [
+      "monochromatic set",
+      "Ramsey theory",
+      "Coloring"
+    ],
+    "prerequisites": [
+      "Coloring"
+    ]
+  },
+  {
+    "id": "erdos-70-finset-homogeneous",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 51,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Finset Homogeneous Set",
+    "content": "Defines **FinsetIsHomogeneous H n k c i**: the Finset variant of homogeneity. All $n$-subsets of the finite set $H$ receive color $i$. Used for the finite parameter in the partition arrow.",
+    "significance": "supporting",
+    "mathContext": "The finite homogeneous set is needed for the second alternative in $\\kappa \\to (\\alpha, m)_2^3$: a finite monochromatic set of size $\\ge m$ for color 1.",
+    "relatedConcepts": [
+      "IsHomogeneous",
+      "Finset",
+      "finite Ramsey"
+    ],
+    "prerequisites": [
+      "Coloring",
+      "Finset"
+    ]
+  },
+  {
+    "id": "erdos-70-ordertype",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 59,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Order Type Bound",
+    "content": "Defines **HasOrderTypeAtLeast S H α**: the cardinality of $H$ is at least $|\\alpha|$. A simplified approximation of the full order-type condition $\\text{otp}(H, <) \\ge \\alpha$.",
+    "significance": "supporting",
+    "mathContext": "The full definition would require $H$ to carry a well-ordering of order type $\\ge \\alpha$. The cardinal approximation $|H| \\ge |\\alpha|$ is necessary but not sufficient; however, for countable ordinals and uncountable sets, the distinction is often immaterial.",
+    "relatedConcepts": [
+      "order type",
+      "Ordinal.card",
+      "Cardinal.mk",
+      "well-ordering"
+    ],
+    "prerequisites": [
+      "Ordinal",
+      "Cardinal"
+    ]
+  },
+  {
+    "id": "erdos-70-partition-arrow",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 71,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Partition Arrow κ → (α, m)₂³",
+    "content": "Defines **PartitionArrow κ α m**: for any 2-coloring of 3-element subsets of a set of cardinality κ, either there exists a color-0 homogeneous set of order type ≥ α, or a color-1 homogeneous Finset of size ≥ m.",
+    "significance": "key",
+    "mathContext": "The arrow notation $\\kappa \\to (\\alpha, m)_2^3$ is the central concept of partition calculus. The asymmetry between $\\alpha$ (an ordinal, for color 0) and $m$ (a natural number, for color 1) reflects the typical setup where one seeks a large structured set or a small finite one.",
+    "relatedConcepts": [
+      "Erdős-Rado theorem",
+      "Ramsey theory",
+      "partition calculus"
+    ],
+    "prerequisites": [
+      "Coloring",
+      "IsHomogeneous",
+      "HasOrderTypeAtLeast",
+      "FinsetIsHomogeneous"
+    ]
+  },
+  {
+    "id": "erdos-70-continuum",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 79,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "Continuum Cardinal 𝔠 = 2^ℵ₀",
+    "content": "Defines **continuum_card** = Cardinal.continuum = $2^{\\aleph_0}$, the cardinality of the real numbers. Proves the defining equation `continuum_def : continuum_card = 2 ^ aleph0`.",
+    "significance": "key",
+    "mathContext": "The continuum $\\mathfrak{c} = 2^{\\aleph_0}$ is the cardinality of $\\mathbb{R}$, $\\mathcal{P}(\\mathbb{N})$, and $\\{0,1\\}^{\\mathbb{N}}$. Under GCH, $\\mathfrak{c} = \\aleph_1$; in general, $\\mathfrak{c} \\ge \\aleph_1$ but could be much larger.",
+    "relatedConcepts": [
+      "Cardinal.continuum",
+      "aleph0",
+      "Continuum Hypothesis",
+      "power set"
+    ],
+    "prerequisites": [
+      "Cardinal"
+    ]
+  },
+  {
+    "id": "erdos-70-countable-ord",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 88,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Countable Ordinal",
+    "content": "Defines **IsCountableOrdinal α**: an ordinal α has cardinality $|\\alpha| \\le \\aleph_0$. All ordinals $< \\omega_1$ are countable. The problem quantifies over all such ordinals.",
+    "significance": "key",
+    "mathContext": "The countable ordinals form the set $\\omega_1 = \\{\\alpha \\mid |\\alpha| \\le \\aleph_0\\}$, the first uncountable ordinal. Examples: $\\omega$, $\\omega + n$, $\\omega^2$, $\\omega^\\omega$, $\\varepsilon_0$. Problem #70 asks about partition properties for ALL of these.",
+    "relatedConcepts": [
+      "omega1",
+      "Ordinal.card",
+      "aleph0",
+      "countable ordinal"
+    ],
+    "prerequisites": [
+      "Ordinal",
+      "Cardinal.aleph0"
+    ]
+  },
+  {
+    "id": "erdos-70-omega-countable",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 91,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "ω is Countable",
+    "content": "Proves **omega0_countable**: $|\\omega| = \\aleph_0 \\le \\aleph_0$, so $\\omega$ is a countable ordinal. Uses `card_omega0` from Mathlib.",
+    "significance": "supporting",
+    "mathContext": "The first infinite ordinal $\\omega = \\{0, 1, 2, \\ldots\\}$ has cardinality $|\\omega| = \\aleph_0$. This is the base case for the hierarchy of countable ordinals.",
+    "relatedConcepts": [
+      "Ordinal.omega0",
+      "card_omega0",
+      "aleph0"
+    ],
+    "prerequisites": [
+      "IsCountableOrdinal"
+    ]
+  },
+  {
+    "id": "erdos-70-erdos-rado",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 111,
+      "endLine": 112
+    },
+    "type": "concept",
+    "title": "Erdős-Rado: 𝔠 → (ω+n, 4)₂³",
+    "content": "**Erdős-Rado Theorem**: For all $2 \\le n < \\omega$, $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$. This is the strongest known partial result toward the full conjecture, proved using the stepping-up lemma.",
+    "significance": "key",
+    "mathContext": "The stepping-up lemma converts $\\kappa \\to (\\alpha, m)_2^2$ to $\\kappa \\to (\\alpha', m+1)_2^3$ for a related ordinal $\\alpha'$. Starting from $\\mathfrak{c} \\to (\\omega, 3)_2^2$ (which follows from the infinite Ramsey theorem), stepping up gives $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$.",
+    "relatedConcepts": [
+      "stepping-up lemma",
+      "infinite Ramsey theorem",
+      "partition arrow"
+    ],
+    "prerequisites": [
+      "PartitionArrow",
+      "continuum_card"
+    ]
+  },
+  {
+    "id": "erdos-70-conjecture",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 123,
+      "endLine": 125
+    },
+    "type": "definition",
+    "title": "Erdős Problem 70 (OPEN)",
+    "content": "**Main Conjecture**: For all countable ordinals $\\beta$ and $n \\ge 2$, $\\mathfrak{c} \\to (\\beta, n)_2^3$. The general case beyond $\\omega + n$ remains completely OPEN.",
+    "significance": "key",
+    "mathContext": "The conjecture asserts $\\forall \\beta < \\omega_1, \\forall n \\ge 2: \\mathfrak{c} \\to (\\beta, n)_2^3$. The first genuinely open case is $\\beta = \\omega \\cdot 2$ (or equivalently $\\omega^2$), since $\\omega + n$ is covered by Erdős-Rado.",
+    "relatedConcepts": [
+      "partition calculus",
+      "continuum",
+      "countable ordinals"
+    ],
+    "prerequisites": [
+      "PartitionArrow",
+      "IsCountableOrdinal",
+      "continuum_card"
+    ]
+  },
+  {
+    "id": "erdos-70-special-omega",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 130,
+      "endLine": 131
+    },
+    "type": "definition",
+    "title": "Special Case: β = ω",
+    "content": "Defines **conjecture_omega(n)**: $\\mathfrak{c} \\to (\\omega, n)_2^3$. This follows from the Erdős-Rado theorem by monotonicity ($\\omega \\le \\omega + n$).",
+    "significance": "supporting",
+    "mathContext": "Since $\\omega \\le \\omega + n$ for $n \\ge 0$, and $\\mathfrak{c} \\to (\\omega+n, 4)_2^3$ by Erdős-Rado, monotonicity gives $\\mathfrak{c} \\to (\\omega, 4)_2^3$, and then $\\mathfrak{c} \\to (\\omega, n)_2^3$ for $n \\le 4$.",
+    "relatedConcepts": [
+      "monotonicity",
+      "Erdős-Rado",
+      "omega"
+    ],
+    "prerequisites": [
+      "PartitionArrow",
+      "erdos_rado_omega_plus_n"
+    ]
+  },
+  {
+    "id": "erdos-70-special-omega2",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 134,
+      "endLine": 135
+    },
+    "type": "definition",
+    "title": "Special Case: β = ω²",
+    "content": "Defines **conjecture_omega_squared(n)**: $\\mathfrak{c} \\to (\\omega^2, n)_2^3$. This is the first genuinely open case, strictly beyond the Erdős-Rado result.",
+    "significance": "key",
+    "mathContext": "The ordinal $\\omega^2 = \\omega \\cdot \\omega$ has order type 'ω copies of ω'. Since $\\omega^2 > \\omega + n$ for all finite $n$, the Erdős-Rado theorem does not cover this case. Whether $\\mathfrak{c} \\to (\\omega^2, n)_2^3$ holds is unknown.",
+    "relatedConcepts": [
+      "ordinal multiplication",
+      "omega squared",
+      "open problem"
+    ],
+    "prerequisites": [
+      "PartitionArrow",
+      "continuum_card"
+    ]
+  },
+  {
+    "id": "erdos-70-special-omega-tower",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 138,
+      "endLine": 139
+    },
+    "type": "definition",
+    "title": "Special Case: β = ω^ω",
+    "content": "Defines **conjecture_omega_tower(n)**: $\\mathfrak{c} \\to (\\omega^\\omega, n)_2^3$. The ordinal $\\omega^\\omega = \\sup(\\omega, \\omega^2, \\omega^3, \\ldots)$ is a limit ordinal strictly larger than any $\\omega^k$.",
+    "significance": "key",
+    "mathContext": "The ordinal $\\omega^\\omega$ is the first ordinal that cannot be expressed as $\\omega^k$ for finite $k$. It is countable ($|\\omega^\\omega| = \\aleph_0$) and well below $\\varepsilon_0$. This would be a significantly stronger result than $\\omega^2$.",
+    "relatedConcepts": [
+      "ordinal exponentiation",
+      "limit ordinal",
+      "epsilon-naught"
+    ],
+    "prerequisites": [
+      "PartitionArrow",
+      "continuum_card"
+    ]
+  },
+  {
+    "id": "erdos-70-finite-ramsey",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 148,
+      "endLine": 151
+    },
+    "type": "concept",
+    "title": "Finite Ramsey Theorem",
+    "content": "**Finite Ramsey Theorem**: For any $r, k, n$, there exists $N$ such that any $k$-coloring of $n$-subsets of an $N$-set has a monochromatic $r$-set. This is the finite analogue of partition calculus.",
+    "significance": "supporting",
+    "mathContext": "The finite Ramsey theorem $N \\to (r)_k^n$ (where $N = R_k^n(r, \\ldots, r)$) is the starting point for all of Ramsey theory. The infinite partition calculus generalizes this to infinite cardinals and ordinals.",
+    "relatedConcepts": [
+      "Ramsey numbers",
+      "finite combinatorics",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "Coloring",
+      "FinsetIsHomogeneous"
+    ]
+  },
+  {
+    "id": "erdos-70-ramsey33",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 158,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "R(3,3) = 6",
+    "content": "**Ramsey's Theorem (specific)**: Any 2-coloring of 3-subsets of a 6-element set has a monochromatic 3-subset. This is the classical $R(3,3) = 6$ result.",
+    "significance": "supporting",
+    "mathContext": "The Ramsey number $R(3,3) = 6$ is one of the few exactly known values. It means that among any 6 people, there are either 3 mutual friends or 3 mutual strangers (in the edge-coloring version). The hypergraph version stated here is for 3-uniform hypergraphs.",
+    "relatedConcepts": [
+      "Ramsey number",
+      "R(3,3)",
+      "hypergraph coloring"
+    ],
+    "prerequisites": [
+      "Coloring",
+      "FinsetIsHomogeneous"
+    ]
+  },
+  {
+    "id": "erdos-70-counterexample",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 169,
+      "endLine": 171
+    },
+    "type": "definition",
+    "title": "Counterexample Structure",
+    "content": "Defines **erdos_70_counterexample**: the negation of the conjecture — there exist a countable $\\beta$ and $n \\ge 2$ with $\\mathfrak{c} \\not\\to (\\beta, n)_2^3$. This would give a coloring with no large monochromatic subsets.",
+    "significance": "supporting",
+    "mathContext": "A counterexample would provide a specific 2-coloring $c$ of $[\\mathfrak{c}]^3$ such that no color-0 homogeneous set has order type $\\ge \\beta$ and no color-1 homogeneous set has size $\\ge n$.",
+    "relatedConcepts": [
+      "negation",
+      "partition arrow failure",
+      "coloring construction"
+    ],
+    "prerequisites": [
+      "PartitionArrow",
+      "IsCountableOrdinal"
+    ]
+  },
+  {
+    "id": "erdos-70-xor",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 174,
+      "endLine": 178
+    },
+    "type": "concept",
+    "title": "Conjecture ↔ ¬Counterexample",
+    "content": "Proves the conjecture and counterexample are logically complementary: `erdos_70_conjecture ↔ ¬erdos_70_counterexample`. The proof is by unfolding definitions and applying `push_neg`.",
+    "significance": "supporting",
+    "mathContext": "This is a logical tautology: $\\forall \\beta, n, P(\\beta, n)$ is equivalent to $\\neg \\exists \\beta, n, \\neg P(\\beta, n)$. The `push_neg` tactic handles the negation pushing automatically.",
+    "relatedConcepts": [
+      "push_neg",
+      "logical equivalence",
+      "De Morgan"
+    ],
+    "prerequisites": [
+      "erdos_70_conjecture",
+      "erdos_70_counterexample"
+    ]
+  },
+  {
+    "id": "erdos-70-mono-ord",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 183,
+      "endLine": 184
+    },
+    "type": "concept",
+    "title": "Ordinal Monotonicity of Partition Arrows",
+    "content": "If $\\kappa \\to (\\beta, m)_2^3$ and $\\alpha \\le \\beta$, then $\\kappa \\to (\\alpha, m)_2^3$. Smaller ordinals are easier to find as homogeneous sets — any color-0 set of type $\\ge \\beta$ also has type $\\ge \\alpha$.",
+    "significance": "key",
+    "mathContext": "Monotonicity in the first ordinal parameter follows from transitivity of $\\le$: if $|H| \\ge |\\beta| \\ge |\\alpha|$ then $|H| \\ge |\\alpha|$. This is why the Erdős-Rado result for $\\omega + n$ implies the result for $\\omega$.",
+    "relatedConcepts": [
+      "monotonicity",
+      "ordinal comparison",
+      "HasOrderTypeAtLeast"
+    ],
+    "prerequisites": [
+      "PartitionArrow"
+    ]
+  },
+  {
+    "id": "erdos-70-mono-size",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 187,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "Size Monotonicity of Partition Arrows",
+    "content": "If $\\kappa \\to (\\alpha, n)_2^3$ and $m \\le n$, then $\\kappa \\to (\\alpha, m)_2^3$. Smaller finite sets are easier to find — any color-1 homogeneous set of size $\\ge n$ also has size $\\ge m$.",
+    "significance": "key",
+    "mathContext": "Monotonicity in the finite parameter follows from $|H| \\ge n \\ge m$. Combined with ordinal monotonicity, this means the partition arrow becomes 'harder' as both parameters increase.",
+    "relatedConcepts": [
+      "monotonicity",
+      "Finset.card",
+      "PartitionArrow"
+    ],
+    "prerequisites": [
+      "PartitionArrow"
+    ]
+  },
+  {
+    "id": "erdos-70-omega-plus-n",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 193,
+      "endLine": 195
+    },
+    "type": "concept",
+    "title": "ω + n is Countable",
+    "content": "Proves $\\omega + n$ is a countable ordinal: $|\\omega + n| = \\aleph_0 + n = \\aleph_0$ by cardinal absorption. Uses `card_add`, `card_omega0`, `card_nat`, and `aleph0_add_nat`.",
+    "significance": "supporting",
+    "mathContext": "Cardinal arithmetic gives $\\aleph_0 + n = \\aleph_0$ for finite $n$ (infinite cardinal absorption). This shows $\\omega + n$ falls within the scope of the conjecture for all $n < \\omega$.",
+    "relatedConcepts": [
+      "cardinal addition",
+      "aleph0_add_nat",
+      "Ordinal.card_add"
+    ],
+    "prerequisites": [
+      "IsCountableOrdinal",
+      "Ordinal.omega0"
+    ]
+  },
+  {
+    "id": "erdos-70-omega-squared",
+    "proofId": "erdos-70",
+    "range": {
+      "startLine": 198,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "ω² is Countable",
+    "content": "Proves $\\omega^2 = \\omega \\cdot \\omega$ is countable: $|\\omega^2| = \\aleph_0 \\cdot \\aleph_0 = \\aleph_0$. Uses `card_mul`, `card_omega0`, and `aleph0_mul_aleph0`.",
+    "significance": "supporting",
+    "mathContext": "The ordinal $\\omega^2$ has the same cardinality as $\\omega$ ($\\aleph_0 \\cdot \\aleph_0 = \\aleph_0$), but a richer order structure. This is why $\\omega^2$ represents a genuinely harder case for partition relations despite having the same cardinality.",
+    "relatedConcepts": [
+      "cardinal multiplication",
+      "aleph0_mul_aleph0",
+      "Ordinal.card_mul"
+    ],
+    "prerequisites": [
+      "IsCountableOrdinal",
+      "Ordinal.omega0"
+    ]
+  }
+]

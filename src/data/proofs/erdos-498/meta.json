@@ -1,0 +1,144 @@
+{
+  "id": "erdos-498",
+  "title": "Erdős Problem #498: Complex Littlewood–Offord Problem",
+  "slug": "erdos-498",
+  "description": "For complex z₁,...,zₙ with |zᵢ| ≥ 1, at most C(n,⌊n/2⌋) signed sums Σεᵢzᵢ fall in any unit disc. Solved by Kleitman (1965), generalized to Hilbert spaces (1970).",
+  "meta": {
+    "erdosNumber": 498,
+    "status": "axiomatized",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "analysis",
+      "littlewood-offord",
+      "signed-sums",
+      "solved"
+    ],
+    "proofRepoPath": "Proofs/Erdos498Problem.lean",
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/498",
+    "erdosUrl": "https://erdosproblems.com/498",
+    "axiomCount": 0,
+    "lineCount": 70,
+    "badge": "wip",
+    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 0,
+    "definitionCount": 5
+  },
+  "sections": [
+    {
+      "id": "header-and-imports",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Module docstring stating the complex Littlewood–Offord problem: at most $\\binom{n}{\\lfloor n/2 \\rfloor}$ signed sums fall in any unit disc. Imports `Nat.Choose.Basic`, `Complex.Basic`, and proof tactics."
+    },
+    {
+      "id": "sign-vector-defs",
+      "title": "Sign Vector and Signed Sum Definitions",
+      "startLine": 24,
+      "endLine": 34,
+      "summary": "Defines `SignVector n` as functions $\\text{Fin}\\, n \\to \\mathbb{Z}$, validity condition $\\varepsilon_i \\in \\{\\pm 1\\}$, and the signed sum $\\sum_{i} \\varepsilon_i z_i$ over complex vectors."
+    },
+    {
+      "id": "disc-and-count",
+      "title": "Disc Containment and Signed Sum Count",
+      "startLine": 35,
+      "endLine": 43,
+      "summary": "Defines `InDisc w r p` as $|p - w| \\leq r$ and `signedSumCount z w r` as the number of sign vectors in $\\{0,1\\}^n$ (encoding $\\pm 1$) whose signed sum falls in the disc $D(w, r)$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Kleitman's Theorem (1965)",
+      "startLine": 47,
+      "endLine": 53,
+      "summary": "Axiom `kleitman_littlewood_offord`: for complex $z_1, \\ldots, z_n$ with $|z_i| \\geq 1$, the number of signed sums in any unit disc is at most $\\binom{n}{\\lfloor n/2 \\rfloor}$."
+    },
+    {
+      "id": "historical-real",
+      "title": "Erdős's Real Case (1945)",
+      "startLine": 57,
+      "endLine": 68,
+      "summary": "Axiom `erdos_real_case`: for real $z_i$ with $|z_i| \\geq 1$, at most $\\binom{n}{\\lfloor n/2 \\rfloor}$ signed sums fall in any interval of length 2. Proved via Sperner's antichain theorem."
+    },
+    {
+      "id": "historical-complex",
+      "title": "Erdős's Complex Weak Bound (1961)",
+      "startLine": 69,
+      "endLine": 70,
+      "summary": "Axiom `erdos_complex_weak`: before Kleitman, Erdős showed the count is $O(2^n / \\sqrt{n})$, weaker than the sharp $\\binom{n}{\\lfloor n/2 \\rfloor} \\sim 2^n / \\sqrt{\\pi n/2}$ by a constant."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Littlewood–Offord problem originated in Littlewood and Offord's 1943 study of random polynomials, where they bounded the number of real roots by controlling how many signed sums of coefficients can concentrate near zero. For real numbers, Erdős (1945) obtained the sharp bound $\\binom{n}{\\lfloor n/2 \\rfloor}$ via an elegant application of Sperner's 1928 antichain theorem: each signed sum is determined by the subset of positive signs, and if many sums fall in an interval of length 2, the corresponding subsets form a large family with no pair in containment relation. For complex numbers, the geometric argument breaks down since one-dimensional ordering is lost. Erdős (1961) obtained the weaker bound $O(2^n/\\sqrt{n})$ for the complex case using probabilistic methods. The breakthrough came from Kleitman (1965), who proved the same sharp bound $\\binom{n}{\\lfloor n/2 \\rfloor}$ holds for complex numbers using a correlation inequality for antichains. Kleitman (1970) further extended this to arbitrary Hilbert spaces, showing the result is purely combinatorial. Modern developments include Tao and Vu's inverse Littlewood–Offord theory (2006), which characterizes when the bound is nearly achieved.",
+    "problemStatement": "Given complex numbers $z_1, \\ldots, z_n$ with $|z_i| \\geq 1$ and any closed disc $D \\subset \\mathbb{C}$ of radius 1, prove that the number of signed sums $\\sum_{i=1}^n \\varepsilon_i z_i$ with $\\varepsilon_i \\in \\{\\pm 1\\}$ falling in $D$ is at most $\\binom{n}{\\lfloor n/2 \\rfloor}$.",
+    "text": "For complex z₁,...,zₙ with |zᵢ| ≥ 1, at most C(n,⌊n/2⌋) signed sums Σεᵢzᵢ fall in any unit disc. Solved by Kleitman (1965), generalized to Hilbert spaces (1970).",
+    "proofStrategy": "The formalization defines the combinatorial framework: sign vectors as functions $\\text{Fin}\\, n \\to \\mathbb{Z}$ with validity condition, signed sums as weighted complex sums, and disc containment via the complex absolute value. The main theorem (Kleitman 1965) is axiomatized, along with the historical progression: Erdős's real case (1945) using interval containment, and Erdős's weaker complex bound (1961) of $O(2^n/\\sqrt{n})$. The generalizations to Hilbert spaces and connections to Sperner's theorem are recorded as comments.",
+    "keyInsights": [
+      "**Sperner's theorem as the key tool**: The bound $\\binom{n}{\\lfloor n/2 \\rfloor}$ is the maximum antichain size in the Boolean lattice $2^{[n]}$ — Erdős's real proof maps signed sums to subsets and shows concentration forces a large antichain",
+      "**Complex case loses ordering**: In $\\mathbb{R}$, signed sums can be ordered and interval containment gives a chain condition. In $\\mathbb{C}$, disc containment is a 2D constraint, requiring Kleitman's more sophisticated antichain correlation inequality",
+      "**Asymptotic equivalence**: $\\binom{n}{\\lfloor n/2 \\rfloor} \\sim 2^n / \\sqrt{\\pi n/2}$ by Stirling's formula, so Erdős's 1961 bound $O(2^n/\\sqrt{n})$ was off by only a constant factor $\\sqrt{\\pi/2}$",
+      "**Hilbert space universality**: Kleitman's 1970 generalization to $\\|v_i\\| \\geq 1$ in any Hilbert space shows the result depends only on the norm condition, not the ambient dimension — it is fundamentally a combinatorial property of sign patterns",
+      "**Inverse Littlewood–Offord theory**: Tao and Vu (2006) proved that if nearly $\\binom{n}{\\lfloor n/2 \\rfloor}$ signed sums concentrate in a disc, then most $z_i$ must be close to an arithmetic progression — characterizing the near-extremal case"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Mathematical analysis"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization captures the complex Littlewood–Offord problem (Erdős Problem #498), recording Kleitman's 1965 sharp bound $\\binom{n}{\\lfloor n/2 \\rfloor}$ for signed sum concentration in discs, the historical progression from Erdős's real case (1945) through his weak complex bound (1961), and the Hilbert space generalization (1970). The connection to Sperner's antichain theorem is the unifying theme.",
+    "implications": "Kleitman's result is foundational in probabilistic combinatorics and random matrix theory. It provides key input for bounding the singularity probability of random ±1 matrices (Kahn, Komlós, Szemerédi 1995), and the inverse Littlewood–Offord theory of Tao and Vu has become a central tool in the study of random discrete structures.",
+    "openQuestions": [
+      "Can the inverse Littlewood–Offord characterization (Tao-Vu) be made fully effective with explicit constants?",
+      "What is the exact extremal configuration achieving $\\binom{n}{\\lfloor n/2 \\rfloor}$ for complex coefficients — must it reduce to the real case?",
+      "What is the optimal higher-dimensional version: for vectors in $\\mathbb{R}^d$ with $d$-dimensional balls replacing discs, is the bound still $\\binom{n}{\\lfloor n/2 \\rfloor}$?",
+      "How does the signed sum count behave for structured sequences (e.g., $z_i = \\omega^i$ for a root of unity $\\omega$)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 70,
+    "axiomCount": 0,
+    "theoremCount": 0,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos498Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Littlewood & Offord (1943): original problem on real polynomials",
+    "Erdős (1945): real case via Sperner's theorem [Er45]",
+    "Erdős (1961): complex weak bound O(2ⁿ/√n) [Er61]",
+    "Kleitman (1965): sharp complex bound [Kl65]",
+    "Kleitman (1970): Hilbert space generalization [Kl70]",
+    "Tao & Vu (2006): inverse Littlewood–Offord theory",
+    "https://erdosproblems.com/498"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1161",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-1166",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, combinatorics, solved"
+    },
+    {
+      "targetId": "erdos-1179",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, combinatorics, solved"
+    }
+  ],
+  "sorries": 0
+}

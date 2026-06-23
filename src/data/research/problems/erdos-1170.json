@@ -1,0 +1,118 @@
+{
+  "slug": "erdos-1170",
+  "title": "Erdős #1170",
+  "phase": "ACT",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Is it consistent that omega_2 -> (alpha)^2_2 for every alpha < omega_2?",
+    "plain": "Can it be consistent with ZFC that every two-coloring of pairs from omega_2 has homogeneous subsets of every order type below omega_2?",
+    "whyMatters": [
+      "The problem asks for a consistency result rather than an ordinary ZFC theorem.",
+      "It distinguishes the full balanced partition property from known polarized forcing results.",
+      "The Lean file cleanly isolates Laver's deep forcing input from elementary ordinal/cardinal consequences."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lean defines balanced and polarized ordinal partition relations using order-preserving embeddings.",
+      "Lean proves `balanced_implies_polarized`, target and source monotonicity, `omega1_lt_omega2`, and `omega1Sq_lt_omega2`.",
+      "The axiom `laver_consistency` supplies the known polarized omega_2 -> (omega_1^2 + 1, alpha)^2 result for alpha < omega_2."
+    ],
+    "open": [
+      "The full balanced consistency question remains open.",
+      "`laver_consistency` is a deep forcing result and is not proved from Mathlib.",
+      "The Lean file does not derive the balanced property from Laver's polarized result."
+    ],
+    "goal": "Treat the formalization as complete at one deep axiom while preserving the original Erdos problem as open."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-24T10:36:00Z",
+    "iteration": 2,
+    "focus": "Surface metadata now clarifies that the Lean formalization is complete at one axiom, while the original balanced consistency problem remains open.",
+    "blockers": [
+      "`laver_consistency` remains axiomatized.",
+      "The balanced omega_2 property is not proved from the polarized Laver result."
+    ],
+    "nextAction": "No immediate metadata action; future proof work could refine the forcing-result interface or add stronger literature references.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Eliminated 6/7 axioms. Replaced opaque partition predicates with constructive definitions (order-preserving embeddings). Proved balanced_implies_polarized, balanced_mono_target, balanced_mono_source, omega1Sq_lt_omega2. Only laver_consistency (deep forcing result) remains as axiom. Created gallery entry.",
+    "builtItems": [
+      "Constructive def ordinalPartitionBalanced (embedding-based, replaces axiom)",
+      "Constructive def ordinalPartitionPolarized (embedding-based, replaces axiom)",
+      "Proved balanced_implies_polarized (fin_cases on color)",
+      "Proved balanced_mono_target (domain restriction)",
+      "Proved balanced_mono_source (transitivity of <)",
+      "Proved omega1Sq_lt_omega2 (cardinal arithmetic: card_mul + mul_eq_self + aleph_lt_aleph)",
+      "Created gallery entry: src/data/proofs/erdos-1170/"
+    ],
+    "insights": [
+      "ordinalPartitionBalanced/Polarized are opaque predicates - should be defined constructively",
+      "omega1Sq_lt_omega2 might be provable from Mathlib cardinal/ordinal arithmetic: |omega1^2| = aleph1 < aleph2 = |omega2|",
+      "laver_consistency is a deep set theory forcing result - not provable from ZFC alone",
+      "Cardinal.lt_ord converts ordinal < initial ordinal to cardinal < cardinal",
+      "Cardinal.mul_eq_self proves ℵ₁·ℵ₁ = ℵ₁ for infinite cardinals",
+      "Embedding-based partition defs avoid universe issues (Ordinal → Ordinal stays in same universe)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1170 - Knowledge Base\n\n## Problem Statement\n\nIs it consistent that ω₂ → (α)²₂ for every α < ω₂?\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Formalization Status**: COMPLETED (1 axiom)\n\n## Achievements\n\n- Eliminated 6 of 7 axioms\n- Constructive partition relation definitions\n- Cardinal arithmetic proof of ω₁² < ω₂\n\n## Tags\n\n- erdos, ramsey-theory, set-theory, ordinal-partition-calculus\n\n## Related Problems\n\n- #1169, #1171, #1167\n\n## References\n\n- Laver (1982), Foreman-Hajnal (2003), Erdős-Rado (1956)\n"
+  },
+  "tags": [
+    "erdos",
+    "ramsey-theory",
+    "set-theory",
+    "ordinal-partition-calculus",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-1167",
+    "erdos-1169",
+    "erdos-117",
+    "erdos-1170",
+    "erdos-1171"
+  ],
+  "references": {
+    "papers": [
+      "Laver (1982): partition relations and large cardinals",
+      "Foreman-Hajnal (2003): extensions of Laver consistency results"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1170"
+    ],
+    "mathlib": [
+      "Cardinal.lt_ord",
+      "Ordinal.card_mul",
+      "Cardinal.mul_eq_self",
+      "Cardinal.card_ord",
+      "Cardinal.aleph_lt_aleph"
+    ]
+  },
+  "started": "2026-01-15T16:53:51.159Z",
+  "lastUpdate": "2026-03-24T10:36:00Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1170Problem.lean",
+      "filename": "Erdos1170Problem.lean",
+      "lineCount": 186,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1170Problem.lean"
+    }
+  ]
+}

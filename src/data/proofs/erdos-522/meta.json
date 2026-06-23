@@ -1,0 +1,207 @@
+{
+  "id": "erdos-522",
+  "title": "Erdős Problem #522: Random Polynomial Roots in the Unit Disk",
+  "slug": "erdos-522",
+  "description": "For random polynomials with ±1 coefficients, does the number of roots in the unit disk converge to n/2 almost surely? Yakir (2021) proved convergence in probability.",
+  "meta": {
+    "author": "Yakir (2021 partial), Erdős-Offord (1956 real roots)",
+    "sourceUrl": "https://erdosproblems.com/522",
+    "date": "1956-2021",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos522Problem.lean",
+    "tags": [
+      "erdos",
+      "probability",
+      "complex-analysis",
+      "random-polynomials",
+      "kac-polynomials"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 522,
+    "erdosUrl": "https://erdosproblems.com/522",
+    "erdosProblemStatus": "partially-solved",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.I",
+        "description": "The imaginary unit i",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "Polynomial",
+        "description": "Polynomials over a ring",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+      }
+    ],
+    "originalContributions": [
+      "Clean Lean 4 formalization of Littlewood and Rademacher polynomials",
+      "Definition of KacPolynomialData structure for random polynomials (1 axiom: isRademacher)",
+      "Connection to Salem numbers and Mahler measure",
+      "Documentation of Erdős-Offord (1956) and Yakir (2021) results in source comments"
+    ],
+    "axiomCount": 1,
+    "lineCount": 276,
+    "assumptions": "1 axiom: KacPolynomialData.isRademacher. 0 sorries.",
+    "theoremCount": 8,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "Random polynomials with independently identically distributed coefficients are called **Kac polynomials** after Mark Kac's pioneering 1943 paper. When the coefficients are ±1 with equal probability, they are called **Rademacher polynomials** or **Littlewood polynomials** (the latter also includes 0 as a possible coefficient).\n\nErdős and Offord (1956) proved a foundational result: random degree-n polynomials with ±1 coefficients have approximately (2/π) log n real roots on average. This was one of the first precise results in the theory of random polynomials.\n\nProblem #522 asks about roots in the complex unit disk {z : |z| ≤ 1}. The natural conjecture is that about half the roots should lie inside the disk, with R_n/(n/2) → 1 as n → ∞. The question is whether this convergence holds almost surely (for almost all sequences of random polynomials) or only in probability.\n\nYakir (2021) proved convergence in probability: lim P(|R_n - n/2| ≥ n^{9/10}) = 0. This confirms that 'most' random polynomials have about n/2 roots in the unit disk, but the stronger almost sure statement remains open.",
+    "problemStatement": "**Erdős Problem #522**: Let $f(z) = \\sum_{k=0}^n \\varepsilon_k z^k$ be a random polynomial where $\\varepsilon_k \\in \\{-1, 1\\}$ independently uniformly at random. Let $R_n$ denote the number of roots of $f(z)$ in the unit disk $\\{z \\in \\mathbb{C} : |z| \\leq 1\\}$.\n\n**Question**: Does $R_n / (n/2) \\to 1$ almost surely as $n \\to \\infty$?\n\n**Status**: PARTIALLY SOLVED\n\n**Known Results**:\n- Erdős-Offord (1956): Expected number of real roots is $(2/\\pi + o(1)) \\log n$\n- Yakir (2021): $R_n / (n/2) \\to 1$ in probability (i.e., $\\lim_{n \\to \\infty} P(|R_n - n/2| \\geq n^{9/10}) = 0$)\n\n**OPEN**: Almost sure convergence remains unresolved.",
+    "text": "For random polynomials with ±1 coefficients, does the number of roots in the unit disk converge to n/2 almost surely? Yakir (2021) proved convergence in probability.",
+    "proofStrategy": "We formalize this problem using a layered approach:\n\n1. **Define polynomial classes**: Littlewood polynomials (coefficients in {-1, 0, 1}) and Rademacher polynomials (coefficients in {-1, 1}).\n\n2. **Define geometric objects**: The unit disk and unit circle in the complex plane.\n\n3. **Document known results**: The Erdős-Offord theorem (1956) on real roots and Yakir's theorem (2021) on convergence in probability are stated in docstring comments; no axioms are declared for these results.\n\n4. **Axiomatize one coefficient property**: The single axiom `KacPolynomialData.isRademacher` asserts that the polynomial in a `KacPolynomialData` structure satisfies the Rademacher coefficient constraint.\n\n5. **Leave open question implicit**: The almost sure convergence question is described in a docstring comment; no `Prop` declaration is made for it.\n\n6. **State connections**: Links to Salem numbers and Mahler measure that motivate this problem.",
+    "keyInsights": [
+      "**Kac polynomials**: Random polynomials with i.i.d. coefficients. Named after Mark Kac who studied their expected number of real zeros in 1943.",
+      "**Why n/2?**: By the symmetry z ↔ 1/z, roots pair up inside and outside the unit disk. For 'generic' polynomials, we expect half inside.",
+      "**Probability vs almost sure**: Yakir's result says P(R_n ≈ n/2) → 1. Almost sure convergence would be: for almost all ω, R_n(ω)/n → 1/2.",
+      "**Erdős-Offord real roots**: The (2/π) log n factor for real roots is much smaller than the n/2 complex roots in the disk.",
+      "**Connection to Mahler measure**: M(p) = |leading coeff| × ∏_{|root|>1} |root|. Root distribution directly affects this measure."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Probability theory",
+      "Complex analysis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Problem statement, status, history, and references.",
+      "mathContext": "Mathematical content: Problem statement, status, history, and references."
+    },
+    {
+      "id": "polynomial-types",
+      "title": "Littlewood and Rademacher Polynomials",
+      "startLine": 39,
+      "endLine": 60,
+      "summary": "Definitions of polynomial classes with constrained coefficients.",
+      "mathContext": "Formal definition: Definitions of polynomial classes with constrained coefficients."
+    },
+    {
+      "id": "unit-disk",
+      "title": "Unit Disk and Circle",
+      "startLine": 61,
+      "endLine": 106,
+      "summary": "Definitions of unitDisk, unitCircle, and membership proofs.",
+      "mathContext": "Formal definition: Definitions of unitDisk, unitCircle, and membership proofs."
+    },
+    {
+      "id": "kac-polynomials",
+      "title": "Kac Polynomial Structure",
+      "startLine": 107,
+      "endLine": 135,
+      "summary": "Structure for random polynomial data with coefficient constraints.",
+      "mathContext": "Formal definition: Structure for random polynomial data with coefficient constraints."
+    },
+    {
+      "id": "root-counting",
+      "title": "Root Counting",
+      "startLine": 136,
+      "endLine": 146,
+      "summary": "Doc comment describing what an axiomatized root-counting function would require; no actual definition or axiom is declared in this section.",
+      "mathContext": "Mathematical content: Doc comment outlining the intended root-counting function (requires splitting fields and careful counting); no declaration present in this section."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results (Doc Comments)",
+      "startLine": 147,
+      "endLine": 188,
+      "summary": "Erdős-Offord theorem, Yakir's theorem, and the open almost sure convergence question (documented as comments; no trivial axioms).",
+      "mathContext": "Verified: Erdős-Offord theorem, Yakir's theorem, and the open almost sure convergence question (documented as comments; no trivial axioms)."
+    },
+    {
+      "id": "heuristics",
+      "title": "Heuristics and Geometric Polynomial",
+      "startLine": 189,
+      "endLine": 217,
+      "summary": "Why n/2? Symmetry argument. Geometric polynomial with all roots on unit circle.",
+      "mathContext": "Mathematical content: Why n/2? Symmetry argument. Geometric polynomial with all roots on unit circle."
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Areas",
+      "startLine": 218,
+      "endLine": 240,
+      "summary": "Links to Salem numbers and Mahler measure (doc comments).",
+      "mathContext": "Mathematical content: Links to Salem numbers and Mahler measure (doc comments)."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "startLine": 241,
+      "endLine": 256,
+      "summary": "Proofs that z-1, z+1, z²+1 have roots on the unit circle.",
+      "mathContext": "Verified: Proofs that z-1, z+1, z²+1 have roots on the unit circle."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 257,
+      "endLine": 276,
+      "summary": "unitCircle_summary theorem packaging verified facts.",
+      "mathContext": "Verified: unitCircle_summary theorem packaging verified facts."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #522 on random polynomial roots in the unit disk. For polynomials with ±1 coefficients, we ask whether R_n/(n/2) → 1 almost surely, where R_n is the root count in {|z| ≤ 1}. Yakir (2021) proved convergence in probability with error bound O(n^{9/10}). The Erdős-Offord theorem (1956) shows (2/π) log n real roots. Almost sure convergence remains open.",
+    "implications": "**Theoretical Significance**: This problem connects several areas:\n\n1. **Random matrix theory**: Eigenvalue distributions have similar questions about concentration\n2. **Complex analysis**: Root distributions of analytic functions\n**3. Probability theory**: Almost sure vs. in-probability convergence\n4. **Mahler measure**: Direct application to height theory of polynomials\n5. **Signal processing**: Littlewood polynomials appear in filter design.",
+    "openQuestions": [
+      "Does R_n/(n/2) → 1 almost surely for Rademacher polynomials?",
+      "What is the variance of R_n? (Central limit theorem?)",
+      "What happens for other coefficient distributions (Gaussian, etc.)?",
+      "Problem #521: Similar question for {0,1} coefficients",
+      "What is the distribution of roots on the unit circle?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Eval.Defs",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Polynomial",
+      "Complex",
+      "BigOperators",
+      "Filter"
+    ],
+    "namespace": "Erdos522",
+    "lineCount": 276,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos522Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-525",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, probability, random-polynomials"
+    },
+    {
+      "targetId": "erdos-395",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: complex-analysis, probability"
+    },
+    {
+      "targetId": "erdos-521",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: probability, random-polynomials"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,260 @@
+[
+  {
+    "id": "ann-802-header",
+    "proofId": "erdos-802",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview and References",
+    "content": "Erdős Problem #802 asks whether $K_r$-free graphs on $n$ vertices with average degree $t$ must contain an independent set of size $\\gg_r (\\log t / t) \\cdot n$. This is the AEKS conjecture (Ajtai-Erdős-Komlós-Szemerédi, 1981). The header documents the resolution timeline: AKS (1980) proved the full bound for $r = 3$ (triangle-free graphs), AEKS (1981) proved a weaker $(\\log\\log t / t) \\cdot n$ bound for general $r$, Shearer (1995) improved to $(\\log t / (\\log\\log t \\cdot t)) \\cdot n$, and Alon (1996) proved the full bound under stronger local sparsity assumptions.",
+    "mathContext": "$\\alpha(G) \\geq c_r \\cdot \\frac{\\log t}{t} \\cdot n$ for $K_r$-free graphs with average degree $t$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "AEKS conjecture",
+      "independence number",
+      "clique-free graph",
+      "Ramsey theory"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "independent sets",
+      "cliques",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-802-imports",
+    "proofId": "erdos-802",
+    "range": {
+      "startLine": 29,
+      "endLine": 39
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "Imports Mathlib's simple graph and clique infrastructure, natural number and real number arithmetic, and the natural logarithm from `Analysis.SpecialFunctions.Log.Basic`. The `open SimpleGraph Real` brings graph notation and `Real.log` into scope.",
+    "mathContext": "Uses `SimpleGraph.IsClique` for clique detection, `Real.log` for $\\ln$, and `Fintype.card` for $|V|$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib SimpleGraph",
+      "natural logarithm",
+      "clique predicate"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib special functions"
+    ]
+  },
+  {
+    "id": "ann-802-avgdegree",
+    "proofId": "erdos-802",
+    "range": {
+      "startLine": 41,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Graph Basics: Average Degree and Clique-Freeness",
+    "content": "Defines `numVertices`, `avgDegree` ($\\bar{d}(G) = 2|E|/|V|$), `IsCliqueFree G r` (no $r$-clique exists), and `IsTriangleFree` ($K_3$-free). The average degree $t$ is the key parameter: denser graphs have larger $t$, and the conjecture asserts that forbidding $K_r$ forces independent sets of size $\\Omega((\\log t / t) \\cdot n)$. The triangle-free case ($r = 3$) is singled out because it was solved first and has the strongest connections to Ramsey theory.",
+    "mathContext": "$\\bar{d}(G) = \\frac{2|E(G)|}{|V(G)|}$; $G$ is $K_r$-free $\\iff \\forall S \\subseteq V,\\; |S| = r \\Rightarrow S$ is not a clique",
+    "significance": "key",
+    "relatedConcepts": [
+      "average degree",
+      "edge density",
+      "Turán's theorem",
+      "triangle-free graph"
+    ],
+    "prerequisites": [
+      "edge set",
+      "vertex set",
+      "clique"
+    ]
+  },
+  {
+    "id": "ann-802-independent",
+    "proofId": "erdos-802",
+    "range": {
+      "startLine": 59,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Independent Set and Independence Number",
+    "content": "`IsIndependent G s` states that no two distinct vertices in $s$ are adjacent. The independence number $\\alpha(G) = \\sup\\{|S| : S \\text{ independent in } G\\}$ is the size of the largest independent set. Computing $\\alpha(G)$ is NP-hard in general, but structural conditions like $K_r$-freeness provide lower bounds. The AEKS conjecture gives a lower bound in terms of average degree.",
+    "mathContext": "$\\alpha(G) = \\max\\{|S| : S \\subseteq V,\\; \\forall u, v \\in S,\\; u \\neq v \\Rightarrow u \\not\\sim v\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "independent set",
+      "vertex cover",
+      "NP-hardness",
+      "Ramsey number"
+    ],
+    "prerequisites": [
+      "graph adjacency",
+      "supremum",
+      "set cardinality"
+    ]
+  },
+  {
+    "id": "ann-802-aeks-conj",
+    "proofId": "erdos-802",
+    "range": {
+      "startLine": 71,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "The AEKS Conjecture",
+    "content": "The formal conjecture `AEKSConjecture r` states: there exists $c > 0$ such that every $K_r$-free graph $G$ with $n$ vertices and average degree $t \\geq 2$ satisfies $\\alpha(G) \\geq c \\cdot (\\log t / t) \\cdot n$. The bound $(\\log t / t) \\cdot n$ is optimal: random $K_r$-free graphs (constructed via the probabilistic method or algebraic constructions) achieve this bound up to constant factors. The helper function `aeksBound` computes the target value.",
+    "mathContext": "$\\text{AEKS}_r: \\exists c_r > 0,\\; \\forall G \\text{ } K_r\\text{-free with } \\bar{d}(G) = t \\geq 2:\\; \\alpha(G) \\geq c_r \\cdot \\frac{\\log t}{t} \\cdot n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey multiplicity",
+      "Turán density",
+      "probabilistic lower bounds",
+      "extremal graph theory"
+    ],
+    "prerequisites": [
+      "independence number",
+      "clique-free graph",
+      "average degree",
+      "logarithm"
+    ]
+  },
+  {
+    "id": "ann-802-aeks-1981",
+    "proofId": "erdos-802",
+    "range": {
+      "startLine": 86,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "AEKS (1981): First Bound with Double Logarithm",
+    "content": "Ajtai, Erdős, Komlós, and Szemerédi (1981) proved $\\alpha(G) \\geq c \\cdot (\\log\\log(t+1) / t) \\cdot n$ for $K_r$-free graphs. This was the first bound showing that forbidding $K_r$ forces independence numbers significantly larger than the trivial $n/t$ (which follows from the greedy algorithm). The double-logarithm factor ($\\log\\log t$ vs $\\log t$) left a gap that would take 14 years to close.",
+    "mathContext": "$\\alpha(G) \\geq c \\cdot \\frac{\\log\\log(t+1)}{t} \\cdot n$ for $K_r$-free $G$ with average degree $t$",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy independent set",
+      "double logarithm",
+      "sparse Turán theorem"
+    ],
+    "prerequisites": [
+      "AEKS conjecture",
+      "clique-free graph"
+    ]
+  },
+  {
+    "id": "ann-802-shearer",
+    "proofId": "erdos-802",
+    "range": {
+      "startLine": 97,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "Shearer (1995): Improved Bound",
+    "content": "Shearer (1995) improved the general bound to $\\alpha(G) \\geq c \\cdot \\frac{\\log t}{\\log\\log(t+1) \\cdot t} \\cdot n$. This is the best known bound for general $r$: it has the correct $\\log t$ in the numerator but retains an extra $\\log\\log t$ factor in the denominator. The proof uses a refined probabilistic argument with entropy-based analysis of random independent sets.",
+    "mathContext": "$\\alpha(G) \\geq c \\cdot \\frac{\\log t}{\\log\\log(t+1) \\cdot t} \\cdot n$ for $K_r$-free $G$; best known for $r \\geq 4$",
+    "significance": "key",
+    "relatedConcepts": [
+      "entropy method",
+      "random independent sets",
+      "probabilistic combinatorics"
+    ],
+    "prerequisites": [
+      "AEKS 1981 bound",
+      "probabilistic method"
+    ]
+  },
+  {
+    "id": "ann-802-aks",
+    "proofId": "erdos-802",
+    "range": {
+      "startLine": 105,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "AKS (1980): Triangle-Free Case Solved",
+    "content": "Ajtai, Komlós, and Szemerédi (1980) proved the full conjectured bound $\\alpha(G) \\geq c \\cdot (\\log t / t) \\cdot n$ for triangle-free graphs ($r = 3$). This was actually proved *before* the general conjecture was formally stated. The proof pioneered the use of the semi-random method in combinatorics. The derived theorem `conjecture_true_for_r3` shows that `AEKSConjecture 3` follows directly, with the proof simply unwrapping the triangle-free definition.",
+    "mathContext": "$G$ triangle-free with $\\bar{d}(G) = t \\Rightarrow \\alpha(G) \\geq c \\cdot \\frac{\\log t}{t} \\cdot n$; this proves $\\text{AEKS}_3$",
+    "significance": "key",
+    "relatedConcepts": [
+      "semi-random method",
+      "triangle-free Ramsey",
+      "AKS theorem"
+    ],
+    "prerequisites": [
+      "triangle-free graph",
+      "independence number",
+      "AEKS conjecture"
+    ]
+  },
+  {
+    "id": "ann-802-alon",
+    "proofId": "erdos-802",
+    "range": {
+      "startLine": 119,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Alon's Local Chromatic Version (1996)",
+    "content": "Alon (1996) proved the full $(\\log t / t) \\cdot n$ bound under the stronger assumption that $G$ is *locally $(r-2)$-chromatic*: every neighborhood $N(v)$ has chromatic number $\\leq r-2$. This is stronger than $K_r$-free (since $K_r$-free implies $N(v)$ is $K_{r-1}$-free, not necessarily $(r-2)$-colorable). The formalization includes `IsLocallyChromatic` (simplified as a placeholder) and the axiom `locally_chromatic_implies_clique_free` relating the two conditions.",
+    "mathContext": "$\\chi(G[N(v)]) \\leq r-2$ for all $v$ $\\Rightarrow$ $\\alpha(G) \\geq c \\cdot \\frac{\\log t}{t} \\cdot n$; note $K_r$-free $\\not\\Rightarrow$ locally $(r-2)$-chromatic",
+    "significance": "key",
+    "relatedConcepts": [
+      "local chromatic number",
+      "neighborhood graph",
+      "local sparsity",
+      "chromatic number"
+    ],
+    "prerequisites": [
+      "chromatic number",
+      "induced subgraph",
+      "clique-free implies bounded local chromatic"
+    ]
+  },
+  {
+    "id": "ann-802-ramsey",
+    "proofId": "erdos-802",
+    "range": {
+      "startLine": 145,
+      "endLine": 163
+    },
+    "type": "insight",
+    "title": "Ramsey Theory Connection",
+    "content": "The AKS triangle-free independence bound directly implies the Ramsey lower bound $R(3, k) \\geq c \\cdot k^2 / \\log k$. The argument: if $G$ is a triangle-free graph on $n$ vertices with no independent set of size $k$, then $n < R(3, k)$. By contrapositive, the AKS bound gives $k \\leq \\alpha(G) \\leq c \\cdot (\\log t / t) \\cdot n$, and maximizing $n$ yields the Ramsey bound. A separate axiom states the classical bound $\\alpha(G) \\geq c\\sqrt{n \\log n}$ for triangle-free graphs on $n$ vertices.",
+    "mathContext": "$R(3, k) \\geq c \\cdot k^2 / \\log k$; also $\\alpha(G) \\geq c\\sqrt{n \\log n}$ for triangle-free $G$ on $n$ vertices",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number R(3,k)",
+      "Kim's theorem",
+      "triangle-free process",
+      "Ramsey lower bounds"
+    ],
+    "prerequisites": [
+      "Ramsey number",
+      "triangle-free independence",
+      "optimization argument"
+    ]
+  },
+  {
+    "id": "ann-802-main",
+    "proofId": "erdos-802",
+    "range": {
+      "startLine": 165,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Main Result: erdos_802",
+    "content": "The main theorem `erdos_802` packages two results as a conjunction: (1) $\\text{AEKS}_3$ (the full conjecture for $r = 3$, proved via AKS 1980), and (2) Shearer's partial bound for all $r \\geq 3$. The proof constructs the pair by calling `conjecture_true_for_r3` for the first component and `shearer_1995` for the second. The file also includes string-valued status and answer summaries, and `#check` commands for verification.",
+    "mathContext": "$\\text{AEKS}_3 \\wedge (\\forall r \\geq 3,\\; \\alpha(G) \\geq c \\cdot \\frac{\\log t}{\\log\\log(t+1) \\cdot t} \\cdot n \\text{ for } K_r\\text{-free } G)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "resolved conjecture",
+      "partial progress",
+      "conjunction of results"
+    ],
+    "prerequisites": [
+      "AKS 1980 theorem",
+      "Shearer 1995 bound",
+      "AEKS conjecture definition"
+    ]
+  }
+]

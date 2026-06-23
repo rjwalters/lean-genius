@@ -1,0 +1,196 @@
+[
+  {
+    "id": "erdos-524-ann-intro",
+    "proofId": "erdos-524",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Module Overview: Erdős Problem #524",
+    "content": "The module docstring introduces Erdős Problem #524 (1961): determine the correct order of magnitude of $M_n(t) = \\max_{x \\in [-1,1]} |\\sum_{k=1}^n \\varepsilon_k(t) x^k|$ for Lebesgue-a.e. $t \\in (0,1)$, where $\\varepsilon_k(t) = \\pm 1$ are the binary digits of $t$. The file imports `Mathlib.Tactic`, `Mathlib.Data.Real.Basic` (for real arithmetic and `sSup`), `Mathlib.MeasureTheory.Measure.Lebesgue.Basic` (for the $\\forall^{\\text{m}}$ quantifier over Lebesgue measure), and `Mathlib.Order.Filter.Basic` (for `Filter.Tendsto` and `Filter.atTop` used in the divergence statements). The problem is OPEN — the known bounds $n^{1/2-\\varepsilon} \\ll M_n \\ll \\sqrt{n/\\log\\log n}$ (i.o.) leave a narrow gap around the conjectured $\\sqrt{n}$.",
+    "mathContext": "Erdős #524: find $f(n)$ with $M_n(t) = \\Theta(f(n))$ a.s. Known: $f(n) = \\omega(n^{1/2-\\varepsilon})$ (Erdős) and $f(n) = O(\\sqrt{n/\\log\\log n})$ i.o. (Chung). Conjecture: $f(n) = \\sqrt{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rademacher polynomials",
+      "maximum modulus",
+      "law of the iterated logarithm",
+      "Salem-Zygmund theorem"
+    ],
+    "prerequisites": [
+      "MeasureTheory.Measure.Lebesgue",
+      "Filter.Tendsto",
+      "sSup",
+      "Real.rpow"
+    ]
+  },
+  {
+    "id": "erdos-524-ann-binaryDigit",
+    "proofId": "erdos-524",
+    "range": {
+      "startLine": 25,
+      "endLine": 27
+    },
+    "type": "definition",
+    "title": "Binary Digit Function",
+    "content": "**binaryDigit t k** maps t ∈ (0,1) and k ∈ ℕ to ±1 based on the k-th binary digit of t: +1 if the digit is 0, −1 if it is 1. Computed as the parity of ⌊t · 2^k⌋.",
+    "significance": "key",
+    "mathContext": "The binary expansion t = Σ_{k≥1} ε_k(t)/2^k defines a sequence of bits ε_k(t) ∈ {0,1}. The function binaryDigit maps these to signs ±1 via (-1)^{ε_k}. Under **Lebesgue measure** on (0,1), the digits ε_k are **independent Bernoulli(1/2) random variables** — this is a consequence of the fact that the binary expansion of a uniformly random real is i.i.d. The implementation uses `⌊t · 2^k⌋ mod 2` to extract the k-th digit, then maps 0 → +1, 1 → −1. This encoding transforms the probability space ((0,1), Lebesgue) into a product space {±1}^ℕ, making the random polynomial a standard **Rademacher random polynomial**.",
+    "relatedConcepts": [
+      "binary expansion",
+      "Rademacher random variables",
+      "i.i.d. sequence",
+      "Lebesgue measure as product measure"
+    ],
+    "prerequisites": [
+      "Int.floor",
+      "HPow"
+    ]
+  },
+  {
+    "id": "erdos-524-ann-randSignPoly",
+    "proofId": "erdos-524",
+    "range": {
+      "startLine": 29,
+      "endLine": 32
+    },
+    "type": "definition",
+    "title": "Random Sign Polynomial P_n(t, x)",
+    "content": "**randSignPoly t n x** = Σ_{k=1}^n binaryDigit(t, k) · x^k. A polynomial of degree n with random ±1 coefficients determined by the binary digits of t.",
+    "significance": "key",
+    "mathContext": "The random sign polynomial P_n(t,x) = Σ_{k=1}^n ε_k(t) x^k (where ε_k = ±1) is a **Rademacher polynomial** — a polynomial whose coefficients are independent random signs. This is a classical object in the theory of random polynomials, studied by **Kac** (1943, zeros on ℝ), **Littlewood-Offord** (1940s, values at specific points), and **Salem-Zygmund** (1954, maximum on [0,2π]). The key feature distinguishing this from random trigonometric polynomials is the **monomial basis x^k**: for |x| close to 1, the terms x^k are all close in magnitude (≈ 1), creating strong correlations; for |x| near 0, terms decay rapidly. This concentration near the endpoints ±1 is what makes the polynomial case harder than the trigonometric case. The Lean implementation uses `Finset.range n` with shift k+1 to sum from k=1 to n.",
+    "relatedConcepts": [
+      "Rademacher polynomials",
+      "Kac polynomials",
+      "Littlewood-Offord problem",
+      "monomial basis concentration"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Finset.sum",
+      "binaryDigit"
+    ]
+  },
+  {
+    "id": "erdos-524-ann-polyMax",
+    "proofId": "erdos-524",
+    "range": {
+      "startLine": 34,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Maximum Modulus M_n(t)",
+    "content": "**polyMax t n** = sup{|P_n(t, x)| : x ∈ [-1, 1]}. The maximum of the absolute value of the random polynomial over the compact interval [-1, 1].",
+    "significance": "key",
+    "mathContext": "The maximum modulus M_n(t) = max_{x ∈ [-1,1]} |P_n(t,x)| is the central random variable in the problem. Since P_n is a continuous function of x and [-1,1] is compact, the supremum is attained (it is a maximum). By the **maximum modulus principle** (for polynomials on ℝ), the maximum of |P_n| on [-1,1] is attained at one of the endpoints x = ±1 or at a critical point in (-1,1). In particular, M_n(t) ≥ |P_n(t, 1)| = |Σ ε_k| and M_n(t) ≥ |P_n(t, -1)| = |Σ (-1)^k ε_k|. By the **law of the iterated logarithm**, |P_n(t,1)| ≈ √(2n log log n) for a.e. t, suggesting M_n should be at least of order √n. The Lean formalization uses `sSup` over the image `{|randSignPoly t n x| | x ∈ Set.Icc (-1) 1}`.",
+    "relatedConcepts": [
+      "maximum modulus principle",
+      "law of the iterated logarithm",
+      "continuous functions on compact sets",
+      "sSup"
+    ],
+    "prerequisites": [
+      "sSup",
+      "Set.Icc",
+      "randSignPoly"
+    ]
+  },
+  {
+    "id": "erdos-524-ann-erdosLower",
+    "proofId": "erdos-524",
+    "range": {
+      "startLine": 40,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "Erdős's Lower Bound: M_n ≫ n^{1/2−ε}",
+    "content": "**erdos_lower_bound**: For every ε ∈ (0, 1/2) and a.e. t ∈ (0,1), polyMax(t, n) / n^{1/2−ε} → ∞ as n → ∞. The maximum grows faster than n^{1/2−ε} for any positive ε.",
+    "significance": "key",
+    "mathContext": "Erdős proved (in an unpublished result) that M_n(t) = ω(n^{1/2-ε}) for any ε > 0, almost surely. The lower bound follows from evaluating P_n at x = 1: P_n(t, 1) = Σ_{k=1}^n ε_k(t), which is a random walk. By the **law of the iterated logarithm** (Khintchine 1924), |Σ ε_k| ≥ √(2n log log n) for infinitely many n, a.s. Since M_n(t) ≥ |P_n(t,1)|, this gives M_n ≥ √(2n log log n) i.o. But the full statement M_n/n^{1/2-ε} → ∞ (for *all* n, not just infinitely many) requires more work — one needs to show the maximum over all x ∈ [-1,1] can't repeatedly dip below n^{1/2-ε}. The formalization uses `∀ᵐ t ∂volume` (Lebesgue a.e.) and `Filter.Tendsto ... atTop atTop` for the divergence statement.",
+    "relatedConcepts": [
+      "law of the iterated logarithm",
+      "random walk lower bounds",
+      "∀ᵐ (measure-theoretic a.e.)",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "MeasureTheory.volume",
+      "Filter.Tendsto",
+      "Filter.atTop",
+      "polyMax"
+    ]
+  },
+  {
+    "id": "erdos-524-ann-chungUpper",
+    "proofId": "erdos-524",
+    "range": {
+      "startLine": 51,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Chung's Upper Bound: M_n ≤ C√(n/log log n) i.o.",
+    "content": "**chung_upper_bound**: ∃ C > 0 such that for a.e. t, for infinitely many n: polyMax(t, n) ≤ C · √(n / log log n). The maximum is occasionally as small as √(n/log log n).",
+    "significance": "key",
+    "mathContext": "**Chung's result** provides an *infinitely often* upper bound, not a uniform one. The √(n/log log n) factor arises from the **law of the iterated logarithm** (LIL): by the LIL, max_{x=±1} |P_n(t,x)| ≤ √(2n log log n) for all sufficiently large n (a.s.), and the i.o. bound √(n/log log n) suggests that M_n can sometimes be *smaller* than the LIL prediction — meaning the maximum over all x ∈ [-1,1] is not always dominated by the endpoints. The gap between Erdős's lower bound (n^{1/2-ε} for all n) and Chung's upper bound (√(n/log log n) for infinitely many n) is narrow: both are close to √n, differing only in iterated logarithm factors. The formalization captures the i.o. nature via ∀ N, ∃ n ≥ N with the bound.",
+    "relatedConcepts": [
+      "law of the iterated logarithm",
+      "infinitely often bounds",
+      "random walk upper estimates",
+      "log log factor"
+    ],
+    "prerequisites": [
+      "MeasureTheory.volume",
+      "Real.sqrt",
+      "Real.log",
+      "polyMax"
+    ]
+  },
+  {
+    "id": "erdos-524-ann-salemZygmund",
+    "proofId": "erdos-524",
+    "range": {
+      "startLine": 61,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "Salem-Zygmund Comparison for Trigonometric Polynomials",
+    "content": "**salem_zygmund_trigonometric**: For random trigonometric polynomials (Σ ε_k cos(kθ) on [0,2π]), the maximum is Θ(√(n log n)) almost surely. The polynomial case on [-1,1] is expected to be different.",
+    "significance": "key",
+    "mathContext": "The **Salem-Zygmund theorem** (1954) establishes that the maximum of a random trigonometric polynomial T_n(θ) = Σ_{k=1}^n ε_k cos(kθ) satisfies max_θ |T_n(θ)| = Θ(√(n log n)) a.s. The extra log n factor (compared to √n) arises because trigonometric polynomials on [0,2π] have **uniform covariance structure**: Cov(T_n(θ₁), T_n(θ₂)) depends smoothly on θ₁ − θ₂, and by a metric entropy argument, sampling at O(n) points suffices to capture the maximum, giving max ≈ √(n · log n) by the maximum of O(n) Gaussian-like random variables. For algebraic polynomials on [-1,1], the covariance structure is non-uniform (it degenerates near ±1 where x^k ≈ 1), so the Salem-Zygmund argument doesn't directly apply. The polynomial maximum is expected to be Θ(√n) — without the log n factor — because the effective number of 'independent' evaluation points near ±1 is bounded.",
+    "relatedConcepts": [
+      "Salem-Zygmund theorem (1954)",
+      "metric entropy",
+      "Gaussian comparison",
+      "covariance structure difference"
+    ],
+    "prerequisites": [
+      "MeasureTheory.volume",
+      "Real.sqrt",
+      "Real.log",
+      "polyMax"
+    ]
+  },
+  {
+    "id": "erdos-524-ann-mainProblem",
+    "proofId": "erdos-524",
+    "range": {
+      "startLine": 74,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Main Open Problem: Order of Magnitude of M_n",
+    "content": "**erdos_524_order_of_magnitude**: ∃ f : ℕ → ℝ with f(n) > 0 such that for a.e. t, M_n(t) = Θ(f(n)) — i.e., c₁·f(n) ≤ M_n(t) ≤ c₂·f(n) for all large n. The function f is conjectured to be √n.",
+    "significance": "key",
+    "mathContext": "The main open problem asks for the **exact asymptotic order** of M_n(t). The axiom asserts existence of a growth function f(n) with M_n = Θ(f(n)) a.s. — meaning both upper and lower bounds hold for all sufficiently large n. The known results constrain f(n): it must satisfy f(n) = ω(n^{1/2-ε}) (Erdős) and f(n) = O(√(n/log log n)) from the i.o. bound (Chung). The natural conjecture is **f(n) = √n**: the maximum behaves like a random walk of n steps with step sizes ≈ 1 (since x^k ≈ 1 near x = 1). This would make the polynomial case simpler than the trigonometric case (√n vs √(n log n)), reflecting the endpoint concentration phenomenon. The formalization existentially quantifies over f and requires Θ-type two-sided bounds for a.e. t.",
+    "relatedConcepts": [
+      "order of magnitude",
+      "Θ-asymptotics",
+      "conjectured √n growth",
+      "endpoint concentration"
+    ],
+    "prerequisites": [
+      "MeasureTheory.volume",
+      "polyMax"
+    ]
+  }
+]

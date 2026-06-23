@@ -1,0 +1,134 @@
+{
+  "slug": "erdos-1008-oq-01",
+  "title": "What are the optimal constants in the Ω(m^{2/3}) bound",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: What are the optimal constants in the Ω(m^{2/3}) bound.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-24T17:30:00Z",
+    "iteration": 2,
+    "focus": "Formalized optimal constant framework and proved structural theorems",
+    "blockers": [],
+    "nextAction": "Prove remaining sorries (optimal_constant_pos, c4free_of_few_edges)",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Eliminated both sorries. c4free_of_few_edges (edge counting via Sym2 distinctness) and optimal_constant_pos (BddAbove via Fin 2 specialization + le_csSup). File: 355 lines, 17 theorems, 2 axioms (deep results), 0 sorries.",
+    "builtItems": [
+      "Created proofs/Proofs/Erdos1008OQ01.lean (296 lines, 15 proved theorems)",
+      "Proved k22_implies_c4: K_{2,2} → C₄ direction",
+      "Proved c4_implies_k22: C₄ → K_{2,2} direction",
+      "Proved c4free_common_neighbor_unique: structural theorem",
+      "Proved folkman_ratio_rpow: (n³)^{2/3} = n²",
+      "Proved c4free_of_subgraph, c4free_mono, empty_isC4Free",
+      "Defined IsAdmissibleConstant framework and optimalConstant",
+      "Created gallery metadata src/data/proofs/erdos-1008-oq-01/meta.json",
+      "c4free_of_few_edges: graph with ≤3 edges has no C₄ (Erdos1008OQ01.lean:261-322)",
+      "optimal_constant_pos: optimalConstant > 0 from cfs_admissible_exists (Erdos1008OQ01.lean:231-250)"
+    ],
+    "insights": [
+      "K_{2,2}=C₄ equivalence proved via Finset.card_eq_two destructuring",
+      "Common neighbor uniqueness is key structural constraint driving KST bounds",
+      "The optimal constant c* ∈ (0,1] -- upper bound from Folkman, lower from CFS",
+      "rpow_mul + norm_num sufficient for real power arithmetic (n³)^{2/3}=n²",
+      "SimpleGraph.ne_of_adj gives distinctness from adjacency (for irreflexive graphs)",
+      "c4free_of_few_edges proof uses Sym2.eq_iff to show 4 edges of a C₄ are distinct, giving card≥4 contradiction",
+      "optimal_constant_pos proved by specializing admissibility to completeGraph (Fin 2) to establish BddAbove, then le_csSup"
+    ],
+    "mathlibGaps": [
+      "No Kővári-Sós-Turán theorem in Mathlib -- would need custom formalization",
+      "No dependent random choice lemma -- needed for CFS proof"
+    ],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "extremal",
+    "cycles",
+    "subgraphs",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1008",
+    "erdos-1008-oq-01",
+    "erdos-1008-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Conlon-Fox-Sudakov 2014: Large subgraphs without complete bipartite graphs (arXiv:1401.6711)",
+      "Kővári-Sós-Turán 1954: On a problem of K. Zarankiewicz"
+    ],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.901Z",
+  "lastUpdate": "2026-03-24T19:00:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1008OQ01.lean",
+      "filename": "Erdos1008OQ01.lean",
+      "lineCount": 375,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1008OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1008OQ04.lean",
+      "filename": "Erdos1008OQ04.lean",
+      "lineCount": 146,
+      "theoremCount": 1,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1008OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1008Problem.lean",
+      "filename": "Erdos1008Problem.lean",
+      "lineCount": 699,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1008Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1008ProblemProvable.lean",
+      "filename": "Erdos1008ProblemProvable.lean",
+      "lineCount": 199,
+      "theoremCount": 3,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1008ProblemProvable.lean"
+    }
+  ]
+}

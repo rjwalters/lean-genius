@@ -1,0 +1,186 @@
+{
+  "id": "erdos-834",
+  "title": "Erdős Problem #834: 3-Critical 3-Uniform Hypergraphs",
+  "slug": "erdos-834",
+  "description": "Does there exist a 3-critical 3-uniform hypergraph in which every vertex has degree ≥ 7? The answer depends on the definition of '3-critical': NO for transversal-criticality (Li 2025 proved max is 6), YES for chromatic-criticality (Lovász constructions give arbitrarily high degree).",
+  "meta": {
+    "author": "Paul Erdős, László Lovász",
+    "sourceUrl": "https://erdosproblems.com/834",
+    "date": "1970s",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos834Problem.lean",
+    "tags": [
+      "erdos",
+      "hypergraphs",
+      "combinatorics",
+      "extremal",
+      "chromatic-number",
+      "transversal"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 834,
+    "erdosUrl": "https://erdosproblems.com/834",
+    "erdosProblemStatus": "solved",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set",
+        "description": "Set type for hyperedge collections",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for hyperedges and transversals",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of a set (used for vertex degree)",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "iInf",
+        "description": "Infimum operation for transversal/chromatic numbers",
+        "module": "Mathlib.Order.CompleteLattice"
+      }
+    ],
+    "originalContributions": [
+      "Defined Hypergraph structure with Set (Finset V) edge representation",
+      "Formalized both transversal-criticality and chromatic-criticality as separate predicates",
+      "Proved transversal_answer_no by contradiction using Li's bound and omega",
+      "Proved chromatic_answer_yes by instantiating Lovász's construction axiom",
+      "Combined both into erdos_834_resolution: complete resolution of the ambiguous problem",
+      "All theorems proved with 0 sorries (axioms encode deep external results)"
+    ],
+    "axiomCount": 3,
+    "lineCount": 197,
+    "assumptions": "3 axiom(s): li_bound, lovasz_construction, tight_bound_exists. See Lean source for complete statements.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 13
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Erdős and Lovász in their influential 1973 paper 'Problems and results on 3-chromatic hypergraphs and some related questions', which initiated the systematic study of hypergraph coloring extremal problems. The question asks about the minimum degree achievable in 3-critical 3-uniform hypergraphs. A key subtlety, discovered over decades of study, is that the answer depends entirely on the interpretation of '3-critical': the transversal interpretation ($\\tau(H) = 3$, every edge essential for the cover) gives a fundamentally different answer than the chromatic interpretation ($\\chi(H) = 3$, every edge essential for the coloring). Lovász had already shown that chromatic-critical hypergraphs can have arbitrarily high minimum degree via product constructions. The transversal case remained open until Li (2025) proved the tight bound $\\delta(H) \\le 6$, completing the picture for both interpretations.",
+    "problemStatement": "Does there exist a 3-critical 3-uniform hypergraph in which every vertex has degree $\\ge 7$?\n\nTwo interpretations:\n1. **Transversal-critical**: $\\tau(H) = 3$ and $\\forall e \\in E(H),\\; \\tau(H - e) < 3$. Answer: NO — Li (2025) proved $\\delta(H) \\le 6$, and this bound is tight.\n2. **Chromatic-critical**: $\\chi(H) = 3$ and $\\forall e \\in E(H),\\; \\chi(H - e) < 3$. Answer: YES — Lovász's construction gives $\\delta(H) \\ge d$ for any $d$.",
+    "text": "Does there exist a 3-critical 3-uniform hypergraph in which every vertex has degree ≥ 7? The answer depends on the definition of '3-critical': NO for transversal-criticality (Li 2025 proved max is 6), YES for chromatic-criticality (Lovász constructions give arbitrarily high degree).",
+    "proofStrategy": "The formalization defines both criticality notions separately and proves the contrasting answers. A custom `Hypergraph V` structure uses `Set (Finset V)` for edges. Transversal and chromatic numbers use conditional infima. Li's bound and Lovász's construction are axiomatized as deep external results. The negative answer uses proof by contradiction with `omega`; the positive answer instantiates the construction axiom with $d = 7$. All Lean theorems have 0 sorries.",
+    "keyInsights": [
+      "The ambiguity in 'critical' leads to genuinely different mathematical questions: transversal-criticality constrains local structure tightly (every edge is essential for the cover), while chromatic-criticality is more flexible (coloring constraints allow more edges)",
+      "Li's bound $\\delta(H) \\le 6$ for $\\tau$-critical hypergraphs exploits the rigidity of transversal structure: each critical edge must contain a pair that 'blocks' all size-2 covers, limiting how many edges can share a vertex",
+      "Lovász's construction for $\\chi$-critical hypergraphs uses iterated product operations to build dense examples: starting from a small critical hypergraph, products preserve criticality while amplifying minimum degree",
+      "The Lean proof of the negative answer is an elegant 3-line contradiction: assume $\\delta \\ge 7$, apply Li's bound to get $\\delta \\le 6$, close with `omega`",
+      "This problem beautifully illustrates how formalization forces precision—the two interpretations, easily conflated in natural language, become clearly distinct in Lean's type system"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-834-definitions",
+      "title": "Hypergraph Definitions",
+      "startLine": 35,
+      "endLine": 58,
+      "summary": "Namespace `Erdos834`. Defines `Hypergraph V` (edge set as `Set (Finset V)`), `IsUniform H k` ($|e| = k$ for all edges), `degree H v` (via `Set.ncard`), and `minDegree H` (via `⨅` over active vertices).",
+      "mathContext": "Defines `Hypergraph V` (edge set as `Set (Finset V)`), `IsUniform H k` ($|e| = k$ for all edges), `degree H v` (via `Set.ncard`), and `minDegree H` (via `⨅` over active vertices)."
+    },
+    {
+      "id": "sec-834-transversal",
+      "title": "Transversal Number $\\tau(H)$",
+      "startLine": 59,
+      "endLine": 72,
+      "summary": "Defines `IsTransversal H T` ($T$ hits every edge) and `transversalNumber H` ($\\min |T|$ over transversals) using conditional infimum.",
+      "mathContext": "Formal definition: Defines `IsTransversal H T` ($T$ hits every edge) and `transversalNumber H` ($\\min |T|$ over transversals) using conditional infimum."
+    },
+    {
+      "id": "sec-834-tau-critical",
+      "title": "Transversal-Criticality",
+      "startLine": 73,
+      "endLine": 88,
+      "summary": "Defines `removeEdge H e` and `IsTransversalCritical H k`: $\\tau(H) = k$ and every edge removal reduces $\\tau$.",
+      "mathContext": "Formal definition: Defines `removeEdge H e` and `IsTransversalCritical H k`: $\\tau(H) = k$ and every edge removal reduces $\\tau$."
+    },
+    {
+      "id": "sec-834-chromatic",
+      "title": "Chromatic Number $\\chi(H)$",
+      "startLine": 89,
+      "endLine": 107,
+      "summary": "Defines `IsProperColoring H k c` (no monochromatic edge of size $\\ge 2$), `chromaticNumber H` (min colors), and `IsChromaticCritical H k` ($\\chi = k$ and every edge removal reduces $\\chi$).",
+      "mathContext": "Formal definition: Defines `IsProperColoring H k c` (no monochromatic edge of size $\\ge 2$), `chromaticNumber H` (min colors), and `IsChromaticCritical H k` ($\\chi = k$ and every edge removal reduces $\\chi$)."
+    },
+    {
+      "id": "sec-834-questions",
+      "title": "Main Question Formulations",
+      "startLine": 108,
+      "endLine": 123,
+      "summary": "States `transversal_question` and `chromatic_question` as existential propositions: does there exist a 3-uniform, 3-critical hypergraph with $\\delta \\ge 7$ under each interpretation?",
+      "mathContext": "States `transversal_question` and `chromatic_question` as existential propositions: does there exist a 3-uniform, 3-critical hypergraph with $\\$\\delta$ \\ge 7$ under each interpretation?"
+    },
+    {
+      "id": "sec-834-li",
+      "title": "Li's Theorem (2025)",
+      "startLine": 124,
+      "endLine": 138,
+      "summary": "Axiomatizes `li_bound` ($\\delta \\le 6$ for $\\tau$-critical) and proves `transversal_answer_no` by contradiction with `omega`.",
+      "mathContext": "Axiomatizes `li_bound` ($\\$\\delta$ \\le 6$ for $\\tau$-critical) and proves `transversal_answer_no` by contradiction with `omega`."
+    },
+    {
+      "id": "sec-834-lovasz",
+      "title": "Lovász's Construction",
+      "startLine": 139,
+      "endLine": 153,
+      "summary": "Axiomatizes `lovasz_construction` ($\\forall d$, $\\chi$-critical with $\\delta \\ge d$ exists) and proves `chromatic_answer_yes` by instantiating with $d = 7$.",
+      "mathContext": "Axiomatizes `lovasz_construction` ($\\forall d$, $\\chi$-critical with $\\$\\delta$ \\ge d$ exists) and proves `chromatic_answer_yes` by instantiating with $d = 7$."
+    },
+    {
+      "id": "sec-834-resolution",
+      "title": "Complete Resolution and Summary",
+      "startLine": 154,
+      "endLine": 197,
+      "summary": "Proves `erdos_834_resolution` (conjunction of both answers), axiomatizes `tight_bound_exists` ($\\delta = 6$ achieved), and proves `erdos_834_summary` combining Li's universal bound with Lovász's universal existence.",
+      "mathContext": "Proves `erdos_834_resolution` (conjunction of both answers), axiomatizes `tight_bound_exists` ($\\delta = 6$ achieved), and proves `erdos_834_summary` combining Li's universal bound with Lovász's universal existence."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #834 is SOLVED with contrasting answers for the two interpretations of '3-critical'. For transversal-criticality: NO, Li (2025) proved the maximum minimum degree is exactly 6 (tight). For chromatic-criticality: YES, Lovász showed arbitrarily high minimum degree is achievable. The formalization has 0 sorries in all theorems, with 3 axioms encoding deep external results (Li's bound, Lovász's construction, tightness of bound 6).",
+    "implications": "**Theoretical Significance**: This problem is a striking example of how definitional precision matters in mathematics. The two interpretations of 'criticality'—covering vs.\n\ncoloring—lead to fundamentally different structural constraints. The transversal version has a tight finite bound reflecting the rigidity of covering structures, while the chromatic version is unbounded reflecting the flexibility of coloring. The result connects to the broader theory of critical hypergraphs and extremal hypergraph theory, where the relationship between local properties (vertex degree) and global properties (criticality) is a central theme.",
+    "openQuestions": [
+      "Can the explicit constructions achieving $\\delta = 6$ for $\\tau$-critical 3-uniform hypergraphs be classified or enumerated?",
+      "What is the growth rate of the minimum number of edges in a $\\chi$-critical 3-uniform hypergraph with $\\delta \\ge d$ as a function of $d$?",
+      "How do these bounds generalize to $k$-critical $k$-uniform hypergraphs for $k > 3$? Is the maximum $\\delta$ for $\\tau$-critical always $2k$?",
+      "Is there an intermediate notion of criticality (between $\\tau$ and $\\chi$) that yields a finite but growing bound on minimum degree?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-738",
+      "relationship": "related",
+      "description": "Erdős #738 studies triangle-free graphs with infinite chromatic number—a graph coloring problem that parallels the hypergraph chromatic number questions in #834"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "technique",
+      "description": "Graph coloring theory provides the foundation; the Four Color Theorem concerns planar graphs while #834 concerns hypergraph criticality and minimum degree"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Ramsey theory underlies many extremal hypergraph results, connecting unavoidable structures to the degree constraints in critical hypergraphs"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos834",
+    "lineCount": 197,
+    "axiomCount": 3,
+    "theoremCount": 4,
+    "definitionCount": 13,
+    "path": "Proofs/Erdos834Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

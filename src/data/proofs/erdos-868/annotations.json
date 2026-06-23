@@ -1,0 +1,362 @@
+[
+  {
+    "id": "ann-e868-header",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Statement and History",
+    "content": "**Erdos Problem #868** asks: if A is an additive basis of order 2 and the representation function f(n) -> infinity, must A contain a minimal basis?\n\nA **minimal basis** is one where removing any element creates infinitely many 'gaps' - numbers that can no longer be represented.\n\n**Key history**:\n- Hartter (1956) & Nathanson (1974): Pathological bases with no minimal subbasis exist\n- Erdos-Nathanson (1979): f(n) > 3.476 log n is SUFFICIENT\n- Erdos-Nathanson (1989): f(n) >= t (constant) is NOT sufficient\n- The gap between these conditions remains **OPEN**",
+    "mathContext": "The representation function f(n) = r_{A,2}(n) counts ordered pairs (a_1, a_2) in A^2 with a_1 + a_2 = n. The constant 3.476 is approximately (log 4/3)^{-1} and comes from a probabilistic deletion argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive-bases",
+      "representation-function",
+      "minimal-bases"
+    ],
+    "prerequisites": [
+      "additive basis of order 2",
+      "representation function f(n) = r_{A,2}(n)",
+      "definition of a minimal basis (no removable element)",
+      "asymptotic growth notation f(n) → ∞ and f(n) > c log n"
+    ]
+  },
+  {
+    "id": "ann-e868-additive-basis-def",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 52,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Additive Basis of Order h",
+    "content": "**IsAdditiveBasis A h** means A is an additive basis of order h:\n\nThe set of natural numbers that CANNOT be written as a sum of h elements from A is **finite**.\n\nEquivalently, all sufficiently large n can be expressed as a_1 + a_2 + ... + a_h with each a_i in A.\n\nFor order 2 (sumsets): every large n = a_1 + a_2 for some a_1, a_2 in A.",
+    "mathContext": "The definition uses Set.Finite on the complement: {n | not exists a, (forall i, a i in A) and sum i, a i = n}.Finite. This is the 'asymptotic' version - we allow finitely many exceptions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sumset",
+      "cofinite",
+      "representation"
+    ],
+    "prerequisites": [
+      "sum of h elements a_1 + ... + a_h with a_i ∈ A",
+      "Set.Finite predicate (finiteness of the complement)",
+      "cofinite coverage of ℕ ('all sufficiently large n')",
+      "sumset of a set with itself (order 2)"
+    ]
+  },
+  {
+    "id": "ann-e868-repr-count",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 69,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "The Representation Function",
+    "content": "**reprCount A h n** counts how many ways n can be written as a sum of h elements from A.\n\nFor order 2: reprCount A 2 n = |{(a_1, a_2) in A^2 : a_1 + a_2 = n}|\n\nThis is the function f(n) = 1_A * 1_A(n) in the problem statement - the convolution of the indicator function of A with itself.\n\nThe key question is: how does the growth of f(n) affect the structure of A?",
+    "mathContext": "We use Set.ncard to count the set {a : Fin h -> N | (forall i, a i in A) and sum i, a i = n}. The function is noncomputable because Set.ncard uses classical logic for infinite sets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convolution",
+      "counting",
+      "ncard"
+    ],
+    "prerequisites": [
+      "IsAdditiveBasis A h definition",
+      "Set.ncard for cardinality of sets",
+      "indicator function 1_A and convolution 1_A * 1_A",
+      "functions Fin h → ℕ as tuples of summands"
+    ]
+  },
+  {
+    "id": "ann-e868-minimal-basis-def",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 86,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "Minimal Bases",
+    "content": "**IsMinimalBasis B h** means B is a minimal additive basis of order h:\n\n1. B is an additive basis of order h\n2. For EVERY b in B, removing b destroys the basis property\n\nIntuitively: B is 'tight' - you can't remove anything without breaking it. Every element is **essential**.\n\nThis is analogous to a minimal spanning tree: every edge is needed.",
+    "mathContext": "Formally: IsAdditiveBasis B h and forall b in B, not IsAdditiveBasis (B \\ {b}) h. The second condition says B \\ {b} has infinitely many unrepresentable numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "essential-elements",
+      "minimal",
+      "subbasis"
+    ],
+    "prerequisites": [
+      "IsAdditiveBasis B h definition",
+      "set difference B \\ {b}",
+      "finite vs infinite set of unrepresentable numbers",
+      "essential element (removal breaks the basis property)"
+    ]
+  },
+  {
+    "id": "ann-e868-open-part-i",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 106,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Open Question Part (i): f(n) -> infinity",
+    "content": "**erdos_868_part_i_open** represents the main OPEN question:\n\nIf A is an additive basis of order 2 and f(n) -> infinity as n -> infinity, must A contain a minimal basis of order 2?\n\nThe condition f(n) -> infinity means representations become unbounded - each large n has more and more ways to be written as a sum of two elements from A.\n\nThis is **strictly weaker** than f(n) > c log n, yet remains unsolved.",
+    "mathContext": "The formal statement would be: forall A, IsBasisOrder2 A -> Tendsto (reprCount2 A) atTop atTop -> exists B subset A, IsMinimalBasis2 B. We use an axiom Prop because the answer is unknown.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tendsto",
+      "open-problem",
+      "unbounded-growth"
+    ],
+    "prerequisites": [
+      "IsAdditiveBasis (basis of order 2)",
+      "reprCount2 representation function",
+      "Filter.Tendsto atTop atTop (f(n) → ∞)",
+      "IsMinimalBasis2 and existence of a subbasis B ⊆ A"
+    ]
+  },
+  {
+    "id": "ann-e868-open-part-ii",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 119,
+      "endLine": 122
+    },
+    "type": "concept",
+    "title": "Open Question Part (ii): f(n) > epsilon log n",
+    "content": "**erdos_868_part_ii_open** represents the second OPEN question:\n\nIf f(n) > epsilon log n for all large n (for ANY fixed epsilon > 0), must A contain a minimal basis?\n\nThis is weaker than the known sufficient condition f(n) > 3.476 log n, but stronger than part (i).\n\n**The mystery**: Why does the threshold matter so much? Why is epsilon = 3.476 enough but arbitrary epsilon > 0 unknown?",
+    "mathContext": "The condition uses Filter.Eventually: eventually n in atTop, epsilon * Real.log n < reprCount2 A n. This means 'for all sufficiently large n'.",
+    "significance": "key",
+    "relatedConcepts": [
+      "logarithmic-growth",
+      "threshold",
+      "eventually"
+    ],
+    "prerequisites": [
+      "reprCount2 representation function",
+      "Real.log and the bound ε · log n < f(n)",
+      "Filter.Eventually (eventually in atTop)",
+      "comparison with the f(n) > 3.476 log n threshold"
+    ]
+  },
+  {
+    "id": "ann-e868-erdos-nathanson-1979",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 136,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Erdos-Nathanson 1979: The Sufficient Condition",
+    "content": "**erdos_nathanson_1979**: If A is a basis of order 2 and f(n) > (log 4/3)^{-1} * log n for all large n, then A contains a minimal basis.\n\nThe constant (log 4/3)^{-1} is approximately 3.476 and comes from a **probabilistic argument**:\n\n1. Consider randomly deleting elements from A\n2. With probability tending to 0, the deletion breaks the basis property\n3. By probabilistic method, some element can always be deleted\n4. The constant 3.476 ensures this probability bound works",
+    "mathContext": "The statement uses Filter.Eventually for 'all large n'. The constant erdosNathansonConstant = (Real.log (4/3))^{-1} is defined separately and shown to be approximately 3.476.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic-method",
+      "sufficient-condition",
+      "threshold"
+    ],
+    "prerequisites": [
+      "additive basis of order 2",
+      "Filter.Eventually for 'all large n'",
+      "erdosNathansonConstant = (log 4/3)⁻¹",
+      "the probabilistic (deletion) method"
+    ]
+  },
+  {
+    "id": "ann-e868-erdos-nathanson-constant",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 142,
+      "endLine": 146
+    },
+    "type": "definition",
+    "title": "The Erdos-Nathanson Constant",
+    "content": "**erdosNathansonConstant** = (log 4/3)^{-1} is approximately 3.476\n\nThis is the critical threshold in the 1979 theorem. Above this constant times log n, minimal subbases are guaranteed.\n\nThe approximation 3.4 < c < 3.5 is axiomatized for reasoning about the gap.",
+    "mathContext": "Computing: log(4/3) is approximately 0.288, so (log 4/3)^{-1} is approximately 3.476. The constant arises from analyzing when random deletion preserves the basis property with positive probability.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold",
+      "logarithm",
+      "constant"
+    ],
+    "prerequisites": [
+      "Real.log and (Real.log (4/3))⁻¹",
+      "numerical estimate log(4/3) ≈ 0.288",
+      "the Erdős-Nathanson 1979 threshold condition",
+      "axiomatized bound 3.4 < c < 3.5"
+    ]
+  },
+  {
+    "id": "ann-e868-hartter-nathanson",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 155,
+      "endLine": 157
+    },
+    "type": "concept",
+    "title": "Hartter-Nathanson: Pathological Bases Exist",
+    "content": "**hartter_nathanson**: For any order h > 1, there exist additive bases with NO minimal subbasis.\n\nThese are 'pathological' bases where you can always remove something while preserving the basis property. The construction is explicit but complex.\n\nThis shows the naive question 'does every basis contain a minimal basis?' has answer **NO**.",
+    "mathContext": "The statement: exists A, IsAdditiveBasis A h and forall B subset A, IsAdditiveBasis B h -> exists b in B, IsAdditiveBasis (B \\ {b}) h. Every subbasis that's still a basis can have something removed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "pathological",
+      "construction"
+    ],
+    "prerequisites": [
+      "IsAdditiveBasis A h for order h > 1",
+      "subbasis B ⊆ A that remains a basis",
+      "set difference B \\ {b}",
+      "definition of a minimal basis (counterexample target)"
+    ]
+  },
+  {
+    "id": "ann-e868-erdos-nathanson-1989",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 166,
+      "endLine": 169
+    },
+    "type": "concept",
+    "title": "Erdos-Nathanson 1989: Bounded f(n) Insufficient",
+    "content": "**erdos_nathanson_1989**: For any constant t, there exists a basis A with f(n) >= t for all large n, yet A contains NO minimal basis.\n\nThis is the key **negative result**: even if every number has at least t representations (for arbitrarily large t), that's not enough to guarantee a minimal subbasis.\n\nThe gap: constant f(n) -> NO guarantee. Logarithmic f(n) -> YES guarantee. What about in between?",
+    "mathContext": "The construction shows that high multiplicity alone doesn't create structure. The condition (eventually n in atTop, t <= reprCount2 A n) says 'eventually f(n) >= t'.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "bounded",
+      "necessary-condition"
+    ],
+    "prerequisites": [
+      "reprCount2 representation function",
+      "Filter.Eventually (eventually f(n) ≥ t)",
+      "definition of a minimal basis",
+      "bounded multiplicity vs structural existence"
+    ]
+  },
+  {
+    "id": "ann-e868-growth-hierarchy",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 185,
+      "endLine": 187
+    },
+    "type": "concept",
+    "title": "The Hierarchy of Growth Conditions",
+    "content": "**growth_hierarchy**: If f(n) > 3.476 log n, then f(n) > epsilon log n for any epsilon > 0.\n\nThis shows the Erdos-Nathanson 1979 condition implies the Part (ii) condition. So:\n\nf(n) > 3.476 log n -> f(n) > epsilon log n -> f(n) -> infinity -> f(n) >= t\n\nThe known sufficient condition is at the top. The mystery is which intermediate conditions suffice.",
+    "mathContext": "This is axiomatized but follows from transitivity of the Filter.Eventually relation when c > epsilon for all epsilon > 0 (which is vacuously satisfied for c approximately 3.476).",
+    "significance": "key",
+    "relatedConcepts": [
+      "hierarchy",
+      "implication",
+      "growth-rate"
+    ],
+    "prerequisites": [
+      "Filter.Eventually and its transitivity",
+      "erdosNathansonConstant ≈ 3.476 vs ε log n",
+      "growth conditions f(n) → ∞ and f(n) ≥ t",
+      "Erdős-Nathanson 1979 sufficient condition"
+    ]
+  },
+  {
+    "id": "ann-e868-univ-basis",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 196,
+      "endLine": 203
+    },
+    "type": "concept",
+    "title": "N is a Trivial Basis",
+    "content": "**univ_is_basis**: The set of all natural numbers N is an additive basis of any order h > 0.\n\nThis is trivial: any n can be written as n + 0 + 0 + ... + 0 (using h summands).\n\n**nat_basis_order2**: N is specifically a basis of order 2 (n = 0 + n or n = 1 + (n-1)).",
+    "mathContext": "The proof uses sorry because the representation function argument is non-trivial to construct in Lean. The intuition is clear: use (n, 0, ..., 0) as the representation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trivial-example",
+      "universal-set",
+      "representation"
+    ],
+    "prerequisites": [
+      "IsAdditiveBasis A h definition",
+      "Set.univ (the set of all naturals ℕ)",
+      "representation n = n + 0 + ... + 0",
+      "basis of order 2 (n = 0 + n or 1 + (n-1))"
+    ]
+  },
+  {
+    "id": "ann-e868-nat-not-minimal",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 205,
+      "endLine": 211
+    },
+    "type": "concept",
+    "title": "N is NOT a Minimal Basis",
+    "content": "**nat_not_minimal**: The set N is NOT a minimal basis of order 2.\n\nWhy? We can remove 0: N \\ {0} is still a basis of order 2. Every n >= 2 can be written as 1 + (n-1).\n\nIn fact, we can remove any finite set of small numbers and still have a basis. N is maximally 'non-minimal'.",
+    "mathContext": "The proof shows: if N were minimal, removing 0 would destroy the basis property. But N \\ {0} is still a basis, contradiction. The sorry handles the technical details.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "non-minimal",
+      "counterexample",
+      "removable-element"
+    ],
+    "prerequisites": [
+      "IsMinimalBasis B h definition",
+      "set difference ℕ \\ {0}",
+      "univ_is_basis (ℕ is a basis of order 2)",
+      "removable element (1 + (n-1) representation)"
+    ]
+  },
+  {
+    "id": "ann-e868-essential-theorem",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 222,
+      "endLine": 229
+    },
+    "type": "concept",
+    "title": "Essential Elements in Minimal Bases",
+    "content": "**minimal_basis_essential**: In a minimal basis B, every element b is 'essential':\n\nRemoving b creates **infinitely many gaps** - numbers that cannot be represented using B \\ {b}.\n\nThis is the defining property: not just that B \\ {b} isn't a basis, but that it fails spectacularly with infinitely many unrepresentable numbers.",
+    "mathContext": "The proof uses the definition of IsAdditiveBasis via Set.Finite. If B \\ {b} is not a basis, the set of unrepresentable numbers is not finite, hence infinite (using Set.Infinite).",
+    "significance": "key",
+    "relatedConcepts": [
+      "essential-elements",
+      "infinite-gaps",
+      "structure"
+    ],
+    "prerequisites": [
+      "IsMinimalBasis B h definition",
+      "IsAdditiveBasis via Set.Finite",
+      "Set.Infinite (not-finite set of gaps)",
+      "set difference B \\ {b}"
+    ]
+  },
+  {
+    "id": "ann-e868-summary",
+    "proofId": "erdos-868",
+    "range": {
+      "startLine": 246,
+      "endLine": 255
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_868_summary** packages the two main results:\n\n1. **There exists a basis with no minimal subbasis**: From Erdos-Nathanson 1989\n2. **Large f(n) guarantees minimal subbasis**: From Erdos-Nathanson 1979\n\nThis formalizes the GAP: we know both extremes but not the middle ground where f(n) -> infinity or f(n) > epsilon log n.",
+    "mathContext": "The proof extracts the existence statement from erdos_nathanson_1989 (taking t=1) and directly applies erdos_nathanson_1979 for the sufficient condition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "summary",
+      "gap",
+      "known-results"
+    ],
+    "prerequisites": [
+      "erdos_nathanson_1989 axiom (counterexample, take t=1)",
+      "erdos_nathanson_1979 axiom (sufficient condition)",
+      "existence of a basis with no minimal subbasis",
+      "the gap between sufficient and necessary conditions"
+    ]
+  }
+]

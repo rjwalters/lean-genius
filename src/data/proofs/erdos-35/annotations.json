@@ -1,0 +1,291 @@
+[
+  {
+    "id": "ann-35-counting",
+    "proofId": "erdos-35",
+    "range": {
+      "startLine": 39,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Counting Function",
+    "content": "Counts elements of A in {1, ..., N}. This is the numerator in the Schnirelmann density ratio. Defined using Finset.filter on {1,...,N}.",
+    "mathContext": "The counting function $A(N) = |A \\cap \\{1, \\ldots, N\\}|$. Implemented as $(\\text{Finset.range}(N+1) \\setminus \\{0\\}).\\text{filter}(\\cdot \\in A).\\text{card}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "natural-density",
+      "counting-functions"
+    ],
+    "prerequisites": [
+      "finset-filter",
+      "finset-card"
+    ]
+  },
+  {
+    "id": "ann-35-densityratio",
+    "proofId": "erdos-35",
+    "range": {
+      "startLine": 43,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Density Ratio",
+    "content": "The ratio |A ∩ {1,...,N}| / N for a specific N. The Schnirelmann density is the infimum over all N ≥ 1. Returns 1 for N = 0 by convention.",
+    "mathContext": "The density ratio $r_N(A) = A(N)/N$ for $N \\geq 1$. This satisfies $0 \\leq r_N(A) \\leq 1$. The Schnirelmann density is $d_s(A) = \\inf_{N \\geq 1} r_N(A)$, which is the 'worst-case' density.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "infimum",
+      "worst-case-density"
+    ],
+    "prerequisites": [
+      "counting-function",
+      "real-division"
+    ]
+  },
+  {
+    "id": "ann-35-schnirelmann",
+    "proofId": "erdos-35",
+    "range": {
+      "startLine": 47,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Schnirelmann Density",
+    "content": "d_s(A) = inf_{N≥1} |A ∩ {1,...,N}| / N. Unlike natural density (which uses liminf or limsup), Schnirelmann density uses the true infimum and is therefore more restrictive. It is the key density notion for additive combinatorics.",
+    "mathContext": "Schnirelmann density: $d_s(A) = \\inf_{N \\geq 1} \\frac{|A \\cap \\{1, \\ldots, N\\}|}{N}$. Key property: $d_s(A) = 1 \\iff A \\supseteq \\mathbb{N}_{\\geq 1}$. Schnirelmann's fundamental theorem: if $d_s(A) + d_s(B) \\geq 1$ then $A + B \\supseteq \\mathbb{N}$ (after some point).",
+    "significance": "key",
+    "relatedConcepts": [
+      "schnirelmann-density",
+      "natural-density",
+      "additive-number-theory"
+    ],
+    "prerequisites": [
+      "infimum",
+      "counting-function",
+      "density-ratio"
+    ]
+  },
+  {
+    "id": "ann-35-sumset",
+    "proofId": "erdos-35",
+    "range": {
+      "startLine": 56,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Sumset A + B",
+    "content": "A + B = {a + b : a ∈ A, b ∈ B}. The fundamental operation in additive combinatorics. The Lean definition uses existential quantifiers and equips Set ℕ with HAdd notation.",
+    "mathContext": "The sumset $A + B = \\{a + b : a \\in A,\\, b \\in B\\}$. Key properties: $A + B = B + A$ (commutativity), $A + \\{0\\} = A$ (identity), and $A \\subseteq A + B$ when $0 \\in B$. The density of $A + B$ is at least $\\min(1, d_s(A) + d_s(B))$ by Schnirelmann's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minkowski-sum",
+      "additive-combinatorics",
+      "freiman-ruzsa"
+    ],
+    "prerequisites": [
+      "set-theory",
+      "addition"
+    ]
+  },
+  {
+    "id": "ann-35-kfold",
+    "proofId": "erdos-35",
+    "range": {
+      "startLine": 63,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "k-Fold Sumset",
+    "content": "B + B + ... + B (k times). Defined recursively: 0-fold is {0}, 1-fold is B, (n+1)-fold is n-fold + B. Used to define additive bases: B is a basis of order k if kB = ℕ.",
+    "mathContext": "The $k$-fold sumset $kB = \\underbrace{B + B + \\cdots + B}_{k}$. Recursive definition: $0B = \\{0\\}$, $(k+1)B = kB + B$. An additive basis of order $k$ has $kB \\supseteq \\mathbb{N}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated-sumsets",
+      "additive-bases",
+      "waring-problem"
+    ],
+    "prerequisites": [
+      "sumset",
+      "recursion"
+    ]
+  },
+  {
+    "id": "ann-35-basis",
+    "proofId": "erdos-35",
+    "range": {
+      "startLine": 69,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "Additive Basis of Order k",
+    "content": "B is a basis of order k if every natural number is a sum of at most k elements of B. IsAdditiveBasisExact requires k to be minimal. Examples: squares have order 4 (Lagrange), primes with 1 have order 3 (Goldbach) or 4 (Vinogradov).",
+    "mathContext": "$B$ is an additive basis of order $k$ if $\\forall n \\in \\mathbb{N},\\, \\exists m \\leq k,\\, n \\in mB$. The order is the minimal such $k$. Waring's problem asks: is $\\{0, 1^k, 2^k, \\ldots\\}$ a basis? Hilbert (1909) proved yes; the order $g(k)$ is known exactly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "waring-problem",
+      "hilbert-1909",
+      "goldbach-conjecture",
+      "lagrange-four-squares"
+    ],
+    "prerequisites": [
+      "k-fold-sumset",
+      "natural-numbers"
+    ]
+  },
+  {
+    "id": "ann-35-density-bounds",
+    "proofId": "erdos-35",
+    "range": {
+      "startLine": 80,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Density Properties",
+    "content": "Three basic properties: (1) d_s(A) ≥ 0 (proved), (2) d_s(A) ≤ 1 (8 sorries in proof), (3) d_s(A) ≤ d_s(A+B) when 0 ∈ B (monotonicity). The non-negativity is fully proved; the others have sorry-gaps in the Lean proofs.",
+    "mathContext": "Basic bounds: $0 \\leq d_s(A) \\leq 1$. Proof of $d_s \\geq 0$: each $A(N)/N \\geq 0$, so $\\inf \\geq 0$. Proof of $d_s \\leq 1$: $A(N) \\leq N$, so each ratio $\\leq 1$. Monotonicity: $0 \\in B \\implies A \\subseteq A + B \\implies d_s(A) \\leq d_s(A+B)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "density-bounds",
+      "monotonicity",
+      "infimum-properties"
+    ],
+    "prerequisites": [
+      "schnirelmann-density",
+      "sumset"
+    ]
+  },
+  {
+    "id": "ann-35-erdos1936",
+    "proofId": "erdos-35",
+    "range": {
+      "startLine": 115,
+      "endLine": 122
+    },
+    "type": "concept",
+    "title": "Erdős 1936 Bound",
+    "content": "The original partial result: d_s(A+B) ≥ α + α(1-α)/(2k). This was the first quantitative lower bound, a factor of 2 weaker than the conjecture. Published in Erdős's 1936 paper [Er36c].",
+    "mathContext": "Erdős (1936): $d_s(A + B) \\geq \\alpha + \\frac{\\alpha(1-\\alpha)}{2k}$ where $\\alpha = d_s(A)$. The denominator $2k$ was later improved to $k$ by Plünnecke's stronger inequality. The $\\alpha(1-\\alpha)$ factor vanishes at the extremes $\\alpha = 0$ and $\\alpha = 1$, as expected.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos-1936",
+      "density-increment",
+      "partial-results"
+    ],
+    "prerequisites": [
+      "schnirelmann-density",
+      "additive-basis"
+    ]
+  },
+  {
+    "id": "ann-35-plunnecke",
+    "proofId": "erdos-35",
+    "range": {
+      "startLine": 126,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Plünnecke's Inequality",
+    "content": "The key 1970 result: d_s(A+B) ≥ α^{1-1/k}. This is strictly stronger than Erdős's conjecture for all α ∈ (0,1) and k ≥ 2. Ruzsa later gave a simplified proof using graph-theoretic methods.",
+    "mathContext": "Plünnecke's inequality (1970): $d_s(A + B) \\geq \\alpha^{1 - 1/k}$ for $B$ a basis of order $k$ with $0 \\in B$ and $\\alpha = d_s(A)$. Ruzsa's proof (1989) uses a clever graph-theoretic argument. For $k = 2$: $\\alpha^{1/2} \\geq \\alpha + \\alpha(1-\\alpha)/2$ iff $\\sqrt{\\alpha} \\geq \\alpha(3-\\alpha)/2$, which holds on $[0,1]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "plunnecke-inequality",
+      "ruzsa-covering-lemma",
+      "graph-theory-in-combinatorics"
+    ],
+    "prerequisites": [
+      "schnirelmann-density",
+      "additive-basis",
+      "real-exponentiation"
+    ]
+  },
+  {
+    "id": "ann-35-powerbound",
+    "proofId": "erdos-35",
+    "range": {
+      "startLine": 135,
+      "endLine": 142
+    },
+    "type": "concept",
+    "title": "Power Bound Implies Erdős",
+    "content": "Calculus lemma: α^{1-1/k} ≥ α + α(1-α)/k for α ∈ [0,1]. This bridges Plünnecke's inequality to Erdős's conjecture. The proof uses concavity of x^p for p ∈ (0,1).",
+    "mathContext": "The bridge lemma: $\\alpha^{1-1/k} \\geq \\alpha + \\frac{\\alpha(1-\\alpha)}{k}$ for $\\alpha \\in [0,1]$, $k \\geq 1$. Proof sketch: let $f(\\alpha) = \\alpha^{1-1/k} - \\alpha - \\alpha(1-\\alpha)/k$. Then $f(0) = 0$, $f(1) = 0$, and $f$ is concave on $(0,1)$ (since $1-1/k < 1$), so $f \\geq 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "concavity",
+      "power-functions",
+      "calculus-lemmas"
+    ],
+    "prerequisites": [
+      "real-analysis",
+      "power-functions",
+      "inequalities"
+    ]
+  },
+  {
+    "id": "ann-35-main",
+    "proofId": "erdos-35",
+    "range": {
+      "startLine": 146,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Erdős Problem #35 (SOLVED)",
+    "content": "The main result: d_s(A+B) ≥ α + α(1-α)/k. Follows from Plünnecke + the power bound. The Lean proof compiles modulo sorries: it chains plunnecke_inequality and power_bound_implies_erdos via linarith.",
+    "mathContext": "Main theorem: $d_s(A + B) \\geq d_s(A) + \\frac{d_s(A)(1 - d_s(A))}{k}$. The proof in Lean: (1) $d_s(A+B) \\geq \\alpha^{1-1/k}$ [Plünnecke], (2) $\\alpha^{1-1/k} \\geq \\alpha + \\alpha(1-\\alpha)/k$ [power bound], (3) combine via $\\texttt{linarith}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "erdos-problem-35",
+      "solved-problems",
+      "density-increment"
+    ],
+    "prerequisites": [
+      "plunnecke-inequality",
+      "power-bound-lemma"
+    ]
+  },
+  {
+    "id": "ann-35-squares",
+    "proofId": "erdos-35",
+    "range": {
+      "startLine": 177,
+      "endLine": 182
+    },
+    "type": "concept",
+    "title": "Squares Form Basis of Order 4",
+    "content": "Lagrange's four-square theorem: every natural number is a sum of four squares. This makes {0, 1, 4, 9, 16, ...} an additive basis of order 4, and Erdős's theorem gives d_s(A + squares) ≥ α + α(1-α)/4.",
+    "mathContext": "Lagrange (1770): $\\forall n \\in \\mathbb{N},\\, n = a^2 + b^2 + c^2 + d^2$ for some $a,b,c,d \\in \\mathbb{N}$. The set of perfect squares $\\{0, 1, 4, 9, 16, \\ldots\\}$ is therefore a basis of order 4. Applying Erdős #35: $d_s(A + \\text{squares}) \\geq \\alpha + \\alpha(1-\\alpha)/4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "lagrange-four-squares",
+      "waring-problem",
+      "quadratic-forms"
+    ],
+    "prerequisites": [
+      "additive-basis",
+      "perfect-squares"
+    ]
+  },
+  {
+    "id": "ann-35-primes",
+    "proofId": "erdos-35",
+    "range": {
+      "startLine": 184,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Primes Form Basis (Conditional)",
+    "content": "Conditional on Goldbach: primes with 1 form a basis of order 3 (every integer ≥ 2 is a sum of at most 3 primes). Unconditionally, Vinogradov's theorem gives order 4 for sufficiently large n, and Helfgott's 2013 work gives ternary Goldbach for all odd n ≥ 7.",
+    "mathContext": "Conditional (Goldbach): $\\{1\\} \\cup \\{p : p \\text{ prime}\\}$ is a basis of order 3. Unconditional (Vinogradov 1937 + Helfgott 2013): every odd $n \\geq 7$ is a sum of three primes, so primes with 1 form a basis of order 4. Applying Erdős #35: $d_s(A + \\text{primes}) \\geq \\alpha + \\alpha(1-\\alpha)/3$ (conditional).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "goldbach-conjecture",
+      "vinogradov-theorem",
+      "helfgott-2013",
+      "prime-basis"
+    ],
+    "prerequisites": [
+      "additive-basis",
+      "prime-numbers"
+    ]
+  }
+]

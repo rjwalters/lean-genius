@@ -1,0 +1,202 @@
+{
+  "id": "erdos-806",
+  "title": "Erdős Problem #806: Small Bases for Sumsets",
+  "slug": "erdos-806",
+  "description": "For A ⊆ {1,...,n} with |A| ≤ √n, must there exist B with |B| = o(√n) such that A ⊆ B + B? YES, with optimal bound Θ((log log n / log n) · √n).",
+  "meta": {
+    "author": "Erdős-Newman (1977 problem), Alon-Bukh-Sudakov (2009 solution)",
+    "sourceUrl": "https://erdosproblems.com/806",
+    "date": "2009",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos806Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "sumsets",
+      "bases",
+      "kakeya",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 806,
+    "erdosUrl": "https://erdosproblems.com/806",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_image_le",
+        "description": "Cardinality bound for image of finset",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_product",
+        "description": "Cardinality of product of finsets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of functions",
+        "module": "Mathlib.Topology.Order.Basic"
+      }
+    ],
+    "originalContributions": [
+      "finsetSumset definition: B + B as image of product",
+      "IsBasisFor definition: A ⊆ B + B predicate",
+      "sumset_card_bound theorem: |B + B| ≤ |B|²",
+      "erdos_newman_lower_bound axiom: Ω((log log n / log n) · √n)",
+      "alon_bukh_sudakov_upper_bound axiom: O((log log n / log n) · √n)",
+      "optimal_basis_size theorem: tight Θ bound",
+      "IsSidonSet definition: connection to Sidon sets",
+      "trivial_basis theorem: A ∪ {0} always works"
+    ],
+    "axiomCount": 2,
+    "lineCount": 219,
+    "assumptions": "2 axioms: erdos_newman_lower_bound, alon_bukh_sudakov_upper_bound. 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #806** was posed by Erdős and Newman in 1977 as part of their study of additive bases. The question asks: given a \"small\" set A (of size at most √n), can we find an even smaller set B whose sumset B + B covers A?\n\n**Historical Development:**\n- **1977 (Erdős-Newman):** Posed the problem and proved a lower bound. They showed there exist sets A with |A| ≈ √n requiring any covering basis B to have |B| ≥ c · (log log n / log n) · √n.\n- **2009 (Alon-Bukh-Sudakov):** Resolved the problem after 32 years! They proved the matching upper bound, showing that EVERY A of size ≤ √n has a basis B of size O((log log n / log n) · √n).\n\nThe resolution came through connections to discrete Kakeya-type problems, demonstrating unexpected links between additive combinatorics and geometric combinatorics.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $A \\subseteq \\{1, \\ldots, n\\}$ with $|A| \\leq \\sqrt{n}$. Must there exist some $B \\subset \\mathbb{Z}$ with $|B| = o(\\sqrt{n})$ such that $A \\subseteq B + B$?\n\n**Answer: YES**\n\nAlon, Bukh, and Sudakov (2009) proved:\n- For any such $A$, there exists $B$ with $A \\subseteq B + B$ and $|B| \\leq C \\cdot \\frac{\\log \\log n}{\\log n} \\cdot \\sqrt{n}$\n\nThis matches the Erdős-Newman lower bound up to constants, making the answer tight:\n$$|B|_{\\text{optimal}} = \\Theta\\left(\\frac{\\log \\log n}{\\log n} \\cdot \\sqrt{n}\\right)$$",
+    "text": "For A ⊆ {1,...,n} with |A| ≤ √n, must there exist B with |B| = o(√n) such that A ⊆ B + B? YES, with optimal bound Θ((log log n / log n) · √n).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** Define sumsets via Finset products and the basis predicate IsBasisFor.\n\n2. **Lower Bound (Erdős-Newman 1977):** Axiomatize the existence of \"hard\" sets A that require bases of size Ω((log log n / log n) · √n).\n\n3. **Upper Bound (Alon-Bukh-Sudakov 2009):** Axiomatize the main theorem that every A has a small basis. The proof uses discrete Kakeya ideas and is beyond direct formalization.\n\n4. **Tight Bound:** Combine both to show the optimal size is Θ((log log n / log n) · √n).\n\n5. **Examples:** Include trivial basis construction and connection to Sidon sets.",
+    "keyInsights": [
+      "**Basis Problem:** Given A, find the smallest B such that every element of A is a sum of two elements from B.",
+      "**Trivial Bound:** A ∪ {0} always works (a = a + 0), giving |B| = |A| + 1 ≈ √n. The question is whether we can do better.",
+      "**Logarithmic Savings:** The answer is YES - we can save a factor of (log n / log log n), getting |B| = o(√n).",
+      "**Tight Result:** Both upper and lower bounds are Θ((log log n / log n) · √n), so this is optimal.",
+      "**Kakeya Connection:** The proof uses ideas from discrete Kakeya problems - unexpected geometry in number theory!"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sumsets-bases",
+      "title": "Sumsets and Bases",
+      "summary": "Defines `finsetSumset` ($B + B$ via Cartesian product), `IsBasisFor` ($A \\subseteq B + B$), and proves `sumset_card_bound` ($|B+B| \\leq |B|^2$) — the foundational building blocks for the problem",
+      "startLine": 40,
+      "endLine": 71,
+      "mathContext": "$B + B = \\{b_1 + b_2 : b_1, b_2 \\in B\\}$, $\\text{IsBasisFor}(B, A) \\iff A \\subseteq B + B$"
+    },
+    {
+      "id": "interval",
+      "title": "The Interval {1, ..., n}",
+      "summary": "Defines the ambient set $\\{1, \\ldots, n\\}$ as a `Finset ℕ` using `Finset.range` with a filter",
+      "startLine": 72,
+      "endLine": 81,
+      "mathContext": "$\\{1, \\ldots, n\\} = \\{k \\in \\text{range}(n) : k \\geq 1\\}$"
+    },
+    {
+      "id": "lower-bound",
+      "title": "Erdős-Newman Lower Bound (1977)",
+      "summary": "Axiomatizes the existence of 'hard' sets $A$ requiring any basis $B$ to satisfy $|B| \\geq (1-\\varepsilon) \\cdot \\frac{\\log \\log n}{\\log n} \\cdot \\sqrt{n}$",
+      "startLine": 82,
+      "endLine": 100,
+      "mathContext": "$\\exists A \\subseteq \\{1,\\ldots,n\\}$ with $|A| \\leq \\sqrt{n}$ such that $\\forall B$, $A \\subseteq B+B \\implies |B| = \\Omega\\left(\\frac{\\log\\log n}{\\log n}\\sqrt{n}\\right)$"
+    },
+    {
+      "id": "upper-bound",
+      "title": "Alon-Bukh-Sudakov Upper Bound (2009)",
+      "summary": "Axiomatizes the resolution: every $A$ with $|A| \\leq \\sqrt{n}$ admits a basis $B$ of size $O\\left(\\frac{\\log\\log n}{\\log n}\\sqrt{n}\\right)$",
+      "startLine": 101,
+      "endLine": 126,
+      "mathContext": "$\\forall A \\subseteq \\{1,\\ldots,n\\}$ with $|A| \\leq \\sqrt{n}$, $\\exists B$ with $A \\subseteq B+B$ and $|B| \\leq C \\cdot \\frac{\\log\\log n}{\\log n} \\cdot \\sqrt{n}$"
+    },
+    {
+      "id": "tight-bound",
+      "title": "The Tight Bound",
+      "summary": "Combines both bounds into a verified theorem: the optimal basis size is $\\Theta\\left(\\frac{\\log\\log n}{\\log n} \\cdot \\sqrt{n}\\right)$",
+      "startLine": 127,
+      "endLine": 151,
+      "mathContext": "$|B|_{\\text{opt}} = \\Theta\\left(\\frac{\\log\\log n}{\\log n}\\sqrt{n}\\right)$"
+    },
+    {
+      "id": "related",
+      "title": "Related Results",
+      "summary": "Defines Sidon sets (`IsSidonSet`) where all pairwise sums are distinct — the dual problem to finding small bases",
+      "startLine": 152,
+      "endLine": 170,
+      "mathContext": "$S$ is Sidon $\\iff a+b = c+d \\implies \\{a,b\\} = \\{c,d\\}$ for $a,b,c,d \\in S$"
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "summary": "Proves `trivial_basis`: $A \\cup \\{0\\}$ is always a basis (since $a = a + 0$), establishing the $|B| = |A|+1$ baseline that Erdős asked to improve",
+      "startLine": 171,
+      "endLine": 192,
+      "mathContext": "$B = A \\cup \\{0\\} \\implies A \\subseteq B + B$ since $a = a + 0 \\in B + B$"
+    },
+    {
+      "id": "asymptotics",
+      "title": "Asymptotic Notation",
+      "summary": "Documents (in a docstring) that $\\frac{\\log\\log n}{\\log n} \\to 0$ — the analytic fact ensuring the Alon-Bukh-Sudakov bound gives $|B| = o(\\sqrt{n})$. Not formalized in this file.",
+      "startLine": 193,
+      "endLine": 201,
+      "mathContext": "$\\lim_{n \\to \\infty} \\frac{\\log\\log n}{\\log n} = 0$"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Closing docstring restating the resolved problem (Alon-Bukh-Sudakov, 2009). No additional declarations.",
+      "startLine": 202,
+      "endLine": 219,
+      "mathContext": "$\\forall A \\subseteq \\{1,\\ldots,n\\}$ with $|A| \\leq \\sqrt{n}$, $\\exists B$ with $|B| \\leq \\frac{\\log\\log n}{\\log n}\\sqrt{n}$ and $A \\subseteq B+B$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #806 asked whether sets A ⊆ {1,...,n} of size at most √n can always be covered by sumsets B + B where B has size o(√n). Alon, Bukh, and Sudakov (2009) answered YES, achieving the tight bound Θ((log log n / log n) · √n) that matches the Erdős-Newman lower bound from 1977.",
+    "implications": "**Theoretical Significance**: **Implications for Additive Combinatorics**\n\n1. **Efficient Bases:** Even \"random-looking\" small sets have surprisingly efficient sumset representations.\n\n**2. Kakeya Connection:** The proof reveals deep connections between additive combinatorics and discrete geometry.\n\n3. **Optimal Bounds:** The matching upper and lower bounds close this problem completely.\n\n4. **Related Problems:** Similar techniques apply to Erdős Problem #333 and other basis questions.",
+    "openQuestions": [
+      "What is the exact leading constant in the optimal bound?",
+      "Can the result be extended to larger sets A (|A| > √n)?",
+      "What about k-fold sumsets kB for k > 2?",
+      "Are there constructive/algorithmic versions of the proof?",
+      "How does the bound change for A ⊆ ℤ (not just {1,...,n})?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Set.Finite",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card"
+    ],
+    "opens": [
+      "Set",
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos806",
+    "lineCount": 219,
+    "axiomCount": 2,
+    "theoremCount": 3,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos806Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-476",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sumsets"
+    },
+    {
+      "targetId": "erdos-484",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sumsets"
+    },
+    {
+      "targetId": "erdos-785",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, sumsets"
+    }
+  ],
+  "sorries": 0
+}

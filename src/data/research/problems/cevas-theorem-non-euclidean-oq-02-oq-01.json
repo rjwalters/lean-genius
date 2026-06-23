@@ -1,0 +1,100 @@
+{
+  "slug": "cevas-theorem-non-euclidean-oq-02-oq-01",
+  "title": "Can the spherical Menelaus theorem be added using sin as the measure function...",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "COMPLETED: Can the spherical Menelaus theorem be added using sin as the measure function, with appropriate domain restrictions (angles in (0, pi))?.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-29T19:14:09.093Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "geometry",
+    "hyperbolic-geometry",
+    "non-euclidean",
+    "menelaus",
+    "transversal",
+    "signed-ratios",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cevas-theorem",
+    "cevas-theorem-non-euclidean",
+    "cevas-theorem-non-euclidean-oq-02",
+    "cevas-theorem-non-euclidean-oq-02-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-29T19:14:09.093Z",
+  "lastUpdate": "2026-05-29T19:14:09.093Z",
+  "completed": "2026-05-29T19:14:09.093Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CevasTheoremNonEuclidean.lean",
+      "filename": "CevasTheoremNonEuclidean.lean",
+      "lineCount": 528,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclidean.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ02.lean",
+      "filename": "CevasTheoremNonEuclideanOQ02.lean",
+      "lineCount": 310,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean",
+      "filename": "CevasTheoremNonEuclideanOQ02OQ01.lean",
+      "lineCount": 341,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean"
+    }
+  ]
+}

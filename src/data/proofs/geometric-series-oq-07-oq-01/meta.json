@@ -1,0 +1,189 @@
+{
+  "id": "geometric-series-oq-07-oq-01",
+  "slug": "geometric-series-oq-07-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "GeometricSeriesOQ07OQ01",
+    "lineCount": 244,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ07OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The General Moment of the Geometric Series: ∑ nᵐ rⁿ = ∑ₖ S(m,k)·k!·rᵏ/(1−r)^{k+1}",
+  "description": "The m-th moment of the geometric series to ALL orders: for |r| < 1 over ℝ, ∑_{n≥0} nᵐ·rⁿ = ∑_{k=0}^{m} S(m,k)·k!·rᵏ/(1−r)^{k+1}, where S(m,k) = Nat.stirlingSecond is the Stirling number of the second kind. Mathlib proves only summability of nᵐrⁿ and the m=0,1 values; this gives the closed value at arbitrary order. Two pillars: the combinatorial change of basis nᵐ = ∑_k S(m,k)·n^{underline k} (monomial over falling factorials, proved by induction — a Stirling↔power bridge Mathlib lacks) and the falling-factorial generating function ∑_n n^{underline k}·rⁿ = k!·rᵏ/(1−r)^{k+1} (an index shift of Mathlib's ascending-factorial sum). Recovers the gallery's order-0/1/2/3 moments (geometric-series, oq-07, oq-10) as special cases.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ07OQ01.lean",
+    "tags": [
+      "analysis",
+      "combinatorics",
+      "geometric-series",
+      "infinite-series",
+      "power-series",
+      "moments",
+      "stirling-numbers",
+      "falling-factorial",
+      "summability",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 244,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "hasSum_pow_mul_geometric / tsum_pow_mul_geometric: the closed form for the m-th moment of the geometric series to ALL orders, ∑_{n≥0} nᵐ · rⁿ = ∑_{k=0}^{m} S(m,k) · k! · rᵏ / (1-r)^{k+1} for |r| < 1 over ℝ, where S(m,k) is the Stirling number of the second kind. This directly answers the open question geometric-series-oq-07-oq-01 (generalise the moment to arbitrary order with a polynomial numerator over (1-r)^{m+1}). Mathlib proves only summability of nᵐ rⁿ (summable_pow_mul_geometric_of_norm_lt_one) and the m=0,1 closed forms; it has no general-order value.",
+      "pow_eq_sum_stirlingSecond_descFactorial: the combinatorial ℕ-identity nᵐ = ∑_{k=0}^{m} S(m,k) · n^{underline k} (the falling-factorial change of basis for a monomial). Mathlib defines Nat.stirlingSecond with its recurrences but provides NO link between Stirling numbers and powers; this lemma supplies that bridge. Proved by induction on m, combining the Stirling recurrence S(m+1,k+1)=(k+1)S(m,k+1)+S(m,k) with a telescoping reindex of the falling-factorial sums.",
+      "hasSum_descFactorial_geometric: the falling-factorial generating function ∑_{n≥0} n^{underline k} · rⁿ = k! · rᵏ / (1-r)^{k+1}, obtained by shifting Mathlib's ascending-factorial sum down by k positions (the first k terms vanish because n^{underline k} = 0 for n < k). The companion mul_descFactorial gives the side-condition-free recurrence n · n^{underline k} = n^{underline{k+1}} + k · n^{underline k}.",
+      "A Stirling-number formulation that is cleaner than the Eulerian-number numerator the open question proposed: since Mathlib has Nat.stirlingSecond but no Eulerian numbers, the coefficient S(m,k)·k! (the number of surjections from an m-set onto a k-set) is the directly available form. The general theorem recovers the gallery's order-0/1/2/3 moments (geometric-series, oq-07, oq-10) as the special cases m = 0,1,2,3, with the small Stirling values discharged by kernel `decide`."
+    ],
+    "prerequisites": [
+      "Mathlib's ascending-factorial geometric sum hasSum_choose_mul_geometric_of_norm_lt_one (∑ (n+k choose k) rⁿ = 1/(1-r)^{k+1})",
+      "Mathlib's Stirling numbers of the second kind Nat.stirlingSecond and the recurrence stirlingSecond_succ_succ",
+      "Nat.descFactorial (the falling factorial) and Nat.descFactorial_eq_factorial_mul_choose, descFactorial_succ, descFactorial_eq_zero_iff_lt",
+      "hasSum_nat_add_iff: index-shift identity HasSum (fun n => f(n+k)) a ↔ HasSum f (a + ∑_{i<k} f i)",
+      "HasSum arithmetic (HasSum.mul_left, hasSum_sum, HasSum.tsum_eq)",
+      "Parent: geometric-series-oq-07 (∑ n² rⁿ = r(1+r)/(1-r)³)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_choose_mul_geometric_of_norm_lt_one",
+        "description": "∑_n (n+k choose k) · rⁿ = 1/(1-r)^{k+1} for ‖r‖ < 1. After multiplying by k! and applying descFactorial_eq_factorial_mul_choose this becomes the ascending-factorial sum; an index shift by k then yields the falling-factorial sum used per order.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Nat.stirlingSecond",
+        "description": "Stirling numbers of the second kind with the recurrence stirlingSecond_succ_succ (S(m+1,k+1)=(k+1)S(m,k+1)+S(m,k)), the boundary values stirlingSecond_succ_zero / stirlingSecond_zero, and the vanishing stirlingSecond_eq_zero_of_lt. These drive the induction for the monomial expansion.",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.descFactorial_eq_factorial_mul_choose",
+        "description": "n^{underline k} = k! · (n choose k). Converts Mathlib's binomial geometric sum into the falling-factorial form and supplies the k! that appears in the moment numerator.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "hasSum_nat_add_iff",
+        "description": "HasSum (fun n => f(n+k)) a ↔ HasSum f (a + ∑_{i<k} f i). Used to recover ∑_n n^{underline k} rⁿ from the shifted sum, the first k terms vanishing since n^{underline k}=0 for n<k.",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.NatInt"
+      },
+      {
+        "theorem": "summable_pow_mul_geometric_of_norm_lt_one",
+        "description": "Mathlib's summability of nᵏ rⁿ for ‖r‖ < 1. It establishes convergence but no closed value — the gap this entry fills for the value at arbitrary order.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The moments ∑ nᵐ rⁿ of the geometric weights are classically computed by repeatedly applying the operator r·d/dr to ∑ rⁿ = 1/(1−r), producing rational functions A_m(r)/(1−r)^{m+1} whose numerators are the Eulerian polynomials — the generating functions of permutation descents (Worpitzky, 1883). A second, combinatorially cleaner route runs through the falling factorials n^{underline k} = n(n−1)···(n−k+1) and the Stirling numbers of the second kind S(m,k), which count partitions of an m-set into k nonempty blocks: every monomial expands as nᵐ = ∑_k S(m,k)·n^{underline k}, and each falling factorial has an elementary geometric generating function. This entry formalizes the Stirling route, which is the one Mathlib can support (it has Nat.stirlingSecond but no Eulerian numbers). The coefficient S(m,k)·k! is the number of surjections from an m-set onto a k-set — so the moment formula reads each power's contribution as a sum over surjection counts. Mathlib knows the Stirling recurrences and the ascending-factorial geometric sum, but neither the link between Stirling numbers and powers nor the moment value; both gaps are filled here.",
+    "problemStatement": "**Open Question (oq-07-oq-01)**: generalize the second-moment computation ∑ n²rⁿ = r(1+r)/(1−r)³ to arbitrary order m, with a polynomial-in-r numerator over (1−r)^{m+1}. Answer: ∑_{n≥0} nᵐ·rⁿ = ∑_{k=0}^{m} S(m,k)·k!·rᵏ/(1−r)^{k+1} for |r| < 1, uniform in m, recovering orders 0,1,2,3 as the gallery's existing entries.",
+    "proofStrategy": "Two pillars assembled by HasSum linearity. **Pillar 1 (combinatorics, in ℕ):** pow_eq_sum_stirlingSecond_descFactorial proves nᵐ = ∑_{k≤m} S(m,k)·n^{underline k} by induction on m. The step multiplies the inductive hypothesis by n, rewrites each summand with the side-condition-free falling-factorial recurrence n·n^{underline k} = n^{underline k+1} + k·n^{underline k} (mul_descFactorial), reindexes both the LHS (via the Stirling recurrence S(m+1,k+1) = (k+1)S(m,k+1)+S(m,k)) and a telescoping shift (Finset.sum_range_succ'), and closes the bookkeeping with omega. **Pillar 2 (analysis, over ℝ):** hasSum_descFactorial_geometric evaluates ∑_n n^{underline k}·rⁿ = k!·rᵏ/(1−r)^{k+1} by taking Mathlib's ascending-factorial sum (k!·(n+k choose k) form), multiplying by rᵏ, and shifting the index down by k via hasSum_nat_add_iff (the first k terms vanish since n^{underline k} = 0 for n < k). **Assembly:** hasSum_pow_mul_geometric casts the Stirling expansion to ℝ, makes each k-term a HasSum, sums over 0 ≤ k ≤ m by hasSum_sum, and collapses the inner finite sum back to nᵐ·rⁿ. Orders 0–3 are checked by evaluating the small Stirling numbers with kernel `decide` and the r-rational identity with field_simp; ring.",
+    "keyInsights": [
+      "The whole computation is one change of basis: every monomial nᵐ lies in the span of the falling factorials {n^{underline k}}, and each falling factorial has an elementary geometric generating function — so the moment at ANY order is a single finite linear combination, no per-order convergence argument and no separate algebraic identity (as orders 2 and 3 each needed individually).",
+      "The Stirling coefficient S(m,k)·k! is exactly the number of surjections from an m-set onto a k-set, giving the moment numerator a clean combinatorial meaning that the Eulerian-polynomial form (which Mathlib cannot yet express) only obscures.",
+      "Mathlib has Nat.stirlingSecond and its recurrences but NO link between Stirling numbers and powers; the monomial expansion proved here (pow_eq_sum_stirlingSecond_descFactorial) supplies that missing bridge as reusable infrastructure.",
+      "The side-condition-free recurrence n·n^{underline k} = n^{underline k+1} + k·n^{underline k} (valid even when k > n, where both falling factorials vanish) is what lets the induction proceed without case-splitting on k ≤ n — a small but essential simplification.",
+      "Working in HasSum throughout means convergence is inherited from Mathlib's summable_pow_mul_geometric; the contribution is purely the VALUE, which is why the open question's 'summability is known, value is not' framing is answered exactly."
+    ]
+  },
+  "sections": [
+    {
+      "id": "stirling-expansion",
+      "title": "Stirling's Monomial Expansion (a Combinatorial ℕ-Identity)",
+      "startLine": 46,
+      "endLine": 104,
+      "summary": "mul_descFactorial proves the side-condition-free falling-factorial recurrence n·n^{underline k} = n^{underline k+1} + k·n^{underline k}. pow_eq_sum_stirlingSecond_descFactorial then proves nᵐ = ∑_{k≤m} S(m,k)·n^{underline k} by induction on m, using the Stirling recurrence and a telescoping reindex (Finset.sum_range_succ'), closed by omega — the Stirling↔power bridge Mathlib lacks."
+    },
+    {
+      "id": "falling-factorial-gf",
+      "title": "The Falling-Factorial Geometric Sum",
+      "startLine": 106,
+      "endLine": 155,
+      "summary": "hasSum_ascFactorial_geometric rephrases Mathlib's ascending-factorial sum as ∑_n (n+k)^{underline k}·rⁿ = k!/(1−r)^{k+1} via descFactorial_eq_factorial_mul_choose. hasSum_descFactorial_geometric then shifts the index down by k (hasSum_nat_add_iff; the first k terms vanish since n^{underline k} = 0 for n < k) to get ∑_n n^{underline k}·rⁿ = k!·rᵏ/(1−r)^{k+1}."
+    },
+    {
+      "id": "general-moment",
+      "title": "The General Moment Closed Form",
+      "startLine": 157,
+      "endLine": 196,
+      "summary": "hasSum_pow_mul_geometric assembles the headline: cast the Stirling expansion to ℝ, make each k-term a HasSum via the falling-factorial generating function, sum over 0 ≤ k ≤ m with hasSum_sum, and collapse the inner finite sum back to nᵐ·rⁿ. tsum_pow_mul_geometric gives the tsum form."
+    },
+    {
+      "id": "low-order",
+      "title": "Recovering the Gallery's Low-Order Moments",
+      "startLine": 198,
+      "endLine": 244,
+      "summary": "The general formula specializes to orders m = 0,1,2,3 — the gallery's geometric-series, oq-07 (∑n²rⁿ), and oq-10 (∑n³rⁿ). The small Stirling numbers are evaluated by kernel `decide` and the resulting r-rational identities by field_simp; ring (after clearing 1−r ≠ 0)."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01",
+      "question": "Identify the numerator with the Eulerian polynomial: prove ∑_{k=0}^{m} S(m,k)·k!·rᵏ·(1-r)^{m-k} = A_m(r), the m-th Eulerian polynomial ∑_j ⟨m,j⟩ rʲ, exhibiting the moment closed form as A_m(r)/(1-r)^{m+1} with nonnegative integer coefficients summing to m!. This requires building Eulerian numbers (absent from Mathlib) and proving Worpitzky's identity.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-02",
+      "question": "Derive the factorial moments of the geometric distribution as a corollary: for X with P(X=n) = (1-r)rⁿ, show E[X^{underline k}] = k!·(r/(1-r))ᵏ directly from hasSum_descFactorial_geometric, and recover E[X], E[X²], Var(X) by re-expanding the falling factorials.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-07",
+      "relationship": "extends",
+      "description": "Parent. oq-07 proves the second moment ∑ n² rⁿ = r(1+r)/(1-r)³ and poses (as its open question oq-01) the generalisation to arbitrary order. This entry answers it with the all-orders closed form ∑ nᵐ rⁿ = ∑ₖ S(m,k)·k!·rᵏ/(1-r)^{k+1}, recovering oq-07 as the case m=2."
+    },
+    {
+      "targetId": "geometric-series-oq-10",
+      "relationship": "sibling",
+      "description": "oq-10 proves the third moment ∑ n³ rⁿ = r(1+4r+r²)/(1-r)⁴ by the rising-binomial method for the single order m=3. This entry subsumes it as the case m=3 of the general formula (verified as an explicit example)."
+    },
+    {
+      "targetId": "geometric-series-oq-08-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "A parallel moment-family strand on the FINITE side: oq-08-oq-01-oq-01 gives the finite second-order arithmetico-geometric sum ∑_{k<n} k²·xᵏ as a rational function over (1-x)³. This entry is the infinite-limit, all-orders counterpart, with the Stirling/falling-factorial basis replacing the explicit polynomial assembly."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecificLimits.Normed",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the ascending-factorial geometric sums (hasSum_choose_mul_geometric_of_norm_lt_one) and the summability of nᵏ rⁿ that this entry upgrades to a closed value."
+    },
+    {
+      "title": "Mathlib4: Combinatorics.Enumerative.Stirling",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Nat.stirlingSecond and its recurrences. Mathlib has the Stirling numbers but not their connection to powers; the monomial expansion proved here supplies that bridge."
+    },
+    {
+      "title": "Concrete Mathematics (Stirling numbers, falling factorials, generating functions)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for the monomial expansion nᵐ = ∑ S(m,k) n^{underline k} and the falling-factorial generating function used to evaluate ∑ nᵐ rⁿ."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For |r| < 1 over ℝ and every order m, the m-th moment of the geometric series has the closed form ∑_{n≥0} nᵐ · rⁿ = ∑_{k=0}^{m} S(m,k) · k! · rᵏ / (1-r)^{k+1}, where S(m,k) = Nat.stirlingSecond m k. The proof has two pillars: (1) the combinatorial identity nᵐ = ∑_k S(m,k) · n^{underline k} expanding a monomial over falling factorials (proved by induction with a telescoping reindex of the Stirling recurrence), and (2) the falling-factorial generating function ∑_n n^{underline k} rⁿ = k! rᵏ/(1-r)^{k+1} (an index shift of Mathlib's ascending-factorial sum). Summing the finite expansion against rⁿ by linearity of HasSum assembles the result. The file provides HasSum and tsum forms and verifies the orders m=0,1,2,3 — the gallery's geometric-series, oq-07 and oq-10 — as explicit specialisations. 244 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound (the low-order checks use kernel `decide`, not native_decide).",
+    "implications": "Mathlib proves nᵐ rⁿ is summable but gives no value beyond the first moment, so the all-orders closed form is a genuine gap fill. The conceptual content is the change of basis: every monomial lies in the span of the falling factorials, and each falling factorial has an elementary geometric generating function, so a single finite linear combination evaluates the moment at any order — no per-order convergence argument and no separate algebraic identity (as oq-07 and oq-10 each needed). The Stirling-number coefficient S(m,k)·k! (the surjection count) is the directly Mathlib-supported form of the Eulerian numerator the parent open question anticipated; making that identification explicit (Worpitzky's identity) is the first follow-up.",
+    "openQuestions": [
+      "Identify the numerator ∑_k S(m,k) k! rᵏ (1-r)^{m-k} with the Eulerian polynomial A_m(r) (requires building Eulerian numbers and Worpitzky's identity).",
+      "Derive the geometric-distribution factorial moments E[X^{underline k}] = k!(r/(1-r))ᵏ as a probabilistic corollary."
+    ]
+  }
+}

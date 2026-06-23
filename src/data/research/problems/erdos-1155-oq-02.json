@@ -1,0 +1,156 @@
+{
+  "slug": "erdos-1155-oq-02",
+  "title": "Triangle Removal Process: Turán Extremality Gap",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "The triangle removal process on $K_n$ produces a triangle-free graph with $f(n)$ edges. By Turán's theorem, any triangle-free graph on $n$ vertices has at most $\\lfloor n^2/4 \\rfloor$ edges. Since the BFL result gives $f(n) = n^{3/2+o(1)}$, the output is far from Turán-extremal. OQ-02: Quantify the gap. Does $f(n)/(n^2/4) \\to 0$? What is the rate?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-24T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "All sorries eliminated. 0 sorries, 7 axioms total (6 inherited from Erdos1155Problem.lean + 1 own: triangleRemovalEdges_le_turan_exact).",
+    "blockers": [],
+    "nextAction": "None — formalization complete within axiomatization scope.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0 sorries remain. 7 axioms total: 6 inherited from Erdos1155Problem.lean (triangleRemovalEdges, _nonneg, _le_complete, bfl_upper_bound, bfl_lower_bound, triangleRemoval_mantel_bound) + 1 own (triangleRemovalEdges_le_turan_exact). All theorems proved via BFL squeeze + Turán bound.",
+    "builtItems": [
+      "turan_triangle_free_bound in Erdos1155OQ02.lean:53 — CliqueFree 3 graph has ≤ n²/4 edges (proved via Mathlib CliqueFree.card_edgeFinset_le)",
+      "turanDensity def in Erdos1155OQ02.lean:104 — f(n)/(n²/4), noncomputable",
+      "turanDensity_eq in Erdos1155OQ02.lean:108 — turanDensity n = 4·f(n)/n²",
+      "turanDensity_mem_Icc in Erdos1155OQ02.lean:116 — turanDensity n ∈ [0,1]",
+      "turanDensity_tendsto_zero in Erdos1155OQ02.lean:132 — PROVED via squeeze: 0 ≤ δ(n) ≤ 4/n^{1/4} → 0",
+      "process_not_turan_extremal in Erdos1155OQ02.lean:175 — eventually f(n) < n²/8 (proved)",
+      "turan_gap_diverges in Erdos1155OQ02.lean:210 — PROVED via (1/8)n^{1/4} ≤ n²/4/(f(n)+1) using BFL",
+      "turan_graph_r2_is_maximal in Erdos1155OQ02.lean:263 — turanGraph n 2 is triangle-free",
+      "turan_bfl_exponent_gap in Erdos1155OQ02.lean:269 — PROVED: n²/4/f(n) > n^{1/2-ε} eventually via BFL upper at ε/2 + n^{ε/2}>4 squeeze"
+    ],
+    "insights": [
+      "turanDensity_tendsto_zero: squeeze proof — 0 ≤ turanDensity n ≤ 4/n^{1/4} → 0. Key: f(n)*n^{1/4} ≤ n^{7/4}*n^{1/4} = n² via Real.rpow_add + Real.rpow_natCast",
+      "turan_gap_diverges: lower bound via tendsto_atTop_mono'. Key step: n²/4/(2*n^{7/4}) = (1/8)*n^{1/4} proved with field_simp + ring after establishing n^{7/4}*n^{1/4}=n²",
+      "turan_triangle_free_bound uses CliqueFree.card_edgeFinset_le with r=2; sorry for connecting abstract f(n) to graph construction",
+      "triangleRemovalEdges_le_turan_exact is axiomatized: connecting abstract f(n) to concrete CliqueFree graph requires ~100 lines",
+      "Turán gap is polynomial: n²/4 / n^{3/2} = n^{1/2}/4 → ∞ — stronger than density-zero statement",
+      "Real.rpow_add requires positivity of base: (0:ℝ) < n needed before applying the identity",
+      "turan_bfl_exponent_gap proved: squeeze via BFL upper bound at ε/2, then n^{ε/2} > 4 eventually gives n^{2-ε/2} < n²/4"
+    ],
+    "mathlibGaps": [
+      "No direct way to connect abstract triangleRemovalEdges function to a concrete CliqueFree SimpleGraph — requires axiom"
+    ],
+    "nextSteps": [
+      "Future axiom-elimination: triangleRemovalEdges_le_turan_exact (~100 lines) requires connecting abstract f(n) to a concrete CliqueFree SimpleGraph construction",
+      "Possible follow-up OQ: bound the rate of convergence to the limiting distribution of f(n)/n^{3/2} (sibling slug erdos-1155-oq-01-oq-01 tracks the existence of a limit)"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "combinatorics",
+    "erdos",
+    "turan-theory"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-115",
+    "erdos-1155",
+    "erdos-1155-oq-01",
+    "erdos-1155-oq-01-oq-01",
+    "erdos-1155-oq-01-oq-06",
+    "erdos-1155-oq-01-oq-07",
+    "erdos-1155-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-24T00:00:00.000Z",
+  "lastUpdate": "2026-04-28T16:00:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1155OQ01.lean",
+      "filename": "Erdos1155OQ01.lean",
+      "lineCount": 412,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155OQ01OQ01.lean",
+      "filename": "Erdos1155OQ01OQ01.lean",
+      "lineCount": 297,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155OQ01OQ06.lean",
+      "filename": "Erdos1155OQ01OQ06.lean",
+      "lineCount": 11,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01OQ06.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155OQ01OQ07.lean",
+      "filename": "Erdos1155OQ01OQ07.lean",
+      "lineCount": 356,
+      "theoremCount": 21,
+      "axiomCount": 3,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ01OQ07.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155OQ02.lean",
+      "filename": "Erdos1155OQ02.lean",
+      "lineCount": 315,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1155Problem.lean",
+      "filename": "Erdos1155Problem.lean",
+      "lineCount": 231,
+      "theoremCount": 8,
+      "axiomCount": 5,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1155Problem.lean"
+    }
+  ]
+}

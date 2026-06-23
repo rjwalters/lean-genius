@@ -1,0 +1,186 @@
+{
+  "id": "uniformbell-multinomial-oq-01",
+  "title": "Uniform Bell numbers: the multinomial structure of equal-block partitions",
+  "slug": "uniformbell-multinomial-oq-01",
+  "description": "The uniform Bell number uniformBell m n counts the partitions of an m·n-element set into m unordered blocks of size n. Mathlib records the cornerstone identity uniformBell m n · (n!)^m · m! = (m·n)! and its division form, but stops there. This entry re-exports those cornerstones and adds the missing surrounding theory: the ordered-block multinomial count, the bridge that forgetting block order divides by m!, positivity, the factorial divisibility corollary, and concrete instances.",
+  "meta": {
+    "author": "E. T. Bell / classical combinatorics",
+    "status": "verified",
+    "proofRepoPath": "Proofs/UniformBellMultinomialOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "bell-numbers",
+      "multinomial",
+      "set-partitions",
+      "enumerative",
+      "factorial",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.uniformBell_mul_eq",
+        "description": "The cornerstone identity uniformBell m n · (n!)^m · m! = (m·n)! for n ≠ 0",
+        "module": "Mathlib.Combinatorics.Enumerative.Bell"
+      },
+      {
+        "theorem": "Nat.uniformBell_eq_div",
+        "description": "Division form uniformBell m n = (m·n)! / ((n!)^m · m!)",
+        "module": "Mathlib.Combinatorics.Enumerative.Bell"
+      },
+      {
+        "theorem": "Nat.uniformBell_eq",
+        "description": "Closed product form uniformBell m n = ∏_{p<m} C(p·n + n − 1, n − 1), used to evaluate concrete instances",
+        "module": "Mathlib.Combinatorics.Enumerative.Bell"
+      },
+      {
+        "theorem": "Nat.multinomial_spec",
+        "description": "(∏ i ∈ s, (f i)!) · multinomial s f = (∑ i ∈ s, f i)!, specialised to the constant function to count ordered blocks",
+        "module": "Mathlib.Data.Nat.Choose.Multinomial"
+      }
+    ],
+    "originalContributions": [
+      "multinomial_range_const: the ordered equal-block count (n!)^m · multinomial (range m) (fun _ => n) = (m·n)!, the ordered analogue of uniformBell_mul_eq, absent from Mathlib",
+      "uniformBell_mul_factorial: the bridge uniformBell m n · m! = multinomial (range m) (fun _ => n), making precise that forgetting the order of the m equal blocks divides the ordered count by exactly m!",
+      "uniformBell_pos: 0 < uniformBell m n for all m, n (an equal-block partition always exists), not recorded in Mathlib",
+      "factorial_pow_mul_factorial_dvd: the divisibility (n!)^m · m! ∣ (m·n)!, the integrality statement underlying the division form",
+      "uniformBell_two_two, uniformBell_two_three, uniformBell_three_two: concrete values 3, 10, 15 verified against the closed product form"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on propext, Classical.choice, Quot.sound. Concrete instances use kernel `decide` (no `native_decide`, so no `Lean.ofReduceBool`).",
+    "lineCount": 119,
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Bell numbers and their refinements count set partitions, a central object of enumerative combinatorics going back to E. T. Bell. The uniform (or equal-block) Bell number uniformBell m n is the number of ways to partition an m·n-element set into m unordered blocks, each of size exactly n. It is the m·n / (n,…,n) case of the partition-into-blocks-of-prescribed-sizes count and is intimately tied to the multinomial coefficient: the number of ways to split the same set into m ORDERED blocks of size n is the multinomial (m·n)! / (n!)^m, and dividing by m! to forget the order of the equal-size blocks recovers uniformBell m n.",
+    "problemStatement": "Determine the multinomial structure of equal-block set partitions: relate uniformBell m n (unordered blocks) to the multinomial coefficient (ordered blocks), establish positivity and divisibility, and verify concrete values.",
+    "text": "uniformBell m n counts partitions of an m·n-set into m unordered blocks of size n. It satisfies uniformBell m n · (n!)^m · m! = (m·n)! and equals the multinomial ordered-block count divided by m!.",
+    "proofStrategy": "1. Re-export the Mathlib cornerstones uniformBell_mul_eq and uniformBell_eq_div. 2. multinomial_range_const: specialise Nat.multinomial_spec to the constant function fun _ => n over Finset.range m; the product of factorials becomes (n!)^m (prod_const + card_range) and the sum becomes m·n (sum_const + card_range + smul_eq_mul), giving (n!)^m · multinomial = (m·n)!. 3. uniformBell_mul_factorial: both uniformBell_mul_eq and multinomial_range_const express (m·n)! as (n!)^m times something; cancel the positive factor (n!)^m via Nat.eq_of_mul_eq_mul_left to read off uniformBell m n · m! = multinomial. 4. uniformBell_pos: if uniformBell m n were 0 then uniformBell_mul_eq forces (m·n)! = 0, contradicting factorial_ne_zero (the n = 0 case is uniformBell m 0 = 1). 5. factorial_pow_mul_factorial_dvd: exhibit uniformBell m n as the cofactor in uniformBell_mul_eq. 6. Concrete instances: rewrite with uniformBell_eq, expand the range product with prod_range_succ, and close the numeric goal with kernel decide.",
+    "keyInsights": [
+      "**Ordered vs. unordered blocks.** The multinomial (m·n)! / (n!)^m counts ordered tuples of m blocks of size n; the m equal-size blocks can be permuted in m! ways without changing the underlying partition, so uniformBell m n · m! = multinomial — the single clean identity organising the whole picture.",
+      "**Cancellation over ℕ.** Both the ordered and unordered identities pin (m·n)! as (n!)^m times a cofactor; since (n!)^m > 0, left-cancellation in ℕ gives the bridge directly, with no division.",
+      "**Filling a Mathlib gap.** Mathlib proves uniformBell_mul_eq and its division form but neither the multinomial bridge, positivity, nor the denominator-divides-factorial corollary; this entry supplies all three.",
+      "**Integrality is a corollary, not an assumption.** That (m·n)! / ((n!)^m · m!) is an honest natural number is exactly the divisibility (n!)^m · m! ∣ (m·n)!, which falls straight out of the structural identity."
+    ],
+    "prerequisites": [
+      "Set partitions and the (uniform) Bell numbers",
+      "Multinomial coefficients",
+      "Factorials and natural-number divisibility"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "File-level docstring describing uniformBell m n, the cornerstone identity, and the additions. Imports Mathlib's Bell and Multinomial files and opens Nat and Finset.",
+      "mathContext": "uniformBell m n = Multiset.bell (replicate m n) counts equal-block partitions; Mathlib supplies the structural identity and division form."
+    },
+    {
+      "id": "reexports",
+      "title": "Re-exported Cornerstones",
+      "startLine": 52,
+      "endLine": 65,
+      "summary": "uniformBell_mul_eq' and uniformBell_eq_div' restate the two Mathlib cornerstones with the gallery's naming.",
+      "mathContext": "uniformBell m n · (n!)^m · m! = (m·n)! and its division form."
+    },
+    {
+      "id": "ordered-count",
+      "title": "The Ordered Equal-Block Count",
+      "startLine": 66,
+      "endLine": 74,
+      "summary": "multinomial_range_const: specialise multinomial_spec to the constant function over range m, simplifying the product to (n!)^m and the sum to m·n.",
+      "mathContext": "The number of ordered m-tuples of size-n blocks is the multinomial (m·n)! / (n!)^m."
+    },
+    {
+      "id": "bridge",
+      "title": "The Unordered/Ordered Bridge",
+      "startLine": 75,
+      "endLine": 84,
+      "summary": "uniformBell_mul_factorial: cancel the positive factor (n!)^m from the two equal-block identities to obtain uniformBell m n · m! = multinomial (range m) (const n).",
+      "mathContext": "Forgetting the order of the m equal blocks divides the ordered count by exactly m!."
+    },
+    {
+      "id": "positivity",
+      "title": "Positivity",
+      "startLine": 85,
+      "endLine": 98,
+      "summary": "uniformBell_pos: 0 < uniformBell m n. If it were 0, uniformBell_mul_eq forces (m·n)! = 0, impossible; the n = 0 case uses uniformBell m 0 = 1.",
+      "mathContext": "An equal-block partition always exists, so the count is strictly positive."
+    },
+    {
+      "id": "divisibility",
+      "title": "Factorial Divisibility",
+      "startLine": 99,
+      "endLine": 103,
+      "summary": "factorial_pow_mul_factorial_dvd: (n!)^m · m! ∣ (m·n)!, witnessed by uniformBell m n via the structural identity.",
+      "mathContext": "The denominator of the closed form divides the factorial — the integrality statement."
+    },
+    {
+      "id": "instances",
+      "title": "Concrete Instances",
+      "startLine": 104,
+      "endLine": 119,
+      "summary": "uniformBell 2 2 = 3, uniformBell 2 3 = 10, uniformBell 3 2 = 15: rewrite with the closed product form, expand with prod_range_succ, close with kernel decide.",
+      "mathContext": "3 ways to pair a 4-set, 10 ways to split a 6-set into two triples, 15 ways into three pairs."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Bell, E. T.",
+      "title": "Exponential numbers",
+      "year": "1934",
+      "note": "Origin of the Bell numbers counting set partitions"
+    },
+    {
+      "authors": "Graham, Knuth, Patashnik",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "note": "Chapter 6 develops set partitions, multinomial coefficients, and equal-block counts"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "bell-numbers-oq-01",
+      "relationship": "related",
+      "description": "Bell-numbers-oq-01 connects the standard Bell number to the Stirling row sum; this entry treats the distinct uniform (equal-block) Bell number and its multinomial structure"
+    },
+    {
+      "targetId": "stirling-second-kind-oq-01",
+      "relationship": "related",
+      "description": "Both count set partitions; Stirling S(n,k) fixes the number of blocks, uniformBell fixes the common block size"
+    }
+  ],
+  "conclusion": {
+    "summary": "uniformBell m n counts equal-block set partitions and satisfies uniformBell m n · (n!)^m · m! = (m·n)!. Beyond re-exporting this cornerstone and its division form, the entry proves the ordered-block multinomial count (multinomial_range_const), the bridge uniformBell m n · m! = multinomial (range m) (const n) that converts ordered to unordered by dividing out m! (uniformBell_mul_factorial), positivity (uniformBell_pos), the divisibility (n!)^m · m! ∣ (m·n)! (factorial_pow_mul_factorial_dvd), and three concrete values. All are verified with 0 axioms and 0 sorries.",
+    "implications": "Provides the multinomial scaffolding around Mathlib's uniform Bell identity — the ordered/unordered bridge, positivity, and integrality — as directly citable lemmas.",
+    "openQuestions": [
+      "Does the bridge generalise to blocks of prescribed (non-uniform) sizes, i.e. Multiset.bell m · ∏ (multiplicities)! = multinomial of the size profile?",
+      "Can uniformBell m n be characterised as the cardinality of an explicit Finset of partitions, connecting the arithmetic identity to a bijective count?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Enumerative.Bell",
+      "Mathlib.Data.Nat.Choose.Multinomial",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "UniformBellMultinomialOQ01",
+    "lineCount": 119,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/UniformBellMultinomialOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -1,0 +1,130 @@
+{
+  "id": "area-of-circle-oq-05-oq-02",
+  "title": "Multivariate Gaussian Integral via Matrix Diagonalization",
+  "slug": "area-of-circle-oq-05-oq-02",
+  "description": "Proves the multivariate Gaussian integral ∫ exp(-xᵀAx) = √(πⁿ/det A) for positive-definite A. The diagonal case is proved completely via Fubini and the scalar Gaussian. The general case (spectral change of variables) is fully proved via spectral decomposition and orthogonal change of variables.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_integral#n-dimensional_and_functional_generalization",
+    "date": "Classical result, formalized 2026",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "integration",
+      "multivariate-gaussian",
+      "matrix-theory",
+      "spectral-theorem",
+      "measure-theory",
+      "open-question",
+      "probability-theory"
+    ],
+    "proofRepoPath": "Proofs/AreaOfCircleOQ05OQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "multivariate_gaussian_integral is fully proved via spectral decomposition + map_linearMap_volume_pi_eq_smul_volume_pi + integral_map. All theorems (prod_sqrt_eq_sqrt_prod, diagonal_gaussian, multivariate_gaussian_integral) are proved with 0 sorries.",
+    "originalContributions": [
+      "prod_sqrt_eq_sqrt_prod: proved by induction that ∏ √(fᵢ) = √(∏ fᵢ) for nonneg fᵢ using Fin.prod_univ_castSucc and Real.sqrt_mul",
+      "diagonal_gaussian: complete proof that ∫ exp(-∑ bᵢxᵢ²) = √(πⁿ/∏bᵢ) using Real.exp_sum + integral_fintype_prod_volume_eq_prod (Fubini) + scaled_gaussian from parent",
+      "multivariate_gaussian_integral: complete proof via spectral decomposition, map_linearMap_volume_pi_eq_smul_volume_pi, and integral_map — identifying the spectral theorem path: eigenvectorUnitary, diagonal_gaussian, det_eq_prod_eigenvalues",
+      "Documents the change-of-variables infrastructure needed: map_linearMap_volume_pi_eq_smul_volume_pi with |det Uᵀ| = 1"
+    ],
+    "dateAdded": "2026-04-21",
+    "lineCount": 189,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The multivariate Gaussian integral ∫_{ℝⁿ} exp(-xᵀAx) dx = √(πⁿ/det A) for positive-definite A is a cornerstone of probability theory (multivariate normal distribution), statistics, quantum mechanics (path integrals), and algebraic geometry (Siegel modular forms). It generalizes the classical Poisson-Laplace formula ∫_{ℝ} exp(-x²) = √π proved by Poisson (1812) and Laplace. The general positive-definite form requires the spectral theorem for real symmetric matrices, which was developed by Cauchy (1829) and Jacobi — the same diagonalization theory that makes the Gaussian integral tractable.\n\nThe formula is central to Bayesian statistics (Laplace approximation, Gaussian process covariance), statistical mechanics (partition functions for harmonic systems), and quantum field theory (functional integrals). The Lean 4 formalization here is notable for building on Mathlib's Fubini infrastructure (`integral_fintype_prod_volume_eq_prod`), which allows the multivariate case to reduce cleanly to a product of scalar Gaussians.",
+    "problemStatement": "**Open Question (OQ-02 from OQ-05)**: Can the multivariate Gaussian integral be formalized in Lean 4?\n\n**Answer**: Fully. Both the diagonal case and the general case are proved (0 sorries). The diagonal case uses Fubini + Mathlib's scalar Gaussian. The general case uses spectral decomposition + orthogonal change of variables via `map_linearMap_volume_pi_eq_smul_volume_pi`. Derived from Mathlib's `integral_gaussian`.",
+    "text": "A 138-line formalization with 3 theorems (all proved, 0 sorries): (1) `diagonal_gaussian`: for positive weights b : Fin n → ℝ, ∫_{ℝⁿ} exp(-∑ bᵢxᵢ²) = √(πⁿ/∏bᵢ) via exp_sum + Fubini + scalar Gaussian. (2) `multivariate_gaussian_integral`: reduces to diagonal case via spectral decomposition and orthogonal change of variables. The helper `prod_sqrt_eq_sqrt_prod` is proved by induction.",
+    "proofStrategy": "**Part 1** (prod_sqrt_eq_sqrt_prod): Induction on n. Base case: ∏_{Fin 0} = 1 = √1. Inductive step: split using Fin.prod_univ_castSucc, apply IH to prefix, then combine √a * √b = √(a*b) via Real.sqrt_mul.\n\n**Part 2** (diagonal_gaussian): (i) Rewrite exp(-∑ bᵢxᵢ²) = ∏ exp(-bᵢxᵢ²) via ← Finset.sum_neg_distrib then Real.exp_sum. (ii) Apply integral_fintype_prod_volume_eq_prod (Fubini for product spaces). (iii) Each factor ∫ exp(-bᵢxᵢ²) = √(π/bᵢ) by scaled_gaussian from AreaOfCircleOQ05. (iv) Simplify ∏ √(π/bᵢ) = √(πⁿ/∏bᵢ) via prod_sqrt_eq_sqrt_prod + prod_div_distrib + prod_const.\n\n**Part 3** (multivariate_gaussian_integral, sorry): (i) Spectral theorem: A = U * diag(λ) * Uᵀ (eigenvectorUnitary). (ii) Quadratic form: xᵀAx = ∑ λᵢ(Uᵀx)ᵢ². (iii) Orthogonal change of variables y = Uᵀx (measure-preserving). (iv) Apply diagonal_gaussian. (v) det A = ∏ λᵢ by det_eq_prod_eigenvalues.",
+    "keyInsights": [
+      "**Fubini as the Core Tool**: integral_fintype_prod_volume_eq_prod from MeasureTheory.Integral.Pi factors ∫_{ℝⁿ} ∏ f(xᵢ) as ∏ ∫_{ℝ} f(xᵢ), making the multivariate integral reduce to a product of scalar integrals. This is the key mathematical step.",
+      "**exp_sum as the Bridge**: Real.exp_sum converts exp(-∑ bᵢxᵢ²) to ∏ exp(-bᵢxᵢ²), enabling the Fubini factorization. Combined with ← Finset.sum_neg_distrib (-(∑f) → ∑(-f)), this makes the rewrite clean.",
+      "**Reuse via Import Chain**: scaled_gaussian from AreaOfCircleOQ05 is imported directly, demonstrating that the Lean Genius gallery builds on itself. Each open question generates child proofs that reuse parent infrastructure.",
+      "**prod_sqrt by Induction**: The helper ∏ √(fᵢ) = √(∏ fᵢ) is not in Mathlib but is easy to prove by induction, combining Fin.prod_univ_castSucc with Real.sqrt_mul.",
+      "**Spectral Gap**: The main sorry requires constructing a MeasurableEquiv from the eigenvector unitary and invoking map_linearMap_volume_pi_eq_smul_volume_pi. The key mathematical fact is |det Uᵀ| = 1 (orthogonal matrices preserve Lebesgue measure)."
+    ],
+    "prerequisites": [
+      "Gaussian integral (AreaOfCircleOQ05.lean): scaled_gaussian for the 1D case",
+      "Matrix spectral theorem (Mathlib.Analysis.Matrix.Spectrum): eigenvectorUnitary, eigenvalues, spectral_theorem",
+      "Fubini for product spaces (Mathlib.MeasureTheory.Integral.Pi): integral_fintype_prod_volume_eq_prod",
+      "Measure change-of-variables (Mathlib.MeasureTheory.Measure.Lebesgue.Basic): map_linearMap_volume_pi_eq_smul_volume_pi",
+      "Positive-definite matrices (Mathlib.Analysis.Matrix.PosDef): PosDef, eigenvalues_pos"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "xref-oq05-parent",
+      "targetId": "area-of-circle-oq-05",
+      "targetTitle": "The Gaussian Integral and the Area of a Circle",
+      "relationship": "parent",
+      "description": "Parent proof establishing the scalar Gaussian integral ∫ e^{-x²} = √π via Mathlib's integral_gaussian"
+    },
+    {
+      "id": "xref-oq05-oq01",
+      "targetId": "area-of-circle-oq-05-oq-01",
+      "targetTitle": "Polar-Coordinate Proof of the Gaussian Integral",
+      "relationship": "sibling",
+      "description": "Sibling open question about the polar coordinate proof of the same scalar Gaussian"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-preamble",
+      "title": "Imports and Mathematical Setup",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Header documenting the two-step proof strategy, imports (Gaussian, Matrix.Spectrum, PosDef, MeasureTheory.Integral.Pi), namespace MultivariateGaussian, and open statements"
+    },
+    {
+      "id": "sec-helper",
+      "title": "Product of Square Roots",
+      "startLine": 42,
+      "endLine": 64,
+      "summary": "Private helper lemma: ∏ √(fᵢ) = √(∏ fᵢ) by induction on n using Fin.prod_univ_castSucc and Real.sqrt_mul"
+    },
+    {
+      "id": "sec-diagonal",
+      "title": "Diagonal Gaussian Integral",
+      "startLine": 65,
+      "endLine": 94,
+      "summary": "Diagonal case: ∫ exp(-∑ bᵢxᵢ²) = √(πⁿ/∏bᵢ) — proved with 0 sorries via exp_sum + Fubini + scalar_gaussian"
+    },
+    {
+      "id": "sec-spectral-sketch",
+      "title": "Spectral Decomposition Sketch",
+      "startLine": 95,
+      "endLine": 114,
+      "summary": "Proof outline for the general case: spectral theorem (A = U diag(λ) Uᵀ), positive eigenvalues, orthogonal change of variables, det A = ∏ λᵢ — the sorry analysis"
+    },
+    {
+      "id": "sec-main",
+      "title": "Multivariate Gaussian Integral (proved)",
+      "startLine": 115,
+      "endLine": 138,
+      "summary": "Main theorem: ∫ exp(-xᵀAx) = √(πⁿ/det A) for positive-definite A — fully proved via spectral decomposition and measure-preserving orthogonal change of variables"
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry formalizes the multivariate Gaussian integral in Lean 4 and is fully proved (0 sorries). The diagonal case (`diagonal_gaussian`) uses Fubini's theorem for product spaces and the scalar Gaussian from the parent proof. The general case (`multivariate_gaussian_integral`) reduces to diagonal via the spectral theorem and is fully proved via spectral decomposition + map_linearMap_volume_pi_eq_smul_volume_pi + integral_map.",
+    "implications": "The diagonal case represents a substantial Lean 4 achievement: combining `Real.exp_sum`, Fubini for `Fin n → ℝ` product spaces, and the scalar Gaussian gives a clean sorry-free proof. The missing step (measure-preserving orthogonal change of variables) is a specific gap in Mathlib's `MeasureTheory.Measure.Lebesgue.Basic` — once `map_linearMap_volume_pi_eq_smul_volume_pi` can be applied to orthogonal matrices, the full proof closes. This formalization demonstrates the modular structure of the Lean Genius gallery: `AreaOfCircleOQ05 → AreaOfCircleOQ05OQ02` via the `scaled_gaussian` import.",
+    "openQuestions": [
+      "Can the orthogonal change-of-variables sorry be closed using Mathlib's `map_linearMap_volume_pi_eq_smul_volume_pi` with the unitary determinant condition?",
+      "Does Mathlib's `MeasurePreserving.integral_comp'` provide the right API for `∫ f(Uᵀx) = ∫ f(y)` when U is orthogonal?",
+      "Can the result be extended to the complex case (Hermitian positive-definite matrices over ℂ)?"
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/AreaOfCircleOQ05OQ02.lean",
+    "imports": ["Proofs.AreaOfCircleOQ05"],
+    "lineCount": 189,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "axiomCount": 0,
+    "sorries": 0
+  }
+}

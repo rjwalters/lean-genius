@@ -1,0 +1,175 @@
+{
+  "id": "erdos-1008",
+  "title": "Erdős Problem #1008: C₄-Free Subgraphs",
+  "slug": "erdos-1008",
+  "description": "Does every graph with m edges contain a C₄-free subgraph with ≫ m^{2/3} edges? Yes, proved by Conlon-Fox-Sudakov (2014). The exponent 2/3 is optimal, as shown by Folkman's counterexample K_{n,n²}.",
+  "meta": {
+    "author": "Conlon-Fox-Sudakov (2014)",
+    "sourceUrl": "https://erdosproblems.com/1008",
+    "date": "2014",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1008Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "extremal",
+      "cycles",
+      "subgraphs",
+      "zarankiewicz"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1008,
+    "erdosUrl": "https://erdosproblems.com/1008",
+    "erdosProblemStatus": "solved",
+    "axiomCount": 1,
+    "lineCount": 698,
+    "assumptions": "1 axiom: Conlon-Fox-Sudakov main theorem (Ω(m^{2/3}) C₄-free subgraph). Proved: Kővári-Sós-Turán C₄-case (cherry counting+CS), K₂₂↔C₄ equivalence, C₄-freeness hereditary/monotone, common neighbor uniqueness, few-edges C₄-free, Folkman ratio, bipartite KST (cherry counting on K_{n,n²}), exponent 2/3 optimality.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 27,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "This problem was originally posed by Bollobás and Erdős at the 1966 Tihany graph theory colloquium in Hungary, asking whether every m-edge graph contains a C₄-free subgraph with ≫ m^{3/4} edges. Folkman quickly disproved this using the bipartite graph K_{n,n²}: it has n³ edges but every C₄-free subgraph has only O(n²) = O(m^{2/3}) edges, by the Kővári-Sós-Turán theorem. Erdős revised the conjecture to exponent 2/3 in 1971, noting that the trivial bound m^{1/2} follows easily from Kővári-Sós-Turán. He mentioned that Szemerédi had proved the 2/3 bound but gave no published reference. The problem remained formally open until Conlon, Fox, and Sudakov proved it in their 2014 paper using dependent random choice, a powerful probabilistic technique developed in the 2000s. A simpler proof was later given by Hunter. The result fits into the broader program of understanding Turán-type and Zarankiewicz-type problems: how dense can a graph be while avoiding a fixed forbidden subgraph? The C₄ case is special because C₄ = K_{2,2}, linking cycle-free conditions to bipartite Ramsey theory.",
+    "problemStatement": "Does every graph with m edges contain a subgraph with ≫ m^{2/3} edges which contains no C₄ (4-cycle)?",
+    "text": "Does every graph with m edges contain a C₄-free subgraph with ≫ m^{2/3} edges? Yes, proved by Conlon-Fox-Sudakov (2014). The exponent 2/3 is optimal, as shown by Folkman's counterexample K_{n,n²}.",
+    "proofStrategy": "The formalization proves the Kővári-Sós-Turán theorem (C₄ case) via cherry counting and Cauchy-Schwarz, the K₂₂↔C₄ equivalence, structural properties (hereditary, monotone, common neighbor uniqueness, few-edges lemma), Folkman's ratio computation, and the exponent 2/3 optimality theorem. The one remaining axiom — Conlon-Fox-Sudakov main theorem — requires probabilistic method machinery not yet in Mathlib.",
+    "keyInsights": [
+      "**C₄ = K_{2,2}:** The 4-cycle is the smallest complete bipartite graph, making C₄-freeness equivalent to K_{2,2}-freeness and connecting to the Zarankiewicz problem",
+      "**Folkman's Optimality Proof:** K_{n,n²} has m = n³ edges but only O(n²) = O(m^{2/3}) edges in any C₄-free subgraph, proving the exponent 2/3 cannot be improved",
+      "**Dependent Random Choice:** The Conlon-Fox-Sudakov proof selects a random vertex set S, takes common neighborhoods, and uses the probabilistic method to find a large C₄-free subgraph",
+      "**Zarankiewicz Generalization:** The result extends to K_{s,t}-free subgraphs with exponent 1-1/s, where the C₄ case is s=t=2",
+      "**Exponent Landscape:** 1/2 (trivial via Kővári-Sós-Turán) → 2/3 (optimal, Conlon-Fox-Sudakov) → 3/4 (impossible, Folkman)"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "4-Cycles, C₄-Freeness, and K_{s,t}",
+      "summary": "HasC4 (4-cycle detection), IsC4Free, HasKst (complete bipartite subgraph) definitions",
+      "startLine": 39,
+      "endLine": 56,
+      "mathContext": "A 4-cycle $C_4$ in a graph $G$ is a sequence of distinct vertices $a, b, c, d$ with edges $ab, bc, cd, da$. Equivalently, $C_4 \\cong K_{2,2}$: four vertices forming a complete bipartite subgraph with parts $\\{a,c\\}$ and $\\{b,d\\}$. A graph is $C_4$-free if it contains no such subgraph."
+    },
+    {
+      "id": "k22-equivalence",
+      "title": "K_{2,2} = C₄ Equivalence (Proved)",
+      "summary": "Full proof that K_{2,2} ↔ C₄ via Finset extraction and disjointness",
+      "startLine": 60,
+      "endLine": 100,
+      "mathContext": "The equivalence $K_{2,2} \\cong C_4$ is the fundamental link between 4-cycle freeness and the Zarankiewicz problem. Forward: extract 2 vertices from each part of $K_{2,2}$ and verify the 4-cycle. Backward: given $a$-$b$-$c$-$d$-$a$, take $S = \\{a,c\\}$, $T = \\{b,d\\}$."
+    },
+    {
+      "id": "structural",
+      "title": "Structural Properties (Proved)",
+      "summary": "C₄-freeness is hereditary, monotone; common neighbor uniqueness; few-edges lemma",
+      "startLine": 104,
+      "endLine": 175,
+      "mathContext": "Key structural results: (1) C₄-freeness passes to subgraphs. (2) In a $C_4$-free graph, any two vertices share at most one common neighbor (if two existed, they'd form a $C_4$). (3) A graph with $\\le 3$ edges is always $C_4$-free since a $C_4$ needs exactly 4 distinct edges."
+    },
+    {
+      "id": "folkman",
+      "title": "Folkman's Counterexample (Proved)",
+      "summary": "Folkman ratio computation: (n³)^{2/3} = n², proving 2/3 is tight",
+      "startLine": 179,
+      "endLine": 190,
+      "mathContext": "The complete bipartite graph $K_{n,n^2}$ has $m = n^3$ edges. The Folkman ratio $m^{2/3}/m^{2/3} = n^2/n^2 = 1$ shows the exponent $2/3$ is best possible."
+    },
+    {
+      "id": "kst-theorem",
+      "title": "Kővári-Sós-Turán Theorem (Proved)",
+      "summary": "Full proof of KST C₄ case via cherry counting + Cauchy-Schwarz: 4m² ≤ n²(n-1) + 2mn",
+      "startLine": 189,
+      "endLine": 340,
+      "mathContext": "The Kővári-Sós-Turán theorem for $C_4$-free graphs: if $G$ has $n$ vertices, $m$ edges, and is $C_4$-free, then $4m^2 \\le n^2(n-1) + 2mn$, giving $m = O(n^{3/2})$. Proved via: (1) Cherry counting — offDiag neighborhoods are pairwise disjoint by $C_4$-freeness, giving $\\sum d(v)(d(v)-1) \\le n(n-1)$; (2) Cauchy-Schwarz — $(\\sum d(v))^2 \\le n \\cdot \\sum d(v)^2$; (3) Handshaking lemma — $\\sum d(v) = 2m$."
+    },
+    {
+      "id": "main-theorems",
+      "title": "Main Theorems (Partially Axiomatized)",
+      "summary": "Bipartite KST helpers (KB, bip_cherry_disjoint/count, bip_edge_bound) + axiom erdos_1008 (CFS conjecture) + proved theorems: exponent_optimal (2/3 is tight) and c4free_subgraph_exists",
+      "startLine": 341,
+      "endLine": 698,
+      "mathContext": "One axiomatized result: **Erdős #1008** (Conlon-Fox-Sudakov 2014, line 590): $\\exists c > 0$ such that every $m$-edge graph has a $C_4$-free subgraph with $\\ge c \\cdot m^{2/3}$ edges. Proved: Exponent optimality (line 605) — for every $\\varepsilon > 0$, some graph has no $C_4$-free subgraph with $m^{2/3+\\varepsilon}$ edges, via Folkman's $K_{n,n^2}$ construction and bipartite cherry counting. Existence (line 690) — every graph has such a subgraph."
+    }
+  ],
+  "conclusion": {
+    "summary": "Every graph with m edges contains a C₄-free subgraph with Ω(m^{2/3}) edges, proved by Conlon-Fox-Sudakov (2014) using dependent random choice. The exponent 2/3 is optimal, matching Folkman's upper bound from K_{n,n²}. The result generalizes to K_{s,t}-free subgraphs with exponent 1-1/s, connecting to the classical Zarankiewicz problem.",
+    "implications": "**Theoretical Significance**: This result exemplifies the power of dependent random choice in extremal combinatorics. It shows that even dense graphs contain large sparse (forbidden-subgraph-free) subgraphs, with tight bounds.\n\nThe technique has applications in additive combinatorics, theoretical computer science (graph sparsification), and Ramsey theory. The Zarankiewicz-type generalization provides a unified framework for understanding how different forbidden subgraphs control the density of extractable subgraphs.",
+    "openQuestions": [
+      "What are the optimal constants in the Ω(m^{2/3}) bound?",
+      "Can such subgraphs be found algorithmically in polynomial time?",
+      "What happens for odd cycle-freeness (C₅, C₇, ...) instead of C₄?",
+      "Can the K_{s,t} generalization be extended to non-bipartite forbidden graphs?",
+      "What is the weighted version: maximize edge-weight sum in a C₄-free subgraph?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "related",
+      "description": "Erdős #1009 (edge-disjoint triangles beyond Turán) studies related extremal graph questions about finding structured subgraphs in dense graphs.",
+      "targetId": "erdos-1009"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #613 (graph decomposition and size Ramsey numbers) connects to the problem of partitioning graphs into forbidden-subgraph-free pieces.",
+      "targetId": "erdos-613"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1006 (robust acyclic orientations) uses the probabilistic method in graph theory, sharing the dependent random choice technique.",
+      "targetId": "erdos-1006"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset"
+    ],
+    "namespace": "Erdos1008",
+    "lineCount": 698,
+    "axiomCount": 1,
+    "theoremCount": 27,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1008Problem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Erdos1008ProblemProvable.lean"
+    ]
+  },
+  "references": [
+    {
+      "key": "Za51",
+      "authors": [
+        "K. Zarankiewicz"
+      ],
+      "title": "Problem P 101",
+      "venue": "Colloquium Mathematicum",
+      "year": "1951",
+      "volume": "2",
+      "pages": "301",
+      "note": "The original Zarankiewicz problem: maximum edges in bipartite graphs without K_{s,t}"
+    },
+    {
+      "key": "KST54b",
+      "authors": [
+        "T. Kővári",
+        "V.T. Sós",
+        "P. Turán"
+      ],
+      "title": "On a problem of K. Zarankiewicz",
+      "venue": "Colloquium Mathematicum",
+      "year": "1954",
+      "volume": "3",
+      "pages": "50-57",
+      "note": "Classical upper bound z(n; s,t) ≤ cn^{2-1/s} for C₄-free graphs"
+    }
+  ],
+  "sorries": 0
+}

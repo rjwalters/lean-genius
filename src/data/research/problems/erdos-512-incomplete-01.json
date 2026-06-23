@@ -1,0 +1,122 @@
+{
+  "slug": "erdos-512-incomplete-01",
+  "title": "Erdős #512 — Fill Measure Theory Gaps in Littlewood Conjecture Formalization",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\int_0^1 \\left|\\sum_{n \\in A} e^{2\\pi i n\\theta}\\right| d\\theta \\geq c \\cdot \\log N",
+    "plain": "Fill 2 remaining sorry gaps in the Littlewood conjecture formalization: expSumNorm_continuous and L1norm_le_card in the Aristotle companion file.",
+    "whyMatters": [
+      "Closes concrete sorry gaps in Erdős #512 gallery proof",
+      "Improves gallery integrity for a flagship formalization",
+      "Demonstrates Fourier analysis + integration Mathlib API patterns"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "expSum_bound: |expSum A θ| ≤ A.card (triangle inequality)",
+      "L1norm_upper_bound: ∫₀¹ |expSum| dθ ≤ A.card (already proved in main file)",
+      "expTwoPiI_norm: |e(x)| = 1",
+      "expTwoPiI_periodic: e(x+1) = e(x)"
+    ],
+    "open": [
+      "L2_norm (Parseval): ∫₀¹ |expSum A θ|² dθ = A.card"
+    ],
+    "goal": "Close Aristotle companion sorries and optionally prove Parseval"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-28T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Closed within axiomatization scope: 0 sorries; 2 axioms (konyagin_theorem, mcgehee_pigno_smith_theorem) representing Littlewood conjecture itself. Pool entry reconciled `available` → `completed` 2026-04-28 (PR #13616 by researcher-1) after Aristotle-sorries-closed PRs #12052/#12115/#12201.",
+    "blockers": [],
+    "nextAction": "Axiom elimination would require formalizing Konyagin (1981) or McGehee-Pigno-Smith (1981) — multi-thousand-line projects, out of scope for incremental sessions. Optional 2→1 axiom merge (declare single `axiom littlewood_conjecture` + name two theorem aliases preserving historical attribution) would reduce count to match single mathematical assumption.",
+    "attemptCounts": {
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "VERIFIED within axiomatization scope: 0 sorries, 2 axioms (konyagin_theorem, mcgehee_pigno_smith_theorem). Both axioms have identical statement (LittlewoodConjecture); they encode the historical fact that Konyagin (1981) and McGehee-Pigno-Smith (1981) gave independent proofs. expSumNorm_sq_double and L2_norm (Parseval) were proved in PR #12115 (1e702aadd36).",
+    "builtItems": [
+      "expSumNorm_continuous (A) : Continuous (expSumNorm A) — Erdos512Aristotle.lean",
+      "L1norm_le_card (A) : ∫₀¹ expSumNorm A θ ≤ A.card — Erdos512Aristotle.lean",
+      "expTwoPiI_conj (PROVED): conj(e(nθ)) = e(-nθ) — Erdos512Problem.lean",
+      "integral_cos_character (PROVED): ∫₀¹ cos(2πkθ)dθ = [k=0] — Erdos512Problem.lean",
+      "L2_norm (PROVED, PR #12115): ∫₀¹ (expSumNorm A θ)² dθ = A.card via expSumNorm_sq_double + integral_cos_character — Erdos512Problem.lean",
+      "expSumNorm_sq_double (PROVED, PR #12115): |∑ e(mθ)|² = ∑_{m,n} cos(2π(m-n)θ) — Erdos512Problem.lean:210"
+    ],
+    "insights": [
+      "expSumNorm_continuous uses Complex.continuous_abs.comp + continuous_finset_sum + fun_prop",
+      "L1norm_le_card follows from continuity + setIntegral_mono_on (mirrors main file inline proof at lines 105-131)",
+      "L2_norm (Parseval) requires character orthogonality: ∫₀¹ e^{2πikθ} dθ = [k=0] — harder",
+      "The Aristotle companion header is outdated: L1norm_upper_bound in main file was already proved, only L2_norm remains there",
+      "L2_norm proof strategy: expSumNorm_sq_double + integral_cos_character + diagonal count",
+      "integral_cos_character proved: ∫₀¹ cos(2πkθ)dθ = [k=0] via intervalIntegral.integral_cos_mul + sin(2πk)=0",
+      "Parseval's L2_norm main proof structured: swap integral/sum + apply character orthogonality + simp sub_eq_zero",
+      "Remaining sorry: expSumNorm_sq_double normSq double-sum algebraic identity — |∑e(mθ)|² = ∑_{m,n} cos(2π(m-n)θ)",
+      "VERIFIED 2026-04-28: file is at 0 sorries, 2 axioms; prior progressSummary was stale.",
+      "konyagin_theorem and mcgehee_pigno_smith_theorem axioms have identical statement (LittlewoodConjecture); the konyagin_equals_mps theorem between them is therefore tautological at the type level. A future axiom-reduction session could merge them into one underlying axiom + two named-theorem aliases (preserves historical attribution while honestly counting one mathematical assumption).",
+      "RE-VERIFIED 2026-05-17 (S3 STATE-SYNC): Erdos512Problem.lean still at lineCount=368, theoremCount=14 (raw regex), axiomCount=2, defCount=9 (narrow `^def ` — narrow vs gallery `definitionCount=16` broad-regex incl 7 `noncomputable def` is a known convention gap deferred to mechanic; both Lean files byte-stable since PR #12201 2026-04-23 → #18059 2026-05-14 touched neither). Erdos512Aristotle.lean at 77/2/0/0/0 unchanged. konyagin_theorem + mcgehee_pigno_smith_theorem still the only 2 axioms — total Littlewood-conjecture assumption count = 1 (two named aliases of identical Prop)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Optional: 2→1 axiom merge — declare a single axiom littlewood_conjecture : LittlewoodConjecture and define konyagin_theorem and mcgehee_pigno_smith_theorem as theorems referencing it. Preserves historical names; reduces axiom count to match the single mathematical assumption.",
+      "Out-of-scope: full elimination requires formalizing Konyagin or MPS papers (~thousands of lines)."
+    ]
+  },
+  "tags": [
+    "erdos",
+    "fourier-analysis",
+    "measure-theory",
+    "sorry-completion",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-5",
+    "erdos-51",
+    "erdos-512"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Complex.continuous_abs",
+      "continuous_finset_sum",
+      "ContinuousOn.integrableOn_compact",
+      "MeasureTheory.setIntegral_mono_on",
+      "Real.volume_Icc"
+    ]
+  },
+  "started": "2026-04-23T00:00:00.000Z",
+  "lastUpdate": "2026-05-17T03:30:00.000Z",
+  "significance": 8,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos512Problem.lean",
+      "filename": "Erdos512Problem.lean",
+      "lineCount": 368,
+      "theoremCount": 14,
+      "axiomCount": 2,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos512Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos512Aristotle.lean",
+      "filename": "Erdos512Aristotle.lean",
+      "lineCount": 77,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos512Aristotle.lean"
+    }
+  ]
+}

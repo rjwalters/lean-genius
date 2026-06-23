@@ -1,0 +1,213 @@
+{
+  "id": "erdos-1183",
+  "title": "Erdős Problem #1183: Monochromatic Lattice Families",
+  "slug": "erdos-1183",
+  "description": "In any 2-coloring of the subsets of {1,...,n}, there exists a monochromatic family closed under unions and intersections. How large must it be? The trivial chain bound gives ⌈(n+1)/2⌉. Erdős and Ulam had 'no plausible conjecture' for the true order of magnitude.",
+  "meta": {
+    "author": "Erdős–Ulam (1978)",
+    "sourceUrl": "https://erdosproblems.com/1183",
+    "date": "1978",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1183Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "ramsey-theory",
+      "lattice-theory",
+      "powerset"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 1183,
+    "erdosUrl": "https://erdosproblems.com/1183",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.29.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.powerset",
+        "description": "Power set of finite sets",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets by a predicate",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card_image_of_injective",
+        "description": "Cardinality preserved under injection",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of union-closed and intersection-closed families on powerset",
+      "Proof that every chain is a sublattice (closed under union and intersection)",
+      "Construction of the standard chain ∅ ⊂ {0} ⊂ ... ⊂ Fin n",
+      "Proof of injectivity of initial segments",
+      "Pigeonhole argument yielding f(n) ≥ ⌈(n+1)/2⌉",
+      "Corrected abstract definitions of f(n) and F(n) using sSup (was sInf, evaluating to 0)",
+      "Formal proof erdos1183_f_lower_bound: f(n) ≥ ⌈(n+1)/2⌉ via le_csSup",
+      "Proof erdos1183_F_ge_f: F(n) ≥ f(n) since sublattices are union-closed",
+      "BddAbove proofs bounding achievable sets by 2^n",
+      "Trivial upper bounds erdos1183_f_upper_bound and erdos1183_F_upper_bound: f(n), F(n) ≤ 2^n via csSup_le and Fintype.card_finset"
+    ],
+    "axiomCount": 0,
+    "assumptions": "0 axiom declarations. Two open conjectures (erdos1183_f_growth_conjecture, erdos1183_F_superpolynomial_conjecture) stated as Prop definitions, not assumed true.",
+    "lineCount": 314,
+    "prerequisites": [
+      "Finite set theory (Finset, powerset, filter)",
+      "Lattice theory (union/intersection closure)",
+      "Pigeonhole principle",
+      "Basic Ramsey theory concepts"
+    ],
+    "theoremCount": 17,
+    "definitionCount": 14
+  },
+  "overview": {
+    "historicalContext": "Erdős and Ulam posed this problem in their 1978 survey [Er78, p.39] as a Ramsey-type question about the powerset lattice. The powerset 2^{[n]} has a natural lattice structure under ∪ and ∩, and any 2-coloring raises the question: how large a monochromatic sublattice must always exist? The trivial lower bound ⌈(n+1)/2⌉ comes from the nested chain ∅ ⊂ {1} ⊂ {1,2} ⊂ ... ⊂ {1,...,n}: by pigeonhole, one color class forms a monochromatic chain of this size, and any chain is a sublattice. Erdős and Ulam reported having 'no plausible conjecture' for the true order of magnitude. Howorka subsequently proved that F(n) > n^{ω(n)} under the special restriction that all same-size subsets receive the same color, but the general case remains open. The problem connects to Frankl's union-closed conjecture (1979, proved by Gilmer 2022 and strengthened by Sawin 2023) and to Dilworth's theorem on chain decompositions in partially ordered sets. For the Lean formalization, a key architectural correction was needed: the initial attempt defined f(n) via sInf (yielding 0, the infimum of a downward-closed set) rather than sSup (the supremum of achievable lower bounds).",
+    "problemStatement": "Let f(n) be maximal such that in any 2-coloring of the subsets of {1,...,n} there is always a monochromatic family of at least f(n) sets which is closed under taking unions and intersections. Estimate f(n). Similarly define F(n) requiring only union-closure.",
+    "text": "We formalize the Erdős-Ulam problem on monochromatic sublattice families and prove the trivial lower bound f(n) ≥ ⌈(n+1)/2⌉ via the standard chain argument.",
+    "proofStrategy": "Construct the standard chain ∅ ⊂ {0} ⊂ {0,1} ⊂ ... ⊂ {0,...,n-1} (n+1 elements). Show any chain is a sublattice. Apply pigeonhole to get a monochromatic subchain of size ≥ ⌈(n+1)/2⌉.",
+    "keyInsights": [
+      "**Chain = sublattice**: In a chain, A ∪ B equals the larger of A, B (Finset.union_eq_right/left.mpr), and A ∩ B equals the smaller. This makes every chain automatically a sublattice with a 2-line proof per operation.",
+      "**Injectivity via wlog**: The proof that distinct k give distinct initialSeg n k uses 'wlog h : j < k' to reduce to one direction, then exhibits j.val as a witness in initialSeg k but not in initialSeg j, closing with omega.",
+      "**sSup vs sInf**: The correct definition of f(n) uses sSup { k | every coloring admits a mono sublattice of size ≥ k }. Using sInf on this downward-closed set would give 0. The le_csSup approach requires proving BddAbove (the set is bounded by 2^n) and membership (the chain bound puts (n+2)/2 in the set).",
+      "**Prop definitions for open conjectures**: The two open conjectures (f_growth_conjecture: f(n) = O(n), F_superpolynomial_conjecture: F(n) ≥ n^{ω(n)}) are stated as Prop-valued definitions rather than axioms, making them formally present without being assumed true.",
+      "**F(n) ≥ f(n) via inclusion**: achievableSublattice ⊆ achievableUnionClosed because every sublattice is in particular union-closed. csSup_le_csSup then gives F(n) ≥ f(n) with a single line."
+    ],
+    "prerequisites": [
+      "Finite set theory",
+      "Lattice basics (union, intersection)",
+      "Pigeonhole principle"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header: Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Module docstring defines f(n) (max monochromatic sublattice size in 2-colorings of subsets of {1,...,n}) and F(n) (same but for union-closed families). States the trivial chain lower bound f(n) ≥ ⌈(n+1)/2⌉, Howorka's result on same-size colorings, and the open status. Imports Mathlib for Finset powerset/lattice operations and conditional completeness.",
+      "mathContext": "$f(n) = \\max\\{k : \\text{any 2-coloring of } \\mathcal{P}([n])$ has a monochromatic sublattice of size $\\geq k\\}$. Trivial bound: the chain $\\emptyset \\subset \\{0\\} \\subset \\cdots \\subset [n]$ has $n+1$ elements; pigeonhole gives one color class of size $\\geq \\lceil(n+1)/2\\rceil$."
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions: Colorings, Sublattices, Chains",
+      "startLine": 35,
+      "endLine": 62,
+      "summary": "Defines 2-colorings of the powerset, union-closed families (`IsUnionClosed`), intersection-closed families (`IsInterClosed`), sublattices (`IsSublattice`: both union- and intersection-closed), monochromaticity (`IsMonochromatic`), and chains (totally ordered by ⊆). Sets up the combinatorial vocabulary for the pigeonhole argument.",
+      "mathContext": "A sublattice of $\\mathcal{P}([n])$ is a family closed under $\\cup$ and $\\cap$. A chain in $\\mathcal{P}([n])$ is a family totally ordered by $\\subseteq$. Every chain is a sublattice (since min/max of chain elements are in the chain)."
+    },
+    {
+      "id": "chains-are-sublattices",
+      "title": "Chains Are Sublattices",
+      "startLine": 64,
+      "endLine": 85,
+      "summary": "Proves that chains are sublattices: `chain_union_mem` and `chain_inter_mem` show that union/intersection of two chain elements is either the smaller or larger element (hence in the chain). `chain_isSublattice` combines these: any chain is simultaneously union-closed and intersection-closed.",
+      "mathContext": "For $A, B$ in a chain with $A \\subseteq B$: $A \\cup B = B \\in \\mathcal{C}$ and $A \\cap B = A \\in \\mathcal{C}$. Hence every chain is a sublattice — the key structural fact enabling the pigeonhole lower bound."
+    },
+    {
+      "id": "the-standard-chain",
+      "title": "The Standard Chain of Initial Segments",
+      "startLine": 87,
+      "endLine": 132,
+      "summary": "Constructs the standard chain $\\emptyset \\subset \\{0\\} \\subset \\{0,1\\} \\subset \\cdots \\subset \\text{Fin}(n)$ using initial segments. Proves `initialSeg_mono` (initial segments are monotone), `stdChain_isChain` (the family is a chain), `initialSeg_injective` (distinct initial segments are distinct), and `stdChain_card` (the chain has exactly $n+1$ elements).",
+      "mathContext": "$\\text{initialSeg}(k) = \\{0, 1, \\ldots, k-1\\} \\subseteq \\text{Fin}(n)$. The chain $\\{\\text{initialSeg}(k) : 0 \\leq k \\leq n\\}$ has $n+1$ elements and is totally ordered by $\\subseteq$."
+    },
+    {
+      "id": "pigeonhole",
+      "title": "Pigeonhole Lemma for 2-Colorings",
+      "startLine": 134,
+      "endLine": 164,
+      "summary": "Proves `exists_mono_color_class`: in any 2-coloring of a finite set $S$, some color class has at least $\\lceil|S|/2\\rceil$ elements. This is the pigeonhole step that converts the $n+1$ chain elements into a large monochromatic subfamily.",
+      "mathContext": "$|S| = |S_0| + |S_1|$ (two color classes). By pigeonhole, $\\max(|S_0|, |S_1|) \\geq \\lceil|S|/2\\rceil$. Applied to the standard chain of size $n+1$: one color class has $\\geq \\lceil(n+1)/2\\rceil$ elements."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Bound: f(n) ≥ ⌈(n+1)/2⌉",
+      "startLine": 166,
+      "endLine": 200,
+      "summary": "The chain bound: for any 2-coloring of subsets of $\\text{Fin}(n)$, there exists a monochromatic sublattice of size $\\geq \\lceil(n+1)/2\\rceil$. Proved by: standard chain (size $n+1$) → pigeonhole → monochromatic color class (size $\\geq \\lceil(n+1)/2\\rceil$) → this color class is a sublattice (being a chain). The $F(n)$ bound follows since sublattices are union-closed.",
+      "mathContext": "$f(n) \\geq \\lceil(n+1)/2\\rceil$: the monochromatic color class of the standard chain is a chain, hence a sublattice, of size $\\geq \\lceil(n+1)/2\\rceil$. $F(n) \\geq f(n)$: every sublattice is union-closed, so $F(n) \\geq f(n) \\geq \\lceil(n+1)/2\\rceil$."
+    },
+    {
+      "id": "abstract-definitions-and-bound",
+      "title": "Abstract Definitions of f(n), F(n) and Formal Bounds",
+      "startLine": 201,
+      "endLine": 314,
+      "summary": "Formalizes $f(n)$ and $F(n)$ as suprema over achievable sizes (`sSup`), with proofs that the suprema are bounded above (hence the `sSup` is a nat). `erdos1183_f_lower_bound` proves $f(n) \\geq \\lceil(n+1)/2\\rceil$ by exhibiting the chain witness. `achievableSublattice_subset_unionClosed` and `erdos1183_F_ge_f` formalize $F(n) \\geq f(n)$ via subset ordering of achievable sets and `csSup_le_csSup`. `erdos1183_f_upper_bound` and `erdos1183_F_upper_bound` give the trivial upper bound $f(n), F(n) \\leq 2^n$ via `csSup_le` and `Fintype.card_finset`.",
+      "mathContext": "$f(n) = \\text{sSup}\\{k : \\exists \\text{ monochromatic sublattice of size } k\\}$. $F(n) = \\text{sSup}\\{k : \\exists \\text{ monochromatic union-closed family of size } k\\}$. Since every sublattice is union-closed: $\\{\\text{achievable sublattice sizes}\\} \\subseteq \\{\\text{achievable union-closed sizes}\\} \\Rightarrow f(n) \\leq F(n)$. Trivial upper bound: any monochromatic family $F \\subseteq \\mathcal{P}(\\text{Fin}(n))$ has $|F| \\leq |\\mathcal{P}(\\text{Fin}(n))| = 2^n$."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #1183 (Erdős-Ulam) and prove the trivial lower bound f(n) ≥ ⌈(n+1)/2⌉ using the standard chain in the powerset lattice. The true growth rate of both f(n) and F(n) remain open.",
+    "implications": [
+      "Provides a baseline Lean formalization for powerset Ramsey problems",
+      "The chain argument generalizes to any lattice with long chains",
+      "Improving the bound beyond ⌈(n+1)/2⌉ likely requires non-chain families"
+    ],
+    "openQuestions": [
+      "What is the true order of magnitude of f(n)? Is it linear, polynomial, or exponential in n?",
+      "Is F(n) superpolynomial (≥ n^{ω(n)}) for general 2-colorings, not just same-size ones?",
+      "Does Howorka's result for same-size colorings extend to arbitrary 2-colorings?",
+      "Can the sSup definition of f(n) be computed or bounded more tightly than ⌈(n+1)/2⌉ ≤ f(n) ≤ 2^n?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Both are Ramsey-type problems about 2-colorings"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, P.",
+      "title": "Problems and results in combinatorial analysis and combinatorial number theory",
+      "year": "1978",
+      "venue": "Proc. Ninth Southeastern Conf. on Combinatorics, Graph Theory, and Computing",
+      "note": "Original problem statement [Er78, p.39]: f(n) and F(n) definitions; no plausible conjecture for growth rate"
+    },
+    {
+      "authors": "Frankl, P.",
+      "title": "On the trace of finite sets",
+      "year": "1983",
+      "venue": "Journal of Combinatorial Theory, Series A 34(1), pp. 41-45",
+      "note": "Union-closed conjecture (1979): every union-closed family has an element in ≥ half the sets; proved by Gilmer (2022)"
+    },
+    {
+      "authors": "Dilworth, R. P.",
+      "title": "A decomposition theorem for partially ordered sets",
+      "year": "1950",
+      "venue": "Annals of Mathematics 51(1), pp. 161-166",
+      "note": "Dilworth's theorem: minimum chain cover = maximum antichain; relevant to the chain-pigeonhole approach"
+    },
+    {
+      "authors": "Gilmer, J.",
+      "title": "A constant bound for the union-closed sets conjecture",
+      "year": "2022",
+      "venue": "arXiv:2211.09055",
+      "note": "Proved the union-closed conjecture with constant 0.01 (later improved by Sawin and others); F(n) connects to this via union-closed families"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Data.Finset.Lattice",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Order.ConditionallyCompleteLattice.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1183",
+    "lineCount": 314,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 14,
+    "path": "Proofs/Erdos1183Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

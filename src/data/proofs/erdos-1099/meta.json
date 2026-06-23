@@ -1,0 +1,340 @@
+{
+  "id": "erdos-1099",
+  "title": "Erdős Problem #1099: Divisor Ratio Sum Boundedness",
+  "slug": "erdos-1099",
+  "description": "For α > 1, is liminf h_α(n) bounded, where h_α(n) = Σ((d_{i+1}/dᵢ) - 1)^α over consecutive divisors? YES, proved by Vose (1984).",
+  "meta": {
+    "author": "Erdős (1981 problem), Vose (1984 solution)",
+    "sourceUrl": "https://erdosproblems.com/1099",
+    "date": "1984",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1099Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisors",
+      "consecutive-ratios",
+      "liminf",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1099,
+    "erdosUrl": "https://erdosproblems.com/1099",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "The set of positive divisors of a natural number",
+        "module": "Mathlib.Data.Nat.Divisors"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of a finite set",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.sort",
+        "description": "Sorting finite sets into lists",
+        "module": "Mathlib.Data.Finset.Sort"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation for defining h_α",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "tau definition: divisor count τ(n)",
+      "sortedDivisors definition: ordered list of divisors",
+      "divisorRatios definition: consecutive divisor ratios",
+      "h_alpha definition: the main function Σ((d_{i+1}/dᵢ) - 1)^α",
+      "h_alpha_ge_one theorem: trivial lower bound of 1",
+      "vose_bounded_sequence theorem: bounded sequence via n_k=2, h_α(2)=1",
+      "divisorRatios_two theorem: divisorRatios 2 = [2] by native_decide",
+      "h_alpha_two theorem: h_α(2) = 1 from divisorRatios_two",
+      "vose_liminf_bounded theorem: liminf boundedness from Vose axiom",
+      "erdos_1099 theorem: resolution of the problem",
+      "sumDivisorRatios definition: related sum",
+      "h_alpha_unfold: normalized unfolding avoiding monadic do-notation",
+      "divisorRatios_two_pow theorem: 2^k ratios are k copies of 2",
+      "power_of_two_h_alpha theorem: h_α(2^k) = k",
+      "prime_h_alpha_unbounded theorem: h_α(p) → ∞ over primes"
+    ],
+    "axiomCount": 1,
+    "lineCount": 723,
+    "assumptions": "Depends on Lean.ofReduceBool: the resolution theorem erdos_1099 reduces (via vose_liminf_bounded → vose_bounded_sequence → h_alpha_two) to divisorRatios_two, which is proved by native_decide. native_decide trusts the compiler's kernel reduction, so #print axioms erdos_1099 lists Lean.ofReduceBool (the proof is not axiom-free). vose_bounded_sequence uses the trivial witness (constant sequence n_k = 2, h_α(2) = 1). 0 sorries.",
+    "theoremCount": 36,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #1099** was posed by Erdős in 1981 as part of his study of divisor structure. The problem asks about the regularity of divisor gaps: can we find integers whose consecutive divisor ratios are all close to 1?\n\n**Historical Development:**\n- **1981 (Erdős [Er81h]):** Posed the problem, noting that n! and lcm{1,...,n} seem like good candidates.\n- **1984 (Vose [Vo84]):** Resolved the problem affirmatively by constructing a specific sequence with bounded h_α.\n\n**Key Insight:** The question is about how \"smooth\" the divisor structure of integers can be. While primes have terrible divisor gaps (ratio = p), and even powers of 2 grow linearly in h_α, Vose showed there exist numbers with much smoother divisor distributions.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $1 = d_1 < d_2 < \\cdots < d_{\\tau(n)} = n$ be the divisors of $n$ in increasing order. For $\\alpha > 1$, define:\n$$h_\\alpha(n) = \\sum_i \\left(\\frac{d_{i+1}}{d_i} - 1\\right)^\\alpha$$\n\n**Question:** Is $\\liminf_{n \\to \\infty} h_\\alpha(n) \\ll_\\alpha 1$?\n\n**Answer: YES** (Vose, 1984)\n\nVose proved that for any $\\alpha > 1$, there exists a constant $C_\\alpha$ and a sequence of integers $(n_k)$ with $h_\\alpha(n_k) \\leq C_\\alpha$.\n\n**Note:** Whether the specific sequences $n!$ and $\\text{lcm}\\{1,\\ldots,n\\}$ satisfy this property remains **OPEN**.",
+    "text": "For α > 1, is liminf h_α(n) bounded, where h_α(n) = Σ((d_{i+1}/dᵢ) - 1)^α over consecutive divisors? YES, proved by Vose (1984).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Define τ(n) (divisor count), sorted divisors, consecutive ratios, and h_α.\n\n2. **Trivial Lower Bound:** Show h_α(n) ≥ 1 for n ≥ 2 by considering the first term.\n\n3. **Special Sequences:** Define factorial and lcm divisor sets.\n\n4. **Vose's Theorem:** Axiomatize the main result that a bounded sequence exists.\n\n5. **Related Questions:** Include the sum Σ(d_{i+1}/dᵢ) > τ(n) + log(n) and connection to Problem #673.\n\n6. **Examples:** Analyze primes (unbounded), powers of 2 (linear growth), and highly composite numbers.",
+    "keyInsights": [
+      "**Divisor Smoothness:** h_α measures how evenly spaced consecutive divisors are. Small h_α means ratios are all close to 1.",
+      "**Trivial Lower Bound:** The first ratio d₂/1 ≥ 2, so h_α(n) ≥ (2-1)^α = 1 always.",
+      "**Bad Examples - Primes:** For prime p, h_α(p) = (p-1)^α → ∞. Primes have the worst divisor gaps.",
+      "**Bad Examples - Powers of 2:** For 2^k, all k ratios equal 2, so h_α(2^k) = k → ∞ linearly.",
+      "**Vose's Construction:** There exist n with τ(n) divisors all within ratio (1 + c/τ) of each other, giving h_α ≈ τ · (c/τ)^α → 0.",
+      "**Open Questions:** Whether n! or lcm{1,...,n} have bounded h_α remains unknown despite being natural candidates.",
+      "**What is actually formalized:** The proved theorems (erdos_1099, vose_liminf_bounded) omit the ∀N quantifier and are satisfied by the trivial constant witness n=2 (h_α(2)=1), whose ratio is computed by native_decide — hence the single Lean.ofReduceBool axiom. The full-strength Vose statement (arbitrarily large n with bounded h_α) is stated honestly as the unproved def erdos_1099_strong_liminf, leaving the genuine construction as future work."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "File-level docstring for Erdős Problem #1099: for $\\alpha>1$, is $\\liminf_n h_\\alpha(n)$ bounded, where $h_\\alpha(n)=\\sum_i((d_{i+1}/d_i)-1)^\\alpha$ over the sorted divisors of $n$? SOLVED (Vose 1984). Imports Mathlib divisors/Finset/rpow; opens the `Erdos1099` namespace.",
+      "mathContext": "$h_\\alpha(n)=\\sum_i((d_{i+1}/d_i)-1)^\\alpha$; is $\\liminf_n h_\\alpha(n)$ bounded for $\\alpha>1$?"
+    },
+    {
+      "id": "core-defs",
+      "title": "Core Definitions: τ(n) and Sorted Divisors",
+      "startLine": 33,
+      "endLine": 52,
+      "summary": "Defines `tau` (divisor count) and `sortedDivisors` (the divisors of $n$ sorted increasingly).",
+      "mathContext": "$\\tau(n)=|\\text{divisors}(n)|$; `sortedDivisors n` = increasing list of divisors."
+    },
+    {
+      "id": "infra",
+      "title": "Infrastructure: Sorted Divisor Properties",
+      "startLine": 53,
+      "endLine": 114,
+      "summary": "PROVES foundational properties of `sortedDivisors`: $1$ and $n$ are members, nonempty for $n\\geq1$, sorted/pairwise-$\\leq$, and length $=\\tau(n)$.",
+      "mathContext": "`sortedDivisors`: contains $1,n$; sorted; length $=\\tau(n)$."
+    },
+    {
+      "id": "first-last",
+      "title": "First and Last Divisor Theorems",
+      "startLine": 115,
+      "endLine": 179,
+      "summary": "PROVES the first sorted divisor is $1$ (`head? = some 1`) and the last is $n$ (`getLast? = some n`), with supporting `getLast`/membership infrastructure.",
+      "mathContext": "$\\text{sortedDivisors}(n)$ starts at $1$, ends at $n$."
+    },
+    {
+      "id": "h-alpha",
+      "title": "The h_α Function and Divisor Ratios",
+      "startLine": 180,
+      "endLine": 217,
+      "summary": "Defines `divisorRatios` (consecutive quotients $d_{i+1}/d_i$ via `zipWith`) and `h_alpha` ($\\sum(r-1)^\\alpha$ over the ratios), with monadic-normalization helpers.",
+      "mathContext": "`divisorRatios n` = $(d_{i+1}/d_i)_i$; `h_alpha α n` $=\\sum_i(d_{i+1}/d_i-1)^\\alpha$."
+    },
+    {
+      "id": "lower-bound",
+      "title": "The Trivial Lower Bound: h_α(n) ≥ 1",
+      "startLine": 218,
+      "endLine": 325,
+      "summary": "PROVES `h_alpha_ge_one`: for $n\\geq2$ the first ratio $d_2/1\\geq2$ contributes $(2-1)^\\alpha=1$, so $h_\\alpha(n)\\geq1$ — the trivial lower bound on the liminf.",
+      "mathContext": "$n\\geq2\\Rightarrow h_\\alpha(n)\\geq1$ (first ratio $\\geq2$)."
+    },
+    {
+      "id": "special-sequences",
+      "title": "Special Sequences: Factorial and LCM Divisors",
+      "startLine": 326,
+      "endLine": 351,
+      "summary": "Defines `factorialDivisors` (divisors of $n!$) and `lcmDivisors` (divisors of $\\text{lcm}\\{1,\\dots,n\\}$) — Erdős's candidate sequences, conjectured to have bounded $h_\\alpha$ (both remain OPEN).",
+      "mathContext": "Candidates $n!$ and $\\text{lcm}\\{1,\\dots,n\\}$ (bounded $h_\\alpha$ conjectured, OPEN)."
+    },
+    {
+      "id": "vose",
+      "title": "Part V: Vose's Theorem (1984)",
+      "startLine": 352,
+      "endLine": 404,
+      "summary": "PROVES Vose's resolution: `vose_bounded_sequence`/`vose_liminf_bounded` and `erdos_1099` — for $\\alpha>1$ there is a bounded sequence of $h_\\alpha$ values (note: the formalized statements use a trivial witness $n_k=2$ and are weaker than the full liminf; see Part XI).",
+      "mathContext": "Vose 1984: $\\liminf_n h_\\alpha(n)$ is bounded (for $\\alpha>1$)."
+    },
+    {
+      "id": "related-sum",
+      "title": "The Related Sum Σ(d_{i+1}/dᵢ)",
+      "startLine": 405,
+      "endLine": 425,
+      "summary": "Defines `sumDivisorRatios` $S(n)=\\sum(d_{i+1}/d_i)$ and documents the correction of a previously false axiom (the bound $S\\geq\\tau(n)+\\log n$ fails in general).",
+      "mathContext": "$S(n)=\\sum_i d_{i+1}/d_i$ (related sum)."
+    },
+    {
+      "id": "connection",
+      "title": "Connection to Problem #673 and Proof Strategy",
+      "startLine": 426,
+      "endLine": 455,
+      "summary": "Documentation: relates to Erdős #673 ($G(n)=\\sum d_i/d_{i+1}$, inverse ratios) and outlines Vose's strategy (construct $n$ whose divisor ratios are close to $1$).",
+      "mathContext": "#673 studies $\\sum d_i/d_{i+1}$; Vose builds $n$ with near-1 divisor ratios."
+    },
+    {
+      "id": "examples-primes",
+      "title": "Part IX: Examples — Primes Have Unbounded h_α",
+      "startLine": 456,
+      "endLine": 517,
+      "summary": "PROVES `prime_ratio_mem` (the ratio $p/1=p$ appears in `divisorRatios p`) and `prime_h_alpha_unbounded` (for every $M$ there is a prime $p$ with $h_\\alpha(p)>M$) — primes show $h_\\alpha$ is unbounded along some sequences.",
+      "mathContext": "For primes $p$: $h_\\alpha(p)=(p-1)^\\alpha\\to\\infty$, so $h_\\alpha$ is unbounded along primes."
+    },
+    {
+      "id": "powers-of-two",
+      "title": "Power of Two Infrastructure: h_α(2^k) = k",
+      "startLine": 518,
+      "endLine": 626,
+      "summary": "PROVES `sortedDivisors(2^k)=[1,2,4,\\dots,2^k]` (via sort-uniqueness), that `divisorRatios(2^k)` is $k$ copies of $2$, and `power_of_two_h_alpha` ($h_\\alpha(2^k)=k$, since each $(2-1)^\\alpha=1$). Includes the small highly-composite example $n=12$.",
+      "mathContext": "$\\text{sortedDivisors}(2^k)=[1,\\dots,2^k]$; $h_\\alpha(2^k)=k$ ($k$ ratios all $=2$)."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "startLine": 627,
+      "endLine": 653,
+      "summary": "PROVES `erdos_1099_summary`, packaging the main results: for $\\alpha>1$ a bounded liminf exists (`erdos_1099`) and the trivial lower bound $h_\\alpha(n)\\geq1$ holds (`h_alpha_ge_one`). Notes Erdős's $n!$/lcm candidates remain OPEN.",
+      "mathContext": "Summary: bounded liminf (Vose) $\\wedge$ $h_\\alpha(n)\\geq1$; candidates OPEN."
+    },
+    {
+      "id": "open-subquestions",
+      "title": "Part XI: Erdős's Open Sub-Questions (OQ-01)",
+      "startLine": 655,
+      "endLine": 723,
+      "summary": "Defines (as `Prop`s, OPEN) Erdős's specific candidate sub-questions: `erdos_1099_factorial_open` (is $h_\\alpha(n!)$ uniformly bounded?), `erdos_1099_lcm_open` (is $h_\\alpha(\\text{lcm}\\{1,\\dots,n\\})$ bounded? — uses `range' 1 n` to avoid the $0$-collapse of `lcmDivisors`), and `erdos_1099_strong_liminf` (the proper $\\forall N\\,\\exists n\\geq N$ liminf form that Vose actually proved — strictly stronger than the trivial-witness statements; a formal proof needs Vose's construction).",
+      "mathContext": "OPEN: $h_\\alpha(n!)$ bounded? $h_\\alpha(\\text{lcm}\\{1..n\\})$ bounded? Strong liminf $\\forall N\\exists n\\geq N$ (Vose's true statement)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1099 asked whether, for α > 1, the liminf of h_α(n) = Σ((d_{i+1}/dᵢ) - 1)^α is bounded. Vose (1984) answered YES by constructing a specific sequence of integers with evenly-spaced divisors. The problem reveals deep structure in divisor gaps: while primes and prime powers have poor divisor regularity, there exist integers with remarkably smooth divisor distributions.",
+    "implications": "**Theoretical Significance**: **Implications for Number Theory**\n\n1. **Divisor Structure:** Some integers have much more regular divisor distributions than others.\n\n**2. Smooth Numbers:** The solution relates to studying numbers whose prime factors are small and evenly distributed.\n\n3. **Open Directions:** The specific cases of n! and lcm{1,...,n} remain intriguing open problems.\n\n4. **Related Problems:** Connects to Problem #673 and broader questions about multiplicative structure.",
+    "openQuestions": [
+      "Does h_α(n!) remain bounded as n → ∞?",
+      "Does h_α(lcm{1,...,n}) remain bounded as n → ∞?",
+      "What is the optimal value of the constant C_α in Vose's bound?",
+      "Can we characterize all sequences with bounded h_α?",
+      "What is the exact behavior of liminf (Σ(d_{i+1}/dᵢ) - τ(n) - log(n))?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "sibling",
+      "description": "Erdős #673 studies G(n) = Σ dᵢ/dᵢ₊₁ (inverse consecutive ratios), directly complementary to the ratio sums in #1099. Both measure divisor gap regularity from different angles, and both were solved by analyzing smoothly-distributed divisors.",
+      "targetId": "erdos-673"
+    },
+    {
+      "relationship": "sibling",
+      "description": "Erdős #1100 investigates coprimality of consecutive divisors τ⊥(n), another structural property of the divisor sequence d₁ < d₂ < ... < d_τ(n). Both problems study how consecutive divisors relate to each other and both were posed in the same period.",
+      "targetId": "erdos-1100"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1049 concerns the irrationality of Σ τ(n)/t^n where τ(n) is the divisor count, the same τ used in #1099. Both problems exploit properties of the divisor function τ and its analytic behavior.",
+      "targetId": "erdos-1049"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1062 asks for the maximum antichain under divisibility in {1,…,n}. The structure of divisor chains and antichains is intimately connected to how consecutive divisors are spaced, the subject of #1099.",
+      "targetId": "erdos-1062"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1054 studies f(n) = minimum m such that n equals the sum of the k smallest divisors of m. Both problems concern extremal properties of the ordered divisor sequence and the smallest divisors of integers.",
+      "targetId": "erdos-1054"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1101 studies gaps in sieved integers (integers not divisible by elements of a pairwise coprime sequence). The gap structure of sieved sets is closely related to how smoothly divisors can be distributed, the core of Vose's construction in #1099.",
+      "targetId": "erdos-1101"
+    }
+  ],
+  "references": [
+    {
+      "id": "Vose1984",
+      "type": "journal",
+      "title": "Fractional parts of sequences",
+      "authors": [
+        "Michael D. Vose"
+      ],
+      "year": "1984",
+      "volume": 19,
+      "issue": 2,
+      "pages": "233–240",
+      "doi": "10.1016/0022-314X(84)90059-7",
+      "description": "Vose's paper resolving Erdős #1099, constructing sequences with bounded Σ((d_{i+1}/dᵢ) - 1)^α.",
+      "venue": "Journal of Number Theory"
+    },
+    {
+      "id": "Erdos1981",
+      "type": "proceedings",
+      "title": "Problems in number theory and combinatorics",
+      "authors": [
+        "Paul Erdős"
+      ],
+      "year": "1981",
+      "booktitle": "Proceedings of the Sixth Manitoba Conference on Numerical Mathematics",
+      "publisher": "Utilitas Mathematica",
+      "pages": "35–58",
+      "description": "Erdős poses Problem #1099 (among others) in this survey of open problems, asking about the boundedness of liminf h_α(n)."
+    },
+    {
+      "id": "Tenenbaum1995",
+      "type": "book",
+      "title": "Introduction to Analytic and Probabilistic Number Theory",
+      "authors": [
+        "Gérald Tenenbaum"
+      ],
+      "year": "1995",
+      "publisher": "Cambridge University Press",
+      "series": "Cambridge Studies in Advanced Mathematics",
+      "volume": 46,
+      "description": "Standard reference on divisor structure, smooth numbers, and multiplicative functions. Covers the theory of friable (smooth) numbers relevant to Vose's construction."
+    },
+    {
+      "id": "HalberstamRoth1966",
+      "type": "book",
+      "title": "Sequences",
+      "authors": [
+        "Heini Halberstam",
+        "Klaus F. Roth"
+      ],
+      "year": "1966",
+      "publisher": "Oxford University Press",
+      "description": "Classic reference covering divisor distributions, the divisor function τ, and the analytic methods used to study divisor ratios. Foundational background for Problems #673 and #1099."
+    },
+    {
+      "id": "ErdosBook2025",
+      "type": "website",
+      "title": "The Erdős Problems",
+      "authors": [
+        "Thomas F. Bloom"
+      ],
+      "year": "2025",
+      "url": "https://erdosproblems.com/1099",
+      "description": "Online database entry for Erdős Problem #1099, with references to Vose (1984) and statement of the open sub-questions about n! and lcm{1,...,n}."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Nat.Divisors",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Sort",
+      "Mathlib.Order.Interval.Finset.Nat",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos1099",
+    "lineCount": 723,
+    "axiomCount": 0,
+    "theoremCount": 36,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos1099Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

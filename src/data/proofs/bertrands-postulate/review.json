@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "proofId": "bertrands-postulate",
+  "reviewDate": "2026-03-24T16:00:00Z",
+  "reviewer": "peer-reviewer-1",
+
+  "overallAssessment": {
+    "grade": "B-",
+    "oneLiner": "Honest Mathlib wrapper with good pedagogy but inflated declaration count, a wrong Wiedijk number, and several filler theorems that restate the same result.",
+    "tier": "B",
+    "tierJustification": "The file's core theorem (Bertrand's Postulate) is entirely Mathlib's Nat.exists_prime_lt_and_le_two_mul. The file provides pedagogical wrappers (hypothesis conversion, corollaries) and two genuinely derived consequences (primes_infinite_via_bertrand, no_largest_prime_via_bertrand). This is Tier B: formalized using Mathlib with bridge/infrastructure contributions."
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json badge field; Lean file docstring lines 19-27",
+      "finding": "The entry is transparent about being a Mathlib wrapper. The badge is 'mathlib' (not 'original' or 'verified'), the Lean docstring explicitly says 'Foundation (from Mathlib)' and lists which Mathlib theorems are used. The mathlibDependencies field correctly names the three key Mathlib theorems (Nat.exists_prime_lt_and_le_two_mul, Nat.bertrand, Nat.exists_prime_lt_and_le_two_mul_eventually). This is honest framing.",
+      "recommendation": "Preserve this transparency. It sets a good standard for other Mathlib wrapper entries."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "primes_infinite_via_bertrand (line 89-97) and no_largest_prime_via_bertrand (line 102-106)",
+      "finding": "These two theorems are the only ones with multi-step proofs. primes_infinite_via_bertrand does a case split on n=0 vs n=succ, applies Bertrand, and extracts the prime. no_largest_prime_via_bertrand derives a contradiction from an assumed largest prime. While elementary, these are genuine derivations that add pedagogical value beyond raw Mathlib calls.",
+      "recommendation": "Keep these. They demonstrate how Bertrand's Postulate connects to the infinitude of primes."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json overview.historicalContext; annotations.json ann-historical",
+      "finding": "The historical exposition is excellent: it accurately traces the theorem from Bertrand's 1845 conjecture through Chebyshev's 1852 analytic proof to Erdos's 1932 elementary proof. The account of Erdos's proof strategy (central binomial coefficient, upper/lower bound squeeze) is mathematically correct. The references section includes primary sources (Chebyshev 1852, Erdos 1932, Bertrand 1845, Ramanujan 1919, Nagura 1952) and Proofs from THE BOOK.",
+      "recommendation": "This is publication-quality mathematical exposition. Preserve it."
+    },
+    {
+      "severity": "moderate",
+      "category": "filler",
+      "location": "bertrand (line 66-67)",
+      "finding": "The theorem 'bertrand' has the exact same type signature as 'bertrand_postulate' (both prove exists p, Nat.Prime p and n < p and p <= 2 * n given 0 < n). It calls Nat.bertrand instead of Nat.exists_prime_lt_and_le_two_mul, but these are themselves aliases in Mathlib. This is a pure alias of an alias -- it adds no mathematical or pedagogical value.",
+      "recommendation": "Remove 'bertrand' or merge it into the docstring of bertrand_postulate as a note about Mathlib's alternative name. Reduce theoremCount from 7 to 6."
+    },
+    {
+      "severity": "moderate",
+      "category": "filler",
+      "location": "exists_prime_between (line 74-75)",
+      "finding": "This theorem has the exact same conclusion as bertrand_postulate. Its only difference is the hypothesis: '1 <= n' instead of '0 < n'. For Nat, these are definitionally equal. The proof body is literally 'exact bertrand_postulate n hn'. This is a wrapper of a wrapper with no substantive difference.",
+      "recommendation": "Remove exists_prime_between or acknowledge it as a trivial restatement rather than counting it as a distinct corollary."
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "bertrand_large (line 118-119)",
+      "finding": "This is a one-line wrapper of Nat.exists_prime_lt_and_le_two_mul_eventually, presented with a section header ('Stronger Bounds for Large n') that implies additional mathematical content. The theorem is identical in conclusion to bertrand_postulate, just with a stronger hypothesis (n >= 512). It does not demonstrate any new mathematical insight; it merely exposes an internal Mathlib lemma.",
+      "recommendation": "Keep for pedagogical completeness (it illustrates the proof structure), but reframe the section to avoid implying this is an independent or 'stronger' result. It is a weaker result (fewer inputs accepted)."
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "meta.json wiedijkNumber: 98 (line 40); Lean file line 47: 'Wiedijk's 100 Theorems: #98'; meta.json overview.text: 'Wiedijk #43'",
+      "finding": "The Wiedijk number is inconsistent. On Freek Wiedijk's '100 Theorems' list, Bertrand's Postulate is #43 (https://www.cs.ru.nl/~freek/100/). The overview.text correctly says 'Wiedijk #43' but the wiedijkNumber field says 98 and the Lean docstring says '#98'. Number 98 on the Wiedijk list is actually 'Descartes' Rule of Signs'.",
+      "recommendation": "Change wiedijkNumber from 98 to 43 in meta.json. Update the Lean file docstring from '#98' to '#43'."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "meta.json overview.text (line 55)",
+      "finding": "The overview text claims '13 declarations' but the file contains exactly 7 theorem declarations and 0 definitions. The count of 13 appears to erroneously include the 6 #check commands (lines 158-163) as 'declarations'. #check is a diagnostic command, not a declaration -- it produces no theorems or definitions.",
+      "recommendation": "Change '13 declarations' to '7 theorems' in overview.text. The leanFile.theoremCount: 7 field is already correct."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json overview.text (line 55)",
+      "finding": "The overview text references 'prime_gap_bound' but the actual theorem name in the Lean file is 'prime_gap_bounded' (line 81). Also mentions 'concrete verifications (e.g., prime 7 between 4 and 8)' but the examples section (lines 121-141) is entirely in comments -- no Lean theorems verify concrete instances.",
+      "recommendation": "Fix the theorem name to 'prime_gap_bounded'. Either remove the claim about concrete verifications or add actual Lean example theorems (e.g., 'example : exists p, Nat.Prime p and 4 < p and p <= 8')."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json sections[0].summary (line 76)",
+      "finding": "The section summary says 'Namespace BertrandsPostulate opens Nat' but the Lean file (line 50) only has 'namespace BertrandsPostulate' with no 'open Nat'. The leanFile.opens field correctly shows [] (empty), contradicting the section summary.",
+      "recommendation": "Remove 'opens Nat' from the section summary."
+    },
+    {
+      "severity": "minor",
+      "category": "overclaim",
+      "location": "meta.json originalContributions (line 34-38)",
+      "finding": "The originalContributions list claims 'Corollaries: prime gaps are bounded, infinitude of primes via Bertrand'. prime_gap_bounded (line 81-83) is a one-line call to bertrand_postulate -- this is not an original corollary proof. primes_infinite_via_bertrand is a genuine (if elementary) derivation and can fairly be called a contribution. The 'Connection to Prime Number Theorem explained' contribution is commentary only (lines 143-154 are a doc comment with no Lean content).",
+      "recommendation": "Reframe originalContributions: distinguish between 'original derivations' (primes_infinite_via_bertrand, no_largest_prime_via_bertrand) and 'pedagogical restatements' (prime_gap_bounded, exists_prime_between). Note that the PNT connection is expository, not formalized."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json description (line 5)",
+      "finding": "The description says 'For every integer n > 1' but the Lean theorem uses the hypothesis '0 < n' (i.e., n >= 1, not n > 1). Mathlib's Nat.exists_prime_lt_and_le_two_mul requires n != 0, which is n >= 1. The case n=1 gives the prime p=2 with 1 < 2 <= 2. This is a minor imprecision but the description excludes n=1 which the formalization covers.",
+      "recommendation": "Change 'n > 1' to 'n >= 1' or 'n > 0' in the description to match the Lean formalization."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json sections[5] (lines 120-126) vs Lean file",
+      "finding": "The section 'Key Theorems Summary' says it verifies 'all six theorems' via #check, listing 6 names. But there are 7 theorems in the file (bertrand_large at line 118 is not #checked). The section title and count are inconsistent with the actual theorem inventory.",
+      "recommendation": "Either add '#check bertrand_large' to the Lean file, or update the section description to say 'six of seven theorems'."
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Fix wiedijkNumber from 98 to 43 in meta.json. Update Lean file docstring line 47 from '#98' to '#43'. Bertrand's Postulate is Wiedijk #43, not #98.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Fix overview.text: change '13 declarations' to '7 theorems'. Fix 'prime_gap_bound' to 'prime_gap_bounded'. Remove or qualify the claim about 'concrete verifications' since the examples section is comments-only.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Remove 'opens Nat' from sections[0].summary. Fix sections[5] description to note 6 of 7 theorems are #checked (bertrand_large is omitted).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "medium",
+      "target": "researcher",
+      "description": "Consider removing the filler theorem 'bertrand' (line 66-67, pure alias) and 'exists_prime_between' (line 74-75, wrapper of wrapper with identical conclusion). These inflate the theorem count without adding value. Alternatively, add concrete example theorems (e.g., verifying Bertrand for specific n values using decide/norm_num) to replace the filler.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Reframe originalContributions to distinguish genuine derivations (primes_infinite_via_bertrand, no_largest_prime_via_bertrand) from trivial restatements (exists_prime_between, prime_gap_bounded) and commentary (PNT connection). Fix description 'n > 1' to 'n >= 1' to match Lean.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-6",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Add concrete example theorems to the examples section (lines 121-141) to back up the commentary. E.g., 'example : exists p, Nat.Prime p and 3 < p and p <= 6 := by exact ...' These would replace the current comments-only examples with machine-checked instances.",
+      "status": "open"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 4,
+    "originalityAccuracy": 7,
+    "completeness": 8,
+    "framingPrecision": 6,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 5,
+    "overall": 6.3
+  },
+
+  "suggestedBestFraming": "A pedagogical Mathlib wrapper for Bertrand's Postulate (Wiedijk #43) that delegates the core result to Mathlib's Nat.exists_prime_lt_and_le_two_mul and provides two genuine derivations (infinitude of primes via Bertrand, no largest prime), accompanied by excellent historical exposition of Erdos's 1932 elementary proof."
+}

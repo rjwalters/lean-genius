@@ -1,0 +1,113 @@
+[
+  {
+    "id": "cvd0102-ann-01",
+    "proofId": "circumference-via-differentiation-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "The L^p surface-derivative question and its answer",
+    "content": "The header states the parent entry's open question — the unit ball in $L^p$ has Dirichlet volume $V_n(p) = 2^n\\,\\Gamma(1/p+1)^n / \\Gamma(n/p+1)$; does the identity $dV/dr = \\text{surface area}$ survive for $p \\ne 2$? — and answers it completely. The volume and its $r^n$ scaling are tractable in Mathlib v4.26 via `MeasureTheory.volume_sum_rpow_le`, giving $dV/dr = n\\,V_n(p)\\,r^{n-1}$ by the power rule. But the surface side depends on *which* surface measure is meant: by the coarea formula $dV/dr = \\int_{\\|x\\|_p = r} |\\nabla\\rho|^{-1}\\, d\\mathcal{H}^{n-1}$ with $\\rho(x) = \\|x\\|_p$, and on the sphere $|\\nabla\\rho|^2 = \\sum |x_i|^{2p-2}$, which is identically $1$ only when $p = 2$. So $dV/dr$ equals the Euclidean Hausdorff surface measure for $p = 2$ (the parent theorem) and a $|\\nabla\\rho|^{-1}$-weighted integral for every finite $p \\ne 2$. The concrete witness is the $L^1$ diamond ($n=2$): $V_2(1) = 2$, $dV/dr|_{r=1} = 4$, but the Euclidean perimeter is $4\\sqrt{2}$; the coarea weight reconciles them as $(4\\sqrt{2})/\\sqrt{2} = 4$.",
+    "mathContext": "$V_n(p) = 2^n\\Gamma(1/p+1)^n/\\Gamma(n/p+1)$; $|\\nabla\\rho|^2 = \\sum|x_i|^{2p-2} \\equiv 1$ on the sphere iff $p=2$; $L^1$, $n=2$: $dV/dr = 4$ vs Euclidean perimeter $4\\sqrt2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "coarea formula",
+      "L^p unit ball volume (Dirichlet)",
+      "Hausdorff surface measure",
+      "Archimedes onion-peel identity"
+    ],
+    "prerequisites": [
+      "L^p norms and unit balls",
+      "Hausdorff measure and the coarea formula",
+      "the parent Euclidean identity dV/dr = surface area"
+    ]
+  },
+  {
+    "id": "cvd0102-ann-02",
+    "proofId": "circumference-via-differentiation-oq-01-oq-02",
+    "range": {
+      "startLine": 102,
+      "endLine": 113
+    },
+    "type": "definition",
+    "title": "L^p ball volume and surface definitions",
+    "content": "Four definitions, written to match the constant in `MeasureTheory.volume_sum_rpow_le` *verbatim* so a future volume bridge is a pure rewrite. `lpUnitBallVolume n p = (2\\cdot\\Gamma(1/p+1))^n / \\Gamma(n/p+1)$ is the Dirichlet closed form $V_n(p)$. `lpBallVolumeFn n p r = V_n(p)\\cdot r^n` is the volume as a function of radius — exactly the $r^n$ scaling factor of the Mathlib lemma. `lpSurfaceConst n p = n\\cdot V_n(p)$ is the constant appearing in the derivative, and `lpSurfaceFn n p r = n\\cdot V_n(p)\\cdot r^{n-1}$ is the surface-derivative function. Matching Mathlib's constant exactly is deliberate: it lets a Docker-enabled session discharge `volume = lpBallVolumeFn` by `rw` on `volume_sum_rpow_le` plus `ENNReal.toReal` bookkeeping, with no restatement risk.",
+    "mathContext": "$V_n(p) = (2\\Gamma(1/p+1))^n/\\Gamma(n/p+1)$; $V(r) = V_n(p) r^n$; surface constant $n V_n(p)$; surface function $n V_n(p) r^{n-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "MeasureTheory.volume_sum_rpow_le",
+      "Real.Gamma",
+      "Dirichlet volume integral"
+    ],
+    "prerequisites": [
+      "Real.Gamma and rpow",
+      "Lean def syntax"
+    ]
+  },
+  {
+    "id": "cvd0102-ann-03",
+    "proofId": "circumference-via-differentiation-oq-01-oq-02",
+    "range": {
+      "startLine": 124,
+      "endLine": 130
+    },
+    "type": "theorem",
+    "title": "Main derivative identity (★)",
+    "content": "`lpBallVolumeFn_hasDerivAt`: the $L^p$ ball-volume function $V(r) = V_n(p)\\cdot r^n$ has derivative $n\\cdot V_n(p)\\cdot r^{n-1}$ at every radius $r$. This is the same power-rule computation as the verified parent's Euclidean `nBallVolumeFn_hasDerivAt`; only the leading constant differs. The proof is two lines: `(hasDerivAt_pow n r).const_mul (lpUnitBallVolume n p)` gives the derivative of $V_n(p)\\cdot r^n$ as $V_n(p)\\cdot(n\\cdot r^{n-1})$, and a `ring` rewrite reassociates the constant to $n\\cdot V_n(p)\\cdot r^{n-1} = $ `lpSurfaceFn n p r`. All of the $L^p$-specific geometry lives in the constant $V_n(p)$; the differentiation step never sees it.",
+    "mathContext": "HasDerivAt (lpBallVolumeFn n p) (lpSurfaceFn n p r) r, via hasDerivAt_pow + HasDerivAt.const_mul + ring.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hasDerivAt_pow",
+      "HasDerivAt.const_mul",
+      "power rule"
+    ],
+    "prerequisites": [
+      "HasDerivAt",
+      "the power rule",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "cvd0102-ann-04",
+    "proofId": "circumference-via-differentiation-oq-01-oq-02",
+    "range": {
+      "startLine": 132,
+      "endLine": 140
+    },
+    "type": "theorem",
+    "title": "Differentiability and the deriv value",
+    "content": "Two immediate corollaries of the main theorem. `lpBallVolumeFn_differentiable` states the volume function is differentiable everywhere, obtained from `lpBallVolumeFn_hasDerivAt`'s `.differentiableAt` at each point. `deriv_lpBallVolume` evaluates Mathlib's `deriv` operator: `deriv (lpBallVolumeFn n p) r = lpSurfaceFn n p r`, via `(lpBallVolumeFn_hasDerivAt n p r).deriv`. Together they package the $(\\star)$ identity in the two forms downstream code is most likely to need: as a `Differentiable` fact and as a definitional `deriv` equation.",
+    "mathContext": "Differentiable ℝ (lpBallVolumeFn n p); deriv (lpBallVolumeFn n p) r = lpSurfaceFn n p r.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "HasDerivAt.differentiableAt",
+      "HasDerivAt.deriv"
+    ],
+    "prerequisites": [
+      "Differentiable",
+      "the deriv operator"
+    ]
+  },
+  {
+    "id": "cvd0102-ann-05",
+    "proofId": "circumference-via-differentiation-oq-01-oq-02",
+    "range": {
+      "startLine": 143,
+      "endLine": 147
+    },
+    "type": "theorem",
+    "title": "Value at the unit radius",
+    "content": "`lpSurfaceFn_one`: at $r = 1$ the surface-derivative function equals the surface constant, $n\\cdot V_n(p)$. The proof is `one_pow` (so $1^{n-1} = 1$) followed by `mul_one`. This is the value that, for $p = 2$, equals the genuine Euclidean surface area of the unit sphere, and for $p \\ne 2$ equals the $|\\nabla\\rho|^{-1}$-weighted surface integral discussed in the header — the single number at which the whole $p=2$-versus-$p\\ne2$ distinction is sharpest.",
+    "mathContext": "lpSurfaceFn n p 1 = lpSurfaceConst n p = n·V_n(p).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "one_pow",
+      "mul_one",
+      "surface constant"
+    ],
+    "prerequisites": [
+      "Lean simp lemmas one_pow, mul_one"
+    ]
+  }
+]

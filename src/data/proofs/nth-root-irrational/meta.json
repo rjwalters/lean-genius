@@ -1,0 +1,256 @@
+{
+  "id": "nth-root-irrational",
+  "title": "Irrationality of nth Roots",
+  "slug": "nth-root-irrational",
+  "description": "A general theorem proving that for any n >= 2 and m >= 1, if m is not a perfect nth power, then the nth root m^(1/n) is irrational. Subsumes all specific irrationality proofs for square roots, cube roots, fourth roots, and beyond.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "generalization",
+      "research"
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/NthRootIrrational.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "irrational_nrt_of_notint_nrt",
+        "description": "If x^n = m, x is not an integer, and n > 0, then x is irrational",
+        "module": "Mathlib.NumberTheory.Real.Irrational"
+      },
+      {
+        "theorem": "Real.rpow_natCast",
+        "description": "Conversion between rpow and natCast for real powers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.rpow_mul",
+        "description": "Multiplicativity of real-valued powers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Int.natAbs_sq",
+        "description": "natAbs squared equals the integer squared: (k.natAbs)^2 = k^2",
+        "module": "Mathlib.Data.Int.NatAbs"
+      }
+    ],
+    "originalContributions": [
+      "General nth root irrationality theorem via irrational_nrt_of_notint_nrt",
+      "Unified proof architecture: power identity + not-an-integer + conclude",
+      "natAbs reduction technique for even-power not-a-perfect-power lemmas",
+      "Converse characterization: perfect powers give integer roots",
+      "15 concrete corollaries spanning square, cube, fourth, and fifth roots"
+    ],
+    "dateAdded": "2026-02-06",
+    "axiomCount": 0,
+    "lineCount": 312,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 22,
+    "definitionCount": 1,
+    "additionalFiles": [
+      "Proofs/CubeRoot5Irrational.lean",
+      "Proofs/CubeRoot6Irrational.lean",
+      "Proofs/CubeRoot7Irrational.lean",
+      "Proofs/CubeRoot9Irrational.lean",
+      "Proofs/CubeRoot10Irrational.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The irrationality of √2 is one of the oldest results in mathematics, attributed to the Pythagoreans around 500 BCE. The classical proof uses a parity argument specific to square roots. The same holds for all nth roots: the rational root theorem states that any rational root p/q of a monic polynomial with integer coefficients must have q dividing 1, hence be an integer. Since the nth root of m is a root of x^n - m, it is rational only if it is an integer, which happens only when m is a perfect nth power. This result was implicit in Gauss's Disquisitiones Arithmeticae (1801) and is now standard in undergraduate algebra courses as an application of unique factorization.",
+    "problemStatement": "For any integers $n \\geq 2$ and $m \\geq 1$, is $m^{1/n}$ rational or irrational?\n\n$$\\text{If no integer } k \\text{ satisfies } k^n = m, \\text{ then } m^{1/n} \\text{ is irrational.}$$\n\nEquivalently: $m^{1/n} \\in \\mathbb{Q}$ if and only if $m$ is a perfect $n$-th power.",
+    "text": "A general theorem proving that for any n >= 2 and m >= 1, if m is not a perfect nth power, then the nth root m^(1/n) is irrational. Subsumes all specific irrationality proofs for square roots, cube roots, fourth roots, and beyond.",
+    "proofStrategy": "The proof follows a clean three-step pattern using Mathlib's `irrational_nrt_of_notint_nrt`:\n\n1. **Power identity**: Show $(m^{1/n})^n = m$ using properties of real-valued powers\n2. **Not an integer**: Show that if $m$ is not a perfect $n$-th power, then $m^{1/n}$ is not an integer (by contrapositive: if $m^{1/n} = k \\in \\mathbb{Z}$, then $k^n = m$)\n3. **Conclude irrationality**: Apply `irrational_nrt_of_notint_nrt` to combine steps 1 and 2",
+    "keyInsights": [
+      "The key Mathlib lemma `irrational_nrt_of_notint_nrt` reduces irrationality to two simpler conditions: a power identity and a not-an-integer proof.",
+      "For even powers (squares, 4th powers), we use `Int.natAbs_sq` to reduce from $\\mathbb{Z}$ to $\\mathbb{N}$, where bounds are easier to establish.",
+      "For odd powers (cubes, 5th powers), negative integers give non-positive results, immediately bounding the search to positive integers.",
+      "The converse direction shows the characterization is tight: if $m = k^n$ for some natural $k$, then $m^{1/n} = k$ is rational.",
+      "A single general theorem subsumes infinitely many specific irrationality results: $\\sqrt{2}$, $\\sqrt{3}$, $\\sqrt{5}$, $\\sqrt[3]{2}$, $\\sqrt[3]{3}$, $\\sqrt[4]{2}$, and all others."
+    ],
+    "prerequisites": [
+      "Number theory (unique prime factorization, rational root theorem)",
+      "Algebra (polynomial roots, field extensions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup and Definitions",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module documentation, imports, and the nthRoot definition.",
+      "mathContext": "Imports for number theory and irrationality from Mathlib. The $n$th root of a non-perfect-$n$th-power integer is irrational: $\\sqrt[n]{k} \\notin \\mathbb{Q}$ unless $k = m^n$ for some $m \\in \\mathbb{Z}$."
+    },
+    {
+      "id": "power-identity",
+      "title": "Power Identity",
+      "startLine": 53,
+      "endLine": 64,
+      "summary": "Proof that (m^(1/n))^n = m using rpow properties.",
+      "mathContext": "The identity $(m^{1/n})^n = m$ for $m \\geq 0$ and $n \\geq 1$, proved via `rpow` (real-valued power) properties. This connects the $n$th root definition $\\sqrt[n]{m} := m^{1/n}$ to the characterizing equation $x^n = m$."
+    },
+    {
+      "id": "not-integer",
+      "title": "Not-an-Integer Lemma",
+      "startLine": 65,
+      "endLine": 79,
+      "summary": "Contrapositive: if m^(1/n) were integer k, then k^n = m.",
+      "mathContext": "Contrapositive argument: if $\\sqrt[n]{m} = k \\in \\mathbb{Z}$, then $k^n = m$, so $m$ is a perfect $n$th power. Therefore, if $m$ is NOT a perfect $n$th power, $\\sqrt[n]{m} \\notin \\mathbb{Z}$."
+    },
+    {
+      "id": "general-theorem",
+      "title": "The General Theorem",
+      "startLine": 80,
+      "endLine": 99,
+      "summary": "Main result combining power identity and not-an-integer via irrational_nrt_of_notint_nrt.",
+      "mathContext": "Main irrationality result using `irrational_nrt_of_notint_nrt`: $\\sqrt[n]{m} \\notin \\mathbb{Q}$ when $m$ is not a perfect $n$th power. The proof combines the power identity with the not-integer argument and the fact that $\\sqrt[n]{m}$ being rational but not integer contradicts unique factorization."
+    },
+    {
+      "id": "not-perfect-power",
+      "title": "Not-a-Perfect-Power Lemmas",
+      "startLine": 100,
+      "endLine": 249,
+      "summary": "Concrete proofs that specific small numbers are not perfect squares, cubes, 4th or 5th powers.",
+      "mathContext": "Concrete verifications that specific small integers are not perfect powers: $2, 3, 5$ are not perfect squares; $2, 3, 5$ are not perfect cubes; $2, 3$ are not perfect fourth powers; $2$ is not a perfect fifth power. Each proved by exhaustive case analysis or `omega`/`norm_num`."
+    },
+    {
+      "id": "corollaries-sqrt",
+      "title": "Concrete Corollaries: Square Roots",
+      "startLine": 250,
+      "endLine": 263,
+      "summary": "Specific irrationality results for square roots: sqrt(2), sqrt(3), sqrt(5).",
+      "mathContext": "Square-root instances of the general theorem: $\\sqrt{2}, \\sqrt{3}, \\sqrt{5} \\notin \\mathbb{Q}$, each obtained from the corresponding not-a-perfect-square lemma."
+    },
+    {
+      "id": "corollaries-cbrt",
+      "title": "Concrete Corollaries: Cube Roots",
+      "startLine": 264,
+      "endLine": 277,
+      "summary": "Specific irrationality results for cube roots: cbrt(2), cbrt(3), cbrt(5).",
+      "mathContext": "Cube-root instances of the general theorem: $\\sqrt[3]{2}, \\sqrt[3]{3}, \\sqrt[3]{5} \\notin \\mathbb{Q}$, each obtained from the corresponding not-a-perfect-cube lemma."
+    },
+    {
+      "id": "corollaries-fourth",
+      "title": "Concrete Corollaries: Fourth Roots",
+      "startLine": 278,
+      "endLine": 287,
+      "summary": "Specific irrationality results for fourth roots: 4thrt(2), 4thrt(3).",
+      "mathContext": "Fourth-root instances of the general theorem: $\\sqrt[4]{2}, \\sqrt[4]{3} \\notin \\mathbb{Q}$, each obtained from the corresponding not-a-perfect-fourth-power lemma."
+    },
+    {
+      "id": "corollaries-fifth",
+      "title": "Fifth Roots",
+      "startLine": 288,
+      "endLine": 293,
+      "summary": "Specific irrationality result for fifth roots: 5thrt(2).",
+      "mathContext": "Fifth-root instance of the general theorem: $\\sqrt[5]{2} \\notin \\mathbb{Q}$, obtained from the not-a-perfect-fifth-power lemma."
+    },
+    {
+      "id": "converse",
+      "title": "The Characterization (Converse: Perfect Powers)",
+      "startLine": 294,
+      "endLine": 312,
+      "summary": "Shows the characterization is tight: perfect nth powers give integer nth roots.",
+      "mathContext": "The characterization is tight: $\\sqrt[n]{m^n} = m \\in \\mathbb{Z}$ for any positive integer $m$. Thus $\\sqrt[n]{k} \\in \\mathbb{Q} \\iff k$ is a perfect $n$th power. Closing examples confirm $\\sqrt{4}=2$, $\\sqrt[3]{8}=2$, $\\sqrt[3]{27}=3$, $\\sqrt[4]{16}=2$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes the complete characterization of rational nth roots: $m^{1/n}$ is rational if and only if $m$ is a perfect $n$-th power. The general theorem uses Mathlib's `irrational_nrt_of_notint_nrt` to reduce irrationality to two conditions (power identity and not-an-integer), both provable with standard real analysis. The result subsumes all specific irrationality proofs for $\\sqrt{2}$, $\\sqrt{3}$, $\\sqrt[3]{2}$, etc., into a single uniform framework.",
+    "implications": "**Theoretical Significance**: This theorem demonstrates the power of generalization in formal mathematics.\n\nRather than proving irrationality case-by-case (one proof for $\\sqrt{2}$, another for $\\sqrt[3]{2}$, etc.), the general framework handles all cases uniformly.\n\nThe proof architecture - power identity + not-an-integer + conclude via `irrational_nrt_of_notint_nrt` - is reusable for any specific instance. To prove a new irrationality result, one only needs to verify that the specific number is not a perfect power.\n\nThe natAbs reduction technique for even powers (using `Int.natAbs_sq`) is a useful pattern: it converts integer problems to natural number problems where bounds checking is simpler.",
+    "openQuestions": [
+      "Can this approach extend to algebraic irrationality? For example, proving that roots of irreducible polynomials over Q are irrational.",
+      "The not-a-perfect-power lemmas use case analysis bounded by the target value. Could a more uniform approach (e.g., via prime factorization) scale to larger values?",
+      "What about transcendence? Numbers like pi and e are not just irrational but transcendental - they satisfy no polynomial equation over Q."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "foundational",
+      "description": "The irrationality of $\\sqrt[n]{m}$ for non-perfect-power $m$ is the simplest case of the radical extension phenomenon central to Abel-Ruffini: each adjunction $\\mathbb{Q}(\\sqrt[n]{m})/\\mathbb{Q}$ produces a cyclic Galois quotient, and Abel-Ruffini's impossibility at degree 5 arises because the composition of cyclic quotients cannot build the non-solvable group $S_5$"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The unique prime factorization theorem underlies the 'not a perfect power' test: $m$ is a perfect $n$-th power iff every prime in its factorization appears with multiplicity divisible by $n$. The irrationality of $\\sqrt[n]{m}$ thus reduces to a divisibility condition on prime exponents"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Nth root irrationality sits at the bottom of the expressibility hierarchy: irrationality ($\\sqrt[n]{m} \\notin \\mathbb{Q}$) is weaker than transcendence ($e \\notin \\overline{\\mathbb{Q}}$). Hermite's proof that $e$ is transcendental (1873) shows $e$ is not even an algebraic number, while this file proves certain algebraic numbers ($\\sqrt[n]{m}$) escape the rationals"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "extended-by",
+      "description": "The irrationality of sqrt(2) is the most famous special case of the general nth root theorem (n=2, m=2). The classical Pythagorean parity argument is subsumed by this file's uniform proof via irrational_nrt_of_notint_nrt, which handles all roots and all non-perfect-powers simultaneously."
+    },
+    {
+      "targetId": "sqrt2-from-axioms",
+      "relationship": "complementary",
+      "description": "While sqrt2-from-axioms proves irrationality of sqrt(2) from first principles using Peano arithmetic axioms, this file takes the opposite approach: leveraging Mathlib's powerful irrational_nrt_of_notint_nrt lemma to prove a maximally general result. The two approaches illustrate the tradeoff between foundational depth and generality in formal mathematics."
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of pi (Lindemann, 1882) is a far stronger result than irrationality: pi satisfies no polynomial equation over Q, while nth roots of integers are algebraic (roots of x^n - m). Together, these results map the hierarchy: rational < irrational algebraic < transcendental, with nth roots occupying the middle tier."
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "The Hermite-Lindemann theorem proves that e^alpha is transcendental for nonzero algebraic alpha. Since nth roots are algebraic, this creates a sharp divide: nth roots of integers are algebraic irrationals (this file), while exponentials of algebraic numbers are transcendental (Hermite-Lindemann). The two results together characterize much of classical transcendence theory."
+    },
+    {
+      "targetId": "nth-root-irrational-oq-01",
+      "relationship": "extended-by",
+      "description": "Recasts the elementary irrationality argument in the language of irreducible polynomials: roots of degree-≥2 irreducibles over ℚ are irrational, and Eisenstein's criterion shows Xⁿ − p is irreducible for prime p, recovering irrationality of ⁿ√p as a special case."
+    },
+    {
+      "targetId": "nth-root-irrational-oq-02",
+      "relationship": "extended-by",
+      "description": "Generalizes the base file's per-value 'not a perfect power' lemmas to a single uniform prime-factorization criterion: if a prime divides m to an exponent not divisible by n, then m is not a perfect nth power, so ⁿ√m is irrational for arbitrary non-perfect-power m."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Real.Irrational",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "NthRootIrrational",
+    "lineCount": 312,
+    "axiomCount": 0,
+    "theoremCount": 22,
+    "definitionCount": 1,
+    "path": "Proofs/NthRootIrrational.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/CubeRoot5Irrational.lean",
+      "Proofs/CubeRoot6Irrational.lean",
+      "Proofs/CubeRoot7Irrational.lean",
+      "Proofs/CubeRoot9Irrational.lean",
+      "Proofs/CubeRoot10Irrational.lean"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Hardy, G.H.; Wright, E.M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "Contains the standard proof that n-th roots of non-perfect-powers are irrational, using unique factorization"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "nth_root_irrational",
+      "type": "core",
+      "description": "The nth root of a positive integer is irrational unless it is a perfect nth power",
+      "leanType": "(n k : Nat) -> 1 < n -> not (exists m, k = m^n) -> Irrational (k^(1/n : R))"
+    }
+  ],
+  "sorries": 0
+}

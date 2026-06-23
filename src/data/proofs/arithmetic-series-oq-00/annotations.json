@@ -1,0 +1,140 @@
+[
+  {
+    "id": "ann-nicomachus-history",
+    "proofId": "arithmetic-series-oq-00",
+    "range": {
+      "startLine": 1,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Nicomachus of Gerasa: 2000 Years of Mathematical Elegance",
+    "content": "Nicomachus of Gerasa (c. 60–120 CE) was a Pythagorean philosopher from what is now Jerash, Jordan. His *Introductio Arithmetica* (Introduction to Arithmetic) was the standard arithmetic textbook in the Greco-Roman world for centuries, surviving through Boethius's Latin adaptation *De Institutione Arithmetica* (c. 500 CE).\n\nNicomachus described this identity by observing that:\n- The k-th cube k³ = sum of k consecutive odd numbers centered around k²\n  (e.g., 3³ = 27 = 7 + 9 + 11)\n- These consecutive odd blocks fit together as gnomons in a growing square\n- The partial sums form the sequence 1, 9, 36, 100, ... — perfect squares!\n\nThis visual insight predates modern algebraic notation by 1500 years and represents one of the earliest known *proofs without words*.",
+    "mathContext": "$$\\sum_{k=1}^{n} k^3 = T_n^2, \\quad T_n = \\frac{n(n+1)}{2}$$\n\nNicomachus's gnomon observation: $k^3 = (k^2 - k + 1) + (k^2 - k + 3) + \\cdots + (k^2 + k - 1)$ — the $k$-th cube equals the sum of $k$ consecutive odd numbers.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "gnomon",
+      "figurate numbers",
+      "Pythagorean arithmetic",
+      "proof without words"
+    ],
+    "prerequisites": [
+      "Sum Of Cubes",
+      "Triangular Numbers",
+      "Odd Number Sums"
+    ]
+  },
+  {
+    "id": "ann-nicomachus-induction",
+    "proofId": "arithmetic-series-oq-00",
+    "range": {
+      "startLine": 49,
+      "endLine": 68
+    },
+    "type": "concept",
+    "title": "Induction Pattern: push_cast then linarith",
+    "content": "The main theorem `sum_cubes_eq_triangular_sq` uses the same three-tactic induction pattern seen in `ArithmeticSeriesOQ04.lean` for `sum_powers_three`:\n\n1. `Finset.sum_Ico_succ_top` splits the sum: ∑_{k=1}^{n+1} k³ = ∑_{k=1}^{n} k³ + (n+1)³\n2. `push_cast` makes the ℕ → ℚ coercions explicit so arithmetic lemmas apply\n3. `linarith` closes the goal using the induction hypothesis\n\nThe `linarith` success here is surprising for a degree-4 identity — it works because after `push_cast`, the IH gives a linear constraint `∑k³ = (n(n+1)/2)²` that combines with the new term `(n+1)³` via the polynomial identity `(n(n+1)/2)² + (n+1)³ = ((n+1)(n+2)/2)²`. The `linarith` tactic can verify this by treating the monomials as atomic terms.",
+    "mathContext": "Inductive step: $\\sum_{k=1}^{n+1} k^3 = \\sum_{k=1}^{n} k^3 + (n+1)^3 = T_n^2 + (n+1)^3 = T_{n+1}^2$, where $T_n = \\frac{n(n+1)}{2}$. The key identity $T_n^2 + (n+1)^3 = T_{n+1}^2$ expands to $\\frac{n^2(n+1)^2}{4} + (n+1)^3 = \\frac{(n+1)^2(n+2)^2}{4}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction",
+      "push_cast",
+      "linarith",
+      "Finset.sum_Ico_succ_top"
+    ],
+    "prerequisites": [
+      "Finset.Ico",
+      "BigOperators",
+      "Nat.cast"
+    ]
+  },
+  {
+    "id": "ann-beautiful-form",
+    "proofId": "arithmetic-series-oq-00",
+    "range": {
+      "startLine": 69,
+      "endLine": 91
+    },
+    "type": "insight",
+    "title": "The Beautiful Form: ∑k³ = (∑k)²",
+    "content": "The theorem `sum_cubes_eq_sq_sum` states that ∑_{k=1}^n k³ = (∑_{k=1}^n k)². This follows immediately by combining two facts:\n1. ∑_{k=1}^n k³ = (n(n+1)/2)² (Nicomachus's theorem)\n2. ∑_{k=1}^n k = n(n+1)/2 (Gauss's formula)\n\nThe proof is just two `rw` steps: rewrite the Gauss sum, then Nicomachus's theorem. No computation needed once the two identities are established.\n\nThis form is arguably the most surprising: the same set {1, 2, ..., n} appears on both sides, but via completely different operations. The cube-and-sum coincides with the sum-and-square. This is genuinely non-obvious and is one reason Nicomachus's theorem has delighted mathematicians for 2000 years.",
+    "mathContext": "$$\\sum_{k=1}^{n} k^3 = \\left(\\sum_{k=1}^{n} k\\right)^2 = T_n^2, \\quad T_n = \\frac{n(n+1)}{2}$$\n\nThe same sequence $\\{1, 2, \\ldots, n\\}$, cubed then summed, equals the square of its plain sum. The helper `gauss_sum_rat` establishes $\\sum_{k=1}^{n} k = \\frac{n(n+1)}{2}$ by the same induction pattern as the main theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gauss sum",
+      "triangular numbers",
+      "figurate numbers",
+      "power sums"
+    ],
+    "prerequisites": [
+      "gauss_sum_rat",
+      "sum_cubes_eq_triangular_sq"
+    ]
+  },
+  {
+    "id": "ann-nat-version",
+    "proofId": "arithmetic-series-oq-00",
+    "range": {
+      "startLine": 92,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "Division-Free ℕ Form via ring",
+    "content": "The theorem `sum_cubes_mul_four` avoids natural number division entirely by multiplying both sides by 4: `4 × ∑k³ = (n(n+1))²`.\n\nThe inductive step needs `ring` rather than `linarith` because the key algebraic identity\n  `(n(n+1))² + 4(n+1)³ = ((n+1)(n+2))²`\nis degree 4 and involves only polynomial multiplication (no division or subtraction). The `ring` tactic works in ℕ as a commutative *semiring* — it verifies polynomial identities without requiring additive inverses, as long as both sides have the same expansion with non-negative coefficients.\n\nExpanding: LHS = n⁴ + 6n³ + 13n² + 12n + 4 = RHS ✓",
+    "mathContext": "$$4 \\cdot \\sum_{k=1}^{n} k^3 = (n(n+1))^2$$\n\nInductive step: $(n(n+1))^2 + 4(n+1)^3 = ((n+1)(n+2))^2$. Both sides expand to $n^4 + 6n^3 + 13n^2 + 12n + 4$, verifiable by `ring` in $\\mathbb{N}$ (no subtraction or division needed).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ring tactic",
+      "commutative semiring",
+      "natural number arithmetic",
+      "division avoidance"
+    ],
+    "prerequisites": [
+      "Nat.mul_add",
+      "ring"
+    ]
+  },
+  {
+    "id": "ann-ring-identity",
+    "proofId": "arithmetic-series-oq-00",
+    "range": {
+      "startLine": 108,
+      "endLine": 118
+    },
+    "type": "insight",
+    "title": "The Algebraic Heart of Nicomachus's Theorem",
+    "content": "The lemma `nicomachus_step` isolates the key algebraic identity:\n  (n(n+1)/2)² + (n+1)³ = ((n+1)(n+2)/2)²\n\nThis is proved in one line by `ring` over ℚ. It expresses the inductive content of the theorem: each time we extend the sum from n to n+1, the sum increases by (n+1)³, and the triangular square increases from T(n)² = (n(n+1)/2)² to T(n+1)² = ((n+1)(n+2)/2)².\n\nThe geometric interpretation: the gnomon for the (n+1)-th step has area (n+1)³, which exactly fills the L-shaped region between the n×n triangular square and the (n+1)×(n+1) triangular square.",
+    "mathContext": "$$\\left(\\frac{n(n+1)}{2}\\right)^2 + (n+1)^3 = \\left(\\frac{(n+1)(n+2)}{2}\\right)^2$$\n\nExpands to $n^4 + 6n^3 + 13n^2 + 12n + 4$ on both sides. Proved in one line by `ring` over $\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangular numbers",
+      "gnomon decomposition",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "ring"
+    ]
+  },
+  {
+    "id": "ann-concrete-values",
+    "proofId": "arithmetic-series-oq-00",
+    "range": {
+      "startLine": 119,
+      "endLine": 142
+    },
+    "type": "concept",
+    "title": "Concrete Verification by native_decide",
+    "content": "The partial sums ∑_{k=1}^n k³ are always perfect squares: 1, 9, 36, 100, 225, 441, 784, 1296, ... These are the squares of the triangular numbers 1, 3, 6, 10, 15, 21, 28, 36, ...\n\nFor n=10: ∑_{k=1}^{10} k³ = 3025 = 55² = (10·11/2)². This is verified by `native_decide`, which compiles Lean code to native machine code and evaluates it, making it extremely fast for these concrete computations.\n\nThe `triangular_squares` theorem verifies all 8 cases simultaneously using a list computation.",
+    "mathContext": "Partial sums: $1^3 = 1 = 1^2$, $\\; 1^3+2^3 = 9 = 3^2$, $\\; \\sum_{k=1}^{3} k^3 = 36 = 6^2$, $\\; \\sum_{k=1}^{4} k^3 = 100 = 10^2$, $\\; \\sum_{k=1}^{10} k^3 = 3025 = 55^2$. Each partial sum $T_n^2$ is the square of the $n$-th triangular number $T_n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "triangular numbers",
+      "concrete computation"
+    ],
+    "prerequisites": [
+      "native_decide",
+      "List.range",
+      "List.map"
+    ]
+  }
+]

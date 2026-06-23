@@ -1,0 +1,189 @@
+{
+  "id": "erdos-589",
+  "title": "Erdős Problem #589: Points in General Position",
+  "slug": "erdos-589",
+  "description": "Let g(n) be the minimum guaranteed size of a general position subset in any n-point planar set with no 4 collinear. Erdős thought g(n) = Ω(n), but actually n^(1/2)·log n ≪ g(n) ≤ n^(5/6+o(1)).",
+  "meta": {
+    "author": "Erdős (origin), Füredi (1991), Furstenberg-Katznelson (1991), Balogh-Solymosi (2018)",
+    "sourceUrl": "https://erdosproblems.com/589",
+    "date": "~1980s",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos589Problem.lean",
+    "tags": [
+      "erdos",
+      "discrete-geometry",
+      "combinatorics",
+      "collinearity",
+      "hales-jewett",
+      "container-method",
+      "partially-resolved"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "erdosNumber": 589,
+    "erdosUrl": "https://erdosproblems.com/589",
+    "erdosProblemStatus": "solved",
+    "axiomCount": 4,
+    "lineCount": 344,
+    "assumptions": "4 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 10,
+    "additionalFiles": [
+      "Proofs/Erdos589Aristotle.lean",
+      "Proofs/Stubs/Erdos589Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "This problem asks about extracting subsets in general position (no 3 collinear) from sets in almost general position (no 4 collinear). Erdős originally believed linear growth was achievable, but this was disproved.\n\n**Timeline:**\n- **1991 (Füredi)**: Proved g(n) ≥ c·√n·log n and g(n) = o(n)\n- **1991 (Furstenberg-Katznelson)**: Density Hales-Jewett theorem implies o(n) upper bound\n- **2018 (Balogh-Solymosi)**: Proved g(n) ≤ n^(5/6+o(1)) using container method\n\nThe exact order of growth remains open, with a gap between exponents 1/2 and 5/6.",
+    "problemStatement": "**Problem:** Let g(n) be maximal such that in any set of n points in ℝ² with no four collinear, there exists a subset of g(n) points with no three collinear. Estimate g(n).\n\n**Terminology:**\n- General position = no 3 collinear\n- Almost general position = no 4 collinear\n\n**Erdős's Belief (WRONG):** g(n) = Ω(n)\n\n**Known Bounds:**\n- Lower: g(n) ≥ c·√n·log n (Füredi 1991)\n- Upper: g(n) ≤ n^(5/6+o(1)) (Balogh-Solymosi 2018)\n- Trivial: g(n) ≥ c·√n (greedy algorithm)\n\n**Status:** Partially resolved - bounds established but exact asymptotics unknown.",
+    "text": "Let g(n) be the minimum guaranteed size of a general position subset in any n-point planar set with no 4 collinear. Erdős thought g(n) = Ω(n), but actually n^(1/2)·log n ≪ g(n) ≤ n^(5/6+o(1)).",
+    "proofStrategy": "The formalization defines collinearity predicates, general and almost general position, and the function g(n). Erdős's false belief is stated and shown to contradict the density Hales-Jewett theorem. Füredi's 1991 bounds and Balogh-Solymosi's 2018 upper bound are axiomatized. The main summary theorem combines all results.",
+    "keyInsights": [
+      "Erdős's linear growth belief was wrong - g(n) = o(n)",
+      "Density Hales-Jewett theorem provides the key tool for o(n) upper bound",
+      "Balogh-Solymosi used the container method - first application to discrete geometry",
+      "Current gap: exponent between 1/2 and 5/6 is unknown",
+      "Greedy algorithm gives trivial √n lower bound by avoiding collinear triples"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "erd-s-problem-589-points-in-ge",
+      "title": "Erdős Problem #589: Points in General Position",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Erdős Problem #589: Points in General Position",
+      "mathContext": "Mathematical content: Erdős Problem #589: Points in General Position"
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 41,
+      "endLine": 82,
+      "summary": "Basic Definitions"
+    },
+    {
+      "id": "the-function-g-n",
+      "title": "The Function g(n)",
+      "startLine": 83,
+      "endLine": 107,
+      "summary": "The Function g(n)"
+    },
+    {
+      "id": "erd-s-s-original-belief",
+      "title": "Erdős's Original Belief",
+      "startLine": 108,
+      "endLine": 128,
+      "summary": "Erdős's Original Belief",
+      "mathContext": "Mathematical content: Erdős's Original Belief"
+    },
+    {
+      "id": "the-trivial-lower-bound",
+      "title": "The Trivial Lower Bound",
+      "startLine": 129,
+      "endLine": 155,
+      "summary": "The Trivial Lower Bound",
+      "mathContext": "Bound: The Trivial Lower Bound"
+    },
+    {
+      "id": "f-redi-s-result-1991",
+      "title": "Füredi's Result (1991)",
+      "startLine": 156,
+      "endLine": 188,
+      "summary": "Füredi's Result (1991)",
+      "mathContext": "Mathematical content: Füredi's Result (1991)"
+    },
+    {
+      "id": "density-hales-jewett-connectio",
+      "title": "Density Hales-Jewett Connection",
+      "startLine": 189,
+      "endLine": 216,
+      "summary": "Density Hales-Jewett Connection",
+      "mathContext": "Mathematical content: Density Hales-Jewett Connection"
+    },
+    {
+      "id": "balogh-solymosi-result-2018",
+      "title": "Balogh-Solymosi Result (2018)",
+      "startLine": 217,
+      "endLine": 252,
+      "summary": "Balogh-Solymosi Result (2018)",
+      "mathContext": "Mathematical content: Balogh-Solymosi Result (2018)"
+    },
+    {
+      "id": "generalization",
+      "title": "Generalization",
+      "startLine": 253,
+      "endLine": 275,
+      "summary": "Generalization"
+    },
+    {
+      "id": "open-questions",
+      "title": "Open Questions",
+      "startLine": 276,
+      "endLine": 300,
+      "summary": "Open Questions"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 301,
+      "endLine": 339,
+      "summary": "Summary"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #589 asks for the guaranteed size of a general position subset extractable from any planar point set with no 4 collinear. Erdős believed linear growth, but this was disproved. Current bounds: n^(1/2)·log n ≤ g(n) ≤ n^(5/6+o(1)). The exact order of growth remains open.",
+    "implications": "**Theoretical Significance**: The problem connects discrete geometry to extremal combinatorics.\n\nThe density Hales-Jewett theorem and container method provide surprising connections. Balogh-Solymosi's paper was the first application of containers to discrete geometry.",
+    "openQuestions": [
+      "What is the exact exponent α such that g(n) = Θ(n^α)?",
+      "Is the Balogh-Solymosi bound n^(5/6) optimal?",
+      "What about the generalized problem g_{k,l}(n) for other k > l ≥ 3?",
+      "Can the lower bound be improved beyond √n·log n?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "Erdos589",
+    "lineCount": 344,
+    "axiomCount": 4,
+    "theoremCount": 7,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos589Problem.lean",
+    "sorries": 2,
+    "additionalFiles": [
+      "Proofs/Erdos589Aristotle.lean",
+      "Proofs/Stubs/Erdos589Aristotle.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1070",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, discrete-geometry"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, discrete-geometry"
+    },
+    {
+      "targetId": "erdos-185",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, hales-jewett"
+    }
+  ],
+  "sorries": 2
+}

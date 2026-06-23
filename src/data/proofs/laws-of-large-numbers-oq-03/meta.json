@@ -1,0 +1,266 @@
+{
+  "id": "laws-of-large-numbers-oq-03",
+  "title": "Law of Large Numbers for Dependent Random Variables (Ergodic Theory)",
+  "slug": "laws-of-large-numbers-oq-03",
+  "description": "Formalizes how ergodic theory extends the Strong Law of Large Numbers to dependent random variables via Birkhoff's Ergodic Theorem",
+  "meta": {
+    "author": "Birkhoff (1931), Von Neumann (1932)",
+    "date": "2026-03-30",
+    "status": "axiomatized",
+    "tags": [
+      "probability",
+      "ergodic-theory",
+      "measure-theory",
+      "dynamics",
+      "convergence",
+      "birkhoff"
+    ],
+    "proofRepoPath": "Proofs/LawsOfLargeNumbersOQ03.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.MeasurePreserving",
+        "description": "Measure-preserving maps",
+        "module": "Mathlib.Dynamics.Ergodic.MeasurePreserving"
+      },
+      {
+        "theorem": "MeasureTheory.Ergodic",
+        "description": "Ergodic transformations",
+        "module": "Mathlib.Dynamics.Ergodic.Ergodic"
+      },
+      {
+        "theorem": "MeasurePreserving.id",
+        "description": "Identity is measure-preserving",
+        "module": "Mathlib.Dynamics.Ergodic.MeasurePreserving"
+      },
+      {
+        "theorem": "MeasurePreserving.comp",
+        "description": "Composition of measure-preserving maps",
+        "module": "Mathlib.Dynamics.Ergodic.MeasurePreserving"
+      }
+    ],
+    "dateAdded": "2026-03-30",
+    "axiomCount": 4,
+    "theoremCount": 9,
+    "lineCount": 404,
+    "assumptions": "4 axioms: Birkhoff ergodic theorem (general and ergodic case), maximal ergodic lemma, von Neumann mean ergodic theorem. These are deep analytical results requiring substantial proof infrastructure.",
+    "originalContributions": [
+      "Complete formalization of Birkhoff sums and ergodic averages with algebraic properties",
+      "Proof that iterates of measure-preserving maps are measure-preserving",
+      "Cocycle relation for Birkhoff sums (S_{n+m} = S_n + S_m ∘ T^n)",
+      "Linearity, scaling, and constant properties of Birkhoff averages",
+      "Telescoping identity for shifted Birkhoff sums",
+      "Formal hierarchy: i.i.d. ⊂ mixing ⊂ ergodic ⊂ stationary",
+      "Documented connection showing classical SLLN as special case of Birkhoff"
+    ],
+    "definitionCount": 5,
+    "additionalFiles": [
+      "Proofs/LawsOfLargeNumbersOQ03Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Birkhoff's Ergodic Theorem (1931) is one of the foundational results of ergodic theory and mathematical physics. It extends the Strong Law of Large Numbers from independent to dependent random variables by replacing i.i.d. sampling with iteration of a measure-preserving transformation T — formalizing Boltzmann's ergodic hypothesis that time averages equal space averages. Von Neumann proved the L² mean ergodic theorem shortly before Birkhoff's almost-sure result in 1932; both appeared in the same issue of PNAS, their competition accelerating the field. Hopf's maximal ergodic lemma (1954) provided a cleaner proof route that is now standard. The theorem unifies several classical LLN results: the SLLN for i.i.d. sequences is the Bernoulli shift special case, and the ergodic theorem for continued fractions (Gauss-Kuzmin law) follows from the Gauss map being ergodic with respect to the Gauss measure.",
+    "problemStatement": "What about dependent random variables? How does the Law of Large Numbers extend beyond the i.i.d. setting?",
+    "text": "Birkhoff's Ergodic Theorem extends the SLLN to stationary sequences: for any measure-preserving T and integrable f, the time averages (1/n)Σf(T^i ω) converge almost surely",
+    "proofStrategy": "Define Birkhoff sums and averages as concrete functions, prove their algebraic properties (linearity, cocycle, telescoping), then state the deep convergence theorems (Birkhoff, von Neumann, maximal ergodic) as axioms. Show the classical SLLN is a special case via the shift map on product spaces.",
+    "keyInsights": [
+      "The classical SLLN is a special case of Birkhoff: take T = left shift on the product space",
+      "Ergodicity means the invariant σ-algebra is trivial — this is what forces convergence to a constant",
+      "Without ergodicity, the limit is a conditional expectation (still well-defined but random)",
+      "The hierarchy i.i.d. ⊂ mixing ⊂ ergodic ⊂ stationary captures increasingly weak dependence",
+      "The cocycle relation S_{n+m}f = S_nf + S_mf∘T^n is the key algebraic identity"
+    ],
+    "prerequisites": [
+      "Measure theory and probability",
+      "Strong Law of Large Numbers (parent proof)",
+      "Measure-preserving transformations",
+      "Filter-based convergence (Mathlib)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "measure-preserving",
+      "title": "Part 1: Measure-Preserving Transformations",
+      "startLine": 51,
+      "endLine": 75,
+      "summary": "Measure-preserving maps via Mathlib's MeasurePreserving, with iterate_measure_preserving proving T^n stays measure-preserving.",
+      "mathContext": "A measure-preserving transformation T satisfies μ(T⁻¹A) = μ(A). The iterates T^n inherit this property by induction."
+    },
+    {
+      "id": "ergodicity",
+      "title": "Part 2: Ergodicity",
+      "startLine": 76,
+      "endLine": 88,
+      "summary": "Ergodicity via Mathlib's Ergodic class: invariant sets have measure 0 or 1.",
+      "mathContext": "Ergodicity means the only T-invariant sets have measure 0 or 1. This forces time averages to converge to a constant (the space average)."
+    },
+    {
+      "id": "birkhoff-averages",
+      "title": "Part 3: Ergodic Averages (Birkhoff Sums)",
+      "startLine": 89,
+      "endLine": 121,
+      "summary": "Definitions birkhoffSum and birkhoffAverage with birkhoffAverage_eq_sum_div and the cocycle relation birkhoffSum_add.",
+      "mathContext": "The Birkhoff sum S_n f(ω) = Σ f(T^i ω) satisfies the cocycle property S_{n+m} = S_n + S_m ∘ T^n, fundamental for Birkhoff's theorem."
+    },
+    {
+      "id": "birkhoff-theorem",
+      "title": "Part 4: The Birkhoff Ergodic Theorem",
+      "startLine": 122,
+      "endLine": 168,
+      "summary": "Birkhoff's pointwise ergodic theorem stated as axioms in both the general (limit E[f|I]) and ergodic (limit E[f]) forms.",
+      "mathContext": "The general form gives almost sure convergence to E[f|I] (conditional on invariants). The ergodic form simplifies to E[f] when T is ergodic."
+    },
+    {
+      "id": "slln-connection",
+      "title": "Part 5: Connection to Classical SLLN",
+      "startLine": 169,
+      "endLine": 193,
+      "summary": "Documents how the classical SLLN is the shift-on-product-space special case of Birkhoff's theorem (slln_from_birkhoff_sketch).",
+      "mathContext": "For i.i.d. X_i, define T = left shift on ℝ^ℕ and f = first coordinate projection. Then f(T^i ω) = X_{i+1}(ω), and Birkhoff gives the SLLN."
+    },
+    {
+      "id": "maximal-ergodic-lemma",
+      "title": "Part 6: Maximal Ergodic Lemma (Key Tool)",
+      "startLine": 194,
+      "endLine": 212,
+      "summary": "Hopf's maximal ergodic lemma (axiom): the key technical input to Birkhoff's theorem.",
+      "mathContext": "For f* = sup_n S_n f / n, ∫_{f*>0} f dμ ≥ 0. Proved via the sunrise/telescoping lemma; the central tool behind the pointwise ergodic theorem."
+    },
+    {
+      "id": "vonneumann-mean-ergodic",
+      "title": "Part 7: Von Neumann's Mean Ergodic Theorem (L² version)",
+      "startLine": 213,
+      "endLine": 233,
+      "summary": "Von Neumann's mean ergodic theorem (axiom): L² convergence of ergodic averages to the projection onto T-invariant functions.",
+      "mathContext": "For f ∈ L²(μ), the averages (1/n)Σ f∘T^i converge in L² norm to the invariant projection. Weaker than Birkhoff (L² vs a.s.) but proved first (1932)."
+    },
+    {
+      "id": "mixing",
+      "title": "Part 8: Mixing and Rates of Convergence",
+      "startLine": 234,
+      "endLine": 283,
+      "summary": "IsMixing definition and the proved theorem mixing_implies_ergodic (full Mathlib proof, no sorry).",
+      "mathContext": "Mixing means μ(A ∩ T^{-n}B) → μ(A)μ(B), strictly stronger than ergodicity; mixing_implies_ergodic is proved via the invariant-set fixed point μ(A)=μ(A)²."
+    },
+    {
+      "id": "examples",
+      "title": "Part 9: Examples of Ergodic Systems",
+      "startLine": 284,
+      "endLine": 297,
+      "summary": "Concrete systems: irrationalRotation (ergodic, not mixing) and doublingMap (mixing).",
+      "mathContext": "Irrational rotation T(x)=x+α mod 1 is ergodic iff α irrational (uniquely ergodic, not mixing); the doubling map T(x)=2x mod 1 is mixing."
+    },
+    {
+      "id": "convergence-hierarchy",
+      "title": "Part 10: Hierarchy of Convergence Modes",
+      "startLine": 298,
+      "endLine": 329,
+      "summary": "Documentation of the LLN generalization chain: i.i.d. ⊂ mixing ⊂ ergodic ⊂ stationary ⊂ general dependent, with the corresponding theorems and tools.",
+      "mathContext": "Classical SLLN (i.i.d.) ⊂ Birkhoff ergodic (stationary+ergodic) ⊂ general Birkhoff (E[f|I]) ⊂ Von Neumann (L²); each relaxes the dependence assumption."
+    },
+    {
+      "id": "algebraic-properties",
+      "title": "Part 11: Proved Results",
+      "startLine": 330,
+      "endLine": 363,
+      "summary": "Linearity (birkhoffAverage_add), scaling (birkhoffAverage_smul), constant (birkhoffAverage_const), and telescoping (birkhoffSum_shift) properties of Birkhoff averages.",
+      "mathContext": "These are the concrete algebraic identities that make Birkhoff averages computationally useful."
+    },
+    {
+      "id": "summary",
+      "title": "Part 12: Summary",
+      "startLine": 364,
+      "endLine": 404,
+      "summary": "Tabulated recap of the 9 proved results, 4 deep-theorem axioms (Birkhoff general/ergodic, maximal ergodic lemma, Von Neumann), and the SLLN↔ergodic-theory contribution, plus #check exports.",
+      "mathContext": "Establishes the SLLN-ergodic theory connection: dependent random variables handled via measure-preserving dynamics over the i.i.d. ⊂ mixing ⊂ ergodic ⊂ stationary hierarchy."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "answers-question",
+      "description": "Answers OQ-03: 'What about dependent random variables?'"
+    },
+    {
+      "targetId": "laws-of-large-numbers-oq-01",
+      "relationship": "extends",
+      "description": "Extends the LLN framework from i.i.d. to stationary sequences"
+    },
+    {
+      "targetId": "laws-of-large-numbers-oq-04",
+      "relationship": "related",
+      "description": "Glivenko-Cantelli Theorem (Uniform LLN): another extension of the LLN from pointwise to uniform convergence over a class of functions; complements OQ-03's extension to dependent sequences"
+    },
+    {
+      "targetId": "shannon-channel-coding-oq-02-oq-04",
+      "relationship": "related",
+      "description": "Shannon channel coding capacity proof uses the ergodic/typicality argument — stationary ergodic sources have the AEP (Asymptotic Equipartition Property) which follows from the ergodic theorem applied to the log-probability process"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Birkhoff Ergodic Theorem is the definitive extension of the Strong Law of Large Numbers to dependent random variables. For measure-preserving transformations, time averages converge almost surely to conditional expectations, and for ergodic transformations they converge to the space average. The classical SLLN is the special case where T is the left shift on a product space.",
+    "implications": "Ergodic theory provides a unifying framework for all laws of large numbers. The hierarchy i.i.d. ⊂ mixing ⊂ ergodic ⊂ stationary shows exactly how much dependence can be tolerated while preserving convergence.",
+    "openQuestions": [
+      "Can Birkhoff's theorem be proved in Lean using Mathlib's ergodic theory infrastructure?",
+      "What are the quantitative rates of convergence for specific ergodic systems (irrational rotations, Bernoulli shifts)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Dynamics.Ergodic.MeasurePreserving",
+      "Mathlib.Dynamics.Ergodic.Ergodic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Measure.MeasureSpace",
+      "Mathlib.Probability.Notation",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "MeasurableSpace",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "LawsOfLargeNumbersOQ03",
+    "lineCount": 404,
+    "axiomCount": 4,
+    "theoremCount": 9,
+    "substantiveTheoremCount": 8,
+    "duplicateTheorems": 0,
+    "definitionCount": 5,
+    "path": "Proofs/LawsOfLargeNumbersOQ03.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/LawsOfLargeNumbersOQ03Aristotle.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "birkhoff_ergodic_theorem",
+      "type": "core",
+      "description": "Birkhoff's Ergodic Theorem: time averages converge a.s. to conditional expectation",
+      "leanType": "(T : Ω → Ω) → MeasurePreserving T μ μ → Measurable T → (f : Ω → ℝ) → Integrable f μ → ∃ f_star, (a.s. convergence) ∧ (Integrable) ∧ (∫ f_star = ∫ f) ∧ (T-invariant)"
+    },
+    {
+      "name": "birkhoff_ergodic_constant",
+      "type": "core",
+      "description": "Ergodic case: time averages converge a.s. to E[f]",
+      "leanType": "(T : Ω → Ω) → Ergodic T μ → Measurable T → (f : Ω → ℝ) → Integrable f μ → ∀ᵐ ω, Sₙf/n → ∫f"
+    },
+    {
+      "name": "birkhoffSum_add",
+      "type": "supporting",
+      "description": "Cocycle relation: S_{n+m}f = S_nf + S_mf∘T^n",
+      "leanType": "(T : Ω → Ω) → (f : Ω → ℝ) → (n m : ℕ) → (ω : Ω) → birkhoffSum T f (n+m) ω = birkhoffSum T f n ω + birkhoffSum T f m (T^[n] ω)"
+    },
+    {
+      "name": "iterate_measure_preserving",
+      "type": "supporting",
+      "description": "Iterates of measure-preserving maps are measure-preserving",
+      "leanType": "(T : Ω → Ω) → MeasurePreserving T μ μ → (n : ℕ) → MeasurePreserving (T^[n]) μ μ"
+    }
+  ],
+  "sorries": 0
+}

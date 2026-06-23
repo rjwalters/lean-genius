@@ -1,0 +1,242 @@
+[
+  {
+    "id": "ann-imports",
+    "proofId": "binomial-theorem-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 4
+    },
+    "type": "concept",
+    "title": "Mathlib Imports: Multinomial and Binomial Infrastructure",
+    "content": "The file requires four Mathlib modules. `Mathlib.Data.Nat.Choose.Multinomial` provides the core multinomial coefficient theory, including `Nat.multinomial`, `Nat.multinomial_insert`, `Nat.binomial_eq_choose`, and the central `Finset.sum_pow_eq_sum_piAntidiag`. `Mathlib.Data.Nat.Choose.Sum` supplies `add_pow` (the classical binomial theorem) and `Nat.sum_range_choose`. `Mathlib.Algebra.BigOperators.Ring.Finset` enables the Σ/∏ notation over finite sets. `Mathlib.Tactic` provides the full Lean 4 tactic library for the ring, simp, and decide tactics used in the proofs.",
+    "mathContext": "The key dependency chain: $\\text{Finset.sum\\_pow\\_eq\\_sum\\_piAntidiag}$ proves $(\\sum_{i \\in s} f(i))^n = \\sum_{k \\in s.\\text{piAntidiag}(n)} \\text{multinomial}(s,k) \\cdot \\prod_i f(i)^{k(i)}$, which is the multinomial theorem in Lean's universe-polymorphic form.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "piAntidiag",
+      "BigOperators",
+      "CommSemiring"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure",
+      "type class hierarchy"
+    ]
+  },
+  {
+    "id": "ann-module-doc",
+    "proofId": "binomial-theorem-oq-02",
+    "range": {
+      "startLine": 6,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Module Documentation: Proof Strategy for the Multinomial Theorem",
+    "content": "The module docstring establishes the mathematical context and outlines the inductive proof strategy. The binomial theorem (2-variable case) drives the multinomial proof at each inductive step: when expanding $(\\sum_{\\{a\\} \\cup s} f)^n = (f(a) + \\sum_s f)^n$, applying the binomial theorem yields a sum over $j$ from 0 to $n$ of $\\binom{n}{j}(f(a))^j (\\sum_s f)^{n-j}$. The induction hypothesis then handles each $(\\sum_s f)^{n-j}$ term, and the multinomial recurrence assembles the result. This is exactly how multinomial coefficients are defined recursively via binomial coefficients.",
+    "mathContext": "The inductive step: $(f(a) + \\sum_s f)^n = \\sum_{j=0}^n \\binom{n}{j} f(a)^j \\left(\\sum_s f\\right)^{n-j}$, then by IH $= \\sum_{j=0}^n \\binom{n}{j} f(a)^j \\sum_{k' \\in s.\\text{piAntidiag}(n-j)} \\text{multinomial}(s,k') \\prod_{s} f^{k'}$, assembled via $\\text{multinomial}(\\{a\\} \\cup s, k) = \\binom{k(a)+\\sum_s k}{k(a)} \\cdot \\text{multinomial}(s,k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction on finset size",
+      "multinomial recurrence",
+      "Pascal's identity",
+      "combinatorial proof"
+    ],
+    "prerequisites": [
+      "binomial theorem",
+      "induction principle",
+      "finset operations in Lean"
+    ]
+  },
+  {
+    "id": "ann-multinomial-theorem",
+    "proofId": "binomial-theorem-oq-02",
+    "range": {
+      "startLine": 58,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "multinomial_theorem: Direct Wrapper Around Mathlib's Core Result",
+    "content": "The theorem `multinomial_theorem` is a thin wrapper around Mathlib's `Finset.sum_pow_eq_sum_piAntidiag`. The statement is fully universe-polymorphic: it works for any `DecidableEq` type `α`, any `CommSemiring R`, any finite set `s : Finset α`, any function `f : α → R`, and any `n : ℕ`. The proof is a one-liner (`exact Finset.sum_pow_eq_sum_piAntidiag s f n`), showing this is really a naming and documentation exercise — we are surfacing a major Mathlib theorem with a clear name and docstring. The `piAntidiag n` notation denotes the finset of all functions `k : α → ℕ` with support in `s` summing to `n`.",
+    "mathContext": "$(\\sum_{i \\in s} f(i))^n = \\sum_{\\substack{k : \\alpha \\to \\mathbb{N} \\\\ \\text{supp}(k) \\subseteq s,\\; \\sum_{i \\in s} k(i) = n}} \\binom{n}{k_1, k_2, \\ldots} \\prod_{i \\in s} f(i)^{k(i)}$ where $\\binom{n}{k_1,\\ldots,k_m} = \\frac{n!}{k_1! \\cdots k_m!}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "piAntidiag",
+      "CommSemiring",
+      "finset power",
+      "multinomial coefficient"
+    ],
+    "prerequisites": [
+      "finset theory in Mathlib",
+      "bigoperators notation",
+      "semiring axioms"
+    ]
+  },
+  {
+    "id": "ann-multinomial-recurrence",
+    "proofId": "binomial-theorem-oq-02",
+    "range": {
+      "startLine": 79,
+      "endLine": 88
+    },
+    "type": "insight",
+    "title": "Multinomial Recurrence: The Binomial–Multinomial Bridge",
+    "content": "The theorem `multinomial_recurrence` expresses how multinomial coefficients build from binomial coefficients inductively. When we add one new element `a` to a set `s`, the multinomial coefficient factors as a binomial coefficient times the multinomial for the remaining set. This is analogous to Pascal's identity $\\binom{n+1}{k} = \\binom{n}{k} + \\binom{n}{k-1}$ but in the 'column-wise' direction: it shows how to compute the whole Pascal-like triangle from its lower-dimensional faces. The Lean proof is again a one-liner delegating to `Nat.multinomial_insert`.",
+    "mathContext": "For $a \\notin s$: $\\text{multinomial}(\\{a\\} \\cup s, k) = \\binom{k(a) + \\sum_{i \\in s} k(i)}{k(a)} \\cdot \\text{multinomial}(s, k)$. Compare Pascal: $\\binom{n}{k} = \\binom{n-1}{k-1} + \\binom{n-1}{k}$. The multinomial analogue iterates this splitting across all variables.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pascal's identity",
+      "binomial coefficient recurrence",
+      "Finset.insert",
+      "inductive definition"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "multinomial coefficients",
+      "finset membership in Lean"
+    ]
+  },
+  {
+    "id": "ann-multinomial-eq-binomial",
+    "proofId": "binomial-theorem-oq-02",
+    "range": {
+      "startLine": 90,
+      "endLine": 98
+    },
+    "type": "insight",
+    "title": "Multinomial = Binomial: The 2-Variable Special Case",
+    "content": "The theorem `multinomial_eq_binomial` proves the precise algebraic equality between multinomial and binomial coefficients for 2-element sets. For `s = {a, b}` with `a ≠ b`, the multinomial coefficient `Nat.multinomial {a,b} k` equals `Nat.choose (f a + f b) (f a)`, i.e., $\\binom{f(a)+f(b)}{f(a)}$. This is the crucial bridge: it shows that the multinomial theorem with 2 variables is literally the same formula as the binomial theorem. One can view the binomial coefficient $\\binom{n}{k}$ as the multinomial coefficient $\\binom{n}{k, n-k}$ where the two 'slots' sum to $n$.",
+    "mathContext": "For $a \\neq b$: $\\text{multinomial}(\\{a,b\\}, k) = \\binom{k(a) + k(b)}{k(a)} = \\binom{n}{k}$ when $k(a)+k(b)=n$ and $k(a)=k$. The factorial formula $\\frac{n!}{k!(n-k)!}$ is recovered from $\\frac{(k(a)+k(b))!}{k(a)! \\cdot k(b)!}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial coefficient",
+      "Nat.choose",
+      "2-element finset",
+      "choose vs multinomial"
+    ],
+    "prerequisites": [
+      "binomial coefficient definition",
+      "Nat.choose in Mathlib",
+      "2-element finset operations"
+    ]
+  },
+  {
+    "id": "ann-multinomial-total",
+    "proofId": "binomial-theorem-oq-02",
+    "range": {
+      "startLine": 107,
+      "endLine": 116
+    },
+    "type": "insight",
+    "title": "Sum Identity: Total Multinomials Equal |s|^n",
+    "content": "The theorem `multinomial_total` proves that the sum of all multinomial coefficients for degree $n$ over a set of size $m$ equals $m^n$. The proof strategy is elegant: substitute $f \\equiv 1$ (the constant-1 function) into the multinomial theorem. The left side becomes $|s|^n$ (since $\\sum_{i \\in s} 1 = |s|$ and $1^n = |s|^n$). The right side simplifies because $\\prod_i f(i)^{k(i)} = \\prod_i 1 = 1$, leaving just $\\sum_k \\text{multinomial}(s,k)$. The `nsmul_eq_mul` simp lemma handles the numeric cast. This generalizes $\\sum_{k=0}^n \\binom{n}{k} = 2^n$ (the $|s|=2$ case).",
+    "mathContext": "Setting $f \\equiv 1$: $\\left(\\sum_{i \\in s} 1\\right)^n = |s|^n = \\sum_{k \\in s.\\text{piAntidiag}(n)} \\text{multinomial}(s,k) \\cdot \\prod_i 1^{k(i)} = \\sum_k \\text{multinomial}(s,k)$. For $|s|=2$: $\\sum_{k=0}^n \\binom{n}{k} = 2^n$. For $|s|=3$: $\\sum_{k_1+k_2+k_3=n} \\binom{n}{k_1,k_2,k_3} = 3^n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sum of binomial coefficients",
+      "counting arrangements",
+      "constant function substitution"
+    ],
+    "prerequisites": [
+      "multinomial theorem",
+      "finset cardinality",
+      "nsmul vs mul in semirings"
+    ]
+  },
+  {
+    "id": "ann-bool-indexed",
+    "proofId": "binomial-theorem-oq-02",
+    "range": {
+      "startLine": 166,
+      "endLine": 187
+    },
+    "type": "concept",
+    "title": "Bool-Indexed Multinomial: Proving Multinomial Implies Binomial",
+    "content": "The theorem `multinomial_bool_form_eq_binomial` is the centrepiece of the generalization relationship. It uses `s = {false, true} : Finset Bool` and `f(b) = if b then y else x` to apply the multinomial theorem, then shows both sides equal $(x+y)^n$. The key technical trick is using `fun b => if b then y else x` (rather than `if b = false then x else y`) so that `f false = x` and `f true = y` reduce *definitionally* via `rfl`, enabling `simp` to simplify the sums and products over the 2-element Bool set. The conclusion `h.symm.trans (binomial_theorem x y n)` chains the equalities: multinomial expansion = $(x+y)^n$ = binomial expansion.",
+    "mathContext": "With $s = \\{F, T\\}$, $f(F)=x$, $f(T)=y$: multinomial theorem gives $(x+y)^n = \\sum_{k \\in \\{F,T\\}.\\text{piAntidiag}(n)} \\text{multinomial}(\\{F,T\\},k) \\cdot x^{k(F)} \\cdot y^{k(T)}$. Since $\\text{multinomial}(\\{F,T\\},k) = \\binom{k(F)+k(T)}{k(F)} = \\binom{n}{k(F)}$, summing over $k(F) \\in \\{0,\\ldots,n\\}$ recovers $\\sum_{j=0}^n \\binom{n}{j} x^j y^{n-j}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bool finset",
+      "definitional reduction",
+      "sum_pair",
+      "prod_pair",
+      "trans equality"
+    ],
+    "prerequisites": [
+      "Bool type in Lean 4",
+      "Finset.sum_pair",
+      "definitional equality vs propositional equality"
+    ]
+  },
+  {
+    "id": "ann-native-decide",
+    "proofId": "binomial-theorem-oq-02",
+    "range": {
+      "startLine": 198,
+      "endLine": 216
+    },
+    "type": "concept",
+    "title": "Concrete Verifications with native_decide",
+    "content": "Five concrete examples verify the multinomial coefficient formula using Lean's `native_decide` tactic, which compiles the proposition to native code and evaluates it. The examples check: $\\binom{3}{1,1,1} = 6$ (all-distinct arrangement of 3 items from 3 slots), $\\binom{4}{2,1,1} = 12$ (one slot gets 2, others 1 each), $\\binom{6}{2,2,2} = 90$ (three equal slots of 2). The sum identities $\\sum \\text{multinomial}(\\text{Fin}3, 2) = 9 = 3^2$ and $\\sum \\text{multinomial}(\\text{Fin}4, 3) = 64 = 4^3$ verify `multinomial_total` for specific small cases. `native_decide` works here because the finsets are computable and the arithmetic is decidable.",
+    "mathContext": "$\\binom{3}{1,1,1} = \\frac{3!}{1! \\cdot 1! \\cdot 1!} = 6$, $\\binom{4}{2,1,1} = \\frac{4!}{2! \\cdot 1! \\cdot 1!} = 12$, $\\binom{6}{2,2,2} = \\frac{6!}{2! \\cdot 2! \\cdot 2!} = 90$. These are the number of distinct permutations of multisets $\\{a,b,c\\}$, $\\{a,a,b,c\\}$, $\\{a,a,b,b,c,c\\}$ respectively.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide tactic",
+      "decidable propositions",
+      "Fin type",
+      "univ finset"
+    ],
+    "prerequisites": [
+      "Lean 4 decision procedures",
+      "Fin type",
+      "Finset.univ",
+      "array literal notation for Fin"
+    ]
+  },
+  {
+    "id": "ann-trinomial",
+    "proofId": "binomial-theorem-oq-02",
+    "range": {
+      "startLine": 218,
+      "endLine": 229
+    },
+    "type": "definition",
+    "title": "Trinomial Square and Cube via Ring",
+    "content": "The theorems `trinomial_square` and `trinomial_cube` give explicit polynomial expansions of $(x+y+z)^2$ and $(x+y+z)^3$ in any commutative semiring, proved by the `ring` tactic. These are instances of the multinomial theorem: the square has multinomial coefficients $1$ (for $x^2, y^2, z^2$) and $2$ (for $xy, xz, yz$), while the cube has coefficients $1$ (for $x^3, y^3, z^3$), $3$ (for $x^2y, x^2z$, etc.), and $6$ (for $xyz$). The `ring` tactic handles commutativity and associativity automatically, making these trivial once the formula is known.",
+    "mathContext": "$(x+y+z)^2 = x^2+y^2+z^2+2xy+2xz+2yz$: coefficients $\\binom{2}{2,0,0}=1$, $\\binom{2}{1,1,0}=2$. $(x+y+z)^3$: coefficients $\\binom{3}{3,0,0}=1$, $\\binom{3}{2,1,0}=3$, $\\binom{3}{1,1,1}=6$. In general, $\\binom{n}{k_1,k_2,k_3} = \\frac{n!}{k_1!k_2!k_3!}$ counts permutations of the multiset.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ring tactic",
+      "trinomial expansion",
+      "commutative semiring",
+      "polynomial identity"
+    ],
+    "prerequisites": [
+      "ring axioms",
+      "multinomial coefficients for small cases"
+    ]
+  },
+  {
+    "id": "ann-triple-recurrence",
+    "proofId": "binomial-theorem-oq-02",
+    "range": {
+      "startLine": 245,
+      "endLine": 253
+    },
+    "type": "concept",
+    "title": "Three-Variable Multinomial via Double Recurrence",
+    "content": "The theorem `multinomial_triple` computes the multinomial coefficient for a 3-element set `{a,b,c}` by applying `Nat.multinomial_insert` twice. First, `a ∉ {b,c}` is verified, and then `{a,b,c}` is rewritten as `insert a {b,c}`. One application of `Nat.multinomial_insert` factors the 3-variable multinomial into a binomial coefficient times a 2-variable multinomial. A second application (via `Nat.binomial_eq_choose`) reduces the 2-variable multinomial to a binomial coefficient. The result is $\\binom{f(a)+f(b)+f(c)}{f(a)} \\cdot \\binom{f(b)+f(c)}{f(b)}$, which is the standard formula for trinomial coefficients.",
+    "mathContext": "$\\text{multinomial}(\\{a,b,c\\}, k) = \\binom{k_a+k_b+k_c}{k_a} \\cdot \\binom{k_b+k_c}{k_b} = \\frac{(k_a+k_b+k_c)!}{k_a! \\cdot (k_b+k_c)!} \\cdot \\frac{(k_b+k_c)!}{k_b! \\cdot k_c!} = \\frac{n!}{k_a! k_b! k_c!}$. This telescoping product generalizes: $\\text{multinomial}(s, k) = \\prod_{i=1}^{m} \\binom{\\sum_{j \\geq i} k_j}{k_i}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multinomial recurrence",
+      "telescoping product",
+      "Finset.insert",
+      "sum_pair"
+    ],
+    "prerequisites": [
+      "multinomial recurrence theorem",
+      "binomial_eq_choose",
+      "Finset membership proofs in Lean"
+    ]
+  }
+]

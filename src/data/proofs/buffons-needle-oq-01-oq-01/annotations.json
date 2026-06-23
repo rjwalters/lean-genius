@@ -1,0 +1,195 @@
+[
+  {
+    "id": "ann-buffon-oq01-sin-integral",
+    "proofId": "buffons-needle-oq-01-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "integral_sin_zero_pi: ∫₀^π sin θ dθ = 2 via Fundamental Theorem of Calculus",
+    "content": "Proves the fundamental angular integral ∫₀^π sin θ dθ = 2 using FTC. The proof supplies -cos as antiderivative: `HasDerivAt (fun x => -cos x) (sin x) x` via `(hasDerivAt_cos x).neg`. Then `integral_eq_sub_of_hasDerivAt` gives the result: -cos(π) - (-cos(0)) = -(-1) - (-1) = 1 + 1 = 2, closed by `simp [cos_pi, cos_zero]; norm_num`.",
+    "mathContext": "The antiderivative chain: d/dx(-cos x) = sin x, so ∫₀^π sin x dx = [-cos x]₀^π = -cos(π) + cos(0) = 1 + 1 = 2. In Lean 4, `hasDerivAt_cos x` gives `HasDerivAt cos (-sin x) x`, and `.neg` flips to `HasDerivAt (fun x => -cos x) (sin x) x`. The `simpa using` pattern rewrites the hypothesis cleanly. The `integral_eq_sub_of_hasDerivAt` requires both the derivative witness and `continuous_sin.intervalIntegrable` (continuity of sin implies integrability on any bounded interval).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fundamental Theorem of Calculus",
+      "hasDerivAt_cos",
+      "intervalIntegrable",
+      "antiderivative",
+      "Buffon's constant 2/π"
+    ],
+    "prerequisites": [
+      "intervalIntegral.integral_eq_sub_of_hasDerivAt",
+      "hasDerivAt_cos",
+      "Real.cos_pi",
+      "Real.cos_zero",
+      "continuous_sin"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq01-abs-sin",
+    "proofId": "buffons-needle-oq-01-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 81
+    },
+    "type": "concept",
+    "title": "integral_abs_sin_zero_pi: ∫₀^π |sin θ| dθ = 2 via Sign on [0,π]",
+    "content": "Proves ∫₀^π |sin θ| dθ = 2 by showing |sin θ| = sin θ on [0, π]. Uses `integral_congr` with the pointwise equality lemma `abs_sin_eq_sin_on_zero_pi` (private lemma: `|sin θ| = sin θ` when θ ∈ [0,π] via `sin_nonneg_of_mem_Icc`), then reduces to `integral_sin_zero_pi`. The key step: `Set.uIcc_of_le pi_pos.le` rewrites `Set.uIcc 0 π` to `Set.Icc 0 π` (since 0 ≤ π).",
+    "mathContext": "The `Set.uIcc` (unsigned/symmetric interval) [a,b] equals [min a b, max a b], which for 0 ≤ π equals [0,π] = `Set.Icc 0 π`. The step `rw [Set.uIcc_of_le pi_pos.le] at hθ` is needed because `integral_congr` quantifies over `Set.uIcc`. The private lemma `abs_sin_eq_sin_on_zero_pi` uses `abs_of_nonneg (sin_nonneg_of_mem_Icc hθ)` — Mathlib's `sin_nonneg_of_mem_Icc : θ ∈ Set.Icc 0 π → 0 ≤ sin θ`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sin_nonneg_of_mem_Icc",
+      "abs_of_nonneg",
+      "integral_congr",
+      "Set.uIcc vs Set.Icc",
+      "absolute value of integrals"
+    ],
+    "prerequisites": [
+      "integral_sin_zero_pi",
+      "integral_congr",
+      "sin_nonneg_of_mem_Icc",
+      "Set.uIcc_of_le",
+      "abs_of_nonneg"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq01-rotation",
+    "proofId": "buffons-needle-oq-01-oq-01",
+    "range": {
+      "startLine": 104,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "integral_abs_sin_shift: Rotation Invariance ∫₀^π |sin(θ+c)| dθ = 2",
+    "content": "Proves that ∫₀^π |sin(θ+c)| dθ = 2 for any c ∈ ℝ — the integral is invariant under phase shifts. Strategy: change variables u = θ+c to get ∫_c^{c+π} |sin u| du, then use the period-π identity |sin(u+π)| = |sin u| to split the extra piece and cancel it. The key steps: (1) `integral_comp_add_right` performs the change of variables, (2) `abs_sin_periodic` gives |sin(u+π)| = |sin u|, (3) `integral_add_adjacent_intervals` splits intervals, and (4) `linear_combination` combines the algebraic identity.",
+    "mathContext": "The `intervalIntegral.integral_comp_add_right f c` states `∫_a^b f(x+c) dx = ∫_{a+c}^{b+c} f(x) dx`. The periodicity `|sin(x+π)| = |sin x|` comes from `sin(x+π) = -sin x` (the sin addition formula), so `|sin(x+π)| = |-sin x| = |sin x|`. The `linear_combination` tactic at line 137 handles the algebraic bookkeeping: `∫_c^{c+π} = ∫_c^0 + ∫_0^π + ∫_π^{c+π}` and after substituting ∫_π^{c+π} = ∫_0^c and ∫_c^0 = -∫_0^c, the result is 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rotation invariance",
+      "integral_comp_add_right",
+      "period of |sin|",
+      "linear_combination tactic",
+      "Cauchy-Crofton formula"
+    ],
+    "prerequisites": [
+      "integral_abs_sin_zero_pi",
+      "abs_sin_periodic",
+      "integral_comp_add_right",
+      "integral_add_adjacent_intervals",
+      "integral_symm"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq01-angular-avg",
+    "proofId": "buffons-needle-oq-01-oq-01",
+    "range": {
+      "startLine": 157,
+      "endLine": 232
+    },
+    "type": "concept",
+    "title": "angular_average: ∫₀^π |a sinθ + b cosθ| dθ = 2√(a²+b²) via Complex.arg",
+    "content": "The main angular averaging theorem: for any (a,b) ∈ ℝ², ∫₀^π |a sinθ + b cosθ| dθ = 2√(a²+b²). Zero case: both sides are 0. Nonzero case: set r = √(a²+b²) > 0 and φ = Complex.arg(a+bi). Using `Complex.cos_arg` and `Complex.sin_arg`, recover r cosφ = a and r sinφ = b. Then a sinθ + b cosθ = r sin(θ+φ), and ∫|r sin(θ+φ)| dθ = r·∫|sin(θ+φ)| dθ = r·2 = 2r = 2√(a²+b²).",
+    "mathContext": "The use of `Complex.arg` (the standard argument function for complex numbers) is elegant: it handles all cases (a > 0, a = 0, a < 0, atan2 branches) uniformly via the Lean 4 definition. The `Complex.cos_arg` and `Complex.sin_arg` lemmas provide `cos(arg z) = z.re/‖z‖` and `sin(arg z) = z.im/‖z‖`. The proof of `r = ‖z‖` uses the Pythagorean identity `cos²φ + sin²φ = 1` combined with substitution. The final `linear_combination -sin θ * hcos_a - cos θ * hsin_a` closes the `a sinθ + b cosθ = r sin(θ+φ)` identity algebraically.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.arg",
+      "Complex.cos_arg",
+      "Complex.sin_arg",
+      "Cauchy-Crofton formula",
+      "projection integral",
+      "mean width"
+    ],
+    "prerequisites": [
+      "integral_abs_sin_shift",
+      "Complex.arg",
+      "Complex.cos_arg",
+      "Complex.sin_arg",
+      "norm_pos_iff",
+      "Real.sqrt_pos_of_pos"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq01-concrete-def",
+    "proofId": "buffons-needle-oq-01-oq-01",
+    "range": {
+      "startLine": 252,
+      "endLine": 258
+    },
+    "type": "definition",
+    "title": "concreteSmoothExpectedCrossings: Double Integral Definition Replacing Abstract Stub",
+    "content": "Defines the expected number of line crossings for smooth curve γ: ℝ → ℝ×ℝ on [a,b] with parallel grid spacing d as: (1/(π·d)) · ∫_a^b (∫₀^π |γ'(t).1 sinθ + γ'(t).2 cosθ| dθ) dt. The inner integral computes the 'effective length' of γ'(t) in direction θ; the outer integral computes the average over the curve parameter t. The Fubini hypothesis (not assumed here) would allow swapping integrals to get (1/(π·d)) · ∫₀^π (∫_a^b |projection of γ'(t)| dt) dθ.",
+    "mathContext": "The `noncomputable` annotation is needed because the definition involves `deriv` (which requires Classical decidability for the general case) and `intervalIntegral` (which uses Bochner measure theory). The use of `deriv (Prod.fst ∘ γ) t` (the x-component of the derivative at t) via the Lean 4 `deriv` function is the natural encoding of γ'(t).x. The definition is parametric: it works for any curve γ, interval [a,b], and spacing d, making it the concrete analogue of the abstract `smoothExpectedCrossings` axiom.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-Crofton formula",
+      "arc length integral",
+      "noncomputable definitions",
+      "expected crossings",
+      "Buffon-Barbier theorem"
+    ],
+    "prerequisites": [
+      "angular_average",
+      "intervalIntegral",
+      "deriv",
+      "Prod.fst ∘ γ",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq01-main-theorem",
+    "proofId": "buffons-needle-oq-01-oq-01",
+    "range": {
+      "startLine": 284,
+      "endLine": 309
+    },
+    "type": "concept",
+    "title": "buffon_smooth_concrete: Concrete Expected Crossings = 2L/(πd) (Main Theorem)",
+    "content": "The main theorem: under differentiability, integrability, and Fubini hypotheses, `concreteSmoothExpectedCrossings γ a b d = 2 * planarArcLength γ a b / (π * d)`. The proof unfolds the definition, applies `integral_congr hFubini` to replace the inner integral with the angular average formula `2 * sqrt(γ'(t).x² + γ'(t).y²)`, then `integral_const_mul` pulls out the constant 2, leaving the arc length integral. The final step is `ring`.",
+    "mathContext": "The `hFubini` hypothesis here is NOT Fubini's theorem in the traditional sense (swapping integration order). Instead, it states that for each t ∈ [a,b], the inner angular integral equals the closed-form value `2 * sqrt(γ'(t).x² + γ'(t).y²)`. This is exactly `angular_average (deriv (Prod.fst ∘ γ) t) (deriv (Prod.snd ∘ γ) t)`, and the `hFubini_from_angular_average` lemma shows this: `hFubini` is provable directly from `angular_average`. The proof structure mirrors Green's theorem: the 'deep analysis' (angular_average) is isolated as a hypothesis, and the rest is algebraic manipulations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Buffon-Barbier theorem",
+      "arc length",
+      "expected crossings formula",
+      "planarArcLength",
+      "integral_congr",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "concreteSmoothExpectedCrossings",
+      "planarArcLength",
+      "angular_average",
+      "hFubini_from_angular_average",
+      "intervalIntegral.integral_const_mul"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq01-full",
+    "proofId": "buffons-needle-oq-01-oq-01",
+    "range": {
+      "startLine": 377,
+      "endLine": 388
+    },
+    "type": "concept",
+    "title": "buffon_smooth_full: Complete Theorem Using angular_average as Fubini Witness",
+    "content": "The cleanest version of the Buffon-Barbier theorem: the same statement as `buffon_smooth_concrete` but without the explicit `hFubini` hypothesis. Instead, the proof supplies `hFubini_from_angular_average γ a b` which proves the inner integral formula from `angular_average`. The proof is a single application of `buffon_smooth_concrete` with `hFubini_from_angular_average`. This shows that `angular_average` completely closes the gap: the entire theorem follows without any remaining axioms or hypotheses about angular integrals.",
+    "mathContext": "The `hFubini_from_angular_average` lemma states: for all t ∈ [a,b], `∫₀^π |γ'(t).x sinθ + γ'(t).y cosθ| dθ = 2 * sqrt(γ'(t).x² + γ'(t).y²)`. This is exactly `angular_average (deriv (Prod.fst ∘ γ) t) (deriv (Prod.snd ∘ γ) t)`. The proof `intro t _; exact angular_average ...` applies the already-proved `angular_average` theorem. The `buffon_smooth_full` theorem therefore depends only on the analytic facts: FTC (for `angular_average`), integrability (for `hInnerInt`), and the derivative witnesses.",
+    "significance": "key",
+    "relatedConcepts": [
+      "buffon_smooth_concrete",
+      "hFubini_from_angular_average",
+      "angular_average",
+      "OQ resolution",
+      "Cauchy-Crofton formula",
+      "axiomatic vs constructive proofs"
+    ],
+    "prerequisites": [
+      "buffon_smooth_concrete",
+      "hFubini_from_angular_average",
+      "concreteSmoothExpectedCrossings",
+      "planarArcLength",
+      "HasDerivAt"
+    ]
+  }
+]

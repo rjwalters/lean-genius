@@ -1,0 +1,149 @@
+[
+  {
+    "id": "ann-fourier-oq02-oq01-01",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": {
+      "startLine": 9,
+      "endLine": 34
+    },
+    "type": "concept",
+    "title": "Two Proofs, One Result: L² vs Quantitative (Module Overview)",
+    "content": "The block comment (lines 9-34) frames the open question and its answer. **Question**: Can `riemannLebesgue_of_holder` be proved via the Parseval/L² route rather than the explicit quantitative bound ‖ĉ_n‖ ≤ (C/2)(T/2|n|)^α? **Answer**: Yes, in ~15 lines.\n\nThe comparison crystallizes two levels of analysis:\n- **Quantitative** (OQ-02, ~90 lines): pinpoints the exact decay rate ‖ĉ_n‖ = O(|n|^{-α}); uses Hölder structure explicitly throughout\n- **Qualitative** (this file, ~15 lines): only needs ĉ_n → 0; uses only L²-membership (which follows from continuity on compact space)\n\nThe five-step chain documented in the comment — Hölder → Continuous → MemLp 2 → toLp → Parseval — exactly mirrors the code structure at lines 57-78, making this comment a precise roadmap for the proof.",
+    "mathContext": "Both proofs establish `Tendsto (fun n : ℤ => fourierCoeff f n) cofinite (𝓝 0)`. The qualitative proof relies on Parseval: $\\sum_n \\|\\hat{c}_n(f)\\|^2 = \\|f\\|_{L^2}^2 < \\infty$ implies $\\hat{c}_n \\to 0$ (summable implies tendsto zero). This avoids all Hölder decay computations after step 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Riemann-Lebesgue lemma",
+      "Parseval's identity",
+      "L² Fourier theory"
+    ],
+    "prerequisites": [
+      "Hölder continuity",
+      "L² spaces",
+      "AddCircle Haar measure"
+    ]
+  },
+  {
+    "id": "ann-fourier-oq02-oq01-02",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": {
+      "startLine": 47,
+      "endLine": 78
+    },
+    "type": "insight",
+    "title": "riemannLebesgue_of_holder_via_L2: The Core Proof",
+    "content": "The complete alternative proof in 5 steps:\n\n1. **Hölder → Continuous**: `hf.continuous hα` — Mathlib's `HolderWith.continuous` (α > 0 implies continuity).\n\n2. **Continuous → MemLp 2**: The key step. `AddCircle T` is compact (hence f is bounded), and the Haar measure is finite, so f ∈ L².\n   ```\n   (memLp_const supNorm).mono' (bounded above by sup norm)\n   ```\n\n3. **Lift to L²**: `hf_memLp.toLp f` creates `f_Lp : Lp ℂ 2 haarAddCircle`.\n\n4. **Coefficient equality**: Since `⇑f_Lp =ᵐ f` (a.e.), the integrals that define fourierCoeff agree pointwise.\n\n5. **Apply Parseval RL**: `FourierSeries.fourierCoeff_tendsto_zero f_Lp` gives the result.",
+    "mathContext": "The MemLp argument uses: (1) continuous → aestronglyMeasurable, (2) compact range → bounded above by sSup, (3) mono' compares with the constant function supNorm which is in Lp.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MemLp.toLp",
+      "coeFn_toLp",
+      "hasSum_sq_fourierCoeff",
+      "Parseval"
+    ],
+    "prerequisites": [
+      "compact spaces",
+      "Haar measure",
+      "Lp spaces",
+      "Parseval's identity"
+    ]
+  },
+  {
+    "id": "ann-fourier-oq02-oq01-03",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 8
+    },
+    "type": "concept",
+    "title": "Imports: Selective Mathlib Modules",
+    "content": "The file imports specific Mathlib modules rather than `import Mathlib`, keeping compilation faster. Key modules:\n\n- `Mathlib.Analysis.Fourier.AddCircle`: `fourierCoeff`, `haarAddCircle`, Parseval\n- `Mathlib.Analysis.InnerProductSpace.l2Space`: L² space structure\n- `Mathlib.MeasureTheory.Function.L2Space`: `MemLp`, `toLp`, `coeFn_toLp`\n- `Mathlib.Topology.MetricSpace.Holder`: `HolderWith`, continuity\n- `Proofs.FourierSeries`: the parent module providing `fourierCoeff_tendsto_zero`",
+    "mathContext": "The local import `Proofs.FourierSeries` is the parent Lean module in this project, providing `FourierSeries.fourierCoeff_tendsto_zero : ∀ (f : Lp ℂ 2 haarAddCircle), Tendsto (fourierCoeff ⇑f) cofinite (𝓝 0)`. This is the Parseval-based Riemann-Lebesgue lemma for L² functions that drives this proof.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "haarAddCircle",
+      "FourierSeries.lean",
+      "selective imports"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib project structure"
+    ]
+  },
+  {
+    "id": "ann-fourier-oq02-oq01-04",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "Namespace Setup: maxHeartbeats, noncomputable, Opens",
+    "content": "Three setup lines before the theorem:\n\n1. `set_option maxHeartbeats 400000` — Parseval's identity elaboration is expensive; the default heartbeat limit (200000) would time out.\n\n2. `noncomputable section` — `Lp ℂ 2 haarAddCircle` (the L² space) is defined via quotient construction and is not computable. All definitions in this section are implicitly noncomputable.\n\n3. `open MeasureTheory Complex Topology Filter AddCircle` + `open scoped ENNReal NNReal Real` — these opens make `MemLp`, `haarAddCircle`, `Tendsto`, `cofinite`, `𝓝`, and numeric notations accessible without prefixes.",
+    "mathContext": "The `Fact (0 < T)` instance in `variable {T : ℝ} [hT : Fact (0 < T)]` is how Mathlib requires the positive period: it's a typeclass `Fact P` wrapping the proposition `P`. The `[hT : Fact (0 < T)]` makes the proof `hT.out : 0 < T` available for `AddCircle T` constructions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "maxHeartbeats",
+      "noncomputable section",
+      "Fact typeclass",
+      "AddCircle",
+      "Filter.cofinite"
+    ],
+    "prerequisites": [
+      "Lean 4 section system",
+      "noncomputable types",
+      "Mathlib typeclass Fact"
+    ]
+  },
+  {
+    "id": "ann-fourier-oq02-oq01-06",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 74
+    },
+    "type": "concept",
+    "title": "integral_congr_ae: Transferring Fourier Coefficients via A.E. Equality",
+    "content": "Lines 70-74 handle the subtle step of transferring fourierCoeff from `⇑f_Lp` (the L² representative) to `f` (the original function). The proof uses `integral_congr_ae`: if two functions agree almost everywhere (`=ᵐ`), their integrals with respect to any integrand are equal.\n\nThe key chain:\n1. `hf_memLp.coeFn_toLp : ⇑f_Lp =ᵐ[haarAddCircle] f` — the coercion of the Lp element back to a function equals f a.e. (by construction of the quotient Lp space)\n2. `.mono fun x hx => by simp only [smul_eq_mul]; rw [hx]` — lifts the a.e. equality to the integrand `fourierChar [-↑n] x • ⇑f_Lp x = fourierChar [-↑n] x • f x`\n3. `integral_congr_ae ...` — concludes the integrals are equal, hence `fourierCoeff (⇑f_Lp) n = fourierCoeff f n`\n\nThis pattern — lift Lp element, use coeFn_toLp a.e.-equality, apply integral_congr_ae — is the standard Lean 4 recipe for moving between Lp representatives and original functions.",
+    "mathContext": "The `fourierCoeff f n = (1/T) ∫ fourierChar [-n] x • f x ∂haarAddCircle` is an integral. If `g =ᵐ f` (a.e.), then `∫ h x • g x = ∫ h x • f x` by `integral_congr_ae`. The a.e. equality `coeFn_toLp : ⇑(MemLp.toLp f) =ᵐ f` is the defining property of the Lp quotient: `toLp f` is the equivalence class of `f`, and `⇑` picks any representative which agrees a.e. with `f`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "integral_congr_ae",
+      "MemLp.coeFn_toLp",
+      "a.e. equality",
+      "Filter.Eventually",
+      "Lp quotient space"
+    ],
+    "prerequisites": [
+      "MeasureTheory.integral_congr_ae",
+      "Lp quotient construction",
+      "Filter.Eventually.mono"
+    ]
+  },
+  {
+    "id": "ann-fourier-oq02-oq01-05",
+    "proofId": "fourier-series-oq-02-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "MemLp.mono' and rwa Transfer: Two Key Techniques",
+    "content": "**MemLp.mono' (lines 60-66)**: The pattern `(memLp_const sSup_val).mono' hf_cont.aestronglyMeasurable (Eventually.of_forall bound_proof)` proves `MemLp f 2 haarAddCircle` by:\n- `memLp_const sSup_val`: the constant function `x ↦ sSup ‖f·‖` is in L² (it's bounded and the measure is finite)\n- `.mono'`: if g ∈ Lp and ‖f(x)‖ ≤ ‖g(x)‖ a.e., then f ∈ Lp\n- The bound `‖f(x)‖ ≤ sSup ‖f·‖` follows from `le_csSup` + `isCompact_range hf_cont.norm`\n\n**rwa + funext transfer (lines 76-78)**: Converts `fourierCoeff_tendsto_zero f_Lp` (for the L² element) to a statement about f by `rwa [show (fun n => fourierCoeff ⇑f_Lp n) = (fun n => fourierCoeff f n) from funext hfc_eq]`.",
+    "mathContext": "`le_csSup` requires the set to be bounded above (`bddAbove`) — this follows from `IsCompact.bddAbove (isCompact_range hf_cont.norm)` (the image of a continuous function on a compact space is compact, hence bounded). `Eventually.of_forall` lifts a pointwise bound to a filter predicate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MemLp.mono'",
+      "memLp_const",
+      "isCompact_range",
+      "le_csSup",
+      "rwa",
+      "funext"
+    ],
+    "prerequisites": [
+      "MemLp in Mathlib",
+      "Filter.Eventually.of_forall",
+      "IsCompact.bddAbove"
+    ]
+  }
+]

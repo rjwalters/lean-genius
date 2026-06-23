@@ -1,0 +1,107 @@
+{
+  "slug": "schauder-fixed-point-oq-01",
+  "title": "Schauder Projection Lemma from First Principles",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "The Schauder projection lemma: given a compact set K in a normed space and epsilon > 0, there exists a continuous map approximating the identity on K with image in a finite-dimensional convex hull. Proved from first principles using partition of unity.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-02-27T08:30:01.798Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Schauder Projection Lemma (OQ-01) - Knowledge\n\n## Problem Summary\nProve the Schauder projection lemma from first principles: given a compact set K in a normed space and ε > 0, construct a continuous map π from K into a finite-dimensional convex hull with ‖π(x) - x‖ < ε.\n\n## Status: COMPLETED\n\n## Session 2026-03-06 (Session 1) - Proof Completion\n\n**Mode**: FRESH\n**Outcome**: completed\n\n### What I Did\n- Found existing proof file (363 lines, 17 theorems, 0 sorries, 0 axioms)\n- Fixed Mathlib 4.26 API compatibility issues:\n  - `Submodule.isClosed_of_finiteDimensional` → `Set.Finite.isClosed_convexHull`\n  - `IsCompact.convexHull` → `Set.Finite.isCompact_convexHull` (from `Mathlib.Analysis.Convex.Topology`)\n  - `Real.norm_of_nonneg` → `Real.norm_eq_abs` + `abs_of_nonneg`\n  - `elim_finite_subcover_image` returns `Set E` with `Finite`, not `Finset E`\n  - Added `classical` for `DecidableEq` on finite subtype\n  - Fixed bump function case analysis: when bumpFn = 0, use `simp [h]` not `le_of_lt`\n  - Fixed calc chain: `S * ε` not `ε * S`, with `rw [hS_def, bumpSum]` to close\n\n### Key Findings\n- `Set.Finite.isCompact_convexHull` and `Set.Finite.isClosed_convexHull` are in `Mathlib.Analysis.Convex.Topology`\n- `Real.norm_of_nonneg` doesn't exist in Mathlib 4.26; use `Real.norm_eq_abs` + `abs_of_nonneg`\n- When using `set S := expr`, `rw` may leave goals like `expr = S` that need `rw [hS_def, ...]` to close\n- `elim_finite_subcover_image` returns `Set E` with `Set.Finite` proof; use `.fintype` for Fintype instance\n\n### Files Modified\n- `proofs/Proofs/SchauderFixedPointOQ01.lean` - 315 lines, 17 theorems, 0 sorries, 0 axioms\n- `src/data/proofs/schauder-fixed-point-oq-01/` - Gallery integration (meta.json, annotations.json, index.ts)\n- `src/data/proofs/schauder-fixed-point/meta.json` - Updated parent: sorries 1→0, resolved OQ-01\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "topology",
+    "fixed-point-theory",
+    "functional-analysis"
+  ],
+  "relatedProofs": [
+    "schauder-fixed-point",
+    "schauder-fixed-point-oq-01",
+    "schauder-fixed-point-oq-03",
+    "schauder-fixed-point-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-06T06:42:42.097Z",
+  "lastUpdate": "2026-03-07T18:02:01.177Z",
+  "completed": "2026-03-07T18:02:01.177Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/SchauderFixedPoint.lean",
+      "filename": "SchauderFixedPoint.lean",
+      "lineCount": 602,
+      "theoremCount": 9,
+      "axiomCount": 5,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchauderFixedPoint.lean"
+    },
+    {
+      "path": "Proofs/SchauderFixedPointOQ01.lean",
+      "filename": "SchauderFixedPointOQ01.lean",
+      "lineCount": 316,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchauderFixedPointOQ01.lean"
+    },
+    {
+      "path": "Proofs/SchauderFixedPointOQ03.lean",
+      "filename": "SchauderFixedPointOQ03.lean",
+      "lineCount": 169,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchauderFixedPointOQ03.lean"
+    },
+    {
+      "path": "Proofs/SchauderFixedPointOQ03OQ01.lean",
+      "filename": "SchauderFixedPointOQ03OQ01.lean",
+      "lineCount": 1284,
+      "theoremCount": 14,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchauderFixedPointOQ03OQ01.lean"
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "slug": "infinitude-primes-4k3-oq-03",
+  "title": "Infinitely Many Primes ≡ 1 (mod 4) — Elementary Proof",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{There are infinitely many primes } p \\equiv 1 \\pmod{4}",
+    "plain": "The gallery proves infinitely many primes $\\equiv 3 \\pmod 4$ (a straightforward Euclid-style argument). Primes $\\equiv 1 \\pmod 4$ are harder: the standard proof uses Fermat's theorem that $-1$ is a quadratic residue mod $p$ if and only if $p \\equiv 1 \\pmod 4$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-13T00:00:00Z",
+    "iteration": 1,
+    "focus": "STATE-SYNC: gallery proof Proofs/InfinitudePrimes4k3OQ03.lean is verified (0 sorries, 0 axioms) and fully proves the stated question. Research tracker was stale; flipped active→completed to match published gallery verdict. infinitely_many_primes_1_mod_4 proves the harder ≡1 mod 4 direction.",
+    "blockers": [],
+    "nextAction": "None — completed and gallery-verified.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: infinitude-primes-4k3-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n- Goal: elementary proof that infinitely many primes p ≡ 1 (mod 4)\n- Key construction: N = (2·p₁·...·pₖ)² + 1, which must have a prime factor ≡ 1 mod 4\n- Requires: if q | a²+1 then q ≡ 1 mod 4 (key number theory lemma via element order)\n\n---\n\n## Insights\n\n- Key lemma: if prime q | a²+1, then q ≡ 1 mod 4\n  - a² ≡ -1 (mod q) → a⁴ ≡ 1 (mod q) → ord_q(a) ∈ {1,2,4}\n  - Not 1: a ≢ 1 (mod q) since a²≡-1≢0\n  - Not 2: a²≡-1≢1 (mod q) for odd q\n  - So ord_q(a) = 4, and ord_q(a) | q-1, so 4 | q-1, q ≡ 1 mod 4 ✓\n\n- Lean approach:\n  - `ZMod.orderOf_dvd_card_sub_one`: order of element divides p-1 in ZMod p\n  - `orderOf_dvd_of_pow_eq_one`: ord(a) | n if a^n = 1\n  - Coprimality: gcd((2P)²+1, 2P) = gcd(1, 2P) = 1, so new prime factor exists\n\n---\n\n## Dead Ends\n\n- None identified; argument is classical and elementary\n"
+  },
+  "tags": [
+    "number-theory",
+    "elementary",
+    "modular-arithmetic",
+    "quadratic-residues",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "infinitude-primes",
+    "infinitude-primes-4k3",
+    "infinitude-primes-4k3-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-29T19:14:09.188Z",
+  "lastUpdate": "2026-06-13T00:00:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/InfinitudePrimes4k3.lean",
+      "filename": "InfinitudePrimes4k3.lean",
+      "lineCount": 257,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k3OQ01.lean",
+      "filename": "InfinitudePrimes4k3OQ01.lean",
+      "lineCount": 102,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ01.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k3OQ01Klein2.lean",
+      "filename": "InfinitudePrimes4k3OQ01Klein2.lean",
+      "lineCount": 225,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ01Klein2.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k3OQ01Tower.lean",
+      "filename": "InfinitudePrimes4k3OQ01Tower.lean",
+      "lineCount": 132,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ01Tower.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k3OQ03.lean",
+      "filename": "InfinitudePrimes4k3OQ03.lean",
+      "lineCount": 104,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ03.lean"
+    }
+  ]
+}

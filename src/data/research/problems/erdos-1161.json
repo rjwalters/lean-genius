@@ -1,0 +1,112 @@
+{
+  "slug": "erdos-1161",
+  "title": "Erdos #1161: Permutation Counts by Order",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For f_k(n) = #{sigma in S_n : order(sigma) = k}, determine which orders k maximize f_k(n).",
+    "plain": "Among permutations of n letters, which cyclic orders occur most often?",
+    "whyMatters": [
+      "Permutation order is controlled by cycle-type lcm data, linking group theory with arithmetic partitions.",
+      "Beker resolved the asymptotic maximization problem using an lcm divisibility criterion.",
+      "The Lean file provides verified counting infrastructure and small cases without active deep-result axioms."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lean defines permCountByOrder, maxPermCountByOrder, and lcmRange.",
+      "The file proves total counting by order, vanishing when k does not divide n!, small S_1/S_2/S_3 counts, and a direct lower bound from n-cycles.",
+      "It proves prime-order counting for S_p and lcmRange monotonicity/divisibility lemmas."
+    ],
+    "open": [
+      "Beker's full characterization is documented in comments but is not an active Lean axiom or theorem in this file.",
+      "The full solved mathematical result should not be described as Lean-proved from the current declarations.",
+      "The statement permCountByOrder n n = (n - 1)! is not valid in general; the active exact theorem is prime-restricted."
+    ],
+    "goal": "Correct stale metadata by matching the active Lean file: zero active axioms, no sorries, and a verified combinatorial scaffold rather than a formal proof of Beker's theorem."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-23T00:00:00Z",
+    "iteration": 2,
+    "focus": "Metadata now treats Problem #1161 as mathematically solved by Beker but only partially reflected in Lean through proved counting infrastructure and no active deep axioms.",
+    "blockers": [
+      "Beker's full characterization and maximizer theorem are comment-level context, not active declarations."
+    ],
+    "nextAction": "Future Lean work would promote Beker's characterization from documentation into formal declarations and proofs.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms, 14 proved theorems. Eliminated sorry-dependency in max_permCount_ge_sub_factorial via direct n-cycle counting argument. Beker's characterization and maximizer theorems are documented only as comments, not as active axiom declarations in the file.",
+    "builtItems": [
+      "Fixed orderOf_perm_dvd_factorial: added Fintype.card_fin simp lemma",
+      "Fixed permCountByOrder_le_factorial: added Fintype.card_fin to rw chain",
+      "Fixed lcmRange_dvd_lcmRange: explicit lt_of_lt_of_le instead of omega",
+      "Fixed dvd_lcmRange: dsimp before omega for lambda reduction",
+      "Fixed deprecated Finset.not_mem_empty → Finset.notMem_empty",
+      "Proved cycleType_eq_singleton_of_prime_order: orderOf σ = p (prime) → cycleType σ = {p}",
+      "Proved permCountByOrder_prime_self: for prime p, permCountByOrder p p = (p-1)!",
+      "Removed false theorem permCountByOrder_n_eq_subfactorial_pred (n=6 counterexample: 240 ≠ 120)",
+      "Rewrote max_permCount_ge_sub_factorial with direct n-cycle counting (axiom-independent)",
+      "Left beker_characterization and beker_maximizer as comment-level documentation only (no active axiom or theorem declaration in the file)"
+    ],
+    "insights": [
+      "File required import Mathlib (full import) - imports all of Mathlib",
+      "Fintype.card_perm gives card = (Fintype.card α)! not n!, need Fintype.card_fin to bridge",
+      "omega cannot see through Finset.mem_range - need to extract membership manually",
+      "lambda application (fun i => i+1) (j-1) needs dsimp before omega can process",
+      "Beker characterization and maximizer theorems are deep published results, unlikely provable from Mathlib",
+      "permCountByOrder n n = (n-1)! is FALSE for composite n! At n=6, both 6-cycles (120) and (3,2,1)-type permutations (120) have order 6, giving 240 total",
+      "The correct statement holds only for prime p: order-p permutations are exactly p-cycles when p is prime",
+      "Key Mathlib APIs: Equiv.Perm.dvd_of_mem_cycleType, two_le_of_mem_cycleType, sum_cycleType, card_of_cycleType",
+      "Equiv.ext on Perm (Fin p) produces coerced goals (↑(σ x) = ↑(id x)); use simp not exact_mod_cast",
+      "max_permCount_ge_sub_factorial can be proved WITHOUT Beker: n-cycles ⊆ {σ | orderOf σ = n}, so #{σ | orderOf σ = n} ≥ (n-1)!",
+      "card_of_cycleType [n] + aesop gives #{σ | cycleType = {n}} = n!/n; then factorial_succ + mul_div_cancel gives (n-1)!",
+      "Converting sorry to axiom for published results is the right formalization choice: makes assumptions explicit"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1161 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos",
+    "permutation-groups",
+    "symmetric-groups",
+    "enumerative-combinatorics",
+    "solved"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-116",
+    "erdos-1161"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T16:53:51.157Z",
+  "lastUpdate": "2026-05-18T08:28:21Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1161Problem.lean",
+      "filename": "Erdos1161Problem.lean",
+      "lineCount": 323,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1161Problem.lean"
+    }
+  ]
+}

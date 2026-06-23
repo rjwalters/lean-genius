@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ann-awgn-capacity-def",
+    "proofId": "shannon-channel-coding-awgn",
+    "range": {
+      "startLine": 55,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "AWGN Capacity C(P, N)",
+    "content": "Defines awgnCapacity P N = ½ · log(1 + P/N), the Shannon capacity of the additive white Gaussian noise channel as a function of signal power P and noise power N.",
+    "mathContext": "$C(P, N) = \\tfrac12\\log\\!\\left(1 + \\frac{P}{N}\\right)$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "channel capacity",
+      "signal-to-noise ratio",
+      "Shannon–Hartley theorem"
+    ],
+    "prerequisites": [
+      "channel capacity",
+      "Gaussian (AWGN) channels",
+      "logarithms"
+    ]
+  },
+  {
+    "id": "ann-awgn-log-identity",
+    "proofId": "shannon-channel-coding-awgn",
+    "range": {
+      "startLine": 65,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "The Entropy-Difference Identity",
+    "content": "awgn_log_identity proves ½ log(2πe(P+N)) - ½ log(2πe N) = ½ log(1 + P/N). The two differential entropies differ only in their variance argument; via Real.log_div the 2πe factors cancel and the ratio (P+N)/N becomes 1 + P/N. This is the algebraic heart of the capacity.",
+    "mathContext": "$\\tfrac12\\log(2\\pi e(P+N)) - \\tfrac12\\log(2\\pi e N) = \\tfrac12\\log\\!\\left(1+\\tfrac{P}{N}\\right)$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "differential entropy",
+      "logarithm of a quotient"
+    ],
+    "prerequisites": [
+      "differential entropy",
+      "logarithm identities (log of a quotient)",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-awgn-achievability",
+    "proofId": "shannon-channel-coding-awgn",
+    "range": {
+      "startLine": 104,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "Achievability via a Gaussian Input",
+    "content": "awgn_capacity_achieved shows that a Gaussian input of power P produces a Gaussian output of power P + N, whose differential entropy ½ log(2πe(P+N)) minus the noise entropy ½ log(2πe N) is exactly the capacity ½ log(1 + P/N). The two entropies are the proven gaussianDifferentialEntropy instantiated at σ = √(P+N) and σ = √N.",
+    "mathContext": "$h(Y) - h(Z) = \\tfrac12\\log\\!\\left(1+\\tfrac{P}{N}\\right)$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Gaussian differential entropy",
+      "capacity-achieving input"
+    ],
+    "prerequisites": [
+      "Gaussian differential entropy",
+      "mutual information",
+      "capacity-achieving distributions"
+    ]
+  },
+  {
+    "id": "ann-awgn-converse",
+    "proofId": "shannon-channel-coding-awgn",
+    "range": {
+      "startLine": 115,
+      "endLine": 141
+    },
+    "type": "theorem",
+    "title": "Converse via Maximum Entropy",
+    "content": "awgn_capacity_upper_bound applies the Gaussian maximum-entropy theorem (gaussian_max_entropy) at σ = √(P+N): any output density f whose variance is bounded by the output power P + N has differential entropy ≤ ½ log(2πe(P+N)), so subtracting the noise entropy gives h(f) - h(Z) ≤ ½ log(1 + P/N). The average-power constraint E[Y²] ≤ P + N enters as the hypothesis hvar.",
+    "mathContext": "$h(f) - h(Z) \\le \\tfrac12\\log\\!\\left(1+\\tfrac{P}{N}\\right)$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "maximum entropy",
+      "converse bound",
+      "power constraint"
+    ],
+    "prerequisites": [
+      "differential entropy",
+      "maximum-entropy principle",
+      "average-power (variance) constraints"
+    ]
+  },
+  {
+    "id": "ann-awgn-structural",
+    "proofId": "shannon-channel-coding-awgn",
+    "range": {
+      "startLine": 143,
+      "endLine": 199
+    },
+    "type": "concept",
+    "title": "Structural Properties",
+    "content": "Elementary monotonicity facts: the capacity is non-negative, vanishes at zero signal power, is strictly positive for P > 0, increases in the signal power, and decreases in the noise power — each from log monotonicity (Real.log_le_log / Real.log_nonneg / Real.log_pos).",
+    "mathContext": "$C \\ge 0,\\ C(0,N)=0,\\ \\partial_P C > 0,\\ \\partial_N C < 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "signal-to-noise ratio"
+    ],
+    "prerequisites": [
+      "real analysis (monotonicity)",
+      "logarithm monotonicity",
+      "signal-to-noise ratio"
+    ]
+  }
+]

@@ -1,0 +1,155 @@
+{
+  "id": "connected-space-oq-01",
+  "title": "The Closure of a (Pre)connected Set Is (Pre)connected",
+  "slug": "connected-space-oq-01",
+  "description": "Formalizes the topological fact that the closure of a preconnected set is preconnected (and likewise for connected sets), with its sharper 'bark and tree' generalization — any set wedged between a preconnected set and its closure is preconnected — and the corollary that a dense connected subset makes the whole space connected. Built on Mathlib's IsPreconnected.closure / IsConnected.closure / IsPreconnected.subset_closure, with the dense corollary proved here. 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Connected_space",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ConnectedSpaceOQ01.lean",
+    "tags": [
+      "topology",
+      "connectedness",
+      "closure",
+      "dense-sets",
+      "point-set-topology",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsPreconnected.closure / IsConnected.closure",
+        "description": "The closure of a (pre)connected set is (pre)connected",
+        "module": "Mathlib.Topology.Connected.Basic"
+      },
+      {
+        "theorem": "IsPreconnected.subset_closure",
+        "description": "'Bark and tree': a set between a preconnected set and its closure is preconnected",
+        "module": "Mathlib.Topology.Connected.Basic"
+      },
+      {
+        "theorem": "connectedSpace_iff_univ / preconnectedSpace_iff_univ",
+        "description": "A space is (pre)connected iff its universal set is (pre)connected",
+        "module": "Mathlib.Topology.Connected.Basic"
+      },
+      {
+        "theorem": "Dense.closure_eq",
+        "description": "A dense set has closure equal to the whole space",
+        "module": "Mathlib.Topology.Defs.Basic"
+      }
+    ],
+    "originalContributions": [
+      "preconnected_closure / connected_closure: gallery-form statements that the closure of a (pre)connected set is (pre)connected",
+      "preconnected_of_subset_closure / connected_of_subset_closure: the 'bark and tree' theorem — any set between s and closure s is (pre)connected, strictly stronger than closing all the way",
+      "connectedSpace_of_dense_connected: a dense connected subset forces the whole space to be a ConnectedSpace (proved via closure = univ and IsConnected.closure)",
+      "preconnectedSpace_of_dense_preconnected: the preconnected analogue"
+    ],
+    "axiomCount": 0,
+    "lineCount": 75,
+    "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide). #print axioms reports only [propext, Classical.choice, Quot.sound]. The closure-preserves-connectedness facts are invoked from Mathlib; the dense corollaries are proved here.",
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "prerequisites": [
+      "Topological spaces, open sets, and closure",
+      "Preconnected and connected sets",
+      "Dense subsets",
+      "Connected / preconnected spaces"
+    ],
+    "relatedProblems": []
+  },
+  "overview": {
+    "historicalContext": "Connectedness is one of the basic topological invariants: a set is preconnected if it cannot be split by two disjoint open sets each meeting it, and connected if it is additionally nonempty. A fundamental stability property is that connectedness survives taking closures — adding limit points to a connected set keeps it connected. The reason is that any open separation of the closure restricts to an open separation of the original (dense) set, which is impossible. In fact a sharper statement holds, sometimes called the 'bark and tree' theorem: any set wedged between a preconnected set s and its closure is itself preconnected.\n\nThese facts are foundational and present in Mathlib (IsPreconnected.closure, IsConnected.closure, IsPreconnected.subset_closure). This entry packages them in gallery form and derives a useful corollary: if a space contains a dense connected subset, the whole space is connected — a common way to prove connectedness (e.g. a space is connected if a dense subspace such as the rationals' image, or a path-connected dense part, is connected).",
+    "problemStatement": "Prove that the closure of a preconnected set is preconnected, and of a connected set is connected; that any set between a preconnected set and its closure is preconnected ('bark and tree'); and that a dense connected (resp. preconnected) subset makes the whole space connected (resp. preconnected).",
+    "proofStrategy": "The closure results and 'bark and tree' are invoked from Mathlib (IsPreconnected.closure, IsConnected.closure, IsPreconnected.subset_closure). For the dense corollary, a space is connected iff its universal set is connected (connectedSpace_iff_univ); a dense set has closure equal to the universe (Dense.closure_eq), so univ = closure s, and the closure of a connected set is connected (IsConnected.closure) — giving IsConnected univ and hence ConnectedSpace.",
+    "keyInsights": [
+      "Connectedness cannot be destroyed by adding limit points: an open separation of the closure would already separate the dense original set.",
+      "The sharp form is 'bark and tree': any set t with s ⊆ t ⊆ closure s inherits preconnectedness — closing all the way is just the special case t = closure s.",
+      "A dense connected subset upgrades to a connected whole space, because its closure is everything and the closure of a connected set is connected.",
+      "Reducing global connectedness (ConnectedSpace) to connectedness of a dense part is a standard and reusable technique, e.g. for proving spaces built from connected dense skeletons are connected.",
+      "Working at the level of IsPreconnected / IsConnected on Set α (not just on the whole space) keeps the statements maximally reusable for subsets."
+    ],
+    "prerequisites": [
+      "Open sets, closure, and dense subsets",
+      "Preconnected and connected sets",
+      "The characterization of (pre)connected spaces via the universal set",
+      "Mathlib's topology API for connectedness"
+    ]
+  },
+  "sections": [
+    {
+      "id": "closure",
+      "title": "Section I: Closure Preserves (Pre)connectedness",
+      "startLine": 35,
+      "endLine": 48,
+      "summary": "preconnected_closure and connected_closure: the closure of a (pre)connected set is (pre)connected (Mathlib's IsPreconnected.closure / IsConnected.closure).",
+      "mathContext": "Adding limit points cannot break connectedness — the basic stability property."
+    },
+    {
+      "id": "bark-and-tree",
+      "title": "Section II: Bark and Tree",
+      "startLine": 50,
+      "endLine": 62,
+      "summary": "preconnected_of_subset_closure and connected_of_subset_closure: any set between a (pre)connected set and its closure is (pre)connected — strictly stronger than closing all the way.",
+      "mathContext": "The sharp form: t with s ⊆ t ⊆ closure s inherits connectedness."
+    },
+    {
+      "id": "dense-corollary",
+      "title": "Section III: Dense Connected ⟹ Connected Space",
+      "startLine": 64,
+      "endLine": 73,
+      "summary": "connectedSpace_of_dense_connected and preconnectedSpace_of_dense_preconnected: a dense (pre)connected subset makes the whole space (pre)connected, via closure = univ and the closure result.",
+      "mathContext": "Reducing global connectedness to a dense part — a standard proof technique."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 75 lines and 6 theorems on the stability of connectedness under closure: the closure of a (pre)connected set is (pre)connected, the 'bark and tree' generalization (any set between s and closure s is (pre)connected), and the corollary that a dense connected subset makes the whole space connected.",
+    "implications": "These package fundamental topological facts in gallery form and add the reusable corollary connecting density to global connectedness. The dense-subset technique is a common route to proving a space is connected; the 'bark and tree' theorem is the sharp tool behind it. All results are stated on subsets (IsPreconnected / IsConnected on Set α) for maximal reusability.",
+    "openQuestions": [
+      "Formalize the analogous stability for path-connectedness or local connectedness, where closure behaves differently (path-connectedness is NOT closure-stable in general).",
+      "Use the dense-connected corollary to prove connectedness of specific spaces built from dense connected skeletons."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.Connected.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Topology"
+    ],
+    "namespace": "ConnectedSpaceOQ01",
+    "lineCount": 75,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/ConnectedSpaceOQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [],
+  "references": [
+    {
+      "key": "Munkres",
+      "citation": "Munkres, J.R., Topology, 2nd ed., Prentice Hall (2000), §23 (Connected Spaces).",
+      "type": "book"
+    },
+    {
+      "key": "Bourbaki",
+      "citation": "Bourbaki, N., General Topology, Chapters 1–4, Springer (1989), Chapter I, §11 (Connectedness).",
+      "type": "book"
+    },
+    {
+      "key": "Willard",
+      "citation": "Willard, S., General Topology, Addison-Wesley (1970), §26.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

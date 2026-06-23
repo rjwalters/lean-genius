@@ -1,0 +1,171 @@
+[
+  {
+    "id": "ann-e596-header",
+    "proofId": "erdos-596",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #596** asks: for which pairs (G₁, G₂) does a Ramsey-type dichotomy hold? The dichotomy requires that finite n-colorings of G₁-free graphs always produce monochromatic G₂, yet countable colorings can avoid it. Erdős and Hajnal originally conjectured no such pairs exist, but (C₄, C₆) is a counterexample. The general characterization remains **OPEN**.",
+    "mathContext": "The dichotomy combines a finite Ramsey property (unavoidable monochromatic subgraph under finite colorings) with a countable coloring property (avoidable under countable colorings). This tension between finite and countable is the heart of the problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "graph coloring",
+      "forbidden subgraphs"
+    ],
+    "tags": [
+      "ramsey-theory",
+      "graph-coloring",
+      "forbidden-subgraphs",
+      "open-problem"
+    ],
+    "prerequisites": [
+      "Ramsey theory basics",
+      "graph coloring terminology"
+    ]
+  },
+  {
+    "id": "ann-e596-definitions",
+    "proofId": "erdos-596",
+    "type": "definition",
+    "range": {
+      "startLine": 25,
+      "endLine": 52
+    },
+    "title": "Dichotomy Definitions",
+    "content": "**GraphProperty** is a predicate on SimpleGraph ℕ. **FiniteRamseyProperty**: for all n ≥ 1, there exists a G₁-free graph H such that every n-coloring of H's edges contains a monochromatic G₂. **CountableColoringProperty**: every G₁-free graph H admits a countable edge coloring with no monochromatic G₂. **HasDichotomy**: both properties hold simultaneously.\n\nThe coloring is typed as `(Σ v w : ℕ, H.Adj v w) → Fin n` for finite and `→ ℕ` for countable, encoding edge colorings as functions from the adjacency relation.",
+    "mathContext": "The two properties are complementary: finite colors are insufficient to avoid monochromatic copies, but countably many suffice. This finite/countable gap is what makes the dichotomy remarkable. Formally: FiniteRamseyProperty $\\equiv \\forall n \\geq 1, \\exists H\\;(G_1\\text{-free}),\\; \\forall c : E(H) \\to [n],\\; \\exists$ monochromatic $G_2$; CountableColoringProperty $\\equiv \\forall H\\;(G_1\\text{-free}),\\; \\exists c : E(H) \\to \\mathbb{N},\\; \\nexists$ monochromatic $G_2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "edge coloring",
+      "Ramsey property",
+      "partition regularity"
+    ],
+    "tags": [
+      "definition",
+      "graph-property",
+      "edge-coloring",
+      "ramsey-property"
+    ],
+    "prerequisites": [
+      "SimpleGraph ℕ",
+      "Fin n type",
+      "dependent sum types"
+    ]
+  },
+  {
+    "id": "ann-e596-c4c6",
+    "proofId": "erdos-596",
+    "type": "concept",
+    "range": {
+      "startLine": 54,
+      "endLine": 85
+    },
+    "title": "The (C₄, C₆) Dichotomy Pair",
+    "content": "**c4_c6_dichotomy** (proved from axioms): HasDichotomy IsC4Free ContainsC6. This combines **nesetril_rodl_c4_c6** (Nešetřil-Rödl: C₄-free graphs have the finite Ramsey property for C₆) and **erdos_hajnal_c4_trees** (Erdős-Hajnal: every C₄-free graph is a countable union of trees, enabling countable coloring). This disproves the original Erdős-Hajnal conjecture that no dichotomy pairs exist.",
+    "mathContext": "Nešetřil-Rödl proved that for every n, there exists a C₄-free graph whose n-colorings all contain monochromatic C₆. Erdős-Hajnal showed C₄-free graphs decompose into countably many trees, giving a countable coloring avoiding C₆.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle-free graphs",
+      "Nešetřil-Rödl theorem",
+      "union of trees"
+    ],
+    "tags": [
+      "dichotomy-pair",
+      "nesetril-rodl",
+      "cycle-graphs",
+      "tree-decomposition"
+    ],
+    "prerequisites": [
+      "Nešetřil-Rödl theorem",
+      "tree decomposition of sparse graphs"
+    ]
+  },
+  {
+    "id": "ann-e596-conjecture",
+    "proofId": "erdos-596",
+    "type": "concept",
+    "range": {
+      "startLine": 87,
+      "endLine": 99
+    },
+    "title": "Main Problem (OPEN)",
+    "content": "**ErdosProblem596**: asks for a complete characterization of all pairs (G₁, G₂) satisfying the dichotomy. **erdos_596** (axiom): asserts such a characterization exists. The problem cannot be resolved by finite computation — it requires understanding the structural properties that determine when the dichotomy holds.",
+    "mathContext": "The problem asks not just for examples but for a complete classification. This is typical of Erdős problems: identify all objects satisfying a given property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "classification",
+      "structural characterization"
+    ],
+    "tags": [
+      "open-problem",
+      "classification",
+      "structural-characterization"
+    ],
+    "prerequisites": [
+      "HasDichotomy definition",
+      "structural characterization"
+    ]
+  },
+  {
+    "id": "ann-e596-k4k3",
+    "proofId": "erdos-596",
+    "type": "concept",
+    "range": {
+      "startLine": 101,
+      "endLine": 118
+    },
+    "title": "Related Problem: (K₄, K₃)",
+    "content": "**erdos_595_k4_k3** (axiom): the pair (K₄, K₃) is conjectured to have the dichotomy (Problem #595). This asks: does every K₄-free graph admit a countable coloring avoiding monochromatic triangles, while for every n some K₄-free graph forces monochromatic triangles under n-coloring?",
+    "mathContext": "Whether K₄-free graphs satisfy the dichotomy for triangles is a natural test case. The finite Ramsey property follows from Ramsey theory, but the countable coloring property is the open question.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete graphs",
+      "triangle-free",
+      "Problem #595"
+    ],
+    "tags": [
+      "complete-graphs",
+      "triangle-free",
+      "related-problem",
+      "open-problem"
+    ],
+    "prerequisites": [
+      "complete graph K₄",
+      "triangle K₃",
+      "Ramsey theory for cliques"
+    ]
+  },
+  {
+    "id": "ann-e596-summary",
+    "proofId": "erdos-596",
+    "type": "concept",
+    "range": {
+      "startLine": 129,
+      "endLine": 142
+    },
+    "title": "Summary",
+    "content": "**erdos_596_summary** (proved): packages the known results as a conjunction — (C₄, C₆) satisfies the dichotomy AND at least one dichotomy pair exists. **dichotomy_pairs_exist** (proved): constructs the witness from c4_c6_dichotomy. The general characterization of all dichotomy pairs remains **OPEN**.",
+    "mathContext": "The summary replaces the earlier placeholder True theorem with a substantive conjunction of results. The existence proof ⟨IsC4Free, ContainsC6, c4_c6_dichotomy⟩ is the canonical witness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem",
+      "summary",
+      "conjunction"
+    ],
+    "tags": [
+      "summary",
+      "existence-proof",
+      "dichotomy",
+      "open-problem"
+    ],
+    "prerequisites": [
+      "c4_c6_dichotomy",
+      "dichotomy_pairs_exist"
+    ]
+  }
+]

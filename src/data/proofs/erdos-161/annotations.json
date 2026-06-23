@@ -1,0 +1,182 @@
+[
+  {
+    "id": "ann-161-statement",
+    "proofId": "erdos-161",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "**Erdős Problem #161: Almost Monochromatic Subsets**\n\nDoes F^(t)(n,α) jump as α varies from 0 to 1/2? F^(t)(n,α) is the largest m allowing a 2-coloring where every large subset has at least α fraction of t-subsets in each color.\n\n**Answer (t=3):** Exactly one jump at α=0 (Conlon-Fox-Sudakov 2011).\n\nThis is a $500 prize problem connecting Ramsey theory (α=0) to balanced coloring (α>0).",
+    "mathContext": "The function F interpolates between Ramsey-type problems and balanced coloring, revealing a phase transition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "Hypergraph coloring",
+      "Phase transitions"
+    ],
+    "prerequisites": [
+      "Ramsey Theory",
+      "Hypergraph 2-Coloring",
+      "Asymptotic Density"
+    ]
+  },
+  {
+    "id": "ann-161-definitions",
+    "proofId": "erdos-161",
+    "type": "definition",
+    "range": {
+      "startLine": 39,
+      "endLine": 58
+    },
+    "title": "Hypergraph Coloring Definitions",
+    "content": "**completeHypergraph:** All t-subsets of [n], forming the complete t-uniform hypergraph.\n\n**HyperedgeColoring:** A 2-coloring assigns each t-subset to true/false (red/blue).\n\n**colorCount:** Counts t-subsets of X with a given color.\n\n**IsBalanced:** A coloring is (α,m)-balanced if every subset X with |X| ≥ m has at least α·C(|X|,t) hyperedges of each color.",
+    "mathContext": "For t=2 this reduces to edge-colorings of complete graphs; for t≥3 we enter hypergraph territory where behavior is qualitatively different.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complete hypergraph",
+      "Balanced coloring",
+      "Uniformity"
+    ],
+    "prerequisites": [
+      "Uniform Hypergraphs",
+      "T-Element Subsets",
+      "Binomial Coefficients"
+    ]
+  },
+  {
+    "id": "ann-161-F-function",
+    "proofId": "erdos-161",
+    "type": "concept",
+    "range": {
+      "startLine": 60,
+      "endLine": 69
+    },
+    "title": "The Function F^(t)(n,α)",
+    "content": "**F (axiom):** F(t,n,α) is the largest m such that some 2-coloring is (α,m)-balanced. Axiomatized because defining it requires nontrivial Ramsey-theoretic existence proofs.\n\n**F_spec:** The specification axiom: some coloring is balanced at threshold F, and no coloring is balanced at F+1.",
+    "mathContext": "F is the central object of study. Its behavior as α varies reveals the structure of optimal colorings.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ring theory",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "Extremal Functions",
+      "Existence Proofs",
+      "Lean Axiomatization"
+    ]
+  },
+  {
+    "id": "ann-161-ramsey",
+    "proofId": "erdos-161",
+    "type": "concept",
+    "range": {
+      "startLine": 71,
+      "endLine": 86
+    },
+    "title": "Ramsey Case (α = 0)",
+    "content": "**FZero:** F^(t)(n,0) is the classical Ramsey function for hypergraphs.\n\n**erdos_hajnal_rado_conjecture:** F^(t)(n,0) ≍ log_{t-1}(n), the (t-1)-times iterated logarithm. This grows extremely slowly—for t=3, it's log₂(n); for t=4, it's log(log(n)).\n\n**iterLog:** The iterated logarithm function, computed recursively.",
+    "mathContext": "The iterated logarithm growth at α=0 contrasts sharply with the power-of-log growth at α>0, creating the jump.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey numbers",
+      "Iterated logarithm",
+      "Erdős-Hajnal-Rado"
+    ],
+    "prerequisites": [
+      "Hypergraph Ramsey Numbers",
+      "Iterated Logarithm",
+      "Asymptotic Growth Rates"
+    ]
+  },
+  {
+    "id": "ann-161-bounds",
+    "proofId": "erdos-161",
+    "type": "concept",
+    "range": {
+      "startLine": 88,
+      "endLine": 100
+    },
+    "title": "Positive α: Lower and Upper Bounds",
+    "content": "**erdos_spencer_lower_bound:** For α > 0, F^(t)(n,α) ≫ (log n)^{1/(t-1)}. This is a POWER of logarithm, much larger than the iterated logarithm at α=0.\n\n**upper_bound_near_half:** Matching upper bound near α = 1/2.\n\nTogether these show F^(t)(n,α) = Θ((log n)^{1/(t-1)}) for positive α, at least when matching upper bounds exist.",
+    "mathContext": "The Erdős-Spencer bound uses probabilistic arguments. The matching upper bound uses greedy coloring constructions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lean 4 formalization",
+      "mathematical proof"
+    ],
+    "prerequisites": [
+      "Probabilistic Method",
+      "Logarithmic Bounds",
+      "Greedy Coloring"
+    ]
+  },
+  {
+    "id": "ann-161-jump",
+    "proofId": "erdos-161",
+    "type": "definition",
+    "range": {
+      "startLine": 102,
+      "endLine": 114
+    },
+    "title": "Jump Formalization",
+    "content": "**HasJumpAt:** F has a jump at α₀ if small changes in α cause changes in F proportional to n.\n\n**erdos_one_jump_belief:** Erdős believed there is exactly ONE jump, at α=0. Moving from α=0 to any α>0 causes F to jump from iterated log to power of log, but further increases don't cause more jumps.",
+    "mathContext": "The jump captures a qualitative change in the combinatorial structure of optimal colorings.",
+    "significance": "key",
+    "relatedConcepts": [
+      "formal definition",
+      "Lean 4 formalization"
+    ],
+    "prerequisites": [
+      "Phase Transitions",
+      "Threshold Functions",
+      "Asymptotic Notation"
+    ]
+  },
+  {
+    "id": "ann-161-cfs",
+    "proofId": "erdos-161",
+    "type": "concept",
+    "range": {
+      "startLine": 116,
+      "endLine": 132
+    },
+    "title": "Conlon-Fox-Sudakov Main Result (t=3)",
+    "content": "**conlon_fox_sudakov_upper:** F^(3)(n,α) ≤ c·√(log n) for all α > 0. This upper bound matches the Erdős-Spencer lower bound.\n\n**F3_characterization:** Combined: F^(3)(n,α) = Θ(√(log n)) for α ∈ (0, 1/2).\n\n**one_jump_for_t3:** Confirms exactly one jump at α=0 for t=3.",
+    "mathContext": "Conlon-Fox-Sudakov (2011) proved this in 'Large almost monochromatic subsets in hypergraphs'. The key technique involves dependent random choice.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dependent random choice",
+      "Upper bounds",
+      "Phase transition"
+    ],
+    "prerequisites": [
+      "Dependent Random Choice",
+      "Matching Bounds",
+      "Hypergraph Ramsey Theory"
+    ]
+  },
+  {
+    "id": "ann-161-summary",
+    "proofId": "erdos-161",
+    "type": "concept",
+    "range": {
+      "startLine": 157,
+      "endLine": 158
+    },
+    "title": "Summary",
+    "content": "**erdos_161_summary:** Combines F3_characterization (Θ(√(log n)) for α > 0) with one_jump_for_t3 (exactly one jump at α = 0) into a single theorem.\n\nThe proof uses exact ⟨F3_characterization, one_jump_for_t3⟩.\n\n**Open:** For t > 3, the one-jump structure is expected but unproven.",
+    "mathContext": "A complete resolution for t=3, with the general case remaining one of the major open problems in hypergraph Ramsey theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof technique",
+      "combinatorics"
+    ],
+    "prerequisites": [
+      "Asymptotic Equivalence",
+      "Open Problems",
+      "Hypergraph Ramsey Theory"
+    ]
+  }
+]

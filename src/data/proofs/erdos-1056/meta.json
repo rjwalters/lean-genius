@@ -1,0 +1,211 @@
+{
+  "id": "erdos-1056",
+  "title": "Erdős Problem #1056: Consecutive Interval Products ≡ 1 (mod p)",
+  "slug": "erdos-1056",
+  "description": "For k ≥ 2, does there exist a prime p and k consecutive intervals whose products are all ≡ 1 (mod p)? Known for k=2 (p=11, Erdős 1979) and k=3 (p=17, Makowski 1983). Guy's Problem A15. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 1056,
+    "status": "axiomatized",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "modular-arithmetic",
+      "factorials",
+      "wilson-theorem",
+      "open"
+    ],
+    "erdosProblemStatus": "open",
+    "badge": "axiom",
+    "proofRepoPath": "Proofs/Erdos1056Problem.lean",
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/1056",
+    "erdosUrl": "https://erdosproblems.com/1056",
+    "relatedProblems": [
+      "wilsons-theorem",
+      "erdos-945",
+      "erdos-1004"
+    ],
+    "axiomCount": 1,
+    "lineCount": 217,
+    "assumptions": "1 axiom: erdos_1056_conjecture (main conjecture — for every k ≥ 2 there exists a solution). k=2 (p=11) and k=3 (p=17) cases fully proved by native_decide. Wilson constraint proved via Mathlib.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 15,
+    "definitionCount": 4,
+    "additionalFiles": [
+      "Proofs/Erdos1056Aristotle.lean"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$, $\\texttt{Finset.Basic}$, and general tactics. Opens $\\texttt{Finset}$ namespace for $\\texttt{Ico}$ and $\\texttt{prod}$.",
+      "mathContext": "Mathematical content: Imports $\\texttt{Mathlib.Data.Nat.Prime.Basic}$, $\\texttt{Finset.Basic}$, and general tactics. Opens $\\texttt{Finset}$ namespace for $\\texttt{Ico}$ and $\\texttt{prod}$."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 33,
+      "endLine": 55,
+      "summary": "Defines $\\text{intervalProd}(a, b) = \\prod_{i=a}^{b-1} i$ via $\\texttt{Finset.Ico}$, validity of boundary sequences ($k+1$ strictly increasing points), the congruence condition $\\prod \\equiv 1 \\pmod{p}$ for all $k$ intervals, and $\\text{HasSolution}(k)$.",
+      "mathContext": "Defines $\\text{intervalProd}(a, b) = \\prod_{i=a}^{b-1} i$ via $\\texttt{Finset.Ico}$, validity of boundary sequences ($k+1$ strictly increasing points), the congruence condition $\\prod \\equiv 1 \\pmod{p}$ for all $k$ intervals, and $\\text{HasSolution}(k)$."
+    },
+    {
+      "id": "infrastructure",
+      "title": "Infrastructure Lemmas",
+      "startLine": 56,
+      "endLine": 96,
+      "summary": "Proves six supporting lemmas: empty interval product equals 1, boundary list properties (length, chain, count), interval product positivity for $a \\ge 1$, and closure of $\\equiv 1 \\pmod{p}$ under multiplication ($a \\equiv 1, b \\equiv 1 \\implies ab \\equiv 1$).",
+      "mathContext": "Proves six supporting lemmas: empty interval product equals 1, boundary list properties (length, chain, count), interval product positivity for $a \\ge 1$, and closure of $\\equiv 1 \\pmod{p}$ under multiplication ($a \\equiv 1, b \\equiv 1 \\implies ab \\equiv 1$)."
+    },
+    {
+      "id": "verified-solutions",
+      "title": "Verified Solutions",
+      "startLine": 97,
+      "endLine": 153,
+      "summary": "Computational verification via $\\texttt{native\\_decide}$: Erdős's $k=2$ ($p=11$, $3 \\cdot 4 \\equiv 5 \\cdot 6 \\cdot 7 \\equiv 1$), Makowski's $k=3$ ($p=17$, three intervals), combined result, non-triviality proof, and observation that both solutions use odd primes $p > 2$.",
+      "mathContext": "Computational verification via $\\texttt{native\\_decide}$: Erdős's $k=2$ ($p=11$, $3 \\cdot 4 \\equiv 5 \\cdot 6 \\cdot 7 \\equiv 1$), Makowski's $k=3$ ($p=17$, three intervals), combined result, non-triviality proof, and observation that both solutions use odd primes $p > 2$."
+    },
+    {
+      "id": "wilson-connection",
+      "title": "Wilson's Theorem Connection",
+      "startLine": 154,
+      "endLine": 190,
+      "summary": "Verifies Wilson's theorem for $p = 11$ and $p = 17$ computationally, then states the general constraint: $(p-1)! \\equiv -1 \\pmod{p}$ implies intervals with product $\\equiv 1$ cannot partition $\\{1, \\ldots, p-1\\}$.",
+      "mathContext": "Verifies Wilson's theorem for $p = 11$ and $p = 17$ computationally, then states the general constraint: $(p-1)! \\equiv -1 \\pmod{p}$ implies intervals with product $\\equiv 1$ cannot partition $\\{1, \\ldots, p-1\\}$."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 191,
+      "endLine": 197,
+      "summary": "Axiomatizes the open conjecture: $\\forall k \\ge 2$, $\\text{HasSolution}(k)$. Only $k = 2$ and $k = 3$ are verified; no $k = 4$ solution is known.",
+      "mathContext": "Axiomatized: Axiomatizes the open conjecture: $\\forall k \\ge 2$, $\\text{HasSolution}(k)$. Only $k = 2$ and $k = 3$ are verified; no $k = 4$ solution is known."
+    },
+    {
+      "id": "noll-simmons",
+      "title": "Noll–Simmons Generalization",
+      "startLine": 198,
+      "endLine": 206,
+      "summary": "States the Noll–Simmons question (prose, not formalized): $\\forall k, \\exists p$ prime with $k$ values $q_1 < \\cdots < q_k < p$ satisfying $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$. Weaker than the interval-product formulation; recorded as motivation, not as an axiom.",
+      "mathContext": "States the Noll–Simmons question (prose, not formalized): $\\forall k, \\exists p$ prime with $k$ values $q_1 < \\cdots < q_k < p$ satisfying $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 207,
+      "endLine": 217,
+      "summary": "Packages all verified results: $\\text{HasSolution}(2) \\land \\text{HasSolution}(3) \\land (10! \\equiv 10 \\pmod{11}) \\land (16! \\equiv 16 \\pmod{17})$.",
+      "mathContext": "Mathematical content: Packages all verified results: $\\text{HasSolution}(2) \\land \\text{HasSolution}(3) \\land (10! \\equiv 10 \\pmod{11}) \\land (16! \\equiv 16 \\pmod{17})$."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**Factorial Residues and Multiplicatively Trivial Intervals**\n\nIn 1979, Erdős observed a remarkable congruence: $3 \\cdot 4 = 12 \\equiv 1 \\pmod{11}$ and $5 \\cdot 6 \\cdot 7 = 210 \\equiv 1 \\pmod{11}$. Two consecutive intervals $[3,5)$ and $[5,8)$ both have products congruent to 1 modulo the same prime. In the language of factorials: $2! \\equiv 4! \\equiv 7! \\pmod{11}$.\n\nMakowski (1983) extended this to $k = 3$ intervals modulo $p = 17$: $2 \\cdot 3 \\cdot 4 \\cdot 5 \\equiv 6 \\cdot 7 \\cdot 8 \\cdot 9 \\cdot 10 \\cdot 11 \\equiv 12 \\cdot 13 \\cdot 14 \\cdot 15 \\equiv 1 \\pmod{17}$. Erdős then asked: can this be done for arbitrarily many intervals?\n\nThe problem connects to the distribution of the **factorial residue function** $n \\mapsto n! \\pmod{p}$ on $\\{0, 1, \\ldots, p-1\\}$. By Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$, the factorial function cannot be constant on all of $\\{0, \\ldots, p-1\\}$, but collisions among factorial values are expected to become more frequent as $p$ grows. Noll and Simmons formalized this as: for every $k$, do there exist $k$ values $q_1 < \\cdots < q_k < p$ with $q_1! \\equiv \\cdots \\equiv q_k! \\pmod{p}$? The problem appears as A15 in Guy's *Unsolved Problems in Number Theory*.",
+    "problemStatement": "For every k ≥ 2, does there exist a prime p and k consecutive intervals I₁, ..., Iₖ (partitioning a range of integers) such that the product of integers in each interval is ≡ 1 (mod p)?",
+    "text": "For k ≥ 2, does there exist a prime p and k consecutive intervals whose products are all ≡ 1 (mod p)? Known for k=2 (p=11, Erdős 1979) and k=3 (p=17, Makowski 1983). Guy's Problem A15. Status: OPEN.",
+    "proofStrategy": "We formalize interval products, define solutions as prime-boundary pairs satisfying the congruence, verify the known k=2 and k=3 examples via native_decide, state the main conjecture, and connect to Wilson's theorem and the Noll–Simmons factorial generalization.",
+    "keyInsights": [
+      "The condition $\\prod_{i=a}^{b-1} i \\equiv 1 \\pmod{p}$ is equivalent to $a! \\equiv b! \\pmod{p}$, transforming the interval product problem into one about collisions of the factorial residue function $n \\mapsto n! \\bmod p$",
+      "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ provides a key obstruction: the intervals cannot partition all of $\\{1, \\ldots, p-1\\}$, since the total product would be $1^k = 1 \\ne -1$. This forces structural gaps in any solution",
+      "The known examples ($p = 11$ for $k = 2$, $p = 17$ for $k = 3$) use small primes, suggesting that solutions may exist for surprisingly small primes relative to $k$—but no $k = 4$ solution is known",
+      "The Noll–Simmons factorial reformulation asks: as $p \\to \\infty$, does the maximum number of collisions among $\\{0!, 1!, \\ldots, (p-1)!\\} \\pmod{p}$ grow without bound? Probabilistic heuristics suggest yes, since the factorial function should behave 'randomly' modulo large primes",
+      "The problem sits at the intersection of multiplicative number theory (products of consecutive integers), analytic number theory (distribution of factorial residues), and combinatorics (partitioning intervals with prescribed products)"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #1056 asks whether for every $k \\ge 2$, there exist a prime $p$ and $k$ consecutive intervals of integers whose products are all $\\equiv 1 \\pmod{p}$. **Status: OPEN.** Known for $k = 2$ (Erdős 1979, $p = 11$) and $k = 3$ (Makowski 1983, $p = 17$). The factorial reformulation—do $k+1$ factorial residues agree modulo some prime?—connects to the Noll–Simmons conjecture. Wilson's theorem provides structural constraints.",
+    "implications": "1. **Factorial Residue Distribution**: The problem asks about the collision structure of $n \\mapsto n! \\bmod p$, a function whose statistical behavior is poorly understood. A positive answer would show that factorial collisions grow without bound as $p$ increases.\n\n**2. Wilson's Theorem Applications**: The constraint $(p-1)! \\equiv -1$ limits which interval structures are possible, creating a non-trivial interaction between additive (interval) and multiplicative (product) structure modulo primes.\n\n3. **Multiplicative Number Theory**: Products of consecutive integers modulo $p$ connect to the multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ and the distribution of smooth numbers in short intervals.\n\n4. **Computational Challenges**: Finding $k = 4$ solutions requires searching over primes and boundary configurations, a computationally intensive task that pushes current methods.",
+    "openQuestions": [
+      "Does a solution exist for $k = 4$? What is the smallest prime $p$ admitting 4 consecutive intervals with products $\\equiv 1 \\pmod{p}$?",
+      "Does the smallest prime $p(k)$ admitting a $k$-solution grow polynomially or exponentially in $k$?",
+      "Can the Noll–Simmons factorial collision conjecture be resolved by probabilistic methods (e.g., showing the expected number of collisions $\\to \\infty$)?",
+      "Is there a constructive algorithm to produce solutions for given $k$, or must they be found by exhaustive search?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ is the primary structural obstruction in this problem: intervals cannot partition all of $\\{1, \\ldots, p-1\\}$, and the proof verifies Wilson's identity computationally for $p = 11$ and $p = 17$.",
+      "targetId": "wilsons-theorem"
+    },
+    {
+      "relationship": "Both problems concern factorial values modulo primes. Erdős #1058 studies prime divisors of $n!+1$ between consecutive primes, while #1056 studies collisions among $n! \\bmod p$; both probe the residue distribution of the factorial function.",
+      "targetId": "erdos-1058"
+    },
+    {
+      "relationship": "The multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p-1$. A primitive root generates this group, giving the algebraic setting in which interval products $\\equiv 1$ must be understood as elements of order dividing $p-1$.",
+      "targetId": "primitive-roots"
+    },
+    {
+      "relationship": "Erdős #1055 classifies primes by the factorization depth of $p+1$ using smooth-number analysis. The smoothness of $p-1$ controls the structure of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, which in turn constrains which products of consecutive integers can equal 1 modulo $p$.",
+      "targetId": "erdos-1055"
+    },
+    {
+      "relationship": "Erdős #945 asks about consecutive integers with distinct divisor counts, sharing the theme of structured behavior in consecutive-integer ranges. Both problems seek patterns in how multiplicative properties vary across consecutive integers.",
+      "targetId": "erdos-945"
+    },
+    {
+      "relationship": "The Chinese Remainder Theorem provides tools for constructing simultaneous congruence solutions. Multi-interval congruence conditions of the form $\\prod_{i=a_j}^{b_j-1} i \\equiv 1 \\pmod{p}$ can be analyzed via CRT when multiple primes are considered.",
+      "targetId": "chinese-remainder-constructive"
+    }
+  ],
+  "references": [
+    {
+      "key": "Er79",
+      "citation": "Erdős, P. (1979). Personal communication. k=2 example: 3·4 ≡ 5·6·7 ≡ 1 (mod 11).",
+      "type": "paper"
+    },
+    {
+      "key": "Ma83",
+      "citation": "Makowski, A. (1983). k=3 solution with p=17 for the Erdős interval product problem.",
+      "type": "paper"
+    },
+    {
+      "key": "Gu04",
+      "citation": "Guy, R.K. (2004). Unsolved Problems in Number Theory, 3rd ed. Springer. Section A15.",
+      "type": "book"
+    },
+    {
+      "key": "NS96",
+      "citation": "Noll, L.C. and Simmons, G.J. (1996). On the distribution of factorial residues modulo primes. Manuscript. Generalizes the interval product conjecture to non-consecutive factorial collisions.",
+      "type": "paper"
+    },
+    {
+      "key": "Gr97",
+      "citation": "Granville, A. (1997). Smooth numbers: computational number theory and beyond. In Algorithmic Number Theory, MSRI Publications, vol. 44, pp. 267–323. Cambridge University Press. Background on smooth-number distribution relevant to the structure of $p-1$ and cyclic groups.",
+      "type": "paper"
+    },
+    {
+      "key": "IK04",
+      "citation": "Iwaniec, H. and Kowalski, E. (2004). Analytic Number Theory. American Mathematical Society Colloquium Publications, vol. 53. Covers multiplicative characters, character sums, and distribution of residues modulo primes relevant to factorial residue analysis.",
+      "type": "book"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1056",
+    "lineCount": 217,
+    "axiomCount": 1,
+    "theoremCount": 15,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos1056Problem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Erdos1056Aristotle.lean"
+    ]
+  },
+  "sorries": 0
+}

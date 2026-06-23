@@ -1,0 +1,174 @@
+{
+  "slug": "descartes-rule-of-signs-oq-01-oq-02",
+  "title": "Minimal Infrastructure for Descartes Parity",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-13T11:40:00Z",
+    "iteration": 3,
+    "focus": "S2 COMPLETION-SYNC #18791 (T-3d) absorbed; OQ answered via DescartesRuleOfSignsOQ01OQ02.lean (317 LOC, 13 theorems, 1 axiom, 0 sorries, status axiomatized). Remaining axiom sign_variation_parity_under_positive_root is documented hard lemma (200-500 LOC estimated) not a research gap. S3 doc-only JSON catchup absorbing predecessor residual drift (currentState block + lastUpdate + leanFiles[3] numerics).",
+    "blockers": [],
+    "nextAction": "None — slug answered. Forward path: discharge axiom via Mathlib succ_signVariations_le_X_sub_C_mul parity refinement (signVariations_eq_eraseLead_add_ite induction extension), ~200-500 LOC. Seeker job for oq-01-oq-02-oq-01 candidate (NOT this slug).",
+    "attemptCounts": {
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: OQ answered. Minimal infrastructure for Descartes parity requires BOTH complex conjugate pairing (degree ≡ real_roots mod 2) AND sign variation parity under root extraction (the hard combinatorial-algebraic ingredient, axiomatized as sign_variation_parity_under_positive_root). 317 LOC, 13 theorems, 1 axiom, 0 sorries. Mathlib provides the inequality version only (succ_signVariations_le_X_sub_C_mul); the parity version is the remaining axiom.",
+    "builtItems": [
+      "proofs/Proofs/DescartesRuleOfSignsOQ01OQ02.lean (317 lines, 1 axiom, 0 sorries, 13 theorems)",
+      "src/data/proofs/descartes-rule-of-signs-oq-01-oq-02/ (gallery entry, axiomatized)",
+      "Structural answer: minimal infrastructure = conjugate pairing + sign variation parity under root extraction"
+    ],
+    "insights": [
+      "Conjugate pairing alone is NOT sufficient for Descartes parity",
+      "Minimal infrastructure: conjugate pairs + sign variation parity under root extraction",
+      "The gap: conjugate pairing gives degree=real_roots (mod 2), but parity needs sv=pos_roots (mod 2)",
+      "The irreducible hard part: how multiplication by (X - C r) transforms coefficient sign sequences",
+      "Parity chain theorem composes all three ingredients",
+      "Mathlib v4.26.0 has Polynomial.RuleOfSigns with succ_signVariations_le_X_sub_C_mul: multiplying by (X - C η) with η > 0 increases signVariations by at least 1. The PARITY refinement (exact = signVariations(q) + 2k + 1) is missing from Mathlib and would be the natural follow-up.",
+      "Forward path to discharge the axiom: extend Mathlib induction with parity tracking via signVariations_eq_eraseLead_add_ite. Estimated 200-500 LOC; would constitute the full Descartes Rule of Signs parity version, beyond Mathlib current inequality version."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove sign_variation_parity_under_positive_root via coefficient analysis",
+      "Explore Sturm chain approach as alternative"
+    ],
+    "markdown": "# Knowledge Base: descartes-rule-of-signs-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "descartes-rule-of-signs",
+    "descartes-rule-of-signs-oq-01",
+    "descartes-rule-of-signs-oq-01-oq-01",
+    "descartes-rule-of-signs-oq-01-oq-02",
+    "descartes-rule-of-signs-oq-02",
+    "descartes-rule-of-signs-oq-02-oq-01",
+    "descartes-rule-of-signs-oq-02-oq-01-oq-02",
+    "descartes-rule-of-signs-oq-03",
+    "descartes-rule-of-signs-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T18:39:05.245Z",
+  "lastUpdate": "2026-05-16T18:55:54Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/DescartesRuleOfSigns.lean",
+      "filename": "DescartesRuleOfSigns.lean",
+      "lineCount": 577,
+      "theoremCount": 35,
+      "axiomCount": 8,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSigns.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ01.lean",
+      "lineCount": 1075,
+      "theoremCount": 30,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ01.lean",
+      "lineCount": 155,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ02.lean",
+      "lineCount": 317,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ02.lean",
+      "lineCount": 699,
+      "theoremCount": 30,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02OQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ02OQ01.lean",
+      "lineCount": 240,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ02OQ01OQ02.lean",
+      "lineCount": 459,
+      "theoremCount": 26,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ03.lean",
+      "filename": "DescartesRuleOfSignsOQ03.lean",
+      "lineCount": 441,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ03.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ04.lean",
+      "filename": "DescartesRuleOfSignsOQ04.lean",
+      "lineCount": 496,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ04.lean"
+    }
+  ]
+}

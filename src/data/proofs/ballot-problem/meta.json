@@ -1,0 +1,276 @@
+{
+  "id": "ballot-problem",
+  "title": "The Ballot Problem",
+  "slug": "ballot-problem",
+  "description": "In an election where candidate A receives p votes and candidate B receives q votes (p > q), the probability that A leads throughout the counting is (p-q)/(p+q).",
+  "meta": {
+    "wiedijkNumber": 30,
+    "author": "Joseph Bertrand (formalized via Mathlib)",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4/blob/master/Archive/Wiedijk100Theorems/BallotProblem.lean",
+    "date": "1887",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BallotProblem.lean",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "counting",
+      "wiedijk-100",
+      "reflection-principle"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Ballot.ballot_problem",
+        "description": "The main ballot theorem: probability A leads throughout",
+        "module": "Archive.Wiedijk100Theorems.BallotProblem"
+      },
+      {
+        "theorem": "Ballot.countedSequence",
+        "description": "Set of vote sequences with p votes for A and q for B",
+        "module": "Archive.Wiedijk100Theorems.BallotProblem"
+      },
+      {
+        "theorem": "Ballot.staysPositive",
+        "description": "Predicate: every nonempty suffix has positive sum",
+        "module": "Archive.Wiedijk100Theorems.BallotProblem"
+      },
+      {
+        "theorem": "Ballot.ballot_problem'",
+        "description": "Auxiliary form of the ballot theorem used in the proof",
+        "module": "Archive.Wiedijk100Theorems.BallotProblem"
+      },
+      {
+        "theorem": "Ballot.count_countedSequence",
+        "description": "Cardinality of countedSequence as C(p+q, p)",
+        "module": "Archive.Wiedijk100Theorems.BallotProblem"
+      }
+    ],
+    "originalContributions": [
+      "ballot_theorem: clean restatement of Ballot.ballot_problem as a Rat-valued probability",
+      "ballot_theorem_real: ℝ-valued version of the ballot probability formula",
+      "ballot_unanimous: P = 1 when q = 0 (all votes for A)",
+      "ballot_tie: P = 0 when p = q (tied election)",
+      "Pedagogical commentary sections on the reflection principle, lattice paths, and Catalan numbers"
+    ],
+    "dateAdded": "2025-12-27",
+    "prerequisites": [
+      "Combinatorics and counting arguments",
+      "Catalan numbers and lattice paths",
+      "Probability theory fundamentals",
+      "Finset and Nat operations from Mathlib"
+    ],
+    "axiomCount": 0,
+    "lineCount": 251,
+    "relatedProblems": [
+      {
+        "id": "ballot-problem-oq-01",
+        "relationship": "Extension of the ballot problem"
+      },
+      {
+        "id": "ballot-problem-oq-02",
+        "relationship": "Further generalization of ballot counting"
+      },
+      {
+        "id": "ballot-problem-oq-03",
+        "relationship": "Additional ballot problem variants"
+      }
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The Ballot Problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus* of the French Academy of Sciences, and solved by Désiré André in the very next issue of the same journal. It asks: in an election where candidate A receives $p$ votes and candidate B receives $q$ votes (with $p > q$), what is the probability that A is ahead of B throughout the entire counting process?\n\nThe answer is the elegant formula $(p-q)/(p+q)$. André's proof introduced the **reflection principle** — a bijective argument that pairs each 'bad' vote sequence (where A falls behind or ties) with a reflected path. The reflection principle has since become one of the most powerful tools in enumerative combinatorics, applied to Catalan numbers, random walks, queueing theory, and financial mathematics.\n\nThe problem has a rich genealogy: it was studied independently by Émile Barbier (1887), rediscovered by Aeppli (1924), and generalized by Takács (1962) and others. William Feller popularized it in his classic textbook *An Introduction to Probability Theory and Its Applications* (1968), where it appears as a gateway to the theory of random walks and fluctuation theory.\n\nThe result appears as Theorem #30 in Wiedijk's Formalizing 100 Theorems list, and was formalized in Mathlib by Sébastien Gouëzel.",
+    "problemStatement": "**Theorem (Bertrand, 1887)**: In an election where candidate A receives p votes and candidate B receives q votes, with p > q, the probability that A leads B throughout the counting is:\n\n$$P = \\frac{p - q}{p + q}$$\n\nThis is Wiedijk's 100 Theorems #30.",
+    "text": "A 255-line pedagogical wrapper around Mathlib's `Archive.Wiedijk100Theorems.BallotProblem` (Wiedijk #30) with 14 declarations, 0 sorries, 0 axioms. The proof models vote sequences as `List Int` of $+1$/$-1$ entries via `Ballot.countedSequence`, counts sequences where all partial sums are positive using `Ballot.staysPositive`, and derives the probability $(p-q)/(p+q)$ via conditional counting on `Finset`. The file provides `ballot_theorem` as a clean rational restatement and `ballot_theorem_real` as the `ℝ`-valued version. Concrete examples include `ballot_unanimous` ($P = 1$ when $q = 0$) and `ballot_tie` ($P = 0$ when $p = q$). Commentary sections explain the reflection principle, the lattice path interpretation, and connections to Catalan numbers and random walk theory.",
+    "proofStrategy": "**The Reflection Principle**:\n\n1. Model vote counting as a path in a lattice (each vote moves the cumulative total up or down)\n2. 'A leads throughout' means the path never touches the x-axis after time 0\n3. Count 'bad' paths by reflecting them across the axis at their first touch point\n4. This creates a bijection with paths to a different endpoint\n5. The probability follows from counting good vs total paths\n\n**Note**: The reflection principle implementation lives in Mathlib (`Archive.Wiedijk100Theorems.BallotProblem`), not in this file. This file wraps the Mathlib proof with pedagogical restatements and concrete examples.",
+    "keyInsights": [
+      "The reflection principle provides a bijective proof that avoids complex recursion: each 'bad' path (where A ties or falls behind) corresponds bijectively to a path with swapped $+1/-1$ votes, ending at a different point.",
+      "The formula $(p-q)/(p+q)$ emerges as a ratio of binomial coefficients: $\\frac{\\binom{p+q}{p} - \\binom{p+q}{q}}{\\binom{p+q}{p}} = \\frac{p-q}{p+q}$, where $\\binom{p+q}{q}$ counts the reflected 'bad' paths.",
+      "The ballot problem connects to Catalan numbers: the number of paths from $(0,0)$ to $(2n, 0)$ that stay non-negative is the Catalan number $C_n = \\frac{1}{n+1}\\binom{2n}{n}$.",
+      "The Mathlib formalization models vote sequences as lists of integers, using `condCount` for conditional probability over finite sets — demonstrating how classical probability theory integrates with Lean's measure theory.",
+      "Applications extend beyond voting: random walks staying positive, queues never emptying, stock prices above a barrier, and the Gambler's Ruin problem all reduce to variants of the ballot problem."
+    ],
+    "prerequisites": [
+      "Combinatorics and counting arguments",
+      "Catalan numbers and lattice paths",
+      "Probability theory fundamentals",
+      "Finset and Nat operations from Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setting",
+      "title": "The Setting",
+      "startLine": 93,
+      "endLine": 112,
+      "summary": "Modeling vote counting as sequences of +1 and -1.",
+      "mathContext": "Vote sequences: elements of $\\{+1, -1\\}^{p+q}$ with exactly $p$ values $+1$ and $q$ values $-1$. `countedSequence p q` is the Finset of all such lists, with $|\\text{countedSequence}\\, p\\, q| = \\binom{p+q}{p}$. `staysPositive` holds when $\\forall i \\geq 1,\\, \\sum_{j=1}^{i} v_j > 0$."
+    },
+    {
+      "id": "key-properties",
+      "title": "Key Properties",
+      "startLine": 113,
+      "endLine": 131,
+      "summary": "Properties of counted sequences and their cardinalities.",
+      "mathContext": "Cardinality: $|\\text{countedSequence}\\, p\\, q| = \\binom{p+q}{p}$. The good paths (where A leads throughout) number $\\binom{p+q}{p} - \\binom{p+q}{q}$. This uses the algebraic identity $\\frac{\\binom{p+q}{p} - \\binom{p+q}{q}}{\\binom{p+q}{p}} = \\frac{p-q}{p+q}$ for $p > q$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Ballot Theorem",
+      "startLine": 132,
+      "endLine": 153,
+      "summary": "The main result: probability of A leading throughout equals (p-q)/(p+q).",
+      "mathContext": "$\\text{condCount}(\\text{countedSequence}\\, p\\, q,\\, \\text{staysPositive}) = \\frac{p-q}{p+q}$ for $p > q$. The conditional probability is computed as the ratio $\\frac{|\\{s \\in \\text{countedSequence}\\, p\\, q \\mid \\text{staysPositive}(s)\\}|}{|\\text{countedSequence}\\, p\\, q|}$."
+    },
+    {
+      "id": "edge-cases",
+      "title": "Edge Cases",
+      "startLine": 154,
+      "endLine": 166,
+      "summary": "Special cases: unanimous vote and tied election.",
+      "mathContext": "Unanimous ($q = 0$): $\\frac{p-0}{p+0} = 1$. Tied ($p = q$): $\\frac{p-p}{2p} = 0$. These verify the formula at its extremes: $P \\in [0, 1]$ for $0 \\leq q \\leq p$. Numerical examples: $(2,1) \\to 1/3$, $(3,1) \\to 1/2$, $(4,2) \\to 1/3$, $(5,2) \\to 3/7$."
+    },
+    {
+      "id": "reflection-principle",
+      "title": "The Reflection Principle",
+      "startLine": 216,
+      "endLine": 251,
+      "summary": "Detailed explanation of the bijective proof technique.",
+      "mathContext": "André's reflection bijection: for any 'bad' path (first touching $y=0$ at step $k$), reflect all votes before step $k$ ($+1 \\leftrightarrow -1$). This maps bad paths ending at $(p+q, p-q)$ bijectively to ALL paths ending at $(p+q, q-p)$. Count: $\\binom{p+q}{q}$ bad paths, so good paths $= \\binom{p+q}{p} - \\binom{p+q}{q}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Ballot Problem elegantly connects probability theory with combinatorics through the reflection principle. The formula (p-q)/(p+q) emerges naturally from counting lattice paths.",
+    "implications": "1. **Random walk reflection principle**: The ballot problem is the fundamental application of the reflection principle for lattice paths. The probability $(p-q)/(p+q)$ is equivalent to the fraction of random walks from $(0,0)$ to $(p+q, p-q)$ that stay strictly positive throughout — computed by reflecting all paths touching 0 across the $x$-axis. This reflection principle is the key combinatorial technique in random walk theory.\n\n2. **Catalan numbers and Dyck paths**: For equal votes ($p = q = n$), the ballot problem connects to Catalan numbers $C_n = \\binom{2n}{n}/(n+1)$: the number of lattice paths from $(0,0)$ to $(2n, 0)$ that never go below the $x$-axis. Catalan numbers count: (a) balanced parenthesizations, (b) non-crossing partitions, (c) standard Young tableaux of staircase shape, (d) triangulations of convex polygons, (e) full binary trees — all via ballot-problem reasoning.\n\n3. **Cycle Lemma (Dvoretzky-Motzkin 1947)**: Among the $n$ cyclic rotations of a sequence with $p$ values of $+1$ and $q$ values of $-1$ (where $p > q$), exactly $p - q$ rotations yield sequences with all partial sums positive. This is the ballot problem's combinatorial avatar and the key ingredient in the first return decomposition of lattice paths — applicable to every bijection involving ballot sequences.\n\n4. **Queueing theory (FIFO queues)**: The ballot problem models single-server queues: if $p$ customers arrive and $q$ depart during a time interval (with $p > q$), the probability that the queue never empties equals $(p-q)/(p+q)$. More generally, the ballot problem governs busy periods in M/D/1 and M/G/1 queues, where the Lindley recursion for waiting times is equivalent to a reflected random walk.\n\n5. **Barrier crossing in finance (first passage times)**: In mathematical finance, the ballot probability $(p-q)/(p+q)$ models the probability that a discrete random walk (stock price) stays above a barrier. The continuous analogue — probability that Brownian motion stays above zero — is computed via the reflection principle for Brownian motion, giving $P(B_s > 0 \\text{ for all } s \\in [0,t] | B_t = x) = x/(\\sqrt{2\\pi t} \\cdot \\varphi(x/\\sqrt{t}))$ (Bachelier's formula).\n\n6. **Connections to Bertrand ballot / cycle structure**: The ballot sequence problem connects to the cycle structure of random permutations: a permutation $\\sigma$ of $\\{1,\\ldots,n\\}$ is uniquely encoded as a ballot sequence via the first-cycle construction (Joyal's bijection). This links the ballot problem to the distribution of cycle lengths in random permutations — governed by the Ewens sampling formula.\n\n7. **Planarity certificates and non-crossing partitions**: Non-crossing partitions (counted by Catalan numbers via ballot sequences) appear in free probability theory (Voiculescu 1985) as the combinatorial structure underlying free cumulants and the free central limit theorem. Ballot sequences thus connect electoral probability to operator algebras and random matrix theory.",
+    "openQuestions": [
+      "Formalize the Cycle Lemma (Dvoretzky-Motzkin, 1947): among the n cyclic rotations of a lattice path from (0,0) to (n, k), exactly k of them stay strictly positive — a powerful generalization of the ballot problem",
+      "Formalize the continuous-time ballot problem via Brownian motion: for a Brownian bridge from 0 to x > 0 over [0,T], the probability of staying positive is x/√(2πT)",
+      "Prove the connection to Catalan numbers explicitly: for p = q = n, the number of non-negative lattice paths from (0,0) to (2n,0) is C_n = (1/(n+1))·C(2n,n)",
+      "Can the bijection between ballot sequences and non-crossing partitions (counted by Catalan numbers) be formalized in Lean? The bijection sends a ballot sequence to a partition where block $i$ corresponds to the $i$-th 'return to zero' segment — connecting the ballot problem to free probability via Voiculescu's free cumulants.",
+      "Is there a Lean formalization of the Bertrand ballot problem via the cycle lemma for random permutations (Joyal's bijection)? The bijection between ballot sequences and permutation cycle structures connects the probability $(p-q)/(p+q)$ to the distribution of record values in random permutations."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fair-games-theorem",
+      "relationship": "related",
+      "description": "Both use conditional probability over finite sample spaces; the ballot problem's staysPositive predicate connects to fair game stopping conditions"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "uses",
+      "description": "The ballot formula relies on binomial coefficients C(p+q,p) and C(p+q,q) for counting lattice paths"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "uses",
+      "description": "The ballot probability is a ratio of binomial coefficients C(p+q,p); the counting argument relies on the combinations formula"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "Both are classic probability problems solved by counting arguments over finite sample spaces — the birthday problem counts collisions in random assignments, the ballot problem counts lattice paths staying positive"
+    },
+    {
+      "targetId": "ballot-problem-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry extending the ballot problem with generalizations and additional analysis"
+    },
+    {
+      "targetId": "ballot-problem-oq-02",
+      "relationship": "extended-by",
+      "description": "Sub-entry exploring further connections of the ballot problem"
+    },
+    {
+      "targetId": "ballot-problem-oq-03",
+      "relationship": "extended-by",
+      "description": "Sub-entry with additional ballot problem variants and applications"
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "related",
+      "description": "Both are classical combinatorics problems solved by bijective counting: the ballot problem uses the reflection principle while derangements use inclusion-exclusion — both transform a counting constraint into a simpler enumeration"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "Inclusion-exclusion is a complementary counting technique to the ballot problem's reflection principle — both reduce constrained counting to simpler enumerations, and some ballot problem proofs use inclusion-exclusion directly"
+    },
+    {
+      "targetId": "erdos-szekeres",
+      "relationship": "related",
+      "description": "Both are combinatorial results solved by elegant counting arguments: the Erdős-Szekeres theorem (every sequence of length mn+1 has a monotone subsequence of length m+1 or n+1) uses the pigeonhole principle on lattice paths, while the ballot problem uses the reflection principle on lattice paths — both involve path-counting in grid diagrams"
+    },
+    {
+      "targetId": "ballot-problem-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Formalizes the Discrete Intermediate Value Theorem for the Dvoretzky-Motzkin cycle lemma — a deeper combinatorial tool that generalizes the ballot problem's reflection principle to cyclic sequences"
+    },
+    {
+      "targetId": "ballot-problem-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends ballot problem lattice path counting to the general $r \\times r$ Lindström-Gessel-Viennot determinant formula — the ballot problem is the $1 \\times 1$ case of the LGV lemma for non-intersecting lattice paths"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Bertrand, Joseph",
+      "title": "Solution d'un problème",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Paris 105",
+      "note": "Original statement of the ballot problem"
+    },
+    {
+      "authors": "André, Désiré",
+      "title": "Solution directe du problème résolu par M. Bertrand",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Paris 105",
+      "note": "First solution using the reflection principle — the celebrated bijective argument"
+    },
+    {
+      "authors": "Feller, William",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. I",
+      "year": "1968",
+      "venue": "Wiley, 3rd edition, Chapter III",
+      "note": "Classic treatment of the ballot problem and its connection to random walks, fluctuation theory, and the arc-sine law"
+    },
+    {
+      "authors": "Renault, Marc",
+      "title": "Four Proofs of the Ballot Theorem",
+      "year": "2007",
+      "venue": "Mathematics Magazine 80(5): 345–352",
+      "note": "Survey of four distinct proof techniques for the ballot theorem: André's reflection, induction, cycle lemma, and direct counting"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Archive.Wiedijk100Theorems.BallotProblem",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Ballot",
+      "Set",
+      "ProbabilityTheory",
+      "MeasureTheory"
+    ],
+    "namespace": "BallotProblem",
+    "lineCount": 251,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/BallotProblem.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "ballot_problem",
+      "type": "core",
+      "description": "If candidate A gets a votes and B gets b votes with a > b, probability A leads throughout is (a-b)/(a+b)",
+      "leanType": "a > b -> P(A leads throughout) = (a - b) / (a + b)"
+    }
+  ],
+  "sorries": 0
+}

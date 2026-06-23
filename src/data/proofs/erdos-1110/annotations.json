@@ -1,0 +1,269 @@
+[
+  {
+    "id": "ann-1110-header",
+    "proofId": "erdos-1110",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "Erdős Problem #1110: For coprime p > q ≥ 2, can integers be represented as sums of p^k q^l where no term divides another? The {2,3} case is completely solved (Erdős's 'silly conjecture'), but other cases remain partially open.",
+    "mathContext": "Representability of integers by sums with non-divisibility constraints",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive combinatorics",
+      "smooth numbers",
+      "density"
+    ],
+    "prerequisites": [
+      "number theory",
+      "additive combinatorics",
+      "elementary divisibility theory"
+    ]
+  },
+  {
+    "id": "ann-1110-power-form",
+    "proofId": "erdos-1110",
+    "range": {
+      "startLine": 46,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Power Form p^k q^l",
+    "content": "A number is in 'power form' for (p,q) if it equals p^k q^l for some non-negative integers k, l. These are products of powers of the two bases. For {2,3}, examples include 1, 2, 3, 4, 6, 8, 9, 12, ...",
+    "mathContext": "IsPowerForm(p, q, n) := ∃ k l, n = p^k * q^l",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "power products"
+    ],
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "Lean 4 existential quantifiers"
+    ]
+  },
+  {
+    "id": "ann-1110-non-div",
+    "proofId": "erdos-1110",
+    "range": {
+      "startLine": 53,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Non-Divisibility Constraint",
+    "content": "The key constraint: no element of the sum can divide another. This prevents 'trivial' representations like 1 + 1 + ... + 1. It forces the terms to be 'spread out' in a multiplicative sense.",
+    "mathContext": "NoOneDividesAnother(S) := ∀ a b ∈ S, a ≠ b → ¬(a | b)",
+    "significance": "key",
+    "relatedConcepts": [
+      "antichain",
+      "divisibility",
+      "multiplicative structure"
+    ],
+    "prerequisites": [
+      "divisibility in the integers",
+      "order theory",
+      "set theory"
+    ]
+  },
+  {
+    "id": "ann-1110-representable",
+    "proofId": "erdos-1110",
+    "range": {
+      "startLine": 60,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "Representable Number",
+    "content": "An integer n is representable if it's a sum of power-form terms where no term divides another. The representation must be a non-empty finite set. Example: 7 = 3 + 4 = 3^1 + 2^2 works for {2,3}.",
+    "mathContext": "IsRepresentable(p, q, n) := ∃ S, nonempty ∧ all power-form ∧ non-dividing ∧ sum = n",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition",
+      "additive representation"
+    ],
+    "prerequisites": [
+      "additive number theory",
+      "finite sets",
+      "Lean 4 existential quantifiers"
+    ]
+  },
+  {
+    "id": "ann-1110-2-3-case",
+    "proofId": "erdos-1110",
+    "range": {
+      "startLine": 82,
+      "endLine": 88
+    },
+    "type": "concept",
+    "title": "The {2,3} Case: All Representable",
+    "content": "Erdős's 'silly conjecture': ALL positive integers are representable for {p,q} = {2,3}. The proof is by simple induction. Erdős called it 'silly' because he expected it to be difficult, but Jansen found an easy proof.",
+    "mathContext": "∀ n ≥ 1, IsRepresentable(3, 2, n)",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction",
+      "Erdős conjecture"
+    ],
+    "prerequisites": [
+      "mathematical induction",
+      "elementary number theory",
+      "history of the Erdős problems"
+    ]
+  },
+  {
+    "id": "ann-1110-induction",
+    "proofId": "erdos-1110",
+    "range": {
+      "startLine": 90,
+      "endLine": 99
+    },
+    "type": "insight",
+    "title": "The Inductive Proof",
+    "content": "The elegant proof: (1) If n is even (n=2m), apply induction to m and double all summands. (2) If n is odd, subtract the largest 3^k ≤ n, which makes n-3^k even, then apply induction. This always works!",
+    "mathContext": "Strong induction with even/odd case split",
+    "significance": "key",
+    "relatedConcepts": [
+      "strong induction",
+      "parity",
+      "greedy algorithm"
+    ],
+    "prerequisites": [
+      "strong induction",
+      "parity arguments",
+      "Lean 4 tactic mode"
+    ]
+  },
+  {
+    "id": "ann-1110-erdos-lewin",
+    "proofId": "erdos-1110",
+    "range": {
+      "startLine": 115,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Erdős-Lewin Characterization",
+    "content": "The fundamental characterization (1996): The set of non-representable numbers is FINITE if and only if {p,q} = {2,3}. All other coprime pairs have infinitely many non-representables.",
+    "mathContext": "Finite(NonRepresentable(p,q)) ↔ {p,q} = {2,3}",
+    "significance": "key",
+    "relatedConcepts": [
+      "characterization theorem",
+      "dichotomy"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "set theory",
+      "characterization theorems"
+    ]
+  },
+  {
+    "id": "ann-1110-density",
+    "proofId": "erdos-1110",
+    "range": {
+      "startLine": 138,
+      "endLine": 156
+    },
+    "type": "lemma",
+    "title": "Natural Density",
+    "content": "The natural density d(A) measures the 'proportion' of integers in A. Yu-Chen (2022) proved the non-representables have density ZERO in many cases: q > 3, or q = 3 and p > 6, or q = 2 and p > 10.",
+    "mathContext": "d(A) = lim |A ∩ [1,n]| / n",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "sparse sets"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-1110-coprime-infinite",
+    "proofId": "erdos-1110",
+    "range": {
+      "startLine": 158,
+      "endLine": 171
+    },
+    "type": "concept",
+    "title": "Yu-Chen Coprime Infinitude",
+    "content": "Yu-Chen (2022) proved infinitely many COPRIME non-representables exist for most (p,q): q > 3, or q = 3 and p ≠ 5, or q = 2 and p ∉ {3, 5, 9}. This answers one of Erdős's main questions.",
+    "mathContext": "Set.Infinite({n ∈ NonRep | gcd(n, pq) = 1})",
+    "significance": "key",
+    "relatedConcepts": [
+      "coprime",
+      "infinitude"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "modular arithmetic",
+      "cardinality and infinite sets"
+    ]
+  },
+  {
+    "id": "ann-1110-min-summand",
+    "proofId": "erdos-1110",
+    "range": {
+      "startLine": 177,
+      "endLine": 203
+    },
+    "type": "concept",
+    "title": "Minimum Summand Bounds",
+    "content": "For {2,3}, Erdős-Lewin asked: how large can all summands be? Yu-Chen proved n/(log n)^{log₂3} ≪ f(n) ≪ n/log n. Yang-Zhao (2025) improved the lower bound to f(n) ≫ n/log n, matching the upper bound.",
+    "mathContext": "f(n) ~ n/log n (up to constants)",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic bounds",
+      "optimal representations"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "analytic number theory",
+      "logarithms and growth rates"
+    ]
+  },
+  {
+    "id": "ann-1110-example",
+    "proofId": "erdos-1110",
+    "range": {
+      "startLine": 220,
+      "endLine": 238
+    },
+    "type": "concept",
+    "title": "Example: 1 is Representable",
+    "content": "The simplest case: 1 = 3^0 · 2^0. A single-element 'sum' trivially satisfies the non-divisibility constraint. This gives a constructive proof that 1 ∈ Representable.",
+    "mathContext": "IsRepresentable(3, 2, 1) proved by {1}",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "base case",
+      "constructive proof"
+    ],
+    "prerequisites": [
+      "elementary number theory",
+      "Lean 4 tactic mode",
+      "constructive existence proofs"
+    ]
+  },
+  {
+    "id": "ann-1110-summary",
+    "proofId": "erdos-1110",
+    "range": {
+      "startLine": 251,
+      "endLine": 292
+    },
+    "type": "concept",
+    "title": "Complete Summary",
+    "content": "Erdős Problem #1110: Status OPEN (partially resolved). The {2,3} case is completely solved. For other (p,q): infinitely many non-representables exist (Erdős-Lewin), density zero in many cases (Yu-Chen), infinitely many coprime exceptions for most parameters.",
+    "mathContext": "Synthesis of all main results",
+    "significance": "key",
+    "relatedConcepts": [
+      "problem status",
+      "summary"
+    ],
+    "prerequisites": [
+      "number theory",
+      "additive combinatorics",
+      "asymptotic analysis"
+    ]
+  }
+]

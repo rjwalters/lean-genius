@@ -1,0 +1,148 @@
+{
+  "slug": "inclusion-exclusion-oq-03",
+  "title": "Efficient Inclusion-Exclusion Computation",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For functions on finite subsets, the zeta transform and signed Mobius transform are inverse operations; inclusion-exclusion is realized as this Mobius inversion on the subset lattice.",
+    "plain": "Reframes inclusion-exclusion as Mobius inversion. The proof develops finite-subset transforms, proves the signed cancellation identity, and packages inclusion-exclusion as inversion of the zeta transform.",
+    "whyMatters": [
+      "Mobius inversion is the conceptual backbone behind many efficient inclusion-exclusion computations.",
+      "The subset-lattice formulation makes the combinatorial cancellation reusable beyond a single counting example.",
+      "This metadata links the algorithmic inclusion-exclusion entry to exact theorem names in the Lean proof."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`mobius_inverts_zeta` proves that the Mobius transform inverts the zeta transform on finite subsets.",
+      "`ie_as_mobius_inversion` states inclusion-exclusion as the pointwise Mobius inversion identity.",
+      "The supporting signed-subset-sum lemmas establish the cancellation that drives the inversion proof."
+    ],
+    "open": [
+      "Runtime-oriented subset-DP implementations and asymptotic performance bounds are outside this theorem metadata slice."
+    ],
+    "goal": "Backfill searchable metadata for the Mobius-inversion proof of inclusion-exclusion."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-21T21:14:00-07:00",
+    "iteration": 2,
+    "focus": "All sorries filled. mobius_inverts_zeta fully proved.",
+    "blockers": [],
+    "nextAction": "None - problem completed",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: InclusionExclusionOQ03.lean now has 0 sorries, 0 axioms. Proved mobius_inverts_zeta (Möbius inversion) via Finset.sum_comm' exchange + sum_nbij bijection + signed_sum_subsets.",
+    "builtItems": [
+      "InclusionExclusionOQ03.lean: Zeta/Möbius transforms (209 lines, 0 axioms, 4 sorries)",
+      "zetaTransform: (ζf)(S) = ∑_{T⊆S} f(T)",
+      "mobiusTransform: (μg)(S) = ∑_{T⊆S} (-1)^|S\\T| g(T)",
+      "zetaStep: single-element DP step for O(n·2^n) computation",
+      "zetaTransform_empty, zetaTransform_singleton: proved",
+      "mobiusTransform_empty: proved",
+      "zetaStep_not_mem, zetaStep_mem: proved",
+      "signed_sum_subsets: proved via Finset.prod_add expansion (product of (1+(-1))=0)",
+      "mobius_subset_lattice: proved via Finset.sum_eq_single isolating T=∅",
+      "odd_even_subset_balance: proved via Finset.card_bij with parity-flipping involution",
+      {
+        "name": "mobius_inverts_zeta",
+        "description": "μ ∘ ζ = id (Möbius inversion on subset lattice) - fully proved",
+        "proven": true
+      },
+      {
+        "name": "inner_sum_eq",
+        "description": "Sum exchange bijection: {T:U⊆T⊆S} ↔ (S\\U).powerset, reduces to signed_sum_subsets",
+        "proven": true
+      }
+    ],
+    "insights": [
+      "Möbius inversion on Boolean lattice reduces to signed_sum_subsets: ∑_{T⊆S} (-1)^|S\\T| = [S=∅]",
+      "The involution T ↦ T △ {a} for fixed a∈S changes |S\\T| parity — this is the key cancellation",
+      "Fast SOS computes zetaTransform in O(n·2^n) by processing one element at a time (zetaStep)",
+      "signed_sum_subsets proof strategy: use powerset_insert to split into halves that cancel",
+      "mobius_inverts_zeta depends on signed_sum_subsets via Fubini-type argument",
+      "odd_even_subset_balance is independent - involution T to T delta {a}",
+      "Finset.prod_add gives the multilinear expansion ∏(f+g) = Σ (∏f)(∏g), perfect for signed sums",
+      "The involution T↦(erase/insert a) is cleaner to formalize than symmDiff for bijection proofs",
+      "mobius_inverts_zeta requires Fubini-type sum exchange (sum_comm with dependent indices) - nontrivial in Lean",
+      "Finset.sum_comm' handles the dependent-index Fubini exchange for ∑_{T⊆S} ∑_{U⊆T} → ∑_{U⊆S} ∑_{T: U⊆T⊆S}",
+      "Finset.sum_nbij handles the bijection proof with explicit injection/surjection on Finset subtraction"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: inclusion-exclusion-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "inclusion-exclusion",
+    "mobius-inversion",
+    "finite-sets",
+    "subset-lattice",
+    "formalized"
+  ],
+  "relatedProofs": [
+    "inclusion-exclusion",
+    "inclusion-exclusion-oq-01",
+    "inclusion-exclusion-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-22T04:19:59.477Z",
+  "lastUpdate": "2026-06-14T01:06:09Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/InclusionExclusion.lean",
+      "filename": "InclusionExclusion.lean",
+      "lineCount": 219,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusion.lean"
+    },
+    {
+      "path": "Proofs/InclusionExclusionGeneral.lean",
+      "filename": "InclusionExclusionGeneral.lean",
+      "lineCount": 277,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionGeneral.lean"
+    },
+    {
+      "path": "Proofs/InclusionExclusionOQ01.lean",
+      "filename": "InclusionExclusionOQ01.lean",
+      "lineCount": 383,
+      "theoremCount": 41,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionOQ01.lean"
+    },
+    {
+      "path": "Proofs/InclusionExclusionOQ03.lean",
+      "filename": "InclusionExclusionOQ03.lean",
+      "lineCount": 338,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionOQ03.lean"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-carnot-overview",
+    "proofId": "carnot-theorem-oq-01",
+    "range": { "startLine": 3, "endLine": 27 },
+    "type": "concept",
+    "title": "From Signed Distances to a Trigonometric Identity",
+    "content": "The docstring reduces the geometric statement of Carnot's theorem — the sum of signed circumcenter-to-side distances equals R + r — to a pure trigonometric identity. Using the chord-distance fact that the signed distance from the circumcenter O to the side opposite angle θ is R cos θ, summing gives R cos A + R cos B + R cos C = R + r, i.e. cos A + cos B + cos C = 1 + r/R. Euler's inradius formula r/R = 4 sin(A/2)sin(B/2)sin(C/2) turns this into the analytic core proved here, valid for any reals with A + B + C = π.",
+    "mathContext": "$\\cos A + \\cos B + \\cos C = 1 + \\frac{r}{R} = 1 + 4\\sin\\tfrac{A}{2}\\sin\\tfrac{B}{2}\\sin\\tfrac{C}{2}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["Carnot's theorem", "circumradius", "inradius", "Euler's inradius formula", "signed distance"],
+    "prerequisites": ["triangle geometry", "trigonometry"]
+  },
+  {
+    "id": "ann-carnot-double-angle",
+    "proofId": "carnot-theorem-oq-01",
+    "range": { "startLine": 33, "endLine": 36 },
+    "type": "lemma",
+    "title": "Double-Angle Helper in 1 − 2sin² Form",
+    "content": "A private helper rewriting cos(2x) as 1 − 2sin²(x). It starts from Mathlib's Real.cos_two_mul' (which gives the 2cos²−1 form) and converts via linear_combination against the Pythagorean identity cos²x + sin²x = 1. This single form lets the main proof express each of cos A, cos B, cos C purely in terms of half-angle sines.",
+    "mathContext": "$\\cos(2x) = 1 - 2\\sin^2 x.$",
+    "significance": "key",
+    "relatedConcepts": ["double-angle formula", "Pythagorean identity", "linear_combination"],
+    "prerequisites": ["trigonometric identities"]
+  },
+  {
+    "id": "ann-carnot-main-statement",
+    "proofId": "carnot-theorem-oq-01",
+    "range": { "startLine": 38, "endLine": 47 },
+    "type": "theorem",
+    "title": "Carnot's Theorem (Angle Form)",
+    "content": "The headline theorem carnot_cos_sum: for any reals A, B, C summing to π, cos A + cos B + cos C = 1 + 4 sin(A/2)sin(B/2)sin(C/2). Stated for arbitrary reals (not just triangle angles), so the result is a clean trigonometric identity rather than a geometric one.",
+    "mathContext": "$A + B + C = \\pi \\implies \\cos A + \\cos B + \\cos C = 1 + 4\\sin\\tfrac{A}{2}\\sin\\tfrac{B}{2}\\sin\\tfrac{C}{2}.$",
+    "significance": "key",
+    "relatedConcepts": ["Carnot's theorem", "half-angle identities", "angle sum constraint"],
+    "prerequisites": ["trigonometry", "real analysis"]
+  },
+  {
+    "id": "ann-carnot-half-angle-c",
+    "proofId": "carnot-theorem-oq-01",
+    "range": { "startLine": 49, "endLine": 52 },
+    "type": "tactic",
+    "title": "Expressing sin(C/2) via the Half-Angles of A and B",
+    "content": "The angle constraint A + B + C = π gives C/2 = π/2 − (A/2 + B/2). Applying Real.sin_pi_div_two_sub (sin(π/2 − x) = cos x) and Real.cos_add expresses sin(C/2) as cos(A/2)cos(B/2) − sin(A/2)sin(B/2). This is the key step that couples the third angle to the first two, eliminating C from the algebra.",
+    "mathContext": "$\\sin\\tfrac{C}{2} = \\cos\\!\\big(\\tfrac{A}{2}+\\tfrac{B}{2}\\big) = \\cos\\tfrac{A}{2}\\cos\\tfrac{B}{2} - \\sin\\tfrac{A}{2}\\sin\\tfrac{B}{2}.$",
+    "significance": "key",
+    "relatedConcepts": ["complementary angle identity", "cosine addition formula", "angle sum constraint"],
+    "prerequisites": ["trigonometric identities"]
+  },
+  {
+    "id": "ann-carnot-linear-combination",
+    "proofId": "carnot-theorem-oq-01",
+    "range": { "startLine": 53, "endLine": 62 },
+    "type": "tactic",
+    "title": "Closing the Identity by linear_combination",
+    "content": "After rewriting each cosine in 1 − 2sin²(·/2) form and substituting the expression for sin(C/2), the goal becomes a polynomial identity in the half-angle sines and cosines. It is discharged by linear_combination with explicit coefficients on the two Pythagorean identities sin²(A/2)+cos²(A/2)=1 and sin²(B/2)+cos²(B/2)=1 — the coefficients (−2cos²(B/2) and 2(sin²(A/2)−1)) are exactly what reduces the difference to zero.",
+    "mathContext": "Goal reduces to a polynomial in $\\sin\\tfrac{A}{2},\\cos\\tfrac{A}{2},\\sin\\tfrac{B}{2},\\cos\\tfrac{B}{2}$, killed modulo the two Pythagorean relations.",
+    "significance": "key",
+    "relatedConcepts": ["linear_combination", "Pythagorean identity", "polynomial certificate"],
+    "prerequisites": ["polynomial algebra", "Lean tactics"]
+  },
+  {
+    "id": "ann-carnot-cos-sq-sum",
+    "proofId": "carnot-theorem-oq-01",
+    "range": { "startLine": 64, "endLine": 79 },
+    "type": "theorem",
+    "title": "Companion: Fundamental Cosine Identity",
+    "content": "carnot_cos_sq_sum proves the polynomial companion cos²A + cos²B + cos²C + 2cosA cosB cosC = 1. Writing C = π − A − B gives cos C = −cos(A+B) = −(cosA cosB − sinA sinB) via Real.cos_pi_sub and Real.cos_add; substituting and applying linear_combination against the Pythagorean identities for A and B finishes it. This degree-2 form is the algebraic twin of the angle form.",
+    "mathContext": "$\\cos^2 A + \\cos^2 B + \\cos^2 C + 2\\cos A\\cos B\\cos C = 1.$",
+    "significance": "key",
+    "relatedConcepts": ["cosine addition formula", "supplementary angle", "Pythagorean identity"],
+    "prerequisites": ["trigonometric identities", "polynomial algebra"]
+  }
+]

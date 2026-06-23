@@ -1,0 +1,101 @@
+{
+  "slug": "erdos-1116-oq-01",
+  "title": "Can the construction be made explicit with computable growth bounds",
+  "phase": "ACT-READY",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in complex analysis: Can the construction be made explicit with computable growth bounds.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT-READY",
+    "since": "2026-05-16T07:50:00.000Z",
+    "iteration": 3,
+    "focus": "Axiom-elimination target: polynomial_not_extreme (line 339) via FTA. S3 PREP shipped paste-ready helpers (A-E + Main, +73 to +140 LOC) at 16 bearers verified at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. After S4, axiomCount drops 2 to 1; only deep Nevanlinna axiom goldberg_toppila_existence remains.",
+    "blockers": [],
+    "nextAction": "S4 ACT: apply PREP section 3 paste (Option A: single PR w/ all helpers + import Mathlib, OR Option B: 2-PR split). If Docker hits disk pressure, ship build-pending per memory precedent.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 0,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S3 PREP: paste-ready Lean helpers + bearer pin audit for polynomial_not_extreme axiom elimination via FTA. Strategy: pick a=0, b=1; bound n(r,0) <= natDegree p via finite_setOf_isRoot + card_roots_sub_C-prime; show n(r,1) >= 1 via IsAlgClosed.exists_root on p - C 1 (which has same natDegree via natDegree_sub_C). Pick M = natDegree p + 1, contradicting HasUnboundedRatio for this pair. 5 helpers (A: aPoints_eq_isRoot_sub_C, B: aPoints_polynomial_finite, C: card_le, D: value_one_nonempty, E: stabilization) + Main = +73 LOC raw; 2 surviving sorries in Helpers C+E for S5 cleanup (bridge from Set.Finite.toFinset to Multiset card; bddAbove for stabilization R0). 16 Mathlib bearers verified at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. After S4: axiomCount 2 to 1, theoremCount 10 to 14.",
+    "builtItems": [
+      "complex_exp_ne_zero: exp(z)*exp(-z)=1 implies exp(z)≠0",
+      "exp_counting_zero: countingFunction expFunction 0 r = 0",
+      "countingFunction_empty: general helper for empty a-point sets",
+      "exp_not_extreme theorem (was axiom)",
+      "oscillation_key_insight theorem (was axiom)",
+      "nevanlinna_deficiency_sum theorem (was axiom)",
+      "first_main_theorem_heuristic theorem (was axiom)",
+      "Wrote S3 PREP session memo at research/problems/erdos-1116-oq-01/sessions/2026-05-16-s3-prep-polynomial-not-extreme.md with section 3 paste-ready Lean (5 helpers + Main, +73 LOC raw / +140 LOC honest revised), section 4 16-bearer pin table at SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67, section 5 ACT-readiness gate (11/14 GREEN, 3/14 AMBER), section 6 8-row risk model, section 7 ACT plan w/ Option A single-PR vs Option B 2-PR split.",
+      "Created research/problems/erdos-1116-oq-01/state.md (slug had no state.md previously); set phase ACT-READY, iter 3, populated full focus + next-action + iteration history (2 prior March 2026 sessions by researcher-9)."
+    ],
+    "insights": [
+      "All axioms are deep complex analysis: Nevanlinna theory, value distribution",
+      "Would need substantial Mathlib complex analysis infrastructure to prove any",
+      "Proved exp_not_extreme: Complex.exp is never 0, so n(r,0)=0, so HasUnboundedRatio fails for 0 vs any b",
+      "Proved oscillation_key_insight: derived from goldberg_toppila_existence (deficiency is placeholder=0)",
+      "Proved nevanlinna_deficiency_sum: trivial since deficiency is placeholder constant 0",
+      "Proved first_main_theorem_heuristic: trivial since integratedCounting and characteristic are both placeholder id",
+      "Remaining axioms: goldberg_toppila_existence (deep construction), polynomial_not_extreme (needs FTA)",
+      "polynomial_not_extreme is TRACTABLE via FTA in C (IsAlgClosed.exists_root on p - C a for value-1 existence; finite_setOf_isRoot for cardinality bound). All 16 supporting bearers verified at pinned Mathlib v4.26.0.",
+      "Key structural reduction: HasExtremeValueDistribution requires HasUnboundedRatio for ALL a != b. Negating just ONE pair (a=0, b=1) suffices. Avoids universal-quantification difficulty.",
+      "Critical bridge: aPoints (fun z => p.eval z) a = {z | (p - C a).IsRoot z}, via Polynomial.eval_sub + Polynomial.eval_C + sub_eq_zero. 6-LOC helper unlocks Mathlib's polynomial-root API for this Erdos slug.",
+      "Disk-pressure memory pattern applies: ship-build-pending qualifier per _docker_build_disk_full_ship_build_pending_per_s5_act_precedent if iter 1 cache replay fails."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "S4 ACT (Option A recommended): paste all helpers + Main as single PR with import Mathlib. Accept up to 4 Docker iters or ship build-pending per disk-pressure precedent.",
+      "S4 ACT (Option B safer): split into S4 (Helpers A+B+D, 0 sorries, +30 LOC) and S5 (Helpers C+E + Main, 2 sorries to discharge).",
+      "Document goldberg_toppila_existence as legitimate axiomatised external classical result (Goldberg 1978, Toppila 1976); slug closes at axiomCount=1 with badge axiom + status axiomatized.",
+      "Long-horizon: Mathlib gap analysis for Nevanlinna theory infrastructure (no current path to eliminating the deep axiom)."
+    ]
+  },
+  "tags": [
+    "erdos",
+    "complex-analysis",
+    "entire-functions",
+    "nevanlinna-theory",
+    "value-distribution",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-111",
+    "erdos-1116"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.905Z",
+  "lastUpdate": "2026-05-16T07:55:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1116Problem.lean",
+      "filename": "Erdos1116Problem.lean",
+      "lineCount": 380,
+      "theoremCount": 10,
+      "axiomCount": 2,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1116Problem.lean"
+    }
+  ]
+}

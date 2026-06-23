@@ -1,0 +1,585 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Module Documentation: Problem Statement and Status",
+    "content": "The module docstring establishes the mathematical context for Erdős Problem #28: the Erdős–Turán conjecture on additive bases. It states the conjecture ($\\limsup r_A(n) = \\infty$ for any asymptotic basis $A$), notes the $500 prize, records the OPEN status, and lists the key partial results (Grekos et al.: $r_A(n) \\geq 6$ i.o.; Borwein et al.: $r_A(n) \\geq 8$ i.o.). The stronger conjectures (logarithmic growth and density version) are also previewed. The outline of the formalization lists five components: representation function, asymptotic basis definition, formal conjecture statement, basic properties, and constructions with unbounded representations.",
+    "mathContext": "The conjecture: if $A + A \\supseteq \\{N_0, N_0+1, \\ldots\\}$ then $\\limsup_{n \\to \\infty} r_A(n) = \\infty$, where $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$. The $500 prize reflects its status as one of the deepest open problems in additive number theory, unsolved since 1941.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems",
+      "additive bases",
+      "representation functions",
+      "Erdős–Turán conjecture"
+    ],
+    "prerequisites": [
+      "additive number theory",
+      "Erdős problem catalog"
+    ]
+  },
+  {
+    "id": "imports-setup",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 35,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib modules for additive combinatorics (SumConv for Minkowski sums), Finset cardinality, filter convergence (atTop, Tendsto), and real-valued functions (log, sqrt). Opens the Filter and Set namespaces and enables pointwise set operations for the A + A notation.",
+    "mathContext": "The pointwise sum $A + A = \\{a + b : a, b \\in A\\}$ is the **Minkowski sum** of $A$ with itself. Filter convergence via `atTop` formalizes limits as $N \\to \\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Minkowski sum",
+      "pointwise set operations",
+      "filter convergence"
+    ],
+    "prerequisites": [
+      "Mathlib Finset API",
+      "Lean 4 set notation"
+    ]
+  },
+  {
+    "id": "rep-function",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 51,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Representation Function",
+    "content": "Defines $r_A(n)$ as the number of pairs $(a, b)$ with $a \\leq b$, both in $A$, summing to $n$. This ordered-pair convention avoids double-counting and is standard in additive number theory. The function filters the interval $[0, n]$ for elements $a \\in A$ with $n - a \\in A$ and $a \\leq n - a$.",
+    "mathContext": "$r_A(n) = |\\{(a,b) \\in A \\times A : a + b = n, \\, a \\leq b\\}|$. Some references use the unordered count $r'_A(n) = |\\{(a,b) : a + b = n\\}|$ which counts each unordered pair twice (except when $a = b = n/2$). The conjecture is equivalent under either convention.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive energy",
+      "sumset",
+      "Schnirelmann density",
+      "B_2 sets"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "set membership",
+      "natural number subtraction"
+    ]
+  },
+  {
+    "id": "asymptotic-basis",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 65,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "Asymptotic Basis of Order 2",
+    "content": "A set $A \\subseteq \\mathbb{N}$ is an asymptotic basis of order 2 if its sumset $A + A$ misses only finitely many natural numbers. This is formalized as $(A + A)^c$ being finite. Classical examples include the primes (by Goldbach-type results for large numbers) and perfect squares (every sufficiently large integer is a sum of at most 4 squares by Lagrange, but 2 squares require additional conditions).",
+    "mathContext": "$A$ is an **asymptotic basis of order 2** if $|\\mathbb{N} \\setminus (A + A)| < \\infty$. Equivalently, there exists $N_0$ such that for all $n \\geq N_0$, we have $n \\in A + A$. The **Schnirelmann density** of $A + A$ is 1 when $A$ is a basis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schnirelmann density",
+      "Waring's problem",
+      "Goldbach conjecture",
+      "essential component"
+    ],
+    "prerequisites": [
+      "Set.Finite",
+      "set complement",
+      "Minkowski sum"
+    ]
+  },
+  {
+    "id": "rep-func-finset",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 58,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Finset-Based Representation Function",
+    "content": "`repFuncFinset` is a computable variant of the representation function for finite sets $A$. Given a `Finset ℕ`, it forms the product $A \\times A$, filters for pairs $(a,b)$ with $a + b = n$, and returns the `Finset.card`. Unlike the `Set`-based `repFunc` (which uses `Set.ncard` and is `noncomputable`), this version can be evaluated by the kernel. The file does not use `repFuncFinset` in the main development — it serves as a computable witness.",
+    "mathContext": "$r_A^{\\text{fin}}(n) = |\\{(a,b) \\in A \\times A : a+b=n\\}|$ via `(A.product A).filter (\\lambda p, p.1 + p.2 = n) |>.card$. This is the ordered count (each unordered pair $\\{a,b\\}$ with $a \\neq b$ is counted twice).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.product",
+      "Finset.filter",
+      "computable representation",
+      "Finset.card"
+    ],
+    "prerequisites": [
+      "Finset API",
+      "repFunc (noncomputable version)"
+    ]
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 210,
+      "endLine": 211
+    },
+    "type": "concept",
+    "title": "Erdős–Turán Conjecture (1941)",
+    "content": "The central conjecture: if $A$ is an asymptotic basis of order 2, then $\\limsup_{n \\to \\infty} r_A(n) = \\infty$. Formalized as: for every bound $B$, there exists $n$ with $r_A(n) \\geq B$. This is stated as an axiom because the conjecture remains OPEN after 85 years. Erdős offered a $500 bounty — one of his largest prizes, reflecting the problem's depth.",
+    "mathContext": "$\\forall B \\in \\mathbb{N}, \\; \\exists n \\in \\mathbb{N}: \\; r_A(n) \\geq B$. Equivalently, $\\limsup_{n \\to \\infty} r_A(n) = \\infty$. The negation — that some basis has $r_A(n) \\leq C$ for all $n$ — would give a remarkable **thin basis** with perfectly controlled representations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "thin bases",
+      "B_2[g] sets",
+      "Sidon sets",
+      "additive energy"
+    ],
+    "prerequisites": [
+      "repFunction",
+      "IsAsymptoticBasis2",
+      "limsup"
+    ]
+  },
+  {
+    "id": "strong-form",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 217,
+      "endLine": 219
+    },
+    "type": "concept",
+    "title": "Logarithmic Growth Conjecture",
+    "content": "The stronger form predicts $\\limsup r_A(n) / \\log n > 0$: representation counts grow at least logarithmically along some subsequence. This is motivated by probabilistic heuristics — if $A$ has density $\\sim \\sqrt{N}$, then for a 'random' such set, $r_A(n)$ has expectation $\\sim \\log n$. Proving even the weaker form (unboundedness without rate) remains out of reach.",
+    "mathContext": "$\\exists c > 0, \\; \\forall N, \\; \\exists n \\geq N: \\; r_A(n) \\geq c \\log n$. Heuristically, if $\\mathbb{P}[a \\in A] \\approx 1/\\sqrt{a}$, then $\\mathbb{E}[r_A(n)] = \\sum_{a \\leq n} \\frac{1}{\\sqrt{a}} \\cdot \\frac{1}{\\sqrt{n-a}} \\approx \\log n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "random sets",
+      "logarithmic growth",
+      "second moment method"
+    ],
+    "prerequisites": [
+      "repFunction",
+      "IsAsymptoticBasis2",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "density-version",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 16,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Density Version of the Conjecture (Unstated Strengthening)",
+    "content": "The module docstring mentions the stronger hypothesis $|A \\cap [1,N]| \\gg N^{1/2}$ as sufficient for the conjecture to hold. This density version replaces the basis condition ($A + A$ covers all large integers) with the weaker assumption that $A$ has density at least $\\sqrt{N}$. Since every basis of order 2 satisfies this density bound (proved as `basis_element_count_sq`), this version is strictly stronger. It is not formalized as a separate Lean definition — it remains a conceptual conjecture discussed in the metadata.",
+    "mathContext": "If $A(N) \\geq c\\sqrt{N}$ for some $c > 0$ and all $N \\geq 1$, then $\\limsup r_A(n) = \\infty$. This generalizes the main conjecture since $\\text{IsAsymptoticBasis2}(A) \\Rightarrow A(N) \\gg \\sqrt{N}$ (proved as `basis_element_count_sq`).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "density conditions",
+      "sumset structure",
+      "inverse sumset theory",
+      "basis_element_count_sq"
+    ],
+    "prerequisites": [
+      "IsAsymptoticBasis",
+      "basis_element_count_sq"
+    ]
+  },
+  {
+    "id": "sidon-connection",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 372,
+      "endLine": 411
+    },
+    "type": "concept",
+    "title": "Sidon Sets Cannot Be Bases",
+    "content": "A Sidon set (or $B_2$ set) has $r_A(n) \\leq 1$ for all $n$: each integer has at most one representation as $a + b$. Such sets satisfy $A(N) \\leq \\sqrt{N} + O(N^{1/4})$ (by the Lindström–Erdős–Turán bound), which is too sparse for a basis. This confirms the conjecture vacuously: the extremal case $r \\leq 1$ is incompatible with being a basis.",
+    "mathContext": "If $r_A(n) \\leq 1$ for all $n$, then $A$ is a **Sidon set** ($B_2$ set). Sidon sets satisfy $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$, but bases require $|A \\cap [1,N]| \\gg \\sqrt{N}$ with a constant that forces density beyond the Sidon threshold.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B_2 sequences",
+      "Erdős–Turán bound on Sidon sets",
+      "Singer difference sets"
+    ],
+    "prerequisites": [
+      "repFunction",
+      "IsAsymptoticBasis2",
+      "Sidon set density bounds"
+    ]
+  },
+  {
+    "id": "problem-40",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 224,
+      "endLine": 224
+    },
+    "type": "concept",
+    "title": "Connection to Problem #40 (B₂[g] Sets)",
+    "content": "Problem #40 asks: if $r_A(n) \\leq g$ for some constant $g$ (i.e., $A$ is a $B_2[g]$ set), can $A$ be a basis of order 2? The Erdős–Turán conjecture (#28) implies the answer is no for every finite $g$. This formalization shows #28 $\\Rightarrow$ #40, connecting two of Erdős's most celebrated problems in additive combinatorics.",
+    "mathContext": "A $B_2[g]$ set satisfies $r_A(n) \\leq g$ for all $n$. Problem #28 states $\\limsup r_A(n) = \\infty$ for any basis, which immediately implies no $B_2[g]$ set (with bounded $r$) can be a basis. The converse implication (#40 $\\Rightarrow$ #28) is unknown.",
+    "significance": "key",
+    "relatedConcepts": [
+      "B_2[g] sets",
+      "Erdős Problem #40",
+      "Erdős Problem #1145",
+      "additive structure"
+    ],
+    "prerequisites": [
+      "repFunction",
+      "IsAsymptoticBasis2",
+      "erdos_turan_conjecture"
+    ]
+  },
+  {
+    "id": "grekos-axiom",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 228,
+      "endLine": 231
+    },
+    "type": "insight",
+    "title": "Axiom: Grekos et al. (2003) — r_A(n) ≥ 6 Infinitely Often",
+    "content": "The first quantitative partial result toward the Erdős–Turán conjecture: for any asymptotic basis $A$ of order 2, the representation function $r_A(n) \\geq 6$ for infinitely many $n$. This is axiomatized rather than proved because the underlying argument uses Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$ and Parseval-type estimates that are not yet in Mathlib.\n\nThe key gap illustrated: the conjecture requires $r_A(n) \\to \\infty$ pointwise, while Grekos et al. show only that $r_A(n)$ occasionally reaches 6. Even if $r_A(n) \\leq 7$ for all $n$, the Erdős–Turán conjecture would be false. The Erdős–Fuchs theorem (1956) shows the *cumulative sum* $\\sum_{n \\leq N} r_A(n)$ must oscillate with amplitude $\\Omega(N^{1/4}/\\sqrt{\\log N})$, but this fluctuation could come from rare large values without the pointwise limsup being infinite.",
+    "mathContext": "$\\forall A \\subseteq \\mathbb{N},\\; \\text{IsAsymptoticBasis}(A) \\Rightarrow \\forall M,\\; \\exists n > M,\\; r_A(n) \\geq 6$. The proof uses exponential sum estimates: write $r_A(n) = \\sum_{a \\in A \\cap [0,n]} \\mathbf{1}_{n-a \\in A}$ and apply Parseval's theorem to the generating function $f(\\theta) = \\sum_{a \\in A} e^{2\\pi i a \\theta}$; the basis condition forces $\\|f\\|_2^2$ to be large, giving the lower bound via a pigeonhole argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Turán conjecture",
+      "Erdős–Fuchs theorem",
+      "exponential sums",
+      "Parseval's theorem",
+      "borwein_lower_bound"
+    ],
+    "prerequisites": [
+      "repFunc",
+      "IsAsymptoticBasis",
+      "Fourier analysis on integers"
+    ]
+  },
+  {
+    "id": "borwein-axiom",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 232,
+      "endLine": 234
+    },
+    "type": "insight",
+    "title": "Axiom: Borwein et al. (2006) — r_A(n) ≥ 8 Infinitely Often",
+    "content": "The current best quantitative lower bound: for any asymptotic basis $A$, $r_A(n) \\geq 8$ for infinitely many $n$. This improved the Grekos et al. (2003) bound of 6 using more refined exponential sum estimates. The axiom is stated universally: for any asymptotic basis $A$ and any threshold $M$, there exists $n > M$ with $r_A(n) \\geq 8$.\n\nThe gap between 'at least 8 infinitely often' and 'unbounded' is the fundamental difficulty: a basis could conceivably have $r_A(n) \\leq 9$ for all $n$ — this is consistent with the Borwein bound but would refute the Erdős–Turán conjecture. No such bounded-representation basis is known to exist, and the conjecture asserts none do.",
+    "mathContext": "$\\forall A \\subseteq \\mathbb{N},\\; \\text{IsAsymptoticBasis}(A) \\Rightarrow \\forall M,\\; \\exists n > M,\\; r_A(n) \\geq 8$. The improvement from 6 to 8 uses the identity $\\sum_{n} r_A(n)^2 = |\\{(a,b,c,d) \\in A^4 : a+b = c+d\\}|$ (additive energy $E(A,A)$) combined with Cauchy–Schwarz on the basis covering condition. The conjectured true answer is $\\limsup r_A(n) = \\infty$; no finite bound $r_A(n) \\geq k$ (however large $k$) would suffice to prove this.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive energy",
+      "Cauchy-Schwarz inequality",
+      "exponential sums",
+      "grekos_lower_bound",
+      "Erdős–Turán conjecture"
+    ],
+    "prerequisites": [
+      "repFunc",
+      "IsAsymptoticBasis",
+      "additive combinatorics"
+    ]
+  },
+  {
+    "id": "basis-equivalence",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 76,
+      "endLine": 108
+    },
+    "type": "insight",
+    "title": "Equivalence of Two Basis Definitions (isAsymptoticBasis_iff)",
+    "content": "Proves that `IsAsymptoticBasis` (threshold form: $\\exists N_0, \\forall n \\geq N_0, n \\in A+A$) is equivalent to `IsAsymptoticBasis'` (finite complement: $(A+A)^c$ is finite). The forward direction embeds the complement into $\\{0, \\ldots, N_0-1\\}$ via `Finset.range N_0`, which is finite. The reverse direction uses `BddAbove` on the finite complement: if the complement is nonempty, its supremum $M$ exists, and all $n > M$ lie in $A+A$; if the complement is empty, every integer is in $A+A$. This is the longest proved theorem in the file (~30 lines) and establishes the foundation for later results that use either definition interchangeably.",
+    "mathContext": "$\\text{IsAsymptoticBasis}(A) \\Leftrightarrow \\text{IsAsymptoticBasis}'(A)$. Forward: $(A+A)^c \\subseteq [0, N_0) \\Rightarrow (A+A)^c$ finite. Reverse: $(A+A)^c$ finite $\\Rightarrow$ bounded above $\\Rightarrow$ $M := \\sup (A+A)^c$ exists $\\Rightarrow$ $\\forall n > M, n \\in A+A$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "BddAbove",
+      "sSup",
+      "Set.Finite",
+      "Finset.range",
+      "basis definitions"
+    ],
+    "prerequisites": [
+      "IsAsymptoticBasis",
+      "IsAsymptoticBasis'",
+      "Set.Finite.bddAbove",
+      "le_csSup"
+    ]
+  },
+  {
+    "id": "pairs-finiteness",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 112,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Part III: Finiteness of Pair Sets and Positive Representation",
+    "content": "Three supporting lemmas establish basic properties of the representation function. `pairs_summing_finite` proves that $\\{(a,b) \\in A^2 : a+b=n\\}$ is finite by embedding it into $[0,n) \\times [0,n)$ — both components are bounded by $n$. `repFunc_pos_of_mem_sumset` shows $r_A(n) \\geq 1$ whenever $n \\in A+A$: the witness pair gives a nonempty finite set with positive `Set.ncard`. `repFunc_pos_of_zero_mem` specializes this: if $0 \\in A$ and $n \\in A$, then $(0, n)$ witnesses $n \\in A+A$. These lemmas establish the connection between sumset membership and positive representation count.",
+    "mathContext": "$n \\in A+A \\Rightarrow r_A(n) \\geq 1$. Proof: $n = a+b$ with $a,b \\in A$ gives $(a,b) \\in \\{(x,y) : x+y=n\\}$, so $|\\{(x,y) : x+y=n\\}| \\geq 1$. Finiteness: $(a,b) \\in A^2$ with $a+b=n$ forces $a,b < n+1$, so the set embeds into $[0,n] \\times [0,n]$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Set.ncard",
+      "Set.Finite.subset",
+      "sumset membership",
+      "representation positivity"
+    ],
+    "prerequisites": [
+      "repFunc",
+      "sumset",
+      "Set.ncard_pos",
+      "Set.finite_Iio"
+    ]
+  },
+  {
+    "id": "sidon-rep-bounded",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 142,
+      "endLine": 199
+    },
+    "type": "concept",
+    "title": "Sidon Sets Have Representation ≤ 2 (Original Proof)",
+    "content": "The file's most detailed original proof. Defines `IsSidon A` as: $a+b = c+d$ with $a,b,c,d \\in A$ implies $\\{a,b\\} = \\{c,d\\}$ (all pairwise sums distinct as multisets). Then proves `sidon_repFunc_bounded`: for Sidon sets, $r_A(n) \\leq 2$ for all $n$. The proof shows that all pairs summing to $n$ must be permutations of a single pair: if $(a,b)$ and $(c,d)$ both sum to $n$, the Sidon property forces $\\{c,d\\} = \\{a,b\\}$, so $(c,d) \\in \\{(a,b), (b,a)\\}$. The subset bound $S \\subseteq \\{(a,b), (b,a)\\}$ gives $|S| \\leq 2$ via `Set.ncard_union_le`. The proof handles the empty case separately (`Set.ncard_empty`). This confirms the extremal case: Sidon sets minimize representation, and their density limitation ($A(N) \\leq \\sqrt{N} + O(N^{1/4})$) prevents them from being bases.",
+    "mathContext": "IsSidon: $a+b = c+d \\Rightarrow \\{a,b\\} = \\{c,d\\}$. Theorem: $r_A(n) \\leq 2$. Proof: fix $(a,b)$ with $a+b=n$; any other $(c,d)$ with $c+d=n$ satisfies $\\{c,d\\} = \\{a,b\\}$, so $(c,d) \\in \\{(a,b), (b,a)\\}$, giving $|S| \\leq |\\{(a,b),(b,a)\\}| \\leq 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B_2 sequences",
+      "pair-matching argument",
+      "Set.ncard_le_ncard",
+      "extremal additive combinatorics"
+    ],
+    "prerequisites": [
+      "IsSidon",
+      "repFunc",
+      "pairs_summing_finite",
+      "Set.ncard_union_le"
+    ]
+  },
+  {
+    "id": "ordered-vs-unordered",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 561,
+      "endLine": 572
+    },
+    "type": "concept",
+    "title": "Part VIII: Ordered ≥ Unordered Representation Count",
+    "content": "Proves `repFunc_ge_repFuncUnordered`: the ordered representation count $r_A(n)$ is at least the unordered count $r_A^{\\leq}(n)$. The proof is a direct subset argument: every unordered pair $(a,b)$ with $a \\leq b$ and $a+b=n$ also satisfies the ordered condition (membership in $A$ and sum $= n$), so the unordered set is a subset of the ordered set. Finiteness from `pairs_summing_finite` enables `Set.ncard_le_ncard`. This bridge lemma is used in `erdos_turan_holds_for_nat` to transfer unboundedness from the unordered to ordered count.",
+    "mathContext": "$r_A(n) = |\\{(a,b) : a+b=n, a,b \\in A\\}| \\geq |\\{(a,b) : a+b=n, a \\leq b, a,b \\in A\\}| = r_A^{\\leq}(n)$. The unordered set is a subset of the ordered set (dropping the $a \\leq b$ constraint only enlarges the set).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ordered pairs",
+      "unordered pairs",
+      "Set.ncard_le_ncard",
+      "representation counting conventions"
+    ],
+    "prerequisites": [
+      "repFunc",
+      "repFuncUnordered",
+      "pairs_summing_finite"
+    ]
+  },
+  {
+    "id": "main-conjecture-formal",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 210,
+      "endLine": 224
+    },
+    "type": "definition",
+    "title": "Part IV: Formal Conjecture Statements (Weak and Strong)",
+    "content": "Three formal definitions capture the conjecture at different strengths. `erdos_turan_weak` states: for every basis $A$ and every bound $k$, there exists $n$ with $r_A(n) > k$ — the representation function is unbounded. `erdos_turan_strong` strengthens this to $r_A(n) > c \\log n$ infinitely often. `erdos_28` is defined as `erdos_turan_weak`, making the official problem statement the weaker form. The gap between weak and strong reflects a real open question: even if unboundedness is proved, the growth rate of $\\limsup r_A(n)$ remains unknown.",
+    "mathContext": "Weak: $\\forall A, \\text{IsAsymptoticBasis}(A) \\to \\forall k, \\exists n, r_A(n) > k$. Strong: $\\exists c > 0, \\forall M, \\exists n > M, r_A(n) > c \\log n$. The strong form implies the weak form but is strictly stronger — $\\log n$ growth vs mere unboundedness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive basis",
+      "representation function",
+      "lim sup",
+      "logarithmic growth"
+    ],
+    "prerequisites": [
+      "repFunc",
+      "IsAsymptoticBasis"
+    ]
+  },
+  {
+    "id": "partial-results-formal",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 229,
+      "endLine": 234
+    },
+    "type": "concept",
+    "title": "Part V: Axiomatized Partial Results (Grekos, Borwein)",
+    "content": "Two axioms encode the best known partial results toward the conjecture. `grekos_lower_bound` (Grekos, Haddad, Helou, Pihko, 2003): for any basis $A$, $r_A(n) \\geq 6$ infinitely often. `borwein_lower_bound` (Borwein, Choi, Croot): improved to $r_A(n) \\geq 8$ infinitely often. The conjecture asserts $r_A(n) \\to \\infty$ along a subsequence, so these results confirm the first few steps of unboundedness. The gap between 8 and $\\infty$ remains one of the central challenges in additive combinatorics.",
+    "mathContext": "Grekos et al. [GHHP03]: $\\forall A, \\text{IsAsymptoticBasis2}(A) \\Rightarrow \\forall M, \\exists n > M, r_A(n) \\geq 6$. Borwein–Choi–Chu [BCC06]: same with $6$ replaced by $8$. Both results use a Fourier-analytic approach: if $r_A(n) \\leq k$ for all large $n$, then the generating function $\\hat{A}(\\theta)^2 = \\sum r_A(n) e^{2\\pi i n\\theta}$ must be nearly flat, contradicting the basis condition. The gap: the conjecture requires $\\forall k \\in \\mathbb{N}, \\exists n, r_A(n) \\geq k$; the best known result only gives $r_A(n) \\geq 8$ infinitely often.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive bases",
+      "lower bounds",
+      "Grekos et al.",
+      "representation function lower bounds"
+    ],
+    "prerequisites": [
+      "repFunc",
+      "IsAsymptoticBasis"
+    ]
+  },
+  {
+    "id": "examples-section",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 239,
+      "endLine": 347
+    },
+    "type": "insight",
+    "title": "Part VI: Concrete Examples — Evens and ℕ",
+    "content": "Two concrete examples illustrate basis behavior. The **even numbers** $\\{0, 2, 4, \\ldots\\}$ form a basis for even integers with $r_{\\text{evens}}(2n) = \\lfloor n/2 \\rfloor + 1$ (growing linearly). **ℕ itself** is trivially a basis with $r_{\\mathbb{N}}(n) = \\lfloor n/2 \\rfloor + 1$, confirming the conjecture for this case. These examples show that 'natural' bases have linearly growing representation functions, far exceeding the conjectured $\\log n$ threshold. The challenge is proving unboundedness for bases with potentially adversarial structure.",
+    "mathContext": "$r_{\\text{evens}}(2n) = \\lfloor n/2 \\rfloor + 1$: pairs $(2k, 2(n-k))$ with $k \\leq n/2$. $r_{\\mathbb{N}}(n) = \\lfloor n/2 \\rfloor + 1$: pairs $(k, n-k)$ with $k \\leq n/2$. Both grow as $\\Theta(n)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "even numbers",
+      "natural numbers as basis",
+      "representation counting",
+      "Goldbach-type problems"
+    ],
+    "prerequisites": [
+      "repFuncUnordered",
+      "IsAsymptoticBasis",
+      "sumset"
+    ]
+  },
+  {
+    "id": "sidon-basis-incompatible",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 349,
+      "endLine": 374
+    },
+    "type": "concept",
+    "title": "Part VII: Sidon Density Bridge and Density Bound",
+    "content": "Part VII opens with a bridge lemma `isSidon_set_to_finset` that converts the Set-based `IsSidon` (unordered pair equality: $a+b = c+d \\Rightarrow \\{a,b\\} = \\{c,d\\}$) to the Finset-based `Erdos340.IsSidon` (ordered pair equality with $a \\leq b$, $c \\leq d$). This bridge enables importing `sidon_density_bound` from the Erdős #340 formalization: for any Sidon set $A$ with elements in $[0, N]$, $|A| \\leq \\sqrt{2N} + 1$. The proof is a one-liner delegating to `Erdos340.sidon_upper_bound_weak` via the bridge. This density bound is the key ingredient for proving Sidon sets cannot be bases.",
+    "mathContext": "Bridge: IsSidon (Set) $\\Rightarrow$ IsSidon (Finset). From $\\{a,b\\} = \\{c,d\\}$ with $a \\leq b, c \\leq d$: either $c = a$ (then $b = d$) or $c = b$ (then $a \\leq b = c \\leq d$ and $a + b = c + d$ force $a = c, b = d$). Density: $|A \\cap [0,N]| \\leq \\sqrt{2N} + 1$ for Sidon $A$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B_2 sequences",
+      "density bounds",
+      "Erdős #340",
+      "bridge lemma"
+    ],
+    "prerequisites": [
+      "IsSidon",
+      "Erdos340.sidon_upper_bound_weak",
+      "Erdos340.IsSidon"
+    ]
+  },
+  {
+    "id": "sidon-combinatorial-helpers",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 376,
+      "endLine": 468
+    },
+    "type": "concept",
+    "title": "Combinatorial Helper Lemmas for Sidon Non-Basis Proof",
+    "content": "Three private helper lemmas build the combinatorial infrastructure for the `sidon_not_basis` proof. `card_upper_triangle` proves $|\\{(a,b) \\in F \\times F : a \\leq b\\}| \\cdot 2 = |F| \\cdot (|F|+1)$ by partitioning $F \\times F$ into upper-triangular ($a \\leq b$), strict-lower ($b < a$), and diagonal ($a = b$) parts, using a swap bijection between strict-upper and strict-lower. `finset_sumset_eq_upper_image` shows the sumset equals the image of upper-triangular pairs under addition, exploiting commutativity ($a+b = b+a$). `finset_sumset_card_bound` combines these: $|\\text{sumset}(F)| \\leq |\\text{upper-triangle}|$ (since the image of upper-triangle surjects onto sumset) and $|\\text{upper-triangle}| \\cdot 2 = |F|(|F|+1)$, giving $|\\text{sumset}(F)| \\cdot 2 \\leq |F|(|F|+1)$. This refined bound (using $|F|(|F|+1)/2$ instead of $|F|^2$) is essential for the `sidon_not_basis` contradiction.",
+    "mathContext": "$|\\{(a,b) \\in F^2 : a \\leq b\\}| = \\frac{|F|(|F|+1)}{2}$. Partition: $F^2 = \\{a < b\\} \\sqcup \\{a = b\\} \\sqcup \\{a > b\\}$, with $|\\{a > b\\}| = |\\{a < b\\}|$ by the swap $(a,b) \\mapsto (b,a)$, and $|\\{a = b\\}| = |F|$ (diagonal). So $|\\{a \\leq b\\}| = |\\{a < b\\}| + |F| = (|F|^2 - |F|)/2 + |F| = |F|(|F|+1)/2$. The sumset $\\{a+b : a,b \\in F\\}$ is the image of $\\{(a,b) : a \\leq b\\}$ under addition (by commutativity), so $|\\text{sumset}(F)| \\leq |F|(|F|+1)/2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "upper-triangular pairs",
+      "swap bijection",
+      "Finset.card_image_of_injective",
+      "sumset cardinality",
+      "pigeonhole principle"
+    ],
+    "prerequisites": [
+      "Finset.product",
+      "Finset.filter",
+      "Finset.card_union_of_disjoint",
+      "Finset.card_image_of_injective"
+    ]
+  },
+  {
+    "id": "sidon-not-basis-proof",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 471,
+      "endLine": 559
+    },
+    "type": "insight",
+    "title": "Sidon Sets Cannot Be Bases (Fully Proved)",
+    "content": "`sidon_not_basis` is the most substantial theorem in the file: any infinite Sidon set $A$ is not an asymptotic basis of order 2. Previously axiomatized, this is now fully proved via a combinatorial counting argument.\n\nThe proof proceeds by contradiction. Assume $A$ is an infinite Sidon set and an asymptotic basis with threshold $N_0$. Choose $T = 4N_0 + 100$ and $N = T^2$. The restricted set $S = A \\cap [0, N]$ is finite and Sidon. By the Sidon density bound (imported from Erdős #340), $|S| \\leq \\sqrt{2N} + 1 = \\sqrt{2T^2} + 1 \\leq T + \\sqrt{T} + 1 \\leq 5N_0 + 126$. But $S$ must cover $[N_0, N]$ via its sumset, giving $|\\text{sumset}(S)| \\geq N - N_0 + 1 = T^2 - N_0 + 1$. The helper bound $|\\text{sumset}(S)| \\cdot 2 \\leq |S|(|S|+1) \\leq (5N_0+126)(5N_0+127)$ then forces $2(4N_0+100)^2 + 2 \\leq (5N_0+126)(5N_0+127) + 2N_0$, which simplifies to $7N_0^2 + 333N_0 + 4000 \\leq 0$ — impossible for $N_0 \\geq 0$. The `nlinarith` tactic closes the proof.",
+    "mathContext": "Proof by contradiction: set $T = 4N_0+100$, $N = T^2$, $s = |A \\cap [0,N]|$.\n\n(1) Sidon bound: $s \\leq \\sqrt{2N}+1 = T\\sqrt{2}+1 \\leq T + \\sqrt{T} + 1 \\leq 5N_0+126$.\n(2) Coverage: $|\\text{sumset}(A \\cap [0,N])| \\geq |[N_0, N]| = T^2 - N_0 + 1$.\n(3) Sumset bound: $|\\text{sumset}| \\cdot 2 \\leq s(s+1) \\leq (5N_0+126)(5N_0+127)$.\n(4) Combining: $2T^2 + 2 \\leq (5N_0+126)(5N_0+127) + 2N_0$.\n(5) Expanding with $T = 4N_0+100$: $32N_0^2 + 1600N_0 + 20002 \\leq 25N_0^2 + 1267N_0 + 16002$, i.e., $7N_0^2 + 333N_0 + 4000 \\leq 0$. Contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "additive bases",
+      "counting argument",
+      "proof by contradiction",
+      "nlinarith",
+      "Erdős #340 dependency"
+    ],
+    "prerequisites": [
+      "IsSidon",
+      "IsAsymptoticBasis",
+      "sidon_density_bound",
+      "finset_sumset_card_bound",
+      "Set.Infinite"
+    ]
+  },
+  {
+    "id": "conjecture-holds-nat",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 574,
+      "endLine": 593
+    },
+    "type": "insight",
+    "title": "Part IX: The Conjecture Holds Trivially for ℕ",
+    "content": "Two proved theorems verify the Erdős-Turán conjecture for $\\mathbb{N}$. `nat_repFuncUnordered_unbounded`: for unordered representations, $r_{\\mathbb{N}}^{\\text{unord}}(2k+2) = k+2 > k$, so the function is unbounded. `erdos_turan_holds_for_nat`: since ordered $\\geq$ unordered ($r \\geq r^{\\text{unord}}$), the ordered count is also unbounded. These are trivial cases — the difficulty lies in adversarially constructed bases where the structure might conspire to keep $r_A(n)$ bounded.",
+    "mathContext": "$r^{\\text{unord}}_{\\mathbb{N}}(2k+2) = (2k+2)/2 + 1 = k+2 > k$. Combined with $r_A(n) \\geq r_A^{\\text{unord}}(n)$: the ordered representation count for $\\mathbb{N}$ is also unbounded.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trivial basis",
+      "ordered vs unordered representations",
+      "proof by explicit computation"
+    ],
+    "prerequisites": [
+      "nat_repFunc",
+      "repFunc_ge_repFuncUnordered"
+    ]
+  },
+  {
+    "id": "basis-density-lower-bound",
+    "proofId": "erdos-28",
+    "range": {
+      "startLine": 595,
+      "endLine": 647
+    },
+    "type": "insight",
+    "title": "Part X: Basis Density Lower Bound (Proved)",
+    "content": "The file's most substantive proved theorem: `basis_element_count_sq` shows that any asymptotic basis $A$ satisfies $|A \\cap [0,N]|^2 \\geq N - N_0 + 1$ for all $N \\geq N_0$, hence $|A \\cap [0,N]| \\geq \\sqrt{N - N_0 + 1}$. This is a counting argument: every $n \\in [N_0, N]$ has a representation $n = a + b$ with $a, b \\in A \\cap [0,N]$, so $[N_0, N] \\subseteq \\text{sumset}(A \\cap [0,N])$, and $|\\text{sumset}(S)| \\leq |S|^2$ (sumset is an image of $S \\times S$). The proof uses `Set.ncard` arithmetic and chains three inequalities via `calc`.",
+    "mathContext": "$\\text{countingFn}(A, N)^2 \\approx |F|^2 \\geq N - T$ where $F = A \\cap [0,N]$ and $T$ is the coverage threshold. Formally: $4(\\text{countingFn}(A,N)+1)^2 \\geq N$ for $N \\geq 2T+2$. This is the **necessary** density condition for an asymptotic basis: if $A + A$ covers $[T+1,\\infty)$, then every $n \\in [T+1,N]$ has a representation $n = a + b$ with $a, b \\in F$, giving $N - T \\leq |\\text{image of } F \\times F| \\leq |F|^2$. Consequence: $A(N) \\gg \\sqrt{N}$, which means sparseness is incompatible with being a basis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting argument",
+      "sumset size bound",
+      "density of bases",
+      "Set.ncard",
+      "calc block"
+    ],
+    "prerequisites": [
+      "IsAsymptoticBasis",
+      "sumset",
+      "Set.ncard_Icc",
+      "Set.ncard_image_le"
+    ]
+  }
+]

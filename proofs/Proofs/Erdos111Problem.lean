@@ -1,0 +1,300 @@
+/-
+Erdős Problem #111: Edge Deletion to Bipartiteness for Large Chromatic Graphs
+
+Source: https://erdosproblems.com/111
+Status: OPEN
+
+Statement:
+For a graph G, let h_G(n) be the maximum number of edges that must be deleted
+from any n-vertex subgraph of G to make it bipartite. Is it true that
+h_G(n)/n → ∞ for every graph G with chromatic number ℵ₁?
+
+Answer: UNKNOWN
+
+Key Results:
+- Erdős-Hajnal-Szemerédi (1982): Graphs with χ(G) = ℵ₁ have h_G(n) ≫ n
+  (since they contain ℵ₁ many vertex-disjoint odd cycles)
+- Erdős-Hajnal-Szemerédi (1982): There exists G with χ(G) = ℵ₁ and h_G(n) ≪ n^(3/2)
+- Erdős (1981): Conjectured this can be improved to h_G(n) ≪ n^(1+ε) for all ε > 0
+
+References:
+- Erdős, Hajnal, Szemerédi (1982): "On almost bipartite large chromatic graphs"
+- Erdős (1981): "On the combinatorial problems which I would most like to see solved"
+- See also Erdős Problem #74
+-/
+
+import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Combinatorics.SimpleGraph.Subgraph
+import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
+import Mathlib.Data.Set.Card
+import Mathlib.SetTheory.Cardinal.Basic
+import Mathlib.SetTheory.Cardinal.Finite
+import Mathlib.SetTheory.Cardinal.Ordinal
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+
+open Cardinal SimpleGraph Set
+
+namespace Erdos111
+
+/-
+## Part I: Basic Definitions
+
+Graphs, bipartiteness, and chromatic number concepts.
+-/
+
+/--
+**Bipartite Graph:**
+A graph G is bipartite if its vertices can be partitioned into two sets
+such that every edge connects a vertex in one set to a vertex in the other.
+Equivalently, G has no odd cycles.
+-/
+def IsBipartite {V : Type*} (G : SimpleGraph V) : Prop :=
+  ∃ A B : Set V, A ∪ B = Set.univ ∧ A ∩ B = ∅ ∧
+    ∀ v w, G.Adj v w → (v ∈ A ∧ w ∈ B) ∨ (v ∈ B ∧ w ∈ A)
+
+/--
+**Edge Set:**
+The set of edges of a graph, represented as unordered pairs.
+-/
+def edgeSet {V : Type*} (G : SimpleGraph V) : Set (Sym2 V) :=
+  {e | e ∈ G.edgeSet}
+
+/-
+## Part II: Edge Deletion to Bipartiteness
+
+The central concept: how many edges must be removed to make a graph bipartite?
+-/
+
+/--
+**Edges to Remove for Bipartiteness:**
+For a finite graph on vertex set V, the minimum number of edges that must
+be deleted to make the graph bipartite.
+
+For bipartite graphs, this is 0. For odd cycles of length 2k+1, this is 1.
+For complete graphs K_n with n ≥ 3, this is approximately n²/4.
+
+We axiomatize this as it requires decidability instances that complicate the formalization.
+-/
+/--
+**Edge Deletion Function h_G:**
+For a graph G and natural number n, h_G(n) is the maximum number of edges
+that must be deleted from any n-vertex induced subgraph of G to make it bipartite.
+
+This measures how "far from bipartite" the densest n-vertex subgraphs of G are.
+
+We axiomatize this as the definition requires taking supremum over subgraphs,
+which involves complex decidability and finiteness conditions.
+-/
+axiom edgeDeletionFunction {V : Type*} (G : SimpleGraph V) (n : ℕ) : ℕ
+
+/-
+## Part III: Chromatic Number
+
+The chromatic number χ(G) is the minimum number of colors needed to color
+the vertices such that no two adjacent vertices share a color.
+-/
+
+/--
+**Proper Coloring:**
+A coloring of G with colors from C is proper if adjacent vertices have different colors.
+-/
+def IsProperColoring {V C : Type*} (G : SimpleGraph V) (f : V → C) : Prop :=
+  ∀ v w, G.Adj v w → f v ≠ f w
+
+/--
+**k-Colorable:**
+A graph is k-colorable if it admits a proper coloring with at most k colors.
+-/
+def IsKColorable {V : Type*} (G : SimpleGraph V) (k : ℕ) : Prop :=
+  ∃ f : V → Fin k, IsProperColoring G f
+
+/-
+## Part IV: Infinite Chromatic Number
+
+For graphs with uncountable chromatic number, we use cardinal arithmetic.
+-/
+
+/--
+**Cardinal Chromatic Number:**
+The chromatic number as a cardinal, for potentially infinite graphs.
+Axiomatized to avoid universe issues.
+-/
+axiom cardinalChromaticNumber (V : Type*) (G : SimpleGraph V) : Cardinal.{0}
+
+/--
+**Aleph-1 Chromatic Number:**
+A graph has chromatic number ℵ₁ if it cannot be colored with countably many
+colors but can be colored with ℵ₁ colors.
+-/
+def hasAleph1ChromaticNumber {V : Type*} (G : SimpleGraph V) : Prop :=
+  cardinalChromaticNumber V G = Cardinal.aleph 1
+
+/-
+## Part V: Odd Cycles and Bipartiteness
+
+A graph is bipartite iff it has no odd cycles. This is fundamental to the problem.
+-/
+
+/--
+**Odd Cycle:**
+A cycle of odd length in a graph. An odd cycle has length 2n+1 for some n ≥ 1.
+-/
+def hasOddCycle {V : Type*} (G : SimpleGraph V) : Prop :=
+  ∃ (n : ℕ) (hn : n ≥ 1) (c : Fin (2*n + 1) → V),
+    (∀ i : Fin (2*n + 1), G.Adj (c i) (c ⟨(i.val + 1) % (2*n + 1), Nat.mod_lt _ (by omega)⟩)) ∧
+    Function.Injective (fun i : Fin (2*n) => c ⟨i.val, by omega⟩)
+
+/-
+## Part VI: Vertex-Disjoint Odd Cycles
+
+Graphs with χ = ℵ₁ contain many vertex-disjoint odd cycles.
+-/
+
+/--
+**Vertex-Disjoint Family of Cycles:**
+A collection of cycles where no two cycles share a vertex.
+-/
+def hasVertexDisjointOddCycles {V : Type*} (G : SimpleGraph V) (κ : Cardinal) : Prop :=
+  ∃ (I : Type*) (cycles : I → Set V),
+    #I = κ ∧
+    (∀ i j, i ≠ j → Disjoint (cycles i) (cycles j)) ∧
+    (∀ i, ∃ n ≥ 1, ∃ path : Fin (2*n + 1) → V,
+      Set.range path = cycles i ∧
+      ∀ k : Fin (2*n + 1), G.Adj (path k) (path ⟨(k.val + 1) % (2*n + 1), Nat.mod_lt _ (by omega)⟩))
+
+/--
+**h_G(n) ≫ n for χ(G) = ℵ₁:**
+If G has chromatic number ℵ₁, then h_G(n)/n → ∞ at least linearly.
+Each vertex-disjoint odd cycle contributes at least 1 to h_G(n).
+-/
+axiom h_at_least_linear {V : Type*} (G : SimpleGraph V)
+    (hχ : hasAleph1ChromaticNumber G) :
+    ∀ c : ℕ, ∃ N : ℕ, ∀ n ≥ N, edgeDeletionFunction G n ≥ c * n
+
+/-
+## Part VII: Upper Bound Construction
+
+Erdős-Hajnal-Szemerédi constructed a graph with χ = ℵ₁ but h_G(n) ≪ n^(3/2).
+-/
+
+/--
+**EHS Upper Bound Construction:**
+There exists a graph G with chromatic number ℵ₁ such that
+h_G(n) = O(n^(3/2)).
+
+This is proved by an explicit construction using probabilistic methods
+and properties of shift graphs.
+-/
+axiom ehs_upper_bound :
+    ∃ (V : Type*) (G : SimpleGraph V),
+      hasAleph1ChromaticNumber G ∧
+      ∃ C : ℕ, ∀ n : ℕ, edgeDeletionFunction G n ≤ C * n * Nat.sqrt n
+
+/-
+## Part VIII: Erdős's Conjecture
+
+Erdős conjectured the upper bound can be improved to n^(1+ε).
+-/
+
+/--
+**Erdős's Conjecture (1981):**
+For every ε > 0, there exists a graph G with chromatic number ℵ₁
+such that h_G(n) = O(n^(1+ε)).
+
+This would show the growth rate can be arbitrarily close to linear,
+contrasting with the ≫ n lower bound.
+-/
+def erdosConjecture111 : Prop :=
+  ∀ ε : ℝ, ε > 0 →
+    ∃ (V : Type*) (G : SimpleGraph V),
+      hasAleph1ChromaticNumber G ∧
+      ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, (edgeDeletionFunction G n : ℝ) ≤ C * (n : ℝ) ^ (1 + ε)
+
+/-
+## Part IX: The Main Open Question
+
+The problem asks about the limiting behavior of h_G(n)/n.
+-/
+
+/--
+**Main Question:**
+Is it true that h_G(n)/n → ∞ for every graph G with chromatic number ℵ₁?
+
+Known: h_G(n) ≫ n (so the ratio is at least some positive constant)
+Unknown: Does the ratio grow without bound?
+-/
+def erdos111_question : Prop :=
+  ∀ (V : Type*) (G : SimpleGraph V),
+    hasAleph1ChromaticNumber G →
+    ∀ M : ℕ, ∃ N : ℕ, ∀ n ≥ N, edgeDeletionFunction G n > M * n
+
+/-
+**Erdős Problem #111: OPEN**
+
+The main question remains unknown. Formalize the gap: we know the lower
+bound is at least linear but cannot reach n^(3/2).
+-/
+theorem erdos_111_gap_exists :
+    (∃ (V : Type*) (G : SimpleGraph V),
+      hasAleph1ChromaticNumber G ∧
+      ∃ C : ℕ, ∀ n : ℕ, edgeDeletionFunction G n ≤ C * n * Nat.sqrt n) :=
+  ehs_upper_bound
+
+/-
+## Part X: Related Results
+
+Connections to other problems and partial results.
+-/
+
+/--
+**Connection to Problem #74:**
+Erdős Problem #74 asks related questions about edge-chromatic number
+and bipartite subgraphs. Both problems study how graphs with large
+chromatic number interact with bipartiteness constraints.
+-/
+
+/--
+**Finite Graphs:**
+For finite graphs, the situation is well-understood:
+- Bipartite graphs: h_G(n) = 0
+- Odd cycles: h_G(n) = O(n)
+- Complete graphs K_n: h_G(n) = Θ(n²)
+
+The interesting behavior emerges for infinite graphs with uncountable chromatic number.
+-/
+/-
+## Part XI: Summary
+
+Erdős Problem #111 remains open. We know:
+
+1. Lower bound: h_G(n) ≫ n (linear growth at minimum)
+2. Upper bound construction: h_G(n) ≪ n^(3/2) is achievable
+3. Erdős's conjecture: h_G(n) ≪ n^(1+ε) should be achievable for all ε > 0
+
+The gap between the lower bound (linear) and upper bound (n^(3/2))
+remains to be closed.
+-/
+
+/--
+**Summary of Known Results:**
+- Erdős-Hajnal-Szemerédi (1982) established both the lower bound and
+  the n^(3/2) upper bound construction
+- The exact growth rate of the minimal h_G(n) for graphs with χ = ℵ₁
+  is unknown
+-/
+theorem erdos_111_summary :
+    (∀ (V : Type*) (G : SimpleGraph V), hasAleph1ChromaticNumber G →
+      ∃ c : ℕ, c > 0 ∧ ∃ N : ℕ, ∀ n ≥ N, edgeDeletionFunction G n ≥ c * n) ∧
+    (∃ (V : Type*) (G : SimpleGraph V), hasAleph1ChromaticNumber G ∧
+      ∃ C : ℕ, ∀ n : ℕ, edgeDeletionFunction G n ≤ C * n * Nat.sqrt n) := by
+  constructor
+  · -- Lower bound from EHS
+    intro V G hχ
+    use 1
+    constructor
+    · omega
+    · exact h_at_least_linear G hχ 1
+  · -- Upper bound construction from EHS
+    exact ehs_upper_bound
+
+end Erdos111

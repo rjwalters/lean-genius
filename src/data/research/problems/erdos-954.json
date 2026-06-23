@@ -1,0 +1,85 @@
+{
+  "slug": "erdos-954",
+  "title": "Erdos 954 Rosen greedy additive sequence",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $1=a_1<a_2<\\cdots$ be the sequence of integers defined by $a_1=1$ and $a_{k+1}$ is the smallest integer $n$ for which the number of solutions to $a_i+a_j \\leq n$ (with $i\\leq j\\leq k$) is less than $n-k$.\n\nIs the number of solutions to $a_i+a_j \\leq x$ equal to $x+O(x^{1/4+o(1)})$?\n\n\n\n\nThis sequence was constructed by Rosen. Note that the number of solutions to $a_i+a_j\\leq x$ is always at least $x$ by construction. Erd\\H{o}s and Rosen could not even prove whether the number of solutions to $a_i+a_j\\leq x$ satisfies is at most $(1+o(1))x$.\n\nThe sequence begins\\[1,3,5,9,13,17,24,31,38,45,\\ldots.\\]",
+    "plain": "Let $1=a_1<a_2<\\cdots$ be the sequence of integers defined by $a_1=1$ and $a_{k+1}$ is the smallest integer $n$ for which the number of solutions to $a_i+a_j \\leq n$ (with $i\\leq j\\leq k$) is less than $n-k$.",
+    "whyMatters": [
+      "Rosen's sequence probes how close a greedy additive basis can stay to the conjectural representation count x.",
+      "The Lean file gives a computable finite prefix and formalizes the greedy lower-bound infrastructure.",
+      "The metadata should separate verified finite/structural facts from the unresolved asymptotic estimate."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`repCount`, `IsGreedyNext`, `IsRosenSequence`, `repCountList`, `findNextRosen`, `buildRosen`, and `rosenTerm` define the sequence and its computable constructor.",
+      "`rosen_term_0` through `rosen_term_10` verify the initial terms 0, 1, 3, 5, 9, 13, 17, 24, 31, 38, 45.",
+      "`repcount_below_at_elements`, `repcount_above_between`, `rosen_strictMono`, `rosen_growth`, and `repcount_lower_bound_pre_element` prove basic consequences of the greedy rule.",
+      "`fullRepCount`, `IsB2Sequence`, `erdos_turan_context`, and `repCount_mono_k` connect the construction to Sidon-style representation growth."
+    ],
+    "open": [
+      "`Erdos954Problem.lean` has zero active axioms and zero active sorries.",
+      "The conjectural estimate R(x)=x+O(x^(1/4+o(1))) and even the (1+o(1)) upper bound remain open."
+    ],
+    "goal": "Expose the verified Rosen-sequence constructor and finite checks while marking the asymptotic question as open."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-15T12:29:39.917Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #954 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $1=a_1<a_2<\\cdots$ be the sequence of integers defined by $a_1=1$ and $a_{k+1}$ is the smallest integer $n$ for which the number of solutions to $a_i+a_j \\leq n$ (with $i\\leq j\\leq k$) is less than $n-k$.\n\nIs the number of solutions to $a_i+a_j \\leq x$ equal to $x+O(x^{1/4+o(1)})$?\n\n\n\n\nThis sequence was constructed by Rosen. Note that the number of solutions to $a_i+a_j\\leq x$ is always at least $x$ by construction. Erd\\H{o}s and Rosen could not even prove whether the number of solutions to $a_i+a_j\\leq x$ satisfies is at most $(1+o(1))x$.\n\nThe sequence begins\\[1,3,5,9,13,17,24,31,38,45,\\ldots.\\]\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #4\n- Problem #953\n- Problem #955\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos",
+    "additive-combinatorics",
+    "greedy-sequences",
+    "representation-counts",
+    "fully-verified"
+  ],
+  "relatedProofs": [
+    "erdos-9",
+    "erdos-95",
+    "erdos-954"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T12:29:39.917Z",
+  "lastUpdate": "2026-03-13T07:52:17.055Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos954Problem.lean",
+      "filename": "Erdos954Problem.lean",
+      "lineCount": 220,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos954Problem.lean"
+    }
+  ]
+}

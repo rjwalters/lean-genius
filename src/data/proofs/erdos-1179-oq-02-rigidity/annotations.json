@@ -1,0 +1,96 @@
+[
+  {
+    "id": "e1179oq02rig-ann-framing",
+    "proofId": "erdos-1179-oq-02-rigidity",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "concept",
+    "title": "The Equality Case of the Trivial Lower Bound",
+    "content": "Erdős #1179 OQ-02 asks whether $g_\\varepsilon(N) \\le \\log_2 N + O_\\varepsilon(1)$, sharpening the Erdős–Hall $(1+o(1))$ factor to a bounded additive error. The sibling entry `erdos-1179-oq-02` proves the matching **trivial lower bound** axiom-free: an $\\varepsilon$-uniform set $A$ ($\\varepsilon < 1$) of an abelian group of order $N$ satisfies $N \\le 2^{|A|}$, i.e. $\\lceil\\log_2 N\\rceil \\le |A|$.\n\nThis file proves the **rigidity / equality statement**: such a set *saturates* the bound ($N = 2^{|A|}$) **iff** every group element has a *unique* subset-sum representation. The extremal subsets of the trivial bound are exactly the unique-representation (perfectly $0$-uniform) configurations — the same objects the deterministic $\\mathbb{F}_2^m$ basis construction of the upper companion exhibits. The proof is pure counting: $\\varepsilon$-uniformity forces each count $F_A(g) \\ge 1$, the counts sum to $2^{|A|}$, and there are exactly $N$ of them, so $N = 2^{|A|}$ forces each to be exactly $1$.",
+    "mathContext": "Saturation N = 2^|A| of the covering bound ∑_g F_A(g) = 2^|A|, with each F_A(g) ≥ 1, is a perfect-packing condition: every group element is hit exactly once.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "subset-sum representations",
+      "rigidity / equality case",
+      "perfect packing",
+      "unique representations"
+    ],
+    "prerequisites": [
+      "the trivial lower bound N ≤ 2^|A| (erdos-1179-oq-02)",
+      "ε-uniformity of subset-sum counts"
+    ]
+  },
+  {
+    "id": "e1179oq02rig-ann-imports",
+    "proofId": "erdos-1179-oq-02-rigidity",
+    "range": { "startLine": 43, "endLine": 48 },
+    "type": "definition",
+    "title": "Imports and Namespace",
+    "content": "The file imports the verified sibling `Proofs.Erdos1179OQ02` — which supplies the spanning lemma `epsUniform_spanning` and re-exports the parent's definitions `IsEpsUniform`, `reprCount`, and the identity `total_reprCount` — together with `Mathlib`, then works in the `Erdos1179` namespace with `Finset` open. No new definitions are introduced; the rigidity theorems are built entirely from the existing machinery.",
+    "mathContext": "Brings F_A(g) ≥ 1 (spanning, from ε-uniformity with ε < 1) and ∑_g F_A(g) = 2^|A| (total_reprCount) into scope.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "reprCount",
+      "IsEpsUniform",
+      "total_reprCount"
+    ],
+    "prerequisites": [
+      "namespaces and imports in Lean",
+      "the parent Erdős #1179 development"
+    ]
+  },
+  {
+    "id": "e1179oq02rig-ann-saturation-iff",
+    "proofId": "erdos-1179-oq-02-rigidity",
+    "range": { "startLine": 50, "endLine": 80 },
+    "type": "key-insight",
+    "title": "Saturation ⇔ Unique Representations",
+    "content": "`epsUniform_saturated_iff_unique_repr` is the heart of the entry: for $\\varepsilon$-uniform $A$ ($\\varepsilon < 1$), $\\;\\text{card } G = 2^{|A|} \\iff \\forall g,\\ \\texttt{reprCount } A\\ g = 1$.\n\n**Forward** (saturation $\\Rightarrow$ uniqueness): `epsUniform_spanning` gives $F_A(g) \\ge 1$ for all $g$; `total_reprCount` gives $\\sum_g F_A(g) = 2^{|A|}$, and the saturation hypothesis $N = 2^{|A|}$ rewrites this as $\\sum_g F_A(g) = \\sum_g 1$. The Mathlib lemma `Finset.sum_eq_sum_iff_of_le` — equal sums with a pointwise $\\le$ force termwise equality — then yields $F_A(g) = 1$ for every $g$. **Reverse** (uniqueness $\\Rightarrow$ saturation): substituting $F_A(g) = 1$ into `total_reprCount` recovers $\\sum_g 1 = 2^{|A|}$, i.e. $N = 2^{|A|}$. The whole argument is elementary counting — no probability, no axioms.",
+    "mathContext": "N nonnegative integers each ≥ 1 summing to N must all equal 1; here the N summands are the counts F_A(g) and the sum is 2^|A| = N.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Finset.sum_eq_sum_iff_of_le",
+      "termwise equality from equal sums",
+      "counting rigidity"
+    ],
+    "prerequisites": [
+      "finite sums and monotonicity",
+      "the spanning bound F_A(g) ≥ 1"
+    ]
+  },
+  {
+    "id": "e1179oq02rig-ann-forward-standalone",
+    "proofId": "erdos-1179-oq-02-rigidity",
+    "range": { "startLine": 82, "endLine": 89 },
+    "type": "proof-step",
+    "title": "Forward Rigidity, Standalone",
+    "content": "`unique_repr_of_epsUniform_saturated` repackages the forward direction as a directly usable lemma: an $\\varepsilon$-uniform set ($\\varepsilon < 1$) that saturates $N = 2^{|A|}$ gives every group element a unique subset-sum representation, $\\texttt{reprCount } A\\ g = 1$. It is the convenient one-directional corollary of the equivalence, handy for downstream use where only extremal $\\Rightarrow$ unique is needed.",
+    "mathContext": "A direct application of the forward half of epsUniform_saturated_iff_unique_repr.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "extremal sets",
+      "unique representations"
+    ],
+    "prerequisites": [
+      "the saturation equivalence above"
+    ]
+  },
+  {
+    "id": "e1179oq02rig-ann-log-form",
+    "proofId": "erdos-1179-oq-02-rigidity",
+    "range": { "startLine": 91, "endLine": 104 },
+    "type": "proof-step",
+    "title": "Logarithmic Form of the Equality Case",
+    "content": "`epsUniform_card_eq_clog_iff_unique_repr` states the equality case in the integer-logarithm form: on a power-of-two group, an $\\varepsilon$-uniform set attains the lower bound $|A| = \\lceil\\log_2 N\\rceil$ (together with $N = 2^{|A|}$) exactly when its representations are unique. The proof rewrites through the saturation equivalence and uses `Nat.clog_pow` to identify $\\lceil\\log_2(2^{|A|})\\rceil = \\operatorname{clog}_2(2^{|A|}) = |A|$, so that saturation of the cardinality and saturation of the count coincide.",
+    "mathContext": "N = 2^|A| ∧ |A| = ⌈log₂N⌉ ⇔ ∀ g, F_A(g) = 1, via clog₂(2^|A|) = |A|.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.clog",
+      "Nat.clog_pow",
+      "integer logarithm form"
+    ],
+    "prerequisites": [
+      "the ceiling logarithm Nat.clog",
+      "the saturation equivalence"
+    ]
+  }
+]

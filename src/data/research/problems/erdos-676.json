@@ -1,0 +1,109 @@
+{
+  "slug": "erdos-676",
+  "title": "Erdős #676",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Is every sufficiently large integer expressible as a*p^2 + b for some prime p, integer a >= 1, and 0 <= b < p?",
+    "plain": "Erdos #676 asks whether all sufficiently large integers have a representation a*p^2 + b with p prime, a at least 1, and b smaller than p.",
+    "whyMatters": [
+      "The problem tests how much prime-square residue classes cover the natural numbers.",
+      "The Lean file proves the finite-exception formulation is equivalent to eventual representability.",
+      "The density-one input is axiomatized, so the metadata must distinguish almost-all coverage from the open all-large-integers question."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lean defines HasRepresentation, IsRepresentable, RepresentableSet, ExceptionSet, exceptionCount, and the expanded ErdosConjecture676 statement.",
+      "The theorem conjecture_equiv proves eventual representability is equivalent to the exception set being finite.",
+      "Theorems prove small examples, and almost_all_covered derives an eventual density inequality from the density_one axiom."
+    ],
+    "open": [
+      "The main Erdos #676 question, whether every sufficiently large integer is representable, remains open.",
+      "`density_one` is the sole active axiom and represents the almost-all representability input.",
+      "The variants without the prime constraint and the minimal-coefficient growth questions are formalized as surrounding open context, not proved."
+    ],
+    "goal": "Present the representation formalization, finite-exception equivalence, and density-one consequence while keeping the all-large-integers conjecture open."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-14T18:07:47.343Z",
+    "iteration": 2,
+    "focus": "Metadata now reflects one active density axiom, proved equivalence/examples, and the still-open eventual representability conjecture.",
+    "blockers": [
+      "`density_one` is axiomatized.",
+      "The all-sufficiently-large representability conjecture is not proved in Lean."
+    ],
+    "nextAction": "A useful proof slice would replace or refine the density-one axiom with a concrete sieve bound, or add more verified finite examples.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 5 theorem entries, 13 definitions, 1 active axiom (`density_one`), 0 sorries. Proved formulation equivalence, two examples, and almost_all_covered from density_one.",
+    "builtItems": [
+      "PROVED almost_all_covered from density_one (5A→4A)"
+    ],
+    "insights": [
+      "almost_all_covered follows from density_one (convergence → eventually > 1-ε). Proved (5A→4A).",
+      "Current active Lean axiom: density_one. Earlier brun_selberg_bound/selfridge_wagstaff/erdos_minimal axiom notes are stale; those declarations are not active in the current source.",
+      "density_one is provable from brun_selberg_bound: if E(x)≤x/(log x)^c then E(x)/x≤1/(log x)^c→0, so (x-E(x))/x→1. Proof needs Metric.tendsto_atTop + squeeze argument (~40 lines Lean)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Formalize a concrete Brun-Selberg style exception bound instead of assuming density_one.",
+      "Add verified examples or computational checks for small representable numbers.",
+      "Keep the all-large-integers conjecture separate from the almost-all density consequence."
+    ],
+    "markdown": "# Erdős #676 - Knowledge Base\n\n## Problem Statement\n\nIs every sufficiently large integer of the form\\[ap^2+b\\]for some prime $p$ and integer $a\\geq 1$ and $0\\leq b0$. Erdős [Er79] believed it is 'rather unlikely' that all large integers are of this form. What if the condition that $p$ is prime is omitted? Selfridge and Wagstaff made a 'preliminary computer search' and suggested that there are infinitely many $n$ not of this form even without the condition that $p$ is prime. It should be true that the number of exceptions in $[1,x]$ is $ View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #675\n- Problem #677\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "prime-squares",
+    "representation",
+    "sieve-methods",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-6",
+    "erdos-67",
+    "erdos-676"
+  ],
+  "references": {
+    "papers": [
+      "Er79",
+      "Er79d"
+    ],
+    "urls": [
+      "https://erdosproblems.com/676"
+    ],
+    "mathlib": [
+      "Mathlib",
+      "Nat.Prime",
+      "Filter.Tendsto",
+      "Set.Finite"
+    ]
+  },
+  "started": "2026-01-14T18:07:47.344Z",
+  "lastUpdate": "2026-03-13T07:52:17.050Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos676Problem.lean",
+      "filename": "Erdos676Problem.lean",
+      "lineCount": 225,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos676Problem.lean"
+    }
+  ]
+}

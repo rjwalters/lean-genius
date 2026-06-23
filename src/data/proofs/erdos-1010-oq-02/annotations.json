@@ -1,0 +1,157 @@
+[
+  {
+    "id": "ann-1010oq02-turan-num",
+    "proofId": "erdos-1010-oq-02",
+    "type": "definition",
+    "title": "Turán Number for K_r",
+    "content": "The Turán number $\\mathrm{ex}(n, K_r) = (1 - 1/(r-1)) \\cdot n^2/2$ is the maximum number of edges in a graph on $n$ vertices containing no complete subgraph $K_r$. The unique extremal graph is the Turán graph $T(n, r-1)$: the complete $(r-1)$-partite graph with parts as equal in size as possible. For $r = 3$, this gives $\\lfloor n^2/4 \\rfloor$ (the bipartite Turán graph).",
+    "mathContext": "$\\mathrm{ex}(n, K_r) = \\left(1 - \\frac{1}{r-1}\\right) \\frac{n^2}{2}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "complete multipartite graphs",
+      "extremal graph theory"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "Fintype.card"
+    ],
+    "range": {
+      "startLine": 42,
+      "endLine": 52
+    }
+  },
+  {
+    "id": "ann-1010oq02-clique-count",
+    "proofId": "erdos-1010-oq-02",
+    "type": "definition",
+    "title": "Clique Count and Density",
+    "content": "The clique count $|K_r(G)|$ is the number of $r$-element subsets of $V(G)$ that form a complete subgraph. The clique density $\\rho_r(G) = |K_r(G)| / \\binom{n}{r}$ normalizes this by the total number of possible $r$-cliques. The supersaturation question asks: given edge density $d = |E|/\\binom{n}{2}$, what is the minimum possible $\\rho_r(G)$?",
+    "mathContext": "$\\rho_r(G) = \\frac{|K_r(G)|}{\\binom{n}{r}}$, $d(G) = \\frac{|E(G)|}{\\binom{n}{2}}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "edge density",
+      "clique number",
+      "Ramsey multiplicity"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.card"
+    ],
+    "range": {
+      "startLine": 53,
+      "endLine": 64
+    }
+  },
+  {
+    "id": "ann-1010oq02-erdos-sim",
+    "proofId": "erdos-1010-oq-02",
+    "type": "concept",
+    "title": "Erdős-Simonovits Supersaturation",
+    "content": "The Erdős-Simonovits supersaturation theorem (1983) gives asymptotic lower bounds: if $|E(G)| \\ge (1 + \\delta) \\cdot \\mathrm{ex}(n, K_r)$ for fixed $\\delta > 0$, then $|K_r(G)| \\ge c(\\delta, r) \\cdot n^r$. This tells us that clique counts grow polynomially once we exceed the Turán threshold by a constant factor, but does not give the exact minimum.",
+    "mathContext": "$|E(G)| \\ge (1+\\delta)\\,\\mathrm{ex}(n, K_r) \\implies |K_r(G)| = \\Omega(n^r)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "supersaturation",
+      "Ramsey theory",
+      "asymptotic counting"
+    ],
+    "prerequisites": [
+      "turanNumber",
+      "cliqueCount"
+    ],
+    "range": {
+      "startLine": 191,
+      "endLine": 200
+    }
+  },
+  {
+    "id": "ann-1010oq02-kk",
+    "proofId": "erdos-1010-oq-02",
+    "type": "concept",
+    "title": "Kruskal-Katona Theorem",
+    "content": "The Kruskal-Katona theorem (Kruskal 1963, Katona 1968) states that among all $k$-uniform set families of a given size, the initial segment in the colex (colexicographic) order minimizes the shadow — the family of $(k-1)$-subsets obtained by deleting one element from each set. Applied to graph theory: the colex graph (edges forming an initial segment in colex order) minimizes the number of triangles for a given edge count. This is the structural foundation for Razborov's exact result.",
+    "mathContext": "Among $k$-uniform families $\\mathcal{F}$ with $|\\mathcal{F}| = m$, the shadow $\\partial \\mathcal{F}$ is minimized by the initial colex segment",
+    "significance": "key",
+    "relatedConcepts": [
+      "shadow operator",
+      "colex order",
+      "set systems",
+      "Sperner theory"
+    ],
+    "prerequisites": [
+      "shadow",
+      "Finset"
+    ],
+    "range": {
+      "startLine": 80,
+      "endLine": 101
+    }
+  },
+  {
+    "id": "ann-1010oq02-razborov",
+    "proofId": "erdos-1010-oq-02",
+    "type": "concept",
+    "title": "Razborov's Flag Algebra Method (2010)",
+    "content": "Razborov (2010) determined the exact minimum triangle density: for edge density $d \\ge 1/2$, the minimum triangle density is $g_3(d) = d(2d-1)^2/2$. The proof uses flag algebras, a framework Razborov introduced in 2007 that translates extremal problems into semidefinite programs. The SDP certificate provides a computer-verifiable proof that $g_3$ is optimal. This resolved the triangle density problem completely and opened the door to exact results for larger cliques.",
+    "mathContext": "$g_3(d) = \\frac{d(2d-1)^2}{2}$ for $d \\in [1/2, 1]$",
+    "significance": "key",
+    "relatedConcepts": [
+      "flag algebras",
+      "semidefinite programming",
+      "extremal graph theory"
+    ],
+    "prerequisites": [
+      "razborovMinTriangleDensity",
+      "edgeDensity",
+      "cliqueDensity"
+    ],
+    "range": {
+      "startLine": 119,
+      "endLine": 124
+    }
+  },
+  {
+    "id": "ann-1010oq02-reiher",
+    "proofId": "erdos-1010-oq-02",
+    "type": "concept",
+    "title": "Reiher's K₄ Density Theorem (2016)",
+    "content": "Christian Reiher (2016) extended Razborov's flag algebra approach to determine the exact minimum K₄ density, confirming a conjecture of Lovász and Simonovits. The proof is substantially more complex than the triangle case: the SDP has many more variables and constraints, and the analysis of the optimal construction requires intricate case analysis. Published in the Annals of Mathematics, this is one of the deepest applications of flag algebras.",
+    "mathContext": "Exact minimum $K_4$ density determined for all edge densities $d \\ge 2/3$",
+    "significance": "key",
+    "relatedConcepts": [
+      "flag algebras",
+      "K₄-density",
+      "Lovász-Simonovits conjecture"
+    ],
+    "prerequisites": [
+      "cliqueDensity",
+      "edgeDensity"
+    ],
+    "range": {
+      "startLine": 142,
+      "endLine": 159
+    }
+  },
+  {
+    "id": "ann-1010oq02-open",
+    "proofId": "erdos-1010-oq-02",
+    "type": "concept",
+    "title": "Open Problem: K_r for r ≥ 5",
+    "content": "For $r \\ge 5$, the exact minimum $K_r$ density as a function of edge density remains unknown. It is conjectured that the minimum is achieved by balanced complete multipartite graphs (generalizations of the Turán graph), but proving this requires extending flag algebra methods to handle SDPs of much higher complexity. The combinatorial explosion in the number of flag types makes this a formidable computational and theoretical challenge.",
+    "mathContext": "For $r \\ge 5$: determine $\\min \\rho_r(G)$ subject to $d(G) \\ge d$",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problems",
+      "extremal graph theory",
+      "flag algebras"
+    ],
+    "prerequisites": [
+      "exactKrDensityOpen"
+    ],
+    "range": {
+      "startLine": 160,
+      "endLine": 190
+    }
+  }
+]

@@ -1,0 +1,301 @@
+[
+  {
+    "id": "erdos-238-header",
+    "proofId": "erdos-238",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "title": "Problem Overview and Imports",
+    "content": "Erdős Problem #238: For $c_1, c_2 > 0$, can we find $> c_1 \\cdot \\log(x)$ consecutive primes $\\le x$ with all gaps $> c_2$? Proved for small $c_1$ (Erdős); general case OPEN.\n\nThe formalization imports from Mathlib: Nat.Prime.Nth for prime enumeration, Filter.Basic for asymptotic statements, and SpecialFunctions.Log for logarithms.",
+    "mathContext": "$\\text{mainConjecture}: \\forall c_1 > 0, \\forall c_2 > 0, \\forall^\\mathrm{f} x \\in \\mathrm{atTop}, \\exists k > c_1 \\cdot \\log(x), \\exists m, \\text{allPrimesLeX}(m,k,x) \\wedge \\text{allGapsLarge}(m,k,c_2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime gaps",
+      "consecutive primes",
+      "Prime Number Theorem",
+      "Cramér model",
+      "second moment method"
+    ],
+    "prerequisites": [
+      "prime number theorem",
+      "prime gap distribution",
+      "Filter.Eventually"
+    ],
+    "crossReferences": [
+      "prime-number-theorem",
+      "erdos-4",
+      "bounded-prime-gaps"
+    ]
+  },
+  {
+    "id": "erdos-238-primes",
+    "proofId": "erdos-238",
+    "type": "definition",
+    "range": {
+      "startLine": 35,
+      "endLine": 49
+    },
+    "title": "Prime Enumeration",
+    "content": "`nthPrime(n) = Nat.nth Nat.Prime n` gives the $n$-th prime (0-indexed in Lean: nthPrime 0 = 2, nthPrime 1 = 3, etc.). `primeGap(n) = nthPrime(n+1) - nthPrime(n)` is the gap between consecutive primes. These are noncomputable since `Nat.nth` uses classical choice.",
+    "mathContext": "$p_n = \\text{Nat.nth Prime } n$, $g_n = p_{n+1} - p_n$. By the PNT, the average gap $\\bar{g}(x) \\sim \\log x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.nth",
+      "prime enumeration",
+      "prime gaps"
+    ],
+    "prerequisites": [
+      "Nat.nth",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "erdos-238-sequences",
+    "proofId": "erdos-238",
+    "type": "definition",
+    "range": {
+      "startLine": 51,
+      "endLine": 75
+    },
+    "title": "Consecutive Prime Sequences",
+    "content": "`consecutivePrimes m k : Fin k → ℕ` gives $k$ primes starting from $p_m$. `allPrimesLeX m k x` requires all primes in the sequence $\\le x$. `allGapsLarge m k c₂` requires all $k-1$ consecutive gaps exceed $c_2$.\n\nThe use of `Fin k` for indexing ensures the sequence is exactly $k$ primes, and `Fin (k-1)` for gaps captures exactly the $k-1$ adjacent pairs.",
+    "mathContext": "$\\text{consecutivePrimes}(m, k, i) = p_{m+i}$ for $i \\in \\{0, \\ldots, k-1\\}$. The gap condition: $\\forall i < k-1, c_2 < p_{m+i+1} - p_{m+i}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fin k",
+      "consecutive primes",
+      "gap predicates"
+    ],
+    "prerequisites": [
+      "nthPrime",
+      "Fin",
+      "primeGap"
+    ]
+  },
+  {
+    "id": "erdos-238-conjecture",
+    "proofId": "erdos-238",
+    "type": "concept",
+    "range": {
+      "startLine": 77,
+      "endLine": 89
+    },
+    "title": "The Main Conjecture (OPEN)",
+    "content": "For ALL $c_1, c_2 > 0$, eventually $\\exists$ run of $k > c_1 \\cdot \\log(x)$ consecutive primes $\\le x$ with all gaps $> c_2$. Uses `Filter.Eventually` ($\\forall^\\mathrm{f}$ in atTop) for 'sufficiently large $x$'.\n\nThe universality over both $c_1$ and $c_2$ is what makes the conjecture hard: even as the run length requirement grows (larger $c_1$), all gaps must simultaneously exceed the threshold $c_2$.",
+    "mathContext": "$\\text{mainConjecture} \\equiv \\forall c_1 > 0, \\forall c_2 > 0, \\forall^\\mathrm{f} x \\in \\mathrm{atTop}, \\exists k, m, c_1 \\cdot \\log(x) < k \\wedge \\text{allPrimesLeX}(m,k,x) \\wedge \\text{allGapsLarge}(m,k,c_2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Eventually",
+      "atTop",
+      "open problem"
+    ],
+    "prerequisites": [
+      "allPrimesLeX",
+      "allGapsLarge",
+      "Filter.Eventually",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "erdos-238-negation",
+    "proofId": "erdos-238",
+    "type": "definition",
+    "range": {
+      "startLine": 91,
+      "endLine": 102
+    },
+    "title": "Negation of Conjecture",
+    "content": "If the conjecture fails: $\\exists c_1, c_2 > 0$ such that for infinitely many $x$, no run of $c_1 \\cdot \\log(x)$ consecutive primes $\\le x$ has all gaps $> c_2$. This explicit negation is used in `conjecture_vs_negation` to prove $\\text{mainConjecture} \\Rightarrow \\neg\\text{conjectureNegation}$.",
+    "mathContext": "$\\text{conjectureNegation}: \\exists c_1 > 0, \\exists c_2 > 0, \\forall N, \\exists x > N$, no valid $(k,m)$ pair exists.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "negation",
+      "counterexample structure",
+      "gap distribution"
+    ],
+    "prerequisites": [
+      "mainConjecture",
+      "existential quantifier"
+    ]
+  },
+  {
+    "id": "erdos-238-partial",
+    "proofId": "erdos-238",
+    "type": "insight",
+    "range": {
+      "startLine": 104,
+      "endLine": 117
+    },
+    "title": "Erdős's Partial Result (Axiom)",
+    "content": "For any $c_2 > 0$, there exists sufficiently small $c_1 > 0$ (depending on $c_2$) making the conjecture hold. The quantifier swap ($\\exists c_1$ vs $\\forall c_1$) is the gap between known and open.\n\nThis is the deepest axiom in the formalization: Erdős's proof uses the PNT to show that for small $c_1$, the expected number of qualifying runs in $[1, x]$ tends to infinity, then applies a second-moment argument.",
+    "mathContext": "$\\text{erdos\\_partial\\_result}: \\forall c_2 > 0, \\exists c_1 > 0, \\forall^\\mathrm{f} x \\in \\mathrm{atTop}, \\exists k, m, c_1 \\cdot \\log(x) < k \\wedge \\ldots$ Compare with the conjecture: $\\forall c_1 > 0, \\forall c_2 > 0, \\ldots$",
+    "significance": "key",
+    "relatedConcepts": [
+      "quantifier order",
+      "partial result",
+      "Erdős",
+      "second moment method",
+      "probabilistic number theory"
+    ],
+    "prerequisites": [
+      "mainConjecture",
+      "Filter.Eventually",
+      "quantifier logic"
+    ],
+    "crossReferences": [
+      "bertrands-postulate",
+      "prime-number-theorem"
+    ]
+  },
+  {
+    "id": "erdos-238-pnt",
+    "proofId": "erdos-238",
+    "type": "concept",
+    "range": {
+      "startLine": 119,
+      "endLine": 141
+    },
+    "title": "Prime Number Theorem Context",
+    "content": "Two axioms providing PNT context:\n\n`average_gap_grows`: For any $c_2 > 0$, eventually there exists a gap $> c_2$ among primes $\\le x$. This is a consequence of the average gap $\\sim \\log x \\to \\infty$.\n\n`prime_number_theorem_asymptotic`: $\\pi(x) \\sim x/\\log x$, formalized as $|\\pi(x)/(x/\\log x) - 1| < \\varepsilon$ eventually. Uses `Finset.filter Nat.Prime` for the counting function.",
+    "mathContext": "$\\pi(x) = |\\{p \\le x : p \\text{ prime}\\}| \\sim \\frac{x}{\\log x}$. Average gap: $\\frac{x}{\\pi(x)} \\sim \\log x$, so for fixed $c_2$, most gaps exceed $c_2$ when $x$ is large.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prime Number Theorem",
+      "average gap",
+      "counting function",
+      "Chebyshev estimates"
+    ],
+    "prerequisites": [
+      "prime number theorem",
+      "Filter.Eventually",
+      "Finset.filter"
+    ],
+    "crossReferences": [
+      "prime-number-theorem"
+    ]
+  },
+  {
+    "id": "erdos-238-runlength",
+    "proofId": "erdos-238",
+    "type": "concept",
+    "range": {
+      "startLine": 143,
+      "endLine": 203
+    },
+    "title": "Run Length Analysis (Proved)",
+    "content": "`maxRunLength(x, c)` = $\\sup\\{k : \\exists$ run of $k$ consecutive primes $\\le x$ with all gaps $> c\\}$. Uses `sSup` (supremum in $\\mathbb{N} \\cup \\{0\\}$).\n\n`conjecture_implies_run_growth` (**proved theorem**, formerly axiom): If the main conjecture holds, then $\\text{maxRunLength}(x, \\lceil c_2 \\rceil) > c_1 \\cdot \\log(x)$ eventually. Proof uses `le_csSup` with a `BddAbove` bound derived from strict monotonicity of prime enumeration (`n \\le p_n`).",
+    "mathContext": "$\\text{maxRunLength}(x, c) = \\sup\\{k \\mid \\exists m, \\text{allPrimesLeX}(m,k,x) \\wedge \\text{allGapsLarge}(m,k,c)\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sSup",
+      "run length",
+      "equivalent formulation"
+    ],
+    "prerequisites": [
+      "sSup",
+      "allPrimesLeX",
+      "allGapsLarge"
+    ]
+  },
+  {
+    "id": "erdos-238-heuristic",
+    "proofId": "erdos-238",
+    "type": "concept",
+    "range": {
+      "startLine": 166,
+      "endLine": 181
+    },
+    "title": "Heuristic Analysis (Proved Theorem)",
+    "content": "`large_gaps_eventually_dominate`: For large $x$, gaps exceeding $c_2$ become common. This is a PROVED theorem (from `average_gap_grows`), not an axiom.\n\nThe heuristic argument: if fraction $1 - o(1)$ of gaps exceed $c_2$, then the probability of $k$ consecutive large gaps $\\approx (1 - o(1))^k$. For $k = c_1 \\cdot \\log(x)$, this is roughly $e^{-o(\\log x)} \\to 1$. Making this rigorous requires controlling gap correlations — the key difficulty.",
+    "mathContext": "If gaps are independent with $P(g_n > c_2) = 1 - o(1)$, then $P(\\text{run of length } k) \\approx (1-o(1))^k \\approx 1$ for $k = O(\\log x)$. But prime gaps are NOT independent — this is a heuristic only.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "probabilistic heuristic",
+      "independence assumption",
+      "Cramér model",
+      "gap correlations"
+    ],
+    "prerequisites": [
+      "average_gap_grows",
+      "prime number theorem"
+    ],
+    "crossReferences": [
+      "prime-number-theorem"
+    ]
+  },
+  {
+    "id": "erdos-238-cramer",
+    "proofId": "erdos-238",
+    "type": "concept",
+    "range": {
+      "startLine": 183,
+      "endLine": 196
+    },
+    "title": "Cramér's Conjecture (Context)",
+    "content": "Cramér (1936) conjectured that the maximal prime gap below $x$ is $O((\\log x)^2)$. This is much stronger than needed for Problem 238 but provides context: if gaps are bounded by $(\\log x)^2$, they're typically much smaller, making long runs of large gaps plausible.\n\nFormalized as a Prop definition: $\\exists C > 0$ such that eventually all gaps between primes $\\le x$ satisfy $g_n \\le C (\\log x)^2$. Cramér's conjecture itself remains open.",
+    "mathContext": "$\\text{cramersConjecture}: \\exists C > 0, \\forall^\\mathrm{f} x, \\forall n, p_{n+1} \\le x \\Rightarrow g_n \\le C (\\log x)^2$. The best unconditional bound is Baker-Harman-Pintz (2001): $g_n \\ll p_n^{0.525}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cramér's conjecture",
+      "maximal gap",
+      "Baker-Harman-Pintz",
+      "Granville's refinement"
+    ],
+    "prerequisites": [
+      "primeGap",
+      "Real.log",
+      "Filter.Eventually"
+    ],
+    "crossReferences": [
+      "erdos-4",
+      "bounded-prime-gaps"
+    ]
+  },
+  {
+    "id": "erdos-238-structural",
+    "proofId": "erdos-238",
+    "type": "insight",
+    "range": {
+      "startLine": 198,
+      "endLine": 234
+    },
+    "title": "Structural Theorems (Verified)",
+    "content": "Two verified theorems demonstrating the logical structure:\n\n`partial_weaker_than_full`: mainConjecture implies the partial result (trivially: instantiate $c_1 = 1$). This confirms the full conjecture is strictly stronger.\n\n`conjecture_vs_negation`: mainConjecture implies $\\neg$conjectureNegation. Proof by extracting witnesses from the filter and reaching a contradiction with the negation. This 12-line proof uses `Filter.Eventually`, `mem_atTop_sets`, and structural unpacking.",
+    "mathContext": "The key step in `conjecture_vs_negation`: from $\\forall^\\mathrm{f} x$, extract $x_0$ via `mem_atTop_sets`, find the negation's $x > x_0$, and derive a contradiction from simultaneously having and not having a qualifying run.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Eventually",
+      "proof by contradiction",
+      "logical structure"
+    ],
+    "prerequisites": [
+      "mainConjecture",
+      "conjectureNegation",
+      "Filter.mem_atTop_sets"
+    ]
+  },
+  {
+    "id": "erdos-238-summary",
+    "proofId": "erdos-238",
+    "type": "concept",
+    "range": {
+      "startLine": 263,
+      "endLine": 274
+    },
+    "title": "Summary and Status",
+    "content": "`erdos_238_summary` packages the known results: Erdős's partial result and the problem statement. `erdos_238_status` records the status as a string.\n\nThe formalization has 3 axioms (erdos_partial_result, average_gap_grows, prime_number_theorem_asymptotic) and 7 verified theorems/lemmas including the proved conjecture_implies_run_growth.",
+    "mathContext": "$\\text{erdos\\_238\\_summary}: (\\forall c_2 > 0, \\exists c_1 > 0, \\ldots) \\wedge \\text{True}$. Proof: $\\langle\\text{erdos\\_partial\\_result}, \\text{trivial}\\rangle$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "known results",
+      "partial solution",
+      "axiom audit"
+    ],
+    "prerequisites": [
+      "erdos_partial_result",
+      "mainConjecture"
+    ]
+  }
+]

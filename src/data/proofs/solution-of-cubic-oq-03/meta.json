@@ -1,0 +1,250 @@
+{
+  "id": "solution-of-cubic-oq-03",
+  "title": "Vieta's Formulas for the Cubic via Cardano's Roots",
+  "slug": "solution-of-cubic-oq-03",
+  "description": "Proves that the three Cardano roots of x³ + px + q = 0 satisfy Vieta's formulas (sum = 0, pairwise products = p, triple product = -q) and derives the complete factorization into linear factors.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vieta%27s_formulas",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SolutionOfCubicOQ03.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "cubic-equations",
+      "vieta-formulas",
+      "cardano-formula",
+      "symmetric-polynomials",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.exp_two_pi_mul_I",
+        "description": "e^(2πi) = 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Complex.exp_mul_I",
+        "description": "Euler's formula: e^(θi) = cos θ + i sin θ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Real.sin_pi_div_three",
+        "description": "sin(π/3) = √3/2",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "vieta_sum: x₁ + x₂ + x₃ = 0 for Cardano roots via 1 + ω + ω² = 0",
+      "vieta_pairs: x₁x₂ + x₁x₃ + x₂x₃ = p via ω³ = 1 and uv = -p/3",
+      "vieta_product: x₁x₂x₃ = -q via ω³ = 1 and u³ + v³ = -q",
+      "cubic_factorization: x³ + px + q = (x - x₁)(x - x₂)(x - x₃)",
+      "all_roots_satisfy: all three Cardano roots are zeros of the cubic"
+    ],
+    "dateAdded": "2026-03-22",
+    "prerequisites": [
+      "Cardano's formula for the depressed cubic (parent proof)",
+      "Cube roots of unity and their properties",
+      "Symmetric polynomial relations",
+      "Complex exponential and trigonometric functions"
+    ],
+    "relatedProblems": [
+      {
+        "id": "solution-of-cubic",
+        "relationship": "Parent: Cardano's formula for the depressed cubic"
+      },
+      {
+        "id": "abel-ruffini",
+        "relationship": "Related: impossibility of quintic formula"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 187,
+    "assumptions": "None. All theorems fully proved from Mathlib with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Vieta's formulas, published by François Viète in his *De aequationum recognitione et emendatione tractatus duo* (1591, published posthumously 1615), were the first systematic statement that polynomial coefficients are elementary symmetric functions of the roots. This insight — that the coefficients 'encode' the roots in a structured way — was revolutionary: it shifted the focus from finding individual roots to understanding the symmetric relationships between all roots simultaneously.\n\nFor the depressed cubic $x^3 + px + q = 0$ (obtained by the substitution $x \\mapsto x - a_2/3$ to eliminate the $x^2$ term), the three elementary symmetric polynomials of the roots are $\\sigma_1 = 0$ (sum), $\\sigma_2 = p$ (pairwise products), and $\\sigma_3 = -q$ (triple product). Cardano's formula, published in his *Ars Magna* (1545) but discovered by Scipione del Ferro (c. 1515) and communicated via Niccolò Tartaglia, gives the roots explicitly as $x_k = \\omega^k u + \\omega^{2k} v$ where $u, v$ are cube roots satisfying $u^3 + v^3 = -q$ and $uv = -p/3$.\n\nThe verification of Vieta's formulas for Cardano's roots is a concrete algebraic computation hinging on the identity $1 + \\omega + \\omega^2 = 0$ for the primitive cube root of unity $\\omega = e^{2\\pi i/3}$. This identity, the minimal polynomial equation $\\Phi_3(\\omega) = 0$ of the cyclotomic polynomial, systematically kills all 'cross terms' in the symmetric sums, leaving only the desired expressions in $u^3 + v^3$ and $uv$. Newton later generalized Vieta's relations via the Newton-Girard identities (1666/1707), expressing power sums $p_k = \\sum x_i^k$ recursively in terms of the elementary symmetric polynomials.",
+    "problemStatement": "Given the three Cardano roots x₁ = u+v, x₂ = ωu+ω²v, x₃ = ω²u+ωv of x³+px+q=0, prove σ₁ = 0, σ₂ = p, σ₃ = -q and the complete factorization.",
+    "proofStrategy": "All three Vieta formulas reduce to algebraic identities involving the cube root of unity ω. The key identity 1+ω+ω²=0 eliminates all but the desired terms in each symmetric sum. The factorization follows from the general identity (x-r₁)(x-r₂)(x-r₃) = x³-σ₁x²+σ₂x-σ₃.",
+    "keyInsights": [
+      "The single identity 1 + ω + ω² = 0 drives all three Vieta proofs: it kills the 'wrong' terms (u², v² in Vieta II; u²v, uv² in Vieta III) while the 'right' terms survive via ω³ = 1",
+      "The sum σ₁ = 0 reflects the absence of the x² term geometrically: the depressed cubic substitution x → x - a₂/3 shifts the roots so their centroid is at the origin",
+      "The pairwise sum σ₂ = p uses the deepest algebraic manipulation: expanding three products, reducing ω⁴ = ω and ω³ = 1, showing the u² and v² coefficients equal (1+ω+ω²) = 0, then computing the uv coefficient as -3",
+      "The pairing x_k = ω^k u + ω^{2k} v is not arbitrary — it preserves uv = -p/3 for each root pair because ω^k · ω^{2k} = ω^{3k} = 1, which is exactly what makes Vieta II work",
+      "The linear_combination tactic provides algebraic proof certificates: instead of step-by-step rewriting, it directly expresses the goal as a linear combination of hypotheses (omega_sum, h_prod, h_sum), leaving only a ring identity for the kernel to verify",
+      "The factorization theorem closes the loop: Cardano → Vieta → factorization → root verification forms a complete algebraic proof cycle, entirely machine-checked"
+    ],
+    "prerequisites": [
+      "Cardano's formula for the depressed cubic x^3 + px + q = 0",
+      "Cube roots of unity: omega = e^(2 pi i/3) and the identity 1 + omega + omega^2 = 0",
+      "Elementary symmetric polynomials and Vieta's formulas",
+      "Complex exponential function and Euler's formula"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cube-root-unity",
+      "title": "Section I: Cube Root of Unity",
+      "startLine": 1,
+      "endLine": 82,
+      "summary": "Defines $\\omega = e^{2\\pi i/3}$ and proves the fundamental identities: $\\omega^3 = 1$, $\\omega \\neq 1$, $1 + \\omega + \\omega^2 = 0$, $\\omega^2 + \\omega = -1$, and $\\omega^4 = \\omega$",
+      "mathContext": "Defines $\\omega = e^{2\\pi i/3}$ and proves the fundamental identities: $\\omega^3 = 1$, $\\omega \\neq 1$, $1 + \\omega + \\omega^2 = 0$, $\\omega^2 + \\omega = -1$, and $\\omega^4 = \\omega$"
+    },
+    {
+      "id": "cardano-roots",
+      "title": "Section II: The Three Cardano Roots",
+      "startLine": 84,
+      "endLine": 95,
+      "summary": "Defines the three roots: $x_1 = u + v$, $x_2 = \\omega u + \\omega^2 v$, $x_3 = \\omega^2 u + \\omega v$",
+      "mathContext": "The choice of pairing (root $k$ uses $\\omega^k u + \\omega^{2k} v$) ensures $uv = -p/3$ is preserved for all three root pairs, which is essential for Vieta II."
+    },
+    {
+      "id": "vieta-sum",
+      "title": "Section III: Vieta I — Sum of Roots",
+      "startLine": 97,
+      "endLine": 108,
+      "summary": "$x_1 + x_2 + x_3 = (1+\\omega+\\omega^2)(u+v) = 0$. Proved via linear_combination with omega_sum",
+      "mathContext": "For a monic polynomial $x^n + a_{n-1}x^{n-1} + \\cdots$, the sum of roots equals $-a_{n-1}$. Here $a_{n-1} = 0$ (no $x^2$ term)."
+    },
+    {
+      "id": "vieta-pairs",
+      "title": "Section IV: Vieta II — Sum of Pairwise Products",
+      "startLine": 110,
+      "endLine": 132,
+      "summary": "After expanding, the $u^2$ and $v^2$ coefficients are $(1+\\omega+\\omega^2) = 0$, and the $uv$ coefficient reduces to $-3$ via $\\omega^3 = 1$ and $\\omega^4 = \\omega$. With $uv = -p/3$, this gives $p$",
+      "mathContext": "The second elementary symmetric polynomial $\\sigma_2 = \\sum_{i<j} x_i x_j$ equals the coefficient of $x$ in the monic depressed cubic."
+    },
+    {
+      "id": "vieta-product",
+      "title": "Section V: Vieta III — Product of All Roots",
+      "startLine": 134,
+      "endLine": 152,
+      "summary": "The triple product expands with cross-terms ($u^2 v$, $uv^2$) that vanish by $1+\\omega+\\omega^2 = 0$, leaving $\\omega^3(u^3+v^3) = u^3 + v^3 = -q$",
+      "mathContext": "The third elementary symmetric polynomial $\\sigma_3 = x_1 x_2 x_3$ equals $(-1)^3$ times the constant term, giving $-q$."
+    },
+    {
+      "id": "factorization",
+      "title": "Section VI: Polynomial Factorization",
+      "startLine": 154,
+      "endLine": 174,
+      "summary": "Combines all three Vieta formulas with the expansion $(x-r_1)(x-r_2)(x-r_3) = x^3 - \\sigma_1 x^2 + \\sigma_2 x - \\sigma_3$ to prove $x^3 + px + q = (x - x_1)(x - x_2)(x - x_3)$",
+      "mathContext": "This is the fundamental theorem of algebra applied to degree 3: every cubic over $\\mathbb{C}$ splits into linear factors."
+    },
+    {
+      "id": "roots-satisfy",
+      "title": "Section VII: Root Verification",
+      "startLine": 176,
+      "endLine": 185,
+      "summary": "As a corollary of the factorization, all three Cardano roots satisfy $x_i^3 + px_i + q = 0$",
+      "mathContext": "Each root is a zero of the polynomial because the factorization puts $(x - x_i)$ as a factor."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms) proof of all three Vieta formulas and the complete factorization of the depressed cubic into linear factors, in 187 lines with 10 theorems and 4 definitions. The central technique is the systematic use of 1 + ω + ω² = 0 to eliminate cross terms in symmetric polynomial computations, with the linear_combination tactic providing clean algebraic proof certificates.",
+    "implications": "Vieta's formulas provide the algebraic bridge between Cardano's explicit radical formula and the abstract factorization theory of polynomials. They confirm that the three Cardano roots are exactly the roots of the cubic, completing a machine-verified proof cycle: radical formula → symmetric polynomial identities → factorization → root verification. This connects to the fundamental theorem of symmetric polynomials: the elementary symmetric polynomials σ₁, σ₂, σ₃ generate the ring of all symmetric polynomials in three variables, and Vieta's formulas express them as the polynomial's coefficients. The proof also demonstrates that Lean's linear_combination tactic is well-suited for algebraic computations involving roots of unity, suggesting it could handle analogous verifications for quartic roots (involving fourth roots of unity) and general cyclotomic identities.",
+    "openQuestions": [
+      "Formalize the discriminant Δ = -4p³ - 27q² and prove it equals (x₁-x₂)²(x₁-x₃)²(x₂-x₃)², relating root separation to coefficient data",
+      "Formalize the casus irreducibilis: when Δ > 0, all three roots are real, yet Cardano's formula necessarily involves complex cube roots — the simplest example of a real result requiring passage through ℂ",
+      "Prove the resolvent cubic for the general quartic reduces to Cardano's formula, connecting this file to the quartic solution chain",
+      "Formalize Newton-Girard identities expressing power sums p_k = Σxᵢᵏ in terms of elementary symmetric polynomials, generalizing the relationship between roots and coefficients",
+      "Verify Vieta's formulas for the general (non-depressed) cubic x³ + ax² + bx + c = 0, showing σ₁ = -a, σ₂ = b, σ₃ = -c"
+    ]
+  },
+  "status": "verified",
+  "badge": "mathlib",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Log",
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+    ],
+    "opens": [
+      "Complex",
+      "Polynomial"
+    ],
+    "namespace": "SolutionOfCubicOQ03",
+    "lineCount": 187,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 4,
+    "path": "Proofs/SolutionOfCubicOQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "extends",
+      "description": "Parent proof: Cardano's formula for the depressed cubic. This file takes the three roots produced by Cardano's formula and verifies they satisfy Vieta's formulas, completing the algebraic picture: Cardano gives the roots explicitly, Vieta's formulas confirm the coefficient relationships, and the factorization theorem shows the cubic splits at these roots."
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "complementary",
+      "description": "The base Vieta's formulas entry proves the general relationship between roots and coefficients abstractly. This file provides the concrete verification for the specific case of Cardano's cubic roots, using the identity 1 + ω + ω² = 0 to perform the explicit computation."
+    },
+    {
+      "targetId": "vietas-formulas-oq-03",
+      "relationship": "related",
+      "description": "Newton's identities express power sums p_k = Σxᵢᵏ recursively in terms of elementary symmetric polynomials eⱼ, generalizing the relationship verified here. This file proves the elementary symmetric polynomial values σ₁ = 0, σ₂ = p, σ₃ = -q; Newton's identities would give the power sums as well."
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "related",
+      "description": "Ferrari's quartic formula (1540) uses a resolvent cubic — the solution of the quartic reduces to solving a cubic, which uses Cardano's formula. This file's verification of Vieta's formulas for the cubic is thus foundational for the quartic solution chain."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "complementary",
+      "description": "Abel-Ruffini proves no radical formula exists for the general quintic. This file demonstrates the cubic case where a radical formula DOES exist (Cardano's) and completely captures the roots. The contrast illustrates the exact boundary of radical solvability: cubics and quartics yield to radicals, quintics do not."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "The FTA guarantees that every degree-n polynomial over ℂ has n roots (counted with multiplicity). This file constructs the three cubic roots explicitly via Cardano's formula and proves the factorization, providing a constructive witness for the FTA in degree 3."
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "The primitive cube root of unity ω = e^{2πi/3} is a primitive root of the cyclotomic polynomial Φ₃(x) = x² + x + 1. The identity 1 + ω + ω² = 0 (the key tool in every Vieta proof here) is exactly the statement that ω is a root of Φ₃."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The binomial theorem underlies the expansion of (ωu + ω²v)³ and similar expressions needed in the Vieta proofs. The multinomial expansions of symmetric products are essentially binomial coefficient computations organized by the symmetry group S₃."
+    }
+  ],
+  "references": [
+    {
+      "key": "Ca45",
+      "citation": "Cardano, G., Artis Magnae, sive de Regulis Algebraicis Liber Unus, Johann Petreius, Nuremberg (1545). English translation: The Great Art, or The Rules of Algebra, MIT Press (1968), trans. T.R. Witmer.",
+      "type": "book"
+    },
+    {
+      "key": "Vi15",
+      "citation": "Viète, F., De aequationum recognitione et emendatione tractatus duo (1591, published posthumously 1615).",
+      "type": "book"
+    },
+    {
+      "key": "Ti01",
+      "citation": "Tignol, J.-P., Galois' Theory of Algebraic Equations, World Scientific (2001), Chapters 3–5.",
+      "type": "book"
+    },
+    {
+      "key": "NZ04",
+      "citation": "Nickalls, R.W.D., Vieta, Descartes and the cubic equation, The Mathematical Gazette 90(518) (2006), 203–208.",
+      "type": "paper"
+    },
+    {
+      "key": "St10",
+      "citation": "Stillwell, J., Mathematics and Its History, 3rd ed., Springer Undergraduate Texts in Mathematics (2010), Chapters 6–7: cubic and quartic equations.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

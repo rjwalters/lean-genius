@@ -1,0 +1,191 @@
+{
+  "id": "erdos-954",
+  "title": "Erdős Problem #954: Rosen's Greedy Additive Sequence",
+  "slug": "erdos-954",
+  "description": "Define a greedy sequence 0 = a₀ < a₁ < ⋯ where a_{k+1} is minimal with representation count < a_{k+1}. Is R(x) = x + O(x^{1/4+o(1)})? Even R(x) ≤ (1+o(1))x is open. Status: OPEN.",
+  "meta": {
+    "author": "Paul Erdős, Rosen",
+    "sourceUrl": "https://erdosproblems.com/954",
+    "date": "1977",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos954Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "greedy-algorithms",
+      "representation-functions",
+      "open-problem",
+      "sidon-sets"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 954,
+    "erdosUrl": "https://erdosproblems.com/954",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Card",
+        "description": "From Mathlib.Data.Finset.Card",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Nat.Basic",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Order.Filter.Basic",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "repCount: cumulative representation count R_k(n) via Finset.Icc sums",
+      "IsGreedyNext/IsRosenSequence: greedy condition and full sequence predicate",
+      "repCountList/findNextRosen/buildRosen/rosenTerm: computable List-based construction",
+      "rosen_term_0 through rosen_term_10: 11 initial values verified by native_decide",
+      "repcount_below_at_elements: R_k(a_{k+1}) < a_{k+1} (proved from definition)",
+      "repcount_above_between: R_k(m) ≥ m between consecutive elements (proved)",
+      "rosen_strictMono: strict monotonicity (proved from definition)",
+      "rosen_growth: a_k ≥ k by induction (proved)",
+      "repcount_lower_bound_pre_element: R_k(a_{k+1}-1) ≥ a_{k+1}-1 (proved)",
+      "fullRepCount: infinite-sequence representation count",
+      "IsB2Sequence: Sidon set definition for connection to Problem #28",
+      "repCount_mono_k: monotonicity R_k(n) ≤ R_{k+1}(n) (proved)"
+    ],
+    "axiomCount": 0,
+    "lineCount": 219,
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 18,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this problem in his 1977 paper (Er77c, p.71), studying a greedy additive sequence construction due to Rosen. The sequence $0 = a_0 < a_1 < a_2 < \\cdots$ is built by choosing $a_{k+1}$ as the smallest integer $n$ where the cumulative representation count $R_k(n) = |\\{(i,j) : i \\leq j,\\, j \\geq 1,\\, a_i + a_j \\leq n\\}|$ drops below $n$. This greedy rule creates a sequence that is as dense as possible while keeping the representation count under control. The construction mirrors the philosophy behind Sidon (B$_2$) sets, where all pairwise sums must be distinct, but relaxes the uniqueness condition to a cumulative density condition. While B$_2$ sets have density $\\sim \\sqrt{x}$, the Rosen sequence aims for density $\\sim x$. Erdős and Rosen could not prove even the weak conjecture that $R(x) = (1+o(1))x$, let alone the strong conjecture with $x^{1/4+o(1)}$ error. The exponent $1/4$ comes from analogy with optimal B$_2$ error terms. The sequence begins $(0, 1, 3, 5, 9, 13, 17, 24, 31, 38, 45, \\ldots)$ and appears as OEIS A390642. The formalization is notable for combining computable verification (11 terms via `native_decide`) with 5 genuinely proved structural theorems and 0 sorries.",
+    "problemStatement": "Let $0 = a_0 < a_1 < a_2 < \\cdots$ where $a_{k+1}$ is the smallest $n$ with $R_k(n) < n$, where $R_k(n)$ counts pairs $(i,j)$ with $i \\leq j$, $j \\geq 1$, and $a_i + a_j \\leq n$. Is $R(x) = x + O(x^{1/4+o(1)})$? Even $R(x) \\leq (1+o(1))x$ is open.",
+    "text": "Define a greedy sequence 0 = a₀ < a₁ < ⋯ where a_{k+1} is minimal with representation count < a_{k+1}. Is R(x) = x + O(x^{1/4+o(1)})? Even R(x) ≤ (1+o(1))x is open. Status: OPEN.",
+    "proofStrategy": "The formalization defines the representation count `repCount` via `Finset.Icc` sums, the greedy condition `IsGreedyNext`, and the full sequence predicate `IsRosenSequence`. A computable List-based construction (`buildRosen`) generates terms verified against OEIS A390642 by `native_decide`. Five structural theorems are proved from the greedy definition: representation count bounds at and between elements, strict monotonicity, linear growth, and monotonicity in $k$. The weak and strong conjectures appear only as docstring comments (no axiom declarations). `erdos_turan_context` is a proved theorem (fullRepCount is unbounded for B₂ sequences). The file has 0 axioms and 0 sorries.",
+    "keyInsights": [
+      "**Greedy duality**: By construction, $R_k(a_{k+1}) < a_{k+1}$ (the count drops below the threshold at each new element) while $R_k(m) \\geq m$ for all $m$ between consecutive elements. This oscillation characterizes the sequence completely.",
+      "**Computable verification**: The first 11 terms $(0, 1, 3, 5, 9, 13, 17, 24, 31, 38, 45)$ are generated by a List-based algorithm and verified by `native_decide`, providing concrete evidence for the conjectures. The gap pattern $1, 2, 2, 4, 4, 4, 7, 7, 7, 7$ suggests $\\sqrt{k}$-type growth.",
+      "**Relaxation of Sidon condition**: B$_2$ (Sidon) sequences require all pairwise sums distinct, giving density $\\sim \\sqrt{x}$. Rosen's sequence allows repeated sums but controls cumulative count, potentially achieving density $\\sim x$ — a quadratic improvement.",
+      "**The $x^{1/4}$ exponent**: For B$_2$ sequences, $R(x) \\sim \\sqrt{x}$ and the optimal error is $O(x^{1/4})$. Scaling to Rosen's setting where $R(x) \\sim x$, the analogous error is $O(x^{1/4})$ — the same exponent but relative to a much larger main term.",
+      "**Five proved theorems with 0 sorries**: All structural properties (monotonicity of $R_k$ in $k$, growth $a_k \\geq k$, greedy bounds) are fully proved. The weak/strong conjectures appear as docstring comments only — not axiomatized. `erdos_turan_context` (fullRepCount unbounded for B₂ sequences) is also fully proved. 0 axioms, 0 sorries."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview & Problem Statement",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Module docstring for Erdős Problem #954 (Rosen's greedy additive sequence): a₀=0, a₁=1, and a_{k+1} is the least n whose representation count R_k(n) is below n. Conjecture R(x)=x+O(x^{1/4+o(1)}) is OPEN; sequence 0,1,3,5,9,13,17,24,31,38,45,… (OEIS A390642). Mathlib imports."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 24,
+      "endLine": 42,
+      "summary": "Defines `repCount a k n` as the cumulative representation count via `Finset.Icc` sums, `IsGreedyNext a k` as the minimality condition $a_{k+1} = \\min\\{n : R_k(n) < n\\}$, and `IsRosenSequence a` combining initial values, strict monotonicity, and the greedy property."
+    },
+    {
+      "id": "computable",
+      "title": "Computable Construction",
+      "startLine": 43,
+      "endLine": 80,
+      "summary": "List-based implementation: `repCountList` computes $R_k(n)$, `findNextRosen` searches with bounded fuel, `buildRosen` constructs terms, `rosenTerm` extracts the $k$-th value."
+    },
+    {
+      "id": "initial-values",
+      "title": "Verified Initial Values",
+      "startLine": 81,
+      "endLine": 96,
+      "summary": "Eleven theorems `rosen_term_0` through `rosen_term_10` verify $(0, 1, 3, 5, 9, 13, 17, 24, 31, 38, 45)$ via `native_decide`, matching OEIS A390642."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 97,
+      "endLine": 132,
+      "summary": "Five proved theorems: $R_k(a_{k+1}) < a_{k+1}$, $R_k(m) \\geq m$ between elements, strict monotonicity, $a_k \\geq k$ by induction, and $R_k(a_{k+1}-1) \\geq a_{k+1}-1$ from the greedy gap."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 133,
+      "endLine": 144,
+      "summary": "Defines `fullRepCount` for the infinite sequence. Includes docstring comments describing the weak conjecture $R(x) = (1+o(1))x$ and strong conjecture $|R(x) - x| = O(x^{1/4} \\log x)$. No axiom declarations for these conjectures — they appear as documentation only."
+    },
+    {
+      "id": "sidon-connection",
+      "title": "Connection to Sidon Sets",
+      "startLine": 145,
+      "endLine": 205,
+      "summary": "Defines `IsB2Sequence` (Sidon set predicate). Proves `erdos_turan_context`: fullRepCount is unbounded for any B₂ sequence (fully proved theorem, not an axiom). `rosen_not_b2` does not exist in the file."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Representation Count Monotonicity",
+      "startLine": 206,
+      "endLine": 219,
+      "summary": "Proves `repCount_mono_k`: $R_k(n) \\leq R_{k+1}(n)$ via `Finset.sum_le_sum_of_subset_of_nonneg`."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #954 formalizes Rosen's greedy additive sequence, an open problem from 1977. The formalization achieves 0 sorries and 0 axioms with 5 genuinely proved structural theorems, 11 computationally verified initial values, and 1 proved theorem (`erdos_turan_context`). The open conjectures appear as docstring comments only. The computable construction allows verification against OEIS A390642.",
+    "implications": "A resolution of even the weak conjecture would illuminate the fundamental limits of greedy additive constructions and the tradeoff between sequence density and representation control. The connection to Sidon sets suggests that understanding Rosen's sequence could inform the broader theory of additive bases and the Erdős-Turán conjecture.",
+    "openQuestions": [
+      "Is $R(x) \\leq (1+o(1))x$ (weak conjecture)? Erdős and Rosen could not prove this.",
+      "Is $|R(x) - x| = O(x^{1/4+o(1)})$ (strong conjecture)?",
+      "What is the density of the Rosen sequence: is $a_k \\sim ck$ for some constant $c$?",
+      "Can the greedy construction be modified (e.g., different threshold) to achieve provably better error bounds?",
+      "Is the Rosen sequence the unique sequence satisfying the greedy property, or are there ties in the minimization?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 219,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos954Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Erdős (1977): original problem (Er77c, p.71)",
+    "Rosen: greedy sequence construction",
+    "OEIS A390642: the Rosen sequence",
+    "https://erdosproblems.com/954"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-340",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, greedy-algorithms, number-theory, sidon-sets"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, representation-functions"
+    },
+    {
+      "targetId": "erdos-30",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, sidon-sets"
+    }
+  ],
+  "sorries": 0
+}

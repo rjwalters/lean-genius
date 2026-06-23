@@ -1,0 +1,388 @@
+{
+  "id": "borsuk-ulam-oq-03-oq-01",
+  "title": "Tucker's 1D Lemma via Discrete IVT, with Interval and Circle Bounds",
+  "slug": "borsuk-ulam-oq-03-oq-01",
+  "description": "Tucker's 1D lemma proved via a discrete intermediate value theorem, together with Lipschitz and oscillation bounds on the antisymmetric difference, circle Borsuk-Ulam via IVT, and sign-change parity infrastructure toward Tucker 2D. Note: many interval-level BU statements are degenerate because 0 is self-antipodal on [-1,1]; the genuinely nontrivial topology begins on S^1. Tucker 2D and n-D are axiomatized.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Tucker%27s_lemma",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BorsukUlamOQ03OQ01.lean",
+    "tags": [
+      "topology",
+      "combinatorial-topology",
+      "tucker-lemma",
+      "borsuk-ulam",
+      "discrete-ivt",
+      "lipschitz",
+      "sign-parity",
+      "circle-bu",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "LipschitzWith.sub",
+        "description": "Lipschitz functions are closed under subtraction",
+        "module": "Mathlib.Topology.MetricSpace.Lipschitz"
+      },
+      {
+        "theorem": "tendsto_pow_atTop_nhds_zero_of_lt_one",
+        "description": "Geometric sequences (1/2)^n tend to zero",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Order"
+      },
+      {
+        "theorem": "intermediate_value_Icc",
+        "description": "Intermediate Value Theorem on closed intervals",
+        "module": "Mathlib.Topology.Order.IntermediateValue"
+      },
+      {
+        "theorem": "isCompact_Icc",
+        "description": "Closed bounded intervals are compact",
+        "module": "Mathlib.Topology.Order.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Tucker's 1D lemma with {+-1} labels via discrete IVT: clean combinatorial proof that an antipodal boundary labeling has a complementary edge",
+      "Discrete IVT (fin_adjacent_eq_implies_const, discrete_ivt): the combinatorial core, proved by Fin.induction and contrapositive",
+      "Circle BU via IVT: genuinely nontrivial proof that continuous f: S^1 -> R has antipodal agreement, using g(theta) = f(cos theta, sin theta) - f(-cos theta, -sin theta) with g(pi) = -g(0)",
+      "Sign-change parity framework: the number of sign changes along a path with complementary endpoints is odd, proved by induction",
+      "Tucker-BU equivalence in 1D: both directions proved",
+      "Tucker for cycles and paths with multi-valued labels: path-based reduction from 2D to 1D Tucker for +-1 labels",
+      "Perturbation stability of antisymmetric differences: epsilon-close functions differ by at most 2*epsilon",
+      "Honest documentation of false two-function circle BU claim with dimensional correction"
+    ],
+    "dateAdded": "2026-03-11",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 1,
+    "lineCount": 1163,
+    "assumptions": "1 axiom (Tucker's lemma in 2D axiomatized). No sorries.",
+    "theoremCount": 46,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "**Tucker's Lemma and the 1D Borsuk-Ulam Theorem**\n\nTucker's lemma (1946) is the combinatorial analog of Borsuk-Ulam: any signed labeling of a triangulated interval with antipodal boundary condition must have a complementary edge (adjacent vertices with opposite labels). In 1D, Tucker's lemma and BU are equivalent.\n\n**Important caveat**: On the interval [-1,1], many Borsuk-Ulam-style statements are degenerate because x = 0 is self-antipodal (0 = -0). Results like \"there exist x, y with f(x) = f(y) and x + y = 0\" are trivially satisfied by x = y = 0, and do not extract hidden structure from any existence theorem. The genuinely nontrivial Borsuk-Ulam topology begins on S^1, where the antipodal map has no fixed points.\n\nThis file's strongest content is the Tucker 1D proof via discrete IVT, the circle BU proof, and the sign-change parity infrastructure. The interval-level quantitative bounds (Lipschitz, oscillation, bisection) are correct but elementary consequences of continuity and compactness, not deep Borsuk-Ulam phenomena.\n\nThe higher-dimensional Tucker's lemma (triangulated disks B^n with labels from {+-1,...,+-n}) implies the full n-dimensional Borsuk-Ulam theorem. The 2D and n-D cases are axiomatized here.",
+    "problemStatement": "**The Open Question**\n\nCan Tucker's lemma be proved in Lean via discrete IVT? What quantitative bounds arise from the constructive 1D BU proof? Can the Tucker framework extend to higher dimensions?\n\n**Answer**\n\n- Tucker 1D: Fully proved via discrete IVT with integer labels {+-1}\n- Circle BU: Nontrivially proved via IVT on the parametric difference g(theta)\n- Interval bounds: Lipschitz (2L), oscillation, bisection convergence (2^{1-n}) -- correct but elementary since x = 0 is always a witness\n- Sign-change parity: Odd count along complementary-endpoint paths, proved by induction\n- Tucker 2D/nD: Axiomatized (requires simplicial complex infrastructure not yet in Mathlib)",
+    "text": "Tucker's 1D lemma proved via a discrete intermediate value theorem, together with Lipschitz and oscillation bounds on the antisymmetric difference, circle Borsuk-Ulam via IVT, and sign-change parity infrastructure toward Tucker 2D. On [-1,1], many BU-style statements are degenerate because 0 is self-antipodal; the genuinely nontrivial topology begins on S^1. Tucker 2D and n-D are axiomatized.",
+    "proofStrategy": "**Strategy: Discrete IVT + Sign Parity**\n\n**Tucker 1D (strongest result)**: By contradiction via Fin.induction. If all adjacent pairs agree, the function is constant (equals f(0)). But f(0) = -f(last) and labels are in {+-1}, so f(0) != f(last), contradiction. Then case-split on the four possible {+-1} combinations to show the differing pair sums to 0.\n\n**Circle BU**: Define g(theta) = f(cos theta, sin theta) - f(-cos theta, -sin theta). Then g(pi) = -g(0) by trigonometric identities, so by IVT on [0, pi], g has a zero. This is genuinely nontrivial because the antipodal map on S^1 has no fixed points.\n\n**Lipschitz Bounds**: The antisymmetric difference g(x) = f(x) - f(-x) of an L-Lipschitz function is (L+L)-Lipschitz. Since dist(x, -x) <= 2 on [-1,1], we get |g(x)| <= 2L. (Note: the existence of a zero at x = 0 is trivial; the bound is on the maximum deviation.)\n\n**Sign-Change Parity**: Proved by induction on path length. If endpoints have complementary labels (sum to 0), the number of sign changes along the path is odd.\n\n**Tucker 2D/nD**: Axiomatized using an abstract graph-theoretic formulation.",
+    "keyInsights": [
+      "**Interval BU is degenerate**: On [-1,1], x = 0 is self-antipodal, so many BU-style existence results are trivially satisfied. The genuinely nontrivial topology begins on S^1",
+      "**Tucker 1D via discrete IVT**: Clean combinatorial proof -- if all adjacent values agree then the function is constant, contradicting the antipodal boundary condition",
+      "**Circle BU is genuinely nontrivial**: Proved via IVT on g(theta) with g(pi) = -g(0); the antipodal map on S^1 has no fixed points, so the zero of g is topologically forced",
+      "**Sign-change parity is the bridge to Tucker 2D**: The odd-count lemma for sign changes along paths with complementary endpoints is the structural foundation for higher-dimensional Tucker",
+      "**Tucker = BU in 1D**: Both directions of the equivalence are proved, connecting combinatorial and topological perspectives",
+      "**False claim honestly documented**: The file identifies and explains a tempting but false two-function circle BU claim, with the dimensional error correction retained as a warning"
+    ],
+    "prerequisites": [
+      "Algebraic topology (degree theory, homotopy)",
+      "Analysis (continuous maps on spheres, antipodal maps)",
+      "Combinatorics (Tucker's lemma, Borsuk-Ulam applications)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: Open Question and Caveat",
+      "summary": "Module overview for OQ-01 of OQ-03: can Tucker's lemma be proved in Lean via discrete IVT, and what quantitative bounds arise from the constructive 1D Borsuk-Ulam proof? Notes the [-1,1] degeneracy (x=0 is self-antipodal) and lists the key results by strength.",
+      "startLine": 1,
+      "endLine": 40,
+      "mathContext": "On [-1,1] many Borsuk-Ulam statements are degenerate because 0 = -0; the genuinely nontrivial topology begins on the circle S¹ where the antipodal map is fixed-point-free."
+    },
+    {
+      "id": "lipschitz-bu",
+      "title": "Section I: Lipschitz Borsuk-Ulam",
+      "summary": "For an L-Lipschitz f, the antisymmetric difference g(x) = f(x) - f(-x) is 2L-Lipschitz, giving quantitative control on the antipodal zero set.",
+      "startLine": 41,
+      "endLine": 78,
+      "mathContext": "For L-Lipschitz f the antisymmetric difference is 2L-Lipschitz and |f(x)-f(-x)| ≤ 2L on [-1,1]."
+    },
+    {
+      "id": "bisection-convergence",
+      "title": "Section II: Bisection Convergence Rate",
+      "summary": "The IVT proof of 1D BU is constructive via bisection; after n steps on [-1,1] the antipodal pair is localized within an interval of length 2^{1-n}, which tends to zero.",
+      "startLine": 79,
+      "endLine": 116,
+      "mathContext": "Bisection width after n steps is 2·(1/2)^n = 2^{1-n} → 0."
+    },
+    {
+      "id": "oscillation-bounds",
+      "title": "Section III: Oscillation Bounds on Antipodal Deviation",
+      "summary": "The oscillation of f on [-1,1] controls the maximum antipodal deviation: for f with oscillation ω we have |f(x) - f(-x)| ≤ ω.",
+      "startLine": 117,
+      "endLine": 156,
+      "mathContext": "Antipodal deviation |f(x)-f(-x)| is bounded by the oscillation ω of f on [-1,1]."
+    },
+    {
+      "id": "coincidence-set",
+      "title": "Section IV: Coincidence Set Structure",
+      "summary": "The coincidence set C(f) = {x ∈ [-1,1] | f(x) = f(-x)} is closed, symmetric, and nonempty (containing 0); further structural properties including compactness and existence of an infimum are proved.",
+      "startLine": 157,
+      "endLine": 200,
+      "mathContext": "C(f) is closed, symmetric, nonempty and compact for continuous f."
+    },
+    {
+      "id": "circle-bu",
+      "title": "Section V: Quantitative Circle BU",
+      "summary": "For the parametric circle version f(cos θ, sin θ) = f(-cos θ, -sin θ), explicit bounds are given using the modulus of continuity on the circle — the genuinely nontrivial Borsuk-Ulam case.",
+      "startLine": 201,
+      "endLine": 243,
+      "mathContext": "Circle BU via IVT on g(θ) = f(θ) - f(θ+π); antipodal deviation bounded by the circle modulus of continuity."
+    },
+    {
+      "id": "uniform-continuous-bu",
+      "title": "Section VI: BU for Uniformly Continuous Functions",
+      "summary": "Every uniformly continuous function on [-1,1] has antipodal deviation controlled by its modulus of uniform continuity, making the constructive content explicit.",
+      "startLine": 244,
+      "endLine": 270,
+      "mathContext": "Antipodal deviation is controlled by the modulus of uniform continuity; bisection needs finitely many steps to reach precision ε."
+    },
+    {
+      "id": "antipodal-value-bounds",
+      "title": "Section VII: Antipodal Value Bounds",
+      "summary": "The value f(x₀) at an antipodal pair x₀ (where f(x₀) = f(-x₀)) is bounded in terms of f's values at the endpoints; monotone functions pin it down further.",
+      "startLine": 271,
+      "endLine": 297,
+      "mathContext": "f(x₀) at the coincidence point lies within the range of f's endpoint values."
+    },
+    {
+      "id": "multi-function-bu",
+      "title": "Section VIII: Multi-Function BU",
+      "summary": "In 1D the Borsuk-Ulam theorem trivially extends to multiple functions because x=0 is self-antipodal; the circle version's multi-function extension is non-trivial.",
+      "startLine": 298,
+      "endLine": 334,
+      "mathContext": "Multi-function interval BU is trivial via x=0; the nontrivial content lives on the circle."
+    },
+    {
+      "id": "quantitative-noninjectivity",
+      "title": "Section IX: Quantitative Non-Injectivity",
+      "summary": "Borsuk-Ulam implies dimension-reducing maps are not injective; this is made quantitative by bounding how close two pre-images must be.",
+      "startLine": 335,
+      "endLine": 377,
+      "mathContext": "BU forces non-injectivity of dimension-reducing maps, with quantitative bounds on antipodal pre-image proximity."
+    },
+    {
+      "id": "continuity-modulus",
+      "title": "Section X: Continuity Modulus and Constructive Bounds",
+      "summary": "The modulus of continuity ω_f(δ) controls the antipodal deviation at each bisection step; after n steps the residual deviation is ≤ ω_f(2^{1-n}).",
+      "startLine": 378,
+      "endLine": 399,
+      "mathContext": "Localization bound: residual antipodal deviation after n bisection steps is at most ω_f(2^{1-n})."
+    },
+    {
+      "id": "antipodal-measure",
+      "title": "Section XI: Antipodal Measure Zero vs Positive Measure",
+      "summary": "For generic continuous functions the coincidence set is discrete, but for special functions (e.g. even or constant functions) it can be all of [-1,1]; linear functions have a unique antipodal point.",
+      "startLine": 400,
+      "endLine": 430,
+      "mathContext": "Coincidence set is generically discrete but equals [-1,1] for even/constant functions; linear non-constant functions have a unique antipodal point."
+    },
+    {
+      "id": "perturbation-stability",
+      "title": "Section XII: Stability of Antipodal Pairs Under Perturbation",
+      "summary": "Small perturbations of f produce nearby antipodal pairs — a quantitative stability result with a 2ε bound on perturbed antisymmetric differences.",
+      "startLine": 431,
+      "endLine": 468,
+      "mathContext": "Perturbing f by g shifts antipodal pairs continuously; the antisymmetric difference changes by at most 2·sup|g|."
+    },
+    {
+      "id": "fixed-point-index",
+      "title": "Section XIII: BU and Fixed Point Index",
+      "summary": "The Borsuk-Ulam theorem relates to the Lefschetz fixed-point theorem via the antipodal map; in 1D the connection is transparent (the antipodal map on {-1,1} has no fixed point).",
+      "startLine": 469,
+      "endLine": 491,
+      "mathContext": "Antipodal map has no fixed point on the boundary; composing with it yields the BU structure."
+    },
+    {
+      "id": "quantitative-summary",
+      "title": "Section XIV: Summary and Open Directions",
+      "summary": "Summary of the quantitative interval/circle Borsuk-Ulam results established above, with open directions toward the combinatorial Tucker program.",
+      "startLine": 492,
+      "endLine": 523,
+      "mathContext": "Consolidates the quantitative BU bounds and frames the transition to Tucker's lemma."
+    },
+    {
+      "id": "discrete-ivt",
+      "title": "Section XIV (cont.): Discrete Intermediate Value Theorem",
+      "summary": "The foundational lemma for Tucker's lemma: a function on {0,…,n+1} taking different values at the endpoints must change value at some adjacent pair (discrete IVT).",
+      "startLine": 524,
+      "endLine": 553,
+      "mathContext": "Discrete IVT: if f(0) ≠ f(n+1) then f changes value across some adjacent index pair."
+    },
+    {
+      "id": "tucker-1d",
+      "title": "Section XV: Tucker's Lemma (1D)",
+      "summary": "Tucker's Lemma (1D): a labeling f : {0,…,n+1} → {−1,+1} with the antipodal boundary condition f(0) = −f(n+1) must have adjacent vertices i, i+1 with f(i)+f(i+1)=0 (a complementary edge).",
+      "startLine": 554,
+      "endLine": 611,
+      "mathContext": "tucker_1d: an antipodally-bounded ±1 labeling on a path has a complementary edge."
+    },
+    {
+      "id": "tucker-1d-examples",
+      "title": "Section XVI: Tucker 1D — Verified Examples",
+      "summary": "Concrete worked examples of Tucker's 1D lemma on small paths, exhibiting the complementary edge for explicit labelings.",
+      "startLine": 612,
+      "endLine": 633,
+      "mathContext": "Worked small-case verifications of tucker_1d, e.g. f = [1,-1]."
+    },
+    {
+      "id": "tucker-odd-zero",
+      "title": "Section XVII: Tucker 1D → Odd Function Zero",
+      "summary": "Tucker's lemma implies the existence of zeros for discrete odd functions — the combinatorial path to Borsuk-Ulam.",
+      "startLine": 634,
+      "endLine": 652,
+      "mathContext": "tucker_implies_discrete_odd_zero: Tucker's 1D lemma yields a zero/sign change for discrete odd labelings."
+    },
+    {
+      "id": "tucker-nd-statements",
+      "title": "Section XVIII: Higher-Dimensional Tucker's Lemma (Statements)",
+      "summary": "Statements of the n-dimensional Tucker lemma on antipodally symmetric triangulations, including the axiomatized tucker_2d, as the bridge to higher-dimensional BU.",
+      "startLine": 653,
+      "endLine": 692,
+      "mathContext": "n-D Tucker: an antipodally symmetric triangulation labeling has a complementary edge; tucker_2d is stated as an axiom."
+    },
+    {
+      "id": "tucker-bu-equivalence",
+      "title": "Section XIX: Tucker–BU Equivalence",
+      "summary": "Tucker's lemma and Borsuk-Ulam are equivalent in each dimension: BU(n) discretizes to a labeling giving Tucker(n), and Tucker(n) on finer triangulations recovers BU(n) in the limit.",
+      "startLine": 693,
+      "endLine": 728,
+      "mathContext": "tucker_bu_equivalence_1d: 1D Tucker and 1D Borsuk-Ulam are equivalent."
+    },
+    {
+      "id": "tucker-cycles-foundation",
+      "title": "Section XX: Tucker's Lemma for Cycles (Higher-Dim Foundation)",
+      "summary": "Generalizes path Tucker labels from {±1} to {±1,…,±k}, establishing the path-transition machinery used as the foundation for higher-dimensional Tucker arguments.",
+      "startLine": 729,
+      "endLine": 829,
+      "mathContext": "tucker_path_transition / tucker_path_pm1_complementary: labels in {±1,…,±k} on paths, transition and complementary-edge lemmas."
+    },
+    {
+      "id": "tucker-cycles",
+      "title": "Section XXI: Tucker for Cycles",
+      "summary": "Tucker's lemma on an antipodally labeled cycle C_{2m} (vertex i ↔ i+m, L(v_{i+m}) = -L(v_i)): a complementary edge exists.",
+      "startLine": 830,
+      "endLine": 868,
+      "mathContext": "tucker_cycle: an antipodal ±-labeling of an even cycle has a complementary edge."
+    },
+    {
+      "id": "tucker-2d-parity",
+      "title": "Section XXII: Tucker 2D — Parity Foundation",
+      "summary": "The key structural lemma for Tucker 2D: along any path in a triangulation whose endpoints have complementary labels, the number of complementary edges has the same parity as 1 (i.e. is odd). Includes the signZ framework.",
+      "startLine": 869,
+      "endLine": 1049,
+      "mathContext": "sign_change_count_parity: complementary-edge counts along complementary-endpoint paths are odd; built on the signZ sign function."
+    },
+    {
+      "id": "tucker-2d-examples",
+      "title": "Section XXIII: Tucker 2D — Verified Small Examples",
+      "summary": "Concrete verification that Tucker's lemma holds for small 2D cases, serving as sanity checks for the axiomatized statements.",
+      "startLine": 1050,
+      "endLine": 1077,
+      "mathContext": "Small-case verifications supporting the axiomatized tucker_2d statement."
+    },
+    {
+      "id": "tucker-2d-reduction",
+      "title": "Section XXIV: Tucker 2D — Reduction to Path Arguments",
+      "summary": "The key insight for proving Tucker 2D: any triangulated disk with antipodal boundary reduces to a path argument, yielding tucker_2d_via_path.",
+      "startLine": 1078,
+      "endLine": 1127,
+      "mathContext": "tucker_2d_via_path: 2D Tucker reduces to the 1D path parity argument."
+    },
+    {
+      "id": "tucker-contribution-summary",
+      "title": "Section XXV: Summary of Tucker's Lemma Contribution",
+      "summary": "Final summary of what is proved (discrete IVT, Tucker 1D, cycle and parity lemmas) versus what remains axiomatized (full 2D Tucker), and the infrastructure contributed.",
+      "startLine": 1128,
+      "endLine": 1163,
+      "mathContext": "Recap: discrete IVT and Tucker 1D are fully proved; tucker_2d remains an axiom; parity/sign-change infrastructure is contributed."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization has three tiers of content. The strongest tier is Tucker's 1D lemma proved via discrete IVT, with clean combinatorial structure and verified examples. The second tier is the circle BU proof (genuinely nontrivial) and the sign-change parity framework (real infrastructure for Tucker 2D). The third tier is interval-level quantitative bounds (Lipschitz, oscillation, bisection, coincidence set) -- these are correct but often elementary, since many interval BU statements reduce to the trivial witness x = 0. Tucker 2D and n-D are axiomatized, reflecting the gap in Mathlib for simplicial complexes with antipodal structure.",
+    "implications": "**Implications**\n\n1. **Tucker-BU bridge**: The proved 1D equivalence validates Tucker's lemma as the discrete foundation for BU, supporting the combinatorial approach to higher-dimensional proofs.\n\n2. **Sign-change parity as 2D foundation**: The odd-count lemma for complementary-endpoint paths is the key structural ingredient for Tucker 2D proofs.\n\n3. **Circle BU**: The IVT proof on g(theta) demonstrates the nontrivial topological content that is absent from interval-level results.\n\n4. **Stability**: The 2*epsilon perturbation bound on antisymmetric differences is a genuine quantitative result, though antipodal pair existence on intervals remains trivial.\n\n5. **Infrastructure roadmap**: The axiomatized Tucker 2D/nD statements specify what Mathlib infrastructure is needed: antipodal triangulations of B^n with labeling conditions.",
+    "openQuestions": [
+      "Can Tucker 2D be proved in Lean using a graph-theoretic path-following argument?",
+      "Can the odd counting version (number of complementary edges is odd) be formalized for Tucker 1D?",
+      "Does Mathlib's SimplicialComplex provide sufficient infrastructure for Tucker 2D, or is custom infrastructure needed?",
+      "Can the quantitative bisection bounds be extended to the circle version?"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "borsuk-ulam-oq-03",
+      "relationship": "Parent: constructive 1D BU theorem that this extension builds upon"
+    },
+    {
+      "id": "borsuk-ulam-oq-03-oq-03",
+      "relationship": "Sibling: 2D BU via Tucker's lemma, using the Tucker infrastructure axiomized here"
+    },
+    {
+      "id": "borsuk-ulam",
+      "relationship": "Base Borsuk-Ulam formalization"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Real",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "BorsukUlamOQ03OQ01",
+    "lineCount": 1163,
+    "axiomCount": 1,
+    "theoremCount": 40,
+    "definitionCount": 4,
+    "path": "Proofs/BorsukUlamOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "A. W. Tucker",
+      "title": "Some topological properties of disk and sphere",
+      "year": "1946",
+      "venue": "Proceedings of the First Canadian Mathematical Congress",
+      "note": "Tucker's combinatorial lemma"
+    },
+    {
+      "authors": "K. Borsuk",
+      "title": "Drei Satze uber die n-dimensionale euklidische Sphare",
+      "year": "1933",
+      "venue": "Fundamenta Mathematicae",
+      "note": "Original Borsuk-Ulam theorem"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-03",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Tucker 2D Lemma via Graph-Theoretic Path-Following"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling open question from the same parent: Constructive 2D Borsuk-Ulam via Tucker's Lemma"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "The continuous IVT is the analytic foundation for circle Borsuk-Ulam proved here: g(0) and g(π) have opposite signs, so IVT gives θ with g(θ)=0, i.e., an antipodal agreement point on S¹"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "ancestor",
+      "description": "The root Borsuk-Ulam formalization — this entry provides the 1D combinatorial infrastructure (Tucker's lemma, discrete IVT) that forms the base case for inductive approaches to the full n-dimensional theorem"
+    }
+  ],
+  "sorries": 0
+}

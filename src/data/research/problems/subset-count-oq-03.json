@@ -1,0 +1,123 @@
+{
+  "slug": "subset-count-oq-03",
+  "title": "Subset-count reductions and multiset counting extensions",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall s : \\operatorname{Finset}(\\alpha),\\ |\\mathcal{P}(s)| = 2^{|s|},\\quad \\sum_{k=0}^{n}\\binom{n}{k}=2^n,\\quad |\\{t : \\operatorname{Multiset}(\\alpha) \\mid t \\le s\\}|=\\prod_{a\\in s.toFinset}(s.count(a)+1).",
+    "plain": "Clarify the Lean-supported reductions around ordinary subset counting and distinct submultiset counting. The core track proves the powerset cardinality theorem, the binomial-coefficient sum interpretation, and the product formula for submultisets with repeated elements.",
+    "whyMatters": [
+      "Subset counting is the base case for many finite-combinatorics reductions.",
+      "The multiset product formula records the exact correction needed when elements have multiplicity.",
+      "All declared Lean support is zero-axiom and zero-sorry, making this a clean metadata landing for completed formal content."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`card_powerset_eq_two_pow` proves that a finite set has exactly `2 ^ card` subsets.",
+      "`sum_choose_eq_two_pow` gives the binomial-coefficient count of all subsets by size.",
+      "`card_distinctSubMultisets` proves the distinct-submultiset product formula `prod (count a + 1)`."
+    ],
+    "open": [
+      "The remaining mathematical question is classificatory: which external counting problems reduce canonically to these subset or multiset templates?"
+    ],
+    "goal": "Use the proved powerset and multiset-counting lemmas as a reliable reduction library for future finite-counting entries."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-28T17:58:20.662Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: File fully proved (0A, 0S, 10T). Standard combinatorial identities.",
+    "builtItems": [],
+    "insights": [
+      "SubsetCount.lean is fully proved: 0A, 0S, 10 theorems about powerset cardinality",
+      "Key results: |P(S)| = 2^|S|, Σ C(n,k) = 2^n, |P(insert a S)| = 2·|P(S)|",
+      "All results are standard Mathlib wrappers — no open questions remain"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "finite-sets",
+    "powersets",
+    "multisets",
+    "binomial-coefficients",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "subset-count",
+    "subset-count-multiset",
+    "subset-count-multiset-oq-01",
+    "subset-count-oq-02",
+    "subset-count-oq-02-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T17:58:20.662Z",
+  "lastUpdate": "2026-03-28T17:58:20.662Z",
+  "significance": 5,
+  "tractability": 9,
+  "leanFiles": [
+    {
+      "path": "Proofs/SubsetCount.lean",
+      "filename": "SubsetCount.lean",
+      "lineCount": 179,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCount.lean"
+    },
+    {
+      "path": "Proofs/SubsetCountMultisetOQ01.lean",
+      "filename": "SubsetCountMultisetOQ01.lean",
+      "lineCount": 227,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCountMultisetOQ01.lean"
+    },
+    {
+      "path": "Proofs/SubsetCountOQ02.lean",
+      "filename": "SubsetCountOQ02.lean",
+      "lineCount": 121,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCountOQ02.lean"
+    },
+    {
+      "path": "Proofs/SubsetCountOQ02OQ01.lean",
+      "filename": "SubsetCountOQ02OQ01.lean",
+      "lineCount": 160,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCountOQ02OQ01.lean"
+    }
+  ]
+}

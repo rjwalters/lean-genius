@@ -1,0 +1,167 @@
+{
+  "id": "erdos-591",
+  "title": "Erdős Problem #591: Ordinal Ramsey Theory for ω^(ω²)",
+  "slug": "erdos-591",
+  "description": "The ordinal Ramsey property ω^(ω²) → (ω^(ω²), 3)² holds. Proved independently by Schipperus (2010) and Darby.",
+  "meta": {
+    "author": "Schipperus (2010), Darby",
+    "sourceUrl": "https://erdosproblems.com/591",
+    "date": "2010",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos591Problem.lean",
+    "tags": [
+      "erdos",
+      "set-theory",
+      "ramsey-theory",
+      "ordinals",
+      "combinatorics",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 591,
+    "erdosUrl": "https://erdosproblems.com/591",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$250",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Ordinal",
+        "description": "The type of ordinal numbers",
+        "module": "Mathlib.SetTheory.Ordinal.Arithmetic"
+      },
+      {
+        "theorem": "Ordinal.opow",
+        "description": "Ordinal exponentiation ω^α",
+        "module": "Mathlib.SetTheory.Ordinal.Exponential"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of the SOLVED Erdős problem in Lean 4",
+      "Axiomatization of the ordinal Ramsey property α → (α, n)²",
+      "Documentation of Specker's and Chang's results in module comments",
+      "Axiomatization of the Schipperus-Darby theorem (ω^(ω²) works) as schipperus_darby_omega_omega_squared",
+      "Verified ordinal arithmetic identities"
+    ],
+    "axiomCount": 2,
+    "lineCount": 175,
+    "assumptions": "2 axioms: OrdinalRamseyProperty, schipperus_darby_omega_omega_squared. 0 sorries.",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Ordinal Ramsey theory extends the classical Ramsey theorem to infinite ordinals. The classical theorem guarantees monochromatic cliques in large finite graphs; ordinal Ramsey theory asks which infinite ordinals have analogous properties.\n\nSpecker (1957) made a surprising discovery: the Ramsey property α → (α, 3)² holds for α = ω² but FAILS for α = ω³, ω⁴, and all ω^n with n ≥ 3. This shows that larger ordinals can have worse Ramsey properties!\n\nChang later proved the property holds again for α = ω^ω, the first limit of limit ordinals. Schipperus (2010) and Darby independently proved the property also holds for α = ω^(ω²), confirming the pattern that limit ordinal exponents restore the Ramsey property.\n\nErdős offered $250 for its resolution, which was claimed when the problem was solved.",
+    "problemStatement": "Let $\\alpha = \\omega^{\\omega^2}$. Is it true that in any red/blue coloring of the edges of the complete graph $K_\\alpha$, there is either a red $K_\\alpha$ or a blue $K_3$?\n\nIn arrow notation: Does $\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$ hold?\n\n**Answer**: YES — Proved independently by Schipperus (2010) and Darby.\n\n**Complete Results**:\n- $\\omega^2 \\to (\\omega^2, 3)^2$ holds (Specker 1957)\n- $\\omega^n \\to (\\omega^n, 3)^2$ FAILS for $n \\geq 3$ (Specker 1957)\n- $\\omega^\\omega \\to (\\omega^\\omega, 3)^2$ holds (Chang)\n- $\\omega^{\\omega^2} \\to (\\omega^{\\omega^2}, 3)^2$ holds (Schipperus 2010, Darby)",
+    "text": "The ordinal Ramsey property ω^(ω²) → (ω^(ω²), 3)² holds. Proved independently by Schipperus (2010) and Darby.",
+    "proofStrategy": "We formalize this SOLVED problem by:\n\n1. **Axiomatizing the Ramsey property**: Define `OrdinalRamseyProperty α n` as the statement that every 2-coloring of pairs from α contains a monochromatic copy of order type α (color 1) or a monochromatic n-element set (color 2)\n\n2. **Stating the key result as an axiom**: The Schipperus-Darby result (`schipperus_darby_omega_omega_squared`). Specker's and Chang's results are documented in module comments only — no axiom or theorem declarations for those.\n\n3. **Stating the main theorem**: `erdos_591` asserts that `OrdinalRamseyProperty (ω ^ (ω ^ 2)) 3` holds\n\n4. **Proving ordinal identities**: We verify basic facts like ω² = ω·ω using Mathlib's ordinal arithmetic",
+    "keyInsights": [
+      "**Arrow notation**: α → (β, n)² means every 2-coloring of pairs from α contains a monochromatic order type β or a monochromatic n-set.",
+      "**The surprising failure**: Larger ordinals don't always have better Ramsey properties. ω³ is 'worse' than ω² for this property!",
+      "**Limit ordinal pattern confirmed**: The property holds for ω² (limit), fails for ω³, ω⁴, ... (successors of 2), then holds again for ω^ω and ω^(ω²) (limit exponents).",
+      "**The answer is YES**: Schipperus (2010) and Darby independently proved ω^(ω²) → (ω^(ω²), 3)² holds.",
+      "**Ordinal arithmetic**: ω^(ω²) = ω^(ω·ω) is enormously larger than ω^ω, which is already vastly beyond any ω^n."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Set theory and cardinality",
+      "Ramsey theory (partition regularity)",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Problem statement, background, and references including the $250 prize."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 22,
+      "endLine": 28,
+      "summary": "Mathlib imports for ordinal arithmetic and exponentiation."
+    },
+    {
+      "id": "background",
+      "title": "Ordinal Ramsey Theory Background",
+      "startLine": 29,
+      "endLine": 44,
+      "summary": "Documentation explaining Ramsey theory and arrow notation."
+    },
+    {
+      "id": "ramsey-property",
+      "title": "The Ordinal Ramsey Property",
+      "startLine": 45,
+      "endLine": 56,
+      "summary": "Axiomatization of the Ramsey property α → (α, n)²."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 57,
+      "endLine": 90,
+      "summary": "Documentation of Specker's and Chang's results in module comments; no axiom or theorem declarations for these results."
+    },
+    {
+      "id": "solved-problem",
+      "title": "The Solved Problem",
+      "startLine": 91,
+      "endLine": 121,
+      "summary": "Statement of Erdős Problem #591 (SOLVED) and the Schipperus-Darby theorem."
+    },
+    {
+      "id": "ordinal-hierarchy",
+      "title": "The Ordinal Hierarchy",
+      "startLine": 122,
+      "endLine": 175,
+      "summary": "Verified ordinal arithmetic and the pattern table showing solved status."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #591, a SOLVED question in ordinal Ramsey theory worth $250. The problem asked whether ω^(ω²) → (ω^(ω²), 3)² holds. The answer is YES, proved independently by Schipperus (2010) and Darby. We axiomatize the Ramsey property and state all known results including this resolution.",
+    "implications": "This result confirms the pattern that limit ordinal exponents restore the Ramsey property that fails for successor ordinal exponents ≥ 3. The positive answer advances our understanding of partition calculus on ordinals and suggests a general characterization may be possible.",
+    "openQuestions": [
+      "For which ordinals α does α → (α, 3)² hold? (General characterization)",
+      "Is there a complete characterization in terms of Cantor normal form?",
+      "What about α → (α, n)² for larger n?",
+      "Does the pattern extend to even larger limit ordinals?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Ordinal.Exponential"
+    ],
+    "opens": [
+      "Ordinal"
+    ],
+    "namespace": "Erdos591",
+    "lineCount": 175,
+    "axiomCount": 2,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos591Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-590",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, ordinals, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1090",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, ramsey-theory, solved"
+    },
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, ramsey-theory, set-theory"
+    }
+  ],
+  "sorries": 0
+}

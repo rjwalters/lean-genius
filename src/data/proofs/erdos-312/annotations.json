@@ -1,0 +1,353 @@
+[
+  {
+    "id": "ann-e312-header",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #312: Subset Sums of Unit Fractions**\n\nGiven a multiset of positive integers whose reciprocals sum to more than K, can we always find a subset whose reciprocal sum is within exp(-cK) of 1?\n\nThe exponential bound exp(-cK) is much stronger than the known polynomial bound c/K². For K = 100, exp(-100c) is astronomically smaller than c/10000, so the conjecture demands far more precise approximation.\n\nThis is an open problem posed by Erdős and Graham [ErGr80].",
+    "mathContext": "The problem connects to Egyptian fraction theory and the fine structure of subset sums. Unit fractions 1/n have irregular spacing, making precise subset sum control much harder than for geometric sequences.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Unit fractions",
+      "Subset sum",
+      "Egyptian fractions",
+      "Exponential bounds"
+    ],
+    "prerequisites": [
+      "unit fractions and Egyptian fraction representations",
+      "subset sums of reciprocals",
+      "exponential versus polynomial error bounds"
+    ]
+  },
+  {
+    "id": "ann-e312-reciprocal-sum",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 37,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Reciprocal Sum Definitions",
+    "content": "**reciprocalSum n a:** The total reciprocal sum Σ_{i=0}^{n-1} 1/a(i), where a : Fin n → ℕ encodes a multiset of n positive integers. Marked noncomputable because real number inverses require classical choice.\n\n**subsetReciprocalSum n a S:** The partial sum over a subset S ⊆ Fin n. The goal is to find S such that this partial sum is close to 1.\n\nThe condition reciprocalSum n a > K ensures we have 'enough' reciprocals to work with — a large budget from which to select a near-1 sum.",
+    "mathContext": "For the canonical example a(i) = i+1, this gives the harmonic series H_n ≈ ln(n) + γ. Larger K means more reciprocals available, which should make it easier to approximate 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum",
+      "Inverse",
+      "Harmonic series"
+    ],
+    "prerequisites": [
+      "Finset.sum over Fin n",
+      "real reciprocals 1/a(i) of positive integers",
+      "the harmonic series as a canonical reciprocal sum"
+    ]
+  },
+  {
+    "id": "ann-e312-subset-algebra",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 46,
+      "endLine": 120
+    },
+    "type": "insight",
+    "title": "Subset Sum Algebra",
+    "content": "A toolkit of elementary lemmas establishing that subsetReciprocalSum behaves like a well-mannered measure over subsets. The key facts that later proofs rely on:\n\n- **Monotonicity** (subsetReciprocalSum_mono): S ⊆ T ⟹ sum(S) ≤ sum(T), since every term 1/a(i) ≥ 0.\n- **Bounded by total** (subsetSum_le_totalSum): any subset sum is ≤ the full reciprocal sum.\n- **Disjoint additivity** (subsetReciprocalSum_disjoint_union): sum(S ∪ T) = sum(S) + sum(T) for disjoint S, T.\n- **Single-step changes** (subsetReciprocalSum_insert / _erase): inserting or removing one index i shifts the sum by exactly 1/a(i).\n\nThe insert/erase lemmas are the workhorses of the greedy argument in Part VII: they quantify exactly how much one element contributes, which is what bounds the gap to 1.",
+    "mathContext": "These are the order-theoretic and additive properties of a finite nonnegative sum $\\sum_{i \\in S} 1/a(i)$ over the lattice of subsets. Nonnegativity of each term $1/a(i) \\ge 0$ is what makes the sum monotone in $S$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Monotonicity",
+      "Finset.sum_insert",
+      "Disjoint union",
+      "Finitely additive"
+    ],
+    "prerequisites": [
+      "monotonicity of nonnegative finite sums over subsets",
+      "Finset.sum_insert and sum over disjoint unions",
+      "the subset lattice of Fin n"
+    ]
+  },
+  {
+    "id": "ann-e312-exponential-precision",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 124,
+      "endLine": 129
+    },
+    "type": "definition",
+    "title": "Exponential Precision Property",
+    "content": "**hasExponentialPrecision n a c K:** There exists a subset S ⊆ {0,...,n-1} such that the reciprocal sum over S lies in the half-open interval (1 - exp(-cK), 1].\n\nThe upper bound ≤ 1 means the subset sum does not exceed 1. The lower bound 1 - exp(-cK) means the sum is exponentially close to 1 — the gap shrinks exponentially in K.\n\nThis is the conjectured property. The known property uses 1 - c/K² instead of 1 - exp(-cK).",
+    "mathContext": "The interval (1 - ε, 1] with ε = exp(-cK) shrinks exponentially. For K = 10 and c = 1, this interval has width ~0.0000454. For K = 100, width ~3.7 × 10^{-44}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.exp",
+      "Half-open intervals",
+      "Precision bounds"
+    ],
+    "prerequisites": [
+      "the real exponential Real.exp and exp(-cK)",
+      "half-open intervals (1 - ε, 1]",
+      "existential quantification over subsets"
+    ]
+  },
+  {
+    "id": "ann-e312-main-conjecture",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 131,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "**mainConjecture:** ∃ c > 0, ∀ K > 1, ∃ N₀, ∀ multisets of size ≥ N₀ with reciprocal sum > K, the exponential precision property holds.\n\nNote the quantifier structure: the constant c is universal (works for all K), but the threshold N₀ can depend on K. This means for each K, 'sufficiently large' may mean different things.\n\nThis is defined as a Prop rather than stated as a theorem with sorry, reflecting that this is a genuine open question — not something we claim to know the answer to.",
+    "mathContext": "The formal statement matches the formal-conjectures project (FormalConjectures/ErdosProblems/312.lean), ensuring compatibility with the broader formalization effort.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Open problems",
+      "Quantifier structure",
+      "Sufficiently large"
+    ],
+    "prerequisites": [
+      "nested quantifier structure with a universal c and K-dependent threshold N₀",
+      "encoding open conjectures as a Prop",
+      "sufficiently-large multiset hypotheses"
+    ]
+  },
+  {
+    "id": "ann-e312-polynomial",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 145,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Erdős-Graham Polynomial Bound",
+    "content": "**hasPolynomialPrecision:** Like exponential precision, but with error bound c/K² instead of exp(-cK).\n\n**erdos_graham_polynomial:** The known theorem of Erdős and Graham [ErGr80]: the polynomial bound c/K² holds. This is the one genuine `axiom` declaration in the file — it is axiomatized because its proof uses sophisticated techniques from analytic number theory not reproduced here.\n\nThe polynomial bound means: for some c > 0, any large enough multiset with reciprocal sum > K has a subset summing to within c/K² of 1. This is already non-trivial — it says we can always find a *very* good approximation to 1.",
+    "mathContext": "The proof of the polynomial bound uses the greedy algorithm with careful analysis of the remainder terms. The transition to exponential bounds would require understanding higher-order correlations in the subset sum distribution. The sieve-and-greedy infrastructure in Part VIII (below) is a first formal step toward an in-Lean derivation of this axiom.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Graham theorem",
+      "Polynomial bounds",
+      "Greedy algorithms",
+      "Axiomatization"
+    ],
+    "prerequisites": [
+      "the Erdős-Graham polynomial bound c/K²",
+      "axiom declarations standing in for unformalized analytic number theory",
+      "greedy approximation of reciprocal subset sums"
+    ]
+  },
+  {
+    "id": "ann-e312-relationship",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 164,
+      "endLine": 223
+    },
+    "type": "concept",
+    "title": "Comparing Exponential and Polynomial Bounds",
+    "content": "**exponential_stronger_than_polynomial:** A *proved theorem* (not an axiom): for any c, c' > 0 there is a threshold K₀ beyond which exp(-cK) < c'/K². The proof is the heart of this section — it uses Mathlib's `Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero` to show K²·exp(-cK) → 0, then extracts a metric ε-bound and divides through. This formalizes the principle that exponential decay always beats polynomial decay.\n\n**conjecture_implies_known:** Also proved: if the exponential conjecture holds, then in particular subsets with reciprocal sum ≤ 1 always exist. The proof destructures the existential from hasExponentialPrecision to extract the upper bound.\n\nTogether these verify the logical consistency of the formalization — the conjectured property is genuinely strictly stronger than the known one.",
+    "mathContext": "The limit $K^2 e^{-cK} \\to 0$ is the rigorous statement of 'exponentials dominate polynomials'. The proof composes $\\mathrm{tendsto\\_pow\\_mul\\_exp\\_neg}$ with the linear scaling $K \\mapsto cK$, then chooses $\\varepsilon = c' c^2$ so that dividing by $(cK)^2$ yields exactly $e^{-cK} < c'/K^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Asymptotic domination",
+      "Real.tendsto_pow_mul_exp_neg",
+      "Metric.tendsto_atTop",
+      "Logical consistency"
+    ],
+    "prerequisites": [
+      "Limits and filters",
+      "Real analysis"
+    ]
+  },
+  {
+    "id": "ann-e312-exp-gap",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 254,
+      "endLine": 283
+    },
+    "type": "insight",
+    "title": "Exponential Gap: Bounds and Limit",
+    "content": "Four lemmas characterizing the precision window width g(K) = 1 - exp(-cK) for the conjectured bound:\n\n- **exponential_gap_nonneg / _lt_one:** 0 ≤ g(K) < 1, so the interval (1 - exp(-cK), 1] is always well-defined and of positive length.\n- **exponential_gap_monotone:** g is increasing in K — larger reciprocal-sum budgets give a wider window, so finding a qualifying subset gets *easier* as K grows.\n- **exponential_gap_tends_to_one:** g(K) → 1 as K → ∞, built from Real.tendsto_exp_neg_atTop_nhds_zero. In the limit the conjecture would force subset sums arbitrarily close to 1.",
+    "mathContext": "$g(K) = 1 - e^{-cK}$ is the standard saturating exponential. Monotone increasing with $g(0)=0$ and $\\lim_{K\\to\\infty} g(K) = 1$; this is the complement of the decay $e^{-cK} \\downarrow 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.exp_le_exp",
+      "Saturating exponential",
+      "Tendsto",
+      "Monotonicity"
+    ],
+    "prerequisites": [
+      "monotonicity of the saturating exponential g(K) = 1 - exp(-cK)",
+      "Real.exp_le_exp and limits of exp(-cK)",
+      "Tendsto and convergence as K → ∞"
+    ]
+  },
+  {
+    "id": "ann-e312-poly-gap",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 287,
+      "endLine": 325
+    },
+    "type": "insight",
+    "title": "Polynomial Gap Analysis",
+    "content": "The parallel analysis for the known bound's window width c/K²:\n\n- **polynomial_gap_pos:** c/K² > 0 for c, K > 0 (closed by `positivity`).\n- **polynomial_gap_antitone:** c/K² is *decreasing* in K — note this is the gap to 1 shrinking, i.e. precision *improving* as K grows.\n- **polynomial_gap_tends_to_zero:** c/K² → 0 as K → ∞, via tendsto_inv_atTop_zero composed with K ↦ K².\n- **polynomialPrecision_mono_c:** raising the constant c weakens the bound, so polynomial precision at c₁ implies it at any c₂ ≥ c₁.\n\nContrast with the exponential window of Part IV.b: there the *window width* g(K) → 1, here the *gap* c/K² → 0. Both describe precision improving with K, but the polynomial gap decays only inverse-quadratically.",
+    "mathContext": "$c/K^2 \\downarrow 0$ at rate $\\Theta(K^{-2})$, versus the conjectured gap $e^{-cK} \\downarrow 0$ at exponential rate. The ratio $\\frac{e^{-cK}}{c'/K^2} = \\frac{K^2 e^{-cK}}{c'} \\to 0$ is exactly what exponential_stronger_than_polynomial proves.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tendsto_inv_atTop_zero",
+      "Antitone",
+      "Inverse-square decay",
+      "div_le_div_of_nonneg_right"
+    ],
+    "prerequisites": [
+      "antitone behaviour of c/K² as K grows",
+      "tendsto_inv_atTop_zero and inverse-square decay",
+      "comparing exponential and polynomial decay rates"
+    ]
+  },
+  {
+    "id": "ann-e312-taylor",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 329,
+      "endLine": 374
+    },
+    "type": "insight",
+    "title": "Taylor Sandwich for the Exponential Gap",
+    "content": "Concrete two-sided estimates on 1 - exp(-cK) using first-order Taylor information about the exponential, avoiding any appeal to limits:\n\n- **Upper bound** (exponential_gap_le_cK): from exp(-x) ≥ 1 - x (i.e. Real.add_one_le_exp), the gap satisfies 1 - exp(-cK) ≤ cK.\n- **Lower bound** (exponential_gap_concrete_bound): from exp(-x) ≤ 1/(1+x) for x ≥ 0, the gap satisfies cK/(1+cK) ≤ 1 - exp(-cK), via the identity 1 - 1/(1+t) = t/(1+t).\n- **exponential_gap_sandwich** packages both: cK/(1+cK) ≤ 1 - exp(-cK) ≤ cK.\n\nThese rational sandwiches give computable, certificate-friendly bounds — useful when one needs explicit estimates rather than asymptotics.",
+    "mathContext": "The convexity inequalities $1 - x \\le e^{-x} \\le \\frac{1}{1+x}$ (for $x \\ge 0$) yield $\\frac{x}{1+x} \\le 1 - e^{-x} \\le x$. With $x = cK$ this sandwiches the precision gap between a rational lower bound and the linear upper bound $cK$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.add_one_le_exp",
+      "Taylor bound",
+      "Convexity of exp",
+      "one_div_le_one_div_of_le"
+    ],
+    "prerequisites": [
+      "the convexity inequalities 1 - x ≤ exp(-x) ≤ 1/(1+x)",
+      "Real.add_one_le_exp as a first-order Taylor bound",
+      "rational sandwich estimates cK/(1+cK) ≤ 1 - exp(-cK) ≤ cK"
+    ]
+  },
+  {
+    "id": "ann-e312-harmonic",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 378,
+      "endLine": 443
+    },
+    "type": "definition",
+    "title": "Harmonic Numbers",
+    "content": "**harmonicNumber n:** H_n = 1 + 1/2 + 1/3 + ... + 1/n, the n-th partial sum of the harmonic series, computed as Σ_{i=0}^{n-1} 1/(i+1).\n\n**harmonic_unbounded:** H_n → ∞ as n → ∞ (via Real.tendsto_sum_range_one_div_nat_succ_atTop). This guarantees that for any K > 0, the multiset {1, 2, ..., n} for large enough n has reciprocal sum > K, supplying canonical test inputs for the conjecture.\n\nThe surrounding lemmas record the basic facts the rest of the file uses: H is non-decreasing (harmonicNumber_mono), the boundary values H_0 = 0 and H_1 = 1, the recurrence H_{n+1} = H_n + 1/(n+1), and the bridge **canonical_reciprocalSum**: reciprocalSum of i ↦ i+1 equals H_n.",
+    "mathContext": "H_n = ln(n) + γ + O(1/n) where γ ≈ 0.5772 is the Euler-Mascheroni constant. The divergence of the harmonic series, proved by Oresme (c. 1350), is one of the earliest results in analysis and is exactly what makes 'reciprocal sum > K' achievable for every K.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Harmonic series",
+      "Euler-Mascheroni constant",
+      "Divergence",
+      "Oresme"
+    ],
+    "prerequisites": [
+      "harmonic numbers H_n and divergence of the harmonic series",
+      "Real.tendsto_sum_range_one_div_nat_succ_atTop",
+      "the Euler-Mascheroni constant and Oresme's divergence proof"
+    ]
+  },
+  {
+    "id": "ann-e312-structural",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 447,
+      "endLine": 502
+    },
+    "type": "insight",
+    "title": "Valid Inputs and Structural Bounds",
+    "content": "Sanity-checking lemmas that the problem is non-vacuous and well-posed:\n\n- **valid_inputs_exist:** for any K there really is a multiset of positive integers with reciprocal sum > K — namely {1, ..., n} for n large, combining harmonic_unbounded with canonical_reciprocalSum.\n- **reciprocalSum_le_of_ge:** if every element is ≥ m > 0, the total sum is ≤ n/m — an upper bound complementing the lower bounds.\n- **trivial_subset_exists:** the empty set always satisfies sum ≤ 1, underscoring that the *hard* direction is approaching 1 from below, not staying under it.\n- **exponentialPrecision_subset_nonempty / polynomialPrecision_subset_sum_pos:** when the gap is nontrivial (e.g. c ≤ K²), the witnessing subset has strictly positive sum, so it is genuinely nonempty.",
+    "mathContext": "These establish the existential preconditions: the hypothesis $\\mathrm{reciprocalSum} > K$ is satisfiable for all $K$, and the precision windows $(1-\\varepsilon, 1]$ produce nonempty subsets whenever $\\varepsilon < 1$. Without these the conjecture could be vacuously true.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Non-vacuity",
+      "Well-posedness",
+      "Existence of witnesses",
+      "Upper bounds"
+    ],
+    "prerequisites": [
+      "existence of witness multisets with reciprocal sum > K",
+      "non-vacuity and well-posedness of the hypothesis",
+      "lower and upper bounds on reciprocal sums"
+    ]
+  },
+  {
+    "id": "ann-e312-greedy",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 511,
+      "endLine": 572
+    },
+    "type": "concept",
+    "title": "Greedy: Maximal Feasible Subsets",
+    "content": "The constructive core of the file's contribution toward the polynomial bound. A subset is **feasible** (isFeasible) if its reciprocal sum is ≤ 1, and **maximal feasible** if adding any further element would exceed 1.\n\n- **maximal_feasible_exists:** such a subset always exists — take a feasible subset of *maximum cardinality* (finitely many subsets, so a maximum exists). Adding any j ∉ S must break feasibility, or S wasn't maximum.\n- **maximalFeasible_gap_bound:** for maximal feasible S and any j ∉ S, sum(S) > 1 - 1/a(j). This is the crucial gap estimate, and it follows immediately from the insert lemma sum(S ∪ {j}) = sum(S) + 1/a(j) > 1.\n- **subset_near_one:** if all elements are ≥ m and the total exceeds 1, there is a subset with sum in (1 - 1/m, 1]. So a larger minimum element m yields a tighter approximation to 1.\n\nThis is precisely the greedy mechanism behind the Erdős-Graham bound: control the gap by controlling the smallest reciprocal you might add.",
+    "mathContext": "Greedy/maximality argument: among all $S$ with $\\sum_{i\\in S} 1/a(i) \\le 1$, pick one of maximal cardinality. Maximality forces $\\sum_{i\\in S} 1/a(i) > 1 - 1/a(j)$ for every excluded $j$, since otherwise $S \\cup \\{j\\}$ would be a larger feasible set. The gap to 1 is thus bounded by the largest admissible reciprocal $1/m$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Greedy algorithm",
+      "Maximal element",
+      "Finset.exists_max_image",
+      "Gap bound"
+    ],
+    "prerequisites": [
+      "Finite combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e312-summary",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 576,
+      "endLine": 587
+    },
+    "type": "concept",
+    "title": "Summary: Known Polynomial Bound",
+    "content": "**erdos_312_status:** A summary theorem packaging the known result — the polynomial bound exists. The proof is `exact erdos_graham_polynomial`, directly referencing the axiom.\n\n**What's known:** c/K² precision (Erdős-Graham).\n**What's conjectured:** exp(-cK) precision (OPEN).\n**What we proved:** The conjecture implies the known result (conjecture_implies_known), the exponential bound is asymptotically stronger (exponential_stronger_than_polynomial), and a constructive sieve-and-greedy route toward c/K² precision (Part VIII).\n\nThe formalization cleanly separates the open conjecture from the established theorem, making the state of knowledge explicit.",
+    "mathContext": "Summary theorems serve as entry points for understanding the formalization. The erdos_312_status theorem is the single statement that captures what has been established about this problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary theorems",
+      "State of knowledge",
+      "Open vs proved"
+    ],
+    "prerequisites": [
+      "separating the open conjecture from the established Erdős-Graham theorem",
+      "summary theorems referencing an axiom via exact",
+      "asymptotic strength of exponential over polynomial precision"
+    ]
+  },
+  {
+    "id": "ann-e312-sieve",
+    "proofId": "erdos-312",
+    "range": {
+      "startLine": 599,
+      "endLine": 716
+    },
+    "type": "concept",
+    "title": "Sieve-and-Greedy Infrastructure",
+    "content": "The toolkit assembling the greedy gap bound into the strategy behind erdos_graham_polynomial. The idea: restrict attention to 'large' elements (those ≥ a threshold m), where each reciprocal is small, so the greedy gap 1/m is controllably tiny.\n\n- **largeElements n a m:** the sieve {i : a(i) ≥ m}, with monotonicity (largeElements_anti) and the split reciprocalSum = largeSum + smallSum (reciprocalSum_split).\n- **restricted_maximal_feasible_exists / restricted_gap_bound:** the Part VII greedy argument generalized to run *inside* an arbitrary index region T.\n- **restricted_subset_near_one:** within T, if elements are ≥ m and the restricted sum exceeds 1, there's a subset with sum in (1 - 1/m, 1].\n- **sieve_and_greedy:** the capstone — apply the restricted greedy to T = largeElements n a m. If the large-element reciprocal sum exceeds 1, we obtain a subset with sum in (1 - 1/m, 1].\n\nChoosing m strategically (balancing 'gap 1/m small' against 'sieved sum still > 1') is exactly the move that yields c/K² precision in the full Erdős-Graham proof.",
+    "mathContext": "Sieve step: discard small elements so the residual reciprocals are all $\\le 1/m$; greedy step: maximal feasible subset of the sieve has gap $< 1/m$. The Erdős-Graham optimization picks $m \\approx K$ so that the sieved mass still exceeds 1 while the gap $1/m \\approx 1/K$ tightens — iterating this scheme is what produces the $c/K^2$ bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sieve method",
+      "Greedy algorithm",
+      "Finset.filter",
+      "Erdős-Graham strategy"
+    ],
+    "prerequisites": [
+      "Finite combinatorics"
+    ]
+  }
+]

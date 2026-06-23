@@ -1,0 +1,147 @@
+[
+  {
+    "id": "ann-pq-001-header",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "OQ Statement and Approach A Strategy",
+    "content": "The OQ asks for an explicit non-cyclic group of order $pq$ when $p, q$ are distinct primes with $p \\mid (q-1)$. The parent file `LagrangeTheoremOQ01OQ01` proves the conditional fact `lagrange_pq_nonabelian_n_p_eq_q` *assuming* a non-cyclic G exists, but does not construct one. This file supplies the witness for $p = 2$ via Approach A from the S1 survey: use Mathlib's `DihedralGroup q`. The general case (Approach B: $\\mathbb{Z}/q \\rtimes_\\varphi \\mathbb{Z}/p$ for any $p \\mid (q-1)$, requiring a non-trivial homomorphism $\\varphi : \\mathbb{Z}/p \\to \\mathrm{MulAut}(\\mathbb{Z}/q)$) is deferred to S3+.",
+    "mathContext": "The dihedral group $D_n$ on a regular $n$-gon has $2n$ elements: $n$ rotations and $n$ reflections, with presentation $\\langle r, s \\mid r^n = s^2 = 1,\\ srs = r^{-1} \\rangle$. For $n = 3$, $D_3 \\cong S_3$ is the smallest non-abelian group. For any $n \\neq 1$, $D_n$ is non-cyclic — the reflection $s$ has order 2 and the rotation $r$ has order $n$, so $D_n$ is non-cyclic whenever it has two distinct elements of order 2 (any even $n$) or an element of prime order $p > 2$ together with the reflection ($n$ odd $\\geq 3$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib.GroupTheory.SpecificGroups.Dihedral",
+      "Burnside classification of pq-groups",
+      "Approach A vs Approach B in the S1 survey",
+      "semidirect product"
+    ],
+    "prerequisites": [
+      "DihedralGroup definition",
+      "Sylow theorems",
+      "Proofs.LagrangeTheoremOQ01OQ01"
+    ]
+  },
+  {
+    "id": "ann-pq-001-neZero-haveI",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 73,
+      "endLine": 80
+    },
+    "type": "insight",
+    "title": "haveI : NeZero q — typeclass plumbing for DihedralGroup.card",
+    "content": "The single line `haveI : NeZero q := ⟨hq.ne_zero⟩` is structurally essential. `DihedralGroup.card` carries a typeclass hypothesis `[NeZero n]`, and Mathlib does not (and should not) export an instance `NeZero q` from `Nat.Prime q` because primality is logically stronger than nonzero and instance synthesis must converge. Hence the proof must locally construct the `NeZero` instance and inject it into the typeclass cache via `haveI` (the term-mode analogue of `letI` for instances). After this single line, `DihedralGroup.card` and `inferInstance` (for `Fintype (DihedralGroup q)`) both succeed without further hints. The same trick recurs throughout Mathlib whenever a `Fintype.card` lemma needs `NeZero`.",
+    "mathContext": "The `NeZero` typeclass packages the proposition $n \\ne 0$ as a class so that lemmas like $\\mathrm{Fintype.card}(\\mathrm{DihedralGroup}\\,n) = 2n$ (which would be wrong for $n = 0$ because $\\mathrm{DihedralGroup}\\,0$ is the infinite dihedral group) can be stated unconditionally on the proposition side while keeping the proof obligation in the typeclass-resolution machinery. The `haveI` tactic is preferred over `have` for instances because it makes the resulting fact available to type-class search; plain `have` would not.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "NeZero typeclass",
+      "haveI vs letI vs have",
+      "typeclass synthesis",
+      "DihedralGroup 0 (infinite dihedral)"
+    ],
+    "prerequisites": [
+      "Lean 4 typeclass system",
+      "Nat.Prime.ne_zero",
+      "haveI tactic"
+    ]
+  },
+  {
+    "id": "ann-pq-001-main-theorem",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 84
+    },
+    "type": "insight",
+    "title": "Main Existence Theorem: DihedralGroup q is the Witness",
+    "content": "`exists_noncyclic_of_order_two_mul_odd_prime` packages the witness as an existential over Type, Group, and Fintype instances together with the two facts: `Fintype.card G = 2 * q` (from `DihedralGroup.card`) and `¬ IsCyclic G` (from `DihedralGroup.not_isCyclic` applied to `q ≠ 1`, which holds by primality). The hypothesis `q ≠ 2` is documentary — it certifies the OQ's divisibility premise $2 \\mid (q - 1)$ but does not appear in the proof body. The proof technique uses `refine ⟨DihedralGroup q, inferInstance, inferInstance, DihedralGroup.card, ?_⟩`: the anonymous-constructor `⟨…⟩` peels off the existential layers in one step, `inferInstance` supplies the `Group` and `Fintype` typeclasses, `DihedralGroup.card` discharges the cardinality conjunct definitionally, and the residual `?_` is the non-cyclicity hole.",
+    "mathContext": "The proof reduces to two Mathlib lemmas: $\\mathrm{Fintype.card}(\\mathrm{DihedralGroup}\\,q) = 2q$ and $\\neg\\, \\mathrm{IsCyclic}(\\mathrm{DihedralGroup}\\,q)$ when $q \\neq 1$. The first requires the `NeZero q` instance (derived from `Nat.Prime.ne_zero`). Crucially, the cardinality identity and non-cyclicity are *orthogonal*: for $n = 1$ we have $|D_1| = 2$ but $D_1 \\cong \\mathbb{Z}/2$ is cyclic; for $n = 2$ we have $|D_2| = 4$ and $D_2 \\cong V_4$ is non-cyclic but abelian; for $n \\geq 3$ both non-cyclic and non-abelian.",
+    "significance": "key",
+    "relatedConcepts": [
+      "DihedralGroup.card",
+      "DihedralGroup.not_isCyclic",
+      "Nat.Prime.one_lt",
+      "Nat.Prime.ne_zero",
+      "existential witnesses for group orders",
+      "refine + inferInstance pattern"
+    ],
+    "prerequisites": [
+      "Lean 4 anonymous-constructor refine syntax",
+      "Mathlib NeZero typeclass",
+      "Nat.Prime API"
+    ]
+  },
+  {
+    "id": "ann-pq-001-divisibility",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 102
+    },
+    "type": "insight",
+    "title": "Divisibility Certificate: 2 ∣ (q-1) for Odd Primes",
+    "content": "`two_dvd_sub_one_of_odd_prime` confirms that the existence theorem lands in the OQ's divisibility regime. The proof splits on `Nat.Prime.eq_two_or_odd'`: the `q = 2` branch contradicts the hypothesis `q ≠ 2` via `absurd rfl hq_ne_two`; the odd branch supplies `q = 2*k + 1`, so `q - 1 = 2 * k`, which `omega` discharges. This certificate is necessary because the main existence theorem alone does *not* statically guarantee the OQ regime — without it, one could read the main theorem as merely 'a non-cyclic group of order $2q$ exists' rather than 'an instance of the $p \\mid (q-1)$ regime with $p = 2$'.",
+    "mathContext": "For any odd prime $q \\geq 3$, $q - 1$ is even, hence $2 \\mid (q - 1)$. This is the OQ's divisibility hypothesis $p \\mid (q-1)$ specialized to $p = 2$. Equivalent statement: an odd prime $q$ admits 2 as a divisor of $q - 1$, which is equivalent to the Sylow-2 subgroup of $\\mathbb{Z}/(q-1)$ being non-trivial — the algebraic fact that powers the semidirect product construction in Approach B.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.Prime.eq_two_or_odd'",
+      "parity of primes",
+      "omega tactic",
+      "OQ premise certification"
+    ],
+    "prerequisites": [
+      "Nat.Prime API",
+      "omega",
+      "case analysis on prime parity"
+    ]
+  },
+  {
+    "id": "ann-pq-001-corollaries",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 104,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Concrete Corollaries: Orders 6, 10, 14, 22",
+    "content": "Four direct corollaries instantiate the main theorem with small odd primes: $q = 3$ gives order-6 ($\\mathrm{DihedralGroup}\\,3 \\cong S_3$), $q = 5$ gives order-10 ($D_5$), $q = 7$ gives order-14 ($D_7$), $q = 11$ gives order-22 ($D_{11}$). Each uses `(by norm_num : Nat.Prime q)` and `(by norm_num : q ≠ 2)`. These complement the parent file's `order_*_non_unique` lemmas, which prove only the divisibility (e.g., `order_6_non_unique : 2 ∣ (3-1)`); the corollaries here additionally exhibit the non-cyclic group, completing the 'two isomorphism classes' statement of the parent (cyclic $\\mathbb{Z}/(2q)$ vs. non-cyclic $D_q$).",
+    "mathContext": "The classical examples: $S_3$ (order 6, smallest non-abelian group, $\\cong D_3$), $D_5$ (order 10, symmetries of a regular pentagon), $D_7$ (order 14), $D_{11}$ (order 22). The next odd primes (13, 17, 19, 23) would extend the family analogously. None of these are isomorphic to the corresponding cyclic group $\\mathbb{Z}/(2q)$: cyclic $\\Leftrightarrow$ abelian for groups of order $2q$, and $D_q$ for $q \\geq 3$ is non-abelian.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "S₃ as DihedralGroup 3",
+      "norm_num tactic for primality",
+      "order_6_non_unique (parent lemma)",
+      "Mathlib SpecificGroups.Dihedral"
+    ],
+    "prerequisites": [
+      "norm_num",
+      "Nat.Prime",
+      "main existence theorem"
+    ]
+  },
+  {
+    "id": "ann-pq-001-documentary-hypothesis",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 69,
+      "endLine": 80
+    },
+    "type": "insight",
+    "title": "Documentary vs. load-bearing hypotheses",
+    "content": "The hypothesis `_hq_ne_two : q ≠ 2` in the main existence theorem is marked with a leading underscore — Lean idiom for 'unused in the proof body'. This is a deliberate design choice: the proof needs only `q ≠ 1` (which follows from `Nat.Prime.one_lt` for any prime), so technically the `q = 2` case would also produce a valid non-cyclic group of order 4, namely $\\mathrm{DihedralGroup}\\,2 \\cong V_4$ (the Klein four-group). But the OQ asks specifically about the $p \\mid (q-1)$ regime with $p < q$ — at $p = q = 2$ the OQ's premise $p < q$ fails. Carrying `q ≠ 2` as a documentary hypothesis disambiguates: 'this theorem covers the OQ-eligible case, not the degenerate $q = 2$ case where the cyclic/non-cyclic dichotomy collapses differently'. The pattern of *load-bearing hypothesis stated but unused in proof* is common in Lean formalizations of conditional theorems and deserves its own annotation.",
+    "mathContext": "Three cases for the dihedral group: $D_1 \\cong \\mathbb{Z}/2$ (cyclic), $D_2 \\cong V_4 = \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ (non-cyclic, abelian), $D_n$ for $n \\geq 3$ (non-cyclic, non-abelian). The OQ targets only the $n = q$ odd prime $\\geq 3$ regime, but `DihedralGroup.not_isCyclic` is sharp at $n \\neq 1$, covering all three cases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "documentary hypotheses in Lean",
+      "Klein four-group V_4",
+      "OQ regime specification",
+      "underscore-prefixed unused hypotheses"
+    ],
+    "prerequisites": [
+      "Lean 4 hypothesis naming conventions",
+      "small-case group theory (D_1, D_2)"
+    ]
+  }
+]

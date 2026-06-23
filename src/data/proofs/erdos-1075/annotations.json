@@ -1,0 +1,233 @@
+[
+  {
+    "id": "ann-e1075-hypergraph",
+    "proofId": "erdos-1075",
+    "range": {
+      "startLine": 42,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "r-Uniform Hypergraph",
+    "content": "An r-uniform hypergraph on vertex set $V$ consists of a finite collection of edges, each being a finite subset of $V$ with exactly $r$ elements. The uniformity constraint ($\\forall e \\in \\text{edges},\\, e.\\text{card} = r$) is enforced as part of the structure. Ordinary graphs are 2-uniform hypergraphs; for $r \\ge 3$, the combinatorial structure becomes significantly richer — edge interactions are no longer pairwise but involve $r$-wise containment.",
+    "significance": "key",
+    "mathContext": "An $r$-uniform hypergraph $H = (V, E)$ with $|V| = n$ can have at most $\\binom{n}{r}$ edges (the complete $r$-uniform hypergraph $K_n^{(r)}$). The density $d(H) = |E|/\\binom{n}{r}$ measures how close $H$ is to complete. Turán-type problems ask: what is the maximum number of edges avoiding a forbidden sub-hypergraph? For $r = 2$, these are classical (Turán 1941, $\\text{ex}(n, K_t) = (1 - 1/(t-1))\\binom{n}{2} + O(1)$). For $r \\ge 3$, even basic cases remain open — e.g., the Turán density $\\pi(K_4^{(3)})$ is unknown. The `Hypergraph` structure here uses `Finset (Finset V)` for edges, which is natural but requires care: edges are unordered $r$-element subsets.",
+    "relatedConcepts": [
+      "Turán density",
+      "complete r-uniform hypergraph",
+      "edge density",
+      "forbidden sub-hypergraph",
+      "extremal hypergraph theory"
+    ],
+    "prerequisites": [
+      "Finset (Finset V)",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-e1075-induced",
+    "proofId": "erdos-1075",
+    "range": {
+      "startLine": 51,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Induced Subhypergraph",
+    "content": "The induced subhypergraph on vertex set $S$ keeps all edges of $H$ that are entirely contained in $S$. The proof that the result is still $r$-uniform follows immediately from the parent hypergraph's uniformity. This is the key construction: the problem asks when we can find $S$ with the induced subhypergraph having high edge density relative to $|S|^r$.",
+    "significance": "key",
+    "mathContext": "For $S \\subseteq V$ with $|S| = m$, the induced subhypergraph $H[S]$ has edges $\\{e \\in E : e \\subseteq S\\}$. If we choose $S$ uniformly at random with each vertex included independently with probability $p$, then $\\mathbb{E}[|H[S]|] = |E| \\cdot p^r$ since each $r$-element edge survives with probability $p^r$. Setting $p = 1/r$ gives $\\mathbb{E}[|S|] = n/r$ and $\\mathbb{E}[|H[S]|] = |E|/r^r$, so the density relative to $m^r \\approx (n/r)^r$ is approximately $|E|/(n/r)^r \\cdot r^{-r}$. This probabilistic calculation explains the threshold constant $r^{-r}$. The Lean implementation uses `Finset.filter` to restrict edges.",
+    "relatedConcepts": [
+      "induced subgraph",
+      "random vertex selection",
+      "first moment method",
+      "expected edge count"
+    ],
+    "prerequisites": [
+      "Hypergraph",
+      "Finset.filter",
+      "Finset.subset"
+    ]
+  },
+  {
+    "id": "ann-e1075-threshold-constant",
+    "proofId": "erdos-1075",
+    "range": {
+      "startLine": 60,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Threshold Constant $r^{-r}$",
+    "content": "The constant $r^{-r}$ arises naturally from random subgraph selection: if we pick each vertex independently with probability $p = 1/r$, each $r$-element edge survives with probability $r^{-r}$. Optimizing the expected density over all $p$ also yields $r^{-r}$ as the optimal constant. Values: $3^{-3} = 1/27 \\approx 0.037$, $4^{-4} = 1/256 \\approx 0.004$, $5^{-5} = 1/3125 \\approx 0.0003$.",
+    "significance": "key",
+    "mathContext": "The noncomputable definition uses `Real.rpow` with negative integer exponent: $(r : \\mathbb{R})^{-(r : \\mathbb{Z})} = 1/r^r$. The constant $r^{-r}$ is intimately connected to the probabilistic method: it represents the optimal survival probability when each of $r$ independent Bernoulli trials must succeed. The optimal sampling probability $p = 1/r$ arises from maximizing $p^r(1-p)^{n-r}$ in the limit, a calculation related to the Poisson approximation. For the complete $r$-uniform hypergraph on $m$ vertices with $\\binom{m}{r} \\approx m^r/r!$ edges, the density $r^{-r} \\cdot m^r$ corresponds to roughly $m^r/r^r = (m/r)^r$ edges, which is the expected count when sampling $m/r$ vertices.",
+    "relatedConcepts": [
+      "probabilistic method",
+      "optimal sampling probability",
+      "Real.rpow",
+      "Poisson approximation"
+    ],
+    "prerequisites": [
+      "Real.rpow",
+      "Int casting"
+    ]
+  },
+  {
+    "id": "ann-e1075-1964result",
+    "proofId": "erdos-1075",
+    "range": {
+      "startLine": 73,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "Erdős 1964 Result",
+    "content": "The foundational result from [Er64f]: with the strong edge threshold $\\varepsilon n^r$, one can find an $m$-vertex subhypergraph with at least $r^{-r} \\cdot m^r$ edges, where $m \\to \\infty$. This uses random vertex selection — the key question (Problem #1075) is whether the weaker threshold $(1+\\varepsilon)(n/r)^r$ allows improving the density constant beyond $r^{-r}$.",
+    "significance": "key",
+    "mathContext": "Erdős's 1964 proof is a probabilistic argument: given $|E| \\ge \\varepsilon n^r$ edges, select each vertex independently with probability $p$. The expected number of surviving edges is $|E| \\cdot p^r \\ge \\varepsilon n^r p^r$, and the expected subset size is $np$. The density of the induced subhypergraph is $\\ge \\varepsilon n^r p^r / (np)^r = \\varepsilon$, and concentration inequalities (Chernoff/Azuma) show a realization achieving $\\ge r^{-r} m^r$ edges exists. The axiomatization captures the full quantifier structure: $\\forall r \\ge 3, \\forall \\varepsilon > 0, \\exists N_0$ such that for $n \\ge N_0$ the conclusion holds. The vertex set is specialized to $\\mathbb{N}$ for concreteness.",
+    "relatedConcepts": [
+      "probabilistic method",
+      "Chernoff bound",
+      "Azuma's inequality",
+      "Erdős 1964 [Er64f]"
+    ],
+    "prerequisites": [
+      "Hypergraph",
+      "thresholdConstant",
+      "Hypergraph.induced",
+      "Hypergraph.numEdges"
+    ]
+  },
+  {
+    "id": "ann-e1075-decreasing",
+    "proofId": "erdos-1075",
+    "range": {
+      "startLine": 90,
+      "endLine": 92
+    },
+    "type": "concept",
+    "title": "Threshold Monotonicity",
+    "content": "The constant $r^{-r}$ is strictly decreasing in $r$: $(r+1)^{-(r+1)} < r^{-r}$ for all $r \\ge 2$. This means the density guarantee weakens for higher uniformity, and the problem of beating $r^{-r}$ becomes correspondingly harder. The rapid decay ($1/27, 1/256, 1/3125, \\ldots$) suggests any improvement, even for $r=3$, would be significant.",
+    "significance": "key",
+    "mathContext": "To prove $(r+1)^{-(r+1)} < r^{-r}$, equivalently $r^r < (r+1)^{r+1}$: write $(r+1)^{r+1} = (r+1)^r \\cdot (r+1) > r^r \\cdot (1+1/r)^r \\cdot (r+1)/e \\cdot e > r^r$ for $r \\ge 2$ since $(r+1)/e > 1$. The super-exponential decay of $r^{-r}$ (related to Stirling: $r! \\sim \\sqrt{2\\pi r}(r/e)^r$ so $r^{-r} \\sim e^{-r}\\sqrt{2\\pi r}/r!$) means the density baseline becomes vanishingly small for large $r$, making the problem increasingly difficult.",
+    "relatedConcepts": [
+      "Stirling's approximation",
+      "monotonicity of r^{-r}",
+      "super-exponential decay"
+    ],
+    "prerequisites": [
+      "thresholdConstant"
+    ]
+  },
+  {
+    "id": "ann-e1075-values",
+    "proofId": "erdos-1075",
+    "range": {
+      "startLine": 95,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Concrete Threshold Values",
+    "content": "Explicit values of the threshold constant for small $r$: $3^{-3} = 1/27 \\approx 0.037$, $4^{-4} = 1/256 \\approx 0.004$, $5^{-5} = 1/3125 \\approx 0.0003$. These quantify how sparse the guaranteed dense subhypergraph can be — for $r=5$, we only guarantee edge density about 0.03% of $m^r$.",
+    "significance": "supporting",
+    "mathContext": "These concrete values make the problem tangible. For $r = 3$, the question is: can we guarantee a subhypergraph with more than $m^3/27$ edges? The complete 3-uniform hypergraph on $m$ vertices has $\\binom{m}{3} \\approx m^3/6$ edges, so $r^{-r} = 1/27$ corresponds to density $(1/27)/(1/6) = 6/27 \\approx 22\\%$ relative to complete. Improving to $c_3 = 1/20$ would be a factor-of-1.35 improvement. The conjunction axiom asserts all three equalities simultaneously.",
+    "relatedConcepts": [
+      "density relative to complete hypergraph",
+      "concrete bounds for small r"
+    ],
+    "prerequisites": [
+      "thresholdConstant"
+    ]
+  },
+  {
+    "id": "ann-e1075-conjecture",
+    "proofId": "erdos-1075",
+    "range": {
+      "startLine": 112,
+      "endLine": 123
+    },
+    "type": "definition",
+    "title": "The Open Conjecture (ErdosConjecture1075)",
+    "content": "The formal statement of Erdős Problem #1075: for each $r \\ge 3$, there exists $c_r$ strictly greater than $r^{-r}$ such that any $r$-uniform hypergraph with enough edges ($\\ge (1+\\varepsilon)(n/r)^r$) contains a subhypergraph on $m > 0$ vertices with at least $c_r \\cdot m^r$ edges. The crucial difference from the known result is the edge threshold: $(1+\\varepsilon)(n/r)^r = (1+\\varepsilon)n^r/r^r$ is much smaller than $\\varepsilon n^r$.",
+    "significance": "key",
+    "mathContext": "The conjecture asks about **supersaturation** beyond the random baseline: just above the expected edge count in a random $r$-uniform hypergraph with density $1/r^r$, must a denser-than-random subhypergraph exist? Compare with the graph case ($r=2$): the Kruskal-Katona theorem and Erdős-Simonovits supersaturation give precise control above Turán thresholds. For $r \\ge 3$, the analogous theory is underdeveloped. The `def` (not `axiom`) declaration means this is a well-defined proposition whose truth is unknown — a standard Lean pattern for open problems.",
+    "relatedConcepts": [
+      "supersaturation",
+      "Kruskal-Katona theorem",
+      "Erdős-Simonovits supersaturation",
+      "Turán threshold",
+      "random hypergraph density"
+    ],
+    "prerequisites": [
+      "Hypergraph",
+      "thresholdConstant",
+      "Hypergraph.induced"
+    ]
+  },
+  {
+    "id": "ann-e1075-comparison",
+    "proofId": "erdos-1075",
+    "range": {
+      "startLine": 131,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Threshold Comparison",
+    "content": "For $n \\ge r \\ge 3$, $(n/r)^r < n^r$. Since $(n/r)^r = n^r/r^r$ and $r \\ge 3$, the conjecture's edge threshold $(1+\\varepsilon)(n/r)^r$ is much smaller than $\\varepsilon n^r$ from the known result. This means the conjecture assumes LESS about the hypergraph (fewer edges guaranteed) while hoping for a STRONGER conclusion (better density constant).",
+    "significance": "key",
+    "mathContext": "The ratio of the two thresholds is $\\varepsilon n^r / [(1+\\varepsilon)(n/r)^r] = \\varepsilon r^r / (1+\\varepsilon)$, which for fixed $\\varepsilon$ and large $r$ grows as $r^r$ — an enormous gap. For $r = 3$ and $\\varepsilon = 0.01$: the known result requires $\\ge 0.01 n^3$ edges, while the conjecture only needs $\\ge 1.01 \\cdot n^3/27 \\approx 0.037 n^3$. So for moderate $\\varepsilon$, the conjecture's threshold is actually comparable to, or even larger than, the known result's threshold. The genuine difference appears for $\\varepsilon \\ll r^{-r}$.",
+    "relatedConcepts": [
+      "threshold gap analysis",
+      "parameter regime comparison",
+      "edge density hierarchy"
+    ],
+    "prerequisites": [
+      "Real.rpow",
+      "Nat casting to ℝ"
+    ]
+  },
+  {
+    "id": "ann-e1075-complete",
+    "proofId": "erdos-1075",
+    "range": {
+      "startLine": 138,
+      "endLine": 148
+    },
+    "type": "definition",
+    "title": "Complete Hypergraph Edges and Asymptotics",
+    "content": "The complete $r$-uniform hypergraph on $m$ vertices has $\\binom{m}{r} = m!/(r!(m-r)!)$ edges. The asymptotic $\\binom{m}{r} \\sim m^r/r!$ for large $m$ connects the binomial coefficient to the $m^r$ density measure used throughout. This asymptotic is formalized as `Filter.Tendsto` of the ratio to 1, providing the bridge between exact combinatorial counts and the density framework.",
+    "significance": "key",
+    "mathContext": "The asymptotic $\\binom{m}{r} = m^r/r! \\cdot \\prod_{i=0}^{r-1}(1-i/m) = m^r/r! \\cdot (1 - O(r^2/m))$ follows from expanding the falling factorial. For fixed $r$, the product $\\to 1$ as $m \\to \\infty$. The density measure $c_r \\cdot m^r$ in the problem is thus proportional to $c_r \\cdot r! \\cdot \\binom{m}{r}$, so $c_r = r^{-r}$ corresponds to relative density $r!/r^r$. By Stirling, $r!/r^r \\approx \\sqrt{2\\pi r} \\cdot e^{-r}$, which decays exponentially. The `Filter.Tendsto` formulation is the standard Mathlib approach to asymptotic equivalence.",
+    "relatedConcepts": [
+      "binomial coefficient asymptotics",
+      "Stirling's approximation",
+      "Filter.Tendsto",
+      "density normalization"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "completeHypergraphEdges",
+      "Filter.Tendsto",
+      "nhds"
+    ]
+  },
+  {
+    "id": "ann-e1075-summary",
+    "proofId": "erdos-1075",
+    "range": {
+      "startLine": 164,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "Packages the two main established facts: (1) Erdős's 1964 result — $c_r = r^{-r}$ works with the strong threshold $\\varepsilon n^r$, and (2) the threshold constant $r^{-r}$ is strictly decreasing in $r$. The proof combines the two axioms via `exact ⟨erdos_1964_result, threshold_decreasing⟩`. The open question (`ErdosConjecture1075`) about improving $c_r$ under the weaker threshold remains unresolved.",
+    "significance": "key",
+    "mathContext": "This summary theorem packages the established knowledge as a conjunction, proved by the anonymous constructor `⟨_, _⟩`. It serves as a single import point for downstream results. The deliberate exclusion of `ErdosConjecture1075` from the summary reflects its open status — it is a `def` (proposition), not an asserted truth. This is a common pattern in formalized mathematics: known results are axioms or proven theorems, while open conjectures are definitions (propositions whose truth value is unknown).",
+    "relatedConcepts": [
+      "conjunction packaging",
+      "axiom composition",
+      "open problem formalization strategy"
+    ],
+    "prerequisites": [
+      "erdos_1964_result",
+      "threshold_decreasing"
+    ]
+  }
+]

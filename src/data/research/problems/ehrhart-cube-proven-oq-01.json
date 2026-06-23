@@ -1,0 +1,114 @@
+{
+  "slug": "ehrhart-cube-proven-oq-01",
+  "title": "Simplex Ehrhart polynomial L(Δᵈ,n)=C(n+d,d) axiom-free proof via bijection",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "L(\\Delta^d, n) = |\\{(a_1,\\ldots,a_d) \\in \\mathbb{Z}_{\\geq 0}^d : a_1 + \\cdots + a_d \\leq n\\}| = \\binom{n+d}{d}",
+    "plain": "Prove axiom-free that the standard d-simplex dilated by n contains C(n+d, d) lattice points, using a type-theoretic bijection with multisets Sym (Fin (d+1)) n.",
+    "whyMatters": [
+      "Pairs with cube_lattice_count to give first-principles axiom-free proofs of the two canonical polytope families.",
+      "Demonstrates that the general ehrhart_poly axiom is unnecessary for explicit polytope families.",
+      "The multiset bijection illustrates the power of Sym types as combinatorial models."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "simplex_lattice_count : Fintype.card (Sym (Fin (d+1)) n) = (n+d).choose d (axiom-free)",
+      "simplex_interior_count : interior count = (n-1).choose d for n >= d+1",
+      "simplex_monotone : count is increasing in n",
+      "simplex_pascal : Pascal-type recursion between dimensions",
+      "simplex_count_descFactorial : count·d! = (n+d).descFactorial d",
+      "simplex_count_ascFactorial : count·d! = (n+1).ascFactorial d",
+      "simplex_count_prod : count·d! = ∏ i ∈ range d, (n+1+i)"
+    ],
+    "open": [],
+    "goal": "All goals achieved: main count proved + polynomial structure exhibited."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-08T09:30:00+03:00",
+    "iteration": 2,
+    "focus": "Solved across two sessions; 17 theorems total in EhrhartSimplexProven.lean (0 sorries, 0 axioms).",
+    "blockers": [],
+    "nextAction": "Mark candidate-pool entry completed; OQ-01 (product polytopes) and OQ-02 (Polynomial-typed lift) deferred.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: S1 2026-05-06 (PR #16233 merged): main bijection-based proof, 14 theorems. S2 2026-05-08: polynomial-form section (3 theorems + 3 examples) exhibiting count·d! as descending/ascending factorial and explicit product. 17 theorems, 0 sorries, 0 axioms, 268 lines.",
+    "builtItems": [
+      "simplex_lattice_count: Fintype.card (Sym (Fin (d+1)) n) = C(n+d, d) in EhrhartSimplexProven.lean",
+      "simplex_at_zero/at_one: base cases (origin = 1, vertices = d+1)",
+      "simplex_interior_count: interior = C(n-1, d) for n >= d+1",
+      "simplex_monotone: count increasing in n via Nat.choose_le_choose",
+      "simplex_pascal: Pascal recursion via Nat.choose_succ_succ",
+      "simplex_0d/1d/2d/3d: dimensional specializations",
+      "simplex_count_descFactorial: count·d! = (n+d).descFactorial d (S2)",
+      "simplex_count_ascFactorial: count·d! = (n+1).ascFactorial d (S2)",
+      "simplex_count_prod: count·d! = ∏ i ∈ range d, (n+1+i) (S2)"
+    ],
+    "insights": [
+      "Sym (Fin (d+1)) n is the multiset model for simplex lattice points; element 0 is the slack coordinate",
+      "Sym.card_sym_eq_choose gives C(d+1+n-1, n) = C(n+d, n); Nat.choose_symm_of_eq_add then converts to C(n+d, d)",
+      "Interior count shifts all coordinates down by 1 (y_i = x_i - 1), reducing to Sym (Fin (d+1)) (n-d-1) with cardinality C(n-1, d)",
+      "Pascal recursion C(n+d+2, d+1) = C(n+d+1, d) + C(n+d+1, d+1) is exactly Nat.choose_succ_succ",
+      "The 1D simplex and 1D cube agree: both give n+1 points; diverge in 2D (triangle vs square)",
+      "Nat.descFactorial_eq_factorial_mul_choose gives a one-line bridge from binomial to descending factorial",
+      "Nat.ascFactorial_eq_factorial_mul_choose: (n+1).ascFactorial k = k! * (n+k).choose k makes the polynomial roots at n=−1,…,−d explicit",
+      "Polynomial structure (degree d, leading coefficient 1/d!) is visible without lifting to a Polynomial-typed object"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "OQ-01 (DEFER): Product polytopes — L(P × Q, n) = L(P,n) · L(Q,n) via Fintype.card_prod",
+      "OQ-02 (DEFER): Polynomial-typed lift — define Polynomial.simplexEhrhart : ℕ[X] using ascPochhammer / d.factorial"
+    ],
+    "markdown": "See research/problems/ehrhart-cube-proven-oq-01/knowledge.md for full session notes (S1 + S2)."
+  },
+  "tags": [
+    "combinatorics",
+    "ehrhart-theory",
+    "polytopes",
+    "lattice-points",
+    "simplex",
+    "multisets",
+    "axiom-elimination"
+  ],
+  "relatedProofs": [
+    "ehrhart-cube-proven",
+    "ehrhart-cube-proven-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "Beck, M. and Robins, S. (2007). Computing the Continuous Discretely. Springer. Chapter 3."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Data.Sym.Card — Sym.card_sym_eq_choose",
+      "Mathlib.Data.Nat.Choose.Basic — Nat.choose_symm_of_eq_add, Nat.descFactorial_eq_factorial_mul_choose, Nat.ascFactorial_eq_factorial_mul_choose",
+      "Mathlib.Data.Nat.Factorial.BigOperators — Nat.ascFactorial_eq_prod_range"
+    ]
+  },
+  "started": "2026-05-06T16:07:08+03:00",
+  "completed": "2026-05-08T09:30:00+03:00",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/EhrhartSimplexProven.lean",
+      "filename": "EhrhartSimplexProven.lean",
+      "lineCount": 268,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartSimplexProven.lean"
+    }
+  ]
+}

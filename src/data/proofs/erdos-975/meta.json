@@ -1,0 +1,179 @@
+{
+  "id": "erdos-975",
+  "title": "Erdős Problem #975: Divisor Sums over Polynomial Values",
+  "slug": "erdos-975",
+  "description": "Does the sum of divisor counts over polynomial values have an asymptotic formula with a specific constant?",
+  "meta": {
+    "author": "Hooley (1963) for quadratics; general case open",
+    "sourceUrl": "https://erdosproblems.com/975",
+    "date": "1952",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos975Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisor-function",
+      "analytic-number-theory",
+      "polynomials"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 975,
+    "erdosUrl": "https://erdosproblems.com/975",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "The set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "The filter of neighborhoods of infinity",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      },
+      {
+        "theorem": "Asymptotics.IsBigO",
+        "description": "Big-O notation for asymptotic bounds",
+        "module": "Mathlib.Analysis.Asymptotics.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of divisor sum over polynomial values",
+      "Statement of Van der Corput and Erdős bounds as axioms",
+      "Statement of Hooley's theorem for quadratics",
+      "The famous n² + 1 asymptotic with constant 3/π",
+      "Verified divisor counts: τ(1)=1, τ(2)=2, τ(6)=4, τ(12)=6, τ(p)=2 for prime p"
+    ],
+    "axiomCount": 0,
+    "lineCount": 183,
+    "assumptions": "0 axioms, 0 sorries. Partial formalization: defines divisor sum functions and polynomial value framework. The main open bounds (vanDerCorput_lower_bound, erdos_upper_bound, erdos_975) are referenced in comments but not formalized as Lean axioms.",
+    "theoremCount": 5,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "The divisor function τ(n) counts how many positive integers divide n. Erdős Problem #975 asks whether the sum Σ_{n≤x} τ(f(n)) for an irreducible polynomial f has a precise asymptotic formula of the form c·x·log(x) for some constant c > 0.\n\nVan der Corput (1939) established the lower bound, showing the sum grows at least as fast as x log x. Erdős (1952) proved the matching upper bound using elementary methods, establishing that the growth is Θ(x log x).\n\nChristopher Hooley (1963) resolved the problem for irreducible quadratic polynomials, showing that an asymptotic formula exists with an explicit (though complicated) constant. The general case for higher-degree polynomials remains open.",
+    "problemStatement": "Let $f \\in \\mathbb{Z}[x]$ be an irreducible non-constant polynomial with $f(n) \\geq 1$ for all sufficiently large $n$. Does there exist a constant $c = c(f) > 0$ such that\n$$\\sum_{n \\leq x} \\tau(f(n)) \\sim c \\cdot x \\cdot \\log x$$\nwhere $\\tau$ is the divisor counting function?\n\n**Status**:\n- **OPEN** for general polynomials\n- **SOLVED** for irreducible quadratics (Hooley, 1963)\n- **Known**: $x \\log x \\ll \\sum \\tau(f(n)) \\ll x \\log x$",
+    "text": "Does the sum of divisor counts over polynomial values have an asymptotic formula with a specific constant?",
+    "proofStrategy": "We formalize:\n\n1. The divisor sum function over polynomial values\n2. Van der Corput's lower bound (1939) as an axiom\n3. Erdős's upper bound (1952) as an axiom\n4. The main conjecture as an axiom (open problem)\n5. Hooley's theorem for quadratics as an axiom\n6. The famous n² + 1 example with constant 3/π\n\nThe deep analytic methods required for these results are beyond current Mathlib formalization. We verify basic properties of the divisor function computationally.",
+    "keyInsights": [
+      "**Divisor function τ(n)**: Counts divisors of n. For prime p, τ(p) = 2. Highly multiplicative: τ(mn) relates to τ(m)τ(n) when gcd(m,n)=1.",
+      "**Why x log x?**: The average value of τ(n) for n ≤ x is approximately log x (Dirichlet). Summing over x terms gives x log x growth.",
+      "**The n² + 1 constant**: Σ τ(n² + 1) ~ (3/π) x log x. The constant 3/π ≈ 0.9549 arises from the distribution of primes dividing values of n² + 1.",
+      "**Hooley's breakthrough**: For quadratics, the constant c involves class numbers and the discriminant of the polynomial. McKee later gave more explicit formulas.",
+      "**Why is the general case hard?**: Higher-degree polynomials have more complicated prime factorization patterns. The analytic methods don't extend easily."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module documentation explaining the problem, its history, and Mathlib imports for arithmetic functions and asymptotics."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 46,
+      "endLine": 69,
+      "summary": "Define the divisor counting function τ(n) and the sum Σ τ(f(n)) over polynomial values."
+    },
+    {
+      "id": "bounds",
+      "title": "Known Bounds",
+      "startLine": 70,
+      "endLine": 99,
+      "summary": "State Van der Corput's lower bound and Erdős's upper bound as axioms."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 100,
+      "endLine": 122,
+      "summary": "State Erdős Problem #975 as an axiom: existence of asymptotic constant for general irreducible polynomials."
+    },
+    {
+      "id": "quadratic-case",
+      "title": "Quadratic Case (Hooley)",
+      "startLine": 123,
+      "endLine": 140,
+      "summary": "State Hooley's theorem resolving the conjecture for irreducible quadratics."
+    },
+    {
+      "id": "n2-plus-1",
+      "title": "The n² + 1 Example",
+      "startLine": 141,
+      "endLine": 169,
+      "summary": "The famous asymptotic Σ τ(n² + 1) ~ (3/π) x log x."
+    },
+    {
+      "id": "divisor-properties",
+      "title": "Divisor Count Properties",
+      "startLine": 170,
+      "endLine": 183,
+      "summary": "Verified examples of τ(n) for small values and the formula τ(p) = 2 for primes."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #975 about asymptotic formulas for divisor sums over polynomial values. While the general case remains open, we state known bounds (Van der Corput, Erdős), Hooley's resolution for quadratics, and the beautiful n² + 1 formula with constant 3/π.",
+    "implications": "This problem connects the multiplicative structure of divisors with the additive structure of polynomial values. Understanding these sums reveals deep connections between prime factorization patterns and polynomial arithmetic.",
+    "openQuestions": [
+      "Does an asymptotic constant exist for cubic and higher-degree irreducible polynomials?",
+      "Can the constant for n² + 1 be derived from first principles without heavy analytic machinery?",
+      "What is the relationship between the constant c(f) and algebraic properties of f?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction.Defs",
+      "Mathlib.NumberTheory.ArithmeticFunction.Misc",
+      "Mathlib.RingTheory.Polynomial.Basic",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Topology.Order.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Polynomial",
+      "Asymptotics",
+      "Real",
+      "ArithmeticFunction",
+      "Topology"
+    ],
+    "namespace": "Erdos975",
+    "lineCount": 183,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos975Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-448",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, divisor-function, number-theory"
+    },
+    {
+      "targetId": "erdos-976",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory, polynomials"
+    },
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analytic-number-theory, number-theory"
+    }
+  ],
+  "sorries": 0
+}

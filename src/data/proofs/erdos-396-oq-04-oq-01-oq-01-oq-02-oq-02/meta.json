@@ -1,0 +1,103 @@
+{
+  "id": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02",
+  "title": "Erdős #396 OQ-04 → OQ-01 → OQ-01 → OQ-02 → OQ-02: The 1/2 Critical Exponent of the Central Binomial Coefficient",
+  "slug": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02",
+  "description": "The sibling extracted the 3/2 exponent of the Catalan numbers from their recurrence; its closing open question asked whether the same machinery recovers the 1/2 exponent of the central binomial coefficient C(2n,n). It does. Mathlib's recurrence (n+1)·C(2(n+1),n+1) = 2(2n+1)·C(2n,n) reads as the ratio s n = (4n+2)/(n+1) = 4 − 2/(n+1), with deficit 2/(n+1) — the un-shifted harmonic tail. Normalising, s k / 4 = 1 − (1/2)/(k+1); the elementary bound log y ≤ y − 1 gives log(s k / 4) ≤ −(1/2)/(k+1); telescoping through the logarithm yields log(C(2n,n)/4^n) = ∑_{k<n} log(s k / 4) ≤ −(1/2)·H_n, so C(2n,n)/4^n ≤ exp(−(1/2)·H_n) ∼ n^{−1/2}: the recurrence alone forces the exponent 1/2 of C(2n,n) ∼ 4^n/√(πn). A reciprocal estimate gives the matching lower bracket. The identity C(2n,n) = (n+1)·catalan n ties the two threads: the extra linear factor n+1 is exactly the difference 3/2 = 1/2 + 1 between the two decay exponents.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://erdosproblems.com/396",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "central-binomial",
+      "catalan",
+      "recurrence",
+      "asymptotics",
+      "harmonic-series",
+      "logarithm",
+      "critical-exponent",
+      "limits"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "erdosNumber": 396,
+    "erdosUrl": "https://erdosproblems.com/396",
+    "axiomCount": 0,
+    "lineCount": 248,
+    "assumptions": "0 axioms, 0 sorries. All results depend only on the foundational axioms propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool / native_decide). Built against Mathlib 4.26.0.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 15,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The thread reads the two-term Catalan recurrence as a multiplicative step and tracks its deficit below the limiting rate 4. The grandparent established r n = 4 − 6/(n+2) → 4; the parent showed the deficit δ n = 6/(n+2) is a harmonic tail whose running sum diverges; and the sibling OQ-02 exponentiated that sum to extract the critical exponent 3/2 of catalan n ∼ 4^n/(n^{3/2}√π) at the recurrence level. The sibling's second open question asked whether the identical machinery, applied to the central binomial coefficient C(2n,n), recovers its 1/2 exponent from the classical asymptotic C(2n,n) ∼ 4^n/√(πn). This entry answers that question affirmatively.",
+    "problemStatement": "Does the normalised step of the central-binomial recurrence (n+1)·C(2(n+1),n+1) = 2(2n+1)·C(2n,n), namely s k / 4 = (4k+2)/(4(k+1)) = 1 − (1/2)/(k+1), exponentiate to the bound C(2n,n)/4^n ≤ exp(−(1/2)·H_n) ∼ n^{−1/2}, recovering the critical exponent 1/2 of the central binomial coefficient by purely recurrence-level reasoning?",
+    "text": "Mathlib's recurrence Nat.succ_mul_centralBinom_succ gives, over ℝ, C(2(n+1),n+1) = s n · C(2n,n) with s n = (4n+2)/(n+1) = 4 − 2/(n+1). Normalising by the limiting rate, s k / 4 = 1 − (1/2)/(k+1), so the harmonic correction has coefficient 1/2 — exactly the critical exponent — visible in a single step (compare the Catalan coefficient 3/2). The elementary inequality log y ≤ y − 1 at y = s k / 4 gives log(s k / 4) ≤ −(1/2)/(k+1). Telescoping the recurrence through the logarithm, log(C(2n,n)/4^n) = ∑_{k<n} log(s k / 4); summing the per-step bound and recognising ∑_{k<n} (1/2)/(k+1) = (1/2)·H_n yields log(C(2n,n)/4^n) ≤ −(1/2)·H_n. Exponentiating gives C(2n,n)/4^n ≤ exp(−(1/2)·H_n), equivalently C(2n,n) ≤ 4^n·exp(−(1/2)·H_n). The same inequality applied to (s k / 4)⁻¹ gives log(s k / 4) ≥ −1/(2k+1), bracketing log(C(2n,n)/4^n) between two harmonic-type sums both with leading coefficient 1/2. Squeezing 0 ≤ C(2n,n)/4^n ≤ exp(−(1/2)·H_n) → 0 proves C(2n,n)/4^n → 0 with an explicit rate, independently of Stirling. Finally C(2n,n) = (n+1)·catalan n exhibits the linear factor n+1 as the precise difference 3/2 = 1/2 + 1 between the two decay exponents.",
+    "proofStrategy": "Import the parent (Proofs.Erdos396OQ04OQ01OQ01) to reuse the harmonic sequence realHarmonic m = ∑_{i<m} 1/(i+1), its successor recurrence, and its divergence realHarmonic_tendsto_atTop. (1) cbRatio defines s n = (4n+2)/(n+1); cbRatio_pos by positivity. (2) centralBinom_succ_eq_ratio_mul: cast Nat.succ_mul_centralBinom_succ to ℝ, field_simp, and close with linear_combination. (3) cbRatioQuarter_eq: s k / 4 = 1 − (1/2)/(k+1) by field_simp; ring. (4) cbRatioQuarter_pos by positivity. (5) log_cbRatioQuarter_le: Real.log_le_sub_one_of_pos at s k/4 and rewrite s k/4 − 1 = −(1/2)/(k+1). (6) log_cbRatioQuarter_ge: same lemma at (s k/4)⁻¹, Real.log_inv, and (s k/4)⁻¹ − 1 = 1/(2k+1) via field_simp. (7) normLog_eq_sum: induction; successor step factors C(2(m+1),m+1)/4^(m+1) = (s m/4)·(C(2m,m)/4^m) and splits the log with Real.log_mul. (8) normLog_le: Finset.sum_le_sum with the per-step bound, then ∑ −(1/2)/(k+1) = −(1/2)·realHarmonic n by Finset.mul_sum. (9) centralBinom_div_le_exp: x = exp(log x) and Real.exp_le_exp.mpr. (10) centralBinom_le_exp_mul: div_le_iff₀. (11) normLog_bracket: combine both per-step bounds. (12) centralBinom_eq_succ_mul_catalan: cast succ_mul_catalan_eq_centralBinom. (13) catalan_div_eq_centralBinom_div: field_simp. (14) expBound_tendsto_zero: −(1/2)·realHarmonic n → atBot (Tendsto.const_mul_atTop_of_neg) composed with Real.tendsto_exp_atBot. (15) centralBinom_div_tendsto_zero: squeeze_zero.",
+    "keyInsights": [
+      "**The exponent 1/2 is visible in a single normalised step.** Dividing the central-binomial recurrence step by the limiting rate, s k / 4 = 1 − (1/2)/(k+1): the coefficient 1/2 of the harmonic correction is precisely the critical exponent of C(2n,n) ∼ 4^n/√(πn), exposed before any summation or limit. Where the Catalan deficit is the shifted harmonic tail 6/(k+2) with coefficient 3/2, the central-binomial deficit is the un-shifted tail 2/(k+1) with coefficient 1/2.",
+      "**Telescoping through the logarithm turns the recurrence into the asymptotic.** Each step multiplies by s k, so log(C(2n,n)/4^n) = ∑_{k<n} log(s k / 4) exactly; the elementary bound log y ≤ y − 1 converts this into −(1/2)·H_n, and exponentiating returns C(2n,n)/4^n ≤ exp(−(1/2)·H_n) ∼ n^{−1/2}.",
+      "**The exponent is forced from both sides.** Applying the same Mathlib inequality to the reciprocal yields log(s k / 4) ≥ −1/(2k+1), so log(C(2n,n)/4^n) is bracketed between two harmonic-type sums *both* with leading coefficient 1/2 — the 1/2 is intrinsic to the recurrence, not an artefact of one inequality.",
+      "**One linear factor separates the two exponents.** The identity C(2n,n) = (n+1)·catalan n means the central-binomial and Catalan normalised sequences differ by exactly the factor n+1. That single factor is the entire difference between the exponents: 3/2 = 1/2 + 1. The recurrence-level analysis makes the relationship between the two classical asymptotics transparent.",
+      "**An independent, rate-quantified proof that C(2n,n)/4^n → 0.** Squeezing between 0 and the explicit exponential bound — which vanishes purely because the harmonic series diverges — recovers the vanishing of the normalised central binomial coefficients without invoking Stirling, with the decay rate made explicit."
+    ],
+    "prerequisites": [
+      "Mathlib's central-binomial recurrence Nat.succ_mul_centralBinom_succ and positivity Nat.centralBinom_pos",
+      "The parent's harmonic sequence realHarmonic m = ∑_{i<m} 1/(i+1) and its divergence realHarmonic_tendsto_atTop",
+      "The elementary logarithm inequality log y ≤ y − 1 (Real.log_le_sub_one_of_pos) and exp/log monotonicity",
+      "The identity C(2n,n) = (n+1)·catalan n (succ_mul_catalan_eq_centralBinom) and the squeeze theorem for sequences"
+    ]
+  },
+  "conclusion": {
+    "summary": "The central-binomial recurrence, normalised by its limiting rate, forces C(2n,n)/4^n ≤ exp(−(1/2)·H_n), equivalently C(2n,n) ≤ 4^n·exp(−(1/2)·H_n). Since H_n ∼ log n the bound is ∼ n^{−1/2}, exhibiting the critical exponent 1/2 of C(2n,n) ∼ 4^n/√(πn) at the level of the integer recurrence. A reciprocal estimate brackets log(C(2n,n)/4^n) between two harmonic-type sums both with coefficient 1/2, and a squeeze gives an independent proof that C(2n,n)/4^n → 0. The identity C(2n,n) = (n+1)·catalan n ties the result to the sibling's 3/2 exponent: the linear factor n+1 is exactly the difference 3/2 = 1/2 + 1. All fifteen theorems are fully machine-checked with no axioms or sorries.",
+    "implications": "The entry closes the sibling's second open question: the same one-line logarithm inequality plus harmonic divergence that produced the Catalan 3/2 exponent produces the central-binomial 1/2 exponent, with no Stirling estimate. Making the structural identity C(2n,n) = (n+1)·catalan n explicit shows the two classical asymptotics are a single recurrence-level phenomenon separated by one linear factor, and the matching reciprocal bound shows each exponent is two-sided.",
+    "openQuestions": [
+      "Combining the lower bracket −∑_{k<n} 1/(2k+1) with H_m = log m + γ + o(1), can one extract explicit constants c₁, c₂ with c₁·4^n/√n ≤ C(2n,n) ≤ c₂·4^n/√n directly from the recurrence, isolating the √π constant as the only ingredient genuinely requiring an analytic (Wallis/Stirling) input?",
+      "The Catalan deficit is the shifted harmonic tail 6/(k+2) and the central-binomial deficit the un-shifted tail 2/(k+1); for which two-term integer recurrences a_{n+1} = ((αn+β)/(γn+δ))·a_n does this normalised-step method pin the polynomial decay exponent as the harmonic coefficient (β/δ − α/γ-type) of the deficit, and what is the general statement?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos396OQ04OQ01OQ01"
+    ],
+    "opens": [
+      "Nat",
+      "Filter",
+      "Topology",
+      "Finset"
+    ],
+    "namespace": "Erdos396OQ01OQ01OQ02OQ02",
+    "lineCount": 248,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-396-oq-04-oq-01-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "Sibling/parent OQ: extracts the 3/2 critical exponent of the Catalan numbers from their recurrence by exponentiating the harmonic deficit sum. This entry answers that file's second open question by running the identical machinery on the central binomial coefficient to recover its 1/2 exponent, and links the two via C(2n,n) = (n+1)·catalan n."
+    },
+    {
+      "targetId": "erdos-396-oq-04-oq-01-oq-01",
+      "relationship": "ancestor",
+      "description": "The deficit δ n = 6/(n+2) is a harmonic tail with ∑_{k<n} δ k = 6·(H_{n+1} − 1) diverging; this entry reuses the same harmonic sequence realHarmonic and its divergence for the central-binomial deficit 2/(n+1)."
+    },
+    {
+      "targetId": "erdos-396-oq-04-oq-01",
+      "relationship": "ancestor",
+      "description": "Grandparent OQ: the asymptotics of the Catalan recurrence ratio r n = 4 − 6/(n+2) → 4. The present central-binomial ratio s n = 4 − 2/(n+1) is the parallel statement for C(2n,n)."
+    },
+    {
+      "targetId": "erdos-396",
+      "relationship": "ancestor",
+      "description": "Root problem: descending factorials dividing central binomial coefficients. The central binomial coefficient C(2n,n) studied here is the root object whose growth rate is bounded."
+    }
+  ],
+  "sorries": 0
+}

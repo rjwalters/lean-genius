@@ -1,0 +1,138 @@
+{
+  "id": "descartes-circle-theorem-oq-01",
+  "title": "Descartes Circle Theorem: Curvature Relation and Soddy Circles",
+  "slug": "descartes-circle-theorem-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "DescartesCircleTheorem",
+    "lineCount": 104,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/DescartesCircleTheorem.lean",
+    "sorries": 0
+  },
+  "description": "For four mutually tangent circles with signed curvatures k₁,k₂,k₃,k₄, the Descartes relation (k₁+k₂+k₃+k₄)² = 2(k₁²+k₂²+k₃²+k₄²) is equivalent to k₄ being one of the two Soddy curvatures k₄ = (k₁+k₂+k₃) ± 2√(k₁k₂+k₂k₃+k₃k₁). Formalizes the curvature arithmetic and the quadratic (Soddy) solution, plus the Vieta relations of the two solutions.",
+  "meta": {
+    "author": "Lean Genius Researcher (2026)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Descartes%27_theorem",
+    "date": "2026-06-16",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DescartesCircleTheorem.lean",
+    "tags": [
+      "geometry",
+      "circles",
+      "curvature",
+      "descartes-circle-theorem",
+      "soddy-circles",
+      "quadratic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sq_sqrt",
+        "description": "(√a)² = a for 0 ≤ a, used to convert the Soddy square root into the symmetric product",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+      }
+    ],
+    "originalContributions": [
+      "descartesRel_iff_sq: the Descartes relation is equivalent to the perfect-square condition (k₄−(k₁+k₂+k₃))² = 4(k₁k₂+k₂k₃+k₃k₁), the quadratic-in-k₄ rewriting (single ring identity, both directions)",
+      "descartes_symmProd_nonneg: the symmetric product k₁k₂+k₂k₃+k₃k₁ is automatically ≥ 0 whenever the relation holds (it equals (k₄−S)²/4), so the Soddy root is always defined",
+      "descartes_soddy_forward / descartes_soddy_backward: equivalence of the relation with the two Soddy curvatures k₄ = (k₁+k₂+k₃) ± 2√(k₁k₂+k₂k₃+k₃k₁), via factoring (k₄−S)²−(2√D)² and mul_eq_zero",
+      "descartes_circle: headline iff packaging the relation as (D ≥ 0) ∧ (k₄ is a Soddy curvature)",
+      "soddy_sum / soddy_prod: Vieta relations — the two Soddy curvatures sum to 2(k₁+k₂+k₃) and have product (k₁+k₂+k₃)²−4(k₁k₂+k₂k₃+k₃k₁)"
+    ],
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "lineCount": 104,
+    "assumptions": "0 axioms. 0 sorries. Fully verified. Scope: formalizes the curvature arithmetic of the Descartes Circle Theorem and the Soddy-circle quadratic solution. Does NOT derive the curvature relation from the planar tangency geometry (centers in ℂ with tangency distance equations) — that derivation (the Lagarias–Mallows–Wilks complex Descartes theorem) is left as a follow-up.",
+    "mathlib_version": "4.26.0",
+    "parentProof": null,
+    "theoremCount": 7,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "René Descartes stated the curvature relation for four mutually tangent ('kissing') circles in a 1643 letter to Princess Elisabeth of Bohemia. It was rediscovered several times — notably by Frederick Soddy, the Nobel-laureate chemist, who published it as the poem *The Kiss Precise* in *Nature* (1936): 'The sum of the squares of all four bends / Is half the square of their sum.' Soddy's name now attaches to the two circles tangent to three given mutually tangent circles. In 2002 Lagarias, Mallows, and Wilks gave the *complex* Descartes theorem, encoding the circle centers as well as curvatures, which underlies the arithmetic of integral Apollonian gaskets — packings in which every curvature is an integer.",
+    "problemStatement": "For four mutually tangent circles with signed curvatures $k_1, k_2, k_3, k_4$ (curvature $\\pm 1/r$, negative for an internally enclosing circle), the Descartes relation is $(k_1+k_2+k_3+k_4)^2 = 2(k_1^2+k_2^2+k_3^2+k_4^2)$. Show it is equivalent to $k_4$ being one of the two Soddy curvatures $k_4 = (k_1+k_2+k_3) \\pm 2\\sqrt{k_1k_2+k_2k_3+k_3k_1}$, and record the Vieta relations of the two solutions.",
+    "proofStrategy": "Treat the relation as a quadratic in $k_4$. `descartesRel_iff_sq` rewrites it (in both directions, by a single `linear_combination`) as the perfect-square condition $(k_4 - S)^2 = 4D$ with $S = k_1+k_2+k_3$ and $D = k_1k_2+k_2k_3+k_3k_1$. Because the left side is a square, $D \\ge 0$ is automatic (`descartes_symmProd_nonneg`), so the Soddy square root always exists with no extra hypothesis. Factoring $(k_4 - S)^2 - (2\\sqrt D)^2$ as a difference of squares and applying `mul_eq_zero` yields the two Soddy curvatures (`descartes_soddy_forward`); substitution gives the converse (`descartes_soddy_backward`); the headline `descartes_circle` packages the equivalence. Finally `soddy_sum`/`soddy_prod` record Vieta's sum and product. The whole development is signed-curvature arithmetic and does not derive the relation from planar tangency geometry.",
+    "keyInsights": [
+      "Signed curvatures are the right coordinates: taking $k = \\pm 1/r$ (negative for an enclosing circle) lets one symmetric relation describe both the inner and outer Soddy circles at once.",
+      "The symmetric relation is secretly a quadratic in any one curvature; rewriting it as $(k_4 - S)^2 = 4D$ turns a four-variable constraint into the single-variable equation whose roots are the Soddy curvatures.",
+      "The discriminant condition $D \\ge 0$ needed for $\\sqrt D$ comes for free: whenever the relation holds, $D = (k_4 - S)^2/4$ is literally a square, so no nonnegativity hypothesis is required.",
+      "The two Soddy solutions are the two roots of $k^2 - 2Sk + (S^2 - 4D)$; Vieta's formulas immediately give sum $2S$ and product $S^2 - 4D$, recovering the inner/outer pair without solving again.",
+      "This is purely the curvature arithmetic; the planar derivation (placing centers in $\\mathbb{C}$ with tangency-distance equations — the Lagarias–Mallows–Wilks complex Descartes theorem) is a separate, deeper result left as a follow-up."
+    ]
+  },
+  "sections": [
+    {
+      "title": "Imports, Docstring, and Namespace",
+      "startLine": 1,
+      "endLine": 27,
+      "description": "Imports Mathlib and states the Descartes Circle Theorem in prose: for four mutually tangent circles with signed curvatures, (k₁+k₂+k₃+k₄)² = 2(k₁²+k₂²+k₃²+k₄²). Explains the Soddy-circle solutions, scopes the file to the curvature-arithmetic core (not the planar tangency geometry), and distinguishes it from Mathlib's unrelated Descartes' Rule of Signs.",
+      "summary": "Imports and module docstring",
+      "id": "imports-docstring-and-namespace",
+      "mathContext": "Signed curvature $k = \\pm 1/r$; the relation $(k_1+k_2+k_3+k_4)^2 = 2(k_1^2+k_2^2+k_3^2+k_4^2)$ is equivalent to the Soddy pair $k_4 = (k_1+k_2+k_3) \\pm 2\\sqrt{k_1k_2+k_2k_3+k_3k_1}$."
+    },
+    {
+      "title": "The Descartes Relation",
+      "startLine": 28,
+      "endLine": 34,
+      "description": "Definition of descartesRel: (k₁+k₂+k₃+k₄)² = 2(k₁²+k₂²+k₃²+k₄²) for four signed curvatures.",
+      "summary": "descartesRel definition",
+      "id": "descartes-relation",
+      "mathContext": "Signed curvature $k = \\pm 1/r$, negative for a circle internally enclosing the others. The relation $(k_1+k_2+k_3+k_4)^2 = 2(k_1^2+k_2^2+k_3^2+k_4^2)$ is the curvature constraint among four mutually tangent circles."
+    },
+    {
+      "title": "Quadratic Rewriting",
+      "startLine": 35,
+      "endLine": 49,
+      "description": "descartesRel_iff_sq rewrites the relation as a perfect square in k₄; descartes_symmProd_nonneg shows the symmetric product is forced nonnegative.",
+      "summary": "Perfect-square form and nonnegativity of the symmetric product",
+      "id": "quadratic-rewriting",
+      "mathContext": "Viewing the relation as a quadratic in $k_4$: $(k_4 - S)^2 = 4D$ where $S = k_1+k_2+k_3$ and $D = k_1k_2+k_2k_3+k_3k_1$. Since the left side is a square, $D \\ge 0$ automatically — the discriminant condition for the Soddy square root is free."
+    },
+    {
+      "title": "Soddy Circles",
+      "startLine": 50,
+      "endLine": 88,
+      "description": "Forward and backward equivalence between the relation and the two Soddy solutions, packaged into the headline iff descartes_circle.",
+      "summary": "k₄ = S ± 2√D via factoring and mul_eq_zero",
+      "id": "soddy-circles",
+      "mathContext": "Solving $(k_4-S)^2 = 4D$ gives the two Soddy circles $k_4 = (k_1+k_2+k_3) \\pm 2\\sqrt{k_1k_2+k_2k_3+k_3k_1}$. Factoring $(k_4-S)^2 - (2\\sqrt{D})^2 = (k_4-S-2\\sqrt D)(k_4-S+2\\sqrt D)$ and applying $\\mathtt{mul\\_eq\\_zero}$ yields the disjunction."
+    },
+    {
+      "title": "Vieta Relations",
+      "startLine": 89,
+      "endLine": 103,
+      "description": "soddy_sum and soddy_prod: the two Soddy curvatures sum to 2(k₁+k₂+k₃) and have product (k₁+k₂+k₃)²−4D.",
+      "summary": "Sum and product of the two Soddy curvatures",
+      "id": "vieta-relations",
+      "mathContext": "The two Soddy curvatures are the roots of $k^2 - 2Sk + (2Q - S^2) = 0$, so by Vieta their sum is $2S = 2(k_1+k_2+k_3)$ and their product is $S^2 - 4D$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "ptolemys-complex-proof",
+      "relationship": "Metric relation on a circle configuration via algebra",
+      "description": "Ptolemy's relation on a cyclic quadrilateral and the Descartes curvature relation are both metric constraints on configurations of points/circles, each reduced to an exact algebraic identity (here over $\\mathbb{R}$, there over $\\mathbb{C}$)."
+    },
+    {
+      "proofId": "herons-formula",
+      "relationship": "Radius/curvature arithmetic of tangent circles",
+      "description": "Heron's formula relates a triangle to its inscribed and circumscribed circles; Descartes' theorem relates four mutually tangent circles through their curvatures $\\pm 1/r$ — neighboring results in the metric geometry of circles and radii."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file machine-checks the algebraic core of the Descartes Circle Theorem with 0 sorries and 0 axioms. The symmetric curvature relation $(k_1+k_2+k_3+k_4)^2 = 2\\sum k_i^2$ is shown equivalent to the perfect-square form $(k_4 - S)^2 = 4D$, from which the two Soddy curvatures $k_4 = S \\pm 2\\sqrt D$ follow by a difference-of-squares factoring and `mul_eq_zero`. The discriminant $D \\ge 0$ is free (it equals a square), and Vieta's relations $k_+ + k_- = 2S$, $k_+ k_- = S^2 - 4D$ are recorded.",
+    "implications": "The equivalence is the engine behind Apollonian gaskets: starting from three mutually tangent circles, the two Soddy curvatures $S \\pm 2\\sqrt D$ give the two ways to inscribe a fourth, and iterating fills the plane. When the four starting curvatures are integers with $D$ a perfect square, every descendant curvature is an integer — the gateway to the rich number theory of integral Apollonian packings (Graham–Lagarias–Mallows–Wilks–Yan). The 'discriminant is free' observation explains why the construction never stalls on a negative radicand.",
+    "openQuestions": [
+      "Can the planar tangency geometry — centers placed in $\\mathbb{C}$ with pairwise distance $r_i + r_j$ — be formalized to *derive* the curvature relation, rather than taking it as the starting definition (the Lagarias–Mallows–Wilks complex Descartes theorem)?",
+      "Does the integrality phenomenon (integer curvatures propagating through the gasket when $D$ is a perfect square) admit a clean Lean statement built on `descartes_circle`?",
+      "Can the Soddy sum/product Vieta relations be packaged to prove the curvatures of a full Apollonian generation satisfy a recurrence?"
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "mul-descfactorial",
+    "proofId": "geometric-series-oq-07-oq-01",
+    "range": { "startLine": 48, "endLine": 56 },
+    "type": "technique",
+    "title": "The Side-Condition-Free Falling-Factorial Recurrence",
+    "content": "`mul_descFactorial` proves n·n^{underline k} = n^{underline k+1} + k·n^{underline k} for ALL n, k — crucially with no hypothesis k ≤ n. The proof rewrites via Nat.descFactorial_succ and splits on k ≤ n versus k > n; in the latter case both falling factorials vanish (descFactorial_eq_zero_iff_lt) and the identity is 0 = 0. This unconditional form is what lets the main induction proceed without ever case-splitting on whether k exceeds n — a small lemma that removes a pervasive side condition.",
+    "mathContext": "$n\\cdot n^{\\underline k} = n^{\\underline{k+1}} + k\\cdot n^{\\underline k}$, valid for all $n,k$ (both sides vanish when $k>n$).",
+    "significance": "supporting",
+    "relatedConcepts": ["falling factorial", "descFactorial", "recurrence relation"],
+    "prerequisites": ["falling factorials", "natural-number arithmetic"]
+  },
+  {
+    "id": "stirling-expansion",
+    "proofId": "geometric-series-oq-07-oq-01",
+    "range": { "startLine": 58, "endLine": 104 },
+    "type": "insight",
+    "title": "Stirling's Monomial Expansion — the Missing Mathlib Bridge",
+    "content": "`pow_eq_sum_stirlingSecond_descFactorial` proves nᵐ = ∑_{k≤m} S(m,k)·n^{underline k}: every power expands over the falling factorials with Stirling-number-of-the-second-kind coefficients. Mathlib defines Nat.stirlingSecond with its recurrences but provides NO connection to powers — this lemma supplies it. The induction on m multiplies the hypothesis by n, rewrites each summand with mul_descFactorial, then reconciles two reindexed sums using the Stirling recurrence S(m+1,k+1) = (k+1)S(m,k+1)+S(m,k) and a telescoping shift (Finset.sum_range_succ'), with the final coefficient bookkeeping discharged by omega. This is reusable combinatorial infrastructure, not just a step.",
+    "mathContext": "$n^m = \\sum_{k=0}^{m} S(m,k)\\, n^{\\underline k}$, where $S(m,k)$ partitions an $m$-set into $k$ blocks.",
+    "significance": "key",
+    "relatedConcepts": ["Stirling numbers of the second kind", "falling-factorial basis", "change of basis", "Worpitzky"],
+    "prerequisites": ["Stirling numbers", "induction", "Finset sums"]
+  },
+  {
+    "id": "asc-factorial-gf",
+    "proofId": "geometric-series-oq-07-oq-01",
+    "range": { "startLine": 108, "endLine": 127 },
+    "type": "technique",
+    "title": "Rephrasing Mathlib's Ascending-Factorial Sum",
+    "content": "`hasSum_ascFactorial_geometric` turns Mathlib's binomial geometric sum ∑(n+k choose k)rⁿ = 1/(1−r)^{k+1} into falling-factorial language: ∑_n (n+k)^{underline k}·rⁿ = k!/(1−r)^{k+1}. It multiplies the Mathlib result by k! and uses descFactorial_eq_factorial_mul_choose ((n+k)^{underline k} = k!·(n+k choose k)) to match summands. This is the bridge from the form Mathlib provides to the falling-factorial form the moment formula needs, and it is where the k! in the numerator originates.",
+    "mathContext": "$\\sum_{n\\ge0} (n+k)^{\\underline k}\\, r^n = \\dfrac{k!}{(1-r)^{k+1}}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["ascending factorial", "binomial coefficients", "generating function"],
+    "prerequisites": ["geometric series", "factorial identities"]
+  },
+  {
+    "id": "desc-factorial-gf",
+    "proofId": "geometric-series-oq-07-oq-01",
+    "range": { "startLine": 129, "endLine": 155 },
+    "type": "technique",
+    "title": "The Falling-Factorial Generating Function via an Index Shift",
+    "content": "`hasSum_descFactorial_geometric` evaluates ∑_n n^{underline k}·rⁿ = k!·rᵏ/(1−r)^{k+1} — the second pillar of the proof. It multiplies the ascending-factorial sum by rᵏ, recognizes the result as the k-shifted version of the target (with summand (n+k)^{underline k}·r^{n+k}), and applies `hasSum_nat_add_iff` to shift back down. The first k terms of the unshifted sum vanish because n^{underline k} = 0 for n < k (descFactorial_eq_zero_iff_lt), so no correction term survives. The factor rᵏ accounts for the index displacement.",
+    "mathContext": "$\\sum_{n\\ge0} n^{\\underline k}\\, r^n = \\dfrac{k!\\, r^k}{(1-r)^{k+1}}$ (shift Mathlib's ascending sum down by $k$).",
+    "significance": "key",
+    "relatedConcepts": ["index shift", "hasSum_nat_add_iff", "falling factorial", "generating function"],
+    "prerequisites": ["HasSum", "reindexing series"]
+  },
+  {
+    "id": "general-moment",
+    "proofId": "geometric-series-oq-07-oq-01",
+    "range": { "startLine": 159, "endLine": 196 },
+    "type": "insight",
+    "title": "Assembling the All-Orders Moment",
+    "content": "`hasSum_pow_mul_geometric` is the headline. It casts the Stirling expansion nᵐ = ∑_k S(m,k)·n^{underline k} to ℝ (hcast), makes each k-summand a HasSum via the falling-factorial generating function multiplied by S(m,k) (hterm), sums these finitely many HasSum facts over 0 ≤ k ≤ m with `hasSum_sum` (hbig), and finally collapses the inner finite sum back to nᵐ·rⁿ (hfun). The result is ∑_{n} nᵐrⁿ = ∑_{k=0}^{m} S(m,k)·k!·rᵏ/(1−r)^{k+1}. `tsum_pow_mul_geometric` is the one-line tsum corollary. Convergence is inherited from the summands — only the value is new content.",
+    "mathContext": "$\\sum_{n\\ge0} n^m r^n = \\sum_{k=0}^{m} S(m,k)\\, k!\\, \\dfrac{r^k}{(1-r)^{k+1}}$ for $|r|<1$.",
+    "significance": "key",
+    "relatedConcepts": ["moments", "HasSum linearity", "hasSum_sum", "change of basis"],
+    "prerequisites": ["HasSum", "finite sums of series"]
+  },
+  {
+    "id": "low-order",
+    "proofId": "geometric-series-oq-07-oq-01",
+    "range": { "startLine": 198, "endLine": 243 },
+    "type": "concept",
+    "title": "Recovering Orders 0–3 (decide on Stirling Values)",
+    "content": "Four worked examples specialize the general formula to m = 0,1,2,3, recovering the gallery's geometric-series (1/(1−r)), oq-07 (∑n²rⁿ = r(1+r)/(1−r)³), and oq-10 (∑n³rⁿ = r(1+4r+r²)/(1−r)⁴). Each expands the finite k-sum, evaluates the small Stirling numbers S(m,k) by kernel `decide` (e.g. S(3,2) = 3 — note this is `decide`, not native_decide, so the file stays propext/Classical/Quot-only and 0-axiom), then closes the r-rational identity with field_simp; ring after clearing 1−r ≠ 0. These double as regression checks linking the general theorem to known special cases.",
+    "mathContext": "$m=2$: $\\sum n^2 r^n = \\tfrac{r(1+r)}{(1-r)^3}$; $m=3$: $\\sum n^3 r^n = \\tfrac{r(1+4r+r^2)}{(1-r)^4}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["specialization", "Stirling number values", "decide", "moment family"],
+    "prerequisites": ["kernel decidability", "field_simp"]
+  }
+]

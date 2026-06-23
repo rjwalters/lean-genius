@@ -1,0 +1,91 @@
+[
+  {
+    "id": "bernoulli-six",
+    "proofId": "basel-problem-oq-12",
+    "range": {
+      "startLine": 37,
+      "endLine": 52
+    },
+    "type": "theorem",
+    "title": "The Genuine New Content: B₆ = 1/42",
+    "content": "bernoulli'_six is the one fact Mathlib does not already provide — its Bernoulli API stops at bernoulli'_four. Everything else in this entry is bookkeeping on top of hasSum_zeta_nat, so this lemma is the load-bearing original contribution. It is computed straight from the defining recurrence bernoulli'_def, which expresses bernoulli' 6 as 1 minus a weighted sum of the lower Bernoulli numbers: the binomial coefficients C(6,k) are settled by `decide`, the odd value bernoulli' 5 = 0 by bernoulli'_eq_zero_of_odd, and `norm_num` expands the range sum and arithmetic to 1/42. The inner sum evaluates to 1/7 + 1/2 + 1/2 + 0 − 1/6 + 0 = 41/42, leaving B₆ = 1 − 41/42 = 1/42.",
+    "mathContext": "$B_6 = 1 - \\sum_{k<6}\\binom{6}{k}\\frac{B_k}{6-k+1} = 1 - \\frac{41}{42} = \\frac{1}{42}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bernoulli numbers",
+      "bernoulli'_def recurrence",
+      "binomial coefficients",
+      "decide / norm_num"
+    ],
+    "prerequisites": [
+      "Bernoulli numbers",
+      "recurrence relations"
+    ]
+  },
+  {
+    "id": "signed-bernoulli",
+    "proofId": "basel-problem-oq-12",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    },
+    "type": "technique",
+    "title": "From bernoulli' to the Signed bernoulli",
+    "content": "Euler's zeta formula in Mathlib is stated with the signed Bernoulli numbers `bernoulli`, whereas the recurrence computes the unsigned `bernoulli'`. The two conventions differ only at index 1 (bernoulli 1 = −1/2 vs bernoulli' 1 = +1/2), so bernoulli_eq_bernoulli'_of_ne_one transports B₆ = 1/42 to the signed convention with a one-line `decide` discharging 6 ≠ 1. This small bridge is what lets the value feed directly into hasSum_zeta_nat.",
+    "mathContext": "$B_n = B_n'$ for $n \\neq 1$, so $\\texttt{bernoulli}\\,6 = \\texttt{bernoulli'}\\,6 = \\tfrac{1}{42}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "signed vs unsigned Bernoulli numbers",
+      "bernoulli convention",
+      "index-1 discrepancy"
+    ],
+    "prerequisites": [
+      "Bernoulli numbers"
+    ]
+  },
+  {
+    "id": "zeta-six",
+    "proofId": "basel-problem-oq-12",
+    "range": {
+      "startLine": 59,
+      "endLine": 67
+    },
+    "type": "theorem",
+    "title": "ζ(6) = π⁶/945 by Specializing Euler's Formula at k = 3",
+    "content": "hasSum_zeta_six is the headline. It `convert`s Mathlib's general hasSum_zeta_nat at k = 3, leaving a numeric goal that `norm_num [Nat.factorial, bernoulli_six]` followed by `ring` closes. Plugging k = 3 into ζ(2k) = (−1)^{k+1}·2^{2k−1}·π^{2k}·B_{2k}/(2k)! gives (−1)⁴·2⁵·π⁶·(1/42)/720 = 32π⁶/30240 = π⁶/945. This is the next Euler zeta value after ζ(2) = π²/6 and ζ(4) = π⁴/90 — each step up is gated purely on knowing the corresponding Bernoulli number.",
+    "mathContext": "$\\zeta(6) = (-1)^{4}\\,2^{5}\\,\\pi^{6}\\,\\dfrac{B_6}{6!} = \\dfrac{32\\,\\pi^6\\,(1/42)}{720} = \\dfrac{\\pi^6}{945}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler zeta formula",
+      "hasSum_zeta_nat",
+      "even zeta values",
+      "factorial"
+    ],
+    "prerequisites": [
+      "Riemann zeta function",
+      "Euler's zeta formula"
+    ]
+  },
+  {
+    "id": "corollaries",
+    "proofId": "basel-problem-oq-12",
+    "range": {
+      "startLine": 69,
+      "endLine": 75
+    },
+    "type": "observation",
+    "title": "Summability and tsum Corollaries",
+    "content": "summable_zeta_six and tsum_zeta_six repackage the HasSum result in the Summable and tsum forms for downstream reuse. Summability is also independently a p-series fact (p = 6 > 1), but here it is read off the HasSum directly. The tsum form ∑' n, 1/n⁶ = π⁶/945 is the citation-friendly statement.",
+    "mathContext": "$\\displaystyle\\sum_{n=1}^{\\infty}\\frac{1}{n^6} = \\frac{\\pi^6}{945}$, convergent as a $p$-series with $p = 6 > 1$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "p-series",
+      "tsum",
+      "Summable",
+      "Riemann zeta function"
+    ],
+    "prerequisites": [
+      "convergence of p-series"
+    ]
+  }
+]

@@ -1,0 +1,238 @@
+{
+  "id": "nth-root-irrational-oq-01",
+  "title": "Nth Root Irrationality via Irreducible Polynomials",
+  "slug": "nth-root-irrational-oq-01",
+  "description": "Algebraic irrationality via irreducible polynomials: proves that roots of irreducible polynomials of degree >= 2 over Q are irrational, applies Eisenstein's criterion to show X^n - p is irreducible for prime p, and derives irrationality of nth roots of primes. Imported by InverseGalois, InverseGaloisD4, InverseGaloisF20, and AngleTrisectionOQ02.",
+  "meta": {
+    "author": "Lang, Dummit-Foote, formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Eisenstein%27s_criterion",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NthRootIrrationalOQ01.lean",
+    "tags": [
+      "algebra",
+      "irrationality",
+      "polynomials",
+      "eisenstein",
+      "galois-theory",
+      "infrastructure"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.Irreducible",
+        "description": "Irreducibility of polynomials over a ring",
+        "module": "Mathlib.RingTheory.Polynomial.Basic"
+      },
+      {
+        "theorem": "Polynomial.irreducible_of_eisenstein_criterion",
+        "description": "Eisenstein's criterion for polynomial irreducibility over Z",
+        "module": "Mathlib.RingTheory.Polynomial.Eisenstein.Criterion"
+      },
+      {
+        "theorem": "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
+        "description": "Gauss lemma: Z-irreducibility transfers to Q for primitive polynomials",
+        "module": "Mathlib.RingTheory.Polynomial.GaussLemma"
+      },
+      {
+        "theorem": "minpoly.irreducible",
+        "description": "The minimal polynomial of an integral element is irreducible",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      }
+    ],
+    "originalContributions": [
+      "irreducible_no_rational_root: irreducible p in Q[X] with deg >= 2 has no rational root",
+      "irrational_root_of_irreducible: real roots of such p are irrational",
+      "irrational_of_minpoly_degree_ge_two: algebraic degree >= 2 implies irrational",
+      "eisenstein_X_pow_sub_prime: X^n - p irreducible over Q for prime p via Eisenstein + Gauss",
+      "irrational_nthRoot_of_prime: nth root of prime is irrational",
+      "Concrete applications: sqrt(2), cbrt(2), cbrt(3), 5th-root(7)"
+    ],
+    "dateAdded": "2026-03-22",
+    "axiomCount": 0,
+    "lineCount": 209,
+    "prerequisites": [
+      "Polynomial algebra over Q (irreducibility, roots, degree)",
+      "Eisenstein's criterion and the Gauss lemma",
+      "Minimal polynomials and algebraic elements",
+      "Real analysis (irrational numbers, algebraMap Q R)"
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The irrationality of $\\sqrt{2}$ was discovered by the Pythagoreans around 500 BCE, traditionally attributed to Hippasus of Metapontum, and reportedly met with hostility from the Pythagorean school, which held that all magnitudes are commensurable. Theodorus of Cyrene (5th century BCE) extended this to $\\sqrt{3}, \\sqrt{5}, \\ldots, \\sqrt{17}$ using geometric arguments (the 'spiral of Theodorus'). These classical proofs are ad hoc, requiring case-specific reasoning for each new root.\n\nThe modern algebraic approach consolidates all such results into a single principle: a real number $\\alpha$ is irrational whenever it satisfies an irreducible polynomial of degree $\\geq 2$ over $\\mathbb{Q}$. This insight connects irrationality to field extension degree via the minimal polynomial, placing it squarely within Galois theory.\n\nThe key technical tool is Eisenstein's criterion, published by Gotthold Eisenstein in 1850 in Crelle's Journal, though a closely related result was discovered earlier by Theodor Schonemann in 1846. It provides a practical sufficient condition for irreducibility over $\\mathbb{Z}$ based on prime divisibility of coefficients. Combined with Gauss's lemma from the *Disquisitiones Arithmeticae* (1801), which transfers $\\mathbb{Z}$-irreducibility to $\\mathbb{Q}$-irreducibility for primitive polynomials, Eisenstein's criterion yields the irreducibility of $X^n - p$ for any prime $p$, immediately implying that all nth roots of primes are irrational.\n\nThis module serves as shared infrastructure for four downstream formalizations in the gallery: the Inverse Galois Problem (main, $D_4$, and $F_{20}$ variants) uses Eisenstein irreducibility for computing Galois groups of radical extensions, and the Angle Trisection impossibility proof uses the algebraic degree machinery to show that trisecting $60°$ requires solving an irreducible cubic.",
+    "problemStatement": "Provide a library of irrationality results based on irreducible polynomials:\n\n1. If p in Q[X] is irreducible with deg(p) >= 2, then p has no rational root\n2. Any real root of such a polynomial is irrational\n3. If the minimal polynomial of alpha over Q has degree >= 2, then alpha is irrational\n4. X^n - p is irreducible over Q for prime p and n >= 2 (Eisenstein + Gauss)\n5. For prime p and n >= 2, the nth root p^(1/n) is irrational",
+    "text": "Algebraic irrationality via irreducible polynomials: proves that roots of irreducible polynomials of degree >= 2 over Q are irrational, applies Eisenstein's criterion to show X^n - p is irreducible for prime p, and derives irrationality of nth roots of primes. Imported by InverseGalois, InverseGaloisD4, InverseGaloisF20, and AngleTrisectionOQ02.",
+    "proofStrategy": "The proof proceeds through a clean hierarchy of increasingly specific results:\n\n1. **Core theorem** (irreducible_no_rational_root): If p is irreducible and has degree >= 2, any rational root r would give a factorization p = (X - r) * q. Since X - r has degree 1 and is not a unit, q must be a unit by irreducibility, forcing deg(p) = 1, contradicting deg(p) >= 2.\n\n2. **Irrationality lift** (irrational_root_of_irreducible): If alpha in R is rational, say alpha = r, then aeval(r, p) = 0, contradicting the core theorem. Uses injectivity of the algebraMap Q -> R.\n\n3. **Minimal polynomial variant** (irrational_of_minpoly_degree_ge_two): Applies the irrationality lift to the minimal polynomial, which is irreducible by Mathlib's minpoly.irreducible.\n\n4. **Eisenstein criterion** (eisenstein_X_pow_sub_prime): Proves X^n - p is irreducible over Z using Eisenstein's criterion at the prime ideal (p), then transfers to Q via the Gauss lemma for primitive polynomials.\n\n5. **Concrete irrationality** (irrational_nthRoot_of_prime): Combines steps 2 and 4, verifying that p^(1/n) is a root of X^n - p via real power arithmetic.",
+    "keyInsights": [
+      "The irreducible polynomial approach (Level 3) subsumes direct counting arguments (Level 2) for irrationality: one algebraic property implies all nth-root results",
+      "Eisenstein's criterion at the prime ideal (p) applies directly to X^n - p: the leading coefficient 1 is not in (p), all lower coefficients are in (p), and the constant term p is not in (p^2)",
+      "The Gauss lemma is essential: Eisenstein gives irreducibility over Z, but we need irreducibility over Q for the irrationality argument",
+      "The minimal polynomial characterization connects irrationality to algebraic degree: alpha is irrational iff its minimal polynomial over Q has degree >= 2",
+      "This module serves as shared infrastructure for Galois theory proofs, where knowing that nth roots of primes generate non-trivial field extensions is a foundational fact",
+      "The proof that $p^2 \\nmid p$ for prime $p$ -- the most delicate Eisenstein condition -- is dispatched by nlinarith using the inequality $(p-1)^2 \\geq 0$, which expands to $p^2 - 2p + 1 \\geq 0$ and thus $p^2 \\geq 2p - 1 > p$ for $p \\geq 2$",
+      "Real power arithmetic ($\\texttt{rpow\\_natCast}$, $\\texttt{rpow\\_mul}$) handles the root verification $(p^{1/n})^n = p$, bridging between the algebraic world ($\\mathbb{Q}[X]$) and the analytic world ($\\mathbb{R}$) where irrationality is defined"
+    ],
+    "prerequisites": [
+      "Polynomial algebra over Q (irreducibility, roots, degree)",
+      "Eisenstein's criterion and the Gauss lemma",
+      "Minimal polynomials and algebraic elements",
+      "Real analysis (irrational numbers, algebraMap Q R)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring explaining the algebraic irrationality approach. Imports Mathlib, opens Polynomial namespace, declares NthRootIrrationalOQ01 namespace with noncomputable section.",
+      "mathContext": "Sets up the algebraic framework: polynomials over Q, irreducibility, and the connection to irrationality of real numbers."
+    },
+    {
+      "id": "core-theorem",
+      "title": "Part I: Irreducible Polynomial Has No Rational Root",
+      "startLine": 38,
+      "endLine": 60,
+      "summary": "Proves irreducible_no_rational_root: if p in Q[X] is irreducible with degree >= 2, then p has no rational root. The proof uses the factorization p = (X - r) * q from a root r, then applies irreducibility to show either X - r or q is a unit, both leading to contradictions.",
+      "mathContext": "If $p \\in \\mathbb{Q}[X]$ is irreducible with $\\deg(p) \\geq 2$ and $r \\in \\mathbb{Q}$, then $p(r) \\neq 0$. Key step: $p = (X - r) \\cdot q$ forces $\\deg(q) = 0$ (unit), giving $\\deg(p) = 1$, contradiction."
+    },
+    {
+      "id": "irrationality-lift",
+      "title": "Part II: Irrational Roots of Irreducible Polynomials",
+      "startLine": 61,
+      "endLine": 78,
+      "summary": "Proves irrational_root_of_irreducible: lifts the rational non-root result to real roots via injectivity of algebraMap Q -> R, so any real root of an irreducible degree >= 2 polynomial is irrational.",
+      "mathContext": "If $\\alpha \\in \\mathbb{R}$ satisfies $p(\\alpha) = 0$ for irreducible $p$ with $\\deg(p) \\geq 2$, then $\\alpha \\notin \\mathbb{Q}$, since a rational root would contradict irreducibility."
+    },
+    {
+      "id": "degree-characterization",
+      "title": "Part III: Algebraic Degree Characterization",
+      "startLine": 79,
+      "endLine": 90,
+      "summary": "Proves irrational_of_minpoly_degree_ge_two: if the minimal polynomial of an integral element alpha over Q has degree >= 2, then alpha is irrational. Applies the irreducibility lift to minpoly.",
+      "mathContext": "If $\\alpha$ is integral over $\\mathbb{Q}$ with $\\deg(\\text{minpoly}_{\\mathbb{Q}}(\\alpha)) \\geq 2$, then $\\alpha \\notin \\mathbb{Q}$. Equivalently, $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\geq 2 \\implies \\alpha$ is irrational."
+    },
+    {
+      "id": "eisenstein",
+      "title": "Part IV: Eisenstein Criterion for X^n - p",
+      "startLine": 91,
+      "endLine": 155,
+      "summary": "Proves X^n - p is irreducible over Z (via Eisenstein at the prime ideal (p)) and then over Q (via the Gauss lemma). The Eisenstein verification checks: leading coefficient not in (p), lower coefficients in (p), constant term not in (p^2), and the polynomial is primitive (monic). Also proves deg(X^n - c) = n for c != 0.",
+      "mathContext": "For prime $p$ and $n \\geq 2$: $X^n - p \\in \\mathbb{Z}[X]$ is irreducible by Eisenstein's criterion at $(p)$, hence irreducible in $\\mathbb{Q}[X]$ by the Gauss lemma. Also proves $\\deg(X^n - c) = n$ for $c \\neq 0$."
+    },
+    {
+      "id": "nth-root-irrationality",
+      "title": "Part V: Structural Irrationality of Nth Roots of Primes",
+      "startLine": 156,
+      "endLine": 174,
+      "summary": "Proves irrational_nthRoot_of_prime: for prime p and n >= 2, p^(1/n) is irrational, by exhibiting it as a root of the irreducible polynomial X^n - p and applying the irrationality lift.",
+      "mathContext": "For prime $p$ and $n \\geq 2$: $p^{1/n}$ is a root of the irreducible polynomial $X^n - p$, hence irrational."
+    },
+    {
+      "id": "concrete-applications",
+      "title": "Part VI: Concrete Applications",
+      "startLine": 175,
+      "endLine": 194,
+      "summary": "Concrete irrationality results obtained from irrational_nthRoot_of_prime: sqrt(2), cbrt(2), cbrt(3), and the fifth root of 7.",
+      "mathContext": "Instances of the structural theorem: $\\sqrt{2}$, $\\sqrt[3]{2}$, $\\sqrt[3]{3}$, $\\sqrt[5]{7}$ are all irrational, each via irreducibility of the corresponding $X^n - p$."
+    },
+    {
+      "id": "structural-hierarchy",
+      "title": "Part VII: The Structural Hierarchy",
+      "startLine": 195,
+      "endLine": 209,
+      "summary": "Proves structural_subsumes_counting, showing the irreducible-polynomial approach (Level 3) subsumes counting arguments (Level 2) by reducing irrationality to a single algebraic property.",
+      "mathContext": "The irreducible-polynomial method subsumes elementary counting arguments: for any prime $p$ and $n \\geq 2$, irrationality of $p^{1/n}$ follows from one algebraic fact (irreducibility of $X^n - p$) rather than case-specific divisibility counting."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "inverse-galois",
+      "relationship": "foundational",
+      "description": "Provides irrationality and irreducibility infrastructure imported by the Inverse Galois Problem formalization for Galois group computations over Q. Eisenstein irreducibility of X^n - p is the starting point for computing Galois groups of radical extensions"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "foundational",
+      "description": "Imported by the angle trisection impossibility proof: constructibility requires the minimal polynomial to have degree a power of 2, and this module provides the algebraic degree machinery to establish that trisecting 60 degrees requires solving a degree-3 irreducible polynomial"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "extends",
+      "description": "The base sqrt(2) irrationality proof uses a direct parity/counting argument (Level 1-2). This module provides a strictly more general algebraic proof (Level 3) via irreducibility of X^2 - 2, subsuming the classical argument"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "extends",
+      "description": "The base nth-root irrationality uses irrational_nrt_of_notint_nrt (counting argument). This module provides the algebraic alternative via irreducible polynomials, which extends naturally to non-radical algebraic numbers"
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "Hermite-Lindemann proves e^alpha is transcendental for algebraic alpha != 0, a strictly stronger result than irrationality. Both sit in the hierarchy: algebraic irrationality (this module) < transcendence (Hermite-Lindemann)"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini uses the irreducibility of the generic polynomial to prove radical unsolvability. This module's Eisenstein criterion is the workhorse for establishing irreducibility of X^n - p, which generates the non-solvable extensions central to Abel-Ruffini"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "The transcendence of e implies e is not a root of any polynomial over Q, a strictly stronger statement than irrationality. This module's approach (irreducible polynomial -> irrational) is the first step in the algebraic hierarchy that culminates in transcendence theory"
+    }
+  ],
+  "conclusion": {
+    "summary": "This module provides a clean, fully verified library (209 lines, 12 theorems, 0 axioms, 0 sorries) of irrationality results via irreducible polynomials. The key chain is: Eisenstein criterion -> Gauss lemma -> irreducibility over Q -> no rational root -> irrational real root. It serves as shared infrastructure for 4 downstream proofs in the gallery.",
+    "implications": "The irreducible polynomial approach to irrationality is strictly more general than ad hoc arguments: it applies to any algebraic number of degree >= 2, not just nth roots. This generality is exactly what makes it useful as infrastructure for Galois theory proofs, where the degree of the minimal polynomial determines the structure of the field extension and its Galois group.",
+    "openQuestions": [
+      "Extend to algebraic irrationality of roots of cyclotomic polynomials and their subfields",
+      "Formalize the connection between algebraic degree and transcendence degree for more general irrationality results",
+      "Add Eisenstein criterion variants for polynomials other than X^n - p (e.g., trinomials, Dumas' generalization using Newton polygons)",
+      "Formalize Kronecker's theorem: a polynomial in Z[X] of degree n with roots in the unit disk has roots that are roots of unity, connecting irreducibility to the geometry of roots"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "NthRootIrrationalOQ01",
+    "lineCount": 209,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "path": "Proofs/NthRootIrrationalOQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "La02",
+      "citation": "Lang, S. (2002). Algebra, 3rd ed. Springer GTM 211, Chapter IV (Polynomials).",
+      "type": "book"
+    },
+    {
+      "key": "DF04",
+      "citation": "Dummit, D. S. and Foote, R. M. (2004). Abstract Algebra, 3rd ed. Wiley, Section 9.4 (Irreducibility Criteria).",
+      "type": "book"
+    },
+    {
+      "key": "Ei50",
+      "citation": "Eisenstein, G. (1850). Uber die Irreductibilitat und einige andere Eigenschaften der Gleichung, von welcher die Theilung der ganzen Lemniscate abhangt. Journal fur die reine und angewandte Mathematik, 39, 160-179.",
+      "type": "paper"
+    },
+    {
+      "key": "Ga01",
+      "citation": "Gauss, C. F. (1801). Disquisitiones Arithmeticae. Article 42 (Gauss's lemma on primitive polynomials).",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

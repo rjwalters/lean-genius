@@ -1,0 +1,176 @@
+{
+  "id": "erdos-311",
+  "title": "Erdős Problem #311: Minimal Deviation of Unit Fraction Sums from 1",
+  "slug": "erdos-311",
+  "description": "Is δ(N) = e^{-(c+o(1))N} for c ∈ (0,1), where δ(N) is the minimal nonzero |1 - Σ 1/n| over A ⊆ {1,...,N}? Lower: e^{-(1+o(1))N}. Upper: exp(-cN/(log N log log N)³) (Tang). Open.",
+  "meta": {
+    "author": "Erdős–Graham (1980, open)",
+    "sourceUrl": "https://erdosproblems.com/311",
+    "date": "1980",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos311Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "approximation",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 311,
+    "erdosUrl": "https://erdosproblems.com/311",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "prerequisites": [
+      "Unit fractions and Egyptian fraction representations",
+      "Greedy algorithm for fraction decomposition",
+      "Finset.sum for partial sums",
+      "Real analysis for approximation bounds"
+    ],
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function for decay bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets for unit fraction sums",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "unitFracSum definition",
+      "validCandidates and deviations definitions (powerset-based)",
+      "delta defined as Finset.min' over deviations (concrete, not axiomatized)",
+      "delta_pos theorem (proved: min of positive finset is positive)",
+      "delta_antitone_full: full Antitone packaging of the single-step antitonicity (Antitone delta), justifying the limit form of the open conjecture",
+      "delta_lower_bound axiom (lcm/PNT lower bound)",
+      "tang_upper_bound axiom (subexponential upper bound)",
+      "erdos_311_conjecture axiom (ε-N₀ form)"
+    ],
+    "axiomCount": 3,
+    "lineCount": 130,
+    "assumptions": "3 axioms: delta_lower_bound_pnt (PNT-based lower bound e^{-(1+ε)N}), tang_upper_bound (Tang's subexponential upper bound), erdos_311_conjecture (the main open conjecture: log δ(N)/N → -c for c ∈ (0,1)). No sorries.",
+    "theoremCount": 7,
+    "definitionCount": 5
+  },
+  "sections": [
+    {
+      "id": "header-setup",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Documents Erdős Problem #311 on the minimal deviation of unit fraction sums from 1. Known bounds: e^{-(1+o(1))N} (lower, from lcm/PNT) and exp(-cN/(log N log log N)³) (upper, Tang). Imports Mathlib."
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions and δ(N) Construction",
+      "startLine": 23,
+      "endLine": 70,
+      "summary": "Defines `unitFracSum(A)`, `validCandidates(N)` (subsets of {1,...,N} with sum ≤ 1, ≠ 1), and `deviations(N)` (the set of 1 - unitFracSum(A) over valid candidates). Constructs `delta(N)` as `Finset.min'` of deviations — a concrete definition replacing the former axiom. Proves `delta_pos`: δ(N) > 0 by showing all deviations are positive and min' is in the set.",
+      "mathContext": "$\\delta(N) = \\min\\{1 - \\text{unitFracSum}(A) : A \\in \\text{validCandidates}(N)\\}$. Proved: $\\delta(N) > 0$ since each valid $A$ has $\\text{unitFracSum}(A) < 1$."
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound",
+      "startLine": 72,
+      "endLine": 78,
+      "summary": "Lower bound (axiom): $\\delta(N) \\ge e^{-(1+\\varepsilon)N}$ for large $N$, from $\\delta(N) \\ge 1/\\text{lcm}(1,\\ldots,N) = e^{-\\psi(N)}$ where $\\psi(N) \\sim N$ by PNT.",
+      "mathContext": "$\\delta(N) \\ge \\frac{1}{\\text{lcm}(1,\\ldots,N)} = e^{-(1+o(1))N}$ by clearing denominators. Uses $\\text{lcm}(1,\\ldots,N) = e^{\\psi(N)}$ where $\\psi(N) \\sim N$ (Chebyshev/PNT)."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Upper Bound",
+      "startLine": 80,
+      "endLine": 86,
+      "summary": "Tang's upper bound (axiom): $\\delta(N) \\le \\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$ — subexponential, far from the conjectured $e^{-cN}$.",
+      "mathContext": "$\\delta(N) \\le \\exp\\bigl(-\\frac{cN}{(\\log N \\cdot \\log\\log N)^3}\\bigr)$ for some $c > 0$ (Tang). This is subexponential — between the conjectured $e^{-cN}$ and polynomial decay."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 88,
+      "endLine": 97,
+      "summary": "The conjecture (axiom): $\\exists c \\in (0,1)$ such that $\\delta(N) = e^{-(c+o(1))N}$, formalized in $\\varepsilon$-$N_0$ form.",
+      "mathContext": "$\\exists c \\in (0,1): \\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall N \\ge N_0: e^{-(c+\\varepsilon)N} \\le \\delta(N) \\le e^{-(c-\\varepsilon)N}$."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. The question connects to the ancient Egyptian tradition of representing fractions as sums of distinct unit fractions (e.g., 2/3 = 1/2 + 1/6). The function δ(N) quantifies how closely 1 can be approximated without being reached exactly. The trivial lower bound δ(N) ≥ 1/lcm(1,...,N) uses the Prime Number Theorem via the Chebyshev function ψ(N) ~ N. Tang obtained the best known upper bound using smooth number constructions, but the gap to the conjectured exponential rate remains enormous — roughly (log N)³ orders of magnitude in the exponent. Kovac proved an important equivalence: the deviation problem is equivalent to asking which integers N admit an exact representation 1 = Σ 1/nᵢ with all nᵢ ≤ N. This open problem remains one of the central questions in the theory of Egyptian fractions.",
+    "problemStatement": "Is δ(N) = e^{-(c+o(1))N} for some constant c ∈ (0,1)? That is, does the minimal nonzero deviation from 1 by unit fraction sums decay exponentially at a rate strictly between 0 and 1?",
+    "text": "Is δ(N) = e^{-(c+o(1))N} for c ∈ (0,1), where δ(N) is the minimal nonzero |1 - Σ 1/n| over A ⊆ {1,...,N}? Lower: e^{-(1+o(1))N}. Upper: exp(-cN/(log N log log N)³) (Tang). Open.",
+    "proofStrategy": "We axiomatize δ(N) and state its positivity, the lower bound from lcm, Tang's upper bound, and the full conjecture in ε-N₀ form.",
+    "keyInsights": [
+      "The trivial lower bound δ(N) ≥ 1/lcm(1,...,N) = e^{-(1+o(1))N} comes from clearing denominators",
+      "Tang's upper bound exp(-cN/(log N log log N)³) is subexponential but far from e^{-cN}",
+      "The conjectured rate c ∈ (0,1) would place δ(N) strictly between the lcm lower bound and any polynomial decay",
+      "Kovac showed the variant asking about subsets summing exactly to 1 is equivalent",
+      "The problem connects Egyptian fractions to the prime number theorem via lcm(1,...,N) estimates"
+    ],
+    "prerequisites": [
+      "Unit fractions and Egyptian fraction representations",
+      "Greedy algorithm for fraction decomposition",
+      "Finset.sum for partial sums",
+      "Real analysis for approximation bounds"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #311 asks whether the minimal nonzero deviation of unit fraction sums from 1 decays as e^{-cN} for some c ∈ (0,1). The trivial lcm lower bound gives rate 1, and Tang's upper bound is subexponential, leaving a large gap.",
+    "implications": "Resolution would reveal the fine structure of unit fraction approximation to 1, connecting to the Erdős–Graham conjecture, Egyptian fractions, and the distribution of smooth numbers.",
+    "openQuestions": [
+      "Is δ(N) = e^{-(c+o(1))N} for some c ∈ (0,1)?",
+      "What is the exact value of c if it exists?",
+      "Can Tang's upper bound be improved to a true exponential exp(-cN)?",
+      "Does the extremal subset A achieving δ(N) have any structural properties?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "related-problem",
+      "description": "Both involve unit fraction sums: #311 asks about approximating 1, while #316 asks about partitioning sets with reciprocal sum < 2",
+      "targetId": "erdos-316"
+    },
+    {
+      "relationship": "uses-result",
+      "description": "The lower bound δ(N) ≥ 1/lcm(1,...,N) uses lcm(1,...,N) = e^{ψ(N)} where ψ(N) ~ N by PNT",
+      "targetId": "prime-number-theorem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Classical"
+    ],
+    "namespace": null,
+    "lineCount": 130,
+    "axiomCount": 3,
+    "theoremCount": 6,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos311Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "authors": "Erdős–Graham 1980",
+      "note": "Original source of the conjecture about exponential decay rate of δ(N)"
+    },
+    {
+      "title": "Upper bound on δ(N)",
+      "authors": "Tang",
+      "note": "Best known upper bound: exp(-cN/(log N · log log N)³)"
+    },
+    {
+      "title": "Equivalence of subset-sum-to-1 variant",
+      "authors": "Kovac",
+      "note": "Showed the variant asking about exact representation of 1 is equivalent"
+    }
+  ],
+  "sorries": 0
+}

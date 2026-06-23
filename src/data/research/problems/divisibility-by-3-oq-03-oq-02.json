@@ -1,0 +1,145 @@
+{
+  "id": "divisibility-by-3-oq-03-oq-02",
+  "title": "Divisibility by 3 OQ-03-OQ-02: Base-Parametric Digital Roots",
+  "description": "Records the Lean base-parametric digital-root and divisibility rules for Nat.digits in arbitrary bases.",
+  "problemStatement": {
+    "formal": "Define `digitalRootBase b n` and prove congruence/divisibility rules modulo b - 1 for base-b digit sums.",
+    "plain": "Generalizes the decimal digital-root rule to any base b, including reusable divisibility tests for factors of b - 1.",
+    "whyMatters": [
+      "It turns the familiar divisibility-by-3 rule into a base-independent theorem.",
+      "The proof uses Mathlib digit-sum congruence lemmas instead of ad hoc decimal arithmetic.",
+      "Concrete octal, hexadecimal, and base-7 checks make the theorem computationally testable."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`digitalRootBase` defines the base-b digital-root function.",
+      "`digitSum_mod_base_pred` and `congruence` prove the digit-sum congruence modulo b - 1.",
+      "`digitalRootBase_range`, `digitalRootBase_single`, and `digitalRootBase_idempotent` prove the expected root behavior.",
+      "`div_pred_iff_div_digitSum` and `factor_div_rule` give the divisibility tests.",
+      "`hex_div15`, `oct_div7`, and the concrete root examples check non-decimal bases.",
+      "`DivisibilityBy3OQ03OQ02.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "The file gives divisibility rules for factors of b - 1, not a full catalogue of all digit tests for arbitrary moduli."
+    ],
+    "goal": "Expose the completed base-parametric digital-root formalization and its verified divisibility rules."
+  },
+  "source": {
+    "proofId": "divisibility-by-3-oq-03",
+    "proofTitle": "Efficient Digital Root Computation via Modular Arithmetic",
+    "type": "open-question"
+  },
+  "problemStatement": {
+    "formal": "For base b >= 3, formalize digitalRootBase b n and its congruence to n modulo b - 1 using Nat.digits b n.",
+    "plain": "Generalize the familiar base-10 digit-sum divisibility rule to arbitrary bases by proving that the digital root tracks residues modulo b - 1.",
+    "whyMatters": [
+      "The result turns a base-specific divisibility trick into reusable modular-arithmetic infrastructure.",
+      "It connects Lean's digit-list API to practical divisibility tests in bases such as 8, 10, and 16."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "digitalRootBase defines the base-b digital root as 0 at n = 0 and 1 + (n - 1) % (b - 1) otherwise.",
+      "digitSum_mod_base_pred and congruence relate digit sums and digital roots to n modulo b - 1.",
+      "digitalRootBase_range, digitalRootBase_single, and digitalRootBase_idempotent prove range and stability properties.",
+      "div_pred_iff_div_digitSum proves the divisibility rule by b - 1 using the digit sum.",
+      "factor_div_rule generalizes the rule to any factor d of b - 1.",
+      "base10_eq_OQ03_formula plus base 16, base 8, and base 7 examples connect the general theorem to concrete computations."
+    ],
+    "open": [],
+    "goal": "Expose the completed base-parametrized digital-root theorem family without changing the underlying proof artifacts."
+  },
+  "category": "extension",
+  "tractability": "challenging",
+  "tags": [
+    "number-theory",
+    "divisibility",
+    "digital-root",
+    "modular-arithmetic",
+    "algorithms",
+    "research",
+    "digits",
+    "formalized",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "divisibility-by-3",
+    "divisibility-by-3-oq-02",
+    "divisibility-by-3-oq-03",
+    "divisibility-by-3-oq-03-oq-02",
+    "divisibility-by-3-oq-04",
+    "divisibility-by-3-oq-04-oq-02"
+  ],
+  "status": "completed",
+  "selectedDate": "2026-04-12",
+  "selectedBy": "seeker",
+  "leanFiles": [
+    {
+      "path": "Proofs/DivisibilityBy3.lean",
+      "filename": "DivisibilityBy3.lean",
+      "lineCount": 236,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ02.lean",
+      "filename": "DivisibilityBy3OQ02.lean",
+      "lineCount": 163,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ03.lean",
+      "filename": "DivisibilityBy3OQ03.lean",
+      "lineCount": 271,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ03.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ03OQ02.lean",
+      "filename": "DivisibilityBy3OQ03OQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ04.lean",
+      "filename": "DivisibilityBy3OQ04.lean",
+      "lineCount": 230,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ04OQ02.lean",
+      "filename": "DivisibilityBy3OQ04OQ02.lean",
+      "lineCount": 229,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04OQ02.lean"
+    }
+  ]
+}

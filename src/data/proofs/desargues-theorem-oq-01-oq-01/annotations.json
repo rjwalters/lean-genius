@@ -1,0 +1,268 @@
+[
+  {
+    "id": "ann-file-header",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "File Overview: The Moulton Plane Construction in 297 Lines",
+    "content": "The file's docstring header (lines 4-42) and namespace declaration (line 44) frame the entire formalization. The construction is the Moulton plane (Moulton 1902): points are $\\mathbb{R}^2$ and lines are ordinary Cartesian lines *except* for positive-slope lines, which are 'bent' at the y-axis so the right half-plane has slope halved. All affine plane axioms (two-points-determine-a-line, two-non-parallel-lines-meet, parallel postulate) remain satisfied, but Desargues's theorem fails for an explicit rational-coordinate counterexample. The header lists the full counterexample data: center of perspectivity $O = (0,0)$; triangles $A=(-2,3), B=(3,1), C=(0,-1)$ and $A'=(-4,6), B'=(9,3), C'=(0,-4)$; intersection points $P=(-17,9), Q=(27,17), R=(-6,11)$. The crucial observation noted at line 40-41: P, Q, R *are* Euclidean-collinear (classical Desargues holds in $\\mathbb{R}^2$) — only the Moulton plane's bent lines reveal the failure. The `open Classical` at line 46 enables decidable case analysis on $m \\leq 0$ vs $m > 0$ in the piecewise definition.",
+    "mathContext": "Moulton's bending rule: $\\text{line}(m, b) = \\{(x,y) : y = mx + b\\}$ for $m \\leq 0$, but for $m > 0$, $\\text{line}(m, b) = \\{(x,y) : y = mx + b \\text{ if } x \\leq 0, \\ y = \\tfrac{m}{2}x + b \\text{ if } x > 0\\}$. The bend preserves continuity at $x=0$ (both pieces give $y=b$). Counterexample: $A' = 2A$, $B' = 3B$, $C' = 4C$ (scalar multiples from $O$), so the perspectivity hypothesis is satisfied along rays through $O$; the failure of Desargues is exhibited by computing $P, Q, R$ and checking that no Moulton line contains all three.",
+    "significance": "supporting",
+    "prerequisites": [
+      "affine plane axioms",
+      "real coordinates",
+      "Lean 4 docstring conventions",
+      "namespace and Classical opens"
+    ],
+    "relatedConcepts": [
+      "Moulton plane (1902)",
+      "non-Desarguesian affine plane",
+      "Hilbert's Grundlagen der Geometrie (1899)",
+      "rational counterexamples in affine geometry"
+    ]
+  },
+  {
+    "id": "ann-classical-decidable-pattern",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 46,
+      "endLine": 58
+    },
+    "type": "insight",
+    "title": "open Classical: Why If-Then-Else on Prop Needs Classical Decidability",
+    "content": "Line 46's `open Classical` is the technical hinge that lets the entire bent-line definition exist. In Lean 4's constructive default, `if h then a else b` requires `Decidable h`, but predicates like `m ≤ 0` on `ℝ` are not constructively decidable — there is no algorithm that takes a real number and returns a Boolean indicating its sign in finite time. Real arithmetic decidability is a *classical* fact: it holds for first-order theories of real closed fields by Tarski's 1948 quantifier elimination, but the elimination procedure is not constructive in Lean's type-theoretic sense. The `open Classical` declaration brings `Classical.propDecidable : ∀ p : Prop, Decidable p` into scope as the default `Decidable` instance, instantiating the if-then-else conditions to the classical decider — at the cost of making the definition non-computable (Lean's `#eval` cannot reduce `onMoultonLine m b P` to a Boolean even for concrete rational inputs). For *theorem proving* this is harmless, since classical logic is already implicit in Mathlib's foundational layer (`Classical.choice` is admitted as an axiom in `Mathlib.Logic.Basic`), but for *computation* the consequence is that the Moulton-line predicate is purely propositional — incidence checks must be discharged by tactics (`norm_num`, `linarith`, `ring`) acting on the unfolded equation form, not by Boolean evaluation. The two-level if-then-else (first split on slope sign, then split on $x$-sign for positive slope) compiles to a *propositional* case-split structure that the helper lemmas (`onML_neg_slope`, `onML_pos_left`, `onML_pos_right`) make tractable for downstream proofs: each lemma collapses one level of the if-then-else by providing the branch hypothesis explicitly, so by the time `desargues_fails` invokes `onML_eq_pos_left` (line 252) the goal has been reduced to a bare linear equation in $(m, b)$ over $\\mathbb{R}$ that `linear_combination` can close mechanically.",
+    "mathContext": "Lean 4 syntactic constraint: `if p then a else b` has type `α` only when `[Decidable p]` is in scope. For `p = (m ≤ 0)` with `m : ℝ`, constructive `Decidable` fails since real comparison is undecidable in computable terms. `open Classical` introduces `Classical.propDecidable : (p : Prop) → Decidable p` as the default instance, so every Prop becomes classically decidable. The definition $\\text{onMoultonLine}(m, b, P) := \\text{ite}(m \\leq 0, \\, P_y = mP_x + b, \\, \\text{ite}(P_x \\leq 0, \\, P_y = mP_x + b, \\, P_y = \\tfrac{m}{2}P_x + b))$ then type-checks. The cost: `onMoultonLine` is non-computable (no Boolean evaluation), but propositional reasoning (`simp only [onMoultonLine, if_pos hm]`) unfolds the if-then-else under explicit branch hypotheses, which is what the six helper lemmas at lines 66-88 mechanise.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Lean 4 `Decidable` typeclass and the `if-then-else` elaboration",
+      "Tarski's quantifier elimination for real closed fields (classical decidability)",
+      "Mathlib's `Classical.propDecidable` instance",
+      "the distinction between propositional and computational definitions in Lean 4"
+    ],
+    "relatedConcepts": [
+      "classical vs constructive logic in Lean 4",
+      "non-computable propositional definitions",
+      "Mathlib `Classical` namespace and `open Classical` idiom",
+      "`if_pos` / `if_neg` simp lemmas",
+      "piecewise definitions over uncomputable predicates"
+    ]
+  },
+  {
+    "id": "ann-moulton-line-def",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "The Moulton Line: A Piecewise-Bent Affine Line",
+    "content": "`onMoultonLine m b P` is a piecewise predicate using classical if-then-else. For m \u2264 0: ordinary line y = mx + b for all x. For m > 0 with P.1 \u2264 0 (left half-plane): also y = mx + b. For m > 0 with P.1 > 0 (right half-plane): slope is halved, y = (m/2)\u00b7x + b. The meeting point is x = 0 where both expressions give y = b \u2014 so the bent line is continuous at the y-axis. `MoultonCollinear` disjunctively covers vertical lines (shared x-coordinate) and Moulton non-vertical lines. Six helper lemmas split cases for convenient use: three for constructing membership, three for extracting the equation from membership.",
+    "mathContext": "$\\text{onMoultonLine}(m,b,P) := \\begin{cases} P_y = mP_x + b & m \\leq 0 \\\\ P_y = mP_x + b & m > 0,\\ P_x \\leq 0 \\\\ P_y = \\frac{m}{2}P_x + b & m > 0,\\ P_x > 0 \\end{cases}$ The bend at $x=0$ preserves continuity ($y = b$ at $x=0$ from both sides). Vertical lines use shared $x$-coordinate.",
+    "significance": "critical",
+    "prerequisites": [
+      "affine plane axioms",
+      "Classical.propDecidable for if-then-else on Prop",
+      "real arithmetic"
+    ],
+    "relatedConcepts": [
+      "Desargues's theorem",
+      "non-Desarguesian planes",
+      "piecewise line definition",
+      "Lean 4 Classical.propDecidable"
+    ]
+  },
+  {
+    "id": "ann-counterexample-points",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 90,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "The Moulton Counterexample: Rational-Coordinate Data",
+    "content": "Nine rational-coordinate points define the counterexample. Center of perspectivity O = (0,0). First triangle: A = (-2,3), B = (3,1), C = (0,-1). Second triangle: A' = (-4,6), B' = (9,3), C' = (0,-4). Note A' = 2A (on the same ray from O), B' = 3B (same ray), C' = 4C (same ray) \u2014 this makes perspectivity from O straightforward to verify. Intersection points: P = AB \u2229 A'B' = (-17,9), Q = BC \u2229 B'C' = (27,17), R = CA \u2229 C'A' = (-6,11). All defined as `private def` since they are only used in the theorems below.",
+    "mathContext": "$A' = 2A$, $B' = 3B$, $C' = 4C$ (scalar multiples from origin $O$), so $O,A,A'$ are collinear, etc. Intersections: $P = \\text{line}(A,B) \\cap \\text{line}(A',B') = (-17,9)$; $Q = \\text{line}(B,C) \\cap \\text{line}(B',C') = (27,17)$; $R = \\text{line}(C,A) \\cap \\text{line}(C',A') = (-6,11)$.",
+    "significance": "key",
+    "prerequisites": [
+      "affine coordinates in \u211d\u00b2",
+      "perspectivity from a point",
+      "line intersection computation"
+    ],
+    "relatedConcepts": [
+      "perspectivity from a point",
+      "Desargues's theorem statement",
+      "rational counterexamples"
+    ]
+  },
+  {
+    "id": "ann-perspectivity",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 103,
+      "endLine": 129
+    },
+    "type": "insight",
+    "title": "Perspectivity Verified: O,A,A'; O,B,B'; O,C,C'",
+    "content": "Three lemmas establish that ABC and A'B'C' are in Moulton perspective from O. `collinear_OAA'`: slope -3/2 \u2264 0 \u2192 ordinary line, all three points verified by norm_num. `collinear_OBB'`: left-slope 2/3 > 0; O is at x=0 (left boundary, onML_pos_left), B and B' are at x>0 (onML_pos_right with right-slope 1/3). `collinear_OCC'`: vertical case (x=0 for all three) \u2192 left branch of MoultonCollinear. Each proof uses the corresponding helper lemma with norm_num closing all arithmetic goals.",
+    "mathContext": "Line $OA$: slope $\\frac{3-0}{-2-0} = -\\frac{3}{2} \\leq 0$ (ordinary). Line $OB$: slope $\\frac{1}{3} > 0$, left-slope $m = \\frac{2}{3}$; $B = (3,1)$ at $x>0$ uses right-slope $\\frac{1}{3}$: $1 = \\frac{1}{3} \\cdot 3 + 0$. \u2713. Line $OC$: $C = C' = (0,*)$, vertical $x=0$.",
+    "significance": "key",
+    "prerequisites": [
+      "onML_neg_slope / onML_pos_left / onML_pos_right helper lemmas",
+      "norm_num",
+      "simp with point definitions"
+    ],
+    "relatedConcepts": [
+      "Moulton collinearity cases",
+      "perspectivity from a point",
+      "bent line positive-slope verification"
+    ]
+  },
+  {
+    "id": "ann-intersection-points",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 131,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Intersection Points: Ordinary Lines for P and R, Bent for Q",
+    "content": "18 incidence lemmas verify that P, Q, R lie on the corresponding side pairs. P = (-17,9): sides AB (slope -2/5) and A'B' (slope -3/13) both have negative slope \u2192 ordinary Moulton lines \u2192 onML_neg_slope. R = (-6,11): sides CA (slope -2) and C'A' (slope -5/2) also negative \u2192 ordinary. Q = (27,17): sides BC (left-slope 4/3, right-slope 2/3) and B'C' (left-slope 14/9, right-slope 7/9) have positive slope and Q is at x=27 > 0 \u2192 right-half Moulton lines via onML_pos_right. The key point: P and R are computed by ordinary linear algebra (the Moulton bending is invisible for negative-slope lines). Q is on the positive-slope right half.",
+    "mathContext": "Line $AB$: slope $\\frac{1-3}{3-(-2)} = -\\frac{2}{5}$, intercept $b = 3 - (-\\frac{2}{5})(-2) = \\frac{11}{5}$. Check $P = (-17,9)$: $(-\\frac{2}{5})(-17) + \\frac{11}{5} = \\frac{34+11}{5} = 9$. \u2713. Line $BC$: slope $\\frac{-1-1}{0-3} = \\frac{4}{3}$ (left-slope); right-slope $= \\frac{2}{3}$; check $Q=(27,17)$: $\\frac{2}{3} \\cdot 27 - 1 = 18-1 = 17$. \u2713.",
+    "significance": "supporting",
+    "prerequisites": [
+      "onML_neg_slope / onML_pos_right helper lemmas",
+      "norm_num",
+      "rational linear algebra"
+    ],
+    "relatedConcepts": [
+      "ordinary vs. bent Moulton lines",
+      "side intersection computation",
+      "negative-slope symmetry"
+    ]
+  },
+  {
+    "id": "ann-q-bent-incidence",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 162,
+      "endLine": 186
+    },
+    "type": "insight",
+    "title": "Q on Bent Moulton Lines: The Asymmetric Test at x = 27",
+    "content": "This sub-block (lemmas $Q$_on_BC, $Q$_on_B'C', $B$_on_BC, $C$_on_BC, $B'$_on_B'C', $C'$_on_B'C') is where the Moulton bending becomes operationally visible. Side $BC$ has left-slope $4/3 > 0$ (right-slope $2/3$), and side $B'C'$ has left-slope $14/9 > 0$ (right-slope $7/9$). Q lives at $x = 27 > 0$, so Q is tested against the *right* branch of the bent line via `onML_pos_right`. But the endpoints split: $C = (0, -1)$ and $C' = (0, -4)$ lie at $x = 0$ (the seam), tested via `onML_pos_left` — at $x = 0$ both branches agree ($y = b$). Meanwhile $B = (3,1)$ and $B' = (9, 3)$ are at $x > 0$, tested via `onML_pos_right`. The asymmetry — same line, three different helper lemmas depending on each endpoint's half-plane — is the operational signature of Moulton bending. Crucially, *the Moulton bending shows up only here*: P and R lie on ordinary negative-slope lines (`onML_neg_slope` throughout), so the failure of Desargues is detectable precisely because Q's bent verification produces the slope-mismatch that the contradiction in `desargues_fails` exploits.",
+    "mathContext": "Side $BC$: left-slope $m = \\frac{4}{3}$, intercept $b = -1$. At $C = (0, -1)$: left branch, $-1 = \\frac{4}{3} \\cdot 0 + (-1)$. ✓. At $B = (3, 1)$: right branch with right-slope $\\frac{m}{2} = \\frac{2}{3}$, $1 = \\frac{2}{3} \\cdot 3 + (-1)$. ✓. At $Q = (27, 17)$: right branch, $17 = \\frac{2}{3} \\cdot 27 + (-1) = 18 - 1 = 17$. ✓. Side $B'C'$: left-slope $m = \\frac{14}{9}$, intercept $b = -4$, right-slope $\\frac{7}{9}$. At $Q$: $\\frac{7}{9} \\cdot 27 - 4 = 21 - 4 = 17$. ✓. The right-slope arithmetic is what blocks the Euclidean-collinearity computation: an ordinary line through $B$ and $C$ with slope $\\frac{4}{3}$ would give $y = \\frac{4}{3} \\cdot 27 - 1 = 35$ at $x = 27$, not $17$.",
+    "significance": "key",
+    "prerequisites": [
+      "onML_pos_left and onML_pos_right helper lemmas",
+      "case-splitting on x-sign at endpoints",
+      "norm_num for arithmetic at concrete rationals"
+    ],
+    "relatedConcepts": [
+      "Moulton plane bending at x = 0",
+      "left-half vs right-half slope",
+      "operational signature of non-Desarguesian planes",
+      "seam behavior at the y-axis"
+    ]
+  },
+  {
+    "id": "ann-part-v-intro-narrative",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 212,
+      "endLine": 225
+    },
+    "type": "concept",
+    "title": "Part V Intro: The Contradiction Setup Before Any Tactic Fires",
+    "content": "The Part V docstring (lines 212-224) lays out the entire structure of the upcoming contradiction in advance, so a reader can verify the algebra by hand before reading the tactic block. Three keys are stated: (1) The witnesses are $P = (-17, 9)$, $Q = (27, 17)$, $R = (-6, 11)$ — note that $P$ and $R$ have $x \\leq 0$ while $Q$ has $x > 0$, which forces any positive-slope Moulton line through all three to mix the left-branch ($y = mx + b$) and right-branch ($y = \\tfrac{m}{2}x + b$) equations. (2) The two-equation pair from $P$ (left, $9 = m(-17) + b$) and $Q$ (right, $17 = \\tfrac{m}{2}(27) + b$) is recombined to yield $m = 16/61$. (3) Substituting this $m$ into the $R$ equation gives $11 = \\tfrac{725}{61} \\neq \\tfrac{671}{61}$, the numeric contradiction. The docstring also rules out the other cases: negative-slope lines cannot contain PQ (slope $2/11 > 0$) and vertical lines are excluded by distinct x-coordinates — corresponding precisely to the three `by_cases` branches `hv1`, `hm : m ≤ 0`, and `m > 0` in the proof below. This 'pre-flight checklist' makes the tactic block at lines 233-261 a transparent translation of the mathematical content, not a sequence of opaque calls.",
+    "mathContext": "Substituting $m = 16/61$ into $11 = m(-6) + b$ gives $b = 11 + 6 \\cdot \\tfrac{16}{61} = \\tfrac{671 + 96}{61} = \\tfrac{767}{61}$, and then $m \\cdot (-17) + b = \\tfrac{-272 + 767}{61} = \\tfrac{495}{61} \\neq \\tfrac{549}{61} = 9 \\cdot \\tfrac{61}{61}$ — but the docstring's framing prefers the shorter calculation: setting $11 = m(-6) + b$ with $b = 17 + \\tfrac{m}{2}(-27) = 17 - \\tfrac{m \\cdot 27}{2}$ (from $Q$) and $m = 16/61$ gives $b = 17 - \\tfrac{8 \\cdot 27}{61} = \\tfrac{17 \\cdot 61 - 216}{61} = \\tfrac{821}{61}$, and then $m(-6) + b = -\\tfrac{96}{61} + \\tfrac{821}{61} = \\tfrac{725}{61} \\neq \\tfrac{11 \\cdot 61}{61} = \\tfrac{671}{61}$. Either reading exposes the same arithmetic obstruction. The actual proof skips this $b$-elimination by using `linear_combination` to extract two contradictory expressions for $m$ directly.",
+    "significance": "supporting",
+    "prerequisites": [
+      "linear systems in two unknowns",
+      "case analysis on slope sign and verticality",
+      "Moulton plane left/right branch equations"
+    ],
+    "relatedConcepts": [
+      "narrative bridge between definition and proof",
+      "pre-tactic algebraic outline",
+      "three-case structure of desargues_fails",
+      "Lean docstring as proof scaffold"
+    ]
+  },
+  {
+    "id": "ann-desargues-fails",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 226,
+      "endLine": 261
+    },
+    "type": "insight",
+    "title": "desargues_fails: The Key Contradiction via Linear Algebra",
+    "content": "The proof proceeds by contradiction assuming MoultonCollinear P Q R. Three cases: (1) **Vertical**: P.1 = -17 \u2260 27 = Q.1, closed by norm_num. (2) **m \u2264 0**: All three points lie on an ordinary line. But hP' (9 = m(-17)+b) and hQ' (17 = m\u00b727+b) give 8 = 44m, so m = 2/11 > 0, contradicting m \u2264 0 \u2014 closed by linarith. (3) **m > 0**: P.1=-17 and R.1=-6 are \u2264 0 (left half), Q.1=27 > 0 (right half). From P: 9 = m(-17)+b; from Q: 17 = (m/2)\u00b727+b; `linear_combination hP' - hR'` gives 11m = 2 (i.e., m = 2/11). Then `linear_combination 2*hP' - 2*hQ'` gives 61m = 16 (i.e., m = 16/61). Since 11\u00b7(16/61) \u2260 2\u00b761/61, `linarith` closes the contradiction.",
+    "mathContext": "From $P$-eq and $Q$-eq: $9 = m(-17)+b$ and $17 = \\frac{m}{2}(27)+b$. Subtract: $-8 = -17m - \\frac{27m}{2} = -\\frac{61m}{2}$, so $m = \\frac{16}{61}$. From $P$-eq and $R$-eq: $9 - 11 = m(-17+6) = -11m$, so $m = \\frac{2}{11}$. But $\\frac{16}{61} \\neq \\frac{2}{11}$ (cross-multiply: $16 \\cdot 11 = 176 \\neq 122 = 2 \\cdot 61$). Contradiction.",
+    "significance": "critical",
+    "prerequisites": [
+      "onML_eq_neg / onML_eq_pos_left / onML_eq_pos_right helper lemmas",
+      "linarith for linear arithmetic",
+      "linear_combination tactic",
+      "by_cases on m \u2264 0"
+    ],
+    "relatedConcepts": [
+      "Moulton line equations",
+      "linear_combination tactic in Lean 4",
+      "contradiction by linear system",
+      "linarith for numeric contradictions"
+    ]
+  },
+  {
+    "id": "ann-linear-combination-tactic",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 256,
+      "endLine": 261
+    },
+    "type": "insight",
+    "title": "linear_combination: Extracting $m$ from Two Different Linear Pairs",
+    "content": "The contradiction hinges on two applications of the `linear_combination` tactic (introduced in Mathlib 4, generalising Lean 3's `linarith` for equalities expressible as integer-coefficient combinations of given hypotheses). Step 1: `linear_combination hP' - hR'` proves $11m = 2$ by computing $(\\text{hP'}) - (\\text{hR'}) = (9 - m(-17) - b) - (11 - m(-6) - b) = -11m + 2$, which equals $0$, hence $11m = 2$. Step 2: `linear_combination 2 * hP' - 2 * hQ'` proves $61m = 16$ by computing $2(9 - m(-17) - b) - 2(17 - \\frac{m}{2}(27) - b) = -16 + (34 + 27)m = 61m - 16$, which equals $0$, hence $61m = 16$. The user does not need to write the algebraic manipulation — `linear_combination` mechanically expands the linear combination and discharges the resulting `= 0` goal by `ring`. The final `linarith` then closes $11 \\cdot 16 = 176 \\neq 122 = 2 \\cdot 61$, exhibiting the inconsistency. This three-line tactic pipeline ($h_1, h_2$, `linarith`) is the entire algebraic core of the Moulton counterexample.",
+    "mathContext": "From $h_P: 9 = m(-17) + b$, $h_Q: 17 = \\tfrac{m}{2}(27) + b$, $h_R: 11 = m(-6) + b$. Pair 1 ($P$ vs $R$, both left-half): subtracting eliminates $b$ and gives $9 - 11 = m(-17) - m(-6) = -11m$, i.e. $m = \\tfrac{2}{11}$. Pair 2 ($P$ vs $Q$, left vs right): $9 \\cdot 2 - 17 \\cdot 2 = m(-34) - m(27) = -61m$ (after using $\\frac{m}{2} \\cdot 27 \\cdot 2 = 27m$), i.e. $-16 = -61m$, so $m = \\tfrac{16}{61}$. The slope $m$ would have to be *both* $\\tfrac{2}{11}$ and $\\tfrac{16}{61}$ — but $2 \\cdot 61 = 122 \\neq 176 = 11 \\cdot 16$, so no real $m$ exists. The Moulton bend on the right half (the factor of $\\tfrac{1}{2}$) is the unique reason the two slopes disagree: in the ordinary Euclidean plane, both pairs would yield the same slope $\\tfrac{2}{11}$ and Desargues would hold.",
+    "significance": "critical",
+    "prerequisites": [
+      "linear_combination tactic in Mathlib 4",
+      "ring tactic for commutative ring equalities",
+      "linarith for inequality contradictions",
+      "elimination of variables in linear systems"
+    ],
+    "relatedConcepts": [
+      "Mathlib linear_combination tactic",
+      "Gaussian elimination in two unknowns",
+      "tactic-driven contradiction proofs",
+      "the half-slope factor as the failure witness"
+    ]
+  },
+  {
+    "id": "ann-full-counterexample",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 263,
+      "endLine": 296
+    },
+    "type": "insight",
+    "title": "moulton_counterexample: Full Desargues Failure Certificate",
+    "content": "`moulton_counterexample` is a single large conjunction packaging the complete certificate: (1) three perspectivity facts (collinear_OAA', collinear_OBB', collinear_OCC'), (2) eighteen incidence facts (each of P, Q, R on both corresponding sides of both triangles), and (3) the non-collinearity fact `desargues_fails`. The proof is a term-mode anonymous constructor \u27e8..., ...\u27e9 listing all 22 components. This makes the counterexample machine-checkable and self-contained \u2014 a single theorem whose type is the negation of Desargues's theorem in the Moulton plane.",
+    "mathContext": "Desargues's theorem asserts: if two triangles $ABC$, $A'B'C'$ are in perspective from a point (i.e., $O,A,A'$; $O,B,B'$; $O,C,C'$ collinear), then their side-intersection points $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$ are collinear. `moulton_counterexample` exhibits all hypotheses \u2713 and conclusion \u2717, formally refuting Desargues in the Moulton affine plane.",
+    "significance": "key",
+    "prerequisites": [
+      "all Part III/IV lemmas",
+      "desargues_fails",
+      "Lean 4 anonymous constructor syntax"
+    ],
+    "relatedConcepts": [
+      "Desargues's theorem statement",
+      "Lean 4 conjunction packaging",
+      "machine-checkable counterexamples",
+      "affine perspective from a point"
+    ]
+  }
+]

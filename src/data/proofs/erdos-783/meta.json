@@ -1,0 +1,162 @@
+{
+  "id": "erdos-783",
+  "title": "Erdős Problem #783: Optimal Sieving with Coprime Sets",
+  "slug": "erdos-783",
+  "description": "Given budget C on reciprocal sums, which pairwise coprime A ⊆ {2,...,n} minimizes unsieved integers? Conjectured: first k primes with Σ 1/p_i ≤ C. Status: OPEN.",
+  "meta": {
+    "erdosNumber": 783,
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos783Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sieve-theory",
+      "optimization",
+      "prime-numbers",
+      "open"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/783",
+    "erdosUrl": "https://erdosproblems.com/783",
+    "erdosProblemStatus": "open",
+    "axiomCount": 0,
+    "lineCount": 420,
+    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives. Includes composite_replacement_improves_product (added 2026-04-27): bridges prime_factor_better_sieve with the product structure of smaller_prime_better, formalizing the improvement step when converting any coprime sieving set toward a prime-only one.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 31,
+    "definitionCount": 6
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Header stating Erdős #783 (optimal coprime sieving under a reciprocal-sum budget C), the conjecture that the largest k primes are optimal, status OPEN, and `import Mathlib`. maxPrimeCount and maxPrimeCount_spec, once axioms, are now proved from Mathlib's prime reciprocal divergence — the file is axiom-free.",
+      "mathContext": "Problem statement, conjecture, OPEN status, imports."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 31,
+      "endLine": 63,
+      "summary": "Defines `IsValidSievingSet` (pairwise-coprime elements with reciprocal sum ≤ C), `unsievedCount` (integers ≤ n surviving the sieve), and proves `optimal_sieving_set_exists` (an unsieved-count-minimizing valid set exists, via `Nat.find` / well-ordering of ℕ).",
+      "mathContext": "Valid sieving set, unsieved count, existence of an optimum."
+    },
+    {
+      "id": "prime-sieving-set",
+      "title": "The Prime Sieving Set",
+      "startLine": 64,
+      "endLine": 131,
+      "summary": "Defines `nthPrime` via `Nat.nth Nat.Prime` with proved primality, strict monotonicity, injectivity, and pairwise coprimality of distinct primes; constructs `primeSievingSet` as the first k primes and proves its cardinality, all-prime, ≥2, and pairwise-coprime properties. All proved (no axioms).",
+      "mathContext": "nth prime infrastructure and the prime sieving set, fully proved."
+    },
+    {
+      "id": "maxprimecount-construction",
+      "title": "Constructing maxPrimeCount from Prime Reciprocal Divergence",
+      "startLine": 132,
+      "endLine": 263,
+      "summary": "Uses Mathlib's `not_summable_one_div_on_primes` (Euler) to show partial sums of prime reciprocals are unbounded, letting `maxPrimeCount C` be defined by `Nat.find` rather than axiomatized. Proves `maxPrimeCount_spec`, `primeSievingSet_reciprocal_sum`, and `primeSievingSet_valid` (the prime set is valid for large n). Replaces the former axiomatization of maxPrimeCount.",
+      "mathContext": "Divergence bridge defining maxPrimeCount; validity of the prime sieve."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture (OPEN)",
+      "startLine": 264,
+      "endLine": 268,
+      "summary": "States Erdős Problem #783: for large n the first k = maxPrimeCount C primes minimize the unsieved count among all valid sieving sets. This is the open conjecture (documented, not assumed as an axiom).",
+      "mathContext": "The open optimality statement."
+    },
+    {
+      "id": "supporting-analysis",
+      "title": "Supporting Analysis",
+      "startLine": 269,
+      "endLine": 282,
+      "summary": "Proves `coprime_sieve_estimate` relating the unsieved fraction to the survival product Π(1 − 1/a); the formal statement is deliberately weak (∃ δ with no bound on δ), serving as documentation of the inclusion-exclusion heuristic rather than a sharp estimate.",
+      "mathContext": "Inclusion-exclusion survival-product heuristic (weak form)."
+    },
+    {
+      "id": "empty-sieve-baseline",
+      "title": "Empty Sieve Baseline and Monotonicity",
+      "startLine": 283,
+      "endLine": 320,
+      "summary": "Proves `empty_is_valid` (the empty set is a valid sieve), `unsievedCount_empty` (unsieved count = n with no sieve), and `sieving_reduces_unsieved` (adding any element ≥2 reduces the unsieved count, via filter monotonicity).",
+      "mathContext": "Baseline empty sieve and sieve monotonicity."
+    },
+    {
+      "id": "infrastructure-minimize",
+      "title": "Infrastructure for primes_minimize_product",
+      "startLine": 321,
+      "endLine": 420,
+      "summary": "Proves the product-minimization infrastructure: `sieve_factor_bounds`/`sieve_factor_mono`, `prime_factor_better_sieve`, `sieve_product_pos`, `erase_increases_product`, `smaller_prime_better`, and `composite_replacement_improves_product` — replacing a composite by a prime factor improves the survival product Π(1 − 1/a). All proved (formerly the 'primes minimize product' axiom).",
+      "mathContext": "Lemmas showing primes minimize the survival product, fully proved."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed this sieve optimization problem in 1973, asking for the best way to eliminate integers using a coprime sieving set with a bounded reciprocal sum. The problem sits at the intersection of sieve theory and combinatorial optimization. Classical sieve methods — the sieve of Eratosthenes (antiquity), Brun's sieve (1919), and Selberg's sieve (1947) — focus on asymptotic estimates for counts of integers surviving a sieve. Erdős's problem instead asks an exact optimality question: given a 'budget' $C$ constraining $\\sum 1/a_i$, which coprime set maximizes the fraction of integers eliminated? The conjecture that the first $k$ primes are optimal is supported by the inclusion-exclusion identity for coprime moduli (related to the Chinese remainder theorem) and Mertens' theorem ($\\prod_{p \\leq x}(1 - 1/p) \\sim e^{-\\gamma}/\\ln x$), which shows primes are asymptotically efficient sieves.",
+    "problemStatement": "Given $C > 0$ and large $n$, which pairwise coprime set $A \\subseteq \\{2, \\ldots, n\\}$ with $\\sum_{a \\in A} 1/a \\leq C$ minimizes $|\\{m \\leq n : \\forall a \\in A,\\; a \\nmid m\\}|$? Conjecture: the first $k$ primes, where $k$ is maximal with $\\sum_{i=1}^k 1/p_i \\leq C$.",
+    "text": "Given budget C on reciprocal sums, which pairwise coprime A ⊆ {2,...,n} minimizes unsieved integers? Conjectured: first k primes with Σ 1/p_i ≤ C. Status: OPEN.",
+    "proofStrategy": "The formalization builds a complete framework: (1) precise definitions of valid sieving sets and the unsieved count; (2) proved prime infrastructure (primality, injectivity, pairwise coprimality of distinct primes); (3) the prime sieving set as a concrete Finset construction; (4) proved validity of the prime set, with maxPrimeCount constructed — not axiomatized — from Mathlib’s prime reciprocal divergence; (5) the main conjecture stated as an open question; (6) the inclusion-exclusion estimate connecting unsieved count to the survival product; (7) proved lemmas showing primes minimize this product (composite_replacement_improves_product); (8) baseline results for the empty sieve and monotonicity of the sieve function. The file is axiom-free (0 axioms, 0 sorries).",
+    "keyInsights": [
+      "For coprime moduli, the Chinese remainder theorem makes inclusion-exclusion exact: the unsieved fraction is $\\prod_{a \\in A}(1 - 1/a)$ plus a bounded error, so minimizing the unsieved count reduces to minimizing this product",
+      "Primes are optimal because replacing a composite $a$ with a prime divisor $p$ reduces the budget ($1/p < 1/a$ is wrong — actually $1/p > 1/a$) while improving sieving power: $p$ sieves $n/p$ integers vs $a$ sieving $n/a < n/p$, giving better return per unit budget",
+      "The coprimality constraint is essential: without it, one could use $\\{2, 4, 8, \\ldots\\}$ which has small reciprocal sum but wastes budget on multiples already sieved by 2",
+      "Mertens' theorem gives $\\prod_{p \\leq x}(1-1/p) \\sim e^{-\\gamma}/\\ln x$, showing that prime reciprocal sums grow like $\\ln\\ln x$ — so the budget $C$ determines roughly which primes fit",
+      "Sieve monotonicity (adding elements only reduces the unsieved count, sieving_reduces_unsieved) combined with product minimization (composite_replacement_improves_product) gives a two-part strategy: use all your budget, and use it on primes",
+      "The 'large $n$' condition in the conjecture handles the edge case where some primes exceed $n$; for $n$ large enough, all first-$k$ primes fit in $\\{2, \\ldots, n\\}$"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "conclusion": {
+    "summary": "This formalization provides a rigorous framework for Erdős Problem #783: it defines the optimization problem (minimize unsieved integers under a coprime reciprocal-sum budget), constructs the conjectured optimal solution (first $k$ primes), proves its validity, and connects the optimization to the survival product $\\prod(1-1/a)$ via inclusion-exclusion. The baseline and monotonicity results establish the boundary behavior of the sieve function.",
+    "implications": "**Theoretical Significance**: A proof would establish a clean optimality result in combinatorial sieve theory: greedy prime selection is the best strategy for coprime sieving under a reciprocal-sum budget.\n\nThis complements the asymptotic sieve estimates of Brun and Selberg by providing an exact optimality characterization. It would also connect to the theory of submodular optimization (the unsieved count as a function of the sieving set has submodular-like properties) and to the study of prime reciprocal sums via Mertens' theorem.",
+    "openQuestions": [
+      "Is the first-$k$-primes sieving set optimal for all sufficiently large $n$ under any budget $C > 0$?",
+      "Can the product minimization heuristic ($\\prod(1-1/a)$ minimized by primes) be rigorously upgraded to an exact optimality proof for unsievedCount?",
+      "What happens if the pairwise coprimality constraint is relaxed to allow sets where elements share at most one common prime factor?",
+      "For small $n$, can non-prime coprime sets outperform the first-$k$-primes set, and if so, what is the transition threshold?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos783",
+    "lineCount": 420,
+    "axiomCount": 0,
+    "theoremCount": 31,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos783Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Erdős (1973): original problem",
+    "https://erdosproblems.com/783"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1065",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "targetId": "erdos-1072",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, prime-numbers"
+    },
+    {
+      "targetId": "erdos-385",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, sieve-theory"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,143 @@
+[
+  {
+    "id": "ann-e117-header",
+    "proofId": "erdos-117",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Statement: Covering Groups by Abelian Subgroups",
+    "content": "Erdős Problem #117 asks: let $h(n)$ be the minimum number of Abelian subgroups needed to cover any group $G$ with the property that every subset of size $> n$ contains two distinct commuting elements. Estimate $h(n)$.\n\nPyber (1987) proved $c_1^n < h(n) < c_2^n$ for constants $c_2 > c_1 > 1$, establishing exponential growth. The problem remains open — determining the optimal base of the exponential is unknown.",
+    "mathContext": "$h(n)$: min Abelian subgroups to cover any $G$ with the $n$-commuting property. Known: $c_1^n < h(n) < c_2^n$ (Pyber 1987).",
+    "significance": "supporting",
+    "prerequisites": [
+      "group theory",
+      "Abelian subgroups",
+      "covering numbers"
+    ],
+    "relatedConcepts": [
+      "Ramsey-type conditions",
+      "commuting pairs",
+      "subgroup coverings"
+    ]
+  },
+  {
+    "id": "ann-e117-ncommuting",
+    "proofId": "erdos-117",
+    "range": {
+      "startLine": 27,
+      "endLine": 30
+    },
+    "type": "definition",
+    "title": "n-Commuting Property",
+    "content": "**HasNCommutingProperty G n**: A group $G$ has the $n$-commuting property if every subset $S \\subseteq G$ with $|S| > n$ contains two distinct elements $x \\neq y$ with $xy = yx$. This is a Ramsey-type condition: large enough subsets are forced to contain commuting pairs. An Abelian group satisfies this for all $n$, while for non-Abelian groups the minimum such $n$ measures the degree of non-commutativity.",
+    "mathContext": "$\\forall S \\subseteq G,\\; |S| > n \\Rightarrow \\exists x \\neq y \\in S,\\; xy = yx$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey property",
+      "commutativity",
+      "Finset.card",
+      "non-Abelian groups"
+    ],
+    "prerequisites": [
+      "Group G",
+      "Finset G",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-e117-abelian-subgroup",
+    "proofId": "erdos-117",
+    "range": {
+      "startLine": 32,
+      "endLine": 33
+    },
+    "type": "definition",
+    "title": "Abelian Subgroup",
+    "content": "**IsAbelianSubgroup G H**: A subgroup $H \\leq G$ is Abelian if all pairs of elements in $H$ commute: $\\forall x, y \\in H, xy = yx$. This is defined directly via pairwise commutativity rather than using Mathlib's `CommGroup` typeclass, since we need it as a property of a specific subgroup within a non-Abelian ambient group.",
+    "mathContext": "$H \\leq G$ is Abelian $\\iff \\forall x, y \\in H,\\; xy = yx$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Subgroup",
+      "commutativity",
+      "center of a group",
+      "Abelian group"
+    ],
+    "prerequisites": [
+      "Subgroup G",
+      "Group.mul_comm"
+    ]
+  },
+  {
+    "id": "ann-e117-cover-number",
+    "proofId": "erdos-117",
+    "range": {
+      "startLine": 37,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Abelian Cover Number h(n)",
+    "content": "**abelianCoverNumber n**: The minimum $k$ such that every finite group $G$ with the $n$-commuting property can be covered by $k$ Abelian subgroups: $G = H_1 \\cup \\cdots \\cup H_k$ with each $H_i$ Abelian. Defined as $\\inf\\{k \\in \\mathbb{N} : \\forall G \\text{ finite with } n\\text{-commuting}, \\exists H_1, \\ldots, H_k \\text{ Abelian covering } G\\}$ via `sInf`. The function is noncomputable due to the universal quantification over all types.",
+    "mathContext": "$h(n) = \\inf\\{k : \\forall G \\text{ finite with } n\\text{-commuting property}, G = \\bigcup_{i=1}^k H_i,\\; H_i \\text{ Abelian}\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering number",
+      "sInf",
+      "Fin k → Subgroup G",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "HasNCommutingProperty",
+      "IsAbelianSubgroup",
+      "sInf on ℕ",
+      "Fintype G"
+    ]
+  },
+  {
+    "id": "ann-e117-main-problem",
+    "proofId": "erdos-117",
+    "range": {
+      "startLine": 47,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "Erdős Problem #117: Exponential Bounds",
+    "content": "**erdos_117_problem**: The main problem statement axiomatizes that $h(n)$ grows exponentially. There exist constants $c_2 > c_1 > 1$ such that $c_1^n < h(n) < c_2^n$ for all $n > 0$. The strict inequalities distinguish this from Pyber's bounds (which use $\\leq$). This captures both Pyber's result and the open question of narrowing the gap between the constants.",
+    "mathContext": "$\\exists c_1, c_2 \\in \\mathbb{R},\\; 1 < c_1 < c_2 : \\forall n > 0,\\; c_1^n < h(n) < c_2^n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential growth",
+      "Erdős open problem",
+      "covering number bounds"
+    ],
+    "prerequisites": [
+      "abelianCoverNumber",
+      "real exponentiation",
+      "Nat.cast"
+    ]
+  },
+  {
+    "id": "ann-e117-pyber",
+    "proofId": "erdos-117",
+    "range": {
+      "startLine": 57,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Pyber's Exponential Bounds (1987)",
+    "content": "**pyber_1987**: Pyber proved that the Abelian covering number is exponential: there exist constants $c_2 > c_1 > 1$ with $c_1^n \\leq h(n) \\leq c_2^n$ for all $n > 0$. The upper bound constructs Abelian covers using the structure theory of nilpotent groups: a group with the $n$-commuting property has a subgroup of bounded index that is nilpotent of bounded class, and nilpotent groups can be covered by $O(c^n)$ Abelian subgroups. The lower bound exhibits explicit groups (related to wreath products) requiring exponentially many Abelian subgroups.",
+    "mathContext": "$\\exists c_2 > c_1 > 1 : \\forall n > 0,\\; c_1^n \\leq h(n) \\leq c_2^n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pyber's theorem",
+      "nilpotent groups",
+      "wreath products",
+      "exponential bounds"
+    ],
+    "prerequisites": [
+      "abelianCoverNumber",
+      "real exponentiation"
+    ]
+  }
+]

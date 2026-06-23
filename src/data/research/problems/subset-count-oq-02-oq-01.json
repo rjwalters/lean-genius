@@ -1,0 +1,94 @@
+{
+  "id": "subset-count-oq-02-oq-01",
+  "title": "Can the DISTINCT submultiset count ∏(mᵢ + 1) be formalized in Lean using Math...",
+  "description": "Can the DISTINCT submultiset count ∏(mᵢ + 1) be formalized in Lean using Mathlib's `Multiset.toFinset` and multiplicity counting? This would require grouping elements by value and computing the product of (multiplicity + 1) over distinct elements — a natural companion theorem to `multiset_powerset_card`.",
+  "source": {
+    "proofId": "subset-count-oq-02",
+    "proofTitle": "Subset Counting for Multisets",
+    "type": "open-question"
+  },
+  "category": "extension",
+  "tractability": "challenging",
+  "tags": [
+    "combinatorics",
+    "multiset",
+    "powerset",
+    "binomial-coefficient",
+    "open-question",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "subset-count",
+    "subset-count-multiset",
+    "subset-count-multiset-oq-01",
+    "subset-count-oq-02",
+    "subset-count-oq-02-oq-01"
+  ],
+  "status": "completed",
+  "selectedDate": "2026-04-12",
+  "selectedBy": "seeker",
+  "leanFiles": [
+    {
+      "path": "Proofs/SubsetCount.lean",
+      "filename": "SubsetCount.lean",
+      "lineCount": 179,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCount.lean"
+    },
+    {
+      "path": "Proofs/SubsetCountMultisetOQ01.lean",
+      "filename": "SubsetCountMultisetOQ01.lean",
+      "lineCount": 227,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCountMultisetOQ01.lean"
+    },
+    {
+      "path": "Proofs/SubsetCountOQ02.lean",
+      "filename": "SubsetCountOQ02.lean",
+      "lineCount": 121,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCountOQ02.lean"
+    },
+    {
+      "path": "Proofs/SubsetCountOQ02OQ01.lean",
+      "filename": "SubsetCountOQ02OQ01.lean",
+      "lineCount": 160,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCountOQ02OQ01.lean"
+    }
+  ],
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "Distinct submultiset count is exactly Mathlib 'Multiset.card_Iic': (Finset.Iic s).card = ∏ a ∈ s.toFinset, (s.count a + 1).",
+      "Finset.Iic s = {t | t ≤ s} is the set of distinct submultisets; each value a with multiplicity m contributes factor (m+1).",
+      "Nodup specialization recovers 2^card; set case is a corollary, not separate work.",
+      "Distinct count is multiplicative over disjoint support."
+    ],
+    "builtItems": [
+      "proofs/Proofs/SubsetCountOQ02OQ01.lean: distinct_submultisets_count (:= Multiset.card_Iic), _empty, _singleton, _replicate, _nodup, _disjoint + native_decide checks (10 theorems, 0 sorry, 0 axiom).",
+      "Build-wired at Proofs.lean:2834."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Docker build SubsetCountOQ02OQ01 when verification infra is restored, then promote gallery meta status/badge to verified."
+    ],
+    "progressSummary": "COMPLETE (build-unverified): open question resolved by existing formalization via Multiset.card_Iic; stale available status corrected to completed."
+  }
+}

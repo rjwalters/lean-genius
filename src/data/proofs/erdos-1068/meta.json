@@ -1,0 +1,254 @@
+{
+  "id": "erdos-1068",
+  "title": "Erdős Problem #1068: Countable Infinitely-Connected Subgraphs",
+  "slug": "erdos-1068",
+  "description": "Does every graph with chromatic number ℵ₁ contain a countable infinitely vertex-connected subgraph? Soukup (2015): uncountable sets can fail. Version of Erdős–Hajnal problem. Open.",
+  "meta": {
+    "author": "Erdős–Hajnal",
+    "sourceUrl": "https://erdosproblems.com/1068",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1068Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "set-theory",
+      "chromatic-number",
+      "infinite-connectivity"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 1068,
+    "erdosUrl": "https://erdosproblems.com/1068",
+    "erdosProblemStatus": "open",
+    "axiomCount": 0,
+    "lineCount": 264,
+    "assumptions": "0 axioms, 0 sorries. Graph theory definitions and supporting lemmas formalized. Open conjectures not formalized as axioms; badge updated from 'axiom' to 'wip'.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "This problem originates from the Erdős–Hajnal program (1966, *Acta Math. Acad. Sci. Hungar.* 17:61–99) connecting chromatic number with structural graph properties. Erdős and Hajnal conjectured that uncountable chromatic number forces subgraphs of infinite connectivity. The specific formulation about countable subgraphs appears in Vatter's 1999 problem collection (Problem 7.90) and is catalogued as Problem B24-adjacent in Guy's survey. Soukup (2015, *Combinatorica*) gave the first ZFC construction of an uncountably chromatic graph where every uncountable vertex set is only finitely connected, using ladder systems on non-special $\\omega_1$-trees. This disproved Problem 1067 but left Problem 1068 (the countable case) open. Bowler and Pitz (2024, *Electronic J. Combinatorics*) simplified Soukup's construction using elementary ladder graphs. Earlier, Komjáth (2013, *Israel J. Math.*) had shown a related question is independent of ZFC, highlighting the set-theoretic depth of the problem. The infinite Menger theorem, proved by Aharoni and Berger (2009, *Inventiones mathematicae*), provides the key characterization: infinite connectivity is equivalent to the absence of finite vertex separators. The De Bruijn–Erdős theorem (1951) connects infinite and finite graph coloring, ensuring $\\chi(G) \\geq \\aleph_1$ implies arbitrarily large finite chromatic number.",
+    "problemStatement": "Does every graph $G$ with chromatic number $\\chi(G) \\geq \\aleph_1$ contain a countable set $S \\subseteq V(G)$ such that the induced subgraph $G[S]$ is infinitely vertex-connected (any two vertices joined by infinitely many pairwise internally disjoint paths)?",
+    "text": "Does every graph with chromatic number ℵ₁ contain a countable infinitely vertex-connected subgraph? Soukup (2015): uncountable sets can fail. Version of Erdős–Hajnal problem. Open.",
+    "proofStrategy": "The formalization builds custom graph infrastructure within a namespace: `PathInGraph` for vertex-list paths, `InternallyDisjoint` and `PairwiseInternallyDisjoint` for path disjointness, `InfinitelyConnected` for $\\infty$-connectivity, and `hasAleph1ChromaticNumber` for uncountable chromatic number via negation of countable coloring. The main conjecture, Soukup's counterexample, the disproof of Problem 1067, the no-finite-separator property, set-theoretic sensitivity, and Bowler–Pitz simplification are axiomatized. Two structural theorems ($\\infty$-connected $\\implies$ connected, and induced subgraph path existence) are fully proved.",
+    "keyInsights": [
+      "**Countable vs uncountable dichotomy**: Soukup's counterexample controls uncountable vertex sets but says nothing about countable ones. The countable case is fundamentally different because countable sets can be \"built up\" vertex by vertex, potentially accumulating infinite connectivity",
+      "**Infinite Menger theorem equivalence**: By Aharoni–Berger (2009), $\\infty$-connectivity is equivalent to the absence of finite vertex separators. This topological characterization converts a path-counting question into a cut-avoidance question, potentially enabling set-theoretic arguments",
+      "**De Bruijn–Erdős compactness**: $\\chi(G) \\geq \\aleph_1$ implies finite subgraphs with arbitrarily large $\\chi$. This compactness bridge between infinite and finite ensures rich local structure, which might be leveraged to construct countable infinitely connected subgraphs",
+      "**Set-theoretic boundary**: Komjáth (2013) showed related questions are ZFC-independent, suggesting Problem 1068 lives near the boundary of what standard set theory can decide. The answer may depend on axioms like $\\diamondsuit$, $\\text{MA}$, or forcing axioms",
+      "**Ladder system technology**: Both Soukup (2015) and Bowler–Pitz (2024) use ladder systems on ordinal trees to control connectivity. Understanding these constructions is key to determining whether countable subgraphs can escape the finite-connectivity trap"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)",
+      "Set theory and cardinality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Problem Statement and Context",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Docstring statement of Erdős Problem #1068 (Erdős–Hajnal): does every graph with chromatic number ℵ₁ contain a countable subgraph that is infinitely (vertex-)connected, i.e. with infinitely many pairwise internally disjoint paths between any two vertices? Notes the OPEN status, the relation to the DISPROVED Problem #1067 (Soukup 2015), the Bowler–Pikhurko (2024) simplification, possible dependence on axioms beyond ZFC, and references.",
+      "mathContext": "Problem statement, its place relative to Problem #1067, and the known partial results."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 33,
+      "endLine": 45,
+      "summary": "Mathlib imports (`SimpleGraph.Basic`, `Cardinal.Basic`/`.Ordinal`, `Set.Countable`), `open Cardinal SimpleGraph`, `namespace Erdos1068`, and the ambient `variable {V : Type*}`.",
+      "mathContext": "Lean preamble: imports, opened namespaces, and the vertex-type variable."
+    },
+    {
+      "id": "graph-infrastructure",
+      "title": "Part I — Graph Infrastructure",
+      "startLine": 46,
+      "endLine": 78,
+      "summary": "Path and connectivity definitions (reused from #1067): the `PathInGraph` structure (a vertex list with adjacent consecutive entries), `InternallyDisjoint` and `PairwiseInternallyDisjoint` (sharing no internal vertices), `InfinitelyManyDisjointPaths` (an infinite pairwise-internally-disjoint family between two vertices), and `InfinitelyConnected` (every distinct pair has such a family).",
+      "mathContext": "Definitions of paths, internal disjointness, and infinite vertex-connectivity over a `SimpleGraph V`."
+    },
+    {
+      "id": "chromatic-infrastructure",
+      "title": "Part II — Chromatic Number Infrastructure",
+      "startLine": 79,
+      "endLine": 85,
+      "summary": "Definition `hasAleph1ChromaticNumber G`: G cannot be properly colored by any countable color type (every countable coloring has a monochromatic adjacent pair), encoding chromatic number ≥ ℵ₁.",
+      "mathContext": "Definition capturing uncountable (≥ ℵ₁) chromatic number via failure of countable colorings."
+    },
+    {
+      "id": "induced-subgraphs",
+      "title": "Part III — Induced Subgraphs on Vertex Subsets",
+      "startLine": 86,
+      "endLine": 94,
+      "summary": "Definition `inducedSubgraph G S`: the subgraph of G induced on a vertex set S (adjacency inherited from G, with `symm` and `loopless` proved), the construction used to speak of countable infinitely-connected subgraphs.",
+      "mathContext": "Definition of the induced subgraph on a `Set V` as a `SimpleGraph S`."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part IV — Main Conjecture",
+      "startLine": 95,
+      "endLine": 101,
+      "summary": "The statement of Problem #1068 (as a docstring): is there a countable vertex set S such that the induced subgraph G[S] is infinitely connected, whenever G has chromatic number ℵ₁? Recorded as prose; the problem is open, so no formal claim is asserted.",
+      "mathContext": "Prose statement of the open main conjecture in terms of `inducedSubgraph` and `InfinitelyConnected`."
+    },
+    {
+      "id": "known-results",
+      "title": "Part V — Known Results",
+      "startLine": 102,
+      "endLine": 112,
+      "summary": "Docstring summary of the literature: Soukup (2015) built a graph of uncountable chromatic number in which every uncountable vertex set induces a non-infinitely-connected subgraph (so #1068 genuinely needs a *countable* subgraph); and the connection to Problem #1067 (which demanded the subgraph also have χ = ℵ₁ and was disproved by Soukup).",
+      "mathContext": "Prose record of Soukup's construction and the relationship to the disproved Problem #1067."
+    },
+    {
+      "id": "structural-observations",
+      "title": "Part VI — Structural Observations",
+      "startLine": 113,
+      "endLine": 203,
+      "summary": "The main proved result `inf_connected_no_finite_separator`: in an infinitely connected graph, for any two non-separated vertices and any finite set S avoiding them, some u–v path avoids S entirely (each s ∈ S is internal to at most one path by pairwise disjointness, so the finitely many 'bad' paths cannot exhaust the infinite family). Also prose notes on set-theoretic sensitivity (Komjáth 2013) and the Bowler–Pikhurko construction.",
+      "mathContext": "A proved no-finite-separator theorem for infinitely connected graphs, via a finite-`biUnion`/subsingleton-fiber counting argument, plus contextual prose."
+    },
+    {
+      "id": "proved-implications",
+      "title": "Part VII — Partial Implications",
+      "startLine": 204,
+      "endLine": 239,
+      "summary": "Proved structural relationships: `inf_connected_implies_path` (infinite connectivity gives at least one path between distinct vertices), `inf_connected_subgraph_has_paths` (paths within an infinitely connected induced subgraph), and `inf_connected_k_connected` (infinitely connected graphs are k-vertex-connected for every finite k, as a corollary of the no-finite-separator theorem).",
+      "mathContext": "Theorems deriving ordinary and finite-k connectivity consequences from infinite connectivity."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 240,
+      "endLine": 264,
+      "summary": "Closing docstring recap: the OPEN main question (does χ = ℵ₁ force a countable infinitely connected subgraph?), the known results (Soukup 2015; the disproved #1067; possible ZFC-independence), the unresolved open aspects, and a note on the problem's difficulty at the intersection of infinite combinatorics and set theory.",
+      "mathContext": "Narrative summary of the problem's status, known results, and open aspects."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem 1068 at the intersection of infinite graph theory and set-theoretic combinatorics. The file builds custom path and connectivity infrastructure, defines uncountable chromatic number and induced subgraphs, states the main conjecture, records Soukup's counterexample and the disproof of Problem 1067, and proves basic structural implications. The 205-line file is one of the more elaborate formalizations, reflecting the problem's depth.",
+    "implications": "Resolution would significantly advance the Erdős–Hajnal program connecting chromatic number with structural graph properties. A positive answer would establish that uncountable chromatic number forces rich local structure (countable $\\infty$-connected subgraphs), while a negative answer or ZFC-independence would reveal fundamental limitations of chromatic forcing and potentially connect to large cardinal axioms or forcing principles.",
+    "openQuestions": [
+      "Does $\\chi(G) \\geq \\aleph_1$ force a countable infinitely connected subgraph? (The main open question.)",
+      "Is the answer to Problem 1068 independent of ZFC? Komjáth showed a related question is, but this specific variant's independence status is unknown.",
+      "Can Soukup's ladder-system techniques be adapted to show countable sets also fail, or does the countable case fundamentally escape the construction?",
+      "What is the weakest connectivity condition (e.g., $k$-connectivity for large $k$, or $\\aleph_0$-connectivity) that $\\chi(G) \\geq \\aleph_1$ forces for countable subgraphs?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Direct predecessor: Problem 1067 asked for an uncountable infinitely connected subgraph with χ = ℵ₁, which Soukup (2015) disproved. Problem 1068 is the surviving countable variant of exactly the same Erdős–Hajnal question.",
+      "targetId": "erdos-1067"
+    },
+    {
+      "relationship": "Parallel open problem in the same infinite chromatic setting: asks whether two graphs with χ = ℵ₁ must share a common subgraph with χ ≥ 4. Both problems probe what structural properties uncountable chromatic number forces.",
+      "targetId": "erdos-62"
+    },
+    {
+      "relationship": "Related structural result on infinite chromatic graphs: Liu–Montgomery showed graphs with infinite χ contain cycles of length 2ⁿ for infinitely many n. Illustrates the broader program of forcing substructures from large chromatic number.",
+      "targetId": "erdos-63"
+    },
+    {
+      "relationship": "The Erdős–Hajnal conjecture is the finite analogue of the same forcing philosophy: H-free graphs must contain large homogeneous sets. Problem 1068 is the infinite-chromatic counterpart asking what connectivity structures are forced.",
+      "targetId": "erdos-61"
+    },
+    {
+      "relationship": "Chromatic forcing in the finite setting: investigates when high chromatic number forces triangles. Shares the core theme of deducing local structure (subgraph existence) from a global chromatic condition.",
+      "targetId": "erdos-1011"
+    },
+    {
+      "relationship": "Triangle-free chromatic threshold: studies how large chromatic number can grow in triangle-free graphs (Mycielski constructions). Relevant background for understanding the relationship between χ and subgraph structure that underlies Problem 1068.",
+      "targetId": "erdos-1013"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Paul Erdős",
+        "András Hajnal"
+      ],
+      "title": "On chromatic number of graphs and set-systems",
+      "volume": "17",
+      "year": "1966",
+      "pages": "61–99",
+      "doi": "10.1007/BF02020444",
+      "note": "Foundational Erdős–Hajnal paper establishing the program connecting chromatic number with structural graph properties; origin of the conjecture formalized in Problem 1068.",
+      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae"
+    },
+    {
+      "authors": [
+        "Lajos Soukup"
+      ],
+      "title": "A note on a problem of Erdős and Hajnal",
+      "volume": "35",
+      "issue": "4",
+      "year": "2015",
+      "pages": "497–511",
+      "doi": "10.1007/s00439-014-0499-5",
+      "note": "Constructs in ZFC an uncountably chromatic graph where every uncountable vertex set is only finitely connected, disproving Problem 1067 and isolating Problem 1068 as the key open case.",
+      "venue": "Combinatorica"
+    },
+    {
+      "authors": [
+        "Ron Aharoni",
+        "Eli Berger"
+      ],
+      "title": "Menger's theorem for infinite graphs",
+      "volume": "176",
+      "issue": "1",
+      "year": "2009",
+      "pages": "1–62",
+      "doi": "10.1007/s00222-008-0157-3",
+      "note": "Proves the infinite Menger theorem: infinite vertex-connectivity is equivalent to the absence of finite vertex separators. This characterization is used in the formalization's no-finite-separator axiom.",
+      "venue": "Inventiones Mathematicae"
+    },
+    {
+      "authors": [
+        "Péter Komjáth"
+      ],
+      "title": "A note on set theory",
+      "volume": "196",
+      "issue": "1",
+      "year": "2013",
+      "pages": "67–76",
+      "doi": "10.1007/s11856-012-0143-4",
+      "note": "Shows a related chromatic-connectivity question is independent of ZFC, indicating that Problem 1068 lies near the boundary of standard set theory and may depend on forcing axioms or diamond principles.",
+      "venue": "Israel Journal of Mathematics"
+    },
+    {
+      "authors": [
+        "Nathan Bowler",
+        "Max Pitz"
+      ],
+      "title": "A simplified construction of an uncountably chromatic graph with no uncountably connected subgraph",
+      "volume": "31",
+      "issue": "1",
+      "year": "2024",
+      "url": "https://www.combinatorics.org/ojs/index.php/eljc/article/view/v31i1p8",
+      "note": "Simplifies Soukup's ladder-system construction using elementary ladder graphs; relevant for understanding the obstruction to uncountable infinitely connected subgraphs and the contrast with the countable case.",
+      "venue": "Electronic Journal of Combinatorics"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Data.Set.Countable"
+    ],
+    "opens": [
+      "Cardinal",
+      "SimpleGraph"
+    ],
+    "namespace": "Erdos1068",
+    "lineCount": 264,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 7,
+    "sorries": 0,
+    "path": "Proofs/Erdos1068Problem.lean"
+  },
+  "sorries": 0
+}

@@ -1,0 +1,219 @@
+{
+  "id": "erdos-997",
+  "title": "Erdős Problem #997: Well-Distributed Sequences and Primes",
+  "slug": "erdos-997",
+  "description": "Is it true that for every α, the sequence {αpₙ} of fractional parts of prime multiples is not well-distributed? The 2024 result by Champagne-Le-Liu-Wooley shows this holds for at least one irrational α.",
+  "meta": {
+    "author": "Champagne, Le, Liu, Wooley (2024 partial result)",
+    "sourceUrl": "https://erdosproblems.com/997",
+    "date": "2024",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos997Problem.lean",
+    "tags": [
+      "erdos",
+      "analysis",
+      "number-theory",
+      "primes",
+      "equidistribution",
+      "discrepancy",
+      "diophantine-approximation",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 997,
+    "erdosUrl": "https://erdosproblems.com/997",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.floor",
+        "description": "Floor function for reals",
+        "module": "Mathlib.Topology.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.nth",
+        "description": "nth element satisfying predicate",
+        "module": "Mathlib.NumberTheory.Primorial"
+      },
+      {
+        "theorem": "Set.Ioc",
+        "description": "Half-open intervals",
+        "module": "Mathlib.Data.Set.Intervals.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filter elements of finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Irrational",
+        "description": "Irrational number predicate",
+        "module": "Mathlib.Data.Real.Irrational"
+      }
+    ],
+    "originalContributions": [
+      "frac definition: fractional part function",
+      "frac_mem_Ico theorem: fractional part in [0,1)",
+      "UnitSequence type: sequences in unit interval",
+      "countInInterval: counting function for distribution",
+      "WellDistributed predicate: Hlawka-Petersen notion",
+      "primeSequence: nth prime function",
+      "primeMultipleSequence: {αpₙ} sequence",
+      "Lacunary predicate: lacunary sequences",
+      "erdos_lacunary_theorem: lacunary non-well-distribution",
+      "CLLW_theorem: 2024 existence result",
+      "Erdos997Conjecture: full conjecture statement",
+      "discrepancy: discrepancy function",
+      "well_distributed_iff_discrepancy: equivalence",
+      "current_status: summary of known results"
+    ],
+    "axiomCount": 1,
+    "lineCount": 321,
+    "assumptions": "1 axiom: CLLW_theorem. 0 sorries.",
+    "theoremCount": 5,
+    "definitionCount": 11
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #997: Well-Distributed Sequences and Prime Multiples**\n\nThe concept of well-distributed sequences was introduced by Hlawka and Petersen in 1955, strengthening the classical notion of equidistribution. A sequence is well-distributed if it becomes uniformly distributed at a rate that is uniform over all starting points.\n\n**Erdős's Work:**\n- Erdős proved that for any lacunary sequence (nₖ), the sequence {αnₖ} is not well-distributed for almost all α\n- In 1964, he claimed to have proved existence of an irrational α for which {αpₙ} is not well-distributed\n- He retracted this claim in 1985, memorably writing \"The theorem is no doubt correct... but I never was able to reconstruct my 'proof' which perhaps never existed\"\n\n**2024 Breakthrough:**\nChampagne, Le, Liu, and Wooley proved that such an α does exist, validating Erdős's intuition after 60 years.\n\n**Current Status:**\nThe existence question is resolved, but Erdős's full problem—whether this holds for ALL α—remains open.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nCall a sequence $x_1, x_2, \\ldots \\in (0,1)$ **well-distributed** if for every $\\epsilon > 0$, when $k$ is sufficiently large:\n$$|\\#\\{n < m \\leq n+k : x_m \\in I\\} - |I| \\cdot k| < \\epsilon k$$\nfor all $n > 0$ and all intervals $I \\subseteq [0,1]$.\n\n**Question:** Is it true that for every $\\alpha$, the sequence $\\{\\alpha p_n\\}$ (fractional parts of $\\alpha$ times primes) is **not** well-distributed?\n\n**Known Results:**\n- Existence: YES, there exists such an $\\alpha$ (CLLW, 2024)\n- Universality: OPEN (does it hold for all $\\alpha$?)\n\n**Key Distinction:**\n- Well-distribution is strictly stronger than equidistribution\n- Vinogradov showed $\\{\\alpha p_n\\}$ IS equidistributed for irrational $\\alpha$\n- But equidistribution does not imply well-distribution",
+    "text": "Is it true that for every α, the sequence {αpₙ} of fractional parts of prime multiples is not well-distributed? The 2024 result by Champagne-Le-Liu-Wooley shows this holds for at least one irrational α.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Fractional Parts:** Define frac(x) = x - ⌊x⌋ and prove it lies in [0,1)\n\n2. **Well-Distribution:** Define the precise ε-k-n-I condition from Hlawka-Petersen\n\n3. **Prime Sequence:** Use Nat.nth to define the sequence of primes\n\n4. **Prime Multiples:** Define primeMultipleSequence(α) = n ↦ frac(α · pₙ)\n\n5. **Lacunary Sequences:** Define lacunary property and state Erdős's theorem for them\n\n6. **CLLW Theorem:** Axiomatize the 2024 existence result\n\n7. **Conjecture:** State Erdos997Conjecture as ∀α, ¬WellDistributed(primeMultipleSequence α)\n\n8. **Discrepancy:** Connect well-distribution to the discrepancy function",
+    "keyInsights": [
+      "**Well vs Equidistribution:** Well-distribution requires uniform distribution to hold starting from any position n, not just from the beginning. This is strictly stronger.",
+      "**Primes Are Not Lacunary:** The ratio pₙ₊₁/pₙ → 1 by the prime number theorem, so primes don't satisfy the lacunary condition (ratio bounded away from 1).",
+      "**Erdős's Retraction:** Erdős's honesty in retracting his 1964 claim is notable—he admitted the proof 'perhaps never existed.'",
+      "**60 Years Later:** The CLLW 2024 paper resolved the existence question that Erdős had attempted, vindicating his intuition.",
+      "**Diophantine Connection:** The problem connects to how well α can be approximated by rationals with prime denominators."
+    ],
+    "prerequisites": [
+      "Equidistribution and well-distribution mod 1",
+      "Fractional parts and Weyl's criterion",
+      "Prime number theory (distribution of primes)",
+      "Discrepancy theory (measuring deviation from uniformity)",
+      "Lacunary sequences and their distribution properties"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Fractional parts, unit sequences, counting functions",
+      "startLine": 41,
+      "endLine": 82,
+      "mathContext": "Mathematical content: Fractional parts, unit sequences, counting functions"
+    },
+    {
+      "id": "well-distributed",
+      "title": "Well-Distributed Sequences",
+      "summary": "Hlawka-Petersen definition and comparison with equidistribution",
+      "startLine": 83,
+      "endLine": 116,
+      "mathContext": "Formal definition: Hlawka-Petersen definition and comparison with equidistribution"
+    },
+    {
+      "id": "prime-sequence",
+      "title": "The Prime Sequence",
+      "summary": "primeSequence, primeMultipleSequence, values in [0,1)",
+      "startLine": 117,
+      "endLine": 143,
+      "mathContext": "Mathematical content: primeSequence, primeMultipleSequence, values in [0,1)"
+    },
+    {
+      "id": "lacunary",
+      "title": "Lacunary Sequences",
+      "summary": "Lacunary definition, Erdős's theorem for lacunary sequences",
+      "startLine": 144,
+      "endLine": 177,
+      "mathContext": "Formal definition: Lacunary definition, Erdős's theorem for lacunary sequences"
+    },
+    {
+      "id": "main-question",
+      "title": "Primes and Well-Distribution",
+      "summary": "CLLW theorem, Erdos997Conjecture, rational and irrational cases",
+      "startLine": 178,
+      "endLine": 232,
+      "mathContext": "Verified: CLLW theorem, Erdos997Conjecture, rational and irrational cases"
+    },
+    {
+      "id": "discrepancy",
+      "title": "Related Concepts",
+      "summary": "Discrepancy, prime irregularity, Diophantine connections",
+      "startLine": 233,
+      "endLine": 292,
+      "mathContext": "Mathematical content: Discrepancy, prime irregularity, Diophantine connections"
+    },
+    {
+      "id": "status",
+      "title": "Status and Implications",
+      "summary": "Current knowledge, problem difficulty",
+      "startLine": 293,
+      "endLine": 320,
+      "mathContext": "Mathematical content: Current knowledge, problem difficulty"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_997_summary, conjecture statement",
+      "startLine": 321,
+      "endLine": 321,
+      "mathContext": "Mathematical content: erdos_997_summary, conjecture statement"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #997 asks whether the sequence {αpₙ} of fractional parts of prime multiples is non-well-distributed for ALL α. The 2024 result by Champagne-Le-Liu-Wooley shows existence of such an α, validating Erdős's retracted 1964 claim. The universal statement remains open.",
+    "implications": "**Theoretical Significance**: **Connections to Other Areas**\n\n1. **Discrepancy Theory:** Well-distribution is equivalent to uniform discrepancy bounds across all starting points\n\n2. **Diophantine Approximation:** Connected to approximation of α by rationals with prime denominators\n\n**3. Prime Distribution:** The irregularity of prime gaps may force non-well-distribution regardless of α\n\n4. **Metric Number Theory:** The behavior for 'generic' α vs all α may differ\n\n5. **Equidistribution Theory:** Shows the gap between equidistribution and stronger uniformity conditions.",
+    "openQuestions": [
+      "Does the conjecture hold for all irrational α?",
+      "What is the Lebesgue measure of the set of α for which {αpₙ} is well-distributed?",
+      "Can the CLLW construction be generalized to prove the universal statement?",
+      "Is there a connection to the distribution of prime gaps?",
+      "What about other subsequences of primes (e.g., primes in arithmetic progressions)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Intervals.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.Topology.Algebra.Order.Floor",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Set",
+      "Real"
+    ],
+    "namespace": "Erdos997",
+    "lineCount": 321,
+    "axiomCount": 1,
+    "theoremCount": 5,
+    "definitionCount": 11,
+    "path": "Proofs/Erdos997Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-998",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, diophantine-approximation, discrepancy, equidistribution"
+    },
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, primes"
+    },
+    {
+      "targetId": "erdos-1138",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: analysis, number-theory, open"
+    }
+  ],
+  "sorries": 0
+}

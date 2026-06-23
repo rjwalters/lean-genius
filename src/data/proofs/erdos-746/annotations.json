@@ -1,0 +1,281 @@
+[
+  {
+    "id": "ann-746-imports",
+    "proofId": "erdos-746",
+    "range": {
+      "startLine": 29,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib modules for natural numbers, real numbers, simple graphs (`SimpleGraph.Basic`), logarithms (`SpecialFunctions.Log.Basic`), and finite sets. Opens `Real` and `Finset` namespaces within the `Erdos746` namespace.",
+    "mathContext": "The formalization uses `SimpleGraph (Fin n)` for graphs on $n$ labeled vertices, `Real.log` for the threshold function $(1/2)n \\log n$, and `Real.exp` for the limiting probability $e^{-e^{-2c}}$. The `Filter.atTop` and `nhds` are needed for the asymptotic statements.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Real.log",
+      "Real.exp",
+      "Filter.atTop"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib SimpleGraph"
+    ]
+  },
+  {
+    "id": "ann-746-graphmodel",
+    "proofId": "erdos-746",
+    "range": {
+      "startLine": 44,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Random Graph Model: $G(n, m)$",
+    "content": "**GraphOnN n**: A `SimpleGraph (Fin n)` — a simple graph on $n$ labeled vertices.\n\n**numEdges G**: Counts edges by filtering ordered pairs $(i, j)$ with $i < j$ and $G.\\text{Adj}\\, i\\, j$.\n\n**ErdosRenyiModel n m**: The type of graphs from the $G(n, m)$ model — $n$ vertices and $m$ uniformly random edges.\n\n**hamiltonianThreshold n ε**: The function $(1/2 + \\varepsilon) n \\log n$, Erdős's conjectured threshold.\n\n**preciseThreshold n**: $(1/2) n \\log n + (1/2) n \\log \\log n$, the sharp threshold established by Korshunov.",
+    "mathContext": "The Erdős-Rényi random graph $G(n, m)$ selects a graph uniformly at random from all graphs on $n$ labeled vertices with exactly $m$ edges. The related model $G(n, p)$ includes each edge independently with probability $p$; the two models are essentially equivalent when $m \\approx p \\binom{n}{2}$. The threshold $m = (1/2) n \\log n$ corresponds to edge probability $p \\approx \\log n / n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Rényi model",
+      "G(n,m) vs G(n,p)",
+      "threshold function",
+      "SimpleGraph"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "Fin",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-746-hamiltonicity",
+    "proofId": "erdos-746",
+    "range": {
+      "startLine": 67,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "Hamiltonicity and Dirac's Theorem",
+    "content": "**IsHamiltonianCycle G cycle**: A list of vertices forming a cycle that visits every vertex exactly once — length $n$, no duplicates, every vertex appears, consecutive vertices are adjacent, and the last connects back to the first.\n\n**IsHamiltonian G**: $G$ contains a Hamiltonian cycle.\n\n**dirac_theorem** (axiom): If every vertex has degree $\\ge n/2$ in a graph on $n \\ge 3$ vertices, then $G$ is Hamiltonian. This deterministic sufficient condition motivates the random graph question.",
+    "mathContext": "Dirac's theorem (1952) states that a simple graph on $n \\ge 3$ vertices with minimum degree $\\delta(G) \\ge n/2$ is Hamiltonian. For random graphs $G(n, m)$ with $m \\approx cn \\log n$, the minimum degree is $\\sim 2c \\log n$ with high probability, so Dirac's condition ($\\delta \\ge n/2$) is far from met. The random graph result requires entirely different techniques — the 'rotation-extension' method of Pósa.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hamiltonian cycle",
+      "Dirac's theorem",
+      "Ore's theorem",
+      "rotation-extension"
+    ],
+    "prerequisites": [
+      "GraphOnN",
+      "List",
+      "SimpleGraph.Adj"
+    ]
+  },
+  {
+    "id": "ann-746-matchings",
+    "proofId": "erdos-746",
+    "range": {
+      "startLine": 87,
+      "endLine": 105
+    },
+    "type": "definition",
+    "title": "Perfect Matchings and Erdős-Rényi (1966)",
+    "content": "**IsPerfectMatching G M**: A set $M$ of edges that pairs all vertices — every edge is in $G$, every vertex appears in exactly one edge, and no two edges share a vertex.\n\n**HasPerfectMatching G**: $\\exists M$ such that $M$ is a perfect matching.\n\n**erdos_renyi_matching** (axiom): For $n$ even, $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ has a perfect matching asymptotically almost surely. Erdős and Rényi proved this in their 1966 paper.",
+    "mathContext": "Erdős and Rényi (1966) proved that the threshold for a perfect matching in $G(n, m)$ is $(1/2) n \\log n$: below this, isolated vertices prevent a matching; above, the matching exists a.a.s. The result uses Hall's marriage theorem — the bottleneck is that every subset $S$ must have $|N(S)| \\ge |S|$. The matching threshold is a stepping stone to Hamiltonicity, since a Hamiltonian cycle is a union of two perfect matchings.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hall's marriage theorem",
+      "matching threshold",
+      "isolated vertex threshold",
+      "Tutte's theorem"
+    ],
+    "prerequisites": [
+      "GraphOnN",
+      "numEdges",
+      "hamiltonianThreshold"
+    ]
+  },
+  {
+    "id": "ann-746-question",
+    "proofId": "erdos-746",
+    "range": {
+      "startLine": 113,
+      "endLine": 116
+    },
+    "type": "definition",
+    "title": "Erdős's Question (Problem #746)",
+    "content": "**ErdosQuestion746**: For every $\\varepsilon > 0$, is $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ almost surely Hamiltonian? This is formalized as a universally quantified `Prop` over positive reals.",
+    "mathContext": "Erdős and Rényi conjectured that the threshold for Hamiltonicity in $G(n, m)$ is the same as for perfect matchings: $(1/2) n \\log n$. The $(1/2 + \\varepsilon)$ formulation asks for Hamiltonicity slightly above this threshold, which turned out to be correct. The precise statement is that $\\Pr[G(n, m) \\text{ is Hamiltonian}] \\to 1$ as $n \\to \\infty$ when $m = (1/2 + \\varepsilon) n \\log n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold phenomenon",
+      "phase transition",
+      "asymptotic probability"
+    ],
+    "prerequisites": [
+      "hamiltonianThreshold",
+      "IsHamiltonian"
+    ]
+  },
+  {
+    "id": "ann-746-posa",
+    "proofId": "erdos-746",
+    "range": {
+      "startLine": 124,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Pósa's Theorem (1976): $Cn \\log n$ Suffices",
+    "content": "**posa_theorem** (axiom): There exists $C > 0$ such that $G(n, m)$ with $m \\ge C n \\log n$ is a.s. Hamiltonian for $n \\ge 3$.\n\n**posaConstant**: Placeholder value; the constant from Pósa's proof is large but unspecified. The significance is not the constant but the existence — Hamiltonicity requires only $O(n \\log n)$ edges.",
+    "mathContext": "Pósa (1976) proved the first Hamiltonicity result for random graphs using his **rotation-extension technique**: start with a long path, and iteratively extend or rotate it to visit more vertices. If the path cannot be extended, the endpoint structure forces enough 'boosters' (non-path edges at the endpoint) to allow rotation. The constant $C$ was later reduced to $1/2$ by Korshunov.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pósa rotation",
+      "path extension",
+      "boosters",
+      "long paths in random graphs"
+    ],
+    "prerequisites": [
+      "ErdosQuestion746",
+      "IsHamiltonian"
+    ]
+  },
+  {
+    "id": "ann-746-korshunov",
+    "proofId": "erdos-746",
+    "range": {
+      "startLine": 140,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Korshunov's Sharp Threshold (1977)",
+    "content": "**korshunov_theorem** (axiom): For any function $\\omega(n) \\to \\infty$, $G(n, m)$ with $m \\ge (1/2) n \\log n + (1/2) n \\log \\log n + \\omega(n) \\cdot n$ is a.s. Hamiltonian for $n \\ge 3$.\n\n**korshunovThreshold n ω**: The threshold function $(1/2) n \\log n + (1/2) n \\log \\log n + \\omega(n) n$.",
+    "mathContext": "Korshunov (1977) established the **sharp threshold** for Hamiltonicity: the critical edge count is $(1/2) n \\log n + (1/2) n \\log \\log n$, matching the connectivity threshold. The $\\log \\log n$ correction arises from vertices of degree 1 — at $(1/2) n \\log n$ edges, the expected number of degree-1 vertices is $\\sim n / \\sqrt{\\log n}$, and the $\\log \\log n$ term eliminates them. Below this threshold, minimum degree 0 or 1 prevents Hamiltonicity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sharp threshold",
+      "minimum degree obstruction",
+      "connectivity threshold",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "posa_theorem",
+      "preciseThreshold",
+      "Filter.atTop"
+    ]
+  },
+  {
+    "id": "ann-746-ks",
+    "proofId": "erdos-746",
+    "range": {
+      "startLine": 159,
+      "endLine": 178
+    },
+    "type": "concept",
+    "title": "Komlós-Szemerédi: Limiting Distribution $e^{-e^{-2c}}$",
+    "content": "**komlos_szemeredi_theorem** (axiom): With $m = (1/2) n \\log n + (1/2) n \\log \\log n + cn$ edges, $\\Pr[G(n,m) \\text{ is Hamiltonian}] \\to e^{-e^{-2c}}$ as $n \\to \\infty$.\n\n**limitingProbability c**: $e^{-e^{-2c}}$, the double-exponential CDF.\n\n**limiting_prob_at_zero** (proved): At $c = 0$, the probability is $e^{-1} \\approx 0.368$.\n\n**limiting_prob_at_infinity** (axiom): As $c \\to \\infty$, probability $\\to 1$.\n\n**limiting_prob_at_neg_infinity** (axiom): As $c \\to -\\infty$, probability $\\to 0$.",
+    "mathContext": "The double exponential $e^{-e^{-2c}}$ is a **Gumbel distribution** CDF (with parameter 2 in the exponent). The factor 2 arises because the obstruction is having minimum degree $\\le 1$: two events per vertex (degree 0 or 1) contribute to the Poisson limiting parameter. This is the same distribution as the connectivity threshold — at the precise level of $cn$ additional edges, both properties have the same limiting probability.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gumbel distribution",
+      "extreme value theory",
+      "Poisson convergence",
+      "double exponential"
+    ],
+    "prerequisites": [
+      "korshunov_theorem",
+      "Real.exp",
+      "Filter.Tendsto",
+      "nhds"
+    ]
+  },
+  {
+    "id": "ann-746-answer",
+    "proofId": "erdos-746",
+    "range": {
+      "startLine": 185,
+      "endLine": 193
+    },
+    "type": "concept",
+    "title": "The Answer: YES",
+    "content": "**erdos_746_answer** (proved): The conjecture is true — `ErdosQuestion746` holds. Proved trivially since the formal statement reduces to `True` (the probabilistic content is in the axioms).\n\n**hamiltonianThresholdValue**: States that the sharp threshold is $(1/2) n \\log n + (1/2) n \\log \\log n$.",
+    "mathContext": "The formal proof is trivial because the probabilistic statements are axiomatized. The mathematical content is in the axioms: Korshunov's theorem establishes that $(1/2 + \\varepsilon) n \\log n$ edges suffice (since $(1/2 + \\varepsilon) n \\log n$ eventually exceeds the Korshunov threshold), confirming Erdős's conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold confirmation",
+      "trivial proof from axioms"
+    ],
+    "prerequisites": [
+      "korshunov_theorem",
+      "ErdosQuestion746"
+    ]
+  },
+  {
+    "id": "ann-746-connectivity",
+    "proofId": "erdos-746",
+    "range": {
+      "startLine": 200,
+      "endLine": 216
+    },
+    "type": "theorem",
+    "title": "Connectivity and Threshold Coincidence",
+    "content": "**IsConnected G**: All vertices are mutually reachable via `G.Reachable`.\n\n**connectivity_threshold** (axiom): $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ is a.s. connected.\n\n**hamiltonian_implies_connected** (sorry): Hamiltonicity implies connectivity (a Hamiltonian cycle connects all vertices).\n\n**thresholdCoincidence**: The thresholds for connectivity and Hamiltonicity coincide at $(1/2) n \\log n$.",
+    "mathContext": "The coincidence of the connectivity and Hamiltonicity thresholds is a deep structural fact. Both are governed by the same bottleneck: isolated vertices (for connectivity) and low-degree vertices (for Hamiltonicity). At the threshold, the last isolated vertex disappears simultaneously with the graph becoming Hamiltonian. This is an instance of the **'minimum degree controls everything'** phenomenon in random graph theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "connectivity threshold",
+      "Reachable",
+      "minimum degree",
+      "hitting time"
+    ],
+    "prerequisites": [
+      "IsHamiltonian",
+      "GraphOnN",
+      "SimpleGraph.Reachable"
+    ]
+  },
+  {
+    "id": "ann-746-related",
+    "proofId": "erdos-746",
+    "range": {
+      "startLine": 223,
+      "endLine": 229
+    },
+    "type": "definition",
+    "title": "Minimum Degree and Related Properties",
+    "content": "**MinDegree G**: The minimum vertex degree in $G$, computed as `Finset.inf'` over all vertex degrees.\n\n**random_graph_min_degree** (axiom): In $G(n, m)$, the minimum degree is close to $2m/n$ with high probability.",
+    "mathContext": "For $G(n, m)$ with $m = cn \\log n$, the expected degree of each vertex is $\\sim 2c \\log n$, and the minimum degree concentrates near $2c \\log n - 2\\sqrt{c \\log n \\cdot \\log \\log n}$ by the Chernoff bound. The minimum degree threshold for Hamiltonicity in deterministic graphs is $n/2$ (Dirac), but in random graphs the average degree $2c \\log n \\ll n/2$ yet Hamiltonicity still holds — randomness provides the structural properties that low degree alone cannot.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "minimum degree",
+      "Chernoff bound",
+      "degree sequence",
+      "Finset.inf'"
+    ],
+    "prerequisites": [
+      "GraphOnN",
+      "SimpleGraph.degree"
+    ]
+  },
+  {
+    "id": "ann-746-summary",
+    "proofId": "erdos-746",
+    "range": {
+      "startLine": 246,
+      "endLine": 260
+    },
+    "type": "concept",
+    "title": "Summary and Main Results",
+    "content": "**erdos_746** (proved): `ErdosQuestion746`, the answer is YES.\n\n**erdos_746_main** (proved): Equivalent restatement.\n\n**erdos_746_precise** (proved): Instantiates Komlós-Szemerédi's precise limiting distribution.\n\n**erdos_746_solved** (proved): Final summary — the problem is completely solved.",
+    "mathContext": "The formalization captures the complete resolution of Erdős Problem #746: from the Erdős-Rényi conjecture (1966) through Pósa's first proof ($Cn \\log n$, 1976), Korshunov's sharp threshold ($(1/2) n \\log n + (1/2) n \\log \\log n$, 1977), to Komlós-Szemerédi's precise limiting probability ($e^{-e^{-2c}}$, 1983). The probabilistic content is axiomatized; the formal proofs compose these axioms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete resolution",
+      "axiom composition",
+      "ErdosQuestion746"
+    ],
+    "prerequisites": [
+      "erdos_746_answer",
+      "komlos_szemeredi_theorem"
+    ]
+  }
+]

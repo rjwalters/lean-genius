@@ -1,0 +1,169 @@
+[
+  {
+    "id": "ann-tpsoq01-header",
+    "proofId": "twin-primes-special-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Historical Background and What Is Formalized",
+    "content": "The module docstring surveys 175 years of failed attempts: de Polignac's 1849 conjecture, Brun's 1919 convergence of the reciprocal sum, Hardy-Littlewood's 1923 quantitative prediction, and the 2014–2015 Zhang-Maynard bounded-gaps breakthrough (gap ≤ 246). The file then states exactly what it contributes: 25 verified pairs, two equivalent reformulations of TPC, and three conditional consequences. The `open TwinPrimes` imports `IsTwinPrimePair`, `TwinPrimeConjecture`, the `twin_prime_conjecture` axiom, and the `twin_prime_mod_six` structure theorem from the parent file.",
+    "mathContext": "Key imports from parent: `IsTwinPrimePair p := Prime(p) ∧ Prime(p+2)`, `TwinPrimeConjecture := ∀ N, ∃ p > N, IsTwinPrimePair p`, and `axiom twin_prime_conjecture : TwinPrimeConjecture`. The structure theorem states: $p > 3 \\Rightarrow (\\text{IsTwinPrimePair}(p) \\Leftrightarrow p \\equiv 5 \\pmod{6})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "TwinPrimeConjecture",
+      "IsTwinPrimePair",
+      "de Polignac conjecture",
+      "Brun's constant",
+      "Hardy-Littlewood Conjecture B",
+      "Zhang-Maynard"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "modular arithmetic",
+      "parent entry twin-primes-special"
+    ]
+  },
+  {
+    "id": "ann-tpsoq01-examples",
+    "proofId": "twin-primes-special-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "19 New Certified Twin Prime Pairs via `decide`",
+    "content": "The 19 theorems (`twin_59` through `twin_521`) each have the proof `by constructor <;> decide`. The `constructor` splits `IsTwinPrimePair p = Prime(p) ∧ Prime(p+2)` into two goals; `decide` closes both by running Lean's kernel primality check for each concrete number. The closing theorem `exists_twentyfive_twin_primes` packages all 25 pairs (6 from parent + 19 new) into a single conjunction proved by an anonymous term-mode constructor.",
+    "mathContext": "New lower elements: $\\{59, 71, 101, 107, 137, 149, 179, 191, 197, 227, 239, 269, 281, 311, 347, 419, 431, 461, 521\\}$. Every element satisfies $p \\equiv 5 \\pmod{6}$ (since $p > 3$), consistent with the structure theorem from the parent. The corresponding twin pairs are $(59,61), (71,73), \\ldots, (521, 523)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decide tactic",
+      "Nat.Prime decidability",
+      "IsTwinPrimePair",
+      "certified computation"
+    ],
+    "prerequisites": [
+      "Lean 4 decide tactic",
+      "structure splitting with constructor"
+    ]
+  },
+  {
+    "id": "ann-tpsoq01-tpc-iff-unbounded",
+    "proofId": "twin-primes-special-oq-01",
+    "range": {
+      "startLine": 103,
+      "endLine": 114
+    },
+    "type": "insight",
+    "title": "TPC ↔ No Finite Bound: the Constructive Equivalence",
+    "content": "The theorem `tpc_iff_unbounded` proves that TPC is equivalent to the non-existence of a bound $M$ such that all twin prime lower elements are $\\leq M$. Forward direction: given TPC, apply it to $M$ to obtain $p > M$ with $p$ a twin prime, contradicting the bound. Backward direction: apply `push_neg` to the negation `¬∃M, ∀p twin, p ≤ M` to get `∀M, ∃p twin, p > M`, which is exactly TPC with $N := M$.",
+    "mathContext": "$$\\text{TPC} \\iff \\neg(\\exists M : \\mathbb{N},\\ \\forall p : \\mathbb{N},\\ \\text{IsTwinPrimePair}(p) \\Rightarrow p \\leq M)$$\nThe `push_neg` tactic converts $\\neg\\exists M, \\forall p \\text{ twin}, p \\leq M$ to $\\forall M, \\exists p \\text{ twin}, p > M$, which is TPC in disguise. The `omega` tactic closes the arithmetic gap $p > M \\Rightarrow \\neg(p \\leq M)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "TwinPrimeConjecture",
+      "push_neg tactic",
+      "unbounded sets",
+      "equivalent reformulation"
+    ],
+    "prerequisites": [
+      "TwinPrimeConjecture definition",
+      "push_neg",
+      "Lean 4 omega tactic"
+    ]
+  },
+  {
+    "id": "ann-tpsoq01-tpc-iff-prime-pairs",
+    "proofId": "twin-primes-special-oq-01",
+    "range": {
+      "startLine": 116,
+      "endLine": 122
+    },
+    "type": "concept",
+    "title": "Unfolding TPC to the Explicit Simultaneous Primality Statement",
+    "content": "`tpc_iff_prime_pairs` unfolds `IsTwinPrimePair` inside `TwinPrimeConjecture` to expose the raw simultaneous primality statement `∃ p > N, Nat.Prime p ∧ Nat.Prime (p+2)`. The proof is a single `simp only` with the definitional unfolding of `TwinPrimeConjecture` and `IsTwinPrimePair`. This form is useful when connecting TPC to Mathlib's `Nat.Prime` API without going through the `IsTwinPrimePair` wrapper.",
+    "mathContext": "$$\\text{TPC} \\iff \\forall N : \\mathbb{N},\\ \\exists p : \\mathbb{N},\\ p > N \\wedge \\text{Nat.Prime}(p) \\wedge \\text{Nat.Prime}(p+2)$$\nThis is the working form used in most papers on prime gaps. The equivalence is definitional: `IsTwinPrimePair p` is literally `Nat.Prime p ∧ Nat.Prime (p+2)` and `TwinPrimeConjecture` is the universal quantification over $N$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "TwinPrimeConjecture",
+      "IsTwinPrimePair",
+      "simp only",
+      "definitional unfolding"
+    ],
+    "prerequisites": [
+      "TwinPrimeConjecture and IsTwinPrimePair definitions"
+    ]
+  },
+  {
+    "id": "ann-tpsoq01-trivial-conditional",
+    "proofId": "twin-primes-special-oq-01",
+    "range": {
+      "startLine": 125,
+      "endLine": 129
+    },
+    "type": "insight",
+    "title": "1-Line Proof: Axiom Instantly Gives Infinitely Many Twin Primes",
+    "content": "`infinite_twin_prime_pairs` is a 1-line proof: `twin_prime_conjecture N`. This is the whole point of axiomatization — once TPC is declared as an axiom, every consequence that follows from TPC alone is a 1-line application of that axiom. The theorem is still meaningful: it names the consequence, gives it a discoverable type signature, and makes the logical dependency on `twin_prime_conjecture` explicit in the term structure. In a formal library, callers use `infinite_twin_prime_pairs` without even knowing that TPC is axiomatized — they just import and apply the theorem.",
+    "mathContext": "The full proof term is `fun N => twin_prime_conjecture N`, where `twin_prime_conjecture : TwinPrimeConjecture = ∀ N, ∃ p > N, IsTwinPrimePair p`. This is a $\\beta$-reduction: the axiom is exactly the statement being named. No computation, no simplification. The formalization value lies in the packaging: it wraps the axiom under a stable theorem name that clients can use without depending on implementation details of the axiom.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "twin_prime_conjecture axiom",
+      "axiom application",
+      "1-line proofs",
+      "TwinPrimeConjecture"
+    ],
+    "prerequisites": [
+      "twin_prime_conjecture axiom",
+      "TwinPrimeConjecture definition"
+    ]
+  },
+  {
+    "id": "ann-tpsoq01-mod-six-consequence",
+    "proofId": "twin-primes-special-oq-01",
+    "range": {
+      "startLine": 130,
+      "endLine": 138
+    },
+    "type": "insight",
+    "title": "Conditional: Infinite Primes ≡ 5 (mod 6) via max(N, 3) Trick",
+    "content": "`infinite_twin_primes_mod_six` is the most interesting conditional theorem. It needs `twin_prime_mod_six` which requires `p > 3`. The trick is to apply TPC at `max N 3` rather than `N`, getting a twin prime `p > max(N, 3)`. Then `Nat.le_max_left` and `Nat.le_max_right` extract both `p > N` and `p > 3` as corollaries, enabling the application of the structure theorem.",
+    "mathContext": "Proof structure: apply $\\text{TPC}(\\max(N,3))$ to obtain $p > \\max(N,3)$ with $\\text{IsTwinPrimePair}(p)$. Then:\n- $p > N$ from $p > \\max(N,3) \\geq N$ (via `Nat.le_max_left`)\n- $p > 3$ from $p > \\max(N,3) \\geq 3$ (via `Nat.le_max_right`)\n- $p \\equiv 5 \\pmod{6}$ from `twin_prime_mod_six` applied to $p > 3$\n\nCombined: TPC implies $\\{p : \\text{prime}, p \\equiv 5 \\pmod{6}\\}$ is infinite.",
+    "significance": "key",
+    "relatedConcepts": [
+      "twin_prime_mod_six",
+      "Nat.le_max_left",
+      "Nat.le_max_right",
+      "arithmetic progressions",
+      "Dirichlet's theorem analogue"
+    ],
+    "prerequisites": [
+      "twin_prime_mod_six (parent entry)",
+      "Nat.max properties",
+      "mod-6 structure of twin primes"
+    ]
+  },
+  {
+    "id": "ann-tpsoq01-finset-cover",
+    "proofId": "twin-primes-special-oq-01",
+    "range": {
+      "startLine": 140,
+      "endLine": 149
+    },
+    "type": "concept",
+    "title": "No Finite Cover via Finset.sup Upper Bound",
+    "content": "`no_finite_cover` shows every finite set `S : Finset ℕ` misses some twin prime. The key idea: apply TPC at `S.sup id` (the maximum element of `S`) to get a twin prime `p > S.sup id`. If `p ∈ S`, then `Finset.le_sup (f := id) hp_mem` gives `p ≤ S.sup id`, contradicting `p > S.sup id` via `omega`.",
+    "mathContext": "For a finite set $S \\subseteq \\mathbb{N}$, $\\sup_{x \\in S} x$ is the maximum element. TPC gives a twin prime $p > \\sup S$. If $p \\in S$ then $p \\leq \\sup S$ by definition of supremum — contradiction. The `Finset.le_sup (f := id) hp_mem` lemma applies because `S.sup id = S.sup (fun x => x)` is exactly the maximum.\n\nThis is a cleaner formulation of infinitude than `Set.Infinite` since it avoids infinite set machinery.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sup",
+      "Finset.le_sup",
+      "infinitude via finite-cover argument",
+      "TwinPrimeConjecture"
+    ],
+    "prerequisites": [
+      "Finset.sup and Finset.le_sup",
+      "omega",
+      "TwinPrimeConjecture"
+    ]
+  }
+]

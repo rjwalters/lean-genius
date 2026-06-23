@@ -1,0 +1,184 @@
+{
+  "id": "erdos-282",
+  "title": "Erdős Problem #282: Greedy Algorithm for Egyptian Fractions",
+  "slug": "erdos-282",
+  "description": "Does the greedy Egyptian fraction algorithm terminate when x has odd denominator and A = odd integers? Fibonacci (1202): yes for A = ℕ. Erdős–Graham conjecture squares fail. Status: OPEN.",
+  "meta": {
+    "author": "Stein (conjecture), Fibonacci (1202), Graham (1964)",
+    "erdosNumber": 282,
+    "status": "axiomatized",
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "greedy-algorithms",
+      "rational-numbers",
+      "open"
+    ],
+    "sourceUrl": "https://erdosproblems.com/282",
+    "erdosUrl": "https://erdosproblems.com/282",
+    "proofRepoPath": "Proofs/Erdos282Problem.lean",
+    "mathlibDependencies": [
+      {
+        "theorem": "Rat.Basic",
+        "description": "Rational number type and arithmetic",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate for denominator sets",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Finite set summation for Egyptian fraction sums",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality for lowest-terms conditions",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsEgyptianFracRep predicate for Egyptian fraction representations",
+      "IsRepresentable existential wrapper",
+      "greedyStep defined via Nat.find with proved membership and inequality properties",
+      "exists_greedy_candidate: proved existence of greedy candidates for infinite A",
+      "infinite_nat_above: proved infinite sets have arbitrarily large elements",
+      "greedyStep_mem: proved greedy step picks element of A (was axiom)",
+      "greedyStep_le: proved greedy step satisfies 1/n ≤ x (was axiom)",
+      "GreedyTerminates definition equating termination with representability",
+      "fibonacci_greedy_terminates axiom for the classical result",
+      "oddPositives and HasOddDenom definitions for Stein's variant",
+      "SteinOddGreedyConjecture as Prop definition (open conjecture)",
+      "congClass and GrahamRepresentability for congruence class denominators",
+      "perfectSquares and ErdosGrahamSquaresConjecture for sparse denominators",
+      "greedy_implies_representable connecting termination to representability",
+      "unit_frac_representable: proved 1/n representable for n ∈ A",
+      "oddPositives_infinite: proved odd positive integers form infinite set"
+    ],
+    "axiomCount": 1,
+    "lineCount": 179,
+    "assumptions": "1 axiom: fibonacci_greedy_terminates (Fibonacci's 1202 result that greedy algorithm terminates for A = ℕ\\{0}). greedyStep now defined via Nat.find with properties proved. Open conjectures stated as Prop definitions.",
+    "theoremCount": 8,
+    "definitionCount": 11
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 25,
+      "endLine": 27,
+      "summary": "Imports full **Mathlib** and **Mathlib.Tactic** for rational numbers, sets, and proof automation."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions and Greedy Step",
+      "startLine": 28,
+      "endLine": 97,
+      "summary": "Defines **IsEgyptianFracRep**, **IsRepresentable**, and **GreedyTerminates**. Proves **infinite_nat_above** and **exists_greedy_candidate** as supporting lemmas. Defines **greedyStep** via `Nat.find` (was axiom) and proves **greedyStep_mem** (membership in A) and **greedyStep_le** ($1/n \\leq x$) — both were axioms, now fully proved."
+    },
+    {
+      "id": "fibonacci",
+      "title": "Fibonacci's Theorem",
+      "startLine": 99,
+      "endLine": 104,
+      "summary": "States **fibonacci_greedy_terminates** (axiom): the greedy algorithm terminates for all $x \\in (0,1]$ when $A = \\mathbb{N} \\setminus \\{0\\}$. The classical 1202 result from *Liber Abaci*."
+    },
+    {
+      "id": "odd-question",
+      "title": "The Odd Denominator Question",
+      "startLine": 106,
+      "endLine": 122,
+      "summary": "Defines **oddPositives**, **HasOddDenom**, and **SteinOddGreedyConjecture** (as Prop def, not axiom). This is the main OPEN question."
+    },
+    {
+      "id": "graham",
+      "title": "Graham's Representability",
+      "startLine": 124,
+      "endLine": 138,
+      "summary": "Defines **congClass** and **GrahamRepresentability** for congruence class denominators."
+    },
+    {
+      "id": "squares-general",
+      "title": "Square Denominators and General Framework",
+      "startLine": 140,
+      "endLine": 179,
+      "summary": "Defines **perfectSquares** and **ErdosGrahamSquaresConjecture**. Proves **greedy_implies_representable**, **representable_iff_greedy**, **unit_frac_representable**, and **oddPositives_infinite**."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**Erdős Problem #282: Greedy Egyptian Fractions with Odd Denominators**\n\nEgyptian fraction decomposition — expressing rationals as sums of distinct unit fractions — is one of the oldest problems in number theory, dating to the Rhind Papyrus (c. 1650 BCE). The systematic study began with Fibonacci's *Liber Abaci* (1202), which proved that the greedy algorithm (repeatedly subtract the largest unit fraction $\\leq x$) terminates for all positive rationals.\n\n**Fibonacci's Classical Result:**\nThe key insight is *numerator descent*: if $x = p/q$ and we subtract $1/n$ where $n = \\lceil q/p \\rceil$, the remainder $x - 1/n$ has numerator $pn - q < p$ in lowest terms. Since numerators are positive integers, this descent terminates.\n\n**The Odd Denominator Variant (Stein):**\nStein asked: does the greedy algorithm still terminate if we restrict both the starting rational and the allowed denominators to have odd denominators? The set of odd-denominator rationals is closed under this operation (odd $\\times$ odd = odd), so the restriction is well-posed. However, Fibonacci's numerator-descent argument breaks down — the numerator can *increase* when forced to skip even denominators.\n\n**Graham's Representability (1964):**\nGraham gave algebraic conditions for when $m/n$ can be represented as a sum of distinct unit fractions with denominators in a congruence class $\\{a, a+d, a+2d, \\ldots\\}$. This settles the *existence* question but not the *algorithmic* question: representability does not imply greedy termination.\n\n**The Erdős-Graham Squares Conjecture:**\nFor the contrasting case of square denominators $\\{1, 4, 9, 16, \\ldots\\}$, the harmonic sum $\\sum 1/k^2 = \\pi^2/6$ converges, severely limiting representability. Erdős and Graham conjectured that the greedy algorithm 'perhaps fails to terminate almost always' for this set.\n\n**Current Status:**\nComputational evidence strongly supports Stein's conjecture — greedy termination has been verified for all $p/q$ with odd $q$ up to large bounds — but no proof exists. The problem remains OPEN.",
+    "problemStatement": "Does the greedy Egyptian fraction algorithm terminate for all $x \\in (0,1] \\cap \\mathbb{Q}$ with odd denominator, when the allowed denominators are restricted to odd positive integers?\n\nMore precisely: if $x = p/q$ with $\\gcd(p,q) = 1$ and $q$ odd, does the sequence $x_0 = x$, $x_{k+1} = x_k - 1/n_k$ (where $n_k$ is the smallest odd integer with $1/n_k \\leq x_k$) reach $0$ in finitely many steps?",
+    "text": "Does the greedy Egyptian fraction algorithm terminate when x has odd denominator and A = odd integers? Fibonacci (1202): yes for A = ℕ. Erdős–Graham conjecture squares fail. Status: OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Egyptian Fraction Representation:** Define `IsEgyptianFracRep x S A` and `IsRepresentable x A`.\n\n2. **Greedy Algorithm (Proved):** Define `greedyStep` via `Nat.find` on the existence of greedy candidates. Prove `exists_greedy_candidate` (for infinite A, candidates exist), `greedyStep_mem` (result is in A), and `greedyStep_le` (satisfies 1/n ≤ x).\n\n3. **Greedy Termination:** Define `GreedyTerminates` equivalent to representability.\n\n4. **Classical Result:** State Fibonacci's theorem as axiom (numerator descent argument).\n\n5. **Conjectures as Definitions:** State Stein's and Erdős-Graham conjectures as Prop defs (not axioms).\n\n6. **Supporting Results (Proved):** `unit_frac_representable`, `oddPositives_infinite`, `representable_iff_greedy`.",
+    "keyInsights": [
+      "**Numerator Descent (Fibonacci):** For $A = \\mathbb{N} \\setminus \\{0\\}$, each greedy step strictly decreases the numerator of the remainder. Since numerators are positive integers, this well-founded descent guarantees termination in at most $p$ steps.",
+      "**Odd Closure Property:** If $x = p/q$ with $q$ odd and we subtract $1/n$ with $n$ odd, then the denominator $qn$ of $x - 1/n$ is odd. So the odd-denominator condition is an *invariant* of the greedy process with odd denominators.",
+      "**Numerator Non-Descent for Odd:** The critical difficulty is that restricting to odd denominators can *increase* the numerator. The greedy algorithm might skip the 'optimal' even denominator and pick a larger odd one, leading to a remainder with larger numerator. This breaks Fibonacci's descent argument.",
+      "**Divergence vs Convergence Dichotomy:** Odd integers have divergent harmonic sum ($\\sum 1/(2k-1) = \\infty$), so representability is not an issue. Squares have convergent harmonic sum ($\\sum 1/k^2 = \\pi^2/6$), limiting representability. This dichotomy explains why termination is expected for odds but not for squares.",
+      "**Representability ≠ Greedy Termination:** Graham's theorem settles which rationals are representable with congruence-class denominators, but says nothing about whether the *greedy* strategy finds such representations. This gap between existence and algorithms is the heart of Problem #282."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #282 asks whether the greedy Egyptian fraction algorithm terminates for odd-denominator rationals using only odd denominators. The 179-line formalization defines greedyStep via Nat.find (eliminating 3 axioms), proves membership and inequality properties, and captures the full framework: Fibonacci's theorem (1 remaining axiom), Stein's conjecture, Graham's representability, and the Erdős-Graham squares conjecture. 8 theorems proved, 0 sorries.",
+    "implications": "**Theoretical Significance**: **Connections and Implications**\n\n1. **Egyptian Fraction Family:** This problem sits in a cluster with Erdős #283 (polynomial denominators), #284 (maximum first denominator), and #285 (asymptotics). Together they explore how denominator restrictions affect Egyptian fraction structure.\n\n2. **Algorithms vs Existence:** The fundamental theme is the gap between representability (existence of a decomposition) and greedy termination (a specific algorithm finding one). Graham's 1964 theorem resolves existence but leaves the algorithmic question open.\n\n3. **Harmonic Sum Threshold:** Whether the greedy algorithm can succeed depends on the harmonic sum $\\sum_{n \\in A} 1/n$.\n\nFor divergent sums (odd integers, congruence classes), termination is plausible. For convergent sums (squares), failure is expected. The threshold behavior connects to analytic number theory.\n\n4. **Covering Systems Connection:** The adjacent Erdős problems #280–#281 concern covering congruences, which also involve distributing integers across congruence classes. The odd-denominator restriction is essentially the congruence class $1 \\pmod{2}$.\n\n5. **Computational Number Theory:** The problem is amenable to computational investigation. Extensive verification supports Stein's conjecture, but the lack of a proof suggests deep structural obstacles related to the non-monotonicity of the greedy remainder sequence.",
+    "openQuestions": [
+      "**Stein's Conjecture (the main question):** Does the greedy algorithm terminate for all odd-denominator rationals using odd denominators?",
+      "**Characterization of Greedy-Terminating Sets:** For which infinite sets $A \\subseteq \\mathbb{N}$ does the greedy algorithm terminate for all representable rationals?",
+      "**Square Denominators:** Does the greedy algorithm on $A = \\{k^2\\}$ fail for 'almost all' rationals (in the measure-theoretic sense), as Erdős and Graham conjectured?",
+      "**Growth Rate of Denominators:** In the odd-denominator greedy algorithm, how fast do the chosen denominators $n_1 < n_2 < \\cdots$ grow? Is there a uniform bound on the number of steps?",
+      "**Alternative Algorithms:** If the greedy algorithm fails for some set $A$, can a non-greedy strategy always find representations (when they exist)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 179,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "definitionCount": 11,
+    "path": "Proofs/Erdos282Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Fibonacci (1202): 'Liber Abaci', greedy algorithm for Egyptian fractions",
+    "Erdős, Graham (1980): 'Old and New Problems and Results in Combinatorial Number Theory', Monographies de l'Enseignement Mathématique 28, p.30",
+    "Graham (1964): 'On finite sums of unit fractions', Proceedings of the London Mathematical Society (3) 14, 193–207",
+    "Stein (unpublished): odd greedy conjecture for Egyptian fractions with odd denominators",
+    "Vose (1985): 'Egyptian fractions', Bulletin of the London Mathematical Society 17, 21–24",
+    "https://erdosproblems.com/282"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open"
+    },
+    {
+      "targetId": "erdos-283",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open"
+    },
+    {
+      "targetId": "erdos-313",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, open"
+    }
+  ],
+  "sorries": 0
+}

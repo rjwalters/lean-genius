@@ -1,0 +1,187 @@
+[
+  {
+    "id": "erdos-1175-imports",
+    "proofId": "erdos-1175",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "title": "Problem Context and Imports",
+    "content": "Header documenting Erdős Problem #1175 on triangle-free subgraphs with large chromatic number. The question asks: for each uncountable cardinal κ, does there exist λ such that every graph with χ(G) ≥ λ contains a triangle-free subgraph with χ ≥ κ? Shelah showed a negative answer is consistent with ZFC for κ = λ = ℵ₁. Imports Cardinal.Ordinal for cardinal arithmetic (ℵ₀, ℵ₁, cardinal comparison) and SimpleGraph.Basic for graph structure and adjacency.",
+    "mathContext": "For uncountable $\\kappa$, does $\\exists\\, \\lambda$ such that $\\chi(G) \\geq \\lambda \\implies G$ contains a triangle-free subgraph $H$ with $\\chi(H) \\geq \\kappa$?",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cardinal.aleph",
+      "SimpleGraph",
+      "Cardinal.Ordinal"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib set theory",
+      "Mathlib graph theory"
+    ]
+  },
+  {
+    "id": "erdos-1175-coloring-defs",
+    "proofId": "erdos-1175",
+    "type": "definition",
+    "range": {
+      "startLine": 30,
+      "endLine": 52
+    },
+    "title": "Cardinal Coloring Infrastructure",
+    "content": "Defines proper coloring for infinite graphs using cardinal-indexed color types: IsProperColoring requires adjacent vertices to receive different colors from a type of cardinality k. IsColorable asserts existence of a proper k-coloring. The cardinal chromatic number cardinalChromaticNumber is axiomatized (avoiding universe and decidability issues inherent in defining infimum over potentially proper classes), with chromaticNumber_le_iff connecting it to colorability. This extends the finite Nat.chromaticNumber to uncountable settings.",
+    "mathContext": "Proper $k$-coloring: $c : V \\to k.\\text{toType}$ with $G.\\text{Adj}(v,w) \\implies c(v) \\neq c(w)$. $\\chi(G) = \\min\\{k : G \\text{ is } k\\text{-colorable}\\}$, axiomatized as $\\chi(G) \\leq k \\iff G \\text{ is } k\\text{-colorable}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cardinal chromatic number",
+      "proper coloring",
+      "Cardinal.toType",
+      "axiomatized minimum"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "graph coloring"
+    ]
+  },
+  {
+    "id": "erdos-1175-triangle-free",
+    "proofId": "erdos-1175",
+    "type": "definition",
+    "range": {
+      "startLine": 54,
+      "endLine": 75
+    },
+    "title": "Triangle-Free Subgraphs",
+    "content": "Defines triangle-freeness as the absence of three mutually adjacent vertices (equivalent to CliqueFree 3). The induced subgraph inducedSubgraphOn restricts G to a vertex subset S by inheriting adjacency. HasTriangleFreeSubgraphWithChromatic formalizes the key property: existence of S ⊆ V such that G[S] is triangle-free and χ(G[S]) ≥ κ. The definitions use subtypes for induced subgraphs, inheriting symmetry and irreflexivity from the parent graph.",
+    "mathContext": "Triangle-free: $\\forall a,b,c \\in V,\\; \\neg(G(a,b) \\wedge G(b,c) \\wedge G(a,c))$. $\\text{HasTriangleFreeSubgraph}(G, \\kappa)$: $\\exists S \\subseteq V,\\; G[S]$ is triangle-free and $\\chi(G[S]) \\geq \\kappa$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle-free graph",
+      "induced subgraph",
+      "CliqueFree",
+      "subtype"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "set theory"
+    ]
+  },
+  {
+    "id": "erdos-1175-main-conjecture",
+    "proofId": "erdos-1175",
+    "type": "concept",
+    "range": {
+      "startLine": 77,
+      "endLine": 92
+    },
+    "title": "The Main Conjecture",
+    "content": "Erdős Problem #1175 asks: for each uncountable κ, does there exist λ such that every graph G with χ(G) ≥ λ contains a triangle-free subgraph H with χ(H) ≥ κ? The formalization quantifies universally over all types V and graphs G on V. The conjecture is a compactness-type question: can large chromatic number be 'concentrated' in a triangle-free part? For finite κ this is known (via Ramsey theory), but the uncountable case is fundamentally harder due to set-theoretic independence phenomena.",
+    "mathContext": "$$\\text{erdos1175}: \\forall\\, \\kappa > \\aleph_0,\\; \\exists\\, \\lambda : \\forall\\, G,\\; \\chi(G) \\geq \\lambda \\implies \\exists\\, S \\subseteq V(G),\\; G[S] \\text{ triangle-free},\\; \\chi(G[S]) \\geq \\kappa$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "uncountable cardinal",
+      "set-theoretic independence",
+      "compactness",
+      "Ramsey theory"
+    ],
+    "prerequisites": [
+      "infinite combinatorics",
+      "set theory"
+    ]
+  },
+  {
+    "id": "erdos-1175-shelah",
+    "proofId": "erdos-1175",
+    "type": "insight",
+    "range": {
+      "startLine": 94,
+      "endLine": 130
+    },
+    "title": "Shelah's Consistency Result",
+    "content": "Shelah proved that a negative answer is consistent with ZFC for κ = λ = ℵ₁: there consistently exists a graph G with χ(G) = ℵ₁ such that every triangle-free induced subgraph has countable chromatic number. The axiom shelah_consistency encodes this. The theorem shelah_implies_failure_at_aleph1 deduces that λ = ℵ₁ does not universally work for κ = ℵ₁, by contradiction: if every ℵ₁-chromatic graph had a triangle-free subgraph with χ ≥ ℵ₁, Shelah's graph would too, but its triangle-free subgraphs have χ ≤ ℵ₀ < ℵ₁. This shows the problem is genuinely set-theoretic.",
+    "mathContext": "Shelah: $\\text{Con}(\\text{ZFC} + \\exists G,\\; \\chi(G) = \\aleph_1 \\wedge \\forall S,\\; G[S] \\text{ triangle-free} \\implies \\chi(G[S]) \\leq \\aleph_0)$. Hence $\\lambda = \\aleph_1$ fails for $\\kappa = \\aleph_1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZFC consistency",
+      "Shelah forcing",
+      "cardinal arithmetic",
+      "independence result"
+    ],
+    "prerequisites": [
+      "set theory",
+      "forcing",
+      "consistency proofs"
+    ]
+  },
+  {
+    "id": "erdos-1175-finite-case",
+    "proofId": "erdos-1175",
+    "type": "insight",
+    "range": {
+      "startLine": 132,
+      "endLine": 150
+    },
+    "title": "Finite Case and Mycielski",
+    "content": "Two positive results for finite chromatic numbers: (1) Mycielski's theorem (1955): for every k ≥ 1, there exists a triangle-free graph with chromatic number exactly k. The Mycielski construction M_k has 3·2^{k-2} - 1 vertices. (2) The finite case of the conjecture holds: for each finite k, there exists n such that every graph with χ(G) ≥ n contains a triangle-free subgraph with χ ≥ k. This follows from Ramsey-type arguments and the Erdős-Hajnal theorem on graphs with large chromatic number.",
+    "mathContext": "Mycielski: $\\forall k \\geq 1,\\; \\exists$ triangle-free $G$ with $\\chi(G) = k$. Finite case: $\\forall k \\geq 1,\\; \\exists n: \\chi(G) \\geq n \\implies G$ has triangle-free subgraph with $\\chi \\geq k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mycielski graph",
+      "Erdős-Hajnal theorem",
+      "Ramsey theory",
+      "finite chromatic number"
+    ],
+    "prerequisites": [
+      "Mycielski construction",
+      "finite graph theory"
+    ]
+  },
+  {
+    "id": "erdos-1175-girth-variant",
+    "proofId": "erdos-1175",
+    "type": "concept",
+    "range": {
+      "startLine": 152,
+      "endLine": 172
+    },
+    "title": "Girth Variant",
+    "content": "A natural strengthening replaces 'triangle-free' with 'girth ≥ g' for any g ≥ 4. HasGirthAtLeast formalizes the absence of short cycles by requiring that no injective map from Fin k (for 3 ≤ k < g) with consecutive adjacency exists. The girth variant erdos1175_girth_variant asks: for each g and uncountable κ, does there exist λ such that every graph with χ ≥ λ has an induced subgraph with girth ≥ g and χ ≥ κ? This hierarchy of questions becomes progressively harder as g increases.",
+    "mathContext": "Girth variant: $\\forall g \\geq 4,\\; \\forall \\kappa > \\aleph_0,\\; \\exists \\lambda: \\chi(G) \\geq \\lambda \\implies \\exists S,\\; \\text{girth}(G[S]) \\geq g \\wedge \\chi(G[S]) \\geq \\kappa$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "girth",
+      "cycle-free graph",
+      "high girth high chromatic",
+      "Erdős 1959"
+    ],
+    "prerequisites": [
+      "graph girth",
+      "cycle detection"
+    ]
+  },
+  {
+    "id": "erdos-1175-erdos1959",
+    "proofId": "erdos-1175",
+    "type": "insight",
+    "range": {
+      "startLine": 174,
+      "endLine": 186
+    },
+    "title": "Erdős 1959 Existence and Summary",
+    "content": "Erdős (1959) proved the foundational result: for every k ≥ 1 and g ≥ 3, there exist finite graphs with girth ≥ g and chromatic number ≥ k. This was one of the first applications of the probabilistic method—a random graph G(n, p) with appropriate parameters has both properties with positive probability. The summary theorem confirms Shelah's consistency result as the main known result. The formal problem statement ErdosProblem1175 is defined as erdos1175. The gap between the finite existence (Erdős 1959) and the infinite structural question (Problem 1175) is the core of the problem.",
+    "mathContext": "Erdős (1959): $\\forall k \\geq 1,\\; g \\geq 3,\\; \\exists$ finite graph $G$ with $\\text{girth}(G) \\geq g$ and $\\chi(G) \\geq k$. Proved by probabilistic method.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "random graph",
+      "high girth existence",
+      "Erdős 1959 theorem"
+    ],
+    "prerequisites": [
+      "probabilistic combinatorics",
+      "random graph theory"
+    ]
+  }
+]

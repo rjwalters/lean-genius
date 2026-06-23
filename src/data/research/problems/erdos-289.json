@@ -1,0 +1,117 @@
+{
+  "slug": "erdos-289",
+  "title": "Erdős #289",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Is it true that, for all sufficiently large $k$, there exist finite intervals $I_1,\\ldots,I_k\\subset \\mathbb{N}$, distinct, not overlapping or adjacent, with $\\lvert I_i\\rvert \\geq 2$ for $1\\leq i\\leq k$ such that\\[1=\\sum_{i=1}^k \\sum_{n\\in I_i}\\frac{1}{n}?\\]\n\n\n\nErd\\H{o}s and Graham posed this in \\cite{ErGr80} without the stipulation the intervals be distinct, non-overlapping, or adjacent, but Kovac in the comments has provided a simple argument showing that it is easily possible without this restriction, and likely \\cite{ErGr80} just forgot to mention this natural restriction.\n\nAs an example representing $2$ rather than $1$, Hickerson and Montgomery, in the solution to AMS Monthly problem E2689 proposed by Hahn, found\\[2=\\sum_{i=1}^5 \\sum_{n\\in I_i}\\frac{1}{n}\\]where $I_1=[2,7]$, $I_2=[9,10]$, $I_3=[17,18]$, $I_4=[34,35]$, and $I_5=[84,85]$.",
+    "plain": "Ask whether, for all sufficiently large k, 1 can be written as a sum of reciprocal sums over k distinct non-adjacent finite integer intervals, each of length at least 2.",
+    "whyMatters": [
+      "Combines Egyptian-fraction style identities with interval and separation constraints.",
+      "The Lean file formalizes interval blocks, valid decompositions, and reciprocal-sum bounds without axioms or sorries.",
+      "The full large-k existence claim is still only problem context, not an active Lean theorem."
+    ],
+    "plainEnglish": "Ask whether, for all sufficiently large k, 1 can be written as a sum of reciprocal sums over k distinct non-adjacent finite integer intervals, each of length at least 2."
+  },
+  "knownResults": {
+    "proven": [
+      "`IntervalBlock`, `IntervalBlock.toFinset`, `IntervalBlock.NonAdjacent`, and `ValidDecomposition` formalize the interval-block setup.",
+      "`interval_block_has_two` proves each interval block has at least two elements.",
+      "`nonadj_implies_disjoint` proves the separation condition implies disjointness.",
+      "`interval_recipsum_upper` and `interval_recipsum_lower` prove elementary upper and lower bounds for the reciprocal sum of one block."
+    ],
+    "open": [
+      "The large-k existence theorem for decomposing 1 is not proved.",
+      "The Hickerson-Montgomery example for target 2 is described in comments but not formalized as an active theorem.",
+      "The easier unconstrained Erdos-Graham variant is comment-only in this file."
+    ],
+    "goal": "Record the axiom-free interval infrastructure while keeping the large-k decomposition question open."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "The file has 4 theorem declarations, 6 definitions/structures, 0 axioms, and 0 sorries; it proves interval and reciprocal-sum infrastructure, not the main existence problem.",
+    "blockers": [
+      "No active Lean theorem states the eventual large-k decomposition claim.",
+      "The Hickerson-Montgomery target-2 example is still comment-only.",
+      "Exact reciprocal identities with many separated intervals remain open."
+    ],
+    "nextAction": "Formalize the five-interval Hickerson-Montgomery example for target 2, then add a Prop definition for the eventual large-k target-1 statement.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "CURRENT: 4 theorem declarations, 6 definitions/structures, 0 axioms, 0 sorries. The Lean file supplies interval-block and reciprocal-sum bounds, while the main large-k existence problem remains unproved context.",
+    "builtItems": [
+      "`IntervalBlock` with positivity, ordering, and length-at-least-two fields",
+      "`IntervalBlock.toFinset`, `.Disjoint`, `.NonAdjacent`, and `.recipSum`",
+      "`ValidDecomposition` for k separated blocks summing to 1",
+      "`interval_block_has_two` and `nonadj_implies_disjoint`",
+      "`interval_recipsum_upper` and `interval_recipsum_lower`"
+    ],
+    "insights": [
+      "The source is axiom-free and sorry-free.",
+      "The main problem is currently described in comments and metadata, not as a named Prop definition.",
+      "Non-adjacency is stronger than disjointness and is proved to imply it.",
+      "The one-block reciprocal-sum bounds are elementary and useful for future quantitative work."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Add an active Prop definition for the eventual large-k decomposition statement.",
+      "Formalize the Hickerson-Montgomery five-interval target-2 example.",
+      "Prove simple constructions or obstructions for small k."
+    ],
+    "markdown": "# Erdős #289 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for all sufficiently large $k$, there exist finite intervals $I_1,\\ldots,I_k\\subset \\mathbb{N}$, distinct, not overlapping or adjacent, with $\\lvert I_i\\rvert \\geq 2$ for $1\\leq i\\leq k$ such that\\[1=\\sum_{i=1}^k \\sum_{n\\in I_i}\\frac{1}{n}?\\]\n\n\n\nErd\\H{o}s and Graham posed this in \\cite{ErGr80} without the stipulation the intervals be distinct, non-overlapping, or adjacent, but Kovac in the comments has provided a simple argument showing that it is easily possible without this restriction, and likely \\cite{ErGr80} just forgot to mention this natural restriction.\n\nAs an example representing $2$ rather than $1$, Hickerson and Montgomery, in the solution to AMS Monthly problem E2689 proposed by Hahn, found\\[2=\\sum_{i=1}^5 \\sum_{n\\in I_i}\\frac{1}{n}\\]where $I_1=[2,7]$, $I_2=[9,10]$, $I_3=[17,18]$, $I_4=[34,35]$, and $I_5=[84,85]$.\n\n\n\n\nReferences\n\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #288\n- Problem #290\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "egyptian-fractions",
+    "reciprocal-sums",
+    "intervals",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-28",
+    "erdos-289"
+  ],
+  "references": {
+    "papers": [
+      "Erdos and Graham 1980",
+      "Hickerson and Montgomery example for AMS Monthly E2689"
+    ],
+    "urls": [
+      "https://erdosproblems.com/289"
+    ],
+    "mathlib": [
+      "Finset.Icc",
+      "Rat",
+      "Finset.sum",
+      "Finset.card"
+    ]
+  },
+  "started": "2026-01-12T22:42:54.055Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos289Problem.lean",
+      "filename": "Erdos289Problem.lean",
+      "lineCount": 135,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos289Problem.lean"
+    }
+  ]
+}

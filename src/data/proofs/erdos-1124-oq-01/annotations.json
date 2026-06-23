@@ -1,0 +1,222 @@
+[
+  {
+    "id": "ann-e1124oq01-header",
+    "proofId": "erdos-1124-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "type": "concept",
+    "title": "Tarski's Circle-Squaring Problem",
+    "content": "Tarski asked in 1925 whether a disk can be partitioned into finitely many pieces and reassembled by translations into a square of equal area. Laczkovich answered affirmatively in 1990, using roughly 10^50 non-measurable pieces and the Axiom of Choice. This file formalizes the follow-up open question: what is the minimum number of pieces needed? The formalization covers three generations of results -- Laczkovich (1990), Grabowski-Mathe-Pikhurko (2016, measurable pieces), and Marks-Unger (2017, Borel pieces with fewer than 10^5 pieces).",
+    "mathContext": "Tarski's problem sits at the intersection of geometric measure theory and the Banach-Tarski tradition. Unlike the Banach-Tarski paradox (which uses rotations and non-measurable pieces to duplicate a ball), circle-squaring preserves area and uses only translations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Banach-Tarski paradox",
+      "equidecomposition",
+      "Axiom of Choice",
+      "geometric measure theory"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "point-set topology"
+    ]
+  },
+  {
+    "id": "ann-e1124oq01-ndecomp",
+    "proofId": "erdos-1124-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "N-Piece Equidecomposition Framework",
+    "content": "The key formalization insight is to parametrize equidecomposition by the piece count N explicitly. An N-piece decomposition of a set S requires N pairwise disjoint subsets whose union is S. Two sets are N-piece translation-equidecomposable when each admits an N-piece decomposition such that corresponding pieces are translates of each other. This parametrization converts the qualitative question ('can it be done?') into the quantitative question ('how many pieces?').",
+    "mathContext": "The type $\\text{IsNDecomposition}(S, n, \\text{pieces})$ requires $\\bigcup_{i \\in \\text{Fin}\\, n} \\text{pieces}(i) = S$ and $\\text{pieces}(i) \\cap \\text{pieces}(j) = \\emptyset$ for $i \\neq j$. Translation-equidecomposability adds the constraint that $\\text{pieces}_B(i) = \\text{pieces}_A(i) + v_i$ for translation vectors $v_i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fin type",
+      "indexed disjoint union",
+      "translation congruence"
+    ],
+    "prerequisites": [
+      "set theory",
+      "Fin indexing"
+    ]
+  },
+  {
+    "id": "ann-e1124oq01-refl",
+    "proofId": "erdos-1124-oq-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 92
+    },
+    "type": "concept",
+    "title": "Reflexivity via Identity Translation",
+    "content": "The proof of reflexivity is fully verified (no sorry). Every set is 1-piece equidecomposable with itself: use the set itself as the single piece and the zero vector as the translation. The proof leverages Subsingleton.elim to handle the fact that Fin 1 has exactly one element, making the disjointness condition vacuously true.",
+    "mathContext": "Reflexivity: $S \\sim_1 S$ via the decomposition $\\text{pieces}(0) = S$ and translation $v_0 = 0$. The identity $\\text{translateBy}(0)(S) = S$ is immediate from $p + 0 = p$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Subsingleton",
+      "identity translation",
+      "equivalence relation"
+    ],
+    "prerequisites": [
+      "Fin 1 singleton property"
+    ]
+  },
+  {
+    "id": "ann-e1124oq01-symm",
+    "proofId": "erdos-1124-oq-01",
+    "range": {
+      "startLine": 94,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Symmetry via Inverse Translations",
+    "content": "Symmetry is fully proved by swapping the two decompositions and negating each translation vector. The helper theorem translateBy_inv_image shows that applying translateBy(-v) to translateBy(v)(S) recovers S. This is the set-level analogue of the group-theoretic fact that translation by v has inverse translation by -v.",
+    "mathContext": "If $B_i = A_i + v_i$ for each piece, then $A_i = B_i + (-v_i)$. Formally, $\\text{translateBy}(-v)(\\text{translateBy}(v)(S)) = S$ follows from $(p + v) + (-v) = p$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "group inverse",
+      "image under bijection",
+      "additive group of translations"
+    ],
+    "prerequisites": [
+      "vector space structure on R^2"
+    ]
+  },
+  {
+    "id": "ann-e1124oq01-mono",
+    "proofId": "erdos-1124-oq-01",
+    "range": {
+      "startLine": 113,
+      "endLine": 171
+    },
+    "type": "concept",
+    "title": "Monotonicity by Appending an Empty Piece",
+    "content": "The monotonicity theorem is the longest fully-verified proof in the file. It shows that N-piece equidecomposability implies (N+1)-piece equidecomposability by extending the Fin n indexed family to Fin (n+1), mapping the new index to the empty set. The bulk of the proof re-establishes the disjointness and union conditions for the extended families, with careful case-splitting on whether each index falls below n.",
+    "mathContext": "Given $\\{A_0, \\ldots, A_{n-1}\\}$ decomposing $S$, define $A'_i = A_i$ for $i < n$ and $A'_n = \\emptyset$. Then $\\bigcup_{i=0}^{n} A'_i = \\bigcup_{i=0}^{n-1} A_i = S$ and $\\emptyset + v = \\emptyset$ for any translation $v$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fin casting",
+      "empty set absorber",
+      "dite (dependent if-then-else)"
+    ],
+    "prerequisites": [
+      "Fin arithmetic",
+      "set union properties"
+    ]
+  },
+  {
+    "id": "ann-e1124oq01-bounds",
+    "proofId": "erdos-1124-oq-01",
+    "range": {
+      "startLine": 195,
+      "endLine": 227
+    },
+    "type": "concept",
+    "title": "Three Generations of Upper Bounds",
+    "content": "The file axiomatizes three progressively stronger results. Laczkovich (1990) showed circle-squaring with at most 10^50 non-measurable pieces. Grabowski-Mathe-Pikhurko (2016) proved that the pieces can be chosen Lebesgue measurable, removing the Axiom of Choice objection. Marks-Unger (2017) achieved Borel pieces with fewer than 10^5 pieces. Each result is a strictly stronger statement, and the formalization captures the measurability upgrade as an additional constraint on the piece sets.",
+    "mathContext": "Laczkovich: $\\exists$ decomposition into $\\leq 10^{50}$ pieces (AC-dependent). Marks-Unger: $\\exists$ decomposition into $< 10^5$ Borel pieces (constructive methods from descriptive set theory). The gap between $10^5$ and $10^{50}$ represents the cost of Axiom of Choice avoidance.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lebesgue measurability",
+      "Borel sets",
+      "Axiom of Choice",
+      "descriptive set theory"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "Borel sigma-algebra"
+    ]
+  },
+  {
+    "id": "ann-e1124oq01-zero-piece",
+    "proofId": "erdos-1124-oq-01",
+    "range": {
+      "startLine": 306,
+      "endLine": 332
+    },
+    "type": "insight",
+    "title": "Zero-Piece Impossibility: Cardinality Obstruction",
+    "content": "The proof that 0-piece equidecomposition is impossible is elegantly simple. Since the union over an empty index type (Fin 0) is the empty set, any 0-piece decomposition would require the set to be empty. But the disk of positive radius contains the origin, giving a contradiction. The proof factors through two clean lemmas: iUnion_fin_zero (the empty indexed union is empty) and disk_nonempty (0 is in the disk since the norm of 0 is 0, which is at most r).",
+    "mathContext": "$\\bigcup_{i \\in \\text{Fin}\\,0} f(i) = \\emptyset$, but $\\text{disk}(r) \\neq \\emptyset$ since $\\|0\\| = 0 \\leq r$ for $r > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fin 0 is empty",
+      "nonempty sets",
+      "vacuous union"
+    ],
+    "prerequisites": [
+      "Fin 0 properties",
+      "norm of zero"
+    ]
+  },
+  {
+    "id": "ann-e1124oq01-one-piece",
+    "proofId": "erdos-1124-oq-01",
+    "range": {
+      "startLine": 337,
+      "endLine": 425
+    },
+    "type": "insight",
+    "title": "One-Piece Impossibility: The Diagonal Norm Argument",
+    "content": "This is the deepest fully-verified result in the file. If a disk and square were 1-piece equidecomposable, then the entire square would be a translate of the entire disk. The proof exploits the diagonal of the square: both the origin (0,0) and the corner (s,s) lie in the square, so both map via the inverse translation to points in the disk. The triangle inequality then gives the norm of (s,s) is at most 2r. Since the norm squared of (s,s) equals 2s^2, this yields s^2 at most 2r^2. But the equal-area condition pi*r^2 = s^2 then implies pi at most 2, contradicting pi > 3.",
+    "mathContext": "Key chain: $\\|(s,s)\\| \\leq \\|(s,s) - v\\| + \\|v\\| \\leq 2r$ by the triangle inequality. Then $\\|(s,s)\\|^2 = 2s^2 \\leq 4r^2$, so $s^2 \\leq 2r^2$. Combined with $\\pi r^2 = s^2$: $\\pi \\leq 2$. But $\\pi > 3$, contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle inequality",
+      "EuclideanSpace.single",
+      "inner product norm",
+      "pi bounds"
+    ],
+    "prerequisites": [
+      "norm properties in R^2",
+      "Real.pi_gt_three"
+    ]
+  },
+  {
+    "id": "ann-e1124oq01-transitivity",
+    "proofId": "erdos-1124-oq-01",
+    "range": {
+      "startLine": 427,
+      "endLine": 448
+    },
+    "type": "concept",
+    "title": "Transitivity via Translation Composition",
+    "content": "Translation congruence is transitive because composing two translations gives another translation. The helper theorem translateBy_comp proves that applying translateBy(w) after translateBy(v) to a set S equals translateBy(v+w) applied to S. This is the set-image version of the identity (p + v) + w = p + (v + w), verified using the abel tactic for the commutativity and associativity of addition.",
+    "mathContext": "If $B = A + v$ and $C = B + w$, then $C = A + (v + w)$. At the set level: $\\text{translateBy}(w)(\\text{translateBy}(v)(S)) = \\text{translateBy}(v + w)(S)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "composition of translations",
+      "abel tactic",
+      "group structure"
+    ],
+    "prerequisites": [
+      "additive group axioms"
+    ]
+  },
+  {
+    "id": "ann-e1124oq01-bound-chain",
+    "proofId": "erdos-1124-oq-01",
+    "range": {
+      "startLine": 454,
+      "endLine": 454
+    },
+    "type": "concept",
+    "title": "The Complete Bound Chain: 3 <= minPieceCount <= 10^50",
+    "content": "The culminating result combines all prior work into the bound 3 <= minPieceCount(r,s) <= 10^50. The lower bound proof uses case analysis via omega on the three possibilities (0, 1, or 2 pieces), dispatching each case with the corresponding impossibility result: 0-piece impossibility (nonemptiness), 1-piece impossibility (diagonal norm argument), and 2-piece impossibility (topological obstruction, axiomatized). The upper bound follows directly from Laczkovich's theorem via the minimality axiom.",
+    "mathContext": "Lower bound: If $\\text{minPieceCount} < 3$, then $\\text{minPieceCount} \\in \\{0, 1, 2\\}$. Cases 0 and 1 are proved impossible; case 2 is axiomatized (topological argument involving the Jordan curve theorem). Upper bound: Laczkovich gives a $10^{50}$-piece decomposition, so $\\text{minPieceCount} \\leq 10^{50}$ by minimality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "omega tactic",
+      "case analysis",
+      "Jordan curve theorem"
+    ],
+    "prerequisites": [
+      "all prior impossibility results",
+      "Laczkovich upper bound axiom"
+    ]
+  }
+]

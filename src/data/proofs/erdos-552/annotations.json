@@ -1,0 +1,192 @@
+[
+  {
+    "id": "ann-552-graphs",
+    "proofId": "erdos-552",
+    "range": {
+      "startLine": 38,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Graph Definitions: C_4 and Star Graph S_n",
+    "content": "**cycleGraph** $C_n$ on $n$ vertices with adjacency $(i+1) \\bmod n = j$. **C4** is the 4-cycle, the specific cycle in this problem.\n\n**starGraph** $S_n = K_{1,n}$ on $n+1$ vertices: vertex 0 is the center, connected to all other vertices ($i \\neq 0$). The star is the other graph in the Ramsey pair.\n\nThe asymmetry between $C_4$ (a small, dense cycle) and $S_n$ (a large, sparse tree) makes this Ramsey number particularly interesting: $C_4$ is extremal for the Zarankiewicz problem while $S_n$ is the simplest tree with $n$ edges.",
+    "mathContext": "$C_4$ is the graph with vertex set $\\{0,1,2,3\\}$ and edges $\\{01, 12, 23, 30\\}$. The star $S_n = K_{1,n}$ has vertex set $\\{0, 1, \\ldots, n\\}$ with edges $\\{0i : 1 \\leq i \\leq n\\}$. A graph $G$ is $C_4$-free iff $\\operatorname{ex}(n, C_4) \\leq \\frac{1}{2}(1 + \\sqrt{4n - 3})$ (Kővári-Sós-Turán), which is the key connection to the $\\sqrt{n}$ term in the Ramsey bounds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zarankiewicz problem",
+      "extremal graph theory",
+      "bipartite graphs",
+      "tree Ramsey numbers"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "modular arithmetic",
+      "star graphs"
+    ]
+  },
+  {
+    "id": "ann-552-ramsey",
+    "proofId": "erdos-552",
+    "range": {
+      "startLine": 59,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "Ramsey Number R(C_4, S_n) Definition",
+    "content": "**ContainsSubgraph** formalizes $H \\subseteq G$ via injective adjacency-preserving maps.\n\n**complement** gives $\\bar{G}$ with edges where $G$ has none (encoding 2-colorings).\n\n**ramseyNumber** $R(H_1, H_2)$ is defined as $\\inf\\{N : \\forall G \\text{ on } \\operatorname{Fin} N, G \\supseteq H_1 \\text{ or } \\bar{G} \\supseteq H_2\\}$.\n\n**R_C4_Sn** specializes to $R(C_4, S_n)$: the minimum $N$ where every 2-coloring of $K_N$ contains a red $C_4$ or a blue $S_n$.",
+    "mathContext": "$R(C_4, S_n) = \\min\\{N : K_N \\to \\{\\text{red, blue}\\} \\Rightarrow \\text{red } C_4 \\text{ or blue } S_n\\}$. Since $S_n$ has maximum degree $n$, any graph with minimum degree $\\geq n$ contains $S_n$ as a subgraph. Thus $R(C_4, S_n)$ is related to the maximum number of vertices in a $C_4$-free graph with minimum degree $< n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey's theorem",
+      "graph complement",
+      "subgraph embedding",
+      "degree conditions"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "graph homomorphisms",
+      "set infimum"
+    ]
+  },
+  {
+    "id": "ann-552-bounds",
+    "proofId": "erdos-552",
+    "range": {
+      "startLine": 83,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Known Bounds: Parsons Upper and BEFRS Lower",
+    "content": "**parsons_upper_bound** (1975): $R(C_4, S_n) \\leq n + \\lceil\\sqrt{n}\\rceil + 1$. Uses the Kővári-Sós-Turán theorem: a $C_4$-free graph on $N$ vertices has at most $\\frac{1}{2}(1 + \\sqrt{4N-3})$ edges per vertex on average, so if $N > n + \\lceil\\sqrt{n}\\rceil + 1$, either $G$ contains $C_4$ or $\\bar{G}$ has a vertex of degree $\\geq n$.\n\n**befrs_lower_bound** (1989): $R(C_4, S_n) \\geq n + \\sqrt{n} - 6n^{11/40}$. Uses Huxley's prime gap bound to find prime powers $q$ near $\\sqrt{n}$, then constructs $C_4$-free graphs from projective planes PG(2,$q$) achieving independence number $< n$.\n\n**asymptotic_bounds** combines both: $R(C_4, S_n) = n + \\sqrt{n} + O(n^{11/40})$.",
+    "mathContext": "Parsons (1975): $R(C_4, S_n) \\leq n + \\lceil\\sqrt{n}\\rceil + 1$. BEFRS (1989): $R(C_4, S_n) \\geq n + \\sqrt{n} - 6n^{11/40}$, where the exponent $11/40 = 0.275$ comes from Huxley's bound on gaps between consecutive primes: $p_{k+1} - p_k = O(p_k^{11/20})$, and $\\sqrt{n^{11/20}} = n^{11/40}$. The gap between upper and lower bounds is $O(n^{11/40})$, vanishing compared to $\\sqrt{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kővári-Sós-Turán theorem",
+      "Huxley prime gap bound",
+      "extremal number ex(n,C_4)",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "prime gap estimates",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-552-exact",
+    "proofId": "erdos-552",
+    "range": {
+      "startLine": 103,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "Exact Values for Prime Power Parameters",
+    "content": "**exact_value_q2_plus_1**: For $n = q^2 + 1$ ($q$ prime power), $R(C_4, S_n) = n + q = n + \\lceil\\sqrt{n}\\rceil$. The polarity graph of PG(2,$q$) gives a $C_4$-free graph on $q^2 + q + 1$ vertices with minimum degree $q$, achieving the lower bound.\n\n**exact_value_q2**: For $n = q^2$ ($q$ prime power), $R(C_4, S_n) = n + q + 1 = n + \\lceil\\sqrt{n}\\rceil + 1$. The upper bound is tight here.\n\n**exact_value_q2_minus_t**: For $n = q^2 - t$ with $0 \\leq t \\leq q$, $R(C_4, S_n) = q^2 - t + q + 1$.\n\nAll known exact values are either $n + \\lceil\\sqrt{n}\\rceil$ or $n + \\lceil\\sqrt{n}\\rceil + 1$, differing by at most 1.",
+    "mathContext": "The projective plane PG(2,$q$) has $q^2 + q + 1$ points. Its polarity graph $G_q$ has $q^2 + q + 1$ vertices, is $C_4$-free (because PG(2,$q$) has no degenerate quadrangles), and has $\\frac{1}{2}q(q+1)^2$ edges. For $n = q^2 + 1$: removing $q$ vertices from $G_q$ gives a $C_4$-free graph on $q^2 + 1$ vertices with independence number $\\leq q^2$, showing $R(C_4, S_{q^2+1}) \\geq q^2 + 1 + q$. Combined with Parsons's upper bound, this gives equality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "projective planes",
+      "polarity graphs",
+      "incidence geometry",
+      "finite geometry"
+    ],
+    "prerequisites": [
+      "finite projective planes",
+      "prime powers",
+      "graph constructions from geometry"
+    ]
+  },
+  {
+    "id": "ann-552-question",
+    "proofId": "erdos-552",
+    "range": {
+      "startLine": 121,
+      "endLine": 134
+    },
+    "type": "concept",
+    "title": "The Erdős Question ($100 Prize)",
+    "content": "**ErdosQuestion**: For $c > 0$, are there infinitely many $n$ with $R(C_4, S_n) \\leq n + \\sqrt{n} - c$?\n\n**ErdosConjecture**: This holds for ALL $c > 0$. The $\\$100$ prize question.\n\n**ErdosConjectureNegation**: There exists $c > 0$ such that eventually $R(C_4, S_n) > n + \\sqrt{n} - c$.\n\nThe conjecture asks whether $R(C_4, S_n) - n - \\sqrt{n} \\to -\\infty$. Since known exact values oscillate between $n + \\lceil\\sqrt{n}\\rceil$ and $n + \\lceil\\sqrt{n}\\rceil + 1$, the question is about the arithmetic of $\\lceil\\sqrt{n}\\rceil - \\sqrt{n}$ for $n$ near prime power squares.",
+    "mathContext": "The conjecture is equivalent to: $\\liminf_{n \\to \\infty} (R(C_4, S_n) - n - \\sqrt{n}) = -\\infty$. Since $R(C_4, S_n) \\leq n + \\lceil\\sqrt{n}\\rceil + 1$ and $\\lceil\\sqrt{n}\\rceil - \\sqrt{n} \\in [0, 1)$, this asks whether $R(C_4, S_n) = n + \\lceil\\sqrt{n}\\rceil$ (the smaller value) for infinitely many $n$ where $\\lceil\\sqrt{n}\\rceil$ is close to $\\sqrt{n}$. The problem reduces to: are there infinitely many $n$ near $q^2 + 1$ for prime powers $q$? This connects to the distribution of prime powers — hence to prime gaps.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime gap distribution",
+      "Bertrand's postulate",
+      "Ingham's theorem",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "analytic number theory",
+      "prime distribution"
+    ]
+  },
+  {
+    "id": "ann-552-primes",
+    "proofId": "erdos-552",
+    "range": {
+      "startLine": 136,
+      "endLine": 153
+    },
+    "type": "concept",
+    "title": "Prime Gap Connection and Cramér's Conjecture",
+    "content": "**primeGap** computes the gap between consecutive primes via $\\inf\\{q > p : q \\text{ prime}\\} - p$.\n\n**CramerConjecture**: $\\text{primeGap}(p) = O((\\log p)^2)$. This is one of the most important open problems in analytic number theory.\n\n**cramer_implies_better_bound**: Under Cramér's conjecture, for any $\\varepsilon > 0$, eventually $R(C_4, S_n) \\geq n + \\sqrt{n} - n^\\varepsilon$. The improvement comes from finding a prime power $q$ with $|q - \\sqrt{n}| = O((\\log n)^2)$, so the construction gives $R \\geq n + \\sqrt{n} - O((\\log n)^2) \\geq n + \\sqrt{n} - n^\\varepsilon$.",
+    "mathContext": "The connection: exact values occur at $n = q^2 + c$ for prime powers $q$. How close is the nearest prime power $q$ to $\\sqrt{n}$? If $q$ is the nearest prime to $\\sqrt{n}$, then $|q^2 - n| \\leq 2q \\cdot \\text{primeGap}(q)$. Under Cramér: $\\text{primeGap}(q) = O((\\log q)^2) = O((\\log n)^2)$, so $|q^2 - n| = O(\\sqrt{n}(\\log n)^2)$, and the error in $R$ is $O((\\log n)^2) = n^{o(1)}$. Unconditionally, Huxley's bound gives $\\text{primeGap}(q) = O(q^{11/20})$, yielding error $O(n^{11/40})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cramér's conjecture",
+      "prime gaps",
+      "Huxley's theorem",
+      "Riemann hypothesis"
+    ],
+    "prerequisites": [
+      "prime number theorem",
+      "analytic number theory",
+      "sieve methods"
+    ]
+  },
+  {
+    "id": "ann-552-f-function",
+    "proofId": "erdos-552",
+    "range": {
+      "startLine": 155,
+      "endLine": 171
+    },
+    "type": "concept",
+    "title": "The Function f(n) = R(C_4, S_n) and Its Properties",
+    "content": "**f** $= R(C_4, S_n)$ as a function of $n$.\n\n**ConsecutiveEqualQuestion**: Does $f(n+1) = f(n)$ infinitely often? Since adding one leaf to the star might not change the Ramsey number.\n\n**BoundedIncreaseQuestion**: Is $f(n+1) \\leq f(n) + 2$ always? The star gains one leaf, so the Ramsey number should increase by at most a bounded amount.\n\n**f_eventually_increasing**: $f$ is eventually strictly increasing — for large $n$, adding a leaf to $S_n$ always increases the Ramsey number.",
+    "mathContext": "Since $S_n \\subseteq S_{n+1}$, we have $R(C_4, S_n) \\leq R(C_4, S_{n+1})$, so $f$ is non-decreasing. The question is about the step sizes. If $f(n) = n + \\lceil\\sqrt{n}\\rceil + c_n$ where $c_n \\in \\{0, 1\\}$, then $f(n+1) - f(n) = 1 + (\\lceil\\sqrt{n+1}\\rceil - \\lceil\\sqrt{n}\\rceil) + (c_{n+1} - c_n)$. Since $\\lceil\\sqrt{n+1}\\rceil - \\lceil\\sqrt{n}\\rceil \\in \\{0, 1\\}$ and $c_{n+1} - c_n \\in \\{-1, 0, 1\\}$, we get $f(n+1) - f(n) \\in \\{0, 1, 2, 3\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone functions",
+      "integer sequences",
+      "Ramsey number growth rates"
+    ],
+    "prerequisites": [
+      "integer floor/ceiling functions",
+      "monotonicity of Ramsey numbers"
+    ]
+  },
+  {
+    "id": "ann-552-constructions",
+    "proofId": "erdos-552",
+    "range": {
+      "startLine": 173,
+      "endLine": 197
+    },
+    "type": "concept",
+    "title": "Parsons Construction and Extremal Results",
+    "content": "**parsons_construction**: For prime $q$, there exists a $C_4$-free graph on $q^2 + q + 1$ vertices such that its complement has no $S_{q^2}$ (star with $q^2$ leaves). The construction uses the projective plane PG(2,$q$): vertices are points, edges connect non-orthogonal points under a polarity.\n\n**polarityGraph**: The polarity graph of PG(2,$q$) — the explicit $C_4$-free extremal graph.\n\n**c4_minimum_degree**: If every vertex of a graph on $n \\geq 4$ vertices has degree $\\geq n/2$, then $G$ contains $C_4$. A Dirac-type condition for 4-cycles.\n\n**c4_star_extremal**: The weaker bound $R(C_4, S_n) \\leq n + 2\\sqrt{n} + 3$, obtained without projective planes.",
+    "mathContext": "The polarity graph $G_q$ of PG(2,$q$) has $q^2 + q + 1$ vertices and $\\frac{1}{2}q(q+1)^2$ edges. It is $C_4$-free because in a projective plane, any two points determine a unique line, so there is no $4$-cycle (which would require two points on two common lines). The maximum degree is $q + 1$ (self-conjugate points have degree $q$). The Kővári-Sós-Turán theorem shows $\\operatorname{ex}(n, C_4) \\leq \\frac{1}{2}(1 + \\sqrt{4n - 3})$, which the polarity graph nearly achieves.",
+    "significance": "key",
+    "relatedConcepts": [
+      "projective planes",
+      "polarity graphs",
+      "Kővári-Sós-Turán theorem",
+      "Turán number ex(n,C_4)"
+    ],
+    "prerequisites": [
+      "finite geometry",
+      "incidence structures",
+      "extremal graph theory"
+    ]
+  }
+]

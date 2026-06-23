@@ -1,0 +1,109 @@
+{
+  "id": "erdos-101-oq-01-incomplete-01",
+  "title": "Erdős #101 OQ-01: the four-point-line conjecture is already a theorem for every ε > 1/12",
+  "slug": "erdos-101-oq-01-incomplete-01",
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos101Problem",
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Cast.Order.Field"
+    ],
+    "opens": [],
+    "namespace": "Erdos101OQ01Incomplete01",
+    "lineCount": 152,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos101OQ01Incomplete01.lean",
+    "sorries": 0
+  },
+  "description": "Pinpoints, and machine-checks, exactly how much of the open $100 Erdős Problem #101 OQ-01 is already a theorem. OQ-01 conjectures that the number of lines containing exactly four points of an n-point planar set with no five collinear is o(n^2); the trivial bound is O(n^2), no o(n^2) is known, and the companion scaffold records the full conjecture as a sorry. This entry does NOT attack the open part. Instead it turns the framework's sorry-free elementary packing bound (improved_upper_bound: fourPointLineCount P <= n(n-1)/12) into the density bound fourPointLineCount P <= n^2/12 and proves the headline: for EVERY epsilon > 1/12, EVERY planar point set P with |P| >= 1 and no five collinear satisfies fourPointLineCount P < epsilon * n^2 — with no size threshold N at all. So the OQ-01 conjecture is an unconditional theorem for all epsilon > 1/12, and the entire open content is the single regime 0 < epsilon <= 1/12 (sharpening the constant 1/12 to a genuinely o(1) factor; the Solymosi-Stojakovic n^{2-o(1)} lower bound shows it cannot decay polynomially). 5 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "date": "formalized 2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos101OQ01Incomplete01.lean",
+    "tags": [
+      "combinatorics",
+      "incidence-geometry",
+      "erdos-problems",
+      "extremal-combinatorics",
+      "four-point-lines",
+      "asymptotics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "axiomCount": 0,
+    "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.Erdos101OQ01Incomplete01` builds green (Lean v4.26.0, Mathlib pin, 3059 jobs). 0 sorries, 0 axiom declarations, no native_decide; only the standard foundational axioms via Mathlib. Builds ONLY on the sorry-free framework Erdos101Problem.lean (specifically its sorry-free improved_upper_bound); the still-open conjecture in the sorry-bearing scaffold Erdos101OQ01.lean is NOT imported and NOT used. The contribution is honest: it formalizes the elementary, already-settled half of OQ-01 (the conjecture for all epsilon > 1/12) and machine-checks the precise boundary 1/12 of the open content, not any new progress on the open o(1) regime.",
+    "lineCount": 152,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "originalContributions": [
+      "twelve_mul_fourPointLineCount_le_sq: the framework's elementary packing bound fourPointLineCount P <= n(n-1)/12 cleared of natural-number division into the clean real inequality 12 * fourPointLineCount P <= n^2",
+      "fourPointLineCount_le_sq_div_twelve: the density bound fourPointLineCount P <= n^2/12 — the four-point-line density never exceeds 1/12",
+      "fourPointLineCount_div_sq_le: the ratio form fourPointLineCount P / n^2 <= 1/12 for nonempty P",
+      "fourPointLineCount_lt_eps_sq: THE HEADLINE — for every epsilon > 1/12, every P with |P| >= 1 and no five collinear satisfies fourPointLineCount P < epsilon * n^2, with NO size threshold N needed (the density bound n^2/12 beats epsilon*n^2 strictly for all n >= 1 as soon as epsilon > 1/12)",
+      "oq01_holds_above_one_twelfth: the settled half of OQ-01 packaged — the little-oh conjecture is an unconditional theorem for every epsilon above the threshold 1/12, so the entire open content is the regime 0 < epsilon <= 1/12"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #101 asks for the maximum number of lines containing exactly four points of an n-point planar set with no five collinear, and OQ-01 — carrying a $100 prize — conjectures this is o(n^2). Erdős originally conjectured Theta(n^{3/2}), but Solymosi and Stojaković (2013) constructed sets with n^{2 - O(1/sqrt(log n))} four-point lines, disproving the 3/2 exponent and showing any o(n^2) bound must hide only a slowly-varying o(1) factor. The trivial Szemerédi-Trotter / double-counting bound gives O(n^2); closing the gap to o(n^2) is open.",
+    "problemStatement": "Erdős #101 OQ-01: for every epsilon > 0, does there exist N such that every planar point set P with |P| >= N and no five collinear satisfies fourPointLineCount(P) < epsilon * |P|^2? Equivalently, is the maximum number of exactly-four-point lines o(n^2)? This entry asks the sharp sub-question: for which epsilon is the conjecture already an unconditional theorem?",
+    "proofStrategy": "Take the framework's sorry-free packing bound improved_upper_bound (fourPointLineCount P <= n(n-1)/12 in natural numbers; proved by a pair-packing double count). Clear the floor division by multiplying by 12 and bounding n(n-1) <= n^2 to get 12 * fourPointLineCount P <= n^2 over the reals, hence the density bound fourPointLineCount P <= n^2/12. For any epsilon > 1/12 and any n >= 1, n^2/12 < epsilon * n^2 strictly (since n^2 > 0 and 1/12 < epsilon), so fourPointLineCount P < epsilon * n^2 holds for ALL such P with no size threshold. This proves OQ-01 unconditionally for every epsilon > 1/12 and isolates 0 < epsilon <= 1/12 as the open content.",
+    "keyInsights": [
+      "The elementary packing bound already gives a uniform density ceiling of 1/12 on exactly-four-point lines, with no asymptotics needed.",
+      "Because the bound is uniform (holds for all n), the o(n^2) conjecture is automatically TRUE for every epsilon > 1/12 — no threshold N is required at all.",
+      "The entire open content of the $100 problem is therefore the single regime 0 < epsilon <= 1/12: replacing the explicit constant 1/12 by a factor tending to 0.",
+      "The Solymosi-Stojaković lower bound n^{2-o(1)} shows that o(1) factor cannot decay polynomially, so the open regime genuinely requires a slowly-varying improvement, not a constant-factor one.",
+      "Cleanly separating the settled elementary half from the open asymptotic half is itself a useful formal contribution: it certifies exactly where the elementary method stops."
+    ]
+  },
+  "sections": [
+    {
+      "id": "problem-statement",
+      "title": "Problem Statement: which ε are already settled?",
+      "summary": "Imports the sorry-free framework and poses the delineating question: OQ-01 is open and its scaffold records the full conjecture as a sorry, so for which epsilon is the o(n^2) statement already an unconditional theorem?",
+      "startLine": 1,
+      "endLine": 62,
+      "mathContext": "Goal: extract from the elementary packing bound the exact threshold above which the OQ-01 little-oh conjecture is already proved."
+    },
+    {
+      "id": "real-form-bound",
+      "title": "The Elementary Bound in Real Form",
+      "summary": "12 * fourPointLineCount P <= n^2 (clearing the natural-number floor division), the density bound fourPointLineCount P <= n^2/12, and the ratio form <= 1/12.",
+      "startLine": 63,
+      "endLine": 104,
+      "mathContext": "From improved_upper_bound (<= n(n-1)/12 in N): multiply by 12, use n(n-1) <= n^2 and Nat.div_mul_le_self, then cast to the reals."
+    },
+    {
+      "id": "settled-above-one-twelfth",
+      "title": "OQ-01 Holds Unconditionally for Every ε > 1/12",
+      "summary": "fourPointLineCount_lt_eps_sq and oq01_holds_above_one_twelfth: for every epsilon > 1/12, every P with |P| >= 1 and no five collinear satisfies the conjecture, with no size threshold; the open content is exactly 0 < epsilon <= 1/12.",
+      "startLine": 105,
+      "endLine": 152,
+      "mathContext": "n^2/12 < epsilon * n^2 strictly for epsilon > 1/12 and n >= 1 (n^2 > 0), via nlinarith on the real-form bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős #101 OQ-01 is open with a $100 prize: prove the number of exactly-four-point lines in an n-point planar set with no five collinear is o(n^2). This entry does not attack the open part; it machine-checks exactly how much is already a theorem. The framework's sorry-free elementary packing bound fourPointLineCount P <= n(n-1)/12, re-expressed as the density bound n^2/12, already proves the o(n^2) statement for EVERY epsilon > 1/12 with no size threshold (oq01_holds_above_one_twelfth). The entire open content is therefore the regime 0 < epsilon <= 1/12 — sharpening the constant 1/12 to an o(1) factor.",
+    "implications": "Separating the settled elementary half from the open asymptotic half pins down the precise frontier of the problem: the elementary double-counting method delivers exactly the constant-density bound 1/12 and no better, and every remaining bit of OQ-01 lives below that density. Combined with the Solymosi-Stojaković n^{2-o(1)} lower bound (which forbids any polynomial-rate improvement), this certifies that the open work is a slowly-varying o(1) refinement of the constant 1/12. The clean real-form bounds (12 * count <= n^2, count <= n^2/12, count/n^2 <= 1/12) are reusable as the elementary baseline against which any future o(1) improvement is measured.",
+    "openQuestions": [
+      "Prove fourPointLineCount P < epsilon * n^2 for some epsilon < 1/12 (eventually in n) — the first genuine improvement below the elementary density ceiling.",
+      "Push the constant 1/12 down to a factor o(1) in n, settling the full OQ-01 o(n^2) conjecture (the $100 open problem).",
+      "Formalize the Solymosi-Stojaković n^{2-o(1)} lower-bound construction to certify in Lean that the open o(1) factor cannot decay polynomially."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-101-oq-01",
+      "relationship": "parent",
+      "description": "The OQ-01 scaffold, which sets up the asymptotic vocabulary (IsLittleOh_n_squared, BoundsAtRate), states the full o(n^2) conjecture as a sorry, and documents the Solymosi-Stojaković lower bound. This entry sharpens that scaffold by proving, unconditionally, exactly which epsilon (all epsilon > 1/12) are already settled, isolating 0 < epsilon <= 1/12 as the open content."
+    },
+    {
+      "targetId": "erdos-101",
+      "relationship": "foundational",
+      "description": "The base Erdős #101 framework (PlanarPointSet, collinear, NoFiveCollinear, fourPointLineCount) and its sorry-free elementary bounds, including improved_upper_bound (fourPointLineCount P <= n(n-1)/12), on which every theorem in this entry rests."
+    }
+  ]
+}

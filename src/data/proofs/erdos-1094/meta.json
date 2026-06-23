@@ -1,0 +1,211 @@
+{
+  "id": "erdos-1094",
+  "title": "Erdős Problem #1094: Least Prime Factor of Binomial Coefficients",
+  "slug": "erdos-1094",
+  "description": "For n ≥ 2k, the least prime factor of C(n,k) should be ≤ max(n/k, k) with only finitely many exceptions. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1094",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1094Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "prime-factorization"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 1094,
+    "erdosUrl": "https://erdosproblems.com/1094",
+    "erdosProblemStatus": "open",
+    "axiomCount": 0,
+    "lineCount": 248,
+    "assumptions": "None. Previously had 1 axiom (main_implies_384) which was eliminated by proving the naive formulation of Problem 384 is false. Open conjecture; supporting lemmas fully verified.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 38,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "This conjecture emerged from a systematic study of prime factors of binomial coefficients by Erdős, Lacampagne, and Selfridge, published in 1988 and 1993. The question builds on Erdős Problem 384, which asks whether $\\binom{n}{k}$ always has a prime factor $\\leq n/k$ when $n \\geq 2k$. Problem 1094 strengthens this by asking about the *least* prime factor and allowing the bound $\\max(n/k, k)$ with only finitely many exceptions. John Selfridge (1977) independently made the stronger conjecture that the bound holds for all $n \\geq k^2 - 1$, with $\\binom{62}{6}$ as the unique exception. The list of 14 known exceptions was compiled by Erdős, Lacampagne, and Selfridge through extensive computation. The problem connects to classical questions about smooth numbers in combinatorial sequences and the distribution of prime factors of $n!$, studied via Legendre's formula and Kummer's theorem on p-adic valuations of binomial coefficients.",
+    "problemStatement": "For all $n \\geq 2k$, is it true that $\\operatorname{lpf}\\binom{n}{k} \\leq \\max(n/k, k)$, with only finitely many exceptions?",
+    "text": "For n ≥ 2k, the least prime factor of C(n,k) should be ≤ max(n/k, k) with only finitely many exceptions. OPEN.",
+    "proofStrategy": "The formalization defines LPFBound and IsException using Nat.minFac, then states ErdosProblem1094 as Set.Finite of the exception set. All 14 known exceptions are verified computationally via native_decide. Non-exception cases demonstrate the bound holds generically. Structural results prove the bound simplifies for $n \\geq k^2$ and that $k = 0, 1$ produce no exceptions. Selfridge's refinement and two stronger conjectures (with $\\sqrt{k}$ and constant 13) are formalized. The naive formulation of Problem 384 is proved false via the C(7,3) counterexample, and a corrected formulation with a sufficiently-large-n condition is provided.",
+    "keyInsights": [
+      "The bound $\\operatorname{lpf}\\binom{n}{k} \\leq \\max(n/k, k)$ fails for only 14 known pairs, all with $k \\leq 28$, suggesting exceptions are confined to small parameters",
+      "Selfridge's conjecture that $n \\geq k^2 - 1$ suffices (except $\\binom{62}{6}$) highlights a phase transition near $n = k^2$: below this threshold the 'small $n/k$' regime produces all but one exception",
+      "The hierarchy of conjectures—from $\\max(n/k, k)$ to $\\max(n/k, \\sqrt{k})$ to $\\max(n/k, 13)$—suggests the true barrier is a small constant, not growing with $k$ at all",
+      "Kummer's theorem (the p-adic valuation of $\\binom{n}{k}$ counts base-p carries) explains why even binomial coefficients trivially satisfy the bound: there is always a carry in base 2",
+      "All 14 exceptions (including the large $\\binom{241}{16}$ and $\\binom{284}{28}$) are verified via native_decide, demonstrating Lean's kernel can evaluate $\\operatorname{minFac}$ even for binomial coefficients of order $10^{27}$ and $10^{38}$",
+      "The naive universal formulation of Problem 384 ($\\forall n \\geq 2k$, $\\exists$ prime $\\leq n/k$ dividing $\\binom{n}{k}$) is provably FALSE: $\\binom{7}{3} = 35 = 5 \\times 7$ has no prime factor $\\leq \\lfloor 7/3 \\rfloor = 2$"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Header documentation stating Erdős Problem #1094 (least prime factor of binomial coefficients), known results from Erdős-Lacampagne-Selfridge, OPEN status, and references. `import Mathlib` and `namespace Erdos1094`.",
+      "mathContext": "Conjecture: for all $n \\geq 2k$, the least prime factor $\\mathrm{lpf}(\\binom{n}{k}) \\leq \\max(n/k, k)$ with only finitely many exceptions. Strengthens Erdős Problem #384."
+    },
+    {
+      "id": "lpf-bound",
+      "title": "Part 1: Core Definitions",
+      "startLine": 25,
+      "endLine": 37,
+      "summary": "Defines `LPFBound n k` ((n.choose k).minFac ≤ max(n/k, k)) and `IsException n k` (0 < k, 2k ≤ n, and the bound fails), with `Decidable` instances for both enabling native_decide verification.",
+      "mathContext": "$\\mathrm{LPFBound}(n,k) \\equiv (\\binom{n}{k}).\\mathrm{minFac} \\leq \\max(\\lfloor n/k \\rfloor, k)$. An exception requires $0 < k$, $2k \\leq n$, and $\\neg\\mathrm{LPFBound}$."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part 2: The Main Conjecture",
+      "startLine": 38,
+      "endLine": 44,
+      "summary": "States `ErdosProblem1094` as `Set.Finite { p | IsException p.1 p.2 }`: the set of exception pairs is finite.",
+      "mathContext": "$\\mathrm{ErdosProblem1094} \\equiv \\mathrm{Set.Finite}\\,\\{(n,k) : \\mathrm{IsException}(n,k)\\}$ — finitely many pairs violate the LPF bound."
+    },
+    {
+      "id": "verified-exceptions",
+      "title": "Part 3: Verified Exceptions",
+      "startLine": 45,
+      "endLine": 84,
+      "summary": "All 14 known exceptions verified by native_decide — from C(7,3)=35 up to the large C(241,16)≈1.6×10²⁷ and C(284,28)≈2.4×10³⁸ (the latter two previously axioms, now machine-checked). Includes Selfridge's famous C(62,6).",
+      "mathContext": "Each `exception_n_k : IsException n k` is closed by native_decide. E.g. C(7,3)=35 has minFac 5 > max(⌊7/3⌋,3)=3; C(62,6) is Selfridge's celebrated exception."
+    },
+    {
+      "id": "non-exceptions",
+      "title": "Part 4: Verified Non-Exceptions",
+      "startLine": 85,
+      "endLine": 112,
+      "summary": "Eight pairs verified to satisfy the bound via native_decide, including the near-miss C(12,4)=495 (minFac 3 ≤ 4, just barely) and the large C(100,2).",
+      "mathContext": "Each `non_exception_n_k : LPFBound n k`. C(12,4)=495 has minFac 3 ≤ max(3,4)=4 (tight); C(20,10) has minFac 2 ≤ 10 (even-row case)."
+    },
+    {
+      "id": "properties",
+      "title": "Part 5: Basic Properties",
+      "startLine": 113,
+      "endLine": 151,
+      "summary": "Structural lemmas: `bound_simplifies_large` (n/k ≥ k reduces the bound to minFac ≤ n/k) and `bound_simplifies_small` (n/k < k reduces it to minFac ≤ k); `not_exception_k_zero` and `not_exception_k_one`/`bound_k_one` (k=0 and k=1 never give exceptions). Plus verified n=2k boundary cases.",
+      "mathContext": "The max splits on whether $n \\geq k^2$: $\\lfloor n/k \\rfloor \\geq k \\Rightarrow$ bound is $\\mathrm{minFac} \\leq n/k$, else $\\mathrm{minFac} \\leq k$. $k=1$: $\\binom{n}{1}=n$ and $\\mathrm{minFac}(n) \\leq n$."
+    },
+    {
+      "id": "selfridge",
+      "title": "Part 6: Selfridge's Refinement",
+      "startLine": 152,
+      "endLine": 159,
+      "summary": "Defines `SelfridgeConjecture`: the bound holds for all n ≥ k² − 1 with the sole exception of C(62,6).",
+      "mathContext": "Selfridge: $\\forall n, k,\\; 0 < k \\land n \\geq k^2 - 1 \\land (n,k) \\neq (62,6) \\Rightarrow \\mathrm{LPFBound}(n,k)$."
+    },
+    {
+      "id": "stronger-bounds",
+      "title": "Part 7: Stronger Bound Conjectures",
+      "startLine": 160,
+      "endLine": 176,
+      "summary": "Two progressively stronger conjectures: `StrongerBoundSqrt` replaces k with √k (finitely many exceptions), and `StrongestBound13` replaces it with the constant 13 (at most 12 exceptions, witnessed by a Finset S).",
+      "mathContext": "$\\mathrm{StrongerBoundSqrt}$: finitely many $(n,k)$ with $\\mathrm{minFac} > \\max(n/k, \\sqrt{k})$. $\\mathrm{StrongestBound13}$: $\\exists S,\\, |S| \\leq 12$, all others satisfy $\\mathrm{minFac} \\leq \\max(n/k, 13)$."
+    },
+    {
+      "id": "problem384",
+      "title": "Part 8: Connection to Problem 384",
+      "startLine": 177,
+      "endLine": 212,
+      "summary": "Proves the naive formulation of Problem 384 is FALSE (`erdos384_naive_false`) via the C(7,3)=35 counterexample (only prime ≤ ⌊7/3⌋=2 is 2, and 2 ∤ 35). Provides the corrected `ErdosProblem384` with a sufficiently-large-n threshold N(k), and notes #1094 ⇒ #384 informally.",
+      "mathContext": "Naive #384: $\\forall n \\geq 2k,\\, \\exists$ prime $p \\leq n/k,\\, p \\mid \\binom{n}{k}$ — FALSE at $(7,3)$. Corrected #384: $\\forall k > 0,\\, \\exists N(k),\\, \\forall n \\geq N(k),\\, \\mathrm{minFac}(\\binom{n}{k}) \\leq n/k$."
+    },
+    {
+      "id": "binomial-props",
+      "title": "Part 9: Binomial Coefficient Properties & Summary",
+      "startLine": 213,
+      "endLine": 248,
+      "summary": "Verifies C(n,k) > 1 for small specific cases (ensuring minFac is a genuine prime, not the minFac(1)=1 degenerate case), then the closing summary docstring recapping what is proved (14 exceptions, 8 non-exceptions, structural results, naive #384 falsity) and what remains open (the finiteness conjecture, Selfridge, stronger bounds), noting 0 axioms (a previously-incorrect #1094⇒naive-#384 axiom was removed).",
+      "mathContext": "`choose_gt_one_*` lemmas confirm $\\binom{n}{k} > 1$ so $\\mathrm{minFac}$ is a true prime factor. Summary: status OPEN, 0 axioms, 0 sorries — the conjecture itself is stated as a `Prop`, not proved."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the full landscape of Erdős Problem 1094: the main conjecture on finiteness of exceptions, all 14 computationally verified exceptions, structural simplification theorems, Selfridge's refinement, and two stronger conjectures pushing the bound toward a constant. The naive formulation of Problem 384 is proved false, with a corrected formulation provided.",
+    "implications": "Resolution would reveal deep structure in the prime factorization of binomial coefficients—specifically, that small prime factors are ubiquitous in $\\binom{n}{k}$ for $n \\geq 2k$. The strongest form ($\\max(n/k, 13)$ with 12 exceptions) would imply that prime factors $\\leq 13$ account for almost all cases, connecting to smooth number theory and the distribution of carries in base-$p$ addition via Kummer's theorem.",
+    "openQuestions": [
+      "Are there exactly 14 exceptions to the LPF bound, or do undiscovered large exceptions exist?",
+      "Is Selfridge's conjecture correct—does $n \\geq k^2 - 1$ suffice with only $\\binom{62}{6}$ excepted?",
+      "Can the bound be improved to $\\max(n/k, 13)$ with at most 12 exceptions?",
+      "What is the role of Kummer's theorem (base-$p$ carry counting) in explaining why exceptions cluster at small $k$ values?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-384",
+      "relationship": "strengthens",
+      "description": "Problem 1094 strengthens Problem 384 by bounding the *least* prime factor, not just requiring existence of a small prime divisor"
+    },
+    {
+      "targetId": "erdos-1093",
+      "relationship": "related",
+      "description": "Problem 1093 studies deficiency (smoothness) of binomial coefficients, the complementary question to small prime factor existence"
+    },
+    {
+      "targetId": "erdos-1095",
+      "relationship": "related",
+      "description": "Problem 1095 defines the Erdős-Selfridge function g(k), the threshold where all prime factors of C(n,k) exceed k"
+    },
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "technique",
+      "description": "Kummer's theorem on p-adic valuations of binomial coefficients provides the key tool for analyzing which primes divide C(n,k)"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "foundation",
+      "description": "Bertrand's postulate guarantees primes in [n, 2n], relevant to bounding prime factors in the central binomial coefficient"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundation",
+      "description": "The combinatorial formula C(n,k) = n!/(k!(n-k)!) underlies all prime factor analysis of binomial coefficients"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos1094",
+    "lineCount": 248,
+    "axiomCount": 0,
+    "theoremCount": 38,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos1094Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "Ku15",
+      "authors": [
+        "E. Kummer"
+      ],
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "venue": "Journal für die reine und angewandte Mathematik",
+      "year": "1852",
+      "volume": "44",
+      "pages": "93-146",
+      "note": "Kummer's theorem: v_p(C(m,n)) equals the number of carries in base-p addition of n and m-n"
+    },
+    {
+      "key": "Gr72",
+      "authors": [
+        "A. Granville"
+      ],
+      "title": "Arithmetic properties of binomial coefficients I: Binomial coefficients modulo prime powers",
+      "venue": "Canadian Mathematical Society Conference Proceedings",
+      "year": "1998",
+      "volume": "20",
+      "pages": "253-276",
+      "note": "Modern treatment of prime factors of binomial coefficients and related Erdős problems"
+    }
+  ],
+  "sorries": 0
+}

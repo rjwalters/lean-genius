@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ann-bridge-header",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08",
+    "range": { "startLine": 1, "endLine": 64 },
+    "type": "concept",
+    "title": "The Solvability Bridge: Motivation and Statement",
+    "content": "Two sibling gallery entries record the same threshold from different sides: the parent `AbelRuffiniOQ04OQ02OQ02` proves $A_n$ solvable $\\iff n \\leq 4$, and `AbelRuffiniOQ04OQ02` proves $S_n$ solvable $\\iff n \\leq 4$. This entry asks *why* the two thresholds coincide and answers with a single equivalence valid for an **arbitrary** finite type $\\alpha$:\n$$\\mathrm{IsSolvable}(A_\\alpha) \\iff \\mathrm{IsSolvable}(S_\\alpha).$$\nThe equivalence carries no cardinality hypothesis, so the agreement of the two classifications is *forced* rather than coincidental. Specialising to $\\alpha = \\mathrm{Fin}\\,n$ makes the alternating and symmetric classifications literally the same theorem viewed through the sign exact sequence $1 \\to A_\\alpha \\to S_\\alpha \\to \\{\\pm 1\\} \\to 1$.\n\n**Why a bridge and not just a chain.** One could deduce $S_n$ solvable $\\iff A_n$ solvable cheaply by chaining the two pre-existing `\\iff n \\leq 4` results. The point of this entry is that the bridge needs *neither* threshold: the forward direction is the short-exact-sequence extension lemma `solvable_of_ker_le_range`, the backward direction is `subgroup_solvable_of_solvable`. Both are pure group theory, so the equivalence holds for every finite $\\alpha$ — including those for which neither classification is even stated. The threshold facts then drop out as corollaries, not as inputs.",
+    "mathContext": "An extension $1 \\to N \\to G \\to Q \\to 1$ with $N$ and $Q$ solvable has $G$ solvable (closure of solvable groups under extensions); and every subgroup of a solvable group is solvable. The sign sequence realises $A_\\alpha = \\ker(\\mathrm{sign})$ as a normal subgroup with abelian quotient $S_\\alpha / A_\\alpha \\cong \\mathbb{Z}/2$ (for $|\\alpha| \\geq 2$; trivial otherwise). Both hypotheses for the extension lemma are therefore automatic once $A_\\alpha$ is solvable, giving the forward direction; the backward direction is immediate since $A_\\alpha \\leq S_\\alpha$.",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "solvable group",
+      "alternating group",
+      "symmetric group",
+      "short exact sequence of groups",
+      "extension-closure of solvable groups",
+      "sign homomorphism",
+      "subgroups of solvable groups are solvable",
+      "Abel-Ruffini theorem"
+    ],
+    "prerequisites": [
+      "group theory",
+      "solvable groups and the derived series",
+      "normal subgroups and quotient groups",
+      "Mathlib `IsSolvable` typeclass"
+    ]
+  },
+  {
+    "id": "ann-bridge-both-directions",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08",
+    "range": { "startLine": 70, "endLine": 96 },
+    "type": "proof-step",
+    "title": "The Two Directions of the Sign Extension",
+    "content": "`sym_solvable_of_alternating_solvable` (the substantive half) applies `solvable_of_ker_le_range` to the pair $(\\,A_\\alpha.\\mathrm{subtype} : A_\\alpha \\to S_\\alpha,\\ \\mathrm{sign} : S_\\alpha \\to \\mathbb{Z}^\\times\\,)$. The side goal $\\ker(\\mathrm{sign}) \\leq \\mathrm{range}(\\mathrm{subtype})$ is discharged by taking $x$ with $\\mathrm{sign}\\,x = 1$ and exhibiting the witness $\\langle x, \\mathrm{mem\\_alternatingGroup.mpr}\\,hx\\rangle$, since membership in the alternating group is *by definition* $\\mathrm{sign}\\,x = 1$. `alternating_solvable_of_sym_solvable` (the easy half) just registers the hypothesis as an instance and lets `subgroup_solvable_of_solvable` fire via type-class resolution — `A_\\alpha` being a `Subgroup (Perm \\alpha)`.\n\nBoth lemmas are stated for a general `[DecidableEq \\alpha] [Fintype \\alpha]`, the exact hypotheses `Perm.sign` and `alternatingGroup` require — no `Fin n` anywhere.",
+    "mathContext": "`solvable_of_ker_le_range (f : G' →* G) (g : G →* G'')` proves `IsSolvable G` from `IsSolvable G'`, `IsSolvable G''` and `g.ker ≤ f.range`. Here $G' = A_\\alpha$, $G = S_\\alpha$, $G'' = \\mathbb{Z}^\\times$; `IsSolvable G''` holds because $\\mathbb{Z}^\\times$ is commutative. The kernel inclusion is an equality in disguise: `alternatingGroup α = (Perm.sign).ker`, so $\\ker(\\mathrm{sign})$ is exactly the range of the subgroup inclusion. The reverse direction uses the instance `subgroup_solvable_of_solvable (H : Subgroup G) [IsSolvable G] : IsSolvable H`, itself `solvable_of_solvable_injective H.subtype_injective`.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "solvable_of_ker_le_range",
+      "subgroup_solvable_of_solvable",
+      "Perm.sign kernel = alternatingGroup",
+      "MonoidHom.mem_ker",
+      "type-class resolution for subgroup solvability"
+    ],
+    "prerequisites": [
+      "monoid homomorphisms, kernels and ranges",
+      "Mathlib `Subgroup.subtype`",
+      "Lean 4 instance synthesis (`haveI`/`infer_instance`)"
+    ]
+  },
+  {
+    "id": "ann-bridge-iff",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08",
+    "range": { "startLine": 98, "endLine": 113 },
+    "type": "key-insight",
+    "title": "The Bridge Equivalence (and its Contrapositive)",
+    "content": "`alternating_solvable_iff_sym_solvable` packages the two directions into the headline equivalence $\\mathrm{IsSolvable}(A_\\alpha) \\iff \\mathrm{IsSolvable}(S_\\alpha)$ for every finite $\\alpha$. `sym_not_solvable_iff_alternating_not_solvable` is the negated form, obtained by `not_congr` — useful because non-solvability is the form in which both Abel–Ruffini and Mathlib's `Equiv.Perm.not_solvable` are stated. Conceptually the lemma says the sign extension is *solvability-transparent*: tacking on the abelian $\\mathbb{Z}/2$ quotient never changes the solvability status of the group, in either direction.",
+    "mathContext": "The equivalence is the antisymmetric combination of the two one-directional lemmas. Its contrapositive $\\neg\\mathrm{IsSolvable}(S_\\alpha) \\iff \\neg\\mathrm{IsSolvable}(A_\\alpha)$ is logically equivalent but more directly composable with `an_not_solvable_of_ge_five` and `Equiv.Perm.not_solvable`, both phrased as negations.",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "if and only if",
+      "not_congr",
+      "solvability-transparent extension",
+      "abelian quotient ℤ/2",
+      "contrapositive reformulation"
+    ],
+    "prerequisites": [
+      "propositional logic in Lean (`Iff`, `not_congr`)",
+      "the two directional lemmas above"
+    ]
+  },
+  {
+    "id": "ann-bridge-fin-specialisation",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08",
+    "range": { "startLine": 115, "endLine": 136 },
+    "type": "proof-step",
+    "title": "Forcing the Threshold Agreement on Fin n",
+    "content": "Specialising the bridge to $\\alpha = \\mathrm{Fin}\\,n$ gives `alternating_fin_solvable_iff_sym_fin_solvable`. Composing it with the parent's `alternating_solvable_iff` yields `sym_solvable_iff : IsSolvable (Perm (Fin n)) \\iff n \\leq 4` as a *single rewrite* — recovering the sibling entry `AbelRuffiniOQ04OQ02`'s `solvable_iff_le_four`, but now *derived* from the alternating classification through the bridge rather than proved independently. `solvability_trichotomy` exhibits the full chain $S_n$ solvable $\\iff A_n$ solvable $\\iff n \\leq 4$ in one statement.",
+    "mathContext": "The rewrite `rw [← alternating_fin_solvable_iff_sym_fin_solvable, alternating_solvable_iff]` turns the goal `IsSolvable (Perm (Fin n)) ↔ n ≤ 4` first into `IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4` (using the bridge backwards) and then closes it with the parent theorem. This makes explicit that the two classical thresholds are not two facts but one fact seen on either side of the sign sequence.",
+    "significance": "important",
+    "relatedConcepts": [
+      "specialisation α = Fin n",
+      "parent `alternating_solvable_iff`",
+      "sibling `solvable_iff_le_four`",
+      "rewriting along an iff",
+      "solvability trichotomy"
+    ],
+    "prerequisites": [
+      "the bridge equivalence",
+      "the parent alternating-group classification",
+      "Lean 4 `rw` with iff lemmas"
+    ]
+  },
+  {
+    "id": "ann-bridge-corollaries",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08",
+    "range": { "startLine": 138, "endLine": 168 },
+    "type": "concept",
+    "title": "Corollaries and the Joint Sharp Threshold",
+    "content": "The bridge transports the parent's small/large results across the sign sequence: `sym_solvable_of_le_four` ($S_n$ solvable for $n \\leq 4$), `sym_not_solvable_of_ge_five` ($S_n$ not solvable for $n \\geq 5$), and the named instances `s4_solvable`, `s5_not_solvable`. `joint_sharp_threshold` collects the sharp dichotomy on *both* families simultaneously — $A_4$ and $S_4$ solvable, $A_5$ and $S_5$ not — making visible that the transition at $n = 5$ happens in lockstep for the two groups, exactly as the bridge predicts. The non-solvability of $S_5$ is the precise group-theoretic obstruction behind Abel–Ruffini: the general quintic has Galois group $S_5$.",
+    "mathContext": "$|S_4| = 24$ is the largest solvable symmetric group (composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ with abelian factors $\\mathbb{Z}/2,\\mathbb{Z}/2,\\mathbb{Z}/3,\\mathbb{Z}/2$), corresponding to Ferrari's quartic formula. $|S_5| = 120$ is non-solvable because $A_5$ (order 60) is simple and non-abelian, so no radical formula exists for the general quintic.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sharp threshold at n = 5",
+      "Ferrari's quartic formula",
+      "general quintic and Abel-Ruffini",
+      "composition series of S_4",
+      "joint dichotomy A_n / S_n"
+    ],
+    "prerequisites": [
+      "the bridge and its Fin n specialisation",
+      "the parent's `an_not_solvable_of_ge_five` and `a4_solvable`"
+    ]
+  }
+]

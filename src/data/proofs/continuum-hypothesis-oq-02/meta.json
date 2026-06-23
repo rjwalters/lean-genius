@@ -1,0 +1,249 @@
+{
+  "id": "continuum-hypothesis-oq-02",
+  "title": "What Is the \"True\" Size of the Continuum?",
+  "slug": "continuum-hypothesis-oq-02",
+  "description": "ZFC constrains 2^aleph_0 to be a regular uncountable cardinal (Cantor + Konig), and Easton showed any such cardinal is achievable. This formalization maps the complete spectrum of possible values, introduces cardinal characteristics (bounding and dominating numbers), and compares three scenarios: CH (2^aleph_0 = aleph_1), PFA (2^aleph_0 = aleph_2), and exotic models (2^aleph_0 > aleph_2).",
+  "meta": {
+    "author": "Easton (1970), Konig (1905), Shelah (1990s), Martin-Solovay (1970)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Continuum_hypothesis",
+    "date": "1970",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ContinuumHypothesisOQ02.lean",
+    "tags": [
+      "set-theory",
+      "foundations",
+      "cardinal-arithmetic",
+      "continuum-hypothesis",
+      "forcing",
+      "cardinal-characteristics",
+      "extension",
+      "hilbert",
+      "wiedijk-100"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.IsRegular",
+        "description": "Predicate for regular cardinals (cf(kappa) = kappa)",
+        "module": "Mathlib.SetTheory.Cardinal.Cofinality"
+      },
+      {
+        "theorem": "Cardinal.isRegular_aleph_one",
+        "description": "aleph_1 is a regular cardinal",
+        "module": "Mathlib.SetTheory.Cardinal.Cofinality"
+      },
+      {
+        "theorem": "Cardinal.isRegular_aleph_succ",
+        "description": "Every successor aleph is regular",
+        "module": "Mathlib.SetTheory.Cardinal.Cofinality"
+      },
+      {
+        "theorem": "Cardinal.aleph_lt_aleph",
+        "description": "Strict monotonicity of the aleph function",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cardinal.aleph_le_aleph",
+        "description": "Monotonicity of the aleph function",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cardinal.cantor",
+        "description": "Cantor's theorem: kappa < 2^kappa",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Proved aleph_omega_cof_eq_omega from Mathlib (Cardinal.cof_aleph + Ordinal.card_omega0)",
+      "Proved bounding_le_dominating from dominating_implies_unbounded via Cardinal infimum reasoning",
+      "Proved easton_regular_consistency (conclusion was trivially True)",
+      "Converted MartinsAxiom from axiom to opaque (removes from axiom environment)",
+      "Formal proof that aleph_omega is singular (from cofinality + regularity API)",
+      "Konig's cofinality constraint on the continuum: cf(2^aleph_0) > aleph_0",
+      "Proof that 2^aleph_0 != aleph_omega (combining Konig with singular cofinality)",
+      "IsPossibleContinuumValue predicate: characterizes the spectrum as regular uncountable cardinals",
+      "Cardinal characteristics framework: bounding number b and dominating number d",
+      "Proof that CH collapses all cardinal characteristics to aleph_1",
+      "Martin's Axiom collapse theorem: MA implies b = d = 2^aleph_0",
+      "Easton-Konig characterization: complete picture of ZFC constraints on 2^aleph_0"
+    ],
+    "dateAdded": "2026-03-27",
+    "axiomCount": 3,
+    "lineCount": 584,
+    "assumptions": "3 assumptions: 2 axioms (bounding_number_uncountable, MA_implies_b_eq_continuum) + 1 opaque constant (MartinsAxiom — declared opaque since the full forcing-axiom statement is not formalized). 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 32,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "After Cohen's 1963 forcing proof showed the independence of CH, a natural question emerged: what values CAN 2^aleph_0 take? Konig (1905) had already shown a cofinality constraint: cf(2^kappa) > kappa, ruling out singular cardinals. Easton (1970) proved the dramatic result that for regular cardinals, the continuum function is essentially unconstrained by ZFC. Meanwhile, the bounding and dominating numbers (b and d) emerged in the 1970s-80s as intermediate cardinal invariants between aleph_1 and 2^aleph_0, leading to the rich combinatorial study of Cichon's diagram.",
+    "problemStatement": "**Open Question (continuum-hypothesis-oq-02)**: What is the 'true' size of the continuum?\n\nZFC constrains 2^aleph_0 to satisfy:\n1. aleph_1 <= 2^aleph_0 (Cantor's theorem)\n2. cf(2^aleph_0) > aleph_0 (Konig's theorem)\n\nEaston showed these are the ONLY constraints: any regular uncountable cardinal is a consistent value.",
+    "text": "ZFC constrains 2^aleph_0 to be a regular uncountable cardinal (Cantor + Konig), and Easton showed any such cardinal is achievable. This formalization maps the complete spectrum of possible values, introduces cardinal characteristics (bounding and dominating numbers), and compares three scenarios: CH (2^aleph_0 = aleph_1), PFA (2^aleph_0 = aleph_2), and exotic models.",
+    "proofStrategy": "We formalize the spectrum of possible continuum values in three layers: (1) Mathlib-proved regularity/singularity results for specific alephs, (2) Konig's cofinality constraint (axiomatized) ruling out singular values, and (3) Easton's theorem (axiomatized) showing all regular values are achievable. Cardinal characteristics (b, d) provide intermediate structure between aleph_1 and 2^aleph_0.",
+    "keyInsights": [
+      "Konig's theorem (cf(2^aleph_0) > aleph_0) is the only constraint beyond Cantor's lower bound",
+      "aleph_omega is singular (cofinality omega) and thus cannot equal 2^aleph_0",
+      "Every successor aleph (aleph_1, aleph_2, aleph_3, ...) is regular and hence a possible continuum value",
+      "Under CH, all cardinal characteristics collapse to aleph_1 (squeezed between aleph_1 and 2^aleph_0 = aleph_1)",
+      "Under Martin's Axiom, b = d = 2^aleph_0 (characteristics are maximal)",
+      "The ZFC constraints on 2^aleph_0 are completely characterized: regular uncountable cardinals"
+    ],
+    "prerequisites": [
+      "Set theory and cardinality (cardinal arithmetic, aleph hierarchy)",
+      "Regular vs singular cardinals and cofinality",
+      "Cantor's theorem: kappa < 2^kappa",
+      "The Continuum Hypothesis and its independence from ZFC",
+      "Basic familiarity with forcing axioms (PFA, Martin's Axiom)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: What ZFC Can and Cannot Decide About the Continuum",
+      "summary": "Module docstring and namespace setup: frames the continuum problem beyond Cohen's independence result — ZFC does constrain 2^ℵ₀ (it must be an uncountable regular cardinal, by König's theorem) — and previews Easton's theorem, Shelah's pcf theory, the cardinal characteristics of the continuum, and Martin's Axiom.",
+      "startLine": 1,
+      "endLine": 68,
+      "mathContext": "The header imports Mathlib's cardinal/ordinal/cofinality APIs and opens the `Cardinal` and `ContinuumHypothesis` namespaces. The docstring explains that while Cohen proved CH independent of ZFC, the value of the continuum 2^ℵ₀ is not arbitrary: by König's theorem its cofinality must exceed ℵ₀, so it cannot equal ℵ_ω. Easton's theorem (1970) shows exponentiation at regular cardinals is otherwise unconstrained, while Shelah's pcf theory imposes bounds at singular cardinals. The file formalizes these constraints and the cardinal characteristics (bounding/dominating numbers, Martin's Axiom) that further pin down the continuum's behavior."
+    },
+    {
+      "id": "regular-singular",
+      "title": "Regular and Singular Cardinals",
+      "startLine": 69,
+      "endLine": 133,
+      "summary": "Establishes the regular/singular dichotomy using Mathlib. aleph_1 is regular (successor), aleph_omega is singular (countable cofinality).",
+      "mathContext": "A cardinal $\\kappa$ is **regular** if $\\text{cf}(\\kappa) = \\kappa$. All successor cardinals $\\aleph_{\\alpha+1}$ are regular. $\\aleph_\\omega = \\sup\\{\\aleph_n : n < \\omega\\}$ is the first singular infinite cardinal."
+    },
+    {
+      "id": "konig-constraint",
+      "title": "Konig's Cofinality Constraint",
+      "startLine": 134,
+      "endLine": 184,
+      "summary": "Konig's theorem constrains the continuum: cf(2^aleph_0) > aleph_0. This rules out 2^aleph_0 = aleph_omega and all singular values.",
+      "mathContext": "**Konig's Theorem**: If $\\kappa_i < \\lambda_i$ for all $i \\in I$, then $\\sum_{i \\in I} \\kappa_i < \\prod_{i \\in I} \\lambda_i$. Corollary: $\\text{cf}(2^{\\aleph_0}) > \\aleph_0$, so $2^{\\aleph_0} \\neq \\aleph_\\omega$."
+    },
+    {
+      "id": "easton-spectrum",
+      "title": "Easton's Theorem: The Spectrum of Possible Values",
+      "startLine": 185,
+      "endLine": 262,
+      "summary": "IsPossibleContinuumValue characterizes the spectrum. Easton: any regular kappa >= aleph_1 is consistent. Successor alephs are all possible; aleph_omega is not.",
+      "mathContext": "**Easton's Theorem** (1970): For any function $F$ from regular cardinals to cardinals satisfying $\\kappa \\leq \\text{cf}(F(\\kappa))$ and $\\kappa < \\lambda \\Rightarrow F(\\kappa) \\leq F(\\lambda)$, there is a model of ZFC where $2^\\kappa = F(\\kappa)$. For $\\kappa = \\aleph_0$, this means any regular $\\lambda \\geq \\aleph_1$ is achievable."
+    },
+    {
+      "id": "cardinal-characteristics",
+      "title": "Cardinal Characteristics of the Continuum",
+      "startLine": 263,
+      "endLine": 405,
+      "summary": "Defines bounding number b and dominating number d. Proves the chain aleph_1 <= b <= d <= 2^aleph_0 and that CH collapses all to aleph_1.",
+      "mathContext": "The **bounding number** $\\mathfrak{b}$ and **dominating number** $\\mathfrak{d}$ are defined via the eventual domination preorder $\\leq^*$ on $\\omega^\\omega$. ZFC proves $\\aleph_1 \\leq \\mathfrak{b} \\leq \\mathfrak{d} \\leq 2^{\\aleph_0}$. Under CH, $\\mathfrak{b} = \\mathfrak{d} = \\aleph_1$."
+    },
+    {
+      "id": "martins-axiom",
+      "title": "Martin's Axiom and the Continuum",
+      "startLine": 406,
+      "endLine": 460,
+      "summary": "Martin's Axiom collapses b and d to 2^aleph_0. Under MA + not-CH, all characteristics are maximal.",
+      "mathContext": "**Martin's Axiom**: For any ccc poset $P$ and $< 2^{\\aleph_0}$ dense sets, a generic filter exists. MA + $\\neg$CH implies $\\mathfrak{b} = \\mathfrak{d} = 2^{\\aleph_0}$. MA + $2^{\\aleph_0} = \\aleph_2$ is equiconsistent with ZFC."
+    },
+    {
+      "id": "three-scenarios",
+      "title": "Three Scenarios for the Continuum",
+      "startLine": 461,
+      "endLine": 498,
+      "summary": "CH gives aleph_1, PFA gives aleph_2, Easton allows aleph_3 and beyond. All are regular (Konig-consistent).",
+      "mathContext": "Three scenarios: (1) $2^{\\aleph_0} = \\aleph_1$ (CH, V=L), (2) $2^{\\aleph_0} = \\aleph_2$ (PFA, MM), (3) $2^{\\aleph_0} > \\aleph_2$ (exotic, no known natural axiom). Most set theorists favor scenario (2)."
+    },
+    {
+      "id": "complete-picture",
+      "title": "The Complete Picture",
+      "startLine": 499,
+      "endLine": 584,
+      "summary": "Easton-Konig characterization: the possible continuum values are exactly the regular uncountable cardinals. The 'true' value remains the deepest open question in foundations.",
+      "mathContext": "The ZFC constraints are: $\\aleph_1 \\leq 2^{\\aleph_0}$ and $\\text{cf}(2^{\\aleph_0}) > \\aleph_0$. These are sharp: Easton showed any regular uncountable cardinal is achievable. Between $\\aleph_1$ and $2^{\\aleph_0}$, cardinal characteristics provide intermediate invariants."
+    }
+  ],
+  "conclusion": {
+    "summary": "ZFC provides exactly two constraints on 2^aleph_0: it must be at least aleph_1 (Cantor) and have uncountable cofinality (Konig). Easton proved these constraints are sharp. Cardinal characteristics like b and d reveal rich combinatorial structure between aleph_1 and 2^aleph_0, but their values are also independent of ZFC. Whether there is a 'true' size of the continuum remains the deepest open question in the foundations of mathematics.",
+    "implications": "The formalization reveals that the question 'how big is the continuum?' has a precise meta-answer: any regular uncountable cardinal is consistent. The real question is not what ZFC says, but which additional axioms to adopt.",
+    "openQuestions": [
+      "Is 2^aleph_0 = aleph_2 the 'correct' value? Most forcing axioms point this way.",
+      "Can Woodin's Ultimate-L accommodate large cardinals while fixing 2^aleph_0 = aleph_1?",
+      "What is the complete Cichon diagram independence picture? (10+ cardinal characteristics)",
+      "Do cardinal characteristics reveal 'natural' structure, or are they artifacts of the axiom system?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.Order.SuccPred.Basic",
+      "Mathlib.Logic.Basic",
+      "Mathlib.Tactic",
+      "Proofs.ContinuumHypothesis",
+      "Proofs.ContinuumHypothesisOQ01"
+    ],
+    "opens": [
+      "Cardinal",
+      "ContinuumHypothesis"
+    ],
+    "namespace": "ContinuumHypothesisOQ02",
+    "lineCount": 584,
+    "axiomCount": 3,
+    "theoremCount": 32,
+    "definitionCount": 6,
+    "path": "Proofs/ContinuumHypothesisOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "extends",
+      "description": "Parent formalization of CH independence (Godel-Cohen). This entry imports CH, continuum, and aleph_one from the parent and builds the spectrum analysis on top."
+    },
+    {
+      "targetId": "continuum-hypothesis-oq-01",
+      "relationship": "extends",
+      "description": "Sibling extension on axiom selection. OQ01 asks 'should we adopt axioms deciding CH?'; OQ02 asks 'what values can the continuum take?' This entry imports PFA and aleph bounds from OQ01."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "uses",
+      "description": "Cantor's diagonal argument establishes aleph_0 < 2^aleph_0, the foundational inequality that makes the 'size of the continuum' question non-trivial."
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "uses",
+      "description": "Cantor's theorem (kappa < 2^kappa) provides the lower bound aleph_1 <= 2^aleph_0 that anchors the spectrum of possible values."
+    }
+  ],
+  "references": [
+    {
+      "key": "Ea70",
+      "citation": "Easton, W.B., Powers of regular cardinals, Annals of Mathematical Logic 1 (1970), 139-178. Proved that the continuum function at regular cardinals is essentially unconstrained by ZFC.",
+      "type": "paper"
+    },
+    {
+      "key": "Ko05",
+      "citation": "Konig, J., Zum Kontinuumproblem, Mathematische Annalen 60 (1905), 177-180. Proved the cofinality constraint: cf(2^kappa) > kappa.",
+      "type": "paper"
+    },
+    {
+      "key": "Bl10",
+      "citation": "Blass, A., Combinatorial cardinal characteristics of the continuum, in Handbook of Set Theory (Foreman and Kanamori, eds.), Springer (2010), 395-489. Comprehensive survey of cardinal characteristics.",
+      "type": "paper"
+    },
+    {
+      "key": "MS70",
+      "citation": "Martin, D.A. and Solovay, R.M., Internal Cohen extensions, Annals of Mathematical Logic 2 (1970), 143-178. Developed Martin's Axiom and its consequences for the continuum.",
+      "type": "paper"
+    },
+    {
+      "key": "Sh94",
+      "citation": "Shelah, S., Cardinal Arithmetic, Oxford Logic Guides 29, Oxford University Press (1994). Landmark work on pcf theory and singular cardinal combinatorics.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,207 @@
+{
+  "id": "erdos-21",
+  "title": "Erdős Problem #21: Covering Intersecting Families",
+  "slug": "erdos-21",
+  "description": "Let f(n) be the minimum size of an intersecting family of n-sets that covers all (n-1)-sets. Is f(n) = O(n)? SOLVED by Kahn (1994): YES.",
+  "meta": {
+    "author": "Erdős-Lovász (conjecture 1975), Kahn (proof 1994)",
+    "sourceUrl": "https://erdosproblems.com/21",
+    "date": "1994",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos21Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "set-theory",
+      "intersecting-families",
+      "projective-planes",
+      "probabilistic-method",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 21,
+    "erdosUrl": "https://erdosproblems.com/21",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$500",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for families",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm for asymptotic bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsIntersecting definition for set families",
+      "CoversSmallSets definition for covering property",
+      "IsUniform definition for uniform families",
+      "CoveringFamily structure combining all conditions",
+      "f(n) function axiomatization",
+      "Known exact values f(1)-f(5)",
+      "Erdős-Lovász lower bound (8/3)n - 3",
+      "Kahn 1992 upper bound n log n",
+      "Kahn 1994 linear bound (main theorem)",
+      "ErdosLovaszConjecture statement and resolution",
+      "ExactBoundConjecture f(n) = 3n + O(1)",
+      "ProjectivePlane structure",
+      "IsSunflower definition",
+      "Generalized f_k(n) problem"
+    ],
+    "axiomCount": 9,
+    "lineCount": 273,
+    "prerequisites": [
+      "Hypergraph theory and set systems",
+      "Covering numbers and matching in hypergraphs",
+      "Extremal set theory",
+      "Turán-type problems"
+    ],
+    "assumptions": "9 axioms: f (exact value function f(n)), f_one/f_two/f_three/f_four/f_five (known values f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=13), erdos_lovasz_lower_bound (Erdős-Lovász lower bound from counting), kahn_1994_linear_bound (Kahn 1994: f(n) ≤ Cn), f_general (generalized function f_k(n) for k-element covering sets). 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #21: Covering Intersecting Families**\n\nThis $500 prize problem was conjectured by Erdős and Lovász in 1975 and asked whether an intersecting family of n-sets that covers all (n-1)-sets can have size O(n).\n\n**Historical Development:**\n- **1975:** Erdős-Lovász proved (8/3)n - 3 ≤ f(n) ≤ O(n^{3/2} log n)\n- **1992:** Kahn improved upper bound to f(n) ≤ O(n log n)\n- **1994:** Kahn proved f(n) = O(n), winning the $500 prize\n- **2014:** Tripathi computed f(3)=6, f(4)=9\n- **2021:** Barát-Wanless computed f(5)=13",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet f(n) be minimal such that there is an intersecting family F of n-sets (so A ∩ B ≠ ∅ for all A, B ∈ F) with |F| = f(n) such that every set S with |S| ≤ n-1 is disjoint from at least one A ∈ F.\n\nIs it true that f(n) ≪ n?\n\n**Solution (Kahn 1994):**\nYES! f(n) = O(n). The proof uses probabilistic selection from projective planes.",
+    "text": "Let f(n) be the minimum size of an intersecting family of n-sets that covers all (n-1)-sets. Is f(n) = O(n)? SOLVED by Kahn (1994): YES.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Define intersecting families, covering property, uniform families.\n\n2. **CoveringFamily Structure:** Combine all conditions into a structure.\n\n3. **Function f(n):** Axiomatize as the minimum family size.\n\n4. **Known Values:** Axiomatize f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=13.\n\n5. **Bounds:** State Erdős-Lovász lower bound and Kahn's upper bounds.\n\n6. **Main Theorem:** Kahn 1994 f(n) = O(n).\n\n7. **Projective Planes:** Define structure and role in constructions.\n\n8. **Generalizations:** f_k(n) covering (n-k)-sets.",
+    "keyInsights": [
+      "**Intersecting Family:** All pairs of sets must share an element",
+      "**Covering Property:** Every small set is disjoint from some family member",
+      "**Lower Bound (8/3)n:** Counting argument on coverage capacity",
+      "**Projective Planes:** Provide optimal constructions when n-1 is prime power",
+      "**Kahn's Method:** Probabilistic selection of O(n) lines covers all (n-1)-sets",
+      "**Conjectured Exact Bound:** f(n) = 3n + O(1)",
+      "**Known Values:** f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=13"
+    ],
+    "prerequisites": [
+      "Hypergraph theory and set systems",
+      "Covering numbers and matching in hypergraphs",
+      "Extremal set theory",
+      "Turán-type problems"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "Intersecting families, covering property, uniform families",
+      "startLine": 40,
+      "endLine": 77,
+      "mathContext": "Mathematical content: Intersecting families, covering property, uniform families"
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(n)",
+      "summary": "Definition and basic properties",
+      "startLine": 78,
+      "endLine": 97,
+      "mathContext": "Formal definition: Definition and basic properties"
+    },
+    {
+      "id": "known-values",
+      "title": "Known Exact Values",
+      "summary": "f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=13",
+      "startLine": 98,
+      "endLine": 125,
+      "mathContext": "Mathematical content: f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=13"
+    },
+    {
+      "id": "lower-bound",
+      "title": "Erdős-Lovász Lower Bound",
+      "summary": "f(n) ≥ (8/3)n - 3",
+      "startLine": 126,
+      "endLine": 146
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds and Resolution",
+      "summary": "From n^{3/2} log n to n log n to O(n)",
+      "startLine": 147,
+      "endLine": 186,
+      "mathContext": "From n^{3/2} $\\log n$ to n $\\log n$ to $O(n)$"
+    },
+    {
+      "id": "projective-planes",
+      "title": "Projective Planes",
+      "summary": "Construction technique",
+      "startLine": 204,
+      "endLine": 233,
+      "mathContext": "Mathematical content: Construction technique"
+    },
+    {
+      "id": "properties",
+      "title": "Properties of Covering Families",
+      "summary": "Intersection structure, sunflowers",
+      "startLine": 234,
+      "endLine": 265,
+      "mathContext": "Formal definition: Intersection structure, sunflowers"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #21 asked whether an intersecting family of n-sets that covers all (n-1)-sets can have size O(n). Kahn (1994) proved YES, winning the $500 prize. The exact bound is conjectured to be f(n) = 3n + O(1).",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Probabilistic Combinatorics:** Kahn's proof demonstrates the power of probabilistic methods.\n\n**2. Projective Geometry:** Connections between set families and finite geometry.\n\n3. **Covering Codes:** Applications to covering designs and codes.\n\n4. **Gap Problem:** The gap between lower bound (8/3)n and conjectured 3n remains.",
+    "openQuestions": [
+      "Determine the exact leading constant: is f(n) = 3n + O(1)?",
+      "Compute f(6) exactly (currently 13 ≤ f(6) ≤ 18)",
+      "Study f_k(n) for k ≥ 2",
+      "Algorithmic aspects: efficiently construct optimal families?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SetFamily.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Set"
+    ],
+    "namespace": "Erdos21",
+    "lineCount": 273,
+    "axiomCount": 9,
+    "theoremCount": 2,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos21Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-19",
+      "relationship": "related",
+      "description": "Problem #19 (EFL conjecture) and Problem #21 both concern colorings of structured hypergraphs. EFL asks about edge-disjoint clique unions; Problem #21 asks about covering intersecting families"
+    },
+    {
+      "targetId": "erdos-22",
+      "relationship": "related",
+      "description": "Problem #22 (Ramsey-Turán for K₄) is another extremal graph/hypergraph problem. Both concern the interplay between density and structural constraints in combinatorial objects"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Gallai, Tibor",
+      "title": "On the minimal number of vertices representing the edges of a graph",
+      "year": "1961",
+      "venue": "Magyar Tudományos Akadémia Matematikai Kutató Intézetének Közleményei, vol. 6, pp. 181–203",
+      "note": "Foundational work on covering and matching in graphs and hypergraphs"
+    },
+    {
+      "authors": "Frankl, Peter",
+      "title": "On intersecting families of finite sets",
+      "year": "1987",
+      "venue": "Journal of Combinatorial Theory, Series A, vol. 24, no. 2, pp. 146–161",
+      "note": "Key results on intersecting set families related to Problem #21's covering question"
+    }
+  ],
+  "sorries": 0
+}

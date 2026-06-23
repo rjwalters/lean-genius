@@ -1,0 +1,223 @@
+{
+  "id": "erdos-412",
+  "title": "Erdős Problem #412: Iterated Sum of Divisors Convergence",
+  "slug": "erdos-412",
+  "description": "Do all iterated sum-of-divisors sequences eventually meet? For every m,n ≥ 2, is there i,j such that σᵢ(m) = σⱼ(n)? Open. Selfridge provided evidence suggesting NO.",
+  "meta": {
+    "author": "van Wijngaarden (communicated 1950s), Erdős (1979)",
+    "sourceUrl": "https://erdosproblems.com/412",
+    "date": "1950s-1979",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos412Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sum-of-divisors",
+      "iteration",
+      "convergence",
+      "open",
+      "dynamical-systems"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 412,
+    "erdosUrl": "https://erdosproblems.com/412",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "dateUpdated": "2026-02-12",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Finite set of divisors of $n$, used to define $\\sigma(n) = \\sum_{d \\mid n} d$",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets, used in `sigma n = (n.divisors).sum id`",
+        "module": "Mathlib.Algebra.BigOperators.Finprod"
+      },
+      {
+        "theorem": "Function.iterate",
+        "description": "Function iteration $f^{[k]}$, used for $\\sigma_k(n) = \\sigma^{\\circ k}(n)$",
+        "module": "Mathlib.Tactic"
+      },
+      {
+        "theorem": "Nat.one_mem_divisors",
+        "description": "$1 \\in \\text{divisors}(n)$ for $n \\ne 0$, used in growth proof",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Finset.sum_le_sum_of_subset",
+        "description": "Sum over subset $\\le$ sum over superset, key to `sigma_ge_succ` proof",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      }
+    ],
+    "originalContributions": [
+      "`sigma n = (n.divisors).sum id` with verified examples ($\\sigma(6) = 12$, $\\sigma(28) = 56$)",
+      "`iterSigma k n = sigma^[k] n` via `Function.iterate`",
+      "`SigmaEquivalent m n`: $\\exists i\\, j,\\, \\sigma_i(m) = \\sigma_j(n)$",
+      "`Erdos412Conjecture`: $\\forall m, n \\ge 2$, `SigmaEquivalent m n`",
+      "`sigma_ge_succ` (proved): $\\sigma(n) \\ge n + 1$ via subset sum bound",
+      "`sigma_gt` (proved): $\\sigma(n) > n$ for $n \\ge 2$",
+      "Four verified equivalences ($2 \\equiv 3$, $2 \\equiv 4$, $5 \\equiv 6$, $7 \\equiv 8$) via `native_decide`",
+      "`aliquotSum`, perfect number verification ($s(6) = 6$, $s(28) = 28$)",
+      "`no_sigma_periodic_step1` (proved): $\\sigma_1(n) > n$ rules out period-1 cycles (one-step case of no-periodicity)",
+      "`erdos_412_summary`: triple of growth, equivalence, no-periodicity"
+    ],
+    "axiomCount": 0,
+    "lineCount": 213,
+    "assumptions": "None. Open conjecture; supporting lemmas fully verified.",
+    "theoremCount": 12,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #412**\n\nThis problem was communicated to Erdős by **A. van Wijngaarden**, a Dutch mathematician at the Mathematisch Centrum (now CWI) in Amsterdam, in the 1950s. It appeared in Erdős's 1979 paper *Some unconventional problems in number theory* and in the Erdős-Graham monograph (1980).\n\n**Historical Development:**\n- **Van Wijngaarden (1950s):** Posed the question of whether all iterated $\\sigma$-sequences eventually merge.\n- **Selfridge:** Provided numerical evidence suggesting the answer is **NO** — that there exist pairs whose sequences never meet.\n- **Erdős & Graham (1980):** Wrote \"it seems unlikely that anything can be proved about this in the near future.\"\n\n**Mathematical Context:**\nThe problem has a **Collatz-like flavor**: it asks about the global structure of orbits under iteration of an arithmetic function. Unlike the Collatz problem where sequences can oscillate, $\\sigma$-sequences are strictly increasing ($\\sigma(n) > n$ for $n \\ge 2$), which eliminates cycles but makes the merging question equally intractable. The problem belongs to a family of questions about arithmetic function dynamics:\n- **Problem #413:** Barriers for the $\\omega$-function (number of prime factors)\n- **Problem #414:** Merging orbits of $h(n) = n + \\tau(n)$\n\nThe $\\sigma$ function is one of the most studied arithmetic functions, with deep connections to perfect numbers ($\\sigma(n) = 2n$), amicable pairs, and the Riemann hypothesis (via the bound $\\sigma(n) < e^\\gamma n \\log \\log n$ for sufficiently large $n$).",
+    "problemStatement": "**Problem Statement**\n\nLet $\\sigma_1(n) = \\sigma(n)$ (sum of divisors) and $\\sigma_k(n) = \\sigma(\\sigma_{k-1}(n))$.\n\n**Question:** Is it true that for every $m, n \\ge 2$, there exist $i, j$ such that $\\sigma_i(m) = \\sigma_j(n)$?\n\nIn other words: Do all iterated sum-of-divisors sequences eventually converge to a single universal sequence?\n\n**Status:** OPEN\n\n**Evidence:** Selfridge's numerical experiments suggest the answer is NO.",
+    "text": "Do all iterated sum-of-divisors sequences eventually meet? For every m,n ≥ 2, is there i,j such that σᵢ(m) = σⱼ(n)? Open. Selfridge provided evidence suggesting NO.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **$\\sigma$ Definition:** `sigma n = (n.divisors).sum id` with computational verification via `native_decide`\n\n2. **Iteration:** `iterSigma k n = sigma^[k] n` via `Function.iterate`, with verified example sequences\n\n3. **Equivalence:** `SigmaEquivalent m n = \\exists i\\, j,\\, \\sigma_i(m) = \\sigma_j(n)`, the orbit merging condition\n\n4. **Conjecture:** `Erdos412Conjecture = \\forall m, n \\ge 2$, `SigmaEquivalent m n` (stated but not asserted)\n\n5. **Growth (proved):** `sigma_ge_succ` ($\\sigma(n) \\ge n + 1$) and `sigma_gt` ($\\sigma(n) > n$) via $\\{1, n\\} \\subseteq \\text{divisors}(n)$\n\n6. **Examples (proved):** Four equivalences via `native_decide`, all from prime merging $\\sigma(p) = p + 1$\n\n7. **No periodicity (proved):** `no_sigma_periodic_step1` proves $\\sigma_1(n) > n$, ruling out period-1 cycles; strict growth precludes all cycles mathematically, though only the one-step case is formalized",
+    "keyInsights": [
+      "**Strict monotonicity:** $\\sigma(n) > n$ for $n \\ge 2$ (since $1$ and $n$ are distinct divisors summing to $n + 1 \\le \\sigma(n)$). This makes all $\\sigma$-sequences strictly increasing and unbounded — no fixed points, no cycles.",
+      "**Prime merging pattern:** For prime $p$, $\\sigma(p) = p + 1$, so the sequence from $p$ immediately joins the sequence from $p + 1$. This yields many easy equivalences but doesn't resolve the general case for composites.",
+      "**One-directional dynamics:** Unlike the Collatz conjecture where sequences oscillate, $\\sigma$-sequences only increase. This eliminates descent arguments and makes both proof and disproof harder — you need infinitely many coincidences (for proof) or infinitely many non-coincidences (for disproof).",
+      "**Orbit partition:** $\\sigma$-equivalence partitions $\\mathbb{N}_{\\ge 2}$ into equivalence classes. The conjecture asserts exactly one class. Disproving requires finding two infinite increasing sequences that never share a value — an infinitary statement requiring qualitatively different techniques.",
+      "**Aliquot contrast:** The related aliquot sum $s(n) = \\sigma(n) - n$ can decrease, allowing rich periodic structure (perfect numbers, amicable pairs). Problem #412 uses $\\sigma$ (not $s$), which simplifies the dynamics but makes the merging question harder."
+    ],
+    "crossReferences": [
+      {
+        "proofId": "erdos-414",
+        "relationship": "Erdős #414 asks the analogous merging question for $h(n) = n + \\tau(n)$ instead of $\\sigma(n)$"
+      },
+      {
+        "proofId": "erdos-409",
+        "relationship": "Erdős #409 studies additive properties of the divisor function $\\tau(n)$, another arithmetic function dynamics problem"
+      }
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Dependencies",
+      "startLine": 30,
+      "endLine": 34,
+      "summary": "Imports `ArithmeticFunction.Defs`, `Nat.Factorization.Basic` for `Nat.divisors` and membership lemmas, `BigOperators.Finprod` for `Finset.sum`, and `Tactic` for `native_decide` and automation.",
+      "mathContext": "Mathematical content: Imports `ArithmeticFunction.Defs`, `Nat.Factorization.Basic` for `Nat.divisors` and membership lemmas, `BigOperators.Finprod` for `Finset.sum`, and `Tactic` for `native_decide` and automation."
+    },
+    {
+      "id": "sigma-def",
+      "title": "The Sum of Divisors Function",
+      "startLine": 40,
+      "endLine": 61,
+      "summary": "Defines `sigma n = (n.divisors).sum id` ($\\sigma(n) = \\sum_{d \\mid n} d$). Verified via `native_decide`: $\\sigma(1) = 1$, $\\sigma(2) = 3$, $\\sigma(6) = 12$, $\\sigma(12) = 28$, $\\sigma(28) = 56$.",
+      "mathContext": "Formal definition: Defines `sigma n = (n.divisors).sum id` ($\\sigma(n) = \\sum_{d \\mid n} d$). Verified via `native_decide`: $\\sigma(1) = 1$, $\\sigma(2) = 3$, $\\sigma(6) = 12$, $\\sigma(12) = 28$, $\\sigma(28) = 56$."
+    },
+    {
+      "id": "iteration",
+      "title": "Iterated Sum of Divisors",
+      "startLine": 62,
+      "endLine": 93,
+      "summary": "`iterSigma k n = sigma^[k] n` via `Function.iterate`. Verified sequences from $2$ ($2 \\to 3 \\to 4 \\to 7 \\to 8 \\to 15$) and $3$ ($3 \\to 4 \\to 7 \\to 8 \\to 15$); merge at step $1$: $\\sigma_1(2) = 3 = \\sigma_0(3)$.",
+      "mathContext": "Verified sequences from $2$ ($2 \\to 3 \\to 4 \\to 7 \\to 8 \\to 15$) and $3$ ($3 \\to 4 \\to 7 \\to 8 \\to 15$); merge at step $1$: $\\sigma_1(2) = 3 = \\sigma_0(3)$."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 94,
+      "endLine": 106,
+      "summary": "`SigmaEquivalent m n`: $\\exists i\\, j,\\, \\sigma_i(m) = \\sigma_j(n)$. `Erdos412Conjecture`: $\\forall m, n \\ge 2$, sequences merge. OPEN — stated but not asserted.",
+      "mathContext": "Mathematical content: `SigmaEquivalent m n`: $\\exists i\\, j,\\, \\sigma_i(m) = \\sigma_j(n)$. `Erdos412Conjecture`: $\\forall m, n \\ge 2$, sequences merge. OPEN — stated but not asserted."
+    },
+    {
+      "id": "examples",
+      "title": "Verified Equivalences",
+      "startLine": 107,
+      "endLine": 120,
+      "summary": "Four $\\sigma$-equivalences via `native_decide`: $2 \\equiv 3$, $2 \\equiv 4$, $5 \\equiv 6$, $7 \\equiv 8$. All from prime merging: $\\sigma(p) = p + 1$.",
+      "mathContext": "Mathematical content: Four $\\sigma$-equivalences via `native_decide`: $2 \\equiv 3$, $2 \\equiv 4$, $5 \\equiv 6$, $7 \\equiv 8$. All from prime merging: $\\sigma(p) = p + 1$."
+    },
+    {
+      "id": "aliquot",
+      "title": "Aliquot Sum and Perfect Numbers",
+      "startLine": 121,
+      "endLine": 137,
+      "summary": "`aliquotSum n = sigma n - n` (proper divisor sum). Verified: $s(6) = 6$, $s(28) = 28$ (perfect numbers). Contrasts $\\sigma$-iteration (increasing) with aliquot iteration (can decrease).",
+      "mathContext": "Mathematical content: `aliquotSum n = sigma n - n` (proper divisor sum). Verified: $s(6) = 6$, $s(28) = 28$ (perfect numbers). Contrasts $\\sigma$-iteration (increasing) with aliquot iteration (can decrease)."
+    },
+    {
+      "id": "growth",
+      "title": "Growth of Iterated $\\sigma$",
+      "startLine": 138,
+      "endLine": 161,
+      "summary": "`sigma_ge_succ` (proved): $\\sigma(n) \\ge n + 1$ via $\\{1, n\\} \\subseteq \\text{divisors}(n)$ and `Finset.sum_le_sum_of_subset`. `sigma_gt` (proved): $\\sigma(n) > n$ for $n \\ge 2$.",
+      "mathContext": "`sigma_ge_succ` (proved): $\\sigma(n) \\ge n + 1$ via $\\{1, n\\} \\subseteq \\text{divisors}(n)$ and `Finset.sum_le_sum_of_subset`. `sigma_gt` (proved): $\\sigma(n) > n$ for $n \\ge 2$."
+    },
+    {
+      "id": "related",
+      "title": "No $\\sigma$-Periodicity",
+      "startLine": 162,
+      "endLine": 173,
+      "summary": "`IsSigmaPeriodic n`: $\\exists k \\ge 1,\\, \\sigma^k(n) = n$. `no_sigma_periodic_step1` (proved): $\\sigma_1(n) > n$ for $n \\ge 2$, ruling out period-1 cycles. Strict monotonicity precludes all cycles, but only the one-step case is formalized.",
+      "mathContext": "Mathematical content: `IsSigmaPeriodic n`: $\\exists k \\ge 1,\\, \\sigma^k(n) = n$. `no_sigma_periodic_step1` (proved): $\\sigma_1(n) > n$ for $n \\ge 2$, ruling out period-1 cycles. Strict monotonicity precludes all cycles, but only the one-step case is formalized."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 174,
+      "endLine": 213,
+      "summary": "`erdos_412_summary` (proved): $\\langle \\sigma(n) > n,\\, 2 \\equiv_\\sigma 3,\\, \\sigma_1(n) > n \\rangle$. Main conjecture `Erdos412Conjecture` remains OPEN.",
+      "mathContext": "Mathematical content: `erdos_412_summary` (proved): $\\langle \\sigma(n) > n,\\, 2 \\equiv_\\sigma 3,\\, \\sigma_1(n) > n \\rangle$. Main conjecture `Erdos412Conjecture` remains OPEN."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #412 on iterated sum-of-divisors convergence. The $\\sigma$ function is defined via `Nat.divisors.sum id` and iterated via `Function.iterate`. We prove $\\sigma(n) > n$ for $n \\ge 2$ (ruling out cycles), verify four equivalences for small numbers, and rule out $\\sigma$-periodicity. The main conjecture — that all starting points $\\ge 2$ produce eventually merging sequences — remains open, with Selfridge's evidence suggesting NO.",
+    "implications": "**Theoretical Significance**: **Mathematical Connections**\n\n1. **Arithmetic function dynamics:** The $\\sigma$-iteration is a strictly increasing discrete dynamical system on $\\mathbb{N}$, contrasting with the oscillatory Collatz and aliquot iterations\n**2. Perfect numbers:** Fixed points of $n \\mapsto \\sigma(n)/2$; the formalization verifies $\\sigma(6) = 12 = 2 \\cdot 6$ and $\\sigma(28) = 56 = 2 \\cdot 28$\n3. **Erdős #413-414:** A family of problems about merging and barrier behavior of iterated arithmetic functions ($\\omega$, $\\tau$)\n4. **Computability:** The `native_decide` proofs demonstrate Lean's capacity for verified numerical computation in number theory.",
+    "openQuestions": [
+      "Do all iterated $\\sigma$-sequences eventually merge? (The main problem, OPEN)",
+      "Can we find explicit pairs $m, n$ whose $\\sigma$-sequences provably never meet?",
+      "How many $\\sigma$-equivalence classes are there? Finitely many, or infinitely many?",
+      "What is the typical 'merging time' — how many iterations before sequences from $m$ and $n$ first agree?",
+      "Is the merging behavior related to the shared prime factorization structure of the starting points?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction.Defs",
+      "Mathlib.NumberTheory.ArithmeticFunction.Misc",
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Algebra.BigOperators.Finprod",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos412",
+    "lineCount": 213,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos412Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1135",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: dynamical-systems, number-theory, open"
+    },
+    {
+      "targetId": "erdos-409",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: dynamical-systems, iteration, number-theory"
+    },
+    {
+      "targetId": "erdos-410",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, sum-of-divisors"
+    }
+  ],
+  "sorries": 0
+}

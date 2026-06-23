@@ -1,0 +1,134 @@
+{
+  "slug": "de-moivre-oq-01",
+  "title": "Formalize the explicit extraction of cos(nθ) and sin(nθ) formulas by comparin...",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "A complete formalization of the explicit extraction of cos(nθ) and sin(nθ) as polynomial expressions in cos(θ) and sin(θ), obtained by comparing real and imaginary parts of (cos θ + i sin θ)^n. The key result is that cos(nθ) = T_n(cos θ) and sin((n+1)θ) = U_n(cos θ)·sin θ, where T_n and U_n are Chebyshev polynomials of the first and second kind.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-02-21T19:21:07.133Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "challenging",
+    "complex-analysis",
+    "trigonometry",
+    "classic",
+    "intermediate",
+    "wiedijk"
+  ],
+  "relatedProofs": [
+    "de-moivre",
+    "de-moivre-oq-01",
+    "de-moivre-oq-02",
+    "de-moivre-oq-02-oq-02",
+    "de-moivre-oq-03",
+    "de-moivre-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-21T19:21:07.133Z",
+  "lastUpdate": "2026-02-24T08:35:25.047Z",
+  "completed": "2026-02-24T08:35:25.047Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/DeMoivre.lean",
+      "filename": "DeMoivre.lean",
+      "lineCount": 240,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivre.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ01.lean",
+      "filename": "DeMoivreOQ01.lean",
+      "lineCount": 232,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ01.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ02.lean",
+      "filename": "DeMoivreOQ02.lean",
+      "lineCount": 158,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ02.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ02OQ02.lean",
+      "filename": "DeMoivreOQ02OQ02.lean",
+      "lineCount": 183,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ03.lean",
+      "filename": "DeMoivreOQ03.lean",
+      "lineCount": 276,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ03.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ03OQ01.lean",
+      "filename": "DeMoivreOQ03OQ01.lean",
+      "lineCount": 75,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ03OQ01.lean"
+    }
+  ]
+}

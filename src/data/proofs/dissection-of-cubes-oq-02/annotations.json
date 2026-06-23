@@ -1,0 +1,277 @@
+[
+  {
+    "id": "ann-scissors-def",
+    "proofId": "dissection-of-cubes-oq-02",
+    "range": {
+      "startLine": 53,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Scissors Congruence",
+    "content": "Defines the scissors congruence relation between polyhedra. Two polyhedra P and Q are scissors congruent if P can be decomposed into finitely many polyhedral pieces that can be rearranged (via rigid motions) to form Q. This is the central equivalence relation studied in Hilbert's Third Problem. The formalization uses a simplified placeholder requiring only the existence of n pieces.",
+    "mathContext": "Two polyhedra $P$ and $Q$ are scissors congruent ($P \\sim_{\\mathrm{sc}} Q$) if there exist polyhedra $P_1, \\ldots, P_n$ and isometries $\\sigma_1, \\ldots, \\sigma_n$ such that $P = \\bigcup P_i$ and $Q = \\bigcup \\sigma_i(P_i)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "equivalence relation",
+      "polyhedral decomposition",
+      "rigid motion",
+      "congruence"
+    ],
+    "prerequisites": [
+      "basic topology",
+      "Euclidean geometry"
+    ]
+  },
+  {
+    "id": "ann-scissors-props",
+    "proofId": "dissection-of-cubes-oq-02",
+    "range": {
+      "startLine": 58,
+      "endLine": 64
+    },
+    "type": "concept",
+    "title": "Reflexivity and Symmetry of Scissors Congruence",
+    "content": "Proves that scissors congruence is reflexive (any polyhedron is scissors congruent to itself via the trivial 1-piece decomposition) and symmetric (if P can be cut and reassembled into Q, then Q can be cut and reassembled into P by reversing the rigid motions). Transitivity also holds but is omitted here.",
+    "mathContext": "Reflexivity: $P \\sim_{\\mathrm{sc}} P$ via the identity decomposition. Symmetry: if $P \\sim_{\\mathrm{sc}} Q$ via isometries $\\sigma_i$, then $Q \\sim_{\\mathrm{sc}} P$ via $\\sigma_i^{-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "equivalence relation",
+      "group action",
+      "isometry group"
+    ],
+    "prerequisites": [
+      "basic algebra"
+    ]
+  },
+  {
+    "id": "ann-cube-angle",
+    "proofId": "dissection-of-cubes-oq-02",
+    "range": {
+      "startLine": 70,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Cube Dihedral Angle and Rationality",
+    "content": "Defines the dihedral angle of the cube as π/2 and proves it is a rational multiple of π. The dihedral angle is the angle between two faces meeting at an edge. For the cube, all 12 edges have identical dihedral angle π/2. The rationality of this angle (specifically 1/2 · π) is what makes the cube's Dehn invariant vanish — this is the key asymmetry exploited by Dehn's argument.",
+    "mathContext": "The cube dihedral angle is $\\theta_{\\mathrm{cube}} = \\pi/2$. Since $\\pi/2 = (1/2) \\cdot \\pi$, we have $\\theta_{\\mathrm{cube}} = q\\pi$ with $q = 1/2 \\in \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "dihedral angle",
+      "rational multiple of π",
+      "Niven's theorem",
+      "regular polyhedra"
+    ],
+    "prerequisites": [
+      "trigonometry",
+      "rational numbers"
+    ]
+  },
+  {
+    "id": "ann-tetra-angle",
+    "proofId": "dissection-of-cubes-oq-02",
+    "range": {
+      "startLine": 186,
+      "endLine": 233
+    },
+    "type": "concept",
+    "title": "Tetrahedron Dihedral Angle and Irrationality",
+    "content": "Defines the dihedral angle of the regular tetrahedron as arccos(1/3) ≈ 70.53° and proves that this is NOT a rational multiple of π via the Chebyshev recurrence argument (Niven's theorem). The proof defines a sequence c_k satisfying c₀=2, c₁=2, c_{k+2}=2c_{k+1}-9c_k, proves 3∤c_k by modular induction, and derives a contradiction from assuming arccos(1/3)/π = p/q. Since arccos(1/3)/π is irrational, the tetrahedron's Dehn invariant is nonzero, creating the invariant obstruction between cube and tetrahedron.",
+    "mathContext": "The regular tetrahedron dihedral angle is $\\theta_{\\mathrm{tet}} = \\arccos(1/3)$. By Niven's theorem, $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$, i.e., there is no $q \\in \\mathbb{Q}$ with $\\theta_{\\mathrm{tet}} = q\\pi$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Niven's theorem",
+      "transcendental number theory",
+      "arccos function",
+      "Platonic solids"
+    ],
+    "prerequisites": [
+      "trigonometry",
+      "number theory",
+      "irrationality proofs"
+    ]
+  },
+  {
+    "id": "ann-dehn-invariant-def",
+    "proofId": "dissection-of-cubes-oq-02",
+    "range": {
+      "startLine": 239,
+      "endLine": 246
+    },
+    "type": "definition",
+    "title": "Simplified Dehn Invariant",
+    "content": "Defines a boolean-valued simplification of the Dehn invariant: a polyhedron has 'zero Dehn invariant' if all its dihedral angles are rational multiples of π. The full Dehn invariant lives in the tensor product ℝ ⊗_ℤ (ℝ/πℤ), summing length(e) ⊗ [θ(e)] over edges. This simplification captures the essential dichotomy: rational-angle polyhedra have zero invariant, irrational-angle polyhedra have nonzero invariant.",
+    "mathContext": "Full Dehn invariant: $D(P) = \\sum_{e} \\ell(e) \\otimes [\\theta(e)] \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$. Simplified version: $D(P) = 0$ iff $\\forall e,\\; \\theta(e)/\\pi \\in \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tensor product",
+      "quotient group",
+      "invariant theory",
+      "algebraic K-theory"
+    ],
+    "prerequisites": [
+      "abstract algebra",
+      "tensor products",
+      "group theory"
+    ]
+  },
+  {
+    "id": "ann-cube-dehn-zero",
+    "proofId": "dissection-of-cubes-oq-02",
+    "range": {
+      "startLine": 248,
+      "endLine": 253
+    },
+    "type": "definition",
+    "title": "Cube Has Zero Dehn Invariant",
+    "content": "Proves that the cube has zero Dehn invariant by showing its only dihedral angle (π/2) is a rational multiple of π. The proof unfolds the definition and applies cube_angle_rational_pi. This is one half of Dehn's obstruction argument.",
+    "mathContext": "$D(\\text{cube}) = 12 \\cdot s \\otimes [\\pi/2] = 12s \\otimes 0 = 0$ since $\\pi/2 \\in \\pi\\mathbb{Q}$, where $s$ is the edge length.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dehn invariant",
+      "rational angles",
+      "cube geometry"
+    ],
+    "prerequisites": [
+      "Dehn invariant definition",
+      "rational multiples of π"
+    ]
+  },
+  {
+    "id": "ann-tetra-dehn-nonzero",
+    "proofId": "dissection-of-cubes-oq-02",
+    "range": {
+      "startLine": 255,
+      "endLine": 261
+    },
+    "type": "concept",
+    "title": "Tetrahedron Has Nonzero Dehn Invariant",
+    "content": "Proves that the regular tetrahedron has nonzero Dehn invariant by contradiction: if the invariant were zero, all dihedral angles would be rational multiples of π, contradicting the irrationality of arccos(1/3)/π. This is the other half of Dehn's obstruction.",
+    "mathContext": "$D(\\text{tet}) = 6 \\cdot a \\otimes [\\arccos(1/3)] \\neq 0$ since $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$, so $[\\arccos(1/3)] \\neq 0$ in $\\mathbb{R}/\\pi\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "Dehn invariant",
+      "irrational angles"
+    ],
+    "prerequisites": [
+      "Dehn invariant definition",
+      "tetrahedron angle irrationality"
+    ]
+  },
+  {
+    "id": "ann-dehn-theorem",
+    "proofId": "dissection-of-cubes-oq-02",
+    "range": {
+      "startLine": 267,
+      "endLine": 275
+    },
+    "type": "insight",
+    "title": "Dehn's Theorem: Invariance Under Dissection",
+    "content": "States Dehn's fundamental theorem: scissors congruent polyhedra have equal Dehn invariant — the bridge between the algebraic invariant and the geometric equivalence relation. Here the preservation of the invariant is taken as an explicit hypothesis (`h_dehn_preserved`) rather than proved: `dehn_invariant_modus_ponens` applies modus ponens, deducing that if P has zero Dehn invariant and the invariant is preserved from P to Q, then Q also has zero Dehn invariant. As its docstring notes, this does not prove Dehn's theorem itself — a full proof would require showing the Dehn invariant is additive (D(P₁ ∪ P₂) = D(P₁) + D(P₂) when P₁, P₂ share only boundary) and invariant under rigid motions.",
+    "mathContext": "If $P \\sim_{\\mathrm{sc}} Q$ then $D(P) = D(Q)$. Equivalently, $D$ descends to a well-defined function on scissors congruence classes: $D: \\mathcal{P}(\\mathbb{R}^3)/\\sim_{\\mathrm{sc}} \\to \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "invariant",
+      "additivity",
+      "homomorphism",
+      "scissors congruence group"
+    ],
+    "prerequisites": [
+      "Dehn invariant definition",
+      "scissors congruence"
+    ]
+  },
+  {
+    "id": "ann-dehn-obstruction",
+    "proofId": "dissection-of-cubes-oq-02",
+    "range": {
+      "startLine": 297,
+      "endLine": 302
+    },
+    "type": "insight",
+    "title": "Dehn Obstruction: The Core of Hilbert's Third Problem",
+    "content": "Proves the conjunction that the cube has zero Dehn invariant AND the tetrahedron has nonzero Dehn invariant. This is the mathematical core of the negative answer to Hilbert's Third Problem: since scissors congruent polyhedra must have equal Dehn invariants (Dehn's theorem), the cube and tetrahedron cannot be scissors congruent despite having equal volume. This was proved by Dehn in 1900, the same year Hilbert posed the problem — making it the first of Hilbert's 23 problems to be solved.",
+    "mathContext": "$D(\\text{cube}) = 0 \\neq D(\\text{tet})$, so by Dehn's theorem, $\\text{cube} \\not\\sim_{\\mathrm{sc}} \\text{tet}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hilbert's problems",
+      "obstruction theory",
+      "invariant separation"
+    ],
+    "prerequisites": [
+      "cube_dehn_zero",
+      "tetrahedron_dehn_nonzero",
+      "Dehn's theorem"
+    ]
+  },
+  {
+    "id": "ann-bolyai-gerwien",
+    "proofId": "dissection-of-cubes-oq-02",
+    "range": {
+      "startLine": 308,
+      "endLine": 328
+    },
+    "type": "concept",
+    "title": "2D Contrast: Bolyai-Gerwien Theorem",
+    "content": "Proves that in 2D, the Dehn invariant is always zero because all interior angles of polygons are integer multiples of π (when measured as the angles relevant to the dissection). This formalizes why Hilbert's question has opposite answers in 2D vs 3D: the Bolyai-Gerwien theorem (1833) shows equal-area polygons are always scissors congruent, while Dehn's result shows this fails for polyhedra. The dimensional contrast is one of the most striking phenomena in geometric measure theory.",
+    "mathContext": "In 2D, every interior angle $\\theta$ satisfies $\\theta = n\\pi$ for some $n \\in \\mathbb{Z}$, so $D_{\\text{2D}}(P) = 0$ for all polygons $P$. Combined with the Wallace-Bolyai-Gerwien theorem: $\\text{Area}(P) = \\text{Area}(Q) \\implies P \\sim_{\\mathrm{sc}} Q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bolyai-Gerwien theorem",
+      "dimension dependence",
+      "Wallace's theorem",
+      "equidecomposability"
+    ],
+    "prerequisites": [
+      "polygon geometry",
+      "Dehn invariant in 2D"
+    ]
+  },
+  {
+    "id": "ann-dehn-sydler",
+    "proofId": "dissection-of-cubes-oq-02",
+    "range": {
+      "startLine": 334,
+      "endLine": 349
+    },
+    "type": "concept",
+    "title": "Dehn-Sydler Completeness Theorem",
+    "content": "States the Dehn-Sydler theorem (1965): in 3D, volume and Dehn invariant are the COMPLETE invariants for scissors congruence. That is, two polyhedra are scissors congruent if and only if they have equal volume and equal Dehn invariant. Dehn conjectured this in 1901; Sydler proved it 64 years later using a difficult construction, and Jessen gave a simplified proof in 1968. This completeness result shows that Dehn's necessary condition is also sufficient.",
+    "mathContext": "$P \\sim_{\\mathrm{sc}} Q \\iff \\mathrm{Vol}(P) = \\mathrm{Vol}(Q) \\land D(P) = D(Q)$. In higher dimensions, the classification involves higher Dehn-type invariants (Dupont-Sah conjecture).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "completeness theorem",
+      "Jessen's proof",
+      "Dupont-Sah conjecture",
+      "higher-dimensional scissors congruence"
+    ],
+    "prerequisites": [
+      "Dehn invariant",
+      "scissors congruence",
+      "measure theory"
+    ]
+  },
+  {
+    "id": "ann-other-polyhedra",
+    "proofId": "dissection-of-cubes-oq-02",
+    "range": {
+      "startLine": 355,
+      "endLine": 367
+    },
+    "type": "concept",
+    "title": "Dihedral Angles of Other Platonic Solids",
+    "content": "Defines the dihedral angles of the regular octahedron (arccos(-1/3) ≈ 109.47°) and regular icosahedron (arccos(-√5/3) ≈ 138.19°), and proves the tetrahedron's angle is positive. By Niven's theorem, the only Platonic solid with a rational dihedral angle (as a multiple of π) is the cube. Thus the octahedron, icosahedron, and dodecahedron also have nonzero Dehn invariants and are not scissors congruent to the cube.",
+    "mathContext": "Platonic solid dihedral angles: cube $\\pi/2$, tetrahedron $\\arccos(1/3)$, octahedron $\\arccos(-1/3)$, icosahedron $\\arccos(-\\sqrt{5}/3)$, dodecahedron $\\arccos(-1/\\sqrt{5})$. Only $\\pi/2$ is a rational multiple of $\\pi$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Platonic solids",
+      "Niven's theorem",
+      "dihedral angle classification",
+      "regular polyhedra"
+    ],
+    "prerequisites": [
+      "trigonometry",
+      "arccos function"
+    ]
+  }
+]

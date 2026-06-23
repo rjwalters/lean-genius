@@ -1,0 +1,96 @@
+{
+  "slug": "e-transcendental-oq-01-oq-01",
+  "title": "Is e + π irrational",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formalization an open mathematical problem in number theory: Is e + π irrational.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-24T00:48:59.900Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "transcendental-numbers",
+    "number-theory",
+    "open-problem",
+    "e",
+    "pi",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "e-transcendental",
+    "e-transcendental-oq-01",
+    "e-transcendental-oq-01-oq-01",
+    "e-transcendental-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.899Z",
+  "lastUpdate": "2026-03-24T00:48:59.899Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ETranscendentalOQ01.lean",
+      "filename": "ETranscendentalOQ01.lean",
+      "lineCount": 539,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01.lean"
+    },
+    {
+      "path": "Proofs/ETranscendentalOQ01OQ01.lean",
+      "filename": "ETranscendentalOQ01OQ01.lean",
+      "lineCount": 342,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ETranscendentalOQ03.lean",
+      "filename": "ETranscendentalOQ03.lean",
+      "lineCount": 220,
+      "theoremCount": 4,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ03.lean"
+    }
+  ]
+}

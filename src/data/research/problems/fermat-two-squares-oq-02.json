@@ -1,0 +1,96 @@
+{
+  "slug": "fermat-two-squares-oq-02",
+  "title": "Fermat Two Squares: Prime Classification and Composite Closure Evidence",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "A prime p is a sum of two squares iff p % 4 != 3, and products of sums of two squares are again sums of two squares via the Brahmagupta-Fibonacci identity.",
+    "plain": "Backfills metadata for the two-squares characterization work. The attached Lean evidence proves the prime classification, special cases for p = 2 and p = 1 mod 4, the obstruction for p = 3 mod 4, and multiplicative closure of two-square representations.",
+    "whyMatters": [
+      "Fermat's two-squares theorem is a central example of congruence conditions controlling Diophantine representation.",
+      "The product identity is the key algebraic mechanism behind composite-number closure.",
+      "The metadata distinguishes the proved prime/closure facts from the full composite exponent characterization still advertised by the broader problem."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`sum_two_squares_iff_not_three_mod_four` proves the prime classification.",
+      "`one_mod_four_is_sum_of_squares` and `two_is_sum_of_squares` record positive special cases.",
+      "`three_mod_four_not_sum_of_squares` proves the mod-4 obstruction.",
+      "`prime_classification` and `sum_of_squares_classification` package the prime cases.",
+      "`two_squares_mul` proves the Brahmagupta-Fibonacci identity, and `two_squares_closed` gives multiplicative closure in existential form.",
+      "The listed Fermat two-squares files are recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "The full composite criterion, requiring every prime factor congruent to 3 mod 4 to occur with even exponent, is not claimed as complete by this metadata slice."
+    ],
+    "goal": "Replace the truncated placeholder entry with precise theorem evidence for the prime theorem and product-closure core."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-29T18:32:39.305Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "fermat-two-squares",
+    "sum-of-two-squares",
+    "modular-arithmetic",
+    "brahmagupta-fibonacci-identity",
+    "formalized"
+  ],
+  "relatedProofs": [
+    "fermat-two-squares",
+    "fermat-two-squares-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:32:39.304Z",
+  "lastUpdate": "2026-03-29T18:32:39.304Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FermatTwoSquares.lean",
+      "filename": "FermatTwoSquares.lean",
+      "lineCount": 202,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquares.lean"
+    },
+    {
+      "path": "Proofs/FermatTwoSquaresOQ01.lean",
+      "filename": "FermatTwoSquaresOQ01.lean",
+      "lineCount": 255,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ01.lean"
+    }
+  ]
+}

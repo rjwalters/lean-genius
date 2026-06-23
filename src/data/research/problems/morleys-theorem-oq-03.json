@@ -1,0 +1,116 @@
+{
+  "slug": "morleys-theorem-oq-03",
+  "title": "The Morley Triangle is Largest at the Equilateral",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For fixed circumradius R, the Morley side 8R·sin(α/3)sin(β/3)sin(γ/3) over triangles (α+β+γ=π, α,β,γ>0) is maximized at α=β=γ=π/3 with value 8R·sin³(π/9).",
+    "plain": "Among all triangles with a fixed circumradius, which has the largest Morley equilateral triangle? Answer: the equilateral triangle; maximal side = 8R·sin³(π/9) ≈ 0.32008 R.",
+    "whyMatters": [
+      "Sharp extremal characterization of the Morley side-length formula, orthogonal to OQ-01 (Conway construction) and OQ-02 (second Morley triangles)",
+      "Fully elementary: AM-GM(3) plus Jensen for sin, no calculus or Lagrange multipliers",
+      "Note: the originally-seeded OQ-03 (contribute cosine_rule_identity to Mathlib) was vacuous — that identity is already fully proven in MorleysTheorem.lean"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Morley side length = 8R sin(α/3)sin(β/3)sin(γ/3) (MorleysTheorem.lean)"
+    ],
+    "open": [
+      "Strict uniqueness: equality iff equilateral"
+    ],
+    "goal": "Prove the Morley side length is maximized (for fixed R) exactly at the equilateral triangle."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-18T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Saturated and machine-verified: bound + attainment + strict uniqueness, 0 sorry/0 axiom, registered (Proofs.lean:2690), kernel-built green in #24690, gallery entry verified/original.",
+    "blockers": [],
+    "nextAction": "None required. Optional future direction: a quantitative Δ-stability deficit bound s_max − s in terms of angle spread.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "MATH COMPLETE (bound + attainment + strict uniqueness, 0 sorry/0 axiom, registered). Gallery meta.json exists. Pre-build name-check passed at pinned rev — file is build-ready. ONLY blocker to verified status is the Docker kernel check (environmental). Auditor PR #24667 correctly holds status at formalized/wip until a build runs.",
+    "builtItems": [
+      "amgm_three in MorleysTheoremOQ03.lean (AM-GM for 3 nonnegatives, cubed form, via nlinarith + SOS hints)",
+      "sin_jensen_three in MorleysTheoremOQ03.lean (3-point Jensen for sin on [0,π] via chained 2-point concavity)",
+      "morley_side_le_equilateral in MorleysTheoremOQ03.lean (s ≤ 8R sin³(π/9))",
+      "morley_side_equilateral + morley_side_max in MorleysTheoremOQ03.lean (bound attained; packaged maximum)",
+      "sin_two_eq in MorleysTheoremOQ03.lean (equality case of 2-pt concavity for sin via strictConcaveOn_sin_Icc.2)",
+      "sin_jensen_three_eq in MorleysTheoremOQ03.lean (3-pt Jensen equality ⟹ a₁=a₂=a₃, chained 2-pt strict)",
+      "morley_side_eq_iff in MorleysTheoremOQ03.lean (R>0: morleySide = 8R sin³(π/9) ↔ α=β=γ=π/3 — strict uniqueness)"
+    ],
+    "insights": [
+      "Substituting aᵢ=αᵢ/3, the constraint α+β+γ=π becomes a₁+a₂+a₃=π/3, so the trisected-angle mean is always π/9 regardless of the triangle.",
+      "Maximizing the Morley side reduces to maximizing ∏ sin(αᵢ/3) at fixed sum π/3, whose max is at the equal point by concavity+AM-GM.",
+      "Two-step bound: ∏ sin aᵢ ≤ ((Σ sin aᵢ)/3)³ ≤ sin(π/9)³ (AM-GM then Jensen), numerically verified with 0 violations.",
+      "AM-GM(3) certificate: (u+v+w)³−27uvw = 3·Σ u(v−w)² + ½(u+v+w)·Σ(u−v)² ≥ 0.",
+      "Strict uniqueness extracted from the bound proof: equality sandwiches ((Σsin)/3)³ = sin(π/9)³, then pow_left_inj₀ (a^n=b^n↔a=b on nonnegatives) gives (Σsin)/3 = sin(π/9), i.e. Jensen is tight.",
+      "Tight Jensen ⟹ angles equal handled by sin_jensen_three_eq, which reads the equality case off each chained 2-point step via strict concavity (strictConcaveOn_sin_Icc.2).",
+      "R>0 is essential for uniqueness: at R=0 every triangle has Morley side 0, so the maximizer is not unique.",
+      "Pre-build name-check audit (researcher-8, 2026-06-15) against pinned Mathlib v4.26.0 (rev 2df2f0150c): every external lemma exists with the used signature — strictConcaveOn_sin_Icc (.2 / .concaveOn.2 patterns mirror Mathlib Bounds.lean L64/69), pow_le_pow_left₀ (Order/GroupWithZero/Unbundled/Basic.lean L455), pow_left_inj₀ (same file L632, exact iff a^n=b^n↔a=b, arg order 0≤a,0≤b,n≠0), sin_nonneg_of_nonneg_of_le_pi (Trigonometric/Basic.lean L419). No stray -/ in docstrings. File is build-ready; only the kernel check is missing."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "BUILD-READY: run ./proofs/scripts/docker-build.sh Proofs.MorleysTheoremOQ03 once Docker recovers — name-check passed, expect 0 sorry/0 axiom green. On green, restore meta.json status verified/original (currently held at formalized/wip by auditor PR #24667, which is policy-correct until a build confirms the kernel check).",
+      "Possible follow-up (only after a green build): quantitative deficit bound s_max - s in terms of angle spread (a Δ-stability estimate)."
+    ]
+  },
+  "tags": [
+    "geometry",
+    "morley",
+    "trisectors",
+    "extremal",
+    "jensen",
+    "am-gm"
+  ],
+  "relatedProofs": [
+    "morleys-theorem",
+    "morleys-theorem-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "strictConcaveOn_sin_Icc",
+      "ConcaveOn.le_map_sum",
+      "geom_mean_le_arith_mean3_weighted",
+      "pow_le_pow_left₀"
+    ]
+  },
+  "started": "2026-04-22T12:51:58.296Z",
+  "lastUpdate": "2026-06-18T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/MorleysTheoremOQ03.lean",
+      "filename": "MorleysTheoremOQ03.lean",
+      "lineCount": 215,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MorleysTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/MorleysTheorem.lean",
+      "filename": "MorleysTheorem.lean",
+      "lineCount": 533,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MorleysTheorem.lean"
+    }
+  ]
+}

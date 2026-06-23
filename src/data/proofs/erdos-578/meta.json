@@ -1,0 +1,210 @@
+{
+  "id": "erdos-578",
+  "title": "Erdős Problem #578: Hypercubes in Random Graphs",
+  "slug": "erdos-578",
+  "description": "If G is a random graph on 2^d vertices with edge probability 1/2, does G almost surely contain Q_d? Answer: YES (Riordan 2000). Threshold p > 1/4 suffices, and copies are normally distributed.",
+  "meta": {
+    "author": "Riordan (2000)",
+    "sourceUrl": "https://erdosproblems.com/578",
+    "date": "2000",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos578Problem.lean",
+    "tags": [
+      "erdos",
+      "random-graphs",
+      "hypercubes",
+      "probabilistic-combinatorics",
+      "graph-theory"
+    ],
+    "prerequisites": [
+      "Basic graph theory (vertices, edges, subgraphs)",
+      "Erdős-Rényi random graph model G(n,p)",
+      "Probability theory (almost sure convergence)",
+      "Hypercube structure and binary representations",
+      "Second moment method in probabilistic combinatorics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 578,
+    "erdosUrl": "https://erdosproblems.com/578",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real number operations",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "ProbabilityMassFunction",
+        "description": "Probability distributions",
+        "module": "Mathlib.Probability.ProbabilityMassFunction.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Hypercube: structure with vertices = 2^d, edges = d·2^{d-1}",
+      "RandomGraph: G(n,p) model with probability constraints",
+      "standardRandomGraph: G(2^d, 1/2) construction",
+      "riordanRandomGraph: G(2^d, p) for p > 1/4",
+      "AlmostSurely: asymptotic probability 1 property",
+      "ContainsHypercube: abstract subgraph containment",
+      "erdos_bollobas_conjecture: original G(2^d, 1/2) statement",
+      "erdos_bollobas_proved axiom: original conjecture",
+      "threshold_at_quarter axiom: 1/4 is essentially tight",
+      "hypercubeAutomorphisms: d! · 2^d symmetries",
+      "erdos_578_summary: proved conjunction of main results"
+    ],
+    "dateAdded": "2026-01-19",
+    "axiomCount": 2,
+    "lineCount": 151,
+    "assumptions": "2 axioms: erdos_bollobas_proved, threshold_at_quarter. 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 11
+  },
+  "overview": {
+    "historicalContext": "Erdős and Béla Bollobás conjectured that random graphs $G(2^d, 1/2)$ almost surely contain the $d$-dimensional hypercube $Q_d$ as a subgraph. This was part of the broader program initiated by Erdős and Rényi (1959-1960) studying threshold phenomena in random graphs: at what edge probability does a given subgraph first appear? For spanning subgraphs like $Q_d$ (which uses all $2^d$ vertices), the question is particularly delicate because the expected number of copies involves a subtle cancellation between the $\\binom{2^d}{2^d} = 1$ ways to choose the vertex set and the $d! \\cdot 2^d$ automorphisms of $Q_d$. Oliver Riordan (2000) resolved the conjecture affirmatively in 'Spanning subgraphs of random graphs' (Combinatorics, Probability & Computing), proving the stronger result that $p > 1/4$ suffices. His proof uses the second moment method: showing the variance of the number of $Q_d$ copies is dominated by the square of the expected value. The threshold $p = 1/4$ is essentially tight. Riordan also established that the number of $Q_d$ copies converges to a normal distribution, a distributional refinement going well beyond mere almost-sure existence.",
+    "problemStatement": "**Problem Statement (SOLVED: YES)**\n\nThe d-dimensional hypercube Q_d has 2^d vertices and d·2^{d-1} edges.\n\n**Question:** If G is a random graph on 2^d vertices with edge probability p = 1/2, does G almost surely contain a copy of Q_d?\n\n**Answer:** YES (Riordan 2000)\n\n**Strengthening:** Even p > 1/4 suffices (Riordan 2000)",
+    "text": "If G is a random graph on 2^d vertices with edge probability 1/2, does G almost surely contain Q_d? Answer: YES (Riordan 2000). Threshold p > 1/4 suffices, and copies are normally distributed.",
+    "proofStrategy": "The formalization defines the hypercube Q_d, random graph model G(n,p), and 'almost surely' containment. Riordan's theorem is axiomatized for p > 1/4, from which the original p = 1/2 conjecture follows. The threshold optimality at 1/4 and normal distribution of copies are also axiomatized. The summary theorem proves the conjunction of the conjecture and threshold result.",
+    "keyInsights": [
+      "**Hypercube Q_d:** 2^d vertices (binary strings), d·2^{d-1} edges",
+      "**Random Graph G(n,p):** Each edge appears independently with probability p",
+      "**Almost Surely:** Probability → 1 as d → ∞",
+      "**Riordan (2000):** Threshold p > 1/4 suffices (stronger than 1/2)",
+      "**Normal Distribution:** Number of Q_d copies is normally distributed",
+      "**Threshold Optimality:** 1/4 is essentially tight"
+    ],
+    "prerequisites": [
+      "Basic graph theory (vertices, edges, subgraphs)",
+      "Erdős-Rényi random graph model G(n,p)",
+      "Probability theory (almost sure convergence)",
+      "Hypercube structure and binary representations",
+      "Second moment method in probabilistic combinatorics"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 40,
+      "endLine": 58,
+      "summary": "Hypercube structure, vertex count 2^d, edge count d·2^{d-1}",
+      "mathContext": "$Q_d$ has $2^d$ vertices (binary strings of length $d$) and $d \\cdot 2^{d-1}$ edges (pairs differing in exactly one coordinate). It is $d$-regular."
+    },
+    {
+      "id": "random-graphs",
+      "title": "Random Graphs",
+      "startLine": 59,
+      "endLine": 81,
+      "summary": "G(n,p) model, standard G(2^d, 1/2), Riordan's G(2^d, p>1/4)",
+      "mathContext": "$G(n,p)$: each potential edge appears independently with probability $p$. The standard instance $G(2^d, 1/2)$ has each edge equally likely; Riordan's strengthening uses $p > 1/4$."
+    },
+    {
+      "id": "almost-sure",
+      "title": "Almost Sure Containment",
+      "startLine": 82,
+      "endLine": 92,
+      "summary": "AlmostSurely definition, ContainsHypercube property",
+      "mathContext": "`AlmostSurely P` means $\\Pr[P(G)] \\to 1$ as $d \\to \\infty$. `ContainsHypercube G d` asserts $Q_d \\subseteq G$ as a subgraph."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Bollobás Conjecture",
+      "startLine": 93,
+      "endLine": 98,
+      "summary": "Original conjecture: G(2^d, 1/2) contains Q_d a.s."
+    },
+    {
+      "id": "riordan",
+      "title": "Riordan's Theorem (2000)",
+      "startLine": 99,
+      "endLine": 107,
+      "summary": "Strengthened result for p > 1/4, proves original conjecture"
+    },
+    {
+      "id": "threshold-distribution",
+      "title": "Threshold and Distribution",
+      "startLine": 108,
+      "endLine": 119,
+      "summary": "Threshold at 1/4 is optimal; normal-distribution refinement is documented in comments only (not axiomatized)",
+      "mathContext": "Threshold: $p \\leq 1/4 \\implies Q_d \\not\\subseteq G(2^d,p)$ a.s. Distribution: the standardized count $(X - \\mathbb{E}[X])/\\sqrt{\\text{Var}(X)} \\to N(0,1)$ (informal, not in Lean)."
+    },
+    {
+      "id": "properties",
+      "title": "Hypercube Properties",
+      "startLine": 120,
+      "endLine": 135,
+      "summary": "d-regular, automorphism group d!·2^d"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 136,
+      "endLine": 151,
+      "summary": "Proved conjunction of conjecture and threshold"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #578 is SOLVED with answer YES. Random graphs G(2^d, 1/2) almost surely contain the hypercube Q_d. Riordan strengthened this to any p > 1/4 and showed the number of copies is normally distributed. The threshold 1/4 is essentially optimal.",
+    "implications": "This result is fundamental in probabilistic combinatorics, showing that hypercubes are 'likely' subgraphs of random graphs with moderate edge density.",
+    "openQuestions": [
+      "What is the exact threshold probability for hypercube containment?",
+      "What are the precise constants in the normal distribution?",
+      "How does this generalize to other structured subgraphs?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Riordan, Oliver",
+      "title": "Spanning subgraphs of random graphs",
+      "year": "2000",
+      "venue": "Combinatorics, Probability and Computing 9(2), pp. 125-148",
+      "note": "Proved G(2^d, p) contains Q_d a.s. for p > 1/4, settling the Erdős-Bollobás conjecture"
+    },
+    {
+      "authors": "Bollobás, Béla",
+      "title": "Random Graphs",
+      "year": "2001",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Background on G(n,p) random graph model and threshold phenomena"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "description": "Both concern guaranteed substructures: Ramsey theory guarantees monochromatic complete graphs, #578 guarantees hypercube subgraphs in random graphs",
+      "relationship": "related"
+    },
+    {
+      "targetId": "erdos-36",
+      "relationship": "related",
+      "description": "Both involve probabilistic combinatorics. Problem #36 uses probabilistic partition arguments, while #578 studies the threshold for hypercube subgraph appearance in random graphs — the probabilistic method applied to different structural questions"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Probability.ProbabilityMassFunction.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos578",
+    "lineCount": 151,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "definitionCount": 11,
+    "path": "Proofs/Erdos578Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

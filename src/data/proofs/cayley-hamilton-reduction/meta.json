@@ -1,0 +1,232 @@
+{
+  "id": "cayley-hamilton-reduction",
+  "title": "Matrix Function Reduction via Cayley-Hamilton",
+  "slug": "cayley-hamilton-reduction",
+  "description": "Any polynomial function of an n×n matrix A reduces to a polynomial of degree at most n-1: aeval A p = aeval A (p mod charpoly(A)). This enables efficient computation of matrix powers, exponentials, and other matrix functions.",
+  "meta": {
+    "author": "Cayley and Hamilton (reduction formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cayley%E2%80%93Hamilton_theorem#Applications",
+    "date": "1858",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonOQ02.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "polynomials",
+      "matrix-exponential",
+      "extension"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.aeval_self_charpoly",
+        "description": "The Cayley-Hamilton theorem: p_A(A) = 0",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Matrix.charpoly_monic",
+        "description": "The characteristic polynomial is monic",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Matrix.charpoly_natDegree_eq_dim",
+        "description": "Degree of charpoly equals matrix dimension n",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Polynomial.modByMonic_add_div",
+        "description": "Division algorithm for monic polynomials",
+        "module": "Mathlib.Algebra.Polynomial.Div"
+      },
+      {
+        "theorem": "Polynomial.degree_modByMonic_lt",
+        "description": "Degree bound on polynomial remainder",
+        "module": "Mathlib.Algebra.Polynomial.Div"
+      }
+    ],
+    "originalContributions": [
+      "Polynomial reduction theorem: aeval A p = aeval A (p mod charpoly)",
+      "Matrix power reduction: A^k as polynomial of degree < n",
+      "Congruence theorem: same remainder implies same matrix evaluation",
+      "Annihilator ideal structure (closure under addition and multiplication)",
+      "Partial sum reduction for matrix exponential series",
+      "Nilpotent and idempotent matrix special cases"
+    ],
+    "dateAdded": "2026-02-10",
+    "axiomCount": 0,
+    "lineCount": 358,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 20,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Cayley-Hamilton theorem (1858) states that every matrix satisfies its characteristic polynomial. A powerful corollary is that any polynomial function of an n×n matrix can be reduced to a polynomial of degree at most n-1. This reduction is the algebraic foundation for efficient computation of matrix exponentials, powers, and other matrix functions.\n\nThis principle is essential in control theory (computing e^{At} for linear systems dx/dt = Ax), signal processing, and numerical ODE solvers. Instead of computing A^100 directly, one reduces X^100 modulo charpoly(A) to get a polynomial of degree < n.",
+    "problemStatement": "**Polynomial Reduction Theorem**: For any polynomial p and n×n matrix A:\n\naeval A p = aeval A (p mod charpoly(A))\n\nwhere the remainder has degree < n. This means every polynomial function of A lies in the span {I, A, A^2, ..., A^{n-1}}.\n\n**Power Reduction**: A^k = aeval A (X^k mod charpoly(A)) for all k.\n\n**Matrix Exponential Foundation**: Finite partial sums of power series also reduce via charpoly, providing the algebraic basis for computing exp(tA) = c_0(t)I + c_1(t)A + ... + c_{n-1}(t)A^{n-1}.",
+    "text": "Any polynomial function of an n×n matrix A reduces to a polynomial of degree at most n-1: aeval A p = aeval A (p mod charpoly(A)). This enables efficient computation of matrix powers, exponentials, and other matrix functions.",
+    "proofStrategy": "The proof uses the polynomial division algorithm for monic polynomials. Since charpoly(A) is monic, any polynomial p decomposes as p = q * charpoly(A) + r where deg(r) < n. Evaluating at A and using Cayley-Hamilton (aeval A charpoly(A) = 0) yields aeval A p = aeval A r.\n\nThe degree bound follows from Mathlib's degree_modByMonic_lt. Special cases for nilpotent matrices (charpoly = X^n implies A^n = 0) and idempotent matrices (A^k = A for k > 0) are derived as corollaries.",
+    "keyInsights": [
+      "The characteristic polynomial acts as a modular reduction for matrix polynomial evaluation",
+      "Any polynomial expression in A reduces to one of degree < n, giving a finite-dimensional computation",
+      "Two polynomials with the same remainder mod charpoly evaluate to the same matrix",
+      "The annihilator of A forms an ideal containing charpoly (closure under + and left multiplication)",
+      "Partial sums of power series (like exp(tA)) also reduce, connecting to matrix exponentials",
+      "Nilpotent matrices have charpoly = X^n, so all powers >= n vanish"
+    ],
+    "prerequisites": [
+      "Linear algebra (matrix powers, characteristic polynomial)",
+      "Ring theory (polynomial ring quotients, Cayley-Hamilton)",
+      "Computational algebra (matrix function evaluation)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "reduction",
+      "title": "The Polynomial Reduction Theorem",
+      "startLine": 59,
+      "endLine": 98,
+      "summary": "Core result: aeval A p = aeval A (p mod charpoly(A)). Uses division algorithm and Cayley-Hamilton annihilation.",
+      "mathContext": "For any polynomial $q(X)$, $q(A) = r(A)$ where $r = q \\mod p_A$ and $\\deg r < n$. This is because $p_A(A) = 0$ by Cayley-Hamilton, so $q(A) \\equiv r(A) \\pmod{p_A(A)}$."
+    },
+    {
+      "id": "degree-bounds",
+      "title": "Degree Bounds",
+      "startLine": 99,
+      "endLine": 130,
+      "summary": "The reduced polynomial has degree < deg(charpoly) = n, bounding matrix expressions to the span of {I, A, ..., A^{n-1}}.",
+      "mathContext": "The reduced polynomial $r = q \\mod p_A$ has $\\deg r < \\deg p_A = n$, so $q(A) = r_0 I + r_1 A + \\cdots + r_{n-1} A^{n-1}$. The matrix algebra $R[A] \\subseteq \\text{Mat}_n(R)$ is spanned by $\\{I, A, \\ldots, A^{n-1}\\}$."
+    },
+    {
+      "id": "power-reduction",
+      "title": "Power Reduction",
+      "startLine": 131,
+      "endLine": 162,
+      "summary": "Matrix powers A^k expressed as evaluation of X^k mod charpoly. Every power reduces to degree < n.",
+      "mathContext": "For any polynomial $q(X)$, $q(A) = r(A)$ where $r = q \\mod p_A$ and $\\deg r < n$. This is because $p_A(A) = 0$ by Cayley-Hamilton, so $q(A) \\equiv r(A) \\pmod{p_A(A)}$."
+    },
+    {
+      "id": "congruence",
+      "title": "Congruence and Algebraic Structure",
+      "startLine": 163,
+      "endLine": 197,
+      "summary": "Two polynomials congruent mod charpoly evaluate identically. The annihilator forms an ideal.",
+      "mathContext": "The quotient ring $R[X]/(p_A)$ is isomorphic to the algebra $R[A]$ generated by $A$. Two polynomials $q_1, q_2$ satisfy $q_1(A) = q_2(A)$ iff $p_A \\mid (q_1 - q_2)$."
+    },
+    {
+      "id": "partial-sums",
+      "title": "Partial Sum Reduction",
+      "startLine": 198,
+      "endLine": 225,
+      "summary": "Finite partial sums of power series reduce via charpoly, providing the foundation for computing matrix exponentials.",
+      "mathContext": "For the matrix exponential: $\\sum_{k=0}^{N} \\frac{(At)^k}{k!} = \\sum_{j=0}^{n-1} \\left(\\sum_{k=0}^{N} \\frac{t^k}{k!} [X^k \\mod p_A]_j\\right) A^j$ where $[\\cdot]_j$ denotes the $j$-th coefficient of the reduced polynomial."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 226,
+      "endLine": 358,
+      "summary": "Nilpotent matrices (A^n = 0 from charpoly = X^n), idempotent matrices (A^k = A), and concrete 2x2 examples.",
+      "mathContext": "Nilpotent: $p_N = \\lambda^n$, so $N^n = 0$ and $e^{Nt} = \\sum_{k=0}^{n-1} \\frac{(Nt)^k}{k!}$ (exact finite sum). Idempotent: $P^2 = P$ gives $P^k = P$ for $k \\geq 1$, and $e^{Pt} = I + (e^t-1)P$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves the polynomial reduction theorem: any polynomial function of an n×n matrix A equals the evaluation of its remainder modulo the characteristic polynomial. All 20 theorems are fully proved (0 sorries), establishing the algebraic foundation for matrix function computation.",
+    "implications": "**Control Theory**: The matrix exponential exp(tA) reduces to n coefficients, enabling efficient computation of linear system responses.\n\n**Numerical Methods**: Instead of computing A^k by repeated multiplication, reduce X^k mod charpoly to a low-degree polynomial.\n\n**Signal Processing**: Transfer functions and z-transforms of matrix systems simplify via this reduction.\n\n**Abstract Algebra**: The evaluation map factors through R[X]/(charpoly), an n-dimensional quotient ring.",
+    "openQuestions": [
+      "Can this reduction be made computationally efficient for sparse matrices?",
+      "How does the minimal polynomial give a tighter reduction than the characteristic polynomial?",
+      "What is the analog for infinite-dimensional operators (compact operators on Hilbert spaces)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.Algebra.Polynomial.Div",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "BigOperators"
+    ],
+    "namespace": "CayleyHamiltonOQ02",
+    "lineCount": 358,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 0,
+    "path": "Proofs/CayleyHamiltonOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "extends",
+      "description": "Parent proof: the Cayley-Hamilton theorem (a matrix satisfies its own characteristic polynomial) — this file shows how to reduce matrix functions modulo the characteristic polynomial"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "The minimal polynomial approach to Cayley-Hamilton — this file uses the characteristic polynomial directly for matrix function reduction"
+    },
+    {
+      "targetId": "cramers-rule",
+      "relationship": "related",
+      "description": "Cramer's rule uses determinants of matrices; the characteristic polynomial involves det(A - λI), connecting determinant theory to eigenvalue analysis"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "Matrix power expansion and polynomial evaluation at matrices use binomial-type identities for the algebraic manipulations"
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "Over $\\mathbb{C}$ the characteristic polynomial splits completely by the fundamental theorem of algebra, so the reduction mod $\\text{charpoly}(A)$ can be computed via partial fractions from eigenvalues"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Lagrange's theorem (subgroup order divides group order) is the algebraic analogue of the minimal polynomial dividing the characteristic polynomial — both reflect quotient structure in their respective settings"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "related",
+      "description": "De Moivre's formula computes powers of rotation matrices via $e^{in\\theta}$; the Cayley-Hamilton reduction reduces these matrix powers to linear combinations of $I$ and $A$ for $2 \\times 2$ rotations"
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "The characteristic polynomial of a matrix determines a field extension via its splitting field; the Galois group of this extension governs the algebraic structure of the matrix's eigenvalues and Jordan form"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-01",
+      "relationship": "extended-by",
+      "description": "Extended by an efficient Cayley-Hamilton reduction specialized to sparse matrices."
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-02",
+      "relationship": "extended-by",
+      "description": "Extended by a refinement reducing via the minimal polynomial in place of the characteristic polynomial."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Horn, Roger A.; Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Covers the reduction approach to Cayley-Hamilton via companion matrices and rational canonical form"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "matrix_polynomial_reduction",
+      "type": "core",
+      "description": "Any polynomial in A can be reduced to degree < deg(chi_A) using Cayley-Hamilton",
+      "leanType": "(p : Polynomial R) -> exists q, q.natDegree < A.charpoly.natDegree and aeval A p = aeval A q"
+    }
+  ],
+  "sorries": 0
+}

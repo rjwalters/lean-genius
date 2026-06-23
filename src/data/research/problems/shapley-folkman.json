@@ -1,0 +1,101 @@
+{
+  "slug": "shapley-folkman",
+  "title": "Shapley-Folkman Lemma",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0 sorries. WF induction on total minCaraDepth. Docker build passes. PR #12242.",
+    "insights": [
+      "reduce_excess_by_one is the mathematical core — requires: (1) linear dependence of d+1 direction vectors via finrank, (2) perturbation ε construction from boundary distances, (3) verification that new points remain in convex hulls",
+      "sum_close_to_convexHull needs convexHull(∑ Sᵢ) = ∑ convexHull(Sᵢ) from Mathlib (check Mathlib.Analysis.Convex.Combination for sum identity)",
+      "repeated_sum_nearly_convex follows from sum_close_to_convexHull by specialization",
+      "Main theorem shapley_folkman is already proved from reduce_excess_by_one by strong induction",
+      "sum_close_to_convexHull proof path: (1) convexHull_min + monotonicity (S⊆convexHull S) gives convexHull(∑S_i) ⊆ ∑convexHull(S_i), (2) Set.mem_finset_sum decomposes membership, (3) shapley_folkman bounds excess. Needs: Mathlib Finset pointwise sum monotonicity + sum-of-convex-is-convex.",
+      "repeated_sum_nearly_convex follows from sum_close_to_convexHull by specializing S_i = S for all i",
+      "reduce_excess_by_one is the deep sorry: needs linearDependent_coefficients (proved!) + perturbation argument (~50 lines). Key steps: extract binary reps for d+1 excess indices, find dependence via linearDependent_coefficients, perturb with epsilon to collapse one index.",
+      "Case A/B analysis for reduce_excess_by_one Step 6: Case A (negative-coefficient minimizer) works directly; Case B (positive-coefficient minimizer, bv ∉ S) requires WF induction on total Caratheodory rank",
+      "Total Caratheodory rank is a valid WF measure: strictly decreases in every perturbation step (Case A: one index leaves excess; Case B: rank at perturbed index decreases n→n-1)",
+      "The 1-dimensional kernel argument shows c\\u2019 cannot always be chosen to force Case A — both Case A and Case B simultaneously failing is possible when (1-sv0)(1-sv1) > sv0*sv1",
+      "hD_subset is trivially true: D.excessIndices subset holds because emb maps INTO D.excessIndices (by hemb_mem), so all perturbed excess indices were already excess",
+      "hemb_inj proved using List.nodup_iff_injective_get on D.excessIndices.val.toList (nodup by Finset.nodup_val)",
+      "ε₀ from neg_indices only is insufficient for new_mem_convexHull: need joint min over neg AND pos coefficient bounds for pos-coeff perturbed points to stay in conv(S)",
+      "Case A of new_mem_convexHull proved: when ε₀ satisfies all pos-index bounds, three-way c-trichotomy (neg/zero/pos) covers all cases via convex_convexHull ℝ (S i)",
+      "Joint minimum ε = min(ε₀, pos_ratios) eliminates Case B sorry in new_mem_convexHull: hε_le_neg and hε_le_pos ensure all convex weights ≥ 0",
+      "Single remaining sorry precisely located: hnew_point_av needs ε = ε₀, which holds when neg-index l_min achieves joint minimum",
+      "When pos-index achieves joint minimum: a-weight → 0, new_point = bv ∈ convexHull but not S; excess does not decrease — WF descent on Carathéodory count needed",
+      "Case B of reduce_excess_by_one requires WF descent — 5 alternative approaches investigated and ruled out",
+      "caratheodoryCount strictly decreases from D.point to bv in binary_repr: bv uses n-1 of n original vertices",
+      "totalCaratheodoryCount measure enables WF induction termination for the sorry",
+      "Sub-case B1 (bv in S) is a special case of WF; Sub-case B2 requires the full recursion",
+      "sum rearrangement sorry proved: ∑_{i∈t} [indicator terms] = ∑_{l:Fin(d+1)} using Finset.sum_subset (terms vanish outside image(emb)) + Finset.sum_image (injectivity) + split_ifs (h.choose = l via hemb_inj h.choose_spec)",
+      "convexHull_not_mem_requires_two proved: obtain affinely independent representation via eq_pos_convex_span_of_mem_convexHull, then case analysis on card ι = 0 (empty sum contradiction) and card ι = 1 (unique element gives x ∈ s contradiction); convert ι to Fin n via Fintype.equivFin",
+      "binary_repr_of_mem_convexHull_not_mem proved: chain from convexHull_not_mem_requires_two to get n≥2 vertex representation, split via Fin.sum_univ_succ into first vertex + rest, renormalize rest as centerMass with weight r = 1 - w₀ > 0"
+    ],
+    "builtItems": [
+      "binary_repr_of_mem_convexHull_not_mem private lemma (ShapleyFolkman.lean:220)",
+      "reduce_excess_by_one Steps 1-5 proof structure (lines 247-300)",
+      "Sign normalization of linear dependence coefficients (proved)",
+      "Direction vectors and linear dependence extraction (proved)",
+      "Fixed embedding extraction Step 2 via Multiset.toList list enumeration (ShapleyFolkman.lean:317-328)",
+      "hemb_inj: injectivity of embedding (List.nodup_iff_injective_get)",
+      "hD_subset: D.excessIndices subset proof (trivial via hemb_mem)",
+      "hnew_point_av: new_point(emb l_min) = av(emb l_min) ∈ S (algebraic proof)",
+      "ε₀ perturbation construction with neg-coefficient minimum",
+      "Case A proof of new_mem_convexHull via by_cases hCaseA + c-trichotomy (ShapleyFolkman.lean ~50 lines at lines 543-590)",
+      "new_mem_convexHull: proved sorry-free using joint ε (ShapleyFolkman.lean:576)",
+      "new_sum: updated to use ε consistently (ShapleyFolkman.lean:522)",
+      "new_sum indicator sum rearrangement: proved via step1 (Finset.sum_subset) + step2 (Finset.sum_image + Finset.sum_congr rfl) — ShapleyFolkman.lean:467",
+      "convexHull_not_mem_requires_two: PROVED (~40 lines, ShapleyFolkman.lean:113-154)",
+      "binary_repr_of_mem_convexHull_not_mem: PROVED (~45 lines, ShapleyFolkman.lean:219-258)"
+    ],
+    "mathlibGaps": [
+      "WF descent on Carathéodory vertex count: needed for Sub-case B2 where bv ∉ S; formal prerequisite is binary_repr_of_mem_convexHull_not_mem returning full n-vertex count so caraDepth(bv) = caraDepth(x) - 1 can be tracked"
+    ],
+    "nextSteps": [
+      "DONE (PR #12242): the Sub-case B2 WF descent was implemented via well-founded induction on total minCaraDepth; Docker build passes. Kept for record.",
+      "DONE: no Sub-case B2 sorry remains to submit — ShapleyFolkman.lean / ShapleyFolkmanAristotle.lean / ShapleyFolkmanOQ03.lean are 0-sorry; slug status is completed/COMPLETED. No live next step — SOLVED."
+    ],
+    "phase": "ACT"
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/ShapleyFolkman.lean",
+      "filename": "ShapleyFolkman.lean",
+      "lineCount": 1239,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkman.lean"
+    },
+    {
+      "path": "Proofs/ShapleyFolkmanAristotle.lean",
+      "filename": "ShapleyFolkmanAristotle.lean",
+      "lineCount": 82,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanAristotle.lean"
+    },
+    {
+      "path": "Proofs/ShapleyFolkmanOQ03.lean",
+      "filename": "ShapleyFolkmanOQ03.lean",
+      "lineCount": 204,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanOQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "shapley-folkman",
+    "shapley-folkman-oq-03"
+  ]
+}

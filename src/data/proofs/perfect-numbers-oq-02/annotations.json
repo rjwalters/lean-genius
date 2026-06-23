@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-index",
+    "proofId": "perfect-numbers-oq-02",
+    "range": {
+      "startLine": 44,
+      "endLine": 56
+    },
+    "type": "insight",
+    "title": "The Divisor Involution Turns Reciprocals into σ(n)/n",
+    "content": "`abundancyIndex_eq_sigma_div` proves I(n) = ∑_{d∣n} 1/d = σ(n)/n. The mechanism is the involution d ↦ n/d on the divisors of n: each reciprocal 1/d equals the cofactor (n/d)/n (since for d ∣ n the natural cofactor n/d casts exactly to (n:ℚ)/(d:ℚ)), so factoring 1/n out leaves (1/n)·∑_{d∣n} (n/d) = (1/n)·∑_{d∣n} d = σ(n)/n. Mathlib packages the involution as Nat.sum_div_divisors: ∑_{d∣n} f(n/d) = ∑_{d∣n} f(d)."
+  },
+  {
+    "id": "ann-characterization",
+    "proofId": "perfect-numbers-oq-02",
+    "range": {
+      "startLine": 62,
+      "endLine": 73
+    },
+    "type": "insight",
+    "title": "Perfect ⟺ Divisor Reciprocals Sum to 2",
+    "content": "`perfect_iff_abundancyIndex_eq_two` is the headline: n is perfect exactly when ∑_{d∣n} 1/d = 2. The proof rewrites perfectness as σ(n) = 2n (Nat.perfect_iff_sum_divisors_eq_two_mul) and the index as σ(n)/n, clears the denominator, and matches the two integer equations by casting. This convention-free form generalizes immediately: a k-perfect number is one with ∑_{d∣n} 1/d = k, so multiply perfect numbers fit the same template."
+  },
+  {
+    "id": "ann-concrete",
+    "proofId": "perfect-numbers-oq-02",
+    "range": {
+      "startLine": 82,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "6 and 28, Checked by Kernel Decide",
+    "content": "perfect_six and perfect_twentyEight establish that 6 and 28 are perfect using ordinary kernel `decide` on the divisor-sum condition ∑_{d∣n} d = 2n — no native_decide, so the entry stays axiom-free. Feeding them into the characterization gives 1/1 + 1/2 + 1/3 + 1/6 = 2 and the analogous identity for 28, the smallest concrete witnesses of the reciprocal-sum-equals-2 property."
+  }
+]

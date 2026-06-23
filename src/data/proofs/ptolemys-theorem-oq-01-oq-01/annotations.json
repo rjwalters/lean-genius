@@ -1,0 +1,139 @@
+[
+  {
+    "id": "ann-definitions-cworder",
+    "proofId": "ptolemys-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "Clockwise Order via Relabeling",
+    "content": "IsCWOrder is defined as IsCCWOrder with points z₂ and z₄ swapped: z₁, z₄, z₃, z₂ go counterclockwise iff z₁, z₂, z₃, z₄ go clockwise. This definitional reduction is elegant — it means every theorem about CCW order can be applied to CW order by relabeling. The FourDistinct structure bundles all six pairwise distinctness conditions (C(4,2) = 6 pairs), making hypotheses ergonomic to pass around and providing the lemma FourDistinct.reverse which converts distinctness under the relabeling z₁z₂z₃z₄ → z₁z₄z₃z₂.",
+    "mathContext": "$\\text{IsCWOrder}(z_1,z_2,z_3,z_4) := \\text{IsCCWOrder}(z_1,z_4,z_3,z_2)$. Equivalently, as one traverses $z_1 \\to z_2 \\to z_3 \\to z_4$ on the unit circle, the angles decrease (mod $2\\pi$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cyclic order",
+      "orientation",
+      "circular permutation"
+    ],
+    "prerequisites": [
+      "IsCCWOrder (from PtolemysTheoremOQ01)",
+      "complex number geometry"
+    ]
+  },
+  {
+    "id": "ann-ptolemy-positive-proportionality",
+    "proofId": "ptolemys-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 99,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Triangle Inequality Equality Case → Positive Proportionality",
+    "content": "This is the algebraic heart of the converse. The Ptolemy equality ‖z₁-z₃‖·‖z₂-z₄‖ = ‖z₁-z₂‖·‖z₃-z₄‖ + ‖z₂-z₃‖·‖z₁-z₄‖ is rewritten as ‖a+b‖ = ‖a‖ + ‖b‖ using the algebraic identity (z₁-z₂)(z₃-z₄) + (z₂-z₃)(z₁-z₄) = (z₁-z₃)(z₂-z₄). In a strictly convex normed space (which ℂ is as a real inner product space), equality in the triangle inequality forces the two summands to lie on the same ray: SameRay ℝ a b. Since both factors are nonzero (from FourDistinct), this gives a positive real scalar t with t•a = b. The key step (ptolemy_equality_implies_proportional) was developed in PtolemysComplexProofOQ01.",
+    "mathContext": "Using the algebraic identity $(z_1-z_2)(z_3-z_4) + (z_2-z_3)(z_1-z_4) = (z_1-z_3)(z_2-z_4)$, Ptolemy equality becomes $\\|a+b\\| = \\|a\\| + \\|b\\|$. In a strictly convex space, this implies $\\exists t > 0$: $t \\cdot (z_1-z_2)(z_3-z_4) = (z_2-z_3)(z_1-z_4)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SameRay",
+      "strictly convex normed space",
+      "triangle inequality",
+      "complex cross-ratio"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.InnerProductSpace.Convex",
+      "SameRay iff norm_add",
+      "complex number algebra"
+    ]
+  },
+  {
+    "id": "ann-positive-ratio-cyclic-order-axiom",
+    "proofId": "ptolemys-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 116,
+      "endLine": 150
+    },
+    "type": "insight",
+    "title": "Angular Case Analysis: The Remaining Axiom",
+    "content": "This axiom captures the geometric step: given that the cross-ratio (z₁-z₂)(z₃-z₄)/((z₂-z₃)(z₁-z₄)) is a positive real number, the four unit-circle points must be in CCW or CW order. The mathematical proof uses the exp difference factorization: zᵢ - zⱼ = 2i·sin((θᵢ-θⱼ)/2)·exp(i(θᵢ+θⱼ)/2). The four exponential phase factors E₁₂, E₃₄, E₂₃, E₁₄ all equal exp(i(θ₁+θ₂+θ₃+θ₄)/2) when multiplied in pairs, so they cancel. The (2i)² factors also cancel, leaving t·sin((θ₁-θ₂)/2)·sin((θ₃-θ₄)/2) = sin((θ₂-θ₃)/2)·sin((θ₁-θ₄)/2). With t > 0, both products must have the same sign. Among all possible orderings of four distinct points on a circle, only CCW and CW orderings give same-sign sine products on both sides.",
+    "mathContext": "With $z_j = e^{i\\theta_j}$: $z_i - z_j = 2i \\sin\\!\\tfrac{\\theta_i-\\theta_j}{2} \\cdot e^{i(\\theta_i+\\theta_j)/2}$. Cross-ratio condition $\\Rightarrow$ $t \\cdot s_{12} s_{34} = s_{23} s_{14}$ where $s_{ij} = \\sin\\!\\tfrac{\\theta_i - \\theta_j}{2}$. Same-sign condition identifies exactly the CCW and CW orderings.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exp difference factorization",
+      "cross-ratio",
+      "half-angle sine",
+      "cyclic order"
+    ],
+    "prerequisites": [
+      "exp_diff_factor (from PtolemysTheoremOQ01)",
+      "sign analysis of sine products",
+      "cyclic ordering of angles"
+    ]
+  },
+  {
+    "id": "ann-main-theorem-composition",
+    "proofId": "ptolemys-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 156,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Main Theorem: Two-Step Composition",
+    "content": "The main theorem ptolemy_equality_implies_ccw_or_cw is a clean two-line proof: first apply ptolemy_eq_implies_pos_prop to extract the positive proportionality constant t, then apply positive_ratio_implies_cyclic_order to conclude CCW or CW order. The proof is essentially a pipeline through two independently established lemmas. This modular decomposition — separating the algebraic/normed-space step from the trigonometric/cyclic-order step — makes the proof architecture clear and the remaining axiom tightly scoped.",
+    "mathContext": "Proof chain: Ptolemy equality $\\xrightarrow{\\text{strict convexity}}$ $\\exists t>0: t \\cdot (z_1-z_2)(z_3-z_4) = (z_2-z_3)(z_1-z_4)$ $\\xrightarrow{\\text{sign analysis}}$ CCW $\\vee$ CW.",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular proof",
+      "obtain pattern in Lean 4",
+      "existential elimination"
+    ],
+    "prerequisites": [
+      "ptolemy_eq_implies_pos_prop",
+      "positive_ratio_implies_cyclic_order"
+    ]
+  },
+  {
+    "id": "ann-cw-direction-biconditional",
+    "proofId": "ptolemys-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 187,
+      "endLine": 233
+    },
+    "type": "insight",
+    "title": "CW Direction via Relabeling and Norm Symmetry",
+    "content": "Proving Ptolemy equality for CW order is handled by relabeling: IsCWOrder(z₁,z₂,z₃,z₄) is by definition IsCCWOrder(z₁,z₄,z₃,z₂), so the forward theorem applies to the permuted sequence (z₁,z₄,z₃,z₂). The result after applying ptolemy_equality_for_unit_circle_ccw is: ‖z₁-z₃‖·‖z₄-z₂‖ = ‖z₁-z₄‖·‖z₃-z₂‖ + ‖z₄-z₃‖·‖z₁-z₂‖. Three applications of norm_sub_rev (‖a-b‖ = ‖b-a‖) bring the norms to canonical form, and linarith closes the goal using multiplication commutativity. The complete biconditional theorem ptolemy_equality_iff_ccw_or_cw then follows by rintro case split.",
+    "mathContext": "The Ptolemy equality is symmetric in the ordering of norms: $\\|a-b\\| = \\|b-a\\|$ and $\\|a\\|\\cdot\\|b\\| = \\|b\\|\\cdot\\|a\\|$ allow converting between the permuted form and the canonical form, closing the CW direction without new mathematical content.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_sub_rev",
+      "linarith",
+      "biconditional proof",
+      "relabeling argument"
+    ],
+    "prerequisites": [
+      "ptolemy_equality_for_unit_circle_ccw (PtolemysTheoremOQ01)",
+      "norm_sub_rev (Mathlib)"
+    ]
+  },
+  {
+    "id": "ann-numerical-verification",
+    "proofId": "ptolemys-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 239,
+      "endLine": 248
+    },
+    "type": "concept",
+    "title": "Numerical Sanity Check: Square on Unit Circle",
+    "content": "The numerical example verifies Ptolemy equality for the CW sequence 1, -i, -1, i (the four vertices of a square inscribed in the unit circle, traversed clockwise). The computation: ‖1-(-1)‖·‖(-i)-i‖ = 2·2 = 4, and ‖1-(-i)‖·‖(-1)-i‖ + ‖(-i)-(-1)‖·‖1-i‖ = √2·√2 + √2·√2 = 4. The proof uses norm_num to verify the complex arithmetic. This serves as a concrete sanity check that the CW theorem gives the right answer for a familiar example — the diagonals of a square equal the sum of products of opposite sides, which is just the statement that 2·2 = 2.",
+    "mathContext": "For the unit square: $|1-(-1)| \\cdot |{-i}-i| = 2 \\cdot 2 = 4$ and $|1-(-i)| \\cdot |{-1}-i| + |{-i}-(-1)| \\cdot |1-i| = \\sqrt{2}\\cdot\\sqrt{2} + \\sqrt{2}\\cdot\\sqrt{2} = 4$. A square satisfies Ptolemy equality because its diagonals have length $\\sqrt{2}\\cdot\\sqrt{2} = 2$ times each side.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_num tactic",
+      "square inscribed in circle",
+      "concrete verification"
+    ],
+    "prerequisites": [
+      "complex number norms",
+      "Ptolemy's theorem"
+    ]
+  }
+]

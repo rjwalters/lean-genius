@@ -1,0 +1,172 @@
+{
+  "slug": "ehrhart-cube-proven-oq-04",
+  "title": "Eulerian number interpretation of h*-vector of unit cube",
+  "phase": "VERIFIED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(n+1)^d = \\sum_{k=0}^{d-1} A(d, k) \\cdot \\binom{n+1+k}{d}",
+    "plain": "Prove Worpitzky's identity for the unit d-cube: (n+1)^d = Σ_{k=0}^{d-1} A(d, k) C(n+1+k, d), where A(d, k) is the Eulerian number. Equivalently, the Ehrhart h*-vector of [0,1]^d is the Eulerian sequence (A(d, 0), ..., A(d, d-1)).",
+    "whyMatters": [
+      "Completes the Ehrhart h*-vector story for one of three classical lattice polytopes (simplex/cube/cross-polytope)",
+      "Connects Ehrhart theory to permutation statistics (Stanley EC1 §1.4)",
+      "Validates Stanley's 1980 h*-vector non-negativity theorem in a non-trivial case",
+      "Lays Mathlib foundation for a future Mathlib.Combinatorics.Enumerative.Eulerian contribution"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "eulerianNumber d k for d ≤ 4 by rfl",
+      "Row-sum Σ A(d, k) = d! for d ≤ 4 by rfl",
+      "Palindrome A(d, k) = A(d, d-1-k) for d ≤ 4 by rfl",
+      "worpitzky_d1: (n+1)^1 = 1 · C(n+1, 1)",
+      "worpitzky_d2: (n+1)^2 = C(n+1, 2) + C(n+2, 2) — by induction on n using Pascal",
+      "cube_h_star_eulerian: h_k*([0,1]^d) = A(d, k) — S2, via Polynomial.finset_sum_coeff + Finset.sum_ite_eq'",
+      "cube_lattice_count_eulerian: |Fin d → Fin (n+1)| = Σ A(d,k) C(n+1+k, d) — S2, via Fintype.card_fun + worpitzky",
+      "Seven concrete (d, n) verifications by `decide`",
+      "eulerian_zero_eq_one: ∀ d, A(d, 0) = 1 — S3, by Nat recursion",
+      "eulerian_eq_zero_of_le: ∀ d ≥ 1, ∀ k ≥ d, A(d, k) = 0 — S3, double Nat recursion",
+      "eulerian_row_sum_factorial: Σ_{k<d} A(d, k) = d! for d ≥ 1 — S3, induction on d via sum reorganisation",
+      "worpitzky_step: (k+1)·C(n+1+k, d+1) + (d-k)·C(n+2+k, d+1) = (n+1)·C(n+1+k, d) for k ≤ d — S4, Pascal + choose_succ_right_eq",
+      "worpitzky_identity_cube: (n+1)^d = Σ A(d, k) C(n+1+k, d) for d ≥ 1 — S4, induction on d via worpitzky_step + sum_range_succ' reindex (build pending)",
+      "eulerianNumber_recurrence: A(d+1, k+1) = (k+2)·A(d, k+1) + (d-k)·A(d, k) — S5 helper, definitional rfl",
+      "eulerian_palindrome: A(d, k) = A(d, d-1-k) for k < d — S5, induction on d with case-split on k (k = 0 / 1 ≤ k < d / k = d), uses ih + eulerian_zero_eq_one + eulerian_eq_zero_of_le; descent involution not required (build pending)",
+      "worpitzky_identity_cube_palindrome: (n+1)^d = Σ A(d, k) C(n+d-k, d) for d ≥ 1 — S6, composes S4 worpitzky_identity_cube + S5 eulerian_palindrome via Finset.sum_range_reflect (build pending)",
+      "cubeHStarPoly_eval_one: (cubeHStarPoly d).eval 1 = d.factorial for d ≥ 1 — S7, Polynomial.eval_finset_sum + eulerian_row_sum_factorial composition (build pending)",
+      "cubeHStarPoly_palindromic: (cubeHStarPoly d).coeff k = (cubeHStarPoly d).coeff (d - 1 - k) for k < d, d ≥ 1 — S7, cube_h_star_eulerian + eulerian_palindrome composition (build pending)"
+    ],
+    "open": [],
+    "goal": "Connect cube_h_star_eulerian + cube_lattice_count_eulerian to EhrhartCubeProven via Polytope.cube parametrisation"
+  },
+  "currentState": {
+    "phase": "VERIFIED",
+    "since": "2026-05-15T22:59:15Z",
+    "iteration": 14,
+    "focus": "S14 STATE-SYNC candidate-pool catchup (this PR, researcher-1, 2026-05-30): doc-only PR closing the gitignored .lean/state/candidate-pool.json drift left by S13 STATE-SYNC. Pool entry for ehrhart-cube-proven-oq-04 still showed status: \"available\" / notes: \"AVAILABLE\" two weeks after the slug verified at S9 ACT (PR #19101, 2026-05-15) because the pool is auto-generated from research/db/knowledge.db and the DB regeneration had not absorbed the verified status. S13 (researcher-12) closed the tracked research-JSON drift but deliberately left the gitignored pool untouched. S14 invokes ./scripts/research/claim-problem.sh update ehrhart-cube-proven-oq-04 completed, which sets .candidates[].status = \"completed\" in the local pool file and drops a completion signal under .loom/signals/completions/ — both side effects gitignored. Tracked S14 deliverables in this PR: state.md head + Current Focus rewrite, this research-JSON iteration bump (13→14, total 13→14, focus + nextAction rewrite, lastUpdate 2026-05-15→2026-05-30), and a new session memo sessions/2026-05-30-s14-state-sync-pool-catchup.md. Underlying Lean source unchanged. Docker build at Mathlib v4.26.0 (SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67) remains clean (PR #19101: 7743 jobs, ~10s warm-cache; 0 sorries, 0 axioms, 0 structure-encoded assumptions). Build inheritance from origin/main HEAD 8ae064a390d is unconditional.",
+    "blockers": [],
+    "nextAction": "S15 (PROSPECTIVE REGRESSION): on any future Mathlib toolchain bump (v4.27.0+), re-run `./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ04` as a regression baseline before any new S## research lands. The 7-error v4.26.0 surface (state.md §Blockers) remains the surgical-fix reference should it recur. S16 (OPTIONAL polynomial-degree corollary): prove `cubeHStarPoly_natDegree (d : ℕ) (hd : 0 < d) : (cubeHStarPoly d).natDegree = d - 1` via Polynomial.natDegree_eq_of_coeff_ne_zero_of_le + the leading-coefficient computation A(d, d-1) = A(d, 0) = 1 (from eulerian_zero_eq_one + eulerian_palindrome). ~25-40 LOC; would complete the three classical h*-vector invariants for the cube (palindromic, sums to d!, degree d-1). S17 (HERMIT cross-gallery scan, optional): the Mathlib v4.26.0 stricter no-op rewrite pattern (Error 6: `rw [pow_two, pow_two] at *` where only one `^2` exists per goal) may have latent failures across the gallery. Out of scope for this slug. S18-Mathlib (OPTIONAL Mathlib upstream): contribute `Nat.eulerianNumber` (def + recurrence), `Nat.eulerian_row_sum_factorial`, `Nat.worpitzky_identity_cube`, `Nat.eulerian_palindrome` to `Mathlib.Combinatorics.Enumerative.Eulerian`. See sessions/2026-05-15-s12-state-sync-build-verified.md §7 for the full contribution map. Estimated 6-stage Mathlib PR. Renamed from S14 in S13s nextAction to avoid confusion with this S14 STATE-SYNC.",
+    "attemptCounts": {
+      "total": 14,
+      "currentApproach": 0,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "VERIFIED S12 (BUILD-VERIFIED, Mathlib v4.26.0): the slug `proofs/Proofs/EhrhartCubeProvenOQ04.lean` Docker-builds clean at Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, 7743 jobs in ~10s warm-cache. S8 BUILD-VERIFY (PR #19078) catalogued 7 surface errors from the first v4.26.0 Docker baseline. S9 PREP (PR #19220) compiled a mechanic kit with surgical fix candidates. S10 PREP (PR #19298) audited the kit and recommended Option-variants 1A/2B/3A/4A/5A/6/7. S11 PREP (PR #19303) ran goal-state walks upgrading the medium-confidence sites to ≥0.95. S9 ACT (mechanic-scope PR #19101, commit `be08fef58bb`) landed all 7 surgical fixes verbatim per the recommendation, achieving a clean Docker build on the first iteration. S12 STATE-SYNC (PR #19334) consumed the cascade and updated state.md + meta.json + added a 271-LOC build-verified confirmation session memo. S13 STATE-SYNC (this PR) closes the research-JSON drift left by S12. File metrics: 775 lines (state.md head reports 775; meta.json `leanFile.lineCount: 775`), 30 public theorems + 2 definitions, 14 examples, 0 sorries, 0 axioms, 0 structure-encoded assumptions — meets CLAUDE.md `status: verified` definition.",
+    "builtItems": [
+      "eulerianNumber : ℕ → ℕ → ℕ (def)",
+      "cubeHStarPoly : ℕ → Polynomial ℕ (def)",
+      "13 concrete value lemmas (d ≤ 4, all rfl)",
+      "4 row-sum sanity checks (d ≤ 4, rfl)",
+      "3 palindrome sanity checks (rfl)",
+      "worpitzky_d1, worpitzky_d2 (proven)",
+      "cube_h_star_eulerian (S2, proven — definitional via coeff_smul + coeff_X_pow)",
+      "cube_lattice_count_eulerian (S2, proven — via Fintype.card_fun + worpitzky)",
+      "7 decide-verifications at (d, n) up to (4, 2)",
+      "eulerian_zero_eq_one (S3, proven — Nat recursion on d)",
+      "eulerian_eq_zero_of_le (S3, proven — double Nat recursion on d, k)",
+      "eulerian_row_sum_factorial (S3, proven — induction on d, sum reorganisation, A(d, d) = 0 boundary)",
+      "worpitzky_step (S4, proven — Pascal + Nat.choose_succ_right_eq, by_cases on d ≤ m for boundary)",
+      "worpitzky_identity_cube (S4, proved modulo build verification — induction on d with worpitzky_step + Finset.sum_range_succ' reindex)",
+      "eulerianNumber_recurrence (S5 helper, definitional rfl — A(d+1, k+1) recurrence equation as a named lemma)",
+      "eulerian_palindrome (S5, proved modulo build verification — induction on d with k = 0 / 1 ≤ k < d / k = d case-split)",
+      "worpitzky_identity_cube_palindrome (S6, proved modulo build verification — (n+1)^d = Σ_{k=0}^{d-1} A(d, k) C(n+d-k, d), the dual/palindrome-reflected Worpitzky form). Proof composes S4 worpitzky_identity_cube + S5 eulerian_palindrome via Finset.sum_range_reflect on the RHS (reindex k ↦ d-1-k), then substitutes A(d,k) = A(d,d-1-k) pointwise and closes the Nat-arithmetic identity n+1+k = n+d-(d-1-k) for k<d via omega. ~15 LOC of tactic + ~15 LOC docstring; new Section VII.",
+      "cubeHStarPoly_eval_one (S7, proved modulo build verification — (cubeHStarPoly d).eval 1 = d.factorial for d ≥ 1). Polynomial-level row-sum identity: evaluating the h*-polynomial at X = 1 sums all coefficients, recovering eulerian_row_sum_factorial. Proof unfolds the d ≠ 0 branch of cubeHStarPoly, distributes eval over the Finset.sum via Polynomial.eval_finset_sum, reduces each summand ((A(d,k) : ℕ) • X^k).eval 1 to A(d,k) via Polynomial.eval_smul + eval_pow + eval_X + smul_eq_mul + mul_one + one_pow, then applies eulerian_row_sum_factorial. ~12 LOC (Section VIII).",
+      "cubeHStarPoly_palindromic (S7, proved modulo build verification — coefficient symmetry (cubeHStarPoly d).coeff k = (cubeHStarPoly d).coeff (d - 1 - k) for k < d, d ≥ 1). Polynomial-level expression of eulerian_palindrome. Three-line proof: rewrite both coefficients via cube_h_star_eulerian (with k < d and d-1-k < d discharged by omega), then apply eulerian_palindrome. ~8 LOC (Section VIII).",
+      "S8 BUILD-VERIFY (PR #19078, researcher-1, 2026-05-15): first Docker baseline at Mathlib v4.26.0 (SHA 2df2f0150c) surfaced 7 surface errors (file metrics 720→775 LOC, prior `build pending` from S4-S7 retroactively interpreted as latent defects). Doc-only inventory in state.md §Blockers — Error 1 `eulerian_zero_eq_one` termination, Error 2 `eulerian_row_sum_factorial` +0 gap, Error 3 `eulerian_palindrome` subst direction, Error 4 `worpitzky_step` Nat.add_mul, Error 5 `worpitzky_identity_cube` rewrite motive, Error 6 `worpitzky_d2` redundant pow_two, Error 7 `cube_h_star_eulerian` sum_ite_eq direction. ~10-15 LOC estimated repair budget.",
+      "S9 PREP mechanic kit (PR #19220, researcher-N, 2026-05-15): doc-only kit compiling surgical fix candidates for all 7 S8 errors. Per-site goal-state walks + paste-ready snippet + confidence rating.",
+      "S10 PREP audit (PR #19298, researcher-N, 2026-05-15): doc-only audit of S9 kit, identified Option-variants `1A/2B/3A/4A/5A/6/7` as the canonical landing pattern.",
+      "S11 PREP ACT-readiness gate (PR #19303, researcher-3, 2026-05-15): doc-only readiness gate with goal-state walks upgrading medium-confidence sites (Errors 2, 4, 5) to ≥0.95 confidence; ACT-greenlight signal.",
+      "S9 ACT mechanic fix (PR #19101, mechanic-scope, commit `be08fef58bb`, 2026-05-15T22:59:15Z): 16 insertions / 13 deletions across 7 surgical sites; landed Option-variants `1A/2B/3A/4A/5A/6/7` verbatim per S11 PREP recommendation. Docker build clean on first iteration (`[7743/7743] Built Proofs.EhrhartCubeProvenOQ04 (10s)`, ~7743 jobs). Zero-drift property of the S10/S11 cascade upheld.",
+      "S12 STATE-SYNC build-verified confirmation (PR #19334, researcher-12, 2026-05-15): doc-only state.md + meta.json sync absorbing the S8→S9-PREP→S10-PREP→S11-PREP→S9-ACT cascade. Promotes meta.json `status: verified`, `badge: verified`. New 271-LOC session memo `2026-05-15-s12-state-sync-build-verified.md` with cascade timeline + drift-recheck table + orthogonality manifest + Mathlib upstream contribution map.",
+      "S13 STATE-SYNC research-JSON catchup (this PR, researcher-12, 2026-05-15): doc-only sync of `src/data/research/problems/ehrhart-cube-proven-oq-04.json` (left untouched by S12 STATE-SYNC). Closes 12-item drift: top-level phase + currentState block + knowledge block + leanFile metrics + lastUpdate. No Lean source / state.md / meta.json edits."
+    ],
+    "insights": [
+      "Nat-subtraction in the eulerianNumber recurrence handles the boundary k ≥ d cleanly: both branches collapse to 0 automatically",
+      "Worpitzky d=2 requires inductive proof on n using Pascal — non-trivial, demonstrates the Lean proof pattern for general d",
+      "Three equivalent statements of OQ-04 (Worpitzky, generating function, h*-vector); Worpitzky form is most tractable in Lean as it avoids PowerSeries",
+      "Mathlib does not have Eulerian numbers — first Lean formalization in this gallery; Mathlib contribution path opens",
+      "cubeHStarPoly's k-th coefficient is definitional (Σ A(d,j) • X^j → coeff_smul + coeff_X_pow + Finset.sum_ite_eq') — the substantive content lives entirely in worpitzky_identity_cube",
+      "S3 row-sum technique: extend both row sums to a common `range (d+1)` index set using `A(d, d) = 0`, then combine pointwise via `(k+1) + (d-k) = d+1` (for k < d) and direct A(d, d) = 0 cancellation (for k = d). Avoids `Finset.sum_Ico_eq_sum_range` reindexing.",
+      "Helper `eulerian_eq_zero_of_le` carries the recursion on the FIRST argument (d), with case-split on whether d = 0 or d ≥ 1 for the inner recursion call. Required to discharge `(d - k) * A(d, k) = 0` boundary contributions.",
+      "**Palindrome-reflected Worpitzky form composes from S4 + S5 directly**: once worpitzky_identity_cube (S4) and eulerian_palindrome (S5) are both in hand, the dual form (n+1)^d = Σ A(d,k) C(n+d-k, d) requires only Finset.sum_range_reflect + a Nat-arithmetic omega step — no new combinatorial content. The pedagogical takeaway: the palindromic symmetry of Eulerian numbers does not yield new identities at the level of (n+1)^d itself, but reindexes the existing identity from forward (exceedance) to descent parametrisation. Useful when downstream consumers prefer one parametrisation over the other (e.g. counting by descents vs. ascents in the symmetric group).",
+      "**Polynomial.eval_finset_sum + smul handling at the cubeHStarPoly level**: the h*-polynomial is defined `∑ k ∈ range d, (A(d,k) : ℕ) • X^k`, with a Nat-scalar action on Polynomial ℕ. Eval distributes via `Polynomial.eval_finset_sum`, and per-summand reduction `((c : ℕ) • X^k).eval x = c * x^k` decomposes as `Polynomial.eval_smul → c • (X^k).eval x → smul_eq_mul → c * x^k`. The structure mirrors the S2 `Polynomial.finset_sum_coeff + Polynomial.coeff_smul` pattern used in `cube_h_star_eulerian` — same `simp only` building blocks, dual to `coeff_X_pow` vs `eval_pow + eval_X`.",
+      "**S7 corollaries demonstrate the value of having both `coeff` and `eval` abstractions**: `cubeHStarPoly_palindromic` is the *coefficient-side* manifestation of `eulerian_palindrome`, while `cubeHStarPoly_eval_one` is the *evaluation-side* manifestation of `eulerian_row_sum_factorial`. Together they show that the h*-polynomial is (i) palindromic (degree-d-1 polynomial with coefficient symmetry) and (ii) sums to d! at X=1 — two of the three classical h*-vector invariants for the cube (the third being natDegree = d-1, a tractable S8 follow-up requiring `Polynomial.natDegree_eq_of_coeff_ne_zero_of_le` + the leading-coefficient computation A(d, d-1) = A(d, 0) = 1).",
+      "**S8 BUILD-VERIFY confirmed pre-v4.26.0 build-pending convention left a 7-error latent inventory**: S1-S7 PRs (2026-05-12 to 2026-05-13) all shipped as `(build pending)` per the docker-disk-pressure convention in the gallery. The first v4.26.0 Docker compile (S8, 2026-05-15) surfaced all 7 errors at once. PR #19101's clean Docker build retroactively confirmed these were latent defects (not regressions) — the v4.26.0-specific changes (Error 4 `Nat.add_mul` distribution normalisation, Error 6 `pow_two` no-op rewrite strictness) interact with proof-construction choices the original S1-S7 PRs made; they would have surfaced on the first Docker build regardless of toolchain version.",
+      "**Zero-drift cascade S8 → S9 PREP → S10 PREP → S11 PREP → S9 ACT**: a five-PR mechanic-handoff sequence preserved per-site fix recommendations verbatim from S10 PREP audit (Option-variants `1A/2B/3A/4A/5A/6/7`) through S11 PREP ACT-readiness gate into PR #19101's actual edits. Demonstrates that a doc-only triage cascade can de-risk a mechanic fix from confidence-0.6 (S9 PREP medium-conf sites) to confidence-0.95+ (S11 PREP goal-state walks), yielding a clean first-iteration Docker build with no rework. Pedagogical pattern for future build-blocker repairs.",
+      "**Mathlib v4.26.0 stricter no-op rewrite pattern (Error 6)**: `rw [pow_two, pow_two] at *` where only one `^2` exists per goal/hyp is now a silent failure (pre-v4.26.0 may have accepted no-op rewrites). Hermit-scope concern: similar `rw [_, _]` chains may have latent failures across the gallery. Out of scope for this slug; flagged for cross-gallery Hermit scan."
+    ],
+    "mathlibGaps": [
+      "No Eulerian numbers (`Nat.eulerianNumber` or similar)",
+      "No permutation descents (`Equiv.Perm.descents` or similar)",
+      "PowerSeries 1/(1-X)^{d+1} expansion as Σ C(n+d, d) X^n needs careful lemma chain"
+    ],
+    "nextSteps": [
+      "S14 (OPTIONAL, Mathlib upstream): contribute `Nat.eulerianNumber` (def + recurrence), `Nat.eulerian_row_sum_factorial`, `Nat.worpitzky_identity_cube`, `Nat.eulerian_palindrome` to `Mathlib.Combinatorics.Enumerative.Eulerian`. See sessions/2026-05-15-s12-state-sync-build-verified.md §7 for the full contribution map. Estimated 6-stage Mathlib PR.",
+      "S15 (PROSPECTIVE REGRESSION): on any future Mathlib toolchain bump (v4.27.0+), re-run `./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ04` as a regression baseline before any new S## research lands. The 7-error v4.26.0 surface (state.md §Blockers) remains the surgical-fix reference should it recur.",
+      "S16 (FOLLOW-UP, optional Polynomial-degree): prove `cubeHStarPoly_natDegree (d : ℕ) (hd : 0 < d) : (cubeHStarPoly d).natDegree = d - 1` via `Polynomial.natDegree_eq_of_coeff_ne_zero_of_le` + leading-coefficient computation A(d, d-1) = A(d, 0) = 1 (from `eulerian_zero_eq_one` + `eulerian_palindrome`). ~25-40 LOC; would complete the three classical h*-vector invariants for the cube.",
+      "S17 (HERMIT cross-gallery scan, optional): the Mathlib v4.26.0 stricter no-op rewrite pattern (Error 6: `rw [pow_two, pow_two]`) may have latent failures across the gallery. Out of scope for this slug; flagged for Hermit."
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "ehrhart-theory",
+    "eulerian-numbers",
+    "h-star-vector",
+    "worpitzky-identity",
+    "permutation-statistics",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "ehrhart-cube-proven",
+    "ehrhart-cube-proven-oq-01",
+    "ehrhart-cube-proven-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "Euler, L. (1755). Institutiones calculi differentialis. — Original Eulerian numbers in generating-series context.",
+      "Worpitzky, J. (1883). Studien über die Bernoullischen und Eulerschen Zahlen. Crelle's Journal. — Original Worpitzky identity.",
+      "Stanley, R. P. (1980). Decompositions of rational convex polytopes. Annals of Discrete Mathematics 6. — h*-vector non-negativity theorem.",
+      "Stanley, R. P. (1986/2012). Enumerative Combinatorics, Volume 1, §1.4. — Modern reference on Eulerian numbers."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Eulerian_number",
+      "https://oeis.org/A008292"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Choose.Basic (Nat.choose, Nat.choose_succ_succ)",
+      "Mathlib.Data.Nat.Factorial.Basic (Nat.factorial)",
+      "Mathlib.Algebra.BigOperators.Basic (Finset.sum_range_succ)",
+      "Mathlib.Algebra.Polynomial.Basic (Polynomial.coeff)"
+    ]
+  },
+  "started": "2026-05-08T19:09:00.563Z",
+  "lastUpdate": "2026-06-13T00:00:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/EhrhartCubeProven.lean",
+      "filename": "EhrhartCubeProven.lean",
+      "lineCount": 297,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProven.lean"
+    },
+    {
+      "path": "Proofs/EhrhartCubeProvenOQ04.lean",
+      "filename": "EhrhartCubeProvenOQ04.lean",
+      "lineCount": 775,
+      "theoremCount": 30,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProvenOQ04.lean"
+    }
+  ]
+}

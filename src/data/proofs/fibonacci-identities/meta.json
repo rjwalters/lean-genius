@@ -1,0 +1,144 @@
+{
+  "id": "fibonacci-identities",
+  "slug": "fibonacci-identities",
+  "title": "Fibonacci Summation Identities",
+  "description": "Mathlib's Nat.fib library has the pointwise Fibonacci identities — the recurrence, the addition formula Nat.fib_add, the doubling formulas, Cassini's identity, the gcd law Nat.fib_gcd, and the Pascal-diagonal sum — but not the classical SUMMATION identities. This entry supplies three, each a self-contained induction from the defining recurrence alone: fib_sum_sq, the sum of squares F₀²+F₁²+⋯+Fₙ² = Fₙ·Fₙ₊₁ (the square-dissection of an Fₙ×Fₙ₊₁ rectangle); fib_sum_odd, the odd-indexed sum F₁+F₃+⋯+F₂ₙ₋₁ = F₂ₙ; and fib_sum_even, the even-indexed sum (F₂+F₄+⋯+F₂ₙ)+1 = F₂ₙ₊₁ (additive form to stay in ℕ). Fully machine-checked, 0 sorries, 0 axioms, no native_decide.",
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Finset"],
+    "namespace": "FibonacciIdentities",
+    "lineCount": 70,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "substantiveTheoremCount": 3,
+    "trivialSpecializations": 0,
+    "definitionCount": 0,
+    "path": "Proofs/FibonacciIdentities.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Classical (Fibonacci summation identities)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fibonacci_sequence#Other_identities",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FibonacciIdentities.lean",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "summation-identities",
+      "induction",
+      "combinatorics",
+      "recurrence"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Each identity is a finite induction using only Nat.fib_add_two (the defining recurrence) and Finset.sum_range_succ; no native_decide is used. #print axioms reports only propext / Classical.choice / Quot.sound.",
+    "dateAdded": "2026-06-20",
+    "mathlibDependencies": [
+      "Nat.fib_add_two",
+      "Finset.sum_range_succ"
+    ],
+    "originalContributions": [
+      "fib_sum_sq: F₀²+F₁²+⋯+Fₙ² = Fₙ·Fₙ₊₁ — the telescoping sum-of-squares identity, absent from Mathlib's Fibonacci library",
+      "fib_sum_odd: F₁+F₃+⋯+F₂ₙ₋₁ = F₂ₙ — the odd-indexed partial sum",
+      "fib_sum_even: (F₂+F₄+⋯+F₂ₙ)+1 = F₂ₙ₊₁ — the even-indexed partial sum (additive form, ℕ-valued)"
+    ],
+    "prerequisites": [
+      "The Fibonacci recurrence Fₙ₊₂ = Fₙ + Fₙ₊₁",
+      "Induction over finite sums (Finset.sum_range_succ)"
+    ],
+    "mathlib_version": "4.26.0",
+    "lineCount": 70,
+    "relatedProblems": ["combinations-formula-oq-08"],
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Fibonacci numbers satisfy a famous web of identities. Pointwise ones (Cassini, the addition and doubling formulas, the gcd law) are in Mathlib; the summation identities — telescoping the partial sums of squares or of the alternately-indexed terms — are the standard companions taught alongside them. The sum-of-squares identity has a memorable geometric reading: an Fₙ×Fₙ₊₁ rectangle dissects exactly into squares of side F₀,…,Fₙ, the spiral that approximates the golden-ratio rectangle.",
+    "problemStatement": "Prove three summation identities for the Fibonacci numbers Fₙ (Nat.fib): the sum of squares ∑_{i≤n} Fᵢ² = Fₙ·Fₙ₊₁; the odd-indexed sum ∑_{i<n} F₂ᵢ₊₁ = F₂ₙ; and the even-indexed sum (∑_{i<n} F₂ᵢ₊₂) + 1 = F₂ₙ₊₁.",
+    "proofStrategy": "Each identity is a direct induction on n. The inductive step peels the last summand with Finset.sum_range_succ, applies the inductive hypothesis, and collapses the remaining two Fibonacci terms with the defining recurrence Nat.fib_add_two; ring (for the sum of squares) or the recurrence itself (for the indexed sums) closes the step. No deeper Fibonacci machinery is needed — the recurrence alone drives all three.",
+    "keyInsights": [
+      "Sum of squares telescopes: Fₙ·Fₙ₊₁ − Fₙ₋₁·Fₙ = Fₙ(Fₙ₊₁ − Fₙ₋₁) = Fₙ·Fₙ = Fₙ², so the partial sums of Fᵢ² are exactly the products Fₙ·Fₙ₊₁.",
+      "The odd-indexed terms accumulate to an even-indexed Fibonacci number: adding F₂ₙ₊₁ to F₂ₙ gives F₂ₙ₊₂ by the recurrence, which is F₂₍ₙ₊₁₎.",
+      "Stating the even-indexed sum additively, (∑ F₂ᵢ₊₂)+1 = F₂ₙ₊₁, avoids truncated ℕ subtraction while capturing the classical ∑_{i=1}^{n} F₂ᵢ = F₂ₙ₊₁ − 1.",
+      "All three reduce to the single fact Fₙ₊₂ = Fₙ + Fₙ₊₁ — the identities are bookkeeping over the recurrence, which is why each proof is only a few lines."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "fib_sum_sq",
+      "statement": "∑ i ∈ Finset.range (n+1), Nat.fib i ^ 2 = Nat.fib n * Nat.fib (n+1)",
+      "description": "The sum of the squares of the first n+1 Fibonacci numbers equals the product Fₙ·Fₙ₊₁ — the square-dissection identity."
+    },
+    {
+      "name": "fib_sum_odd",
+      "statement": "∑ i ∈ Finset.range n, Nat.fib (2*i+1) = Nat.fib (2*n)",
+      "description": "The sum of the odd-indexed Fibonacci numbers F₁+F₃+⋯+F₂ₙ₋₁ equals F₂ₙ."
+    },
+    {
+      "name": "fib_sum_even",
+      "statement": "(∑ i ∈ Finset.range n, Nat.fib (2*i+2)) + 1 = Nat.fib (2*n+1)",
+      "description": "The sum of the even-indexed Fibonacci numbers F₂+F₄+⋯+F₂ₙ, plus one, equals F₂ₙ₊₁ (additive ℕ-valued form of ∑F₂ᵢ = F₂ₙ₊₁ − 1)."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "`import Mathlib`, the module docstring surveying which Fibonacci identities Mathlib already has (recurrence, addition, doubling, Cassini, gcd, Pascal diagonal) and which it lacks (the summation identities supplied here), then `namespace FibonacciIdentities` opening `Finset`.",
+      "mathContext": "$F_{n+2} = F_n + F_{n+1}.$"
+    },
+    {
+      "id": "sum-of-squares",
+      "title": "Sum of Squares",
+      "startLine": 35,
+      "endLine": 46,
+      "summary": "fib_sum_sq: ∑_{i≤n} Fᵢ² = Fₙ·Fₙ₊₁ by induction. The step rewrites the last square, applies the inductive hypothesis, expands Fₙ₊₂ = Fₙ + Fₙ₊₁, and closes with ring.",
+      "mathContext": "$\\sum_{i=0}^{n} F_i^2 = F_n F_{n+1}.$"
+    },
+    {
+      "id": "odd-indexed",
+      "title": "Odd-Indexed Sum",
+      "startLine": 48,
+      "endLine": 56,
+      "summary": "fib_sum_odd: ∑_{i<n} F₂ᵢ₊₁ = F₂ₙ by induction; the step adds F₂ₙ₊₁ to F₂ₙ and collapses to F₂ₙ₊₂ = F₂₍ₙ₊₁₎ via the recurrence.",
+      "mathContext": "$\\sum_{i=0}^{n-1} F_{2i+1} = F_{2n}.$"
+    },
+    {
+      "id": "even-indexed",
+      "title": "Even-Indexed Sum",
+      "startLine": 58,
+      "endLine": 70,
+      "summary": "fib_sum_even: (∑_{i<n} F₂ᵢ₊₂) + 1 = F₂ₙ₊₁ by induction; the step peels the last summand, rewrites F₂₍ₙ₊₁₎₊₁ = F₂ₙ₊₁ + F₂ₙ₊₂ via the recurrence, and closes with omega against the inductive hypothesis.",
+      "mathContext": "$\\Big(\\sum_{i=1}^{n} F_{2i}\\Big) + 1 = F_{2n+1}.$"
+    }
+  ],
+  "references": [
+    {
+      "title": "Fibonacci sequence — other identities",
+      "url": "https://en.wikipedia.org/wiki/Fibonacci_sequence#Other_identities"
+    },
+    {
+      "title": "Mathlib: Nat.fib",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Nat/Fib/Basic.html"
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "combinations-formula-oq-08",
+      "relationship": "Companion Fibonacci identity",
+      "description": "combinations-formula-oq-08 records the Pascal shallow-diagonal sum Fₙ₊₁ = ∑ C(n−k, k) (Mathlib's Nat.fib_succ_eq_sum_choose); this entry supplies the orthogonal family of summation identities (sum of squares, odd- and even-indexed sums)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Three classical Fibonacci summation identities — the sum of squares ∑Fᵢ² = Fₙ·Fₙ₊₁, the odd-indexed sum ∑F₂ᵢ₊₁ = F₂ₙ, and the even-indexed sum (∑F₂ᵢ)+1 = F₂ₙ₊₁ — are proved by self-contained induction from the Fibonacci recurrence, filling a gap in Mathlib's otherwise rich pointwise-identity library. Zero sorries, zero axioms, no native_decide.",
+    "implications": "The summation identities complement Mathlib's pointwise Fibonacci lemmas and the Pascal-diagonal sum; the sum-of-squares identity in particular is the algebraic shadow of the golden-ratio rectangle's square dissection. The proofs illustrate that the entire family is bookkeeping over the single recurrence Fₙ₊₂ = Fₙ + Fₙ₊₁.",
+    "openQuestions": [
+      "Can the alternating sum ∑ (−1)ⁱ Fᵢ and the weighted sum ∑ i·Fᵢ be added (these require ℤ and a second induction)?",
+      "Does the same template yield the Lucas-number summation identities, and the mixed Fibonacci–Lucas sums?"
+    ]
+  }
+}

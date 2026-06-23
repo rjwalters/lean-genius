@@ -1,0 +1,153 @@
+{
+  "slug": "divisibility-by-3-oq-02",
+  "title": "Base-b Divisibility Rules",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "For base b >= 3 and n : Nat, prove n is congruent modulo b - 1 to the sum of its base-b digits, and derive divisibility tests for factors of b - 1.",
+    "plain": "Generalizes divisibility rules to arbitrary bases: for b >= 3, (b - 1) divides n iff (b - 1) divides the base-b digit sum. Covers hexadecimal, octal, factor tests, and cross-base consistency. All direct file theorems are verified.",
+    "whyMatters": [
+      "Digit-sum divisibility rules are a familiar arithmetic trick with a clean modular explanation.",
+      "The base-b version shows the rule is really about b == 1 modulo b - 1, not about decimal notation specifically.",
+      "The hexadecimal, octal, and cross-base corollaries make the theorem useful beyond the classic tests for 3 and 9."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "The base congruence b % (b - 1) = 1 is proved for b >= 3 (Lean: base_mod_pred).",
+      "The digit-sum congruence n == sum(digits_b n) mod (b - 1) is formalized (Lean: modEq_digits_sum_base_minus_one and mod_base_minus_one_eq).",
+      "Divisibility by b - 1 and by factors of b - 1 is reduced to divisibility of the digit sum (Lean: dvd_base_minus_one_iff and dvd_factor_iff).",
+      "Concrete hexadecimal and octal rules are included for divisibility by 15, 3, 5, and 7 (Lean: hex_div_15, hex_div_3, hex_div_5, oct_div_7).",
+      "Cross-base consistency and the usual decimal divisibility-by-3 and divisibility-by-9 rules are derived."
+    ],
+    "open": [],
+    "goal": "Record the verified arbitrary-base digit-sum divisibility framework and its concrete base-specific corollaries."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-21T21:13:59-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full formalization of base-b divisibility rules. 162L, 15 theorems, 0 axioms, 0 sorries.",
+    "builtItems": [
+      "DivisibilityBy3OQ02.lean: 162L, 15 theorems, 0 axioms, 0 sorries",
+      "base_mod_pred, factor_mod: key modular arithmetic helpers",
+      "modEq_digits_sum_base_minus_one: general (b-1) congruence",
+      "dvd_base_minus_one_iff: general (b-1) divisibility test",
+      "hex_div_15, hex_div_3, hex_div_5, oct_div_7: specific base tests",
+      "cross_base_divisibility: same test across different bases"
+    ],
+    "insights": [
+      "base_mod_pred: b % (b-1) = 1 for b >= 3, proved via Nat.mod_eq_sub_mod",
+      "factor_mod: b % d = 1 when d >= 2 and d | (b-1), proved via Nat.add_mul_mod_self_left",
+      "Universal (b-1) rule applies to any base, not just 10",
+      "Cross-base divisibility: 3|n testable in decimal, hex, or any base with 3|(b-1)",
+      "Hex mod-15 test works, plus factor tests for mod 3 and mod 5"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: divisibility-by-3-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "modular-arithmetic",
+    "divisibility-rules",
+    "digit-sums",
+    "base-b",
+    "verified"
+  ],
+  "relatedProofs": [
+    "divisibility-by-3",
+    "divisibility-by-3-oq-02",
+    "divisibility-by-3-oq-03",
+    "divisibility-by-3-oq-03-oq-02",
+    "divisibility-by-3-oq-04",
+    "divisibility-by-3-oq-04-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-22T04:19:59.477Z",
+  "lastUpdate": "2026-03-22T04:19:59.494Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/DivisibilityBy3.lean",
+      "filename": "DivisibilityBy3.lean",
+      "lineCount": 236,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ02.lean",
+      "filename": "DivisibilityBy3OQ02.lean",
+      "lineCount": 163,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ03.lean",
+      "filename": "DivisibilityBy3OQ03.lean",
+      "lineCount": 271,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ03.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ03OQ02.lean",
+      "filename": "DivisibilityBy3OQ03OQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ04.lean",
+      "filename": "DivisibilityBy3OQ04.lean",
+      "lineCount": 230,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ04OQ02.lean",
+      "filename": "DivisibilityBy3OQ04OQ02.lean",
+      "lineCount": 229,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04OQ02.lean"
+    }
+  ]
+}

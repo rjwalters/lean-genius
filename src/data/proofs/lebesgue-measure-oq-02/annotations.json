@@ -1,0 +1,233 @@
+[
+  {
+    "id": "ann-conjugate-two",
+    "line": 44,
+    "type": "concept",
+    "content": "**Hölder conjugate $(2,2)$**: Proves that $p = q = 2$ satisfies the Hölder conjugate condition $1/p + 1/q = 1$. The proof is `constructor <;> norm_num`, which verifies $1 < 2$, $1 < 2$, and $1/2 + 1/2 = 1$ by normalization. This is the Cauchy-Schwarz case — the most important conjugate pair in analysis.",
+    "mathContext": "The Hölder conjugate condition $1/p + 1/q = 1$ with $p, q > 1$ parameterizes a family of inequalities. Key pairs: $(2,2)$ for Cauchy-Schwarz and $L^2$ theory, $(1, \\infty)$ as limiting case, $(4/3, 4)$ in Sobolev embedding theory. In Mathlib, `Real.HolderConjugate p q` encodes all three conditions as a structure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjugate exponents",
+      "Cauchy-Schwarz",
+      "Lp-Lq duality",
+      "HolderConjugate"
+    ],
+    "prerequisites": [
+      "Real.HolderConjugate"
+    ],
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 29,
+      "endLine": 50
+    }
+  },
+  {
+    "id": "ann-conjugate-general",
+    "line": 48,
+    "type": "concept",
+    "content": "**General conjugate construction**: For any $p > 1$, the conjugate $q = p/(p-1)$ satisfies $1/p + 1/q = 1$. Uses Mathlib's `conjExponent` which constructs $q$ and verifies the conjugate condition automatically. The map $p \\mapsto p/(p-1)$ is a decreasing involution on $(1, \\infty)$ with fixed point $p = 2$.",
+    "mathContext": "$q = \\frac{p}{p-1}$ satisfies $\\frac{1}{p} + \\frac{p-1}{p} = 1$. As $p \\to 1^+$, $q \\to \\infty$; as $p \\to \\infty$, $q \\to 1^+$. The symmetry $p \\leftrightarrow q$ reflects the duality $(L^p)^* \\cong L^q$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjugate exponent construction",
+      "involution",
+      "duality"
+    ],
+    "prerequisites": [
+      "Real.HolderConjugate.conjExponent"
+    ],
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 29,
+      "endLine": 50
+    }
+  },
+  {
+    "id": "ann-young",
+    "line": 67,
+    "type": "concept",
+    "content": "**Young's inequality** (ENNReal): For conjugate $p, q$ and non-negative $a, b \\in \\mathbb{R}_{\\geq 0}^\\infty$: $ab \\leq a^p/p + b^q/q$. This is the *pointwise engine* of Hölder's inequality. The proof uses the concavity of $\\log$: $\\log(ab) = \\frac{1}{p}\\log(a^p) + \\frac{1}{q}\\log(b^q) \\leq \\log(a^p/p + b^q/q)$ by Jensen. Wraps `ENNReal.young_inequality`.",
+    "mathContext": "Young's inequality is a weighted AM-GM: $ab = (a^p)^{1/p}(b^q)^{1/q} \\leq \\frac{1}{p}a^p + \\frac{1}{q}b^q$ where $1/p + 1/q = 1$ are the weights. Equality holds iff $a^p = b^q$. The ENNReal version handles $\\infty$ gracefully: $\\infty \\cdot 0 = 0 \\leq \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Young's inequality",
+      "weighted AM-GM",
+      "concavity of log",
+      "Jensen's inequality"
+    ],
+    "prerequisites": [
+      "Real.HolderConjugate",
+      "ENNReal.young_inequality"
+    ],
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 67,
+      "endLine": 93
+    }
+  },
+  {
+    "id": "ann-holder-lintegral",
+    "line": 94,
+    "type": "concept",
+    "content": "**Hölder's inequality** (Lebesgue integral): For conjugate $p, q$ and non-negative measurable $f, g$: $\\int^- fg \\, d\\mu \\leq (\\int^- f^p \\, d\\mu)^{1/p} (\\int^- g^q \\, d\\mu)^{1/q}$. This is the central theorem of the file. The proof in Mathlib normalizes $f, g$ to unit $L^p/L^q$ norms, applies Young pointwise, and integrates: $\\int FG \\leq 1/p + 1/q = 1$.",
+    "mathContext": "Proof outline: (1) If $\\|f\\|_p = 0$ or $\\|g\\|_q = 0$, the product is a.e. zero and the inequality is trivial. (2) Otherwise, set $F = f/\\|f\\|_p$, $G = g/\\|g\\|_q$. Then $\\int F^p = 1$ and $\\int G^q = 1$. (3) Young: $F(x)G(x) \\leq F(x)^p/p + G(x)^q/q$ pointwise. (4) Integrate: $\\int FG \\leq 1/p + 1/q = 1$. (5) Scale back: $\\int fg = \\|f\\|_p \\|g\\|_q \\int FG \\leq \\|f\\|_p \\|g\\|_q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hölder inequality",
+      "Lebesgue integral",
+      "normalization trick",
+      "Lp norm"
+    ],
+    "prerequisites": [
+      "Real.HolderConjugate",
+      "AEMeasurable",
+      "ENNReal.lintegral_mul_le_Lp_mul_Lq"
+    ],
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 94,
+      "endLine": 102
+    }
+  },
+  {
+    "id": "ann-holder-lebesgue",
+    "line": 103,
+    "type": "concept",
+    "content": "**Hölder on $\\mathbb{R}$**: Specialization to the real line with Lebesgue measure (`volume`). One-line proof: `holder_lintegral volume hpq hf hg`. This is the classical setting for Fourier analysis and PDE theory, where $f, g : \\mathbb{R} \\to \\mathbb{R}_{\\geq 0}^\\infty$.",
+    "mathContext": "On $(\\mathbb{R}, \\text{Lebesgue})$: $\\int_\\mathbb{R} fg \\, dx \\leq \\|f\\|_{L^p(\\mathbb{R})} \\cdot \\|g\\|_{L^q(\\mathbb{R})}$. This is the form used in Fourier analysis ($\\int \\hat{f} g \\leq \\|\\hat{f}\\|_p \\|g\\|_q$) and Sobolev embedding theory.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "volume",
+      "Fourier analysis",
+      "Sobolev spaces"
+    ],
+    "prerequisites": [
+      "holder_lintegral",
+      "volume (Lebesgue measure on ℝ)"
+    ],
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 103,
+      "endLine": 123
+    }
+  },
+  {
+    "id": "ann-cauchy-schwarz",
+    "line": 124,
+    "type": "concept",
+    "content": "**Cauchy-Schwarz for Lebesgue integral**: Setting $p = q = 2$ in Hölder gives $\\int^- fg \\leq (\\int^- f^2)^{1/2}(\\int^- g^2)^{1/2}$. One-line proof composing `holder_lintegral` with `holderConj_two_two`. This makes $L^2(\\mu)$ an inner product space via $\\langle f, g \\rangle = \\int fg \\, d\\mu$, which is the foundation of Hilbert space theory.",
+    "mathContext": "The Cauchy-Schwarz inequality $|\\langle f, g \\rangle|^2 \\leq \\langle f, f \\rangle \\langle g, g \\rangle$ is the defining property of an inner product. For $L^2$: $\\langle f, g \\rangle = \\int fg$ and $\\|f\\|_2 = (\\int f^2)^{1/2}$. Equality holds iff $f = \\lambda g$ a.e. This is the starting point for orthogonal projections, Fourier series, and spectral theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-Schwarz",
+      "inner product space",
+      "L² space",
+      "Hilbert space",
+      "Fourier analysis"
+    ],
+    "prerequisites": [
+      "holder_lintegral",
+      "holderConj_two_two"
+    ],
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 94,
+      "endLine": 102
+    }
+  },
+  {
+    "id": "ann-minkowski",
+    "line": 151,
+    "type": "concept",
+    "content": "**Minkowski's inequality**: $\\|f + g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $p \\geq 1$. This is the triangle inequality making $L^p$ a normed space (Banach for $1 \\leq p \\leq \\infty$). The proof for $p > 1$ uses Hölder internally: expand $\\|f+g\\|_p^p$, split via triangle inequality, apply Hölder to each term with exponents $p$ and $q = p/(p-1)$, then divide. In Lean: `norm_add_le f g`.",
+    "mathContext": "The Hölder-based proof: $\\int|f+g|^p \\leq \\int|f+g|^{p-1}|f| + \\int|f+g|^{p-1}|g|$. Apply Hölder: $\\int|f+g|^{p-1}|f| \\leq \\||f+g|^{p-1}\\|_q \\|f\\|_p = \\|f+g\\|_p^{p/q} \\|f\\|_p$. Sum and divide by $\\|f+g\\|_p^{p/q}$, using $p - p/q = 1$. The case $p = 1$ is just the triangle inequality for integrals.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Minkowski inequality",
+      "triangle inequality",
+      "Banach space",
+      "Lp completeness"
+    ],
+    "prerequisites": [
+      "holder_lintegral",
+      "norm_add_le",
+      "MeasureTheory.Lp"
+    ],
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 151,
+      "endLine": 162
+    }
+  },
+  {
+    "id": "ann-proper-holder",
+    "line": 179,
+    "type": "concept",
+    "content": "**Proper Hölder statement**: Replaces the `True` placeholder in `LebesgueMeasure.lean`. The original placeholder was `theorem holder_inequality_statement ... : True := by trivial`. This theorem provides the real content: $\\int^- fg \\leq (\\int^- f^p)^{1/p}(\\int^- g^q)^{1/q}$ with proper Real exponents and the `HolderConjugate` condition.",
+    "mathContext": "The key difficulty was bridging exponent types: the original placeholder used `ENNReal` exponents ($p, q : \\mathbb{R}_{\\geq 0}^\\infty$) while Mathlib's Hölder uses `Real.HolderConjugate` ($p, q : \\mathbb{R}$ with $p > 1$). This theorem uses the Real convention, which is the natural one since the conjugate condition $1/p + 1/q = 1$ involves division.",
+    "significance": "key",
+    "relatedConcepts": [
+      "placeholder replacement",
+      "ENNReal vs Real exponents",
+      "parent proof integration"
+    ],
+    "prerequisites": [
+      "ENNReal.lintegral_mul_le_Lp_mul_Lq",
+      "Real.HolderConjugate"
+    ],
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 67,
+      "endLine": 93
+    }
+  },
+  {
+    "id": "ann-l2-inner-product",
+    "line": 207,
+    "type": "concept",
+    "content": "**$L^2$ as inner product space**: Lean's type class inference verifies that `Lp ℝ 2 μ` is an `InnerProductSpace ℝ` via `inferInstance`. This means Mathlib has already registered the instance: the inner product $\\langle f, g \\rangle = \\int fg \\, d\\mu$ satisfies all axioms (bilinearity, symmetry, positive-definiteness, Cauchy-Schwarz). The `noncomputable` keyword is needed because the inner product involves integration.",
+    "mathContext": "$L^2(\\mu)$ is simultaneously a Banach space (via Minkowski for $p=2$) and a Hilbert space (via the inner product). It is the unique $L^p$ space with this dual structure. The completeness of $L^2$ (Riesz-Fischer theorem) makes it the natural home for Fourier series, spectral theory, and quantum mechanics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inner product space",
+      "Hilbert space",
+      "Riesz-Fischer theorem",
+      "Fourier analysis",
+      "inferInstance"
+    ],
+    "prerequisites": [
+      "MeasureTheory.Lp",
+      "InnerProductSpace",
+      "cauchy_schwarz_lintegral"
+    ],
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 199,
+      "endLine": 224
+    }
+  },
+  {
+    "id": "ann-lp-norm-nonneg",
+    "line": 219,
+    "type": "concept",
+    "content": "**$L^p$ norm non-negativity**: $\\|f\\|_p \\geq 0$ for any $f \\in L^p$. Proved by `norm_nonneg f`, which is an axiom of normed spaces. While trivial, this completes the verification that the $L^p$ norm satisfies all norm axioms: non-negativity, definiteness ($\\|f\\| = 0 \\iff f = 0$ a.e.), homogeneity, and the triangle inequality (Minkowski).",
+    "mathContext": "The $L^p$ norm $\\|f\\|_p = (\\int |f|^p \\, d\\mu)^{1/p}$ is well-defined for $p \\geq 1$. Non-negativity follows from the non-negativity of the integral. Combined with Minkowski (triangle inequality) and Riesz-Fischer (completeness), this makes $L^p$ a Banach space for $1 \\leq p \\leq \\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm axioms",
+      "Lp space",
+      "Banach space",
+      "norm_nonneg"
+    ],
+    "prerequisites": [
+      "MeasureTheory.Lp",
+      "norm_nonneg"
+    ],
+    "proofId": "lebesgue-measure-oq-02",
+    "range": {
+      "startLine": 219,
+      "endLine": 224
+    }
+  }
+]

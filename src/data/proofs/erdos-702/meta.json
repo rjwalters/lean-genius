@@ -1,0 +1,221 @@
+{
+  "id": "erdos-702",
+  "title": "Erdős Problem #702: Singleton Intersections in k-Uniform Families",
+  "slug": "erdos-702",
+  "description": "For k ≥ 4, if F is a k-uniform family over {1,...,n} with |F| > C(n-2, k-2), must some pair have |A ∩ B| = 1? SOLVED by Frankl (1977): YES, the bound is tight.",
+  "meta": {
+    "author": "Erdős, Sós, Katona, Frankl",
+    "sourceUrl": "https://erdosproblems.com/702",
+    "date": "1977",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos702Problem.lean",
+    "tags": [
+      "erdos",
+      "extremal-set-theory",
+      "intersecting-families",
+      "frankl",
+      "combinatorics",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 702,
+    "erdosUrl": "https://erdosproblems.com/702",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.26.0",
+    "mathContext": {
+      "field": "Extremal Set Theory",
+      "subfield": "Forbidden intersection configurations in uniform families",
+      "level": "research",
+      "centralObjects": [
+        "k-uniform family F",
+        "singleton intersection |A ∩ B| = 1",
+        "extremal bound C(n-2, k-2)",
+        "shifting operator"
+      ],
+      "keyTechniques": [
+        "shifting (compression) technique",
+        "extremal construction via fixed kernel",
+        "binomial coefficient counting",
+        "case analysis for small k"
+      ],
+      "significance": "Resolves the Erdős-Sós conjecture on singleton intersection avoidance: the maximum k-uniform family avoiding |A ∩ B| = 1 has exactly C(n-2, k-2) sets (achieved by fixing two common elements). Frankl's proof via shifting established a paradigm for extremal set theory. The sharp threshold at k = 4 reveals a structural boundary — the theorem fails for k = 3 due to designs like Steiner triple systems."
+    },
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for representing k-sets and families",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients for the extremal bound C(n-2, k-2)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality for k-uniformity and intersection size",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.inter",
+        "description": "Finite set intersection for SingletonIntersection predicate",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "groundSet: {1,...,n} via Finset.range with shift",
+      "IsKUniform: k-uniform family predicate",
+      "SingletonIntersection: |A ∩ B| = 1 predicate",
+      "AvoidsSingletonIntersections: universal avoidance over distinct pairs",
+      "HasSingletonPair: existential singleton pair predicate",
+      "extremal_construction: docstring-only narrative on tight C(n-2, k-2) construction (no axiom)",
+      "frankl_theorem: axiomatized main result for k ≥ 4",
+      "katona_k4: docstring-only note on k = 4 special case (not separately axiomatized)",
+      "k3_fails: docstring-only note on failure for k = 3 (not axiomatized)",
+      "erdos_702: main theorem as application of frankl_theorem"
+    ],
+    "axiomCount": 1,
+    "lineCount": 155,
+    "assumptions": "1 axiom: frankl_theorem. 0 sorries.",
+    "theoremCount": 1,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "Erdős and Sós conjectured that for k ≥ 4, any k-uniform family over {1,...,n} with more than C(n-2, k-2) sets must contain two sets sharing exactly one element. The bound C(n-2, k-2) is natural: fixing two elements x, y and taking all k-sets containing both gives a family of this size where every pair shares at least {x, y}.\n\nKatona first proved the k = 4 case (unpublished). Frankl resolved the full conjecture in 1977 using the shifting (compression) technique — a method that systematically simplifies set families while preserving structural properties. His proof established the shifting technique as a central tool in extremal set theory.\n\nThe condition k ≥ 4 is necessary: for k = 3, large families avoiding singleton intersections exist beyond the C(n-2, 1) = n-2 bound, due to combinatorial designs (Steiner triple systems). The problem is closely related to #703, where Frankl and Rödl extended to general r-intersection avoidance.",
+    "problemStatement": "Let k ≥ 4. If F is a family of k-subsets of {1,...,n} with |F| > C(n-2, k-2), then there exist A, B ∈ F with |A ∩ B| = 1. Answer: YES (Frankl 1977). The bound C(n-2, k-2) is tight.",
+    "text": "For k ≥ 4, if F is a k-uniform family over {1,...,n} with |F| > C(n-2, k-2), must some pair have |A ∩ B| = 1? SOLVED by Frankl (1977): YES, the bound is tight.",
+    "proofStrategy": "The formalization defines k-uniform families over a ground set, introduces SingletonIntersection and avoidance predicates, discusses the extremal construction and special cases via docstrings, axiomatizes Frankl's theorem (the sole formal axiom), and derives the main theorem erdos_702 from frankl_theorem.",
+    "keyInsights": [
+      "Extremal construction: all k-sets containing two fixed elements give C(n-2, k-2) sets avoiding singleton intersections",
+      "Frankl (1977): this bound is tight — any larger family must contain a singleton pair",
+      "k ≥ 4 is necessary: the theorem fails for k = 3 due to combinatorial designs",
+      "Shifting technique: the key proof method, preserving avoidance under compression",
+      "Katona proved k = 4 first (unpublished), before Frankl's general result",
+      "Related to #703: Frankl-Rödl extended to general r-intersection avoidance"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "families",
+      "title": "Set Families",
+      "summary": "Defines `groundSet` ({1,...,n} via Finset.range with shift), `IsKUniform` (all sets have cardinality k), and `IsOverGroundSet` (all sets are subsets of ground set).",
+      "startLine": 35,
+      "endLine": 49
+    },
+    {
+      "id": "intersections",
+      "title": "Intersection Patterns",
+      "summary": "Defines `SingletonIntersection` (|A ∩ B| = 1), `AvoidsSingletonIntersections` (no distinct pair has singleton intersection), and `HasSingletonPair` (existential).",
+      "startLine": 50,
+      "endLine": 66
+    },
+    {
+      "id": "extremal",
+      "title": "Extremal Bound",
+      "summary": "Discusses the extremal construction: fixing {x, y} and taking all k-sets through both yields C(n-2, k-2) sets where every pair shares ≥ 2 elements. Docstring-only narrative; no formal axiom in this section.",
+      "startLine": 67,
+      "endLine": 77
+    },
+    {
+      "id": "frankl",
+      "title": "Frankl's Theorem",
+      "summary": "Axiomatizes `frankl_theorem` (k ≥ 4, |F| > C(n-2, k-2) implies singleton pair exists). Notes Katona's k = 4 case in docstring (not separately axiomatized).",
+      "startLine": 78,
+      "endLine": 95
+    },
+    {
+      "id": "special",
+      "title": "Special Cases",
+      "summary": "Verifies C(4,2) = 6 by `native_decide`. Notes that the k = 3 case fails in docstring (not axiomatized).",
+      "startLine": 96,
+      "endLine": 108
+    },
+    {
+      "id": "proof",
+      "title": "Proof Technique",
+      "summary": "Notes Frankl's shifting method and the connection to Problem #703 (general r-intersection avoidance).",
+      "startLine": 109,
+      "endLine": 118
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Main Theorem",
+      "summary": "Defines `erdos_702 := frankl_theorem` as the main result. Includes answer and status strings. Verifies key definitions with `#check`.",
+      "startLine": 119,
+      "endLine": 155
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #702 (Erdős-Sós conjecture) was SOLVED by Frankl in 1977. For k ≥ 4, any k-uniform family with more than C(n-2, k-2) sets contains a singleton intersection pair. The bound is achieved by taking all k-sets through two fixed points. The proof uses the shifting technique, and the condition k ≥ 4 is necessary.",
+    "implications": "Characterizes the maximum k-uniform family avoiding singleton intersections for k ≥ 4 Establishes the shifting technique as a paradigm for extremal set theory proofs Reveals a structural boundary at k = 4: the theorem fails for k = 3 due to combinatorial designs The extremal family (sunflower with 2-element kernel) is the unique maximum-avoiding construction",
+    "openQuestions": [
+      "Characterize all extremal families achieving C(n-2, k-2) for each k ≥ 4",
+      "Strengthen results for specific values of n and k",
+      "Extensions to other forbidden intersection sizes |A ∩ B| = r",
+      "Stability results: how close to the extremal structure must near-maximal families be?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos702",
+    "lineCount": 155,
+    "axiomCount": 1,
+    "theoremCount": 1,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos702Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "Fr77",
+      "citation": "Frankl, Péter, On families of finite sets no two of which intersect in a singleton, Bull. Austral. Math. Soc. 17 (1977), 125-134.",
+      "type": "paper"
+    },
+    {
+      "key": "Fr87",
+      "citation": "Frankl, P. and Füredi, Z., Forbidding just one intersection, J. Combin. Theory Ser. A 39 (1985), 160-176.",
+      "type": "paper"
+    },
+    {
+      "key": "EKR61",
+      "citation": "Erdős, P., Ko, C., and Rado, R., Intersection theorems for systems of finite sets, Quart. J. Math. Oxford 12 (1961), 313-320.",
+      "type": "paper"
+    },
+    {
+      "key": "erdos702",
+      "citation": "Erdős Problems, Problem #702, https://erdosproblems.com/702",
+      "type": "website"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-21",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, intersecting-families, solved"
+    },
+    {
+      "targetId": "erdos-272",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-set-theory, solved"
+    },
+    {
+      "targetId": "erdos-701",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, extremal-set-theory, intersecting-families"
+    }
+  ],
+  "sorries": 0
+}

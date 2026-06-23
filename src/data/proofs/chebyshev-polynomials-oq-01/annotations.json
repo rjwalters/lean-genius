@@ -1,0 +1,128 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "chebyshev-polynomials-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "The composition law and the commuting Chebyshev family",
+    "content": "The Chebyshev polynomials of the first kind Tₙ satisfy the composition law T_{m·n} = T_m ∘ T_n. Mathlib supplies this multiplicativity as Polynomial.Chebyshev.T_mul but records none of its structural consequences. This file packages the law with its monoid structure (X = T₁ as the compositional identity, associativity), its headline corollary — the Tₙ commute under composition — and its trigonometric origin cos(m·n·θ) = T_m(T_n(cos θ)).",
+    "mathContext": "$T_{mn} = T_m \\circ T_n$ for all $m, n \\in \\mathbb{Z}$ over any commutative ring.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Chebyshev polynomials",
+      "polynomial composition",
+      "commuting polynomials",
+      "Ritt's theorem"
+    ],
+    "prerequisites": [
+      "Chebyshev polynomials of the first kind",
+      "polynomial composition"
+    ]
+  },
+  {
+    "id": "ann-composition-law",
+    "proofId": "chebyshev-polynomials-oq-01",
+    "range": {
+      "startLine": 43,
+      "endLine": 47
+    },
+    "type": "key-step",
+    "title": "The composition law T_{m·n} = T_m ∘ T_n",
+    "content": "The foundation of the entry: T_comp is Mathlib's Polynomial.Chebyshev.T_mul, stating that the (m·n)-th Chebyshev polynomial is the composite of the m-th and n-th. This is a polynomial identity valid over any commutative ring and for all integer indices.",
+    "mathContext": "$T_{m \\cdot n} = T_m \\circ T_n$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Chebyshev polynomials",
+      "polynomial composition"
+    ],
+    "prerequisites": [
+      "polynomial composition"
+    ]
+  },
+  {
+    "id": "ann-identity",
+    "proofId": "chebyshev-polynomials-oq-01",
+    "range": {
+      "startLine": 49,
+      "endLine": 66
+    },
+    "type": "key-step",
+    "title": "T₁ = X is the identity for composition",
+    "content": "Since T₁ = X and X is the two-sided identity for polynomial composition (p ∘ X = p and X ∘ p = p), the index 1 acts as a compositional unit: T_m ∘ T₁ = T_m. Together with the composition law this exhibits n ↦ Tₙ as a monoid morphism from (ℤ, ·, 1) into (R[X], ∘, X).",
+    "mathContext": "$T_1 = X$, and $p \\circ X = X \\circ p = p$, so $T_m \\circ T_1 = T_m$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial composition",
+      "monoid morphism",
+      "identity element"
+    ],
+    "prerequisites": [
+      "polynomial composition"
+    ]
+  },
+  {
+    "id": "ann-commutativity",
+    "proofId": "chebyshev-polynomials-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 75
+    },
+    "type": "key-step",
+    "title": "Chebyshev polynomials commute under composition (headline)",
+    "content": "The original contribution of the entry: T_m ∘ T_n = T_n ∘ T_m. Rewriting both composites back to T_{m·n} and T_{n·m} via the composition law reduces the claim to commutativity of integer multiplication. This is exactly what makes the Tₙ a commuting family — the property at the heart of Ritt's classification of commuting polynomials — and it is not recorded in Mathlib.",
+    "mathContext": "$T_m \\circ T_n = T_{mn} = T_{nm} = T_n \\circ T_m$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "commuting polynomials",
+      "Ritt's theorem",
+      "polynomial composition"
+    ],
+    "prerequisites": [
+      "polynomial composition"
+    ]
+  },
+  {
+    "id": "ann-assoc",
+    "proofId": "chebyshev-polynomials-oq-01",
+    "range": {
+      "startLine": 77,
+      "endLine": 88
+    },
+    "type": "key-step",
+    "title": "Associativity of the composition law",
+    "content": "Iterating the composition law unfolds T_{l·m·n} into a triple composite (T_l ∘ T_m) ∘ T_n, and the two bracketings agree via mul_assoc — completing the monoid laws for n ↦ Tₙ.",
+    "mathContext": "$T_{lmn} = (T_l \\circ T_m) \\circ T_n = T_l \\circ (T_m \\circ T_n)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "associativity",
+      "polynomial composition"
+    ],
+    "prerequisites": [
+      "polynomial composition"
+    ]
+  },
+  {
+    "id": "ann-trig-origin",
+    "proofId": "chebyshev-polynomials-oq-01",
+    "range": {
+      "startLine": 91,
+      "endLine": 117
+    },
+    "type": "key-step",
+    "title": "The trigonometric origin",
+    "content": "Over ℝ, Tₙ(cos θ) = cos(n θ). Applying this twice gives T_m(T_n(cos θ)) = T_m(cos(n θ)) = cos(m·n·θ), and through the composition polynomial (T_m ∘ T_n)(cos θ) = cos(m·n·θ). The composition law is thus the polynomial shadow of the angle identity cos(m·(n θ)) = cos((m n) θ). Concrete instances T₆ = T₂ ∘ T₃ = T₃ ∘ T₂ are checked over ℤ.",
+    "mathContext": "$T_m(T_n(\\cos\\theta)) = \\cos(mn\\theta)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multiple-angle identity",
+      "Chebyshev polynomials",
+      "cosine"
+    ],
+    "prerequisites": [
+      "cosine multiple-angle identity"
+    ]
+  }
+]

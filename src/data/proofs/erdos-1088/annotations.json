@@ -1,0 +1,192 @@
+[
+  {
+    "id": "ann-1088-1",
+    "proofId": "erdos-1088",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Statement and Background",
+    "content": "Erdős Problem #1088 asks a Ramsey-type question in discrete geometry: given $m$ points in $\\mathbb{R}^d$, how large must $m$ be to guarantee a subset of $n$ points with all $\\binom{n}{2}$ pairwise distances distinct? Erdős posed this in 1975. The problem has a surprising dimensional dependence: more dimensions provide more room for distinct distances, but the question is whether $f_d(n)$ grows subexponentially in $d$ for fixed $n$.",
+    "mathContext": "Define $f_d(n) = \\min\\{m : \\text{every } m\\text{-point set in } \\mathbb{R}^d \\text{ contains } n \\text{ points with all } \\binom{n}{2} \\text{ pairwise distances distinct}\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "discrete geometry",
+      "distinct distances",
+      "high-dimensional combinatorics"
+    ],
+    "prerequisites": [
+      "metric spaces",
+      "finite point configurations",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-1088-2",
+    "proofId": "erdos-1088",
+    "range": {
+      "startLine": 31,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "AllDistancesDistinct Predicate",
+    "content": "The predicate `AllDistancesDistinct d S` holds when all $\\binom{|S|}{2}$ pairwise distances in the finite set $S \\subset \\mathbb{R}^d$ are distinct. Points are represented as functions $\\text{Fin}\\, d \\to \\mathbb{R}$, and distance is measured by squared Euclidean distance $\\sum_{i=0}^{d-1}(p_1(i) - p_2(i))^2$ (avoiding square roots for cleaner formalization). Two pairs $\\{p_1, p_2\\}$ and $\\{q_1, q_2\\}$ are required to have different squared distances whenever they are different as unordered pairs.",
+    "mathContext": "$\\text{AllDistancesDistinct}(d, S) \\iff \\forall \\{p_1, p_2\\} \\neq \\{q_1, q_2\\} \\subseteq S$: $\\sum_{i} (p_1(i) - p_2(i))^2 \\neq \\sum_{i} (q_1(i) - q_2(i))^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squared Euclidean distance",
+      "distance multiset",
+      "general position",
+      "Sidon sets"
+    ],
+    "prerequisites": [
+      "Euclidean distance",
+      "finite sets",
+      "combinatorics of pairs"
+    ]
+  },
+  {
+    "id": "ann-1088-3",
+    "proofId": "erdos-1088",
+    "range": {
+      "startLine": 43,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "The Function f_d(n)",
+    "content": "The central extremal function $f_d(n)$ is axiomatized as $f : \\mathbb{N} \\times \\mathbb{N} \\to \\mathbb{N}$. Constructively defining $f_d(n)$ would require quantifying over all finite point configurations in $\\mathbb{R}^d$ and finding the minimum guaranteeing a distinct-distance subset, which is beyond current Mathlib infrastructure. The axiomatization allows stating all known bounds and the main conjecture cleanly.",
+    "mathContext": "$f_d(n) = \\min\\{m \\in \\mathbb{N} : \\forall S \\subset \\mathbb{R}^d, |S| = m \\implies \\exists T \\subseteq S, |T| = n, \\text{AllDistancesDistinct}(d, T)\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal functions",
+      "Ramsey numbers",
+      "guaranteed substructure"
+    ],
+    "prerequisites": [
+      "point configurations",
+      "finite set cardinality",
+      "extremal combinatorics"
+    ]
+  },
+  {
+    "id": "ann-1088-4",
+    "proofId": "erdos-1088",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "One-Dimensional Case: f_1(n) ~ n²",
+    "content": "In one dimension, $f_1(n) \\asymp n^2$. The upper bound follows because among $cn^2$ real numbers, some $n$ of them must have all $\\binom{n}{2}$ pairwise differences distinct (a Sidon-type argument). The lower bound comes from arithmetic progressions: $n^2$ equally spaced points can be arranged so no $n$-element subset has all differences distinct, by pigeonhole on the $O(n^2)$ possible difference values. This connects to Problem #530.",
+    "mathContext": "$\\exists\\, c_1, c_2 > 0$: $c_1 n^2 \\leq f_1(n) \\leq c_2 n^2$ for all $n \\geq 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B_2 sequences",
+      "arithmetic progressions",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "one-dimensional distance",
+      "pigeonhole principle",
+      "quadratic growth"
+    ]
+  },
+  {
+    "id": "ann-1088-5",
+    "proofId": "erdos-1088",
+    "range": {
+      "startLine": 59,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "f_2(3) = 7: Plane Case for Triangles",
+    "content": "Exactly 7 points in the plane guarantee a triangle with all three side lengths distinct. The lower bound construction uses 6 points: the vertices of a regular hexagon yield only 2 distinct distances (edge length and diameter), so no triangle among them has 3 distinct sides. For the upper bound, Erdős proved that any 7 points in $\\mathbb{R}^2$ must contain 3 forming a scalene triangle.",
+    "mathContext": "$f_2(3) = 7$. The regular hexagon with 6 vertices shows $f_2(3) > 6$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "regular hexagon",
+      "scalene triangles",
+      "planar point configurations"
+    ],
+    "prerequisites": [
+      "planar geometry",
+      "triangle classification",
+      "extremal constructions"
+    ]
+  },
+  {
+    "id": "ann-1088-6",
+    "proofId": "erdos-1088",
+    "range": {
+      "startLine": 62,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Three-Point Asymptotics: f_d(3) = d²/2 + O(d)",
+    "content": "For the simplest nontrivial case $n = 3$, the function grows quadratically in dimension: $f_d(3) = d^2/2 + O(d)$. The leading term $d^2/2$ counts approximately the number of distinct squared-distance values achievable in $\\mathbb{R}^d$. The exact value $f_3(3) = 9$ was proved by Croft in 1962. The $O(d)$ error term reflects boundary effects in the extremal constructions.",
+    "mathContext": "$\\exists\\, c > 0$: $|f_d(3) - d^2/2| \\leq c \\cdot d$ for all $d \\geq 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic growth",
+      "dimension dependence",
+      "Croft's theorem",
+      "extremal point sets"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "higher-dimensional geometry",
+      "error bounds"
+    ]
+  },
+  {
+    "id": "ann-1088-7",
+    "proofId": "erdos-1088",
+    "range": {
+      "startLine": 67,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "Erdős-Straus Exponential Upper Bound",
+    "content": "Erdős and Straus proved that for each fixed $n \\geq 3$, there exists a constant $c_n > 1$ such that $f_d(n) \\leq c_n^d$. This is an exponential upper bound in the dimension $d$. The proof uses a probabilistic/counting argument: in a sufficiently large random set, an $n$-element subset with distinct distances exists with positive probability. The constant $c_n$ depends on $n$ but not on $d$.",
+    "mathContext": "For each $n \\geq 3$: $\\exists\\, c > 1$ such that $f_d(n) \\leq c^d$ for all $d \\geq 1$. Equivalently, $\\log_2 f_d(n) = O(d)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential growth",
+      "probabilistic method",
+      "counting arguments",
+      "dimension dependence"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "exponential functions",
+      "probabilistic combinatorics"
+    ]
+  },
+  {
+    "id": "ann-1088-8",
+    "proofId": "erdos-1088",
+    "range": {
+      "startLine": 75,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "The Main Conjecture: Subexponential Growth (OPEN)",
+    "content": "The central question of Problem #1088: for fixed $n \\geq 3$, is $f_d(n) = 2^{o(d)}$? This asks whether the Erdős-Straus exponential bound $c_n^d$ can be improved to subexponential growth. The formalization uses the $\\varepsilon$-characterization: for every $\\varepsilon > 0$, eventually $f_d(n) \\leq 2^{\\varepsilon d}$, meaning $\\log_2 f_d(n)/d \\to 0$ as $d \\to \\infty$. This is equivalent to saying the base of the exponential can be made arbitrarily close to 1.",
+    "mathContext": "$\\forall n \\geq 3,\\; \\forall \\varepsilon > 0,\\; \\exists D \\in \\mathbb{N},\\; \\forall d \\geq D$: $f_d(n) \\leq 2^{\\varepsilon d}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subexponential growth",
+      "asymptotic dimension dependence",
+      "o-notation",
+      "high-dimensional phenomena"
+    ],
+    "prerequisites": [
+      "exponential asymptotics",
+      "limit definitions",
+      "high-dimensional analysis"
+    ]
+  }
+]

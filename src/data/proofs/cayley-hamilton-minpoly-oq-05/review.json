@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "proofId": "cayley-hamilton-minpoly-oq-05",
+  "reviewDate": "2026-03-25T12:00:00Z",
+  "reviewer": "peer-reviewer",
+
+  "overallAssessment": {
+    "grade": "B-",
+    "oneLiner": "Well-organized pedagogical exploration of minimal polynomial reduction in K-algebras, heavily leveraging Mathlib, with multiple stale sorry references creating internal contradictions.",
+    "tier": "B",
+    "tierJustification": "All 23 theorems are fully proved with no sorries or axioms. However, the file relies heavily on Mathlib's minpoly infrastructure — most theorems are 1-3 line wrappers. The core reduction calc proof and the tower degree bound are genuinely substantive; the rest are pedagogical curation of Mathlib facts.",
+    "stratification": {
+      "proved": [
+        "minpoly_reduction (core reduction via division algorithm)",
+        "minpoly_annihilator_iff (annihilator characterization)",
+        "minpoly_congruence_iff (congruence modulo minpoly)",
+        "power_reduction (power computation in quotient)",
+        "reduction_degree_lt (degree bound on remainders)",
+        "minpoly_dvd_of_idempotent/involutory/nilpotent (special elements)",
+        "minpoly_dvd_map_of_tower (tower divisibility)",
+        "minpoly_natDegree_tower_le (tower degree bound)",
+        "minpoly_eq_map_of_irreducible (equality under irreducibility)"
+      ],
+      "axiomatized": [],
+      "elementary": [
+        "minpoly_dvd_of_aeval_eq_zero (literal one-line Mathlib call: minpoly.dvd K x hf)",
+        "isIntegral_tower_top (literal one-line: hx.tower_top)",
+        "minpoly_map_monic_tower (literal one-line: (minpoly.monic hx).map ...)",
+        "minpoly_natDegree_pos (literal one-line: minpoly.natDegree_pos hx)",
+        "annihilator_add (trivial: map_add + add_zero)",
+        "annihilator_mul_left (trivial: map_mul + zero_mul)",
+        "minpoly_quotient_vanishes (trivial corollary of core reduction)",
+        "minpoly_reduction_diff (trivial corollary of core reduction)"
+      ],
+      "assessment": "All components are fully proved, creating good epistemic coherence. The substantive proofs (minpoly_reduction, minpoly_natDegree_tower_le) coexist with ~8 one-line Mathlib wrappers that are pedagogically useful but should not be framed as 'original contributions'."
+    }
+  },
+
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Lean file, overall structure (lines 1-232)",
+      "finding": "The file is exceptionally well-organized into 7 clearly delineated sections with logical progression: core reduction → annihilator → congruence → degree bounds → power reduction → special elements → tower. Each section builds on the previous. The calc proof of minpoly_reduction (lines 40-49) is a clean pedagogical exposition of the division algorithm approach.",
+      "recommendation": "Preserve this organizational structure — it is the entry's greatest strength."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "Lean file, minpoly_natDegree_tower_le (lines 204-215)",
+      "finding": "The tower degree bound theorem is a genuinely substantive proof combining divisibility, degree-of-divisor bounds, and monic degree preservation under map. It's the most technically involved result in the file and demonstrates real algebraic reasoning beyond simple Mathlib delegation.",
+      "recommendation": "Highlight this as the key technical contribution in the tower section."
+    },
+    {
+      "severity": "major",
+      "category": "inconsistency",
+      "location": "meta.json: originalContributions[7], sections[6], conclusion.openQuestions[0]",
+      "finding": "Multiple text fields reference '1 sorry' in minpoly_eq_map_of_irreducible, but the Lean file has NO sorries (verified: grep -c 'sorry' returns 0). Specifically: originalContributions[7] says '(1 sorry)', sections[6].summary says '1 sorry remaining', conclusion.openQuestions[0] says 'Complete the sorry in minpoly_eq_map_of_irreducible'. Meanwhile sorryCount=0 and status='verified'. The sorry was clearly resolved but the text wasn't updated.",
+      "recommendation": "Remove all '(1 sorry)' references. Update originalContributions[7] to remove the sorry note. Remove conclusion.openQuestions[0]. Update sections[6].summary to reflect full verification."
+    },
+    {
+      "severity": "moderate",
+      "category": "inconsistency",
+      "location": "meta.json: meta.badge='mathlib' (line 20) vs root badge='verified' (line 199)",
+      "finding": "Two badge fields in the JSON disagree: meta.badge is 'mathlib' while the root-level badge is 'verified'. Given the heavy Mathlib reliance (most proofs are 1-3 line Mathlib wrappers), 'mathlib' is more accurate. Per project conventions, 'verified' means fully machine-checked with no assumptions, which IS true, but the 'mathlib' badge better signals the dependency profile.",
+      "recommendation": "Unify badge fields. Recommend 'verified' since the proof has 0 sorries and 0 axioms — this matches the project's status field definitions. Update meta.badge from 'mathlib' to 'verified'."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions",
+      "finding": "Several items listed as 'original contributions' are direct Mathlib calls: (1) minpoly_dvd_of_aeval_eq_zero is literally `minpoly.dvd K x hf` — a one-token Mathlib wrapper. (2) The special element theorems (idempotent/involutory/nilpotent) are each 2-line proofs calling `minpoly.dvd` then `simp`. (3) minpoly_eq_map_of_irreducible delegates to `minpoly.eq_of_irreducible_of_monic`. These are legitimate pedagogical contributions but not 'original' in the mathematical sense.",
+      "recommendation": "Reframe originalContributions to distinguish substantive proofs from pedagogical wrappers. The genuinely substantive contributions are: minpoly_reduction, minpoly_annihilator_iff (as a bidirectional characterization), minpoly_congruence_iff, power_reduction, and minpoly_natDegree_tower_le."
+    },
+    {
+      "severity": "minor",
+      "category": "inconsistency",
+      "location": "meta.json mathlibDependencies[3]: minpoly.irreducible",
+      "finding": "minpoly.irreducible is listed as a Mathlib dependency but is never called in the Lean file. The file takes irreducibility as a hypothesis (hirr parameter in minpoly_eq_map_of_irreducible) rather than deriving it from minpoly.irreducible.",
+      "recommendation": "Remove minpoly.irreducible from the mathlibDependencies list, or add a note that it provides theoretical context rather than being directly invoked."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "annotations.json ann-chmoq05-6, endLine: 239",
+      "finding": "The annotation range specifies endLine 239 but the Lean file is only 232 lines long. The annotation should end at line 232.",
+      "recommendation": "Update endLine from 239 to 232."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "annotations.json ann-chmoq05-6 content",
+      "finding": "The annotation text says '(1 sorry)' for the equality condition, matching the stale sorry references in meta.json. The sorry has been resolved — the proof uses minpoly.eq_of_irreducible_of_monic.",
+      "recommendation": "Remove '(1 sorry)' from the annotation content and update to note the theorem is fully proved."
+    }
+  ],
+
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Remove all stale sorry references: update originalContributions[7] to remove '(1 sorry)', update sections[6].summary to remove '1 sorry remaining', remove conclusion.openQuestions[0] about completing the sorry, and update annotation ann-chmoq05-6 to remove '(1 sorry)' from content.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Unify badge fields: both meta.badge and root badge should be 'verified' (0 sorries, 0 axioms = verified per project conventions).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Reframe originalContributions to distinguish substantive proofs (minpoly_reduction, minpoly_annihilator_iff, minpoly_congruence_iff, power_reduction, minpoly_natDegree_tower_le) from pedagogical Mathlib wrappers (minpoly_dvd_of_idempotent etc.).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Remove minpoly.irreducible from mathlibDependencies (not used in the Lean file). Fix annotation ann-chmoq05-6 endLine from 239 to 232.",
+      "status": "resolved"
+    }
+  ],
+
+  "qualityScores": {
+    "mathematicalSubstance": 6,
+    "originalityAccuracy": 6,
+    "completeness": 8,
+    "framingPrecision": 7,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 5,
+    "epistemicCoherence": 8,
+    "overall": 6.9
+  },
+
+  "suggestedBestFraming": "A pedagogically organized Lean 4 formalization of polynomial evaluation modulo the minimal polynomial in general K-algebras, combining Mathlib's minpoly infrastructure with original calc proofs for modular reduction, annihilator characterization, and base change degree bounds in algebra towers — fully verified with no sorries or axioms."
+}

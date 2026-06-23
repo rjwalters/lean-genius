@@ -1,0 +1,182 @@
+[
+  {
+    "id": "erdos-685-header",
+    "proofId": "erdos-685",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 11
+    },
+    "title": "Problem Overview",
+    "content": "Erdős Problem 685 asks for the asymptotic number of distinct prime divisors of the binomial coefficient C(n,k) when n^ε < k ≤ n^{1-ε}. The conjectured answer is ω(C(n,k)) ~ k · Σ_{k<p<n} 1/p.",
+    "mathContext": "Binomial coefficients encode rich arithmetic information. The prime factorization of C(n,k) reflects how primes in various ranges divide the product n(n-1)···(n-k+1)/k!. Primes p in (k,n) each divide C(n,k) exactly when ⌊n/p⌋ > ⌊k/p⌋ + ⌊(n-k)/p⌋, which happens with probability ~k/p by Kummer's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial-coefficients",
+      "prime-divisors",
+      "analytic-number-theory"
+    ],
+    "prerequisites": [
+      "number theory",
+      "asymptotic analysis",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "erdos-685-omega",
+    "proofId": "erdos-685",
+    "type": "definition",
+    "range": {
+      "startLine": 23,
+      "endLine": 25
+    },
+    "title": "Prime Divisor Count ω(n)",
+    "content": "**`omega n`** = `n.primeFactors.card`, the number of distinct prime divisors of n. This is the additive function ω, not the big-Ω that counts multiplicity.",
+    "mathContext": "By the Hardy–Ramanujan theorem, ω(n) ~ log log n for typical n. For binomial coefficients, the prime divisor count can be much larger due to the product structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime-omega",
+      "hardy-ramanujan",
+      "additive-function"
+    ],
+    "prerequisites": [
+      "number theory",
+      "arithmetic functions",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "erdos-685-primesum",
+    "proofId": "erdos-685",
+    "type": "definition",
+    "range": {
+      "startLine": 27,
+      "endLine": 29
+    },
+    "title": "Prime Reciprocal Sum",
+    "content": "**`primeSumInRange k n`** = Σ_{k<p<n, p prime} 1/p, the sum of prime reciprocals in the open interval (k, n).",
+    "mathContext": "By Mertens' theorem, Σ_{p≤x} 1/p ~ log log x. So primeSumInRange(k,n) ~ log log n - log log k. When k = n^ε, this is ~ (1-ε) log log n, giving ω(C(n,k)) ~ k · (1-ε) log log n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "mertens-theorem",
+      "prime-reciprocals"
+    ],
+    "prerequisites": [
+      "number theory",
+      "real analysis",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "erdos-685-conjecture",
+    "proofId": "erdos-685",
+    "type": "concept",
+    "range": {
+      "startLine": 33,
+      "endLine": 41
+    },
+    "title": "Main Conjecture",
+    "content": "**Erdős Problem 685**: For n^ε < k ≤ n^{1-ε}, the number of distinct prime divisors of C(n,k) satisfies ω(C(n,k)) = (1+o(1)) · k · Σ_{k<p<n} 1/p. The formalization captures this as a (1±δ)-sandwich for any δ > 0 and all large n.",
+    "mathContext": "The conjecture says that primes p ∈ (k,n) each independently divide C(n,k) with probability ~k/p, and the total count concentrates around its expectation. This is a concentration phenomenon for the additive function ω applied to a highly structured number.",
+    "significance": "key",
+    "relatedConcepts": [
+      "concentration",
+      "kummer-theorem",
+      "open-problem"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "probability theory",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "erdos-685-lower",
+    "proofId": "erdos-685",
+    "type": "insight",
+    "range": {
+      "startLine": 45,
+      "endLine": 47
+    },
+    "title": "Trivial Lower Bound",
+    "content": "ω(C(n,k)) ≥ log C(n,k) / log n. Since each prime divisor is at most n, C(n,k) ≤ n^{ω(C(n,k))}.",
+    "mathContext": "This bound is tight when k > n^{1-o(1)}, because then C(n,k) ~ n^k/k! and the prime factorization is dominated by small primes appearing with high multiplicity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "trivial-bound",
+      "prime-counting"
+    ],
+    "prerequisites": [
+      "number theory",
+      "real analysis",
+      "inequalities"
+    ]
+  },
+  {
+    "id": "erdos-685-tight",
+    "proofId": "erdos-685",
+    "type": "insight",
+    "range": {
+      "startLine": 49,
+      "endLine": 55
+    },
+    "title": "Tightness Near n",
+    "content": "For k > n^{1-ε}, the trivial lower bound is asymptotically tight: ω(C(n,k)) ≤ (1+ε) · log C(n,k) / log n. This shows the conjecture's range restriction n^ε < k ≤ n^{1-ε} is necessary.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tightness",
+      "boundary-behavior"
+    ],
+    "mathContext": "See annotation content for formal details of tightness near n",
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic analysis",
+      "inequalities"
+    ]
+  },
+  {
+    "id": "erdos-685-basic",
+    "proofId": "erdos-685",
+    "type": "insight",
+    "range": {
+      "startLine": 59,
+      "endLine": 69
+    },
+    "title": "Verified Basic Properties",
+    "content": "Three properties proved constructively: **ω(1) = 0** (1 has no prime divisors), **ω(C(n,0)) = 0** (since C(n,0) = 1), and **ω(C(n,1)) = ω(n)** (since C(n,1) = n). These are verified by Lean's kernel, not axiomatized.",
+    "mathContext": "These boundary cases ground the formalization: the conjecture's interesting range starts at k ≥ 2 where the binomial coefficient has non-trivial factorization.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "verified-examples",
+      "boundary-cases"
+    ],
+    "prerequisites": [
+      "number theory",
+      "Lean 4 tactic mode",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "erdos-685-zero-iff",
+    "proofId": "erdos-685",
+    "type": "insight",
+    "range": {
+      "startLine": 71,
+      "endLine": 73
+    },
+    "title": "Characterization of ω = 0",
+    "content": "ω(n) = 0 if and only if n ≤ 1. This axiom connects the prime divisor count to the structure of small numbers.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "characterization",
+      "small-cases"
+    ],
+    "mathContext": "See annotation content for formal details of characterization of ω = 0",
+    "prerequisites": [
+      "number theory",
+      "elementary logic",
+      "Lean 4 tactic mode"
+    ]
+  }
+]

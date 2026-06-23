@@ -1,0 +1,184 @@
+[
+  {
+    "id": "ann-e372-header",
+    "proofId": "erdos-372",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #372: Descending Largest Prime Factors**\n\nLet P(n) denote the largest prime factor of n. Are there infinitely many n such that P(n) > P(n+1) > P(n+2)?\n\n**Answer:** YES — proved by Antal Balog (2001)\n\nThe problem was posed by Erdős and Pomerance in 1978. They proved the ascending case (P(n) < P(n+1) < P(n+2)) but the descending case remained open for 23 years until Balog's resolution using sophisticated sieve methods.",
+    "mathContext": "P(n) denotes the largest prime dividing n. For example, P(30) = 5 since 30 = 2 × 3 × 5. The question asks about patterns in the largest prime factors of consecutive integers — a fundamental question in multiplicative number theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factorization",
+      "analytic number theory",
+      "sieve methods"
+    ],
+    "prerequisites": [
+      "largest prime factor function P(n)",
+      "patterns among consecutive integers",
+      "multiplicative number theory"
+    ]
+  },
+  {
+    "id": "ann-e372-lpf-def",
+    "proofId": "erdos-372",
+    "range": {
+      "startLine": 34,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Largest Prime Factor and Properties",
+    "content": "**largestPrimeFactor(n) and three key properties:**\n\n**Definition:** P(n) = max(primeFactors(n)) for n > 1, P(1) = 1 by convention. Uses Mathlib's `primeFactors` (the set of prime divisors) and `Finset.max'` (maximum of a nonempty finite set).\n\n**largestPrimeFactor_prime** (proved): P(n) is prime for n > 1. Follows because every element of primeFactors is prime.\n\n**largestPrimeFactor_dvd** (proved): P(n) ∣ n for n > 1. Membership in primeFactors implies divisibility.\n\n**prime_le_largestPrimeFactor** (proved): For any prime p dividing n, p ≤ P(n). This is the maximality property — P(n) is genuinely the *largest* prime factor.",
+    "mathContext": "The function is noncomputable because Finset.max' uses Classical.choice internally. All three properties are proved directly from the Mathlib API for primeFactors and Finset operations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.max'",
+      "Nat.primeFactors",
+      "divisibility"
+    ],
+    "prerequisites": [
+      "Nat.primeFactors as the set of prime divisors",
+      "Finset.max' for the maximum of a nonempty finite set",
+      "divisibility and prime divisor membership"
+    ]
+  },
+  {
+    "id": "ann-e372-examples",
+    "proofId": "erdos-372",
+    "range": {
+      "startLine": 73,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Concrete Examples",
+    "content": "**Three computed examples verified by native_decide:**\n\n- P(6) = 3, since 6 = 2 × 3\n- P(30) = 5, since 30 = 2 × 3 × 5\n- P(210) = 7, since 210 = 2 × 3 × 5 × 7 (the primorial of 7)\n\nThe `native_decide` tactic compiles the decision procedure to native code for fast evaluation. These examples illustrate how P extracts the largest prime from increasingly complex factorizations.",
+    "mathContext": "The primorial p# is the product of all primes up to p. These are natural test cases because their largest prime factor equals p exactly.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "primorial",
+      "computational verification"
+    ],
+    "prerequisites": [
+      "prime factorization of small integers",
+      "the primorial as a product of consecutive primes",
+      "native_decide for computational verification"
+    ]
+  },
+  {
+    "id": "ann-e372-descending",
+    "proofId": "erdos-372",
+    "range": {
+      "startLine": 93,
+      "endLine": 107
+    },
+    "type": "definition",
+    "title": "Descending Triple Property",
+    "content": "**isDescendingTriple(n) and descendingTriples:**\n\nA natural number n satisfies the descending triplet property if P(n) > P(n+1) > P(n+2) — three consecutive integers have strictly decreasing largest prime factors.\n\nThe set descendingTriples = {n | isDescendingTriple n} collects all such n. Problem #372 asks whether this set is infinite.",
+    "mathContext": "Finding descending triplets is harder than ascending ones because large prime factors are relatively rare. A number with a large prime factor p must be divisible by p, which constrains it to multiples of p. Having three consecutive integers with decreasing largest primes requires careful number-theoretic analysis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "consecutive integers",
+      "prime factor distribution"
+    ],
+    "prerequisites": [
+      "largest prime factor P(n)",
+      "strict inequalities over three consecutive integers",
+      "set-builder definition of a number-theoretic property"
+    ]
+  },
+  {
+    "id": "ann-e372-ascending",
+    "proofId": "erdos-372",
+    "range": {
+      "startLine": 109,
+      "endLine": 125
+    },
+    "type": "concept",
+    "title": "Erdős-Pomerance Ascending Theorem (1978)",
+    "content": "**erdos_pomerance_ascending (axiom):**\n\nThere are infinitely many n with P(n) < P(n+1) < P(n+2).\n\nThis was proved by Erdős and Pomerance in 1978 — 23 years before the descending case. The ascending case is easier because smooth numbers (numbers with only small prime factors) are relatively common, and transitioning from a smooth number to one with a large prime factor is natural.\n\nAxiomatized because the proof uses sieve-theoretic methods not yet formalized in Mathlib.",
+    "mathContext": "The proof leverages the fact that y-smooth numbers (P(n) ≤ y) have positive density for y = x^ε. By finding runs where P increases, ascending triplets can be constructed. The key tool is the Dickman function ρ(u) which governs smooth number counts.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "Erdős-Pomerance (1978)",
+      "Dickman function"
+    ],
+    "prerequisites": [
+      "smooth numbers with only small prime factors",
+      "the Dickman function and smooth number density",
+      "axiomatizing a sieve-theoretic result"
+    ]
+  },
+  {
+    "id": "ann-e372-balog",
+    "proofId": "erdos-372",
+    "range": {
+      "startLine": 127,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Balog's Theorem (2001)",
+    "content": "**Two axiomatized results from Balog (2001):**\n\n**balog_quantitative:** There exist constants c > 0 and x₀ such that for all x ≥ x₀, at least c·√x integers n ≤ x satisfy P(n) > P(n+1) > P(n+2). This is the main technical achievement.\n\n**balog_descending_infinite:** The set of descending triplets is infinite. This follows from the quantitative bound since c·√x → ∞, but is axiomatized separately for clarity.\n\nBalog's proof uses deep sieve methods (Selberg sieve, Brun's sieve) to construct these triplets, far beyond current Mathlib capabilities.",
+    "mathContext": "The √x bound is sublinear — it grows slower than x — which means descending triplets are relatively sparse. By comparison, the density conjecture predicts ~x/6 such triplets up to x. The gap between √x and x/6 reflects the limitations of Balog's sieve approach.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sieve methods",
+      "asymptotic counting",
+      "Selberg sieve"
+    ],
+    "prerequisites": [
+      "sieve methods including the Selberg and Brun sieves",
+      "asymptotic lower bounds of order sqrt(x)",
+      "counting integers up to x by a property"
+    ]
+  },
+  {
+    "id": "ann-e372-density",
+    "proofId": "erdos-372",
+    "range": {
+      "startLine": 150,
+      "endLine": 163
+    },
+    "type": "definition",
+    "title": "Density Conjecture (1/6)",
+    "content": "**balog_density_conjecture:**\n\nThe natural density of n with P(n) > P(n+1) > P(n+2) is conjectured to be exactly 1/6.\n\n**Intuition:** There are 3! = 6 possible strict orderings of the triple (P(n), P(n+1), P(n+2)). By a symmetry heuristic, each ordering should occur with equal density 1/6. This is analogous to how random permutations are equidistributed.\n\nThis conjecture remains **OPEN**. Balog's √x lower bound only implies a density lower bound of 0.",
+    "mathContext": "The density is formalized using Filter.Tendsto: the ratio #{n ≤ x : descending}/x should converge to 1/6 as x → ∞. The symmetry argument is only heuristic — the values P(n), P(n+1), P(n+2) are not independent, so equal distribution is non-obvious.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "permutation symmetry",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "natural density of an integer set",
+      "Filter.Tendsto for limits of counting ratios",
+      "symmetry heuristic over the 6 orderings of a triple"
+    ]
+  },
+  {
+    "id": "ann-e372-summary",
+    "proofId": "erdos-372",
+    "range": {
+      "startLine": 193,
+      "endLine": 219
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_372_summary combines two key results:**\n\n1. **Descending triplets are infinite:** Set.Infinite {n | isDescendingTriple n} — from Balog (2001)\n2. **Ascending triplets are infinite:** Set.Infinite {n | isAscendingTriple n} — from Erdős-Pomerance (1978)\n\nTogether, these establish that both monotone patterns in largest prime factors occur infinitely often among consecutive integers. The proof is a simple conjunction: ⟨balog_descending_infinite, erdos_pomerance_ascending⟩.\n\nErdős Problem #372 is completely SOLVED.",
+    "mathContext": "The summary theorem packages the two main results into a single conjunction. The proof is trivially constructed from the two axioms. The remaining open question is the density conjecture (1/6 for each of the 6 orderings).",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjunction",
+      "summary theorem"
+    ],
+    "prerequisites": [
+      "Set.Infinite for descending and ascending triplet sets",
+      "combining axiomatized results by conjunction",
+      "monotone patterns in largest prime factors"
+    ]
+  }
+]

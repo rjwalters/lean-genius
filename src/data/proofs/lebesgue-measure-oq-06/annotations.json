@@ -1,0 +1,344 @@
+[
+  {
+    "id": "ann-preamble",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 1,
+      "endLine": 41
+    },
+    "type": "insight",
+    "title": "The Banach-Tarski Paradox: Duplicating a Ball",
+    "content": "The module docstring frames the paradox: the closed unit ball in ℝ³ can be cut into finitely many pieces (5 suffice) and those pieces rearranged — using only rotations and translations — into two complete copies of the original ball. This violates naive conservation of volume, but the pieces are non-measurable (constructed via Axiom of Choice) so Lebesgue measure cannot be assigned to them. The key ingredients are: the free subgroup F₂ in SO(3) (Hausdorff 1914, proved here as `hausdorff_free_subgroup`), the paradoxical decomposition of F₂, extension to S², and extension to B³. Only the final geometric assembly (`banach_tarski`) is left as an axiom; the surrounding theory is fully proved (0 sorries).",
+    "mathContext": "Banach-Tarski is a theorem of ZFC. In ZF alone it is independent. The pieces are coset representatives of the free group $F_2 = \\langle \\varphi, \\psi \\rangle \\subset \\text{SO}(3)$ acting on $S^2$, requiring an uncountable choice function. The minimum number of pieces is 5 (Straus–von Neumann).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Axiom of Choice",
+      "non-measurable set",
+      "free group",
+      "SO(3)",
+      "equidecomposability"
+    ],
+    "prerequisites": [
+      "Group actions on sets",
+      "Lebesgue measure",
+      "Free groups"
+    ]
+  },
+  {
+    "id": "ann-equidecomposable",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 46,
+      "endLine": 103
+    },
+    "type": "definition",
+    "title": "G-Equidecomposability: The Abstract Framework",
+    "content": "`Equidecomposable` captures 'cutting and rearranging using group elements' precisely: A and B are G-equidecomposable if A can be partitioned into n pieces, each piece moved by a group element g_i, so the images partition B. The group G represents the allowed moves (rotations, translations, etc.). Both `equidecomposable_refl` (reflexivity via 1 piece and the identity) and `equidecomposable_symm` (symmetry, by inverting each g_i) are proved theorems here.",
+    "mathContext": "$A \\sim_G B$ iff $\\exists n$, pairwise-disjoint $(P_i)_{i<n}$ with $A = \\bigsqcup_i P_i$ and $(g_i)$ in $G$ with $B = \\bigsqcup_i g_i P_i$. This is an equivalence relation on subsets of any $G$-set; reflexivity and symmetry are formalized. Equidecomposability preserves any $G$-invariant measure, which is why paradoxical sets break measure theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "group action",
+      "set partition",
+      "Hausdorff paradox",
+      "Tarski's theorem"
+    ],
+    "prerequisites": [
+      "Group (Lean typeclass)",
+      "MulAction",
+      "Set.Disjoint",
+      "Set.iUnion"
+    ]
+  },
+  {
+    "id": "ann-paradoxical",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 105,
+      "endLine": 113
+    },
+    "type": "definition",
+    "title": "Paradoxical Sets: Duplication via Group Action",
+    "content": "`IsParadoxical G A`: A can be partitioned into two disjoint subsets B and C (each ⊆ A) such that A is equidecomposable to B alone AND to C alone. This means A can be 'duplicated': two disjoint proper subsets each individually recapture all of A via rearrangement. This is the formal definition that makes Banach-Tarski precise.",
+    "mathContext": "IsParadoxical G A: $\\exists B, C \\subseteq A$ with $B \\cap C = \\emptyset$, $A \\sim_G B$, $A \\sim_G C$. Tarski (1938): a $G$-set $X$ admits no $G$-invariant finitely-additive probability measure iff $X$ is $G$-paradoxical — making amenability exactly dual to the Banach-Tarski phenomenon.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tarski's theorem",
+      "amenability",
+      "invariant measure",
+      "Hausdorff paradox"
+    ],
+    "prerequisites": [
+      "Equidecomposable",
+      "Set.Disjoint",
+      "Set.Subset"
+    ]
+  },
+  {
+    "id": "ann-ennreal-lemma",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 119,
+      "endLine": 127
+    },
+    "type": "insight",
+    "title": "ENNReal Helper: a + a = a implies a = 0 or ∞ (Proved)",
+    "content": "`ennreal_add_self_eq_self` is fully proved (no sorry). In ℝ≥0∞ (extended non-negative reals), if a + a = a then a must be 0 or ⊤. The proof lifts a to ℝ≥0 using the finiteness assumption (a ≠ ⊤), then derives a = 0 from a + a = a by linarith. This captures the essential arithmetic of the paradox: 'measure doubled = original measure' forces extremal values.",
+    "mathContext": "Proof: (1) push_neg splits ¬(a = 0 ∨ a = ⊤) into a ≠ 0 ∧ a ≠ ⊤; (2) lift a to ℝ≥0 via a ≠ ⊤; (3) cast the ENNReal equation to ℝ≥0; (4) linarith gives a = 0, contradicting a ≠ 0. The coercion $\\uparrow a + \\uparrow a = \\uparrow a$ in ℝ≥0 means $2a = a$, hence $a = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ENNReal arithmetic",
+      "extended reals",
+      "measure paradoxes",
+      "linarith in ℝ≥0"
+    ],
+    "prerequisites": [
+      "ENNReal.coe_add",
+      "ENNReal.coe_inj",
+      "NNReal.eq_zero_of_add_eq_self"
+    ]
+  },
+  {
+    "id": "ann-no-measure",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 129,
+      "endLine": 176
+    },
+    "type": "insight",
+    "title": "Paradoxical Sets Have No Finite Invariant Measure",
+    "content": "`paradoxical_no_finite_measure` is a fully proved theorem (0 sorries): if A is G-paradoxical, any G-invariant finitely-additive measure μ must assign A measure 0 or ∞. The argument: equidecomposability forces μ(A) = μ(B) and μ(A) = μ(C); finite additivity on the disjoint subsets gives μ(A) ≥ μ(B) + μ(C) = 2μ(A), so μ(A) + μ(A) = μ(A); the helper `ennreal_add_self_eq_self` then forces μ(A) ∈ {0, ∞}.",
+    "mathContext": "$\\mu(A) = \\mu(B) = \\mu(C)$ by invariance under equidecomposition, and $\\mu(B) + \\mu(C) \\le \\mu(A)$ by disjointness + monotonicity, giving $2\\mu(A) \\le \\mu(A)$ hence $\\mu(A) + \\mu(A) = \\mu(A)$, so $\\mu(A) \\in \\{0, \\top\\}$. This is the measure-theoretic heart of why a paradoxical ball cannot have finite positive measure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finitely-additive measure",
+      "invariant measure",
+      "ENNReal",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "IsParadoxical",
+      "ennreal_add_self_eq_self",
+      "Equidecomposable"
+    ]
+  },
+  {
+    "id": "ann-bt-statement",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 187,
+      "endLine": 193
+    },
+    "type": "definition",
+    "title": "§III: The Unit Ball and Sphere in ℝ³",
+    "content": "Defines the geometric objects of the paradox: `unitBall3 = Metric.closedBall 0 1` (the closed unit ball B³) and `unitSphere3 = Metric.sphere 0 1` (the unit sphere S²). The sphere carries the SO(3) action whose paradoxical decomposition is then transported to the ball minus its center, and finally to the whole ball.",
+    "mathContext": "$B^3 = \\{x \\in \\mathbb{R}^3 : \\|x\\| \\le 1\\}$, $S^2 = \\{x : \\|x\\| = 1\\}$. The rotation group $\\text{SO}(3)$ acts on $S^2$; the free subgroup $F_2$ produces a paradoxical decomposition of $S^2$ (minus countably many fixed points), which radially extends to $B^3 \\setminus \\{0\\}$ and then to $B^3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "unit ball",
+      "unit sphere",
+      "SO(3) action",
+      "Metric.closedBall"
+    ],
+    "prerequisites": [
+      "EuclideanSpace ℝ (Fin 3)",
+      "Metric.closedBall",
+      "Metric.sphere"
+    ]
+  },
+  {
+    "id": "ann-integer-orbit",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 206,
+      "endLine": 406
+    },
+    "type": "concept",
+    "title": "§IV: Integer-Orbit Model of the Free Rotations",
+    "content": "The technical core of the freeness proof. Rather than track real rotation matrices, the file models the action of φ, ψ (and inverses) on the integer vector orbit scaled by powers of 3 (`scaledActPhi`, `scaledActPsi`, `e2Int`, etc.), reducing 'is this word the identity?' to integer congruence arithmetic. The `scaledAct*_k` lemmas compute components, the `inv_*` defs identify the inverse generator, and the `trans_*` / `base_*` lemmas track how the trailing generator of a reduced word constrains the orbit vector mod 3 — the bookkeeping that makes the freeness proof decidable.",
+    "mathContext": "The rotations $R_z(\\arccos\\tfrac13), R_x(\\arccos\\tfrac13)$ have matrix entries in $\\tfrac13\\mathbb{Z}[\\sqrt2]$. Scaling by $3^n$ (n = word length) clears denominators, so applying a reduced word to $(0,0,1)$ gives an integer vector whose middle coordinate is $\\not\\equiv 0 \\pmod 3$ for nonempty reduced words — hence $\\neq (0,0,1)$, proving the word is nontrivial.",
+    "significance": "key",
+    "relatedConcepts": [
+      "free group freeness",
+      "integer orbit / ping-pong",
+      "rotation matrix entries",
+      "congruence mod 3"
+    ],
+    "prerequisites": [
+      "rotation matrices",
+      "integer arithmetic",
+      "FreeGroup reduced words"
+    ]
+  },
+  {
+    "id": "ann-word-automaton",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 417,
+      "endLine": 542
+    },
+    "type": "concept",
+    "title": "Part B: Word Evaluation and Reduced-Word Bookkeeping",
+    "content": "Sets up the evaluation of free-group words as products of the scaled integer actions. `applyGen` applies one generator, `evalWord` folds a word into the orbit, and `labeledInv` tracks the last generator used. The `evalWord_append`, `labeledInv_step`, and `evalWord_nonempty_anyInv` lemmas prove that a nonempty reduced word ends in a definite generator class, which the §IV congruence lemmas then use to conclude the orbit vector is nontrivial. This is the automaton-style invariant that drives the freeness induction.",
+    "mathContext": "For a reduced word $w = g_n \\cdots g_1$, `evalWord` computes $g_n(\\cdots g_1(e_2)\\cdots)$ in the integer model. The invariant 'last applied generator determines the residue class of the middle coordinate mod 3' is maintained by `labeledInv_step`, giving an inductive proof that $\\text{evalWord}(w) \\neq e_2$ for nonempty reduced $w$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "word evaluation",
+      "reduced-word induction",
+      "ping-pong lemma",
+      "automaton invariant"
+    ],
+    "prerequisites": [
+      "FreeGroup",
+      "List.foldr",
+      "reduced words"
+    ]
+  },
+  {
+    "id": "ann-hausdorff-free-subgroup",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 554,
+      "endLine": 858
+    },
+    "type": "theorem",
+    "title": "Hausdorff's Theorem: SO(3) Contains a Free Subgroup of Rank 2 (Proved)",
+    "content": "`hausdorff_free_subgroup` is a **fully proved theorem** (~300 lines, 0 sorries) — earlier drafts axiomatized it, but it is now established. It states that φ = rotation by arccos(1/3) and ψ = rotation by arccos(1/3) about a second axis freely generate a copy of F₂ inside SO(3). Freeness is expressed via injectivity of `FreeGroup.lift`, and is proved by the integer-orbit/word-automaton machinery of §IV and Part B: any nontrivial reduced word moves the basepoint $(0,0,1)$ to a vector with a non-zero residue mod 3, so it cannot be the identity.",
+    "mathContext": "$\\text{FreeGroup.lift}(b \\mapsto \\text{if } b \\text{ then } \\varphi \\text{ else } \\psi)$ is injective. A nontrivial reduced word $w(\\varphi,\\psi)$ applied to $(0,0,1)^\\top$ yields a vector whose middle coordinate is $\\not\\equiv 0 \\pmod 3$, hence $\\neq (0,0,1)^\\top$, so $w \\neq 1$ in SO(3). This is the rigorous form of Hausdorff's 1914 construction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "free group",
+      "SO(3)",
+      "rotation matrix",
+      "FreeGroup.lift",
+      "Hausdorff paradox"
+    ],
+    "prerequisites": [
+      "EuclideanSpace ℝ (Fin 3)",
+      "LinearIsometryEquiv",
+      "FreeGroup",
+      "evalWord_nonempty_anyInv"
+    ]
+  },
+  {
+    "id": "ann-banach-tarski",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 888,
+      "endLine": 901
+    },
+    "type": "insight",
+    "title": "Banach-Tarski: The Main Theorem (Axiomatized)",
+    "content": "`axiom banach_tarski` — the file's single axiom (axiomCount = 1). It states the unit ball B³ can be partitioned into n pieces, moved by isometries, to form two copies of B³ (the second translated by 2·e₁). The geometric assembly from the proved free-subgroup machinery to the final ball decomposition is the one step left axiomatized; everything feeding into it (Hausdorff freeness, the measure obstruction) and everything derived from it (non-measurability) is proved.",
+    "mathContext": "5 pieces suffice (Wagon 1985): 2 from the free-group action on one copy, 3 for the other. The pieces use a transfinite choice (AC) and are necessarily non-measurable. `RigidMotion3 = EuclideanSpace ℝ (Fin 3) ≃ᵢ EuclideanSpace ℝ (Fin 3)` covers rotations and translations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "isometry",
+      "unit ball",
+      "Axiom of Choice",
+      "non-measurable sets"
+    ],
+    "prerequisites": [
+      "IsometryEquiv",
+      "Metric.closedBall",
+      "EuclideanSpace",
+      "Set.image"
+    ]
+  },
+  {
+    "id": "ann-nonmeasurable-corollary",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 904,
+      "endLine": 962
+    },
+    "type": "theorem",
+    "title": "Corollary: Banach-Tarski Pieces Are Non-Measurable (Proved)",
+    "content": "`banach_tarski_pieces_nonmeasurable` is a **proved theorem** (derived from the `banach_tarski` axiom, no sorry): the unit ball contains a non-Lebesgue-measurable subset. The argument: if all pieces were measurable, countable additivity gives λ(B³) = Σᵢ λ(pᵢ); the two reassemblies and isometry-invariance of λ give Σᵢ λ(pᵢ) = 2λ(B³) = 2·(4π/3), contradicting Σᵢ λ(pᵢ) = λ(B³). Hence at least one piece is non-measurable.",
+    "mathContext": "If pieces $P_i$ are measurable: $\\lambda(B^3) = \\sum_i \\lambda(P_i)$, and isometry-invariance gives $\\sum_i \\lambda(P_i) = 2\\lambda(B^3)$. Since $\\lambda(B^3) = 4\\pi/3 \\in (0,\\infty)$, this forces $\\lambda(B^3) = 2\\lambda(B^3)$, a contradiction — so some $P_i$ is non-measurable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "non-measurable set",
+      "isometry-invariance",
+      "Vitali set"
+    ],
+    "prerequisites": [
+      "banach_tarski",
+      "isometry-invariance of volume",
+      "MeasurableSet"
+    ]
+  },
+  {
+    "id": "ann-amenability",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 968,
+      "endLine": 984
+    },
+    "type": "definition",
+    "title": "§VI: Amenable Groups — The Group-Theoretic Obstruction",
+    "content": "`IsAmenable G` defines amenability: G admits a finitely-additive left-invariant probability measure on all subsets of G. Amenable groups include ℤ (proved here as `int_amenable`) and all finite groups, but NOT F₂ (proved here as `free_group_not_amenable`). The non-amenability of F₂ is the group-theoretic root cause of Banach-Tarski: F₂ ↪ SO(3), so SO(3) is non-amenable, so the unit ball is paradoxical.",
+    "mathContext": "Tarski: $G$ acts without paradoxical subsets iff every $G$-set carries a $G$-invariant finitely-additive probability measure. $F_2$ is paradoxical: $F_2 = W(a) \\sqcup aW(a^{-1})$ with $F_2 \\sim W(a)$ (via $a$) and $F_2 \\sim aW(a^{-1})$ — so no invariant mean exists.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Day's theorem",
+      "Tarski's theorem",
+      "invariant mean",
+      "free group paradox"
+    ],
+    "prerequisites": [
+      "FreeGroup",
+      "Group action",
+      "finitely-additive measure",
+      "left-invariant measure"
+    ]
+  },
+  {
+    "id": "ann-int-amenable",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 996,
+      "endLine": 1259
+    },
+    "type": "theorem",
+    "title": "ℤ is Amenable (Proved)",
+    "content": "`int_amenable` is a **fully proved theorem** (~260 lines, 0 sorries) — earlier drafts left it as a sorry. It constructs a left-invariant finitely-additive probability measure on all subsets of ℤ, exhibiting ℤ as amenable. This is the positive counterpart to F₂'s non-amenability: abelian (indeed all virtually-solvable) groups admit invariant means, so they generate no paradox.",
+    "mathContext": "An invariant mean on ℤ arises from a Banach limit applied to Cesàro averages $\\mu(A) = \\text{LIM}_{N} \\frac{|A \\cap [-N,N]|}{2N+1}$; translation-invariance follows because shifting $A$ changes the window count by $O(1)$, which the limit absorbs. The formalization builds the required additivity and invariance directly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "amenability of abelian groups",
+      "invariant mean",
+      "Cesàro / Banach limit",
+      "Følner sequence"
+    ],
+    "prerequisites": [
+      "IsAmenable",
+      "finitely-additive measure",
+      "translation invariance"
+    ]
+  },
+  {
+    "id": "ann-free-group-paradoxical",
+    "proofId": "lebesgue-measure-oq-06",
+    "range": {
+      "startLine": 1261,
+      "endLine": 1515
+    },
+    "type": "theorem",
+    "title": "F₂ is Paradoxical and Non-Amenable (Proved)",
+    "content": "The §VI climax, fully proved. `WordStart` and the `free_group_cover_*` / `wordStart_disjoint` lemmas partition F₂ by the first letter of the reduced word. `free_group_paradoxical` assembles these into a paradoxical decomposition of F₂ (two disjoint subsets each equidecomposable to the whole), and `free_group_not_amenable` concludes — via `paradoxical_no_finite_measure` — that F₂ admits no invariant mean. This is the abstract group-theoretic source of the Banach-Tarski paradox, now machine-checked.",
+    "mathContext": "Partition $F_2 \\setminus \\{1\\}$ by first letter into $W(a), W(a^{-1}), W(b), W(b^{-1})$. Then $F_2 = W(a) \\cup aW(a^{-1})$ and $F_2 = W(b) \\cup bW(b^{-1})$ give two disjoint copies, so $F_2$ is paradoxical. By `paradoxical_no_finite_measure`, no left-invariant finitely-additive probability measure exists — $F_2$ is non-amenable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "paradoxical decomposition",
+      "free group F₂",
+      "non-amenability",
+      "first-letter partition"
+    ],
+    "prerequisites": [
+      "FreeGroup reduced words",
+      "IsParadoxical",
+      "paradoxical_no_finite_measure"
+    ]
+  }
+]

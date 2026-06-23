@@ -1,0 +1,300 @@
+[
+  {
+    "id": "erdos-688-ann-imports",
+    "proofId": "erdos-688",
+    "range": {
+      "startLine": 20,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports Mathlib's prime number API, real number arithmetic, logarithm functions, and general tactics. The logarithm imports are essential for stating the Erdős lower bound involving iterated logarithms, and the prime API provides Nat.Prime and primality-related lemmas.",
+    "mathContext": "Uses $\\text{Nat.Prime}$, $\\text{Real.log}$ (natural logarithm), $\\text{Filter.atTop}$ for asymptotic statements, and $\\text{nhds}$ for limits.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.Prime",
+      "Real.log",
+      "Filter.atTop",
+      "Mathlib.Tactic"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library"
+    ]
+  },
+  {
+    "id": "erdos-688-ann-assignment",
+    "proofId": "erdos-688",
+    "range": {
+      "startLine": 27,
+      "endLine": 30
+    },
+    "type": "definition",
+    "title": "Covering Assignment",
+    "content": "For each prime p in a given finite set, choose a residue class a_p in {0, ..., p-1}. This is formalized as a dependent function from primes (with membership proof) to Fin p, ensuring the chosen class is valid. This is the 'strategy' in the covering game.",
+    "mathContext": "A covering assignment is a function $f : \\{p \\in \\mathcal{P}\\} \\to \\{0, \\ldots, p-1\\}$ choosing one congruence class $a_p \\pmod{p}$ per prime. The class $a_p \\pmod{p}$ covers $\\lfloor n/p \\rfloor$ or $\\lceil n/p \\rceil$ integers in $[1, n]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "residue class",
+      "Chinese Remainder Theorem",
+      "covering system"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "Fin type",
+      "dependent functions"
+    ]
+  },
+  {
+    "id": "erdos-688-ann-cover",
+    "proofId": "erdos-688",
+    "range": {
+      "startLine": 32,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Interval Coverage Predicate",
+    "content": "A covering assignment covers [1, n] if every integer m in that interval satisfies m ≡ a_p (mod p) for at least one prime p in the set. This is the completeness condition: no integer in [1, n] is left uncovered by all chosen residue classes.",
+    "mathContext": "$[1, n] \\subseteq \\bigcup_{p \\in \\mathcal{P}} \\{m : m \\equiv a_p \\pmod{p}\\}$. By inclusion-exclusion, the probability a random $m \\in [1,n]$ is covered by a single prime $p$ is approximately $1/p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering system",
+      "inclusion-exclusion",
+      "set cover problem"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "interval notation"
+    ]
+  },
+  {
+    "id": "erdos-688-ann-primerange",
+    "proofId": "erdos-688",
+    "range": {
+      "startLine": 40,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "Primes in Range (n^ε, n]",
+    "content": "The finite set of primes p satisfying n^ε < p ≤ n. As ε decreases, this range widens to include more primes, providing greater covering capacity. By the prime number theorem, this range contains approximately n/(log n) − n^ε/(ε log n) primes.",
+    "mathContext": "$\\mathcal{P}(n, \\varepsilon) = \\{p \\text{ prime} : n^\\varepsilon < p \\le n\\}$. By PNT, $|\\mathcal{P}(n, \\varepsilon)| \\sim \\frac{n}{\\log n}(1 - \\varepsilon)$ for fixed $\\varepsilon$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime number theorem",
+      "prime counting function",
+      "Chebyshev bounds"
+    ],
+    "prerequisites": [
+      "prime numbers",
+      "real exponentiation",
+      "Finset filtering"
+    ]
+  },
+  {
+    "id": "erdos-688-ann-exponent",
+    "proofId": "erdos-688",
+    "range": {
+      "startLine": 45,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Covering Exponent εₙ",
+    "content": "The supremum of all ε ∈ (0, 1) for which there exists a covering assignment using primes in (n^ε, n] that covers [1, n]. This is the central quantity: larger εₙ means larger primes alone suffice. The conjecture asks whether εₙ → 0, meaning primes arbitrarily close to n (relative to n) can cover the interval.",
+    "mathContext": "$\\varepsilon_n = \\sup\\{\\varepsilon \\in (0,1) : \\exists f \\text{ covering assignment for } \\mathcal{P}(n,\\varepsilon) \\text{ covering } [1,n]\\}$. Defined via $\\text{sSup}$ (supremum over a set of reals).",
+    "significance": "key",
+    "relatedConcepts": [
+      "supremum",
+      "covering threshold",
+      "asymptotic behavior"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "covering systems",
+      "sSup"
+    ]
+  },
+  {
+    "id": "erdos-688-ann-conjecture",
+    "proofId": "erdos-688",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    },
+    "type": "insight",
+    "title": "Erdős's Conjecture: εₙ → 0",
+    "content": "The main conjecture: εₙ = o(1), i.e., the covering exponent tends to 0. This means that for any δ > 0, primes in (n^δ, n] with one residue class each can cover [1, n] for sufficiently large n. Formalized using Filter.Tendsto to nhds 0, the standard Mathlib way to express limits.",
+    "mathContext": "$\\varepsilon_n \\to 0$ as $n \\to \\infty$. Equivalently, $\\forall \\delta > 0$, $\\exists N$ such that $n \\ge N \\implies$ primes in $(n^\\delta, n]$ with one class each cover $[1, n]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tendsto",
+      "nhds",
+      "Filter.atTop",
+      "little-o notation"
+    ],
+    "prerequisites": [
+      "filter limits",
+      "asymptotic analysis",
+      "covering systems"
+    ]
+  },
+  {
+    "id": "erdos-688-ann-lower",
+    "proofId": "erdos-688",
+    "range": {
+      "startLine": 61,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Erdős's Lower Bound on εₙ",
+    "content": "Erdős proved εₙ ≫ (log log log n)/(log log n), establishing that the covering exponent cannot tend to 0 faster than this triply-iterated logarithmic ratio. The proof uses a probabilistic/counting argument: if ε is too small, the total covering capacity ∑ n/p is insufficient to cover [1, n] with high multiplicity.",
+    "mathContext": "$\\varepsilon_n \\ge c \\cdot \\frac{\\log\\log\\log n}{\\log\\log n}$ for some $c > 0$ and all large $n$. This uses the fact that covering requires $\\sum_{p \\in \\mathcal{P}} 1/p \\ge 1 + o(1)$, and by Mertens' theorem $\\sum_{n^\\varepsilon < p \\le n} 1/p \\approx \\log(1/\\varepsilon)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated logarithm",
+      "Mertens' theorem",
+      "covering capacity"
+    ],
+    "prerequisites": [
+      "prime number theorem",
+      "Mertens' estimates",
+      "probabilistic method"
+    ]
+  },
+  {
+    "id": "erdos-688-ann-upper",
+    "proofId": "erdos-688",
+    "range": {
+      "startLine": 69,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "Trivial Upper Bound εₙ < 1",
+    "content": "The covering exponent is always less than 1 for n ≥ 2. With ε = 1, the only prime in (n, n] would be n itself (if prime), providing just one residue class — clearly insufficient to cover [1, n]. The interesting question is how close to 0 εₙ can be.",
+    "mathContext": "$\\varepsilon_n < 1$ for $n \\ge 2$. With $\\varepsilon$ near 1, $\\mathcal{P}(n, \\varepsilon)$ contains $O(n^{1-\\varepsilon}/\\log n)$ primes, which is too few for coverage.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trivial bound",
+      "prime counting",
+      "covering feasibility"
+    ],
+    "prerequisites": [
+      "prime number theorem",
+      "covering exponent definition"
+    ]
+  },
+  {
+    "id": "erdos-688-ann-single",
+    "proofId": "erdos-688",
+    "range": {
+      "startLine": 76,
+      "endLine": 80
+    },
+    "type": "concept",
+    "title": "Single-Class Coverage Bound",
+    "content": "A single residue class a mod p covers at most ⌊n/p⌋ + 1 integers in [1, n]. This is the per-prime contribution to the covering: each prime p 'controls' approximately n/p elements. The +1 accounts for boundary effects.",
+    "mathContext": "$|\\{m \\in [1,n] : m \\equiv a \\pmod{p}\\}| \\le \\lfloor n/p \\rfloor + 1 \\le n/p + 1$. Summing over primes: $\\sum_{p \\in \\mathcal{P}} (n/p + 1) \\approx n \\sum 1/p + |\\mathcal{P}|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "residue class size",
+      "modular counting",
+      "floor function"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "division algorithm"
+    ]
+  },
+  {
+    "id": "erdos-688-ann-mertens",
+    "proofId": "erdos-688",
+    "range": {
+      "startLine": 82,
+      "endLine": 88
+    },
+    "type": "concept",
+    "title": "Mertens Coverage Estimate",
+    "content": "By Mertens' theorem, the total covering capacity ∑_{n^ε < p ≤ n} n/p is approximately n · log(1/ε). This is the crucial quantitative estimate: it tells us how much 'coverage budget' we get from primes in the range (n^ε, n]. For the covering to succeed, we need this sum to exceed n (with enough slack for the probabilistic argument).",
+    "mathContext": "Mertens' third theorem: $\\sum_{p \\le x} 1/p = \\log\\log x + M + o(1)$ where $M \\approx 0.2615$ is the Meissel-Mertens constant. Hence $\\sum_{n^\\varepsilon < p \\le n} 1/p \\approx \\log\\log n - \\log\\log(n^\\varepsilon) = \\log(1/\\varepsilon)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mertens' theorem",
+      "Meissel-Mertens constant",
+      "prime reciprocal sum",
+      "covering capacity"
+    ],
+    "prerequisites": [
+      "prime number theorem",
+      "Mertens' estimates",
+      "partial summation"
+    ]
+  },
+  {
+    "id": "erdos-688-ann-monotone",
+    "proofId": "erdos-688",
+    "range": {
+      "startLine": 90,
+      "endLine": 94
+    },
+    "type": "concept",
+    "title": "Monotonicity of Prime Ranges",
+    "content": "If ε₁ ≤ ε₂, then (n^ε₂, n] ⊆ (n^ε₁, n], so primesInRange n ε₂ ⊆ primesInRange n ε₁. Decreasing ε includes more primes and strictly increases covering capacity. This implies the set of feasible ε values is a half-open interval (0, εₙ].",
+    "mathContext": "$\\varepsilon_1 \\le \\varepsilon_2 \\implies n^{\\varepsilon_1} \\le n^{\\varepsilon_2} \\implies (n^{\\varepsilon_2}, n] \\subseteq (n^{\\varepsilon_1}, n]$. The covering exponent $\\varepsilon_n$ is well-defined as a supremum because feasibility is monotone in $\\varepsilon$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "set inclusion",
+      "supremum well-definedness"
+    ],
+    "prerequisites": [
+      "real exponentiation monotonicity",
+      "Finset subset"
+    ]
+  },
+  {
+    "id": "erdos-688-ann-full",
+    "proofId": "erdos-688",
+    "range": {
+      "startLine": 96,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Full Prime Covering (ε = 0)",
+    "content": "Using all primes up to n (ε = 0), a covering assignment exists for sufficiently large n. This follows from the Chinese Remainder Theorem and the prime number theorem: with all primes ≤ n available, the total coverage far exceeds n, and a greedy or random assignment succeeds. This establishes that εₙ is well-defined and positive.",
+    "mathContext": "By CRT, the residues modulo distinct primes $p_1, \\ldots, p_k$ are independent. With $\\sum_{p \\le n} 1/p \\approx \\log\\log n \\to \\infty$, a random assignment covers any fixed $m$ with probability $1 - \\prod (1 - 1/p) \\to 1$. Union bound over $[1,n]$ gives coverage w.h.p.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "probabilistic method",
+      "Lovász Local Lemma"
+    ],
+    "prerequisites": [
+      "CRT",
+      "prime number theorem",
+      "probabilistic combinatorics"
+    ]
+  },
+  {
+    "id": "erdos-688-ann-sieve",
+    "proofId": "erdos-688",
+    "range": {
+      "startLine": 103,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Sieve Duality",
+    "content": "Covering [1, n] by including one class per prime is the dual of sieving — excluding one class per prime to find integers not in any excluded class. In sieve theory (Brun, Selberg, combinatorial sieves), one removes residue classes to isolate primes or almost-primes. The covering problem reverses this: collect classes to hit every integer. Axiomatized as True as a placeholder for the full duality formalization.",
+    "mathContext": "If covering selects classes $a_p \\pmod{p}$, sieving removes them: $S = [1,n] \\setminus \\bigcup_p \\{m : m \\equiv a_p \\pmod{p}\\}$. Coverage $\\iff$ $S = \\emptyset$. This duality connects to Legendre's sieve and the Eratosthenes sieve.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Brun's sieve",
+      "Selberg sieve",
+      "Legendre's formula",
+      "Eratosthenes sieve"
+    ],
+    "prerequisites": [
+      "sieve theory basics",
+      "set complement",
+      "modular arithmetic"
+    ]
+  }
+]

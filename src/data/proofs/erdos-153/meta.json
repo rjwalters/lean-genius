@@ -1,0 +1,216 @@
+{
+  "id": "erdos-153",
+  "title": "Erdős Problem #153: Gap Variance in Sidon Sumsets",
+  "slug": "erdos-153",
+  "description": "Let A be a finite Sidon set and A+A = {s₁ < ... < sₜ}. Is it true that (1/t) · Σ (s_{i+1} - s_i)² → ∞ as |A| → ∞? The mean squared gap in sumsets of Sidon sets should diverge. OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/153",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos153Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "sidon-sets",
+      "additive-combinatorics",
+      "sumsets"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 153,
+    "erdosUrl": "https://erdosproblems.com/153",
+    "erdosProblemStatus": "open",
+    "axiomCount": 1,
+    "lineCount": 542,
+    "assumptions": "1 axiom(s) and 0 sorry(s). Axioms: erdos_153_conjecture (main open conjecture). Proved: sidon_sumset_card (exact cardinality), sidon_sumset_card_eq, sidon_distinct_differences (B₂ distinct differences), sidon_density_bound (√N density), sidon_sumset_range, average_gap_bounded, ess_1994_result, infinite_sidon_gap_from_finite.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 22,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "Sidon sets originate from Simon Sidon's 1932 question to Erdős about sets of natural numbers whose pairwise sums are all distinct. Erdős and Turán (1941) proved the foundational density bound: a Sidon set in $\\{1,\\ldots,N\\}$ has at most $(1+o(1))\\sqrt{N}$ elements, and perfect difference set constructions (Singer 1938, using projective planes over finite fields) show this is essentially tight. Problem 153 was posed by Erdős, Sárközy, and Sós in their 1994 paper 'On Sum Sets of Sidon Sets, I', where they initiated a systematic study of the fine structure of sumsets $A+A$ for Sidon sets $A$. While the average gap in such sumsets is bounded ($\\Theta(1)$ for maximal Sidon sets), they conjectured that the second moment — the mean squared gap — must diverge. This question sits at the intersection of additive combinatorics and the statistical theory of gap distributions, connecting to broader phenomena like the pair correlation conjecture for zeros of the Riemann zeta function and the study of level spacing in random matrix theory.",
+    "problemStatement": "Let $A$ be a finite Sidon set and $A+A = \\{s_1 < s_2 < \\cdots < s_t\\}$. Is it true that $\\frac{1}{t} \\sum_{i=1}^{t-1} (s_{i+1} - s_i)^2 \\to \\infty$ as $|A| \\to \\infty$?",
+    "text": "Let A be a finite Sidon set and A+A = {s₁ < ... < sₜ}. Is it true that (1/t) · Σ (s_{i+1} - s_i)² → ∞ as |A| → ∞? The mean squared gap in sumsets of Sidon sets should diverge. OPEN.",
+    "proofStrategy": "The formalization defines Sidon sets as finite subsets of $\\mathbb{N}$ with all pairwise sums distinct, constructs the sumset $A+A$ via Cartesian product image, sorts it into a list for gap computation, and defines the sum of squared gaps using a fold over consecutive pairs. The mean squared gap divides by the number of gaps. The conjecture ErdosProblem153 is stated as: for every $M > 0$ there exists $N_0$ such that all Sidon sets of size $\\ge N_0$ have mean squared gap exceeding $M$. Key structural properties are fully proved: sumset cardinality $|A+A| \\ge n(n+1)/2$ via an injection argument and an upper triangle cardinality lemma (partition into strict triangles + diagonal with swap bijection), range bound $A+A \\subseteq [0,2N]$, and bounded average gap. The Erdős–Sárközy–Sós (1994) positive lower bound is axiomatized as a deep published result. The infinite Sidon set variant is also formalized.",
+    "keyInsights": [
+      "**Sidon property forces quadratic sumset growth**: A Sidon set of size $n$ has $|A+A| \\ge n(n+1)/2$ — every unordered pair yields a distinct sum, so the sumset is as large as possible given the representation constraint",
+      "**Bounded mean vs unbounded variance**: For a maximal Sidon set $A \\subseteq \\{1,\\ldots,N\\}$ with $|A| \\sim \\sqrt{N}$, the average gap in $A+A$ is $\\Theta(1)$, yet the conjecture predicts the variance diverges — a striking separation between first and second moments",
+      "**Cauchy–Schwarz lower bound**: By Cauchy–Schwarz, $\\sum (s_{i+1}-s_i)^2 \\ge (\\text{range})^2/(t-1)$, so if the range grows faster than $t$, the sum of squared gaps must be large. For Sidon sets both are $\\Theta(N)$, making this bound insufficient",
+      "**Connection to additive energy**: The gap variance is inversely related to the additive energy $E(A+A)$. Proving the gaps are irregular would constrain how 'structured' the sumset can be, with implications for sum-product type estimates",
+      "**Erdős–Sárközy–Sós (1994) established the baseline**: They proved $\\bar{G}(A) \\ge c > 0$ for sufficiently large Sidon sets, confirming gaps are not perfectly uniform, but the full divergence remains open after three decades"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble & Imports",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring (Erdős #153 statement, status OPEN, references) and Mathlib imports",
+      "mathContext": "Mathematical content: Module docstring (Erdős #153 statement, status OPEN, references) and Mathlib imports"
+    },
+    {
+      "id": "sidon-sets",
+      "title": "Section I: Sidon Sets",
+      "startLine": 33,
+      "endLine": 42,
+      "summary": "IsSidon (B₂ set: pairwise sums distinct)",
+      "mathContext": "Mathematical content: IsSidon (B₂ set: pairwise sums distinct)"
+    },
+    {
+      "id": "sumset-gap-structure",
+      "title": "Section II: Sumset and Gap Structure",
+      "startLine": 43,
+      "endLine": 61,
+      "summary": "sumset, sortedSumset, gapSquaredSum",
+      "mathContext": "Mathematical content: sumset, sortedSumset, gapSquaredSum"
+    },
+    {
+      "id": "gap-variance",
+      "title": "Section III: The Gap Variance",
+      "startLine": 62,
+      "endLine": 75,
+      "summary": "meanGapSquared, minMeanGapSquared",
+      "mathContext": "Mathematical content: meanGapSquared, minMeanGapSquared"
+    },
+    {
+      "id": "conjecture",
+      "title": "Section IV: The Conjecture",
+      "startLine": 76,
+      "endLine": 89,
+      "summary": "ErdosProblem153 (mean squared gap tends to infinity)",
+      "mathContext": "Mathematical content: ErdosProblem153 (mean squared gap tends to infinity)"
+    },
+    {
+      "id": "upper-triangle",
+      "title": "Section V: Upper Triangle Cardinality",
+      "startLine": 90,
+      "endLine": 186,
+      "summary": "diag_card_eq, card_lt_swap, card_upper_triangle (|{(a,b):a≤b}| = n(n+1)/2)",
+      "mathContext": "Mathematical content: diag_card_eq, card_lt_swap, card_upper_triangle (|{(a,b):a≤b}| = n(n+1)/2)"
+    },
+    {
+      "id": "general-sumset-bound",
+      "title": "Section V.5: General Sumset Cardinality Bound",
+      "startLine": 187,
+      "endLine": 216,
+      "summary": "sumset_eq_upper_image, sumset_card_le (|A+A| ≤ n(n+1)/2)",
+      "mathContext": "Mathematical content: sumset_eq_upper_image, sumset_card_le (|A+A| ≤ n(n+1)/2)"
+    },
+    {
+      "id": "sidon-sumset-properties",
+      "title": "Section VI: Sidon Set Sumset Properties",
+      "startLine": 217,
+      "endLine": 264,
+      "summary": "sidon_sumset_card, sidon_sumset_card_eq, sidon_sumset_range (|A+A| = n(n+1)/2 for Sidon A)",
+      "mathContext": "Mathematical content: sidon_sumset_card, sidon_sumset_card_eq, sidon_sumset_range (|A+A| = n(n+1)/2 for Sidon A)"
+    },
+    {
+      "id": "distinct-differences",
+      "title": "Section VI.5: Distinct Differences and Density",
+      "startLine": 265,
+      "endLine": 302,
+      "summary": "sidon_distinct_differences, sidon_density_bound",
+      "mathContext": "Mathematical content: sidon_distinct_differences, sidon_density_bound"
+    },
+    {
+      "id": "known-bounds",
+      "title": "Section VII: Known Bounds",
+      "startLine": 303,
+      "endLine": 401,
+      "summary": "average_gap_bounded, foldl_sq_gap_ge, gapSquaredSum_ge_card_sub_one, ess_1994_result",
+      "mathContext": "Mathematical content: average_gap_bounded, foldl_sq_gap_ge, gapSquaredSum_ge_card_sub_one, ess_1994_result"
+    },
+    {
+      "id": "main-conjecture-axiom",
+      "title": "Section VIII: The Main Conjecture (Axiomatized)",
+      "startLine": 402,
+      "endLine": 409,
+      "summary": "erdos_153_conjecture (axiom): the open conjecture",
+      "mathContext": "Mathematical content: erdos_153_conjecture (axiom): the open conjecture"
+    },
+    {
+      "id": "infinite-sidon",
+      "title": "Section IX: Infinite Sidon Sets (Derived from Finite Conjecture)",
+      "startLine": 410,
+      "endLine": 495,
+      "summary": "IsInfiniteSidon, infinite_sidon_restriction, infinite_set_exists_finset, infinite_set_card_grows, infinite_sidon_gap_from_finite",
+      "mathContext": "Mathematical content: IsInfiniteSidon, infinite_sidon_restriction, infinite_set_exists_finset, infinite_set_card_grows, infinite_sidon_gap_from_finite"
+    },
+    {
+      "id": "sumset-extremes",
+      "title": "Section X: Sumset Extremes",
+      "startLine": 496,
+      "endLine": 542,
+      "summary": "sumset_nonempty, sumset_min', sumset_max', sumset_span",
+      "mathContext": "Mathematical content: sumset_nonempty, sumset_min', sumset_max', sumset_span"
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem 153, which asks whether the mean squared gap in the sumset of a Sidon set diverges as the set grows. The average gap is bounded at $\\Theta(1)$, and Erdős–Sárközy–Sós (1994) proved the mean squared gap is at least a positive constant, but full divergence remains open. The Lean file formalizes the core definitions (Sidon sets, sumsets, gap variance), the conjecture, known bounds, and the infinite Sidon set extension.",
+    "implications": "A positive resolution would reveal fundamental irregularity in the additive structure of Sidon sets — even optimally constructed Sidon sets cannot have uniformly spaced sumsets. This would connect to additive energy estimates, sum-product phenomena, and the broader understanding of structured vs pseudorandom behavior in combinatorial number theory.",
+    "openQuestions": [
+      "Does $\\bar{G}_{\\min}(n) \\to \\infty$, and if so, what is the growth rate? Is it $\\Theta(\\log n)$, polynomial, or faster?",
+      "Can the gap distribution of $A+A$ for Sidon sets be compared to that of random subsets of comparable density?",
+      "Does the analogous statement hold for $B_h$ sets ($h \\ge 3$), where $h$-wise sums are distinct?",
+      "For algebraic Sidon sets (from Singer/Bose–Chowla constructions), can the gap variance be computed explicitly?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Sort",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 542,
+    "axiomCount": 1,
+    "theoremCount": 22,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos153Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-109",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, sumsets"
+    },
+    {
+      "targetId": "erdos-1112",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, sumsets"
+    },
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets, sumsets"
+    }
+  ],
+  "references": [
+    {
+      "key": "ET41",
+      "authors": [
+        "P. Erdős",
+        "P. Turán"
+      ],
+      "title": "On a problem of Sidon in additive number theory, and on some related problems",
+      "venue": "Journal of the London Mathematical Society",
+      "year": "1941",
+      "volume": "s1-16",
+      "pages": "212-215",
+      "note": "Foundational paper on Sidon sets and their arithmetic properties"
+    }
+  ],
+  "sorries": 0
+}

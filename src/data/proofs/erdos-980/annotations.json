@@ -1,0 +1,372 @@
+[
+  {
+    "id": "ann-e980-header",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 1,
+      "endLine": 40
+    },
+    "type": "concept",
+    "title": "Problem Overview and Imports",
+    "content": "The file formalizes Erdos Problem #980 on the sum of least $k$-th power nonresidues over primes. It imports Mathlib modules for prime number basics, the Legendre symbol, asymptotics, and logarithmic functions. The `open Nat Real` command brings natural number and real number notations into scope.",
+    "mathContext": "The problem asks whether $\\sum_{p < x} n_k(p) \\sim c_k \\cdot x/\\log x$ where $n_k(p)$ is the least $k$-th power nonresidue modulo prime $p$. This connects the distribution of power residues to prime counting asymptotics via $\\pi(x) \\sim x/\\log x$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Power residues",
+      "Quadratic nonresidues",
+      "Character sums",
+      "Prime number theorem"
+    ],
+    "prerequisites": [
+      "Analytic number theory",
+      "Prime distribution"
+    ]
+  },
+  {
+    "id": "ann-e980-power-residue",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 50,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "k-th Power Residue",
+    "content": "An integer $a$ is a $k$-th power residue mod $p$ if $a \\equiv b^k \\pmod{p}$ for some integer $b$. For $k = 2$, these are the classical quadratic residues. The set of $k$-th power residues forms a subgroup of $(\\mathbb{Z}/p\\mathbb{Z})^*$ of index $\\gcd(k, p-1)$, so roughly $1/k$ of nonzero residues are $k$-th power residues when $k \\mid (p-1)$.",
+    "mathContext": "$\\text{IsPowerResidue}(k, p, a) :\\iff \\exists b,\\; b^k \\equiv a \\pmod{p}$. The $k$-th power residues form a subgroup $H \\leq (\\mathbb{Z}/p\\mathbb{Z})^*$ with $[(\\mathbb{Z}/p\\mathbb{Z})^* : H] = \\gcd(k, p-1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Quadratic residues",
+      "Legendre symbol",
+      "Multiplicative group modulo p"
+    ],
+    "prerequisites": [
+      "Modular arithmetic",
+      "Group theory basics"
+    ]
+  },
+  {
+    "id": "ann-e980-power-nonresidue",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 57,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "k-th Power Nonresidue",
+    "content": "An integer $a$ is a $k$-th power nonresidue mod $p$ if it is not a $k$-th power residue and $a \\not\\equiv 0 \\pmod{p}$. The condition $a \\% p \\neq 0$ excludes multiples of $p$, which are neither residues nor nonresidues in the classical sense.",
+    "mathContext": "$\\text{IsPowerNonresidue}(k, p, a) :\\iff \\neg\\text{IsPowerResidue}(k, p, a) \\wedge a \\not\\equiv 0 \\pmod{p}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Quadratic nonresidues",
+      "Legendre symbol",
+      "Power residue symbol"
+    ],
+    "prerequisites": [
+      "Power residue definition"
+    ]
+  },
+  {
+    "id": "ann-e980-quadratic-case",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 63,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Quadratic Case Equivalence",
+    "content": "For $k = 2$, the general power nonresidue definition specializes to quadratic nonresidues: $a$ is a quadratic nonresidue mod $p$ iff $\\nexists b,\\; b^2 \\equiv a \\pmod{p}$ and $a \\not\\equiv 0 \\pmod{p}$. The Legendre symbol characterizes this: $(a/p) = -1$ for nonresidues.",
+    "mathContext": "$\\text{IsPowerNonresidue}(2, p, a) \\iff (\\nexists b,\\; b^2 \\equiv a \\pmod{p}) \\wedge p \\nmid a$. Equivalently, the Legendre symbol $(a/p) = -1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Legendre symbol",
+      "Quadratic reciprocity"
+    ],
+    "prerequisites": [
+      "Power nonresidue definition"
+    ]
+  },
+  {
+    "id": "ann-e980-least-nonresidue",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 75,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Least Power Nonresidue",
+    "content": "The least $k$-th power nonresidue $n_k(p) = \\min\\{a \\geq 1 : a \\text{ is a } k\\text{-th power nonresidue mod } p\\}$. This is the central quantity in Erdos's problem. The definition uses `Nat.find` to select the smallest witness, returning 0 if no nonresidue exists (which cannot happen for primes $p > k$).",
+    "mathContext": "$n_k(p) = \\min\\{a \\in \\mathbb{N} : a \\geq 1 \\wedge a \\text{ is a } k\\text{-th power NR mod } p\\}$. The sequence $n_2(p)$ for primes $p = 3, 5, 7, 11, 13, \\ldots$ starts $2, 2, 3, 2, 2, \\ldots$",
+    "significance": "key",
+    "relatedConcepts": [
+      "OEIS A053760",
+      "Least quadratic nonresidue",
+      "Nat.find"
+    ],
+    "prerequisites": [
+      "Power nonresidue definition"
+    ]
+  },
+  {
+    "id": "ann-e980-nonresidue-exists",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 84,
+      "endLine": 85
+    },
+    "type": "concept",
+    "title": "Existence of Quadratic Nonresidues",
+    "content": "For any odd prime $p$, quadratic nonresidues exist: exactly half of the nonzero residues mod $p$ are quadratic residues and half are nonresidues. This axiom guarantees the least nonresidue function is well-defined for $p > 2$.",
+    "mathContext": "For prime $p > 2$: $|\\{a \\in (\\mathbb{Z}/p\\mathbb{Z})^* : (a/p) = 1\\}| = (p-1)/2$ and $|\\{a : (a/p) = -1\\}| = (p-1)/2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euler's criterion",
+      "Quadratic residue distribution"
+    ],
+    "prerequisites": [
+      "Quadratic residues",
+      "Prime numbers"
+    ]
+  },
+  {
+    "id": "ann-e980-vinogradov",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 91,
+      "endLine": 94
+    },
+    "type": "concept",
+    "title": "Vinogradov's Bound",
+    "content": "Vinogradov's classical bound on the least quadratic nonresidue: $n(p) = O(p^{1/(4\\sqrt{e}) + \\varepsilon})$ for any $\\varepsilon > 0$. The exponent $1/(4\\sqrt{e}) \\approx 0.1516$ comes from deep character sum estimates. This was later improved by Burgess (1962) using his celebrated short character sum inequality.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists C > 0,\\; \\forall p \\text{ prime},\\; n_2(p) \\leq C \\cdot p^{1/(4\\sqrt{e}) + \\varepsilon}$. The Burgess bound refines this: $n(p) \\ll p^{1/(4\\sqrt{e}) + \\varepsilon}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Burgess bound",
+      "Character sum estimates",
+      "Vinogradov's method"
+    ],
+    "prerequisites": [
+      "Dirichlet characters",
+      "Analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-e980-grh-bound",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 100,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "GRH Bound",
+    "content": "Under the Generalized Riemann Hypothesis, the least quadratic nonresidue satisfies $n(p) = O((\\log p)^2)$. This conditional bound is dramatically better than the unconditional Vinogradov/Burgess bounds, showing the least nonresidue is very small relative to $p$. The proof uses explicit formulas connecting character sums to zeros of $L$-functions.",
+    "mathContext": "$\\text{GRH} \\implies \\exists C > 0,\\; \\forall p \\text{ prime},\\; n_2(p) \\leq C (\\log p)^2$. Compared to the unconditional $n(p) \\leq p^{0.1516+\\varepsilon}$, this is exponentially better.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Generalized Riemann Hypothesis",
+      "L-functions",
+      "Zero-free regions"
+    ],
+    "prerequisites": [
+      "Dirichlet L-functions",
+      "Riemann Hypothesis"
+    ]
+  },
+  {
+    "id": "ann-e980-sum-function",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 113,
+      "endLine": 114
+    },
+    "type": "definition",
+    "title": "Sum of Least Nonresidues $S_k(x)$",
+    "content": "The sum $S_k(x) = \\sum_{p < x,\\; p \\text{ prime}} n_k(p)$ aggregates the least $k$-th power nonresidues over all primes below $x$. The formalization uses `Finset.range` with a primality filter. This is the main object of study in Problem #980.",
+    "mathContext": "$S_k(x) = \\sum_{\\substack{p < x \\\\ p \\text{ prime}}} n_k(p)$. The problem asks whether $S_k(x) \\sim c_k \\cdot x/\\log x$ as $x \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prime summation",
+      "Asymptotic analysis",
+      "Finset operations"
+    ],
+    "prerequisites": [
+      "Least nonresidue",
+      "Prime counting"
+    ]
+  },
+  {
+    "id": "ann-e980-constant-c2",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 132,
+      "endLine": 143
+    },
+    "type": "definition",
+    "title": "The Constant $c_2$",
+    "content": "The explicit constant in the quadratic case: $c_2 = \\sum_{j=1}^{\\infty} p_j / 2^j$ where $p_j$ is the $j$-th prime. This series converges because primes grow like $j \\log j$ (by the prime number theorem) while the denominator $2^j$ grows exponentially. The partial sums give $c_2 = 2/2 + 3/4 + 5/8 + 7/16 + 11/32 + \\cdots \\approx 3.67$.",
+    "mathContext": "$c_2 = \\sum_{j=1}^{\\infty} \\frac{p_j}{2^j} = \\frac{2}{2} + \\frac{3}{4} + \\frac{5}{8} + \\frac{7}{16} + \\cdots$. Satisfies $3.5 < c_2 < 4$. The convergence follows from $p_j \\sim j \\log j$ and the ratio test.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prime-weighted series",
+      "Convergent series",
+      "Erdos's formula"
+    ],
+    "prerequisites": [
+      "Prime number theorem",
+      "Series convergence"
+    ]
+  },
+  {
+    "id": "ann-e980-constants-ck",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 152,
+      "endLine": 158
+    },
+    "type": "definition",
+    "title": "General Constants $c_k$",
+    "content": "For $k \\geq 2$, the constant $c_k$ in the asymptotic $\\sum n_k(p) \\sim c_k \\cdot x/\\log x$ is defined via character sums and the distribution of $k$-th power residues. The exact formula involves a weighted sum over primes analogous to $c_2$, but with weights depending on the $k$-th power residue structure. Positivity is axiomatized via `c_k_positive`.",
+    "mathContext": "$c_k > 0$ for all $k \\geq 2$. The formula generalizes $c_2 = \\sum p_j/2^j$ to higher power residue characters. The positivity follows from the fact that $k$-th power nonresidues exist among small integers for all primes $p > k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Power residue characters",
+      "Positive constants",
+      "Asymptotic coefficients"
+    ],
+    "prerequisites": [
+      "Power residues",
+      "Character theory"
+    ]
+  },
+  {
+    "id": "ann-e980-erdos-1961",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 171,
+      "endLine": 182
+    },
+    "type": "concept",
+    "title": "Erdos's Result (1961)",
+    "content": "Erdos proved the quadratic case ($k = 2$) in his 1961 paper 'Remarks on number theory I' (Mat. Lapok): $\\sum_{p<x} n_2(p) \\sim c_2 \\cdot x/\\log x$. The asymptotic is stated in two equivalent forms: absolute error ($|S_2(x) - c_2 x/\\log x| < \\varepsilon \\cdot x/\\log x$) and ratio convergence ($S_2(x)/(x/\\log x) \\to c_2$). The proof uses properties of the Legendre symbol and the prime number theorem.",
+    "mathContext": "$\\sum_{p < x} n_2(p) = c_2 \\cdot \\frac{x}{\\log x} + o\\left(\\frac{x}{\\log x}\\right)$ where $c_2 = \\sum_{j \\geq 1} p_j/2^j \\approx 3.67$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Quadratic residues",
+      "Prime number theorem",
+      "Asymptotic analysis"
+    ],
+    "prerequisites": [
+      "Legendre symbol",
+      "PNT",
+      "Character sums"
+    ]
+  },
+  {
+    "id": "ann-e980-elliott-1967",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 196,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "Elliott's Generalization (1967)",
+    "content": "P.D.T.A. Elliott extended Erdos's result from $k = 2$ to all $k \\geq 2$ in his 1967 paper 'A problem of Erdos concerning power residue sums' (Acta Arithmetica, 131-149). This completely solved Problem #980. Elliott's proof generalizes the character sum techniques to $k$-th power residue characters, using the Polya-Vinogradov inequality for higher-order characters.",
+    "mathContext": "$\\forall k \\geq 2,\\; \\sum_{p<x} n_k(p) = c_k \\cdot \\frac{x}{\\log x} + o\\left(\\frac{x}{\\log x}\\right)$ with $c_k > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Higher-order characters",
+      "Polya-Vinogradov inequality",
+      "Complete solution"
+    ],
+    "prerequisites": [
+      "Erdos 1961 result",
+      "Power residue characters"
+    ]
+  },
+  {
+    "id": "ann-e980-solution",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 207,
+      "endLine": 214
+    },
+    "type": "concept",
+    "title": "Main Solution Theorem",
+    "content": "The main theorem: for $k \\geq 2$, there exists $c > 0$ such that $\\sum_{p<x} n_k(p) \\sim c \\cdot x/\\log x$. The proof instantiates $c = c_k(k)$, uses `c_k_positive` for positivity, and `elliott_1967_general` for the asymptotic. This is a constructive combination of the axiomatized results.",
+    "mathContext": "$\\forall k \\geq 2,\\; \\exists c > 0,\\; |S_k(x) - c \\cdot x/\\log x| < \\varepsilon \\cdot x/\\log x$ for all $x \\geq x_0(\\varepsilon)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Constructive proof",
+      "Asymptotic existence"
+    ],
+    "prerequisites": [
+      "Elliott's theorem",
+      "Constant positivity"
+    ]
+  },
+  {
+    "id": "ann-e980-average",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 227,
+      "endLine": 240
+    },
+    "type": "concept",
+    "title": "Average and Typical Size",
+    "content": "The average value of $n_k(p)$ over primes $p < x$ is approximately $c_k \\cdot \\log x$, since $\\pi(x) \\sim x/\\log x$. While individual values can be as large as $O(p^{0.15+\\varepsilon})$ (Vinogradov), the average is only $O(\\log x)$. This shows that large nonresidues are rare among primes — most primes have small least nonresidues.",
+    "mathContext": "$\\frac{1}{\\pi(x)} \\sum_{p < x} n_k(p) \\sim c_k \\cdot \\log x$ as $x \\to \\infty$, since $\\pi(x) \\sim x/\\log x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Average order",
+      "Prime number theorem",
+      "Typical vs worst-case"
+    ],
+    "prerequisites": [
+      "Sum function",
+      "PNT"
+    ]
+  },
+  {
+    "id": "ann-e980-special-cases",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 251,
+      "endLine": 262
+    },
+    "type": "concept",
+    "title": "Special Cases: $n_2(p) = 2$ and $n_2(p) = 3$",
+    "content": "The least quadratic nonresidue is 2 for infinitely many primes — precisely those with $p \\equiv 3, 5 \\pmod{8}$ (by the second supplement to quadratic reciprocity). Similarly, $n_2(p) = 3$ for infinitely many primes where 2 is a QR but 3 is not, occurring for $p \\equiv 1, 7 \\pmod{24}$. By Dirichlet's theorem on primes in arithmetic progressions, each residue class contains infinitely many primes.",
+    "mathContext": "$n_2(p) = 2 \\iff (2/p) = -1 \\iff p \\equiv \\pm 3 \\pmod{8}$. $n_2(p) = 3 \\iff (2/p) = 1 \\wedge (3/p) = -1$, which occurs for $p \\equiv 1, 7 \\pmod{24}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Quadratic reciprocity",
+      "Dirichlet's theorem",
+      "Residue classes"
+    ],
+    "prerequisites": [
+      "Legendre symbol",
+      "Quadratic reciprocity"
+    ]
+  },
+  {
+    "id": "ann-e980-character-sums",
+    "proofId": "erdos-980",
+    "range": {
+      "startLine": 275,
+      "endLine": 276
+    },
+    "type": "concept",
+    "title": "Polya-Vinogradov Connection",
+    "content": "The Polya-Vinogradov inequality bounds partial sums of Dirichlet characters: $|\\sum_{n \\leq N} \\chi(n)| \\leq C\\sqrt{p} \\log p$. This is the key analytic tool underlying both Erdos's and Elliott's proofs, as it controls the distribution of $k$-th power residue symbols over intervals, enabling precise estimates of how often $n_k(p)$ takes various values.",
+    "mathContext": "The Polya-Vinogradov inequality (1918): $|\\sum_{n=1}^{N} \\chi(n)| \\leq c \\sqrt{q} \\log q$ for any non-principal character $\\chi \\pmod{q}$. This is used to show that power residues are well-distributed in short intervals.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet characters",
+      "Character sum bounds",
+      "Analytic number theory"
+    ],
+    "prerequisites": [
+      "Dirichlet characters",
+      "L-functions"
+    ]
+  }
+]

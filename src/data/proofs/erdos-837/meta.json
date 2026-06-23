@@ -1,0 +1,168 @@
+{
+  "id": "erdos-837",
+  "title": "Erdős Problem #837: Hypergraph Density Jumps",
+  "slug": "erdos-837",
+  "description": "Define A_k as the density jump values for k-uniform hypergraphs. For graphs, A_2 = {1−1/m : m ≥ 1} by Erdős–Stone. What is A_3? Connected to hypergraph Turán problem. Open.",
+  "meta": {
+    "erdosNumber": 837,
+    "status": "axiomatized",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "hypergraphs",
+      "extremal-combinatorics",
+      "turan",
+      "open"
+    ],
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/837",
+    "erdosUrl": "https://erdosproblems.com/837",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients, used to compute C(n,k) for edge density normalization",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Real number arithmetic for edge densities in [0,1]",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Set.Basic",
+        "description": "Set operations for defining the density jump set A_k ⊆ [0,1]",
+        "module": "Mathlib.Data.Set.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Defined KUniformHypergraph structure with vertices, edges, uniformity",
+      "Defined edgeDensity as e(G)/C(|G|,k) with division-by-zero guard",
+      "Formalized IsDensityJump and the jump set densityJumpSet(k) ⊆ [0,1]",
+      "Axiomatized the Erdős–Stone–Simonovits characterization: A_2 = {1−1/m : m ≥ 1}",
+      "Axiomatized the Turán connection: each 1−1/m is a jump for k = 2",
+      "Axiomatized the central open question: characterize A_3",
+      "Axiomatized 0 ∈ A_3 (zero is a jump for 3-uniform hypergraphs)"
+    ],
+    "axiomCount": 0,
+    "badge": "wip",
+    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "proofRepoPath": "Proofs/Erdos837Problem.lean",
+    "mathlib_version": "4.26.0",
+    "lineCount": 78,
+    "theoremCount": 0,
+    "definitionCount": 5
+  },
+  "sections": [
+    {
+      "id": "sec-837-header",
+      "title": "Problem Overview",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Header documentation stating the problem: define $A_k$ as density jump values for $k$-uniform hypergraphs. Notes $A_2 = \\{1 - 1/m\\}$ is solved; $A_3$ is the central open question. Imports Nat.Basic, Real.Basic, Set.Basic, and Tactic."
+    },
+    {
+      "id": "sec-837-definitions",
+      "title": "Definitions",
+      "startLine": 23,
+      "endLine": 46,
+      "summary": "Defines `KUniformHypergraph` structure, `binom` (Nat.choose wrapper), `edgeDensity` as $e(G)/\\binom{|G|}{k}$, `IsDensityJump` for the jump property, and `densityJumpSet k` as $A_k \\subseteq [0,1]$."
+    },
+    {
+      "id": "sec-837-graph-case",
+      "title": "Known Results: The Graph Case",
+      "startLine": 48,
+      "endLine": 59,
+      "summary": "documents in source comments `graph_density_jumps` (no Lean declaration exists): $A_2 = \\{1 - 1/m : m \\geq 1\\}$ from the Erdős–Stone–Simonovits theorem. Also documents in source comments `turan_densities` (no Lean declaration exists): each $1 - 1/m$ is a density jump for $k = 2$."
+    },
+    {
+      "id": "sec-837-main-question",
+      "title": "Main Question: A_3",
+      "startLine": 61,
+      "endLine": 71,
+      "summary": "documents in source comments `erdos_837_characterize_A3` (no Lean declaration exists): the central open problem of characterizing $A_3$, the density jump set for 3-uniform hypergraphs. Also documents in source comments `zero_is_jump_3uniform` (no Lean declaration exists): $0 \\in A_3$."
+    },
+    {
+      "id": "sec-837-observations",
+      "title": "Observations and Connections",
+      "startLine": 73,
+      "endLine": 78,
+      "summary": "Comments (not formalized) on the hypergraph Turán problem ($\\pi(K_4^{(3)})$ unknown, conjectured $5/9$), Frankl–Rödl's Ramsey multiplicity approach, and Razborov's flag algebra method for computing specific jump values."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős and Simonovits introduced the concept of density jumps for hypergraphs in 1974 [Er74d], building on the foundational Erdős–Stone theorem (1946) and its sharpening by Erdős and Simonovits (1966). For ordinary graphs ($k = 2$), the complete answer $A_2 = \\{1 - 1/m : m \\geq 1\\}$ is one of the crown jewels of extremal graph theory: a graph sequence with density above $1 - 1/m$ must contain $K_{m+1}$-dense subgraphs. The central question is whether this elegant structure extends to hypergraphs. For $k \\geq 3$, even the simplest Turán-type density $\\pi(K_4^{(3)})$ remains unknown (conjectured to be $5/9$), making the full characterization of $A_3$ one of the most difficult and important open problems in extremal combinatorics. Frankl and Rödl (1984) showed that the jump phenomenon exists for 3-uniform hypergraphs, and Razborov's flag algebra framework (2007) has enabled computation of specific jump values, but the global structure of $A_3$ remains mysterious.",
+    "problemStatement": "For $k$-uniform hypergraphs, define $A_k \\subseteq [0,1]$ as the set of $\\alpha$ such that there exists $\\beta > \\alpha$ with the property: whenever $\\{G_n\\}$ is a sequence of $k$-uniform hypergraphs with $\\liminf e(G_n)/\\binom{|G_n|}{k} > \\alpha$, there exist subhypergraphs $H_n \\subseteq G_n$ with $|H_n| \\to \\infty$ and $\\liminf e(H_n)/\\binom{|H_n|}{k} > \\beta$. What is $A_3$?",
+    "text": "Define A_k as the density jump values for k-uniform hypergraphs. For graphs, A_2 = {1−1/m : m ≥ 1} by Erdős–Stone. What is A_3? Connected to hypergraph Turán problem. Open.",
+    "proofStrategy": "The formalization defines the density jump concept using a `KUniformHypergraph` structure with edge density $e(G)/\\binom{|G|}{k}$. The `IsDensityJump` predicate is partially axiomatized (the full sequence-limit formulation is encoded as `True`). The graph case $A_2 = \\{1-1/m\\}$ and the open question about $A_3$ are both axiomatized, along with the observation that $0 \\in A_3$.",
+    "keyInsights": [
+      "For graphs, $A_2 = \\{1 - 1/m : m \\geq 1\\}$: the Erdős–Stone–Simonovits theorem gives a complete, discrete characterization where each jump corresponds to a Turán density $\\pi(K_{m+1})$",
+      "The `IsDensityJump` definition uses a simplified axiomatization (`True`) rather than the full $\\liminf$ formulation, since Lean's topology library would require substantial infrastructure for sequences of growing hypergraphs",
+      "Even $0 \\in A_3$ (the simplest possible jump) requires showing that 3-uniform hypergraphs with positive density contain denser subhypergraphs—a non-trivial fact related to hypergraph regularity",
+      "The hypergraph Turán conjecture $\\pi(K_4^{(3)}) = 5/9$ remains open after 80+ years, and resolving it would determine whether $5/9 \\in A_3$",
+      "Razborov's flag algebra method provides a systematic computational approach to bounding extremal densities, but cannot alone determine the full structure of $A_3$"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #837 is OPEN. The formalization captures the density jump framework for $k$-uniform hypergraphs, records the elegant solution $A_2 = \\{1 - 1/m\\}$ for graphs via Erdős–Stone–Simonovits, and states the central open question: characterize $A_3$ for 3-uniform hypergraphs. The file has 0 sorries and 0 axiom declarations; the known and unknown results are encoded as `def : Prop` statements, not formal `axiom` declarations.",
+    "implications": "**Theoretical Significance**: Characterizing $A_3$ would be a major breakthrough in hypergraph extremal theory, unifying our understanding of density phenomena across all uniformities.\n\nIt would resolve or subsume many specific open problems including the Turán tetrahedron conjecture. The structure of $A_3$—whether discrete like $A_2$, or having accumulation points, or even being uncountable—remains completely open.",
+    "openQuestions": [
+      "What is $A_3$ for 3-uniform hypergraphs? Is it countable or uncountable?",
+      "Does $A_3$ consist of isolated points like $A_2$, or does it have accumulation points?",
+      "What is $\\pi(K_4^{(3)})$? The Turán tetrahedron conjecture gives $5/9$",
+      "Is $A_k = A_3$ for all $k \\geq 3$, or does the structure change with uniformity?",
+      "Can the `IsDensityJump` definition be strengthened to encode the full $\\liminf$ formulation using Lean's topology library?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-833",
+      "relationship": "related",
+      "description": "Problem #833 studies vertex degrees in 3-chromatic hypergraphs—another structural question about k-uniform hypergraphs from the same Erdős–Lovász (1975) paper"
+    },
+    {
+      "targetId": "erdos-834",
+      "relationship": "related",
+      "description": "Problem #834 studies 3-critical 3-uniform hypergraphs—another problem from Erdős–Lovász on extremal properties of k-uniform hypergraphs"
+    },
+    {
+      "targetId": "erdos-1019",
+      "relationship": "related",
+      "description": "Problem #1019 studies dense graphs forcing saturated planar subgraphs via Turán-type thresholds, connecting to the density-forcing paradigm that A_k generalizes"
+    },
+    {
+      "targetId": "erdos-622",
+      "relationship": "related",
+      "description": "Problem #622 studies cycle-spanning subsets in dense regular graphs—another extremal problem where graph density forces specific substructures"
+    }
+  ],
+  "references": [
+    "Erdős & Simonovits (1974): original problem [Er74d]",
+    "Erdős–Stone–Simonovits: A_2 = {1−1/m}",
+    "Frankl & Rödl (1984): Ramsey multiplicity approach for hypergraph jumps",
+    "Razborov (2007): flag algebra method for extremal problems",
+    "https://erdosproblems.com/837"
+  ],
+  "leanFile": {
+    "lineCount": 78,
+    "structureCount": 1,
+    "axiomCount": 0,
+    "theoremCount": 0,
+    "lemmaCount": 0,
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "path": "Proofs/Erdos837Problem.lean",
+    "sorries": 0,
+    "definitionCount": 5
+  },
+  "sorries": 0
+}

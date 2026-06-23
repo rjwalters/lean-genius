@@ -1,0 +1,53 @@
+{
+  "slug": "erdos-131-incomplete-01",
+  "title": "Erdős #131: Non-Dividing Sets",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T20:30:00Z",
+    "iteration": 1,
+    "focus": "Surveyed — all 4 sorries are deep published results.",
+    "blockers": [
+      "All sorries require deep number theory"
+    ],
+    "nextAction": "None feasible",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: File has 4 sorries (ELRSS upper bound, Pham-Zakharov breakthrough, Csaba/Straus lower bounds), 0 axioms. All are deep published results. The file has good structure: original_question_answered_no is proved from Pham-Zakharov (depends on sorry). Taylor bound tricks (exp(3/4)>2, log 2<3/4) are cleanly proved.",
+    "builtItems": [],
+    "insights": [
+      "The 4 sorries are: elrss_upper_bound (1999), pham_zakharov_upper_bound (2024), csaba_lower_bound, straus_lower_bound",
+      "original_question_answered_no is a clean proof using Pham-Zakharov + rpow monotonicity",
+      "File structure is good: definitions, monotonicity, bounds, question resolution",
+      "No axioms — all assumptions are stated as sorries (good practice)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "None of the 4 sorries are tractable without major new infrastructure"
+    ]
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "combinatorics",
+    "divisibility",
+    "incomplete",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-13",
+    "erdos-131"
+  ],
+  "started": "2026-03-28T20:25:00Z",
+  "lastUpdate": "2026-03-28T20:30:00Z",
+  "significance": 5,
+  "tractability": 6
+}

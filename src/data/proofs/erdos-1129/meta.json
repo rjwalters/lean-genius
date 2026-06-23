@@ -1,0 +1,287 @@
+{
+  "id": "erdos-1129",
+  "title": "Erdős Problem #1129: Optimal Lagrange Interpolation Nodes",
+  "slug": "erdos-1129",
+  "description": "Which choice of interpolation nodes x₁,...,xₙ in [-1,1] minimizes the Lebesgue constant Λ = max Σ|l_k(x)|? SOLVED: Optimal nodes exist, are characterized by equal subinterval maxima, and achieve Λ ~ (2/π) log n.",
+  "meta": {
+    "author": "Kilgore-Cheney (1976), Kilgore (1977), de Boor-Pinkus (1978)",
+    "sourceUrl": "https://erdosproblems.com/1129",
+    "date": "1978",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1129Problem.lean",
+    "tags": [
+      "erdos",
+      "approximation-theory",
+      "interpolation",
+      "lagrange-interpolation",
+      "lebesgue-constant",
+      "chebyshev-polynomials",
+      "numerical-analysis",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1129,
+    "erdosUrl": "https://erdosproblems.com/1129",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.cos",
+        "description": "Cosine function on real numbers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "sSup",
+        "description": "Supremum of a set",
+        "module": "Mathlib.Order.Bounds.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Complex.exp",
+        "description": "Complex exponential for roots of unity",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Log"
+      }
+    ],
+    "originalContributions": [
+      "LagrangeBasis definition: Lagrange fundamental function l_k(x)",
+      "LebesgueFunction definition: sum of |l_k(x)| for interpolation conditioning",
+      "LebesgueConstant definition: supremum of Lebesgue function over [-1,1]",
+      "ChebyshevNodes definition: roots of Chebyshev polynomials",
+      "EqualHeightProperty definition: characterization of optimal nodes",
+      "erdos_lower_bound axiom: Λ ≥ (2/π) log n - O(1)",
+      "chebyshev_upper_bound axiom: Chebyshev achieves Λ ≤ (2/π) log n + O(1)",
+      "kilgore_cheney_existence axiom: optimal nodes exist",
+      "ComplexLebesgueConstant definition: unit circle variant",
+      "RootsOfUnity definition: n-th roots of unity",
+      "erdos_complex_conjecture theorem: roots of unity are optimal on unit circle",
+      "erdos_1129 theorem: main result combining existence and bounds",
+      "erdos_1129_summary theorem: complete summary"
+    ],
+    "axiomCount": 5,
+    "lineCount": 454,
+    "assumptions": "5 axioms: erdos_lower_bound, chebyshev_upper_bound, kilgore_cheney_existence, brutman_odd, brutman_pinkus_even. 0 sorries.",
+    "theoremCount": 30,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #1129: Optimal Lagrange Interpolation**\n\nThis problem concerns polynomial interpolation, a fundamental topic in numerical analysis dating back to Newton and Lagrange. Given data points (x₁,y₁),...,(xₙ,yₙ), the unique interpolating polynomial of degree ≤ n-1 is P(x) = Σyₖl_k(x), where l_k are the Lagrange basis functions.\n\n**Historical Development:**\n- **Faber (1914)**: First proved that no choice of nodes can keep the Lebesgue constant bounded as n → ∞. This was a fundamental negative result showing polynomial interpolation has inherent limitations.\n- **Bernstein (1931)**: Improved the lower bound to Λ > (2/π - o(1)) log n and found optimal nodes for n = 3.\n- **Erdős (1961)**: Achieved the sharp lower bound Λ ≥ (2/π) log n - O(1).\n- **Erdős (1967)**: Conjectured the equal-height characterization and posed the complex variant.\n- **Kilgore & Cheney (1976)**: Proved existence of minimizing configurations.\n- **Kilgore (1977)**: Proved the equal-height characterization.\n- **de Boor & Pinkus (1978)**: Proved uniqueness for canonical configurations.\n- **Brutman (1980), Brutman & Pinkus (1980)**: Proved roots of unity are optimal on the unit circle.\n- **Rack & Vajda (2015)**: Found the explicit optimal configuration for n = 4.\n\n**Mathematical Setting:**\nThe Lebesgue constant Λ = max_{x∈[-1,1]} Σ|l_k(x)| measures how much interpolation can amplify errors. If f is approximated by P interpolating at nodes x_i, then ||f - P||_∞ ≤ (1 + Λ) · E_n(f), where E_n(f) is the best polynomial approximation error.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nFor $x_1,\\ldots,x_n \\in [-1,1]$, the Lagrange fundamental functions are:\n$$l_k(x) = \\frac{\\prod_{i \\neq k}(x - x_i)}{\\prod_{i \\neq k}(x_k - x_i)}$$\n\nThe Lebesgue constant is:\n$$\\Lambda(x_1,\\ldots,x_n) = \\max_{x \\in [-1,1]} \\sum_k |l_k(x)|$$\n\n**Question:** Which choice of $x_i$ minimizes $\\Lambda$?\n\n**Answer:**\n1. **Existence:** Optimal nodes exist (Kilgore-Cheney 1976)\n2. **Characterization:** Optimal nodes satisfy the equal-height property: the subinterval maxima $\\max_{x \\in [x_i, x_{i+1}]} \\sum_k |l_k(x)|$ are all equal (Kilgore 1977)\n3. **Uniqueness:** For canonical configurations (endpoints at ±1, symmetric), the minimizer is unique (de Boor-Pinkus 1978)\n4. **Bounds:** $(2/\\pi) \\log n - O(1) \\leq \\Lambda_{\\min} \\leq (2/\\pi) \\log n + O(1)$\n5. **Complex variant:** On the unit circle, roots of unity are optimal",
+    "text": "Which choice of interpolation nodes x₁,...,xₙ in [-1,1] minimizes the Lebesgue constant Λ = max Σ|l_k(x)|? SOLVED: Optimal nodes exist, are characterized by equal subinterval maxima, and achieve Λ ~ (2/π) log n.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Define LagrangeBasis, LebesgueFunction, and LebesgueConstant using Mathlib's real analysis infrastructure.\n\n2. **Chebyshev Nodes:** Define using cosine formula: $x_k = \\cos((2k-1)\\pi/2n)$.\n\n3. **The 5 axioms (the only assumptions in the file):**\n   - `erdos_lower_bound`: Erdős's sharp bound $\\Lambda \\geq (2/\\pi) \\log n - O(1)$\n   - `chebyshev_upper_bound`: Chebyshev nodes achieve $\\Lambda \\leq (2/\\pi) \\log n + O(1)$\n   - `kilgore_cheney_existence`: optimal nodes exist\n   - `brutman_odd` / `brutman_pinkus_even`: roots of unity are optimal on the unit circle (odd / even $n$)\n\n   Faber's theorem (subsumed by the Erdős bound), the Kilgore equal-height characterization, and de Boor–Pinkus uniqueness are cited as background context in comments but are **not** formalized as axioms or theorems in this file.\n\n4. **Exact small cases:** Prove `optimal_n2` ({-1,1}, Λ=1) and `optimal_n3` ({-1,0,1}, Λ=5/4) from scratch — these are genuine machine-checked theorems, not axioms.\n\n5. **Complex Variant:** Define ComplexLebesgueConstant for the unit circle; `erdos_complex_conjecture` is derived by case split on parity from the two Brutman axioms.\n\n6. **Main Results:** Combine into `erdos_1129` theorem showing existence (from `kilgore_cheney_existence`) and asymptotic bounds (from `erdos_lower_bound` + `chebyshev_upper_bound`).",
+    "keyInsights": [
+      "**Lebesgue Constant:** Measures interpolation conditioning - the worst-case error amplification factor",
+      "**Equal-Height Property:** Optimal nodes equalize the maximum of the Lebesgue function on each subinterval (equioscillation)",
+      "**Chebyshev Nodes:** Roots of T_n cluster near ±1, giving near-optimal Λ ~ (2/π) log n",
+      "**Logarithmic Growth:** No node choice can avoid Λ → ∞; best possible is Λ ~ (2/π) log n",
+      "**Complex Variant:** On the unit circle, roots of unity (uniformly spaced) are provably optimal",
+      "**Known Exact Solutions:** Optimal canonical nodes known only for n ≤ 4; the n = 4 solution has an explicit algebraic form"
+    ],
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Number theory (primes, divisibility, arithmetic functions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lagrange-basics",
+      "title": "Lagrange Interpolation Fundamentals",
+      "summary": "File header and Part I: LagrangeBasis definition, DistinctNodes and NodesInInterval predicates",
+      "startLine": 1,
+      "endLine": 71,
+      "mathContext": "Formal definition: File header and Part I: LagrangeBasis definition, DistinctNodes and NodesInInterval predicates"
+    },
+    {
+      "id": "lebesgue-constant",
+      "title": "The Lebesgue Constant",
+      "summary": "LebesgueFunction and LebesgueConstant definitions measuring interpolation conditioning",
+      "startLine": 72,
+      "endLine": 95,
+      "mathContext": "Formal definition: LebesgueFunction and LebesgueConstant definitions measuring interpolation conditioning"
+    },
+    {
+      "id": "chebyshev-nodes",
+      "title": "Chebyshev Nodes",
+      "summary": "ChebyshevNodes definition using the cosine formula and chebyshev_nodes_in_interval theorem",
+      "startLine": 96,
+      "endLine": 119,
+      "mathContext": "Formal definition: ChebyshevNodes definition using the cosine formula and chebyshev_nodes_in_interval theorem"
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Fundamental Lower Bounds",
+      "summary": "erdos_lower_bound and chebyshev_upper_bound axioms establishing the sharp (2/π) log n asymptotic",
+      "startLine": 120,
+      "endLine": 150,
+      "mathContext": "erdos_lower_bound and chebyshev_upper_bound axioms establishing the sharp (2/π) log n asymptotic"
+    },
+    {
+      "id": "equal-height",
+      "title": "The Equal-Height Characterization",
+      "summary": "SubintervalMax and EqualHeightProperty definitions; kilgore_cheney_existence axiom; Kilgore and de Boor-Pinkus characterization notes",
+      "startLine": 151,
+      "endLine": 187,
+      "mathContext": "Formal definition: SubintervalMax and EqualHeightProperty definitions; kilgore_cheney_existence axiom; Kilgore and de Boor-Pinkus characterization notes"
+    },
+    {
+      "id": "exact-solutions",
+      "title": "Known Exact Solutions",
+      "summary": "Explicit optimal nodes for small cases: optimal_n2 ({-1,1}, Λ=1) and optimal_n3 ({-1,0,1}, Λ=5/4) with supporting Lagrange/Lebesgue lemmas",
+      "startLine": 188,
+      "endLine": 353,
+      "mathContext": "Mathematical content: Explicit optimal nodes for small cases: optimal_n2 ({-1,1}, Λ=1) and optimal_n3 ({-1,0,1}, Λ=5/4) with supporting Lagrange/Lebesgue lemmas"
+    },
+    {
+      "id": "complex-variant",
+      "title": "Complex Variant",
+      "summary": "ComplexLebesgueConstant, RootsOfUnity definitions; Brutman and Brutman-Pinkus theorems; erdos_complex_conjecture for nodes on the unit circle",
+      "startLine": 354,
+      "endLine": 403,
+      "mathContext": "Verified: ComplexLebesgueConstant, RootsOfUnity definitions; Brutman and Brutman-Pinkus theorems; erdos_complex_conjecture for nodes on the unit circle"
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_1129 and erdos_1129_summary theorems combining existence, asymptotic bounds, and the complex variant",
+      "startLine": 404,
+      "endLine": 454,
+      "mathContext": "Verified: erdos_1129 and erdos_1129_summary theorems combining existence, asymptotic bounds, and the complex variant"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1129 asked which interpolation nodes minimize the Lebesgue constant. The answer is complete: optimal nodes exist (Kilgore-Cheney), are characterized by the equal-height property (Kilgore), and are unique for canonical configurations (de Boor-Pinkus). The minimum Lebesgue constant satisfies (2/π) log n - O(1) ≤ Λ_min ≤ (2/π) log n + O(1), with Chebyshev nodes achieving the upper bound. For the complex variant on the unit circle, roots of unity are optimal.",
+    "implications": "**Theoretical Significance**: **Numerical Analysis Significance**\n\n1. **Interpolation Error Bounds:** ||f - P||_∞ ≤ (1 + Λ) · E_n(f) shows conditioning matters.\n\n2. **Chebyshev Preference:** Chebyshev nodes are standard in numerical methods because they achieve asymptotically optimal conditioning.\n\n**3. Runge Phenomenon:** Explains why equidistant nodes fail - their Lebesgue constant grows exponentially.\n\n4. **Approximation Theory:** Connects polynomial interpolation to best approximation through Lebesgue's inequality.\n\n5. **Computational Practice:** Modern spectral methods use Chebyshev or Gauss-Lobatto points based on these results.",
+    "openQuestions": [
+      "Explicit optimal nodes for n ≥ 5",
+      "Optimal nodes for other intervals or weight functions",
+      "Characterization for non-canonical (asymmetric) configurations",
+      "Generalization to multivariate interpolation",
+      "Optimal rational interpolation nodes"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "related",
+      "relevance": "high",
+      "targetId": "erdos-1130",
+      "description": "Erdős Problem #1130: Lagrange Basis Function Sums"
+    },
+    {
+      "relationship": "related",
+      "relevance": "high",
+      "targetId": "erdos-1131",
+      "description": "Minimizing Lagrange Interpolation Basis Polynomial Integrals"
+    },
+    {
+      "relationship": "related",
+      "relevance": "high",
+      "targetId": "erdos-671",
+      "description": "Erdős Problem #671: Lagrange Interpolation Convergence"
+    },
+    {
+      "relationship": "related",
+      "relevance": "medium",
+      "targetId": "erdos-1132",
+      "description": "Erdős Problem #1132: Lagrange Interpolation and Lebesgue Functions"
+    },
+    {
+      "relationship": "related",
+      "relevance": "medium",
+      "targetId": "erdos-1133",
+      "description": "Erdős Problem #1133: Large Polynomial Interpolation Bound"
+    },
+    {
+      "relationship": "related",
+      "relevance": "medium",
+      "targetId": "de-moivre-oq-02",
+      "description": "Chebyshev Polynomial Properties via De Moivre's Theorem"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "T. Kilgore",
+        "E. W. Cheney"
+      ],
+      "title": "A theorem on interpolation in Haar subspaces",
+      "year": "1976",
+      "volume": "14",
+      "pages": "391–400",
+      "description": "First proof of the existence of optimal interpolation nodes (Kilgore-Cheney existence theorem); the key compactness argument establishing that a minimizer of Λ exists in [-1,1]^n.",
+      "venue": "Aequationes Mathematicae"
+    },
+    {
+      "authors": [
+        "T. Kilgore"
+      ],
+      "title": "A characterization of the Lagrange interpolating projection with minimal Tchebycheff norm",
+      "year": "1977",
+      "volume": "24",
+      "pages": "273–288",
+      "description": "Proves the equal-height characterization: optimal nodes equalize the local maxima of the Lebesgue function on consecutive subintervals (equioscillation theorem).",
+      "venue": "Journal of Approximation Theory"
+    },
+    {
+      "authors": [
+        "C. de Boor",
+        "A. Pinkus"
+      ],
+      "title": "Proof of the conjectures of Bernstein and Erdős concerning the optimal nodes for polynomial interpolation",
+      "year": "1978",
+      "volume": "24",
+      "pages": "289–303",
+      "description": "Proves uniqueness of the canonical minimizer and resolves both the Bernstein and Erdős conjectures on optimal interpolation nodes; the source for the uniqueness axiom in the Lean formalization.",
+      "venue": "Journal of Approximation Theory"
+    },
+    {
+      "authors": [
+        "G. Faber"
+      ],
+      "title": "Über die interpolatorische Darstellung stetiger Funktionen",
+      "year": "1914",
+      "volume": "23",
+      "pages": "192–210",
+      "description": "The foundational 1914 result showing that no sequence of interpolation nodes can keep Λ_n bounded; establishes Λ_n → ∞ for every node sequence, the starting point for the logarithmic lower bound.",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung"
+    },
+    {
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "Problems and results on the theory of interpolation II",
+      "year": "1961",
+      "volume": "12",
+      "pages": "235–244",
+      "description": "Erdős establishes the sharp lower bound Λ ≥ (2/π) log n - O(1) and conjectures the equal-height characterization of optimal nodes, posing the problem that Kilgore and de Boor–Pinkus later solved.",
+      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Polynomials.Chebyshev",
+      "Mathlib.Topology.ContinuousFunction.Compact",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Analysis.NormedSpace.Basic",
+      "Mathlib.Order.Bounds.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Real"
+    ],
+    "namespace": "Erdos1129",
+    "lineCount": 454,
+    "axiomCount": 5,
+    "theoremCount": 30,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos1129Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -1,0 +1,85 @@
+{
+  "slug": "erdos-424",
+  "title": "Erdos 424 Hofstadter generated sequence density",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Start from the set {2,3} and repeatedly close under values $ab-1$ with distinct already-generated elements. Does the set of integers eventually generated have positive density?",
+    "plain": "Does Hofstadter's closure rule from 2 and 3 generate a positive-density set of integers?",
+    "whyMatters": [
+      "The formalization captures the generation rule as iterated set closure.",
+      "It proves the mod-3 obstruction showing that numbers congruent to 1 mod 3 never appear.",
+      "The metadata should distinguish this verified obstruction from the still-open positive-density question."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`nextGeneration`, `sequenceSet`, and `generatedSet` formalize the Hofstadter generation process.",
+      "`mod_3_obstruction` proves that no generated integer is congruent to 1 modulo 3.",
+      "`initial_elements`, `sequence_monotone`, `sequenceSet_mono`, and `generated_closed` verify the initial values, monotonicity, and closure behavior."
+    ],
+    "open": [
+      "`Erdos424Problem.lean` has zero active axioms and zero active sorries.",
+      "Positive density of the generated set is not proved; the Lean file supplies the generation and obstruction infrastructure."
+    ],
+    "goal": "Expose the verified generation rule and mod-3 obstruction while keeping the density question open."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-13T02:41:06.676Z",
+    "iteration": 1,
+    "focus": "Metadata backfill aligned with the verified Hofstadter-sequence closure scaffold.",
+    "blockers": [],
+    "nextAction": "Use the closure theorem and mod-3 obstruction as the baseline for future density work.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #424 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $a_1=2$ and $a_2=3$ and continue the sequence by appending to $a_1,\\ldots,a_n$ all possible values of $a_ia_j-1$ with $i\\neq j$. Is it true that the set of integers which eventually appear has positive density?\n\n\n\nAsked by Hofstadter. The sequence begins $2,3,5,9,14,17,26,\\ldots$ and is A005244 in the OEIS. This problem is also discussed in section E31 of Guy's book Unsolved Problems in Number Theory.\n\nIn \\cite{ErGr80} (and in Guy's book) this problem as written is asking for whether almost all integers appear in this sequence, but the answer to this is trivially no (as pointed out to me by Steinerberger): no integer $\\equiv 1\\pmod{3}$ is ever in the sequence, so the set of integers which appear has density at most $2/3$. This is easily seen by induction, and the fact that if $a,b\\in \\{0,2\\}\\pmod{3}$ then $ab-1\\in \\{0,2\\}\\pmod{3}$.\n\nPresumably it is the weaker question of whether a positive density of integers appear (as correctly asked in \\cite{Er77c}) that was also intended in \\cite{ErGr80}.\n\nSee also Problem 63 of Green's open problems list.\n\n\n\n\nReferences\n\n\n[Er77c] Erd\\H{o}s, Paul, Problems and results on combinatorial number theory. III. Number theory day (Proc. Conf., Rockefeller Univ.,\nNew York, 1976) (1977), 43-72.\n\n[ErGr80] Erd\\H{o}s, P. and Graham, R., Old and new problems and results in combinatorial number theory. Monographies de L'Enseignement Mathematique (1980).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #3\n- Problem #423\n- Problem #425\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #63\n\n## References\n\n- ErGr80\n- Er77c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "generated-sequences",
+    "modular-arithmetic",
+    "density",
+    "fully-verified"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-42",
+    "erdos-424"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T02:41:06.676Z",
+  "lastUpdate": "2026-03-13T07:52:17.048Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos424Problem.lean",
+      "filename": "Erdos424Problem.lean",
+      "lineCount": 152,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos424Problem.lean"
+    }
+  ]
+}

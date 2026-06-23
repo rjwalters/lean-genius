@@ -1,0 +1,31 @@
+# Problem: Formalize complex Gram-Schmidt using Cauchy-Schwarz equality characterization
+
+**ID**: cauchy-schwarz-oq-01-oq-01-oq-01
+**Category**: extension
+**Tractability**: challenging
+**Source Proof**: cauchy-schwarz-oq-01-oq-01 (open-question)
+**Tags**: analysis, linear-algebra, inner-product-spaces, complex-analysis, functional-analysis, classic
+
+## Problem Statement
+
+Can the complex Gram-Schmidt process be formalized using this equality characterization?
+
+## Context
+
+Source proof: Cauchy-Schwarz Equality for Complex Inner Product Spaces
+
+## Research Phase
+
+OBSERVE
+
+## Key Questions
+
+1. What Lean/Mathlib infrastructure exists for this problem?
+2. What are the key mathematical obstacles?
+3. What related formalizations can guide the approach?
+
+## Suggested First Steps
+
+1. Survey the source proof and related gallery entries
+2. Check Mathlib for relevant definitions and theorems
+3. Sketch the proof strategy before writing Lean code

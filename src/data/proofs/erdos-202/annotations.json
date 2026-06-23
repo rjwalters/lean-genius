@@ -1,0 +1,238 @@
+[
+  {
+    "id": "erdos-202-imports",
+    "proofId": "erdos-202",
+    "type": "concept",
+    "range": {
+      "startLine": 59,
+      "endLine": 68
+    },
+    "title": "Library Imports and Namespace",
+    "content": "Imports Mathlib for modular arithmetic (`Int.ModEq`), finite sets, real analysis (`Log.Basic`, `Pow.Real`), and tactics. Opens `Finset` and `Real` namespaces within the `Erdos202` namespace.",
+    "mathContext": "The formalization uses `Int.ModEq` ($a \\equiv b \\pmod{n}$) for congruence class membership, `Finset` for finite collections of classes and moduli, `Real.exp` and `Real.sqrt` for the $L(N)$ function, and `Real.log` for logarithmic bounds. The `sSup` (conditional supremum) defines $f(N)$ over all valid disjoint systems.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Int.ModEq",
+      "Finset",
+      "Real.exp",
+      "Real.sqrt",
+      "sSup"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib modular arithmetic",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "erdos-202-congclass",
+    "proofId": "erdos-202",
+    "type": "definition",
+    "range": {
+      "startLine": 73,
+      "endLine": 84
+    },
+    "title": "Congruence Class and Disjointness",
+    "content": "A `CongruenceClass` is a structure with residue $a \\in \\mathbb{Z}$, modulus $n > 0$. Membership: $x \\in (a, n) \\iff x \\equiv a \\pmod{n}$. Two classes are disjoint (`AreDisjoint`) if no integer belongs to both.",
+    "mathContext": "CongruenceClass: $(a, n)$ with $n > 0$. CongruenceClass.contains$(c, x) \\iff x \\equiv c.\\text{residue} \\pmod{c.\\text{modulus}}$ using `Int.ModEq`. AreDisjoint$(c_1, c_2) \\iff \\forall x: \\neg(c_1.\\text{contains}(x) \\wedge c_2.\\text{contains}(x))$. Two classes $(a_1, n_1)$ and $(a_2, n_2)$ are disjoint iff $a_1 \\not\\equiv a_2 \\pmod{\\gcd(n_1, n_2)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "congruence classes",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "Int.ModEq",
+      "structure types"
+    ]
+  },
+  {
+    "id": "erdos-202-system",
+    "proofId": "erdos-202",
+    "type": "definition",
+    "range": {
+      "startLine": 89,
+      "endLine": 103
+    },
+    "title": "Disjoint System Structure",
+    "content": "A `DisjointSystem` is a `Finset CongruenceClass` with pairwise disjointness. Defines `moduli`, `boundedBy` (all moduli $\\leq N$), and `size` (cardinality). This is the combinatorial object whose maximum size defines $f(N)$.",
+    "mathContext": "DisjointSystem: classes $\\in \\text{Finset}(\\text{CongruenceClass})$ with $\\forall c_1 \\neq c_2 \\in$ classes: AreDisjoint$(c_1, c_2)$. The density constraint: $\\sum_{c \\in S} 1/c.\\text{modulus} \\leq 1$ (proved in Lean via `sum_inv_moduli_le_one`), since the classes partition disjoint subsets of $\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pairwise disjointness",
+      "covering systems",
+      "density constraint"
+    ],
+    "prerequisites": [
+      "CongruenceClass",
+      "AreDisjoint",
+      "Finset"
+    ]
+  },
+  {
+    "id": "erdos-202-f",
+    "proofId": "erdos-202",
+    "type": "definition",
+    "range": {
+      "startLine": 108,
+      "endLine": 109
+    },
+    "title": "The Function $f(N)$",
+    "content": "Defines $f(N) = \\sup\\{r : \\exists S$ disjoint system with moduli $\\leq N$ and $|S| = r\\}$ via `sSup`. This is the central extremal function whose asymptotics are the subject of the problem.",
+    "mathContext": "$f(N) = \\text{sSup}\\{r \\in \\mathbb{N} : \\exists S : \\text{DisjointSystem}, S.\\text{boundedBy}(N) \\wedge S.\\text{size} = r\\}$. The key identity $f(N) = N$ is proved by constructing the full system $\\{0 \\bmod N, 1 \\bmod N, \\ldots, (N-1) \\bmod N\\}$ (lower bound) and using $\\sum 1/n_i \\leq 1$ with $n_i \\leq N$ (upper bound).",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "sSup",
+      "covering number"
+    ],
+    "prerequisites": [
+      "DisjointSystem",
+      "sSup",
+      "BddAbove"
+    ]
+  },
+  {
+    "id": "erdos-202-basic-bounds",
+    "proofId": "erdos-202",
+    "type": "concept",
+    "range": {
+      "startLine": 143,
+      "endLine": 336
+    },
+    "title": "Basic Bounds: $f(N) = N$",
+    "content": "Proves `f_mono` ($N_1 \\leq N_2 \\implies f(N_1) \\leq f(N_2)$), `f_le_N` ($f(N) \\leq N$ via the density constraint $\\sum 1/n_i \\leq 1$), and `f_lower_trivial`/`f_ge_N` ($f(N) \\geq N$ via the full system of residue classes mod $N$). Key intermediate results: `sum_inv_moduli_le_one` and `sum_card_le_L`. Many proved by Aristotle.",
+    "mathContext": "f_le_N uses the density bound: if $|S| > N$ with moduli $\\leq N$, then $\\sum_{c \\in S} 1/c.\\text{modulus} \\geq |S|/N > 1$, contradicting $\\sum 1/n_i \\leq 1$. f_ge_N constructs $\\{0 \\bmod N, \\ldots, (N-1) \\bmod N\\}$, giving $|S| = N$. Combined: $f(N) = N$ for $N \\geq 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "density argument",
+      "CRT construction",
+      "Aristotle proofs",
+      "sSup properties"
+    ],
+    "prerequisites": [
+      "f",
+      "DisjointSystem",
+      "sum_inv_moduli_le_one",
+      "csSup_le"
+    ]
+  },
+  {
+    "id": "erdos-202-L",
+    "proofId": "erdos-202",
+    "type": "definition",
+    "range": {
+      "startLine": 340,
+      "endLine": 342
+    },
+    "title": "The $L$ Function",
+    "content": "Defines $L(N) = \\exp(\\sqrt{\\log N \\cdot \\log\\log N})$ for $N > 2$ (and $1$ otherwise). This function, intermediate between polynomial and logarithmic growth, appears in all modern bounds on $f(N)$.",
+    "mathContext": "$L(N) = \\begin{cases} 1 & N \\leq 2 \\\\ \\exp(\\sqrt{\\log N \\cdot \\log\\log N}) & N > 2 \\end{cases}$. The function satisfies: $L(N) = N^{o(1)}$ (subpolynomial, proved by Aristotle) and $L(N) \\gg (\\log N)^c$ for any $c$ (superlogarithmic). It also appears in smooth number theory: $\\Psi(N, N^{1/u}) \\approx N/L(N)^{u/2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "Dickman function",
+      "subexponential functions"
+    ],
+    "prerequisites": [
+      "Real.exp",
+      "Real.sqrt",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "erdos-202-L-props",
+    "proofId": "erdos-202",
+    "type": "concept",
+    "range": {
+      "startLine": 345,
+      "endLine": 411
+    },
+    "title": "$L$ Function Properties",
+    "content": "Proves `L_mono` ($L$ is monotone for $N \\geq 3$) and `L_subpolynomial` ($\\forall \\varepsilon > 0: L(N) < N^\\varepsilon$ eventually). The subpolynomial proof decomposes $\\sqrt{\\log N \\cdot \\log\\log N}/\\log N \\to 0$ via nested substitutions. `L_superlogarithmic` ($L(N) > (\\log N)^c$) is stated with sorry.",
+    "mathContext": "L_subpolynomial: $\\forall \\varepsilon > 0, \\exists N_0: N \\geq N_0 \\implies L(N) < N^\\varepsilon$. Equivalently, $\\sqrt{\\log N \\cdot \\log\\log N} < \\varepsilon \\log N$, i.e., $\\log\\log N / \\log N \\to 0$. The proof (by Aristotle) uses $\\sqrt{\\log\\log N}/\\sqrt{\\log N} \\to 0$ via substitutions $y = \\log N$, $z = \\sqrt{y}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subpolynomial growth",
+      "iterated logarithm",
+      "Aristotle proofs"
+    ],
+    "prerequisites": [
+      "L",
+      "Filter.Tendsto",
+      "Real.tendsto_exp_atTop"
+    ]
+  },
+  {
+    "id": "erdos-202-erdos-stein",
+    "proofId": "erdos-202",
+    "type": "concept",
+    "range": {
+      "startLine": 420,
+      "endLine": 546
+    },
+    "title": "Erdős–Stein Conjecture and Szemerédi Upper Bound",
+    "content": "States `erdos_stein_conjecture`: $f(N) = o(N)$ (sorry). Proves `erdos_szemeredi_upper` (by Aristotle): $\\exists c > 0: f(N) < N/(\\log N)^c$ eventually, using `erdos_stein_conjecture` with $\\varepsilon = 1$. Includes construction of `trivialSystem` ($N$ classes mod $N$) and `full_system` proving $f(N) \\geq N$.",
+    "mathContext": "erdos_stein_conjecture: $\\forall \\varepsilon > 0, \\exists N_0: N \\geq N_0 \\implies f(N) < \\varepsilon N$. erdos_szemeredi_upper: $\\exists c > 0, \\exists N_0: N \\geq N_0 \\implies f(N) < N/(\\log N)^c$. Erdős and Szemerédi (1968) proved $f(N) = o(N)$ using a sieve-theoretic argument counting smooth numbers among the moduli.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Stein conjecture",
+      "Erdős–Szemerédi 1968",
+      "sieve methods",
+      "Aristotle proofs"
+    ],
+    "prerequisites": [
+      "f",
+      "erdos_stein_conjecture",
+      "f_ge_N"
+    ]
+  },
+  {
+    "id": "erdos-202-bfv",
+    "proofId": "erdos-202",
+    "type": "concept",
+    "range": {
+      "startLine": 552,
+      "endLine": 760
+    },
+    "title": "Modern Bounds: BFV Upper and Lower",
+    "content": "States `upper_bound_BFV`: $f(N) < N/L(N)^{\\sqrt{3}/2 - \\varepsilon}$ (sorry). Proves `lower_bound_BFV` (by Aristotle): $f(N) > N/L(N)^{1+\\varepsilon}$ by showing $L(N) \\to \\infty$ and $f(N) \\geq N$. Defines `ExactAsymptoticConjecture`: $f(N) = N/L(N)^{1+o(1)}$. Includes smooth number infrastructure.",
+    "mathContext": "upper_bound_BFV: $\\forall \\varepsilon > 0, \\exists N_0: f(N) < N \\cdot L(N)^{-(\\sqrt{3}/2 - \\varepsilon)}$. lower_bound_BFV: $\\forall \\varepsilon > 0, \\exists N_0: f(N) > N \\cdot L(N)^{-(1 + \\varepsilon)}$. The gap between exponents $1$ and $\\sqrt{3}/2 \\approx 0.866$ is the main open problem. De la Bretèche–Ford–Vandehey (2013) improved Croot's (2003) bounds using character sum techniques.",
+    "significance": "key",
+    "relatedConcepts": [
+      "de la Bretèche–Ford–Vandehey 2013",
+      "Croot 2003",
+      "smooth numbers",
+      "character sums"
+    ],
+    "prerequisites": [
+      "f",
+      "L",
+      "L_subpolynomial",
+      "f_ge_N"
+    ]
+  },
+  {
+    "id": "erdos-202-examples",
+    "proofId": "erdos-202",
+    "type": "concept",
+    "range": {
+      "startLine": 783,
+      "endLine": 798
+    },
+    "title": "Examples and Covering Density",
+    "content": "States `example_N6` ($f(6) \\geq 3$, sorry) using classes $0 \\bmod 2$, $1 \\bmod 4$, $3 \\bmod 6$. Defines `coveringDensity` as $\\sum 1/n_i$ and states `covering_density_le_one` ($\\sum 1/n_i \\leq 1$, sorry — though proved earlier as `sum_inv_moduli_le_one`).",
+    "mathContext": "For $N = 6$: the classes $\\{0 \\bmod 2, 1 \\bmod 4, 3 \\bmod 6\\}$ have density $1/2 + 1/4 + 1/6 = 11/12 < 1$, confirming disjointness. The density constraint $\\sum 1/n_i \\leq 1$ is the fundamental obstruction: it limits how many classes can be packed.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "covering density",
+      "density constraint",
+      "explicit constructions"
+    ],
+    "prerequisites": [
+      "DisjointSystem",
+      "coveringDensity",
+      "sum_inv_moduli_le_one"
+    ]
+  }
+]

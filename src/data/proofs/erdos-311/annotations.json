@@ -1,0 +1,190 @@
+[
+  {
+    "id": "ann-e311-header",
+    "proofId": "erdos-311",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #311** (Erdős–Graham 1980, OPEN):\n\nDefine $\\delta(N) = \\min\\{|1 - \\sum_{n \\in A} 1/n| : A \\subseteq \\{1,\\ldots,N\\}, \\sum \\neq 1, \\sum \\le 1\\}$ — the minimal nonzero deviation from 1 achievable by unit fraction sums.\n\n**Conjecture:** $\\delta(N) = e^{-(c+o(1))N}$ for some constant $c \\in (0,1)$.\n\n**Known:** $e^{-(1+o(1))N} \\le \\delta(N) \\le \\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$.",
+    "mathContext": "This problem sits at the intersection of number theory (lcm estimates via PNT), combinatorial optimization (subset-sum), and asymptotic analysis (exponential decay rates). The trivial lower bound comes from denominator clearing: any nonzero $|1 - \\sum 1/n_i|$ is at least $1/\\text{lcm}(n_1,\\ldots,n_k) \\ge 1/\\text{lcm}(1,\\ldots,N) = e^{-\\psi(N)}$ where $\\psi(N) \\sim N$ is the Chebyshev function. Kovac showed the variant asking about subsets summing exactly to 1 is equivalent to the near-1 deviation problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Unit fractions",
+      "Egyptian fractions",
+      "Subset sums",
+      "Prime number theorem",
+      "Chebyshev function"
+    ],
+    "prerequisites": [
+      "Finite sets",
+      "Rational arithmetic",
+      "Exponential function"
+    ]
+  },
+  {
+    "id": "ann-e311-imports",
+    "proofId": "erdos-311",
+    "range": {
+      "startLine": 19,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Imports",
+    "content": "Imports `Mathlib.Tactic`, `Data.Nat.Basic`, `Data.Real.Basic`, and `Data.Finset.Basic`. These provide real arithmetic, finite sets for subset enumeration, and `Real.exp`/`Real.log` for the exponential bounds.",
+    "mathContext": "The formalization uses $\\mathbb{R}$ rather than $\\mathbb{Q}$ for the unit fraction sums, allowing direct use of `Real.exp` and `Real.log` in the bound statements without coercion. The axiomatized `delta` function maps $\\mathbb{N} \\to \\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "Real arithmetic",
+      "Finset"
+    ],
+    "prerequisites": [
+      "Lean 4 import system"
+    ]
+  },
+  {
+    "id": "ann-e311-definitions",
+    "proofId": "erdos-311",
+    "range": {
+      "startLine": 26,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "Unit Fraction Sum and δ(N)",
+    "content": "**unitFracSum $A$:** computes $\\sum_{n \\in A} 1/n$ for a finite set $A \\subseteq \\mathbb{N}$.\n\n**delta $N$ = $\\delta(N)$:** axiomatized as the minimal nonzero value of $|1 - \\text{unitFracSum}(A)|$ over subsets $A \\subseteq \\{1,\\ldots,N\\}$ with sum $\\le 1$ and sum $\\neq 1$.\n\n**delta_pos:** $\\delta(N) > 0$ for $N \\ge 1$ — the minimum is achieved and is strictly positive.",
+    "mathContext": "The function $\\delta(N)$ is well-defined by finiteness of $\\mathcal{P}(\\{1,\\ldots,N\\})$. It measures 'unit fraction Diophantine approximation': how closely can 1 be approximated by sums of distinct unit fractions without being reached exactly? The positivity axiom `delta_pos` follows from rationality — all sums $\\sum 1/n_i$ are rational, and the nonzero minimum of a finite set of positive rationals is positive. The axiomatization avoids formalizing the minimization over $2^N$ subsets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Unit fractions",
+      "Subset sum",
+      "Diophantine approximation",
+      "Finset.sum"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Real division",
+      "Noncomputable definitions"
+    ]
+  },
+  {
+    "id": "ann-e311-lower",
+    "proofId": "erdos-311",
+    "range": {
+      "startLine": 39,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Lower Bound via lcm",
+    "content": "**delta_lower_bound:** $\\delta(N) \\ge e^{-(1+\\varepsilon)N}$ for all $\\varepsilon > 0$ and sufficiently large $N$.\n\n**Proof idea:** Any nonzero $|1 - \\sum 1/n_i|$ is at least $1/\\text{lcm}(1,\\ldots,N)$, since clearing denominators gives a nonzero integer. By PNT, $\\text{lcm}(1,\\ldots,N) = e^{\\psi(N)}$ where $\\psi(N) = (1+o(1))N$.",
+    "mathContext": "This is the 'trivial' lower bound — it follows purely from the arithmetic of denominators without analyzing which subsets $A$ achieve near-1 sums. The Chebyshev function $\\psi(N) = \\sum_{p^k \\le N} \\log p$ satisfies $\\psi(N) \\sim N$ by the Prime Number Theorem, and $\\text{lcm}(1,\\ldots,N) = e^{\\psi(N)}$ since $\\text{lcm}$ is the product of highest prime powers $\\le N$. The conjecture asserts $c < 1$, meaning $\\delta(N)$ decays *slower* than $1/\\text{lcm}$ — the trivial bound is not tight.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lcm",
+      "Prime number theorem",
+      "Chebyshev function",
+      "Denominator clearing"
+    ],
+    "prerequisites": [
+      "Real.exp",
+      "Filter.Eventually",
+      "Asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-e311-upper",
+    "proofId": "erdos-311",
+    "range": {
+      "startLine": 47,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "Tang's Upper Bound",
+    "content": "**tang_upper_bound:** $\\delta(N) \\le \\exp\\bigl(-cN/(\\log N \\cdot \\log\\log N)^3\\bigr)$ for some $c > 0$.\n\nThis is subexponential: faster than any polynomial decay, but much slower than the conjectured $e^{-cN}$. The triple logarithmic factor $(\\log N \\cdot \\log\\log N)^3$ in the denominator significantly weakens the exponential rate.",
+    "mathContext": "Tang's result constructs explicit subsets $A \\subseteq \\{1,\\ldots,N\\}$ whose unit fraction sums approximate 1 to within $\\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$. The construction uses smooth numbers (integers whose prime factors are all small) and careful selection of denominators to maximize cancellation. The gap between Tang's bound and the conjectured $e^{-cN}$ is enormous — roughly $(\\log N)^3$ orders of magnitude in the exponent — making this one of the widest open gaps in combinatorial number theory. The Lean statement requires $N \\ge 10$ to avoid issues with $\\log\\log N \\le 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Subexponential decay",
+      "Smooth numbers",
+      "Unit fraction construction",
+      "Real.log"
+    ],
+    "prerequisites": [
+      "Real.exp",
+      "Real.log",
+      "Asymptotic bounds"
+    ]
+  },
+  {
+    "id": "ann-e311-conjecture",
+    "proofId": "erdos-311",
+    "range": {
+      "startLine": 55,
+      "endLine": 61
+    },
+    "type": "insight",
+    "title": "The Erdős–Graham Conjecture (OPEN)",
+    "content": "**erdos_311_conjecture:** There exists $c \\in (0,1)$ such that $\\delta(N) = e^{-(c+o(1))N}$.\n\nFormally: $\\forall \\varepsilon > 0, \\exists N_0, \\forall N \\ge N_0:$\n$$e^{-(c+\\varepsilon)N} \\le \\delta(N) \\le e^{-(c-\\varepsilon)N}$$\n\n**Why $c < 1$?** Because $c = 1$ would mean $\\delta \\sim 1/\\text{lcm}$, the trivial lower bound.\n**Why $c > 0$?** Because $\\delta(N) > 0$ and tends to 0.",
+    "mathContext": "The conjecture equivalently states $\\lim_{N \\to \\infty} -\\log \\delta(N) / N = c$. The Lean formalization uses the $\\varepsilon$-$N_0$ form to avoid defining limits explicitly. The existential quantification over $c$ is crucial: the problem asks both whether such a rate exists and what its value is. The constraint $c \\in (0,1)$ is forced by the known bounds. Resolving this would reveal deep structure in Egyptian fraction decompositions and their relationship to the distribution of smooth numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Exponential decay rate",
+      "Erdős–Graham conjecture",
+      "Egyptian fractions",
+      "Open problem"
+    ],
+    "prerequisites": [
+      "Real.exp",
+      "Filter.Eventually",
+      "Existential quantification"
+    ]
+  },
+  {
+    "id": "ann-e311-gap-analysis",
+    "proofId": "erdos-311",
+    "type": "insight",
+    "range": {
+      "startLine": 37,
+      "endLine": 51
+    },
+    "title": "The Enormous Gap Between Bounds",
+    "content": "The lower and upper bounds on $\\delta(N)$ leave a vast unexplained gap:\n\n- **Lower**: $\\delta(N) \\geq e^{-(1+\\varepsilon)N}$ (from lcm/PNT)\n- **Upper**: $\\delta(N) \\leq \\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$ (Tang)\n\nThe gap is roughly $(\\log N)^3$ orders of magnitude in the exponent. To see how large this is: for $N = 10^6$, the lower bound exponent is $\\approx -10^6$ while Tang's upper bound exponent is $\\approx -10^6 / (6 \\cdot 2.6)^3 \\approx -10^6 / 3900 \\approx -256$. The conjectured exponent $-cN$ with $c \\in (0,1)$ lies between these, but neither bound comes close to determining $c$.\n\n**Why is this hard?** The lower bound uses only the *arithmetic* of denominators (clearing to lcm). The upper bound requires *constructing* explicit subsets with near-1 sums — a combinatorial optimization over $2^N$ subsets. Bridging this gap requires understanding which subsets of $\\{1,\\ldots,N\\}$ produce near-optimal unit fraction approximations to 1, connecting to the theory of smooth numbers and greedy algorithms for Egyptian fractions.",
+    "mathContext": "Gap: $e^{-(1+o(1))N} \\leq \\delta(N) \\leq \\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$. The exponent ratio is $\\approx (\\log N \\cdot \\log\\log N)^3$, tending to infinity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential gap",
+      "smooth numbers",
+      "greedy algorithm",
+      "Chebyshev function"
+    ],
+    "prerequisites": [
+      "lower and upper bounds",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-e311-axiom-design",
+    "proofId": "erdos-311",
+    "type": "concept",
+    "range": {
+      "startLine": 30,
+      "endLine": 35
+    },
+    "title": "Axiomatization Design: δ as an Opaque Function",
+    "content": "The function $\\delta(N)$ is axiomatized rather than defined because computing it requires minimizing over all $2^N$ subsets of $\\{1,\\ldots,N\\}$ — a noncomputable operation in Lean's constructive type theory. The positivity axiom `delta_pos` encodes a non-trivial fact: $\\delta(N) > 0$ requires showing that no subset of $\\{1,\\ldots,N\\}$ sums to exactly 1, except the trivially exact case $\\{1\\}$ (which sums to 1, so it's excluded by the $\\sum \\neq 1$ condition).\n\nActually, for $N \\geq 2$, many subsets DO sum to 1 (e.g., $\\{2, 3, 6\\}$ since $1/2 + 1/3 + 1/6 = 1$). So `delta_pos` encodes the subtler claim that the minimum over subsets with $\\sum \\neq 1$ and $\\sum \\leq 1$ is achieved at a positive value — which follows because there are only finitely many subsets and the minimum of a finite nonempty set of positive reals is positive.",
+    "mathContext": "$\\delta(N) > 0$ because $\\{|1 - \\text{unitFracSum}(A)| : A \\subseteq \\{1,\\ldots,N\\},\\, \\text{sum} \\leq 1,\\, \\text{sum} \\neq 1\\}$ is a finite nonempty subset of $(0, \\infty)$, so its minimum exists and is positive.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "noncomputable definition",
+      "axiomatization strategy",
+      "finite minimization",
+      "constructive vs classical"
+    ],
+    "prerequisites": [
+      "Lean's noncomputable framework",
+      "Finset operations"
+    ]
+  }
+]

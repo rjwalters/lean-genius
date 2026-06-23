@@ -1,0 +1,119 @@
+{
+  "slug": "erdos-889",
+  "title": "Erdős #889",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For $k\\geq 0$ and $n\\geq 1$ let $v(n,k)$ count the prime factors of $n+k$ which do not divide $n+i$ for $0\\leq i<k$. Equivalently, $v(n,k)$ counts the number of prime factors of $n+k$ which are $>k$.\n\nIs it true that\\[v_0(n)=\\max_{k\\geq 0}v(n,k)\\to \\infty\\]as $n\\to \\infty$?\n\n\n\nA question of Erd\\H{o}s and Selfridge \\cite{ErSe67}, who could only show that $v_0(n)\\geq 2$ for $n\\geq 17$. More generally, they conjecture that\\[v_l(n)=\\max_{k\\geq l}v(n,k)\\to \\infty\\]as $n\\to \\infty$, for every fixed $l$, but could not even prove that $v_1(n)\\geq 2$ for all large $n$.\n\nThis is problem B27 of Guy's collection \\cite{Gu04}.",
+    "plain": "Ask whether the maximum number v0(n) of new prime factors appearing among consecutive shifts tends to infinity with n.",
+    "whyMatters": [
+      "Studies how prime factors newly appear across runs of consecutive integers.",
+      "The Lean file defines the new-prime-factor counts, proves the k=0 sanity lemma, and derives v0(n) >= 2 for n >= 17 from an exception-list axiom.",
+      "The main divergence conjecture and generalized shifted variants remain open."
+    ],
+    "plainEnglish": "Ask whether the maximum number v0(n) of new prime factors appearing among consecutive shifts tends to infinity with n."
+  },
+  "knownResults": {
+    "proven": [
+      "`newPrimeFactorCount` defines v(n,k) using prime factors of n+k absent from earlier shifts.",
+      "`newPrimeFactorCount_zero` proves the k=0 case is just the number of prime factors of n.",
+      "`ErdosProblem889` and `ErdosProblem889General` state the base and shifted divergence conjectures.",
+      "`v0_ge_2_for_large` derives the known n >= 17 lower bound from the axiomatized exception list.",
+      "`general_implies_base` and `exact_power_ge_new_prime` relate the generalized and exact-power variants to the base count."
+    ],
+    "open": [
+      "The exception list for v0(n)<=1 is axiomatized.",
+      "The full claim v0(n)->infinity is not proved.",
+      "`v0` and shifted variants use finite ranges tied to n; equivalence with a literal supremum over all k is not proved."
+    ],
+    "goal": "Record the exception-list consequence and variant definitions while keeping the divergence problem open."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "The file has 4 theorem declarations, 7 definitions, 1 axiom, and 0 sorries; it proves basic relationships and a v0(n)>=2 consequence from the exception-list axiom.",
+    "blockers": [
+      "The Erdos-Selfridge exception classification is an axiom.",
+      "The main divergence theorem is only a Prop definition.",
+      "The finite-range supremum model needs justification against unrestricted k."
+    ],
+    "nextAction": "Prove small exception cases computationally and add a lemma explaining why the finite k range suffices for v0.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "CURRENT: 4 theorem declarations, 7 definitions, 1 axiom, and 0 sorries; proves basic relationships and a v0(n)>=2 consequence from the exception-list axiom.",
+    "builtItems": [
+      "`newPrimeFactorCount` and `v0`",
+      "`ErdosProblem889`",
+      "`v0_exceptions` axiom and `v0_ge_2_for_large`",
+      "`vShifted` and `ErdosProblem889General`",
+      "`exactPowerNewCount`, `exactPowerShifted`, and `exact_power_ge_new_prime`"
+    ],
+    "insights": [
+      "The file is sorry-free but uses one exception-list axiom.",
+      "The exact-power variant is formalized enough to compare against the base new-prime count.",
+      "The current result only reaches the known >=2 threshold, not divergence."
+    ],
+    "mathlibGaps": [
+      "Computational certificates for exception lists",
+      "Unbounded-growth arguments for new prime factors in consecutive integers"
+    ],
+    "nextSteps": [
+      "Verify the finite exception list for small n.",
+      "Justify the finite search range in `v0`.",
+      "State finiteness of v1(n)=1 as an active Prop."
+    ],
+    "markdown": "# Erdős #889 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $k\\geq 0$ and $n\\geq 1$ let $v(n,k)$ count the prime factors of $n+k$ which do not divide $n+i$ for $0\\leq i<k$. Equivalently, $v(n,k)$ counts the number of prime factors of $n+k$ which are $>k$.\n\nIs it true that\\[v_0(n)=\\max_{k\\geq 0}v(n,k)\\to \\infty\\]as $n\\to \\infty$?\n\n\n\nA question of Erd\\H{o}s and Selfridge \\cite{ErSe67}, who could only show that $v_0(n)\\geq 2$ for $n\\geq 17$. More generally, they conjecture that\\[v_l(n)=\\max_{k\\geq l}v(n,k)\\to \\infty\\]as $n\\to \\infty$, for every fixed $l$, but could not even prove that $v_1(n)\\geq 2$ for all large $n$.\n\nThis is problem B27 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[ErSe67] Erd\\H{o}s, P. and Selfridge, J. L., Some problems on the prime factors of consecutive integers. Illinois J. Math. (1967), 428--430.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #890\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErSe67\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "prime-factors",
+    "consecutive-integers",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-8",
+    "erdos-88",
+    "erdos-889"
+  ],
+  "references": {
+    "papers": [
+      "Erdos-Selfridge 1967 prime factors of consecutive integers",
+      "Guy 2004 Problem B27"
+    ],
+    "urls": [
+      "https://erdosproblems.com/889"
+    ],
+    "mathlib": [
+      "Nat.Prime.Basic",
+      "Nat.Factorization.Basic",
+      "Finset.Basic",
+      "ConditionallyCompleteLattice.Basic"
+    ]
+  },
+  "started": "2026-01-15T10:57:29.901Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos889Problem.lean",
+      "filename": "Erdos889Problem.lean",
+      "lineCount": 136,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos889Problem.lean"
+    }
+  ]
+}

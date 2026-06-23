@@ -1,0 +1,46 @@
+[
+  {
+    "id": "vandermonde-interpolation-oq-01-module-header",
+    "proofId": "vandermonde-interpolation-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "title": "Module Header: Vandermonde and Interpolation",
+    "content": "Over a field with $n$ **distinct** nodes $v : \\mathrm{Fin}\\,n \\to F$, the Vandermonde matrix $V_{ij} = v_i^j$ has determinant $\\prod_{i<j}(v_j - v_i) \\ne 0$, so evaluation at the nodes is injective on polynomials of degree $< n$. Two consequences: the **finite identity theorem** (a degree-$<n$ polynomial vanishing at $n$ points is $0$) and **interpolation uniqueness** (degree-$<n$ polynomials agreeing at $n$ points are equal). Mathlib proves the coefficient-vector form but stops short of the `Polynomial.eval` bridge — supplied here."
+  },
+  {
+    "id": "vandermonde-interpolation-oq-01-det",
+    "proofId": "vandermonde-interpolation-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 30,
+      "endLine": 36
+    },
+    "title": "Vandermonde Nonvanishing",
+    "content": "`vandermonde_det_ne_zero`: for injective (distinct) nodes, $\\det(\\mathrm{vandermonde}\\,v) \\ne 0$ — a specialization of Mathlib's `det_vandermonde_ne_zero_iff`. The determinant is $\\prod_{i<j}(v_j - v_i)$, which is nonzero precisely when the nodes are pairwise distinct. This invertibility is what makes the evaluation-at-nodes map a bijection on degree-$<n$ polynomials."
+  },
+  {
+    "id": "vandermonde-interpolation-oq-01-identity",
+    "proofId": "vandermonde-interpolation-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 38,
+      "endLine": 57
+    },
+    "title": "The Finite Identity Theorem",
+    "content": "`eq_zero_of_eval_eq_zero`: a polynomial $p$ of degree $< n$ vanishing at $n$ distinct points is the zero polynomial.\n\n**Bridge.** For each node $j$, `eval_eq_sum_range'` writes $p(v_j) = \\sum_{i<n} p_i\\,v_j^{\\,i}$, and `Fin.sum_univ_eq_sum_range` converts the range-sum to a $\\mathrm{Fin}\\,n$ sum. This is exactly the hypothesis of Mathlib's `eq_zero_of_forall_index_sum_mul_pow_eq_zero`, which — from node injectivity (Vandermonde nonvanishing) — forces the coefficient vector $i \\mapsto p_i$ to vanish on $\\mathrm{Fin}\\,n$. Coefficients of index $\\ge n$ vanish since $\\deg p < n$, so every coefficient is $0$ and $p = 0$."
+  },
+  {
+    "id": "vandermonde-interpolation-oq-01-uniqueness",
+    "proofId": "vandermonde-interpolation-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 59,
+      "endLine": 65
+    },
+    "title": "Interpolation Uniqueness",
+    "content": "`eq_of_eval_eq`: two polynomials $p, q$ of degree $< n$ that agree at $n$ distinct points are equal — there is at most one interpolant of degree $< n$ through $n$ given values.\n\nThe difference $p - q$ has $\\deg(p-q) \\le \\max(\\deg p, \\deg q) < n$ (`natDegree_sub_le`) and vanishes at every node, so $p - q = 0$ by the finite identity theorem; `sub_eq_zero` gives $p = q$."
+  }
+]

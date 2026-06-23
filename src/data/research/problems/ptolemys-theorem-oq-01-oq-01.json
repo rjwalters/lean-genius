@@ -1,0 +1,144 @@
+{
+  "slug": "ptolemys-theorem-oq-01-oq-01",
+  "title": "Ptolemy Converse: Equality Characterizes Cyclic Quadrilaterals",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem ptolemy_converse (A B C D : Circle.unitCircle ℂ) (hne : A ≠ B ∧ B ≠ C ∧ C ≠ D ∧ D ≠ A) : dist A C * dist B D = dist A B * dist C D + dist A D * dist B C → IsCyclicOrder A B C D",
+    "plain": "If four distinct unit-circle points satisfy Ptolemy equality AC·BD = AB·CD + AD·BC, then they appear in cyclic (CCW or CW) order — completing the bidirectional characterization of cyclic quadrilaterals.",
+    "whyMatters": [
+      "Completes the converse of Ptolemy's theorem for unit-circle points",
+      "Provides a metric characterization of cyclic order without angular arguments",
+      "Parent proof established the forward direction; this is the natural completion"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "ptolemys-theorem-oq-01: CCW order → Ptolemy equality (verified, 0 sorries)",
+      "ptolemys-theorem: Ptolemy's theorem via complex numbers",
+      "ptolemys-complex-proof-oq-01: algebraic complex proof variant"
+    ],
+    "open": [
+      "Converse direction: Ptolemy equality → cyclic order",
+      "Ptolemy's inequality for non-cyclic configurations"
+    ],
+    "goal": "Prove converse: unit-circle Ptolemy equality implies cyclic order"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-21",
+    "iteration": 1,
+    "focus": "Read PtolemysTheoremOQ01.lean for forward proof technique, assess cross-ratio approach",
+    "blockers": [],
+    "nextAction": "Read proofs/Proofs/PtolemysTheoremOQ01.lean to understand CCW order definition and proof method",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Problem selected by Seeker. Parent proof establishes forward direction. Converse requires showing Ptolemy equality forces cyclic configuration.",
+    "builtItems": [],
+    "insights": [
+      "Cross-ratio (z1-z3)(z2-z4)/((z1-z4)(z2-z3)) is real ↔ four points concyclic or collinear",
+      "Ptolemy equality ↔ positive real cross-ratio for unit circle points",
+      "Strict Ptolemy inequality holds for non-cyclic-order configurations"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Read PtolemysTheoremOQ01.lean: understand IsCyclicOrder definition",
+      "Check if Mathlib has cross-ratio machinery",
+      "Consider direct algebraic approach using complex products"
+    ]
+  },
+  "tags": [
+    "geometry",
+    "ptolemy",
+    "cyclic-quadrilaterals",
+    "complex-numbers"
+  ],
+  "relatedProofs": [
+    "ptolemys-complex-proof-oq-01",
+    "ptolemys-theorem",
+    "ptolemys-theorem-oq-01",
+    "ptolemys-theorem-oq-01-incomplete-01",
+    "ptolemys-theorem-oq-01-oq-01",
+    "ptolemys-theorem-oq-01-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "Ptolemy, Claudius. Almagest — original statement",
+      "Prasolov, V.V. Problems in Solid Geometry — converse proof"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Complex.abs",
+      "Complex.arg"
+    ]
+  },
+  "started": "2026-04-21T20:38:00.000Z",
+  "lastUpdate": "2026-04-21T20:38:00.000Z",
+  "significance": 8,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/PtolemysTheorem.lean",
+      "filename": "PtolemysTheorem.lean",
+      "lineCount": 241,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheorem.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01.lean",
+      "filename": "PtolemysTheoremOQ01.lean",
+      "lineCount": 483,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01Incomplete01.lean",
+      "filename": "PtolemysTheoremOQ01Incomplete01.lean",
+      "lineCount": 490,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01OQ01.lean",
+      "filename": "PtolemysTheoremOQ01OQ01.lean",
+      "lineCount": 289,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01OQ02.lean",
+      "filename": "PtolemysTheoremOQ01OQ02.lean",
+      "lineCount": 271,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01OQ02.lean"
+    }
+  ]
+}

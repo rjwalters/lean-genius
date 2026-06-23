@@ -1,0 +1,63 @@
+{
+  "slug": "angle-trisection-oq-02-oq-04-oq-01-incomplete-01",
+  "title": "Complete Tower-Galois Equivalence via Mathlib Correspondence",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "The file `proofs/Proofs/AngleTrisectionOQ02OQ04OQ01.lean` formalizes the Tower-Galois",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-22",
+    "iteration": 1,
+    "focus": "Complete the 3 remaining `sorry`s in `proofs/Proofs/AngleTrisectionOQ02OQ04OQ01.lean`.",
+    "activeApproach": "None yet — initial observation phase.",
+    "blockers": [],
+    "nextAction": "1. Read the full Lean file to understand the sorry context precisely",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge: Complete Tower-Galois Equivalence\n\n**Problem**: angle-trisection-oq-02-oq-04-oq-01-incomplete-01\n**Last Updated**: 2026-04-22\n\n## Current Understanding\n\n### The File\n\n`proofs/Proofs/AngleTrisectionOQ02OQ04OQ01.lean` — 300+ lines, mostly proved.\n\nStructure:\n- Part 1: QuadraticTower inductive definition (proved)\n- Part 2: Tower degree theorem `quadratic_tower_degree` (proved: towers give 2^n degree)\n- Part 3: Solvability and index-2 subgroup infrastructure (proved)\n- Part 4: Galois → Tower direction (SORRY 1)\n- Part 5: Tower → Galois direction (SORRY 2)\n- Part 6: Full equivalence `tower_iff_galois_two_group` (stated, depends on 1+2)\n- Part 7: Feasibility assessment (commentary)\n- Part 8: √2 example (SORRY 3)\n- Part 9: Summary\n\n### Approach for Sorry 3 (Easiest — √2 in tower)\n\nThe goal is:\n```lean\n∃ (K : IntermediateField ℚ ℝ), QuadraticTower ℚ ℝ K 1 ∧ Real.sqrt 2 ∈ K\n```\n\nApproach: Use `adjoin` to construct K = ℚ(√2). Key lemmas needed:\n- `IntermediateField.adjoin_simple_le_iff` or `IntermediateField.mem_adjoin`\n- `Real.sqrt_two_mul_self` or `Real.sqrt_sq`\n- Prove `[ℚ(√2):ℚ] = 2` via `minpoly ℚ (Real.sqrt 2)` = X²-2\n\nMathlib has: `Polynomial.aeval_eq_sum_range`, `IntermediateField.adjoin.finiteDimensional`\nThe degree calculation needs `minpoly.degree_dvd` and `Polynomial.Irreducible.natDegree`.\n\n### Approach for Sorry 2 (Tower → Galois, medium)\n\nGoal: `ht : ConstructibleViaTower α → IsPGroup 2 (minpoly ℚ α).Gal`\n\nStrategy via degree bounds:\n1. From `ht`, extract tower K with [K:ℚ] = 2^n via `quadratic_tower_degree`\n2. α ∈ K, so `minpoly.degree_le` gives deg(minpoly ℚ α) ≤ [K:ℚ] = 2^n\n3. The splitting field E of minpoly α has [E:ℚ] | (2^n)!\n4. Stronger: [E:ℚ] | 2^(n·deg) which is still a power of 2\n5. `IsPGroup.iff_card` converts card = 2^k to 2-group\n\nKey Mathlib lemmas:\n- `Polynomial.Splits.card_roots_le_degree`\n- `IsGalois.card_aut_eq_finrank`\n- `Module.finrank_mul_finrank` (tower law for degrees)\n\n### Approach for Sorry 1 (Galois → Tower, hardest)\n\nGoal: `IsPGroup 2 (minpoly ℚ α).Gal → ConstructibleViaTower α`\n\nThis requires the full Galois correspondence + induction on |G|.\n\nKey steps:\n1. Let E = splitting field of minpoly ℚ α; G = Gal(E/ℚ)\n2. `exists_index_two_subgroup` (already proved in the file) → H ≤ G with [G:H] = 2\n3. Galois correspondence: `IntermediateField.fixedField H` = K₁ with [K₁:ℚ] = [G:H] = 2\n4. `QuadraticTower.step` gives a tower reaching K₁\n5. Restrict to Gal(E/K₁) = H, which is a 2-group (subgroup of 2-group)\n6. Induct on |H| to build the rest of the tower\n7. Show α ∈ E ⊆ final tower\n\nThe hardest API gap: connecting `Polynomial.Gal` (acts on roots of the polynomial)\nto `IntermediateField.fixingSubgroup` (acts on extension E/ℚ).\n\nPossible bridge: `Polynomial.Gal.galActionHom` or `IsGalois.galoisGroup`.\n\n## What's Already Proved in the File\n\n- `QuadraticTower` definition and `QuadraticTower.degree` lemma\n- `exists_index_two_subgroup` (via Sylow theory)\n- Part infrastructure for tower induction\n- `gal_x2_minus_2_is_two_group` (uses result from AngleTrisectionOQ02.lean)\n\n## Priority Order\n\n1. **Sorry 3** (sqrt2_constructible_tower) — warm-up, good Aristotle candidate\n2. **Sorry 2** (tower_implies_galois_two_group) — degree bound argument\n3. **Sorry 1** (galois_two_group_implies_tower) — requires Galois correspondence API glue\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "algebra",
+    "galois-theory",
+    "tower-law",
+    "angle-trisection",
+    "incomplete"
+  ],
+  "relatedProofs": [
+    "angle-trisection",
+    "angle-trisection-oq-02",
+    "angle-trisection-oq-02-oq-04",
+    "angle-trisection-oq-02-oq-04-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-21T20:13:37.105Z",
+  "lastUpdate": "2026-04-22T11:18:43.472Z",
+  "significance": 7,
+  "tractability": 5
+}

@@ -1,0 +1,312 @@
+{
+  "id": "chinese-remainder-constructive",
+  "title": "Chinese Remainder Theorem (Constructive)",
+  "slug": "chinese-remainder-constructive",
+  "description": "For pairwise coprime moduli, there exists a unique solution to any system of congruences. Includes the classic Sunzi problem: find n where n = 2 (mod 3), n = 3 (mod 5), n = 2 (mod 7). Answer: 23.",
+  "meta": {
+    "author": "Sun Zi (formalized in Lean 4)",
+    "date": "3rd-5th century CE",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/ChineseRemainderConstructive.lean",
+    "tags": [
+      "number-theory",
+      "modular-arithmetic",
+      "algorithms",
+      "classical"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.chineseRemainder",
+        "description": "Core CRT existence: constructs the witness for the simultaneous congruence solution",
+        "module": "Mathlib.Data.Nat.ModEq"
+      },
+      {
+        "theorem": "Nat.modEq_and_modEq_iff_modEq_mul",
+        "description": "x = y (mod m) and x = y (mod n) iff x = y (mod m*n) when gcd(m,n)=1",
+        "module": "Mathlib.Data.Nat.ModEq"
+      },
+      {
+        "theorem": "Nat.chineseRemainder_lt_mul",
+        "description": "The CRT witness is bounded: x < m*n",
+        "module": "Mathlib.Data.Nat.ModEq"
+      },
+      {
+        "theorem": "Nat.gcd_eq_gcd_ab",
+        "description": "Bezout's identity: m * gcdA(m,n) + n * gcdB(m,n) = gcd(m,n)",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Nat.Coprime.mul_dvd_of_dvd_of_dvd",
+        "description": "If gcd(m,n)=1 and m|x and n|x then mn|x",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Constructive proofs with explicit witnesses",
+      "Extension to three pairwise coprime moduli",
+      "Extension to four pairwise coprime moduli with uniqueness",
+      "Classic Sunzi problem solution (23 mod 105)",
+      "Four-moduli example (53 mod 210)",
+      "Residue Number System (RNS) uniqueness theorem",
+      "CRT injectivity as foundation for ring isomorphism",
+      "Modular arithmetic preservation (add, mul, pow)"
+    ],
+    "dateAdded": "2025-12-31",
+    "axiomCount": 1,
+    "lineCount": 416,
+    "assumptions": "Depends on `Lean.ofReduceBool`. The advertised concrete worked examples — the classic Sunzi problem solution (23 mod 105) and the four-moduli example (53 mod 210), along with the other numeric congruence checks — are established solely by `native_decide`, which trusts the Lean compiler's kernel reduction and so introduces the `Lean.ofReduceBool` axiom. The general structural results (existence `crt_exists`, uniqueness `crt_unique`/`crt_three_unique`/`crt_four_unique`, the Bezout construction, and modular-arithmetic preservation) are proved symbolically and are axiom-free; only the named computational examples carry the `native_decide` dependency. No literal `axiom` declarations and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 17,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The Chinese Remainder Theorem first appeared in the Sunzi Suanjing ('The Mathematical Classic of Sun Zi'), a Chinese treatise from the 3rd-5th century CE. The classic problem asks:\n\n'Find a number that leaves remainder 2 when divided by 3, remainder 3 when divided by 5, and remainder 2 when divided by 7.'\n\nThe answer is 23, unique modulo 105 = 3 * 5 * 7. Indian mathematicians, notably Aryabhata (499 CE), independently developed similar techniques for astronomical calculations involving planetary periods. The theorem was rediscovered in Europe by Euler and fully developed by Gauss in his Disquisitiones Arithmeticae (1801), where it appears as a tool for reducing modular computations. The modern ring-theoretic formulation — CRT gives an isomorphism Z/mnZ -> Z/mZ x Z/nZ — emerged in the 20th century and is fundamental to algebraic number theory and cryptography.",
+    "problemStatement": "**Chinese Remainder Theorem**: Given pairwise coprime moduli m1, m2, ..., mk and any integers a1, a2, ..., ak, there exists a unique x (mod m1*m2*...*mk) such that:\n\nx = a1 (mod m1)\nx = a2 (mod m2)\n...\nx = ak (mod mk)\n\n**Constructive Formula**: For two moduli m, n with gcd(m,n) = 1, find u, v with mu + nv = 1 (Bezout). Then:\nx = a*n*v + b*m*u\nsatisfies x = a (mod m) and x = b (mod n).",
+    "text": "A 416-line constructive formalization of the Chinese Remainder Theorem with 21 declarations and 0 sorries. The general structural results are axiom-free; the concrete worked examples (the Sunzi solution 23 mod 105, the four-moduli solution 53 mod 210, and the other numeric congruence checks) are discharged by `native_decide`, which introduces the `Lean.ofReduceBool` axiom. Uses Mathlib's `Nat.chineseRemainder` for the core two-moduli case, then iterates via `Nat.Coprime.mul_left` for multi-moduli systems. The explicit Bezout witness $x = a \\cdot n \\cdot v + b \\cdot m \\cdot u$ (where $mu + nv = 1$) is computed via `Nat.gcdA`/`Nat.gcdB`. Includes `crt_sunzi` solving the classic Sunzi problem ($n \\equiv 2 \\pmod{3}$, $n \\equiv 3 \\pmod{5}$, $n \\equiv 2 \\pmod{7}$, answer 23) verified by `native_decide`, `crt_unique` proving uniqueness modulo $\\prod m_i$, and `crt_ring_iso` establishing the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ via `ZMod.chineseRemainder`.",
+    "proofStrategy": "The proof uses Mathlib's `Nat.chineseRemainder` for the core result.\n\n**Existence**: Bezout's identity gives coefficients u, v with mu + nv = 1. The solution x = a*n*v + b*m*u works because:\n- x = a*n*v + b*m*u = a*(1-mu) + b*m*u = a + m*(bu-au) = a (mod m)\n- Similarly x = b (mod n)\n\n**Uniqueness**: If x1 = x2 = a (mod m) and x1 = x2 = b (mod n), then m | (x1-x2) and n | (x1-x2). Since gcd(m,n)=1, we have m*n | (x1-x2).\n\n**Multi-moduli**: Iterate the two-moduli case — solve for the first two, then combine the intermediate result with the third modulus. Coprimality of products follows from `Nat.Coprime.mul_left`.",
+    "keyInsights": [
+      "CRT converts a congruence mod $M = m_1 \\cdots m_k$ into $k$ independent congruences mod each $m_i$",
+      "The solution is constructive: Bezout coefficients $mu + nv = 1$ give the explicit formula $x = a \\cdot nv + b \\cdot mu$",
+      "Uniqueness modulo $m_1 m_2 \\cdots m_k$ follows from coprime divisibility: $m \\mid d$ and $n \\mid d$ with $\\gcd(m,n)=1$ implies $mn \\mid d$",
+      "CRT gives the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$, the theoretical basis for Residue Number Systems",
+      "The iterative generalization to $k$ moduli reduces each step to the two-moduli case: coprimality of products ($\\gcd(m_1 m_2, m_3) = 1$) is the key structural property that makes induction work",
+      "Complexity of the constructive formula: computing Bezout coefficients via the extended Euclidean algorithm takes $O(\\log\\min(m,n))$ steps, making the CRT reconstruction $O(k \\log M)$ for $k$ moduli with product $M$. This efficiency underlies the RSA-CRT speedup: private key operations can be done modulo $p$ and $q$ separately, giving a ~4x speedup over working modulo $N = pq$",
+      "The Lean proof uses `Nat.chineseRemainder'` from Mathlib, which provides the ring isomorphism $(\\mathbb{Z}/m\\mathbb{Z}) \\times (\\mathbb{Z}/n\\mathbb{Z}) \\xrightarrow{\\sim} \\mathbb{Z}/mn\\mathbb{Z}$ for coprime $m, n$. The constructive aspect — explicitly computing the Bezout witness — bridges the abstract isomorphism to the concrete formula, showing the Lean formalization captures both the mathematical and computational content"
+    ],
+    "prerequisites": [
+      "Modular arithmetic (Nat.ModEq)",
+      "Coprimality (Nat.Coprime)",
+      "Bezout's identity (Nat.gcd_eq_gcd_ab)",
+      "Divisibility in natural numbers"
+    ]
+  },
+  "sections": [
+    {
+      "id": "core-crt",
+      "title": "Core CRT for Two Moduli",
+      "startLine": 44,
+      "endLine": 69,
+      "summary": "Existence (`crt_exists`), uniqueness (`crt_unique`), and bounded solution (`crt_bounded`) for $x \\equiv a \\pmod{m}$, $x \\equiv b \\pmod{n}$.",
+      "mathContext": "$\\exists x < mn,\\; x \\equiv a \\pmod{m} \\wedge x \\equiv b \\pmod{n}$ (unique) when $\\gcd(m,n)=1$"
+    },
+    {
+      "id": "constructive",
+      "title": "Constructive Algorithm",
+      "startLine": 70,
+      "endLine": 104,
+      "summary": "Bezout coefficients (`bezoutCoeffs`, `bezout_identity`, `bezout_coprime`) and the explicit solution formula (`crtSolution`).",
+      "mathContext": "$mu + nv = 1$ via `Nat.gcdA`/`Nat.gcdB`; solution $x = a \\cdot nv + b \\cdot mu$"
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 105,
+      "endLine": 163,
+      "summary": "The Sunzi problem ($23 \\bmod 105$), the $(4, 5)$ case ($17 \\bmod 20$), and the $(11, 13)$ case ($135 \\bmod 143$), all verified by `native_decide`.",
+      "mathContext": "$23 \\equiv 2 \\pmod{3},\\; 23 \\equiv 3 \\pmod{5},\\; 23 \\equiv 2 \\pmod{7}$; verified by `decide`"
+    },
+    {
+      "id": "three-moduli",
+      "title": "Extension to Three Moduli",
+      "startLine": 164,
+      "endLine": 203,
+      "summary": "CRT for three pairwise coprime moduli (`crt_three`, `crt_three_unique`) by iterating the two-moduli result.",
+      "mathContext": "Solve mod $m_1 m_2$ first, then combine with $m_3$; uses `Nat.Coprime.mul_right` for coprimality of products"
+    },
+    {
+      "id": "applications",
+      "title": "Applications: Residue Number Systems",
+      "startLine": 204,
+      "endLine": 239,
+      "summary": "RNS representation and the `rns_unique` theorem: any $x, y < 105$ with equal residues mod 3, 5, 7 are equal.",
+      "mathContext": "Bijection $\\{0, \\ldots, M-1\\} \\simeq \\prod_i \\mathbb{Z}/m_i\\mathbb{Z}$ via residue map; parallel arithmetic on components"
+    },
+    {
+      "id": "constructive-detail",
+      "title": "Constructive Algorithm in Detail",
+      "startLine": 240,
+      "endLine": 261,
+      "summary": "Worked example of the Bezout-based formula: for (3, 5), coefficients $u=2, v=-1$ give $x = 2 \\cdot 5 \\cdot (-1) + 3 \\cdot 3 \\cdot 2 = 8$.",
+      "mathContext": "$3 \\cdot 2 + 5 \\cdot (-1) = 1$; solution $x = a \\cdot 5 \\cdot (-1) + b \\cdot 3 \\cdot 2$ for the $(3,5)$ case"
+    },
+    {
+      "id": "four-moduli",
+      "title": "CRT for Four Moduli",
+      "startLine": 279,
+      "endLine": 317,
+      "summary": "Existence (`crt_four`) and uniqueness (`crt_four_unique`) for four pairwise coprime moduli by iterating `crt_three` + `crt_exists`.",
+      "mathContext": "$\\exists! x \\pmod{m_1 m_2 m_3 m_4},\\; x \\equiv a_i \\pmod{m_i}$ for $i=1,\\ldots,4$"
+    },
+    {
+      "id": "modular-preservation",
+      "title": "Modular Arithmetic Preservation",
+      "startLine": 318,
+      "endLine": 355,
+      "summary": "Congruences preserved under addition (`modEq_add`), multiplication (`modEq_mul`), exponentiation (`modEq_pow`), and the coprime product divisibility characterization (`coprime_mul_dvd_iff`, `modEq_mul_iff`).",
+      "mathContext": "$a \\equiv b \\pmod{m}$ is a ring congruence: respects $+$, $\\times$, $(\\cdot)^k$. Also: $mn \\mid x \\iff m \\mid x \\wedge n \\mid x$ when $\\gcd(m,n)=1$."
+    },
+    {
+      "id": "four-moduli-example",
+      "title": "Concrete Four-Moduli Example",
+      "startLine": 356,
+      "endLine": 382,
+      "summary": "Verifies $53 \\equiv 1 \\pmod{2},\\; 53 \\equiv 2 \\pmod{3},\\; 53 \\equiv 3 \\pmod{5},\\; 53 \\equiv 4 \\pmod{7}$, unique mod $210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$.",
+      "mathContext": "$53$ is the unique solution mod $210$ to $x \\equiv i+1 \\pmod{p_i}$ for primes $p_1=2, p_2=3, p_3=5, p_4=7$"
+    },
+    {
+      "id": "ring-isomorphism",
+      "title": "CRT and Ring Isomorphism",
+      "startLine": 383,
+      "endLine": 416,
+      "summary": "Injectivity of the CRT map (`crt_injective`) and coprime zero congruence (`coprime_zero_congruence`). Together with surjectivity from `crt_bounded`, these establish $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$.",
+      "mathContext": "Injectivity: $x, y < mn,\\; x \\equiv y \\pmod{m},\\; x \\equiv y \\pmod{n} \\implies x = y$. This is the CRT bijection on canonical representatives."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a complete treatment of the Chinese Remainder Theorem, from the abstract existence/uniqueness results to concrete computational examples. The constructive approach using Bezout coefficients gives explicit formulas for solutions. Extensions to three and four moduli demonstrate the iterative nature of the algorithm, while the ring isomorphism section establishes the algebraic structure underlying CRT.",
+    "implications": "RSA decryption uses CRT to split modular exponentiation into two smaller computations, achieving ~4x speedup\nResidue Number Systems enable parallel arithmetic: add/multiply componentwise in the product ring, reconstruct via CRT\nThe ring isomorphism Z/mnZ -> Z/mZ x Z/nZ is the prototype for decomposition theorems in commutative algebra (e.g., structure of Z/nZ for arbitrary n)\nCRT-based polynomial interpolation (Lagrange interpolation is CRT over polynomial rings) is fundamental to error-correcting codes and secret sharing",
+    "openQuestions": [
+      "What are the best algorithms for computing Bezout coefficients in multi-precision arithmetic?",
+      "How does CRT generalize to non-coprime moduli (see chinese-remainder-non-coprime)?",
+      "What are the most efficient RNS bases for computer arithmetic?",
+      "Can the four-moduli pattern be generalized to an arbitrary-length list of moduli in Lean 4 (inductive CRT over lists)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.ModEq",
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "ChineseRemainderConstructive",
+    "lineCount": 416,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 2,
+    "path": "Proofs/ChineseRemainderConstructive.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "The constructive CRT solution uses Bezout coefficients: given $\\gcd(m,n) = 1$, find $u,v$ with $mu + nv = 1$, then $x = a \\cdot nv + b \\cdot mu$ solves $x \\equiv a \\pmod{m}, x \\equiv b \\pmod{n}$. The extended Euclidean algorithm provides these coefficients"
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "The coprimality hypothesis $\\gcd(m,n) = 1$ is verified by the Euclidean algorithm. The extended GCD simultaneously computes the Bezout coefficients needed for the CRT solution formula"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "CRT gives the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$ when $\\gcd(m,n)=1$. Taking unit groups: $(\\mathbb{Z}/mn\\mathbb{Z})^* \\cong (\\mathbb{Z}/m\\mathbb{Z})^* \\times (\\mathbb{Z}/n\\mathbb{Z})^*$, which gives the multiplicativity $\\phi(mn) = \\phi(m)\\phi(n)$ for Euler's totient"
+    },
+    {
+      "targetId": "factor-remainder-theorem",
+      "relationship": "related",
+      "description": "CRT for polynomial rings gives $R[x]/(f_1 \\cdots f_k) \\cong \\prod R[x]/(f_i)$ when the $f_i$ are pairwise coprime. When $f_i = (x-a_i)$, this is Lagrange interpolation — the polynomial analog of CRT — and the Factor Theorem provides the coprimality"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem $(p-1)! \\equiv -1 \\pmod{p}$ uses the structure of $(\\mathbb{Z}/p\\mathbb{Z})^*$, while CRT decomposes $(\\mathbb{Z}/n\\mathbb{Z})^*$ into a product of cyclic groups for composite $n$. Together they explain the generalized Wilson theorem for composite moduli"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "CRT is used in proofs of quadratic reciprocity: the Jacobi symbol $(a/mn) = (a/m)(a/n)$ follows from the CRT decomposition. Gauss's proof of QR via Gauss's lemma uses properties of residues that CRT helps organize"
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "The CRT decomposition $\\mathbb{Z}/n\\mathbb{Z} \\cong \\prod \\mathbb{Z}/p_i^{a_i}\\mathbb{Z}$ (where $n = \\prod p_i^{a_i}$) requires unique prime factorization to identify the factors. This isomorphism is the fundamental structure theorem for $\\mathbb{Z}/n\\mathbb{Z}$"
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "extended-by",
+      "description": "The non-coprime CRT generalizes: $x \\equiv a \\pmod{m}, x \\equiv b \\pmod{n}$ has a solution iff $\\gcd(m,n) \\mid (a-b)$, and if so, the solution is unique mod $\\text{lcm}(m,n)$. This entry handles the coprime case where $\\text{lcm}(m,n) = mn$"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "CRT is used in Cornacchia's algorithm for finding the two-square representation $p = a^2+b^2$: compute $r \\equiv \\sqrt{-1} \\pmod{p}$ (which exists iff $p \\equiv 1 \\pmod{4}$), then apply the Euclidean algorithm to $(p, r)$"
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "CRT's multiplicativity result $\\phi(mn) = \\phi(m)\\phi(n)$ (for coprime $m,n$) generalizes to all multiplicative functions including $\\sigma_1$ used in the perfect number theorem: $\\sigma_1(mn) = \\sigma_1(m)\\sigma_1(n)$"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Sun Tzu (Sunzi)"
+      ],
+      "title": "Sunzi Suanjing (The Mathematical Classic of Sun Tzu)",
+      "year": "~400 CE",
+      "venue": "China",
+      "note": "Earliest known statement of the Chinese Remainder Theorem: 'There are certain things whose number is unknown. Repeatedly divided by 3, the remainder is 2; by 5 the remainder is 3; and by 7 the remainder is 2. What will be the number?' Answer: 23"
+    },
+    {
+      "authors": [
+        "Gauss, Carl Friedrich"
+      ],
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig: Gerhard Fleischer",
+      "note": "Section 36 gives the general formulation of CRT for pairwise coprime moduli, establishing the modern algebraic framework"
+    },
+    {
+      "authors": [
+        "Ireland, Kenneth",
+        "Rosen, Michael"
+      ],
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Springer GTM 84, 2nd edition",
+      "note": "Chapter 3 presents CRT as a ring isomorphism, with applications to quadratic residues and the structure of (Z/nZ)*"
+    },
+    {
+      "authors": [
+        "Shoup, Victor"
+      ],
+      "title": "A Computational Introduction to Number Theory and Algebra",
+      "year": "2009",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Algorithmic perspective on CRT: the constructive Bezout-based formula, its complexity, and applications to RSA-CRT and residue number systems"
+    },
+    {
+      "authors": [
+        "Sun Zi"
+      ],
+      "title": "Sunzi Suanjing (The Mathematical Classic of Sun Zi)",
+      "year": "~400 CE",
+      "venue": "Chinese mathematical treatise",
+      "note": "Earliest known statement of the Chinese Remainder Theorem as a concrete problem"
+    },
+    {
+      "authors": [
+        "O. Ore"
+      ],
+      "title": "The general Chinese remainder theorem",
+      "year": "1952",
+      "venue": "Amer. Math. Monthly, 59(6), 365-370",
+      "note": "Extension of CRT to non-coprime moduli via compatibility conditions"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "crt",
+      "type": "core",
+      "description": "System of congruences x = a_i (mod n_i) with pairwise coprime moduli has a unique solution mod N",
+      "leanType": "pairwise_coprime ns -> exists! x (mod prod ns), forall i, x % ns i = as i"
+    }
+  ],
+  "sorries": 0
+}

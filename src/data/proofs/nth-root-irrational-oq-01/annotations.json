@@ -1,0 +1,221 @@
+[
+  {
+    "id": "ann-header-docstring",
+    "proofId": "nth-root-irrational-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Module Overview and Setup",
+    "content": "Documents the module's purpose: providing a structural, algebraic approach to irrationality via irreducible polynomials, as opposed to the direct counting argument in the base `NthRootIrrational.lean`. The key insight is that $\\alpha$ is irrational whenever it satisfies an irreducible polynomial of degree $\\geq 2$ over $\\mathbb{Q}$ — this single algebraic property subsumes all nth-root irrationality results.\n\nImports all of Mathlib. Sets `maxHeartbeats 800000` (the Eisenstein criterion proof requires extended computation time). Opens the `Polynomial` namespace for convenient access to `X`, `C`, and polynomial operations. Declares a `noncomputable section` because real-valued computations (algebraMap, rpow) are inherently noncomputable in Lean's type theory.",
+    "mathContext": "Key insight: $\\alpha \\in \\mathbb{R}$ is irrational $\\iff$ $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\geq 2$ $\\iff$ $\\text{minpoly}_{\\mathbb{Q}}(\\alpha)$ has degree $\\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "irreducible polynomials",
+      "algebraic irrationality",
+      "noncomputable section",
+      "maxHeartbeats"
+    ],
+    "prerequisites": [
+      "polynomial algebra",
+      "field extensions"
+    ]
+  },
+  {
+    "id": "ann-core-theorem",
+    "proofId": "nth-root-irrational-oq-01",
+    "range": {
+      "startLine": 42,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "Core Theorem: Irreducible Polynomials Have No Rational Roots",
+    "content": "Proves `irreducible_no_rational_root`: if $p \\in \\mathbb{Q}[X]$ is irreducible with $\\deg(p) \\geq 2$, then $p(r) \\neq 0$ for all $r \\in \\mathbb{Q}$.\n\n**Proof by contradiction:** Assume $p(r) = 0$. Then $X - r \\mid p$, so $p = (X - r) \\cdot q$ for some $q$. By irreducibility, either $X - r$ or $q$ is a unit:\n- If $X - r$ is a unit: impossible, since $X - r$ is irreducible (degree 1 polynomials over fields are irreducible but not units).\n- If $q$ is a unit: then $\\deg(q) = 0$, so $\\deg(p) = \\deg(X - r) + \\deg(q) = 1 + 0 = 1$, contradicting $\\deg(p) \\geq 2$.\n\nThe proof uses `dvd_iff_isRoot.mpr` to get the divisibility from the root, `hirr.isUnit_or_isUnit` for the irreducibility case split, `irreducible_X_sub_C` to rule out the first case, and degree arithmetic (`natDegree_mul`, `natDegree_X_sub_C`, `natDegree_C`) plus `omega` for the second.",
+    "mathContext": "If $p \\in \\mathbb{Q}[X]$ is irreducible with $\\deg(p) \\geq 2$ and $r \\in \\mathbb{Q}$, then $p(r) \\neq 0$. Proof: $p(r) = 0 \\Rightarrow p = (X - r) q$, but irreducibility forces $\\deg(p) = 1$, contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irreducible polynomial",
+      "polynomial root",
+      "degree arithmetic",
+      "dvd_iff_isRoot",
+      "isUnit_or_isUnit"
+    ],
+    "prerequisites": [
+      "polynomial irreducibility",
+      "degree computations"
+    ]
+  },
+  {
+    "id": "ann-irrationality-lift",
+    "proofId": "nth-root-irrational-oq-01",
+    "range": {
+      "startLine": 65,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Irrationality Lift via algebraMap Injectivity",
+    "content": "Proves `irrational_root_of_irreducible`: if $\\alpha \\in \\mathbb{R}$ satisfies $p(\\alpha) = 0$ for irreducible $p \\in \\mathbb{Q}[X]$ with $\\deg(p) \\geq 2$, then $\\alpha$ is irrational.\n\n**Proof by contradiction:** Assume $\\alpha = r$ for some $r \\in \\mathbb{Q}$. The key step uses the injectivity of the canonical embedding $\\iota : \\mathbb{Q} \\hookrightarrow \\mathbb{R}$ (Lean's `algebraMap Q R`): since $\\iota(r) = \\alpha$ and $p(\\alpha) = 0$ in $\\mathbb{R}$, we get $\\iota(p(r)) = p(\\iota(r)) = p(\\alpha) = 0$. By injectivity of $\\iota$, this forces $p(r) = 0$ in $\\mathbb{Q}$, contradicting `irreducible_no_rational_root`.\n\nThe tactic `apply_fun (algebraMap Q R) using (algebraMap Q R).injective` performs the key injectivity argument. The `show` tactic provides the equation `algebraMap Q R r = α`.",
+    "mathContext": "If $\\alpha \\in \\mathbb{R}$, $p(\\alpha) = 0$ for irreducible $p$ with $\\deg p \\geq 2$, then $\\alpha \\notin \\mathbb{Q}$. Key: $\\iota : \\mathbb{Q} \\hookrightarrow \\mathbb{R}$ injective, so $p(\\iota(r)) = 0 \\Rightarrow p(r) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebraMap",
+      "ring homomorphism injectivity",
+      "Irrational predicate",
+      "aeval_algebraMap_apply",
+      "apply_fun tactic"
+    ],
+    "prerequisites": [
+      "irreducible_no_rational_root",
+      "algebraMap Q R injective"
+    ]
+  },
+  {
+    "id": "ann-minpoly-characterization",
+    "proofId": "nth-root-irrational-oq-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 89
+    },
+    "type": "insight",
+    "title": "Minimal Polynomial Characterization of Irrationality",
+    "content": "Proves `irrational_of_minpoly_degree_ge_two`: if $\\alpha$ is integral over $\\mathbb{Q}$ and its minimal polynomial has degree $\\geq 2$, then $\\alpha$ is irrational. This is a one-line proof composing three Mathlib facts: `minpoly.irreducible` (minimal polynomial of an integral element is irreducible), `minpoly.aeval` (the minimal polynomial vanishes at $\\alpha$), and the irrationality lift.\n\nThis characterization is conceptually important: it connects irrationality to the **algebraic degree** of field extensions. Since $\\deg(\\min_{\\mathbb{Q}}(\\alpha)) = [\\mathbb{Q}(\\alpha):\\mathbb{Q}]$, the theorem says $\\alpha$ is irrational iff $\\mathbb{Q}(\\alpha)$ is a proper extension of $\\mathbb{Q}$. This is the viewpoint of Galois theory: irrationality is equivalent to having a nontrivial field extension.",
+    "mathContext": "For integral $\\alpha \\in \\mathbb{R}$: $\\deg(\\min_{\\mathbb{Q}}(\\alpha)) \\geq 2 \\Rightarrow \\alpha \\notin \\mathbb{Q}$. Equivalently, $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\geq 2 \\iff \\alpha$ is irrational.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimal polynomial",
+      "IsIntegral",
+      "field extension degree",
+      "minpoly.irreducible",
+      "simple field extension"
+    ],
+    "prerequisites": [
+      "irrational_root_of_irreducible",
+      "minpoly.irreducible",
+      "minpoly.aeval"
+    ]
+  },
+  {
+    "id": "ann-eisenstein-int",
+    "proofId": "nth-root-irrational-oq-01",
+    "range": {
+      "startLine": 95,
+      "endLine": 132
+    },
+    "type": "concept",
+    "title": "Eisenstein Criterion: X^n - p Irreducible over Z",
+    "content": "Proves `X_pow_sub_prime_irreducible_int`: $X^n - p \\in \\mathbb{Z}[X]$ is irreducible for prime $p$ and $n \\geq 2$, using Eisenstein's criterion at the prime ideal $(p)$.\n\nEisenstein's criterion requires verifying five conditions:\n1. **$(p)$ is prime**: Via `Ideal.span_singleton_prime` and `Int.prime_iff_natAbs_prime`.\n2. **Leading coefficient $\\notin (p)$**: The leading coefficient of $X^n - p$ is 1 (the coefficient of $X^n$), and $p \\nmid 1$ since $p$ is prime.\n3. **Non-leading coefficients $\\in (p)$**: For $k < n$, the coefficient of $X^k$ is 0 (if $k \\geq 1$) or $-p$ (if $k = 0$). Both are divisible by $p$.\n4. **Positive degree**: $\\deg(X^n - p) = n \\geq 2 > 0$.\n5. **Constant coefficient $\\notin (p)^2$**: The constant term is $-p$, and $p^2 \\nmid p$ since $p$ is prime (so $|p| < p^2$ for $p \\geq 2$). Proved by `nlinarith` using `sq_nonneg (p - 1)`.\n\nThe **primitivity** requirement (the content of the polynomial is 1) is immediate since $X^n - p$ is monic.\n\nThis private theorem establishes irreducibility over $\\mathbb{Z}$. The Gauss lemma will transfer it to $\\mathbb{Q}$.",
+    "mathContext": "Eisenstein at $(p)$ for $X^n - p \\in \\mathbb{Z}[X]$: leading coeff $1 \\notin (p)$; non-leading coeffs $\\in (p)$; constant $-p \\notin (p)^2$ since $p^2 \\nmid p$; monic hence primitive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Eisenstein's criterion",
+      "prime ideal",
+      "Ideal.span_singleton",
+      "polynomial coefficients",
+      "primitivity"
+    ],
+    "prerequisites": [
+      "Eisenstein's criterion",
+      "prime ideals in Z",
+      "polynomial coefficient access"
+    ]
+  },
+  {
+    "id": "ann-eisenstein-p-squared",
+    "proofId": "nth-root-irrational-oq-01",
+    "range": {
+      "startLine": 122,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "The p-squared Condition: Most Delicate Eisenstein Step",
+    "content": "The fifth Eisenstein condition -- that the constant term $-p$ is not in $(p)^2$, i.e., $p^2 \\nmid p$ -- is the most subtle verification step. The proof uses `nlinarith` with the hint `sq_nonneg ((p : Z) - 1)`, which provides the inequality $(p-1)^2 \\geq 0$. Expanding: $p^2 - 2p + 1 \\geq 0$, so $p^2 \\geq 2p - 1 \\geq p + 1 > p$ for $p \\geq 2$. This means $p^2 > p$, so $p^2 \\nmid p$ (since $|p^2| > |p| > 0$).\n\nThis is the condition that distinguishes Eisenstein's criterion from weaker irreducibility tests. It prevents the polynomial from being a perfect square modulo $p$, which would allow a nontrivial factorization. Geometrically, it ensures the Newton polygon of $X^n - p$ at $p$ has a single segment of slope $-1/n$, forcing irreducibility.",
+    "mathContext": "Verify $p^2 \\nmid p$: from $(p-1)^2 \\geq 0$ we get $p^2 \\geq 2p - 1 > p$ for $p \\geq 2$, so $|p^2| > |p|$ and $p^2 \\nmid p$. Newton polygon interpretation: $X^n - p$ has a single segment of slope $-1/n$ at $p$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nlinarith tactic",
+      "sq_nonneg",
+      "Newton polygon",
+      "Eisenstein fifth condition",
+      "prime ideal powers"
+    ],
+    "prerequisites": [
+      "Ideal.span_singleton_pow",
+      "integer divisibility",
+      "nlinarith"
+    ]
+  },
+  {
+    "id": "ann-gauss-lemma",
+    "proofId": "nth-root-irrational-oq-01",
+    "range": {
+      "startLine": 134,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Gauss Lemma Transfer and Degree Computation",
+    "content": "Two results completing the Eisenstein machinery:\n\n1. **`eisenstein_X_pow_sub_prime`**: Transfers irreducibility from $\\mathbb{Z}[X]$ to $\\mathbb{Q}[X]$ via the Gauss lemma. The Gauss lemma (`IsPrimitive.Int.irreducible_iff_irreducible_map_cast`) states that for primitive polynomials, irreducibility over $\\mathbb{Z}$ is equivalent to irreducibility over $\\mathbb{Q}$. Since $X^n - p$ is monic (hence primitive), the $\\mathbb{Z}$-irreducibility from Eisenstein transfers directly. The `convert` tactic handles the coefficient casting from $\\mathbb{Z}$ to $\\mathbb{Q}$.\n\n2. **`natDegree_X_pow_sub_C_eq`**: Proves $\\deg(X^n - c) = n$ for nonzero $c$ and $n \\geq 1$. Uses `natDegree_sub_eq_left_of_natDegree_lt`: since $\\deg(C(c)) = 0 < n = \\deg(X^n)$, the degree of the difference equals the degree of the dominant term.\n\n**The Gauss lemma** is a fundamental result in algebraic number theory: it ensures that factoring polynomials over $\\mathbb{Q}$ is equivalent to factoring over $\\mathbb{Z}$ (for primitive polynomials). Named after Gauss, who proved it in *Disquisitiones Arithmeticae* (1801).",
+    "mathContext": "Gauss lemma: for primitive $f \\in \\mathbb{Z}[X]$, $f$ is irreducible over $\\mathbb{Z}$ $\\iff$ $f$ is irreducible over $\\mathbb{Q}$. Applied: $X^n - p$ is monic $\\Rightarrow$ primitive $\\Rightarrow$ $\\mathbb{Z}$-irred $\\iff$ $\\mathbb{Q}$-irred.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gauss lemma",
+      "primitive polynomial",
+      "IsPrimitive",
+      "irreducible_iff_irreducible_map_cast",
+      "Disquisitiones Arithmeticae"
+    ],
+    "prerequisites": [
+      "Eisenstein over Z",
+      "primitive polynomials",
+      "Gauss lemma"
+    ]
+  },
+  {
+    "id": "ann-nth-root-irrationality",
+    "proofId": "nth-root-irrational-oq-01",
+    "range": {
+      "startLine": 160,
+      "endLine": 173
+    },
+    "type": "insight",
+    "title": "Irrationality of Nth Roots of Primes",
+    "content": "The module's crown result: `irrational_nthRoot_of_prime` proves that $p^{1/n}$ is irrational for prime $p$ and $n \\geq 2$.\n\nThe proof combines the two main threads:\n1. $X^n - p$ is irreducible over $\\mathbb{Q}$ (Eisenstein + Gauss) with degree $n \\geq 2$.\n2. $p^{1/n}$ is a root of $X^n - p$: the verification computes $(p^{1/n})^n = p$ using real power arithmetic. Specifically, `Real.rpow_natCast` converts $(p^{1/n})^n$ to $p^{(1/n) \\cdot n}$, and `Real.rpow_mul` simplifies $(1/n) \\cdot n = 1$, giving $p^1 = p$.\n3. By `irrational_root_of_irreducible`: since $p^{1/n}$ is a root of an irreducible polynomial of degree $\\geq 2$, it is irrational.\n\nThis clean three-step argument replaces ad hoc divisibility arguments with a single algebraic principle.",
+    "mathContext": "For prime $p$ and $n \\geq 2$: $p^{1/n}$ is a root of the irreducible polynomial $X^n - p \\in \\mathbb{Q}[X]$ (by Eisenstein), hence irrational. Verification: $(p^{1/n})^n = p^{(1/n) \\cdot n} = p^1 = p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "nth root",
+      "Real.rpow",
+      "aeval",
+      "compositional proof",
+      "algebraic irrationality"
+    ],
+    "prerequisites": [
+      "eisenstein_X_pow_sub_prime",
+      "irrational_root_of_irreducible",
+      "real power arithmetic"
+    ]
+  },
+  {
+    "id": "ann-concrete-applications",
+    "proofId": "nth-root-irrational-oq-01",
+    "range": {
+      "startLine": 179,
+      "endLine": 205
+    },
+    "type": "concept",
+    "title": "Concrete Applications and Structural Hierarchy",
+    "content": "Instantiates the general theorem for four concrete cases:\n- $\\sqrt{2}$ is irrational ($n = 2, p = 2$)\n- $\\sqrt[3]{2}$ is irrational ($n = 3, p = 2$)\n- $\\sqrt[3]{3}$ is irrational ($n = 3, p = 3$)\n- $\\sqrt[5]{7}$ is irrational ($n = 5, p = 7$)\n\nEach is a one-line application of `irrational_nthRoot_of_prime` with `le_rfl` or `norm_num` for the constraints. The `structural_subsumes_counting` theorem explicitly names the fact that this algebraic approach subsumes the direct counting argument from the base `NthRootIrrational.lean` — it proves the same results with a strictly more general method.\n\n**The irrationality hierarchy:**\n- **Level 1** (classical): Direct proof for $\\sqrt{2}$ via parity argument.\n- **Level 2** (counting): `irrational_nrt_of_notint_nrt` uses prime factorization counting.\n- **Level 3** (algebraic): Irreducible polynomial approach — subsumes Level 2 and extends to any algebraic number of degree $\\geq 2$.",
+    "mathContext": "Concrete instances: $\\sqrt{2}, \\sqrt[3]{2}, \\sqrt[3]{3}, \\sqrt[5]{7}$ are all irrational. The algebraic approach (Level 3) strictly subsumes counting arguments (Level 2): irreducibility implies irrationality for any root, not just nth roots.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "concrete instantiation",
+      "norm_num",
+      "le_rfl",
+      "irrationality hierarchy",
+      "structural generality"
+    ],
+    "prerequisites": [
+      "irrational_nthRoot_of_prime"
+    ]
+  }
+]

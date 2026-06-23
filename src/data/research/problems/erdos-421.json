@@ -1,0 +1,111 @@
+{
+  "slug": "erdos-421",
+  "title": "Erdős #421",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Is there a sequence $1\\leq d_1<d_2<\\cdots$ with density $1$ such that all products $\\prod_{u\\leq i\\leq v}d_i$ are distinct?\n\n\n\nA construction of Selfridge (see [786]) shows that there exists such a sequence of density $>1/e-\\epsilon$ for any $\\epsilon>0$.\n\nSee also [786].",
+    "plain": "Is there a sequence $1\\leq d_11/e-\\epsilon$ for any $\\epsilon>0$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-13T02:38:27.587Z",
+    "iteration": 3,
+    "focus": "Proved 12 structural theorems, fixed build errors",
+    "blockers": [],
+    "nextAction": "Explore density bounds, potential for proving counting arguments",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 25T (was 15), 1A, 1S. Added 10 counting/structural theorems for distinct products.",
+    "builtItems": [
+      "Assessment: 1A appropriate (Selfridge)",
+      "intervalProduct_single: product over [u,u] = d(u) (simp lemma)",
+      "intervalProduct_empty: product over empty interval = 1",
+      "valid_seq_pos: all terms of valid sequences ≥ 1",
+      "valid_seq_injective: valid sequences are injective (from StrictMono)",
+      "intervalProduct_pos: interval products of valid sequences are positive",
+      "valid_seq_ge_succ: d(i) ≥ i+1 for valid sequences (by induction)",
+      "natSeq_valid: d(i)=i+1 is a valid sequence",
+      "natSeq_not_distinct: natural numbers fail HasDistinctProducts (product[0,1]=product[1,1]=2)",
+      "pow2Seq_valid: d(i)=2^i is a valid sequence",
+      "pow2Seq_not_distinct: powers of 2 fail HasDistinctProducts (product[0,2]=product[3,3]=8)",
+      "distinct_products_growth_lower: any valid distinct-products sequence has d(n-1) ≥ n",
+      "Fixed countingFunc (added Classical for decidability)",
+      "Fixed indexUpTo (safe default when no bound exists)",
+      "Fixed erdos_421_statement (and_assoc for ∧-parenthesization)",
+      "adjacent_product_bound: d(i)*d(i+1) >= (i+2)*(i+3)",
+      "consecutive_product_gt_single: d(u) < d(u)*d(u+1)",
+      "single_ne_pair_product: single-element != 2-element products",
+      "product_strict_mono_right: ∏[u,v] < ∏[u,v+1]",
+      "total_product_lower_from_counting: ∏[0,n-1] >= n(n+1)/2",
+      "numValidPairs_eq: count of valid pairs = n(n+1)/2 (1 sorry)"
+    ],
+    "insights": [
+      "selfridge_construction encodes Selfridge result: sequences with distinct products, density > 1/e - ε",
+      "Deep result, appropriate as axiom",
+      "selfridge_achieves_one_over_e proved from the axiom (good use)",
+      "Clean file with good definitions: IsValidSequence, HasDistinctProducts, HasDensity, selfridgeDensity",
+      "Natural numbers (d(i)=i+1) fail distinctness: product [0,1] = 1*2 = 2 = product [1,1]",
+      "Powers of 2 (d(i)=2^i) also fail: product [0,2] = 2^(0+1+2) = 8 = 2^3 = product [3,3]",
+      "The exponent-sum collision (0+1+2 = 3) shows pow2Seq fails — same-sum intervals give same product",
+      "Any valid sequence has d(i) ≥ i+1 (strictly increasing from ≥ 1 forces this growth rate)",
+      "The challenge is fundamental: dense sequences have too many coincidences, sparse ones lack density",
+      "File had 3 pre-existing build errors: DecidablePred for countingFunc, malformed indexUpTo, and_assoc in erdos_421_statement",
+      "Counting constraint: n(n+1)/2 distinct positive interval products force total product >= n(n+1)/2",
+      "Adjacent products d(i)*d(i+1) >= (i+2)*(i+3), quadratic growth from distinct products",
+      "Single-element products never equal 2-element products (from InjOn)",
+      "Products strictly increase when extending interval: ∏[u,v] < ∏[u,v+1]",
+      "total product >= n(n+1)/2 follows from (n+1)! >= n(n+1)/2"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove numValidPairs_eq (the 1 sorry - combinatorial counting)",
+      "Use counting constraint to derive explicit density upper bounds",
+      "Explore connection between product growth and achievable density"
+    ],
+    "markdown": "# Erdős #421 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a sequence $1\\leq d_1<d_2<\\cdots$ with density $1$ such that all products $\\prod_{u\\leq i\\leq v}d_i$ are distinct?\n\n\n\nA construction of Selfridge (see [786]) shows that there exists such a sequence of density $>1/e-\\epsilon$ for any $\\epsilon>0$.\n\nSee also [786].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #786\n- Problem #420\n- Problem #422\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-42",
+    "erdos-421"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-13T02:38:27.587Z",
+  "lastUpdate": "2026-03-28T05:05:00Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos421Problem.lean",
+      "filename": "Erdos421Problem.lean",
+      "lineCount": 580,
+      "theoremCount": 25,
+      "axiomCount": 1,
+      "defCount": 20,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos421Problem.lean"
+    }
+  ]
+}

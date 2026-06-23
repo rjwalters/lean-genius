@@ -1,0 +1,144 @@
+[
+  {
+    "id": "ann-dcoq01-overview",
+    "proofId": "derangements-convergence-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Problem Setup: Fixed-Point Count Converges to Poisson(1)",
+    "content": "The header docstring states the open question and its full resolution. For a uniformly random permutation of Fin n, X_n counts fixed points. The probability of exactly k fixed points factors as P(X_n=k) = C(n,k)·D(n-k)/n! = (1/k!)·D(n-k)/(n-k)!, where D(m) = numDerangements m. Because D(m)/m! → e⁻¹ (Mathlib's numDerangements_tendsto_inv_e), each marginal converges to the Poisson(1) mass e⁻¹/k!. The file also proves the finite-n rate bound |P(X_n=k) - e⁻¹/k!| ≤ 1/(k!·(n-k+1)!); the underlying alternating-series estimate |D(m)/m! - e⁻¹| ≤ 1/(m+1)! is supplied by derangements_convergence_rate imported from the parent DerangementsConvergence module, so the result is fully machine-checked with no sorries or axioms.",
+    "mathContext": "$P(X_n=k)=\\binom{n}{k}D(n-k)/n!=\\tfrac{1}{k!}\\cdot D(n-k)/(n-k)! \\xrightarrow{n\\to\\infty} e^{-1}/k! = \\mathrm{Pois}(1)(k)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Poisson approximation",
+      "derangements",
+      "fixed points of permutations",
+      "weak convergence of measures"
+    ],
+    "prerequisites": [
+      "probability on finite symmetric groups",
+      "limits of real sequences",
+      "Taylor series of e⁻¹"
+    ]
+  },
+  {
+    "id": "ann-dcoq01-probkfixed",
+    "proofId": "derangements-convergence-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "probKFixed: Probability of Exactly k Fixed Points",
+    "content": "probKFixed n k = C(n,k)·D(n-k)/n! is the probability that a uniformly random permutation of Fin n has exactly k fixed points. The numerator C(n,k)·D(n-k) counts such permutations: choose which k elements are fixed (C(n,k) ways), then the remaining n-k elements must be deranged (D(n-k) ways). The denominator n! is the total number of permutations. This is noncomputable because it uses Real division. The key formula P(X_n = k) = (1/k!)·D(n-k)/(n-k)! (proved in probKFixed_eq) decouples the k! factor from the derangement ratio.",
+    "mathContext": "$P(X_n = k) = \\binom{n}{k} \\cdot D(n-k) / n! = \\frac{1}{k!} \\cdot \\frac{D(n-k)}{(n-k)!}$. For $k=0$: $P(X_n = 0) = D(n)/n! \\to e^{-1}$ (the classical derangement result).",
+    "significance": "key",
+    "relatedConcepts": [
+      "derangements",
+      "fixed points of permutations",
+      "binomial coefficient",
+      "Poisson(1) distribution"
+    ],
+    "prerequisites": [
+      "derangement numbers D(n)",
+      "binomial coefficients",
+      "real-valued probability in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-dcoq01-algebraic-identity",
+    "proofId": "derangements-convergence-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 81
+    },
+    "type": "concept",
+    "title": "Algebraic Identity: Factoring Out 1/k! via linear_combination",
+    "content": "Two algebraic identities enable the convergence proof. `probKFixed_eq` proves P(X_n=k) = (1/k!)·D(n-k)/(n-k)! using `Nat.choose_mul_factorial_mul_factorial` (C(n,k)·k!·(n-k)! = n!). The Lean proof uses `field_simp` followed by `linear_combination (numDerangements (n-k) : ℝ) * hchoose` to bridge the natural number identity with real arithmetic. `probKFixed_succ_eq` gives the reparametrization P(X_{n+k}=k) = (1/k!)·D(n)/n!, convenient for stating the limit (as n → ∞ with k fixed).",
+    "mathContext": "$\\binom{n}{k} \\cdot D(n-k) / n! = D(n-k) / (k! \\cdot (n-k)!) = (1/k!) \\cdot D(n-k)/(n-k)!$, from $\\binom{n}{k} = n!/(k!(n-k)!)$. The `linear_combination` tactic proves $\\binom{n}{k} \\cdot D(n-k) \\cdot k! \\cdot (n-k)! = D(n-k) \\cdot n!$ from $\\binom{n}{k} \\cdot k! \\cdot (n-k)! = n!$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.choose_mul_factorial_mul_factorial",
+      "linear_combination tactic",
+      "field_simp",
+      "reparametrization"
+    ],
+    "prerequisites": [
+      "binomial coefficient identity n!/(k!(n-k)!)",
+      "linear_combination tactic in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-dcoq01-rate",
+    "proofId": "derangements-convergence-oq-01",
+    "range": {
+      "startLine": 85,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Rate Bound via Alternating Series Delegation",
+    "content": "`derangements_rate` proves |D(n)/n! - e⁻¹| ≤ 1/(n+1)!. The Lean proof is one line: it calls `derangements_convergence_rate n` from the parent module `DerangementsConvergence`. This lemma is proved there via the alternating series estimation theorem applied to D(n)/n! = Σ_{k=0}^n (-1)^k/k!. `kFixed_convergence_rate` then builds on this: factor out 1/k! from |P(X_n=k) - e⁻¹/k!|, apply `derangements_rate` to n-k, multiply by 1/k! to get the final bound 1/(k!·(n-k+1)!). The proof uses `abs_mul`, `abs_of_pos`, and `mul_le_mul_of_nonneg_left` for the absolute value algebra.",
+    "mathContext": "$|P(X_n=k) - e^{-1}/k!| = (1/k!) \\cdot |D(n-k)/(n-k)! - e^{-1}| \\leq (1/k!) \\cdot \\frac{1}{(n-k+1)!} = \\frac{1}{k! \\cdot (n-k+1)!}$. The alternating series bound: $|\\sum_{j=0}^N (-1)^j a_j - \\sum_{j=0}^\\infty (-1)^j a_j| \\leq a_{N+1}$ for decreasing $(a_j)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "alternating series estimation theorem",
+      "derangements_convergence_rate",
+      "mul_le_mul_of_nonneg_left",
+      "abs_mul"
+    ],
+    "prerequisites": [
+      "alternating series theorem",
+      "absolute value arithmetic in Lean 4",
+      "DerangementsConvergence.lean"
+    ]
+  },
+  {
+    "id": "ann-dcoq01-tendsto",
+    "proofId": "derangements-convergence-oq-01",
+    "range": {
+      "startLine": 116,
+      "endLine": 136
+    },
+    "type": "insight",
+    "title": "kFixed_tendsto: Convergence to Poisson(1) Mass Function",
+    "content": "`kFixed_tendsto` proves P(X_{n+k}=k) → e⁻¹/k! as n → ∞ (k fixed). The proof: (1) rewrite using `probKFixed_succ_eq`: P(X_{n+k}=k) = (1/k!)·D(n)/n!; (2) the limit is (1/k!)·e⁻¹ = e⁻¹/k!; (3) apply `tendsto_const_nhds.mul numDerangements_tendsto_inv_e`: the product of a constant (1/k!) and a convergent sequence (D(n)/n! → e⁻¹) converges to their product. This is the key theorem: each marginal P(X_n = k) of the fixed-point count converges to the Poisson(1) probability Pois(1)(k) = e⁻¹/k!. The k=0 case `kFixed_zero_tendsto` recovers the classical derangement convergence P(X_n=0) → e⁻¹.",
+    "mathContext": "$P(X_n = k) \\to e^{-1}/k! = \\text{Pois}(1)(k)$ as $n \\to \\infty$. Proof chain: $P(X_{n+k}=k) = \\frac{1}{k!} \\cdot \\frac{D(n)}{n!} \\to \\frac{1}{k!} \\cdot e^{-1}$ via Mathlib's `numDerangements_tendsto_inv_e`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Poisson(1) distribution",
+      "numDerangements_tendsto_inv_e",
+      "Filter.Tendsto",
+      "tendsto_const_nhds",
+      "distribution convergence"
+    ],
+    "prerequisites": [
+      "Poisson distribution",
+      "Filter.Tendsto in Mathlib",
+      "multiplication of convergent sequences"
+    ]
+  },
+  {
+    "id": "ann-dcoq01-rate-comparison",
+    "proofId": "derangements-convergence-oq-01",
+    "range": {
+      "startLine": 138,
+      "endLine": 151
+    },
+    "type": "insight",
+    "title": "Rate Comparison: Larger k Gives Tighter Bound",
+    "content": "`kFixed_rate_tighter` proves that for k ≥ 1, the k-fixed rate 1/(k!·(n-k+1)!) ≤ 1/(n-k+1)! — the rate is tighter than the raw derangements rate by a factor of k!. Intuitively: knowing that k specific events happen (k fixed points) is more constrained than knowing none happen (derangements), so convergence is proportionally faster. Proof: k! ≥ 1 for k ≥ 1, so k!·(n-k+1)! ≥ (n-k+1)!, giving the reciprocal inequality. For example, at n=10, k=2: rate = 1/(2·9!) ≈ 1.38×10⁻⁷ vs derangements rate 1/(11!) ≈ 2.51×10⁻⁸ — the k=2 rate is slightly looser at the same n but for a different marginal.",
+    "mathContext": "Rate: $\\frac{1}{k! \\cdot (n-k+1)!} \\leq \\frac{1}{(n-k+1)!}$ since $k! \\geq 1$. The rate improves by factor $k!$: for fixed $n-k$, higher $k$ always gives tighter bounds on $|P(X_n=k) - e^{-1}/k!|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rate comparison",
+      "factorial bounds",
+      "Poisson approximation quality"
+    ],
+    "prerequisites": [
+      "factorial monotonicity",
+      "reciprocal inequalities"
+    ]
+  }
+]

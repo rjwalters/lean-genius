@@ -1,0 +1,120 @@
+{
+  "slug": "sum-of-kth-powers",
+  "title": "Sum of kth Powers (Faulhaber Formulas)",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Closed-form formulas for sums of consecutive kth powers (k=1 through k=5), including the remarkable identity that the sum of cubes equals the square of the sum.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-27T22:18:02.334Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "algebra",
+    "series",
+    "faulhaber",
+    "bernoulli-numbers",
+    "extension"
+  ],
+  "relatedProofs": [
+    "sum-of-kth-powers",
+    "sum-of-kth-powers-oq-01",
+    "sum-of-kth-powers-oq-02",
+    "sum-of-kth-powers-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-27T22:18:02.334Z",
+  "lastUpdate": "2026-02-08T06:11:43.708Z",
+  "completed": "2026-02-08T06:11:43.708Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/SumOfKthPowers.lean",
+      "filename": "SumOfKthPowers.lean",
+      "lineCount": 601,
+      "theoremCount": 49,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowers.lean"
+    },
+    {
+      "path": "Proofs/SumOfKthPowersOQ01.lean",
+      "filename": "SumOfKthPowersOQ01.lean",
+      "lineCount": 194,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowersOQ01.lean"
+    },
+    {
+      "path": "Proofs/SumOfKthPowersOQ02.lean",
+      "filename": "SumOfKthPowersOQ02.lean",
+      "lineCount": 176,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowersOQ02.lean"
+    },
+    {
+      "path": "Proofs/SumOfKthPowersOQ04.lean",
+      "filename": "SumOfKthPowersOQ04.lean",
+      "lineCount": 194,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowersOQ04.lean"
+    },
+    {
+      "path": "Proofs/SumOfKthPowersOQ04Aristotle.lean",
+      "filename": "SumOfKthPowersOQ04Aristotle.lean",
+      "lineCount": 32,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfKthPowersOQ04Aristotle.lean"
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "id": "erdos-91",
+  "title": "Erdős Problem #91: Non-Uniqueness of Minimal Distance Sets",
+  "slug": "erdos-91",
+  "description": "Among n-point sets minimizing the number of distinct distances, must there be multiple non-similar configurations for large n? Known for small n (the regular pentagon is uniquely optimal for n=5), but open in general.",
+  "meta": {
+    "author": "Erdős (problem), Kovács (2024, n=5 proof)",
+    "sourceUrl": "https://erdosproblems.com/91",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos91Problem.lean",
+    "tags": [
+      "discrete-geometry",
+      "distinct-distances",
+      "erdos",
+      "point-configurations",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 91,
+    "erdosUrl": "https://erdosproblems.com/91",
+    "erdosProblemStatus": "open",
+    "relatedProblems": [
+      {
+        "id": "erdos-89",
+        "relationship": "The minimal number of distinct distances (the value being minimized here)"
+      }
+    ],
+    "axiomCount": 5,
+    "lineCount": 276,
+    "assumptions": "5 axioms: n3_unique, n4_two_optima, kovacs_2024_n5_unique, and 2 more. See Lean source for complete statements.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "**Optimal Point Configurations**\n\nThe Erdős distinct distances problem asks: what is the minimum number of distinct distances among n points in the plane? This companion problem asks: for configurations achieving this minimum, are they unique up to similarity?\n\n**Small Cases**:\n- n=3: The equilateral triangle is uniquely optimal (1 distance)\n- n=4: Two non-similar optima exist - the square and two equilateral triangles sharing an edge\n- n=5: The regular pentagon is uniquely optimal (2 distances) - proved by an unnamed 'colleague from Zagreb', with published proof by Kovács (2024)\n- n=6 to 9: At least two non-similar examples exist for each\n\n**The Mystery**: Erdős remarked cryptically that n=5 uniqueness was proved by 'a colleague from Zagreb' whose letter he lost! Kovács finally published a proof in 2024.\n\n**The Conjecture**: For large n, there should be many non-similar optimal configurations.",
+    "problemStatement": "**Problem Statement**\n\nLet A ⊂ ℝ² with |A| = n minimize the number of distinct distances among pairs of points. Prove that for large n, there exist at least two non-similar such sets A.\n\n**Erdős's Expectation**: He believed there should be 'many' such non-similar configurations, not just two.\n\n**Known Results**:\n- n=3: Unique (equilateral triangle)\n- n=4: Non-unique (square vs bowtie)\n- n=5: Unique (regular pentagon) - Kovács 2024\n- n=6-9: Non-unique\n- Large n: OPEN\n\n**Status**: OPEN",
+    "text": "Among n-point sets minimizing the number of distinct distances, must there be multiple non-similar configurations for large n? Known for small n (the regular pentagon is uniquely optimal for n=5), but open in general.",
+    "proofStrategy": "**Approaches**\n\n**For Small n**: Exhaustive analysis of configurations with few distinct distances. The n=5 proof requires showing no non-pentagon configuration achieves only 2 distances.\n\n**For Large n**: Would require understanding the structure of optimal configurations. Possible approaches:\n1. Lattice-based constructions giving multiple non-similar optima\n2. Perturbation arguments showing continuous families exist\n3. Algebraic geometry of distance equations\n\n**The Challenge**: We don't even know the exact minimum number of distinct distances for large n (the Guth-Katz bound n/log n is not tight), making uniqueness questions even harder.",
+    "keyInsights": [
+      "The n=5 case (regular pentagon uniqueness) required a 2024 paper to prove rigorously",
+      "Non-uniqueness is known for n=4,6,7,8,9 but the pattern is unclear",
+      "The problem connects to lattice point geometry and algebraic number theory",
+      "Erdős's 'colleague from Zagreb' mystery was resolved after decades",
+      "Related problem #89 asks for the minimum distance count itself",
+      "For large n, even the minimum distance count is not precisely known"
+    ],
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Number theory (primes, divisibility, arithmetic functions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview, Imports and Namespace",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "File header: states Erdős #91 (for large n, optimal minimal-distance n-point sets in ℝ² are non-unique up to similarity), known results (n=3,5 unique; n=4,6-9 non-unique; large n open), imports, and the `Erdos91` namespace."
+    },
+    {
+      "id": "distance-defs",
+      "title": "Part I: Distance Sets in the Plane",
+      "startLine": 36,
+      "endLine": 66,
+      "summary": "Point type, dist function, distinctDistances, numDistinctDistances"
+    },
+    {
+      "id": "optimal",
+      "title": "Part II: Optimal Configurations",
+      "startLine": 67,
+      "endLine": 87,
+      "summary": "minDistinctDistances and IsOptimal definitions"
+    },
+    {
+      "id": "similarity",
+      "title": "Part III: Similarity of Point Sets",
+      "startLine": 88,
+      "endLine": 110,
+      "summary": "AreSimilar and AreNonSimilar definitions"
+    },
+    {
+      "id": "small-cases",
+      "title": "Part IV: Small Cases",
+      "startLine": 111,
+      "endLine": 155,
+      "summary": "Axiomatized small-n results: n=3 unique (equilateral triangle), n=4 two non-similar optima, n=5 unique (Kovács 2024 pentagon), n=6-9 non-unique."
+    },
+    {
+      "id": "conjecture",
+      "title": "Part V: The Conjecture for Large n",
+      "startLine": 156,
+      "endLine": 186,
+      "summary": "erdos_91_conjecture and strong version (OPEN)"
+    },
+    {
+      "id": "partial-evidence",
+      "title": "Part VI: Partial Evidence",
+      "startLine": 187,
+      "endLine": 217,
+      "summary": "Proves known_cases combining the n=3 (unique), n=4 (non-unique), and n=5 (unique) results, with a note on the history of the mysterious n=5 case (Kovács 2024)."
+    },
+    {
+      "id": "distinct-distances",
+      "title": "Part VII: Connection to Distinct Distances Problem",
+      "startLine": 218,
+      "endLine": 236,
+      "summary": "Relates to Problem #89 (D(n) = minimum distinct distances) and axiomatizes the Guth-Katz (2015) bounds n/log n ≪ D(n) ≤ c·n/√(log n)."
+    },
+    {
+      "id": "summary",
+      "title": "Part VIII: Summary",
+      "startLine": 237,
+      "endLine": 276,
+      "summary": "Combined results and status; proves erdos_91_summary combining the n=4, n=5, and n=6-9 cases, noting the non-monotonic uniqueness pattern."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #91 asks whether there are multiple non-similar n-point sets achieving the minimum number of distinct distances. For n=5, the regular pentagon is uniquely optimal (Kovács 2024), but for n=4,6-9, multiple optima exist. The question for large n remains OPEN.",
+    "implications": "1. **Discrete Geometry**: Connects to rigidity theory and configuration spaces\n\n**2. Algebraic Geometry**: Optimal configurations satisfy polynomial distance equations\n\n3. **Number Theory**: Lattice points and algebraic integers appear in optimal constructions\n\n4. **Combinatorics**: The structure of minimal distance sets is poorly understood.",
+    "openQuestions": [
+      "Prove non-uniqueness for all sufficiently large n",
+      "Characterize the structure of optimal configurations",
+      "What is the growth rate of the number of non-similar optima?",
+      "Are there continuous families of optimal configurations?",
+      "How does this connect to the precise minimum distance count (Problem #89)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.InnerProductSpace.Basic"
+    ],
+    "opens": [
+      "Real",
+      "Finset"
+    ],
+    "namespace": "Erdos91",
+    "lineCount": 276,
+    "axiomCount": 5,
+    "theoremCount": 2,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos91Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-89",
+      "relationship": "related",
+      "description": "The minimal number of distinct distances (the value being minimized here)"
+    },
+    {
+      "targetId": "erdos-224",
+      "relationship": "related",
+      "description": "Both are discrete geometry problems studying metric or angular properties of finite point configurations"
+    }
+  ],
+  "references": [
+    {
+      "key": "Er46d",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "On sets of distances of n points",
+      "venue": "American Mathematical Monthly",
+      "year": "1946",
+      "volume": "53",
+      "pages": "248-250",
+      "note": "Foundation for the study of distance sets and minimum-distance point configurations"
+    }
+  ],
+  "sorries": 0
+}

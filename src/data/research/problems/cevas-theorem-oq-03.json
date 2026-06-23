@@ -1,0 +1,217 @@
+{
+  "slug": "cevas-theorem-oq-03",
+  "title": "What is the computational complexity of finding cevian configurations with sp...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formalization extending an existing formalization: What is the computational complexity of finding cevian configurations with sp....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-23T00:42:35.519Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: No Lean file. Parent files fully proved (0A, 0S). OQ-03 about computational complexity needs new formalization.",
+    "builtItems": [
+      "Assessment: BLOCKED — no Lean file, computational complexity question needs new formalization"
+    ],
+    "insights": [
+      "No Lean file for OQ-03. Parent files: 9 Lean files, 0 axioms, 0 real sorries, 146 theorems",
+      "OQ-03 is about computational complexity of cevian configurations — theoretical CS question",
+      "All existing formalizations are fully proved (0 axioms across all files)",
+      "Would need new formalization about computational complexity, not a Lean proof task"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "cevas-theorem",
+    "cevas-theorem-non-euclidean",
+    "cevas-theorem-non-euclidean-oq-02",
+    "cevas-theorem-non-euclidean-oq-02-oq-01",
+    "cevas-theorem-oq-01",
+    "cevas-theorem-oq-01-oq-03",
+    "cevas-theorem-oq-02",
+    "cevas-theorem-oq-02-oq-01",
+    "cevas-theorem-oq-02-oq-01-oq-02",
+    "cevas-theorem-oq-02-oq-01-oq-03",
+    "cevas-theorem-oq-02-oq-02",
+    "cevas-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-23T00:42:35.519Z",
+  "lastUpdate": "2026-03-28T05:56:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CevasTheorem.lean",
+      "filename": "CevasTheorem.lean",
+      "lineCount": 264,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheorem.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclidean.lean",
+      "filename": "CevasTheoremNonEuclidean.lean",
+      "lineCount": 528,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclidean.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ02.lean",
+      "filename": "CevasTheoremNonEuclideanOQ02.lean",
+      "lineCount": 234,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean",
+      "filename": "CevasTheoremNonEuclideanOQ02OQ01.lean",
+      "lineCount": 273,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ01.lean",
+      "filename": "CevasTheoremOQ01.lean",
+      "lineCount": 908,
+      "theoremCount": 39,
+      "axiomCount": 0,
+      "defCount": 22,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ01OQ03.lean",
+      "filename": "CevasTheoremOQ01OQ03.lean",
+      "lineCount": 231,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02.lean",
+      "filename": "CevasTheoremOQ02.lean",
+      "lineCount": 502,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ01.lean",
+      "filename": "CevasTheoremOQ02OQ01.lean",
+      "lineCount": 263,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ01OQ02.lean",
+      "filename": "CevasTheoremOQ02OQ01OQ02.lean",
+      "lineCount": 302,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ01OQ03.lean",
+      "filename": "CevasTheoremOQ02OQ01OQ03.lean",
+      "lineCount": 297,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ02.lean",
+      "filename": "CevasTheoremOQ02OQ02.lean",
+      "lineCount": 321,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ04.lean",
+      "filename": "CevasTheoremOQ04.lean",
+      "lineCount": 243,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremSinRatio.lean",
+      "filename": "CevasTheoremSinRatio.lean",
+      "lineCount": 146,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremSinRatio.lean"
+    }
+  ]
+}

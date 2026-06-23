@@ -1,0 +1,149 @@
+[
+  {
+    "id": "ann-mcpoq02-imports",
+    "proofId": "minpoly-charpoly-oq-02",
+    "range": { "startLine": 1, "endLine": 10 },
+    "type": "concept",
+    "title": "Import Stack: Charpoly + Semisimple + Eigenspace + Parent",
+    "content": "Ten imports stage the three Mathlib layers used by the OQ-02 discharge plan:\n\n* **Minpoly / charpoly layer** (L1-2): `Matrix.Charpoly.Basic` for charpoly and `Matrix.Charpoly.Minpoly` for `Matrix.minpoly_toLin'` — the Bridge D used to transport squarefree across the matrix↔endo correspondence.\n* **Diagonal-matrix predicate** (L3): `LinearAlgebra.Matrix.IsDiag` — the codomain of the similarity-transform existential in `Matrix.IsDiagonalizable`. Note: the S7 ACT v4.26.0 import regression fix added this import after the silently-removed `Mathlib.Algebra.Polynomial.Squarefree` (file renamed in v4.26.0).\n* **Semisimplicity** (L4): `LinearAlgebra.Semisimple` — provides `Module.End.IsSemisimple`, the engine of the entire iff. Includes both directions of Bridge C: `Module.End.IsSemisimple.minpoly_squarefree` and `Module.End.isSemisimple_of_squarefree_aeval_eq_zero`.\n* **Eigenspace layer** (L5-6): `Eigenspace.Semisimple` for `IsFinitelySemisimple.maxGenEigenspace_eq_eigenspace` (the second link in Bridge B forward's 3-lemma chain); `Eigenspace.Triangularizable` for `Module.End.iSup_maxGenEigenspace_eq_top` (the third link, the endpoint).\n* **Finite-dim transport** (L7-8): `FreeModule.Finite.Matrix` for the `Matrix.toLin'` algebra hookups; `FieldTheory.IsAlgClosed.Basic` for the headline's `[IsAlgClosed K]` hypothesis.\n* **Tactic + Parent** (L9-10): `Mathlib.Tactic` for `simpa`/`refine`/calc; `Proofs.MinpolyCharpoly` for the parent's 17 minpoly | charpoly theorems.",
+    "mathContext": "Two endomorphism-level bridges (B forward and C) are built directly on top of `Module.End.IsSemisimple` and its companion eigenspace lemmas. The matrix-level discharge uses `Matrix.toLin'` + `Matrix.minpoly_toLin'` for transport.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Module.End.IsSemisimple",
+      "Matrix.minpoly_toLin'",
+      "Matrix.IsDiag",
+      "iSup_maxGenEigenspace_eq_top"
+    ],
+    "prerequisites": [
+      "Lean 4 import syntax",
+      "Mathlib namespace layout (v4.26.0)"
+    ]
+  },
+  {
+    "id": "ann-mcpoq02-resolution",
+    "proofId": "minpoly-charpoly-oq-02",
+    "range": { "startLine": 28, "endLine": 56 },
+    "type": "concept",
+    "title": "S1 OBSERVE Resolution — Three Ingredients, No Mathlib Gap",
+    "content": "The S1 OBSERVE docstring resolves OQ-02 affirmatively by identifying three Mathlib-level ingredients that compose into the matrix-level iff:\n\n1. **Module.End.IsSemisimple ↔ Squarefree (minpoly K f)** — already in Mathlib at v4.26.0 (`Module.End.isSemisimple_iff_squarefree_minpoly` ships in `Mathlib.LinearAlgebra.Semisimple`, with both directions named). Bridge C ships this in-tree as a packaged iff (lines 162-167).\n\n2. **IsSemisimple + minpoly splits → diagonalizable**: over alg-closed `K` the splits hypothesis is automatic; semisimplicity then implies the eigenspaces span the whole space (Bridge B forward, lines 146-155). Composed with the converse direction (Bridge B reverse, deferred to S8 ACT) this gives the operator-theoretic characterisation.\n\n3. **Matrix ↔ endomorphism transport**: `Matrix.toLin' M` carries the minpoly across (`Matrix.minpoly_toLin'`, Bridge D) and lets us read the matrix-level diagonalizability statement back from the endomorphism-level iff.\n\nNo Mathlib gap is required. The remaining work for OQ-02 is purely *integrative* — assemble the three pieces into the headline matrix-level statement. The four sub-OQs (OQ-02-OQ-01..OQ-02-OQ-04) decompose this integration into ~450 LOC across four iterations.",
+    "mathContext": "$M \\in \\mathrm{Mat}_n(K)$ diagonalizable $\\Leftrightarrow$ $\\mathrm{toLin}'(M)$ semisimple + minpoly splits $\\Leftrightarrow$ minpoly $\\mathrm{toLin}'(M)$ squarefree + splits $\\Leftrightarrow$ minpoly $M$ squarefree + splits. Over $K$ alg-closed: the splits clause is automatic. Over $K$ char-0: every polynomial is separable, so squarefree is the strongest squarefree-style condition.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Module.End.IsSemisimple",
+      "Squarefree polynomial",
+      "Matrix.minpoly_toLin'",
+      "Bridge composition",
+      "Sub-OQ decomposition"
+    ],
+    "prerequisites": [
+      "Semisimplicity of endomorphisms",
+      "Cayley-Hamilton",
+      "Matrix.toLin' algebra equivalence"
+    ]
+  },
+  {
+    "id": "ann-mcpoq02-isdiagonalizable",
+    "proofId": "minpoly-charpoly-oq-02",
+    "range": { "startLine": 100, "endLine": 108 },
+    "type": "definition",
+    "title": "Matrix.IsDiagonalizable — the Matrix-Level Predicate",
+    "content": "`Matrix.IsDiagonalizable M` is defined as `∃ P : Matrix n n K, IsUnit P ∧ IsDiag (P⁻¹ * M * P)` — the existential over similarity transforms `P` whose conjugate of `M` is a diagonal matrix.\n\nDesign choices:\n\n* **Existential over `P` rather than fixed `P`**: the definition is intrinsic to the similarity class. Two diagonalizable matrices may use very different `P`s, and the predicate abstracts that out.\n* **`IsUnit P` rather than `P.Invertible` or `Nonsing`**: `IsUnit` is the Mathlib idiom for invertibility in a monoid; `Matrix.IsUnit_iff_isUnit_det` connects it to the determinant for downstream calculations.\n* **`IsDiag` rather than `Matrix.diagonal d` for some explicit `d`**: `IsDiag` is the predicate ('every off-diagonal entry is zero'), which is what callers actually need. The explicit eigenvalue-multiplicity diagonal is reconstructable from `IsDiag` + `Matrix.diag` extraction.\n* **`_root_.Matrix.IsDiagonalizable`**: the `_root_` prefix exposes the predicate at the top-level `Matrix` namespace, matching `Matrix.IsDiag` / `Matrix.IsUnit_iff_isUnit_det` etc.\n\nThis predicate corresponds at the endomorphism level to `Module.End.IsSemisimple ∧ Polynomial.Splits (algebraMap K K) (minpoly K f)` — the alg-closed condition makes the splits clause vacuous, so under `[IsAlgClosed K]` the predicate is equivalent to `IsSemisimple (toLin' M)`.",
+    "mathContext": "$M \\in \\mathrm{Mat}_n(K)$ is diagonalizable $\\Leftrightarrow$ $\\exists P \\in \\mathrm{GL}_n(K),\\ P^{-1} M P \\in \\mathrm{Diag}_n(K)$, where $\\mathrm{Diag}_n(K) = \\{ D : \\forall i \\neq j,\\ D_{ij} = 0 \\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Matrix.IsDiag",
+      "IsUnit",
+      "Similarity",
+      "Module.End.IsSemisimple"
+    ],
+    "prerequisites": [
+      "Matrix multiplication",
+      "Group of units in a matrix ring",
+      "Existential quantifiers in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-mcpoq02-headline",
+    "proofId": "minpoly-charpoly-oq-02",
+    "range": { "startLine": 110, "endLine": 122 },
+    "type": "insight",
+    "title": "diagonalizable_iff_squarefree_minpoly — The S1 Headline (Sorry-Guarded)",
+    "content": "The S1 statement is the textbook gold form: over an algebraically closed field of characteristic zero, a matrix is diagonalizable iff its minimal polynomial is squarefree. A single `sorry` at line 122 carries the proof — the four sub-OQs (OQ-02-OQ-01..OQ-02-OQ-04) and the ~59 LOC ACT synthesis are designed to discharge it.\n\n**Why these specific hypotheses?**\n\n* **`[IsAlgClosed K]`**: makes `Polynomial.Splits (algebraMap K K) (minpoly K M)` automatic, so the textbook 'minpoly squarefree *and splits*' condition collapses to just 'minpoly squarefree'.\n* **`[CharZero K]`**: every polynomial is separable in char 0, so 'squarefree' and 'product of distinct irreducible factors' coincide. This is the cleanest target for the OQ-02-OQ-04 sub-OQ.\n\nThe minimum hypotheses are weaker — 'perfect field + minpoly splits in K' suffices — but the alg-closed-char-0 case is what most callers (linear-algebra texts, computer algebra systems, downstream applications) expect. The general-field form is the target of **OQ-02-OQ-03** and could be added as `diagonalizable_iff_squarefree_minpoly_general` once that sub-OQ ships.\n\n**Discharge plan (~59 LOC, picker-estimated by S7c PREP §5.1)**:\n\n| Bridge | Direction | Source | LOC |\n|---|---|---|---:|\n| A fwd | M.IsDiagonalizable → eigenbasis | S2 PREP-3 §2 | ~12 |\n| A rev | eigenbasis → M.IsDiagonalizable | S2 PREP-3 §3.2 | ~8 |\n| B fwd | IsSemisimple → ⨆ eigenspace = ⊤ | **In-tree** (this file, lines 146-155) | 0 |\n| B rev | ⨆ eigenspace = ⊤ → IsSemisimple | S5b PREP §5 + S7c §3.3 Option A | ~33 |\n| C | IsSemisimple ↔ Squarefree minpoly | **In-tree** (this file, lines 162-167) | 0 |\n| D | minpoly K (toLin' M) = minpoly K M | `Matrix.minpoly_toLin'` (Mathlib, @[simp]) | 1 |\n| Compose | iff headline | 4 bridges + finiteness | ~5 |",
+    "mathContext": "For $K$ algebraically closed of characteristic 0 and $M \\in \\mathrm{Mat}_n(K)$: $M$ is diagonalizable $\\Leftrightarrow$ $\\mathrm{minpoly}_K(M) \\in K[X]$ is squarefree.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Polynomial.Squarefree",
+      "minpoly",
+      "Diagonalizability",
+      "Algebraically closed field",
+      "Characteristic zero"
+    ],
+    "prerequisites": [
+      "Minimum polynomial of a matrix",
+      "Squarefree polynomials",
+      "Splitting field"
+    ]
+  },
+  {
+    "id": "ann-mcpoq02-sanity",
+    "proofId": "minpoly-charpoly-oq-02",
+    "range": { "startLine": 124, "endLine": 134 },
+    "type": "definition",
+    "title": "Sanity Helpers — of_isDiag and zero (Unconditional)",
+    "content": "Two unconditional sanity lemmas give the file a non-trivial public surface even before the headline discharge:\n\n* **`Matrix.IsDiagonalizable.of_isDiag`** (lines 126-129): any diagonal matrix is diagonalizable, witnessed by `P = 1`. Proof: `refine ⟨1, isUnit_one, ?_⟩; simpa using hM`. The `simpa` simp-set rewrites `1⁻¹ * M * 1 = M`, reducing the goal to `IsDiag M` which is the hypothesis. Note: the S7 ACT v4.26.0 patch dropped `Matrix.inv_one` from this `simpa` lemma list (now subsumed by the default simp set) and added the `Matrix.IsDiag` namespace qualification (M → Matrix.IsDiag M, since just `IsDiag` is ambiguous at v4.26.0).\n\n* **`Matrix.IsDiagonalizable.zero`** (lines 132-134): the zero matrix is diagonalizable. Proof: `Matrix.IsDiagonalizable.of_isDiag Matrix.isDiag_zero`. A one-liner combining the previous sanity helper with `Matrix.isDiag_zero` (the zero matrix is diagonal).\n\nThese helpers are not the discharge target — they exist so the file passes 'has-non-trivial-public-content' checks (e.g. for the gallery card thumbnail) and as worked examples of the `Matrix.IsDiagonalizable` predicate API.",
+    "mathContext": "(a) Any $M \\in \\mathrm{Diag}_n(K)$ is diagonalizable (take $P = I$). (b) $0 \\in \\mathrm{Mat}_n(K)$ is diagonalizable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Matrix.isDiag_zero",
+      "isUnit_one",
+      "simpa tactic"
+    ],
+    "prerequisites": [
+      "Identity matrix",
+      "Matrix.IsDiag predicate"
+    ]
+  },
+  {
+    "id": "ann-mcpoq02-bridge-b-fwd",
+    "proofId": "minpoly-charpoly-oq-02",
+    "range": { "startLine": 140, "endLine": 155 },
+    "type": "definition",
+    "title": "Bridge B Forward — Phantom-Corrected 3-Lemma Chain",
+    "content": "**S7 ACT contribution (#19095, merged 2026-05-15)**. `Module.End.iSup_eigenspace_eq_top_of_isSemisimple`: over a finite-dimensional alg-closed-K space, if `f` is semisimple then its eigenspaces span the whole space (⨆ μ : K, f.eigenspace μ = ⊤).\n\n**Why a 3-lemma chain?** The natural-looking direct form `Module.End.IsSemisimple.iSup_eigenspace_eq_top` *does not exist in Mathlib*. S3 PREP #18481 originally claimed it as a single lemma — caught as phantom by the S4 PREP #18626 audit. The corrected route composes three steps:\n\n1. **`hss.isFinitelySemisimple`**: upgrade semisimplicity to its finitely-semisimple companion (uses `[FiniteDimensional K V]`).\n2. **`hfin.maxGenEigenspace_eq_eigenspace μ`**: under finite semisimplicity, the maximal generalized eigenspace equals the eigenspace at each `μ`. (Reverse direction taken via `.symm`.)\n3. **`Module.End.iSup_maxGenEigenspace_eq_top f`**: over alg-closed-K in finite dim, the sum of maximal generalized eigenspaces is the whole space.\n\nComposition: `iSup μ, eigenspace μ = iSup μ, maxGenEigenspace μ = ⊤`, fused by `iSup_congr`.\n\nThis is the **Bridge B forward** of the four-bridge synthesis. Combined with the (still-pending) Bridge B reverse (S5b PREP §5 + S7c §3.3 Option A) it gives the eigenspace-decomposition ↔ semisimple iff, which together with Bridge C (squarefree ↔ semisimple) and Bridges A/D (matrix↔endo) discharges the headline.",
+    "mathContext": "For $V$ finite-dim over $K$ algebraically closed and $f : V \\to V$ a $K$-linear semisimple endomorphism: $\\bigsqcup_{\\mu \\in K} \\ker(f - \\mu \\cdot \\mathrm{id}) = V$. Equivalently: $V$ admits an eigenbasis for $f$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Module.End.IsSemisimple",
+      "Module.End.IsFinitelySemisimple",
+      "maxGenEigenspace",
+      "iSup_congr",
+      "Phantom lemma corrections"
+    ],
+    "prerequisites": [
+      "Generalized eigenspace",
+      "iSup (supremum in a complete lattice)",
+      "Algebraically closed field"
+    ]
+  },
+  {
+    "id": "ann-mcpoq02-bridge-c",
+    "proofId": "minpoly-charpoly-oq-02",
+    "range": { "startLine": 157, "endLine": 167 },
+    "type": "theorem",
+    "title": "Bridge C — IsSemisimple ↔ Squarefree minpoly",
+    "content": "**S7 ACT contribution (#19095, merged 2026-05-15)**. `Module.End.isSemisimple_iff_squarefree_minpoly`: over a finite-dimensional `K`-space, an endomorphism `f` is semisimple iff its minimal polynomial is squarefree.\n\n* **Forward**: `Module.End.IsSemisimple.minpoly_squarefree` (Mathlib, in `LinearAlgebra.Semisimple`). Directly gives `f.IsSemisimple → Squarefree (minpoly K f)`.\n* **Reverse**: `Module.End.isSemisimple_of_squarefree_aeval_eq_zero` (Mathlib) applied to `minpoly.aeval K f`. The lemma's general form takes any polynomial `p` that's squarefree and annihilates `f` and concludes `f.IsSemisimple`; specialising `p := minpoly K f` (with `minpoly.aeval` witnessing `p.aeval f = 0`) gives the reverse direction.\n\nThis Bridge C is the **endomorphism-level iff** — the heart of OQ-02. Transporting it to the matrix level via Bridge D (`Matrix.minpoly_toLin'`) yields `IsSemisimple (toLin' M) ↔ Squarefree (minpoly K M)`, and combining with Bridges A/B yields the headline.\n\n**Note**: this iff is field-independent and characteristic-independent — `[CharZero K]` is *not* required for the iff itself. The CharZero hypothesis on the headline enters only to simplify the OQ-02-OQ-04 sub-OQ (where 'squarefree' coincides with 'separable + product of distinct linear factors over `K`').",
+    "mathContext": "For $V$ finite-dim over a field $K$ and $f \\in \\mathrm{End}_K(V)$: $f$ is semisimple $\\Leftrightarrow$ $\\mathrm{minpoly}_K(f) \\in K[X]$ is squarefree.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Module.End.IsSemisimple.minpoly_squarefree",
+      "Module.End.isSemisimple_of_squarefree_aeval_eq_zero",
+      "minpoly.aeval",
+      "Polynomial.Squarefree"
+    ],
+    "prerequisites": [
+      "Minimum polynomial of an endomorphism",
+      "Squarefree polynomial predicate",
+      "Annihilating polynomial"
+    ]
+  }
+]

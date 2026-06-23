@@ -1,0 +1,112 @@
+{
+  "id": "erdos-1129-oq-02",
+  "title": "Optimal Interpolation Nodes for General Intervals",
+  "slug": "erdos-1129-oq-02",
+  "description": "Extends Erdős #1129 (optimal Lagrange interpolation nodes) to arbitrary intervals [a,b] via affine invariance. Proves the affine map T: [-1,1] → [a,b] preserves the Lebesgue constant, so Chebyshev nodes transfer to any interval with identical approximation quality.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://erdosproblems.com/1129",
+    "date": "2026-04-12",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1129OQ02.lean",
+    "tags": [
+      "approximation-theory",
+      "interpolation",
+      "lebesgue-constant",
+      "chebyshev-nodes"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-04-12",
+    "axiomCount": 0,
+    "assumptions": "",
+    "lineCount": 260,
+    "theoremCount": 15,
+    "definitionCount": 6,
+    "originalContributions": [
+      "affineMap/invAffineMap: T: [-1,1] → [a,b] and inverse",
+      "Strict monotonicity and interval preservation of T",
+      "lagrangeBasis_affine_covariant: Lagrange basis invariance under affine maps",
+      "lebesgueFunction_affine_invariant: Lebesgue function invariance (proved, not axiomatized)",
+      "lebesgueConstantOnInterval_affine_invariant: Lebesgue constant invariance (proved, not axiomatized)",
+      "chebyshev_lebesgue_any_interval: same Lebesgue constant on any interval",
+      "chebyshev_one_midpoint: n=1 node is the midpoint",
+      "chebyshev_two_formula: explicit n=2 nodes"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Lagrange interpolation, introduced by Joseph-Louis Lagrange in 1795 (though anticipated by Edward Waring in 1779), constructs a polynomial passing through given data points. The question of which nodes minimize the interpolation error was studied by Chebyshev in the 1850s, who showed that the zeros of Chebyshev polynomials $T_n(x)$ are optimal for $[-1,1]$. The Lebesgue constant $\\Lambda_n$, introduced by Henri Lebesgue in 1898, measures the worst-case amplification of interpolation error relative to the best polynomial approximation. The optimality of Chebyshev nodes was made precise by Kilgore (1978) and de Boor-Pinkus (1978), who proved the existence and near-uniqueness of optimal nodes. This formalization addresses the natural follow-up: do these results depend on the interval? The answer — no, via affine invariance — is a folklore result in approximation theory, but this appears to be its first machine-checked verification. The proof eliminates two prior axioms by proving the Lagrange basis covariance theorem directly from the algebraic identity $T(x) - T(y) = c(x-y)$.",
+    "problemStatement": "Do optimal interpolation nodes depend on the choice of interval $[a,b]$? Prove that the Lebesgue constant $\\Lambda_n$ is preserved under the canonical affine transformation $T: [-1,1] \\to [a,b]$ given by $T(x) = \\frac{b-a}{2}x + \\frac{a+b}{2}$, so optimal nodes for $[-1,1]$ immediately yield optimal nodes for any $[a,b]$.",
+    "proofStrategy": "Define the affine map $T(x) = \\frac{b-a}{2}x + \\frac{a+b}{2}$ and its inverse, prove $T$ is a bijection preserving order. The key algebraic identity is $T(x) - T(y) = c(x-y)$ where $c = (b-a)/2$. In the Lagrange basis $\\ell_k(x) = \\prod_{j \\neq k} \\frac{x - x_j}{x_k - x_j}$, substituting $T(x)$ for $x$ and $T(x_j)$ for $x_j$ gives a factor of $c$ in each numerator and denominator term. Since there are $n-1$ terms in each product, $c^{n-1}$ cancels, proving $\\ell_k(T(x); T(x_1),\\ldots,T(x_n)) = \\ell_k(x; x_1,\\ldots,x_n)$. The Lebesgue function $\\lambda(x) = \\sum_k |\\ell_k(x)|$ and constant $\\Lambda_n = \\sup_x \\lambda(x)$ then inherit invariance automatically.",
+    "keyInsights": [
+      "The identity $T(x) - T(y) = c(x-y)$ causes $c^{n-1}$ cancellation in the Lagrange basis product: each of the $n-1$ factors contributes one power of $c$ to both numerator and denominator, yielding exact equality $\\ell_k(T(x); T(\\mathbf{x})) = \\ell_k(x; \\mathbf{x})$.",
+      "Affine invariance reduces all interval problems to the canonical interval $[-1,1]$: once optimal nodes are found there (Chebyshev nodes), they transfer to any $[a,b]$ via the linear map $T$.",
+      "The $n=1$ Chebyshev node on $[a,b]$ is the midpoint $(a+b)/2$, which follows from $\\cos(\\pi/2) = 0$ mapped through $T$. For $n=2$, the nodes are at $(a+b)/2 \\pm (b-a)/(2\\sqrt{2})$.",
+      "The proof eliminates two axioms from the previous version by establishing the Lagrange basis covariance theorem directly. The key Lean tactic sequence uses `Finset.prod_mul_distrib`, `Finset.prod_const`, and `mul_div_mul_left` to cancel $c^{n-1}$.",
+      "This is a rare example where a result that is 'obvious' in informal mathematics requires careful formal verification: the cancellation of $c^{n-1}$ involves manipulating finite products in a non-trivial way, and the sup-invariance requires showing the affine map is a bijection on the interval."
+    ]
+  },
+  "sections": [
+    {
+      "id": "affine-map",
+      "title": "Affine Transformation Between Intervals",
+      "startLine": 33,
+      "endLine": 98,
+      "summary": "Defines the affine map $T: [-1,1] \\to [a,b]$ and its inverse, proves they compose to the identity, that $T$ is strictly monotone, and that $T$ maps $[-1,1]$ into $[a,b]$."
+    },
+    {
+      "id": "transformed-nodes",
+      "title": "Transformed Interpolation Nodes",
+      "startLine": 100,
+      "endLine": 115,
+      "summary": "Defines `transformNodes` (applying $T$ pointwise), Chebyshev nodes on $[-1,1]$ via $x_k = \\cos((2k-1)\\pi/(2n))$, and Chebyshev nodes on $[a,b]$ via the affine map."
+    },
+    {
+      "id": "lagrange-covariance",
+      "title": "Lagrange Basis Covariance Under Affine Maps",
+      "startLine": 117,
+      "endLine": 145,
+      "summary": "The key mathematical result: proves $\\ell_k(T(x); T(\\mathbf{x})) = \\ell_k(x; \\mathbf{x})$ using the identity $T(x)-T(y) = c(x-y)$ and the cancellation of $c^{n-1}$ in the product formula."
+    },
+    {
+      "id": "lebesgue-invariance",
+      "title": "Lebesgue Function and Constant Invariance",
+      "startLine": 147,
+      "endLine": 209,
+      "summary": "Defines the Lebesgue constant on a general interval, proves the Lebesgue function is invariant under affine transformation (from basis covariance), and lifts this to the Lebesgue constant. Concludes that Chebyshev nodes have the same Lebesgue constant on any interval."
+    },
+    {
+      "id": "explicit-formulas",
+      "title": "Explicit Chebyshev Nodes on [a,b]",
+      "startLine": 211,
+      "endLine": 260,
+      "summary": "Computes explicit formulas: the $n=1$ node is the midpoint $(a+b)/2$ (using $\\cos(\\pi/2) = 0$), and the $n=2$ nodes involve $\\cos(\\pi/4)$. Includes a summary of all results proved and axioms eliminated."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a complete, axiom-free proof that the Lebesgue constant is affine-invariant, reducing all interval interpolation problems to the canonical interval $[-1,1]$. The proof eliminates two axioms from the prior version by establishing Lagrange basis covariance directly from the algebraic identity $T(x) - T(y) = c(x-y)$.",
+    "implications": "The affine invariance result means the entire Kilgore-Cheney-de Boor-Pinkus theory of optimal interpolation nodes applies uniformly across all compact intervals. This is foundational for numerical analysis: practitioners can work on $[-1,1]$, confident that transforming nodes to their target interval preserves all optimality properties.",
+    "openQuestions": [
+      "Can the theory be extended to weighted interpolation with weight function $w(x)$, where affine invariance may fail because $w(T(x)) \\neq w(x)$?",
+      "Can optimal nodes for Hermite interpolation (matching function values and derivatives) be characterized using a similar affine invariance argument?",
+      "What is the growth rate of the Lebesgue constant $\\Lambda_n$ for Chebyshev nodes? The classical result $\\Lambda_n \\sim (2/\\pi) \\ln n$ could be formalized."
+    ]
+  },
+  "leanFile": {
+    "namespace": "Erdos1129OQ02",
+    "lineCount": 260,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos1129OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1129",
+      "relationship": "extends",
+      "description": "Generalizes optimal interpolation from [-1,1] to any [a,b]"
+    }
+  ],
+  "sorries": 0
+}

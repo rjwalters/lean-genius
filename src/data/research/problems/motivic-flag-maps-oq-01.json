@@ -1,0 +1,169 @@
+{
+  "slug": "motivic-flag-maps-oq-01",
+  "title": "Can moduli space theory be formalized in Mathlib to remove the 2 axioms",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "Parent gallery proof `motivic-flag-maps` axiomatizes the Bryan\u2013Elek\u2013Manners\u2013Salafatinos\u2013Vakil 2025 (arXiv:2601.07222) motivic identity [\u03a9\u00b2_\u03b2(Fl_{n+1})] = [GL_n \u00d7 A^a] in K\u2080(Var). OQ-01: can the 2 axioms in `proofs/Proofs/MotivicFlagMaps.lean` (motivicClassBasedMaps L309, motivic_class_flag_maps L320) be removed by formalizing moduli space theory in Mathlib?",
+    "plain": "The parent proof depends on two axioms: (1) the existence of the motivic class of the moduli space of based rational maps to flag varieties, and (2) the BEMSV 2025 theorem identifying that class with [GL_n \u00d7 A^a]. This OQ asks whether Mathlib can be extended to remove these axioms. Verdict: full removal is multi-month-blocked on Mathlib's lack of K\u2080(Var) and moduli infrastructure; intermediate structural refactors and F_q-realization weakenings are tractable.",
+    "whyMatters": [
+      "Reduces a major axiomatized gallery proof to a fully machine-checked one.",
+      "Builds K\u2080(Var) and moduli infrastructure in Mathlib \u2014 useful for many other motivic/enumerative-geometry problems.",
+      "Forces a clean structure-encoded interface (sub-goal A) aligned with active OQ-03 patterns.",
+      "Demonstrates Mathlib's reach into modern algebraic geometry (post-2020 research)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Bryan, Elek, Manners, Salafatinos, Vakil 2025 (arXiv:2601.07222): [\u03a9\u00b2_\u03b2(Fl_{n+1})] = [GL_n \u00d7 A^a] in K\u2080(Var) for n \u2265 1 and positive \u03b2.",
+      "Kontsevich 1995: foundational theory of moduli of stable maps M\u0304_{g,n}(X, \u03b2).",
+      "Bittner 2004: cut-and-paste relations for K\u2080(Var) in characteristic zero.",
+      "In MotivicFlagMaps.lean: GLn class computation, cell decompositions, q-factorial identities (40 theorems, sorry-free)."
+    ],
+    "open": [
+      "Full Lean formalization of the BEMSV 2025 theorem.",
+      "Whether Mathlib has any K\u2080(Var) infrastructure (verified absent at pinned SHA).",
+      "Sub-goal A: structure-encoded BEMSVTheoremAxioms refactor as a cleaner replacement for the 2 raw axioms.",
+      "Sub-goal B: F_q-realization weakening \u2014 replace BEMSV identity with weaker F_q-count identity for small (n, \u03b2).",
+      "Out of scope (sibling OQs): partial_flag_extension conjecture in MotivicFlagMapsPartialFlags.lean."
+    ],
+    "goal": "Replace one or both raw axioms in MotivicFlagMaps.lean with structural refinements (sub-goal A) or weaker realization-level axioms (sub-goal B). Full axiom removal (sub-goal C) is multi-month and blocked on Mathlib."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-13T12:15:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE complete \u2014 axiom map of MotivicFlagMaps.lean (2 axioms: motivicClassBasedMaps L309, motivic_class_flag_maps L320 = BEMSV 2025 theorem), Mathlib bearer audit at lake-pinned SHA confirming no K\u2080(Var)/moduli/flag-variety infrastructure, cross-ref to active sibling OQ-03 thread.",
+    "blockers": [
+      "Mathlib at pinned SHA 2df2f01 has no K\u2080(Var), no flag varieties, no moduli of stable maps. Sub-goal C requires multi-month Mathlib contribution."
+    ],
+    "nextAction": "Future session: sub-goal A \u2014 bundle the 2 axioms into a BEMSVTheoremAxioms structure (~30\u201360 LOC refactor). Aligns with OQ-03 MotivicMeasure structure pattern. Does NOT reduce assumption count per CLAUDE.md Axiom Integrity Policy, but provides cleaner interface.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE 2026-05-13 (researcher-10): Comprehensive axiom map of MotivicFlagMaps.lean (2 axioms: motivicClassBasedMaps L309, motivic_class_flag_maps L320 = BEMSV 2025 main theorem), Mathlib bearer audit at lake-pinned SHA 2df2f01 confirming NO K\u2080(Var)/flag varieties/moduli infrastructure (matches OQ-03 finding). Cross-referenced 5 active sibling OQ-03 PRs (#18299 #18401 #18457 #18524 #18744 \u2014 MotivicMeasure structure pattern). 3-sub-goal decomposition: A (tractable structural refactor), B (F_q realization weakening), C (multi-month blocked). Note: prior progressSummary referred to parent gallery proof completion (sorries \u2192 0), not to this OQ's actual axiom-removal question.",
+    "builtItems": [
+      "Fixed grassmannianClass: swapped (_, 0) and (0, _) patterns so Gr(0,0) = 1",
+      "Fixed grassmannianClass: q-Pascal recursion uses grassmannianClass (d+1) n (was using d)",
+      "Proved grassmannianClass_lines: Gr(1,n+1) = P^n by induction on n",
+      "Proved geom_sum_split: \u2211_{i<a} q^i + q^a \u00b7 \u2211_{i<b} q^i = \u2211_{i<a+b} q^i",
+      "Proved qNumber_split: [d]_L + L^d \u00b7 [n-d]_L = [n]_L for d \u2264 n",
+      "Fixed grassmannianClass pattern order: 0,_ before _,0 so Gr(0,0)=1 (was 0)",
+      "Fixed grassmannianClass q-Pascal: first recursive call uses (d+1) n (was d n)",
+      "Proved grassmannianClass_lines by induction: base Gr(1,1)=1=P^0, step Gr(1,n+2)=L*P^n+1=P^(n+1)",
+      "Fixed qPascal proof: simp lemmas corrected for unfolded if-conditions",
+      "Re-fixed grassmannianClass: swapped pattern order and corrected q-Pascal recursion",
+      "Added qFactorial_succ: qF(n+1) = qN(n+1) * qF(n)",
+      "Added qNumber_split: qN(d+1) + L^(d+1) * qN(n-d) = qN(n+1)",
+      "Proved gaussian_binomial_identity by induction on n with q-Pascal + qNumber_split",
+      "Proved grassmannianClass_self: Gr(n,n) = 1",
+      "Proved grassmannianClass_lines by induction using qPascal",
+      "Fixed grassmannianClass: swapped patterns, fixed recursive call",
+      "Proved grassmannianClass_lines: Gr(1,n+1) = P^n by induction (PartialFlags:239-249)",
+      "Proved grassmannianClass_duality via Polynomial Z universality: lift to integral domain, cancel via Gaussian binomial identity, evaluate back",
+      "Added grassmannianClass_eq_zero_of_gt: Gr(d,n)=0 when d>n",
+      "Added polyK0/evalAtL infrastructure for proving ring identities via Z[X]",
+      "[S1 OBSERVE 2026-05-13 researcher-10] Comprehensive axiom map (2 in scope, 2 OOS) + Mathlib bearer audit at SHA 2df2f01 (NO K\u2080(Var)/moduli infrastructure) + 3-sub-goal decomposition (A tractable refactor, B F_q realization, C multi-month blocked) + cross-ref to 5 active OQ-03 PRs. Doc-only; 0 LOC Lean."
+    ],
+    "insights": [
+      "OQ-01 axiom-removal target: 2 axioms in MotivicFlagMaps.lean (motivicClassBasedMaps L309, motivic_class_flag_maps L320). Out of scope: 2 partial-flag axioms in MotivicFlagMapsPartialFlags.lean (one is genuinely open).",
+      "Axiom #1 (motivicClassBasedMaps) cannot be removed without the actual moduli space \u2014 requires either (a) moduli-as-scheme + pushforward to K\u2080(Var), or (b) constructive description via cell decomposition.",
+      "Axiom #2 (motivic_class_flag_maps) IS the BEMSV 2025 theorem. Removing means formalizing the BEMSV proof: cell decomposition of \u03a9\u00b2_\u03b2(Fl_{n+1}) + tableaux combinatorics. Research-level.",
+      "Mathlib bearer audit at SHA 2df2f01: NO K\u2080(Var), NO flag varieties/Grassmannians as schemes, NO moduli of stable maps, NO Hilbert/Quot schemes, NO 'motivic' terminology. Only basic scheme theory + generic GrothendieckGroup (group completion of monoids).",
+      "Sibling OQ-03 has 5 active PRs (#18299 S1 OBSERVE, #18401 S2 PREP, #18457 S2-A PREP MotivicMeasure, #18524 S2 ACT divisibility, #18744 S2-A ACT-1 open) and established the structure-encoded MotivicMeasure pattern.",
+      "Sub-goal A (tractable next): bundle the 2 axioms into a BEMSVTheoremAxioms structure (~30\u201360 LOC refactor). Per Axiom Integrity Policy, this does NOT reduce the assumption count (structure fields count as assumptions), but provides cleaner architectural interface aligned with OQ-03.",
+      "Sub-goal B (harder): F_q-realization route. The K\u2080(Var) identity implies an exact F_q-point count for \u03a9\u00b2_\u03b2(Fl_{n+1})(F_q), verifiable combinatorially for small (n, \u03b2) without moduli space theory.",
+      "Sub-goal C (blocked, multi-month): full K\u2080(Var) + flag variety + BEMSV formalization. Requires ~10\u201320 KLOC of new Mathlib content.",
+      "GrothendieckRingVar structure already exists in MotivicFlagMaps.lean:66 \u2014 any future K\u2080(Var) implementation plugs in via this interface without changing parent signatures.",
+      "partial_flag_extension axiom in MotivicFlagMapsPartialFlags.lean:563 is genuinely open mathematically (extension conjecture for partial flags), not just unformalized. Even perfect BEMSV formalization would not remove it."
+    ],
+    "mathlibGaps": [
+      "No K\u2080(Var) (Grothendieck ring of varieties) as a named construction at pinned SHA.",
+      "No flag varieties Fl(d\u2081,\u2026,d\u2096; n) or Grassmannians as defined schemes at pinned SHA.",
+      "No moduli spaces of stable maps M\u0304_{g,n}(X, \u03b2) at pinned SHA.",
+      "No Hilbert schemes or Quot schemes at pinned SHA.",
+      "No 'motivic' terminology in Mathlib at pinned SHA (verified via GitHub code search).",
+      "Spaces of based rational maps \u03a9\u00b2_\u03b2(X) are absent \u2014 would need to be defined from scratch."
+    ],
+    "nextSteps": [
+      "Sub-goal A: Draft BEMSVTheoremAxioms structure in MotivicFlagMaps.lean (or fresh MotivicFlagMapsOQ01.lean companion). ~30\u201360 LOC refactor, low risk.",
+      "Sub-goal B: Survey BEMSV Section 3 (cell decomposition) for the F_q realization; sketch F_q-count axiom + small-case proofs.",
+      "Sub-goal C: defer \u2014 blocked on Mathlib K\u2080(Var) + flag variety + moduli infrastructure.",
+      "Cross-pollinate with OQ-03: watch PR #18744 (S2-A ACT-1) for the MotivicMeasure structure pattern; OQ-01 sub-goal A should mirror its approach."
+    ],
+    "markdown": "# Knowledge Base: motivic-flag-maps-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n**Parent**: `motivic-flag-maps` formalizes the motivic identity `[\u03a9\u00b2_\u03b2(Fl_{n+1})] = [GL_n \u00d7 A^a]` in K\u2080(Var), proved by Bryan\u2013Elek\u2013Manners\u2013Salafatinos\u2013Vakil (BEMSV) 2025 (arXiv:2601.07222). The proof relies on:\n- A definition of `K\u2080(Var)` (axiomatized via `GrothendieckRingVar` structure at `MotivicFlagMaps.lean:66`).\n- A definition of `motivicClassBasedMaps` \u2014 the motivic class of the moduli space of based rational maps to flag varieties.\n- The BEMSV theorem itself as an axiom.\n\n**OQ-01**: Can the 2 axioms in `MotivicFlagMaps.lean` be removed by formalizing moduli space theory in Mathlib?\n\n---\n\n## Axiom map (`MotivicFlagMaps.lean`, primary file scope)\n\n| # | Name | Line | Type |\n|---|---|---|---|\n| 1 | `motivicClassBasedMaps` | 309 | `(n : \u2115) (\u03b2 : HomologyClass n) : K.carrier` |\n| 2 | `motivic_class_flag_maps` | 320 | `[\u03a9\u00b2_\u03b2(Fl_{n+1})] = [GL_n \u00d7 A^a]` (BEMSV 2025 main theorem) |\n\nOut-of-scope axioms (in `MotivicFlagMapsPartialFlags.lean`):\n- `motivicClassPartialFlagMaps` (L527)\n- `partial_flag_extension` (L563) \u2014 the open extension conjecture for partial flags.\n\n---\n\n## Mathlib bearer audit (SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)\n\n**Existing infrastructure** (foundation only):\n- `Mathlib/AlgebraicGeometry/*` \u2014 schemes, projective spectrum, morphisms (~30 files).\n- `Mathlib/GroupTheory/MonoidLocalization/GrothendieckGroup.lean` \u2014 generic group completion.\n- `Mathlib/AlgebraicGeometry/EllipticCurve/Weierstrass.lean` \u2014 sole occurrence of \"moduli\" (j-invariant level).\n\n**Missing in Mathlib at pinned SHA**:\n- \u274c `K\u2080(Var)` \u2014 Grothendieck ring of varieties.\n- \u274c Flag varieties / Grassmannians as schemes.\n- \u274c Moduli spaces of stable maps `M\u0304_{g,n}(X, \u03b2)`.\n- \u274c Hilbert schemes, Quot schemes.\n- \u274c Spaces of based rational maps `\u03a9\u00b2_\u03b2(X)`.\n- \u274c Any \"motivic\" terminology.\n\n---\n\n## Insights\n\n### Insight 1: Axiom #1 cannot be removed without the actual moduli space\n`motivicClassBasedMaps` is a *value* in `K.carrier` (the Grothendieck ring). Removing this axiom requires either (a) defining the moduli space concretely as a scheme and pushing it forward to K\u2080(Var), or (b) refining `GrothendieckRingVar` so that the class can be derived from a constructive description (cell decomposition, F_q point counts, etc.). Both are multi-month projects.\n\n### Insight 2: Axiom #2 IS the BEMSV theorem\n`motivic_class_flag_maps` axiomatizes the 2025 paper's main theorem. Removing it means formalizing the BEMSV proof, which uses cell decomposition of `\u03a9\u00b2_\u03b2(Fl_{n+1})` and tableaux combinatorics. Research-level.\n\n### Insight 3: Mathlib has no motivic infrastructure at pinned SHA\nGitHub code search at the pinned SHA returns ZERO files in Mathlib mentioning \"motivic\", \"K_0(Var)\", \"stable map moduli\", or \"Quot scheme\". The OQ-03 thread has already established this; OQ-01 inherits the same blocker.\n\n### Insight 4: Sibling OQ-03 thread provides a template\n`motivic-flag-maps-oq-03` is actively building a `MotivicMeasure` structure (PR #18457 + #18744) that abstracts the motivic-measure interface. This pattern \u2014 replace raw axioms with a structure that bundles assumptions \u2014 is the **template for sub-goal A** here: bundle the 2 axioms into a `BEMSVTheoremAxioms` structure.\n\n### Insight 5: Structure-encoded refinement doesn't reduce assumption count\nPer CLAUDE.md's Axiom Integrity Policy: moving axioms into a structure does **not** reduce the assumption count. It only changes where they are declared. Sub-goal A's value is **architectural** (cleaner interface, single point of dependency), not assumption-eliminating.\n\n### Insight 6: F_q realization is a tractable falsifiability route\nThe BEMSV identity in K\u2080(Var) implies, via the realization homomorphism `K\u2080(Var) \u2192 \u2124[q]`, an exact F_q point count for `\u03a9\u00b2_\u03b2(Fl_{n+1})(F_q)`. The F_q count for fixed `(n, \u03b2)` is verifiable by combinatorial methods independent of moduli space theory. This is **sub-goal B**: replace the K\u2080(Var) identity with the (weaker) F_q-count identity.\n\n### Insight 7: GrothendieckRingVar structure already exists in the parent file\n`MotivicFlagMaps.lean:66` defines `GrothendieckRingVar` as a structure with `carrier`, `L` (Lefschetz motive), and ring operations. The 2 axioms in this file consume `K : GrothendieckRingVar` \u2014 so any future K\u2080(Var) implementation can be plugged in directly without changing the parent file's signatures.\n\n### Insight 8: Out-of-scope axioms in PartialFlags.lean are genuinely open\nThe `partial_flag_extension` axiom in `MotivicFlagMapsPartialFlags.lean:563` is the **extension conjecture** for partial flags \u2014 it is open mathematically, not just unformalized. Even a perfect Mathlib formalization of BEMSV 2025 would not remove that axiom; it would still be an open conjecture.\n\n---\n\n## Cross-references\n\n- `motivic-flag-maps`: parent gallery proof.\n- `motivic-flag-maps-oq-03`: actively-researched sibling; established the \"structure-encoded `MotivicMeasure`\" pattern. PRs: #18299 #18401 #18457 #18524 #18744.\n- arXiv:2601.07222 (BEMSV 2025): the source of axiom #2.\n\n---\n\n## Sub-goals\n\nSee `state.md` \u00a7 \"Sub-goal decomposition\" for full details:\n- **Sub-goal A** (tractable, 30\u201360 LOC): `BEMSVTheoremAxioms` structure refactor \u2014 pure architectural improvement. Axiom count \u2192 0 in this file, but assumption count unchanged.\n- **Sub-goal B** (harder, 100\u2013200 LOC + sorries): F_q realization route \u2014 replace BEMSV identity with weaker F_q-count identity for small `(n, \u03b2)`.\n- **Sub-goal C** (blocked on Mathlib, multi-month): full K\u2080(Var) + flag variety + BEMSV formalization.\n\n---\n\n## Dead Ends\n\nNone yet \u2014 this is the OBSERVE session.\n\nLikely future dead ends (based on Mathlib audit):\n- Searching for an existing K\u2080(Var) or stable-maps moduli library in Mathlib (does not exist at pinned SHA).\n- Trying to derive `motivicClassBasedMaps` from elliptic-curve moduli infrastructure (`Mathlib/AlgebraicGeometry/EllipticCurve/Weierstrass.lean` is too specialized).\n- Replacing axioms via `derive`/`decide` tactics \u2014 these are propositional/categorical, not computational.\n\n---\n\n## References\n\n- Bryan, J., Elek, B., Manners, F., Salafatinos, G., Vakil, R. (2025). *Motivic class of based maps to flag varieties*. arXiv:2601.07222.\n- Kontsevich, M. (1995). *Enumeration of rational curves via torus actions*. (Moduli of stable maps.)\n- Bittner, F. (2004). *The universal Euler characteristic for varieties of characteristic zero*. Compositio Math. (K\u2080(Var) foundations.)\n- Mathlib `GrothendieckGroup.lean` (Ya\u00ebl Dillies et al.): the only existing K\u2080-like primitive.\n"
+  },
+  "tags": [
+    "motivic-flag-maps",
+    "K0-Var",
+    "moduli-spaces",
+    "axiomatized-parent",
+    "axiom-removal",
+    "open-question",
+    "BEMSV-2025",
+    "algebraic-geometry"
+  ],
+  "relatedProofs": [
+    "motivic-flag-maps",
+    "motivic-flag-maps-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "Bryan, J., Elek, B., Manners, F., Salafatinos, G., Vakil, R. (2025). Motivic class of based maps to flag varieties. arXiv:2601.07222.",
+      "Kontsevich, M. (1995). Enumeration of rational curves via torus actions.",
+      "Bittner, F. (2004). The universal Euler characteristic for varieties of characteristic zero. Compositio Math.",
+      "Bj\u00f8rner, A., Brenti, F. (2005). Combinatorics of Coxeter Groups. (Tableaux background.)"
+    ],
+    "urls": [
+      "https://arxiv.org/abs/2601.07222"
+    ],
+    "mathlib": [
+      "Mathlib/AlgebraicGeometry/Scheme.lean (foundation only)",
+      "Mathlib/GroupTheory/MonoidLocalization/GrothendieckGroup.lean (only K\u2080-like primitive at pinned SHA)",
+      "Mathlib/AlgebraicGeometry/EllipticCurve/Weierstrass.lean (sole 'moduli' occurrence)"
+    ]
+  },
+  "started": "2026-03-30T07:24:09.593Z",
+  "lastUpdate": "2026-05-13T12:15:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/MotivicFlagMaps.lean",
+      "filename": "MotivicFlagMaps.lean",
+      "lineCount": 439,
+      "theoremCount": 26,
+      "axiomCount": 2,
+      "defCount": 17,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MotivicFlagMaps.lean"
+    },
+    {
+      "path": "Proofs/MotivicFlagMapsPartialFlags.lean",
+      "filename": "MotivicFlagMapsPartialFlags.lean",
+      "lineCount": 636,
+      "theoremCount": 33,
+      "axiomCount": 2,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MotivicFlagMapsPartialFlags.lean"
+    },
+    {
+      "path": "Proofs/MotivicFlagMapsProvable.lean",
+      "filename": "MotivicFlagMapsProvable.lean",
+      "lineCount": 183,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MotivicFlagMapsProvable.lean"
+    }
+  ]
+}

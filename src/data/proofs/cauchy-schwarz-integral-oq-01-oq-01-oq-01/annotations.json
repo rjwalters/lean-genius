@@ -1,0 +1,226 @@
+[
+  {
+    "id": "ann-cs-oq01-oq01-oq01-00-preamble",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports the full Mathlib library and opens the Real namespace. The file works entirely with explicit real-valued coordinates rather than abstract inner product spaces, making all proofs accessible to nlinarith's polynomial arithmetic.",
+    "mathContext": "By working in $\\mathbb{R}^n$ with explicit coordinates $(a_1, \\ldots, a_n)$ rather than abstract inner product spaces, each inequality reduces to a polynomial identity that `nlinarith` can verify via sum-of-squares certificates.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nlinarith",
+      "Real namespace",
+      "polynomial arithmetic"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib"
+    ]
+  },
+  {
+    "id": "ann-cs-oq01-oq01-oq01-01-cs-r2",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 31,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Cauchy-Schwarz for $\\mathbb{R}^2$ via Lagrange Identity",
+    "content": "Proves $(a_1 b_1 + a_2 b_2)^2 \\leq (a_1^2 + a_2^2)(b_1^2 + b_2^2)$ in a single line: the hint `sq_nonneg (a₁ * b₂ - a₂ * b₁)` tells nlinarith that the cross-term $(a_1 b_2 - a_2 b_1)^2 \\geq 0$, which is exactly the gap between RHS and LHS in the Lagrange identity.",
+    "mathContext": "The **Lagrange identity** states $(a_1 b_1 + a_2 b_2)^2 + (a_1 b_2 - a_2 b_1)^2 = (a_1^2 + a_2^2)(b_1^2 + b_2^2)$. Since the cross-term square is nonneg, CS follows immediately. This is the $n=2$ case; geometrically, $(a_1 b_2 - a_2 b_1)^2 = \\|\\mathbf{a} \\times \\mathbf{b}\\|^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange identity",
+      "cross product",
+      "sq_nonneg",
+      "inner product"
+    ],
+    "prerequisites": [
+      "real arithmetic",
+      "squares are nonneg"
+    ]
+  },
+  {
+    "id": "ann-cs-oq01-oq01-oq01-02-cs-r3",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 38,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "Cauchy-Schwarz for $\\mathbb{R}^3$",
+    "content": "The 3D Cauchy-Schwarz requires three cross-term squares as nlinarith hints: $(a_1 b_2 - a_2 b_1)^2$, $(a_1 b_3 - a_3 b_1)^2$, and $(a_2 b_3 - a_3 b_2)^2$. These are exactly the three components of the vector cross product $\\mathbf{a} \\times \\mathbf{b}$ in $\\mathbb{R}^3$.",
+    "mathContext": "The generalized Lagrange identity for $\\mathbb{R}^3$: $(\\sum a_i b_i)^2 + \\sum_{i<j}(a_i b_j - a_j b_i)^2 = (\\sum a_i^2)(\\sum b_i^2)$. The $\\binom{3}{2} = 3$ cross-terms account for all $2 \\times 2$ minors of the $2 \\times 3$ matrix $\\begin{pmatrix} a_1 & a_2 & a_3 \\\\ b_1 & b_2 & b_3 \\end{pmatrix}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Binet-Cauchy formula",
+      "cross product components",
+      "Gram determinant"
+    ],
+    "prerequisites": [
+      "Lagrange identity",
+      "vector cross product"
+    ]
+  },
+  {
+    "id": "ann-cs-oq01-oq01-oq01-03-young",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 51,
+      "endLine": 54
+    },
+    "type": "concept",
+    "title": "Young's Inequality ($p = q = 2$)",
+    "content": "Young's inequality $ab \\leq a^2/2 + b^2/2$ is proved from the single hint $(a-b)^2 \\geq 0$, which expands to $a^2 - 2ab + b^2 \\geq 0$, i.e., $ab \\leq (a^2 + b^2)/2$. This is the $p = q = 2$ case of the general Young inequality $ab \\leq a^p/p + b^q/q$ for conjugate exponents.",
+    "mathContext": "**Young's inequality** (1912): $ab \\leq \\frac{a^p}{p} + \\frac{b^q}{q}$ for $\\frac{1}{p} + \\frac{1}{q} = 1$. At $p = q = 2$: $ab \\leq \\frac{a^2}{2} + \\frac{b^2}{2}$. This is the starting point for proving Hölder's inequality via duality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Young's inequality",
+      "conjugate exponents",
+      "Hölder inequality",
+      "AM-GM"
+    ],
+    "prerequisites": [
+      "real arithmetic"
+    ]
+  },
+  {
+    "id": "ann-cs-oq01-oq01-oq01-04-young-eps",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Young's Inequality with $\\varepsilon$ (sorry)",
+    "content": "The parametric form $ab \\leq \\varepsilon a^2/2 + b^2/(2\\varepsilon)$ is essential in PDE energy estimates. Follows from applying the base Young inequality to $\\sqrt{\\varepsilon}\\,a$ and $b/\\sqrt{\\varepsilon}$. Currently sorry'd — the substitution requires careful handling of the square root.",
+    "mathContext": "For $\\varepsilon > 0$: $ab = (\\sqrt{\\varepsilon}\\,a)(b/\\sqrt{\\varepsilon}) \\leq \\frac{(\\sqrt{\\varepsilon}\\,a)^2}{2} + \\frac{(b/\\sqrt{\\varepsilon})^2}{2} = \\frac{\\varepsilon a^2}{2} + \\frac{b^2}{2\\varepsilon}$. This is used extensively in Sobolev embedding and elliptic regularity proofs.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "PDE energy estimates",
+      "epsilon-delta",
+      "Sobolev spaces"
+    ],
+    "prerequisites": [
+      "Young's inequality",
+      "square root properties"
+    ]
+  },
+  {
+    "id": "ann-cs-oq01-oq01-oq01-05-amgm",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "AM-GM: Two Equivalent Forms",
+    "content": "Two forms of AM-GM for nonneg reals: (1) `amgm_two`: $\\sqrt{ab} \\leq (a+b)/2$, proved via `sqrt_le_sqrt` after showing $ab \\leq ((a+b)/2)^2$; (2) `amgm_sq`: $ab \\leq ((a+b)/2)^2$, a direct algebraic form proved from $(a-b)^2 \\geq 0$. The first form requires square root manipulation; the second is purely polynomial.",
+    "mathContext": "The AM-GM inequality $\\sqrt{ab} \\leq \\frac{a+b}{2}$ is equivalent to $(\\sqrt{a} - \\sqrt{b})^2 \\geq 0$. The quadratic form $ab \\leq \\left(\\frac{a+b}{2}\\right)^2$ avoids square roots entirely and is the form most useful in algebraic contexts.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic mean",
+      "geometric mean",
+      "power mean hierarchy"
+    ],
+    "prerequisites": [
+      "squares nonneg",
+      "Real.sqrt_le_sqrt"
+    ]
+  },
+  {
+    "id": "ann-cs-oq01-oq01-oq01-06-qm-am",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "QM-AM Inequality",
+    "content": "The Quadratic Mean–Arithmetic Mean inequality: $(a+b)^2/4 \\leq (a^2+b^2)/2$, or equivalently $\\text{AM}(a,b) \\leq \\text{QM}(a,b)$. Proved from the single hint $(a-b)^2 \\geq 0$. Together with AM-GM, this gives the chain $\\text{GM} \\leq \\text{AM} \\leq \\text{QM}$.",
+    "mathContext": "The power mean inequality chain: $\\min \\leq \\text{HM} \\leq \\text{GM} \\leq \\text{AM} \\leq \\text{QM} \\leq \\max$. QM-AM is the $M_1 \\leq M_2$ case, where $M_p = \\left(\\frac{a^p + b^p}{2}\\right)^{1/p}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "power mean",
+      "quadratic mean",
+      "Jensen's inequality"
+    ],
+    "prerequisites": [
+      "AM-GM"
+    ]
+  },
+  {
+    "id": "ann-cs-oq01-oq01-oq01-07-titu",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 89,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "Titu's Lemma (Engel Form of Cauchy-Schwarz)",
+    "content": "Titu's lemma: $\\frac{a_1^2}{b_1} + \\frac{a_2^2}{b_2} \\geq \\frac{(a_1+a_2)^2}{b_1+b_2}$ for $b_i > 0$. The proof first combines fractions via `div_add_div`, then reduces to `div_le_div_iff₀` to clear denominators, and finally uses `nlinarith` with the key hint $(a_1 b_2 - a_2 b_1)^2 \\geq 0$. This is the CS inequality applied to vectors $(a_i/\\sqrt{b_i})$ and $(\\sqrt{b_i})$.",
+    "mathContext": "**Titu's lemma** (also Engel form or Sedrakyan's inequality): $\\sum_i \\frac{a_i^2}{b_i} \\geq \\frac{(\\sum a_i)^2}{\\sum b_i}$. Obtained from Cauchy-Schwarz by setting $x_i = a_i/\\sqrt{b_i}$, $y_i = \\sqrt{b_i}$: $(\\sum x_i y_i)^2 \\leq (\\sum x_i^2)(\\sum y_i^2)$ gives $\\frac{(\\sum a_i)^2}{\\sum b_i} \\leq \\sum \\frac{a_i^2}{b_i}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-Schwarz",
+      "Sedrakyan's inequality",
+      "competition mathematics",
+      "div_le_div_iff"
+    ],
+    "prerequisites": [
+      "Cauchy-Schwarz",
+      "positive denominators"
+    ]
+  },
+  {
+    "id": "ann-cs-oq01-oq01-oq01-08-nesbitt",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 109,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Nesbitt's Inequality via field_simp and SOS",
+    "content": "Nesbitt's inequality: $\\frac{a}{b+c} + \\frac{b}{a+c} + \\frac{c}{a+b} \\geq \\frac{3}{2}$ for $a,b,c > 0$. The proof rewrites via `ge_iff_le` and `sub_nonneg`, then uses `field_simp` to clear the triple denominator $(b+c)(a+c)(a+b)$, reducing to a polynomial inequality. The SOS certificate uses three difference squares $(a-b)^2, (b-c)^2, (a-c)^2$ plus products $ab, bc, ac > 0$ for the mixed terms.",
+    "mathContext": "Nesbitt's inequality (1903) is equivalent to $\\sum_{\\text{cyc}} \\frac{a}{b+c} = \\sum_{\\text{cyc}} \\left(\\frac{a+b+c}{b+c} - 1\\right) = (a+b+c)\\sum_{\\text{cyc}} \\frac{1}{b+c} - 3 \\geq \\frac{3}{2}$, which by Cauchy-Schwarz (or AM-HM) gives $(a+b+c) \\cdot \\frac{9}{2(a+b+c)} = \\frac{9}{2}$, so the sum $\\geq \\frac{9}{2} - 3 = \\frac{3}{2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "symmetric inequalities",
+      "field_simp",
+      "SOS decomposition",
+      "AM-HM"
+    ],
+    "prerequisites": [
+      "field_simp tactic",
+      "positivity",
+      "nlinarith"
+    ]
+  },
+  {
+    "id": "ann-cs-oq01-oq01-oq01-09-schur",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 129,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Schur's Inequality (sorry)",
+    "content": "Schur's inequality at $t=1$: $a(a-b)(a-c) + b(b-a)(b-c) + c(c-a)(c-b) \\geq 0$ for $a,b,c \\geq 0$. Currently sorry'd because the SOS decomposition is non-trivial — the standard proof assumes WLOG $a \\geq b \\geq c$ and rewrites as $a(a-b)(a-c) + c(b-c)(a-c) + b(a-b)(b-c) \\geq 0$, which requires case analysis on the sign of $(a-c)$.",
+    "mathContext": "**Schur's inequality** (1923): For $a,b,c \\geq 0$ and $t \\geq 0$, $a^t(a-b)(a-c) + b^t(b-a)(b-c) + c^t(c-a)(c-b) \\geq 0$. At $t=1$ this is equivalent to $a^3 + b^3 + c^3 + abc \\geq ab(a+b) + bc(b+c) + ca(c+a)$, a standard olympiad inequality.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Schur's inequality",
+      "Muirhead",
+      "symmetric functions",
+      "olympiad inequalities"
+    ],
+    "prerequisites": [
+      "WLOG ordering",
+      "SOS decomposition"
+    ]
+  }
+]

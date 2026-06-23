@@ -1,0 +1,320 @@
+[
+  {
+    "id": "ann-e205-header",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 1,
+      "endLine": 40
+    },
+    "type": "concept",
+    "title": "Problem Overview and History",
+    "content": "**Erdős Problem #205**: Can every large $n$ be written as $2^k + m$ where $\\Omega(m) < \\log \\log m$?\n\n**Status**: DISPROVED (Barreto-Leeham 2026, quantified by Tao-Alexeev)\n\n**Counterexample**: There are infinitely many $n$ where ALL remainders $n - 2^k$ have $\\Omega \\ge c\\sqrt{\\log n / \\log \\log n}$ prime factors. Since $\\sqrt{\\log n / \\log \\log n} \\gg \\log \\log n$, the conjecture fails.\n\nThe header traces the problem from Romanoff (1934) through Erdős (1950) to the 2026 disproof, listing the full progress log of the formalization.",
+    "mathContext": "$\\Omega(m)$ counts prime factors with multiplicity (e.g., $\\Omega(12) = \\Omega(2^2 \\cdot 3) = 3$). The average $\\Omega(n) \\approx \\log \\log n$ by the Hardy-Ramanujan theorem (1917).",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factors",
+      "big-omega function",
+      "covering systems",
+      "de Polignac numbers"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "covering systems",
+      "analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-e205-bigomega",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 52,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "The Big-Omega Function",
+    "content": "`bigOmega n` = number of prime factors of $n$, counted WITH multiplicity. Defined as `n.primeFactorsList.length`, leveraging Mathlib's `primeFactorsList` which returns the sorted list of prime factors (with repeats). For example, $\\Omega(12) = |[2, 2, 3]| = 3$.",
+    "mathContext": "$\\Omega(n) = \\sum_{p^a \\| n} a = |\\text{primeFactorsList}(n)|$. This is a completely additive arithmetic function: $\\Omega(ab) = \\Omega(a) + \\Omega(b)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.primeFactorsList",
+      "completely additive function",
+      "arithmetic function"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-e205-omega-theorems",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 57,
+      "endLine": 85
+    },
+    "type": "insight",
+    "title": "Properties of Omega (All Verified)",
+    "content": "All four fundamental properties of $\\Omega$ are **fully proved** (no axioms):\n\n- `bigOmega_one`: $\\Omega(1) = 0$ (by `simp`)\n- `bigOmega_prime`: $\\Omega(p) = 1$ for prime $p$ (by `simp` with `primeFactorsList_prime`)\n- `bigOmega_prime_pow`: $\\Omega(p^k) = k$ (by induction on $k$, using `perm_primeFactorsList_mul`)\n- `bigOmega_mul`: $\\Omega(ab) = \\Omega(a) + \\Omega(b)$ for $a, b > 0$ (via `perm_primeFactorsList_mul`)\n\nThese were originally axiomatized but are now proved from Mathlib, eliminating 3 axioms.",
+    "mathContext": "Complete additivity $\\Omega(ab) = \\Omega(a) + \\Omega(b)$ follows because $\\text{primeFactorsList}(ab) \\sim \\text{primeFactorsList}(a) \\mathbin{++} \\text{primeFactorsList}(b)$ (permutation equivalence).",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete additivity",
+      "Nat.perm_primeFactorsList_mul",
+      "induction"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Nat.primeFactorsList",
+      "List.Perm"
+    ]
+  },
+  {
+    "id": "ann-e205-conjecture",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 91,
+      "endLine": 99
+    },
+    "type": "definition",
+    "title": "The Erdős Conjecture (Problem 205)",
+    "content": "`HasSmallOmegaRep n`: $n = 2^k + m$ with $\\Omega(m) < \\log \\log m$ for some $k, m$.\n\n`Erdos205Conjecture`: $\\exists N_0, \\forall n \\ge N_0$, $n$ has such a representation.\n\nThe hope was that since most $m$ have $\\Omega(m) \\approx \\log \\log m$, finding one with $\\Omega < \\log \\log m$ among $\\{n - 2^k : 2^k < n\\}$ should be easy. The disproof shows this intuition fails.",
+    "mathContext": "The condition $\\Omega(m) < \\log \\log m$ is weaker than requiring $m$ prime ($\\Omega(m) = 1$), but stronger than requiring $m$ squarefree. By probabilistic arguments, almost all $n$ DO have such representations — but not all.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive representation",
+      "existential quantifier",
+      "sufficiently large"
+    ],
+    "prerequisites": [
+      "bigOmega",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-e205-minomega",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 105,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "Minimum Omega Over Remainders",
+    "content": "`minOmegaRemainder n` = $\\min\\{\\Omega(n - 2^k) : 2^k < n\\}$, computed via `Finset.inf'` over valid exponents $k \\le \\log_2 n$. Returns 0 for $n \\le 1$.\n\n`thresholdFunction n` = $\\sqrt{\\log n / \\log \\log n}$, the growth rate of the counterexample.\n\nThe counterexample shows $\\text{minOmegaRemainder}(n) \\ge c \\cdot \\text{thresholdFunction}(n)$ for infinitely many $n$.",
+    "mathContext": "$\\text{minOmegaRemainder}(n) = \\min_{0 \\le k \\le \\log_2 n} \\Omega(n - 2^k)$. The threshold $\\sqrt{\\log n / \\log \\log n}$ grows faster than $\\log \\log n$ since $\\frac{\\sqrt{\\log n / \\log \\log n}}{\\log \\log n} = \\frac{\\sqrt{\\log n}}{(\\log \\log n)^{3/2}} \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.inf'",
+      "threshold function",
+      "asymptotic growth"
+    ],
+    "prerequisites": [
+      "Finset operations",
+      "bigOmega",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-e205-counterexample",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 119,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Barreto-Leeham Counterexample",
+    "content": "`barreto_leeham_counterexample` (axiom): There exist $c > 0$ and infinitely many $n$ such that:\n1. $\\text{minOmegaRemainder}(n) \\ge c \\cdot \\sqrt{\\log n / \\log \\log n}$\n2. All remainders $n - 2^k \\ge 16$ (needed for $\\log \\log$ monotonicity)\n\nThe $n \\ge 16$ condition ensures the monotonicity lemma `loglog_mono_nat` applies, which is crucial for the final contradiction in the disproof.",
+    "mathContext": "For $n = 10^{100}$: $\\log \\log n \\approx 5.3$ but $\\sqrt{\\log n / \\log \\log n} \\approx 6.5$. The gap widens: for $n = 10^{10000}$, $\\log \\log n \\approx 10.1$ but the threshold $\\approx 47$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "Set.Infinite",
+      "lower bound"
+    ],
+    "prerequisites": [
+      "covering systems",
+      "Chinese remainder theorem",
+      "sieve methods"
+    ]
+  },
+  {
+    "id": "ann-e205-auxiliaries",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 133,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "Auxiliary Lemmas (2 proved, 1 axiom)",
+    "content": "Three lemmas connecting the counterexample to the disproof:\n\n- `threshold_dominates_loglog` (axiom): $\\forall c > 0, \\exists N_0, \\forall n \\ge N_0: c \\cdot \\sqrt{\\log n / \\log \\log n} > \\log \\log n$\n- `remainder_achieves_min` (**proved**): $\\text{minOmegaRemainder}(n) \\le \\Omega(n - 2^k)$ via `Finset.inf'_le`\n- `loglog_mono_nat` (**proved**): $\\log \\log m \\le \\log \\log n$ for $16 \\le m \\le n$ via `Real.log_le_log`\n\nThe `remainder_achieves_min` proof carefully shows $k$ is in the valid Finset range using `Nat.lt_pow_succ_log_self`.",
+    "mathContext": "The chain of inequalities in the disproof: $\\Omega(m) \\ge \\text{minOmega}(n) \\ge c \\cdot \\text{threshold}(n) > \\log \\log n \\ge \\log \\log m$. Each link uses one of these lemmas.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.inf'_le",
+      "Real.log_le_log",
+      "asymptotic dominance"
+    ],
+    "prerequisites": [
+      "Finset.inf'",
+      "Real.log monotonicity",
+      "Nat.log"
+    ]
+  },
+  {
+    "id": "ann-e205-disproof",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 182,
+      "endLine": 229
+    },
+    "type": "insight",
+    "title": "Disproof of Conjecture (Verified)",
+    "content": "**theorem erdos_205_disproved : ¬Erdos205Conjecture**\n\nA 47-line verified proof by contradiction:\n1. Assume conjecture holds with threshold $N_0$\n2. Get counterexample constant $c$ and threshold $N_1$ where $c \\cdot \\text{threshold} > \\log \\log$\n3. Find $n > \\max(N_0, N_1)$ from counterexample\n4. Conjecture gives $n = 2^k + m$ with $\\Omega(m) < \\log \\log m$\n5. But $\\Omega(m) \\ge \\text{minOmega}(n) \\ge c \\cdot \\text{threshold}(n) > \\log \\log n \\ge \\log \\log m$\n6. `linarith` derives the contradiction from $\\Omega(m) < \\log \\log m$ and $\\Omega(m) > \\log \\log m$",
+    "mathContext": "The key monotonicity step: $m = n - 2^k \\le n$ and $m \\ge 16$, so $\\log \\log m \\le \\log \\log n$ by `loglog_mono_nat`. This closes the chain $\\log \\log m \\le \\log \\log n < \\Omega(m)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "linarith",
+      "verified disproof"
+    ],
+    "prerequisites": [
+      "barreto_leeham_counterexample",
+      "threshold_dominates_loglog",
+      "remainder_achieves_min",
+      "loglog_mono_nat"
+    ]
+  },
+  {
+    "id": "ann-e205-romanoff",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 235,
+      "endLine": 246
+    },
+    "type": "concept",
+    "title": "Romanoff's Theorem (1934)",
+    "content": "`romanoff_positive_density` (axiom): A positive proportion $\\delta > 0$ of integers can be written as $2^k + p$ for prime $p$.\n\nThis is a POSITIVE result: asking for $\\Omega(m) = 1$ (i.e., $m$ prime) works for many $n$. But not all — and the disproof shows even the far weaker $\\Omega(m) < \\log \\log m$ doesn't suffice universally. Romanoff's original proof uses a counting argument over primes $p \\le N$ and exponents $k \\le \\log_2 N$, bounding collisions via the PNT.",
+    "mathContext": "Romanoff proved $\\delta = \\lim_{N \\to \\infty} \\frac{|\\{n \\le N : n = 2^k + p\\}|}{N} > 0$. The exact value is $\\delta = \\sum_{k=1}^{\\infty} \\frac{1}{2^k \\log 2^k} \\cdot (1 - \\text{collision correction})$. Numerical estimates give $\\delta \\approx 0.434$. The proof uses inclusion-exclusion on the sets $A_k = \\{2^k + p : p \\le N - 2^k\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "positive density",
+      "Goldbach-type representation",
+      "IsPowerPlusePrime"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "density of sums"
+    ]
+  },
+  {
+    "id": "ann-e205-covering-obstruction",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 248,
+      "endLine": 253
+    },
+    "type": "concept",
+    "title": "Erdős's Covering Obstruction (1950)",
+    "content": "`erdos_covering_obstruction` (axiom): A positive density of ODD integers CANNOT be written as $2^k + p$ for any prime $p$. This was Erdős's breakthrough application of covering systems to additive problems.\n\nFor $n$ in a suitable arithmetic progression mod $3 \\cdot 5 \\cdot 7 \\cdot 13 \\cdot 17 \\cdot 241$, every remainder $n - 2^k$ is divisible by one of $\\{3, 5, 7, 13, 17, 241\\}$ and hence composite (since $n - 2^k > 241$).",
+    "mathContext": "Erdős showed $\\lim_{N \\to \\infty} \\frac{|\\{n \\le N : n \\text{ odd}, \\nexists k, p : n = 2^k + p\\}|}{N} = \\delta' > 0$. These are the de Polignac numbers, the smallest being 127.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering systems",
+      "de Polignac numbers",
+      "modular arithmetic"
+    ],
+    "prerequisites": [
+      "Chinese remainder theorem",
+      "multiplicative orders"
+    ]
+  },
+  {
+    "id": "ann-e205-concrete-omega",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 259,
+      "endLine": 293
+    },
+    "type": "concept",
+    "title": "Concrete Omega Computations (12 values, native_decide)",
+    "content": "Twelve concrete values of $\\Omega$ verified by `native_decide`:\n\n$\\Omega(2) = 1$, $\\Omega(4) = 2$, $\\Omega(6) = 2$, $\\Omega(8) = 3$, $\\Omega(12) = 3$, $\\Omega(30) = 3$, $\\Omega(60) = 4$, $\\Omega(120) = 5$, $\\Omega(210) = 4$, $\\Omega(1024) = 10$, $\\Omega(2310) = 5$, $\\Omega(30030) = 6$.\n\nNotable values: $\\Omega(1024) = \\Omega(2^{10}) = 10$ (pure prime power), $\\Omega(30030) = \\Omega(2 \\cdot 3 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 13) = 6$ (primorial of 13).",
+    "mathContext": "These demonstrate $\\Omega$ on various number types: prime powers ($2^k$), primorials ($p\\#$), and products. The primorial $p\\# = \\prod_{q \\le p} q$ has $\\Omega(p\\#) = \\pi(p)$ (prime counting function).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "primorial",
+      "prime power"
+    ],
+    "prerequisites": [
+      "bigOmega",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "ann-e205-covering-systems",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 295,
+      "endLine": 384
+    },
+    "type": "concept",
+    "title": "Covering Systems and de Polignac Numbers",
+    "content": "Formal verification of the covering system machinery underlying the disproof:\n\n**Covering system definition**: `IsCoveringSystem S` requires every integer is in some residue class of `S`.\n\n**Erdős modulus**: $3 \\cdot 5 \\cdot 7 \\cdot 13 \\cdot 17 \\cdot 241 = 5{,}592{,}405$, verified by `native_decide`. The orders $\\text{ord}_p(2)$ for these primes are $\\{2, 4, 3, 12, 8, 24\\}$ with $\\text{lcm} = 24$.\n\n**De Polignac number verification**: 127 and 149 are verified as de Polignac numbers by checking all remainders $n - 2^k$ are composite (14 `not_prime` theorems via `native_decide`).\n\n**Example for 127**: $127 - 1 = 126 = 2 \\cdot 3^2 \\cdot 7$, $127 - 2 = 125 = 5^3$, ..., $127 - 64 = 63 = 3^2 \\cdot 7$. All composite.",
+    "mathContext": "The covering $\\{0 \\bmod 2, 0 \\bmod 3, 1 \\bmod 4, 3 \\bmod 8, 7 \\bmod 12, 23 \\bmod 24\\}$ covers $\\{0, \\ldots, 23\\}$. For $n$ in the right AP mod $5{,}592{,}405$, each $2^k \\bmod \\text{ord}_p(2) = r$ forces $p \\mid (n - 2^k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "covering system",
+      "multiplicative order",
+      "de Polignac number",
+      "OEIS A006285"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "Nat.Prime",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "ann-e205-average",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 390,
+      "endLine": 404
+    },
+    "type": "concept",
+    "title": "Hardy-Ramanujan Average and Erdős-Kac Concentration",
+    "content": "Two axiomatized analytic results providing context for why $\\log \\log$ is the natural threshold:\n\n`average_omega_asymptotic` (Hardy-Ramanujan 1917): $\\frac{1}{N} \\sum_{n=1}^{N} \\Omega(n) / \\log \\log N \\to 1$. Turán (1934) gave a dramatically simpler proof using only the second moment method.\n\n`omega_concentration` (Erdős-Kac 1940): The fraction of $n \\le N$ with $|\\Omega(n) - \\log \\log n| > \\varepsilon \\sqrt{\\log \\log n}$ tends to 0. In full strength, $(\\Omega(n) - \\log \\log n) / \\sqrt{\\log \\log n} \\to N(0,1)$ in distribution. This was the first 'probabilistic number theory' result and launched the Erdős-Kac paradigm.",
+    "mathContext": "The Erdős-Kac theorem is remarkable: $\\Omega(n)$ is asymptotically Gaussian despite being a deterministic arithmetic function, because the contributions of different primes $p \\mid n$ behave like approximately independent Bernoulli random variables with parameter $1/p$. The variance $\\sum_{p \\le n} 1/p \\approx \\log \\log n$ explains the normalization. This makes $\\log \\log n$ the 'typical' value and explains why Erdős expected the conjecture to be true.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hardy-Ramanujan theorem",
+      "Erdős-Kac theorem",
+      "normal distribution",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "prime number theorem",
+      "central limit theorem"
+    ]
+  },
+  {
+    "id": "ann-e205-summary",
+    "proofId": "erdos-205",
+    "range": {
+      "startLine": 406,
+      "endLine": 444
+    },
+    "type": "concept",
+    "title": "Summary: 6 Axioms, All Deep Results",
+    "content": "**Erdős Problem #205: DISPROVED** with `erdos_205_disproved : ¬Erdos205Conjecture`.\n\n**Proved (non-axiom)**: $\\Omega$ properties (4 theorems), `remainder_achieves_min`, `loglog_mono_nat`, the disproof itself, 12 concrete $\\Omega$ values, covering system verification, de Polignac verification for 127 and 149.\n\n**Axiomatized (6 deep results)**: Barreto-Leeham counterexample, threshold dominance, Romanoff density, Erdős covering obstruction, Hardy-Ramanujan average, Erdős-Kac concentration.\n\nThree axioms were eliminated during the formalization by proving `bigOmega_prime_pow`, `bigOmega_mul`, and `remainder_achieves_min` from Mathlib.",
+    "mathContext": "The 6 remaining axioms are all deep analytic/number-theoretic results requiring techniques (sieve methods, complex analysis, probabilistic methods) far beyond what automated proof search can currently handle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom audit",
+      "formalization status",
+      "Mathlib integration"
+    ],
+    "prerequisites": [
+      "all preceding sections"
+    ]
+  }
+]

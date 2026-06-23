@@ -1,0 +1,210 @@
+[
+  {
+    "id": "ann-e712-context",
+    "proofId": "erdos-712",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview: Hypergraph Turán Densities",
+    "content": "**Erdős Problem #712** asks to determine the Turán density for r-uniform hypergraphs avoiding a complete k-clique K_k^r, for all k > r > 2. The graph case (r=2) was solved by Turán in 1941, but the hypergraph case is completely open — even the simplest case K_4^3 remains unsolved after 80+ years.\n\nErdős offered a $500 prize for any single case and $1000 for the full solution. This is one of the most famous open problems in extremal combinatorics.",
+    "mathContext": "The Turán density π_r(K_k^r) = lim_{n→∞} ex_r(n, K_k^r)/C(n,r) measures the maximum edge density achievable while avoiding a complete r-uniform clique on k vertices. For graphs: π_2(K_k) = (1-1/(k-1))/2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal combinatorics",
+      "Hypergraph theory",
+      "Turán problem",
+      "Flag algebras"
+    ],
+    "prerequisites": [
+      "extremal combinatorics",
+      "asymptotic analysis",
+      "set systems"
+    ]
+  },
+  {
+    "id": "ann-e712-hypergraph",
+    "proofId": "erdos-712",
+    "range": {
+      "startLine": 42,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "r-Uniform Hypergraph and Clique Definitions",
+    "content": "**Hypergraph V r** is a structure with edges (a Finset of Finsets) and a uniformity proof that every edge has cardinality r. This generalizes graphs (r=2) to higher uniformities.\n\n**formsClique H S** says every r-subset of S is an edge of H — S forms a complete K_|S|^r.\n\n**isCliqueFree H k** says no k-element subset forms a clique. This is the avoidance condition in the Turán problem.",
+    "mathContext": "The structure-based approach cleanly separates the hypergraph data (edges) from the uniformity proof, mirroring Mathlib's style for mathematical structures.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hypergraphs",
+      "Cliques",
+      "Forbidden substructures"
+    ],
+    "prerequisites": [
+      "set theory",
+      "Lean 4 structures",
+      "Mathlib Finset API"
+    ]
+  },
+  {
+    "id": "ann-e712-turan-number",
+    "proofId": "erdos-712",
+    "range": {
+      "startLine": 65,
+      "endLine": 82
+    },
+    "type": "definition",
+    "title": "Hypergraph Turán Number",
+    "content": "**turanNumber n r k** is ex_r(n, K_k^r): the maximum number of edges in a K_k^r-free r-uniform hypergraph on n vertices. Defined via sSup (supremum) over all valid hypergraphs.\n\n**turan_upper_trivial** provides the obvious upper bound: ex_r(n, K_k^r) ≤ C(n,r), the total number of r-subsets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal numbers",
+      "Supremum",
+      "Binomial coefficients"
+    ],
+    "mathContext": "See annotation content for formal details of hypergraph turán number",
+    "prerequisites": [
+      "extremal combinatorics",
+      "order theory (suprema)",
+      "binomial coefficient identities"
+    ]
+  },
+  {
+    "id": "ann-e712-density",
+    "proofId": "erdos-712",
+    "range": {
+      "startLine": 84,
+      "endLine": 100
+    },
+    "type": "definition",
+    "title": "Turán Density and Its Properties",
+    "content": "**turanDensity r k** = π_r(K_k^r) = lim_{n→∞} ex_r(n,K_k^r)/C(n,r). The normalized limit of Turán numbers as n → ∞.\n\n**turan_density_exists** axiomatizes that this limit exists (a known result). **turan_density_bounds** states 0 ≤ π ≤ 1.",
+    "mathContext": "The existence of the Turán density as a limit follows from a super-additivity argument (Katona-Nemetz-Simonovits). The density captures the asymptotic edge density of extremal hypergraphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Asymptotic density",
+      "Super-additivity",
+      "Limit existence"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "limits and sequences",
+      "subadditivity arguments"
+    ]
+  },
+  {
+    "id": "ann-e712-turan-theorem",
+    "proofId": "erdos-712",
+    "range": {
+      "startLine": 102,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Classical Turán Theorem (r=2)",
+    "content": "**turan_theorem** states the complete solution for graphs: π_2(K_k) = (1-1/(k-1))/2. This classical result (1941) gives both the exact density and the extremal construction (the balanced complete (k-1)-partite graph).\n\n**turan_graph_extremal** gives the exact edge count of the Turán graph T(n,k-1). For k=3: π_2(K_3) = 0, since K_3-free graphs have at most n²/4 edges (Mantel's theorem).",
+    "mathContext": "Turán's theorem is the foundation of extremal graph theory. The proof combines the double-counting technique with an optimization argument over balanced partitions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "Complete multipartite graphs",
+      "Extremal graph theory"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "combinatorial optimization",
+      "double counting"
+    ]
+  },
+  {
+    "id": "ann-e712-k43",
+    "proofId": "erdos-712",
+    "range": {
+      "startLine": 120,
+      "endLine": 145
+    },
+    "type": "concept",
+    "title": "The K_4^3 Case: Turán's Conjecture",
+    "content": "**turanConjectureK43 = 5/9 ≈ 0.556** is the conjectured density. The Turán hypergraph T(n,4,3) — obtained by partitioning n vertices into 4 balanced parts and taking 3-edges meeting at least 2 parts — achieves this density and is K_4^3-free.\n\n**K43_lower_bound:** π_3(K_4^3) ≥ 5/9 (from the construction).\n**K43_upper_bound_razborov:** π_3(K_4^3) ≤ 0.5616 (Razborov, flag algebras, 2010).\n\nThe gap between 5/9 ≈ 0.556 and 0.5616 is one of the most stubborn gaps in combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's conjecture",
+      "K_4^3",
+      "Flag algebras",
+      "Extremal constructions"
+    ],
+    "mathContext": "See annotation content for formal details of the k_4^3 case: turán's conjecture",
+    "prerequisites": [
+      "hypergraph theory",
+      "extremal combinatorics",
+      "semidefinite programming"
+    ]
+  },
+  {
+    "id": "ann-e712-bounds",
+    "proofId": "erdos-712",
+    "range": {
+      "startLine": 147,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Known Bounds and Methods",
+    "content": "**de_caen_lower_bound:** π_r(K_k^r) ≥ 1 - C(k-1,r)/C(k,r), giving non-trivial lower bounds for all cases.\n\n**kruskal_katona_upper:** π_r(K_k^r) ≤ 1 - 1/k from the Kruskal-Katona theorem on shadows of set systems.\n\n**flag_algebras_upper:** Razborov's method (2007) gives upper bounds strictly below Kruskal-Katona for specific cases using semidefinite programming on local density constraints.",
+    "mathContext": "Flag algebras systematically exploit local density constraints to derive global bounds. While powerful, they have not closed any gap to an exact value for r > 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "De Caen bound",
+      "Kruskal-Katona",
+      "Flag algebras",
+      "SDP bounds"
+    ],
+    "prerequisites": [
+      "extremal set theory",
+      "convex optimization",
+      "asymptotic combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e712-main",
+    "proofId": "erdos-712",
+    "range": {
+      "startLine": 180,
+      "endLine": 201
+    },
+    "type": "concept",
+    "title": "Erdős Problem #712: Main Theorem",
+    "content": "**erdos_712** is the main entry-point theorem, FULLY PROVEN from the axioms. It establishes two facts:\n\n1. The Turán density exists with 0 < π < 1 (using turan_density_positive and kruskal_katona_upper)\n2. The exact value is unknown (using erdos_712_open)\n\nThe proof of π < 1 uses the Kruskal-Katona bound and positivity of k. This is one of the few theorems with actual tactic proofs (calc, linarith, positivity).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Problem statement",
+      "Known bounds",
+      "Open status"
+    ],
+    "mathContext": "See annotation content for formal details of erdős problem #712: main theorem",
+    "prerequisites": [
+      "real analysis",
+      "Lean 4 tactic mode",
+      "order theory"
+    ]
+  },
+  {
+    "id": "ann-e712-conjectures",
+    "proofId": "erdos-712",
+    "range": {
+      "startLine": 203,
+      "endLine": 218
+    },
+    "type": "concept",
+    "title": "Related Conjectures",
+    "content": "**extremal_structure_conjecture:** For each r, k, the extremal hypergraph should be 'nice' — specifically, a balanced k-partition construction analogous to the Turán graph. This is unproven for any r > 2.\n\n**mubayi_K53_conjecture:** π_3(K_5^3) = 3/4, the next simplest case after K_4^3.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal structure",
+      "Mubayi's conjecture"
+    ],
+    "mathContext": "See annotation content for formal details of related conjectures",
+    "prerequisites": [
+      "hypergraph theory",
+      "extremal combinatorics"
+    ]
+  }
+]

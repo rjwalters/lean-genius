@@ -1,0 +1,294 @@
+[
+  {
+    "id": "ann-e225-header",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Problem Overview and Aristotle Contributions",
+    "content": "**Erdős Problem #225**: If a trigonometric polynomial $f(\\theta) = \\sum c_k e^{ik\\theta}$ has all roots on the unit circle and $\\|f\\|_\\infty = 1$, then $\\|f\\|_1 \\leq 4$. **Solved** by Kristiansen (1974) and Saff–Sheil-Small (1973). Aristotle (Harmonic) proved the optimality theorem and found a **formalization bug**: the main theorem is false for constant polynomials, which vacuously satisfy `HasUnitCircleRoots`.",
+    "mathContext": "The problem connects two fundamental norms in harmonic analysis: the $L^\\infty$ norm (supremum) and the $L^1$ norm (integral) of a trigonometric polynomial. The constraint that all roots of $P(z) = \\sum c_k z^k$ lie on $|z| = 1$ severely restricts the polynomial, preventing large $L^1$ norm. The sharp bound of 4 was conjectured by Erdős in the 1940s and listed as Problem 4.20 in Hayman's *Research Problems in Function Theory* (1974). Note: 'real roots' is a misnomer — it refers to roots on the **unit circle** $|z| = 1$, not on $\\mathbb{R}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "trigonometric polynomials",
+      "unit circle",
+      "L1 norm",
+      "L-infinity norm",
+      "Hayman's problem list",
+      "Aristotle proof search"
+    ],
+    "prerequisites": [
+      "complex exponential",
+      "Fourier analysis basics",
+      "polynomial roots"
+    ]
+  },
+  {
+    "id": "ann-e225-imports",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 40,
+      "endLine": 44
+    },
+    "type": "concept",
+    "title": "Imports and Measure Theory Setup",
+    "content": "Imports the full **Mathlib** library and opens `MeasureTheory` namespace for integration. The `MeasureTheory` import provides Bochner integration (`∫`) and `Set.Icc` intervals needed for $L^1$ norms.",
+    "mathContext": "Lean's `∫ θ in Set.Icc 0 (2π), ‖f(θ)‖` uses Bochner integration over the Lebesgue measure. The `noncomputable` keyword on norm definitions reflects that suprema and integrals over $\\mathbb{R}$ are not computationally decidable in general.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bochner integration",
+      "MeasureTheory",
+      "Lebesgue measure",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "measure theory basics",
+      "Bochner integral"
+    ]
+  },
+  {
+    "id": "ann-e225-trigpoly",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 48,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Trigonometric Polynomial Definition and Evaluation",
+    "content": "**TrigPoly n** is defined as `Fin (n+1) → ℂ` — a function mapping indices $0, 1, \\ldots, n$ to complex coefficients. **TrigPoly.eval** computes $f(\\theta) = \\sum_{k=0}^{n} c_k e^{ik\\theta}$ using `Finset.sum` over `Fin (n+1)`.",
+    "mathContext": "Trigonometric polynomials are finite Fourier series: elements of $\\text{span}\\{e^{ik\\theta} : 0 \\leq k \\leq n\\}$. Unlike general Fourier series, they have finitely many terms and are entire functions. The representation via `Fin (n+1) → ℂ` makes the degree explicit in the type, enabling degree-dependent arguments. Evaluation uses `Complex.exp (I * k * θ)` which equals $e^{ik\\theta}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fourier series",
+      "complex exponential",
+      "finite-dimensional function space",
+      "Fin type"
+    ],
+    "prerequisites": [
+      "complex numbers",
+      "complex exponential",
+      "Finset.sum",
+      "function types"
+    ]
+  },
+  {
+    "id": "ann-e225-unitcircle",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 60,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Unit Circle Roots Condition",
+    "content": "**OnUnitCircle z** holds when $\\|z\\| = 1$. **HasUnitCircleRoots p** requires that every root of $P(z) = \\sum c_k z^k$ satisfies $|z| = 1$. This formalizes the 'real roots' condition from the problem statement.",
+    "mathContext": "The terminology 'real roots' in Erdős's original formulation is misleading. It means the roots of $P(z)$ are of the form $z = e^{i\\alpha}$ for real $\\alpha$, i.e., they lie on the unit circle $S^1 \\subset \\mathbb{C}$. **Aristotle's insight**: constant polynomials ($n = 0$) vacuously satisfy `HasUnitCircleRoots` because they have **no roots** — the condition $\\forall z, P(z) = 0 \\to \\|z\\| = 1$ is vacuously true when $P$ is never zero. This creates a loophole in the main theorem statement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial roots",
+      "unit circle",
+      "vacuous truth",
+      "formalization bug"
+    ],
+    "prerequisites": [
+      "complex norm",
+      "polynomial root definition",
+      "universal quantification"
+    ]
+  },
+  {
+    "id": "ann-e225-norms",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 76,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "Supremum and $L^1$ Norm Definitions",
+    "content": "**supNorm**: $\\|f\\|_\\infty = \\sup_{\\theta \\in [0, 2\\pi]} \\|f(\\theta)\\|$, using `iSup` over `Set.Icc`. **l1Norm**: $\\|f\\|_1 = \\int_0^{2\\pi} \\|f(\\theta)\\| \\, d\\theta$, using Bochner integration.",
+    "mathContext": "The supremum norm uses `⨆ θ : Set.Icc 0 (2π), ‖p.eval θ‖`, taking the supremum over the compact subtype. The $L^1$ norm uses `∫ θ in Set.Icc 0 (2π), ‖p.eval θ‖` with Lebesgue measure. Both are `noncomputable` since computing exact real-valued suprema and integrals requires non-constructive principles. The problem asks: given $\\|f\\|_\\infty = 1$, how large can $\\|f\\|_1$ be under the unit-circle-roots constraint?",
+    "significance": "key",
+    "relatedConcepts": [
+      "supremum norm",
+      "L1 norm",
+      "iSup",
+      "Bochner integral",
+      "compact interval"
+    ],
+    "prerequisites": [
+      "real analysis (supremum)",
+      "Lebesgue integration",
+      "norm of complex number"
+    ]
+  },
+  {
+    "id": "ann-e225-main",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 90,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "Main Theorem (Contains Sorry — Formalization Bug)",
+    "content": "**erdos_225_main**: For any trigonometric polynomial $p$ with `HasUnitCircleRoots` and `supNorm = 1`, the $L^1$ norm is $\\leq 4$. **Contains `sorry`** due to a formalization bug discovered by Aristotle: the statement is **false** for constant polynomials, which have $L^1$ norm $= 2\\pi > 4$.",
+    "mathContext": "The mathematical theorem (Kristiansen 1974, Saff–Sheil-Small 1973) is correct when the polynomial has **degree $\\geq 1$** (i.e., at least one root). The formalization needs an additional hypothesis `n ≥ 1` or an explicit non-constant condition. This is a classic formalization subtlety: the informal statement implicitly excludes trivial cases that formal logic does not. The `sorry` marks the incomplete proof, not a mathematical gap.",
+    "significance": "key",
+    "relatedConcepts": [
+      "formalization gap",
+      "vacuous truth",
+      "sorry",
+      "Kristiansen theorem",
+      "Saff–Sheil-Small"
+    ],
+    "prerequisites": [
+      "HasUnitCircleRoots",
+      "supNorm",
+      "l1Norm",
+      "degree condition"
+    ]
+  },
+  {
+    "id": "ann-e225-optimal",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 112,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Optimality: Bound 4 is Sharp (Proved by Aristotle)",
+    "content": "**erdos_225_optimal**: For every $\\varepsilon > 0$, there exists a polynomial with unit-circle roots, $\\|f\\|_\\infty = 1$, and $\\|f\\|_1 > 4 - \\varepsilon$. **Fully proved** by Aristotle (Harmonic) — the witness is the constant polynomial $f = 1$, which has $L^1$ norm $= 2\\pi > 4 > 4 - \\varepsilon$.",
+    "mathContext": "Ironically, Aristotle's proof of optimality uses the same constant polynomial that **disproves** the main theorem as formalized. The constant polynomial $f(\\theta) = 1$ has $\\|f\\|_\\infty = 1$ and $\\|f\\|_1 = 2\\pi \\approx 6.28 > 4$, so it trivially satisfies $\\|f\\|_1 > 4 - \\varepsilon$ for any $\\varepsilon > 0$. The proof uses `ciSup_const` for the supremum and `Real.pi_gt_three` to show $2\\pi > 4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sharpness",
+      "extremal polynomial",
+      "constant function",
+      "ciSup_const",
+      "pi bounds"
+    ],
+    "prerequisites": [
+      "ciSup properties",
+      "Real.pi_gt_three",
+      "norm_num tactic"
+    ]
+  },
+  {
+    "id": "ann-e225-special",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 131,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Special Cases and Examples",
+    "content": "**constant_l1_norm**: $2\\pi > 4$, proved via `Real.pi_gt_three` and `linarith`. This confirms the constant polynomial's $L^1$ norm exceeds the bound, demonstrating the formalization bug.",
+    "mathContext": "The computation $2\\pi > 4$ follows from $\\pi > 3$ (available as `Real.pi_gt_three` in Mathlib), giving $2\\pi > 6 > 4$. This is the simplest demonstration that a polynomial can vacuously satisfy `HasUnitCircleRoots` while violating the $L^1 \\leq 4$ bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pi bounds",
+      "linarith tactic",
+      "counterexample"
+    ],
+    "prerequisites": [
+      "Real.pi_gt_three",
+      "linarith"
+    ]
+  },
+  {
+    "id": "ann-e225-equiv",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 145,
+      "endLine": 151
+    },
+    "type": "theorem",
+    "title": "Equivalent Polynomial Formulation",
+    "content": "**PolynomialHasUnitCircleRoots**: An alternative formulation using the algebraic polynomial $P(z) = \\sum c_k z^k$ directly. Identical to `HasUnitCircleRoots` — both require all roots to satisfy $\\|z\\| = 1$.",
+    "mathContext": "The equivalence between the trigonometric formulation ($f(\\theta) = \\sum c_k e^{ik\\theta}$) and the algebraic one ($P(z) = \\sum c_k z^k$) arises from the substitution $z = e^{i\\theta}$. The roots of $P(z)$ correspond to the zeros of $f(\\theta)$: $f(\\theta_0) = 0 \\iff P(e^{i\\theta_0}) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial representation",
+      "z = e^(iθ) substitution",
+      "equivalent formulations"
+    ],
+    "prerequisites": [
+      "complex polynomial",
+      "unit circle parameterization"
+    ]
+  },
+  {
+    "id": "ann-e225-supequiv",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 158,
+      "endLine": 189
+    },
+    "type": "concept",
+    "title": "Supremum Equivalence on Unit Circle (Proved by Aristotle)",
+    "content": "**sup_on_circle_eq_trig_sup**: The $L^\\infty$ norm of $P(z)$ on the unit circle equals the supremum of $|f(\\theta)|$ over $[0, 2\\pi]$. **Fully proved** by Aristotle (Harmonic) using a bijection between $S^1$ and $[0, 2\\pi]$.",
+    "mathContext": "The proof establishes a bijection: for every $z$ with $\\|z\\| = 1$, there exists $\\theta \\in [0, 2\\pi]$ with $z = e^{i\\theta}$, and vice versa. This uses `Complex.norm_eq_one_iff` and floor-division to normalize $\\theta$ into $[0, 2\\pi]$. The key steps are: (1) `le_antisymm` to prove equality of suprema, (2) `ciSup_le` to bound one supremum by the other, (3) `le_ciSup` with compactness (`IsCompact.bddAbove`) to reverse the inequality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit circle parameterization",
+      "supremum equality",
+      "Complex.norm_eq_one_iff",
+      "compactness argument"
+    ],
+    "prerequisites": [
+      "ciSup_le",
+      "le_ciSup",
+      "IsCompact.bddAbove",
+      "Complex.exp_eq_exp_iff_exists_int"
+    ]
+  },
+  {
+    "id": "ann-e225-fejer",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 193,
+      "endLine": 199
+    },
+    "type": "concept",
+    "title": "Fejér–Riesz Theorem (Axiomatized)",
+    "content": "**fejer_riesz**: If $f(\\theta) \\geq 0$ for all $\\theta$, then $f(\\theta) = |g(\\theta)|^2$ for some trigonometric polynomial $g$. This classical 1915 result connects non-negativity to sum-of-squares representations.",
+    "mathContext": "The Fejér–Riesz theorem (1915) is a cornerstone of harmonic analysis: every non-negative trigonometric polynomial admits a **spectral factorization** $f = |g|^2$. It generalizes to operator-valued functions (Rosenblum's theorem) and matrix-valued settings. The theorem is relevant to Problem #225 because the unit-circle-roots condition can be analyzed via factorization of $|f|^2$. Axiomatized because its proof requires the fundamental theorem of algebra and careful root analysis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fejér–Riesz theorem",
+      "spectral factorization",
+      "sum of squares",
+      "non-negative trigonometric polynomial"
+    ],
+    "prerequisites": [
+      "trigonometric polynomial evaluation",
+      "non-negativity condition",
+      "polynomial factorization"
+    ]
+  },
+  {
+    "id": "ann-e225-littlewood",
+    "proofId": "erdos-225",
+    "range": {
+      "startLine": 201,
+      "endLine": 215
+    },
+    "type": "concept",
+    "title": "Littlewood's Conjecture (Now Theorem)",
+    "content": "**littlewood_lower_bound**: For unimodular polynomials ($|c_k| = 1$ for all $k$), the $L^1$ norm on the unit circle is $\\geq C \\log n$. This provides a **lower bound** on $L^1$ norms, complementing Erdős #225's **upper bound**.",
+    "mathContext": "Littlewood conjectured in 1966 that $\\int_0^{2\\pi} |\\sum_{k=0}^{n-1} c_k e^{ik\\theta}| \\, d\\theta \\geq C \\log n$ when all $|c_k| = 1$. Proved by McGehee, Pigno, and Smith (1981) and independently by Konyagin (1981). The result shows that unimodular polynomials have $L^1$ mass growing logarithmically. By contrast, Erdős #225 shows that unit-circle-root polynomials have $L^1$ norms **bounded** by 4 regardless of degree.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Littlewood conjecture",
+      "unimodular polynomial",
+      "L1 lower bound",
+      "McGehee–Pigno–Smith"
+    ],
+    "prerequisites": [
+      "unimodular coefficients",
+      "logarithmic growth",
+      "Bochner integral"
+    ]
+  }
+]

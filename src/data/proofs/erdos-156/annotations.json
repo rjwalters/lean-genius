@@ -1,0 +1,265 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-156",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Module Header and Problem Overview",
+    "content": "The module docstring introduces Erdős Problem #156: does there exist a maximal Sidon set $A \\subset \\{1, \\ldots, N\\}$ of size $O(N^{1/3})$? Defines Sidon sets (or $B_2$ sequences) as sets where all pairwise sums are distinct, and maximal Sidon sets as those that cannot be extended. References the Erdős-Sárközy-Sós paper [ESS94] posing the problem and Ruzsa's construction [Ru98b] achieving size $O(N^{1/3+\\varepsilon})$.",
+    "mathContext": "A Sidon set: $a + b = c + d$ with $a \\leq b, c \\leq d$ implies $\\{a,b\\} = \\{c,d\\}$. Maximal in $\\{1,\\ldots,N\\}$: $\\forall x \\notin A$, $A \\cup \\{x\\}$ is not Sidon. Question: $\\exists C > 0$, $\\forall N$, $\\exists A$ maximal Sidon with $|A| \\leq C \\cdot N^{1/3}$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "B₂ sequences",
+      "maximal sets",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "pairwise sums",
+      "set theory",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-sidon-defs",
+    "proofId": "erdos-156",
+    "range": {
+      "startLine": 19,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Two Equivalent Sidon Set Definitions",
+    "content": "Two formal characterizations of Sidon sets:\n\n1. **IsSidonSet**: For all $a, b, c, d \\in A$ with $a \\leq b$ and $c \\leq d$, if $a + b = c + d$ then $\\{a, b\\} = \\{c, d\\}$.\n2. **IsSidonSetAlt**: For all $a, b, c, d \\in A$ with $a < b$ and $c < d$, if $a + b = c + d$ then $a = c$ and $b = d$.\n\nThe first uses weak ordering and set equality; the second uses strict ordering and element equality. Both capture the same property: no two distinct pairs produce the same sum.",
+    "mathContext": "$\\text{IsSidonSet}(A) \\iff \\forall a \\leq b, c \\leq d \\in A: a + b = c + d \\implies \\{a,b\\} = \\{c,d\\}$. Equivalently, $\\forall a < b, c < d \\in A: a + b = c + d \\implies (a,b) = (c,d)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pairwise sum distinctness",
+      "B₂ sequences",
+      "set pair equality"
+    ],
+    "prerequisites": [
+      "set membership",
+      "ordered pairs",
+      "natural number ordering"
+    ]
+  },
+  {
+    "id": "ann-sidon-equiv",
+    "proofId": "erdos-156",
+    "range": {
+      "startLine": 38,
+      "endLine": 81
+    },
+    "type": "concept",
+    "title": "Equivalence of Sidon Definitions",
+    "content": "The theorem `sidonSet_iff_alt` proves the two Sidon characterizations are equivalent (using a slightly different 'alt' with $a \\neq b$). The proof handles four cases based on whether $a \\leq b$ or $a > b$ and $c \\leq d$ or $c > d$. Each case applies the hypothesis after reordering elements, using `push_neg`, `linarith`, and set extensionality (`ext x`, `simp`, `tauto`). The reverse direction handles the degenerate case $a = b$ separately.",
+    "mathContext": "The equivalence requires careful handling of the case $a = b$ (diagonal sums $2a$). When $a = b$ and $c \\neq d$, or vice versa, the sum equation $2a = c + d$ with $c < d$ needs separate treatment. The proof uses `linarith` to derive contradictions in impossible cases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "case analysis",
+      "set extensionality",
+      "push_neg",
+      "linarith"
+    ],
+    "prerequisites": [
+      "Lean proof tactics",
+      "set equality",
+      "natural number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-maximal-def",
+    "proofId": "erdos-156",
+    "range": {
+      "startLine": 82,
+      "endLine": 100
+    },
+    "type": "definition",
+    "title": "Maximal Sidon Sets in Intervals",
+    "content": "Three definitions:\n\n- **Interval(N)**: The set $\\{n : 1 \\leq n \\land n \\leq N\\}$, the standard domain for Sidon set problems.\n- **IsMaximalSidonSet(A, N)**: $A \\subseteq \\text{Interval}(N)$, $A$ is Sidon, and $\\forall x \\in \\text{Interval}(N) \\setminus A$, $A \\cup \\{x\\}$ is not Sidon.\n- **size(A)**: Uses `Set.Finite.toFinset.card` when $A$ is finite, else 0.\n\nMaximality captures 'saturation': every missing element would create a sum collision with existing elements.",
+    "mathContext": "Maximal $\\neq$ maximum: a maximal Sidon set cannot be extended, but it may be much smaller than the largest Sidon set. The maximum Sidon set size is $\\sim \\sqrt{N}$ (Erdős-Turán), but the minimum maximal size could be as small as $N^{1/3}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set saturation",
+      "Interval definition",
+      "Finset.card",
+      "maximal vs maximum"
+    ],
+    "prerequisites": [
+      "set containment",
+      "Sidon property",
+      "finite set cardinality"
+    ]
+  },
+  {
+    "id": "ann-greedy",
+    "proofId": "erdos-156",
+    "range": {
+      "startLine": 101,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Greedy Sidon Construction and Properties",
+    "content": "The greedy algorithm `greedySidon` is defined recursively: at step $n+1$, add $n+1$ if $A \\cup \\{n+1\\}$ remains Sidon, otherwise keep $A$. Two theorems:\n\n1. **greedySidon_is_sidon**: Proved by induction — the base case (empty set) is vacuously Sidon; the inductive step either uses the explicit Sidon check or the inductive hypothesis.\n2. **greedySidon_maximal**: States the greedy set is maximal (sorry — requires tracking rejection history).\n\nThe greedy construction is the canonical baseline: it produces maximal Sidon sets of size $\\Theta(\\sqrt{N})$.",
+    "mathContext": "Greedy analysis: when considering element $n$, it is rejected if $n = a + b - c$ for some $a, b, c$ in the current set $A$. With $|A| = s$ elements, there are $O(s^2)$ such forbidden values. The set saturates when $s^2 \\sim N$, giving $s \\sim \\sqrt{N}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "recursive construction",
+      "induction",
+      "greedy algorithms",
+      "saturation threshold"
+    ],
+    "prerequisites": [
+      "structural induction",
+      "Sidon property preservation",
+      "counting forbidden values"
+    ]
+  },
+  {
+    "id": "ann-classical-bounds",
+    "proofId": "erdos-156",
+    "range": {
+      "startLine": 132,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Erdős-Turán Upper Bound and Greedy Lower Bound",
+    "content": "Two axioms establishing the $\\Theta(\\sqrt{N})$ size of greedy Sidon sets:\n\n1. **sidon_upper_bound**: $\\exists C$, $\\forall N$, $\\forall A \\subseteq \\{1,\\ldots,N\\}$ Sidon: $|A| \\leq \\sqrt{N} + C$. This is the Erdős-Turán counting argument: $\\binom{|A|}{2} + |A|$ distinct sums all lie in $\\{2, \\ldots, 2N\\}$.\n2. **greedy_lower_bound**: $\\exists c > 0$, $\\forall N \\geq 1$: $|\\text{greedy}(N)| \\geq c\\sqrt{N}$. The greedy algorithm includes enough elements before saturation.",
+    "mathContext": "Upper: $\\binom{|A|}{2} + |A| \\leq 2N - 1$ (sums range in $[2, 2N]$), so $|A|^2/2 \\leq 2N$, giving $|A| \\leq 2\\sqrt{N}$. The $O(N^{1/4})$ improvement uses character sum methods.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Turán bound",
+      "pigeonhole principle",
+      "Real.sqrt",
+      "character sums"
+    ],
+    "prerequisites": [
+      "combinatorial counting",
+      "sum range bounds",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-ruzsa",
+    "proofId": "erdos-156",
+    "range": {
+      "startLine": 149,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "Ruzsa's Small Maximal Sidon Sets",
+    "content": "The axiom `ruzsa_small_maximal`: for any $\\varepsilon > 0$, there exists a family of maximal Sidon sets $f(N) \\subseteq \\{1,\\ldots,N\\}$ with $|f(N)| \\leq N^{1/3 + \\varepsilon}$. This is Ruzsa's 1998 breakthrough — the first construction beating the $\\sqrt{N}$ barrier for maximal Sidon sets. The extra $\\varepsilon$ comes from logarithmic factors in the recursive depth of his construction.",
+    "mathContext": "Ruzsa's result: $\\forall \\varepsilon > 0$, $\\exists$ maximal Sidon $A_N \\subseteq [N]$ with $|A_N| = O(N^{1/3+\\varepsilon})$. The construction uses a Sidon set $S$ in a smaller interval as a 'skeleton' and fills gaps to ensure maximality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "recursive construction",
+      "Ruzsa's method",
+      "logarithmic factors",
+      "N^{1/3} barrier"
+    ],
+    "prerequisites": [
+      "Sidon set constructions",
+      "maximality verification",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-main-conjecture",
+    "proofId": "erdos-156",
+    "range": {
+      "startLine": 162,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Main Conjecture: O(N^{1/3}) Maximal Sidon Sets",
+    "content": "The central axiom `erdos_156_conjecture` formalizes the open problem as a disjunction:\n\n1. **Positive**: $\\exists C > 0$ such that for all $N \\geq 1$, there exists a maximal Sidon set $A$ in $\\{1,\\ldots,N\\}$ with $|A| \\leq C \\cdot N^{1/3}$.\n2. **Negative**: $\\forall C > 0$, $\\exists N_0$ such that for all $N \\geq N_0$, every maximal Sidon set in $\\{1,\\ldots,N\\}$ has $|A| > C \\cdot N^{1/3}$.\n\nThis captures both possible resolutions: either the $N^{1/3}$ bound is achievable (with a universal constant), or it represents a genuine barrier.",
+    "mathContext": "The disjunction is: $\\left(\\exists C > 0, \\forall N \\geq 1, \\exists A\\text{ max Sidon}: |A| \\leq CN^{1/3}\\right) \\lor \\left(\\forall C > 0, \\exists N_0, \\forall N \\geq N_0, \\forall A\\text{ max Sidon}: |A| > CN^{1/3}\\right)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problems",
+      "disjunction formulation",
+      "asymptotic bounds",
+      "universal constants"
+    ],
+    "prerequisites": [
+      "quantifier structure",
+      "asymptotic notation",
+      "Sidon maximality"
+    ]
+  },
+  {
+    "id": "ann-gap-minimum",
+    "proofId": "erdos-156",
+    "range": {
+      "startLine": 184,
+      "endLine": 203
+    },
+    "type": "definition",
+    "title": "Growth Exponent and Minimum Maximal Size",
+    "content": "Two definitions and an axiom:\n\n- **minMaximalSidonSize(N)**: Uses `Nat.find` to locate the smallest natural number that is the size of a Sidon subset of $\\{1,\\ldots,N\\}$ (with a sorry in the existence proof).\n- **minMaximalSidon_exponent**: Conjectures $\\exists \\alpha \\in [1/3, 1/2]$ such that $\\log(\\text{minSize}(N))/\\log N \\to \\alpha$. This asks whether the growth exponent exists and lies in the expected range.\n\nNote: `minMaximalSidonSize` is defined via Sidon sets (not maximal Sidon sets), which may be an oversight — the intended definition should minimize over maximal Sidon sets.",
+    "mathContext": "The growth exponent: $\\alpha = \\lim_{N \\to \\infty} \\frac{\\log(\\min\\{|A| : A \\text{ maximal Sidon in } [N]\\})}{\\log N}$. Known: $1/3 \\leq \\alpha \\leq 1/2$ (from Ruzsa and greedy bounds). The question is whether $\\alpha = 1/3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.find",
+      "Filter.Tendsto",
+      "growth exponents",
+      "nhds"
+    ],
+    "prerequisites": [
+      "filter limits",
+      "logarithmic ratios",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-sumset",
+    "proofId": "erdos-156",
+    "range": {
+      "startLine": 204,
+      "endLine": 238
+    },
+    "type": "definition",
+    "title": "Sumsets, B₂ Sets, and Combinatorial Context",
+    "content": "Three components connecting Sidon sets to additive combinatorics:\n\n1. **sumset(A)**: The set $A + A = \\{a + b : a, b \\in A\\}$ of all pairwise sums.\n2. **sidon_sumset_size**: For finite Sidon sets, $|A + A| = |A|(|A|+1)/2$ (sorry). The count: $|A|$ diagonal sums $2a$ plus $\\binom{|A|}{2}$ off-diagonal sums, all distinct.\n3. **IsB2Set**: Alias for `IsSidonSet`, documenting the $B_2$ notation from additive combinatorics.\n4. **random_sidon_barrier**: Placeholder axiom (proves `True`) about random Sidon sets.\n\nThe sumset perspective makes Sidon sets natural objects in additive combinatorics: they are sets with the largest possible sumset for their size.",
+    "mathContext": "$|A + A| = \\binom{|A|}{2} + |A| = \\frac{|A|(|A|+1)}{2}$ for Sidon $A$. Comparison: for general sets, $|A + A| \\geq 2|A| - 1$ (Cauchy-Davenport), so Sidon sets are extremal — they maximize $|A + A|$ relative to $|A|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sumset A + A",
+      "B₂ sequences",
+      "B_h generalizations",
+      "Cauchy-Davenport"
+    ],
+    "prerequisites": [
+      "additive combinatorics basics",
+      "sumset definition",
+      "counting arguments"
+    ]
+  },
+  {
+    "id": "ann-infimum",
+    "proofId": "erdos-156",
+    "range": {
+      "startLine": 239,
+      "endLine": 261
+    },
+    "type": "concept",
+    "title": "Infimum Formulation and Precise Problem Statement",
+    "content": "The most refined formulation of Problem #156:\n\n- **infMaximalSidonSize(N)**: Defined as $\\inf_{A : \\text{maximal Sidon in } [N]} |A|$ using `iInf` (indexed infimum). This is the exact quantity of interest.\n- **erdos_156_precise**: The final axiom states the disjunction in terms of this infimum: either $\\exists C$ with $\\text{inf}(N) \\leq C \\cdot N^{1/3}$ for all $N \\geq 1$, or $\\text{inf}(N) / N^{1/3} \\to \\infty$ as $N \\to \\infty$.\n\nThe `Filter.Tendsto ... atTop atTop` formulation in the second disjunct means the ratio diverges — no constant suffices.",
+    "mathContext": "$\\text{inf}(N) = \\inf\\{|A| : A \\text{ maximal Sidon in } \\{1,\\ldots,N\\}\\}$. The precise question: is $\\limsup_{N \\to \\infty} \\text{inf}(N) / N^{1/3} < \\infty$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "iInf",
+      "Filter.Tendsto",
+      "Filter.atTop",
+      "limsup characterization"
+    ],
+    "prerequisites": [
+      "complete lattice infimum",
+      "filter limits",
+      "asymptotic analysis"
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "problem_number": 1075,
+  "title": "Dense Subgraphs in r-Uniform Hypergraphs",
+  "status": "open",
+  "solvers": [],
+  "source_url": "https://erdosproblems.com/1075",
+  "overview": "For r ≥ 3, does there exist c_r > r^{-r} such that any r-uniform hypergraph on n vertices with at least (1+ε)(n/r)^r edges contains a subgraph on m vertices with at least c_r·m^r edges, where m → ∞ as n → ∞? Erdős proved this holds with c_r = r^{-r}.",
+  "sections": [],
+  "conclusion": "OPEN - The question is whether the density constant c_r can be improved beyond r^{-r}. The weaker edge threshold (1+ε)(n/r)^r vs ε·n^r may allow stronger conclusions. No improvement is currently known.",
+  "references": [
+    "Erdős [Er64f] - Original result with c_r = r^{-r}",
+    "Erdős [Er74c, p.80] - Problem statement"
+  ],
+  "related_problems": [],
+  "tags": ["combinatorics", "hypergraphs", "extremal", "density", "open"]
+}

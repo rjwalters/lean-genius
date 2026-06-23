@@ -1,0 +1,553 @@
+[
+  {
+    "id": "erdos-153-imports",
+    "proofId": "erdos-153",
+    "type": "concept",
+    "range": {
+      "startLine": 23,
+      "endLine": 29
+    },
+    "title": "Library Imports for Additive Combinatorics",
+    "content": "Imports core Mathlib libraries for natural numbers, integers, finite sets (including cardinality and sorting), real numbers, and general tactics. These provide the foundation for defining Sidon sets and their sumset gap structure.",
+    "mathContext": "The formalization works over $\\mathbb{N}$ for the Sidon set elements and $\\mathbb{R}$ for the mean squared gap computation, requiring both `Data.Nat.Basic` and `Data.Real.Basic`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset",
+      "List sorting",
+      "real division"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib structure"
+    ],
+    "line": 23
+  },
+  {
+    "id": "erdos-153-sidon-def",
+    "proofId": "erdos-153",
+    "type": "definition",
+    "range": {
+      "startLine": 37,
+      "endLine": 41
+    },
+    "title": "Sidon Set (B₂ Set) Definition",
+    "content": "IsSidon A requires that all pairwise sums are distinct: if $a + b = c + d$ with $a \\le b$ and $c \\le d$, then $(a,b) = (c,d)$. These are also called B₂ sets, named after the sequence condition introduced by Sidon in the 1930s.",
+    "mathContext": "A set $A \\subseteq \\mathbb{N}$ is **Sidon** (or $B_2$) if for all $a, b, c, d \\in A$ with $a \\le b$ and $c \\le d$: $a + b = c + d \\implies (a, b) = (c, d)$. Equivalently, all pairwise sums $a + b$ ($a \\le b$) are distinct.",
+    "significance": "key",
+    "relatedConcepts": [
+      "B_h sets",
+      "perfect difference sets",
+      "Sidon's problem on Fourier series",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "finite sets",
+      "natural number arithmetic",
+      "pairwise sums"
+    ],
+    "line": 39
+  },
+  {
+    "id": "erdos-153-sumset-def",
+    "proofId": "erdos-153",
+    "type": "definition",
+    "range": {
+      "startLine": 47,
+      "endLine": 49
+    },
+    "title": "Sumset A + A",
+    "content": "The sumset is defined as the image of all pairs $(a, b) \\in A \\times A$ under addition. For Sidon sets, this yields a particularly structured subset of the integers with known cardinality bounds.",
+    "mathContext": "The sumset $A + A = \\{a + b : a, b \\in A\\}$ is computed as the image of the Cartesian product $A \\times A$ under $(a,b) \\mapsto a + b$. For a Sidon set of size $n$, $|A + A| \\ge \\binom{n+1}{2} = n(n+1)/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Minkowski sum",
+      "sumset cardinality",
+      "additive energy",
+      "Plünnecke–Ruzsa inequality"
+    ],
+    "prerequisites": [
+      "Finset.image",
+      "Cartesian product of finite sets"
+    ],
+    "line": 48
+  },
+  {
+    "id": "erdos-153-sorted-sumset",
+    "proofId": "erdos-153",
+    "type": "definition",
+    "range": {
+      "startLine": 51,
+      "endLine": 53
+    },
+    "title": "Sorted Sumset",
+    "content": "Converts the sumset from a Finset to a sorted List, enabling computation of consecutive gaps. The sorting is essential since Finset has no inherent ordering.",
+    "mathContext": "Writing $A + A = \\{s_1 < s_2 < \\cdots < s_t\\}$ in increasing order is necessary to define consecutive gaps $g_i = s_{i+1} - s_i$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sort",
+      "order statistics",
+      "gap distribution"
+    ],
+    "prerequisites": [
+      "total order on natural numbers",
+      "list operations"
+    ],
+    "line": 52
+  },
+  {
+    "id": "erdos-153-gap-squared",
+    "proofId": "erdos-153",
+    "type": "definition",
+    "range": {
+      "startLine": 55,
+      "endLine": 60
+    },
+    "title": "Sum of Squared Gaps",
+    "content": "gapSquaredSum computes $\\sum_{i=1}^{t-1} (s_{i+1} - s_i)^2$ over consecutive elements of the sorted sumset. This is the numerator in the mean squared gap, measuring the total irregularity of spacing in the sumset.",
+    "mathContext": "Given $A + A = \\{s_1 < \\cdots < s_t\\}$, the sum of squared gaps is $G(A) = \\sum_{i=1}^{t-1} (s_{i+1} - s_i)^2$. By the Cauchy–Schwarz inequality, $G(A) \\ge \\frac{(s_t - s_1)^2}{t-1}$, so large range forces large gap variance.",
+    "significance": "key",
+    "relatedConcepts": [
+      "second moment of gaps",
+      "variance",
+      "Cauchy–Schwarz inequality",
+      "additive energy"
+    ],
+    "prerequisites": [
+      "list zip and fold operations",
+      "squared differences"
+    ],
+    "line": 57
+  },
+  {
+    "id": "erdos-153-mean-gap",
+    "proofId": "erdos-153",
+    "type": "definition",
+    "range": {
+      "startLine": 66,
+      "endLine": 70
+    },
+    "title": "Mean Squared Gap",
+    "content": "meanGapSquared A divides the sum of squared gaps by the number of gaps $(t-1)$, producing the second moment of the gap distribution. This is the quantity Erdős conjectured diverges for growing Sidon sets.",
+    "mathContext": "The mean squared gap is $\\bar{G}(A) = \\frac{1}{t-1} \\sum_{i=1}^{t-1} (s_{i+1} - s_i)^2$ where $t = |A+A|$. Since the mean gap is $\\bar{g} = \\frac{s_t - s_1}{t-1} = \\Theta(1)$ for maximal Sidon sets in $\\{1,\\ldots,N\\}$, the conjecture asks whether $\\operatorname{Var}(g_i) \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "second moment",
+      "variance of gap distribution",
+      "moment methods in combinatorics"
+    ],
+    "prerequisites": [
+      "real division",
+      "sumset cardinality"
+    ],
+    "line": 68
+  },
+  {
+    "id": "erdos-153-min-mean-gap",
+    "proofId": "erdos-153",
+    "type": "definition",
+    "range": {
+      "startLine": 72,
+      "endLine": 74
+    },
+    "title": "Minimum Mean Squared Gap",
+    "content": "minMeanGapSquared(n) takes the infimum of meanGapSquared over all Sidon sets of size n. This captures the worst-case gap regularity: the conjecture states this minimum still diverges.",
+    "mathContext": "Define $\\bar{G}_{\\min}(n) = \\inf\\{\\bar{G}(A) : A \\text{ Sidon}, |A| = n\\}$. Erdős Problem 153 is equivalent to $\\bar{G}_{\\min}(n) \\to \\infty$ as $n \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infimum over Sidon sets",
+      "extremal combinatorics",
+      "minimax problems"
+    ],
+    "prerequisites": [
+      "conditional infimum (iInf)",
+      "real-valued optimization"
+    ],
+    "line": 73
+  },
+  {
+    "id": "erdos-153-conjecture",
+    "proofId": "erdos-153",
+    "type": "concept",
+    "range": {
+      "startLine": 80,
+      "endLine": 88
+    },
+    "title": "Erdős Problem 153 — The Conjecture",
+    "content": "For every $M > 0$, there exists $N_0$ such that every Sidon set A with $|A| \\ge N_0$ satisfies $\\bar{G}(A) > M$. This is the formal statement that the mean squared gap diverges. The problem remains open as of 2026.",
+    "mathContext": "$$\\forall M > 0,\\; \\exists N_0 \\in \\mathbb{N},\\; \\forall A \\subseteq \\mathbb{N}: \\text{IsSidon}(A) \\wedge |A| \\ge N_0 \\implies \\bar{G}(A) > M$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "divergence of sequences",
+      "Erdős problems in additive combinatorics",
+      "gap distribution conjectures"
+    ],
+    "prerequisites": [
+      "Sidon set definition",
+      "mean squared gap",
+      "limit divergence"
+    ],
+    "line": 85
+  },
+  {
+    "id": "erdos-153-upper-triangle",
+    "proofId": "erdos-153",
+    "line": 121,
+    "type": "insight",
+    "title": "Counting the Upper Triangle of A×A",
+    "content": "Three lemmas establish |{(a,b) ∈ A×A : a ≤ b}| = n(n+1)/2 for |A| = n. diag_card_eq counts the diagonal {(a,a)} (n pairs); card_lt_swap uses the swap bijection (a,b) ↦ (b,a) to show the strict-below and strict-above triangles are equinumerous; card_upper_triangle then combines them — the full square n² splits as diagonal + 2·(strict triangle), so the upper triangle (diagonal + strict-below) has n + (n²−n)/2 = n(n+1)/2 elements. This count is the combinatorial backbone of every sumset-cardinality bound below.",
+    "mathContext": "Partition $A \\times A$ into the diagonal $D = \\{(a,a)\\}$, the strict-lower triangle $L = \\{(a,b): b<a\\}$, and the strict-upper $U' = \\{(a,b): a<b\\}$. The swap involution gives $|L| = |U'|$, and $|D| = n$, so $n^2 = n + 2|U'|$, whence the closed (upper) triangle has $|D| + |U'| = n + \\frac{n^2-n}{2} = \\binom{n+1}{2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bijective counting",
+      "swap involution",
+      "Finset.card",
+      "triangular number",
+      "Cartesian product"
+    ],
+    "prerequisites": [
+      "Finset cardinality",
+      "bijections",
+      "counting arguments"
+    ],
+    "range": {
+      "startLine": 94,
+      "endLine": 185
+    }
+  },
+  {
+    "id": "erdos-153-sumset-image",
+    "proofId": "erdos-153",
+    "line": 193,
+    "type": "insight",
+    "title": "Sumset as Image of the Upper Triangle",
+    "content": "sumset_eq_upper_image realizes A+A as the image of the upper triangle {(a,b): a ≤ b} under (a,b) ↦ a+b (since a+b = b+a, the lower triangle adds nothing new). sumset_card_le then bounds |A+A| ≤ n(n+1)/2 because an image cannot exceed the domain's cardinality. For a general set this is just an upper bound — the Sidon property is what makes the map injective and turns it into an equality.",
+    "mathContext": "Addition is symmetric, so $A+A = \\{a+b : (a,b) \\in T\\}$ with $T$ the upper triangle. Hence $|A+A| = |\\mathrm{image}| \\le |T| = \\binom{n+1}{2}$ by `Finset.card_image_le`. Equality holds iff the addition map is injective on $T$ — precisely the Sidon condition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.image",
+      "card_image_le",
+      "upper triangle",
+      "sumset upper bound"
+    ],
+    "prerequisites": [
+      "Finset.image",
+      "sumset definition"
+    ],
+    "range": {
+      "startLine": 191,
+      "endLine": 215
+    }
+  },
+  {
+    "id": "erdos-153-sumset-card",
+    "proofId": "erdos-153",
+    "type": "concept",
+    "range": {
+      "startLine": 221,
+      "endLine": 246
+    },
+    "title": "Sidon Sumset Cardinality Lower Bound",
+    "content": "A Sidon set of size $n$ has $|A+A| \\ge n(n+1)/2$ distinct pairwise sums. This quadratic growth is immediate from the Sidon property: each unordered pair $\\{a,b\\}$ with $a \\le b$ contributes a distinct sum.",
+    "mathContext": "For a Sidon set $A$ with $|A| = n$: $|A + A| \\ge \\binom{n+1}{2} = \\frac{n(n+1)}{2}$. This follows because the $\\binom{n+1}{2}$ sums $a + b$ ($a \\le b$) are all distinct by the Sidon property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sumset size bounds",
+      "Erdős–Turán conjecture on Sidon sets",
+      "additive energy"
+    ],
+    "prerequisites": [
+      "IsSidon definition",
+      "counting ordered pairs"
+    ],
+    "line": 224
+  },
+  {
+    "id": "erdos-153-exact-card",
+    "proofId": "erdos-153",
+    "line": 251,
+    "type": "insight",
+    "title": "Exact Sidon Sumset Cardinality: |A+A| = n(n+1)/2",
+    "content": "sidon_sumset_card_eq upgrades the two one-sided bounds into an exact identity for Sidon sets: |A+A| = n(n+1)/2. The lower bound sidon_sumset_card uses the Sidon property (distinct pairwise sums force the n(n+1)/2 upper-triangle sums to be distinct), and the upper bound sumset_card_le holds for any set; antisymmetry gives equality. This exact count is what fixes |A+A| = Θ(n²) and underlies the bounded-average-gap analysis.",
+    "mathContext": "For a Sidon set the addition map on the upper triangle is injective, so $|A+A| = |T| = \\binom{n+1}{2}$ exactly. This pins the sumset size to $\\Theta(n^2)$, and since a Sidon set in $[1,N]$ has $n = \\Theta(\\sqrt N)$, the sumset is $\\Theta(N)$ points inside an interval of length $\\Theta(N)$ — bounded mean gap.",
+    "significance": "key",
+    "relatedConcepts": [
+      "antisymmetry of ≤",
+      "exact cardinality",
+      "Sidon injectivity",
+      "quadratic sumset growth"
+    ],
+    "prerequisites": [
+      "sidon_sumset_card",
+      "sumset_card_le",
+      "le_antisymm"
+    ],
+    "range": {
+      "startLine": 248,
+      "endLine": 253
+    }
+  },
+  {
+    "id": "erdos-153-sumset-range",
+    "proofId": "erdos-153",
+    "type": "concept",
+    "range": {
+      "startLine": 255,
+      "endLine": 263
+    },
+    "title": "Sumset Range Bound",
+    "content": "If $A \\subseteq \\{1, \\ldots, N\\}$ is a Sidon set, then $A + A \\subseteq \\{2, \\ldots, 2N\\}$. This bounds the range containing the sumset, which together with the cardinality bound controls the average gap.",
+    "mathContext": "For $A \\subseteq \\{1, \\ldots, N\\}$: $\\forall s \\in A+A,\\; s \\le 2N$. Combined with $|A+A| \\ge n(n+1)/2$ and $|A| = O(\\sqrt{N})$, the average gap is $\\frac{2N}{|A+A|} = O(1)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sidon sets in intervals",
+      "Lindström's bound",
+      "maximal Sidon sets"
+    ],
+    "prerequisites": [
+      "natural number addition bounds",
+      "subset containment"
+    ],
+    "line": 257
+  },
+  {
+    "id": "erdos-153-distinct-diff",
+    "proofId": "erdos-153",
+    "line": 272,
+    "type": "insight",
+    "title": "Distinct Differences from the Sidon Property",
+    "content": "sidon_distinct_differences shows that for a Sidon set the ordered differences a−b (a > b) are all distinct, the difference-set analogue of distinct sums. This is the standard equivalent formulation of the B₂ condition: a+b = c+d ⟺ a−c = d−b, so distinct sums and distinct differences are two faces of the same property. It supplies the injectivity used in the density bound.",
+    "mathContext": "The Sidon condition $a+b=c+d \\Rightarrow \\{a,b\\}=\\{c,d\\}$ is equivalent to all nonzero differences $a-b$ being distinct: $a-c = d-b$ rearranges to $a+b = c+d$. A set of $n$ elements then has $n(n-1)$ distinct ordered differences, all lying in $(-N, N)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "difference set",
+      "B_2 equivalence",
+      "distinct differences",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "IsSidon",
+      "integer differences"
+    ],
+    "range": {
+      "startLine": 269,
+      "endLine": 289
+    }
+  },
+  {
+    "id": "erdos-153-density",
+    "proofId": "erdos-153",
+    "line": 293,
+    "type": "insight",
+    "title": "Sidon Density Bound (Erdős–Turán)",
+    "content": "sidon_density_bound formalizes the classical fact that a Sidon set A ⊆ {0,...,N} has |A| = O(√N). The n(n−1) distinct differences must fit inside the 2N−1 possible difference values, forcing n(n−1) ≤ 2N−1 and hence n ≲ √(2N). This Erdős–Turán (1941) bound is why maximal Sidon sets have size ~√N, which calibrates the mean-gap normalization in the conjecture.",
+    "mathContext": "With $n(n-1)$ distinct differences in $\\{-(N-1),\\dots,N-1\\}$ (size $2N-1$), $n(n-1) \\le 2N-1$, so $|A| = n \\le \\tfrac{1}{2}(1+\\sqrt{4N-3}) = O(\\sqrt N)$. Equivalently a Sidon set in an interval of length $N$ has density $O(N^{-1/2})$ — the Erdős–Turán upper bound, asymptotically tight by Singer difference-set constructions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Turán bound",
+      "Sidon density",
+      "difference counting",
+      "Singer sets"
+    ],
+    "prerequisites": [
+      "sidon_distinct_differences",
+      "counting in intervals"
+    ],
+    "range": {
+      "startLine": 291,
+      "endLine": 301
+    }
+  },
+  {
+    "id": "erdos-153-avg-gap",
+    "proofId": "erdos-153",
+    "type": "concept",
+    "range": {
+      "startLine": 307,
+      "endLine": 327
+    },
+    "title": "Bounded Average Gap",
+    "content": "The average gap in the sumset of a Sidon set in $\\{1,\\ldots,N\\}$ is $O(1)$. Since $|A+A| = \\Theta(N)$ and the range is $\\Theta(N)$, the mean gap stays bounded. The conjecture asks about the second moment (variance), which could still diverge.",
+    "mathContext": "The average gap $\\bar{g} = \\frac{2N}{|A+A|} \\le \\frac{2N}{n(n+1)/2} = \\frac{4N}{n(n+1)}$. For a maximal Sidon set with $n \\sim \\sqrt{N}$, this gives $\\bar{g} = \\Theta(1)$. The gap between bounded mean and potentially unbounded variance is the heart of the problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "first vs second moment",
+      "variance of random variables",
+      "Chebyshev's inequality"
+    ],
+    "prerequisites": [
+      "Sidon set in interval",
+      "sumset cardinality bound"
+    ],
+    "line": 311
+  },
+  {
+    "id": "erdos-153-gap-lower",
+    "proofId": "erdos-153",
+    "line": 359,
+    "type": "insight",
+    "title": "Lower Bound on the Gap-Squared Sum",
+    "content": "Two lemmas bound the gap-squared sum from below. foldl_sq_gap_ge shows that for a sorted duplicate-free list each consecutive gap is ≥ 1, so each squared gap is ≥ 1. gapSquaredSum_ge_card_sub_one then sums this to give G(A) ≥ (|A+A| − 1) — i.e. the number of gaps. Since |A+A| = n(n+1)/2 for Sidon sets, this already forces G(A) ≥ n(n+1)/2 − 1 = Θ(n²), a concrete (if weak) handle on the otherwise-open second moment.",
+    "mathContext": "For a strictly increasing integer list $s_1 < \\dots < s_t$, every gap $s_{i+1}-s_i \\ge 1$, so $(s_{i+1}-s_i)^2 \\ge 1$ and $G(A) = \\sum (s_{i+1}-s_i)^2 \\ge t-1 = |A+A|-1$. Equality requires all unit gaps (a full interval), which a Sidon sumset of size $\\ge 2$ cannot achieve — the source of the conjectured growth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sorted list gaps",
+      "List.foldl induction",
+      "second moment lower bound",
+      "strict monotonicity"
+    ],
+    "prerequisites": [
+      "sortedSumset",
+      "gapSquaredSum",
+      "list folds"
+    ],
+    "range": {
+      "startLine": 329,
+      "endLine": 370
+    }
+  },
+  {
+    "id": "erdos-153-ess-1994",
+    "proofId": "erdos-153",
+    "type": "concept",
+    "range": {
+      "startLine": 372,
+      "endLine": 400
+    },
+    "title": "Erdős–Sárközy–Sós (1994) Lower Bound",
+    "content": "Erdős, Sárközy, and Sós proved that the mean squared gap is bounded below by a positive constant $c > 0$ for all sufficiently large Sidon sets. This confirms the gaps are not perfectly regular, but falls short of proving divergence.",
+    "mathContext": "There exists $c > 0$ such that for all Sidon sets $A$ with $|A| \\ge 4$: $\\bar{G}(A) \\ge c$. This means $\\bar{G}_{\\min}(n) \\ge c > 0$ for $n \\ge 4$, but the conjecture requires $\\bar{G}_{\\min}(n) \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Sárközy–Sós series of papers",
+      "positive lower bounds vs divergence",
+      "probabilistic method in combinatorics"
+    ],
+    "prerequisites": [
+      "mean squared gap definition",
+      "Sidon set properties"
+    ],
+    "line": 376
+  },
+  {
+    "id": "erdos-153-axiom",
+    "proofId": "erdos-153",
+    "line": 408,
+    "type": "insight",
+    "title": "Problem #153 Stated as an Axiom",
+    "content": "erdos_153_conjecture records the open problem itself as an axiom: the minimum mean squared gap diverges, ∀ M, eventually minMeanGapSquared(n) > M. Because Erdős Problem #153 is unresolved (open as of 2026), it cannot be proved in-file and is honestly declared as an assumption — this is why the entry's status is axiomatized/axiom with axiomCount including this declaration. All in-file theorems are the genuinely-proved supporting structure around this single stated conjecture.",
+    "mathContext": "The axiom asserts $\\bar G_{\\min}(n) \\to \\infty$, equivalently $\\forall M>0,\\ \\exists N_0,\\ \\forall n \\ge N_0,\\ \\bar G_{\\min}(n) > M$. This is the content of Erdős #153 and remains open; the formalization isolates it as the sole unproved assumption, with everything else (counting, density, ESS lower bound) established rigorously.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open conjecture",
+      "axiomatized assumption",
+      "divergence",
+      "Erdős problem status"
+    ],
+    "prerequisites": [
+      "minMeanGapSquared",
+      "axiom declarations",
+      "conjecture formalization"
+    ],
+    "range": {
+      "startLine": 406,
+      "endLine": 408
+    }
+  },
+  {
+    "id": "erdos-153-infinite-sidon",
+    "proofId": "erdos-153",
+    "type": "concept",
+    "range": {
+      "startLine": 419,
+      "endLine": 423
+    },
+    "title": "Infinite Sidon Set",
+    "content": "An infinite Sidon set is an infinite subset of $\\mathbb{N}$ where all pairwise sums remain distinct. The existence of such sets is non-trivial — constructions include greedy algorithms and algebraic methods.",
+    "mathContext": "A set $S \\subseteq \\mathbb{N}$ is an **infinite Sidon set** if $S$ is infinite and $\\forall a, b, c, d \\in S$: $a \\le b \\wedge c \\le d \\wedge a + b = c + d \\implies (a,b) = (c,d)$. The counting function $|S \\cap [1,N]| = O(\\sqrt{N})$ by Erdős–Turán (1941).",
+    "significance": "key",
+    "relatedConcepts": [
+      "greedy Sidon construction",
+      "Erdős–Turán density bound",
+      "Cilleruelo's construction"
+    ],
+    "prerequisites": [
+      "Set.Infinite",
+      "Sidon property"
+    ],
+    "line": 420
+  },
+  {
+    "id": "erdos-153-infinite-reduction",
+    "proofId": "erdos-153",
+    "line": 454,
+    "type": "insight",
+    "title": "Infinite ⟶ Finite Reduction Lemmas",
+    "content": "Three lemmas connect infinite Sidon sets to their finite restrictions. infinite_sidon_restriction: any finite subset of an infinite Sidon set is Sidon. infinite_set_exists_finset: an infinite subset of ℕ contains finite subsets of every prescribed size. infinite_set_card_grows: restricting an infinite set to {0,...,N} yields cardinalities that grow without bound as N → ∞. Together they let the finite conjecture transfer to the infinite setting.",
+    "mathContext": "If $S$ is infinite Sidon and $A_N = S \\cap [0,N]$, then each $A_N$ is Sidon (Sidon-ness is hereditary) and $|A_N| \\to \\infty$ (an infinite subset of $\\mathbb N$ is unbounded). Hence a positive answer for finite Sidon sets propagates along the exhaustion $A_N \\uparrow S$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "hereditary property",
+      "Set.Infinite",
+      "exhaustion by finsets",
+      "monotone cardinality"
+    ],
+    "prerequisites": [
+      "IsInfiniteSidon",
+      "Set.Infinite",
+      "Finset.filter"
+    ],
+    "range": {
+      "startLine": 425,
+      "endLine": 471
+    }
+  },
+  {
+    "id": "erdos-153-infinite-question",
+    "proofId": "erdos-153",
+    "type": "concept",
+    "range": {
+      "startLine": 473,
+      "endLine": 494
+    },
+    "title": "Infinite Sidon Set Gap Question",
+    "content": "The analogous question for infinite Sidon sets: restrict $S$ to $\\{1,\\ldots,N\\}$, compute the mean squared gap of the resulting sumset, and ask whether it diverges as $N \\to \\infty$. This is at least as hard as the finite version.",
+    "mathContext": "For an infinite Sidon set $S$, let $A_N = S \\cap \\{1, \\ldots, N\\}$. The question is whether $\\bar{G}(A_N) \\to \\infty$ as $N \\to \\infty$ for every infinite Sidon set $S$. Since $|A_N| \\to \\infty$, a positive answer to Problem 153 would imply this.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "restriction to intervals",
+      "asymptotic gap distribution",
+      "Sidon set density"
+    ],
+    "prerequisites": [
+      "infinite Sidon set",
+      "Finset.filter",
+      "mean squared gap"
+    ],
+    "line": 482
+  },
+  {
+    "id": "erdos-153-sumset-endpoints",
+    "proofId": "erdos-153",
+    "line": 522,
+    "type": "insight",
+    "title": "Sumset Endpoints: min, max, and Span = 2·span(A)",
+    "content": "Four structural theorems pin down the geometry of A+A. sumset_nonempty (A+A ≠ ∅ when A ≠ ∅), sumset_min' (min(A+A) = 2·min A, from the diagonal pair (min,min)), sumset_max' (max(A+A) = 2·max A), and sumset_span (max(A+A) − min(A+A) = 2·(max A − min A)). The span identity shows the sumset occupies an interval exactly twice as wide as A, which together with |A+A| = n(n+1)/2 controls the mean gap normalization.",
+    "mathContext": "The extreme sums come from the diagonal: $\\min(A+A) = 2\\min A$ and $\\max(A+A) = 2\\max A$, so $\\mathrm{span}(A+A) = 2\\,\\mathrm{span}(A)$. With $\\Theta(n^2)$ sumset points spread over a length-$2\\,\\mathrm{span}(A)$ interval, the average gap is $\\Theta(\\mathrm{span}(A)/n^2)$ — the quantity whose second moment Problem #153 concerns.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sumset extremes",
+      "diagonal pairs",
+      "span identity",
+      "interval geometry"
+    ],
+    "prerequisites": [
+      "sumset definition",
+      "Finset.min'/max'",
+      "ordered sums"
+    ],
+    "range": {
+      "startLine": 500,
+      "endLine": 542
+    }
+  }
+]

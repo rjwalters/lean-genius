@@ -1,0 +1,186 @@
+[
+  {
+    "id": "ann-e1038-header",
+    "proofId": "erdos-1038",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "**Erdős Problem #1038** asks: for monic polynomials f with all roots in [-1,1], what are the minimum and maximum possible measures of the set {x : |f(x)| < 1}?\n\nThis \"sublevel set\" is where the polynomial stays small (absolute value less than 1). The answer reveals deep connections between polynomial structure and measure theory.",
+    "mathContext": "The problem was posed by Erdős, Herzog, and Piranian in 1958. They conjectured the supremum is 2√2, which Terence Tao proved in December 2025 using logarithmic potential theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monic-polynomials",
+      "measure-theory",
+      "sublevel-sets"
+    ],
+    "prerequisites": [
+      "Lebesgue measure of subsets of the real line",
+      "polynomial sup-norm on a bounded interval",
+      "extremal problems and suprema over function families"
+    ]
+  },
+  {
+    "id": "ann-e1038-imports",
+    "proofId": "erdos-1038",
+    "range": {
+      "startLine": 21,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "**We import Mathlib** for access to:\n- Polynomials over ℝ\n- Lebesgue measure (volume)\n- Extended non-negative reals (ℝ≥0∞)",
+    "mathContext": "The `open scoped Real ENNReal` enables notation like `Real.sqrt` and `ENNReal.ofReal`. We also open `MeasureTheory` and `Polynomial` namespaces for cleaner syntax.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mathlib",
+      "imports",
+      "namespaces"
+    ],
+    "prerequisites": [
+      "ENNReal arithmetic and order structure",
+      "Polynomial namespace and evaluation in Mathlib",
+      "scoped notation and Real.sqrt"
+    ]
+  },
+  {
+    "id": "ann-e1038-monic-def",
+    "proofId": "erdos-1038",
+    "range": {
+      "startLine": 35,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "Monic Polynomials with Constrained Roots",
+    "content": "**MonicRealRootedIn01** defines the class of polynomials we study: monic (leading coefficient 1) with all roots real and in [-1,1].\n\nThink of it like requiring all the \"zeros\" of the polynomial to be clustered in a small interval.",
+    "mathContext": "A polynomial f is monic if f = xⁿ + aₙ₋₁xⁿ⁻¹ + ... + a₀. The constraint `∀ r ∈ f.roots, r ∈ Set.Icc (-1) 1` ensures all roots lie in [-1,1].",
+    "significance": "key",
+    "relatedConcepts": [
+      "monic",
+      "polynomial-roots",
+      "interval"
+    ],
+    "prerequisites": [
+      "leading coefficient and degree of a polynomial",
+      "multiset of roots over a field",
+      "Set.Icc closed-interval membership"
+    ]
+  },
+  {
+    "id": "ann-e1038-sublevel",
+    "proofId": "erdos-1038",
+    "range": {
+      "startLine": 39,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Sublevel Set Definition",
+    "content": "**The sublevel set** is where |f(x)| < 1 — the region where the polynomial stays \"small.\"\n\nImagine graphing y = f(x). The sublevel set is the projection onto the x-axis of where the graph stays between y = -1 and y = 1.",
+    "mathContext": "Formally: sublevelSet(f) = {x ∈ ℝ : |f(x)| < 1}. This is a measurable set, so we can ask about its Lebesgue measure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sublevel-sets",
+      "preimage",
+      "measurable-sets"
+    ],
+    "prerequisites": [
+      "preimage of an open set under a continuous map",
+      "absolute value as a real-valued function",
+      "Borel measurability of polynomial sublevel sets"
+    ]
+  },
+  {
+    "id": "ann-e1038-measure",
+    "proofId": "erdos-1038",
+    "range": {
+      "startLine": 43,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Sublevel Measure",
+    "content": "**sublevelMeasure** computes the \"length\" of the sublevel set using Lebesgue measure (standard length on ℝ).\n\nIf the sublevel set is a union of intervals, this is their total length.",
+    "mathContext": "The return type `ℝ≥0∞` (extended non-negative reals) allows for infinite measures. For our polynomials, the measure is always finite and positive.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "lebesgue-measure",
+      "volume",
+      "ennreal"
+    ],
+    "prerequisites": [
+      "countable additivity over disjoint intervals",
+      "ENNReal.ofReal coercion of interval lengths",
+      "finiteness criteria for Lebesgue measure"
+    ]
+  },
+  {
+    "id": "ann-e1038-supremum",
+    "proofId": "erdos-1038",
+    "range": {
+      "startLine": 55,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Supremum = 2√2 (Tao 2025)",
+    "content": "**The main result**: the largest possible sublevel measure is exactly 2√2 ≈ 2.828.\n\nThis is achieved (in the limit) by polynomials approaching (x-1)(x+1) = x² - 1. For this polynomial, the sublevel set is (-√2, 0) ∪ (0, √2), which has measure 2√2.",
+    "mathContext": "Tao's proof uses logarithmic potential theory and the connection between polynomial sublevel sets and equilibrium measures. The supremum is taken over all valid monic polynomials.",
+    "significance": "key",
+    "relatedConcepts": [
+      "supremum",
+      "potential-theory",
+      "tao-2025"
+    ],
+    "prerequisites": [
+      "logarithmic capacity and transfinite diameter",
+      "equilibrium measure on a compact set",
+      "limiting families of polynomials and weak convergence"
+    ]
+  },
+  {
+    "id": "ann-e1038-lower-bound",
+    "proofId": "erdos-1038",
+    "range": {
+      "startLine": 73,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "Infimum Lower Bound",
+    "content": "**The infimum is at least 2^(4/3) - 1 ≈ 1.519.**\n\nNo matter how you construct a valid polynomial, you cannot make the sublevel set smaller than this. The lower bound comes from potential-theoretic arguments.",
+    "mathContext": "The formula 2^(4/3) - 1 ≈ 1.5198 arises from analyzing logarithmic potentials and equilibrium measures on [-1,1].",
+    "significance": "key",
+    "relatedConcepts": [
+      "infimum",
+      "lower-bound",
+      "logarithmic-potential"
+    ],
+    "prerequisites": [
+      "logarithmic energy minimization",
+      "Frostman's theorem and equilibrium potentials",
+      "lower bounds via potential-theoretic inequalities"
+    ]
+  },
+  {
+    "id": "ann-e1038-upper-bound",
+    "proofId": "erdos-1038",
+    "range": {
+      "startLine": 81,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "Infimum Upper Bound",
+    "content": "**The infimum is less than 1.835.**\n\nThis is witnessed by explicit polynomial constructions — specific polynomials that achieve sublevel measures close to this bound.",
+    "mathContext": "The gap between 1.519 and 1.835 represents our current uncertainty about the exact infimum. Closing this gap remains an open problem.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "infimum",
+      "upper-bound",
+      "explicit-construction"
+    ],
+    "prerequisites": [
+      "explicit polynomial witness constructions",
+      "infimum as greatest lower bound over a family",
+      "numerical estimation of sublevel-set length"
+    ]
+  }
+]

@@ -1,0 +1,83 @@
+[
+  {
+    "id": "def-cochromatic-coloring",
+    "proofId": "erdos-758",
+    "range": { "startLine": 45, "endLine": 56 },
+    "type": "definition",
+    "title": "Cochromatic Coloring",
+    "content": "A partition of vertices into color classes where each class induces either a clique (complete subgraph) or an independent set (empty subgraph).",
+    "significance": "major"
+  },
+  {
+    "id": "def-cochromatic-number",
+    "proofId": "erdos-758",
+    "range": { "startLine": 58, "endLine": 68 },
+    "type": "definition",
+    "title": "Cochromatic Number ζ(G)",
+    "content": "The minimum number of colors in any cochromatic coloring of G.",
+    "significance": "major"
+  },
+  {
+    "id": "def-z-function",
+    "proofId": "erdos-758",
+    "range": { "startLine": 70, "endLine": 76 },
+    "type": "definition",
+    "title": "The Function z(n)",
+    "content": "z(n) = max{ζ(G) : G is a graph on n vertices}. The maximum cochromatic number over all n-vertex graphs.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-z-12",
+    "proofId": "erdos-758",
+    "range": { "startLine": 144, "endLine": 149 },
+    "type": "theorem",
+    "title": "Main Result: z(12) = 4",
+    "content": "Bhavik Mehta computationally proved z(12) = 4 by identifying the unique graph (up to complement) on 12 vertices where both G and Ḡ are K₄-free with χ ≥ 5.",
+    "significance": "major"
+  },
+  {
+    "id": "def-known-values",
+    "proofId": "erdos-758",
+    "range": { "startLine": 173, "endLine": 182 },
+    "type": "definition",
+    "title": "Known Values Sequence",
+    "content": "z(n) for n=1..19: {1,1,2,2,3,3,3,3,4,4,4,4,5,5,5,6,6,6,6}. Shows z increases in a staircase pattern.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-gimbel-asymptotic",
+    "proofId": "erdos-758",
+    "range": { "startLine": 194, "endLine": 201 },
+    "type": "theorem",
+    "title": "Gimbel's Asymptotic Result",
+    "content": "z(n) ~ n/log n as n → ∞. The cochromatic number grows sublinearly.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-mehta-unique",
+    "proofId": "erdos-758",
+    "range": { "startLine": 238, "endLine": 248 },
+    "type": "theorem",
+    "title": "Mehta's Unique Graph",
+    "content": "There is exactly one graph (up to complementation) on 12 vertices where both G and Ḡ are K₄-free with chromatic number ≥ 5.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-ramsey",
+    "proofId": "erdos-758",
+    "range": { "startLine": 264, "endLine": 271 },
+    "type": "insight",
+    "title": "Ramsey Theory Connection",
+    "content": "z(n) relates to Ramsey numbers: for high cochromatic number, both G and Ḡ must lack large cliques, connecting to R(k,k).",
+    "significance": "minor"
+  },
+  {
+    "id": "summary-758",
+    "proofId": "erdos-758",
+    "range": { "startLine": 289, "endLine": 305 },
+    "type": "summary",
+    "title": "Problem Status Summary",
+    "content": "SOLVED: z(12) = 4. Known values for n=1..19. Asymptotic z(n) ~ n/log n. z(20) = 6 or 7 remains open.",
+    "significance": "major"
+  }
+]

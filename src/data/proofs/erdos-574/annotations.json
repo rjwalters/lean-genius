@@ -1,0 +1,192 @@
+[
+  {
+    "id": "simple-graph-def",
+    "proofId": "erdos-574",
+    "range": {
+      "startLine": 27,
+      "endLine": 30
+    },
+    "type": "definition",
+    "title": "Simple Graph Structure",
+    "content": "Defines a simple graph on $n$ vertices using a symmetric, irreflexive adjacency relation on $\\text{Fin}\\,n$. This is a custom structure rather than Mathlib's `SimpleGraph`, tailored to the finite vertex setting needed for extremal counting.",
+    "mathContext": "$G = (V, E)$ where $V = \\text{Fin}\\,n$, adjacency satisfies $u \\sim v \\Rightarrow v \\sim u$ and $\\neg(v \\sim v)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simple graph",
+      "adjacency relation",
+      "finite graph"
+    ],
+    "prerequisites": [
+      "Fin type",
+      "symmetric relation",
+      "irreflexive relation"
+    ]
+  },
+  {
+    "id": "edge-count",
+    "proofId": "erdos-574",
+    "range": {
+      "startLine": 33,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "Counts edges by filtering ordered pairs $(u, v)$ with $u < v$ and $u \\sim v$ from the universal finite set. The ordering constraint $u < v$ avoids double-counting since the adjacency is symmetric.",
+    "mathContext": "$|E(G)| = |\\{(u,v) \\in V \\times V : u < v \\text{ and } u \\sim v\\}|$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge counting",
+      "handshaking lemma",
+      "graph density"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.card",
+      "linear order on Fin n"
+    ]
+  },
+  {
+    "id": "has-cycle",
+    "proofId": "erdos-574",
+    "range": {
+      "startLine": 37,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Cycle Containment",
+    "content": "A graph contains a cycle of length $\\ell$ if there exists an injective function from $\\text{Fin}\\,\\ell$ to vertices such that consecutive images (modulo $\\ell$) are adjacent. The injectivity ensures the cycle visits distinct vertices, and $\\ell \\ge 3$ excludes degenerate cases.",
+    "mathContext": "$G \\supseteq C_\\ell \\iff \\exists f: \\text{Fin}\\,\\ell \\hookrightarrow V,\\; f(i) \\sim f(i+1 \\bmod \\ell)$ for all $i$, with $\\ell \\ge 3$",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle graph",
+      "graph homomorphism",
+      "girth",
+      "circumference"
+    ],
+    "prerequisites": [
+      "injective function",
+      "modular arithmetic",
+      "Fin type"
+    ]
+  },
+  {
+    "id": "consecutive-free",
+    "proofId": "erdos-574",
+    "range": {
+      "startLine": 42,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Consecutive Cycle-Free Predicate",
+    "content": "A graph is $\\{C_{2k-1}, C_{2k}\\}$-free if it contains neither a cycle of length $2k-1$ nor a cycle of length $2k$. This is the central forbidden subgraph condition for Problem #574. The conjunction of two cycle-avoidance conditions creates a pair exclusion that is potentially no harder than the single even cycle exclusion.",
+    "mathContext": "$\\text{IsConsecutiveCycleFree}(G, k) \\iff \\neg(G \\supseteq C_{2k-1}) \\wedge \\neg(G \\supseteq C_{2k})$",
+    "significance": "key",
+    "relatedConcepts": [
+      "forbidden subgraph",
+      "Turán-type problem",
+      "girth condition",
+      "bipartite graph"
+    ],
+    "prerequisites": [
+      "cycle containment",
+      "extremal graph theory"
+    ]
+  },
+  {
+    "id": "extremal-number",
+    "proofId": "erdos-574",
+    "range": {
+      "startLine": 46,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Extremal Number for Consecutive Cycle Pairs",
+    "content": "The extremal number $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\})$ is the maximum number of edges in a graph on $n$ vertices that is $\\{C_{2k-1}, C_{2k}\\}$-free. The formalization uses an axiomatized supremum since computing the exact extremal number requires solving the open problem.",
+    "mathContext": "$\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) = \\max\\{|E(G)| : G \\text{ on } n \\text{ vertices, } G \\not\\supseteq C_{2k-1}, C_{2k}\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal number",
+      "Turán number",
+      "Zarankiewicz number",
+      "forbidden subgraph extremal function"
+    ],
+    "prerequisites": [
+      "edge count",
+      "consecutive cycle-free predicate",
+      "supremum over finite sets"
+    ]
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-574",
+    "range": {
+      "startLine": 56,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Erdős–Simonovits Conjecture (1982)",
+    "content": "The main conjecture: for $k \\ge 2$ and any $\\varepsilon > 0$, there exists $N_0$ such that for all $n \\ge N_0$, the extremal number lies within a $(1 \\pm \\varepsilon)$ factor of $(n/2)^{1+1/k}$. This $\\varepsilon$-$N_0$ formulation is the standard way to express asymptotic equivalence in formal mathematics, capturing both upper and lower asymptotic bounds simultaneously.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall n \\ge N_0: \\; (1-\\varepsilon)(n/2)^{1+1/k} \\le \\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) \\le (1+\\varepsilon)(n/2)^{1+1/k}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic equivalence",
+      "little-o notation",
+      "extremal graph conjecture",
+      "Erdős–Simonovits theory"
+    ],
+    "prerequisites": [
+      "real analysis asymptotics",
+      "extremal number definition",
+      "even cycle Turán number"
+    ]
+  },
+  {
+    "id": "even-cycle-turan",
+    "proofId": "erdos-574",
+    "range": {
+      "startLine": 65,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "Even Cycle Turán Number",
+    "content": "The established result that $\\text{ex}(n; C_{2k}) = \\Theta(n^{1+1/k})$. The Bondy–Simonovits theorem (1974) gives the upper bound $O(n^{1+1/k})$, while algebraic constructions by Lazebnik–Ustimenko–Woldar (1995) provide matching lower bounds for $k = 2, 3, 5$. These constructions use incidence graphs of generalized polygons over finite fields, yielding bipartite graphs with $\\sim q^{1+1/k}$ edges and girth $> 2k$.",
+    "mathContext": "$\\exists c_1, c_2 > 0: \\; c_1 \\cdot n^{1+1/k} \\le \\text{ex}(n; C_{2k}) \\le c_2 \\cdot n^{1+1/k}$ for $n \\ge 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "even cycle problem",
+      "Bondy–Simonovits theorem",
+      "algebraic construction",
+      "generalized polygon",
+      "girth"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic notation",
+      "finite geometry"
+    ]
+  },
+  {
+    "id": "bondy-simonovits",
+    "proofId": "erdos-574",
+    "range": {
+      "startLine": 73,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Bondy–Simonovits Upper Bound",
+    "content": "The Bondy–Simonovits theorem (1974) proves $\\text{ex}(n; C_{2k}) \\le c_k \\cdot n^{1+1/k}$ for a constant $c_k$ depending on $k$. The proof uses a supersaturation argument: if a graph has too many edges, a dependent random walk finds a cycle of length $2k$. Since $\\{C_{2k-1}, C_{2k}\\}$-free graphs are a fortiori $C_{2k}$-free, this upper bound applies to the consecutive pair problem as well.",
+    "mathContext": "$\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) \\le \\text{ex}(n; C_{2k}) \\le c_k \\cdot n^{1+1/k}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "supersaturation",
+      "dependent random walk",
+      "upper bound",
+      "monotonicity of extremal numbers"
+    ],
+    "prerequisites": [
+      "probabilistic method",
+      "graph density",
+      "cycle detection"
+    ]
+  }
+]

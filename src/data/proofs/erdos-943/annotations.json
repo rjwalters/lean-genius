@@ -1,0 +1,110 @@
+[
+  {
+    "id": "powerful-def",
+    "proofId": "erdos-943",
+    "range": { "startLine": 26, "endLine": 30 },
+    "type": "definition",
+    "title": "Powerful (Squarefull) Number",
+    "content": "A natural number $n \\geq 1$ is powerful (also called squarefull) if every prime $p$ dividing $n$ satisfies $p^2 \\mid n$. Equivalently, $n = a^2 b^3$ for some positive integers $a, b$ (proved by Golomb, 1970). The first few powerful numbers are 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, 64, 72, 81, 100, ... The set excludes all squarefree numbers and includes all perfect squares and perfect cubes. The density of powerful numbers up to $x$ is asymptotically $\\zeta(3/2)/\\zeta(3) \\cdot \\sqrt{x} \\approx 1.943\\sqrt{x}$.",
+    "mathContext": "$\\text{IsPowerful}(n) \\iff n \\geq 1 \\wedge \\forall p \\text{ prime},\\; p \\mid n \\implies p^2 \\mid n$. Equivalently $n = a^2 b^3$ for $a, b \\geq 1$.",
+    "significance": "key",
+    "relatedConcepts": ["squarefull number", "Golomb characterization", "squarefree complement", "Riemann zeta function"],
+    "prerequisites": ["Nat.Prime", "Nat.dvd", "prime factorization"]
+  },
+  {
+    "id": "powerful-set",
+    "proofId": "erdos-943",
+    "range": { "startLine": 32, "endLine": 33 },
+    "type": "definition",
+    "title": "The Set of Powerful Numbers",
+    "content": "The set `PowerfulSet` $= \\{n \\in \\mathbb{N} : \\text{IsPowerful}(n)\\}$ collects all powerful numbers. This is a multiplicatively closed set (the product of two powerful numbers is powerful) but not additively closed. Its additive properties—specifically how many ways integers can be represented as sums of two elements—are the subject of Problem #943.",
+    "mathContext": "$\\mathcal{A} = \\{n \\in \\mathbb{N} : \\forall p \\text{ prime},\\; p \\mid n \\implies p^2 \\mid n\\}$",
+    "significance": "supporting",
+    "relatedConcepts": ["multiplicative closure", "additive basis", "Goldbach-type problems"],
+    "prerequisites": ["IsPowerful", "Set ℕ"]
+  },
+  {
+    "id": "rep-function",
+    "proofId": "erdos-943",
+    "range": { "startLine": 35, "endLine": 40 },
+    "type": "definition",
+    "title": "Representation Function r(n)",
+    "content": "The function $r(n) = |\\{(a, b) \\in \\mathcal{A}^2 : a + b = n\\}|$ counts ordered pairs of powerful numbers summing to $n$. This is a discrete convolution: $r = \\mathbf{1}_\\mathcal{A} * \\mathbf{1}_\\mathcal{A}$ in the additive convolution sense. The formalization counts $a \\in [0, n]$ with both $a$ and $n - a$ powerful, using `Finset.filter` on `Finset.range(n+1)`. The average order $\\sum_{n \\leq x} r(n) \\sim c^2 x$ follows from the density $|\\mathcal{A} \\cap [1,x]| \\sim c\\sqrt{x}$.",
+    "mathContext": "$r(n) = |\\{a \\leq n : \\text{IsPowerful}(a) \\wedge \\text{IsPowerful}(n - a)\\}| = (\\mathbf{1}_\\mathcal{A} * \\mathbf{1}_\\mathcal{A})(n)$",
+    "significance": "key",
+    "relatedConcepts": ["additive convolution", "representation function", "Waring-type problems", "additive number theory"],
+    "prerequisites": ["IsPowerful", "Finset.filter", "Finset.card"]
+  },
+  {
+    "id": "main-conjecture",
+    "proofId": "erdos-943",
+    "range": { "startLine": 44, "endLine": 48 },
+    "type": "insight",
+    "title": "Subpolynomial Growth Conjecture",
+    "content": "The central open question: Is $r(n) = n^{o(1)}$? Formally, for every $\\varepsilon > 0$, there exists $N_0$ such that $r(n) \\leq n^\\varepsilon$ for all $n \\geq N_0$. This would mean powerful numbers are too structured to produce many additive representations—their special multiplicative structure ($n = a^2 b^3$) constrains which pairs can sum to a given target. The trivial upper bound $r(n) \\leq c\\sqrt{n}$ corresponds to $\\varepsilon = 1/2$, so the conjecture asks for improvement to any $\\varepsilon > 0$.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall n \\geq N_0:\\; r(n) \\leq n^\\varepsilon$, i.e., $r(n) = n^{o(1)}$",
+    "significance": "key",
+    "relatedConcepts": ["subpolynomial growth", "little-o notation", "ε-N definition", "axiom in Lean"],
+    "prerequisites": ["powerfulSumRep", "Real.rpow", "asymptotic notation"]
+  },
+  {
+    "id": "density",
+    "proofId": "erdos-943",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "insight",
+    "title": "Powerful Number Density",
+    "content": "The number of powerful numbers up to $x$ is asymptotically $c\\sqrt{x}$ where $c = \\zeta(3/2)/\\zeta(3) \\approx 1.943$. This classical result follows from the $a^2 b^3$ representation and a lattice point count. The constant involves the Riemann zeta function because $\\sum_{n \\text{ powerful}} n^{-s} = \\zeta(2s)\\zeta(3s)/\\zeta(6s)$.",
+    "mathContext": "$|\\mathcal{A} \\cap [1, x]| \\sim \\frac{\\zeta(3/2)}{\\zeta(3)} \\cdot \\sqrt{x} \\approx 1.943\\sqrt{x}$",
+    "significance": "key",
+    "relatedConcepts": ["Riemann zeta function", "Dirichlet series", "asymptotic counting", "lattice point counting"],
+    "prerequisites": ["IsPowerful", "Finset.filter", "Real.rpow"]
+  },
+  {
+    "id": "trivial-bound",
+    "proofId": "erdos-943",
+    "range": { "startLine": 60, "endLine": 64 },
+    "type": "insight",
+    "title": "Trivial Upper Bound: r(n) ≤ c√n",
+    "content": "Since each representation $n = a + b$ with $a, b$ powerful requires $a \\leq n$ to be powerful, and there are at most $c\\sqrt{n}$ powerful numbers up to $n$, we get $r(n) \\leq |\\mathcal{A} \\cap [1, n]| \\leq c\\sqrt{n}$. This corresponds to exponent $1/2$. The conjecture asks whether this can be improved to any $\\varepsilon < 1/2$, and indeed to $o(1)$.",
+    "mathContext": "$r(n) \\leq |\\mathcal{A} \\cap [0, n]| \\leq c\\sqrt{n} + O(1)$",
+    "significance": "key",
+    "relatedConcepts": ["counting argument", "density-based bound", "representation bound"],
+    "prerequisites": ["powerful_density", "powerfulSumRep"]
+  },
+  {
+    "id": "structure",
+    "proofId": "erdos-943",
+    "range": { "startLine": 66, "endLine": 71 },
+    "type": "insight",
+    "title": "a²b³ Structural Characterization",
+    "content": "Golomb (1970) proved every powerful number can be written as $a^2 b^3$ for positive integers $a, b$. The equation $r(n) > 0$ becomes $a_1^2 b_1^3 + a_2^2 b_2^3 = n$, a specific Diophantine equation. The $a^2 b^3$ form constrains solutions more than generic additive problems: the density is $O(\\sqrt{x})$ and the Diophantine structure should further limit solutions. Making this rigorous is the core difficulty.",
+    "mathContext": "$\\text{IsPowerful}(n) \\iff \\exists a, b \\geq 1:\\; n = a^2 b^3$. So $r(n) = |\\{(a_1, b_1, a_2, b_2) : a_1^2 b_1^3 + a_2^2 b_2^3 = n\\}|$.",
+    "significance": "key",
+    "relatedConcepts": ["Golomb characterization", "Diophantine equation", "lattice point problem"],
+    "prerequisites": ["IsPowerful", "existential quantification"]
+  },
+  {
+    "id": "squares-connection",
+    "proofId": "erdos-943",
+    "range": { "startLine": 79, "endLine": 82 },
+    "type": "insight",
+    "title": "Connection to Sums of Squares",
+    "content": "Perfect squares are a special case of powerful numbers (with $b = 1$). The number of representations $n = x^2 + y^2$ is given by Jacobi's two-square theorem: $r_2(n) = 4(d_1(n) - d_3(n))$ where $d_k(n)$ counts divisors $\\equiv k \\pmod{4}$. This gives $r_2(n) = O(n^\\varepsilon)$ from the divisor bound. For powerful numbers, the analogous bound is conjectured but unproven because $\\mathcal{A}$ is less regular than the squares.",
+    "mathContext": "Squares $\\subset$ powerful. Jacobi: $r_2(n) = 4(d_1(n) - d_3(n)) = O(n^\\varepsilon)$. For powerful numbers, $r(n) = n^{o(1)}$ is open.",
+    "significance": "supporting",
+    "relatedConcepts": ["Jacobi's two-square theorem", "divisor function", "sum of squares", "Gauss circle problem"],
+    "prerequisites": ["perfect squares", "divisor function", "IsPowerful"]
+  },
+  {
+    "id": "average-order",
+    "proofId": "erdos-943",
+    "range": { "startLine": 75, "endLine": 77 },
+    "type": "insight",
+    "title": "Average Order of r(n)",
+    "content": "On average, $\\sum_{n \\leq x} r(n) \\sim c^2 x$ where $c = \\zeta(3/2)/\\zeta(3)$. The average order being constant means $r(n)$ is bounded on average, but pointwise it could occasionally be large. The conjecture asks that even these occasional large values are subpolynomial.",
+    "mathContext": "$\\frac{1}{x} \\sum_{n \\leq x} r(n) \\to c^2 = \\left(\\frac{\\zeta(3/2)}{\\zeta(3)}\\right)^2 \\approx 3.77$",
+    "significance": "supporting",
+    "relatedConcepts": ["average order", "pointwise vs average bounds", "additive convolution sum"],
+    "prerequisites": ["powerfulSumRep", "powerful_density"]
+  }
+]

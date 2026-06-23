@@ -1,0 +1,200 @@
+{
+  "id": "erdos-469",
+  "title": "Erdős Problem #469: Primitive Pseudoperfect Numbers",
+  "slug": "erdos-469",
+  "description": "A primitive pseudoperfect number is a sum of distinct proper divisors, with no proper divisor having this property. Does Σ_{n ∈ A} 1/n converge? OEIS A006036. Open.",
+  "meta": {
+    "erdosNumber": 469,
+    "status": "verified",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisors",
+      "pseudoperfect-numbers",
+      "convergence",
+      "open"
+    ],
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/469",
+    "erdosUrl": "https://erdosproblems.com/469",
+    "axiomCount": 0,
+    "badge": "mathlib",
+    "lineCount": 327,
+    "assumptions": "0 axioms. All former axioms removed. The open conjectures (erdos469_conjecture, infinitely_many_primitive) are stated as def : Prop, not asserted as axioms. File is fully verified.",
+    "proofRepoPath": "Proofs/Erdos469Problem.lean",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 32,
+    "definitionCount": 10
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "States Erdős Problem #469 (primitive pseudoperfect numbers). $n$ is pseudoperfect (semiperfect) if it is a sum of distinct proper divisors; primitive pseudoperfect if additionally no proper divisor is pseudoperfect. Let $A$ = primitive pseudoperfect numbers (OEIS A006036: $6,20,28,88,\\dots$). Does $\\sum_{n\\in A}1/n$ converge? Status OPEN. Imports Mathlib.",
+      "mathContext": "Primitive pseudoperfect $A$ (OEIS A006036); does $\\sum_{n\\in A}1/n$ converge?"
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 22,
+      "endLine": 38,
+      "summary": "Defines `IsPseudoperfect` (a subset of proper divisors sums to $n$), `IsPrimitivePseudoperfect` (pseudoperfect with no pseudoperfect proper divisor), and the set `primitivePseudoperfectSet`.",
+      "mathContext": "$\\text{IsPseudoperfect}(n):\\exists S\\subseteq\\text{properDivisors}(n),\\ \\sum S=n$; primitive if no proper divisor is pseudoperfect."
+    },
+    {
+      "id": "perfect-pseudoperfect",
+      "title": "Perfect Numbers are Pseudoperfect",
+      "startLine": 39,
+      "endLine": 46,
+      "summary": "PROVES `perfect_is_pseudoperfect`: a perfect number (proper divisors sum to $n$) is pseudoperfect, witnessed by all of its proper divisors.",
+      "mathContext": "Perfect $\\Rightarrow$ pseudoperfect (take all proper divisors)."
+    },
+    {
+      "id": "verified-pseudoperfect",
+      "title": "Verified Pseudoperfect Numbers (Witnesses)",
+      "startLine": 47,
+      "endLine": 60,
+      "summary": "PROVES explicit examples by `decide`: `pseudoperfect_6` ($6=1+2+3$), `pseudoperfect_12` ($12=1+2+3+6$), `pseudoperfect_20` ($20=1+4+5+10$).",
+      "mathContext": "$6,12,20$ pseudoperfect via explicit divisor subsets."
+    },
+    {
+      "id": "deficiency-argument",
+      "title": "Non-pseudoperfect: Deficiency Argument",
+      "startLine": 61,
+      "endLine": 109,
+      "summary": "The private helper `subset_sum_le_total` (subset sum $\\leq$ total proper-divisor sum) drives PROVED non-pseudoperfectness of $0,1,2,3,4,5$ (their proper divisors sum below themselves). Also `pseudoperfect_28` ($28=1+2+4+7+14$, perfect).",
+      "mathContext": "$n\\leq5$: $\\sum\\text{properDivisors}<n$, so not pseudoperfect. $28$ pseudoperfect (perfect)."
+    },
+    {
+      "id": "additional-nonpseudoperfect",
+      "title": "Non-pseudoperfect: Additional Cases",
+      "startLine": 110,
+      "endLine": 129,
+      "summary": "PROVES `not_pseudoperfect_7`, `_10`, `_14` (proper-divisor sums $1,8,10$ all below the number) — needed for the primitivity proofs of $20$ and $28$.",
+      "mathContext": "$7,10,14$ deficient, hence not pseudoperfect."
+    },
+    {
+      "id": "divisors-of-88",
+      "title": "Non-pseudoperfect: Divisors of 88",
+      "startLine": 130,
+      "endLine": 155,
+      "summary": "PROVES `not_pseudoperfect_8`, `_11`, `_22`, `_44` (all deficient) — needed for the primitivity proof of $88$.",
+      "mathContext": "$8,11,22,44$ deficient, hence not pseudoperfect."
+    },
+    {
+      "id": "key-structural",
+      "title": "Key Structural Results",
+      "startLine": 156,
+      "endLine": 169,
+      "summary": "PROVES `pseudoperfect_ge_six`: the smallest pseudoperfect number is $6$ (by `interval_cases` over $n<6$ using the non-pseudoperfect lemmas).",
+      "mathContext": "Pseudoperfect $\\Rightarrow n\\geq6$."
+    },
+    {
+      "id": "verified-primitive",
+      "title": "Verified Primitive Pseudoperfect Numbers (A006036)",
+      "startLine": 170,
+      "endLine": 228,
+      "summary": "PROVES the first members of $A$: `primitive_pseudoperfect_6`, `_20`, `_28`, and (after `pseudoperfect_88`) `primitive_pseudoperfect_88` — each by checking no proper divisor is pseudoperfect (via $n\\geq6$ plus the deficiency lemmas and `interval_cases`).",
+      "mathContext": "$6,20,28,88\\in A$ (primitive pseudoperfect, OEIS A006036)."
+    },
+    {
+      "id": "structural-theorems",
+      "title": "Structural Theorems",
+      "startLine": 229,
+      "endLine": 254,
+      "summary": "PROVES the unfolding/projection lemmas: `isPseudoperfect_iff`, `primitive_pos`, `primitive_is_pseudoperfect`, `primitive_no_divisor_pseudoperfect`, and `primitive_pseudoperfect_ge_six`.",
+      "mathContext": "Primitive pseudoperfect $\\Rightarrow$ pseudoperfect, $>0$, $\\geq6$, no pseudoperfect proper divisor."
+    },
+    {
+      "id": "abundance",
+      "title": "Abundance and Pseudoperfection",
+      "startLine": 255,
+      "endLine": 280,
+      "summary": "Defines `sigma0` (proper-divisor sum), `IsAbundant`, `IsDeficient`, `IsPerfect'`, and PROVES `deficient_not_pseudoperfect` (a deficient number cannot be pseudoperfect).",
+      "mathContext": "Deficient ($\\sigma_0(n)<n$) $\\Rightarrow$ not pseudoperfect."
+    },
+    {
+      "id": "weird-numbers",
+      "title": "Weird Numbers",
+      "startLine": 281,
+      "endLine": 288,
+      "summary": "Defines `IsWeird` (abundant but not pseudoperfect; smallest is $70$).",
+      "mathContext": "Weird = abundant $\\wedge$ not pseudoperfect (smallest $70$)."
+    },
+    {
+      "id": "open-questions",
+      "title": "The Open Questions (OPEN)",
+      "startLine": 289,
+      "endLine": 327,
+      "summary": "Defines (as `Prop`s, NOT axioms) the open questions: `erdos469_conjecture` (convergence of $\\sum_{n\\in A}1/n$) and `infinitely_many_primitive` ($A$ is infinite). PROVES `multiple_of_pseudoperfect` (every positive multiple of a pseudoperfect number is pseudoperfect, by scaling the divisor witness).",
+      "mathContext": "Open: $\\sum_{n\\in A}1/n$ summable? $A$ infinite? Proved: $n$ pseudoperfect $\\Rightarrow nm$ pseudoperfect."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**Erdős Problem #469** concerns **primitive pseudoperfect numbers** (also called semiperfect numbers). A number $n$ is **pseudoperfect** if it equals the sum of a subset of its proper divisors. It is **primitive** pseudoperfect if no proper divisor of $n$ is pseudoperfect.\n\nThe sequence was studied by Erdős (1970) and Benkoski–Erdős (1974), beginning $6, 20, 28, 88, 104, 272, 304, 350, \\ldots$ (OEIS A006036). Every **perfect number** (where $\\sigma(n) = 2n$, meaning all proper divisors sum to $n$) is pseudoperfect. Since perfect numbers are the 'base case' of pseudoperfect, the first primitive pseudoperfect number is $6$ (the smallest perfect number). The problem asks whether the sum $\\sum_{n \\in A} 1/n$ over all primitive pseudoperfect numbers $A$ **converges**. This remains **open** as of 2025.",
+    "problemStatement": "Does the sum Σ_{n ∈ A} 1/n converge, where A is the set of primitive pseudoperfect numbers?",
+    "text": "A primitive pseudoperfect number is a sum of distinct proper divisors, with no proper divisor having this property. Does Σ_{n ∈ A} 1/n converge? OEIS A006036. Open.",
+    "proofStrategy": "We define IsPseudoperfect using Finset subsets of properDivisors, define primitivity by requiring no proper divisor to be pseudoperfect, and record basic structural results. The convergence question is formalized as a bounded partial sums condition.",
+    "keyInsights": [
+      "Every perfect number (σ(n) = 2n) is pseudoperfect: the proper divisors sum to n",
+      "6 is the smallest primitive pseudoperfect number (and the smallest perfect number)",
+      "Multiples of pseudoperfect numbers are pseudoperfect, so primitivity is about divisor chains",
+      "There are infinitely many primitive pseudoperfect numbers",
+      "The convergence of Σ 1/n over A would imply A has density 0 and is sparse"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Erdős Problem #469 asks whether the sum of reciprocals of primitive pseudoperfect numbers converges. These are numbers expressible as sums of distinct proper divisors, with no proper divisor having this property. The problem connects divisor-sum arithmetic to analytic number theory.",
+    "implications": "Convergence would show primitive pseudoperfect numbers are extremely sparse, while divergence would indicate they are as common as primes (in reciprocal-sum terms).",
+    "openQuestions": [
+      "Does Σ_{n ∈ A} 1/n converge?",
+      "What is the asymptotic density of primitive pseudoperfect numbers?",
+      "Are all even perfect numbers primitive pseudoperfect?"
+    ]
+  },
+  "references": [
+    "Erdős (1970), p.131",
+    "Benkoski–Erdős (1974), p.620",
+    "Erdős–Graham (1980), p.93",
+    "OEIS A006036",
+    "https://erdosproblems.com/469"
+  ],
+  "leanFile": {
+    "lineCount": 327,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 32,
+    "lemmaCount": 0,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "path": "Proofs/Erdos469Problem.lean",
+    "sorries": 0,
+    "definitionCount": 10
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-313",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, pseudoperfect-numbers"
+    },
+    {
+      "targetId": "erdos-412",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: convergence, number-theory, open"
+    },
+    {
+      "targetId": "erdos-884",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisors, number-theory, open"
+    }
+  ],
+  "sorries": 0
+}

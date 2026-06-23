@@ -1,0 +1,99 @@
+{
+  "slug": "erdos-1009-oq-01",
+  "title": "What is the exact optimal constant $C$ in $f(c) \\leq Cc^2$",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: What is the exact optimal constant $C$ in $f(c) \\leq Cc^2$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-24T00:48:59.901Z",
+    "iteration": 3,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Eliminated turan_extremal axiom (3→2 axioms). Proved from Mathlib CliqueFree.card_edgeFinset_le.",
+    "builtItems": [
+      "Assessment: 8A all appropriate (opaque function + deep results)",
+      "edgeDisjoint_comm: symmetry of edge-disjointness",
+      "turanThreshold_zero, turanThreshold_one: small value computations",
+      "turanThreshold_pos: positivity for n≥2",
+      "turanThreshold_mono: monotonicity of Turán threshold",
+      "PROVED turan_extremal from Mathlib (axiom count 3→2)"
+    ],
+    "insights": [
+      "8 axioms: boundFunction (opaque) + deep graph theory (Györi, Turán, Sauer). All appropriate.",
+      "turanThreshold is n²/4 rounded down — monotone, positive for n≥2, zero for n≤1",
+      "8 axioms encode Györi 1988 (solved), Erdős partial, Sauer counterexample, Turán — all deep, no elimination possible",
+      "turan_extremal axiom eliminated by proving from Mathlib CliqueFree.card_edgeFinset_le",
+      "Bridge: custom Triangle → CliqueFree 3 via Finset.card_eq_three + Set.Pairwise application"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "triangles",
+    "edge-disjoint",
+    "turan-numbers",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1009",
+    "erdos-1009-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-24T00:48:59.901Z",
+  "lastUpdate": "2026-03-28T05:55:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1009OQ02Problem.lean",
+      "filename": "Erdos1009OQ02Problem.lean",
+      "lineCount": 268,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1009OQ02Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1009Problem.lean",
+      "filename": "Erdos1009Problem.lean",
+      "lineCount": 240,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1009Problem.lean"
+    }
+  ]
+}

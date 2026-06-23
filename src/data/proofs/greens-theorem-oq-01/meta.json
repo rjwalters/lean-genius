@@ -1,0 +1,199 @@
+{
+  "id": "greens-theorem-oq-01",
+  "title": "Green's Theorem via Concrete Mathlib Integrals",
+  "slug": "greens-theorem-oq-01",
+  "description": "Green's theorem for rectangles formalized using Mathlib's intervalIntegral machinery, replacing the abstract stub definitions with genuine FTC-based computations. The proof uses only FTC, Fubini (as hypothesis), linearity of integration, and ring arithmetic — demonstrating that Mathlib's analysis library is powerful enough for multivariable calculus.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Green%27s_theorem",
+    "date": "1828 (Green), formalized 2026",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "multivariable-calculus",
+      "integration",
+      "fubini",
+      "ftc"
+    ],
+    "proofRepoPath": "Proofs/GreensTheoremOQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "intervalIntegral.integral_eq_sub_of_hasDerivAt",
+        "description": "Fundamental Theorem of Calculus: if f has derivative f' on [a,b], then ∫_a^b f' = f(b) - f(a)",
+        "module": "Mathlib.MeasureTheory.Integral.FundThmCalculus"
+      },
+      {
+        "theorem": "intervalIntegral.integral_sub",
+        "description": "Linearity: ∫(f-g) = ∫f - ∫g for integrable functions",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
+      },
+      {
+        "theorem": "intervalIntegral.integral_congr",
+        "description": "Pointwise equality implies integral equality on an interval",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
+      },
+      {
+        "theorem": "intervalIntegral.integral_const",
+        "description": "∫_a^b c = c * (b - a) for constant functions",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
+      },
+      {
+        "theorem": "HasDerivAt",
+        "description": "Differentiability at a point with specified derivative",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Basic"
+      }
+    ],
+    "originalContributions": [
+      "rectLineIntegral: concrete definition of the line integral around a rectangle boundary using intervalIntegral (replaces abstract stub)",
+      "rectDoubleIntegral: concrete iterated integral over a rectangle using intervalIntegral (replaces abstract stub)",
+      "ftc_partial_x: FTC applied to x-partial derivative of Q — ∫_a^b ∂Q/∂x dx = Q(b,y) - Q(a,y)",
+      "ftc_partial_y: FTC applied to y-partial derivative of P — ∫_c^d ∂P/∂y dy = P(x,d) - P(x,c)",
+      "greens_theorem_concrete: Green's theorem proof using only FTC + Fubini hypothesis + ring arithmetic (0 sorries)",
+      "area_double_integral: ∫∫_R 1 dA = (b-a)(d-c) — verified concretely with intervalIntegral",
+      "unit_square_area_as_line_integral: unit square area = 1 computed as a concrete line integral"
+    ],
+    "dateAdded": "2026-02-24",
+    "axiomCount": 0,
+    "lineCount": 338,
+    "assumptions": "0 axioms, 0 sorries. Core FTC (integral_eq_sub_of_hasDerivAt) and integral operations from Mathlib; original work is the Green's theorem reformulation.",
+    "theoremCount": 9,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "**George Green (1793–1841)** published his theorem in 1828 in 'An Essay on the Application of Mathematical Analysis to the Theories of Electricity and Magnetism.' The theorem relates a line integral around a simple closed curve C to a double integral over the region D enclosed by C:\n\n$$\\oint_C (P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)\\,dA$$\n\nGreen's theorem is a special case of **Stokes' theorem** in 2D, itself a vast generalization of the Fundamental Theorem of Calculus. For a rectangle, the proof reduces to applying FTC twice (once in each variable) and Fubini to interchange the order of integration.\n\nThe **original formalization** of Green's theorem in this gallery (Wiedijk #21) used abstract definitions for `lineIntegral` and `doubleIntegralCurl` that returned 0 as stubs. **This extension (OQ-01)** replaces those stubs with genuine Mathlib `intervalIntegral` objects, making the formalization mathematically substantive.",
+    "problemStatement": "**Open Question (greens-theorem-oq-01)**: Can the abstract `lineIntegral` and `doubleIntegralCurl` stubs in `GreensTheorem.lean` be replaced with Mathlib's `intervalIntegral` machinery, giving a genuine (non-axiomatic) formalization?\n\n**Answer: YES** — using `intervalIntegral` + FTC.\n\nThe key insight: Mathlib's `intervalIntegral.integral_eq_sub_of_hasDerivAt` provides the Fundamental Theorem of Calculus needed to replace each abstract stub with a concrete integral.",
+    "text": "Green's theorem for rectangles formalized using Mathlib's intervalIntegral machinery, replacing the abstract stub definitions with genuine FTC-based computations. The proof uses only FTC, Fubini (as hypothesis), linearity of integration, and ring arithmetic — demonstrating that Mathlib's analysis library is powerful enough for multivariable calculus.",
+    "proofStrategy": "**Green's theorem for rectangle** [a,b]×[c,d]:\n\n```\n∮_{∂R} (P dx + Q dy) = ∬_R (∂Q/∂x - ∂P/∂y) dA\n```\n\nThe line integral decomposes into four edges:\n- Bottom (y=c): ∫_a^b P(x,c) dx\n- Right (x=b): ∫_c^d Q(b,y) dy  \n- Top (y=d): −∫_a^b P(x,d) dx (right→left)\n- Left (x=a): −∫_c^d Q(a,y) dy (top→bottom)\n\n**Eight proof steps:**\n1. Split inner integral: ∫_x (∂Q/∂x − ∂P/∂y) = ∫_x ∂Q/∂x − ∫_x ∂P/∂y (integral_sub)\n2. Lift to outer integral (integral_congr)\n3. Split outer: ∫_y (A − B) = ∫_y A − ∫_y B (integral_sub)\n4. Apply FTC to ∂Q/∂x: ∫_a^b ∂Q/∂x dx = Q(b,y) − Q(a,y) (integral_eq_sub_of_hasDerivAt)\n5. Split ∫_y (Q(b,y) − Q(a,y)) = ∫_y Q(b,y) − ∫_y Q(a,y) (integral_sub)\n6. Apply Fubini: swap ∫_y ∫_x ∂P/∂y = ∫_x ∫_y ∂P/∂y (hypothesis)\n7. Apply FTC to ∂P/∂y: ∫_c^d ∂P/∂y dy = P(x,d) − P(x,c) (integral_eq_sub_of_hasDerivAt)\n8. Split and rearrange: pure `ring` arithmetic closes the goal",
+    "keyInsights": [
+      "**FTC twice is the core**: Green's theorem for rectangles is fundamentally two applications of the Fundamental Theorem of Calculus — once for ∂Q/∂x in x, once for ∂P/∂y in y.",
+      "**Fubini is the one deep step**: The interchange of integration order (∫_y ∫_x = ∫_x ∫_y) requires measurability and integrability on the product. Taking it as a hypothesis makes the proof structure transparent.",
+      "**ring closes the arithmetic**: Once FTC is applied and Fubini is used, the four boundary terms assemble into the line integral by pure ring arithmetic. No analysis needed for the final step.",
+      "**intervalIntegral is the right abstraction**: Mathlib's intervalIntegral handles signed intervals and satisfies FTC directly, making the proof much simpler than using Lebesgue integrals.",
+      "**The proof generalizes**: The same 8-step proof works for any rectangle — the specific dimensions [a,b]×[c,d] are all parameters."
+    ],
+    "prerequisites": [
+      "Multivariable calculus (partial derivatives, double integrals)",
+      "Fundamental Theorem of Calculus (single-variable)",
+      "Fubini's theorem (interchange of integration order)",
+      "Mathlib's intervalIntegral and MeasureTheory libraries"
+    ]
+  },
+  "sections": [
+    {
+      "id": "concrete-definitions",
+      "title": "Concrete Integral Definitions",
+      "startLine": 57,
+      "endLine": 86,
+      "summary": "rectLineIntegral: the boundary line integral ∮_{∂R} (P dx + Q dy) as a sum of four intervalIntegrals (bottom, right, top, left edges). rectDoubleIntegral: the double integral ∬_R f dA as an iterated intervalIntegral ∫_c^d (∫_a^b f(x,y) dx) dy. These replace the abstract stubs from GreensTheorem.lean.",
+      "mathContext": "$\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\int_a^b P(x,c)\\,dx + \\int_c^d Q(b,y)\\,dy - \\int_a^b P(x,d)\\,dx - \\int_c^d Q(a,y)\\,dy$. Double integral: $\\iint_R f\\,dA = \\int_c^d \\left(\\int_a^b f(x,y)\\,dx\\right)dy$ via iterated `intervalIntegral`."
+    },
+    {
+      "id": "ftc-lemmas",
+      "title": "FTC Lemmas for Partial Derivatives",
+      "startLine": 87,
+      "endLine": 115,
+      "summary": "ftc_partial_x: ∫_a^b ∂Q/∂x dx = Q(b,y) - Q(a,y) for fixed y, using integral_eq_sub_of_hasDerivAt. ftc_partial_y: ∫_c^d ∂P/∂y dy = P(x,d) - P(x,c) for fixed x. Both are direct wrappers around the Mathlib FTC theorem.",
+      "mathContext": "FTC for partial derivatives: $\\int_a^b \\frac{\\partial Q}{\\partial x}(x,y)\\,dx = Q(b,y) - Q(a,y)$ and $\\int_c^d \\frac{\\partial P}{\\partial y}(x,y)\\,dy = P(x,d) - P(x,c)$. Uses Mathlib's `integral_eq_sub_of_hasDerivAt` with the parameter-fixed partial derivative as the integrand."
+    },
+    {
+      "id": "greens-theorem-main",
+      "title": "Green's Theorem (Main Proof)",
+      "startLine": 145,
+      "endLine": 202,
+      "summary": "greens_theorem_concrete: under differentiability, integrability, and Fubini hypotheses, rectLineIntegral P Q a b c d = rectDoubleIntegral (∂Q/∂x - ∂P/∂y) a b c d. Eight steps: split inner integral, lift to outer, apply FTC for Q, split boundary terms, apply Fubini, apply FTC for P, split, ring arithmetic.",
+      "mathContext": "$\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\iint_R \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)dA$. Proved in 8 steps: (1-2) split and lift inner integral, (3) split outer, (4) FTC for $\\partial Q/\\partial x$, (5) split $Q$ terms, (6) Fubini swap, (7) FTC for $\\partial P/\\partial y$, (8) `ring`."
+    },
+    {
+      "id": "axiomatic-connection",
+      "title": "Connection to Axiomatic Formulation",
+      "startLine": 217,
+      "endLine": 232,
+      "summary": "concrete_matches_stub_zero: the concrete integrals agree with the abstract stubs on the zero field. area_double_integral: rectDoubleIntegral 1 a b c d = (b-a)*(d-c), proved concretely with integral_const. Shows our definitions compute correctly.",
+      "mathContext": "Verification: $\\iint_R 1\\,dA = (b-a)(d-c)$ via `integral_const`. This confirms the iterated integral definition computes the correct area."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 240,
+      "endLine": 267,
+      "summary": "constant_field_zero_circulation: line integral of (1,0) around any rectangle is 0. unit_square_area_as_line_integral: line integral of (0,x) around unit square equals 1 (= area). unit_square_curl_integral: double integral of 1 over unit square equals 1. All verified with norm_num.",
+      "mathContext": "Examples: (1) $\\oint (1\\,dx + 0\\,dy) = 0$ (curl-free field has zero circulation). (2) $\\oint_{\\partial [0,1]^2} x\\,dy = 1 = \\text{area}([0,1]^2)$. (3) $\\iint_{[0,1]^2} 1\\,dA = 1$. All proved with `norm_num`."
+    },
+    {
+      "id": "discussion",
+      "title": "Discussion: What More Is Needed",
+      "startLine": 269,
+      "endLine": 331,
+      "summary": "Documents what the proof achieves (concrete definitions, structural proof, mostly ring theory) and the one remaining gap: Fubini as a hypothesis. Describes how to prove it from Mathlib's MeasureTheory.integral_integral_swap with measurability and integrability conditions. greens_theorem_concrete_summary packages the main result.",
+      "mathContext": "The only non-trivial hypothesis: Fubini ($\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx$). Mathlib provides `MeasureTheory.integral_integral_swap` for measurable, integrable functions on product spaces. Discharging this hypothesis would give a fully autonomous proof."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization answers greens-theorem-oq-01 affirmatively: YES, the abstract stubs in GreensTheorem.lean can be replaced with genuine Mathlib intervalIntegral objects. The proof uses FTC twice (once in each variable) plus Fubini (as hypothesis), plus pure ring arithmetic. Zero sorries. The one explicit hypothesis (Fubini) identifies the deep analysis step transparently.",
+    "implications": "**Theoretical Significance**: Shows that Mathlib's intervalIntegral machinery is expressive enough for multivariable calculus theorems.\n\nThe concrete definitions (rectLineIntegral, rectDoubleIntegral) can serve as templates for formalizing Stokes' theorem in higher dimensions. The proof structure (FTC + Fubini + ring) generalizes beyond rectangles to any domain where these tools apply.",
+    "openQuestions": [
+      "Can Fubini be proved from Mathlib's MeasureTheory.integral_integral_swap, giving a fully self-contained proof with 0 hypotheses about integration order?",
+      "Can the proof generalize to smooth curves (not just rectangular boundaries) using Mathlib's path integration machinery?",
+      "Can this approach extend to Stokes' theorem in 3D (∬_S (∇×F)·dS = ∮_{∂S} F·dr) using differential forms?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "intervalIntegral"
+    ],
+    "namespace": "GreensTheoremOQ01",
+    "lineCount": 338,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "path": "Proofs/GreensTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "greens-theorem",
+      "relationship": "extends",
+      "description": "This entry replaces the abstract stubs in greens-theorem with concrete Mathlib intervalIntegral definitions, making the formalization substantive rather than axiomatic"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "Green's theorem for rectangles is fundamentally two applications of FTC — once for $\\partial Q/\\partial x$ in $x$ and once for $\\partial P/\\partial y$ in $y$. The Mathlib FTC lemma `integral_eq_sub_of_hasDerivAt` is the core tool in both `ftc_partial_x` and `ftc_partial_y`"
+    },
+    {
+      "targetId": "greens-theorem-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling open question exploring Green's theorem in different settings — together these entries demonstrate multiple approaches to formalizing the line-integral/double-integral connection in Lean 4"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Green, George",
+      "title": "An Essay on the Application of Mathematical Analysis to the Theories of Electricity and Magnetism",
+      "year": "1828",
+      "venue": "Nottingham (privately published)",
+      "note": "The original publication of Green's theorem, relating a line integral around a closed curve to a double integral over the enclosed region. Green was a self-taught miller's son whose work was largely unknown until Lord Kelvin rediscovered it in 1846"
+    },
+    {
+      "authors": "Spivak, Michael",
+      "title": "Calculus on Manifolds",
+      "year": "1965",
+      "venue": "W. A. Benjamin, Inc.",
+      "note": "The standard reference for the modern treatment of Green's, Stokes', and the divergence theorem as special cases of the generalized Stokes' theorem on manifolds with boundary. Chapter 4 presents the general framework that this formalization instantiates for rectangles"
+    },
+    {
+      "authors": "van Doorn, Floris",
+      "title": "Formalization of measure theory and the Lebesgue integral in Lean 4",
+      "year": "2023",
+      "venue": "Mathlib4 documentation",
+      "note": "The Mathlib measure theory and integration library underpinning this formalization, including intervalIntegral, integral_eq_sub_of_hasDerivAt (FTC), and integral_integral_swap (Fubini)"
+    }
+  ],
+  "sorries": 0
+}

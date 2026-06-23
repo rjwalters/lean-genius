@@ -1,0 +1,226 @@
+[
+  {
+    "id": "ann-binom-log-concave-reexport",
+    "proofId": "newton-inductive-step-oq-02",
+    "range": {
+      "startLine": 39,
+      "endLine": 45
+    },
+    "type": "theorem",
+    "title": "Re-export: Binomial Log-Concavity from the Parent",
+    "content": "`binom_log_concave'` re-exports the parent file's log-concavity result $\\binom{n}{k}^2 \\geq \\binom{n}{k-1} \\binom{n}{k+1}$ (for $1 \\leq k$ and $k+1 \\leq n$) into the current namespace. This is the foundation that ultra-log-concavity (Part I) builds on directly.",
+    "mathContext": "$\\binom{n}{k}^2 \\geq \\binom{n}{k-1} \\binom{n}{k+1}$ for $1 \\leq k < n$. This is the classical log-concavity of the binomial coefficient sequence in $k$, equivalent to $\\binom{n}{k} / \\binom{n}{k-1}$ being non-increasing in $k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "log-concavity of sequences",
+      "binomial coefficient identities",
+      "namespace re-export pattern"
+    ],
+    "prerequisites": [
+      "NewtonInductiveStepOQ01.binom_log_concave"
+    ]
+  },
+  {
+    "id": "ann-binom-ultra-log-concave",
+    "proofId": "newton-inductive-step-oq-02",
+    "range": {
+      "startLine": 51,
+      "endLine": 70
+    },
+    "type": "theorem",
+    "title": "Ultra-Log-Concavity: The Squared Form",
+    "content": "Proves $\\binom{n}{k}^4 \\geq \\binom{n}{k-1}^2 \\binom{n}{k+1}^2$ in 18 lines via the *square-then-factor* trick: from log-concavity $a^2 \\geq bc$ we get $a^2 - bc \\geq 0$. The companion factor $a^2 + bc \\geq 0$ is automatic (sum of nonnegs). The algebraic identity $(a^2 - bc)(a^2 + bc) = a^4 - b^2 c^2$ then gives $a^4 - b^2 c^2 \\geq 0$, closed by `linarith` with the explicit `key : ... = ... := by ring` and the product nonnegativity from `mul_nonneg`.",
+    "mathContext": "Set $a = \\binom{n}{k}$, $b = \\binom{n}{k-1}$, $c = \\binom{n}{k+1}$. From $a^2 \\geq bc$: $(a^2 - bc)(a^2 + bc) = a^4 - b^2 c^2 \\geq 0$ since both factors are nonneg. This is a stronger inequality than $a^2 \\geq bc$ alone — squaring effectively eliminates the sign uncertainty in $a^2 - bc$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ultra-log-concavity",
+      "difference of squares factorization",
+      "log-concavity → ultra-log-concavity",
+      "ring tactic for polynomial identities",
+      "linarith for linear arithmetic over ordered rings"
+    ],
+    "prerequisites": [
+      "binom_log_concave (from parent)",
+      "sq_nonneg, mul_nonneg, add_nonneg lemmas"
+    ]
+  },
+  {
+    "id": "ann-esymm-zero-tail",
+    "proofId": "newton-inductive-step-oq-02",
+    "range": {
+      "startLine": 77,
+      "endLine": 115
+    },
+    "type": "lemma",
+    "title": "Zero-Tail Property: e_j = 0 ⇒ e_{j+1} = 0",
+    "content": "If a list of nonneg reals has $e_j(\\mathbf{x}) = 0$ (for $j \\geq 1$), then $e_{j+1}(\\mathbf{x}) = 0$ as well. Combinatorial reason: $e_j = 0$ means every $j$-element product of list entries is zero, which forces the list to have *fewer than j* nonzero entries; hence every $(j+1)$-element product is also zero. The proof is by induction on the list with the Pascal-style decomposition $e_{j+1}(x :: xs) = e_{j+1}(xs) + x \\cdot e_j(xs)$.",
+    "mathContext": "$e_j(\\mathbf{x}) := \\sum_{|S| = j} \\prod_{i \\in S} x_i = 0$ on a nonneg list ⟹ $e_{j+1}(\\mathbf{x}) = 0$. Equivalently: the support of $e_j$ in $j$ (i.e., the set $\\{j : e_j \\neq 0\\}$) is downward-closed in the *upper* range — if $e_j$ vanishes, all subsequent $e_{j'}$ for $j' > j$ also vanish.",
+    "significance": "key",
+    "relatedConcepts": [
+      "elementary symmetric polynomials",
+      "Pascal recurrence for esymm",
+      "support of a sequence",
+      "List.cons induction in Lean"
+    ],
+    "prerequisites": [
+      "esymm definition",
+      "esymm_nil_succ",
+      "List recursion in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-esymm-log-concave",
+    "proofId": "newton-inductive-step-oq-02",
+    "range": {
+      "startLine": 117,
+      "endLine": 213
+    },
+    "type": "theorem",
+    "title": "Unnormalized Newton: e_k² ≥ e_{k-1} · e_{k+1}",
+    "content": "The classical log-concavity $e_k(\\mathbf{x})^2 \\geq e_{k-1}(\\mathbf{x}) \\cdot e_{k+1}(\\mathbf{x})$ for nonneg lists. Proof by induction on the list length. Boundary cases at $k = 1$ and $k = n$ both reduce to a quadratic-nonneg discriminant argument, where the discriminant simplifies via the Pascal-rule identity $2\\binom{n+1}{p+1} = n(n+1)$. The interior case uses the inductive hypothesis with `esymm_cons` decompositions and the `linear_combination` tactic to discharge the residual algebra.",
+    "mathContext": "$e_k(\\mathbf{x})^2 \\geq e_{k-1}(\\mathbf{x}) \\cdot e_{k+1}(\\mathbf{x})$ for $1 \\leq k$ and $k + 1 \\leq |\\mathbf{x}|$. Equivalently: the sequence $(e_k(\\mathbf{x}))$ is log-concave in $k$ for any nonneg input list.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Newton's inequality (unnormalized)",
+      "log-concavity of symmetric polynomials",
+      "discriminant of a quadratic",
+      "linear_combination tactic",
+      "Pascal's rule identity 2·C(n+1, p+1) = n·(n+1)"
+    ],
+    "prerequisites": [
+      "esymm_zero_tail",
+      "esymm_cons / esymm recursion identities",
+      "List.length induction"
+    ]
+  },
+  {
+    "id": "ann-esymm-cross-condition",
+    "proofId": "newton-inductive-step-oq-02",
+    "range": {
+      "startLine": 219,
+      "endLine": 252
+    },
+    "type": "lemma",
+    "title": "Cross Condition for esymm Log-Concavity",
+    "content": "A private helper packaging the two consecutive instances of the unnormalized Newton inequality (at $k$ and $k-1$) plus the zero-tail property into the `cross_product_of_log_concave` form expected by `newton_cleared_denom_inductive_step`. The cross condition: $e_k \\cdot e_{k-1} \\geq e_{k-2} \\cdot e_{k+1}$. Proof handles three sub-cases via `Nat.lt_or_ge` on the list length, falling back to zero-tail when esymm vanishes by overflow.",
+    "mathContext": "$e_k(\\mathbf{x}) \\cdot e_{k-1}(\\mathbf{x}) \\geq e_{k-2}(\\mathbf{x}) \\cdot e_{k+1}(\\mathbf{x})$ for $k \\geq 2$. This is the *cross-product* form of consecutive log-concavity, a standard packaging used in inductive proofs that operate on three or four adjacent terms.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cross-product of log-concave sequences",
+      "private auxiliary lemma pattern",
+      "case split via Nat.lt_or_ge",
+      "esymm_eq_zero_of_gt"
+    ],
+    "prerequisites": [
+      "esymm_log_concave",
+      "esymm_zero_tail",
+      "NewtonLogConcavity.cross_product_of_log_concave"
+    ]
+  },
+  {
+    "id": "ann-newton-inequality-binomial",
+    "proofId": "newton-inductive-step-oq-02",
+    "range": {
+      "startLine": 254,
+      "endLine": 611
+    },
+    "type": "theorem",
+    "title": "Newton's Inequality (Cleared-Denominator Form)",
+    "content": "The headline theorem: $\\binom{n}{k-1} \\binom{n}{k+1} e_k^2 \\geq \\binom{n}{k}^2 e_{k-1} e_{k+1}$ where $n = |\\mathbf{x}|$. Proof by induction on the list length. The k=1 base case is a direct quadratic-nonneg argument via `linear_combination` (the cleared-denominator form simplifies to a discriminant ≥ 0 statement). The inductive step (k ≥ 2) feeds the unnormalized Newton inequality and the cross condition to `newton_cleared_denom_inductive_step` from `AmgmInequalityOQ02OQ02.lean` — that lemma encapsulates the algebraic combinatorial identity needed to descend from $|\\mathbf{x}| = n$ to $|\\mathbf{x}| = n-1$ while preserving the binomial-coefficient weighting.",
+    "mathContext": "$\\binom{n}{k-1} \\binom{n}{k+1} e_k(\\mathbf{x})^2 \\geq \\binom{n}{k}^2 e_{k-1}(\\mathbf{x}) e_{k+1}(\\mathbf{x})$ for $1 \\leq k \\leq n - 1$, where $n = |\\mathbf{x}|$. Dividing by $\\binom{n}{k-1}\\binom{n}{k+1}\\binom{n}{k}^2$ and combining with ultra-log-concavity yields the textbook normalized Newton inequality $S_k^2 \\geq S_{k-1} S_{k+1}$ where $S_k = e_k / \\binom{n}{k}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Newton's inequality (normalized)",
+      "Maclaurin's inequality (downstream)",
+      "List.length induction",
+      "linear_combination tactic for quadratic-nonneg",
+      "cleared-denominator algebraic form"
+    ],
+    "prerequisites": [
+      "esymm_log_concave (unnormalized Newton)",
+      "esymm_cross_condition",
+      "AmgmInequalityOQ02OQ02.newton_cleared_denom_inductive_step",
+      "Pascal's rule and Nat.choose_succ_right_eq"
+    ]
+  },
+  {
+    "id": "ann-imports-architecture",
+    "proofId": "newton-inductive-step-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Module Architecture: Three-Layer Dependency",
+    "content": "The file imports two parents: `NewtonInductiveStepOQ01` (provides binom_log_concave for Layer 1) and `AmgmInequalityOQ02OQ02` (provides newton_cleared_denom_inductive_step for Layer 3). This three-layer architecture — ultra-log-concavity from log-concavity, unnormalized Newton from zero-tail + boundary, normalized Newton from unnormalized + cross-condition + AMGM identity — is what makes the 611-line proof tractable.",
+    "mathContext": "The three layers correspond to three increasingly strong inequalities: (1) $\\binom{n}{k}^4 \\geq \\binom{n}{k-1}^2 \\binom{n}{k+1}^2$ (purely arithmetic); (2) $e_k^2 \\geq e_{k-1} e_{k+1}$ (unnormalized); (3) $\\binom{n}{k-1}\\binom{n}{k+1} e_k^2 \\geq \\binom{n}{k}^2 e_{k-1} e_{k+1}$ (normalized).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "modular proof architecture",
+      "layered induction",
+      "import-driven proof decomposition"
+    ],
+    "prerequisites": [
+      "Newton's Inequalities",
+      "Elementary Symmetric Polynomials",
+      "Lean Module Imports"
+    ]
+  },
+  {
+    "id": "ann-newton-binomial-k1-quadratic",
+    "proofId": "newton-inductive-step-oq-02",
+    "range": {
+      "startLine": 275,
+      "endLine": 391
+    },
+    "type": "insight",
+    "title": "k = 1 Base Case: Discriminant Reduction via Pascal Identity",
+    "content": "The k = 1 sub-proof inside `newton_inequality_binomial` is a complete quadratic-nonneg argument hand-built from two Pascal-rule identities and the inductive hypothesis at k = 1 on the tail. After unfolding `esymm_cons_succ`, the goal becomes $\\binom{n+1}{2}(E_1 + x)^2 \\geq (n+1)^2 (E_2 + x \\cdot E_1)$, a quadratic in $x$ with $\\alpha = \\binom{n+1}{2}$, $\\beta = -(n+1) E_1$, $\\gamma = \\binom{n+1}{2} E_1^2 - (n+1)^2 E_2$. The classical condition $4 \\alpha \\gamma \\geq \\beta^2$ closes the goal via `quadratic_nonneg`.\n\nThe nontrivial work is showing $4 \\alpha \\gamma \\geq \\beta^2$ — i.e., $(n+1)^2 \\cdot ((n^2 - 1) E_1^2 - 2n(n+1) E_2) \\geq 0$, which factors as $(n+1)^3 \\cdot ((n-1) E_1^2 - 2n E_2) \\geq 0$. This reduces to $E_1^2 \\geq 2 E_2 \\cdot (n / (n-1))$ in the relevant range, recovered from the IH at k = 1 for `xs` (giving $\\binom{n}{2} E_1^2 \\geq n^2 E_2$) plus the Pascal-rule identity $2 \\binom{n}{2} = n(n-1)$.\n\nThe identity $2 \\binom{n}{2} = n(n-1)$ is proved inline by induction on $n$ rather than imported from Mathlib, since the cast to ℝ and the specific shape needed for `linear_combination` make a direct proof more transparent than searching for the right Mathlib lemma. The `linear_combination` invocations at `h4C3` (showing $4(\\binom{n}{2} + n)^2 = (n(n+1))^2$) and `hd_key` (the full discriminant identity) collapse what would otherwise be 50-line `ring` expansions into 1-line cofactor specifications.",
+    "mathContext": "**Quadratic-nonneg form**: for $\\alpha \\geq 0$, $\\gamma \\geq 0$, $4 \\alpha \\gamma \\geq \\beta^2$ $\\Rightarrow$ $\\alpha x^2 + \\beta x + \\gamma \\geq 0$. In Mathlib: `quadratic_nonneg`.\n\n**Pascal identity used twice**:\n- $\\binom{n+1}{2} = \\binom{n}{2} + \\binom{n}{1} = \\binom{n}{2} + n$ (composition step `hPascal2`).\n- $2 \\binom{n}{2} = n(n-1)$ (algebraic identity `h2C2`).\n\nCombining: $2(\\binom{n}{2} + n) = n(n-1) + 2n = n(n+1)$, so $4(\\binom{n}{2} + n)^2 = (n(n+1))^2$.\n\n**Discriminant computation**:\n- $4 \\alpha \\gamma - \\beta^2 = 4(\\binom{n}{2} + n)((\\binom{n}{2} + n) E_1^2 - (n+1)^2 E_2) - (n+1)^2 E_1^2$\n- $= (n+1)^2 \\cdot ((n^2 - 1) E_1^2 - 2 n(n+1) E_2)$  (via `linear_combination` on `h4C3`, `h2C2`)\n- $= (n+1)^3 \\cdot ((n-1) E_1^2 - 2 n E_2) \\geq 0$ from IH.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic_nonneg tactic",
+      "linear_combination tactic",
+      "Pascal's identity 2C(n,2)=n(n-1)",
+      "discriminant condition",
+      "quadratic inequality",
+      "case split on list length"
+    ],
+    "prerequisites": [
+      "esymm_cons_succ recurrence",
+      "Nat.choose_succ_succ (Pascal's rule)",
+      "quadratic_nonneg from Mathlib",
+      "linear_combination tactic semantics"
+    ]
+  },
+  {
+    "id": "ann-newton-binomial-induction-overflow",
+    "proofId": "newton-inductive-step-oq-02",
+    "range": {
+      "startLine": 392,
+      "endLine": 611
+    },
+    "type": "insight",
+    "title": "k ≥ 2 Inductive Step: Overflow-Aware Case Analysis",
+    "content": "The k ≥ 2 sub-proof starts with `obtain ⟨p, rfl⟩ : ∃ p, k = p + 2`, replacing $k$ with $p + 2$ uniformly to eliminate $k - 1$ and $k + 1$ obstructions. Three recurrence equations `rec_k`, `rec_km1`, `rec_kp1` expand $e_{p+2}, e_{p+1}, e_{p+3}$ on the head-cons list via `esymm_cons_succ`. Four abbreviations `ek := esymm xs (p+2)`, `ekm1, ekp1, ekm2` make the algebra readable; their nonnegativity is dispatched once at the top via `esymm_nonneg`.\n\nThree pieces of input data are assembled:\n1. **Unnormalized Newton on `xs` at $p + 2$** and at $p + 1$ — `h_unn_k`, `h_unn_km1` — both with overflow guards (when $p + 3 > n$ or $p + 2 > n$, the relevant $e_j$ is zero by `esymm_eq_zero_of_gt`).\n2. **Cross condition** `h_cross : ek · ekm1 ≥ ekm2 · ekp1` — obtained from `NewtonLogConcavity.cross_product_of_log_concave` plus a zero-tail fallback for the edge case `ekm1 = 0`.\n3. **Two normalized-Newton IHs** `h_ih_k`, `h_ih_km1` — applied at $p + 2$ and $p + 1$ respectively on `xs`, again with overflow guards (when $\\binom{n}{p+3}$ or $\\binom{n}{p+2}$ vanishes, the inequality is trivial).\n\nThe heavy lifting is then delegated to `NewtonLogConcavity.newton_cleared_denom_inductive_step` from `AmgmInequalityOQ02OQ02.lean`, which packages the algebraic combinatorial identity that drives the descent. Finally, a case split on $p + 3 \\leq n$ vs $p + 3 > n$ handles the boundary: when the new variable $x$ pushes $k + 1$ past the list length on `x :: xs`, $\\binom{n+1}{p+3} = 1$ (via $n = p + 2$) but $e_{p+3}(\\mathtt{xs}) = 0$, so the RHS collapses entirely.\n\nThis pattern — destruct via `obtain ⟨p, rfl⟩`, set abbreviations, gather all IH instances upfront with overflow guards, delegate the algebraic core to a packaged lemma — is reusable for any inequality whose induction needs to handle multiple `Nat.choose` overflow patterns simultaneously.",
+    "mathContext": "**Index management**: After `obtain ⟨p, rfl⟩ : ∃ p, k = p + 2`, indices become $\\{p, p+1, p+2, p+3\\}$. Overflow regions:\n- $p + 3 > n$ ⟹ $e_{p+3}(\\mathtt{xs}) = 0$\n- $p + 2 > n$ ⟹ $e_{p+2}(\\mathtt{xs}) = 0$ (only triggers when $n \\leq p + 1$, impossible given $k + 1 \\leq n + 1$).\n\n**Boundary at $n + 1 = p + 3$** (i.e., $n = p + 2$, $k = n - 1$ from the outer goal):\n- $\\binom{n}{p+3} = 0$, $e_{p+3}(\\mathtt{xs}) = 0$.\n- LHS: $\\binom{n+1}{p+1} \\binom{n+1}{p+3} \\cdot (e_{p+2}(x::\\mathtt{xs}))^2 = \\binom{n+1}{p+1} \\cdot 1 \\cdot e_{p+2}^2$.\n- RHS: $\\binom{n+1}{p+2}^2 \\cdot e_{p+1} \\cdot e_{p+3}(x::\\mathtt{xs}) = \\binom{n+1}{p+2}^2 \\cdot e_{p+1} \\cdot (0 + x \\cdot e_{p+2}(\\mathtt{xs}))$.\n\n**Inductive step (interior)**: `newton_cleared_denom_inductive_step n (p+2)` takes the cross-condition + two unnormalized + two normalized IHs and produces the binomial-weighted inequality on the cons list. Its internal proof is the algebraic combinatorial identity at the heart of the inductive descent.",
+    "significance": "key",
+    "relatedConcepts": [
+      "obtain ⟨p, rfl⟩ destructuring",
+      "set abbreviation tactic",
+      "induction hypothesis gathering",
+      "Nat.choose_eq_zero_of_lt overflow",
+      "esymm_eq_zero_of_gt overflow",
+      "cross_product_of_log_concave",
+      "newton_cleared_denom_inductive_step",
+      "case split on boundary vs interior"
+    ],
+    "prerequisites": [
+      "NewtonLogConcavity.cross_product_of_log_concave",
+      "NewtonLogConcavity.newton_cleared_denom_inductive_step",
+      "Nat.choose_eq_zero_of_lt",
+      "esymm_cons_succ recurrence",
+      "esymm_eq_zero_of_gt zero-overflow lemma"
+    ]
+  }
+]

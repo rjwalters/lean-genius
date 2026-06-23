@@ -1,0 +1,194 @@
+{
+  "id": "erdos-754",
+  "title": "Erdős Problem #754: Favorite Distances in Four Dimensions",
+  "slug": "erdos-754",
+  "description": "In n points in ℝ⁴, each point can have at most n/2 + O(1) equidistant neighbors. Proved by Swanepoel (2013) after initial bounds by Avis-Erdős-Pach (1988).",
+  "meta": {
+    "author": "Swanepoel (2013)",
+    "sourceUrl": "https://erdosproblems.com/754",
+    "date": "2013",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos754Problem.lean",
+    "tags": [
+      "erdos",
+      "geometry",
+      "combinatorics",
+      "distances",
+      "high-dimensional",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 754,
+    "erdosUrl": "https://erdosproblems.com/754",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝⁿ for point configurations",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "dist",
+        "description": "Distance function in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets for equidistant points",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "PointConfig: point configuration in ℝᵈ",
+      "equidistantSet: set of points at given distance",
+      "favoriteCount: max count at any distance",
+      "f: the function f_d(n) for dimension d",
+      "avis_erdos_pach_lower_bound: f(n) ≥ n/2 + 2",
+      "swanepoel_erdos_754: f(n) ≤ n/2 + O(1)",
+      "erdos_754_solved: combining bounds"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-668",
+        "relationship": "Related Erdős problem on unit distance geometry in the plane"
+      }
+    ],
+    "axiomCount": 2,
+    "prerequisites": [
+      "Euclidean geometry in ℝᵈ",
+      "Metric spaces and distance functions",
+      "Finite combinatorics (Finset, cardinality)",
+      "Extremal combinatorial geometry",
+      "Asymptotic notation (O, Θ)"
+    ],
+    "lineCount": 140,
+    "assumptions": "2 axioms: avis_erdos_pach_lower_bound, swanepoel_erdos_754. 0 sorries.",
+    "theoremCount": 3,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #754: Favorite Distances in ℝ⁴**\n\nThis problem asks about 'favorite distances' - the maximum number of points equidistant from a given point in a configuration.\n\n**Key History:**\n- Erdős (1994): Posed the problem about ℝ⁴\n- Avis-Erdős-Pach (1988): Proved n/2 + 2 ≤ f(n) ≤ (1+o(1))n/2\n- Swanepoel (2013): Completed the solution with f(n) = n/2 + O(1)\n\nThe lower bound of n/2 + 2 is achieved by placing n/2 points on each of two orthogonal great circles of the Clifford torus in ℝ⁴: every point on one circle is equidistant from all n/2 points on the other circle, so each point has at least n/2 favorite-distance equidistant neighbors. The problem is special to ℝ⁴ and higher dimensions; in ℝ² and ℝ³ the analogous favorite-distance problem has a different answer, reflecting how the intersection of spheres changes dimensionally.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet f(n) be maximal such that there exists a set A of n points in ℝ⁴ where every x ∈ A has at least f(n) points equidistant from x.\n\n**Question:** Is f(n) ≤ n/2 + O(1)?\n\n**Answer: YES** - Swanepoel (2013)",
+    "text": "In n points in ℝ⁴, each point can have at most n/2 + O(1) equidistant neighbors. Proved by Swanepoel (2013) after initial bounds by Avis-Erdős-Pach (1988).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Definitions:**\n   - PointConfig: configurations in ℝᵈ\n   - equidistantSet: points at given distance\n   - favoriteCount: maximum over distances\n   - f: the extremal function\n\n2. **Bounds:**\n   - avis_erdos_pach_lower_bound: f(n) ≥ n/2 + 2\n   - swanepoel_erdos_754: f(n) ≤ n/2 + O(1)\n\n3. **Stronger Result:**\n   - Swanepoel (2013): total favorite distance pairs ≤ (1/2)n² + O(n)\n   - Applies to arbitrary distance assignments",
+    "keyInsights": [
+      "**Dimension 4 Is Special:** The problem specifically asks about ℝ⁴ because the geometry changes from ℝ³. Higher dimensions have similar bounds.",
+      "**Clifford Torus Construction:** Taking n/2 points on each of two orthogonal circles achieves f(n) ≥ n/2 - points on different circles are equidistant.",
+      "**Favorite Distance Pairs:** Swanepoel's stronger result bounds Σ 1_{|x-y|=d(x)} ≤ (1/2)n² + O(n) for ANY distance assignment d(x).",
+      "**Tight Bounds:** The answer is f(n) = n/2 + Θ(1), determined up to an additive constant.",
+      "**Sphere Intersections:** In ℝ⁴, two 3-spheres generically intersect in a 2-sphere, giving rich equidistance structure."
+    ],
+    "prerequisites": [
+      "Euclidean geometry in ℝᵈ",
+      "Metric spaces and distance functions",
+      "Finite combinatorics (Finset, cardinality)",
+      "Extremal combinatorial geometry",
+      "Asymptotic notation (O, Θ)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "summary": "Favorite distances problem setup",
+      "startLine": 30,
+      "endLine": 38
+    },
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "summary": "PointConfig, equidistantSet, favoriteCount",
+      "startLine": 39,
+      "endLine": 60
+    },
+    {
+      "id": "function-f",
+      "title": "The Function f(n)",
+      "summary": "f_d(n) definition, minFavoriteCount",
+      "startLine": 61,
+      "endLine": 70
+    },
+    {
+      "id": "four-dim",
+      "title": "Four-Dimensional Case",
+      "summary": "Avis-Erdős-Pach bounds (1988)",
+      "startLine": 71,
+      "endLine": 77
+    },
+    {
+      "id": "swanepoel",
+      "title": "Swanepoel's Theorem",
+      "summary": "2013 solution, favorite distance pairs, erdos_754_solved",
+      "startLine": 78,
+      "endLine": 102
+    },
+    {
+      "id": "higher-dim",
+      "title": "Higher Dimensions",
+      "summary": "Swanepoel (2013) analogous results for higher dimensions d ≥ 4",
+      "startLine": 103,
+      "endLine": 105
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_754, erdos_754_summary",
+      "startLine": 106,
+      "endLine": 140
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #754 asked whether f(n) ≤ n/2 + O(1) for 'favorite distances' in ℝ⁴. Swanepoel (2013) proved YES, completing the picture started by Avis-Erdős-Pach (1988). The tight answer is f(n) = n/2 + Θ(1).",
+    "implications": "**Theoretical Significance**: **Connections and Applications**\n\n1. **Combinatorial Geometry:** Fundamental result about distance structure in high dimensions\n\n**2. Related to Problem 223:** Maximum diameter pairs - another distance extremal problem\n\n3. **Unit Distance Problem:** Different question but same spirit: counting distance occurrences\n\n4. **Higher Dimensions:** Swanepoel extended to all d ≥ 4 with analogous bounds.",
+    "openQuestions": [
+      "Exact value of the additive constant in f(n) = n/2 + O(1)?",
+      "Structure of extremal configurations achieving f(n)?",
+      "Analogous problems for other distance constraints?",
+      "Lower dimensional cases (d ≤ 3) have different answers - what are they exactly?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Pach, János; Pollack, Richard; Tuza, Zsolt",
+      "title": "How many unit distances can a graph have?",
+      "year": "1990",
+      "venue": "Graphs and Combinatorics 6, pp. 357-365",
+      "note": "Related work on unit distance problems in higher dimensions"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-604",
+      "relationship": "related",
+      "description": "Both concern distance geometry: #604 studies pinned distances in the plane, #754 studies equidistant neighbors in 4D"
+    },
+    {
+      "targetId": "erdos-224",
+      "relationship": "related",
+      "description": "Both concern geometric extremal problems — studying how point configurations or geometric shapes must satisfy structural constraints"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos754",
+    "lineCount": 140,
+    "axiomCount": 2,
+    "theoremCount": 3,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos754Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

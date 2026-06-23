@@ -1,0 +1,653 @@
+[
+  {
+    "id": "ann-263-imports",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 23,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports real number basics, the definition of irrationality, real-valued power functions, and the full tactic/filter framework needed for limits. A small compatibility shim re-adds `PNat.val_mk` (removed in newer Mathlib) so the positive-integer sequence type works cleanly.",
+    "mathContext": "Requires $\\mathbb{R}$, $\\texttt{Irrational}$, $x^r$ for $r \\in \\mathbb{R}$, and the filter-based limit framework $\\mathcal{F} \\to \\mathcal{G}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib filters",
+      "real analysis",
+      "irrational numbers"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "ann-263-posintseq",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 37,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Positive Integer Sequence",
+    "content": "Defines the type of positive integer sequences as functions $\\mathbb{N} \\to \\mathbb{N}^+$. Using Lean's $\\texttt{PNat}$ type ($\\mathbb{N}^+$) ensures positivity is enforced at the type level, eliminating division-by-zero concerns in reciprocal sums.",
+    "mathContext": "A positive integer sequence is a function $a : \\mathbb{N} \\to \\mathbb{N}^+$ where $\\mathbb{N}^+ = \\{1, 2, 3, \\ldots\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "PNat",
+      "dependent types",
+      "positive naturals"
+    ],
+    "prerequisites": [
+      "type theory",
+      "natural numbers"
+    ]
+  },
+  {
+    "id": "ann-263-recipsum",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 40,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Reciprocal Sum",
+    "content": "The infinite series $\\sum_{n=0}^{\\infty} 1/b_n$ defined via Mathlib's $\\texttt{tsum}$ (topological sum). This is a conditional sum that equals zero when the series is not summable, which is mathematically convenient for stating irrationality results.",
+    "mathContext": "$S(b) = \\sum_{n=0}^{\\infty} \\frac{1}{b_n}$ where $b : \\mathbb{N} \\to \\mathbb{Z}$. The integer-valued sequence allows perturbations that are not necessarily positive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tsum",
+      "summability",
+      "series convergence",
+      "harmonic series"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "topological spaces",
+      "completeness of reals"
+    ]
+  },
+  {
+    "id": "ann-263-partialsum",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Reciprocal Partial Sum",
+    "content": "The finite partial sum $\\sum_{n=0}^{N-1} 1/b_n$ using Finset.range. Partial sums are useful for approximation arguments and for relating the infinite series to its finite truncations.",
+    "mathContext": "$S_N(b) = \\sum_{n=0}^{N-1} \\frac{1}{b_n}$. The relationship $S(b) = \\lim_{N \\to \\infty} S_N(b)$ when the series converges.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.range",
+      "partial sums",
+      "Cauchy criterion"
+    ],
+    "prerequisites": [
+      "finite sums",
+      "convergence of series"
+    ]
+  },
+  {
+    "id": "ann-263-perturbation",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 48,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Perturbation",
+    "content": "A sequence $b_n$ is a perturbation of $a_n$ if $b_n/a_n \\to 1$. This captures the idea of 'small relative changes' — replacing each term by a nearby integer. The definition uses Lean's filter-based $\\texttt{Tendsto}$ to express convergence to 1 along the $\\texttt{atTop}$ filter.",
+    "mathContext": "$b$ is a perturbation of $a$ if $\\lim_{n \\to \\infty} \\frac{b_n}{a_n} = 1$, i.e., $b_n = a_n(1 + o(1))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic equivalence",
+      "filter convergence",
+      "neighborhood filter"
+    ],
+    "prerequisites": [
+      "limits of sequences",
+      "filter theory",
+      "asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-263-irrseq",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Irrationality Sequence",
+    "content": "The central definition: a sequence $(a_n)$ is an irrationality sequence if for ALL perturbations $(b_n)$ with $b_n/a_n \\to 1$ and all $b_n > 0$, the sum $\\sum 1/b_n$ is irrational. This is a remarkably strong property — it requires irrationality to be robust under all small relative perturbations, not just for the original sequence. Erdős introduced this concept to study the structural reasons behind irrationality.",
+    "mathContext": "$(a_n)$ is an irrationality sequence if $\\forall (b_n) \\in \\mathbb{Z}^{\\mathbb{N}},\\; \\frac{b_n}{a_n} \\to 1 \\wedge b_n > 0 \\;\\Rightarrow\\; \\sum_{n=0}^{\\infty} \\frac{1}{b_n} \\notin \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrationality",
+      "Diophantine approximation",
+      "robust irrationality",
+      "Erdős problems"
+    ],
+    "prerequisites": [
+      "irrational numbers",
+      "infinite series",
+      "perturbation theory"
+    ]
+  },
+  {
+    "id": "ann-263-doubleexp",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 59,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Double Exponential Sequence",
+    "content": "The sequence $a_n = 2^{2^n}$, growing as $2, 4, 16, 256, 65536, \\ldots$. This is the specific sequence Erdős asked about. Its reciprocal sum $\\sum 1/2^{2^n}$ is a Kempner-like number whose irrationality is known (and proved later in this file as `doubleExp_sum_irrational`), but the irrationality sequence property (robustness under ALL perturbations) remains open.",
+    "mathContext": "$a_n = 2^{2^n}$. The sum $\\sum_{n=0}^{\\infty} 2^{-2^n}$ is known to be transcendental (it is a Fredholm number related to $\\prod_{k=0}^{\\infty}(1 - 2^{-2^k})$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "double exponential growth",
+      "Fredholm numbers",
+      "lacunary series",
+      "Mahler's method"
+    ],
+    "prerequisites": [
+      "exponential functions",
+      "transcendence theory"
+    ]
+  },
+  {
+    "id": "ann-263-q1",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 62,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Erdős Question 1",
+    "content": "Formalizes Erdős's first question: Is $2^{2^n}$ an irrationality sequence? This asks whether the sum $\\sum 1/b_n$ is irrational for EVERY integer sequence $(b_n)$ asymptotic to $2^{2^n}$. The double exponential grows fast enough that its own reciprocal sum is transcendental, but the universal quantification over all perturbations makes this much harder.",
+    "mathContext": "Is $\\texttt{doubleExp}$ an irrationality sequence? Equivalently: $\\forall (b_n),\\; b_n/2^{2^n} \\to 1 \\Rightarrow \\sum 1/b_n \\notin \\mathbb{Q}$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problems",
+      "transcendence",
+      "lacunary series"
+    ],
+    "prerequisites": [
+      "irrationality sequences",
+      "double exponential growth"
+    ]
+  },
+  {
+    "id": "ann-263-superexp",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 67,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Superexponential Growth",
+    "content": "A sequence has superexponential growth if $a_n^{1/n} \\to \\infty$, meaning it grows faster than any geometric sequence $c^n$. Erdős's second question asks whether this is a necessary condition for irrationality sequences. Note that $n!$ has superexponential growth (by Stirling: $(n!)^{1/n} \\sim n/e$) but $2^n$ does not ($2^{n/n} = 2$).",
+    "mathContext": "$\\lim_{n \\to \\infty} a_n^{1/n} = \\infty$, equivalently $\\forall C > 0,\\; \\exists N,\\; \\forall n \\geq N,\\; a_n > C^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "growth rates",
+      "root test",
+      "Stirling's approximation",
+      "Cauchy-Hadamard theorem"
+    ],
+    "prerequisites": [
+      "exponential growth",
+      "limits",
+      "root test for series"
+    ]
+  },
+  {
+    "id": "ann-263-q2",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 71,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Erdős Question 2",
+    "content": "Formalizes Erdős's second question: Must every irrationality sequence have superexponential growth? A negative answer would provide surprisingly slowly-growing irrationality sequences. A positive answer would establish a fundamental growth barrier for the irrationality sequence property.",
+    "mathContext": "$\\forall a : \\mathbb{N} \\to \\mathbb{N}^+,\\; \\texttt{IsIrrationalitySequence}(a) \\Rightarrow a_n^{1/n} \\to \\infty$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "necessary conditions",
+      "growth rates",
+      "characterization problems"
+    ],
+    "prerequisites": [
+      "irrationality sequences",
+      "superexponential growth"
+    ]
+  },
+  {
+    "id": "ann-263-folklore",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 77,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Folklore Growth Condition",
+    "content": "The condition $a_n^{1/2^n} \\to \\infty$, which is strictly stronger than superexponential growth. This captures 'doubly exponential' growth and above. It is known to be sufficient for the reciprocal sum to be irrational, providing a positive partial result toward characterizing irrationality sequences.",
+    "mathContext": "$\\lim_{n \\to \\infty} a_n^{1/2^n} = \\infty$. This means $\\log_2 \\log_2 a_n - n \\to \\infty$, so $a_n$ grows faster than $2^{2^n}$ (up to subexponential factors).",
+    "significance": "key",
+    "relatedConcepts": [
+      "doubly exponential growth",
+      "iterated logarithm",
+      "tetration"
+    ],
+    "prerequisites": [
+      "superexponential growth",
+      "logarithmic scales"
+    ]
+  },
+  {
+    "id": "ann-263-folklorethm",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 81,
+      "endLine": 85
+    },
+    "type": "concept",
+    "title": "Folklore Irrationality Theorem",
+    "content": "The classical sufficient condition: if $a_n^{1/2^n} \\to \\infty$, then $\\sum 1/a_n$ is irrational. The proof typically uses the fact that such rapidly growing sequences produce very good rational approximations to $\\sum 1/a_n$ via partial sums, which contradicts rationality by a measure-of-irrationality argument (similar to Liouville's theorem).",
+    "mathContext": "If $\\lim_{n \\to \\infty} a_n^{1/2^n} = \\infty$, then $\\sum_{n=0}^{\\infty} \\frac{1}{a_n} \\notin \\mathbb{Q}$. The key step uses $|S - S_N| < 1/a_{N+1}$ combined with the growth condition to get $|S - p/q| < 1/q^{2+\\epsilon}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Liouville's theorem",
+      "irrationality measure",
+      "rational approximation"
+    ],
+    "prerequisites": [
+      "series convergence",
+      "Diophantine approximation",
+      "irrationality criteria"
+    ]
+  },
+  {
+    "id": "ann-263-doubleexp-folklore",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 87,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Double Exponential Does NOT Satisfy Folklore",
+    "content": "The theorem `doubleExp_not_folklore_growth` proves that $2^{2^n}$ does NOT satisfy the folklore growth condition: it sits exactly on the boundary, since $(2^{2^n})^{1/2^n} = 2$ for all $n$, and $2 \\not\\to \\infty$. This is precisely why the folklore sufficient condition cannot resolve Erdős Question 1 for the double exponential — the question remains open.",
+    "mathContext": "$(2^{2^n})^{1/2^n} = 2^{2^n/2^n} = 2^1 = 2$ for all $n$. Since the limit is $2 \\neq \\infty$, $\\texttt{HasFolkloreGrowth}\\;\\texttt{doubleExp}$ is false.",
+    "significance": "key",
+    "relatedConcepts": [
+      "boundary cases",
+      "folklore condition",
+      "growth rate computation"
+    ],
+    "prerequisites": [
+      "exponent arithmetic",
+      "double exponential properties"
+    ]
+  },
+  {
+    "id": "ann-263-increasing",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 127,
+      "endLine": 129
+    },
+    "type": "definition",
+    "title": "Strictly Increasing Sequence",
+    "content": "Defines strict monotonicity: $n < m \\Rightarrow a_n < a_m$. This is a hypothesis of the Kovač-Tao theorem, ensuring the sequence has no repeated terms, which is needed for their Diophantine approximation argument.",
+    "mathContext": "$\\forall n < m,\\; a_n < a_m$. Equivalently, $a_0 < a_1 < a_2 < \\cdots$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone sequences",
+      "well-ordering"
+    ],
+    "prerequisites": [
+      "order relations"
+    ]
+  },
+  {
+    "id": "ann-263-convergentsum",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 131,
+      "endLine": 133
+    },
+    "type": "definition",
+    "title": "Convergent Reciprocal Sum",
+    "content": "The summability condition $\\sum 1/a_n < \\infty$ using Mathlib's $\\texttt{Summable}$. This ensures the reciprocal sum is a well-defined real number, which is a prerequisite for asking about its rationality.",
+    "mathContext": "$\\sum_{n=0}^{\\infty} \\frac{1}{a_n} < \\infty$, i.e., the series converges absolutely.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "absolute convergence",
+      "comparison test",
+      "Summable"
+    ],
+    "prerequisites": [
+      "series convergence tests",
+      "positive term series"
+    ]
+  },
+  {
+    "id": "ann-263-kt",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 135,
+      "endLine": 137
+    },
+    "type": "definition",
+    "title": "Kovač-Tao Condition",
+    "content": "The condition $a_{n+1}/a_n^2 \\to 0$, meaning the sequence grows strictly slower than iterated squaring. Sequences satisfying this grow fast enough for the sum to converge, but not fast enough to prevent rational perturbations. Kovač and Tao (2024) showed these are NOT irrationality sequences.",
+    "mathContext": "$\\lim_{n \\to \\infty} \\frac{a_{n+1}}{a_n^2} = 0$. This means $a_{n+1} = o(a_n^2)$, so the sequence grows slower than the iteration $x \\mapsto x^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "growth rate comparison",
+      "iterated squaring",
+      "Sylvester sequence"
+    ],
+    "prerequisites": [
+      "limits",
+      "asymptotic analysis",
+      "quadratic recurrences"
+    ]
+  },
+  {
+    "id": "ann-263-ktthm",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 139,
+      "endLine": 145
+    },
+    "type": "concept",
+    "title": "Kovač-Tao Theorem (2024)",
+    "content": "The landmark 2024 result by Vjekoslav Kovač and Terence Tao: strictly increasing sequences with convergent reciprocal sum and $a_{n+1}/a_n^2 \\to 0$ are NOT irrationality sequences. Their proof constructs an explicit perturbation $(b_n)$ with $b_n/a_n \\to 1$ such that $\\sum 1/b_n$ is rational, using a delicate greedy algorithm for Egyptian fraction decomposition.",
+    "mathContext": "If $a_0 < a_1 < \\cdots$, $\\sum 1/a_n < \\infty$, and $a_{n+1}/a_n^2 \\to 0$, then $\\exists (b_n) \\in \\mathbb{Z}_{>0}^{\\mathbb{N}}$ with $b_n/a_n \\to 1$ and $\\sum 1/b_n \\in \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "greedy algorithms",
+      "rational approximation",
+      "Tao's work"
+    ],
+    "prerequisites": [
+      "irrationality sequences",
+      "series manipulation",
+      "Egyptian fraction theory"
+    ]
+  },
+  {
+    "id": "ann-263-positive",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 170,
+      "endLine": 173
+    },
+    "type": "definition",
+    "title": "Positive Condition (Sufficient for Irrationality)",
+    "content": "The condition $\\liminf a_{n+1}/a_n^{2+\\epsilon} > 0$ for some $\\epsilon > 0$. This means the sequence grows at least as fast as iterated squaring with a polynomial speedup. Together with the Kovač-Tao result, this establishes a sharp threshold near the quadratic recurrence $a_{n+1} \\approx a_n^2$.",
+    "mathContext": "$\\exists \\epsilon > 0 : \\liminf_{n \\to \\infty} \\frac{a_{n+1}}{a_n^{2+\\epsilon}} > 0$. This implies $a_{n+1} \\geq c \\cdot a_n^{2+\\epsilon}$ for infinitely many $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "liminf",
+      "growth thresholds",
+      "sufficient conditions"
+    ],
+    "prerequisites": [
+      "liminf/limsup",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-263-positivethm",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 175,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Positive Condition Implies Irrationality Sequence",
+    "content": "If a sequence satisfies the positive condition $\\liminf a_{n+1}/a_n^{2+\\epsilon} > 0$, it is an irrationality sequence. The proof uses the fact that fast-growing sequences produce extremely good rational approximations to their reciprocal sums, and any perturbation preserves this approximation quality.",
+    "mathContext": "$\\exists \\epsilon > 0,\\; \\liminf \\frac{a_{n+1}}{a_n^{2+\\epsilon}} > 0 \\;\\Rightarrow\\; (a_n) \\text{ is an irrationality sequence}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrationality measure",
+      "Roth's theorem",
+      "Diophantine exponent"
+    ],
+    "prerequisites": [
+      "irrationality sequences",
+      "positive condition",
+      "Diophantine approximation"
+    ]
+  },
+  {
+    "id": "ann-263-factorial",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 183,
+      "endLine": 184
+    },
+    "type": "definition",
+    "title": "Factorial Sequence Example",
+    "content": "The factorial sequence $a_n = (n+1)!$ as a test case. While $n!$ grows superexponentially ($(n!)^{1/n} \\sim n/e \\to \\infty$ by Stirling), it does NOT satisfy the folklore growth condition since $(n!)^{1/2^n} \\to 1$. The irrationality of $e - 1 = \\sum 1/n!$ is well-known, but whether $n!$ is an irrationality sequence remains open. The lemmas that follow verify it satisfies the Kovač-Tao condition, is strictly increasing, and has a convergent sum.",
+    "mathContext": "$a_n = (n+1)!$. By Stirling's approximation, $(n!)^{1/n} \\sim n/e$, so $n!$ has superexponential growth. But $(n!)^{1/2^n} \\to 1$ since $\\log(n!)/2^n \\sim n \\log n / 2^n \\to 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "factorial",
+      "Stirling's approximation",
+      "number $e$",
+      "Taylor series"
+    ],
+    "prerequisites": [
+      "factorial function",
+      "Stirling's approximation",
+      "growth rate analysis"
+    ]
+  },
+  {
+    "id": "ann-263-tower",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 350,
+      "endLine": 353
+    },
+    "type": "definition",
+    "title": "Tower Function (Tetration)",
+    "content": "The tower function defined recursively: $\\text{tower}(0) = 1$, $\\text{tower}(n+1) = 2^{\\text{tower}(n)}$. This produces the sequence $1, 2, 4, 16, 65536, 2^{65536}, \\ldots$ which grows much faster than the double exponential and clearly satisfies the folklore condition.",
+    "mathContext": "$T(n) = {}^n 2$ (Knuth's up-arrow notation: $2 \\uparrow\\uparrow n$). The tower function grows as $2, 2^2, 2^{2^2}, 2^{2^{2^2}}, \\ldots$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tetration",
+      "Knuth's up-arrow notation",
+      "hyperoperations",
+      "Ackermann function"
+    ],
+    "prerequisites": [
+      "recursion",
+      "exponential functions"
+    ]
+  },
+  {
+    "id": "ann-263-doubleexp-incr",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 355,
+      "endLine": 360
+    },
+    "type": "concept",
+    "title": "Double Exponential is Strictly Increasing",
+    "content": "Proves $2^{2^n}$ is strictly increasing: since $2^n$ is strictly increasing and $x \\mapsto 2^x$ is strictly monotone, the composition is strictly increasing.",
+    "mathContext": "$n < m \\Rightarrow 2^n < 2^m \\Rightarrow 2^{2^n} < 2^{2^m}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "composition of monotone functions"
+    ],
+    "prerequisites": [
+      "exponential monotonicity"
+    ]
+  },
+  {
+    "id": "ann-263-doubleexp-conv",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 371,
+      "endLine": 389
+    },
+    "type": "concept",
+    "title": "Double Exponential Sum Converges",
+    "content": "The sum $\\sum 1/2^{2^n}$ converges extremely rapidly. Each term is at most the square of the previous tail, giving supergeometric convergence. The sum equals approximately $0.8164215...$, related to Fredholm numbers.",
+    "mathContext": "$\\sum_{n=0}^{\\infty} \\frac{1}{2^{2^n}} = \\frac{1}{2} + \\frac{1}{4} + \\frac{1}{16} + \\frac{1}{256} + \\cdots \\approx 0.8164$. This converges by comparison with any geometric series.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "lacunary series",
+      "rapid convergence",
+      "comparison test"
+    ],
+    "prerequisites": [
+      "convergence tests",
+      "geometric series"
+    ]
+  },
+  {
+    "id": "ann-263-gap",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 448,
+      "endLine": 453
+    },
+    "type": "concept",
+    "title": "Characterization Gap",
+    "content": "There exist sequences with superexponential growth that do NOT satisfy the folklore condition — establishing a genuine gap between the necessary and sufficient conditions. This gap is where the core difficulty of Problem #263 lives: the double exponential $2^{2^n}$ falls exactly in this gap.",
+    "mathContext": "$\\exists a : \\mathbb{N} \\to \\mathbb{N}^+$ such that $a_n^{1/n} \\to \\infty$ but $a_n^{1/2^n} \\not\\to \\infty$. Example: $a_n = n!$ or any sequence with $\\log\\log a_n / n \\to c < 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "gap between conditions",
+      "growth hierarchies",
+      "classification problems"
+    ],
+    "prerequisites": [
+      "superexponential growth",
+      "folklore growth"
+    ]
+  },
+  {
+    "id": "ann-263-mainq",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 455,
+      "endLine": 459
+    },
+    "type": "definition",
+    "title": "Main Question",
+    "content": "Bundles both of Erdős's questions into a single proposition. Resolving either question would be a significant advance in understanding the structure of irrationality sequences.",
+    "mathContext": "$\\texttt{MainQuestion} \\iff \\texttt{ErdosQuestion1} \\wedge \\texttt{ErdosQuestion2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problems",
+      "conjunctive formalization"
+    ],
+    "prerequisites": [
+      "Erdős Question 1",
+      "Erdős Question 2"
+    ]
+  },
+  {
+    "id": "ann-263-conn262",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 461,
+      "endLine": 464
+    },
+    "type": "definition",
+    "title": "Connection to Problem #262",
+    "content": "Problem #262 asks about the growth rate of irrationality sequences: how slowly can they grow? Hančl (1991) showed $\\limsup (\\log_2 \\log_2 a_n)/n \\geq 1$ is necessary. This provides the lower bound complementing the upper bound from the folklore condition. The proposition `connection_262` states that every irrationality sequence has an irrational reciprocal sum (proved below as `connection_262_proved`).",
+    "mathContext": "Connection: if $(a_n)$ is an irrationality sequence, then $\\sum 1/a_n$ is itself irrational (choosing $b_n = a_n$ as the trivial perturbation).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "erdos-262",
+      "growth lower bounds",
+      "Hančl's theorem"
+    ],
+    "prerequisites": [
+      "irrationality sequences",
+      "logarithmic growth scales"
+    ]
+  },
+  {
+    "id": "ann-263-conn264",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 486,
+      "endLine": 489
+    },
+    "type": "definition",
+    "title": "Connection to Problem #264",
+    "content": "Problem #264 uses a different perturbation model: bounded additive perturbations $b_n$ (rather than multiplicative). Kovač and Tao (2024) showed $2^n$ is NOT such a sequence. The relationship between additive and multiplicative perturbation models reveals different aspects of irrationality robustness.",
+    "mathContext": "Problem #264 asks: is $(a_n)$ an irrationality sequence under bounded additive perturbations $|b_n| \\leq C$? This is related but distinct from the $b_n/a_n \\to 1$ model.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "erdos-264",
+      "additive vs multiplicative perturbations",
+      "Kovač-Tao"
+    ],
+    "prerequisites": [
+      "irrationality sequences",
+      "perturbation models"
+    ]
+  },
+  {
+    "id": "ann-263-noncompute",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 640,
+      "endLine": 656
+    },
+    "type": "concept",
+    "title": "The Reciprocal Sum Σ 1/2^{2ⁿ} is Irrational",
+    "content": "The headline machine-checked result of the file: $\\sum_{n=0}^{\\infty} 1/2^{2^n}$ is irrational (`doubleExp_sum_irrational`). This is a *necessary* condition for Erdős Question 1 — if the sum were rational, the identity perturbation $b = a$ would already witness that $2^{2^n}$ is NOT an irrationality sequence. The proof is a self-contained integer-gap argument (no transcendence machinery): assuming $S = p/q$, set $D = 2^{2^N}$ with $N = q.\\mathrm{den}$, split $S = A + 1/D + T$, and show $qDT$ is a nonzero integer of absolute value $< 1$ — a contradiction.",
+    "mathContext": "$\\sum_{n=0}^{\\infty} \\frac{1}{2^{2^n}} \\notin \\mathbb{Q}$. Key bound: $0 < qDT < |q|/(D-1) \\leq 1$ with $qDT \\in \\mathbb{Z}$, impossible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrationality proof",
+      "integer-gap argument",
+      "Fredholm numbers",
+      "tail estimate"
+    ],
+    "prerequisites": [
+      "proof by contradiction",
+      "tsum splitting",
+      "rational denominators"
+    ]
+  },
+  {
+    "id": "ann-263-truncation",
+    "proofId": "erdos-263",
+    "range": {
+      "startLine": 499,
+      "endLine": 503
+    },
+    "type": "concept",
+    "title": "Truncation Insufficiency",
+    "content": "No finite prefix of a sequence determines whether it is an irrationality sequence: for every $N$, there exist two sequences agreeing on the first $N$ terms where one is an irrationality sequence and the other is not. This shows the property is genuinely infinitary. (The earlier 'non-computability' theorem was removed from the file because, under classical logic, decidability is not the right formalization; this truncation statement captures the intended infinitary content.)",
+    "mathContext": "$\\forall N \\in \\mathbb{N},\\; \\exists a, b : \\mathbb{N} \\to \\mathbb{N}^+$ with $a_n = b_n$ for $n < N$, $(a_n)$ an irrationality sequence, $(b_n)$ not.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite determinacy",
+      "tail behavior",
+      "topological complexity"
+    ],
+    "prerequisites": [
+      "irrationality sequences",
+      "sequence extension arguments"
+    ]
+  }
+]

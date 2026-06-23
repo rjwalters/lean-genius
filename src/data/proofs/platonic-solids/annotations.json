@@ -1,0 +1,181 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "platonic-solids",
+    "range": {
+      "startLine": 4,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Number of Platonic Solids: Wiedijk #50",
+    "content": "**There are exactly FIVE Platonic solids**:\n\n1. **Tetrahedron**: 4 triangular faces {3, 3}\n2. **Cube**: 6 square faces {4, 3}\n3. **Octahedron**: 8 triangular faces {3, 4}\n4. **Dodecahedron**: 12 pentagonal faces {5, 3}\n5. **Icosahedron**: 20 triangular faces {3, 5}\n\n**Definition**: A Platonic solid is a convex polyhedron where:\n- All faces are congruent regular $p$-gons\n- Same number $q$ of faces meet at each vertex\n\n**Historical**: Known to ancient Greeks; Euclid proved uniqueness in Elements Book XIII.",
+    "mathContext": "A Platonic solid is a convex polyhedron $\\{p,q\\}$ with congruent regular $p$-gon faces and $q$ faces per vertex. The classification: $|\\{(p,q) : p,q \\geq 3,\\, (p-2)(q-2) < 4\\}| = 5$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "regular polyhedra",
+      "Schlafli symbol",
+      "Euler's formula"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Natural number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-schlafli",
+    "proofId": "platonic-solids",
+    "range": {
+      "startLine": 71,
+      "endLine": 99
+    },
+    "type": "definition",
+    "title": "Schlafli Symbol {p, q}",
+    "content": "**The Schlafli Symbol**:\n\nA Platonic solid is characterized by $\\{p, q\\}$:\n- $p$ = number of sides per face ($p \\geq 3$)\n- $q$ = number of faces per vertex ($q \\geq 3$)\n\nThe regularity constraint $(p-2)(q-2) < 4$ arises from Euler's formula $V - E + F = 2$.",
+    "mathContext": "The `SchlafliPair` structure carries $p, q : \\mathbb{N}$ with proofs $3 \\leq p$ and $3 \\leq q$. The constraint $\\frac{1}{p} + \\frac{1}{q} > \\frac{1}{2}$ is equivalent to $(p-2)(q-2) < 4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schlafli symbol",
+      "regularity",
+      "vertex figure"
+    ],
+    "prerequisites": [
+      "Structure definition",
+      "Natural number subtraction"
+    ],
+    "leanSymbol": "SchlafliPair"
+  },
+  {
+    "id": "ann-five-solids",
+    "proofId": "platonic-solids",
+    "range": {
+      "startLine": 104,
+      "endLine": 128
+    },
+    "type": "definition",
+    "title": "The Five Platonic Solids",
+    "content": "**The Five Valid Pairs**: tetrahedron $\\{3,3\\}$, cube $\\{4,3\\}$, octahedron $\\{3,4\\}$, dodecahedron $\\{5,3\\}$, icosahedron $\\{3,5\\}$. Each defined as a `SchlafliPair` with proof obligations for $p,q \\geq 3$.",
+    "mathContext": "$\\{3,3\\}, \\{4,3\\}, \\{3,4\\}, \\{5,3\\}, \\{3,5\\}$ — the complete list of solutions to $(p-2)(q-2) < 4$ with $p,q \\geq 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "regular faces",
+      "vertex configuration",
+      "Finset enumeration"
+    ],
+    "prerequisites": [
+      "SchlafliPair"
+    ]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "platonic-solids",
+    "range": {
+      "startLine": 134,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "Verification",
+    "content": "**Each Solid Satisfies the Constraint**:\n\n$(p-2)(q-2)$ evaluates to $1, 2, 2, 3, 3$ for the five pairs respectively, all $< 4$. Verified by `norm_num`.",
+    "mathContext": "$(3-2)(3-2) = 1$, $(4-2)(3-2) = 2$, $(3-2)(4-2) = 2$, $(5-2)(3-2) = 3$, $(3-2)(5-2) = 3$. All strictly less than 4, verified by the `norm_num` tactic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "norm_num",
+      "verification",
+      "concrete computation"
+    ],
+    "prerequisites": [
+      "norm_num tactic"
+    ],
+    "leanSymbol": "all_platonic_solids_valid"
+  },
+  {
+    "id": "ann-classification",
+    "proofId": "platonic-solids",
+    "range": {
+      "startLine": 167,
+      "endLine": 279
+    },
+    "type": "concept",
+    "title": "Classification Theorem",
+    "content": "**Main Classification**: For $p, q \\geq 3$, $(p-2)(q-2) < 4$ has exactly 5 solutions. Proved by systematic case analysis: $p = 3$ gives $q \\in \\{3,4,5\\}$; $p = 4$ gives $q = 3$; $p = 5$ gives $q = 3$; $p \\geq 6$ fails. Uses `omega` tactic.",
+    "mathContext": "The biconditional $(p-2)(q-2) < 4 \\iff (p,q) \\in \\text{validPairs}$ is proved by exhaustive case split on $p$. For $p \\geq 6$: $(p-2) \\geq 4$ and $(q-2) \\geq 1$, so the product $\\geq 4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "case analysis",
+      "omega tactic",
+      "completeness"
+    ],
+    "prerequisites": [
+      "omega tactic",
+      "Natural number arithmetic"
+    ],
+    "leanSymbol": "platonic_classification"
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "platonic-solids",
+    "range": {
+      "startLine": 284,
+      "endLine": 312
+    },
+    "type": "concept",
+    "title": "Main Result: Exactly Five",
+    "content": "**Wiedijk #50**: `validPairs.card = 5`, verified by `native_decide`. Also proved: all five are distinct (different $(p,q)$ tuples).",
+    "mathContext": "$|\\text{validPairs}| = 5$ where $\\text{validPairs} = \\{(3,3),(4,3),(3,4),(5,3),(3,5)\\}$. Verified by `native_decide` (computable decision procedure).",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "cardinality",
+      "distinctness"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "native_decide"
+    ],
+    "leanSymbol": "number_of_platonic_solids"
+  },
+  {
+    "id": "ann-geometry",
+    "proofId": "platonic-solids",
+    "range": {
+      "startLine": 318,
+      "endLine": 369
+    },
+    "type": "concept",
+    "title": "Geometric Properties (V, E, F)",
+    "content": "**Vertices, Edges, Faces** computed from $\\{p,q\\}$ using $pF = 2E$, $qV = 2E$, $V - E + F = 2$. All five verified to satisfy Euler's formula.",
+    "mathContext": "From $pF = 2E$ and $qV = 2E$: $F = \\frac{4q}{2p+2q-pq}$, $E = \\frac{2pq}{2p+2q-pq}$, $V = \\frac{4p}{2p+2q-pq}$. Euler: $V - E + F = 2$ verified for all five solids.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's formula",
+      "face counting",
+      "double counting"
+    ],
+    "prerequisites": [
+      "Euler's polyhedral formula"
+    ]
+  },
+  {
+    "id": "ann-duality",
+    "proofId": "platonic-solids",
+    "range": {
+      "startLine": 375,
+      "endLine": 412
+    },
+    "type": "concept",
+    "title": "Duality",
+    "content": "**Dual Pairs**: Swapping $p \\leftrightarrow q$ gives the dual solid. Cube $\\leftrightarrow$ octahedron, dodecahedron $\\leftrightarrow$ icosahedron, tetrahedron is self-dual. Duality is an involution: $\\mathrm{dual}(\\mathrm{dual}(s)) = s$.",
+    "mathContext": "$\\operatorname{dual}(\\{p,q\\}) = \\{q,p\\}$. Since $(p-2)(q-2) = (q-2)(p-2)$, duality preserves the regularity constraint. The involution property follows from commutativity of the swap.",
+    "significance": "key",
+    "relatedConcepts": [
+      "duality",
+      "self-dual",
+      "face-vertex correspondence",
+      "involution"
+    ],
+    "prerequisites": [
+      "SchlafliPair",
+      "dual definition"
+    ],
+    "leanSymbol": "dual"
+  }
+]

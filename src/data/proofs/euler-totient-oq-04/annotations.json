@@ -1,0 +1,144 @@
+[
+  {
+    "id": "ann-gcd-class-def",
+    "proofId": "euler-totient-oq-04",
+    "range": {
+      "startLine": 35,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "GCD Class S_d(n)",
+    "content": "The GCD class $S_d(n) = \\{k \\in \\{0,\\ldots,n-1\\} : \\gcd(k,n) = d\\}$ partitions the integers modulo n by their greatest common divisor with n. Implemented as (range n).filter (fun k => Nat.gcd k n = d). The class S₁(n) is exactly the coprime residues mod n — the group (ℤ/nℤ)× — with |S₁| = φ(n) elements. Classes for different divisors are automatically disjoint since each k has a unique gcd with n.",
+    "mathContext": "$S_d(n) = \\{k \\in \\{0,\\ldots,n-1\\} : \\gcd(k,n) = d\\}$. Non-empty iff $d \\mid n$. The class $S_1(n) = (\\mathbb{Z}/n\\mathbb{Z})^\\times$ with $|S_1| = \\varphi(n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "GCD",
+      "coprime residues",
+      "partition",
+      "Euler's totient"
+    ],
+    "prerequisites": [
+      "Nat.gcd",
+      "Finset.filter",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-partition-structure",
+    "proofId": "euler-totient-oq-04",
+    "range": {
+      "startLine": 47,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "GCD Class Partition of {0,...,n-1}",
+    "content": "Proves {0,...,n-1} = ⊔_{d|n} S_d(n): every k < n belongs to exactly one GCD class S_{gcd(k,n)}, and classes for different divisors are disjoint. Coverage is immediate: gcd(k,n) always divides n, so k ∈ S_{gcd(k,n)}. Disjointness follows from uniqueness of GCD. The Lean proof uses Finset.biUnion with a disjointness hypothesis verified by Finset.disjoint_filter.",
+    "mathContext": "$\\{0,\\ldots,n-1\\} = \\bigsqcup_{d \\mid n} S_d(n)$. For each $k$: $k \\in S_{\\gcd(k,n)}$ (coverage). If $d_1 \\neq d_2$: $S_{d_1} \\cap S_{d_2} = \\emptyset$ (uniqueness of GCD).",
+    "significance": "key",
+    "relatedConcepts": [
+      "set partition",
+      "Finset.biUnion",
+      "disjoint union",
+      "divisor lattice"
+    ],
+    "prerequisites": [
+      "GCD uniqueness",
+      "Finset.biUnion",
+      "divisor enumeration"
+    ]
+  },
+  {
+    "id": "ann-cardinality-bijection",
+    "proofId": "euler-totient-oq-04",
+    "range": {
+      "startLine": 72,
+      "endLine": 135
+    },
+    "type": "concept",
+    "title": "Key Bijection: |S_d(n)| = φ(n/d)",
+    "content": "The heart of the proof. The map k ↦ k/d bijects S_d(n) with the coprime set {m < n/d : gcd(m, n/d) = 1}. For k ∈ S_d: d divides k (since gcd(k,n) = d), so k/d is well-defined, and gcd(k/d, n/d) = gcd(k,n)/d = 1 (coprimality after cancellation). Injectivity: k₁/d = k₂/d with d|k₁, d|k₂ gives k₁ = k₂ by Nat.div_mul_cancel. Surjectivity: for coprime m < n/d, the element d·m ∈ S_d since gcd(d·m, d·(n/d)) = d·gcd(m,n/d) = d·1 = d. The Lean proof uses Finset.card_bij.",
+    "mathContext": "Bijection $k \\mapsto k/d : S_d(n) \\xrightarrow{\\sim} \\{m < n/d : \\gcd(m, n/d) = 1\\}$. Uses $\\gcd(k/d, n/d) = \\gcd(k,n)/d = 1$ and inverse $m \\mapsto d \\cdot m$ with $\\gcd(dm, dq) = d \\cdot \\gcd(m,q) = d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_bij",
+      "coprime set",
+      "GCD cancellation",
+      "Nat.gcd_mul_left"
+    ],
+    "prerequisites": [
+      "bijection proof technique",
+      "divisibility arithmetic",
+      "Nat.totient definition"
+    ]
+  },
+  {
+    "id": "ann-divisor-sum-identity",
+    "proofId": "euler-totient-oq-04",
+    "range": {
+      "startLine": 137,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "The Divisor Sum Identity n = Σ_{d|n} φ(n/d)",
+    "content": "The main result: n = Σ_{d|n} φ(n/d), proved by summing the partition cardinalities. The chain: n = |{0,...,n-1}| = Σ_{d|n} |S_d(n)| = Σ_{d|n} φ(n/d), using card_range, card_biUnion (with disjointness), and card_gcdClass_eq_totient. Also proves the standard form Σ_{d|n} φ(d) = n via the divisor-symmetry reindexing d ↔ n/d, cross-validated against Mathlib's Nat.sum_totient.",
+    "mathContext": "$n = \\sum_{d \\mid n} \\varphi(n/d) = \\sum_{d \\mid n} \\varphi(d)$. The reindexing $d \\leftrightarrow n/d$ uses the involution on the divisor set: $\\{d : d \\mid n\\} \\cong \\{d : d \\mid n\\}$ via $d \\mapsto n/d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisor sum",
+      "Nat.sum_totient",
+      "Möbius function",
+      "multiplicative functions"
+    ],
+    "prerequisites": [
+      "partition cardinality sum",
+      "Finset.card_biUnion",
+      "divisor reindexing"
+    ]
+  },
+  {
+    "id": "ann-partition-of-unity",
+    "proofId": "euler-totient-oq-04",
+    "range": {
+      "startLine": 174,
+      "endLine": 198
+    },
+    "type": "insight",
+    "title": "Partition of Unity and Probabilistic Interpretation",
+    "content": "Proves Σ_{d|n} φ(n/d)/n = 1 over ℚ by dividing the integer identity by n. The probabilistic content: if U is uniform on {0,...,n-1}, then P(gcd(U,n) = d) = φ(n/d)/n. The divisors of n with weights φ(n/d)/n form a probability mass function on the divisor lattice. This connects to the Haar measure on ℤ/nℤ and to the distribution theory of GCD random variables, which appears in the analysis of random number generators and cryptographic protocols.",
+    "mathContext": "$\\sum_{d \\mid n} \\frac{\\varphi(n/d)}{n} = 1$. Probabilistic: $P(\\gcd(U,n) = d) = \\varphi(n/d)/n$ where $U \\sim \\text{Uniform}(\\{0,\\ldots,n-1\\})$. For $d=1$: $P(\\gcd(U,n)=1) = \\varphi(n)/n$ — the 'probability of coprimality.'",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "probability mass function",
+      "GCD distribution",
+      "Haar measure",
+      "coprimality probability"
+    ],
+    "prerequisites": [
+      "rational arithmetic",
+      "probability basics",
+      "Finset.sum_div"
+    ]
+  },
+  {
+    "id": "ann-concrete-verifications",
+    "proofId": "euler-totient-oq-04",
+    "range": {
+      "startLine": 200,
+      "endLine": 231
+    },
+    "type": "concept",
+    "title": "Concrete Verifications for n = 6, 7, 12, 30",
+    "content": "Uses native_decide to verify the identity for specific values. For n=6: divisors {1,2,3,6}, GCD classes S₁={1,5}, S₂={2,4}, S₃={3}, S₆={0}, sizes 2,2,1,1 matching φ(6)=2, φ(3)=2, φ(2)=1, φ(1)=1. For prime p=7: S₁={1,2,3,4,5,6} (size 6=φ(7)), S₇={0} (size 1=φ(1)), sum=7. These serve as sanity checks and illustrate the GCD partition structure concretely.",
+    "mathContext": "For $n=6$: $6 = \\varphi(6) + \\varphi(3) + \\varphi(2) + \\varphi(1) = 2+2+1+1$. For prime $p$: $p = \\varphi(p) + \\varphi(1) = (p-1) + 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "concrete verification",
+      "prime totient"
+    ],
+    "prerequisites": [
+      "decidable equality",
+      "native_decide tactic"
+    ]
+  }
+]

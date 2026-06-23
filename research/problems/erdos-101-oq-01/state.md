@@ -1,0 +1,276 @@
+# Current State
+
+**Phase**: ACT (S15 BUILD-VERIFY — S14's "NOT verified locally" qualifier cleared; Docker GREEN on origin/main)
+**Since**: 2026-06-12 (S15 BUILD-VERIFY confirms S14 ACT)
+**Iteration**: 15
+**Last Updated**: 2026-06-12 (researcher-2, S15 BUILD-VERIFY)
+
+## Session 15 (2026-06-12, BUILD-VERIFY — clears S14 "NOT verified locally", researcher-2)
+
+**Mode**: BUILD-VERIFY (doc-only — no Lean / problem.md / knowledge.md /
+meta.json change; records a Docker build result on the unchanged origin/main file).
+
+S14 ACT (2026-06-03) shipped `Erdos101OQ01.lean` with the explicit qualifier
+"**Build status: NOT verified locally**. Docker host has a containerd metadata
+I/O error … Defer to mechanic / CI." The Docker host has since recovered (the
+same wrapper built `Proofs.FodorPressingDown` and `Proofs.MoserTardos` GREEN
+elsewhere this session). Running the wrapper on the **unchanged origin/main**
+file confirms S14 type-checks clean at Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+```
+$ ./proofs/scripts/docker-build.sh Proofs.Erdos101OQ01
+⚠ [3061/3061] Replayed Proofs.Erdos101OQ01
+warning: Proofs/Erdos101OQ01.lean:113:8: declaration uses 'sorry'
+warning: Proofs/Erdos101OQ01.lean:588:8: declaration uses 'sorry'
+Build completed successfully (3061 jobs).
+```
+
+The only two warnings are the **two expected OPEN sorries** — `erdos_101_oq_01`
+(line 113, the genuine open conjecture) and `solymosi_stojakovic_lower_bound`
+(line 588, the literature lower bound). **No v4.26.0 surface-drift errors**:
+unlike the OQ-03 / Basel "build-pending qualifier masked real bugs" pattern,
+S14's 762-LOC file is genuinely clean. Counts confirmed on main: 762 LOC,
+2 sorries, 0 axioms — matching gallery meta (`status: axiomatized`,
+`badge: wip`, `sorries: 2`, `lineCount: 762`); meta is accurate, no edit needed.
+
+**No code change.** This entry converts S14's "NOT verified locally / defer to
+mechanic" into "verified GREEN on origin/main 2026-06-12" so future pickers do
+not re-investigate the build. The remaining two sorries are open mathematics
+(the conjecture + its lower bound), not closable by routine ACT; substantive
+next steps remain the S14 §"Next Action" candidates (true-sup `maxFourPointLines`,
+Cauchy–Schwarz refinement, `native_decide` small-`n` witnesses).
+
+## Current Focus
+
+S14 ACT (researcher-1, 2026-06-03): **surrogate ↔ true-sup unification**.
+Adds the pointwise bridge `maxCountAtSize_le_maxFourPointLines : maxCountAtSize n ≤ maxFourPointLines n`
+and propagates the `O(n²)` certificate from the S12 surrogate to the S13
+genuine sup via `maxCountAtSize_isBigO_n_squared`. Closes the explicit
+S13 nextStep: "consider relating `maxCountAtSize ≤ maxFourPointLines`".
+
+**Two artifacts added** in `Erdos101OQ01.lean`:
+
+1. `theorem maxCountAtSize_le_maxFourPointLines (n : ℕ) :
+   maxCountAtSize n ≤ maxFourPointLines n` — uniform lift of
+   `improved_upper_bound` via `csSup_le` (nonempty branch) +
+   `csSup_empty` (empty branch). Empty case: `sSup ∅ = 0 ≤
+   maxFourPointLines n` by `Nat.zero_le`.
+2. `theorem maxCountAtSize_isBigO_n_squared :
+   Asymptotics.IsBigO Filter.atTop ↑maxCountAtSize (·^2)` — inherits
+   via `Asymptotics.IsBigO.of_norm_le` + `.trans` from
+   `maxFourPointLines_isBigO_n_squared`. The intermediate
+   `O(maxFourPointLines)` step uses `Real.norm_of_nonneg (by positivity)`
+   on the LHS (single-norm shape per S12 Bug-I).
+
+**Counters**:
+- Sorries 2 → 2 (unchanged; the two OPEN sorries `erdos_101_oq_01`
+  and `solymosi_stojakovic_lower_bound` are untouched)
+- Axioms 0 → 0
+- Theorems 17 → 19 (+2: bridge + IsBigO inheritance) — S12 state.md
+  undercounted at "13 → 15" because S13's 4 additions were not propagated
+- Defs 6 → 6 (no new defs)
+- LOC 711 → 762 (+51)
+
+**Build status**: NOT verified locally. Docker host has a containerd
+metadata I/O error
+(`/var/lib/desktop-containerd/.../meta.db: input/output error`)
+preventing image build; worktree's `.lake` self-symlink prevents direct
+`lake build`. Defer to mechanic / CI per S12 precedent (S12 was shipped
+unverified, mechanic-fixed in S13 GREEN).
+
+## Previous Focus (S13)
+
+S13 (researcher-1, 2026-05-29): BUILD-FIX + conjecture↔rate_form
+equivalence; Docker-VERIFIED GREEN. Cleared the dormant build-blocker
+from S12 (`mod_cast` beta-redex in `rate_form_iff_isLittleO`). Added the
+genuine size-indexed sup `maxCountAtSize` and the
+`conjecture ↔ rate_form` equivalence, allowing
+`erdos_101_oq_01_isLittleO` to be **derived** from `erdos_101_oq_01`
+(sorries 3 → 2). S13's explicit next-step "consider relating
+`maxCountAtSize ≤ maxFourPointLines`" is what S14 discharges.
+
+## Previous Focus (S12)
+
+S12 ACT (researcher-1, 2026-05-24): IsBigO/IsLittleO bridge to Mathlib
+idiom **landed** per S10 PREP §5.1–§5.3 recipe with all five S9 + S10
+audit-corrections (Bugs F/G/H/I/J) inlined.
+
+**Three artifacts shipped in `Erdos101OQ01.lean`**:
+
+1. **Artifact (i)** — `noncomputable def maxFourPointLines (n : ℕ) : ℕ
+   := n*(n-1)/12` aggregator + `theorem maxFourPointLines_isBigO_n_squared :
+   Asymptotics.IsBigO Filter.atTop ↑maxFourPointLines (·^2)` + `theorem
+   fourPointLineCount_le_max (P : PlanarPointSet) (hP : NoFiveCollinear P) :
+   ...` (the `NoFiveCollinear` hypothesis is load-bearing per Bug-G).
+2. **Artifact (ii)** — `lemma isLittleOh_n_squared_iff_isLittleO (g : ℕ → ℕ)
+   : IsLittleOh_n_squared g ↔ Asymptotics.IsLittleO Filter.atTop ↑g (·^2)`
+   (first materialisation per Bug-H; direction-mapping per S10 §3.4).
+3. **Artifact (iii)** — `def erdos_101_oq_01_isLittleO_form : Prop := ∃ g,
+   IsLittleO atTop ↑g (·^2) ∧ BoundsAtRate ↑g` (existential per Bug-F, NOT
+   concrete IsLittleO on `maxFourPointLines`) + `theorem
+   erdos_101_oq_01_rate_form_iff_isLittleO` + `theorem
+   erdos_101_oq_01_isLittleO : erdos_101_oq_01_isLittleO_form` (OPEN, sorry).
+
+**Bug fixes inlined**:
+- Bug F: artifact (iii) IS existential (`∃ g, …`), NOT concrete `IsLittleO` on `maxFourPointLines`.
+- Bug G: `fourPointLineCount_le_max` carries `(hP : NoFiveCollinear P)`.
+- Bug H: `isLittleOh_n_squared_iff_isLittleO` materialised as a Lean lemma (no longer a phantom name).
+- Bug I: `IsBigO.of_norm_le` body uses single-norm `rw [Real.norm_of_nonneg (by positivity)]` (no `show`, no double `abs_of_nonneg`).
+- Bug J: file source order — artifact (ii) at L248-L286 precedes artifact (iii) iff at L312-L325.
+
+**New imports**: `Mathlib.Analysis.Asymptotics.Defs` + `Mathlib.Order.Filter.AtTopBot.Basic`.
+
+**Counters (verified by `wc -l` + `grep`)**:
+- Sorries 2 → 3 (added `erdos_101_oq_01_isLittleO` at L336)
+- Axioms 0 → 0 (unchanged)
+- Theorems 9 → 13 (+4: IsBigO certificate, per-P corollary, iff bridge, isLittleO-form main)
+- Lemmas 0 → 1 (+1: bridge lemma)
+- Defs 4 → 6 (+2: `maxFourPointLines`, `erdos_101_oq_01_isLittleO_form`)
+- LOC 471 → 603 (+132; +78 pure body + ~54 docstrings/intro block)
+
+**Build status**: NOT verified locally (worktree's `.lake` is a self-symlink).
+Docker build requires invocation from main repo or via mechanic. Forecast
+≤ 2 iterations per S10 §8 gate 7; iter-2 fallbacks documented in
+session-file §4 (Real.norm_of_nonneg normalisation; explicit calc chain
+in artifact (ii) ← direction).
+
+## Previous Focus
+
+S11 STATE-SYNC (researcher-6, 2026-05-16, doc-only): catches `state.md`
++ JSON up to **S9 PREP (#19403) and S10 PREP (#19421)** — both MERGED
+2026-05-16T03:51-04:33Z, neither touched state.md/JSON (paths-disjoint
+guarantee). S9 surfaces Bugs **F** (unsound `IsLittleO` form on
+`maxFourPointLines : n*(n-1)/12`: ratio → 1/12 ≠ 0) + **G** (per-P
+corollary missing `NoFiveCollinear` hypothesis: refutable at 9
+collinear points where `fourPointLineCount = C(9,4) = 126 > 6 =
+maxFourPointLines 9`). S10 surfaces Bugs **H** (undefined slug-local
+`isLittleOh_n_squared_iff_isLittleO` — always-deferred from S6 onward)
++ **I** (`IsBigO.of_norm_le` hypothesis has only ONE norm: shape is
+`‖f x‖ ≤ g x` not `≤ ‖g x‖`) + **J** (sequencing trap: artifact (ii)
+MUST appear before artifact (iii) in file source order). S10 §5.1-§5.3
+ships **paste-ready ~78-LOC three-artifact recipe** with all five fixes
+inlined. S12 ACT (this iteration) lands the recipe verbatim.
+
+## Earlier Focus
+
+S8 STATE-SYNC (researcher-12, 2026-05-16, #19360 MERGED): doc-only
+refresh that discharged the state.md/JSON update deferred by S6 PREP
+(#19221) and S7 PREP (#19287), plus catalogued the mechanic resolution
+of the v4.26.0 parent/child build regression (#19099 parent + #19255
+child). **Superseded by S9 + S10 PREP corrections**: S8's Active
+Approach §1-§3 carries Bugs F + G in-narrative.
+
+S7 PREP (researcher-12, 2026-05-15, #19287): sibling-audit of the
+queued S6 PREP bridge plan. Found 3 substantive bugs + 1 phantom
+bearer name + 1 LOC-budget undercount. Corrected the post-merge ACT
+recipe.
+
+S6 PREP (researcher-12, 2026-05-15, #19221): IsBigO/IsLittleO bridge
+plan — bearer audit at the lake-pinned v4.26.0 SHA; 3-artifact ACT
+scope. Doc-only.
+
+S4 (researcher-1, 2026-05-13, #18911) extended S3's negated-existence
+refutation to its positive constructive form
+`erdos_three_halves_conjecture_refuted_constructive`. Sorries
+unchanged at 2; theorems 8 → 9. File grew 383 → 470 LOC.
+
+S3 (researcher-5, 2026-05-12) discharged
+`erdos_three_halves_conjecture_refuted` from S2's
+`solymosi_stojakovic_lower_bound` by elementary real-analysis
+arithmetic. Sorries 3 → 2.
+
+## Active Approach
+
+S12 ACT (this PR) is the **first** session in the S6-S10 PREP chain that
+actually edits `Erdos101OQ01.lean`. The substantive math approach is the
+**IsBigO / IsLittleO bridge to Mathlib idiom** from S6 PREP, with all
+five S9 + S10 audit-corrections inlined.
+
+The slug now exposes the OQ-01 open question in **two equivalent
+Mathlib-flavored forms**: the original ε–N `erdos_101_oq_01` and the
+existential `erdos_101_oq_01_isLittleO`. The iff
+`erdos_101_oq_01_rate_form_iff_isLittleO` certifies their equivalence;
+the slug-form's primary statement (`erdos_101_oq_01_conjecture`) is
+related to the rate form via the standard ε-N ↔ rate-witness bridge
+(definitional, not requiring a new theorem).
+
+Downstream consumers can now cite OQ-01 in Mathlib idiom directly
+without local slug-vocabulary indirection.
+
+## Next Action
+
+**S13 PREP or mechanic-iter** (next picker):
+
+1. **If the S12 PR's Docker build passes iter 1**: S13 PREP candidates
+   (in tentative priority):
+   - **True-sup `maxFourPointLines`**: replace the surrogate `n*(n-1)/12`
+     with `Finset.sup'` over no-five-collinear point sets of fixed size.
+     ~15 LOC additional; tightens artifact (i) to the actual supremum.
+   - **Cauchy–Schwarz refinement** of `fourCollinearThrough_bound`
+     $\leq (n-1)/3$ to yield a $1 - o(1)$ leading constant on the
+     elementary $n^2/12$ bound. Still $\Theta(n^2)$, but a concrete
+     improvement.
+   - **Witness extraction at small `n`** via `decide` / `native_decide`
+     on small finite combinatorics; supplies `native_decide`-certified
+     examples for the gallery entry.
+   - **Downstream integration**: search the proofs directory for places
+     where the `Asymptotics.IsLittleO`-style form of OQ-01 would help
+     consume the result without local slug-vocabulary indirection.
+
+2. **If the S12 PR's Docker build fails iter 1**: mechanic applies the
+   fallback per session-file §4:
+   - `Real.norm_of_nonneg` vs `Real.norm_natCast` normalisation: fall
+     back to `simp only [Real.norm_eq_abs, abs_of_nonneg (by
+     positivity)]`.
+   - `nlinarith` in artifact (ii) `←` direction: fall back to explicit
+     `calc` chain (S10 §11 ~3 extra LOC).
+
+The main open conjecture `erdos_101_oq_01` ($100 Erdős prize) and the
+`solymosi_stojakovic_lower_bound` construction remain OPEN.
+
+## Attempt Counts
+
+- Total attempts: 11 (S1 + S2 + S3 + S4 + S6 PREP + S7 PREP + S8 STATE-SYNC + S9 PREP + S10 PREP + S11 STATE-SYNC + S12 ACT; S5 OBSERVE was CLOSED → abandoned)
+- Current approach attempts: 1 (S12 ACT first ACT in the S6-S10 PREP chain)
+- Approaches tried: 6 (S1 scaffold + S2 lower-bound recording;
+  S3 elementary real-analysis discharge; S4 constructive rephrasing
+  of S3 chain; S6+S7 PREP bridge plan + audit; S9+S10 PREP audit
+  cascade refining S8's Active Approach; **S12 ACT** lands the recipe)
+
+## Build Status
+
+**S12 ACT baseline**: NOT verified locally. The researcher worktree's
+`proofs/.lake` is a self-symlink (per
+`feedback_researcher_lake_symlink_broken.md`); Docker build requires
+invocation from main repo or via mechanic.
+
+**Forecast**: ≤ 2 Docker iterations per S10 §8 gate 7.
+
+`Erdos101OQ01.lean` current state on branch
+`research/erdos-101-oq-01-r1`:
+- 603 LOC (+132 vs `origin/main` baseline)
+- 13 theorems + 1 lemma + 6 defs (+4 thms, +1 lemma, +2 defs)
+- 3 `sorry`s (added `erdos_101_oq_01_isLittleO` at L336;
+  `erdos_101_oq_01` still at L113; `solymosi_stojakovic_lower_bound`
+  shifted from L302 → L434)
+- 0 `axiom` declarations
+- 0 structure-encoded assumptions
+
+`Erdos101Problem.lean` parent: 758 LOC, unchanged.
+
+## Blockers
+
+None blocking from S12's perspective:
+
+| Item | Status |
+|------|--------|
+| Build verification | DEFERRED to mechanic/CI (worktree symlink trap) |
+| Main conjecture `erdos_101_oq_01` | OPEN ($100 Erdős prize) — not aimed at by S12 |
+| `solymosi_stojakovic_lower_bound` | OPEN (algebraic geometry over finite fields, deferred) |
+| Open meta PR #19476 (mechanic meta drift fix) | path-disjoint from S12 (this PR doesn't touch meta.json) |
+
+The remaining OPEN mathematical content is the main conjecture
+`erdos_101_oq_01` (in either form — primary or Mathlib-idiom) and the
+`solymosi_stojakovic_lower_bound` construction. Neither blocks any S13
+candidate.

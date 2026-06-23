@@ -1,0 +1,232 @@
+{
+  "id": "erdos-1172",
+  "title": "Erdős Problem #1172: Partition Relations under GCH and CH",
+  "slug": "erdos-1172",
+  "description": "Do the partition relations ω₃ → (ω₂, ω₁ + 2)² and related ordinal relations hold under GCH?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1172",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1172Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "set-theory",
+      "ramsey-theory",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1172,
+    "erdosUrl": "https://erdosproblems.com/1172",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Arithmetic",
+        "description": "From Mathlib.SetTheory.Ordinal.Arithmetic",
+        "module": "Mathlib.SetTheory.Ordinal.Arithmetic"
+      },
+      {
+        "theorem": "Exponential",
+        "description": "From Mathlib.SetTheory.Ordinal.Exponential",
+        "module": "Mathlib.SetTheory.Ordinal.Exponential"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.SetTheory.Cardinal.Basic",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Ordinal",
+        "description": "From Mathlib.SetTheory.Cardinal.Ordinal",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "From Mathlib.Tactic",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "omega1",
+      "omega2",
+      "omega3",
+      "omegaOrd",
+      "OrdPartitionRel",
+      "BalancedPartitionRel",
+      "GCH",
+      "CH",
+      "gch_implies_ch",
+      "question1",
+      "question2",
+      "question3",
+      "question4",
+      "omega1_lt_omega2",
+      "omega2_lt_omega3"
+    ],
+    "axiomCount": 3,
+    "lineCount": 246,
+    "assumptions": "3 axioms: erdos_dushnik_miller (EDM 1941: λ→(λ,ω)² for infinite λ), todorcevic_negative (1989: ω₁↛(ω₁,ω+2)² under b=ω₁), pfa_positive (PFA: ω₁→(ω₁,α)² for countable α). OrdPartitionRel is now a proper definition and partition_mono_target is proved from it.",
+    "theoremCount": 19,
+    "definitionCount": 13
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1172 originates from the Erdős-Hajnal partition calculus program, a systematic study of ordinal partition relations launched by Paul Erdős and András Hajnal in the 1960s. The specific questions appear as problem 7.87 in Väänänen's 1999 survey (Va99), attributed to Erdős and Hajnal.\n\nThe partition calculus grew out of Ramsey's theorem (1930) and its infinitary extensions by Erdős and Rado (1956). The Erdős-Dushnik-Miller theorem (1941) established the foundational result λ → (λ, ω)² for all infinite λ. By the 1960s, Erdős and Hajnal had developed a comprehensive program to determine which ordinal partition relations hold under various set-theoretic hypotheses.\n\nA key turning point came with Todorcevic's work in 1989, which revealed that many partition relations at ω₁ are independent of ZFC. Under the Proper Forcing Axiom (PFA), ω₁ → (ω₁, α)² holds for all countable α, while under b = ω₁, the relation ω₁ → (ω₁, ω + 2)² fails. This independence phenomenon makes the questions at ω₂ and ω₃ particularly subtle, as GCH or CH may be needed to resolve them.\n\nThe four questions in Problem 1172 probe the boundary between what is provable under GCH/CH and what remains open, involving delicate interactions between ordinal arithmetic, cofinality, and coloring arguments.",
+    "problemStatement": "Under GCH, do the following ordinal partition relations hold? (1) $\\omega_3 \\to (\\omega_2, \\omega_1 + 2)^2$, (2) $\\omega_3 \\to (\\omega_2 + \\omega_1, \\omega_2 + \\omega)^2$, (3) $\\omega_2 \\to (\\omega_1^{\\omega+2} + 2, \\omega_1 + 2)^2$. Under CH: (4) $\\omega_2 \\to (\\omega_1 + \\omega)_2^2$.",
+    "text": "Do the partition relations ω₃ → (ω₂, ω₁ + 2)² and related ordinal relations hold under GCH?",
+    "proofStrategy": "The formalization introduces ordinal partition relations as an axiomatic framework, since their full combinatorial definition requires substantial infrastructure beyond current Mathlib. It then proves several consequences using monotonicity: the Erdős-Dushnik-Miller theorem immediately gives ω₃ → (ω₃, ω)² and ω₂ → (ω₂, ω)², and target monotonicity yields weak forms of the open questions. The file also axiomatizes Todorcevic's negative result and PFA's positive result to exhibit the independence of ω₁ → (ω₁, ω + 2)² from ZFC, contextualizing why the questions at higher cardinals remain difficult.",
+    "keyInsights": [
+      "The partition relation $\\alpha \\to (\\beta, \\gamma)^2$ is asymmetric ('unbalanced'): the two colors can require monochromatic sets of different order types, which is crucial for the nuanced questions in this problem.",
+      "The Erdős-Dushnik-Miller theorem $\\lambda \\to (\\lambda, \\omega)^2$ (1941) is the workhorse that provides weak forms of all the open questions via monotonicity, but the gap from $\\omega$ to $\\omega_1 + 2$ in the second target is exactly where the difficulty lies.",
+      "Todorcevic's 1989 result that $\\omega_1 \\not\\to (\\omega_1, \\omega + 2)^2$ is consistent with ZFC demonstrates that partition relations can be independent of the standard axioms, motivating the need for GCH/CH hypotheses.",
+      "The stepping-up lemma transfers negative partition results upward: if $\\kappa \\not\\to (\\alpha, \\beta)^2$, there exist targets making $\\kappa + 1 \\not\\to (\\alpha', \\beta')^2$ fail, showing that counterexamples propagate through the ordinal hierarchy.",
+      "Question 4 under CH is naturally 'balanced' ($\\omega_2 \\to (\\omega_1 + \\omega)_2^2$), meaning both colors must admit the same order type, which is a strictly stronger requirement than the unbalanced case."
+    ],
+    "prerequisites": [
+      "Ordinal partition relations ($\\\\alpha \\\\to (\\\\beta, \\\\gamma)^r$)",
+      "Infinite combinatorics (Ramsey for ordinals)",
+      "Set theory (GCH, CH, ZFC independence)",
+      "Ordinal arithmetic ($\\\\omega_1, \\\\omega_2, \\\\omega_3$)",
+      "Erdos-Dushnik-Miller theorem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ordinal-and-cardinal-setup",
+      "title": "Ordinal and Cardinal Setup",
+      "summary": "Defines ω₁, ω₂, ω₃ as the ordinals of the first three uncountable alephs, and ω as the first limit ordinal.",
+      "startLine": 38,
+      "endLine": 44,
+      "mathContext": "$\\\\omega_1, \\\\omega_2, \\\\omega_3$: first three uncountable ordinals. $\\\\aleph_0 < \\\\aleph_1 < \\\\aleph_2 < \\\\aleph_3$."
+    },
+    {
+      "id": "partition-relation",
+      "title": "Partition Relations",
+      "summary": "Introduces the unbalanced ordinal partition relation α → (β, γ)² as an axiom and defines the balanced variant α → (β)₂².",
+      "startLine": 45,
+      "endLine": 53,
+      "mathContext": "$\\\\alpha \\\\to (\\\\beta, \\\\gamma)^2$: for every 2-coloring of pairs from $\\\\alpha$, there is a red set order-isomorphic to $\\\\beta$ or a blue set order-isomorphic to $\\\\gamma$."
+    },
+    {
+      "id": "set-theoretic-hypotheses",
+      "title": "Set-Theoretic Hypotheses",
+      "summary": "Formalizes GCH as 2^ℵ_α = ℵ_{α+1} for all α, CH as the special case 2^ℵ₀ = ℵ₁, and proves GCH implies CH.",
+      "startLine": 54,
+      "endLine": 67,
+      "mathContext": "GCH: $2^{\\\\aleph_\\\\alpha} = \\\\aleph_{\\\\alpha+1}$. CH: $2^{\\\\aleph_0} = \\\\aleph_1$ (special case). Some partition relations depend on GCH."
+    },
+    {
+      "id": "the-four-open-questions",
+      "title": "The Four Open Questions",
+      "summary": "States the four open partition relations from Erdős-Hajnal as Lean definitions, three under GCH and one under CH.",
+      "startLine": 68,
+      "endLine": 81,
+      "mathContext": "Four OPEN questions from Erdos-Hajnal: $\\\\omega_3 \\\\to (\\\\omega_2, \\\\omega_1+2)^2$, etc. Each asks about specific ordinal partition relations."
+    },
+    {
+      "id": "basic-ordinal-arithmetic",
+      "title": "Basic Ordinal Arithmetic",
+      "summary": "Proves the ordering chain ω < ω₁ < ω₂ < ω₃ and positivity of all three uncountable ordinals using Mathlib's aleph lemmas.",
+      "startLine": 82,
+      "endLine": 115,
+      "mathContext": "$\\\\omega < \\\\omega_1 < \\\\omega_2 < \\\\omega_3$ (strict ordering). All are limit ordinals. $|\\\\omega_i| = \\\\aleph_i$."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity Principles",
+      "summary": "Axiomatizes source monotonicity (enlarging the source preserves the relation) and target monotonicity (shrinking targets preserves it).",
+      "startLine": 116,
+      "endLine": 123,
+      "mathContext": "Source monotonicity: $\\\\alpha \\\\to (\\\\beta, \\\\gamma)^2$ and $\\\\alpha \\\\leq \\\\alpha \\\\Rightarrow \\\\alpha \\\\to (\\\\beta, \\\\gamma)^2$."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Classical Results",
+      "summary": "States the Erdős-Dushnik-Miller theorem (1941) and the Erdős-Rado strengthening for regular uncountable cardinals as axioms.",
+      "startLine": 124,
+      "endLine": 134,
+      "mathContext": "Erdos-Dushnik-Miller (1941): $\\\\omega_1 \\\\to (\\\\omega_1, \\\\omega+1)^2$. Erdos-Rado: stronger results with GCH."
+    },
+    {
+      "id": "proved-theorems",
+      "title": "Derived Partition Relations",
+      "summary": "Derives six consequences including weak forms of Q1 via EDM + monotonicity, target weakening implications, and the unfolding of Q4's balanced definition.",
+      "startLine": 135,
+      "endLine": 172,
+      "mathContext": "Six derived consequences via EDM + monotonicity. Weak forms of Q1 follow from classical results."
+    },
+    {
+      "id": "stepping-up-lemma",
+      "title": "Stepping-Up Lemma",
+      "summary": "Axiomatizes the negative stepping-up lemma: failure of a partition relation at κ propagates to κ + 1 with modified targets.",
+      "startLine": 173,
+      "endLine": 178,
+      "mathContext": "Negative stepping-up: failure of $\\\\alpha \\\\to (\\\\beta, \\\\gamma)^2$ can imply failure at higher cardinals."
+    },
+    {
+      "id": "independence-results",
+      "title": "Independence Results",
+      "summary": "Demonstrates ZFC-independence of ω₁ → (ω₁, ω + 2)² via Todorcevic's negative result under b = ω₁ and PFA's positive result.",
+      "startLine": 179,
+      "endLine": 194,
+      "mathContext": "ZFC-independent: $\\\\omega_1 \\\\to (\\\\omega_1, \\\\omega+2)^2$ is independent of ZFC (Todorcevic negative, forcing positive)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Auxiliary Facts",
+      "summary": "Packages all four questions into one conjunction and verifies consistency bounds on the targets appearing in Q2 and Q3.",
+      "startLine": 195,
+      "endLine": 204,
+      "mathContext": "Four OPEN ordinal partition questions. Some are ZFC-independent. Known: EDM theorem and monotonicity consequences."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the four open partition relations of Erdős Problem #1172 in Lean 4, establishes their logical structure within the Erdős-Hajnal partition calculus framework, proves several weak consequences from classical results (Erdős-Dushnik-Miller, monotonicity), and contextualizes the difficulty by exhibiting the ZFC-independence of related partition relations at ω₁.",
+    "implications": "**Theoretical Significance**: The formalization demonstrates how axiomatic frameworks can effectively encode open problems in infinitary combinatorics.\n\nThe derivation of weak forms from EDM shows the precise gap that remains: bridging from ω to ω₁ + 2 in the second target requires fundamentally new coloring arguments beyond classical monotonicity. The independence results at ω₁ suggest that GCH/CH may play an essential role, as the behavior of partition relations is sensitive to set-theoretic hypotheses.",
+    "openQuestions": [
+      "Does ω₃ → (ω₂, ω₁ + 2)² hold under GCH? This is the core of Q1 and the most natural starting point, as EDM already gives the weak form ω₃ → (ω₂, ω)².",
+      "Can the stepping-up lemma be refined to give negative results at ω₂ under specific combinatorial hypotheses, potentially resolving Q3 or Q4?",
+      "Is there a forcing model where Q4 (ω₂ → (ω₁ + ω)₂² under CH) fails, or is it provable from CH alone?",
+      "What is the exact role of regularity in these partition relations? The Erdős-Rado strengthening gains one ordinal (from ω to ω + 1) for regular uncountable cardinals — can similar gains be achieved at singular cardinals?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.SetTheory.Ordinal.Exponential",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Ordinal",
+      "Cardinal"
+    ],
+    "namespace": "Erdos1172",
+    "lineCount": 246,
+    "axiomCount": 3,
+    "theoremCount": 19,
+    "definitionCount": 13,
+    "path": "Proofs/Erdos1172Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1167",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1169",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, ramsey-theory, set-theory"
+    },
+    {
+      "targetId": "erdos-1171",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, open, ramsey-theory, set-theory"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,242 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "partition-theorem",
+    "range": {
+      "startLine": 1,
+      "endLine": 90
+    },
+    "type": "concept",
+    "title": "Partition Theorem: Wiedijk #45",
+    "content": "**Euler's Partition Identity (Wiedijk 100 Theorems #45)**:\n\nThe number of partitions of n into **distinct parts** equals the number of partitions into **odd parts**.\n\n**Example (n = 5):** Distinct: {5}, {4+1}, {3+2} = 3. Odd: {5}, {3+1+1}, {1+1+1+1+1} = 3.\n\nThe docstring explains three proof approaches: generating functions (Euler's original), Glaisher's bijection (combinatorial), and Mathlib's `Theorems100.partition_theorem` which provides the formal proof. The file imports from `Mathlib.Combinatorics.Enumerative.Partition` for `Nat.Partition` and `Mathlib.Tactic` for proof automation.",
+    "mathContext": "For all $n \\in \\mathbb{N}$: $|\\{\\lambda \\vdash n : \\text{parts distinct}\\}| = |\\{\\lambda \\vdash n : \\text{parts odd}\\}|$. Euler proved this in 1748 by showing the generating function identity $\\prod_{k=1}^{\\infty}(1+x^k) = \\prod_{k=0}^{\\infty}\\frac{1}{1-x^{2k+1}}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Integer partitions",
+      "Generating functions",
+      "Wiedijk 100 theorems",
+      "Glaisher correspondence"
+    ],
+    "prerequisites": [
+      "Partition theory basics",
+      "Formal power series",
+      "Multisets"
+    ]
+  },
+  {
+    "id": "ann-partitions",
+    "proofId": "partition-theorem",
+    "range": {
+      "startLine": 92,
+      "endLine": 106
+    },
+    "type": "definition",
+    "title": "Integer Partitions",
+    "content": "**Integer Partition of n:** A multiset of positive integers summing to n, where order doesn't matter. Lean represents this as `Nat.Partition n` with `p.parts : Multiset ℕ` satisfying `p.parts.sum = n`.\n\nThe three `example` declarations demonstrate: (1) the type `Nat.Partition n` exists, (2) parts are accessible as a `Multiset ℕ`, and (3) the sum constraint `p.parts_sum` is definitional.",
+    "mathContext": "A partition $\\lambda \\vdash n$ is a sequence $\\lambda_1 \\geq \\lambda_2 \\geq \\cdots \\geq \\lambda_k > 0$ with $\\sum \\lambda_i = n$. The number of partitions of $n$ is denoted $p(n)$, with $p(0) = 1, p(1) = 1, p(2) = 2, p(3) = 3, p(4) = 5, p(5) = 7, \\ldots$ (OEIS A000041).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Multiset",
+      "Young diagram",
+      "Ferrers diagram",
+      "Partition function p(n)"
+    ],
+    "prerequisites": [
+      "Nat.Partition",
+      "Multiset.sum",
+      "Positive integers"
+    ]
+  },
+  {
+    "id": "ann-distinct",
+    "proofId": "partition-theorem",
+    "range": {
+      "startLine": 107,
+      "endLine": 118
+    },
+    "type": "definition",
+    "title": "Distinct Partitions",
+    "content": "**Distinct Partitions:** Partitions where no part repeats — each part appears at most once.\n\n`Nat.Partition.distincts n` gives the `Finset` of all distinct partitions of n. The theorem `distinct_iff_nodup` proves the characterization: `p ∈ distincts n ↔ p.parts.Nodup`.\n\nThe proof is a simple `simp` unfolding the definition of `distincts`.",
+    "mathContext": "A partition $\\lambda \\vdash n$ is distinct if all parts are different: $\\lambda_i \\neq \\lambda_j$ for $i \\neq j$. The count $Q(n) = |\\text{distincts}(n)|$ is OEIS A000009: $1, 1, 1, 2, 2, 3, 4, 5, 6, 8, 10, \\ldots$ Equivalently, each part has multiplicity exactly 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Multiset.Nodup",
+      "Set vs multiset",
+      "Strict partition",
+      "OEIS A000009"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Nodup predicate",
+      "Multiset membership"
+    ]
+  },
+  {
+    "id": "ann-odd",
+    "proofId": "partition-theorem",
+    "range": {
+      "startLine": 120,
+      "endLine": 132
+    },
+    "type": "definition",
+    "title": "Odd Partitions",
+    "content": "**Odd Partitions:** Partitions where every part is odd (1, 3, 5, 7, ...).\n\n`Nat.Partition.odds n` gives the `Finset` of all odd partitions of n. The theorem `odd_iff_all_odd` proves: `p ∈ odds n ↔ ∀ i ∈ p.parts, ¬Even i`.\n\nParts can repeat in odd partitions (e.g., {3, 3} is a valid odd partition of 6), which is why the equality with distinct partitions is surprising.",
+    "mathContext": "A partition $\\lambda \\vdash n$ is odd if every part $\\lambda_i$ is odd: $\\lambda_i \\equiv 1 \\pmod{2}$ for all $i$. The surprise of Euler's theorem is that restricting to odd parts (allowing repeats) gives exactly as many partitions as restricting to distinct parts (allowing even).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Parity",
+      "Even predicate",
+      "Part multiplicity",
+      "Self-conjugate partitions"
+    ],
+    "prerequisites": [
+      "Even/Odd",
+      "Multiset universal quantifier",
+      "Partition membership"
+    ]
+  },
+  {
+    "id": "ann-theorem",
+    "proofId": "partition-theorem",
+    "range": {
+      "startLine": 133,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "The Partition Theorem (PROVED)",
+    "content": "**partition_theorem (n : ℕ) : (distincts n).card = (odds n).card**\n\nThis is the main result — a FULLY PROVED theorem (no axioms or sorry!). The proof is a one-liner: `(Theorems100.partition_theorem n).symm`, which applies the Mathlib proof from the Wiedijk 100 Theorems archive and reverses the equality direction.\n\nThe Mathlib proof uses generating functions: it shows the formal power series ∏(1+xᵏ) and ∏1/(1-x^{2k+1}) are equal, then extracts the coefficient of xⁿ to get the partition count equality.",
+    "mathContext": "The key generating function identity: $\\prod_{k=1}^{\\infty}(1+x^k) = \\prod_{k=0}^{\\infty}\\frac{1}{1-x^{2k+1}}$. This follows from $1+x^k = \\frac{1-x^{2k}}{1-x^k}$, so $\\prod(1+x^k) = \\prod\\frac{1-x^{2k}}{1-x^k}$. The numerator contains $(1-x^{2k})$ for all $k$, and the denominator $(1-x^k)$ for all $k$. Telescoping cancels all even factors, leaving $1/\\prod_{k \\text{ odd}}(1-x^k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Formal power series equality",
+      "Coefficient extraction",
+      "Telescoping products",
+      "Theorems100"
+    ],
+    "prerequisites": [
+      "Formal power series",
+      "Generating function methods",
+      "Mathlib Theorems100 archive"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "partition-theorem",
+    "range": {
+      "startLine": 154,
+      "endLine": 196
+    },
+    "type": "concept",
+    "title": "Verified Examples via native_decide",
+    "content": "**Computational Verification for n = 0 through 8:**\n\nAll examples are proved by `native_decide`, which compiles the Lean expression to native code and evaluates it — a brute-force verification that the partition counts match.\n\n| n | Q(n) | Distinct partitions | Odd partitions |\n|---|------|--------------------|-----------------|\n| 0 | 1 | {} | {} |\n| 1 | 1 | {1} | {1} |\n| 2 | 1 | {2} | {1+1} |\n| 3 | 2 | {3}, {2+1} | {3}, {1+1+1} |\n| 4 | 2 | {4}, {3+1} | {3+1}, {1⁴} |\n| 5 | 3 | {5}, {4+1}, {3+2} | {5}, {3+1+1}, {1⁵} |\n| 8 | 6 | 6 partitions each | 6 partitions each |",
+    "mathContext": "The `native_decide` tactic reduces decidable propositions to boolean computation. Since `Nat.Partition` is `DecidableEq` and the partitions of small $n$ are finitely enumerable, the tactic can evaluate $(\\text{distincts}\\ n).\\text{card}$ directly. This provides independent verification beyond the generating function proof.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Decidable computation",
+      "native_decide",
+      "Small case verification",
+      "Constructive proof"
+    ],
+    "prerequisites": [
+      "DecidableEq",
+      "Finset.card",
+      "native_decide tactic"
+    ]
+  },
+  {
+    "id": "ann-generating",
+    "proofId": "partition-theorem",
+    "range": {
+      "startLine": 198,
+      "endLine": 222
+    },
+    "type": "insight",
+    "title": "Generating Function Proof (Commentary)",
+    "content": "**The Classical Generating Function Argument:**\n\nDistinct parts GF: ∏_{k≥1}(1+xᵏ) — each part k appears 0 or 1 times.\nOdd parts GF: ∏_{k≥0}1/(1-x^{2k+1}) — each odd part appears any number of times.\n\nThe key algebraic identity 1+xᵏ = (1-x^{2k})/(1-xᵏ) transforms the product. The numerator ∏(1-x^{2k}) contains factors for even exponents, and the denominator ∏(1-xᵏ) for all exponents. Cancellation leaves only odd denominators.\n\nThis is a commentary section (no Lean code) — the actual proof lives in Mathlib's `Theorems100.partition_theorem`.",
+    "mathContext": "$\\prod_{k=1}^{\\infty}(1+x^k) = \\prod_{k=1}^{\\infty}\\frac{1-x^{2k}}{1-x^k} = \\frac{\\prod_{m \\text{ even}}(1-x^m)}{\\prod_{m \\geq 1}(1-x^m)} = \\frac{1}{\\prod_{m \\text{ odd}}(1-x^m)}$. Each step is an identity of formal power series in $\\mathbb{Z}[[x]]$, valid without convergence concerns.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Formal power series ring",
+      "Infinite products",
+      "Euler's product formula",
+      "q-Pochhammer symbol"
+    ],
+    "prerequisites": [
+      "Formal power series arithmetic",
+      "Infinite product convergence",
+      "Telescoping"
+    ]
+  },
+  {
+    "id": "ann-glaisher",
+    "proofId": "partition-theorem",
+    "range": {
+      "startLine": 224,
+      "endLine": 250
+    },
+    "type": "insight",
+    "title": "Glaisher's Bijection (Commentary)",
+    "content": "**Glaisher Correspondence — A Bijective Proof:**\n\n**Distinct → Odd:** For each distinct part d, write d = 2^a × b (b odd). Replace d with 2^a copies of b.\n\n**Odd → Distinct:** Group identical odd parts. If odd part b appears m times, write m in binary: m = Σ 2^{aᵢ}. Replace m copies of b with distinct parts {2^{aᵢ} × b}.\n\n**Example:** {6, 5, 3} → 6=2¹×3 gives {3,3}; 5=2⁰×5 gives {5}; 3=2⁰×3 gives {3}. Result: {5, 3, 3, 3}.\n\nThis bijection is named after James Whitbread Lee Glaisher (1848-1928). It provides a constructive proof avoiding generating functions entirely.",
+    "mathContext": "The Glaisher map $\\phi$ sends distinct partition $\\{d_1, \\ldots, d_k\\}$ to the odd partition where each $d_i = 2^{a_i} b_i$ ($b_i$ odd) contributes $2^{a_i}$ copies of $b_i$. Invertibility follows from the uniqueness of binary representation: given multiplicities of each odd part, the binary expansion uniquely determines which distinct parts to use.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bijective proof",
+      "Binary representation",
+      "2-adic valuation",
+      "Glaisher (1883)"
+    ],
+    "prerequisites": [
+      "Unique factorization of 2^a × odd",
+      "Binary expansion",
+      "Constructive bijection"
+    ]
+  },
+  {
+    "id": "ann-pentagonal",
+    "proofId": "partition-theorem",
+    "range": {
+      "startLine": 252,
+      "endLine": 264
+    },
+    "type": "concept",
+    "title": "Pentagonal Number Connection (Commentary)",
+    "content": "**Euler's Pentagonal Number Theorem:**\n\n∏_{k=1}^∞ (1-xᵏ) = Σ_{n=-∞}^{∞} (-1)ⁿ x^{n(3n-1)/2}\n\nThe generalized pentagonal numbers n(3n-1)/2 give: 0, 1, 2, 5, 7, 12, 15, 22, 26, ...\n\nThis yields a recurrence for p(n): p(n) = p(n-1) + p(n-2) - p(n-5) - p(n-7) + ... with signs alternating in pairs. The pentagonal theorem is closely related to Euler's partition identity — both arise from manipulating ∏(1-xᵏ).",
+    "mathContext": "The pentagonal number theorem connects the Euler function $\\phi(x) = \\prod_{k=1}^{\\infty}(1-x^k)$ to a lacunary series. Since the partition generating function is $1/\\phi(x)$, this gives a sparse recurrence for $p(n)$ that avoids computing all smaller partition values. The pentagonal numbers $\\omega(n) = n(3n-1)/2$ are generalized polygonal numbers.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pentagonal numbers",
+      "Euler function",
+      "Partition recurrence",
+      "Jacobi triple product"
+    ],
+    "prerequisites": [
+      "Infinite products and series",
+      "Pentagonal number formula",
+      "Recurrence relations"
+    ]
+  },
+  {
+    "id": "ann-asymptotics",
+    "proofId": "partition-theorem",
+    "range": {
+      "startLine": 266,
+      "endLine": 281
+    },
+    "type": "concept",
+    "title": "Asymptotic Growth and Verification",
+    "content": "**OEIS A000009 — Distinct/Odd Partition Counts:**\n\n1, 1, 1, 2, 2, 3, 4, 5, 6, 8, 10, 12, 15, 18, 22, 27, ...\n\n**Asymptotic formula:** Q(n) ~ exp(π√(n/3)) / (4·3^{1/4}·n^{3/4})\n\nThis is analogous to the Hardy-Ramanujan formula for p(n) but with √(n/3) instead of √(2n/3). The subexponential growth in √n is characteristic of partition-type functions.\n\nThe file ends with `#check` commands verifying that `partition_theorem`, `distinct_iff_nodup`, and `odd_iff_all_odd` are accessible.",
+    "mathContext": "The asymptotic formula $Q(n) \\sim \\frac{e^{\\pi\\sqrt{n/3}}}{4 \\cdot 3^{1/4} \\cdot n^{3/4}}$ was derived by Meinardus (1954) using his general theorem on partition asymptotics. Compare with $p(n) \\sim \\frac{e^{\\pi\\sqrt{2n/3}}}{4n\\sqrt{3}}$ (Hardy-Ramanujan, 1918). The ratio $Q(n)/p(n) \\to 0$ shows distinct/odd partitions are asymptotically rare among all partitions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hardy-Ramanujan formula",
+      "Meinardus theorem",
+      "OEIS A000009",
+      "Partition asymptotics"
+    ],
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Saddle-point method",
+      "Circle method"
+    ]
+  }
+]

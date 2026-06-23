@@ -1,0 +1,158 @@
+{
+  "slug": "erdos-1006-oq-02-oq-01",
+  "title": "FFLLW cannot be sharpened to chi <= girth",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Show that the classical FFLLW condition cannot be strengthened from chi(G) < girth(G) to chi(G) <= girth(G); the K3 girth-3 witness has chi = girth and no classically robust orientation.",
+    "plain": "Can the FFLLW sufficient condition chi < girth be sharpened to chi <= girth? No: K3 is the boundary counterexample in the classical formulation.",
+    "whyMatters": [
+      "This separates the sharp classical FFLLW threshold from the rank-based formulation used elsewhere in the Erdos1006 family."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`k3_no_classical_robust` proves K3 has no classically robust orientation.",
+      "`girth3_classical_witness` packages K3 as the girth-3, chromatic-number-3 witness in Erdos1006OQ02.lean."
+    ],
+    "open": [
+      "The broader classical FFLLW lower bound is still carried by the `ffllw_classical` axiom."
+    ],
+    "goal": "Record the sharpness counterexample without implying a separate OQ02OQ01 Lean file exists."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-30T11:35:17-07:00",
+    "iteration": 1,
+    "focus": "Completed counterexample record refreshed: the current proof family contains the K3 classical witness in Erdos1006OQ02.lean rather than a child-specific Lean file.",
+    "blockers": [],
+    "nextAction": "No immediate metadata action; optional future work can factor a named sharpening theorem from the existing K3 witness.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Metadata sync 2026-05-18: the broad Erdos1006 matcher now reports seven proof files. The sharpness content is represented by K3/classical witness declarations in Erdos1006OQ02.lean; the old claim of a child-specific Lean file/theorem was too specific for the current tree.",
+    "builtItems": [
+      "Recorded the chi <= girth sharpness obstruction via the K3 classical witness in Erdos1006OQ02.lean."
+    ],
+    "insights": [
+      "K3 has chi = girth = 3 and no classically robust orientation, so chi <= girth is not a sufficient replacement for chi < girth.",
+      "Rank-based robust orientation is intentionally distinguished from the classical path-based definition in Erdos1006OQ02.lean."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-1006-oq-02-oq-01\n\nMetadata refreshed on 2026-05-18. The record is completed through the K3 classical witness already present in Erdos1006OQ02.lean.\n"
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "chromatic-number",
+    "girth",
+    "orientation",
+    "grotzsch-graph",
+    "probabilistic-method",
+    "research"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-100",
+    "erdos-1006",
+    "erdos-1006-oq-01",
+    "erdos-1006-oq-01-oq-02",
+    "erdos-1006-oq-02",
+    "erdos-1006-oq-02-oq-03",
+    "erdos-1006-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T18:39:05.245Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1006OQ01.lean",
+      "filename": "Erdos1006OQ01.lean",
+      "lineCount": 278,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ01OQ02.lean",
+      "filename": "Erdos1006OQ01OQ02.lean",
+      "lineCount": 257,
+      "theoremCount": 9,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ02.lean",
+      "filename": "Erdos1006OQ02.lean",
+      "lineCount": 470,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 8,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ03.lean",
+      "filename": "Erdos1006OQ03.lean",
+      "lineCount": 248,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ04.lean",
+      "filename": "Erdos1006OQ04.lean",
+      "lineCount": 194,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ04Decidability.lean",
+      "filename": "Erdos1006OQ04Decidability.lean",
+      "lineCount": 116,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04Decidability.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006Problem.lean",
+      "filename": "Erdos1006Problem.lean",
+      "lineCount": 142,
+      "theoremCount": 1,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006Problem.lean"
+    }
+  ]
+}

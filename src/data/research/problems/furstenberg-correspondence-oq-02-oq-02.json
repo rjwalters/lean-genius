@@ -1,0 +1,93 @@
+{
+  "slug": "furstenberg-correspondence-oq-02-oq-02",
+  "title": "Is the disintegration in Mathlib sufficient for the ergodic decomposition, or...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Is the disintegration in Mathlib sufficient for the ergodic decomposition, or....",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-29T19:14:09.185Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "furstenberg-correspondence",
+    "furstenberg-correspondence-oq-01",
+    "furstenberg-correspondence-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-29T19:14:09.185Z",
+  "lastUpdate": "2026-05-29T19:14:09.185Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FurstenbergCorrespondence.lean",
+      "filename": "FurstenbergCorrespondence.lean",
+      "lineCount": 253,
+      "theoremCount": 4,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FurstenbergCorrespondence.lean"
+    },
+    {
+      "path": "Proofs/FurstenbergCorrespondenceOQ01.lean",
+      "filename": "FurstenbergCorrespondenceOQ01.lean",
+      "lineCount": 930,
+      "theoremCount": 30,
+      "axiomCount": 1,
+      "defCount": 8,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FurstenbergCorrespondenceOQ01.lean"
+    },
+    {
+      "path": "Proofs/FurstenbergCorrespondenceOQ02.lean",
+      "filename": "FurstenbergCorrespondenceOQ02.lean",
+      "lineCount": 414,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FurstenbergCorrespondenceOQ02.lean"
+    }
+  ]
+}

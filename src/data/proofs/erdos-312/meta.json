@@ -1,0 +1,238 @@
+{
+  "id": "erdos-312",
+  "title": "Erdős Problem #312: Subset Sums of Unit Fractions",
+  "slug": "erdos-312",
+  "description": "Does there exist c > 0 such that for K > 1, every large multiset with reciprocal sum > K has a subset summing to within exp(-cK) of 1? Known: polynomial bound c/K² holds (Erdős-Graham). OPEN.",
+  "meta": {
+    "author": "Erdős-Graham [ErGr80]",
+    "sourceUrl": "https://erdosproblems.com/312",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos312Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "subset-sum",
+      "exponential-bounds",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 312,
+    "erdosUrl": "https://erdosproblems.com/312",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Real exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real number type and operations",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "reciprocalSum definition: Σ 1/a(i) over a finite multiset",
+      "subsetReciprocalSum: sum over a subset S ⊆ {0,...,n-1}",
+      "hasExponentialPrecision: the exp(-cK) precision property",
+      "mainConjecture: full formal statement of the open problem",
+      "hasPolynomialPrecision: the c/K² precision property",
+      "erdos_graham_polynomial axiom: known polynomial bound",
+      "exponential_stronger_than_polynomial: exp(-cK) < c'/K² for large K",
+      "conjecture_implies_known: proved - exponential implies polynomial",
+      "harmonicNumber definition: H_n = Σ 1/k for k=1..n",
+      "harmonic_unbounded theorem: H_n → ∞",
+      "erdos_312_status summary theorem"
+    ],
+    "axiomCount": 1,
+    "lineCount": 718,
+    "assumptions": "1 axiom: erdos_graham_polynomial. See Lean source for the complete statement.",
+    "theoremCount": 58,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #312: Subset Sums of Unit Fractions**\n\nThis problem, posed by Erdős and Graham [ErGr80], explores the precision with which subset sums of unit fractions can approximate 1.\n\nThe key question is about *exponential* precision: given a multiset of positive integers whose reciprocals sum to more than K, can we always find a subset whose reciprocal sum is within exp(-cK) of 1? The closer to 1, the better the approximation.\n\n**Known Results:** Erdős and Graham proved the weaker *polynomial* bound: for some constant c > 0, one can always find a subset summing to within c/K² of 1. The gap between the polynomial bound c/K² and the conjectured exponential bound exp(-cK) is enormous for large K, making this a significant open problem in combinatorial number theory.\n\nThe problem connects to the classical theory of Egyptian fractions (representing rationals as sums of distinct unit fractions) and to computational subset sum problems.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nDoes there exist a constant $c > 0$ such that, for any $K > 1$, whenever $A$ is a sufficiently large finite multiset of positive integers with $\\sum_{n \\in A} 1/n > K$, there exists a subset $S \\subseteq A$ with:\n$$1 - e^{-cK} < \\sum_{n \\in S} 1/n \\leq 1$$\n\n**Known:** Erdős-Graham proved this with $e^{-cK}$ replaced by $c/K^2$ (polynomial precision).",
+    "text": "Does there exist c > 0 such that for K > 1, every large multiset with reciprocal sum > K has a subset summing to within exp(-cK) of 1? Known: polynomial bound c/K² holds (Erdős-Graham). OPEN.",
+    "proofStrategy": "**Formalization Approach** (718 lines, 58 theorems/lemmas, 8 definitions, 1 axiom)\n\n1. **Unit Fraction Sums (Part I):** `reciprocalSum` and `subsetReciprocalSum` as noncomputable `Finset.sum` of inverses, with full basic algebra (monotonicity, disjoint additivity, erase/insert step identities).\n\n2. **Precision Properties (Parts II-III):** Separate `Prop` definitions for exponential ($e^{-cK}$) and polynomial ($c/K^2$) precision. The open `mainConjecture` is a `Prop` definition (not a `sorry` theorem); the known Erdős-Graham polynomial bound is the sole axiom `erdos_graham_polynomial`.\n\n3. **Relationship and Gap Analysis (Part IV and IV.b-d):** Proves the exponential bound is strictly stronger than the polynomial one (exponentials dominate polynomials), and a detailed quantitative analysis of both gaps, culminating in the sandwich $cK/(1+cK) \\le 1-e^{-cK} \\le cK$.\n\n4. **Harmonic Context and Valid Inputs (Part V, V.b):** Defines `harmonicNumber`, proves $H_n\\to\\infty$, and shows valid problem inputs exist (the canonical $\\{1,\\ldots,n\\}$ family).\n\n5. **Greedy and Sieve Infrastructure (Parts V.c, VII, VIII):** A constructive thread toward the polynomial bound — maximal feasible subsets, the gap bound $\\text{sum}(S) > 1 - 1/a(j)$, `subset_near_one`, and the `sieve_and_greedy` theorem: sieving to large elements ($a(i)\\ge m$) and running the restricted greedy algorithm yields a subset with sum in $(1-1/m, 1]$, the core step of the Erdős-Graham approach.",
+    "keyInsights": [
+      "**Exponential vs Polynomial:** For K = 100, exp(-cK) ≈ 10^{-43} while c/K² = c/10000 — the exponential bound is astronomically tighter",
+      "**Precision of Approximation:** The problem asks how close to 1 we can get using subset sums of 1/n, given a large budget of reciprocals",
+      "**Harmonic Numbers:** H_n = 1 + 1/2 + ... + 1/n grows like ln(n), providing canonical examples with arbitrarily large reciprocal sums",
+      "**Egyptian Fractions:** Representing 1 as a sum of distinct unit fractions is a classical problem; here we seek *near-1* representations from a given multiset",
+      "**Known Result:** The polynomial version c/K² is proved by Erdős-Graham, establishing that good approximation is always possible — the question is how good"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Problem statement: does there exist $c>0$ such that for any $K>1$, every sufficiently large finite multiset of positive integers with $\\sum_{n\\in A} 1/n > K$ has a subset $S$ with $1 - e^{-cK} < \\sum_{n\\in S} 1/n \\le 1$? Records the known Erdős-Graham polynomial bound $c/K^2$. Status: OPEN."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Namespace",
+      "startLine": 22,
+      "endLine": 33,
+      "summary": "Imports `Finset`, `Real`, analytic special functions (`ExpDeriv`, `Log.Deriv`), filter/liminf-limsup, and `PSeries`; opens `Finset Real Filter` and enters namespace `Erdos312`."
+    },
+    {
+      "id": "part-i-unit-fractions",
+      "title": "Part I: Unit Fraction Sums",
+      "startLine": 35,
+      "endLine": 121,
+      "summary": "Defines `reciprocalSum` ($\\sum_i 1/a(i)$) and `subsetReciprocalSum` ($\\sum_{i\\in S} 1/a(i)$), then proves their basic algebra: non-negativity, $\\text{sum}(S)\\le\\text{total}$, empty/univ/singleton evaluations, monotonicity in $S$, disjoint-union additivity, positivity, and the erase/insert step identities."
+    },
+    {
+      "id": "part-ii-main-conjecture",
+      "title": "Part II: The Main Conjecture",
+      "startLine": 122,
+      "endLine": 142,
+      "summary": "Defines `hasExponentialPrecision` (a subset with sum in $(1-e^{-cK}, 1]$) and states `mainConjecture` (OPEN): $\\exists c>0$ such that for all $K>1$, every sufficiently large multiset with reciprocal sum $>K$ has exponential precision. Stated as a `Prop` definition, not a `sorry` theorem."
+    },
+    {
+      "id": "part-iii-polynomial",
+      "title": "Part III: Known Result (Polynomial Bound)",
+      "startLine": 143,
+      "endLine": 160,
+      "summary": "Defines `hasPolynomialPrecision` (a subset with sum in $(1-c/K^2, 1]$) and axiomatizes `erdos_graham_polynomial` — the Erdős-Graham theorem that the weaker polynomial bound $c/K^2$ holds. This is the file's sole `axiom`."
+    },
+    {
+      "id": "part-iv-relationship",
+      "title": "Part IV: Relationship Between Bounds",
+      "startLine": 162,
+      "endLine": 251,
+      "summary": "Proves the exponential bound is strictly stronger than the polynomial one: `exponential_stronger_than_polynomial` ($e^{-cK} < c'/K^2$ for large $K$, since exponentials dominate polynomials, via `tendsto_pow_mul_exp_neg_atTop_nhds_zero`), `conjecture_implies_known`, the pointwise `exponential_implies_polynomial_pointwise`, and monotonicity in $c$."
+    },
+    {
+      "id": "part-ivb-exp-gap",
+      "title": "Part IV.b: Exponential Gap Analysis",
+      "startLine": 252,
+      "endLine": 283,
+      "summary": "Analyzes the gap $1-e^{-cK}$: non-negativity, strictly $<1$ (so the window $(1-e^{-cK},1]$ has positive length), monotonicity in $K$, and the limit `exponential_gap_tends_to_one` ($1-e^{-cK}\\to 1$ as $K\\to\\infty$)."
+    },
+    {
+      "id": "part-ivc-poly-gap",
+      "title": "Part IV.c: Polynomial Gap Analysis",
+      "startLine": 285,
+      "endLine": 325,
+      "summary": "Analyzes the gap $c/K^2$: positivity, antitone in $K$ (`polynomial_gap_antitone`), the limit $c/K^2\\to 0$ as $K\\to\\infty$ (`polynomial_gap_tends_to_zero`), and monotonicity of polynomial precision in the constant $c$."
+    },
+    {
+      "id": "part-ivd-taylor",
+      "title": "Part IV.d: Taylor Bound Analysis",
+      "startLine": 327,
+      "endLine": 374,
+      "summary": "Establishes Taylor/exponential inequalities: $e^{-x}\\le 1/(1+x)$ for $x\\ge0$, the rational lower bound $1-1/(1+cK)$, the algebraic identity $1-1/(1+t)=t/(1+t)$, and the first-order bound $e^{-x}\\ge 1-x$, combining into the sandwich `exponential_gap_sandwich`: $cK/(1+cK) \\le 1-e^{-cK} \\le cK$."
+    },
+    {
+      "id": "part-v-harmonic",
+      "title": "Part V: Harmonic Number Context",
+      "startLine": 376,
+      "endLine": 444,
+      "summary": "Defines `harmonicNumber` $H_n = \\sum_{i<n} 1/(i+1)$ and proves $H_n\\to\\infty$ (`harmonic_unbounded`, via Mathlib's `tendsto_sum_range_one_div_nat_succ_atTop`), monotonicity, $H_0=0$, $H_1=1$, non-negativity, the recurrence $H_{n+1}=H_n+1/(n+1)$, $H_n\\ge 1$ for $n\\ge1$, and that the canonical multiset $\\{1,\\ldots,n\\}$ has reciprocal sum $H_n$."
+    },
+    {
+      "id": "part-vb-valid-inputs",
+      "title": "Part V.b: Existence of Valid Inputs",
+      "startLine": 445,
+      "endLine": 456,
+      "summary": "Proves `valid_inputs_exist`: for any $K$ there is a finite multiset of positive integers with reciprocal sum $>K$ (the canonical $\\{1,\\ldots,n\\}$ family), confirming the problem hypotheses are satisfiable."
+    },
+    {
+      "id": "part-vc-structural",
+      "title": "Part V.c: Structural Properties",
+      "startLine": 458,
+      "endLine": 502,
+      "summary": "Proves the reciprocal-sum upper bound $\\text{reciprocalSum}\\le n/m$ when all elements $\\ge m$, the trivial feasible subset ($\\emptyset$, sum $\\le1$), and that exponential/polynomial precision yield a nontrivial subset with strictly positive sum $\\le1$."
+    },
+    {
+      "id": "part-vii-maximal-feasible",
+      "title": "Part VII: Maximal Feasible Subsets and the Gap Bound",
+      "startLine": 504,
+      "endLine": 572,
+      "summary": "The greedy approach: defines `isFeasible` (sum $\\le1$), proves the empty set is feasible, the full set is infeasible when total $>1$, existence of a maximal feasible subset (`maximal_feasible_exists`, via max-cardinality), the gap bound $\\text{sum}(S)>1-1/a(j)$ for $j\\notin S$, and `subset_near_one`: if all elements $\\ge m$ and total $>1$ then some subset has sum in $(1-1/m, 1]$."
+    },
+    {
+      "id": "part-vi-summary",
+      "title": "Part VI: Summary",
+      "startLine": 574,
+      "endLine": 587,
+      "summary": "`erdos_312_status` packages the known result (the polynomial bound exists, via `erdos_graham_polynomial`) while the exponential conjecture remains open."
+    },
+    {
+      "id": "part-viii-sieve-greedy",
+      "title": "Part VIII: Restricted Greedy and Sieving Infrastructure",
+      "startLine": 589,
+      "endLine": 717,
+      "summary": "Infrastructure toward proving `erdos_graham_polynomial`: defines `largeElements` (indices with $a(i)\\ge m$), proves its threshold properties, the split `reciprocalSum = largeSum + smallSum`, the restricted maximal-feasible existence and gap bound, `restricted_subset_near_one`, and the core `sieve_and_greedy`: if the large elements have reciprocal sum $>1$, find a subset of them with sum in $(1-1/m, 1]$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #312 asks whether subset sums of unit fractions can achieve exponentially precise approximations to 1. The polynomial version (c/K²) is proved by Erdős-Graham, but the conjectured exponential bound (exp(-cK)) remains open. We prove that the conjecture implies the known result.",
+    "implications": "**Theoretical Significance**: **Connections**\n\n1. **Egyptian Fractions:** Understanding subset sums of unit fractions connects to the ancient problem of representing rationals as sums of distinct unit fractions\n\n**2. Combinatorial Number Theory:** The transition from polynomial to exponential bounds is a fundamental threshold in many problems\n\n3. **Approximation Theory:** How well can we approximate target values using discrete building blocks?\n\n4. **Computational Complexity:** Subset sum is NP-hard in general; the large reciprocal sum condition enables polynomial-time solutions.",
+    "openQuestions": [
+      "Does the exponential bound exp(-cK) hold?",
+      "What is the optimal constant c?",
+      "Can the polynomial bound c/K² be improved to c/K^α for some α > 2?",
+      "Are there connections to the Erdős-Straus conjecture on 4/n = 1/x + 1/y + 1/z?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
+      "Mathlib.Analysis.SpecialFunctions.Log.Deriv",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.PSeries"
+    ],
+    "opens": [
+      "Finset",
+      "Real",
+      "Filter"
+    ],
+    "namespace": "Erdos312",
+    "lineCount": 718,
+    "axiomCount": 1,
+    "theoremCount": 58,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos312Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-148",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-242",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-284",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, unit-fractions"
+    }
+  ],
+  "sorries": 0
+}

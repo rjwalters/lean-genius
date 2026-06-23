@@ -1,0 +1,208 @@
+[
+  {
+    "id": "ann-e655-imports",
+    "proofId": "erdos-655",
+    "type": "concept",
+    "title": "Euclidean Geometry and Finset Imports",
+    "content": "Imports Mathlib's InnerProductSpace for EuclideanSpace ℝ (Fin 2), Finset for combinatorial counting, and tactics.",
+    "mathContext": "The formalization works in $\\mathbb{R}^2$ modeled as `EuclideanSpace ℝ (Fin 2)`, Mathlib's standard finite-dimensional Euclidean space with the `dist` metric from `MetricSpace`. The `Finset` library provides the combinatorial infrastructure for counting distinct distances and bounding fiber sizes. The `InnerProductSpace.Basic` import brings in the full metric space hierarchy.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "EuclideanSpace",
+      "MetricSpace",
+      "Finset",
+      "InnerProductSpace"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "range": {
+      "startLine": 18,
+      "endLine": 21
+    }
+  },
+  {
+    "id": "ann-e655-pointConfig",
+    "proofId": "erdos-655",
+    "type": "definition",
+    "title": "Point Configuration",
+    "content": "A configuration of n labeled points in ℝ², modeled as a function Fin n → EuclideanSpace ℝ (Fin 2).",
+    "mathContext": "The type `PointConfig n` represents $n$ labeled points in $\\mathbb{R}^2$. Using `Fin n → EuclideanSpace ℝ (Fin 2)` rather than `Finset (ℝ × ℝ)` preserves point multiplicity and allows referring to individual points by index. The injectivity hypothesis `Function.Injective P` (required in theorems) ensures distinct geometric positions. This is the standard Lean/Mathlib pattern for finite point sets in combinatorial geometry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "EuclideanSpace",
+      "Fin type",
+      "point sets in geometry"
+    ],
+    "prerequisites": [
+      "EuclideanSpace",
+      "Fin"
+    ],
+    "range": {
+      "startLine": 26,
+      "endLine": 26
+    }
+  },
+  {
+    "id": "ann-e655-distinctDistances",
+    "proofId": "erdos-655",
+    "type": "definition",
+    "title": "Distinct Distances",
+    "content": "The set of distinct positive pairwise distances in a point configuration, computed as the image of all pairs under dist, filtered to exclude zero.",
+    "mathContext": "The **distinct distance problem** asks for the minimum number of distinct distances determined by $n$ points in $\\mathbb{R}^2$. Erdős (1946) conjectured the minimum is $\\Theta(n/\\sqrt{\\log n})$, achieved by the $\\sqrt{n} \\times \\sqrt{n}$ integer lattice. Guth and Katz (2015) proved the lower bound $\\Omega(n/\\log n)$, nearly resolving the conjecture. Here `distinctDistances` counts the global distinct distance set, while `distinctDistancesFrom` counts per-point. The `noncomputable` annotation reflects that `dist` on `EuclideanSpace` involves real-valued computation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős distinct distances",
+      "Guth-Katz theorem",
+      "integer lattice"
+    ],
+    "prerequisites": [
+      "PointConfig",
+      "Finset.image",
+      "dist"
+    ],
+    "range": {
+      "startLine": 29,
+      "endLine": 31
+    }
+  },
+  {
+    "id": "ann-e655-distinctDistancesFrom",
+    "proofId": "erdos-655",
+    "type": "definition",
+    "title": "Distinct Distances from a Single Point",
+    "content": "The set of distinct positive distances from point i to all other points, computed by imaging the distance function over Fin n and filtering out zero.",
+    "mathContext": "For a point $x_i$ in a configuration of $n$ points, $|\\{\\text{dist}(x_i, x_j) : j \\neq i\\}|$ counts the distinct distances from $x_i$. Under the `NoConcyclicTriple` condition, each distance value $r$ has at most 2 preimages among the other $n-1$ points, yielding the lower bound $|\\text{distinctDistancesFrom}(P, i)| \\geq (n-1)/2$. This per-point quantity is the key to the pigeonhole argument in the main theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distance multiplicity",
+      "pigeonhole principle",
+      "per-point distances"
+    ],
+    "prerequisites": [
+      "PointConfig",
+      "Finset.image",
+      "dist"
+    ],
+    "range": {
+      "startLine": 34,
+      "endLine": 35
+    }
+  },
+  {
+    "id": "ann-e655-noConcyclicTriple",
+    "proofId": "erdos-655",
+    "type": "definition",
+    "title": "No Concyclic Triple Condition",
+    "content": "For each point xᵢ and each radius r > 0, at most 2 other points lie at distance r from xᵢ. Equivalently, no circle centered at xᵢ passes through 3+ other points.",
+    "mathContext": "The condition `NoConcyclicTriple` bounds the **distance multiplicity** from each point: for every $x_i$ and every $r > 0$, $|\\{j \\neq i : d(x_i, x_j) = r\\}| \\leq 2$. This is equivalent to saying no circle centered at $x_i$ passes through 3 or more other configuration points. The condition is weaker than 'no 4 concyclic' (which forbids 4 points on *any* circle, not just centered ones). Hunter's counterexample shows this weaker condition is insufficient for the $(1+c)n/2$ bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "concyclic points",
+      "distance multiplicity",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "PointConfig",
+      "Finset.filter",
+      "Finset.card"
+    ],
+    "range": {
+      "startLine": 41,
+      "endLine": 43
+    }
+  },
+  {
+    "id": "ann-e655-noFourConcyclic",
+    "proofId": "erdos-655",
+    "type": "definition",
+    "title": "No Four Concyclic Condition",
+    "content": "No 4 points of the configuration lie on a common circle. This is the stronger condition believed to be the intended formulation of Problem 655.",
+    "mathContext": "The condition `NoFourConcyclic` requires that for any 4 distinct points $a, b, c, d$, there is no circle passing through all four. This is strictly stronger than `NoConcyclicTriple`: it forbids 4 points on *any* circle, not just circles centered at configuration points. In the corrected formulation, this condition (possibly combined with no 3 collinear) should force $\\geq (1+c)n/2$ distinct distances. The formalization uses `Finset.card = 4` to enforce distinctness and existential quantification over center and radius.",
+    "significance": "key",
+    "relatedConcepts": [
+      "concyclic points",
+      "general position",
+      "no 4 concyclic"
+    ],
+    "prerequisites": [
+      "PointConfig",
+      "EuclideanSpace",
+      "Finset.card"
+    ],
+    "range": {
+      "startLine": 46,
+      "endLine": 51
+    }
+  },
+  {
+    "id": "ann-e655-countingLemma",
+    "proofId": "erdos-655",
+    "type": "concept",
+    "title": "Counting Lemma: n-1 ≤ 2·|distances from i|",
+    "content": "Under the NoConcyclicTriple condition, the n-1 other points map to distinct distances with multiplicity ≤ 2 each, giving n-1 ≤ 2·|distinctDistancesFrom P i|.",
+    "mathContext": "This is the key **counting lemma** proved in full in Lean. The proof decomposes $\\{j \\neq i\\}$ into fibers by distance value using `Finset.card_eq_sum_card_fiberwise`, bounds each fiber by 2 using `NoConcyclicTriple`, and sums: $n-1 = \\sum_{r} |\\text{fiber}_r| \\leq \\sum_r 2 = 2 \\cdot |\\text{distinctDistancesFrom}(P,i)|$. The fiber decomposition is the combinatorial core—it requires showing that the distance function maps $\\{j \\neq i\\}$ into `distinctDistancesFrom P i`, which needs injectivity of $P$ to ensure $d(x_i, x_j) > 0$ for $j \\neq i$. This is a **fully proved** result (no sorry), making it one of the substantive Lean proofs in the gallery.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fiber decomposition",
+      "Finset.card_eq_sum_card_fiberwise",
+      "distance multiplicity bound"
+    ],
+    "prerequisites": [
+      "NoConcyclicTriple",
+      "distinctDistancesFrom",
+      "Function.Injective",
+      "Finset.card_eq_sum_card_fiberwise"
+    ],
+    "range": {
+      "startLine": 59,
+      "endLine": 101
+    }
+  },
+  {
+    "id": "ann-e655-basicBound",
+    "proofId": "erdos-655",
+    "type": "concept",
+    "title": "Basic (n-1)/2 Distance Bound",
+    "content": "Under NoConcyclicTriple, every point determines at least (n-1)/2 distinct distances. Proved by applying the counting lemma and dividing by 2.",
+    "mathContext": "The theorem `basic_distance_bound` derives $(n-1)/2 \\leq |\\text{distinctDistancesFrom}(P, i)|$ as a direct corollary of the counting lemma via `omega`. This bound is **tight**: equally-spaced points on a circle achieve exactly $\\lceil n/2 \\rceil$ distinct distances from each point (Hunter's counterexample). The conjecture asks whether the stronger `NoFourConcyclic` condition forces a multiplicative improvement to $(1+c) \\cdot n/2$. This is a **fully proved** theorem with no sorry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "tight bounds",
+      "distinct distances per point"
+    ],
+    "prerequisites": [
+      "others_card_le_two_mul_distinct",
+      "omega"
+    ],
+    "range": {
+      "startLine": 106,
+      "endLine": 111
+    }
+  },
+  {
+    "id": "ann-e655-hunterCounterexample",
+    "proofId": "erdos-655",
+    "type": "concept",
+    "title": "Hunter's Counterexample",
+    "content": "Zach Hunter showed that n equally-spaced points on a circle satisfy NoConcyclicTriple but determine only ~n/2 distinct distances, disproving the original conjecture.",
+    "mathContext": "**Hunter's counterexample** uses $n$ equally-spaced points on a circle of radius $R$. The distances are $2R \\sin(k\\pi/n)$ for $k = 1, \\ldots, \\lfloor n/2 \\rfloor$, giving exactly $\\lfloor n/2 \\rfloor$ distinct distances—matching the $(n-1)/2$ lower bound up to a constant. The `NoConcyclicTriple` condition holds because for any center point $x_i$ and radius $r$, the circle centered at $x_i$ with radius $r$ meets the original circle in at most 2 points (two circles intersect in $\\leq 2$ points). This shows `NoConcyclicTriple` is too weak: the corrected formulation needs `NoFourConcyclic` (which this configuration violates, since all $n$ points are concyclic). Formalized with `Filter.atTop` for 'sufficiently large $n$'.",
+    "significance": "key",
+    "relatedConcepts": [
+      "regular polygon distances",
+      "circle-circle intersection",
+      "counterexample construction"
+    ],
+    "prerequisites": [
+      "NoConcyclicTriple",
+      "distinctDistances",
+      "Filter.atTop"
+    ],
+    "range": {
+      "startLine": 118,
+      "endLine": 122
+    }
+  }
+]

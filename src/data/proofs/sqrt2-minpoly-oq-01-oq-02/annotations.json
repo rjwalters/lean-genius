@@ -1,0 +1,147 @@
+[
+  {
+    "id": "ann-sqrt2oq0102-irrationality",
+    "proofId": "sqrt2-minpoly-oq-01-oq-02",
+    "range": {
+      "startLine": 50,
+      "endLine": 62
+    },
+    "type": "insight",
+    "title": "Part I: Irrationality of √r for a Rational Radicand",
+    "content": "`irrational_sqrt_of_not_isSquare_rat` proves that if `r ≥ 0` is **not** a square in `ℚ`, then `√r` is irrational. The proof is a direct contrapositive: assume `√r = (s : ℝ)` for some rational `s` (the `rintro ⟨s, hs⟩` unpacks `Irrational`'s definition as the negation of being in the range of `ℚ → ℝ`). Then `s² = (√r)² = r` (via `Real.sq_sqrt` on the nonnegativity `0 ≤ r`), and `exact_mod_cast` transports `s² = r` from `ℝ` back to `ℚ`. This exhibits `r = s·s` as a rational square, contradicting `hns`.\n\nThe key efficiency over the natural-number case: because `IsSquare` is taken **directly in ℚ**, a rational value of `√r` immediately produces a rational square, with no integrality descent.",
+    "mathContext": "Contrapositive of the square-root irrationality criterion over $\\mathbb{Q}$: if $\\sqrt{r} = s \\in \\mathbb{Q}$ then $s^2 = r$, so $r = s \\cdot s$ is a square in $\\mathbb{Q}$. The nonnegativity hypothesis $0 \\le r$ is needed for $(\\sqrt{r})^2 = r$ (`Real.sq_sqrt`); for $r < 0$ Mathlib sets $\\sqrt{r} = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.sq_sqrt",
+      "Irrational",
+      "IsSquare",
+      "exact_mod_cast"
+    ],
+    "prerequisites": [
+      "Real.sqrt in Mathlib",
+      "Irrational as range complement of ℚ → ℝ",
+      "rational casts"
+    ]
+  },
+  {
+    "id": "ann-sqrt2oq0102-main",
+    "proofId": "sqrt2-minpoly-oq-01-oq-02",
+    "range": {
+      "startLine": 64,
+      "endLine": 124
+    },
+    "type": "insight",
+    "title": "Part II: Main Theorem — minpoly ℚ (√r) = X² − r",
+    "content": "`minpoly_sqrt_of_not_isSquare_rat` is the central result: for nonnegative rational `r` that is not a rational square, the minimal polynomial of `√r` over `ℚ` is exactly `X² − C r`. The argument is a degree squeeze:\n\n1. **Degree ≤ 2.** `X² − C r` is monic (`monic_X_pow_sub_C`) with `√r` as a root (`Real.sq_sqrt` plus the identification `algebraMap ℚ ℝ r = (r : ℝ)` via `eq_ratCast`). Hence `minpoly ℚ √r ∣ X² − C r` by `minpoly.dvd`, and `natDegree_le_of_dvd` gives degree ≤ 2.\n2. **Degree ≥ 2.** If the degree were 1, the monic linear minimal polynomial `X + C b` would force `√r = −b ∈ ℚ`, contradicting Part I's irrationality result.\n3. **Equality.** Writing `X² − C r = minpoly · c`, both factors monic and the product degree-2 forces `c` to be the constant `1`, so `minpoly = X² − C r`.",
+    "mathContext": "$\\operatorname{minpoly}_{\\mathbb{Q}}(\\sqrt{r}) = X^2 - r$ when $r \\ge 0$ and $r \\notin (\\mathbb{Q}^\\times)^2$. The minimal polynomial is **monic by definition**, so this monic form is canonical; the degree argument reduces to the fact that a monic divisor of a monic degree-2 polynomial that itself has degree 2 must equal it. `eq_ratCast` is the load-bearing coercion lemma: any ring hom out of $\\mathbb{Q}$ is the rational cast, so `algebraMap ℚ ℝ r` and `(r : ℝ)` agree.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "minpoly.dvd",
+      "monic_X_pow_sub_C",
+      "Polynomial.natDegree_le_of_dvd",
+      "eq_ratCast",
+      "minpoly.natDegree_pos"
+    ],
+    "prerequisites": [
+      "minimal polynomial API",
+      "monic polynomials and divisibility",
+      "Real.sq_sqrt"
+    ]
+  },
+  {
+    "id": "ann-sqrt2oq0102-iff",
+    "proofId": "sqrt2-minpoly-oq-01-oq-02",
+    "range": {
+      "startLine": 126,
+      "endLine": 141
+    },
+    "type": "insight",
+    "title": "Part III: Irrationality Characterization (iff)",
+    "content": "`irrational_sqrt_iff_not_isSquare_rat` upgrades Part I to a biconditional: for `r ≥ 0`, `√r` is irrational **iff** `r` is not a rational square. The reverse direction is exactly Part I. The forward direction is the elementary converse: if `r = s·s` is a rational square, then `√r = √(s²) = |s|` (via `Real.sqrt_sq` on `|s| ≥ 0`, after rewriting `r = |s|²` using `sq_abs`), which is rational — contradicting irrationality.\n\nThis is the clean standard criterion: the square root of a nonnegative rational is irrational precisely when the rational is not a perfect square in `ℚ`.",
+    "mathContext": "$\\sqrt{r} \\in \\mathbb{R} \\setminus \\mathbb{Q} \\iff r \\notin (\\mathbb{Q})^2$ for $r \\ge 0$. The forward direction uses $\\sqrt{s^2} = |s|$ (`Real.sqrt_sq` requires the argument nonnegative, supplied by `|s| \\ge 0`); `sq_abs` gives $|s|^2 = s^2$ so the radicand can be written as a square of a nonnegative real.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.sqrt_sq",
+      "sq_abs",
+      "IsSquare",
+      "Irrational"
+    ],
+    "prerequisites": [
+      "Real.sqrt_sq",
+      "absolute value of rationals",
+      "Part I irrationality lemma"
+    ]
+  },
+  {
+    "id": "ann-sqrt2oq0102-degree",
+    "proofId": "sqrt2-minpoly-oq-01-oq-02",
+    "range": {
+      "startLine": 143,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "Part IV: Degree and Field-Extension Consequences",
+    "content": "Three corollaries flow from the main theorem. `minpoly_sqrt_natDegree`: `natDegree (minpoly ℚ √r) = 2`, by rewriting with the main theorem and `natDegree_X_pow_sub_C`. `sqrt_isIntegral`: `√r` is integral over `ℚ`, witnessed by the monic `X² − C r` (this is stated separately so the finrank lemma does not need the non-square hypothesis). `adjoin_sqrt_finrank`: `[ℚ(√r) : ℚ] = 2`, obtained from `IntermediateField.adjoin.finrank` applied to the integral element, whose value is the minimal-polynomial degree.\n\nTogether these establish `ℚ(√r)` as a degree-2 quadratic extension for every non-square rational radicand.",
+    "mathContext": "For an algebraic element $\\alpha$ integral over $K$, $[K(\\alpha) : K] = \\deg \\operatorname{minpoly}_K(\\alpha)$ (`IntermediateField.adjoin.finrank`). Here $\\alpha = \\sqrt{r}$, $\\deg = 2$, so $[\\mathbb{Q}(\\sqrt{r}) : \\mathbb{Q}] = 2$. Note $\\mathbb{Q}(\\sqrt{p/q}) = \\mathbb{Q}(\\sqrt{pq})$, so the field itself depends only on the squarefree part of the radicand.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IntermediateField.adjoin.finrank",
+      "Polynomial.natDegree_X_pow_sub_C",
+      "IsIntegral",
+      "Module.finrank"
+    ],
+    "prerequisites": [
+      "field extension degree",
+      "integral elements",
+      "minimal polynomial degree = extension degree"
+    ]
+  },
+  {
+    "id": "ann-sqrt2oq0102-explicit",
+    "proofId": "sqrt2-minpoly-oq-01-oq-02",
+    "range": {
+      "startLine": 165,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Part V: Explicit p/q and Cleared-Denominator Forms",
+    "content": "`cleared_denom_form` is a pure polynomial identity: `C q · (X² − C(p/q)) = C q · X² − C p` (for `q ≠ 0`), proved by `field_simp` on `q · (p/q) = p` followed by distributing the constant. This connects the canonical **monic** answer `X² − p/q` with the integer-coefficient associate `q·X² − p` that appears in the informal statement of the problem.\n\n`minpoly_sqrt_div` then specializes the main theorem to a radicand written as a ratio of naturals: for `p, q : ℕ` with `q > 0` and `p/q` not a rational square, `minpoly ℚ (√(p/q)) = X² − p/q`. The only work beyond invoking the main theorem is the cast `((p/q : ℚ) : ℝ) = (p : ℝ)/(q : ℝ)`.",
+    "mathContext": "The minimal polynomial is monic, hence $X^2 - \\tfrac{p}{q}$; multiplying by the leading-coefficient clearing factor $q$ yields the primitive integer associate $qX^2 - p$, which is **not** monic and therefore not itself a minimal polynomial. The two generate the same ideal in $\\mathbb{Q}[X]$ and have the same roots; they differ only by the unit $q \\in \\mathbb{Q}^\\times$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Polynomial.C",
+      "field_simp",
+      "monic vs primitive associate",
+      "rational casts"
+    ],
+    "prerequisites": [
+      "polynomial constant coefficients",
+      "associates in ℚ[X]",
+      "natural-number to rational casts"
+    ]
+  },
+  {
+    "id": "ann-sqrt2oq0102-examples",
+    "proofId": "sqrt2-minpoly-oq-01-oq-02",
+    "range": {
+      "startLine": 183,
+      "endLine": 203
+    },
+    "type": "concept",
+    "title": "Part VI: Concrete Examples — the Genuinely Rational Radicand 1/2",
+    "content": "Three example lemmas make the theory concrete. `not_isSquare_two` recovers `¬ IsSquare (2 : ℚ)` from Mathlib's `irrational_sqrt_two` via the Part III iff. `not_isSquare_half` deduces `¬ IsSquare (1/2)` using `isSquare_inv` (a value is a square iff its inverse is). `minpoly_sqrt_half` is the headline application: `minpoly ℚ (√(1/2)) = X² − 1/2`, a genuinely **non-integer** rational radicand where `√(1/2) = √2/2` is irrational — exactly the case that the natural-number predecessor `sqrt2-minpoly-oq-01` could not express.",
+    "mathContext": "$\\operatorname{minpoly}_{\\mathbb{Q}}(\\sqrt{1/2}) = X^2 - \\tfrac12$. The non-squareness of $1/2$ is reduced to that of its inverse $2$ via `isSquare_inv`: $a$ is a square iff $a^{-1}$ is. Non-squareness of $2$ in $\\mathbb{Q}$ is equivalent to the irrationality of $\\sqrt{2}$, the canonical entry point `irrational_sqrt_two`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "irrational_sqrt_two",
+      "isSquare_inv",
+      "minpoly_sqrt_div",
+      "rational radicand"
+    ],
+    "prerequisites": [
+      "irrational_sqrt_two",
+      "IsSquare and inverses",
+      "Part V explicit p/q form"
+    ]
+  }
+]

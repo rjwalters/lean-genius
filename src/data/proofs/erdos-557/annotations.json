@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-557-header",
+    "proofId": "erdos-557",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Multicolor Tree Ramsey Problem",
+    "content": "Module header for Erdős Problem #557: is R(T; k) ≤ k·n + O(1) for any tree T on n vertices and k colors? R(T; k) is the minimum m such that every k-coloring of K_m contains a monochromatic copy of T. The star S_n = K_{1,n-1} shows the bound would be tight. The problem connects to the Burr–Erdős conjecture: for k=2, Lee (2017) proved R(T; 2) = O(n), but k ≥ 3 remains open.",
+    "mathContext": "$R(T; k) = \\min\\{m : \\forall \\chi: E(K_m) \\to [k],\\; \\exists \\text{monochromatic copy of } T\\}$. Conjecture: $\\exists C, \\forall T, k: R(T; k) \\leq kn + C$ where $T$ has $n$ vertices. Star lower bound: $R(S_n; k) \\geq k(n-1) + 1$, so the conjectured bound is tight up to $O(1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "graph coloring",
+      "trees",
+      "Burr-Erdős conjecture"
+    ],
+    "prerequisites": [
+      "Ramsey numbers",
+      "graph theory (trees, complete graphs)",
+      "edge colorings"
+    ]
+  },
+  {
+    "id": "ann-557-defs",
+    "proofId": "erdos-557",
+    "range": {
+      "startLine": 29,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Core Definitions: Trees, Edge Colorings, and Multicolor Ramsey Numbers",
+    "content": "**`Tree n`** wraps a `SimpleGraph (Fin n)` — trees are connected acyclic graphs with n-1 edges and degeneracy 1.\n\n**`EdgeColoring m k`** assigns each edge of K_m one of k colors (as `Fin m → Fin m → Fin k`).\n\n**`HasMonochromaticCopy`**: a coloring contains a monochromatic copy of T if ∃ color c and injective f: [n] → [m] with all image edges colored c.\n\n**`ramseyTree n T k`** is axiomatized as the minimum m — this avoids the need to prove existence from first principles in Lean.",
+    "mathContext": "$R(T; k) = \\min\\{m : \\text{every } k\\text{-coloring of } K_m \\text{ contains monochromatic } T\\}$. Trees have degeneracy 1 (every subgraph has a vertex of degree $\\leq 1$), making them the sparsest connected graphs. The EdgeColoring type `Fin m → Fin m → Fin k` models edge labels without requiring a formal SimpleGraph edge structure — simpler for Lean 4 but slightly more general (allows self-loops).",
+    "significance": "key",
+    "relatedConcepts": [
+      "SimpleGraph in Mathlib",
+      "Ramsey's theorem",
+      "graph degeneracy",
+      "monochromatic subgraphs"
+    ],
+    "prerequisites": [
+      "SimpleGraph (Fin n) in Lean 4/Mathlib",
+      "injective functions (Function.Injective)",
+      "Nat.find for minimum witnesses"
+    ]
+  },
+  {
+    "id": "ann-557-conjecture",
+    "proofId": "erdos-557",
+    "range": {
+      "startLine": 53,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Erdős Problem #557: Linear Bound Conjecture (OPEN)",
+    "content": "**`erdos_557_conjecture`** (OPEN): ∃ C, ∀ T (tree on n vertices), ∀ k ≥ 1, R(T; k) ≤ k·n + C.\n\nThis says the multicolor tree Ramsey number is linear in both n and k with only a universal additive constant. It would establish that trees — as the sparsest connected graphs — have the simplest possible multicolor Ramsey behavior. For k=2, R(T; 2) ≤ 2n-2 is known (classical), so C=-2 works for 2 colors.",
+    "mathContext": "$\\exists C \\in \\mathbb{N}, \\forall n, \\forall T \\text{ on } n \\text{ vertices}, \\forall k \\geq 1: R(T; k) \\leq kn + C$. Sharp: stars give $R(S_n; k) \\geq k(n-1) + 1$. The iterative bound $R(T; k) \\leq R(T; k-1) + (n-1)$ gives $R(T; k) \\leq k(n-1) + R(T; 1) = kn + O(1)$ only if $R(T; 1) = O(1)$ — but $R(T; 1) = n$, so the sum $R(T; k) \\leq k(n-1) + n = kn - k + n$, which is already within $O(1)$ of the conjecture.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Burr-Erdős conjecture",
+      "linear Ramsey growth",
+      "tree degeneracy",
+      "multicolor Ramsey theory"
+    ],
+    "prerequisites": [
+      "ramseyTree definition",
+      "Tree structure",
+      "star lower bound for tightness"
+    ]
+  },
+  {
+    "id": "ann-557-star",
+    "proofId": "erdos-557",
+    "range": {
+      "startLine": 64,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Star Graph and Lower Bound: R(S_n; k) ≥ k(n-1) + 1",
+    "content": "**`starTree n hn`** defines $S_n = K_{1,n-1}$: vertex 0 is the center, connected to all others. The adjacency relation `(i.val = 0 ∧ j.val ≠ 0) ∨ (j.val = 0 ∧ i.val ≠ 0)` is explicit, with symmetry and loop-freeness proved inline.\n\n**`star_ramsey_lower`**: R(S_n; k) ≥ k(n-1)+1. Extremal coloring: partition k(n-1) vertices into k groups of n-1, color each group monochromatically — every vertex then has ≤ n-2 edges of each color, so no monochromatic star S_n exists.",
+    "mathContext": "Extremal coloring for $K_{k(n-1)}$: label vertices as $(i, j)$ for $i \\in [k], j \\in [n-1]$. Color edge $\\{(i_1,j_1),(i_2,j_2)\\}$ by color $i_1$ if $i_1 = i_2$, else color 1. Then each vertex has exactly $n-2$ edges of each same-group color and at most $k(n-1) - (n-1) = (k-1)(n-1)$ cross-edges — but the center of any $S_n$ needs $n-1$ edges of one color, and in $K_{k(n-1)}$ each vertex has only $n-2 \\leq n-2$ same-group edges. Proof that the Lean `starTree` satisfies the SimpleGraph axioms: `symm` swaps the disjunction, `loopless` exploits that `i.val = 0 ∧ i.val ≠ 0` is impossible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "extremal colorings",
+      "degree-based Ramsey lower bounds",
+      "star graphs"
+    ],
+    "prerequisites": [
+      "starTree construction",
+      "SimpleGraph axioms (symm, loopless)",
+      "pigeonhole argument for Ramsey lower bounds"
+    ]
+  },
+  {
+    "id": "ann-557-known",
+    "proofId": "erdos-557",
+    "range": {
+      "startLine": 80,
+      "endLine": 95
+    },
+    "type": "insight",
+    "title": "Known Results: 2-Color Bound, Monotonicity, and Burr-Erdős Connection",
+    "content": "**`two_color_tree_ramsey`**: R(T; 2) ≤ 2n-2 for trees — the k=2 case of the conjecture. Proved classically by finding a long monochromatic path.\n\n**`ramseyTree_mono_k`**: R(T; k) ≤ R(T; k+1) — adding more colors can only increase the guarantee.\n\n**`star_ramsey_lower`**: R(S_n; k) ≥ k(n-1)+1 — the star gives the matching lower bound showing the conjecture is tight.\n\nThe Burr–Erdős conjecture (Problem #548) asks R(G; 2) = O(n) for d-degenerate graphs. Lee (2017) proved this for d=1 (trees), but the k-color generalization is what Problem #557 asks.",
+    "mathContext": "$R(T; 2) \\leq 2n - 2$: proved by Erdős-Gallai type arguments; the bound is tight for paths. $R(P_n; 2) = \\lfloor 3(n-1)/2 \\rfloor + 1$ (Gerencsér–Gyárfás 1967). Monotonicity: $R(T; k) \\leq R(T; k+1)$ because any $(k+1)$-coloring restricted to $k$ colors is a $k$-coloring, so a monochromatic copy exists. Lee (2017): for 2-colorings, $R(T; 2) \\leq 2n$ by a probabilistic argument. Extending to $k$ colors requires $R(T; k) \\leq R(T; k-1) + n - 1$, but the induction loses $n-1$ per step.",
+    "significance": "key",
+    "relatedConcepts": [
+      "2-color Ramsey theory",
+      "Burr-Erdős conjecture",
+      "Lee's theorem (2017)",
+      "Gerencsér-Gyárfás path formula"
+    ],
+    "prerequisites": [
+      "ramseyTree definition",
+      "starTree construction",
+      "monotonicity in k"
+    ]
+  }
+]

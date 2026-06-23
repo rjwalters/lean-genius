@@ -1,0 +1,177 @@
+[
+  {
+    "id": "erdos-121-header",
+    "proofId": "erdos-121",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "title": "Problem Overview",
+    "content": "Erdős Problem 121 studies F_k(N), the maximum size of A ⊆ {1,...,N} with no product of k distinct elements being a perfect square. Erdős conjectured F_{2k+1}(N) ~ N; disproved by Tao (2024) for k ≥ 2.",
+    "mathContext": "This is an extremal problem in multiplicative combinatorics. The structure of perfect squares in multiplicative groups mod squarefree numbers governs which subsets avoid square products. The even/odd dichotomy in k reflects parity phenomena in the group (ℤ/2ℤ)^r of squarefree parts.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal-combinatorics",
+      "multiplicative-structure",
+      "perfect-squares"
+    ],
+    "prerequisites": [
+      "perfect squares",
+      "extremal combinatorics",
+      "multiplicative number theory"
+    ]
+  },
+  {
+    "id": "erdos-121-square",
+    "proofId": "erdos-121",
+    "type": "definition",
+    "range": {
+      "startLine": 23,
+      "endLine": 25
+    },
+    "title": "Perfect Square",
+    "content": "**`IsSquare n`** holds when n = m² for some m. This is the target property that k-element products must avoid.",
+    "significance": "supporting",
+    "mathContext": "An integer $n$ is a perfect square iff $v_p(n)$ is even for every prime $p$, where $v_p$ is the $p$-adic valuation. Equivalently, the squarefree part $\\mathrm{sqf}(n) = \\prod_{p:\\, v_p(n)\\text{ odd}} p$ equals $1$.",
+    "relatedConcepts": [
+      "perfect-square",
+      "quadratic-residues"
+    ],
+    "prerequisites": [
+      "Nat.mul",
+      "existential quantifier"
+    ]
+  },
+  {
+    "id": "erdos-121-k-square-free",
+    "proofId": "erdos-121",
+    "type": "definition",
+    "range": {
+      "startLine": 28,
+      "endLine": 31
+    },
+    "title": "k-Square-Free Set",
+    "content": "**`IsKSquareFree A k`** means no product of k distinct elements of A is a perfect square. For k = 2, this forbids a·b being a square; for k = 3, it forbids a·b·c being a square.",
+    "mathContext": "Each integer n has a squarefree part sqf(n): write n = sqf(n)·m². Then a₁···aₖ is a square iff sqf(a₁)···sqf(aₖ) = 1 in the group (ℤ/2ℤ)^r of squarefree parts. The k-square-free condition becomes: no k-element subset sums to 0 in this group.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squarefree-part",
+      "zero-sum",
+      "abelian-group"
+    ],
+    "prerequisites": [
+      "squarefree part",
+      "group homomorphism",
+      "zero-sum theory"
+    ]
+  },
+  {
+    "id": "erdos-121-fk",
+    "proofId": "erdos-121",
+    "type": "definition",
+    "range": {
+      "startLine": 34,
+      "endLine": 38
+    },
+    "title": "Extremal Function F_k(N)",
+    "content": "**`squareFreeMax k N`** is the maximum cardinality of a k-square-free subset of {1,...,N}. This extremal function is the central object of study.",
+    "mathContext": "Computing via powerset filtration: check all subsets of {1,...,N}, filter by the k-square-free property, and take the maximum cardinality. Non-constructive in practice, but the definition is clean for stating asymptotics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal-function",
+      "optimization"
+    ],
+    "prerequisites": [
+      "Finset.powerset",
+      "Finset.filter",
+      "Finset.sup"
+    ]
+  },
+  {
+    "id": "erdos-121-f2",
+    "proofId": "erdos-121",
+    "type": "insight",
+    "range": {
+      "startLine": 43,
+      "endLine": 47
+    },
+    "title": "F_2: Squarefree Density 6/π²",
+    "content": "F_2(N) = (6/π² + o(1))N: the squarefree integers have density 6/π² ≈ 0.608. A 2-square-free set is exactly a set with no two elements having the same squarefree part.",
+    "mathContext": "The density 6/π² = 1/ζ(2) arises from the inclusion-exclusion on squarefree numbers. This classical result (Gegenbauer, 1885) gives the exact answer for k = 2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squarefree-density",
+      "zeta-function",
+      "classical-result"
+    ],
+    "prerequisites": [
+      "squarefree integers",
+      "Euler product",
+      "zeta function"
+    ]
+  },
+  {
+    "id": "erdos-121-f3",
+    "proofId": "erdos-121",
+    "type": "insight",
+    "range": {
+      "startLine": 49,
+      "endLine": 54
+    },
+    "title": "F_3 Has Full Density",
+    "content": "F_3(N) = (1 - o(1))N: for 3-element products, almost all integers can be included. The density loss is o(1), so asymptotically the full set works.",
+    "significance": "key",
+    "mathContext": "$F_3(N) = (1 - o(1))N$ as $N \\to \\infty$. The key is that in $\\mathbb{F}_2^r$, any 3-element subset $\\{u, v, w\\}$ sums to zero only if $u + v + w = 0$, and this constraint is sparse enough to allow density 1. Contrast with $F_2(N) \\approx (6/\\pi^2)N < N$, where the constraint is denser.",
+    "relatedConcepts": [
+      "full-density",
+      "three-products"
+    ],
+    "prerequisites": [
+      "3-element products",
+      "full density"
+    ]
+  },
+  {
+    "id": "erdos-121-f4",
+    "proofId": "erdos-121",
+    "type": "insight",
+    "range": {
+      "startLine": 56,
+      "endLine": 61
+    },
+    "title": "F_4: Density Goes to Zero",
+    "content": "F_4(N) = o(N): for 4-element products, the maximum density tends to 0. This stark contrast with F_3 shows k = 4 is the critical threshold.",
+    "mathContext": "The jump from F_3 ~ N to F_4 = o(N) is a phase transition in multiplicative combinatorics. Erdős expected a similar pattern: F_{even} = o(N) and F_{odd} ~ N. Tao disproved the odd case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "phase-transition",
+      "four-products"
+    ],
+    "prerequisites": [
+      "4-element products",
+      "density zero"
+    ]
+  },
+  {
+    "id": "erdos-121-conjecture",
+    "proofId": "erdos-121",
+    "type": "concept",
+    "range": {
+      "startLine": 65,
+      "endLine": 72
+    },
+    "title": "Erdős's Conjecture (Disproved)",
+    "content": "Erdős conjectured F_{2k+1}(N) = (1-o(1))N for all k ≥ 1: odd-index products should allow near-full density. This would mean the even/odd dichotomy persists for all k.",
+    "mathContext": "The conjecture was natural: for k = 3 (= 2·1+1), full density holds. The surprise of Tao's disproof is that the group-theoretic structure becomes more constrained for k ≥ 5 despite k being odd.",
+    "significance": "key",
+    "relatedConcepts": [
+      "disproved",
+      "even-odd-dichotomy"
+    ],
+    "prerequisites": [
+      "even/odd parity",
+      "asymptotic density"
+    ]
+  }
+]

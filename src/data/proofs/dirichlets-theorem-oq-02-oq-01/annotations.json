@@ -1,0 +1,327 @@
+[
+  {
+    "id": "ann-grh-critical-strip-line",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Critical Strip and Critical Line",
+    "content": "The critical strip $\\{s \\in \\mathbb{C} : 0 < \\operatorname{Re}(s) < 1\\}$ and critical line $\\{s : \\operatorname{Re}(s) = 1/2\\}$ are the geometric loci central to GRH. The functional equation of $L(s, \\chi)$ maps $s \\mapsto 1-s$, reflecting the critical strip across the critical line. All known non-trivial zeros lie on the critical line.",
+    "mathContext": "$\\text{criticalStrip} = \\{s \\in \\mathbb{C} : 0 < \\operatorname{Re}(s) < 1\\}, \\quad \\text{criticalLine} = \\{s : \\operatorname{Re}(s) = 1/2\\}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "critical strip",
+      "critical line",
+      "functional equation",
+      "analytic continuation"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "L-functions"
+    ]
+  },
+  {
+    "id": "ann-grh-per-character",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "GRH: Per-Character and Full Statements",
+    "content": "Two levels of GRH are formalized. `GRH_for_character χ` says all zeros of a single $L(s, \\chi)$ in the critical strip lie on the critical line. The full `GRH` quantifies universally: GRH holds for ALL Dirichlet characters of ALL moduli simultaneously. This universal quantification is what makes GRH so powerful — it controls ALL L-functions at once.",
+    "mathContext": "$\\text{GRH\\_for\\_character}(\\chi): \\forall s,\\; L(s,\\chi) = 0 \\land 0 < \\operatorname{Re}(s) < 1 \\implies \\operatorname{Re}(s) = 1/2$\n$\\text{GRH}: \\forall N, \\forall \\chi \\pmod{N},\\; \\text{GRH\\_for\\_character}(\\chi)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet character",
+      "L-function",
+      "Riemann Hypothesis",
+      "zero distribution"
+    ],
+    "prerequisites": [
+      "Dirichlet characters",
+      "Dirichlet L-functions",
+      "analytic continuation"
+    ]
+  },
+  {
+    "id": "ann-grh-right-half",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "GRH Right Half Formulation",
+    "content": "An equivalent formulation: GRH holds iff no $L(s,\\chi)$ vanishes with $\\operatorname{Re}(s) \\in (1/2, 1)$. This 'right-half' form is often more convenient in applications because it directly gives a zero-free region, which is the input needed for contour integration arguments in analytic number theory.",
+    "mathContext": "$\\text{GRH\\_right\\_half}: \\forall \\chi \\pmod{N},\\; \\operatorname{Re}(s) \\in (1/2, 1) \\implies L(s, \\chi) \\neq 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "zero-free region",
+      "contour integration",
+      "Perron formula"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-grh-iff-right-half",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 81,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "GRH ↔ GRH_right_half via Functional Equation",
+    "content": "The central proved equivalence. The forward direction ($\\text{GRH} \\implies \\text{right half}$) is immediate: zeros on the critical line don't have $\\operatorname{Re}(s) > 1/2$. The reverse uses the functional equation: if $L(s,\\chi) = 0$ with $\\operatorname{Re}(s) < 1/2$, then $L(1-s, \\chi) = 0$ with $\\operatorname{Re}(1-s) > 1/2$, contradicting the right-half hypothesis. So zeros with $\\operatorname{Re}(s) < 1/2$ are also excluded, leaving only $\\operatorname{Re}(s) = 1/2$.",
+    "mathContext": "$L(s, \\chi) = 0 \\iff L(1-s, \\bar{\\chi}) = 0$ (functional equation symmetry)\n$\\text{GRH} \\iff \\text{GRH\\_right\\_half}$ (proved in Lean)",
+    "significance": "key",
+    "relatedConcepts": [
+      "functional equation",
+      "reflection symmetry",
+      "Gauss sum",
+      "gamma factor"
+    ],
+    "prerequisites": [
+      "functional equation of L-functions",
+      "complex analysis"
+    ]
+  },
+  {
+    "id": "ann-grh-zero-free-region",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 119,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Zero-Free Regions: GRH vs Classical",
+    "content": "Under GRH, the zero-free region is the entire half-plane $\\operatorname{Re}(s) > 1/2$ — a dramatic improvement over the classical zero-free region $\\operatorname{Re}(s) > 1 - c / \\log(q(|t|+2))$, which narrows as the modulus $q$ or height $t$ grows. The classical region approaches $\\operatorname{Re}(s) = 1$ logarithmically slowly; GRH gives a fixed boundary at $\\operatorname{Re}(s) = 1/2$. This gap is the source of all the quantitative improvements GRH provides.",
+    "mathContext": "$\\text{GRH}: L(s,\\chi) \\neq 0 \\text{ for } \\operatorname{Re}(s) > 1/2$\n$\\text{Classical}: L(s,\\chi) \\neq 0 \\text{ for } \\operatorname{Re}(s) > 1 - \\frac{c}{\\log(q(|t|+2))}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "de la Vallée-Poussin zero-free region",
+      "Vinogradov-Korobov",
+      "explicit formula"
+    ],
+    "prerequisites": [
+      "zero-free regions",
+      "Hadamard-de la Vallée-Poussin theory"
+    ]
+  },
+  {
+    "id": "ann-prime-counting-ap",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 160,
+      "endLine": 164
+    },
+    "type": "definition",
+    "title": "Prime Counting in Arithmetic Progressions",
+    "content": "The function $\\pi(x; q, a)$ counts primes $p \\leq x$ with $p \\equiv a \\pmod{q}$. By Dirichlet's theorem, this grows to infinity when $\\gcd(a,q) = 1$. The PNT for APs gives the asymptotic: $\\pi(x; q, a) \\sim \\text{Li}(x)/\\varphi(q)$, showing primes distribute equally among the $\\varphi(q)$ coprime residue classes.",
+    "mathContext": "$\\pi(x; q, a) = \\#\\{p \\leq x : p \\text{ prime},\\; p \\equiv a \\pmod{q}\\}$\n$\\pi(x; q, a) \\sim \\frac{\\text{Li}(x)}{\\varphi(q)} \\sim \\frac{x}{\\varphi(q) \\log x}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime counting function",
+      "Euler totient",
+      "equidistribution",
+      "Chebyshev bias"
+    ],
+    "prerequisites": [
+      "prime number theorem",
+      "Dirichlet's theorem"
+    ]
+  },
+  {
+    "id": "ann-siegel-walfisz",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 166,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Siegel-Walfisz vs GRH Error Terms",
+    "content": "The Siegel-Walfisz theorem gives the unconditional PNT for APs with error $O(x \\exp(-c\\sqrt{\\log x}))$, but only for $q \\leq (\\log x)^A$. Under GRH, the error shrinks to $O(\\sqrt{x} \\log x)$ with NO restriction on $q$ vs $x$. The improvement is doubly dramatic: (1) the error term is far smaller ($\\sqrt{x}$ vs $x$), and (2) the valid range of $q$ extends all the way to $q < x$. This is the single most important consequence of GRH for prime distribution.",
+    "mathContext": "$\\text{Siegel-Walfisz}: \\left|\\pi(x;q,a) - \\frac{x}{\\varphi(q)\\log x}\\right| \\leq Cx\\,e^{-c\\sqrt{\\log x}}\\quad (q \\leq (\\log x)^A)$\n$\\text{GRH}: \\left|\\pi(x;q,a) - \\frac{x}{\\varphi(q)\\log x}\\right| \\leq C\\sqrt{x}\\log x\\quad (q < x)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Siegel-Walfisz theorem",
+      "Bombieri-Vinogradov",
+      "explicit formula",
+      "contour integration"
+    ],
+    "prerequisites": [
+      "prime number theorem for arithmetic progressions",
+      "character sums"
+    ]
+  },
+  {
+    "id": "ann-error-sublinear",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 188,
+      "endLine": 204
+    },
+    "type": "concept",
+    "title": "GRH Error is Sublinear",
+    "content": "This theorem proves $\\sqrt{x} \\log x < x$ for $x > e^4$, confirming the GRH error term is genuinely sublinear. The proof strategy reduces to showing $\\log x < \\sqrt{x}$, using the identity $\\log x = 2 \\log \\sqrt{x}$ and the standard inequality $\\log u < u$. One technical real-analysis bound remains as a sorry.",
+    "mathContext": "$\\sqrt{x} \\cdot \\log x < x \\quad \\text{for } x > e^4$\n$\\text{Key step: } \\log x < \\sqrt{x} \\text{ for large } x$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sublinear growth",
+      "logarithmic inequality",
+      "real analysis bounds"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "logarithmic inequalities"
+    ]
+  },
+  {
+    "id": "ann-linnik-theorem",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 210,
+      "endLine": 249
+    },
+    "type": "concept",
+    "title": "Linnik's Theorem and GRH Improvement",
+    "content": "Linnik's theorem (1944) guarantees the least prime in an AP is at most $Cq^L$ for some absolute constants. The best known unconditional exponent is $L \\leq 5$ (Xylouris, 2011). Under GRH, this drops to $O(q^2 (\\log q)^2)$, i.e., effectively $L = 2$. The theorem `GRH_least_prime_improves_linnik` proves $q^2(\\log q)^2 < q^5$ for large $q$, confirming the GRH bound is strictly better. The proof uses $(\\log q)^2 < q^3$, which follows from $\\log q < q$.",
+    "mathContext": "$\\text{Linnik}: p_{\\min}(q,a) \\leq Cq^L \\quad (L \\leq 5)$\n$\\text{GRH}: p_{\\min}(q,a) \\leq Cq^2(\\log q)^2$\n$\\text{Proved: } q^2(\\log q)^2 < q^5 \\text{ for } q > e$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Linnik's theorem",
+      "least prime",
+      "Xylouris bound",
+      "sieve methods"
+    ],
+    "prerequisites": [
+      "Linnik's theorem",
+      "analytic number theory"
+    ]
+  },
+  {
+    "id": "ann-polya-vinogradov",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 255,
+      "endLine": 279
+    },
+    "type": "concept",
+    "title": "Character Sums: Pólya-Vinogradov and GRH",
+    "content": "The Pólya-Vinogradov inequality (1918) bounds partial sums of Dirichlet characters: $|\\sum_{n=M+1}^{M+N} \\chi(n)| \\leq c\\sqrt{q} \\log q$. Under GRH, Montgomery-Vaughan (1977) improved this to $O(\\sqrt{q} \\log\\log q)$ — saving a factor of $\\log q / \\log\\log q$. The theorem `GRH_char_sum_implies_PV` proves $\\log\\log q \\leq \\log q$ for $q \\geq 3$, confirming the GRH bound is at least as strong.",
+    "mathContext": "$\\text{Pólya-Vinogradov}: \\left|\\sum_{n=M+1}^{M+N} \\chi(n)\\right| \\leq c\\sqrt{q}\\log q$\n$\\text{GRH (Montgomery-Vaughan)}: \\left|\\sum_{n=M+1}^{M+N} \\chi(n)\\right| \\leq c\\sqrt{q}\\log\\log q$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pólya-Vinogradov inequality",
+      "character sums",
+      "Montgomery-Vaughan",
+      "exponential sums"
+    ],
+    "prerequisites": [
+      "Dirichlet characters",
+      "Gauss sums",
+      "exponential sum bounds"
+    ]
+  },
+  {
+    "id": "ann-siegel-zeros",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 285,
+      "endLine": 311
+    },
+    "type": "insight",
+    "title": "GRH Eliminates Siegel Zeros",
+    "content": "Siegel zeros are hypothetical real zeros $\\beta$ of $L(s, \\chi)$ very close to $s = 1$, specifically in $(1 - c/\\log q, 1)$. Their possible existence causes the ineffectivity in Siegel's theorem. Since any such $\\beta > 1/2$, GRH immediately eliminates them — this is the bridge connecting GRH (OQ02) to the Siegel zero question (OQ01). The theorem `GRH_L_nonzero_right_of_half` goes further: it proves $L(\\sigma, \\chi) \\neq 0$ for ALL $\\sigma > 1/2$ by combining GRH (for $1/2 < \\sigma < 1$), Dirichlet's nonvanishing ($\\sigma = 1$), and the Euler product ($\\sigma > 1$).",
+    "mathContext": "$\\text{Siegel zero: } \\beta \\in (1 - c/\\log q,\\, 1),\\; L(\\beta, \\chi) = 0$\n$\\text{GRH} \\implies \\beta > 1/2 \\implies \\text{contradiction}$\n$\\text{GRH} \\implies L(\\sigma, \\chi) \\neq 0 \\text{ for all } \\sigma > 1/2,\\; \\chi \\neq 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Siegel zeros",
+      "Siegel's theorem",
+      "ineffectivity",
+      "exceptional zero",
+      "Landau-Siegel conjecture"
+    ],
+    "prerequisites": [
+      "Siegel zeros",
+      "Dirichlet nonvanishing",
+      "Euler product"
+    ]
+  },
+  {
+    "id": "ann-effective-l-one-bound",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 317,
+      "endLine": 332
+    },
+    "type": "insight",
+    "title": "Effective vs Ineffective Lower Bounds on L(1, χ)",
+    "content": "Siegel's theorem gives $|L(1, \\chi)| \\gg_\\varepsilon q^{-\\varepsilon}$, but the constant is ineffective — one cannot compute it. Under GRH, $|L(1, \\chi)| \\geq C/(\\log q)^2$ with an explicit $C$. This effectivity matters enormously: it lets one actually compute bounds in applications to class numbers, least primes, and primality testing. The proof that this implies $\\|L(1,\\chi)\\| > 0$ uses $C > 0$ and $(\\log N)^2 > 0$ to bound the ratio away from zero.",
+    "mathContext": "$\\text{Siegel (ineffective): } |L(1,\\chi)| \\gg_\\varepsilon q^{-\\varepsilon}$\n$\\text{GRH (effective): } |L(1,\\chi)| \\geq \\frac{C}{(\\log q)^2}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Siegel's theorem",
+      "ineffectivity",
+      "effective bounds",
+      "class number formula"
+    ],
+    "prerequisites": [
+      "Siegel's theorem",
+      "Dirichlet class number formula"
+    ]
+  },
+  {
+    "id": "ann-class-number",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 338,
+      "endLine": 355
+    },
+    "type": "concept",
+    "title": "Class Number Bounds Under GRH",
+    "content": "For imaginary quadratic fields $\\mathbb{Q}(\\sqrt{d})$ with $d < 0$, the class number $h(d)$ is linked to $L(1, \\chi_d)$ via the Dirichlet class number formula: $h(d) = \\frac{\\sqrt{|d|}}{\\pi} L(1, \\chi_d)$. Under GRH, $h(d) \\geq C\\sqrt{|d|}/\\log|d|$ — much stronger than the unconditional Goldfeld-Gross-Zagier bound $h(d) \\gg (\\log|d|)^{1-\\varepsilon}$ from 1983. The gap between $\\sqrt{|d|}$ and $\\log|d|$ growth is enormous.",
+    "mathContext": "$h(d) = \\frac{\\sqrt{|d|}}{\\pi} L(1, \\chi_d) \\quad \\text{(Dirichlet class number formula)}$\n$\\text{GRH: } h(d) \\geq C\\frac{\\sqrt{|d|}}{\\log|d|}$\n$\\text{Goldfeld-Gross-Zagier: } h(d) \\gg (\\log|d|)^{1-\\varepsilon}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "class number",
+      "imaginary quadratic field",
+      "Dirichlet class number formula",
+      "Goldfeld",
+      "Gross-Zagier"
+    ],
+    "prerequisites": [
+      "algebraic number theory",
+      "class number formula",
+      "quadratic forms"
+    ]
+  },
+  {
+    "id": "ann-grh-equivalences",
+    "proofId": "dirichlets-theorem-oq-02-oq-01",
+    "range": {
+      "startLine": 361,
+      "endLine": 366
+    },
+    "type": "concept",
+    "title": "Equivalent Formulations of GRH",
+    "content": "Three formulations are shown equivalent: (1) the original GRH (all zeros on Re(s) = 1/2), (2) GRH_right_half (no zeros with Re(s) > 1/2), and (3) GRH_via_log_derivative (L'/L has no poles in the right half). The log-derivative formulation is useful because poles of $L'/L$ correspond to zeros of $L$, and the log-derivative appears naturally in the explicit formula connecting primes to zeros.",
+    "mathContext": "$\\text{GRH} \\iff \\text{GRH\\_right\\_half} \\iff \\text{GRH\\_via\\_log\\_derivative}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "log-derivative",
+      "explicit formula",
+      "von Mangoldt function",
+      "Weil explicit formula"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "logarithmic derivative"
+    ]
+  }
+]

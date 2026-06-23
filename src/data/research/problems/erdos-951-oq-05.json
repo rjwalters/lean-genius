@@ -1,0 +1,83 @@
+{
+  "slug": "erdos-951-oq-05",
+  "title": "Can the finiteness sorry (`beurlingPi_finite`) be resolved via Aristotle from...",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "Resolve the finiteness of Beurling prime counting and connect the ordinary prime sequence to the Beurling-prime abstraction.",
+    "plain": "Show that the Beurling counting function is finite in the formal model and that ordinary primes instantiate the abstraction.",
+    "whyMatters": [
+      "The result removes a small infrastructure gap in the Beurling-prime formalization.",
+      "It gives a verified bridge between generalized prime systems and the usual prime-counting function."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "beurlingPi_finite proves the finite-counting fact for Beurling prime sequences.",
+      "primeSeq_isPrime, primeSeq_strictly_increasing, and primeSeq_gt_one establish ordinary primes as a valid sequence.",
+      "primeSeq_well_separated proves the ordinary prime sequence satisfies the well-separated-products condition.",
+      "actualPrimes packages ordinary primes as a BeurlingPrimes structure.",
+      "actualPrimes_counting proves that Beurling counting agrees with primePi for ordinary primes.",
+      "erdos_951_primes_equality records the bridge theorem between the generalized and ordinary counting functions."
+    ],
+    "open": [
+      "The broader erdos951_conjecture is explicitly left open and is not axiomatized."
+    ],
+    "goal": "Document the completed Beurling-prime counting infrastructure while keeping the larger conjecture out of scope."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-03-30T00:13:04-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-951-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "beurling-primes",
+    "prime-counting",
+    "generalized-primes"
+  ],
+  "relatedProofs": [
+    "erdos-9",
+    "erdos-95",
+    "erdos-951"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T07:24:09.592Z",
+  "lastUpdate": "2026-06-10T09:47:38.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos951Problem.lean",
+      "filename": "Erdos951Problem.lean",
+      "lineCount": 392,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos951Problem.lean"
+    }
+  ]
+}

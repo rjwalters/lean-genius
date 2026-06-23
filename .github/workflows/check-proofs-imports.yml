@@ -1,0 +1,17 @@
+name: Check Proofs.lean sync
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Proofs.lean is in sync
+        run: ./.lean/scripts/generate-proofs-imports.sh --check

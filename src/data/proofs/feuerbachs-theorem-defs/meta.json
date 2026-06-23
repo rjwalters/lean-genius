@@ -1,0 +1,257 @@
+{
+  "id": "feuerbachs-theorem-defs",
+  "title": "Feuerbach's Theorem Definitions and Nine-Point Circle",
+  "slug": "feuerbachs-theorem-defs",
+  "description": "Core definitions and infrastructure for Feuerbach's Theorem (Wiedijk #29): triangle geometry in R^2 with coordinate formulas for circumcenter, orthocenter, incenter, excircles, nine-point circle, and altitude feet. Proves all 9 special points lie on the nine-point circle (3 side midpoints, 3 Euler midpoints, 3 altitude feet) with the Euler line relation. Imported by FeuerbachsTheoremOQ01.",
+  "meta": {
+    "author": "Karl Wilhelm Feuerbach (1822), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Nine-point_circle",
+    "date": "1822",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FeuerbachsTheoremDefs.lean",
+    "tags": [
+      "geometry",
+      "euclidean-geometry",
+      "nine-point-circle",
+      "feuerbach",
+      "triangle",
+      "circumcenter",
+      "incircle",
+      "infrastructure",
+      "wiedijk-100"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function for distance computations",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "EuclideanGeometry",
+        "description": "Euclidean geometry framework from Mathlib",
+        "module": "Mathlib.Geometry.Euclidean.Triangle"
+      },
+      {
+        "theorem": "Metric.Sphere",
+        "description": "Sphere/circle definitions for circle tangency",
+        "module": "Mathlib.Geometry.Euclidean.Sphere.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Triangle structure: non-degenerate triangle in R^2 with coordinate vertices",
+      "Triangle special points: circumcenter, orthocenter, centroid, incenter formulas",
+      "Excircle infrastructure: excenter_a/b/c and exradius_a/b/c definitions",
+      "Nine-point circle: center N = midpoint(O, H), radius R/2",
+      "9 membership proofs: all 3 side midpoints, 3 Euler midpoints, 3 altitude feet on the nine-point circle",
+      "Euler line relation: G = (2O + H)/3",
+      "Circumcenter equidistance from all vertices (squared version via perpendicular bisectors)",
+      "Tangency definitions: internal and external circle tangency",
+      "Numerical verification: 3-4-5 right triangle with computed circumradius, inradius, incircle Feuerbach tangency"
+    ],
+    "dateAdded": "2026-03-22",
+    "axiomCount": 0,
+    "lineCount": 687,
+    "wiedijkNumber": 29,
+    "prerequisites": [
+      "Euclidean geometry in R^2 (coordinates, distance formula)",
+      "Triangle geometry (circumcenter, orthocenter, incenter, excircles)",
+      "The nine-point circle and its properties",
+      "Coordinate geometry computations (field_simp, ring, nlinarith)"
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 38,
+    "definitionCount": 36,
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefsOQ03.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The nine-point circle was discovered independently by Charles-Julien Brianchon and Jean-Victor Poncelet in 1821 and by Karl Wilhelm Feuerbach in 1822. Feuerbach's key contribution, proved in his 1822 treatise *Eigenschaften einiger merkwürdigen Punkte des geradlinigen Dreiecks*, was that this circle is tangent to the inscribed circle and all three excircles of the triangle. The tangency point with the incircle is now called the Feuerbach point, and the theorem itself is #29 on Wiedijk's list of 100 greatest theorems.\n\nThe nine-point circle was further studied by Leonhard Euler (who established the Euler line through circumcenter, centroid, and orthocenter) and named by Olry Terquem in 1842 after proving it passes through all nine special points. The relationship N = (O + H)/2 connecting the nine-point center to the Euler line was established by Feuerbach and generalized by later mathematicians.\n\nThis module provides the complete definitional infrastructure using explicit coordinate geometry in R^2. The approach trades the elegance of synthetic proofs for computational verifiability: every step is a polynomial identity verified by field_simp + ring. The 3-4-5 right triangle serves as a numerical sanity check, confirming that all formulas are consistent and Feuerbach tangency holds (|NI| = |R/2 - r|).",
+    "problemStatement": "Provide the complete definitional and computational infrastructure for Feuerbach's Theorem:\n\n1. **Triangle structure**: Non-degenerate triangle in R^2 with side lengths, area, semiperimeter\n2. **Special points**: Circumcenter O, orthocenter H, centroid G, incenter I, excenters\n3. **Nine-point circle**: Center N = midpoint(O, H), radius R/2\n4. **Circle membership**: All 9 points (3 side midpoints, 3 Euler midpoints, 3 altitude feet) lie on the nine-point circle\n5. **Euler line**: G = (2O + H)/3\n6. **Tangency definitions**: Internal and external circle tangency\n7. **Numerical verification**: 3-4-5 right triangle as a concrete test case",
+    "text": "Core definitions and infrastructure for Feuerbach's Theorem (Wiedijk #29): triangle geometry in R^2 with coordinate formulas for circumcenter, orthocenter, incenter, excircles, nine-point circle, and altitude feet. Proves all 9 special points lie on the nine-point circle (3 side midpoints, 3 Euler midpoints, 3 altitude feet) with the Euler line relation. Imported by FeuerbachsTheoremOQ01.",
+    "proofStrategy": "The proofs use coordinate geometry with explicit formulas:\n\n1. **Circumcenter**: Computed via perpendicular bisector intersection. Equidistance proved via the perpendicular bisector condition (B-A) dot (B+A-2O) = 0, which is linear in O and verified by field_simp + ring after clearing the denominator.\n\n2. **Nine-point membership**: For each of the 9 points P, show dist(N, P) = R/2 by proving |P - N|^2 = |O - A|^2/4. The key lemma ninepoint_membership factors out the common proof structure: express P - N as half of some (O - V) vector, then use circumcenter equidistance.\n\n3. **Altitude feet**: The most computationally intensive proofs (maxHeartbeats 25,600,000). After unfolding the projection formula, clearing denominators (field_simp with circumcenter denom and side length sq), the result reduces to a polynomial identity verified by ring.\n\n4. **Numerical verification**: The 3-4-5 right triangle provides a concrete check: R = 5/2, r = 1, N = (3/4, 1), I = (1, 1), |NI| = 1/4 = |R/2 - r|, confirming Feuerbach tangency.",
+    "keyInsights": [
+      "Coordinate geometry trades elegance for verifiability: explicit formulas make every step machine-checkable at the cost of longer algebraic manipulations",
+      "The ninepoint_membership lemma factors out the common pattern: each of the 9 points satisfies P - N = (O - V)/2 for some vertex V, so dist(N, P) = dist(O, V)/2 = R/2",
+      "Circumcenter equidistance is proved via the perpendicular bisector condition, which is LINEAR in O (much easier than the quadratic distance equations)",
+      "The 3-4-5 right triangle is the simplest non-trivial test case: R = 5/2 (half the hypotenuse), r = 1, orthocenter at the right-angle vertex, confirming all formulas",
+      "Non-degeneracy (the signed area is nonzero) is the single structural hypothesis needed for all computations"
+    ],
+    "prerequisites": [
+      "Euclidean geometry in R^2 (coordinates, distance formula)",
+      "Triangle geometry (circumcenter, orthocenter, incenter, excircles)",
+      "The nine-point circle and its properties",
+      "Coordinate geometry computations (field_simp, ring, nlinarith)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "triangle-config",
+      "title": "Part 1: Triangle Configuration in ℝ²",
+      "summary": "Sets up the coordinate model: Point as ℝ², the Triangle structure with non-degeneracy, and the basic vertex/side accessors and side-length definitions used throughout.",
+      "startLine": 1,
+      "endLine": 95,
+      "mathContext": "Sets up the coordinate model: Point as ℝ², the Triangle structure with non-degeneracy, and the basic vertex/side accessors and side-length definitions used throughout."
+    },
+    {
+      "id": "special-points",
+      "title": "Part 2: Special Points of a Triangle",
+      "summary": "Defines the classical triangle centers and auxiliary points (midpoints via pointMidpoint, centroid, orthocenter, circumcenter, and related constructions) together with the squared-distance helper dist2.",
+      "startLine": 96,
+      "endLine": 139,
+      "mathContext": "Defines the classical triangle centers and auxiliary points (midpoints via pointMidpoint, centroid, orthocenter, circumcenter, and related constructions) together with the squared-distance helper dist2."
+    },
+    {
+      "id": "nine-point-circle",
+      "title": "Part 3: The Nine-Point Circle",
+      "summary": "Defines the nine-point center and nine-point radius (and squared-distance variants dist2_sq) that specify the nine-point circle whose tangency to the incircle is Feuerbach's theorem.",
+      "startLine": 140,
+      "endLine": 187,
+      "mathContext": "Defines the nine-point center and nine-point radius (and squared-distance variants dist2_sq) that specify the nine-point circle whose tangency to the incircle is Feuerbach's theorem."
+    },
+    {
+      "id": "incircle-excircles",
+      "title": "Part 4: Incircle and Excircles",
+      "summary": "Defines the incircle and the three excircles (centers and radii) of the triangle, the objects whose tangency with the nine-point circle Feuerbach's theorem asserts.",
+      "startLine": 188,
+      "endLine": 240,
+      "mathContext": "Defines the incircle and the three excircles (centers and radii) of the triangle, the objects whose tangency with the nine-point circle Feuerbach's theorem asserts."
+    },
+    {
+      "id": "tangency-definitions",
+      "title": "Part 5: Tangency Definitions",
+      "summary": "Defines circlesInternallyTangent and circlesExternallyTangent, the predicates expressing the tangency conclusions of Feuerbach's theorem.",
+      "startLine": 241,
+      "endLine": 254,
+      "mathContext": "Defines circlesInternallyTangent and circlesExternallyTangent, the predicates expressing the tangency conclusions of Feuerbach's theorem."
+    },
+    {
+      "id": "key-relations",
+      "title": "Part 6: Key Relations for Feuerbach's Theorem",
+      "summary": "Establishes the Euler-line relations: euler_line_relation and ninePointCenter_on_euler_line place the nine-point center on the Euler line, a key relation underpinning the tangency proof.",
+      "startLine": 255,
+      "endLine": 272,
+      "mathContext": "Establishes the Euler-line relations: euler_line_relation and ninePointCenter_on_euler_line place the nine-point center on the Euler line, a key relation underpinning the tangency proof."
+    },
+    {
+      "id": "nine-point-properties",
+      "title": "Part 8: Nine-Point Circle Properties",
+      "summary": "Core properties: ninePointRadius_eq_half_circumradius, nonnegativity lemmas (dist2_nonneg, ninePointRadius_nonneg), circumcenter denominator/perpendicular-bisector and equidistance lemmas, and the central ninepoint_membership criterion for a point lying on the nine-point circle.",
+      "startLine": 273,
+      "endLine": 375,
+      "mathContext": "Core properties: ninePointRadius_eq_half_circumradius, nonnegativity lemmas (dist2_nonneg, ninePointRadius_nonneg), circumcenter denominator/perpendicular-bisector and equidistance lemmas, and the central ninepoint_membership criterion for a point lying on the nine-point circle."
+    },
+    {
+      "id": "midpoint-membership",
+      "title": "Part 8: Side and Euler Midpoints on the Nine-Point Circle",
+      "summary": "Proves six of the nine points lie on the nine-point circle: the three side midpoints (midpoint_a/b/c_on_ninePointCircle) and the three Euler midpoints of the segments from vertices to the orthocenter (midpoint_AH/BH/CH_on_ninePointCircle).",
+      "startLine": 376,
+      "endLine": 442,
+      "mathContext": "Proves six of the nine points lie on the nine-point circle: the three side midpoints (midpoint_a/b/c_on_ninePointCircle) and the three Euler midpoints of the segments from vertices to the orthocenter (midpoint_AH/BH/CH_on_ninePointCircle)."
+    },
+    {
+      "id": "altitude-feet",
+      "title": "Part 8b: Altitude Feet on the Nine-Point Circle",
+      "summary": "Proves the remaining three of the nine points lie on the circle: the feet of the altitudes (foot_a/b/c_on_ninePointCircle), with side-square nonvanishing lemmas, culminating in ninePoints_all_on_circle.",
+      "startLine": 443,
+      "endLine": 577,
+      "mathContext": "Proves the remaining three of the nine points lie on the circle: the feet of the altitudes (foot_a/b/c_on_ninePointCircle), with side-square nonvanishing lemmas, culminating in ninePoints_all_on_circle."
+    },
+    {
+      "id": "numerical-verification",
+      "title": "Part 12: Numerical Verification — 3-4-5 Right Triangle",
+      "summary": "Instantiates the 3-4-5 right triangle (triangle_345) and computes its area, semiperimeter, inradius, circumcenter/radius, nine-point radius/center, orthocenter, and incenter, verifying triangle_345_feuerbach_incircle: the incircle is tangent to the nine-point circle.",
+      "startLine": 578,
+      "endLine": 687,
+      "mathContext": "Instantiates the 3-4-5 right triangle (triangle_345) and computes its area, semiperimeter, inradius, circumcenter/radius, nine-point radius/center, orthocenter, and incenter, verifying triangle_345_feuerbach_incircle: the incircle is tangent to the nine-point circle."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "feuerbachs-theorem-oq-01",
+      "relationship": "foundational",
+      "description": "Provides all definitions, special point formulas, and nine-point circle membership proofs imported by the main Feuerbach tangency proof (incircle and excircle tangency distance relations)"
+    },
+    {
+      "targetId": "feuerbachs-theorem",
+      "relationship": "foundational",
+      "description": "Provides the definitional infrastructure assembled by the top-level Feuerbach's Theorem entry"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The Euclidean distance formula used throughout this module is a direct application of the Pythagorean theorem"
+    },
+    {
+      "targetId": "isosceles-triangle",
+      "relationship": "related",
+      "description": "Circumcenter equidistance from vertices is the defining property used in this module; the isosceles triangle proof shares similar coordinate geometry techniques"
+    }
+  ],
+  "conclusion": {
+    "summary": "This module provides comprehensive, fully verified infrastructure (687 lines, 38 theorems/lemmas, 35 definitions, 1 structure, 0 axioms, 0 sorries) for Feuerbach's Theorem. All 9 special points are proved to lie on the nine-point circle, the Euler line relation is established, and the 3-4-5 triangle serves as a numerical verification. This is the largest infrastructure entry in the gallery.",
+    "implications": "**Theoretical Significance**: The coordinate geometry approach, while algebraically intensive, makes the nine-point circle properties fully constructive and computationally verifiable.\n\nThe factored ninepoint_membership lemma provides a reusable proof pattern that could be extended to other circle membership proofs. The numerical verification with the 3-4-5 triangle demonstrates that all formulas are consistent.",
+    "openQuestions": [
+      "Can the altitude foot proofs be optimized to require fewer heartbeats (currently 25.6M)?",
+      "Extend to prove the nine-point circle is the unique circle through all 9 points",
+      "Formalize the Feuerbach point as the tangency point between the nine-point circle and incircle",
+      "Connect to Mathlib's affine geometry framework for a more abstract treatment"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Geometry.Euclidean.Sphere.Basic",
+      "Mathlib.Geometry.Euclidean.Triangle",
+      "Mathlib.Geometry.Euclidean.Circumcenter",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "EuclideanGeometry"
+    ],
+    "namespace": "FeuerbachsTheorem",
+    "lineCount": 687,
+    "axiomCount": 0,
+    "theoremCount": 38,
+    "definitionCount": 36,
+    "path": "Proofs/FeuerbachsTheoremDefs.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefsOQ03.lean"
+    ]
+  },
+  "references": [
+    {
+      "key": "Fe22",
+      "citation": "Feuerbach, K. W. (1822). Eigenschaften einiger merkwuerdigen Punkte des geradlinigen Dreiecks und mehrerer durch sie bestimmten Linien und Figuren.",
+      "type": "paper"
+    },
+    {
+      "key": "Co67",
+      "citation": "Coxeter, H. S. M. (1967). Geometry Revisited. Mathematical Association of America.",
+      "type": "book"
+    },
+    {
+      "key": "BP21",
+      "citation": "Brianchon, C. J. and Poncelet, J. V. (1821). Recherches sur la détermination d'une hyperbole équilatère. Annales de Mathématiques, 11, 205-220.",
+      "type": "paper"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "nine_point_circle_def",
+      "type": "core",
+      "description": "Definitions for the nine-point circle and its relationship to incircle/excircles",
+      "leanType": "ninePointCircle : Triangle -> Circle"
+    }
+  ],
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/FeuerbachsTheoremDefsOQ03.lean"
+  ]
+}

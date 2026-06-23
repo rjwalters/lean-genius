@@ -1,0 +1,312 @@
+[
+  {
+    "id": "erdos-478-ann-imports",
+    "proofId": "erdos-478",
+    "type": "concept",
+    "range": {
+      "startLine": 21,
+      "endLine": 25
+    },
+    "title": "Imports and Dependencies",
+    "content": "Imports $\\texttt{Nat.Prime}$, $\\texttt{ZMod}$, $\\texttt{Finset.Card}$, $\\texttt{Real}$, and $\\texttt{Tactic}$ from Mathlib. The formalization works in $\\mathbb{Z}/p\\mathbb{Z}$ for modular arithmetic and uses $\\texttt{Finset}$ for the finite factorial residue set.",
+    "mathContext": "Working in $\\texttt{ZMod p}$ allows direct computation of $k! \\bmod p$ as elements of $\\mathbb{Z}/p\\mathbb{Z}$. The $\\texttt{Finset.Card}$ library provides $|A_p|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ZMod",
+      "Finset.card",
+      "Nat.Prime"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib modular arithmetic"
+    ]
+  },
+  {
+    "id": "erdos-478-ann-factorial-set",
+    "proofId": "erdos-478",
+    "type": "definition",
+    "range": {
+      "startLine": 30,
+      "endLine": 31
+    },
+    "title": "Factorial Residue Set $A_p$",
+    "content": "The set $A_p = \\{k! \\bmod p : 1 \\leq k < p\\}$ formalized as a $\\texttt{Finset}$ over $\\texttt{ZMod p}$ by mapping $k \\mapsto (k+1)!$ for $k \\in \\{0, \\ldots, p-2\\}$. This gives all factorial residues from $1!$ through $(p-1)!$. The image operation automatically removes duplicates, so $|A_p| \\leq p - 1$.",
+    "mathContext": "$A_p = \\{1!, 2!, \\ldots, (p-1)!\\} \\subset (\\mathbb{Z}/p\\mathbb{Z})^*$. For $p = 7$: $A_7 = \\{1, 2, 6, 3, 1, 6\\} = \\{1, 2, 3, 6\\}$, so $|A_7| = 4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorial",
+      "ZMod",
+      "Finset.image",
+      "modular residues"
+    ],
+    "prerequisites": [
+      "Nat.factorial",
+      "ZMod p",
+      "Finset.range"
+    ]
+  },
+  {
+    "id": "erdos-478-ann-count",
+    "proofId": "erdos-478",
+    "type": "definition",
+    "range": {
+      "startLine": 34,
+      "endLine": 35
+    },
+    "title": "Factorial Residue Count",
+    "content": "$\\texttt{factorialResidueCount}(p) = |A_p|$, the number of distinct factorial residues modulo $p$. The conjecture predicts $|A_p| \\sim (1 - 1/e) \\cdot p \\approx 0.6321p$. Known values: $|A_5| = 3$, $|A_7| = 4$, $|A_{11}| = 8$, $|A_{13}| = 9$.",
+    "mathContext": "$|A_p| = \\#\\{k! \\bmod p : 1 \\leq k \\leq p-1\\}$. Conjectured: $|A_p|/p \\to 1 - e^{-1} \\approx 0.6321$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card",
+      "asymptotic density",
+      "factorial coverage"
+    ],
+    "prerequisites": [
+      "factorialResidueSet",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "erdos-478-ann-density",
+    "proofId": "erdos-478",
+    "type": "definition",
+    "range": {
+      "startLine": 38,
+      "endLine": 38
+    },
+    "title": "Conjectured Density $1 - 1/e$",
+    "content": "The conjectured asymptotic density $1 - e^{-1} \\approx 0.63212$ arises from the birthday-problem heuristic: if each $k!$ independently landed on a uniform random residue, the expected coverage after $p-1$ steps would be $p \\cdot (1 - (1-1/p)^{p-1}) \\to p(1-1/e)$.",
+    "mathContext": "$\\texttt{conjecturedDensity} = 1 - e^{-1}$. From the coupon collector model: $\\mathbb{E}[\\text{coverage}] = n(1 - (1-1/n)^n) \\to n(1-1/e)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "birthday problem",
+      "coupon collector",
+      "Real.exp"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "exponential function"
+    ]
+  },
+  {
+    "id": "erdos-478-ann-wilson",
+    "proofId": "erdos-478",
+    "type": "concept",
+    "range": {
+      "startLine": 43,
+      "endLine": 44
+    },
+    "title": "Wilson's Theorem for Factorial Residues",
+    "content": "Wilson's theorem states $(p-1)! \\equiv -1 \\pmod{p}$ for prime $p$. This means the last factorial in the sequence is $-1 \\equiv p-1$, so $p-1 \\in A_p$ always. Combined with $0 \\notin A_p$, this gives $A_p \\subseteq \\{1, \\ldots, p-1\\}$.",
+    "mathContext": "$(p-1)! \\equiv -1 \\pmod{p}$ (Wilson). So $A_p \\ni p-1$ and $0 \\notin A_p$, giving $|A_p| \\leq p-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wilson's theorem",
+      "ZMod.wilson_theorem",
+      "factorial parity"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Wilson's theorem"
+    ]
+  },
+  {
+    "id": "erdos-478-ann-nonzero",
+    "proofId": "erdos-478",
+    "type": "concept",
+    "range": {
+      "startLine": 47,
+      "endLine": 48
+    },
+    "title": "Factorial Residues Exclude Zero",
+    "content": "For primes $p > 2$, no $k!$ with $1 \\leq k < p$ is divisible by $p$, since all factors $1, 2, \\ldots, k$ are strictly less than $p$. Hence $0 \\notin A_p$ and $A_p \\subseteq (\\mathbb{Z}/p\\mathbb{Z})^*$.",
+    "mathContext": "$k < p \\Rightarrow p \\nmid k! \\Rightarrow k! \\not\\equiv 0 \\pmod{p}$. So $A_p \\subseteq \\{1, \\ldots, p-1\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "prime divisibility",
+      "factorial prime factorization",
+      "units in ZMod"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "factorial divisibility"
+    ]
+  },
+  {
+    "id": "erdos-478-ann-upper",
+    "proofId": "erdos-478",
+    "type": "concept",
+    "range": {
+      "startLine": 51,
+      "endLine": 52
+    },
+    "title": "Upper Bound $|A_p| \\leq p - 2$",
+    "content": "For $p > 5$, the factorial residue set satisfies $|A_p| \\leq p - 2$: not all nonzero residues are hit. This is because factorial residues concentrate among smooth numbers (those with small prime factors), so residues that are primitive roots tend to be missed.",
+    "mathContext": "$|A_p| \\leq p - 2$ for $p > 5$. For $p = 5$: $A_5 = \\{1, 2, 1, 4\\} = \\{1, 2, 4\\}$, so $|A_5| = 3 = p - 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "factorial coverage gap",
+      "smooth numbers",
+      "primitive roots"
+    ],
+    "prerequisites": [
+      "factorialResidueSet",
+      "factorial_residues_nonzero"
+    ]
+  },
+  {
+    "id": "erdos-478-ann-ratio-set",
+    "proofId": "erdos-478",
+    "type": "concept",
+    "range": {
+      "startLine": 59,
+      "endLine": 61
+    },
+    "title": "Ratio Set Covers $(\\mathbb{Z}/p\\mathbb{Z})^*$",
+    "content": "The ratio set $A_p / A_p$ covers all nonzero residues: for any $r \\neq 0$, there exist $a, b \\in A_p$ with $a/b = r$. This follows because $(k+1)!/k! = k+1$ ranges over $\\{2, \\ldots, p-1\\}$, and $1!/1! = 1$, covering all of $\\{1, \\ldots, p-1\\}$.",
+    "mathContext": "$A_p / A_p \\supseteq \\{1, 2, \\ldots, p-1\\} = (\\mathbb{Z}/p\\mathbb{Z})^*$. Since $|A_p/A_p| \\leq |A_p|^2$, this forces $|A_p|^2 \\geq p - 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ratio set",
+      "multiplicative structure",
+      "sum-product phenomenon"
+    ],
+    "prerequisites": [
+      "factorialResidueSet",
+      "ZMod multiplication"
+    ]
+  },
+  {
+    "id": "erdos-478-ann-sqrt",
+    "proofId": "erdos-478",
+    "type": "concept",
+    "range": {
+      "startLine": 66,
+      "endLine": 67
+    },
+    "title": "Square-Root Lower Bound",
+    "content": "The counting argument $|A_p/A_p| \\leq |A_p|^2$ combined with $|A_p/A_p| \\geq p - 1$ gives $|A_p| \\geq \\sqrt{p-1}$. This is the basic unconditional lower bound, far from the conjectured linear growth $\\sim 0.63p$.",
+    "mathContext": "$|A_p|^2 \\geq |A_p/A_p| \\geq p - 1 \\Rightarrow |A_p| \\geq \\sqrt{p-1}$. Gap: $\\sqrt{p} \\ll p^{1/2}$ vs.\\ conjectured $\\Theta(p)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Plünnecke-Ruzsa inequality",
+      "sum-product estimates",
+      "square-root barrier"
+    ],
+    "prerequisites": [
+      "ratio_set_full",
+      "counting argument"
+    ]
+  },
+  {
+    "id": "erdos-478-ann-gssv",
+    "proofId": "erdos-478",
+    "type": "concept",
+    "range": {
+      "startLine": 72,
+      "endLine": 74
+    },
+    "title": "GSSV Improved Bound (2024)",
+    "content": "Grebennikov, Sagdeev, Semchankau, and Vasilevskii (2024) improved the lower bound to $|A_p| \\geq (\\sqrt{2} - o(1))\\sqrt{p}$ by proving $|A_p \\cdot A_p| = (1+o(1))p$. Their product-set estimate exploits the multiplicative random walk structure of factorial residues.",
+    "mathContext": "$|A_p| \\geq (\\sqrt{2} - o(1))\\sqrt{p}$ [GSSV24]. Key: $|A_p \\cdot A_p| = (1+o(1))p$ implies $|A_p| \\geq \\sqrt{2p(1-o(1))}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "product set",
+      "Plünnecke-Ruzsa inequality",
+      "multiplicative energy"
+    ],
+    "prerequisites": [
+      "factorial_residue_sqrt_lower",
+      "product-set estimates"
+    ]
+  },
+  {
+    "id": "erdos-478-ann-conjecture",
+    "proofId": "erdos-478",
+    "type": "concept",
+    "range": {
+      "startLine": 80,
+      "endLine": 83
+    },
+    "title": "Main Conjecture: $|A_p| \\sim (1 - 1/e) \\cdot p$",
+    "content": "The central open problem: $|A_p|/p \\to 1 - 1/e \\approx 0.6321$ as $p \\to \\infty$ through primes. The gap between the best lower bound ($\\sqrt{p}$ scale) and the conjectured truth (linear in $p$) is enormous—bridging $p^{1/2}$ to $p^1$ would require fundamentally new techniques.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists P_0 : |\\frac{|A_p|}{p} - (1 - e^{-1})| < \\varepsilon$ for $p > P_0$ prime. Status: OPEN.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic density",
+      "random model validation",
+      "Erdős conjecture"
+    ],
+    "prerequisites": [
+      "factorialResidueCount",
+      "conjecturedDensity"
+    ]
+  },
+  {
+    "id": "erdos-478-ann-heuristic",
+    "proofId": "erdos-478",
+    "type": "insight",
+    "range": {
+      "startLine": 91,
+      "endLine": 93
+    },
+    "title": "Birthday-Type Random Model",
+    "content": "The heuristic: if each $k! \\bmod p$ independently hit a uniformly random residue, the expected coverage after $p-1$ steps would be $p \\cdot (1 - (1-1/p)^{p-1}) \\to p(1 - 1/e)$. This is the classical birthday/coupon-collector argument. The axiom formalizes that $(1 - 1/p)^{p-1} \\to e^{-1}$.",
+    "mathContext": "$(1 - 1/p)^{p-1} \\to e^{-1}$ as $p \\to \\infty$. Expected distinct values after $n$ uniform draws from $\\{1,\\ldots,n\\}$: $n(1-(1-1/n)^n) \\to n(1-1/e)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "birthday problem",
+      "coupon collector problem",
+      "Poisson approximation"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "limit of (1-1/n)^n"
+    ]
+  },
+  {
+    "id": "erdos-478-ann-walk",
+    "proofId": "erdos-478",
+    "type": "concept",
+    "range": {
+      "startLine": 97,
+      "endLine": 99
+    },
+    "title": "Factorial as Multiplicative Walk",
+    "content": "The recursion $(k+1)! = (k+1) \\cdot k!$ shows that the factorial sequence modulo $p$ is a multiplicative random walk on $(\\mathbb{Z}/p\\mathbb{Z})^*$: each step multiplies by $k+1$. Since $k+1$ ranges over $\\{2, \\ldots, p-1\\}$, the multipliers are all distinct nonzero residues.",
+    "mathContext": "$(k+1)! \\equiv (k+1) \\cdot k! \\pmod{p}$. The sequence $1!, 2!, \\ldots, (p-1)!$ is a walk on $(\\mathbb{Z}/p\\mathbb{Z})^*$ with step $k \\mapsto k \\cdot (k+1)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multiplicative walk",
+      "Cayley graph",
+      "random walk on groups"
+    ],
+    "prerequisites": [
+      "Nat.factorial recursion",
+      "ZMod multiplication"
+    ]
+  },
+  {
+    "id": "erdos-478-ann-average",
+    "proofId": "erdos-478",
+    "type": "concept",
+    "range": {
+      "startLine": 105,
+      "endLine": 108
+    },
+    "title": "Klurman–Munsch Average Result (2017)",
+    "content": "Oleksiy Klurman and Marc Munsch (2017) proved that the conjecture holds on average over primes: $\\frac{\\sum_{p \\leq x} |A_p|}{\\sum_{p \\leq x} p} \\to 1 - 1/e$. This confirms the random model prediction in an averaged sense, providing strong evidence for the pointwise conjecture.",
+    "mathContext": "$\\lim_{x \\to \\infty} \\frac{\\sum_{p \\leq x, p \\text{ prime}} |A_p|}{\\sum_{p \\leq x, p \\text{ prime}} p} = 1 - e^{-1}$ [Klurman–Munsch 2017].",
+    "significance": "key",
+    "relatedConcepts": [
+      "average order",
+      "prime averaging",
+      "second moment method"
+    ],
+    "prerequisites": [
+      "erdos_478_conjecture",
+      "prime number theorem"
+    ]
+  }
+]

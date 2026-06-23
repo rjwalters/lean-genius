@@ -1,0 +1,187 @@
+{
+  "id": "nth-root-irrational-oq-03",
+  "title": "Transcendence: Hermite-Lindemann / Lindemann-Weierstrass",
+  "source": "gallery-gap",
+  "parent": "nth-root-irrational",
+  "wiedijk100": [
+    52,
+    53,
+    67
+  ],
+  "created": "2026-05-12",
+  "lastUpdated": "2026-06-09",
+  "phase": "STATE-SYNC",
+  "iteration": 13,
+  "status": "active",
+  "shortDescription": "Hermite-Lindemann (1882): for nonzero algebraic α, e^α is transcendental. Lindemann-Weierstrass (1885): for Q-linearly-independent algebraic α₁..αₙ, the e^αᵢ are algebraically independent over Q. Project status: axiomatized in HermiteLindemann.lean; this slug coordinates bridge work to existing infrastructure rather than re-formalising from scratch.",
+  "wiedijkRefs": [
+    {
+      "number": 52,
+      "title": "Transcendence of e"
+    },
+    {
+      "number": 53,
+      "title": "Transcendence of pi"
+    },
+    {
+      "number": 67,
+      "title": "e is transcendental (corollary form)"
+    }
+  ],
+  "knowledge": {
+    "insights": [
+      "Slug duplicates substantial existing transcendence infrastructure: HermiteLindemann.lean (390 lines, 1 axiom), eTranscendental.lean (304 lines, 1 sorry), ETranscendentalOQ0{1,2,3}.lean (538/715/219 lines, 0/1/2 axioms), PiTranscendental.lean (457 lines, 1 sorry). Total 2,623 lines of related work.",
+      "Parent placement under `nth-root-irrational` is technique-mismatched: parent is *algebraic-irrationality of irreducible-polynomial roots* (purely algebraic), this OQ is *transcendence over Q* (analytic/auxiliary-polynomial techniques). Effective parent should be `e-transcendental-*` family.",
+      "Two adjacent axioms are tractable bridge targets: (1) `irrational_liouvilleWith_two` in ETranscendentalOQ03.lean:114 (Dirichlet's approximation lower bound, ~30-60 line proof from Mathlib); (2) `e_not_liouvilleWith_gt_two` in ETranscendentalOQ03.lean:154 (sharp upper bound via regular CF expansion of e, harder ~100-200 lines).",
+      "Full Hermite-Lindemann proof is ~900 lines of formalisation (auxiliary polynomial + integral identity + prime-selection contradiction). Mathlib has active upstream PR work; long-term right move is to bridge to upstream rather than re-formalise.",
+      "Status field must be `axiomatized` (per Axiom Integrity Policy): main result depends on `axiom hermite_lindemann` plus 2 OQ03 axioms plus 4 sibling sorries. Never mark `verified`.",
+      "S5a PREP (2026-05-13, researcher-12): discovered cascading Mathlib v4.26.0 API regressions blocking the build of both ETranscendentalOQ03.lean (line 118, `irrational_exp_iff` gone) and eTranscendental.lean (9 errors at lines 151/164/183/198/212/214/224/225/228, `IsFractionRing.isAlgebraic_iff` gone). These are pre-existing regressions on origin/main, not introduced by recent research PRs. 9 prior consecutive doc-only PREP PRs (S1-S4c) failed to catch them because none Docker-built. Repair scope: doctor/mechanic (3 fix-points across 2 files).",
+      "S2 ACT discharge proof body drafted (~85 LOC): `rat_approx_bounded_den_finite` helper (50 LOC, injects bounded-den slice into Set.Icc(-M)(M) ×ˢ Set.Icc(1)(N)) + `irrational_liouvilleWith_two` (30 LOC, uses Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational + slice helper + standard LiouvilleWith repackaging). Unverified (parent does not build) but recipe is self-contained; ready to paste-in after parent repair. See sessions/2026-05-13-s5a-prep-mathlib-regression-discovery-and-proof-draft.md §3.",
+      "S5b ACT (2026-05-14, researcher-9): parent-file build restored on origin/main via 4 surgical Mathlib v4.26.0 fixes (3 diagnosed in S5a, 1 surfaced after Fix #1 unblocked the namespace). `eTranscendental.lean` and `ETranscendentalOQ03.lean` now build cleanly (3071 jobs). Fix breakdown: (1) add `import Mathlib.RingTheory.Localization.Integral` to `eTranscendental.lean` for `IsFractionRing.isAlgebraic_iff` (lemma moved out of `Algebraic.Basic`'s transitive closure). (2) Replace `isAlgebraic_algebraMap (1 : ℚ)` with `isAlgebraic_one` at `eTranscendental.lean:225` (newer Mathlib elaborator doesn't auto-bridge `algebraMap ℚ ℝ 1` to `(1 : ℝ)`). (3) Replace `irrational_exp_iff.mpr ...` with project-local `e_irrational` at `ETranscendentalOQ03.lean:118` (lemma upstream-removed during Mathlib.Data.Real.Irrational → Mathlib.NumberTheory.Real.Irrational refactor). (4) Flip `.mp` to `.mpr` at `eTranscendental.lean:152` (sole site mismatched with v4.26.0 iff convention `IsAlgebraic A x ↔ IsAlgebraic K x`). Unblocks S5c S2 ACT paste-in for axiomCount 2→1.",
+      "S5c ACT (2026-05-16, researcher-12): pasted S5a §3 drafted proof body verbatim into ETranscendentalOQ03.lean, replacing `axiom irrational_liouvilleWith_two` with a `theorem` + the helper `rat_approx_bounded_den_finite`. Added import `Mathlib.NumberTheory.DiophantineApproximation.Basic`. Docker build clean on **first attempt** (3072 jobs, OQ03 file built in 5.8s; `eTranscendental` replayed from cache). None of the S5c PREP §4 robustness fallbacks (Option B/C for `field_simp`, `rpow_natCast`, image-membership refine) were needed — Option A compiled verbatim. `e-transcendental-oq-03/meta.json` axiomCount 2→1. Sharp-upper-bound axiom `e_not_liouvilleWith_gt_two` remains (S5d). Marquee `axiom hermite_lindemann` in HermiteLindemann.lean remains gated on Mathlib PR #28013 (S6). The drafted body + slice-finiteness helper is now a reusable template for analogous LiouvilleWith ACTs.",
+      "S5d PREP (2026-05-16, researcher-11): enumerated Mathlib `Algebra.ContinuedFractions.*` + `NumberTheory.DiophantineApproximation.*` API at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0). Generic CF machinery is fully available: `succ_nth_fib_le_of_nth_den` (Approximations.lean:249), `abs_sub_convs_le` (Approximations.lean:393), `Real.exists_rat_eq_convergent` (Basic.lean:538), `Real.convs_eq_convergent`, `of_partNum_eq_one`/`of_one_le_get?_partDen`. **However the CF expansion of e (Euler's [2;1,2k,1] pattern) is completely absent** — confirmed via 3 independent code searches + full tree filter. Davis's (1978) argument decomposes into 6 steps: steps 3/4/5 (generic machinery) available, steps 1/2 (e-specific input) absent. Direct S5d discharge requires formalising the CF expansion of e from scratch — re-estimated scope 280–480 LOC across 3 sub-tasks (S5d.A `e_continued_fraction_pattern` 150–250 LOC, S5d.B `e_convergent_den_ratio_bounded` 50–80 LOC, S5d.C target axiom 80–150 LOC), not the 150–250 LOC originally estimated. **Recommended hybrid Path B (PR #28013 watch — ~90.93h stale of 168h threshold) + Path C (apply S5c slice-finiteness template to sibling LiouvilleWith-2 slug — ~30–60 LOC ACT) rather than direct S5d ACT.** Also 0 drift on S5c-era bearers (re-pinned at SHA). PR #28013 status unchanged from S5a/S5c records (head SHA `3bafffe27908…`, updated_at `2026-05-12T09:28:36Z`).",
+      "S6 PREP (2026-06-01, researcher-1): 16-day delta watch tick. PR #28013 received exactly one activity since S5d — the 2026-05-29 merge-from-master (head SHA `3bafffe27908…` → `5abb7c68488…`). Recomputed staleness 69.8h (was 90.9h at S5d); the merge reset the clock. `mergeable_state` still `blocked` (24 review comments + 9 issue comments). No new substantive content since 2026-05-08 cluster. Mathlib master rescan since 2026-05-16: 1 CF commit (#37997, generalises det formula `SimpContFract` → `GenContFract`; no e-specific input), 1 toolchain bump (v4.31.0-rc1), 1 doc PR. 0 e-specific additions. S5d's 280–480 LOC re-estimate for S5d.A remains valid. **Path C empirically exhausted**: `grep -rn 'axiom.*[Ll]iouvilleWith' proofs/Proofs/` returns exactly one hit (`e_not_liouvilleWith_gt_two` in the same file as the just-shipped `irrational_liouvilleWith_two` template); no sibling slug carries the analogous-axiom shape. PiTranscendental.lean has only `lindemann_theorem`. S5c infrastructure build-verified clean at HEAD `8bf8a7b3552` (3072/3072 jobs); 0 bearer drift; same 3 deprecation linter warnings as S5c records (Mathlib.Data.Real.Irrational → NumberTheory.Real.Irrational; Mathlib.Data.Complex.ExponentialBounds → Analysis.Complex.ExponentialBounds). Strategic posture shifts to Path B (passive watch) primary; Path A.A deferred.",
+      "S7 ACT (2026-06-05, researcher-5): discharged axiom e_transcendental in eTranscendental.lean by deriving from axiom hermite_lindemann via halg.algebraMap bridge. ALSO discovered and repaired 5 pre-existing Mathlib v4.26.0 regressions in HermiteLindemann.lean (3 broken theorems + 2 dangling docstrings) blocking the build: (1) e_transcendental_rationals had broken Complex.ofRealHom.toAlgHom call (`RingHom.toAlgHom` removed v4.26.0), (2) pi_transcendental used removed Complex.ofReal_cos_ofReal_re and (X^2+1)≠0 via by-decide, (3) pi_transcendental_real used same Complex.ofRealHom.toAlgHom, (4-6) dangling /-- aspirational axiom docstrings without attached declarations at lines 150/173/185/200/262/281/293. Replaced all broken proofs with halg.algebraMap pattern (3 lines each via IsAlgebraic.algebraMap from Mathlib.RingTheory.Algebraic.Basic:174). Build clean 3079 jobs first attempt. Net effect: eTranscendental.lean axiom 1→0; HermiteLindemann.lean restored to clean build (was failing on origin/main); pi_transcendental and pi_transcendental_real now provide working bridges in addition to e_transcendental_int. S5d.A/B/C continued-fraction-of-e arc still deferred; this is an orthogonal axiom-reduction path.",
+      "S8 ACT (2026-06-05, researcher-11): discharged axiom lindemann_theorem in PiTranscendental.lean by deriving from axiom hermite_lindemann via 3-line IsFractionRing.isAlgebraic_iff bridge (ℤ-algebraic → ℚ-algebraic, the only signature difference between the two axioms). Same orthogonal axiom-reduction pattern as S7 ACT but applied to the Lindemann variant. ALSO discovered and repaired 3 pre-existing Mathlib v4.26.0 build failures: (1) added Mathlib.Analysis.Real.Pi.Irrational import for irrational_pi (per ETranscendentalOQ01.lean:11 pattern), (2) replaced isAlgebraic_algebraMap (1 : ℚ) with isAlgebraic_one at line 285 (S5b Fix #2 pattern from eTranscendental.lean:225), (3) NEW finding: pi_transcendental had a long-standing forward-reference bug — its proof body referenced I_algebraic and neg_one_algebraic defined LATER in the same file (lines 209+, 213+), invalid in Lean 4; replaced with one-line alias to HermiteLindemann.pi_transcendental_real (already proven post-S7). Build verified 3092/3092 jobs clean (81s). PiTranscendental.lean axiomCount 1→0, lineCount 457→432, theoremCount 18→19. Note: host docker disk pressure initially blocked verification; resolved via docker system prune -f (reclaimed 8.155 GB).",
+      "S11 source audit (2026-06-14, researcher-9): read ETranscendentalOQ03.lean from source — confirmed exactly 1 axiom (e_not_liouvilleWith_gt_two, line 247), 0 sorries, 312 LOC; irrational_liouvilleWith_two is a proved theorem at line 180. Gallery meta.json already accurate (axiomCount 1). De-staled the Iteration-1 narrative in knowledge.md (Insight 2/4 + Target A) which still presented irrational_liouvilleWith_two as an open axiom — marked DONE, corrected axiom/sorry tallies. No proof advance possible: sole remaining axiom is Docker-gated CF work (S5d.A); marquee hermite_lindemann gated on Mathlib PR #28013.",
+      "S13b (researcher-3, 2026-06-15): Mathlib v4.26.0 HAS substantial CF API (GenContFract.abs_sub_convs_le upper bound :393, exact error sub_convs_eq :328, succ_nth_stream_b_le_nth_stream_fr_inv :111, of_den_mono, continuant recurrence) but LACKS best-approximation, convergent LOWER bound, and the CF of e.",
+      "S13b: convergent-error LOWER bound (G2) is CHEAP — derivable from sub_convs_eq: |v-pn/qn| = 1/(qn(fr^-1*qn+q_{n-1})), with b_{n+1}<=fr^-1<b_{n+1}+1 giving two-sided 1/(qn(q_{n+1}+qn)) <= |v-pn/qn| <= 1/(qn*q_{n+1}). ~40-60 LOC. Prior sessions wrongly assumed this was missing.",
+      "S13b: the e_not_liouvilleWith_gt_two axiom factors into G1 (CF of e = [2;1,2,1,1,4,...], Euler 1737, THE bottleneck, ~hundreds LOC), G2 (convergent lower bound, cheap), G3 (best-approximation reduction, ~100-200 LOC). Hermite-Pade integral route avoids G1 AND G3.",
+      "S13b: blackout re-tested LIVE — docker info times out >15s, Aristotle prove returns 404 Resource not found."
+    ],
+    "builtItems": [
+      {
+        "name": "irrational_liouvilleWith_two",
+        "type": "theorem",
+        "file": "proofs/Proofs/ETranscendentalOQ03.lean",
+        "namespace": "ETranscendentalOQ03",
+        "signature": "(x : ℝ) (hx : Irrational x) : LiouvilleWith 2 x",
+        "iteration": 5,
+        "summary": "Dirichlet's approximation theorem in `LiouvilleWith` form: every irrational has irrationality measure ≥ 2. Discharges the easier of two axioms on the irrationality-measure-of-e file."
+      },
+      {
+        "name": "rat_approx_bounded_den_finite",
+        "type": "lemma",
+        "file": "proofs/Proofs/ETranscendentalOQ03.lean",
+        "namespace": "ETranscendentalOQ03",
+        "signature": "(x : ℝ) (N : ℕ) : {q : ℚ | |x - (q : ℝ)| < 1 / (q.den : ℝ) ^ 2 ∧ q.den ≤ N}.Finite",
+        "iteration": 5,
+        "summary": "Slice-finiteness helper: the set of good rational approximations to `x` with denominator ≤ N is finite. Used in `irrational_liouvilleWith_two` to derive that good approximations have unbounded denominators. Reusable template for analogous `LiouvilleWith p` ACTs on specific irrationals."
+      },
+      {
+        "name": "e_transcendental_int",
+        "type": "theorem",
+        "file": "proofs/Proofs/HermiteLindemann.lean",
+        "namespace": "HermiteLindemann",
+        "signature": "Transcendental ℤ (Real.exp 1)",
+        "iteration": 8,
+        "summary": "Bridges hermite_lindemann (Complex.exp) to Real.exp via Complex.ofReal_exp rewrite + halg.algebraMap. Discharges axiom e_transcendental in eTranscendental.lean. Reusable template for ℂ→ℝ transcendence transfer."
+      },
+      {
+        "name": "e_transcendental",
+        "type": "theorem (formerly axiom)",
+        "file": "proofs/Proofs/eTranscendental.lean",
+        "namespace": "(top-level)",
+        "signature": "Transcendental ℤ (Real.exp 1)",
+        "iteration": 8,
+        "summary": "Was axiom Wiedijk #67; now derived as HermiteLindemann.e_transcendental_int. axiomCount of e-transcendental slug: 1→0."
+      },
+      {
+        "name": "pi_transcendental (repaired)",
+        "type": "theorem",
+        "file": "proofs/Proofs/HermiteLindemann.lean",
+        "namespace": "HermiteLindemann",
+        "signature": "Transcendental ℤ (Real.pi : ℂ)",
+        "iteration": 8,
+        "summary": "Was broken at v4.26.0 (Complex.ofReal_cos_ofReal_re removed, decide failed); repaired with Complex.ofReal_cos and explicit eval-at-0 nonzero proof. Wiedijk #53."
+      },
+      {
+        "name": "lindemann_theorem (formerly axiom)",
+        "type": "theorem (formerly axiom)",
+        "file": "proofs/Proofs/PiTranscendental.lean",
+        "namespace": "(top-level)",
+        "signature": "(α : ℂ) (hα_ne : α ≠ 0) (hα_alg : IsAlgebraic ℤ α) : Transcendental ℤ (Complex.exp α)",
+        "iteration": 9,
+        "summary": "Was axiom (Lindemann 1882 e^α-transcendental over ℤ); now derived from HermiteLindemann.hermite_lindemann (which assumes ℚ-algebraicity) via IsFractionRing.isAlgebraic_iff extension. Sibling axiom-reduction to S7s e_transcendental discharge."
+      },
+      "Created proofs/Proofs/ETranscendentalOQ03CF.lean (UNREGISTERED build-pending): convs_sub_lower_bound (G2), not_liouvilleWith_of_partDen_subexp (G3), exp_one_partDen_linear (G1), assembly e_not_liouvilleWith_gt_two_prime — factors the open axiom into named targets with exact Mathlib hooks."
+    ],
+    "progressSummary": "S13b (2026-06-15, researcher-3): AUDITED Mathlib v4.26.0 CF API and FACTORED the sole open axiom e_not_liouvilleWith_gt_two (mu(e)<=2) into 3 named sub-targets in new UNREGISTERED build-pending file ETranscendentalOQ03CF.lean. Corrected the prior vague estimate: Mathlib HAS the convergent UPPER bound + exact error formula sub_convs_eq + denominator recurrence, but LACKS best-approximation, the convergent LOWER bound, and the CF of e. NEW: the convergent LOWER bound (G2) is CHEAP (~40-60 LOC off sub_convs_eq), not the missing piece prior sessions assumed. The TRUE bottleneck is G1 = Euler CF of e (~hundreds LOC); the Hermite-Pade integral route avoids both G1 and G3. Series route stays ruled out (S13). Gallery file ETranscendentalOQ03.lean untouched (registered, 0 sorries, 1 axiom). Dual blackout re-confirmed live (docker timeout, Aristotle 404). Next live session: build the new file, discharge G2 first to validate hooks, then choose G1-CF vs Pade for the core.",
+    "approachesAttempted": [],
+    "knownDeadEnds": [],
+    "nextSteps": [
+      "S9 (passive watch, primary): re-check Mathlib PR #28013. head SHA unchanged at 5abb7c68488 since 2026-05-29 (7 days). mergeable_state still blocked. Grace period continues to ~2026-06-26 per S6.",
+      "S5d.A/B/C (deferred): CF expansion of e (Euler [2;1,2k,1]) for e_not_liouvilleWith_gt_two. 280-480 LOC across 3 sub-tasks. Tractability unchanged.",
+      "S8 follow-up (low priority): pi_transcendental_over_rationals (PiTranscendental.lean:179) now has a cleaner ℚ-direct path via lindemann_theorem theorem; previous proof goes ℤ-route. Could simplify if useful, but not on critical path.",
+      "ETranscendentalOQ01.lean transitively depends on PiTranscendental.lean. S8 fix unblocks OQ01.",
+      "Mechanic follow-up: ETranscendentalOQ02.lean still has pre-existing build error at line 708 (no goals). Out of researcher scope."
+    ]
+  },
+  "leanFile": {
+    "path": "proofs/Proofs/HermiteLindemann.lean",
+    "namespace": "HermiteLindemann",
+    "primaryDeclaration": "hermite_lindemann"
+  },
+  "additionalFiles": [
+    "proofs/Proofs/eTranscendental.lean",
+    "proofs/Proofs/ETranscendentalOQ01.lean",
+    "proofs/Proofs/ETranscendentalOQ02.lean",
+    "proofs/Proofs/ETranscendentalOQ03.lean",
+    "proofs/Proofs/PiTranscendental.lean"
+  ],
+  "crossReferences": [
+    {
+      "slug": "e-transcendental-oq-01",
+      "reason": "Sibling: strong-form Q-linear-independence of 1, e, e², …, eⁿ"
+    },
+    {
+      "slug": "e-transcendental-oq-02",
+      "reason": "Sibling: irrationality measure µ(e) = 2 via continued fractions"
+    },
+    {
+      "slug": "e-transcendental-oq-03",
+      "reason": "Sibling: µ(e) = 2 via Liouville framework — contains the two tractable axioms targeted by this slug's S2/S4"
+    },
+    {
+      "slug": "nth-root-irrational",
+      "reason": "Parent slug — placement is technique-mismatched but seeker-assigned"
+    },
+    {
+      "slug": "angle-trisection-cos-20-gal-oq-01-oq-03",
+      "reason": "Adjacent algebraic-transcendence interface (cyclotomic Φ_{2p}(-1) = p)"
+    },
+    {
+      "slug": "algebraic-numbers-countable-oq-02-oq-04",
+      "reason": "Adjacent transcendence-theoretic context"
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "nth-root-irrational-oq-03-q1",
+      "question": "What is the current state of `mathlib4` Lindemann-Weierstrass / Hermite-Lindemann formalisation as of 2026-05-12? Has any upstream PR landed that would let us discharge `axiom hermite_lindemann` directly?",
+      "rationale": "Bridge-vs-rebuild decision for S3. If upstream is stable, ~50 lines of bridge work; if not, the axiom stays and we focus on tier-A/B/C non-HL targets."
+    },
+    {
+      "id": "nth-root-irrational-oq-03-q2",
+      "question": "Should `nth-root-irrational-oq-03` be renamed/aliased to align with the `e-transcendental-*` family, or remain as a cross-reference entry pointing to the real work in those slugs?",
+      "rationale": "Pure organisational question. Either choice is defensible; flagged for human/curator review."
+    }
+  ],
+  "references": [
+    "Hermite, C. (1873). Sur la fonction exponentielle. Comptes Rendus 77, 18-24, 74-79.",
+    "Lindemann, F. (1882). Über die Zahl π. Math. Ann. 20, 213-225.",
+    "Weierstrass, K. (1885). Zu Lindemann's Abhandlung. Sitz. Berlin Akad.",
+    "Baker, A. (1990). Transcendental Number Theory, CUP. Ch. 1-2 (Hermite-Lindemann), Ch. 6 (Baker's theorem).",
+    "Niven, I. (1956). Irrational Numbers, Carus Math. Monographs 11. (Accessible proof of Hermite-Lindemann.)",
+    "Mathlib: Mathlib.NumberTheory.Transcendental.Liouville.* (Liouville constructions), Mathlib.Data.Real.Pi.Irrational (Real.pi_irrational)."
+  ],
+  "tags": [
+    "transcendence",
+    "hermite-lindemann",
+    "lindemann-weierstrass",
+    "wiedijk-100",
+    "axiomatized",
+    "bridge-target"
+  ],
+  "lastUpdate": "2026-06-14T23:59:00Z"
+}

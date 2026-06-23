@@ -1,0 +1,370 @@
+[
+  {
+    "id": "ann-e1174-header",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1174** asks whether restricting a host graph can still force monochromatic structures under countable edge colorings. The classical Ramsey theorem says that any 2-coloring of the complete graph K_ω produces a monochromatic infinite clique. But what if we forbid large cliques in the host graph and allow countably many colors instead of just two? Part (a) asks for a K₄-free graph forcing monochromatic triangles; part (b) lifts this to infinite cardinals.",
+    "mathContext": "The problem was posed by Erdős and Hajnal. Shelah proved consistency results showing ZFC cannot rule out such graphs, but whether they provably exist in ZFC is open. Reference: [Va99, 7.91].",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey theory",
+      "set-theoretic independence",
+      "partition calculus"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "axiomatic set theory (ZFC)",
+      "infinite cardinals"
+    ]
+  },
+  {
+    "id": "ann-e1174-clique",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 41,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Clique Definition",
+    "content": "A **clique** in a graph G is a set S of vertices where every two distinct vertices are adjacent. This is the standard graph-theoretic notion: a clique of size k is a complete subgraph K_k. The definition quantifies over all pairs in S, requiring G.Adj v w whenever v ≠ w.",
+    "mathContext": "This is equivalent to saying the induced subgraph G[S] is complete. In Ramsey theory, finding monochromatic cliques is a central goal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete graph",
+      "Ramsey theory",
+      "induced subgraph"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "first-order logic quantifiers"
+    ]
+  },
+  {
+    "id": "ann-e1174-k4free",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 48,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "K₄-free Graph",
+    "content": "A graph is **K₄-free** if no four vertices form a complete subgraph. The definition explicitly enumerates all 6 edges among 4 vertices and asserts their conjunction is impossible. This is the key constraint in part (a): we want a graph rich enough to force monochromatic triangles under any coloring, yet sparse enough to avoid K₄.",
+    "mathContext": "K₄-free graphs include important families like triangle-free graphs, planar graphs, and complete tripartite graphs. The Turán graph T(n,3) maximizes edges while being K₄-free.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "graph density",
+      "forbidden subgraph"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "extremal graph theory",
+      "Lean 4 syntax"
+    ]
+  },
+  {
+    "id": "ann-e1174-cardinal-clique",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 56,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Cardinal Clique-freeness",
+    "content": "**IsCliqueFreeCardinal G κ** says that every clique in G has cardinality strictly less than κ. For part (b), we use κ = ℵ₁ (the first uncountable cardinal), meaning G has no uncountable clique. This generalizes finite clique-freeness to the transfinite setting.",
+    "mathContext": "The cardinality #S uses Mathlib's Cardinal type. Cardinal.aleph 1 = ℵ₁ is the smallest cardinal greater than ℵ₀ = |ℕ|. Under GCH, ℵ₁ = 2^{ℵ₀}, but this is independent of ZFC.",
+    "significance": "key",
+    "relatedConcepts": [
+      "aleph numbers",
+      "cardinal arithmetic",
+      "set theory"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "axiomatic set theory",
+      "Mathlib Cardinal type"
+    ]
+  },
+  {
+    "id": "ann-e1174-symmetric-coloring",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 64,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "Symmetric Coloring Structure",
+    "content": "A **symmetric coloring** packages a color function f : V → V → C with a proof that f(v,w) = f(w,v). This reflects the fact that edge colorings assign a single color to each unordered edge {v,w}. The structure ensures well-definedness without needing to work with unordered pairs directly.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "edge coloring",
+      "graph homomorphism"
+    ],
+    "mathContext": "See annotation content for formal details of symmetric coloring structure",
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 structures",
+      "equivalence relations"
+    ]
+  },
+  {
+    "id": "ann-e1174-mono-triangle",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 76,
+      "endLine": 85
+    },
+    "type": "definition",
+    "title": "Monochromatic Triangle",
+    "content": "**HasMonochromaticTriangle G f** asserts there exist three mutually adjacent vertices whose three edge colors under f all agree. This is the Ramsey-theoretic target for part (a): we want to find three vertices a, b, c forming a triangle in G with f(a,b) = f(a,c) = f(b,c). The coloring uses ℕ as the color set, representing countably many colors.",
+    "mathContext": "With only 2 colors and 6 vertices, Ramsey's theorem R(3,3) = 6 guarantees a monochromatic triangle. With countably many colors, no finite bound suffices, making the problem fundamentally harder.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number R(3,3)",
+      "monochromatic subgraph",
+      "countable coloring"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "Lean 4 syntax"
+    ]
+  },
+  {
+    "id": "ann-e1174-eh-finite",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 87,
+      "endLine": 97
+    },
+    "type": "definition",
+    "title": "Erdős-Hajnal Finite Property",
+    "content": "The **Erdős-Hajnal finite property** combines two conditions: (1) G is K₄-free, and (2) every symmetric edge coloring of G with countably many colors contains a monochromatic triangle. A graph satisfying both conditions would answer part (a) affirmatively. The tension is that K₄-freeness limits graph density, while the coloring property demands enough structure to force monochromatic triangles.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Hajnal conjecture",
+      "partition property",
+      "Ramsey forcing"
+    ],
+    "mathContext": "See annotation content for formal details of erdős-hajnal finite property",
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "extremal graph theory"
+    ]
+  },
+  {
+    "id": "ann-e1174-part-a",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 99,
+      "endLine": 105
+    },
+    "type": "definition",
+    "title": "Problem 1174 Part (a)",
+    "content": "**erdos_1174a** is the formal statement of part (a): there exists some type V and some simple graph G on V satisfying the Erdős-Hajnal finite property. The existential quantification over the vertex type V means we are not restricted to graphs on ℕ or any fixed set—the graph could have any cardinality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential statement",
+      "graph construction",
+      "Type*"
+    ],
+    "mathContext": "See annotation content for formal details of problem 1174 part (a)",
+    "prerequisites": [
+      "mathematical logic",
+      "Lean 4 existential statements",
+      "graph theory"
+    ]
+  },
+  {
+    "id": "ann-e1174-mono-aleph0",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 111,
+      "endLine": 121
+    },
+    "type": "definition",
+    "title": "Monochromatic ℵ₀-Clique",
+    "content": "**HasMonochromaticAleph0Clique G f** asks for a set S of cardinality exactly ℵ₀ (countably infinite) that forms a clique in G with all edges the same color c. This is the infinite analog of a monochromatic triangle: instead of 3 vertices forming K₃, we need countably many vertices forming K_{ℵ₀}.",
+    "mathContext": "The cardinality condition #S = Cardinal.aleph 0 ensures S is countably infinite, not merely finite. The universal quantification over pairs in S with the same color c gives a monochromatic infinite complete subgraph.",
+    "significance": "key",
+    "relatedConcepts": [
+      "countably infinite set",
+      "aleph-0",
+      "infinite Ramsey theory"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "infinite combinatorics",
+      "Mathlib Cardinal type"
+    ]
+  },
+  {
+    "id": "ann-e1174-eh-infinite",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 123,
+      "endLine": 141
+    },
+    "type": "definition",
+    "title": "Erdős-Hajnal Infinite Property and Part (b)",
+    "content": "The **Erdős-Hajnal infinite property** requires: (1) G has no clique of cardinality ℵ₁, and (2) every countable coloring yields a monochromatic K_{ℵ₀}. This is the transfinite analog of the finite property, replacing K₄-free with K_{ℵ₁}-free and monochromatic K₃ with monochromatic K_{ℵ₀}. The formal statement **erdos_1174b** asserts the existence of such a graph.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite combinatorics",
+      "transfinite Ramsey theory",
+      "uncountable cardinals"
+    ],
+    "mathContext": "See annotation content for formal details of erdős-hajnal infinite property and part (b)",
+    "prerequisites": [
+      "infinite combinatorics",
+      "cardinal arithmetic",
+      "Ramsey theory"
+    ]
+  },
+  {
+    "id": "ann-e1174-ramsey",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 147,
+      "endLine": 157
+    },
+    "type": "concept",
+    "title": "Infinite Ramsey Theorem (2 Colors)",
+    "content": "The **infinite Ramsey theorem** for 2 colors states that any symmetric 2-coloring of edges of the complete graph on ℕ yields a monochromatic countably infinite clique. This is axiomatized because the full proof requires König's lemma or an equivalent. It provides crucial context: the complete graph K_ω trivially has the coloring property, but it is not K₄-free.",
+    "mathContext": "This is the infinite version of R(ω,ω) = ω in partition calculus notation. The theorem extends to any finite number of colors, but Problem 1174 asks about countably many colors on restricted graphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey's theorem",
+      "König's lemma",
+      "infinite combinatorics"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "infinite combinatorics",
+      "König's lemma"
+    ]
+  },
+  {
+    "id": "ann-e1174-complete-not-k4free",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 159,
+      "endLine": 171
+    },
+    "type": "concept",
+    "title": "Complete Graph is Not K₄-free",
+    "content": "This **constructive proof** shows the complete graph on ℕ is not K₄-free by exhibiting the 4-clique {0, 1, 2, 3}. The proof is by contradiction: assume K₄-freeness, instantiate with vertices 0-3, show all 6 edges exist (via `SimpleGraph.top_adj`), and derive a contradiction. This demonstrates that the K₄-freeness constraint in part (a) is essential—without it, the coloring property holds trivially via Ramsey.",
+    "mathContext": "The tactic `simp [SimpleGraph.top_adj]` resolves all adjacency goals in the complete graph ⊤, and `omega` handles the distinctness conditions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete graph",
+      "proof by contradiction",
+      "constructive mathematics"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 tactic mode",
+      "proof by contradiction"
+    ]
+  },
+  {
+    "id": "ann-e1174-partition",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 177,
+      "endLine": 187
+    },
+    "type": "definition",
+    "title": "Partition Property",
+    "content": "**partitionProperty G k numColors** formalizes the arrow notation G → (k)²_{numColors}: for every coloring of G's edges with numColors colors, there exists a monochromatic clique of size k. This is the language of partition calculus, originally developed by Erdős, Hajnal, and Rado to systematically study Ramsey-type phenomena.",
+    "mathContext": "The notation G → (k)²_c is standard in infinite combinatorics. The superscript 2 indicates we color edges (2-element subsets). Problem 1174(a) effectively asks for G → (3)²_ω with G being K₄-free.",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition calculus",
+      "Erdős-Rado theorem",
+      "arrow notation"
+    ],
+    "prerequisites": [
+      "partition calculus",
+      "Ramsey theory",
+      "infinite combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e1174-nesetril-rodl",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 189,
+      "endLine": 197
+    },
+    "type": "concept",
+    "title": "Nešetřil-Rödl Theorem",
+    "content": "The **Nešetřil-Rödl theorem** is axiomatized here as context: for each finite number k of colors, there exists a K₄-free graph G with G → (3)²_{k+1}. This means the finite-color version of part (a) is achievable. The deep challenge in Problem 1174 is whether these finite-color solutions can be unified into a single graph that works for all countably many colors simultaneously.",
+    "mathContext": "Nešetřil and Rödl proved this using the amalgamation technique for sparse Ramsey classes. Their result is constructive for fixed k but does not yield a single graph for all k.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structural Ramsey theory",
+      "Hales-Jewett theorem",
+      "amalgamation"
+    ],
+    "prerequisites": [
+      "structural Ramsey theory",
+      "graph theory",
+      "model-theoretic amalgamation"
+    ]
+  },
+  {
+    "id": "ann-e1174-shelah",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 199,
+      "endLine": 207
+    },
+    "type": "concept",
+    "title": "Shelah's Consistency Results",
+    "content": "Shelah showed that it is **consistent with ZFC** that graphs satisfying either the finite or infinite Erdős-Hajnal property exist. This is expressed as a comment rather than a formal axiom because consistency statements are meta-mathematical (they concern models of ZFC, not objects within ZFC). The upshot: we know ZFC cannot disprove existence, but it remains open whether ZFC can prove it.",
+    "mathContext": "Consistency proofs typically use forcing: Shelah constructs a model of ZFC (extending a ground model) in which the desired graph exists. This does not establish the graph exists in all models.",
+    "significance": "key",
+    "relatedConcepts": [
+      "forcing",
+      "consistency",
+      "set-theoretic independence"
+    ],
+    "prerequisites": [
+      "axiomatic set theory (ZFC)",
+      "forcing",
+      "mathematical logic"
+    ]
+  },
+  {
+    "id": "ann-e1174-summary",
+    "proofId": "erdos-1174",
+    "range": {
+      "startLine": 224,
+      "endLine": 232
+    },
+    "type": "concept",
+    "title": "Open Status Summary",
+    "content": "Both parts of Problem 1174 remain **open in ZFC**. The known landscape: (1) Nešetřil-Rödl handles finitely many colors, (2) Shelah shows consistency, (3) no ZFC proof or refutation is known. The problem connects three major areas: finite Ramsey theory (partition properties of sparse graphs), infinite combinatorics (transfinite generalizations), and set-theoretic independence (forcing and consistency).",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem",
+      "ZFC independence",
+      "Ramsey theory"
+    ],
+    "mathContext": "See annotation content for formal details of open status summary",
+    "prerequisites": [
+      "Ramsey theory",
+      "axiomatic set theory (ZFC)",
+      "infinite combinatorics"
+    ]
+  }
+]

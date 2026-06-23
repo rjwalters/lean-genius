@@ -1,0 +1,136 @@
+[
+  {
+    "id": "ann-factorization-choose-prime",
+    "proofId": "kummer-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 128,
+      "endLine": 165
+    },
+    "type": "insight",
+    "title": "Nat.factorization_choose' IS the Carries Formula — Already in Mathlib 4.26.0",
+    "content": "The theorem `Nat.factorization_choose'` in `Mathlib.Data.Nat.Choose.Factorization` is:\n\n```lean\ntheorem Nat.factorization_choose' {p n k b : ℕ} (hp : p.Prime) (hnb : log p (n + k) < b) :\n    (choose (n + k) k).factorization p = #{i ∈ Ico 1 b | p ^ i ≤ k % p ^ i + n % p ^ i}\n```\n\nThe set `{i ∈ Ico 1 b | p^i ≤ k mod p^i + n mod p^i}` counts the positions where a carry occurs when adding `k` and `n` in base `p`. A carry at position `i` occurs precisely when `k mod p^i + n mod p^i ≥ p^i` — the sum of the lower `i` digits overflows.\n\nThe parent proof `KummerTheoremOQ01.lean` (line 105–108) states:\n> \"Full formalization requires base-p carry counting (not yet in Mathlib)\"\n\nThis was **wrong** as of Mathlib 4.26.0. The carry counting formalism exists as `Nat.factorization_choose'`.",
+    "mathContext": "$v_p\\binom{n+k}{k} = \\#\\{i \\in [1,b) : p^i \\le k \\bmod p^i + n \\bmod p^i\\}$ — the number of carries when adding $k$ and $n$ in base $p$. The bound $b$ need only satisfy $b > \\log_p(n+k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.factorization_choose'",
+      "carries",
+      "p-adic valuation",
+      "Kummer's theorem"
+    ],
+    "prerequisites": [
+      "kummer-theorem"
+    ]
+  },
+  {
+    "id": "ann-three-step-proof",
+    "proofId": "kummer-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 165
+    },
+    "type": "insight",
+    "title": "Three-Step Derivation: Distribution → Bridge → Kummer",
+    "content": "The multinomial Kummer theorem follows a clean three-step derivation:\n\n**Step 1 — Distribution** (`factorization_list_prod`):\n```\nv_p(l.prod) = ∑ v_p(x) for x in l    [Nat.factorization_mul by induction]\n```\n\n**Step 2 — Bridge** (`multinomial_factorization_is_sum_of_binomial_factorizations`):\n```\nv_p(multinomial ks) \n  = v_p(∏ C(acc+k, k))              [multinomial_eq_prod_choose from OQ-01]\n  = ∑ v_p(C(acc+k, k))              [Step 1]\n```\n\n**Step 3 — Kummer** (`multinomial_kummer`):\n```\nv_p(C(acc+k, k)) = #{carries when adding k and acc}   [Nat.factorization_choose']\n```\n\nCombining: `v_p(multinomial ks) = ∑_{steps} #{carries at step} = total carries`.\n\nEach step is a one-or-two line Lean proof.",
+    "mathContext": "$v_p(\\text{mult}(ks)) = v_p\\!\\left(\\prod_{(acc,k)} \\binom{acc+k}{k}\\right) = \\sum_{(acc,k)} v_p\\binom{acc+k}{k} = \\sum_{(acc,k)} \\#\\{\\text{carries at step}\\}$, where the product runs over the \\texttt{scanl} pairs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorization_list_prod",
+      "multinomial_eq_prod_choose",
+      "Nat.factorization_choose'"
+    ],
+    "prerequisites": [
+      "kummer-theorem-oq-01"
+    ]
+  },
+  {
+    "id": "ann-bound-parameter",
+    "proofId": "kummer-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 128,
+      "endLine": 153
+    },
+    "type": "concept",
+    "title": "The Bound Parameter b in Nat.factorization_choose'",
+    "content": "`Nat.factorization_choose'` requires a bound `b` with `Nat.log p (n + k) < b`. The bound doesn't affect the value — it just restricts the sum to `Ico 1 b`, and positions `i ≥ b` contribute 0 since `p^i > n+k` implies no carry.\n\nFor the multinomial theorem, we use `b = Nat.log p ks.sum + 1`. This is valid because:\n- Each pair `(acc, k)` in the scanl decomposition has `acc + k ≤ ks.sum`\n- By `Nat.log_mono_right`: `log p (acc + k) ≤ log p ks.sum`\n- So `log p (acc + k) < log p ks.sum + 1 = b`\n\nThe key helper `scanl_zip_tail_sum_le` proves `acc + k ≤ ks.sum` by induction on the list structure:\n- For `ks = k :: rest`, the tail pairs are in `(rest.scanl (·+·) k).zip rest`\n- By `scanl_zip_sum_le`: each such pair satisfies `acc + k ≤ k + rest.sum = ks.sum` ✓",
+    "mathContext": "Given b = Nat.log p ks.sum + 1 and acc + k ≤ ks.sum (from scanl_zip_tail_sum_le), Nat.log_mono_right gives log_p(acc + k) ≤ log_p(ks.sum), so log_p(acc + k) < b. Positions i ≥ b satisfy p^i > n + k, making all carry indicators 0 — the bound is tight and does not change the sum.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.log_mono_right",
+      "scanl_zip_tail_sum_le",
+      "List.scanl"
+    ],
+    "prerequisites": [
+      "Nat.log_mono_right",
+      "scanl_zip_tail_sum_le",
+      "List.Ico"
+    ]
+  },
+  {
+    "id": "ann-scanl-bounds",
+    "proofId": "kummer-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "scanl_zip_sum_le: Bounding Partial Sums in List.scanl",
+    "content": "Two private lemmas prove that prefix sums in a `scanl (·+·)` decomposition stay bounded by the total. `scanl_zip_sum_le` shows that every pair `(acc, k)` in `(ks.scanl (·+·) init).zip ks` satisfies `acc + k ≤ init + ks.sum`. The proof is by induction on `ks`, with the cons case using `omega` for the base pair and applying the inductive hypothesis for tail pairs.\n\n`scanl_zip_tail_sum_le` specializes to `init = 0`, giving `acc + k ≤ ks.sum` for tail pairs (skipping the first pair, which trivially has acc=0). This bound is used in `multinomial_kummer` to establish `Nat.log p (acc+k) < b` for the bound parameter `b = Nat.log p ks.sum + 1`.",
+    "mathContext": "For $ks = [k_1, k_2, \\ldots, k_m]$ and $acc_i = k_1 + \\cdots + k_{i-1}$: each pair $(acc_i, k_i)$ satisfies $acc_i + k_i \\leq k_1 + \\cdots + k_m = ks.\\text{sum}$. This is used to ensure $\\log_p(acc_i + k_i) \\leq \\log_p(ks.\\text{sum}) < b$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "List.scanl",
+      "List.zip",
+      "omega",
+      "prefix sums"
+    ],
+    "prerequisites": [
+      "scanl_zip_sum_le",
+      "List.scanl_cons",
+      "List.tail_cons"
+    ]
+  },
+  {
+    "id": "ann-concrete-verification",
+    "proofId": "kummer-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 167,
+      "endLine": 191
+    },
+    "type": "insight",
+    "title": "Concrete Verification: multinomial([1,2,3]) = 60, v_2 = 2, v_3 = 1",
+    "content": "For `ks = [1, 2, 3]`:\n- `multinomial [1, 2, 3] = 6! / (1! · 2! · 3!) = 720 / (1 · 2 · 6) = 60` ✓\n\nThe scanl pairs (via tail): `[(1, 2), (3, 3)]`\n\n**At p=2:**\n- Step (1, 2): carries at i where `2^i ≤ 2 mod 2^i + 1 mod 2^i`\n  - i=1: `2 ≤ 0 + 1 = 1`? No. (no carry)\n- Step (3, 3): carries at i where `2^i ≤ 3 mod 2^i + 3 mod 2^i`\n  - i=1: `2 ≤ 1 + 1 = 2`? Yes ✓ (carry)\n  - i=2: `4 ≤ 3 + 3 = 6`? Yes ✓ (carry)\n- Total: 2 carries. `v_2(60) = v_2(4 · 15) = 2` ✓\n\n**At p=3:**\n- Step (1, 2): `3 ≤ 2 mod 3 + 1 mod 3 = 2 + 1 = 3`? Yes ✓ (carry at i=1)\n- Step (3, 3): `3 ≤ 0 + 0 = 0`? No. (no carry)\n- Total: 1 carry. `v_3(60) = v_3(3 · 20) = 1` ✓",
+    "mathContext": "60 = 2^2 · 3 · 5, so $v_2(60) = 2$ and $v_3(60) = 1$. Carry count at p=2: scanl pairs [(1,2),(3,3)] give 0+2=2 carries ✓. Carry count at p=3: 1+0=1 carry ✓. Verified in Lean via native_decide for the factorization computations, and decide for the list-based carry count comparison.",
+    "significance": "key",
+    "relatedConcepts": [
+      "native_decide",
+      "decide"
+    ],
+    "prerequisites": [
+      "Nat.factorization_choose'",
+      "multinomial_kummer"
+    ]
+  },
+  {
+    "id": "ann-list-factorization",
+    "proofId": "kummer-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Inductive Proof that v_p Distributes Over List Products",
+    "content": "`factorization_list_prod` proves `l.prod.factorization p = (l.map (·.factorization p)).sum` by induction:\n\n```lean\n| nil => simp\n| cons n rest ih =>\n    rw [Nat.factorization_mul hn hrest, Finsupp.add_apply]\n    congr 1\n    exact ih ...\n```\n\n`Nat.factorization_mul hn hrest : (n * rest.prod).factorization = n.factorization + rest.prod.factorization`\n\n`Finsupp.add_apply : (f + g) p = f p + g p`\n\nThen `congr 1` reduces to proving `rest.prod.factorization p = (rest.map ...).sum`, which is the inductive hypothesis.\n\nNote: `rest.prod ≠ 0` follows from `List.prod_ne_zero` applied to all elements satisfying the nonzero hypothesis.",
+    "mathContext": "$v_p\\!\\left(\\prod_{i=1}^{n} a_i\\right) = \\sum_{i=1}^{n} v_p(a_i)$ for $a_i \\ne 0$, proved by induction using $v_p(mn) = v_p(m) + v_p(n)$ (\\texttt{Nat.factorization\\_mul}).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.factorization_mul",
+      "Finsupp.add_apply",
+      "List.prod_ne_zero"
+    ],
+    "prerequisites": [
+      "Nat.factorization_mul",
+      "Finsupp.add_apply",
+      "List.prod_ne_zero"
+    ]
+  }
+]

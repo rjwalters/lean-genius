@@ -1,0 +1,247 @@
+{
+  "slug": "hilbert-10-oq-01-oq-02",
+  "title": "Is ℤ purely Diophantine over ℚ — can integrality be detected by polynomial equations with rational solutions?",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\exists\\, P : \\mathbb{Q}[t, x_1, \\ldots, x_k] \\text{ such that } \\forall t \\in \\mathbb{Q}: t \\in \\mathbb{Z} \\iff \\exists\\, x_1, \\ldots, x_k \\in \\mathbb{Q}: P(t, x_1, \\ldots, x_k) = 0",
+    "plain": "Hilbert's 10th over ℤ is undecidable (Matiyasevich 1970). Whether the analogous problem over ℚ is decidable is OPEN, and reduces to the question: can the set ℤ ⊂ ℚ be defined PURELY EXISTENTIALLY (i.e., as the projection of a rational-solution set of a polynomial equation)? This is the 'is ℤ Diophantine over ℚ' question. Sister-question OQ-01 asks the same in a 'broader' definability framework; this OQ-01-OQ-02 narrows to the strictly purely-Diophantine (∃-formula) form, where Koenigsmann's celebrated 2016 ∀∃ universal definition does NOT settle the question.",
+    "whyMatters": [
+      "If ℤ is purely Diophantine over ℚ, then Hilbert's 10th problem over ℚ is undecidable (immediate reduction from Matiyasevich): the answer to one of the most famous open problems in mathematical logic would be settled NEGATIVELY",
+      "Mazur's conjecture (1992): the topological closure of any Diophantine subset of ℚ in ℝ has finitely many connected components — would IMPLY ℤ is NOT Diophantine over ℚ (since ℤ is closed in ℝ with infinitely many points but no interval-like structure)",
+      "Koenigsmann (Annals 2016) gave a UNIVERSAL (∀∃) definition of ℤ in ℚ; finding a purely existential (Diophantine) definition would be a substantial strengthening with direct consequences for H10/ℚ",
+      "Bridges mathematical logic, number theory, and arithmetic geometry — connects to the Brauer-Manin obstruction (Poonen 2009 Diophantine definitions over rings of S-integers)",
+      "Resolution either way (positive or negative) would be a major milestone in the model theory of ℚ"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Matiyasevich 1970 (DPRM theorem): every recursively enumerable subset of ℕ is Diophantine over ℤ; in particular, Hilbert's 10th problem over ℤ is UNDECIDABLE.",
+      "Robinson 1949: ℤ is definable in (ℚ, +, ·, 0, 1) by a first-order formula (with universal quantifiers); thus the first-order theory of (ℚ, +, ·) is undecidable.",
+      "Poonen 2009: for many rings of S-integers in number fields (where S has positive density), the analog of Hilbert's 10th is undecidable; uses a Diophantine definition of ℤ in those rings.",
+      "Koenigsmann 2016 (Annals): ℤ has a UNIVERSAL (Π₁) definition in ℚ — i.e., ℤ = {t ∈ ℚ : ∀ y₁,…,yₖ, ∃ z₁,…,zₘ : P(t, y, z) = 0} for an explicit polynomial P. (NOT a Diophantine, i.e., Σ₁, definition — that remains open.)",
+      "Sun 2016, Daans 2021, Eisenträger-Park 2018+: variations and refinements giving alternate ∀∃ definitions; some improving the number of universal quantifiers.",
+      "Mazur's conjecture is KNOWN to imply ℤ is not Diophantine over ℚ (a clean conditional theorem)."
+    ],
+    "open": [
+      "Is ℤ purely Diophantine (Σ₁) over ℚ? — the ORIGINAL question; both positive and negative answers consistent with current knowledge.",
+      "Is Hilbert's 10th problem over ℚ decidable? — closely related; would be undecidable if ℤ is Diophantine over ℚ.",
+      "Is Mazur's conjecture true? — would resolve OQ-01-OQ-02 negatively if proved.",
+      "Existence of a Diophantine definition with low quantifier complexity (e.g., bounded number of variables k); even an upper bound on k would be informative.",
+      "Connections to S-integers: for which sets S of primes does ℤ_S have a Diophantine definition in ℚ?",
+      "Mathematical-logic angle: is there a finite-axiomatizable extension of Robinson's Q in which ℤ becomes Σ₁-definable?"
+    ],
+    "goal": "Either: (a) construct an explicit polynomial P(t, x_1, …, x_k) ∈ ℚ[t, x] witnessing ℤ as a Diophantine subset of ℚ — would imply H10/ℚ undecidable; or (b) prove ℤ is NOT Diophantine over ℚ (e.g., via Mazur's conjecture or a topological/density argument), which would NOT immediately settle H10/ℚ but would close this specific approach. Phase-2 Lean goal: state both directions as axioms with full provenance and document the implication chain `IntegersDiophantineOverQ → ¬H10_Rational_Decidable` already present in `Hilbert10OQ01.lean`."
+  },
+  "currentState": {
+    "phase": "ACT (iter 27a-δ shipped 2026-06-10 — 5 H10/ℚ-implication-chain re-export theorems, axiom-free; main iter 27a still upstream-blocked, 30-day re-anchor 2026-07-03 unchanged)",
+    "since": "2026-05-15T22:58:32Z",
+    "iteration": 27,
+    "focus": "S34 T+4d bearer recheck ACT (2026-06-14, researcher-1, this PR): doc-only confirmation that the iter 27a Σ₂(ℤ) attack stays upstream-blocked — 5/5 bearers still absent + 0 PR motion since S32 baseline. iter 27a-δ already shipped (S33, 2026-06-10) and the in-file re-export surface is exhausted, so no Lean delta this cycle. 30-day re-anchor 2026-07-03 unchanged; claim re-released.",
+    "blockers": [
+      "Mathlib upstream: 5/5 bearers (HilbertSymbol, HasseMinkowski, BrauerRational, PoonenNonSquaresDiophantine, Hilbert10Rational) absent at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67; 4/5 have zero PR/issue activity at any time, 5th (Brauer) dormant since 2025-01. Iter 27a-ACT is upstream-blocked with no visible recovery vector in the foreseeable mathlib4 queue."
+    ],
+    "nextAction": "Iter 27a-δ shipped 2026-06-10 in this PR — exhausts the only feasible single-cycle Lean delta identified in S30 PREP-1. Forward-motion candidates after merge: (a) bearer recheck after 2026-07-03 anchor (PREP-4 style: re-run S31 PREP-2 survey for any new motion on HilbertSymbol / HasseMinkowski / BrauerRational / PoonenNonSquaresDiophantine / Hilbert10Rational; if dormant, longer release horizon ~90d) — this is the proportionate next move; (b) iter 27a-γ Mathlib upstream contribution of HilbertSymbol+HasseMinkowski over ℚ — multi-quarter deferred; (c) wait for an external bearer event to unblock the main iter 27a Σ₂(ℤ) attack. Iter 27a-δ exhausts in-file re-exports against the existing Σ₁/Π₁/Σ₂/Π₂ surface; further single-cycle Lean deltas would require either anti-axiom-policy escalation (27a-α / 27d) or upstream bearer landings (27a-γ). Trigger event for immediate re-pickup: any new PR title containing HilbertSymbol / Hasse-Minkowski / Brauer ℚ / BrauerQ / Poonen Diophantine / Hilbert10 / H10/Q (and natural variants).",
+    "attemptCounts": {
+      "total": 28,
+      "currentApproach": 2,
+      "approachesTried": 28
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S34 T+4d BEARER RECHECK (researcher-1, 2026-06-14, this PR, doc-only): Slug reclaimed by the random picker 2026-06-14 — ~4 days after S33 shipped iter 27a-δ (2026-06-10) and well inside the 30-day dormancy window anchored to 2026-07-03. Recheck verdict: 5/5 bearers (HilbertSymbol, HasseMinkowski, BrauerRational, PoonenNonSquaresDiophantine, Hilbert10Rational) still ABSENT from the pinned Mathlib tree (2df2f0150c275ad53cb3c90f7c98ec15a56a1a67) and ZERO new PR motion since the S32 baseline (2026-06-09). Pinned-tree presence checks: Mathlib/NumberTheory/ carries only the unrelated DiophantineApproximation; Mathlib/Algebra/BrauerGroup/ carries only abstract Defs.lean (no rational classification / BrauerRational); HilbertSymbol + HasseMinkowski have 0 code hits in mathlib4. Invariants stable: pin unchanged, LOC 3174, 1 axiom (koenigsmann_2016_universal), 0 sorries, 90 theorems, 0 open PRs. iter 27a-δ in-file re-export surface already exhausted by S33 → no single-cycle Lean delta this cycle either; declined to add cosmetic glue. 30-day re-anchor 2026-07-03 UNCHANGED; claim re-released. Next-pickup gate: do not reclaim before 2026-07-03 unless an external Mathlib bearer event is detected. Full memo: sessions/2026-06-14-s34-bearer-recheck-t4d.md.\n\nS33 ITER 27a-δ ACT (researcher-1, 2026-06-10, this PR): Lean ACT shipping the 5 H10/ℚ-implication-chain re-export theorems flagged as the only feasible single-cycle delta by S30 PREP-1 and re-affirmed by S32 PREP-3. Slug was reclaimed by the random picker 1 day after S32 released it (S32 recommended next-pickup gate 2026-07-03); rather than churn another in-window PREP-N, this session ships the 27a-δ Lean delta instead. **New section Part VIII.33** in `proofs/Proofs/Hilbert10OQ01OQ02.lean` (lines ~2785-2865) adds 5 axiom-free theorems: (1) `h10_decidable_implies_not_sigma1_integers` — contrapositive of `integers_diophantine_sigma1_implies_h10_q_undecidable`, gives H10/ℚ decidable ⟹ ¬Σ₁(ℤ); (2) `h10_decidable_implies_not_codiophantine_complement` — symmetric companion on the Π₁(ℚ\\ℤ) side via `codiophantine_complement_implies_h10_q_undecidable`; (3) `mazur_implies_pi2_strict_above_sigma1_at_integers` — Mazur + Koenigsmann ⟹ Π₂(ℤ) ∧ ¬Σ₁(ℤ), packages the strict-containment Σ₁ ⊊ Π₂ at `IntSubset` as a single conjunction; (4) `h10_decidable_implies_pi2_strict_above_sigma1_at_integers` — same Σ₁ ⊊ Π₂ non-collapse from H10/ℚ-decidability + Koenigsmann (different conditional antecedent); (5) `mazur_implies_sigma2_strict_above_codiophantine_at_complement_integers` — symmetric Π₁/Σ₂ analog at the complement, packaging Σ₂(ℚ\\ℤ) ∧ ¬Π₁(ℚ\\ℤ) under Mazur (uses the iter-3 corollary `koenigsmann_implies_complement_existentialUniversal` already on file). All 5 theorems are **axiom-free** — pure logical glue on the existing axioms (`koenigsmann_2016_universal` Π₂(ℤ), `mazur_implies_not_diophantine` Mazur→¬Σ₁, and OQ-01's `integers_diophantine_implies_undecidable` Σ₁→¬H10/ℚ) and the previously-proved theorems. File counts: 3082 → 3174 LOC (+92); theoremCount 85 → 90 (+5); axiomCount 1 unchanged; definitionCount 15 unchanged; sorries 0 unchanged. **Zero new imports**; #check block at file-end extended by 5 entries; docstring theorem list at file-end extended by 5 entries. Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) unchanged. Main iter 27a Σ₂(ℤ) attack via Koenigsmann lift + complement-collapse remains upstream-blocked (5/5 Mathlib bearers HilbertSymbol / HasseMinkowski / BrauerRational / PoonenNonSquaresDiophantine / Hilbert10Rational absent per S30/S31/S32). After merge, the 30-day anchor `2026-07-03` for the next bearer-event recheck is unchanged. Full record in `research/problems/hilbert-10-oq-01-oq-02/sessions/2026-06-10-s33-iter27a-delta-h10-implication-chain.md`. | S32 ITER 27a PREP-3 (researcher-1, 2026-06-09, T+6d post-PREP-2): doc-only T+6d Mathlib bearer recheck. Slug reclaimed by random picker only 6 days into the 30-day dormancy window PREP-2 anchored to 2026-07-03; this session verifies the verdict still holds. `gh search prs` + `gh search issues` against `leanprover-community/mathlib4` for each of the 5 missing bearers (HilbertSymbol, HasseMinkowski, BrauerRational, PoonenNonSquaresDiophantine, Hilbert10Rational) and keyword variants (Hilbert symbol, Hasse-Minkowski, Brauer, Poonen, Matiyasevich, H10) filtered for new motion since 2026-06-03: **0 new PRs + 0 new issues** on any bearer. Three Brauer-keyword PR hits (#26377 open SimpleAlgebra tensor 2026-04-11 awaiting-author; #30736 Picard↔ClassGroup MERGED 2026-01-11; #27535 GPT-4.1-mini typo cleanup MERGED 2025-07-27) all predate PREP-2 and none touch the BrauerRational surface. Invariants verified at T+6d: Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) unchanged; `proofs/Proofs/Hilbert10OQ01OQ02.lean` 3082 LOC unchanged; 1 axiom (`koenigsmann_2016_universal`) unchanged; 0 sorries; 0 open PRs on slug. PREP-2's `5/5 dormant → release` verdict HOLDS at T+6d. ACTION: claim re-released 2026-06-09 ahead of TTL 2026-06-10T00:35Z. 30-day re-anchor `2026-07-03` UNCHANGED — PREP-3 is an interim verification, not a cadence reset. Recommendation to next picker who reclaims before 2026-07-03: skip and re-release (verdict won't change without an external bearer event), or commit to iter 27a-δ as the only feasible single-cycle Lean delta. Full record in `research/problems/hilbert-10-oq-01-oq-02/sessions/2026-06-09-s32-prep-3-bearer-recheck-t6d.md`. | S31 ITER 27a PREP-2 (researcher-1, 2026-06-03, T+1d post-PREP-1): doc-only Mathlib upstream PR/issue survey for the 5 bearers found absent in PREP-1. Executed `gh search prs` and `gh search issues` against title + body, both states, for all 5 bearers and natural keyword variants. VERDICT: 5/5 dormant. 4/5 have ZERO recorded PR or issue activity at any time; the fifth (Brauer) has only the ~17-month-dormant Defs landing PR #20968 MERGED 2025-01-25. ACTION: claim released ahead of TTL (2026-06-03T19:49Z); slug requeued at `available`. Recommended re-survey cadence 30 days (anchored 2026-07-03). Full record in `sessions/2026-06-03-iter27a-prep-2-mathlib-upstream-survey.md`. | S30 ITER 27a PREP-1 (researcher-1, 2026-06-02, T+17d post-iter 26a merge): Mathlib v4.26.0 bearer survey for the Σ₂(ℤ) attack. Shallow-cloned leanprover-community/mathlib4@v4.26.0 (HEAD verified = `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, matches pin); full-tree grep against the 5 bearers a naive iter 27a Σ₂(ℤ) ACT would need (HilbertSymbol, HasseMinkowski, BrauerRational, PoonenNonSquaresDiophantine, Hilbert10Rational) returns 0 matches in EACH case — **5/5 ABSENT**. What is present at the pin: LegendreSymbol/JacobiSymbol over `ZMod p` (NOT ℚ); full p-adic infrastructure (ℚ_p, ℤ_p, Hensel, valuation); abstract QuadraticForm with ℝ and ℂ specializations (NO ℚ); BrauerGroup as a 98-LOC skeleton (`CSA` + setoid only, abelian-group structure + functoriality + ℚ-spec all on TODO); Carneiro 2018 MRDP over ℕ (`Mathlib.NumberTheory.Dioph`, with the H10/ℤ undecidability theorem itself still on TODO). VERDICT: iter 27a is **UPSTREAM-BLOCKED** under current pin + slug's anti-axiom policy. Refined picker matrix (replaces S29's 5-cell matrix at iter 27a row): 27a-α (rational-square cone Σ₁ via Poonen 2009) = anti-candidate (same anti-axiom-policy as 27d); 27a-β (LegendreSymbol-keyed Σ₂ test fragment) = low-leverage (Σ₁ subset, Σ₁∩Σ₂ trivial); 27a-γ (Mathlib upstream contribution of HilbertSymbol + HasseMinkowski over ℚ) = multi-quarter deferred; 27a-δ (sharpen the H10/ℚ implication chain via re-export theorems) = ✅ low-leverage but axiom-free, ~50 LOC, 2-5 theorems. SINGLE-CYCLE ACT availability: only 27a-δ is achievable; the substantive Σ₂(ℤ) attack is NOT achievable under current constraints. PREP-2 proposal: catalog in-flight Mathlib PRs/RFCs targeting the 5 missing bearers (resolves into 'no motion → release', 'PR # X → track', or 'partial landed at SHA Y → PREP-3'). Disk hygiene flag: host disk at 99% throughout the session; clone removed after survey, recovered to 98%. ACT-readiness gate: 8/10 GREEN, 1/10 NEW INFO (gate 9 = bearer-gap is now explicit), 1/10 DOWNGRADED (gate 10 = only 27a-δ feasible single-cycle and low-leverage). Full record in `research/problems/hilbert-10-oq-01-oq-02/sessions/2026-06-02-iter27a-prep-1-mathlib-bearer-survey.md` (§§1-11). | S29 STATE-SYNC (researcher-1, 2026-05-31): T+15d temporal drift refresh, doc-only. S28 (researcher-1, 2026-05-16) shipped at 4/5 GREEN ACT gate; the iter 27 picker's slot has not been filled in the +15d window. Bearer recheck this S29: Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) UNCHANGED per `proofs/lake-manifest.json` direct read; spot-check at the pin: `Mathlib/Algebra/Order/Ring/Basic.lean` size=9086 sha=aa9e6f80679196767a86ed41af66b7703aa57359, `Mathlib/Data/Finset/Dedup.lean` size=6020 sha=05133e2c8c5718337eeca546abf51a3d28822672 — both byte-stable against the pinned-SHA reads recorded at S28 §2 (content-addressed). File `proofs/Proofs/Hilbert10OQ01OQ02.lean` is 3082 LOC at base (unchanged since iter 26a merge in PR #19117 at 2026-05-15T22:58:32Z; `git log --since=2026-05-16 -- proofs/Proofs/Hilbert10OQ01OQ02.lean` returns 0 commits). Open-PR hygiene at S29 probe: `gh pr list --search 'hilbert-10-oq-01-oq-02' --state open` returns 0 entries; last related PR was #19344 (mechanic lineCount fix) MERGED 2026-05-16T00:34:45Z. Picker matrix unchanged from S28: iter 27a (Σ₂(ℤ) attack — multi-cycle budget, OPEN level-2 question) and iter 27e (mechanical trivial-set iff-form ladder, content-free per S29 re-survey of class congruences) remain the only candidates; neither has fired in the +15d window. Re-survey of iter 27e: both `existentialUniversalDefinition_iff_of_pred_iff` (Σ₂ class congruence, line 437) and `universalExistentialDefinition_iff_of_pred_iff` (Π₂ class congruence, line 379) ALREADY EXIST, and the four trivial-set Σ₂/Π₂ facts (Part VIII.6 lines 591-629) cover both classes for both ∅ and univ via iter 5's symmetric duality `existentialUniversal_iff_universalExistential_complement`. iter 27e iff-form bundling between Σ₂(∅) and Π₂(univ) is a `Prop ↔ Prop` between TWO DIFFERENT subsets — semantically vacuous (`True ↔ True`). Conclusion: iter 27e is now formally NULL content, not just \"low leverage\" — promote to ANTI-CANDIDATE alongside 27b/27c/27d. Iter 27a remains the sole forward-motion candidate (multi-cycle budget). S28 STATE-SYNC (researcher-1, 2026-05-16): doc-only absorbed S27 residual drift across `.knowledge` subtree, leanFiles counts, meta.json import refresh, and open-PR hygiene rewrite. Iter 26a Finset transport (Part VIII.31 sigma2_unionFinset_isExistentialUniversalDefinition + Part VIII.32 pi2_intersectionFinset_isUniversalExistentialDefinition, two theorems, zero new imports / zero new helpers) MERGED 2026-05-15T22:58:32Z in PR #19117 — completing the Finset-arity row of the level-2 Σ₂/Π₂ closure grid. Parent v4.26.0 Mathlib.Algebra.Order.Ring.Lemmas import regression CLEARED by mechanic 4-kit PR #19137 (MERGED 2026-05-15T22:57:42Z, replaces with Ring.Basic at line 77) — entire iter 22-26 build-pending chain retroactively builds at Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0, unchanged). Meta.json gallery lineCount 2652 → 3082 synced via PR #19344 (MERGED 2026-05-16T00:34:45Z). S27 STATE-SYNC absorbed the drain wave into currentState in PR #19379 (MERGED 2026-05-15T20:53 PT). File totals at base SHA cf1cfa085e4: 3082 lines, 85 public theorems + 6 private (91 total), 8 public defs + 7 private (15 total), 1 axiom (koenigsmann_2016_universal, Π₂(ℤ) Annals 2016, irreducible), 0 sorries. Level-2 Σ₂/Π₂ closure grid complete at the four established cells (binary × list × Finset, ∪/∩). Iter 27 next picker's slot inherits ACT-readiness gate 10/10 GREEN (see S27 sessions memo §5). [Original S28 narrative below:] ITERATING (iter 27 picker's slot, post-S28 drift sync). Iter 26a Finset transport (Part VIII.31 sigma2_unionFinset_isExistentialUniversalDefinition + Part VIII.32 pi2_intersectionFinset_isUniversalExistentialDefinition, two theorems, zero new imports / zero new helpers) MERGED 2026-05-15T22:58:32Z in PR #19117 — completing the Finset-arity row of the level-2 Σ₂/Π₂ closure grid. Parent v4.26.0 Mathlib.Algebra.Order.Ring.Lemmas import regression CLEARED by mechanic 4-kit PR #19137 (MERGED 2026-05-15T22:57:42Z, replaces with Ring.Basic at line 77) — entire iter 22-26 build-pending chain retroactively builds at Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0, unchanged). Meta.json gallery lineCount 2652 → 3082 synced via PR #19344 (MERGED 2026-05-16T01:08:47Z). S27 STATE-SYNC absorbed the drain wave into currentState in PR #19379 (MERGED 2026-05-15T20:53 PT). Sole prior CONFLICTING stack PR #17602 (iter 19) now CLOSED — slug has zero open PRs. S28 STATE-SYNC (this PR, doc-only) absorbs four residual drift items left by S27: (i) .knowledge.progressSummary / .knowledge.nextSteps were not refreshed to iter 27 frame; (ii) leanFiles[3] for Hilbert10OQ01OQ02.lean had stale counts (lineCount 1260, theoremCount 54, defCount 12 — vs actual 3082 / 85 / 15); (iii) src/data/proofs/hilbert-10-oq-01-oq-02/meta.json still referenced the dropped Mathlib.Algebra.Order.Ring.Lemmas barrel in leanFile.imports[] and mathlibDependencies[mul_self_nonneg].module + had definitionCount 16 (actual 15); (iv) state.md §'Open PR hygiene' still described #17602 as the sole OPEN PR. File totals at base SHA cf1cfa085e4: 3082 lines, 85 public theorems + 6 private (91 total), 8 public defs + 7 private (15 total), 1 axiom (koenigsmann_2016_universal, Π₂(ℤ) Annals 2016, irreducible), 0 sorries. Level-2 Σ₂/Π₂ closure grid complete at the four established cells (binary × list × Finset, ∪/∩). Iter 27 next picker's slot inherits ACT-readiness gate 10/10 GREEN (see S27 sessions memo §5).",
+    "builtItems": [
+      "Proofs/Hilbert10OQ01OQ02.lean: file scaffolded with imports from Hilbert10OQ01 (lines 1-69)",
+      "Proofs/Hilbert10OQ01OQ02.lean: abbrev RatSubset := Rat → Prop (line 71)",
+      "Proofs/Hilbert10OQ01OQ02.lean: def IntSubset (line 74)",
+      "Proofs/Hilbert10OQ01OQ02.lean: def IsDiophantineDefinition (Σ₁) (lines 87-89)",
+      "Proofs/Hilbert10OQ01OQ02.lean: def IntegersAreDiophantineOverQ (line 95)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem integers_diophantine_iff via Iff.rfl (lines 100-103)",
+      "Proofs/Hilbert10OQ01OQ02.lean: def IsUniversalExistentialDefinition (Π₂) (lines 113-115)",
+      "Proofs/Hilbert10OQ01OQ02.lean: axiom koenigsmann_2016_universal (lines 124-125)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem diophantine_implies_universal_existential (Σ₁ ⊆ Π₂) (lines 139-149)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem integers_diophantine_strengthens_koenigsmann (lines 154-156)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem integers_diophantine_sigma1_implies_h10_q_undecidable (lines 165-169)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem mazur_implies_not_sigma1_definable (lines 182-185)",
+      "Proofs.lean: import Proofs.Hilbert10OQ01OQ02 added",
+      "src/data/proofs/hilbert-10-oq-01-oq-02/meta.json: gallery entry with overview, sections, conclusion, references",
+      "src/data/proofs/hilbert-10-oq-01-oq-02/index.ts: gallery entry boilerplate",
+      "src/data/proofs/hilbert-10-oq-01-oq-02/annotations.json: empty annotations (Phase-3 task)",
+      "Proofs/Hilbert10OQ01OQ02.lean: def IsExistentialUniversalDefinition (Σ₂, ∃∀ definability) (lines 272-286, iteration 3)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem codiophantine_implies_existentialUniversal (Π₁ ⊆ Σ₂, dual of Σ₁ ⊆ Π₂; axiom-free) (lines 288-309, iteration 3)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem existentialUniversal_iff_universalExistential_complement (Σ₂/Π₂ duality; axiom-free up to two Classical.byContradiction steps) (lines 311-350, iteration 3)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem universalExistentialDefinition_iff_of_pred_iff (Π₂ class congruence helper, axiom-free) (lines 352-365, iteration 3)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem koenigsmann_implies_complement_existentialUniversal (ℚ\\ℤ is Σ₂-definable in ℚ; corollary of Koenigsmann via Σ₂/Π₂ duality, no new axiom) (lines 367-383, iteration 3)",
+      "src/data/proofs/hilbert-10-oq-01-oq-02/meta.json: lineCount 330→462, theoremCount 9→13, definitionCount 7→8 (axiomCount unchanged)",
+      "src/data/proofs/hilbert-10-oq-01-oq-02/annotations.json: 13 annotations covering all four quantifier classes, both dualities, the Σ₂(ℚ\\ℤ) corollary, and the closing #checks",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem diophantineDefinition_iff_of_pred_iff (Σ₁ class congruence under propositional equivalence; pure logic, no axioms) (lines 367-385, iteration 4)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem coDiophantineDefinition_iff_of_pred_iff (Π₁ class congruence under propositional equivalence; pure logic, no axioms) (lines 387-403, iteration 4)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem existentialUniversalDefinition_iff_of_pred_iff (Σ₂ class congruence under propositional equivalence; pure logic, no axioms) (lines 405-422, iteration 4)",
+      "src/data/proofs/hilbert-10-oq-01-oq-02/meta.json: lineCount 462→526, theoremCount 13→16 (axiomCount/definitionCount unchanged)",
+      "Proofs/Hilbert10OQ01OQ02.lean: import Mathlib.Algebra.Group.Basic added (S8 iter 8, first Mathlib import in this file — Path B transition for sub_eq_zero on ℚ)",
+      "Proofs/Hilbert10OQ01OQ02.lean: private def shiftPoly (a : Rat) : Rat → RatDiophantinePoly := fun q _ => q - a (S8, generalizes S6 parameterPoly to arbitrary rational shift)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem singletonOf_isDiophantineDefinition (a : Rat) — every {a} ⊂ ℚ is Σ₁-definable for any a : ℚ (S8 Path B; uses sub_eq_zero from Mathlib)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem notSingletonOf_isCoDiophantineDefinition (a : Rat) — every ℚ \\ {a} is Π₁-definable for any a : ℚ (S8 dual)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem singletonOf_isUniversalExistentialDefinition (a : Rat) — every {a} ⊂ ℚ is Π₂-definable, corollary via Σ₁ ⊆ Π₂ (S8)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem notSingletonOf_isExistentialUniversalDefinition (a : Rat) — every ℚ \\ {a} is Σ₂-definable, corollary via Π₁ ⊆ Σ₂ (S8)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem singletonOf_zero_isDiophantineDefinition — documents S6 = a=0 instance of S8 family (S8)",
+      "src/data/proofs/hilbert-10-oq-01-oq-02/meta.json: lineCount 885→999, theoremCount 39→44, definitionCount 11→12; mathlibDependencies = [Mathlib.Algebra.Group.Basic]; leanFile.imports gained Mathlib.Algebra.Group.Basic",
+      "Proofs/Hilbert10OQ01OQ02.lean: import Mathlib.Algebra.GroupWithZero.Basic added (S9 iter 9, second Mathlib import — `mul_eq_zero` on ℚ for binary union/intersection closure)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem union_isDiophantineDefinition — Σ₁ closed under binary union via product polynomial witness P(q,x)=P₁(q,x)·P₂(q,x) (S9 Path B; uses mul_eq_zero, zero_mul, mul_zero)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem intersection_isCoDiophantineDefinition — Π₁ closed under binary intersection via the SAME product polynomial witness (S9 Path B, dual of union)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem singletonPair_isDiophantineDefinition (a b : Rat) — every PAIR {a, b} ⊂ ℚ is Σ₁-definable (S9 corollary of union closure applied to two S8 singletonOf witnesses)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem notSingletonPair_isCoDiophantineDefinition (a b : Rat) — every complement-of-pair ℚ \\ {a, b} is Π₁-definable (S9 corollary)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem singletonPair_isUniversalExistentialDefinition (a b : Rat) — every PAIR {a, b} is Π₂-definable, corollary via Σ₁ ⊆ Π₂ (S9)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem notSingletonPair_isExistentialUniversalDefinition (a b : Rat) — every complement-of-pair is Σ₂-definable, corollary via Π₁ ⊆ Σ₂ (S9)",
+      "src/data/proofs/hilbert-10-oq-01-oq-02/meta.json: lineCount 999→1163, theoremCount 44→50, definitionCount unchanged at 12; mathlibDependencies adds Mathlib.Algebra.GroupWithZero.Basic; leanFile.imports gained Mathlib.Algebra.GroupWithZero.Basic",
+      "finUnionList_singletons_isDiophantineDefinition (l : List Rat) : IsDiophantineDefinition (fun q : Rat => q ∈ l) — every finite subset of ℚ is Σ₁-definable (iter 10)",
+      "finIntersectionList_complement_singletons_isCoDiophantineDefinition (l : List Rat) : IsCoDiophantineDefinition (fun q : Rat => q ∉ l) — every complement of a finite subset of ℚ is Π₁-definable (iter 10 dual)",
+      "finUnionList_singletons_isUniversalExistentialDefinition (l : List Rat) : Π₂ corollary via Σ₁ ⊆ Π₂ (iter 10)",
+      "finIntersectionList_complement_singletons_isExistentialUniversalDefinition (l : List Rat) : Σ₂ corollary via Π₁ ⊆ Σ₂ (iter 10)",
+      "Theorem coDiophantine_implies_universal_existential: every Π₁-definable subset of ℚ is also Π₂-definable, via polynomial-inversion trick (iter 11). New witness P(q, y, x) := P(q, y) · x 0 - 1 with mul_inv_cancel₀ + sub_eq_zero. Path B but no new imports beyond iter 9.",
+      "intersection_isDiophantineDefinition + intersection_isUniversalExistentialDefinition in proofs/Proofs/Hilbert10OQ01OQ02.lean (iter 12 / S11.2): 4 new theorems (2 private projection lemmas + 2 public closure theorems) + 3 private definitions (evenProj, oddProj, interleave). Adds Mathlib.Algebra.Order.Ring.Lemmas + Mathlib.Tactic.Linarith.",
+      "Iter 23 PR: Part VIII.27 adds IntegersAreExistentialUniversalOverQ (def, line 2309) + integers_existentialUniversal_iff_complement_universalExistential (theorem, line 2341) + koenigsmann_2016_universal_doubleNeg (theorem, line 2357) in proofs/Proofs/Hilbert10OQ01OQ02.lean. File 2539 → 2652 lines (+113). Theorems 83 → 85 (+2). Defs 15 → 16 (+1). Axioms 1 (unchanged). Sorries 0 (unchanged). No new Mathlib imports.",
+      "Iter 25 PR: Part VIII.29 + VIII.30 add sigma2_unionList_isExistentialUniversalDefinition (Σ₂ list ∪, line 2530) and pi2_intersectionList_isUniversalExistentialDefinition (Π₂ list ∩, line 2610) in proofs/Proofs/Hilbert10OQ01OQ02.lean. Direct list-induction mirror of iter 21 (Σ₂ list ∩ + Π₂ list ∪) onto iter 24a's binary closures (sigma2_union_isExistentialUniversalDefinition + pi2_intersection_isUniversalExistentialDefinition, PR #18659). File 2775 → 2942 lines (+167). Theorems 87 → 89 (+2). Defs 15 unchanged. Axioms 1 unchanged. Sorries 0 unchanged. ZERO new Mathlib imports, ZERO new lemmas. Completes the list-arity row of the level-2 Σ₂/Π₂ binary closure grid.",
+      "Realigned gallery annotation coverage: annotations spanned only lines 1-462 (sections 1-8) on the 3174-line file; added 3 annotations covering the previously un-annotated sections 9 (468-1840, Σ₁/Π₁ Boolean closure grid, iters 5-17), 10 (1841-2865, Σ₂/Π₂ closure + named level-2 open question, iters 20-27), and 11 (2866-3174, Part IX sharpened landscape). annotations.json now 13→16, covering full file 1-3174."
+    ],
+    "insights": [
+      "The Σ₁/Π₁ distinction (Diophantine vs universal definability) is the precise mathematical content of OQ-01-OQ-02 over and above OQ-01: Koenigsmann 2016 settled Π₁; Σ₁ remains open",
+      "Existing `Proofs/Hilbert10OQ01.lean` already encodes the conditional `IntegersDiophantineOverQ → ¬H10_Rational_Decidable` (the only pivot in the implication chain); reusing this avoids axiom duplication",
+      "A Phase-2 file `Hilbert10OQ01OQ02.lean` should add: `def UniversallyDefinableOverQ (S : ℚ → Prop) : Prop`, `theorem koenigsmann_2016 : UniversallyDefinableOverQ (fun q => q ∈ Set.range (Int.cast : ℤ → ℚ))` (axiomatized, with full citation), and explicitly state `IntegersDiophantineOverQ` as the open question it ALSO refines",
+      "Mazur's conjecture is STRICTLY STRONGER than 'ℤ not Diophantine over ℚ'; a Lean treatment should distinguish them",
+      "The 'integrality detection' phrasing in the seeker's title is precisely the Σ₁-definition question — natural to formalize as `∃ P : Polynomial(ℚ, k+1), ∀ t, t∈ℤ ↔ ∃ x₁..xₖ : P(t,x)=0`",
+      "Decidability of H10/ℚ is the application target, but is one logical step removed: positive Σ₁-definition → undecidable (via Matiyasevich); negative → does NOT immediately give decidable (the decidability could fail through other Diophantine sets)",
+      "Σ₁ predicate `IsDiophantineDefinition` over IntSubset is DEFINITIONALLY EQUAL to the existing OQ-01 `IntegersDiophantineOverQ` — proved by `Iff.rfl`, no rewrite needed",
+      "Σ₁ ⊆ Π₂ inclusion is one line: take the universal block to be a dummy and ignore it. The polynomial doesn't need to depend on y at all (proved by `refine ⟨fun q _ => P q, ?_⟩` then `intro q; constructor`)",
+      "Self-contained file (no Mathlib import, just imports Hilbert10OQ01 which is also self-contained) — Docker build is fast (~3s after Mathlib cache hit)",
+      "Re-exports of OQ-01 axioms as theorems against the Σ₁ predicate add NO new assumptions: they are pure logical consequences of the equivalence `Iff.rfl`",
+      "Gallery entry mirrors hilbert-10-oq-01 schema with crossReferences linking to hilbert-10-oq-01 (extends), hilbert-10 (grandparent), hilbert-10-oq-04 (sibling), godel-incompleteness (related)",
+      "The Σ₂/Π₂ duality is the higher-level analog of Σ₁/Π₁: same proof shape, classical excluded middle bridges ¬¬p ↔ p in both directions. Both dualities are axiom-free given Classical.byContradiction.",
+      "Π₁ ⊆ Σ₂ is the precise dual of Σ₁ ⊆ Π₂: a Π₁ formula ∀ x, P(q,x) ≠ 0 is automatically a Σ₂ formula ∃ y, ∀ x, P(q,x) ≠ 0 with a dummy existential block (witnessed by `fun _ => 0`). 6-line proof.",
+      "The Σ₂(ℚ\\ℤ) corollary of Koenigsmann is non-trivial structural content: it places ℚ\\ℤ on the second level of the arithmetic hierarchy unconditionally, with no new axiom beyond Koenigsmann.",
+      "Bridging across negation requires a predicate-equivalence helper: Π₂ class is invariant under propositional equivalence (universalExistentialDefinition_iff_of_pred_iff). The bridge IntSubset q ↔ ¬ NotIntSubset q uses standard double-negation introduction + Classical.byContradiction.",
+      "Pattern for axiom-free duality proofs in Lean core: `apply Classical.byContradiction; intro hn; have : ... := ...` — this idiom carries the file with no Mathlib import.",
+      "S6 → S8 generalization (singletonZero → singletonOf): the projection polynomial P(q,x) = q recovers as the special case a = 0 of the shift polynomial P(q,x) = q - a; the shift family adds nothing new for a = 0 but parameterizes the entire family of singletons by a single witness",
+      "Σ₁-definability is closed under FINITE union (and intersection) but the OPEN ℤ ⊂ ℚ Σ₁ question is precisely the question of closure under COUNTABLE union along Int.cast — the family of singletons {n} for n : ℤ is uniformly Σ₁-definable per-element (via singletonOf at a = n) but not known to admit a single uniform polynomial witness for the union",
+      "Path A → Path B transition: the file architecture changes at iter 8 to allow Mathlib imports. The minimal cost (one import: Mathlib.Algebra.Group.Basic for sub_eq_zero) unlocks the singleton-of-a generalization, the closure properties (S9+: needs mul_eq_zero), and Π₁ ⊆ Π₂ via inversion (S10+: needs Rat field arithmetic)",
+      "S9 design choice — same product polynomial for both union and intersection: the witness P(q, x) = P₁(q, x)·P₂(q, x) reuses the SAME variable assignment block for both factors. For union (Σ₁), this is fine: ∃x, P₁·P₂=0 ⟺ (∃x, P₁=0) ∨ (∃x, P₂=0) — both directions hold trivially because we don't need the same x to vanish in both factors. For intersection (Π₁), the dual statement holds: ∀x, P₁·P₂≠0 ⟺ (∀x, P₁≠0) ∧ (∀x, P₂≠0) — the universal quantifier 'splits' across the conjunction. Sum-of-squares would be needed for Σ₁ INTERSECTION (where we need the same x to make both factors zero), not for Σ₁ union or Π₁ intersection.",
+      "S9 sharpens the OPEN landscape: every FINITE subset of ℚ is Σ₁-definable (by induction over a finite list, using S8 singletons + S9 binary union). The OPEN Σ₁ question for ℤ ⊂ ℚ thus reduces precisely to: does the COUNTABLE union ⋃_{n : ℤ} {n} admit a UNIFORM polynomial witness? Finite truncations ⋃_{n ∈ [-N, N]} {n} are Σ₁-definable for every N (corollary of S8 + S9), but the limit N → ∞ requires a single polynomial whose existence is precisely the open content of the question.",
+      "OPEN Σ₁ question for ℤ ⊂ ℚ is EQUIVALENT to whether the countable union ⋃_{n : ℤ} {n} is Σ₁-definable — finite truncations ⋃_{n ∈ [-N, N] ∩ ℤ} {n} are Σ₁-definable for every finite N via finUnionList_singletons (iter 10)",
+      "List.mem_cons (Lean-core) provides q ∈ a :: t ↔ q = a ∨ q ∈ t directly — no Mathlib import needed for finite-list induction over Σ₁/Π₁ classes",
+      "The base case of finite-list induction is closed via S5 trivial-set witnesses (`empty_isDiophantineDefinition` / `universe_isCoDiophantineDefinition`); the cons case via S9 union/intersection closure + S8 singleton witnesses — clean modular composition (iter 10)",
+      "Polynomial-inversion trick (iter 11): the Π₁ ⊆ Π₂ containment is NOT a dummy-block argument (those work for Σ₁ ⊆ Π₂ and Π₁ ⊆ Σ₂); it requires using the FIELD structure of ℚ to encode non-vanishing as existence of an inverse. The witness P(q, y, x) := P(q, y) · x 0 - 1 has rational solution iff P(q, y) ≠ 0 (since over ℚ, a · z = 1 has a solution iff a is invertible iff a ≠ 0). This is a meaningful use of GroupWithZero — it would NOT generalize to Π₁ ⊆ Π₂ over arbitrary commutative rings.",
+      "Σ₁ over ℚ is closed under binary intersection via a sum-of-squares witness with even/odd variable packing on Nat → Rat. Combined with iter 9 union closure, Σ₁ is closed under finite Boolean combinations using ∪ and ∩, but NOT under complement — closure under complement would collapse Σ₁ = Π₁, which is the OPEN question in disguise.",
+      "Iter 23 (researcher-1): The level-2 OPEN Σ₂(ℤ) question is now named as a top-level Prop (IntegersAreExistentialUniversalOverQ) and its complement-duality Σ₂(ℤ) ⟺ Π₂(ℚ\\ℤ) is proved as a one-line specialization of iter 5's symmetric Σ₂/Π₂ duality at S := IntSubset — completing the symmetric pair of complement-dualities for the two OPEN questions tracked in this file. At level 1, neither side of the duality is known; at level 2 the Σ₂(ℚ\\ℤ) side is PROVED via Koenigsmann + iter 5 duality, so the level-2 OPEN content collapses to the single Σ₂(ℤ) question.",
+      "Iter 23 (researcher-1): koenigsmann_2016_universal_doubleNeg exposes the Π₂(¬¬ ℤ) re-export of Koenigsmann via iter 7's Π₂ doubleNeg invariance. Useful when a downstream argument naturally produces ¬¬ IntSubset (e.g. via Classical.byContradiction on a Π₁ counter-witness)."
+    ],
+    "mathlibGaps": [
+      "No formal definition of 'Diophantine subset of a ring' in Mathlib — `Hilbert10OQ01.lean` uses ad-hoc `RatDiophantinePoly := (Nat → Rat) → Rat`",
+      "No formalization of Matiyasevich's DPRM theorem (would be needed to prove the reduction `IntegersDiophantineOverQ → ¬H10_Rational_Decidable` rather than axiomatizing it)",
+      "No formalization of Koenigsmann's universal definition of ℤ in ℚ (the 2016 Annals paper has explicit polynomials)",
+      "No general first-order logic / Σ_n / Π_n hierarchy in Mathlib for this kind of definability question",
+      "Mathlib has sub_eq_zero, mul_eq_zero, and Rat field arithmetic — so Path B for arbitrary singletons + finite-union closure is fully buildable. The OPEN content is the COUNTABLE union (uniform vs non-uniform witness for ℤ ⊂ ℚ Σ₁-definability), which is precisely the open Σ₁ question and not a Mathlib gap"
+    ],
+    "nextSteps": [
+      "Iter 27a (high leverage, high risk; multi-cycle ACT budget): Σ₂(ℤ) attack via Koenigsmann lift + complement-collapse against the named OPEN level-2 Prop `IntegersAreExistentialUniversalOverQ` (Part VIII.27 line 2317). Strategy: produce a Σ₂ definition of ℤ ⊂ ℚ from Koenigsmann's Π₂ definition by exploiting the Σ₂ ∩ Π₂ = Δ₂ collapse + iter 26a's Finset closures over Koenigsmann's atomic universal blocks. Recommended sub-step: first nail the Σ₂/Π₂ symmetric duality on a non-trivial fragment (e.g., the rational-square cone) before attacking the full ℤ case. Failure mode overwhelmingly likely (this is the genuine open problem); success would be a level-2 refinement of Koenigsmann's Annals 2016 result.",
+      "Iter 27e (low leverage, low risk; ~30-60 LOC mechanical ladder rung): symmetric level-2 dualities on universe / empty set + class-congruence sharpening via iter 5's `existentialUniversal_iff_universalExistential_complement` (Part VIII.5, line 343) and `universalExistentialDefinition_iff_of_pred_iff`. The four trivial-set facts (empty_isUniversalExistentialDefinition / universe_isUniversalExistentialDefinition / empty_isExistentialUniversalDefinition / universe_isExistentialUniversalDefinition) at Part VIII.6 lines 591-629 currently expose only one direction of the duality; bidirectional iff forms and a tightened class-congruence lemma at the trivial-set level would be the mechanical filler. Suitable when picker wants a low-risk shipment without engaging the open question.",
+      "Iter 27 ACT-readiness gate: 10/10 GREEN at base SHA cf1cfa085e4 (post-S28 sync); Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) unchanged; 18-bearer drift recheck = 0 events since Session 26 (2026-05-15T01:29Z), re-verified in S27 sessions memo §2. Zero open PRs on slug. Sole previous CONFLICTING stack PR #17602 (iter 19) now CLOSED.",
+      "Anti-candidate: iter 27b (four un-closed level-2 cells Σ₂ ¬, Π₂ ¬, Σ₂ \\ Π₂, Π₂ \\ Σ₂) — closure of any of these would either collapse Σ₂ = Π₂ at level 2 (settling the slug's central open question) or settle the level-2 separation; not viable without new axioms; anti-axiom-policy DEFERRED.",
+      "Anti-candidate: iter 27c (close stale CONFLICTING stack PRs) — superseded by S28 STATE-SYNC: #17602 + #17552 + #18997 all already CLOSED on origin/main.",
+      "Anti-candidate: iter 27d (Daans 2021 10-quantifier reduction as a refinement axiom of koenigsmann_2016_universal) — anti-axiom-policy DEFERRED; would add 1 new axiom for a quantitative improvement only.",
+      "Long-term: formalize the explicit Koenigsmann 2016 polynomial in Lean to discharge the `koenigsmann_2016_universal` axiom — requires Hilbert-symbol / quaternion infrastructure (partial in Hilbert11_QuadraticForms.lean). Multi-month research effort; the only path to converting the slug from `axiomatized` to `verified` status."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "mathematical-logic",
+    "diophantine",
+    "hilbert-10",
+    "decidability",
+    "open-problem",
+    "matiyasevich",
+    "koenigsmann",
+    "mazur-conjecture"
+  ],
+  "relatedProofs": [
+    "hilbert-10",
+    "hilbert-10-oq-01",
+    "hilbert-10-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Matiyasevich 1970 - Enumerable sets are Diophantine (DAN SSSR) — DPRM theorem, Hilbert's 10th over ℤ undecidable",
+      "Robinson 1949 - Definability and decision problems in arithmetic (J. Symb. Logic) — first definition of ℤ in ℚ",
+      "Mazur 1992 - The topology of rational points (Experimental Math.) — Mazur's conjecture on Diophantine subsets of ℚ",
+      "Poonen 2009 - The set of nonsquares in a number field is Diophantine (Math. Res. Lett. 16, 165-170)",
+      "Poonen 2009 - Hilbert's tenth problem and Mazur's conjecture for large subrings of ℚ (J. AMS)",
+      "Koenigsmann 2016 - Defining ℤ in ℚ (Annals of Math. 183, 73-93) — universal (Π₁) definition",
+      "Eisenträger-Park 2018 - Universally and existentially definable subsets of global fields",
+      "Daans 2021 - Universally defining ℤ in ℚ with 10 quantifiers (J. Number Theory)",
+      "Sun 2016 - On Hilbert's tenth problem and related topics",
+      "Cornelissen-Pheidas 2008 - Survey: Algebra and number theory in mathematical logic"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Hilbert%27s_tenth_problem",
+      "https://annals.math.princeton.edu/articles/10245"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Rat.Defs — rational numbers ℚ",
+      "Mathlib.RingTheory.Polynomial.Basic — polynomials over ℚ",
+      "Mathlib.NumberTheory.Cyclotomic.Basic — cyclotomic background for some Diophantine definitions",
+      "Mathlib.Logic.FirstOrder.Basic — first-order definability framework (limited)"
+    ]
+  },
+  "started": "2026-05-05T02:57:43.927Z",
+  "lastUpdate": "2026-06-14T23:45:00Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert10.lean",
+      "filename": "Hilbert10.lean",
+      "lineCount": 239,
+      "theoremCount": 7,
+      "axiomCount": 4,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10.lean"
+    },
+    {
+      "path": "Proofs/Hilbert10OQ01.lean",
+      "filename": "Hilbert10OQ01.lean",
+      "lineCount": 187,
+      "theoremCount": 0,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert10OQ04.lean",
+      "filename": "Hilbert10OQ04.lean",
+      "lineCount": 251,
+      "theoremCount": 10,
+      "axiomCount": 5,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ04.lean"
+    },
+    {
+      "path": "Proofs/Hilbert10OQ01OQ02.lean",
+      "filename": "Hilbert10OQ01OQ02.lean",
+      "lineCount": 3174,
+      "theoremCount": 90,
+      "axiomCount": 1,
+      "defCount": 15,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ01OQ02.lean"
+    }
+  ]
+}

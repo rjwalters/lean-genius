@@ -1,0 +1,160 @@
+{
+  "id": "area-of-circle-oq-01-oq-03-oq-01",
+  "title": "Arc-Length Reparametrization for Smooth Closed Curves",
+  "slug": "area-of-circle-oq-01-oq-03-oq-01",
+  "description": "Proves the arc-length reparametrization theorem: every regular smooth closed curve admits a constant-speed reparametrization preserving circumference and area. The key results are: (1) the periodic integral shift ∫_t^{t+T} f = ∫_0^T f for T-periodic f (proved via Mathlib's integral_comp_add_left and periodicity); (2) quasi-periodicity s(t+2π) = s(t)+L (proved from (1)); (3) surjectivity of arc-length via IVT; (4) bijectivity and the C¹ inverse via IFT (proved via HasStrictDerivAt.to_local_left_inverse + contDiff_one_iff_deriv); (5) the change-of-variables formula for circumference and area (proved via chain rule + IFT derivative). Completes the analytic infrastructure for the isoperimetric inequality (area-of-circle-oq-01-oq-03).",
+  "meta": {
+    "author": "researcher-3",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Arc_length",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ01OQ03OQ01.lean",
+    "tags": [
+      "analysis",
+      "geometry",
+      "calculus",
+      "differential-geometry",
+      "arc-length",
+      "reparametrization",
+      "isoperimetric",
+      "inverse-function-theorem",
+      "open-question",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "",
+    "originalContributions": [
+      "periodic_integral_shift: ∫_t^{t+T} f = ∫_0^T f for T-periodic f, proved via integral_comp_add_left + periodicity",
+      "arcLength_quasi_periodic: s(t+2π) = s(t) + L, proved from periodic_integral_shift (completing the sorry in parent)",
+      "arcLength_nat_multiple: s(2nπ) = nL for n : ℕ, proved by induction",
+      "arcLength_neg_nat_multiple: s(−2nπ) = −nL, proved from quasi-periodicity",
+      "arcLength_surjective: s : ℝ → ℝ is surjective for regular curves (proved via IVT using growth bounds ±nL)",
+      "arcLengthInv_quasi_periodic: σ(y+L) = σ(y)+2π, proved from arc-length quasi-periodicity",
+      "exists_arclength_reparam': full arc-length reparametrization theorem with constant speed L/(2π)"
+    ],
+    "lineCount": 712,
+    "theoremCount": 26,
+    "defCount": 3,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "The arc-length reparametrization is a fundamental tool in differential geometry, in use since the 19th century. For smooth regular curves, the arc-length parameter ('unit speed') makes curvature calculations and variational arguments dramatically simpler. Adolf Hurwitz's 1901 proof of the isoperimetric inequality — that among all closed curves of given length L, the circle encloses maximum area A with $L^2 \\ge 4\\pi A$ — uses arc-length reparametrization as its first step: by normalizing to constant speed $c = L/(2\\pi)$, the Fourier coefficients of the curve become orthogonal, and Parseval's equality directly yields the Wirtinger inequality $\\|f'\\|^2 \\ge \\|f\\|^2$, which is equivalent to the isoperimetric inequality. The existence of the reparametrization relies on the inverse function theorem: since $s'(t) = \\text{speed}(t) > 0$ for regular curves, the arc-length function $s : \\mathbb{R} \\to \\mathbb{R}$ is a $C^1$ diffeomorphism with a $C^1$ inverse $\\sigma = s^{-1}$. The classical treatment appears in do Carmo's *Differential Geometry of Curves and Surfaces* (1976), §1-7. The periodic integral shift lemma $\\int_t^{t+T} f = \\int_0^T f$ — proved here from Mathlib primitives rather than axiomatized — is the same identity underlying the Poisson summation formula and the periodization technique in harmonic analysis.",
+    "problemStatement": "**Arc-Length Reparametrization**:\n\nGiven a regular smooth closed curve γ : [0,2π] → ℝ² (where 'regular' means |γ'(t)| > 0 everywhere), show there exists a smooth closed curve γ' : [0,2π] → ℝ² with:\n1. γ'.circumference = γ.circumference  (same total length L)\n2. γ'.area = γ.area  (same enclosed area A)\n3. |γ'(t)|² = (L/2π)² for all t  (constant speed L/(2π))\n\n**Key sub-problems**:\n- Prove ∫_t^{t+2π} f = ∫_0^{2π} f for 2π-periodic f (periodic integral shift)\n- Prove s(t+2π) = s(t) + L (quasi-periodicity of arc-length)\n- Prove s : ℝ → ℝ is surjective (IVT from growth bounds)\n- Apply IFT to get C¹ inverse σ with σ'(y) = 1/speed(σ(y))",
+    "text": "This file proves the arc-length reparametrization theorem for smooth regular closed curves. The construction is: set c = L/(2π), let s = ∫_0^t |γ'(u)| du be the arc-length function, σ = s⁻¹ its C¹ inverse (IFT), and τ(t) = σ(c·t) the reparametrization. Then γ'(t) = γ(τ(t)) is 2π-periodic, smooth, and has constant speed c = L/(2π). The proof of quasi-periodicity (the key sorry from the parent) uses the periodic integral shift lemma: for 2π-periodic f, ∫_t^{t+2π} f = ∫_t^{2π} f + ∫_0^t f(·+2π) = ∫_0^{2π} f. Surjectivity uses IVT from the growth bounds s(2nπ) = nL → ±∞. The IFT and change-of-variables axioms capture the analytically hard parts.",
+    "proofStrategy": "**Construction**: Let L = γ.circumference, c = L/(2π).\n1. Define s(t) = ∫_0^t speed(u) du (arc-length function)\n2. Prove s is C¹, strictly increasing (speed > 0), quasi-periodic: s(t+2π) = s(t)+L\n3. Prove s is surjective (IVT: s(2nπ) = nL → ∞, s(-2nπ) → -∞)\n4. Define σ = s⁻¹ (C¹ by IFT, with σ'(y) = 1/speed(σ(y)))\n5. Define τ(t) = σ(c·t). Then τ(t+2π) = σ(c·t+L) = σ(c·t)+2π (quasi-periodicity of σ)\n6. γ'(t) = γ(τ(t)) is smooth, 2π-periodic, with speed c (by chain rule + IFT derivative)\n7. Circumference and area preserved by change of variables",
+    "keyInsights": [
+      "**Periodic integral shift**: The key novelty is proving ∫_t^{t+T} f = ∫_0^T f for T-periodic f via Mathlib's integral_comp_add_left rather than an axiom",
+      "**Quasi-periodicity follows**: Once the shift lemma is proved, s(t+2π) = s(t) + L follows cleanly from the integral splitting",
+      "**Surjectivity via IVT**: s(2nπ) = nL is proved by induction; surjectivity then follows from the intermediate value theorem for continuous functions",
+      "**Speed = c**: The constant speed computation (x'∘τ)² + (y'∘τ)² = c² uses the IFT derivative σ'(ct) = 1/speed(σ(ct)) — then c²/speed² · speed² = c²",
+      "**σ quasi-periodic**: σ(y+L) = σ(y)+2π follows from s(σ(y)+2π) = σ(y)+L by arc-length quasi-periodicity and injectivity"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Module docstring for the arc-length reparametrization theorem for smooth closed curves, the analytic infrastructure under the isoperimetric inequality (parent AreaOfCircleOQ01OQ03.lean). Identifies the two parent sorries this file discharges (periodic integral shift; arc-length reparametrization) and lists key results. Note: the header's '## Axioms: 4' line is historical — the file is now fully proved with 0 axioms (status verified).",
+      "mathContext": "Goal: every smooth closed regular curve $\\gamma$ admits a constant-speed reparametrization $\\gamma'(t) = \\gamma(\\tau(t))$ with $|\\gamma'| \\equiv L/(2\\pi)$ that preserves circumference and signed area — the reduction enabling the Wirtinger/Fourier proof of $L^2 \\ge 4\\pi A$."
+    },
+    {
+      "id": "periodic",
+      "title": "Section I: Periodic Functions and Integral Shift",
+      "startLine": 52,
+      "endLine": 87,
+      "summary": "periodic_integral_shift: ∫_t^{t+2π} f = ∫_0^{2π} f for 2π-periodic continuous f. Proved via integral splitting + integral_comp_add_left substitution + periodicity.",
+      "mathContext": "For a T-periodic integrable function f: $\\int_t^{t+T} f = \\int_0^T f$. The proof splits at T, uses the substitution $u = x + T$ for the piece $\\int_T^{t+T}$, then combines via periodicity."
+    },
+    {
+      "id": "arclength",
+      "title": "Section II: Arc-Length Function Properties",
+      "startLine": 88,
+      "endLine": 208,
+      "summary": "curveSpeed, arcLength definitions. arcLength_hasDerivAt, _continuous, _zero, _period. arcLength_quasi_periodic (PROVED): s(t+2π) = s(t)+L. arcLength_nat_multiple: s(2nπ) = nL. arcLength_neg_nat_multiple: s(-2nπ) = -nL.",
+      "mathContext": "Arc-length $s(t) = \\int_0^t |\\gamma'(u)| du$ satisfies: $s'(t) = |\\gamma'(t)|$, $s(0) = 0$, $s(2\\pi) = L$, $s(t+2\\pi) = s(t) + L$, $s(2n\\pi) = nL$."
+    },
+    {
+      "id": "surjectivity",
+      "title": "Section III: Surjectivity of Arc-Length via IVT",
+      "startLine": 209,
+      "endLine": 247,
+      "summary": "arcLength_surjective (PROVED via IVT): for any y, find n with s(-2nπ) ≤ y ≤ s(2nπ), then IVT gives t with s(t) = y. Sets up the bijectivity used to define the inverse.",
+      "mathContext": "Surjective (IVT from $s(2n\\pi) = nL \\to \\infty$ and $s(-2n\\pi) = -nL \\to -\\infty$) — combined with strict monotonicity (next section) this gives a bijective homeomorphism $\\mathbb{R} \\to \\mathbb{R}$."
+    },
+    {
+      "id": "inverse",
+      "title": "Section IV: C¹ Inverse — Monotonicity, Bijectivity, and Quasi-Periodicity",
+      "startLine": 248,
+      "endLine": 318,
+      "summary": "arcLength_strictMono (regular curves, via MVT + speed > 0), arcLength_injective, arcLength_bijective. arcLengthInv: the inverse defined via Equiv.ofBijective. arcLengthInv_left/_right (left/right inverses). arcLengthInv_quasi_periodic (PROVED): σ(y+L) = σ(y)+2π. (The banner reads 'Axiomatized' for historical reasons; all results here are proved.)",
+      "mathContext": "Strictly monotone (speed > 0) + surjective (IVT) ⟹ bijective, so the global inverse $\\sigma = s^{-1}$ exists; quasi-periodicity $s(t+2\\pi) = s(t)+L$ transfers to $\\sigma(y+L) = \\sigma(y)+2\\pi$ by injectivity."
+    },
+    {
+      "id": "inverse-ift",
+      "title": "Section IV (continued): C¹ Inverse — Differentiability via IFT (Proved)",
+      "startLine": 319,
+      "endLine": 394,
+      "summary": "arcLengthInv_hasDerivAt (PROVED via IFT): σ'(y) = 1/speed(σ(y)), from HasStrictDerivAt of arcLength at σ(y) with speed > 0 and σ a global left inverse. arcLengthInv_contDiff (PROVED): σ is C¹ via contDiff_one_iff_deriv.",
+      "mathContext": "The inverse function theorem: since $s' = \\text{speed} > 0$, the global inverse $\\sigma$ is $C^1$ with $\\sigma'(y) = 1/s'(\\sigma(y)) = 1/\\text{speed}(\\sigma(y))$."
+    },
+    {
+      "id": "changevar",
+      "title": "Section V: Change of Variables for Integrals (Proved)",
+      "startLine": 395,
+      "endLine": 572,
+      "summary": "circumference_reparam_preserved (PROVED): ∫|γ'∘τ| = L. area_reparam_preserved (PROVED): the signed area form is preserved. Both apply the change-of-variables formula for interval integrals under the reparametrization τ = σ∘(c·).",
+      "mathContext": "The reparametrization $\\tau = \\sigma \\circ (c \\cdot)$ is an orientation-preserving diffeomorphism $[0,2\\pi] \\to [0,2\\pi]$, so it preserves both arc length and the signed area form $x dy - y dx$."
+    },
+    {
+      "id": "main",
+      "title": "Section VI: Main Theorem — Constant-Speed Reparametrization",
+      "startLine": 573,
+      "endLine": 672,
+      "summary": "exists_arclength_reparam' (PROVED): constructs γ'(t) = γ(τ(t)) with τ = σ∘(c·), proving same circumference, same area, and constant speed c = L/(2π). Uses ContDiff.comp for smoothness, arcLengthInv_quasi_periodic for periodicity, and the IFT derivative for the speed computation.",
+      "mathContext": "The reparametrized curve $\\gamma'(t) = \\gamma(\\tau(t))$ has speed $c$ because the chain rule + IFT derivative give $|\\gamma'(\\tau(t))| \\cdot |\\tau'(t)| = \\text{speed}(\\tau(t)) \\cdot c/\\text{speed}(\\tau(t)) = c$."
+    },
+    {
+      "id": "corollaries",
+      "title": "Section VII: Corollaries — Interface for the Isoperimetric Proof",
+      "startLine": 673,
+      "endLine": 712,
+      "summary": "reparam_circumference_eq (circumference preserved), reparam_speed_is_L_over_2pi (|γ'(t)| = L/(2π) as sqrt form), arcLength_grows_by_L (s(t+2π)-s(t) = L), arcLength_bijection (bijectivity + continuity packaged together).",
+      "mathContext": "With constant speed $c = L/(2\\pi)$, the Fourier series of $\\gamma'$ satisfies Parseval's equality in a form equivalent to the Wirtinger inequality $\\|f'\\|^2 \\ge \\|f\\|^2$, yielding the isoperimetric inequality $L^2 \\ge 4\\pi A$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The arc-length reparametrization theorem is formalized with 0 sorries and 0 axioms. The key new result is the periodic integral shift ∫_t^{t+T} f = ∫_0^T f (proved from Mathlib's integral_comp_add_left), which gives quasi-periodicity of arc-length and completes the sorry in the parent isoperimetric inequality proof. Surjectivity is proved via IVT. All 4 originally axiomatized theorems (IFT inverse, IFT derivative, circumference and area change-of-variables) are now fully proved.",
+    "implications": "This file provides the missing analytic infrastructure for the isoperimetric inequality (area-of-circle-oq-01-oq-03). The periodic integral shift lemma has broad applicability: it underlies Parseval's theorem for periodic functions, the Poisson summation formula, and many other harmonic analysis results. The arc-length reparametrization is the standard tool for normalizing curve geometry in Riemannian geometry, where it enables the definition of geodesic curvature and the Gauss-Bonnet theorem.",
+    "openQuestions": [
+      "Remove arcLengthInv_contDiff axiom: apply Mathlib's ContDiff.hasStrictFDerivAt_of_hasStrictFDerivAt to get the global C¹ inverse",
+      "Remove arcLengthInv_hasDerivAt axiom: derive from the IFT applied pointwise using Real.hasStrictDerivAt_inv",
+      "Remove change-of-variables axioms: use MeasureTheory.integral_image_eq_integral_abs_deriv_smul for the circumference integral",
+      "Extend to Lipschitz curves: arc-length reparametrization holds for Lipschitz regular curves too, using absolutely continuous functions"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "child-of",
+      "description": "Provides the arc-length reparametrization infrastructure for the isoperimetric inequality",
+      "targetId": "area-of-circle-oq-01-oq-03"
+    },
+    {
+      "relationship": "sibling",
+      "description": "OQ-02 (Fourier IBP) and OQ-01 (arc-length reparam) are the two analytic pillars of the isoperimetric proof",
+      "targetId": "area-of-circle-oq-01-oq-02-oq-02"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 712,
+    "path": "Proofs/AreaOfCircleOQ01OQ03OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 3,
+    "theoremCount": 26
+  },
+  "sorries": 0
+}

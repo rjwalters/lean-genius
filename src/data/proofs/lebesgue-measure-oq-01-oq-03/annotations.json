@@ -1,0 +1,221 @@
+[
+  {
+    "id": "ann-historical-null-sets",
+    "proofId": "lebesgue-measure-oq-01-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Historical Context: Null Sets and the Lebesgue Revolution",
+    "content": "Henri Lebesgue's 1902 doctoral thesis introduced the integral bearing his name precisely to handle functions that are badly behaved on small sets. The key insight: two functions that agree almost everywhere (a.e.) should have the same integral. This philosophy made 'measure zero' sets invisible to integration. The Dirichlet function 𝟙_ℚ — equal to 1 on rationals and 0 on irrationals — is the canonical pathology: it is not Riemann integrable (upper Darboux sum = 1, lower = 0 on any interval), yet under Lebesgue integration it integrates to 0, because ℚ has measure zero. This file extends that single example to a general theorem: any measurable set S with μ(S) = 0 has ∫ 𝟙_S dμ = 0.",
+    "mathContext": "Riemann vs. Lebesgue: $\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}} \\, dx$ does not exist in the Riemann sense (upper Darboux integral = 1, lower = 0), but $\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}} \\, d\\lambda = 0$ in the Lebesgue sense since $\\lambda(\\mathbb{Q}) = 0$. General: $\\mu(S) = 0 \\Rightarrow \\int \\mathbf{1}_S \\, d\\mu = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lebesgue integral",
+      "Riemann integrability",
+      "Dirichlet function",
+      "almost everywhere",
+      "null sets"
+    ],
+    "prerequisites": [
+      "Lebesgue measure on ℝ",
+      "Darboux sums",
+      "measure theory basics"
+    ]
+  },
+  {
+    "id": "ann-core-abstract",
+    "proofId": "lebesgue-measure-oq-01-oq-03",
+    "range": {
+      "startLine": 58,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Core Proof: Three-Step Bridge from Measure to Integral",
+    "content": "The abstract proof proceeds in three elegantly composed steps. Step 1 (`indicator_ae_zero_of_null`): use `compl_mem_ae_iff.mpr` to convert μ(S) = 0 into the statement 'μ-almost every x satisfies x ∉ S', i.e., Sᶜ ∈ μ.ae (the filter of a.e.-true predicates). Step 2: since x ∉ S implies 𝟙_S(x) = 0 by definition of indicator functions, we get 𝟙_S = 0 a.e. Step 3 (`integral_indicator_of_null`): apply `integral_eq_zero_of_ae` to conclude ∫ 𝟙_S dμ = 0. The proof requires no measurability hypothesis on S for the implication μ(S) = 0 → ∫ 𝟙_S = 0 — measurability only matters for the converse. Extensions use `ae_restrict_of_ae` for restricted integrals over subsets T.",
+    "mathContext": "`compl_mem_ae_iff.mpr`: $\\mu(S) = 0 \\Leftrightarrow S^c \\in \\mu.ae$ — the filter of $\\mu$-a.e.-true sets. `integral_eq_zero_of_ae`: $f = 0$ $\\mu$-a.e. $\\Rightarrow \\int f \\, d\\mu = 0$. Combined: $\\mu(S) = 0 \\Rightarrow \\mathbf{1}_S = 0$ a.e. $\\Rightarrow \\int \\mathbf{1}_S \\, d\\mu = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "compl_mem_ae_iff",
+      "integral_eq_zero_of_ae",
+      "ae_restrict_of_ae",
+      "Bochner integral",
+      "MeasureTheory.ae"
+    ],
+    "prerequisites": [
+      "MeasureTheory.ae filter",
+      "Bochner integral basics",
+      "indicator function definition"
+    ]
+  },
+  {
+    "id": "ann-no-measurability",
+    "proofId": "lebesgue-measure-oq-01-oq-03",
+    "range": {
+      "startLine": 58,
+      "endLine": 115
+    },
+    "type": "insight",
+    "title": "No MeasurableSet Hypothesis Required",
+    "content": "A subtle but important feature: `integral_indicator_of_null` does NOT require S to be measurable. This is because the proof only uses the implication μ(S) = 0 → 𝟙_S = 0 a.e. → ∫ 𝟙_S = 0. None of these steps require a measurability check. The Bochner integral is defined for any function (not just measurable ones), and `integral_eq_zero_of_ae` applies to arbitrary a.e.-zero functions. This means the theorem applies even to non-measurable null sets (which exist, e.g., under AC), though such sets are less natural to work with. MeasurableSet hypotheses appear only when we need the converse or when computing μ(S) in the first place.",
+    "mathContext": "For the forward direction: $\\mu(S) = 0 \\Rightarrow \\int \\mathbf{1}_S \\, d\\mu = 0$ holds without $S$ measurable. The Bochner integral satisfies this via `integral_eq_zero_of_ae`. The converse ($\\int f \\cdot \\mathbf{1}_S \\, d\\mu = 0$ for all $f \\Rightarrow \\mu(S) = 0$) requires measurability of $S$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MeasurableSet",
+      "non-measurable sets",
+      "Bochner integral domain",
+      "AC and Vitali sets"
+    ],
+    "prerequisites": [
+      "MeasureTheory.integral (Bochner)",
+      "MeasurableSet vs measure-zero"
+    ]
+  },
+  {
+    "id": "ann-lebesgue-specializations",
+    "proofId": "lebesgue-measure-oq-01-oq-03",
+    "range": {
+      "startLine": 118,
+      "endLine": 158
+    },
+    "type": "insight",
+    "title": "Specializations: Countable, Finite, Singleton, and ℚ",
+    "content": "Part II specializes the abstract theorem to concrete null sets in ℝ. The key hierarchy of null sets in Lebesgue measure: every singleton {a} has λ({a}) = 0 (points have measure zero), every finite set has measure zero (finite union of singletons), every countable set has measure zero (countable union: λ(S) ≤ Σ λ({s}) = 0 via countable subadditivity). In particular, ℚ is countable, so λ(ℚ) = 0, recovering the Dirichlet function result from OQ-01 as a corollary. The theorem `integral_indicator_countable` captures the countable case. `integral_indicator_rationals` is the Dirichlet specialization. Uncountable null sets (like the Cantor set) also work via the main theorem with a direct measure calculation.",
+    "mathContext": "Null-set hierarchy: $\\{a\\}$: $\\lambda(\\{a\\}) = 0$ (point). Finite: $\\lambda(\\{a_1,\\ldots,a_n\\}) = 0$. Countable: $\\lambda(S) \\leq \\sum_{s \\in S} \\lambda(\\{s\\}) = 0$. $\\mathbb{Q}$ countable $\\Rightarrow \\lambda(\\mathbb{Q}) = 0 \\Rightarrow \\int \\mathbf{1}_{\\mathbb{Q}} = 0$ (Dirichlet). Cantor set: uncountable but $\\lambda(C) = 0$ by construction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "countable subadditivity",
+      "Cantor set",
+      "Dirichlet function",
+      "MeasureTheory.measure_iUnion_null"
+    ],
+    "prerequisites": [
+      "Lebesgue measure on ℝ",
+      "countable sets",
+      "sigma-additivity of measure"
+    ]
+  },
+  {
+    "id": "ann-countable-unions",
+    "proofId": "lebesgue-measure-oq-01-oq-03",
+    "range": {
+      "startLine": 161,
+      "endLine": 183
+    },
+    "type": "concept",
+    "title": "Countable Unions of Null Sets Are Null",
+    "content": "`measure_iUnion_null_of_null` proves that if {Sₙ} is a sequence of null sets, then μ(⋃ₙ Sₙ) = 0. This is the σ-subadditivity of measure: μ(⋃ₙ Sₙ) ≤ Σₙ μ(Sₙ) = 0. Combined with `integral_indicator_of_null`, this gives `integral_indicator_iUnion_null`: ∫ 𝟙_{⋃ Sₙ} dμ = 0. The theorem allows constructing more complex null sets from simple ones, e.g., the rationals as ⋃_{q ∈ ℚ} {q}. In Mathlib, `Measure.iUnion_null_iff` and `measure_iUnion_null` handle this via `tsum_zero` and sigma-finiteness.",
+    "mathContext": "$\\mu\\left(\\bigcup_{n=1}^{\\infty} S_n\\right) \\leq \\sum_{n=1}^{\\infty} \\mu(S_n) = 0$ when each $\\mu(S_n) = 0$. Hence $\\int \\mathbf{1}_{\\bigcup S_n} \\, d\\mu = 0$. Uses $\\sigma$-subadditivity of measures.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sigma-subadditivity",
+      "MeasureTheory.Measure.iUnion_null",
+      "tsum_zero",
+      "sigma-finite measures"
+    ],
+    "prerequisites": [
+      "countable additivity of measure",
+      "ENNReal tsum",
+      "Measure.iUnion_null_iff"
+    ]
+  },
+  {
+    "id": "ann-ae-invariance",
+    "proofId": "lebesgue-measure-oq-01-oq-03",
+    "range": {
+      "startLine": 186,
+      "endLine": 210
+    },
+    "type": "insight",
+    "title": "Almost Everywhere Invariance: The Philosophical Core",
+    "content": "`integral_congr_ae_null_change` captures the deepest principle: if f and g agree outside a null set S, then ∫ f dμ = ∫ g dμ. This is the formal statement that L¹(μ) consists of equivalence classes: two functions represent the same L¹ element iff they agree a.e. The theorem `integral_on_null_set` handles another variant: ∫_S f dμ = 0 for any f (not just indicators) when μ(S) = 0, because restricting the measure to S gives the zero measure (μ|_S = 0), and `integral_zero_measure` handles the rest. This makes null sets genuinely invisible to the Lebesgue integral.",
+    "mathContext": "L¹ equivalence classes: $f \\sim g$ iff $f = g$ $\\mu$-a.e. $\\Rightarrow \\int f \\, d\\mu = \\int g \\, d\\mu$. `integral_zero_measure`: $\\int f \\, d(0) = 0$ for any $f$ (zero measure). `Measure.restrict_zero_set`: $\\mu|_S = 0$ when $\\mu(S) = 0$. Combined: $\\int_S f \\, d\\mu = \\int f \\, d(\\mu|_S) = \\int f \\, d(0) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "L1 equivalence classes",
+      "integral_zero_measure",
+      "Measure.restrict_zero_set",
+      "integral_congr_ae"
+    ],
+    "prerequisites": [
+      "Bochner integral",
+      "Measure.restrict",
+      "ae-filter",
+      "MeasureTheory.L1"
+    ]
+  },
+  {
+    "id": "ann-arbitrary-integrand",
+    "proofId": "lebesgue-measure-oq-01-oq-03",
+    "range": {
+      "startLine": 100,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Extension to Arbitrary Integrands via Zero Measure",
+    "content": "`integral_mul_indicator_of_null` extends the result to arbitrary integrands: ∫_T f·𝟙_S dμ = 0 for any measurable f and null set S. The key is `Measure.restrict_zero_set`: restricting μ to a null set gives the zero measure. Then `integral_zero_measure` finishes. This avoids integrability hypotheses on f — the zero measure makes any integral zero regardless of how f behaves on S. `integral_on_null_set` is the cleaner corollary: ∫_S f dμ = 0 for any f and μ(S) = 0, which formalizes 'integrating over a null set gives zero'.",
+    "mathContext": "$\\int_T f \\cdot \\mathbf{1}_S \\, d\\mu = \\int_T f \\, d(\\mu|_S) = \\int_T f \\, d(0) = 0$ when $\\mu(S) = 0$. `Measure.restrict_zero_set`: $\\mu|_S = 0 \\Leftrightarrow \\mu(S) = 0$ (for restricted measures). `integral_zero_measure`: $\\int f \\, d(0) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Measure.restrict_zero_set",
+      "integral_zero_measure",
+      "Bochner integral linearity",
+      "MeasureTheory.integrable"
+    ],
+    "prerequisites": [
+      "Measure.restrict",
+      "integral_zero_measure",
+      "f · 𝟙_S as indicator product"
+    ]
+  },
+  {
+    "id": "ann-subsumes-oq01",
+    "proofId": "lebesgue-measure-oq-01-oq-03",
+    "range": {
+      "startLine": 213,
+      "endLine": 240
+    },
+    "type": "concept",
+    "title": "Part V: OQ-01 Dirichlet Result as a One-Line Corollary",
+    "content": "Part V closes the loop on the motivating question. The OQ-01 result — ∫_{[0,1]} 𝟙_ℚ dλ = 0 — appears as an unnamed `example` whose proof is a one-liner: `integral_indicator_of_null_on_set _ _ (Set.countable_range (Rat.cast : ℚ → ℝ) |>.measure_zero volume)`. This crystallizes the proof architecture: the entire OQ-01 argument that once required its own file is now subsumed in a single term-mode expression. The SUMMARY comment catalogues all 15 theorems with their roles. The five-part structure is pedagogically deliberate: each part peels away one layer of specificity, from abstract measure spaces (Part I) through ℝ (Part II) and countable unions (Part III) and a.e. invariance (Part IV) to the original question (Part V).",
+    "mathContext": "OQ-01 reduced to: `integral_indicator_of_null_on_set (Set.range (Rat.cast : ℚ → ℝ)) (Set.Icc 0 1) (Set.countable_range _ |>.measure_zero volume)`. The chain: `Set.Countable.measure_zero` converts countability to $\\lambda(\\mathbb{Q}) = 0$; then the main theorem applies.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "integral_indicator_of_null_on_set",
+      "Set.Countable.measure_zero",
+      "Dirichlet function",
+      "OQ-01 parent proof",
+      "term-mode proof composition"
+    ],
+    "prerequisites": [
+      "LebesgueMeasureOQ01 (parent proof context)",
+      "Set.countable_range for Rat.cast",
+      "MeasureTheory.NullMeasurableSet"
+    ]
+  },
+  {
+    "id": "ann-radon-nikodym-connection",
+    "proofId": "lebesgue-measure-oq-01-oq-03",
+    "range": {
+      "startLine": 61,
+      "endLine": 80
+    },
+    "type": "insight",
+    "title": "Connection to Radon-Nikodym and Absolute Continuity",
+    "content": "The result ∫ 𝟙_S dμ = 0 whenever μ(S) = 0 is the defining condition for absolute continuity of measures. If ν(B) = ∫_B f dμ for some density f, then ν ≪ μ (ν is absolutely continuous with respect to μ) means exactly: μ(S) = 0 ⟹ ν(S) = 0. The Radon-Nikodym theorem says every ν ≪ μ has such a density f. The indicator integral result is the simplest instance: taking ν = Lebesgue measure on S, ν(S) = μ(S) = 0, confirming ν ≪ μ. This connects null-set integration to the fundamental structure theorem of measure theory.",
+    "mathContext": "Absolute continuity: $\\nu \\ll \\mu$ iff $\\mu(S)=0 \\Rightarrow \\nu(S)=0$ for all measurable $S$. Radon-Nikodym: $\\nu \\ll \\mu \\Rightarrow \\exists f \\geq 0,\\, \\nu(B) = \\int_B f \\, d\\mu$. Indicator integrals: $\\int \\mathbf{1}_S \\, d\\mu = \\mu(S) = 0$ for null $S$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Radon-Nikodym theorem",
+      "absolute continuity of measures",
+      "L1 density",
+      "Fubini-Tonelli theorem"
+    ],
+    "prerequisites": [
+      "MeasureTheory.AbsolutelyContinuous",
+      "Radon-Nikodym theorem",
+      "σ-finite measures"
+    ]
+  }
+]

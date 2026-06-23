@@ -1,0 +1,479 @@
+{
+  "id": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+  "title": "Symmetric Group Borsuk-Ulam: The Largest-Prime-Below Conjecture",
+  "slug": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+  "description": "Phase-2 formalization of the open question: For S_n, is symBUDim n d = buDim p* d, where p* is the largest prime \u2264 n? At even d = 2k the parent's Yang-Borsuk axiom pins buDim p* (2k) = 2k \u2212 1, so the conjecture there reduces to symBUDim n (2k) = 2k \u2212 1; at odd d \u2265 3 the value of buDim p* d for odd primes is not axiomatized in the parent, and the universal closed form 2\u230ad/2\u230b \u2212 1 is provably inconsistent (refuted by the axiom-free symBUDim_lower_z2: d \u2212 1 \u2264 symBUDim n d, which forces 2k \u2264 symBUDim n (2k+1) at odd d). The lower bound symBUDim n (2k) \u2265 2k \u2212 1 is proved unconditionally (axiom-free, modulo parent infrastructure); the matching upper bound is the conjectural equality, axiomatized as `symBUDim_eq_largestPrime`. From the conjecture we derive the explicit closed form symBUDim n (2k) = 2k \u2212 1 at even d. Adds the quantitative Bertrand-Chebyshev bound `n/2 < largestPrimeBelow n` (axiom-free, via Mathlib's `Nat.bertrand`), pinning p* in the dyadic window (n/2, n] and showing the cyclic lower bound is within factor 2 of optimal.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem",
+    "date": "2026-05-07",
+    "status": "axiomatized",
+    "tags": [
+      "topology",
+      "borsuk-ulam",
+      "equivariant",
+      "symmetric-groups",
+      "bertrand-postulate",
+      "open-problem",
+      "advanced"
+    ],
+    "proofRepoPath": "Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 2040,
+    "dateAdded": "2026-05-08",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.findGreatest",
+        "description": "Greatest m \u2264 n satisfying P, or 0 if none exists.",
+        "module": "Mathlib.Data.Nat.Find"
+      },
+      {
+        "theorem": "Nat.findGreatest_spec",
+        "description": "If P k holds and k \u2264 n, then P (Nat.findGreatest P n).",
+        "module": "Mathlib.Data.Nat.Find"
+      },
+      {
+        "theorem": "Nat.le_findGreatest",
+        "description": "If P k holds and k \u2264 n, then k \u2264 Nat.findGreatest P n.",
+        "module": "Mathlib.Data.Nat.Find"
+      },
+      {
+        "theorem": "Nat.findGreatest_le",
+        "description": "Nat.findGreatest P n \u2264 n.",
+        "module": "Mathlib.Data.Nat.Find"
+      },
+      {
+        "theorem": "Nat.prime_two",
+        "description": "2 is prime \u2014 used as the existence witness for largestPrimeBelow.",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.exists_prime_lt_and_le_two_mul",
+        "description": "Bertrand's postulate: for n \u2260 0 there is a prime p with n < p \u2264 2n. Used to prove n/2 < largestPrimeBelow n.",
+        "module": "Mathlib.NumberTheory.Bertrand"
+      }
+    ],
+    "originalContributions": [
+      "largestPrimeBelow: noncomputable wrapper `Nat.findGreatest Nat.Prime n` for the largest prime \u2264 n",
+      "largestPrimeBelow_isPrime: for n \u2265 2, the result is genuinely prime (witness p = 2)",
+      "largestPrimeBelow_le: trivial upper bound \u2264 n",
+      "two_le_largestPrimeBelow: lower bound \u2265 2 for n \u2265 2",
+      "symBUDim_even_lower: unconditional lower bound symBUDim n (2k) \u2265 2k \u2212 1 (axiom-free modulo parent)",
+      "axiom symBUDim_eq_largestPrime: the conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n \u2265 2 \u2014 the open question, isolated as a single named axiom",
+      "symBUDim_even_formula: tight closed form symBUDim n (2k) = 2k \u2212 1 derived from the conjecture + parent's buDim_prime",
+      "Concrete instances: symBUDim_three_four (= 3), symBUDim_four_six (= 5), symBUDim_five_lower_unconditional (axiom-free)",
+      "n_div_two_lt_largestPrimeBelow: Bertrand-Chebyshev quantitative bound n/2 < largestPrimeBelow n for n \u2265 2 (axiom-free, via Mathlib's Nat.exists_prime_lt_and_le_two_mul); pins p* in the dyadic window (n/2, n] regardless of how composite n is",
+      "largestPrimeBelow_in_bertrand_window: package combining the Bertrand lower bound with the trivial upper bound \u2264 n",
+      "largestPrimeBelow_self_of_prime: when n itself is prime, largestPrimeBelow n = n (axiom-free squeeze argument); reusable for prime-n consequences",
+      "largestPrimeBelow_two, _three, _five, _seven: concrete computations at small primes, all axiom-free corollaries of largestPrimeBelow_self_of_prime",
+      "symBUDim_eq_largestPrime_two_unconditional: the **n=2 case of the conjectured equality is provable axiom-free** from the parent's `symBUDim_two` axiom and `largestPrimeBelow_two`; non-trivial consistency check showing the new axiom `symBUDim_eq_largestPrime` is compatible with the pre-existing n=2 base case (and is redundant at n=2)",
+      "symBUDim_two_even_formula_unconditional: axiom-free closed form symBUDim 2 (2k) = 2k - 1, derived directly from parent's symBUDim_two + buDim_prime",
+      "symBUDim_two_four_unconditional: concrete axiom-free instance symBUDim 2 4 = 3",
+      "largestPrimeBelow_eq_self_iff_prime: fixed-point characterization (n \u2265 2): largestPrimeBelow n = n \u2194 Nat.Prime n. Forward direction uses largestPrimeBelow_isPrime; backward is largestPrimeBelow_self_of_prime",
+      "largestPrimeBelow_lt_of_not_prime: strict bound for composite n (corollary of the iff): when n \u2265 2 is not prime, largestPrimeBelow n < n",
+      "symBUDim_{six,seven,eight}_lower_unconditional: axiom-free Yang-Borsuk lower bounds 2k - 1 \u2264 symBUDim n (2k) for n \u2208 {6,7,8} via direct application of symBUDim_even_lower",
+      "largestPrimeBelow_mono: monotonicity of the prime selector \u2014 n \u2264 m \u2192 largestPrimeBelow n \u2264 largestPrimeBelow m. Structural prerequisite for compatibility of the symBUDim_eq_largestPrime axiom with the parent's sym_has_smaller_sym monotonicity (stretch goal in the research roadmap). Handles n < 2 case via the fact that findGreatest returns 0 when no prime \u2264 1 exists",
+      "largestPrimeBelow_eight_le_eleven: concrete monotonicity instance",
+      "symBUDim_{nine,ten,eleven,twelve}_lower_unconditional: extended axiom-free lower bounds 2k - 1 \u2264 symBUDim n (2k) for n \u2208 {9,10,11,12}, covering both prime (n=11) and composite (n=9=3\u00b2, n=10, n=12) cases",
+      "symBUDim_eq_buDim_at_prime: at any prime p, the conjectural equality symBUDim_eq_largestPrime collapses (via largestPrimeBelow_self_of_prime) to the clean statement symBUDim p d = buDim p d \u2014 isolates the *prime-n content* of the open question (S\u2099 vs \u2124/p, no Bertrand selector involved). Conditional on the new axiom",
+      "symBUDim_prime_even_formula: tight closed form symBUDim p (2k) = 2k - 1 at any prime p with k \u2265 1; combines symBUDim_eq_buDim_at_prime with parent's buDim_prime",
+      "symBUDim_{eleven,thirteen}_eq_buDim: concrete prime-n equality instances at n = 11, 13 (conditional)",
+      "symBUDim_{eleven,thirteen}_even_formula: concrete prime-n closed-form instances symBUDim 11 (2k) = 2k - 1, symBUDim 13 (2k) = 2k - 1 (conditional)",
+      "symBUDim_lower_z2: UNIFORM unconditional lower bound `d \u2212 1 \u2264 symBUDim n d` for all n \u2265 2, d \u2265 1 (axiom-free up to parent's symBUDim_two + buDim_two + symBUDim_le_of_le). Strictly tighter than `symBUDim_even_lower` at odd d: at d = 2k+1 it gives 2k, while symBUDim_even_lower only delivers the floor-rounded 2k \u2212 1. Routes through Z/2 \u2014 the cyclic-prime lower bound at p = 2 \u2014 and is therefore independent of the new largestPrimeBelow axiom",
+      "symBUDim_odd_lower_unconditional: odd-d corollary `2k \u2264 symBUDim n (2k+1)` for n \u2265 2 (axiom-free); the strictly-stronger odd-d component of the Z/2 uniform bound",
+      "symBUDim_two_general_unconditional: axiom-free CLOSED FORM at n = 2 for ALL d \u2265 1: `symBUDim 2 d = d \u2212 1`. Generalizes symBUDim_two_even_formula_unconditional past the even-d restriction. Combined with largestPrimeBelow_two, this **fully settles the conjecture axiom-free at n = 2 across all dimensions** (independent of the new symBUDim_eq_largestPrime axiom)",
+      "symBUDim_two_{three,five,seven}_unconditional: concrete axiom-free closed-form values at n = 2 and small odd d (`symBUDim 2 3 = 2`, `symBUDim 2 5 = 4`, `symBUDim 2 7 = 6`)",
+      "symBUDim_{three,four}_three_lower_unconditional, symBUDim_{three,four}_five_lower_unconditional: concrete axiom-free odd-d lower bounds at n = 3, 4 \u2014 including the V\u2084 \u2264 S\u2084 Klein-4 test case cited in the problem statement",
+      "buDim_largestPrime_lower_z2 (conditional, iter 8): the axiom-free Z/2 lower bound `symBUDim_lower_z2` pulls through `symBUDim_eq_largestPrime` to deliver `d \u2212 1 \u2264 buDim (largestPrimeBelow n) d` for n \u2265 2, d \u2265 1. Genuinely new content beyond the parent's axiomatization: at odd d the parent's `buDim_prime` axiom (which only fires on even d) leaves `buDim p d` unconstrained for primes p \u2265 3; the symmetric-group conjecture would PIN a NEW lower bound `d \u2212 1` valid at odd d.",
+      "buDim_prime_lower_z2_conditional (conditional, iter 8): at any prime p and d \u2265 1, conditionally `d \u2212 1 \u2264 buDim p d`. Specializes `buDim_largestPrime_lower_z2` via `largestPrimeBelow_self_of_prime`. **Significance**: classical Yang-Borsuk only handles even d at primes \u2265 3; this conditional bound transfers the Z/2 Borsuk-Ulam dimension to ALL cyclic-prime Yang-Borsuk dimensions at ALL d.",
+      "buDim_{three,five,seven}_lower_z2_conditional (conditional, iter 8): concrete instances of the conditional bound at small odd primes (e.g., conditionally `buDim 3 3 \u2265 2`).",
+      "symBUDim_prime_combined_lower (axiom-free, iter 8): packaged max-bound at any prime p with d \u2265 1: `max (buDim p d) (d \u2212 1) \u2264 symBUDim p d`. Combines the Z/p subgroup contribution (`sym_has_cyclic_prime`) with the Z/2 contribution (iter-7's `symBUDim_lower_z2`). At even d = 2k both coincide via `buDim_prime`; at odd d the Z/2 component dominates.",
+      "ConjectureLPB (iter 9): the equality conjecture stated as a `Prop` rather than an axiom. Lets downstream developments take the conjecture as a hypothesis instead of using `symBUDim_eq_largestPrime`, making conjecture-dependence explicit at the type level.",
+      "buDim_largestPrime_lower_z2_of, buDim_prime_lower_z2_of, symBUDim_eq_buDim_at_prime_of (iter 9): hypothesis-form variants of iter-8's conditional theorems and iter-5's symBUDim_eq_buDim_at_prime. Same statements, but the dependence on the conjecture is encoded via a `ConjectureLPB` hypothesis rather than via the file's axiom.",
+      "not_conjectureLPB_of_buDim_lt (iter 9): formal **falsification theorem** \u2014 at any prime p with d \u2265 1, a future proof of `buDim p d < d \u2212 1` refutes `ConjectureLPB`. Crystallizes iter-8's remark \"any computation of buDim p d at odd d violating d \u2212 1 \u2264 buDim p d would falsify symBUDim_eq_largestPrime at n = p\" as a concrete theorem at the type level.",
+      "not_conjectureLPB_of_buDim_{three_three_lt_two, five_three_lt_two, three_five_lt_four} (iter 9): explicit falsification handles at small (p, d) with odd d \u2014 the simplest cases beyond the parent's `buDim_prime` axiom (which fires only on even d). These pinpoint exactly where future Yang-Borsuk research could refute the conjecture.",
+      "largestPrimeBelow_succ_of_not_prime (axiom-free, iter 10): atomic plateau step \u2014 if `n + 1` is composite, `largestPrimeBelow (n + 1) = largestPrimeBelow n`. Direct corollary of Mathlib's `Nat.findGreatest_of_not`.",
+      "largestPrimeBelow_const_in_no_prime_range (axiom-free, iter 10): general plateau lemma \u2014 if no prime exists in `(n, m]`, `largestPrimeBelow m = largestPrimeBelow n`. Proved by `Nat.le_induction` lifting the atomic step over each composite successor in the prime gap. Structural reason LPB is locally constant between consecutive primes.",
+      "largestPrimeBelow_eq_of_in_plateau (axiom-free, iter 10): prime-anchored packaging \u2014 if `p` is prime, `lpb n = p`, and no prime lies in `(n, m]`, then `lpb m = p` too. Convenient form for combining with prime-gap data.",
+      "symBUDim_eq_of_lpb_eq (conditional, iter 10): plateau collapse \u2014 any two `n, m \u2265 2` with `largestPrimeBelow n = largestPrimeBelow m` have `symBUDim n d = symBUDim m d` at every dimension. Conditional on `symBUDim_eq_largestPrime`.",
+      "symBUDim_const_in_no_prime_range (conditional, iter 10): symBUDim plateau on prime-gap intervals \u2014 if no prime exists in `(n, m]` and `n \u2265 2`, then `symBUDim n d = symBUDim m d` for all d. Formal expression of the 'plateau collapse' prediction: distinct symmetric groups in any maximal prime-gap interval conjecturally share the equivariant BU dimension at every dimension. Conditional.",
+      "symBUDim_eq_of_lpb_eq_of, symBUDim_const_in_no_prime_range_of (conditional, iter 10): hypothesis-form variants taking `ConjectureLPB` as a `Prop` argument rather than relying on the file's axiom (matches Part XV's pattern).",
+      "no_prime_in_eight_to_ten, no_prime_in_fourteen_to_sixteen, no_prime_in_twentyfour_to_twentyeight (axiom-free, iter 11): witnesses that the half-open intervals (8, 10], (13, 16], (23, 28] contain no primes (each proved by `interval_cases` + `decide`). Cover the smallest prime gaps with multiple composites: the dyadic gap (7, 11), (13, 17), and the first gap of size 6 at (23, 29).",
+      "largestPrimeBelow_eight_eq_ten, largestPrimeBelow_thirteen_eq_sixteen, largestPrimeBelow_twentythree_eq_twentyeight (axiom-free, iter 11): concrete LPB plateau collapse instances at the three intervals. One-line specializations of `largestPrimeBelow_const_in_no_prime_range`. The S\u2082\u2083 \u2192 S\u2082\u2088 instance witnesses that the first prime gap of size 6 forces five consecutive `largestPrimeBelow` values to coincide.",
+      "symBUDim_eight_eq_ten, symBUDim_thirteen_eq_sixteen, symBUDim_twentythree_eq_twentyeight (conditional, iter 11): plateau collapse predictions of the conjecture at three intervals. The S\u2082\u2083 \u2192 S\u2082\u2088 instance is the longest plateau collapse below n = 30: under `symBUDim_eq_largestPrime`, six consecutive symmetric groups (n = 23, 24, ..., 28) share equivariant Borsuk-Ulam dimensions at every dimension, despite their qualitatively different subgroup structures.",
+      "symBUDim_eight_eq_ten_of, symBUDim_thirteen_eq_sixteen_of, symBUDim_twentythree_eq_twentyeight_of (conditional, iter 11): hypothesis-form variants of the three plateau-collapse instances, taking `ConjectureLPB` explicitly.",
+      "no_prime_in_ninety_to_ninetysix (axiom-free, iter 12): witness that the half-open interval (89, 96] contains no primes \u2014 each of 90, 91, 92, 93, 94, 95, 96 is composite. Pins the **first prime gap of size 8 in \u2115** (between consecutive primes 89 and 97). Proof: `interval_cases k` then `decide` on each of the seven composite cases.",
+      "largestPrimeBelow_eightynine_eq_ninetysix (axiom-free, iter 12): the longest LPB plateau below n = 100. `largestPrimeBelow 96 = largestPrimeBelow 89`. Eight consecutive ranks {89, 90, \u2026, 96} all share the same `largestPrimeBelow`. One-line specialization of Part XVI's `largestPrimeBelow_const_in_no_prime_range`.",
+      "symBUDim_eightynine_eq_ninetysix (conditional, iter 12): the longest conjectural plateau collapse below n = 100. Under `symBUDim_eq_largestPrime`, `symBUDim 89 d = symBUDim 96 d` for every dimension d \u2014 eight consecutive symmetric groups conjecturally agree on equivariant Borsuk-Ulam dimension despite qualitatively different rank structure (S\u2088\u2089 on prime rank vs S\u2089\u2086 on the highly-composite 96 = 2\u2075\u00b73, where Sylow_2(S\u2089\u2086) has order 2\u2079\u00b3).",
+      "symBUDim_eightynine_eq_ninetysix_of (conditional, iter 12): hypothesis-form variant of the size-8-gap plateau-collapse instance, taking `ConjectureLPB` explicitly.",
+      "largestPrimeBelow_lt_of_prime_in_range (axiom-free, iter 13): structural converse of `largestPrimeBelow_const_in_no_prime_range`. If a prime p lies in (n, m], then `largestPrimeBelow n < largestPrimeBelow m`. Three-line proof via `Nat.le_findGreatest` and `largestPrimeBelow_le`. No `2 \u2264 n` hypothesis required.",
+      "largestPrimeBelow_eq_iff_no_prime_in_range (axiom-free, iter 13): biconditional plateau characterization. For n \u2264 m, `largestPrimeBelow n = largestPrimeBelow m` iff no prime exists in (n, m]. Combines forward direction (PART XVI) with the new converse to give a tight structural characterization \u2014 LPB plateaus correspond exactly to prime-gap intervals. Subsumes the entire Part XVII\u2013XVIII concrete-gap enumeration template; every 'no prime in (a, b] \u21d2 lpb a = lpb b' instance is now an iff-corollary.",
+      "largestPrimeBelow_strict_mono_at_prime (axiom-free, iter 13): clean specialization at m = p prime \u2014 `largestPrimeBelow n < largestPrimeBelow p` whenever `n < p`. Tight at the right endpoint of every prime gap.",
+      "largestPrimeBelow_eight_lt_eleven, _thirteen_lt_seventeen, _twentythree_lt_twentynine, _eightynine_lt_ninetyseven (axiom-free, iter 13): plateau-edge witnesses at the four prime-gap intervals from Parts XVII\u2013XVIII. Together with the corresponding eq-instances, pin each plateau as a *maximal* level set of `largestPrimeBelow` rather than a possibly-extendable cluster."
+    ],
+    "assumptions": "1 axiom: `symBUDim_eq_largestPrime` \u2014 the conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n \u2265 2. The lower-bound direction (`buDim p* d \u2264 symBUDim n d`) is a theorem; the matching upper bound is the genuinely open content. **At n = 2 the conjecture is now settled axiom-free for ALL dimensions d \u2265 1**: `symBUDim_two_general_unconditional` shows symBUDim 2 d = d \u2212 1 from the parent's `symBUDim_two` axiom + `buDim_two`, and combined with `largestPrimeBelow_two` this matches the conjectured value buDim (largestPrimeBelow 2) d = buDim 2 d = d \u2212 1. So the new axiom is redundant at n = 2 not only on even d (per `symBUDim_eq_largestPrime_two_unconditional`) but on ALL d. The file inherits the parent file's axioms `symBUDim`, `sym_has_cyclic_prime`, `symBUDim_two`, `buDim`, `buDim_prime`, `buDim_two` (counted in the parent gallery entries).",
+    "theoremCount": 123,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The classical Borsuk-Ulam theorem (Borsuk 1933) says any continuous odd map $S^n \\to \\mathbb{R}^n$ has a zero. For a finite group $G$ acting linearly on a real representation, the equivariant analog asks: what is the largest sphere dimension on which every $G$-equivariant map to a $d$-dimensional representation must vanish? Yang (1954) and Borsuk (1933) settled the case $G = \\mathbb{Z}/p$ for prime $p$, giving the celebrated formula $\\text{buDim}(\\mathbb{Z}/p, 2k) = 2k - 1$ \u2014 the 'tight prime bound'. For non-cyclic groups the answer requires cohomological index theory (Fadell-Husseini 1988).\n\nFor the symmetric group $S_n$, every prime $p \\leq n$ embeds as a cyclic subgroup via $p$-cycles, so subgroup monotonicity gives $\\text{symBUDim}(n, d) \\geq \\text{buDim}(p, d)$. The strongest bound comes from $p = p^*$, the **largest prime $\\leq n$**. Bertrand's postulate (Chebyshev 1850, Erd\u0151s 1932) guarantees $p^* > n/2$, so $\\text{symBUDim}(n, 2k) \\geq 2k - 1$ unconditionally \u2014 within factor 2 of the trivial upper bound $d - 1$.\n\nThe open question studied here is whether $\\text{symBUDim}(n, d)$ EQUALS $\\text{buDim}(p^*, d)$ \u2014 i.e. whether the $S_n$-equivariant structure adds nothing beyond the largest cyclic subgroup of prime order. A positive answer would yield the closed form $\\text{symBUDim}(n, 2k) = 2k - 1$. A negative answer would have to come from $S_n$-specific structure (Klein-4 subgroup $V_4 \\leq S_4$, representation-theoretic obstructions, ...).",
+    "problemStatement": "**Open Question (sub-question of borsuk-ulam-oq-02-oq-01-oq-03)**:\n\nFor every $n \\geq 2$ and $d \\geq 1$, is $$\\text{symBUDim}(n, d) = \\text{buDim}(p^*, d),$$ where $p^* = \\max\\{p \\text{ prime} : p \\leq n\\}$? At even $d = 2k$ the parent's Yang-Borsuk axiom gives $\\text{buDim}(p^*, 2k) = 2k - 1$, so the conjecture there reduces to $\\text{symBUDim}(n, 2k) = 2k - 1$. The universal decoration $= 2\\lfloor d/2 \\rfloor - 1$ is **not** part of the statement: it is provably inconsistent at every odd $d \\geq 3$, refuted by this file's axiom-free `symBUDim_lower_z2` ($d - 1 \\leq \\text{symBUDim}(n, d)$, hence $2k \\leq \\text{symBUDim}(n, 2k+1)$).\n\nThis Phase-2 formalization (a) proves the lower-bound direction unconditionally, (b) axiomatizes the conjectured equality as a single named axiom, and (c) derives the explicit closed form on even dimensions from the axiom plus the cyclic-prime Yang-Borsuk axiom inherited from the gallery's BU framework.",
+    "text": "The lower bound $\\text{symBUDim}(n, d) \\geq \\text{buDim}(p^*, d)$ is a theorem (axiom-free in this file, modulo parent infrastructure). The matching upper bound \u2014 equivalent to the conjectural equality \u2014 is the OPEN content, captured as the single axiom `symBUDim_eq_largestPrime`. The explicit closed form $\\text{symBUDim}(n, 2k) = 2k - 1$ is then a corollary.",
+    "proofStrategy": "**Step 1 (Definition, axiom-free):** Package $p^*$ as `largestPrimeBelow n := Nat.findGreatest Nat.Prime n`. Use `Nat.findGreatest_spec` (witness $p = 2$, valid for $n \\geq 2$) for primality, `Nat.findGreatest_le` for the upper bound, and `Nat.le_findGreatest` for the lower bound $\\geq 2$.\n\n**Step 2 (Lower bound, axiom-free):** Apply the parent file's `sym_has_cyclic_prime n d p* hp hle` to get $\\text{buDim}(p^*, d) \\leq \\text{symBUDim}(n, d)$. Compose with the Yang-Borsuk cyclic-prime axiom `buDim_prime` to get the explicit floor lower bound $\\text{symBUDim}(n, 2k) \\geq 2k - 1$ \u2014 `symBUDim_even_lower` in the file.\n\n**Step 3 (Conjecture):** Axiomatize the equality `symBUDim_eq_largestPrime : \u2200 n d, 2 \u2264 n \u2192 symBUDim n d = buDim (largestPrimeBelow n) d` as the working assumption. The lower-bound direction is `symBUDim_even_lower`; only the upper-bound direction is genuinely open.\n\n**Step 4 (Tight formula):** From the equality + `buDim_prime` derive `symBUDim_even_formula : \u2200 n k, 2 \u2264 n \u2192 0 < k \u2192 symBUDim n (2k) = 2k - 1` \u2014 the conjectured closed form on even dimensions.\n\n**Step 5 (Concrete instances):** Verify the formula at $n = 3, 4$ via `symBUDim_three_four` and `symBUDim_four_six`, and the unconditional $S_5$ lower bound `symBUDim_five_lower_unconditional` (axiom-free up to parent).",
+    "keyInsights": [
+      "**The conjecture decomposes into two pieces, one already settled.** $\\text{symBUDim}(n, d) = \\text{buDim}(p^*, d)$ splits as (i) symmetric-group structure adds nothing beyond the largest cyclic prime (the new axiom), and (ii) the Yang-Borsuk cyclic-prime formula $\\text{buDim}(p^*, 2k) = 2k - 1$ at even $d$ (inherited from the parent's `buDim_prime`). Only (i) is the *new* open content. Note (ii) fires only at even $d$: the universal closed form $2\\lfloor d/2\\rfloor - 1$ is provably false at odd $d \\geq 3$ (refuted by the axiom-free `symBUDim_lower_z2`), so the conjecture's genuine open content lives at odd $d$.",
+      "**Bertrand controls the gap.** For any $n \\geq 2$, Bertrand's postulate guarantees a prime in $(n/2, n]$, so $p^* > n/2$. The gap between the unconditional cyclic lower bound and the conjectured value is at most a factor of 2 \u2014 already a tight bound.",
+      "**The unconditional lower bound is axiom-free in this file.** `symBUDim_even_lower` relies only on parent's `sym_has_cyclic_prime` (subgroup monotonicity) + parent's `buDim_prime` (Yang-Borsuk) + Mathlib's `Nat.findGreatest` API. No new axiom is needed for the LOWER bound \u2014 only the conjectured equality is axiomatized.",
+      "**`Nat.findGreatest` packaging is robust.** Using `Nat.findGreatest_spec` with witness $p = 2$ (always prime, \u2264 any $n \\geq 2$) gives primality whenever $n \\geq 2$. Combined with `Nat.findGreatest_le` and `Nat.le_findGreatest`, all required properties of $p^*$ are derived without an explicit recursion or interval search.",
+      "**Failure modes for the conjecture.** If the conjecture fails at some $n$, the failure must come from $S_n$-specific structure: Klein-4 $V_4 \\leq S_4$ (non-cyclic of order 4), representation-theoretic obstructions from non-trivial irreducibles, or higher-cohomology classes in the Fadell-Husseini index. Natural test cases: $n = 4$ ($p^* = 3$, but $V_4 \\leq S_4$) and $n = 8$ ($p^* = 7$, but $S_8$ has rich subgroup structure including $A_4 \\times A_4$, etc.).",
+      "**Concrete computations are immediate.** `symBUDim_three_four = 3` and `symBUDim_four_six = 5` follow from the closed-form formula; the unconditional `symBUDim_five_lower_unconditional` is axiom-free up to parent. These serve as both regression tests and Lean-verified instances of the conjecture's predictions.",
+      "**Bertrand-Chebyshev makes the factor-2 gap formal.** The unconditional cyclic lower bound `2k \u2212 1 \u2264 symBUDim n (2k)` matches the conjectural upper bound exactly modulo the open axiom \u2014 but it's also worth showing that the prime witness $p^*$ is genuinely close to $n$, not just some small prime. `n_div_two_lt_largestPrimeBelow` formalizes this: for any $n \\geq 2$, $p^* > n/2$, axiom-free via Mathlib's `Nat.exists_prime_lt_and_le_two_mul`. The prime witness is in the dyadic window $(n/2, n]$, so any improvement beyond the cyclic lower bound must come from $S_n$-specific (non-cyclic) structure.",
+      "**The n=2 instance of the conjecture is provable, axiom-free.** `symBUDim_eq_largestPrime_two_unconditional` shows that the conjectured equality $\\text{symBUDim}(n, d) = \\text{buDim}(p^*, d)$ at $n=2$ is *not* an independent axiom: it follows from the parent file's pre-existing `symBUDim_two` axiom and the squeeze-argument `largestPrimeBelow_self_of_prime` (instantiated at $n = p = 2$). This is a non-trivial *consistency check* \u2014 the new axiom `symBUDim_eq_largestPrime` is compatible with prior axiomatization, and its true open content is for $n \\geq 3$. (For larger primes $n$, the analogous derivation would require a $\\text{symBUDim}_p$ base axiom that the gallery does not yet have.)",
+      "**At prime n, the conjecture has a strikingly simpler form.** Specializing `symBUDim_eq_largestPrime` at any prime $p$ gives `symBUDim p d = buDim p d` (since `largestPrimeBelow p = p` by the squeeze argument). The Bertrand selector and the `n/2 < p^* \\leq n$` window collapse to the trivial `p^* = n` \u2014 there is no choice to make. So the *prime-n case* asks whether the symmetric-group BU dimension equals the cyclic-prime-$n$ BU dimension, a strictly $S_n$-versus-$\\mathbb{Z}/p$ comparison. This separates two qualitatively different difficulties: composite-$n$ cases (the prime $p^* < n$ is a non-trivial choice) versus prime-$n$ cases (no choice, S\u2099 vs \u2124/p directly). Captured in `symBUDim_eq_buDim_at_prime` and instantiated at $n = 11, 13$.",
+      "**The Z/2 subgroup gives a uniform lower bound at ALL d (including odd).** The Yang-Borsuk cyclic-prime axiom only pins `buDim p (2k) = 2k \u2212 1` for even dimensions, so the largestPrimeBelow route delivers only the floor-rounded $2 \\lfloor d/2 \\rfloor - 1$ at odd $d$. But the parent's `buDim_two : buDim 2 (m+1) = m` operates in *any* dimension via the classical $S^d \\to \\mathbb{R}^d$ antipodal map. Composing with parent's `symBUDim_two` and subgroup monotonicity yields the **strictly stronger** uniform bound $d - 1 \\leq \\text{symBUDim}(n, d)$ at odd $d$ (`symBUDim_lower_z2`). Captured cleanly in Part IX. At $n = 2$ this also delivers the **complete axiom-free closed form** $\\text{symBUDim}(2, d) = d - 1$ for all $d$ \u2014 the conjecture is fully settled at $n = 2$ independent of the new largestPrimeBelow axiom.",
+      "**The genuinely-open content of the new axiom is strictly $n \\geq 3$ at odd $d \\geq 3$.** With Part IX/X, $n = 2$ is fully axiom-free for all $d$, and even-$d$ at $n \\geq 3$ has a tight unconditional lower bound matching the conjectured value modulo the conjectured *upper* bound. The remaining open content is whether $S_n$ for $n \\geq 3$ at odd $d \\geq 3$ improves *past* the Z/2 uniform bound $d - 1$ \u2014 that would require $S_n$-specific or non-cyclic-subgroup contributions beyond what $\\mathbb{Z}/2$ already provides.",
+      "**The conjecture WOULD extend Yang-Borsuk to odd dimensions at all cyclic primes.** Iteration 8's `buDim_prime_lower_z2_conditional` is a clean structural consequence: assuming `symBUDim_eq_largestPrime`, the classical Borsuk-Ulam lower bound $d - 1 \\leq \\text{buDim}(p, d)$ extends from $p = 2$ (parent's `buDim_two`, valid in any dimension) to ALL primes $p$ and ALL $d \\geq 1$ \u2014 including odd $d$, where the parent's even-$d$-only `buDim_prime` axiom is silent. So accepting the symmetric-group conjecture would PIN a NEW lower bound on cyclic-prime Yang-Borsuk dimensions at odd $d$ for $p \\geq 3$, content beyond the current Mathlib/parent axiomatization. Inversely, any future computation of $\\text{buDim}(p, d)$ at odd $d$ that *fails* to satisfy $d - 1 \\leq \\text{buDim}(p, d)$ would FALSIFY `symBUDim_eq_largestPrime` at $n = p$.",
+      "**The plateau structure of $\\text{largestPrimeBelow}$ formalizes the conjecture's 'plateau collapse' prediction.** Iteration 10 adds `largestPrimeBelow_const_in_no_prime_range` (axiom-free): if no prime lies in $(n, m]$, then $\\text{lpb}(m) = \\text{lpb}(n)$. The conditional symBUDim consequence `symBUDim_const_in_no_prime_range` then says: the conjecture predicts that all $S_n$ for $n$ in any maximal prime-gap interval $[p, q)$ \u2014 between two consecutive primes $p < q$ \u2014 share the *same* equivariant Borsuk-Ulam dimension at every $d$. So the conjecture has highly non-trivial *internal* content: it forces, e.g., $S_8, S_9, S_{10}$ to have identical $\\text{symBUDim}$ at all $d$, despite their qualitatively different subgroup structures. This is the structural reason behind the concrete 'plateau collapse' instances at composite $n$ \u2014 and gives a uniform, axiom-free engine for any future plateau argument."
+    ],
+    "prerequisites": [
+      "BorsukUlamOQ02OQ01.lean (cyclic-group buDim, buDim_two, buDim_prime, buDim_mono)",
+      "BorsukUlamOQ02OQ01OQ03.lean (symBUDim, sym_has_cyclic_prime, sym_has_smaller_sym, symBUDim_two)",
+      "Mathlib.Data.Nat.Find (Nat.findGreatest API)",
+      "Mathlib.Data.Nat.Prime.Basic (primality, Nat.prime_two)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "largest-prime",
+      "title": "Part I: The Largest Prime \u2264 n",
+      "startLine": 54,
+      "endLine": 87,
+      "summary": "`largestPrimeBelow n := Nat.findGreatest Nat.Prime n` (noncomputable). Theorems: `largestPrimeBelow_isPrime` (genuine prime for n \u2265 2 via witness 2), `largestPrimeBelow_le` (\u2264 n), `two_le_largestPrimeBelow` (\u2265 2 for n \u2265 2). Combined, these establish $p^* \\in \\{p \\text{ prime} : 2 \\leq p \\leq n\\}$.",
+      "mathContext": "$p^* = \\max\\{p \\text{ prime} : p \\leq n\\}$. The witness $p = 2$ ensures `findGreatest` returns a prime whenever $n \\geq 2$; combining `findGreatest_le` and `le_findGreatest` (with witness 2) pins $p^* \\in [2, n]$ and prime."
+    },
+    {
+      "id": "conjecture-axiom",
+      "title": "Part II: The Equality Conjecture (Axiomatized)",
+      "startLine": 88,
+      "endLine": 103,
+      "summary": "`symBUDim_eq_largestPrime`: the central conjectural equality $\\text{symBUDim}(n, d) = \\text{buDim}(p^*, d)$ for $n \\geq 2$. Axiomatized because the matching upper bound requires Fadell-Husseini cohomological index theory not yet in Mathlib. The lower-bound direction is parent's `sym_has_cyclic_prime`.",
+      "mathContext": "The proof sketch in the file's docstring outlines the cohomological strategy: spectral sequence of $BS_n \\to BG$ for cyclic prime $G$, exploiting that non-cyclic factors of $S_n$ contribute only via prime subgroups in the equivariant index."
+    },
+    {
+      "id": "closed-form",
+      "title": "Part III: Closed Form on Even Dimensions",
+      "startLine": 104,
+      "endLine": 118,
+      "summary": "`symBUDim_even_formula`: from the conjectural axiom + parent's `buDim_prime`, derives the tight closed form $\\text{symBUDim}(n, 2k) = 2k - 1$ for $n \\geq 2, k \\geq 1$. A two-line `rw` proof composing the new axiom with the Yang-Borsuk formula.",
+      "mathContext": "$\\text{symBUDim}(n, 2k) \\stackrel{\\text{axiom}}{=} \\text{buDim}(p^*, 2k) \\stackrel{\\text{Yang-Borsuk}}{=} 2k - 1$. The closed form is conditional on the conjecture \u2014 not yet a theorem of Mathlib."
+    },
+    {
+      "id": "unconditional-lower",
+      "title": "Part IV: Unconditional Lower Bound (No New Axioms)",
+      "startLine": 119,
+      "endLine": 145,
+      "summary": "`symBUDim_even_lower`: $2k - 1 \\leq \\text{symBUDim}(n, 2k)$ for $n \\geq 2, k \\geq 1$, using ONLY (a) `largestPrimeBelow_isPrime` + `largestPrimeBelow_le`, (b) parent's `sym_has_cyclic_prime` (subgroup monotonicity), (c) parent's `buDim_prime` (Yang-Borsuk). NO new axiom needed for the LOWER bound \u2014 only the conjectural equality is axiomatized.",
+      "mathContext": "$\\text{buDim}(p^*, 2k) \\stackrel{\\text{Yang-Borsuk}}{=} 2k - 1$, and $\\text{buDim}(p^*, 2k) \\leq \\text{symBUDim}(n, 2k)$ by subgroup monotonicity (parent axiom). Chaining gives the unconditional lower bound."
+    },
+    {
+      "id": "concrete",
+      "title": "Part V: Concrete Instances",
+      "startLine": 146,
+      "endLine": 167,
+      "summary": "`symBUDim_three_four = 3`: $S_3$ on $\\mathbb{R}^4$ representation. `symBUDim_four_six = 5`: $S_4$ on $\\mathbb{R}^6$ representation (note $p^* = 3$ since 4 is composite). Both conditional on the conjectural axiom. `symBUDim_five_lower_unconditional`: axiom-free $S_5$ lower bound. Serve as regression tests for the API.",
+      "mathContext": "$S_3 \\cong D_3$ (order 6), $p^* = 3$. $S_4$ (order 24), $p^* = 3$ \u2014 interesting because $V_4 \\leq S_4$ is the natural counterexample candidate for the conjecture. $S_5$ (order 120), $p^* = 5$ \u2014 the simplest nonsolvable $S_n$, with rich representation theory."
+    },
+    {
+      "id": "bertrand-bound",
+      "title": "Part VI: Bertrand Bound on the Largest Prime",
+      "startLine": 168,
+      "endLine": 250,
+      "summary": "`n_div_two_lt_largestPrimeBelow`: axiom-free quantitative bound $n/2 < \\text{largestPrimeBelow}(n)$ for $n \\geq 2$, derived from Mathlib's Bertrand-Chebyshev (`Nat.exists_prime_lt_and_le_two_mul`). `largestPrimeBelow_in_bertrand_window`: the two-sided window $n/2 < p^* \\leq n$.",
+      "mathContext": "Bertrand-Chebyshev applied at $m = \\lfloor n/2 \\rfloor \\geq 1$ produces a prime $p$ with $m < p \\leq 2m \\leq n$, hence $p \\leq p^*$ by maximality. The bound shows the unconditional cyclic lower bound $2k - 1 \\leq \\text{symBUDim}(n, 2k)$ is within factor 2 of the trivial upper bound \u2014 independently of how composite $n$ is. Tightening past this would require $S_n$-specific structure (representation-theoretic obstructions, $V_4$-style non-cyclic factors)."
+    },
+    {
+      "id": "n2-consistency",
+      "title": "Part VII: Axiom-free Consistency at n=2",
+      "startLine": 251,
+      "endLine": 389,
+      "summary": "`largestPrimeBelow_self_of_prime` (general, axiom-free): for prime $n$, $\\text{largestPrimeBelow}(n) = n$ via squeeze. Concrete corollaries `largestPrimeBelow_two/_three/_five/_seven`. `symBUDim_eq_largestPrime_two_unconditional` (axiom-free): the n=2 case of the conjectured equality is provable from parent's `symBUDim_two` + `largestPrimeBelow_two`, *without* invoking the new `symBUDim_eq_largestPrime` axiom \u2014 a non-trivial consistency check. `symBUDim_two_even_formula_unconditional`, `symBUDim_two_four_unconditional`: axiom-free closed form and concrete instance at n=2.",
+      "mathContext": "The squeeze argument: $n \\leq \\text{findGreatest}(\\text{Prime}, n)$ from `Nat.le_findGreatest le_rfl hn`, and $\\text{findGreatest}(\\text{Prime}, n) \\leq n$ from `Nat.findGreatest_le`, hence equality when $n$ is prime. At n=2 this reduces the conjecture to the parent's pre-existing `symBUDim_two` axiom \u2014 showing the new axiom is consistent with prior axiomatization and contributes new content only for $n \\geq 3$."
+    },
+    {
+      "id": "prime-n-specialization",
+      "title": "Part VIII: Conjecture Specialized at Prime n",
+      "startLine": 390,
+      "endLine": 444,
+      "summary": "`symBUDim_eq_buDim_at_prime`: at any prime $p$, the conjectural equality `symBUDim_eq_largestPrime` collapses (via `largestPrimeBelow_self_of_prime`) to the clean statement $\\text{symBUDim}(p, d) = \\text{buDim}(p, d)$. `symBUDim_prime_even_formula`: tight closed form $\\text{symBUDim}(p, 2k) = 2k - 1$ at any prime $p$, $k \\geq 1$ (combines `symBUDim_eq_buDim_at_prime` + parent's `buDim_prime`). Concrete instances `symBUDim_eleven_eq_buDim_eleven`, `symBUDim_thirteen_eq_buDim_thirteen`, `symBUDim_eleven_even_formula`, `symBUDim_thirteen_even_formula`. All conditional on the new axiom.",
+      "mathContext": "At prime $n$, the Bertrand selector and the dyadic window $(n/2, n]$ collapse: $p^* = n$ is forced. The conjecture's content reduces to whether the symmetric-group BU dimension equals the cyclic-prime-$n$ BU dimension \u2014 a strictly $S_n$-versus-$\\mathbb{Z}/p$ comparison. Separates two qualitatively different difficulties: composite-$n$ cases (the prime $p^* < n$ is a non-trivial choice from Bertrand's window) versus prime-$n$ cases (no choice, direct comparison). The cleanly-isolated prime-$n$ case may admit elementary equivariant techniques."
+    },
+    {
+      "id": "z2-general-d-lower",
+      "title": "Part IX: General-d Unconditional Lower Bound from Z/2",
+      "startLine": 445,
+      "endLine": 493,
+      "summary": "`symBUDim_lower_z2`: uniform unconditional lower bound $d - 1 \\leq \\text{symBUDim}(n, d)$ for all $n \\geq 2$, $d \\geq 1$. Routes through Z/2 \u2014 the parent's `symBUDim_two : symBUDim 2 d = buDim 2 d`, `buDim_two : buDim 2 (m+1) = m`, and `symBUDim_le_of_le 2 n d`. Strictly tighter than `symBUDim_even_lower` at odd $d$: at $d = 2k + 1$ this gives $2k$, while `symBUDim_even_lower` only delivers the floor-rounded $2k - 1$. `symBUDim_odd_lower_unconditional`: odd-$d$ corollary $2k \\leq \\text{symBUDim}(n, 2k + 1)$ for $n \\geq 2$.",
+      "mathContext": "The Yang-Borsuk cyclic-prime axiom `buDim_prime p k` only handles even dimensions ($d = 2k$). For odd $d$ the largestPrimeBelow route gives at best the floor-rounded value $2 \\lfloor d/2 \\rfloor - 1$, but the classical Borsuk-Ulam map at $p = 2$ ($S^d \\to \\mathbb{R}^d$ with antipodal action) operates in *any* dimension via `buDim_two : buDim 2 (m+1) = m`. So the Z/2 subgroup contributes the strictly-stronger $d - 1$ lower bound at odd $d$, independent of the new $largestPrimeBelow$ axiom. This isolates one half of the conjecture's odd-$d$ content \u2014 only the question of whether $S_n$ for $n \\geq 3$ improves past $\\mathbb{Z}/2$ at odd $d$ remains."
+    },
+    {
+      "id": "n2-general-d-closed-form",
+      "title": "Part X: General-d Closed Form at n = 2 (Axiom-free)",
+      "startLine": 494,
+      "endLine": 533,
+      "summary": "`symBUDim_two_general_unconditional`: axiom-free closed form $\\text{symBUDim}(2, d) = d - 1$ for ALL $d \\geq 1$. Generalizes `symBUDim_two_even_formula_unconditional` (which only handled even $d$) by routing through `buDim_two` at the general-$d$ shape. Combined with `largestPrimeBelow_two`, this **fully settles the conjecture axiom-free at $n = 2$ across all dimensions**, independent of the new `symBUDim_eq_largestPrime` axiom. Concrete instances at small odd $d$: `symBUDim_two_three_unconditional` (= 2), `_two_five_` (= 4), `_two_seven_` (= 6).",
+      "mathContext": "At $n = 2$ the parent already pins $\\text{symBUDim}(2, d) = \\text{buDim}(2, d)$ via the `symBUDim_two` axiom, and `buDim_two` is the classical Borsuk-Ulam in any dimension. The redundancy of the new axiom at $n = 2$ \u2014 previously known only on even $d$ via `symBUDim_eq_largestPrime_two_unconditional` \u2014 is now extended to all dimensions. The genuinely-open content of the new axiom is therefore strictly for $n \\geq 3$."
+    },
+    {
+      "id": "odd-d-concrete-bounds",
+      "title": "Part XI: Concrete Odd-d Lower Bounds (n \u2265 3)",
+      "startLine": 534,
+      "endLine": 565,
+      "summary": "Concrete axiom-free instances of `symBUDim_odd_lower_unconditional`: `symBUDim_three_three_lower_` ($2 \\leq \\text{symBUDim}(3, 3)$), `_four_three_lower_` ($2 \\leq \\text{symBUDim}(4, 3)$ \u2014 V\u2084 \u2264 S\u2084 test case), `_three_five_lower_` ($4 \\leq \\text{symBUDim}(3, 5)$), `_four_five_lower_` ($4 \\leq \\text{symBUDim}(4, 5)$). At odd $d$ the largestPrimeBelow route only delivers the floor-rounded value, so these bounds are **strictly tighter** than what Part IV / Part V's even-$d$ machinery can produce.",
+      "mathContext": "Specialization of the Z/2 odd-$d$ uniform bound to small $n$ and $d$. The $S_4$ instances are the natural Klein-4 ($V_4 \\leq S_4$) test cases cited in the problem statement: even though $V_4$ is non-cyclic of order 4, the Z/2 lower bound applies regardless. A future improvement at $S_4$ that goes beyond $d - 1$ would have to come from $V_4$-specific representation-theoretic obstructions."
+    },
+    {
+      "id": "z2-transfer-to-cyclic-primes",
+      "title": "Part XIV: Conditional Z/2 Transfer to Cyclic Primes",
+      "startLine": 566,
+      "endLine": 633,
+      "summary": "**Iteration 8.** `buDim_largestPrime_lower_z2`: conditional on `symBUDim_eq_largestPrime`, `d \u2212 1 \u2264 buDim (largestPrimeBelow n) d` for n \u2265 2, d \u2265 1. `buDim_prime_lower_z2_conditional`: at any prime p with d \u2265 1, conditionally `d \u2212 1 \u2264 buDim p d` \u2014 extends Yang-Borsuk's lower bound from p = 2 (parent's `buDim_two`) to all primes and all dimensions including odd d. Concrete instances `buDim_{three,five,seven}_lower_z2_conditional`. `symBUDim_prime_combined_lower`: axiom-free packaged max-bound `max (buDim p d) (d \u2212 1) \u2264 symBUDim p d` at prime p \u2014 combines the Z/p and Z/2 subgroup contributions.",
+      "mathContext": "The parent's `buDim_prime` axiom only fires on EVEN d ($\\text{buDim}(p, 2k) = 2k - 1$ for prime $p$, $k \\geq 1$); at odd $d$, $\\text{buDim}(p, d)$ for primes $p \\geq 3$ is unconstrained by the existing axiomatization. The new axiom $\\text{symBUDim}_n d = \\text{buDim}(p^*, d)$ combined with the axiom-free Z/2 lower bound $d - 1 \\leq \\text{symBUDim}(n, d)$ (iter 7) WOULD pin a NEW lower bound $d - 1 \\leq \\text{buDim}(p, d)$ valid at ALL d for ALL primes p. This is genuinely new content: a structural consequence of the symmetric-group conjecture for cyclic-prime Yang-Borsuk dimensions. **Falsification corollary**: any future computation of $\\text{buDim}(p, d)$ at odd $d$ violating $d - 1 \\leq \\text{buDim}(p, d)$ would falsify the symmetric-group conjecture at $n = p$."
+    },
+    {
+      "id": "conjecture-as-prop-and-falsification",
+      "title": "Part XV: Conjecture-as-Prop and Falsification Handles",
+      "startLine": 634,
+      "endLine": 709,
+      "summary": "**Iteration 9.** `ConjectureLPB : Prop` \u2014 the equality conjecture stated as an explicit hypothesis (not an axiom). `buDim_largestPrime_lower_z2_of`, `buDim_prime_lower_z2_of`, `symBUDim_eq_buDim_at_prime_of`: hypothesis-form variants of iter-5/iter-8 conditional theorems with `ConjectureLPB` as an explicit hypothesis instead of using the file's axiom. `not_conjectureLPB_of_buDim_lt`: formal falsification theorem \u2014 a proof of `buDim p d < d \u2212 1` at any prime p, d \u2265 1 refutes `ConjectureLPB`. Concrete falsification handles `not_conjectureLPB_of_buDim_three_three_lt_two`, `_five_three_lt_two`, `_three_five_lt_four` pinpoint the simplest odd-d cases beyond the parent's even-d Yang-Borsuk axiomatization where future research could refute the conjecture.",
+      "mathContext": "Reformulates iter-8's structural consequence as a Prop-level hypothesis so downstream developments can track conjecture-dependence explicitly. The falsification theorem is the formal contrapositive of `buDim_prime_lower_z2_of`: assuming `ConjectureLPB`, the Z/2 lower bound $d - 1 \\leq \\text{symBUDim}(n, d)$ (axiom-free, iter 7) transfers via the conjecture to $d - 1 \\leq \\text{buDim}(p, d)$ at any prime $p$ \u2014 content beyond the parent's `buDim_prime` axiom at odd $d$. So a proof of $\\text{buDim}(p, d) < d - 1$ at odd $d$ for any prime $p \\geq 3$ would refute the conjecture. The concrete instances at $(p, d) = (3, 3), (5, 3), (3, 5)$ are the simplest cases where the conjecture's content is genuinely beyond the parent's even-d axiomatization."
+    },
+    {
+      "id": "plateau-infrastructure",
+      "title": "Part XVI: Plateau Infrastructure for largestPrimeBelow",
+      "startLine": 710,
+      "endLine": 807,
+      "summary": "**Iteration 10.** Axiom-free engine for the local-constancy structure of $\\text{lpb}$ between consecutive primes. `largestPrimeBelow_succ_of_not_prime`: atomic step \u2014 composite successor preserves LPB (direct corollary of Mathlib's `Nat.findGreatest_of_not`). `largestPrimeBelow_const_in_no_prime_range`: general plateau lemma proved by `Nat.le_induction` lifting the atomic step over a prime gap. `largestPrimeBelow_eq_of_in_plateau`: prime-anchored packaging combining a known $\\text{lpb}(n) = p$ with a no-prime-in-$(n, m]$ hypothesis. **Conditional consequences**: `symBUDim_eq_of_lpb_eq` \u2014 same LPB \u21d2 same symBUDim at every dimension, conditional on `symBUDim_eq_largestPrime`. `symBUDim_const_in_no_prime_range` \u2014 formal expression of the 'plateau collapse' prediction: distinct symmetric groups in any maximal prime-gap interval conjecturally share the equivariant BU dimension at every $d$. `symBUDim_eq_of_lpb_eq_of`, `symBUDim_const_in_no_prime_range_of` \u2014 hypothesis-form variants taking `ConjectureLPB` as a `Prop` argument.",
+      "mathContext": "$\\text{lpb}(n)$ is locally constant on the maximal prime-gap intervals $[p_i, p_{i+1})$ between consecutive primes $p_i < p_{i+1}$ \u2014 pinned at $p_i$ throughout. The proof is by induction on $m - n$: each successor jump $k \\to k + 1$ preserves $\\text{lpb}$ when $k + 1$ is composite, via $\\text{Nat.findGreatest}_\\text{of\\_not}$. Combined with the central conjecture, this forces all symmetric groups whose index falls in the same prime gap to have *identical* equivariant Borsuk-Ulam dimensions at every $d$ \u2014 a strong, type-level prediction. Concrete instances (e.g., $\\text{lpb}(8) = \\text{lpb}(9) = \\text{lpb}(10) = 7$, hence conjecturally $\\text{symBUDim}(8, d) = \\text{symBUDim}(9, d) = \\text{symBUDim}(10, d)$ for all $d$) follow uniformly from this axiom-free engine plus a single primality decision."
+    },
+    {
+      "id": "plateau-collapse-instances",
+      "title": "Part XVII: Concrete Plateau Collapse Instances",
+      "startLine": 808,
+      "endLine": 928,
+      "summary": "**Iteration 11.** Direct applications of Part XVI's plateau infrastructure to specific prime-gap intervals. Each instance pins a no-prime-in-gap fact via `interval_cases` + `decide`, then derives an axiom-free LPB collapse, a conditional `symBUDim` collapse, and its hypothesis-form variant. Three intervals chosen to cover the smallest prime gaps with multiple composites: $(7, 11)$ (dyadic, gap 4), $(13, 17)$ (gap 4), and $(23, 29)$ (gap 6 \u2014 first occurrence of a 5-composite stretch). The S\u2082\u2083 \u2192 S\u2082\u2088 instance forces six consecutive symmetric groups to share equivariant Borsuk-Ulam dimensions at every $d$, despite their qualitatively different subgroup structures.",
+      "mathContext": "Combines the structural Part XVI engine (prime-gap induction over `largestPrimeBelow_succ_of_not_prime`) with concrete primality checks decided by Lean's kernel. The three chosen intervals exhibit the qualitatively different prime-gap regimes: gap 4 at small $n$ (twin-prime adjacent), gap 4 at moderate $n$ (just past 13), and the first gap of size 6 (between 23 and 29 \u2014 the first instance where the maximal prime gap exceeds the previously-observed gap-4 ceiling). Each `symBUDim` instance is genuinely new content modulo the conjecture: e.g., `symBUDim 23 d = symBUDim 28 d` is non-trivial because S\u2082\u2083 contains a Sylow-2 subgroup of order $2^{19}$ while S\u2082\u2088 contains a Sylow-2 of order $2^{25}$, so any 2-equivariant invariant differs between the two \u2014 yet the conjecture forces their equivariant BU dimensions to coincide."
+    },
+    {
+      "id": "first-gap-eight",
+      "title": "Part XVIII: First Prime Gap of Size 8 \u2014 Plateau Collapse at S\u2088\u2089 \u2192 S\u2089\u2086",
+      "startLine": 929,
+      "endLine": 986,
+      "summary": "The interval (89, 97) is the first prime gap of size 8 in \u2115 (seven consecutive composites 90\u201396). `no_prime_in_ninety_to_ninetysix` (axiom-free, `interval_cases`+`decide`) witnesses it; `largestPrimeBelow_eightynine_eq_ninetysix` pins the longest LPB plateau below n=100 (eight consecutive ranks {89,\u2026,96}) axiom-free. Conditionally on the file axiom, `symBUDim_eightynine_eq_ninetysix` forces equivariant BU dimensions at all eight ranks to coincide; a hypothesis-form variant `symBUDim_eightynine_eq_ninetysix_of` uses `ConjectureLPB` instead of the axiom.",
+      "mathContext": "Extends the Part-XVII prime-gap enumeration template (gaps of size 4, 6) to the first size-8 gap. All `largestPrimeBelow` facts are axiom-free via the no-prime-in-range machinery; the `symBUDim` collapse is conditional on `symBUDim_eq_largestPrime`. The plateau distinguishes S\u2088\u2089 (prime rank, |S\u2088\u2089|=89!) from the highly-composite S\u2089\u2086 (96 = 2\u2075\u00b73)."
+    },
+    {
+      "id": "structural-converse-mono",
+      "title": "Part XIX: Structural Converse \u2014 Strict Monotonicity Across Primes",
+      "startLine": 987,
+      "endLine": 1087,
+      "summary": "Converse of the no-prime-in-range constancy: `largestPrimeBelow_lt_of_prime_in_range` shows a prime in (n, m] forces strict growth `largestPrimeBelow n < largestPrimeBelow m` (axiom-free, via `Nat.le_findGreatest` + `largestPrimeBelow_le`, no `2 \u2264 n` needed). Packaged as the biconditional `largestPrimeBelow_eq_iff_no_prime_in_range`: for n \u2264 m, LPB plateaus correspond exactly to prime-gap intervals. `largestPrimeBelow_strict_mono_at_prime` specializes at m = p; concrete plateau-edge witnesses (`_eight_lt_eleven`, `_thirteen_lt_seventeen`, `_twentythree_lt_twentynine`, `_eightynine_lt_ninetyseven`) pin each plateau as a maximal level set.",
+      "mathContext": "Subsumes the entire 'first prime gap of size N' enumeration under one structural iff: plateau \u21d4 absence of primes in the interval. The strict-mono converse witnesses each plateau's right boundary at the next prime, where LPB strictly exceeds the plateau value."
+    },
+    {
+      "id": "symmetric-biconditional",
+      "title": "Part XX: Symmetric Biconditional \u2014 Drop the Order Hypothesis",
+      "startLine": 1088,
+      "endLine": 1166,
+      "summary": "Order-free form of the Part XIX characterization: `largestPrimeBelow_eq_iff_no_prime_in_range_symm` replaces n \u2264 m with 'no prime in (min n m, max n m]' by case-splitting on `le_total`. `largestPrimeBelow_ne_of_prime_in_range_symm` packages the contrapositive. `symBUDim_const_in_unordered_no_prime_range` (+ `_of` hypothesis-form) lifts the symmetric LPB-iff to the conjectured `symBUDim` collapse for an unordered pair. `largestPrimeBelow_ten_eq_eight` demonstrates the reverse-order (n=10 > m=8) instance without `Eq.symm`.",
+      "mathContext": "The symmetric statement is canonical when the order between n and m is unknown or context-dependent (e.g. the conjectured collapse `symBUDim n d = symBUDim m d` for an unordered pair). Axiom-free on the LPB side; the symBUDim lift is conditional on `symBUDim_eq_largestPrime`."
+    },
+    {
+      "id": "bertrand-window-packaging",
+      "title": "Part XXII: Bertrand-Window Packaging + Hypothesis-Form Variants",
+      "startLine": 1167,
+      "endLine": 1242,
+      "summary": "Hypothesis-form bridge `symBUDim_eq_largestPrime_of` lets a `ConjectureLPB` hypothesis stand in for the file axiom in any rewrite, with conjecture-dependence explicit at the type level. Hypothesis-form mirrors of the Part III/VIII closed forms (`symBUDim_even_formula_of`, `symBUDim_prime_even_formula_of`). Bertrand-window packaging `symBUDim_eq_buDim_in_bertrand_window` (+ `_of`): for n \u2265 2 there exists a prime p in the dyadic window (n/2, n] with `symBUDim n d = buDim p d`, hiding the internal `largestPrimeBelow` selector behind an existential.",
+      "mathContext": "Combines the conjecture's prediction `symBUDim n d = buDim (largestPrimeBelow n) d` with the Bertrand\u2013Chebyshev bound `n/2 < largestPrimeBelow n \u2264 n` (Part VI) to yield a selector-free 'there exists a Bertrand-window prime' restatement. The hypothesis-form variants track conjecture-dependence syntactically rather than via the axiom."
+    },
+    {
+      "id": "bertrand-window-mono",
+      "title": "Part XXIII: Bertrand-Window Monotonicity Packaging",
+      "startLine": 1243,
+      "endLine": 1322,
+      "summary": "`buDim_largestPrime_mono` (+ `_of`): for 2 \u2264 n \u2264 m, `buDim (largestPrimeBelow n) d \u2264 buDim (largestPrimeBelow m) d`, a one-line rewrite through the file axiom reducing to the parent's unconditional `symBUDim_le_of_le`. `exists_bertrand_window_primes_mono` (+ `_of`) packages this selector-free: there exist primes p \u2208 (n/2, n] and q \u2208 (m/2, m] with `buDim p d \u2264 buDim q d`.",
+      "mathContext": "Path-Forward Item 2 from Iter 15. Transfers the parent's monotonicity of `symBUDim` in n (modulo parent axiom `sym_has_smaller_sym`) to monotonicity of `buDim \u2218 largestPrimeBelow`, then packages it as 'Bertrand-window primes have monotonically non-decreasing buDim'. Conditional on `symBUDim_eq_largestPrime`."
+    },
+    {
+      "id": "even-odd-asymmetry",
+      "title": "Part XXIV: Even-d / Odd-d Asymmetry of the Conjecture's Content",
+      "startLine": 1323,
+      "endLine": 1422,
+      "summary": "Documents that strict monotonicity at even d is impossible. `buDim_largestPrime_even_eq` (axiom-free): `buDim (largestPrimeBelow n) (2k) = 2k\u22121` from parent's `buDim_prime` alone. `buDim_largestPrime_even_const` + `buDim_largestPrime_even_no_strict_mono`: the even-d value is constant in n, refuting Iter-16's strict variant. Conditional companions `symBUDim_even_const_across_n` (+ `_of`) and `symBUDim_even_no_strict_mono` (+ `_of`) mirror this for `symBUDim`.",
+      "mathContext": "Yang\u2013Borsuk (`buDim_prime`) pins `buDim p (2k) = 2k\u22121` for every prime p, so the conjecture's even-d content is constancy in n, not strict monotonicity. The genuine non-trivial content therefore lives at odd d, where the parent's `buDim_prime` is silent for primes p \u2265 3 \u2014 sharpening the proven/open boundary."
+    },
+    {
+      "id": "concrete-lpb-composites",
+      "title": "Part XXV: Concrete largestPrimeBelow Values at Small Composites",
+      "startLine": 1423,
+      "endLine": 1512,
+      "summary": "Closes the explicit TODO in `largestPrimeBelow_eight_eq_ten` (Part XVII) by pinning concrete values axiom-free: `no_prime_in_seven_to_ten`, then `largestPrimeBelow_eight_eq_seven`, `_nine_eq_seven`, `_ten_eq_seven` (each chains `largestPrimeBelow_const_in_no_prime_range` over (7, k] with the base case `largestPrimeBelow_seven`). Conditionally, `symBUDim_seven_eq_ten` (+ `_of`) gives the longest concrete symBUDim plateau collapse below n=11.",
+      "mathContext": "Yields the 4-step run `symBUDim 7 d = symBUDim 8 d = symBUDim 9 d = symBUDim 10 d` (last step conditional on `symBUDim_eq_largestPrime`) across the dyadic gap (7, 11). Four symmetric groups with qualitatively distinct subgroup lattices (S\u2087 simple-like, S\u2088 with V\u2084\u00b7A\u2084, S\u2089 with S\u2082\u00d7S\u2082 Sylow-2, S\u2081\u2080 with A\u2085\u00d7A\u2085) are forced to share equivariant BU dimensions at every d."
+    },
+    {
+      "id": "budim-lpb-constancy",
+      "title": "Part XXVI: buDim \u2218 largestPrimeBelow Constancy on Prime-Gap Plateaus",
+      "startLine": 1513,
+      "endLine": 1640,
+      "summary": "The third (axiom-free) constancy axis: `buDim_largestPrime_const_in_no_prime_range` shows that whenever (n, m] contains no prime, `buDim (largestPrimeBelow n) d = buDim (largestPrimeBelow m) d` for every d \u2014 the structurally-most-primitive form of Iter-19's conditional `symBUDim_seven_eq_ten`. Concrete instances on the catalogued gaps: `buDim_lpb_seven_eq_buDim_lpb_ten`, `_eight_`/`_nine_` middle steps, and (cont.) `buDim_lpb_thirteen_eq_buDim_lpb_sixteen`, `_twentythree_eq_buDim_lpb_twentyeight`, `_eightynine_eq_buDim_lpb_ninetysix` across the size-4/6/8 gaps.",
+      "mathContext": "Sharp combination with Part XXIV: at even d, `buDim_largestPrime_even_const` gives unrestricted constancy in n (parent's `buDim_prime` pins the value); at odd d, this part's no-prime-in-gap constancy still holds, restricted to prime-gap plateaus. The axiom-free `buDim`-side facts are what the conjecture transports through `symBUDim_eq_largestPrime`."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: Axiom Inventory and Proved-Theorem Census",
+      "startLine": 1641,
+      "endLine": 2040,
+      "summary": "Closing documentation block. Records the single axiom added (`symBUDim_eq_largestPrime`, with the n=2 instance noted redundant via `symBUDim_eq_largestPrime_two_unconditional`), the full census of theorems proved axiom-free up to the parent's axioms (prime-selector facts, fixed-point characterization, unconditional Z/2 lower bound, concrete instances, plateau infrastructure, biconditional characterization, Bertrand-window packaging, even/odd asymmetry), and per-iteration addition logs (Iter 12 size-8 gap, Iter 13 converse, Iter 14 symmetric biconditional, Iter 17 even/odd asymmetry, Iter 21 buDim\u2218lpb plateau constancy).",
+      "mathContext": "The summary distinguishes proven content (even-d closed form 2k\u22121 via Yang\u2013Borsuk; all `largestPrimeBelow` structural facts) from the single open axiom encoding the conjectured equality `symBUDim n d = buDim (largestPrimeBelow n) d`, whose full proof requires Fadell\u2013Husseini index calculations absent from Mathlib. Odd-d content remains genuinely open."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-02-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "BorsukUlamOQ02OQ01OQ03 develops the symBUDim framework with subgroup monotonicity. This file specializes to the largest-prime question and adds the conjectural equality."
+    },
+    {
+      "targetId": "borsuk-ulam-oq-02-oq-01",
+      "relationship": "depends-on",
+      "description": "Inherits buDim, buDim_prime (Yang-Borsuk), and buDim_mono from the cyclic-group framework."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "uses",
+      "description": "Bertrand's postulate (background only \u2014 not directly imported here): used to argue p* > n/2, placing the bound within factor 2 of optimal."
+    }
+  ],
+  "conclusion": {
+    "summary": "Phase-2 formalization of the symmetric-group BU dimension's largest-prime conjecture. The lower bound $\\text{symBUDim}(n, 2k) \\geq 2k - 1$ is a theorem (axiom-free in this file, modulo parent infrastructure), and Bertrand's postulate gives $p^* > n/2$ \u2014 placing the bound within factor 2 of optimal. The matching upper bound is axiomatized as the single conjectural equality `symBUDim_eq_largestPrime`; from it we derive the tight closed form $\\text{symBUDim}(n, 2k) = 2k - 1$.",
+    "implications": "This file isolates the genuinely-open content (the upper bound) into a single named axiom. Any future progress \u2014 a Fadell-Husseini cohomological calculation, an equivariant-map construction for symmetric reps, or a counterexample at small composite $n$ \u2014 would slot directly into this framework. The infrastructure also supports the parallel dihedral question (`borsuk-ulam-oq-02-oq-01-oq-03-oq-01`), with which it shares the parent file `BorsukUlamOQ02OQ01OQ03.lean`.",
+    "openQuestions": [
+      "Prove or refute the conjectural axiom symBUDim_eq_largestPrime via Fadell-Husseini index theory. The S_n equivariant cohomology index would give the matching upper bound.",
+      "Test case n = 4: does $V_4 \\leq S_4$ (non-cyclic of order 4) contribute beyond the buDim 3 d lower bound? An explicit equivariant calculation could confirm or falsify the conjecture at n = 4.",
+      "Test case n = 8: does $S_8$ (which contains $V_4$, $A_4$, $\\mathbb{Z}/2 \\times \\mathbb{Z}/2 \\times \\mathbb{Z}/2$, ...) contribute beyond buDim 7 d? Higher composite n with rich subgroup structure are natural counterexample candidates.",
+      "Connection to Lov\u00e1sz-Kneser: the chromatic-number-of-Kneser-graph application of equivariant BU uses the $\\mathbb{Z}/2$ case; what is the symmetric-group analog, and does it require the conjectured equality?",
+      "Sister-question OQ-02-OQ-01-OQ-03-OQ-01 (dihedral $D_n$ analog): is $\\text{dihedralBUDim}(n, d) = \\max(\\text{buDim}(2, d), \\max_{p \\text{ prime}, p|n} \\text{buDim}(p, d))$? Shares the parent file's infrastructure with this OQ-02."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Find",
+      "Mathlib.NumberTheory.Bertrand",
+      "Mathlib.Tactic",
+      "Proofs.BorsukUlamOQ02OQ01OQ03"
+    ],
+    "opens": [
+      "BorsukUlamNonCyclic",
+      "BorsukUlamOQ02OQ01"
+    ],
+    "namespace": "BorsukUlamSymPrime",
+    "lineCount": 2040,
+    "axiomCount": 1,
+    "theoremCount": 123,
+    "substantiveTheoremCount": 121,
+    "definitionCount": 2,
+    "path": "Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Borsuk, K.",
+      "title": "Drei S\u00e4tze \u00fcber die n-dimensionale euklidische Sph\u00e4re",
+      "year": "1933",
+      "note": "Fundamenta Mathematicae 20, 177-190. The original BU theorem."
+    },
+    {
+      "authors": "Fadell, E.R. and Husseini, S.Y.",
+      "title": "An ideal-valued cohomological index theory with applications to Borsuk-Ulam and Bourgin-Yang theorems",
+      "year": "1988",
+      "note": "Ergodic Theory and Dynamical Systems 8*, 73-85. The S_n-equivariant cohomological index \u2014 needed for any direct proof of the upper bound."
+    },
+    {
+      "authors": "Matou\u0161ek, J.",
+      "title": "Using the Borsuk-Ulam Theorem",
+      "year": "2003",
+      "note": "Springer, Berlin. Chapter 6: equivariant BU for non-cyclic groups."
+    },
+    {
+      "authors": "Lov\u00e1sz, L.",
+      "title": "Kneser's conjecture, chromatic number, and homotopy",
+      "year": "1978",
+      "note": "Journal of Combinatorial Theory A 25, 319-324. The Z/2-equivariant BU \u2192 chromatic-number application; symmetric-group generalizations remain a long-running program."
+    },
+    {
+      "authors": "Erd\u0151s, P.",
+      "title": "Beweis eines Satzes von Tschebyschef",
+      "year": "1932",
+      "note": "Acta Sci. Math. (Szeged) 5, 194-198. Erd\u0151s's elementary proof of Bertrand's postulate, used in the prose discussion to argue p* > n/2."
+    },
+    {
+      "authors": "tom Dieck, T.",
+      "title": "Transformation Groups",
+      "year": "1987",
+      "note": "De Gruyter, Berlin. Equivariant homotopy reference."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "symBUDim_even_formula",
+      "type": "core",
+      "description": "Conjectural tight formula: symBUDim n (2k) = 2k \u2212 1 for n \u2265 2, k \u2265 1.",
+      "leanType": "(n k : \u2115) \u2192 2 \u2264 n \u2192 0 < k \u2192 symBUDim n (2 * k) = 2 * k - 1"
+    },
+    {
+      "name": "symBUDim_even_lower",
+      "type": "core",
+      "description": "Unconditional lower bound: symBUDim n (2k) \u2265 2k \u2212 1 for n \u2265 2, k \u2265 1 (axiom-free modulo parent).",
+      "leanType": "(n k : \u2115) \u2192 2 \u2264 n \u2192 0 < k \u2192 2 * k - 1 \u2264 symBUDim n (2 * k)"
+    },
+    {
+      "name": "symBUDim_eq_largestPrime",
+      "type": "axiom",
+      "description": "The conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n \u2265 2 \u2014 the open question.",
+      "leanType": "(n d : \u2115) \u2192 2 \u2264 n \u2192 symBUDim n d = buDim (largestPrimeBelow n) d"
+    },
+    {
+      "name": "largestPrimeBelow_isPrime",
+      "type": "supporting",
+      "description": "For n \u2265 2, largestPrimeBelow n is prime (witness p = 2).",
+      "leanType": "(n : \u2115) \u2192 2 \u2264 n \u2192 Nat.Prime (largestPrimeBelow n)"
+    },
+    {
+      "name": "symBUDim_eq_buDim_at_prime",
+      "type": "core",
+      "description": "Specialization at prime n: the conjectural equality symBUDim_eq_largestPrime collapses to symBUDim p d = buDim p d at any prime p (since largestPrimeBelow p = p). Isolates the prime-n content of the open question. Conditional on the new axiom.",
+      "leanType": "(p d : \u2115) \u2192 Nat.Prime p \u2192 symBUDim p d = buDim p d"
+    },
+    {
+      "name": "n_div_two_lt_largestPrimeBelow",
+      "type": "core",
+      "description": "Bertrand-Chebyshev bound (axiom-free): for n \u2265 2, n/2 < largestPrimeBelow n. Pins p* in the dyadic window (n/2, n] regardless of how composite n is.",
+      "leanType": "(n : \u2115) \u2192 2 \u2264 n \u2192 n / 2 < largestPrimeBelow n"
+    },
+    {
+      "name": "symBUDim_lower_z2",
+      "type": "core",
+      "description": "Uniform unconditional lower bound (axiom-free up to parent): d \u2212 1 \u2264 symBUDim n d for all n \u2265 2 and d \u2265 1. Routes through Z/2 (parent's symBUDim_two + buDim_two + symBUDim_le_of_le 2 n d). Strictly tighter than symBUDim_even_lower at odd d: at d = 2k + 1 it gives 2k while symBUDim_even_lower delivers only the floor-rounded 2k \u2212 1.",
+      "leanType": "(n d : \u2115) \u2192 2 \u2264 n \u2192 0 < d \u2192 d - 1 \u2264 symBUDim n d"
+    },
+    {
+      "name": "symBUDim_two_general_unconditional",
+      "type": "core",
+      "description": "Axiom-free closed form at n = 2 for all d \u2265 1: symBUDim 2 d = d \u2212 1. Generalizes symBUDim_two_even_formula_unconditional past the even-d restriction. Combined with largestPrimeBelow_two this fully settles the conjecture axiom-free at n = 2 across all dimensions, independent of the new symBUDim_eq_largestPrime axiom.",
+      "leanType": "(d : \u2115) \u2192 0 < d \u2192 symBUDim 2 d = d - 1"
+    }
+  ],
+  "sorries": 0
+}

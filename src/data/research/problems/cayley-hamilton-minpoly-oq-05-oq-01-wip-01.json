@@ -1,0 +1,60 @@
+{
+  "slug": "cayley-hamilton-minpoly-oq-05-oq-01-wip-01",
+  "title": "Complete Nonderogatory Matrices Have Cyclic Vectors",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Complete Nonderogatory Matrices Have Cyclic Vectors.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-28T17:58:20.660Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: File fully proved (0A, 0S). Nonderogatory → cyclic vector over infinite fields.",
+    "builtItems": [],
+    "insights": [
+      "CayleyHamiltonMinpolyOQ05OQ01.lean is fully proved: 0A, 0S",
+      "Proves: nonderogatory matrix (minpoly = charpoly) over infinite field has cyclic vector",
+      "Uses UniqueFactorizationMonoid API (normalizedFactors)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton-minpoly-oq-05",
+    "cayley-hamilton-minpoly-oq-05-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T17:58:20.660Z",
+  "lastUpdate": "2026-03-28T17:58:20.660Z",
+  "significance": 6,
+  "tractability": 5
+}

@@ -1,0 +1,325 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Module Header and Problem Statement",
+    "content": "The module docstring introduces Erdős Problem #265: given a strictly increasing sequence of positive integers $1 \\leq a_1 < a_2 < \\cdots$, how fast can the sequence grow if both $\\sum 1/a_n$ and $\\sum 1/(a_n - 1)$ are rational? The header summarizes the three key developments: Cantor's triangular number example, Erdős's two conjectures about growth rates, and the Kovač-Tao (2024) breakthrough achieving doubly exponential growth.",
+    "mathContext": "The dual rationality constraint $\\sum 1/a_n \\in \\mathbb{Q}$ and $\\sum 1/(a_n - 1) \\in \\mathbb{Q}$ is far more restrictive than either condition alone. Most increasing integer sequences yield irrational reciprocal sums (by Erdős-Straus type results).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős problems",
+      "irrationality of series",
+      "growth rates",
+      "Kovač-Tao theorem"
+    ],
+    "prerequisites": [
+      "convergence of series",
+      "rational vs irrational sums"
+    ]
+  },
+  {
+    "id": "ann-pos-seq",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 28,
+      "endLine": 30
+    },
+    "type": "definition",
+    "title": "Positive Integer Sequences",
+    "content": "Defines `IsPositiveIntSeq a` as $\\forall n, a_n \\geq 1$. This ensures the reciprocals $1/a_n$ are well-defined positive real numbers. Working over $\\mathbb{N} \\to \\mathbb{N}$ with the positivity constraint is equivalent to working with sequences of positive integers, since $\\mathbb{N}$ already excludes negatives.",
+    "mathContext": "$\\text{IsPositiveIntSeq}(a) \\iff \\forall n \\in \\mathbb{N},\\; a(n) \\geq 1$. The condition $a_n \\geq 1$ ensures $1/a_n \\leq 1$ and $a_n - 1 \\geq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positive integers",
+      "reciprocal sequences",
+      "well-definedness"
+    ],
+    "prerequisites": [
+      "natural number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-increasing",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 32,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "Strictly Increasing Sequences",
+    "content": "Defines `IsStrictlyIncreasing a` as $\\forall n, a_n < a_{n+1}$. Combined with positivity, this forces $a_n \\geq n+1$, so $a_n \\to \\infty$ and $\\sum 1/a_n$ converges by comparison with $\\sum 1/n^2$. Strict monotonicity also ensures all terms are distinct.",
+    "mathContext": "$\\text{IsStrictlyIncreasing}(a) \\iff \\forall n,\\; a(n) < a(n+1)$. This implies $a(n) \\geq n + a(0) \\geq n + 1$, guaranteeing convergence of $\\sum 1/a_n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone sequences",
+      "convergence tests",
+      "comparison test"
+    ],
+    "prerequisites": [
+      "sequence monotonicity",
+      "series convergence"
+    ]
+  },
+  {
+    "id": "ann-reciprocal-sum",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 36,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Reciprocal Sum via tsum",
+    "content": "Defines `reciprocalSum a` as $\\sum' n, 1/a_n$ using Mathlib's `tsum` (topological sum). The `noncomputable` tag reflects that the sum involves real-valued limits. For strictly increasing sequences with $a_n \\geq n+1$, this sum converges absolutely.",
+    "mathContext": "$\\text{reciprocalSum}(a) = \\sum_{n=0}^{\\infty} \\frac{1}{a_n} \\in \\mathbb{R}$. Convergence follows from $0 < 1/a_n \\leq 1/(n+1)$ and the comparison test.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tsum",
+      "infinite series",
+      "reciprocal sums",
+      "Filter.Summable"
+    ],
+    "prerequisites": [
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "topological sums"
+    ]
+  },
+  {
+    "id": "ann-shifted-sum",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 40,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Shifted Reciprocal Sum",
+    "content": "Defines `shiftedReciprocalSum a` as $\\sum' n, 1/(a_n - 1)$. This is the second constraint that makes the problem hard. Note: when $a_n = 1$ (which can happen for $n = 0$), the term $1/(a_n - 1) = 1/0$ is formally $0$ in Lean's division-by-zero convention, so the sum is well-defined even without an explicit guard.",
+    "mathContext": "$\\text{shiftedReciprocalSum}(a) = \\sum_{n=0}^{\\infty} \\frac{1}{a_n - 1}$. The shift by 1 couples the two sums: $\\frac{1}{a_n - 1} - \\frac{1}{a_n} = \\frac{1}{a_n(a_n - 1)}$, so requiring both rational constrains the 'interaction terms'.",
+    "significance": "key",
+    "relatedConcepts": [
+      "partial fractions",
+      "telescoping series",
+      "division by zero in Lean"
+    ],
+    "prerequisites": [
+      "tsum",
+      "Lean division semantics"
+    ]
+  },
+  {
+    "id": "ann-both-rational",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 44,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Dual Rationality Predicate",
+    "content": "Defines `hasBothRationalSums a` as the conjunction: $\\exists q \\in \\mathbb{Q}, \\text{reciprocalSum}(a) = q$ AND $\\exists q' \\in \\mathbb{Q}, \\text{shiftedReciprocalSum}(a) = q'$. This predicate is the central constraint of Erdős #265. The rationality of a real number is expressed via the existence of a rational $q$ mapping to it under the canonical embedding $\\mathbb{Q} \\hookrightarrow \\mathbb{R}$.",
+    "mathContext": "$\\text{hasBothRationalSums}(a) \\iff \\sum 1/a_n \\in \\mathbb{Q} \\;\\land\\; \\sum 1/(a_n - 1) \\in \\mathbb{Q}$. Note: if $\\sum 1/a_n = p/q$ and $\\sum 1/(a_n - 1) = r/s$, then $\\sum \\frac{1}{a_n(a_n-1)} = r/s - p/q \\in \\mathbb{Q}$ as well.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rational numbers",
+      "rationality of series",
+      "canonical embedding ℚ → ℝ"
+    ],
+    "prerequisites": [
+      "rational number theory",
+      "series convergence"
+    ]
+  },
+  {
+    "id": "ann-cantor",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 48,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "Cantor's Triangular Number Example",
+    "content": "Defines `cantorSeq n = n * (n + 1) / 2` (triangular numbers: 0, 1, 3, 6, 10, 15, ...) and proves it is strictly increasing for $n \\geq 1$ via `simp`, `ring_nf`, and `omega`. The rationality of both sums is stated as axioms. For the standard triangular numbers, $\\sum_{n=1}^{\\infty} 2/(n(n+1)) = 2$ by the telescoping identity $2/(n(n+1)) = 2/n - 2/(n+1)$. This is the prototype example with polynomial growth: $a_n \\sim n^2/2$, so $a_n^{1/n} \\to 1$.",
+    "mathContext": "$a_n = \\binom{n+1}{2} = \\frac{n(n+1)}{2}$. The telescoping sum $\\sum_{n=1}^{N} \\frac{2}{n(n+1)} = 2 - \\frac{2}{N+1} \\to 2$ gives rationality. Growth: $a_n^{1/n} = (n(n+1)/2)^{1/n} \\to 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangular numbers",
+      "telescoping series",
+      "polynomial growth",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "telescoping sums",
+      "Lean omega tactic"
+    ]
+  },
+  {
+    "id": "ann-growth-rates",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 72,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "Growth Rate Hierarchy",
+    "content": "Three noncomputable growth measures form a hierarchy of increasing sensitivity:\n\n1. **singleExpGrowth**: $a_n^{1/n}$ — detects exponential vs polynomial growth. Polynomial sequences give limit 1, exponential sequences give a finite constant $c > 1$.\n2. **doubleExpGrowth**: $a_n^{1/2^n}$ — detects doubly exponential growth. If $a_n = c^{2^n}$, this equals $c$.\n3. **genExpGrowth**: $a_n^{1/\\beta^n}$ for parameter $\\beta > 1$ — interpolates between single and double exponential.\n\nThe Kovač-Tao result shows genExpGrowth can tend to $\\infty$ for some $\\beta > 1$. Erdős's open question asks whether $\\beta = 2$ is achievable.",
+    "mathContext": "The hierarchy: $a_n^{1/n} \\to \\infty \\implies a_n^{1/\\beta^n} \\to \\infty$ for small $\\beta$, but $a_n^{1/2^n} \\to 1$ can hold even when $a_n^{1/n} \\to \\infty$. Example: $a_n = n^n$ has $a_n^{1/n} = n \\to \\infty$ but $a_n^{1/2^n} = n^{n/2^n} \\to 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential growth",
+      "doubly exponential growth",
+      "growth rate comparison",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "real exponentiation",
+      "limits at infinity",
+      "Filter.atTop"
+    ]
+  },
+  {
+    "id": "ann-conjectures",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 91,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Erdős's Two Conjectures",
+    "content": "Two axioms formalize Erdős's conjectures:\n\n**First conjecture** (`erdos_265_singleExp_achievable`): $\\exists a$ valid with $a_n^{1/n} \\to \\infty$. This was **proved** by Kovač-Tao (2024), so this axiom records a known theorem.\n\n**Second conjecture** (`erdos_265_doubleExp_necessary`): $\\forall a$ valid, $a_n^{1/2^n} \\to 1$. This remains **open** — it asserts that double-exponential growth is the absolute barrier for valid sequences.\n\nThe first conjecture uses `Filter.Tendsto ... Filter.atTop Filter.atTop` (divergence to $+\\infty$), while the second uses `Filter.Tendsto ... (nhds 1)` (convergence to 1).",
+    "mathContext": "Conjecture 1: $\\exists a \\in \\mathcal{V},\\; \\lim_{n \\to \\infty} a_n^{1/n} = +\\infty$ (proved). Conjecture 2: $\\forall a \\in \\mathcal{V},\\; \\lim_{n \\to \\infty} a_n^{1/2^n} = 1$ (open).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős conjectures",
+      "Filter.Tendsto",
+      "nhds",
+      "growth barriers"
+    ],
+    "prerequisites": [
+      "filter limits",
+      "neighborhood filter nhds",
+      "Filter.atTop"
+    ]
+  },
+  {
+    "id": "ann-kovac-tao",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 111,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Kovač-Tao Theorem and Remaining Question",
+    "content": "Two axioms capture the current state of knowledge:\n\n**kovac_tao_theorem**: $\\exists \\beta > 1$ and a valid sequence $a$ with $a_n^{1/\\beta^n} \\to \\infty$. Published in the *Annals of Mathematics* (2024), this confirms that growth strictly faster than any single exponential is achievable. The construction is non-explicit (existence proof via probabilistic/analytic methods).\n\n**erdos_265_remaining**: A formal disjunction stating that either (a) some valid sequence has $\\limsup a_n^{1/2^n} > 1$, or (b) all valid sequences satisfy $a_n^{1/2^n} \\to 1$. This is a tautology (law of excluded middle) but its formalization highlights the open problem's structure.",
+    "mathContext": "Kovač-Tao: $\\exists \\beta > 1,\\; \\exists a \\in \\mathcal{V},\\; \\lim a_n^{1/\\beta^n} = +\\infty$. The gap between their $\\beta$ and $\\beta = 2$ is the open frontier. The disjunction $P \\lor \\neg P$ for $P = \\exists a \\in \\mathcal{V},\\; \\limsup a_n^{1/2^n} > 1$ encodes the problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Annals of Mathematics",
+      "Kovač-Tao",
+      "doubly exponential growth",
+      "law of excluded middle",
+      "Filter.limsup"
+    ],
+    "prerequisites": [
+      "filter limits",
+      "limsup",
+      "existential quantification"
+    ]
+  },
+  {
+    "id": "ann-irrationality",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 133,
+      "endLine": 144
+    },
+    "type": "concept",
+    "title": "Irrationality Threshold at $\\beta = 2$",
+    "content": "The axiom `irrationality_threshold` states: if $a_n^{1/2^n} \\to c > 1$ for some constant $c$, then $\\sum 1/a_n$ is irrational. This folklore result from transcendence theory explains why $\\beta = 2$ is expected to be the barrier — sequences growing at exactly double-exponential rate with a definite limit automatically violate the rationality constraint.\n\nThe proof idea uses the fact that $a_n \\approx c^{2^n}$ makes $\\sum 1/a_n$ a lacunary series whose irrationality follows from Liouville-type approximation arguments.",
+    "mathContext": "If $\\lim_{n \\to \\infty} a_n^{1/2^n} = c > 1$, then $a_n \\approx c^{2^n}$ and $\\sum 1/a_n \\approx \\sum c^{-2^n}$. This is a lacunary series: the gaps between terms grow exponentially, making the sum transcendental (and hence irrational) by Mahler-type results.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lacunary series",
+      "transcendence theory",
+      "Liouville numbers",
+      "Mahler's method"
+    ],
+    "prerequisites": [
+      "transcendental number theory",
+      "lacunary series",
+      "irrationality criteria"
+    ]
+  },
+  {
+    "id": "ann-valid-set",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 146,
+      "endLine": 159
+    },
+    "type": "axiom",
+    "title": "Valid Sequence Set and Maximum Growth Rate",
+    "content": "Defines `validSequences` as the set $\\{a \\mid \\text{IsPositiveIntSeq}(a) \\land \\text{IsStrictlyIncreasing}(a) \\land \\text{hasBothRationalSums}(a)\\}$ and `maxGrowthRate` as the supremum of $\\limsup a_n^{1/n}$ over all valid $a$. The supremum uses Mathlib's `⨆` (indexed supremum). The Kovač-Tao result shows $\\text{maxGrowthRate} = +\\infty$ (since $a_n^{1/n} \\to \\infty$ is achievable).",
+    "mathContext": "$\\mathcal{V} = \\{a : \\mathbb{N} \\to \\mathbb{N} \\mid a_n \\geq 1,\\; a_n < a_{n+1},\\; \\sum 1/a_n \\in \\mathbb{Q},\\; \\sum 1/(a_n-1) \\in \\mathbb{Q}\\}$. By Kovač-Tao, $\\sup_{a \\in \\mathcal{V}} \\limsup a_n^{1/n} = +\\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "indexed supremum",
+      "Filter.limsup",
+      "set comprehension"
+    ],
+    "prerequisites": [
+      "set theory",
+      "supremum in ℝ",
+      "limsup"
+    ]
+  },
+  {
+    "id": "ann-polynomial",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 161,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "Higher-Degree Polynomial Examples",
+    "content": "States that cubic polynomial sequences can also satisfy the dual rationality constraint with an appropriate shift. The example $p(n) = n^3 + 6n^2 + 5n$ with shift $k = 12$ asserts that both $\\sum 1/p(n)$ and $\\sum 1/(p(n) - 12)$ are rational. Such polynomial families generalize Cantor's quadratic example but remain in the polynomial growth regime ($a_n^{1/n} \\to 1$), far from the doubly exponential frontier.",
+    "mathContext": "For $p(n) = n^3 + 6n^2 + 5n = n(n+1)(n+5)$, partial fractions give $\\frac{1}{p(n)} = \\frac{1}{4}\\left(\\frac{1}{n(n+1)} - \\frac{1}{(n+4)(n+5)}\\right)$, a telescoping decomposition ensuring rationality.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "partial fractions",
+      "telescoping series",
+      "polynomial sequences"
+    ],
+    "prerequisites": [
+      "partial fraction decomposition",
+      "polynomial factorization"
+    ]
+  },
+  {
+    "id": "ann-main-open",
+    "proofId": "erdos-265",
+    "range": {
+      "startLine": 174,
+      "endLine": 205
+    },
+    "type": "concept",
+    "title": "Main Open Problem: The $\\beta = 2$ Barrier",
+    "content": "The formal statement of Erdős #265 as a logical disjunction using `Filter.limsup`:\n\nEither (a) $\\exists a \\in \\mathcal{V}$ with $\\limsup a_n^{1/2^n} > 1$ — meaning some valid sequence exceeds double-exponential growth, disproving Erdős's second conjecture — or (b) $\\forall a \\in \\mathcal{V}$, $\\limsup a_n^{1/2^n} \\leq 1$ — meaning double-exponential growth is the hard barrier, confirming the conjecture.\n\nThe docstring above the axiom provides a self-contained summary of the entire problem: Cantor's example, the two conjectures, the Kovač-Tao resolution of the first, and the remaining open question about $\\beta = 2$.",
+    "mathContext": "$\\text{erdos\\_265\\_main}: \\left(\\exists a \\in \\mathcal{V},\\; \\limsup a_n^{1/2^n} > 1\\right) \\lor \\left(\\forall a \\in \\mathcal{V},\\; \\limsup a_n^{1/2^n} \\leq 1\\right)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problems",
+      "growth rate barriers",
+      "Filter.limsup",
+      "law of excluded middle"
+    ],
+    "prerequisites": [
+      "filter theory",
+      "limsup",
+      "logical disjunction"
+    ]
+  }
+]

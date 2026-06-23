@@ -1,0 +1,208 @@
+[
+  {
+    "id": "ann-clt-oq01-oq01-slowly-varying-def",
+    "proofId": "central-limit-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 40,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Slowly Varying Functions",
+    "content": "A function $L$ is slowly varying at infinity if $L(cx)/L(x) \\to 1$ as $x \\to \\infty$ for every $c > 0$. The definition requires $L(x) \\neq 0$ for all positive $x$, ensuring ratios are well-defined. The proof that constant positive functions are slowly varying is immediate: $a/a = 1$ for any $a > 0$. Slowly varying functions serve as the correction factors in the tail asymptotics of distributions lying in the domain of attraction of stable laws.",
+    "mathContext": "$L : \\mathbb{R} \\to \\mathbb{R}$ is slowly varying if $\\forall c > 0, \\; L(cx)/L(x) \\to 1$ as $x \\to +\\infty$. Examples include constants, $\\log x$, $\\log\\log x$, and $(\\log x)^\\beta$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Karamata theory",
+      "regular variation",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "atTop filter"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-oq01-sv-closure",
+    "proofId": "central-limit-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Closure Properties of Slowly Varying Functions",
+    "content": "Slowly varying functions are closed under multiplication, real powers, division, and reciprocal. The multiplication proof factors $L_1(cx)L_2(cx)/(L_1(x)L_2(x))$ into a product of two ratios each tending to 1. The $|L|^p$ closure uses the identity $|L(cx)/L(x)|^p \\to 1^p = 1$, relying on continuity of the power function and the norm characterization of convergence. These algebraic closure properties are essential for manipulating tail asymptotics when combining distributions.",
+    "mathContext": "If $L_1, L_2$ are slowly varying and $p \\neq 0$, then $L_1 \\cdot L_2$, $|L|^p$, $L_1/L_2$, and $1/L$ are all slowly varying.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "field_simp tactic",
+      "Filter.Tendsto.mul",
+      "rpow continuity"
+    ],
+    "prerequisites": [
+      "SlowlyVarying definition",
+      "real-valued power functions"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-oq01-regular-variation",
+    "proofId": "central-limit-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 102,
+      "endLine": 140
+    },
+    "type": "definition",
+    "title": "Regular Variation and the Representation Theorem",
+    "content": "A function $f$ is regularly varying with index $\\alpha$ if $f(cx)/f(x) \\to c^\\alpha$ for every $c > 0$. Slowly varying corresponds to $\\alpha = 0$. The proof that $|x|^\\alpha$ is regularly varying uses the identity $|cx|^\\alpha/|x|^\\alpha = |c|^\\alpha \\cdot |x|^\\alpha/|x|^\\alpha = c^\\alpha$ for $c > 0$, applied eventually via filter_upwards. Regular variation provides the natural language for tail behavior: distributions in the domain of attraction have tails that are regularly varying with index $-\\alpha$.",
+    "mathContext": "$f$ is regularly varying with index $\\alpha$ ($f \\in RV(\\alpha)$) if $f(cx)/f(x) \\to c^\\alpha$ as $x \\to \\infty$. The representation theorem states $f \\in RV(\\alpha) \\iff f(x) = |x|^\\alpha L(x)$ with $L$ slowly varying.",
+    "significance": "key",
+    "relatedConcepts": [
+      "power functions",
+      "slowly varying functions",
+      "tail asymptotics"
+    ],
+    "prerequisites": [
+      "SlowlyVarying",
+      "Real.rpow"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-oq01-tail-balance",
+    "proofId": "central-limit-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 141,
+      "endLine": 173
+    },
+    "type": "definition",
+    "title": "Tail Balance Structure",
+    "content": "The TailBalance structure encodes the asymptotic relationship between left and right distribution tails: $P(X > x) \\sim p \\cdot x^{-\\alpha} L(x)$ and $P(X < -x) \\sim q \\cdot x^{-\\alpha} L(x)$. The weights $p, q \\geq 0$ with $p + q > 0$ determine the skewness parameter $\\beta = (p - q)/(p + q)$ of the limiting stable law. The structure bundles the stability index $\\alpha \\in (0, 2]$, the slowly varying function $L$, and the convergence hypotheses into a single Lean structure, enabling clean theorem statements downstream.",
+    "mathContext": "The tail balance ratio $p/(p+q)$ determines skewness: $p = q$ gives symmetric stable laws, $q = 0$ gives maximally skewed (one-sided) distributions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "stable distributions",
+      "skewness parameter",
+      "distribution tails"
+    ],
+    "prerequisites": [
+      "SlowlyVarying",
+      "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-oq01-domain-of-attraction",
+    "proofId": "central-limit-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 174,
+      "endLine": 257
+    },
+    "type": "concept",
+    "title": "Domain of Attraction and the Gnedenko-Kolmogorov Theorem",
+    "content": "The domain of attraction is defined via characteristic function convergence: $\\varphi$ is in $DA(\\alpha)$ if there exist normalizing sequences $a_n \\to \\infty$ and centering constants $b_n$ such that $\\varphi^n(t/a_n) \\cdot e^{-ib_n t/a_n} \\to e^{-|t|^\\alpha}$. The Gnedenko-Kolmogorov theorem (axiomatized in three parts) gives: (1) forward direction -- tail conditions imply domain of attraction membership, (2) Gaussian case -- finite variance implies $\\alpha = 2$, and (3) converse -- domain of attraction membership implies regularly varying tails. These axioms represent deep results requiring Levy's continuity theorem and Abelian-Tauberian theory.",
+    "mathContext": "The full theorem: $X \\in DA(S_\\alpha) \\iff P(|X| > x) = x^{-\\alpha} L(x)$ with $L$ slowly varying, and the tail balance converges. For $\\alpha = 2$, finite variance suffices (classical CLT).",
+    "significance": "key",
+    "relatedConcepts": [
+      "characteristic functions",
+      "Levy continuity theorem",
+      "stable laws",
+      "classical CLT"
+    ],
+    "prerequisites": [
+      "InDomainOfAttraction",
+      "stableCharFun",
+      "TailBalance"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-oq01-stable-self-similarity",
+    "proofId": "central-limit-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 320,
+      "endLine": 344
+    },
+    "type": "insight",
+    "title": "Stable Self-Similarity Property",
+    "content": "The key algebraic identity $[\\exp(-|t/n^{1/\\alpha}|^\\alpha)]^n = \\exp(-|t|^\\alpha)$ captures why stable distributions are \"stable\" under normalized summation. The proof chains through $|t/n^{1/\\alpha}|^\\alpha = |t|^\\alpha/n$ (using $n^{1/\\alpha}$ raised to $\\alpha$ gives $n$) and then $n \\cdot (-(|t|^\\alpha/n)) = -|t|^\\alpha$. This identity means an $n$-fold convolution of the stable law, after rescaling by $n^{1/\\alpha}$, returns the same law -- the defining property of stability. The Lean proof carefully handles complex exponential arithmetic and the cancellation $n/(n^{1/\\alpha})^\\alpha = 1$.",
+    "mathContext": "$\\exp(-|t/n^{1/\\alpha}|^\\alpha)^n = \\exp(-n \\cdot |t|^\\alpha / n) = \\exp(-|t|^\\alpha)$, using $(n^{1/\\alpha})^\\alpha = n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "stable distributions",
+      "convolution",
+      "characteristic functions",
+      "self-similar processes"
+    ],
+    "prerequisites": [
+      "Complex.exp_nat_mul",
+      "rpow_mul",
+      "inv_mul_cancel"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-oq01-representation-theorem",
+    "proofId": "central-limit-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 616,
+      "endLine": 645
+    },
+    "type": "concept",
+    "title": "Representation Theorem for Regular Variation",
+    "content": "The representation theorem states that every regularly varying function decomposes as $f(x) = |x|^\\alpha \\cdot L(x)$ where $L$ is slowly varying. The decomposition direction extracts $L(x) = f(x)/|x|^\\alpha$ and shows it is slowly varying by the algebraic identity $RV(\\alpha)/RV(\\alpha) = RV(0) = SV$. The synthesis direction shows that $|x|^\\alpha \\cdot L(x) \\in RV(\\alpha)$ using $RV(\\alpha) \\cdot RV(0) = RV(\\alpha + 0) = RV(\\alpha)$. These results reduce all questions about regularly varying functions to questions about slowly varying functions, which is why Karamata theory focuses on the latter.",
+    "mathContext": "$f \\in RV(\\alpha) \\iff f(x) = |x|^\\alpha L(x)$ with $L \\in SV$. This separates \"pure power\" behavior from \"slowly varying correction\".",
+    "significance": "key",
+    "relatedConcepts": [
+      "Karamata representation",
+      "slowly varying decomposition",
+      "index arithmetic"
+    ],
+    "prerequisites": [
+      "RegularlyVarying",
+      "SlowlyVarying",
+      "regularlyVarying_div_index"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-oq01-pareto-cauchy-instances",
+    "proofId": "central-limit-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 916,
+      "endLine": 1041
+    },
+    "type": "concept",
+    "title": "Concrete Tail Balance Instances: Pareto and Cauchy",
+    "content": "Two concrete TailBalance instances demonstrate the theory. The Pareto distribution (one-sided, $p = 1$, $q = 0$, $L = 1$) has pure power-law right tail $P(X > x) = x^{-\\alpha}$ and no left tail, giving maximally skewed stable limits. The symmetric Cauchy distribution ($\\alpha = 1$, $p = q = 1/2$, $L = 2$) has equal left and right tails decaying as $x^{-1}$, giving a symmetric 1-stable limit. Both instances use the axiomatized forward direction to conclude membership in the appropriate domain of attraction. The Cauchy example illustrates heavy-tailed distributions with infinite mean, while Pareto covers the full range $0 < \\alpha < 2$.",
+    "mathContext": "Pareto: $P(X > x) = x^{-\\alpha}$, $P(X < -x) = 0$. Cauchy: $P(X > x) \\sim P(X < -x) \\sim x^{-1}/2$. Both lie in the domain of attraction of their respective $\\alpha$-stable laws.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pareto distribution",
+      "Cauchy distribution",
+      "heavy tails",
+      "stable laws"
+    ],
+    "prerequisites": [
+      "TailBalance structure",
+      "gnedenko_kolmogorov_forward",
+      "slowlyVarying_const"
+    ]
+  },
+  {
+    "id": "ann-clt-oq01-oq01-sv-log-examples",
+    "proofId": "central-limit-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 1042,
+      "endLine": 1114
+    },
+    "type": "concept",
+    "title": "Slowly Varying Examples: Shifted Logarithms",
+    "content": "The proof that $\\log(x + a)$ is slowly varying for $a \\geq 1$ is the most substantial construction in the file. The strategy decomposes the ratio as $\\log(cx + a)/\\log(x + a) = 1 + \\log((cx + a)/(x + a))/\\log(x + a)$. Since $(cx + a)/(x + a) \\to c$, the numerator tends to $\\log c$ (bounded), while $\\log(x + a) \\to \\infty$, giving a bounded-over-infinity ratio tending to 0. The shift $a \\geq 1$ ensures $\\log(x + a) > 0$ for all $x > 0$, avoiding the singularity $\\log(1) = 0$. Combined with the $|L|^p$ closure property, this gives $(\\log(x + a))^\\beta$ as slowly varying for any $\\beta \\neq 0$, providing the standard non-constant examples used throughout regular variation theory.",
+    "mathContext": "$\\log(cx+a)/\\log(x+a) = 1 + \\frac{\\log c + \\log(1 + O(1/x))}{\\log(x+a)} \\to 1 + 0 = 1$ since the numerator is bounded and the denominator diverges.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "logarithmic growth",
+      "bounded-over-infinity argument",
+      "Real.log continuity"
+    ],
+    "prerequisites": [
+      "Real.tendsto_log_atTop",
+      "Real.continuousAt_log",
+      "Filter.Tendsto.div_atTop"
+    ]
+  }
+]

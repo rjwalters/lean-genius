@@ -1,0 +1,189 @@
+[
+  {
+    "id": "ann-e99-header",
+    "proofId": "erdos-99",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #99** asks a striking question in discrete geometry: given n points in ℝ² with minimum pairwise distance 1, arranged to minimize the enclosing diameter, must the set contain a unit equilateral triangle when n is large enough? Thue's theorem on optimal circle packing suggests yes, since diameter-minimizing configurations should resemble the triangular lattice. But the n=4 case (a unit square) shows small configurations can avoid equilateral triangles. Erdős offered $100 for a counterexample but only $50 for a proof, suggesting he suspected the conjecture might be false.",
+    "mathContext": "The problem connects optimal circle packing (Thue's theorem) to the local structure of extremal point sets. The triangular lattice achieves packing density π/(2√3) ≈ 0.9069, and is built entirely from equilateral triangles.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangular lattice",
+      "circle packing",
+      "Thue's theorem",
+      "discrete geometry"
+    ],
+    "prerequisites": [
+      "Discrete Geometry",
+      "Circle Packing",
+      "Equilateral Triangle"
+    ]
+  },
+  {
+    "id": "ann-e99-distances",
+    "proofId": "erdos-99",
+    "range": {
+      "startLine": 39,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "Geometric Foundations",
+    "content": "The formalization works in **Plane** = EuclideanSpace ℝ (Fin 2), the standard Euclidean plane from Mathlib. **dist** computes the Euclidean distance ‖p - q‖ between points. **minPairwiseDistance** returns the smallest distance between any two distinct points using Finset.inf' over pairs, while **diameter** returns the largest using Finset.sup'. Both definitions handle the degenerate case (fewer than 2 points) by returning 0. The nonemptiness proofs use Finset.exists_ne_of_one_lt_card to find two distinct elements.",
+    "mathContext": "The minimum pairwise distance constraint (≥ 1) is equivalent to saying unit disks centered at the points don't overlap. Minimizing diameter subject to this constraint is an optimal packing problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "EuclideanSpace",
+      "Finset.inf'",
+      "Finset.sup'",
+      "metric space"
+    ],
+    "prerequisites": [
+      "Euclidean Space",
+      "Metric Space Distance",
+      "Finset Infimum Supremum"
+    ]
+  },
+  {
+    "id": "ann-e99-triangles",
+    "proofId": "erdos-99",
+    "range": {
+      "startLine": 72,
+      "endLine": 85
+    },
+    "type": "definition",
+    "title": "Equilateral Triangles and Containment",
+    "content": "**IsUnitEquilateralTriangle p q r** requires all three pairwise distances to equal 1. **ContainsUnitEquilateralTriangle A** existentially quantifies over three distinct points in A that form such a triangle. **HasMinDistanceOne** requires the minimum pairwise distance to be at least 1. Note that in a set with minimum distance 1, any equilateral triangle must have side length exactly 1 (the minimum possible).",
+    "mathContext": "Equilateral triangles of side 1 are the fundamental cells of the triangular lattice. The conjecture asks whether the global constraint of diameter minimization forces the local presence of these cells.",
+    "significance": "key",
+    "relatedConcepts": [
+      "equilateral triangle",
+      "unit distance",
+      "packing constraint"
+    ],
+    "prerequisites": [
+      "Pairwise Distance",
+      "Equilateral Triangle",
+      "Existential Quantification"
+    ]
+  },
+  {
+    "id": "ann-e99-optimal",
+    "proofId": "erdos-99",
+    "range": {
+      "startLine": 87,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "Optimal Configurations",
+    "content": "**IsOptimalConfiguration A** combines two properties: HasMinDistanceOne (all pairwise distances ≥ 1) and HasMinimalDiameter (no other set with the same cardinality and minimum distance 1 has a smaller diameter). This captures the extremal point sets that the conjecture asks about. Finding these optimal configurations is itself a hard computational problem for each n.",
+    "mathContext": "The existence of optimal configurations follows from compactness: the space of n-point sets with minimum distance 1 and bounded diameter is compact in an appropriate topology, so the diameter function achieves its minimum.",
+    "significance": "key",
+    "relatedConcepts": [
+      "optimization",
+      "extremal sets",
+      "compactness"
+    ],
+    "prerequisites": [
+      "Extremal Set",
+      "Diameter Minimization",
+      "Compactness Argument"
+    ]
+  },
+  {
+    "id": "ann-e99-lattice",
+    "proofId": "erdos-99",
+    "range": {
+      "startLine": 98,
+      "endLine": 127
+    },
+    "type": "definition",
+    "title": "The Triangular Lattice",
+    "content": "**triangularLatticePoint i j** gives the point with coordinates (i + j/2, j√3/2), using the standard basis vectors (1, 0) and (1/2, √3/2) that generate the triangular lattice. **TriangularLattice** is the set of all such points. Two key properties are axiomatized: **triangular_lattice_unit_distance** (adjacent lattice points in all three directions are distance 1 apart) and **triangular_lattice_has_equilateral** (any three adjacent points form a unit equilateral triangle). These are axiomatized rather than proved because the distance computations involve √3 and require careful norm calculations.",
+    "mathContext": "The triangular lattice is the unique densest circle packing in ℝ² (Thue, 1910; Tóth, 1940). Every face of the Voronoi tessellation is a regular hexagon, and every edge of the Delaunay triangulation has length 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lattice",
+      "basis vectors",
+      "Delaunay triangulation",
+      "Voronoi tessellation"
+    ],
+    "prerequisites": [
+      "Triangular Lattice",
+      "Basis Vectors",
+      "Voronoi Tessellation"
+    ]
+  },
+  {
+    "id": "ann-e99-thue",
+    "proofId": "erdos-99",
+    "range": {
+      "startLine": 129,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Thue's Packing Consequence",
+    "content": "**thue_diameter_consequence** captures the key insight from Thue's theorem: for large enough optimal configurations, most points lie near the triangular lattice. Specifically, for any tolerance ε > 0, at least 90% of points in a sufficiently large optimal configuration are within distance ε of some lattice point. This is the bridge between global optimality and local lattice structure — but crucially, 'near the lattice' does not immediately imply 'on the lattice' or 'containing lattice triangles'.",
+    "mathContext": "Thue's theorem states that the densest packing of unit disks has density π/(2√3). The consequence for diameter minimization follows from the fact that any configuration achieving near-optimal packing density must approximate the triangular lattice arrangement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Thue's theorem",
+      "packing density",
+      "asymptotic structure"
+    ],
+    "prerequisites": [
+      "Thue's Theorem",
+      "Packing Density",
+      "Asymptotic Approximation"
+    ]
+  },
+  {
+    "id": "ann-e99-n4",
+    "proofId": "erdos-99",
+    "range": {
+      "startLine": 142,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Small Cases: n=3 and n=4",
+    "content": "**case_n3** asserts that every optimal 3-point configuration is an equilateral triangle (trivially containing a unit equilateral triangle). **case_n4_no_equilateral** is the critical counterpoint: for n=4, the unit square is an optimal configuration that contains NO unit equilateral triangle. This is the strongest evidence that the conjecture might be false — if non-lattice optimal configurations exist for n=4, might they persist for larger n? Bezdek and Fodor (1999) extended this analysis to other small values of n.",
+    "mathContext": "The unit square has minimum distance 1 (side length), diameter √2 (diagonal), and contains no equilateral triangle of side 1. Its optimality for n=4 can be verified by exhaustive geometric analysis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit square",
+      "optimal packing",
+      "Bezdek-Fodor"
+    ],
+    "prerequisites": [
+      "Optimal Configuration",
+      "Unit Square",
+      "Exhaustive Case Analysis"
+    ]
+  },
+  {
+    "id": "ann-e99-conjecture",
+    "proofId": "erdos-99",
+    "range": {
+      "startLine": 158,
+      "endLine": 179
+    },
+    "type": "concept",
+    "title": "The Conjectures and Packing Density",
+    "content": "**Erdos99Conjecture** formalizes the main open question: there exists N such that for all n ≥ N, every optimal configuration contains a unit equilateral triangle. **StrongerConjecture** is Erdős's bolder claim: for any ε > 0, in large enough optimal configurations, at least (1-ε)n points lie exactly on the triangular lattice. The stronger conjecture implies the main one, since any large enough region of the triangular lattice contains equilateral triangles. **triangularPackingDensity** = π/(2√3) ≈ 0.9069 is the density of the optimal packing.",
+    "mathContext": "The stronger conjecture would resolve not just the equilateral triangle question but would completely characterize the structure of optimal configurations: they are essentially circular patches of the triangular lattice, possibly with O(εn) exceptional points.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open conjecture",
+      "lattice approximation",
+      "packing density"
+    ],
+    "prerequisites": [
+      "Open Conjecture",
+      "Triangular Lattice",
+      "Packing Density"
+    ]
+  }
+]

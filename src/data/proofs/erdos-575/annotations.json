@@ -1,0 +1,184 @@
+[
+  {
+    "id": "erdos-575-ann-imports",
+    "proofId": "erdos-575",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Statement and Imports",
+    "content": "The header lays out Erdős Problem #575: given a finite family F of forbidden graphs containing at least one bipartite member, must some single bipartite G ∈ F satisfy ex(n; G) = O(ex(n; F))? The formalization imports Mathlib's SimpleGraph infrastructure and Finset API.",
+    "mathContext": "The extremal number $\\mathrm{ex}(n; F)$ counts the maximum edges in an $n$-vertex graph avoiding every member of $F$. When $F$ contains a bipartite graph, the Kővári–Sós–Turán theorem forces $\\mathrm{ex}(n; F) = o(n^2)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "extremal graph theory",
+      "forbidden subgraph",
+      "Turán density"
+    ],
+    "prerequisites": [
+      "simple graphs",
+      "graph homomorphisms"
+    ]
+  },
+  {
+    "id": "erdos-575-ann-turan",
+    "proofId": "erdos-575",
+    "range": {
+      "startLine": 31,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Turán Number ex(n; H)",
+    "content": "Defines ex(n; H), the maximum number of edges in an n-vertex simple graph containing no copy of H. This is the central quantity in extremal graph theory, introduced by Turán in 1941 when he determined ex(n; K_{r+1}) exactly.",
+    "mathContext": "For the complete graph $K_{r+1}$, Turán's theorem gives $\\mathrm{ex}(n; K_{r+1}) = \\left(1 - \\frac{1}{r}\\right)\\frac{n^2}{2}$, achieved by the balanced complete $r$-partite graph $T(n,r)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán graph",
+      "extremal function",
+      "Zykov symmetrization"
+    ],
+    "prerequisites": [
+      "simple graphs",
+      "graph isomorphism",
+      "supremum"
+    ]
+  },
+  {
+    "id": "erdos-575-ann-family",
+    "proofId": "erdos-575",
+    "range": {
+      "startLine": 40,
+      "endLine": 46
+    },
+    "type": "definition",
+    "title": "Family Extremal Function ex(n; F)",
+    "content": "Defines ex(n; F) for a family F of forbidden patterns. A graph is F-free if it contains no subgraph isomorphic to any member of F. The family extremal function satisfies ex(n; F) ≤ ex(n; G) for each G ∈ F, since F-free graphs are also G-free.",
+    "mathContext": "For a family $\\mathcal{F} = \\{H_1, \\ldots, H_k\\}$, $\\mathrm{ex}(n; \\mathcal{F}) = \\max\\{|E(G)| : |V(G)| = n,\\; G \\text{ is } \\mathcal{F}\\text{-free}\\}$. The chromatic threshold of $\\mathcal{F}$ is $\\chi_{\\mathrm{cr}}(\\mathcal{F}) = \\min_{H \\in \\mathcal{F}} \\chi(H)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "forbidden subgraph",
+      "extremal number",
+      "chromatic threshold"
+    ],
+    "prerequisites": [
+      "graph families",
+      "subgraph containment",
+      "supremum"
+    ]
+  },
+  {
+    "id": "erdos-575-ann-bipartite",
+    "proofId": "erdos-575",
+    "range": {
+      "startLine": 48,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Bipartite Graph Predicate",
+    "content": "A graph is bipartite iff its vertex set admits a proper 2-coloring. Equivalently, a graph is bipartite iff it contains no odd cycle. The formalization uses a Boolean coloring function f : Fin n → Bool witnessing the 2-partition.",
+    "mathContext": "A graph $G = (V, E)$ is bipartite iff $\\chi(G) \\le 2$, iff $G$ contains no cycle $C_{2k+1}$. Every bipartite graph $H$ satisfies $\\mathrm{ex}(n; H) = o(n^2)$ by Kővári–Sós–Turán.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "2-colorability",
+      "odd cycle",
+      "König's theorem"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "cycle structure"
+    ]
+  },
+  {
+    "id": "erdos-575-ann-conjecture",
+    "proofId": "erdos-575",
+    "range": {
+      "startLine": 53,
+      "endLine": 66
+    },
+    "type": "insight",
+    "title": "Erdős–Simonovits Conjecture (Problem #575)",
+    "content": "The main conjecture: for any finite family F containing a bipartite graph, some bipartite G ∈ F has ex(n; G) = O(ex(n; F)). Axiomatized as True because the full formal statement requires graph homomorphism machinery not yet available in Mathlib. The conjecture is open in general, though verified for special families (e.g., when F consists of complete bipartite graphs).",
+    "mathContext": "The conjecture asserts $\\exists G \\in \\mathcal{F},\\; G$ bipartite, such that $\\mathrm{ex}(n; G) = O(\\mathrm{ex}(n; \\mathcal{F}))$. Equivalently, the bipartite members of $\\mathcal{F}$ determine the order of magnitude of $\\mathrm{ex}(n; \\mathcal{F})$, and moreover a single one suffices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zarankiewicz problem",
+      "degenerate Turán problem",
+      "rational exponent conjecture"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "extremal graph theory",
+      "graph families"
+    ]
+  },
+  {
+    "id": "erdos-575-ann-ess",
+    "proofId": "erdos-575",
+    "range": {
+      "startLine": 68,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Erdős–Stone–Simonovits Theorem",
+    "content": "The fundamental theorem of extremal graph theory: for non-bipartite H with χ(H) = r ≥ 3, ex(n; H) = (1 − 1/(r−1) + o(1))·n²/2. This completely determines the Turán density for non-bipartite graphs, leaving the bipartite case as the major open frontier.",
+    "mathContext": "For $\\chi(H) \\ge 3$: $\\mathrm{ex}(n; H) = \\left(1 - \\frac{1}{\\chi(H) - 1}\\right)\\frac{n^2}{2} + o(n^2)$. The leading coefficient $1 - \\frac{1}{\\chi(H)-1}$ is the Turán density $\\pi(H)$. For bipartite $H$, $\\pi(H) = 0$, and the exact order of $\\mathrm{ex}(n; H)$ is generally unknown.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán density",
+      "Erdős–Stone theorem",
+      "supersaturation"
+    ],
+    "prerequisites": [
+      "chromatic number",
+      "Ramsey theory",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "erdos-575-ann-kst",
+    "proofId": "erdos-575",
+    "range": {
+      "startLine": 78,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Kővári–Sós–Turán Bound",
+    "content": "The Kővári–Sós–Turán theorem (1954) gives ex(n; K_{s,t}) ≤ c·n^{2−1/s} for s ≤ t. This is the best known general upper bound for complete bipartite Turán numbers. For s = 2, 3 the bound is tight (Reiman 1958, Brown 1966), but tightness for s ≥ 4 remains a major open problem.",
+    "mathContext": "For $1 \\le s \\le t$: $\\mathrm{ex}(n; K_{s,t}) \\le \\frac{1}{2}(t-1)^{1/s} n^{2 - 1/s} + \\frac{s-1}{2}n$. The Zarankiewicz problem asks for the exact value of $\\mathrm{ex}(n; K_{s,t})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zarankiewicz problem",
+      "algebraic constructions",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "double counting",
+      "convexity",
+      "complete bipartite graphs"
+    ]
+  },
+  {
+    "id": "erdos-575-ann-mono",
+    "proofId": "erdos-575",
+    "range": {
+      "startLine": 84,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Monotonicity of Extremal Functions",
+    "content": "For any G ∈ F, ex(n; F) ≤ ex(n; G): forbidding more graphs can only reduce the maximum edge count. This is immediate from the definitions, since every F-free graph is also G-free for each individual G ∈ F.",
+    "mathContext": "If $\\mathcal{F}' \\supseteq \\mathcal{F}$, then $\\mathrm{ex}(n; \\mathcal{F}') \\le \\mathrm{ex}(n; \\mathcal{F})$. In particular, $\\mathrm{ex}(n; \\mathcal{F}) \\le \\min_{H \\in \\mathcal{F}} \\mathrm{ex}(n; H)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "set inclusion",
+      "extremal monotonicity",
+      "forbidden family"
+    ],
+    "prerequisites": [
+      "set theory",
+      "extremal graph theory basics"
+    ]
+  }
+]

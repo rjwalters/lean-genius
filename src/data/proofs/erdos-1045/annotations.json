@@ -1,0 +1,163 @@
+[
+  {
+    "id": "ann-1045-header",
+    "proofId": "erdos-1045",
+    "range": {
+      "startLine": 1,
+      "endLine": 34
+    },
+    "type": "concept",
+    "title": "Problem Documentation and Imports",
+    "content": "Documents Erdős Problem #1045 on maximizing the product of pairwise distances among n complex points with diameter at most 2. Imports Mathlib for complex analysis, exponentials, and finset products.",
+    "significance": "key",
+    "mathContext": "Given $n$ points $z_1, \\ldots, z_n \\in \\mathbb{C}$ with $|z_i - z_j| \\le 2$ for all $i, j$, define $\\Delta(z_1, \\ldots, z_n) = \\prod_{i \\ne j} |z_i - z_j|$. The problem asks for $\\max \\Delta$ subject to the diameter constraint. This was posed by Erdős, Herzog, and Piranian (1958) alongside Problem #1044, as part of their systematic study of metric properties of polynomials. The product $\\Delta$ is related to the discriminant of the polynomial $f(z) = \\prod(z - z_i)$.",
+    "relatedConcepts": [
+      "discriminant",
+      "polynomial roots",
+      "diameter constraint",
+      "geometric optimization"
+    ],
+    "prerequisites": [
+      "Complex.abs",
+      "Complex.exp",
+      "Finset.prod"
+    ]
+  },
+  {
+    "id": "ann-1045-definitions",
+    "proofId": "erdos-1045",
+    "range": {
+      "startLine": 36,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Configuration, Diameter Constraint, and Delta",
+    "content": "Defines Configuration (Fin n → ℂ), DiameterAtMost2 (all pairwise |zᵢ - zⱼ| ≤ 2), Delta (product over ordered pairs), and DeltaSqrt (product over unordered pairs, giving Δ^(1/2)).",
+    "significance": "key",
+    "mathContext": "The configuration space is $(\\overline{B}(0, 1))^n \\cap \\{\\text{diam} \\le 2\\}$, which is compact. Since $\\Delta$ is continuous, the maximum is attained. The ordered-pair product $\\Delta = \\prod_{i \\ne j} |z_i - z_j|$ counts each distance twice, so $\\Delta = (\\Delta_{\\text{sqrt}})^2$ where $\\Delta_{\\text{sqrt}} = \\prod_{i < j} |z_i - z_j|$. Note $\\Delta_{\\text{sqrt}}^2 = |\\text{disc}(f)|$ where $\\text{disc}(f) = \\prod_{i < j}(z_i - z_j)^2$ is the discriminant of $f(z) = \\prod(z - z_i)$.",
+    "relatedConcepts": [
+      "compact optimization",
+      "discriminant",
+      "Vandermonde determinant"
+    ],
+    "prerequisites": [
+      "Fin",
+      "Complex.abs",
+      "Finset.prod"
+    ]
+  },
+  {
+    "id": "ann-1045-regular",
+    "proofId": "erdos-1045",
+    "range": {
+      "startLine": 53,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "Regular Polygon and Its Delta Values",
+    "content": "Defines RegularPolygon as nth roots of unity scaled to diameter 2. Axiomatizes delta_regular_even (Δ = n^n for even n) and delta_regular_odd (Δ = cos(π/2n)^{-n(n-1)} · n^n for odd n). The even-n formula comes from cyclotomic polynomial evaluation.",
+    "significance": "key",
+    "mathContext": "For the regular $n$-gon inscribed in the unit circle, the product of all pairwise distances uses the identity $\\prod_{k=1}^{n-1} |1 - \\omega^k| = n$ where $\\omega = e^{2\\pi i/n}$, giving $\\prod_{i \\ne j} |z_i - z_j| = n^n$ for even $n$ (when the diameter is exactly 2).\n\nFor odd $n$, the maximum pairwise distance is $2\\cos(\\pi/2n) < 2$, so the regular polygon doesn't achieve diameter exactly 2. Rescaling to diameter 2 introduces the correction factor $\\cos(\\pi/2n)^{-n(n-1)}$. As $n \\to \\infty$, $\\cos(\\pi/2n)^{-n(n-1)} \\to e^{\\pi^2/8} \\approx 3.43$, so the odd-$n$ regular polygon has $\\Delta \\sim e^{\\pi^2/8} \\cdot n^n$.",
+    "relatedConcepts": [
+      "roots of unity",
+      "cyclotomic polynomial",
+      "diameter of regular polygon"
+    ],
+    "prerequisites": [
+      "Complex.exp",
+      "Real.cos",
+      "Real.pi"
+    ]
+  },
+  {
+    "id": "ann-1045-ehp",
+    "proofId": "erdos-1045",
+    "range": {
+      "startLine": 72,
+      "endLine": 85
+    },
+    "type": "concept",
+    "title": "Erdős–Herzog–Piranian Bound (1958)",
+    "content": "Defines polynomialFromRoots and ConnectedSublevelSet. Axiomatizes EHP_1958: if the sublevel set {w : |f(w)| < 1} is connected, then Δ < n^n.",
+    "significance": "key",
+    "mathContext": "The EHP result connects geometric optimization to polynomial level sets. If $f(z) = \\prod(z - z_i)$ and $\\{w : |f(w)| < 1\\}$ is connected (a single component), then $\\Delta = \\prod_{i \\ne j} |z_i - z_j| < n^n$. The proof uses the fact that connectivity of the sublevel set forces the roots to be 'spread out' in a way that limits the discriminant. This is related to Problem #1044 on boundary lengths of polynomial level sets—both problems come from the same 1958 paper.",
+    "relatedConcepts": [
+      "polynomial level sets",
+      "connected sublevel set",
+      "Problem #1044"
+    ],
+    "prerequisites": [
+      "polynomialFromRoots",
+      "Delta"
+    ]
+  },
+  {
+    "id": "ann-1045-pommerenke",
+    "proofId": "erdos-1045",
+    "range": {
+      "startLine": 87,
+      "endLine": 92
+    },
+    "type": "concept",
+    "title": "Pommerenke's Upper Bound (1961)",
+    "content": "Axiomatizes Pommerenke's result: Δ ≤ 2^{Cn} · n^n for some universal constant C > 0, for any diameter-≤-2 configuration.",
+    "significance": "key",
+    "mathContext": "Pommerenke (1961) proved $\\Delta(z_1, \\ldots, z_n) \\le 2^{Cn} \\cdot n^n$ for any $n$ points with diameter $\\le 2$, where $C > 0$ is an absolute constant. This shows the maximum $\\Delta$ is at most exponentially larger than $n^n$ (the regular polygon value for even $n$). The proof uses potential-theoretic estimates on the capacity of subsets of the plane.",
+    "relatedConcepts": [
+      "potential theory",
+      "capacity",
+      "exponential bounds"
+    ],
+    "prerequisites": [
+      "Configuration",
+      "DiameterAtMost2",
+      "Delta"
+    ]
+  },
+  {
+    "id": "ann-1045-counterexamples",
+    "proofId": "erdos-1045",
+    "range": {
+      "startLine": 94,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Counterexamples: Regular Polygon Not Optimal for Even n",
+    "content": "Axiomatizes Hu–Tang counterexamples for n = 4 and n = 6, and Cambie's generalization to all even n ≥ 4: there exist configurations with Δ strictly exceeding the regular polygon value.",
+    "significance": "key",
+    "mathContext": "**Hu–Tang**: Found explicit 4-point and 6-point configurations beating the square and regular hexagon. For $n = 4$, the optimal configuration is NOT a square—perturbing one pair of opposite vertices slightly inward while pushing the other pair outward increases $\\Delta$.\n\n**Cambie's Theorem**: For every even $n \\ge 4$, $\\exists$ configuration with $\\Delta > n^n$ (the regular polygon value). The proof constructs perturbations of the regular polygon that exploit the even symmetry. The key insight is that even-sided regular polygons have a specific deformation mode (related to antipodal vertex pairs) along which the Hessian of $\\log \\Delta$ is non-negative, allowing improvement.\n\nThis completely resolves the even case: the regular polygon is provably suboptimal.",
+    "relatedConcepts": [
+      "Hessian analysis",
+      "symmetry breaking",
+      "perturbation methods"
+    ],
+    "prerequisites": [
+      "Delta",
+      "RegularPolygon",
+      "DiameterAtMost2"
+    ]
+  },
+  {
+    "id": "ann-1045-lowerbounds",
+    "proofId": "erdos-1045",
+    "range": {
+      "startLine": 111,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Quantitative Lower Bounds: How Much Better Than Regular?",
+    "content": "Defines MaxDelta(n) = sup{Δ(z) : diam ≤ 2}. Axiomatizes three bounds: Sothanaphan (2025) gives liminf ≥ 1.0378 for even n; Cambie–Dong–Tang give ≥ 1.304 when 6|n and ≥ 1.269 for all even n.",
+    "significance": "key",
+    "mathContext": "The quantity $\\text{MaxDelta}(n) / n^n$ measures how much the true optimum exceeds the regular polygon value. Progressive improvement:\n\n- **Sothanaphan (2025)**: $\\liminf_{n \\text{ even}} \\text{MaxDelta}(n) / n^n \\ge 1.0378$\n- **Cambie–Dong–Tang** ($6 | n$): $\\liminf \\ge 1.304$\n- **Cambie–Dong–Tang** (all even $n$): $\\liminf \\ge 1.269$\n\nThe gap between the $6|n$ and general even cases suggests that divisibility properties of $n$ affect the optimal configuration structure. The constructions use algebraic configurations related to cyclotomic fields and their subfields. The true value of $\\liminf \\text{MaxDelta}(n)/n^n$ is unknown.",
+    "relatedConcepts": [
+      "cyclotomic fields",
+      "asymptotic optimization",
+      "liminf bounds"
+    ],
+    "prerequisites": [
+      "MaxDelta",
+      "Delta",
+      "Configuration"
+    ]
+  }
+]

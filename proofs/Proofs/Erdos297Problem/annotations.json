@@ -1,0 +1,110 @@
+[
+  {
+    "id": "def-harmonic-sum",
+    "proofId": "erdos-297",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "Harmonic Sum",
+    "content": "The harmonic sum of a set A is Σ_{n ∈ A} 1/n. This is the sum of unit fractions (Egyptian fractions) for elements in A.",
+    "significance": "major"
+  },
+  {
+    "id": "def-egyptian-representation",
+    "proofId": "erdos-297",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "definition",
+    "title": "Egyptian Representation",
+    "content": "A set A ⊆ {1,...,N} is an Egyptian representation if its harmonic sum equals 1 and all elements are positive.",
+    "significance": "major"
+  },
+  {
+    "id": "def-egyptian-count",
+    "proofId": "erdos-297",
+    "range": { "startLine": 64, "endLine": 65 },
+    "type": "definition",
+    "title": "Egyptian Count Function",
+    "content": "egyptianCount(N) counts subsets of {1,...,N} whose harmonic sum equals exactly 1. This is the central object of the problem.",
+    "significance": "major"
+  },
+  {
+    "id": "example-representations",
+    "proofId": "erdos-297",
+    "range": { "startLine": 71, "endLine": 81 },
+    "type": "example",
+    "title": "Example Egyptian Representations",
+    "content": "Examples: {1} has sum 1. {2,3,6} has sum 1/2+1/3+1/6=1. {2,4,5,20} has sum 1/2+1/4+1/5+1/20=1.",
+    "significance": "minor"
+  },
+  {
+    "id": "def-subexponential-growth",
+    "proofId": "erdos-297",
+    "range": { "startLine": 103, "endLine": 105 },
+    "type": "definition",
+    "title": "Subexponential Growth Question",
+    "content": "The key question: is there c < 1 with egyptianCount(N) ≤ 2^{cN}? This asks whether the count is exponentially smaller than the total 2^N subsets.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-steinerberger",
+    "proofId": "erdos-297",
+    "range": { "startLine": 114, "endLine": 116 },
+    "type": "theorem",
+    "title": "Steinerberger's Upper Bound (2024)",
+    "content": "Steinerberger proved egyptianCount(N) ≤ 2^{0.93N} for large N. This was the first rigorous proof that c < 1.",
+    "significance": "major"
+  },
+  {
+    "id": "def-liu-sawhney-constant",
+    "proofId": "erdos-297",
+    "range": { "startLine": 122, "endLine": 129 },
+    "type": "definition",
+    "title": "Liu-Sawhney Constant",
+    "content": "The optimal constant c ≈ 0.91... is defined as the solution to a certain integral equation. It lies between 0.9 and 0.92.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-liu-sawhney",
+    "proofId": "erdos-297",
+    "range": { "startLine": 131, "endLine": 135 },
+    "type": "theorem",
+    "title": "Liu-Sawhney Full Asymptotic (2024)",
+    "content": "Liu-Sawhney proved the complete asymptotic: egyptianCount(N) = 2^{(c+o(1))N} where c ≈ 0.91... is their constant.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-conlon-et-al",
+    "proofId": "erdos-297",
+    "range": { "startLine": 141, "endLine": 158 },
+    "type": "theorem",
+    "title": "Conlon et al. Generalization (2024)",
+    "content": "Conlon-Fox-He-Mubayi-Pham-Suk-Verstraëte proved the same asymptotic independently and generalized to arbitrary rational targets x > 0.",
+    "significance": "major"
+  },
+  {
+    "id": "insight-why-c-less-than-1",
+    "proofId": "erdos-297",
+    "range": { "startLine": 179, "endLine": 189 },
+    "type": "insight",
+    "title": "Why c < 1",
+    "content": "Most subsets overshoot 1 because the expected sum of a random subset is ~(log N)/2 which grows without bound. The constraint of sum exactly equal to 1 is very restrictive.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-main",
+    "proofId": "erdos-297",
+    "range": { "startLine": 211, "endLine": 222 },
+    "type": "theorem",
+    "title": "Main Theorem",
+    "content": "The count of A ⊆ {1,...,N} with Σ 1/n = 1 is 2^{(c+o(1))N} where 0.9 < c < 0.93 (the Liu-Sawhney constant).",
+    "significance": "major"
+  },
+  {
+    "id": "thm-answer",
+    "proofId": "erdos-297",
+    "range": { "startLine": 224, "endLine": 236 },
+    "type": "theorem",
+    "title": "Erdős's Question Answered",
+    "content": "YES, the count has subexponential growth: egyptianCount(N) = 2^{cN} for c < 1. This follows from Steinerberger's upper bound.",
+    "significance": "major"
+  }
+]

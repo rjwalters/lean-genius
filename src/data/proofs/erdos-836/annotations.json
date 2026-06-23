@@ -1,0 +1,155 @@
+[
+  {
+    "id": "ann-e836-header",
+    "proofId": "erdos-836",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #836** concerns r-uniform hypergraphs with chromatic number 3 where any two edges intersect. Two questions were asked: (1) Must the vertex count be O(r²)? Answer: NO — Alon's counterexample has ~4^r/√r vertices. (2) Must two edges share many vertices? Partial answer: Erdős-Lovász proved Ω(r/log r).",
+    "mathContext": "A hypergraph is r-uniform if every edge has exactly r vertices. It is intersecting if every pair of edges shares at least one vertex. Chromatic number 3 means vertices can be properly 3-coloured (no monochromatic edge) but not 2-coloured. These constraints interact in surprising ways.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hypergraphs",
+      "chromatic-number",
+      "intersecting-families",
+      "extremal-combinatorics"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e836-definitions",
+    "proofId": "erdos-836",
+    "range": {
+      "startLine": 45,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Hypergraph Definitions",
+    "content": "**Hypergraph** is defined as a structure with a set of edges (subsets of a vertex type). **IsUniform** requires all edges to have exactly r vertices. **IsIntersecting** requires every pair of edges to share at least one vertex. These three definitions form the basic vocabulary for the problem.",
+    "mathContext": "Unlike simple graphs where edges have exactly 2 vertices, hypergraph edges can have any number. The uniformity constraint (all edges same size) and intersection constraint (pairwise overlap) create the structured setting for Erdős's questions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set-theory",
+      "cardinality",
+      "intersecting-families"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e836-chromatic",
+    "proofId": "erdos-836",
+    "range": {
+      "startLine": 70,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "Chromatic Number Definitions",
+    "content": "**IsProperColouring** assigns colours to vertices such that no edge is monochromatic. **IsThreeChromatic** means 3-colourable but not 2-colourable. **ChromaticAtMostThree** is the weaker condition used in the problem statements. The gap between χ=2 and χ=3 is crucial: 2-chromatic intersecting hypergraphs must be stars, while 3-chromatic ones can be exponentially large.",
+    "mathContext": "The colouring uses Fin k (finite type with k elements) for colours. The key structural insight is that 2-chromatic intersecting hypergraphs are severely constrained (star property), while the jump to 3 colours allows dramatic combinatorial complexity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph-colouring",
+      "chromatic-number",
+      "star-hypergraph"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e836-q1",
+    "proofId": "erdos-836",
+    "range": {
+      "startLine": 110,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Question 1: O(r²) Vertex Bound (FALSE)",
+    "content": "**Question 1** asks whether every r-uniform, intersecting, 3-chromatic hypergraph has O(r²) vertices. This is formalized as the existence of a constant C > 0 with |V| ≤ Cr². The axiom **question1_false** states this is FALSE — Alon's counterexample disproves it with exponentially many vertices.",
+    "mathContext": "The formal statement uses an existential quantifier over C : ℝ and universal quantifiers over r, V, and H. The negation ¬Question1 means for every C, some r-uniform intersecting 3-chromatic hypergraph exceeds Cr² vertices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic-bounds",
+      "counterexample",
+      "extremal-combinatorics"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e836-alon",
+    "proofId": "erdos-836",
+    "range": {
+      "startLine": 133,
+      "endLine": 166
+    },
+    "type": "concept",
+    "title": "Alon's Counterexample Construction",
+    "content": "**Alon's construction** takes a set X of size 2r-2 and the set Y of balanced partitions of X (size C(2r-2,r-1)/2). The hypergraph has r-subsets of X as edges, plus edges combining (r-1)-subsets with partition elements. This yields ~4^r/√r vertices — exponentially larger than r². The axiom **exponential_growth** confirms 4^r/√r > r² for large r.",
+    "mathContext": "AlonVertexCount(r) = 4^r/√r is defined using Real.sqrt. The axiom alon_construction asserts existence of a hypergraph satisfying all required properties (uniform, intersecting, 3-chromatic) with at least AlonVertexCount(r)/2 vertices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition-construction",
+      "exponential-growth",
+      "binomial-coefficients"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e836-lovasz",
+    "proofId": "erdos-836",
+    "range": {
+      "startLine": 172,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "Erdős-Lovász Edge Intersection Bound",
+    "content": "**The Erdős-Lovász bound (1975)** proves that in any r-uniform, intersecting, 3-chromatic hypergraph, some pair of distinct edges must intersect in at least Ω(r/log r) vertices. This is the best known lower bound. Whether it can be improved to Ω(r) is a major open question.",
+    "mathContext": "ErdosLovaszBound(r) = r/Real.log(r). The axiom erdos_lovasz_bound asserts existence of two distinct edges whose intersection (typed as a subtype) has cardinality at least ErdosLovaszBound(r)/2. The proof in the original paper uses probabilistic methods.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic-method",
+      "edge-intersection",
+      "logarithmic-bounds"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e836-examples",
+    "proofId": "erdos-836",
+    "range": {
+      "startLine": 222,
+      "endLine": 246
+    },
+    "type": "concept",
+    "title": "Verified Small Cases",
+    "content": "**For r=3**, Alon's construction gives X of size 4 and Y of size C(4,2)/2 = 3, totaling 7 vertices — exactly matching the Fano plane! This is verified computationally using norm_num and native_decide. **For r=4**, the construction gives 6+10 = 16 vertices, which equals r² = 16 — the boundary where polynomial and exponential behaviors diverge.",
+    "mathContext": "The examples use native_decide for binomial coefficient computation (Nat.choose) and norm_num for arithmetic. These concrete values illustrate how the exponential construction begins to diverge from the O(r²) bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fano-plane",
+      "binomial-coefficients",
+      "native-decide"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e836-summary",
+    "proofId": "erdos-836",
+    "range": {
+      "startLine": 252,
+      "endLine": 270
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_836_summary** packages both main results as a conjunction: (1) ¬Question1 (vertex count is not O(r²)) and (2) the Erdős-Lovász intersection bound holds for all r ≥ 2. The proof is simply ⟨question1_false, erdos_lovasz_bound⟩, combining the two key axioms.",
+    "mathContext": "The theorem type is a conjunction of the negation of Question1 and the universal statement of the Erdős-Lovász bound. The anonymous constructor ⟨·, ·⟩ packages both components cleanly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjunction",
+      "axiom-composition",
+      "problem-resolution"
+    ],
+    "prerequisites": []
+  }
+]

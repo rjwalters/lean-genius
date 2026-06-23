@@ -1,0 +1,209 @@
+{
+  "id": "erdos-126",
+  "title": "Erdős Problem #126: Distinct Prime Factors of Pairwise Sums",
+  "slug": "erdos-126",
+  "description": "Is it true that f(n)/log(n) → ∞, where f(n) is the maximum number of distinct prime factors guaranteed in the product of all pairwise sums of an n-element set? OPEN ($250 prize).",
+  "meta": {
+    "author": "Erdős (1934 problem, with Turán)",
+    "sourceUrl": "https://erdosproblems.com/126",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos126Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "prime-factors",
+      "extremal-problems",
+      "asymptotics",
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 126,
+    "erdosUrl": "https://erdosproblems.com/126",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.offDiag",
+        "description": "Off-diagonal pairs (a, b) with a ≠ b in a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Set of distinct prime divisors of a natural number",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "IsGreatest",
+        "description": "Predicate for greatest element in an ordered set",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Asymptotics.IsBigO",
+        "description": "Big-O asymptotic notation",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Asymptotics.IsLittleO",
+        "description": "Little-o asymptotic notation",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of a function along a filter",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on ℝ",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsMaximalAddFactorsCard definition: the extremal function for pairwise sum prime factors",
+      "ErdosConjecture126 definition: f(n)/log(n) → ∞ formalized via Tendsto",
+      "erdos_turan_lower axiom: log(n) = O(f(n)) lower bound",
+      "erdos_turan_upper axiom: f(n) = O(n/log(n)) upper bound",
+      "erdos_turan_bounds theorem: combines both bounds (proved from axioms)"
+    ],
+    "axiomCount": 2,
+    "lineCount": 152,
+    "assumptions": "2 axioms: erdos_turan_lower, erdos_turan_upper. 0 sorries.",
+    "theoremCount": 1,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "**Origins and Early Work**\n\nErdős Problem #126 originates from the first joint paper of Paul Erdős and Pál Turán, published in 1934 in the American Mathematical Monthly. The investigation was prompted by questions from László Lázár and Tibor Grünwald (later Gallai). The paper studied the arithmetic structure of pairwise sums from finite subsets of the natural numbers.\n\n**The Extremal Function and Known Bounds**\n\nThe central object is the function f(n): the maximum value such that for any n-element subset A ⊆ ℕ, the product ∏_{a≠b∈A}(a+b) has at least f(n) distinct prime factors. Erdős and Turán established the bounds log(n) ≪ f(n) ≪ n/log(n). The upper bound is obtained trivially by taking A = {1, 2, …, n}, where all pairwise sums are at most 2n−1, so there are at most π(2n−1) ∼ 2n/log(n) possible prime factors by the prime number theorem.\n\n**Current Status and Prize**\n\nThe conjecture that f(n)/log(n) → ∞ remains open and carries a $250 Erdős prize. Erdős also noted that even the weaker statement f(n) = o(n/log(n)) — showing the upper bound is not tight — has \"never been seriously attacked.\" No significant progress has been made on narrowing the gap between log(n) and n/log(n) since the original 1934 paper. References: [ErTu34], [Er95c], [Er97], [Er97e].",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $f(n)$ be the maximum value such that for any $A \\subseteq \\mathbb{N}$ with $|A| = n$, the product $\\prod_{a \\neq b \\in A}(a+b)$ has at least $f(n)$ distinct prime factors.\n\n**Conjecture:** $\\frac{f(n)}{\\log n} \\to \\infty$ as $n \\to \\infty$.\n\n**Known:** $\\log n \\ll f(n) \\ll \\frac{n}{\\log n}$ (Erdős–Turán, 1934).\n\n**Prize:** $250 for resolution.",
+    "text": "Is it true that f(n)/log(n) → ∞, where f(n) is the maximum number of distinct prime factors guaranteed in the product of all pairwise sums of an n-element set? OPEN ($250 prize).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Extremal function:** `IsMaximalAddFactorsCard` defines f(n) using `Finset.offDiag` for ordered pairs and `Nat.primeFactors` for distinct prime divisors.\n\n2. **Main conjecture:** `ErdosConjecture126` formalizes f(n)/log(n) → ∞ using `Filter.Tendsto` with `atTop`.\n\n3. **Asymptotic bounds:** The Erdős–Turán bounds are stated as axioms using Mathlib's `IsBigO` notation, and combined into `erdos_turan_bounds` (proved).\n\n4. **Secondary question:** The little-o question f(n) = o(n/log(n)) is discussed in a docstring; no Lean declaration is added for this open sub-question.\n\n5. **Structural properties:** Monotonicity of f and the conjecture's implications are discussed in docstrings; no corresponding Lean declarations are added.\n\nOnly the two Erdős–Turán bounds are axiomatized. The remaining sections discuss open questions and structural observations in docstrings only.",
+    "keyInsights": [
+      "**Extremal function f(n)**: Counts the minimum number of distinct prime factors guaranteed in products of pairwise sums of any n-element subset of ℕ",
+      "**Erdős–Turán bounds (1934)**: The only known bounds are log(n) ≪ f(n) ≪ n/log(n), established 90+ years ago with no improvement since",
+      "**Trivial upper bound**: Taking A = {1,…,n} shows all prime factors are ≤ 2n−1, giving f(n) ≤ π(2n−1) ∼ 2n/log(n) by the prime number theorem",
+      "**Two open questions**: Both f(n)/log(n) → ∞ (the main conjecture) and f(n) = o(n/log(n)) (tightness of upper bound) remain unresolved",
+      "**Gap magnitude**: The gap between log(n) and n/log(n) is enormous — roughly a factor of n/log²(n) — making this one of the widest open gaps in extremal number theory"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "extremal-function",
+      "title": "Part I: The Extremal Function",
+      "startLine": 30,
+      "endLine": 49,
+      "summary": "Defines IsMaximalAddFactorsCard(f): f(n) is the maximum m such that every n-element subset guarantees at least m distinct prime factors in the pairwise sum product."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part II: The Main Conjecture",
+      "startLine": 50,
+      "endLine": 67,
+      "summary": "Defines ErdosConjecture126 (f(n)/log(n) → ∞ via Tendsto). The conjecture itself is not asserted as a Lean axiom — it is named only via the definition; the file's docstring describes the open status."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Part III: Known Bounds (Erdős–Turán 1934)",
+      "startLine": 68,
+      "endLine": 99,
+      "summary": "Axioms for the lower bound (log(n) = O(f(n))) and upper bound (f(n) = O(n/log(n))). Theorem erdos_turan_bounds combines both."
+    },
+    {
+      "id": "littleo-question",
+      "title": "Part IV: The Little-o Question",
+      "startLine": 100,
+      "endLine": 112,
+      "summary": "Discusses the secondary open question f(n) = o(n/log(n)) in a docstring; no Lean declaration is added for this question."
+    },
+    {
+      "id": "trivial-bound",
+      "title": "Part V: Trivial Upper Bound Construction",
+      "startLine": 113,
+      "endLine": 124,
+      "summary": "Discusses the trivial upper bound construction A = {1,...,n} in a docstring; no Lean declaration is added."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Part VI: Monotonicity of f",
+      "startLine": 125,
+      "endLine": 134,
+      "summary": "Discusses monotonicity of f in a docstring; no Lean declaration is added."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary and Consequences",
+      "startLine": 135,
+      "endLine": 152,
+      "summary": "Summary docstring noting f(n)/log(n) → ∞ would imply f is not O(log); no Lean declaration is added."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #126 asks whether f(n)/log(n) → ∞, where f(n) counts the minimum distinct prime factors guaranteed in pairwise sum products of n-element sets. The formalization captures the extremal function, the Erdős–Turán bounds log(n) ≪ f(n) ≪ n/log(n), the main conjecture, the secondary little-o question, and structural properties including monotonicity.",
+    "implications": "**Theoretical Significance**: Resolution would reveal the arithmetic complexity of pairwise sums in finite subsets of ℕ.\n\nA positive answer would show that large sets force rich prime structure in their pairwise sums, while a negative answer would mean sets can be constructed whose pairwise sums have surprisingly few distinct prime factors relative to set size. The problem connects to sieve methods, the prime number theorem, and extremal combinatorics.",
+    "openQuestions": [
+      "Is f(n)/log(n) → ∞? ($250 Erdős prize)",
+      "Is f(n) = o(n/log(n))? (tightness of the upper bound)",
+      "What is the true order of growth of f(n)?",
+      "Can the Erdős–Turán lower bound log(n) ≪ f(n) be improved?",
+      "Are there structural characterizations of extremal sets achieving f(n)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Asymptotics"
+    ],
+    "namespace": "Erdos126",
+    "lineCount": 152,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos126Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-648",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-890",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, number-theory, prime-factors"
+    },
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, number-theory"
+    }
+  ],
+  "references": [
+    {
+      "key": "Er35",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "On the normal number of prime factors of p-1 and some related problems concerning Euler's phi-function",
+      "venue": "Quarterly Journal of Mathematics",
+      "year": "1935",
+      "volume": "6",
+      "pages": "205-213",
+      "note": "Context for prime factor distribution in structured sets"
+    }
+  ],
+  "sorries": 0
+}

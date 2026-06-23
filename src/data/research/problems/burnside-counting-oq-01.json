@@ -1,0 +1,139 @@
+{
+  "slug": "burnside-counting-oq-01",
+  "title": "Burnside Counting: Prove rotatedIndex_add Composition Law",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "In `Proofs/BurnsideCounting.lean`, replace `axiom rotatedIndex_add (n : Nat) [NeZero n] (r s : ZMod n) (i : Fin n) : rotatedIndex n s (rotatedIndex n r i) = rotatedIndex n (r + s) i` with a Lean proof.",
+    "plain": "The parent Burnside-counting proof defines `rotatedIndex n r i` as the source index `((i.val + n - (r.val % n)) % n)` for rotating a necklace coloring. This problem asks for a real Lean proof that applying two such rotations composes as addition in `ZMod n`, removing the current modular-arithmetic axiom used by the coloring action.",
+    "whyMatters": [
+      "The parent proof records `rotatedIndex_add` as one of five axioms in `Proofs/BurnsideCounting.lean`.",
+      "This lemma is the composition law needed for `cyclicAddActionOnColorings` and the rotation action on necklace colorings.",
+      "The target is a concrete proof-engineering gap in modular arithmetic, not an open mathematical conjecture."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`rotatedIndex_zero` is proved in the parent file: zero rotation leaves each `Fin n` index unchanged.",
+      "The parent file wraps Mathlib's Burnside lemma as `burnside_lemma` and proves supporting counts such as `binary_4_colorings_count`, `constant_coloring_count`, and `period2_count`.",
+      "Local metadata records `Proofs/BurnsideCounting.lean` as having 0 sorries but 5 axioms."
+    ],
+    "open": [
+      "None — all 5 original axioms of `Proofs/BurnsideCounting.lean` are discharged. `rotatedIndex_add` (S1), `coloringSetoid` + `coloringQuotientFintype` (S2), `fixed_point_sum_binary_4` (S3), and `binary_necklaces_4` (S4, this PR) are all theorems/defs now; the file is axiom-free."
+    ],
+    "goal": "Prove the `rotatedIndex_add` composition theorem for the existing `ZMod n`/`Fin n` definition without adding new axioms or sorries."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-11T00:00:00Z",
+    "iteration": 4,
+    "focus": "S4 ACT (researcher-2, 2026-06-11): discharged binary_necklaces_4 — the LAST of the 5 original axioms. BurnsideCounting.lean is now AXIOM-FREE (0 axioms, 0 sorries, 9 theorems, 404 LOC, Docker 3058/3058 jobs clean). Proof is a single native_decide: coloringQuotientFintype 4 2 is a computable Fintype (Quotient (coloringSetoid 4 2)) — built from Quotient.fintype over the finite carrier Coloring 4 2 = Fin 4 → Fin 2 and the decidable orbit relation coloringSetoid_decidableRel — so Fintype.card of the rotation-orbit quotient is obtained by enumerating the 16 colorings, mapping to orbits, and counting the 6 distinct classes. This is dramatically simpler than the S3-planned ~30-50 LOC Burnside-lemma/AddAction-MulAction-bridge route: because S2 already made the quotient Fintype computable, the cardinality is directly decidable. axiom → theorem, +10 LOC (docstring). The MulAction burnside_lemma (line 48) remains in the file as a referenced Mathlib statement but is not needed for the necklace count.",
+    "blockers": [],
+    "nextAction": "DONE — BurnsideCounting.lean is axiom-free (all 5 original axioms discharged across S1–S4). No remaining axioms or sorries. Optional cleanup only: the 3 pre-existing simpArgs linter warnings at lines 77/299/301 (cosmetic, untouched since pre-S2). The slug's OQ target (rotatedIndex_add) was discharged in S1; the broader file axiom-elimination is now complete.",
+    "attemptCounts": {
+      "total": 4,
+      "currentApproach": 1,
+      "approachesTried": 4
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ACT (S3, researcher-9, 2026-06-10): BurnsideCounting.lean further reduced from 2 axioms to 1 by discharging fixed_point_sum_binary_4 via native_decide. axiom → theorem; Docker 3058/3058 jobs clean. Coloring 4 2 is finite (Fin 4 → Fin 2 with DecidableEq), IsFixedByRotation is decidable (instance at line 329), so the 4 subtype cardinalities and the final sum to 24 are all computable. lineCount 387 → 394 (+7 LOC). Only binary_necklaces_4 (S4 target) remains. ACT (S2, researcher-1, 2026-06-09): BurnsideCounting.lean reduced from 4 axioms to 2 by deriving coloringSetoid as AddAction.orbitRel (ZMod n) (Coloring n k) and coloringQuotientFintype via Quotient.fintype + a new DecidableRel instance for orbit membership.",
+    "builtItems": [
+      "fixed_point_sum_binary_4: theorem (was axiom) in BurnsideCounting.lean — Fintype.card { c // IsFixedByRotation r c } summed for r ∈ {0,1,2,3} equals 24; discharged in S3 (2026-06-10) by native_decide",
+      "coloringSetoid: def (was axiom) in BurnsideCounting.lean:353 — Setoid (Coloring n k) := AddAction.orbitRel (ZMod n) (Coloring n k)",
+      "coloringSetoid_decidableRel: instance in BurnsideCounting.lean:361 — DecidableRel (coloringSetoid n k).r via decidable_of_iff + AddAction.mem_orbit_iff.symm + Fintype.decidableExistsFintype",
+      "coloringQuotientFintype: def (was axiom) in BurnsideCounting.lean:368 — Fintype (Quotient (coloringSetoid n k)) via Quotient.fintype with letI/haveI for setoid + DecidableRel"
+    ],
+    "insights": [
+      "S3 (researcher-9, 2026-06-10): `native_decide` discharges `fixed_point_sum_binary_4` in one tactic. The pre-existing `DecidablePred (IsFixedByRotation r)` instance at line 329 + `DecidableEq (Fin n → Fin k)` + `Fintype` on `Coloring 4 2` + `Subtype.fintype` chain together with no further infrastructure. The `+7 LOC` overhead is entirely the prose docstring; the actual tactic is one line.",
+      "The actual source theorem uses `ZMod n` rotations and `Fin n` indices, not bare natural-number rotation parameters.",
+      "`rotatedIndex n r i` computes `((i.val + n - (r.val % n)) % n)` to model subtraction modulo `n` in `Nat`.",
+      "`cyclicAddActionOnColorings.add_vadd` depends directly on `rotatedIndex_add`.",
+      "Discharging this OQ removes one parent-file axiom, but the overall Burnside-counting entry remains axiomatized until the other four parent axioms are also proved.",
+      "Mathlib orbitRel carries @[to_additive], so AddAction.orbitRel exists directly — the Multiplicative-bridge sketched in the S1b STATE-SYNC plan was unnecessary for the setoid axiom",
+      "Decidability of the orbit relation on Coloring n k reduces to ∃ x : ZMod n, x +ᵥ b = a via AddAction.mem_orbit_iff, then discharged by Fintype.decidableExistsFintype (ZMod n is Fintype, Fin n → Fin k has DecidableEq)",
+      "Quotient.fintype requires the setoid in scope before resolving the DecidableRel on (· ≈ ·); pattern: letI := <setoid>; haveI : DecidableRel (· ≈ ·) := <inst>; exact Quotient.fintype _",
+      "S4 (binary_necklaces_4) still needs a bridge to burnside_lemma (MulAction form) — the Multiplicative bridge from S1b STATE-SYNC §2.1 remains the candidate path"
+    ],
+    "mathlibGaps": [
+      "No confirmed missing Mathlib theorem is documented locally; the expected work is controlling `Nat` subtraction/modulo arithmetic or recasting the argument through `ZMod`/`Fin` lemmas."
+    ],
+    "nextSteps": [
+      "S4 (next picker, recommended): discharge binary_necklaces_4. With fixed_point_sum_binary_4 now a real theorem (S3 DONE 2026-06-10), the route is burnside_lemma (MulAction form) + the now-discharged fixed_point_sum_binary_4 + |ZMod 4| = 4 to conclude 24/4 = 6. Cleanest paths: (a) bridge AddAction.orbitRel.Quotient (ZMod 4) (Coloring 4 2) to MulAction.orbitRel.Quotient (Multiplicative (ZMod 4)) (Coloring 4 2) via Multiplicative, or (b) apply to_additive to burnside_lemma to produce an AddAction-form variant directly applicable to the cyclicAddActionOnColorings instance. Estimated ~30-50 LOC. Once S4 lands, BurnsideCounting.lean is axiom-free.",
+      "S3 DONE (researcher-9, 2026-06-10): discharged fixed_point_sum_binary_4 via native_decide. axiom → theorem, lineCount 387 → 394, axiomCount 2 → 1. Docker 3058/3058 jobs clean.",
+      "Optional cleanup: investigate whether the 3 pre-existing simpArgs-linter warnings at lines 77/299/301 are worth a separate cleanup (untouched in this PR; pre-existing from earlier iterations)."
+    ],
+    "markdown": "# Knowledge Base: burnside-counting-oq-01\n\n## Problem Understanding\n\nThe target is the parent-file axiom `rotatedIndex_add` in `Proofs/BurnsideCounting.lean`. The source definition is:\n\n```lean\ndef rotatedIndex (n : Nat) [NeZero n] (r : ZMod n) (i : Fin n) : Fin n :=\n  { val := ((i : Nat) + n - (r.val % n)) % n\n    isLt := Nat.mod_lt _ (NeZero.pos n) }\n```\n\nThe theorem to prove is that composing two rotations of this form equals rotation by the sum in `ZMod n`:\n\n```lean\nrotatedIndex n s (rotatedIndex n r i) = rotatedIndex n (r + s) i\n```\n\n## Source Evidence\n\n`Proofs/BurnsideCounting.lean` proves `rotatedIndex_zero`, but states `rotatedIndex_add` as an axiom. The `cyclicAddActionOnColorings` instance uses this axiom to satisfy `add_vadd`. Parent metadata also lists `rotatedIndex_add` as one of five assumptions in the Burnside-counting gallery proof.\n\n## Current Status\n\nThe research state is still OBSERVE with zero recorded attempts. No local session file records a failed tactic path or a completed Lean proof for this OQ.\n\n## Useful Facts\n\n- The index formula is subtraction modulo `n` implemented in `Nat`: `i + n - r.val`, then `% n`.\n- Equality of `Fin n` values should reduce to a modular arithmetic identity on the underlying natural values.\n- The parent proof already has `[NeZero n]`, so `0 < n` is available as `NeZero.pos n`.\n\n## Next Work\n\nStart from the exact source signature, unfold `rotatedIndex`, and test whether `simp` plus `omega` can close the `Nat` modulo identity. If direct `Nat.sub` arithmetic is brittle, prove the rotation law in `ZMod n` first and transfer it back to the `Fin n` index representation.\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "group-theory",
+    "counting",
+    "orbits",
+    "necklaces",
+    "group-actions",
+    "modular-arithmetic",
+    "zmod",
+    "polya-enumeration"
+  ],
+  "relatedProofs": [
+    "burnside-counting",
+    "burnside-counting-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T07:05:01-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/BurnsideCounting.lean",
+      "filename": "BurnsideCounting.lean",
+      "lineCount": 404,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCounting.lean"
+    },
+    {
+      "path": "Proofs/BurnsideCountingOQ03.lean",
+      "filename": "BurnsideCountingOQ03.lean",
+      "lineCount": 405,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ03.lean"
+    },
+    {
+      "path": "Proofs/BurnsideCountingOQ03Aristotle.lean",
+      "filename": "BurnsideCountingOQ03Aristotle.lean",
+      "lineCount": 78,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BurnsideCountingOQ03OQ03.lean",
+      "filename": "BurnsideCountingOQ03OQ03.lean",
+      "lineCount": 150,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ03OQ03.lean"
+    }
+  ],
+  "lastUpdate": "2026-06-11T00:00:00Z"
+}

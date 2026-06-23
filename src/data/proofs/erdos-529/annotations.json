@@ -1,0 +1,219 @@
+[
+  {
+    "id": "ann-e529-header",
+    "proofId": "erdos-529",
+    "range": {
+      "startLine": 30,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports `Real.Basic` and `Nat.Basic` for foundational arithmetic, `Pow.Real` for the real power function $n^\\nu$, `Log.Basic` for the logarithmic correction term $(\\log n)^{1/8}$ in 4D, and `MetricSpace.Basic` for the Euclidean distance structure on $\\mathbb{Z}^k$. Opens the `Real` namespace for convenient notation.",
+    "significance": "supporting",
+    "mathContext": "The SAW formalization requires real-valued exponents (the critical exponent $\\nu$ takes non-integer values like $0.588$), real powers ($n^\\nu$ via `Real.rpow`), and logarithms (for the 4D correction). The metric space import provides the framework for measuring end-to-end distances in $\\mathbb{Z}^k$ embedded in $\\mathbb{R}^k$.",
+    "relatedConcepts": [
+      "Real.rpow",
+      "Real.log",
+      "MetricSpace",
+      "namespace management"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Topology.MetricSpace.Basic"
+    ]
+  },
+  {
+    "id": "ann-e529-saw",
+    "proofId": "erdos-529",
+    "range": {
+      "startLine": 52,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Self-Avoiding Walk and Expected Distance",
+    "content": "`SelfAvoidingWalk k` is a structure with `steps : \\mathbb{N}`, `selfAvoiding : Prop` (no self-intersections), and `validSteps : Prop` (nearest-neighbor steps on $\\mathbb{Z}^k$). `endToEndDistance` axiomatizes $|X_n| = \\|\\omega(n) - \\omega(0)\\|_2$ as a real-valued function. `expectedEndDistance k n` axiomatizes $d_k(n) = \\mathbb{E}[|X_n|]$ over the uniform measure on $n$-step SAWs.",
+    "significance": "key",
+    "mathContext": "The structure abstracts the essential properties of SAWs without constructing explicit paths on $\\mathbb{Z}^k$. A rigorous definition would require a function $\\omega : \\{0,\\ldots,n\\} \\to \\mathbb{Z}^k$ with $\\|\\omega(i+1) - \\omega(i)\\|_1 = 1$ and injectivity. The expected distance $d_k(n)$ is defined via the uniform measure on the set $\\mathcal{S}_n^{(k)}$ of all $n$-step SAWs: $d_k(n) = \\frac{1}{|\\mathcal{S}_n^{(k)}|} \\sum_{\\omega \\in \\mathcal{S}_n^{(k)}} |\\omega(n)|$. The count $c_n^{(k)} = |\\mathcal{S}_n^{(k)}|$ is itself a central object: it grows as $\\mu_k^n \\cdot n^{\\gamma-1}$ where $\\mu_k$ is the connective constant.",
+    "relatedConcepts": [
+      "connective constant",
+      "uniform measure on SAWs",
+      "Euclidean norm",
+      "lattice path"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "probability measures",
+      "Euclidean distance"
+    ]
+  },
+  {
+    "id": "ann-e529-exponent",
+    "proofId": "erdos-529",
+    "range": {
+      "startLine": 93,
+      "endLine": 106
+    },
+    "type": "definition",
+    "title": "Critical Exponent and Mean-Field Theorem",
+    "content": "`criticalExponent k` returns the conjectured $\\nu_k$: $3/4$ for $k=2$, $0.588$ for $k=3$, $1/2$ otherwise. `meanField_exponent` proves $\\nu_k = 1/2$ for $k \\ge 5$ by computation (`simp` + `omega`). This is a proved theorem, not an axiom.",
+    "significance": "key",
+    "mathContext": "The critical exponent $\\nu$ governs the power-law scaling $d_k(n) \\sim n^\\nu$. In the renormalization group framework, $\\nu$ is a universal quantity depending only on dimension $d$ and the symmetry of the walk. The value $\\nu = 1/2$ for $d \\ge 5$ matches simple random walk, where the central limit theorem gives $\\mathbb{E}[|X_n|] \\sim \\sqrt{2n/\\pi d}$. Self-avoidance becomes irrelevant above the upper critical dimension $d_c = 4$ because the walk's trajectory is sparse enough in high dimensions that self-intersections are rare. The numerical value $\\nu_3 \\approx 0.5876 \\pm 0.0002$ comes from high-precision Monte Carlo simulations by Clisby (2010).",
+    "relatedConcepts": [
+      "renormalization group",
+      "universality",
+      "central limit theorem",
+      "Monte Carlo simulation"
+    ],
+    "prerequisites": [
+      "real number arithmetic",
+      "omega tactic",
+      "critical phenomena basics"
+    ]
+  },
+  {
+    "id": "ann-e529-high-dim",
+    "proofId": "erdos-529",
+    "range": {
+      "startLine": 113,
+      "endLine": 142
+    },
+    "type": "concept",
+    "title": "High-Dimensional Results (Slade and Hara-Slade)",
+    "content": "`tendsTo` axiomatizes asymptotic convergence $f(n) \\to L$. `slade_high_dim` (1987): for $k$ sufficiently large, $d_k(n)/\\sqrt{n} \\to D > 0$. `haraSlade_five_dim` (1991-92): extends to all $k \\ge 5$. `high_dim_sqrt` derives from `haraSlade_five_dim` directly.",
+    "significance": "key",
+    "mathContext": "Gordon Slade's 1987 result used the **lace expansion**, a perturbative technique introduced by Brydges and Spencer (1985) for weakly self-avoiding walks. The lace expansion rewrites the SAW two-point function $G_z(x) = \\sum_n c_n(x) z^n$ as a Neumann series around the simple random walk Green's function. Hara and Slade (1991-92) refined this to work for all $k \\ge 5$ by controlling the lace expansion coefficients $\\pi_m(x)$ using diagrammatic bounds. The constant $D$ in $d_k(n) \\sim D\\sqrt{n}$ is non-trivial: it depends on the lattice and equals $(2/\\pi d)^{1/2} \\cdot (1 + O(1/d))$ for large $d$. The proof that $k = 5$ suffices (rather than some larger threshold) required computer-assisted verification of the expansion's convergence.",
+    "relatedConcepts": [
+      "lace expansion",
+      "Brydges-Spencer",
+      "two-point function",
+      "Green's function",
+      "diagrammatic bounds"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "perturbation theory",
+      "generating functions"
+    ]
+  },
+  {
+    "id": "ann-e529-question1",
+    "proofId": "erdos-529",
+    "range": {
+      "startLine": 154,
+      "endLine": 182
+    },
+    "type": "definition",
+    "title": "Question 1: Two-Dimensional SAW",
+    "content": "`question1` formalizes: $\\forall M,\\, \\exists N_0,\\, \\forall n \\ge N_0,\\, d_2(n)/\\sqrt{n} \\ge M$ (i.e., $d_2(n)/\\sqrt{n} \\to \\infty$). `duminilCopin_subBallistic` (2013): $d_2(n)/n \\to 0$. `conjecture_2d`: $d_2(n) \\sim D \\cdot n^{3/4}$. `conjecture_implies_question1`: the 2D conjecture implies Question 1 via $d_2(n)/\\sqrt{n} = (d_2(n)/n^{3/4}) \\cdot n^{1/4} \\to \\infty$.",
+    "significance": "key",
+    "mathContext": "Hugo Duminil-Copin and Alan Hammond's 2013 proof that 2D SAW is sub-ballistic was a breakthrough. They showed $d_2(n) = o(n)$ using a novel combinatorial argument based on the 'bridge decomposition' of SAWs and pattern theorem techniques. However, even proving $d_2(n)/\\sqrt{n} \\to \\infty$ (Question 1) remains open. The conjectured exponent $\\nu = 3/4$ is supported by: (1) Flory's mean-field argument, (2) Nienhuis's exact solution (1982) of a related O(n) loop model on the honeycomb lattice, (3) conformal field theory predictions ($\\nu = 3/4$ corresponds to the $n \\to 0$ limit of the $O(n)$ model with central charge $c = 0$), and (4) high-precision simulations. The SLE$_{8/3}$ process is conjectured to be the scaling limit of 2D SAW.",
+    "relatedConcepts": [
+      "bridge decomposition",
+      "pattern theorem",
+      "SLE",
+      "O(n) model",
+      "conformal field theory"
+    ],
+    "prerequisites": [
+      "question1 definition",
+      "asymptotic analysis",
+      "expectedEndDistance"
+    ]
+  },
+  {
+    "id": "ann-e529-question2",
+    "proofId": "erdos-529",
+    "range": {
+      "startLine": 194,
+      "endLine": 231
+    },
+    "type": "definition",
+    "title": "Question 2: Three and Four Dimensions",
+    "content": "`question2 k` formalizes: $k \\ge 3 \\implies \\exists C > 0,\\, \\forall n,\\, d_k(n) \\le C\\sqrt{n}$. `conjecture_3d`: $\\exists \\nu \\in (1/2, 3/4)$ with $d_3(n)/n^\\nu \\to 1$ (refutes Question 2 for $k=3$). `conjecture_4d`: $d_4(n) \\sim D (\\log n)^{1/8} \\sqrt{n}$ (refutes for $k=4$). `question2_high_dim`: TRUE for $k \\ge 5$. `question2_false_3d`: conditional refutation.",
+    "significance": "key",
+    "mathContext": "Erdos's Question 2 asked whether SAW in 3+ dimensions grows at most as fast as $\\sqrt{n}$. The modern understanding is that this is FALSE for $k = 3, 4$. For $k = 3$, the numerical value $\\nu \\approx 0.5876$ (Clisby 2010) exceeds $1/2$, so $d_3(n) \\gg \\sqrt{n}$. For $k = 4$ (the upper critical dimension), there is a logarithmic correction: $d_4(n) \\sim D (\\log n)^{1/8} \\sqrt{n}$, so $d_4(n)/\\sqrt{n} \\to \\infty$ (slowly). The exponent $1/8$ for the logarithmic correction was predicted by Brezin, Le Guillou, and Zinn-Justin (1973) using renormalization group methods. For $k \\ge 5$, Hara-Slade's result gives $d_k(n) \\sim D\\sqrt{n}$, confirming Question 2.",
+    "relatedConcepts": [
+      "logarithmic corrections",
+      "upper critical dimension",
+      "renormalization group",
+      "Clisby simulations"
+    ],
+    "prerequisites": [
+      "question2 definition",
+      "haraSlade_five_dim",
+      "conjecture_3d"
+    ]
+  },
+  {
+    "id": "ann-e529-critical-dim",
+    "proofId": "erdos-529",
+    "range": {
+      "startLine": 244,
+      "endLine": 265
+    },
+    "type": "definition",
+    "title": "Upper Critical Dimension",
+    "content": "`upperCriticalDimension = 4`: the dimension separating anomalous ($k < 4$, $\\nu > 1/2$) from mean-field ($k > 4$, $\\nu = 1/2$) behavior. `below_critical`: $\\nu_k > 1/2$ for $k < 4$ with $k \\ge 2$. `above_critical`: $\\nu_k = 1/2$ for $k > 4$. `at_critical`: $\\nu_4 = 1/2$ (base exponent, with logarithmic corrections).",
+    "significance": "key",
+    "mathContext": "The upper critical dimension $d_c = 4$ for SAW can be understood through the **intersection probability** heuristic: two independent random walk paths of $n$ steps in $\\mathbb{Z}^d$ have intersection probability $\\sim n^{2-d/2}$ (up to logs). For $d > 4$, this vanishes as $n \\to \\infty$, so self-avoidance becomes irrelevant. For $d \\le 4$, intersections persist and self-avoidance fundamentally changes the scaling. This is analogous to the Ising model ($d_c = 4$), percolation ($d_c = 6$), and branched polymers ($d_c = 8$). At $d = d_c$, mean-field exponents hold but with logarithmic corrections — a phenomenon called **marginal** behavior.",
+    "relatedConcepts": [
+      "intersection probability",
+      "marginal dimension",
+      "Ising model",
+      "percolation critical dimension"
+    ],
+    "prerequisites": [
+      "criticalExponent",
+      "random walk intersection",
+      "scaling theory"
+    ]
+  },
+  {
+    "id": "ann-e529-flory",
+    "proofId": "erdos-529",
+    "range": {
+      "startLine": 280,
+      "endLine": 288
+    },
+    "type": "definition",
+    "title": "Flory's Prediction and Verification",
+    "content": "`floryExponent d = 3/(d+2)`: Paul Flory's 1949 mean-field prediction for the SAW exponent. `flory_2d`: $3/(2+2) = 3/4$ (proved by `norm_num`). `flory_3d`: $3/(3+2) = 3/5$ (proved by `norm_num`). The 2D prediction is conjectured exact; the 3D prediction ($0.6$) is close to the numerical $0.5876$.",
+    "significance": "key",
+    "mathContext": "Paul Flory derived $\\nu = 3/(d+2)$ in 1949 using a remarkably simple argument: balance the entropic cost of confinement (favoring expansion) against the energy cost of self-intersection (favoring compactness). For a polymer of $n$ monomers confined to a ball of radius $R$, the free energy is $F \\sim R^2/n + n^2/R^d$ (Gaussian stretching + excluded volume). Minimizing gives $R \\sim n^{3/(d+2)}$. Flory's formula is exact for $d = 1$ ($\\nu = 1$), $d = 2$ ($\\nu = 3/4$), and $d \\ge 4$ ($\\nu = 1/2$), but only approximate for $d = 3$ ($3/5$ vs $0.5876$). The remarkable accuracy is sometimes called the 'Flory paradox' — a mean-field argument shouldn't be exact in low dimensions.",
+    "relatedConcepts": [
+      "polymer physics",
+      "excluded volume",
+      "free energy minimization",
+      "Flory paradox"
+    ],
+    "prerequisites": [
+      "floryExponent definition",
+      "norm_num tactic",
+      "polymer scaling"
+    ]
+  },
+  {
+    "id": "ann-e529-summary",
+    "proofId": "erdos-529",
+    "range": {
+      "startLine": 304,
+      "endLine": 306
+    },
+    "type": "concept",
+    "title": "Main Results Summary",
+    "content": "`erdos_529_summary` packages: (1) Hara-Slade for $k \\ge 5$, (2) Duminil-Copin-Hammond sub-ballistic, (3) $\\nu_2 = 3/4$ (definition). Proved by $\\langle$`haraSlade_five_dim, duminilCopin_subBallistic, rfl`$\\rangle$. `erdos_529` (main theorem) adds Question 2 for $k \\ge 5$. **Status: OPEN** for low dimensions.",
+    "significance": "key",
+    "mathContext": "The main theorem combines three independent results into a comprehensive statement about the current knowledge of Erdos Problem #529. The `rfl` for $\\nu_2 = 3/4$ reflects that this is a definitional equality (the `criticalExponent` function returns $3/4$ for $k = 2$), not a proved theorem. The open parts are: (1) proving $d_2(n)/\\sqrt{n} \\to \\infty$ (Question 1, widely believed true), (2) determining exact $\\nu_3$ (conjectured $\\approx 0.5876$), (3) proving the logarithmic correction in 4D, and (4) establishing the scaling limit of SAW as SLE$_{8/3}$ in 2D. A complete resolution would require fundamentally new techniques, possibly involving conformal invariance arguments or novel renormalization group methods.",
+    "relatedConcepts": [
+      "partial resolution",
+      "open problems",
+      "SLE scaling limit",
+      "renormalization methods"
+    ],
+    "prerequisites": [
+      "haraSlade_five_dim",
+      "duminilCopin_subBallistic",
+      "question2_high_dim"
+    ]
+  }
+]

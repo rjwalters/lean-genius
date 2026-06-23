@@ -1,0 +1,130 @@
+{
+  "slug": "erdos-1098-oq-03",
+  "title": "Extensions to other algebraic structures (rings, semigroups)",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in group theory: Extensions to other algebraic structures (rings, semigroups).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-28T20:57:10.257Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Created ring non-commuting graph formalization with Jacobi identity. 0 sorries, 0 axioms.",
+    "builtItems": [
+      "Erdos1098OQ03.lean: ~130 lines, 15 theorems, 5 defs, 0 sorries, 0 axioms",
+      "Ring non-commuting relation (symmetric, irreflexive)",
+      "Ring center theory (0, 1, sum, product, negation central)",
+      "Ring commutator: antisymmetric, bilinear, Jacobi identity"
+    ],
+    "insights": [
+      "Extended non-commuting graph from groups to rings",
+      "Ring commutator [x,y] = xy - yx satisfies Jacobi identity",
+      "Central elements form a subring (closed under +, *, -)",
+      "ω(Γ(R)) = 0 iff R commutative (trivial characterization)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "group-theory",
+    "graph-theory",
+    "non-commuting-graph",
+    "center"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-109",
+    "erdos-1098",
+    "erdos-1098-oq-01",
+    "erdos-1098-oq-01-oq-01",
+    "erdos-1098-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T20:57:10.257Z",
+  "lastUpdate": "2026-03-28T20:57:10.257Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1098OQ01.lean",
+      "filename": "Erdos1098OQ01.lean",
+      "lineCount": 123,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1098OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1098OQ01OQ01.lean",
+      "filename": "Erdos1098OQ01OQ01.lean",
+      "lineCount": 206,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1098OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1098OQ03.lean",
+      "filename": "Erdos1098OQ03.lean",
+      "lineCount": 160,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1098OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1098OQ04.lean",
+      "filename": "Erdos1098OQ04.lean",
+      "lineCount": 134,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1098OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1098Problem.lean",
+      "filename": "Erdos1098Problem.lean",
+      "lineCount": 349,
+      "theoremCount": 14,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1098Problem.lean"
+    }
+  ]
+}

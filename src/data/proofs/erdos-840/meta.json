@@ -1,0 +1,154 @@
+{
+  "id": "erdos-840",
+  "title": "Erdős Problem #840: Quasi-Sidon Subsets",
+  "slug": "erdos-840",
+  "description": "How large can a quasi-Sidon subset of {1,...,N} be? A set A is quasi-Sidon if |A+A| = (1+o(1))·C(|A|,2). Bounds: (2/√3)√N ≤ f(N) ≤ 1.86√N.",
+  "meta": {
+    "author": "Erdős and Freud",
+    "sourceUrl": "https://erdosproblems.com/840",
+    "date": "1991",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos840Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "sidon-sets",
+      "sumsets",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 840,
+    "erdosUrl": "https://erdosproblems.com/840",
+    "erdosProblemStatus": "open",
+    "axiomCount": 8,
+    "lineCount": 237,
+    "assumptions": "8 axioms (theorem sorries) and 2 definition sorries. Axioms: (1) sidon_sumset_card — classical Sidon cardinality |A+A|=C(|A|+1,2); (2) erdos_freud_lower_bound — Erdős-Freud (1991) lower bound f(N)≥(2/√3+o(1))√N; (3) construction_is_quasi_sidon — Erdős-Freud construction is quasi-Sidon; (4) erdos_freud_upper_bound — Erdős-Freud (1991) upper bound f(N)≤(2+o(1))√N; (5) pikhurko_upper_bound — Pikhurko (2006) improved bound f(N)≤(c_P+o(1))√N; (6) sidon_set_upper_bound — classical Sidon bound |A|≤√N+O(N^{1/4}); (7) sidon_set_exists — Singer construction Sidon sets of size ~√N; (8) pikhurko_constant_approx — numerical bound c_P∈(1.86,1.87). Definition sorries: f(N) and fAlt(N,δ) (axiomatized definitions). Proven: lower_bound_constant_value, bounds_gap, cilleruelo_difference_set, open_problem_gap.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 11,
+    "additionalFiles": [
+      "Proofs/Erdos840Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Sidon sets (also called $B_2$ sequences) were introduced by Simon Sidon in a 1932 letter to Erdős, asking for the maximum size of a subset of $\\{1, \\ldots, N\\}$ with all pairwise sums distinct. Erdős and Turán (1941) proved the upper bound $|A| \\leq \\sqrt{N} + O(N^{1/4})$, while constructions by Singer (1938, using difference sets from projective planes) and Bose–Chowla (1962) achieved $|A| \\sim \\sqrt{N}$. The quasi-Sidon relaxation, introduced by Erdős and Freud in 1991, allows a vanishing fraction of sum collisions: $|A + A| = (1 + o(1)) \\binom{|A|}{2}$. This permits larger sets — the question is how much larger. Erdős and Freud proved $(2/\\sqrt{3})\\sqrt{N} \\leq f(N) \\leq 2\\sqrt{N}$ using a reflection construction and pigeonhole arguments. Pikhurko (2006) improved the upper bound to $\\approx 1.863\\sqrt{N}$ via a connection to edge-magic graph labelings and thin additive bases. Cilleruelo (2010) resolved the analogous problem for difference sets ($A - A$ instead of $A + A$), showing the answer is simply $\\sim \\sqrt{N}$ with constant 1. The sum version remains open, with the true constant lying in the interval $[2/\\sqrt{3}, 1.863] \\approx [1.155, 1.863]$.",
+    "problemStatement": "Let $f(N)$ be the maximum size of a quasi-Sidon subset $A \\subseteq \\{1, \\ldots, N\\}$, where $A$ is quasi-Sidon if $|A + A| = (1 + o(1)) \\binom{|A|}{2}$. What is the asymptotic constant $c$ such that $f(N) \\sim c\\sqrt{N}$? Known bounds: $(2/\\sqrt{3})\\sqrt{N} \\leq f(N) \\leq 1.863\\sqrt{N}$.",
+    "text": "How large can a quasi-Sidon subset of {1,...,N} be? A set A is quasi-Sidon if |A+A| = (1+o(1))·C(|A|,2). Bounds: (2/√3)√N ≤ f(N) ≤ 1.86√N.",
+    "proofStrategy": "The formalization defines Sidon sets (all pairwise sums distinct), sumsets $A + A$, and the quasi-Sidon condition via little-$o$ notation. The function $f(N)$ is axiomatized as the maximum quasi-Sidon subset size. The Erdős–Freud lower bound construction (Sidon set $B \\subseteq [1, N/3]$ union reflection $\\{N - b : b \\in B\\}$) and Pikhurko's upper bound are axiomatized. Related results on difference sets (Cilleruelo) and classical Sidon bounds are also included.",
+    "keyInsights": [
+      "**Quasi-Sidon relaxation**: A Sidon set has $|A+A| = \\binom{|A|}{2} + |A|$ exactly; quasi-Sidon only requires $(1 + o(1))\\binom{|A|}{2}$. This tiny relaxation allows sets $\\sim 15\\%$ larger than Sidon sets.",
+      "**Reflection construction**: Take a Sidon set $B \\subseteq [1, N/3]$ of size $\\sim \\sqrt{N/3}$ and form $A = B \\cup \\{N - b : b \\in B\\}$. Cross-sums $b_1 + (N - b_2) \\approx N$ cluster near $N$, avoiding most collisions with $b_1 + b_2$ or $(N-b_1) + (N-b_2)$.",
+      "**Pikhurko's constant involves $\\pi$**: The upper bound constant $c_P = (1/4 + 1/(\\pi + 2)^2)^{-1/2} \\approx 1.863$ arises from optimizing over trigonometric sums in the analysis of edge-magic graph labelings.",
+      "**Difference vs. sum asymmetry**: For $A - A$, Cilleruelo showed $f_{\\text{diff}}(N) \\sim \\sqrt{N}$ (constant 1). The sum version is harder because $A + A$ is 'smaller' than $A - A$ for structured sets ($|A+A| \\leq |A-A|$ by Ruzsa's inequality for sets with additive structure).",
+      "**Connection to Ruzsa–Szemerédi**: Quasi-Sidon sets relate to $(6,3)$-free graphs and the Ruzsa–Szemerédi removal lemma. Few repeated sums in $A + A$ mean the 'sum graph' on $A$ has few triangles."
+    ],
+    "prerequisites": [
+      "Additive combinatorics: sumsets $A + A$, Sidon ($B_2$) sets, and the Plünnecke-Ruzsa inequality relating $|A+A|$ to additive structure",
+      "Asymptotic analysis: little-$o$ notation, $\\Theta(\\sqrt{N})$ growth rates, and the distinction between exact and asymptotic extremal bounds",
+      "Combinatorial number theory: binomial coefficients $\\binom{|A|}{2}$ as representation counts, pigeonhole arguments on sum collisions, and constructive lower bounds via Singer difference sets",
+      "Extremal graph theory: connections to $(6,3)$-free graphs, the Ruzsa-Szemer\\'{e}di removal lemma, and edge-magic graph labelings (Pikhurko's upper bound)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: Quasi-Sidon Subsets (Erdős #840)",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "File docstring, imports, and namespace. States Erdős Problem #840: how large can a quasi-Sidon subset A ⊆ {1,...,N} be, where A is quasi-Sidon if |A+A| = (1+o(1))·C(|A|,2)? Records the known bounds — Erdős–Freud (1991) lower bound (2/√3)√N ≈ 1.15√N and upper bound 2√N, sharpened by Pikhurko (2006) to ≈ 1.86√N — the difference-set variant (~√N, Cilleruelo), and references.",
+      "mathContext": "$f(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\ |A+A| = (1+o(1))\\binom{|A|}{2}\\}$. Known: $(2/\\sqrt{3})\\sqrt{N} \\le f(N) \\le 1.863\\sqrt{N}$; the exact constant is OPEN."
+    },
+    {
+      "id": "sidon-quasi-sidon-defs",
+      "title": "§1: Basic Definitions, the Quasi-Sidon Condition, and f(N)",
+      "startLine": 39,
+      "endLine": 95,
+      "summary": "Defines intervalFinset N = {1,...,N}, sumset A+A, IsSidon (all pairwise sums distinct), IsLittleO for asymptotic notation, and IsQuasiSidon with error o(|A+A|). Defines f(N) as max quasi-Sidon subset size and fAlt(N,δ) as the δ-approximate version. Proves sidon_sumset_card: Sidon sets have |A+A| = Θ(|A|²).",
+      "mathContext": "$A \\subseteq \\{1,\\ldots,N\\}$ is Sidon (Sidon 1932, also B₂) if all pairwise sums $a_i + a_j$ ($i \\leq j$) are distinct. Equivalently, $|A+A| = \\binom{|A|}{2} + |A|$. The quasi-Sidon relaxation asks that $|A+A| \\geq \\binom{|A|}{2} + |A| - o(|A+A|)$ — allowing an asymptotically negligible number of collisions."
+    },
+    {
+      "id": "known-bounds",
+      "title": "§2: Known Bounds — Erdős-Freud and Pikhurko",
+      "startLine": 96,
+      "endLine": 148,
+      "summary": "Axiomatizes erdos_freud_lower_bound: f(N) ≥ (2/√3 + o(1))√N. Proves lower_bound_constant_value (2/√3 = 2√3/3). Defines lowerBoundConstruction (B ∪ {N−b : b∈B}) and axiomatizes construction_is_quasi_sidon. Axiomatizes erdos_freud_upper_bound: f(N) ≤ (2 + o(1))√N, and pikhurko_upper_bound with the sharper constant (1/4 + 1/(π+2)²)^(−1/2) ≈ 1.86, plus pikhurko_constant_approx pinning it in (1.86, 1.87).",
+      "mathContext": "Erdős–Freud (1991): $(2/\\sqrt{3} + o(1))\\sqrt{N} \\le f(N) \\le (2 + o(1))\\sqrt{N}$, i.e. $1.155\\sqrt{N} \\lesssim f(N) \\lesssim 2\\sqrt{N}$. Pikhurko (2006) sharpened the upper bound to $\\big(\\tfrac14 + \\tfrac1{(\\pi+2)^2}\\big)^{-1/2}\\sqrt{N} \\approx 1.863\\sqrt{N}$. The open question is the exact value of $\\lim_{N\\to\\infty} f(N)/\\sqrt{N} \\in [2/\\sqrt{3},\\ 1.863]$."
+    },
+    {
+      "id": "erdos-840-question",
+      "title": "§3: The Main Question and Optimal Constant",
+      "startLine": 149,
+      "endLine": 162,
+      "summary": "States erdos_840_question: does f(N) ~ c·N^(1/2) for some constant c, and if so what is c? The formalization captures the open conjecture that the Erdős-Freud lower bound (2/√3) is asymptotically optimal.",
+      "mathContext": "The central open question: is $\\lim_{N\\to\\infty} f(N)/\\sqrt{N}$ equal to $2/\\sqrt{3}$? The Erdős-Freud construction achieves this ratio, and they conjecture it is optimal. Pikhurko's improvement gives a sharper upper bound approaching $2/\\sqrt{3}$ from above, narrowing the gap. The question is equivalent to asking whether the quasi-Sidon condition allows only a bounded improvement over Sidon sets."
+    },
+    {
+      "id": "difference-set-theory",
+      "title": "§4: Difference Sets and Cilleruelo's Theorem",
+      "startLine": 163,
+      "endLine": 192,
+      "summary": "Defines diffset A−A for integer Sidon sets and axiomatizes cilleruelo_difference_set: a Sidon set over ℤ has |A−A| = |A|² − |A| + 1 (all nonzero differences distinct). Frames the sum/difference asymmetry — the difference-set analogue of the problem has the simpler answer ~√N (constant 1).",
+      "mathContext": "For Sidon sets $A \\subseteq \\mathbb{Z}$: the difference set $A - A$ has exactly $|A|^2 - |A| + 1$ elements (all differences are distinct except $0$). This difference-set characterization, due to Cilleruelo, provides an alternative route to Sidon set bounds via additive combinatorics and connects to perfect difference sets in finite projective planes."
+    },
+    {
+      "id": "sidon-set-background",
+      "title": "§5: Classical Sidon Set Background",
+      "startLine": 193,
+      "endLine": 211,
+      "summary": "Background on classical (non-quasi) Sidon sets. Axiomatizes sidon_set_upper_bound: a Sidon subset of {1,...,N} has size ≤ √N + O(N^(1/4)) (Erdős–Turán 1941), and sidon_set_exists: Sidon sets of size ≈ √N exist (Singer 1938 / Bose–Chowla 1962). These pin the √N baseline that the quasi-Sidon relaxation beats by the factor 2/√3 ≈ 1.155.",
+      "mathContext": "Classical Sidon: $\\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\ A\\text{ Sidon}\\} = \\sqrt{N} + O(N^{1/4})$. The quasi-Sidon gain: $f(N)/\\sqrt{N} \\ge 2/\\sqrt{3} > 1$."
+    },
+    {
+      "id": "bounds-gap",
+      "title": "§5: The Gap Between Sidon and Quasi-Sidon Bounds",
+      "startLine": 212,
+      "endLine": 237,
+      "summary": "Proves bounds_gap: the Erdős-Freud lower bound (2/√3) strictly exceeds the classical Sidon upper bound (1), making the quasi-Sidon problem genuinely distinct. Axiomatizes open_problem_gap: the exact value of lim f(N)/√N is unknown. Summarizes the current state of the problem.",
+      "mathContext": "Since $2/\\sqrt{3} \\approx 1.155 > 1$, quasi-Sidon sets are provably larger than any Sidon set by a constant factor. The gap between the lower bound $2/\\sqrt{3}$ and the upper bound (approaching $2/\\sqrt{3}$ from above) is the frontier of the problem. Closing this gap would resolve Erdős Problem #840 and determine whether the Erdős-Freud construction is optimal."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #840 formalizes the quasi-Sidon problem: determine the maximum size of a subset of {1,...,N} with asymptotically optimal sumset size. The formalization axiomatizes the Erdős–Freud bounds, Pikhurko's improvement, and related results on difference sets and classical Sidon bounds.",
+    "implications": "**Theoretical Significance**: Resolution would quantify exactly how much the quasi-Sidon relaxation buys over classical Sidon sets.\n\nThe connection to edge-magic graphs (Pikhurko), Ruzsa–Szemerédi theory, and additive energy makes this a nexus problem in additive combinatorics. Closing the 38% gap between bounds would likely require new structural understanding of sets with few sum collisions.",
+    "openQuestions": [
+      "What is the exact asymptotic constant $c$ such that $f(N) \\sim c\\sqrt{N}$? Is it $2/\\sqrt{3}$ or closer to $1.863$?",
+      "Can the reflection construction ($B \\cup \\{N - b\\}$) be improved by using three or more shifted copies of a Sidon set?",
+      "Is there a connection between the quasi-Sidon constant and the Ruzsa–Szemerédi density threshold?",
+      "For the difference-set version, Cilleruelo showed the constant is 1. Why is the sum version fundamentally harder?"
+    ]
+  },
+  "leanFile": {
+    "imports": [],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 237,
+    "axiomCount": 8,
+    "theoremCount": 4,
+    "definitionCount": 11,
+    "sorries": 0,
+    "path": "Proofs/Erdos840Problem.lean",
+    "additionalFiles": [
+      "Proofs/Erdos840Aristotle.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets, sumsets"
+    },
+    {
+      "targetId": "erdos-152",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets, sumsets"
+    },
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets, sumsets"
+    }
+  ],
+  "sorries": 0,
+  "axiomCount": 8
+}

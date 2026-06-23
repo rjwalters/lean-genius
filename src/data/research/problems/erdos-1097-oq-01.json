@@ -1,0 +1,104 @@
+{
+  "slug": "erdos-1097-oq-01",
+  "title": "k-Term AP Common Differences",
+  "phase": "ACT",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For k ≥ 3, define D_k(A) = { d : ∃ a, {a, a+d, ..., a+(k-1)d} ⊆ A }. How does max_{|A|=n} |D_k(A)| grow as a function of n and k? The k=3 case is Erdős #1097 with bounds Ω(n^{1.778}) to O(n^{11/6}). For k ≥ 4 the exponent should decrease.",
+    "plain": "Generalize the 3-term AP common differences question to k-term APs: how many distinct common differences can k-APs in an n-element set have?",
+    "whyMatters": [
+      "Connects to Szemerédi's theorem and quantitative arithmetic regularity",
+      "Anti-monotonicity in k gives a hierarchy of counting problems"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "D_k anti-monotone in k (17 theorems, 0 axioms, 0 sorries)",
+      "D_k(A) ⊆ D_3(A) for k ≥ 3",
+      "Negation symmetry, subset monotonicity, O(n²) upper bound"
+    ],
+    "open": [
+      "Growth exponent α(4): is it strictly less than α(3)?",
+      "Rate of α(k) → 0 as k → ∞"
+    ],
+    "goal": "Formalize basic k-AP common differences infrastructure"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-29T18:30:00Z",
+    "iteration": 1,
+    "focus": "Created 180-line formalization with 17 proved theorems and 0 axioms.",
+    "blockers": [],
+    "nextAction": "None — formalization complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 180-line formalization with 17 proved theorems, 0 axioms, 0 sorries. Defines k-AP predicate, proves anti-monotonicity, containment in D_3, symmetry, quadratic bound.",
+    "builtItems": [
+      "Created Proofs/Erdos1097OQ01.lean (180 lines, 17 theorems, 0 axioms)",
+      "Created gallery entry src/data/proofs/erdos-1097-oq-01/"
+    ],
+    "insights": [
+      "D_k anti-monotonicity follows directly from weakening the universal quantifier in the k-AP definition",
+      "The IsKAP definition with ∀ i < k supports clean induction and monotonicity proofs",
+      "IsKAP with k=3 is provably equivalent to the triple membership condition from Erdős #1097"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": ""
+  },
+  "tags": [
+    "erdos",
+    "additive combinatorics",
+    "arithmetic progressions",
+    "k-AP"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-109",
+    "erdos-1097",
+    "erdos-1097-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://erdosproblems.com/1097"
+    ],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:00:00Z",
+  "lastUpdate": "2026-03-29T18:30:00Z",
+  "significance": 4,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1097OQ01.lean",
+      "filename": "Erdos1097OQ01.lean",
+      "lineCount": 208,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1097OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1097Problem.lean",
+      "filename": "Erdos1097Problem.lean",
+      "lineCount": 391,
+      "theoremCount": 23,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1097Problem.lean"
+    }
+  ]
+}

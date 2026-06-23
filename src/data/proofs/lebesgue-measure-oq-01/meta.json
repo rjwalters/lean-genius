@@ -1,0 +1,227 @@
+{
+  "id": "lebesgue-measure-oq-01",
+  "title": "Dirichlet Function Integral via Almost Everywhere Zero",
+  "slug": "lebesgue-measure-oq-01",
+  "description": "A complete proof that the Dirichlet function (indicator of rationals) has Lebesgue integral zero over [0,1], resolving an axiom from the parent Lebesgue Measure proof. Uses Mathlib's ae filter and integral_eq_zero_of_ae to show that since ℚ has measure zero, the indicator 𝟙_ℚ is zero almost everywhere, giving ∫₀¹ 𝟙_ℚ = 0. Also proves the function is nowhere continuous and extends the result to arbitrary sets.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet_function",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ01.lean",
+    "tags": [
+      "measure-theory",
+      "lebesgue-integral",
+      "dirichlet-function",
+      "almost-everywhere",
+      "countable-sets",
+      "real-analysis",
+      "extension",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_eq_zero_of_ae",
+        "description": "If f = 0 almost everywhere, then ∫ f = 0. The key tool for the main theorem.",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
+      },
+      {
+        "theorem": "Set.Countable.measure_zero",
+        "description": "Countable sets have measure zero w.r.t. any atomless measure (e.g., Lebesgue measure).",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "compl_mem_ae_iff",
+        "description": "The complement of a set is in the ae filter iff the set has measure zero.",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      },
+      {
+        "theorem": "ae_restrict_of_ae",
+        "description": "An ae property for the full measure implies ae for restricted measure.",
+        "module": "Mathlib.MeasureTheory.Measure.Restrict"
+      },
+      {
+        "theorem": "Real.volume_ball",
+        "description": "Volume of open ball B(x,δ) in ℝ equals 2δ. Used in discontinuity proof.",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "exists_rat_near",
+        "description": "For any x ∈ ℝ and ε > 0, there exists q ∈ ℚ with |x - q| < ε (density of ℚ).",
+        "module": "Mathlib.Data.Rat.Dense"
+      }
+    ],
+    "originalContributions": [
+      "Complete proof that ∫₀¹ 𝟙_ℚ = 0, replacing the axiom in LebesgueMeasure.lean",
+      "Proof that the Dirichlet function is zero a.e. via compl_mem_ae_iff and ℚ measure zero",
+      "Extension: integral is zero over any measurable set, not just [0,1]",
+      "Proof that the Dirichlet function is nowhere continuous (discontinuous at every point)"
+    ],
+    "historicalContext": "Peter Gustav Lejeune Dirichlet introduced his indicator function 𝟙_ℚ in 1829 as an example of a function that cannot be integrated by Riemann's method: the upper Darboux sum is always 1 and the lower sum always 0 on any interval, since both rationals and irrationals are dense. This exposed a fundamental limitation of Riemann's 1854 integral. Henri Lebesgue's 1902 integral resolved this by measuring the range rather than the domain — since ℚ is countable and hence has Lebesgue measure zero, the function equals zero almost everywhere, yielding ∫₀¹ 𝟙_ℚ = 0. Lebesgue's criterion (1901) later gave a complete characterization: a bounded function is Riemann integrable iff its discontinuity set has measure zero. Since the Dirichlet function is discontinuous everywhere, it is not Riemann integrable — but it is Lebesgue integrable.",
+    "axiomCount": 0,
+    "lineCount": 197,
+    "assumptions": "0 axioms, 0 sorries. Core measure theory results (integral_eq_zero_of_ae, Set.Countable.measure_zero) from Mathlib; original work is the application to Dirichlet-type functions.",
+    "theoremCount": 12,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "**Dirichlet** (1829) introduced $\\mathbf{1}_{\\mathbb{Q}}$ to show that not all functions are representable by Fourier series, and it later became the canonical counterexample to Riemann integrability. **Riemann** (1854) formalized his integral, under which $\\mathbf{1}_{\\mathbb{Q}}$ fails: the upper Darboux sum is 1 and the lower is 0 on every subinterval, since both $\\mathbb{Q}$ and $\\mathbb{R} \\setminus \\mathbb{Q}$ are dense. **Lebesgue** (1902) resolved this with his measure-theoretic integral: since $\\mathbb{Q}$ is countable (hence measure zero), $\\mathbf{1}_{\\mathbb{Q}} = 0$ almost everywhere, giving $\\int_0^1 \\mathbf{1}_{\\mathbb{Q}} = 0$. This example demonstrates the strict superiority of Lebesgue's integral over Riemann's.",
+    "problemStatement": "**Open Question #1** from the Lebesgue Measure gallery: Can the axiom `dirichlet_integral_zero` be replaced by a full proof using Mathlib's `integral_eq_zero_of_ae` and the countability of $\\mathbb{Q}$?",
+    "text": "A complete proof that the Dirichlet function (indicator of rationals) has Lebesgue integral zero over [0,1], resolving an axiom from the parent Lebesgue Measure proof. Uses Mathlib's ae filter and integral_eq_zero_of_ae to show that since ℚ has measure zero, the indicator 𝟙_ℚ is zero almost everywhere, giving ∫₀¹ 𝟙_ℚ = 0. Also proves the function is nowhere continuous and extends the result to arbitrary sets.",
+    "proofStrategy": "The proof follows a clean 3-step chain: (1) $\\mathbb{Q}$ is countable ($\\Rightarrow$ `Set.countable_range`), hence has Lebesgue measure zero ($\\Rightarrow$ `Countable.measure_zero`). (2) Convert measure zero to almost everywhere via `compl_mem_ae_iff`: since $\\mu(\\mathbb{Q}) = 0$, for a.e. $x$, $x \\notin \\mathbb{Q}$, so $\\mathbf{1}_{\\mathbb{Q}}(x) = 0$. (3) Apply `integral_eq_zero_of_ae`: a function that is zero a.e. has integral zero. Extensions: generalize to arbitrary sets via `ae_restrict_of_ae`, and prove nowhere continuity via measure-theoretic arguments (balls have positive measure but $\\mathbb{Q}$ has measure zero).",
+    "keyInsights": [
+      "**Countable $\\Rightarrow$ measure zero $\\Rightarrow$ ae zero $\\Rightarrow$ integral zero**: The entire proof is a 3-step logical chain. Each step uses one Mathlib lemma: `Countable.measure_zero`, `compl_mem_ae_iff`, `integral_eq_zero_of_ae`. The remarkable brevity (3 lines of proof) contrasts with the historical difficulty of the problem.",
+      "**The ae filter as bridge**: Mathlib's `ae` filter connects measure theory (sets of measure zero) to integration (functions equal a.e.). The key lemma `compl_mem_ae_iff` translates '$\\mathbb{Q}$ has measure zero' into 'for a.e. $x$, $x \\notin \\mathbb{Q}$,' which is the form needed for `integral_eq_zero_of_ae`.",
+      "**Nowhere continuity via positive measure**: The discontinuity proof at rational points uses a measure-theoretic argument rather than explicit construction: any ball $B(x, \\delta)$ has positive Lebesgue measure ($2\\delta > 0$) while $\\mathbb{Q}$ has measure zero, so the ball cannot be contained in $\\mathbb{Q}$ — hence contains an irrational.",
+      "**Density of $\\mathbb{Q}$ for the irrational case**: Discontinuity at irrational points uses `exists_rat_near`: for any $\\varepsilon > 0$, there exists $q \\in \\mathbb{Q}$ with $|x - q| < \\varepsilon$. This is the density of $\\mathbb{Q}$ in $\\mathbb{R}$, complementary to the measure-zero property.",
+      "**Extension to arbitrary sets is free**: Once $\\mathbf{1}_{\\mathbb{Q}} = 0$ a.e. is established for the full measure, restriction to any subset preserves the property via `ae_restrict_of_ae`. The integral is zero over $[0,1]$, over $[0, 100]$, over any Borel set, and over all of $\\mathbb{R}$."
+    ],
+    "prerequisites": [
+      "Lebesgue measure (volume) on ℝ",
+      "Countability of ℚ",
+      "Almost everywhere (ae) filter",
+      "Bochner integral (integral_eq_zero_of_ae)",
+      "Parent proof: Lebesgue Measure"
+    ]
+  },
+  "sections": [
+    {
+      "id": "measure-zero",
+      "title": "Measure Zero Properties",
+      "summary": "Establishes that $\\mathbb{Q}$ embedded in $\\mathbb{R}$ is countable (`Set.countable_range`) and hence has Lebesgue measure zero (`Countable.measure_zero`). Also proves the monotonicity principle: subsets of null sets are null.",
+      "startLine": 39,
+      "endLine": 56,
+      "mathContext": "The rationals $\\mathbb{Q} \\subset \\mathbb{R}$ form a countable set (`Set.countable_range`) with Lebesgue measure zero: $\\lambda(\\mathbb{Q}) = 0$. This uses `MeasureTheory.measure_countable`."
+    },
+    {
+      "id": "dirichlet-function",
+      "title": "The Dirichlet Function",
+      "summary": "Defines $\\mathbf{1}_{\\mathbb{Q}} : \\mathbb{R} \\to \\mathbb{R}$ as `Set.indicator` of $\\text{range}(\\text{Rat.cast})$ with constant value 1. Characterization lemmas: equals 1 on rationals (`indicator_of_mem`) and 0 on irrationals (`indicator_of_notMem`).",
+      "startLine": 58,
+      "endLine": 77,
+      "mathContext": "The Dirichlet function $\\mathbf{1}_{\\mathbb{Q}}: \\mathbb{R} \\to \\mathbb{R}$ defined as `Set.indicator` of $\\text{range}(\\mathbb{Q} \\hookrightarrow \\mathbb{R})$. Takes value 1 on rationals, 0 on irrationals. The classic example of a function discontinuous everywhere."
+    },
+    {
+      "id": "almost-everywhere",
+      "title": "Almost Everywhere Zero",
+      "summary": "The core technical result: $\\mathbf{1}_{\\mathbb{Q}} = 0$ a.e. via `compl_mem_ae_iff.mpr` (converts $\\mu(\\mathbb{Q}) = 0$ to $\\mathbb{Q}^c \\in \\text{ae}$) and `filter_upwards`. Restricted version for $[0,1]$ via `ae_restrict_of_ae`.",
+      "startLine": 79,
+      "endLine": 96,
+      "mathContext": "The core result: $\\mathbf{1}_{\\mathbb{Q}} = 0$ almost everywhere with respect to Lebesgue measure. Since $\\mathbb{Q}$ has measure zero, $\\mathbf{1}_{\\mathbb{Q}}$ differs from the zero function only on a null set."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem: $\\int_0^1 \\mathbf{1}_{\\mathbb{Q}} = 0$",
+      "summary": "Applies `integral_eq_zero_of_ae` to the a.e.-zero result. This resolves the axiom `dirichlet_integral_zero` from the parent proof. Two equivalent formulations: one using the raw indicator, one using the named `dirichletFunction`.",
+      "startLine": 98,
+      "endLine": 122,
+      "mathContext": "The integral: $\\int_{\\mathbb{R}} \\mathbf{1}_{\\mathbb{Q}}\\,d\\lambda = 0$. Proved by `integral_eq_zero_of_ae` applied to the a.e.-zero result. Despite being 1 on a dense set, the Dirichlet function integrates to 0."
+    },
+    {
+      "id": "extensions",
+      "title": "Extensions and Nowhere Continuity",
+      "summary": "Generalizes to arbitrary sets and all of $\\mathbb{R}$. Proves `dirichletFunction_not_continuous_at` for every $x \\in \\mathbb{R}$: at rationals, balls contain irrationals (by positive measure vs null $\\mathbb{Q}$); at irrationals, balls contain rationals (by `exists_rat_near`). Each case shows $|f(x) - f(y)| = 1$ for nearby $y$.",
+      "startLine": 124,
+      "endLine": 197,
+      "mathContext": "Generalizations: $\\int \\mathbf{1}_S\\,d\\lambda = 0$ for any countable set $S \\subset \\mathbb{R}$. Also proves $\\mathbf{1}_{\\mathbb{Q}}$ is not (Riemann) continuous at any point."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete resolution of the axiom dirichlet_integral_zero from the parent Lebesgue Measure proof, via the 3-step chain: ℚ countable → ℚ measure zero → 𝟙_ℚ = 0 a.e. → ∫ 𝟙_ℚ = 0. The proof extends to arbitrary sets and also establishes the classical result that the Dirichlet function is discontinuous at every point of ℝ. All proofs are complete with 0 sorries.",
+    "implications": "**Theoretical Significance**: This formalization demonstrates the power of Lebesgue's integral over Riemann's: a function that is completely intractable for Riemann (oscillating between 0 and 1 at every scale) becomes trivially integrable via measure theory.\n\nThe 3-line proof chain (countable → null → ae zero → integral zero) is a template for integrating any function supported on a countable set. The nowhere-continuity proof showcases measure-theoretic reasoning as an alternative to explicit ε-δ constructions.",
+    "openQuestions": [
+      "Can the modified Dirichlet function $f(x) = 1/q$ for $x = p/q$ in lowest terms, $f(x) = 0$ for irrational $x$, be shown Riemann integrable via Lebesgue's criterion (discontinuity set = ℚ, which has measure zero)?",
+      "Can the Thomae function (modified Dirichlet function) integral be computed explicitly using Mathlib's Bochner integral?",
+      "Can the result be extended to show that the indicator of any Borel set with measure zero integrates to zero, and can this be automated as a Lean tactic?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "extends",
+      "description": "This proof resolves Open Question #1 from the parent Lebesgue Measure entry, replacing the axiom dirichlet_integral_zero with a complete proof via countability of ℚ, measure zero, and integral_eq_zero_of_ae"
+    },
+    {
+      "targetId": "lebesgue-measure-oq-02",
+      "relationship": "related",
+      "description": "Sibling open question from the same parent proof (Lebesgue Measure), exploring other aspects of Lebesgue integration and measure theory"
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's diagonal argument establishes the uncountability of ℝ, which provides the contrast central to this proof: ℚ is countable (measure zero) while ℝ\\ℚ is uncountable (full measure), explaining why 𝟙_ℚ = 0 almost everywhere"
+    },
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The FTC connects Riemann integration to differentiation; this proof demonstrates a function (the Dirichlet function) that lies beyond the FTC's scope since it is not Riemann integrable, motivating the Lebesgue integral that this formalization uses"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "Both proofs use measure-theoretic or analytic techniques to resolve questions about integration: harmonic divergence shows ∑1/n diverges (related to the integral test), while this proof shows ∫𝟙_ℚ = 0 via measure-theoretic methods unavailable to classical analysis"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Named after the same mathematician (Dirichlet): his theorem on primes in arithmetic progressions uses Dirichlet characters, while his indicator function 𝟙_ℚ formalized here was an early example exploring the boundaries of function theory and integration"
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "foundational",
+      "description": "Schröder-Bernstein establishes that injections in both directions yield a bijection, underpinning the cardinality arguments (ℚ countable, ℝ uncountable) that drive the measure-zero property central to this proof"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "The irrationality of √2 establishes the existence of irrational numbers — the points where 𝟙_ℚ = 0. The density of irrationals (which are uncountable) is what makes the Dirichlet function zero almost everywhere"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Set",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Measure",
+      "Set",
+      "Filter"
+    ],
+    "namespace": "LebesgueMeasureOQ01",
+    "lineCount": 197,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 1,
+    "path": "Proofs/LebesgueMeasureOQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Henri Lebesgue",
+      "title": "Intégrale, longueur, aire",
+      "year": "1902",
+      "venue": "Doctoral dissertation, Sorbonne",
+      "note": "The Dirichlet function was a motivating example for Lebesgue's integral"
+    },
+    {
+      "authors": "Peter G. Dirichlet",
+      "title": "Sur la convergence des séries trigonométriques",
+      "year": "1829",
+      "venue": "Journal für die reine und angewandte Mathematik",
+      "note": "Original introduction of the everywhere-discontinuous indicator function"
+    },
+    {
+      "authors": "Bernhard Riemann",
+      "title": "Über die Darstellbarkeit einer Function durch eine trigonometrische Reihe",
+      "year": "1854",
+      "venue": "Habilitationsschrift, Göttingen (published 1867)",
+      "note": "Formulated the Riemann integral, under which the Dirichlet function is not integrable"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,169 @@
+[
+  {
+    "id": "ann-kfixed-support",
+    "proofId": "derangements-oq-02",
+    "range": {
+      "startLine": 50,
+      "endLine": 58
+    },
+    "type": "concept",
+    "title": "Fixed Points ↔ Support Size",
+    "content": "**Theorem** `kFixed_iff_support_card` (requires `hk : k ≤ n`):\n```\n(Finset.univ.filter (fun x => σ x = x)).card = k ↔ σ.support.card = n - k\n```\n\nThe key identity: fixed points = support complement. Since `Fix(σ) = σ.supportᶜ` in `Fin n`, we have `|Fix(σ)| = n - |σ.support|`. The iff then reduces to `n - a = k ↔ a = n - k` in ℕ, which requires both `a ≤ n` (from `Finset.card_le_univ`) and `k ≤ n` (hypothesis) for `omega` to succeed.\n\n**Nat subtraction subtlety**: Without `hk : k ≤ n`, the iff fails! Example: n=3, σ=id (support.card=0), k=5. LHS: 3=5 (false). RHS: 0=3-5=0 (true by truncation). `omega` correctly rejects the unprovable goal.",
+    "mathContext": "|\\text{Fix}(\\sigma)| = k \\iff |\\sigma.\\text{support}| = n - k \\quad (k \\leq n)",
+    "significance": "key",
+    "relatedConcepts": [
+      "support",
+      "fixed-points",
+      "Nat subtraction",
+      "complement"
+    ],
+    "prerequisites": [
+      "Permutation Support",
+      "Fixed Points",
+      "Natural Number Subtraction"
+    ]
+  },
+  {
+    "id": "ann-support-invariance",
+    "proofId": "derangements-oq-02",
+    "range": {
+      "startLine": 60,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Support Invariance and Derangement Restriction",
+    "content": "Two key lemmas that enable the bijection. `support_mem_iff_smul_mem` proves the support is σ-invariant: x ∈ σ.support ↔ σ x ∈ σ.support. This is needed for `subtypePerm` which restricts σ to the subtype of support elements. `subtypePerm_of_support_is_derangement` then shows the restricted permutation is a derangement: every element of the support is moved (by definition of support), so the restriction has no fixed points. The `.symm` on the invariance proof is needed because Mathlib's `subtypePerm` takes `h : ∀ x, p (σ x) ↔ p x` (the reversed direction from what's natural).",
+    "mathContext": "$x \\in \\text{support}(\\sigma) \\iff \\sigma(x) \\in \\text{support}(\\sigma)$ (support is $\\sigma$-invariant). Therefore $\\sigma|_{\\text{support}(\\sigma)} \\in \\text{derangements}(\\text{support}(\\sigma))$, since $\\forall x \\in \\text{support}(\\sigma): \\sigma(x) \\neq x$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "support invariance",
+      "subtypePerm",
+      "derangement restriction",
+      "Equiv.Perm.mem_support"
+    ],
+    "prerequisites": [
+      "Equiv.Perm.support",
+      "subtypePerm API"
+    ]
+  },
+  {
+    "id": "ann-bijection",
+    "proofId": "derangements-oq-02",
+    "range": {
+      "startLine": 115,
+      "endLine": 148
+    },
+    "type": "definition",
+    "title": "Bijection: Support = S ↔ Derangements of S",
+    "content": "**Definition** `permSupportEqEquiv S`: An explicit bijection\n```\n{σ : Equiv.Perm (Fin n) | σ.support = S} ≃ derangements {x : Fin n // x ∈ S}\n```\n\n**Forward** (`toFun`): `σ ↦ σ.subtypePerm h` where `h : ∀ x, x ∈ S ↔ σ x ∈ S`. Since `S = σ.support`, every element of `S` is moved by `σ`, making the restriction a derangement.\n\n**Backward** (`invFun`): `τ ↦ ofSubtype τ`. The extension by identity has support exactly `S` because: elements in `S` are moved (τ is a derangement, so τ ⟨x,hx⟩ ≠ ⟨x,hx⟩, hence ofSubtype τ x ≠ x); elements outside `S` are fixed by `ofSubtype_apply_of_not_mem`.\n\n**Left inverse**: `ofSubtype_subtypePerm` gives the round-trip `ofSubtype ∘ subtypePerm = id`, with the single explicit hypothesis `h2 : ∀ x, σ x ≠ x → x ∈ S`.\n\n**Right inverse**: `simp` closes the goal via the definitional equality of `subtypePerm ∘ ofSubtype`.",
+    "mathContext": "\\{\\sigma \\mid \\sigma.\\text{support} = S\\} \\cong \\text{derangements}(\\uparrow S)",
+    "significance": "key",
+    "relatedConcepts": [
+      "subtypePerm",
+      "ofSubtype",
+      "Equiv",
+      "derangements",
+      "bijection"
+    ],
+    "prerequisites": [
+      "Type Equivalences",
+      "subtypePerm and ofSubtype",
+      "Derangements"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "derangements-oq-02",
+    "range": {
+      "startLine": 159,
+      "endLine": 193
+    },
+    "type": "concept",
+    "title": "Main Formula: S(n,k) = C(n,k)·D(n-k)",
+    "content": "**Theorem** `card_perms_with_kfixed` (for `hk : k ≤ n`):\n```\n|{σ ∈ Sₙ | |Fix(σ)| = k}| = C(n,k) · numDerangements(n-k)\n```\n\n**Proof via 5 rewrites**:\n1. **kFixed → support**: `|Fix(σ)| = k` ↔ `σ.support.card = n-k` (uses `kFixed_iff_support_card`)\n2. **biUnion decomposition**: `{σ | support.card = n-k}` = `⊎_{S ∈ C(Fin n, n-k)} {σ | support = S}` (each σ belongs to exactly one class by its support)\n3. **Count biUnion**: `|biUnion| = Σ |{σ | support = S}|` (by `Finset.card_biUnion`, using disjointness: two permutations with the same support card but different supports land in different buckets)\n4. **Each piece = D(n-k)**: `|{σ | support = S}| = numDerangements(n-k)` via `permSupportEqEquiv` and `card_derangements_eq_numDerangements`\n5. **Binomial count**: `|C(Fin n, n-k)| = C(n,n-k) = C(n,k)` (by `Nat.choose_symm hk`)",
+    "mathContext": "S(n,k) = \\binom{n}{k} \\cdot D(n-k)",
+    "significance": "key",
+    "relatedConcepts": [
+      "biUnion",
+      "Finset.card_biUnion",
+      "derangements",
+      "binomial coefficient",
+      "numDerangements"
+    ],
+    "prerequisites": [
+      "Finset biUnion",
+      "Binomial Coefficients",
+      "Derangement Numbers"
+    ]
+  },
+  {
+    "id": "ann-special-cases",
+    "proofId": "derangements-oq-02",
+    "range": {
+      "startLine": 248,
+      "endLine": 300
+    },
+    "type": "concept",
+    "title": "Special Cases: S(n,0), S(n,n), S(n,n-1)",
+    "content": "Three special cases provide sanity checks:\n\n**S(n,0) = D(n)**: No fixed points means the permutation is a derangement. Proved by reducing to `σ.support = Finset.univ` (full support = moves everything).\n\n**S(n,n) = 1**: The only permutation fixing all n elements is the identity. Proved by `Finset.eq_univ_of_card` (the fixed-point set is all of Fin n, so σ is forced to be identity).\n\n**S(n,n-1) = 0** (for n ≥ 2): Impossible to fix exactly n-1 elements. If n-1 elements are fixed, the remaining element must also be fixed (no room for a non-trivial orbit). Formally: `σ.support.card = 1` via the formula, but `Equiv.Perm.card_support_ne_one σ` says this is impossible for any permutation.",
+    "mathContext": "S(n,0) = D(n), \\quad S(n,n) = 1, \\quad S(n,n-1) = 0 \\text{ for } n \\geq 2",
+    "significance": "key",
+    "relatedConcepts": [
+      "derangements",
+      "identity permutation",
+      "card_support_ne_one"
+    ],
+    "prerequisites": [
+      "Identity Permutation",
+      "Permutation Support Cardinality",
+      "Derangements"
+    ]
+  },
+  {
+    "id": "ann-sum-factorial",
+    "proofId": "derangements-oq-02",
+    "range": {
+      "startLine": 306,
+      "endLine": 329
+    },
+    "type": "concept",
+    "title": "Algebraic Identity: ∑ S(n,k) = n!",
+    "content": "**Theorem** `sum_permsWithKFixed_eq_factorial`:\n```\n∑_{k=0}^{n} S(n,k) = n!\n```\n\nEvery permutation has exactly one fixed-point count (its fixed-point set has a definite cardinality in {0,...,n}), so the filter classes partition all of `Equiv.Perm (Fin n)`. The sum equals the cardinality of the disjoint union, which is `Fintype.card_perm = n!`.\n\n**Proof**: Using `Finset.card_biUnion` with the disjointness proof (two permutations in different filter classes have different fixed-point counts, hence are in different sets). The biUnion covers all permutations by membership: `(Finset.univ.filter fun x => σ x = x).card ∈ Finset.range (n+1)` (fixed-point count ≤ n).",
+    "mathContext": "\\sum_{k=0}^{n} S(n,k) = n!",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition",
+      "Finset.card_biUnion",
+      "Fintype.card_perm",
+      "factorial"
+    ],
+    "prerequisites": [
+      "Set Partition",
+      "Finset.card_biUnion",
+      "Factorial of Permutations"
+    ]
+  },
+  {
+    "id": "ann-native-decide",
+    "proofId": "derangements-oq-02",
+    "range": {
+      "startLine": 198,
+      "endLine": 242
+    },
+    "type": "concept",
+    "title": "Verification via native_decide",
+    "content": "**11 concrete verifications** using `native_decide`:\n\n- **n=3**: S(3,0)=2, S(3,1)=3, S(3,2)=0, S(3,3)=1 → sum = 6 = 3!\n- **n=4**: S(4,0)=9, S(4,1)=8, S(4,2)=6, S(4,3)=0, S(4,4)=1 → sum = 24 = 4!\n- **n=5**: S(5,2)=20 = C(5,2)·D(3) = 10·2\n\nThese verify the formula S(n,k) = C(n,k)·D(n-k) for small concrete values. `native_decide` compiles the proposition to native code and evaluates it, providing fast decidable verification.\n\n**Formula check for n=4**: D(0)=1, D(1)=0, D(2)=1, D(3)=2, D(4)=9. Then:\n- S(4,0) = C(4,0)·9 = 9 ✓\n- S(4,1) = C(4,1)·2 = 8 ✓\n- S(4,2) = C(4,2)·1 = 6 ✓\n- S(4,3) = C(4,3)·0 = 0 ✓\n- S(4,4) = C(4,4)·1 = 1 ✓",
+    "mathContext": "S(n,k) = \\binom{n}{k} \\cdot D(n-k) \\text{ verified for } n \\in \\{3,4,5\\}",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "derangement numbers",
+      "concrete verification"
+    ],
+    "prerequisites": [
+      "native_decide Tactic",
+      "Derangement Numbers",
+      "Decidable Propositions"
+    ]
+  }
+]

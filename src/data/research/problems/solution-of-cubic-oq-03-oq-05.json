@@ -1,0 +1,147 @@
+{
+  "slug": "solution-of-cubic-oq-03-oq-05",
+  "title": "Verify Vieta's formulas for the general cubic",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "vieta_cubic: a = -(r₁+r₂+r₃) ∧ b = r₁r₂+r₁r₃+r₂r₃ ∧ c = -(r₁r₂r₃)",
+    "plain": "Vieta's formulas for x³ + ax² + bx + c = (x-r₁)(x-r₂)(x-r₃) over any CommRing.",
+    "whyMatters": [
+      "Extends depressed cubic Vieta's to general case",
+      "Fundamental result in algebra"
+    ]
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-28T20:10:00Z",
+    "iteration": 1,
+    "focus": "Complete proof via polynomial coefficient comparison.",
+    "blockers": [],
+    "nextAction": "Docker build verification",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved all Vieta's formulas for general cubic (0 sorries, 0 axioms). Expansion via ring, coefficient extraction via simp.",
+    "builtItems": [
+      "cubic_factor_expansion: product of linear factors = canonical cubic form (by ring)",
+      "vieta_sigma1, vieta_sigma2, vieta_sigma3: individual Vieta relations",
+      "vieta_cubic: combined formulas",
+      "root_satisfies: roots are actual roots of the polynomial"
+    ],
+    "insights": [
+      "Working over general CommRing avoids needing field-specific arguments",
+      "The ring tactic handles the polynomial expansion cleanly",
+      "Coefficient extraction via coeff + simp gives the individual relations"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Docker build verification"
+    ]
+  },
+  "tags": [
+    "algebra",
+    "polynomials",
+    "cubic-equations",
+    "vieta-formulas",
+    "research",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "solution-of-cubic",
+    "solution-of-cubic-oq-03",
+    "solution-of-cubic-oq-03-oq-01",
+    "solution-of-cubic-oq-03-oq-02",
+    "solution-of-cubic-oq-03-oq-03",
+    "solution-of-cubic-oq-03-oq-05",
+    "solution-of-cubic-oq-05"
+  ],
+  "started": "2026-03-28T20:05:00Z",
+  "lastUpdate": "2026-03-28T20:15:00Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/SolutionOfCubic.lean",
+      "filename": "SolutionOfCubic.lean",
+      "lineCount": 298,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubic.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ03.lean",
+      "filename": "SolutionOfCubicOQ03.lean",
+      "lineCount": 188,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ03.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ03OQ01.lean",
+      "filename": "SolutionOfCubicOQ03OQ01.lean",
+      "lineCount": 90,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ03OQ02.lean",
+      "filename": "SolutionOfCubicOQ03OQ02.lean",
+      "lineCount": 179,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ03OQ03.lean",
+      "filename": "SolutionOfCubicOQ03OQ03.lean",
+      "lineCount": 263,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ03OQ05.lean",
+      "filename": "SolutionOfCubicOQ03OQ05.lean",
+      "lineCount": 113,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ03OQ05.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ05.lean",
+      "filename": "SolutionOfCubicOQ05.lean",
+      "lineCount": 184,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ05.lean"
+    }
+  ]
+}

@@ -1,0 +1,173 @@
+{
+  "id": "pythagorean-triples-oq-07",
+  "title": "Parity Dichotomy: Exactly One Leg of a Primitive Pythagorean Triple is Even",
+  "slug": "pythagorean-triples-oq-07",
+  "description": "In a primitive Pythagorean triple x²+y²=z² with coprime legs, exactly one leg is even and the other odd. Both-even is excluded by coprimality; both-odd is impossible for ANY triple because a sum of two odd squares is 2 mod 4, never a perfect square. The hypotenuse is consequently odd.",
+  "meta": {
+    "author": "classical; Euclid",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PythagoreanTriplesOQ07.lean",
+    "tags": [
+      "number-theory",
+      "pythagorean-triples",
+      "parity",
+      "modular-arithmetic",
+      "diophantine",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "PythagoreanTriple.even_odd_of_coprime",
+        "description": "For coprime legs, exactly one leg is even (x%2=0 ∧ y%2=1) ∨ (x%2=1 ∧ y%2=0)",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      },
+      {
+        "theorem": "Int.sq_ne_two_mod_four",
+        "description": "z * z % 4 ≠ 2: a perfect square is never 2 mod 4",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      },
+      {
+        "theorem": "Int.odd_iff",
+        "description": "Odd n ↔ n % 2 = 1",
+        "module": "Mathlib.Algebra.Ring.Int.Parity"
+      },
+      {
+        "theorem": "Int.even_iff",
+        "description": "Even n ↔ n % 2 = 0",
+        "module": "Mathlib.Algebra.Group.Int.Even"
+      }
+    ],
+    "originalContributions": [
+      "sq_emod_four_of_odd: an odd integer squared is 1 mod 4 (the arithmetic core)",
+      "not_both_odd: NO Pythagorean triple has two odd legs — proved for ANY triple, no coprimality needed, via the 2-mod-4 obstruction",
+      "not_both_even: a primitive triple has no two even legs (coprimality)",
+      "parity_dichotomy: mod-2 form of exactly-one-even",
+      "exactly_one_even: Even/Odd form of the dichotomy",
+      "even_iff_not_even: the legs never share parity (Even x ↔ ¬Even y)",
+      "hypotenuse_odd: consequence — the hypotenuse of a primitive triple is odd"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound.",
+    "lineCount": 127,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The classification and parity structure of Pythagorean triples is one of the oldest results in number theory, recorded in Euclid's Elements (Book X) and used implicitly by the Babylonians (Plimpton 322, c. 1800 BCE). For a primitive triple — one with coprime legs — the parametrisation x = m²−n², y = 2mn, z = m²+n² already makes the parity visible: the leg 2mn is even and m²−n² is odd. The clean modular obstruction 'a sum of two odd squares is 2 mod 4, hence never a square' is the elementary reason no primitive triple can have two odd legs, and it is exactly the step that forces the even-leg/odd-leg split that underlies the whole classification (and, downstream, the n=4 case of Fermat's Last Theorem via infinite descent).",
+    "problemStatement": "Can we machine-check that exactly one leg of a primitive Pythagorean triple is even?\n\n**Answer: Yes.** Both-odd is ruled out for every triple by a mod-4 argument; both-even is ruled out by coprimality; together they give the dichotomy, and the hypotenuse is shown to be odd as a corollary.",
+    "text": "Exactly one leg of a primitive Pythagorean triple is even — the parity split behind the classical parametrisation.",
+    "proofStrategy": "Establish that an odd square is 1 mod 4 (sq_emod_four_of_odd). Conclude both legs odd would make x²+y² ≡ 2 mod 4 = z², impossible by Int.sq_ne_two_mod_four (this needs no coprimality). Exclude both-even via Mathlib's even_odd_of_coprime. Package the dichotomy in mod-2 and Even/Odd forms, then derive that the hypotenuse is odd.",
+    "keyInsights": [
+      "The 'both odd is impossible' obstruction holds for EVERY Pythagorean triple, not just primitive ones — coprimality is only needed to exclude the both-even case",
+      "The whole dichotomy rests on a single residue fact: an odd square is 1 mod 4, so two odd squares sum to 2 mod 4, which Int.sq_ne_two_mod_four rules out as a square",
+      "omega closes the modular contradictions once the squares are rewritten in the form 4·(…)+r: it reasons about % with a literal modulus over the atoms x·x, y·y, z·z",
+      "The hypotenuse is forced odd: with one even leg (≡0 mod 4) and one odd leg (≡1 mod 4), z² ≡ 1 mod 4, and an even z would give z² ≡ 0 mod 4"
+    ],
+    "prerequisites": [
+      "Modular arithmetic (residues mod 4)",
+      "Parity of integers",
+      "Pythagorean triples and primitivity (coprime legs)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "obstruction",
+      "title": "The mod-4 Obstruction",
+      "startLine": 30,
+      "endLine": 39,
+      "summary": "An odd integer squared is 1 mod 4 — the single arithmetic fact behind everything.",
+      "mathContext": "$a \\text{ odd} \\Rightarrow a^2 \\equiv 1 \\pmod 4$."
+    },
+    {
+      "id": "both-odd",
+      "title": "Both Legs Odd is Impossible",
+      "startLine": 41,
+      "endLine": 54,
+      "summary": "For any Pythagorean triple, the two legs cannot both be odd (no coprimality needed).",
+      "mathContext": "$x,y$ odd $\\Rightarrow x^2+y^2 \\equiv 2 \\pmod 4$, but $z^2 \\not\\equiv 2 \\pmod 4$."
+    },
+    {
+      "id": "both-even",
+      "title": "Both Legs Even is Impossible",
+      "startLine": 56,
+      "endLine": 65,
+      "summary": "Under coprimality, the two legs cannot both be even.",
+      "mathContext": "$x,y$ even $\\Rightarrow 2 \\mid \\gcd(x,y) = 1$, absurd."
+    },
+    {
+      "id": "dichotomy",
+      "title": "The Parity Dichotomy",
+      "startLine": 67,
+      "endLine": 90,
+      "summary": "Exactly one leg is even, in mod-2 and Even/Odd forms, plus opposite-parity equivalence.",
+      "mathContext": "$(x \\text{ even} \\wedge y \\text{ odd}) \\vee (x \\text{ odd} \\wedge y \\text{ even})$."
+    },
+    {
+      "id": "hypotenuse",
+      "title": "The Hypotenuse is Odd",
+      "startLine": 92,
+      "endLine": 127,
+      "summary": "Consequence: the hypotenuse of a primitive triple is odd.",
+      "mathContext": "$z^2 = (\\text{even})^2 + (\\text{odd})^2 \\equiv 1 \\pmod 4 \\Rightarrow z \\text{ odd}$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book X",
+      "year": "c. 300 BCE",
+      "note": "Classical parametrisation of Pythagorean triples"
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1938",
+      "note": "Standard treatment of the primitive triple parametrisation and its parity structure"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "extends",
+      "description": "Refines the structure of Pythagorean triples by establishing the parity of the legs and hypotenuse."
+    },
+    {
+      "targetId": "pythagorean-triples-oq-06",
+      "relationship": "related",
+      "description": "Companion open-question entry on the coprime-parameter classification (m²−n², 2mn, m²+n²); this entry isolates the parity consequence that classification relies on."
+    },
+    {
+      "targetId": "pythagorean-triples-oq-05",
+      "relationship": "related",
+      "description": "Both descend from the primitive-triple structure; oq-05 treats the Brahmagupta–Fibonacci / Gaussian-norm identity, oq-07 the parity dichotomy."
+    }
+  ],
+  "conclusion": {
+    "summary": "Exactly one leg of a primitive Pythagorean triple is even, machine-checked: both-odd is excluded for every triple by a mod-4 argument, both-even by coprimality, and the hypotenuse is shown odd as a corollary.",
+    "implications": "Isolates the elementary parity obstruction (sum of two odd squares is 2 mod 4) that underlies the classical parametrisation and the infinite-descent proof of Fermat's Last Theorem for n=4.",
+    "openQuestions": [
+      "Can the next layer of the structure be formalised — that in a primitive triple the even leg is divisible by 4, equivalently 4 ∣ mn in the parametrisation?",
+      "Does the 'sum of two odd squares is 2 mod 4' obstruction generalise to a clean Lean lemma characterising which integers are sums of two coprime squares (the 1 mod 4 prime condition)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "PythagoreanTriple"
+    ],
+    "namespace": "PythagoreanTriplesParity",
+    "lineCount": 127,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/PythagoreanTriplesOQ07.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

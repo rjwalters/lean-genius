@@ -1,0 +1,238 @@
+[
+  {
+    "id": "ann-lln-oq03-measure-preserving",
+    "proofId": "laws-of-large-numbers-oq-03",
+    "range": {
+      "startLine": 68,
+      "endLine": 74
+    },
+    "type": "concept",
+    "title": "Measure-Preserving Transformations and Iterates",
+    "content": "Introduces measure-preserving maps $T : \\Omega \\to \\Omega$ satisfying $\\mu(T^{-1}A) = \\mu(A)$ using Mathlib's `MeasurePreserving`. Proves `iterate_measure_preserving`: the iterates $T^n$ are measure-preserving by induction, using `MeasurePreserving.id` for the base case and `MeasurePreserving.comp` for the step via `Function.iterate_succ'`.",
+    "mathContext": "$T$ is measure-preserving: $\\mu(T^{-1}A) = \\mu(A)$ for all measurable $A$. Then $T^n$ is measure-preserving for all $n \\geq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "MeasurePreserving",
+      "Function.iterate",
+      "semigroup action",
+      "measure theory"
+    ],
+    "prerequisites": [
+      "MeasureTheory.MeasurePreserving",
+      "Function.iterate_succ'"
+    ]
+  },
+  {
+    "id": "ann-lln-oq03-ergodicity",
+    "proofId": "laws-of-large-numbers-oq-03",
+    "range": {
+      "startLine": 85,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "Ergodicity: Trivial Invariant σ-Algebra",
+    "content": "Demonstrates Mathlib's `Ergodic` class: a transformation is ergodic if the only $T$-invariant measurable sets have measure 0 or measure $\\mu(\\Omega)$. Uses `ae_empty_or_univ` to extract this from the class. Ergodicity is the key property that forces time averages to converge to a constant (the space average) rather than a random variable.",
+    "mathContext": "$T$ is ergodic: $T^{-1}A = A \\implies \\mu(A) = 0$ or $\\mu(A) = \\mu(\\Omega)$. Equivalently, the invariant $\\sigma$-algebra $\\mathcal{I} = \\{A : T^{-1}A = A\\}$ is trivial mod null sets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ergodic",
+      "invariant σ-algebra",
+      "Kolmogorov 0-1 law",
+      "ae_empty_or_univ"
+    ],
+    "prerequisites": [
+      "MeasureTheory.Ergodic",
+      "ae_eq_of_eq"
+    ]
+  },
+  {
+    "id": "ann-lln-oq03-birkhoff-sums",
+    "proofId": "laws-of-large-numbers-oq-03",
+    "range": {
+      "startLine": 98,
+      "endLine": 120
+    },
+    "type": "definition",
+    "title": "Birkhoff Sums and Averages",
+    "content": "Defines `birkhoffSum(T, f, n, ω) = ∑_{i=0}^{n-1} f(T^i ω)` and `birkhoffAverage = (1/n) · birkhoffSum`. These are the ergodic-theoretic analogues of the partial sum and sample mean. The cocycle relation `birkhoffSum_add` — $S_{n+m}f(\\omega) = S_nf(\\omega) + S_mf(T^n\\omega)$ — is proved using `Finset.sum_range_add` and `Function.iterate_add_apply`.",
+    "mathContext": "$S_nf(\\omega) = \\sum_{i=0}^{n-1} f(T^i\\omega)$, $\\bar{f}_n(\\omega) = \\frac{1}{n}S_nf(\\omega)$. Cocycle: $S_{n+m}f = S_nf + S_mf \\circ T^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_range_add",
+      "Function.iterate_add_apply",
+      "cocycle identity",
+      "sample mean"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Function.iterate"
+    ]
+  },
+  {
+    "id": "ann-lln-oq03-birkhoff-theorem",
+    "proofId": "laws-of-large-numbers-oq-03",
+    "range": {
+      "startLine": 143,
+      "endLine": 167
+    },
+    "type": "concept",
+    "title": "Birkhoff's Ergodic Theorem",
+    "content": "States Birkhoff's theorem in two forms as axioms. The general form: for measure-preserving $T$ and integrable $f$, there exists $f^*$ such that $\\bar{f}_n \\to f^*$ a.s., with $f^*$ integrable, $T$-invariant, and $\\int f^* = \\int f$. The ergodic form: when $T$ is ergodic, $\\bar{f}_n \\to E[f]$ a.s. These are deep results whose proofs require the maximal ergodic lemma — stated separately as an axiom.",
+    "mathContext": "General: $\\frac{1}{n}\\sum_{i=0}^{n-1} f(T^i\\omega) \\to E[f|\\mathcal{I}]$ a.s. Ergodic: $\\frac{1}{n}\\sum_{i=0}^{n-1} f(T^i\\omega) \\to \\int f\\,d\\mu$ a.s.",
+    "significance": "key",
+    "relatedConcepts": [
+      "almost sure convergence",
+      "conditional expectation",
+      "IsProbabilityMeasure",
+      "Tendsto"
+    ],
+    "prerequisites": [
+      "birkhoffAverage",
+      "MeasurePreserving",
+      "Ergodic",
+      "Integrable"
+    ]
+  },
+  {
+    "id": "ann-lln-oq03-slln-connection",
+    "proofId": "laws-of-large-numbers-oq-03",
+    "range": {
+      "startLine": 190,
+      "endLine": 192
+    },
+    "type": "insight",
+    "title": "Classical SLLN as Special Case of Birkhoff",
+    "content": "Documents the key insight: the classical Strong Law of Large Numbers is a special case of Birkhoff's theorem. For i.i.d. $X_1, X_2, \\ldots$, take $\\Omega = \\mathbb{R}^\\mathbb{N}$, $T$ = left shift, and $f$ = first coordinate projection. Then $f(T^i\\omega) = X_{i+1}(\\omega)$ and the Birkhoff average is exactly the sample mean. Independence makes $T$ ergodic via Kolmogorov's 0-1 law.",
+    "mathContext": "$T(x_1, x_2, \\ldots) = (x_2, x_3, \\ldots)$, $f(x_1, x_2, \\ldots) = x_1$. Then $\\frac{1}{n}\\sum f(T^i\\omega) = \\frac{1}{n}\\sum X_i \\to E[X_1]$ by Birkhoff.",
+    "significance": "key",
+    "relatedConcepts": [
+      "left shift operator",
+      "product probability space",
+      "Kolmogorov 0-1 law",
+      "i.i.d. sequences"
+    ],
+    "prerequisites": [
+      "birkhoff_ergodic_constant",
+      "product measure"
+    ]
+  },
+  {
+    "id": "ann-lln-oq03-maximal-ergodic",
+    "proofId": "laws-of-large-numbers-oq-03",
+    "range": {
+      "startLine": 206,
+      "endLine": 211
+    },
+    "type": "concept",
+    "title": "Maximal Ergodic Lemma",
+    "content": "States Hopf's maximal ergodic lemma (1954) as an axiom: for measure-preserving $T$ and integrable $f$, $\\int_{\\{\\omega : \\exists n,\\, S_{n+1}f(\\omega) > 0\\}} f\\,d\\mu \\geq 0$. This is the key technical tool in proving Birkhoff's theorem — it controls the behavior of the maximal Birkhoff sum and is proved via a telescoping/sunrise lemma argument.",
+    "mathContext": "$\\int_{\\{\\sup_n S_nf > 0\\}} f\\,d\\mu \\geq 0$. The set $\\{\\sup_n S_nf > 0\\}$ is where the time averages are sometimes positive.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "maximal inequality",
+      "sunrise lemma",
+      "Birkhoff sum",
+      "conditional convergence"
+    ],
+    "prerequisites": [
+      "birkhoffSum",
+      "MeasurePreserving",
+      "Integrable"
+    ]
+  },
+  {
+    "id": "ann-lln-oq03-von-neumann",
+    "proofId": "laws-of-large-numbers-oq-03",
+    "range": {
+      "startLine": 225,
+      "endLine": 232
+    },
+    "type": "concept",
+    "title": "Von Neumann Mean Ergodic Theorem",
+    "content": "States von Neumann's mean ergodic theorem (1932) as an axiom: for $f \\in L^2$, the ergodic averages converge in $L^2$ norm to the projection onto the $T$-invariant functions. This is weaker than Birkhoff ($L^2$ vs a.s. convergence) but was proved first using Hilbert space methods (the projection theorem onto the closed subspace of invariant functions).",
+    "mathContext": "$\\int |\\bar{f}_n - f^*|^2\\,d\\mu \\to 0$ where $f^*$ is the orthogonal projection of $f$ onto $\\{g : g \\circ T = g\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "L² convergence",
+      "Hilbert space projection",
+      "MemℒpClass",
+      "orthogonal decomposition"
+    ],
+    "prerequisites": [
+      "birkhoffAverage",
+      "MeasurePreserving",
+      "MemℒpClass"
+    ]
+  },
+  {
+    "id": "ann-lln-oq03-mixing",
+    "proofId": "laws-of-large-numbers-oq-03",
+    "range": {
+      "startLine": 243,
+      "endLine": 253
+    },
+    "type": "definition",
+    "title": "Mixing and the Dependence Hierarchy",
+    "content": "Defines strong mixing: $\\mu(A \\cap T^{-n}B) \\to \\mu(A)\\mu(B)$ as $n \\to \\infty$, meaning events become asymptotically independent under iteration. States `mixing_implies_ergodic` (with sorry): if $A$ is invariant then $\\mu(A) = \\mu(A)^2$, giving $\\mu(A) \\in \\{0,1\\}$. This places mixing strictly between independence and ergodicity in the hierarchy.",
+    "mathContext": "$T$ is mixing: $\\mu(A \\cap T^{-n}B) \\to \\mu(A)\\mu(B)$. For invariant $A$: $\\mu(A)^2 = \\lim \\mu(A \\cap T^{-n}A) = \\mu(A)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "strong mixing",
+      "asymptotic independence",
+      "decorrelation",
+      "ergodic hierarchy"
+    ],
+    "prerequisites": [
+      "Tendsto",
+      "Filter.atTop",
+      "MeasurePreserving"
+    ]
+  },
+  {
+    "id": "ann-lln-oq03-examples",
+    "proofId": "laws-of-large-numbers-oq-03",
+    "range": {
+      "startLine": 291,
+      "endLine": 296
+    },
+    "type": "concept",
+    "title": "Canonical Ergodic Systems",
+    "content": "Defines two canonical examples: (1) **irrational rotation** $T(x) = x + \\alpha \\pmod{1}$, which is ergodic iff $\\alpha \\notin \\mathbb{Q}$ (by Weyl's equidistribution theorem) but never mixing; (2) **doubling map** $T(x) = 2x \\pmod{1}$, which is mixing (hence ergodic) with exponential convergence rates. These illustrate the gap between ergodicity and mixing.",
+    "mathContext": "Irrational rotation: $T(x) = x + \\alpha - \\lfloor x + \\alpha \\rfloor$. Doubling map: $T(x) = 2x - \\lfloor 2x \\rfloor$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "irrational rotation",
+      "doubling map",
+      "Weyl equidistribution",
+      "Bernoulli shift"
+    ],
+    "prerequisites": [
+      "ergodicity",
+      "mixing"
+    ]
+  },
+  {
+    "id": "ann-lln-oq03-algebraic-properties",
+    "proofId": "laws-of-large-numbers-oq-03",
+    "range": {
+      "startLine": 335,
+      "endLine": 362
+    },
+    "type": "concept",
+    "title": "Algebraic Properties of Birkhoff Averages",
+    "content": "Proves four algebraic properties: (1) **linearity** — average of $f+g$ equals sum of averages, via `Finset.sum_add_distrib`; (2) **scaling** — average of $cf$ equals $c$ times average, via `Finset.mul_sum`; (3) **constants** — average of constant $c$ is $c$, using `field_simp`; (4) **telescoping shift** — $S_nf(T\\omega) = S_{n+1}f(\\omega) - f(\\omega)$, via `Finset.sum_range_succ'`. These are the computational backbone for applications of Birkhoff's theorem.",
+    "mathContext": "$\\bar{(f+g)}_n = \\bar{f}_n + \\bar{g}_n$, $\\overline{cf}_n = c\\bar{f}_n$, $\\overline{c}_n = c$, $S_nf(T\\omega) = S_{n+1}f(\\omega) - f(\\omega)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "linearity",
+      "Finset.sum_add_distrib",
+      "Finset.sum_range_succ'",
+      "field_simp"
+    ],
+    "prerequisites": [
+      "birkhoffAverage",
+      "birkhoffSum",
+      "Finset operations"
+    ]
+  }
+]

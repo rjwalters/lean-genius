@@ -1,0 +1,225 @@
+{
+  "id": "erdos-1148",
+  "title": "Erdős Problem #1148: Representation as x² + y² - z²",
+  "slug": "erdos-1148",
+  "description": "Can every sufficiently large integer n be written as n = x² + y² - z² where max(x², y², z²) ≤ n?",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1148",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1148Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1148,
+    "erdosUrl": "https://erdosproblems.com/1148",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Nat.Prime.Basic",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Sqrt",
+        "description": "From Mathlib.Data.Nat.Sqrt",
+        "module": "Mathlib.Data.Nat.Sqrt"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Finset.Basic",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Real.Basic",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Basic",
+        "description": "From Mathlib.Data.Int.Basic",
+        "module": "Mathlib.Data.Int.Basic"
+      },
+      {
+        "theorem": "Tactic",
+        "description": "From Mathlib.Tactic",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "IsRepresentable",
+      "IsRepresentableWith",
+      "perfectSquare_representable",
+      "zero_representable",
+      "one_representable",
+      "representable_mono",
+      "representable_implies_relaxed",
+      "odd_diff_squares_exceeds_bound",
+      "odd_diff_squares_identity",
+      "two_representable",
+      "four_representable",
+      "five_representable",
+      "eight_representable",
+      "nine_representable",
+      "checkRepresentable"
+    ],
+    "axiomCount": 1,
+    "lineCount": 355,
+    "assumptions": "1 axiom: erdos_1148. See Lean source for the complete statement.",
+    "theoremCount": 31,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1148 asks whether every sufficiently large integer $n$ can be written as $n = x^2 + y^2 - z^2$ with the strict bound $\\max(x^2, y^2, z^2) \\leq n$. This problem sits at the intersection of additive number theory and the classical theory of quadratic forms. The question is related to the broader study of representations by ternary quadratic forms, where the Hardy–Littlewood circle method provides asymptotic formulas for the number of representations of large integers. Without the bound constraint, every positive integer $n \\not\\equiv 0 \\pmod{4}$ is representable as a difference of two squares via $n = ((n+1)/2)^2 - ((n-1)/2)^2$ for odd $n$. The strict bound $\\max(x^2, y^2, z^2) \\leq n$ makes the problem substantially harder: it restricts the search space to $(\\lfloor\\sqrt{n}\\rfloor + 1)^3 = O(n^{3/2})$ triples. The Fermat–Euler theorem on sums of two squares (a positive integer $m$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ divides $m$ to even power) plays a key role, since the problem reduces to finding $z \\leq \\sqrt{n}$ such that $n + z^2$ is a sum of two bounded squares. Computational searches show that 6563 is the largest known non-representable integer, suggesting the threshold $N_0 \\leq 6564$. The problem remains open as of 2025.",
+    "problemStatement": "Can every sufficiently large integer $n$ be written as $n = x^2 + y^2 - z^2$ where $\\max(x^2, y^2, z^2) \\leq n$?",
+    "text": "Can every sufficiently large integer n be written as n = x² + y² - z² where max(x², y², z²) ≤ n?",
+    "proofStrategy": "The formalization defines `Representation` as a structure packaging a triple $(x,y,z)$ with the equation $x^2 + y^2 = z^2 + n$ (reformulated to avoid natural number subtraction) and bounds $x^2, y^2, z^2 \\leq b$. Two predicates capture strict ($b = n$) and relaxed representability. Small cases ($n = 0, 1, 2, 4, 5, 8, 9$) are proved by explicit witnesses, while $n = 3$ is shown non-representable by exhaustive case analysis using `interval_cases`. A decidable Boolean checker with proved soundness and completeness enables computational verification. The key structural result reduces the problem to the Fermat–Euler characterization of sums of two squares. The main conjecture is axiomatized since the problem is open.",
+    "keyInsights": [
+      "**Difference-of-squares obstruction for odd $n$**: The natural identity $n = ((n+1)/2)^2 - ((n-1)/2)^2$ violates the strict bound for $n \\geq 3$ since $((n+1)/2)^2 > n$, forcing the search for alternative representations with all three squares bounded by $n$",
+      "**Reduction to sum-of-two-squares**: The equivalence $n = x^2 + y^2 - z^2 \\iff x^2 + y^2 = n + z^2$ transforms the problem into: for which $n$ does there exist $z \\leq \\sqrt{n}$ such that $n + z^2$ is a sum of two squares bounded by $n$? This connects directly to the Fermat–Euler characterization",
+      "**Decidable representability via brute-force search**: The checker iterates over all $(x,y,z) \\in \\{0, \\ldots, \\lfloor\\sqrt{b}\\rfloor\\}^3$ with proved soundness and completeness, enabling kernel-verified computation within Lean for specific values of $n$",
+      "**Reformulation avoids $\\mathbb{N}$ subtraction**: The equation $x^2 + y^2 = z^2 + n$ rather than $x^2 + y^2 - z^2 = n$ sidesteps truncated subtraction in natural numbers, a common formalization pitfall in Lean",
+      "**The search space is $O(n^{3/2})$**: Since $\\max(x^2, y^2, z^2) \\leq n$ implies $x, y, z \\leq \\lfloor\\sqrt{n}\\rfloor$, the brute-force checker runs in time $O(n^{3/2})$, which is feasible for moderate $n$ but insufficient for resolving the conjecture computationally"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Header documentation and Mathlib imports for `Nat.Prime.Basic`, `Nat.Sqrt`, `Finset.Basic`, `BigOperators`, `Real`, `Int`, and `Mathlib.Tactic`. Opens the `Erdos1148` namespace.",
+      "mathContext": "Mathematical content: Header documentation and Mathlib imports for `Nat.Prime.Basic`, `Nat.Sqrt`, `Finset.Basic`, `BigOperators`, `Real`, `Int`, and `Mathlib.Tactic`. Opens the `Erdos1148` namespace."
+    },
+    {
+      "id": "representation",
+      "title": "Representation Structure",
+      "startLine": 40,
+      "endLine": 58,
+      "summary": "Defines the `Representation` structure packaging $(x,y,z)$ with proof of $x^2 + y^2 = z^2 + n$ and bounds, plus `IsRepresentable` (bound $= n$) and `IsRepresentableWith` (arbitrary bound) predicates using `Nonempty`.",
+      "mathContext": "Defines the `Representation` structure packaging $(x,y,z)$ with proof of $x^2 + y^2 = z^2 + n$ and bounds, plus `IsRepresentable` (bound $= n$) and `IsRepresentableWith` (arbitrary bound) predicates using `Nonempty`."
+    },
+    {
+      "id": "basic-representable",
+      "title": "Basic Representability Results",
+      "startLine": 59,
+      "endLine": 75,
+      "summary": "Proves perfect squares are representable via $(k, 0, 0)$, plus explicit witnesses for $n = 0$ and $n = 1$ (using $(1, 0, 0)$ since $1 = 1^2 + 0^2 - 0^2$).",
+      "mathContext": "Proves perfect squares are representable via $(k, 0, 0)$, plus explicit witnesses for $n = 0$ and $n = 1$ (using $(1, 0, 0)$ since $1 = $1^{2}$ + $0^{2}$ - $0^{2}$$)."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity and Bound Relaxation",
+      "startLine": 76,
+      "endLine": 94,
+      "summary": "Proves $\\text{IsRepresentableWith}(n, b_1) \\wedge b_1 \\leq b_2 \\Rightarrow \\text{IsRepresentableWith}(n, b_2)$ and the corollary that strict representability implies relaxed representability for any $b \\geq n$.",
+      "mathContext": "Proves $\\text{IsRepresentableWith}(n, b_1) \\wedge b_1 \\leq b_2 \\Rightarrow \\text{IsRepresentableWith}(n, b_2)$ and the corollary that strict representability implies relaxed representability for any $b \\geq n$."
+    },
+    {
+      "id": "odd-obstruction",
+      "title": "Odd Difference-of-Squares Obstruction",
+      "startLine": 95,
+      "endLine": 111,
+      "summary": "Proves that for odd $n \\geq 3$, the identity $n = ((n+1)/2)^2 - ((n-1)/2)^2$ violates the strict bound since $((n+1)/2)^2 > n$. Uses the `omega` tactic for arithmetic reasoning.",
+      "mathContext": "Verified: Proves that for odd $n \\geq 3$, the identity $n = ((n+1)/2)^2 - ((n-1)/2)^2$ violates the strict bound since $((n+1)/2)^2 > n$. Uses the `omega` tactic for arithmetic reasoning."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Case Verification",
+      "startLine": 112,
+      "endLine": 144,
+      "summary": "Explicit witness constructions for $n = 2, 4, 5, 8, 9$: e.g., $2 = 1^2 + 1^2 - 0^2$, $5 = 2^2 + 1^2 - 0^2$, $9 = 3^2 + 0^2 - 0^2$. Each witness is verified by `omega` and `Nat.le_refl`.",
+      "mathContext": "Explicit witness constructions for $n = 2, 4, 5, 8, 9$: e.g., $2 = $1^{2}$ + $1^{2}$ - $0^{2}$$, $5 = $2^{2}$ + $1^{2}$ - $0^{2}$$, $9 = $3^{2}$ + $0^{2}$ - $0^{2}$$. Each witness is verified by `omega` and `Nat.le_refl`."
+    },
+    {
+      "id": "decidable-checker",
+      "title": "Decidable Representability Checker",
+      "startLine": 145,
+      "endLine": 175,
+      "summary": "Defines `checkRepresentable n b` as a Boolean brute-force search over $\\{0, \\ldots, \\lfloor\\sqrt{b}\\rfloor\\}^3$. Proves soundness ($\\text{true} \\Rightarrow \\text{IsRepresentableWith}$) and completeness ($\\text{IsRepresentableWith} \\Rightarrow \\text{true}$) via `List.any` and `Nat.sqrt` properties.",
+      "mathContext": "Defines `checkRepresentable n b` as a Boolean brute-force search over $\\{0, \\ldots, \\lfloor\\sqrt{b}\\rfloor\\}^3$. Proves soundness ($\\text{true} \\Rightarrow \\text{IsRepresentableWith}$) and completeness ($\\text{IsRepresentableWith} \\Rightarrow \\text{true}$) via `List.any` and `Nat.sqrt` properties."
+    },
+    {
+      "id": "non-representable",
+      "title": "Non-Representability of 3",
+      "startLine": 176,
+      "endLine": 189,
+      "summary": "Proves $\\neg\\text{IsRepresentable}(3)$ by exhaustive enumeration: with $x, y, z \\in \\{0, 1\\}$ (since $2^2 = 4 > 3$), $\\max(x^2 + y^2) = 2 < 3 = \\min(z^2 + 3)$, so no solution exists. Uses `interval_cases`.",
+      "mathContext": "Proves $\\neg\\text{IsRepresentable}(3)$ by exhaustive enumeration: with $x, y, z \\in \\{0, 1\\}$ (since $2^2 = 4 > 3$), $\\max(x^2 + y^2) = 2 < 3 = \\min(z^2 + 3)$, so no solution exists."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture and Component Bounds",
+      "startLine": 190,
+      "endLine": 240,
+      "summary": "Axiomatizes the main conjecture $\\exists N_0,\\; \\forall n \\geq N_0,\\; \\text{IsRepresentable}(n)$. Proves component bounds $x, y, z \\leq \\lfloor\\sqrt{n}\\rfloor$ via `Nat.le_sqrt`, formalizing the $O(n^{3/2})$ search space.",
+      "mathContext": "Axiomatizes the main conjecture $\\exists N_0,\\; \\forall n \\geq N_0,\\; \\text{IsRepresentable}(n)$. Proves component bounds $x, y, z \\leq \\lfloor\\sqrt{n}\\rfloor$ via `Nat.le_sqrt`, formalizing the $O(n^{3/2})$ search space."
+    },
+    {
+      "id": "structural-equivalences",
+      "title": "Sum-of-Two-Squares Equivalence and Density",
+      "startLine": 241,
+      "endLine": 355,
+      "summary": "Proves the key equivalence: $\\text{IsRepresentable}(n) \\iff \\exists z \\leq \\sqrt{n},\\; n + z^2$ is a sum of two squares bounded by $n$. Defines `nonRepresentable N` as the finite set of non-representable integers up to $N$, and proves the conjecture implies finiteness of exceptions.",
+      "mathContext": "Proves the key equivalence: $\\text{IsRepresentable}(n) \\iff \\exists z \\leq \\sqrt{n},\\; n + z^2$ is a sum of two squares bounded by $n$. Defines `nonRepresentable N` as the finite set of non-representable integers up to $N$, and proves the conjecture implies finiteness of exceptions."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a comprehensive Lean 4 treatment of Erdős Problem #1148, covering the representation structure, small-case verification for 7 specific values, the decidable checker with proved soundness and completeness, the difference-of-squares obstruction for odd numbers, and the key reduction to sums of two bounded squares via the Fermat–Euler connection.",
+    "implications": "The sum-of-two-squares reduction shows that resolving the conjecture requires understanding the distribution of primes $p \\equiv 3 \\pmod{4}$ in the arithmetic progressions $n + z^2$ for $z \\leq \\sqrt{n}$. The decidable checker enables computational exploration, and the proved equivalence provides a clear path for any future analytic or algebraic approach.",
+    "openQuestions": [
+      "Can the Hardy–Littlewood circle method be applied to the ternary form $x^2 + y^2 - z^2$ with the strict bound constraint to obtain an asymptotic formula?",
+      "Is 6563 truly the largest non-representable integer, or do larger exceptions exist beyond current computational reach?",
+      "For which density of $z \\leq \\sqrt{n}$ does $n + z^2$ satisfy the Fermat–Euler criterion (all primes $p \\equiv 3 \\pmod{4}$ dividing to even power)?",
+      "Can the connection to Erdős Problem #1094 (least prime factors of binomial coefficients) be formalized through shared quadratic form techniques?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1094",
+      "relationship": "related",
+      "description": "Both problems involve bounding quantities associated with quadratic expressions and share techniques from the theory of quadratic forms"
+    },
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "foundation",
+      "description": "The equation x² + y² = z² + n generalizes Pythagorean triples (n = 0 case), and representability analysis builds on similar structural insights"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Sqrt",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos1148",
+    "lineCount": 355,
+    "axiomCount": 1,
+    "theoremCount": 31,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos1148Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

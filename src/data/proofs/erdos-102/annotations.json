@@ -1,0 +1,253 @@
+[
+  {
+    "id": "erdos-102-ann-imports",
+    "proofId": "erdos-102",
+    "range": {
+      "startLine": 19,
+      "endLine": 21
+    },
+    "type": "concept",
+    "title": "Imports",
+    "content": "Imports `Finset.Card` for finite set cardinality operations, `Data.Nat.Basic` for natural number arithmetic, and `Tactic` for Lean's automation suite. Notably does *not* import `Mathlib.Analysis.SpecialFunctions.Pow.Real` directly — `Real.sqrt` appears only in the type of the upper bound axiom.",
+    "mathContext": "The formalization works with $\\mathbb{R}^2$ points as `ℝ × ℝ` pairs and uses `Finset` for finite point configurations. No specialized incidence geometry library from Mathlib is used; the combinatorial geometry is built from scratch.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset operations",
+      "real arithmetic",
+      "Lean tactics"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "Mathlib finset library"
+    ]
+  },
+  {
+    "id": "erdos-102-ann-pointconfig",
+    "proofId": "erdos-102",
+    "range": {
+      "startLine": 26,
+      "endLine": 28
+    },
+    "type": "definition",
+    "title": "PointConfig Structure",
+    "content": "A `PointConfig` is a `Finset (ℝ × ℝ)` with a proof that its cardinality is positive. This structure represents a finite planar point set — the basic object of study in combinatorial geometry. The positivity constraint `size_pos : points.card > 0` ensures non-degeneracy.",
+    "mathContext": "A point configuration $P = \\{p_1, \\ldots, p_n\\} \\subset \\mathbb{R}^2$ with $n \\ge 1$. The structure bundles the point set with its non-emptiness proof, enabling type-safe reasoning about incidence properties.",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite point sets",
+      "planar configurations",
+      "structure types in Lean"
+    ],
+    "prerequisites": [
+      "Finset of product types",
+      "structure definitions"
+    ]
+  },
+  {
+    "id": "erdos-102-ann-collinear",
+    "proofId": "erdos-102",
+    "range": {
+      "startLine": 31,
+      "endLine": 32
+    },
+    "type": "definition",
+    "title": "Collinearity via Cross Product",
+    "content": "Three points $p, q, r \\in \\mathbb{R}^2$ are collinear if and only if the cross product of displacement vectors vanishes: $(q_1 - p_1)(r_2 - p_2) = (r_1 - p_1)(q_2 - p_2)$. This is equivalent to the vanishing of the $2 \\times 2$ determinant formed by displacement vectors, which equals zero precisely when $p$, $q$, $r$ lie on a common line.",
+    "mathContext": "$\\text{collinear}_3(p,q,r) \\iff (q_1-p_1)(r_2-p_2) - (r_1-p_1)(q_2-p_2) = 0 \\iff \\det\\begin{pmatrix} q_1-p_1 & r_1-p_1 \\\\ q_2-p_2 & r_2-p_2 \\end{pmatrix} = 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "cross product",
+      "determinant",
+      "affine geometry",
+      "signed area"
+    ],
+    "prerequisites": [
+      "coordinate geometry",
+      "determinant of 2×2 matrix",
+      "collinearity criterion"
+    ]
+  },
+  {
+    "id": "erdos-102-ann-richlines",
+    "proofId": "erdos-102",
+    "range": {
+      "startLine": 35,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Rich Line Count",
+    "content": "Counts the number of 4-element collinear subsets of the point configuration. A line is 'rich' if it contains $\\ge 4$ points. The formalization counts 4-element subsets $S \\subseteq P$ such that all points of $S$ are collinear (witnessed by two anchor points $a, b \\in S$ with $a \\ne b$). This is a proxy for the number of rich lines; the exact count would require quotienting by collinear equivalence.",
+    "mathContext": "$\\text{richLineCount}(P) = |\\{S \\in \\binom{P}{4} : \\exists a \\ne b \\in S,\\, \\forall p \\in S,\\, \\text{collinear}_3(a,b,p)\\}|$. The problem assumes $\\text{richLineCount}(P) \\ge cn^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "k-rich lines",
+      "incidence counting",
+      "Szemerédi–Trotter theorem"
+    ],
+    "prerequisites": [
+      "Finset.powerset",
+      "Finset.filter",
+      "collinear₃ definition"
+    ]
+  },
+  {
+    "id": "erdos-102-ann-maxcollinear",
+    "proofId": "erdos-102",
+    "range": {
+      "startLine": 41,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Maximum Collinear Points: $h_c(n)$",
+    "content": "The maximum number of collinear points in the configuration, computed as the supremum of cardinalities over all collinear subsets of $P$. This is $h_c(n)$, the central quantity to estimate. Uses `Finset.sup` to take the maximum cardinality over all qualifying subsets.",
+    "mathContext": "$h_c(n) = \\max\\{|S| : S \\subseteq P,\\, |S| \\ge 2,\\, S \\text{ collinear}\\}$. The problem asks for the minimum of $h_c(n)$ over all $n$-point configurations with $\\ge cn^2$ rich lines.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "collinear subset maximum",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "Finset.sup",
+      "collinear₃",
+      "richLineCount"
+    ]
+  },
+  {
+    "id": "erdos-102-ann-divergence",
+    "proofId": "erdos-102",
+    "range": {
+      "startLine": 50,
+      "endLine": 54
+    },
+    "type": "concept",
+    "title": "Main Problem: $h_c(n) \\to \\infty$",
+    "content": "The central open question of Problem #102: for fixed $c > 0$, if a point configuration of size $n$ has $\\ge cn^2$ rich lines, does the maximum collinear count grow without bound as $n \\to \\infty$? Formally: $\\forall M,\\, \\exists N_0,\\, \\forall P$ with $|P| \\ge N_0$ and richLineCount $\\ge cn^2$, we have maxCollinear$(P) \\ge M$. This remains open — neither divergence nor bounded counterexamples have been established.",
+    "mathContext": "$\\forall M \\in \\mathbb{N},\\, \\exists N_0 \\in \\mathbb{N},\\, \\forall P \\text{ with } |P| \\ge N_0 \\text{ and } \\text{richLineCount}(P) \\ge cn^2: h_c(n) \\ge M$",
+    "significance": "key",
+    "relatedConcepts": [
+      "divergence of sequences",
+      "extremal combinatorics",
+      "incidence geometry open problems"
+    ],
+    "prerequisites": [
+      "richLineCount",
+      "maxCollinear",
+      "PointConfig"
+    ]
+  },
+  {
+    "id": "erdos-102-ann-upper",
+    "proofId": "erdos-102",
+    "range": {
+      "startLine": 60,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Upper Bound: $h_c(n) \\le C\\sqrt{n}$",
+    "content": "The best known upper bound: if a configuration of $n$ points has $\\ge cn^2$ rich lines, then the maximum collinear count is $O(\\sqrt{n})$. This follows from the Szemerédi–Trotter incidence theorem: if $m \\ge cn^2$ lines are each 4-rich, then incidences $\\ge 4m \\ge 4cn^2$, and by ST we get $4cn^2 \\le C(n^{2/3}m^{2/3} + n + m)$, which forces the maximum line multiplicity to be $O(\\sqrt{n})$.",
+    "mathContext": "$\\exists C > 0,\\, \\forall P: \\text{richLineCount}(P) \\ge cn^2 \\Rightarrow h_c(n) \\le C\\sqrt{n}$. Derived from $I(P,L) \\le C'(n^{2/3}m^{2/3} + n + m)$ with $m = \\Theta(n^2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi–Trotter theorem",
+      "incidence bounds",
+      "square root barriers"
+    ],
+    "prerequisites": [
+      "Szemerédi–Trotter incidence bound",
+      "Real.sqrt"
+    ]
+  },
+  {
+    "id": "erdos-102-ann-hunter",
+    "proofId": "erdos-102",
+    "range": {
+      "startLine": 68,
+      "endLine": 73
+    },
+    "type": "concept",
+    "title": "Hunter's Counterexample to $\\sqrt{n}$ Lower Bound",
+    "content": "Zach Hunter disproved Erdős's conjecture that $h_c(n) \\gg \\sqrt{n}$. The construction uses points from the integer lattice $\\{1,\\ldots,m\\}^d$ (for suitable dimension $d$) projected to $\\mathbb{R}^2$. The lattice structure creates many four-point collinear subsets (from arithmetic progressions in the lattice) while limiting the maximum collinear count to $n^{1/\\log(1/c)}$. This is much slower than $\\sqrt{n}$ for small $c$.",
+    "mathContext": "$\\exists f : \\forall 0 < c < 1,\\, \\forall n > 0,\\, \\exists P$ with $|P| = n$, richLineCount$(P) \\ge cn^2$, and $h_c(n) \\le f(c,n) \\ll n^{1/\\log(1/c)}$. For small $c$, $1/\\log(1/c) \\ll 1/2$, so the growth is far below $\\sqrt{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lattice point constructions",
+      "arithmetic progressions",
+      "extremal constructions in geometry"
+    ],
+    "prerequisites": [
+      "integer lattice geometry",
+      "collinear quadruples in lattices",
+      "projection to plane"
+    ]
+  },
+  {
+    "id": "erdos-102-ann-connection101",
+    "proofId": "erdos-102",
+    "range": {
+      "startLine": 79,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "Bridge to Problem #101",
+    "content": "If Problem #102's divergence holds ($h_c(n) \\to \\infty$), then Problem #101's conclusion follows: the number of four-point lines is $o(n^2)$ for point sets with no five collinear. The argument: if there were $\\ge cn^2$ four-point lines and no five collinear, then $h_c(n) \\ge 5$ for large $n$ (by divergence), contradicting the no-five-collinear hypothesis. Hence the four-point line count must be $o(n^2)$.",
+    "mathContext": "$\\big[\\forall M,\\, \\exists N_0,\\, (|P| \\ge N_0 \\wedge \\text{rich}(P) \\ge cn^2 \\Rightarrow h_c(n) \\ge M)\\big] \\Rightarrow \\big[\\forall \\varepsilon > 0,\\, \\exists N_1,\\, (|P| \\ge N_1 \\wedge h_c(n) \\le 4 \\Rightarrow \\text{rich}(P) < \\varepsilon n^2)\\big]$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Problem #101 four-point lines",
+      "contrapositive argument",
+      "o(n²) bounds"
+    ],
+    "prerequisites": [
+      "erdos_102_divergence",
+      "definition of o(n²)",
+      "no-five-collinear hypothesis"
+    ]
+  },
+  {
+    "id": "erdos-102-ann-st",
+    "proofId": "erdos-102",
+    "range": {
+      "startLine": 92,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "Szemerédi–Trotter Incidence Bound",
+    "content": "The Szemerédi–Trotter theorem (1983): for $n$ points and $m$ lines in $\\mathbb{R}^2$, the number of point-line incidences satisfies $I(P,L) \\le C(n^{2/3}m^{2/3} + n + m)$. This is the foundational tool in discrete incidence geometry. Proved originally by a cell decomposition argument, later reproved by Székely (1997) using the crossing number inequality, and by Clarkson et al. using cuttings.",
+    "mathContext": "$I(P,L) = |\\{(p,\\ell) : p \\in P,\\, \\ell \\in L,\\, p \\in \\ell\\}| \\le C(n^{2/3}m^{2/3} + n + m)$ where $n = |P|$, $m = |L|$. The exponent $2/3$ is tight (matching the Elekes grid construction).",
+    "significance": "key",
+    "relatedConcepts": [
+      "incidence geometry",
+      "crossing number inequality",
+      "Elekes grid",
+      "cell decomposition"
+    ],
+    "prerequisites": [
+      "point-line incidences",
+      "asymptotic notation",
+      "combinatorial geometry foundations"
+    ]
+  },
+  {
+    "id": "erdos-102-ann-erdospurdy",
+    "proofId": "erdos-102",
+    "range": {
+      "startLine": 100,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "Erdős–Purdy: Rich Lines Force $\\ge 4$ Collinear",
+    "content": "An elementary observation connecting to the problem's origin: if $cn^2$ lines each contain $\\ge 4$ points, then trivially some line contains $\\ge 4$ points (i.e., $h_c(n) \\ge 4$). This is the starting point — the real question is whether $h_c(n)$ grows with $n$. The axiom serves as a formalized acknowledgment of the Erdős–Purdy survey context.",
+    "mathContext": "$\\forall c > 0,\\, \\forall P: \\text{richLineCount}(P) \\ge cn^2 \\Rightarrow h_c(n) \\ge 4$. This is trivial since each rich line already has $\\ge 4$ points.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trivial lower bounds",
+      "Erdős–Purdy surveys",
+      "combinatorial geometry surveys"
+    ],
+    "prerequisites": [
+      "richLineCount definition",
+      "maxCollinear definition"
+    ]
+  }
+]

@@ -1,0 +1,204 @@
+[
+  {
+    "id": "ann-1091-header",
+    "proofId": "erdos-1091",
+    "range": {
+      "startLine": 20,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Problem Overview and Setup",
+    "content": "**Erdos Problem #1091**: Must a $K_4$-free graph with $\\chi(G) = 4$ contain an odd cycle with at least two diagonals? The first question is **SOLVED** (Voss 1982). The general $f(r)$ question remains **OPEN**. The formalization imports Mathlib's SimpleGraph, Coloring, and Clique infrastructure, working with finite types with decidable equality.",
+    "mathContext": "$K_4$-free, $\\chi(G) \\geq 4 \\Rightarrow \\exists\\, C$ odd cycle with $\\geq 2$ diagonals. A $K_4$-free graph has no complete subgraph on 4 vertices. Despite this clique restriction, the chromatic number can still be 4 or higher (by Mycielski's construction).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "K4-free",
+      "chromatic-number",
+      "odd-cycles",
+      "graph-diagonals"
+    ],
+    "prerequisites": [
+      "graph-theory-basics",
+      "coloring"
+    ]
+  },
+  {
+    "id": "ann-1091-cycle",
+    "proofId": "erdos-1091",
+    "range": {
+      "startLine": 34,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Cycle and Odd Cycle",
+    "content": "A **cycle** in a graph $G$ is a list of $\\geq 3$ distinct vertices where consecutive vertices are adjacent, plus a closing edge from last to first. The `Cycle.isOdd` predicate checks if the length is odd. This formalization captures cycles as ordered vertex lists rather than using Mathlib's Walk type, allowing direct index-based reasoning about diagonals.",
+    "mathContext": "$C = (v_0, v_1, \\ldots, v_{k-1})$ with $v_i \\sim v_{i+1}$, $v_{k-1} \\sim v_0$, $k \\geq 3$. The Cycle structure stores vertices as a List $V$ with explicit adjacency proofs for consecutive pairs and the closing edge. Nodup ensures distinctness. Odd cycles have odd length (important for graph coloring theory).",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph-cycle",
+      "odd-cycle",
+      "list-representation"
+    ],
+    "prerequisites": [
+      "simple-graph",
+      "list-operations"
+    ]
+  },
+  {
+    "id": "ann-1091-diagonal",
+    "proofId": "erdos-1091",
+    "range": {
+      "startLine": 47,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Cycle Diagonals and Count",
+    "content": "A **diagonal** of a cycle $C$ is an edge $uv$ where $u, v \\in C$ are non-consecutive in the cyclic order but adjacent in $G$. The `diagonalCount` counts unordered pairs $\\{u, v\\}$ with $u < v$ to avoid double-counting. Diagonals create 'shortcuts' across the cycle, and their existence constrains the graph's structure -- K4-free graphs with high $\\chi$ must have such shortcuts in their odd cycles.",
+    "mathContext": "$\\text{isDiagonal}(u, v) \\Leftrightarrow u, v \\in C \\wedge u \\not\\sim_{\\text{cyc}} v \\wedge u \\sim_G v$. Non-consecutiveness is checked modularly: $(i+1) \\bmod |C| \\neq j$ and $(j+1) \\bmod |C| \\neq i$. The diagonal count uses Finset.filter on $V \\times V$ with the ordering constraint $u < v$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chord",
+      "cycle-diagonal",
+      "shortcut-edge"
+    ],
+    "prerequisites": [
+      "cycle-definition",
+      "modular-arithmetic"
+    ]
+  },
+  {
+    "id": "ann-1091-k4free",
+    "proofId": "erdos-1091",
+    "range": {
+      "startLine": 63,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "K4-Free and Chromatic Number",
+    "content": "**IsK4Free**: $G$ contains no clique of size 4: $\\neg \\exists\\, S \\subseteq V,\\, |S| = 4 \\wedge G.\\text{IsClique}(S)$. **chromaticNumber**: the minimum $k$ such that $G$ has a proper $k$-coloring, defined via $\\text{sSup}$ of valid coloring sizes. K4-free graphs can still require arbitrarily many colors (Mycielski's theorem), making the interaction between clique-freeness and chromatic number subtle.",
+    "mathContext": "$\\text{IsK4Free}(G) \\Leftrightarrow \\omega(G) \\leq 3$, $\\chi(G) = \\min\\{k : G \\text{ is } k\\text{-colorable}\\}$. Uses Mathlib's SimpleGraph.IsClique for the clique condition and SimpleGraph.Coloring for proper colorings.",
+    "significance": "key",
+    "relatedConcepts": [
+      "clique-number",
+      "chromatic-number",
+      "clique-free"
+    ],
+    "prerequisites": [
+      "simple-graph",
+      "graph-coloring",
+      "clique"
+    ]
+  },
+  {
+    "id": "ann-1091-larson",
+    "proofId": "erdos-1091",
+    "range": {
+      "startLine": 76,
+      "endLine": 94
+    },
+    "type": "concept",
+    "title": "Larson's Theorem and Bollobas-Erdos (1979)",
+    "content": "**Larson (1979)**: Every $K_4$-free graph with $\\chi(G) \\geq 4$ contains an odd cycle with at least **one** diagonal. This was the first major result.\n\n**Bollobas-Erdos Conjecture** (proved by Larson): If $G$ is $K_4$-free with no odd cycle having a diagonal, then $G$ is bipartite, has a cut vertex, or has a vertex of degree $\\leq 2$. The three alternatives are captured by the `BollobasErdosAlternative` structure.",
+    "mathContext": "$K_4$-free $\\wedge\\; \\chi \\geq 4 \\Rightarrow \\exists\\, C$ odd, $\\text{diag}(C) \\geq 1$. Both axiomatized. Larson's theorem is subsumed by Voss's stronger result. The Bollobas-Erdos alternatives show that the absence of odd-cycle diagonals forces extreme structural restrictions on $K_4$-free graphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structural-theorem",
+      "bipartite",
+      "cut-vertex"
+    ],
+    "prerequisites": [
+      "K4-free",
+      "chromatic-number",
+      "cycle-diagonal"
+    ]
+  },
+  {
+    "id": "ann-1091-voss",
+    "proofId": "erdos-1091",
+    "range": {
+      "startLine": 102,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Voss's Theorem (1982): Two Diagonals",
+    "content": "**Voss (1982)**: Every $K_4$-free graph with $\\chi(G) \\geq 4$ contains an odd cycle with at least **two** diagonals. This significant strengthening of Larson's result answers the first question of Erdos #1091 affirmatively. The corollary `voss_implies_larson` is fully verified: $\\geq 2$ implies $\\geq 1$ via `Nat.le_of_succ_le`.",
+    "mathContext": "$K_4$-free $\\wedge\\; \\chi \\geq 4 \\Rightarrow \\exists\\, C$ odd, $\\text{diag}(C) \\geq 2$. Axiomatized. The corollary `voss_implies_larson` is proved by extracting the cycle from Voss's result and weakening the diagonal bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strengthening",
+      "diagonal-count",
+      "solved"
+    ],
+    "prerequisites": [
+      "K4-free",
+      "chromatic-number"
+    ]
+  },
+  {
+    "id": "ann-1091-wheel",
+    "proofId": "erdos-1091",
+    "range": {
+      "startLine": 118,
+      "endLine": 157
+    },
+    "type": "definition",
+    "title": "Pentagonal Wheel: Extremal Counterexample",
+    "content": "The **pentagonal wheel** $W_5$: vertices $\\{0,1,2,3,4\\}$ form a 5-cycle, vertex 5 is the center connected to all outer vertices. Properties (axiomatized): $W_5$ is $K_4$-free, $\\chi(W_5) = 4$, and every odd cycle has $\\leq 2$ diagonals. The **three_diagonals_not_guaranteed** theorem is fully verified: it assumes the universal $\\geq 3$ statement, instantiates it with $W_5$, and derives a contradiction via `omega` from the max-2-diagonals axiom. This shows Voss's bound is tight.",
+    "mathContext": "$W_5 = C_5 + K_1$, $\\omega(W_5) = 3$, $\\chi(W_5) = 4$, $\\max_{C \\text{ odd}} \\text{diag}(C) = 2$. PentagonalWheel is defined as a SimpleGraph (Fin 6) with explicit adjacency. The symmetry and loop-free properties are proved by case analysis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "wheel-graph",
+      "extremal-example",
+      "tight-bound"
+    ],
+    "prerequisites": [
+      "cycle-diagonal",
+      "K4-free",
+      "chromatic-number"
+    ]
+  },
+  {
+    "id": "ann-1091-general",
+    "proofId": "erdos-1091",
+    "range": {
+      "startLine": 165,
+      "endLine": 175
+    },
+    "type": "definition",
+    "title": "General Question (OPEN)",
+    "content": "The **OPEN** general question: Does there exist $f(r) \\to \\infty$ such that every graph with $\\chi \\geq 4$ that is locally 3-colorable (every subgraph on $\\leq r$ vertices has $\\chi \\leq 3$) contains an odd cycle with $\\geq f(r)$ diagonals? **IsLocallyColorable** captures the local coloring condition using induced subgraphs. **GeneralQuestion** is defined as a Prop without asserting truth.",
+    "mathContext": "$\\exists\\, f : \\mathbb{N} \\to \\mathbb{N}$, $f(r) \\to \\infty$ $\\wedge$ $\\forall\\, G$, $\\chi(G) \\geq 4$ $\\wedge$ loc-3-col$(G, r)$ $\\Rightarrow$ $\\exists\\, C$ odd, $\\text{diag}(C) \\geq f(r)$. IsLocallyColorable uses SimpleGraph.induce to restrict to subgraphs. The divergence condition is formalized as: for all $N$, exists $r$ such that $f(r') \\geq N$ for all $r' \\geq r$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "local-coloring",
+      "divergent-function",
+      "open-problem"
+    ],
+    "prerequisites": [
+      "chromatic-number",
+      "induced-subgraph"
+    ]
+  },
+  {
+    "id": "ann-1091-related",
+    "proofId": "erdos-1091",
+    "range": {
+      "startLine": 180,
+      "endLine": 207
+    },
+    "type": "concept",
+    "title": "Related Results and Summary",
+    "content": "**K4_free_high_chi_possible** (verified): The pentagonal wheel witnesses that $K_4$-free graphs can have $\\chi \\geq 4$.\n\n**mycielski_construction** (axiomatized): Triangle-free ($K_3$-free) graphs can have arbitrarily high $\\chi$, contextualizing why $K_4$-free high-$\\chi$ graphs exist.\n\n**erdos_1091_summary** (verified): Combines Voss ($\\geq 2$ guaranteed) with the pentagonal wheel counterexample ($\\geq 3$ not guaranteed), giving a complete answer to the specific question.",
+    "mathContext": "$\\forall\\, k$, $\\exists\\, G$ triangle-free with $\\chi(G) \\geq k$ (Mycielski). K4_free_high_chi_possible is proved by instantiation with PentagonalWheel. The summary theorem combines both directions into a single statement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "mycielski-graph",
+      "summary-theorem",
+      "existence-witness"
+    ],
+    "prerequisites": [
+      "pentagonal-wheel",
+      "voss-theorem"
+    ]
+  }
+]

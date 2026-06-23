@@ -1,0 +1,243 @@
+[
+  {
+    "id": "ann-kuhn-module-overview",
+    "proofId": "sperner-ndim-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "Kuhn's Path-Following Algorithm: Constructive Sperner's Lemma",
+    "content": "The module header succinctly captures why Kuhn's 1968 result matters: it gives a CONSTRUCTIVE proof of Sperner's lemma. The non-constructive proof (using a parity argument over door counts) shows that a fully-colored simplex must exist, but does not find it. Kuhn's algorithm finds it in polynomial time by following a deterministic path through the door graph from a known boundary door to an FC simplex.\n\nThe door graph structure is described precisely: each simplex has a 'door degree' (number of facets where the opposite face carries all d colors). The abstract door parity theorem guarantees FC simplices have odd degree and non-FC have even degree. Under the Kuhn compatibility axiom (degree ≤ 2), this forces FC = degree 1 (terminal) and non-FC = degree 0 or 2 (isolated or pass-through).",
+    "mathContext": "A door at (s, k) means the d vertices of s excluding vertex k carry all d colors {0,...,d-1}. Interior doors pair with adjacent simplex doors via K.adj. Boundary doors (K.adj s k = none) are degree-1 in the door graph. The Kuhn walk starts at a boundary door and follows the unique path: enter through one door, exit through the unique other (for non-FC simplices), until reaching an FC simplex (degree 1, no exit).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sperner's lemma",
+      "door graph",
+      "path-following algorithms",
+      "constructive proofs",
+      "fixed-point computation"
+    ],
+    "prerequisites": [
+      "SpernerNDim.lean abstract door parity",
+      "IsKuhnCompatible axiom"
+    ]
+  },
+  {
+    "id": "ann-kuhn-compatible-def",
+    "proofId": "sperner-ndim-oq-04",
+    "range": {
+      "startLine": 59,
+      "endLine": 67
+    },
+    "type": "definition",
+    "title": "doorDegree and IsKuhnCompatible: Bounding the Door Graph Degree",
+    "content": "The `doorDegree` function counts how many facets of a simplex carry a door — it's the degree of the simplex in the door graph. `IsKuhnCompatible` asserts this degree is at most 2 for every simplex. This is the key structural axiom that makes Kuhn's algorithm deterministic: with at most 2 doors, entering through one uniquely determines the exit (if any).\n\nIn practice, Freudenthal triangulations (and many standard triangulations) are Kuhn-compatible. The compatibility axiom is an abstract property of the triangulation type, so the theorem applies to any compatible triangulation.",
+    "mathContext": "$\\text{doorDegree}(c, K, s) = |\\{k : \\text{isDoorAt}(c, K, s, k)\\}|$. IsKuhnCompatible: $\\forall s, \\text{doorDegree}(c, K, s) \\leq 2$. In the door graph $G$: vertices are (simplex, facet) pairs, edges connect adjacent door pairs via K.adj. IsKuhnCompatible ≡ max vertex degree ≤ 2, making $G$ a disjoint union of paths and cycles.",
+    "significance": "key",
+    "relatedConcepts": [
+      "door graph",
+      "degree bound",
+      "Freudenthal triangulation",
+      "IsKuhnCompatible"
+    ],
+    "prerequisites": [
+      "isDoorAt (from SpernerNDim)",
+      "SpernerTriangulation.adj"
+    ]
+  },
+  {
+    "id": "ann-door-parity",
+    "proofId": "sperner-ndim-oq-04",
+    "range": {
+      "startLine": 70,
+      "endLine": 90
+    },
+    "type": "concept",
+    "title": "Deriving Per-Simplex Door Parity from the Abstract Theorem",
+    "content": "The `door_degree_parity` lemma translates the abstract door parity theorem (from SpernerNDim) into the concrete statement about doorDegree. The key step is proving that the Finset filter for isDoorAt matches the abstract condition (surjectivity of the coloring restricted to the d facets), allowing a direct `convert` from the abstract theorem.\n\nThe abstract theorem states that for any coloring f: Fin(d+1) → Fin(d), the number of indices k such that f∣_{Fin(d+1)∖{k}} is surjective has the same parity as the surjectivity of f itself. This is applied with f = c ∘ K.vertices s.",
+    "mathContext": "Abstract theorem: $|\\{k : f|_{[d+1]\\setminus\\{k\\}} \\text{ surjective}\\}| \\equiv [f \\text{ surjective}] \\pmod{2}$. Applied with $f = c \\circ K.\\text{vertices}(s)$: $\\text{doorDegree}(c,K,s) \\equiv [\\text{IsFC}(c,K,s)] \\pmod{2}$. FC ↔ surjective ↔ odd door degree; non-FC ↔ not surjective ↔ even door degree.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "abstract_door_parity",
+      "IsFC",
+      "parity argument",
+      "surjective coloring"
+    ],
+    "prerequisites": [
+      "abstract_door_parity (SpernerNDim)",
+      "IsFC definition"
+    ]
+  },
+  {
+    "id": "ann-door-counts",
+    "proofId": "sperner-ndim-oq-04",
+    "range": {
+      "startLine": 92,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Exact Door Counts via Parity + Degree Bound",
+    "content": "The two theorems `fc_door_count_eq_one` and `nonfc_door_count_zero_or_two` are straightforward omega arguments: combining 'door degree is odd/even' (from door_degree_parity) with 'door degree ≤ 2' (from IsKuhnCompatible), the only solutions are 1 (for FC) or 0/2 (for non-FC).\n\nThe elegance is that both proofs are single `omega` calls after unfolding the hypotheses. This is characteristic of Lean 4 proofs that reduce to linear arithmetic: once the constraints are stated correctly, omega handles all the case analysis automatically.",
+    "mathContext": "FC case: $\\text{doorDeg} \\equiv 1 \\pmod{2}$ and $\\text{doorDeg} \\leq 2$ ⟹ $\\text{doorDeg} \\in \\{1\\}$ (since 3 > 2). Non-FC case: $\\text{doorDeg} \\equiv 0 \\pmod{2}$ and $\\text{doorDeg} \\leq 2$ ⟹ $\\text{doorDeg} \\in \\{0, 2\\}$. Both proofs: one omega call combining hpar (parity) and hle (degree bound).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "omega tactic",
+      "Nat.mod",
+      "linear arithmetic",
+      "case analysis"
+    ],
+    "prerequisites": [
+      "door_degree_parity",
+      "IsKuhnCompatible",
+      "omega"
+    ]
+  },
+  {
+    "id": "ann-unique-exit",
+    "proofId": "sperner-ndim-oq-04",
+    "range": {
+      "startLine": 119,
+      "endLine": 178
+    },
+    "type": "concept",
+    "title": "Unique Exit Door: The Determinism Core of Kuhn's Algorithm",
+    "content": "The theorem `nonfc_with_door_has_unique_exit` is the mathematical heart of Kuhn's algorithm: it proves that any non-FC simplex with an entry door has exactly one other door. The proof uses `Finset.card_eq_two` to decompose the 2-element door set and then case-splits on which element is the entry door.\n\nThe `∃!` (exists unique) formulation is precise: k_out ≠ k_in and isDoorAt c K s k_out, and uniqueness holds for any other door. The proof handles both cases (k_in = k₁ or k_in = k₂) symmetrically, using simp to simplify the membership of the {k₁, k₂} pair.",
+    "mathContext": "Proof sketch: (1) If doorDeg = 0: contradicts k_in being a door (card_pos argument). (2) If doorDeg = 2: apply card_eq_two to get k₁, k₂. Since k_in ∈ {k₁, k₂}, by cases k_in = k₁ (exit = k₂) or k_in = k₂ (exit = k₁). Uniqueness: any other door must be in {k₁, k₂} and ≠ k_in, so it equals the exit. The ∃! is the formal statement that Kuhn's algorithm is **deterministic**.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_eq_two",
+      "existsUnique",
+      "determinism",
+      "2-element sets"
+    ],
+    "prerequisites": [
+      "nonfc_door_count_zero_or_two",
+      "Finset.card_eq_two",
+      "Finset.min'_mem"
+    ]
+  },
+  {
+    "id": "ann-door-transfer",
+    "proofId": "sperner-ndim-oq-04",
+    "range": {
+      "startLine": 183,
+      "endLine": 202
+    },
+    "type": "concept",
+    "title": "Door Transfer: Adjacency Preserves the Door Property",
+    "content": "The `door_transfer` lemma establishes that the door property is symmetric across adjacency: if K.adj s k = some (s', k'), then isDoorAt c K s k ↔ isDoorAt c K s' k'. This is proved by showing that the d-vertex images of (s excluding k) and (s' excluding k') are equal, which is exactly the definition of K.adj_vertices.\n\nThis lemma is re-proved locally because the version in SpernerNDim is private. The proof uses `local_door_transfer_one_dir` for both directions: if the two vertex images are equal, a door at one implies a door at the other (the required color can be found in either simplex).",
+    "mathContext": "K.adj_vertices guarantees: K.adj s k = some (s', k') ⟹ (Finset.univ.erase k).image (K.vertices s) = (Finset.univ.erase k').image (K.vertices s'). This equal image condition means the same set of d colors is available at both (s,k) and (s',k'), so isDoorAt c K s k ↔ isDoorAt c K s' k'.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "adjacency",
+      "door property",
+      "SpernerTriangulation.adj_vertices",
+      "symmetry"
+    ],
+    "prerequisites": [
+      "SpernerTriangulation.adj_vertices",
+      "isDoorAt definition"
+    ]
+  },
+  {
+    "id": "ann-kuhn-step",
+    "proofId": "sperner-ndim-oq-04",
+    "range": {
+      "startLine": 207,
+      "endLine": 244
+    },
+    "type": "definition",
+    "title": "kuhnStep: One Deterministic Step of the Algorithm",
+    "content": "The `kuhnStep` function implements one step: if s is FC, return None (done); otherwise find the unique exit door k_out using Finset.min' on the exit_doors filter, then return K.adj s k_out. The use of Finset.min' (minimum element) is a standard Lean 4 pattern for extracting an element from a nonempty Finset with a well-defined choice.\n\nThe companion lemma `kuhnStep_door_preserved` shows the next step's entry door (k_out') maintains the door property — using the nonfc_with_door_has_unique_exit result to prove exit_doors is nonempty, then applying door_transfer to conclude isDoorAt at the new simplex.",
+    "mathContext": "kuhnStep returns: None if IsFC s (terminal state); Some (s', k_out') where k_out = exit_doors.min' (the minimum exit door index) and K.adj s k_out = some (s', k_out'). The door preservation: isDoorAt c K s k_out (from filter membership) + K.adj s k_out = some (s', k_out') + door_transfer ⟹ isDoorAt c K s' k_out'.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.min'",
+      "option type",
+      "step function",
+      "invariant preservation"
+    ],
+    "prerequisites": [
+      "nonfc_with_door_has_unique_exit",
+      "door_transfer",
+      "Finset.min'_mem"
+    ]
+  },
+  {
+    "id": "ann-kuhn-walk",
+    "proofId": "sperner-ndim-oq-04",
+    "range": {
+      "startLine": 250,
+      "endLine": 297
+    },
+    "type": "definition",
+    "title": "KuhnState and kuhnWalk: Fuel-Based Path Following",
+    "content": "The `KuhnState` structure captures the full algorithm state: current simplex, entry door (with proof it's a door), and visited set (with proof current is not in visited). The visited set enforces the non-revisiting invariant: if the next simplex is already visited, the walk terminates early (a safety guard).\n\nThe `kuhnWalk` function uses a fuel parameter to avoid well-founded recursion obligations. With fuel = Fintype.card K.Simplex (at most as many simplices as exist), sufficient fuel is guaranteed if the non-revisiting invariant holds — each step visits a new simplex, so at most |K.Simplex| steps are needed. The fuel approach avoids proving termination upfront, deferring it to the correctness theorem.",
+    "mathContext": "Fuel-based recursion: kuhnWalk fuel state matches on fuel (0 → terminate; n+1 → step or continue). When fuel = Fintype.card K.Simplex and the walk is non-revisiting: each step adds one simplex to visited, so after ≤ Fintype.card K.Simplex steps, either FC is found or fuel runs out. The non-revisiting guard (hs' : s' ∉ visited ∪ {current}) catches would-be revisits, terminating early.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fuel-based recursion",
+      "well-founded recursion",
+      "Fintype.card",
+      "visited set",
+      "termination"
+    ],
+    "prerequisites": [
+      "KuhnState structure",
+      "kuhnStep",
+      "door_transfer"
+    ]
+  },
+  {
+    "id": "ann-main-theorems",
+    "proofId": "sperner-ndim-oq-04",
+    "range": {
+      "startLine": 298,
+      "endLine": 343
+    },
+    "type": "insight",
+    "title": "Termination and Walk Correctness: The Non-Revisiting Invariant",
+    "content": "Two sorry-using theorems capture what remains formally unproved:\n\n1. `kuhn_path_terminates`: An FC simplex exists. Currently sorry'd but could be filled by applying sperner_ndim directly — the parity of boundary doors implies FC existence without any algorithm argument.\n\n2. `kuhn_walk_reaches_fc`: The kuhnWalk with sufficient fuel actually reaches an FC simplex. This requires the **non-revisiting invariant**: the door graph path from a boundary vertex has no cycles. This is the core open sorry.\n\nThe non-revisiting invariant is why Kuhn's algorithm works: the door graph component containing a boundary door is a path (not a cycle). Any cycle would require an even number of boundary vertices; but each path component has exactly 2 endpoints and the boundary door provides only 1, forcing the other endpoint to be an FC simplex.",
+    "mathContext": "Door graph G: interior edges from K.adj, boundary half-edges from K.adj = none. Under IsKuhnCompatible, max degree ≤ 2, so G is a disjoint union of paths and cycles. Boundary vertex (K.adj s₀ k₀ = none) has degree 1 in G, forcing its component to be a path (not a cycle). Both endpoints of a path in G have degree 1: either FC simplices (degree 1 by fc_door_count_eq_one) or boundary doors. Since the path starts at a boundary door, the other endpoint is an FC simplex.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "non-revisiting invariant",
+      "path-cycle decomposition",
+      "door graph components",
+      "Sperner's lemma"
+    ],
+    "prerequisites": [
+      "kuhnWalk",
+      "IsKuhnCompatible",
+      "sperner_ndim (existence)",
+      "door graph structure"
+    ]
+  },
+  {
+    "id": "ann-kuhn-path-start",
+    "proofId": "sperner-ndim-oq-04",
+    "range": {
+      "startLine": 344,
+      "endLine": 389
+    },
+    "type": "definition",
+    "title": "kuhnPathStart: The Public API for Kuhn's Algorithm",
+    "content": "Section IX packages the algorithm into its final public-facing form. `kuhnPathStart` wraps kuhnWalk with:\n- An initial KuhnState from the boundary door (s₀, k₀) with empty visited set\n- Fuel = Fintype.card K.Simplex (at most as many steps as there are simplices)\n\nThe initial state invariant `current_not_visited` holds trivially: s₀ ∉ ∅. The fuel bound is correct because a non-revisiting walk of length n visits n+1 distinct simplices, so Fintype.card K.Simplex steps suffice.\n\n`kuhnPathStart_is_fc` is the top-level correctness theorem: it states that the simplex returned by the algorithm is fully colored. Currently sorry'd, pending formalization of the non-revisiting invariant that would chain kuhn_walk_reaches_fc to the initial boundary door condition.",
+    "mathContext": "The choice fuel = Fintype.card K.Simplex is sharp: in a triangulation with N simplices, the worst-case path visits all N simplices before reaching FC. The invariant chain: hbdry₀ (K.adj s₀ k₀ = none) ⟹ (s₀, k₀) is a boundary door ⟹ kuhnWalk path from (s₀, k₀) is non-revisiting ⟹ terminates at FC within N steps.",
+    "significance": "key",
+    "relatedConcepts": [
+      "public API",
+      "fuel bound",
+      "Fintype.card",
+      "KuhnState",
+      "boundary door"
+    ],
+    "prerequisites": [
+      "kuhnWalk",
+      "KuhnState",
+      "kuhn_walk_reaches_fc",
+      "Fintype.card"
+    ]
+  }
+]

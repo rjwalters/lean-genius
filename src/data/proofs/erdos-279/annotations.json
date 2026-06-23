@@ -1,0 +1,168 @@
+[
+  {
+    "id": "ann-header-imports",
+    "proofId": "erdos-279",
+    "type": "concept",
+    "title": "Problem Statement and Imports",
+    "content": "The file opens with a detailed doc comment stating Erdős Problem #279: for $k \\geq 3$, can residue classes $a_p \\pmod{p}$ be chosen for every prime $p$ so that every sufficiently large integer $n$ is representable as $n = a_p + tp$ for some prime $p$ and $t \\geq k$? The comment notes that even $k = 3$ is difficult, describes the generalization to dense subsets of $\\mathbb{N}$, and records that $k \\leq 2$ is solved. Imports `Nat.Basic`, `Nat.Prime.Basic`, and `Tactic` from Mathlib.\n\n**Historical note:** This problem appears in Erdős and Graham's 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (Enseign. Math., Geneva). The monograph collected hundreds of problems across combinatorial number theory, many of which remain open. Problem 279 belongs to a cluster of questions about covering integers with arithmetic progressions of prescribed moduli.",
+    "mathContext": "The problem: $\\forall k \\geq 3$, $\\exists (a_p)_p$, $\\forall n \\gg 0$, $\\exists$ prime $p$, $\\exists t \\geq k$: $n = a_p + tp$. The imports provide `Nat.Prime` (primality predicate) and basic arithmetic tactics.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős-Graham monograph",
+      "covering systems",
+      "shifted arithmetic progressions",
+      "Mathlib imports"
+    ],
+    "prerequisites": [
+      "arithmetic progressions",
+      "prime numbers",
+      "Lean module system"
+    ],
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    }
+  },
+  {
+    "id": "ann-log-log-divergence",
+    "proofId": "erdos-279",
+    "type": "definition",
+    "title": "Log-Log Divergence Condition",
+    "content": "**HasLogLogDivergence A**: the reciprocal sum $\\sum_{n \\in A, n \\leq N} 1/n$ exceeds $\\log\\log N$ by an unbounded amount as $N \\to \\infty$. This condition, combined with HasPrimeLikeDensity, characterizes sets dense enough to potentially cover all large integers.\n\n**Connection to Mertens' theorem:** For the primes, $\\sum_{p \\leq N} 1/p = \\log\\log N + M + o(1)$ where $M \\approx 0.2615$ is the Meissel-Mertens constant. The condition asks that $A$ matches this behavior asymptotically.\n\n**Current status:** Placeholder `True` definition. A full formalization would use Mathlib's `Filter.Tendsto` with `Filter.atTop` to express the divergence condition.",
+    "mathContext": "$\\sum_{n \\in A, n \\leq N} \\frac{1}{n} - \\log\\log N \\to \\infty$ as $N \\to \\infty$. For primes: $\\sum_{p \\leq N} 1/p = \\log\\log N + M + o(1)$ (Mertens, 1874) where $M \\approx 0.2615$ is the Meissel-Mertens constant.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mertens' theorem",
+      "Meissel-Mertens constant",
+      "reciprocal sum divergence",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "harmonic sum over primes",
+      "logarithmic growth"
+    ],
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    }
+  },
+  {
+    "id": "residue-choice",
+    "proofId": "erdos-279",
+    "type": "definition",
+    "title": "Residue Choice",
+    "content": "**ResidueChoice** assigns to each prime $p$ a residue class $a_p \\in \\{0, \\ldots, p-1\\}$.\n\n**Lean type**: `(p : ℕ) → (hp : Nat.Prime p) → ℕ` — a dependent function that takes a natural number $p$ and a proof that $p$ is prime, and returns a natural number (the residue). The dependent typing on `Nat.Prime p` ensures we only make choices for actual primes.\n\n**Degree of freedom**: For each prime $p$, we have $p$ choices for $a_p$, giving a total choice space of $\\prod_p p$ — an uncountable space. The problem asks whether ANY single point in this space achieves the covering property.\n\n**No range constraint**: The definition allows $a_p \\geq p$, but since $n = a_p + tp$ depends only on $a_p \\mod p$, values $\\geq p$ are equivalent to their reductions.",
+    "mathContext": "a : prime p ↦ aₚ ∈ ℕ (residue class mod p)",
+    "significance": "key",
+    "relatedConcepts": [
+      "dependent function type",
+      "Nat.Prime",
+      "residue classes",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "dependent function types in Lean",
+      "modular arithmetic"
+    ],
+    "range": {
+      "startLine": 26,
+      "endLine": 27
+    }
+  },
+  {
+    "id": "covering-property",
+    "proofId": "erdos-279",
+    "type": "definition",
+    "title": "Covering Property",
+    "content": "**IsCoveredBy a k n**: the integer $n$ can be written as $n = a_p + t \\cdot p$ for some prime $p$ and $t \\geq k$.\n\n**The constraint $t \\geq k$**: This is the key difficulty parameter. For $k = 1$, the progression $\\{a_p, a_p + p, a_p + 2p, \\ldots\\}$ covers all residues $\\equiv a_p \\pmod{p}$ starting from $a_p$. For $k = 3$, the progression starts at $a_p + 3p$, leaving a gap of $3p$ elements at the beginning.\n\n**CoversEventually a k**: `∃ N, ∀ n ≥ N, IsCoveredBy a k n` — there exists a threshold $N$ beyond which every integer is covered. The threshold $N$ depends on the choice $a$ and the parameter $k$.\n\n**Why existential over $p$**: Each integer only needs ONE prime's progression to cover it. The primes 'share the work' — small primes cover many residue classes (each prime $p$ covers a $1/p$ fraction), and their union should eventually cover everything.",
+    "mathContext": "∃ prime p, ∃ t ≥ k, n = aₚ + t·p",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "covering system",
+      "existential quantification",
+      "Filter.atTop"
+    ],
+    "prerequisites": [
+      "ResidueChoice",
+      "arithmetic progressions",
+      "Nat.Prime"
+    ],
+    "range": {
+      "startLine": 29,
+      "endLine": 37
+    }
+  },
+  {
+    "id": "small-k-result",
+    "proofId": "erdos-279",
+    "type": "concept",
+    "title": "Small k Result (k ≤ 2)",
+    "content": "**For $k \\leq 2$**: Any set with divergent reciprocal sum (including primes, since $\\sum 1/p = \\infty$) can cover all sufficiently large integers.\n\n**Why k ≤ 2 is easy**: For $k = 1$, each prime $p$ covers the full residue class $a_p + p\\mathbb{Z}_{\\geq 0}$. Since $\\sum 1/p$ diverges, the 'expected number of primes covering $n$' is infinite, and a probabilistic or greedy argument shows almost all integers are covered. For $k = 2$, the gap of $p$ at the start of each progression is manageable because the total coverage from all primes still diverges.\n\n**Current status in Lean**: Axiomatized with a placeholder `True` body — the formal proof would require Mertens' theorem ($\\sum_{p \\leq N} 1/p \\sim \\log \\log N$) and a covering argument.\n\n**The k = 3 barrier**: At $k = 3$, the gaps grow to $3p$, and the total 'lost coverage' from these gaps becomes comparable to the total coverage, making the divergence argument fail.",
+    "mathContext": "k ≤ 2 ∧ Σ 1/p = ∞ ⟹ covering holds",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mertens' theorem",
+      "divergence of Σ 1/p",
+      "greedy covering",
+      "placeholder axiom"
+    ],
+    "prerequisites": [
+      "divergence of harmonic sum over primes",
+      "covering by arithmetic progressions"
+    ],
+    "range": {
+      "startLine": 41,
+      "endLine": 46
+    }
+  },
+  {
+    "id": "prime-like-density",
+    "proofId": "erdos-279",
+    "type": "definition",
+    "title": "Prime-Like Density",
+    "content": "**HasPrimeLikeDensity A**: the counting function $|A \\cap [1,N]| \\geq c \\cdot N / \\log N$ for some constant $c > 0$ and all large $N$.\n\n**Why $N/\\log N$**: By the Prime Number Theorem (Hadamard and de la Vallée-Poussin, 1896), $\\pi(N) \\sim N/\\log N$. The condition says $A$ is at least as dense as the primes, up to a constant factor.\n\n**Current status**: Placeholder definition using `True` — a full formalization would use Mathlib's `Asymptotics.IsLittleO` or explicit bounds on the counting function.\n\n**Role in generalization**: Together with HasLogLogDivergence, this condition captures the essential density properties of primes needed for the covering argument. The conjecture says ONLY these density conditions matter, not the multiplicative structure of primes.",
+    "mathContext": "|A ∩ [1,N]| ≥ c·N/log N for some c > 0",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prime Number Theorem",
+      "counting function",
+      "asymptotic density",
+      "placeholder definition"
+    ],
+    "prerequisites": [
+      "Prime Number Theorem",
+      "asymptotic analysis",
+      "counting functions"
+    ],
+    "range": {
+      "startLine": 50,
+      "endLine": 54
+    }
+  },
+  {
+    "id": "k3-conjecture",
+    "proofId": "erdos-279",
+    "type": "concept",
+    "title": "The k = 3 Case",
+    "content": "**ErdosProblem279_k3**: There exists a residue choice $a$ such that $\\text{CoversEventually}(a, 3)$ — every sufficiently large integer $n$ can be written as $n = a_p + 3t \\cdot p$ for some prime $p$ and $t \\geq 1$ (equivalently, $n = a_p + tp$ with $t \\geq 3$).\n\n**Why this is the hardest open case**: $k = 3$ is the smallest value where the problem is open. For each prime $p$, the progression $\\{a_p + 3p, a_p + 4p, \\ldots\\}$ misses the first 3 multiples of $p$ after $a_p$. These gaps accumulate across all primes, and it's unknown whether any global choice of residues can compensate.\n\n**Status**: OPEN. No construction or obstruction is known.\n\n**Lean**: `∃ a : ResidueChoice, CoversEventually a 3` — a clean existential statement.",
+    "mathContext": "∃ a, ∀ n ≫ 0, ∃ prime p, ∃ t ≥ 3, n = aₚ + tp",
+    "significance": "key",
+    "relatedConcepts": [
+      "simplest open case",
+      "covering threshold",
+      "existential construction"
+    ],
+    "prerequisites": [
+      "ResidueChoice",
+      "CoversEventually",
+      "IsCoveredBy"
+    ],
+    "range": {
+      "startLine": 68,
+      "endLine": 70
+    }
+  }
+]

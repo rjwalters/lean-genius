@@ -1,0 +1,186 @@
+{
+  "id": "erdos-1157",
+  "title": "Erdős Problem #1157: General Extremal Numbers for r-Uniform Hypergraphs",
+  "slug": "erdos-1157",
+  "description": "Determine the extremal number f^(r)(n; k, s) for r-uniform hypergraphs. The Brown-Erdős-Sós conjecture asserts f^(t)(n; k, s) = o(n^t) when k >= (r-t)s + t + 1. Resolved for 3-uniform (Delcourt-Postle 2024). Open for r >= 4.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1157",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1157Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "hypergraph",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1157,
+    "erdosUrl": "https://erdosproblems.com/1157",
+    "erdosProblemStatus": "open",
+    "axiomCount": 2,
+    "lineCount": 378,
+    "assumptions": "2 axioms: brown_erdos_sos_lower_bound (BES 1973 lower bound), delcourt_postle_theorem (Delcourt-Postle 2024, full 3-uniform BES). Previously axiomatized extremalNumber, monotonicity in k/s now proved constructively from sSup definition.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 27,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "Brown, Erdős, and Sós introduced the general extremal number $f^{(r)}(n; k, s)$ in 1973, proving the foundational lower bound $f^{(r)}(n; k, s) \\gg n^{(rs-k)/(s-1)}$ for $k > r$ and $s > 1$ using probabilistic and algebraic constructions over finite fields. The BES conjecture—that $f^{(t)}(n; k, s) = o(n^t)$ when $k \\geq (r-t)s + t + 1$—predicts a sharp phase transition in the growth rate. The first case resolved was the $(6,3)$-problem by Ruzsa and Szemerédi (1978), who established $f^{(3)}(n; 6, 3) = o(n^2)$ via the Triangle Removal Lemma (a consequence of Szemerédi's regularity lemma). This special case is independently famous as Erdős Problem #716 and connects to Roth's theorem on 3-term arithmetic progressions. Glock (2019) resolved the $(7,4)$-case. The breakthrough came from Delcourt and Postle (2024), who proved the full 3-uniform BES conjecture: $f^{(3)}(n; k, s) = o(n^2)$ for all $s \\geq 3$ and $k \\geq s + 3$. Problem #1076 (the $k = s + 2$ case) was solved separately by Bohman-Warnke (2019), lying beyond the BES threshold. The conjecture remains wide open for uniformities $t \\geq 3$.",
+    "problemStatement": "Determine the extremal number $f^{(r)}(n; k, s)$, the maximum edges in an $r$-uniform hypergraph on $n$ vertices with no $s$ edges spanning at most $k$ vertices. Prove the Brown-Erdős-Sós conjecture: for $r > t \\geq 2$ and $s \\geq 3$, $f^{(t)}(n; k, s) = o(n^t)$ when $k \\geq (r-t)s + t + 1$.",
+    "text": "Determine the extremal number f^(r)(n; k, s) for r-uniform hypergraphs. The Brown-Erdős-Sós conjecture asserts f^(t)(n; k, s) = o(n^t) when k >= (r-t)s + t + 1. Resolved for 3-uniform (Delcourt-Postle 2024). Open for r >= 4.",
+    "proofStrategy": "The extremal number is defined constructively as $\\mathrm{sSup}$ of achievable edge counts, with monotonicity in $k$ and $s$ proved from first principles. The BES exponent $\\alpha = (rs-k)/(s-1)$ is defined over $\\mathbb{R}$ and analyzed: positivity, monotonicity in $k$, vanishing at $k = rs$, specific values for $(6,3)$ and $(7,4)$, the exact threshold formula $(2s-3)/(s-1)$ for 3-uniform, and the sharp bound $\\alpha < 2$ at the BES threshold. Two axioms encode deep results: the BES lower bound (1973) and the Delcourt-Postle theorem (2024). Ruzsa-Szemerédi and Glock results are proved as special cases. The exponent's monotonicity in $r$ (increasing), $k$ (decreasing), and $s$ (via transfer) is fully characterized. General monotonicity transfer theorems allow deducing BES for larger $k$ or $s$ at arbitrary uniformity.",
+    "keyInsights": [
+      "The BES exponent $\\alpha = (rs-k)/(s-1)$ governs a sharp phase transition: for $\\alpha \\geq t$ the extremal number grows as $\\Omega(n^t)$, while the conjecture predicts $o(n^t)$ just above this threshold at $k = (r-t)s + t + 1$",
+      "The (6,3)-case is equivalent to the Ruzsa-Szemerédi theorem and connects to Roth's theorem on arithmetic progressions via the Triangle Removal Lemma, illustrating how hypergraph extremal theory interacts with additive combinatorics",
+      "Delcourt-Postle's 2024 resolution of the full 3-uniform case was achieved over 50 years after the conjecture, showing that the $t = 2$ barrier was the most fundamental—but $t \\geq 3$ remains completely open",
+      "Problem #1076 ($k = s + 2$) is beyond the BES threshold ($k \\geq s + 3$), yet was also resolved (Bohman-Warnke 2019), suggesting the true extremal landscape is richer than BES alone predicts",
+      "Monotonicity in $k$ enables a transfer principle: proving BES for the smallest valid $k$ in each parameter family automatically implies it for all larger $k$, reducing the conjecture to boundary cases"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Problem Context and Imports",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Header documentation with problem statement, known results (BES 1973, Ruzsa-Szemerédi 1978, Glock 2019, Delcourt-Postle 2024), and Mathlib imports for natural numbers, real numbers, and real powers.",
+      "mathContext": "Mathematical content: Header documentation with problem statement, known results (BES 1973, Ruzsa-Szemerédi 1978, Glock 2019, Delcourt-Postle 2024), and Mathlib imports for natural numbers, real numbers, and real powers."
+    },
+    {
+      "id": "extremal-number",
+      "title": "General Extremal Number",
+      "startLine": 31,
+      "endLine": 53,
+      "summary": "Axiomatizes f^(r)(n; k, s) as extremalNumber : ℕ⁴ → ℕ with monotonicity axioms in k and s.",
+      "mathContext": "Axiomatizes f^(r)(n; k, s) as extremalNumber : ℕ⁴ $\\to$ $\\mathbb{N}$ with monotonicity axioms in k and s."
+    },
+    {
+      "id": "bes-exponent",
+      "title": "BES Exponent",
+      "startLine": 54,
+      "endLine": 77,
+      "summary": "Defines besExponent α = (rs−k)/(s−1) over ℝ and proves positivity when rs > k and s ≥ 2.",
+      "mathContext": "Defines besExponent α = (rs−k)/(s−1) over $\\mathbb{R}$ and proves positivity when rs > k and s $\\geq$ 2."
+    },
+    {
+      "id": "bes-lower-bound",
+      "title": "Brown-Erdős-Sós Lower Bound",
+      "startLine": 78,
+      "endLine": 84,
+      "summary": "Axiomatizes the 1973 lower bound: f^(r)(n; k, s) ≥ c·n^α for k > r ≥ 2, s ≥ 2.",
+      "mathContext": "Axiomatizes the 1973 lower bound: f^(r)(n; k, s) $\\geq$ c·n^α for k > r $\\geq$ 2, s $\\geq$ 2."
+    },
+    {
+      "id": "bes-conjecture",
+      "title": "The BES Conjecture",
+      "startLine": 85,
+      "endLine": 101,
+      "summary": "Formalizes IsLittleO and the BES conjecture: f^(t)(n; k, s) = o(n^t) when k ≥ (r−t)s + t + 1.",
+      "mathContext": "Formalizes IsLittleO and the BES conjecture: f^(t)(n; k, s) = o(n^t) when k $\\geq$ (r−t)s + t + 1."
+    },
+    {
+      "id": "special-cases",
+      "title": "Connections to Other Problems",
+      "startLine": 102,
+      "endLine": 119,
+      "summary": "Parameter checks connecting to Problem #716 (tight at k=6) and Problem #1076 (beyond BES threshold).",
+      "mathContext": "Mathematical content: Parameter checks connecting to Problem #716 (tight at k=6) and Problem #1076 (beyond BES threshold)."
+    },
+    {
+      "id": "partial-results",
+      "title": "Known Partial Results",
+      "startLine": 120,
+      "endLine": 137,
+      "summary": "Axiomatizes Ruzsa-Szemerédi (6,3), Glock (7,4), and Delcourt-Postle (full 3-uniform) results.",
+      "mathContext": "Axiomatized: Axiomatizes Ruzsa-Szemerédi (6,3), Glock (7,4), and Delcourt-Postle (full 3-uniform) results."
+    },
+    {
+      "id": "exponent-structure",
+      "title": "Exponent Structural Properties",
+      "startLine": 138,
+      "endLine": 273,
+      "summary": "Proves exponent is decreasing in k, zero at k=rs, computes α(3,6,3)=3/2 and α(3,7,4)=5/3, shows α<2 at BES threshold, exact threshold formula (2s-3)/(s-1) for 3-uniform case, monotonicity in r, and general monotonicity transfer theorems for arbitrary uniformity.",
+      "mathContext": "Proves exponent is decreasing in k, zero at k=rs, computes α(3,6,3)=3/2 and α(3,7,4)=5/3, shows α$<$2 at BES threshold. Exact formula besExponent 3 (s+3) s = (2s-3)/(s-1). Monotonicity in r. General monotonicity transfers in k and s for arbitrary uniformity t."
+    },
+    {
+      "id": "proved-theorems",
+      "title": "Proved Theorems",
+      "startLine": 274,
+      "endLine": 342,
+      "summary": "Proved theorems: 3-uniform BES resolution, (6,3) case, and monotonicity transfer principles for little-o bounds in both k and s.",
+      "mathContext": "Verified: Proved theorems: 3-uniform BES resolution, (6,3) case, and monotonicity transfer principles for little-o bounds."
+    },
+    {
+      "id": "main-statement",
+      "title": "Problem Statement and Summary",
+      "startLine": 343,
+      "endLine": 366,
+      "summary": "States full Problem #1157 as universal BES conjecture. Summary theorem combines Delcourt-Postle, Ruzsa-Szemerédi, and computed exponents.",
+      "mathContext": "Verified: States full Problem #1157 as universal BES conjecture. Summary theorem combines Delcourt-Postle, Ruzsa-Szemerédi, and computed exponents."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the full landscape of Erdős Problem #1157: the general extremal number $f^{(r)}(n; k, s)$ is axiomatized with monotonicity properties, the BES exponent $\\alpha = (rs-k)/(s-1)$ is analyzed in detail, the 1973 lower bound and the BES conjecture are formalized, three landmark partial results are encoded, and structural properties of the exponent are proved. The 3-uniform case ($t = 2$) is fully resolved; the problem remains open for higher uniformities.",
+    "implications": "**Theoretical Significance**: The BES conjecture is one of the central problems in extremal hypergraph theory.\n\nIts resolution for $t \\geq 3$ would require fundamentally new techniques beyond regularity-based methods, which lose effectiveness for higher uniformities. The phase transition at $k = (r-t)s + t + 1$ governs the complexity of forbidden configuration problems in combinatorics, with connections to additive number theory (via the Ruzsa-Szemerédi/Roth link), design theory (via Steiner systems), and the probabilistic method.",
+    "openQuestions": [
+      "Can the BES conjecture be proved for any $t \\geq 3$? Even the case $t = 3$ (4-uniform hypergraphs) remains completely open",
+      "What is the correct exponent in the BES lower bound? Is $f^{(r)}(n; k, s) = \\Theta(n^{(rs-k)/(s-1)})$ below the BES threshold, or can the lower bound be improved?",
+      "Can quantitative bounds on the $o(n^t)$ term be established? The regularity-based proofs give only tower-type bounds",
+      "Is there a unified approach to the BES conjecture that avoids case-by-case analysis of uniformity?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-716",
+      "relationship": "specializes",
+      "description": "Problem #716 (Ruzsa-Szemerédi (6,3)-problem) is the t=2, r=s=3, k=6 case of the BES conjecture, resolved in 1978 via the Triangle Removal Lemma"
+    },
+    {
+      "targetId": "erdos-1076",
+      "relationship": "related",
+      "description": "Problem #1076 (3-uniform extremal for k=s+2) lies beyond the BES threshold, solved by Bohman-Warnke (2019) using Steiner system constructions"
+    },
+    {
+      "targetId": "erdos-714",
+      "relationship": "related",
+      "description": "Problem #714 (Zarankiewicz for K_{r,r}) is a related bipartite extremal problem; the K_{2,2} case connects to hypergraph extremal theory via incidence geometry"
+    },
+    {
+      "targetId": "erdos-1075",
+      "relationship": "related",
+      "description": "Problem #1075 (dense subgraphs in r-uniform hypergraphs) studies the density constant c_r, complementing the extremal number bounds in #1157"
+    },
+    {
+      "targetId": "erdos-1155",
+      "relationship": "technique",
+      "description": "Problem #1155 (triangle removal process) involves the Triangle Removal Lemma, which is the key technique for the (6,3)-case of the BES conjecture"
+    },
+    {
+      "targetId": "erdos-1078",
+      "relationship": "related",
+      "description": "Problem #1078 (minimum degree for K_r in r-partite graphs) studies BES-type thresholds in the multipartite setting, solved by Haxell (2001)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [],
+    "namespace": "Erdos1157",
+    "lineCount": 378,
+    "axiomCount": 2,
+    "theoremCount": 27,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos1157Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -1,0 +1,106 @@
+{
+  "slug": "cauchy-schwarz-oq-02-oq-02-oq-01",
+  "title": "Parseval Completeness: Orthonormal System is a Hilbert Basis iff Bessel is an Equality",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For an orthonormal family } \\{v_i\\}_{i\\in I} \\text{ in a Hilbert space } H:\\quad \\{v_i\\}\\text{ is a Hilbert basis} \\iff \\forall x\\in H,\\ \\sum_{i\\in I} |\\langle v_i, x\\rangle|^2 = \\|x\\|^2.",
+    "plain": "An orthonormal system in a Hilbert space is complete (a Hilbert basis whose closed span is the whole space) precisely when Bessel's inequality holds with equality for every vector — i.e. when Parseval's identity is satisfied. This upgrades the parent entry's Bessel inequality (the ≤ direction) to a full characterization of completeness.",
+    "whyMatters": [
+      "Parseval's identity is the quantitative core of Fourier analysis and the spectral theorem: an orthonormal basis loses no information.",
+      "Gives a concrete, internal, checkable criterion for completeness, avoiding explicit density arguments.",
+      "Bridges the gallery's verified Bessel entry to Mathlib's HilbertBasis infrastructure."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Bessel's inequality (parent entry cauchy-schwarz-oq-02-oq-02; Mathlib Orthonormal.tsum_inner_products_le)",
+      "HilbertBasis API and Parseval for Hilbert bases (Mathlib Analysis.InnerProductSpace.l2Space)",
+      "Orthogonal projection and complement API (Mathlib Analysis.InnerProductSpace.Projection)"
+    ],
+    "open": [
+      "A self-contained gallery statement of completeness ⇔ Parseval phrased directly on an Orthonormal family"
+    ],
+    "goal": "State and prove, axiom-free, that an orthonormal family has dense (closed) span iff Parseval's identity holds for all x, reusing Mathlib's HilbertBasis bridge rather than reproving the analysis."
+  },
+  "currentState": "SOLVED (build unverified — Docker down). Proved the Parseval completeness criterion: a real orthonormal family underlies a Hilbert basis iff Parseval holds for every x. Forward reuses parent parseval_real; reverse derives trivial orthogonal complement from Parseval and applies HilbertBasis.mkOfOrthogonalEqBot. 4 theorems, 0 sorries, axiom-free (no native_decide).",
+  "knowledge": {
+    "progressSummary": "COMPLETE: Parseval completeness criterion proved (build unverified, Docker down). Axiom-free, settles parent oq-01.",
+    "builtItems": [
+      "parseval_of_hilbertBasis (CauchySchwarzOQ02OQ02OQ01.lean) — forward direction via subst + parent parseval_real",
+      "orthogonalComplement_eq_bot_of_parseval — Parseval ⟹ (span ℝ (range v))ᗮ = ⊥ (the new content)",
+      "hilbertBasis_iff_parseval — the headline iff settling parent oq-01",
+      "orthogonalComplement_eq_bot_iff_parseval — construction-free totality ⟺ Parseval form"
+    ],
+    "insights": [
+      "Reverse direction (Parseval ⟹ basis) is the totality argument: a vector orthogonal to every vᵢ has all-zero Fourier coefficients, so Parseval forces ‖x‖²=0, hence x=0; this is exactly (span ℝ (range v))ᗮ = ⊥.",
+      "Mathlib HilbertBasis.mkOfOrthogonalEqBot consumes the trivial-orthogonal-complement hypothesis directly, so deriving totality (not density) from Parseval is the right route.",
+      "Forward direction is pure reuse: subst on ⇑b = v collapses it onto the parent verified parseval_real."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Generalize the iff to RCLike fields (Parseval as ∑ ‖⟨vᵢ,x⟩‖² = ‖x‖²); reverse direction is already field-agnostic, forward needs complex Parseval from HilbertBasis.tsum_inner_mul_inner.",
+      "Bundle totality ⟺ dense span ⟺ Parseval ⟺ basis-exists into a single TFAE."
+    ],
+    "markdown": "# Knowledge Base: cauchy-schwarz-oq-02-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "functional-analysis",
+    "hilbert-space",
+    "orthonormal-basis",
+    "parseval",
+    "bessel-inequality"
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-integral",
+    "cauchy-schwarz-integral-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
+    "cauchy-schwarz-integral-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-03",
+    "cauchy-schwarz-integral-oq-01-oq-03-oq-01",
+    "cauchy-schwarz-integral-oq-02",
+    "cauchy-schwarz-integral-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-02-oq-02",
+    "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-03",
+    "cauchy-schwarz-oq-01",
+    "cauchy-schwarz-oq-01-oq-01",
+    "cauchy-schwarz-oq-01-oq-01-oq-01",
+    "cauchy-schwarz-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-oq-01-oq-02",
+    "cauchy-schwarz-oq-01-oq-03",
+    "cauchy-schwarz-oq-01-oq-04",
+    "cauchy-schwarz-oq-02",
+    "cauchy-schwarz-oq-02-oq-01",
+    "cauchy-schwarz-oq-02-oq-02",
+    "cauchy-schwarz-oq-02-oq-03",
+    "cauchy-schwarz-oq-03",
+    "cauchy-schwarz-oq-03-oq-01",
+    "cauchy-schwarz-oq-03-oq-02",
+    "cauchy-schwarz-oq-04",
+    "cauchy-schwarz-oq-04-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-20T01:45:44.001Z",
+  "lastUpdate": "2026-06-19",
+  "leanFiles": [
+    "Proofs/CauchySchwarzOQ02OQ02OQ01.lean"
+  ]
+}

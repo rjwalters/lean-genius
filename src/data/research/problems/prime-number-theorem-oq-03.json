@@ -1,0 +1,68 @@
+{
+  "slug": "prime-number-theorem-oq-03",
+  "title": "Elementary PNT with Error Bounds",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Can PNT be proved elementarily with error bounds matching the analytic proof.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T12:03:52.281Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "analytic-number-theory",
+    "prime-number-theorem",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "prime-number-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T12:03:52.280Z",
+  "lastUpdate": "2026-04-03T12:03:52.281Z",
+  "significance": 8,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/PrimeNumberTheorem.lean",
+      "filename": "PrimeNumberTheorem.lean",
+      "lineCount": 461,
+      "theoremCount": 15,
+      "axiomCount": 8,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeNumberTheorem.lean"
+    }
+  ]
+}

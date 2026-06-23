@@ -1,0 +1,287 @@
+{
+  "id": "erdos-1046",
+  "title": "Lemniscate Containment in a Disc",
+  "slug": "erdos-1046",
+  "description": "For monic f ∈ ℂ[x], if E = {z : |f(z)| < 1} is connected, is E in a disc of radius 2? YES (Pommerenke 1959). The center is the root centroid. But the width conjecture is FALSE.",
+  "meta": {
+    "author": "Erdős-Herzog-Piranian (1958), Pommerenke (1959)",
+    "sourceUrl": "https://erdosproblems.com/1046",
+    "date": "1959",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1046Problem.lean",
+    "tags": [
+      "erdos",
+      "complex-analysis",
+      "polynomials",
+      "lemniscates",
+      "geometry"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1046,
+    "erdosUrl": "https://erdosproblems.com/1046",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial",
+        "description": "Polynomial ring over ℂ",
+        "module": "Mathlib.Algebra.Polynomial.Basic"
+      },
+      {
+        "theorem": "Complex.abs",
+        "description": "Complex absolute value",
+        "module": "Mathlib.Data.Complex.Basic"
+      },
+      {
+        "theorem": "IsConnected",
+        "description": "Topological connectedness",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "derivative",
+        "description": "Polynomial derivative",
+        "module": "Mathlib.Analysis.Complex.Polynomial.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lean formalization of sublevel sets of polynomials",
+      "Definition of open/closed discs in ℂ",
+      "Root centroid definition using Vieta's formulas",
+      "Critical points characterization of connectivity",
+      "Pommerenke's theorem: E ⊆ D(centroid, 2)",
+      "Width conjecture counterexample",
+      "Diameter bound formalization"
+    ],
+    "dateAdded": "2026-01-19",
+    "axiomCount": 3,
+    "prerequisites": [
+      "Complex polynomial evaluation and roots",
+      "Topological connectedness in ℂ",
+      "Polynomial derivative and critical points",
+      "Complex absolute value (modulus)",
+      "Basic potential theory",
+      "Vieta's formulas for monic polynomials"
+    ],
+    "lineCount": 236,
+    "assumptions": "3 axioms: pommerenke_theorem, width, pommerenke_width_counterexample. 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 14
+  },
+  "overview": {
+    "historicalContext": "Erdős, Fritz Herzog, and George Piranian posed this problem in their influential 1958 paper on the geometric properties of lemniscates — the sublevel sets $\\{z \\in \\mathbb{C} : |p(z)| \\leq 1\\}$ of monic polynomials $p$ of degree $n$. They conjectured that any such lemniscate of capacity 1 (i.e., leading coefficient 1) has both diameter $\\leq 2$ and width $\\leq 2$. Christian Pommerenke (1959) proved the disc containment conjecture: the lemniscate is always contained in a disc of radius 1, answering the diameter question affirmatively. However, he also showed the width conjecture is FALSE — there exist lemniscates of capacity 1 with width exceeding 2. The disc containment result connects to potential theory and the transfinite diameter of compact sets in $\\mathbb{C}$.",
+    "problemStatement": "Let f ∈ ℂ[x] be a monic polynomial and E = {z : |f(z)| < 1}. If E is connected, is E contained in a disc of radius 2?",
+    "text": "For monic f ∈ ℂ[x], if E = {z : |f(z)| < 1} is connected, is E in a disc of radius 2? YES (Pommerenke 1959). The center is the root centroid. But the width conjecture is FALSE.",
+    "proofStrategy": "The formalization defines sublevel sets, open/closed discs, and root centroids. Pommerenke's theorem is axiomatized: if E is connected, then E ⊆ D(centroid, 2). The width counterexample is also formalized.",
+    "keyInsights": [
+      "The answer is YES - E is contained in a disc of radius 2",
+      "The center of this disc can be the root centroid (z₁+...+zₙ)/n",
+      "E is connected ⟺ E contains all zeros of f'",
+      "The width conjecture is FALSE: width can exceed √3·2^{1/3} ≈ 2.18",
+      "The diameter is at most 2 (sharper than the 4 implied by disc containment)"
+    ],
+    "prerequisites": [
+      "Complex polynomial evaluation and roots",
+      "Topological connectedness in ℂ",
+      "Polynomial derivative and critical points",
+      "Complex absolute value (modulus)",
+      "Basic potential theory",
+      "Vieta's formulas for monic polynomials"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 42,
+      "endLine": 77,
+      "summary": "Monic polynomials, sublevel sets, open/closed discs",
+      "mathContext": "Mathematical content: Monic polynomials, sublevel sets, open/closed discs"
+    },
+    {
+      "id": "roots-centroid",
+      "title": "Roots and Centroid",
+      "startLine": 78,
+      "endLine": 100,
+      "summary": "Root multiset, centroid, Vieta's formulas",
+      "mathContext": "Mathematical content: Root multiset, centroid, Vieta's formulas"
+    },
+    {
+      "id": "connectivity",
+      "title": "Connectivity Characterization",
+      "startLine": 101,
+      "endLine": 116,
+      "summary": "E is connected ⟺ E contains critical points",
+      "mathContext": "Mathematical content: E is connected ⟺ E contains critical points"
+    },
+    {
+      "id": "ehp-question",
+      "title": "Erdős-Herzog-Piranian Question",
+      "startLine": 117,
+      "endLine": 125,
+      "summary": "EHPQuestion definition",
+      "mathContext": "Formal definition: EHPQuestion definition"
+    },
+    {
+      "id": "pommerenke-theorem",
+      "title": "Pommerenke's Theorem",
+      "startLine": 126,
+      "endLine": 145,
+      "summary": "Main result: E ⊆ D(centroid, 2)",
+      "mathContext": "Mathematical content: Main result: E ⊆ D(centroid, 2)"
+    },
+    {
+      "id": "width-counterexample",
+      "title": "Width Counterexample",
+      "startLine": 146,
+      "endLine": 177,
+      "summary": "Width conjecture is FALSE, axiomatized counterexample",
+      "mathContext": "Axiomatized: Width conjecture is FALSE, axiomatized counterexample"
+    },
+    {
+      "id": "diameter",
+      "title": "Diameter Bounds",
+      "startLine": 178,
+      "endLine": 194,
+      "summary": "Diameter ≤ 2 by Pommerenke",
+      "mathContext": "Diameter $\\leq$ 2 by Pommerenke"
+    },
+    {
+      "id": "related-concepts",
+      "title": "Related Concepts",
+      "startLine": 195,
+      "endLine": 218,
+      "summary": "Lemniscate, filled lemniscate, Bernoulli lemniscate",
+      "mathContext": "Mathematical content: Lemniscate, filled lemniscate, Bernoulli lemniscate"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 219,
+      "endLine": 236,
+      "summary": "erdos_1046_summary theorem",
+      "mathContext": "Verified: erdos_1046_summary theorem"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1046 is SOLVED: YES, if E = {z : |f(z)| < 1} is connected, then E is contained in a disc of radius 2 centered at the root centroid. However, the related width conjecture is FALSE (Pommerenke's counterexample).",
+    "implications": "**Theoretical Significance**: This result shows the subtle geometry of polynomial sublevel sets.\n\nWhile they fit in a disc of radius 2, they can be elongated (width > 2). The connectivity condition is characterized by critical points.",
+    "openQuestions": [
+      "What is the sharp bound on width for connected sublevel sets?",
+      "How does the geometry depend on the degree of f?",
+      "What happens for non-monic polynomials?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "companion",
+      "description": "Erdős #1043 concerns projections of polynomial level sets {z : |f(z)| ≤ 1} — the same sublevel set studied here. Pommerenke's 1961 counterexample there parallels his 1959 disc-containment theorem here.",
+      "targetId": "erdos-1043"
+    },
+    {
+      "relationship": "companion",
+      "description": "Erdős #1044 studies the boundary length of polynomial level sets for polynomials with roots in the unit disk — a closely related geometric question about lemniscates of monic polynomials.",
+      "targetId": "erdos-1044"
+    },
+    {
+      "relationship": "companion",
+      "description": "Erdős #1047 asks whether connected components of {z : |f(z)| ≤ c} must be convex for small c. It shares the lemniscate connectivity theme and the role of Pommerenke as key contributor.",
+      "targetId": "erdos-1047"
+    },
+    {
+      "relationship": "companion",
+      "description": "Erdős #1048 asks about the diameter of L(f,1) = {z : |f(z)| < 1} for monic f with roots near the origin — a direct diameter question complementing the disc-containment (radius 2) result here.",
+      "targetId": "erdos-1048"
+    },
+    {
+      "relationship": "related",
+      "description": "Erdős #1045 maximizes the product of pairwise distances among n complex points, intersecting themes of complex geometry and the transfinite diameter that underlies the capacity-1 lemniscate setting.",
+      "targetId": "erdos-1045"
+    },
+    {
+      "relationship": "prerequisite",
+      "description": "The Fundamental Theorem of Algebra guarantees that monic degree-n polynomials over ℂ split completely; the root multiset and centroid used in Pommerenke's theorem rely on this existence of roots.",
+      "targetId": "fundamental-theorem-algebra"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "P. Erdős",
+        "F. Herzog",
+        "G. Piranian"
+      ],
+      "title": "On the geometric properties of level curves of polynomials",
+      "volume": "2",
+      "year": "1958",
+      "pages": "553–563",
+      "description": "Original paper posing the disc containment and width conjectures for connected lemniscates of monic polynomials.",
+      "venue": "Illinois Journal of Mathematics"
+    },
+    {
+      "authors": [
+        "Ch. Pommerenke"
+      ],
+      "title": "On the derivative of a polynomial",
+      "volume": "6",
+      "year": "1959",
+      "pages": "373–396",
+      "description": "Proves the disc containment theorem (E ⊆ D(centroid, 2)) and provides a counterexample disproving the width conjecture.",
+      "venue": "Michigan Mathematical Journal"
+    },
+    {
+      "authors": [
+        "Ch. Pommerenke"
+      ],
+      "title": "On the coefficients and Hankel determinants of univalent functions",
+      "volume": "41",
+      "year": "1966",
+      "pages": "111–122",
+      "description": "Subsequent work by Pommerenke on polynomial geometry and function theory in the complex plane, building on the lemniscate results.",
+      "venue": "Journal of the London Mathematical Society"
+    },
+    {
+      "authors": [
+        "M. Marden"
+      ],
+      "title": "Geometry of Polynomials",
+      "volume": "3",
+      "year": "1966",
+      "pages": "–",
+      "description": "Comprehensive reference on the geometry of polynomial zero sets, including lemniscate containment, critical points, and the Gauss–Lucas theorem used in characterizing connectivity.",
+      "venue": "Mathematical Surveys and Monographs, American Mathematical Society"
+    },
+    {
+      "authors": [
+        "T. Ransford"
+      ],
+      "title": "Potential Theory in the Complex Plane",
+      "volume": "28",
+      "year": "1995",
+      "pages": "–",
+      "description": "Standard reference for transfinite diameter, logarithmic capacity, and the potential-theoretic framework underlying the capacity-1 lemniscate setting of this problem.",
+      "venue": "London Mathematical Society Student Texts, Cambridge University Press"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Analysis.Normed.Field.Basic",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.Complex.Basic"
+    ],
+    "opens": [
+      "Complex",
+      "Polynomial"
+    ],
+    "namespace": "Erdos1046",
+    "lineCount": 236,
+    "axiomCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 14,
+    "path": "Proofs/Erdos1046Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

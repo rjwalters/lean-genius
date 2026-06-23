@@ -1,0 +1,271 @@
+{
+  "id": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+  "slug": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+  "title": "Escape Diverges, Survival Coincides: (2,2) Is the Unique Preservation Survivor at the Abel–Ruffini Boundary",
+  "description": "The parent file proved an ASYMMETRY of escape cost: starting from the solvable range {0,1,2,3,4}, the disjoint union first manufactures an unsolvable degree at 5 = 2 + 3, while the product must wait until 6 = 2 · 3 (5 is prime, hence multiplicatively unreachable). This entry examines the opposite face — PRESERVATION — and finds the reverse pattern: the two operations agree exactly. For NONTRIVIAL solvable pieces (each with ≥ 2 points), the composite stays solvable in one single case, the same for both operations. Perm (α ⊕ β) is solvable with card α, card β ≥ 2 iff card α = card β = 2 (perm_sum_nontrivial_solvable_iff): any larger summand pushes the sum to ≥ 5. Perm (α × β) is solvable with card α, card β ≥ 2 iff card α = card β = 2 (perm_prod_nontrivial_solvable_iff): any larger factor pushes the product to ≥ 6. So although ⊕ and × escape the solvable range at different degrees, their sets of surviving nontrivial pairs are IDENTICAL — the single pair (2,2) — and for nontrivial solvable pieces solvability of the sum-composite is equivalent to solvability of the product-composite (sum_prod_survival_coincide). Because 2 + 2 = 4 = 2 · 2, both composites land on the same degree 4 — the largest solvable symmetric degree (S₄ is solvable), one step below the threshold 5 (survivor_at_four, survivor_degree_below_threshold). The closing escape_diverges_survival_coincides sets the parent's asymmetry of escape beside this file's coincidence of survival.",
+  "overview": {
+    "historicalContext": "Abel–Ruffini rests on S₅ being non-solvable; classically Sₙ and Aₙ are solvable exactly for n ≤ 4. The parent chain read that threshold through the two monoidal structures on finite types — disjoint union (which adds point counts) and Cartesian product (which multiplies them) — and isolated an asymmetry of ESCAPE: the least degree pushed out of {0,1,2,3,4} from solvable inputs is 5 under ⊕ but 6 under ×, because 5 is prime and so multiplicatively unreachable. That asymmetry concerns where the solvable range first BREAKS. The dual question is where it HOLDS: which pairs of solvable pieces still produce a solvable composite. For trivial pieces (0 or 1 points) the composite reduces to the other piece, so the substantive question is for nontrivial pieces, those with at least 2 points — equivalently the solvable pieces of cardinality 2, 3, or 4.",
+    "modernSignificance": "Reading Perm as a functor on finite types, solvability of Perm (α ⊕ β) and Perm (α × β) is governed by card α + card β and card α · card β against the cap 4. For nontrivial pieces both constraints collapse to the same survivor: card α = card β = 2. Under ⊕ this is the linear fact that 2 + 2 = 4 but 2 + 3 = 5 already escapes; under × it is the nonlinear fact that 2 · 2 = 4 but 2 · 3 = 6 escapes — yet the surviving pair is the same. So the preservation side is SYMMETRIC where the escape side was asymmetric: solvability of the sum-composite is equivalent to solvability of the product-composite for nontrivial solvable pieces (sum_prod_survival_coincide), both occurring exactly on (2,2). The coincidence 2 + 2 = 2 · 2 sends both survivors to the single degree 4 = card (Fin 2 ⊕ Fin 2) = card (Fin 2 × Fin 2), the largest solvable symmetric degree and the last rung below the Abel–Ruffini threshold."
+  },
+  "meta": {
+    "author": "Classical (Sₙ/Aₙ solvable iff n ≤ 4); unique-survivor and survival-coincidence formalization original",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Symmetric_group",
+    "date": "1870",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ02OQ02OQ08OQ01OQ01OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "solvability",
+      "alternating-group",
+      "symmetric-group",
+      "product",
+      "disjoint-union",
+      "closure",
+      "classification",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.card_sum",
+        "description": "Fintype.card (α ⊕ β) = Fintype.card α + Fintype.card β. Behind perm_sum_solvable_iff, turns the union threshold into the linear constraint card α + card β ≤ 4 that the unique additive survivor solves.",
+        "module": "Mathlib.Data.Fintype.Sum"
+      },
+      {
+        "theorem": "Fintype.card_prod",
+        "description": "Fintype.card (α × β) = Fintype.card α * Fintype.card β. Behind perm_prod_solvable_iff, turns the product threshold into card α · card β ≤ 4, the nonlinear constraint forcing both factors to 2.",
+        "module": "Mathlib.Data.Fintype.Prod"
+      },
+      {
+        "theorem": "Nat.mul_le_mul",
+        "description": "a ≤ b ∧ c ≤ d ⟹ a * c ≤ b * d. With a factor ≥ 3 and the other ≥ 2 yields ≥ 6 > 4, the engine forcing the unique multiplicative survivor to be (2,2) (perm_prod_nontrivial_solvable_iff).",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Fintype.card_fin",
+        "description": "Fintype.card (Fin n) = n. Evaluates the concrete survivor Perm (Fin 2 ⊕ Fin 2) and Perm (Fin 2 × Fin 2) at 4 points (survivor_at_four, survivor_degree_below_threshold).",
+        "module": "Mathlib.Data.Fintype.Card"
+      }
+    ],
+    "originalContributions": [
+      "card_nontrivial_solvable_mem: every nontrivial solvable piece has cardinality 2, 3, or 4 — the intrinsic cap card ≤ 4 with the degenerate 0/1 cases removed by the ≥ 2 hypothesis",
+      "perm_sum_nontrivial_solvable_iff: the UNIQUE additive survivor — for summands with ≥ 2 points each, Perm (α ⊕ β) is solvable iff both have exactly 2 points (2 + 2 = 4, while 2 + 3 = 5 escapes)",
+      "perm_prod_nontrivial_solvable_iff: the UNIQUE multiplicative survivor — for factors with ≥ 2 points each, Perm (α × β) is solvable iff both have exactly 2 points (the nonlinear cap forced factor-by-factor via Nat.mul_le_mul)",
+      "sum_prod_survival_coincide: survival coincides though escape diverges — for nontrivial solvable pieces, Perm (α ⊕ β) is solvable iff Perm (α × β) is, the preservation-side counterpart to the parent's escape-cost asymmetry",
+      "unique_survivor_characterization: either composite being solvable is equivalent to card α = card β = 2, and that condition makes both composites solvable — the survivor is unique up to both operations at once",
+      "survivor_at_four: the concrete survivor — Perm (Fin 2 ⊕ Fin 2) and Perm (Fin 2 × Fin 2) are both solvable and 2 + 2 = 4 = 2 · 2, realising S₄ simultaneously as a sum and a product of two 2-point systems",
+      "survivor_degree_below_threshold: the surviving composite has 4 points and 4 + 1 = 5 reaches the unsolvable Perm (Fin 5) — the unique survivor sits at the very top of the solvable range, immediately below the Abel–Ruffini degree",
+      "escape_diverges_survival_coincides: the two faces side by side — the escape costs diverge (least nontrivial additive escape 5 < least multiplicative escape 6) while the survival is symmetric (sum-solvable iff product-solvable for nontrivial solvable pieces, both on (2,2))"
+    ],
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "lineCount": 218,
+    "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions. No `native_decide` is used (the strings 'sorry'/'native_decide' appear only in the module docstring's no-assumptions disclaimer). The survivor lemmas rewrite the parent chain's thresholds (perm_sum_solvable_iff / perm_prod_solvable_iff / perm_solvable_iff_card / not_solvable_perm_card_eq_ge_five) and close with omega; the multiplicative direction forces the nonlinear cap factor-by-factor with Nat.mul_le_mul. `#print axioms` on escape_diverges_survival_coincides, sum_prod_survival_coincide, perm_prod_nontrivial_solvable_iff and survivor_at_four reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no `Lean.ofReduceBool`, no `sorryAx`. The symmetric/alternating solvability content these thresholds rest on is Mathlib's `Equiv.Perm.not_solvable` (Sₙ unsolvable for n ≥ 5), reached through the parent chain's `perm_solvable_iff_card`; this file supplies the combinatorial packaging, not an independent solvability proof, hence the `mathlib` (Tier B) badge.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "additionalFiles": [],
+    "relatedProblems": [
+      {
+        "id": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01",
+        "relationship": "Parent — proved the asymmetry of ESCAPE cost (additive 5 vs multiplicative 6). This entry proves the dual coincidence of SURVIVAL: for nontrivial solvable pieces the unique pair whose composite stays solvable is (2,2) for both ⊕ and ×, so sum-solvability is equivalent to product-solvability."
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01",
+        "relationship": "Grandparent — supplied perm_sum_solvable_iff and perm_prod_solvable_iff turning the thresholds into arithmetic on card α + card β and card α · card β, and no_nontrivial_product_equals_five reused in the closing escape/survival statement."
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01",
+        "relationship": "Ancestor — the intrinsic threshold IsSolvable (Perm α) ↔ Fintype.card α ≤ 4 behind the nontrivial-survivor classification."
+      },
+      {
+        "id": "abel-ruffini",
+        "relationship": "Ancestor — Abel–Ruffini rests on S₅ non-solvable. The unique survivor sits at degree 4 = 2 + 2 = 2 · 2, one rung below the classical threshold 5, where S₄ is the largest solvable symmetric group."
+      }
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Mathlib.GroupTheory.Perm.ViaEmbedding",
+      "Mathlib.Tactic",
+      "Proofs.AbelRuffiniOQ04OQ02OQ02OQ08OQ01OQ01OQ01OQ01OQ01"
+    ],
+    "opens": [
+      "Equiv"
+    ],
+    "namespace": "AbelRuffiniOQ04OQ02OQ02OQ08OQ01OQ01OQ01OQ01OQ01OQ01",
+    "lineCount": 218,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "perm_sum_nontrivial_solvable_iff",
+        "type": "key",
+        "description": "The unique additive survivor: for summands with ≥ 2 points each, Perm (α ⊕ β) is solvable iff both have exactly 2 points.",
+        "leanType": "[DecidableEq α] → [DecidableEq β] → [Fintype α] → [Fintype β] → 2 ≤ Fintype.card α → 2 ≤ Fintype.card β → (IsSolvable (Perm (α ⊕ β)) ↔ Fintype.card α = 2 ∧ Fintype.card β = 2)",
+        "line": 77
+      },
+      {
+        "name": "perm_prod_nontrivial_solvable_iff",
+        "type": "key",
+        "description": "The unique multiplicative survivor: for factors with ≥ 2 points each, Perm (α × β) is solvable iff both have exactly 2 points. The nonlinear cap is forced factor-by-factor via Nat.mul_le_mul.",
+        "leanType": "[DecidableEq α] → [DecidableEq β] → [Fintype α] → [Fintype β] → 2 ≤ Fintype.card α → 2 ≤ Fintype.card β → (IsSolvable (Perm (α × β)) ↔ Fintype.card α = 2 ∧ Fintype.card β = 2)",
+        "line": 95
+      },
+      {
+        "name": "sum_prod_survival_coincide",
+        "type": "key",
+        "description": "Survival coincides though escape diverges: for nontrivial solvable pieces, Perm (α ⊕ β) is solvable iff Perm (α × β) is — both hold exactly on the unique survivor card α = card β = 2.",
+        "leanType": "[DecidableEq α] → [DecidableEq β] → [Fintype α] → [Fintype β] → 2 ≤ Fintype.card α → 2 ≤ Fintype.card β → (IsSolvable (Perm (α ⊕ β)) ↔ IsSolvable (Perm (α × β)))",
+        "line": 133
+      },
+      {
+        "name": "unique_survivor_characterization",
+        "type": "core",
+        "description": "Either composite being solvable is equivalent to card α = card β = 2, and that condition makes both composites solvable — the survivor is unique up to both operations at once.",
+        "leanType": "[DecidableEq α] → [DecidableEq β] → [Fintype α] → [Fintype β] → 2 ≤ Fintype.card α → 2 ≤ Fintype.card β → ((IsSolvable (Perm (α ⊕ β)) ∨ IsSolvable (Perm (α × β))) ↔ (Fintype.card α = 2 ∧ Fintype.card β = 2))",
+        "line": 145
+      },
+      {
+        "name": "survivor_at_four",
+        "type": "specialization",
+        "description": "The concrete survivor: Perm (Fin 2 ⊕ Fin 2) and Perm (Fin 2 × Fin 2) are both solvable and 2 + 2 = 4 = 2 · 2 — S₄ realised simultaneously as a sum and a product of two 2-point systems.",
+        "leanType": "IsSolvable (Perm (Fin 2 ⊕ Fin 2)) ∧ IsSolvable (Perm (Fin 2 × Fin 2)) ∧ (2 + 2 = 4) ∧ (2 * 2 = 4)",
+        "line": 168
+      },
+      {
+        "name": "escape_diverges_survival_coincides",
+        "type": "key",
+        "description": "The two faces side by side: the escape costs diverge (least nontrivial additive escape 5 < least multiplicative escape 6) while survival is symmetric (sum-solvable iff product-solvable for nontrivial solvable pieces).",
+        "leanType": "((∃ m n : ℕ, 2 ≤ m ∧ 2 ≤ n ∧ m ≤ 4 ∧ n ≤ 4 ∧ m + n = 5) ∧ (∀ m n : ℕ, 2 ≤ m → 2 ≤ n → m * n ≠ 5) ∧ (5 : ℕ) < 6) ∧ (∀ (α β : Type) [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β], 2 ≤ Fintype.card α → 2 ≤ Fintype.card β → (IsSolvable (Perm (α ⊕ β)) ↔ IsSolvable (Perm (α × β))))",
+        "line": 205
+      }
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "escape_diverges_survival_coincides",
+      "statement": "Escape: there is a nontrivial additive escape at 5 (= 2 + 3, both ≤ 4) but no product of two factors ≥ 2 equals 5, so the least nontrivial multiplicative escape is 6 > 5. Survival: for nontrivial solvable pieces, Perm (α ⊕ β) is solvable iff Perm (α × β) is, both occurring exactly on the unique pair (2,2) with 2 + 2 = 4 = 2 · 2.",
+      "significance": "Pairs the two faces of the Abel–Ruffini boundary {≤4} under the algebra of finite types. Where the range first BREAKS depends on the operation — additive degree 5, multiplicative degree 6 — but where it HOLDS does not: both ⊕ and × preserve solvability of nontrivial pieces only on the single pair (2,2), landing on the same degree 4 = S₄, the last solvable rung below the threshold."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring contrasting the parent's escape-cost asymmetry (additive 5 vs multiplicative 6) with this file's survival coincidence: for nontrivial solvable pieces both operations preserve solvability only on (2,2), landing at degree 4 = 2 + 2 = 2 · 2. Imports the parent chain and Mathlib group/permutation infrastructure.",
+      "mathContext": "Parent supplies perm_sum_solvable_iff, perm_prod_solvable_iff, perm_solvable_iff_card, not_solvable_perm_card_eq_ge_five and no_nontrivial_product_equals_five."
+    },
+    {
+      "id": "nontrivial-range",
+      "title": "§1 A nontrivial solvable piece has 2, 3, or 4 points",
+      "startLine": 54,
+      "endLine": 67,
+      "summary": "card_nontrivial_solvable_mem caps a solvable piece at 4 points and the ≥ 2 hypothesis removes the degenerate 0/1 cases, placing every nontrivial solvable piece in {2,3,4}.",
+      "mathContext": "The intrinsic threshold IsSolvable (Perm α) ↔ card α ≤ 4 intersected with card α ≥ 2."
+    },
+    {
+      "id": "additive-survivor",
+      "title": "§2 The unique additive survivor",
+      "startLine": 68,
+      "endLine": 84,
+      "summary": "perm_sum_nontrivial_solvable_iff: for summands with ≥ 2 points each, Perm (α ⊕ β) is solvable iff both have exactly 2 points (the linear cap card α + card β ≤ 4 with both ≥ 2 forces 2 and 2).",
+      "mathContext": "2 + 2 = 4 survives but 2 + 3 = 5 escapes — the unique additive survivor is (2,2)."
+    },
+    {
+      "id": "multiplicative-survivor",
+      "title": "§3 The unique multiplicative survivor",
+      "startLine": 85,
+      "endLine": 118,
+      "summary": "perm_prod_nontrivial_solvable_iff: for factors with ≥ 2 points each, Perm (α × β) is solvable iff both have exactly 2 points; the nonlinear cap card α · card β ≤ 4 is forced factor-by-factor via Nat.mul_le_mul.",
+      "mathContext": "If either factor reached 3 the product would be ≥ 6 > 4, so both factors equal 2 — the same survivor as the sum despite the different escape cost."
+    },
+    {
+      "id": "survival-coincides",
+      "title": "§4 Survival coincides though escape diverges",
+      "startLine": 119,
+      "endLine": 156,
+      "summary": "sum_prod_survival_coincide chains the two equivalences: for nontrivial solvable pieces Perm (α ⊕ β) is solvable iff Perm (α × β) is; unique_survivor_characterization packages either-composite-solvable iff (2,2).",
+      "mathContext": "Both §2 and §3 reduce to card α = card β = 2, so the operations agree on which nontrivial pairs survive — the preservation-side counterpart to the parent's escape-cost asymmetry."
+    },
+    {
+      "id": "survivor-degree-four",
+      "title": "§5 The survivor, concretely: degree 4",
+      "startLine": 157,
+      "endLine": 186,
+      "summary": "survivor_at_four shows Perm (Fin 2 ⊕ Fin 2) and Perm (Fin 2 × Fin 2) both solvable with 2 + 2 = 4 = 2 · 2; survivor_degree_below_threshold places the survivor at 4, one step below the unsolvable Perm (Fin 5).",
+      "mathContext": "The coincidence 2 + 2 = 2 · 2 sends both survivors to degree 4 = S₄, the largest solvable symmetric group and the last rung below the Abel–Ruffini threshold."
+    },
+    {
+      "id": "escape-vs-survival",
+      "title": "§6 Escape-vs-survival, side by side",
+      "startLine": 187,
+      "endLine": 218,
+      "summary": "escape_diverges_survival_coincides places the parent's escape asymmetry (5 < 6) beside this file's survival symmetry (sum-solvable iff product-solvable for nontrivial solvable pieces).",
+      "mathContext": "Two faces of the boundary {≤4}: where it breaks differs by operation, where it holds does not."
+    }
+  ],
+  "sorries": [],
+  "references": [
+    {
+      "authors": [
+        "C. Jordan"
+      ],
+      "title": "Traité des substitutions et des équations algébriques",
+      "year": "1870",
+      "venue": "Gauthier-Villars, Paris",
+      "note": "Sₙ and Aₙ solvable iff n ≤ 4; S₄ as the largest solvable symmetric group at degree 4."
+    },
+    {
+      "authors": [
+        "É. Galois"
+      ],
+      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
+      "year": "1846",
+      "venue": "Journal de Mathématiques Pures et Appliquées (published posthumously)",
+      "note": "Solvability by radicals iff solvable Galois group; S₅ as the minimal obstruction one step above the degree-4 survivor."
+    },
+    {
+      "authors": [
+        "I. Stewart"
+      ],
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "Chapman and Hall/CRC, 4th edition",
+      "note": "Sₙ and Aₙ solvable iff n ≤ 4; subgroup-closure of solvability."
+    },
+    {
+      "authors": [
+        "The mathlib Community"
+      ],
+      "title": "The Lean Mathematical Library — Data.Fintype.Sum, Data.Fintype.Prod and GroupTheory.Solvable",
+      "year": "2020",
+      "venue": "Lean 4 / Mathlib",
+      "note": "Source of Fintype.card_sum, Fintype.card_prod and Nat.mul_le_mul, the arithmetic engines of the survivor classification."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent proved escape costs diverge (additive 5 vs multiplicative 6). This entry proves the dual: survival coincides — both operations preserve solvability of nontrivial pieces only on (2,2)."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent supplied perm_sum_solvable_iff / perm_prod_solvable_iff and no_nontrivial_product_equals_five reused in the closing escape/survival statement."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel–Ruffini rests on S₅ non-solvable; the unique survivor sits at degree 4 = 2 + 2 = 2 · 2, one rung below the classical threshold 5."
+    }
+  ]
+}

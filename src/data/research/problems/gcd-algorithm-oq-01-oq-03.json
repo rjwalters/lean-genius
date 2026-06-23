@@ -1,0 +1,87 @@
+{
+  "slug": "gcd-algorithm-oq-01-oq-03",
+  "title": "Golden ratio Fibonacci identity for GCD algorithm bounds",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Golden ratio Fibonacci identity for GCD algorithm bounds.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-15T12:10:20.234Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "algorithms",
+    "fibonacci"
+  ],
+  "relatedProofs": [
+    "binary-gcd",
+    "gcd-algorithm",
+    "gcd-algorithm-oq-01",
+    "gcd-algorithm-oq-01-oq-03",
+    "gcd-algorithm-oq-02",
+    "gcd-algorithm-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-15T12:11:41.208Z",
+  "lastUpdate": "2026-03-18T15:53:06.873Z",
+  "completed": "2026-03-18T15:53:06.873Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/GcdAlgorithmOQ02.lean",
+      "filename": "GcdAlgorithmOQ02.lean",
+      "lineCount": 178,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GcdAlgorithmOQ02.lean"
+    },
+    {
+      "path": "Proofs/GcdAlgorithmOQ04.lean",
+      "filename": "GcdAlgorithmOQ04.lean",
+      "lineCount": 187,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GcdAlgorithmOQ04.lean"
+    }
+  ]
+}

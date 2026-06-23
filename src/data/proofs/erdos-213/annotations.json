@@ -1,0 +1,252 @@
+[
+  {
+    "id": "ann-e213-header",
+    "proofId": "erdos-213",
+    "range": {
+      "startLine": 1,
+      "endLine": 16
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This header documents **Erdős Problem #213** about integer distance sets in general position. The question asks whether for all n ≥ 4, we can find n points with no three collinear, no four concyclic, and all distances integers.",
+    "mathContext": "The 'general position' requirements (no three collinear, no four concyclic) prevent trivial infinite constructions. Anning-Erdős proved such sets must be finite; n=7 is the current record.",
+    "significance": "key",
+    "relatedConcepts": [
+      "integer distances",
+      "general position",
+      "combinatorial geometry"
+    ],
+    "prerequisites": [
+      "Erdős problems in combinatorial geometry",
+      "integer distance sets in the plane",
+      "general position (no three collinear, no four concyclic)"
+    ]
+  },
+  {
+    "id": "ann-e213-point",
+    "proofId": "erdos-213",
+    "range": {
+      "startLine": 31,
+      "endLine": 32
+    },
+    "type": "definition",
+    "title": "Point Type",
+    "content": "We use **EuclideanSpace ℝ (Fin 2)** as our representation of points in the plane. This is Mathlib's standard type for finite-dimensional Euclidean spaces.",
+    "mathContext": "abbrev Point := EuclideanSpace ℝ (Fin 2). This provides the metric structure we need for distances.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "EuclideanSpace",
+      "plane"
+    ],
+    "prerequisites": [
+      "Mathlib's EuclideanSpace ℝ (Fin 2)",
+      "finite-dimensional Euclidean spaces",
+      "metric structure on the plane"
+    ]
+  },
+  {
+    "id": "ann-e213-collinear",
+    "proofId": "erdos-213",
+    "range": {
+      "startLine": 34,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Collinearity",
+    "content": "Three points are **collinear** if one is a linear combination of the others (they lie on a common line). **NoThreeCollinear** requires no three distinct points from the set are collinear.",
+    "mathContext": "AreCollinear uses vector differences: r - p = t • (q - p) means r lies on the line through p and q. NoThreeCollinear applies this to all triples.",
+    "significance": "key",
+    "relatedConcepts": [
+      "general position",
+      "linear dependence"
+    ],
+    "prerequisites": [
+      "linear dependence of vector differences",
+      "scalar multiples r - p = t • (q - p)",
+      "quantifying over triples of points"
+    ]
+  },
+  {
+    "id": "ann-e213-concyclic",
+    "proofId": "erdos-213",
+    "range": {
+      "startLine": 43,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Concyclicity",
+    "content": "Four points are **concyclic** (or cocircular) if they lie on a common circle. **NoFourConcyclic** forbids any four distinct points from the set lying on a circle.",
+    "mathContext": "AreConcyclic p q r s := ∃ center radius, radius > 0 and all four points are at distance radius from center. This is the standard definition of four points on a circle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "circle",
+      "circumcircle",
+      "general position"
+    ],
+    "prerequisites": [
+      "circles defined by center and radius",
+      "equidistance from a common center",
+      "quantifying over quadruples of points"
+    ]
+  },
+  {
+    "id": "ann-e213-integer-dist",
+    "proofId": "erdos-213",
+    "range": {
+      "startLine": 54,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "Integer Distances",
+    "content": "A set has **integer distances** if for every pair of distinct points, the Euclidean distance is an integer. Combined with general position, this is a severe constraint.",
+    "mathContext": "AllDistancesInteger S := S.Pairwise (fun p q => ∃ n : ℤ, dist p q = n). IsIntegerDistanceSetGP combines all three conditions. ExistsIntDistSetGP n asserts existence of an n-point set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distance",
+      "integers",
+      "Pythagorean"
+    ],
+    "prerequisites": [
+      "Euclidean distance dist p q",
+      "Set.Pairwise over distinct points",
+      "integers ℤ and divisibility constraints"
+    ]
+  },
+  {
+    "id": "ann-e213-anning",
+    "proofId": "erdos-213",
+    "range": {
+      "startLine": 75,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Anning-Erdős Theorem",
+    "content": "**Anning-Erdős (1945)** proved a fundamental finiteness result: any set in the plane with no three collinear and all distances integers must be finite. This doesn't even need the concyclic condition!",
+    "mathContext": "axiom anning_erdos_finite : ∀ S, NoThreeCollinear S → AllDistancesInteger S → S.Finite. This is why finding large examples is hard.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Anning",
+      "Erdős",
+      "finiteness"
+    ],
+    "prerequisites": [
+      "the Anning-Erdős finiteness theorem",
+      "Set.Finite",
+      "axiomatizing a cited result in Lean"
+    ]
+  },
+  {
+    "id": "ann-e213-question",
+    "proofId": "erdos-213",
+    "range": {
+      "startLine": 85,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "Main Question",
+    "content": "**Erdős Problem #213** asks: for all n ≥ 4, does ExistsIntDistSetGP n hold? That is, can we always find n points satisfying all the constraints? This remains OPEN.",
+    "mathContext": "Erdos213Question := ∀ n ≥ 4, ExistsIntDistSetGP n. The status is axiomatized as 'open' since neither proof nor disproof is known.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem",
+      "existence"
+    ],
+    "prerequisites": [
+      "universally quantified existence statements",
+      "open problems with no known proof or disproof",
+      "the ExistsIntDistSetGP predicate"
+    ]
+  },
+  {
+    "id": "ann-e213-harborth",
+    "proofId": "erdos-213",
+    "range": {
+      "startLine": 99,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Harborth's Construction",
+    "content": "**Harborth** proved that n=5 is achievable by explicitly constructing 5 points in general position with integer distances.",
+    "mathContext": "axiom harborth_five : ExistsIntDistSetGP 5. The explicit coordinates involve Pythagorean triples.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Harborth",
+      "construction",
+      "n=5"
+    ],
+    "prerequisites": [
+      "Harborth's explicit five-point construction",
+      "Pythagorean triples",
+      "verifying integer distances in general position"
+    ]
+  },
+  {
+    "id": "ann-e213-kreisel",
+    "proofId": "erdos-213",
+    "range": {
+      "startLine": 108,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Kreisel-Kurz Record",
+    "content": "**Kreisel and Kurz (2008)** achieved the current record: n=7. Their 'integral heptagon' has no three collinear, no four concyclic, and all 21 pairwise distances are integers.",
+    "mathContext": "axiom kreisel_kurz_seven : ExistsIntDistSetGP 7. This has been the record for over 15 years. n=8 remains unknown.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kreisel",
+      "Kurz",
+      "heptagon"
+    ],
+    "prerequisites": [
+      "the Kreisel-Kurz integral heptagon",
+      "checking all 21 pairwise distances",
+      "constructive existence for n=7"
+    ]
+  },
+  {
+    "id": "ann-e213-derived",
+    "proofId": "erdos-213",
+    "range": {
+      "startLine": 114,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Derived Existence Theorems",
+    "content": "From the n=7 construction, we prove n=4,5,6 exist by taking subsets. A subset of a set in general position is still in general position, and inherits integer distances.",
+    "mathContext": "exists_four, exists_six are axioms; exists_five, exists_seven are theorems referencing the axioms. The predicates are preserved under taking subsets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "subset",
+      "inheritance",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "predicates preserved under taking subsets",
+      "monotonicity of general position and integer distances",
+      "deriving n=4,5,6 from the n=7 construction"
+    ]
+  },
+  {
+    "id": "ann-e213-sparsity",
+    "proofId": "erdos-213",
+    "range": {
+      "startLine": 130,
+      "endLine": 134
+    },
+    "type": "concept",
+    "title": "Sparsity Bound",
+    "content": "**Greenfeld-Iliopoulou-Peluse (2024)** proved that integer distance sets in general position in [-N,N]² have size at most O((log N)^C). This extreme sparsity shows such sets are rare.",
+    "mathContext": "axiom gip_sparsity_bound : ∃ C > 0, for all S in [-N,N]² satisfying the conditions, |S| ≤ (log N)^C. This is an unconditional bound (no Bombieri-Lang needed).",
+    "significance": "key",
+    "relatedConcepts": [
+      "sparsity",
+      "upper bound",
+      "logarithmic"
+    ],
+    "prerequisites": [
+      "the Greenfeld-Iliopoulou-Peluse sparsity bound",
+      "logarithmic upper bounds O((log N)^C)",
+      "unconditional results avoiding Bombieri-Lang"
+    ]
+  }
+]

@@ -1,0 +1,152 @@
+[
+  {
+    "id": "ann-gowers-overview",
+    "proofId": "szemeredi-hypergraph-core-oq-01-incomplete-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Stratified SimplicialComplex: Design Rationale",
+    "content": "Two designs for simplicial complexes exist in this codebase: (1) flat — a single Finset of all faces with downward closure (SzemerediHypergraphCoreOQ01.lean); (2) stratified — a function skeleton : Fin dim → Finset (Finset V) giving faces at each dimension level (this file). For Gowers regularity, the stratified design is superior because topCliques is defined by conditioning on the top-level skeleton, which maps directly to the `skeleton (dim-1)` field rather than filtering the whole face set.\n\nThe design choice affects what can be expressed naturally: Gowers regularity conditions on 'the (k-1)-complex underlying H' — a level-specific notion. The Fin-indexed skeleton makes this conditioning definitional rather than definitional-after-filter. This file extends SzemerediHypergraphCore.lean (UHypergraph, kPartiteDensity, naive regularity) with the relative density infrastructure needed for the hypergraph counting lemma.",
+    "mathContext": "Two simplicial complex designs: (1) flat: $\\mathcal{F} \\subseteq 2^V$ with $\\forall e \\in \\mathcal{F}, f \\subsetneq e \\Rightarrow f \\in \\mathcal{F}$; (2) stratified: $\\text{skeleton} : \\text{Fin}(\\dim) \\to \\text{Finset}(\\text{Finset}\\,V)$ with $\\text{skeleton}(j)$ = $(j+1)$-faces. The stratified design makes $\\text{topCliques}$ a direct lookup: $T$ is a topClique iff every $(\\dim)$-subset of $T$ is in $\\text{skeleton}(\\dim-1)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "stratified simplicial complex",
+      "flat simplicial complex",
+      "Fin dim indexing",
+      "topCliques"
+    ],
+    "prerequisites": [
+      "simplicial complexes (downward-closed face sets)",
+      "Szemerédi's graph regularity lemma",
+      "k-uniform hypergraphs (UHypergraph)"
+    ]
+  },
+  {
+    "id": "ann-simplicial-structure",
+    "proofId": "szemeredi-hypergraph-core-oq-01-incomplete-01",
+    "range": {
+      "startLine": 44,
+      "endLine": 82
+    },
+    "type": "definition",
+    "title": "SimplicialComplex: Stratified Face Structure",
+    "content": "The `SimplicialComplex V dim` structure has three fields:\n- `skeleton : Fin dim → Finset (Finset V)` — the faces at each dimension level, where `skeleton j` contains $(j.val + 1)$-element faces for $j : \\text{Fin}(\\dim)$\n- `uniform` — every face at level $j$ has cardinality exactly $j.val + 1$\n- `down_closed` — every $j$-face's sub-faces of size $j$ are $(j-1)$-faces\n\n`IsSubComplex C' C` is the pointwise subset relation: $C'.\\text{skeleton}(j) \\subseteq C.\\text{skeleton}(j)$ for all $j$. This is a partial order with `refl` and `trans` lemmas.\n\n`completeComplex V dim` fills every level with all $(j+1)$-subsets of $V$. It's the top element of the IsSubComplex order. The proof that `completeComplex` satisfies `down_closed` is elegant: a sub-face of a subset of $V$ is still a subset of $V$, and its cardinality is exactly right.",
+    "mathContext": "$\\text{SimplicialComplex}(V, \\dim)$: $\\text{skeleton}(j) \\subseteq \\binom{V}{j+1}$ with $f \\subsetneq e \\in \\text{skeleton}(j)$, $|f| = j \\Rightarrow f \\in \\text{skeleton}(j-1)$. $\\text{completeComplex}$: $\\text{skeleton}(j) = \\binom{V}{j+1}$ (all $(j+1)$-subsets). $C' \\subseteq C \\Leftrightarrow \\forall j,\\, \\text{skeleton}_{C'}(j) \\subseteq \\text{skeleton}_C(j)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SimplicialComplex",
+      "IsSubComplex",
+      "completeComplex",
+      "Fin dim indexing",
+      "downward closure"
+    ],
+    "prerequisites": [
+      "abstract simplicial complexes",
+      "Lean 4 structures and fields",
+      "Finset.powerset",
+      "Fin type in Lean"
+    ]
+  },
+  {
+    "id": "ann-top-cliques",
+    "proofId": "szemeredi-hypergraph-core-oq-01-incomplete-01",
+    "range": {
+      "startLine": 85,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "topCliques: the Key Linking Construction",
+    "content": "topCliques hdim C = { T ∈ pow(V) | |T| = dim+1 ∧ ∀ F ⊆ T with |F| = dim, F ∈ C.skeleton(dim-1) }. For a k-graph H with C : SimplicialComplex V (k-1), topCliques(C) = k-subsets of V all of whose (k-1)-subsets are in C's top level. This is the 'support' of the complex relative to H: the k-cliques that C endorses as potential H-edges. topCliques_completeComplex proves topCliques(complete) = all k-subsets.\n\nTwo key theorems are proved here:\n- `topCliques_completeComplex`: For the complete complex, every $(\\dim+1)$-subset qualifies (proof: sub-faces land in the complete skeleton by definition).\n- `topCliques_mono`: Sub-complex implies sub-topCliques (proof: if $T$ qualifies for $C'$ and $C' \\subseteq C$, then $T$ also qualifies for $C$).",
+    "mathContext": "$\\text{topCliques}(\\mathcal{C}) = \\{T \\subseteq V : |T| = \\dim+1 \\text{ and } \\forall F \\subsetneq T \\text{ with } |F| = \\dim,\\ F \\in \\mathcal{C}.\\text{skeleton}(\\dim-1)\\}$. For a $k$-graph $H$ with $\\mathcal{C} : \\text{SimplicialComplex}(V, k-1)$, topCliques bridges the simplicial complex (combinatorial object) and the hypergraph density (analytic object). Density relative to $\\mathcal{C}$ measures what fraction of endorsed $k$-sets are actual $H$-edges.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SimplicialComplex",
+      "relativeKDensity",
+      "Gowers regularity",
+      "topCliques_mono"
+    ],
+    "prerequisites": [
+      "SimplicialComplex (previous section)",
+      "Finset filtering in Lean",
+      "powerset and subset combinatorics"
+    ]
+  },
+  {
+    "id": "ann-relative-density",
+    "proofId": "szemeredi-hypergraph-core-oq-01-incomplete-01",
+    "range": {
+      "startLine": 123,
+      "endLine": 157
+    },
+    "type": "definition",
+    "title": "relativeKDensity: Density Conditioning on Complex",
+    "content": "relativeKDensity hk H C = |H.edges ∩ topCliques(C)| / |topCliques(C)|, returning 0 when empty. The intersection H.edges ∩ topCliques(C) selects H-edges that are 'endorsed' by C. The theorem relativeKDensity_completeComplex shows that when C is the complete complex (all j-subsets as faces), topCliques(C) = all k-subsets of V, so the relative density equals the global density |H.edges| / C(|V|, k). Proof: H.edges ⊆ all-k-subsets by H.uniform, so H.edges ∩ D = H.edges by Finset.inter_eq_left.\n\nThree basic properties are proved:\n- `nonneg`: density ≥ 0 (by `positivity` after handling the empty case)\n- `le_one`: density ≤ 1 (intersection ≤ denominator by `Finset.card_le_card (Finset.inter_subset_right)`)\n- `empty`: density of the empty hypergraph is 0",
+    "mathContext": "$d(H \\mid \\mathcal{C}) = |H.\\text{edges} \\cap \\text{topCliques}(\\mathcal{C})| / |\\text{topCliques}(\\mathcal{C})|$. This is the core definition enabling Gowers regularity. By conditioning on sub-complexes $\\mathcal{C}' \\subseteq \\mathcal{C}$, we measure whether $H$ has roughly the same density among topCliques endorsed by $\\mathcal{C}'$ as among all topCliques of $\\mathcal{C}$. Key property: $d(H \\mid \\mathcal{C}_{\\text{complete}}) = |H.\\text{edges}| / \\binom{|V|}{k}$ (global density), proved via `Finset.inter_eq_left.mpr` since $H.\\text{edges} \\subseteq \\text{all-}k\\text{-subsets}$ by $H.\\text{uniform}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "topCliques",
+      "globalDensity",
+      "IsGowersRegular",
+      "Finset.inter_eq_left"
+    ],
+    "prerequisites": [
+      "topCliques (previous section)",
+      "UHypergraph.uniform field",
+      "rational arithmetic in Lean (ℚ)",
+      "Finset intersection and cardinality"
+    ]
+  },
+  {
+    "id": "ann-gowers-regularity",
+    "proofId": "szemeredi-hypergraph-core-oq-01-incomplete-01",
+    "range": {
+      "startLine": 163,
+      "endLine": 186
+    },
+    "type": "definition",
+    "title": "IsGowersRegular: Stability Under Dense Sub-Complexes",
+    "content": "IsGowersRegular hk H ε δ C says: for all sub-complexes C' ⊆ C with |topCliques(C')| ≥ δ·|topCliques(C)|, we have |d(H | C') - d(H | C)| ≤ ε. The δ condition ensures C' is 'dense' — it endorses at least a δ fraction of C's topCliques. Monotonicity: (ε,δ)-regular → (ε',δ)-regular for ε' ≥ ε (larger tolerance easier); (ε,δ)-regular → (ε,δ')-regular for δ' ≥ δ (larger density threshold means fewer qualifying C', so easier to satisfy).\n\nFor graphs ($k = 2$): A 2-graph $H$ on bipartition $(A, B)$ is classically $\\varepsilon$-regular if for all $A' \\subseteq A$, $B' \\subseteq B$ with $|A'| \\geq \\varepsilon|A|$, $|B'| \\geq \\varepsilon|B|$, the edge density between $A'$ and $B'$ is within $\\varepsilon$ of the density between $A$ and $B$. `IsGowersRegular` generalizes this to hypergraphs using the topClique structure instead of vertex bipartitions.",
+    "mathContext": "Gowers $(\\varepsilon, \\delta)$-regularity: $\\forall \\mathcal{C}' \\subseteq \\mathcal{C}$ with $|\\text{topCliques}(\\mathcal{C}')| \\geq \\delta\\cdot|\\text{topCliques}(\\mathcal{C})|$, $|d(H \\mid \\mathcal{C}') - d(H \\mid \\mathcal{C})| \\leq \\varepsilon$. For graphs ($k=2$) this reduces to classical bipartite $\\varepsilon$-regularity of Szemerédi. The key difference from naive regularity: conditions are on the complex structure (topological sub-complexes) rather than vertex sub-sets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "topCliques_mono",
+      "IsSubComplex",
+      "relativeKDensity",
+      "naive_implies_gowers"
+    ],
+    "prerequisites": [
+      "relativeKDensity (previous section)",
+      "IsSubComplex partial order",
+      "Szemerédi's graph regularity (background)",
+      "rational inequalities in Lean"
+    ]
+  },
+  {
+    "id": "ann-naive-implies-gowers",
+    "proofId": "szemeredi-hypergraph-core-oq-01-incomplete-01",
+    "range": {
+      "startLine": 188,
+      "endLine": 244
+    },
+    "type": "insight",
+    "title": "naive_implies_gowers: Open Sorry and relativeKDensity_completeComplex",
+    "content": "This section contains both the deepest completed result and the one remaining sorry.\n\n**globalDensity and relativeKDensity_completeComplex (proved)**: `globalDensity H` = fraction of all $k$-subsets that are $H$-edges. The theorem `relativeKDensity_completeComplex` shows these coincide when $\\mathcal{C}$ = completeComplex. Proof: the topCliques of the complete complex are exactly all $k$-subsets (by `topCliques_completeComplex`), and since every $H$-edge has cardinality $k$ (by `H.uniform`), $H.\\text{edges} \\subseteq \\text{all-}k\\text{-subsets}$. Then `Finset.inter_eq_left.mpr` gives the intersection is just $H.\\text{edges}$.\n\n**naive_implies_gowers (sorry)**: The sorry reflects a genuine mathematical difficulty. Naive regularity conditions on vertex sub-parts (transversals $V_1' \\times ... \\times V_k'$), while Gowers regularity conditions on sub-complexes (topological objects). Sub-complex topCliques are NOT generally expressible as transversals of vertex sub-parts, so the direction naive → Gowers requires a structural hypothesis on the sub-complex (e.g., it must arise from vertex sub-selections). The sorry is honest and well-documented: this reduction is hard and requires reformulation or additional assumptions.",
+    "mathContext": "$d(H \\mid \\mathcal{C}_{\\text{complete}}) = |H.\\text{edges}| / \\binom{|V|}{k}$ = globalDensity. Proof: $\\text{topCliques}(\\mathcal{C}_{\\text{complete}}) = \\binom{V}{k}$ (all $k$-subsets), $H.\\text{edges} \\subseteq \\binom{V}{k}$ (by $H.\\text{uniform}$), so $H.\\text{edges} \\cap \\binom{V}{k} = H.\\text{edges}$ (by `Finset.inter_eq_left`). Sorry: naive $\\varepsilon$-regularity is a vertex-partition condition; Gowers regularity is a sub-complex condition. The two are not directly comparable without structural assumptions on $\\mathcal{C}'$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "globalDensity",
+      "relativeKDensity_completeComplex",
+      "naive_implies_gowers",
+      "Finset.inter_eq_left",
+      "IsHypergraphRegular"
+    ],
+    "prerequisites": [
+      "relativeKDensity (previous section)",
+      "UHypergraph.uniform field",
+      "IsHypergraphRegular from SzemerediHypergraphCore.lean",
+      "topCliques_completeComplex theorem"
+    ]
+  }
+]

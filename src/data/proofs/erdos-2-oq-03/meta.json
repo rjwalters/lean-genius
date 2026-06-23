@@ -1,0 +1,107 @@
+{
+  "id": "erdos-2-oq-03",
+  "title": "Erdős Problem #2 (OQ-03): Structural Cost of a Large Minimum Modulus",
+  "slug": "erdos-2-oq-03",
+  "description": "Axiom-free structural arithmetic behind the covering-systems bound problem: any covering system with minimum modulus m has at least m congruence classes and a modulus ≥ 2m−1.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://erdosproblems.com/2",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos2OQ03.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "covering-systems",
+      "modular-arithmetic",
+      "combinatorics",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": 2,
+    "erdosUrl": "https://erdosproblems.com/2",
+    "erdosProblemStatus": "solved",
+    "axiomCount": 0,
+    "lineCount": 234,
+    "theoremCount": 7,
+    "definitionCount": 10,
+    "dateAdded": "2026-06-21",
+    "assumptions": "All main theorems are conditional on the classical reciprocal-sum density bound Σ 1/nᵢ ≥ 1 for covering systems, which is supplied as an explicit hypothesis (not an axiom). The parent entry erdos-2 records this bound as the axiom Erdos2.reciprocal_sum_ge_one; here it appears only as a theorem hypothesis, so every declaration is axiom-free (depends solely on propext, Classical.choice, Quot.sound).",
+    "relatedProblems": [
+      {
+        "id": "erdos-2",
+        "relationship": "Parent entry: formalizes the solved status of the minimum-modulus problem (Hough 2015; Balister–Bollobás–Morris–Sahasrabudhe–Tiba 2022, bound 616,000; Owens 2014, construction with min modulus 42) via three axioms, including the density bound reciprocal_sum_ge_one. OQ-03 asks whether the 616,000 upper bound can be improved. This entry isolates the elementary counting constraints any such bound must respect, taking the density bound as a hypothesis rather than an axiom, and is self-contained because the parent file currently fails to compile under Lean 4.26.0 (a forward reference to the balister_bound axiom)."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős (c. 1950) asked whether the minimum modulus of a covering system with distinct moduli ≥ 2 can be arbitrarily large — 'perhaps my favourite problem', with a $1000 prize. Constructions raised the record minimum modulus to 2, 3, 20, 36, 40, 42 (Owens 2014), and most experts expected the answer YES. Hough (2015) stunned the field by proving NO: every covering system has a modulus ≤ 10^16, via the Lovász Local Lemma building on Filaseta–Ford–Konyagin–Pomerance–Yu (2007). Balister, Bollobás, Morris, Sahasrabudhe and Tiba (2022) sharpened the bound to 616,000 with their 'distortion method' (Annals of Mathematics). The exact maximum minimum modulus is open, lying between 42 and 616,000. Open question OQ-03 asks specifically whether the 616,000 upper bound can be pushed lower.",
+    "problemStatement": "OQ-03: Can the Balister et al. upper bound of 616,000 on the minimum modulus of a covering system be improved? This is a wide-open quantitative research problem and is NOT resolved here. Instead this entry formalizes, with no axioms, the elementary structural arithmetic that every covering system with a large minimum modulus must obey — the soft consequences of the classical density inequality Σ 1/nᵢ ≥ 1.",
+    "proofStrategy": "Every theorem is conditional on the density bound cs.reciprocalSum ≥ 1, given as a hypothesis. (1) reciprocalSum_le: if all moduli are ≥ m then Σ 1/nᵢ ≤ k/m, since each summand is ≤ 1/m (List.sum_le_card_nsmul). (2) card_classes_ge: combining with Σ 1/nᵢ ≥ 1 gives k ≥ m — a large minimum modulus forces many classes. (3) maxModulus_ge: if moreover the moduli are distinct and all ≤ M, then the k moduli are distinct integers in [m, M], so k ≤ M+1−m (List.toFinset_card_of_nodup + Nat.card_Icc); with k ≥ m this yields 2m ≤ M+1, i.e. a modulus ≥ 2m−1 is forced. (4) improvement_cost packages both. (5) card_bound_tight shows k ≥ m is sharp via the trivial {0,1 mod 2} cover (k = m = 2, reciprocal sum 1).",
+    "significance": "These bounds make explicit why pushing the lower bound (Owens' 42) is combinatorially expensive — a minimum modulus m requires at least m congruence classes and forces the moduli to span a factor-2 range — and frame the constraints any improved upper bound for OQ-03 must respect. The contribution is honest about scope: it is the easy structural skeleton, not a quantitative improvement to 616,000, and the deep density bound itself is assumed rather than reproved."
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Self-contained covering-system definitions",
+      "startLine": 60,
+      "endLine": 93,
+      "summary": "Re-introduces CongruenceClass (residue, modulus ≥ 2), CoveringSystem (a nonempty list of classes covering ℤ), and the derived notions moduli, hasDistinctModuli, hasMinModulusAtLeast, and reciprocalSum = Σ 1/nᵢ. The file is self-contained because the parent Erdos2Problem.lean does not currently compile.",
+      "mathContext": "A covering system is a finite family of arithmetic progressions aᵢ mod nᵢ (nᵢ ≥ 2) whose union is all of ℤ. The minimum modulus is min nᵢ."
+    },
+    {
+      "id": "reciprocal-sum-bound",
+      "title": "§ The reciprocal-sum upper bound",
+      "startLine": 95,
+      "endLine": 117,
+      "summary": "reciprocalSum_le: if every modulus is ≥ m ≥ 1 then Σ 1/nᵢ ≤ k/m, where k is the number of classes. Each summand 1/nᵢ ≤ 1/m, and the list-sum bound List.sum_le_card_nsmul does the rest.",
+      "mathContext": "This is the elementary upper half of the density picture; the matching lower half (Σ 1/nᵢ ≥ 1) is the classical density fact assumed as a hypothesis."
+    },
+    {
+      "id": "class-count",
+      "title": "§ Lower bound on the number of classes",
+      "startLine": 118,
+      "endLine": 137,
+      "summary": "card_classes_ge: a covering system with minimum modulus ≥ m has at least m congruence classes (k ≥ m), obtained by combining 1 ≤ Σ 1/nᵢ ≤ k/m.",
+      "mathContext": "The elementary engine behind quantitative work on Erdős #2: a large minimum modulus forces a large number of progressions."
+    },
+    {
+      "id": "spread",
+      "title": "§ The moduli must span a wide range",
+      "startLine": 138,
+      "endLine": 184,
+      "summary": "maxModulus_ge: distinct moduli all in [m, M] force 2m ≤ M+1 (a modulus ≥ 2m−1 exists), since k distinct integers in [m, M] satisfy k ≤ M+1−m while k ≥ m. improvement_cost packages the count and spread bounds.",
+      "mathContext": "The moduli of a covering system cannot be confined to a narrow window just above the minimum; this is the structural constraint any improved bound for OQ-03 must respect."
+    },
+    {
+      "id": "tightness",
+      "title": "§ Tightness of the class-count bound",
+      "startLine": 186,
+      "endLine": 234,
+      "summary": "The trivial covering system {0 mod 2, 1 mod 2} has reciprocal sum exactly 1 and realises k = m = 2 (card_bound_tight), so the bound k ≥ m cannot be improved in general.",
+      "mathContext": "Demonstrates sharpness of card_classes_ge at the smallest possible minimum modulus."
+    }
+  ],
+  "conclusion": {
+    "summary": "We give an axiom-free formalization of the structural arithmetic underlying Erdős Problem #2 and its open question OQ-03. Conditional only on the classical density bound Σ 1/nᵢ ≥ 1 (supplied as a hypothesis, not an axiom), we prove that a covering system with minimum modulus m has at least m congruence classes and a modulus at least 2m−1, and that the class-count bound is sharp.",
+    "implications": "These inequalities quantify the combinatorial cost of a large minimum modulus and constrain any covering system relevant to improving the known bounds (Owens' 42 from below, Balister et al.'s 616,000 from above). The deep quantitative question OQ-03 — whether 616,000 can be improved — remains open and is untouched here.",
+    "openQuestions": [
+      "Can the Balister et al. upper bound of 616,000 be improved? (OQ-03, open)",
+      "What is the exact maximum possible minimum modulus, between 42 and 616,000?",
+      "Can the classical density bound Σ 1/nᵢ ≥ 1 itself be formalized axiom-free (e.g. via a residue-counting argument), removing the remaining hypothesis?"
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Set", "Finset"],
+    "namespace": "Erdos2OQ03",
+    "lineCount": 234,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos2OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

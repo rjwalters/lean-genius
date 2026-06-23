@@ -1,0 +1,117 @@
+{
+  "id": "fundamental-theorem-calculus-oq-01",
+  "name": "FTC Generalization to Lebesgue Integral",
+  "status": "surveyed",
+  "phase": "OBSERVE",
+  "knowledge": {
+    "insights": [
+      "Parent FundamentalTheoremCalculus.lean complete (165 lines, 0 axioms, 0 sorries)",
+      "Parent proves FTC Parts 1 and 2 using Mathlib interval integral",
+      "Lebesgue FTC: if f is absolutely continuous, f' exists a.e. and ∫[a,b] f' = f(b)-f(a)",
+      "Mathlib has MeasureTheory.Integral.Bochner.FundThmCalculus with Lebesgue integral support",
+      "Key Mathlib theorems: integral_hasDerivAt_right, integral_eq_sub_of_hasDerivAt already use measure theory",
+      "Lipschitz→AC arithmetic: K*Σ(bk-ak) ≤ K*(ε/(K+1)) < ε by div_lt_self when K+1>1",
+      "AC→uniform continuity: instantiate with n=1, disjointness vacuous via Subsingleton.elim, use abs_sub_comm for direction",
+      "BLOCKED: Jordan decomposition (BV → difference of monotone) NOT in Mathlib - key missing piece for axiom elimination",
+      "BLOCKED: AbsolutelyContinuousOn is custom-defined (not in Mathlib) - no Mathlib AC→BV path exists",
+      "Cantor function sorry requires full construction (~200+ lines): define via ternary expansion, prove continuous, monotone, not AC",
+      "Path to lebesgue_ftc_differentiable: AC→BV (provable) → Jordan decomp (MISSING) → Monotone.ae_differentiableAt (exists)",
+      "BoundedVariationOn and eVariationOn exist in Mathlib.Analysis.BoundedVariation",
+      "Monotone.ae_differentiableAt confirmed working in Mathlib (used in line 236)"
+    ],
+    "builtItems": [
+      "lipschitz_implies_ac: proved via Finset.sum_le_sum + mul_le_mul_of_nonneg_left + div_lt_self chain",
+      "ac_implies_uniformly_continuous: instantiate AC with n=1, Fin 1 functions, Subsingleton.elim for vacuous disjointness"
+    ],
+    "openQuestions": [
+      "What specific Lebesgue generalization is needed beyond what Mathlib already provides?",
+      "Does Mathlib have the Lebesgue differentiation theorem for absolutely continuous functions?"
+    ],
+    "nextSteps": [],
+    "progressSummary": "COMPLETE: 2A blocked on missing Mathlib Jordan decomposition, 14T proved, 2S (blocked). Infrastructure assessment done."
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/FundamentalTheoremCalculus.lean",
+      "filename": "FundamentalTheoremCalculus.lean",
+      "lineCount": 166,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculus.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusLebesgue.lean",
+      "filename": "FundamentalTheoremCalculusLebesgue.lean",
+      "lineCount": 275,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusLebesgue.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusOQ04.lean",
+      "filename": "FundamentalTheoremCalculusOQ04.lean",
+      "lineCount": 176,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusOQ04.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusStokes.lean",
+      "filename": "FundamentalTheoremCalculusStokes.lean",
+      "lineCount": 366,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokes.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusStokesAristotle.lean",
+      "filename": "FundamentalTheoremCalculusStokesAristotle.lean",
+      "lineCount": 64,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokesAristotle.lean"
+    }
+  ],
+  "relatedProofs": [
+    "fundamental-theorem-calculus",
+    "fundamental-theorem-calculus-oq-01",
+    "fundamental-theorem-calculus-oq-02"
+  ],
+  "tags": [],
+  "problemStatement": {
+    "formal": "",
+    "plain": "Formalizes the Lebesgue generalization of the Fundamental Theorem of Calculus. Defines absolutely continuous functions (not yet in Mathlib), states the Lebesgue FTC (AC → a.e. differentiable, integral of derivative = net change), and connects to Mathlib's Vitali covering theorem, Lebesgue density theorem, and monotone a.e. differentiability.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "The parent FundamentalTheoremCalculus.lean entry is recorded as complete with no axioms or sorries.",
+      "Mathlib interval-integral support covers the parent FTC Parts 1 and 2.",
+      "The survey proves Lipschitz implies the custom absolutely-continuous condition.",
+      "The survey proves the custom absolutely-continuous condition implies uniform continuity.",
+      "Mathlib support for monotone almost-everywhere differentiability is identified and connected to the path forward."
+    ],
+    "open": [
+      "The Lebesgue FTC itself is not complete in this entry.",
+      "Jordan decomposition from bounded variation to a difference of monotone functions is recorded as missing Mathlib infrastructure.",
+      "The custom AbsolutelyContinuousOn definition still needs a Mathlib-aligned replacement or bridge.",
+      "The Cantor-function counterexample remains a substantial future construction."
+    ],
+    "goal": "Keep this as a survey and infrastructure map for a future Lebesgue FTC proof, not as a claim that the Lebesgue FTC has been completed."
+  }
+}

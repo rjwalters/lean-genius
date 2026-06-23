@@ -1,0 +1,268 @@
+[
+  {
+    "id": "ann-e580-header",
+    "proofId": "erdos-580",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Problem Overview: The Loebl-Komlós-Sós Conjecture",
+    "content": "**Erdős Problem #580: The Loebl-Komlós-Sós Conjecture**\n\nAlso called the $(n/2, n/2, n/2)$ conjecture, this is one of the central open problems (now resolved for large $n$) in extremal graph theory:\n\nIf $G$ has $n$ vertices and at least $n/2$ vertices of degree $\\geq n/2$, must $G$ contain every tree on $\\leq n/2$ vertices?\n\n**Answer: YES for large $n$** — proved by Yi Zhao (2011)\n\n**Historical Timeline:**\n- **EFLS95**: Conjecture posed by Erdős, Füredi, Loebl, and Sós\n- **AKS 1995**: Ajtai, Komlós, Szemerédi proved the asymptotic version with $(1+\\varepsilon)n/2$ factor\n- **2000s**: Piguet-Stein proved special cases (caterpillar trees, bounded-degree trees)\n- **Zhao 2011**: Full conjecture for sufficiently large $n$ via Regularity Lemma\n- **2017**: Hladký-Komlós-Piguet-Simonovits-Stein-Szemerédi announced proof for all $n$",
+    "mathContext": "The conjecture states: $\\exists N_0$ such that $\\forall n \\geq N_0$, if $G$ is a graph on $n$ vertices with $|\\{v \\in V(G) : \\deg(v) \\geq n/2\\}| \\geq n/2$, then $T \\subseteq G$ for every tree $T$ with $|V(T)| \\leq n/2$. This is a forced subgraph problem: global degree conditions imply universal tree containment.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tree embedding",
+      "Degree conditions",
+      "Szemerédi Regularity Lemma",
+      "Extremal graph theory",
+      "Blow-up lemma"
+    ],
+    "prerequisites": [
+      "Graph theory basics",
+      "Tree structures",
+      "Degree sequences"
+    ]
+  },
+  {
+    "id": "ann-e580-imports",
+    "proofId": "erdos-580",
+    "range": {
+      "startLine": 26,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Mathlib Graph Theory Imports",
+    "content": "Imports Mathlib's `SimpleGraph.Basic` for the core simple graph type, `SimpleGraph.Connectivity.Subgraph` for subgraph notions, `SimpleGraph.Maps` for graph homomorphisms, and `Data.Fintype.Card` for finite cardinality. The `SimpleGraph` and `Finset` namespaces are opened for convenience.",
+    "mathContext": "Mathlib's `SimpleGraph V` represents a simple graph on vertex type $V$ as a symmetric irreflexive relation. `neighborFinset` provides the finite neighbor set of a vertex, enabling computable degree calculations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Fintype",
+      "Mathlib graph theory"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
+  },
+  {
+    "id": "ann-e580-degree",
+    "proofId": "erdos-580",
+    "range": {
+      "startLine": 46,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Vertex Degree and High-Degree Vertices",
+    "content": "**vertexDegree G v:** The degree of vertex $v$ in graph $G$, defined as $|N_G(v)|$ via `(G.neighborFinset v).card`. This is noncomputable because `neighborFinset` requires `DecidableRel G.Adj`.\n\n**highDegreeVertices G k:** The Finset of vertices with degree $\\geq k$, computed by filtering `Finset.univ` with the degree predicate.\n\n**numVertices V:** Simply `Fintype.card V`, the total number of vertices.\n\nThe LKS condition requires `(highDegreeVertices G (n/2)).card ≥ n/2` where $n$ = `numVertices V`.",
+    "mathContext": "For a vertex $v$ in graph $G$, $\\deg_G(v) = |N_G(v)| = |\\{u \\in V(G) : uv \\in E(G)\\}|$. The high-degree set is $H_k(G) = \\{v \\in V(G) : \\deg(v) \\geq k\\}$. The LKS condition is $|H_{n/2}(G)| \\geq n/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Degree sequence",
+      "Neighbor set",
+      "Erdős-Gallai theorem",
+      "Degree conditions for subgraph containment"
+    ],
+    "prerequisites": [
+      "SimpleGraph.neighborFinset",
+      "Finset.filter",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-e580-tree",
+    "proofId": "erdos-580",
+    "range": {
+      "startLine": 62,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "Tree Structure and Cayley's Formula",
+    "content": "**Tree k:** A structure carrying a vertex `Finset ℕ`, an edge `Finset (ℕ × ℕ)`, and a proof `card_vertices : vertices.card = k`. This is a combinatorial representation rather than using Mathlib's connectivity-based tree definition.\n\n**allTrees k:** The collection of all trees on $k$ vertices, defined as `Set.univ`.\n\n**cayley_formula:** Axiomatizes Cayley's celebrated result: the number of labeled trees on $k \\geq 2$ vertices is exactly $k^{k-2}$. Arthur Cayley first stated this in 1889; proofs include Prüfer sequences and the matrix tree theorem.",
+    "mathContext": "Cayley's formula: $|\\{\\text{labeled trees on } [k]\\}| = k^{k-2}$ for $k \\geq 2$. For the LKS conjecture, the quantity of interest is trees up to isomorphism (unlabeled), but Cayley's formula gives context on the combinatorial richness of tree structures.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cayley's formula",
+      "Prüfer sequence",
+      "Matrix tree theorem",
+      "Labeled vs unlabeled trees",
+      "Kirchhoff's theorem"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Tree graph theory",
+      "Combinatorial counting"
+    ]
+  },
+  {
+    "id": "ann-e580-embedding",
+    "proofId": "erdos-580",
+    "range": {
+      "startLine": 90,
+      "endLine": 111
+    },
+    "type": "definition",
+    "title": "Tree Embedding Predicate",
+    "content": "**TreeEmbeds T G:** Asserts existence of an injective map $f: \\mathrm{Fin}\\, k \\to V$ that preserves edges: if $(i, j) \\in T.\\text{edges}$, then $G.\\text{Adj}\\, (f\\, i)\\, (f\\, j)$. This captures subgraph isomorphism — the tree is realized as an induced pattern in $G$.\n\n**ContainsAllTreesUpTo G k:** The universal tree containment property: for all $m \\leq k$ and all trees $T$ on $m$ vertices, $T$ embeds in $G$. The LKS conjecture asks when this holds for $k = n/2$.",
+    "mathContext": "A graph $G$ **contains** a tree $T$ if there exists an injective homomorphism $f: V(T) \\hookrightarrow V(G)$ with $uv \\in E(T) \\Rightarrow f(u)f(v) \\in E(G)$. The property $\\text{ContainsAllTreesUpTo}(G, k) \\equiv \\forall T$ with $|V(T)| \\leq k, T \\subseteq G$ is the target conclusion of the LKS conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Graph homomorphism",
+      "Subgraph isomorphism",
+      "Function.Injective",
+      "Tree containment"
+    ],
+    "prerequisites": [
+      "Function.Injective",
+      "Fin type",
+      "SimpleGraph.Adj"
+    ]
+  },
+  {
+    "id": "ann-e580-lks-condition",
+    "proofId": "erdos-580",
+    "range": {
+      "startLine": 112,
+      "endLine": 133
+    },
+    "type": "definition",
+    "title": "The LKS and Generalized LKS Conditions",
+    "content": "**satisfiesLKS G:** The $(n/2, n/2, n/2)$ condition: `(highDegreeVertices G (n/2)).card ≥ n/2` where $n$ = `numVertices V`. This is the exact degree condition from the Loebl-Komlós-Sós conjecture.\n\n**satisfiesGeneralizedLKS G k:** The Komlós-Sós generalization: `(highDegreeVertices G k).card ≥ n/2`. Here the degree threshold $k$ is decoupled from $n/2$, giving a strictly stronger conjecture when $k < n/2$.",
+    "mathContext": "The LKS condition $|H_{n/2}(G)| \\geq n/2$ is a **median-type** condition: at least half the vertices have degree above the median threshold $n/2$. Compare with the Erdős-Sós conjecture's **average-type** condition $\\bar{d}(G) > k-2$. The generalization to arbitrary $k$ is the Komlós-Sós conjecture: $|H_k(G)| \\geq n/2 \\Rightarrow G \\supseteq T$ for all trees $T$ with $|V(T)| \\leq k+1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Median degree",
+      "Degree conditions",
+      "Erdős-Sós conjecture",
+      "Turán-type conditions"
+    ],
+    "prerequisites": [
+      "highDegreeVertices",
+      "numVertices",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-e580-lks-conj",
+    "proofId": "erdos-580",
+    "range": {
+      "startLine": 134,
+      "endLine": 158
+    },
+    "type": "definition",
+    "title": "Formal LKS and Komlós-Sós Conjectures",
+    "content": "**LKSConjecture:** The full formal statement quantifies over all finite types $V$ and simple graphs $G$ on $V$: if `satisfiesLKS G` then `ContainsAllTreesUpTo G (numVertices V / 2)`. This is a Prop-valued definition.\n\n**KomlosSosConjecture:** The generalization adds a universal quantifier over $k$: if `satisfiesGeneralizedLKS G k` then `ContainsAllTreesUpTo G k`. Note the Komlós-Sós conjecture strictly generalizes LKS (take $k = n/2$).",
+    "mathContext": "The LKS conjecture: $\\forall n, \\forall G$ on $n$ vertices, $|H_{n/2}(G)| \\geq n/2 \\Rightarrow G \\supseteq T$ for all trees $T$ with $|V(T)| \\leq n/2$.\n\nKomlós-Sós conjecture: $\\forall n, k, \\forall G$ on $n$ vertices, $|H_k(G)| \\geq n/2 \\Rightarrow G \\supseteq T$ for all trees $T$ with $|V(T)| \\leq k+1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Universal containment",
+      "Forced subgraphs",
+      "Conjecture hierarchy"
+    ],
+    "prerequisites": [
+      "satisfiesLKS",
+      "ContainsAllTreesUpTo",
+      "Universal quantification over types"
+    ]
+  },
+  {
+    "id": "ann-e580-aks",
+    "proofId": "erdos-580",
+    "range": {
+      "startLine": 159,
+      "endLine": 176
+    },
+    "type": "concept",
+    "title": "Ajtai-Komlós-Szemerédi Asymptotic Theorem",
+    "content": "**AKS_theorem:** For any $\\varepsilon > 0$, there exists $N$ such that for all graphs $G$ on $\\geq N$ vertices: if at least $\\lceil(1+\\varepsilon)n/2\\rceil$ vertices have degree $\\geq \\lceil(1+\\varepsilon)n/2\\rceil$, then $G$ contains every tree on $\\leq n/2$ vertices.\n\nThis 1995 result by Ajtai, Komlós, and Szemerédi was the first major progress on the LKS conjecture. The $(1+\\varepsilon)$ factor was later removed by Zhao.",
+    "mathContext": "The AKS theorem: $\\forall \\varepsilon > 0, \\exists N_0$ such that $\\forall n \\geq N_0$, if $|H_{\\lceil(1+\\varepsilon)n/2\\rceil}(G)| \\geq \\lceil(1+\\varepsilon)n/2\\rceil$, then $G \\supseteq T$ for all trees $T$ with $|V(T)| \\leq n/2$. Published in 'On a conjecture of Loebl' (1995).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Asymptotic results",
+      "Regularity Lemma",
+      "Epsilon-removal",
+      "Ajtai-Komlós-Szemerédi"
+    ],
+    "prerequisites": [
+      "Real analysis (ε > 0)",
+      "Nat.ceil",
+      "highDegreeVertices"
+    ]
+  },
+  {
+    "id": "ann-e580-zhao",
+    "proofId": "erdos-580",
+    "range": {
+      "startLine": 177,
+      "endLine": 196
+    },
+    "type": "concept",
+    "title": "Zhao's Theorem and the Main Result",
+    "content": "**zhao_theorem:** Axiomatizes Zhao's 2011 result: $\\exists N$ such that for all $G$ on $\\geq N$ vertices, `satisfiesLKS G → ContainsAllTreesUpTo G (n/2)`. This removes the $(1+\\varepsilon)$ factor from the AKS theorem.\n\n**erdos_580:** The main theorem of this formalization, derived in a single line as `zhao_theorem`. This demonstrates that the logical content is entirely captured by Zhao's result.\n\nZhao's proof strategy: (1) apply Szemerédi's Regularity Lemma to decompose $G$, (2) analyze the reduced graph structure, (3) use the blow-up lemma and probabilistic embedding to place the tree into pseudo-random pairs.",
+    "mathContext": "Zhao's theorem: $\\exists N_0 \\in \\mathbb{N}$ such that $\\forall n \\geq N_0$, $\\forall G$ on $n$ vertices, $|H_{n/2}(G)| \\geq n/2 \\Rightarrow G \\supseteq T$ for every tree $T$ with $|V(T)| \\leq n/2$. Published in *Electronic Journal of Combinatorics* 18(1), Paper 27, 2011.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi Regularity Lemma",
+      "Blow-up lemma",
+      "Reduced graph",
+      "Probabilistic embedding"
+    ],
+    "prerequisites": [
+      "zhao_theorem axiom",
+      "satisfiesLKS",
+      "ContainsAllTreesUpTo"
+    ]
+  },
+  {
+    "id": "ann-e580-special-cases",
+    "proofId": "erdos-580",
+    "range": {
+      "startLine": 200,
+      "endLine": 222
+    },
+    "type": "concept",
+    "title": "Special Cases: Paths and Stars",
+    "content": "**path_case:** Under the LKS condition, all paths of length $\\leq n/2 - 1$ embed in $G$. The proof idea: among the $\\geq n/2$ high-degree vertices, a greedy walk can extend step-by-step, always finding an unused neighbor.\n\n**star_case:** Stars $K_{1,k-1}$ with $k \\leq n/2$ embed trivially: any vertex of degree $\\geq n/2 \\geq k$ can serve as the center, with $k-1$ of its neighbors as leaves.\n\nThese represent the easiest trees to embed. The true difficulty lies in 'broom' trees (path + star), caterpillar trees, and trees with branching structure.",
+    "mathContext": "A path $P_\\ell$ on $\\ell+1$ vertices embeds under LKS by a greedy algorithm: start at any high-degree vertex and extend. A star $K_{1,k-1}$ embeds because any vertex with $\\deg(v) \\geq k-1$ provides a center with enough neighbors. The hard cases are trees combining long paths with branching, requiring the Regularity Lemma.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Path graphs",
+      "Star graphs",
+      "Greedy embedding",
+      "Broom trees",
+      "Caterpillar trees"
+    ],
+    "prerequisites": [
+      "satisfiesLKS",
+      "Function.Injective",
+      "Fin.castSucc",
+      "Fin.succ"
+    ]
+  },
+  {
+    "id": "ann-e580-tightness",
+    "proofId": "erdos-580",
+    "range": {
+      "startLine": 223,
+      "endLine": 236
+    },
+    "type": "concept",
+    "title": "Tightness of the LKS Condition",
+    "content": "**LKS_tightness:** For every $n \\geq 4$, there exists a graph on $n$ vertices with exactly $n/2 - 1$ vertices of degree $\\geq n/2 - 1$ that fails to contain some tree on $n/2$ vertices.\n\n**The extremal construction:** Consider $G = K_{\\lfloor n/2 \\rfloor - 1} \\cup K_{\\lceil n/2 \\rceil + 1}$, the disjoint union of two cliques. The smaller clique has $\\lfloor n/2 \\rfloor - 1$ vertices each of degree $\\lfloor n/2 \\rfloor - 2$, while the larger has $\\lceil n/2 \\rceil + 1$ vertices of degree $\\lceil n/2 \\rceil$. A path of length $n/2 - 1$ cannot be embedded because it would need to fit entirely within one component, but both components are too small to accommodate it.",
+    "mathContext": "The sharpness construction shows that relaxing the LKS condition from $n/2$ to $n/2 - 1$ allows counterexamples. Specifically, $G = K_{n/2-1} \\cup K_{n/2+1}$ satisfies $|H_{n/2-1}(G)| = n/2 - 1$ but $P_{n/2} \\not\\subseteq G$ since neither component has $n/2$ vertices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal constructions",
+      "Disjoint union of cliques",
+      "Tight bounds",
+      "Sharpness examples"
+    ],
+    "prerequisites": [
+      "highDegreeVertices",
+      "TreeEmbeds negation",
+      "Complete graphs"
+    ]
+  }
+]

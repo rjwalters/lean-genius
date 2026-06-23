@@ -1,0 +1,273 @@
+[
+  {
+    "id": "ann-e1161-header",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 1,
+      "endLine": 15
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #1161: Maximizing Permutation Count by Order**\n\nLet $f_k(n) = |\\{\\sigma \\in S_n : \\mathrm{ord}(\\sigma) = k\\}|$. For which $k$ is $f_k(n)$ maximized?\n\n**Status**: SOLVED by Beker [Be25d]\n\n**Key results**: $\\max_k f_k(n) \\sim (n-1)!$, the maximizer $k$ is characterized by the lcm divisibility condition $\\mathrm{lcm}(1, \\ldots, n-k) \\mid k$, and the maximizer is the minimal such $k$.",
+    "mathContext": "$f_k(n) = |\\{\\sigma \\in S_n : \\mathrm{ord}(\\sigma) = k\\}|$, $\\max_k f_k(n) \\sim (n-1)!$",
+    "significance": "key",
+    "relatedConcepts": [
+      "permutation order",
+      "symmetric group",
+      "Erdős-Turán law",
+      "cycle type"
+    ],
+    "prerequisites": [
+      "symmetric group S_n",
+      "order of a group element"
+    ]
+  },
+  {
+    "id": "ann-e1161-permCountByOrder",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 28,
+      "endLine": 30
+    },
+    "type": "definition",
+    "title": "Permutation Count by Order",
+    "content": "**permCountByOrder n k**: The number of permutations in $S_n$ having order exactly $k$. Defined by filtering all permutations `Equiv.Perm (Fin n)` for those with `orderOf σ = k`. Since the order of a permutation equals the lcm of its cycle lengths, this counts all cycle types whose cycle lengths have lcm equal to $k$.",
+    "mathContext": "$f_k(n) = |\\{\\sigma \\in S_n : \\mathrm{ord}(\\sigma) = k\\}| = |\\{\\sigma : \\mathrm{lcm}(\\text{cycle lengths of } \\sigma) = k\\}|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "orderOf",
+      "Equiv.Perm",
+      "cycle type",
+      "lcm of cycle lengths"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "orderOf in Lean",
+      "Fin n"
+    ]
+  },
+  {
+    "id": "ann-e1161-maxPermCountByOrder",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 32,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "Maximum Permutation Count",
+    "content": "**maxPermCountByOrder n**: The maximum of $f_k(n)$ over all possible orders $k \\in [0, n!]$. Defined via `Finset.sup` over the range $[0, n!]$, since every permutation order divides $n!$ by Lagrange's theorem. Beker proved this equals $(n-1)! + o((n-1)!)$ asymptotically.",
+    "mathContext": "$\\max_{k \\geq 1} f_k(n) = \\sup_{0 \\leq k \\leq n!} f_k(n)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sup",
+      "extremal function",
+      "asymptotic analysis"
+    ],
+    "prerequisites": [
+      "permCountByOrder",
+      "Finset.range"
+    ]
+  },
+  {
+    "id": "ann-e1161-lcmRange",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "LCM Range",
+    "content": "**lcmRange m**: The least common multiple of all integers from 1 to $m$, i.e., $\\mathrm{lcm}(1, 2, \\ldots, m)$. Defined via `Finset.lcm` applied to the function $i \\mapsto i+1$ over `Finset.range m`. By the prime number theorem, $\\log(\\mathrm{lcm}(1,\\ldots,m)) \\sim m$, so `lcmRange` grows roughly as $e^m$. This function is central to Beker's characterization of the maximizer.",
+    "mathContext": "$\\mathrm{lcm}(1, \\ldots, m) = \\prod_{p \\leq m} p^{\\lfloor \\log_p m \\rfloor}$, $\\log \\mathrm{lcm}(1,\\ldots,m) \\sim m$",
+    "significance": "key",
+    "relatedConcepts": [
+      "least common multiple",
+      "Chebyshev function",
+      "prime number theorem",
+      "Finset.lcm"
+    ],
+    "prerequisites": [
+      "Finset.lcm",
+      "Finset.range"
+    ]
+  },
+  {
+    "id": "ann-e1161-basic-props",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 45,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "Basic Properties of f_k(n)",
+    "content": "Four fundamental properties of $f_k(n)$:\n\n1. **permCountByOrder_one_pos**: $f_1(n) > 0$ for $n \\geq 1$ (the identity has order 1). Proved constructively.\n2. **orderOf_perm_dvd_factorial**: $\\mathrm{ord}(\\sigma) \\mid n!$ for all $\\sigma \\in S_n$, by Lagrange's theorem ($|S_n| = n!$). Proved via `Fintype.card_perm`.\n3. **sum_permCountByOrder**: $\\sum_k f_k(n) = n!$ (partition of $S_n$ by order). Sorried.\n4. **permCountByOrder_eq_zero_of_not_dvd**: $f_k(n) = 0$ if $k \\nmid n!$. Proved by contradiction using the divisibility property.",
+    "mathContext": "$f_1(n) > 0$; $\\mathrm{ord}(\\sigma) \\mid n!$; $\\sum_{k} f_k(n) = n!$; $k \\nmid n! \\Rightarrow f_k(n) = 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange's theorem",
+      "orderOf_dvd_card",
+      "partition by order"
+    ],
+    "prerequisites": [
+      "Equiv.Perm",
+      "orderOf",
+      "Fintype.card_perm"
+    ]
+  },
+  {
+    "id": "ann-e1161-small-cases",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 74,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "Small Cases: S_1, S_2, S_3",
+    "content": "Explicit computation of $f_k(n)$ for small symmetric groups:\n\n- **$S_1$**: $f_1(1) = 1$ (only the identity)\n- **$S_2$**: $f_1(2) = 1$ (identity), $f_2(2) = 1$ (the transposition $(1\\;2)$)\n- **$S_3$**: $f_1(3) = 1$, $f_2(3) = 3$ (three transpositions), $f_3(3) = 2$ (two 3-cycles)\n\nNote that in $S_3$, the maximizer is $k = 2$ with $f_2(3) = 3 > f_3(3) = 2 > f_1(3) = 1$. All statements are sorried but should be provable by `decide`.",
+    "mathContext": "$S_1$: $f_1 = 1$; $S_2$: $f_1 = f_2 = 1$; $S_3$: $f_1 = 1, f_2 = 3, f_3 = 2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "transposition",
+      "3-cycle",
+      "decidable computation"
+    ],
+    "prerequisites": [
+      "permCountByOrder definition"
+    ]
+  },
+  {
+    "id": "ann-e1161-beker-char",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 103,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "Beker's Characterization",
+    "content": "**beker_characterization**: For $n \\geq 100$, if $f_k(n) \\geq (n-1)!$ then $\\mathrm{lcm}(1, \\ldots, n-k)$ divides $k$.\n\nThis is the necessary condition: any order $k$ achieving near-maximum count must satisfy an arithmetic divisibility condition involving the lcm function. The condition $\\mathrm{lcm}(1,\\ldots,n-k) \\mid k$ severely restricts which $k$ can be maximizers, since lcmRange grows exponentially.",
+    "mathContext": "$f_k(n) \\geq (n-1)! \\Rightarrow \\mathrm{lcm}(1, \\ldots, n-k) \\mid k$ for $n \\geq 100$",
+    "significance": "key",
+    "relatedConcepts": [
+      "necessary condition",
+      "lcm divisibility",
+      "Beker's theorem"
+    ],
+    "prerequisites": [
+      "permCountByOrder",
+      "lcmRange",
+      "factorial"
+    ]
+  },
+  {
+    "id": "ann-e1161-beker-max",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 114,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "Beker's Maximizer Theorem",
+    "content": "**beker_maximizer_achieves**: For $n \\geq 100$, if $k$ is the minimal positive integer with $\\mathrm{lcm}(1, \\ldots, n-k) \\mid k$, then $f_k(n) = (n-1)!$.\n\nThis is the sufficient condition: the minimal $k$ satisfying the lcm divisibility condition achieves exactly $(n-1)!$ permutations, which is the maximum. Combined with the characterization, this completely determines the maximizer.",
+    "mathContext": "$k$ minimal with $\\mathrm{lcm}(1,\\ldots,n-k) \\mid k$ $\\Rightarrow$ $f_k(n) = (n-1)!$",
+    "significance": "key",
+    "relatedConcepts": [
+      "sufficient condition",
+      "minimality",
+      "exact count"
+    ],
+    "prerequisites": [
+      "beker_characterization",
+      "lcmRange"
+    ]
+  },
+  {
+    "id": "ann-e1161-asymptotic",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 121,
+      "endLine": 125
+    },
+    "type": "concept",
+    "title": "Asymptotic Lower Bound",
+    "content": "**max_permCount_ge_sub_factorial**: For $n \\geq 2$, there exists $k$ with $f_k(n) \\geq (n-1)!$.\n\nThis establishes the lower bound direction: $\\max_k f_k(n) \\geq (n-1)!$. Since $(n-1)! = n!/n$, this means the most popular order accounts for at least a $1/n$ fraction of all permutations.",
+    "mathContext": "$\\forall n \\geq 2, \\exists k : f_k(n) \\geq (n-1)!$",
+    "significance": "key",
+    "relatedConcepts": [
+      "existence of maximizer",
+      "asymptotic bound",
+      "factorial"
+    ],
+    "prerequisites": [
+      "permCountByOrder",
+      "factorial"
+    ]
+  },
+  {
+    "id": "ann-e1161-upper-bound",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 127,
+      "endLine": 133
+    },
+    "type": "concept",
+    "title": "Upper Bound: f_k(n) ≤ n!",
+    "content": "**permCountByOrder_le_factorial**: $f_k(n) \\leq n!$ for all $k$.\n\nTrivially, since $f_k(n)$ counts a subset of $S_n$ and $|S_n| = n!$. Proved via `Finset.card_filter_le` and `Fintype.card_perm`. This is one of the few fully proved results in the file.",
+    "mathContext": "$f_k(n) \\leq |S_n| = n!$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trivial bound",
+      "cardinality of subset",
+      "Fintype.card_perm"
+    ],
+    "prerequisites": [
+      "Finset.card_filter_le",
+      "Fintype.card_perm"
+    ]
+  },
+  {
+    "id": "ann-e1161-n-cycles",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 139,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "n-Cycles Count",
+    "content": "**permCountByOrder_n_eq_subfactorial_pred**: The number of $n$-cycles in $S_n$ is $(n-1)!$.\n\nA permutation of order $n$ on $[n]$ must be a single $n$-cycle. There are $(n-1)!$ such cycles (fix position 1, permute the remaining $n-1$ elements). This is the key structural fact explaining why $\\max_k f_k(n) \\sim (n-1)!$.",
+    "mathContext": "$f_n(n) = |\\{n\\text{-cycles in } S_n\\}| = (n-1)!$",
+    "significance": "key",
+    "relatedConcepts": [
+      "n-cycle",
+      "cycle counting",
+      "derangements",
+      "subfactorial"
+    ],
+    "prerequisites": [
+      "permCountByOrder",
+      "cycle structure of S_n"
+    ]
+  },
+  {
+    "id": "ann-e1161-lcm-props",
+    "proofId": "erdos-1161",
+    "range": {
+      "startLine": 145,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "LCM Range Properties",
+    "content": "**lcmRange_dvd_lcmRange**: $m \\leq m' \\Rightarrow \\mathrm{lcm}(1,\\ldots,m) \\mid \\mathrm{lcm}(1,\\ldots,m')$. Monotonicity of lcmRange: extending the range can only add prime factors.\n\n**dvd_lcmRange**: For $1 \\leq j \\leq m$, $j \\mid \\mathrm{lcm}(1,\\ldots,m)$. Each integer in the range divides the lcm by definition.\n\nBoth are proved directly using `Finset.lcm_dvd` and `Finset.dvd_lcm`. These structural lemmas support Beker's characterization.",
+    "mathContext": "$m \\leq m' \\Rightarrow \\mathrm{lcm}(1,\\ldots,m) \\mid \\mathrm{lcm}(1,\\ldots,m')$; $j \\leq m \\Rightarrow j \\mid \\mathrm{lcm}(1,\\ldots,m)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "lcm monotonicity",
+      "divisibility",
+      "Finset.lcm_dvd",
+      "Finset.dvd_lcm"
+    ],
+    "prerequisites": [
+      "lcmRange definition",
+      "Finset.lcm API"
+    ]
+  }
+]

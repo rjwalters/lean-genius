@@ -1,0 +1,220 @@
+[
+  {
+    "id": "erdos-234-imports",
+    "proofId": "erdos-234",
+    "type": "concept",
+    "range": {
+      "startLine": 15,
+      "endLine": 30
+    },
+    "title": "Library Imports and Namespace",
+    "content": "Imports Mathlib for prime enumeration (`Nat.Nth`), finite sets, real analysis (`Log.Basic`, `ExpDeriv`), topology (`nhds`, `Filter.atTop`), and the Riemann Hypothesis axiom from `Proofs.RiemannHypothesis`. Opens `Nat`, `Filter`, `Real`, `Set` namespaces.",
+    "mathContext": "The formalization uses `Nat.nth Nat.Prime` to enumerate primes, `Real.log` and `Real.exp` for the normalized gap and Cramér prediction, `Filter.Tendsto` with `atTop` for limits $\\lim_{N \\to \\infty}$, and `nhds` for topological convergence. The `RiemannHypothesis` import provides the axiom needed for Gallagher's conditional result.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.nth",
+      "Filter.Tendsto",
+      "Real.log",
+      "Real.exp",
+      "RiemannHypothesis"
+    ],
+    "prerequisites": [
+      "Lean 4 basics",
+      "Mathlib analysis library",
+      "filter theory"
+    ]
+  },
+  {
+    "id": "erdos-234-prime-defs",
+    "proofId": "erdos-234",
+    "type": "definition",
+    "range": {
+      "startLine": 37,
+      "endLine": 44
+    },
+    "title": "Prime Gaps and Normalized Gaps",
+    "content": "Defines `nthPrime` via `Nat.nth Nat.Prime`, `primeGap` as $p_{n+1} - p_n$, and `normalizedGap` as $g_n / \\log n$ (with $0$ for $n \\leq 1$). The normalization by $\\log n$ is motivated by the Prime Number Theorem: the average gap near $p_n$ is approximately $\\log p_n \\approx \\log n$.",
+    "mathContext": "nthPrime$(n) = p_n$ via `Nat.nth`. primeGap$(n) = p_{n+1} - p_n$. normalizedGap$(n) = g_n / \\log n$ for $n > 1$, else $0$. By PNT, $p_n \\sim n \\log n$, so consecutive gaps average $\\log p_n$. The normalization makes the gap distribution scale-free.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.nth",
+      "prime number theorem",
+      "prime gaps",
+      "normalization"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Real.log",
+      "natural number subtraction"
+    ]
+  },
+  {
+    "id": "erdos-234-counting",
+    "proofId": "erdos-234",
+    "type": "definition",
+    "range": {
+      "startLine": 51,
+      "endLine": 56
+    },
+    "title": "Counting Functions for Gap Distribution",
+    "content": "Defines `countSmallNormGaps` as $\\#\\{n < N : g_n/\\log n < c\\}$ via `Finset.filter` on `Finset.range N`, and `gapProportion` as this count divided by $N$. These are the finite approximations to the density $f(c)$.",
+    "mathContext": "countSmallNormGaps$(N, c) = |\\{n < N : \\text{normalizedGap}(n) < c\\}|$ via `Finset.range.filter`. gapProportion$(N, c) = \\text{countSmallNormGaps}(N, c) / N$. The conjecture asks whether $\\lim_{N \\to \\infty} \\text{gapProportion}(N, c)$ exists.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.filter",
+      "empirical distribution function",
+      "natural density"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Finset.card",
+      "real division"
+    ]
+  },
+  {
+    "id": "erdos-234-conjecture",
+    "proofId": "erdos-234",
+    "type": "definition",
+    "range": {
+      "startLine": 63,
+      "endLine": 76
+    },
+    "title": "Erdős Problem 234 — The Conjecture",
+    "content": "States `ErdosProblem234` as two conditions: (1) for every $c \\geq 0$, the limit $f(c) = \\lim_{N \\to \\infty} \\text{gapProportion}(N, c)$ exists, and (2) there exists a continuous function $f : \\mathbb{R} \\to \\mathbb{R}$ that equals this limit for all $c \\geq 0$. The conjecture is OPEN.",
+    "mathContext": "ErdosProblem234: $(\\forall c \\geq 0, \\exists f_c: \\text{Tendsto}(\\text{gapProportion}(\\cdot, c), \\text{atTop}, \\text{nhds}(f_c))) \\wedge (\\exists f \\in C(\\mathbb{R}): \\forall c \\geq 0, \\text{Tendsto}(\\text{gapProportion}(\\cdot, c), \\text{atTop}, \\text{nhds}(f(c))))$. The second conjunct is strictly stronger: it requires the pointwise limits to assemble into a continuous function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "continuous distribution function",
+      "Erdős 1935"
+    ],
+    "prerequisites": [
+      "DensityExists",
+      "Tendsto",
+      "Continuous",
+      "nhds"
+    ]
+  },
+  {
+    "id": "erdos-234-basic-props",
+    "proofId": "erdos-234",
+    "type": "concept",
+    "range": {
+      "startLine": 83,
+      "endLine": 141
+    },
+    "title": "Basic Properties of the Density",
+    "content": "Proves in Lean: `normalizedGap_nonneg` ($g_n/\\log n \\geq 0$), `countSmallNormGaps_zero` (no gaps below $0$), `gapProportion_zero` ($f_N(0) = 0$), `density_at_zero` ($f(0) = 0$), `gapProportion_nonneg` ($f_N(c) \\geq 0$), `gapProportion_le_one` ($f_N(c) \\leq 1$), `countSmallNormGaps_mono` and `density_monotone` ($c_1 \\leq c_2 \\implies f_N(c_1) \\leq f_N(c_2)$). Axiomatizes `density_at_infinity` ($f(c) \\to 1$ as $c \\to \\infty$).",
+    "mathContext": "The proved properties establish that the finite approximations $f_N(c)$ form a family of non-decreasing functions from $[0,1]$ into $[0,1]$ with $f_N(0) = 0$. The axiom density_at_infinity captures that eventually all normalized gaps lie below any threshold, a consequence of the prime number theorem and Bertrand's postulate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distribution function properties",
+      "monotonicity",
+      "Bertrand's postulate",
+      "PNT"
+    ],
+    "prerequisites": [
+      "normalizedGap",
+      "gapProportion",
+      "div_nonneg",
+      "Finset.card_filter_le"
+    ]
+  },
+  {
+    "id": "erdos-234-cramer",
+    "proofId": "erdos-234",
+    "type": "definition",
+    "range": {
+      "startLine": 153,
+      "endLine": 178
+    },
+    "title": "Cramér's Exponential Model",
+    "content": "Defines `cramerPrediction` as $f(c) = 1 - e^{-c}$ for $c \\geq 0$ (and $0$ for $c < 0$), following **Cramér's 1936 probabilistic model** where each integer $n$ is independently prime with probability $1/\\log n$. Proves `cramer_continuous` (continuity of the piecewise function) and `cramer_in_unit_interval` ($0 \\leq f(c) \\leq 1$ for $c \\geq 0$).",
+    "mathContext": "cramerPrediction$(c) = \\begin{cases} 0 & c < 0 \\\\ 1 - e^{-c} & c \\geq 0 \\end{cases}$. Cramér's model treats primes as a Poisson process with rate $1/\\log n$, giving exponential gaps. The CDF of $\\text{Exp}(1)$ is $1 - e^{-c}$. The continuity proof uses `Continuous.if_lt` to join the two pieces at $c = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cramér model",
+      "Poisson process",
+      "exponential distribution",
+      "CDF"
+    ],
+    "prerequisites": [
+      "Real.exp",
+      "Continuous.if_lt",
+      "exp_le_one_of_nonpos"
+    ]
+  },
+  {
+    "id": "erdos-234-gallagher",
+    "proofId": "erdos-234",
+    "type": "concept",
+    "range": {
+      "startLine": 187,
+      "endLine": 202
+    },
+    "title": "Gallagher's Conditional Result (1976)",
+    "content": "Axiomatizes **Gallagher's theorem**: assuming the Riemann Hypothesis, $\\lim_{N \\to \\infty} \\text{gapProportion}(N, c) = 1 - e^{-c}$ for all $c \\geq 0$. Then proves `gallagher_implies_conjecture`: RH implies `ErdosProblem234`, since Cramér's prediction is continuous and matches the limit.",
+    "mathContext": "gallagher_conditional: RH $\\implies \\forall c \\geq 0, \\text{Tendsto}(\\text{gapProportion}(\\cdot, c), \\text{atTop}, \\text{nhds}(\\text{cramerPrediction}(c)))$. gallagher_implies_conjecture: RH $\\implies$ ErdosProblem234. Proof: the first conjunct uses `gallagher_conditional` to witness the limit; the second uses `cramerPrediction` as the continuous function (via `cramer_continuous`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gallagher 1976",
+      "Riemann Hypothesis",
+      "conditional results",
+      "short intervals"
+    ],
+    "prerequisites": [
+      "gallagher_conditional",
+      "cramer_continuous",
+      "ErdosProblem234"
+    ]
+  },
+  {
+    "id": "erdos-234-partial",
+    "proofId": "erdos-234",
+    "type": "concept",
+    "range": {
+      "startLine": 210,
+      "endLine": 220
+    },
+    "title": "Partial Results: Small Gaps, Large Gaps, Average",
+    "content": "Three axiomatized results: (1) `small_gaps_exist`: for any $\\varepsilon > 0$, infinitely many primes have $g_n < (1 + \\varepsilon) \\log p_n$ (Goldston–Pintz–Yıldırım, Maynard–Tao); (2) `large_gaps_exist`: normalized gaps are unbounded (Rankin 1938, improved by Ford–Green–Konyagin–Tao 2016, Maynard 2016); (3) `average_normalized_gap` tends to $1$ by PNT.",
+    "mathContext": "small_gaps_exist: $\\{n : g_n < (1+\\varepsilon)\\log p_n\\}$ is infinite. GPY (2009) showed $\\liminf g_n/\\log p_n = 0$; Maynard–Tao (2014) showed bounded gaps. large_gaps_exist: $\\forall M > 0, \\exists n: g_n/\\log n > M$. The best bound is $g_n \\gg \\log n \\cdot \\log\\log n \\cdot \\log\\log\\log\\log n / (\\log\\log\\log n)^2$ (FGKT). average_normalized_gap: $\\frac{1}{N}\\sum_{n<N} g_n/\\log n \\to 1$ by PNT.",
+    "significance": "key",
+    "relatedConcepts": [
+      "GPY theorem",
+      "Maynard–Tao",
+      "Rankin's theorem",
+      "Ford–Green–Konyagin–Tao",
+      "PNT"
+    ],
+    "prerequisites": [
+      "primeGap",
+      "normalizedGap",
+      "Set.Infinite",
+      "Tendsto"
+    ]
+  },
+  {
+    "id": "erdos-234-cramer-props",
+    "proofId": "erdos-234",
+    "type": "concept",
+    "range": {
+      "startLine": 227,
+      "endLine": 248
+    },
+    "title": "Additional Cramér Model Properties",
+    "content": "Proves `cramer_at_zero` ($f(0) = 0$, by `simp`), `cramer_nonneg` ($f(c) \\geq 0$), `cramer_le_one` ($f(c) \\leq 1$), and `cramer_monotone` ($c_1 \\leq c_2 \\implies f(c_1) \\leq f(c_2)$, using $e^{-c_2} \\leq e^{-c_1}$ from `exp_le_exp`).",
+    "mathContext": "cramer_monotone uses the fact that $e^{-x}$ is decreasing: $c_1 \\leq c_2 \\implies -c_2 \\leq -c_1 \\implies e^{-c_2} \\leq e^{-c_1} \\implies 1 - e^{-c_1} \\leq 1 - e^{-c_2}$. All properties mirror the standard CDF axioms: $F(0) = 0$, $0 \\leq F \\leq 1$, $F$ non-decreasing.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "CDF axioms",
+      "exponential monotonicity",
+      "exp_le_exp"
+    ],
+    "prerequisites": [
+      "cramerPrediction",
+      "cramer_in_unit_interval",
+      "Real.exp"
+    ]
+  }
+]

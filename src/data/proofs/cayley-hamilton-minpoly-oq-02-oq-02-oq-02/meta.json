@@ -1,0 +1,190 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-02-oq-02-oq-02",
+  "title": "The Jordan Block: Nilpotent Shift and Its Minimal Polynomial",
+  "slug": "cayley-hamilton-minpoly-oq-02-oq-02-oq-02",
+  "description": "Jordan block infrastructure toward Jordan normal form: the n x n nilpotent shift J_n(0) has the closed-form power law (N^k)_{ij} = [j = i+k], giving N^n = 0 and N^{n-1} != 0, so minpoly(J_n(0)) = X^n; and the general Jordan block J_n(mu) = mu*I + N has minpoly(J_n(mu)) = (X - C mu)^n. This generalizes the bespoke 4x4 nilpotent computation of the parent entry to arbitrary size and eigenvalue.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Jordan_normal_form",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ02OQ02OQ02.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "jordan-form",
+      "jordan-block",
+      "minimal-polynomial",
+      "nilpotent",
+      "elementary-divisors",
+      "extension",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "minpoly.dvd",
+        "description": "If aeval x p = 0, then minpoly K x divides p",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "minpoly.aeval",
+        "description": "The minimal polynomial annihilates the element",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "Matrix.isIntegral",
+        "description": "All matrices over a field are integral elements",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly"
+      },
+      {
+        "theorem": "dvd_prime_pow",
+        "description": "Divisors of a prime power p^n are associated to p^i for some i <= n",
+        "module": "Mathlib.Algebra.GroupWithZero.Associated"
+      },
+      {
+        "theorem": "prime_X_sub_C",
+        "description": "X - C r is a prime element of the polynomial ring",
+        "module": "Mathlib.Algebra.Polynomial.RingDivision"
+      }
+    ],
+    "originalContributions": [
+      "Closed-form power law for the nilpotent shift: (N^k)_{ij} = 1 iff j = i + k (proved by induction with a single-nonzero-term sum extraction)",
+      "Exact nilpotency order: N^n = 0 and N^{n-1} != 0 for the n x n shift",
+      "Minimal polynomial of the nilpotent Jordan block J_n(0) is X^n (UFD divisor classification over the prime X)",
+      "Minimal polynomial of the general Jordan block J_n(mu) = mu*I + N is (X - C mu)^n (same argument over the prime X - C mu, via aeval(J_n mu)(X - C mu) = N)"
+    ],
+    "dateAdded": "2026-06-20",
+    "axiomCount": 0,
+    "lineCount": 268,
+    "assumptions": "None. All theorems fully machine-checked (0 axioms, 0 sorries). Results require n >= 1 where stated (the minimal-polynomial claims). Full Jordan normal form (existence of the block decomposition and the similarity classification) is NOT claimed and is documented as open in the file.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The Jordan normal form (Camille Jordan, 1870) states that every matrix over an algebraically closed field is similar to a block-diagonal matrix whose blocks are Jordan blocks J_n(mu) -- an eigenvalue mu on the diagonal and ones on the superdiagonal. Each block corresponds to one elementary divisor (X - mu)^n. Mathlib provides the deep adjacent results (the Jordan-Chevalley-Dunford decomposition in Mathlib.LinearAlgebra.JordanChevalley, and the fact that generalized eigenspaces span the space over an algebraically closed field) but does not provide the Jordan block as a first-class object with its spectral invariants.",
+    "problemStatement": "**Open Question** (from cayley-hamilton-minpoly-oq-02-oq-02): Formalize Jordan normal form over algebraically closed fields.\n\nFull JNF is a large formalization. This entry supplies its irreducible building block: the single Jordan block J_n(mu), with its minimal polynomial computed for arbitrary size n and eigenvalue mu. It generalizes the parent entry's specific 4x4 nilpotent minpoly = X^2 computation.",
+    "text": "The n x n nilpotent shift N (ones on the superdiagonal) is the Jordan block J_n(0). Its powers obey (N^k)_{ij} = [j = i+k], so N is nilpotent of order exactly n, and minpoly(J_n(0)) = X^n. The general block J_n(mu) = mu*I + N then has minpoly (X - C mu)^n -- exactly the elementary divisor it contributes.",
+    "proofStrategy": "**Power law by induction.** (N^0)_{ij} = [i=j] = [j = i+0]. For the step, expand (N^{k+1})_{ij} = sum_l (N^k)_{il} N_{lj} via the Leibniz/matrix-multiply formula; by the inductive closed form only l with l = i+k contributes, and N_{lj} = [j = l+1] = [j = i+k+1]. Case-splitting on whether i+k < n (so the witness index exists) versus not (sum is empty) gives the result; a single-term extraction (Finset.sum_eq_single_of_mem) handles the nonzero case.\n\n**Minimal polynomial by UFD classification.** X^n annihilates N (since N^n = 0), so minpoly | X^n; as X is prime, minpoly = X^j with j <= n. If j < n then N^j = 0 forces N^{n-1} = N^{n-1-j} * N^j = 0, contradicting N^{n-1} != 0. Hence j = n. The general block reuses the identical argument with the prime X - C mu, using aeval(J_n mu)(X - C mu) = (J_n mu) - mu*I = N.",
+    "keyInsights": [
+      "The superdiagonal shift's k-th power moves the diagonal of ones k steps up: (N^k)_{ij} = [j = i+k]. Nilpotency is then automatic because column indices live in Fin n.",
+      "The nilpotency order is exactly n: N^{n-1} has a single 1 in the top-right corner, witnessing N^{n-1} != 0.",
+      "A Jordan block contributes exactly one elementary divisor: minpoly(J_n(mu)) = (X - mu)^n.",
+      "Defining J_n(mu) as algebraMap mu + shift makes aeval(J_n mu)(X - C mu) = shift hold by add_sub_cancel_left, so the eigenvalue-mu case reduces verbatim to the nilpotent case."
+    ],
+    "prerequisites": [
+      "Matrix multiplication and the entrywise power formula",
+      "Minimal polynomial theory (divisibility, monic uniqueness)",
+      "Unique factorization in K[X]; primality of X and X - C mu",
+      "Nilpotent matrices and Jordan blocks (motivation)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header: Scope and What Mathlib Already Provides",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "States the open question (formalize Jordan normal form) and scopes this file to the single Jordan block. Notes that Mathlib supplies Jordan-Chevalley-Dunford and the generalized-eigenspace decomposition but not the Jordan block itself, and lists exactly what is proved here.",
+      "mathContext": "Jordan block $J_n(\\mu)$ has eigenvalue $\\mu$ on the diagonal and $1$ on the superdiagonal; it contributes the elementary divisor $(X-\\mu)^n$."
+    },
+    {
+      "id": "shift-def",
+      "title": "The Nilpotent Shift J_n(0)",
+      "startLine": 53,
+      "endLine": 70,
+      "summary": "Defines shift n as the n x n matrix with ones on the superdiagonal (entry (i,j) = 1 iff j = i+1), i.e. the Jordan block for eigenvalue 0, plus its entry simp lemma.",
+      "mathContext": "$N_{ij} = [\\,j = i+1\\,]$, the nilpotent Jordan block $J_n(0)$."
+    },
+    {
+      "id": "power-law",
+      "title": "Closed-Form Powers and Nilpotency",
+      "startLine": 71,
+      "endLine": 134,
+      "summary": "Proves the power law (N^k)_{ij} = [j = i+k] by induction, then derives N^n = 0 (nilpotency) and N^{n-1} != 0 (nilpotency order exactly n).",
+      "mathContext": "$(N^k)_{ij} = [\\,j = i+k\\,]$; hence $N^n = 0$ since $j < n \\le i+n$, while $(N^{n-1})_{0,n-1} = 1 \\neq 0$."
+    },
+    {
+      "id": "minpoly-nilpotent",
+      "title": "Minimal Polynomial of J_n(0) is X^n",
+      "startLine": 135,
+      "endLine": 187,
+      "summary": "Computes minpoly(shift n) = X^n for n >= 1 via UFD divisor classification: minpoly | X^n with X prime gives minpoly = X^j; j < n would force N^{n-1} = 0, a contradiction.",
+      "mathContext": "$X^n$ annihilates $N$ and $X$ is prime, so $\\mathrm{minpoly}(N) = X^j$ with $j \\le n$; $j<n \\Rightarrow N^{n-1}=0$, contradiction, so $j=n$."
+    },
+    {
+      "id": "general-block",
+      "title": "The General Jordan Block J_n(mu) and Its Minimal Polynomial",
+      "startLine": 188,
+      "endLine": 254,
+      "summary": "Defines jordanBlock n mu = algebraMap mu + shift n, proves aeval(J_n mu)(X - C mu) = shift and (X - C mu)^n annihilates the block, then computes minpoly(J_n mu) = (X - C mu)^n by the same divisor argument over the prime X - C mu.",
+      "mathContext": "$\\mathrm{aeval}_{J_n(\\mu)}(X - C\\mu) = J_n(\\mu) - \\mu I = N$, so $\\mathrm{minpoly}(J_n(\\mu)) = (X - C\\mu)^n$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Open Work",
+      "startLine": 255,
+      "endLine": 286,
+      "summary": "Recaps the verified results and lists the remaining steps toward full Jordan normal form: block characteristic polynomial, block-diagonal assembly, existence of the decomposition, and the similarity classification.",
+      "mathContext": "Each block gives one elementary divisor; assembling blocks and proving existence/uniqueness of the normal form remains open (the cyclic decomposition of a nilpotent generalized-eigenspace part is the genuinely missing Mathlib ingredient)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The single Jordan block is formalized as a first-class object with its spectral invariants fully verified (0 axioms, 0 sorries): the nilpotent shift J_n(0) has minimal polynomial X^n, and the general block J_n(mu) has minimal polynomial (X - C mu)^n. This is the irreducible building block of Jordan normal form, generalizing the parent entry's specific 4x4 minpoly = X^2 computation to arbitrary size and eigenvalue.",
+    "implications": "1. **Reusable block object**: J_n(mu) is now available with its closed-form power law and minimal polynomial, ready to be assembled into a block-diagonal normal form.\n\n2. **One block = one elementary divisor**: minpoly(J_n(mu)) = (X - mu)^n makes precise the role a Jordan block plays in the elementary-divisor / invariant-factor description of the similarity class.\n\n3. **Honest scope**: full Jordan normal form (existence and the similarity classification) is NOT claimed. The missing ingredient -- a cyclic decomposition of each nilpotent generalized-eigenspace component -- is documented as open.",
+    "openQuestions": [
+      "Characteristic polynomial of the block: charpoly(J_n(mu)) = (X - C mu)^n (upper-triangular with constant diagonal).",
+      "Block-diagonal assembly: for M a direct sum of Jordan blocks, charpoly = product of (X - mu_k)^{n_k} and minpoly = lcm of the block minimal polynomials.",
+      "Existence: every matrix over an algebraically closed field is similar to a sum of Jordan blocks (needs a cyclic decomposition of nilpotent endomorphisms, not yet in Mathlib).",
+      "Uniqueness / classification: two matrices are similar iff they have the same Jordan type (elementary divisors)."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial"
+    ],
+    "namespace": "JordanBlock",
+    "lineCount": 268,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "path": "Proofs/CayleyHamiltonMinpolyOQ02OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry proves a specific 4x4 nilpotent counterexample with minpoly = X^2. This entry generalizes that computation to the Jordan block of arbitrary size n and eigenvalue mu, and supplies the block object explicitly listed as open work item #2 there."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "related",
+      "description": "Grandparent formalization of the minimal polynomial of a matrix. The Jordan block's minimal polynomial (X - mu)^n is the model case for a single elementary divisor."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hoffman, Kenneth; Kunze, Ray",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "venue": "Prentice-Hall, 2nd edition",
+      "note": "Chapter 7: rational canonical form, elementary divisors, and the Jordan form. The minimal polynomial of a single Jordan block J_n(mu) is (X - mu)^n."
+    },
+    {
+      "authors": "Horn, Roger A.; Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Sections 3.1-3.2: Jordan blocks, Jordan canonical form, and elementary divisors."
+    }
+  ],
+  "sorries": 0
+}

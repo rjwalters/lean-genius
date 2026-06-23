@@ -1,0 +1,247 @@
+{
+  "slug": "picks-theorem-oq-01-oq-01-oq-01",
+  "title": "Pick's theorem via primitive triangulation + GCD boundary count (Lean derivation)",
+  "phase": "PLAN",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Given the primitive-triangulation result (PicksTheoremOQ01OQ01.exists_primitive_triangulation: every lattice triangle T = (v_1, v_2, v_3) in (Z^2)^3 with |det(T)| > 0 decomposes into a List of |det(T)| primitive sub-triangles, each with |det| = 1) and the GCD boundary-count result (PicksTheoremOQ02.card_segmentPoints: the segment from (0,0) to (a,b) in N^2 contains exactly gcd(a,b) + 1 integer lattice points), can the formula Area(T) = I(T) + B(T)/2 - 1 -- where I(T) is the count of strictly-interior lattice points and B(T) = sum over edges of gcd(|Delta_x|, |Delta_y|) -- be derived constructively in Lean 4?",
+    "plain": "Can Pick's theorem I + B/2 - 1 = Area be derived in Lean 4 by combining primitive triangulation (every triangle = |det| primitive pieces) with a boundary-point count via the GCD formula (lattice points on segment from v1 to v2 = gcd(|Dx|, |Dy|) + 1)?",
+    "whyMatters": [
+      "Eliminates the axiom in Proofs/PicksTheorem.lean by deriving Pick's formula from already-verified ingredients.",
+      "Demonstrates the modularity of the Lean Genius proof library: independent results can be composed to retire axioms.",
+      "Provides a template for further Pick-style theorems (Ehrhart polynomial, n-dim Smith-normal-form bound) via the same primitive-decomposition + lattice-point-count strategy."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Primitive triangulation (PicksTheoremOQ01OQ01.exists_primitive_triangulation): every non-degenerate lattice triangle decomposes into exactly |det| primitive pieces.",
+      "GCD boundary count (PicksTheoremOQ02.card_segmentPoints): the segment from (0,0) to (a,b) has gcd(a,b)+1 lattice points.",
+      "Shoelace formula for lattice triangles (PicksTheoremOQ01): 2*Area(T) = |det(T)|.",
+      "Pick's formula for axis-aligned rectangles (PicksTheoremOQ01, Part III)."
+    ],
+    "open": [
+      "[DONE in S3-prep #18158] Prove that EVERY primitive triangle (|det| = 1) has realInteriorCount = 0 (general base case, beyond the three test instances).",
+      "Prove primitive_pickInterior_zero (every primitive triangle has pickInterior = 0) via primitive_edgeGCD_eq_one + the cleared Pick identity. This closes the dual side of the base case agreement.",
+      "Prove the additivity lemma: when two lattice triangles T1, T2 share an edge with no interior lattice points (gcd = 1), realInteriorCount(T1 union T2) = realInteriorCount T1 + realInteriorCount T2.",
+      "Close the induction via exists_primitive_triangulation."
+    ],
+    "goal": "Eliminate the picks_theorem axiom in PicksTheorem.lean by proving Pick's theorem for lattice triangles."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-05T11:00:00Z",
+    "iteration": 16,
+    "focus": "S3b-act-2 ACT (researcher-1, 2026-06-05): shipped Case (a) witness exists_nonvertex_lattice_point_of_edgeGCD_ge_two with 3 supporting items (vEdgeStart/vEdgeEnd defs, OnStrictEdgeInterior predicate, edgeGCD_eq_Int_gcd bridge lemma). Added 137 LOC to Proofs/PicksTheoremOQ01OQ01OQ01.lean (721 → 858). Docker-verified 3058 jobs clean at v4.26.0. 0 sorries, 0 axioms. Final bearer set 6 (dropped Int.natAbs_sub_comm from PREP s 7-bearer table because edgeDelta 2 already matches vEdgeStart 2 → vEdgeEnd 2 orientation by rfl). One paste-time fix: explicit show 1 ∈ Finset.range (g + 1) bridges the definitional gap between outer set g and inner let-bound Int.gcd dx dy that emerged after unfold latticeSegmentPoints, letting omega solve the membership obligation.",
+    "blockers": [],
+    "nextAction": "S3b-act-3 ACT (Case (b)): primitive-triangle interior witness for T.twiceArea ≥ 2 via Euclidean-algorithm-on-edge-vectors. S3b PREP §4.1.b approach (b.ii) is the recommended non-circular route. Estimated ~50-100 LOC. After Case (b), the combined exists_nonvertex_lattice_point statement is a short case-split corollary. Then S4 (full additivity, ~150-300 LOC) closes the Pick induction.",
+    "attemptCounts": {
+      "total": 16,
+      "currentApproach": 16,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S3b-act-2 ACT shipped (researcher-1, 2026-06-05): Case (a) witness exists_nonvertex_lattice_point_of_edgeGCD_ge_two now realised in Lean (+137 LOC, 721→858; Docker-verified 3058 jobs clean at v4.26.0). Cumulative chain: S3a-plus ACT (#19023, primitive_pickInterior_zero, +144 LOC) → S3b PREP (#19267, geometric decomposition) → S3b PREP-2 (#19304, ℤ-anchored bridge signature) → S3b PREP-3 (#19613, Int.gcd_pos_iff substitute) → S3b-act-1 ACT (#21155, card_latticeSegmentPoints, +75 LOC) → S3b-act-2 PREP (#22311, doc-only paste-ready code) → **this PR S3b-act-2 ACT (Case (a) witness, +137 LOC)**. Final bearer set 6 (Int.gcd_dvd_left/right, Int.ediv_mul_cancel, Finset.mem_image/range, mul_eq_zero); dropped Int.natAbs_sub_comm from PREP s 7-bearer table because edgeDelta 2 already matches vEdgeStart 2 → vEdgeEnd 2 orientation by rfl. Remaining hard step toward exists_nonvertex_lattice_point: Case (b) primitive-triangle interior witness via Euclidean-algorithm-on-edge-vectors (S3b PREP §4.1.b approach b.ii, ~50-100 LOC estimated). After Case (b), the combined statement is a short corollary. Picks chain status: PicksTheoremOQ01OQ01OQ01.lean 858 lines, 0 sorries, 0 axioms (clean).",
+    "builtItems": [
+      "LatticeTriangle structure (S1: mirror of PicksTheoremOQ01OQ01)",
+      "LatticeTriangle.det / NonDegenerate / twiceArea (S1)",
+      "LatticeTriangle.edgeDelta / edgeGCD / boundaryCount (S1)",
+      "LatticeTriangle.pickInterior (rational) / pickInteriorNum (cleared) (S1)",
+      "two_mul_pickInterior / pick_formula_cleared identities (S1)",
+      "Three test-triangle pickInterior verifications (S1)",
+      "cross2 (S2): twice the signed area of triangle (a, b, p) via the 2D cross product",
+      "LatticeTriangle.StrictInterior (S2): disjunction of two orientation cases on three edge cross products",
+      "Decidable instance for StrictInterior (S2)",
+      "LatticeTriangle.xmin / xmax / ymin / ymax / boundingBox (S2)",
+      "LatticeTriangle.realInterior (S2): boundingBox filtered by StrictInterior",
+      "LatticeTriangle.realInteriorCount (S2): the Finset cardinality",
+      "Three test-triangle realInteriorCount theorems (S2): unitTriangle=0, triangle_2_1=0, triangle_3_3=1",
+      "Three test-triangle pick_agrees theorems (S2): (realInteriorCount : Q) = pickInterior",
+      "cross2_partition_sum (S3-prep, #18158): cross2 v1 v2 p + cross2 v2 v3 p + cross2 v3 v1 p = T.det -- the three sub-triangles (v_i, v_{i+1}, p) tile T with signs, so their signed areas sum to twice the signed area of T (proved by unfold + ring)",
+      "primitive_no_strict_interior (S3-prep, #18158): for T with twiceArea = 1, no lattice point is strictly interior -- if all three cross products had the same strict sign each would have |.| >= 1 forcing |sum| >= 3, contradicting |sum| = |T.det| = 1 (omega in both orientation branches)",
+      "primitive_realInteriorCount_zero (S3-prep, #18158): general primitive base case -- every primitive lattice triangle has realInteriorCount = 0 (no bounding-box enumeration needed; the impossibility holds at every lattice point)",
+      "S3a-plus ACT (#19023, researcher-9, 2026-05-14): +144 LOC (502→646) closing primitive_pickInterior_zero via the cyclic-symmetric det divisibility chain. Adds signedDelta : Fin 3 → ℤ × ℤ helper + crossDelta + det_eq_signedDelta_factor + 7 supporting lemmas. Docker-verified clean 3058 jobs at Mathlib v4.26.0. PicksTheoremOQ01OQ01OQ01.lean now has 27→37 theorems and 21→23 defs.",
+      "S3b PREP (#19267, researcher-9, 2026-05-15, doc-only): geometric-decomposition audit + 3 corrected closure paths narrowing the 200-400 LOC S3 monolith. Decomposition: S3b-act-1 (~30-50 LOC translation/reflection bridge for card_latticeSegmentPoints), S3b-act-2 (~50 LOC exists_nonvertex_lattice_point witness Case-(a)), S3b-act-3 (~150-300 LOC realInteriorCount_union_of_shared_edge_gcd_one additivity).",
+      "S3b PREP-2 (#19304, researcher-4, 2026-05-15, doc-only): ℤ-anchored edge-segment bridge full signature + 6-bearer pin-verify + 4-step proof skeleton ready for S3b-act-1. Variant A (recommended, ~25 LOC): noncomputable def latticeSegmentPoints (v w : ℤ × ℤ) : Finset (ℤ × ℤ) parametrised by k · (Δ / g) where g = Int.gcd Δx Δy. Bearers: Int.gcd_eq_natAbs_gcd_natAbs, Int.ediv_mul_cancel, Finset.card_image_of_injective, Finset.card_range, PicksTheoremOQ02.card_segmentPoints (sibling), Int.natAbs_dvd_natAbs.",
+      "S3b STATE-SYNC (this iteration, researcher-1, 2026-05-16, doc-only): absorbs the three PRs above into state.md head + JSON currentState/knowledge. Iteration 7→8 state.md / 6→8 JSON. Bearer drift 0 at unchanged Mathlib pin. New session memo sessions/2026-05-16-s3b-state-sync.md (~9 sections, ~280 LOC) catalogues 20 drift items (9 in state.md, 11 in JSON) + 6-bearer recheck + handoff plan.",
+      "S3b PREP-3 (researcher-3, 2026-05-16, doc-only): close PREP-2 §5.4 `Int.gcd_pos_iff` hedge — substitute `Int.ne_zero_of_gcd` at `Mathlib/Data/Int/GCD.lean:202` pin-verified; sharpened Variant A paste with 0 conjectural bearers (~38 LOC `parametrisation_injOn_range` + ~4 LOC `card_latticeSegmentPoints`); corrected 2 PREP-2 §4.1 file-path drifts (`Int.ediv_mul_cancel` at core Lean `Init/Data/Int/DivMod/Bootstrap.lean:318`; `Int.gcd_dvd_left/right` at core Lean `Init/Data/Int/Gcd.lean:46/49`); 8-bearer table refreshed; ACT-readiness gate 7/8 GREEN substantive + 1/8 RED INFRA (Docker daemon hung).",
+      "S3b-act-1 ACT (researcher-1, 2026-05-30, this PR): `card_latticeSegmentPoints` Variant A landed. +75 LOC (646→721) added at end of Proofs/PicksTheoremOQ01OQ01OQ01.lean: +1 noncomputable def `LatticeTriangle.latticeSegmentPoints (v w : ℤ × ℤ) : Finset (ℤ × ℤ)` (PREP-3 §2.1 verbatim), +1 private theorem `parametrisation_injOn_range` (PREP-3 §2.2 body + §10 (3) explicit-form fallback statement), +1 theorem `card_latticeSegmentPoints` (PREP-3 §2.3, sole edit: namespace prefix on `latticeSegmentPoints`). Docker build clean 3058 jobs in 18s leaf-time at v4.26.0. Two paste-time deviations from PREP-3 §2 verbatim (both anticipated by PREP-3 §10): (1) explicit-form statement of `parametrisation_injOn_range` because `let`s in the original statement got consumed by `intro` count; (2) `rw [Finset.mem_coe, Finset.mem_range]` substituted for `simp only [Finset.coe_range, Set.mem_Iio]` which didn't fire. Both are mechanical/ergonomics — not mathematical.",
+      "S3b-act-2 ACT (PicksTheoremOQ01OQ01OQ01.lean: 721→858 LOC, +137; researcher-1, 2026-06-05): +2 defs LatticeTriangle.vEdgeStart/vEdgeEnd, +1 lemma LatticeTriangle.edgeGCD_eq_Int_gcd (fin_cases + rfl), +1 def LatticeTriangle.OnStrictEdgeInterior, +1 theorem exists_nonvertex_lattice_point_of_edgeGCD_ge_two — the Case (a) witness from S3b PREP §4.1. Docker-verified 3058 jobs clean at v4.26.0."
+    ],
+    "insights": [
+      "Both ingredients (primitive triangulation + GCD boundary count) are already verified in the project; the bridge is purely compositional.",
+      "The cleared-denominator form pickInteriorNum = twiceArea - boundaryCount + 2 stays in Z, dodging the rationals during future induction proofs.",
+      "Each edge contributes gcd(|Dx|, |Dy|) + 1 lattice points; the three shared vertices double-count, so B = sum (gcd + 1) - 3 = sum gcd.",
+      "[RESOLVED in S3b PREP-3 (this PR)]: the conjectural `Int.gcd_pos_iff` bearer PREP-2 §5.4 hedged on is **NOT** in pinned Mathlib SHA `2df2f0150c…` (`Mathlib/Data/Int/GCD.lean` 277 lines verified line-by-line). The correct substitute is `Int.ne_zero_of_gcd` at the same file line 202 — signature `{x y : ℤ} (hc : gcd x y ≠ 0) : x ≠ 0 ∨ y ≠ 0`, exactly the contrapositive direction `parametrisation_injOn_range` needs. 1 LOC drop-in (`rcases Int.ne_zero_of_gcd hg with hxne | hyne`), strictly cheaper than PREP-2 §5.4's hypothesised ~4 LOC fallback via `Int.gcd_eq_zero_iff` (also not in pin).",
+      "S2: The disjunction `(all > 0) OR (all < 0)` in StrictInterior covers both orientations of (v1, v2, v3), so we do not need to normalize the triangle's winding order.",
+      "S2: native_decide reduces realInteriorCount on any concrete triangle because Finset.Icc on Z, Finset.product, and the strict-interior predicate all compile to decidable computations.",
+      "S3-prep: the partition-sum identity sum_i cross2 v_i v_{i+1} p = T.det converts the StrictInterior obstruction into an integer arithmetic contradiction, closed by `omega`. No bounding-box enumeration needed -- the conclusion holds at every lattice point.",
+      "S3a-plus (proposed): primitive triangles have all three edge gcds = 1 (boundaryCount = 3). Proof: let d = edgeGCD i, then (d : Z) | Delta_x_i and (d : Z) | Delta_y_i; T.det expands as a linear combination of (Delta_x_i, Delta_y_i) and the opposite-edge deltas, so (d : Z) | T.det. With |T.det| = 1, this forces d = 1. Combined with pickInterior = (twiceArea - boundaryCount)/2 + 1, we get pickInterior = 0 for every primitive triangle (currently only verified on three test instances).",
+      "Bridge architecture note: closing primitive_pickInterior_zero (S3a-plus) gives the clean primitive base-case pair (realInteriorCount = 0 AND pickInterior = 0), so S3b additivity only needs to preserve agreement under primitive-edge gluing -- the base case is then fully discharged for the eventual Pick induction.",
+      "[RESOLVED in S3b PREP-2 #19304]: the previously 'still missing' translation/reflection bridge from PicksTheoremOQ02.card_segmentPoints (ℕ-coord, origin-anchored) to general ℤ-coord vertex-anchored segments is now supplied as Variant A (~25 LOC noncomputable def + companion theorem). Replaces Variant B's 4-case sign split.",
+      "Picks chain has NO Sylow-style parent blocker (unlike lagrange-theorem-oq-01-oq-01-oq-01 where SylowTheoremOQ01.lean has 7+ v4.26.0 errors). S3a-plus ACT #19023 verified the full chain Proofs.PicksTheoremOQ01OQ01OQ01 build clean (3058 jobs) at v4.26.0 directly, so S3b-act-1 ACT can use direct Docker build rather than standalone-extract.",
+      "S3b-act-2 ACT (researcher-1, 2026-06-05): edgeGCD_eq_Int_gcd extracted as top-level rfl-lemma rather than inlined in the witness proof — cleaner and reusable. Final bearer count 6 (dropped Int.natAbs_sub_comm from PREP table since edgeDelta 2 already matches vEdgeStart 2 → vEdgeEnd 2 orientation by rfl)."
+    ],
+    "mathlibGaps": [
+      "Mathlib has Convex / intrinsicInterior for topological interiors but no built-in lattice-point-of-triangle count; we use a custom Finset.Icc + filter definition (S2).",
+      "Mathlib.Data.Int.Interval is required for Finset.Icc on Z (LocallyFiniteOrder Z); Mathlib.Data.Finset.Prod for Finset.product."
+    ],
+    "nextSteps": [
+      "S3b-act-3 ACT (Case (b)): primitive-triangle interior witness for T.twiceArea ≥ 2 via Euclidean-algorithm-on-edge-vectors. S3b PREP §4.1.b approach (b.ii) is the recommended non-circular route. Estimated ~50-100 LOC. Builds directly on S3b-act-2 ACT (edgeGCD_eq_Int_gcd, latticeSegmentPoints, cross2, det).",
+      "S3b-act-4 ACT (combination): one-corollary lift to exists_nonvertex_lattice_point — case-split on max edgeGCD: ≥ 2 ⟹ Case (a) (this PR), all = 1 ⟹ Case (b) (next).",
+      "S4 ACT (additivity): full realInteriorCount additivity step for primitive gluing, ~150-300 LOC. Combined with primitive_pick_agrees (S3a-plus) and exists_primitive_triangulation (PicksTheoremOQ01OQ01), closes Picks induction."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "geometry",
+    "lattice",
+    "picks-theorem",
+    "triangulation",
+    "gcd",
+    "determinant",
+    "seeker-selected",
+    "gallery-extracted",
+    "bridge-scaffold"
+  ],
+  "relatedProofs": [
+    "picks-theorem",
+    "picks-theorem-oq-01",
+    "picks-theorem-oq-01-oq-01",
+    "picks-theorem-oq-01-oq-02",
+    "picks-theorem-oq-02",
+    "picks-theorem-oq-03-cross-poly",
+    "picks-theorem-oq-03-ext",
+    "picks-theorem-oq-03-product"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Pick%27s_theorem"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Data.Int.Interval",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Prod"
+    ]
+  },
+  "started": "2026-05-12T08:02:11.449Z",
+  "lastUpdate": "2026-05-30T11:50:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/PicksTheorem.lean",
+      "filename": "PicksTheorem.lean",
+      "lineCount": 485,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheorem.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01.lean",
+      "filename": "PicksTheoremOQ01.lean",
+      "lineCount": 207,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ01.lean",
+      "filename": "PicksTheoremOQ01OQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
+      "filename": "PicksTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 646,
+      "theoremCount": 37,
+      "axiomCount": 0,
+      "defCount": 23,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ02.lean",
+      "filename": "PicksTheoremOQ01OQ02.lean",
+      "lineCount": 310,
+      "theoremCount": 22,
+      "axiomCount": 3,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ02.lean",
+      "filename": "PicksTheoremOQ02.lean",
+      "lineCount": 246,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03.lean",
+      "filename": "PicksTheoremOQ03.lean",
+      "lineCount": 438,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03CrossPoly.lean",
+      "filename": "PicksTheoremOQ03CrossPoly.lean",
+      "lineCount": 696,
+      "theoremCount": 69,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03CrossPoly.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03Ext.lean",
+      "filename": "PicksTheoremOQ03Ext.lean",
+      "lineCount": 289,
+      "theoremCount": 30,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03Ext.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03Product.lean",
+      "filename": "PicksTheoremOQ03Product.lean",
+      "lineCount": 605,
+      "theoremCount": 57,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03Product.lean"
+    }
+  ]
+}

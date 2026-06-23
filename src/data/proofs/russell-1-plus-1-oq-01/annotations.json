@@ -1,0 +1,102 @@
+[
+  {
+    "id": "russnno-ann-01",
+    "proofId": "russell-1-plus-1-oq-01",
+    "range": { "startLine": 82, "endLine": 92 },
+    "type": "concept",
+    "title": "The Iterator IS the Recursor — Existence for Free",
+    "content": "`iter f a : ℕ → A` is the canonical map out of ℕ: it sends `zero` to the point `a` and iterates the endomap `f`. Categorically it is the unique algebra homomorphism `(ℕ, zero, succ) → (A, a, f)`, the catamorphism or `fold`. Its definition by pattern matching elaborates directly to `ℕ.rec`, so the two defining equations `iter_zero` (`iter f a zero = a`) and `iter_succ` (`iter f a (succ n) = f (iter f a n)`) hold by `rfl`. This is the existence half of the Natural Numbers Object universal property: in type theory it is a computation rule, not a theorem to prove.",
+    "mathContext": "$\\mathrm{iter}\\,f\\,a\\,(0) = a,\\quad \\mathrm{iter}\\,f\\,a\\,(S n) = f(\\mathrm{iter}\\,f\\,a\\,n).$ The mediating arrow $u$ of the universal property is $u = \\mathrm{iter}\\,f\\,a$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "catamorphism / fold",
+      "primitive recursion",
+      "algebra homomorphism",
+      "the recursor ℕ.rec"
+    ],
+    "prerequisites": [
+      "inductive types and their recursors",
+      "iota-reduction (the computation rule for recursors)"
+    ]
+  },
+  {
+    "id": "russnno-ann-02",
+    "proofId": "russell-1-plus-1-oq-01",
+    "range": { "startLine": 102, "endLine": 115 },
+    "type": "concept",
+    "title": "Uniqueness = Initiality = Structural Induction",
+    "content": "`iter_unique` proves that any `u : ℕ → A` satisfying the two algebra equations equals `iter f a` pointwise. The proof is a three-line structural induction: the base case rewrites by `u zero = a` and `iter_zero`, and the successor case rewrites by `u (succ n) = f (u n)`, the inductive hypothesis, and `iter_succ`. This uniqueness is exactly what makes ℕ the *initial* algebra: the mediating arrow is unique. It is also precisely the content the set-theoretic recursion theorem must establish by a separate union-of-approximations argument — here it is delivered by the induction principle of the inductive type.",
+    "mathContext": "If $u(0)=a$ and $u(S n)=f(u\\,n)$ for all $n$, then $u(n)=\\mathrm{iter}\\,f\\,a\\,(n)$ for all $n$, by induction on $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "initiality of an algebra",
+      "structural induction",
+      "Dedekind recursion theorem",
+      "uniqueness of mediating morphisms"
+    ],
+    "prerequisites": [
+      "the induction principle for ℕ",
+      "rewriting with hypotheses (rw)"
+    ]
+  },
+  {
+    "id": "russnno-ann-03",
+    "proofId": "russell-1-plus-1-oq-01",
+    "range": { "startLine": 120, "endLine": 126 },
+    "type": "theorem",
+    "title": "Lawvere's Natural Numbers Object Universal Property",
+    "content": "`nno_universal` is the headline: for every type `A`, point `a : A`, and endomap `f : A → A` there is a unique `u : ℕ → A` with `u zero = a` and `u (succ n) = f (u n)`. This says `(ℕ, zero, succ)` is the initial algebra of the functor `X ↦ 1 + X` — Lawvere's 1964 definition of a Natural Numbers Object. Existence is supplied by `iter` (with its `rfl` computation rules); uniqueness is `iter_unique` lifted from a pointwise equality to an equality of functions by `funext`. The `∃!` is spelled out by hand as `there is a solution, and every solution equals it` to keep the file Mathlib-free. This single statement is the bridge the parent entry's open question asks for: it is simultaneously the type-theoretic recursor, the set-theoretic recursion theorem, and the category-theoretic initiality of ℕ.",
+    "mathContext": "$\\forall A\\,(a:A)\\,(f:A\\to A),\\ \\exists!\\,u:\\mathbb{N}\\to A,\\ u(0)=a \\,\\wedge\\, \\forall n,\\ u(S n)=f(u\\,n).$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Natural Numbers Object (Lawvere)",
+      "initial algebra of X ↦ 1 + X",
+      "universal property",
+      "function extensionality (funext, Quot.sound)"
+    ],
+    "prerequisites": [
+      "universal properties and initial objects",
+      "function extensionality",
+      "the iterator and its uniqueness (iter, iter_unique)"
+    ]
+  },
+  {
+    "id": "russnno-ann-04",
+    "proofId": "russell-1-plus-1-oq-01",
+    "range": { "startLine": 133, "endLine": 147 },
+    "type": "concept",
+    "title": "Addition and Multiplication Are Forced by Initiality",
+    "content": "Rather than positing `+` and `×` as new primitives, the file derives them from the universal property. `add n := iter succ n` is the unique map named by the property at the algebra `(n, succ)`; its equations `add n zero = n` and `add n (succ m) = succ (add n m)` hold by `rfl`, and `one_add_one : add one one = two` re-derives 1+1=2 through the universal property. `add_eq_unique` then proves that *any* function solving the same recurrence equals `add n` — addition is the unique solution, not a free choice. Multiplication `mul n := iter (add n) zero` is the same construction one layer up, with `mul n (succ m) = add n (mul n m)`.",
+    "mathContext": "$n + {-} = \\mathrm{iter}\\,S\\,n$, so $n+0=n$ and $n+(S m)=S(n+m)$; $n\\cdot{-} = \\mathrm{iter}\\,(n+{-})\\,0$, so $n\\cdot 0 = 0$ and $n\\cdot(S m)=n+(n\\cdot m)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "primitive recursion from the recursor",
+      "uniqueness of solutions to a recurrence",
+      "Peano addition and multiplication"
+    ],
+    "prerequisites": [
+      "the iterator iter and its uniqueness",
+      "definitional equality (rfl)"
+    ]
+  },
+  {
+    "id": "russnno-ann-05",
+    "proofId": "russell-1-plus-1-oq-01",
+    "range": { "startLine": 160, "endLine": 184 },
+    "type": "theorem",
+    "title": "Lambek's Lemma: ℕ ≅ 1 + ℕ",
+    "content": "Lambek's lemma states that the structure map of an *initial* algebra is always an isomorphism. Here it is exhibited concretely: `structMap : Option ℕ → ℕ` (with `Option ℕ` the type `1 + ℕ`) sends `none ↦ zero` and `some n ↦ succ n`, and `structInv : ℕ → Option ℕ` is its candidate inverse. The two round-trip identities `structMap_leftInv` and `structInv_rightInv` are proved by case analysis (each case is `rfl`) and packaged in `lambek`, witnessing the bijection ℕ ≅ 1 + ℕ. This is the categorical reason every natural number is *uniquely* either zero or a successor — ℕ is a fixed point of the functor `X ↦ 1 + X`.",
+    "mathContext": "$\\mathrm{structMap}\\circ\\mathrm{structInv}=\\mathrm{id}_{\\mathbb{N}}$ and $\\mathrm{structInv}\\circ\\mathrm{structMap}=\\mathrm{id}_{1+\\mathbb{N}}$, hence $\\mathbb{N}\\cong 1+\\mathbb{N}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lambek's lemma",
+      "fixed point of an endofunctor",
+      "bijection / isomorphism",
+      "Option as the coproduct 1 + X"
+    ],
+    "prerequisites": [
+      "initial algebras and their structure maps",
+      "case analysis on an inductive type"
+    ]
+  }
+]

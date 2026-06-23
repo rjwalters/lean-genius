@@ -1,0 +1,230 @@
+{
+  "id": "erdos-406",
+  "title": "Erdős Problem #406: Powers of 2 with Only Digits 0 and 1 in Base 3",
+  "slug": "erdos-406",
+  "description": "Are there only finitely many powers of 2 whose base-3 representation uses only digits 0 and 1? Known examples: $1 = 2^0$, $4 = 2^2$, $256 = 2^8$. These are numbers simultaneously equal to a power of 2 and a sum of distinct powers of 3. Saye (2022) verified no new examples for $2^n$ with $n \\leq 5.9 \\times 10^{21}$.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/406",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos406Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "base-representations",
+      "powers-of-2",
+      "digit-problems",
+      "S-unit-equations"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 406,
+    "erdosUrl": "https://erdosproblems.com/406",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-01-26",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.digits",
+        "description": "Base-b digit representation of natural numbers (little-endian list)",
+        "module": "Mathlib.Data.Nat.Digits.Defs"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "List.Basic",
+        "description": "Basic list operations for digit list manipulation",
+        "module": "Mathlib.Data.List.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized digit predicates HasOnlyDigits01Base3 and HasOnlyDigits12Base3 via Nat.digits",
+      "Defined ternarySparse and ternaryDense sets capturing the two conjecture variants",
+      "Recorded all three known examples: 1 = 2^0, 4 = 2^2, 256 = 2^8",
+      "Axiomatized Saye's (2022) massive computational verification up to 5.9 × 10²¹",
+      "Proved digits01_sum_of_powers: {0,1}-digit numbers are sums of distinct powers of 3",
+      "Exhaustive classification sparse_complete_to_15: for n ≤ 15, 2^n is ternary-sparse iff n ∈ {0, 2, 8}",
+      "Bridge theorem sparse_classification_known_range combining small cases + Saye for full known-range classification",
+      "Variant classification dense_complete_to_15: digits {1,2} examples for n ≤ 15 are n ∈ {0,1,2,3,4,15} (corrected from earlier {1,3,5,7,15} after Mathlib v4.26.0 native_decide flagged 2^0=[1], 2^2=[1,1], 2^4=[1,2,1] as additional members)",
+      "Proved variant_classification_known_range: 2^15 is the largest in Saye's verified range",
+      "Kummer connection: ternary-sparse powers of 2 are sums of distinct powers of 3",
+      "Proved pow3_sum_split: structural decomposition S.sum(3^·) = indicator(0∈S) + 3·(image pred).sum(3^·)",
+      "Proved sum_of_distinct_powers_digits01: converse of digits01_sum_of_powers (via strong induction on the sum)",
+      "Proved digits01_iff_finset_sum_of_pow3: complete iff characterization HasOnlyDigits01Base3 n ↔ ∃ S, n = S.sum(3^·)",
+      "Proved digits01_double_digits02: doubling preserves digit-bounding (HasOnlyDigits01Base3 n → all digits of 2n are in {0,2}); the digit-level no-carry statement that promotes the Kummer connection from a structural observation to a quantitative bound on v₃(C(2n,n))",
+      "Proved digits01_double_eq_map: pointwise digit-doubling equality `Nat.digits 3 (2*n) = (Nat.digits 3 n).map (·*2)` whenever n has only digits {0,1} — the *exact* no-carry statement strengthening digits01_double_digits02 from a digit-bound to a per-column equality, giving Kummer's theorem the lockstep digit relation needed to conclude v₃(C(2n,n)) = 0 for ternary-sparse n"
+    ],
+    "axiomCount": 1,
+    "lineCount": 352,
+    "assumptions": "1 axiom: saye_computation (Saye 2022 computational verification for n ≤ 5.9×10²¹, deep). ErdosProblem406 and variant are defs, not axioms.",
+    "theoremCount": 19,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "This problem asks about the intersection of powers of 2 and numbers expressible with only digits 0 and 1 in base 3 (equivalently, sums of distinct powers of 3). Only three examples are known: $1 = 2^0$, $4 = 2^2 = 1 + 3$, and $256 = 2^8 = 1 + 3 + 9 + 243$. The problem connects multiplication (powers of 2) with additive structure (base-3 representations) and is notoriously difficult, sitting at the frontier of S-unit equations and multiplicative independence.\n\nThe underlying difficulty is the fundamental tension between the multiplicative structure of $2^k$ and the additive structure of base-3 representations. Since $\\log_3 2$ is irrational (by the fundamental theorem of arithmetic), the sequence $2^k \\bmod 3^m$ behaves quasi-randomly as $k$ grows. Heuristically, the 'probability' that a random $n$-digit ternary number uses only digits $\\{0,1\\}$ is $(2/3)^n$, and $2^k$ has about $k \\log_3 2 \\approx 0.631k$ ternary digits, so the expected count of solutions is $\\sum_k (2/3)^{0.631k}$, which converges — strongly predicting finitely many solutions.\n\nSaye (2022) provided overwhelming computational evidence by checking all $2^n$ for $n \\leq 5.9 \\times 10^{21}$ using an efficient incremental base-3 digit extraction algorithm that avoids computing the full number. The problem connects to the S-unit equation theorem of Evertse, Schlickewei, and Schmidt, and to the ABC conjecture: a sufficiently effective ABC would force $2^k$ to eventually use all three ternary digits.",
+    "problemStatement": "Is the set $\\{2^k : \\text{all base-3 digits of } 2^k \\text{ are } 0 \\text{ or } 1\\}$ finite? A variant asks whether $2^{15} = 32768$ is the largest power of 2 with only digits 1 and 2 in base 3.",
+    "text": "Are there only finitely many powers of 2 whose base-3 representation uses only digits 0 and 1? Known examples: $1 = 2^0$, $4 = 2^2$, $256 = 2^8$. These are numbers simultaneously equal to a power of 2 and a sum of distinct powers of 3. Saye (2022) verified no new examples for $2^n$ with $n \\leq 5.9 \\times 10^{21}$.",
+    "proofStrategy": "The formalization defines digit predicates `HasOnlyDigits01Base3` and `HasOnlyDigits12Base3` via `Nat.digits`, constructs the sets `ternarySparse` and `ternaryDense`, states finiteness as the main conjecture (`ErdosProblem406`), records the three known examples and the variant, and axiomatizes Saye's computational verification. The connection to sums of distinct powers of 3 is proved via `digits01_sum_of_powers`. Complete small-case classification via `native_decide` is bridged with Saye's computation to give the full known-range classification.",
+    "keyInsights": [
+      "**Only three known examples:** $1 = 2^0 = 3^0$, $4 = 2^2 = 3^0 + 3^1$, $256 = 2^8 = 3^0 + 3^1 + 3^2 + 3^5$. The sparsity of solutions over an astronomically large search range ($n \\leq 5.9 \\times 10^{21}$) strongly suggests finiteness.",
+      "**Cantor set integers:** Numbers with ternary digits $\\{0, 1\\}$ are exactly sums of distinct powers of 3, which correspond to integer points in the middle-thirds Cantor set scaled by powers of 3. The problem asks: which powers of 2 are Cantor set integers?",
+      "**Multiplicative independence of 2 and 3:** Since $\\log_3 2$ is irrational, the orbits of $2^k$ modulo powers of 3 are equidistributed. This quasi-randomness makes it increasingly unlikely that $2^k$ avoids the digit 2 in base 3 as $k$ grows.",
+      "**Heuristic for finiteness:** With $\\approx 0.631k$ ternary digits, the probability of all digits being in $\\{0,1\\}$ is roughly $(2/3)^{0.631k}$, giving expected count $\\sum_k (2/3)^{0.631k} < \\infty$.",
+      "**S-unit equation connection:** The equation $2^k = \\sum_{i \\in S} 3^i$ is an S-unit equation with $S = \\{2, 3\\}$. The Evertse-Schlickewei-Schmidt theorem guarantees finitely many non-degenerate solutions to general S-unit equations.",
+      "**ABC conjecture implication:** An effective ABC conjecture would force the radical of $2^k - \\sum 3^{a_i}$ to grow, eventually requiring all three ternary digits.",
+      "**Saye's massive computation (2022):** Verified no new examples for $n \\leq 5.9 \\times 10^{21}$ using incremental ternary digit extraction — avoiding full computation of $2^n$, only tracking its base-3 digits."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Digits.Defs",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.List.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 352,
+    "axiomCount": 1,
+    "theoremCount": 19,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos406Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-407",
+      "relationship": "related-problem",
+      "description": "Newman's conjecture on representations as 2^a + 3^b + 2^c · 3^d. Both problems explore the interplay between powers of 2 and powers of 3, asking when sums involving these multiplicatively independent bases take special forms."
+    },
+    {
+      "targetId": "erdos-9",
+      "relationship": "related-problem",
+      "description": "Odd integers not of the form p + 2^k + 2^l. Both problems study representability constraints involving powers of 2, asking which numbers can or cannot be expressed as sums of specific arithmetic forms."
+    },
+    {
+      "targetId": "erdos-10",
+      "relationship": "related-problem",
+      "description": "Sums of a prime and powers of 2. Both involve the interplay between additive structure and powers of 2, studying which integers arise from constrained representations."
+    },
+    {
+      "targetId": "erdos-125",
+      "relationship": "uses-same-technique",
+      "description": "Positive density of digit-restricted sumsets. Both problems impose digit constraints on number representations and study the resulting set-theoretic properties (density for #125, finiteness for #406)."
+    },
+    {
+      "targetId": "erdos-851",
+      "relationship": "related-problem",
+      "description": "Density of integers 2^k + n. Both involve distribution questions about sets defined using powers of 2, connecting additive and multiplicative structure."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "States Erdős Problem #406: are there only finitely many powers of $2$ whose base-3 representation uses only digits $0$ and $1$? Known examples $1,4,256$. Variant: among powers of $2$ using only digits $1,2$ in base $3$, $2^{15}$ appears largest. Saye (2022) verified $2^n$ contains every ternary digit for $16\\leq n\\leq5.9\\times10^{21}$. Imports `Nat.Digits`, `Nat.Prime`, `List`, tactics.",
+      "mathContext": "Finitely many $2^k$ with base-3 digits $\\subseteq\\{0,1\\}$? Known: $1,4,256$. Variant largest: $2^{15}$."
+    },
+    {
+      "id": "predicates",
+      "title": "Ternary Digit Predicates",
+      "startLine": 23,
+      "endLine": 48,
+      "summary": "Defines `HasOnlyDigits01Base3` (base-3 digits $\\subseteq\\{0,1\\}$), `HasOnlyDigits12Base3` (digits $\\subseteq\\{1,2\\}$), and the sets `ternarySparse` / `ternaryDense` (powers of $2$ with those digit restrictions). Provides `Decidable` instances for both predicates (enabling `native_decide`).",
+      "mathContext": "$\\text{ternarySparse}=\\{2^k:\\text{digits}_3\\subseteq\\{0,1\\}\\}$; $\\text{ternaryDense}=\\{2^k:\\text{digits}_3\\subseteq\\{1,2\\}\\}$."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 49,
+      "endLine": 54,
+      "summary": "Defines `ErdosProblem406 := ternarySparse.Finite` — the set of powers of $2$ with only ternary digits $\\{0,1\\}$ is finite.",
+      "mathContext": "$\\text{ErdosProblem406}:\\ \\text{ternarySparse.Finite}$."
+    },
+    {
+      "id": "variant-conjecture",
+      "title": "Variant Conjecture",
+      "startLine": 55,
+      "endLine": 60,
+      "summary": "Defines `ErdosProblem406_variant`: $2^{15}$ is the greatest power of $2$ with only ternary digits $\\{1,2\\}$ ($\\forall k,\\ 2^k\\in\\text{ternaryDense}\\to2^k\\leq2^{15}$).",
+      "mathContext": "Variant: $\\forall k,\\ 2^k\\in\\text{ternaryDense}\\Rightarrow2^k\\leq2^{15}$."
+    },
+    {
+      "id": "known-examples",
+      "title": "Known Examples",
+      "startLine": 61,
+      "endLine": 74,
+      "summary": "PROVES the three known elements of `ternarySparse` via `native_decide`: $1=2^0$, $4=2^2$ (base-3 $[1,1]$), and $256=2^8$ (base-3 $[1,1,1,0,0,1]$).",
+      "mathContext": "$1,4,256\\in\\text{ternarySparse}$ (i.e. $2^0,2^2,2^8$)."
+    },
+    {
+      "id": "computational",
+      "title": "Computational Evidence",
+      "startLine": 75,
+      "endLine": 83,
+      "summary": "States Saye's 2022 computation as the AXIOM `saye_computation`: for $16\\leq n\\leq5.9\\times10^{21}$, $2^n$ uses all three ternary digits, so it lies in neither `ternarySparse` nor `ternaryDense`.",
+      "mathContext": "Axiom (Saye 2022): $16\\leq n\\leq5.9\\times10^{21}\\Rightarrow 2^n$ has all of $\\{0,1,2\\}$ as digits."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 84,
+      "endLine": 117,
+      "summary": "PROVES `digits01_sum_of_powers`: a number with base-3 digits $\\subseteq\\{0,1\\}$ is a sum of distinct powers of $3$ (induction on the digit list); and `zero_hasOnlyDigits01` (trivially $0$ qualifies).",
+      "mathContext": "digits$_3\\subseteq\\{0,1\\}\\Rightarrow n=\\sum_{i\\in S}3^i$ (sum of distinct powers of 3)."
+    },
+    {
+      "id": "small-case",
+      "title": "Small-Case Exhaustive Classification",
+      "startLine": 118,
+      "endLine": 142,
+      "summary": "PROVES `sparse_complete_to_15` (for $n\\leq15$, $2^n$ is ternary-sparse only for $n\\in\\{0,2,8\\}$, via `interval_cases`+`native_decide`), `no_sparse_in_saye_range` (from Saye's axiom), and `sparse_classification_known_range` (combined: for $n\\leq5.9\\times10^{21}$, $n\\in\\{0,2,8\\}$).",
+      "mathContext": "For $n\\leq5.9\\times10^{21}$, $2^n$ ternary-sparse $\\Leftrightarrow n\\in\\{0,2,8\\}$."
+    },
+    {
+      "id": "variant-classification",
+      "title": "Variant: Digits {1, 2} in Base 3",
+      "startLine": 143,
+      "endLine": 171,
+      "summary": "PROVES `dense_complete_to_15` (for $n\\leq15$, $2^n$ has only digits $\\{1,2\\}$ exactly for $n\\in\\{0,1,2,3,4,15\\}$), `no_dense_in_saye_range` (from Saye), and `variant_classification_known_range` (for $n\\leq5.9\\times10^{21}$, $2^n\\in\\text{ternaryDense}\\Rightarrow n\\leq15$, so $2^{15}$ is the largest in range).",
+      "mathContext": "For $n\\leq15$: $2^n$ digits $\\subseteq\\{1,2\\}\\Leftrightarrow n\\in\\{0,1,2,3,4,15\\}$; $2^{15}$ largest in Saye's range."
+    },
+    {
+      "id": "kummer",
+      "title": "Connection to Kummer's Theorem",
+      "startLine": 172,
+      "endLine": 256,
+      "summary": "Relates ternary-sparseness to carry-free base-3 doubling (Kummer's theorem). PROVES `kummer_connection_forward` (a ternary-sparse $2^k$ is a sum of distinct powers of $3$), `digits01_double_digits02` (digits $\\{0,1\\}\\Rightarrow$ $2n$ has digits $\\{0,2\\}$ — no carries), and the exact no-carry equality `digits01_double_eq_map` ($\\text{digits}_3(2n)=\\text{digits}_3(n)$ mapped by $(\\cdot\\times2)$), the precise statement Kummer consumes for $v_3\\binom{2n}{n}$.",
+      "mathContext": "digits$_3(n)\\subseteq\\{0,1\\}\\Rightarrow$ $n+n$ carry-free, $\\text{digits}_3(2n)=\\text{map}(\\cdot 2)\\,\\text{digits}_3(n)$, so $v_3\\binom{2n}{n}=0$."
+    },
+    {
+      "id": "converse",
+      "title": "Converse: Sum of Distinct Powers of 3 has Only Digits 0 and 1",
+      "startLine": 257,
+      "endLine": 352,
+      "summary": "PROVES the converse of `digits01_sum_of_powers`, completing the iff. Private lemmas `pow3_sum_split` (decompose $\\sum_{i\\in S}3^i$ by whether $0\\in S$), `sum_pow3_mod3` (ones digit) and `sum_pow3_div3` (shift) feed `sum_of_distinct_powers_digits01` (every base-3 digit of $\\sum_{i\\in S}3^i$ is in $\\{0,1\\}$, by strong induction). Final `digits01_iff_finset_sum_of_pow3`: $\\text{HasOnlyDigits01Base3}\\,n\\Leftrightarrow\\exists S,\\ n=\\sum_{i\\in S}3^i$.",
+      "mathContext": "digits$_3(n)\\subseteq\\{0,1\\}\\Leftrightarrow n=\\sum_{i\\in S}3^i$ for some finite $S$ (full iff)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization captures the open Erdős Problem #406 on finiteness of powers of 2 with restricted ternary digits, recording the three known examples ($1, 4, 256$), the digit-$\\{1,2\\}$ variant (largest: $2^{15}$), and Saye's massive computational verification up to $5.9 \\times 10^{21}$. The problem remains one of the most computationally supported yet theoretically unresolved questions in number theory.",
+    "implications": "Resolution would illuminate the multiplicative-additive independence of powers of 2 and powers of 3, a deep question in number theory related to the ABC conjecture, S-unit equations, and the distribution of digits in exponential sequences. A proof of finiteness would likely require new techniques bridging transcendence theory (linear forms in logarithms) with combinatorial digit analysis.",
+    "openQuestions": [
+      "Is $\\{2^k : \\text{digits}_3(2^k) \\subseteq \\{0,1\\}\\}$ finite? (The main conjecture — OPEN)",
+      "Is $2^{15}$ the largest power of 2 with ternary digits $\\subseteq \\{1,2\\}$? (The variant — OPEN)",
+      "Can the S-unit theorem of Evertse-Schlickewei-Schmidt be applied directly to resolve the problem, or does the digit constraint require fundamentally new tools?",
+      "What is the distribution of the ternary digit 2 in $2^n$ as $n \\to \\infty$? Is it equidistributed with frequency $1/3$?",
+      "Does the analogous problem for other base pairs (e.g., powers of 2 with only digits $\\{0,1\\}$ in base 5) have finitely many solutions?"
+    ]
+  },
+  "sorries": 0
+}

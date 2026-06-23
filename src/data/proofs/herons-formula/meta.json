@@ -1,0 +1,218 @@
+{
+  "id": "herons-formula",
+  "title": "Heron's Formula",
+  "slug": "herons-formula",
+  "description": "Area = √(s(s-a)(s-b)(s-c)) where s is the semi-perimeter. Computes triangle area from side lengths alone.",
+  "meta": {
+    "author": "Hero of Alexandria (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Heron%27s_formula",
+    "date": "~60 AD",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "trigonometry",
+      "classic",
+      "intermediate",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/HeronsFormula.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Theorems100.heron",
+        "description": "Heron's formula from Mathlib Archive",
+        "module": "Archive.Wiedijk100Theorems.HeronsFormula"
+      }
+    ],
+    "originalContributions": [
+      "Computable definitions of semi-perimeter and Heron product with algebraic expansions proved by ring",
+      "Non-negativity proof via triangle inequality (heron_product_nonneg)",
+      "Three worked numerical examples (3-4-5, equilateral-2, 5-12-13) verified by norm_num"
+    ],
+    "dateAdded": "2025-12-26",
+    "wiedijkNumber": 57,
+    "axiomCount": 0,
+    "lineCount": 268,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "**Hero of Alexandria** (c. 10-70 AD) described this formula in his treatise *Metrica*, discovered in 1896 in Constantinople. However, **Archimedes** (c. 287-212 BC) likely knew an equivalent form, as suggested by fragments in the Arabic mathematical tradition. The formula was independently rediscovered by Chinese mathematicians — **Qin Jiushao** stated it in his 1247 *Mathematical Treatise in Nine Sections* using a different algebraic form.\n\nThe formula connects three fundamental areas of mathematics: (1) **Euclidean geometry** — it is equivalent to the law of cosines combined with the sine area formula $\\frac{1}{2}ab\\sin C$; (2) **algebra** — the product $s(s-a)(s-b)(s-c)$ is a symmetric polynomial in the side lengths; and (3) **analysis** — the non-negativity of this product is equivalent to the triangle inequality.\n\n**Brahman Sphuta Siddhanta** (628 AD) by **Brahmagupta** generalized Heron's formula to cyclic quadrilaterals: $\\text{Area} = \\sqrt{(s-a)(s-b)(s-c)(s-d)}$ where $s = (a+b+c+d)/2$. The Cayley-Menger determinant provides a further generalization to simplices in arbitrary dimensions.\n\nThis is #57 on **Freek Wiedijk**'s list of 100 theorems formalized in proof assistants.",
+    "problemStatement": "**Heron's Formula**:\n\nFor a triangle with sides $a, b, c$ and semi-perimeter $s = (a+b+c)/2$:\n$$\\text{Area} = \\sqrt{s(s-a)(s-b)(s-c)}$$\n\nEquivalently, starting from the trigonometric area formula:\n$$\\frac{1}{2}ab\\sin(\\angle p_1 p_2 p_3) = \\sqrt{s(s-a)(s-b)(s-c)}$$",
+    "text": "Area = √(s(s-a)(s-b)(s-c)) where s is the semi-perimeter. Computes triangle area from side lengths alone.",
+    "proofStrategy": "The formalization builds on Mathlib's `Theorems100.heron` from the Archive, which proves the identity $\\frac{1}{2}ab\\sin C = \\sqrt{s(s-a)(s-b)(s-c)}$ in abstract inner product spaces using `EuclideanGeometry.angle` and `dist`. The proof works in any `NormedAddTorsor V P` where $V$ is a real inner product space. The formalization then provides: (1) the semi-perimeter and Heron product as computable definitions, (2) an algebraic expansion $s(s-a)(s-b)(s-c) = \\frac{(a+b+c)(-a+b+c)(a-b+c)(a+b-c)}{16}$ proved by `ring`, (3) concrete verifications for 3-4-5, equilateral, and 5-12-13 triangles using `norm_num` and `sqrt_sq`, and (4) a non-negativity proof connecting the Heron product to the triangle inequality via `linarith`.",
+    "keyInsights": [
+      "**No heights or angles needed**: Heron's formula computes area from side lengths alone — the three distances $a, b, c$ completely determine the triangle up to congruence, and hence its area",
+      "**Symmetry**: The formula is symmetric under permutations of $(a, b, c)$, reflecting that relabeling vertices does not change the area. The expanded form $\\frac{(a+b+c)(-a+b+c)(a-b+c)(a+b-c)}{16}$ makes this manifest",
+      "**Triangle inequality encoded**: The product $s(s-a)(s-b)(s-c) \\geq 0$ if and only if the triangle inequality holds. Each factor $s-a = (b+c-a)/2$ is non-negative precisely when $a \\leq b+c$",
+      "**Generalizes to abstract spaces**: Mathlib's formalization works in any real inner product space, not just $\\mathbb{R}^2$ or $\\mathbb{R}^3$, using the abstract `dist` and `angle` functions from `EuclideanGeometry`",
+      "**Algebraic proof by `ring`**: The key algebraic identity reducing Heron's product to the expanded form is closed entirely by Lean's `ring` tactic, demonstrating the power of verified algebraic computation"
+    ],
+    "prerequisites": [
+      "Euclidean geometry (triangles, area formulas)",
+      "Algebra (algebraic manipulation, square roots)",
+      "Trigonometry (law of cosines, area = ab sin C / 2)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Documentation",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports Mathlib modules for Euclidean geometry (`Triangle`, `Angle.Sphere`), trigonometric functions (`sin`), and the Wiedijk Archive proof (`Archive.Wiedijk100Theorems.HeronsFormula`). The docstring explains the formula $\\text{Area} = \\sqrt{s(s-a)(s-b)(s-c)}$ and its Mathlib dependencies.",
+      "mathContext": "`Archive.Wiedijk100Theorems.HeronsFormula` is from Mathlib's special archive of Wiedijk's 100 theorems — a curated collection of classic mathematics formalized in Lean. The key import chain: `Mathlib.Geometry.Euclidean.Triangle` provides `EuclideanGeometry.angle p₁ p₂ p₃` and `dist` for abstract inner product spaces; the Archive module builds on these to prove the identity $\\frac{1}{2}ab\\sin C = \\sqrt{s(s-a)(s-b)(s-c)}$ at full generality."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and Configuration",
+      "startLine": 48,
+      "endLine": 57,
+      "summary": "Opens the `HeronsFormula` namespace and the `EuclideanGeometry` and `Real` namespaces for access to `angle`, `dist`, `sqrt`, and `sin`.",
+      "mathContext": "`EuclideanGeometry` provides `angle p₁ p₂ p₃ : ℝ` (the angle at vertex $p_2$ between rays to $p_1$ and $p_3$) and `dist p₁ p₂ : ℝ` (Euclidean distance) in any `NormedAddTorsor V P` with `V : InnerProductSpace ℝ`. `Real` provides `sqrt` (non-negative square root with `sqrt_sq`, `sqrt_mul`) and `sin`. This abstract setup means the theorem is proved once for all Euclidean spaces ($\\mathbb{R}^2$, $\\mathbb{R}^3$, and beyond)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Heron's Formula (Wiedijk #57)",
+      "startLine": 58,
+      "endLine": 105,
+      "summary": "States and proves $\\frac{1}{2}ab\\sin(\\angle p_1 p_2 p_3) = \\sqrt{s(s-a)(s-b)(s-c)}$ in abstract inner product spaces via `Theorems100.heron`. The theorem requires only that $p_1 \\neq p_2$ and $p_3 \\neq p_2$ (non-degeneracy).",
+      "mathContext": "The abstract formulation: for distinct points $p_1, p_2, p_3$ in any real inner product space, with $a = d(p_2, p_3)$, $b = d(p_1, p_3)$, $c = d(p_1, p_2)$, $s = (a+b+c)/2$: $\\frac{1}{2}c \\cdot a \\cdot \\sin(\\angle p_1 p_2 p_3) = \\sqrt{s(s-a)(s-b)(s-c)}$. Non-degeneracy ($p_1 \\neq p_2$ and $p_3 \\neq p_2$) ensures $\\sin(\\angle p_1 p_2 p_3) > 0$. The formula connects the trigonometric area $\\frac{1}{2}ca \\sin B$ to the algebraic expression purely in side lengths."
+    },
+    {
+      "id": "definitions",
+      "title": "Semi-perimeter and Heron Product",
+      "startLine": 106,
+      "endLine": 130,
+      "summary": "Defines `semiperimeter(a,b,c) = (a+b+c)/2` and `heron_product(a,b,c) = s(s-a)(s-b)(s-c)` as noncomputable real-valued functions. Explains why each factor $s-a = (b+c-a)/2$ is non-negative by the triangle inequality.",
+      "mathContext": "$s = (a+b+c)/2$ is the semiperimeter. The four Heron factors: $s-a = (b+c-a)/2$, $s-b = (a+c-b)/2$, $s-c = (a+b-c)/2$. Each is non-negative iff the corresponding triangle inequality holds: $s-a \\geq 0 \\iff a \\leq b+c$. The product $s(s-a)(s-b)(s-c) \\geq 0$ for valid triangles. The `noncomputable` attribute reflects that `ℝ` operations require classical choice in Lean's kernel — exact computation is not possible, but formal proofs are."
+    },
+    {
+      "id": "algebraic",
+      "title": "Algebraic Expansion",
+      "startLine": 131,
+      "endLine": 141,
+      "summary": "Proves $s(s-a)(s-b)(s-c) = \\frac{(a+b+c)(-a+b+c)(a-b+c)(a+b-c)}{16}$ via `ring`. This expansion avoids computing $s$ and is numerically more stable.",
+      "mathContext": "The expansion $s(s-a)(s-b)(s-c) = \\frac{(a+b+c)(-a+b+c)(a-b+c)(a+b-c)}{16}$ reveals the symmetry: the four factors $(a+b+c)$, $(-a+b+c)$, $(a-b+c)$, $(a+b-c)$ are linearly symmetric in $\\{a,b,c\\}$ and correspond to $2s$, $2(s-a)$, $2(s-b)$, $2(s-c)$ respectively, so the product $= (2s \\cdot 2(s-a) \\cdot 2(s-b) \\cdot 2(s-c))/16$. The `ring` tactic verifies this polynomial identity by normalizing both sides — a 1-line proof for what would be pages of algebra by hand."
+    },
+    {
+      "id": "examples",
+      "title": "Worked Examples",
+      "startLine": 152,
+      "endLine": 216,
+      "summary": "Verifies Heron's formula for three classic triangles: the **3-4-5** right triangle (area 6), the **equilateral** triangle with side 2 (area $\\sqrt{3}$), and the **5-12-13** right triangle (area 30). Uses `norm_num` for computation and `sqrt_sq` for square root simplification.",
+      "mathContext": "3-4-5 right triangle: $s = 6$, $s-3 = 3$, $s-4 = 2$, $s-5 = 1$, product $= 36$, area $= 6 = \\frac{1}{2}\\cdot3\\cdot4$. Equilateral side 2: $s = 3$, product $= 3\\cdot1\\cdot1\\cdot1 = 3$, area $= \\sqrt{3}$. 5-12-13 right triangle: $s = 15$, $s-5 = 10$, $s-12 = 3$, $s-13 = 2$, product $= 15\\cdot10\\cdot3\\cdot2 = 900$, area $= 30 = \\frac{1}{2}\\cdot5\\cdot12$. The `norm_num` and `sqrt_sq` tactics handle the numerical verification."
+    },
+    {
+      "id": "triangle-inequality",
+      "title": "Triangle Inequality and Non-negativity",
+      "startLine": 217,
+      "endLine": 243,
+      "summary": "Proves that $s(s-a)(s-b)(s-c) \\geq 0$ for valid triangles satisfying the strict triangle inequality $a < b+c$, $b < a+c$, $c < a+b$. Each of the four factors is shown positive by `linarith`, then combined via `mul_nonneg`.",
+      "mathContext": "$s(s-a)(s-b)(s-c) \\geq 0$ encodes the triangle inequalities: each of $s > 0$, $s-a \\geq 0$, $s-b \\geq 0$, $s-c \\geq 0$ is equivalent to one of the three triangle inequalities. The strict case $a < b+c$, $b < a+c$, $c < a+b$ gives $s > 0$ and each $s - x_i > 0$, hence area $> 0$ (non-degenerate). The degenerate case $a = b + c$ (collinear) gives $s - a = 0$ and area $= 0$. Each factor is shown non-negative by `linarith`, combined via `mul_nonneg`."
+    },
+    {
+      "id": "applications",
+      "title": "Triangle Area API and Applications",
+      "startLine": 244,
+      "endLine": 268,
+      "summary": "Defines `triangle_area(a,b,c) = \\sqrt{s(s-a)(s-b)(s-c)}` and proves non-negativity via `sqrt_nonneg`. Concludes with `#check` statements exporting the main results.",
+      "mathContext": "`triangle_area(a,b,c) = Real.sqrt(heron_product(a,b,c))`. Non-negativity of area follows from `Real.sqrt_nonneg` — Lean's `sqrt` is defined to return 0 for negative inputs, so `0 ≤ sqrt x` is unconditional. The `#check` statements export: `heron_main : ∀ p₁ p₂ p₃, p₁ ≠ p₂ → p₃ ≠ p₂ → ...`; `heron_product_nonneg : ∀ a b c, 0 < a → 0 < b → 0 < c → a < b + c → ... → 0 ≤ heron_product a b c`; `triangle_area_nonneg`. These form a complete API for computing and reasoning about triangle areas."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "Heron's formula can be derived from the Pythagorean theorem by expressing the triangle altitude in terms of side lengths and applying a^2 + h^2 = c^2."
+    },
+    {
+      "proofId": "triangle-angle-sum",
+      "relationship": "related",
+      "description": "Both are fundamental triangle geometry results. The triangle angle sum (180 degrees) and Heron's formula together characterize Euclidean triangles."
+    },
+    {
+      "proofId": "triangle-inequality",
+      "relationship": "foundational",
+      "description": "The triangle inequality ensures s(s-a)(s-b)(s-c) >= 0 for valid triangles, making the square root in Heron's formula well-defined."
+    },
+    {
+      "proofId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "Both are classical geometry results from antiquity. Heron (c. 60 AD) and Ptolemy (c. 150 AD) developed foundational geometric computation tools."
+    },
+    {
+      "targetId": "herons-formula-oq-03",
+      "relationship": "extended-by",
+      "description": "Kahan's numerically stable variant of Heron's formula; this verified child proves the algebraic identity kahan_product = 16·heron_product and equivalence with the classical triangle area."
+    },
+    {
+      "targetId": "herons-formula-oq-04",
+      "relationship": "extended-by",
+      "description": "Verified isoperimetric result: among triangles of fixed perimeter the equilateral maximizes area, proved via three-variable AM-GM on (s−a)(s−b)(s−c) ≤ (s/3)³."
+    },
+    {
+      "targetId": "herons-formula-oq-05",
+      "relationship": "extended-by",
+      "description": "Verified generalization to simplex content via the Cayley–Menger determinant, with the triangle case 16·Area² = −cmDet recovering Heron's formula as a polynomial identity in squared edge lengths."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization provides a complete treatment of Heron's formula: the main identity in abstract inner product spaces via Mathlib, computable definitions of the semi-perimeter and Heron product, algebraic expansions proved by `ring`, concrete verifications for classic triangles, and the non-negativity theorem connecting Heron's formula to the triangle inequality. All proofs are complete with zero sorries.",
+    "implications": "**Theoretical Significance**: Heron's formula sits at the intersection of Euclidean geometry, algebra, and analysis. The algebraic expansion form is the basis for numerically stable area computation (Kahan's algorithm).\n\nThe connection to the Cayley-Menger determinant generalizes to volumes of simplices in higher dimensions. In algebraic geometry, the formula relates to the discriminant of the triangle viewed as a polynomial system.",
+    "openQuestions": [
+      "Can Brahmagupta's generalization to cyclic quadrilaterals $\\text{Area} = \\sqrt{(s-a)(s-b)(s-c)(s-d)}$ be formalized in Lean using Mathlib's cyclic polygon infrastructure?",
+      "Can the Cayley-Menger determinant formula for simplex volumes be derived as a higher-dimensional generalization?",
+      "Can a numerically stable variant (Kahan's formula using compensated subtraction) be formalized and proved equivalent?",
+      "Can the isoperimetric inequality for triangles — that the equilateral triangle maximizes area for fixed perimeter — be derived from Heron's formula using AM-GM?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Geometry.Euclidean.Triangle",
+      "Mathlib.Geometry.Euclidean.Angle.Sphere",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Tactic",
+      "Archive.Wiedijk100Theorems.HeronsFormula"
+    ],
+    "opens": [
+      "EuclideanGeometry",
+      "Real"
+    ],
+    "namespace": "HeronsFormula",
+    "lineCount": 268,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 3,
+    "path": "Proofs/HeronsFormula.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Heron of Alexandria",
+      "title": "Metrica",
+      "year": "~60 CE",
+      "venue": "Alexandria",
+      "note": "Contains the formula A = √(s(s-a)(s-b)(s-c)) for the area of a triangle in terms of its side lengths"
+    },
+    {
+      "authors": "Heath, Thomas L.",
+      "title": "A History of Greek Mathematics, Vol. II",
+      "year": "1921",
+      "venue": "Oxford University Press (Dover reprint 1981)",
+      "note": "Historical analysis of Heron's formula including the proof from Metrica"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "heron_formula",
+      "type": "core",
+      "description": "Area of triangle = sqrt(s(s-a)(s-b)(s-c)) where s = (a+b+c)/2",
+      "leanType": "area = Real.sqrt (s * (s-a) * (s-b) * (s-c)) where s = (a+b+c)/2"
+    }
+  ],
+  "sorries": 0
+}

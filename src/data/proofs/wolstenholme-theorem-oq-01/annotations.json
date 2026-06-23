@@ -1,0 +1,164 @@
+[
+  {
+    "id": "ann-wpoq01-overview",
+    "proofId": "wolstenholme-theorem-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "The Infinitude Question: Are There Unboundedly Many Wolstenholme Primes?",
+    "content": "Wolstenholme's theorem tells us that C(2p-1,p-1) ≡ 1 (mod p³) for all primes p ≥ 5. Primes where this strengthens to mod p⁴ are called Wolstenholme primes. Only two are known — 16843 (McIntosh, 1995) and 2124679 (McIntosh-Roettger, 2007). The central conjecture: are there infinitely many? The heuristic argument: if P(p is WP) ≈ 1/p, then the expected count below N is Σ_{p≤N} 1/p ≈ ln(ln N), which diverges — but excruciatingly slowly (≈ 3.1 at 10⁹). This file formalizes the conjecture, proves the logical dichotomy, and connects it to Bernoulli numbers and Wieferich primes.",
+    "mathContext": "InfinitelyManyWP := ∀ N, ∃ p > N, IsWP p. BoundedWP := ∃ N, ∀ p, IsWP p → p ≤ N. These are provably complementary. The Bernoulli characterization: IsWP p ↔ p | B_{p-3}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wolstenholme primes",
+      "infinitude conjectures",
+      "Bernoulli numbers",
+      "Wieferich primes",
+      "heuristic density"
+    ],
+    "prerequisites": [
+      "Wolstenholme's theorem",
+      "Nat.choose",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-wpoq01-known-wps",
+    "proofId": "wolstenholme-theorem-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 94
+    },
+    "type": "concept",
+    "title": "The Two Known Wolstenholme Primes",
+    "content": "Primality of 16843 and 2124679 is verified via native_decide. The mod p⁴ congruences are axiomatized because C(33685, 16842) and C(4249357, 2124678) are astronomical. From these axioms we construct `isWP_16843` and `isWP_2124679`, then prove at least two distinct WPs exist. The gap (2,107,836) and ratio (126×) quantify the sparsity: consistent with the 1/p density heuristic where spacing grows roughly as p·ln(p).",
+    "mathContext": "$\\text{cb}(16843) \\bmod 16843^4 = 1$ and $\\text{cb}(2124679) \\bmod 2124679^4 = 1$ (axiomatized). Gap: $2124679 - 16843 = 2107836$. Ratio: $\\lfloor 2124679/16843 \\rfloor = 126$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "McIntosh-Roettger",
+      "axiomatized computation",
+      "native_decide"
+    ],
+    "prerequisites": [
+      "Nat.choose",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-wpoq01-dichotomy",
+    "proofId": "wolstenholme-theorem-oq-01",
+    "range": {
+      "startLine": 95,
+      "endLine": 126
+    },
+    "type": "insight",
+    "title": "The Finite/Infinite Dichotomy",
+    "content": "The theorem `bounded_iff_not_infinite` proves BoundedWP ↔ ¬InfinitelyManyWP via classical reasoning. The forward direction is straightforward: a bound contradicts finding a WP above it. The backward direction uses push_neg to convert ¬∀∃ into ∃∀¬, extracting the bound. This clean logical framework means the open question has a sharp dichotomy: either WPs grow without bound, or some finite N contains them all.",
+    "mathContext": "$(\\exists N, \\forall p, \\text{IsWP}(p) \\to p \\le N) \\iff \\neg(\\forall N, \\exists p > N, \\text{IsWP}(p))$. Proved using `push_neg` and the contrapositive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "classical logic",
+      "push_neg",
+      "excluded middle",
+      "logical complementarity"
+    ],
+    "prerequisites": [
+      "InfinitelyManyWP",
+      "BoundedWP"
+    ]
+  },
+  {
+    "id": "ann-wpoq01-conditional-bounds",
+    "proofId": "wolstenholme-theorem-oq-01",
+    "range": {
+      "startLine": 154,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "Conditional Bounds and the 10⁹ Frontier",
+    "content": "Two flavors of conditional results. First, if WPs are bounded by N, then N ≥ 2124679 — simply because 2124679 is a known WP. Second, a third WP (if it exists) exceeds 10⁹, from the McIntosh-Roettger exhaustive search. The theorem `wp_second_or_larger` sharpens this: any WP other than 16843 is at least 2124679. Together these constrain the search space: finding a new WP requires checking primes beyond a billion.",
+    "mathContext": "If $\\forall p, \\text{IsWP}(p) \\to p \\le N$, then $N \\ge 2124679$. Any third WP $p \\notin \\{16843, 2124679\\}$ satisfies $p \\ge 10^9$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "computational search bounds",
+      "McIntosh-Roettger",
+      "conditional reasoning"
+    ],
+    "prerequisites": [
+      "isWP_2124679",
+      "no_wp_below_billion"
+    ]
+  },
+  {
+    "id": "ann-wpoq01-bernoulli",
+    "proofId": "wolstenholme-theorem-oq-01",
+    "range": {
+      "startLine": 199,
+      "endLine": 213
+    },
+    "type": "insight",
+    "title": "Bernoulli Number Characterization",
+    "content": "The deepest connection: p ≥ 5 is a Wolstenholme prime iff p | num(B_{p-3}), where B_n is the n-th Bernoulli number. This links WPs to irregular prime theory. A prime is irregular if p | B_{2k} for some 0 < 2k < p-1 (Kummer's criterion). The WP condition singles out the specific index p-3. Since p is odd and ≥ 5, p-3 is even and ≥ 2, so B_{p-3} ≠ 0. The characterization is axiomatized here; a full proof would require the Clausen-von Staudt theorem and detailed p-adic analysis.",
+    "mathContext": "$\\text{IsWP}(p) \\iff p \\mid \\text{num}(B_{p-3})$ for prime $p \\geq 5$. Every WP is $(p-3)$-irregular. For $p = 16843$: $16843 \\mid \\text{num}(B_{16840})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bernoulli numbers",
+      "irregular primes",
+      "Kummer's criterion",
+      "p-adic analysis"
+    ],
+    "prerequisites": [
+      "bernoulli",
+      "IsWP"
+    ]
+  },
+  {
+    "id": "ann-wpoq01-wieferich",
+    "proofId": "wolstenholme-theorem-oq-01",
+    "range": {
+      "startLine": 214,
+      "endLine": 247
+    },
+    "type": "concept",
+    "title": "The Wieferich Prime Parallel",
+    "content": "Wieferich primes (2^{p-1} ≡ 1 mod p², strengthening Fermat's little theorem) are the closest analogue to Wolstenholme primes. The parallels are striking: both have exactly two known examples (WP: 16843, 2124679; Wieferich: 1093, 3511), both have heuristic density ≈ 1/p, and infinitude is conjectured for both. The key difference: Wieferich primes connect to Fermat's Last Theorem (FLT Case I), while WPs connect to Bernoulli numbers. Both 1093 and 3511 are verified as Wieferich primes via native_decide — feasible because 2^{p-1} mod p² is computable even for four-digit primes.",
+    "mathContext": "$\\text{IsWieferich}(p) := \\text{Nat.Prime}(p) \\wedge 2^{p-1} \\bmod p^2 = 1$. $2^{1092} \\bmod 1194649 = 1$ and $2^{3510} \\bmod 12327121 = 1$ (by `native_decide`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wieferich primes",
+      "Fermat's little theorem",
+      "modular exponentiation",
+      "exceptional primes"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Nat.pow",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "ann-wpoq01-divisibility-chain",
+    "proofId": "wolstenholme-theorem-oq-01",
+    "range": {
+      "startLine": 248,
+      "endLine": 271
+    },
+    "type": "concept",
+    "title": "Divisibility Chain: WP → Wolstenholme → Babbage",
+    "content": "Every Wolstenholme prime satisfies three nested congruences: mod p⁴ (by definition), mod p³ (Wolstenholme's theorem), and mod p² (Babbage's theorem). The proofs use the divisibility chain p² | p³ | p⁴ with Nat.mod_mod_of_dvd. This grounds the exceptional concept (WPs) in the classical hierarchy: WP ⊂ primes satisfying Wolstenholme ⊂ primes satisfying Babbage = all primes ≥ 3.",
+    "mathContext": "$p^4 \\mid (\\text{cb}(p) - 1) \\Rightarrow p^3 \\mid \\Rightarrow p^2 \\mid$. Uses $p^3 \\mid p^4$ (witness: $p$) and $p^2 \\mid p^3$ (witness: $p$) with `Nat.mod_mod_of_dvd`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "divisibility chain",
+      "Wolstenholme's theorem",
+      "Babbage's theorem",
+      "Nat.mod_mod_of_dvd"
+    ],
+    "prerequisites": [
+      "wp_ge_five",
+      "Nat.mod_mod_of_dvd"
+    ]
+  }
+]

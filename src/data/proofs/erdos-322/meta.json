@@ -1,0 +1,280 @@
+{
+  "id": "erdos-322",
+  "title": "Erdős Problem #322: Representations as Sums of k-th Powers",
+  "slug": "erdos-322",
+  "description": "Does r_k(n) > n^c for infinitely many n, where r_k(n) counts representations of n as sum of k k-th powers? k=3: YES (Mahler 1936). k≥4: OPEN.",
+  "meta": {
+    "author": "Mahler (1936 for k=3), Erdős-Chowla (1936 lower bounds)",
+    "sourceUrl": "https://erdosproblems.com/322",
+    "date": "1936",
+    "dateAdded": "2026-01-19",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos322Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "waring",
+      "additive-combinatorics",
+      "hypothesis-k"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 322,
+    "erdosUrl": "https://erdosproblems.com/322",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.pow",
+        "description": "Power function for naturals",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite range sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real power function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "kthPowers definition: set of k-th powers",
+      "representationCount: r_k(n) axiomatized",
+      "hypothesisK: Hardy-Littlewood conjecture formalized",
+      "hypothesisK_fails: negation as polynomial lower bound",
+      "hypothesisK_fails_for_3: Mahler's 1936 disproof of Hypothesis K for cubes (qualitative)",
+      "erdos_chowla_bound: r_k(n) ≫ n^{c/log log n}",
+      "hypothesisKStar: weaker squared sum bound"
+    ],
+    "axiomCount": 3,
+    "lineCount": 182,
+    "assumptions": "3 axioms: representationCount, hypothesisK_fails_for_3, erdos_chowla_bound. 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "This problem connects to the classical theory of Waring's problem and the Hardy-Littlewood circle method. Hardy and Littlewood conjectured Hypothesis K: that r_k(n) = n^{o(1)} for k ≥ 3, meaning representations grow slower than any polynomial.\n\nMahler (1936) sensationally disproved this for cubes, showing r_3(n) ≫ n^{1/12} for infinitely many n. Erdős believed Hypothesis K fails for all k ≥ 4, but this remains open. Independently, Erdős and Chowla proved a weaker bound r_k(n) ≫ n^{c/log log n} for all k ≥ 3.\n\nThe weaker Hypothesis K* (bounding the sum Σ r_k(n)² ≪ N^{1+ε}) is probably true but unproven and very deep. Erdős and Graham noted it 'would suffice for most applications' of the original Hypothesis K.",
+    "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nLet k ≥ 3 and let r_k(n) be the number of representations of n as a sum of k many k-th powers.\n\n**Question:** Does there exist c > 0 with r_k(n) > n^c for infinitely many n?\n\n**Results:**\n- k = 3: YES, c = 1/12 works (Mahler 1936)\n- k ≥ 4: OPEN (Erdős conjectured YES)\n- Weaker: r_k(n) ≫ n^{c/log log n} for all k ≥ 3 (Erdős-Chowla)",
+    "text": "This 182-line formalization captures the current state of Erdős Problem #322 with 3 axioms and 0 sorries. It defines the representation count $r_k(n)$ — the number of ways to write $n = x_1^k + \\cdots + x_k^k$ with $x_i \\geq 0$ — and formalizes both Hypothesis K ($r_k(n) = n^{o(1)}$) and its negation ($\\exists c > 0$, $r_k(n) > n^c$ infinitely often). The key axioms encode Mahler's 1936 disproof for $k=3$ (`hypothesisK_fails_for_3`) and the Erdős-Chowla weaker bound ($r_k(n) \\gg n^{c/\\log\\log n}$ for all $k \\geq 3$). Two proved theorems (`erdos_322` and `erdos_322_summary`) synthesize these results.",
+    "proofStrategy": "The formalization is organized in eight parts mirroring the problem's logical structure:\n\n1. **Definitions** (Part I): `kthPowers k` as $\\{m^k : m \\in \\mathbb{N}\\}$ and `representationCount k n` axiomatized as $r_k(n) = |\\{(x_1,\\ldots,x_k) : x_1^k + \\cdots + x_k^k = n\\}|$.\n\n2. **Hypothesis K** (Part II): Formalized as $\\forall \\varepsilon > 0, \\exists N, \\forall n \\geq N, r_k(n) < n^\\varepsilon$, with its negation `hypothesisK_fails` expressing $\\exists c > 0$ with $r_k(n) > n^c$ infinitely often.\n\n3. **Mahler's Theorem** (Part III): Axiomatizes $r_3(n) \\geq c \\cdot n^{1/12}$ for infinitely many $n$, using `Real.rpow` for the fractional exponent.\n\n4. **Open problem** (Part IV): `erdos_conjecture_k4` states the conjecture for $k \\geq 4$.\n\n5. **Erdős-Chowla** (Part V): Axiomatizes the weaker bound using `Real.log (Real.log n)` for the doubly-logarithmic denominator.\n\n6. **Hypothesis K\\*** (Part VI): Defines the squared-sum variant $\\sum_{n \\leq N} r_k(n)^2 \\ll N^{1+\\varepsilon}$ using `Finset.range N`.\n\n7. **Positive density** (Part VII): Documentation placeholder for Erdős's claim about unbounded representations from dense subsets; this section contains an orphaned docstring but no axiom is declared.\n\n8. **Summary** (Part VIII): Two proved theorems combining the results.",
+    "keyInsights": [
+      "**Hypothesis K:** r_k(n) ≤ n^{o(1)} (Hardy-Littlewood conjecture)",
+      "**Mahler (1936):** Disproved for cubes with r_3(n) ≫ n^{1/12}",
+      "**k ≥ 4:** Status unknown - Erdős believed K fails",
+      "**Erdős-Chowla:** Weaker r_k(n) ≫ n^{c/log log n} for all k ≥ 3",
+      "**Hypothesis K*:** Σ r_k(n)² ≪ N^{1+ε} (probably true, very deep)"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 44,
+      "endLine": 62,
+      "summary": "Defines `kthPowers k` as $\\{m^k : m \\in \\mathbb{N}\\}$ and axiomatizes `representationCount k n` as $r_k(n) = |\\{(x_1,\\ldots,x_k) \\in \\mathbb{N}^k : x_1^k + \\cdots + x_k^k = n\\}|$.",
+      "mathContext": "$r_k(n)$ is the $k$-fold convolution of the indicator of $k$-th powers evaluated at $n$. It counts ordered $k$-tuples, so $r_2(n)$ counts pairs $(a,b)$ with $a^2 + b^2 = n$, while $r_3(n)$ counts triples of cubes summing to $n$. The axiomatization avoids the technically involved computability definition."
+    },
+    {
+      "id": "hypothesis-k",
+      "title": "Hypothesis K",
+      "startLine": 63,
+      "endLine": 81,
+      "summary": "Defines `hypothesisK k` as $\\forall \\varepsilon > 0,\\; r_k(n) < n^\\varepsilon$ eventually, and `hypothesisK_fails k` as $\\exists c > 0$ with $r_k(n) > n^c$ infinitely often. These are logically complementary for $k \\geq 3$.",
+      "mathContext": "Hypothesis K: $r_k(n) = n^{o(1)}$, i.e., $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\geq N,\\; r_k(n) < n^\\varepsilon$. Hardy and Littlewood introduced this in their 'Partitio Numerorum' papers (1920s) as a key ingredient for their asymptotic formula for Waring representations. Its failure for $k=3$ (Mahler) means the circle method predictions are less precise than hoped."
+    },
+    {
+      "id": "mahler",
+      "title": "Mahler's Theorem",
+      "startLine": 82,
+      "endLine": 97,
+      "summary": "Axiomatizes Mahler's 1936 theorem: $\\exists c > 0,\\; \\forall N,\\; \\exists n \\geq N,\\; r_3(n) \\geq c \\cdot n^{1/12}$. The corollary `hypothesisK_fails_for_3` restates this in the Hypothesis K framework.",
+      "mathContext": "Mahler's proof exploits the algebraic structure of cubic forms: certain integers $n$ have $\\gg n^{1/12}$ representations as sums of 3 cubes because they lie on algebraic curves with many lattice points. The exponent $1/12$ arises from Birch's generalization of the lattice point counting for ternary cubic forms. The result was a major surprise — Hardy and Littlewood had expected Hypothesis K to hold universally."
+    },
+    {
+      "id": "k-geq-4",
+      "title": "Status for k ≥ 4",
+      "startLine": 98,
+      "endLine": 108,
+      "summary": "Defines `erdos_conjecture_k4` as $\\forall k \\geq 4,\\; \\text{hypothesisK\\_fails}\\,k$. This remains one of the central open questions in additive number theory.",
+      "mathContext": "For $k = 4$ (fourth powers), the situation is much harder than cubes because the density of fourth powers ($\\sim N^{1/4}$) is sparser than cubes ($\\sim N^{1/3}$). No analog of Mahler's algebraic geometry argument is known for fourth powers. Even the weaker question of whether $r_4(n)$ can exceed $n^\\varepsilon$ for some fixed $\\varepsilon > 0$ and infinitely many $n$ is open."
+    },
+    {
+      "id": "erdos-chowla",
+      "title": "Erdős-Chowla Bound",
+      "startLine": 109,
+      "endLine": 123,
+      "summary": "Axiomatizes the Erdős-Chowla theorem (1936): for all $k \\geq 3$, $\\exists c > 0$ with $r_k(n) \\geq n^{c/\\log\\log n}$ for infinitely many $n$. Also defines Hypothesis K* ($\\sum_{n \\leq N} r_k(n)^2 \\ll N^{1+\\varepsilon}$).",
+      "mathContext": "The Erdős-Chowla bound $r_k(n) \\gg n^{c/\\log\\log n}$ is super-logarithmic but sub-polynomial — it doesn't disprove Hypothesis K but shows $r_k(n)$ can be large. Hypothesis K* controls the $L^2$ norm of $r_k$: $\\sum_{n \\leq N} r_k(n)^2 \\leq C N^{1+\\varepsilon}$ allows occasional polynomial spikes but bounds their frequency. If K* holds, $r_k(n) > n^c$ can happen for at most $O(N^{1-c+\\varepsilon})$ integers $n \\leq N$."
+    },
+    {
+      "id": "hypothesis-k-star",
+      "title": "Hypothesis K*",
+      "startLine": 124,
+      "endLine": 139,
+      "summary": "Weaker conjecture on squared sums",
+      "mathContext": "Mathematical content: Weaker conjecture on squared sums"
+    },
+    {
+      "id": "positive-density",
+      "title": "Positive Density Sets",
+      "startLine": 140,
+      "endLine": 149,
+      "summary": "Docstring describing Erdős's positive density claim (no corresponding axiom declaration).",
+      "mathContext": "This generalizes the representation problem to $k$-th powers of arbitrary dense subsets. If $|S \\cap [1,N]| \\geq \\delta N$, then $|B \\cap [1,N^k]| \\geq \\delta N$, so the set of $k$-th powers from $S$ has density $\\sim \\delta N^{1-1/k}$ among integers up to $N^k$. The claim says this density always suffices for unbounded $k$-fold sums — a strong structural result about the additive properties of power sets."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 150,
+      "endLine": 182,
+      "summary": "Two proved theorems: `erdos_322_summary` bundles Mahler's $k=3$ result with the Erdős-Chowla bound for all $k \\geq 3$ as a conjunction; `erdos_322` states `hypothesisK_fails 3` directly.",
+      "mathContext": "`erdos_322_summary : hypothesisK_fails 3 ∧ (∀ k ≥ 3, ∃ c > 0, r_k(n) ≥ n^{c/\\log\\log n}$ i.o.$)$. The proof is `⟨hypothesisK_fails_for_3, fun k hk => erdos_chowla_bound k hk⟩` — a direct pairing of the two axiomatized results. These are the only two non-axiom theorems in the file."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #322 is PARTIALLY SOLVED. For k=3 (cubes), Mahler (1936) proved that Hypothesis K fails with r_3(n) ≫ n^{1/12} for infinitely many n. For k ≥ 4, whether Hypothesis K fails remains OPEN, though Erdős conjectured it does. The Erdős-Chowla bound provides a weaker result valid for all k ≥ 3.",
+    "implications": "**Waring's problem connection**: The classical Waring problem asks for the smallest $g(k)$ such that every integer is a sum of $g(k)$ $k$-th powers. Problem #322 asks the finer question about $r_k(n)$ when we fix the number of summands at exactly $k$ — the 'diagonal' case where the number of summands equals the power. The growth of $r_k(n)$ determines the error term in Waring-type asymptotic formulas.\n\n**Circle method implications**: Hardy and Littlewood's Hypothesis K was formulated as a technical assumption to make the circle method produce sharp asymptotic formulas for Waring representations. Mahler's disproof for $k=3$ means the 'major arc' analysis alone doesn't capture the full behavior — the minor arcs contribute more than expected, requiring more delicate estimates.\n\n**Vinogradov-type bounds**: The state of the art for the Waring problem uses Vinogradov's mean value theorem (proved by Bourgain-Demeter-Guth 2016 via decoupling), which gives sharp bounds on exponential sums over $k$-th powers. Whether these techniques can resolve Hypothesis K for $k \\geq 4$ remains open.\n\n**Density and structure**: Erdős's positive density claim connects to a broader theme: additive properties of structured sets. If even a positive-density subset of $\\mathbb{N}$ produces unbounded $r_k$ when restricted to its $k$-th powers, this suggests the representation function is controlled by density rather than arithmetic structure.",
+    "openQuestions": [
+      "Does Hypothesis K fail for k = 4? (Erdős conjectured YES)",
+      "What is the optimal exponent c for each k?",
+      "Is Hypothesis K* true?",
+      "Characterize n with exceptionally many representations"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+    ],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
+    "namespace": "Erdos322",
+    "lineCount": 182,
+    "axiomCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos322Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-325",
+      "relationship": "related",
+      "description": "Problem #325 on sums of three $k$-th powers is the $k$-summand generalization: while #322 fixes the number of summands at $k$, #325 fixes it at 3 and varies $k$. Both probe the interplay between power growth and additive structure"
+    },
+    {
+      "targetId": "erdos-829",
+      "relationship": "related",
+      "description": "Problem #829 on representations as sums of two cubes ($k=2$ summands, power $3$) is the complementary case to #322's $k=3$ summands of cubes. The growth of $r_2(n)$ for cubes (Hardy-Ramanujan taxi-cab numbers) has a different character from $r_3(n)$"
+    },
+    {
+      "targetId": "erdos-28",
+      "relationship": "foundational",
+      "description": "The Erdős-Turán conjecture on additive bases provides the broader context: if $A$ is an asymptotic basis of order 2, then $r_A(n)$ is unbounded. Problem #322 asks the analogous question for $k$-th powers as a basis of order $k$"
+    },
+    {
+      "targetId": "erdos-979",
+      "relationship": "related",
+      "description": "Problem #979 on sums of $k$-th powers of primes restricts the summands to prime powers — a harder variant of #322 where the base set is sparser. The intersection of Waring's problem with prime number theory"
+    },
+    {
+      "targetId": "erdos-1107",
+      "relationship": "related",
+      "description": "Problem #1107 on sums of $r$-powerful numbers generalizes from $k$-th powers to $r$-powerful numbers (where every prime factor appears with exponent $\\geq r$). The representation count behavior parallels #322 but with a denser base set"
+    },
+    {
+      "targetId": "erdos-66",
+      "relationship": "related",
+      "description": "Problem #66 on representation function asymptotics asks when $r_A(n) \\sim cn$ for a basis $A$ of order 2. This is the precise asymptotic analog of #322's polynomial growth question, but for bases of order 2 rather than order $k$"
+    },
+    {
+      "targetId": "erdos-40",
+      "relationship": "related",
+      "description": "Problem #40 on representation functions and dense sets connects to #322's positive density claim: both ask how the additive structure of a set determines the growth of its representation function"
+    },
+    {
+      "targetId": "erdos-940",
+      "relationship": "related",
+      "description": "Problem #940 on sums of $r$-powerful numbers is a close variant — while #322 studies sums of exact $k$-th powers, #940 allows the more general class of $r$-powerful numbers, where every prime divisor appears with exponent $\\geq r$"
+    }
+  ],
+  "references": [
+    {
+      "key": "Ma36",
+      "authors": [
+        "K. Mahler"
+      ],
+      "title": "Note on Hypothesis K of Hardy and Littlewood",
+      "venue": "Journal of the London Mathematical Society",
+      "year": "1936",
+      "volume": "11",
+      "pages": "136-138",
+      "note": "Disproved Hypothesis K for cubes: showed r_3(n) ≫ n^{1/12} for infinitely many n, using properties of ternary cubic forms"
+    },
+    {
+      "key": "EC36",
+      "authors": [
+        "P. Erdős",
+        "S. Chowla"
+      ],
+      "title": "On the representation of an integer as the sum of k k-th powers",
+      "venue": "Journal of the London Mathematical Society",
+      "year": "1936",
+      "volume": "11",
+      "pages": "142-145",
+      "note": "Proved the weaker bound r_k(n) ≫ n^{c/log log n} for all k ≥ 3, using a combinatorial counting argument"
+    },
+    {
+      "key": "HL20",
+      "authors": [
+        "G. H. Hardy",
+        "J. E. Littlewood"
+      ],
+      "title": "Some problems of 'Partitio Numerorum' I: A new solution of Waring's problem",
+      "venue": "Göttingen Nachrichten",
+      "year": "1920",
+      "pages": "33-54",
+      "note": "Introduced the circle method and Hypothesis K as a technical assumption for asymptotic Waring formulas"
+    },
+    {
+      "key": "EG80",
+      "authors": [
+        "P. Erdős",
+        "R. L. Graham"
+      ],
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "venue": "Monographies de L'Enseignement Mathématique",
+      "year": "1980",
+      "volume": "28",
+      "note": "States Hypothesis K* and describes it as 'probably true but no doubt very deep' — the weaker squared-sum conjecture"
+    },
+    {
+      "key": "ErdosProblems",
+      "authors": [
+        "T. Bloom"
+      ],
+      "title": "Erdős Problems",
+      "venue": "https://erdosproblems.com/322",
+      "year": "2024",
+      "note": "Comprehensive database listing Problem 322 with current status"
+    }
+  ],
+  "sorries": 0
+}

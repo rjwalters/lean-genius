@@ -1,0 +1,141 @@
+[
+  {
+    "id": "ann-bridge-overview",
+    "proofId": "shannon-channel-coding-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Bridge Architecture: Two Definitions, One Theorem",
+    "content": "This file resolves a modular tension in the information theory formalization: OQ-03 proved Fano's inequality using its own private `conditionalEntropy` definition to avoid importing a then-broken dependency, while the rest of the project uses `InformationTheory.conditionalEntropy` from ShannonEntropy.lean. The bridge confirms these are the same, letting OQ-03's result flow into the broader framework — and, now that the dependency is fixed (PR #16334), letting Section 5 discharge the parent `fano_inequality` axiom outright.\n\nThe architectural lesson: when a dependency has a known bug, it can be productive to duplicate the minimal interface (here, just the conditional entropy definition) and prove the main theorem self-contained, then bridge back once the upstream fix lands. This 'islands of correctness' approach let OQ-03 make progress before the blocker was resolved.",
+    "mathContext": "Two definitions:\n$H_1(X|Y) = -\\sum_x\\sum_y [\\text{if } p=0 \\text{ then } 0 \\text{ else } p \\log(p/p_Y)]$ (OQ-03)\n$H_2(X|Y) = -\\sum_x\\sum_y [\\text{if } p=0 \\text{ then } 0 \\text{ else } p \\log(p/p_Y)]$ (standard)\nSame formula → definitional equality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular proof design",
+      "definitional equality",
+      "conditional entropy"
+    ],
+    "prerequisites": [
+      "Lean definitional equality (rfl)",
+      "conditional entropy definition"
+    ]
+  },
+  {
+    "id": "ann-def-compat",
+    "proofId": "shannon-channel-coding-oq-02-oq-01",
+    "range": {
+      "startLine": 45,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Definitional Equality via rfl",
+    "content": "The theorem `conditional_entropy_defs_agree` states that `FanoInequality.conditionalEntropy pXY = -(∑ x ∑ y, if pXY(x,y)=0 then 0 else pXY(x,y)*log(pXY(x,y)/pY(y)))` and is proved by `rfl`. This works because Lean's definitional equality check unfolds both sides and confirms they are syntactically identical after reduction.\n\nIn Lean 4, `rfl` proves goals of the form `a = b` when `a` and `b` reduce to the same normal form. Here, unfolding `FanoInequality.conditionalEntropy` reveals the formula directly, matching the explicit RHS.",
+    "mathContext": "`theorem conditional_entropy_defs_agree ... := by rfl`",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lean definitional equality",
+      "term reduction",
+      "unfolding definitions"
+    ],
+    "prerequisites": [
+      "Lean 4 definitional equality",
+      "rfl tactic"
+    ]
+  },
+  {
+    "id": "ann-fano-corollary",
+    "proofId": "shannon-channel-coding-oq-02-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "One-Line Proof via OQ-03",
+    "content": "The theorem `fano_from_oq03` proves Fano's inequality by directly invoking `fano_theorem` from OQ-03: `exact fano_theorem hn pXY hp hsum`. This is a paradigmatic example of modular proof reuse: the hard work (5 intermediate lemmas, Jensen's inequality, monotonicity argument) was done in OQ-03; this file just applies it.\n\nThe formula P_e used here is `1 - ∑_y ∑_x P(x,y)²/P(Y=y)`, which is the 'quadratic surrogate' for MAP error probability. OQ-03 established MAP P_e ≤ formula P_e, and monotonicity of h(p)+p·log(c) bridges the gap.",
+    "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}|-1)$ where $P_e = 1 - \\sum_y \\frac{\\sum_x P(x,y)^2}{P(Y=y)}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular reuse",
+      "Fano inequality",
+      "MAP error probability",
+      "binary entropy"
+    ],
+    "prerequisites": [
+      "fano_theorem from OQ-03",
+      "conditional entropy compatibility"
+    ]
+  },
+  {
+    "id": "ann-shannon-entropy-bug",
+    "proofId": "shannon-channel-coding-oq-02-oq-01",
+    "range": {
+      "startLine": 77,
+      "endLine": 136
+    },
+    "type": "insight",
+    "title": "Historical Blocker: Sum Order Mismatch in strong_subadditivity (Resolved)",
+    "content": "This comment block records a blocker that has since been resolved. ShannonEntropy.lean's `strong_subadditivity` proof originally failed at line 811 with `linarith [h_cmi]`. The root cause was a sum order mismatch: after the `simp_rw [hYZ]` rewrite, the YZ marginal sum had order `∑ y : β, ∑ z : γ, ∑ x : α, f x y z`, but the same quantity from the hterm expansion had order `∑ x : α, ∑ y : β, ∑ z : γ, f x y z`. Lean's `linarith` works syntactically and could not see these as equal (they differ by `Finset.sum_comm`), so the cancellation never fired.\n\nThe diagnosed fix — inserting a `Finset.sum_comm` normalization before `linarith [h_cmi]` — was applied in PR #16334, which made `strong_subadditivity` a genuine theorem. That is why this file can now `import Proofs.ShannonEntropy` (line 34) and complete the axiom discharge in Section 5. The block is retained as documentation of the original obstruction and the 'islands of correctness' strategy that let OQ-03 progress while it stood.",
+    "mathContext": "Originally-blocked step: `linarith [h_cmi]` where `h_cmi ≥ 0` should cancel a term. Mismatch: one copy of $\\sum_y\\sum_z\\sum_x f$ vs $\\sum_x\\sum_y\\sum_z f$. Resolved by `Finset.sum_comm` normalization (PR #16334).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "strong subadditivity",
+      "sum commutativity",
+      "Finset.sum_comm",
+      "linarith limitations"
+    ],
+    "prerequisites": [
+      "Finset.sum_comm",
+      "strong subadditivity of entropy",
+      "conditional mutual information"
+    ]
+  },
+  {
+    "id": "ann-trivial-case",
+    "proofId": "shannon-channel-coding-oq-02-oq-01",
+    "range": {
+      "startLine": 137,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "Edge Case: |X| = 1",
+    "content": "For the degenerate case where X takes only one value (Unit type), Fano's inequality is trivially satisfied. Both sides equal 0: H(X|Y) = 0 because X is deterministic (knowing or not knowing Y gives no information about a fixed value), and the RHS collapses because log(|X|-1) = log(0) = 0 annihilates the second term while P_e = 0 by hsum.\n\nThe case is mathematically transparent but takes real work in Lean: `fano_trivial_singleton` must push `∑ x : Unit, f x = f ()` collapses through both the P_e expression and the conditional-entropy `if pXY(x,y)=0 then 0 else ...` structure, using `div_self` to reduce each surviving log argument to 1. The theorem is fully proved (no sorry); `fano_singleton_card_one` in Section 5 generalizes it to any `Fintype.card α = 1` via `Subsingleton`.",
+    "mathContext": "For $|\\mathcal{X}|=1$: $H(X|Y) = 0$ (deterministic X), $P_e = 0$, and $(|\\mathcal{X}|-1)\\log = 0\\cdot\\log(0) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Unit type in Lean",
+      "Fintype.sum_unique",
+      "Subsingleton collapse",
+      "degenerate distributions"
+    ],
+    "prerequisites": [
+      "Fintype.card_unit = 1",
+      "Real.log_zero = 0",
+      "Finset.sum over Unit"
+    ]
+  },
+  {
+    "id": "ann-axiom-discharge",
+    "proofId": "shannon-channel-coding-oq-02-oq-01",
+    "range": {
+      "startLine": 189,
+      "endLine": 318
+    },
+    "type": "insight",
+    "title": "Discharging the fano_inequality Axiom",
+    "content": "Section 5 is where the bridge pays off. With the strong_subadditivity blocker resolved (PR #16334), `fano_from_oq03_std` restates the |α|≥2 bound against the project-standard `InformationTheory.conditionalEntropy` and is proved by `:=` — supplying the OQ-03 proof term directly, since the two conditional-entropy definitions are definitionally equal. `fano_singleton_card_one` covers the general one-element domain via a `Subsingleton` collapse. `fano_inequality_proved` then assembles a hypothesis-free dispatcher: it first derives `Nonempty α` (an empty domain makes ∑ pXY = 0, contradicting hsum = 1), then case-splits on `Fintype.card α` — card 1 routes to the singleton lemma, card ≥ 2 to the OQ-03 route. Its statement is a literal match for the `fano_inequality` axiom signature, so the parent `ShannonChannelCoding.lean` defines `theorem fano_inequality := FanoFromConditionalEntropy.fano_inequality_proved ...`, reducing the parent's axiom count from 4 to 3.",
+    "mathContext": "Dispatcher: $|\\mathcal{X}| = 0 \\Rightarrow$ contradiction with $\\sum pXY = 1$; $|\\mathcal{X}| = 1 \\Rightarrow$ singleton case; $|\\mathcal{X}| \\geq 2 \\Rightarrow$ OQ-03 route. Conclusion: $H(X|Y) \\leq h(P_e) + P_e\\log(|\\mathcal{X}|-1)$ for the standard definition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom discharge",
+      "definitional equality",
+      "case analysis on Fintype.card",
+      "modular proof reuse"
+    ],
+    "prerequisites": [
+      "fano_theorem from OQ-03",
+      "Fintype.card case analysis",
+      "Subsingleton / Nonempty reasoning"
+    ]
+  }
+]

@@ -1,0 +1,124 @@
+{
+  "id": "hall-marriage-theorem-oq-01",
+  "title": "Hall's marriage theorem: systems of distinct representatives, the deficiency obstruction, and concrete witnesses",
+  "slug": "hall-marriage-theorem-oq-01",
+  "description": "Hall's marriage theorem in its set-system (transversal) formulation: for a family t : ι → Finset α, an injective system of distinct representatives — an injective f with f i ∈ t i for all i — exists iff Hall's condition #s ≤ #(s.biUnion t) holds for every finite sub-family s. Mathlib proves only the biconditional (Finset.all_card_le_biUnion_card_iff_exists_injective, via Rado's compactness argument). This entry restates that headline and adds the two faces used in practice: the necessity direction proved directly by a one-line counting argument (no finiteness of ι, no compactness), and the deficiency / failure obstruction — a deficient sub-family (#(s.biUnion t) < #s) certifies that NO transversal exists. Two explicit Fin 3 witnesses (a satisfying family with an exhibited transversal, and a violating family where three indices compete for two values) confirm both directions by kernel decide. Distinct from the gallery's bipartite-graph matching formulation (halls-theorem-oq-01): this is the original set-system 'marriage' statement over a Finset family, built on a different Mathlib backbone.",
+  "meta": {
+    "author": "Philip Hall (1935); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HallMarriageTheoremOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "hall-marriage",
+      "transversal",
+      "matching",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.all_card_le_biUnion_card_iff_exists_injective",
+        "description": "Hall's marriage theorem (set-system form): (∀ s : Finset ι, #s ≤ #(s.biUnion t)) ↔ ∃ f, Function.Injective f ∧ ∀ x, f x ∈ t x. Proved in Mathlib via Rado's compactness argument over the finite case.",
+        "module": "Mathlib.Combinatorics.Hall.Basic"
+      },
+      {
+        "theorem": "Finset.card_image_of_injective",
+        "description": "If f is injective then #(s.image f) = #s; the equality driving the necessity counting step.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_le_card",
+        "description": "s ⊆ t → #s ≤ #t; applied to s.image f ⊆ s.biUnion t.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.mem_biUnion",
+        "description": "a ∈ s.biUnion t ↔ ∃ i ∈ s, a ∈ t i; witnesses the inclusion s.image f ⊆ s.biUnion t.",
+        "module": "Mathlib.Data.Finset.Lattice"
+      }
+    ],
+    "originalContributions": [
+      "hall_marriage_iff: the Hall biconditional in set-system form restated as the headline (Mathlib re-export).",
+      "exists_sdr_of_hall: the sufficiency direction (Hall's condition ⟹ a transversal exists) extracted as a standalone corollary.",
+      "hall_condition_of_sdr / hall_condition_of_exists_sdr: the necessity direction proved DIRECTLY by the counting inequality #s = #(s.image f) ≤ #(s.biUnion t), using only injectivity of f — no finiteness of ι and no compactness, so it is strictly cheaper than invoking the full biconditional. Mathlib does not isolate this direction.",
+      "no_sdr_of_deficiency: the deficiency / failure obstruction — a deficient sub-family (#(s.biUnion t) < #s) certifies that NO system of distinct representatives exists. The contrapositive of necessity and the form actually used to prove a matching impossible. New content.",
+      "hall_violating_deficiency: a concrete deficient sub-family — for t₀=t₁=t₂={0,1} over Fin 3, univ.biUnion t = {0,1} so #(univ.biUnion t) = 2 < 3 = #univ.",
+      "hall_satisfiable_example / hall_violating_example: explicit Fin 3 witnesses verified by kernel decide — the family {0,1},{1,2},{0,2} admits the transversal ![0,1,2], and the family {0,1},{0,1},{0,1} has no transversal (derived through the deficiency theorem, not brute force over the maps)."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Uses only kernel `decide` for the concrete witnesses (no native_decide, so no Lean.ofReduceBool). Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 135,
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Philip Hall proved his marriage theorem in 1935: a family of finite sets has a system of distinct representatives (a transversal) iff every k of the sets jointly contain at least k elements. It is one of the central theorems of combinatorics — equivalent to König's theorem, Dilworth's theorem, the max-flow min-cut theorem for bipartite graphs, and Menger's theorem — and underlies transversal theory, Latin squares, doubly stochastic matrices (Birkhoff–von Neumann), and the theory of matchings.",
+    "problemStatement": "Mathlib's `Combinatorics/Hall/Basic.lean` proves the biconditional `Finset.all_card_le_biUnion_card_iff_exists_injective` via Rado's compactness argument, but packages neither the cheap necessity direction on its own nor the deficiency obstruction used to certify non-existence. Can the necessity direction be proved directly (without finiteness of the index type or compactness), and can the failure form — a deficient sub-family rules out any transversal — be isolated and exercised on concrete instances?\n\n**Answer:** Yes. Necessity is a one-step counting argument valid for an arbitrary index type, and its contrapositive is exactly the deficiency obstruction; both are confirmed on explicit Fin 3 families.",
+    "text": "The set-system formulation of Hall's theorem is restated from Mathlib, the sufficiency and necessity directions are split out (necessity proved directly), the deficiency obstruction is derived, and two explicit Fin 3 families — one satisfiable, one violating — are checked with no axioms.",
+    "proofStrategy": "1. hall_marriage_iff / exists_sdr_of_hall: re-export of Finset.all_card_le_biUnion_card_iff_exists_injective and its forward direction.\n2. hall_condition_of_sdr: for a transversal f and a sub-family s, s.image f ⊆ s.biUnion t (each f x ∈ t x) and f injective gives #s = #(s.image f) ≤ #(s.biUnion t) via card_image_of_injective and card_le_card.\n3. hall_condition_of_exists_sdr: destructure the existential and apply (2).\n4. no_sdr_of_deficiency: contrapositive — a transversal would force #s ≤ #(s.biUnion t), contradicting #(s.biUnion t) < #s.\n5. hall_satisfiable_example: kernel decide finds the transversal ![0,1,2] for {0,1},{1,2},{0,2}.\n6. hall_violating_deficiency + hall_violating_example: decide checks #(univ.biUnion t) = 2 < 3 for {0,1},{0,1},{0,1}, and no_sdr_of_deficiency converts the deficiency into impossibility of any transversal.",
+    "keyInsights": [
+      "**The biconditional is one re-export; the work is the two practical faces.** Mathlib supplies only the iff. The necessity direction proved directly and the deficiency obstruction — the form used to rule out matchings — are the genuine content here.",
+      "**Necessity is free of compactness.** The easy direction needs only that f is injective and lands in the sets: #s = #(s.image f) ≤ #(s.biUnion t). It holds for an arbitrary (possibly infinite) index type ι, unlike the sufficiency direction which relies on Rado's compactness argument over the finite case.",
+      "**Deficiency certifies impossibility.** In applications one rarely produces a transversal directly; one exhibits a deficient sub-family. no_sdr_of_deficiency packages exactly this contrapositive: more members than available representatives ⟹ no transversal.",
+      "**Two values, three suitors.** The violating witness t₀=t₁=t₂={0,1} is the smallest pigeonhole obstruction: three indices, two possible representatives, so univ is deficient and no injective choice exists — certified through the deficiency theorem rather than by brute-force enumeration."
+    ],
+    "exampleSections": [
+      {
+        "title": "Concrete Fin 3 witnesses",
+        "mathContext": "A satisfiable family with an exhibited transversal and a pigeonhole-violating family, both checked by kernel decide, confirming the iff and the deficiency obstruction numerically."
+      }
+    ]
+  },
+  "references": [
+    {
+      "authors": "Hall, Philip",
+      "title": "On Representatives of Subsets",
+      "year": "1935",
+      "note": "J. London Math. Soc. 10, 26–30 — the original marriage theorem: a family of finite sets has a system of distinct representatives iff every k of them cover ≥ k elements."
+    },
+    {
+      "authors": "Rado, Richard",
+      "title": "A theorem on independence relations",
+      "year": "1942",
+      "note": "Quart. J. Math. 13, 83–89 — the compactness argument extending Hall's theorem to infinite index sets, the route Mathlib formalizes."
+    },
+    {
+      "authors": "van Lint, J. H.; Wilson, R. M.",
+      "title": "A Course in Combinatorics",
+      "year": "2001",
+      "note": "Chapter 5 — Hall's marriage theorem, systems of distinct representatives, the deficiency version, and equivalences with König's and Dilworth's theorems."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "halls-theorem-oq-01",
+      "reason": "The bipartite-graph matching formulation of Hall's theorem (SimpleGraph.IsBipartiteWith / IsMatching). This entry gives the dual set-system / transversal (SDR) formulation over a Finset family — the original 'marriage' statement — on a different Mathlib backbone."
+    }
+  ],
+  "conclusion": {
+    "summary": "The set-system formulation of Hall's marriage theorem is restated from Mathlib (hall_marriage_iff, exists_sdr_of_hall), the necessity direction is proved directly by a counting argument (hall_condition_of_sdr, hall_condition_of_exists_sdr), the deficiency obstruction is derived (no_sdr_of_deficiency), and two explicit Fin 3 families are verified (hall_satisfiable_example, hall_violating_deficiency, hall_violating_example). All results are verified with 0 axioms and 0 sorries.",
+    "implications": "Provides the transversal-theory face of Hall's theorem alongside the gallery's bipartite-graph version, and isolates the deficiency obstruction — the certificate of impossibility — as a reusable standalone lemma valid for an arbitrary index type.",
+    "openQuestions": [
+      "Can the defect (deficiency) version of Hall's theorem be formalized quantitatively — that the maximum size of a partial transversal equals #ι − max_s (#s − #(s.biUnion t)) — refining the all-or-nothing obstruction to an exact count?",
+      "Can König's theorem (max matching = min vertex cover in bipartite graphs) be derived in the gallery from this set-system Hall theorem, exhibiting the standard equivalence?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "HallMarriage",
+    "lineCount": 135,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/HallMarriageTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

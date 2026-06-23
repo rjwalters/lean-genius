@@ -1,0 +1,119 @@
+{
+  "slug": "mean-value-theorem-oq-03",
+  "title": "Vector-valued MVT generalization (mean value inequality)",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\lVert f(b)-f(a)\\rVert\\le C\\,|b-a| whenever \\lVert f'(t)\\rVert\\le C on the interval, with Banach-space Frechet-derivative analogues.",
+    "plain": "Backfill the vector-valued mean-value inequality metadata: the classical equality becomes a norm bound, with Lipschitz consequences, ODE difference estimates, and Banach-space generalizations.",
+    "whyMatters": [
+      "Vector-valued functions do not generally satisfy the scalar MVT equality, so the inequality is the right reusable theorem.",
+      "Derivative bounds become Lipschitz and displacement estimates, which are central in analysis and ODE theory.",
+      "The Banach-space version packages the same principle for Frechet derivatives."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`mean_value_inequality` proves the core vector-valued norm bound.",
+      "`scalar_mean_value_inequality` records the scalar comparison, while `circular_counterexample` explains why equality cannot be expected in vector targets.",
+      "`deriv_bound_implies_lipschitz`, `difference_bound_for_odes`, and `lipschitz_of_nnnorm_fderiv_le` turn derivative bounds into Lipschitz-style estimates.",
+      "`banach_mean_value_inequality`, `banach_mvt_differentiableAt`, and `banach_constant_of_fderiv_zero` provide Banach-space versions."
+    ],
+    "open": [
+      "`MeanValueTheoremOQ03.lean` records zero axioms and zero sorries; the sibling `MeanValueTheoremOQ02.lean` has one Taylor-theorem axiom."
+    ],
+    "goal": "Expose the completed vector-valued and Banach-space mean-value inequality results without importing the sibling Taylor axiom."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-06T11:43:14.358Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "generalization",
+    "mean-value-inequality",
+    "banach-spaces",
+    "lipschitz",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "mean-value-theorem",
+    "mean-value-theorem-oq-02",
+    "mean-value-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-07T18:02:01.177Z",
+  "lastUpdate": "2026-03-12T07:36:01.957Z",
+  "completed": "2026-03-12T07:36:01.957Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/MeanValueTheorem.lean",
+      "filename": "MeanValueTheorem.lean",
+      "lineCount": 164,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheorem.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ02.lean",
+      "filename": "MeanValueTheoremOQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ03.lean",
+      "filename": "MeanValueTheoremOQ03.lean",
+      "lineCount": 462,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ04.lean",
+      "filename": "MeanValueTheoremOQ04.lean",
+      "lineCount": 294,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ04.lean"
+    }
+  ]
+}

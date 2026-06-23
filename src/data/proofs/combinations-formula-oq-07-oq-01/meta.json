@@ -1,0 +1,126 @@
+{
+  "id": "combinations-formula-oq-07-oq-01",
+  "title": "The Subset-of-a-Subset Identity (Trinomial Revision)",
+  "slug": "combinations-formula-oq-07-oq-01",
+  "description": "Formalizes the multiplicative companion of Vandermonde's convolution: the subset-of-a-subset identity C(n,k)·C(k,m) = C(n,m)·C(n-m,k-m) for m ≤ k ≤ n (trinomial revision, the committee–subcommittee identity). Proved by clearing factorial denominators with Nat.choose_mul_factorial_mul_factorial — both sides times m!·(k-m)!·(n-k)! collapse to n! — so no summation or induction is needed. Derives the central-blocks symmetric form and the absorption / committee-chair corollary k·C(n,k) = n·C(n-1,k-1).",
+  "meta": {
+    "author": "Lean Genius researcher-8",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ07OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 129,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "assumptions": "None. The identity holds for all m ≤ k ≤ n and is fully machine-checked. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms — no Lean.ofReduceBool, no sorryAx).",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "trinomial-revision",
+      "subset-of-a-subset",
+      "absorption-identity",
+      "factorial",
+      "double-counting"
+    ],
+    "dateAdded": "2026-06-22",
+    "originalContributions": [
+      "choose_mul_choose: the subset-of-a-subset identity C(n,k)·C(k,m) = C(n,m)·C(n-m,k-m) for m ≤ k ≤ n, absent from Mathlib, proved by clearing factorial denominators (both sides × m!·(k-m)!·(n-k)! = n!) with zero summation and zero induction",
+      "choose_mul_choose_of_le': the central-blocks form C(n,k)·C(k,m) = C(n,m)·C(n-m,n-k) via choose symmetry on the leftover block",
+      "mul_choose_eq: the absorption / committee-chair corollary k·C(n,k) = n·C(n-1,k-1), recovered as the m=1 slice of the general identity",
+      "Worked verification C(5,3)·C(3,2) = 30 = C(5,2)·C(3,1) and 3·C(5,3) = 30 = 5·C(4,2)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose_mul_factorial_mul_factorial",
+        "description": "For k ≤ n, C(n,k)·k!·(n-k)! = n!. The single factorial fact the whole proof rests on: applied at (n,k), (k,m), (n,m) and (n-m,k-m) it makes both sides of the identity collapse to n! after multiplication by the shared denominator m!·(k-m)!·(n-k)!.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.eq_of_mul_eq_mul_right",
+        "description": "Right-cancellation a·c = b·c → a = b for 0 < c. Cancels the nonzero shared denominator after both sides are shown equal to n!.",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Nat.choose_symm",
+        "description": "C(n, n-k) = C(n, k) for k ≤ n; rewrites the leftover block C(n-m,k-m) into C(n-m,n-k) for the central-blocks form.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_one_right",
+        "description": "C(n,1) = n; specializes the general identity at m=1 to the absorption corollary.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/CombinationsFormulaOQ07OQ01.lean",
+    "namespace": "CombinationsFormulaOQ07OQ01",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 129,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The subset-of-a-subset identity — also called trinomial revision or the committee–subcommittee identity — is equation (5.21) in Graham, Knuth & Patashnik's Concrete Mathematics, where it is listed among the handful of binomial identities one should memorize. It is the multiplicative counterpart of Vandermonde's additive convolution: where Vandermonde splits a single selection across two blocks, trinomial revision re-routes a nested pair of selections (committee then subcommittee) into the opposite order (subcommittee then committee). It is the workhorse behind hypergeometric term simplification and behind the absorption identity used to evaluate weighted binomial sums such as ∑ k·C(n,k) = n·2^{n-1}.",
+    "problemStatement": "Open Question OQ-07-OQ-01: Vandermonde's convolution (OQ-07) is the additive binomial identity C(m+n,k) = ∑_{i+j=k} C(m,i)·C(n,j). What is its multiplicative companion? Formalize the subset-of-a-subset identity C(n,k)·C(k,m) = C(n,m)·C(n-m,k-m) for m ≤ k ≤ n, which Mathlib does not provide, and recover the classical absorption identity as a special case.",
+    "proofStrategy": "Avoid summation entirely and work with the single factorial identity Nat.choose_mul_factorial_mul_factorial: C(n,k)·k!·(n-k)! = n! whenever k ≤ n. Multiply both sides of the target by the common denominator D = m!·(k-m)!·(n-k)!. On the left, the block C(k,m)·m!·(k-m)! collapses to k! (factorial identity at (k,m)), leaving C(n,k)·k!·(n-k)! = n! (factorial identity at (n,k)). On the right, using (n-m)-(k-m) = n-k, the block C(n-m,k-m)·(k-m)!·(n-k)! collapses to (n-m)! (factorial identity at (n-m,k-m)), leaving C(n,m)·m!·(n-m)! = n! (factorial identity at (n,m)). Both products thus equal n!; since D > 0, Nat.eq_of_mul_eq_mul_right cancels it and yields the identity. All pure-multiplication regrouping is discharged by ring (ℕ is a commutative semiring), and the natural-subtraction bookkeeping (k-m ≤ n-m, (n-m)-(k-m) = n-k) by omega.",
+    "keyInsights": [
+      "Trinomial revision needs no summation and no induction: it is a pointwise factorial identity, so clearing denominators reduces both sides to n! directly.",
+      "The shared denominator m!·(k-m)!·(n-k)! is exactly the multiset of factorials missing from each binomial coefficient; recognizing it is the whole trick.",
+      "Natural-number subtraction is tamed by a single arithmetic fact (n-m)-(k-m) = n-k (omega), letting the (n-m,k-m) factorial identity reuse the same (n-k)! factor that appears on the left.",
+      "The absorption identity k·C(n,k) = n·C(n-1,k-1) is not separate mathematics but the m=1 slice of trinomial revision, exposed by C(n,1)=n.",
+      "ring closes every multiplicative regrouping because the binomial coefficients and factorials are treated as opaque atoms in the commutative semiring ℕ."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Mathematical Context",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Header stating OQ-07-OQ-01: the subset-of-a-subset identity as the multiplicative companion of Vandermonde. Gives the committee–subcommittee double-counting interpretation and the factorial-clearing strategy."
+    },
+    {
+      "id": "main-identity",
+      "title": "Subset-of-a-Subset Identity",
+      "startLine": 65,
+      "endLine": 95,
+      "summary": "choose_mul_choose: C(n,k)·C(k,m) = C(n,m)·C(n-m,k-m). Establishes the four factorial collapses, shows LHS·D = n! and RHS·D = n! with ring regrouping, and cancels the positive denominator D with Nat.eq_of_mul_eq_mul_right."
+    },
+    {
+      "id": "central-blocks",
+      "title": "Central-Blocks Form",
+      "startLine": 100,
+      "endLine": 109,
+      "summary": "choose_mul_choose_of_le': C(n,k)·C(k,m) = C(n,m)·C(n-m,n-k), counting the leftover seats from the top via Nat.choose_symm on the (n-m)-block."
+    },
+    {
+      "id": "absorption",
+      "title": "Absorption / Committee-Chair Corollary",
+      "startLine": 111,
+      "endLine": 129,
+      "summary": "mul_choose_eq: k·C(n,k) = n·C(n-1,k-1), the m=1 slice recovered with Nat.choose_one_right. Worked numeric checks C(5,3)·C(3,2) = C(5,2)·C(3,1) = 30 and 3·C(5,3) = 5·C(4,2) = 30."
+    }
+  ],
+  "conclusion": {
+    "summary": "3 theorems, 0 sorries, 0 axioms. The subset-of-a-subset identity C(n,k)·C(k,m) = C(n,m)·C(n-m,k-m) — Mathlib's missing multiplicative companion to Vandermonde — is formalized by clearing factorial denominators, with no summation and no induction. Its central-blocks symmetric form and the classical absorption identity k·C(n,k) = n·C(n-1,k-1) follow as corollaries.",
+    "implications": "Fills a genuine Mathlib gap: trinomial revision is a core memorize-it binomial identity yet was not available. The factorial-clearing proof pattern (multiply by the shared denominator, collapse each side with choose_mul_factorial_mul_factorial, cancel) is reusable for any pointwise binomial-product identity, and the entry exposes absorption as a one-line specialization rather than independent mathematics.",
+    "openQuestions": [
+      "Does trinomial revision extend to the multinomial coefficient (n; a,b,c) = (n; a)·(n-a; b,c), and is that statement provable by the same denominator-clearing route over Mathlib's Nat.multinomial?",
+      "Can absorption k·C(n,k) = n·C(n-1,k-1), now available, be used to give a summation-free proof of the weighted row sum ∑ k·C(n,k) = n·2^{n-1} already studied in combinations-formula-oq-09?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-07",
+      "relationship": "parent — Vandermonde's additive convolution, whose multiplicative companion this entry formalizes"
+    },
+    {
+      "targetId": "combinations-formula-oq-09",
+      "relationship": "related — weighted binomial row sums, whose ∑ k·C(n,k) = n·2^{n-1} is driven by the absorption corollary proved here"
+    }
+  ],
+  "sorries": 0
+}

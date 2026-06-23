@@ -1,0 +1,118 @@
+[
+  {
+    "id": "ann-142-imports",
+    "proofId": "erdos-142",
+    "range": {
+      "startLine": 20,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports Mathlib's core tactic library, `Finset` operations for finite set manipulation, natural number basics, and `Filter` theory. The formalization relies heavily on `Finset.range`, `Finset.filter`, `Finset.powerset`, and `Finset.sup` for defining arithmetic progressions and computing $r_k(N)$. Real number operations (`Real.exp`, `Real.sqrt`, `Real.log`) are used for the quantitative bounds.",
+    "mathContext": "Uses `Finset.range k`, `Finset.image`, `Finset.powerset`, and `Finset.sup` for combinatorial definitions. Real-valued bounds use `Real.exp`, `Real.sqrt`, and `Real.log` from Mathlib.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset",
+      "Real",
+      "Filter",
+      "Mathlib tactics"
+    ],
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib"
+    ]
+  },
+  {
+    "id": "ann-142-arith-prog",
+    "proofId": "erdos-142",
+    "range": {
+      "startLine": 28,
+      "endLine": 29
+    },
+    "type": "definition",
+    "title": "Arithmetic Progression as Finset",
+    "content": "Defines an arithmetic progression of length $k$ starting at $a$ with common difference $d$ as $\\{a, a+d, a+2d, \\ldots, a+(k-1)d\\}$, implemented via `Finset.range k |>.image (fun i => a + i * d)`. This representation is natural for Lean's `Finset` library and enables subset checking via `⊆`.",
+    "mathContext": "$\\text{arithProg}(a, d, k) = \\{a + id : 0 \\le i < k\\}$. For $d > 0$ and $k \\ge 3$, this is a non-trivial $k$-term AP.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "Finset.image",
+      "van der Waerden numbers"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Finset.image"
+    ]
+  },
+  {
+    "id": "ann-142-ap-free",
+    "proofId": "erdos-142",
+    "range": {
+      "startLine": 33,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "AP-$k$-Free Sets and $r_k(N)$",
+    "content": "Two key definitions: (1) **IsAPFree** — a set $S \\subseteq \\{1,\\ldots,N\\}$ is AP-$k$-free if no $k$-term AP with positive common difference is contained in $S$; (2) **$r_k(N)$** — the maximum cardinality of an AP-$k$-free subset of $\\{1,\\ldots,N\\}$, computed as `Finset.sup` over the powerset filtered by `IsAPFree`. The noncomputability arises from the supremum over an exponentially large family.",
+    "mathContext": "$r_k(N) = \\max\\{|S| : S \\subseteq [N],\\, S \\text{ contains no } k\\text{-AP}\\}$. For $k = 3$: $r_3(10) = 5$ (e.g., $\\{1,2,6,7,9\\}$). The function $r_k(N)/N \\to 0$ by Szemerédi's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "AP-free sets",
+      "extremal combinatorics",
+      "Szemerédi's theorem",
+      "Finset.sup"
+    ],
+    "prerequisites": [
+      "arithmetic progression",
+      "Finset.powerset",
+      "Finset.filter"
+    ]
+  },
+  {
+    "id": "ann-142-szemeredi",
+    "proofId": "erdos-142",
+    "range": {
+      "startLine": 47,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Szemerédi's Theorem: $r_k(N) = o(N)$",
+    "content": "The foundational qualitative result: for every $k \\ge 3$, any subset of $\\{1,\\ldots,N\\}$ of positive density must contain a $k$-term AP. Equivalently, $r_k(N)/N \\to 0$ as $N \\to \\infty$. Proved by Szemerédi (1975) via a combinatorial regularity lemma. Alternative proofs: Furstenberg (1977, ergodic theory, multiple recurrence), Gowers (2001, Fourier analysis and uniformity norms), and hypergraph regularity (Gowers 2007, Nagle–Rödl–Schacht 2006). Axiomatized here since the full proof is extremely long.",
+    "mathContext": "$\\forall k \\ge 3,\\, \\forall \\varepsilon > 0,\\, \\exists N_0 : \\forall N \\ge N_0,\\, r_k(N) \\le \\varepsilon N$. The original proof gives tower-type bounds on $N_0(k, \\varepsilon)$; Gowers's proof gives $N_0 \\le 2^{2^{\\varepsilon^{-c_k}}}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi regularity lemma",
+      "Furstenberg correspondence",
+      "Gowers uniformity norms",
+      "density Hales-Jewett"
+    ],
+    "prerequisites": [
+      "AP-free sets",
+      "rk definition",
+      "o-notation"
+    ]
+  },
+  {
+    "id": "ann-142-roth",
+    "proofId": "erdos-142",
+    "range": {
+      "startLine": 54,
+      "endLine": 54
+    },
+    "type": "concept",
+    "title": "Roth's Theorem: The $k = 3$ Case",
+    "content": "Roth (1953) proved $r_3(N) = o(N)$ using Fourier analysis on $\\mathbb{Z}/N\\mathbb{Z}$ (the circle method). This was the first case of Szemerédi's theorem to be proved, preceding the general result by over two decades. Successive quantitative improvements: Heath-Brown and Szemerédi ($N/(\\log N)^c$), Bourgain ($N(\\log\\log N)^2/\\log N$), Sanders ($N/(\\log N)^{1-\\varepsilon}$), Bloom ($N/(\\log N)^{1+c}$), Bloom–Sisask, and finally Kelley–Meka.",
+    "mathContext": "$r_3(N) = o(N)$. The Fourier-analytic proof decomposes the indicator function of $S$ into structured (major arc) and pseudorandom (minor arc) components, showing both contribute 3-APs when $|S|$ is large.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fourier analysis on finite groups",
+      "circle method",
+      "density increment",
+      "Bloom–Sisask"
+    ],
+    "prerequisites": [
+      "AP-free sets",
+      "Szemerédi's theorem"
+    ]
+  }
+]

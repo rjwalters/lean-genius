@@ -1,0 +1,156 @@
+{
+  "id": "four-square-distribution-oq-05",
+  "title": "The 2-adic structure of the four-square symmetry multiplier",
+  "slug": "four-square-distribution-oq-05",
+  "description": "Supplies the divisibility structure of the per-type symmetry multiplier in the four-square type decomposition: the sign-change subgroup of order 2^(nonzeroCount) always divides a type's contribution. This is the '2^k' half of the hyperoctahedral symmetry B₄ = (ℤ/2)⁴ ⋊ S₄ underlying Jacobi's factor of 8, isolated per type — in particular 8 ∣ contribution once a type has ≥ 3 nonzero entries, and 16 ∣ contribution when all four are nonzero. The parent file proved only the bounds (≤ 384) and no divisibility.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FourSquareDistributionOQ05.lean",
+    "tags": [
+      "number-theory",
+      "sum-of-squares",
+      "jacobi",
+      "symmetry",
+      "hyperoctahedral-group",
+      "divisibility",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No assumptions. Fully machine-checked with only Lean/Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). Builds on the parent file FourSquareDistribution.lean's RepType / contribution / signFactor definitions.",
+    "dateAdded": "2026-06-21",
+    "lineCount": 110,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "originalContributions": [
+      "two_pow_nonzeroCount_dvd_contribution (PROVED): 2^(nonzeroCount t) ∣ contribution t — the sign-change subgroup order divides the per-type multiplier (the parent file records no divisibility property of contribution)",
+      "two_pow_dvd_contribution_of_le (PROVED): k ≤ nonzeroCount t → 2^k ∣ contribution t — the full 2-adic divisibility tower",
+      "eight_dvd_contribution_of_three_le (PROVED): 8 ∣ contribution t when nonzeroCount t ≥ 3 — the 'factor of 8' from sign symmetry at the type level",
+      "sixteen_dvd_contribution_of_four (PROVED): 16 ∣ contribution t when all four entries are nonzero",
+      "signFactor_dvd_contribution / two/four_dvd_contribution (PROVED): supporting divisibility lemmas and low-order specializations"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "pow_dvd_pow",
+        "description": "2^k ∣ 2^m for k ≤ m — propagates the divisibility down the 2-adic tower.",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "Nat.one_le_two_pow",
+        "description": "1 ≤ 2^k — positivity of the sign factor.",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Jacobi's four-square theorem r₄(n) = 8·σ*(n) carries a famous factor of 8. The parent gallery entry four-square-distribution explains it group-theoretically: the representations n = a²+b²+c²+d² split into types (sorted absolute-value tuples), and each type contributes the size of its orbit under the hyperoctahedral group B₄ = (ℤ/2)⁴ ⋊ S₄ of signed coordinate permutations (order 2⁴·4! = 384). The orbit size factors as permutations(t)·signFactor(t) with signFactor(t) = 2^(nonzeroCount). The parent proved the bounds on this multiplier (≤ 384, etc.) but recorded no divisibility property.",
+    "problemStatement": "**OQ-05 of four-square-distribution**\n\nEstablish the divisibility structure of the symmetry multiplier — in particular which powers of 2 always divide a type's contribution.",
+    "text": "2^(nonzeroCount t) ∣ contribution t for every type t; hence 8 ∣ contribution t when nonzeroCount t ≥ 3, and 16 ∣ contribution t when all four entries are nonzero.",
+    "proofStrategy": "Since contribution(t) = permutations(t)·signFactor(t) and signFactor(t) = 2^(nonzeroCount t), the sign factor is literally a factor of the contribution; this gives signFactor_dvd_contribution by exhibiting permutations(t) as the cofactor. Rewriting signFactor as 2^(nonzeroCount) yields the headline divisibility. The tower 2^k ∣ contribution for k ≤ nonzeroCount follows from pow_dvd_pow and transitivity; the named corollaries (2, 4, 8, 16) are specializations.",
+    "keyInsights": [
+      "The contribution literally contains the sign factor as a multiplicative component, so the 2-adic divisibility is structural, not arithmetic — no number-theoretic input is needed.",
+      "This isolates the sign-change half (ℤ/2)^k of the hyperoctahedral symmetry: it is exactly the part of Jacobi's factor of 8 that is visible per type, regardless of how the permutation part behaves.",
+      "8 ∣ contribution holds outright once a type has ≥ 3 nonzero entries. The remaining low-nonzero cases (1 or 2 nonzero entries) need the parity of the permutation count and are deliberately left out of scope here.",
+      "The result complements the parent's upper bound: together they sandwich each type's contribution between a fixed power of 2 (as a divisor) and 384 (as a bound)."
+    ],
+    "prerequisites": [
+      "The parent file's RepType, contribution, signFactor (= 2^nonzeroCount), and nonzeroCount definitions",
+      "pow_dvd_pow and basic Nat divisibility"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Docstring explaining the 2-adic (sign-change) structure of the symmetry multiplier and the honest scope. Imports the parent FourSquareDistribution and Mathlib.Tactic; reopens namespace FourSquareDistribution.",
+      "mathContext": "contribution(t) = permutations(t)·signFactor(t), signFactor(t) = 2^(nonzeroCount t); B₄ = (ℤ/2)⁴ ⋊ S₄, |B₄| = 384."
+    },
+    {
+      "id": "sec-divisibility",
+      "title": "Sign-Part Divisibility of the Multiplier",
+      "startLine": 59,
+      "endLine": 110,
+      "summary": "one_le_signFactor; signFactor_dvd_contribution; two_pow_nonzeroCount_dvd_contribution; the tower two_pow_dvd_contribution_of_le; and the corollaries two/four/eight/sixteen_dvd_contribution by nonzeroCount.",
+      "mathContext": "2^k ∣ contribution t for k ≤ nonzeroCount t; the factor of 8 appears once a type has ≥ 3 nonzero entries."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "four-square-distribution",
+      "relationship": "parent",
+      "description": "Parent entry: defines the type decomposition and the symmetry multiplier contribution = permutations·signFactor, proving its bounds (≤ 384). This entry adds the divisibility structure the parent lacked: 2^(nonzeroCount) ∣ contribution."
+    },
+    {
+      "targetId": "four-square-distribution-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling entry: Jacobi's formula r₄(n) = 8·σ*(n). This entry exhibits the sign-symmetry source of the factor of 8 at the level of an individual type."
+    },
+    {
+      "targetId": "four-square-distribution-oq-04",
+      "relationship": "sibling",
+      "description": "Sibling entry: hyperoctahedral type decomposition for sums of 2k squares. This entry records the 2-adic divisibility of the 4-square multiplier specifically."
+    }
+  ],
+  "conclusion": {
+    "summary": "Machine-verified divisibility structure of the four-square symmetry multiplier: 2^(nonzeroCount t) ∣ contribution t for every type, hence 8 ∣ contribution t once a type has ≥ 3 nonzero entries and 16 ∣ contribution t when all four are nonzero. Zero sorries, zero axioms beyond the foundational ones.",
+    "implications": "Isolates the sign-change half of the hyperoctahedral symmetry behind Jacobi's factor of 8 at the per-type level, complementing the parent's upper bound. The full 8 ∣ r₄(n) refinement (needing the permutation parity in the one- and two-nonzero cases) is identified as the remaining step."
+  },
+  "mainTheorems": [
+    {
+      "name": "two_pow_nonzeroCount_dvd_contribution",
+      "type": "theorem",
+      "description": "The sign-change subgroup order 2^(nonzeroCount) divides a type's contribution.",
+      "leanType": "{n : ℕ} → (t : RepType n) → 2 ^ t.nonzeroCount ∣ t.contribution"
+    },
+    {
+      "name": "two_pow_dvd_contribution_of_le",
+      "type": "theorem",
+      "description": "The 2-adic divisibility tower: 2^k ∣ contribution t for any k ≤ nonzeroCount t.",
+      "leanType": "{n : ℕ} → (t : RepType n) → {k : ℕ} → k ≤ t.nonzeroCount → 2 ^ k ∣ t.contribution"
+    },
+    {
+      "name": "eight_dvd_contribution_of_three_le",
+      "type": "theorem",
+      "description": "Factor of 8 at the type level: 8 ∣ contribution t when nonzeroCount t ≥ 3.",
+      "leanType": "{n : ℕ} → (t : RepType n) → 3 ≤ t.nonzeroCount → 8 ∣ t.contribution"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.FourSquareDistribution",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "FourSquareDistribution",
+    "lineCount": 110,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "substantiveTheoremCount": 5,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/FourSquareDistributionOQ05.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Carl Gustav Jacob Jacobi",
+      "title": "Fundamenta nova theoriae functionum ellipticarum",
+      "year": "1829",
+      "venue": "Königsberg",
+      "note": "Source of the four-square formula r₄(n) = 8·σ*(n) with its factor of 8."
+    },
+    {
+      "authors": "John H. Conway, Neil J. A. Sloane",
+      "title": "Sphere Packings, Lattices and Groups",
+      "year": "1999",
+      "venue": "Springer, Ch. 4 (the hyperoctahedral group)",
+      "note": "The group B₄ = (ℤ/2)⁴ ⋊ S₄ of signed coordinate permutations acting on 4-tuples."
+    }
+  ]
+}

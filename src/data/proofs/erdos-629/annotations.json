@@ -1,0 +1,531 @@
+[
+  {
+    "id": "ann-629-imports",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 54,
+      "endLine": 64
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib's `SimpleGraph`, `Coloring`, `Finset`, `Fintype`, logarithm functions, and tactics. Unlike many Erdős formalizations that use custom graph types, this file builds directly on Mathlib's `SimpleGraph` infrastructure, enabling use of `chromaticNumber` and `Colorable`.",
+    "mathContext": "The formalization uses Mathlib's `SimpleGraph V` which models simple graphs as symmetric, irreflexive relations on a type $V$. The `chromaticNumber` function and `Colorable` predicate from Mathlib provide a foundation for comparing ordinary $\\chi(G)$ with the custom list chromatic number $\\chi_L(G)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib SimpleGraph",
+      "Finset",
+      "Fintype",
+      "chromaticNumber"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib graph theory"
+    ]
+  },
+  {
+    "id": "ann-629-listassign",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 69,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Color List Assignment",
+    "content": "**ColorListAssignment V C** assigns to each vertex $v \\in V$ a finite set $L(v) \\subseteq C$ of available colors. This is the key input for list coloring — different vertices may have completely different color lists, unlike ordinary coloring where all vertices share the same palette.",
+    "mathContext": "A list assignment $L : V \\to 2^C$ maps each vertex to a finite subset of a color set $C$. The key constraint is that each vertex must be colored from its own list: $f(v) \\in L(v)$. This is strictly harder than ordinary coloring, where all vertices share the same $k$ colors.",
+    "significance": "key",
+    "relatedConcepts": [
+      "list coloring",
+      "choosability",
+      "Galvin's theorem",
+      "kernel method"
+    ],
+    "prerequisites": [
+      "Finset",
+      "function types"
+    ]
+  },
+  {
+    "id": "ann-629-respects",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 72,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Respecting Lists",
+    "content": "**RespectsLists L f** means every vertex $v$ receives a color from its assigned list: $f(v) \\in L(v)$. This constraint is what makes list coloring fundamentally different from ordinary coloring.",
+    "mathContext": "The constraint $f(v) \\in L(v)$ for all $v \\in V$ means the coloring must respect the per-vertex color restrictions. Combined with properness ($f(u) \\neq f(v)$ for adjacent $u, v$), this defines a proper $L$-coloring.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "proper coloring",
+      "list coloring",
+      "constraint satisfaction"
+    ],
+    "prerequisites": [
+      "Finset membership",
+      "function application"
+    ]
+  },
+  {
+    "id": "ann-629-proper",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 76,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "Proper Coloring",
+    "content": "**IsProperColoring G f** requires adjacent vertices to receive different colors: $G.\\text{Adj}(u,v) \\implies f(u) \\neq f(v)$. Combined with list-respecting, this gives a proper $L$-coloring.",
+    "mathContext": "A proper coloring $f : V \\to C$ satisfies $\\{u,v\\} \\in E(G) \\implies f(u) \\neq f(v)$. This is the standard constraint from graph coloring theory, now applied in the list coloring context where $f(v)$ must additionally lie in $L(v)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "graph coloring",
+      "chromatic number",
+      "independent set"
+    ],
+    "prerequisites": [
+      "SimpleGraph adjacency",
+      "function inequality"
+    ]
+  },
+  {
+    "id": "ann-629-klist",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 80,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "k-List-Colorable",
+    "content": "**IsKListColorable G k** means for ANY assignment of lists of size $\\geq k$ to vertices, a proper coloring exists from the lists. The universal quantification over all list assignments is the key — it's much stronger than just being $k$-colorable, because we must handle adversarial list choices.",
+    "mathContext": "$G$ is $k$-choosable (or $k$-list-colorable) if for every list assignment $L$ with $|L(v)| \\geq k$ for all $v$, there exists a proper $L$-coloring. Formally: $\\forall L, (\\forall v, |L(v)| \\geq k) \\implies \\exists f, f(v) \\in L(v) \\wedge \\text{proper}(f)$. The choice number $\\text{ch}(G) = \\min\\{k : G \\text{ is } k\\text{-choosable}\\}$ satisfies $\\text{ch}(G) \\geq \\chi(G)$ always.",
+    "significance": "key",
+    "relatedConcepts": [
+      "choosability",
+      "list chromatic number",
+      "adversarial coloring",
+      "Galvin's theorem"
+    ],
+    "prerequisites": [
+      "universal quantification over types",
+      "Fintype",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-629-listchrom",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 87,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "List Chromatic Number",
+    "content": "**listChromaticNumber G** = $\\chi_L(G) = \\inf\\{k : G \\text{ is } k\\text{-list-colorable}\\}$. Always satisfies $\\chi_L(G) \\geq \\chi(G)$, but can be much larger — even for bipartite graphs where $\\chi(G) \\leq 2$!",
+    "mathContext": "The list chromatic number (or choice number) $\\chi_L(G) = \\text{ch}(G) = \\min\\{k : G \\text{ is } k\\text{-choosable}\\}$. The inequality $\\chi_L(G) \\geq \\chi(G)$ is trivial (take all lists equal), but the gap can be arbitrarily large. For complete bipartite graphs, $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$ (Galvin 1995), while $\\chi(K_{n,n}) = 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "choice number",
+      "chromatic number gap",
+      "Galvin's theorem",
+      "sInf"
+    ],
+    "prerequisites": [
+      "sInf (infimum)",
+      "IsKListColorable",
+      "natural number ordering"
+    ]
+  },
+  {
+    "id": "ann-629-bipartite",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 94,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "Bipartite Graph",
+    "content": "**IsBipartite G** means $G$ admits a proper 2-coloring using `Fin 2`. Equivalently, $G$ has no odd cycles. All bipartite graphs satisfy $\\chi(G) \\leq 2$, yet their list chromatic number can be arbitrarily large — the central surprise motivating this problem.",
+    "mathContext": "A graph $G$ is bipartite iff $\\chi(G) \\leq 2$, iff it contains no odd cycle. The definition uses `Fin 2` as the color set, partitioning $V$ into two independent sets $A = f^{-1}(0)$ and $B = f^{-1}(1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "2-colorable",
+      "odd cycle characterization",
+      "König's theorem",
+      "bipartite matching"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "proper coloring",
+      "Fin 2"
+    ]
+  },
+  {
+    "id": "ann-629-bip-chrom",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 98,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "Bipartite Implies χ ≤ 2 (Proved by Aristotle)",
+    "content": "**bipartite_chromatic_le_two**: Every bipartite graph has $\\chi(G) \\leq 2$. Proved by Aristotle — converts the `IsBipartite` witness to Mathlib's `Colorable` and applies `chromaticNumber_le`. This establishes that ordinary coloring is trivial for bipartite graphs.",
+    "mathContext": "If $G$ is bipartite with 2-coloring $f : V \\to \\{0,1\\}$, then $G$ is 2-colorable, so $\\chi(G) \\leq 2$. The proof converts between the custom `IsProperColoring` and Mathlib's `SimpleGraph.Colorable`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic number",
+      "Colorable",
+      "SimpleGraph.chromaticNumber_le"
+    ],
+    "prerequisites": [
+      "IsBipartite",
+      "Mathlib chromaticNumber"
+    ]
+  },
+  {
+    "id": "ann-629-unbounded",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 260,
+      "endLine": 270
+    },
+    "type": "concept",
+    "title": "List Chromatic Unbounded (Proved by Aristotle)",
+    "content": "**bipartite_list_chromatic_unbounded**: For every $k$, there exists a bipartite graph with $\\chi_L > k$. Proved by Aristotle using the `MyGraph k` construction (complete bipartite on $(k+1)$-subsets of $\\{1,\\ldots,2k+1\\}$). This is the key surprise: $\\chi \\leq 2$ yet $\\chi_L$ is unbounded!",
+    "mathContext": "The construction uses $V = \\binom{[2k+1]}{k+1}$ as vertices (all $(k+1)$-subsets of $[2k+1]$), with the complete bipartite graph $K_{V,V}$. Each vertex's list is its subset. The pigeon-hole/hitting-set argument shows no proper list coloring exists: any coloring uses $\\geq k+1$ colors on each side, but only $2k+1$ colors total, forcing a collision.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Rubin-Taylor construction",
+      "hitting set",
+      "pigeonhole principle",
+      "complete bipartite graph"
+    ],
+    "prerequisites": [
+      "MyGraph construction",
+      "MyGraph_not_colorable",
+      "MyGraph_bipartite"
+    ]
+  },
+  {
+    "id": "ann-629-nfunc",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 275,
+      "endLine": 277
+    },
+    "type": "definition",
+    "title": "The Function n(k)",
+    "content": "**n(k)** = minimum number of vertices in a bipartite graph $G$ with $\\chi_L(G) > k$. Defined as $\\inf\\{m : \\exists G \\text{ bipartite with } |V| = m,\\, \\chi_L(G) > k\\}$. This is the central object of study in Problem #629.",
+    "mathContext": "$n(k) = \\min\\{|V(G)| : G \\text{ bipartite}, \\chi_L(G) > k\\}$. The function is well-defined because `bipartite_list_chromatic_unbounded` guarantees the set is non-empty. Known values: $n(2) = 6$, $n(3) = 14$. Asymptotically, $2^{k-1} < n(k) < k^2 \\cdot 2^{k+2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "list chromatic number",
+      "bipartite graph",
+      "sInf"
+    ],
+    "prerequisites": [
+      "sInf",
+      "bipartite_list_chromatic_unbounded"
+    ]
+  },
+  {
+    "id": "ann-629-n-welldef",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 299,
+      "endLine": 311
+    },
+    "type": "concept",
+    "title": "n(k) > 0 (Proved by Aristotle)",
+    "content": "**n_well_defined**: $n(k) > 0$ for all $k$. Proved by Aristotle via contradiction — a graph on 0 vertices has $\\chi_L = 0$, contradicting $\\chi_L > k$. Uses the auxiliary `listChromaticNumber_eq_zero_of_card_eq_zero`.",
+    "mathContext": "If $|V| = 0$ then $G$ is the empty graph with $\\chi_L(G) = 0 \\leq k$, so no empty graph can witness $\\chi_L > k$. Hence $n(k) \\geq 1 > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "empty graph",
+      "well-definedness",
+      "sInf positivity"
+    ],
+    "prerequisites": [
+      "n definition",
+      "listChromaticNumber_eq_zero_of_card_eq_zero"
+    ]
+  },
+  {
+    "id": "ann-629-n-mono",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 314,
+      "endLine": 317
+    },
+    "type": "concept",
+    "title": "n is Monotone (Proved by Aristotle)",
+    "content": "**n_mono**: If $k_1 \\leq k_2$ then $n(k_1) \\leq n(k_2)$. Proved by Aristotle — any bipartite graph with $\\chi_L > k_2$ also has $\\chi_L > k_1$, so the infimum for $k_2$ is at least as large.",
+    "mathContext": "$k_1 \\leq k_2 \\implies \\{G : \\chi_L(G) > k_2\\} \\subseteq \\{G : \\chi_L(G) > k_1\\}$, so $n(k_2) = \\inf\\{|V| : \\chi_L > k_2\\} \\geq \\inf\\{|V| : \\chi_L > k_1\\} = n(k_1)$. Actually the argument is more subtle: each witness for $k_2$ is also a witness for $k_1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "extremal function",
+      "sInf ordering"
+    ],
+    "prerequisites": [
+      "n definition",
+      "bipartite_list_chromatic_unbounded"
+    ]
+  },
+  {
+    "id": "ann-629-n2",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 540,
+      "endLine": 626
+    },
+    "type": "concept",
+    "title": "n(2) = 6 (Proved by Aristotle)",
+    "content": "**n_2_eq_6**: The smallest bipartite graph with $\\chi_L > 2$ has exactly 6 vertices. Proved by Aristotle with a two-sided argument: $K_{3,3}$ witnesses $n(2) \\leq 6$ (via `K33_not_2_list_colorable`), and any bipartite graph on $< 6$ vertices is 2-list-colorable (via `bipartite_small_is_2_list_colorable'`).",
+    "mathContext": "$n(2) = 6$ was first established by Erdős, Rubin, and Taylor (1980). The upper bound uses $K_{3,3}$ with the adversarial list assignment $L(v_i) = \\{a_i, b_i\\}$ where the lists form a combinatorial design forcing a monochromatic edge. The lower bound shows all bipartite graphs on $\\leq 5$ vertices are 2-choosable by case analysis on partition sizes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "K_{3,3}",
+      "complete bipartite graph",
+      "adversarial list assignment",
+      "case analysis"
+    ],
+    "prerequisites": [
+      "K33 definition",
+      "K33_not_2_list_colorable",
+      "bipartite_small_is_2_list_colorable'"
+    ]
+  },
+  {
+    "id": "ann-629-n3",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 630,
+      "endLine": 631
+    },
+    "type": "concept",
+    "title": "n(3) = 14 (Sorry)",
+    "content": "**n_3_eq_14**: Hanson-MacGillivray-Toft (1996) proved $n(3) = 14$. This remains unproved in the formalization — the case analysis is substantially more complex than for $n(2) = 6$.",
+    "mathContext": "$n(3) = 14$ requires showing (1) there exists a bipartite graph on 14 vertices with $\\chi_L > 3$, and (2) every bipartite graph on $\\leq 13$ vertices is 3-choosable. The construction and exhaustive verification are computationally intensive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hanson-MacGillivray-Toft",
+      "exhaustive verification",
+      "list chromatic threshold"
+    ],
+    "prerequisites": [
+      "n definition",
+      "case analysis techniques"
+    ]
+  },
+  {
+    "id": "ann-629-ertlower",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 788,
+      "endLine": 799
+    },
+    "type": "concept",
+    "title": "Original Lower Bound 2^{k-1} < n(k) (Proved by Aristotle)",
+    "content": "**ert_lower_bound**: $2^{k-1} < n(k)$ for $k \\geq 1$. Proved by Aristotle using the probabilistic method — if $|V| < 2^k$, randomly partition colors into two sets; with positive probability every vertex gets a usable color from its part, giving a proper list coloring.",
+    "mathContext": "The Erdős-Rubin-Taylor (1980) lower bound $2^{k-1} < n(k)$ uses the probabilistic method: for a bipartite graph with parts $A, B$ and $|A| + |B| < 2^k$, a random 2-coloring $\\chi : C \\to \\{0,1\\}$ of the color universe satisfies $\\Pr[\\forall c \\in L(v), \\chi(c) = 1] = 2^{-|L(v)|} \\leq 2^{-k}$. By union bound, $\\Pr[\\text{bad}] < |V| \\cdot 2^{-k} < 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "probabilistic method",
+      "union bound",
+      "random coloring",
+      "Lovász Local Lemma"
+    ],
+    "prerequisites": [
+      "bipartite_card_lt_two_pow_k_implies_k_list_colorable",
+      "bipartite_list_coloring_probability_bound"
+    ]
+  },
+  {
+    "id": "ann-629-ertupper",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 803,
+      "endLine": 804
+    },
+    "type": "concept",
+    "title": "Original Upper Bound n(k) < k²·2^{k+2} (Sorry)",
+    "content": "**ert_upper_bound**: $n(k) < k^2 \\cdot 2^{k+2}$ for $k \\geq 1$. This upper bound from Erdős-Rubin-Taylor (1980) shows $n(k) = O(k^2 \\cdot 2^k)$. Remains unproved in the formalization.",
+    "mathContext": "The upper bound $n(k) < k^2 \\cdot 2^{k+2}$ is constructive: the complete bipartite graph $K_{m,m}$ with $m = \\binom{2k}{k}$ has $\\chi_L > k$, and $\\binom{2k}{k} < k^2 \\cdot 2^{k+2}$ for large $k$. Combined with the lower bound, this gives $n(k) = \\Theta(2^k \\cdot k^{O(1)})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete bipartite construction",
+      "central binomial coefficient",
+      "exponential growth"
+    ],
+    "prerequisites": [
+      "n definition",
+      "combinatorial bounds"
+    ]
+  },
+  {
+    "id": "ann-629-rs",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 820,
+      "endLine": 823
+    },
+    "type": "concept",
+    "title": "Radhakrishnan-Srinivasan Improved Lower Bound (Sorry)",
+    "content": "**rs_lower_bound**: $2^k \\cdot (k / \\log k)^{1/2} \\lesssim n(k)$. The 2000 improvement by Radhakrishnan and Srinivasan uses a refined probabilistic argument with the Lovász Local Lemma, improving the polynomial factor in the lower bound.",
+    "mathContext": "Radhakrishnan and Srinivasan (2000) proved $n(k) \\geq c \\cdot 2^k \\cdot \\sqrt{k / \\ln k}$ using an entropy-based refinement of the probabilistic method. This improved the Erdős-Rubin-Taylor bound $n(k) > 2^{k-1}$ by a factor of $\\Theta(\\sqrt{k / \\log k})$. The formalization uses $\\forall^\\infty$ (eventually) notation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "entropy method",
+      "probabilistic combinatorics",
+      "eventually (Filter.atTop)"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "Filter.atTop",
+      "eventually quantifier"
+    ]
+  },
+  {
+    "id": "ann-629-hmt",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 827,
+      "endLine": 829
+    },
+    "type": "concept",
+    "title": "HMT Recursive Upper Bound (Sorry)",
+    "content": "**hmt_recursive_upper**: $n(k) \\leq k \\cdot n(k-2) + 2^k$ for $k \\geq 2$. Hanson-MacGillivray-Toft (1996) gave this recursive bound, useful for computing upper bounds on specific values of $n(k)$.",
+    "mathContext": "The recursion $n(k) \\leq k \\cdot n(k-2) + 2^k$ comes from a structural argument: given a bipartite graph $G$ with $\\chi_L > k$, one can extract a substructure related to a graph with $\\chi_L > k-2$ and a $2^k$-sized complete bipartite part. Unrolling gives $n(k) = O(k! \\cdot 2^k / (k/2)!)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "recursive bounds",
+      "Hanson-MacGillivray-Toft",
+      "structural decomposition"
+    ],
+    "prerequisites": [
+      "n definition",
+      "n_mono"
+    ]
+  },
+  {
+    "id": "ann-629-propb",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 835,
+      "endLine": 838
+    },
+    "type": "definition",
+    "title": "Property B Threshold m(k)",
+    "content": "**propertyB_threshold k** = $m(k)$ = smallest family of $k$-sets without Property B. Property B means having a 2-coloring of the ground set with no monochromatic set in the family. This connects list coloring to hypergraph coloring theory.",
+    "mathContext": "A family $\\mathcal{F}$ of $k$-element sets has **Property B** if there exists a 2-coloring $f : \\bigcup\\mathcal{F} \\to \\{0,1\\}$ such that no $S \\in \\mathcal{F}$ is monochromatic. The threshold $m(k) = \\min\\{|\\mathcal{F}| : \\mathcal{F} \\text{ is } k\\text{-uniform, lacks Property B}\\}$. Erdős (1963) proved $m(k) \\geq 2^{k-1}$ using the probabilistic method.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Property B",
+      "hypergraph 2-coloring",
+      "Erdős Problem #901",
+      "set system"
+    ],
+    "prerequisites": [
+      "Finset of Finsets",
+      "2-coloring of ground set"
+    ]
+  },
+  {
+    "id": "ann-629-connection",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 843,
+      "endLine": 845
+    },
+    "type": "concept",
+    "title": "Property B Connection: m(k) ≤ n(k) ≤ m(k+1) (Sorry)",
+    "content": "**n_property_b_bounds**: $m(k) \\leq n(k) \\leq m(k+1)$. This key connection links list coloring of bipartite graphs to Property B of hypergraphs. The lower bound follows because a bipartite graph with $\\chi_L > k$ yields a set system without Property B; the upper bound reverses the construction.",
+    "mathContext": "The connection $m(k) \\leq n(k) \\leq m(k+1)$ was established by Erdős, Rubin, and Taylor (1980). Given a bipartite graph $G$ with $\\chi_L(G) > k$, the neighborhoods form a family of sets; a proper list coloring from 2-element lists corresponds to a 2-coloring with Property B. Conversely, a family without Property B can be encoded as a bipartite graph.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Property B",
+      "bipartite-hypergraph correspondence",
+      "Erdős Problem #901",
+      "extremal set theory"
+    ],
+    "prerequisites": [
+      "propertyB_threshold",
+      "n definition"
+    ]
+  },
+  {
+    "id": "ann-629-kbip",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 850,
+      "endLine": 860
+    },
+    "type": "definition",
+    "title": "Complete Bipartite Graph Construction",
+    "content": "**completeBipartite m n** defines $K_{m,n}$ on `Fin m ⊕ Fin n` where every left vertex is adjacent to every right vertex. Proved symmetric and loopless. This is the primary construction for studying $\\chi_L$ growth.",
+    "mathContext": "The complete bipartite graph $K_{m,n}$ has vertex set $\\{l_1,\\ldots,l_m\\} \\cup \\{r_1,\\ldots,r_n\\}$ with all $mn$ edges between the parts. For $\\chi_L$, the key result is $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$ (Galvin 1995 for the upper bound).",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete bipartite graph",
+      "Sum type",
+      "Galvin's theorem",
+      "list chromatic of K_{n,n}"
+    ],
+    "prerequisites": [
+      "SimpleGraph",
+      "Sum.inl/Sum.inr",
+      "Fin type"
+    ]
+  },
+  {
+    "id": "ann-629-knn",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 870,
+      "endLine": 873
+    },
+    "type": "concept",
+    "title": "χ_L(K_{n,n}) ≈ log₂ n + 1 (Sorry)",
+    "content": "**knn_list_chromatic**: $\\lceil\\log_2 n\\rceil \\leq \\chi_L(K_{n,n}) \\leq \\lceil\\log_2 n\\rceil + 2$ for $n \\geq 2$. This asymptotic characterization of the list chromatic number of balanced complete bipartite graphs is a key result in the theory.",
+    "mathContext": "Galvin (1995) proved $\\chi_L(K_{n,n}) = \\lceil\\log_2 n\\rceil + 1$ exactly, using the kernel method. The formalization states a slightly weaker bound with an additive error of 1. The lower bound $\\chi_L(K_{n,n}) \\geq \\lceil\\log_2 n\\rceil$ follows from a counting/information-theoretic argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Galvin's theorem",
+      "kernel method",
+      "logarithmic growth",
+      "Nat.clog"
+    ],
+    "prerequisites": [
+      "completeBipartite",
+      "listChromaticNumber",
+      "Nat.clog"
+    ]
+  },
+  {
+    "id": "ann-629-asymp",
+    "proofId": "erdos-629",
+    "range": {
+      "startLine": 903,
+      "endLine": 907
+    },
+    "type": "definition",
+    "title": "Exact Asymptotic Conjecture",
+    "content": "**ExactAsymptoticConjecture**: Is $n(k) = \\Theta(2^k \\cdot k^\\alpha)$ for some specific exponent $\\alpha$? Determining $\\alpha$ is the main open question. Current bounds give $\\alpha \\in [1/2, 2]$ approximately.",
+    "mathContext": "The conjecture asks whether $n(k) \\sim C \\cdot 2^k \\cdot k^\\alpha$ for some universal constant $\\alpha \\in (0, 1]$. The best bounds give $2^k \\cdot \\sqrt{k/\\ln k} \\lesssim n(k) \\lesssim k^2 \\cdot 2^k$, so $\\alpha \\in [1/2 - \\epsilon, 2]$. Pinning down $\\alpha$ would resolve this aspect of Problem #629.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "exponential growth rate",
+      "polynomial correction factor"
+    ],
+    "prerequisites": [
+      "Filter.atTop",
+      "Real exponentiation",
+      "eventually quantifier"
+    ]
+  }
+]

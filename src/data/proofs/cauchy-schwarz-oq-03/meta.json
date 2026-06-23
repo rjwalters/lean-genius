@@ -1,0 +1,222 @@
+{
+  "id": "cauchy-schwarz-oq-03",
+  "title": "Hölder's Inequality as Cauchy-Schwarz Generalization",
+  "slug": "cauchy-schwarz-oq-03",
+  "description": "Hölder's inequality ∑f_i·g_i ≤ (∑f_i^p)^(1/p)·(∑g_i^q)^(1/q) for conjugate exponents 1/p+1/q=1, proved via Young's inequality normalization. Cauchy-Schwarz emerges as the p=q=2 special case. Proof chain: Young → Normalized Hölder → General Hölder → Lagrange identity → Cauchy-Schwarz.",
+  "meta": {
+    "author": "Hölder (1889), Lagrange (1773), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/H%C3%B6lder%27s_inequality",
+    "date": "1889",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "cauchy-schwarz",
+      "functional-analysis",
+      "lp-spaces",
+      "measure-theory",
+      "classic",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CauchySchwarzOQ03.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "NNReal.inner_le_Lp_mul_Lq",
+        "description": "General Hölder's inequality for NNReal: ∑f_i·g_i ≤ (∑f_i^p)^(1/p)·(∑g_i^q)^(1/q)",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      },
+      {
+        "theorem": "ENNReal.lintegral_mul_le_Lp_mul_Lq",
+        "description": "Hölder's inequality for the extended Lebesgue integral: ∫f·g dμ ≤ (∫f^p dμ)^(1/p)·(∫g^q dμ)^(1/q)",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace"
+      },
+      {
+        "theorem": "abs_real_inner_le_norm",
+        "description": "Cauchy-Schwarz for real inner product spaces: |⟪u,v⟫| ≤ ‖u‖·‖v‖",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "Real.HolderConjugate",
+        "description": "The Hölder conjugate condition: p.HolderConjugate q ↔ 1/p + 1/q = 1, p > 1",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      }
+    ],
+    "originalContributions": [
+      "Elementary Cauchy-Schwarz via Lagrange's identity (double sum of squared differences)",
+      "Hölder for real-valued functions via NNReal lift using |f|, |g| as NNReal values",
+      "Normalized Hölder: ‖f‖_p = ‖g‖_q = 1 → ∑f_i·g_i ≤ 1 (one line from NNReal.inner_le_Lp_mul_Lq)",
+      "Cauchy-Schwarz-Hölder bridge: CS = Hölder at p=q=2 (HolderConjugate 2 2 via norm_num)",
+      "Pedagogical organization of the proof chain from Mathlib's Hölder (which internally uses Young's inequality) through multiple forms of Cauchy-Schwarz"
+    ],
+    "dateAdded": "2026-02-26",
+    "axiomCount": 0,
+    "lineCount": 244,
+    "assumptions": "0 axioms, 0 sorries. Core Hölder inequality derived from Mathlib's NNReal.inner_le_Lp_mul_Lq and ENNReal.lintegral_mul_le_Lp_mul_Lq. Lagrange identity proof of Cauchy-Schwarz is independent.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "**From Cauchy-Schwarz to Hölder: A Family of Inequalities**\n\nThe Cauchy-Schwarz inequality $(\\sum f_i g_i)^2 \\leq (\\sum f_i^2)(\\sum g_i^2)$ was discovered by Cauchy (1821) for finite sums and extended to integrals by Bunyakovsky (1859) and Schwarz (1885). In 1889, Otto Hölder proved its sweeping generalization:\n\n$$\\sum_{i} f_i g_i \\leq \\left(\\sum_i f_i^p\\right)^{1/p} \\cdot \\left(\\sum_i g_i^q\\right)^{1/q}$$\n\nfor any **conjugate exponents** $p, q > 1$ satisfying $\\frac{1}{p} + \\frac{1}{q} = 1$. Setting $p = q = 2$ recovers Cauchy-Schwarz.\n\n**The Open Question**: Can we build an elementary proof chain from Young's inequality through Hölder to Cauchy-Schwarz, showing CS as a special case?\n\n**The Answer**: YES — using Mathlib's `NNReal.inner_le_Lp_mul_Lq` as the core, the full chain is formalized: Young normalization → Hölder → Lagrange identity → Cauchy-Schwarz → abstract inner product spaces → Lebesgue integral form.",
+    "problemStatement": "**Hölder's Inequality as Cauchy-Schwarz Generalization (OQ-03)**\n\nFor non-negative sequences $f, g : \\iota \\to \\mathbb{R}_{\\geq 0}$ and Hölder conjugate exponents $p, q > 1$ with $\\frac{1}{p} + \\frac{1}{q} = 1$:\n\n$$\\sum_{i \\in s} f_i \\cdot g_i \\leq \\left(\\sum_{i \\in s} f_i^p\\right)^{1/p} \\cdot \\left(\\sum_{i \\in s} g_i^q\\right)^{1/q}$$\n\n**Key connections**:\n1. $p = q = 2$: recovers Cauchy-Schwarz $(\\sum f_i g_i)^2 \\leq (\\sum f_i^2)(\\sum g_i^2)$\n2. The condition $1/p + 1/q = 1$ is essential and emerges naturally from the Young normalization argument\n3. The same inequality holds for the Lebesgue integral on measure spaces",
+    "text": "Hölder's inequality ∑f_i·g_i ≤ (∑f_i^p)^(1/p)·(∑g_i^q)^(1/q) for conjugate exponents 1/p+1/q=1, proved via Young's inequality normalization. Cauchy-Schwarz emerges as the p=q=2 special case. Proof chain: Young → Normalized Hölder → General Hölder → Lagrange identity → Cauchy-Schwarz.",
+    "proofStrategy": "**Formalization Strategy: Two Routes to Cauchy-Schwarz**\n\n**Route 1: Via Young's Inequality (Hölder chain)**\n\nMathlib's `NNReal.inner_le_Lp_mul_Lq` provides the general Hölder inequality. **Note**: Steps 1–4 below describe the internal proof strategy of Mathlib's lemma — this file uses that result as a black box (one-liner) and builds additional forms on top.\n\n1. **Normalize**: Set $F_i = f_i / \\|f\\|_p$, $G_i = g_i / \\|g\\|_q$\n2. **Apply Young** to each term: $F_i G_i \\leq F_i^p/p + G_i^q/q$  \n3. **Sum**: $\\sum F_i G_i \\leq 1/p \\cdot \\sum F_i^p + 1/q \\cdot \\sum G_i^q = 1/p + 1/q = 1$\n4. **Scale back** by $\\|f\\|_p \\cdot \\|g\\|_q$\n\nThe conjugate condition $1/p + 1/q = 1$ appears at step 3 — it is *exactly* what makes the bound sharp!\n\n**Route 2: Via Lagrange's Identity (Elementary — original proof in this file)**\n\nFor $p = q = 2$, an independent elementary proof via Lagrange's algebraic identity:\n\n$$2\\left[(\\sum f_i^2)(\\sum g_j^2) - (\\sum f_i g_i)^2\\right] = \\sum_i \\sum_j (f_i g_j - f_j g_i)^2 \\geq 0$$\n\nThe RHS is a sum of squares, hence non-negative. This elegant identity, due to Lagrange (1773), gives the sharpest proof of Cauchy-Schwarz.",
+    "keyInsights": [
+      "**Conjugate condition is not arbitrary**: The condition $1/p + 1/q = 1$ appears naturally in the Young normalization — it is the condition that makes $1/p \\cdot 1 + 1/q \\cdot 1 = 1$ after substituting unit-norm inputs.",
+      "**NNReal as the natural domain**: Hölder's inequality for non-negative reals (NNReal) is fundamental. The signed real case follows by applying it to $|f_i|$ and $|g_i|$, using the triangle inequality $|\\sum f_i g_i| \\leq \\sum |f_i| |g_i|$.",
+      "**Two independent proofs of CS**: Cauchy-Schwarz can be proved both via Hölder (set $p=q=2$) and via Lagrange's identity. Both proofs are formalized here, with the bridge theorem `cauchy_schwarz_holder_bridge` connecting them.",
+      "**HolderConjugate 2 2 by norm_num**: The verification that $p = q = 2$ are Hölder conjugates reduces to $1/2 + 1/2 = 1$, proved by `norm_num`. This makes the bridge completely automatic.",
+      "**Three levels of abstraction**: The formalization progresses from concrete (finite sums over NNReal) through intermediate (signed reals, abstract inner product spaces) to abstract (Lebesgue integrals on measure spaces), demonstrating how the same algebraic idea — Young's pointwise bound summed over a domain — scales across mathematical frameworks"
+    ],
+    "prerequisites": [
+      "Real analysis (sequences, sums, integrals)",
+      "Inner product spaces and norms",
+      "Young's inequality ($ab \\leq a^p/p + b^q/q$)",
+      "Measure theory and Lebesgue integration (for the integral form)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "summary": "Imports Mathlib (for NNReal, ENNReal, Finset, MeasureTheory) and opens Finset, NNReal, Real, MeasureTheory, ENNReal namespaces.",
+      "startLine": 1,
+      "endLine": 25,
+      "mathContext": "Module docstring outlines the proof chain: Young's inequality $ab \\leq a^p/p + b^q/q$ $\\to$ Normalized Hölder $\\to$ General Hölder $\\to$ Cauchy-Schwarz. References Hölder (1889), Hardy-Littlewood-Pólya (1934), Lagrange (1773)."
+    },
+    {
+      "id": "holder-nnreal",
+      "title": "Hölder's Inequality for NNReal",
+      "summary": "General Hölder (holder_nnreal) via Mathlib's NNReal.inner_le_Lp_mul_Lq. Normalized Hölder (holder_normalized) for unit-norm inputs. Educational Young-normalization derivation in comments.",
+      "startLine": 26,
+      "endLine": 82,
+      "mathContext": "Young's inequality $ab \\leq a^p/p + b^q/q$ is applied to normalized inputs $F_i = f_i/\\|f\\|_p$, $G_i = g_i/\\|g\\|_q$. Summing: $\\sum F_i G_i \\leq 1/p + 1/q = 1$ when $1/p + 1/q = 1$. Scaling back gives $\\sum f_i g_i \\leq \\|f\\|_p \\|g\\|_q$."
+    },
+    {
+      "id": "cauchy-schwarz-lagrange",
+      "title": "Cauchy-Schwarz via Lagrange's Identity",
+      "summary": "Elementary proof of Cauchy-Schwarz (cauchy_schwarz_finite) via Lagrange's identity: 2[(∑f²)(∑g²)-(∑fg)²] = ∑_i∑_j(f_i·g_j-f_j·g_i)² ≥ 0. The Hölder bridge (cauchy_schwarz_from_holder) shows CS = Hölder at p=q=2.",
+      "startLine": 83,
+      "endLine": 133,
+      "mathContext": "Lagrange's identity (1773): $2[(\\sum f_i^2)(\\sum g_j^2) - (\\sum f_i g_i)^2] = \\sum_i \\sum_j (f_i g_j - f_j g_i)^2 \\geq 0$. The RHS is a sum of squares, giving Cauchy-Schwarz directly. The proof expands $(a-b)^2$, computes three sub-sums via `Finset.mul_sum` and `Finset.sum_comm`, and combines with `linarith`."
+    },
+    {
+      "id": "holder-real",
+      "title": "Hölder for Real-Valued Functions",
+      "summary": "Holder_real: |∑f_i·g_i| ≤ (∑|f_i|^p)^(1/p)·(∑|g_i|^q)^(1/q) for signed reals. Proved by lifting |f_i|, |g_i| to NNReal and applying the NNReal Hölder inequality.",
+      "startLine": 134,
+      "endLine": 164,
+      "mathContext": "$|\\sum f_i g_i| \\leq \\sum |f_i||g_i| \\leq (\\sum |f_i|^p)^{1/p} (\\sum |g_i|^q)^{1/q}$. The first step is the triangle inequality; the second applies NNReal Hölder to $|f_i|, |g_i|$ packaged as `\\langle |f_i|, \\text{abs\\_nonneg}\\rangle : \\mathbb{R}_{\\geq 0}$."
+    },
+    {
+      "id": "holder-lintegral",
+      "title": "Hölder for Lebesgue Integral",
+      "summary": "Holder_lintegral: ∫f·g dμ ≤ (∫f^p dμ)^(1/p)·(∫g^q dμ)^(1/q) for ENNReal-valued measurable functions. Mathlib's ENNReal.lintegral_mul_le_Lp_mul_Lq provides this directly.",
+      "startLine": 165,
+      "endLine": 184,
+      "mathContext": "$\\int f \\cdot g\\, d\\mu \\leq (\\int f^p\\, d\\mu)^{1/p} (\\int g^q\\, d\\mu)^{1/q}$ for $[0,\\infty]$-valued measurable functions. The continuous analogue of `holder_nnreal`, fundamental to $L^p$ space theory: Minkowski $\\to$ $L^p$ is Banach $\\to$ Riesz-Fischer $\\to$ Fourier analysis."
+    },
+    {
+      "id": "cauchy-schwarz-abstract",
+      "title": "Cauchy-Schwarz for Inner Product Spaces",
+      "summary": "Abstract CS (cauchy_schwarz_inner): |⟪u,v⟫_ℝ| ≤ ‖u‖·‖v‖ via abs_real_inner_le_norm. The Hölder bridge (cauchy_schwarz_holder_bridge): CS = Hölder at p=q=2 for NNReal, proved by HolderConjugate 2 2.",
+      "startLine": 185,
+      "endLine": 214,
+      "mathContext": "Abstract Cauchy-Schwarz: $|\\langle u, v \\rangle| \\leq \\|u\\| \\cdot \\|v\\|$ in any real inner product space. Proved from $\\|u + tv\\|^2 \\geq 0$ for all $t \\in \\mathbb{R}$, which gives a non-negative discriminant. The bridge theorem verifies $\\text{HolderConjugate}\\,2\\,2$ via $1/2 + 1/2 = 1$ (`norm_num`)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: The Full Proof Chain",
+      "summary": "Documents the complete hierarchy: Young → Normalized Hölder → General Hölder → Hölder for reals → CS via Lagrange → Abstract inner product CS → Integral Hölder. All 8 theorems proved with 0 sorries.",
+      "startLine": 215,
+      "endLine": 242,
+      "mathContext": "The chain: $ab \\leq a^p/p + b^q/q$ (Young) $\\to$ $\\|f\\|_p = \\|g\\|_q = 1 \\Rightarrow \\sum f_i g_i \\leq 1$ (Normalized Hölder) $\\to$ $\\sum f_i g_i \\leq \\|f\\|_p \\|g\\|_q$ (General Hölder) $\\to$ $(\\sum f_i g_i)^2 \\leq (\\sum f_i^2)(\\sum g_i^2)$ (Cauchy-Schwarz at $p=q=2$). The conjugate condition $1/p + 1/q = 1$ appears naturally in step 3."
+    }
+  ],
+  "conclusion": {
+    "summary": "The open question is answered affirmatively: Hölder's inequality generalizes Cauchy-Schwarz, and the full proof chain from Young's inequality through Hölder to Cauchy-Schwarz (in both its finite-sum and integral forms) is formalized with 0 sorries. The key unifying idea is the conjugate condition 1/p + 1/q = 1, which appears naturally in the Young normalization argument.",
+    "implications": "**Theoretical Significance**: **Implications and Connections**\n\n1. **L^p Space Theory**: Hölder's inequality is the foundation of L^p space theory. It implies Minkowski's inequality (triangle inequality in L^p spaces) and characterizes the dual space (L^p)* ≅ L^q via the pairing ⟨f,g⟩ = ∫f·g dμ.\n\n2. **Connection to CauchySchwarz.lean**: The base file proves Cauchy-Schwarz as an inner product space result. This file shows it emerges as a special case (p=q=2) of the more general Hölder inequality.\n\n**3. Connection to CauchySchwarzIntegralOQ01.lean**: That file treats Hölder for the Lebesgue integral (`holder_lintegral` here). The two files complement each other: this file gives the finite sum theory, while that file develops the L^p space perspective more deeply.\n\n4. **Young's Inequality is the Key**: The entire Hölder proof chain flows from Young's pointwise inequality $ab \\leq a^p/p + b^q/q$. The conjugate condition $1/p + 1/q = 1$ is precisely what makes the normalization step work.\n\n5. **Quantum Mechanics**: Hölder's inequality for p=q=2 (Cauchy-Schwarz) bounds the matrix element $|\\langle \\psi | A | \\phi \\rangle| \\leq \\|\\psi\\| \\cdot \\|A\\phi\\|$, essential for uncertainty principles.",
+    "openQuestions": [
+      "Can the equality case (‖f‖_p · ‖g‖_q = ∑f_i·g_i iff f and g are proportional with the right scaling) be formalized?",
+      "Can Minkowski's inequality (∑(f_i+g_i)^p)^(1/p) ≤ (∑f_i^p)^(1/p) + (∑g_i^p)^(1/p) be proved from this Hölder formalization?",
+      "Can the interpolation inequality ‖f‖_r ≤ ‖f‖_p^θ · ‖f‖_q^(1-θ) (for 1/r = θ/p + (1-θ)/q) be derived?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "NNReal",
+      "Real",
+      "MeasureTheory",
+      "ENNReal"
+    ],
+    "namespace": null,
+    "lineCount": 244,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarzOQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "O. Hölder",
+      "title": "Ueber einen Mittelwerthssatz",
+      "year": "1889",
+      "venue": "Goettinger Nachrichten",
+      "note": "Original proof of the general inequality for conjugate exponents"
+    },
+    {
+      "authors": "J.-L. Lagrange",
+      "title": "Solutions analytiques de quelques problèmes sur les pyramides triangulaires",
+      "year": "1773",
+      "venue": "Nouveaux Mémoires de l'Académie de Berlin",
+      "note": "Lagrange's identity: the elegant algebraic proof of Cauchy-Schwarz"
+    },
+    {
+      "authors": "G. H. Hardy, J. E. Littlewood, G. Pólya",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive treatment of Young, Hölder, and Minkowski inequalities"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "extends",
+      "description": "Parent formalization proving Cauchy-Schwarz as an inner product space result. This entry generalizes it by showing CS is the $p=q=2$ special case of Hölder's inequality."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-04",
+      "relationship": "sibling",
+      "description": "Sibling entry exploring other generalizations/applications of Cauchy-Schwarz; both extend the parent from different angles."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "The integral form of Cauchy-Schwarz. This entry's holder_lintegral provides the Hölder generalization of the integral CS inequality."
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "AM-GM and Hölder are both proved via convexity arguments. Young's inequality $ab \\leq a^p/p + b^q/q$ (the engine behind Hölder) is itself a weighted AM-GM: the point $(a^p, b^q)$ lies above the secant line of the concave function $t \\mapsto t^{1/p}$ (resp. $t^{1/q}$)."
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "related",
+      "description": "Hölder's inequality implies Minkowski's inequality (the triangle inequality for $L^p$ spaces): $\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$. The proof applies Hölder to $|f+g|^{p-1}$ paired with $f$ and $g$ separately."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Sub-entry further exploring consequences or refinements of the Hölder generalization established here."
+    }
+  ],
+  "sorries": 0
+}

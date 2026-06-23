@@ -1,0 +1,237 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "solution-of-cubic",
+    "range": {
+      "startLine": 7,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Cardano's Formula: Wiedijk #37",
+    "content": "**The Cubic Formula**:\n\nFor $x^3 + px + q = 0$ (depressed cubic):\n\n$$x = \\sqrt[3]{-\\frac{q}{2} + \\sqrt{\\Delta}} + \\sqrt[3]{-\\frac{q}{2} - \\sqrt{\\Delta}}$$\n\nwhere $\\Delta = \\frac{q^2}{4} + \\frac{p^3}{27}$ is the discriminant.\n\n**Historical**: Cardano's *Ars Magna* (1545), discovered by del Ferro (~1515) and Tartaglia (~1535).\n\n**Significance**: First algebraic solution beyond quadratics, led to complex numbers via the *casus irreducibilis*.",
+    "mathContext": "The module header establishes Wiedijk #37 with a complete proof using complex arithmetic. Imports: `Mathlib.Analysis.SpecialFunctions.Pow.Complex` (for `cpow` cube roots), `Mathlib.Analysis.SpecialFunctions.Complex.Log` (for `exp`), `Mathlib.Algebra.Polynomial.Div` (for `Polynomial.eval`), `Mathlib.Data.Complex.Basic`, `Mathlib.Analysis.SpecialFunctions.Complex.Circle`. The namespace is `SolutionOfCubic` with `open Complex Polynomial`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardano's formula",
+      "cubic equation",
+      "radical solution",
+      "Wiedijk 100 theorems"
+    ],
+    "prerequisites": [
+      "complex arithmetic",
+      "polynomial evaluation",
+      "cube roots"
+    ]
+  },
+  {
+    "id": "ann-depressed",
+    "proofId": "solution-of-cubic",
+    "range": {
+      "startLine": 49,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Depressed Cubic and Discriminant",
+    "content": "**Depressed Cubic**: $x^3 + px + q = 0$ (no $x^2$ term).\n\n**Reduction**: Any cubic $ax^3 + bx^2 + cx + d = 0$ reduces via $x = y - b/(3a)$, giving:\n$$p = \\frac{3ac - b^2}{3a^2}, \\quad q = \\frac{2b^3 - 9abc + 27a^2d}{27a^3}$$\n\n**Discriminant**: $\\Delta = q^2/4 + p^3/27$\n- $\\Delta > 0$: one real, two complex conjugate roots\n- $\\Delta = 0$: repeated root(s)\n- $\\Delta < 0$: three distinct real roots (*casus irreducibilis*)",
+    "mathContext": "`depressedCubic (p q : ℂ) : ℂ[X]` is defined as `X ^ 3 + C p * X + C q` using Mathlib's polynomial API with `C` for constant polynomials and `X` for the indeterminate. `discriminant (p q : ℂ) : ℂ` computes `q ^ 2 / 4 + p ^ 3 / 27`. Both are `noncomputable` since they depend on complex number operations. Working over $\\mathbb{C}$ handles all discriminant cases uniformly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tschirnhaus transformation",
+      "discriminant",
+      "depressed polynomial",
+      "polynomial API"
+    ],
+    "prerequisites": [
+      "polynomial ring ℂ[X]",
+      "complex numbers",
+      "Vieta's substitution"
+    ]
+  },
+  {
+    "id": "ann-cube-root",
+    "proofId": "solution-of-cubic",
+    "range": {
+      "startLine": 62,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Complex Cube Root",
+    "content": "**Complex Cube Root**: $\\sqrt[3]{z} = z^{1/3}$ via complex exponentiation.\n\nUsing `Complex.cpow`, the cube root is defined as `z ^ (1/3 : ℂ)`. This gives the principal branch of the cube root for any complex number, selecting a consistent branch cut.",
+    "mathContext": "`cubeRoot (z : ℂ) : ℂ := z ^ (1/3 : ℂ)` uses `Complex.cpow` from `Mathlib.Analysis.SpecialFunctions.Pow.Complex`. The exponent `(1/3 : ℂ)` is a complex number, making this `noncomputable`. The principal branch is chosen by `cpow`'s convention (using the principal logarithm). This is sufficient for stating Cardano's formula; the other two cube root branches are handled by multiplying by $\\omega, \\omega^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "complex exponentiation",
+      "branch cut",
+      "cpow",
+      "principal value"
+    ],
+    "prerequisites": [
+      "complex logarithm",
+      "complex exponentiation"
+    ]
+  },
+  {
+    "id": "ann-algebraic-identity",
+    "proofId": "solution-of-cubic",
+    "range": {
+      "startLine": 70,
+      "endLine": 93
+    },
+    "type": "concept",
+    "title": "Key Algebraic Identities",
+    "content": "**Cube of Sum**: $(u + v)^3 = u^3 + v^3 + 3uv(u + v)$\n\n**Cardano's Core Verification**: If $u^3 + v^3 = -q$ and $3uv = -p$, then $x = u + v$ satisfies $x^3 + px + q = 0$.\n\n**Proof**:\n$$x^3 + px + q = (u^3 + v^3) + 3uv(u+v) + p(u+v) + q = -q + (-p)(u+v) + p(u+v) + q = 0$$\n\nThis is the heart of Cardano's formula — it reduces solving a cubic to finding $u, v$ with prescribed sum-of-cubes and product.",
+    "mathContext": "`cube_of_sum` is proved by `ring`. `cardano_verification_core` takes hypotheses `h_sum : u ^ 3 + v ^ 3 = -q` and `h_prod : 3 * u * v = -p`, then proves `(u + v) ^ 3 + p * (u + v) + q = 0` via a `calc` chain: rewrite with `cube_of_sum`, substitute `h_sum` and `h_prod`, simplify with `ring`. This is the key lemma — everything else reduces to it.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial expansion",
+      "Vieta substitution",
+      "ring tactic",
+      "calc proof"
+    ],
+    "prerequisites": [
+      "complex ring arithmetic",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-cardano-properties",
+    "proofId": "solution-of-cubic",
+    "range": {
+      "startLine": 95,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "Properties of Cardano's Components",
+    "content": "**Verification that Cardano's $u, v$ satisfy the required conditions**:\n\nFor $u = \\sqrt[3]{-q/2 + \\sqrt{\\Delta}}$ and $v = \\sqrt[3]{-q/2 - \\sqrt{\\Delta}}$:\n\n1. **Sum**: $u^3 + v^3 = (-q/2 + \\sqrt{\\Delta}) + (-q/2 - \\sqrt{\\Delta}) = -q$ ✓\n2. **Product**: $u^3 v^3 = (-q/2)^2 - (\\sqrt{\\Delta})^2 = q^2/4 - \\Delta = -p^3/27$\n\nSo $uv = \\sqrt[3]{-p^3/27} = -p/3$ ✓",
+    "mathContext": "Three theorems verify Cardano's construction: `cardano_sum_property` proves `(-q/2 + sqrtΔ) + (-q/2 - sqrtΔ) = -q` by `ring`. `cardano_product_under_roots` proves the difference-of-squares identity `(-q/2 + sqrtΔ) * (-q/2 - sqrtΔ) = q²/4 - Δ` using `ring` and the hypothesis `hΔ : sqrtΔ ^ 2 = discriminant p q`. `cardano_product_simplified` proves `q²/4 - Δ = -p³/27` by unfolding `discriminant` and applying `ring`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "difference of squares",
+      "conjugate surds",
+      "discriminant cancellation"
+    ],
+    "prerequisites": [
+      "discriminant definition",
+      "ring arithmetic"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "solution-of-cubic",
+    "range": {
+      "startLine": 119,
+      "endLine": 144
+    },
+    "type": "concept",
+    "title": "Cardano's Formula (Main Theorem)",
+    "content": "**Cardano's Formula (Wiedijk #37)**:\n\nFor any $u, v \\in \\mathbb{C}$ satisfying $u^3 + v^3 = -q$ and $uv = -p/3$, the value $x = u + v$ is a root of $x^3 + px + q = 0$.\n\n$$(\\text{depressedCubic } p\\; q).\\text{eval}(u + v) = 0$$\n\nThis is the main theorem of the file — it proves that Cardano's construction actually works.",
+    "mathContext": "`cardano_formula` takes hypotheses `h_sum : u ^ 3 + v ^ 3 = -q` and `h_prod : u * v = -p / 3`, then proves `(depressedCubic p q).eval (u + v) = 0`. The proof first rewrites with `depressedCubic_eval` to unfold the polynomial evaluation, then derives `3 * u * v = -p` from `h_prod` via a `calc` chain, and applies `cardano_verification_core`. The helper `depressedCubic_eval` proves `(depressedCubic p q).eval x = x ^ 3 + p * x + q` using `simp` with polynomial evaluation lemmas.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial evaluation",
+      "root finding",
+      "Cardano's formula",
+      "Wiedijk #37"
+    ],
+    "prerequisites": [
+      "cardano_verification_core",
+      "depressedCubic_eval",
+      "polynomial API"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "solution-of-cubic",
+    "range": {
+      "startLine": 146,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "Verified Examples",
+    "content": "**Special Cases** verified by `norm_num`:\n\n| Cubic | Root | Check |\n|-------|------|-------|\n| $x^3 - 6x - 40 = 0$ | $x = 4$ | $64 - 24 - 40 = 0$ |\n| $x^3 + 6x - 20 = 0$ | $x = 2$ | $8 + 12 - 20 = 0$ |\n| $x^3 - 1 = 0$ | $x = 1$ | $1 - 1 = 0$ |\n| $x^3 - 2 = 0$ | $\\sqrt[3]{2}$ | When $p = 0$: discriminant $= 0$ |",
+    "mathContext": "Four `example` declarations verify specific cubic roots over $\\mathbb{C}$: `(4 : ℂ) ^ 3 + (-6 : ℂ) * 4 + (-40 : ℂ) = 0`, etc. All are discharged by `norm_num`, which handles concrete complex arithmetic. The $x^3 - 2 = 0$ example verifies that the discriminant vanishes when $p = 0$, showing the formula simplifies to $x = \\sqrt[3]{-q}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_num",
+      "concrete verification",
+      "special cases"
+    ],
+    "prerequisites": [
+      "complex number literals",
+      "norm_num tactic"
+    ]
+  },
+  {
+    "id": "ann-cube-roots-unity",
+    "proofId": "solution-of-cubic",
+    "range": {
+      "startLine": 166,
+      "endLine": 227
+    },
+    "type": "concept",
+    "title": "Cube Roots of Unity",
+    "content": "**Primitive Cube Root**: $\\omega = e^{2\\pi i/3} = -\\frac{1}{2} + \\frac{\\sqrt{3}}{2}i$\n\n**Three proved properties**:\n1. $\\omega^3 = 1$ — cube root of unity\n2. $\\omega \\neq 1$ — primitive (not trivial)\n3. $1 + \\omega + \\omega^2 = 0$ — sum of all cube roots vanishes\n\nThese enable expressing all three roots of a cubic: if $(u, v)$ gives root $x_1 = u + v$, then $x_2 = \\omega u + \\omega^2 v$ and $x_3 = \\omega^2 u + \\omega v$.",
+    "mathContext": "`omega : ℂ := exp (2 * Real.pi * I / 3)` is the primitive cube root. `omega_cubed` is proved by rewriting `exp(3 \\cdot 2\\pi i/3) = exp(2\\pi i) = 1` using `exp_nat_mul` and `exp_two_pi_mul_I`. `omega_ne_one` is a substantial proof: it extracts the imaginary part `sin(2π/3) = √3/2 ≠ 0` using `exp_mul_I`, `Real.sin_pi_sub`, `Real.sin_pi_div_three`, and `positivity`. `omega_sum` uses the factorization $\\omega^3 - 1 = (\\omega - 1)(\\omega^2 + \\omega + 1)$ with `mul_eq_zero` and `omega_ne_one` to conclude $\\omega^2 + \\omega + 1 = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "roots of unity",
+      "cyclotomic polynomial",
+      "exp_two_pi_mul_I",
+      "positivity"
+    ],
+    "prerequisites": [
+      "complex exponential",
+      "trigonometric identities",
+      "Real.pi",
+      "group theory of roots"
+    ]
+  },
+  {
+    "id": "ann-other-roots",
+    "proofId": "solution-of-cubic",
+    "range": {
+      "startLine": 228,
+      "endLine": 267
+    },
+    "type": "concept",
+    "title": "The Second Root via Omega",
+    "content": "**Second Root**: $x_2 = \\omega u + \\omega^2 v$\n\n**Why it works**: $(\\omega u)^3 = \\omega^3 u^3 = u^3$ and $(\\omega^2 v)^3 = \\omega^6 v^3 = v^3$, so the sum-of-cubes condition is preserved. The product $(\\omega u)(\\omega^2 v) = \\omega^3 uv = uv = -p/3$ is also preserved.\n\nSince both conditions for `cardano_verification_core` hold, $\\omega u + \\omega^2 v$ is a root. By symmetry, $\\omega^2 u + \\omega v$ is the third root.",
+    "mathContext": "`omega_root_product` proves `(omega * u) * (omega ^ 2 * v) = -p / 3` by rewriting `omega ^ 3 = 1` and using `h : u * v = -p / 3`. `second_root` proves `(depressedCubic p q).eval (omega * u + omega ^ 2 * v) = 0` by showing both cube-sum (`h_sum'`) and triple-product (`h_prod'`) conditions hold for `(omega * u, omega ^ 2 * v)`, then applying `cardano_verification_core`. Each step rewrites `omega ^ 3 = 1` (or `omega ^ 6 = (omega ^ 3) ^ 2 = 1`) and simplifies with `ring`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "all three roots",
+      "omega multiplication",
+      "symmetry",
+      "Vieta's formulas"
+    ],
+    "prerequisites": [
+      "omega_cubed",
+      "cardano_verification_core",
+      "polynomial evaluation"
+    ]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "solution-of-cubic",
+    "range": {
+      "startLine": 269,
+      "endLine": 297
+    },
+    "type": "concept",
+    "title": "Historical Significance and Connections",
+    "content": "**Mathematical Impact**:\n\n1. **First radical formula** beyond quadratics — showed degree > 2 polynomials could be solved algebraically\n2. **Led to complex numbers** — the *casus irreducibilis* forced mathematicians to accept $\\sqrt{-1}$\n3. **Motivated Galois theory** — the question 'which polynomials are solvable by radicals?' culminated in Galois's work\n\n**Casus Irreducibilis**: When three real distinct roots exist, $\\Delta < 0$ so $\\sqrt{\\Delta}$ is imaginary. Yet cube roots combine to give real answers! This paradox forced acceptance of complex numbers as legitimate mathematical objects.\n\n**Connection to Other Theorems**: #46 (quartic formula uses cubic resolvents), #16 (Abel-Ruffini: no quintic formula), #80 (Fundamental Theorem of Algebra guarantees roots exist).",
+    "mathContext": "The commentary section (lines 269-287) and export block (lines 291-297) summarize the file's contributions. Six key results are exported via `#check`: `cardano_formula` (main theorem), `cardano_verification_core` (key lemma), `cube_of_sum` (algebraic identity), `omega_cubed` (root of unity), `omega_sum` (sum vanishes), `second_root` (second root via omega). The entire file uses 0 axioms — all results are fully proved from Mathlib.",
+    "significance": "key",
+    "relatedConcepts": [
+      "casus irreducibilis",
+      "Galois theory",
+      "Abel-Ruffini",
+      "complex number history"
+    ],
+    "prerequisites": [
+      "history of algebra",
+      "polynomial solvability",
+      "field extensions"
+    ]
+  }
+]

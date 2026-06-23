@@ -1,0 +1,438 @@
+[
+  {
+    "id": "ann-e576-hypercube-vertex",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 49,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Hypercube Vertex",
+    "content": "**HypercubeVertex k:**\n\nA vertex of Q_k is a function from {0,1,...,k-1} to {true, false}.\n\nThis represents a binary string of length k.\n\n**Examples:**\n- In Q_3: vertex (1,0,1) maps 0↦true, 1↦false, 2↦true\n- Q_k has 2^k vertices total",
+    "mathContext": "The k-dimensional hypercube is fundamental in combinatorics, coding theory, and computer science.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Binary strings",
+      "Boolean functions",
+      "Coding theory"
+    ],
+    "prerequisites": [
+      "Binary strings",
+      "Graph theory basics",
+      "Hamming distance"
+    ]
+  },
+  {
+    "id": "ann-e576-hamming-distance",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 52,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Hamming Distance",
+    "content": "**hammingDistance v w:**\n\nThe number of coordinates where v and w differ.\n\n**Examples:**\n- d((1,0,0), (1,1,1)) = 2 (positions 1,2 differ)\n- d((0,0,0), (1,1,1)) = 3 (all positions differ)\n- d(v, v) = 0 always\n\nThis is the natural graph metric on hypercubes.",
+    "significance": "key",
+    "mathContext": "The Hamming distance $d_H(u,v) = |\\{i : u_i \\neq v_i\\}|$ counts the number of coordinates where two binary strings differ. Two vertices in $Q_d$ are adjacent iff $d_H(u,v) = 1$ (they differ in exactly one bit).",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Hypercube graphs",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "Binary strings",
+      "Graph theory basics",
+      "Hamming distance"
+    ]
+  },
+  {
+    "id": "ann-e576-hypercube-adj",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 56,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Hypercube Adjacency",
+    "content": "**hypercubeAdj v w:**\n\nTwo vertices are adjacent iff their Hamming distance is exactly 1.\n\nThey differ in exactly one bit.\n\n**Key property:** Each vertex has exactly k neighbors in Q_k (one for each coordinate that can be flipped).",
+    "significance": "key",
+    "mathContext": "$Q_d$ has edges $\\{u,v\\}$ where $u,v \\in \\{0,1\\}^d$ differ in exactly one coordinate. Each vertex has degree $d$, giving $|E(Q_d)| = d \\cdot 2^{d-1}$. $Q_d$ is a $d$-regular bipartite graph (partition by parity of Hamming weight).",
+    "relatedConcepts": [
+      "Hypercube graph",
+      "Boolean lattice",
+      "Hamming distance"
+    ],
+    "prerequisites": [
+      "Binary strings",
+      "Graph theory basics",
+      "Hamming distance"
+    ]
+  },
+  {
+    "id": "ann-e576-hypercube-graph",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 71,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "Hypercube Graph Q_k",
+    "content": "**hypercubeGraph k:**\n\nThe k-dimensional hypercube graph Q_k.\n\n**Structure:**\n- 2^k vertices\n- k·2^(k-1) edges\n- Each vertex has degree k\n- Bipartite (partition by parity of bit-sum)\n\n**Examples:**\n- Q_1 = single edge (2 vertices)\n- Q_2 = 4-cycle (square)\n- Q_3 = cube (8 vertices, 12 edges)",
+    "mathContext": "Also known as the k-cube, Boolean lattice graph, or Hamming graph H(k,2).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bipartite graphs",
+      "Vertex-transitive graphs",
+      "Cayley graphs"
+    ],
+    "prerequisites": [
+      "Binary strings",
+      "Graph theory basics",
+      "Hamming distance"
+    ]
+  },
+  {
+    "id": "ann-e576-vertex-count",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 86,
+      "endLine": 90
+    },
+    "type": "concept",
+    "title": "Vertex Count",
+    "content": "**hypercube_vertex_count:**\n\n|V(Q_k)| = 2^k\n\nEach of the k positions can be 0 or 1 independently.\n\n**Proof:** Direct calculation using Fintype.card_fun.",
+    "significance": "supporting",
+    "mathContext": "See annotation content for the mathematical details of: Vertex Count",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Hypercube graphs",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube structure",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "ann-e576-edge-count",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 96,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Edge Count",
+    "content": "**hypercube_edge_count:**\n\n|E(Q_k)| = k·2^(k-1)\n\n**Derivation:**\n- Each vertex has degree k\n- Total degree = k·2^k\n- Number of edges = k·2^(k-1) (each edge counted twice)\n\n**Examples:**\n- Q_3: 3·4 = 12 edges\n- Q_4: 4·8 = 32 edges",
+    "significance": "key",
+    "mathContext": "See annotation content for the mathematical details of: Edge Count",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Hypercube graphs",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube structure",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "ann-e576-subgraph-free",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 107,
+      "endLine": 112
+    },
+    "type": "definition",
+    "title": "H-Free Graphs",
+    "content": "**IsSubgraphFree G H:**\n\nG is H-free if no subgraph of G is isomorphic to H.\n\nFormalized via graph embeddings: there's no injective vertex map f: V(H) → V(G) preserving all edges.\n\n**Central concept:** Turán theory studies the maximum edges in H-free graphs.",
+    "mathContext": "The foundation of extremal graph theory, initiated by Turán's theorem for complete graphs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Graph homomorphism",
+      "Subgraph containment",
+      "Forbidden subgraphs"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube structure",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "ann-e576-turan-number",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 114,
+      "endLine": 121
+    },
+    "type": "definition",
+    "title": "Turán Number",
+    "content": "**turanNumber n H = ex(n; H):**\n\nThe maximum number of edges in an n-vertex H-free graph.\n\n**Central question:** Given a forbidden graph H, how dense can an n-vertex graph be while avoiding H?\n\n**Classical results:**\n- ex(n; K_r) = (1 - 1/(r-1) + o(1))·C(n,2) [Turán]\n- ex(n; K_{s,t}) = O(n^(2-1/s)) [Kővári-Sós-Turán]",
+    "mathContext": "The extremal function ex(n; H) is one of the most studied objects in combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "Erdős-Stone theorem",
+      "Extremal graph theory"
+    ],
+    "prerequisites": [
+      "Extremal graph theory",
+      "ex(n, H) definition"
+    ]
+  },
+  {
+    "id": "ann-e576-es-lower",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 129,
+      "endLine": 132
+    },
+    "type": "concept",
+    "title": "Erdős-Simonovits Lower Bound",
+    "content": "**erdos_simonovits_lower_bound:**\n\nex(n; Q_3) ≥ (1/2 + o(1))n^(3/2)\n\nThe lower bound comes from the **polarity graph** construction from finite geometry.\n\n**Construction:** Take points and lines in a projective plane; connect point p to line ℓ iff p is not on ℓ. This is Q_3-free and has Ω(n^(3/2)) edges.",
+    "mathContext": "Algebraic constructions often give the best lower bounds in extremal problems.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Hypercube graphs",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube structure",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "ann-e576-es-upper",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 134,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Erdős-Simonovits Upper Bound",
+    "content": "**erdos_simonovits_upper_bound:**\n\nex(n; Q_3) ≪ n^(8/5)\n\nThis is the key upper bound from 1970 and remains unimproved for Q_3 specifically.\n\nThe exponent 8/5 = 1.6 has survived 50+ years of attempts.",
+    "mathContext": "Upper bounds typically require careful counting or regularity arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Hypercube graphs",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube structure",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "ann-e576-combined-bounds",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 139,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "Combined Bounds",
+    "content": "**erdos_simonovits_bounds:**\n\nn^(3/2) ≪ ex(n; Q_3) ≪ n^(8/5)\n\n**The gap:**\n- Lower exponent: 3/2 = 1.5\n- Upper exponent: 8/5 = 1.6\n- Gap: 1/10 = 0.1\n\nClosing this gap is the main open problem.",
+    "significance": "key",
+    "mathContext": "See annotation content for the mathematical details of: Combined Bounds",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Hypercube graphs",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube structure",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "ann-e576-sudakov-tomon",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 154,
+      "endLine": 157
+    },
+    "type": "concept",
+    "title": "Sudakov-Tomon Bound (2022)",
+    "content": "**sudakov_tomon_bound:**\n\nex(n; Q_k) = o(n^(2-1/k))\n\n**Breakthrough result:** First bound for general k that beats the trivial n^2.\n\n**For Q_3:** This gives o(n^(5/3)) ≈ o(n^1.67), weaker than Erdős-Simonovits but valid for all k.\n\nProved using tight cycle methods.",
+    "mathContext": "Published in Int. Math. Res. Not. IMRN (2022).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Hypercube graphs",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube structure",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "ann-e576-janzer-sudakov-exp",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 159,
+      "endLine": 161
+    },
+    "type": "definition",
+    "title": "Janzer-Sudakov Exponent",
+    "content": "**janzerSudakovExponent k:**\n\n2 - 1/(k-1) + 1/((k-1)·2^(k-1))\n\n**For k=3:**\n2 - 1/2 + 1/8 = 13/8 = 1.625\n\nThis improves on Sudakov-Tomon's 5/3 ≈ 1.67 for k=3.",
+    "significance": "key",
+    "mathContext": "See annotation content for the mathematical details of: Janzer-Sudakov Exponent",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Hypercube graphs",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube structure",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "ann-e576-janzer-sudakov",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 163,
+      "endLine": 166
+    },
+    "type": "concept",
+    "title": "Janzer-Sudakov Bound (2022)",
+    "content": "**janzer_sudakov_bound:**\n\nex(n; Q_k) ≪_k n^(janzerSudakovExponent k)\n\n**State of the art** for general k (as of 2022).\n\nStill does not match the conjectured 8/5 = 1.6 for k=3.",
+    "mathContext": "Published in arXiv:2211.02015 (2024 journal version).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Hypercube graphs",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube structure",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "ann-e576-k3-exponent",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 168,
+      "endLine": 172
+    },
+    "type": "concept",
+    "title": "k=3 Exponent Calculation",
+    "content": "**janzer_sudakov_k3_exponent:**\n\njanzerSudakovExponent 3 = 13/8\n\n**Calculation:**\n2 - 1/2 + 1/8 = 16/8 - 4/8 + 1/8 = 13/8 = 1.625\n\nThis still exceeds the conjectured 8/5 = 1.6.",
+    "significance": "supporting",
+    "mathContext": "See annotation content for the mathematical details of: k=3 Exponent Calculation",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Hypercube graphs",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube structure",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "ann-e576-conjecture",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 181,
+      "endLine": 185
+    },
+    "type": "definition",
+    "title": "The Main Conjecture",
+    "content": "**erdos_conjecture_Q3:**\n\nex(n; Q_3) ≍ n^(8/5)\n\nThis means both upper AND lower bounds have exponent 8/5.\n\n**The challenge:** The lower bound is stuck at 3/2 = 1.5. Proving the conjecture requires a new construction achieving n^(8/5) edges while avoiding Q_3.",
+    "mathContext": "Erdős asked this question in 1974, 1981, and 1993.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Hypercube graphs",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube structure",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "ann-e576-bound-gap",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 187,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "The Exponent Gap",
+    "content": "**bound_gap:**\n\n8/5 - 3/2 = 1/10 = 0.1\n\nThe gap may seem small, but n^1.5 vs n^1.6 grows enormously different:\n- At n = 10^6: n^1.5 ≈ 10^9, n^1.6 ≈ 2.5×10^9\n- At n = 10^12: n^1.5 ≈ 10^18, n^1.6 ≈ 10^19.2\n\nClosing this gap is a 50+ year open problem.",
+    "significance": "key",
+    "mathContext": "See annotation content for the mathematical details of: The Exponent Gap",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Hypercube graphs",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube structure",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "ann-e576-minus-edge",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 202,
+      "endLine": 209
+    },
+    "type": "concept",
+    "title": "Q_3 Minus One Edge",
+    "content": "**erdos_simonovits_minus_edge:**\n\nIf G = Q_3 minus one edge, then ex(n; G) ≍ n^(3/2).\n\n**Striking fact:** Removing a single edge from Q_3 drops the Turán exponent from ~8/5 to exactly 3/2!\n\nThis shows how delicate extremal problems can be.",
+    "mathContext": "Proved by Erdős and Simonovits in the same 1970 paper.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Extremal graph theory",
+      "Hypercube graphs",
+      "Turán-type problems"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Hypercube structure",
+      "Turán numbers"
+    ]
+  },
+  {
+    "id": "ann-e576-bipartite",
+    "proofId": "erdos-576",
+    "range": {
+      "startLine": 220,
+      "endLine": 223
+    },
+    "type": "concept",
+    "title": "Hypercubes are Bipartite",
+    "content": "**hypercube_bipartite:**\n\nQ_k is bipartite for all k ≥ 1.\n\n**Partition:** By parity of bit-sum (number of 1s).\n- 'Even' vertices: even number of 1s\n- 'Odd' vertices: odd number of 1s\n\nFlipping one bit changes parity, so edges only connect even↔odd.",
+    "mathContext": "Bipartiteness is key to why hypercube Turán problems are difficult.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hypercube graph",
+      "Boolean lattice",
+      "Hamming distance"
+    ],
+    "prerequisites": [
+      "Binary strings",
+      "Graph theory basics",
+      "Hamming distance"
+    ]
+  }
+]

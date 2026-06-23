@@ -1,0 +1,151 @@
+{
+  "slug": "schroeder-bernstein-oq-01",
+  "title": "Categorical characterization of the Schroeder-Bernstein property",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let C be a locally small category. C has the Schroeder-Bernstein property (SBP) iff for all X, Y in Ob(C), the existence of monos m : X → Y and n : Y → X implies X ≅ Y. Identify a minimal categorical hypothesis Φ(C) such that Φ(C) ⇒ SBP. Banaschewski–Brümmer (1986) gave one sufficient condition (the split-mono / retraction condition).",
+    "plain": "Schroeder-Bernstein in Set says: mutual injections imply a bijection. In many concrete categories (groups, Banach spaces) this fails. The open question is: what is the right categorical hypothesis that recovers the property? Banaschewski and Brümmer (1986) showed a 'split-mono' axiom suffices; a complete (necessary + sufficient) characterization is open.",
+    "whyMatters": [
+      "Foundational categorical question with concrete failure witnesses (Bumby, Gowers).",
+      "Direct extension of a fully verified Wiedijk-100 gallery entry (Schroeder–Bernstein in Set).",
+      "Mathlib currently has zero infrastructure for SBP in arbitrary categories — the gap is wide open."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Set has SBP (Bernstein 1898; Mathlib's Function.Embedding.antisymm).",
+      "Categories with the split-mono / retraction condition have SBP (Banaschewski–Brümmer 1986).",
+      "Divisible abelian groups have SBP (Bumby 1965)."
+    ],
+    "open": [
+      "Necessary + sufficient categorical conditions for SBP (i.e. a complete characterization).",
+      "Whether the split-mono condition is strictly weaker than 'topos'."
+    ],
+    "goal": "Define HasSBP in Mathlib's CategoryTheory framework, prove HasSBP (Type u), and formalize Banaschewski–Brümmer's split-mono ⇒ SBP implication."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-05T00:00:00Z",
+    "iteration": 17,
+    "focus": "S17 GALLERY-WIRING (researcher-1, 2026-06-05, doc-only 3-file, NO Lean edit): surfaced the build-verified 6-theorem corpus to the gallery. Created src/data/proofs/schroeder-bernstein-oq-01/meta.json (status \"verified\", badge \"original\", lineCount 353, theoremCount 6, definitionCount 1, axiomCount 0, sorries 0; 7 mathlibDependencies, 7 originalContributions, 4 openQuestions, 7 sections, 4 crossReferences, 7 mainTheorems, 4 references) + annotations.json (8 annotations). Realises S16 alt-B; closes the gap where oq-01 was the only schroeder-bernstein sibling without a gallery entry. Build carried via SHA-pin transitivity from S15 BUILD-VERIFY #21230 (3115 jobs clean at Mathlib 2df2f0150c…, byte-stable per S16 5-day re-affirm). Lean file UNCHANGED (353 LOC / 6 theorems / 0 sorries / 0 axioms).",
+    "blockers": [],
+    "nextAction": "S18 ACT (mathematical, Docker-gated) — two viable scopes carried from S16/S17: (alt-A) Path D.ii abstract orbit construction (~150-250 LOC, S10 PREP §3.3 — genuinely non-vacuous AND broader than the D.i fully-faithful-forget result; requires Bernstein-orbit recursion in pure category theory) OR Path E Banaschewski-Brummer route. Both require a Docker build to verify; deferred until the host Docker daemon is back up.",
+    "attemptCounts": {
+      "total": 7,
+      "currentApproach": 2,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S17 GALLERY-WIRING (researcher-1, 2026-06-05, doc-only 3-file, NO Lean edit): surfaced the build-verified 6-theorem corpus to the gallery — created meta.json (status \"verified\"/badge \"original\", 353 LOC/6 thm/1 def/0 ax/0 sorry) + annotations.json (8 annotations) under src/data/proofs/schroeder-bernstein-oq-01/, realising S16 alt-B. Honest framing: NOT a solution to OQ-01 (full categorical characterization remains open); surfaces existing corpus with vacuous-vs-non-vacuous distinctions + 4 open questions. Build carried via SHA-pin transitivity from S15 (#21230, 3115 jobs). S16 STATE-SYNC (researcher-1, 2026-06-04T17:30Z, doc-only tight 2-file + session doc): 5-day stability re-affirm post-S15 BUILD-VERIFY #21230 (2026-05-30). Verified Mathlib pin SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 byte-stable via fresh `git clone --depth 1 --branch v4.26.0 https://github.com/leanprover-community/mathlib4` + `git rev-parse HEAD`; SHA-pin transitivity carries S15's 3115-job verification without re-running. Lean file unchanged (353 LOC / 6 theorems / 0 sorries / 0 axioms re-confirmed via wc -l + grep -c). Host disk 33 Gi avail (downgrade 60 → 33 Gi over 5 days; still well above 5.4 Gi ACT floor). No open PRs on slug. **9/9 GREEN preserved** at S16. Flag: OQ-01 is the only schroeder-bernstein-family slug without a gallery entry (parent, OQ-02, OQ-03, OQ-04 all have them). S17 alt-B GALLERY-WIRING is a focused alternative to Path D.ii / Path E mathematical scope: build-verified Lean ⇒ honest `status: verified` gallery entry possible. | Pre-S16: S15 BUILD-VERIFY (researcher-1, 2026-05-30T18:30Z, doc-only tight 2-file): `./proofs/scripts/docker-build.sh Proofs.SchroederBernsteinOQ01` returned `Build completed successfully (3115 jobs)` exit 0; clears S12 build-pending status held since 2026-05-16 (14-day verification gap closed). All 6 public theorems compile cleanly at Mathlib v4.26.0 (pin 2df2f0150c byte-stable). INFRA reality vs S14 STATE-SYNC: Docker daemon responsive, host disk 60 Gi (above 5.4 Gi ACT floor), `proofs/.lake` symlink non-barring under Docker volume mount. 3-RED INFRA conjunction at S14 reframed as 2 genuine bars (both recovered) + 1 over-flagged. B1 blocker cleared. 9/9 GREEN ACT-readiness at S15. Build numerics 3115 vs S8 PREP §6 forecast 3069-3080 (+35-job delta = Mathlib transitive-dep drift, not new code). 2-file ship: state.md head + JSON catchup. | Pre-S15: S14 STATE-SYNC (researcher-10, 2026-05-16T19:05Z, doc-only tight 3-file): JSON catchup absorbing S13 STATE-SYNC + mechanic PR #19679 + single new disk-floor-cross delta. Brings JSON cs.iteration 12→14 (covering S13 STATE-SYNC #19578 which was state.md-only ship excluding canonical JSON). 3 RED INFRA conjunction (Docker hung + disk 3.3 Gi below 5.4 Gi floor + .lake circular) bars S14 BUILD-VERIFY. Mechanic PR #19679 fixed leanFiles[1].{theoremCount 8→6, defCount 3→1} for SchroederBernsteinOQ01.lean; no other meta surfaces touched. Mathlib SHA 2df2f0150c byte-stable. 0 PRs open on slug. Bearer carry-forward via SHA-transitivity. | Pre-S14: S2/S3 ACT defined HasSBP + proved hasSBP_Type (PR #18383, verified). S4 ACT proved hasSBP_Discrete (PR #18496, verified post-S6 BUILD UNBLOCKER). S5 PREP chain + S5 ACT (PRs #18450/#18508/#18602/#18655/#18673/#18707) shipped not_hasSBP_TopCat via [0,1] vs (0,1) compactness obstruction. S6 BUILD UNBLOCKER (PR #18980) cleared build-pending via noncomputable on fHom/gHom. S6 ACT (PR #19086) shipped hasSBP_of_isDiscrete : [Category C] [IsDiscrete C] -> HasSBP C (vacuous, 4th positive). S7/S8/S9 PREPs (PRs #19158/#19196/#19259) catalogued paths C/D/E + path-D.i refinement (25-35 LOC) + Grp counterexample feasibility. S10 PREP STATE-SYNC (PR #19369) gated paths C/D.i GREEN. S11 ACT (PR #19424) shipped hasSBP_of_isGroupoid (vacuous-but-broadening, 5th positive). S12 ACT (this PR) ships hasSBP_of_fullFaithful_forget — FIRST GENUINELY NON-VACUOUS positive, 6th theorem in the corpus. Parent file 266→353 LOC, 6 public theorems, 0 sorries, 0 axioms, build pending (host disk full).",
+    "builtItems": [
+      "Defined SchroederBernsteinOQ01.HasSBP (Type*) [Category C] : Prop in proofs/Proofs/SchroederBernsteinOQ01.lean — categorical predicate previously absent from Mathlib.",
+      "Proved hasSBP_Type : HasSBP (Type u) in proofs/Proofs/SchroederBernsteinOQ01.lean — bridges classical Schroeder-Bernstein (Function.Embedding.antisymm) to the categorical statement via CategoryTheory.mono_iff_injective and Equiv.toIso.",
+      "Registered Proofs.SchroederBernsteinOQ01 in proofs/Proofs.lean (line 2666).",
+      "Proved hasSBP_Discrete : HasSBP (Discrete α) in proofs/Proofs/SchroederBernsteinOQ01.lean (S4 ACT, PR #18496) — second positive HasSBP instance.",
+      "Added private defs fHom, gHom and private theorems fHom_injective, gHom_injective + public theorem not_hasSBP_TopCat to proofs/Proofs/SchroederBernsteinOQ01.lean (S5 ACT, PR #18707) — first Lean-formal failure witness for HasSBP, via the [0,1] vs (0,1) compactness obstruction. ~55 LOC, 0 sorries, 0 axioms; build verified post-S6 BUILD UNBLOCKER (PR #18980, noncomputable on fHom/gHom).",
+      "Proved hasSBP_of_isDiscrete : (C : Type*) [Category C] [IsDiscrete C] -> HasSBP C in proofs/Proofs/SchroederBernsteinOQ01.lean (S6 ACT, PR #19086) — 4th positive instance; generalizes hasSBP_Discrete beyond Discrete α to all Mathlib IsDiscrete categories. Vacuous (Mono = Iso forced via isIso_of_isDiscrete instance, Discrete/Basic.lean:342).",
+      "Proved hasSBP_of_isGroupoid : (C : Type*) [Category C] [IsGroupoid C] -> HasSBP C in proofs/Proofs/SchroederBernsteinOQ01.lean (S11 ACT, this PR) — 5th positive instance; broadens hasSBP_of_isDiscrete from at-most-one-Hom categories to all groupoids via IsGroupoid.all_isIso instance (Mathlib/CategoryTheory/Groupoid.lean:119 + line 121 attribute). One-line proof (`exact ⟨asIso m⟩`). Vacuous-but-broadening: covers fundamental groupoids, Brandt groupoids, EssGroupoid, action groupoids strictly beyond IsDiscrete.",
+      "src/data/proofs/schroeder-bernstein-oq-01/{meta.json,annotations.json} — gallery entry surfacing the build-verified 6-theorem corpus (status verified, badge original, 0 ax/0 sorry) (S17 GALLERY-WIRING, researcher-1, 2026-06-05)"
+    ],
+    "insights": [
+      "SBP fails in concrete categories with structure (Grp, Ban) but holds in pure Set; the categorical 'right hypothesis' isolates the structure-free skeleton.",
+      "The split-mono / retraction condition (Banaschewski–Brümmer 1986) is the cleanest known sufficient condition: every mono splits ⇒ SBP, via a short composition argument.",
+      "Mathlib's CategoryTheory.SplitMono cleanly models the hypothesis; the Lean formalization should be ~80 LOC.",
+      "In Type u (v4.26.0), CategoryTheory.mono_iff_injective lives in Mathlib.CategoryTheory.Types.Basic and reduces categorical SBP to Function.Embedding.antisymm in three lines — no glue needed beyond the Equiv.toIso lift.",
+      "Honesty caveat for S4: the literal statement '[every mono splits] → HasSBP C' collapses Mono = Iso (via the equation m ∘ r ∘ m = m and mono-cancellation), making the conclusion vacuous. The S4 PR should either use regular-mono variants or document the collapse.",
+      "TopCat is the first Lean-formal HasSBP failure witness: [0,1] and (0,1) admit mutual continuous injections (compression (x+1)/4 and inclusion) but compactness blocks homeomorphism. The proof chains TopCat.mono_iff_injective → HasSBP destructor → TopCat.homeoOfIso → Homeomorph.compactSpace → isCompact_Ioo_iff (~13 LOC body).",
+      "The TopCat counterexample uses topological structure where the underlying set bijection ([0,1] ≅_Set (0,1) via the same Schroeder-Bernstein machinery hasSBP_Type proves) is incompatible with the topology — making it a direct analogue of Bumby (Grp) and Gowers (Ban) but realised in a category Mathlib formalises explicitly.",
+      "S6 (2026-05-13, researcher-12): pre-claim Docker build at origin/main 893e29b7d7b surfaced one error — `fHom` on line 103 needs `noncomputable` because `(x+1)/4` over ℝ depends on `Real.instDivInvMonoid` (noncomputable). 2-token fix (def → noncomputable def) on both fHom and gHom passes Docker (3069 jobs). Both `(build pending)` annotations on S4 ACT and S5 ACT are now verified. Discovered via the new memory `feedback_researcher_docs_only_chain_silent_parent_regression.md` pattern.",
+      "S11 ACT (2026-05-16, researcher-5): the vacuous-vs-non-vacuous distinction is finer than 'forces Mono = Iso'. hasSBP_of_isDiscrete (S6 ACT) and hasSBP_of_isGroupoid (S11 ACT) both force Mono = Iso (so both are 'vacuous' in the strict sense), but they cover different instance spaces. [IsDiscrete C] ⊊ [IsGroupoid C] strictly: fundamental groupoids of non-trivial topological spaces, Brandt groupoids, action groupoids, EssGroupoid are groupoids but not discrete. So even within the vacuous regime there is meaningful corpus-broadening, and the proof structure is identical (one-line `exact ⟨asIso m⟩`) — what differs is the typeclass route to IsIso m (isIso_of_isDiscrete vs IsGroupoid.all_isIso). This justifies the S11 PR over a 'skip vacuous-broadening, jump to non-vacuous' policy.",
+      {
+        "title": "Path D.i shipped: first genuinely non-vacuous SBP instance via fully-faithful forget",
+        "summary": "S12 ACT (researcher-6, 2026-05-16) shipped hasSBP_of_fullFaithful_forget — 6th theorem in the corpus and first genuinely non-vacuous positive. Lifts classical Schroeder-Bernstein in Type through fully-faithful forgetful via Functor.FullyFaithful.ofFullyFaithful (forget C) |>.preimageIso e.toIso. Build pending (host disk full).",
+        "session": "S12",
+        "date": "2026-05-16"
+      }
+    ],
+    "mathlibGaps": [
+      "No HasSchroederBernsteinProperty class in Mathlib upstream (filled locally by SchroederBernsteinOQ01.HasSBP).",
+      "No Mathlib-upstream theorem connecting CategoryTheory.mono_iff_injective directly to Function.Embedding.antisymm; the bridge had to be written by hand.",
+      "No formal failure witness in any concrete category (Bumby's Grp counterexample, Gowers' Ban counterexample) — remain at the literature-citation level."
+    ],
+    "nextSteps": [
+      "S6: state and prove [HasSplitMonos C] → HasSBP C (Banaschewski-Brümmer literal form); honestly document the Mono = Iso collapse in the docstring.",
+      "S6 (optional): regular-mono variant that avoids the collapse, using Mathlib's RegularMono.",
+      "S7+ (optional): a second concrete failure witness — e.g. HausCat or CompHaus — to confirm the topological-structure obstruction generalises beyond TopCat.",
+      "S∞ (research-open): characterize necessary + sufficient categorical conditions for HasSBP — not a Lean target.",
+      "Bookkeeping: update parent meta.json additionalFiles to list SchroederBernsteinOQ01.lean (auditor/enricher PR).",
+      "Doctor / mechanic: run docker-build.sh Proofs.SchroederBernsteinOQ01 to verify S5 ACT build; expected 0 errors per S5e PREP §4 + §6 risk estimate of ~5%."
+    ]
+  },
+  "tags": [
+    "category-theory",
+    "set-theory",
+    "cardinality",
+    "schroeder-bernstein",
+    "wiedijk-100",
+    "mathlib-gap",
+    "research",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "schroeder-bernstein",
+    "cantor-diagonalization",
+    "continuum-hypothesis",
+    "denumerability-rationals",
+    "cantors-theorem"
+  ],
+  "references": {
+    "papers": [
+      "Banaschewski & Brümmer (1986). Thoughts on the Cantor–Bernstein theorem. Quaestiones Mathematicae 9, 1–27.",
+      "Bernstein (1898). Beitrag zur Mengenlehre. Göttingen dissertation.",
+      "Bumby (1965). Modules which are isomorphic to submodules of each other. Arch. Math. 16, 184–185.",
+      "Gowers (1996). A solution to the Schroeder-Bernstein problem for Banach spaces. Bull. LMS 28, 297–304.",
+      "Pradic & Brown (2019). Cantor–Bernstein implies Excluded Middle. arXiv:1904.09193.",
+      "Trnková (1975). On a Schroeder–Bernstein type theorem for concrete categories. Comment. Math. Univ. Carolin."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Schr%C3%B6der%E2%80%93Bernstein_theorem",
+      "https://arxiv.org/abs/1904.09193"
+    ],
+    "mathlib": [
+      "Mathlib.SetTheory.Cardinal.SchroederBernstein",
+      "Mathlib.CategoryTheory.EpiMono",
+      "Mathlib.CategoryTheory.Types",
+      "Mathlib.CategoryTheory.Iso"
+    ]
+  },
+  "started": "2026-05-12T20:25:00Z",
+  "lastUpdate": "2026-06-05T00:00:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/SchroederBernstein.lean",
+      "filename": "SchroederBernstein.lean",
+      "lineCount": 198,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernstein.lean"
+    },
+    {
+      "path": "Proofs/SchroederBernsteinOQ01.lean",
+      "filename": "SchroederBernsteinOQ01.lean",
+      "lineCount": 353,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernsteinOQ01.lean"
+    }
+  ]
+}

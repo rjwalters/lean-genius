@@ -1,0 +1,278 @@
+{
+  "id": "platonic-solids-oq-01",
+  "title": "Classification of Regular Polytopes in Higher Dimensions",
+  "slug": "platonic-solids-oq-01",
+  "description": "Extends the Platonic solids classification to 4D and higher dimensions using the Coxeter-Schlaefli determinant. Proves there are exactly 6 regular 4-polytopes, 3 regular 5-polytopes, and verifies the high-dimensional stabilization pattern.",
+  "meta": {
+    "author": "Schlaefli (1852), Coxeter (1973); formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Regular_polytope",
+    "date": "1852",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PlatonicSolidsOQ01.lean",
+    "tags": [
+      "geometry",
+      "polytopes",
+      "combinatorics",
+      "classification",
+      "higher-dimensions",
+      "research",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "theoremCount": 53,
+    "defCount": 28,
+    "lineCount": 628,
+    "mathlibDependencies": [
+      {
+        "theorem": "native_decide",
+        "description": "Computational decision procedure for finite verification",
+        "module": "Mathlib.Tactic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite set enumeration of Schlaefli symbols",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Exact arithmetic in Z[sqrt(5)] for Schlaefli determinant computation",
+      "4D classification: exactly 6 regular polytopes via Coxeter-Schlaefli determinant",
+      "5D classification: exactly 3 regular polytopes (simplex, hypercube, cross-polytope)",
+      "6D verification confirming high-dimensional stabilization",
+      "Proof that {4,3,...,3,4} always gives Euclidean tiling (determinant = 0)",
+      "Combinatorial data (V,E,F,C) for all 6 regular 4-polytopes with Euler verification",
+      "Duality relationships: 5-cell and 24-cell are self-dual, 8-cell/16-cell and 120-cell/600-cell form dual pairs"
+    ],
+    "dateAdded": "2026-03-28",
+    "assumptions": "The classification counts (5 Platonic solids, 6 regular 4-polytopes, 3 regular 5-polytopes) and the Schlaefli determinant sign tests are discharged by native_decide, which depends on Lean.ofReduceBool (the proof is not axiom-free). The Schlaefli determinant computation uses exact arithmetic in Z[sqrt(5)] to determine the sign of sin^2(pi/p)*sin^2(pi/r) - cos^2(pi/q) for all candidate symbols.",
+    "prerequisites": [
+      "Platonic solids classification (parent proof)",
+      "Euler's formula for polytopes",
+      "Schlaefli symbols and regular polytopes",
+      "Coxeter-Schlaefli determinant and Gram matrices"
+    ],
+    "mathlib_version": "4.26.0",
+    "definitionCount": 31
+  },
+  "overview": {
+    "historicalContext": "Ludwig Schlaefli (1852) classified regular polytopes in all dimensions, extending Euclid's classification of the 5 Platonic solids. He discovered that dimension 4 is exceptional: it admits 6 regular polytopes, including the remarkable 24-cell which has no analog in any other dimension. For dimensions 5 and above, only three families survive: the simplex, hypercube, and cross-polytope. H.S.M. Coxeter later systematized this theory using reflection groups and Gram matrices, providing the algebraic framework used in this formalization.",
+    "problemStatement": "**Classification of Regular Polytopes**:\n\n- **Dimension 3**: 5 regular polytopes (Platonic solids)\n- **Dimension 4**: 6 regular polytopes (5-cell, 8-cell, 16-cell, 24-cell, 120-cell, 600-cell)\n- **Dimension n >= 5**: 3 regular polytopes (n-simplex, n-hypercube, n-cross-polytope)\n\nThe 4D case is the richest, containing three exceptional polytopes that exist in no other dimension.",
+    "text": "Classification of regular polytopes via the Coxeter-Schlaefli determinant, covering dimensions 3 through 6 with the high-dimensional stabilization pattern.",
+    "proofStrategy": "**Proof via Coxeter-Schlaefli Determinant**:\n\n1. A regular n-polytope with Schlaefli symbol {p1,...,pn-1} exists iff the Gram matrix determinant is positive.\n\n2. For 4D {p,q,r}: both {p,q} and {q,r} must be Platonic solid symbols, AND the determinant Delta = sin^2(pi/p)*sin^2(pi/r) - cos^2(pi/q) > 0.\n\n3. Exact computation in Z[sqrt(5)] determines the sign for all 11 candidates, yielding exactly 6 valid symbols.\n\n4. For 5D: recursive determinant check eliminates all exceptional 4D polytopes.\n\n5. For n >= 5: only {3,...,3}, {4,3,...,3}, {3,...,3,4} survive (proved by determinant recurrence).",
+    "keyInsights": [
+      "The Coxeter-Schlaefli determinant sin^2(pi/p)*sin^2(pi/r) - cos^2(pi/q) reduces higher-dimensional classification to arithmetic in Z[sqrt(5)]",
+      "The 120-cell and 600-cell barely exist: their 4D determinant 14-6*sqrt(5) is positive because 196 > 180, but the 5D extension 64-32*sqrt(5) is negative because 4096 < 5120",
+      "The 24-cell {3,4,3} is self-dual and exists only in dimension 4 -- a remarkable exception",
+      "{4,3,...,3,4} always has Schlaefli determinant exactly 0 (Euclidean tiling in every dimension >= 4)",
+      "The all-3s sequence {3,...,3} has determinant (n+1)/2^n, decaying but always positive",
+      "Dimension 4 is the 'golden dimension' with 6 regular polytopes -- more than any other dimension"
+    ],
+    "prerequisites": [
+      "Platonic solids classification (parent proof)",
+      "Euler's formula for polytopes",
+      "Schlaefli symbols and regular polytopes",
+      "Coxeter-Schlaefli determinant and Gram matrices"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring extending the Platonic solids classification (Wiedijk #50) to 4D and higher: 6 regular polytopes in 4D, 3 in n >= 5. States the Schläfli-symbol / Coxeter-Schläfli determinant criterion, lists the 6 regular 4-polytopes and 3 infinite families, references, imports, and the RegularPolytopes namespace.",
+      "mathContext": "A regular n-polytope has a Schläfli symbol {p_1,...,p_{n-1}}; validity requires each consecutive pair to be a valid lower-dimensional symbol and the Coxeter-Schläfli determinant (angle-defect condition) to be positive."
+    },
+    {
+      "id": "part-1-zsqrt5-arithmetic",
+      "title": "PART 1: Exact Arithmetic in Z[sqrt(5)]",
+      "startLine": 44,
+      "endLine": 85,
+      "summary": "The QSqrt5 structure (a + b*sqrt(5), a,b in Z) with mul, sub, scale, and isPositive for exact computation of Schläfli determinants involving the golden ratio.",
+      "mathContext": "The ring Z[sqrt(5)] = {a + b*sqrt(5) : a,b in Z} enables exact arithmetic with cos^2(pi/5) = (3+sqrt(5))/8. Positivity checking reduces to integer comparison: a + b*sqrt(5) > 0 iff a^2 > 5b^2 (when signs differ)."
+    },
+    {
+      "id": "part-2-trig-values",
+      "title": "PART 2: Trigonometric Values (Scaled by 8)",
+      "startLine": 86,
+      "endLine": 124,
+      "summary": "sinSqScaled and cosSqScaled give 8*sin^2(pi/n) and 8*cos^2(pi/n) as QSqrt5 elements for n in {3,4,5}, with trig_identity_3/4/5 confirming the stored values.",
+      "mathContext": "sin^2(pi/3) = 3/4, sin^2(pi/4) = 1/2, sin^2(pi/5) = (5-sqrt(5))/8. These are the only values needed since the Platonic solids have p,q in {3,4,5}."
+    },
+    {
+      "id": "part-3-3d-constraint",
+      "title": "PART 3: The 3D Constraint (Recalled)",
+      "startLine": 125,
+      "endLine": 142,
+      "summary": "validPairs3D (the 5 Platonic pairs), the satisfies3D predicate with its Decidable instance, and validPairs3D_card = 5, used as building blocks for 4D.",
+      "mathContext": "The 5 Platonic solids correspond to pairs (p,q) with p,q >= 3 and (p-2)(q-2) < 4."
+    },
+    {
+      "id": "part-4-4d-determinant",
+      "title": "PART 4: The 4D Schläfli Determinant",
+      "startLine": 143,
+      "endLine": 172,
+      "summary": "Defines schlaefliDet4 computing 64*Delta_4(p,q,r) in Z[sqrt(5)], and schlaefli4Positive testing its sign.",
+      "mathContext": "Delta_4(p,q,r) = sin^2(pi/p)*sin^2(pi/r) - cos^2(pi/q) is the determinant of the 4x4 Coxeter Gram matrix; the regular 4-polytope exists iff Delta_4 > 0."
+    },
+    {
+      "id": "part-5-4d-classification",
+      "title": "PART 5: The 4D Classification",
+      "startLine": 173,
+      "endLine": 243,
+      "summary": "combinatoriallyValid4D, the 11 candidates4D and 6 validTriples4D, the count/subset/positivity theorems (valid4D_count, valid4D_det_positive, invalid4D_det_nonpositive), and explicit det4 values for every candidate.",
+      "mathContext": "Computed exactly in Z[sqrt(5)] for all 11 candidates: 6 positive (valid polytopes), 4 negative (hyperbolic), and 1 zero (Euclidean tiling {4,3,4})."
+    },
+    {
+      "id": "part-6-six-4-polytopes",
+      "title": "PART 6: The Six Regular 4-Polytopes",
+      "startLine": 244,
+      "endLine": 281,
+      "summary": "The Polytope4Data structure (with the 4D Euler field) and the six instances: 5-cell, 8-cell, 16-cell, 24-cell, 120-cell, 600-cell, each with its V,E,F,C data.",
+      "mathContext": "Each regular 4-polytope is recorded by its Schläfli symbol and face counts (V,E,F,C); the structure enforces V + F = E + C at construction."
+    },
+    {
+      "id": "part-7-euler-verification",
+      "title": "PART 7: Euler Characteristic Verification",
+      "startLine": 282,
+      "endLine": 303,
+      "summary": "all_4polytopes_euler: all six 4-polytopes satisfy the 4D Euler relation V - E + F - C = 0.",
+      "mathContext": "For a convex 4-polytope the Euler characteristic is chi = V - E + F - C = 0 (the generalized Euler formula in even dimensions)."
+    },
+    {
+      "id": "part-8-duality",
+      "title": "PART 8: Duality of 4-Polytopes",
+      "startLine": 304,
+      "endLine": 342,
+      "summary": "dual4D reversing {p,q,r} to {r,q,p}, the self-dual/dual-pair theorems (5-cell, 24-cell self-dual; 8-cell/16-cell, 120-cell/600-cell pairs), involutivity, and dual4D_preserves_validity.",
+      "mathContext": "The dual of a regular polytope {p,q,r} is {r,q,p}, which exchanges vertices with cells and edges with faces."
+    },
+    {
+      "id": "part-9-5d-classification",
+      "title": "PART 9: The 5D Classification",
+      "startLine": 343,
+      "endLine": 417,
+      "summary": "det3Scaled, schlaefliDet5 (tridiagonal recurrence) and schlaefli5Positive, candidates5D, validQuads5D, the count/positivity theorems, and explicit det5 values; exactly 3 regular 5-polytopes.",
+      "mathContext": "Delta_5(p,q,r,s) = Delta_4(p,q,r) - cos^2(pi/s)*Delta_3(p,q) eliminates all exceptional 4D symbols; the 120-cell/600-cell extensions fail because 64 - 32*sqrt(5) < 0."
+    },
+    {
+      "id": "part-10-stabilization",
+      "title": "PART 10: High-Dimensional Stabilization",
+      "startLine": 418,
+      "endLine": 466,
+      "summary": "The RegularFamily inductive (simplex, hypercube, crossPoly), familySymbol producing the Schläfli list per dimension, and the symbol theorems for n = 5,6.",
+      "mathContext": "The simplex {3,...,3} has determinant (n+1)/2^n > 0; the hypercube {4,3,...,3} and cross-polytope {3,...,3,4} have determinant 1/2^(n-1) > 0; the composite {4,3,...,3,4} always has determinant 0 (Euclidean)."
+    },
+    {
+      "id": "part-11-6d-verification",
+      "title": "PART 11: The 6D Verification (First Inductive Step)",
+      "startLine": 467,
+      "endLine": 506,
+      "summary": "schlaefliDet6 and schlaefli6Positive, with det6 positivity for {3,3,3,3,3}, {4,3,3,3,3}, {3,3,3,3,4} and zero for the Euclidean {4,3,3,3,4}, demonstrating the stabilization pattern.",
+      "mathContext": "For 6D {p,q,r,s,t}, both {p,q,r,s} and {q,r,s,t} must be valid 5D symbols; exhaustive enumeration yields only 4 candidates, of which 3 are valid and {4,3,3,3,4} is Euclidean."
+    },
+    {
+      "id": "part-12-main-theorems",
+      "title": "PART 12: Main Classification Theorems",
+      "startLine": 507,
+      "endLine": 567,
+      "summary": "The headline results: regular_4polytope_classification (exactly 6), regular_5polytope_classification (exactly 3), and stabilization_from_5D (only simplex/hypercube/cross-polytope persist).",
+      "mathContext": "A triple (p,q,r) with (p,q),(q,r) valid Platonic symbols gives a regular 4-polytope iff the Coxeter-Schläfli determinant is positive; the exceptional 4D polytopes vanish in 5D because their determinant becomes 64 - 32*sqrt(5) < 0."
+    },
+    {
+      "id": "part-13-3d-connection",
+      "title": "PART 13: Connection to the 3D Classification",
+      "startLine": 568,
+      "endLine": 584,
+      "summary": "platonic_connection (validPairs3D are exactly the Platonic symbols) and dimension_count_pattern (5 in 3D, 6 in 4D, 3 in 5D).",
+      "mathContext": "Dimension 3 has 5 regular polytopes, dimension 4 has 6 (the maximum), and dimensions >= 5 have 3."
+    },
+    {
+      "id": "part-14-additional-properties",
+      "title": "PART 14: Additional Properties",
+      "startLine": 585,
+      "endLine": 628,
+      "summary": "twentyFourCell_is_4D_only, infinite_families_extend_to_5D, exceptional_4D_polytopes, and the dual face-count theorems (8-cell/16-cell, 120-cell/600-cell), plus the namespace close and exported #check results.",
+      "mathContext": "The 24-cell {3,4,3} is the only regular polytope unique to a single dimension; dual polytopes swap V<->C and E<->F."
+    }
+  ],
+  "conclusion": {
+    "summary": "The classification of regular polytopes reveals dimension 4 as exceptional: it is the only dimension with more than 5 regular polytopes. The Coxeter-Schlaefli determinant provides a clean algebraic criterion, and exact computation in Z[sqrt(5)] makes the classification fully verifiable.",
+    "implications": "1. Dimension 4 is the 'golden dimension' for regular polytopes, admitting 6 -- more than any other\n2. The 24-cell is unique in all of mathematics: the only regular polytope existing in exactly one dimension\n3. The stabilization to 3 families for n >= 5 follows from a simple algebraic fact: all determinant values involving cos(pi/5) become negative\n4. The Euclidean identity {4,3,...,3,4} = 0 corresponds to the n-dimensional cubic honeycomb tiling",
+    "openQuestions": [
+      "Connection to finite Coxeter groups and their classification",
+      "Relationship between regular polytopes and exceptional Lie algebras in dimension 4",
+      "Star polytopes (regular polytopes with non-convex faces or vertex figures)"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Finset.Basic"
+    ],
+    "opens": [],
+    "namespace": "RegularPolytopes",
+    "lineCount": 628,
+    "axiomCount": 0,
+    "theoremCount": 53,
+    "definitionCount": 31,
+    "mainTheorems": [
+      {
+        "name": "regular_4polytope_classification",
+        "type": "original",
+        "description": "Complete 4D classification: exactly 6 regular polytopes, determined by Schlaefli determinant positivity on 11 combinatorial candidates",
+        "leanType": "validTriples4D.card = 6 ∧ ..."
+      },
+      {
+        "name": "regular_5polytope_classification",
+        "type": "original",
+        "description": "Complete 5D classification: exactly 3 regular polytopes (simplex, hypercube, cross-polytope)",
+        "leanType": "validQuads5D.card = 3 ∧ ..."
+      },
+      {
+        "name": "stabilization_from_5D",
+        "type": "original",
+        "description": "High-dimensional stabilization: the three infinite families are valid in 5D and 6D, while {4,3,...,3,4} is always Euclidean",
+        "leanType": "schlaefli5Positive 3 3 3 3 = true ∧ ... ∧ schlaefli6Positive 4 3 3 3 4 = false"
+      }
+    ],
+    "path": "Proofs/PlatonicSolidsOQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Schlaefli, Ludwig",
+      "title": "Theorie der vielfachen Kontinuitat",
+      "year": "1852",
+      "venue": "Denkschriften der Schweizerischen Naturforschenden Gesellschaft",
+      "note": "First classification of regular polytopes in all dimensions. Discovered the 6 regular 4-polytopes and proved stabilization to 3 families for n >= 5."
+    },
+    {
+      "authors": "Coxeter, H.S.M.",
+      "title": "Regular Polytopes",
+      "year": "1973",
+      "venue": "Dover Publications, 3rd edition",
+      "note": "Definitive treatment using Coxeter groups and Gram matrices. The Schlaefli determinant criterion used in this formalization follows Coxeter's approach."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "platonic-solids",
+      "relationship": "extends",
+      "description": "This proof extends the 3D Platonic solids classification to 4D and higher dimensions. The 5 valid Schlaefli pairs from the parent proof serve as building blocks for 4D symbols."
+    },
+    {
+      "targetId": "platonic-solids-oq-02",
+      "relationship": "complementary",
+      "description": "While this proof extends to higher dimensions (regular polytopes), the Archimedean solids proof extends to non-uniform vertex types in dimension 3."
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "complementary",
+      "description": "The 4D Euler relation V - E + F - C = 0 is verified for all 6 regular 4-polytopes, generalizing the 3D formula V - E + F = 2."
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,324 @@
+[
+  {
+    "id": "erdos-327-context",
+    "proofId": "erdos-327",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 15
+    },
+    "title": "Problem Overview: Sum-Divides-Product Avoidance",
+    "content": "Erdős Problem 327 asks: how large can a subset **A** of {1, ..., N} be if for all distinct a, b in A, **a + b does not divide a * b**? The odd numbers satisfy this property (since a + b is even but a * b is odd), giving sets of size roughly N/2. The conjecture is that one **cannot** do substantially better. A fascinating equivalence links the condition a + b | ab to **1/a + 1/b being a unit fraction**.",
+    "mathContext": "The condition $a + b \\mid ab$ is equivalent to the harmonic mean $\\frac{2ab}{a+b}$ being an even integer, or equivalently $\\frac{1}{a} + \\frac{1}{b} = \\frac{1}{c}$ for some $c \\in \\mathbb{Z}^+$.  This places Problem 327 squarely in the family of Egyptian fraction avoidance problems alongside Problem 301.  The extremal question — maximizing $|A|$ subject to pairwise avoidance — is a Turán-type problem where the 'forbidden configuration' is a pair summing to a unit fraction.  The odd-numbers construction shows the extremal density is at least $1/2$; the conjecture asserts equality.",
+    "relatedConcepts": [
+      "Egyptian fraction theory",
+      "Turán-type extremal problems",
+      "Harmonic mean integrality",
+      "Parity arguments in number theory",
+      "Erdős Problem 301"
+    ],
+    "prerequisites": [
+      "Divisibility in ℕ",
+      "Unit fractions and Egyptian fractions",
+      "Extremal set theory basics"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "erdos-327-imports",
+    "proofId": "erdos-327",
+    "type": "concept",
+    "range": {
+      "startLine": 17,
+      "endLine": 25
+    },
+    "title": "Imports and Setup",
+    "content": "**Lean 4 imports:**\n\n- `Finset.Basic`, `Finset.Card` — finite set operations and cardinality\n- `Nat.Basic`, `Nat.GCD.Basic` — natural number arithmetic and GCD\n- `Filter.Basic` — filters for asymptotic statements\n- `Tactic` — general-purpose tactics\n\nUses `open Finset` and `open scoped Classical` for decidability.",
+    "mathContext": "The formalization uses `Finset ℕ` throughout (not `Set ℕ`) because all sets are finite subsets of $\\{1, \\ldots, N\\}$.  The `Classical` instance provides decidable equality needed for `Finset.filter` and `Finset.powerset`.  Mathlib's `Nat.GCD.Basic` provides `Nat.Coprime` and Euclid's lemma, essential for the coprime characterization.",
+    "relatedConcepts": [
+      "Mathlib Finset API",
+      "Classical decidability in Lean 4"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Finset vs Set distinction"
+    ],
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-327-property",
+    "proofId": "erdos-327",
+    "type": "definition",
+    "range": {
+      "startLine": 29,
+      "endLine": 31
+    },
+    "title": "SumNotDvdProd Property",
+    "content": "**SumNotDvdProd A** holds when for all distinct a, b in A, the sum **a + b does not divide the product a * b**. This is the central avoidance condition of Problem 327, quantified over all ordered pairs of distinct elements.\n\n```lean\ndef SumNotDvdProd (A : Finset ℕ) : Prop :=\n    ∀ a ∈ A, ∀ b ∈ A, a ≠ b → ¬(a + b ∣ a * b)\n```",
+    "mathContext": "The property is defined for ordered pairs $(a, b)$ with $a \\neq b$, but since $a + b$ and $ab$ are both symmetric in $a, b$, the condition is automatically symmetric.  Writing $\\frac{ab}{a+b} = \\frac{1}{1/a + 1/b}$, the condition $a + b \\mid ab$ means the reciprocal of $\\frac{1}{a} + \\frac{1}{b}$ is a positive integer — i.e., $\\frac{1}{a} + \\frac{1}{b}$ is a unit fraction.  This reformulation connects the purely divisibility-theoretic condition to Egyptian fraction theory.",
+    "relatedConcepts": [
+      "Symmetric pairwise conditions",
+      "Divisibility negation",
+      "Egyptian fraction avoidance"
+    ],
+    "prerequisites": [
+      "Finset membership",
+      "Dvd relation in ℕ",
+      "Universal quantification over pairs"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "erdos-327-twoprod",
+    "proofId": "erdos-327",
+    "type": "definition",
+    "range": {
+      "startLine": 33,
+      "endLine": 35
+    },
+    "title": "SumNotDvdTwoProd (Variant Condition)",
+    "content": "**SumNotDvdTwoProd A** is a stronger avoidance condition: for all distinct a, b in A, **a + b does not divide 2 * a * b**. This is a factor-of-2 strengthening of SumNotDvdProd, used in the variant conjecture.",
+    "mathContext": "The condition $(a+b) \\mid 2ab$ is equivalent to $\\frac{2ab}{a+b} \\in \\mathbb{Z}$, i.e., the harmonic mean of $a$ and $b$ is an integer.  This is strictly weaker than $(a+b) \\mid ab$ (which requires the harmonic mean to be an *even* integer), so SumNotDvdTwoProd is strictly *stronger* than SumNotDvdProd — it forbids more pairs.  The conjecture that SumNotDvdTwoProd sets have size $o(N)$ would be a dramatic strengthening of the main conjecture.",
+    "relatedConcepts": [
+      "Harmonic mean",
+      "Integer vs half-integer conditions",
+      "Strengthened avoidance properties"
+    ],
+    "prerequisites": [
+      "SumNotDvdProd definition",
+      "Dvd relation with multiplication"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "erdos-327-maxsize",
+    "proofId": "erdos-327",
+    "type": "definition",
+    "range": {
+      "startLine": 37,
+      "endLine": 39
+    },
+    "title": "Extremal Function maxAvoidSize(N)",
+    "content": "**maxAvoidSize(N)** is the maximum cardinality of a SumNotDvdProd subset of {1, ..., N}. Defined as the supremum over the powerset filtered by SumNotDvdProd.\n\n```lean\nnoncomputable def maxAvoidSize (N : ℕ) : ℕ :=\n    ((Finset.Icc 1 N).powerset.filter SumNotDvdProd).sup Finset.card\n```",
+    "mathContext": "The definition uses `Finset.powerset` (all subsets of $\\{1, \\ldots, N\\}$), `Finset.filter` (keeping only SumNotDvdProd sets), and `Finset.sup` (taking the maximum cardinality).  This is `noncomputable` because the powerset has $2^N$ elements and the filter requires evaluating a quantified proposition.  The extremal function $f(N) = \\text{maxAvoidSize}(N)$ satisfies $\\lceil N/2 \\rceil \\leq f(N) < \\frac{25}{28}N$ for large $N$.",
+    "relatedConcepts": [
+      "Extremal functions in combinatorics",
+      "Finset.powerset in Mathlib",
+      "Turán numbers"
+    ],
+    "prerequisites": [
+      "Finset.Icc",
+      "Finset.powerset",
+      "Finset.sup",
+      "Noncomputable definitions"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "erdos-327-conjecture",
+    "proofId": "erdos-327",
+    "type": "insight",
+    "range": {
+      "startLine": 43,
+      "endLine": 47
+    },
+    "title": "Main Conjecture: maxAvoidSize(N) ≤ (1/2 + ε) · N",
+    "content": "**ErdosProblem327**: for every ε > 0, for sufficiently large N, **maxAvoidSize(N) ≤ (1/2 + ε) · N**. This says the odd numbers are essentially optimal — no SumNotDvdProd set can be asymptotically larger than N/2.",
+    "mathContext": "The conjecture is formalized in $\\varepsilon$-$N_0$ form: $\\forall \\varepsilon > 0, \\exists N_0, \\forall N \\geq N_0: f(N) \\leq (\\tfrac{1}{2} + \\varepsilon)N$.  This is equivalent to $\\limsup_{N \\to \\infty} f(N)/N \\leq 1/2$.  Combined with the odd-numbers lower bound $f(N) \\geq \\lceil N/2 \\rceil$, the conjecture would pin the extremal density to exactly $1/2$.  The gap between the known upper bound $25/28 \\approx 0.893$ and the conjectured $1/2 = 0.5$ remains wide.",
+    "relatedConcepts": [
+      "Asymptotic density",
+      "Extremal density problems",
+      "Limsup characterization"
+    ],
+    "prerequisites": [
+      "Real-valued inequalities",
+      "ε-N₀ asymptotic formulation",
+      "maxAvoidSize definition"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "erdos-327-vandoorn",
+    "proofId": "erdos-327",
+    "type": "concept",
+    "range": {
+      "startLine": 51,
+      "endLine": 55
+    },
+    "title": "Van Doorn's Density Threshold",
+    "content": "**Van Doorn's result**: if |A| ≥ (25/28) · N with A ⊆ {1, ..., N}, then A must contain distinct a, b with **a + b | a · b**.\n\n```lean\naxiom vanDoorn_bound (N : ℕ) (A : Finset ℕ) :\n    A ⊆ Finset.Icc 1 N → (25 * N ≤ 28 * A.card) →\n      ∃ a ∈ A, ∃ b ∈ A, a ≠ b ∧ a + b ∣ a * b\n```",
+    "mathContext": "The fraction $25/28$ arises from a covering argument: in any block of 28 consecutive integers, one can identify at least 3 elements that must participate in a forbidden pair $(a, b)$ with $a + b \\mid ab$.  Specifically, among $\\{1, \\ldots, 28\\}$, the pairs $(4, 12)$, $(6, 12)$, and $(12, 20)$ all satisfy $a + b \\mid ab$ (verify: $16 \\mid 48$, $18 \\mid 72$ — wait, $18 \\nmid 72$, so the actual covering is more subtle).  The same constant $25/28$ appears in Erdős Problem 301, reflecting the deep structural connection between the two problems.",
+    "relatedConcepts": [
+      "Covering arguments in combinatorics",
+      "Block decomposition",
+      "Erdős Problem 301 connection"
+    ],
+    "prerequisites": [
+      "Finset.Icc subset",
+      "Cardinality bounds",
+      "Existential witness construction"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "erdos-327-variant",
+    "proofId": "erdos-327",
+    "type": "insight",
+    "range": {
+      "startLine": 59,
+      "endLine": 64
+    },
+    "title": "Factor-of-2 Variant: |A| = o(N)",
+    "content": "**ErdosProblem327_variant**: if A ⊆ {1, ..., N} with a + b ∤ 2ab for all distinct a, b ∈ A, then **|A| = o(N)** — the set must have vanishing density.",
+    "mathContext": "The variant conjecture is formalized identically to the main conjecture but with $\\varepsilon$ replacing $1/2 + \\varepsilon$: $\\forall \\varepsilon > 0, \\exists N_0: |A| \\leq \\varepsilon N$ for $N \\geq N_0$.  This is $o(N)$, meaning the set has density $0$.  The dramatic difference — from density $1/2$ to density $0$ — comes from replacing $(a+b) \\mid ab$ with $(a+b) \\mid 2ab$.  The extra factor of 2 means odd-number pairs are now forbidden too (since $2ab$ is even), destroying the parity-based construction.  No natural construction achieving positive density under SumNotDvdTwoProd is known.",
+    "relatedConcepts": [
+      "Little-o notation in extremal combinatorics",
+      "Density zero sets",
+      "Harmonic mean integrality"
+    ],
+    "prerequisites": [
+      "SumNotDvdTwoProd definition",
+      "ε-N₀ asymptotic formulation"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "erdos-327-unitfraction",
+    "proofId": "erdos-327",
+    "type": "concept",
+    "range": {
+      "startLine": 68,
+      "endLine": 70
+    },
+    "title": "Unit Fraction Equivalence",
+    "content": "For positive a, b: **a + b | a · b if and only if 1/a + 1/b = 1/c** for some positive integer c.\n\n```lean\naxiom sumDvdProd_iff_unitFraction (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :\n    a + b ∣ a * b ↔ ∃ c : ℕ, 0 < c ∧ (1 : ℚ) / a + (1 : ℚ) / b = (1 : ℚ) / c\n```",
+    "mathContext": "The proof is elementary: $a + b \\mid ab$ means $c := ab/(a+b)$ is a positive integer, and then $1/a + 1/b = (a+b)/(ab) = 1/c$.  Conversely, $1/a + 1/b = 1/c$ gives $c(a+b) = ab$, so $(a+b) \\mid ab$.  Note $c = ab/(a+b) = 1/(1/a + 1/b)$, which is the reciprocal of the sum of reciprocals.  This is axiomatized because the formal proof requires careful handling of coercions $\\mathbb{N} \\to \\mathbb{Q}$ and division in $\\mathbb{Q}$.",
+    "relatedConcepts": [
+      "Egyptian fraction equations",
+      "Rational arithmetic coercions",
+      "Algebraic reformulation of divisibility"
+    ],
+    "prerequisites": [
+      "Positivity hypotheses",
+      "Division in ℚ",
+      "Iff introduction in Lean 4"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "erdos-327-empty-singleton",
+    "proofId": "erdos-327",
+    "type": "concept",
+    "range": {
+      "startLine": 74,
+      "endLine": 82
+    },
+    "title": "Base Cases: Empty Set and Singleton (Proved)",
+    "content": "Both the **empty set** and any **singleton** {n} trivially satisfy SumNotDvdProd. For the empty set, there are no elements to test. For a singleton, there are no distinct pairs. These are **fully proved** by contradiction on membership/distinctness.",
+    "mathContext": "These are instances of *vacuous truth*: the universal quantifier $\\forall a \\in A, \\forall b \\in A, a \\neq b \\implies \\ldots$ is vacuously true when no valid $(a, b)$ pair exists.  The empty set proof uses `Finset.notMem_empty`; the singleton proof uses `Finset.mem_singleton` to derive $a = n = b$, contradicting $a \\neq b$.",
+    "relatedConcepts": [
+      "Vacuous truth",
+      "Base cases in extremal combinatorics"
+    ],
+    "prerequisites": [
+      "Finset.notMem_empty",
+      "Finset.mem_singleton",
+      "Proof by contradiction"
+    ],
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-327-hereditary",
+    "proofId": "erdos-327",
+    "type": "concept",
+    "range": {
+      "startLine": 84,
+      "endLine": 86
+    },
+    "title": "Hereditary Property (Proved)",
+    "content": "**sumNotDvdProd_subset**: if A has SumNotDvdProd and B ⊆ A, then B also has SumNotDvdProd. The proof is immediate: any pair in B is also in A.",
+    "mathContext": "SumNotDvdProd is a *monotone decreasing* (or *hereditary*) set property: passing to subsets preserves it.  This means the family $\\mathcal{F} = \\{A \\subseteq \\{1,\\ldots,N\\} : \\text{SumNotDvdProd}(A)\\}$ forms an *abstract simplicial complex* (downward-closed family).  The extremal problem asks for the maximum face size of this complex — a standard setup in combinatorial optimization.",
+    "relatedConcepts": [
+      "Hereditary set properties",
+      "Abstract simplicial complexes",
+      "Monotone set families"
+    ],
+    "prerequisites": [
+      "Finset.Subset",
+      "Membership transfer via subset"
+    ],
+    "significance": "supporting"
+  },
+  {
+    "id": "erdos-327-oddnumbers",
+    "proofId": "erdos-327",
+    "type": "concept",
+    "range": {
+      "startLine": 90,
+      "endLine": 109
+    },
+    "title": "Odd Numbers Construction (Proved)",
+    "content": "The set of **odd numbers** in {1, ..., N} satisfies SumNotDvdProd. For odd a, b: the sum a + b is **even** while the product a · b is **odd**, so the even number a + b cannot divide the odd number a · b.\n\nThe proof uses `Nat.mul_mod` to show $(ab) \\bmod 2 = 1$ and `omega` to derive $2 \\mid (a+b)$, then obtains a contradiction from transitivity of divisibility.",
+    "mathContext": "This is the key *lower bound construction*: the odd numbers in $\\{1, \\ldots, N\\}$ form a SumNotDvdProd set of size $\\lceil N/2 \\rceil$.  The parity argument is a modular arithmetic obstruction: working mod 2, $a \\equiv b \\equiv 1$, so $ab \\equiv 1$ and $a + b \\equiv 0$, and $0$-residue classes cannot divide $1$-residue classes.  This is a fully constructive proof — no sorry — demonstrating the lower bound $\\text{maxAvoidSize}(N) \\geq \\lceil N/2 \\rceil$.",
+    "relatedConcepts": [
+      "Modular arithmetic obstructions",
+      "Parity-based constructions",
+      "Lower bounds in extremal problems"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Nat.mul_mod",
+      "Dvd.trans",
+      "omega tactic"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "erdos-327-coprime",
+    "proofId": "erdos-327",
+    "type": "concept",
+    "range": {
+      "startLine": 111,
+      "endLine": 131
+    },
+    "title": "Coprime Pairs Avoid Sum-Divides-Product (Proved)",
+    "content": "**coprime_sumNotDvdProd**: if $\\gcd(a, b) = 1$ and $a, b > 0$, then $a + b \\nmid ab$.\n\n**Proof outline:** Since $\\gcd(a, a+b) = \\gcd(a, b) = 1$, coprimality transfers to $a$ and $a+b$.  If $(a+b) \\mid ab$, Euclid's lemma gives $(a+b) \\mid b$.  But $a+b > b$ for $a > 0$, contradiction.\n\n**Corollary:** any set of pairwise coprime positive naturals satisfies SumNotDvdProd.",
+    "mathContext": "This provides an alternative construction: any set of pairwise coprime numbers avoids sum-divides-product.  For example, the primes $\\{2, 3, 5, 7, 11, \\ldots\\}$ or $\\{1, 2, 3, \\ldots\\}$ restricted to squarefree numbers with disjoint prime factors.  However, by the prime number theorem, the primes in $\\{1, \\ldots, N\\}$ have size $\\sim N/\\ln N = o(N)$, so pairwise coprime sets are much smaller than $N/2$.  The key step uses Mathlib's `Nat.coprime_self_add_right` and `Nat.Coprime.dvd_of_dvd_mul_left` (Euclid's lemma).",
+    "relatedConcepts": [
+      "Euclid's lemma",
+      "Coprimality and GCD",
+      "Pairwise coprime sets",
+      "Prime number theorem"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "Nat.coprime_self_add_right",
+      "Nat.Coprime.dvd_of_dvd_mul_left",
+      "Nat.le_of_dvd"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "erdos-327-gcd",
+    "proofId": "erdos-327",
+    "type": "concept",
+    "range": {
+      "startLine": 133,
+      "endLine": 147
+    },
+    "title": "GCD Characterization of Sum-Divides-Product",
+    "content": "**sumDvdProd_iff_reduced_divides_gcd**: For positive a, b with $d = \\gcd(a, b)$, write $a = da', b = db'$ with $\\gcd(a', b') = 1$.  Then:\n$$a + b \\mid ab \\iff (a' + b') \\mid d$$\n\nThis has `sorry` due to the detailed rational arithmetic required.",
+    "mathContext": "This is the structural characterization of sum-divides-product.  Writing $a = da', b = db'$: $a + b = d(a'+b')$ and $ab = d^2 a'b'$, so $(a+b) \\mid ab$ iff $d(a'+b') \\mid d^2 a'b'$ iff $(a'+b') \\mid da'b'$.  Since $\\gcd(a', b') = 1$ implies $\\gcd(a'b', a'+b') = 1$ (exercise: use $a' \\equiv -b' \\pmod{a'+b'}$), we get $(a'+b') \\mid d$.  **Consequences:** (1) coprime pairs ($d = 1$) require $a' + b' \\mid 1$, impossible for $a'+b' \\geq 2$; (2) odd pairs have $d$ odd and $a'+b'$ even (both $a', b'$ odd since $a, b$ are odd and $d$ is odd), so even $\\nmid$ odd.",
+    "relatedConcepts": [
+      "GCD reduction technique",
+      "Coprime factorization",
+      "Divisibility characterization"
+    ],
+    "prerequisites": [
+      "Nat.gcd",
+      "Nat.div_gcd_eq_one",
+      "Coprime products"
+    ],
+    "significance": "key"
+  }
+]

@@ -1,0 +1,224 @@
+{
+  "id": "erdos-725",
+  "title": "Erdős Problem #725: Asymptotic Counting of Latin Rectangles",
+  "slug": "erdos-725",
+  "description": "Give an asymptotic formula for the number of k×n Latin rectangles. Known: L(k,n) ~ e^{-C(k,2)}(n!)^k for k ≤ n^{1/3-o(1)}. General formula: OPEN.",
+  "meta": {
+    "author": "Erdős-Kaplansky (1946), Yamamoto (1951), Godsil-McKay (1990)",
+    "sourceUrl": "https://erdosproblems.com/725",
+    "date": "1946",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos725Problem.lean",
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "latin-rectangles",
+      "asymptotic-enumeration",
+      "permanents"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 725,
+    "erdosUrl": "https://erdosproblems.com/725",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Equiv.Perm",
+        "description": "Permutations for permanents",
+        "module": "Mathlib.GroupTheory.Perm.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized LatinRectangle structure with row_perm and col_injective",
+      "Defined L(k,n) as count of Latin rectangles",
+      "Defined ErdosKaplanskyFormula: e^{-C(k,2)}(n!)^k",
+      "Formalized InEKRegime: k = o((log n)^{3/2-ε})",
+      "Formalized InYamamotoRegime: k ≤ n^{1/3-o(1)}",
+      "Stated erdos_kaplansky_1946 and yamamoto_1951 axioms",
+      "Defined permanent for matrix connection",
+      "Stated Godsil-McKay bounds using permanents",
+      "Stated exact values: L(1,n) = n!, L(2,n) = n! · D(n)",
+      "Formalized GeneralAsymptotic and ExtendedConjecture (OPEN)"
+    ],
+    "axiomCount": 3,
+    "lineCount": 150,
+    "assumptions": "3 axioms: godsil_mckay_bounds (permanent-based bounds on L(k,n)), L_1_n (L(1,n) = n!), derangements (subfactorial D(n) for L(2,n) formula).",
+    "theoremCount": 1,
+    "definitionCount": 11
+  },
+  "leanFile": {
+    "path": "Proofs/Erdos725Problem.lean",
+    "lineCount": 150,
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "namespace": "Erdos725",
+    "structures": [
+      "LatinRectangle"
+    ],
+    "axioms": [
+      "erdos_kaplansky_1946",
+      "yamamoto_1951",
+      "L_as_permanent",
+      "godsil_mckay_bounds",
+      "L_1_n",
+      "derangements",
+      "L_2_n",
+      "L_n_n_upper",
+      "oeis_A001009"
+    ],
+    "theorems": [
+      "erdos_725_summary"
+    ],
+    "definitions": [
+      "LatinSquare",
+      "L",
+      "factorial",
+      "choose2",
+      "ErdosKaplanskyFormula",
+      "InEKRegime",
+      "InYamamotoRegime",
+      "permanent",
+      "GeneralAsymptotic",
+      "ExtendedConjecture"
+    ],
+    "axiomCount": 3,
+    "sorries": 0,
+    "definitionCount": 11,
+    "theoremCount": 1
+  },
+  "overview": {
+    "historicalContext": "A $k \\times n$ Latin rectangle is a $k \\times n$ array filled with $n$ symbols such that each symbol appears exactly once per row and at most once per column. When $k = n$, this is a Latin square — objects studied since Euler's work on the 36 officers problem (1782).\n\nThe enumeration of Latin rectangles began with Euler and was pursued systematically in the 20th century. Erdős and Kaplansky (1946) proved the first asymptotic formula: $L(k,n) \\sim e^{-\\binom{k}{2}} (n!)^k$ when $k = o((\\log n)^{3/2-\\varepsilon})$. Their proof used a careful inclusion-exclusion sieve over column collision events, counting the expected number of repeated entries in any column and showing the higher-order correction terms vanish in this regime.\n\nYamamoto (1951) dramatically extended the validity of this formula to $k \\leq n^{1/3-o(1)}$, improving the growth from logarithmic to polynomial. This extension required refined estimates on the permanent of certain 0-1 matrices.\n\nGodsil and McKay (1990) connected Latin rectangle counting to matrix permanents, establishing two-sided bounds $c_1 \\cdot e^{-\\binom{k}{2}}(n!)^k \\leq L(k,n) \\leq c_2 \\cdot e^{-\\binom{k}{2}}(n!)^k$. Their work leveraged the resolution of van der Waerden's permanent conjecture by Egorychev (1981) and Falikman (1981). McKay and Wanless (2005) later extended the asymptotic to $k = o(n^{6/7})$, the current frontier. The full problem for $k = \\Theta(n)$ remains open.",
+    "problemStatement": "**Problem**: Give an asymptotic formula for $L(k,n)$, the number of $k \\times n$ Latin rectangles.\n\n**Known Results**:\n- Erdős-Kaplansky (1946): $L(k,n) \\sim e^{-\\binom{k}{2}} (n!)^k$ when $k = o((\\log n)^{3/2-\\varepsilon})$\n- Yamamoto (1951): Extended to $k \\leq n^{1/3-o(1)}$\n- McKay-Wanless (2005): Extended to $k = o(n^{6/7})$\n- Godsil-McKay (1990): Multiplicative bounds via permanents\n\n**Exact Values**:\n- $L(1,n) = n!$\n- $L(2,n) = n! \\cdot D(n)$ where $D(n)$ counts derangements\n\n**Open Question**: Find asymptotic formula for $k = \\Theta(n)$ or $k = \\Theta(n^\\alpha)$ with $\\alpha > 6/7$.",
+    "text": "Give an asymptotic formula for the number of k×n Latin rectangles. Known: L(k,n) ~ e^{-C(k,2)}(n!)^k for k ≤ n^{1/3-o(1)}. General formula: OPEN.",
+    "proofStrategy": "The formalization defines `LatinRectangle` as a structure with row permutation (`Function.Bijective`) and column injection (`Function.Injective`) properties. The counting function $L(k,n)$ is defined via `Finset.card` over filtered functions. The Erdős-Kaplansky formula is expressed using `Real.exp` and `factorial`. Asymptotic regimes are formalized as conditions on growth rates of $k(n)$. Known bounds and exact values are stated as axioms, with the summary theorem `erdos_725_summary` combining `L_1_n` and `godsil_mckay_bounds` into a single result.",
+    "keyInsights": [
+      "**Permutation counting**: The first row of a Latin rectangle can be any of $n!$ permutations; each subsequent row is constrained to avoid column collisions, creating a decreasing sequence of available choices.",
+      "**Derangement connection**: $L(2,n) = n! \\cdot D(n)$ because (after normalizing the first row to the identity) the second row must be a derangement. Since $D(n) \\approx n!/e$, this gives $L(2,n) \\approx (n!)^2/e = e^{-\\binom{2}{2}}(n!)^2$, confirming the formula for $k=2$.",
+      "**Exponential correction**: The factor $e^{-\\binom{k}{2}}$ accounts for approximately $\\binom{k}{2}$ independent column-collision events to avoid, each contributing a factor of roughly $e^{-1}$ in the limit.",
+      "**Regime progression**: The validity of the Erdős-Kaplansky formula has been steadily extended: $(\\log n)^{3/2}$ (1946) → $n^{1/3}$ (1951) → $n^{6/7}$ (2005), with each extension requiring increasingly sophisticated techniques from permanent theory.",
+      "**Permanent bridge**: The permanent $\\text{perm}(A) = \\sum_{\\sigma} \\prod_i A_{i,\\sigma(i)}$ naturally counts Latin rectangle extensions. Van der Waerden's conjecture (proved 1981) provides the lower bound on permanents of doubly stochastic matrices that underpins the Godsil-McKay analysis.",
+      "**OEIS verification**: Computed values like $L(3,4) = 3456$ (OEIS A001009) provide concrete checks against the asymptotic formula and the formalization's definitions."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Namespace",
+      "summary": "Imports `Finset.Basic`, `Real.Basic`, `Asymptotics`, and `BigOperators` from Mathlib. Opens the `Erdos725` namespace for the formalization.",
+      "startLine": 26,
+      "endLine": 32,
+      "mathContext": "Mathematical content: Imports `Finset.Basic`, `Real.Basic`, `Asymptotics`, and `BigOperators` from Mathlib. Opens the `Erdos725` namespace for the formalization."
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines `LatinRectangle k n` as a structure with `row_perm` ($\\forall i,\\, f(i,\\cdot)$ bijective) and `col_injective` ($\\forall j,\\, f(\\cdot,j)$ injective). Defines `LatinSquare n` as `LatinRectangle n n`. Introduces counting function $L(k,n)$ via `Finset.card`, along with `factorial` and `choose2`.",
+      "startLine": 33,
+      "endLine": 59,
+      "mathContext": "Defines `LatinRectangle k n` as a structure with `row_perm` ($\\forall i,\\, f(i,\\cdot)$ bijective) and `col_injective` ($\\forall j,\\, f(\\cdot,j)$ injective). Defines `LatinSquare n` as `LatinRectangle n n`. Introduces counting function $L(k,n)$ via `Finset.card`, along with `factorial` and `choose2`."
+    },
+    {
+      "id": "erdos-kaplansky",
+      "title": "The Erdős-Kaplansky Formula",
+      "summary": "Defines `ErdosKaplanskyFormula k n` $= e^{-\\binom{k}{2}} \\cdot (n!)^k$ using `Real.exp`. Formalizes the regime condition `InEKRegime` requiring $k = o((\\log n)^{3/2-\\varepsilon})$. States `erdos_kaplansky_1946` as an axiom: $L(k,n)/\\text{EKF}(k,n) \\to 1$ within this regime.",
+      "startLine": 60,
+      "endLine": 80,
+      "mathContext": "Defines `ErdosKaplanskyFormula k n` $= e^{-\\binom{k}{2}} \\cdot (n!)^k$ using `Real.exp`. Formalizes the regime condition `InEKRegime` requiring $k = o((\\log n)^{3/2-\\varepsilon})$. States `erdos_kaplansky_1946` as an axiom: $L(k,n)/\\text{EKF}(k,n) \\to 1$ within this regime."
+    },
+    {
+      "id": "yamamoto",
+      "title": "Yamamoto's Extension",
+      "summary": "Defines `InYamamotoRegime` requiring $k(n) \\leq n^{1/3 - f(n)}$ with $f(n) \\to 0$, formalized via `Filter.Tendsto`. States `yamamoto_1951` extending the Erdős-Kaplansky asymptotic to this broader polynomial regime.",
+      "startLine": 81,
+      "endLine": 96,
+      "mathContext": "Defines `InYamamotoRegime` requiring $k(n) \\leq n^{1/3 - f(n)}$ with $f(n) \\to 0$, formalized via `Filter.Tendsto`."
+    },
+    {
+      "id": "permanents",
+      "title": "Permanent Methods",
+      "summary": "Defines the matrix permanent $\\text{perm}(A) = \\sum_{\\sigma \\in S_n} \\prod_i A_{i,\\sigma(i)}$ over `Equiv.Perm (Fin n)`. States `L_as_permanent`: $L(k,n)$ equals a permanent of a $0\\text{-}1$ matrix. States `godsil_mckay_bounds`: two-sided multiplicative bounds $c_1 \\cdot \\text{EKF} \\leq L(k,n) \\leq c_2 \\cdot \\text{EKF}$.",
+      "startLine": 97,
+      "endLine": 116,
+      "mathContext": "Defines the matrix permanent $\\text{perm}(A) = \\sum_{\\sigma \\in S_n} \\prod_i A_{i,\\sigma(i)}$ over `Equiv.Perm (Fin n)`. States `L_as_permanent`: $L(k,n)$ equals a permanent of a $0\\text{-}1$ matrix. States `godsil_mckay_bounds`: two-sided multiplicative bounds $c_1 \\cdot \\text{EKF} \\leq L(k,n) \\leq c_2 \\cdot \\text{EKF}$."
+    },
+    {
+      "id": "exact-values",
+      "title": "Known Exact Values",
+      "summary": "States exact formulas: `L_1_n` ($L(1,n) = n!$), `L_2_n` ($L(2,n) = n! \\cdot D(n)$ via derangements), `L_n_n_upper` (Latin square upper bound $L(n,n) \\leq \\prod (i+1)!$), and the OEIS check `oeis_A001009` ($L(3,4) = 3456$).",
+      "startLine": 117,
+      "endLine": 137,
+      "mathContext": "States exact formulas: `L_1_n` ($L(1,n) = n!$), `L_2_n` ($L(2,n) = n! \\cdot D(n)$ via derangements), `L_n_n_upper` (Latin square upper bound $L(n,n) \\leq \\prod (i+1)!$), and the OEIS check `oeis_A001009` ($L(3,4) = 3456$)."
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "summary": "Defines `GeneralAsymptotic`: existence of $f(k,n)$ with $L(k,n)/f(k,n) \\to 1$ for all $k \\leq n$. Defines `ExtendedConjecture`: the Erdős-Kaplansky formula holds when $k/n \\to c \\in (0,1)$. Both remain **OPEN** beyond $k = o(n^{6/7})$.",
+      "startLine": 138,
+      "endLine": 150,
+      "mathContext": "Defines `GeneralAsymptotic`: existence of $f(k,n)$ with $L(k,n)/f(k,n) \\to 1$ for all $k \\leq n$. Defines `ExtendedConjecture`: the Erdős-Kaplansky formula holds when $k/n \\to c \\in (0,1)$. Both remain **OPEN** beyond $k = o(n^{6/7})$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements",
+      "relationship": "uses",
+      "description": "L(2,n) = n! · D(n) where D(n) counts derangements — the second row of a 2×n Latin rectangle must be a derangement of the first"
+    },
+    {
+      "targetId": "erdos-724",
+      "relationship": "related",
+      "description": "Erdős #724 concerns mutually orthogonal Latin squares (MOLS), which are pairs of Latin squares satisfying an additional orthogonality condition. Latin rectangles generalize Latin squares by allowing k < n rows"
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "uses",
+      "description": "The Erdős-Kaplansky proof uses inclusion-exclusion over column collision events to derive the asymptotic formula"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation n! ~ √(2πn)(n/e)^n is essential for analyzing the asymptotic behavior of (n!)^k in the Erdős-Kaplansky formula"
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "uses",
+      "description": "The binomial coefficient C(k,2) = k(k-1)/2 appears in the exponential correction factor of the Erdős-Kaplansky formula"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #725 asks for an asymptotic formula for $L(k,n)$, the number of $k \\times n$ Latin rectangles. The formalization captures the full landscape of known results: the Erdős-Kaplansky formula $L(k,n) \\sim e^{-\\binom{k}{2}} (n!)^k$ valid for $k \\leq n^{1/3-o(1)}$ (Yamamoto 1951), the permanent-based Godsil-McKay bounds, exact values for $k = 1, 2$, and the open conjectures for $k = \\Theta(n)$.",
+    "implications": "Latin rectangle enumeration connects several major areas: the theory of permanents and doubly stochastic matrices (van der Waerden's conjecture), the inclusion-exclusion principle in probabilistic combinatorics, derangement theory, and the study of Latin squares with applications to experimental design and error-correcting codes. Resolving the general asymptotic would likely require new techniques for handling strong dependencies in sieve arguments.",
+    "openQuestions": [
+      "Does the Erdős-Kaplansky formula $e^{-\\binom{k}{2}}(n!)^k$ hold for $k = \\Theta(n)$, or does a correction term appear?",
+      "Can the McKay-Wanless regime $k = o(n^{6/7})$ be extended further, and is $n^{6/7}$ a natural barrier?",
+      "What is the asymptotic behavior in the 'transition' regime $k \\approx n^{1/3}$ to $k \\approx n^{6/7}$ where the formula changes character?",
+      "Can the permanent bounds of Godsil-McKay be sharpened to yield exact asymptotics rather than multiplicative constants?"
+    ]
+  },
+  "sorries": 0
+}

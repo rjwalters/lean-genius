@@ -1,0 +1,89 @@
+{
+  "slug": "erdos-1159",
+  "title": "Erdos #1159: Bounded Blocking Sets in Projective Planes",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Does there exist an absolute constant C such that every finite projective plane has a blocking set meeting each line in at least one point and at most C points?",
+    "plain": "Can every finite projective plane be blocked by a point set whose intersection with every line is uniformly bounded, independent of the plane order?",
+    "whyMatters": [
+      "Turns the known logarithmic blocking-set bound into a uniformity question about finite projective planes.",
+      "Separates small blocking sets from blocking sets with bounded line intersections.",
+      "The Lean file highlights the gap between per-order O(log n) bounds and a single absolute constant."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lean defines IsBlockingSet for generic incidence structures and proves monotonicity plus non-triviality of the empty set.",
+      "Mathlib-backed projective-plane facts are exposed for point counts, line counts, and total points/lines.",
+      "The theorem ess_implies_per_order_bound derives per-order bounds from the axiomatized Erdos-Silverman-Stein logarithmic result."
+    ],
+    "open": [
+      "The absolute constant blocking-set conjecture remains open.",
+      "The Erdos-Silverman-Stein O(log n) theorem is an active axiom, not proved from Mathlib.",
+      "The Lean conjecture uses a natural-number constant C and does not encode a separate C > 1 side condition."
+    ],
+    "goal": "Keep the known logarithmic bound, the projective-plane infrastructure, and the open uniform-constant conjecture clearly separated."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-01-15T16:46:42.684Z",
+    "iteration": 1,
+    "focus": "Metadata now describes the blocking-set scaffold, Mathlib projective-plane anchors, and the single ESS axiom without claiming the uniform constant conjecture is solved.",
+    "blockers": [
+      "Uniform constant C is open.",
+      "ess_log_blocking_set is axiomatized."
+    ],
+    "nextAction": "A useful proof slice would formalize more concrete finite-plane examples or sharpen the bridge from logarithmic per-order bounds to uniform-bounded variants.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1159 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos",
+    "projective-planes",
+    "blocking-sets",
+    "finite-geometry",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-115",
+    "erdos-1159"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T16:46:42.684Z",
+  "lastUpdate": "2026-05-18T08:28:21Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1159Problem.lean",
+      "filename": "Erdos1159Problem.lean",
+      "lineCount": 144,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1159Problem.lean"
+    }
+  ]
+}

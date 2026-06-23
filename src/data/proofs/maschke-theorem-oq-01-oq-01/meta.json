@@ -1,0 +1,132 @@
+{
+  "id": "maschke-theorem-oq-01-oq-01",
+  "slug": "maschke-theorem-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MonoidAlgebra"
+    ],
+    "namespace": "MaschkeModularCounterexample",
+    "lineCount": 139,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/MaschkeModularCounterexampleOQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Modular Counterexample to Maschke's Theorem: 𝔽ₚ[ℤ/p] Is Not Semisimple",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MaschkeModularCounterexampleOQ01.lean",
+    "tags": [
+      "algebra",
+      "representation-theory",
+      "group-algebra",
+      "maschke",
+      "semisimple",
+      "modular-representation-theory",
+      "counterexample",
+      "nilpotent",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 139,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "badge": "mathlib",
+    "originalContributions": [
+      "not_isSemisimpleRing: the headline result — over the field 𝔽_p the group algebra 𝔽_p[ℤ/p] is NOT a semisimple ring, proving the hypothesis char k ∤ |G| of Maschke's theorem (the parent entry) is essential and cannot be dropped; uniform in the prime p rather than a single decidable instance",
+      "g_pow_card: the basis generator g = [1] indexed by 1 ∈ ℤ/p has order p (g ^ p = 1), reduced to p • (1 : ZMod p) = 0 via MonoidAlgebra.single_pow and ofAdd_nsmul",
+      "g_sub_one_pow_card: the freshman's-dream computation (g - 1) ^ p = g ^ p - 1 ^ p = 1 - 1 = 0 over 𝔽_p[ℤ/p] (characteristic p established by charP_of_injective_algebraMap'), exhibiting an explicit nilpotent",
+      "g_sub_one_ne_zero / g_ne_one: the witness g - 1 is genuinely nonzero, since 1 ≠ 0 in 𝔽_p (Finsupp.single_eq_single_iff)",
+      "isNilpotent_g_sub_one: g - 1 is a nonzero nilpotent — the single element that is the entire obstruction to semisimplicity (a generator of the augmentation ideal ker ε)",
+      "not_isReduced: 𝔽_p[ℤ/p] is not a reduced ring, the bridge between the nilpotent witness and the failure of semisimplicity (a commutative semisimple ring is reduced)",
+      "not_isSemisimpleModule: equivalently, 𝔽_p[ℤ/p] is not semisimple as a module over itself — the regular representation of ℤ/p over 𝔽_p is not completely reducible",
+      "exists_submodule_no_complement: complete reducibility fails concretely — some subrepresentation (the augmentation ideal) has no complement, with no internal direct-sum splitting"
+    ],
+    "prerequisites": [
+      "CommRing R, IsSemisimpleRing R ⟹ IsReduced R: the low-priority Mathlib instance (Mathlib.RingTheory.Jacobson.Semiprimary) for commutative rings, a consequence of Ring.jacobson R = ⊥ for semisimple rings",
+      "sub_pow_char: the freshman's dream (x - y) ^ p = x ^ p - y ^ p in a commutative ring of prime characteristic p",
+      "charP_of_injective_algebraMap': a commutative-algebra A over 𝔽_p with faithful scalar action inherits characteristic p",
+      "MonoidAlgebra.single_pow, ofAdd_nsmul, ofAdd_eq_one: the group-algebra basis arithmetic identifying g ^ p with the basis element of p • 1 = 0",
+      "isNilpotent_iff_eq_zero: in a reduced ring, the only nilpotent is 0"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "IsSemisimpleRing → IsReduced (commutative case)",
+        "description": "For a commutative ring, being semisimple forces the Jacobson radical to vanish, hence no nonzero nilpotents; this is the decisive step turning the explicit nilpotent g - 1 into a proof that 𝔽_p[ℤ/p] is not semisimple.",
+        "module": "Mathlib.RingTheory.Jacobson.Semiprimary"
+      },
+      {
+        "theorem": "sub_pow_char",
+        "description": "The freshman's dream (x - y) ^ p = x ^ p - y ^ p in prime characteristic; supplies (g - 1) ^ p = 0 from g ^ p = 1.",
+        "module": "Mathlib.Algebra.CharP.Lemmas"
+      },
+      {
+        "theorem": "MonoidAlgebra.single_pow",
+        "description": "Powers of a single-supported group-algebra element: (single m r) ^ n = single (m ^ n) (r ^ n); used to show the generator has order p.",
+        "module": "Mathlib.Algebra.MonoidAlgebra.Defs"
+      },
+      {
+        "theorem": "charP_of_injective_algebraMap'",
+        "description": "Transfer of characteristic from a base ring to a faithful algebra over it; gives CharP (𝔽_p[ℤ/p]) p.",
+        "module": "Mathlib.Algebra.CharP.Algebra"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "maschke-theorem-oq-01-oq-01-oq-01",
+      "question": "Identify the nilpotent g - 1 explicitly with a generator of the augmentation ideal ker ε (ε : 𝔽_p[ℤ/p] → 𝔽_p, ∑ a_g g ↦ ∑ a_g) and show the short exact sequence 0 → ker ε → 𝔽_p[ℤ/p] → 𝔽_p → 0 does not split, recovering exists_submodule_no_complement with a named witness.",
+      "significance": "medium"
+    },
+    {
+      "id": "maschke-theorem-oq-01-oq-01-oq-02",
+      "question": "Generalize to char k = p ∣ |G| for an arbitrary finite group G with p ∣ |G|: the group algebra k[G] is non-semisimple because its Jacobson radical (the augmentation-ideal contribution from a Sylow p-subgroup) is nonzero.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "maschke-theorem-oq-01",
+      "relationship": "sharpens",
+      "description": "This entry is the sharpness companion to Maschke's theorem: it proves the parent's hypothesis char k ∤ |G| cannot be dropped by exhibiting the non-semisimple modular group algebra 𝔽_p[ℤ/p]."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: RingTheory.Jacobson.Semiprimary",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the commutative IsSemisimpleRing → IsReduced instance used to derive non-semisimplicity from the nilpotent witness."
+    },
+    {
+      "title": "Beweis des Satzes, dass diejenigen endlichen linearen Substitutionsgruppen, in welchen einige durchgehends verschwindende Coefficienten auftreten, intransitiv sind",
+      "author": "Heinrich Maschke",
+      "year": "1899",
+      "venue": "Mathematische Annalen 52 (2): 363–368",
+      "description": "The original theorem; this entry records the sharpness of its characteristic hypothesis."
+    },
+    {
+      "title": "Über die Darstellung von Gruppen in Galoisschen Feldern",
+      "author": "Richard Brauer",
+      "year": "1935",
+      "venue": "Actualités Sci. Ind.",
+      "description": "Foundational modular representation theory, where the failure of Maschke's theorem in characteristic p ∣ |G| is the starting point."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Over the field 𝔽_p, the group algebra 𝔽_p[ℤ/p] (the regular representation of the cyclic group of order p) is proved NOT semisimple, uniformly in the prime p. The obstruction is a single explicit nilpotent: the basis generator g = [1] satisfies g ^ p = 1 (because p • 1 = 0 in ℤ/p), so the freshman's dream in characteristic p gives (g - 1) ^ p = g ^ p - 1 = 0 while g - 1 ≠ 0. Thus 𝔽_p[ℤ/p] contains a nonzero nilpotent and is not reduced; since a commutative semisimple ring is reduced, it cannot be semisimple, and consequently the regular representation is not completely reducible — some subrepresentation (the augmentation ideal generated by g - 1) has no complement. 139 lines, 9 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "implications": "This is the sharpness companion to the parent Maschke entry: it shows the hypothesis char k ∤ |G| is genuinely necessary. The decisive non-triviality — that a commutative semisimple ring is reduced — is a Mathlib instance (hence the mathlib badge); the contribution is the assembly of the explicit counterexample 𝔽_p[ℤ/p], the order-p generator computation, the nilpotent witness g - 1, and the bridge from non-reducedness to the failure of complete reducibility, none of which sit in the gallery. Unlike a p = 2 decidability check, the argument is uniform in p.",
+    "openQuestions": [
+      "Identify g - 1 with a generator of the augmentation ideal and show the augmentation short exact sequence does not split.",
+      "Generalize to arbitrary finite G with p ∣ |G| via the nonzero Jacobson radical of k[G]."
+    ]
+  }
+}

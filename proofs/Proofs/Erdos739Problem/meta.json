@@ -1,0 +1,17 @@
+{
+  "problem_number": 739,
+  "title": "Chromatic Numbers of Subgraphs (Infinite Graphs)",
+  "status": "independent",
+  "solvers": [],
+  "source_url": "https://erdosproblems.com/739",
+  "overview": "Let 𝔪 be an infinite cardinal and G a graph with chromatic number 𝔪. Is it true that for every infinite cardinal 𝔫 < 𝔪, there exists a subgraph of G with chromatic number 𝔫?",
+  "sections": [],
+  "conclusion": "INDEPENDENT OF ZFC - Galvin (1973): YES for 𝔪 = ℵ₀. Komjáth (1988): Consistent with ZFC that NO (counterexample with 𝔪 = ℵ₂, 𝔫 = ℵ₁). Shelah (1990): YES under V=L for 𝔪 = ℵ₂, 𝔫 = ℵ₁. OPEN: Does GCH imply YES?",
+  "references": [
+    "Galvin (1973) - Proved for 𝔪 = ℵ₀",
+    "Komjáth (1988) - Consistency of counterexample",
+    "Shelah (1990) - YES under axiom of constructibility (V=L)"
+  ],
+  "related_problems": [],
+  "tags": ["graph-theory", "chromatic-number", "set-theory", "cardinals", "independence"]
+}

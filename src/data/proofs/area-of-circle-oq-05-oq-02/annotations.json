@@ -1,0 +1,168 @@
+[
+  {
+    "id": "ann-oq02-overview",
+    "proofId": "area-of-circle-oq-05-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Multivariate Gaussian: Two-Step Strategy",
+    "content": "The file header frames the two-step proof strategy: (1) diagonal case via Fubini + scalar Gaussian, (2) general case via spectral theorem. The key mathematical chain is: for positive-definite A, diagonalize as A = UᵀDU (D = diag(λ₁,...,λₙ)), then the orthogonal change y = Uᵀx preserves Lebesgue measure (|det Uᵀ| = 1), so ∫ exp(-xᵀAx) = ∫ exp(-yᵀDy) = ∫ exp(-∑ λᵢyᵢ²) = ∏ √(π/λᵢ) = √(πⁿ/∏λᵢ) = √(πⁿ/det A).\n\nThe status section explicitly tracks what is proved (0 sorries) vs. open (1 sorry in the general case), making the boundary of formalization precise.",
+    "mathContext": "$\\int_{\\mathbb{R}^n} e^{-x^\\top A x}\\,dx = \\sqrt{\\frac{\\pi^n}{\\det A}}$ for positive-definite $A$. Proof chain: $A = U^\\top D U$ (spectral), $|\\det U| = 1$ (orthogonal), $\\det A = \\prod \\lambda_i$ (eigenvalue product).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multivariate normal distribution",
+      "spectral theorem",
+      "Fubini's theorem",
+      "Lebesgue measure preservation"
+    ],
+    "prerequisites": [
+      "Gaussian integral (scalar case)",
+      "positive-definite matrices",
+      "orthogonal matrices and determinants"
+    ]
+  },
+  {
+    "id": "ann-oq02-imports",
+    "proofId": "area-of-circle-oq-05-oq-02",
+    "range": {
+      "startLine": 30,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Imports: Gaussian, Spectral Theorem, Fubini, and Parent Proof",
+    "content": "Seven imports assemble the required Mathlib infrastructure. Gaussian.GaussianIntegral provides Real.integral_gaussian (the base ∫ exp(-x²) = √π). Analysis.Matrix.Spectrum brings IsHermitian.eigenvectorUnitary and spectral_theorem. Analysis.Matrix.PosDef provides the PosDef class with eigenvalues_pos. MeasureTheory.Integral.Pi provides integral_fintype_prod_volume_eq_prod (Fubini for ℝⁿ product spaces). Lebesgue.Basic brings map_linearMap_volume_pi_eq_smul_volume_pi (the change-of-variables lemma). LinearAlgebra.Determinant adds det_eq_prod_eigenvalues. Finally, Proofs.AreaOfCircleOQ05 imports the parent scaled_gaussian result, demonstrating the gallery's modular proof reuse.",
+    "mathContext": "Import chain: parent $\\int_{\\mathbb{R}} e^{-bx^2}\\,dx = \\sqrt{\\pi/b}$ (AreaOfCircleOQ05) $\\to$ Fubini $\\to$ diagonal case $\\to$ spectral theorem $\\to$ general case.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib.Analysis.Matrix.Spectrum",
+      "MeasureTheory.Integral.Pi",
+      "Mathlib.Analysis.Matrix.PosDef",
+      "integral_fintype_prod_volume_eq_prod"
+    ],
+    "prerequisites": [
+      "Mathlib library structure",
+      "Lean 4 import system",
+      "Gaussian integral (AreaOfCircleOQ05)"
+    ]
+  },
+  {
+    "id": "ann-oq02-prod-sqrt",
+    "proofId": "area-of-circle-oq-05-oq-02",
+    "range": {
+      "startLine": 48,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "∏ √(fᵢ) = √(∏ fᵢ): Induction Helper",
+    "content": "The private lemma `prod_sqrt_eq_sqrt_prod` is not in Mathlib but is easily proved by induction on n using `Fin.prod_univ_castSucc` to split off the last element:\n- Base (n=0): empty product = 1 = √1, handled by `simp`.\n- Step: split using `Fin.prod_univ_castSucc` to isolate the last element, apply IH to the prefix, then combine via `← Real.sqrt_mul` (which gives `√a * √b = √(a*b)` for `a ≥ 0`).\n\nThis lemma is the simplification step in `diagonal_gaussian` that converts `∏ √(π/bᵢ)` into `√(∏(π/bᵢ)) = √(πⁿ/∏bᵢ)`.",
+    "mathContext": "$\\prod_{i=0}^{n-1} \\sqrt{f_i} = \\sqrt{\\prod_{i=0}^{n-1} f_i}$ for $f_i \\ge 0$. Proved by induction using $\\sqrt{a} \\cdot \\sqrt{b} = \\sqrt{ab}$ (`Real.sqrt_mul`).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.sqrt_mul",
+      "Fin.prod_univ_castSucc",
+      "Finset.prod_nonneg"
+    ],
+    "prerequisites": [
+      "Lean 4 induction on ℕ",
+      "Real.sqrt properties (positivity, multiplicativity)"
+    ]
+  },
+  {
+    "id": "ann-oq02-diagonal-stmt",
+    "proofId": "area-of-circle-oq-05-oq-02",
+    "range": {
+      "startLine": 65,
+      "endLine": 75
+    },
+    "type": "concept",
+    "title": "diagonal_gaussian Statement: The Fully Proved Core",
+    "content": "The theorem `diagonal_gaussian` is the heart of the formalization and is proved with 0 sorries. It states: for any n and positive weights b : Fin n → ℝ, the integral of exp(-∑ bᵢxᵢ²) over ℝⁿ equals √(πⁿ/∏bᵢ). The hypothesis `hb : ∀ i, 0 < b i` ensures each weight is positive, needed both for the scalar Gaussian (which requires b > 0) and for the product in the denominator to be well-defined. This generalizes immediately from the diagonal case to the general positive-definite case via the spectral theorem.",
+    "mathContext": "$$\\int_{\\mathbb{R}^n} e^{-\\sum_{i} b_i x_i^2}\\,dx = \\sqrt{\\frac{\\pi^n}{\\prod_i b_i}}, \\quad b_i > 0$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "multivariate Gaussian distribution",
+      "Fubini's theorem",
+      "diagonal positive-definite matrix",
+      "scalar Gaussian integral"
+    ],
+    "prerequisites": [
+      "Real.exp: exponential function",
+      "MeasureTheory.integral over Fin n → ℝ",
+      "scaled_gaussian from AreaOfCircleOQ05"
+    ]
+  },
+  {
+    "id": "ann-oq02-diagonal",
+    "proofId": "area-of-circle-oq-05-oq-02",
+    "range": {
+      "startLine": 73,
+      "endLine": 93
+    },
+    "type": "insight",
+    "title": "Diagonal Gaussian via Fubini: The Core Technique",
+    "content": "The theorem `diagonal_gaussian` is the central proved result (0 sorries). It decomposes the n-dimensional Gaussian via four steps:\n\n1. **exp_sum**: Rewrite `exp(-∑ bᵢxᵢ²) = ∏ exp(-bᵢxᵢ²)` using `← Finset.sum_neg_distrib` then `Real.exp_sum`. This converts a single exponential into a product.\n\n2. **Fubini**: Apply `integral_fintype_prod_volume_eq_prod` (from `MeasureTheory.Integral.Pi`) to factor the integral over `Fin n → ℝ` into a product of scalar integrals.\n\n3. **Scalar Gaussian**: Each factor `∫ exp(-bᵢxᵢ²) = √(π/bᵢ)` by `GaussianIntegralCircle.scaled_gaussian` imported from `AreaOfCircleOQ05`.\n\n4. **Product simplification**: `prod_sqrt_eq_sqrt_prod + prod_div_distrib + prod_const` simplify `∏ √(π/bᵢ) = √(πⁿ/∏bᵢ)`.",
+    "mathContext": "$\\int_{\\mathbb{R}^n} e^{-\\sum_i b_i x_i^2}\\,dx = \\prod_{i} \\int_\\mathbb{R} e^{-b_i x_i^2}\\,dx_i = \\prod_{i} \\sqrt{\\frac{\\pi}{b_i}} = \\sqrt{\\frac{\\pi^n}{\\prod_i b_i}}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.exp_sum",
+      "integral_fintype_prod_volume_eq_prod",
+      "GaussianIntegralCircle.scaled_gaussian",
+      "Fubini for product spaces"
+    ],
+    "prerequisites": [
+      "prod_sqrt_eq_sqrt_prod",
+      "scaled_gaussian from AreaOfCircleOQ05",
+      "MeasureTheory.Integral.Pi"
+    ]
+  },
+  {
+    "id": "ann-oq02-spectral-outline",
+    "proofId": "area-of-circle-oq-05-oq-02",
+    "range": {
+      "startLine": 97,
+      "endLine": 114
+    },
+    "type": "insight",
+    "title": "Spectral Decomposition Proof Outline and the Remaining Gap",
+    "content": "The docstring for `multivariate_gaussian_integral` describes a 5-step proof plan: (1) spectral theorem — A = U * diag(λ) * U* for eigenvector unitary U; (2) quadratic form rewrite xᵀAx = ∑ᵢ λᵢ(Uᵀx)ᵢ²; (3) orthogonal change of variables y = Uᵀx (measure-preserving since |det U| = 1); (4) apply diagonal_gaussian with b = eigenvalues; (5) use det A = ∏ λᵢ. Steps 1, 2, 4, 5 are mathematically clear and Mathlib has all the pieces. The single sorry lives entirely in step 3: connecting the orthogonal linear map to a MeasurableEquiv and invoking map_linearMap_volume_pi_eq_smul_volume_pi with the determinant condition.",
+    "mathContext": "Spectral theorem: $A = U^\\top \\mathrm{diag}(\\lambda_1,\\ldots,\\lambda_n) U$. Change of variables: $y = U^\\top x \\Rightarrow \\int_{{\\mathbb{R}^n}} f(x)\\,dx = \\int_{{\\mathbb{R}^n}} f(Uy)\\,dy$ (since $|\\det U| = 1$). Then $\\det A = \\prod_i \\lambda_i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "spectral theorem for symmetric matrices",
+      "MeasurableEquiv from linear map",
+      "measure-preserving transformations",
+      "determinant and eigenvalues"
+    ],
+    "prerequisites": [
+      "IsHermitian.eigenvectorUnitary",
+      "Matrix.PosDef.eigenvalues_pos",
+      "map_linearMap_volume_pi_eq_smul_volume_pi"
+    ]
+  },
+  {
+    "id": "ann-oq02-main",
+    "proofId": "area-of-circle-oq-05-oq-02",
+    "range": {
+      "startLine": 115,
+      "endLine": 138
+    },
+    "type": "insight",
+    "title": "General Case: Spectral Sorry and What Remains",
+    "content": "The theorem `multivariate_gaussian_integral` has 1 sorry: the spectral change-of-variables step. The docstring documents exactly what is needed:\n\n(a) **Spectral decomposition**: `hA.isHermitian.spectral_theorem` gives A = U * diag(λ) * U* for the eigenvector unitary U.\n\n(b) **Positive eigenvalues**: `Matrix.PosDef.eigenvalues_pos` gives λᵢ > 0.\n\n(c) **Measure preservation**: `map_linearMap_volume_pi_eq_smul_volume_pi` with `|det Uᵀ| = 1` (orthogonal matrix). Requires constructing a `MeasurableEquiv` from U and using `MeasurePreserving.integral_comp'`.\n\n(d) **Determinant identity**: `IsHermitian.det_eq_prod_eigenvalues` connects `det A` to `∏ λᵢ`.\n\nThe difficulty is step (c): Mathlib's change-of-variables infrastructure requires constructing a `MeasurableEquiv` from the orthogonal linear map, which involves connecting `Matrix.toLinearMap` to `MeasurableLinearMap`.",
+    "mathContext": "After spectral decomposition $A = U^\\top \\text{diag}(\\lambda) U$ and change of variables $y = U^\\top x$: $x^\\top A x = \\sum_i \\lambda_i y_i^2$, and $\\int e^{-x^\\top Ax}\\,dx = \\int e^{-\\sum \\lambda_i y_i^2}\\,dy = \\sqrt{\\pi^n/\\prod \\lambda_i} = \\sqrt{\\pi^n/\\det A}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "spectral theorem (Lean 4 Mathlib)",
+      "map_linearMap_volume_pi_eq_smul_volume_pi",
+      "MeasurePreserving.integral_comp",
+      "IsHermitian.det_eq_prod_eigenvalues"
+    ],
+    "prerequisites": [
+      "diagonal_gaussian",
+      "Matrix.PosDef and IsHermitian (Mathlib)",
+      "MeasureTheory change-of-variables"
+    ]
+  }
+]

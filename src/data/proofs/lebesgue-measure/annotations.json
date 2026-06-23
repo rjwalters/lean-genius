@@ -1,0 +1,264 @@
+[
+  {
+    "id": "ann-imports",
+    "proofId": "lebesgue-measure",
+    "range": {
+      "startLine": 1,
+      "endLine": 12
+    },
+    "type": "concept",
+    "title": "Measure Theory Imports",
+    "content": "Imports Mathlib's measure theory stack: Lebesgue measure construction (`Lebesgue.Basic`), its identification with Haar measure (`EqHaar`), the `lintegral` for non-negative functions, the Bochner integral for signed functions, dominated convergence, the Fundamental Theorem of Calculus, product measures (for Fubini), $L^p$ spaces, and special integrals. This is one of the deepest import chains in Mathlib.",
+    "mathContext": "The import chain builds: $\\sigma$-algebra $\\to$ outer measure $\\to$ Carathéodory extension $\\to$ Haar measure $\\to$ volume on $\\mathbb{R}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib.MeasureTheory",
+      "Haar measure",
+      "Bochner integral"
+    ],
+    "prerequisites": [
+      "measure theory basics",
+      "topology"
+    ]
+  },
+  {
+    "id": "ann-intro",
+    "proofId": "lebesgue-measure",
+    "range": {
+      "startLine": 14,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Lebesgue Measure: Wiedijk #86",
+    "content": "**Lebesgue Measure and Integration**:\n\nHenri Lebesgue's 1902 doctoral dissertation revolutionized analysis by introducing:\n\n1. **Lebesgue Measure**: A complete, translation-invariant measure on $\\mathbb{R}^n$ extending the notion of length/area/volume\n\n2. **Key Theorems**:\n   - **Monotone Convergence**: If $f_n \\nearrow f$, then $\\int f_n \\to \\int f$\n   - **Dominated Convergence**: If $|f_n| \\leq g$ integrable and $f_n \\to f$, then $\\int f_n \\to \\int f$\n   - **Fubini's Theorem**: Iterated integrals equal double integrals\n\n**Why Lebesgue?** The Riemann integral can't handle:\n- Functions like the Dirichlet function (1 on $\\mathbb{Q}$, 0 elsewhere)\n- Limits of sequences of Riemann integrable functions\n\nLebesgue's approach: integrate by partitioning the **range** rather than the domain.",
+    "mathContext": "Lebesgue's innovation: define $\\int f\\,d\\mu = \\sup\\{\\int s\\,d\\mu : s \\text{ simple}, s \\leq f\\}$ by partitioning the range of $f$, not the domain",
+    "significance": "key",
+    "relatedConcepts": [
+      "measure theory",
+      "integration",
+      "convergence theorems"
+    ],
+    "prerequisites": [
+      "Riemann integration",
+      "set theory",
+      "topology"
+    ]
+  },
+  {
+    "id": "ann-measure-construction",
+    "proofId": "lebesgue-measure",
+    "range": {
+      "startLine": 74,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Lebesgue Measure Construction",
+    "content": "**The Lebesgue Measure on $\\mathbb{R}$**:\n\nIn Mathlib, Lebesgue measure is `volume`, constructed via Haar measure theory on the locally compact group $(\\mathbb{R}, +)$.\n\n**Key Properties Proved**:\n- `lebesgue_measure_Icc`: $\\mu([a,b]) = b - a$ for $a \\leq b$\n- `lebesgue_measure_Ioo`: $\\mu((a,b)) = b - a$\n- `lebesgue_measure_singleton`: $\\mu(\\{x\\}) = 0$\n- `lebesgue_measure_univ`: $\\mu(\\mathbb{R}) = \\infty$\n\nThe fact that $\\mu([a,b]) = \\mu((a,b))$ follows from single points having measure zero — the boundary $\\{a, b\\}$ contributes nothing.",
+    "mathContext": "$\\mu([a,b]) = b - a$, $\\mu(\\{x\\}) = 0$, $\\mu(\\mathbb{R}) = +\\infty$",
+    "significance": "key",
+    "relatedConcepts": [
+      "volume",
+      "Real.volume_Icc",
+      "ENNReal",
+      "Haar measure"
+    ],
+    "prerequisites": [
+      "outer measure",
+      "Carathéodory extension theorem",
+      "locally compact groups"
+    ]
+  },
+  {
+    "id": "ann-translation-invariance",
+    "proofId": "lebesgue-measure",
+    "range": {
+      "startLine": 116,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Translation Invariance",
+    "content": "**Translation Invariance**: $\\mu(E + c) = \\mu(E)$\n\nLebesgue measure is invariant under translation. In Lean, this is expressed as `IsAddLeftInvariant volume`, which Mathlib derives from the fact that Lebesgue measure is a Haar measure on $(\\mathbb{R}, +)$.\n\nThe explicit proof of `volume_add_left` uses `measure_preimage_add`, rewriting the image $c + E$ as the preimage of $E$ under $x \\mapsto -c + x$.\n\n**Uniqueness**: Any translation-invariant Borel measure on $\\mathbb{R}$ that assigns finite measure to $[0,1]$ is a scalar multiple of Lebesgue measure. This is a special case of the uniqueness of Haar measure on locally compact groups.",
+    "mathContext": "$\\mu(E + c) = \\mu(E)$ for all measurable $E$ and $c \\in \\mathbb{R}$; Lebesgue measure is the unique (up to scaling) translation-invariant Borel measure",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsAddLeftInvariant",
+      "Haar measure",
+      "uniqueness of Haar measure",
+      "measure_preimage_add"
+    ],
+    "prerequisites": [
+      "locally compact groups",
+      "Borel sigma-algebra",
+      "Haar measure theory"
+    ]
+  },
+  {
+    "id": "ann-lebesgue-integral",
+    "proofId": "lebesgue-measure",
+    "range": {
+      "startLine": 146,
+      "endLine": 170
+    },
+    "type": "concept",
+    "title": "The Lebesgue Integral",
+    "content": "**Lebesgue Integration in Mathlib**:\n\nTwo integral notations coexist:\n- `∫⁻ x, f x ∂μ` — the **lintegral** for $[0, \\infty]$-valued functions (using `ENNReal`)\n- `∫ x, f x ∂μ` — the **Bochner integral** for signed/complex/Banach-valued functions\n\n**Properties demonstrated**:\n- `integral_const_on_Icc`: $\\int_{[a,b]} c = c(b-a)$, proved by unfolding `setIntegral_const` and `Real.volume_Icc`\n- `integral_add_of_integrable`: linearity $\\int(f+g) = \\int f + \\int g$\n- `integral_smul_const`: scalar multiplication $\\int(cf) = c\\int f$\n\nThe Bochner integral extends Lebesgue's original construction to Banach-space-valued functions, essential for vector-valued analysis and probability.",
+    "mathContext": "$\\int_a^b c\\,dx = c(b-a)$; $\\int(f+g) = \\int f + \\int g$; $\\int cf = c\\int f$",
+    "significance": "key",
+    "relatedConcepts": [
+      "lintegral",
+      "Bochner integral",
+      "simple functions",
+      "ENNReal"
+    ],
+    "prerequisites": [
+      "measurable functions",
+      "simple function approximation",
+      "Banach spaces"
+    ]
+  },
+  {
+    "id": "ann-monotone-convergence",
+    "proofId": "lebesgue-measure",
+    "range": {
+      "startLine": 191,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Monotone Convergence Theorem",
+    "content": "**Monotone Convergence Theorem** (Beppo Levi, 1906):\n\nIf $f_n \\nearrow f$ pointwise (non-decreasing to $f$), then:\n$$\\int f_n \\, d\\mu \\to \\int f \\, d\\mu$$\n\nThe proof delegates to `lintegral_tendsto_of_tendsto_of_monotone`, converting pointwise hypotheses to almost-everywhere statements via `ae_of_all`.\n\n**Corollary** (`lintegral_tsum_eq`): For non-negative measurable $f_n$,\n$$\\int \\sum_n f_n = \\sum_n \\int f_n$$\nThis is proved via `lintegral_tsum` and is essential for series manipulations in analysis.\n\n**Why Important**: Justifies interchanging limits and integrals under monotonicity — no need for uniform convergence. This is strictly weaker than dominated convergence but applies to $[0,\\infty]$-valued functions where no integrable bound is needed.",
+    "mathContext": "$f_n \\nearrow f \\implies \\int f_n \\to \\int f$; $\\int \\sum_n f_n = \\sum_n \\int f_n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "lintegral_tendsto_of_tendsto_of_monotone",
+      "lintegral_tsum",
+      "ae_of_all"
+    ],
+    "prerequisites": [
+      "measurable functions",
+      "ENNReal-valued integration",
+      "filter convergence"
+    ]
+  },
+  {
+    "id": "ann-dominated-convergence",
+    "proofId": "lebesgue-measure",
+    "range": {
+      "startLine": 230,
+      "endLine": 239
+    },
+    "type": "concept",
+    "title": "Dominated Convergence Theorem",
+    "content": "**Dominated Convergence Theorem** (Lebesgue, 1910):\n\nIf $f_n \\to f$ pointwise a.e. and $\\|f_n(x)\\| \\leq g(x)$ for integrable $g$, then:\n$$\\int f_n \\, d\\mu \\to \\int f \\, d\\mu$$\n\nThe proof is a single line delegating to `tendsto_integral_of_dominated_convergence`, which is one of the deepest results in Mathlib's measure theory library.\n\n**Why this is the workhorse**: Unlike monotone convergence (requires monotonicity) or uniform convergence (requires uniformity), DCT needs only:\n1. Pointwise a.e. convergence\n2. An integrable dominating function\n\nThis generality makes it applicable throughout analysis, probability, and PDE theory. It also implies that $f$ itself is integrable — a free bonus.",
+    "mathContext": "$\\|f_n\\| \\leq g \\in L^1$, $f_n \\to f$ a.e. $\\implies \\int f_n \\to \\int f$ and $f \\in L^1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "tendsto_integral_of_dominated_convergence",
+      "AEStronglyMeasurable",
+      "Integrable"
+    ],
+    "prerequisites": [
+      "Bochner integral",
+      "a.e. convergence",
+      "integrable functions",
+      "normed spaces"
+    ]
+  },
+  {
+    "id": "ann-fubini",
+    "proofId": "lebesgue-measure",
+    "range": {
+      "startLine": 260,
+      "endLine": 294
+    },
+    "type": "concept",
+    "title": "Fubini's Theorem",
+    "content": "**Fubini-Tonelli Theorem**:\n\nTwo forms are proved:\n\n1. **Tonelli** (non-negative): For measurable $f : \\mathbb{R}^2 \\to [0,\\infty]$,\n$$\\int\\int f(x,y)\\,d\\mu(x)\\,d\\nu(y) = \\int f\\,d(\\mu \\times \\nu)$$\nProved via `lintegral_prod`.\n\n2. **Fubini** (integrable): For $f \\in L^1(\\mu \\times \\nu)$,\n$$\\int\\int f(x,y)\\,d\\mu\\,d\\nu = \\int\\int f(x,y)\\,d\\nu\\,d\\mu$$\nThe proof shows both iterated integrals equal the product integral using `integral_prod`, then applies `integral_prod_swap` with `hf.comp_measurable measurable_swap` for the other order.\n\nAlso proves `integral_prod_eq_integral_integral`: the product integral equals the iterated integral.\n\n**Historical note**: Guido Fubini (1907) and Leonida Tonelli (1909) independently established these results. Tonelli's version for non-negative functions doesn't require integrability — a crucial distinction.",
+    "mathContext": "$\\int\\int f\\,dx\\,dy = \\int\\int f\\,dy\\,dx = \\iint f\\,d(\\mu \\times \\nu)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "product measure",
+      "lintegral_prod",
+      "integral_prod",
+      "integral_prod_swap",
+      "measurable_swap"
+    ],
+    "prerequisites": [
+      "product measures",
+      "Tonelli's theorem",
+      "integrability on product spaces"
+    ]
+  },
+  {
+    "id": "ann-completeness",
+    "proofId": "lebesgue-measure",
+    "range": {
+      "startLine": 306,
+      "endLine": 324
+    },
+    "type": "concept",
+    "title": "Completeness and Null Sets",
+    "content": "**Completeness of Lebesgue Measure**:\n\nProves two key results about null sets:\n\n1. `countable_measure_zero`: Any countable set $S \\subseteq \\mathbb{R}$ has $\\mu(S) = 0$, via `Set.Countable.measure_zero`.\n\n2. `rationals_measure_zero`: $\\mu(\\mathbb{Q}) = 0$ as a corollary, since $\\mathbb{Q}$ is countable (`Set.countable_range`).\n\nThe Cantor set theorem is stated as `True` (placeholder) but represents the deep fact that uncountable sets can have measure zero. The standard Cantor set $C \\subseteq [0,1]$ satisfies $|C| = |\\mathbb{R}|$ (continuum cardinality) but $\\mu(C) = 0$ because the total length removed is $\\sum_{n=1}^\\infty 2^{n-1}/3^n = 1$.",
+    "mathContext": "$S$ countable $\\implies \\mu(S) = 0$; $\\mu(\\mathbb{Q}) = 0$; Cantor set: $|C| = \\mathfrak{c}$ but $\\mu(C) = 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "null sets",
+      "Cantor set",
+      "Set.Countable.measure_zero",
+      "completion of measures"
+    ],
+    "prerequisites": [
+      "countable sets",
+      "sigma-algebra completion",
+      "geometric series"
+    ]
+  },
+  {
+    "id": "ann-riemann-comparison",
+    "proofId": "lebesgue-measure",
+    "range": {
+      "startLine": 337,
+      "endLine": 370
+    },
+    "type": "insight",
+    "title": "Riemann vs Lebesgue Integration",
+    "content": "**Lebesgue Extends Riemann**:\n\nEvery Riemann integrable function is Lebesgue integrable (with the same value), but not vice versa.\n\n`bounded_measurable_integrable_on_Icc` proves that bounded measurable functions on $[a,b]$ are Lebesgue integrable, using `Integrable.mono'` with the constant bound $M$.\n\n**The Dirichlet Function**: $f(x) = \\mathbf{1}_{\\mathbb{Q}}(x)$ is the canonical example:\n- **Riemann**: Not integrable (upper and lower sums always differ by 1)\n- **Lebesgue**: $\\int_0^1 f = 0$ because $\\mathbb{Q} \\cap [0,1]$ has measure zero\n\nThe integral is fully proved: `dirichlet_integral_zero` uses `integral_eq_zero_of_ae` together with `rationals_measure_zero` to show the integrand is zero almost everywhere on $[0,1]$.\n\n**Lebesgue's criterion**: A bounded function on $[a,b]$ is Riemann integrable iff its set of discontinuities has Lebesgue measure zero.",
+    "mathContext": "Dirichlet function $\\mathbf{1}_{\\mathbb{Q}}$: not Riemann integrable, but $\\int_0^1 \\mathbf{1}_{\\mathbb{Q}} = 0$ in the Lebesgue sense",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riemann integrability",
+      "Dirichlet function",
+      "Lebesgue's criterion",
+      "integral_eq_zero_of_ae"
+    ],
+    "prerequisites": [
+      "Riemann integration",
+      "measure zero",
+      "almost everywhere"
+    ]
+  },
+  {
+    "id": "ann-applications",
+    "proofId": "lebesgue-measure",
+    "range": {
+      "startLine": 388,
+      "endLine": 401
+    },
+    "type": "concept",
+    "title": "Applications: $L^p$ Spaces and Holder's Inequality",
+    "content": "**Modern Applications of Lebesgue Integration**:\n\n1. **$L^p$ Spaces**: The space $L^p(\\mu)$ of functions with $\\int |f|^p < \\infty$ forms a Banach space. For $p = 2$, it's a Hilbert space — the natural setting for Fourier analysis. The example shows the zero function as an element of $L^2(\\mathbb{R})$.\n\n2. **Holder's Inequality**: For conjugate exponents $\\frac{1}{p} + \\frac{1}{q} = 1$,\n$$\\|fg\\|_1 \\leq \\|f\\|_p \\cdot \\|g\\|_q$$\nThis is stated as a placeholder (`True`). The full result is available in Mathlib as `NNNorm.inner_le_Lp_mul_Lq`.\n\n3. **Probability**: Kolmogorov's axioms define probability as a measure with $\\mu(\\Omega) = 1$; expectations, variances, and moment conditions all use Lebesgue integration.\n\n4. **PDEs**: Sobolev spaces $W^{k,p}$ use $L^p$-based weak derivatives for existence theory of partial differential equations.",
+    "mathContext": "$L^p(\\mu) = \\{f : \\int |f|^p\\,d\\mu < \\infty\\}$; Holder: $\\|fg\\|_1 \\leq \\|f\\|_p \\|g\\|_q$ when $1/p + 1/q = 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lp spaces",
+      "Holder inequality",
+      "Hilbert space",
+      "Sobolev spaces",
+      "Kolmogorov axioms"
+    ],
+    "prerequisites": [
+      "Banach spaces",
+      "Hilbert spaces",
+      "conjugate exponents"
+    ]
+  }
+]

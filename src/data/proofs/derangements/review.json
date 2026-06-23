@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "proofId": "derangements",
+  "reviewDate": "2026-03-24T16:00:00Z",
+  "reviewer": "peer-reviewer-1",
+  "overallAssessment": {
+    "grade": "B-",
+    "oneLiner": "Honest Mathlib wrapper with good pedagogy but inflated originality claims and a phantom theorem reference.",
+    "tier": "B",
+    "tierJustification": "The core mathematical content (derangement definition, recurrence, closed-form formula, cardinality bridge) comes entirely from Mathlib's Combinatorics.Derangements module via direct one-line calls. The file adds two small original proofs (identity not a derangement; derangements not a subgroup), five native_decide examples, and extensive commentary. This is solidly Tier B: a pedagogical presentation layer over Mathlib."
+  },
+  "findings": [
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "derangement_mul_self_not_always_derangement, lines 174-183",
+      "finding": "The proof that derangements do not form a subgroup is a genuine original contribution. It constructs a concrete counterexample (Equiv.swap 0 1 on Fin 2), verifies it is a derangement via fin_cases, and shows its square is the identity. This is a 7-line multi-step proof with real mathematical content that goes beyond what Mathlib provides.",
+      "recommendation": "Preserve this. It is the strongest original theorem in the file and could be highlighted more prominently in the framing."
+    },
+    {
+      "severity": "positive",
+      "category": "strength",
+      "location": "meta.json badge field",
+      "finding": "The badge is correctly set to 'mathlib' rather than 'original', which is honest and accurate. The docstring (lines 22-25) also honestly states 'Foundation (from Mathlib)' and describes the contributions as 'Pedagogical wrapper theorems'. This transparency is commendable.",
+      "recommendation": "Preserve this honest framing."
+    },
+    {
+      "severity": "major",
+      "category": "overclaim",
+      "location": "meta.json originalContributions[1]: 'Limit approaches 1/e'",
+      "finding": "The claimed original contribution 'Limit approaches 1/e' does not exist as a formalized theorem in the Lean file. The convergence D(n)/n! -> 1/e appears ONLY in comment blocks (lines 48, 145-160, 200). No theorem named derangement_probability_limit or anything equivalent is proved. The overview.text at line 69 of meta.json explicitly references 'derangement_probability_limit (D_n/n! -> 1/e ~ 0.3679)' which is a phantom -- this theorem does not exist in Derangements.lean.",
+      "recommendation": "Remove 'Limit approaches 1/e' from originalContributions. Remove the reference to 'derangement_probability_limit' from overview.text. If the limit result is desired, a researcher should formalize it (it would require Mathlib analysis imports and a genuine proof)."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json originalContributions[0]: 'Recurrence relation'",
+      "finding": "The 'recurrence relation' contribution (theorem derangements_recurrence, line 97-99) is a direct one-line wrapper: the proof body is simply 'numDerangements_add_two n'. This is a Mathlib call with a new name, not an original contribution.",
+      "recommendation": "Reframe originalContributions to distinguish between 'pedagogical restatements of Mathlib results' and 'genuinely new proofs'. The recurrence is a restatement, not an original contribution. Honest framing: 'Pedagogical restatement of recurrence via Mathlib's numDerangements_add_two'."
+    },
+    {
+      "severity": "moderate",
+      "category": "overclaim",
+      "location": "meta.json overview.text",
+      "finding": "The overview states '11 declarations'. Actual count: 10 named theorems, 5 examples, 4 #check statements. None of these groupings total 11. The leanFile section of meta.json says theoremCount: 10, definitionCount: 0, which sums to 10 (or 15 with examples). The '11 declarations' figure appears invented.",
+      "recommendation": "Correct to '10 theorems and 5 computed examples' or similar accurate count."
+    },
+    {
+      "severity": "minor",
+      "category": "filler",
+      "location": "numDerangements_zero (line 83) and numDerangements_one (line 86)",
+      "finding": "Both theorems are proved by 'rfl' -- they are definitional unfoldings that Lean resolves by computation. While pedagogically useful as signposts, they add no mathematical content. Similarly, mem_derangements_iff (line 67-69) is Iff.rfl.",
+      "recommendation": "These are acceptable as pedagogical markers. No action needed, but they should not be counted toward substance claims."
+    },
+    {
+      "severity": "minor",
+      "category": "gap",
+      "location": "Inclusion-exclusion section, lines 203-220",
+      "finding": "The 'Inclusion-Exclusion Derivation' section (lines 203-220) contains only a comment block -- no formalized Lean proof. The annotations describe this as formalized content (ann-inclusion-exclusion covers lines 203-220), and the meta.json sections entry describes it with a summary implying formalized content. In reality, this is purely narrative mathematics in a comment.",
+      "recommendation": "The annotations should clarify that this section is expository commentary, not formalized proof. If formalization is desired, a researcher could formalize the inclusion-exclusion derivation (this would be a meaningful addition)."
+    },
+    {
+      "severity": "minor",
+      "category": "gap",
+      "location": "Hat-check section, lines 145-160",
+      "finding": "The 'Hat-Check Problem' section (lines 145-160) is entirely a comment block with no Lean code. The annotation ann-hat-check annotates this range and is marked significance 'key', but there is no formalized content in these lines.",
+      "recommendation": "Downgrade ann-hat-check significance from 'key' to 'supporting' or 'expository', since it annotates commentary rather than formal mathematics."
+    },
+    {
+      "severity": "minor",
+      "category": "precision",
+      "location": "meta.json crossReferences to fundamental-arithmetic",
+      "finding": "The cross-reference to fundamental-arithmetic states 'The factorial n! in the derangement formula connects to prime factorization: D(n)/n! converges to 1/e, linking combinatorics to analysis via the Fundamental Theorem of Arithmetic.' This is a tenuous connection -- the convergence to 1/e has nothing to do with prime factorization or the Fundamental Theorem of Arithmetic. The factorial appears in both contexts but for entirely unrelated reasons.",
+      "recommendation": "Remove or rewrite the fundamental-arithmetic cross-reference. A more honest connection would note that both results involve factorials, without claiming a deeper link."
+    }
+  ],
+  "actionItems": [
+    {
+      "id": "ai-1",
+      "priority": "high",
+      "target": "enricher",
+      "description": "Remove 'Limit approaches 1/e' from originalContributions in meta.json. Remove the reference to 'derangement_probability_limit' from overview.text -- this theorem does not exist in the Lean file.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-2",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Reframe originalContributions to distinguish 'pedagogical restatements' (recurrence, closed form) from 'original proofs' (not-a-subgroup counterexample, identity exclusion). Suggested list: ['Proof that derangements do not form a subgroup (counterexample)', 'Proof that identity is never a derangement', 'Concrete computations D(2)-D(6) via native_decide', 'Pedagogical presentation of Mathlib derangement theory'].",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-3",
+      "priority": "medium",
+      "target": "enricher",
+      "description": "Fix the '11 declarations' claim in overview.text to match reality (10 named theorems, 5 computed examples).",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-4",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Downgrade ann-hat-check and ann-inclusion-exclusion significance ratings since they annotate comment blocks, not formalized Lean proofs. Add a note that these sections are expository.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-5",
+      "priority": "low",
+      "target": "enricher",
+      "description": "Remove or rewrite the cross-reference to fundamental-arithmetic, which incorrectly implies a connection between derangements and prime factorization.",
+      "status": "resolved"
+    },
+    {
+      "id": "ai-6",
+      "priority": "low",
+      "target": "researcher",
+      "description": "Consider formalizing the limit D(n)/n! -> 1/e as an actual Lean theorem. This would be a meaningful addition requiring Mathlib analysis imports. A companion file DerangementsConvergence.lean already exists -- check if it contains this result.",
+      "status": "open"
+    }
+  ],
+  "qualityScores": {
+    "mathematicalSubstance": 4,
+    "originalityAccuracy": 5,
+    "completeness": 7,
+    "framingPrecision": 6,
+    "pedagogicalQuality": 8,
+    "internalConsistency": 6,
+    "overall": 6.0
+  },
+  "suggestedBestFraming": "A pedagogical presentation of Mathlib's derangement theory (Wiedijk #88), providing named wrapper theorems for the recurrence D(n+2)=(n+1)(D(n)+D(n+1)) and the closed-form sum formula, concrete native_decide computations of D(2) through D(6), and two original proofs showing that the identity is never a derangement and that derangements do not form a subgroup of Sn."
+}

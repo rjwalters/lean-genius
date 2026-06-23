@@ -1,0 +1,158 @@
+{
+  "id": "erdos-135",
+  "title": "Erdős Problem #135: Four Points, Five Distances",
+  "slug": "erdos-135",
+  "description": "If any 4 points from A ⊂ ℝ² determine at least 5 distinct distances, must A determine ≫ n² distances? DISPROVED by Tao (2024).",
+  "meta": {
+    "author": "Erdős, Gyárfás",
+    "sourceUrl": "https://erdosproblems.com/135",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos135Problem.lean",
+    "tags": [
+      "erdos",
+      "discrete-geometry",
+      "distinct-distances",
+      "disproved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 135,
+    "erdosUrl": "https://erdosproblems.com/135",
+    "erdosProblemStatus": "solved",
+    "erdosPrizeValue": "$250",
+    "axiomCount": 5,
+    "lineCount": 146,
+    "assumptions": "5 axioms: erdos_135_false (the five-distance conjecture is false, Tao 2024), tao_counterexample (Tao's explicit randomized parabola counterexample), guth_katz_lower_bound (any n points determine ≥ cn/√(log n) distinct distances, Guth-Katz 2015), parallelogram_few_distances (parallelograms determine ≤ 3 distances), tao_avoids_parallelograms (five-distance sets contain no parallelogram). 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 8,
+    "additionalFiles": [
+      "Proofs/Stubs/Erdos135Aristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős and Gyárfás conjectured that local constraints on 4-point configurations would force global distance diversity: if any 4 points determine at least 5 of the 6 possible distinct distances, the total number of distances should be quadratic. This $250-prize problem remained open for decades until Terence Tao disproved it in September 2024 (arXiv:2409.01343). Tao's counterexample, using randomized algebraic curves over finite fields, was part of his broader exploration of erdosproblems.com, partly as a test case for AI-assisted mathematics. The result shows that local constraints on small point subsets cannot guarantee global distance diversity.",
+    "problemStatement": "Let A ⊂ ℝ² be n points such that any 4 points determine at least 5 distinct distances (out of 6 possible). Must A determine ≫ n² total distinct distances?",
+    "text": "If any 4 points from A ⊂ ℝ² determine at least 5 distinct distances, must A determine ≫ n² distances? DISPROVED by Tao (2024).",
+    "proofStrategy": "Tao uses randomized algebraic curves over finite fields. Parabolas (ax+by)² ≡ cx+dy+e (mod p) naturally avoid parallelograms. Random affine transformations and probabilistic deletion handle other forbidden 4-point patterns. The result: O(n²/√(log n)) distances with the five-distance property.",
+    "keyInsights": [
+      "Four points have 6 pairwise distances; the 'five-distance property' requires ≥ 5 distinct",
+      "Parallelograms have only 2-3 distinct distances and must be forbidden",
+      "Points on parabolas automatically avoid parallelograms (algebraic constraint)",
+      "Random affine transformations reduce other forbidden patterns",
+      "The construction achieves O(n²/√(log n)) distances - subquadratic but not by much"
+    ],
+    "prerequisites": [
+      "Combinatorics (counting, extremal problems)",
+      "Number theory (primes, divisibility, arithmetic functions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement",
+      "summary": "Erdős conjecture on four-point distance property, Tao's 2024 disproof",
+      "startLine": 9,
+      "endLine": 36,
+      "mathContext": "Verified: Erdős conjecture on four-point distance property, Tao's 2024 disproof"
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Points and Distances",
+      "summary": "Point, sqDist, distinctDistances, distanceCount definitions",
+      "startLine": 48,
+      "endLine": 64,
+      "mathContext": "Formal definition: Point, sqDist, distinctDistances, distanceCount definitions"
+    },
+    {
+      "id": "five-distance-property",
+      "title": "The Five-Distance Property",
+      "summary": "fourPointDistances, HasFiveDistanceProperty — forbids degenerate 4-point configs",
+      "startLine": 65,
+      "endLine": 78,
+      "mathContext": "Mathematical content: fourPointDistances, HasFiveDistanceProperty — forbids degenerate 4-point configs"
+    },
+    {
+      "id": "conjecture-false",
+      "title": "Erdős's Conjecture (FALSE)",
+      "summary": "ErdosConjecture135 definition, erdos_135_false axiom, erdos_135_disproved theorem",
+      "startLine": 79,
+      "endLine": 106,
+      "mathContext": "Formal definition: ErdosConjecture135 definition, erdos_135_false axiom, erdos_135_disproved theorem"
+    },
+    {
+      "id": "forbidden-patterns",
+      "title": "Forbidden Four-Point Patterns",
+      "summary": "InGeneralPosition, IsParallelogram, IsForbiddenPattern, parallelogram_forbidden",
+      "startLine": 107,
+      "endLine": 146,
+      "mathContext": "Mathematical content: InGeneralPosition, IsParallelogram, IsForbiddenPattern, parallelogram_forbidden"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #135 is DISPROVED. Tao (2024) constructed n-point sets with the five-distance property but only O(n²/√(log n)) distinct distances, disproving the Ω(n²) conjecture.",
+    "implications": "**Distinct Distances and the Guth-Katz Breakthrough**: The problem connects to the Erdős distinct distances conjecture, resolved by Guth and Katz (2015) who proved $n$ points in the plane determine $\\Omega(n/\\log n)$ distinct distances using algebraic methods (polynomial partitioning). The $\\sqrt{\\log n}$ factor appearing in this problem's bounds echoes the logarithmic correction in Guth-Katz, suggesting shared structural barriers.\n\n**Local-Global Phenomena**: The key insight — that local constraints on 4-point configurations don't guarantee global distance diversity — illustrates a fundamental theme in combinatorial geometry: local regularity can coexist with global structure. This parallels the Szemerédi regularity lemma's distinction between local pseudorandomness and global patterns.\n\n**Incidence Geometry**: The problem sits within the broader framework of incidence geometry, connecting to the Szemerédi-Trotter theorem on point-line incidences and the Elekes-Rónyai theorem on expanding polynomials. These algebraic-geometric tools provide the state-of-the-art bounds for distance problems.",
+    "openQuestions": [
+      "What is the exact optimal bound for five-distance sets?",
+      "Can the construction be made deterministic?",
+      "What about higher dimensions or different forbidden patterns?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.Convex.Hull",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Finset",
+      "Metric",
+      "Real"
+    ],
+    "namespace": "Erdos135",
+    "lineCount": 146,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos135Problem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Stubs/Erdos135Aristotle.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-105",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, disproved"
+    },
+    {
+      "targetId": "erdos-1088",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distinct-distances"
+    },
+    {
+      "targetId": "erdos-1089",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, distinct-distances"
+    }
+  ],
+  "references": [
+    {
+      "key": "Er46f",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "On sets of distances of n points",
+      "venue": "American Mathematical Monthly",
+      "year": "1946",
+      "volume": "53",
+      "pages": "248-250",
+      "note": "Original paper posing the four points, five distances problem"
+    }
+  ],
+  "sorries": 0
+}

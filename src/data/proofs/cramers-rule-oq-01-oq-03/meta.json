@@ -1,0 +1,182 @@
+{
+  "id": "cramers-rule-oq-01-oq-03",
+  "title": "Complexity Analysis: Cramer's Rule O(n!) vs Gaussian Elimination O(n³)",
+  "slug": "cramers-rule-oq-01-oq-03",
+  "description": "Formalizes the computational complexity comparison between Cramer's Rule and Gaussian elimination. Defines operation counts for both algorithms, proves n! ≥ n³ for n ≥ 6 by induction, and computes exact operation counts for small systems (n = 1,2,3,4). Cramer's Rule uses (n+1)·detOps(n) + n operations via the Leibniz formula, while Gaussian elimination uses O(n³).",
+  "meta": {
+    "author": "Gabriel Cramer (1750); Carl Friedrich Gauss",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cramer%27s_rule#Complexity",
+    "date": "1750/1800s",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CramersRuleOQ01OQ03.lean",
+    "tags": [
+      "linear-algebra",
+      "complexity",
+      "determinants",
+      "cramer",
+      "algorithms",
+      "research",
+      "open-problem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axiom declarations, 0 sorries. All definitions and key theorems are fully proved including gaussian_cubic_bound (O(n³) bound via term-by-term bounding) and factorial_ge_cube (n! >= n³ for n >= 6).",
+    "lineCount": 228,
+    "theoremCount": 11,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "**Why Cramer's Rule is Beautiful but Impractical**\n\nCramer's Rule was published by Gabriel Cramer in 1750 in his treatise on algebraic curves, providing the first explicit closed-form formula for solving systems of linear equations via ratios of determinants. The rule was considered a triumph of 18th-century algebra. However, the Leibniz formula for determinants (independently developed by Leibniz in the 1690s and later systematized) sums over all n! permutations, making it computationally prohibitive for large n.\n\nGaussian elimination, developed systematically by Carl Friedrich Gauss in the early 1800s (though known in Chinese mathematics as early as 179 CE), solves the same problem in O(n³) operations. The complexity gap — n! vs n³ — was not formalized until the 20th century with the development of computational complexity theory. Modern numerical linear algebra uses LU decomposition (a refined Gaussian elimination) with O(n³) arithmetic and robust pivoting strategies.\n\nDespite its impracticality for computation, Cramer's Rule remains theoretically essential: it provides the adjugate matrix identity A⁻¹ = adj(A)/det(A), underlies the proof of the Cayley-Hamilton theorem, and gives explicit differentiability of solutions with respect to parameters.",
+    "problemStatement": "**Problem Statement**\n\nCan the complexity analysis (O(n!) vs O(n³)) for Cramer's Rule be formalized in Lean 4?\n\n**Answer**: Yes. This file formalizes operation counts for both algorithms and proves the key asymptotic result n! ≥ n³ for n ≥ 6.",
+    "text": "Formalizes the complexity comparison between Cramer's Rule (O(n!)) and Gaussian elimination (O(n³)).",
+    "proofStrategy": "**Approach**\n\n1. Count operations in Leibniz formula: n! summands × (n-1) multiplications each\n2. Count Cramer operations: (n+1) determinants + n divisions\n3. Count Gaussian operations via summation formulas\n4. Prove n! ≥ n³ for n ≥ 6 by strong induction\n5. Compute exact counts for n = 1,2,3,4",
+    "keyInsights": [
+      "**Exact counts reveal the gap**: At n = 4, Cramer uses 479 operations vs ~20 for Gaussian. At n = 10, Cramer needs ~40 million vs ~1000 for Gaussian. The gap grows super-exponentially.",
+      "**Inductive proof of factorial dominance**: The key step n³ ≥ (n+1)² for n ≥ 3 (equivalently n²(n-1) ≥ 2n+1) makes the induction work. The `nlinarith` tactic handles the polynomial inequality automatically.",
+      "**Cramer's theoretical value**: Despite O(n!) complexity, Cramer's Rule provides closed-form solutions essential for the adjugate matrix identity A⁻¹ = adj(A)/det(A) and the algebraic proof of the Cayley-Hamilton theorem.",
+      "**Term-by-term bounding for Gaussian O(n³)**: The Lean proof of `gaussian_cubic_bound` uses a crude but elegant approach — bound each term of the two summations by n², sum n-1 and n terms respectively, giving (n-1)n² + n² = n³. A tighter bound of n³/3 would require a closed-form summation identity.",
+      "**perm_count: a one-line bridge**: The theorem `perm_count : Fintype.card (Equiv.Perm (Fin n)) = n!` follows directly from `Fintype.card_perm` in Mathlib. This single-line proof connects abstract algebra (symmetric group) to combinatorics (factorial), illustrating how Mathlib's modular structure makes such connections trivial."
+    ],
+    "prerequisites": [
+      "Linear algebra: determinants, Cramer's Rule, Gaussian elimination",
+      "Combinatorics: factorial, permutations",
+      "Complexity theory: operation counting, asymptotic notation"
+    ]
+  },
+  "sections": [
+    {
+      "id": "part1-det-count",
+      "title": "Part I: Operation Count for Determinant via Leibniz Formula",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Module overview plus the Leibniz-formula operation model: perm_count (|S_n| = n!), the definitions leibnizSummands/multsPerSummand/detMultiplications/detAdditions/detOperations, and det_operations_formula = n!(n-1) + (n!-1)."
+    },
+    {
+      "id": "part2-cramer-count",
+      "title": "Part II: Operation Count for Cramer's Rule",
+      "startLine": 63,
+      "endLine": 84,
+      "summary": "cramerOperations n = (n+1)·detOperations n + n, with cramer_lower_bound: at least (n+1)(n!-1) operations for n >= 2."
+    },
+    {
+      "id": "part3-gaussian-count",
+      "title": "Part III: Operation Count for Gaussian Elimination",
+      "startLine": 85,
+      "endLine": 136,
+      "summary": "forwardElimOps/backSubOps/gaussianOperations definitions, back_sub_formula = n(n-1)/2, and gaussian_cubic_bound: Gaussian elimination is O(n^3) (bounded by n^3 for n >= 1)."
+    },
+    {
+      "id": "part4-factorial-dominates",
+      "title": "Part IV: Factorial Dominates Polynomial",
+      "startLine": 137,
+      "endLine": 162,
+      "summary": "factorial_ge_cube: n! >= n^3 for n >= 6, by induction with the m^3 >= (m+1)^2 step -- the key asymptotic dominance making Cramer's Rule impractical."
+    },
+    {
+      "id": "part5-crossover",
+      "title": "Part V: Exact Crossover Point",
+      "startLine": 163,
+      "endLine": 187,
+      "summary": "Exact small-n Cramer operation counts: cramer_ops_2 = 11, cramer_ops_3 = 71, cramer_ops_4 = 479, locating the crossover with O(n^3) around n = 4-5."
+    },
+    {
+      "id": "part6-when-useful",
+      "title": "Part VI: When IS Cramer's Rule Useful?",
+      "startLine": 188,
+      "endLine": 211,
+      "summary": "cramer_ops_1 = 1 and singleComponentCramer / single_component_formula (one extra determinant per component) -- when Cramer is competitive: tiny systems, single-component, or symbolic/theoretical use."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 212,
+      "endLine": 228,
+      "summary": "Recap of the formalized results (perm_count, det_operations_formula, cramer_lower_bound, factorial_ge_cube, exact counts 1/11/71/479, gaussian_cubic_bound) and #check exports."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the complexity gap between Cramer's Rule and Gaussian elimination. The key result is the fully proved factorial_ge_cube (n! ≥ n³ for n ≥ 6), along with exact operation counts for small n demonstrating the practical crossover.",
+    "implications": "The formalization shows that while Cramer's Rule is theoretically beautiful (closed-form, connection to adjugate/Cayley-Hamilton), it is computationally impractical for systems larger than about 4×4.",
+    "openQuestions": [
+      "Can the cramer_exceeds_gaussian comparison theorem be formalized directly?",
+      "What is the exact crossover point where Gaussian beats Cramer?",
+      "Can LU decomposition operation counts be formalized similarly?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "factorial_ge_cube",
+      "type": "core",
+      "description": "n! ≥ n³ for n ≥ 6 — the key asymptotic dominance result",
+      "leanType": "∀ n ≥ 6, n ! ≥ n ^ 3"
+    },
+    {
+      "name": "perm_count",
+      "type": "supporting",
+      "description": "|Sₙ| = n! — number of permutations equals factorial",
+      "leanType": "Fintype.card (Equiv.Perm (Fin n)) = n !"
+    },
+    {
+      "name": "cramer_ops_4",
+      "type": "supporting",
+      "description": "Cramer's Rule on a 4×4 system requires exactly 479 operations",
+      "leanType": "cramerOperations 4 = 479"
+    },
+    {
+      "name": "cramer_lower_bound",
+      "type": "supporting",
+      "description": "Cramer uses at least (n+1)(n!-1) operations",
+      "leanType": "∀ n ≥ 2, cramerOperations n ≥ (n+1)*(n!-1)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule",
+      "relationship": "extends",
+      "description": "Extends the Cramer's Rule formalization with complexity analysis"
+    },
+    {
+      "targetId": "cramers-rule-oq-01",
+      "relationship": "extends",
+      "description": "Extends OQ-01 (Cayley-Hamilton connection) with the complexity perspective"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "BigOperators"
+    ],
+    "namespace": "CramersRuleComplexity",
+    "lineCount": 228,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "substantiveTheoremCount": 10,
+    "sorryTheorems": 0,
+    "definitionCount": 10,
+    "mainTheorems": [
+      {
+        "name": "factorial_ge_cube",
+        "type": "proved",
+        "description": "n! ≥ n³ for n ≥ 6"
+      },
+      {
+        "name": "cramer_ops_4",
+        "type": "proved",
+        "description": "Cramer on 4×4 uses 479 ops"
+      },
+      {
+        "name": "gaussian_cubic_bound",
+        "type": "proved",
+        "description": "Gaussian elimination is O(n³)"
+      }
+    ],
+    "path": "Proofs/CramersRuleOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

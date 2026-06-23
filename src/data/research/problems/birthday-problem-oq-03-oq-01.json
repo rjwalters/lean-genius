@@ -1,0 +1,227 @@
+{
+  "slug": "birthday-problem-oq-03-oq-01",
+  "title": "Exact k=3 birthday coincidence threshold",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "Define extensionCount for no-triple assignments below the k=3 pigeonhole bound and prove the day-type decomposition supporting recursive exact-threshold counts.",
+    "plain": "Build the exact-counting framework for k=3 birthday coincidences: classify empty, single, double, and full days, then count legal extensions of no-triple assignments.",
+    "whyMatters": [
+      "Supports recursive exact-threshold computation for the first n with triple-collision probability above one half.",
+      "Separates the extension-counting framework from downstream numeric threshold and asymptotic work."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "fullDays and extensionCount are defined for the k-way framework.",
+      "Below the pigeonhole limit, not all days are full.",
+      "For k=3, full days are exactly doubled days.",
+      "A valid no-triple assignment below 2*d has a positive extension count.",
+      "Empty, single, and double day counts partition the d days."
+    ],
+    "open": [],
+    "goal": "Completed extension-counting framework for exact k=3 birthday calculations."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-18T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Complete extension-counting framework for k=3: the Lean file defines fibers, day types, full days, and extensionCount; proves that below 2*d a valid no-triple assignment has a legal extension; and proves the empty/single/double day counts sum to d.",
+    "blockers": [],
+    "nextAction": "No Lean action for this framework; downstream exact and asymptotic work is tracked in child slugs.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: BirthdayProblemOQ03OQ01.lean contains the extension-counting framework for k=3 no-triple assignments.",
+    "builtItems": [
+      "fullDays and extensionCount definitions.",
+      "fullDays_lt_d and extensionCount_pos.",
+      "k=3 identification of full days with doubled days.",
+      "Day-type partition for empty, single, and double days."
+    ],
+    "insights": [
+      "The file supports exact-threshold computation but intentionally does not close the numeric n=88 calculation by itself."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "No framework action; use child slugs for exact/asymptotic threshold work."
+    ]
+  },
+  "tags": [
+    "probability",
+    "combinatorics",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "birthday-problem",
+    "birthday-problem-oq-01",
+    "birthday-problem-oq-01-oq-01",
+    "birthday-problem-oq-02",
+    "birthday-problem-oq-02-oq-01",
+    "birthday-problem-oq-03",
+    "birthday-problem-oq-03-oq-01",
+    "birthday-problem-oq-03-oq-01-oq-01",
+    "birthday-problem-oq-03-oq-01-oq-02",
+    "birthday-problem-oq-03-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T08:49:59.591Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/BirthdayProblem.lean",
+      "filename": "BirthdayProblem.lean",
+      "lineCount": 403,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblem.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemAsymptotics.lean",
+      "filename": "BirthdayProblemAsymptotics.lean",
+      "lineCount": 85,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemAsymptotics.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01.lean",
+      "filename": "BirthdayProblemOQ01.lean",
+      "lineCount": 514,
+      "theoremCount": 53,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ01OQ01.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01Aristotle.lean",
+      "filename": "BirthdayProblemOQ01OQ01Aristotle.lean",
+      "lineCount": 35,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ01OQ02.lean",
+      "lineCount": 205,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02.lean",
+      "filename": "BirthdayProblemOQ02.lean",
+      "lineCount": 301,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02OQ01.lean",
+      "filename": "BirthdayProblemOQ02OQ01.lean",
+      "lineCount": 230,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03.lean",
+      "filename": "BirthdayProblemOQ03.lean",
+      "lineCount": 369,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01.lean",
+      "filename": "BirthdayProblemOQ03OQ01.lean",
+      "lineCount": 246,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ01.lean",
+      "lineCount": 318,
+      "theoremCount": 41,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
+      "lineCount": 2264,
+      "theoremCount": 54,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ03.lean",
+      "filename": "BirthdayProblemOQ03OQ03.lean",
+      "lineCount": 242,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ03.lean"
+    }
+  ]
+}

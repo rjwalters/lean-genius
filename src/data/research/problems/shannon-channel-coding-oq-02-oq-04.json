@@ -1,0 +1,200 @@
+{
+  "slug": "shannon-channel-coding-oq-02-oq-04",
+  "title": "Generalize BSC Capacity Proof to Symmetric Channels",
+  "phase": "OBSERVE",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "C = \\max_{p(x)} I(X; Y) = \\log |\\mathcal{X}| - H(Y|X)",
+    "plain": "Generalize the BSC capacity proof to weakly symmetric channels. The current OQ02OQ04 target has 0 sorries and states the symmetric-channel capacity theorem; parent ShannonChannelCoding.lean still uses axioms for broader channel-coding results.",
+    "whyMatters": [
+      "Generalizes existing gallery work"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "ShannonChannelCodingOQ02OQ04.lean proves symmetric-channel capacity support for the BSC generalization path.",
+      "The target file has 0 axioms and 0 sorries by the current extractor counts."
+    ],
+    "open": [],
+    "goal": "Generalize the BSC capacity proof to weakly symmetric channels - graduated."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-18T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Completed/graduated metadata refreshed: ShannonChannelCodingOQ02OQ04.lean script-counts as 249 lines, 10 theorem/lemma declarations, 1 definition, 0 axioms, and 0 sorries.",
+    "blockers": [],
+    "nextAction": "None for this graduated metadata record; parent integration and broader channel-coding axioms belong to sibling tasks.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Metadata sync 2026-05-18: target file counts are current at 249 script-counted lines, 10 theorem/lemma declarations, 1 definition, 0 axioms, 0 sorries. Extractor note: broad slug matching includes the full ShannonChannelCoding* proof family; line counts use content.split(\"\\n\"), theorem counts ignore private/attributed declarations, and raw sorry counts include comments.",
+    "builtItems": [
+      "ShannonChannelCodingOQ02OQ04.lean: symmetric-channel capacity theorem family",
+      "Broad ShannonChannelCoding leanFiles metadata refreshed to 11 current proof files"
+    ],
+    "insights": [
+      "The current target uses no sorries; parent-level channel-coding axioms are separate from this graduated symmetric-channel record."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: shannon-channel-coding-oq-02-oq-04\n\nGraduated. Metadata refreshed on 2026-05-18. `ShannonChannelCodingOQ02OQ04.lean` contains the weakly symmetric channel capacity support with current extractor counts of 249 lines, 10 theorem/lemma declarations, 1 definition, 0 axioms, and 0 sorries. Parent-level channel-coding axioms are tracked separately.\n"
+  },
+  "tags": [
+    "information-theory",
+    "channel-capacity",
+    "bsc",
+    "symmetric-channels",
+    "entropy"
+  ],
+  "relatedProofs": [
+    "shannon-channel-coding",
+    "shannon-channel-coding-oq-02",
+    "shannon-channel-coding-oq-02-oq-01",
+    "shannon-channel-coding-oq-02-oq-03",
+    "shannon-channel-coding-oq-02-oq-04",
+    "shannon-channel-coding-oq-03",
+    "shannon-channel-coding-oq-04",
+    "shannon-channel-coding-oq-04-oq-01",
+    "shannon-channel-coding-oq-04-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-13T00:54:20.862Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
+  "completed": "2026-04-13T06:39:18.605Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonChannelCoding.lean",
+      "filename": "ShannonChannelCoding.lean",
+      "lineCount": 556,
+      "theoremCount": 16,
+      "axiomCount": 3,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCoding.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ02.lean",
+      "filename": "ShannonChannelCodingOQ02.lean",
+      "lineCount": 298,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
+      "filename": "ShannonChannelCodingOQ02OQ01.lean",
+      "lineCount": 313,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ02OQ01Aristotle.lean",
+      "filename": "ShannonChannelCodingOQ02OQ01Aristotle.lean",
+      "lineCount": 112,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ02OQ03.lean",
+      "filename": "ShannonChannelCodingOQ02OQ03.lean",
+      "lineCount": 163,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ02OQ04.lean",
+      "filename": "ShannonChannelCodingOQ02OQ04.lean",
+      "lineCount": 249,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ03.lean",
+      "filename": "ShannonChannelCodingOQ03.lean",
+      "lineCount": 665,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ03.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ03Aristotle.lean",
+      "filename": "ShannonChannelCodingOQ03Aristotle.lean",
+      "lineCount": 105,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ04.lean",
+      "filename": "ShannonChannelCodingOQ04.lean",
+      "lineCount": 225,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ04.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ04OQ01.lean",
+      "filename": "ShannonChannelCodingOQ04OQ01.lean",
+      "lineCount": 127,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ04OQ01OQ01.lean",
+      "filename": "ShannonChannelCodingOQ04OQ01OQ01.lean",
+      "lineCount": 103,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ04OQ01OQ01.lean"
+    }
+  ]
+}

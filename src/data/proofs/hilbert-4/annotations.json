@@ -1,0 +1,240 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "hilbert-4",
+    "range": {
+      "startLine": 8,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Hilbert's 4th Problem",
+    "content": "**Hilbert's 4th Problem (1900)**:\n\n> Characterize all geometries where straight lines are the shortest paths between points.\n\nMore precisely: Keep ordering and incidence axioms, weaken congruence, omit parallel postulate — what metrics remain?\n\n**Answer (Busemann 1955)**:\n- Minkowski metrics (translation-invariant)\n- Hilbert metrics (projective invariant)\n- Funk-type metrics (asymmetric)",
+    "significance": "key",
+    "mathContext": "Hilbert formulated this in 1900 as part of his famous 23 problems. The problem is unusual among Hilbert's problems in that the answer is a complete classification rather than a yes/no result. The formalization axiomatizes Busemann's three classes and proves key structural properties of Minkowski geometries.",
+    "relatedConcepts": [
+      "geodesics",
+      "Minkowski geometry",
+      "convex bodies",
+      "Hilbert's problems"
+    ],
+    "prerequisites": [
+      "metric spaces",
+      "convexity",
+      "projective geometry"
+    ]
+  },
+  {
+    "id": "ann-minkowski-gauge",
+    "proofId": "hilbert-4",
+    "range": {
+      "startLine": 93,
+      "endLine": 126
+    },
+    "type": "definition",
+    "title": "Minkowski Geometry",
+    "content": "**Minkowski Gauge**: A function f: E → ℝ satisfying:\n- f(x) ≥ 0 (non-negative)\n- f(x) = 0 ⟺ x = 0 (definite)\n- f(rx) = r·f(x) for r ≥ 0 (positive homogeneous)\n- f(x+y) ≤ f(x) + f(y) (triangle inequality)\n\n**Minkowski Geometry**: A normed vector space with convex unit ball.\n\nNamed after Hermann Minkowski (1864-1909), not to be confused with Minkowski spacetime!",
+    "significance": "key",
+    "mathContext": "A Minkowski gauge $f : E \\to \\mathbb{R}$ satisfies: $f(x) \\ge 0$, $f(x)=0 \\iff x=0$, $f(rx)=rf(x)$ for $r \\ge 0$, and $f(x+y) \\le f(x)+f(y)$. The unit ball $B = \\{x : f(x) \\le 1\\}$ is a centrally symmetric convex body. Every norm is a Minkowski gauge, but gauges need not be symmetric: $f(x) \\ne f(-x)$ is allowed.",
+    "relatedConcepts": [
+      "norm",
+      "convex body",
+      "gauge function",
+      "Banach spaces"
+    ],
+    "prerequisites": [
+      "NormedSpace",
+      "Convex",
+      "linear algebra"
+    ]
+  },
+  {
+    "id": "ann-geodesics",
+    "proofId": "hilbert-4",
+    "range": {
+      "startLine": 127,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Geodesics in Minkowski Spaces",
+    "content": "**Key Theorem**: In any Minkowski space, straight lines are geodesics.\n\n**Why?** For points on a line segment:\n$$\\|z - x\\| + \\|y - z\\| = \\|y - x\\|$$\n\nThis is **equality** in the triangle inequality!\n\n**Corollary**: The straight line is the **unique** shortest path between two points in a Minkowski geometry.",
+    "mathContext": "For collinear points $x, z, y$ with $z$ between $x$ and $y$: $f(z-x) + f(y-z) = f(y-x)$. This is equality in the triangle inequality, achieved because $z-x$ and $y-z$ are positive scalar multiples of the same direction $y-x$, and the gauge $f$ is positively homogeneous. The equality $d(x,z) + d(z,y) = d(x,y)$ means the line segment achieves the infimum of all path lengths.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle inequality",
+      "shortest path",
+      "geodesic",
+      "positive homogeneity"
+    ],
+    "prerequisites": [
+      "Minkowski gauge",
+      "triangle inequality",
+      "metric space geodesics"
+    ]
+  },
+  {
+    "id": "ann-hilbert-geometry",
+    "proofId": "hilbert-4",
+    "range": {
+      "startLine": 169,
+      "endLine": 211
+    },
+    "type": "definition",
+    "title": "Hilbert Geometry",
+    "content": "**Hilbert Metric**: On the interior of a convex body K.\n\nFor x, y ∈ int(K), let line(x,y) meet ∂K at p, q (in order p, x, y, q).\n\n$$d_H(x,y) = \\frac{1}{2} \\log \\text{(cross-ratio)}$$\n\n**Key Property**: Geodesics are straight line segments!\n\nThe Hilbert metric is **projectively invariant** — it respects projective transformations.",
+    "mathContext": "$d_H(x,y) = \\frac{1}{2} \\log \\frac{|x-q| \\cdot |y-p|}{|x-p| \\cdot |y-q|}$ where $p, q \\in \\partial K$ are where the line through $x, y$ meets the boundary (ordered $p, x, y, q$). This is half the logarithm of the cross-ratio $(p,x;y,q)$. The Hilbert metric on the interior of an ellipsoid recovers the hyperbolic (Cayley-Klein) metric.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cross-ratio",
+      "projective geometry",
+      "convex domain",
+      "hyperbolic geometry"
+    ],
+    "prerequisites": [
+      "convex bodies",
+      "cross-ratio",
+      "logarithm"
+    ]
+  },
+  {
+    "id": "ann-busemann",
+    "proofId": "hilbert-4",
+    "range": {
+      "startLine": 212,
+      "endLine": 266
+    },
+    "type": "concept",
+    "title": "Busemann's Classification (1955)",
+    "content": "**THE MAIN THEOREM**:\n\nLet d be a continuous metric on an open convex U ⊂ ℝⁿ with straight-line geodesics.\n\nThen d is one of:\n1. **Minkowski metric** (translation-invariant)\n2. **Hilbert metric** (projectively invariant)\n3. **Funk-type metric** (asymmetric)\n\nThis **completely solves** Hilbert's 4th Problem for metrizable geometries!",
+    "mathContext": "Busemann's theorem: every continuous metric on an open convex $U \\subseteq \\mathbb{R}^n$ where geodesics are straight lines falls into exactly one of three classes. The proof uses Busemann's theory of G-spaces (geodesic spaces with local extendability of geodesics). The classification is exhaustive: any such metric is determined by its behavior under translations (Minkowski), projective transformations (Hilbert), or neither (Funk).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Busemann G-spaces",
+      "geodesic spaces",
+      "classification theorems",
+      "projective metrics"
+    ],
+    "prerequisites": [
+      "MetricSpace",
+      "convexity",
+      "projective geometry"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "hilbert-4",
+    "range": {
+      "startLine": 267,
+      "endLine": 319
+    },
+    "type": "insight",
+    "title": "Concrete Examples",
+    "content": "**Euclidean**: ‖x‖₂ = √(Σxᵢ²)\n- Unit ball: round sphere\n- The \"default\" geometry\n\n**Taxicab/Manhattan**: ‖x‖₁ = Σ|xᵢ|\n- Unit ball: cross-polytope (diamond)\n- Distance = sum of coordinate differences\n\n**Chebyshev/Maximum**: ‖x‖∞ = max|xᵢ|\n- Unit ball: hypercube\n- Distance = largest coordinate difference\n\n**All satisfy triangle inequality** ⟹ straight lines are geodesics!",
+    "significance": "supporting",
+    "mathContext": "The $L^p$ norms $\\|x\\|_p = (\\sum |x_i|^p)^{1/p}$ for $p \\ge 1$ all give Minkowski geometries. The unit balls range from the cross-polytope ($p=1$) through the Euclidean sphere ($p=2$) to the hypercube ($p=\\infty$). All have convex unit balls and straight-line geodesics. The Euclidean case ($p=2$) is the unique one with rotational symmetry.",
+    "relatedConcepts": [
+      "Lp norms",
+      "taxicab geometry",
+      "convex polytopes",
+      "unit balls"
+    ],
+    "prerequisites": [
+      "normed spaces",
+      "Lp spaces"
+    ]
+  },
+  {
+    "id": "ann-hamel",
+    "proofId": "hilbert-4",
+    "range": {
+      "startLine": 320,
+      "endLine": 354
+    },
+    "type": "concept",
+    "title": "Hamel's Theorem (1903)",
+    "content": "**First Progress on Hilbert 4**:\n\n**Theorem (Hamel 1903)**: In dimension 2, every Desarguesian projective metric is a Minkowski metric.\n\nThis showed that in the plane, Minkowski geometries are **exactly** the metrics where straight lines are shortest.\n\nHamel's proof uses functional equations and projective geometry.",
+    "mathContext": "Hamel (1903) proved that in $\\mathbb{R}^2$, every Desarguesian projective metric (one where Desargues' theorem holds for the geodesic lines) is a Minkowski metric. This was the first substantial progress on Hilbert's 4th Problem. Hamel's approach used functional equations arising from the projective structure, showing that the Desargues condition forces the metric to be translation-invariant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hamel",
+      "Desargues' theorem",
+      "2D geometry",
+      "functional equations"
+    ],
+    "prerequisites": [
+      "projective geometry",
+      "Desargues' theorem",
+      "functional equations"
+    ]
+  },
+  {
+    "id": "ann-finsler",
+    "proofId": "hilbert-4",
+    "range": {
+      "startLine": 355,
+      "endLine": 388
+    },
+    "type": "concept",
+    "title": "Modern Perspective: Finsler Geometry",
+    "content": "**Finsler Metric**: A smooth function F: TM → ℝ restricting to a Minkowski gauge on each tangent space.\n\nGeneralizes Riemannian geometry: at each point, the \"unit ball\" can be any smooth convex body (not necessarily an ellipsoid).\n\n**Hilbert 4 in Finsler terms**: Characterize Finsler metrics on ℝⁿ with straight-line geodesics = projective Finsler metrics.",
+    "significance": "supporting",
+    "mathContext": "A Finsler metric $F : TM \\to \\mathbb{R}$ restricts to a Minkowski gauge on each tangent space $T_pM$. Riemannian metrics are the special case where $F^2$ is a quadratic form on each fiber (the unit ball is always an ellipsoid). Hilbert's 4th Problem in Finsler terms becomes: classify projective Finsler metrics on $\\mathbb{R}^n$ (those with straight-line geodesics). Álvarez Paiva and Thompson gave a modern treatment using symplectic geometry.",
+    "relatedConcepts": [
+      "Finsler geometry",
+      "tangent bundle",
+      "Álvarez Paiva",
+      "Riemannian geometry"
+    ],
+    "prerequisites": [
+      "differential geometry",
+      "tangent bundles",
+      "Riemannian metrics"
+    ]
+  },
+  {
+    "id": "ann-funk",
+    "proofId": "hilbert-4",
+    "range": {
+      "startLine": 389,
+      "endLine": 412
+    },
+    "type": "definition",
+    "title": "The Funk Metric",
+    "content": "**Funk Metric**: An asymmetric distance on int(K).\n\n$$d_F(x,y) = \\log\\frac{|y-p|}{|x-p|}$$\n\nwhere p is intersection of ray(x→y) with ∂K.\n\n**Relation to Hilbert**: \n$$d_H(x,y) = \\frac{1}{2}(d_F(x,y) + d_F(y,x))$$\n\nThe Hilbert metric is the symmetrized Funk metric!",
+    "mathContext": "$d_F(x,y) = \\log \\frac{|y-p|}{|x-p|}$ where $p = \\text{ray}(x \\to y) \\cap \\partial K$. The Funk metric is asymmetric: $d_F(x,y) \\ne d_F(y,x)$ in general. The symmetrization $d_H(x,y) = \\frac{1}{2}(d_F(x,y) + d_F(y,x))$ recovers the Hilbert metric. Paul Funk introduced this in 1929, predating Busemann's classification.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "asymmetric metric",
+      "Funk metric",
+      "symmetrization",
+      "quasimetric spaces"
+    ],
+    "prerequisites": [
+      "convex bodies",
+      "logarithm",
+      "ray-boundary intersection"
+    ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "hilbert-4",
+    "range": {
+      "startLine": 413,
+      "endLine": 457
+    },
+    "type": "concept",
+    "title": "Problem Status: SOLVED",
+    "content": "**Hilbert's 4th Problem is SOLVED**:\n\n**Timeline**:\n- 1900: Hilbert poses the problem\n- 1903: Hamel solves 2D case\n- 1955: Busemann gives complete classification\n- 2000s: Finsler perspective refined\n\n**The Answer**: Straight-line geodesic metrics are exactly:\n- Minkowski (translation-invariant)\n- Hilbert (projective invariant)\n- Funk-type (asymmetric)\n\nFoundation for modern Finsler geometry and convex analysis.",
+    "significance": "supporting",
+    "mathContext": "Hilbert's 4th Problem has the unusual status of being 'solved' but still generating active research. Busemann's 1955 classification settled the metrizable case, but extensions to non-metrizable geometries and connections to symplectic geometry (via Álvarez Paiva) remain active areas. The formalization captures the key definitions and classification statement with 0 sorries, 6 axioms.",
+    "relatedConcepts": [
+      "solved problems",
+      "Hilbert problems",
+      "geometry classification",
+      "ongoing research"
+    ],
+    "prerequisites": [
+      "all preceding definitions",
+      "mathematical history"
+    ]
+  }
+]

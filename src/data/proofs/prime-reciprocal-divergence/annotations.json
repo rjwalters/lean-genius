@@ -1,0 +1,170 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {
+      "startLine": 1,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Prime Reciprocal Divergence: Wiedijk #81",
+    "content": "**Main Result**:\n\n$$\\sum_{p \\text{ prime}} \\frac{1}{p} = \\frac{1}{2} + \\frac{1}{3} + \\frac{1}{5} + \\frac{1}{7} + \\cdots = \\infty$$\n\n**Significance**: A quantitative strengthening of Euclid's infinitude of primes (~300 BCE). Not only infinitely many primes, but \"dense enough\" for reciprocals to diverge.\n\n**Growth Comparison**:\n- Harmonic series: $H_n \\sim \\ln(n)$\n- Prime reciprocals: $\\sum_{p \\leq n} 1/p \\sim \\ln(\\ln(n)) + M$ where $M \\approx 0.2615$ (Meissel-Mertens constant)\n\n**Historical**: Euler (1737) via his product formula $\\prod_p (1 - 1/p)^{-1} = \\sum_n 1/n$. Erdős later gave a purely elementary proof.",
+    "mathContext": "$\\neg \\text{Summable}(p \\mapsto 1/p)$, equivalently $\\sum_{p \\leq n} 1/p \\to \\infty$ as $n \\to \\infty$",
+    "significance": "key",
+    "relatedConcepts": [
+      "divergent series",
+      "prime distribution",
+      "Euler product formula",
+      "Meissel-Mertens constant"
+    ],
+    "prerequisites": [
+      "summability",
+      "prime numbers",
+      "harmonic series"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {
+      "startLine": 62,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Main Theorem: $\\sum 1/p$ Diverges",
+    "content": "**Prime Reciprocal Divergence**:\n\n`¬ Summable (fun p : Nat.Primes => 1 / (p : ℝ))`\n\nThe function $p \\mapsto 1/p$ over primes is **not summable** — its partial sums grow without bound.\n\n**Two formulations proved**:\n1. `prime_reciprocal_not_summable` — using division $1/p$\n2. `prime_reciprocal_not_summable'` — using inverse $p^{-1}$ (converted via `one_div`)\n\n**Mathlib**: Directly from `Nat.Primes.not_summable_one_div`, which follows Erdős's smooth number argument.",
+    "mathContext": "`¬ Summable (fun p : Nat.Primes => 1 / (p : ℝ))`",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summable",
+      "Nat.Primes",
+      "one_div",
+      "inverse notation"
+    ],
+    "prerequisites": [
+      "summability in Mathlib",
+      "Nat.Primes type",
+      "real division"
+    ]
+  },
+  {
+    "id": "ann-indicator",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {
+      "startLine": 78,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Indicator Function Formulation",
+    "content": "**As Sub-sum of the Harmonic Series**:\n\nUsing set indicator functions:\n$$\\sum_{n=1}^{\\infty} \\mathbf{1}_{\\{p : \\text{Prime}(p)\\}}(n) \\cdot \\frac{1}{n}$$\n\nFor each $n$: the term is $1/n$ if $n$ is prime, else $0$.\n\n**Why important**:\n- Shows the prime reciprocal sum embeds into the harmonic series\n- Both diverge, but the prime sum grows as $\\ln \\ln n$ while the harmonic sum grows as $\\ln n$\n- Uses `Set.indicator` and `not_summable_one_div_on_primes` from Mathlib\n\n**Connection**: Since the prime reciprocal sum is a sub-sum of the harmonic series, its divergence is a *stronger* statement than harmonic divergence.",
+    "mathContext": "$\\sum_n \\mathbf{1}_{\\mathbb{P}}(n) \\cdot n^{-1}$ is not summable",
+    "significance": "key",
+    "relatedConcepts": [
+      "indicator function",
+      "harmonic series",
+      "subset sum",
+      "Set.indicator"
+    ],
+    "prerequisites": [
+      "set indicator functions",
+      "summability",
+      "harmonic series divergence"
+    ]
+  },
+  {
+    "id": "ann-p-series",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {
+      "startLine": 91,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Prime $p$-Series Criterion",
+    "content": "**Sharp Convergence Criterion**:\n\n$$\\text{Summable}(p \\mapsto p^r) \\Leftrightarrow r < -1$$\n\n**Cases**:\n- $r = -1$: **DIVERGES** (our main theorem)\n- $r < -1$: CONVERGES (e.g., $\\sum 1/p^2 < \\infty$)\n- $r > -1$: DIVERGES (even faster)\n\n**Prime zeta function**: $P(s) = \\sum_{p \\text{ prime}} p^{-s}$ converges for $\\text{Re}(s) > 1$ and diverges at $s = 1$. This is the prime analogue of the Riemann zeta function.\n\n**Mathlib**: `Nat.Primes.summable_rpow` provides the biconditional. The special case $r = -1$ is recovered via `norm_num`.",
+    "mathContext": "`Summable (fun p : Nat.Primes => ((p : ℝ) ^ r)) ↔ r < -1`",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime zeta function",
+      "convergence criterion",
+      "Riemann zeta function",
+      "rpow"
+    ],
+    "prerequisites": [
+      "real-valued power functions",
+      "summability criteria",
+      "Nat.Primes type"
+    ]
+  },
+  {
+    "id": "ann-significance",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {
+      "startLine": 111,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Significance for Prime Distribution",
+    "content": "**Series Comparison Table**:\n\n| Series | Result | Asymptotic Growth |\n|--------|--------|-------------------|\n| $\\sum 1/n^2$ | Converges ($\\pi^2/6$) | Bounded |\n| $\\sum 1/n$ | Diverges | $\\sim \\ln(n)$ |\n| $\\sum_{p} 1/p$ | Diverges | $\\sim \\ln(\\ln(n))$ |\n\n**Prime Number Theorem**: $\\pi(n) \\sim n/\\ln(n)$ (Hadamard & de la Vallée Poussin, 1896)\n\nPrimes become rare but remain dense enough for reciprocal divergence. The divergence of $\\sum 1/p$ is strictly weaker than the PNT but still implies the infinitude of primes.\n\n**Key applications**: Mertens' theorems, prime factorization statistics, Brun's theorem ($\\sum_{p \\text{ twin}} 1/p$ converges!), sieve methods.",
+    "mathContext": "$\\sum_{p \\leq n} 1/p = \\ln \\ln n + M + O(1/\\ln n)$ where $M$ is the Meissel-Mertens constant",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prime Number Theorem",
+      "Mertens' theorems",
+      "Brun's theorem",
+      "sieve methods"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "prime counting function",
+      "series comparison"
+    ]
+  },
+  {
+    "id": "ann-convergent-cases",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {
+      "startLine": 128,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "Convergent Case: $\\sum 1/p^2$",
+    "content": "**Contrast**: While $\\sum 1/p$ diverges, $\\sum 1/p^2$ converges!\n\n**Theorem**: `prime_squared_reciprocal_summable : Summable (fun p : Nat.Primes => 1 / ((p : ℝ) ^ 2))`\n\n**Proof technique**: Converts to the $r = -2$ case of the general criterion via:\n1. `prime_power_summable_iff` with `norm_num` to verify $-2 < -1$\n2. Algebraic manipulation using `Real.rpow_neg` and `Real.rpow_two`\n3. Positivity of prime coercions via `p.prop.two_le`\n\n**Prime zeta values**: $P(2) \\approx 0.4522$, $P(3) \\approx 0.1747$, $P(4) \\approx 0.0769$. Unlike $\\zeta(2) = \\pi^2/6$, no closed forms are known for $P(n)$.",
+    "mathContext": "$P(2) = \\sum_p 1/p^2 \\approx 0.4522$ converges; proved via `Nat.Primes.summable_rpow` at $r = -2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime zeta function values",
+      "convergence",
+      "rpow manipulation",
+      "positivity"
+    ],
+    "prerequisites": [
+      "real power functions",
+      "summability criteria",
+      "prime number positivity"
+    ]
+  },
+  {
+    "id": "ann-erdos-proof",
+    "proofId": "prime-reciprocal-divergence",
+    "range": {
+      "startLine": 147,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "Erdős's Elementary Proof",
+    "content": "**Elementary Proof** (Erdős, from \"Proofs from THE BOOK\"):\n\n1. **Assume** $\\sum 1/p$ converges to $S$\n2. **Choose** $k$ so that $\\sum_{p > p_k} 1/p < 1/2$\n3. **Count** $k$-smooth numbers up to $n$ (all prime factors $\\leq p_k$): at most $2^k \\sqrt{n}$\n4. **Count** non-$k$-smooth numbers up to $n$: each has a factor $p > p_k$, so at most $\\sum_{p > p_k} n/p < n/2$\n5. **Conclude**: $n \\leq 2^k \\sqrt{n} + n/2$, so $n/2 \\leq 2^k \\sqrt{n}$, giving $n \\leq 4^{k+1}$\n6. **Contradiction** for $n > 4^{k+1}$!\n\n**Why this is remarkable**: Purely combinatorial — no analysis, no logarithms, no products. Just counting.\n\n**The Mathlib formalization** follows this approach. The `#check` lines verify the three main results typecheck.",
+    "mathContext": "$n \\leq 2^k \\sqrt{n} + n/2 \\Rightarrow n \\leq 4^{k+1}$ — contradiction for large $n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "Proofs from THE BOOK",
+      "combinatorial number theory",
+      "Erdős"
+    ],
+    "prerequisites": [
+      "smooth numbers",
+      "prime factorization",
+      "counting arguments"
+    ]
+  }
+]

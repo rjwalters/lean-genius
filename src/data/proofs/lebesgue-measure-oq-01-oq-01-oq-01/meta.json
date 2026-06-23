@@ -1,0 +1,147 @@
+{
+  "id": "lebesgue-measure-oq-01-oq-01-oq-01",
+  "slug": "lebesgue-measure-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory"
+    ],
+    "namespace": "LebesgueMeasureOQ01OQ01OQ01",
+    "lineCount": 229,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 1,
+    "path": "Proofs/LebesgueMeasureOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "Thomae's Function and Lebesgue's Criterion for Riemann Integrability",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ01OQ01OQ01.lean",
+    "tags": [
+      "measure-theory",
+      "lebesgue-measure",
+      "thomae-function",
+      "popcorn-function",
+      "riemann-integrability",
+      "lebesgue-criterion",
+      "almost-everywhere-continuity",
+      "null-set",
+      "real-analysis",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 229,
+    "theoremCount": 13,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "thomae_continuous_at_irrational: a self-contained proof that Thomae's function is continuous at every irrational, rebuilt against the current Mathlib API (the gallery file previously carrying this had bit-rotted: `div_lt_iff` → `div_lt_iff₀`, `Set.Finite.ofFinset` now needs an iff so `Set.Finite.subset` is used, `one_div_le_one_div_of_le` for the denominator bound, `@insert` induction pattern). The ε–δ argument: pick N with 1/(N+1) < ε; only finitely many rationals of denominator ≤ N lie in [x−1,x+1] (finite_rat_bounded), so they keep a positive distance δ from the irrational x (pos_min_dist); within min(δ,1), a rational point has denominator > N hence value < ε.",
+      "thomae_discontinuitySet_subset: the discontinuity set {x | ¬ContinuousAt thomae x} is contained in the rationals range((↑):ℚ→ℝ) — the contrapositive of continuity at the irrationals.",
+      "rat_range_null: the image of ℚ in ℝ is Lebesgue-null (countable set in the atomless measure volume, via Set.Countable.measure_zero).",
+      "thomae_discontinuitySet_null: **the measure side of Lebesgue's criterion** — the discontinuity set of Thomae's function has Lebesgue measure zero.",
+      "thomae_ae_continuousAt: Thomae's function is continuous almost everywhere — the exact hypothesis of Lebesgue's criterion for Riemann integrability, the part the prior Riemann entry deliberately routed around.",
+      "thomae_integrable / thomae_integral_zero / thomae_integrableOn_Icc / thomae_intervalIntegral_zero: integrability and the integral value 0 (over the line and over [0,1]), recovered self-containedly from a.e.-vanishing.",
+      "thomae_riemann_via_lebesgue_criterion: the criterion packaged — null discontinuity set ∧ integrable ∧ ∫₀¹ = 0; classically, 'Riemann integrable on [0,1] with value 0' obtained through the criterion rather than around it."
+    ],
+    "prerequisites": [
+      "Set.Countable.measure_zero (Mathlib): a countable set is null for any atomless (NoAtoms) measure — turns the rationals into a null set",
+      "MeasureTheory.ae_iff (Mathlib): (∀ᵐ x, p x) ↔ μ {x | ¬ p x} = 0 — converts the null discontinuity set into a.e.-continuity",
+      "measure_mono_null (Mathlib): a subset of a null set is null — the discontinuity set ⊆ rationals",
+      "div_lt_iff₀, one_div_le_one_div_of_le (Mathlib): ordered-field reciprocal manipulations behind the ε–δ continuity bound",
+      "Int.floor_le, Int.le_ceil (Mathlib): integer bracketing of the numerator, behind finite_rat_bounded",
+      "Sibling: lebesgue-measure-oq-01-oq-01-oq-02 (the continuity classification; reproved here because that file has bit-rotted), and …-oq-02-oq-01 (the prior Riemann-integrability entry that sidestepped the criterion)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Countable.measure_zero",
+        "description": "A countable set has measure zero for any NoAtoms measure. Applied to range((↑):ℚ→ℝ) with volume to make the rationals (hence the discontinuity set) null.",
+        "module": "Mathlib.MeasureTheory.Measure.Typeclasses.NoAtoms"
+      },
+      {
+        "theorem": "MeasureTheory.ae_iff",
+        "description": "(∀ᵐ x ∂μ, p x) ↔ μ {x | ¬ p x} = 0. Converts the null discontinuity set into the a.e.-continuity statement (Lebesgue's criterion) and the null nonzero-set into a.e.-vanishing.",
+        "module": "Mathlib.MeasureTheory.Measure.AEDisjoint"
+      },
+      {
+        "theorem": "measure_mono_null",
+        "description": "s ⊆ t → μ t = 0 → μ s = 0. The discontinuity set, contained in the null rationals, is itself null.",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpaceDef"
+      },
+      {
+        "theorem": "div_lt_iff₀",
+        "description": "0 < c → (b / c < a ↔ b < a * c). The current-API replacement for the bit-rotted `div_lt_iff`, used to turn 1/(N+1) < ε into a polynomial inequality.",
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Basic"
+      },
+      {
+        "theorem": "intervalIntegral.integral_congr_ae",
+        "description": "Equal a.e. on the interval ⇒ equal interval integrals. Reduces ∫₀¹ thomae to ∫₀¹ 0 = 0 from a.e.-vanishing.",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "lebesgue-measure-oq-01-oq-01-oq-01-oq-01",
+      "question": "State and prove the *general* Lebesgue criterion in Lean — for an arbitrary bounded f on [a,b], Riemann integrability ⇔ the discontinuity set is null — rather than instantiating it for Thomae's function. This needs a Lean development of the Riemann/Darboux integral (Mathlib currently has only the Bochner/Lebesgue integral and the box-integral), against which Thomae would become a corollary.",
+      "significance": "high"
+    },
+    {
+      "id": "lebesgue-measure-oq-01-oq-01-oq-01-oq-02",
+      "question": "Quantify the discontinuity: prove that the oscillation of Thomae's function at a rational p/q (in lowest terms) is exactly 1/q, and that the set where oscillation ≥ ε is finite in every bounded interval — the finer form of Lebesgue's criterion via the oscillation function.",
+      "significance": "medium"
+    },
+    {
+      "id": "lebesgue-measure-oq-01-oq-01-oq-01-oq-03",
+      "question": "Construct the 2D popcorn function and show it is Lebesgue integrable but not Riemann integrable on the unit square (its discontinuity set has positive planar measure on a line of rationals), giving an explicit Lebesgue-but-not-Riemann example — the parent's third open question.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent: Thomae's (modified Dirichlet) function and its Lebesgue integral 0 via a.e.-zero. Its first open question asks to formalize Riemann integrability via Lebesgue's criterion (measure-zero discontinuities) — answered here on the measure side."
+    },
+    {
+      "targetId": "lebesgue-measure-oq-01-oq-01-oq-02",
+      "relationship": "depends-on",
+      "description": "Sibling that classified the continuity of Thomae's function (continuous at irrationals, discontinuous at rationals). The continuity-at-irrationals result is reproved here self-containedly because that file has bit-rotted against the current Mathlib."
+    },
+    {
+      "targetId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Prior Riemann-integrability entry which proved integrability and ∫₀¹ = 0 through `thomae =ᵐ 0`, explicitly stating it sidestepped the Lebesgue criterion. This entry supplies precisely the criterion it routed around: the null discontinuity set and a.e.-continuity."
+    }
+  ],
+  "references": [
+    {
+      "title": "Sur une généralisation de l'intégrale définie (Lebesgue's criterion)",
+      "author": "Henri Lebesgue",
+      "year": "1902",
+      "venue": "Comptes Rendus / Annali di Matematica",
+      "description": "Lebesgue's theorem: a bounded function on [a,b] is Riemann integrable iff its set of discontinuities has measure zero. The criterion whose measure-theoretic content is formalized here for Thomae's function."
+    },
+    {
+      "title": "Principles of Mathematical Analysis",
+      "author": "Walter Rudin",
+      "year": "1976",
+      "venue": "McGraw-Hill",
+      "description": "Standard reference for Lebesgue's criterion, the oscillation function, and Thomae's (popcorn) function as the canonical Riemann-integrable function with a dense set of discontinuities."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Thomae's function is treated through Lebesgue's criterion for Riemann integrability. Continuity at every irrational is reproved self-containedly (only finitely many rationals of bounded denominator lie near an irrational, at a positive distance), so the discontinuity set {x | ¬ContinuousAt thomae x} is contained in the rationals (thomae_discontinuitySet_subset). The rationals are countable hence Lebesgue-null (rat_range_null), so the discontinuity set is null (thomae_discontinuitySet_null) — the measure side of Lebesgue's criterion — and Thomae's function is continuous almost everywhere (thomae_ae_continuousAt). It is integrable with integral 0 over the line and over [0,1] (thomae_integrable, thomae_integral_zero, thomae_intervalIntegral_zero), packaged as thomae_riemann_via_lebesgue_criterion. 229 lines, 13 theorems, 1 definition, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This answers the first open question of the Thomae grandparent — formalizing the Riemann integrability of Thomae's function via Lebesgue's criterion — by supplying exactly the criterion's measure-theoretic content (the null discontinuity set and a.e.-continuity) that the prior Riemann entry explicitly sidestepped in favor of the cheaper `thomae =ᵐ 0` route. Because Mathlib has no first-class Riemann/Darboux integral or general Lebesgue-criterion lemma, the genuinely general statement remains open; here the criterion is realized concretely for the popcorn function, the textbook example where it bites. A side effect is a self-contained, current-API proof of continuity-at-irrationals that repairs the bit-rotted continuity file.",
+    "openQuestions": [
+      "Formalize the general Lebesgue criterion (bounded f on [a,b] Riemann integrable ⇔ discontinuities null), which requires a Lean Riemann/Darboux integral.",
+      "Prove the oscillation of Thomae at p/q is exactly 1/q and that {oscillation ≥ ε} is finite per bounded interval.",
+      "Build the 2D popcorn function as an explicit Lebesgue-but-not-Riemann integrable example on the unit square."
+    ]
+  }
+}

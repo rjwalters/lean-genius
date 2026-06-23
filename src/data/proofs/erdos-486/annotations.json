@@ -1,0 +1,217 @@
+[
+  {
+    "id": "ann-e486-header",
+    "proofId": "erdos-486",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #486** asks a fundamental question about integer sequences: if you forbid certain residue classes modulo each number n, must the remaining integers have a well-defined 'logarithmic density'?\n\nThis is an **open problem**—no one has proved or disproved it yet. The problem generalizes classical results about divisibility-defined sets.",
+    "mathContext": "The problem statement: for each $n$, choose forbidden residues $X_n \\subseteq \\mathbb{Z}/n\\mathbb{Z}$. Let $B$ be integers avoiding all forbidden classes. Does $\\lim_{x\\to\\infty} \\frac{1}{\\log x} \\sum_{m \\in B,\\, m < x} \\frac{1}{m}$ exist?",
+    "significance": "key",
+    "relatedConcepts": [
+      "logarithmic density",
+      "modular avoidance",
+      "Erdős problems",
+      "analytic number theory"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "density of integer sequences",
+      "limits"
+    ]
+  },
+  {
+    "id": "ann-e486-imports",
+    "proofId": "erdos-486",
+    "range": {
+      "startLine": 19,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Imports and Classical Logic",
+    "content": "We import the full Mathlib library and enable **classical logic**. Classical logic provides the `Decidable` instances needed for set membership predicates—essential when working with arbitrary sets where decidability isn't constructively provable.",
+    "mathContext": "The `open scoped Classical` command makes all propositions decidable, allowing us to use operations like filtering sets by arbitrary predicates without constructive proofs of decidability.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "classical logic",
+      "law of excluded middle",
+      "decidability"
+    ],
+    "prerequisites": [
+      "propositional logic",
+      "constructive vs classical logic"
+    ]
+  },
+  {
+    "id": "ann-e486-logsum",
+    "proofId": "erdos-486",
+    "range": {
+      "startLine": 35,
+      "endLine": 38
+    },
+    "type": "definition",
+    "title": "Logarithmic Sum",
+    "content": "The **logarithmic sum** of a set A up to x is the sum of 1/n for all n in A with 1 ≤ n ≤ x. This differs from counting (which sums 1s) by weighting smaller integers more heavily.\n\nFor example, if A = {1,2,3,4}, the logarithmic sum up to 4 is 1/1 + 1/2 + 1/3 + 1/4 ≈ 2.08.",
+    "mathContext": "$\\text{logSum}(A, x) = \\sum_{n \\in A,\\, 0 < n \\leq x} \\frac{1}{n}$. We filter the range $[0,x]$ to elements in $A$ with $n > 0$ (avoiding division by zero). For $A = \\mathbb{N}$, this is the harmonic sum $H_x \\sim \\ln x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic series",
+      "partial sums",
+      "Finset.sum",
+      "divergence of harmonic series"
+    ],
+    "prerequisites": [
+      "harmonic series",
+      "Finset operations in Lean",
+      "real division"
+    ]
+  },
+  {
+    "id": "ann-e486-haslogdensity",
+    "proofId": "erdos-486",
+    "range": {
+      "startLine": 40,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "Logarithmic Density",
+    "content": "A set A has **logarithmic density d** if the ratio of its logarithmic sum to log(x) approaches d as x→∞. Intuitively, if d = 1/2, then 'half' the harmonic weight belongs to A.\n\nLogarithmic density is **weaker** than natural density—more sets have logarithmic density than natural density.",
+    "mathContext": "$\\text{HasLogDensity}(A, d) \\iff \\lim_{x \\to \\infty} \\frac{\\text{logSum}(A,x)}{\\log x} = d$. Uses `Filter.Tendsto` for the limit definition. The normalization by $\\log x$ works because the full harmonic sum $H_x \\sim \\ln x$ by Euler's asymptotic formula.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "asymptotic density",
+      "natural density",
+      "Euler's constant"
+    ],
+    "prerequisites": [
+      "limits of sequences",
+      "Filter theory in Mathlib",
+      "logarithmic asymptotics"
+    ]
+  },
+  {
+    "id": "ann-e486-avoidance",
+    "proofId": "erdos-486",
+    "range": {
+      "startLine": 52,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Modular Avoidance Set",
+    "content": "The **modular avoidance set** B consists of all natural numbers m that avoid every forbidden residue class. For each modulus n, we have a set X_n of 'forbidden' residues, and m is in B if m mod n is never in X_n.\n\nExample: If X_6 = {0,3}, then 1,2,4,5,7,8,10,11,... are in B (avoiding multiples of 3 and 6).",
+    "mathContext": "$\\text{avoidanceSet}(X) = \\{m \\in \\mathbb{N} : \\forall n,\\, (m \\bmod n) \\notin X_n\\}$. Uses Lean's coercion from $\\mathbb{N}$ to $\\text{ZMod}\\; n$ for the modular reduction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZMod",
+      "residue classes",
+      "sieve methods",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "ZMod type in Lean",
+      "set-builder notation"
+    ]
+  },
+  {
+    "id": "ann-e486-conjecture",
+    "proofId": "erdos-486",
+    "range": {
+      "startLine": 67,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "The Main Conjecture",
+    "content": "**Erdős Problem #486** (OPEN): For ANY choice of forbidden residue sets X_n, the modular avoidance set B has a logarithmic density.\n\nThis is stated as an `axiom` because it's unproven. Using axiom makes the open status explicit in the Lean formalization—we're asserting without proof.",
+    "mathContext": "$\\forall X : (n : \\mathbb{N}) \\to \\mathcal{P}(\\mathbb{Z}/n\\mathbb{Z}),\\; \\exists d \\in \\mathbb{R},\\; \\text{HasLogDensity}(\\text{avoidanceSet}(X), d)$. The conjecture quantifies over ALL possible choices of forbidden sets, making it vastly more general than the Davenport-Erdős special case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open conjecture",
+      "axiom declaration",
+      "universal quantification",
+      "existential density"
+    ],
+    "prerequisites": [
+      "logarithmic density",
+      "modular avoidance sets",
+      "Lean axiom semantics"
+    ]
+  },
+  {
+    "id": "ann-e486-zeroavoid",
+    "proofId": "erdos-486",
+    "range": {
+      "startLine": 85,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Zero-Avoidance Set",
+    "content": "The **zero-avoidance set** for A is the special case where X_n = {0} for n in A. This means avoiding all integers divisible by any element of A.\n\nExample: If A = {2,3}, the zero-avoidance set is numbers not divisible by 2 or 3: {1,5,7,11,13,...}.",
+    "mathContext": "$\\text{zeroAvoidanceSet}(A) = \\{m \\in \\mathbb{N} : \\forall n \\in A,\\; n \\nmid m \\text{ or } n = 0\\}$. The $n=0$ case handles the edge case where $0 \\in A$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "divisibility",
+      "Eratosthenes sieve",
+      "coprimality",
+      "multiplicative number theory"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "set membership",
+      "sieve of Eratosthenes"
+    ]
+  },
+  {
+    "id": "ann-e486-davenport",
+    "proofId": "erdos-486",
+    "range": {
+      "startLine": 89,
+      "endLine": 97
+    },
+    "type": "concept",
+    "title": "Davenport-Erdős Theorem (1936)",
+    "content": "**Davenport and Erdős proved** that zero-avoidance sets always have logarithmic density. This is the foundational result that Problem #486 seeks to generalize.\n\nThe theorem was proved in 1936 with an elementary re-proof in 1951. It establishes that avoiding divisibility by any set of integers yields a set with well-defined logarithmic density.",
+    "mathContext": "$\\forall A \\subseteq \\mathbb{N},\\; \\exists d \\in \\mathbb{R},\\; \\text{HasLogDensity}(\\text{zeroAvoidanceSet}(A), d)$. Stated as axiom pending Mathlib formalization of the 1936 proof.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Davenport-Erdős theorem",
+      "inclusion-exclusion",
+      "Möbius function",
+      "multiplicative functions"
+    ],
+    "prerequisites": [
+      "logarithmic density",
+      "zero-avoidance sets",
+      "elementary number theory"
+    ]
+  },
+  {
+    "id": "ann-e486-natural",
+    "proofId": "erdos-486",
+    "range": {
+      "startLine": 105,
+      "endLine": 108
+    },
+    "type": "definition",
+    "title": "Natural Density",
+    "content": "**Natural density** (or asymptotic density) counts what fraction of integers up to x are in A. It's stronger than logarithmic density—if natural density exists, so does logarithmic density, but not conversely.\n\nExample: Even numbers have natural density 1/2. Primes have natural density 0 (by the Prime Number Theorem).",
+    "mathContext": "$\\text{HasNaturalDensity}(A, d) \\iff \\lim_{n \\to \\infty} \\frac{|A \\cap [1,n]|}{n} = d$. This counts elements rather than summing $1/n$. If natural density $d$ exists, then logarithmic density also equals $d$, but the converse fails.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "asymptotic density",
+      "Schnirelmann density",
+      "upper and lower density",
+      "Prime Number Theorem"
+    ],
+    "prerequisites": [
+      "limits of sequences",
+      "counting functions",
+      "Finset.card"
+    ]
+  }
+]

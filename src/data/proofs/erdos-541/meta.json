@@ -1,0 +1,193 @@
+{
+  "id": "erdos-541",
+  "title": "Erdős Problem #541: Graham's Conjecture on Zero-Sum Subsequences",
+  "slug": "erdos-541",
+  "description": "If a sequence of p residues modulo p has the property that all nonempty zero-sum subsets have the same cardinality r, must at most 2 distinct residues appear in the sequence? This was conjectured by Graham and proved by Erdős-Szemerédi (1976) for large primes, then by Gao-Hamidoune-Wang (2010) for all moduli.",
+  "meta": {
+    "author": "Graham (conjectured), Erdős-Szemerédi (1976, large primes), Gao-Hamidoune-Wang (2010, full proof)",
+    "sourceUrl": "https://erdosproblems.com/541",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos541Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "zero-sum",
+      "modular-arithmetic",
+      "additive-combinatorics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 541,
+    "erdosUrl": "https://erdosproblems.com/541",
+    "erdosProblemStatus": "solved",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod",
+        "description": "Integers modulo n as a ring",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets (noncomputable)",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of HasUniqueZeroSumLength property",
+      "Definition of distinctCount via Set.range cardinality",
+      "Statement of Graham's conjecture as a theorem",
+      "Axiomatization of Gao-Hamidoune-Wang (all moduli) as the sole assumption; Erdős-Szemerédi (large primes, 1976) documented in docstring comment only",
+      "Examples showing constant and two-value sequences satisfy distinctCount ≤ 2",
+      "Connection to Olson's theorem on zero-sum subsequence existence",
+      "Historical context linking to Erdős-Ginzburg-Ziv theorem"
+    ],
+    "dateAdded": "2025-12-22",
+    "prerequisites": [
+      "Zero-sum theory and Davenport constant",
+      "Modular arithmetic and ZMod",
+      "Finset operations for subsequences",
+      "Erdős-Ginzburg-Ziv theorem"
+    ],
+    "lineCount": 167,
+    "axiomCount": 1,
+    "assumptions": [
+      "gao_hamidoune_wang: Graham's conjecture holds for all moduli n (Gao-Hamidoune-Wang 2010)"
+    ],
+    "theoremCount": 2,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Zero-sum problems form a central topic in additive combinatorics. The study asks: given a sequence of elements from an abelian group, when must there exist a subsequence summing to zero?\n\nGraham posed a structural question: if we impose that ALL nonempty zero-sum subsets have the SAME cardinality r, what does this constrain about the sequence? His conjecture was that such rigid structure forces the sequence to use at most 2 distinct residues.\n\nErdős and Szemerédi (1976) proved this for sufficiently large primes. The full result came from Gao, Hamidoune, and Wang (2010), who proved it for ALL moduli n, not just primes.\n\nThis connects to the Erdős-Ginzburg-Ziv theorem (1961), which guarantees that among 2n-1 integers, some n have sum divisible by n.",
+    "problemStatement": "Let $a_1, \\ldots, a_p$ be residues modulo a prime $p$ (not necessarily distinct). Suppose there exists a fixed $r$ such that every nonempty subset $S \\subseteq [p]$ with\n$$\\sum_{i \\in S} a_i \\equiv 0 \\pmod{p}$$\nhas exactly $|S| = r$ elements.\n\n**Graham's Conjecture** (SOLVED): Under these conditions, at most 2 distinct residues appear among the $a_i$.\n\n**History**:\n- Graham posed the question\n- Erdős-Szemerédi (1976) proved it for $p$ sufficiently large\n- Gao-Hamidoune-Wang (2010) proved it for all moduli (not just primes)",
+    "text": "If a sequence of p residues modulo p has the property that all nonempty zero-sum subsets have the same cardinality r, must at most 2 distinct residues appear in the sequence? This was conjectured by Graham and proved by Erdős-Szemerédi (1976) for large primes, then by Gao-Hamidoune-Wang (2010) for all moduli.",
+    "proofStrategy": "Since this is a solved theorem but the proof is quite involved, our formalization:\n\n1. **Defines the key concepts**:\n   - `HasUniqueZeroSumLength p a r`: all nonempty zero-sum subsets have cardinality r\n   - `HasSomeUniqueZeroSumLength p a`: there exists such an r\n   - `distinctCount p a`: count of distinct residues in the sequence\n\n2. **States the main theorem**: `graham_conjecture` asserts distinctCount ≤ 2 given the zero-sum uniformity property\n\n3. **Provides examples**: constant sequences trivially satisfy distinctCount ≤ 1, and two-value sequences satisfy distinctCount ≤ 2\n\n4. **Records related results**: Gao-Hamidoune-Wang (axiomatized), plus docstring mentions of Erdős-Szemerédi (large primes), Olson's theorem (existence), and Erdős-Ginzburg-Ziv\n\nThe main theorem `graham_conjecture` is proved by direct application of the `gao_hamidoune_wang` axiom; it is not a sorry.",
+    "keyInsights": [
+      "**Uniformity Implies Simplicity**: If all zero-sum subsets have the same size, the sequence cannot be 'rich' in distinct values. Three or more distinct residues would allow constructing zero-sums of different cardinalities.",
+      "**Connection to Pigeonhole**: Zero-sum subsequences always exist by the pigeonhole principle on partial sums. Graham asks about the converse constraint.",
+      "**Beyond Primes**: Gao-Hamidoune-Wang's generalization to arbitrary moduli n shows the phenomenon is arithmetic rather than purely prime-specific.",
+      "**Erdős-Ginzburg-Ziv Link**: The EGZ theorem (2n-1 integers contain n summing to 0 mod n) provides the foundation for zero-sum theory.",
+      "**Davenport Constant Connection**: The Davenport constant $D(G)$ is the smallest $\\ell$ such that every sequence of length $\\ell$ over an abelian group $G$ contains a nonempty zero-sum subsequence. Graham's problem asks a complementary question: when zero-sum subsequences exist but are all the same length, what structure is forced on the sequence?"
+    ],
+    "prerequisites": [
+      "Zero-sum theory and Davenport constant",
+      "Modular arithmetic and ZMod",
+      "Finset operations for subsequences",
+      "Erdős-Ginzburg-Ziv theorem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring with problem statement, known results (Erdős-Szemerédi 1976, Gao-Hamidoune-Wang 2010), and Mathlib imports for ZMod, Finset, and Set.ncard.",
+      "mathContext": "Problem: given $a_1, \\ldots, a_p \\in \\mathbb{Z}/p\\mathbb{Z}$ where all nonempty zero-sum subsets have the same cardinality $r$, must $|\\{a_1, \\ldots, a_p\\}| \\leq 2$? **SOLVED** (Gao-Hamidoune-Wang 2010)."
+    },
+    {
+      "id": "setup",
+      "title": "Definitions",
+      "startLine": 27,
+      "endLine": 45,
+      "summary": "Defines HasUniqueZeroSumLength (all nonempty zero-sum subsets have cardinality r), HasSomeUniqueZeroSumLength (existential wrapper), and distinctCount (number of distinct residues in the sequence via Set.range ncard).",
+      "mathContext": "$\\text{HasUniqueZeroSumLength}(p, a, r) :\\iff \\forall S \\neq \\emptyset,\\; \\sum_{i \\in S} a_i = 0 \\Rightarrow |S| = r$. $\\text{distinctCount}(p, a) = |\\{a(i) : i \\in \\text{Fin}\\; p\\}|$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Graham's Conjecture and Partial Results",
+      "startLine": 46,
+      "endLine": 86,
+      "summary": "Axiomatizes gao_hamidoune_wang (all moduli, Gao-Hamidoune-Wang 2010) and proves graham_conjecture by direct application. Erdős-Szemerédi (large primes, 1976) is documented in a docstring comment only; gao_hamidoune_wang is the sole axiom. The main claim: HasSomeUniqueZeroSumLength implies distinctCount ≤ 2.",
+      "mathContext": "$\\text{HasSomeUniqueZeroSumLength}(p, a) \\Rightarrow \\text{distinctCount}(p, a) \\leq 2$. Erdős-Szemerédi: holds for $p \\gg 1$ prime. Gao-Hamidoune-Wang: holds for all $n$."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Key Insight",
+      "startLine": 87,
+      "endLine": 152,
+      "summary": "Examples showing constant (distinctCount ≤ 1) and two-value (distinctCount ≤ 2) sequences satisfy the bound. Comment explaining why 3+ values force zero-sum subsets of different sizes. Includes zero_sum_exists theorem proved by Aristotle via pigeonhole.",
+      "mathContext": "Constant sequence: $\\text{distinctCount} = 1$. Two values: $\\text{range} \\subseteq \\{c, d\\}$, so $\\text{distinctCount} \\leq 2$. Zero-sum existence: partial sums $s_0, \\ldots, s_p$ in $\\mathbb{Z}/p\\mathbb{Z}$ have a collision by pigeonhole."
+    },
+    {
+      "id": "historical",
+      "title": "Historical Context and EGZ",
+      "startLine": 153,
+      "endLine": 167,
+      "summary": "Historical notes on zero-sum theory and the Davenport constant. The Erdős-Ginzburg-Ziv theorem (1961) is mentioned in a closing docstring comment only; no axiom or theorem declaration follows it in the file.",
+      "mathContext": "Erdős-Ginzburg-Ziv (1961): $\\forall a : \\text{Fin}(2n-1) \\to \\mathbb{Z}/n\\mathbb{Z},\\; \\exists S,\\; |S| = n \\wedge \\sum_{i \\in S} a_i = 0$. Tight: $2n-2$ copies of $\\{0, 1\\}$ avoid this."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #541, Graham's Conjecture on zero-sum subsequences. We define the property that all nonempty zero-sum subsets have the same cardinality, state that this implies at most 2 distinct residues, and provide examples and historical context. The main theorem is axiomatized as the full proof is complex.",
+    "implications": "Graham's result reveals that rigid uniformity in zero-sum structure forces near-constancy in the sequence. This is a structural theorem in additive combinatorics with connections to the Davenport constant and subsequence sum problems.",
+    "openQuestions": [
+      "What is the exact threshold for 'sufficiently large' in Erdős-Szemerédi's original proof?",
+      "Are there effective bounds on how the proof complexity depends on the modulus?",
+      "How does this generalize to non-cyclic abelian groups?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Classical",
+      "Finset"
+    ],
+    "namespace": "Erdos541",
+    "lineCount": 167,
+    "axiomCount": 1,
+    "theoremCount": 2,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos541Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Erdős, Paul; Szemerédi, Endre",
+      "title": "On a problem of Graham",
+      "year": "1976",
+      "venue": "Publicationes Mathematicae Debrecen, 23, pp. 123-127",
+      "note": "Proved Graham's conjecture for sufficiently large primes"
+    },
+    {
+      "authors": "Gao, Weidong; Hamidoune, Yahya Ould; Wang, Guoqing",
+      "title": "On zero-sum subsequences of restricted size, IV",
+      "year": "2010",
+      "venue": "Acta Arithmetica, 143, pp. 301-316",
+      "note": "Proved Graham's conjecture for all moduli, completing the result"
+    },
+    {
+      "authors": "Erdős, Paul; Ginzburg, Abraham; Ziv, Abraham",
+      "title": "Theorem in the additive number theory",
+      "year": "1961",
+      "venue": "Bulletin of the Research Council of Israel, 10F, pp. 41-43",
+      "note": "Foundational result: 2n-1 integers contain n summing to 0 mod n"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-1074",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: modular-arithmetic, number-theory"
+    },
+    {
+      "targetId": "erdos-11",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory"
+    }
+  ],
+  "sorries": 0
+}

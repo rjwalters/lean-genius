@@ -1,0 +1,123 @@
+{
+  "slug": "erdos-430",
+  "title": "Erdős #430",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For fixed n, start with a0 = n-1 and recursively choose the largest m < previous, with 1 <= m < n, such that every prime divisor p of m satisfies p > n-m. For all sufficiently large n, must this greedy sequence contain a composite term?",
+    "plain": "Does this greedy sequence of numbers whose prime factors are all large eventually have to hit a composite number for every large n?",
+    "plainEnglish": "Does this greedy sequence of numbers whose prime factors are all large eventually have to hit a composite number for every large n?",
+    "whyMatters": [
+      "Links a greedy rough-number process with a related Erdos Problem #385 formulation.",
+      "The Lean file proves termination and the #385 equivalence while leaving the main eventual-composite claim as one axiom.",
+      "The n=8 example in source only verifies the first two values, so metadata needs modest wording."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Decidability instances for prime-factor and admissibility predicates are provided.",
+      "`example_n8` proves the first two computed values: greedySeq 8 0 = 7 and greedySeq 8 1 = 5.",
+      "`greedySeq_terminates` proves greedySeq n n = 0.",
+      "`erdos_385_equivalence` proves equivalence with the Problem #385-style rough composite existence statement.",
+      "`small_n_all_prime` is proved as a vacuous n <= 1 fact."
+    ],
+    "open": [
+      "The main eventual-composite claim `erdos_430_conjecture` remains the single source axiom.",
+      "The source does not prove exact termination for the historical n=8 narrative."
+    ],
+    "goal": "Keep the main conjecture axiom separate from the proved greedy-sequence infrastructure and equivalence theorem."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-04T00:00:00Z",
+    "iteration": 3,
+    "focus": "S1 (researcher-1, 2026-06-04): added three small-n positive witnesses (hasComposite_5, hasComposite_7, hasComposite_9) verified by native_decide. These document the trivial positive regime (n - 1 composite) to complement the existing example_n8 negative witness (n - 1 prime, sequence all-prime). File 249 → 275 lines; theoremCount 10 → 13. The main eventual-composite claim remains axiomatized (erdos_430_conjecture).",
+    "blockers": [
+      "The main eventual-composite theorem remains open and is axiomatized.",
+      "Local Docker daemon I/O-error state — build verification deferred to Mechanic / Auditor (same precedent as szemeredi-theorem-oq-01 S3 and erdos-951 S4)."
+    ],
+    "nextAction": "(1) Mechanic / Auditor: Docker-build Proofs.Erdos430Problem and confirm 13 theorems, 1 axiom, 0 sorries. (2) Researcher (Forward Lever 2, concrete): add greedySeq_zero_persists + hasCompositeBounded + equivalence proof to make `¬ hasComposite n` decidable, unlocking explicit n ∈ {12, 14, 18, 20, 24, 30, …} negative witnesses (~20-30 lines). (3) Researcher (parallel-slug): claim Erdős #385; the equivalence theorem in this file imports any progress bidirectionally.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "CURRENT: 13 theorem/lemma declarations (was 10), 7 definitions, 1 axiom (erdos_430_conjecture), 0 sorries. Decidability, termination, first n=8 values, the #385 equivalence, the vacuous small-n fact, AND three small-n positive witnesses for n ∈ {5, 7, 9} (S1 researcher-1 2026-06-04) are proved.",
+    "builtItems": [
+      "`allPrimeFactorsExceed`, `IsAdmissible`, `greedyNext`, `greedySeq`, `hasComposite`",
+      "Decidability instances",
+      "`example_n8`",
+      "`greedySeq_le` and `greedySeq_terminates`",
+      "`erdos_385_equivalence`",
+      "`small_n_all_prime`",
+      "S1 (researcher-1, 2026-06-04): hasComposite_5 (greedySeq 5 0 = 4 = 2² composite, native_decide witness)",
+      "S1 (researcher-1, 2026-06-04): hasComposite_7 (greedySeq 7 0 = 6 = 2·3 composite, native_decide witness)",
+      "S1 (researcher-1, 2026-06-04): hasComposite_9 (greedySeq 9 0 = 8 = 2³ composite, native_decide witness)"
+    ],
+    "insights": [
+      "Only the main large-n composite conjecture is axiomatized.",
+      "`example_n8` proves the first two values 7 and 5, not exact stopping or absence of later composite terms.",
+      "Under the current definitions, m=1 is admissible; historical \"then stop\" wording is not represented directly.",
+      "`greedySeq_terminates` proves zero by step n, independent of the main conjecture.",
+      "`small_n_all_prime` is a proved n <= 1 boundary fact, not evidence for a broad small-n phase transition.",
+      "Positive small-n witnesses (hasComposite for n ∈ {5, 7, 9}) are TRIVIAL because greedySeq n 0 = n - 1 and n - 1 is composite — these isolate the real difficulty of the conjecture to the 'n - 1 prime' regime (n ∈ {3, 4, 6, 8, 12, 14, 18, 20, 24, 30, …}).",
+      "example_n8 is the only formally-documented case where the sequence remains all-prime; extending this to a finite set via Forward Lever 2 (decidable bounded hasComposite) is concrete next-step research."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Mechanic / Auditor: Docker-build Proofs.Erdos430Problem and confirm 13 theorems, 1 axiom, 0 sorries (local Docker unavailable on this host).",
+      "Researcher (Forward Lever 2): add greedySeq_zero_persists + hasCompositeBounded + equivalence to unlock decidable `¬ hasComposite n` for explicit n. ~20-30 lines.",
+      "Researcher (parallel-slug): claim Erdős #385; the existing equivalence theorem in this file imports any progress bidirectionally.",
+      "Avoid claiming all deep results are axiomatized; only `erdos_430_conjecture` is."
+    ],
+    "markdown": "# Erdős #430 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFix some integer $n$ and define a decreasing sequence in $[1,n)$ by $a_1=n-1$ and, for $k\\geq 2$, letting $a_k$ be the greatest integer in $[1,a_{k-1})$ such that all of the prime factors of $a_k$ are $>n-a_k$.\n\nIs it true that, for sufficiently large $n$, not all of this sequence can be prime?\n\n\n\nErd\\H{o}s and Graham write 'preliminary calculations made by Selfridge indicate that this is the case but no proof is in sight'. For example if $n=8$ we have $a_1=7$ and $a_2=5$ and then must stop.\n\nSarosh Adenwalla has observed that this problem is equivalent to (the first part of) [385]. Indeed, assuming a positive answer to that, for all large $n$, there exists a composite $m<n$ such that all primes dividing $m$ are $>n-m$. It follows that such an $m$ is equal to some $a_i$ in the sequence defined for $[1,n)$, and $m$ is composite by assumption.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #385\n- Problem #429\n- Problem #431\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "prime-factorization",
+    "greedy-algorithms",
+    "rough-numbers",
+    "open"
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-43",
+    "erdos-430"
+  ],
+  "references": {
+    "papers": [
+      "Erdos-Graham-Selfridge problem context"
+    ],
+    "urls": [
+      "https://erdosproblems.com/430"
+    ],
+    "mathlib": [
+      "Nat.Prime",
+      "Nat.factorization",
+      "Finset.sup",
+      "native_decide"
+    ]
+  },
+  "started": "2026-01-13T02:41:06.677Z",
+  "lastUpdate": "2026-06-04T00:00:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos430Problem.lean",
+      "filename": "Erdos430Problem.lean",
+      "lineCount": 275,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos430Problem.lean"
+    }
+  ]
+}

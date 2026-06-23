@@ -1,0 +1,256 @@
+[
+  {
+    "id": "ann-e912-header",
+    "proofId": "erdos-912",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Problem Overview: Distinct Exponents in n!",
+    "content": "**Erdős Problem #912: OPEN**\n\nIf n! = ∏ pᵢ^{kᵢ}, let h(n) count distinct exponents kᵢ.\n\n**Question:** Does h(n) ~ c·√(n/log n) for some c > 0?\n\n**Known:** h(n) ≍ √(n/log n) (Erdős-Selfridge, 1982)\n**Conjectured:** c = √(2π) ≈ 2.506 (Tao, Cramér model)",
+    "mathContext": "The prime factorization $n! = \\prod_{p \\leq n} p^{k_p}$ has exponents $k_p = \\sum_{j \\geq 1} \\lfloor n/p^j \\rfloor$ (Legendre's formula). The function $h(n) = |\\{k_p : p \\leq n, p \\text{ prime}\\}|$ counts how many distinct values appear. Erdős and Selfridge proved $h(n) \\asymp \\sqrt{n/\\log n}$; the open question asks whether $h(n)/\\sqrt{n/\\log n}$ converges to a specific constant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorials",
+      "prime-factorization",
+      "Legendre-formula",
+      "asymptotic-analysis"
+    ],
+    "prerequisites": [
+      "padicValNat",
+      "Nat.factorial",
+      "Real.sqrt",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-e912-exponent",
+    "proofId": "erdos-912",
+    "range": {
+      "startLine": 49,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "Exponent in Factorial",
+    "content": "**exponentInFactorial p n:**\n\nThe p-adic valuation of n!, i.e., the exponent kₚ where p^{kₚ} ‖ n!.\n\nDefined as `padicValNat p n.factorial`, which computes Legendre's formula: ∑ⱼ floor(n/p^j).",
+    "mathContext": "Legendre's formula (1808): $v_p(n!) = \\sum_{j=1}^{\\infty} \\lfloor n/p^j \\rfloor = \\frac{n - s_p(n)}{p-1}$ where $s_p(n)$ is the sum of digits of $n$ in base $p$. The implementation uses Mathlib's `padicValNat` applied to `n.factorial`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-adic-valuation",
+      "Legendre-formula",
+      "digit-sum"
+    ],
+    "prerequisites": [
+      "padicValNat",
+      "Nat.factorial"
+    ]
+  },
+  {
+    "id": "ann-e912-primes-and-multiset",
+    "proofId": "erdos-912",
+    "range": {
+      "startLine": 63,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Primes and Exponent Multiset",
+    "content": "**primesInFactorial n**: The finite set of primes p ≤ n, computed as `(Finset.range (n+1)).filter Nat.Prime`.\n\n**exponentMultiset n**: The image of `primesInFactorial n` under `exponentInFactorial`, giving the set of distinct exponents in n!'s factorization.",
+    "mathContext": "The primes dividing $n!$ are exactly the primes $p \\leq n$, since $p | n!$ iff $p \\leq n$ (by the definition of factorial). The `Finset.image` operation automatically removes duplicate exponents, so `exponentMultiset` is already a set of distinct values.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.filter",
+      "Finset.image",
+      "prime-factorization"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Finset.filter",
+      "Nat.Prime",
+      "exponentInFactorial"
+    ]
+  },
+  {
+    "id": "ann-e912-h",
+    "proofId": "erdos-912",
+    "range": {
+      "startLine": 77,
+      "endLine": 82
+    },
+    "type": "definition",
+    "title": "The Function h(n)",
+    "content": "**h(n):**\n\nThe number of distinct values among the exponents kₚ in n! = ∏ pᵢ^{kᵢ}. Defined as `(exponentMultiset n).card`.\n\nThis measures the 'diversity' of exponents in the prime factorization.",
+    "mathContext": "Example: $10! = 2^8 \\cdot 3^4 \\cdot 5^2 \\cdot 7^1$, so the exponents are $\\{8, 4, 2, 1\\}$ and $h(10) = 4$. More generally, $h(n) = |\\{v_p(n!) : p \\leq n, p \\text{ prime}\\}|$. Since `exponentMultiset` uses `Finset.image`, duplicates are already eliminated and `.card` gives the count of distinct values.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distinct-values",
+      "prime-factorization",
+      "Finset.card"
+    ],
+    "prerequisites": [
+      "exponentMultiset"
+    ]
+  },
+  {
+    "id": "ann-e912-lower",
+    "proofId": "erdos-912",
+    "range": {
+      "startLine": 88,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "Erdős-Selfridge Lower Bound",
+    "content": "**erdos_selfridge_lower_bound:**\n\nh(n) ≥ c₁ · √(n/log n) for some c₁ > 0 and all sufficiently large n.\n\nAxiomatized: the proof uses analytic number theory (prime counting estimates). From Erdős, Congr. Numer. (1982).",
+    "mathContext": "The axiom states $\\exists c_1 > 0, \\exists N_0, \\forall n \\geq N_0, h(n) \\geq c_1 \\sqrt{n/\\log n}$. The proof exploits that primes $p$ in different ranges $[n^{1/(k+1)}, n^{1/k}]$ contribute distinct exponents $k$ to $n!$, and the number of such ranges grows as $\\sqrt{n/\\log n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower-bound",
+      "asymptotic-analysis",
+      "prime-counting"
+    ],
+    "prerequisites": [
+      "h",
+      "Real.sqrt",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-e912-upper",
+    "proofId": "erdos-912",
+    "range": {
+      "startLine": 97,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Erdős-Selfridge Upper Bound",
+    "content": "**erdos_selfridge_upper_bound:**\n\nh(n) ≤ c₂ · √(n/log n) for some c₂ > 0 and all sufficiently large n.\n\nAxiomatized: together with the lower bound, establishes h(n) ≍ √(n/log n).",
+    "mathContext": "The axiom states $\\exists c_2 > 0, \\exists N_0, \\forall n \\geq N_0, h(n) \\leq c_2 \\sqrt{n/\\log n}$. The upper bound follows from the observation that the largest exponent $v_2(n!) \\approx n$, so the $h(n)$ distinct exponents span at most $[1, n]$, but they must satisfy number-theoretic constraints limiting their count.",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper-bound",
+      "asymptotic-analysis"
+    ],
+    "prerequisites": [
+      "h",
+      "Real.sqrt",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-e912-asymptotic",
+    "proofId": "erdos-912",
+    "range": {
+      "startLine": 110,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Combined Asymptotic (Proved)",
+    "content": "**erdos_selfridge_asymptotic**: Combines the lower and upper bounds into a single statement: ∃ c₁ c₂ > 0, ∃ N₀, ∀ n ≥ N₀, c₁√(n/log n) ≤ h(n) ≤ c₂√(n/log n).\n\nProved constructively by extracting constants from both axioms and using `max N₁ N₂` to unify the thresholds.",
+    "mathContext": "The proof pattern is standard for combining two eventually-true bounds: given $N_1$ for the lower bound and $N_2$ for the upper bound, take $N_0 = \\max(N_1, N_2)$. Uses `le_of_max_le_left` and `le_of_max_le_right` to discharge the individual hypotheses.",
+    "significance": "key",
+    "relatedConcepts": [
+      "combined-bounds",
+      "asymptotic-order",
+      "max-threshold"
+    ],
+    "prerequisites": [
+      "erdos_selfridge_lower_bound",
+      "erdos_selfridge_upper_bound"
+    ]
+  },
+  {
+    "id": "ann-e912-conjecture",
+    "proofId": "erdos-912",
+    "range": {
+      "startLine": 124,
+      "endLine": 133
+    },
+    "type": "definition",
+    "title": "The Erdős Conjecture",
+    "content": "**ErdosConjecture912:**\n\n∃ c > 0 such that h(n)/√(n/log n) → c as n → ∞.\n\nThis is strictly stronger than the known bounds: it asks not just for asymptotic order but for a specific limiting constant. Formalized using `Filter.Tendsto` and `nhds c`.",
+    "mathContext": "The conjecture asserts $\\exists c > 0, \\lim_{n \\to \\infty} \\frac{h(n)}{\\sqrt{n/\\log n}} = c$, formalized as `Filter.Tendsto (fun n => (h n : ℝ) / Real.sqrt (n / Real.log n)) Filter.atTop (nhds c)`. This is a convergence statement in the topology of $\\mathbb{R}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjecture",
+      "Filter.Tendsto",
+      "nhds",
+      "asymptotic-limit"
+    ],
+    "prerequisites": [
+      "h",
+      "Filter.Tendsto",
+      "nhds",
+      "Real.sqrt",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-e912-tao",
+    "proofId": "erdos-912",
+    "range": {
+      "startLine": 135,
+      "endLine": 149
+    },
+    "type": "definition",
+    "title": "Tao's Conjectured Constant",
+    "content": "**taoConstant = √(2π) ≈ 2.506...**\n\nBased on the Cramér random model for prime distribution, which treats primes as random with density 1/log n. Under this model, the exponents become approximately independent, and their distinct count follows Gaussian statistics.\n\n**TaoConjecture**: The specific statement that h(n)/√(n/log n) → √(2π).",
+    "mathContext": "Cramér's random model (1936) models primes as a random subset of $\\mathbb{N}$ where each $n$ is 'prime' independently with probability $1/\\log n$. Under this model, $v_p(n!) \\approx n/(p-1)$ and the number of distinct values among $\\{n/(p-1) : p \\leq n \\text{ prime}\\}$ concentrates around $\\sqrt{2\\pi n/\\log n}$. The factor $\\sqrt{2\\pi}$ arises from Gaussian CLT considerations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tao",
+      "Cramer-model",
+      "CLT",
+      "heuristic",
+      "Real.pi"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "Real.pi",
+      "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-e912-monotone",
+    "proofId": "erdos-912",
+    "range": {
+      "startLine": 159,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "Exponent Monotonicity (Proved)",
+    "content": "**exponent_monotone**: For fixed prime p, m ≤ n implies v_p(m!) ≤ v_p(n!). Proved using Mathlib's `padicValNat.factorial_le_factorial`.\n\nThis is one of the few fully proved results in the file.",
+    "mathContext": "The proof unfolds `exponentInFactorial` and applies `padicValNat.factorial_le_factorial hp hmn`. The underlying fact is that $v_p(n!) = \\sum \\lfloor n/p^j \\rfloor$ is a sum of non-decreasing functions of $n$, hence non-decreasing.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotonicity",
+      "factorial",
+      "padicValNat"
+    ],
+    "prerequisites": [
+      "padicValNat.factorial_le_factorial",
+      "exponentInFactorial"
+    ]
+  },
+  {
+    "id": "ann-e912-small",
+    "proofId": "erdos-912",
+    "range": {
+      "startLine": 183,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "Small Values of h(n)",
+    "content": "**h_small_values / h_sequence_prefix:**\n\n- h(1) = 0, h(2) = 1, h(3) = 1, h(4) = 2\n- h(10) = 3, h(20) = 4, h(100) ≥ 7\n\nSequence: OEIS A071626. Axiomatized because computing h(n) from the noncomputable definition requires decide instances.",
+    "mathContext": "OEIS A071626: $h(1), h(2), \\ldots = 0, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, \\ldots$ The values grow slowly, consistent with $h(n) \\asymp \\sqrt{n/\\log n}$: for $n = 100$, $\\sqrt{100/\\log 100} \\approx \\sqrt{21.7} \\approx 4.7$, and $h(100) \\geq 7$ exceeds this (the constant $c$ is likely around 2.5).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "OEIS",
+      "sequence",
+      "small-values",
+      "verification"
+    ],
+    "prerequisites": [
+      "h"
+    ]
+  }
+]

@@ -1,0 +1,130 @@
+{
+  "slug": "hilbert-20-oq-01",
+  "title": "hilbert-20-oq-01",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-28T06:54:31-07:00",
+    "iteration": 2,
+    "focus": "Formalized problem and stated characterization",
+    "blockers": [
+      "3 deep axioms in Hilbert20LocalSolvability.lean encode the Nirenberg-Treves theorem (1970): direction (sufficient: psi+local solvability) and (necessary: not-psi -> not-locally-solvable). Full proof requires propagation-of-singularities arguments at the boundary of the 1980s harmonic analysis literature."
+    ],
+    "nextAction": "Gallery is correctly badged 'axiomatized'. Formalization is at appropriate maturity given Mathlib v4.26 PDE coverage. Open questions in src/data/proofs/hilbert-20-oq-01/meta.json conclusion.openQuestions.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE 2026-05-03: Added imSymbolAlongCurve_spec bridge axiom, proved real_symbol_solvable and self_adjoint_solvable. File now 8 axioms, 0 sorries. Gallery meta updated.",
+    "builtItems": [
+      "Hilbert20LocalSolvability.lean: formalization (181 lines)",
+      "Defs: LinearPDO, principalSymbol, IsPrincipalType, ConditionPsi, IsElliptic",
+      "Main theorem: nirenberg_treves_characterization (iff)",
+      "Corollary: elliptic_locally_solvable",
+      "Gallery entry: src/data/proofs/hilbert-20-oq-01/meta.json",
+      "Proved monomial_real in Hilbert20OQ01OQ03.lean:77 via norm_cast + ofReal_im",
+      "imSymbolAlongCurve_spec axiom in Hilbert20OQ01OQ03.lean:191 — bridge between bicharacteristic Im and principalSymbol Im",
+      "Proved real_symbol_solvable in Hilbert20OQ01OQ03.lean:267 — real principal symbol → locally solvable",
+      "Proved self_adjoint_solvable in Hilbert20OQ01OQ03.lean:282 — self-adjoint → locally solvable"
+    ],
+    "insights": [
+      "Local solvability = distribution solution exists for every smooth RHS",
+      "Condition (Ψ): Im(p_m) does not change sign from - to + along bicharacteristics of Re(p_m)",
+      "Nirenberg-Treves conjecture (1963, proved Dencker 2006): (Ψ) iff locally solvable for principal type",
+      "Elliptic operators satisfy (Ψ) vacuously - principal symbol never vanishes",
+      "Operators with real principal symbol satisfy (Ψ) trivially - Im = 0",
+      "Full proof requires microlocal analysis not in Mathlib",
+      "monomial_real proof: cast product of complex powers to ofReal product via norm_cast, then ofReal_im gives im=0. The original rw approach was structurally broken.",
+      "Bridge axiom imSymbolAlongCurve_spec (∃ x ξ, imSymbolAlongCurve γ t = (principalSymbol P x ξ).im) directly connects the bicharacteristic parameterization to the concrete principal symbol — this is the one missing axiom that unlocks both corollaries",
+      "real_symbol_solvable proof: from hreal (all Im=0) + bridge axiom, any hneg : imSymbolAlongCurve γ t₁ < 0 gives x,ξ with (principalSymbol P x ξ).im < 0, contradicting hreal via linarith",
+      "self_adjoint_solvable proof: formalAdjoint P = P implies principalSymbol P x ξ = starRingEnd ℂ (principalSymbol P x ξ) via principalSymbol_adjoint + rw[hsa]; then Complex.conj_eq_iff_im.mp gives Im=0; apply real_symbol_solvable"
+    ],
+    "mathlibGaps": [
+      "No distribution theory in Mathlib",
+      "No microlocal analysis",
+      "No pseudodifferential operators",
+      "No Hamilton flow on cotangent bundles"
+    ],
+    "nextSteps": [
+      "Build distribution theory infrastructure in Mathlib",
+      "Formalize Hamilton flow and bicharacteristic curves",
+      "Prove real_symbol_satisfies_psi (remove the 1 sorry)"
+    ],
+    "markdown": "# Knowledge Base: hilbert-20-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "hilbert-20",
+    "hilbert-20-oq-01",
+    "hilbert-20-oq-01-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T14:26:43.165Z",
+  "lastUpdate": "2026-05-02T00:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert20BoundaryValue.lean",
+      "filename": "Hilbert20BoundaryValue.lean",
+      "lineCount": 245,
+      "theoremCount": 1,
+      "axiomCount": 4,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20BoundaryValue.lean"
+    },
+    {
+      "path": "Proofs/Hilbert20LocalSolvability.lean",
+      "filename": "Hilbert20LocalSolvability.lean",
+      "lineCount": 210,
+      "theoremCount": 5,
+      "axiomCount": 3,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20LocalSolvability.lean"
+    },
+    {
+      "path": "Proofs/Hilbert20OQ01OQ03.lean",
+      "filename": "Hilbert20OQ01OQ03.lean",
+      "lineCount": 321,
+      "theoremCount": 9,
+      "axiomCount": 7,
+      "defCount": 6,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/Hilbert20OQ01OQ03Aristotle.lean",
+      "filename": "Hilbert20OQ01OQ03Aristotle.lean",
+      "lineCount": 67,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert20OQ01OQ03Aristotle.lean"
+    }
+  ]
+}

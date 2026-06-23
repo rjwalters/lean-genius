@@ -1,0 +1,232 @@
+[
+  {
+    "id": "ann-taylor-oq03-iterated-deriv",
+    "proofId": "taylor-theorem-oq-03",
+    "range": {
+      "startLine": 43,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Iterated Derivatives of exp Equal exp",
+    "content": "Proves iteratedDeriv n exp = exp by induction on n. The base case uses iteratedDeriv_zero (the 0th derivative is the function itself). The inductive step rewrites iteratedDeriv (n+1) as deriv of iteratedDeriv n, applies the inductive hypothesis, and finishes with Real.deriv_exp. The pointwise corollary iteratedDeriv_exp_apply follows immediately by function evaluation.",
+    "mathContext": "$\\frac{d^n}{dx^n} e^x = e^x$ for all $n \\in \\mathbb{N}$. Base: $\\frac{d^0}{dx^0} e^x = e^x$. Step: $\\frac{d^{n+1}}{dx^{n+1}} e^x = \\frac{d}{dx}\\left(\\frac{d^n}{dx^n} e^x\\right) = \\frac{d}{dx} e^x = e^x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated derivative",
+      "exponential function",
+      "eigenfunction of differentiation"
+    ],
+    "prerequisites": [
+      "iteratedDeriv_zero",
+      "iteratedDeriv_succ",
+      "Real.deriv_exp"
+    ]
+  },
+  {
+    "id": "ann-taylor-oq03-partial-sums",
+    "proofId": "taylor-theorem-oq-03",
+    "range": {
+      "startLine": 61,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "Taylor Partial Sums of exp",
+    "content": "Defines expPartialSum n x = sum_{k=0}^{n} x^k/k!, the n-th partial sum of the Taylor series of exp at 0. Three basic properties are proved: S_0(x) = 1 (only the constant term), the successor recurrence S_{n+1}(x) = S_n(x) + x^{n+1}/(n+1)!, and S_n(0) = 1 for all n (by induction, since 0^k = 0 for k >= 1).",
+    "mathContext": "$S_n(x) = \\sum_{k=0}^{n} \\frac{x^k}{k!}$, with $S_0(x) = 1$, $S_{n+1}(x) = S_n(x) + \\frac{x^{n+1}}{(n+1)!}$, and $S_n(0) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Taylor polynomial",
+      "power series",
+      "partial sums"
+    ],
+    "prerequisites": [
+      "Finset.range",
+      "Finset.sum_range_succ"
+    ]
+  },
+  {
+    "id": "ann-taylor-oq03-summability",
+    "proofId": "taylor-theorem-oq-03",
+    "range": {
+      "startLine": 84,
+      "endLine": 94
+    },
+    "type": "concept",
+    "title": "Summability and Factorial Domination",
+    "content": "Proves the series x^n/n! is summable for any real x, by norm comparison with Mathlib's summable_pow_div_factorial for ||x||. The key consequence is x^n/n! -> 0, which follows from summability via Summable.tendsto_atTop_zero. This is the engine driving all convergence results: factorial growth eventually dominates any fixed power.",
+    "mathContext": "$\\sum_{n=0}^{\\infty} \\frac{|x|^n}{n!}$ converges (comparison with $e^{|x|}$), so $\\frac{x^n}{n!} \\to 0$ as $n \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "summability",
+      "ratio test",
+      "factorial growth",
+      "power series convergence"
+    ],
+    "prerequisites": [
+      "summable_pow_div_factorial",
+      "Summable.tendsto_atTop_zero"
+    ]
+  },
+  {
+    "id": "ann-taylor-oq03-remainder-axioms",
+    "proofId": "taylor-theorem-oq-03",
+    "range": {
+      "startLine": 104,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "Remainder Bound Axioms (Positive and Negative x)",
+    "content": "States two axioms encoding the Lagrange remainder bounds for exp. For x > 0: |exp(x) - S_n(x)| <= exp(x) * x^{n+1}/n! (since exp is monotone increasing on [0,x], the intermediate value exp(xi) <= exp(x)). For x < 0: |exp(x) - S_n(x)| <= |x|^{n+1}/n! (since exp <= 1 on [x,0]). Both follow from taylor_mean_remainder_bound applied to exp, but the formal connection between taylorWithinEval and expPartialSum requires bridging iteratedDerivWithin on Icc to iteratedDeriv for globally smooth functions.",
+    "mathContext": "For $x > 0$: $\\left|e^x - S_n(x)\\right| \\leq \\frac{e^x \\cdot x^{n+1}}{n!}$. For $x < 0$: $\\left|e^x - S_n(x)\\right| \\leq \\frac{|x|^{n+1}}{n!}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange remainder",
+      "Taylor remainder bound",
+      "axiom declarations in Lean"
+    ],
+    "prerequisites": [
+      "taylor_mean_remainder_bound",
+      "iteratedDerivWithin",
+      "monotonicity of exp"
+    ]
+  },
+  {
+    "id": "ann-taylor-oq03-unified-bound",
+    "proofId": "taylor-theorem-oq-03",
+    "range": {
+      "startLine": 127,
+      "endLine": 142
+    },
+    "type": "concept",
+    "title": "Unified Remainder Bound",
+    "content": "Combines the two axioms into a single bound valid for all x: |exp(x) - S_n(x)| <= exp(|x|) * |x|^{n+1}/n!. The proof uses lt_trichotomy to split into three cases: x < 0 (apply negative axiom, then multiply by exp(|x|) >= 1), x = 0 (trivial since S_n(0) = 1 = exp(0)), and x > 0 (apply positive axiom, rewrite |x| = x).",
+    "mathContext": "$\\left|e^x - S_n(x)\\right| \\leq \\frac{e^{|x|} \\cdot |x|^{n+1}}{n!}$ for all $x \\in \\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "case analysis",
+      "absolute value",
+      "norm inequalities"
+    ],
+    "prerequisites": [
+      "exp_taylor_remainder_pos",
+      "exp_taylor_remainder_neg",
+      "lt_trichotomy"
+    ]
+  },
+  {
+    "id": "ann-taylor-oq03-remainder-tendsto",
+    "proofId": "taylor-theorem-oq-03",
+    "range": {
+      "startLine": 144,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Remainder Tends to Zero",
+    "content": "Proves the Taylor remainder exp(x) - S_n(x) -> 0 using the squeeze theorem (squeeze_zero_norm'). The upper bound exp(|x|) * |x|^{n+1}/n! is rewritten as (exp(|x|) * |x|) * (|x|^n/n!) and shown to tend to zero because |x|^n/n! -> 0 (from factorial domination) while exp(|x|) * |x| is a constant factor.",
+    "mathContext": "$\\frac{e^{|x|} \\cdot |x|^{n+1}}{n!} = \\left(e^{|x|} \\cdot |x|\\right) \\cdot \\frac{|x|^n}{n!} \\to 0$ since $\\frac{|x|^n}{n!} \\to 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "squeeze theorem",
+      "limit of remainder",
+      "constant multiple rule"
+    ],
+    "prerequisites": [
+      "squeeze_zero_norm'",
+      "pow_div_factorial_tendsto",
+      "Tendsto.const_mul"
+    ]
+  },
+  {
+    "id": "ann-taylor-oq03-convergence",
+    "proofId": "taylor-theorem-oq-03",
+    "range": {
+      "startLine": 161,
+      "endLine": 167
+    },
+    "type": "insight",
+    "title": "Partial Sums Converge to exp",
+    "content": "Proves expPartialSum n x -> exp(x) by rewriting: exp(x) - (exp(x) - S_n(x)) = S_n(x), and since exp(x) - S_n(x) -> 0, it follows that S_n(x) -> exp(x) - 0 = exp(x). The proof uses Tendsto.const_sub to subtract the remainder from the constant exp(x).",
+    "mathContext": "$S_n(x) = e^x - (e^x - S_n(x)) \\to e^x - 0 = e^x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limit arithmetic",
+      "Taylor series convergence",
+      "analytic functions"
+    ],
+    "prerequisites": [
+      "exp_taylor_remainder_tendsto",
+      "Tendsto.const_sub"
+    ]
+  },
+  {
+    "id": "ann-taylor-oq03-tsum",
+    "proofId": "taylor-theorem-oq-03",
+    "range": {
+      "startLine": 173,
+      "endLine": 198
+    },
+    "type": "insight",
+    "title": "exp Equals Its Taylor Series (tsum identity)",
+    "content": "Proves exp(x) = tsum (x^n/n!) by uniqueness of limits. The series is summable, so HasSum gives (range n).sum f -> tsum. But expPartialSum n x = (range(n+1)).sum f, while HasSum uses (range n).sum f. The index shift is resolved by showing (range n).sum f = expPartialSum n x - f(n), and since f(n) = x^n/n! -> 0, both partial sum sequences have the same limit. The final step applies tendsto_nhds_unique.",
+    "mathContext": "$e^x = \\sum_{n=0}^{\\infty} \\frac{x^n}{n!}$, proved by showing $\\sum_{k=0}^{n} \\frac{x^k}{k!} \\to e^x$ and $\\sum_{k=0}^{n-1} \\frac{x^k}{k!} \\to \\text{tsum}$, with the difference $\\frac{x^n}{n!} \\to 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tsum",
+      "HasSum",
+      "uniqueness of limits",
+      "power series representation"
+    ],
+    "prerequisites": [
+      "summable_exp_terms",
+      "expPartialSum_tendsto",
+      "tendsto_nhds_unique"
+    ]
+  },
+  {
+    "id": "ann-taylor-oq03-euler-bounds",
+    "proofId": "taylor-theorem-oq-03",
+    "range": {
+      "startLine": 207,
+      "endLine": 226
+    },
+    "type": "concept",
+    "title": "Bounds on Euler's Number and Computation Error",
+    "content": "Proves 2 < e < 3 using Mathlib's exp_one_gt_d9 and exp_one_lt_d9 bounds. The error bound |e - S_n(1)| <= 3/n! follows from the unified remainder bound at x = 1: exp(1) * 1^{n+1}/n! = e/n! <= 3/n! since e < 3. This gives a practical computation guarantee: 10 terms yield |e - S_{10}(1)| <= 3/10! = 3/3628800 < 10^{-6}.",
+    "mathContext": "$2 < e < 3$. Error: $|e - S_n(1)| \\leq \\frac{e}{n!} \\leq \\frac{3}{n!}$. For $n = 10$: $\\frac{3}{10!} \\approx 8.3 \\times 10^{-7} < 10^{-6}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euler's number",
+      "numerical computation",
+      "error bounds",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "exp_one_gt_d9",
+      "exp_one_lt_d9",
+      "exp_taylor_remainder_bound"
+    ]
+  },
+  {
+    "id": "ann-taylor-oq03-cauchy-remainder",
+    "proofId": "taylor-theorem-oq-03",
+    "range": {
+      "startLine": 250,
+      "endLine": 265
+    },
+    "type": "concept",
+    "title": "Cauchy Remainder Applied to exp",
+    "content": "Applies the Cauchy remainder theorem to exp for x > 0: there exists xi in (0,x) such that exp(x) - T_n(x) = exp(xi) * (x-xi)^n/n! * x. The proof verifies the ContDiffOn and DifferentiableOn hypotheses for exp on [0,x], invokes taylor_mean_remainder_cauchy to get the intermediate point xi, then simplifies using iteratedDerivWithin_exp_eq (which converts iteratedDerivWithin on Icc to exp via the unique differentiability of Icc).",
+    "mathContext": "$\\exists\\, \\xi \\in (0,x),\\quad e^x - T_n(x) = \\frac{e^\\xi \\cdot (x - \\xi)^n}{n!} \\cdot x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy remainder",
+      "mean value theorem for integrals",
+      "intermediate value"
+    ],
+    "prerequisites": [
+      "taylor_mean_remainder_cauchy",
+      "ContDiffOn",
+      "iteratedDerivWithin_exp_eq"
+    ]
+  }
+]

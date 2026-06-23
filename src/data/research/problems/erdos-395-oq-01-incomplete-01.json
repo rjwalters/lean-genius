@@ -1,0 +1,87 @@
+{
+  "slug": "erdos-395-oq-01-incomplete-01",
+  "title": "Reverse Littlewood-Offord at the Carnielli-Carolino threshold",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For the Carnielli-Carolino configuration z_0=1 and z_i=i in even dimension n>=2, prove every sign vector has signedSumAbs at least sqrt 2, then connect this witness to the reverse Littlewood-Offord threshold and the 1/n optimal-constant framework.",
+    "plain": "Backfill the reverse Littlewood-Offord metadata around the Lean results: the axiom-free parity proof of the Carnielli-Carolino lower bound, the derived failure of the original threshold-1 question, and the remaining optimal-constant facts that still depend on external probability estimates.",
+    "whyMatters": [
+      "The file turns the geometric counterexample into explicit Lean arithmetic on sign vectors.",
+      "It separates the elementary parity proof from deeper HJNS and extremal-distribution inputs.",
+      "The metadata should make clear that the exact optimal constant remains open even though the threshold obstruction is formalized."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`counterexample_always_large_proved` proves the Carnielli-Carolino sqrt 2 lower bound without axioms in `Erdos395OQ01Incomplete01.lean`.",
+      "`valid_constants_nonempty`, `valid_constants_bddAbove`, and `optimal_constant_pos` build the positive optimal-constant framework in `Erdos395OQ01.lean`.",
+      "`counterexample_exceeds_one`, `erdos_original_is_false_proved`, and `sqrt2_is_critical` record the threshold-1 obstruction and the critical sqrt 2 boundary.",
+      "`count_monotone_threshold`, `rate_is_tight`, `extremal_is_unit`, and `optimal_constant_summary` document monotonicity, tightness, and the final rate summary."
+    ],
+    "open": [
+      "`counterexample_always_large` and `extremal_example_tight` are axioms in `Erdos395OQ01.lean`; the companion incomplete file proves the first one for the Carnielli-Carolino configuration.",
+      "`hjns_2024` remains the imported deep reverse Littlewood-Offord input; the exact optimal constant is not determined here.",
+      "The active Lean files have zero sorries."
+    ],
+    "goal": "Clarify the verified counterexample proof and the axiom boundary for the optimal reverse Littlewood-Offord constant."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T09:13:03.071Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved both remaining sorries. valid_constants_bddAbove proved via n=1 specialization + sign vector cardinality bound. erdos_original_is_false_proved proved by showing counterexample set is empty (counterexample_exceeds_one). 2 axioms, 0 sorries.",
+    "builtItems": [
+      "Restored 2 axioms in Erdos395OQ01.lean: counterexample_always_large, extremal_example_tight",
+      "Restructured optimal_constant_pos: BddAbove extracted, main proof complete modulo BddAbove",
+      "Proved valid_constants_bddAbove: BddAbove via c ≤ 1 from n=1 + probSmallSum ≤ 1",
+      "Proved erdos_original_is_false_proved: empty toFinset → card 0 → contradiction with c > 0"
+    ],
+    "insights": [
+      "Erdos395OQ01.lean references counterexample_always_large and extremal_example_tight which were removed from parent in mass axiom cleanup",
+      "Re-declared both axioms locally in OQ01 to restore compilability",
+      "optimal_constant_pos restructured: extracted valid_constants_bddAbove as separate lemma, main proof follows from le_csSup",
+      "Remaining 2 sorries (valid_constants_bddAbove, erdos_original_is_false_proved) require finite set cardinality reasoning",
+      "For BddAbove of valid constants: specialize to n=1, bound countSmallSums ≤ 2^1 by showing sign vector set ⊆ {fun _ => 1, fun _ => -1}",
+      "For erdos_original_is_false: counterexample_exceeds_one ∀ sign ε gives |sum| > 1, so {ε | |sum| ≤ 1}.toFinset = ∅, and card 0 / 2^2 = 0 contradicts c/2 > 0"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "erdos",
+    "probability",
+    "combinatorics",
+    "seeker-selected",
+    "littlewood-offord",
+    "sign-vectors",
+    "axiom-backed"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-39",
+    "erdos-395",
+    "erdos-395-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T09:13:03.071Z",
+  "lastUpdate": "2026-04-03T09:13:03.071Z",
+  "significance": 7,
+  "tractability": 5
+}

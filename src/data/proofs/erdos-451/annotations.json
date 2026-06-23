@@ -1,0 +1,214 @@
+[
+  {
+    "id": "erdos-451-context",
+    "proofId": "erdos-451",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "title": "Problem Overview: Primes in (k, 2k) Avoiding Products",
+    "content": "Erdos Problem #451 studies the function **n_k**, the smallest integer n > 2k such that the descending product (n-1)(n-2)...(n-k) has **no prime factor** in the interval (k, 2k). By **Bertrand's postulate**, such primes always exist, making avoidance non-trivial. The problem asks for the **precise growth rate** of n_k: it should grow faster than any polynomial (**superpolynomial**) yet slower than any exponential (**sub-exponential**).",
+    "mathContext": "The connection to Bertrand's postulate is key: for every k >= 1, there is at least one prime p with k < p < 2k. Avoiding all such primes as factors of a product of k consecutive shifted integers requires a delicate number-theoretic construction. The Chinese Remainder Theorem (CRT) reduces the problem to finding a simultaneous residue class that avoids dangerous residues modulo each Bertrand-range prime.",
+    "relatedConcepts": [
+      "Bertrand's postulate",
+      "Chinese Remainder Theorem",
+      "prime distribution",
+      "sieve theory",
+      "consecutive products"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "Bertrand's postulate on primes between k and 2k",
+      "the Chinese Remainder Theorem",
+      "asymptotic growth rates: polynomial vs exponential"
+    ]
+  },
+  {
+    "id": "erdos-451-descending-product",
+    "proofId": "erdos-451",
+    "type": "definition",
+    "range": {
+      "startLine": 28,
+      "endLine": 30
+    },
+    "title": "Descending Product",
+    "content": "**descendingProduct n k** computes the product (n-1)(n-2)...(n-k) as a finite product over the index set {1, ..., k}. This product captures k consecutive integers ending just below n, and its **prime factorization** drives the entire problem.",
+    "mathContext": "Among k consecutive integers, the distribution of prime factors is governed by the principle that a prime p divides at most floor(k/p) + 1 of them. For primes p > k, at most one factor in the product is divisible by p, which is the key structural insight exploited in the CRT analysis.",
+    "relatedConcepts": [
+      "finite products",
+      "consecutive integers",
+      "prime factorization"
+    ],
+    "significance": "supporting",
+    "prerequisites": [
+      "products of consecutive integers",
+      "prime factorization of integers",
+      "the count of multiples of a prime in an interval"
+    ]
+  },
+  {
+    "id": "erdos-451-avoidance",
+    "proofId": "erdos-451",
+    "type": "definition",
+    "range": {
+      "startLine": 32,
+      "endLine": 41
+    },
+    "title": "Bertrand Prime Avoidance",
+    "content": "**AvoidsBertrandPrimes n k** asserts that no prime p in the interval (k, 2k) divides the descending product. The predicate **IsInBertrandRange** captures the three conditions: k < p, p < 2k, and p is prime. This is the central feasibility condition defining which n values are valid.",
+    "mathContext": "The avoidance condition is equivalent to requiring that for every Bertrand-range prime p, the value n does not fall into any of the k 'dangerous' residue classes modulo p. Since k < p, these k residue classes {1, 2, ..., k} mod p are all distinct, leaving exactly p - k 'safe' residues per prime.",
+    "relatedConcepts": [
+      "Bertrand's postulate",
+      "prime avoidance",
+      "residue classes",
+      "modular arithmetic"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "prime divisibility of a product",
+      "residue classes modulo a prime",
+      "Bertrand-range primes in the interval (k, 2k)"
+    ]
+  },
+  {
+    "id": "erdos-451-nk",
+    "proofId": "erdos-451",
+    "type": "concept",
+    "range": {
+      "startLine": 55,
+      "endLine": 65
+    },
+    "title": "The Function n_k (Axiomatized)",
+    "content": "The function **nk** is axiomatized with three properties: (1) **nk k > 2k** ensures we look beyond the trivial range; (2) **nk_avoids** confirms it satisfies the Bertrand avoidance condition; (3) **nk_minimal** ensures it is the **smallest** such value. Together these uniquely characterize n_k.",
+    "mathContext": "Axiomatizing nk rather than computing it is necessary because determining n_k exactly requires an exhaustive search through residue systems. The known computed values (n_1 = 3, n_2 = 6, ..., n_10 = 220) grow rapidly and irregularly, suggesting the function's behavior is governed by the arithmetic structure of Bertrand-range primes.",
+    "relatedConcepts": [
+      "axiomatization",
+      "minimality",
+      "well-ordering principle"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "the well-ordering principle and minimality",
+      "axiomatization of a defined function",
+      "exhaustive search over residue systems"
+    ]
+  },
+  {
+    "id": "erdos-451-crt",
+    "proofId": "erdos-451",
+    "type": "insight",
+    "range": {
+      "startLine": 67,
+      "endLine": 92
+    },
+    "title": "CRT Structural Lemmas",
+    "content": "Three key structural results formalize the **Chinese Remainder Theorem** perspective: (1) **at_most_one_div** shows that for a prime p > k, at most one of the k factors n-1, ..., n-k is divisible by p; (2) **prime_dvd_descendingProduct** gives the equivalence between p dividing the product and p dividing some factor; (3) **card_safeResidues** counts exactly **p - k safe residue classes** modulo each prime p in (k, 2k).",
+    "mathContext": "The at_most_one_div lemma is the combinatorial heart: if p divides both (n - i) and (n - j), then p divides |i - j|. But 1 <= i, j <= k and k < p, so |i - j| < p, forcing i = j. This means avoiding p as a factor of the product reduces to avoiding a single residue class per factor, and the safe residues form the set {0, k+1, k+2, ..., p-1} of cardinality p - k.",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "safe residues",
+      "prime divisibility",
+      "pigeonhole principle"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "the Chinese Remainder Theorem",
+      "prime divisibility of differences of integers",
+      "counting safe residue classes modulo a prime"
+    ]
+  },
+  {
+    "id": "erdos-451-lower",
+    "proofId": "erdos-451",
+    "type": "insight",
+    "range": {
+      "startLine": 96,
+      "endLine": 99
+    },
+    "title": "Erdos-Graham Lower Bound",
+    "content": "The **Erdos-Graham lower bound** states that n_k > k^(1+c) for some absolute constant c > 0 and all sufficiently large k. This shows the growth rate is **strictly superlinear** -- stronger than the trivial bound n_k > 2k but far from exponential.",
+    "mathContext": "The proof relies on counting arguments in the sieve-theoretic framework. The number of 'safe' residues per prime p in (k, 2k) is p - k, which by Bertrand's postulate is at most k - 1. The density of safe integers decreases as the product of (p - k)/p over all Bertrand-range primes, and the prime number theorem shows this product decays polynomially faster than 1/k, yielding the superlinear lower bound.",
+    "relatedConcepts": [
+      "Erdos-Graham inequality",
+      "sieve methods",
+      "superlinear growth",
+      "prime number theorem"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "sieve methods and density of safe integers",
+      "the prime number theorem",
+      "superlinear growth bounds"
+    ]
+  },
+  {
+    "id": "erdos-451-upper",
+    "proofId": "erdos-451",
+    "type": "insight",
+    "range": {
+      "startLine": 101,
+      "endLine": 118
+    },
+    "title": "Adenwalla Upper Bound via CRT",
+    "content": "**Adenwalla's upper bound** shows n_k <= product of all primes in (k, 2k), which is e^(O(k)) by the prime number theorem. The proof idea is explicit: take n = 0 mod p for every Bertrand-range prime p. By the **Chinese Remainder Theorem**, such an n exists and equals the product of those primes. The theorem **adenwalla_crt_idea** formalizes this reduction, showing that if M = prod(bertrandPrimes k) satisfies the avoidance condition, then nk k <= M by minimality.",
+    "mathContext": "By the prime number theorem, the sum of log p over primes p in (k, 2k) is asymptotically k, so the product of these primes is e^(k + o(k)). This gives an explicit exponential upper bound. The gap between the superlinear lower bound k^(1+c) and the exponential upper bound e^(O(k)) is precisely what Problem 451 seeks to resolve.",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "primorial",
+      "Chebyshev's theorem",
+      "exponential bounds"
+    ],
+    "significance": "supporting",
+    "prerequisites": [
+      "the Chinese Remainder Theorem",
+      "the primorial and Chebyshev's theorem on prime products",
+      "the prime number theorem for sums of log p"
+    ]
+  },
+  {
+    "id": "erdos-451-trivial-lower",
+    "proofId": "erdos-451",
+    "type": "insight",
+    "range": {
+      "startLine": 107,
+      "endLine": 110
+    },
+    "title": "Trivial Lower Bound (Proved)",
+    "content": "The theorem **nk_trivial_lower** is the one fully proved result: n_k > 2k follows immediately from the axiom nk_gt_2k by casting from natural numbers to rationals. This is the baseline bound that all deeper results strengthen.",
+    "relatedConcepts": [
+      "type coercion",
+      "baseline bounds"
+    ],
+    "significance": "supporting",
+    "mathContext": "See annotation content for formal details of trivial lower bound (proved)",
+    "prerequisites": [
+      "coercion from natural numbers to rationals",
+      "deriving inequalities from an axiom"
+    ]
+  },
+  {
+    "id": "erdos-451-conjecture",
+    "proofId": "erdos-451",
+    "type": "concept",
+    "range": {
+      "startLine": 120,
+      "endLine": 134
+    },
+    "title": "Erdos Problem 451: Superpolynomial but Sub-exponential",
+    "content": "The conjecture is split into two parts: (1) **ErdosProblem451_superpolynomial** asserts n_k > k^d for every constant d and all sufficiently large k; (2) **ErdosProblem451_subexponential** asserts n_k < 2^(epsilon * k) for every epsilon > 0 and all sufficiently large k. Together they place n_k in the **intermediate growth regime** between polynomial and exponential -- a rare and interesting phenomenon in combinatorial number theory.",
+    "mathContext": "Functions with superpolynomial but sub-exponential growth occupy a narrow band in the hierarchy of growth rates. Classic examples include e^(sqrt(k)) and e^(k / log k). The conjecture implies n_k belongs to this class, and determining its precise asymptotic (e.g., whether n_k ~ e^(c * sqrt(k * log k)) for some c) remains completely open.",
+    "relatedConcepts": [
+      "growth rate classification",
+      "superpolynomial growth",
+      "sub-exponential growth",
+      "intermediate asymptotics"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "superpolynomial and sub-exponential growth rates",
+      "the hierarchy of asymptotic growth classes",
+      "intermediate growth in combinatorial number theory"
+    ]
+  }
+]

@@ -1,0 +1,175 @@
+[
+  {
+    "id": "ann-ivt-oq01-00-preamble",
+    "proofId": "intermediate-value-theorem-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "concept",
+    "title": "Header and Problem Context",
+    "content": "The header describes the bisection method as a constructive counterpart to the Intermediate Value Theorem. While the IVT asserts existence non-constructively, bisection builds an explicit sequence of nested intervals converging to a root. The file proves 7 theorems with 2 sorries (the inductive width decay and error bound).",
+    "mathContext": "The IVT states: if $f: [a,b] \\to \\mathbb{R}$ is continuous and $f(a) \\cdot f(b) < 0$, then $\\exists c \\in (a,b)$ with $f(c) = 0$. The classical proof uses completeness of $\\mathbb{R}$ (sup of $\\{x : f(x) \\leq 0\\}$) and is non-constructive. Bisection provides a constructive alternative.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IVT",
+      "constructivism",
+      "Bolzano's theorem"
+    ],
+    "prerequisites": [
+      "continuous functions",
+      "completeness of ℝ"
+    ]
+  },
+  {
+    "id": "ann-ivt-oq01-01-bisect-step",
+    "proofId": "intermediate-value-theorem-oq-01",
+    "range": {
+      "startLine": 30,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "The Bisection Step",
+    "content": "bisectStep computes the midpoint $m = (a+b)/2$ and tests the sign of $f(a) \\cdot f(m)$. If $f(a) \\cdot f(m) \\leq 0$ (sign change in left half), return $(a, m)$; otherwise return $(m, b)$. The key invariant is that the returned interval always contains a sign change, maintaining the IVT hypothesis.",
+    "mathContext": "The decision $f(a) \\cdot f(\\text{mid}) \\leq 0$ tests whether the root lies in $[a, \\text{mid}]$ or $[\\text{mid}, b]$. By the IVT, at least one half contains a root. If both do, the left half is chosen (an arbitrary convention). This is `noncomputable` because $f$ is an arbitrary real function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sign change",
+      "interval halving",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "real-valued functions",
+      "IVT"
+    ]
+  },
+  {
+    "id": "ann-ivt-oq01-02-midpoint",
+    "proofId": "intermediate-value-theorem-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "Midpoint Properties",
+    "content": "Three lemmas about the midpoint: (1) midpoint_mem_Icc: $a \\leq (a+b)/2 \\leq b$ when $a \\leq b$; (2) midpoint_sub_left: $(a+b)/2 - a = (b-a)/2$; (3) right_sub_midpoint: $b - (a+b)/2 = (b-a)/2$. All proved by `linarith` or `ring`. These establish that the midpoint is well-positioned and each half has exactly half the width.",
+    "mathContext": "The midpoint $m = \\frac{a+b}{2}$ satisfies $m - a = b - m = \\frac{b-a}{2}$, so each half has equal width. This symmetry is essential: the convergence rate $(b-a)/2^n$ depends on the width being exactly halved, not merely reduced.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interval arithmetic",
+      "linarith",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "real arithmetic"
+    ]
+  },
+  {
+    "id": "ann-ivt-oq01-03-iter",
+    "proofId": "intermediate-value-theorem-oq-01",
+    "range": {
+      "startLine": 57,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Iterated Bisection Sequence",
+    "content": "bisectIter recursively applies bisectStep $n$ times: base case $(a,b)$, inductive case bisectStep applied to the previous interval. bisectLeft and bisectRight extract the endpoints. This builds the nested interval sequence $[a_n, b_n]$ where $[a_0, b_0] = [a, b]$ and $[a_{n+1}, b_{n+1}]$ is a half of $[a_n, b_n]$.",
+    "mathContext": "The sequence $\\{[a_n, b_n]\\}_{n \\geq 0}$ satisfies: (1) $[a_{n+1}, b_{n+1}] \\subseteq [a_n, b_n]$ (nested intervals), (2) $b_n - a_n = (b_0 - a_0)/2^n$ (exponential width decay), (3) $f(a_n) \\cdot f(b_n) \\leq 0$ (sign persistence). By the Nested Interval Theorem, $\\bigcap_n [a_n, b_n] = \\{c\\}$ with $f(c) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "nested intervals",
+      "recursive definition",
+      "Cauchy sequence"
+    ],
+    "prerequisites": [
+      "bisectStep",
+      "natural number recursion"
+    ]
+  },
+  {
+    "id": "ann-ivt-oq01-04-width",
+    "proofId": "intermediate-value-theorem-oq-01",
+    "range": {
+      "startLine": 74,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Width Decay: Single Step and Inductive",
+    "content": "bisectStep_width proves the single-step case: the output width equals $(b-a)/2$, by case-splitting on the sign test and using `ring` for each branch. bisect_width states the general case $(b-a)/2^n$ but is sorry'd — the induction requires composing bisectStep_width with an invariant that each intermediate pair satisfies $a_k \\leq b_k$.",
+    "mathContext": "**Proved**: $b_1 - a_1 = (b_0 - a_0)/2$. **Sorry'd**: $b_n - a_n = (b_0 - a_0)/2^n$. The inductive proof needs: (i) $a_k \\leq b_k$ for all $k$ (so bisectStep_width applies), (ii) rewriting $((b-a)/2^k)/2 = (b-a)/2^{k+1}$. The ordering invariant requires sign persistence or direct interval containment.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential convergence",
+      "geometric series",
+      "induction"
+    ],
+    "prerequisites": [
+      "bisectStep_width",
+      "power of 2 arithmetic"
+    ]
+  },
+  {
+    "id": "ann-ivt-oq01-05-error",
+    "proofId": "intermediate-value-theorem-oq-01",
+    "range": {
+      "startLine": 95,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Error Bound (sorry)",
+    "content": "bisect_error_bound states that the interval width after $n$ steps is at most $(b-a)/2^n$. This is sorry'd and would follow immediately from bisect_width (equality implies inequality). The error bound is the key practical result: it guarantees that the midpoint of the $n$-th interval approximates any root to within $(b-a)/2^{n+1}$.",
+    "mathContext": "After $n$ bisection steps, any root $c \\in [a_n, b_n]$ satisfies $|c - m_n| \\leq (b_n - a_n)/2 = (b-a)/2^{n+1}$, where $m_n$ is the midpoint. For $[1,2]$: 10 steps give error $< 10^{-3}$, 20 steps give error $< 10^{-6}$, 34 steps give error $< 10^{-10}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "convergence rate",
+      "numerical precision",
+      "linear convergence"
+    ],
+    "prerequisites": [
+      "bisect_width"
+    ]
+  },
+  {
+    "id": "ann-ivt-oq01-06-sqrt2",
+    "proofId": "intermediate-value-theorem-oq-01",
+    "range": {
+      "startLine": 106,
+      "endLine": 116
+    },
+    "type": "insight",
+    "title": "Constructive Existence of $\\sqrt{2}$",
+    "content": "Proves $\\exists x \\in [1,2]$ with $x^2 = 2$ by exhibiting `Real.sqrt 2` as witness. The bounds $1 \\leq \\sqrt{2} \\leq 2$ use monotonicity of sqrt: $\\sqrt{1} < \\sqrt{2}$ and $\\sqrt{2} \\leq \\sqrt{4} = 2$. The identity $x^2 = 2$ uses `Real.sq_sqrt`. This is the IVT applied to $f(x) = x^2 - 2$ on $[1,2]$, but proved constructively using Mathlib's sqrt.",
+    "mathContext": "The irrationality of $\\sqrt{2}$ was known to the Pythagoreans (~500 BCE). Here we prove existence constructively: $f(1) = -1 < 0$ and $f(2) = 2 > 0$, so the IVT guarantees a root. Rather than using bisection (which would require infinite iteration), we use Mathlib's `Real.sqrt` which is defined via the completeness of $\\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.sqrt",
+      "norm_num",
+      "constructive existence"
+    ],
+    "prerequisites": [
+      "sqrt properties",
+      "IVT"
+    ]
+  },
+  {
+    "id": "ann-ivt-oq01-07-examples",
+    "proofId": "intermediate-value-theorem-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 122
+    },
+    "type": "concept",
+    "title": "Concrete Convergence Rate Examples",
+    "content": "Two concrete computations: $1/2^{10} = 1/1024$ (10 bisection steps on a unit interval give $\\approx 10^{-3}$ precision) and $1/2^{20} < 10^{-6}$ (20 steps give sub-microsecond precision). Both proved by `norm_num`. These illustrate the practical convergence rate: roughly 3.32 steps per decimal digit of accuracy (since $\\log_2(10) \\approx 3.32$).",
+    "mathContext": "The bisection method has **linear convergence** with rate $1/2$: each step gains $\\log_2(10)^{-1} \\approx 0.301$ decimal digits. Compare: Newton's method has **quadratic convergence** ($2^n$ correct digits after $n$ steps) but requires differentiability and a good initial guess. Bisection is slower but unconditionally reliable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_num",
+      "convergence rate",
+      "Newton's method comparison"
+    ],
+    "prerequisites": [
+      "power of 2 arithmetic"
+    ]
+  }
+]

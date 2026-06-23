@@ -1,0 +1,228 @@
+{
+  "slug": "cevas-theorem-oq-02-oq-01",
+  "title": "Spherical Ceva via Weighted Unit Vectors",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a spherical triangle with vertices represented by unit vectors A, B, C, define cevian points on the opposite arcs by normalized positive linear combinations, for example D = (α_D B + β_D C) / ‖α_D B + β_D C‖ on arc BC. The intended result is that sin(BD) / sin(DC) = β_D / α_D for one cevian, the product of the three corresponding sine ratios equals the product of the weight ratios, and the three cevians are concurrent exactly when α_D α_E α_F = β_D β_E β_F.",
+    "plain": "The spherical Ceva theorem expressed concretely using unit vectors in an inner product space. Cevian points on arcs are defined by weight parameters (α, β) via normalization of α·B + β·C. The key results: sin(BD)/sin(DC) = β/α for a single cevian, the triple product of sin-ratios equals the weight-product ratio, and the spherical Ceva concurrency condition reduces to α_D·α_E·α_F = β_D·β_E·β_F.",
+    "whyMatters": [
+      "It recasts spherical Ceva in concrete inner-product and unit-vector terms.",
+      "The weighted-normalization formulation connects geometric arc ratios to algebraic parameter equalities."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "The existing JSON records a completed Lean file for this slug, Proofs/CevasTheoremOQ02OQ01.lean, with 6 theorems, 0 axioms, and 0 sorries.",
+      "The existing JSON also records related completed Ceva formalizations, including Euclidean, non-Euclidean, and sine-ratio variants."
+    ],
+    "open": [],
+    "goal": "Formalize the spherical Ceva statement where arc sine ratios for cevian points defined by weights reduce to the equality α_D α_E α_F = β_D β_E β_F."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-02-24T13:38:05-08:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "The repository metadata marks this problem as graduated, while the local research state file remains at OBSERVE with zero recorded attempts. The local knowledge file contains no substantive research notes beyond the problem description.",
+    "builtItems": [],
+    "insights": [
+      "The core formulation uses unit vectors and normalized weighted sums to define cevian points on spherical arcs.",
+      "The intended algebraic bridge is from sine ratios on arcs to ratios of the defining weights.",
+      "The concurrency condition is stated as the equality α_D α_E α_F = β_D β_E β_F."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Read problem.md thoroughly and acquire full context.",
+      "Move to ORIENT phase to explore literature and related proofs."
+    ],
+    "markdown": "# Knowledge Base: cevas-theorem-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThe problem concerns a spherical version of Ceva's theorem expressed through unit vectors in an inner product space. Cevian points on arcs are defined by normalizing weighted sums such as α·B + β·C. The stated target relates spherical arc sine ratios to the corresponding weight ratios and reduces the concurrency condition to α_D α_E α_F = β_D β_E β_F.\n\n---\n\n## Insights\n\n- The single-cevian ratio is stated as sin(BD) / sin(DC) = β / α.\n- The three cevian ratios multiply to the product of the corresponding weight ratios.\n- The spherical Ceva concurrency condition is stated as α_D α_E α_F = β_D β_E β_F.\n\n---\n\n## Dead Ends\n\nNo dead ends are recorded in the local knowledge file.\n"
+  },
+  "tags": [
+    "geometry",
+    "spherical-geometry",
+    "cevas-theorem",
+    "inner-product-space",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "cevas-theorem",
+    "cevas-theorem-non-euclidean",
+    "cevas-theorem-non-euclidean-oq-02",
+    "cevas-theorem-non-euclidean-oq-02-oq-01",
+    "cevas-theorem-oq-01",
+    "cevas-theorem-oq-01-oq-03",
+    "cevas-theorem-oq-02",
+    "cevas-theorem-oq-02-oq-01",
+    "cevas-theorem-oq-02-oq-01-oq-02",
+    "cevas-theorem-oq-02-oq-01-oq-03",
+    "cevas-theorem-oq-02-oq-02",
+    "cevas-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-25T19:36:59.226Z",
+  "lastUpdate": "2026-02-25T19:36:59.226Z",
+  "completed": "2026-02-25T19:36:59.226Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CevasTheorem.lean",
+      "filename": "CevasTheorem.lean",
+      "lineCount": 264,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheorem.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclidean.lean",
+      "filename": "CevasTheoremNonEuclidean.lean",
+      "lineCount": 528,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclidean.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ02.lean",
+      "filename": "CevasTheoremNonEuclideanOQ02.lean",
+      "lineCount": 234,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean",
+      "filename": "CevasTheoremNonEuclideanOQ02OQ01.lean",
+      "lineCount": 273,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ01.lean",
+      "filename": "CevasTheoremOQ01.lean",
+      "lineCount": 908,
+      "theoremCount": 39,
+      "axiomCount": 0,
+      "defCount": 22,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ01OQ03.lean",
+      "filename": "CevasTheoremOQ01OQ03.lean",
+      "lineCount": 231,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02.lean",
+      "filename": "CevasTheoremOQ02.lean",
+      "lineCount": 502,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ01.lean",
+      "filename": "CevasTheoremOQ02OQ01.lean",
+      "lineCount": 263,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ01OQ02.lean",
+      "filename": "CevasTheoremOQ02OQ01OQ02.lean",
+      "lineCount": 302,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ01OQ03.lean",
+      "filename": "CevasTheoremOQ02OQ01OQ03.lean",
+      "lineCount": 297,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ02.lean",
+      "filename": "CevasTheoremOQ02OQ02.lean",
+      "lineCount": 321,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ04.lean",
+      "filename": "CevasTheoremOQ04.lean",
+      "lineCount": 243,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremSinRatio.lean",
+      "filename": "CevasTheoremSinRatio.lean",
+      "lineCount": 146,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremSinRatio.lean"
+    }
+  ]
+}

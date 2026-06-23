@@ -1,0 +1,397 @@
+[
+  {
+    "id": "erdos-742-ann-header",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 28,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Library Imports",
+    "content": "Imports Mathlib's `SimpleGraph` for graph structure, `Connectivity.Subgraph` for reachability and distance, `Nat.Basic` and `Finset.Card` for counting edges in finite graphs.",
+    "significance": "supporting",
+    "mathContext": "Mathlib's `SimpleGraph V` provides symmetric irreflexive adjacency on vertex type $V$. The `edgeFinset` gives the edge set as a `Finset` when $V$ is finite, enabling edge counting.",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "graph connectivity",
+      "Finset cardinality"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib graph theory API"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-dist",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 44,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Graph Distance",
+    "content": "Shortest path length between vertices $u$ and $v$ in graph $G$. Returns $\\infty$ if the vertices are not connected, otherwise the standard graph distance $d_G(u,v)$.",
+    "significance": "key",
+    "mathContext": "Graph distance $d_G(u,v) = \\min\\{|P| : P \\text{ is a } u\\text{-}v \\text{ path}\\}$ is a metric on connected components. The use of $\\mathbb{N}_{\\infty}$ (extended naturals) handles disconnected pairs cleanly.",
+    "relatedConcepts": [
+      "shortest path",
+      "graph metric",
+      "extended naturals"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Reachable",
+      "SimpleGraph.dist"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-diameter",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 48,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Graph Diameter",
+    "content": "The diameter of $G$, defined as $\\sup_{u,v} d_G(u,v)$. For connected finite graphs this equals $\\max_{u,v} d_G(u,v)$, the longest shortest path.",
+    "significance": "key",
+    "mathContext": "The diameter $\\mathrm{diam}(G) = \\max_{u,v \\in V} d_G(u,v)$ measures the 'worst case' distance. Diameter 2 means every pair of vertices has a common neighbor.",
+    "relatedConcepts": [
+      "eccentricity",
+      "radius",
+      "common neighbor"
+    ],
+    "prerequisites": [
+      "dist definition",
+      "supremum over finite type"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-hasdiam",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 52,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "HasDiameter Predicate",
+    "content": "Graph $G$ has diameter exactly $d$: (1) $G$ is connected, (2) all distances $\\le d$, and (3) some pair achieves distance exactly $d$. The three-part definition ensures the diameter is precisely $d$.",
+    "significance": "key",
+    "mathContext": "The three conditions formalize $\\mathrm{diam}(G) = d$: connectivity ensures all distances are finite, the upper bound gives $\\mathrm{diam}(G) \\le d$, and the witness gives $\\mathrm{diam}(G) \\ge d$.",
+    "relatedConcepts": [
+      "graph connectivity",
+      "diameter computation",
+      "BFS"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Connected",
+      "SimpleGraph.dist"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-hasdiam2",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 57,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "HasDiameter2",
+    "content": "Specialization: $G$ has diameter exactly 2. Equivalently, $G$ is connected, non-complete, and every two non-adjacent vertices have a common neighbor.",
+    "significance": "key",
+    "mathContext": "Diameter 2 graphs are characterized by the common neighbor property: $\\forall u,v$, either $uv \\in E$ or $\\exists w,\\; uw, wv \\in E$. The complete graph has diameter 1, so diameter 2 requires at least one non-edge.",
+    "relatedConcepts": [
+      "common neighbor",
+      "friendship theorem",
+      "complete graph"
+    ],
+    "prerequisites": [
+      "HasDiameter definition"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-deleteedge",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 64,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Edge Deletion",
+    "content": "Removes edge $\\{u,v\\}$ from $G$: adjacency $x \\sim y$ holds in the new graph iff $x \\sim_G y$ and $\\{x,y\\} \\ne \\{u,v\\}$. Preserves symmetry (via `Set.pair_comm`) and irreflexivity.",
+    "significance": "key",
+    "mathContext": "Edge deletion is the fundamental operation for studying critical edges. The resulting graph $G - uv$ has $|E(G)| - 1$ edges and may increase the diameter if $uv$ was a 'bridge' for some shortest path.",
+    "relatedConcepts": [
+      "edge contraction",
+      "graph minor",
+      "bridge edge"
+    ],
+    "prerequisites": [
+      "SimpleGraph structure",
+      "Set.pair equality"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-critical",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 72,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Critical Edge",
+    "content": "Edge $uv$ is critical if $uv \\in E(G)$ and deleting it destroys the diameter-2 property: $\\mathrm{diam}(G - uv) > 2$ (or $G - uv$ is disconnected).",
+    "significance": "key",
+    "mathContext": "An edge $uv$ is critical for diameter 2 iff there exist vertices $x, y$ whose unique shortest path of length $\\le 2$ uses $uv$. Equivalently, after deletion, some pair loses all common neighbors and the edge itself.",
+    "relatedConcepts": [
+      "edge criticality",
+      "bridge",
+      "diameter increase"
+    ],
+    "prerequisites": [
+      "deleteEdge",
+      "HasDiameter2"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-alledgescrit",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 76,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "All Edges Critical",
+    "content": "Every edge in $G$ is critical for diameter 2. This defines the 'minimal' or 'edge-minimal' diameter-2 property: no proper spanning subgraph has diameter 2.",
+    "significance": "key",
+    "mathContext": "A graph with all edges critical is called **diameter-critical** or **minimal**. It is edge-minimal among all spanning subgraphs with diameter 2. Note this is different from being a subgraph-minimal diameter-2 graph (which could have fewer vertices).",
+    "relatedConcepts": [
+      "spanning subgraph",
+      "edge-minimal property",
+      "Turán-type problem"
+    ],
+    "prerequisites": [
+      "IsCriticalEdge",
+      "AllEdgesCritical quantifier"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-minimal",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 84,
+      "endLine": 85
+    },
+    "type": "definition",
+    "title": "Minimal Diameter-2 Graph",
+    "content": "The conjunction: $G$ has diameter 2 AND every edge is critical. This is the central object of Problem #742 — the question is how many edges such a graph can have.",
+    "significance": "key",
+    "mathContext": "The class of minimal diameter-2 graphs is closed under isomorphism but not under taking subgraphs. The extremal question $\\max |E(G)|$ subject to $G$ being minimal diameter-2 on $n$ vertices is the content of the Murty-Plesník conjecture.",
+    "relatedConcepts": [
+      "extremal graph theory",
+      "Turán problem",
+      "diameter-critical class"
+    ],
+    "prerequisites": [
+      "HasDiameter2",
+      "AllEdgesCritical"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-edgecount",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 88,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "Edge Count",
+    "content": "The number of edges $|E(G)| = |\\text{edgeFinset}(G)|$, using Mathlib's `edgeFinset` which gives the set of unordered pairs $\\{u,v\\}$ with $u \\sim v$.",
+    "significance": "supporting",
+    "mathContext": "For a simple graph on $n$ vertices, $0 \\le |E(G)| \\le \\binom{n}{2}$. The Murty-Plesník bound $n^2/4$ is approximately half of the Turán number $\\mathrm{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$, which is not coincidental — the extremal graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is the same.",
+    "relatedConcepts": [
+      "Turán number",
+      "edge density",
+      "Mantel's theorem"
+    ],
+    "prerequisites": [
+      "SimpleGraph.edgeFinset",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-bound",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 92,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "Murty-Plesník Bound",
+    "content": "The conjectured upper bound $\\lfloor n^2/4 \\rfloor$ on edges in a minimal diameter-2 graph. This equals the number of edges in the balanced complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$.",
+    "significance": "key",
+    "mathContext": "The bound $n^2/4$ appears throughout extremal graph theory: it is also the Turán number $\\mathrm{ex}(n, K_3)$ (Mantel 1907) and the maximum edges in a bipartite graph on $n$ vertices. The coincidence with the Turán number reflects the fact that the extremal graph is bipartite and triangle-free.",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "Mantel's theorem",
+      "balanced bipartite graph"
+    ],
+    "prerequisites": [
+      "natural number division",
+      "floor function"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-bipartite",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 100,
+      "endLine": 102
+    },
+    "type": "concept",
+    "title": "Complete Bipartite Has Diameter 2",
+    "content": "The complete bipartite graph $K_{a,b}$ (with $a,b \\ge 1$) has diameter 2 and exactly $a \\cdot b$ edges. Any two vertices in the same part are connected via a vertex in the other part.",
+    "significance": "key",
+    "mathContext": "$K_{a,b}$ has vertex set $A \\sqcup B$ with $|A|=a$, $|B|=b$, and edges between all cross-part pairs. Diameter is 2 since same-part vertices are at distance 2 (via any vertex in the other part). For $a = \\lfloor n/2 \\rfloor$, $b = \\lceil n/2 \\rceil$, the edge count is $\\lfloor n^2/4 \\rfloor$.",
+    "relatedConcepts": [
+      "complete bipartite graph",
+      "bipartition",
+      "AM-GM inequality"
+    ],
+    "prerequisites": [
+      "HasDiameter2",
+      "edgeCount"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-balanced",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 112,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Balanced Bipartite Is Minimal",
+    "content": "$K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ is a minimal diameter-2 graph: every edge is critical. Deleting any cross-edge disconnects the two endpoints from the 2-step path.",
+    "significance": "key",
+    "mathContext": "In $K_{a,b}$ every edge $uv$ (with $u \\in A$, $v \\in B$) is critical: after deleting $uv$, the vertices $u$ and $v$ are still at distance 2 (via other vertices), but if $a = 1$ or $b = 1$ then deleting the unique edge between $u$ and $v$ increases the diameter. For balanced bipartite with $a,b \\ge 2$, criticality requires a more subtle argument involving the structure of common neighbors.",
+    "relatedConcepts": [
+      "edge-criticality in bipartite graphs",
+      "common neighbor structure"
+    ],
+    "prerequisites": [
+      "IsMinimalDiameter2",
+      "complete_bipartite_diameter2"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-furedi",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 125,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Füredi's Theorem (1992)",
+    "content": "For sufficiently large $n$, every minimal diameter-2 graph on $n$ vertices has at most $\\lfloor n^2/4 \\rfloor$ edges. This settles the Murty-Plesník-Ore conjecture.",
+    "significance": "key",
+    "mathContext": "Füredi's proof uses a combination of extremal graph theory techniques. The key insight is that in a minimal diameter-2 graph, the neighborhood structure is highly constrained: for each edge $uv$, there must exist a 'private witness' — vertices whose only path of length $\\le 2$ uses $uv$. Counting these witnesses leads to the bound. The 'sufficiently large' threshold $N_0$ is not explicitly determined.",
+    "relatedConcepts": [
+      "regularity lemma",
+      "extremal graph theory",
+      "private witness argument"
+    ],
+    "prerequisites": [
+      "IsMinimalDiameter2",
+      "MurtyPlesnikBound",
+      "edgeCount"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-tight",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 132,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Bound Is Tight",
+    "content": "Proved theorem: for every $n \\ge 2$, there exists a minimal diameter-2 graph with exactly $\\lfloor n^2/4 \\rfloor$ edges. The proof instantiates the balanced complete bipartite graph axiom.",
+    "significance": "key",
+    "mathContext": "The proof is a direct application of `balanced_bipartite_minimal`: for any $n \\ge 2$, $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ witnesses the bound. This shows the Murty-Plesník bound is not just an upper bound but is achieved — the problem is completely resolved.",
+    "relatedConcepts": [
+      "extremal example",
+      "tightness of bounds",
+      "constructive witness"
+    ],
+    "prerequisites": [
+      "balanced_bipartite_minimal axiom",
+      "MurtyPlesnikBound"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-diamcrit",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 166,
+      "endLine": 168
+    },
+    "type": "definition",
+    "title": "Diameter-Critical Graph (General)",
+    "content": "A graph is diameter-$d$-critical if it has diameter $d$ and deleting any edge increases the diameter. This generalizes minimal diameter-2 to arbitrary diameter values.",
+    "significance": "key",
+    "mathContext": "For diameter $d \\ge 3$, the extremal problem $\\max |E(G)|$ over diameter-$d$-critical graphs on $n$ vertices has different answers. The $d = 2$ case is the Murty-Plesník conjecture; for $d \\ge 3$, the bounds involve different extremal constructions.",
+    "relatedConcepts": [
+      "diameter-critical graphs",
+      "Turán-type problems for diameter"
+    ],
+    "prerequisites": [
+      "HasDiameter",
+      "edge deletion",
+      "diameter increase"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-equiv",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 171,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Minimal Iff Critical",
+    "content": "Proved theorem: `IsMinimalDiameter2 G ↔ IsDiameterCritical G 2`. The two definitions coincide for diameter 2, showing our specialized definition is consistent with the general framework.",
+    "significance": "supporting",
+    "mathContext": "The proof unfolds both definitions and shows they are logically equivalent. The forward direction extracts the diameter and criticality, the backward direction reconstructs the conjunction. This is a sanity check that the specialized and general definitions agree.",
+    "relatedConcepts": [
+      "logical equivalence",
+      "definition consistency",
+      "iff proof"
+    ],
+    "prerequisites": [
+      "IsMinimalDiameter2",
+      "IsDiameterCritical"
+    ]
+  },
+  {
+    "id": "erdos-742-ann-main",
+    "proofId": "erdos-742",
+    "range": {
+      "startLine": 204,
+      "endLine": 207
+    },
+    "type": "concept",
+    "title": "Main Result: Erdős Problem #742",
+    "content": "Proved theorem combining both directions: (1) Füredi's bound $|E(G)| \\le n^2/4$ for large $n$, and (2) tightness via the balanced complete bipartite graph. The proof is `⟨furedi_theorem, bound_is_tight⟩`.",
+    "significance": "key",
+    "mathContext": "The conjunction packages the complete resolution: the upper bound (from Füredi's axiom) and the matching lower bound (from the proved `bound_is_tight` theorem). This is the standard format for solved extremal problems: optimal bound + extremal construction.",
+    "relatedConcepts": [
+      "solved Erdős problem",
+      "extremal resolution",
+      "upper and lower bounds"
+    ],
+    "prerequisites": [
+      "furedi_theorem",
+      "bound_is_tight"
+    ]
+  }
+]

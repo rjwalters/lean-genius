@@ -1,0 +1,146 @@
+[
+  {
+    "title": "1D Brouwer via IVT: The g(x) = f(x) \u2212 x Reduction",
+    "mathContext": "The g(x) = f(x) - x trick reduces a fixed-point problem to a root-finding problem. The key topological fact used is: \u211d has the Intermediate Value Property \u2014 a continuous function on a connected domain that takes both positive and non-positive values must have a zero. In Lean, `intermediate_value_Icc'` is the variant for non-increasing transitions (g from \u22650 to \u22640), while `intermediate_value_Icc` handles the increasing case. Both follow from the connectedness of closed intervals.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "exists_mem_Icc_isFixedPt_of_mapsTo in Mathlib",
+      "intermediate_value_Icc / intermediate_value_Icc' variants",
+      "ContinuousOn.sub for continuity of g = f - id",
+      "Cauchy-Bolzano theorem as prototype"
+    ],
+    "prerequisites": [
+      "continuity of real functions on a closed interval [a,b]",
+      "the Intermediate Value Theorem",
+      "the auxiliary function g(x) = f(x) \u2212 x and its sign changes"
+    ],
+    "proofId": "brouwer-fixed-point-oq-01",
+    "range": {
+      "startLine": 67,
+      "endLine": 117
+    },
+    "id": "ann-brouwer-oq01-1d-ivt",
+    "type": "insight",
+    "content": "Two proofs of the 1D Brouwer Fixed Point Theorem are given side by side. `brouwer_1d` is a one-liner: Mathlib's `exists_mem_Icc_isFixedPt_of_mapsTo` encapsulates the argument. `brouwer_1d_via_ivt` makes the reasoning explicit: define g(x) = f(x) - x (continuous on [a,b]); g(a) = f(a) - a \u2265 0 because f maps a into [a,b]; g(b) = f(b) - b \u2264 0 for the same reason at b; by `intermediate_value_Icc'` (the decreasing IVT variant), there exists x \u2208 [a,b] with g(x) = 0, i.e., f(x) = x. The Lean proof extracts these steps as `hga`, `hgb`, and an `obtain` from IVT, closing with `linarith`.\n\nThis illustrates a general principle in formal verification: provide both a 'trusted library' proof (short, using existing Mathlib results) and an 'explanatory' proof (longer, but pedagogically clear). Both are verified by Lean, so they serve different audiences \u2014 the library proof ensures correctness against Mathlib's standard; the IVT proof shows that IVT alone suffices, which is the key insight for the OQ (open question). The unit interval specialization `brouwer_1d_unit_interval` is then a trivial corollary."
+  },
+  {
+    "title": "1D No-Retraction Theorem: IVT Forces Value 1/2",
+    "mathContext": "The No-Retraction Theorem states there is no continuous retraction from a ball B\u207f to its boundary sphere S\u207f\u207b\u00b9. In dimension 1, the ball is [0,1] and the boundary is {0,1} \u2014 a discrete two-point set. A retraction would be a continuous map that fixes boundary points, but the IVT forces passage through intermediate values. In n \u2265 2, the boundary S\u00b9 is connected, so IVT cannot be used this way \u2014 instead the homology group H_{n-1}(S\u207f\u207b\u00b9) = \u2124 provides the obstruction.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "No-Retraction Theorem in n dimensions",
+      "H_{n-1}(S^{n-1}) = Z as obstruction",
+      "connected vs discrete image",
+      "Brouwer FPT \u2194 No-Retraction equivalence"
+    ],
+    "prerequisites": [
+      "continuous maps and connectedness of the image",
+      "the boundary {0,1} of the interval [0,1]",
+      "the Intermediate Value Theorem (no continuous surjection onto a disconnected set)"
+    ],
+    "proofId": "brouwer-fixed-point-oq-01",
+    "range": {
+      "startLine": 123,
+      "endLine": 159
+    },
+    "id": "ann-brouwer-oq01-no-retraction",
+    "type": "insight",
+    "content": "The theorem `no_retraction_1d` proves there is no continuous map r:[0,1] \u2192 {0,1} satisfying r(0) = 0 and r(1) = 1. The proof applies IVT: since r(0) = 0 and r(1) = 1, by `intermediate_value_Icc`, the image of [0,1] under r contains every value in [r(0), r(1)] = [0,1]. In particular, 1/2 \u2208 r''([0,1]). But by hypothesis r(x) \u2208 {0, 1} for all x \u2014 contradicting that r hits 1/2. The contradiction is closed by `rcases hmaps x hx_mem with h | h` followed by `norm_num` on each case r(x) = 0 or r(x) = 1.\n\nThe 1D No-Retraction theorem is classically equivalent to the 1D Brouwer Fixed Point Theorem (each implies the other). The Lean proof shows the IVT \u2192 No-Retraction direction directly. The equivalence IVT \u2194 Brouwer \u2194 No-Retraction in 1D is a foundational example of how topological facts in low dimensions reduce to purely analytic results, while higher dimensions require genuinely topological tools."
+  },
+  {
+    "title": "1D Borsuk-Ulam: Antipodal Sign Change via g(x) = f(x) \u2212 f(\u2212x)",
+    "mathContext": "The Borsuk-Ulam theorem in n dimensions states: every continuous f:S\u207f\u2192\u211d\u207f has an antipodal pair x with f(x) = f(-x). The 1D version here is the interval analogue (S\u00b9 would be the circle; this is the [-1,1] version). The proof structure \u2014 define the antisymmetric function h(x) = f(x) - f(-x), note h(-1) = -h(1), apply IVT to h \u2014 is exactly the n=1 case of the ham-sandwich theorem's topological core. The case split `by_cases h0 : g (-1) = 0` is necessary because IVT requires a strict sign change for both variants.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Borsuk-Ulam theorem in n dimensions",
+      "ham-sandwich theorem",
+      "antipodal points on S^n",
+      "antisymmetric function g(-x) = -g(x)"
+    ],
+    "prerequisites": [
+      "antipodal / antisymmetric functions g(\u2212x) = \u2212g(x)",
+      "the Intermediate Value Theorem",
+      "odd functions vanish somewhere on a symmetric interval"
+    ],
+    "proofId": "brouwer-fixed-point-oq-01",
+    "range": {
+      "startLine": 165,
+      "endLine": 229
+    },
+    "id": "ann-brouwer-oq01-borsuk-ulam",
+    "type": "insight",
+    "content": "The theorem `borsuk_ulam_1d` proves: for any continuous f:\u211d\u2192\u211d, there exists x \u2208 [-1,1] with f(x) = f(-x). Define g(x) = f(x) - f(-x). Then g(1) = f(1) - f(-1) = -(f(-1) - f(1)) = -g(-1), so g(1) and g(-1) have opposite signs (or one is zero). If g(-1) = 0, then f(-1) = f(1) and x = -1 works. Otherwise, by `lt_or_gt_of_ne`, g changes sign: if g(-1) < 0 < g(1), use `intermediate_value_Icc`; if g(-1) > 0 > g(1), use `intermediate_value_Icc'`. In each case, IVT gives x with g(x) = 0.\n\nBorsuk-Ulam has applications from antipodal weather (two points on Earth with equal temperature and pressure) to the ham-sandwich theorem (any n measurable sets in \u211d\u207f can be bisected by a single hyperplane). The 1D proof requires only IVT, showing that the 1D case is entirely elementary. The Lean case analysis (g(-1) = 0, g(-1) < 0, g(-1) > 0) is minimal: any continuous proof needs to handle the boundary case where IVT cannot be applied without extra work."
+  },
+  {
+    "title": "Banach Contraction: Unique Fixed Point via ContractingWith",
+    "mathContext": "The Banach Fixed Point Theorem (1922) says: if (X,d) is a complete metric space and f:X\u2192X satisfies d(f(x),f(y)) \u2264 k\u00b7d(x,y) for some k < 1 (a contraction), then f has a unique fixed point, found as the limit of iterates x\u2099\u208a\u2081 = f(x\u2099). Mathlib's `ContractingWith` encodes this as a typeclass. NNReal (nonneg real numbers) is used instead of \u211d to avoid sign conditions in Lipschitz bounds. The `[Nonempty \u03b1]` hypothesis provides a starting point for the iteration.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ContractingWith typeclass in Mathlib",
+      "LipschitzWith.of_dist_le_mul",
+      "NNReal for nonneg Lipschitz constants",
+      "Picard iteration for ODEs as application"
+    ],
+    "prerequisites": [
+      "metric spaces and the distance function",
+      "contraction mappings (Lipschitz constant K < 1)",
+      "the Banach fixed-point theorem and Picard iteration"
+    ],
+    "proofId": "brouwer-fixed-point-oq-01",
+    "range": {
+      "startLine": 235,
+      "endLine": 278
+    },
+    "id": "ann-brouwer-oq01-banach",
+    "type": "insight",
+    "content": "The theorem `banach_contraction_fixed_point` proves existence and uniqueness of fixed points for contracting maps on complete metric spaces. The proof converts the user-provided Lipschitz constant k:\u211d and bound `\u2200 x y, dist(f x)(f y) \u2264 k\u00b7dist x y` into Mathlib's `ContractingWith K f` typeclass (where K:NNReal). The conversion uses `LipschitzWith.of_dist_le_mul` to build a LipschitzWith bound, then packages it as ContractingWith. Finally, `hcontr.fixedPoint f` gives the unique fixed point, `hcontr.fixedPoint_isFixedPt` proves it is a fixed point, and `hcontr.fixedPoint_unique hy` gives uniqueness.\n\nBanach contraction is strictly stronger than Brouwer: it requires f to be a contraction (Lipschitz < 1) rather than just continuous, but in return gives uniqueness and algorithmic constructibility (the iteration converges). The follow-up theorem `banach_implies_brouwer_1d` uses `LipschitzWith.continuous` to extract continuity from the Lipschitz bound and applies `brouwer_1d_unit_interval`, showing the implication Banach \u2192 Brouwer in 1D. This Lean proof makes the strict logical implication (Banach \u2282 hypotheses of Brouwer) formally precise."
+  },
+  {
+    "title": "Brouwer Non-Uniqueness: The Identity Witnesses Infinite Fixed Points",
+    "mathContext": "Existence vs. uniqueness is a fundamental distinction in fixed point theory. Brouwer's theorem guarantees \u2203 x, f(x) = x but says nothing about how many. Banach's theorem (under contraction) gives \u2203! x, f(x) = x. The identity function on [0,1] is a simple counterexample to uniqueness for Brouwer: every x is a fixed point. The constant map c is a simple example of uniqueness: only c satisfies f(c) = c. These two extremes bound the spectrum \u2014 Brouwer fixed points can range from a single point to a full interval.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "identity function as infinite fixed-point set",
+      "constant map as unique fixed point",
+      "existence vs uniqueness in fixed point theory",
+      "existsUnique (\u2203! x) in Lean 4"
+    ],
+    "prerequisites": [
+      "the distinction between existence and uniqueness",
+      "fixed points of the identity vs a constant map",
+      "the \u2203! (exists-unique) quantifier"
+    ],
+    "proofId": "brouwer-fixed-point-oq-01",
+    "range": {
+      "startLine": 284,
+      "endLine": 310
+    },
+    "id": "ann-brouwer-oq01-nonuniqueness",
+    "type": "insight",
+    "content": "The theorem `brouwer_nonunique` exhibits a continuous self-map of [0,1] with more than one fixed point: the identity function `id`. Every point x \u2208 [0,1] satisfies id(x) = x, so every point is a fixed point. The Lean proof constructs the witness as `\u27e8id, continuousOn_id, fun x hx => hx, 0, ..., 1, ..., ...\u27e9`, providing the function, its continuity and self-map property, and two distinct fixed points 0 and 1. The companion theorem `constant_map_fixed_point` shows the other extreme: a constant map `fun _ => c` has exactly one fixed point c in [0,1] (when c \u2208 [0,1]).\n\nThese examples serve a pedagogical purpose: they make precise why Brouwer's theorem is weaker than Banach's. Students often incorrectly assume fixed point theorems give unique fixed points. The Lean proofs are minimal \u2014 `brouwer_nonunique` takes 3 lines and `constant_map_fixed_point` takes 2 lines \u2014 because the examples are the simplest possible witnesses. This minimality is itself a form of mathematical elegance: the theorem is proved by exhibiting the most obvious counterexample."
+  },
+  {
+    "title": "The Dimensional Gap: Why n \u2265 2 Requires Algebraic Topology",
+    "mathContext": "Singular homology (or simplicial, or cellular) assigns abelian groups H\u2099(X) to topological spaces. For the n-sphere: H_{n-1}(S\u207f\u207b\u00b9) = \u2124. For the n-ball B\u207f (contractible): all reduced homology vanishes. A retraction r: B\u207f \u2192 S\u207f\u207b\u00b9 with r|_{S\u207f\u207b\u00b9} = id would produce a commutative diagram where the identity on H_{n-1}(S\u207f\u207b\u00b9) = \u2124 factors through H_{n-1}(B\u207f) = 0 \u2014 impossible. The 2D case can be handled combinatorially via Sperner's Lemma (no homology needed), which is the approach discussed as an open challenge in this file.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "singular homology H_n(S^{n-1}) = Z",
+      "Sperner's Lemma as combinatorial Brouwer",
+      "BrouwerFixedPoint.lean axiomatized companion",
+      "Mathlib gap: Brouwer FPT not in Mathlib 4.26"
+    ],
+    "prerequisites": [
+      "the 1-dimensional Brouwer/IVT argument",
+      "why the IVT has no direct higher-dimensional analogue",
+      "algebraic-topology obstructions (singular homology H\u2099(S\u207f\u207b\u00b9), Sperner\u2019s lemma)"
+    ],
+    "proofId": "brouwer-fixed-point-oq-01",
+    "range": {
+      "startLine": 359,
+      "endLine": 392
+    },
+    "id": "ann-brouwer-oq01-dimensional-gap",
+    "type": "concept",
+    "content": "Section VII explains the qualitative difference between n=1 and n\u22652 for the Brouwer Fixed Point Theorem. In 1D, IVT suffices because the boundary {0,1} is disconnected (a discrete two-point set), and a continuous function cannot connect them. In n\u22652, the boundary S\u207f\u207b\u00b9 is connected, so IVT fails to provide an obstruction. The key algebraic-topological fact: H_{n-1}(S\u207f\u207b\u00b9) = \u2124 while H_{n-1}(B\u207f) = 0. A continuous retraction B\u207f \u2192 S\u207f\u207b\u00b9 would induce an injection \u2124 \u2192 0 on homology \u2014 impossible. The `dimension_gap` theorem is a trivial placeholder recording this logical structure (both cases hold trivially as True).\n\nThe dimensional gap illustrates a profound phenomenon in mathematics: problems that are elementary in low dimensions can require sophisticated machinery in higher dimensions. The file's acknowledgment that '2D Brouwer via Sperner's Lemma' is an open challenge in the project directly references the companion file BrouwerFixedPoint.lean and the Mathlib gap (Brouwer FPT not in Mathlib as of 2026). This honest documentation of the state of the art \u2014 what's proved, what's axiomatized, what's missing from Mathlib \u2014 is a strength of the Lean formalization approach."
+  }
+]

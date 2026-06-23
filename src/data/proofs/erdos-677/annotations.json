@@ -1,0 +1,219 @@
+[
+  {
+    "id": "erdos-677-context",
+    "proofId": "erdos-677",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "title": "Problem Overview: Distinct LCM of Consecutive Integers",
+    "content": "**Erdos Problem 677** asks whether the LCM of k consecutive integers uniquely determines the starting point: is it true that M(m, k) != M(n, k) whenever m >= n + k and k > 0? A **stronger conjecture** asserts that for k > 2, only finitely many pairs of separated consecutive blocks can even share the same **prime factors**. The formalization defines lcmInterval, states both conjectures, records two known cross-parameter examples, and proves basic structural properties.",
+    "mathContext": "The LCM of consecutive integers encodes deep arithmetic information about the distribution of prime factors across integer intervals. If two well-separated intervals of the same length have the same LCM, their prime factorizations must align in a very specific way. The Thue-Siegel theorem from Diophantine approximation already implies finiteness of such coincidences for fixed k, but the full conjecture asks for zero solutions (when parameters match).",
+    "relatedConcepts": [
+      "least common multiple",
+      "number theory",
+      "Diophantine equations",
+      "prime factorization"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "number theory",
+      "least common multiples",
+      "analytic number theory",
+      "Diophantine approximation"
+    ]
+  },
+  {
+    "id": "erdos-677-lcm",
+    "proofId": "erdos-677",
+    "type": "definition",
+    "range": {
+      "startLine": 32,
+      "endLine": 35
+    },
+    "title": "LCM Interval M(n, k)",
+    "content": "**lcmInterval n k** = lcm(n+1, n+2, ..., n+k), computed as a fold of Nat.lcm over Finset.range k. This captures the **least common multiple** of k consecutive integers starting at n+1. The offset-by-one convention avoids degeneracy at n = 0.",
+    "mathContext": "The LCM of consecutive integers grows roughly as e^k by the prime number theorem, since it equals the product divided by common factors. For small k, the LCM is often equal to the product itself (when the consecutive integers are pairwise coprime), but for larger k, shared prime factors cause significant cancellation. The arithmetic structure of lcmInterval is intimately connected to the distribution of primes.",
+    "relatedConcepts": [
+      "least common multiple",
+      "consecutive integers",
+      "prime number theorem",
+      "Finset.fold"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "number theory",
+      "least common multiples",
+      "Lean 4 definitions",
+      "Mathlib Finset operations"
+    ]
+  },
+  {
+    "id": "erdos-677-conjecture",
+    "proofId": "erdos-677",
+    "type": "insight",
+    "range": {
+      "startLine": 39,
+      "endLine": 41
+    },
+    "title": "Main Conjecture: Distinct LCM Values",
+    "content": "**ErdosProblem677** states that for all m, n, k with k > 0 and m >= n + k, we have lcmInterval m k != lcmInterval n k. In other words, two **non-overlapping** blocks of k consecutive integers always have **distinct LCMs**. This is an injectivity statement for M(-, k) on well-separated inputs.",
+    "mathContext": "The condition m >= n + k ensures the two intervals [n+1, n+k] and [m+1, m+k] are disjoint. The conjecture asserts that the LCM function is injective on such separated intervals. This is plausible because shifting the starting point changes which primes and prime powers appear, but proving it requires ruling out all possible arithmetic coincidences -- a task that seems to require deep tools from analytic number theory.",
+    "relatedConcepts": [
+      "injectivity",
+      "arithmetic functions",
+      "prime distribution in intervals"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "number theory",
+      "arithmetic functions",
+      "injectivity of functions"
+    ]
+  },
+  {
+    "id": "erdos-677-examples",
+    "proofId": "erdos-677",
+    "type": "concept",
+    "range": {
+      "startLine": 45,
+      "endLine": 48
+    },
+    "title": "Known Cross-Parameter Examples",
+    "content": "Two remarkable equalities are known where the **parameters differ**: M(4, 3) = M(13, 2) = 210 (since lcm(5,6,7) = lcm(14,15)) and M(3, 4) = M(19, 2) = 420 (since lcm(4,5,6,7) = lcm(20,21)). These do **not** contradict the conjecture because k differs between the two sides.",
+    "mathContext": "These examples show that LCM coincidences do occur when the block length k is allowed to vary. The equality lcm(5,6,7) = lcm(14,15) = 210 works because 14 = 2 * 7 and 15 = 3 * 5, so the same primes {2, 3, 5, 7} appear with the same maximum powers. Erdos noted these were the only known examples and asked whether infinitely many exist even in the cross-parameter case.",
+    "relatedConcepts": [
+      "LCM coincidences",
+      "smooth numbers",
+      "prime power distribution"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "arithmetic of small integers"
+    ]
+  },
+  {
+    "id": "erdos-677-prime-factors",
+    "proofId": "erdos-677",
+    "type": "definition",
+    "range": {
+      "startLine": 52,
+      "endLine": 58
+    },
+    "title": "Same Prime Factors and Consecutive Product",
+    "content": "**samePrimeFactors a b** holds when a and b have identical sets of prime divisors (ignoring multiplicities). **consecutiveProduct n k** = (n+1)(n+2)...(n+k) is the product of k consecutive integers. These definitions support the **stronger conjecture** about shared prime factor sets.",
+    "mathContext": "The prime factor set of a consecutive product is the union of the prime factors of each term. Two separated blocks sharing the same prime factor set is a very strong arithmetic coincidence: it means every prime dividing any element of one block also divides some element of the other block, and vice versa. For large k, consecutive products contain many primes (by Bertrand's postulate), making such coincidences increasingly unlikely.",
+    "relatedConcepts": [
+      "prime factorization",
+      "radical of an integer",
+      "Bertrand's postulate"
+    ],
+    "significance": "supporting",
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "Lean 4 definitions",
+      "finite sets"
+    ]
+  },
+  {
+    "id": "erdos-677-strong",
+    "proofId": "erdos-677",
+    "type": "insight",
+    "range": {
+      "startLine": 60,
+      "endLine": 65
+    },
+    "title": "Strong Prime Factor Conjecture",
+    "content": "**ErdosProblem677_strong** asserts that for k > 2 and m >= n + k, the set of pairs where consecutiveProduct n k and consecutiveProduct m k share the same prime factors is **finite**. This is strictly stronger than the LCM conjecture: same LCM implies same prime factors, but not conversely.",
+    "mathContext": "This stronger form asks about the radical (product of distinct prime factors) rather than the full LCM. Even if two blocks have the same set of primes, their LCMs will typically differ because the maximum prime powers differ. The stronger conjecture rules out even radical coincidences, which is a much deeper statement. The restriction k > 2 is necessary because for k = 2, the equation rad((n+1)(n+2)) = rad((m+1)(m+2)) can have infinitely many solutions related to Pell equations.",
+    "relatedConcepts": [
+      "radical of an integer",
+      "abc conjecture",
+      "S-unit equations",
+      "Pell equations"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "number theory",
+      "Diophantine equations",
+      "asymptotic finiteness arguments"
+    ]
+  },
+  {
+    "id": "erdos-677-thue-siegel",
+    "proofId": "erdos-677",
+    "type": "concept",
+    "range": {
+      "startLine": 69,
+      "endLine": 72
+    },
+    "title": "Thue-Siegel Finiteness Theorem",
+    "content": "The **Thue-Siegel theorem** implies that for each fixed k > 0, only **finitely many** pairs (m, n) with m >= n + k satisfy M(m, k) = M(n, k). This provides asymptotic support for the conjecture: the set of counterexamples, if any exist, must be finite.",
+    "mathContext": "The Thue-Siegel-Roth theorem on Diophantine approximation bounds the number of solutions to certain polynomial equations. Applied here, it shows that the equation lcm(m+1,...,m+k) = lcm(n+1,...,n+k) defines a Diophantine system with finitely many solutions for fixed k. This is a powerful finiteness result but falls short of proving zero solutions. The gap between 'finitely many' and 'none' is the content of Erdos's conjecture.",
+    "relatedConcepts": [
+      "Thue-Siegel-Roth theorem",
+      "Diophantine approximation",
+      "finiteness theorems",
+      "effective bounds"
+    ],
+    "significance": "key",
+    "prerequisites": [
+      "Diophantine approximation",
+      "number theory",
+      "algebraic number theory"
+    ]
+  },
+  {
+    "id": "erdos-677-basic-properties",
+    "proofId": "erdos-677",
+    "type": "concept",
+    "range": {
+      "startLine": 76,
+      "endLine": 90
+    },
+    "title": "Proved Basic Properties",
+    "content": "Four basic theorems are formally proved: **lcmInterval_zero** (empty LCM is 1), **lcmInterval_one** (single-element LCM is n+1), **consecutiveProduct_zero** (empty product is 1), and **consecutiveProduct_one** (single-element product is n+1). These base cases anchor the recursive structure of both functions.",
+    "mathContext": "These degenerate cases are proved by simplification (simp) from the definitions. They confirm that the fold-based and product-based definitions behave correctly at the boundaries. The identity Nat.lcm_one_left is used to reduce lcmInterval n 1 to just n + 1, reflecting that the LCM of a singleton is itself.",
+    "relatedConcepts": [
+      "base cases",
+      "fold semantics",
+      "Finset.range",
+      "Lean 4 simp tactic"
+    ],
+    "significance": "supporting",
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "Mathlib simp tactic",
+      "least common multiples",
+      "Finset folds"
+    ]
+  },
+  {
+    "id": "erdos-677-structural-axioms",
+    "proofId": "erdos-677",
+    "type": "concept",
+    "range": {
+      "startLine": 92,
+      "endLine": 97
+    },
+    "title": "LCM-Product Divisibility and Positivity",
+    "content": "Two structural properties are axiomatized: **lcmInterval_dvd_product** asserts that the LCM of a range always divides the product of the same range (since LCM divides any common multiple), and **lcmInterval_pos** guarantees lcmInterval is positive when k > 0 (since it is the LCM of positive integers).",
+    "mathContext": "The divisibility lcm(a_1,...,a_k) | a_1 * ... * a_k follows from the definition of LCM as the smallest common multiple. The positivity follows because each a_i = n + i + 1 >= 1, so their LCM is at least 1. These properties are foundational for any further arithmetic reasoning about the relationship between lcmInterval and consecutiveProduct.",
+    "relatedConcepts": [
+      "divisibility",
+      "LCM properties",
+      "positive integers",
+      "arithmetic axioms"
+    ],
+    "significance": "supporting",
+    "prerequisites": [
+      "number theory",
+      "divisibility theory",
+      "Lean 4 axioms"
+    ]
+  }
+]

@@ -1,0 +1,291 @@
+[
+  {
+    "id": "ann-e72-header",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Problem Overview: Unavoidable Cycle Lengths",
+    "content": "Erdős Problem #72 ($100 prize) asks: does there exist a set A of natural numbers with density 0 and a constant c > 0 such that every sufficiently large graph with average degree ≥ c contains a cycle whose length is in A? The answer is YES, proved non-constructively by Verstraëte (2005) and constructively for powers of 2 by Liu-Montgomery (2020), contradicting Erdős's intuition.",
+    "mathContext": "$\\exists A \\subseteq \\mathbb{N}, \\text{dens}(A) = 0, \\exists c > 0, \\forall G \\text{ large with } \\bar{d}(G) \\geq c, \\exists k \\in A, C_k \\subseteq G$. Here $\\text{dens}(A) = \\lim_{n \\to \\infty} |A \\cap [1,n]|/n$ and $\\bar{d}(G) = 2|E|/|V|$.",
+    "significance": "key",
+    "prerequisites": [
+      "natural density",
+      "average degree",
+      "cycle detection"
+    ],
+    "relatedConcepts": [
+      "erdos-71",
+      "extremal-graph-theory"
+    ]
+  },
+  {
+    "id": "ann-e72-counting",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 42,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Counting Function and Density Zero",
+    "content": "The counting function |A ∩ [0,n]| counts elements of A up to n, implemented as Finset.filter over Finset.range. A set has density 0 if this count divided by n tends to 0, formalized via Tendsto to nhds 0. Powers of 2 have counting function ~log₂(n), while arithmetic progressions grow linearly.",
+    "mathContext": "$\\text{countingFunction}(A, n) = |\\{a \\in A : a \\leq n\\}|$. $\\text{hasDensityZero}(A) := \\text{countingFunction}(A, n)/n \\to 0$ as $n \\to \\infty$. For powers of 2: $|\\{2^k : 2^k \\leq n\\}| = \\lfloor \\log_2 n \\rfloor + 1 = O(\\log n)$, so density is $O(\\log n / n) \\to 0$.",
+    "significance": "key",
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.range",
+      "Tendsto",
+      "nhds"
+    ],
+    "relatedConcepts": [
+      "erdos-72"
+    ]
+  },
+  {
+    "id": "ann-e72-powers2",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 50,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Powers of Two: The Key Set",
+    "content": "The set {2^k : k ∈ ℕ} = {1, 2, 4, 8, 16, ...} is defined as a Set ℕ via existential quantification. Erdős believed this set would NOT work as an unavoidable cycle length set, but Liu-Montgomery proved it does. The density zero proof (sorry) follows from the counting function being O(log n).",
+    "mathContext": "$\\text{powersOfTwo} = \\{n \\in \\mathbb{N} : \\exists k, n = 2^k\\}$. Only $\\lfloor \\log_2 n \\rfloor + 1$ elements lie in $[1,n]$, giving density $O(\\log n / n) \\to 0$.",
+    "significance": "key",
+    "prerequisites": [
+      "Set ℕ",
+      "natural density"
+    ],
+    "relatedConcepts": [
+      "erdos-72"
+    ]
+  },
+  {
+    "id": "ann-e72-ap",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 57,
+      "endLine": 63
+    },
+    "type": "definition",
+    "title": "Arithmetic Progressions: Positive Density Contrast",
+    "content": "Arithmetic progressions {a + kd : k ∈ ℕ} have density 1/d > 0, so they cannot solve the density-0 version of the problem. However, Bollobás (1977) proved they are unavoidable when they contain even numbers, demonstrating the cycle-forcing phenomenon exists.",
+    "mathContext": "$\\text{AP}(a, d) = \\{a + kd : k \\in \\mathbb{N}\\}$ has $|\\text{AP}(a,d) \\cap [1,n]| \\sim n/d$, so $\\text{dens}(\\text{AP}(a,d)) = 1/d > 0$. The theorem `arithmeticProgression_positive_density` (sorry) states $\\neg\\text{hasDensityZero}(\\text{AP}(a,d))$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "arithmeticProgression",
+      "hasDensityZero"
+    ],
+    "relatedConcepts": [
+      "erdos-72",
+      "erdos-71"
+    ]
+  },
+  {
+    "id": "ann-e72-graph-defs",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 65,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "Graph Definitions: Average Degree and Cycle Lengths",
+    "content": "Three key definitions: (1) averageDegree = (Σ deg(v))/|V| = 2|E|/|V|; (2) cycleLengths = set of k such that G contains a k-cycle, using SimpleGraph.Walk.IsCycle; (3) containsCycleIn checks whether cycleLengths intersects a target set A. These build on Mathlib's SimpleGraph infrastructure.",
+    "mathContext": "$\\bar{d}(G) = \\frac{1}{|V|} \\sum_{v \\in V} \\deg(v) = \\frac{2|E|}{|V|}$. $\\text{cycleLengths}(G) = \\{k : \\exists \\text{ cycle of length } k \\text{ in } G\\}$. Uses `SimpleGraph.Walk` for paths and `Walk.IsCycle` for the cycle predicate.",
+    "significance": "key",
+    "prerequisites": [
+      "SimpleGraph",
+      "SimpleGraph.Walk",
+      "Walk.IsCycle",
+      "Fintype.card"
+    ],
+    "relatedConcepts": [
+      "erdos-72"
+    ]
+  },
+  {
+    "id": "ann-e72-unavoidable",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 85,
+      "endLine": 97
+    },
+    "type": "definition",
+    "title": "Unavoidable and Strongly Unavoidable Sets",
+    "content": "A set A is unavoidable with threshold c if every graph on ≥ n₀ vertices with average degree ≥ c contains a cycle of length in A. It is strongly unavoidable if some such c exists. The existential quantifier over n₀ allows excluding small graphs where the property may fail trivially.",
+    "mathContext": "$\\text{isUnavoidable}(A, c) := \\exists n_0, \\forall G \\text{ on } \\geq n_0 \\text{ vertices}, \\bar{d}(G) \\geq c \\Rightarrow \\text{cycleLengths}(G) \\cap A \\neq \\emptyset$. $\\text{isStronglyUnavoidable}(A) := \\exists c > 0, \\text{isUnavoidable}(A, c)$. The crucial point: $c$ is independent of $|V|$.",
+    "significance": "key",
+    "prerequisites": [
+      "averageDegree",
+      "containsCycleIn"
+    ],
+    "relatedConcepts": [
+      "erdos-72"
+    ]
+  },
+  {
+    "id": "ann-e72-statement",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 99,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "Erdős Problem #72: Formal Statement",
+    "content": "The formal problem: does there exist a density-0 set A that is strongly unavoidable? This combines number-theoretic sparsity (density 0) with extremal graph theory (cycle forcing by average degree). Defined as Erdos72Statement, it is proved by erdos_72_solved using Liu-Montgomery.",
+    "mathContext": "$\\text{Erdos72Statement} := \\exists A \\subseteq \\mathbb{N}, \\text{hasDensityZero}(A) \\wedge \\text{isStronglyUnavoidable}(A)$.",
+    "significance": "key",
+    "prerequisites": [
+      "hasDensityZero",
+      "isStronglyUnavoidable"
+    ],
+    "relatedConcepts": [
+      "erdos-72",
+      "erdos-71"
+    ]
+  },
+  {
+    "id": "ann-e72-bollobas",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 110,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Bollobás (1977): Arithmetic Progressions",
+    "content": "Bollobás proved that infinite arithmetic progressions containing even numbers are strongly unavoidable. While this doesn't solve Problem #72 (APs have positive density), it establishes the cycle-forcing phenomenon. The requirement of even numbers connects to the bipartite structure: odd cycles are harder to force.",
+    "mathContext": "If $\\text{AP}(a,d)$ contains an even number (i.e., $\\exists k, 2 \\mid (a + kd)$), then $\\text{isStronglyUnavoidable}(\\text{AP}(a,d))$. The even condition is necessary: the set $\\{1, 3, 5, 7, \\ldots\\}$ is not unavoidable since bipartite graphs have no odd cycles regardless of density.",
+    "significance": "key",
+    "prerequisites": [
+      "bollobas_arithmetic_progression",
+      "arithmeticProgression"
+    ],
+    "relatedConcepts": [
+      "erdos-72",
+      "erdos-71"
+    ]
+  },
+  {
+    "id": "ann-e72-verstraete",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 123,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Verstraëte (2005): Non-Constructive Existence",
+    "content": "Verstraëte proved non-constructively that some density-0 set is strongly unavoidable, solving Problem #72 in principle. The proof uses probabilistic and compactness arguments, establishing existence without identifying which specific sets work. This left open the constructive question answered by Liu-Montgomery.",
+    "mathContext": "`verstraete_existence : Erdos72Statement` — a pure existence axiom. The proof in [Ve05] uses probabilistic methods to show a random sparse subset of even numbers is unavoidable with high probability.",
+    "significance": "key",
+    "prerequisites": [
+      "Erdos72Statement"
+    ],
+    "relatedConcepts": [
+      "erdos-72"
+    ]
+  },
+  {
+    "id": "ann-e72-liu-montgomery",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 130,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Liu-Montgomery (2020): Powers of 2 Work",
+    "content": "The breakthrough result: powers of 2 are strongly unavoidable. There exists a constant c > 0 such that every sufficiently large graph with average degree ≥ c contains a cycle whose length is a power of 2. Combined with density-zero of powers of 2, this yields the constructive solution erdos_72_solved.",
+    "mathContext": "`liu_montgomery_powers_of_two : isStronglyUnavoidable powersOfTwo`. Combined with `powersOfTwo_density_zero`, yields `erdos_72_solved : Erdos72Statement` via `⟨powersOfTwo, powersOfTwo_density_zero, liu_montgomery_powers_of_two⟩`.",
+    "significance": "key",
+    "prerequisites": [
+      "isStronglyUnavoidable",
+      "powersOfTwo"
+    ],
+    "relatedConcepts": [
+      "erdos-72"
+    ]
+  },
+  {
+    "id": "ann-e72-erdos-wrong",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 142,
+      "endLine": 152
+    },
+    "type": "insight",
+    "title": "Erdős Was Wrong: Refuted Belief",
+    "content": "Erdős stated he was 'almost certain' that powers of 2 would NOT be unavoidable, expecting the required threshold to grow with graph size. The theorem erdos_was_wrong formally refutes this: since liu_montgomery_powers_of_two proves isStronglyUnavoidable powersOfTwo, the negation ¬isStronglyUnavoidable powersOfTwo is false.",
+    "mathContext": "`erdos_incorrect_belief := ¬isStronglyUnavoidable powersOfTwo`. `erdos_was_wrong : ¬erdos_incorrect_belief` follows by applying `liu_montgomery_powers_of_two` to the hypothesis. This is a rare instance of Erdős's combinatorial intuition being definitively wrong.",
+    "significance": "key",
+    "prerequisites": [
+      "liu_montgomery_powers_of_two",
+      "erdos_incorrect_belief"
+    ],
+    "relatedConcepts": [
+      "erdos-72"
+    ]
+  },
+  {
+    "id": "ann-e72-other-sets",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 154,
+      "endLine": 172
+    },
+    "type": "definition",
+    "title": "Other Density-0 Sets and Open Questions",
+    "content": "Perfect squares {k² : k ∈ ℕ} have density 0 (~√n/n → 0), but whether they are strongly unavoidable remains open. The theorem powersOfTwo_all_even shows that powers of 2 are all even (except 1), which is key to the Liu-Montgomery argument — bipartite graphs exclude odd cycles, so even-length cycles are the right target.",
+    "mathContext": "$\\text{perfectSquares} = \\{k^2 : k \\in \\mathbb{N}\\}$ with $|\\text{perfectSquares} \\cap [1,n]| = \\lfloor \\sqrt{n} \\rfloor$, so $\\text{dens} = O(n^{-1/2}) \\to 0$. The evenness property: $2^k$ is even for $k \\geq 1$, proved by `⟨2^{k-1}, \\text{ring}⟩$ in the successor case.",
+    "significance": "supporting",
+    "prerequisites": [
+      "perfectSquares",
+      "Even"
+    ],
+    "relatedConcepts": [
+      "erdos-72"
+    ]
+  },
+  {
+    "id": "ann-e72-quantitative",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 174,
+      "endLine": 185
+    },
+    "type": "definition",
+    "title": "Optimal Threshold and Explicit Bounds",
+    "content": "The optimal threshold for a set A is the infimum of all c > 0 for which A is unavoidable. Liu-Montgomery gives an explicit but large bound (< 10^6) for powers of 2. Finding the true optimal threshold remains open — it may be much smaller, perhaps even a small constant.",
+    "mathContext": "$\\text{optimalThreshold}(A) = \\inf\\{c > 0 : \\text{isUnavoidable}(A, c)\\}$. Liu-Montgomery: $\\text{optimalThreshold}(\\text{powersOfTwo}) < 10^6$. The true value is conjectured to be much smaller.",
+    "significance": "supporting",
+    "prerequisites": [
+      "sInf",
+      "optimalThreshold"
+    ],
+    "relatedConcepts": [
+      "erdos-72"
+    ]
+  },
+  {
+    "id": "ann-e72-general",
+    "proofId": "erdos-72",
+    "range": {
+      "startLine": 187,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "General Liu-Montgomery Theorem",
+    "content": "Liu-Montgomery actually proved a more general result: any set A with logarithmic growth (|A ∩ [1,n]| ≤ log₂(n) + 1) consisting of even numbers (plus possibly 1) is strongly unavoidable. Powers of 2 is a special case. This characterizes a broad class of unavoidable sets.",
+    "mathContext": "If $|A \\cap [1,n]| \\leq \\log_2(n) + 1$ and $\\forall a \\in A, 2 \\mid a \\text{ or } a = 1$, then $\\text{isStronglyUnavoidable}(A)$. This uses `hasControlledGrowth A (fun n => Nat.log 2 n + 1)` for the growth bound.",
+    "significance": "key",
+    "prerequisites": [
+      "hasControlledGrowth",
+      "Nat.log",
+      "isStronglyUnavoidable"
+    ],
+    "relatedConcepts": [
+      "erdos-72"
+    ]
+  }
+]

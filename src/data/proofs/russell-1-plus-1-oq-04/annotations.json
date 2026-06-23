@@ -1,0 +1,214 @@
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "russell-1-plus-1-oq-04",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "concept",
+    "title": "Module Header: The Taxonomy Table",
+    "content": "Module docstring presenting the entry's central artefact: a five-row table indexed by ℕ encoding, with each row's minimal reduction-rule subset `Rules(E) ⊆ {β, ι, δ, ζ}` and step count `N` for the kernel rewrite from `one_E + one_E` to syntactic identity with `two_E`. The table is the propositional content; Parts 1–5 below witness each row by a named `theorem ... := rfl`. The header also flags the *incomparability observation* (Church `{δ, β}` vs. pattern-matched Peano `{δ, ι}`): no non-trivial encoding's rule set is universally smallest, a fact about the CIC subset lattice rather than a Lean implementation accident. The single import `Proofs.OnePlusOne` is deliberate — no Mathlib — keeping the kernel-rule trace transparent and free of unfamiliar `simp` lemmas.",
+    "mathContext": "Rule subsets: $\\emptyset$ (Row 0), $\\{\\delta, \\iota\\}$ (Row 1, Row 4), $\\{\\delta, \\iota, \\beta\\}$ (Row 2), $\\{\\delta, \\beta\\}$ (Row 3). Step counts $N \\in \\{0, 5, 6, 6, 3\\}$. Church–Rosser confluence on closed typeable CIC terms guarantees the *rule set* is order-independent; the *step count* generally is not.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Calculus of Inductive Constructions",
+      "β-reduction (lambda application)",
+      "ι-reduction (recursor on constructor)",
+      "δ-reduction (definition unfolding)",
+      "ζ-reduction (let-binding elimination)",
+      "Church–Rosser confluence",
+      "subset lattice"
+    ],
+    "prerequisites": [
+      "Lean 4 kernel reduction rules",
+      "CIC type theory basics",
+      "powerset lattice / subset ordering"
+    ]
+  },
+  {
+    "id": "ann-row0-unfolded",
+    "proofId": "russell-1-plus-1-oq-04",
+    "range": { "startLine": 52, "endLine": 60 },
+    "type": "insight",
+    "title": "Row 0 — Unfolded Baseline (Rules(E) = ∅)",
+    "content": "The bottom of the subset lattice: both sides of the equality are already in *fully-applied constructor form* `Peano.ℕ.succ (Peano.ℕ.succ Peano.ℕ.zero)`, so the goal is a syntactic identity and `rfl = Eq.refl _` closes it with zero kernel rewrites. This row pins down the trivial baseline and makes precise the otherwise-imprecise claim that `∅` is a strict lower bound: as soon as either side names a `def` (`Peano.one`, `Peano.add`, `Peano.two`), the `δ`-rule is forced and `Rules(E) ⊋ ∅`. The row is *not* a tautology — it is a deliberately-chosen extremal point that anchors the taxonomy.",
+    "mathContext": "Goal: $\\mathrm{succ}(\\mathrm{succ}(\\mathrm{zero})) = \\mathrm{succ}(\\mathrm{succ}(\\mathrm{zero}))$. Closed by $\\mathrm{Eq.refl}\\,\\_\\,$ without invoking any rewrite. Step count $N = 0$; rule set $\\mathrm{Rules}(E) = \\emptyset$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "syntactic identity",
+      "fully-applied constructor form",
+      "reflexivity",
+      "definitional equality"
+    ],
+    "prerequisites": [
+      "Peano.ℕ inductive type from parent file",
+      "Eq.refl in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-row1-peano-pattern",
+    "proofId": "russell-1-plus-1-oq-04",
+    "range": { "startLine": 62, "endLine": 73 },
+    "type": "concept",
+    "title": "Row 1 — Pattern-Matched Peano (Rules(E) = {δ, ι})",
+    "content": "The parent file's encoding. The kernel rewrites `Peano.one + Peano.one` to `Peano.two` in 5 single-rule steps: three `δ`-unfoldings (one each for `Peano.one`, `Peano.add`, `Peano.two`) and two `ι`-reductions firing the recursive and base clauses of `Peano.add`'s `match`. **No `β` appears** — yet the underlying recursor *does* have a step lambda. The equation compiler folds this lambda into the `ι`-rule at the user-visible level, hiding the β-redex. Row 2 (raw recursor) makes the hidden β explicit, exhibiting concretely how Lean's surface-level pattern matching translates to the kernel-level eliminator + λ. The structural takeaway: *the user-visible rule trace depends on how `add` is written, not just on what it computes*.",
+    "mathContext": "$\\mathrm{Peano.one} + \\mathrm{Peano.one} \\;\\triangleright_\\delta\\; \\mathrm{succ}\\,\\mathrm{zero} + \\mathrm{succ}\\,\\mathrm{zero} \\;\\triangleright_\\iota\\; \\mathrm{succ}\\,(\\mathrm{succ}\\,\\mathrm{zero} + \\mathrm{zero}) \\;\\triangleright_\\iota\\; \\mathrm{succ}\\,(\\mathrm{succ}\\,\\mathrm{zero}) \\equiv \\mathrm{Peano.two}$. δ unfolds `one`, `add`, `two`; ι reduces the recursive and base match-clauses.",
+    "significance": "key",
+    "relatedConcepts": [
+      "equation compiler",
+      "pattern matching elaboration",
+      "ι-reduction on inductive constructors",
+      "δ-reduction (definition unfolding)",
+      "Peano arithmetic"
+    ],
+    "prerequisites": [
+      "Lean 4 inductive types and structural recursion",
+      "the parent file Proofs.OnePlusOne",
+      "match-expression desugaring"
+    ]
+  },
+  {
+    "id": "ann-row2-addrec-def",
+    "proofId": "russell-1-plus-1-oq-04",
+    "range": { "startLine": 75, "endLine": 88 },
+    "type": "definition",
+    "title": "Row 2 — Raw-Recursor Addition (addRec)",
+    "content": "Same `Peano.ℕ` carrier as Row 1, but with addition written via the auto-generated eliminator `Peano.ℕ.rec` rather than the equation compiler. The step function `fun _ acc => Peano.ℕ.succ acc` is now a *literal lambda*, making the underlying β-redex of the recursor visible at the surface. The `noncomputable` marker is **principled, not a workaround**: Lean's code generator declines `Peano.ℕ.rec` with a non-Prop motive at runtime, but kernel reduction — which is what `rfl` uses at type-checking time — is unaffected. Equivalent `match`-based definitions (like `Peano.add` itself in the parent file) *do* compile; the raw-recursor form is here specifically to *expose the η-expansion that pattern matching hides*.",
+    "mathContext": "$\\mathrm{addRec}\\,n\\,m \\;:=\\; \\mathrm{Peano.ℕ.rec}\\,(\\text{motive}{:=}\\lambda \\_.\\mathrm{Peano.ℕ})\\,n\\,(\\lambda\\_\\,\\mathrm{acc}.\\,\\mathrm{succ}\\,\\mathrm{acc})\\,m$. The third argument is the step function; its $\\lambda$ becomes a β-redex when the recursor is applied to a successor.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "dependent eliminator",
+      "Peano.ℕ.rec",
+      "noncomputable definitions",
+      "η-expansion of pattern matching",
+      "kernel reduction vs. runtime evaluation"
+    ],
+    "prerequisites": [
+      "inductive type eliminators (recursors)",
+      "Lean 4 noncomputable annotation semantics",
+      "the distinction between kernel and code-generator"
+    ]
+  },
+  {
+    "id": "ann-row2-theorem",
+    "proofId": "russell-1-plus-1-oq-04",
+    "range": { "startLine": 90, "endLine": 99 },
+    "type": "insight",
+    "title": "Row 2 Witness — β Exposed by the Raw Recursor (Rules(E) = {δ, ι, β})",
+    "content": "Witnesses `addRec Peano.one Peano.one = Peano.two := rfl` in 6 single-rule steps: `δ` unfolds `addRec`, `one`, `two`; `ι` fires `Nat.rec_succ` then `Nat.rec_zero`; `β` applies the step function `fun _ acc => succ acc` twice. The decisive contrast with Row 1 is the *appearance of β*: it was already there in Row 1 (the equation compiler emits a recursor under the hood), but folded into ι at the user-visible level. By writing the recursor manually we strip away the folding and the β-redex becomes a separate rule in the trace. **This is the precise sense in which `{δ, ι}` (Row 1) is `{δ, ι, β}` (Row 2) with the β administratively packaged inside ι.**",
+    "mathContext": "Trace: $\\mathrm{addRec}\\,\\mathrm{one}\\,\\mathrm{one} \\triangleright_\\delta \\mathrm{rec}\\,n\\,(\\lambda\\_\\,\\mathrm{acc}.\\mathrm{succ}\\,\\mathrm{acc})\\,(\\mathrm{succ}\\,\\mathrm{zero}) \\triangleright_\\iota (\\lambda\\_\\,\\mathrm{acc}.\\mathrm{succ}\\,\\mathrm{acc})\\,\\mathrm{zero}\\,(\\mathrm{rec}\\,n\\,\\_\\,\\mathrm{zero}) \\triangleright_\\beta \\mathrm{succ}\\,(\\mathrm{rec}\\,n\\,\\_\\,\\mathrm{zero}) \\triangleright_\\iota \\mathrm{succ}\\,n \\triangleright_\\beta \\mathrm{succ}\\,(\\mathrm{succ}\\,\\mathrm{zero}) \\equiv \\mathrm{Peano.two}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "β-reduction visibility",
+      "equation compiler folding",
+      "Peano.ℕ.rec",
+      "kernel rewrite trace"
+    ],
+    "prerequisites": [
+      "Lean 4 dependent recursor reduction (Nat.rec_succ / Nat.rec_zero)",
+      "λ-application and β-redex"
+    ]
+  },
+  {
+    "id": "ann-row3-church-types",
+    "proofId": "russell-1-plus-1-oq-04",
+    "range": { "startLine": 101, "endLine": 117 },
+    "type": "definition",
+    "title": "Row 3 — Church Numerals: Pure λ-Encoded ℕ",
+    "content": "A Church numeral encodes `n` as `fun α f x => f^n x` — pure λ-calculus, no inductive types, no constructors. `Church := (α : Type) → (α → α) → α → α` is the carrier type; `cOne` applies `f` once, `cTwo` twice; `cAdd m n` iterates m's function on top of n's. The crucial feature: `Church` lives in `Type 1`, not `Type 0`. The Π-binder `(α : Type) → ...` ranges over `Type 0` and CIC's universe rules force the binder type itself up by one level. Writing `Church : Type 1` explicitly avoids universe-inference surprises in the body of `cAdd`. **No constructors means no ι-rule applies**: every reduction in this row is δ (unfold abbreviations) or β (λ-application). This is the structural source of incomparability with the Peano rows.",
+    "mathContext": "$\\mathrm{Church} \\equiv \\forall \\alpha {:} \\mathrm{Type}.\\, (\\alpha \\to \\alpha) \\to \\alpha \\to \\alpha : \\mathrm{Type}_1$. Numerals: $c_n := \\lambda \\alpha\\,f\\,x.\\,f^n(x)$. Addition: $c_{\\mathrm{Add}}\\,m\\,n := \\lambda \\alpha\\,f\\,x.\\,m\\,\\alpha\\,f\\,(n\\,\\alpha\\,f\\,x)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Church numerals",
+      "λ-encoding of natural numbers",
+      "polymorphic types",
+      "universe polymorphism",
+      "System F"
+    ],
+    "prerequisites": [
+      "untyped λ-calculus",
+      "polymorphic typing (∀-types)",
+      "Lean 4 universe hierarchy"
+    ]
+  },
+  {
+    "id": "ann-row3-theorem",
+    "proofId": "russell-1-plus-1-oq-04",
+    "range": { "startLine": 119, "endLine": 127 },
+    "type": "insight",
+    "title": "Row 3 Witness — Church Addition Closes by δ + β Alone (Rules(E) = {δ, β})",
+    "content": "Witnesses `cAdd cOne cOne = cTwo := rfl` in 6 single-rule steps: `δ` unfolds `cAdd`, `cOne` (twice — both arguments), `cTwo`; `β` fires three nested λ-applications. **No ι anywhere in the trace** because there are no inductive constructors to match. This is the *structural* incomparability with pattern-matched Peano: `{δ, β} ⊄ {δ, ι}` (Church needs β, Peano doesn't expose it) and `{δ, ι} ⊄ {δ, β}` (Peano needs ι, Church has no constructors). Hence no non-trivial encoding's rule subset is universally smaller than all others — a small but real lattice-theoretic fact about CIC, not an implementation quirk.",
+    "mathContext": "Trace: $c_{\\mathrm{Add}}\\,c_1\\,c_1 \\triangleright_\\delta (\\lambda\\alpha f x.\\,c_1\\,\\alpha\\,f\\,(c_1\\,\\alpha\\,f\\,x)) \\triangleright_{\\delta\\delta} (\\lambda\\alpha f x.\\,(\\lambda\\_f' x'.\\,f'\\,x')\\,\\alpha\\,f\\,((\\lambda\\_f' x'.\\,f'\\,x')\\,\\alpha\\,f\\,x)) \\triangleright_{\\beta\\beta\\beta} (\\lambda\\alpha f x.\\,f\\,(f\\,x)) \\equiv c_2$ ($\\triangleright_\\delta c_2$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "incomparability in subset lattices",
+      "Church–Turing equivalence",
+      "purely λ-encoded arithmetic",
+      "structural vs. computational equivalence"
+    ],
+    "prerequisites": [
+      "β-reduction on nested λ-abstractions",
+      "Church numerals (Row 3 definitions)"
+    ]
+  },
+  {
+    "id": "ann-row4-binary-defs",
+    "proofId": "russell-1-plus-1-oq-04",
+    "range": { "startLine": 129, "endLine": 153 },
+    "type": "definition",
+    "title": "Row 4 — Little-Endian Binary Naturals",
+    "content": "`Bin = one | b0 | b1` is little-endian binary: `one` represents 1, `b0 n` represents 2·n, `b1 n` represents 2·n + 1. `Bin.succ` propagates carries through three clauses — the third (`b1 n → b0 n.succ`) is the carry-chain rule. `Bin.add` recurses *structurally on the second argument*, yielding three clauses that match the structure of `m`'s bits. This encoding is the spiritual ancestor of Mathlib's `Nat.bit0`/`Nat.bit1` (now `Nat.bit`) and is close to the machine-word layout of Lean's runtime `Nat`. Notice that `Bin.add` is total without explicit termination annotations: structural recursion on the second argument's depth ensures the equation compiler accepts it without `decreasing_by`.",
+    "mathContext": "Carrier: $\\mathrm{Bin} = \\mathrm{one} \\mid b_0(n) \\mid b_1(n)$. Decoding: $\\llbracket \\mathrm{one} \\rrbracket = 1$, $\\llbracket b_0(n) \\rrbracket = 2\\llbracket n \\rrbracket$, $\\llbracket b_1(n) \\rrbracket = 2\\llbracket n \\rrbracket + 1$. Successor: $\\mathrm{one}^+ = b_0(\\mathrm{one})$, $(b_0\\,n)^+ = b_1\\,n$, $(b_1\\,n)^+ = b_0\\,n^+$ (carry).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binary representation of naturals",
+      "little-endian encoding",
+      "structural recursion",
+      "carry propagation",
+      "Mathlib Nat.bit"
+    ],
+    "prerequisites": [
+      "inductive types with three constructors",
+      "structural recursion on the second argument"
+    ]
+  },
+  {
+    "id": "ann-row4-theorem",
+    "proofId": "russell-1-plus-1-oq-04",
+    "range": { "startLine": 155, "endLine": 166 },
+    "type": "insight",
+    "title": "Row 4 Witness — Shortest Trace and the Carry-Chain Caveat (Rules(E) = {δ, ι})",
+    "content": "Witnesses `Bin.add Bin.one Bin.one = Bin.b0 Bin.one := rfl` in **3 steps — the shortest of any encoding for this input**. The trace: `δ + ι` (the `m, .one` clause of `Bin.add` fires, giving `Bin.one.succ`); then `ι` (the `.one` clause of `Bin.succ` fires, giving `Bin.b0 Bin.one`). Same rule subset as pattern-matched Peano `{δ, ι}` but a different step count, and structurally a different encoding entirely. **The shallow `1+1` depth is illusory in general**: for `2^k + 2^k` the carry chain walks the bit-string, giving an `O(k)` ι-step count. The minimal *rule set* `Rules(E)` is invariant in the input; the minimal *step count* `N(E, input)` is not. This row is the cleanest concrete witness that step count and rule set are *independent axes* of complexity.",
+    "mathContext": "Trace: $\\mathrm{Bin.add}\\,\\mathrm{one}\\,\\mathrm{one} \\triangleright_{\\delta+\\iota} \\mathrm{Bin.one.succ} \\triangleright_\\iota \\mathrm{Bin.b_0}\\,\\mathrm{Bin.one}$. Decoding: $1 + 1 = 2 = 1 \\cdot 2 + 0 = b_0(\\mathrm{one})$ in little-endian. For $2^k + 2^k = 2^{k+1}$: trace length $\\Theta(k)$ as the carry chain propagates through $k$ bits.",
+    "significance": "key",
+    "relatedConcepts": [
+      "step-count complexity",
+      "carry-chain propagation",
+      "rule-set vs. step-count invariants",
+      "asymptotic kernel reduction cost"
+    ],
+    "prerequisites": [
+      "Bin.succ and Bin.add definitions (Row 4 above)",
+      "ι-reduction on inductive constructors with depth"
+    ]
+  },
+  {
+    "id": "ann-part-6-axiom-freedom",
+    "proofId": "russell-1-plus-1-oq-04",
+    "range": { "startLine": 168, "endLine": 192 },
+    "type": "insight",
+    "title": "Part 6 — Axiom-Freedom via #print axioms",
+    "content": "Five `#print axioms` stanzas — one per row — produce build-time info messages confirming each named theorem depends on no axioms. This is the **propositional dual to the reductional taxonomy of Parts 1–5**: not only is each row closed by a known minimal rule subset (reductional content), but the closure consumes no `Classical.choice`, `propext`, `Quot.sound`, or other axiom extending CIC (propositional content). The two together establish that the `{β, ι, δ, ζ}` reduction alphabet is *all that is needed* for `1+1=2` across the taxonomy — both a sufficiency claim (the reduction trace exists) and an irreducibility claim (no escape into axiomatic shortcuts). Doubles as a lightweight regression detector: if a future refactor silently injects a `Classical`-dependent helper into one of the encodings, the file still compiles but the `#print axioms` line in the build log will visibly list the new dependency.",
+    "mathContext": "For each row $r_i$, expected output: $\\text{'r}_i\\text{' does not depend on any axioms}$. The kernel's axiom-tracking computes the transitive closure of `Classical`, `propext`, `Quot.sound`, etc., used by the proof term — here, the trivial closure of `Eq.refl _`, which uses no axioms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "#print axioms (Lean 4 kernel introspection)",
+      "Classical.choice / propext / Quot.sound",
+      "axiom-freedom verification",
+      "propositional vs. reductional content",
+      "regression detection in proof artifacts"
+    ],
+    "prerequisites": [
+      "Lean 4 axiom-tracking mechanism",
+      "the three standard CIC-extending axioms"
+    ]
+  }
+]

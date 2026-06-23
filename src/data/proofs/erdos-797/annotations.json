@@ -1,0 +1,218 @@
+[
+  {
+    "id": "ann-e797-header",
+    "proofId": "erdos-797",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #797: Acyclic Chromatic Number**\n\nLet f(d) be the maximal acyclic chromatic number of any graph with maximum degree d. An acyclic coloring is a proper coloring where no cycle is bichromatic (uses only two colors). Erdős asked: is f(d) = o(d²)? The answer is YES: f(d) = Θ(d^{4/3}), resolved by Alon, McDiarmid, and Reed in 1991.\n\nThe problem connects graph coloring to additive combinatorics through Sidon sets, and to the probabilistic method through the Lovász Local Lemma.",
+    "mathContext": "The acyclic chromatic number χ_a(G) is the minimum number of colors needed for an acyclic coloring of G. The extremal function f(d) = max{χ_a(G) : Δ(G) ≤ d} is the central object of study.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chromatic-number",
+      "graph-coloring",
+      "maximum-degree",
+      "Lovász Local Lemma"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "graph coloring",
+      "asymptotic analysis",
+      "probabilistic method"
+    ]
+  },
+  {
+    "id": "ann-e797-acyclic-coloring",
+    "proofId": "erdos-797",
+    "range": {
+      "startLine": 44,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Acyclic Coloring Definitions",
+    "content": "**IsProperColoring**: Adjacent vertices receive different colors.\n\n**HasBichromaticCycle**: A cycle of length ≥ 3 in G using exactly two colors, formalized via a list with adjacency constraints on consecutive elements.\n\n**IsAcyclicColoring**: A proper coloring with no bichromatic cycle. This is the key constraint distinguishing acyclic coloring from ordinary proper coloring. Without it, χ_a(G) would just be χ(G).\n\nThe acyclicity condition has a natural interpretation: for any two color classes, the subgraph induced by their union is a forest (acyclic).",
+    "mathContext": "HasBichromaticCycle uses a list representation with length ≥ 3, two distinct colors, and G-adjacency between consecutive elements. This captures the combinatorial essence of 2-colored cycles.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proper-coloring",
+      "cycle-detection",
+      "forest",
+      "graph-homomorphism"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "discrete mathematics"
+    ]
+  },
+  {
+    "id": "ann-e797-graph-params",
+    "proofId": "erdos-797",
+    "range": {
+      "startLine": 64,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Graph Parameters",
+    "content": "**maxDegree** computes the maximum vertex degree over all vertices using Finset.sup.\n\n**acyclicChromaticNumber** is the smallest k admitting an acyclic k-coloring, defined via sInf over the set {k | ∃ c, IsAcyclicColoring G c ∧ ∀ v, c v < k}.\n\nThese are the standard graph-theoretic parameters needed to state the problem. The max degree d parameterizes the class of graphs under consideration.",
+    "mathContext": "maxDegree uses Finset.sup over Finset.univ, requiring Fintype V and DecidableRel G.Adj. The chromatic number uses sInf on ℕ, which is well-defined since ℕ is well-ordered.",
+    "significance": "key",
+    "relatedConcepts": [
+      "vertex-degree",
+      "chromatic-number",
+      "well-ordering"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "order theory",
+      "Mathlib library structure",
+      "set theory"
+    ]
+  },
+  {
+    "id": "ann-e797-f-axiom",
+    "proofId": "erdos-797",
+    "range": {
+      "startLine": 75,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "The Extremal Function f(d)",
+    "content": "**f(d)** is axiomatized rather than defined via sSup, since it ranges over all graph types with max degree d. The axiom **f_realized** guarantees that f(d) is achieved by some concrete graph, establishing existence of extremal graphs.\n\nThis axiomatization avoids universe issues that would arise from taking a supremum over all possible vertex types. The existence guarantee is essential: it confirms that f(d) is a genuine extremal quantity, not merely a formal supremum.",
+    "mathContext": "f : ℕ → ℕ is an axiom because defining it as sSup over all graph types would require quantifying over types, which is problematic in Lean's type theory. The f_realized axiom provides the key extremal property.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal-graph-theory",
+      "axiomatization",
+      "universe-polymorphism"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "type theory",
+      "Lean 4 syntax",
+      "order theory"
+    ]
+  },
+  {
+    "id": "ann-e797-bounds",
+    "proofId": "erdos-797",
+    "range": {
+      "startLine": 88,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Known Bounds on f(d)",
+    "content": "Four bounds are axiomatized, telling the complete story of progress on this problem:\n\n1. **greedy_upper_bound**: f(d) ≤ d² + 1. A simple greedy argument — the starting point.\n2. **erdos_lower_bound**: f(d) ≥ d^{4/3 - ε} for large d. Erdős's probabilistic construction using Sidon sets.\n3. **alon_mcdiarmid_reed_upper**: f(d) ≤ C·d^{4/3}. The Lovász Local Lemma resolution.\n4. **precise_lower_bound**: f(d) ≥ c·d^{4/3}/(log d)^{1/3}. The best known lower bound.\n\nBounds (3) and (4) together establish f(d) = Θ(d^{4/3}), answering YES to f(d) = o(d²).",
+    "mathContext": "The AMR upper bound uses the Lovász Local Lemma to show that a random coloring can be modified to avoid bichromatic cycles. The lower bound constructs explicit graphs from Sidon sets where many colors are forced. The log factor in the lower bound comes from density limitations of Sidon sets in {1,...,n}.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lovasz-local-lemma",
+      "probabilistic-method",
+      "sidon-sets",
+      "greedy-algorithm"
+    ],
+    "prerequisites": [
+      "probabilistic method",
+      "additive combinatorics",
+      "asymptotic analysis",
+      "extremal graph theory"
+    ]
+  },
+  {
+    "id": "ann-e797-theta",
+    "proofId": "erdos-797",
+    "range": {
+      "startLine": 120,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Theta Bound: f(d) = Θ(d^{4/3})",
+    "content": "**asymptotic_theta** combines the upper and lower bounds into a single statement: for d ≥ 3, c·d^{4/3}/(log d)^{1/3} ≤ f(d) ≤ C·d^{4/3} with 0 < c < C.\n\nThe (log d)^{1/3} gap between the upper and lower bounds is the only remaining imprecision. Closing this gap — determining whether f(d) ~ c·d^{4/3} for some constant c — is an open problem.",
+    "mathContext": "The Θ notation means both O and Ω hold simultaneously. The log factor in the lower bound comes from the density limitations of Sidon sets: the densest Sidon set in {1,...,n} has O(n^{1/2}) elements.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic-analysis",
+      "big-theta",
+      "extremal-combinatorics"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "extremal combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e797-b2",
+    "proofId": "erdos-797",
+    "range": {
+      "startLine": 131,
+      "endLine": 142
+    },
+    "type": "definition",
+    "title": "Connection to B₂ Sequences (Sidon Sets)",
+    "content": "**is_B2_sequence(A)**: A finite set A ⊂ ℕ is a B₂ set (Sidon set) if all pairwise sums a + b (a ≤ b) are distinct. Equivalently, a + b = c + d with a ≤ b, c ≤ d implies a = c and b = d.\n\nSidon sets are used in the lower bound construction: dense Sidon sets in ℤ_p yield bipartite graphs where many colors are forced for acyclic coloring. The B₂ property prevents certain color reuse patterns, and the density of the Sidon set controls the resulting chromatic number.",
+    "mathContext": "The connection: given a Sidon set S ⊂ ℤ_p, construct a bipartite graph where edges encode sum relations. The B₂ property prevents certain color reuse patterns, forcing high acyclic chromatic number. The densest Sidon set in {1,...,n} has ~n^{1/2} elements, leading to the (log d)^{1/3} factor.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sidon-sets",
+      "additive-combinatorics",
+      "B2-sequences",
+      "bipartite-graphs"
+    ],
+    "prerequisites": [
+      "additive combinatorics",
+      "number theory",
+      "graph theory"
+    ]
+  },
+  {
+    "id": "ann-e797-subquadratic",
+    "proofId": "erdos-797",
+    "range": {
+      "startLine": 144,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "The Original Question: f(d) = o(d²)",
+    "content": "**erdos_797_subquadratic**: The original Erdős question asked whether f(d) = o(d²). This is axiomatized as: for every ε > 0, there exists d₀ such that for all d ≥ d₀, f(d) ≤ ε·d².\n\nThis follows from the AMR upper bound f(d) ≤ C·d^{4/3}, since d^{4/3}/d² = d^{-2/3} → 0 as d → ∞. The explicit ε-δ formulation captures the little-o notation precisely in Lean's type theory.",
+    "mathContext": "f(d) = o(d²) means f(d)/d² → 0 as d → ∞, formalized as ∀ ε > 0, ∃ d₀, ∀ d ≥ d₀, f(d) ≤ ε·d². This is the direct formalization of the original question.",
+    "significance": "key",
+    "relatedConcepts": [
+      "little-o-notation",
+      "asymptotic-analysis",
+      "original-question"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis",
+      "Lean 4 syntax"
+    ]
+  },
+  {
+    "id": "ann-e797-summary",
+    "proofId": "erdos-797",
+    "range": {
+      "startLine": 152,
+      "endLine": 155
+    },
+    "type": "concept",
+    "title": "Summary Theorem: erdos_797_summary",
+    "content": "**erdos_797_summary** is a proved theorem combining:\n1. The AMR upper bound: ∃ C > 0, ∀ d ≥ 1, f(d) ≤ C·d^{4/3}\n2. The precise lower bound: ∃ c > 0, ∀ d ≥ 3, f(d) ≥ c·d^{4/3}/(log d)^{1/3}\n\nProof: `exact ⟨alon_mcdiarmid_reed_upper, precise_lower_bound⟩`\n\nThis captures the complete resolution of Erdős Problem #797, establishing f(d) = Θ(d^{4/3}) and confirming that f(d) = o(d²).",
+    "mathContext": "The theorem is a clean conjunction of the two main asymptotic bounds, demonstrating that f(d) = Θ(d^{4/3}) up to a logarithmic factor in the lower bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic-resolution",
+      "extremal-graph-theory",
+      "solved-problem"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "extremal graph theory",
+      "Lean 4 tactic mode"
+    ]
+  }
+]

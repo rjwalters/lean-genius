@@ -1,0 +1,203 @@
+[
+  {
+    "id": "erdos-226-header",
+    "proofId": "erdos-226",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "title": "Problem Overview and History",
+    "content": "**Erdős Problem #226**: Is there an entire non-linear $f$ with $x \\in \\mathbb{Q} \\Leftrightarrow f(x) \\in \\mathbb{Q}$?\n\n**Status**: SOLVED (YES) by Barth-Schneider (1970)\n\nThe question goes beyond Stäckel's 1895 result that a transcendental entire function can map $\\mathbb{Q}$ into $\\mathbb{Q}$: Erdős required the biconditional. Barth and Schneider proved the much stronger result that for ANY countable dense $A, B \\subset \\mathbb{R}$, a transcendental entire $f$ with $f(A) = B$ exists. Their 1971 follow-up extended this to $\\mathbb{C}$.",
+    "mathContext": "$f : \\mathbb{C} \\to \\mathbb{C}$ entire, $\\forall x \\in \\mathbb{R}: x \\in \\mathbb{Q} \\Leftrightarrow f(x) \\in \\mathbb{Q}$. Problem 2.31 in Hayman's 1974 collection [Ha74].",
+    "significance": "key",
+    "relatedConcepts": [
+      "entire functions",
+      "transcendental functions",
+      "countable dense sets",
+      "Weierstrass products"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "topology of the reals"
+    ]
+  },
+  {
+    "id": "erdos-226-definitions",
+    "proofId": "erdos-226",
+    "type": "definition",
+    "range": {
+      "startLine": 45,
+      "endLine": 68
+    },
+    "title": "Entire Function Definitions",
+    "content": "Three key definitions:\n\n- `IsEntire(f)` := `Differentiable ℂ f` — holomorphic on all of $\\mathbb{C}$\n- `IsTranscendental(f)` := `IsEntire f ∧ ¬∃ (n : ℕ) (p : Polynomial ℂ), ∀ z, f z = p.eval z` — entire but not polynomial\n- `IsNonLinear(f)` := `¬∃ (a b : ℂ), ∀ z, f z = a * z + b` — not affine\n\nThe transcendence condition is strictly stronger than non-linearity: every transcendental function is non-linear, but not conversely ($z^2$ is non-linear but polynomial).",
+    "mathContext": "An entire function has a power series $f(z) = \\sum_{n=0}^{\\infty} a_n z^n$ converging on all of $\\mathbb{C}$. It is transcendental iff infinitely many $a_n \\neq 0$. The `Differentiable ℂ f` condition in Mathlib is equivalent to holomorphicity by Cauchy-Riemann.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Differentiable",
+      "Polynomial.eval",
+      "holomorphic functions"
+    ],
+    "prerequisites": [
+      "complex differentiability",
+      "power series"
+    ]
+  },
+  {
+    "id": "erdos-226-countable-dense",
+    "proofId": "erdos-226",
+    "type": "insight",
+    "range": {
+      "startLine": 69,
+      "endLine": 86
+    },
+    "title": "ℚ is Countable Dense (Proved)",
+    "content": "`IsCountableDense(S)` := `S.Countable ∧ Dense S`.\n\n`rationals_countable_dense` (**proved**): $\\mathbb{Q}$ is countable and dense in $\\mathbb{R}$. The proof is a direct two-line application of `Set.countable_range` and `Rat.denseRange_ratCast` — two fundamental Mathlib facts.\n\nThis is the only non-trivial verified theorem in the formalization (everything else is either a definition or derived from axioms).",
+    "mathContext": "$\\mathbb{Q}$ is represented as `Set.range (↑· : ℚ → ℝ)` — the image of the canonical coercion. Density means every open interval $(a, b) \\subset \\mathbb{R}$ contains a rational, i.e., $\\overline{\\mathbb{Q}} = \\mathbb{R}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.countable_range",
+      "Rat.denseRange_ratCast",
+      "Dense"
+    ],
+    "prerequisites": [
+      "Set.Countable",
+      "DenseRange",
+      "Rat coercion"
+    ]
+  },
+  {
+    "id": "erdos-226-questions",
+    "proofId": "erdos-226",
+    "type": "definition",
+    "range": {
+      "startLine": 87,
+      "endLine": 129
+    },
+    "title": "The Erdős and General Questions",
+    "content": "Four definitions formalizing the problem:\n\n- `PreservesRationality(f)`: $\\forall x \\in \\mathbb{R}, (\\exists q \\in \\mathbb{Q}, q = x) \\Leftrightarrow (\\exists q \\in \\mathbb{Q}, q = f(x))$\n- `MapsSetToSet(f, A, B)`: $\\forall x, x \\in A \\Leftrightarrow f(x) \\in B$\n- `ErdosQuestion`: $\\exists$ entire non-linear $f$ preserving rationality\n- `GeneralQuestion`: $\\forall$ countable dense $A, B$, $\\exists$ entire $f$ with $f(A) = B$\n\nThe `GeneralQuestion` strictly implies `ErdosQuestion` (take $A = B = \\mathbb{Q}$).",
+    "mathContext": "The rationality-preservation condition $f(x) \\in \\mathbb{Q} \\Leftrightarrow x \\in \\mathbb{Q}$ is formalized via the coercion $\\mathbb{Q} \\hookrightarrow \\mathbb{R}$ and existential quantification, since Lean represents rationals and reals as distinct types.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rationality preservation",
+      "set bijection",
+      "type coercion"
+    ],
+    "prerequisites": [
+      "Rat cast to Real",
+      "Set membership"
+    ]
+  },
+  {
+    "id": "erdos-226-barth-schneider",
+    "proofId": "erdos-226",
+    "type": "concept",
+    "range": {
+      "startLine": 130,
+      "endLine": 161
+    },
+    "title": "Barth-Schneider Theorem (1970) — Axiomatized",
+    "content": "Two axioms encoding the Barth-Schneider theorem:\n\n1. `barth_schneider_1970` (axiom): For all countable dense $A, B \\subset \\mathbb{R}$, $\\exists$ transcendental entire $f$ with $z \\in A \\Leftrightarrow f(z) \\in B$ on the reals.\n\n2. `barth_schneider_monotone` (axiom): Same, but additionally $f|_{\\mathbb{R}}$ is strictly monotone.\n\nThe original construction uses Weierstrass products: enumerate $A = \\{a_n\\}$, $B = \\{b_n\\}$, and build $f$ as an infinite product forcing $f(a_n) = b_n$ while maintaining entireness. The monotonicity requires more care in ordering the interpolation points.",
+    "mathContext": "The construction produces $f(z) = \\lim_{n \\to \\infty} P_n(z)$ where each $P_n$ is a polynomial interpolating the first $n$ pairs $(a_i, b_i)$, with corrections via Weierstrass factors $E_p(z/z_n)$ to ensure convergence on $\\mathbb{C}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Weierstrass products",
+      "StrictMono",
+      "interpolation"
+    ],
+    "prerequisites": [
+      "entire function theory",
+      "Weierstrass factorization",
+      "countable enumeration"
+    ]
+  },
+  {
+    "id": "erdos-226-answer",
+    "proofId": "erdos-226",
+    "type": "insight",
+    "range": {
+      "startLine": 162,
+      "endLine": 207
+    },
+    "title": "The Answer: YES (Proved from Axioms)",
+    "content": "`erdos_question_affirmative` (**proved**): The answer is YES.\n\nThe proof instantiates `barth_schneider_1970` with $A = B = \\text{Set.range}(\\uparrow \\cdot : \\mathbb{Q} \\to \\mathbb{R})$, applying `rationals_countable_dense`. It then shows transcendental $\\Rightarrow$ non-linear by contradiction: if $f(z) = az + b$, encode this as the polynomial $C(b) + C(a) \\cdot X$, contradicting transcendence.\n\n`general_question_affirmative` (**proved**): Follows immediately by unwrapping `barth_schneider_1970` and extracting the `IsEntire` component from `IsTranscendental`.",
+    "mathContext": "The transcendental $\\Rightarrow$ non-linear step: any affine function $az + b$ equals $\\text{eval}_z(b + aX)$, a degree-1 polynomial. So $f$ would satisfy $\\exists n, p, \\forall z, f(z) = p.\\text{eval}(z)$, contradicting `IsTranscendental`. Uses `ring_nf` to simplify $a \\cdot z + b = (b + a \\cdot X).\\text{eval}(z)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial.C",
+      "Polynomial.X",
+      "ring_nf"
+    ],
+    "prerequisites": [
+      "barth_schneider_1970",
+      "rationals_countable_dense",
+      "Polynomial.eval"
+    ]
+  },
+  {
+    "id": "erdos-226-extensions",
+    "proofId": "erdos-226",
+    "type": "concept",
+    "range": {
+      "startLine": 208,
+      "endLine": 222
+    },
+    "title": "Complex Extension (1971)",
+    "content": "`barth_schneider_complex` (axiom): For countable dense $A, B \\subseteq \\mathbb{C}$, $\\exists$ transcendental entire $f$ with $z \\in A \\Leftrightarrow f(z) \\in B$.\n\nThis is a substantial generalization: $\\mathbb{C}$ has richer topology than $\\mathbb{R}$ (simply connected, algebraically closed), so the interpolation argument requires different techniques to handle the two-dimensional dense set.",
+    "mathContext": "Countable dense subsets of $\\mathbb{C}$ include $\\mathbb{Q}[i] = \\{a + bi : a, b \\in \\mathbb{Q}\\}$ and $\\overline{\\mathbb{Q}} \\cap \\mathbb{C}$ (algebraic numbers). The axiom states the result for arbitrary such sets.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "complex extension",
+      "countable dense subsets of ℂ",
+      "Gaussian rationals"
+    ],
+    "prerequisites": [
+      "complex topology",
+      "Barth-Schneider 1970 result"
+    ]
+  },
+  {
+    "id": "erdos-226-techniques",
+    "proofId": "erdos-226",
+    "type": "insight",
+    "range": {
+      "startLine": 224,
+      "endLine": 240
+    },
+    "title": "Why Polynomials Fail",
+    "content": "`no_polynomial_works` (axiom): No polynomial of degree $> 1$ preserves rationality bidirectionally.\n\nThe argument: if $p \\in \\mathbb{R}[x]$ with $\\deg p > 1$ and $p(\\mathbb{Q}) \\subseteq \\mathbb{Q}$, then $p$ must have rational coefficients (by evaluating at $0, 1, 2, \\ldots$). But a degree-$d$ rational polynomial $p(x) - r = 0$ has at most $d$ roots, so most irrational preimages of rationals exist: $\\exists x \\notin \\mathbb{Q}$ with $p(x) \\in \\mathbb{Q}$, breaking the biconditional.",
+    "mathContext": "For $p(x) = x^2$: $p(\\sqrt{2}) = 2 \\in \\mathbb{Q}$ but $\\sqrt{2} \\notin \\mathbb{Q}$. This is the simplest counterexample. More generally, $p^{-1}(\\mathbb{Q})$ is dense but strictly larger than $\\mathbb{Q}$ for any $\\deg p > 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial degree",
+      "algebraic numbers",
+      "fiber cardinality"
+    ],
+    "prerequisites": [
+      "Polynomial.natDegree",
+      "algebraic number theory"
+    ]
+  },
+  {
+    "id": "erdos-226-summary",
+    "proofId": "erdos-226",
+    "type": "concept",
+    "range": {
+      "startLine": 242,
+      "endLine": 268
+    },
+    "title": "Summary: Problem SOLVED",
+    "content": "Three theorems wrap up the formalization:\n\n- `erdos_226_summary` (**proved**): `ErdosQuestion ∧ GeneralQuestion`\n- `erdos_226` := `erdos_question_affirmative` (alias)\n- `erdos_226_answer` (**proved**): $\\exists$ entire transcendental $f$ preserving rationality — the most explicit statement\n\n**Score**: 4 axioms (Barth-Schneider real/complex, monotone version, no-polynomial), 1 verified theorem (`rationals_countable_dense`), 3 derived theorems, 0 sorries.",
+    "mathContext": "The `erdos_226_answer` theorem provides the strongest formulation: $\\exists f : \\mathbb{C} \\to \\mathbb{C}$, `IsEntire f` $\\wedge$ `IsTranscendental f` $\\wedge$ $\\forall x \\in \\mathbb{R}, x \\in \\mathbb{Q} \\Leftrightarrow f(x) \\in \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "formalization completeness",
+      "axiom audit",
+      "solved Erdős problems"
+    ],
+    "prerequisites": [
+      "all preceding parts"
+    ]
+  }
+]

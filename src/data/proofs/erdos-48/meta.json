@@ -1,0 +1,308 @@
+{
+  "id": "erdos-48",
+  "title": "Erdos Problem #48: Infinitely Many Pairs with phi(n) = sigma(m)",
+  "slug": "erdos-48",
+  "description": "Are there infinitely many integers n, m such that phi(n) = sigma(m)? YES, proved by Ford-Luca-Pomerance (2010).",
+  "meta": {
+    "author": "Ford-Luca-Pomerance (2010 proof), Erdos (1959 problem)",
+    "sourceUrl": "https://erdosproblems.com/48",
+    "date": "2010",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos48Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "totient",
+      "sum-of-divisors",
+      "arithmetic-functions",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 48,
+    "erdosUrl": "https://erdosproblems.com/48",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-13",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.divisors",
+        "description": "Set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sumDivisors definition: sum of all divisors sigma(n)",
+      "totientSigmaPairs set: {(n,m) | phi(n) = sigma(m)}",
+      "commonValues set: intersection of totient and sigma ranges",
+      "Concrete examples: (2,1), (5,3), (7,5), (13,11), (13,6)",
+      "ford_luca_pomerance axiom: totientSigmaPairs.Infinite",
+      "garaev_improvement axiom: strengthened density bounds",
+      "twin_prime_gives_pair theorem: connection to twin primes",
+      "prime_pair_condition theorem: characterizing prime pairs",
+      "Sophie Germain and perfect number connections",
+      "Multiplicativity properties",
+      "erdos_48 theorem: the main result"
+    ],
+    "axiomCount": 3,
+    "lineCount": 479,
+    "assumptions": "3 axioms: ford_luca_pomerance (Ford-Luca-Pomerance — totient-sigma pairs are infinite), commonValues_infinite (common values of φ and σ are infinite), garaev_improvement (Garaev improvement). 0 sorries.",
+    "theoremCount": 40,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "**Erdos Problem #48**\n\nThis problem asks about common values of two fundamental arithmetic functions.\n\n**Key History:**\n- Erdos [Er59c], [Er74b], [Er95]: Original problem formulations\n- Ford-Luca-Pomerance (2010): Proved infinitely many pairs exist\n- Garaev (2011): Improved density bounds\n\n**Mathematical Setting:**\n- phi(n) = Euler's totient = count of integers 1 to n coprime to n\n- sigma(n) = sum of all positive divisors of n\n\nBoth are multiplicative functions with very different behavior: phi(n) < n for n > 1 (shrinks), while sigma(n) > n for n > 1 (grows).",
+    "problemStatement": "**Problem Statement (Proved)**\n\nAre there infinitely many integers n, m such that phi(n) = sigma(m)?\n\n**Answer: YES**\n\nFord, Luca, and Pomerance (2010) proved:\n1. Infinitely many such pairs exist\n2. Quantitative bound: >= exp((log log x)^c) common values <= x\n\nGaraev (2011) improved to exp((log log x)^omega(x)) where omega(x) -> infinity.",
+    "text": "Are there infinitely many integers n, m such that phi(n) = sigma(m)? YES, proved by Ford-Luca-Pomerance (2010).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Arithmetic Functions:** Define sumDivisors sigma(n) using Finset.sum\n\n2. **Key Sets:**\n   - totientSigmaPairs: {(n,m) | phi(n) = sigma(m)}\n   - commonValues: intersection of phi-range and sigma-range\n\n3. **Examples:** Verify (2,1), (5,3), (7,5), (13,11), (13,6) using native_decide\n\n4. **Main Results:** Axiomatize Ford-Luca-Pomerance and Garaev theorems\n\n5. **Connections:** Twin primes, Sophie Germain primes, perfect numbers\n\n6. **Properties:** Multiplicativity of phi and sigma",
+    "keyInsights": [
+      "**Twin Prime Connection:** If p, p+2 both prime, then phi(p+2) = sigma(p) = p+1",
+      "**Value Distribution:** phi tends to be small, sigma tends to be large",
+      "**Common Values Include:** 1, 4, 6, 12, 24, 48, ...",
+      "**Multiplicativity:** Both phi and sigma are multiplicative functions",
+      "**Perfect Numbers:** sigma(n) = 2n gives special structure",
+      "**Density:** Common values have positive lower density"
+    ],
+    "prerequisites": [
+      "Euler totient phi(n)",
+      "Sum of divisors sigma(n)",
+      "Multiplicative function images",
+      "Ford density estimates",
+      "Twin prime connections"
+    ]
+  },
+  "sections": [
+    {
+      "id": "arithmetic-functions",
+      "title": "Arithmetic Functions",
+      "summary": "sumDivisors definition, notation, Euler's totient from Mathlib",
+      "startLine": 41,
+      "endLine": 71,
+      "mathContext": "phi(n)=Euler totient. sigma(m)=sum of divisors. Both multiplicative."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "sumDivisors_one, sumDivisors_prime, totient_prime, totient_lt",
+      "startLine": 72,
+      "endLine": 117,
+      "mathContext": "sigma(1)=1, sigma(p)=p+1. phi(p)=p-1. phi(n)<n for n>1."
+    },
+    {
+      "id": "pair-sets",
+      "title": "Totient-Sigma Pairs",
+      "summary": "totientSigmaPairs, commonValues, commonValues_iff",
+      "startLine": 118,
+      "endLine": 146,
+      "mathContext": "Common values: Im(phi) intersect Im(sigma). Infinitely many?"
+    },
+    {
+      "id": "examples",
+      "title": "Verified Examples",
+      "summary": "pair_5_3, pair_2_1, pair_7_5, pair_13_11, pair_13_6",
+      "startLine": 147,
+      "endLine": 231,
+      "mathContext": "phi(3)=2=sigma(1). phi(7)=6=sigma(5). phi(13)=12=sigma(11)."
+    },
+    {
+      "id": "ford-luca-pomerance",
+      "title": "Ford-Luca-Pomerance Theorem",
+      "summary": "ford_luca_pomerance axiom, erdos_48 main theorem",
+      "startLine": 232,
+      "endLine": 258,
+      "mathContext": "SOLVED: infinitely many (n,m) with phi(n)=sigma(m)."
+    },
+    {
+      "id": "garaev",
+      "title": "Garaev's Improvement",
+      "summary": "garaev_improvement axiom with stronger density bounds",
+      "startLine": 259,
+      "endLine": 278,
+      "mathContext": "Garaev: stronger density bounds on solutions up to x."
+    },
+    {
+      "id": "twin-primes",
+      "title": "Connection to Twin Primes",
+      "summary": "twin_prime_gives_pair, prime_pair_condition",
+      "startLine": 279,
+      "endLine": 306,
+      "mathContext": "Twin primes p,p+2: phi(p+2)=p+1=sigma(p)."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "summary": "prime_pair_condition, Sophie Germain, perfect numbers",
+      "startLine": 307,
+      "endLine": 346,
+      "mathContext": "Sophie Germain primes, perfect numbers give phi-sigma pairs."
+    },
+    {
+      "id": "value-distribution",
+      "title": "Value Distribution",
+      "summary": "totientRange, sigmaRange, common values 1, 4, 6, 12",
+      "startLine": 347,
+      "endLine": 413,
+      "mathContext": "Range of phi: density ~ C/sqrt(log x) (Ford)."
+    },
+    {
+      "id": "multiplicativity",
+      "title": "Multiplicativity",
+      "summary": "totient_multiplicative (σ-multiplicativity documented in docstring)",
+      "startLine": 414,
+      "endLine": 430,
+      "mathContext": "sigma multiplicative: sigma(mn)=sigma(m)sigma(n) for gcd(m,n)=1."
+    },
+    {
+      "id": "main-results",
+      "title": "Main Results",
+      "summary": "erdos_48_summary, erdos_48_answer, at_least_five_pairs",
+      "startLine": 431,
+      "endLine": 479,
+      "mathContext": "SOLVED: infinitely many common values of phi and sigma."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #48 asked whether infinitely many pairs (n,m) exist with phi(n) = sigma(m). The answer is YES, proved by Ford, Luca, and Pomerance in 2010. Garaev improved the density bounds in 2011. The problem has deep connections to twin primes - if the twin prime conjecture is true, Erdos #48 follows immediately.",
+    "implications": "**Theoretical Significance**: **Number-Theoretic Connections**\n\n1. **Twin Primes:** phi(p+2) = sigma(p) = p+1 for twin primes\n\n2. **Value Ranges:** Understanding which values are in Im(phi) and Im(sigma)\n\n**3. Multiplicativity:** Both functions are multiplicative\n\n4. **Perfect Numbers:** sigma(n) = 2n gives special pairs\n\n5. **Density Estimates:** Common values have positive density.",
+    "openQuestions": [
+      "Exact characterization of common values",
+      "Optimal density bounds for common values",
+      "Explicit construction of infinitely many pairs",
+      "Connection to Carmichael's totient conjecture",
+      "Common values of other arithmetic function pairs"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "uses",
+      "description": "Euler's totient function φ(n) is one of the two arithmetic functions at the heart of this problem; the formalization imports Nat.totient from Mathlib and relies on its multiplicativity and prime-value formula."
+    },
+    {
+      "targetId": "erdos-49",
+      "relationship": "related",
+      "description": "Erdős #49 also studies sets defined by totient values and uses the same range Im(φ); understanding which values appear in Im(φ) is central to both problems."
+    },
+    {
+      "targetId": "erdos-1003",
+      "relationship": "related",
+      "description": "Erdős #1003 asks about consecutive equal totient values φ(n) = φ(n+1); the twin-prime construction used in erdos-48 (φ(p+2) = σ(p) = p+1 for twin primes) directly connects the two problems."
+    },
+    {
+      "targetId": "erdos-1004",
+      "relationship": "related",
+      "description": "Erdős #1004 studies the distribution of distinct consecutive totient values; the density and value-distribution techniques (EPS bounds) are closely related to the Garaev density improvement axiomatized here."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "uses",
+      "description": "The infinite supply of twin primes (conjectural) and ordinary primes underpins the Ford-Luca-Pomerance construction; the infinitude of primes is the foundational fact that makes the argument work."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "uses",
+      "description": "Unique factorization is required for the multiplicativity of both φ and σ; the multiplicative structure exploited throughout the proof rests on the Fundamental Theorem of Arithmetic."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Kevin Ford",
+        "Florian Luca",
+        "Carl Pomerance"
+      ],
+      "title": "Common values of the arithmetic functions φ and σ",
+      "venue": "Bulletin of the London Mathematical Society",
+      "year": "2010",
+      "volume": "42",
+      "pages": "478–488",
+      "doi": "10.1112/blms/bdq014",
+      "note": "Proves infinitely many pairs (n,m) with φ(n) = σ(m); the main result axiomatized as ford_luca_pomerance."
+    },
+    {
+      "authors": [
+        "Moubariz Z. Garaev"
+      ],
+      "title": "On the number of common values of the arithmetic functions φ and σ below x",
+      "venue": "Bulletin of the Belgian Mathematical Society – Simon Stevin",
+      "year": "2011",
+      "volume": "18",
+      "pages": "373–380",
+      "doi": "10.36045/bbms/1313604464",
+      "note": "Improves density bounds to exp((log log x)^{ω(x)}) where ω(x) → ∞; axiomatized as garaev_improvement."
+    },
+    {
+      "authors": [
+        "Paul Erdős"
+      ],
+      "title": "Some remarks on number theory",
+      "venue": "Riveon Lematematika (Israel)",
+      "year": "1959",
+      "volume": "9",
+      "pages": "45–48",
+      "note": "Original 1959 formulation [Er59c] of the problem asking about common values of φ and σ."
+    },
+    {
+      "authors": [
+        "Kevin Ford"
+      ],
+      "title": "The distribution of totients",
+      "venue": "Ramanujan Journal",
+      "year": "1998",
+      "volume": "2",
+      "pages": "67–151",
+      "doi": "10.1023/A:1009761909132",
+      "note": "Comprehensive study of Im(φ) and its density; background for the value-distribution results used in the proof."
+    },
+    {
+      "authors": [
+        "Paul Erdős",
+        "Carl Pomerance",
+        "András Sárközy"
+      ],
+      "title": "On locally repeated values of certain arithmetic functions",
+      "venue": "Journal of Number Theory",
+      "year": "1987",
+      "volume": "21",
+      "pages": "319–332",
+      "doi": "10.1016/0022-314X(85)90058-0",
+      "note": "EPS (1987) density bounds for arithmetic functions; related to the Garaev improvement and value-distribution analysis."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "Erdos48",
+    "lineCount": 479,
+    "axiomCount": 3,
+    "theoremCount": 40,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos48Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -1,0 +1,146 @@
+{
+  "id": "erdos-622-oq-04",
+  "title": "Absorbing Method Infrastructure for Erdős-Faudree Graphs",
+  "slug": "erdos-622-oq-04",
+  "description": "Formalizes the absorbing method infrastructure for the DKM 2025 proof of Erdős Problem #622. Proves edge counting, common neighborhood bounds, absorbing pair existence and density in Erdős-Faudree graphs.",
+  "meta": {
+    "author": "Draganić-Keevash-Müyesser (2025); infrastructure formalized 2026",
+    "sourceUrl": "https://erdosproblems.com/622",
+    "date": "2025",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos622OQ04.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "extremal-combinatorics",
+      "absorbing-method",
+      "regular-graphs"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 215,
+    "assumptions": "0 axioms, 0 sorries. All theorems fully proved from Mathlib.",
+    "dateAdded": "2026-04-12",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph definitions and basic operations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets with membership, cardinality, and filter",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "regular_edge_count: handshaking lemma for regular graphs (2|E| = |V|·d)",
+      "erdos_faudree_edge_count: |E| = n(n+1) for EF graphs",
+      "common_neighbors_ge: inclusion-exclusion bound on common neighborhoods",
+      "erdos_faudree_common_ge_two: ≥2 common neighbors in EF graphs",
+      "IsAbsorbingTriple definition and symmetry",
+      "absorbingPairs definition",
+      "absorbing_pair_exists: triangle existence in dense regular graphs",
+      "erdos_faudree_absorbing_pairs_ge: ≥n absorbing pairs per vertex",
+      "HasAbsorbingStructure definition (absorbing lemma statement)"
+    ],
+    "theoremCount": 9,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "The absorbing method was introduced by Rödl, Ruciński, and Szemerédi in their 2011 Annals of Mathematics paper on Dirac's theorem for hypergraphs, and has since become one of the most powerful tools in extremal combinatorics and Ramsey theory. The method guarantees the existence of a short 'absorbing structure' — a path or cycle that can be extended to cover any small additional vertex set — which allows one to convert approximate spanning results into exact ones. Erdős Problem #622 asks whether every Erdős-Faudree graph ($2n$ vertices, $(n+1)$-regular) decomposes into Hamiltonian cycles. Draganić, Keevash, and Müyesser (DKM 2025) resolved this affirmatively using the absorbing method. This Lean file formalizes the combinatorial infrastructure: the edge counting, the common neighborhood lower bound that provides $\\geq 2$ common neighbors for every pair of vertices, and the absorbing pair density result that gives $\\geq n$ absorbing triples per vertex — the quantitative input to DKM's probabilistic argument.",
+    "problemStatement": "**Infrastructure**: Build the absorbing method machinery for Erdős-Faudree graphs (2n vertices, (n+1)-regular). Prove that every vertex w has at least n absorbing pairs — ordered pairs (u,v) forming a triangle through w that can absorb w into a cycle.",
+    "text": "Absorbing method infrastructure: edge counting, common neighborhoods, absorbing pair existence and density for Erdős-Faudree graphs.",
+    "proofStrategy": "Edge counting via handshaking lemma. Common neighborhood bound via inclusion-exclusion on neighbor sets. Absorbing pair existence by picking a neighbor u of w, then finding v in N(u) ∩ N(w) (which has ≥ 2 elements). Density bound by injecting N(w) \\ {u₀} into absorbingPairs via u ↦ (u, choose(N(u) ∩ N(w))).",
+    "keyInsights": [
+      "**Common neighborhood density**: In an Erdős-Faudree graph, any two vertices share at least 2 common neighbors. This follows from $|N(u) \\cap N(v)| \\geq 2d - |V| = 2(n+1) - 2n = 2$ via inclusion-exclusion.",
+      "**Triangle density**: Every vertex in an EF graph is in at least $n$ triangles: each of the $n+1$ neighbors has $\\geq 2$ neighbors within $N(w)$, yielding $\\geq 2(n+1)$ directed edges within $N(w)$.",
+      "**Injection argument**: The absorbing pair density bound uses the injection $u \\mapsto (u, v(u))$ from $N(w) \\setminus \\{u_0\\}$ into absorbingPairs. Injectivity is trivial (first coordinates are distinct).",
+      "**Hypothesis correction**: The original statement of absorbing_pair_exists had a flipped inequality ($2d \\leq |V| + 2$ instead of $|V| + 2 \\leq 2d$). The docstring said '$2d \\geq |V|$' which is the correct direction.",
+      "**Probabilistic barrier**: The absorbing lemma (`HasAbsorbingStructure`) is stated as a definition only — its proof requires probabilistic tools (Lovász Local Lemma or concentration inequalities) not yet formalized in Mathlib. Each absorbing pair $(u,v)$ for vertex $w$ contributes $\\Omega(1/n^2)$ probability of absorbing $w$ in a random short cycle, so $\\geq n$ pairs make the failure probability exponentially small."
+    ],
+    "prerequisites": [
+      "Graph theory (SimpleGraph, neighborhoods, degree)",
+      "Finset cardinality and inclusion-exclusion",
+      "Erdős Problem #622 definitions (Erdos622Problem.lean)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-622",
+      "relationship": "extends",
+      "description": "Builds absorbing method infrastructure for the main Erdős #622 formalization. Uses IsRegular, IsErdosFaudreeGraph, and vertexCount definitions from the parent file."
+    }
+  ],
+  "sections": [
+    {
+      "id": "edge-counting",
+      "title": "Edge Count in Regular Graphs",
+      "summary": "Proves the handshaking lemma for d-regular graphs (2|E| = |V|·d) and its corollary for Erdős-Faudree graphs (|E| = n(n+1)).",
+      "startLine": 1,
+      "endLine": 55,
+      "mathContext": "For a $d$-regular graph $G$: $\\sum_{v} \\deg(v) = 2|E|$, and $\\sum_{v} d = |V| \\cdot d$, so $2|E| = |V| \\cdot d$. For EF: $|V| = 2n$, $d = n+1$, giving $|E| = n(n+1)$."
+    },
+    {
+      "id": "common-neighborhoods",
+      "title": "Common Neighborhood Lower Bound",
+      "summary": "Proves |N(u) ∩ N(v)| + |V| ≥ 2d for d-regular graphs, and the corollary that EF graph vertices share ≥ 2 common neighbors.",
+      "startLine": 56,
+      "endLine": 82,
+      "mathContext": "$|N(u) \\cap N(v)| = |N(u)| + |N(v)| - |N(u) \\cup N(v)| \\geq 2d - |V|$. For EF: $2(n+1) - 2n = 2$."
+    },
+    {
+      "id": "absorbing-framework",
+      "title": "Absorbing Method Framework",
+      "summary": "Defines IsAbsorbingTriple, absorbingPairs, and proves symmetry and basic properties.",
+      "startLine": 83,
+      "endLine": 110,
+      "mathContext": "An absorbing triple $(u, v, w)$: $u \\sim v$, $u \\sim w$, $w \\sim v$, all distinct. The edge $u$-$v$ can be replaced by the path $u$-$w$-$v$ to 'absorb' $w$ into a cycle."
+    },
+    {
+      "id": "absorbing-density",
+      "title": "Absorbing Pair Existence and Density",
+      "summary": "Proves absorbing_pair_exists (triangle existence in dense regular graphs) and erdos_faudree_absorbing_pairs_ge (≥ n absorbing pairs per vertex in EF graphs).",
+      "startLine": 111,
+      "endLine": 165,
+      "mathContext": "For $|V| \\leq 2d - 2$: $|N(u) \\cap N(w)| \\geq 2 > 0$, giving a common neighbor $v$ forming a triangle. For EF: injecting $N(w) \\setminus \\{u_0\\}$ into absorbingPairs via $u \\mapsto (u, v(u))$ gives $\\geq n$ pairs."
+    },
+    {
+      "id": "absorbing-lemma",
+      "title": "Absorbing Lemma (Statement Only)",
+      "summary": "Defines HasAbsorbingStructure: the existence of a short cycle that can absorb any small subset. This is the main DKM 2025 technical contribution.",
+      "startLine": 166,
+      "endLine": 180,
+      "mathContext": "$\\exists$ cycle $C$ with $|C| \\leq \\lceil \\varepsilon |V| \\rceil$ such that $\\forall T \\subseteq V \\setminus V(C)$ with $|T| \\leq \\delta |V|$, $C$ can be extended to also span $T$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete absorbing method infrastructure for Erdős-Faudree graphs: 9 proved theorems, 0 axioms, 0 sorries. Edge counting, common neighborhood bounds, absorbing pair existence and density are all fully machine-checked.",
+    "implications": "This infrastructure is the foundation for formalizing the full DKM 2025 absorbing method proof. The absorbing pair density result (≥ n pairs per vertex) is the quantitative input to the probabilistic argument that yields the absorbing lemma.",
+    "openQuestions": [
+      "Can the absorbing lemma (HasAbsorbingStructure) be proved from the density bounds, or does it require probabilistic tools not yet in Mathlib?",
+      "Can the density bound be sharpened to Ω(n²) absorbing pairs, matching the heuristic from the 2(n+1) directed edges within N(w)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos622Problem"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Finset",
+      "Erdos622"
+    ],
+    "namespace": "Erdos622OQ04",
+    "lineCount": 215,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos622OQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

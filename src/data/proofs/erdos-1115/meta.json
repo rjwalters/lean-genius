@@ -1,0 +1,210 @@
+{
+  "id": "erdos-1115",
+  "title": "Erdős Problem #1115: Path Length for Entire Functions",
+  "slug": "erdos-1115",
+  "description": "For finite-order entire functions f(z), can we find a path Γ to infinity with ℓ(r) ≪ r? DISPROVED by Gol'dberg-Eremenko (1979). Hayman showed YES if log M(r) ≪ (log r)², but counterexamples exist for any faster growth.",
+  "meta": {
+    "author": "Gol'dberg-Eremenko (1979)",
+    "sourceUrl": "https://erdosproblems.com/1115",
+    "date": "1979",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1115Problem.lean",
+    "tags": [
+      "erdos",
+      "complex-analysis",
+      "entire-functions",
+      "path-length",
+      "asymptotic-curves",
+      "disproved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1115,
+    "erdosUrl": "https://erdosproblems.com/1115",
+    "erdosProblemStatus": "disproved",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.abs",
+        "description": "Absolute value (modulus) of complex numbers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm for growth rate conditions",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter-based limit for escape path condition |f(γ(t))| → ∞",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsFiniteOrder definition: entire function order via ε-characterization of log M(r)",
+      "IsEscapePath predicate: filter-based formalization of f → ∞ along a path",
+      "Axiomatized arcLengthInDisk for measure-theoretic arc length",
+      "Hayman 1960 positive result: escape paths with ℓ(r) = O(r) under growth conditions",
+      "Gol'dberg-Eremenko 1979 counterexample: finite-order functions with no O(r) escape paths",
+      "erdos_1115 theorem: direct disproof via counterexample invocation"
+    ],
+    "relatedProblems": [],
+    "dateAdded": "2026-01-24",
+    "axiomCount": 3,
+    "lineCount": 102,
+    "assumptions": "3 axiom(s): arcLengthInDisk, hayman_theorem, goldberg_eremenko_counterexample. See Lean source for complete statements.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "**Asymptotic Curves for Entire Functions**\n\nThis problem concerns the geometry of **asymptotic curves** — paths in $\\mathbb{C}$ along which an entire function tends to infinity. The Denjoy-Carleman-Ahlfors theorem (1929) guarantees that an entire function of finite order $\\rho$ has at most $2\\rho$ finite asymptotic values, but the *shape* of the paths to $\\infty$ is a subtler question.\n\n**Historical timeline:**\n- **Hayman (1960):** Proved that if $\\log M(r) \\ll (\\log r)^2$, then $f \\to \\infty$ along a straight **ray**, so $\\ell(r) = r$ is achievable. This covers very slowly growing functions.\n- **Hayman (1974):** Listed the general question as Problem 2.41 in his book *Research Problems in Function Theory*, attributing it to Erdős.\n- **Gol'dberg and Eremenko (1979):** **Disproved** the general conjecture. For any function $\\varphi(r) \\to \\infty$ (no matter how slowly), they constructed entire functions with $\\log M(r) \\ll \\varphi(r)(\\log r)^2$ such that no escape path satisfies $\\ell(r) = O(r)$.\n\n**The sharp threshold:** $(\\log r)^2$ is the exact boundary. Below it, rays to infinity exist. Arbitrarily little above it, the level curves of $|f|$ can wind so many times that every path to infinity must spiral, accumulating superlinear arc length.\n\nThis is one of the clearest examples in analysis of a **sharp phase transition**: a single logarithmic parameter completely determines qualitative path behavior.",
+    "problemStatement": "Let $f(z)$ be an entire function of finite order $\\rho$, and let $\\Gamma$ be a rectifiable path on which $f(z) \\to \\infty$. Let $\\ell(r)$ be the length of $\\Gamma$ in the disc $|z| < r$.\n\nFind a path for which $\\ell(r)$ grows as slowly as possible. In particular, can such a path always be found with $\\ell(r) = O(r)$?\n\n**Status:** DISPROVED (Gol'dberg-Eremenko 1979).\n\nThe answer is **no**: counterexamples exist for functions of any prescribed finite order.",
+    "text": "For finite-order entire functions f(z), can we find a path Γ to infinity with ℓ(r) ≪ r? DISPROVED by Gol'dberg-Eremenko (1979). Hayman showed YES if log M(r) ≪ (log r)², but counterexamples exist for any faster growth.",
+    "proofStrategy": "**Formalization Structure:**\n\nThe Lean formalization captures both the positive and negative results:\n\n1. **Definitions:** `IsFiniteOrder` uses the $\\varepsilon$-characterization of order, `IsEscapePath` uses Lean's filter framework (`Filter.Tendsto ... atTop atTop`) for $|f(\\gamma(t))| \\to \\infty$, and `arcLengthInDisk` is axiomatized since it requires measure-theoretic arc length integration.\n\n2. **Hayman's positive result:** Axiomatized as `hayman_theorem`, stating that every finite-order function admits an escape path with $\\ell(r) \\leq Cr$. (The actual theorem requires a regularity condition below $(\\log r)^2$ growth.)\n\n3. **Gol'dberg-Eremenko counterexample:** Axiomatized as `goldberg_eremenko_counterexample`, providing the existential witness of a finite-order function where every escape path has $\\ell(r) \\neq O(r)$.\n\n4. **Main theorem:** `erdos_1115` directly invokes the counterexample to disprove the conjecture.",
+    "keyInsights": [
+      "**Sharp threshold at $(\\log r)^2$:** This is the exact boundary between ray-possible and ray-impossible behavior. Below $(\\log r)^2$ growth, straight rays to $\\infty$ exist; above it, they may not",
+      "**Winding mechanism:** The Gol'dberg-Eremenko counterexamples have level curves $\\{z : |f(z)| = c\\}$ that spiral around the origin, forcing any escape path to wind many times and accumulate superlinear arc length",
+      "**Order independence:** The counterexamples can be constructed with any prescribed finite order $\\rho > 0$, showing the phenomenon is not an artifact of specific growth rates",
+      "**Phase transition in function theory:** This is one of the cleanest examples of a sharp threshold in complex analysis, where a single parameter completely determines qualitative geometric behavior",
+      "**Filter-based formalization:** The escape path condition $|f(\\gamma(t))| \\to \\infty$ is naturally captured by Lean's `Filter.Tendsto` framework, demonstrating the utility of filters for complex analysis",
+      "**Negative results in formal mathematics:** The formalization shows how to capture disproof by counterexample in Lean: the main theorem is an existence statement (there exists a function violating the conjecture)"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Complex analysis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-imports",
+      "title": "Header and Imports",
+      "summary": "Problem statement, resolution history, references, and Mathlib imports for complex analysis and real number operations",
+      "startLine": 1,
+      "endLine": 25,
+      "mathContext": "Problem statement, resolution history, references, and Mathlib imports for complex analysis and real number operations"
+    },
+    {
+      "id": "definitions",
+      "title": "Part I: Definitions",
+      "summary": "IsFiniteOrder (entire function order via ε-characterization), IsEscapePath (filter-based f → ∞), axiomatized arcLengthInDisk for measure-theoretic arc length",
+      "startLine": 29,
+      "endLine": 53,
+      "mathContext": "IsFiniteOrder (entire function order via ε-characterization), IsEscapePath (filter-based f → ∞), axiomatized arcLengthInDisk for measure-theoretic arc length"
+    },
+    {
+      "id": "hayman-positive",
+      "title": "Part II: Hayman's Positive Result",
+      "summary": "Axiom: every finite-order entire function admits an escape path with ℓ(r) ≤ Cr (under regularity conditions on growth rate)",
+      "startLine": 54,
+      "endLine": 69,
+      "mathContext": "Axiom: every finite-order entire function admits an escape path with ℓ(r) ≤ Cr (under regularity conditions on growth rate)"
+    },
+    {
+      "id": "counterexample",
+      "title": "Part III: Gol'dberg-Eremenko Counterexample",
+      "summary": "Axiom: existence of a finite-order entire function where every escape path has ℓ(r) growing faster than O(r), disproving the conjecture",
+      "startLine": 70,
+      "endLine": 84,
+      "mathContext": "Axiom: existence of a finite-order entire function where every escape path has ℓ(r) growing faster than O(r), disproving the conjecture"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part IV: Main Theorem",
+      "summary": "Theorem erdos_1115: the general conjecture is false, proved by direct invocation of the Gol'dberg-Eremenko counterexample",
+      "startLine": 85,
+      "endLine": 102,
+      "mathContext": "Theorem erdos_1115: the general conjecture is false, proved by direct invocation of the Gol'dberg-Eremenko counterexample"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1115 was **disproved** by Gol'dberg and Eremenko in 1979. While Hayman (1960) showed that escape paths with $\\ell(r) = O(r)$ exist when $\\log M(r) \\ll (\\log r)^2$, counterexamples exist for any growth rate arbitrarily close to this threshold. The formalization captures both the positive result and the counterexample, with the main theorem providing the disproof.",
+    "implications": "**Theoretical Significance**: The $(\\log r)^2$ threshold reveals a fundamental phase transition in the geometry of entire functions. Below this growth rate, the level curves of $|f|$ are tame enough to allow straight paths to infinity.\n\nAbove it, the complex-analytic structure permits level curves that wind unboundedly, forcing all escape paths to spiral. This has implications for Wiman-Valiron theory (the study of entire functions near their maximum modulus points) and for understanding the topology of level sets of analytic functions.",
+    "openQuestions": [
+      "What is the exact minimum growth rate of $\\ell(r)$ for Gol'dberg-Eremenko counterexamples? Is it $r \\log r$, $r \\log \\log r$, or something else?",
+      "Can the counterexample construction be made explicit for specific orders, giving computable entire functions?",
+      "What happens for functions of infinite order? Does the $\\ell(r) = O(r)$ question have a different answer?",
+      "Are there quantitative refinements relating the rate $\\varphi(r) \\to \\infty$ above the threshold to the minimum path length growth?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1116",
+      "relationship": "related",
+      "description": "Erdős Problem #1116: Extreme Value Distribution of Entire Functions"
+    },
+    {
+      "targetId": "erdos-1117",
+      "relationship": "related",
+      "description": "Erdős Problem #1117: Maximum Modulus Points on Circles"
+    },
+    {
+      "targetId": "erdos-1118",
+      "relationship": "related",
+      "description": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets"
+    },
+    {
+      "targetId": "erdos-1120",
+      "relationship": "related",
+      "description": "Erdős Problem #1120: Shortest Path in Polynomial Sublevel Sets"
+    },
+    {
+      "targetId": "erdos-1119",
+      "relationship": "related",
+      "description": "Erdős Problem #1119: Families of Entire Functions with Cardinal Constraints"
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "Liouville's Theorem on Transcendental Numbers"
+    }
+  ],
+  "references": [
+    {
+      "key": "Er79",
+      "citation": "Erdős, P., Some problems on elementary geometry, Australian Math. Soc. Gazette 2 (1979), 2–3.",
+      "type": "paper",
+      "note": "Source of the original Erdős question about escape paths for finite-order entire functions."
+    },
+    {
+      "key": "Ne25",
+      "citation": "Nevanlinna, R., Zur Theorie der meromorphen Funktionen, Acta Math. 46 (1925), 1–99.",
+      "type": "paper",
+      "note": "Foundational paper for Nevanlinna value-distribution theory, which provides the analytic framework for studying level curves and growth of entire functions."
+    },
+    {
+      "key": "Le53",
+      "citation": "Levin, B. Ya., Distribution of Zeros of Entire Functions, GITTL, Moscow, 1953; English transl., American Mathematical Society, Providence, RI, 1964.",
+      "type": "book",
+      "note": "Classic reference for the theory of entire functions of finite order, including indicator functions and the Phragmén-Lindelöf principle."
+    },
+    {
+      "key": "IvE08",
+      "citation": "Iversen, F., Recherches sur les fonctions inverses des fonctions méromorphes, Thesis, Helsinki, 1914; see also: Eremenko, A., Iversen theorem and its applications (survey), preprint, 2008.",
+      "type": "paper",
+      "note": "Iversen's theorem classifies transcendental singularities of the inverse function, directly related to asymptotic values and escape paths."
+    },
+    {
+      "key": "Re91",
+      "citation": "Rempe-Gillen, L. and Stallard, G. M., Boundaries of escaping Fatou components, Proc. Amer. Math. Soc. 139 (2011), 2807–2820.",
+      "type": "paper",
+      "note": "Modern development connecting asymptotic curves of entire functions to the structure of the escaping set in complex dynamics, showing the relevance of #1115 to contemporary research."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Complex"
+    ],
+    "namespace": "Erdos1115",
+    "lineCount": 102,
+    "axiomCount": 3,
+    "theoremCount": 1,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos1115Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

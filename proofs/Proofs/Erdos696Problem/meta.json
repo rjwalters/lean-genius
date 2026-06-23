@@ -1,0 +1,16 @@
+{
+  "problem_number": 696,
+  "title": "Chains of Prime Divisors with Congruence Conditions",
+  "status": "open",
+  "solvers": [],
+  "source_url": "https://erdosproblems.com/696",
+  "overview": "Let h(n) be the largest ℓ such that there is a sequence of primes p₁ < p₂ < ... < pₗ all dividing n with p_{i+1} ≡ 1 (mod p_i). Let H(n) be the analogous function for general divisors. Questions: (1) Estimate h(n) and H(n). (2) Is H(n)/h(n) → ∞ for almost all n?",
+  "sections": [],
+  "conclusion": "PARTIALLY SOLVED - van Doorn proved h(n) → ∞ for almost all n. Erdős conjectured the normal order of h(n) is log*(n) (iterated logarithm). The ratio question H(n)/h(n) → ∞ remains OPEN.",
+  "references": [
+    "Erdős [Er79e, p.81] - Original problem",
+    "van Doorn - Proof that h(n) → ∞ for almost all n"
+  ],
+  "related_problems": [695],
+  "tags": ["number-theory", "divisors", "prime-chains", "congruences", "partially-solved"]
+}

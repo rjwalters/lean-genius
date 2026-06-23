@@ -1,0 +1,115 @@
+{
+  "slug": "erdos-932",
+  "title": "Erdős #932",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let p_r be the zero-indexed rth prime and g_r = p_{r+1} - p_r. Are there infinitely many r for which at least two integers m satisfy p_r < m < p_{r+1} and every prime factor of m is strictly less than g_r? In Lean this is expressed as infinitude of {r | smoothCount r >= 2}.",
+    "plain": "Do infinitely many prime gaps contain at least two numbers whose prime factors are all smaller than the gap itself?",
+    "plainEnglish": "Do infinitely many prime gaps contain at least two numbers whose prime factors are all smaller than the gap itself?",
+    "whyMatters": [
+      "Links prime gaps with smooth-number distribution inside the gaps.",
+      "Separates the main infinitude conjecture from a density-zero weak condition.",
+      "Shows where concrete factorization lemmas end and analytic number theory begins."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`nthPrime`, `primeGap`, `maxPrimeFactor`, gap intervals, and smooth-in-gap counts are formalized.",
+      "Basic facts about maximum prime factors of 1, primes, products, and prime powers are proved.",
+      "The open prime-gap interval is nonempty exactly when the gap is greater than 1.",
+      "Alternative formulations and monotonicity of smooth counts up to a bound are proved."
+    ],
+    "open": [
+      "The main infinitude statement `erdos_932` remains axiomatized.",
+      "The density-zero weak condition is represented by the axiom `erdos_932_density_zero`.",
+      "The concrete r=3 example is currently the axiom `example_r3`, not a verified computation."
+    ],
+    "goal": "Record the current three-axiom boundary without overstating the density theorem or example as Lean-proved."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "Definitions and elementary factorization/gap lemmas are in place; `erdos_932`, `erdos_932_density_zero`, and `example_r3` are the three active axioms.",
+    "blockers": [
+      "Main infinitude, density-zero theorem, and example r=3 are still axiomatized in source."
+    ],
+    "nextAction": "Replace `example_r3` with a concrete computation before tackling the analytic infinitude and density claims.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "CURRENT: 20 theorem/lemma declarations, 12 definitions, 3 axioms, 0 sorries. The main infinitude claim, the density-zero weak condition, and the r=3 example are axioms; elementary smooth-number and gap infrastructure is proved.",
+    "builtItems": [
+      "`nthPrime` and `primeGap`",
+      "`maxPrimeFactor` and `isSmooth`",
+      "`primesGapInterval`, `smoothInGap`, and `smoothCount`",
+      "`erdos932Condition` and `erdos932WeakCondition`",
+      "Basic max-prime-factor and prime-power smoothness lemmas",
+      "`erdos_932_alt`, `erdos_932_variants_one_le`, `example_satisfies`, and `smoothCountUpTo_mono`"
+    ],
+    "insights": [
+      "The gap condition uses strict maxPrimeFactor m < primeGap r, even though the general `isSmooth B n` helper uses <= B.",
+      "`example_r3` is an axiom in source, so metadata must not call it a verified computation.",
+      "`erdos_932_density_zero` records Erdos' density-zero result as a Lean axiom.",
+      "`erdos_932_alt` and variant theorems convert formulations rather than prove the main result unconditionally.",
+      "`smoothCountUpTo_mono` supplies reusable monotonicity for bounded counting."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove the r=3 example by computation.",
+      "Clarify the relationship between `isSmooth B n` and the strict gap condition in comments or helper lemmas.",
+      "Treat density-zero and infinitude claims as analytic assumptions until formalized."
+    ],
+    "markdown": "# Erdős #932 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $p_k$ denote the $k$th prime. For infinitely many $r$ there are at least two integers $p_r<n<p_{r+1}$ all of whose prime factors are $<p_{r+1}-p_r$.\n\n\n\nErd\\H{o}s thought this was true but that there are very few such $r$. He could show that the density of $r$ such that at least one such $n$ exist is $0$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #931\n- Problem #933\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "prime-gaps",
+    "smooth-numbers",
+    "natural-density",
+    "open"
+  ],
+  "relatedProofs": [
+    "erdos-9",
+    "erdos-93",
+    "erdos-932"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://erdosproblems.com/932"
+    ],
+    "mathlib": [
+      "Nat.nth",
+      "Nat.Prime",
+      "Nat.factorization",
+      "Finset.Icc",
+      "Finset.filter"
+    ]
+  },
+  "started": "2026-01-15T11:43:50.650Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos932Problem.lean",
+      "filename": "Erdos932Problem.lean",
+      "lineCount": 356,
+      "theoremCount": 20,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos932Problem.lean"
+    }
+  ]
+}

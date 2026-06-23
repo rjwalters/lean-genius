@@ -1,0 +1,70 @@
+{
+  "slug": "geometric-series-oq-08",
+  "title": "Finite Geometric Sums and the Infinite Limit: Defect, Bounds, and Monotonicity",
+  "phase": "COMPLETE",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\forall (r : \\mathbb{R}),\\ 0 \\le r < 1 \\Rightarrow (1-r)^{-1} - \\sum_{k<n} r^k = \\frac{r^n}{1-r} \\ \\wedge\\ \\sum_{k<n} r^k \\le (1-r)^{-1}",
+    "plain": "For a real ratio r with 0 ≤ r < 1, the finite geometric partial sum ∑_{k<n} r^k approaches its infinite value (1−r)⁻¹ from below: the truncation defect is exactly r^n/(1−r), the partial sums are bounded above by (1−r)⁻¹ (strictly for 0 < r < 1), increase in n, and converge upward to the limit.",
+    "whyMatters": [
+      "The truncation error r^n/(1−r) is the estimate behind the comparison test, the ratio-test remainder, and numerical geometric-sum approximations.",
+      "Exhibits the infinite geometric value 1/(1−r) as the supremum of an increasing, bounded sequence of finite partial sums — the quantitative bridge between the gallery's finite closed form and its infinite value.",
+      "Provides a typed, reusable defect/bound package rather than re-deriving the error inline each time a geometric series is truncated."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Mathlib geom_sum_eq: ∑_{k<n} x^k = (x^n − 1)/(x − 1) for x ≠ 1 (finite closed form).",
+      "Mathlib hasSum_geometric_of_abs_lt_one: ∑ r^n = (1 − r)⁻¹ for |r| < 1 (infinite value).",
+      "Gallery GeometricSeries.lean: finite_geom_sum_div records the closed form (1 − r^n)/(1 − r); the infinite value is infinite_geom_sum."
+    ],
+    "open": [
+      "Ico-slice defect and Cauchy-criterion envelope (oq-01); alternating bracketing for −1 < r < 0 (oq-02)."
+    ],
+    "goal": "Ship a verified (0 sorries, 0 axioms) gallery entry with the truncation defect, strict/non-strict bounds, monotonicity, and upward convergence of finite geometric sums."
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-06-20T00:00:00Z",
+    "iteration": 1,
+    "focus": "Shipped GeometricSeriesOQ08.lean + gallery entry; Docker build green (Lean v4.26.0), axiom-clean.",
+    "blockers": [],
+    "nextAction": "Done. Optional: Ico-slice envelope and negative-ratio bracketing (see openQuestions).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Shipped proofs/Proofs/GeometricSeriesOQ08.lean (128 lines, 6 theorems, 0 sorries/axioms) plus gallery meta.json. Theorems: geometric_sum_closed (closed form in the (1−r^n)/(1−r) convention), geometric_sum_tail (exact defect (1−r)⁻¹ − S n = r^n/(1−r)), geometric_sum_le_inv / geometric_sum_lt_inv (non-strict / strict upper bound by the infinite value), geometric_sum_monotone (partial sums increase), geometric_sum_tendsto_inv (upward convergence). Docker build verified green on Lean v4.26.0; import registered in Proofs.lean.",
+    "builtItems": [
+      "proofs/Proofs/GeometricSeriesOQ08.lean (verified, Docker-built); src/data/proofs/geometric-series-oq-08/meta.json; import in Proofs.lean."
+    ],
+    "mathlibGaps": [
+      "Mathlib states the finite closed form and the infinite value separately but not their difference (the truncation defect) nor the monotone-bounded-convergence package."
+    ],
+    "nextSteps": [
+      "Ico-slice defect + Cauchy envelope; alternating bracketing for negative ratios."
+    ]
+  },
+  "tags": [
+    "analysis",
+    "geometric-series",
+    "finite-sums",
+    "partial-sums",
+    "truncation-error",
+    "monotonicity",
+    "research"
+  ],
+  "relatedProofs": [
+    "geometric-series",
+    "geometric-series-oq-07"
+  ],
+  "started": "2026-06-20T00:00:00.000Z",
+  "lastUpdate": "2026-06-20T00:00:00.000Z",
+  "significance": 4,
+  "tractability": 8
+}

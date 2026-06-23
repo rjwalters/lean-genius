@@ -1,0 +1,160 @@
+[
+  {
+    "id": "ann-e887-header",
+    "proofId": "erdos-887",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 15
+    },
+    "title": "Problem Overview: Divisors Near √n",
+    "content": "**Erdős Problem #887** asks a deceptively simple question: can many divisors of n cluster in a short interval just above √n? Specifically, is there a universal constant K such that no sufficiently large n can have more than K divisors in (√n, √n + C·n^{1/4})?\n\nThe problem is **OPEN**. Erdős and Rosenfeld (1997) showed that 4 divisors can appear infinitely often, and conjectured this is the maximum. Chan (2013) proved the bound K ≤ 5 for perfect squares. The general case — whether any K works at all — remains unsolved.",
+    "mathContext": "The interval width n^{1/4} is the critical exponent. For wider intervals (width n^α with α > 1/2), no bound exists. For narrower intervals (α < 1/4), at most 2 divisors can appear. The exponent 1/4 sits at the phase transition, making this a frontier problem in divisor theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Divisor function",
+      "Short intervals",
+      "Analytic number theory",
+      "Erdős-Rosenfeld conjecture"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e887-definitions",
+    "proofId": "erdos-887",
+    "type": "definition",
+    "range": {
+      "startLine": 27,
+      "endLine": 40
+    },
+    "title": "Divisor Definitions and Interval Counting",
+    "content": "**divisors n** constructs the finite set of all positive divisors of n by filtering {1, ..., n} for divisibility. **tau n** = τ(n) counts divisors (e.g., τ(12) = 6 since 1, 2, 3, 4, 6, 12 all divide 12).\n\n**divisorsInInterval n a b** filters divisors to those in the real interval [a, b], and **countDivisorsInInterval** gives the cardinality. This machinery lets us precisely count how many divisors fall in a specified range — the core measurement for the problem.",
+    "mathContext": "The divisor function τ(n) is multiplicative: τ(mn) = τ(m)τ(n) when gcd(m,n) = 1. On average, τ(n) ≈ log n, but individual values fluctuate wildly. The question here is about local concentration near √n rather than global counts.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Divisor function",
+      "Finset",
+      "Multiplicative functions",
+      "Divisibility"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e887-conjecture",
+    "proofId": "erdos-887",
+    "type": "definition",
+    "range": {
+      "startLine": 44,
+      "endLine": 63
+    },
+    "title": "The Erdős-Rosenfeld Conjecture",
+    "content": "**ErdosRosenfeldConjecture** formalizes the main question: ∃ K, ∀ C > 0, ∃ N₀, ∀ n ≥ N₀, divisorsNearSqrt(n, C) ≤ K. The quantifier structure is crucial — K is chosen *first*, before C, making it a universal constant.\n\n**WeakErdosRosenfeld** reverses the quantifiers on K and C: for each C there exists a (possibly C-dependent) K. Even this weaker statement is open! The strong form asserts K can be chosen independently of C.",
+    "mathContext": "The distinction between the strong and weak forms is analogous to uniform vs. pointwise convergence. The strong form is a uniformity statement: the same K works for all interval widths simultaneously.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Universal constants",
+      "Quantifier order",
+      "Uniform bounds",
+      "Extremal problems"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e887-lower-bound",
+    "proofId": "erdos-887",
+    "type": "concept",
+    "range": {
+      "startLine": 67,
+      "endLine": 76
+    },
+    "title": "Erdős-Rosenfeld Lower Bound: 4 Divisors Achieved",
+    "content": "**erdos_rosenfeld_four_divisors** axiomatizes the key 1997 result: for C ≥ 1, the set of n with exactly 4 divisors in (√n, √n + C·n^{1/4}) is infinite. This establishes K ≥ 4.\n\n**FourIsMaximum** states the conjectured sharp bound: for all C > 0 and sufficiently large n, at most 4 divisors can appear. If true, K = 4 is optimal.\n\nThe construction uses n = p₁p₂p₃p₄ with four primes chosen so that four of the six pairwise products pᵢpⱼ land in the target interval.",
+    "mathContext": "The construction is delicate: one needs four primes p₁ < p₂ < p₃ < p₄ with p₁p₂ ≈ p₁p₃ ≈ p₁p₄ ≈ p₂p₃ ≈ √n. By the prime number theorem, primes are dense enough that such configurations exist infinitely often.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lower bounds",
+      "Prime products",
+      "Constructive examples",
+      "Set.Infinite"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e887-chan",
+    "proofId": "erdos-887",
+    "type": "concept",
+    "range": {
+      "startLine": 80,
+      "endLine": 97
+    },
+    "title": "Chan's Theorem: Perfect Squares Have ≤ 5 Divisors",
+    "content": "**chan_perfect_square_bound** axiomatizes Chan's 2013 result: for any perfect square n = k² and any c > 0, at most 5 divisors of n lie in the symmetric interval (√n - c·n^{1/4}, √n + c·n^{1/4}).\n\nThe bound is 5 rather than 4 because √n = k is itself a divisor of n = k². The theorem **perfect_square_has_sqrt_divisor** proves this basic fact directly: given n = k², we have k | n with k² = n.\n\nThis is the strongest partial result toward the conjecture, but covers only perfect squares.",
+    "mathContext": "For non-square n, √n is irrational, so no divisor equals √n exactly. This fundamental asymmetry explains why perfect squares are a natural special case and why their bound (5) differs from the conjectured general bound (4).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Perfect squares",
+      "Symmetric intervals",
+      "Partial solutions",
+      "Divisor structure"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e887-epsilon-bound",
+    "proofId": "erdos-887",
+    "type": "concept",
+    "range": {
+      "startLine": 101,
+      "endLine": 104
+    },
+    "title": "The Divisor Bound τ(n) ≪ n^ε",
+    "content": "**divisor_bound_epsilon** states that for any ε > 0 there exists a constant C such that τ(n) ≤ C·n^ε for all n ≥ 1. This means the total number of divisors of n grows slower than any positive power of n.\n\nThis classical result provides context: since the *total* number of divisors is subpolynomial, asking for a *constant* bound on divisors in a short interval is a much finer question about local concentration rather than global counting.",
+    "mathContext": "The bound follows from the prime factorization: if n = p₁^{a₁}···pₖ^{aₖ} then τ(n) = (a₁+1)···(aₖ+1). The worst case is n = 2^m, giving τ(n) = m + 1 = (log n / log 2) + 1, which is ≪ n^ε for any ε > 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Divisor bounds",
+      "Subpolynomial growth",
+      "Prime factorization"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e887-phase-transition",
+    "proofId": "erdos-887",
+    "type": "concept",
+    "range": {
+      "startLine": 118,
+      "endLine": 128
+    },
+    "title": "Phase Transition at Exponent 1/4",
+    "content": "**no_bound_for_large_alpha** states that for α > 1/2, no K can bound divisors in (√n, √n + n^α) — the interval is too wide relative to √n. For any K, one can find n exceeding it.\n\n**bound_for_small_alpha** states that for α < 1/4, the interval is so narrow that at most 2 divisors can appear (a complementary pair d and n/d). The critical exponent α = 1/4 lies between these regimes.\n\nThis phase transition is why Problem #887 focuses specifically on n^{1/4}: it is the exact boundary where the problem transitions from trivially bounded to open.",
+    "mathContext": "The threshold α = 1/4 arises because if d₁, d₂ are divisors of n with √n < d₁ < d₂ < √n + n^α, then d₂ - d₁ < n^α while n/d₁ - n/d₂ ≈ n·(d₂ - d₁)/d₁d₂ ≈ (d₂ - d₁). When α < 1/4, these constraints become too tight for more than one pair.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Phase transitions",
+      "Critical exponents",
+      "Complementary divisors",
+      "Threshold behavior"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e887-summary-axiom",
+    "proofId": "erdos-887",
+    "type": "concept",
+    "range": {
+      "startLine": 132,
+      "endLine": 153
+    },
+    "title": "Summary and Main Entry Point",
+    "content": "**erdos_887_summary** packages all known results into a single 4-part conjunction: (1) the Erdős–Rosenfeld lower bound of 4, (2) Chan's perfect-square bound of 5, (3) unboundedness for α > 1/2, and (4) the bound of 2 for α < 1/4.\n\n**erdos_887** provides the main entry point by showing that ErdosRosenfeldConjecture unfolds to the expected quantified statement. This is proved by `rfl` since the conjecture is definitionally equal to its expansion.\n\nThe problem's status is OPEN: neither the existence nor non-existence of the universal constant K has been established in the general case.",
+    "mathContext": "The summary axiom is not logically stronger than the individual axioms but provides a convenient single reference. The `rfl` proof of erdos_887 confirms that ErdosRosenfeldConjecture is defined transparently without hidden computation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Problem summary",
+      "Open problems",
+      "Definitional equality"
+    ],
+    "prerequisites": []
+  }
+]

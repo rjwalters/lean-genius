@@ -1,0 +1,192 @@
+{
+  "slug": "descartes-rule-of-signs-oq-02-oq-01",
+  "title": "Can the `budan_upper_bound` axiom be fully proved in Lean",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-17T05:25:00Z",
+    "iteration": 4,
+    "focus": "S4 ACT executed: paste-ready d=0 base case + architectural bridge per S3 PREP §3. Added `import Proofs.DescartesRuleOfSignsOQ02` to OQ02OQ01.lean imports + opened `namespace BudanTheorem` (re-opens the same namespace from imported parent OQ02.lean) after `end BudanUpperBound` (L239) + pasted 4-line `budan_upper_bound_natDegree_zero` theorem. File 239 → 257 LOC (+18; +6 over S3 PREP +12 budget, all blank-line padding + 4-line docstring). Bearer-cohort identical to S3 PREP §3 byte-paste-ready at SHA 2df2f0150c (unchanged ≥9d). Ships as **build-pending** under S3 PREP §1 fallback contract: B1 host disk 4.6 Gi avail (RED, below 5 Gi soft-floor, -2.6 Gi/21h vs S3 PREP 7.2 Gi) + B2 Docker server hung (G8 RED, `docker info` returns empty Server: section). Six sibling sessions in last 4 h ship-as-build-pending under same INFRA window (schauder S25 #20085, ballot S80 #19994, minkowski S29 #20018, four-square S27 #20072, prob-method S9 #20041, erdos-1151 S34 #20007). High-confidence Lean compiles when daemon recovers: bearer audit byte-stable, no novel Mathlib calls, namespace re-open pattern proven (parent OQ02.lean `BudanTheorem` L57-L698 + AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle.lean:483 import precedent). Worktree path trap encountered + recovered per memory feedback (~5 min cost).",
+    "blockers": [
+      "B1 Disk pressure (RED): /System/Volumes/Data 4.6 Gi avail (100% used), below 5 Gi soft-floor; -2.6 Gi degradation in 21h vs S3 PREP 7.2 Gi. Mitigates to build-pending ship per S3 PREP §1 plan. S5/S6 gated until ≥50 Gi recovers.",
+      "B2 Docker daemon hung (RED): `docker info` returns empty Server: section. Daemon unresponsive ≥24h cumulative across sibling sessions. Mitigates to build-pending; deployer accepts ship-pending under documented INFRA per recent precedent (#20085, #20018, etc.).",
+      "B4 Sign-change accounting bridging Rolle to the bound is not in Mathlib (no Budan-Fourier API; `signVariations` is coefficient-based and only handles positive roots). Must be built locally; dominant cost (~100-200 LOC). Affects S6 only."
+    ],
+    "nextAction": "S5 ACT (deferred until disk avail ≥50 Gi AND Docker daemon healthy): paste §§4.1-4.5 of sessions/2026-05-16-s3-prep-d1-pasteready.md into the `namespace BudanTheorem` block established by S4 (insert before `end BudanTheorem` on line 256): three private sub-lemmas (polyDegOne_eq_C_mul_X_add_C 8 LOC, polyDegOne_coeff_one_ne_zero 7 LOC, rootsInInterval_polyDegOne 22 LOC, budanCount_polyDegOne 28-35 LOC) + main _natDegree_one 30-40 LOC + residual axiom _natDegree_ge_two 4 LOC + composed _axiom_proved per S2 PREP §6. +95-100 LOC. Expect 3-5 Docker iters. Axiom budget 0 → 1 (slice axiom for d≥2). Mechanic flag: leanFiles[5] (DescartesRuleOfSignsOQ02OQ01.lean) is cross-slug shared (10 sibling JSONs reference it); pre-S4 already stale (lineCount: 192 actual 239, theoremCount: 4 actual ~7); S4 widens gap (257 LOC / ~8 narrow / ~11 raw theorems). Single mechanic batch PR appropriate.",
+    "attemptCounts": {
+      "total": 4,
+      "currentApproach": 2,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: S1 (#17193) added 5 iterDeriv structural lemmas; OQ02OQ01 grew to 239 LOC, ~7 thms narrow, 0 sorries, 0 axioms. S2 PREP (PR #18756): bootstrapped problem.md/state.md/knowledge.md + session note with concrete d=0 base-case proof (4 lines) + d=1 skeleton (40-60 LOC) + Mathlib bearer audit + Rolle-vs-factor-out-root strategy comparison + architectural bridge (OQ02OQ01 must import OQ02 to access budanCount/rootsInInterval). S3 PREP (PR #19537, researcher-11): Mathlib bearer audit refresh at SHA 2df2f0150c (unchanged ≥9d) confirmed all S2 bearers + new bearers for d=1; d=0 byte-paste-ready re-confirmed; d=1 sketch upgraded with sub-lemma proof bodies (total 100-120 LOC); 13-23 LOC remaining sorries in signChangesInList / sign-of-product; honest budget revised 2× upward; ACT split S4 minimal + S5 substantial. S4 ACT (THIS PR, researcher-12, 2026-05-17): executed the S3 PREP §3 recipe verbatim — added `import Proofs.DescartesRuleOfSignsOQ02` + opened `namespace BudanTheorem` (re-opens parent OQ02.lean namespace) + pasted 4-line `budan_upper_bound_natDegree_zero` theorem; file 239 → 257 LOC (+18; +6 over +12 budget from docstring + blank padding); ships build-pending under S3 PREP §1 fallback contract (B1 disk 4.6 Gi RED + B2 Docker hung RED); bearer-cohort identical to S3 PREP §3 ⇒ high-confidence Lean compiles when daemon recovers.",
+    "builtItems": [
+      "Created DescartesRuleOfSignsOQ02OQ01.lean: proof scaffold with 5 theorems, 3 sorries",
+      "Proved constant_no_roots base case",
+      "Documented proof completion roadmap with line estimates",
+      "Proved rolle_polynomial from Mathlib exists_deriv_eq_zero",
+      "Proved root_of_sign_change from IVT (intermediate_value_Icc)",
+      "S2 PREP: bootstrapped research/problems/descartes-rule-of-signs-oq-02-oq-01/{problem.md,state.md,knowledge.md} (slug previously had no research dir)",
+      "S2 PREP: 2026-05-13-s2-prep-base-case-bridge.md — concrete d=0 base case proof, d=1 skeleton, Mathlib audit, strategy comparison (~400 LOC doc-only)",
+      "S2 PREP: Mathlib bearer audit confirmed no Polynomial.budanCount/budanSequence/half-open-interval-root-counting API exists; OQ-02 locals are genuinely necessary",
+      "S2 PREP: small-case falsification of (X-r)*q sign-change conjecture on (X-1)(X+1) and (X-1)(X-3) — both consistent",
+      "S3 PREP (2026-05-16-s3-prep-d1-pasteready.md): bearer audit refresh at SHA 2df2f0150c (no Mathlib drift since S2 PREP); d=0 byte-paste-ready re-confirmation; d=1 sub-lemma upgrade from sorries to paste-ready bodies (polyDegOne_eq_C_mul_X_add_C 8 LOC via as_sum_range_C_mul_X_pow; polyDegOne_coeff_one_ne_zero 7 LOC via leadingCoeff_ne_zero; rootsInInterval_polyDegOne 22 LOC via roots_C_mul + roots_X_add_C; budanCount_polyDegOne 28-35 LOC via composed derivative_* + signChangesInList case-analysis); main _natDegree_one 30-40 LOC assembly with case-split on r ∈ (a,b]; total revised LOC budget 100-120 (vs S2 PREP 40-60, ~2× upward); ACT-readiness gate S4 8/9 GREEN 1/9 AMBER (disk margin), S5 2/4 GREEN 2/4 RED (disk pressure); split-ACT plan minimal S4 (+12 LOC d=0+bridge) and substantial S5 (+100-120 LOC d=1+axiom+composed deferred until disk ≥50Gi)",
+      "S4 ACT (2026-05-17-s4-act-d0-base-case.md): proved `budan_upper_bound_natDegree_zero : rootsInInterval p a b ≤ budanCount p a - budanCount p b` for `p.natDegree = 0`, via `eq_C_of_natDegree_eq_zero` + `rootsInInterval_C` + `budanCount_C` (4-line body). Added `import Proofs.DescartesRuleOfSignsOQ02` and opened `namespace BudanTheorem` (re-opens parent OQ02.lean namespace). File 239 → 257 LOC (+18; +1 import, +17 namespace block). Bearer-cohort byte-stable at SHA 2df2f0150c since S2 PREP. Architectural bridge S3 PREP §B1 (option A) executed: shared namespace across OQ02 and OQ02OQ01, no parallel API. Discharges the d=0 slice of `budan_upper_bound_axiom`; OQ-02 axiom itself unchanged (composed `_axiom_proved` requires S5 d=1 + S6 d≥2 to land first)."
+    ],
+    "insights": [
+      "Proof by strong induction on deg(p): base deg≤1 trivial, inductive step uses Rolle",
+      "Rolle theorem (Mathlib: exists_deriv_eq_zero) gives derivative roots between consecutive polynomial roots",
+      "Sign-change accounting across derivative levels is the hardest part (~100-200 lines)",
+      "Building blocks needed: constant_no_roots, rolle_polynomial, root_of_sign_change (IVT)",
+      "Full proof estimated at 240-410 lines using existing OQ-02 infrastructure",
+      "Mathlib RuleOfSigns proves Descartes via factor-out-positive-root induction on root count, NOT via Rolle — uses succ_signVariations_le_X_sub_C_mul",
+      "Lifting Mathlib factor-out-root pattern to Budan requires a sign-change-preservation lemma for (X-r) * q at arbitrary evaluation points, NOT in Mathlib; difficulty profile equivalent to Rolle path",
+      "OQ-02-OQ-01 architectural bridge: file must import Proofs.DescartesRuleOfSignsOQ02 to discharge axiom (currently does not); existing BudanUpperBound-namespace helpers parallel to OQ-02 lemmas",
+      "Axiom-elimination strategy: split budan_upper_bound_axiom into _natDegree_zero (proved), _natDegree_one (proved), _natDegree_ge_two (honest residual axiom); narrows unproved mathematical content"
+    ],
+    "mathlibGaps": [
+      "No Polynomial.budanCount / budanSequence / signChangesAtPoint API",
+      "No (X-r) * q sign-change-preservation lemma at arbitrary evaluation points; Mathlib only has succ_signVariations_le_X_sub_C_mul which is coefficient-based"
+    ],
+    "nextSteps": [
+      "S5 ACT (deferred until disk avail ≥50 Gi AND Docker daemon healthy): paste §§4.1-4.5 of 2026-05-16-s3-prep-d1-pasteready.md into namespace BudanTheorem (line 256 insertion): 3 private sub-lemmas (polyDegOne_eq_C_mul_X_add_C 8 LOC + polyDegOne_coeff_one_ne_zero 7 LOC + rootsInInterval_polyDegOne 22 LOC + budanCount_polyDegOne 28-35 LOC) + main _natDegree_one 30-40 LOC + residual `_natDegree_ge_two` axiom (4 LOC) + composed `_axiom_proved` theorem per S2 PREP §6 (~10 LOC). +95-100 LOC total. Expect 3-5 Docker iters. Axiom budget 0 → 1 (slice axiom). Original `budan_upper_bound_axiom` in OQ-02 stays until S6 closes d≥2.",
+      "S6 ACT (much later, after S4+S5 land): prove `_natDegree_ge_two` via Rolle induction + sign-change accounting (~100-200 LOC). See S2 PREP §5 for strategy comparison vs Mathlib factor-out-root pattern.",
+      "Mechanic catchup: leanFiles[5] (DescartesRuleOfSignsOQ02OQ01.lean) is cross-slug shared (10 sibling JSONs reference); pre-S4 already stale (lineCount: 192 actual 239, theoremCount: 4 actual ~7); S4 widens gap to 257/8 narrow/11 raw. Single mechanic batch PR appropriate; do NOT surgically fix here."
+    ],
+    "markdown": "# Knowledge Base: descartes-rule-of-signs-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "descartes-rule-of-signs",
+    "descartes-rule-of-signs-oq-01",
+    "descartes-rule-of-signs-oq-01-oq-01",
+    "descartes-rule-of-signs-oq-01-oq-02",
+    "descartes-rule-of-signs-oq-02",
+    "descartes-rule-of-signs-oq-02-oq-01",
+    "descartes-rule-of-signs-oq-02-oq-01-oq-02",
+    "descartes-rule-of-signs-oq-03",
+    "descartes-rule-of-signs-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T04:28:18.977Z",
+  "lastUpdate": "2026-05-17T05:25:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/DescartesRuleOfSigns.lean",
+      "filename": "DescartesRuleOfSigns.lean",
+      "lineCount": 577,
+      "theoremCount": 35,
+      "axiomCount": 8,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSigns.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ01.lean",
+      "lineCount": 1075,
+      "theoremCount": 30,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ01.lean",
+      "lineCount": 155,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ02.lean",
+      "lineCount": 272,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ02.lean",
+      "lineCount": 699,
+      "theoremCount": 30,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02OQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ02OQ01.lean",
+      "lineCount": 240,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ02OQ01OQ02.lean",
+      "lineCount": 459,
+      "theoremCount": 26,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ03.lean",
+      "filename": "DescartesRuleOfSignsOQ03.lean",
+      "lineCount": 441,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ03.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ04.lean",
+      "filename": "DescartesRuleOfSignsOQ04.lean",
+      "lineCount": 496,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ04.lean"
+    }
+  ]
+}

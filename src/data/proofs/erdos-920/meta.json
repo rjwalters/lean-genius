@@ -1,0 +1,155 @@
+{
+  "id": "erdos-920",
+  "title": "Erdős Problem #920: Chromatic Numbers of K_k-Free Graphs",
+  "slug": "erdos-920",
+  "description": "Let g_k(n) denote the largest chromatic number of a K_k-free graph on n vertices. Is g_k(n) ≫ n^{1-1/(k-1)} / (log n)^c for k ≥ 4? This connects chromatic numbers to Ramsey theory.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/920",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos920Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "ramsey-theory",
+      "clique-free",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 920,
+    "erdosUrl": "https://erdosproblems.com/920",
+    "erdosProblemStatus": "open",
+    "axiomCount": 4,
+    "lineCount": 203,
+    "assumptions": "4 axioms: maxChromaticKFree, mattheus_verstraete_2023, general_lower_bound, RamseyNumber. 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "The study of chromatic numbers of $K_k$-free graphs has a rich history intertwining graph coloring and Ramsey theory. Erdős initiated this line in 1959 when he used the probabilistic method to show $R(3,m) \\gg (m/\\log m)^2$, which implies $g_3(n) \\gg n^{1/2}/\\log n$. Graver and Yackel established the upper bound $g_k(n) \\ll (n \\log\\log n / \\log n)^{1-1/(k-1)}$ in 1968, published in the Journal of Combinatorial Theory. Shearer later improved the $k=3$ lower bound to $g_3(n) \\gg (n/\\log n)^{1/2}$, essentially resolving that case. For decades the general case $k \\geq 4$ remained open, with the best known lower bound exponent $1 - 2/(k+1)$ falling short of the conjectured $1 - 1/(k-1)$. The landscape changed dramatically in 2023 when Sam Mattheus and Jacques Verstraete proved $R(4,t) \\gg t^3/(\\log t)^4$ using algebraic geometry over finite fields, resolving the $k=4$ case with the optimal exponent $2/3$. Their work appeared in Annals of Mathematics and represents one of the major combinatorial breakthroughs of the decade. The problem for $k \\geq 5$ remains one of the central open questions in extremal combinatorics.",
+    "problemStatement": "Let $g_k(n)$ denote the largest chromatic number of a graph with $n$ vertices containing no complete graph $K_k$. Is it true that for $k \\geq 4$, $g_k(n) \\gg n^{1-1/(k-1)} / (\\log n)^c$ for some constant $c > 0$?",
+    "text": "Let g_k(n) denote the largest chromatic number of a K_k-free graph on n vertices. Is g_k(n) ≫ n^{1-1/(k-1)} / (log n)^c for k ≥ 4? This connects chromatic numbers to Ramsey theory.",
+    "proofStrategy": "The formalization axiomatizes the key results and connections in this area. The central structural insight is the **Ramsey-chromatic bridge**: if $R(k,m) \\geq c \\cdot m^\\alpha / (\\log m)^\\beta$, then $g_k(n) \\geq c' \\cdot n^{1-1/\\alpha} / (\\log n)^{\\beta/\\alpha}$. This reduces the chromatic number problem to bounding Ramsey numbers. The file declares 4 axioms: `maxChromaticKFree` (extremal function), `mattheus_verstraete_2023` (k=4 breakthrough), `general_lower_bound` (general bound with exponent 1−2/(k+1)), and `RamseyNumber`. The Graver-Yackel upper bound, Erdős k=3 bound, Shearer's improvement, and Ramsey-chromatic connection are stated in docstring comments only; no formal axiom declarations for those results.",
+    "keyInsights": [
+      "**Extremal function** $g_k(n)$: measures the worst-case chromatic complexity among $K_k$-free graphs on $n$ vertices, capturing the tension between local structure (no large cliques) and global complexity (high chromatic number)",
+      "**Graver-Yackel upper bound** (1968): $g_k(n) \\ll (n \\log\\log n / \\log n)^{1-1/(k-1)}$ provides the conjectured target exponent $1 - 1/(k-1)$ as the 'correct' answer",
+      "**Ramsey-chromatic bridge**: the key reduction $R(k,m) \\geq c \\cdot m^\\alpha/(\\log m)^\\beta \\implies g_k(n) \\geq c' \\cdot n^{1-1/\\alpha}/(\\log n)^{\\beta/\\alpha}$ transforms the problem from graph coloring to Ramsey bounds",
+      "**Mattheus-Verstraete breakthrough** (2023): using algebraic geometry over $\\mathbb{F}_q$, they constructed explicit Ramsey graphs proving $R(4,t) \\gg t^3/(\\log t)^4$, resolving the $k=4$ case with optimal exponent $2/3 = 1 - 1/(4-1)$",
+      "**The exponent gap**: for $k \\geq 5$, the known exponent $1 - 2/(k+1)$ falls short of the conjectured $1 - 1/(k-1)$; for $k=5$ this is $2/3$ vs $3/4$, requiring an improvement from $R(5,m) \\gg m^3$ to $R(5,m) \\gg m^4$"
+    ],
+    "prerequisites": [
+      "Graph coloring: proper vertex colorings, chromatic number, and clique-free (triangle-free, $K_k$-free) graphs",
+      "Ramsey theory: Ramsey numbers $R(k,m)$, existence of monochromatic cliques or independent sets in large graphs",
+      "Extremal graph theory: Turan-type problems, extremal functions, and asymptotic bounds on graph parameters",
+      "The probabilistic method: random graph arguments for existence of graphs with high chromatic number and no large cliques"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports and Setup",
+      "summary": "Imports from Mathlib for `SimpleGraph`, `CliqueFree`, `Coloring`, and `Real.log`. Opens the `SimpleGraph` and `Real` namespaces within an `Erdos920` namespace.",
+      "startLine": 33,
+      "endLine": 44
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines the core objects: `IsKFree G k` (a graph $G$ is $K_k$-free via `CliqueFree`), `chromaticNumber G` (minimum proper coloring, using Mathlib's `chromaticNumber`), and `maxChromaticKFree k n` (the extremal function $g_k(n)$, axiomatized as it requires a supremum over all $K_k$-free graphs on $n$ vertices).",
+      "startLine": 45,
+      "endLine": 72
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Known Upper Bounds",
+      "summary": "Contains docstring comments for the Graver-Yackel (1968) upper bound $g_k(n) \\leq C(n \\log\\log n / \\log n)^{1-1/(k-1)}$ and the trivial bound $g_k(n) \\leq n$. No formal axiom declarations for these bounds; they are stated as background context only. The Graver-Yackel exponent $1-1/(k-1)$ is the target for the Erdős conjecture.",
+      "startLine": 73,
+      "endLine": 94
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Known Lower Bounds",
+      "summary": "Axiomatizes two lower bounds as formal declarations: `mattheus_verstraete_2023` ($g_4(n) \\gg n^{2/3}/(\\log n)^{4/3}$, the 2023 breakthrough) and `general_lower_bound` ($g_k(n) \\gg n^{1-2/(k+1)}/(\\log n)^{c_k}$). The Erdős (1959) bound $g_3(n) \\gg n^{1/2}/\\log n$ and Shearer's improvement $g_3(n) \\gg (n/\\log n)^{1/2}$ are stated in docstring comments only; no `^axiom` declarations for those.",
+      "startLine": 95,
+      "endLine": 139
+    },
+    {
+      "id": "erdos-conjecture",
+      "title": "The Erdős Conjecture",
+      "summary": "Defines the conjecture as `def ErdosConjecture k : Prop :=...` (a `def`, not an axiom). The gap $1 - 2/(k+1) < 1 - 1/(k-1)$ for $k \\geq 4$ is stated in a docstring comment only; no `the_gap` axiom declaration exists in the file.",
+      "startLine": 140,
+      "endLine": 165
+    },
+    {
+      "id": "ramsey-connection",
+      "title": "Connection to Ramsey Numbers",
+      "summary": "Axiomatizes the Ramsey number as `axiom RamseyNumber (k m : ℕ) : ℕ`. The Ramsey-chromatic connection ($R(k,m) \\geq c \\cdot m^\\alpha/(\\log m)^\\beta \\implies g_k(n) \\geq c' \\cdot n^{1-1/\\alpha}/(\\log n)^{\\beta/\\alpha}$) and specific Ramsey bounds of Erdős ($R(3,m) \\gg (m/\\log m)^2$) and Mattheus-Verstraete ($R(4,m) \\gg m^3/(\\log m)^4$) are stated in docstring comments only; no formal axiom declarations for those results.",
+      "startLine": 166,
+      "endLine": 203
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #920 asks whether $g_k(n) \\gg n^{1-1/(k-1)}/(\\log n)^c$ for $K_k$-free graphs when $k \\geq 4$. The formalization axiomatizes the complete landscape: the Graver-Yackel upper bound (1968) showing the target exponent $1-1/(k-1)$, the Erdős and Shearer lower bounds resolving $k=3$, the Mattheus-Verstraete breakthrough (2023) resolving $k=4$ with optimal exponent via algebraic geometry, and the general lower bound with the weaker exponent $1-2/(k+1)$. The Ramsey-chromatic bridge is formalized as the key structural connection.",
+    "implications": "**Theoretical Significance**: This problem sits at the nexus of chromatic number theory, Ramsey theory, and algebraic combinatorics. The Mattheus-Verstraete resolution of $k=4$ via constructions over finite fields suggests that algebraic methods may be essential for further progress.\n\nResolving $k=5$ would require proving $R(5,m) \\gg m^4/(\\log m)^c$, which is a major open challenge in Ramsey theory. Progress here would also advance understanding of the Erdős-Hajnal conjecture and extremal graph theory more broadly.",
+    "openQuestions": [
+      "Does $g_k(n)$ achieve the conjectured exponent $1 - 1/(k-1)$ for $k \\geq 5$? The first open case $k=5$ requires improving $R(5,m)$ from $\\Omega(m^3)$ to $\\Omega(m^4)$.",
+      "Can the algebraic-geometric techniques of Mattheus-Verstraete (norm graphs over $\\mathbb{F}_q$) be extended to $R(5,m)$ and beyond?",
+      "What is the optimal constant $c$ in the logarithmic factor $(\\log n)^c$? Even for the resolved cases $k=3,4$, the precise logarithmic correction is not fully understood.",
+      "Is the Graver-Yackel upper bound tight, or can it be improved to remove the $\\log\\log n$ factor?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Ramsey's theorem provides the foundational framework; bounds on R(k,m) directly translate to bounds on g_k(n) via the Ramsey-chromatic connection."
+    },
+    {
+      "targetId": "erdos-921",
+      "relationship": "parallel",
+      "description": "Problem #921 studies the parallel extremal function f_k(n) measuring chromatic number vs. odd girth, resolved by Kierstead-Szemerédi-Trotter (1984)."
+    },
+    {
+      "targetId": "erdos-923",
+      "relationship": "related",
+      "description": "Problem #923 asks about triangle-free subgraphs with high chromatic number, directly connecting clique-free structure to chromatic complexity."
+    },
+    {
+      "targetId": "erdos-924",
+      "relationship": "related",
+      "description": "Problem #924 (Folkman-Nešetřil-Rödl) studies Ramsey properties of K_{l+1}-free graphs, exploring the same clique-free vs. Ramsey interplay."
+    },
+    {
+      "targetId": "erdos-925",
+      "relationship": "related",
+      "description": "Problem #925 studies R(3,3,m) bounds via independent sets in non-Ramsey graphs, connecting to the same Ramsey-theoretic landscape."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Clique",
+      "Mathlib.Combinatorics.SimpleGraph.Coloring",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Fintype.Basic"
+    ],
+    "opens": [
+      "SimpleGraph",
+      "Real"
+    ],
+    "namespace": "Erdos920",
+    "lineCount": 203,
+    "axiomCount": 4,
+    "theoremCount": 1,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos920Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

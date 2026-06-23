@@ -1,0 +1,225 @@
+[
+  {
+    "id": "ann-ptoq03-lattice-polytope",
+    "proofId": "picks-theorem-oq-03",
+    "range": {
+      "startLine": 59,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "LatticePolytope Structure",
+    "content": "The LatticePolytope structure axiomatizes a d-dimensional lattice polytope by bundling its geometric data: dimension, Euclidean and normalized volume, and the partition of lattice points into interior and boundary. The consistency axioms total_eq, vol_relation, and dim_pos ensure the data is well-formed. This axiomatization sidesteps the full convex geometry library (which Mathlib lacks for lattice polytopes) while capturing exactly the combinatorial data needed for Ehrhart theory.",
+    "mathContext": "A lattice polytope $P \\subset \\mathbb{R}^d$ is the convex hull of finitely many integer points. The normalized volume $\\text{nvol}(P) = d! \\cdot \\text{vol}(P)$ is always an integer for lattice simplices, and the relation $|P \\cap \\mathbb{Z}^d| = i + b$ partitions lattice points into interior and boundary.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convex hull",
+      "lattice points",
+      "normalized volume",
+      "Euler characteristic"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Rat.Cast.Lemmas",
+      "Mathlib.Data.Nat.Factorial.Basic"
+    ]
+  },
+  {
+    "id": "ann-ptoq03-ehrhart-axiom",
+    "proofId": "picks-theorem-oq-03",
+    "range": {
+      "startLine": 125,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Ehrhart's Theorem (Axiomatized)",
+    "content": "The axiom ehrhart_is_polynomial states the core of Ehrhart's theorem: for every lattice polytope P, there exists a function L on the rationals such that L(0) = 1 and L(n) agrees with the lattice point count of nP for all positive integers n. The constant term L(0) = 1 encodes the topological fact that the Euler characteristic of a convex polytope is always 1. This is axiomatized because a full proof requires triangulation theory and Mobius inversion on the face lattice, which are not yet available in Mathlib.",
+    "mathContext": "Ehrhart's theorem (1962): For a $d$-dimensional lattice polytope $P$ and positive integer $n$, $|nP \\cap \\mathbb{Z}^d| = L_P(n)$ where $L_P$ is a polynomial of degree $d$ with leading coefficient $\\text{vol}(P)$ and constant term $\\chi(P) = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial interpolation",
+      "Euler characteristic",
+      "lattice point enumeration"
+    ],
+    "prerequisites": [
+      "convex geometry",
+      "Mobius inversion"
+    ]
+  },
+  {
+    "id": "ann-ptoq03-reciprocity",
+    "proofId": "picks-theorem-oq-03",
+    "range": {
+      "startLine": 151,
+      "endLine": 155
+    },
+    "type": "concept",
+    "title": "Ehrhart-Macdonald Reciprocity",
+    "content": "Macdonald's reciprocity theorem (1971) is the second axiom: the interior lattice point count L*(P, n) equals (-1)^d times the Ehrhart polynomial evaluated at -n. This elegantly connects boundary and interior information through analytic continuation of the polynomial to negative arguments. The sign factor (-1)^d reflects the orientation reversal when 'opening' the boundary, and the formula is a discrete analog of Poincare duality in topology.",
+    "mathContext": "For a $d$-dimensional lattice polytope $P$: $L^*(P, n) = (-1)^d \\cdot L_P(-n)$, where $L^*(P, n) = |\\text{int}(nP) \\cap \\mathbb{Z}^d|$ counts strictly interior lattice points.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Poincare duality",
+      "analytic continuation",
+      "interior lattice points",
+      "generating functions"
+    ],
+    "prerequisites": [
+      "Ehrhart polynomial",
+      "sign conventions"
+    ]
+  },
+  {
+    "id": "ann-ptoq03-cube-ehrhart",
+    "proofId": "picks-theorem-oq-03",
+    "range": {
+      "startLine": 187,
+      "endLine": 209
+    },
+    "type": "insight",
+    "title": "Unit Cube Ehrhart Polynomial",
+    "content": "The unit cube [0,1]^3 provides the simplest non-trivial Ehrhart verification. Its polynomial L(t) = (t+1)^3 follows from the product structure: the dilated cube [0,n]^3 has (n+1)^3 lattice points because each coordinate independently ranges over {0, 1, ..., n}. The expanded form t^3 + 3t^2 + 3t + 1 reveals the binomial coefficients C(3,k), connecting Ehrhart theory to the binomial theorem. All verifications use ring, reflecting that these are purely algebraic identities.",
+    "mathContext": "For the $d$-cube $[0,1]^d$: $L_{\\square_d}(t) = (t+1)^d = \\sum_{k=0}^{d} \\binom{d}{k} t^k$. The coefficient of $t^k$ is $\\binom{d}{k}$, which counts the $k$-dimensional faces of the cube.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binomial theorem",
+      "product polytopes",
+      "face enumeration"
+    ],
+    "prerequisites": [
+      "ring tactic",
+      "rational arithmetic"
+    ]
+  },
+  {
+    "id": "ann-ptoq03-picks-derivation",
+    "proofId": "picks-theorem-oq-03",
+    "range": {
+      "startLine": 319,
+      "endLine": 324
+    },
+    "type": "concept",
+    "title": "Deriving Pick's Theorem from Ehrhart Theory",
+    "content": "The theorem picks_from_ehrhart is the conceptual heart of the formalization: it derives Pick's formula A = i + b/2 - 1 purely from the 2D Ehrhart polynomial. The proof unfolds ehrhart2D_at_one to get A + b/2 + 1 = i + b, then applies linarith to solve the linear equation. This two-line proof demonstrates that Pick's theorem is not an isolated result but a direct consequence of polynomial lattice point counting in dimension 2. The linarith tactic handles the rational arithmetic automatically.",
+    "mathContext": "In 2D, $L_P(t) = A t^2 + \\frac{b}{2} t + 1$ where $A = \\text{area}(P)$, $b = |\\partial P \\cap \\mathbb{Z}^2|$. Evaluating at $t=1$: $i + b = A + b/2 + 1$, so $A = i + b/2 - 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pick's theorem",
+      "linear arithmetic",
+      "dimensional specialization"
+    ],
+    "prerequisites": [
+      "ehrhartPoly2D definition",
+      "linarith tactic"
+    ]
+  },
+  {
+    "id": "ann-ptoq03-reeve",
+    "proofId": "picks-theorem-oq-03",
+    "range": {
+      "startLine": 358,
+      "endLine": 428
+    },
+    "type": "definition",
+    "title": "Reeve Tetrahedra: Why Pick Fails in 3D",
+    "content": "The Reeve tetrahedra T_r provide a family of counterexamples to any 3D analog of Pick's theorem. All T_r have identical lattice data (i=0, b=4) but volume r/6, so no formula of the form vol = f(i, b) can exist. The key theorem reeve_same_L1_different_poly shows L_1(1) = L_2(1) = 4 but L_1(2) = 10 while L_2(2) differs, proving the Ehrhart polynomials diverge at the second dilation. The Ehrhart perspective explains precisely why: in 3D the polynomial has 4 coefficients but i and b provide only 2 equations, leaving 2 degrees of freedom.",
+    "mathContext": "The Reeve tetrahedron $T_r$ has vertices $(0,0,0)$, $(1,0,0)$, $(0,1,0)$, $(1,1,r)$ with $\\text{vol}(T_r) = r/6$. Its Ehrhart polynomial $L_{T_r}(t) = \\frac{r}{6}t^3 + t^2 + \\frac{12-r}{6}t + 1$ has $L_{T_r}(1) = 4$ independent of $r$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "dimensional obstruction",
+      "coefficient count argument"
+    ],
+    "prerequisites": [
+      "reeveTetrahedron definition",
+      "positivity tactic"
+    ]
+  },
+  {
+    "id": "ann-ptoq03-cube-reciprocity",
+    "proofId": "picks-theorem-oq-03",
+    "range": {
+      "startLine": 447,
+      "endLine": 465
+    },
+    "type": "definition",
+    "title": "Reciprocity Verified for the Cube",
+    "content": "The cube reciprocity verification demonstrates Ehrhart-Macdonald reciprocity concretely: L*(t) = (t-1)^3 equals (-1)^3 * L(-t) = -(1-t)^3 = (t-1)^3. The proof is a single ring invocation, showing the identity is purely algebraic once the polynomials are defined. The interior counts L*(1) = 0, L*(2) = 1, L*(3) = 8 match geometric intuition: the unit cube has no interior points, [0,2]^3 has one interior point (1,1,1), and [0,3]^3 has the 8 interior points {1,2}^3.",
+    "mathContext": "For the unit cube: $L^*_{\\square_3}(t) = (t-1)^3 = (-1)^3 ((-t)+1)^3 = (-1)^3 L_{\\square_3}(-t)$, confirming Macdonald reciprocity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interior lattice points",
+      "sign pattern",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "cubeEhrhart",
+      "cubeInteriorEhrhart"
+    ]
+  },
+  {
+    "id": "ann-ptoq03-hstar-vectors",
+    "proofId": "picks-theorem-oq-03",
+    "range": {
+      "startLine": 564,
+      "endLine": 615
+    },
+    "type": "definition",
+    "title": "h*-Vectors and Stanley Nonnegativity",
+    "content": "The h*-vector (or delta-vector) encodes Ehrhart data via the generating function identity sum L(P,n)x^n = h*(x)/(1-x)^{d+1}. Stanley's nonnegativity theorem (1980) -- that all h*-entries are non-negative -- is enforced by construction here since the coefficients map into the natural numbers. The verified examples are illuminating: the cube's h*-vector (1,4,1,0) sums to 6 = 3!, the simplex's (1,0,0,0) sums to 1, and the octahedron's (1,3,3,1) sums to 8. The octahedron's palindromic h*-vector reflects that it is a reflexive polytope.",
+    "mathContext": "The $h^*$-vector $(h^*_0, \\ldots, h^*_d)$ satisfies $\\sum_i h^*_i = d! \\cdot \\text{vol}(P)$. Stanley (1980) proved $h^*_i \\geq 0$ using the theory of Cohen-Macaulay rings. Palindromy $h^*_i = h^*_{d-i}$ characterizes reflexive polytopes (Hibi's theorem).",
+    "significance": "key",
+    "relatedConcepts": [
+      "generating functions",
+      "Cohen-Macaulay rings",
+      "reflexive polytopes",
+      "Hibi theorem"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "native_decide"
+    ]
+  },
+  {
+    "id": "ann-ptoq03-dimensional-hierarchy",
+    "proofId": "picks-theorem-oq-03",
+    "range": {
+      "startLine": 636,
+      "endLine": 655
+    },
+    "type": "concept",
+    "title": "Dimensional Hierarchy and Pick's Consistency",
+    "content": "The dimensional hierarchy section traces Ehrhart polynomials from d=0 (a point: L=1) through d=1 (a segment: L(t)=lt+1) to d=2 (Pick's theorem) and d=3 (no closed-form analog). Each dimension adds one polynomial coefficient, requiring one more piece of geometric data. The 1D case is verified concretely: a segment of length 5 has 6 lattice points at dilation 1 and 11 at dilation 2. The theorem picks_ehrhart_consistency closes the loop by showing Pick's formula is equivalent to the constraint that the total lattice point count matches the Ehrhart polynomial at t=1.",
+    "mathContext": "In dimension $d$, $L_P(t)$ has $d+1$ coefficients. For $d=1$: $L(t) = \\ell t + 1$ where $\\ell$ is the length. For $d=2$: $L(t) = At^2 + (b/2)t + 1$. For $d \\geq 3$: the number of free coefficients exceeds the data from $i$ and $b$ alone.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "dimension theory",
+      "polynomial degree",
+      "coefficient counting"
+    ],
+    "prerequisites": [
+      "segmentEhrhart",
+      "ehrhartPoly2D"
+    ]
+  },
+  {
+    "id": "ann-ptoq03-half-boundary",
+    "proofId": "picks-theorem-oq-03",
+    "range": {
+      "startLine": 680,
+      "endLine": 691
+    },
+    "type": "concept",
+    "title": "Half-Boundary Axiom and Final Pick's Derivation",
+    "content": "The axiom ehrhart_second_coeff_2D captures the crucial geometric fact that the linear coefficient of a 2D Ehrhart polynomial equals b/2, where b is the boundary lattice point count. This is the one piece that cannot be derived purely algebraically -- it requires the Ehrhart-Macdonald theorem applied in dimension 2, or equivalently a direct geometric argument about lattice segments. With this axiom, the final theorem picks_theorem_from_ehrhart derives Pick's formula in a single linarith step, completing the chain: Ehrhart theory implies Pick's theorem as a specialization to d=2.",
+    "mathContext": "For any $d$-dimensional lattice polytope, the second-highest Ehrhart coefficient equals $\\frac{1}{2} \\sum_F \\text{nvol}_{d-1}(F)$ where $F$ ranges over facets. In $d=2$ this reduces to $b/2$, the half-boundary count, because each edge of a lattice polygon contributes its lattice length to the sum.",
+    "significance": "key",
+    "relatedConcepts": [
+      "facet enumeration",
+      "surface area",
+      "lattice edge length"
+    ],
+    "prerequisites": [
+      "ehrhart_second_coeff_2D axiom",
+      "linarith"
+    ]
+  }
+]

@@ -1,0 +1,254 @@
+[
+  {
+    "id": "ann-583-imports",
+    "proofId": "erdos-583",
+    "range": {
+      "startLine": 24,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports `SimpleGraph.Basic` for the irreflexive symmetric relation model of graphs, `SimpleGraph.Connectivity.Connected` for the `Connected` predicate, `Finset.Basic` for finite set operations, and `Nat.Basic` for natural number arithmetic. Opens the `SimpleGraph` namespace and declares `V` with `Fintype` and `DecidableEq` instances for finite decidable vertex computations.",
+    "significance": "supporting",
+    "mathContext": "Mathlib's `SimpleGraph V` models undirected simple graphs as irreflexive symmetric relations on a vertex type $V$. The `Connected` predicate requires a `Reachable` path between every pair of vertices. The `Fintype` constraint ensures the graph has finitely many vertices, enabling cardinality computations like $|V| = n$. The `Sym2 V` type (symmetric pairs) represents edges as unordered pairs, avoiding orientation ambiguity in edge-disjointness conditions.",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Fintype",
+      "DecidableEq",
+      "Sym2",
+      "graph connectivity"
+    ],
+    "prerequisites": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected"
+    ]
+  },
+  {
+    "id": "ann-583-path-defs",
+    "proofId": "erdos-583",
+    "range": {
+      "startLine": 41,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "Graph Paths, Edge-Disjointness, and Partitions",
+    "content": "`GraphPath G` is a structure with `vertices : List V`, `distinct : vertices.Nodup` (no repeated vertices), and `edges` ensuring consecutive adjacency. `edgeSet` extracts the set of `Sym2 V` edges used. `EdgeDisjoint paths` requires pairwise empty edge intersection. `CoversAllEdges paths` requires every graph edge to appear in some path. `PathPartition G` bundles both conditions, with `size = paths.length`.",
+    "significance": "key",
+    "mathContext": "The `Nodup` condition distinguishes paths from walks: a path visits each vertex at most once, while a walk may revisit vertices. This is the standard graph-theoretic notion where a path $P = v_1 v_2 \\cdots v_k$ has $k$ distinct vertices and $k-1$ edges. The edge-disjointness condition $p_i.\\text{edgeSet} \\cap p_j.\\text{edgeSet} = \\emptyset$ for $i \\neq j$ is what makes the Erdős-Gallai conjecture harder than Fan's covering result. Edge partitions are fundamental in graph decomposition theory — the Veblen decomposition theorem guarantees that Eulerian graphs decompose into edge-disjoint cycles, but decomposing into edge-disjoint *paths* with a bounded count is far more constrained.",
+    "relatedConcepts": [
+      "graph path",
+      "walk vs path",
+      "Nodup",
+      "edge-disjoint decomposition",
+      "Veblen's theorem"
+    ],
+    "prerequisites": [
+      "List.Nodup",
+      "SimpleGraph.Adj",
+      "Sym2",
+      "Set intersection"
+    ]
+  },
+  {
+    "id": "ann-583-conjecture",
+    "proofId": "erdos-583",
+    "range": {
+      "startLine": 78,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "The Erdős-Gallai Conjecture",
+    "content": "`ErdosGallaiConjecture n`: for every connected `SimpleGraph V` with $|V| = n$, there exists a `PathPartition` of size $\\le (n+1)/2 = \\lceil n/2 \\rceil$. `satisfiesConjecture G` checks an individual graph against the bound.",
+    "significance": "key",
+    "mathContext": "The bound $\\lceil n/2 \\rceil$ arises from the parity structure of vertex degrees. By the handshaking lemma, every graph has an even number $2k$ of odd-degree vertices. Each path in a decomposition has exactly two endpoints that contribute odd degree to the path's internal structure, so at least $k$ paths are needed. Since $2k \\le n$, we get $k \\le \\lfloor n/2 \\rfloor$. The ceiling $\\lceil n/2 \\rceil$ allows one additional path for remaining even-degree edges. The conjecture was first posed by Erdős and Gallai around 1959, making it one of the oldest open problems in graph decomposition theory. Erdős offered a prize for its resolution.",
+    "relatedConcepts": [
+      "handshaking lemma",
+      "odd-degree vertices",
+      "graph decomposition",
+      "ceiling function",
+      "Erdős prizes"
+    ],
+    "prerequisites": [
+      "ErdosGallaiConjecture",
+      "PathPartition",
+      "SimpleGraph.Connected",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-583-lovasz",
+    "proofId": "erdos-583",
+    "range": {
+      "startLine": 94,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Lovász's Theorem (1968) and Path-Cycle Partitions",
+    "content": "`GraphCycle G` requires $\\ge 3$ distinct vertices with wraparound adjacency. `PathCyclePartition` combines paths and cycles. `lovasz_theorem` (axiom): every graph decomposes into $\\le \\lfloor n/2 \\rfloor$ edge-disjoint paths and cycles. `lovasz_corollary` (axiom): every graph with edges decomposes into $\\le n-1$ paths.",
+    "significance": "key",
+    "mathContext": "**László Lovász** proved this in 1968 as one of his early breakthroughs. The proof proceeds by induction on $n$: remove a vertex $v$ of minimum degree, decompose $G - v$ by induction, then extend paths and cycles through $v$. The key insight is that each vertex $v$ increases the partition count by at most $1/2$ on average because two path endpoints at $v$ can be joined into one path through $v$. Cycles are 'free' — they handle even-degree structure without consuming path slots. The corollary follows because each cycle can be broken into a path by removing one edge, but this increases path count. The gap between $\\lfloor n/2 \\rfloor$ paths+cycles and $\\lceil n/2 \\rceil$ pure paths is exactly the open content of the Erdős-Gallai conjecture.",
+    "relatedConcepts": [
+      "Lovász",
+      "path-cycle decomposition",
+      "vertex deletion induction",
+      "minimum degree",
+      "cycle splitting"
+    ],
+    "prerequisites": [
+      "GraphCycle",
+      "PathCyclePartition",
+      "SimpleGraph.Adj",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-583-chung",
+    "proofId": "erdos-583",
+    "range": {
+      "startLine": 123,
+      "endLine": 136
+    },
+    "type": "definition",
+    "title": "Chung's Theorem (1978): Tree Partitions",
+    "content": "`TreePartition G` records `numTrees`. `chung_theorem` (axiom): connected graphs decompose into $\\le \\lceil n/2 \\rceil$ edge-disjoint trees. `chung_implies_tree_bound` derives the numeric bound from the existential.",
+    "significance": "key",
+    "mathContext": "**Fan Chung** proved that the conjectured bound $\\lceil n/2 \\rceil$ is achievable if trees (connected acyclic subgraphs) are allowed instead of paths. Trees are more flexible because they can branch — a tree on $k$ vertices uses $k-1$ edges, like a path, but can 'reach' vertices in multiple directions from a single node. Chung's proof uses the **Nash-Williams arboricity theorem**: the arboricity $a(G) = \\max_{H \\subseteq G} \\lceil |E(H)| / (|V(H)| - 1) \\rceil$ gives the minimum number of spanning forests needed. For connected graphs, $a(G) \\le \\lceil n/2 \\rceil$. Converting these trees to paths would resolve the conjecture, but 'straightening' a tree into a path may require splitting, increasing the count.",
+    "relatedConcepts": [
+      "Fan Chung",
+      "arboricity",
+      "Nash-Williams theorem",
+      "spanning forest",
+      "tree decomposition"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Connected",
+      "TreePartition",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-583-pyber-fan",
+    "proofId": "erdos-583",
+    "range": {
+      "startLine": 144,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Pyber's and Fan's Theorems: Path Covers",
+    "content": "`PathCover G` covers all edges without requiring edge-disjointness. `pyber_theorem` (axiom, 1996): connected graphs admit a path cover of size $n/2 + O(n^{3/4})$. `fan_theorem` (axiom, 2002): connected graphs admit a path cover of size $\\le \\lceil n/2 \\rceil$. `fan_covers_conjecture` records the result.",
+    "significance": "key",
+    "mathContext": "**László Pyber** (1996) used a probabilistic argument: randomly partition vertices into $\\sim n^{1/4}$ groups of size $\\sim n^{3/4}$, apply Lovász's theorem within each group, then stitch paths together across groups. The $O(n^{3/4})$ error comes from the stitching cost. **Genghua Fan** (2002) proved the exact bound $\\lceil n/2 \\rceil$ for covering without disjointness. Fan's proof starts from an arbitrary path cover and iteratively merges paths sharing edges, reducing the count until the bound is achieved. The critical barrier is that merging overlapping paths may create new overlaps elsewhere — Fan shows the process terminates at $\\lceil n/2 \\rceil$ but cannot guarantee edge-disjointness at termination. The conjecture sits precisely between Lovász's result (disjoint but allows cycles) and Fan's result (exact bound but not disjoint).",
+    "relatedConcepts": [
+      "Pyber",
+      "Genghua Fan",
+      "path cover vs partition",
+      "probabilistic method",
+      "iterative merging"
+    ],
+    "prerequisites": [
+      "PathCover",
+      "CoversAllEdges",
+      "SimpleGraph.Connected"
+    ]
+  },
+  {
+    "id": "ann-583-hajos",
+    "proofId": "erdos-583",
+    "range": {
+      "startLine": 177,
+      "endLine": 186
+    },
+    "type": "definition",
+    "title": "Hajós' Conjecture: Cycle Decomposition of Eulerian Graphs",
+    "content": "`IsEulerian G` requires `Even (G.degree v)` for all $v$. `HajosConjecture n`: every Eulerian graph on $n$ vertices decomposes into $\\le \\lfloor n/2 \\rfloor$ edge-disjoint cycles.",
+    "significance": "key",
+    "mathContext": "**Hajós' conjecture** is the cycle analog of Erdős-Gallai: instead of decomposing arbitrary connected graphs into paths, decompose Eulerian graphs (all degrees even) into cycles. By Euler's theorem, every connected Eulerian graph has an Euler circuit — a closed walk traversing every edge exactly once. The question is whether this circuit can be decomposed into at most $\\lfloor n/2 \\rfloor$ simple cycles. The bound $\\lfloor n/2 \\rfloor$ comes from the same degree-parity argument: in an Eulerian graph, every vertex has even degree $\\ge 2$, and each cycle through a vertex 'uses' at least 2 of its edges. With $n$ vertices, at most $\\lfloor n/2 \\rfloor$ cycles suffice to handle all degree contributions. Both conjectures have resisted proof for 60+ years, suggesting a common structural barrier.",
+    "relatedConcepts": [
+      "Hajós conjecture",
+      "Eulerian graph",
+      "Euler circuit",
+      "cycle decomposition",
+      "even degree"
+    ],
+    "prerequisites": [
+      "IsEulerian",
+      "GraphCycle",
+      "SimpleGraph.degree",
+      "Even"
+    ]
+  },
+  {
+    "id": "ann-583-special",
+    "proofId": "erdos-583",
+    "range": {
+      "startLine": 195,
+      "endLine": 205
+    },
+    "type": "concept",
+    "title": "Special Cases: Trees, Complete Graphs, and Cycles",
+    "content": "`tree_satisfies` (axiom): trees satisfy the conjecture trivially. `complete_graph_satisfies` (axiom): $K_n$ satisfies it for all $n \\ge 1$. `cycle_satisfies` (axiom): 2-regular connected graphs (cycles) satisfy it.",
+    "significance": "supporting",
+    "mathContext": "**Trees** have $n-1$ edges and are themselves paths when they have no branching, or decompose into $\\le \\lceil n/2 \\rceil$ paths by repeatedly extracting longest paths. **Complete graphs** $K_n$: for odd $n$, $K_n$ has a Hamiltonian decomposition into $(n-1)/2$ Hamiltonian paths, giving exactly $\\lfloor n/2 \\rfloor$ paths. For even $n$, $K_n$ decomposes into $n/2$ Hamiltonian paths plus a perfect matching, giving $n$ paths total (within the bound). **Cycles** $C_n$: a single cycle on $n$ vertices opens into one path of length $n$, requiring just $1$ path ($\\le \\lceil n/2 \\rceil$ for $n \\ge 2$). These special cases verify the conjecture for the most structured graph families but don't address irregular or sparse graphs.",
+    "relatedConcepts": [
+      "tree decomposition",
+      "Hamiltonian decomposition",
+      "complete graph",
+      "cycle graph",
+      "2-regular graph"
+    ],
+    "prerequisites": [
+      "SimpleGraph.IsTree",
+      "satisfiesConjecture",
+      "ErdosGallaiConjecture"
+    ]
+  },
+  {
+    "id": "ann-583-main",
+    "proofId": "erdos-583",
+    "range": {
+      "startLine": 213,
+      "endLine": 219
+    },
+    "type": "concept",
+    "title": "Main Conjecture Equivalence",
+    "content": "`erdos_583_conjecture n`: the conjecture is definitionally equal to its unfolded form — $\\forall V, G,\\, |V| = n \\land G.\\text{Connected} \\implies \\exists P,\\, P.\\text{size} \\le (n+1)/2$. Proved by `Iff.rfl`.",
+    "significance": "key",
+    "mathContext": "The `Iff.rfl` proof demonstrates that the conjecture's definition unfolds exactly to its standard mathematical statement. This is a definitional equality in Lean's type theory: the proposition `ErdosGallaiConjecture n` is *definitionally* the same as the universally quantified statement over connected graphs. No mathematical content is needed — the proof is purely a check that the definition matches the intended formulation. This pattern is common in formalizations: first define a named predicate, then show it is equivalent to the 'spelled out' version to ensure correctness.",
+    "relatedConcepts": [
+      "definitional equality",
+      "Iff.rfl",
+      "conjecture formalization",
+      "unfolding definitions"
+    ],
+    "prerequisites": [
+      "ErdosGallaiConjecture",
+      "PathPartition",
+      "Fintype.card"
+    ]
+  },
+  {
+    "id": "ann-583-bounds",
+    "proofId": "erdos-583",
+    "range": {
+      "startLine": 228,
+      "endLine": 232
+    },
+    "type": "concept",
+    "title": "Lower Bounds and Tightness Examples",
+    "content": "`star_needs_few_paths` (axiom): stars $K_{1,n-1}$ decompose easily, showing the bound is not always tight. `bipartite_tight` (axiom): $K_{n,n}$ on $2n$ vertices requires $\\ge n/2$ paths, showing the bound is asymptotically tight.",
+    "significance": "key",
+    "mathContext": "The tightness question asks: is there a graph requiring exactly $\\lceil n/2 \\rceil$ paths? **Stars** $K_{1,n-1}$ are easy: they decompose into $\\lceil (n-1)/2 \\rceil$ paths through the center, well below $\\lceil n/2 \\rceil$. **Complete bipartite graphs** $K_{n,n}$ are hard: with $n^2$ edges and maximum path length $2n - 1$, at least $\\lceil n^2 / (2n-1) \\rceil \\approx n/2$ paths are needed. Since $K_{n,n}$ has $2n$ vertices, the bound is $\\lceil 2n/2 \\rceil = n$, so $K_{n,n}$ needs $\\Theta(n)$ paths out of a budget of $n$ — demonstrating the bound is tight up to constants. Explicit constructions of optimal path decompositions for $K_{n,n}$ are known via Latin square methods.",
+    "relatedConcepts": [
+      "star graph",
+      "complete bipartite graph",
+      "tightness",
+      "Latin squares",
+      "lower bounds"
+    ],
+    "prerequisites": [
+      "PathPartition",
+      "Fintype.card",
+      "edge counting"
+    ]
+  }
+]

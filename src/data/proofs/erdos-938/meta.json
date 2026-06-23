@@ -1,0 +1,215 @@
+{
+  "id": "erdos-938",
+  "title": "Erdős Problem #938: Three-term Progressions in Consecutive Powerful Numbers",
+  "slug": "erdos-938",
+  "description": "Are there only finitely many three-term arithmetic progressions among consecutive powerful numbers?",
+  "meta": {
+    "author": "Erdős [Er76d]",
+    "sourceUrl": "https://erdosproblems.com/938",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos938Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "arithmetic-progressions",
+      "squarefull-numbers",
+      "open"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 938,
+    "erdosUrl": "https://erdosproblems.com/938",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-26",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit of a function along a filter",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets by a predicate",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "Powerful definition: squarefull number predicate (p | n implies p² | n)",
+      "PowerfulAlt definition: alternative characterization via n = a²·b³",
+      "nthPowerful enumeration: ordered listing of powerful numbers",
+      "ConsecutivePowerfulAP definition: AP condition for consecutive powerful numbers",
+      "apIndices set: indices where consecutive powerful numbers form APs",
+      "powerfulGap function: gap between consecutive powerful numbers",
+      "ap_iff_equal_gaps lemma: AP condition reformulated as equal gaps",
+      "erdos_938_conjecture Prop definition: the main open problem (finiteness of apIndices — stated as def, not axiom)",
+      "NoThreeConsecutivePowerful: connection to Problem #364",
+      "countPowerful counting function with powerful_count_asymptotic_theorem Prop definition (not an axiom)",
+      "differences_finite_of_indices_finite lemma: derived finiteness result",
+      "Concrete examples: 1, 4, 8, 9 verified as powerful"
+    ],
+    "axiomCount": 0,
+    "lineCount": 218,
+    "assumptions": "0 axiom declarations. Three conjectures/results stated as Prop definitions (not assumed true): erdos_938_conjecture (open), erdos_364_conjecture (open), powerful_count_asymptotic_theorem (known result, unused).",
+    "theoremCount": 6,
+    "definitionCount": 14
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #938 was posed by Paul Erdős in 1976 [Er76d] and concerns the distribution of powerful numbers (also called squarefull numbers). A positive integer n is powerful if p | n implies p² | n for every prime p, or equivalently n = a²b³ for some positive integers a, b. The sequence of powerful numbers begins 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, ... (OEIS A001694).\n\nThe problem sits at the intersection of multiplicative number theory and additive combinatorics. While the global distribution of powerful numbers is well understood — the count up to x is asymptotically (ζ(3/2)/ζ(3))·√x ≈ 2.17·√x — the local structure of gaps between consecutive powerful numbers is far more mysterious. The question of whether three consecutive powerful numbers can form an arithmetic progression infinitely often probes this local irregularity.\n\nThe problem is closely related to Erdős Problem #364, which makes the stronger conjecture that no three consecutive integers n, n+1, n+2 can all be powerful. If Problem #364 is true, it would forbid the simplest type of three-term AP (with common difference 1) among consecutive powerful numbers. Problem #938 remains open and cannot be resolved by finite computation alone.",
+    "problemStatement": "Let $A = \\{n_1 < n_2 < \\cdots\\}$ be the sequence of powerful numbers. Are there only finitely many three-term arithmetic progressions of consecutive terms $n_k, n_{k+1}, n_{k+2}$? Equivalently, are there only finitely many $k$ such that $n_{k+1} - n_k = n_{k+2} - n_{k+1}$?\n\n**Status: OPEN** — this problem cannot be resolved with finite computation.",
+    "text": "Are there only finitely many three-term arithmetic progressions among consecutive powerful numbers?",
+    "proofStrategy": "Since this is an open problem, the formalization axiomatizes the main conjecture. The approach is:\n\n1. **Define powerful numbers** via the prime-power condition (p | n ⟹ p² | n) and the alternative a²b³ representation.\n2. **Enumerate powerful numbers** using a noncomputable ordered listing with axioms for strict monotonicity, membership, and surjectivity.\n3. **Define the AP condition** as equality of consecutive gaps: P(k+1) - P(k) = P(k+2) - P(k+1).\n4. **State the main problem** as finiteness of the index set.\n5. **Connect to Problem #364** and the asymptotic counting function.\n6. **Prove a derived result**: if AP indices are finite, so are the AP differences.",
+    "keyInsights": [
+      "**Powerful Numbers**: A positive integer n is powerful if every prime power in its factorization has exponent ≥ 2. Equivalently, n = a²b³ for positive integers a, b.",
+      "**Sparse Distribution**: Powerful numbers have density ~c/√x, so they become increasingly sparse. The average gap grows like √n, making sustained regularity (equal gaps) increasingly unlikely.",
+      "**AP Condition**: Three consecutive powerful numbers P(k), P(k+1), P(k+2) form an AP precisely when the gap P(k+1) - P(k) equals the gap P(k+2) - P(k+1).",
+      "**Problem #364 Connection**: The stronger conjecture that no three consecutive integers can all be powerful would rule out APs with common difference 1.",
+      "**Asymptotic Count**: The number of powerful numbers up to x is (ζ(3/2)/ζ(3))·√x, a classical result connecting to the Riemann zeta function.",
+      "**Computational Barrier**: Unlike some Erdős problems, this one cannot be settled by checking finitely many cases — the question is inherently about infinitary behavior."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-docs",
+      "title": "Problem Documentation",
+      "summary": "Header documentation with problem statement, references, and OEIS link",
+      "startLine": 1,
+      "endLine": 25,
+      "mathContext": "Mathematical content: Header documentation with problem statement, references, and OEIS link"
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and Setup",
+      "summary": "Specific Mathlib imports and namespace opening",
+      "startLine": 26,
+      "endLine": 46,
+      "mathContext": "Mathematical content: Specific Mathlib imports and namespace opening"
+    },
+    {
+      "id": "powerful-def",
+      "title": "Powerful Number Definitions",
+      "summary": "Powerful and PowerfulAlt definitions, powerfulSet",
+      "startLine": 47,
+      "endLine": 57,
+      "mathContext": "Formal definition: Powerful and PowerfulAlt definitions, powerfulSet"
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "summary": "Verification that 1, 4, 8, 9 are powerful numbers",
+      "startLine": 58,
+      "endLine": 77,
+      "mathContext": "Mathematical content: Verification that 1, 4, 8, 9 are powerful numbers"
+    },
+    {
+      "id": "enumeration",
+      "title": "Enumeration of Powerful Numbers",
+      "summary": "infinite_powerful theorem, nthPowerful via Nat.nth with proved monotonicity, membership, surjectivity",
+      "startLine": 78,
+      "endLine": 97,
+      "mathContext": "Verified: infinite_powerful theorem, nthPowerful via Nat.nth with proved monotonicity, membership, surjectivity"
+    },
+    {
+      "id": "ap-condition",
+      "title": "Arithmetic Progression Condition",
+      "summary": "ConsecutivePowerfulAP, apIndices, powerfulGap, ap_iff_equal_gaps",
+      "startLine": 98,
+      "endLine": 124,
+      "mathContext": "Mathematical content: ConsecutivePowerfulAP, apIndices, powerfulGap, ap_iff_equal_gaps"
+    },
+    {
+      "id": "main-problem",
+      "title": "Main Problem Statement",
+      "summary": "erdos_938_conjecture Prop definition: finiteness of apIndices (OPEN — stated as def, not axiom)",
+      "startLine": 125,
+      "endLine": 139,
+      "mathContext": "Mathematical content: erdos_938_conjecture Prop definition (not an axiom — this is an open problem stated as a Prop)"
+    },
+    {
+      "id": "problem-364",
+      "title": "Connection to Problem #364",
+      "summary": "NoThreeConsecutivePowerful and erdos_364_conjecture",
+      "startLine": 140,
+      "endLine": 155,
+      "mathContext": "Mathematical content: NoThreeConsecutivePowerful and erdos_364_conjecture"
+    },
+    {
+      "id": "asymptotics",
+      "title": "Counting Function and Asymptotics",
+      "summary": "countPowerful and powerful_count_asymptotic_theorem Prop definition (not an axiom)",
+      "startLine": 156,
+      "endLine": 174,
+      "mathContext": "Mathematical content: countPowerful function and powerful_count_asymptotic_theorem Prop definition (stated as def, not axiom)"
+    },
+    {
+      "id": "ap-differences",
+      "title": "AP Differences",
+      "summary": "ConsecutivePowerfulAPWithDiff, apDifferences, finiteness lemma",
+      "startLine": 175,
+      "endLine": 217,
+      "mathContext": "Mathematical content: ConsecutivePowerfulAPWithDiff, apDifferences, finiteness lemma"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #938 remains open. The formalization defines powerful numbers, their ordered enumeration, and the arithmetic progression condition for consecutive terms. The main conjecture — that only finitely many consecutive powerful triples form APs — is axiomatized along with connections to Problem #364 and the asymptotic distribution of powerful numbers. A derived finiteness result for AP differences is proved from the main conjecture.",
+    "implications": "**Theoretical Significance**: Resolution of this problem would illuminate the fine structure of powerful number distribution. A positive answer (finitely many APs) would show that local regularity becomes impossible for large consecutive powerful numbers.\n\nA negative answer (infinitely many APs) would reveal surprising hidden arithmetic structure. Progress on this problem would likely require new techniques in multiplicative number theory beyond current asymptotic methods.",
+    "openQuestions": [
+      "Are there infinitely many three-term APs among consecutive powerful numbers?",
+      "What is the largest known index k where consecutive powerful numbers form an AP?",
+      "Can Erdős Problem #364 (no three consecutive integers are powerful) be resolved?",
+      "What is the distribution of gap differences |g_{k+1} - g_k| for consecutive powerful numbers?",
+      "Is there a uniform bound on the common difference of APs in consecutive powerful numbers?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Filter",
+      "Classical"
+    ],
+    "namespace": "Erdos938",
+    "lineCount": 218,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 14,
+    "sorries": 0,
+    "path": "Proofs/Erdos938Problem.lean"
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-177",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, number-theory, open"
+    },
+    {
+      "targetId": "erdos-200",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: arithmetic-progressions, number-theory, open"
+    },
+    {
+      "targetId": "erdos-936",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number-theory, open, powerful-numbers"
+    }
+  ],
+  "sorries": 0
+}

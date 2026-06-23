@@ -1,0 +1,157 @@
+[
+  {
+    "id": "ann-e983-header",
+    "proofId": "erdos-983",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #983: Prime Coverage Function for Smooth Numbers**\n\nThis problem asks whether 2π(√n) - f(π(n)+1, n) → ∞ as n → ∞.\n\n**Key Definitions:**\n- f(k,n) = minimum primes needed to \"cover\" any k-subset of {1,...,n}\n- \"Cover\" means at least r elements are P-smooth for a set P of r primes\n- A number is P-smooth if all its prime factors are in P\n\n**Answer: NO** - Erdős-Straus (1970) proved the difference is o(√n/(log n)^A).\n\n**Historical Context:**\nThis appeared in Erdős's 1970 paper \"Some applications of graph theory to number theory\" at the Second Chapel Hill Conference on Combinatorial Mathematics. The proof uses hypergraph covering techniques — elements of a subset A are vertices, and for each prime p, the set of elements divisible by p forms a hyperedge.",
+    "mathContext": "The function f(k,n) arises from covering problems in combinatorial number theory. It measures the minimum number of primes needed to guarantee that any k-subset contains enough smooth numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "prime counting function",
+      "hypergraph covering"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e983-is-smooth",
+    "proofId": "erdos-983",
+    "range": {
+      "startLine": 60,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Smooth Numbers and Covering",
+    "content": "**IsSmooth P m:**\n\nA positive integer m is **P-smooth** if all its prime factors are in P.\n\n**Examples:**\n- 12 = 2² · 3 is {2,3}-smooth\n- 60 = 2² · 3 · 5 is {2,3,5}-smooth\n- 35 = 5 · 7 is NOT {2,3,5}-smooth (7 ∉ P)\n\n**PrimesCover P A r:**\nA set P of r primes \"r-covers\" A if at least r elements of A are P-smooth. The f function minimizes r over all prime sets, maximizing over all k-subsets.",
+    "mathContext": "Smooth numbers are central to modern factorization algorithms. The covering condition ensures a balance: we use r primes and get at least r smooth elements.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dickman function",
+      "quadratic sieve",
+      "covering problems",
+      "set cover"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e983-f-function",
+    "proofId": "erdos-983",
+    "range": {
+      "startLine": 87,
+      "endLine": 107
+    },
+    "type": "definition",
+    "title": "The f Function and Its Properties",
+    "content": "**f(k, n):**\n\nThe smallest r such that **any** k-subset of {1,...,n} can be r-covered.\n\n**Formal Definition:**\n```lean\nnoncomputable def f (k n : ℕ) : ℕ :=\n  sInf {r : ℕ | ∀ A : Finset ℕ, A ⊆ Finset.range (n + 1) → A.card = k →\n    ∃ P : Finset ℕ, PrimesCover P A r}\n```\n\n**Key Properties:**\n- f(k,n) ≤ π(n) — using all primes ≤ n trivially covers everything\n- f is monotone: k₁ ≤ k₂ implies f(k₁,n) ≤ f(k₂,n)\n\nThis is a minimax problem: minimize r over all possible prime sets, maximizing over all possible k-subsets. f(k,n) measures the \"worst case\" — how many primes are needed to cover even the hardest k-subset.",
+    "mathContext": "The function f(k,n) is the central object of Erdős Problem #983. Its asymptotic behavior reveals deep connections between prime structure and smooth number distribution.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimax problems",
+      "extremal combinatorics",
+      "prime coverage"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e983-main-question",
+    "proofId": "erdos-983",
+    "range": {
+      "startLine": 114,
+      "endLine": 126
+    },
+    "type": "definition",
+    "title": "The Erdős Question and Answer",
+    "content": "**ErdosQuestion983:**\n\nDoes 2π(√n) - f(π(n)+1, n) → ∞ as n → ∞?\n\nThe answer is **NO** (axiomatized as `erdos_question_answer : ¬ErdosQuestion983`).\n\nThe difference 2π(√n) - f(π(n)+1, n) does NOT tend to infinity; it remains bounded (in fact, it's sublinear in √n).\n\nErdős and Straus proved this negative answer using graph-theoretic methods (hypergraph covering) combined with estimates on smooth number distribution.",
+    "mathContext": "The value k = π(n)+1 is critical because any subset of {1,...,n} of this size must contain at least one non-prime (pigeonhole). The factor 2π(√n) appears due to the structure of prime factorizations.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic analysis",
+      "pigeonhole principle",
+      "negative results"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e983-erdos-straus-main",
+    "proofId": "erdos-983",
+    "range": {
+      "startLine": 134,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Erdős-Straus Theorems",
+    "content": "**erdos_straus_main:**\nf(π(n)+1, n) = 2π(√n) + o_A(√n/(log n)^A) for any A > 0.\nThe error term is smaller than any polynomial power of log n — an extremely precise result.\n\n**difference_is_sublinear:**\n|2π(√n) - f(π(n)+1, n)| / √n → 0, confirming asymptotic equivalence.\n\n**erdos_straus_dense:**\nFor constant 0 < c < 1: f(cn, n) = log log n + (c₁ + o(1))√(2 log log n)\nwhere c₁ relates to c via the normal distribution. For \"dense\" sets (cn elements), f grows much more slowly — doubly logarithmic rather than proportional to π(√n).",
+    "mathContext": "The notation o_A means the error can be made smaller than any polynomial power of log n. The appearance of log log n in the dense case reflects the distribution of smooth numbers, and the normal distribution connection comes from probabilistic number theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "little-o notation",
+      "asymptotic analysis",
+      "probabilistic number theory",
+      "normal distribution"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e983-prime-structure",
+    "proofId": "erdos-983",
+    "range": {
+      "startLine": 173,
+      "endLine": 181
+    },
+    "type": "concept",
+    "title": "Prime Structure Lemma",
+    "content": "**prime_structure:**\n\nEvery m ≤ n with m ≥ 1 satisfies:\n- Either all prime factors of m are ≤ √n, OR\n- There exists a unique prime q > √n dividing m\n\n**Why?** If m had two primes > √n, their product would exceed n.\n\nThis dichotomy explains why 2π(√n) appears in the formula: π(√n) primes for small prime factors, plus π(√n) additional to handle numbers with one large prime factor.",
+    "mathContext": "This structural lemma is fundamental. It means every integer ≤ n either consists entirely of small primes, or has exactly one large prime factor multiplied by small primes. The factor 2 in 2π(√n) reflects this bipartite structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factorization structure",
+      "unique large prime factor",
+      "double counting"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e983-y-smooth",
+    "proofId": "erdos-983",
+    "range": {
+      "startLine": 187,
+      "endLine": 206
+    },
+    "type": "definition",
+    "title": "y-Smooth Numbers and Dickman Asymptotics",
+    "content": "**IsYSmooth y m:** A positive integer m is y-smooth if all its prime factors are ≤ y.\n\n**smoothCount x y = Ψ(x, y):** The count of y-smooth integers up to x.\n\n**dickman_asymptotics:** Ψ(x, y) ≤ x — a trivial bound axiomatized here. The deep result is Ψ(x, x^{1/u}) ~ x·ρ(u) where ρ is the Dickman function satisfying uρ'(u) = -ρ(u-1).\n\n**Key values:** ρ(1) = 1, ρ(2) ≈ 0.306, ρ(3) ≈ 0.049, ρ(4) ≈ 0.005\n\nThe rapid decay of ρ(u) explains why smooth numbers become rare and why covering problems are non-trivial.",
+    "mathContext": "The Dickman function ρ governs the density of smooth numbers and appears throughout computational number theory, especially in factorization algorithm analysis (quadratic sieve, number field sieve).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dickman function",
+      "friable numbers",
+      "factorization complexity",
+      "smooth number algorithms"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e983-imports",
+    "proofId": "erdos-983",
+    "range": {
+      "startLine": 31,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Mathlib Dependencies",
+    "content": "**Imports and Setup:**\n\nThe formalization uses several Mathlib modules:\n- `Mathlib.Data.Nat.Prime.Basic` — Nat.Prime predicate\n- `Mathlib.Data.Finset.Basic` — Finite sets for smooth element counting\n- `Mathlib.Analysis.SpecialFunctions.Log.Basic` — Real.log for asymptotic bounds\n- `Mathlib.NumberTheory.PrimeCounting` — Prime counting function π(n)\n\nThe proof opens `Nat`, `Finset`, and `BigOperators` for concise notation throughout.",
+    "mathContext": "These imports provide the foundational tools needed to state the asymptotic results precisely. The Real.log function is essential for expressing the error bounds in the Erdős-Straus theorems.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "formalization infrastructure",
+      "Lean 4"
+    ],
+    "prerequisites": []
+  }
+]

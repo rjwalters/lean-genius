@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ann-e1059-oq01-header",
+    "proofId": "erdos-1059-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Selberg Density Axiom Bug Discovery",
+    "content": "Identifies a threshold bug in the parent file: the `selberg_density_axiom` claims every interval $(l!, (l+1)!]$ for $l \\ge 3$ contains a prime $p$ where $p - k!$ is composite for all $k$ with $k! < p$. This is false for $l = 3$: exhaustive checking shows all 6 primes in $(6, 24]$ fail the condition. The correct threshold is $l \\ge 4$, where $p = 101 \\in (24, 120]$ is the first qualifying prime.",
+    "mathContext": "The condition `AllFactorialSubtractionsComposite$(p)$: $\\forall k: k! < p \\Rightarrow (p - k!)$ is composite and $\\ge 2$. For $p \\in (6, 24]$: the primes $7, 11, 13, 17, 19, 23$ all have $p - 2$ or $p - 6$ prime, violating the condition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorial intervals",
+      "prime subtraction",
+      "axiom correction",
+      "Selberg sieve"
+    ],
+    "prerequisites": [
+      "Nat.factorial",
+      "Nat.Prime",
+      "AllFactorialSubtractionsComposite"
+    ]
+  },
+  {
+    "id": "ann-e1059-oq01-counterexample",
+    "proofId": "erdos-1059-oq-02-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 90
+    },
+    "type": "insight",
+    "title": "Exhaustive Counterexample for l = 3",
+    "content": "Six theorems, one for each prime in $(6, 24]$, each proving failure by exhibiting a factorial index $k$ where $p - k!$ is prime. The pattern: $p = 7, 13, 19$ fail at $k = 2$ ($p - 2$ is prime), while $p = 11, 17, 23$ fail at $k = 3$ ($p - 6$ is prime). All proofs use `norm_num` to verify primality of the offending difference.",
+    "mathContext": "Failure witnesses: $7 - 2! = 5$ (prime), $11 - 3! = 5$ (prime), $13 - 2! = 11$ (prime), $17 - 3! = 11$ (prime), $19 - 2! = 17$ (prime), $23 - 3! = 17$ (prime). The factorials $2! = 2$ and $3! = 6$ create differences that land on primes too frequently in this small interval.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample by exhaustion",
+      "norm_num",
+      "finite case analysis"
+    ],
+    "prerequisites": [
+      "AllFactorialSubtractionsComposite",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-e1059-oq01-p101",
+    "proofId": "erdos-1059-oq-02-oq-01",
+    "range": {
+      "startLine": 92,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "p = 101 Qualifies in I(4)",
+    "content": "Proves that 101 is the first qualifying prime: $101 \\in (24, 120]$ and all factorial subtractions yield composites. The proof bounds $k \\le 4$ (since $5! = 120 > 101$), then checks $k = 0, 1, 2, 3, 4$ with `interval_cases` and `norm_num`. Key factorizations: $101 - 1 = 100 = 4 \\times 25$, $101 - 2 = 99 = 9 \\times 11$, $101 - 6 = 95 = 5 \\times 19$, $101 - 24 = 77 = 7 \\times 11$.",
+    "mathContext": "For $p = 101$: $p - 0! = p - 1! = 100 = 2^2 \\cdot 5^2$, $p - 2! = 99 = 3^2 \\cdot 11$, $p - 3! = 95 = 5 \\cdot 19$, $p - 4! = 77 = 7 \\cdot 11$. All composite and $\\ge 2$. Since $5! = 120 > 101$, no further conditions apply.",
+    "significance": "key",
+    "relatedConcepts": [
+      "interval_cases",
+      "factorial bound",
+      "composite verification"
+    ],
+    "prerequisites": [
+      "Nat.factorial_le_factorial",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-e1059-oq01-corrected",
+    "proofId": "erdos-1059-oq-02-oq-01",
+    "range": {
+      "startLine": 125,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Corrected Selberg Density Axiom (l ≥ 4)",
+    "content": "States the corrected axiom: for $l \\ge 4$, the interval $(l!, (l+1)!]$ contains at least one qualifying prime. Verified for $l = 4$ (with $p = 101$). The general case $l \\ge 5$ requires the Brun-Titchmarsh inequality and Selberg sieve, both absent from Mathlib.",
+    "mathContext": "The Brun-Titchmarsh inequality bounds $\\pi(x; q, a) \\le \\frac{2x}{\\phi(q)\\log(x/q)}$ for primes in arithmetic progressions. For factorial intervals with $l \\ge 4$, the density of primes is sufficient to guarantee at least one avoids all factorial residues.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Selberg sieve",
+      "Brun-Titchmarsh inequality",
+      "prime density"
+    ],
+    "prerequisites": [
+      "AllFactorialSubtractionsComposite",
+      "p101_qualifying"
+    ]
+  },
+  {
+    "id": "ann-e1059-oq01-main",
+    "proofId": "erdos-1059-oq-02-oq-01",
+    "range": {
+      "startLine": 142,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Infinitely Many Qualifying Primes",
+    "content": "Proves the main theorem: for any $n$, there exists $p > n$ that is prime and qualifying. Uses the corrected axiom with $l = n + 4 \\ge 4$, giving $p \\in ((n+4)!, (n+5)!]$. Since $(n+4)! \\ge n + 4 > n$, we get $p > n$ via `Nat.self_le_factorial`. Includes summary of the bug fix and remaining infrastructure gaps (Brun-Titchmarsh, Selberg sieve).",
+    "mathContext": "For any $n$: set $l = n + 4$. The corrected axiom gives $p > (n+4)! \\ge n + 4 > n$. The qualifying primes grow at least as fast as $(n+4)!$, far exceeding polynomial growth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.self_le_factorial",
+      "factorial growth",
+      "infinitary statement"
+    ],
+    "prerequisites": [
+      "selberg_density_corrected",
+      "Nat.self_le_factorial"
+    ]
+  }
+]

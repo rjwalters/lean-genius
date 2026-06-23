@@ -1,0 +1,146 @@
+{
+  "id": "erdos-944",
+  "title": "Erdős Problem #944: Critical Graphs Without Critical Edges",
+  "slug": "erdos-944",
+  "description": "For k ≥ 4 and r ≥ 1, does there exist a k-vertex-critical graph where every critical edge set has size > r? The case k = 4 remains OPEN; all k ≥ 5 are solved.",
+  "meta": {
+    "author": "Dirac (1970), Brown (1992), Jensen (2002), Martinsson-Steiner (2025)",
+    "sourceUrl": "https://erdosproblems.com/944",
+    "date": "1970",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos944Problem.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "critical-graphs",
+      "vertex-critical"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 944,
+    "erdosUrl": "https://erdosproblems.com/944",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for Lattanzio's result",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Typeclass definition of k-vertex-critical graphs (IsKVertexCritical) and the Erdős944 property (IsErdos944Graph)",
+      "Documentation of the open case k = 4",
+      "Historical commentary on known results (Brown 1992, Lattanzio 2002, Jensen 2002, Martinsson-Steiner 2025) — described in source comments, not formally axiomatized"
+    ],
+    "axiomCount": 0,
+    "lineCount": 120,
+    "theoremCount": 0,
+    "definitionCount": 2,
+    "assumptions": "0 axioms. Lean source contains only typeclass definitions (IsKVertexCritical, IsErdos944Graph) used as abstract predicates with no declared instances; the known results of Brown, Lattanzio, Jensen, and Martinsson-Steiner are described in comments only, not formally axiomatized. Open conjecture (k = 4 case unsolved)."
+  },
+  "overview": {
+    "historicalContext": "A **k-vertex-critical graph** is one with chromatic number k where every vertex is critical (its deletion reduces χ). A **critical edge** is one whose deletion reduces χ.\n\nDirac (1970) conjectured that for k ≥ 4, there exist k-vertex-critical graphs with NO critical edges. This asks whether vertex-criticality and edge-criticality can be 'decoupled.'\n\n**Timeline of results**:\n- 1970: Dirac's conjecture\n- 1992: Brown constructs a 5-vertex-critical graph with no critical edges (11 vertices)\n- 2002: Lattanzio shows such graphs exist when k-1 is not prime\n- 2002: Jensen gives a general construction for all k ≥ 5\n- 2025: Martinsson-Steiner prove existence for large k and any r ≥ 1\n- 2025: Skottova-Steiner show f_k(n) → ∞ for k ≥ 5\n\nThe case **k = 4 remains OPEN**.",
+    "problemStatement": "A **critical vertex** is one whose deletion lowers the chromatic number. A **critical edge** (or critical edge set) is one whose deletion lowers the chromatic number.\n\n**Erdős Problem #944**: Let $k \\geq 4$ and $r \\geq 1$. Does there exist a graph $G$ with chromatic number $k$ such that:\n1. Every vertex is critical (G is k-vertex-critical)\n2. Every critical set of edges has size $> r$?\n\n**Status by k**:\n- $k \\geq 5$: **SOLVED** (Jensen 2002)\n- $k = 4$: **OPEN** (even for $r = 1$)",
+    "text": "For k ≥ 4 and r ≥ 1, does there exist a k-vertex-critical graph where every critical edge set has size > r? The case k = 4 remains OPEN; all k ≥ 5 are solved.",
+    "proofStrategy": "We formalize this problem by:\n\n1. **k-vertex-critical**: A type class capturing graphs where χ(G) = k and every vertex is critical\n\n2. **Erdős944 property**: Extends k-vertex-critical with the condition that all critical edge sets have size > r\n\n3. **Main conjecture**: Existence for all k ≥ 4, r ≥ 1\n\n4. **Solved cases**: Brown (k=5), Lattanzio (k-1 not prime), Jensen (k≥5), Martinsson-Steiner (large k)\n\n5. **Open case**: k = 4 remains unsolved",
+    "keyInsights": [
+      "**Why complete graphs fail**: K_k is k-vertex-critical, but EVERY edge is critical. The problem asks if we can avoid edge-criticality.",
+      "**Brown's construction (1992)**: The first example for k = 5 uses 11 vertices with a carefully chosen edge structure.",
+      "**Why k = 4 is hard**: The constraints are very tight. A 4-vertex-critical graph must be quite dense (min degree 3), leaving little room for non-critical edges.",
+      "**Quantitative version**: Erdős asked about f_k(n) = largest r for n-vertex k-critical graphs. Skottova-Steiner showed n^{1/3} ≪ f_k(n) ≪ n/(log n)^C for k ≥ 5.",
+      "**Gap in understanding**: The jump from k = 4 to k = 5 represents a fundamental structural difference that remains unexplained."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Graph theory (vertices, edges, colorings)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 34,
+      "endLine": 52,
+      "summary": "Type classes for k-vertex-critical graphs and the Erdős944 property."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjecture",
+      "startLine": 53,
+      "endLine": 66,
+      "summary": "The Erdős-Dirac conjecture about existence of graphs with the Erdős944 property."
+    },
+    {
+      "id": "dirac",
+      "title": "Dirac's Conjecture (r = 1)",
+      "startLine": 67,
+      "endLine": 77,
+      "summary": "The special case asking for k-vertex-critical graphs with no critical edges."
+    },
+    {
+      "id": "solved",
+      "title": "Solved Cases",
+      "startLine": 78,
+      "endLine": 101,
+      "summary": "Brown (1992), Lattanzio (2002), Jensen (2002), and Martinsson-Steiner (2025)."
+    },
+    {
+      "id": "open",
+      "title": "The Open Case: k = 4",
+      "startLine": 102,
+      "endLine": 112,
+      "summary": "The last remaining case of Dirac's conjecture."
+    },
+    {
+      "id": "properties",
+      "title": "Basic Properties",
+      "startLine": 113,
+      "endLine": 120,
+      "summary": "Minimum degree, connectivity, and examples (complete graphs, odd cycles)."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #944 about the existence of k-vertex-critical graphs where every critical edge set is large. Dirac (1970) conjectured this for r = 1; it's now proven for all k ≥ 5 (Jensen 2002) and for large k with any r (Martinsson-Steiner 2025). The case k = 4 remains OPEN.",
+    "implications": "**Theoretical Significance**: This problem reveals deep structure in graph coloring.\n\nThe question of whether vertex-criticality and edge-criticality can be decoupled connects to fundamental questions about the 'redundancy' in graph colorings. Understanding k = 4 could illuminate the transition from small to large chromatic numbers.",
+    "openQuestions": [
+      "Does there exist a 4-vertex-critical graph with no critical edges?",
+      "What is the exact asymptotic behavior of f_k(n) for k ≥ 5?",
+      "Can the Martinsson-Steiner bound be improved for moderate k?",
+      "Is there a structural characterization of when decoupling is possible?"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/Erdos944Problem.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos944",
+    "lineCount": 120,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 0,
+    "definitionCount": 2
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1032",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, critical-graphs, graph-theory"
+    },
+    {
+      "targetId": "erdos-744",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, critical-graphs, graph-theory"
+    },
+    {
+      "targetId": "erdos-917",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: chromatic-number, critical-graphs, graph-theory"
+    }
+  ],
+  "sorries": 0
+}

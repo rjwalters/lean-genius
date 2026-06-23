@@ -1,0 +1,106 @@
+{
+  "slug": "erdos-783",
+  "title": "Erdős #783",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Fix some constant $C>0$ and let $n$ be large. Let $A\\subseteq \\{2,\\ldots,n\\}$ be such that $(a,b)=1$ for all $a\\neq b\\in A$ and $\\sum_{n\\in A}\\frac{1}{n}\\leq C$.\n\nWhat choice of such an $A$ minimises the number of integers $m\\leq n$ not divisible by any $a\\in A$? Is this minimised by letting $n\\geq q_1>q_2>\\cdots$ be the consecutive primes in decreasing order and choosing $A=\\{q_1,\\ldots,q_k\\}$ where $k$ is maximal such that\\[\\sum_{i=1}^k\\frac{1}{q_i}\\leq C?\\]",
+    "plain": "Fix some constant $C>0$ and let $n$ be large. Let $A\\subseteq \\{2,\\ldots,n\\}$ be such that $(a,b)=1$ for all $a\\neq b\\in A$ and $\\sum_{n\\in A}\\frac{1}{n}\\leq C$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-17T05:55:00Z",
+    "iteration": 4,
+    "focus": "Slug graduated: Lean file is 0 sorries, 0 axioms (was 4, all eliminated), 31 theorems/lemmas, 6 definitions. Gallery meta aligned. Main conjecture #783 itself remains OPEN (intentionally not stated as Prop — file provides infrastructure + supporting analysis only). Registry has had slug at phase=COMPLETED/status=graduated since 2026-03-24T15:15:41.789Z (T-54d); pool and research JSON now synced to match."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 0 sorries, 0 axioms (all 4 originally axiomatized maxPrimeCount/maxPrimeCount_spec/etc reduced to proved theorems via Mathlib prime reciprocal divergence). 31 theorems/lemmas + 6 definitions across core, prime infrastructure, prime sieving set, validity, and supporting analysis sections. Main conjecture #783 remains OPEN ($500 Erdős prize) — file deliberately provides infrastructure and replacement-step lemmas (composite_replacement_improves_product, smaller_prime_better, prime_factor_better_sieve) toward the conjecture without stating it as a Prop, leaving the formalization of the optimality claim itself as future work.",
+    "builtItems": [
+      "IsValidSievingSet (def): A coprime, sum 1/a <= C, all 2 <= a <= n",
+      "unsievedCount (def): count of m in [1,n] divisible by no a in A",
+      "nthPrime (noncomputable def): Nat.nth Nat.Prime k",
+      "primeSievingSet (noncomputable def): image of Finset.range k under nthPrime",
+      "primesBelow (private noncomputable def): primes strictly below n",
+      "maxPrimeCount (noncomputable def): largest k with prime reciprocal partial sum <= C — was axiom, now proved via Nat.find",
+      "optimal_sieving_set_exists: well-ordering of ℕ gives optimal A for every (n,C) with C>0",
+      "primes_infinite: setOf Nat.Prime is Infinite (Mathlib alias)",
+      "nthPrime_prime: every nthPrime k is prime",
+      "nthPrime_strictMono / nthPrime_increasing / nthPrime_injective: monotonicity / injectivity",
+      "nthPrime_ge_two: nthPrime k >= 2",
+      "nthPrime_coprime: distinct nthPrime values are coprime",
+      "primeSievingSet_card / primeSievingSet_all_prime / primeSievingSet_ge_two / primeSievingSet_pairwise_coprime: structure lemmas for primeSievingSet",
+      "primeReciprocalSumDiverges (private lemma): partial sums over primes ≤ N exceed any C for N large",
+      "count_primes_lt (private lemma): Nat.count Nat.Prime p < p for prime p",
+      "primesBelow_subset_primeSievingSet (private lemma): primes ≤ N ⊆ first N nthPrimes",
+      "primeSumUnbounded / exists_prime_sum_exceeds (private lemmas): indexed/range-form partial sum unboundedness",
+      "maxPrimeCount_spec: previously axiomatized, now proved theorem characterizing maxPrimeCount via Nat.find_spec / find_min",
+      "primeSievingSet_reciprocal_sum: Σ 1/p over primeSievingSet (maxPrimeCount C) ≤ C",
+      "primeSievingSet_valid: primeSievingSet is a valid IsValidSievingSet for n large enough",
+      "coprime_sieve_estimate: unsievedCount / n approximation by product Π(1-1/a) (trivially true, placeholder)",
+      "empty_is_valid + unsievedCount_empty: empty-set baseline (count = n for n ≥ 1)",
+      "sieving_reduces_unsieved: adding any a ≥ 2 to A weakly decreases unsievedCount",
+      "sieve_factor_bounds: 0 < 1 - 1/a < 1 for a ≥ 2",
+      "sieve_factor_mono: 1 - 1/a is monotone increasing in a",
+      "prime_factor_better_sieve: for composite a with prime factor p < a, 1 - 1/p < 1 - 1/a",
+      "sieve_product_pos: product of sieve factors is positive for A with elements ≥ 2",
+      "erase_increases_product: removing element from coprime set weakly increases product",
+      "smaller_prime_better: replacing larger prime q ∈ B with smaller prime p ∉ B (p < q) strictly decreases product",
+      "composite_replacement_improves_product (2026-04-27): bridges prime_factor_better_sieve and smaller_prime_better — replacing composite a ∈ A with prime factor p ∉ A strictly decreases sieve product"
+    ],
+    "insights": [
+      "Axiom count reduced from 4 to 0: maxPrimeCount and maxPrimeCount_spec proved from Mathlib prime reciprocal divergence (Nat.find construction; find_spec + find_min give the spec)",
+      "Key bridge: primesBelow N ⊆ primeSievingSet N via Nat.nth_count and count_primes_lt — gives that prime reciprocal sums over primeSievingSet exceed every C",
+      "Replacement-step lemmas now complete: smaller_prime_better (swap larger prime for smaller absent prime) + prime_factor_better_sieve (swap composite for its prime factor) + composite_replacement_improves_product (combined improvement step)",
+      "The conjecture for #783 reduces (modulo deeper analytic estimates connecting product Π(1-1/a) to unsievedCount asymptotics) to: (1) every coprime A with bounded reciprocal sum can be improved by replacing composites with prime factors; (2) prime-only sets can be reordered to put smaller primes first. Both lemmas now formalized.",
+      "Main statement #783 (optimal_sieving = primeSievingSet) is NOT stated as a Prop — file is supporting infrastructure only. Bridging Π(1-1/a) → unsievedCount asymptotics is the deep remaining analytic gap (sieve-theoretic inequality, no current Mathlib tool)",
+      "coprime_sieve_estimate is currently a trivial existence claim (∃ δ with no bound) — placeholder for the precise inclusion-exclusion estimate which remains the main analytic obstruction",
+      "Gallery meta.json fully aligned with Lean file: 420 lines, 0 axioms, 0 sorries, 31 theorems, 6 definitions, mathlib 4.26.0 (badge='wip' reflects the open conjecture status, not internal debt)",
+      "Slug status 'axiomatized' (gallery meta) is the conservative designation for an open conjecture slug; 'verified' would imply complete formalization of the optimality claim itself"
+    ],
+    "mathlibGaps": [
+      "No Mathlib formalization of the precise inclusion-exclusion bound for unsievedCount in terms of Π(1-1/a) (the heart of the analytic gap)",
+      "No Mathlib formalization of sieve-theoretic optimality (smallest prime always wins for fixed reciprocal-sum budget)"
+    ],
+    "nextSteps": [],
+    "markdown": "# Erdős #783 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFix some constant $C>0$ and let $n$ be large. Let $A\\subseteq \\{2,\\ldots,n\\}$ be such that $(a,b)=1$ for all $a\\neq b\\in A$ and $\\sum_{n\\in A}\\frac{1}{n}\\leq C$.\n\nWhat choice of such an $A$ minimises the number of integers $m\\leq n$ not divisible by any $a\\in A$? Is this minimised by letting $n\\geq q_1>q_2>\\cdots$ be the consecutive primes in decreasing order and choosing $A=\\{q_1,\\ldots,q_k\\}$ where $k$ is maximal such that\\[\\sum_{i=1}^k\\frac{1}{q_i}\\leq C?\\]\n\n\n\n\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #782\n- Problem #784\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er73\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-7",
+    "erdos-78",
+    "erdos-783"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T08:39:26.859Z",
+  "lastUpdate": "2026-05-17T05:55:00Z",
+  "completed": "2026-05-17T05:55:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos783Problem.lean",
+      "filename": "Erdos783Problem.lean",
+      "lineCount": 420,
+      "theoremCount": 31,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos783Problem.lean"
+    }
+  ]
+}

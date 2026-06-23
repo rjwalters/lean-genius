@@ -1,0 +1,132 @@
+{
+  "slug": "erdos-931",
+  "title": "Erdős #931",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $k_1\\geq k_2\\geq 3$. Are there only finitely many $n_2\\geq n_1+k_1$ such that\\[\\prod_{1\\leq i\\leq k_1}(n_1+i)\\textrm{ and }\\prod_{1\\leq j\\leq k_2}(n_2+j)\\]have the same prime factors?\n\n\n\nTijdeman gave the example\\[19,20,21,22\\textrm{ and }54,55,56,57.\\]Erd\\H{o}s \\cite{Er76d} was unsure of this conjecture, and thought perhaps if the two products have the same prime factors then $n_2>2(n_1+k_1)$. It is not clear but it is possible that he meant to ask this question also permitting finitely many counterexamples. Indeed, without this caveat it is false - AlphaProof has found the counterexample\\[10! = 2^8\\cdot 3^4\\cdot 5^2\\cdot 7\\]and\\[14\\cdot 15\\cdot 16 = 2^5\\cdot 3\\cdot 5\\cdot 7,\\]so that $n_1=0$, $k_1=10$, $n_2=13$, and $k_2=3$.\n\nSee also [388].\n\nThis is discussed in problem B35 of Guy's collection \\cite{Gu04}.",
+    "plain": "Let $k_1\\geq k_2\\geq 3$. Are there only finitely many $n_2\\geq n_1+k_1$ such that\\[\\prod_{1\\leq i\\leq k_1}(n_1+i)\\textrm{ and }\\prod_{1\\leq j\\leq k_2}(n_2+j)\\]have the same prime factors?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-13T11:25:00Z",
+    "iteration": 10,
+    "focus": "S10 SURVEY (2026-05-13 12:30 UTC) — Mathlib Nat.smoothNumbers bearer audit confirms definitions + ~50 API lemmas are present, but Størmer's theorem (consecutive-smooth-pair finiteness) and Tijdeman's effective bound are genuine Mathlib gaps. S11 PREP roadmap defined: docstring rewrite using Mathlib smoothNumbers vocabulary as the immediate next step.",
+    "blockers": [
+      "Størmer's theorem on consecutive smooth numbers — NOT in Mathlib; would discharge stronger_implies_main and exists_prime_between_blocks_hard",
+      "Tijdeman's effective bound on consecutive smooth integers — NOT in Mathlib; would give the quantitative form"
+    ],
+    "nextAction": "S11 PREP (1 session, doc-only): Restate the 2 sorry docstrings using Nat.smoothNumbers vocabulary; add Mathlib.NumberTheory.SmoothNumbers import; add bridge lemma consecutivePrimeFactors_iff_smoothNumbers. See research/problems/erdos-931/sessions/2026-05-13-s10-survey-mathlib-smoothnumbers-bearer.md for the full S11–S14 roadmap.",
+    "attemptCounts": {
+      "total": 10,
+      "currentApproach": 1,
+      "approachesTried": 5
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: 2026-05-13 drift repair — 1-line Mathlib API alignment at Erdos931Problem.lean:279 (`Prime.dvd_finset_prod_iff` now explicit `g`). Latent index bug at the old lines 485-487 was already repaired in a prior session. 2 sorries remain by design (stronger_implies_main; exists_prime_between_blocks_hard), both gated on Størmer-type consecutive-smooth-number theory not yet in Mathlib. Build pending (worktree `.lake` symlink loop; high-confidence repair audited against lake-pinned Mathlib source).",
+    "builtItems": [
+      "Fixed consecutive product computation bug (9459360 → 9480240)",
+      "Proved first_block_has_prime using Nat.exists_prime_lt_and_le_two_mul (Bertrand)",
+      "Proved exists_prime_between_blocks_small: covers k₁ ≥ n₁ case without SamePrimeFactors",
+      "Proved exists_prime_between_of_large_prime_factor: uses SamePrimeFactors + Prime.dvd_finset_prod_iff",
+      "Added 3 new verified counterexample pairs via native_decide: (3,3,7,3), (2,4,7,3), (0,5,7,3)",
+      "Proved exists_prime_between_blocks as theorem (was axiom) — 4-way case analysis in Erdos931Problem.lean:309-330",
+      "hard_case_n1_lower_bound: proved n₁ ≥ k₁+k₂+1 ≥ 7 in hard case",
+      "hard_case_next_prime_beyond_block: next prime after n₁ exceeds n₁+k₁",
+      "hard_case_no_prime_in_first_block: contradiction when prime in first block",
+      "hard_case_vacuous_k3_n30: computational proof that hard case hypotheses are inconsistent for n₁ ≤ 30, k₁=k₂=3",
+      "Converted stronger_implies_main from axiom to theorem-with-sorry",
+      "Converted exists_prime_between_blocks_hard from axiom to theorem-with-sorry",
+      "FIXED hard_case_no_prime_in_first_block: index p → p-n₁ (Erdos931Problem.lean:497-502)",
+      "Fixed Prime.dvd_finset_prod_iff drift at Erdos931Problem.lean:279"
+    ],
+    "insights": [
+      "Only 2 axioms, both deep: stronger_implies_main (requires Størmer-type smooth number theory), exists_prime_between_blocks (partially proved)",
+      "Key insight: exists_prime_between_blocks is TRIVIALLY true when first block contains a prime (p>n₁, p≤n₁+k₁≤n₂≤n₂+k₂)",
+      "By Bertrand's postulate, first block always contains a prime when k₁ ≥ n₁, covering the small-n₁ regime",
+      "The HARD remaining case: n₁ > k₁, first block all composite, all prime factors ≤ n₁ — SamePrimeFactors forces second block to be n₁-smooth",
+      "Empirically, the hard case appears vacuously true: for all tested n₁ with all-composite blocks, SamePrimeFactors fails",
+      "stronger_implies_main requires showing the outer set {n₂ > 2(n₁+k₁)} is finite — needs smooth number theory (Størmer)",
+      "New examples show same-prime-factors pairs cluster around small primes: {2,3,5} examples (4·5·6 = 8·9·10 in primes)",
+      "Refined exists_prime_between_blocks: general statement proved as theorem via 4-way case analysis (Bertrand for k₁≥n₁, Bertrand for 2n₁≤n₂+k₂, large prime factor transfer, hard-case axiom)",
+      "The hard-case axiom (exists_prime_between_blocks_hard) adds 3 hypotheses: k₁<n₁, n₂+k₂<2n₁, all prime factors ≤n₁ — strictly weaker than the original",
+      "The hard case forces BOTH blocks to be n₁-smooth, making it likely vacuously true by Størmer — the SamePrimeFactors hypothesis cannot be satisfied when blocks are far apart and smooth",
+      "In hard case, first block is entirely composite (no prime), so next prime > n₁+k₁",
+      "Hard case hypotheses (h₅, h₆, h₇, SamePrimeFactors) are computationally verified to be mutually inconsistent for n₁ ≤ 30 with k₁=k₂=3",
+      "The SamePrimeFactors constraint is extremely restrictive: second block must use EXACTLY the same primes as first block, which is impossible when blocks are in different ranges",
+      "DRIFT BLOCKER (2026-04-27, researcher-1): docker build of unmodified Erdos931Problem.lean fails with 4 errors. Two distinct issues: (a) Mathlib API drift on Prime.dvd_finset_prod_iff at line 269 — hq.prime.dvd_finset_prod_iff.mp hq_dvd no longer type-checks; the iff now takes the prod function f as an explicit argument, e.g. (hq.prime.dvd_finset_prod_iff _).mp hq_dvd. (b) Pre-existing proof bug at lines 485-487 in hard_case_no_prime_in_first_block: p (a prime in (n₁, n₁+k₁]) is passed as the Finset.Icc index to hard_case_first_block_composite, but the index should be i = p - n₁ ∈ [1, k₁] and the prime hypothesis should be (n₁ + i).Prime reconstructed from p = n₁ + (p - n₁).",
+      "Quick fix sketch for line 485-487: introduce i := p - n₁, prove i ∈ Finset.Icc 1 k₁ from n₁ < p ∧ p ≤ n₁ + k₁, rewrite hp : p.Prime to (n₁ + i).Prime, then call hard_case_first_block_composite n₁ k₁ h₅ h₇ i hi_mem hi_prime.",
+      "Build infrastructure: native_decide proofs (hard_case_vacuous_k3_n30, samePrimeFactors counterexamples) likely unaffected by the drift but cannot be re-verified until lines 269 and 485 are fixed.",
+      "Last touch: only commit was 783f005c6d9 from PR #10735 (research dispatch). The bug at 485 may have been latent and never caught because the file had not been built on the current Mathlib until now.",
+      "BUG FIX: hard_case_no_prime_in_first_block used p as index i but hard_case_first_block_composite expects i = p-n₁ (then n₁+i = p). Old proof had p ∈ Icc 1 k₁ which is FALSE since p > n₁ > k₁.",
+      "Fix: use i := p - n₁, prove i ∈ Icc 1 k₁ from (n₁ < p) and (p ≤ n₁+k₁), prove (n₁+i).Prime = p.Prime via n₁+(p-n₁)=p.",
+      "DRIFT REPAIR 2026-05-13 (researcher-11): line 279 `hq.prime.dvd_finset_prod_iff.mp hq_dvd` → `(hq.prime.dvd_finset_prod_iff _).mp hq_dvd`. Mathlib API now takes the product function `g` as an explicit argument; passing `_` lets Lean infer `g = fun j => n₂ + j` from `hq_dvd` after `unfold consecutiveProduct at hq_dvd`. Audited against lake-pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (Mathlib/Algebra/BigOperators/Associated.lean:216). The latent index bug at the old lines 485-487 was already repaired in a prior session (lines 497-503 use `i := p - n₁`)."
+    ],
+    "mathlibGaps": [
+      "Størmer's theorem (1897) on consecutive smooth numbers — for any finite prime set P, only finitely many consecutive pairs (m, m+1) are both P-smooth. NOT in Mathlib; would discharge both remaining sorries.",
+      "Tijdeman's bound (1973): if m, m+1 are both P-smooth with #P = r, then m ≤ exp((log P_r)^O(r)). Quantitative Størmer; not in Mathlib.",
+      "S-unit / Evertse–Schlickewei–Schmidt: x + y = z in S-units has only finitely many solutions for finite prime set S. Generalises Størmer; not in Mathlib.",
+      "Mathlib `Nat.smoothNumbers` (Mathlib/NumberTheory/SmoothNumbers.lean, ~494 LOC, ~50 API lemmas) HAS definitions and structural API but explicitly lacks the consecutive-pair finiteness theorems above."
+    ],
+    "nextSteps": [
+      "S11 PREP (1 session, doc-only): Restate the 2 sorry docstrings + add `import Mathlib.NumberTheory.SmoothNumbers` + bridge lemma `consecutivePrimeFactors_iff_smoothNumbers`. No logical change. Makes the gap legible.",
+      "S12 ACT-A (2 sessions): Extend `hard_case_vacuous_k3_n30` to `n₁ ≤ 100` via `native_decide` for `(k₁, k₂) = (3, 3)`; close `exists_prime_between_blocks_hard` for that bounded range.",
+      "S13 ACT-B (1 session): Bridge lemma `same_prime_factors_implies_both_smooth` (purely `SamePrimeFactors`-semantic, no Størmer needed).",
+      "S14+ (4–6 weeks): Port Størmer-for-fixed-prime-set as a Mathlib contribution PR. Discharges both sorries."
+    ],
+    "markdown": "# Erdős #931 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k_1\\geq k_2\\geq 3$. Are there only finitely many $n_2\\geq n_1+k_1$ such that\\[\\prod_{1\\leq i\\leq k_1}(n_1+i)\\textrm{ and }\\prod_{1\\leq j\\leq k_2}(n_2+j)\\]have the same prime factors?\n\n\n\nTijdeman gave the example\\[19,20,21,22\\textrm{ and }54,55,56,57.\\]Erd\\H{o}s \\cite{Er76d} was unsure of this conjecture, and thought perhaps if the two products have the same prime factors then $n_2>2(n_1+k_1)$. It is not clear but it is possible that he meant to ask this question also permitting finitely many counterexamples. Indeed, without this caveat it is false - AlphaProof has found the counterexample\\[10! = 2^8\\cdot 3^4\\cdot 5^2\\cdot 7\\]and\\[14\\cdot 15\\cdot 16 = 2^5\\cdot 3\\cdot 5\\cdot 7,\\]so that $n_1=0$, $k_1=10$, $n_2=13$, and $k_2=3$.\n\nSee also [388].\n\nThis is discussed in problem B35 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Er76d] Erd\\H{o}s, P., Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics (Univ. Manitoba, Winnipeg, Man., 1975) (1976), 25-44.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #388\n- Problem #930\n- Problem #932\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-9",
+    "erdos-93",
+    "erdos-931"
+  ],
+  "references": {
+    "papers": [
+      "Størmer, C. (1897). Quelques théorèmes sur l'équation de Pell x² - Dy² = ±1 et leurs applications. Skrifter Videnskabs-selskabet (Christiania), Mat.-Naturv. Kl., I (2), 48 pp.",
+      "Tijdeman, R. (1973). On the maximal distance between integers composed of small primes. Compositio Mathematica 28 (2), 159–162.",
+      "Erdős, P. (1976). Problems and results on number theoretic properties of consecutive integers and related questions. Proceedings of the Fifth Manitoba Conference on Numerical Mathematics, 25–44. [Er76d]",
+      "Guy, R. K. (2004). Unsolved problems in number theory. Problem B35."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Smooth_number",
+      "https://en.wikipedia.org/wiki/S-unit"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.SmoothNumbers — Nat.smoothNumbers, Nat.factoredNumbers, Nat.smoothNumbersUpTo, Nat.equivProdNatSmoothNumbers (~50 API lemmas; definitions but no consecutive-smooth-pair finiteness)",
+      "Mathlib.NumberTheory.PrimeCounting — π(n), prime counting (referenced by SmoothNumbers but unrelated to consecutive smoothness)",
+      "Mathlib.NumberTheory.EulerProduct.Basic — Euler products over smoothNumbers (analytic; not finitary)",
+      "Mathlib.Algebra.BigOperators.Associated — Prime.dvd_finset_prod_iff (lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67); the bearer for line 279 alignment in PR #18779",
+      "Mathlib.NumberTheory.Pell — fundamental Pell solutions; would be a building block for any future Størmer port"
+    ]
+  },
+  "started": "2026-01-15T11:43:50.650Z",
+  "lastUpdate": "2026-05-13T12:30:00.000Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos931Problem.lean",
+      "filename": "Erdos931Problem.lean",
+      "lineCount": 540,
+      "theoremCount": 46,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos931Problem.lean"
+    }
+  ]
+}

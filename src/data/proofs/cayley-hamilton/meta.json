@@ -1,0 +1,241 @@
+{
+  "id": "cayley-hamilton",
+  "title": "Cayley-Hamilton Theorem",
+  "slug": "cayley-hamilton",
+  "description": "Every square matrix satisfies its own characteristic polynomial. If A is an n×n matrix with characteristic polynomial p(λ) = det(λI - A), then p(A) = 0.",
+  "meta": {
+    "author": "Cayley and Hamilton (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cayley%E2%80%93Hamilton_theorem",
+    "date": "1858",
+    "status": "verified",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "polynomials",
+      "eigenvalues",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/CayleyHamilton.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.aeval_self_charpoly",
+        "description": "The Cayley-Hamilton theorem: p_A(A) = 0",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Matrix.charpoly_monic",
+        "description": "The characteristic polynomial is monic",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Matrix.charpoly_natDegree_eq_dim",
+        "description": "The degree equals the matrix dimension",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Pedagogical presentation with detailed explanations",
+      "Nilpotent matrix characterization via characteristic polynomial",
+      "Examples for identity and zero matrices",
+      "Historical context connecting Cayley and Hamilton"
+    ],
+    "dateAdded": "2025-12-26",
+    "wiedijkNumber": 49,
+    "axiomCount": 0,
+    "lineCount": 250,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Cayley-Hamilton theorem is named after Arthur Cayley (1821–1895) and William Rowan Hamilton (1805–1865). Hamilton proved a version for quaternions in his 1853 *Lectures on Quaternions*: every quaternion $q$ satisfies $q^2 - 2\\text{Re}(q)\\cdot q + |q|^2 = 0$, which is the characteristic equation of the $2\\times 2$ complex matrix representation. Cayley stated the general theorem for matrices in his 1858 *Memoir on the Theory of Matrices* (Philosophical Transactions), but verified it only for $2\\times 2$ and $3\\times 3$ cases, writing that the general proof was 'not necessary.' Ferdinand Frobenius gave the first rigorous proof for arbitrary $n\\times n$ matrices in 1878 using the adjugate matrix identity.\n\nThe theorem is fundamental across mathematics: in control theory, it proves that the state transition matrix $e^{At}$ can be expressed as a degree-$(n{-}1)$ polynomial in $A$; in quantum mechanics, it constrains the algebra of observables; and in numerical analysis, it underpins the Krylov subspace methods (Lanczos, Arnoldi) for eigenvalue computation. The Lean formalization uses Mathlib's `Matrix.aeval_self_charpoly`, which proves the theorem algebraically via the adjugate identity $p(A) = \\det(A - tI) \\cdot I$ evaluated at $t = A$.",
+    "problemStatement": "Theorem (Cayley-Hamilton): If A is an n×n matrix over a commutative ring, and p(λ) = det(λI - A) is its characteristic polynomial, then:\n\n$$p(A) = A^n - c_{n-1}A^{n-1} - \\cdots - c_1A - c_0I = 0$$\n\nwhere the c_i are the coefficients of the characteristic polynomial.",
+    "text": "A 250-line formalization of the Cayley-Hamilton Theorem (Wiedijk #49) with 22 declarations, 0 sorries, 0 axioms. Delegates the core identity $p(A) = 0$ to Mathlib's `Matrix.aeval_self_charpoly`, which proves it algebraically via the adjugate identity: in $\\text{Mat}_n(R[X])$, $(XI-A)\\cdot\\text{adj}(XI-A) = \\det(XI-A)\\cdot I = p(X)\\cdot I$, then evaluate at $X=A$. Provides `cayley_hamilton` as a clean restatement, `charpoly_degree` ($\\deg p = n$ via `Matrix.charpoly_natDegree`), `eigenvalue_is_root` (eigenvalues satisfy $p(\\lambda)=0$), and `minimal_poly_divides_charpoly`. Demonstrates with $2\\times 2$ and $3\\times 3$ concrete matrices using `native_decide` and `norm_num`. Works over any commutative ring, not just fields.",
+    "proofStrategy": "The proof in Mathlib uses a clever algebraic approach. The key insight is the identity relating the adjugate matrix to the determinant:\n\n$$A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$$\n\nBy working with matrices over the polynomial ring and carefully manipulating the adjugate of (XI - A), the proof shows that evaluating the characteristic polynomial at A yields zero.\n\nThe beauty of this approach is that it's purely algebraic and works over any commutative ring, not just fields.",
+    "keyInsights": [
+      "**Eigenvalue Encoding:** The characteristic polynomial $p(\\lambda) = \\det(\\lambda I - A) = \\lambda^n - c_{n-1}\\lambda^{n-1} - \\cdots - c_0$ has the eigenvalues as roots. Cayley-Hamilton says $A$ itself satisfies the same polynomial: $p(A) = 0$.",
+      "**Bounded Polynomial Expression:** Since $A^n = c_{n-1}A^{n-1} + \\cdots + c_1 A + c_0 I$, every power $A^k$ (for $k \\geq n$) reduces to a linear combination of $I, A, \\ldots, A^{n-1}$. The algebra generated by $A$ is at most $n$-dimensional.",
+      "**Polynomial Inverse:** When $\\det(A) = c_0 \\neq 0$: rearranging $p(A) = 0$ gives $A^{-1} = -c_0^{-1}(A^{n-1} - c_{n-1}A^{n-2} - \\cdots - c_1 I)$. The inverse is a polynomial in $A$ — no Gaussian elimination needed.",
+      "**$2 \\times 2$ Case:** $A^2 - \\text{tr}(A) \\cdot A + \\det(A) \\cdot I = 0$. For invertible $A$: $A^{-1} = \\frac{1}{\\det(A)}(\\text{tr}(A) \\cdot I - A)$. This gives the classical adjugate formula directly.",
+      "**Minimal vs. Characteristic:** The minimal polynomial $m_A$ divides $p_A$ (by Cayley-Hamilton), so $\\deg(m_A) \\leq n$. Equality holds iff $A$ has a cyclic vector. The gap between $m_A$ and $p_A$ measures the 'redundancy' in the eigenvalue structure."
+    ],
+    "prerequisites": [
+      "Linear algebra (matrices, determinants, characteristic polynomial)",
+      "Ring theory (polynomial rings, evaluation homomorphisms)",
+      "Abstract algebra (commutativity of polynomial evaluation)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction and Historical Context",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring covering the Wiedijk #49 reference, Cayley-Hamilton statement, Mathlib approach via adjugate identity, and historical notes on Cayley (1858), Hamilton (1853), and Frobenius (1878).",
+      "mathContext": "Every $n \\times n$ matrix $A$ over a commutative ring $R$ satisfies $p_A(A) = 0$ where $p_A(\\lambda) = \\det(\\lambda I - A)$. The proof uses $\\text{adj}(XI - A) \\cdot (XI - A) = p_A(X) \\cdot I$ in $\\text{Mat}_n(R[X])$, evaluated at $X = A$."
+    },
+    {
+      "id": "charpoly",
+      "title": "The Characteristic Polynomial",
+      "startLine": 43,
+      "endLine": 72,
+      "summary": "Proves `charpoly_is_monic` (via `Matrix.charpoly_monic`) and `charpoly_degree` ($\\deg p_A = n$ via `Matrix.charpoly_natDegree_eq_dim`). Both properties are fundamental: monicity ensures the leading term is $\\lambda^n$, and degree $n$ ensures Cayley-Hamilton gives a relation on $A^n$.",
+      "mathContext": "$p_A(\\lambda) = \\lambda^n - \\text{tr}(A)\\lambda^{n-1} + \\cdots + (-1)^n \\det(A)$. The coefficient of $\\lambda^{n-k}$ is $(-1)^k e_k(\\lambda_1, \\ldots, \\lambda_n)$ where $e_k$ are the elementary symmetric polynomials in the eigenvalues."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Cayley-Hamilton Theorem",
+      "startLine": 73,
+      "endLine": 104,
+      "summary": "The main theorem `cayley_hamilton`: $p_A(A) = 0$, delegating to Mathlib's `Matrix.aeval_self_charpoly`. Also proves `eigenvalue_is_root` ($Av = \\lambda v \\Rightarrow p_A(\\lambda) = 0$) and `minimal_poly_divides_charpoly`.",
+      "mathContext": "Lean: `Matrix.aeval_self_charpoly : (Matrix.charpoly M).aeval M = 0`. The evaluation homomorphism `aeval : R[X] →+* \\text{Mat}_n(R)` sends $X \\mapsto M$ and $r \\mapsto rI$, so `aeval M p` computes $p(M)$ in the matrix ring."
+    },
+    {
+      "id": "examples",
+      "title": "Examples and Special Cases",
+      "startLine": 105,
+      "endLine": 141,
+      "summary": "Concrete instantiations: identity matrix ($p_I(\\lambda) = (\\lambda - 1)^n$), nilpotent matrices ($N^n = 0$), scalar matrices ($p_{cI}(\\lambda) = (\\lambda - c)^n$), zero matrix ($p_0(\\lambda) = \\lambda^n$).",
+      "mathContext": "The identity matrix has $p_I(\\lambda) = (\\lambda-1)^n$, so Cayley-Hamilton gives $(I-I)^n = 0$ (trivially). A nilpotent $N$ has $p_N(\\lambda) = \\lambda^n$ (all eigenvalues 0), giving $N^n = 0$ — the nilpotency index is at most $n$."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences and Applications",
+      "startLine": 142,
+      "endLine": 163,
+      "summary": "Proves that every matrix polynomial of degree $\\geq n$ reduces modulo $p_A$ to degree $< n$, and that the minimal polynomial divides the characteristic polynomial.",
+      "mathContext": "The commutative algebra $R[A] = \\{p(A) : p \\in R[X]\\} \\cong R[X]/(p_A)$ has dimension $\\leq n$ over $R$. The minimal polynomial $m_A$ is the generator of the ideal $\\{p \\in R[X] : p(A) = 0\\}$, and $m_A \\mid p_A$ by Cayley-Hamilton."
+    },
+    {
+      "id": "2x2-case",
+      "title": "The 2×2 Case: Trace and Determinant",
+      "startLine": 164,
+      "endLine": 188,
+      "summary": "Explicit $2 \\times 2$ Cayley-Hamilton: $A^2 - \\text{tr}(A) \\cdot A + \\det(A) \\cdot I = 0$. Derives the inverse formula $A^{-1} = \\frac{1}{\\det(A)}(\\text{tr}(A) \\cdot I - A)$ when $\\det(A) \\neq 0$. Verified with concrete $2 \\times 2$ matrices via `native_decide`.",
+      "mathContext": "For $A = \\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$: $\\text{tr}(A) = a+d$, $\\det(A) = ad-bc$, and $A^2 - (a+d)A + (ad-bc)I = 0$. Rearranging: $A^{-1} = \\frac{1}{ad-bc}\\begin{pmatrix} d & -b \\\\ -c & a \\end{pmatrix}$ — the classical adjugate formula."
+    },
+    {
+      "id": "significance",
+      "title": "Theoretical Significance and Commentary",
+      "startLine": 189,
+      "endLine": 250,
+      "summary": "Doc sections on applications (matrix powers, exponentials, control theory), the minimal polynomial, eigenvalue factorization $(A-\\lambda_1 I)\\cdots(A-\\lambda_n I) = 0$, and historical notes on Cayley, Hamilton, and Frobenius.",
+      "mathContext": "Key applications: (1) $A^k$ for $k \\geq n$ reduces to a degree $< n$ polynomial in $A$; (2) $e^{At} = \\sum_{k=0}^{n-1} \\alpha_k(t) A^k$ for computing state transitions in control theory; (3) the minimal polynomial $m_A \\mid p_A$ determines the Jordan structure."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization demonstrates the Cayley-Hamilton theorem using Mathlib's algebraic approach. The theorem states that every square matrix satisfies its own characteristic polynomial, a fundamental result with far-reaching applications.",
+    "implications": "The theorem has important implications for computing matrix functions, analyzing linear dynamical systems, and understanding the algebraic structure of matrix rings. It shows that n×n matrices form a space of 'polynomial dimension' n.",
+    "openQuestions": [
+      "What is the minimal polynomial of a given matrix, and how does it relate to the characteristic polynomial?",
+      "How can Cayley-Hamilton be used to efficiently compute matrix exponentials e^(At)?",
+      "What is the analog of Cayley-Hamilton for infinite-dimensional operators?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "related",
+      "description": "FTA guarantees the characteristic polynomial of a complex matrix splits into linear factors (eigenvalues). Cayley-Hamilton then says the matrix is annihilated by the product of these linear factors"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "thematic",
+      "description": "Both are 'every element satisfies a universal polynomial' results: Lagrange says every group element g satisfies g^|G| = e, Cayley-Hamilton says every matrix M satisfies p(M) = 0 where p is the characteristic polynomial"
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "The eigenvalues of a matrix are the roots of its characteristic polynomial. For matrices larger than 4×4, Abel-Ruffini implies these roots cannot always be expressed in radicals — yet Cayley-Hamilton guarantees the matrix satisfies the polynomial regardless"
+    },
+    {
+      "targetId": "cayley-hamilton-reduction",
+      "relationship": "extended-by",
+      "description": "Applies Cayley-Hamilton to reduce matrix functions: since $p(M) = 0$, any polynomial in $M$ of degree $\\geq n$ can be reduced to degree $< n$, enabling efficient computation of matrix exponentials and powers"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "extended-by",
+      "description": "Develops the minimal polynomial theory: the minimal polynomial $m(x)$ divides the characteristic polynomial $p(x)$ by Cayley-Hamilton, and $m(M) = 0$ is the strongest polynomial annihilation result — answering the open question about minimal polynomials"
+    },
+    {
+      "targetId": "cramers-rule",
+      "relationship": "related",
+      "description": "Cramer's rule ($x_i = \\det(A_i)/\\det(A)$) and Cayley-Hamilton share the same algebraic core: the adjugate matrix identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$. Cramer's rule uses it to solve linear systems, while Cayley-Hamilton evaluates $\\text{adj}(XI - A) \\cdot (XI - A) = \\det(XI - A) \\cdot I$ at $X = A$ to prove $p_A(A) = 0$. The inverse formula $A^{-1} = \\frac{1}{\\det(A)} \\text{adj}(A)$ — a direct consequence of both results — appears explicitly in the 2×2 case section"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.Data.Matrix.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "BigOperators"
+    ],
+    "namespace": "CayleyHamilton",
+    "lineCount": 250,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/CayleyHamilton.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Cayley, Arthur",
+      "title": "A memoir on the theory of matrices",
+      "year": "1858",
+      "venue": "Philosophical Transactions of the Royal Society of London 148, 17–37",
+      "note": "Stated the theorem for 2×2 and 3×3 matrices; general proof came later"
+    },
+    {
+      "authors": "Hamilton, William Rowan",
+      "title": "Lectures on Quaternions",
+      "year": "1853",
+      "venue": "Hodges and Smith, Dublin",
+      "note": "Hamilton proved the analogous result for quaternions, anticipating the matrix case"
+    },
+    {
+      "authors": "Horn, Roger A.; Johnson, Charles R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Modern treatment with multiple proofs including via the adjugate matrix and minimal polynomial"
+    },
+    {
+      "authors": "Cayley, Arthur",
+      "title": "A Memoir on the Theory of Matrices",
+      "year": "1858",
+      "venue": "Philosophical Transactions of the Royal Society of London 148, 17–37",
+      "note": "Cayley's foundational paper introducing matrix algebra and stating the theorem that every matrix satisfies its characteristic equation, verified for 2×2 and 3×3 cases"
+    },
+    {
+      "authors": "Hamilton, William Rowan",
+      "title": "Lectures on Quaternions",
+      "year": "1853",
+      "venue": "Hodges and Smith, Dublin",
+      "note": "Hamilton proved that every quaternion satisfies a quadratic equation — the quaternionic analogue of Cayley-Hamilton, predating Cayley's matrix formulation by five years"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "cayley_hamilton",
+      "type": "core",
+      "description": "Every square matrix satisfies its characteristic polynomial: chi_A(A) = 0",
+      "leanType": "(A : Matrix (Fin n) (Fin n) R) -> aeval A A.charpoly = 0"
+    },
+    {
+      "name": "minpoly_dvd_charpoly",
+      "type": "key",
+      "description": "The minimal polynomial divides the characteristic polynomial",
+      "leanType": "(A : Matrix (Fin n) (Fin n) R) -> minpoly R A dvd A.charpoly"
+    }
+  ],
+  "sorries": 0
+}

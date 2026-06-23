@@ -1,0 +1,258 @@
+{
+  "id": "erdos-828",
+  "title": "Erdős Problem #828: Totient Divisibility φ(n) | n + a",
+  "slug": "erdos-828",
+  "description": "For any integer a, are there infinitely many n such that φ(n) divides n + a? Generalizes Lehmer's conjecture (a = -1) and the characterized case a = 0 (n = 2^a · 3^b). OPEN.",
+  "meta": {
+    "author": "Erdős (1983), Graham (conjecture attribution)",
+    "sourceUrl": "https://erdosproblems.com/828",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos828Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "totient-function",
+      "divisibility",
+      "lehmer-conjecture",
+      "open"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 828,
+    "erdosUrl": "https://erdosproblems.com/828",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "totient_prime",
+        "description": "φ(p) = p - 1 for prime p",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_even",
+        "description": "φ(n) is even for n ≥ 3",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_prime_pow",
+        "description": "φ(p^k) = p^(k-1)(p-1) for prime p",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.infinite_setOf_prime",
+        "description": "The set of primes is infinite",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Set.infinite_of_injective_forall_mem",
+        "description": "Injective function into a set implies the set is infinite",
+        "module": "Mathlib.Data.Set.Finite.Basic"
+      }
+    ],
+    "originalContributions": [
+      "totientDivisors definition: {n : φ(n) | n + a}",
+      "totient_dvd_self_iff theorem: a = 0 characterization (fully proved via 2-adic decomposition)",
+      "totientDivisors_zero_infinite: proved via powers-of-2 family and Set.infinite_of_injective_forall_mem",
+      "lehmerConjecture definition",
+      "prime_totient_dvd_pred theorem: constructive proof via totient_prime",
+      "totientDivisors_neg_one_infinite: proved via Set.Infinite.mono with Nat.infinite_setOf_prime",
+      "erdos828Conjecture definition",
+      "totient_even: proved from Nat.totient_even",
+      "totient_prime_pow_formula: proved from Nat.totient_prime_pow",
+      "erdos_828_summary theorem"
+    ],
+    "axiomCount": 0,
+    "lineCount": 346,
+    "theoremCount": 17,
+    "assumptions": "0 axioms, 0 sorries. totient_dvd_self_iff fully proved: φ(n)|n iff n≤1 or n=2^a·3^b. Key technique: 2-adic decomposition n=2^α·m, show φ(m)|2m, prove m has at most one odd prime factor (otherwise 4|φ(m)|2m contradicts m odd), then (p-1)|2p forces p=3. Open conjecture; supporting lemmas fully verified.",
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #828, from [Er83], asks a sweeping question about Euler's totient function: for every integer a, must there be infinitely many n with φ(n) | n + a? The conjecture is attributed to Graham and appears as Problem B37 in Guy's 'Unsolved Problems in Number Theory' (2004). It unifies several classical problems about totient divisibility into a single framework.\n\nThe case a = 0 is completely understood: φ(n) | n if and only if n ≤ 1 or n = 2^a · 3^b for some a > 0 (the 3-smooth numbers with a factor of 2). This characterization follows from the multiplicative formula φ(n)/n = ∏_{p|n}(1 - 1/p), which yields an integer ratio only when the prime factors are 2 and 3. The case a = -1 is far more famous: asking when φ(n) | n - 1 is essentially Lehmer's conjecture (1932), which asserts that the only solutions with n > 1 are the primes (where φ(p) = p - 1 trivially divides p - 1).\n\nThe general conjecture remains wide open. While the a = 0 and a = -1 cases have rich structure, extending the analysis to arbitrary a ∈ ℤ requires understanding the arithmetic of the totient function at a much deeper level. The problem connects to Carmichael's totient conjecture and to the Fermat-Euler theorem, which shows a^{φ(n)} ≡ 1 (mod n) for gcd(a,n) = 1.",
+    "problemStatement": "**Problem Statement (Open)**\n\nFor any integer $a \\in \\mathbb{Z}$, are there infinitely many $n$ such that $\\varphi(n) \\mid n + a$?\n\n**Known Cases:**\n- $a = 0$: Completely characterized — $\\varphi(n) \\mid n$ iff $n = 2^a \\cdot 3^b$\n- $a = -1$: Lehmer's conjecture (1932) — only primes satisfy $\\varphi(n) \\mid n-1$ for $n > 1$ (OPEN)\n\n**Attribution:** Conjecture of Graham. See Guy (2004), Problem B37.",
+    "text": "For any integer a, are there infinitely many n such that φ(n) divides n + a? Generalizes Lehmer's conjecture (a = -1) and the characterized case a = 0 (n = 2^a · 3^b). OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization defines totientDivisors(a) as the set {n ∈ ℕ : φ(n) | n + a} using integer arithmetic to handle negative a. The deep characterization totient_dvd_self_iff (φ(n)|n iff n=2^a·3^b) is fully proved (no axioms).\n\nThe infiniteness of totientDivisors(0) is proved constructively by showing all powers of 2 are members (φ(2^(k+1))=2^k | 2^(k+1)) using Set.infinite_of_injective_forall_mem. The infiniteness of totientDivisors(-1) is proved via Set.Infinite.mono from Nat.infinite_setOf_prime, since all primes p satisfy φ(p)=p-1 | p+(-1).\n\nStructural properties (totient_even, totient_prime_pow_formula) are proved directly from Mathlib's Nat.totient_even and Nat.totient_prime_pow.",
+    "keyInsights": [
+      "**a = 0 Characterized:** φ(n) | n iff n = 2^a · 3^b — only 3-smooth numbers with a factor of 2",
+      "**Lehmer's Conjecture (a = -1):** No composite n > 1 known with φ(n) | n - 1; open since 1932",
+      "**Totient Evenness:** φ(n) is even for n > 2, constraining which n + a can be divisible by φ(n)",
+      "**Prime Power Formula:** φ(p^k) = p^(k-1)(p-1) controls divisibility in prime power cases",
+      "**Unifying Framework:** The conjecture packages infinitely many individual questions (one per integer a) into a single statement"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Background",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Docstring summarizing Erdős Problem #828: for any integer $a$, are there infinitely many $n$ with $\\varphi(n) \\mid n + a$? Lists the key cases ($a = 0$ characterized, $a = -1$ is Lehmer's conjecture) and references. Imports Mathlib and opens the `Nat` and `Set` namespaces.",
+      "mathContext": "The problem unifies several classical questions. For $a = 0$: $\\varphi(n) \\mid n$ iff $n \\in \\{0,1\\}$ or $n = 2^a \\cdot 3^b$. For $a = -1$: $\\varphi(n) \\mid n-1$ is Lehmer's conjecture (1932). Attribution to Graham; see Guy (2004), Problem B37."
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 34,
+      "endLine": 39,
+      "summary": "Defines `totientDivisors(a)` as the set $\\{n \\in \\mathbb{N} : \\varphi(n) \\mid n + a\\}$ using integer arithmetic to handle negative $a$.",
+      "mathContext": "The central object: $\\text{totientDivisors}(a) = \\{n \\in \\mathbb{N} : \\varphi(n) \\mid n + a\\}$ where $\\varphi$ is Euler's totient and the divisibility is checked in $\\mathbb{Z}$."
+    },
+    {
+      "id": "two-pow-three-pow-lemma",
+      "title": "Totient Divides $2^a \\cdot 3^b$",
+      "startLine": 40,
+      "endLine": 66,
+      "summary": "Proves `totient_dvd_two_pow_mul_three_pow`: for $a > 0$ and any $b$, $\\varphi(2^a \\cdot 3^b) \\mid 2^a \\cdot 3^b$. The base case ($b = 0$) uses $\\varphi(2^a) = 2^{a-1}$. The inductive case uses coprimality of $2^a$ and $3^{b+1}$, multiplicativity $\\varphi(mn) = \\varphi(m)\\varphi(n)$, and the prime power formulas to reduce to a divisibility chain.",
+      "mathContext": "$\\varphi(2^a \\cdot 3^b) = 2^{a-1} \\cdot 3^{b-1} \\cdot 2 = 2^a \\cdot 3^{b-1}$ divides $2^a \\cdot 3^b$ since $3^{b-1} \\mid 3^b$. This establishes the reverse direction of the characterization: every $2^a \\cdot 3^b$ with $a > 0$ lies in $\\text{totientDivisors}(0)$."
+    },
+    {
+      "id": "odd-prime-classification",
+      "title": "Odd Prime Classification Lemma",
+      "startLine": 67,
+      "endLine": 77,
+      "summary": "Proves `odd_prime_of_pred_dvd_two_mul`: if $p$ is an odd prime with $(p-1) \\mid 2p$, then $p = 3$. Uses the fact that $\\gcd(p-1, p) = 1$, so $(p-1) \\mid 2p$ implies $(p-1) \\mid 2$, forcing $p \\leq 3$.",
+      "mathContext": "Key classification: among odd primes $p$, the condition $(p-1) \\mid 2p$ pins down $p = 3$ uniquely. Since $\\gcd(p-1, p) = 1$ (consecutive integers are coprime), we get $(p-1) \\mid 2$, so $p - 1 \\in \\{1, 2\\}$, hence $p \\in \\{2, 3\\}$, and $p \\neq 2$ forces $p = 3$."
+    },
+    {
+      "id": "factorization-helpers",
+      "title": "Factorization Helper Lemmas",
+      "startLine": 78,
+      "endLine": 122,
+      "summary": "Four helper lemmas for the forward direction of the characterization. `factorization_pos_of_dvd`: if prime $p \\mid n$ then $p$'s exponent in $n$ is positive. `pow_factorization_dvd`: $p^{v_p(n)} \\mid n$. `coprime_pow_factorization_div`: $\\gcd(p^{v_p(n)},\\, n / p^{v_p(n)}) = 1$. `pred_dvd_totient_of_prime_dvd`: if $p \\mid n$ then $(p-1) \\mid \\varphi(n)$.",
+      "mathContext": "These lemmas wrap the $p$-adic valuation $v_p(n)$ and the decomposition $n = p^{v_p(n)} \\cdot (n / p^{v_p(n)})$ with coprime factors. The key consequence is $(p-1) \\mid \\varphi(n)$ whenever $p \\mid n$, since $\\varphi(p^e) = p^{e-1}(p-1)$ and $\\varphi$ is multiplicative over coprime factors."
+    },
+    {
+      "id": "parity-lemmas",
+      "title": "Parity and Divisibility Lemmas",
+      "startLine": 123,
+      "endLine": 136,
+      "summary": "Two parity lemmas. `two_dvd_pred_of_odd_prime`: $2 \\mid (p-1)$ for any odd prime $p$, proved by showing $p$ is odd so $p-1$ is even. `four_not_dvd_two_mul_odd`: if $m$ is odd then $4 \\nmid 2m$, a simple divisibility argument.",
+      "mathContext": "For odd primes $p$, $p - 1$ is even, so $2 \\mid (p-1)$. Combined with `pred_dvd_totient_of_prime_dvd`, this gives: if two distinct odd primes $p, r$ divide $n$, then $4 \\mid \\varphi(n)$. The lemma $4 \\nmid 2m$ (for odd $m$) provides the contradiction in the uniqueness argument."
+    },
+    {
+      "id": "odd-totient-structure",
+      "title": "Odd Numbers with $\\varphi(m) \\mid 2m$ Are Powers of 3",
+      "startLine": 137,
+      "endLine": 209,
+      "summary": "Proves `odd_totient_dvd_two_mul`: if $m > 0$, $m \\neq 1$, $m$ is odd, and $\\varphi(m) \\mid 2m$, then $m = 3^e$ for some $e > 0$. The proof has three steps: (1) $m$ has exactly one prime factor (otherwise two odd prime divisors give $4 \\mid \\varphi(m) \\mid 2m$, contradicting $m$ odd); (2) $m = p^e$ since $p$ is the sole prime factor; (3) $(p-1) \\mid 2p$ forces $p = 3$.",
+      "mathContext": "This is the deepest lemma in the file. If $m$ is odd with $\\varphi(m) \\mid 2m$, suppose $p \\neq r$ are both odd prime divisors. Then $2 \\mid (p-1) \\mid \\varphi(p^{v_p(m)})$ and $2 \\mid (r-1) \\mid \\varphi(m/p^{v_p(m)})$, so $4 \\mid \\varphi(m) \\mid 2m$. But $4 \\nmid 2m$ since $m$ is odd — contradiction. Hence $m = p^e$, and $\\varphi(p^e) = p^{e-1}(p-1) \\mid 2p^e$ simplifies to $(p-1) \\mid 2p$, giving $p = 3$."
+    },
+    {
+      "id": "characterization-theorem",
+      "title": "Full Characterization: $\\varphi(n) \\mid n$ iff $n = 2^a \\cdot 3^b$",
+      "startLine": 210,
+      "endLine": 290,
+      "summary": "Proves `totient_dvd_self_iff`: $\\varphi(n) \\mid n$ iff $n \\leq 1$ or $n = 2^a \\cdot 3^b$ with $a > 0$. The forward direction extracts the 2-adic part $n = 2^\\alpha \\cdot m$ with $m$ odd, shows $\\varphi(n) = 2^{\\alpha-1} \\cdot \\varphi(m)$, deduces $\\varphi(m) \\mid 2m$, and applies `odd_totient_dvd_two_mul` to get $m = 3^b$. The reverse uses `totient_dvd_two_pow_mul_three_pow`.",
+      "mathContext": "The central result: $\\varphi(n) \\mid n \\Leftrightarrow n \\leq 1$ or $n = 2^a \\cdot 3^b$. Forward: write $n = 2^\\alpha m$ with $m$ odd, $\\alpha \\geq 1$ (since $\\varphi(n)$ even for $n \\geq 3$ forces $2 \\mid n$). Then $\\varphi(n) = 2^{\\alpha-1} \\varphi(m)$ and $\\varphi(n) \\mid n$ gives $\\varphi(m) \\mid 2m$, so $m = 3^b$ or $m = 1$. Reverse: direct computation."
+    },
+    {
+      "id": "zero-infinite",
+      "title": "Infinitely Many Solutions for $a = 0$",
+      "startLine": 291,
+      "endLine": 303,
+      "summary": "Proves `totientDivisors_zero_infinite`: $\\text{totientDivisors}(0)$ is infinite by exhibiting the injective family $k \\mapsto 2^{k+1}$. Each member satisfies $\\varphi(2^{k+1}) = 2^k \\mid 2^{k+1}$. Uses `Set.infinite_of_injective_forall_mem` with injectivity from `Nat.pow_right_injective`.",
+      "mathContext": "$\\varphi(2^{k+1}) = 2^k$ divides $2^{k+1} = 2 \\cdot 2^k$, so every $2^{k+1}$ lies in $\\text{totientDivisors}(0)$. The map $k \\mapsto 2^{k+1}$ is injective, giving infinitely many distinct elements."
+    },
+    {
+      "id": "lehmer-conjecture",
+      "title": "Lehmer's Conjecture and the $a = -1$ Case",
+      "startLine": 304,
+      "endLine": 321,
+      "summary": "Defines `lehmerConjecture`: for $n > 1$, $\\varphi(n) \\mid n-1$ iff $n$ is prime (open since 1932). Proves `prime_totient_dvd_pred`: $\\varphi(p) \\mid p-1$ for prime $p$ (trivially $p-1 \\mid p-1$). Proves `totientDivisors_neg_one_infinite`: every prime $p$ satisfies $\\varphi(p) \\mid p + (-1)$, so $\\text{totientDivisors}(-1)$ is infinite via `Nat.infinite_setOf_prime`.",
+      "mathContext": "Lehmer's conjecture (1932): no composite $n > 1$ satisfies $\\varphi(n) \\mid n-1$. The easy direction ($n$ prime $\\Rightarrow \\varphi(n) = n-1 \\mid n-1$) gives infinitely many witnesses for $a = -1$, since there are infinitely many primes."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "startLine": 322,
+      "endLine": 326,
+      "summary": "Defines `erdos828Conjecture`: $\\forall a \\in \\mathbb{Z},\\; \\text{totientDivisors}(a)$ is infinite. This is the full open problem — the formalization establishes it as a `Prop` without proof.",
+      "mathContext": "The conjecture $\\forall a \\in \\mathbb{Z},\\; |\\{n : \\varphi(n) \\mid n + a\\}| = \\infty$ remains open. The cases $a = 0$ and $a = -1$ are proved infinite in this file, but the general statement (attributed to Graham) is unresolved."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties of the Totient",
+      "startLine": 327,
+      "endLine": 339,
+      "summary": "Three structural results. `totient_even_of_gt_two`: $2 \\mid \\varphi(n)$ for $n > 2$, from `Nat.totient_even`. `totient_prime'`: $\\varphi(p) = p - 1$ (wrapper around `totient_prime`). `totient_prime_pow_formula`: $\\varphi(p^k) = p^{k-1}(p-1)$ for $k > 0$ (wrapper around `Nat.totient_prime_pow`).",
+      "mathContext": "These are standard identities. $\\varphi(n)$ is even for $n \\geq 3$ because either $4 \\mid n$ (giving $2 \\mid \\varphi(4) \\mid \\varphi(n)$) or $n$ has an odd prime factor $p$ with $2 \\mid (p-1) \\mid \\varphi(n)$. The prime power formula $\\varphi(p^k) = p^{k-1}(p-1)$ follows from counting integers up to $p^k$ not divisible by $p$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Theorem",
+      "startLine": 340,
+      "endLine": 346,
+      "summary": "Proves `erdos_828_summary`: both $\\text{totientDivisors}(0)$ and $\\text{totientDivisors}(-1)$ are infinite, packaging the two main results. Closes the `Erdos828` namespace.",
+      "mathContext": "The conjunction $\\text{totientDivisors}(0).\\text{Infinite} \\wedge \\text{totientDivisors}(-1).\\text{Infinite}$ summarizes the formalization's verified content: the $a = 0$ case (via powers of 2) and the $a = -1$ case (via primes) are both settled."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #828 asks whether totientDivisors(a) is infinite for every integer a. The a = 0 case is fully characterized (3-smooth numbers), and the a = -1 case is Lehmer's famous 1932 conjecture. The formalization constructively proves infiniteness for both a=0 (via powers of 2) and a=-1 (via primes), plus structural properties from Mathlib. The deep characterization totient_dvd_self_iff is fully proved via 2-adic decomposition (0 axioms, 0 sorries).",
+    "implications": "**Theoretical Significance**: **Number Theory Connections**\n\n1. **Lehmer's Conjecture:** The a = -1 case is one of the most famous open problems about the totient function\n\n**2. Totient Arithmetic:** Resolution would illuminate the divisibility structure of Euler's totient at a deep level\n\n3. **Carmichael's Conjecture:** Related conjecture that φ(n) = φ(m) always has a solution m ≠ n\n\n4. **Unification:** The problem unifies infinitely many specific divisibility questions into one conjecture.",
+    "openQuestions": [
+      "Are there composite Lehmer numbers (φ(n) | n - 1 with n > 1 composite)?",
+      "What is the density of solutions for each fixed a?",
+      "Can solutions be characterized for specific values of a beyond 0?",
+      "What is the smallest n in totientDivisors(a) as a function of a?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "Set"
+    ],
+    "namespace": "Erdos828",
+    "lineCount": 346,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos828Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1063",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, open"
+    },
+    {
+      "targetId": "erdos-396",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, open"
+    },
+    {
+      "targetId": "erdos-650",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: divisibility, number-theory, open"
+    }
+  ],
+  "sorries": 0
+}

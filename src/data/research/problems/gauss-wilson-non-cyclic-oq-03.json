@@ -1,0 +1,130 @@
+{
+  "slug": "gauss-wilson-non-cyclic-oq-03",
+  "title": "Exact count of square roots of unity in (ZMod n)× via CRT generalization",
+  "phase": "ACT",
+  "status": "blocked",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\#\\{x \\in \\mathbb{Z}/n\\mathbb{Z} : x^2 = 1\\} = 2^{\\omega_{\\text{odd}}(n) + \\varepsilon_2(n)}",
+    "plain": "Upgrade the parent's qualitative lower bound (≥ 3 square roots of 1 for non-cyclic (ℤ/nℤ)×) to the exact count formula via CRT. For n = 2^a · m with m odd having k distinct odd prime factors, the number of solutions to x² ≡ 1 (mod n) is 2^(k + ε₂(n)) where ε₂(n) ∈ {0,1,2} is the standard 2-adic correction (0 if a ≤ 1, 1 if a = 2, 2 if a ≥ 3).",
+    "whyMatters": [
+      "Completes the gallery's coverage of the Gauss-Wilson generalization: the parent file proves the qualitative ≥ 3 lower bound; OQ-03 gives the quantitative exact count for every n.",
+      "Textbook CRT specialization in the gallery — the proof is a clean application of the Chinese Remainder Theorem plus the well-known unit-group structure of ZMod prime-power moduli.",
+      "Same count appears in three different formulations (ring solutions of x²=1, 2-torsion of (ZMod n)ˣ, real Dirichlet characters mod n) — a single proof unlocks all three corollaries."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT (BLOCKED — Docker down)",
+    "since": "2026-06-12T00:00:00.000Z",
+    "iteration": 8,
+    "focus": "S5b.3 (researcher-2, 2026-06-12, merged): ACT — closed the structural power-of-2 unit-side count for k ≥ 3 (count = 4), the last of the three per-prime-power even cases and the ε₂(n)=2 leg of the two-adic correction. New Section 9 with two theorems in proofs/Proofs/GaussWilsonNonCyclicOQ03.lean: two_pow_dvd_split (private ℕ helper) and card_filter_sq_eq_one_units_zmod_two_pow_ge_three (#{u : (ZMod 2^k)ˣ | u²=1} = 4 for k ≥ 3), proved via elementary divisibility rather than the PREP's orderOf_five route. With S5 (odd-prime power, count 2), S5b.1 (k=1, count 1) and S5b.2 (k=2, count 2), this closes ALL per-prime-power unit-side counts feeding S6 (CRT multiplicativity). File: 396 → 584 lines (+188, +2 theorems, +1 new Section 9). 0 axioms, 1 sorry (the main theorem card_sqrts_one_eq_numSqrtsOne, line 131). Source (584 lines, 11 col-0 theorems/lemmas, Sections 1–9) confirmed in sync with state.md via this session's AUDIT against origin/main.",
+    "blockers": [
+      "Docker daemon down on host (2026-06-13 verification blackout, `docker info` hangs/exit 124) → cannot run ./proofs/scripts/docker-build.sh to verify any new proof; direct `lake build` is forbidden (CLAUDE.md).",
+      "Both remaining steps are heavy build-dependent ACT: S6 (CRT multiplicativity, assembles S5+S5b.1+S5b.2+S5b.3 into a multiplicative formula over n.primeFactors) and S7 (induction assembly on n.primeFactors.card, closes the sole remaining sorry card_sqrts_one_eq_numSqrtsOne). Neither is verifiable without a build.",
+      "S6/S7 already have 4 accumulated PREP/audit sessions (2026-05-12 s06-prep-crt-multiplicativity, 2026-05-13 s06-s07-prep-mathlib-api-audit, 2026-05-13 s07-prep-main-theorem-induction, 2026-05-13 s07b-prep-bookkeeping-discharge) — the design is saturated; only the build-gated ACT remains, so further PREP would be churn.",
+      "No build-free win remains: per-prime-power counts all closed (S5/S5b.1/S5b.2/S5b.3), state.md ↔ source ↔ this JSON now in sync. Aristotle backend still 404s during the 2026-06-13 blackout."
+    ],
+    "nextAction": "S5b.3 ACT: substantive even-prime work — (ZMod 2^k)ˣ count for k ≥ 3 via the `orderOf_five` cardinality squeeze (~60-90 LOC). Complete design in S5b PREP #18648 §3.3; the proof adapts `Mathlib/NumberTheory/ArithmeticFunction/Carmichael.lean:135-148`'s established `orderOf_five` idiom. Then S6 ACT (CRT multiplicativity) combines S5 + S5b.1 + S5b.2 + S5b.3 into a multiplicative formula over n.primeFactors (design in S6 PREP #18423). Then S7 ACT (induction assembly) closes the main theorem `card_sqrts_one_eq_numSqrtsOne` (design in S7 PREP #18465).",
+    "attemptCounts": {
+      "total": 6,
+      "currentApproach": 6,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S4 closes the generic order-of half: every cyclic group of even order has exactly 2 square roots of 1, dispatched by totient lookup. S5 will plug in the ZMod-side cyclicity + even-order witnesses to get the prime-power specialisation; S6 will multiplicatively assemble via CRT; S7 will close the remaining sorry by induction on n.primeFactors.card.",
+    "builtItems": [
+      "research/problems/gauss-wilson-non-cyclic-oq-03/problem.md (new, ~280 lines): full problem statement, two formal-statement variants (counted-form on the ring and structural-form on the unit group), Mathlib infrastructure map, theoretical path through CRT + prime-power cyclicity + (ZMod 2^k)ˣ structure, decomposition into S2–S5 sessions.",
+      "research/problems/gauss-wilson-non-cyclic-oq-03/state.md (new): phase NEW → OBSERVE; concrete S2 skeleton for proofs/Proofs/GaussWilsonNonCyclicOQ03.lean with 1 sorry placeholder.",
+      "research/problems/gauss-wilson-non-cyclic-oq-03/knowledge.md (new, ~200 lines): numerical table N=1..120 verifying the formula at 18 values, closed-formula derivation, parent-file API summary, Mathlib status with module names, three equivalent counts (ring / units / characters), S2 skeleton.",
+      "proofs/Proofs/GaussWilsonNonCyclicOQ03.lean (new, ~120 lines): epsTwo, omegaOdd, numSqrtsOne defs; numSqrtsOne_pos proved; 13 decide examples spanning powers of 2, odd-only, and mixed cases; card_sqrts_one_eq_numSqrtsOne main theorem statement with sorry.",
+      "proofs/Proofs/GaussWilsonNonCyclicOQ03.lean S4 generic endpoint: card_filter_sq_eq_one_cyclic_even (Section 6). For any [Group][DecidableEq][Fintype][IsCyclic] G with 2 ∣ Fintype.card G, #{u : G | u^2 = 1} = 2. Proof: rw card_filter_sq_eq_one_decomp; rw card_orderOf_eq_totient at d=1 and d=2; decide. 257 → 296 lines.",
+      "proofs/Proofs/GaussWilsonNonCyclicOQ03.lean S5b.1+.2 endpoint (researcher-1, 2026-06-04): Section 8 — card_filter_sq_eq_one_units_zmod_two (count = 1; trivial group (ZMod 2)ˣ) and card_filter_sq_eq_one_units_zmod_four (count = 2; cyclic order 2 (ZMod 4)ˣ). Both via pure `decide`. Implements the batched proposal from S5b PREP #18648 (researcher-8, 2026-05-13). File: 335 → 396 lines, +2 theorems, 0 axioms, 1 sorry unchanged."
+    ],
+    "insights": [
+      "Closed formula: # = 2^(ω_odd(n) + ε₂(n)) where ω_odd(n) is the number of distinct odd prime factors of n and ε₂(n) is 0 if v₂(n) ≤ 1, 1 if v₂(n) = 2, 2 if v₂(n) ≥ 3.",
+      "The power-of-2 case is the only subtlety: for odd primes p, (ZMod p^k)ˣ is cyclic of even order → exactly 2 square roots of 1; the bifurcation at v₂(n) ∈ {0, 1, 2, ≥3} is the structural source of ε₂.",
+      "Three equivalent counts: solutions to x²=1 in ZMod n equals |2-torsion of (ZMod n)ˣ| equals number of real Dirichlet characters mod n (via Pontryagin duality Hom(A, ℤ/2) ≅ A[2]).",
+      "Parent file's `unitOfSqEqOne` is the ring↔unit-group bridge: every x : ZMod n with x²=1 is automatically a unit, so the ring-level count equals the unit-level count. OQ-03 should state the main theorem at whichever level is most direct for the proof (ring level recommended).",
+      "Parent file uses Nat.ordProj_mul_ordCompl_eq_self for the 2-adic split (not Nat.factorization directly). S2 should match this convention for code-style consistency, or document the choice explicitly.",
+      "Definition design: use Nat.primeFactors (computable, returns Finset ℕ) rather than Nat.factorization.support (noncomputable due to multiplicity under the hood). Allows decide-based small-case verification.",
+      "The two-adic correction epsTwo is most naturally expressed as nested ifs on n % 8 and n % 4 rather than v₂(n) directly — keeps the def in the decidable fragment.",
+      "Three concrete defs cleanly separate concerns: epsTwo (2-adic), omegaOdd (odd prime count), numSqrtsOne (combined 2^...). Future S3..S5 lemmas attach to each independently.",
+      "S4 generic step: IsCyclic + 2 ∣ |G| ⇒ #{u | u² = 1} = 2. The order-1 component is the identity (φ(1) = 1); the order-2 component is the unique involution (φ(2) = 1, available iff 2 ∣ |G|). This decouples the order-of analysis from the ZMod-specific cyclicity proof; downstream (S5+) just plugs in ZMod.isCyclic_units_of_prime_pow + p-1 even for odd p."
+    ],
+    "mathlibGaps": [
+      "A standalone `card_sqrts_one_formula` theorem for ZMod n at the pinned revision. The pieces (CRT, prime-power cyclicity, (ZMod 2^k)ˣ structure) are all present but the assembled exact-count formula appears to be gallery-only.",
+      "A noncomputable def numSqrtsOne : ℕ → ℕ packaging the formula. Without this, every consumer has to redo the case split on v₂(n).",
+      "A statement at the unit group level Nat.card {u : (ZMod n)ˣ // u^2 = 1}. The parent's unitOfSqEqOne provides the bridge but a direct unit-level count would be a useful Mathlib addition."
+    ],
+    "nextSteps": [
+      "S3: prove prime-power cases. (a) Odd p, k ≥ 1: count = 2 via cyclic 2-torsion. (b) 2^k for k ∈ {0,1,2,≥3} explicitly. ~100 lines.",
+      "S4: CRT multiplicativity for the filter count via ZMod.chineseRemainder + Finset.card_image_of_injective. ~50 lines.",
+      "S5: induction on n.primeFactors.card to assemble S3 + S4 → card_sqrts_one_eq_numSqrtsOne. ~40 lines."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "group-theory",
+    "cyclic-groups",
+    "zmod",
+    "wilson-gauss",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "gauss-wilson-non-cyclic",
+    "wilsons-theorem",
+    "euler-totient",
+    "chinese-remainder-constructive"
+  ],
+  "references": {
+    "papers": [
+      "Gauss, C. F. (1801). Disquisitiones Arithmeticae §96 (the original generalization of Wilson's theorem to composite moduli).",
+      "Hardy, G. H. & Wright, E. M. (1979). An Introduction to the Theory of Numbers, 5th ed., §6.3 (Wilson's theorem and generalizations)."
+    ],
+    "urls": [
+      "https://oeis.org/A060594"
+    ],
+    "mathlib": [
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.RingTheory.ZMod.UnitsCyclic",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.NumberTheory.Padics.PadicVal",
+      "Mathlib.Data.Nat.Factorization.Basic"
+    ]
+  },
+  "started": "2026-05-12T04:44:06.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/GaussWilsonNonCyclic.lean",
+      "filename": "GaussWilsonNonCyclic.lean",
+      "lineCount": 324,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclic.lean"
+    },
+    {
+      "path": "Proofs/GaussWilsonNonCyclicOQ03.lean",
+      "filename": "GaussWilsonNonCyclicOQ03.lean",
+      "lineCount": 585,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclicOQ03.lean"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-02",
+  "title": "Besicovitch's Theorem: ℚ-Linear Independence of √(squarefree)",
+  "status": "surveyed",
+  "phase": "ORIENT",
+  "tier": "B",
+  "significance": 5,
+  "tractability": 6,
+  "started": "2026-06-14",
+  "lastUpdate": "2026-06-14",
+  "path": "research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-02",
+  "problemStatement": "Generalize OQ-01 (irrationality of √2+√3+√5) to Besicovitch's theorem: the square roots of distinct squarefree integers are linearly independent over ℚ; equivalently [ℚ(√p₁,…,√pₙ):ℚ]=2ⁿ for distinct primes, with the 2ⁿ subset products a ℚ-basis.",
+  "problemSource": "Seeker-selected stub (no problem.md); OQ defined this session.",
+  "tags": [
+    "number-theory",
+    "field-theory",
+    "multiquadratic",
+    "besicovitch",
+    "linear-independence",
+    "diophantine",
+    "research"
+  ],
+  "knowledge": {
+    "progressSummary": "BLOCKED (2026-06-15): heart sqrt_prime_not_mem_multiquadratic is BUILD-class (~250-450 LOC) and ALL proving tools are down this session (Docker timeout + Aristotle MCP 'Resource not found' + no local Mathlib source to verify lemma names), so the heart cannot be safely advanced blind. Confirmed Strategy D (sibling oq-01's algebraic-integer route) does NOT generalize to the linear-independence statement. Decomposition verified sound: heart is the sole genuine gap. ORIENT (Docker down, no build): known theorem (Besicovitch 1940). Framed as the structural generalization of OQ-01's ad-hoc squaring; exact-arithmetic verification ALL PASS; Mathlib bearer map identifies the single ~250-450 LOC gap (non-membership induction).",
+    "builtItems": [
+      "research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-02/verify_besicovitch.py: exact sympy verification (A) degree=2^n via primitive element, (B) linear independence of distinct squarefree roots, (C) induction-heart degree doubling, (D) direct refutation for the OQ-01 field — ALL PASS",
+      "proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean: ORIENT skeleton (NOT build-verified) decomposing into irrational_sqrt_prime (base, one-liner), sqrt_prime_not_mem_multiquadratic (HEART, sorry), multiquadratic_subset_products_linearIndependent, besicovitch_sqrt_linearIndependent, and OQ-01 recovery",
+      "research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-02/knowledge.md: field-theory proof + sign-flip-automorphism alternative + bearer map"
+    ],
+    "insights": [
+      "OQ-01's 'square twice to isolate √30' is exactly the n=3 shadow of √2+√3+√5 being a primitive element of the degree-8 field ℚ(√2,√3,√5) (minpoly degree 8 > 1 ⟹ irrational)",
+      "The whole theorem reduces to ONE non-trivial step: √pₖ ∉ ℚ(√p₁,…,√pₖ₋₁) for a new prime pₖ (the induction heart). Upper bound ≤2ⁿ and the n=1 base case are Mathlib one-liners",
+      "Equivalent operational test of the heart (certified exactly): minpoly(Σ_{i≤k} √pᵢ) has exactly twice the degree of minpoly(Σ_{i<k} √pᵢ)",
+      "Independence of distinct squarefree √d follows from degree=2ⁿ because distinct squarefree d have distinct odd-power-prime signatures ⟹ distinct subset-product basis vectors",
+      "Sign-flip automorphism proof (σ_p: √p↦−√p) is the conceptual content of OQ-01's repeated squaring, but needs the same degree theorem to know the automorphisms exist — not strictly easier in Lean",
+      "S(2026-06-15) NEGATIVE RESULT: R10's Strategy D (algebraic-integer + integrally-closed-descent + bounded-interval, which cleanly closed the sibling sqrt2+3+5+7-irrational-oq-01 IRRATIONALITY) does NOT discharge OQ-02's main theorem besicovitch_sqrt_linearIndependent. Strategy D proves a SINGLE sum is irrational (not an integer in an open interval); OQ-02's statement is the stronger FAMILY claim that {sqrt d : d in S} is Q-linearly independent, which requires the full degree=2^n / sign-flip-Galois machinery (i.e. the multiquadratic heart). No shortcut: any nonzero Q-combination vanishing is ruled out only via the (Z/2)^n automorphism group, whose existence needs the degree theorem = the heart. Recorded to prevent a future session re-attempting Strategy D here.",
+      "S(2026-06-15) DECOMPOSITION is sound: of the 3 sorries, only sqrt_prime_not_mem_multiquadratic (HEART, ~250-450 LOC, BUILD-class) is genuinely hard; multiquadratic_subset_products_linearIndependent follows by induction on ps.card using the heart at each step (tower-of-quadratics), and besicovitch_sqrt_linearIndependent follows by the squarefree->subset-product-signature reindexing. So the heart is the SINGLE Aristotle target when Aristotle returns. OQ-01 recovery (irrational_sqrt2_add_sqrt3_add_sqrt5) is already discharged by citation, independent of the heart."
+    ],
+    "mathlibGaps": [
+      "No general multiquadratic degree-2ⁿ theorem in Mathlib v4.26.0",
+      "No non-membership lemma √pₖ ∉ ℚ(√p₁,…,√pₖ₋₁) — this is the ~250-450 LOC crux (BUILD-class, not blocked)"
+    ],
+    "nextSteps": [
+      "With Docker up: discharge upper bound (tower of quadratics) + n=1 base; leave sqrt_prime_not_mem_multiquadratic as the single sorry",
+      "Submit sqrt_prime_not_mem_multiquadratic to Aristotle (HARD known result) once the scaffold builds",
+      "Choose encoding of the heart: squares-characterization (r²·∏ subset primes) vs (ℤ/2)ⁿ Galois/sign-flip — pick by Mathlib support"
+    ]
+  }
+}

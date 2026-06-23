@@ -1,0 +1,126 @@
+{
+  "slug": "lagrange-theorem-oq-01",
+  "title": "Can the Sylow theorems (partial converse of Lagrange) be formalized, showing ...",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in group theory: Can the Sylow theorems (partial converse of Lagrange) be formalized, showing ....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-28T20:57:10.258Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: All three Sylow theorems + partial converse + Cauchy theorem. 0 sorries, 0 axioms.",
+    "builtItems": [
+      "LagrangeTheoremOQ01.lean: ~140 lines, 11 theorems, 0 sorries, 0 axioms",
+      "Parts I-V: Lagrange, Sylow existence, conjugacy, counting, partial converse + Cauchy"
+    ],
+    "insights": [
+      "Sylow theorems are fully in Mathlib — file wraps existing API in gallery format",
+      "Key Mathlib lemmas: Sylow.nonempty, Sylow.card_eq_multiplicity, Sylow.conj_eq",
+      "Sylow.card_sylow_dvd_index, Sylow.card_sylow_modEq_one, exists_prime_orderOf_dvd_card",
+      "Partial converse: Sylow.exists_subgroup_card_pow_prime gives p^k | |G| → ∃ H of order p^k"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "group-theory",
+    "algebra",
+    "classic",
+    "intermediate",
+    "wiedijk-100"
+  ],
+  "relatedProofs": [
+    "lagrange-theorem",
+    "lagrange-theorem-oq-01",
+    "lagrange-theorem-oq-02",
+    "lagrange-theorem-oq-03",
+    "lagrange-theorem-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T20:57:10.258Z",
+  "lastUpdate": "2026-03-28T20:57:10.258Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LagrangeTheorem.lean",
+      "filename": "LagrangeTheorem.lean",
+      "lineCount": 223,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheorem.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01.lean",
+      "filename": "LagrangeTheoremOQ01.lean",
+      "lineCount": 142,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02.lean",
+      "filename": "LagrangeTheoremOQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ03.lean",
+      "filename": "LagrangeTheoremOQ03.lean",
+      "lineCount": 374,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ05.lean",
+      "filename": "LagrangeTheoremOQ05.lean",
+      "lineCount": 114,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ05.lean"
+    }
+  ]
+}

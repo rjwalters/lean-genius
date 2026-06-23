@@ -1,0 +1,139 @@
+[
+  {
+    "id": "erdos-593-ann-header",
+    "proofId": "erdos-593",
+    "range": {
+      "startLine": 1,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Problem Statement and Imports",
+    "content": "The header states Erdős Problem #593: characterize which finite 3-uniform hypergraphs must appear in every 3-uniform hypergraph of uncountable chromatic number. This is a $500 prize problem from Erdős (1995). The formalization imports Mathlib's cardinal arithmetic, Finset, and set theory modules.",
+    "mathContext": "A 3-uniform hypergraph $H = (V, E)$ has $E \\subseteq \\binom{V}{3}$. The problem asks: for which finite $F$ is it true that every $H$ with $\\chi(H) > \\aleph_0$ contains a copy of $F$?",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "infinite combinatorics",
+      "hypergraph coloring",
+      "cardinal arithmetic"
+    ],
+    "prerequisites": [
+      "cardinal numbers",
+      "Finset",
+      "set theory"
+    ]
+  },
+  {
+    "id": "erdos-593-ann-hypergraph-def",
+    "proofId": "erdos-593",
+    "range": {
+      "startLine": 21,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "3-Uniform Hypergraph and Coloring",
+    "content": "Defines Hypergraph3 as a structure with edges that are 3-element Finsets, enforced by the edge_card axiom. IsProperColoring requires no edge to be monochromatic (no color c colors all three vertices of any edge). ChromaticNumberLE bounds the chromatic number using Cardinal arithmetic, asking for a proper coloring with at most κ colors.",
+    "mathContext": "A proper $k$-coloring $f: V \\to [k]$ satisfies $|\\{f(v) : v \\in e\\}| \\ge 2$ for every $e \\in E$. The chromatic number $\\chi(H) = \\min\\{k : H \\text{ has a proper } k\\text{-coloring}\\}$. Here $\\chi(H) \\le \\kappa$ is stated as $\\exists C$ with $\\#C \\le \\kappa$ and a proper $C$-coloring.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hypergraph chromatic number",
+      "property B",
+      "Ramsey theory on hypergraphs"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "Finset.card",
+      "structure definitions"
+    ]
+  },
+  {
+    "id": "erdos-593-ann-subhypergraph",
+    "proofId": "erdos-593",
+    "range": {
+      "startLine": 43,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Subhypergraph Embedding",
+    "content": "A finite hypergraph F is a subhypergraph of H if there exists an injective vertex map φ that sends each edge of F to an edge of H. This captures the notion of F 'appearing' in H, which is the key concept for the unavoidability question. The injectivity ensures distinct vertices of F are mapped to distinct vertices of H.",
+    "mathContext": "An embedding $\\varphi: V(F) \\hookrightarrow V(H)$ is injective and satisfies $\\varphi(e) \\in E(H)$ for all $e \\in E(F)$, where $\\varphi(e) = \\{\\varphi(v) : v \\in e\\}$. This is a homomorphism that is also an injection on vertices.",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph homomorphism",
+      "Ramsey property",
+      "substructure"
+    ],
+    "prerequisites": [
+      "injective functions",
+      "Finset.image",
+      "hypergraph edges"
+    ]
+  },
+  {
+    "id": "erdos-593-ann-unavoidable",
+    "proofId": "erdos-593",
+    "range": {
+      "startLine": 53,
+      "endLine": 72
+    },
+    "type": "insight",
+    "title": "Unavoidability and Erdős Problem #593",
+    "content": "IsUnavoidable captures the central property: a finite 3-uniform hypergraph F is unavoidable if every 3-uniform hypergraph with chromatic number exceeding ℵ₀ contains F as a subhypergraph. ErdosProblem593 asks for a decidable predicate P characterizing exactly which F are unavoidable. The $500 prize reflects the depth and difficulty of this question.",
+    "mathContext": "A finite 3-uniform $F$ is unavoidable if $\\forall H$ with $\\chi(H) > \\aleph_0$, $F \\subseteq H$. The problem seeks $P$ such that $P(F) \\iff F$ is unavoidable. The characterization would be a structural theorem in infinite hypergraph combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey classes",
+      "obligatory subhypergraph",
+      "partition property"
+    ],
+    "prerequisites": [
+      "cardinal.aleph0",
+      "universal quantification",
+      "hypergraph embeddings"
+    ]
+  },
+  {
+    "id": "erdos-593-ann-graph-case",
+    "proofId": "erdos-593",
+    "range": {
+      "startLine": 74,
+      "endLine": 97
+    },
+    "type": "concept",
+    "title": "Solved Graph Case: Unavoidable ⟺ Bipartite",
+    "content": "For ordinary graphs (2-uniform hypergraphs), the characterization is completely solved: a finite graph G is unavoidable in every graph of uncountable chromatic number if and only if G is bipartite. Non-bipartite graphs (those containing odd cycles) need not appear because there exist triangle-free graphs of arbitrarily large chromatic number, as shown by Erdős's probabilistic construction (1959) and Mycielski's explicit construction (1955).",
+    "mathContext": "For 2-uniform: $G$ is unavoidable $\\iff$ $G$ is bipartite ($\\chi(G) \\le 2$). The key is that $\\chi(G) \\ge 3 \\implies \\exists H$ with $\\chi(H) > \\aleph_0$ and $G \\not\\subseteq H$. Erdős showed triangle-free graphs can have $\\chi = \\aleph_1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bipartite graphs",
+      "Mycielski construction",
+      "triangle-free graphs of large chromatic number"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "bipartiteness",
+      "odd cycles"
+    ]
+  },
+  {
+    "id": "erdos-593-ann-2colorable",
+    "proofId": "erdos-593",
+    "range": {
+      "startLine": 99,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "2-Colorable Hypergraphs Are Unavoidable",
+    "content": "Any 2-colorable (properly 2-chromatic) finite 3-uniform hypergraph is unavoidable. This is the natural analog of the bipartiteness condition: if F can be properly 2-colored, then F must appear in every 3-uniform hypergraph of uncountable chromatic number. The open question is whether this sufficient condition is also necessary, or whether some non-2-colorable hypergraphs are also unavoidable.",
+    "mathContext": "$\\mathrm{Is2Colorable}(F) \\implies \\mathrm{IsUnavoidable}(F)$. For 3-uniform $F$, 2-colorability means $\\exists f: V(F) \\to \\{0,1\\}$ with no monochromatic edge. The converse — whether unavoidable implies 2-colorable — is the heart of Problem #593.",
+    "significance": "key",
+    "relatedConcepts": [
+      "property B",
+      "2-colorability",
+      "Bernstein property"
+    ],
+    "prerequisites": [
+      "hypergraph coloring",
+      "IsUnavoidable definition"
+    ]
+  }
+]

@@ -1,0 +1,99 @@
+{
+  "slug": "erdos-810",
+  "title": "Erdős #810",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Does there exist some $\\epsilon>0$ such that, for all sufficiently large $n$, there exists a graph $G$ on $n$ vertices with at least $\\epsilon n^2$ many edges such that the edges can be coloured with $n$ colours so that every $C_4$ receives $4$ distinct colours?\n\n\n\nA problem of Burr, Erd\\H{o}s, Graham, and S\\'{o}s.\n\nSee also [809].",
+    "plain": "Does there exist some $\\epsilon>0$ such that, for all sufficiently large $n$, there exists a graph $G$ on $n$ vertices with at least $\\epsilon n^2$ many edges such that the edges can be coloured with $n$ colours so that every $C_4$ receives $4$ distinct colours?",
+    "whyMatters": [
+      "Connects dense graph edge bounds with the obstruction that any quadratic-density witness must contain many C4s",
+      "Separates the Kovari-Sos-Turan input from the original rainbow C4 existence problem",
+      "Keeps the remaining graph-theoretic axiom explicit instead of presenting the open problem as solved"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "dense_graph_has_C4_large_n: dense enough graphs contain a C4, conditional on the KST axiom",
+      "witness_must_contain_C4: any Problem 810 witness must contain C4s",
+      "rainbow_C4_needs_4_colors: a rainbow C4 requires at least four colors",
+      "c4_free_vacuously_rainbow: C4-free graphs vacuously satisfy the rainbow condition"
+    ],
+    "open": [
+      "kovari_sos_turan_C4 remains axiomatized",
+      "The original Erdos 810 rainbow C4 existence problem remains open"
+    ],
+    "goal": "Record the conditional dense-graph obstruction with one explicit KST axiom"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-01-15T09:32:29.766Z",
+    "iteration": 1,
+    "focus": "Conditional formalization: 213 lines, 4 public theorems, 5 defs, 1 KST axiom, 0 sorries.",
+    "blockers": [],
+    "nextAction": "None for this metadata slice; future proof work should replace the KST axiom or add constructions.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED metadata slice: Erdos810Problem.lean has 213 lines, 4 public theorems, 5 defs, 1 KST axiom, and 0 sorries. It proves conditional structural consequences and does not solve the original rainbow C4 problem.",
+    "builtItems": [
+      "dense_graph_has_C4_large_n: derived from KST axiom (replaced incorrect axiom, 1 arithmetic sorry)",
+      "witness_must_contain_C4: any witness for Problem 810 must contain C₄s (proved from above)",
+      "rainbow_C4_needs_4_colors: n ≥ 4 required for rainbow C₄ coloring (proved)",
+      "Reduced axiom count from 2 to 1 (eliminated dense_graph_has_C4)",
+      "dense_graph_has_C4_large_n: sorry eliminated via rpow_add + sqrt decomposition"
+    ],
+    "insights": [
+      "C₄-free graphs have O(n^{3/2}) edges (KST), so witness must contain C₄s for quadratic density",
+      "The conjecture is non-trivially open: any witness graph must have many C₄s, ALL of which are rainbow",
+      "dense_graph_has_C4 axiom was incorrectly stated (too strong for small n) — replaced with correct version from KST",
+      "Rainbow C₄ requires n ≥ 4 colors (4 distinct elements from Fin n)",
+      "Related to Problem 809 (same authors). KST + density argument forces C₄ existence for large n",
+      "Proved dense_graph_has_C4_large_n: decompose n^{3/2}=n·√n, cancel n, use n>(C/ε)² to get ε·√n>C, contradiction"
+    ],
+    "mathlibGaps": [
+      "Kovari-Sos-Turan C4 extremal bound is axiomatized"
+    ],
+    "nextSteps": [
+      "Add lower bound constructions: bipartite graphs with structured colorings",
+      "Connect to Problem 809 formalization"
+    ],
+    "markdown": "# Erdős #810 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist some $\\epsilon>0$ such that, for all sufficiently large $n$, there exists a graph $G$ on $n$ vertices with at least $\\epsilon n^2$ many edges such that the edges can be coloured with $n$ colours so that every $C_4$ receives $4$ distinct colours?\n\n\n\nA problem of Burr, Erd\\H{o}s, Graham, and S\\'{o}s.\n\nSee also [809].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #809\n- Problem #811\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er91\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-8",
+    "erdos-81",
+    "erdos-810"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-15T09:32:29.767Z",
+  "lastUpdate": "2026-03-24T15:20:00Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos810Problem.lean",
+      "filename": "Erdos810Problem.lean",
+      "lineCount": 213,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos810Problem.lean"
+    }
+  ]
+}

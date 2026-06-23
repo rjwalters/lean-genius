@@ -1,0 +1,245 @@
+{
+  "id": "erdos-771",
+  "title": "Erdos Problem #771: Subsets Avoiding a Given Sum",
+  "slug": "erdos-771",
+  "description": "Let f(n) be maximal such that for every m >= 1, there exists S subset {1,...,n} with |S| = f(n) where no subset of S sums to m. Is f(n) = (1/2+o(1))n/log n? SOLVED: YES (Erdos-Graham lower, Alon-Freiman upper).",
+  "meta": {
+    "author": "Erdos-Graham (lower bound), Alon-Freiman (1988, upper bound)",
+    "sourceUrl": "https://erdosproblems.com/771",
+    "date": "1988",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos771Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "subset-sums",
+      "primes",
+      "lcm",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 7,
+    "erdosNumber": 771,
+    "erdosUrl": "https://erdosproblems.com/771",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-23",
+    "mathlib_version": "4.26.0",
+    "relatedProblems": [],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed interval {1,...,n} for the base set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.powerset",
+        "description": "Powerset enumeration for subset sum computation",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets for subset sums",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm for asymptotic formula n/log n",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.lcm",
+        "description": "LCM of a finite set for the Alon-Freiman upper bound",
+        "module": "Mathlib.NumberTheory.Primorial"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition for leading constant convergence",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Icc_n: the set {1,...,n} via Finset.Icc 1 n",
+      "subsetSums: all positive subset sums via powerset.image(sum).filter(>0)",
+      "AvoidSum, IsMAvoidingSet: m-avoidance predicates",
+      "maxAvoidingSize: max card of m-avoiding set via sup over powerset",
+      "f: the function f(n) = min over m of maxAvoidingSize(n,m)",
+      "f_property, f_characterization (sorry): characterization of f(n)",
+      "expectedValue: (1/2)*n/log(n) for n > 1",
+      "ErdosGrahamConjecture, ErdosGrahamConjecture': two formulations",
+      "erdos_graham_lower_bound (axiom): f(n) >= (1/2-eps)*n/log n",
+      "primeMutliples, prime_multiples_size (sorry), prime_multiples_avoid (sorry): construction lemmas",
+      "smallest_prime_bound (noted in comments): Bertrand's postulate",
+      "alon_freiman_upper_bound (axiom): f(n) <= (1/2+eps)*n/log n",
+      "lcm_up_to, lcm_estimate (unformalized), large_set_achieves_sum (unformalized): LCM tools",
+      "erdos_graham_conjecture_true (partial proof + sorry): combines both bounds",
+      "explicitBounds, leading_constant (sorry): explicit numerical bounds",
+      "m_eq_one_case (sorry), m_eq_two_case (sorry): special cases",
+      "smallPrimeConstruction: practical construction via Nat.minFac",
+      "IsSumFree, sum_free_upper_bound (unformalized): comparison with sum-free sets",
+      "erdos_771, erdos_771_main, erdos_771_solved: main theorem statements"
+    ],
+    "axiomCount": 2,
+    "lineCount": 244,
+    "assumptions": "2 axioms: erdos_graham_lower_bound, alon_freiman_upper_bound. 7 sorries.",
+    "theoremCount": 11,
+    "definitionCount": 16,
+    "additionalFiles": [
+      "Proofs/Erdos771Aristotle.lean",
+      "Proofs/Erdos771ProblemAristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdos Problem #771: Subsets Avoiding a Given Sum**\n\n**The Problem:**\nGiven n, what is the largest set S subset {1,...,n} such that for ANY prescribed target m, no nonempty subset of S sums to m? The function f(n) measures this worst-case avoidance capacity. Erdos and Graham conjectured f(n) = (1/2+o(1))n/log n.\n\n**The Lower Bound (Erdos-Graham):**\nFor any target m, take S = {multiples of p in [n]} where p is the smallest prime not dividing m. Every subset sum of S is divisible by p, but m is not, so S avoids m. The size |S| = floor(n/p). By the prime number theorem, the smallest prime not dividing m is at most (2+o(1))log m, giving |S| >= (1/2+o(1))n/log n. Bertrand's postulate guarantees such a prime exists.\n\n**The Upper Bound (Alon-Freiman, 1988):**\nThe clever target: choose m = lcm{1,...,s} where s is maximal with m small enough. By PNT, lcm{1,...,s} ~ e^s. Any set S larger than (1/2+o(1))n/log n must contain a nonempty subset summing to some multiple of each integer in {1,...,s}, which forces a subset sum equal to m.\n\n**Resolution:**\nThe conjecture is TRUE: f(n) = (1/2+o(1))n/log n. The constant 1/2 comes from the prime number theorem: the density of primes near x is 1/log x, so the smallest prime not dividing any given m is about 2 log m.\n\n**The Lean formalization** has 7 sorries (characterization of f, prime multiples properties, special cases, leading constant convergence, and the final epsilon-delta bridge). The structural framework is complete with the key axioms for the lower and upper bounds.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet f(n) be the maximum k such that for every m >= 1, there exists S subset {1,...,n} with |S| = k such that no nonempty subset of S sums to m.\n\n**Question:** Is f(n) = (1/2 + o(1)) * n / log n?\n\n**Answer: YES**\n\n- Lower bound: Erdos-Graham using prime multiples\n- Upper bound: Alon-Freiman (1988) using LCM argument\n\nThe constant 1/2 is exact.",
+    "text": "Let f(n) be maximal such that for every m >= 1, there exists S subset {1,...,n} with |S| = f(n) where no subset of S sums to m. Is f(n) = (1/2+o(1))n/log n? SOLVED: YES (Erdos-Graham lower, Alon-Freiman upper).",
+    "proofStrategy": "**Formalization Architecture**\n\nThe formalization builds f(n) from first principles and establishes the asymptotic formula:\n\n1. **Basic Definitions** (Icc_n, subsetSums, AvoidSum, IsMAvoidingSet): Interval, subset sum enumeration via powerset, avoidance predicate\n\n2. **The Function f(n)** (maxAvoidingSize, f, f_property, f_characterization): Defined as min over m of max avoiding set size; characterization has sorry\n\n3. **The Conjecture** (ErdosGrahamConjecture, ErdosGrahamConjecture'): Two equivalent formulations of f(n) ~ (1/2)n/log n\n\n4. **Lower Bound** (erdos_graham_lower_bound axiom, primeMutliples, prime_multiples_avoid): Construction via multiples of prime not dividing m; 2 sorries for construction lemmas\n\n5. **Upper Bound** (alon_freiman_upper_bound axiom, lcm_up_to, lcm_estimate): LCM argument forcing large sets to hit a carefully chosen m\n\n6. **Main Result** (erdos_graham_conjecture_true): Combines bounds with epsilon/2 trick; final sorry for absolute value manipulation\n\n7. **Explicit Bounds and Special Cases**: Numerical bounds, m=1 and m=2 cases, leading constant convergence\n\n8. **Sum-Free Comparison**: IsSumFree definition and comparison: f(n) ~ n/(2 log n) vs n/3 for sum-free",
+    "keyInsights": [
+      "**Prime Multiples Construction**: Multiples of p not dividing m automatically avoid m, since all subset sums are divisible by p. This gives the lower bound with the prime number theorem providing p ~ 2 log n.",
+      "**LCM Argument for Upper Bound**: Choosing m = lcm{1,...,s} exploits the fact that s is highly divisible. Any large enough set must have a nonempty subset summing to m by a pigeonhole/divisibility argument.",
+      "**Exact Constant 1/2**: The factor 1/2 = 1/(2 * 1) arises because the smallest prime not dividing m is about 2 log m by PNT (the factor 2 comes from the prime counting function pi(x) ~ x/log x).",
+      "**m-Avoiding vs Sum-Free**: m-avoiding allows MUCH larger sets than sum-free (n/(2 log n) vs n/3), because we only need to avoid one specific sum rather than all internal sums.",
+      "**Bertrand's Postulate**: Guarantees existence of a prime in (n, 2n], ensuring the construction always works. The PNT gives the precise asymptotic."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 39,
+      "endLine": 57,
+      "summary": "Icc_n (Finset.Icc 1 n), subsetSums (powerset.image(sum).filter(>0)), AvoidSum (m not in subsetSums), IsMAvoidingSet (subset of [n] avoiding m).",
+      "mathContext": "Mathematical content: Icc_n (Finset.Icc 1 n), subsetSums (powerset.image(sum).filter(>0)), AvoidSum (m not in subsetSums), IsMAvoidingSet (subset of [n] avoiding m)."
+    },
+    {
+      "id": "the-function-f-n",
+      "title": "The Function f(n)",
+      "startLine": 58,
+      "endLine": 82,
+      "summary": "maxAvoidingSize (sup over powerset of avoiding sets), f (inf over m in [1,n^2] of maxAvoidingSize), f_property (universal avoidance characterization), f_characterization (sorry: f is maximal).",
+      "mathContext": "maxAvoidingSize (sup over powerset of avoiding sets), f (inf over m in [1,$n^{2}$] of maxAvoidingSize), f_property (universal avoidance characterization), f_characterization (sorry: f is maximal)."
+    },
+    {
+      "id": "the-erdos-graham-conjecture",
+      "title": "The Erdos-Graham Conjecture",
+      "startLine": 83,
+      "endLine": 102,
+      "summary": "expectedValue = (1/2)*n/log(n). ErdosGrahamConjecture: |f(n)/(n/log n) - 1/2| < epsilon for large n. ErdosGrahamConjecture': f(n) = (1/2 + g(n))*n/log n with g(n) -> 0.",
+      "mathContext": "expectedValue = (1/2)*n/log(n). ErdosGrahamConjecture: |f(n)/(n/$\\log n$) - 1/2| < $\\varepsilon$ for large n. ErdosGrahamConjecture': f(n) = (1/2 + g(n))*n/$\\log n$ with g(n) -> 0."
+    },
+    {
+      "id": "erdos-graham-lower-bound",
+      "title": "Erdos-Graham Lower Bound",
+      "startLine": 103,
+      "endLine": 132,
+      "summary": "erdos_graham_lower_bound (axiom): f(n) >= (1/2-eps)n/log n. primeMutliples (filter by divisibility), prime_multiples_size (sorry: card = n/p), prime_multiples_avoid (sorry: p prime and p not dividing m implies avoidance), smallest_prime_bound (noted in comments: Bertrand's postulate).",
+      "mathContext": "erdos_graham_lower_bound (axiom): f(n) >= (1/2-eps)n/log n. primeMutliples (filter by divisibility), prime_multiples_size (sorry: card = n/p), prime_multiples_avoid (sorry: p prime and p not dividing m implies avoidance), smallest_prime_bound (noted in comments: Bertrand's postulate)."
+    },
+    {
+      "id": "alon-freiman-upper-bound",
+      "title": "Alon-Freiman Upper Bound",
+      "startLine": 133,
+      "endLine": 155,
+      "summary": "alon_freiman_upper_bound (axiom): f(n) <= (1/2+eps)n/log n. lcm_up_to (Icc_n(s).lcm id), lcm_estimate (unformalized: lcm{1,...,s} <= exp(2s)), large_set_achieves_sum (unformalized: large sets hit some m).",
+      "mathContext": "alon_freiman_upper_bound (axiom): f(n) <= (1/2+eps)n/$\\log n$. lcm_up_to (Icc_n(s).lcm id), lcm_estimate (unformalized: lcm{1,...,s} <= exp(2s)), large_set_achieves_sum (unformalized: large sets hit some m)."
+    },
+    {
+      "id": "the-complete-answer",
+      "title": "The Complete Answer",
+      "startLine": 156,
+      "endLine": 175,
+      "summary": "erdos_graham_conjecture_true (partial proof + sorry): combines lower/upper bounds with epsilon/2. f_asymptotic: alias. The conjecture is TRUE.",
+      "mathContext": "erdos_graham_conjecture_true (partial proof + sorry): combines lower/upper bounds with $\\varepsilon$/2. f_asymptotic: alias. The conjecture is TRUE."
+    },
+    {
+      "id": "explicit-bounds",
+      "title": "Explicit Bounds",
+      "startLine": 176,
+      "endLine": 190,
+      "summary": "explicitBounds: 0.4*n/log n <= f(n) <= 0.6*n/log n for n >= 10. leading_constant (sorry): f(n)/(n/log n) -> 1/2 via Filter.Tendsto.",
+      "mathContext": "explicitBounds: 0.4*n/$\\log n$ <= f(n) <= 0.6*n/$\\log n$ for n >= 10. leading_constant (sorry): f(n)/(n/$\\log n$) -> 1/2 via Filter.Tendsto."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 191,
+      "endLine": 209,
+      "summary": "m_eq_one_case (sorry): maxAvoidingSize(n,1) = n-1. m_eq_two_case (sorry): >= n-2. smallPrimeConstruction: uses Nat.minFac(m+1) for practical construction.",
+      "mathContext": "Mathematical content: m_eq_one_case (sorry): maxAvoidingSize(n,1) = n-1. m_eq_two_case (sorry): >= n-2. smallPrimeConstruction: uses Nat.minFac(m+1) for practical construction."
+    },
+    {
+      "id": "connection-to-sum-free-sets",
+      "title": "Connection to Sum-Free Sets",
+      "startLine": 210,
+      "endLine": 228,
+      "summary": "IsSumFree (no a+b=c in S), sum_free_upper_bound (unformalized: |S| <= n/3+1). Comparison: m-avoiding allows n/(2 log n) vs n/3 for sum-free.",
+      "mathContext": "IsSumFree (no a+b=c in S), sum_free_upper_bound (unformalized: |S| <= n/3+1). Comparison: m-avoiding allows n/(2 $\\log n$) vs n/3 for sum-free."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 229,
+      "endLine": 244,
+      "summary": "erdos_771, erdos_771_main, erdos_771_solved: three equivalent statements that ErdosGrahamConjecture holds. All proved from erdos_graham_conjecture_true.",
+      "mathContext": "Mathematical content: erdos_771, erdos_771_main, erdos_771_solved: three equivalent statements that ErdosGrahamConjecture holds. All proved from erdos_graham_conjecture_true."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #771 asks whether f(n) = (1/2+o(1))n/log n, where f(n) is the maximum size of a subset of {1,...,n} that can avoid any prescribed sum m. The conjecture is TRUE: Erdos-Graham proved the lower bound using prime multiples, and Alon-Freiman (1988) proved the matching upper bound using an LCM argument. The formalization has 7 sorries in construction lemmas and epsilon-delta bridges, with the key results axiomatized.",
+    "implications": "1. **Prime Number Theory**: The constant 1/2 arises directly from prime density via PNT, connecting additive combinatorics to analytic number theory\n\n**2. LCM Estimates**: The upper bound uses lcm{1,...,s} ~ e^s, a fundamental estimate in multiplicative number theory\n\n3. **Subset Sum Problems**: Part of the broader study of which target sums can be avoided by large subsets of integers\n\n4. **Sum-Free Comparison**: The contrast f(n) ~ n/(2 log n) vs n/3 quantifies the gap between avoiding one sum and avoiding all internal sums.",
+    "openQuestions": [
+      "What are explicit constants in the o(1) term for f(n)?",
+      "What about simultaneously avoiding multiple target sums?",
+      "How does the problem change for other base sets (e.g., primes, squares)?",
+      "What is the computational complexity of finding an optimal S for given n and m?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.NumberTheory.Primorial"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Real",
+      "Nat"
+    ],
+    "namespace": "Erdos771",
+    "lineCount": 244,
+    "axiomCount": 2,
+    "theoremCount": 11,
+    "definitionCount": 16,
+    "sorries": 7,
+    "path": "Proofs/Erdos771Problem.lean",
+    "additionalFiles": [
+      "Proofs/Erdos771Aristotle.lean",
+      "Proofs/Erdos771ProblemAristotle.lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-237",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, primes, solved"
+    },
+    {
+      "targetId": "erdos-473",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, primes, solved"
+    },
+    {
+      "targetId": "erdos-874",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, subset-sums"
+    }
+  ],
+  "sorries": 7
+}

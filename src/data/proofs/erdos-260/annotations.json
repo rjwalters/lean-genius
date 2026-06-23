@@ -1,0 +1,283 @@
+[
+  {
+    "id": "ann-260-imports",
+    "proofId": "erdos-260",
+    "range": {
+      "startLine": 29,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "The formalization imports `SpecificLimits.Basic` (for specific limit computations), `Data.Real.Irrational` (the `Irrational` predicate), `Topology.Instances.Real` (topological structure on $\\mathbb{R}$), `Order.Filter.Basic` (filters for limit definitions), and `Tactic` (automation). The `open Filter Topology` command brings filter notation (`atTop`, `𝓝`, `Tendsto`) and topological lemmas into scope.",
+    "mathContext": "The formalization uses Mathlib's filter-based limits: $f \\to \\ell$ as $n \\to \\infty$ is expressed as `Tendsto f atTop (𝓝 ℓ)` for finite limits or `Tendsto f atTop atTop` for divergence to infinity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "filter limits",
+      "Irrational predicate",
+      "topological real numbers",
+      "atTop filter"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Data.Real.Irrational"
+    ]
+  },
+  {
+    "id": "ann-260-incseq",
+    "proofId": "erdos-260",
+    "range": {
+      "startLine": 43,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Increasing Sequence Structure",
+    "content": "The `IncreasingSeq` structure packages a sequence $a : \\mathbb{N} \\to \\mathbb{N}$ with a proof of strict monotonicity (`StrictMono`). This ensures $a_1 < a_2 < a_3 < \\cdots$ with no repeated values. Using a structure (rather than a bare function with a hypothesis) allows clean dependent function signatures throughout the formalization.",
+    "mathContext": "An **increasing sequence** is a pair $(a, h)$ where $a : \\mathbb{N} \\to \\mathbb{N}$ and $h : \\forall\\, m < n,\\; a(m) < a(n)$. Strict monotonicity implies injectivity and that $a(n) \\geq n$ for all $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "StrictMono",
+      "subsequence",
+      "monotone function",
+      "lacunary sequence"
+    ],
+    "prerequisites": [
+      "monotone functions",
+      "natural number ordering"
+    ]
+  },
+  {
+    "id": "ann-260-fastgrowth",
+    "proofId": "erdos-260",
+    "range": {
+      "startLine": 48,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Fast Growth Condition",
+    "content": "The central hypothesis of Problem #260: $a_n / n \\to \\infty$ as $n \\to \\infty$. This means $a_n$ grows superlinearly — faster than any linear function $Cn$. It is strictly weaker than requiring the gaps $a_{n+1} - a_n$ to tend to infinity (e.g., $a_n = n \\lceil \\log n \\rceil$ has fast growth but bounded gaps for long stretches). The formalization uses `Tendsto` with `atTop` in both domain and codomain.",
+    "mathContext": "$\\mathrm{FastGrowth}(a) :\\Leftrightarrow \\lim_{n \\to \\infty} \\frac{a_n}{n} = +\\infty$\n\nThis is the condition in Erdős's conjecture. It implies $a_n \\geq \\omega(n) \\cdot n$ for any function $\\omega(n) \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "superlinear growth",
+      "Tendsto atTop atTop",
+      "density of sequences",
+      "Cesàro behavior"
+    ],
+    "prerequisites": [
+      "limits at infinity",
+      "growth rate comparison"
+    ]
+  },
+  {
+    "id": "ann-260-gaps",
+    "proofId": "erdos-260",
+    "range": {
+      "startLine": 52,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "Gaps to Infinity",
+    "content": "The stronger condition $a_{n+1} - a_n \\to \\infty$ under which Erdős proved irrationality. This means not just that $a_n$ grows fast on average, but that consecutive terms become increasingly separated. This is the hypothesis in Erdős's 1974 theorem. The gap between this condition and mere fast growth is the core of Problem #260.",
+    "mathContext": "$\\mathrm{GapsToInfinity}(a) :\\Leftrightarrow \\lim_{n \\to \\infty} (a_{n+1} - a_n) = +\\infty$\n\nThis implies $\\mathrm{FastGrowth}(a)$ (since telescoping gives $a_n = a_1 + \\sum_{k=1}^{n-1} (a_{k+1} - a_k)$, which grows superlinearly if the summands $\\to \\infty$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "lacunary sequence",
+      "gap sequence",
+      "Hadamard lacunarity",
+      "telescoping sum"
+    ],
+    "prerequisites": [
+      "sequence gaps",
+      "Tendsto atTop atTop"
+    ]
+  },
+  {
+    "id": "ann-260-superlog",
+    "proofId": "erdos-260",
+    "range": {
+      "startLine": 56,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Superlogarithmic Growth",
+    "content": "An intermediate sufficient condition: $a_n \\geq C \\cdot n \\sqrt{\\log n \\cdot \\log \\log n}$ for some constant $C > 0$ and all sufficiently large $n$. This is between fast growth ($a_n/n \\to \\infty$) and gaps-to-infinity in strength. Erdős proved this also suffices for irrationality, using more delicate rational approximation estimates from the theory of continued fractions and Diophantine approximation.",
+    "mathContext": "$\\mathrm{SuperlogarithmicGrowth}(a) :\\Leftrightarrow \\exists\\, C > 0,\\; a_n \\geq C \\cdot n \\sqrt{\\log n \\cdot \\log\\log n}$ eventually.\n\nThis implies fast growth since $\\sqrt{\\log n \\cdot \\log\\log n} \\to \\infty$, but does not imply gaps $\\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Diophantine approximation",
+      "continued fractions",
+      "irrationality measure",
+      "iterated logarithm"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "Real.sqrt",
+      "eventually filter"
+    ]
+  },
+  {
+    "id": "ann-260-series",
+    "proofId": "erdos-260",
+    "range": {
+      "startLine": 63,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Series Definition and Convergence",
+    "content": "The series term $a_n / 2^{a_n}$, partial sums, convergence theorem, and series limit. The `noncomputable` keyword is needed because division over $\\mathbb{R}$ involves classical choice. Convergence follows from comparison with $\\sum n/2^n$ since $a_n \\geq n$. The limit `seriesSum` is extracted via `Classical.choose`, making it well-defined but noncomputable.",
+    "mathContext": "$T_n = \\frac{a_n}{2^{a_n}}, \\quad S_N = \\sum_{n=0}^{N-1} T_n, \\quad S = \\lim_{N \\to \\infty} S_N$\n\nConvergence: $T_n \\leq n/2^n$ since $a_n \\geq n$, and $\\sum n/2^n = 2 < \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "comparison test",
+      "absolute convergence",
+      "Classical.choose",
+      "noncomputable def"
+    ],
+    "prerequisites": [
+      "series convergence",
+      "dominated convergence",
+      "Finset.range"
+    ]
+  },
+  {
+    "id": "ann-260-gapsirr",
+    "proofId": "erdos-260",
+    "range": {
+      "startLine": 89,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Gaps to Infinity Implies Irrational",
+    "content": "Erdős's 1974 theorem: if $a_{n+1} - a_n \\to \\infty$, then $\\sum a_n/2^{a_n}$ is irrational. The proof technique (formalized with `sorry`) uses the **rational approximation method**: if the sum were $p/q$, multiply by $2^{a_N}$ to get $2^{a_N} \\cdot p/q = \\text{integer} + \\text{tail}$. When gaps $\\to \\infty$, the tail $\\sum_{n>N} a_n/2^{a_n - a_N}$ can be made arbitrarily small (since $a_n - a_N$ grows rapidly), contradicting the assumed rationality.",
+    "mathContext": "**Theorem (Erdős, 1974):** $a_{n+1} - a_n \\to \\infty \\Rightarrow \\sum \\frac{a_n}{2^{a_n}} \\notin \\mathbb{Q}$.\n\n**Proof sketch:** Suppose $\\sum = p/q$. Then $2^{a_N} \\cdot p/q - \\sum_{n \\leq N} a_n \\cdot 2^{a_N - a_n}$ equals the tail $\\sum_{n > N} a_n / 2^{a_n - a_N} \\to 0$, contradicting integrality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrationality by contradiction",
+      "rational approximation",
+      "lacunary series",
+      "tail estimates"
+    ],
+    "prerequisites": [
+      "Irrational predicate",
+      "series tail bounds",
+      "Diophantine approximation"
+    ]
+  },
+  {
+    "id": "ann-260-superlogirr",
+    "proofId": "erdos-260",
+    "range": {
+      "startLine": 98,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Superlogarithmic Growth Implies Irrational",
+    "content": "Erdős's refined result from the Erdős-Graham monograph: $a_n \\gg n\\sqrt{\\log n \\cdot \\log \\log n}$ suffices for irrationality. The proof uses more delicate estimates on the approximation quality of the sum by rationals with denominators $2^{a_N}$, exploiting the superlogarithmic growth to control error terms that the simple gap argument cannot handle.",
+    "mathContext": "**Theorem (Erdős):** $a_n \\geq C \\cdot n\\sqrt{\\log n \\cdot \\log\\log n}$ eventually $\\Rightarrow \\sum \\frac{a_n}{2^{a_n}} \\notin \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős-Graham monograph",
+      "refined Diophantine approximation",
+      "irrationality measure"
+    ],
+    "prerequisites": [
+      "SuperlogarithmicGrowth",
+      "Irrational",
+      "rational approximation theory"
+    ]
+  },
+  {
+    "id": "ann-260-squareseq",
+    "proofId": "erdos-260",
+    "range": {
+      "startLine": 188,
+      "endLine": 203
+    },
+    "type": "definition",
+    "title": "Square Sequence Example",
+    "content": "The concrete example $a_n = n^2$. Strict monotonicity is proved via `Nat.pow_lt_pow_left`. Two properties are fully proved (no sorry): **fast growth** ($n^2/n = n \\to \\infty$) and **gaps $\\to \\infty$** ($(n+1)^2 - n^2 = 2n + 1 \\to \\infty$, using `Tendsto.atTop_add_const` and `Tendsto.const_mul_atTop`). These are the only fully-proved theorems in the file.",
+    "mathContext": "For $a_n = n^2$: $a_n/n = n \\to \\infty$ and $a_{n+1} - a_n = 2n + 1 \\to \\infty$.\n\nThe series $\\sum n^2/2^{n^2}$ has terms: $1/4, 4/16, 9/512, \\ldots$ — vanishing faster than double-exponentially.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic growth",
+      "polynomial sequence",
+      "Nat.pow_lt_pow_left",
+      "complete proof"
+    ],
+    "prerequisites": [
+      "StrictMono",
+      "tendsto_natCast_atTop_atTop",
+      "field_simp"
+    ]
+  },
+  {
+    "id": "ann-260-squareirr",
+    "proofId": "erdos-260",
+    "range": {
+      "startLine": 217,
+      "endLine": 218
+    },
+    "type": "concept",
+    "title": "Square Sequence Series is Irrational",
+    "content": "$\\sum n^2/2^{n^2}$ is irrational, proved by composing `irrational_of_gaps_to_infinity` with `squareSeq_gaps`. This demonstrates the formalization's composability: the irrationality of a specific series follows from the general theorem plus verification of a growth condition.",
+    "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{n^2}{2^{n^2}} \\notin \\mathbb{Q}$\n\nProved: $\\texttt{irrational\\_of\\_gaps\\_to\\_infinity}(\\texttt{squareSeq}, \\texttt{squareSeq\\_gaps})$",
+    "significance": "key",
+    "relatedConcepts": [
+      "theorem composition",
+      "specific irrationality",
+      "double exponential decay"
+    ],
+    "prerequisites": [
+      "irrational_of_gaps_to_infinity",
+      "squareSeq_gaps"
+    ]
+  },
+  {
+    "id": "ann-260-conjecture",
+    "proofId": "erdos-260",
+    "range": {
+      "startLine": 222,
+      "endLine": 228
+    },
+    "type": "concept",
+    "title": "The Main Conjecture (OPEN)",
+    "content": "Erdős Problem #260 formalized as an axiom: for *any* increasing sequence with $a_n/n \\to \\infty$, the sum $\\sum a_n/2^{a_n}$ is irrational. This is the strongest possible irrationality statement using only the growth rate. The axiom form reflects the open status — if proved, it would subsume both the gaps-to-infinity theorem and the superlogarithmic theorem as corollaries.",
+    "mathContext": "$\\forall\\, a \\in \\mathrm{IncreasingSeq},\\; \\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}\\left(\\sum_{n=1}^{\\infty} \\frac{a_n}{2^{a_n}}\\right)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős conjecture",
+      "growth rate vs irrationality",
+      "axiom for open problem"
+    ],
+    "prerequisites": [
+      "FastGrowth",
+      "Irrational",
+      "seriesSum"
+    ]
+  },
+  {
+    "id": "ann-260-counterex",
+    "proofId": "erdos-260",
+    "range": {
+      "startLine": 239,
+      "endLine": 243
+    },
+    "type": "definition",
+    "title": "Erdős-Graham Counterexample Specification",
+    "content": "A formal specification of what a counterexample to the stronger conjecture (limsup gaps $= \\infty$ implies irrationality) would look like: a sequence with unbounded gaps ($\\limsup = \\infty$) but not tending to infinity ($\\liminf < \\infty$), whose series sums to a rational. Erdős and Graham conjectured such a sequence exists, but none has been found. The formalization uses `∃ᶠ` (frequently in filter) for the limsup condition.",
+    "mathContext": "$\\exists\\, a : \\limsup(a_{n+1} - a_n) = \\infty \\;\\wedge\\; \\liminf(a_{n+1} - a_n) < \\infty \\;\\wedge\\; \\sum \\frac{a_n}{2^{a_n}} \\in \\mathbb{Q}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "limsup",
+      "liminf",
+      "counterexample specification",
+      "Erdős-Graham monograph",
+      "filter.Frequently"
+    ],
+    "prerequisites": [
+      "filter.Frequently",
+      "limsup/liminf theory",
+      "rational sums"
+    ]
+  }
+]

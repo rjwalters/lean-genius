@@ -1,0 +1,59 @@
+{
+  "slug": "sophie-germain-structure",
+  "title": "Sophie Germain Prime Structure",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "p > 3 \\text{ is Sophie Germain prime} \\Rightarrow p \\equiv 5 \\pmod{6}",
+    "plain": "A Sophie Germain prime p is one where 2p+1 is also prime. For p > 3, such primes must be congruent to 5 mod 6. The corresponding safe prime 2p+1 is congruent to 11 mod 12.",
+    "whyMatters": [
+      "Cryptographic importance"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2025-12-31T14:00:00-08:00",
+    "iteration": 1,
+    "focus": "",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: sophie-germain-structure\n\n## Problem Summary\n\nFormalize Sophie Germain primes and prove structural constraints on their distribution modulo 6.\n\n## Current State\n\n**Status**: COMPLETED\n**Proof File**: `proofs/Proofs/SophieGermain.lean` (297 lines)\n**Sorries**: 0 (but contains 1 axiom for the conjecture)\n\n### What's Proven (no sorries)\n\n1. **Core Definitions**\n   - `IsSophieGermainPrime p` - p and 2p+1 are both prime\n   - `SafePrime p` - the prime 2p+1 corresponding to Sophie Germain prime p\n   - `IsSafePrime q` - q is prime and (q-1)/2 is also prime\n\n2. **Small Examples Verified**\n   - `sg_2`, `sg_3`, `sg_5`, `sg_11`, `sg_23`, `sg_29`, `sg_41`, `sg_53`, `sg_83`, `sg_89`\n   - Non-examples: `not_sg_7`, `not_sg_13`, `not_sg_17`, `not_sg_19`\n\n3. **Structure Theorems**\n   - `prime_mod_six` - Primes > 3 are congruent to 1 or 5 (mod 6)\n   - `sophie_germain_mod_six` - **Key result**: For p > 3 Sophie Germain, p = 5 (mod 6)\n   - `sophie_germain_form` - Sophie Germain primes > 3 have form 6k - 1\n   - `safe_prime_mod_twelve` - Safe primes 2p+1 (p > 3) satisfy 2p+1 = 11 (mod 12)\n\n4. **Additional Results**\n   - `sophie_germain_iff_safe` - Equivalence between characterizations\n   - `sg_chain_2_5_11_23` - A Sophie Germain chain\n   - `not_sg_47` - Chain terminates at 47\n\n### What's Axiomatized (1 axiom)\n\n- `sophie_germain_conjecture` - Infinitely many Sophie Germain primes (unsolved)\n\n### Key Mathematical Insight\n\nIf p > 3 is Sophie Germain, then p = 5 (mod 6). Proof: if p = 1 (mod 6), then 2p+1 = 3 (mod 6), so 3 | (2p+1), but 2p+1 is prime > 3, contradiction.\n\n## Session Log\n\n### Backfill Session (2026-01-01)\n\n**Mode**: BACKFILL - Problem was completed without knowledge documentation\n\n**Quality Assessment**: HIGH - Well-structured proof with good mathematical content\n"
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "partial-progress",
+    "sophie-germain"
+  ],
+  "relatedProofs": [
+    "sophie-germain"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2025-12-31T14:00:00-08:00",
+  "completed": "2025-12-31T15:00:00-08:00",
+  "significance": 6,
+  "tractability": 8
+}

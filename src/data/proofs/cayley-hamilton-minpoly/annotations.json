@@ -1,0 +1,275 @@
+[
+  {
+    "id": "ann-chm-imports",
+    "proofId": "cayley-hamilton-minpoly",
+    "range": {
+      "startLine": 1,
+      "endLine": 5
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "The formalization imports four key Mathlib modules: `Matrix.Charpoly.Minpoly` (the minimal polynomial of a matrix, including `minpoly.monic`, `minpoly.aeval`, `minpoly.dvd`, and `minpoly_dvd_charpoly`), `Matrix.Charpoly.Basic` (characteristic polynomial foundations), `Algebra.Polynomial.Div` (the division algorithm for polynomials, including `modByMonic_add_div` and `degree_modByMonic_lt`), and `RingTheory.Polynomial.Basic` (ring-theoretic properties of polynomial rings).",
+    "mathContext": "Key Mathlib facts used: $\\text{minpoly}(K, M)$ is monic, $\\text{aeval}_M(\\text{minpoly}) = 0$, $\\text{minpoly} \\mid \\text{charpoly}$, and the division algorithm $f = q \\cdot g + r$ with $\\deg(r) < \\deg(g)$ for monic $g$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib polynomial library",
+      "matrix characteristic polynomial",
+      "polynomial division"
+    ],
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib"
+    ]
+  },
+  {
+    "id": "ann-chm-reduction",
+    "proofId": "cayley-hamilton-minpoly",
+    "range": {
+      "startLine": 68,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "Minimal Polynomial Reduction Theorem",
+    "content": "The core theorem: evaluating any polynomial $f$ at matrix $M$ equals evaluating the remainder $f \\bmod \\text{minpoly}(K, M)$. This is the matrix-algebra analogue of modular arithmetic: just as $a \\equiv a \\bmod n$ in $\\mathbb{Z}/n\\mathbb{Z}$, we have $\\text{aeval}_M(f) = \\text{aeval}_M(f \\bmod \\text{minpoly})$. The proof applies the division algorithm $f = q \\cdot \\text{minpoly} + r$, evaluates at $M$, and uses $\\text{aeval}_M(\\text{minpoly}) = 0$ to eliminate the quotient term. The companion theorem shows $\\text{aeval}_M(f - f \\bmod \\mu_M) = 0$.",
+    "mathContext": "$\\text{aeval}_M(f) = \\text{aeval}_M(f \\bmod \\mu_M)$ where $\\mu_M = \\text{minpoly}(K, M)$. Proof: $f = q \\cdot \\mu_M + r \\Rightarrow \\text{aeval}_M(f) = \\text{aeval}_M(q) \\cdot 0 + \\text{aeval}_M(r) = \\text{aeval}_M(r)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial division algorithm",
+      "modular arithmetic",
+      "evaluation homomorphism"
+    ],
+    "prerequisites": [
+      "minpoly.monic",
+      "minpoly.aeval",
+      "Polynomial.modByMonic_add_div"
+    ]
+  },
+  {
+    "id": "ann-chm-degree",
+    "proofId": "cayley-hamilton-minpoly",
+    "range": {
+      "startLine": 96,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Degree Bounds: Tighter than Charpoly",
+    "content": "Two degree bound theorems establish the advantage of minpoly over charpoly reduction. First, $\\deg(f \\bmod \\mu_M) < \\deg(\\mu_M)$ (from the division algorithm). Second, chaining with $\\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$, we get $\\deg(f \\bmod \\mu_M) < n$. For **derogatory matrices** (where $\\mu_M \\neq \\chi_M$), the bound $\\deg(\\mu_M) < n$ is strict, giving a genuinely tighter reduction. Example: a scalar matrix $cI$ has $\\mu_M = X - c$ (degree 1) vs. $\\chi_M = (X-c)^n$ (degree $n$).",
+    "mathContext": "$\\deg(f \\bmod \\mu_M) < \\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$. For derogatory $M$: $\\deg(\\mu_M) < n$, so minpoly reduction is strictly tighter.",
+    "significance": "key",
+    "relatedConcepts": [
+      "derogatory matrices",
+      "nonderogatory matrices",
+      "polynomial degree bounds"
+    ],
+    "prerequisites": [
+      "degree_modByMonic_lt",
+      "minpoly_dvd_charpoly",
+      "charpoly_natDegree_eq_dim"
+    ]
+  },
+  {
+    "id": "ann-chm-annihilator",
+    "proofId": "cayley-hamilton-minpoly",
+    "range": {
+      "startLine": 127,
+      "endLine": 163
+    },
+    "type": "concept",
+    "title": "Annihilator Ideal Characterization",
+    "content": "The key structural result: $\\text{aeval}_M(f) = 0$ if and only if $\\mu_M \\mid f$. This means the **annihilator** of $M$ in $K[X]$ is the principal ideal $(\\mu_M)$. Since $K[X]$ is a PID (principal ideal domain), every ideal is principal, and $\\mu_M$ is the unique monic generator of the annihilator. The proof establishes closure under addition and multiplication (making it an ideal) and uses Mathlib's `minpoly.dvd` for the key direction. The converse follows from $\\text{aeval}_M(\\mu_M) = 0$ and multiplicativity of evaluation.",
+    "mathContext": "$\\ker(\\text{aeval}_M : K[X] \\to M_n(K)) = (\\mu_M) = \\{f \\in K[X] : \\mu_M \\mid f\\}$. This is a principal ideal in the PID $K[X]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "principal ideal domain",
+      "kernel of ring homomorphism",
+      "ideal theory",
+      "evaluation homomorphism"
+    ],
+    "prerequisites": [
+      "minpoly.dvd",
+      "minpoly.aeval",
+      "PID structure of K[X]"
+    ]
+  },
+  {
+    "id": "ann-chm-congruence",
+    "proofId": "cayley-hamilton-minpoly",
+    "range": {
+      "startLine": 176,
+      "endLine": 189
+    },
+    "type": "concept",
+    "title": "Congruence Modulo Minimal Polynomial",
+    "content": "Two polynomials $f$ and $g$ evaluate to the same matrix iff $\\mu_M \\mid (f - g)$, i.e., $f \\equiv g \\pmod{\\mu_M}$. This defines an equivalence relation on $K[X]$ whose classes correspond 1-to-1 with elements of the subalgebra $K[M] = \\{p(M) : p \\in K[X]\\}$. The quotient $K[X]/(\\mu_M)$ is isomorphic to $K[M]$ as a $K$-algebra, with $\\dim_K K[M] = \\deg(\\mu_M)$. This is a finer equivalence than charpoly congruence since $\\mu_M \\mid \\chi_M$.",
+    "mathContext": "$\\text{aeval}_M(f) = \\text{aeval}_M(g) \\iff \\mu_M \\mid (f - g) \\iff f \\equiv g \\pmod{\\mu_M}$. Quotient: $K[X]/(\\mu_M) \\cong K[M] \\subseteq M_n(K)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quotient rings",
+      "polynomial congruence",
+      "generated subalgebra",
+      "first isomorphism theorem"
+    ],
+    "prerequisites": [
+      "annihilator_iff_minpoly_dvd",
+      "aeval_eq_aeval_mod_minpoly"
+    ]
+  },
+  {
+    "id": "ann-chm-power",
+    "proofId": "cayley-hamilton-minpoly",
+    "range": {
+      "startLine": 203,
+      "endLine": 222
+    },
+    "type": "concept",
+    "title": "Power Reduction via Minimal Polynomial",
+    "content": "Every matrix power $M^k$ can be expressed as a polynomial in $M$ of degree $< \\deg(\\mu_M)$: $M^k = \\text{aeval}_M(X^k \\bmod \\mu_M)$. This means $\\{I, M, M^2, \\ldots, M^{d-1}\\}$ (where $d = \\deg(\\mu_M)$) spans the subalgebra $K[M]$. For computing $M^{100}$ when $d = 3$, we only need to find $X^{100} \\bmod \\mu_M$ (a degree $\\leq 2$ polynomial), then evaluate the 3-term expression. This is the basis of efficient matrix exponentiation.",
+    "mathContext": "$M^k = \\text{aeval}_M(X^k \\bmod \\mu_M)$, so $M^k = \\sum_{i=0}^{d-1} c_i M^i$ where $d = \\deg(\\mu_M)$. The set $\\{I, M, \\ldots, M^{d-1}\\}$ is a $K$-basis of $K[M]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "matrix exponentiation",
+      "Krylov subspace",
+      "Cayley-Hamilton efficient computation"
+    ],
+    "prerequisites": [
+      "aeval_eq_aeval_mod_minpoly",
+      "polynomial modular reduction"
+    ]
+  },
+  {
+    "id": "ann-chm-comparison",
+    "proofId": "cayley-hamilton-minpoly",
+    "range": {
+      "startLine": 236,
+      "endLine": 271
+    },
+    "type": "concept",
+    "title": "Comparison with Characteristic Polynomial Reduction",
+    "content": "Three results establish the relationship between minpoly and charpoly reductions. (1) $\\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$. (2) $\\deg(\\mu_M) > 0$ (the minpoly is never constant). (3) **Refinement**: reducing first by $\\chi_M$ then by $\\mu_M$ gives the same result as reducing directly by $\\mu_M$. Since $\\mu_M \\mid \\chi_M$, the minpoly reduction is always at least as tight. For nonderogatory matrices ($\\mu_M = \\chi_M$), both reductions coincide.",
+    "mathContext": "$\\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$ and $\\text{aeval}_M(f \\bmod \\chi_M) = \\text{aeval}_M(f \\bmod \\mu_M)$ for all $f$. Nonderogatory: $\\mu_M = \\chi_M \\Leftrightarrow \\deg(\\mu_M) = n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "nonderogatory matrices",
+      "derogatory matrices",
+      "charpoly-minpoly relationship"
+    ],
+    "prerequisites": [
+      "minpoly_dvd_charpoly",
+      "charpoly_natDegree_eq_dim",
+      "Matrix.aeval_self_charpoly"
+    ]
+  },
+  {
+    "id": "ann-chm-special",
+    "proofId": "cayley-hamilton-minpoly",
+    "range": {
+      "startLine": 284,
+      "endLine": 303
+    },
+    "type": "concept",
+    "title": "Special Cases: Scalar, Identity, and Zero Matrices",
+    "content": "Concrete examples showing the minpoly-charpoly gap. The identity matrix $I$ satisfies $X - 1$ (degree 1), while $\\chi_I = (X-1)^n$. The zero matrix satisfies $X$ (degree 1), while $\\chi_0 = X^n$. More generally, scalar matrices $cI$ satisfy $X - c$. These are maximally derogatory: $\\deg(\\mu_M) = 1$ while $\\deg(\\chi_M) = n$.",
+    "mathContext": "$\\mu_I = X - 1$, $\\mu_0 = X$, $\\mu_{cI} \\mid X - c$. In each case $\\deg(\\mu_M) = 1 \\ll n = \\deg(\\chi_M)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "scalar matrices",
+      "diagonal matrices",
+      "derogatory matrices"
+    ],
+    "prerequisites": [
+      "aeval_X",
+      "minpoly.dvd"
+    ]
+  },
+  {
+    "id": "ann-chm-nilpotent",
+    "proofId": "cayley-hamilton-minpoly",
+    "range": {
+      "startLine": 316,
+      "endLine": 331
+    },
+    "type": "concept",
+    "title": "Nilpotent Matrices via Minimal Polynomial",
+    "content": "A matrix $M$ with $\\mu_M = X^d$ is nilpotent of index exactly $d$: $M^d = 0$ and $M^{d-1} \\neq 0$. The proof substitutes $\\mu_M = X^d$ into $\\text{aeval}_M(\\mu_M) = 0$ to get $M^d = 0$. Higher powers vanish by $M^k = M^d \\cdot M^{k-d} = 0$. The nilpotency index equals $\\deg(\\mu_M)$, which is more precise than using $\\chi_M = X^n$ (which only gives $M^n = 0$).",
+    "mathContext": "$\\mu_M = X^d \\Rightarrow M^d = 0$, and $\\forall k \\geq d,\\; M^k = 0$. The nilpotency index $= d = \\deg(\\mu_M) \\leq n = \\deg(\\chi_M)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "nilpotent matrices",
+      "nilpotency index",
+      "Jordan blocks",
+      "nilpotent Lie algebras"
+    ],
+    "prerequisites": [
+      "minpoly.aeval",
+      "pow_add",
+      "zero_mul"
+    ]
+  },
+  {
+    "id": "ann-chm-identities",
+    "proofId": "cayley-hamilton-minpoly",
+    "range": {
+      "startLine": 346,
+      "endLine": 365
+    },
+    "type": "concept",
+    "title": "Polynomial Identities via Annihilator Theory",
+    "content": "The annihilator ideal structure provides a systematic method for proving matrix identities: to show $\\text{aeval}_M(f) = \\text{aeval}_M(g)$, it suffices to show $\\mu_M \\mid (f - g)$. The theorem `aeval_eq_of_minpoly_dvd_diff` formalizes this. Additionally, `annihilating_degree_ge_minpoly` shows that any nonzero annihilating polynomial has degree $\\geq \\deg(\\mu_M)$, confirming the minimality of $\\mu_M$.",
+    "mathContext": "If $f - g = \\mu_M \\cdot q$ then $\\text{aeval}_M(f) = \\text{aeval}_M(g)$. For nonzero $f$ with $\\text{aeval}_M(f) = 0$: $\\deg(f) \\geq \\deg(\\mu_M)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "matrix identity verification",
+      "polynomial divisibility",
+      "degree lower bounds"
+    ],
+    "prerequisites": [
+      "annihilator_iff_minpoly_dvd",
+      "Polynomial.natDegree_le_of_dvd"
+    ]
+  },
+  {
+    "id": "ann-chm-idempotent",
+    "proofId": "cayley-hamilton-minpoly",
+    "range": {
+      "startLine": 378,
+      "endLine": 403
+    },
+    "type": "concept",
+    "title": "Idempotent and Involutory Matrix Classification",
+    "content": "**Idempotent matrices** ($M^2 = M$): $M$ satisfies $X^2 - X = X(X-1)$, so $\\mu_M \\mid X(X-1)$. Since $X(X-1)$ has distinct roots over any field, $\\mu_M \\in \\{X, X-1, X(X-1)\\}$ — corresponding to $M = 0$, $M = I$, or a nontrivial projection. **Involutory matrices** ($M^2 = I$): $M$ satisfies $X^2 - 1 = (X-1)(X+1)$, so $\\mu_M \\mid (X-1)(X+1)$. If $\\text{char}(K) \\neq 2$, the factors are distinct, giving $\\mu_M \\in \\{X-1, X+1, (X-1)(X+1)\\}$ — corresponding to $M = I$, $M = -I$, or a nontrivial involution.",
+    "mathContext": "Idempotent: $M^2 = M \\Rightarrow \\mu_M \\mid X(X-1)$, so $\\mu_M \\in \\{X, X-1, X(X-1)\\}$. Involutory: $M^2 = I \\Rightarrow \\mu_M \\mid (X-1)(X+1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "projection operators",
+      "involutions",
+      "spectral decomposition",
+      "matrix classification"
+    ],
+    "prerequisites": [
+      "minpoly.dvd",
+      "idempotent_annihilated",
+      "involutory_annihilated"
+    ]
+  },
+  {
+    "id": "ann-chm-summary",
+    "proofId": "cayley-hamilton-minpoly",
+    "range": {
+      "startLine": 409,
+      "endLine": 447
+    },
+    "type": "concept",
+    "title": "Summary of Results",
+    "content": "The summary section lists all 25+ theorems organized into categories: the core reduction theorem, degree bounds, annihilator ideal characterization, congruence results, power reduction, charpoly comparison, and special matrix classes (idempotent, involutory, nilpotent). The `#check` commands verify the key theorem signatures. All results are fully proved with 0 sorries, building on Mathlib's foundational results for minimal and characteristic polynomials.",
+    "mathContext": "Key results: $\\text{aeval}_M(f) = \\text{aeval}_M(f \\bmod \\mu_M)$, $\\ker(\\text{aeval}_M) = (\\mu_M)$, $M^k = \\text{aeval}_M(X^k \\bmod \\mu_M)$, $\\text{aeval}_M(f \\bmod \\chi_M) = \\text{aeval}_M(f \\bmod \\mu_M)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "theorem index",
+      "formalization completeness",
+      "Lean proof verification"
+    ],
+    "prerequisites": [
+      "all preceding theorems"
+    ]
+  }
+]

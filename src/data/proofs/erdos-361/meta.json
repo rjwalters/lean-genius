@@ -1,0 +1,207 @@
+{
+  "id": "erdos-361",
+  "title": "Erdős Problem #361: Largest Non-Representing Subsets",
+  "slug": "erdos-361",
+  "description": "For c > 0, what is the maximum size of A ⊆ {1,...,⌊cn⌋} such that n is not a subset sum from A? Does this depend on n irregularly? Possibly Θ(√n).",
+  "meta": {
+    "author": "Erdős, Graham (1980)",
+    "sourceUrl": "https://erdosproblems.com/361",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos361Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "subset-sums",
+      "combinatorics",
+      "asymptotics"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 361,
+    "erdosUrl": "https://erdosproblems.com/361",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-15",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.powerset",
+        "description": "Powerset of finite sets",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Asymptotics.IsBigO",
+        "description": "Big-O and Theta notation",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for asymptotic analysis",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Defined IsSubsetSum and NonRepresenting predicates",
+      "Defined maxNonReprSize via Finset.powerset.filter.sup",
+      "Stated ErdosProblem361 (irregularity as non-monotonicity)",
+      "Stated MaxNonReprUnbounded (unbounded growth conjecture)",
+      "Stated plausible Θ(√n) growth using Mathlib's IsTheta",
+      "Proved nonRepresenting_empty and nonRepresenting_subset",
+      "Proved singleton_one_nonRepr for {1} and n ≥ 2",
+      "Proved nonRepresenting_of_sum_lt: sets with small sum are non-representing",
+      "Proved maxNonRepr_full_of_sum_lt: full range is optimal when total sum < n",
+      "Proved maxNonRepr_ge_one: lower bound ≥ 1 for c ≥ 1, n ≥ 2",
+      "Fixed incorrect maxNonRepr_large_n (was false) with correct conditional theorem"
+    ],
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "lineCount": 140,
+    "theoremCount": 6,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this problem on page 59 of their influential 1980 monograph [ErGr80] on combinatorial number theory. The question asks a natural extremal question: how large can a subset of $\\{1,\\ldots,\\lfloor cn \\rfloor\\}$ be if it must avoid representing $n$ as a subset sum? The problem has two aspects—determining the growth rate and understanding whether the answer depends on $n$ in an irregular (non-monotone) fashion.\n\nThe conjectured growth rate is $\\Theta(\\sqrt{n})$, which emerges from a heuristic argument: a random $k$-element subset of $\\{1,\\ldots,cn\\}$ produces $\\binom{k}{j}$ subset sums for each size $j$, and when $k \\approx \\sqrt{n}$ the total number of achievable sums ($\\approx 2^k$) becomes comparable to $n$, making it difficult to avoid any particular target. Below $\\sqrt{n}$ elements, avoidance is easy; above $\\sqrt{n}$, the subset sum space saturates.\n\nThe irregularity question is more subtle—it asks whether the arithmetic structure of $n$ (its factorization, residues, representation properties) causes the maximum non-representing subset size to fluctuate non-monotonically. This connects to the erratic behavior of arithmetic functions and is reminiscent of similar irregularity phenomena in partition theory.\n\nThe problem sits at the intersection of additive combinatorics and computational complexity: the subset sum problem is NP-complete, so exact computation of $\\max |A|$ for specific $(c, n)$ is computationally hard, and theoretical bounds require combinatorial rather than algorithmic methods.\n\n**Status**: OPEN — Both the growth rate and irregularity questions are unresolved.",
+    "problemStatement": "**Problem (OPEN)**\n\nLet $c > 0$ and $n$ be a large integer. What is the maximum cardinality of a set $A \\subseteq \\{1, \\ldots, \\lfloor cn \\rfloor\\}$ such that $n$ cannot be expressed as a sum of distinct elements of $A$?\n\nDoes this maximum depend on $n$ irregularly (non-monotonically)?\n\n**Conjectured**: The maximum is $\\Theta(\\sqrt{n})$.\n\n**Known**: Basic structural properties (empty set, subset monotonicity, singleton bounds) are proved. Asymptotic behavior is axiomatized.",
+    "text": "For c > 0, what is the maximum size of A ⊆ {1,...,⌊cn⌋} such that n is not a subset sum from A? Does this depend on n irregularly? Possibly Θ(√n).",
+    "proofStrategy": "**Formalization Strategy**\n\nThe Lean file (101 lines) formalizes the problem with a mix of proved and axiomatized results:\n\n1. **Core definitions** (lines 22–37): `IsSubsetSum A n` asserts $\\exists B \\subseteq A, \\sum B = n$ via `Finset.sum id`. `NonRepresenting A n` is the negation. `maxNonReprSize c n` computes the supremum of cardinalities over `(Finset.Icc 1 ⌊cn⌋₊).powerset` filtered by non-representation.\n\n2. **Main conjecture** (lines 39–50): `ErdosProblem361` states non-monotonicity of `maxNonReprSize c`. `MaxNonReprUnbounded` states the function tends to infinity.\n\n3. **Asymptotics** (lines 52–60): Axiomatizes the existence of a big-O bound (`maxNonRepr_bigO_bound`) and the plausible $\\Theta(\\sqrt{n})$ growth (`maxNonRepr_plausible_theta`) using Mathlib's `IsBigO` and `IsTheta`.\n\n4. **Proved properties** (lines 62–90): Three fully proved results: empty set is non-representing, subsets of non-representing sets are non-representing, and $\\{1\\}$ is non-representing for $n \\geq 2$.\n\n5. **Sorried results** (lines 91–101): Small-$c$ regime (eventually $\\max = \\lfloor cn \\rfloor$) and lower bound ($\\max \\geq 1$ for $n \\geq 2$, $c \\geq 1$).",
+    "keyInsights": [
+      "The conjectured $\\Theta(\\sqrt{n})$ growth emerges from the subset sum saturation threshold: a $k$-element set produces up to $2^k$ distinct sums, and when $k \\approx \\sqrt{n}$ the number of achievable sums becomes comparable to $n$, making avoidance difficult",
+      "The irregularity question asks whether the arithmetic structure of $n$ causes non-monotone fluctuations in the maximum non-representing subset size—a question about the interaction between additive structure and extremal combinatorics",
+      "In the small-$c$ regime ($c < 1$), for large $n$ the maximum sum $\\sum_{i=1}^{\\lfloor cn \\rfloor} i = \\lfloor cn \\rfloor(\\lfloor cn \\rfloor + 1)/2 < n$, so every subset is non-representing and the answer is simply $\\lfloor cn \\rfloor$",
+      "Subset monotonicity (`NonRepresenting` is downward-closed) means the extremal sets achieving the maximum size have a hereditary structure amenable to matroid-theoretic analysis",
+      "The NP-completeness of the subset sum problem means computing `maxNonReprSize c n` exactly is computationally intractable, motivating the search for asymptotic bounds rather than exact formulas"
+    ],
+    "prerequisites": [
+      "Subset sums and the subset sum problem (NP-completeness)",
+      "Extremal combinatorics: maximizing set size under constraints",
+      "Asymptotic notation: $O(\\cdot)$, $\\Theta(\\cdot)$ via Mathlib's $\\texttt{IsBigO}$/$\\texttt{IsTheta}$",
+      "Powerset and filtration combinatorics ($\\texttt{Finset.powerset}$, $\\texttt{Finset.filter}$)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 22,
+      "endLine": 38,
+      "summary": "Defines `IsSubsetSum A n` ($\\exists B \\subseteq A, \\sum_{b \\in B} b = n$), `NonRepresenting A n` (negation: no subset sums to $n$), and `maxNonReprSize c n` as the supremum of $|A|$ over the powerset of $\\{1,\\ldots,\\lfloor cn \\rfloor\\}$ filtered by `NonRepresenting`, using `Finset.powerset`, `Finset.filter`, and `Finset.sup`.",
+      "mathContext": "$\\text{IsSubsetSum}(A, n) \\Leftrightarrow \\exists B \\subseteq A, \\sum_{b \\in B} b = n$; $\\text{maxNonReprSize}(c, n) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,\\lfloor cn \\rfloor\\}, \\neg\\text{IsSubsetSum}(A, n)\\}$."
+    },
+    {
+      "id": "conjecture",
+      "title": "Main Conjectures",
+      "startLine": 39,
+      "endLine": 51,
+      "summary": "States two conjectures: `ErdosProblem361` asserts non-monotonicity of `maxNonReprSize c` (the irregularity question), and `MaxNonReprUnbounded` asserts the function tends to infinity via `Filter.Tendsto atTop atTop`.",
+      "mathContext": "Irregularity: $\\exists n_1 < n_2, \\text{maxNonReprSize}(c, n_1) > \\text{maxNonReprSize}(c, n_2)$. Unbounded: $\\text{maxNonReprSize}(c, n) \\to \\infty$ as $n \\to \\infty$."
+    },
+    {
+      "id": "asymptotics",
+      "title": "Asymptotic Growth",
+      "startLine": 52,
+      "endLine": 64,
+      "summary": "documents in source comments `maxNonRepr_bigO_bound` (no Lean declaration exists) (existence of a big-O bound) and the plausible $\\Theta(\\sqrt{n})$ growth rate `maxNonRepr_plausible_theta` using Mathlib's `Asymptotics.IsTheta` and `Asymptotics.IsBigO` with `Filter.atTop`.",
+      "mathContext": "Axioms: $\\text{maxNonReprSize}(c, n) = O(f(n))$ for some $f$; conjecture: $\\text{maxNonReprSize}(c, n) = \\Theta(\\sqrt{n})$, formalized via Mathlib's $\\texttt{IsTheta}$."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Proved Basic Properties",
+      "startLine": 65,
+      "endLine": 91,
+      "summary": "Three fully proved results: `nonRepresenting_empty` (the empty set is non-representing for $n > 0$ since $\\sum \\emptyset = 0 \\neq n$), `nonRepresenting_subset` (subsets of non-representing sets are non-representing, by transitivity of $\\subseteq$), and `singleton_one_nonRepr` ($\\{1\\}$ is non-representing for $n \\geq 2$ since subsets sum to 0 or 1).",
+      "mathContext": "$\\text{NonRepr}(\\emptyset, n)$ for $n > 0$; $B \\subseteq A \\wedge \\text{NonRepr}(A, n) \\implies \\text{NonRepr}(B, n)$ (downward closure); $\\text{NonRepr}(\\{1\\}, n)$ for $n \\geq 2$."
+    },
+    {
+      "id": "structural-lemmas",
+      "title": "Structural Lemmas",
+      "startLine": 92,
+      "endLine": 101,
+      "summary": "`nonRepresenting_of_sum_lt`: If the sum of all elements of $A$ is less than $n$, then $A$ is non-representing. The proof uses `Finset.sum_le_sum_of_subset_of_nonneg` to show any subset has an even smaller sum.",
+      "mathContext": "$\\sum_{a \\in A} a < n \\implies \\text{NonRepr}(A, n)$, since $\\forall B \\subseteq A, \\sum B \\leq \\sum A < n$."
+    },
+    {
+      "id": "proved-properties",
+      "title": "Proved Properties",
+      "startLine": 102,
+      "endLine": 140,
+      "summary": "Two fully proved results (no sorry): `maxNonRepr_full_of_sum_lt` shows that when the total sum of $\\{1,\\ldots,\\lfloor cn \\rfloor\\}$ is less than $n$, the maximum non-representing set is the full range. `maxNonRepr_ge_one` proves $\\mathrm{maxNonReprSize}(c,n) \\geq 1$ for $c \\geq 1$, $n \\geq 2$ using $\\{1\\}$ as a witness via `Finset.le\\_sup`.",
+      "mathContext": "$\\sum_{i=1}^{\\lfloor cn \\rfloor} i < n \\implies \\text{maxNonReprSize}(c,n) = \\lfloor cn \\rfloor$ (full range is optimal). Lower bound: $\\text{maxNonReprSize}(c,n) \\geq 1$ for $c \\geq 1, n \\geq 2$ (witness: $\\{1\\}$)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #361 with precise definitions of the subset sum and non-representation predicates, the extremal function `maxNonReprSize` via powerset filtration, the irregularity and growth conjectures, asymptotic bounds using Mathlib's `IsBigO`/`IsTheta`, and three proved structural properties (empty set, subset monotonicity, singleton bound).",
+    "implications": "1. **Additive Combinatorics**: Understanding the maximum non-representing subset size connects to Freiman's theorem on sumsets and the structure of sets avoiding prescribed sums\n\n**2. Subset Sum Theory**: The problem is a continuous parameterization of the subset sum avoidance question, bridging combinatorial number theory and computational complexity\n\n3. **Irregularity Phenomena**: A positive answer to the irregularity question would demonstrate that extremal quantities in additive combinatorics can exhibit non-monotone behavior driven by arithmetic structure\n\n4. **Asymptotic Analysis**: The $\\Theta(\\sqrt{n})$ conjecture, if proved, would establish a precise threshold for subset sum saturation in bounded ranges.",
+    "openQuestions": [
+      "What is the precise growth rate of maxNonReprSize c n? Is it Θ(√n)?",
+      "Is the dependence on n truly irregular (non-monotone)?",
+      "Does the growth rate depend on c, or is it c-independent up to constants?",
+      "What is the structure of optimal non-representing sets for specific n?",
+      "Can probabilistic methods or second-moment arguments establish the Θ(√n) bound?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Analysis.Asymptotics.Lemmas",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Asymptotics",
+      "Classical"
+    ],
+    "namespace": null,
+    "lineCount": 140,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos361Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "ErGr80",
+      "citation": "Erdős, P. and Graham, R.L. (1980). Old and New Problems and Results in Combinatorial Number Theory. Monographies de L'Enseignement Mathématique 28, Université de Genève, p. 59.",
+      "type": "book"
+    },
+    {
+      "key": "ErdosTuran41",
+      "citation": "Erdős, P. and Turán, P. (1941). On a problem of Sidon in additive number theory, and on some related problems. Journal of the London Mathematical Society, 16(4), 212–215.",
+      "type": "paper",
+      "note": "Foundational paper establishing the √N density bound for Sidon sets, motivating the √n threshold in Problem #361"
+    },
+    {
+      "key": "Freiman73",
+      "citation": "Freiman, G.A. (1973). Foundations of a Structural Theory of Set Addition. Translations of Mathematical Monographs 37, AMS.",
+      "type": "book",
+      "note": "Freiman's theorem on the structure of sets with small sumset connects to the extremal sets in Problem #361 via inverse sumset theory"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-253",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, subset-sums"
+    },
+    {
+      "targetId": "erdos-300",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorics, number-theory, subset-sums"
+    },
+    {
+      "targetId": "erdos-400",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, combinatorics, number-theory"
+    }
+  ],
+  "sorries": 0
+}

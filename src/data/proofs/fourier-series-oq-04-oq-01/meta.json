@@ -1,0 +1,245 @@
+{
+  "id": "fourier-series-oq-04-oq-01",
+  "title": "2D Carleson Spherical-Summation Conjecture (axiomatized)",
+  "slug": "fourier-series-oq-04-oq-01",
+  "description": "Axiomatizes the 2D Carleson conjecture on T² = (R/Z)²: for f ∈ L²(T²), the spherical partial Fourier sum S_R^sph f converges to f for almost every x as R → ∞. This is the L²-endpoint of the Bochner-Riesz / spherical-summation family and the natural higher-dimensional analogue of the 1D Carleson theorem (1966). Open in mathematics; no improvement on Fefferman's 1971 ball-multiplier barrier. Companion unconditional theorem (L² norm convergence by Plancherel) is now proved sorry-free via Mathlib's multivariate Fourier engine.",
+  "leanFile": {
+    "path": "Proofs/FourierSeriesOQ04OQ01.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Complex",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "FourierSeriesOQ04OQ01",
+    "lineCount": 598,
+    "axiomCount": 1,
+    "sorries": 0,
+    "definitionCount": 5,
+    "theoremCount": 16
+  },
+  "meta": {
+    "author": "Open in mathematics (Stein 1971 ICM; Tao 2002 survey). Formalized statement: Lean Genius contributors.",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Bochner%E2%80%93Riesz_mean",
+    "date": "Open conjecture (no known closure as of 2024)",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FourierSeriesOQ04OQ01.lean",
+    "tags": [
+      "harmonic-analysis",
+      "fourier-series",
+      "bochner-riesz",
+      "carleson-conjecture",
+      "spherical-summation",
+      "open-conjecture",
+      "two-dimensional"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-05-12",
+    "axiomCount": 1,
+    "lineCount": 598,
+    "theoremCount": 16,
+    "definitionCount": 5,
+    "assumptions": "1 axiom: `carleson_2d_sph` — the open 2D Carleson spherical-summation conjecture on T² (the a.e.-pointwise claim, genuinely open in mathematics). 0 sorries: the unconditional L²-norm convergence companion `sphPartialSum_L2_norm_converge` is now proved (S15) sorry-free via Mathlib's multivariate Fourier engine `UnitAddTorus.hasSum_mFourier_series_L2`. No other assumptions.",
+    "mathlibDependencies": [
+      {
+        "theorem": "AddCircle",
+        "description": "The quotient R/T·Z carrying Haar measure",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "fourier",
+        "description": "Fourier monomials e_n(x) = exp(2πinx/T) on AddCircle T",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "haarAddCircle",
+        "description": "Normalized Haar measure on AddCircle T",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "MeasureTheory.Measure.pi",
+        "description": "Product measure on Pi types — used for haarT2 = ⊗ haarAddCircle",
+        "module": "Mathlib.MeasureTheory.Constructions.Pi"
+      },
+      {
+        "theorem": "MeasureTheory.MemLp",
+        "description": "L^p membership predicate",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace"
+      },
+      {
+        "theorem": "MeasureTheory.eLpNorm",
+        "description": "Extended L^p norm",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace"
+      }
+    ],
+    "originalContributions": [
+      "T2: 2-torus as Fin 2 → AddCircle 1",
+      "haarT2: product Haar measure on T2",
+      "multiFourierCoeff: 2D Fourier coefficient as iterated integral against fourier characters",
+      "latticeDisc: integer lattice disc |k| ≤ R as a Finset (bounding-box + decidable filter)",
+      "sphPartialSum: spherical partial Fourier sum on T²",
+      "carleson_2d_sph: the open 2D Carleson conjecture axiomatized with full quantifiers",
+      "sphPartialSum_L2_norm_converge (S15 ACT, iter 14): unconditional L²-norm convergence — PROVED sorry-free. Transports to Mathlib's multivariate Fourier engine UnitAddTorus.hasSum_mFourier_series_L2 (Mathlib.Analysis.Fourier.AddCircleMulti, v4.26.0). Crucial finding: the engine's ambient volume on UnitAddTorus (Fin 2) is DEFINITIONALLY Measure.pi (fun _ => haarAddCircle) = haarT2 (the engine declares a local MeasureSpace ⟨haarAddCircle⟩), so the engine applies natively with NO measure-cast — superseding the global-volume bridge route (haarT2_eq_volume targets the off-by-(1•) global volume, not the engine's measure). Uses latticeDisc_eventually_supset (S9) cofinality to pass from the Finset-directed HasSum to the R→∞ limit, then ENNReal.tendsto_toReal_iff to lift Lp-norm convergence to the eLpNorm form.",
+      "mFourier_fin2 (S15 ACT, iter 14): bridge lemma — the engine's multi-character UnitAddTorus.mFourier k on T2 factors as fourier (k 0) (x 0) * fourier (k 1) (x 1), via Fin.prod_univ_two; matches the character form used by sphPartialSum",
+      "mFourierCoeff_eq_multiFourierCoeff (S15 ACT, iter 14): bridge lemma — the engine's coefficient functional UnitAddTorus.mFourierCoeff (⇑fhat) k equals our multiFourierCoeff f k for any Lp representative fhat of f, via integral_congr_ae over the (definitionally identical) engine/haarT2 measure plus the character factorisation",
+      "multiFourierCoeff_zero, sphPartialSum_zero: sanity-check lemmas (zero function in / zero coefficient out)",
+      "latticeDisc_subset_bbox, latticeDisc_card_le_bbox (S2c): trivial pre-Gauss bounding-box cardinality bound for the lattice disc",
+      "bbox_card, latticeDisc_card_le_explicit (S2d): explicit bounding-box cardinality (2⌈|R|⌉+1)² via Pi.card_Icc + Int.card_Icc, yielding the closed-form O(R²) Gauss-circle upper bound for the lattice disc",
+      "latticeDisc_card_le_real (S2-Gauss-real): Real-form qualitative Gauss-circle bound ((latticeDisc R).card : ℝ) ≤ (2|R|+3)² suitable for ℓ¹-majorisation of sphPartialSum",
+      "latticeDisc_mem_eventually, latticeDisc_eventually_supset (S2e-cofinality, iter 8): atTop cofinality of latticeDisc — every fixed finite set of lattice points is eventually contained in latticeDisc R as R → ∞; stepping-stone for the Plancherel-tail engine that closes sphPartialSum_L2_norm_converge",
+      "coeFn_finset_sum_haarT2 (S2e-step2, iter 9, private helper): inductive `Lp.coeFn_finset_sum`-style helper specialized to `Lp ℂ 2 haarT2` — closes the documented Mathlib gap (no named `Lp.coeFn_finset_sum` / `Finset.coeFn_sum` / `AEEqFun.coeFn_sum` at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67) via `Finset.induction_on` + `Lp.coeFn_zero` + `Lp.coeFn_add`. Step 2 of the S7 audit §4 ACT recipe for discharging `sphPartialSum_L2_norm_converge`; independent of step 1 (haarT2/volume setup)",
+      "haarT2_eq_volume (S2e-step1-contingency, iter 10): sorry-free, axiom-free measure-equality bridge `haarT2 = (volume : Measure T2)` on `Fin 2 → AddCircle 1`. Combines `AddCircle.volume_eq_smul_haarAddCircle` (1D scaling identity `volume = ENNReal.ofReal T • haarAddCircle`) with `ENNReal.ofReal_one`, `one_smul`, and `volume_pi` (a `rfl` lemma `volume = Measure.pi (fun _ => volume)` on a Pi type). At `T = 1` the scaling is trivial. Discharges step 1 contingency of the S7 audit §4 ACT recipe (haarT2/volume disambiguation) — the Mathlib engine `hasSum_mFourier_series_L2` in `Mathlib.Analysis.Fourier.AddCircleMulti` (verified at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 / v4.26.0, line 224) is stated over `L²(UnitAddTorus d)` with `volume` measure, so this bridge enables invoking it on our `haarT2`-stated theorems. Sites the rfl-ness of `volume_pi` (Pi.lean:652) and `AddCircle.volume_eq_smul_haarAddCircle` (AddCircle.lean:92).",
+      "memLp_haarT2_iff_volume, eLpNorm_haarT2_eq_volume (S14-ACT-step-4a/6 measure-bridge corollaries, iter 13, public): two sorry-free, axiom-free direct corollaries of `haarT2_eq_volume` (S11 ACT) that paste-ready the S12 PREP §5 sub-tactics. `memLp_haarT2_iff_volume` provides the step-4a `MemLp` lift `MemLp f p haarT2 ↔ MemLp f p volume` (so `MemLp.toLp` and the Mathlib engine `hasSum_mFourier_series_L2` become invokable on our `haarT2`-stated hypothesis). `eLpNorm_haarT2_eq_volume` provides the step-6 `eLpNorm` swap `eLpNorm f p haarT2 = eLpNorm f p volume` (the option-(c) workaround, avoiding `Lp`-element transport). Both proofs are single-tactic `rw [haarT2_eq_volume]`, propagating the measure equality through the type-class-resolved `MemLp`/`eLpNorm` definitions."
+    ]
+  },
+  "overview": {
+    "historicalContext": "**The 2D Carleson Conjecture (open)**\n\nIn 1966, Lennart Carleson proved that for every $f \\in L^2(\\mathbb{T}^1)$, the Fourier partial sums $S_N f$ converge to $f$ for almost every $x \\in \\mathbb{T}^1$. Fields-Medal-winning work (1966 Acta Math; 2006 Abel Prize). The natural higher-dimensional generalisation — for $f \\in L^2(\\mathbb{T}^n)$ with $n \\geq 2$, do the **spherical** partial sums $S_R^{\\text{sph}} f$ converge a.e. as $R \\to \\infty$? — is open even for $n=2$.\n\n**Why the 1D case is solved but 2D is not.** Carleson's 1D proof relied on a time-frequency decomposition of $\\{|k| \\leq N\\} \\subset \\mathbb{Z}$, an interval — a single rectangle in phase space. In 2D, $\\{|k| \\leq R\\} \\subset \\mathbb{Z}^2$ is a **disc** whose curved boundary cannot be efficiently covered by axis-aligned dyadic rectangles. Fefferman (1971, Annals of Math 94) proved the ball multiplier theorem: for $p \\neq 2$ the operator does not extend to $L^p$. This rules out Hunt-style $L^p$-interpolation; the L²-endpoint a.e. statement remains the unique untouched case.\n\n**Current status (2024).** No conditional reduction (Kakeya, restriction) discharges the L² endpoint. The conjecture is the L² endpoint of the Bochner–Riesz family; equivalently, no weak-type maximal estimate for the spherical Carleson operator is known.",
+    "problemStatement": "Let $\\mathbb{T}^2 = (\\mathbb{R}/\\mathbb{Z})^2$ with normalised Haar measure $\\mu$. For $f \\in L^2(\\mathbb{T}^2)$ and $k = (k_1, k_2) \\in \\mathbb{Z}^2$, define\n$$\n\\widehat{f}(k) = \\int_{\\mathbb{T}^2} f(x)\\, e^{-2\\pi i k \\cdot x}\\, d\\mu(x), \\qquad S_R^{\\text{sph}} f(x) = \\sum_{|k| \\leq R} \\widehat{f}(k)\\, e^{2\\pi i k \\cdot x},\n$$\nwith $|k| = \\sqrt{k_1^2 + k_2^2}$. **Conjecture (2D Carleson, spherical):**\n$$\n\\forall f \\in L^2(\\mathbb{T}^2):\\quad S_R^{\\text{sph}} f(x) \\xrightarrow{R \\to \\infty} f(x) \\quad \\text{for } \\mu\\text{-a.e. } x.\n$$\n**Status:** Open as of 2024.",
+    "proofStrategy": "This entry **axiomatises** the open conjecture (per the gallery's Axiom Integrity Policy: open-mathematics conjectures must use `status: axiomatized`, never `verified`). The Lean architecture has three layers:\n\n**Layer 1 — Definitions (rigorous, no sorries).** The 2-torus is realised as `T2 := Fin 2 → AddCircle 1` with product Haar measure `haarT2`. The Fourier coefficient `multiFourierCoeff f k` is the iterated integral of `f(x) · fourier(-(k 0))(x 0) · fourier(-(k 1))(x 1)` against `haarT2`. The lattice disc `latticeDisc R : Finset (Fin 2 → ℤ)` is the `Finset` of integer pairs $(k_1, k_2)$ with $k_1^2 + k_2^2 \\leq R^2$, implemented as the filter of a bounding box `Icc (-⌈|R|⌉) ⌈|R|⌉ × Icc (-⌈|R|⌉) ⌈|R|⌉`. The spherical partial sum is the explicit `Finset.sum` over `latticeDisc R`.\n\n**Layer 2 — The conjecture (axiomatised, 1 axiom).** `carleson_2d_sph` states the convergence with all quantifiers spelled out — `∀ᵐ x ∂haarT2, Tendsto (fun R ↦ sphPartialSum f R x) atTop (𝓝 (f x))` for any `f : T2 → ℂ` with `MemLp f 2 haarT2`. This is the L²-pointwise-a.e. claim.\n\n**Layer 3 — Unconditional companion (proved, 0 sorries — S15).** `sphPartialSum_L2_norm_converge` states the *norm* version — `‖S_R^sph f - f‖_{L²} → 0` — which holds without conjectural input by Plancherel on T². It is now proved sorry-free by transporting to Mathlib's multivariate Fourier engine `UnitAddTorus.hasSum_mFourier_series_L2` (`Mathlib.Analysis.Fourier.AddCircleMulti`). The key observation is that the engine's ambient `volume` on `UnitAddTorus (Fin 2) = T2` is *definitionally* `Measure.pi (fun _ => haarAddCircle) = haarT2`, so the engine applies natively with no measure-cast. Two bridge lemmas — `mFourier_fin2` (the engine's multi-character factors as the product of two 1-D characters) and `mFourierCoeff_eq_multiFourierCoeff` (the engine's coefficient functional equals our `multiFourierCoeff`) — identify our `sphPartialSum` with the engine's Fourier partial sum a.e.; the `latticeDisc` cofinality (`latticeDisc_eventually_supset`, S9) passes from the `Finset`-directed `HasSum` to the `R → ∞` limit; and `ENNReal.tendsto_toReal_iff` lifts the real `Lp`-norm convergence to the `eLpNorm` form.\n\nTwo definitional sanity-check lemmas (`multiFourierCoeff_zero`, `sphPartialSum_zero`) confirm the type signatures are coherent.",
+    "keyInsights": [
+      "**L² norm convergence is trivial; a.e. convergence is the open problem.** The asymmetry guides the formalisation: Plancherel gives the norm statement; the maximal-operator estimate for $\\sup_R |S_R^{\\text{sph}} f|$ on $L^2(\\mathbb{T}^2)$ is the missing weak-type bound. No such estimate is known.",
+      "**Rectangular ≠ spherical in $n \\geq 2$.** Fefferman (1971) showed that *rectangular* $L^1$ partial sums diverge a.e. on $\\mathbb{T}^2$; yet *spherical* $L^2$ a.e. convergence is open. Both facts coexist consistently in the gallery (rectangular failure is unconditional; spherical $L^2$ a.e. is the open conjecture).",
+      "**The 2D Carleson conjecture is the L² endpoint of Bochner–Riesz.** For $\\delta > (n-1)/2 = 1/2$ in $n=2$, Stein 1958 proved $S_R^\\delta f \\to f$ a.e. (the $\\delta > 0$ regularised version). The unregularised $\\delta = 0$ case — exactly the spherical sum — is open at the $L^2$ endpoint.",
+      "**No conditional reduction is known.** Kakeya, restriction, and decoupling have all yielded partial Bochner-Riesz results for $\\delta > 0$, but none discharge the $L^2$-endpoint a.e. statement. The conjecture is genuinely a flagship open problem in harmonic analysis.",
+      "**Axiomatisation is the honest path.** Per the gallery's Axiom Integrity Policy, an open conjecture in mathematics must use `status: axiomatized` with `badge: axiom`. The companion L²-norm theorem (unconditional, now proved sorry-free via Mathlib's multivariate Fourier engine) is the legitimate machine-checked progress this entry contributes alongside the axiomatised conjecture."
+    ],
+    "prerequisites": [
+      "Fourier series fundamentals (1D Carleson theorem: Proofs/FourierSeriesOQ01.lean)",
+      "L² spaces and Hilbert basis theory (Mathlib's lp 2)",
+      "Measure theory: product / iterated measures on Pi types",
+      "AddCircle and the fourier-character API (Mathlib.Analysis.Fourier.AddCircle)",
+      "Bochner-Riesz means and the critical-exponent landscape"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement & Architecture",
+      "startLine": 1,
+      "endLine": 72,
+      "summary": "Module docstring: the 2D Carleson spherical-summation research question (does S_R^sph f → f a.e. for f ∈ L²(T²)?), its OPEN status (Fefferman 1971 ball-multiplier barrier, no L²-endpoint conditional reduction), the axiomatise-plus-companion architecture, and references. Followed by imports, namespace, and measure-theoretic opens.",
+      "mathContext": "The L²-endpoint of the Bochner–Riesz / spherical-summation family and the natural 2D generalisation of the 1D Carleson theorem. Per the gallery Axiom Integrity Policy for unresolved open problems, the conjecture is axiomatised (`carleson_2d_sph`) and surrounded by the unconditional L²-*norm* companion proved via Plancherel on the 2-torus."
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions: T², Haar measure, Fourier coefficient, lattice disc, partial sum",
+      "startLine": 73,
+      "endLine": 117,
+      "summary": "Rigorous definitions: T² as Fin 2 → AddCircle 1, product Haar measure, the iterated-integral 2D Fourier coefficient, the lattice disc as a Finset (Icc bounding box + decidable filter), and the spherical partial sum.",
+      "mathContext": "T² = (R/Z)² inherits its measure-theoretic instances from the AddCircle 1 base (with Fact (0 < 1) instance provided). The multi-character $e^{-2\\pi i k \\cdot x}$ factors as `fourier (-(k 0)) (x 0) * fourier (-(k 1)) (x 1)` using Mathlib's fourier-monomial API. `latticeDisc R` is finite because $|k_i| \\leq |R| \\leq \\lceil |R| \\rceil$ for any $(k_1, k_2)$ in the disc."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture (axiomatised)",
+      "startLine": 118,
+      "endLine": 134,
+      "summary": "`carleson_2d_sph`: for every f ∈ L²(T²), the spherical partial Fourier sums converge to f for almost every x as R → ∞. Open in mathematics; axiomatised here per gallery policy.",
+      "mathContext": "The conjecture combines two layers of quantification: pointwise a.e. (via `Filter.Eventually` against `MeasureTheory.ae μ`) and the Tendsto-at-infinity convergence. Equivalent to a *weak-type* maximal-operator estimate for $\\sup_R |S_R^{\\text{sph}} f|$ on $L^2(\\mathbb{T}^2)$, which is the missing analytic content."
+    },
+    {
+      "id": "companion-note",
+      "title": "Unconditional Companion (Plancherel-direct) — orientation",
+      "startLine": 135,
+      "endLine": 145,
+      "summary": "Docstring orienting the reader to the unconditional companion: the L²-*norm* version of convergence holds with no conjectural input, via Plancherel. The full close `sphPartialSum_L2_norm_converge` lives in the S15 ACT section at the end of the file, where the latticeDisc cofinality (S9) and Lp coercion helpers (S10) are in scope.",
+      "mathContext": "Discharged via Mathlib's multivariate Fourier engine `UnitAddTorus.hasSum_mFourier_series_L2` (`Mathlib.Analysis.Fourier.AddCircleMulti`), whose ambient measure on `UnitAddTorus (Fin 2) = T2` is definitionally `haarT2`. This is a forward-reference signpost rather than substantive content; the proof itself is in S15."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity-check lemmas (no sorries)",
+      "startLine": 146,
+      "endLine": 160,
+      "summary": "`multiFourierCoeff_zero` and `sphPartialSum_zero`: the Fourier coefficient and spherical partial sum of the zero function are identically zero. Definitional, no sorries.",
+      "mathContext": "These exist to confirm the definitions are not vacuous and that the type signatures interact correctly with `simp` lemmas about integration of the zero function. Sanity checks rather than substantive theorems."
+    },
+    {
+      "id": "lattice-disc-bbox",
+      "title": "S2c — `latticeDisc` bounding-box cardinality bound",
+      "startLine": 161,
+      "endLine": 185,
+      "summary": "`latticeDisc_subset_bbox` and `latticeDisc_card_le_bbox`: the lattice disc embeds in the integer bounding box `[-⌈|R|⌉, ⌈|R|⌉]²`, and its cardinality is bounded above by the box cardinality. Trivial pre-Gauss bound; sharper Gauss-circle estimate deferred.",
+      "mathContext": "The crude bound `(latticeDisc R).card ≤ (2·⌈|R|⌉+1)²` suffices for ℓ¹ majorisation of the spherical partial sum and other quantitative arguments that do not require the sharper $\\sim \\pi R^2$ count. The sharper Gauss circle problem bound $\\lceil \\pi R^2 \\rceil + O(R)$ is a separate substantive subtask; this S2c contribution gives the structural foundation (subset of an explicit bounding box) on which any cardinality estimate is built."
+    },
+    {
+      "id": "lattice-disc-explicit-card",
+      "title": "S2d — Explicit cardinality `(2⌈|R|⌉+1)²` via `Pi.card_Icc`",
+      "startLine": 186,
+      "endLine": 215,
+      "summary": "`bbox_card` and `latticeDisc_card_le_explicit`: evaluate the integer bounding box cardinality as `(2⌈|R|⌉+1).toNat ^ 2`, then chain with the S2c subset bound to obtain a closed-form `(latticeDisc R).card ≤ (2⌈|R|⌉+1)²`. Sorry-free, axiom-free, and uses only stable Mathlib API (`Pi.card_Icc` + `Int.card_Icc`).",
+      "mathContext": "The integer interval `Icc (-⌈|R|⌉) ⌈|R|⌉ ⊂ ℤ` has cardinality `(⌈|R|⌉ + 1 - (-⌈|R|⌉)).toNat = (2⌈|R|⌉+1).toNat` by `Int.card_Icc`; the product over `Fin 2` raises this to the square (`Pi.card_Icc` + `Finset.prod_const` + `Fintype.card_fin`). Composing with S2c's `latticeDisc_card_le_bbox` yields the explicit Gauss-circle upper bound, bridging the qualitative subset bound to a numerical estimate usable for ℓ¹ majorisation of `sphPartialSum`. The sharp constant `π` (Gauss circle problem proper) requires boundary-lattice analysis and is deferred."
+    },
+    {
+      "id": "lattice-disc-gauss-real",
+      "title": "S2-Gauss-real — Real-form qualitative Gauss-circle bound",
+      "startLine": 216,
+      "endLine": 260,
+      "summary": "`latticeDisc_card_le_real`: bridges S2d's Nat-valued explicit bound `(latticeDisc R).card ≤ (2⌈|R|⌉+1)²` to a Real-form analytic bound `((latticeDisc R).card : ℝ) ≤ (2|R| + 3)²` suitable for downstream ℓ¹-majorisation / Plancherel estimates on sphPartialSum. Sorry-free, axiom-free; the sharp constant π remains deferred (separate boundary-lattice analysis).",
+      "mathContext": "Combines S2d's `latticeDisc_card_le_explicit` with `Int.ceil_lt_add_one` (⌈|R|⌉ < |R| + 1) under cast to ℝ, dropping `.toNat` via `Int.toNat_of_nonneg` and squaring the linear inequality with `pow_le_pow_left₀`. The expanded constant is `4|R|² + 12|R| + 9`; the `(2|R|+3)²` form is the natural closure. Qualitative (constant 4 vs sharp π) but enough for O(R²)-class estimates of the spherical partial sum's ℓ¹-norm."
+    },
+    {
+      "id": "lattice-disc-cofinality",
+      "title": "S2e-cofinality — `latticeDisc R` eventually contains every finite lattice set",
+      "startLine": 261,
+      "endLine": 356,
+      "summary": "`latticeDisc_mem_eventually` and `latticeDisc_eventually_supset`: every fixed lattice point (resp. finite set of lattice points) is contained in `latticeDisc R` for all sufficiently large `R`. Sorry-free, axiom-free, pure ℝ/ℤ arithmetic — no measure-theoretic dependencies. The Plancherel-tail engine for the eventual S2e ACT close of `sphPartialSum_L2_norm_converge`.",
+      "mathContext": "For a single `k ∈ ℤ²`, taking `R ≥ (k 0)² + (k 1)² + 1` (which forces `R ≥ 1` and hence `R ≤ R²`) discharges both the disc condition `(k 0)² + (k 1)² ≤ R²` and the bounding-box condition `|k i| ≤ ⌈|R|⌉` (via `(k i)² ≤ R²` ⇒ `|k i| ≤ R` ⇒ `|k i| ≤ ⌈|R|⌉`). The finite-set case follows by `Finset.induction_on`, combining the singleton via `Filter.filter_upwards`. This is the cofinality bearer noted in the S2e PREP / S7 audit's §2.3, converting the Plancherel residual `‖S_R^{sph} f - f‖₂² = ∑_{k ∉ latticeDisc R} |fk|²` into a tail of the convergent series `∑_k |fk|² = ‖f‖₂²`."
+    },
+    {
+      "id": "lp-coefn-finset-sum",
+      "title": "S2e-step2 — `Lp.coeFn_finset_sum` helper on `haarT2` (Mathlib gap)",
+      "startLine": 357,
+      "endLine": 394,
+      "summary": "`coeFn_finset_sum_haarT2`: a private inductive helper closing the documented Mathlib gap noted in the S7 audit-at-pick-time review. For a finite family of `Lp ℂ 2 haarT2` elements, the pointwise coercion of the finset-sum agrees almost everywhere with the pointwise finset-sum of coercions. Sorry-free, axiom-free, build-verified. Step 2 of the S7 audit §4 ACT recipe for discharging `sphPartialSum_L2_norm_converge`; independent of step 1 (haarT2 = volume setup).",
+      "mathContext": "Proof by `Finset.induction_on`. Empty case: `Finset.sum_empty` reduces both sides to `(0 : Lp ℂ 2 haarT2)` and `fun _ => (0 : ℂ)`; closed by `Lp.coeFn_zero ℂ 2 haarT2`. Insert case: `Finset.sum_insert` rewrites the LHS as `f k + ∑ j ∈ s, f j` in Lp; `Lp.coeFn_add` (LpSpace/Basic.lean:195 at pin) gives the AE-equality with the Pi-add of coercions; the inductive hypothesis then closes via `filter_upwards` + Pi.add_apply + Finset.sum_insert on the RHS. The helper specialises the obvious Mathlib-bound generalisation (with `{E p μ}` parameters) to `Lp ℂ 2 haarT2`; the same proof works for any `{E p μ}` and would be a natural upstream contribution. Independent of the haarT2/volume disambiguation (step 1 of the recipe), so safe to ship standalone."
+    },
+    {
+      "id": "haart2-volume-bridge",
+      "title": "S2e-step1-contingency — `haarT2 = volume` measure-equality bridge",
+      "startLine": 395,
+      "endLine": 427,
+      "summary": "`haarT2_eq_volume`: sorry-free, axiom-free measure-equality bridge `haarT2 = (volume : Measure T2)` on `Fin 2 → AddCircle 1`. Discharges step 1 contingency of the S7 audit §4 ACT recipe — the Mathlib engine `hasSum_mFourier_series_L2` (in `Mathlib.Analysis.Fourier.AddCircleMulti` at pin v4.26.0, line 224) is stated over `L²(UnitAddTorus d)` with the `volume` measure, so this bridge enables invoking it on our `haarT2`-stated theorems. Combines `AddCircle.volume_eq_smul_haarAddCircle` + `ENNReal.ofReal_one` + `one_smul` + `volume_pi`. Build-verified Docker 7743 jobs.",
+      "mathContext": "The key insight: `T = 1` makes the scaling factor trivial. `AddCircle.volume_eq_smul_haarAddCircle` (AddCircle.lean:92) states `(volume : Measure (AddCircle T)) = ENNReal.ofReal T • haarAddCircle` by `rfl`. At `T = 1`: `ENNReal.ofReal 1 = 1` and `(1 : ℝ≥0∞) • μ = μ` (via `one_smul`), so `volume = haarAddCircle` on `AddCircle 1`. The product side: `volume_pi` (Pi.lean:652) is a `rfl` lemma stating `(volume : Measure (∀ i, α i)) = Measure.pi (fun _ => volume)`. Combining: `Measure.pi (fun _ => haarAddCircle) = Measure.pi (fun _ => volume) = volume` (the last step is `rfl` by `volume_pi.symm`). Proof tactic: `show Measure.pi (fun _ => haarAddCircle) = volume`, then `simp_rw [key]` where `key : haarAddCircle = volume` (rewriting under the `fun _ =>` binder), then `rfl`. Independent of step 2 (`Lp.coeFn_finset_sum` helper); together steps 1+2 of the S7 audit §4 recipe are now both shipped, leaving steps 3 (cofinality, ✅ done in S9) + 4 (Bridge sphPartialSum → Lp finset-sum, 15-25 LOC pending) + 5 (cite `hasSum_mFourier_series_L2`, 5-10 LOC pending) + 6 (close `eLpNorm`-form via `Lp.norm_def`, 5-10 LOC pending) = 25-45 LOC for a future single-iteration close."
+    },
+    {
+      "id": "measure-bridge-corollaries",
+      "title": "S14 ACT — `MemLp` / `eLpNorm` measure-bridge corollaries",
+      "startLine": 428,
+      "endLine": 457,
+      "summary": "`memLp_haarT2_iff_volume` and `eLpNorm_haarT2_eq_volume`: direct corollaries of `haarT2_eq_volume` (S11). Step 4a lifts `MemLp f 2 haarT2` to `MemLp f 2 volume` so `MemLp.toLp` and the Mathlib engine become invokable on haarT2-stated hypotheses; step 6 rewrites an `eLpNorm _ 2 haarT2` goal to `eLpNorm _ 2 volume` directly. Sorry-free, axiom-free.",
+      "mathContext": "Both are propositional consequences of the measure equality `haarT2 = volume` with no new analytic content — each proof is a single `rw [haarT2_eq_volume]`. They paste-ready the S12 PREP §5 sub-tactics for the eventual S2e ACT close of `sphPartialSum_L2_norm_converge`."
+    },
+    {
+      "id": "l2-norm-companion",
+      "title": "Unconditional L²-norm Companion (proved, S15)",
+      "startLine": 458,
+      "endLine": 598,
+      "summary": "`sphPartialSum_L2_norm_converge`: ‖S_R^sph f - f‖_{L²} → 0 as R → ∞, without conjectural input — proved sorry-free (S15). Transports to Mathlib's multivariate Fourier engine `UnitAddTorus.hasSum_mFourier_series_L2`, whose ambient measure on `UnitAddTorus (Fin 2)` is definitionally `haarT2`. Two bridge lemmas `mFourier_fin2` and `mFourierCoeff_eq_multiFourierCoeff` identify our `sphPartialSum` with the engine's Fourier partial sum a.e.; the `latticeDisc` cofinality (S9) drives the R → ∞ limit.",
+      "mathContext": "Plancherel on $\\mathbb{T}^2$: $\\|f\\|_{L^2}^2 = \\sum_{k \\in \\mathbb{Z}^2} |\\hat f(k)|^2$. Mathlib's `Mathlib.Analysis.Fourier.AddCircleMulti` packages this as `hasSum_mFourier_series_L2 : HasSum (fun k ↦ mFourierCoeff f k • mFourierLp 2 k) f` (a Hilbert-basis `HasSum` over `Finset (ℤ²)` directed by inclusion). The key formalisation insight is that the engine declares a *local* `MeasureSpace UnitAddCircle := ⟨haarAddCircle⟩`, so its `volume` on `UnitAddTorus (Fin 2)` is `Measure.pi (fun _ ↦ haarAddCircle)` — *definitionally* our `haarT2`. Hence the engine applies with no measure-cast (the earlier `haarT2_eq_volume` global-volume route targeted the off-by-`(1•)` global `volume`, which is the wrong measure). The `latticeDisc` cofinality (`latticeDisc_eventually_supset`, S9) gives `Tendsto latticeDisc atTop atTop` in the `Finset` filter, so composing with the `HasSum` yields the `R → ∞` limit; `tendsto_iff_norm_sub_tendsto_zero` + `Lp.norm_def` + `ENNReal.tendsto_toReal_iff` convert the `Lp`-norm convergence to the `eLpNorm` goal form."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry contributes a rigorous formalisation of the 2D Carleson spherical-summation conjecture and its unconditional L²-norm companion. The conjecture itself is axiomatised (1 axiom, `carleson_2d_sph`) per the gallery's Axiom Integrity Policy; the companion `sphPartialSum_L2_norm_converge` is now proved sorry-free (S15) by transporting to Mathlib's multivariate Fourier engine `UnitAddTorus.hasSum_mFourier_series_L2`, whose ambient measure is definitionally `haarT2`.",
+    "implications": "The unconditional L²-norm convergence companion is fully machine-checked, leaving the lone assumption as the genuinely open a.e.-pointwise conjecture `carleson_2d_sph`. The 2D Carleson conjecture is the L²-endpoint of the Bochner–Riesz family and a flagship open problem in harmonic analysis; an axiomatised formalisation lets dependent results be stated and verified contingent on the conjecture without overclaiming proof status.",
+    "openQuestions": [
+      "**A.e.-pointwise convergence** (`carleson_2d_sph`, the axiomatised conjecture): the genuinely open problem — establish a weak-type maximal estimate for the 2D spherical Carleson operator on $L^2(\\mathbb{T}^2)$. No conditional reduction (Kakeya, restriction) is known at the L² endpoint.",
+      "**Bochner–Riesz $\\delta > 1/2$**: formalise Stein 1958 a.e. convergence for the regularised spherical operator $S_R^\\delta$ on $\\mathbb{T}^2$ (classical, ~300–500 Lean lines). Companion to this axiom file.",
+      "**Fefferman ball-multiplier counterexample**: formalise the 1971 negative result for rectangular $L^1$ partial sums. Requires Besicovitch / Kakeya machinery (substantial Mathlib detour)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fourier-series-oq-04",
+      "relationship": "parent",
+      "description": "Higher-dimensional Fourier series convergence on tori (scaffold). Parent file with placeholder definitions; this child rigorises the 2D case."
+    },
+    {
+      "targetId": "fourier-series-oq-01",
+      "relationship": "sibling",
+      "description": "Carleson's theorem (1D L² pointwise a.e. convergence, axiomatized). The 1D analogue this conjecture extends. Same axiomatisation pattern; 1D version is solved (Carleson 1966)."
+    }
+  ]
+}

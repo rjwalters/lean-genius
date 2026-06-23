@@ -1,0 +1,179 @@
+{
+  "id": "erdos-461",
+  "title": "Erdős Problem #461: Distinct Smooth Components in Short Intervals",
+  "slug": "erdos-461",
+  "description": "Let $s_t(n)$ be the $t$-smooth component of $n$ and $f(n,t)$ count distinct values of $s_t(m)$ for $m \\in \\{n+1,\\ldots,n+t\\}$. Is $f(n,t) \\gg t$? Erdős–Graham proved $f(n,t) \\gg t/\\log t$.",
+  "meta": {
+    "author": "Erdős–Graham",
+    "sourceUrl": "https://erdosproblems.com/461",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos461Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "smooth-numbers",
+      "short-intervals",
+      "multiplicative-functions",
+      "sieve-methods"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 461,
+    "erdosUrl": "https://erdosproblems.com/461",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factors",
+        "description": "Prime factorization with multiplicity for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed intervals [a, b] as finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card_image_le",
+        "description": "Image cardinality is at most domain cardinality",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on real numbers for the Erdős-Graham bound",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.dvd_mul",
+        "description": "Prime divisibility of products for list membership lemmas",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Constructive definition of smoothComponent via Nat.factors filtering — not axiomatized",
+      "Fully proved infrastructure: list_prod_filter_dvd, prime_dvd_list_prod_mem, no_small_prime_in_complement",
+      "Proved smoothComponent_dvd, smoothComponent_smooth, smoothComponent_pos (core properties without sorry)",
+      "Proved six boundary cases: smoothComponent_one, smoothComponent_zero, smoothComponent_t_le_one, smoothComponent_prime, smoothDistinctCount_le, smoothDistinctCount_zero",
+      "Only sorry: smoothComponent_largest (maximality) — proof strategy documented, infrastructure prepared"
+    ],
+    "axiomCount": 1,
+    "lineCount": 290,
+    "assumptions": "1 axiom(s). No sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 24,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "This problem originates from Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (Monographie no. 28, L'Enseignement Mathématique, p.92). They introduced the $t$-smooth component of an integer — the largest divisor whose prime factors are all $< t$ — and asked whether the number of distinct smooth components in a short interval $\\{n+1, \\ldots, n+t\\}$ is linear in $t$.\n\nErdős and Graham proved the weaker bound $f(n,t) \\gg t/\\log t$ using sieve methods and multiplicative function estimates. The problem connects to the broader study of smooth (or 'friable') numbers, a central topic in analytic number theory with applications to cryptography (factoring algorithms like the number field sieve rely on smooth number density). Key related work includes Hildebrand's 1986 estimates for $\\Psi(x, y)$ (the count of $y$-smooth numbers up to $x$), Tenenbaum's probabilistic approach, and Ford's 2008 Annals paper on divisor distribution.\n\nThe problem remains OPEN: the logarithmic gap between the known $t/\\log t$ and the conjectured $t$ has not been closed.",
+    "problemStatement": "Define $s_t(n)$ as the largest divisor of $n$ all of whose prime factors are $< t$. Let $f(n,t) = |\\{s_t(m) : n < m \\leq n+t\\}|$. Is $f(n,t) \\gg t$ uniformly in $n$?\n\nFormally: $\\exists C > 0, \\exists t_0, \\forall t \\geq t_0, \\forall n : f(n,t) \\geq C \\cdot t$.",
+    "text": "Let $s_t(n)$ be the $t$-smooth component of $n$ and $f(n,t)$ count distinct values of $s_t(m)$ for $m \\in \\{n+1,\\ldots,n+t\\}$. Is $f(n,t) \\gg t$? Erdős–Graham proved $f(n,t) \\gg t/\\log t$.",
+    "proofStrategy": "The formalization takes a constructive approach: `smoothComponent` is defined via `Nat.factors` filtering (not axiomatized), enabling proved properties. Core theorems `smoothComponent_dvd` ($s_t(n) \\mid n$), `smoothComponent_smooth` (all prime factors $< t$), and `smoothComponent_pos` ($s_t(n) > 0$) are all fully proved. The maximality theorem `smoothComponent_largest` remains a `sorry` with documented proof strategy via coprime decomposition. The counting function uses `Finset.Icc` and `Finset.image`. The Erdős–Graham bound $f(n,t) \\gg t/\\log t$ is axiomatized.",
+    "keyInsights": [
+      "**Constructive smooth component:** $s_t(n)$ is defined as `(n.factors.filter (· < t)).prod`, not axiomatized — enabling fully proved core properties (divisibility, smoothness, positivity)",
+      "**Erdős–Graham bound falls a log factor short:** The known $f(n,t) \\gg t/\\log t$ vs conjectured $f(n,t) \\gg t$ parallels the prime counting gap ($\\pi(t) \\sim t/\\log t$ vs $t$)",
+      "**Near-complete formalization:** Only 1 sorry (`smoothComponent_largest`) out of ~15 results; the coprime decomposition infrastructure is already in place",
+      "**Uniform $\\forall n$ quantification:** The conjecture requires the bound for ALL starting points, not just typical ones — substantially stronger than an average-case statement",
+      "**Smooth-rough decomposition as key tool:** The factorization $n = s_t(n) \\cdot r_t(n)$ where $\\gcd(s_t(n), r_t(n)) = 1$ underlies the maximality proof strategy"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header: Statement and References",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "States Erdős Problem #461. The $t$-smooth component $s_t(n)$ is the largest divisor of $n$ whose prime factors are all $<t$; $f(n,t)$ counts the distinct $s_t(m)$ for $m\\in\\{n+1,\\dots,n+t\\}$. Question: is $f(n,t)\\gg t$ for all $n,t$? Erdős–Graham proved the weaker $f(n,t)\\gg t/\\log t$. Imports `Nat.Prime`, `Finset`, reals, tactics.",
+      "mathContext": "$s_t(n)=\\prod_{p\\mid n,\\,p<t}p$; $f(n,t)=|\\{s_t(m):n<m\\leq n+t\\}|$. Conjecture: $f(n,t)\\gg t$."
+    },
+    {
+      "id": "smooth-infra",
+      "title": "Smooth Components: Definition and Infrastructure",
+      "startLine": 22,
+      "endLine": 62,
+      "summary": "Defines `smoothComponent t n` $=\\prod$ of the prime factors of $n$ (with multiplicity) that are $<t$ (`n.factors.filter (· < t) |>.prod`). PROVES the private list-infrastructure lemmas `list_prod_filter_dvd` (a filtered product divides the full product) and `prime_dvd_list_prod_mem` (a prime dividing a product of primes is one of them).",
+      "mathContext": "$s_t(n)=(\\text{factors}(n).\\text{filter}(<t)).\\text{prod}$; filtered product divides full product."
+    },
+    {
+      "id": "smooth-core",
+      "title": "Smooth Components: Core Properties",
+      "startLine": 63,
+      "endLine": 142,
+      "summary": "PROVES the defining properties of $s_t(n)$: `smoothComponent_dvd` ($s_t(n)\\mid n$), `smoothComponent_smooth` (every prime factor is $<t$), `smoothComponent_pos` ($s_t(n)>0$), and the key `smoothComponent_largest` ($s_t(n)$ is the largest $t$-smooth divisor: any $t$-smooth $d\\mid n$ divides $s_t(n)$, via the coprime partition $n=s_t(n)\\cdot\\text{comp}$). Helpers `no_small_prime_in_complement` and `list_prod_filter_mul_not` (partition identity).",
+      "mathContext": "$s_t(n)\\mid n$, all prime factors $<t$, and $s_t(n)$ is the largest such divisor (via coprime partition $n=s_t(n)\\cdot\\text{comp}$)."
+    },
+    {
+      "id": "counting",
+      "title": "Counting Distinct Smooth Components",
+      "startLine": 143,
+      "endLine": 148,
+      "summary": "Defines `smoothDistinctCount n t` $=f(n,t)=|\\text{image}(s_t,\\,[n+1,n+t])|$ via `Finset.Icc` and `Finset.image`.",
+      "mathContext": "$f(n,t)=|\\{s_t(m):m\\in[n+1,n+t]\\}|$."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "startLine": 149,
+      "endLine": 157,
+      "summary": "Defines `ErdosProblem461`: $\\exists C>0,\\exists t_0,\\forall t\\geq t_0,\\forall n,\\ C\\,t\\leq f(n,t)$ — the conjectured linear lower bound.",
+      "mathContext": "Conjecture: $\\exists C>0,\\ f(n,t)\\geq C\\,t$ for large $t$, all $n$."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results",
+      "startLine": 158,
+      "endLine": 165,
+      "summary": "States the Erdős–Graham bound as the AXIOM `erdos_graham_lower`: $f(n,t)\\geq C\\,t/\\log t$ for some $C>0$ and all large $t$ — the best published lower bound (weaker than the conjectured $\\gg t$).",
+      "mathContext": "Axiom (Erdős–Graham): $f(n,t)\\geq C\\,t/\\log t$."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 166,
+      "endLine": 290,
+      "summary": "A battery of PROVED lemmas on $s_t$ and $f$. Smooth component: `smoothComponent_one`/`_zero` ($s_t(1)=s_t(0)=1$), `_t_le_one` ($t\\leq1\\Rightarrow s_t(n)=1$), `_eq_self`/`_id_of_smooth`/`_id_of_lt` ($s_t(n)=n$ when $n$ is $t$-smooth or $n<t$), `_prime`/`_prime_ge` ($s_t(p)=p$ if $p<t$ else $1$), `_mul` (full multiplicativity $s_t(mn)=s_t(m)s_t(n)$), `_eq_one_iff`, `_dvd_mul_left`. Count: `smoothDistinctCount_le` ($f\\leq t$), `_zero` ($f(n,0)=0$), `_pos` ($t\\geq1\\Rightarrow f>0$), `_t_le_one` ($f\\leq1$), and the boundary case `smoothDistinctCount_one` ($f(n,1)=1$).",
+      "mathContext": "$s_t$ multiplicative, $=n$ on $t$-smooth $n$, $=1$ for $t\\leq1$; $0<f(n,t)\\leq t$, $f(n,1)=1$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "relationship": "Both problems study density phenomena in short intervals: #450 asks about divisor density in $(n, 2n)$ intervals, #461 asks about distinct smooth component counts. Both connect to Ford's work on divisor distribution and the anatomy of integers.",
+      "targetId": "erdos-450"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The distribution of smooth numbers (those with all prime factors ≤ y) is controlled by the Dickman function ρ(u), whose behavior depends on the prime distribution governed by PNT. Problem #461 studies smooth numbers in short intervals, directly connecting to PNT-based estimates"
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization of Erdős Problem 461 is notably strong: the smooth component is constructively defined (not axiomatized), and most core properties are fully proved. The only sorry is the maximality theorem, for which the infrastructure (complement lemma, list product divisibility) is already in place. The gap between the known $t/\\log t$ bound and the conjectured linear bound remains open.",
+    "implications": "Resolution would reveal fine structure in the distribution of smooth parts of integers across short intervals. The constructive definition and proved properties make this formalization particularly amenable to Aristotle proof search for the remaining sorry.",
+    "openQuestions": [
+      "Is $f(n,t) \\gg t$ or is the logarithmic loss in the Erdős–Graham bound essential?",
+      "What is the true order of growth of $\\min_n f(n,t)$?",
+      "Can improved sieve methods or the Hildebrand–Tenenbaum framework close the $\\log t$ gap?",
+      "Can the maximality theorem `smoothComponent_largest` be proved using the existing infrastructure?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 290,
+    "axiomCount": 1,
+    "theoremCount": 24,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos461Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

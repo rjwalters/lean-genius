@@ -1,0 +1,17 @@
+{
+  "problem_number": 841,
+  "title": "Minimal Interval for Square Product",
+  "status": "solved",
+  "solvers": ["Selfridge", "Bui-Pratt-Zaharescu (2024)"],
+  "source_url": "https://erdosproblems.com/841",
+  "overview": "For non-square n, let t_n be the minimal t such that {n+1,...,n+t} contains a subset S where n·∏S is a perfect square (t_n = 0 if n is square). The problem asks to estimate t_n. Selfridge proved that t_n = P(n) (largest prime divisor) when P(n) > √(2n)+1, and t_n ≪ √n otherwise. Bui-Pratt-Zaharescu (2024) showed the distribution of t_n follows P(n)'s distribution.",
+  "sections": [],
+  "conclusion": "The function t_n is completely characterized: it equals the largest prime divisor P(n) when P(n) is large (> √(2n)+1), and is bounded by O(√n) otherwise. For example, t_6 = 6 since 6·8·12 = 24². The behavior is determined by whether n is 'rough' (large prime factor) or 'smooth' (small prime factors).",
+  "references": [
+    "Erdős-Graham-Selfridge (original problem)",
+    "Bui-Pratt-Zaharescu (2024)",
+    "Guy, Unsolved Problems in Number Theory, B30"
+  ],
+  "related_problems": [437],
+  "tags": ["number-theory", "square-products", "prime-divisors", "smooth-numbers"]
+}

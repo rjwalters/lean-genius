@@ -1,0 +1,147 @@
+[
+  {
+    "id": "ann-con-formula",
+    "proofId": "godel-second-incompleteness-oq02",
+    "range": {
+      "startLine": 62,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "The Consistency Formula Con(F)",
+    "content": "Con(F) = neg (Prov (godelNum falsum)) is the formula asserting '⊥ is not provable in F'. The formula `falsum` has code 0, so `Prov (godelNum falsum) = Prov 0 = ⟨0⟩`. Then `Con = neg ⟨0⟩ = ⟨0 + 1⟩ = ⟨1⟩`. The specific code is irrelevant; what matters is that Con(F) is the object-level statement of F's own consistency.\n\nThis definition follows the standard treatment: Con(F) = ¬Prov(⌜⊥⌝) where ⊥ is any refutable formula (such as 0=1 in arithmetic). If the system proves ⊥, it proves everything — so Con(F) = ¬Prov(⌜⊥⌝) is the minimal consistency assertion.",
+    "mathContext": "In Peano arithmetic: Con(PA) = ¬∃p Proof(p, ⌜0 = 1⌝), where Proof(p,n) is the primitive recursive proof-checking predicate. This is a $\\Pi_1^0$ sentence: it has the form $\\forall p, \\neg\\mathrm{Proof}(p, c)$ for a fixed Gödel number $c$ of the formula $0=1$. $\\Pi_1^0$ sentences, when true, are true in all models — but they may still be unprovable in F if they are 'close to the edge' of F's strength.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gödel numbering",
+      "consistency formula",
+      "Π₁⁰ sentences",
+      "provability predicate"
+    ],
+    "prerequisites": [
+      "formula encoding",
+      "provability predicate",
+      "Gödel numbering"
+    ]
+  },
+  {
+    "id": "ann-hbl-d2",
+    "proofId": "godel-second-incompleteness-oq02",
+    "range": {
+      "startLine": 82,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "HBL Condition D2: Modus Ponens Internalization",
+    "content": "D2 states: if F proves (φ→ψ) and F proves φ, then F proves ψ. This is 'modus ponens is internalizable': the act of combining proofs via modus ponens is itself representable within the system. In provability logic GL, D2 is written □(φ→ψ) → (□φ → □ψ).\n\nD2 is needed to formalize the proof of G_not_provable inside F. Specifically, the chain 'F ⊢ (φ→ψ), F ⊢ φ ⊢ ψ' must be internalized step by step inside F to obtain 'F ⊢ (Con → G)'.",
+    "mathContext": "D2 holds in PA because proof composition (modus ponens) is a primitive recursive operation on proof codes: if $p$ codes a proof of $\\varphi\\to\\psi$ and $q$ codes a proof of $\\varphi$, then $\\mathrm{mp}(p,q)$ codes a proof of $\\psi$. Since mp is primitive recursive, it's representable in PA, and D2 follows from $\\Sigma^0_1$-completeness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "HBL conditions",
+      "provability logic GL",
+      "modus ponens",
+      "proof composition"
+    ],
+    "prerequisites": [
+      "primitive recursive functions",
+      "proof predicates",
+      "Σ₁⁰ completeness"
+    ]
+  },
+  {
+    "id": "ann-hbl-d3",
+    "proofId": "godel-second-incompleteness-oq02",
+    "range": {
+      "startLine": 102,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "HBL Condition D3: Provability of Provability",
+    "content": "D3 states: if F proves φ, then F proves 'Prov(⌜φ⌝) is provable'. In modal notation: □φ → □□φ. This says provability 'knows about itself': the statement 'φ has a proof' is itself something the system can prove.\n\nD3 is the most subtle of the HBL conditions. It uses that Prov(⌜φ⌝) is a Σ₁⁰ sentence: if n is a proof of φ, then Prov(⌜φ⌝) = ∃p Proof(p,⌜φ⌝) is witnessed by n. Since Σ₁⁰ sentences are provable in F whenever they have a witness, D3 follows from Σ₁⁰-completeness applied twice (first to prove Prov(⌜φ⌝), then to prove Prov(⌜Prov(⌜φ⌝)⌝)).",
+    "mathContext": "D3 in modal logic GL is the characteristic axiom that distinguishes provability logic from other modal logics. The modal system K + D1 + D2 + D3 = K4 (the reflexive transitive closure of accessibility). Provability logic GL adds the additional Löb axiom □(□A→A)→□A, which captures the fixed-point properties of the provability predicate. D3 alone (without Löb) gives the weaker 4 axiom.",
+    "significance": "key",
+    "relatedConcepts": [
+      "HBL conditions",
+      "provability logic GL",
+      "Σ₁⁰ sentences",
+      "modal logic K4"
+    ],
+    "prerequisites": [
+      "Σ₁⁰ completeness",
+      "primitive recursive functions",
+      "modal logic"
+    ]
+  },
+  {
+    "id": "ann-con-implies-g",
+    "proofId": "godel-second-incompleteness-oq02",
+    "range": {
+      "startLine": 120,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "The Key Bridge: Formalized First Incompleteness",
+    "content": "The axiom `con_implies_G: (⊢ Con) → (⊢ G)` captures the deepest mathematical content of this file. It says: if F proves its own consistency, then F proves the Gödel sentence G.\n\nThe justification requires formalizing the entire G_not_provable proof inside F:\n1. F internally proves: Con → ¬Prov(⌜G⌝) [formalized G_not_provable, using D1+D2+D3]\n2. F internally proves: ¬Prov(⌜G⌝) → G [from the object-level Diagonal Lemma]\n3. F proves: Con → G [composition via D2]\n4. Meta-level: (⊢ Con) → (⊢ G) [rule of modus ponens]\n\nThis is the 'bridge' that connects Con's unprovability to G's undecidability.",
+    "mathContext": "The formalized First Incompleteness (step 1) is essentially the statement F ⊢ (Con(F) → ¬Prov(⌜G⌝)). Proving this inside F requires:\n- Formalizing D1 inside F (that Prov is representable)\n- Formalizing the diagonal property G ↔ ¬Prov(⌜G⌝) at the object level\n- Chaining these via D2 (to internalize modus ponens)\n- Using D3 to handle the iteration Prov(⌜Prov(⌜G⌝)⌝)\n\nHilbert and Bernays (1939) devoted roughly 20 pages to establishing this formalization. The Lean formalization would require several hundred lines of formal arithmetic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "formalized incompleteness",
+      "HBL conditions",
+      "provability logic",
+      "reflection principle"
+    ],
+    "prerequisites": [
+      "First Incompleteness Theorem",
+      "D1, D2, D3 conditions",
+      "object-level vs meta-level proofs"
+    ]
+  },
+  {
+    "id": "ann-second-incompleteness-proof",
+    "proofId": "godel-second-incompleteness-oq02",
+    "range": {
+      "startLine": 150,
+      "endLine": 185
+    },
+    "type": "concept",
+    "title": "Second Incompleteness: One-Line Proof",
+    "content": "The proof `fun hCon => G_not_provable h (con_implies_G hCon)` is a single function composition:\n1. `hCon : ⊢ Con` (assumption: F proves its consistency)\n2. `con_implies_G hCon : ⊢ G` (formalized First Incompleteness applied)\n3. `G_not_provable h (con_implies_G hCon) : False` (First Incompleteness applied)\n4. So `¬(⊢ Con)` by absurdity.\n\nThis brevity is the mark of a well-structured proof: all complexity is in the lemmas, not the final argument. The proof's elegance comes from having separated concerns correctly across the two incompleteness theorems.",
+    "mathContext": "The proof in formal logic:\n\n$$\\mathrm{Consistent} \\vdash \\neg(F\\vdash\\mathrm{Con}(F))$$\n\nProof: Suppose $F\\vdash\\mathrm{Con}(F)$. By `con_implies_G`: $F\\vdash G$. By `G_not_provable` (with $\\mathrm{Consistent}$): $\\neg(F\\vdash G)$. Contradiction. $\\square$\n\nIn terms of proof trees, this is a single application of modus-tollens: the formalized First Incompleteness says Con → G, and First Incompleteness says ¬G, so by contraposition, ¬Con.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "modus tollens",
+      "function composition",
+      "proof modularity"
+    ],
+    "prerequisites": [
+      "G_not_provable from First Incompleteness",
+      "con_implies_G axiom",
+      "Lean function application"
+    ]
+  },
+  {
+    "id": "ann-lob-context",
+    "proofId": "godel-second-incompleteness-oq02",
+    "range": {
+      "startLine": 187,
+      "endLine": 205
+    },
+    "type": "insight",
+    "title": "Löb's Theorem: The Broader Context",
+    "content": "Löb's theorem (1955) generalizes Second Incompleteness: F ⊢ (□A → A) iff F ⊢ A. Second Incompleteness is the case A = ⊥: F ⊢ (□⊥ → ⊥) iff F ⊢ ⊥. Since □⊥ → ⊥ is Con(F) (¬Prov(⌜⊥⌝)), this says F ⊢ Con(F) iff F ⊢ ⊥ — i.e., if F is consistent then F ⊬ Con(F).\n\nLöb's theorem completely characterizes the self-referential provability behavior of F: a sentence A is provable in F if and only if 'A is provable implies A' is provable in F. This is the modal logic GL, axiomatized by □(□A→A)→□A.",
+    "mathContext": "Löb (1955) proved his theorem using the Henkin fixed-point sentence: let $H$ be such that $F\\vdash(H\\leftrightarrow(\\Box A\\to A))$ (from the Diagonal Lemma). Then:\n1. $F\\vdash(\\Box H\\to H)$ [hypothesis]\n2. Show $F\\vdash H$: use D3 on the hypothesis to get $F\\vdash\\Box(\\Box H\\to H)$, then D2 to get $F\\vdash\\Box H\\to\\Box A$, then use hypothesis again...\n3. From $F\\vdash H$ and $H\\leftrightarrow(\\Box A\\to A)$: $F\\vdash(\\Box A\\to A)$, and since $F\\vdash\\Box A$ (by D1 on step 2)... $F\\vdash A$.\n\nThe full proof requires the Henkin fixed-point axiom, which is why `lob_theorem` is not fully proved in this file.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Löb's theorem",
+      "provability logic GL",
+      "Henkin fixed point",
+      "modal logic"
+    ],
+    "prerequisites": [
+      "Second Incompleteness",
+      "HBL conditions",
+      "Diagonal Lemma",
+      "modal logic"
+    ]
+  }
+]

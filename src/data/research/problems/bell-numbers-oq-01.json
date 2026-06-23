@@ -1,0 +1,79 @@
+{
+  "slug": "bell-numbers-oq-01",
+  "title": "Bell Numbers as the Row Sum of Stirling Numbers of the Second Kind",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "started": "2026-06-20T10:05:00Z",
+  "lastUpdate": "2026-06-20T10:05:00Z",
+  "tags": [
+    "combinatorics",
+    "enumerative",
+    "bell-numbers",
+    "stirling-numbers",
+    "set-partitions",
+    "recurrence",
+    "seeker-selected",
+    "research"
+  ],
+  "tractability": 6,
+  "significance": 7,
+  "problemStatement": {
+    "formal": "The Bell number $B_n$ (number of partitions of an $n$-set) equals the row sum of the Stirling numbers of the second kind: $B_n = \\sum_{k=0}^{n} S(n,k)$, where $S(n,k)$ counts partitions into exactly $k$ blocks.",
+    "plain": "Every partition of an n-element set uses some number k of blocks; grouping partitions by their block count gives the classical identity B_n = S(n,0) + S(n,1) + ... + S(n,n). Pinned Mathlib defines both Nat.bell (via the binomial recurrence B_{n+1} = sum_i C(n,i) B_{n-i}) and Nat.stirlingSecond (via the triangular recurrence S(n+1,k+1) = (k+1) S(n,k+1) + S(n,k)), with their boundary values, but it does NOT connect the two definitions. This entry proves the bridge.",
+    "whyMatters": [
+      "The Bell = sum-of-Stirling identity is the fundamental link between the two most important set-partition counting sequences, both of which Mathlib carries as standalone recurrence-defined functions with no relation between them.",
+      "The proof passes through a second, 'horizontal' Stirling recurrence S(n+1,k+1) = sum_{j<=n} C(n,j) S(j,k) — itself absent from pinned Mathlib (which has only the triangular recurrence stirlingSecond_succ_succ). Summing it over k turns the Stirling row sum into the Bell binomial recurrence.",
+      "A founding combinatorial-identity entry distinct from existing Stirling work (stirling-second-kind-oq-01 proved the k=2 column closed form S(n,2)=2^{n-1}-1; this is the orthogonal row-sum identity and a new cross-sequence bridge)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "stirlingSecond_horizontal: S(n+1,k+1) = sum_{j in range(n+1)} C(n,j) * S(j,k). Proved by induction on n (generalizing k): the triangular recurrence on the LHS, a Pascal split + index shift on the RHS, and the induction hypothesis applied at both k and k-1. Absent from pinned Mathlib.",
+      "bell_eq_sum_stirlingSecond: bell n = sum_{k in range(n+1)} S(n,k). Proved by strong induction on n: the horizontal recurrence expands each S(n+1,k+1), Finset.sum_comm swaps the order, the inner Stirling row sum collapses to bell j via the IH (with the tail terms killed by stirlingSecond_eq_zero_of_lt), and Finset.sum_range_reflect + Nat.choose_symm matches Mathlib's bell_succ binomial recurrence."
+    ],
+    "open": [
+      "The exponential generating function exp(e^x - 1) = sum B_n x^n / n!.",
+      "Dobinski's formula B_n = (1/e) sum_{j>=0} j^n / j!.",
+      "Touchard's congruence B_{p+n} = B_n + B_{n+1} (mod p)."
+    ],
+    "goal": "State and verify the Bell = sum-of-Stirling-second-kind identity, bridging Mathlib's two recurrence-defined set-partition sequences, via a new horizontal Stirling recurrence — axiom-free."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-20T10:05:00Z",
+    "iteration": 1,
+    "focus": "ACT: shipped Proofs/BellNumbersOQ01.lean proving (1) the horizontal Stirling recurrence S(n+1,k+1)=sum_j C(n,j) S(j,k) and (2) the Bell row-sum identity bell n = sum_k S(n,k). Both axiom-free, sorry-free, no native_decide.",
+    "blockers": [],
+    "nextAction": "Optional follow-ups: EGF exp(e^x-1), Dobinski's formula, or Touchard's congruence. Core identity complete and verified.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 ACT (researcher-3, 2026-06-20): Built Proofs/BellNumbersOQ01.lean. Mathlib has Nat.bell (binomial recurrence) and Nat.stirlingSecond (triangular recurrence) as UNCONNECTED recurrence-defined functions; the row-sum bridge B_n = sum_k S(n,k) is absent, as is the horizontal Stirling recurrence used to prove it. KEY LEMMA stirlingSecond_horizontal: S(n+1,k+1)=sum_{j<n+1} C(n,j) S(j,k), induction on n generalizing k: rw stirlingSecond_succ_succ (LHS), Finset.sum_range_succ' + Nat.choose_succ_succ' (Pascal) + sum_add_distrib (RHS), then a shift lemma (sum_range_succ'/sum_range_succ + choose_succ_self) packages the C(n,i+1) block, IH at k closes hS2, and for the C(n,i) block case-split k: k=0 the row vanishes (stirlingSecond_succ_zero), k=k'+1 apply triangular recurrence inside the sum (mul_sum + sum_add_distrib + sum_congr + ring) then IH at k'+1 and k', finish with rw[hSum1];omega (omega abstracts the nonlinear (k'+1)*S as an atom). MAIN bell_eq_sum_stirlingSecond: strong induction (Nat.strong_induction_on), match on 0/(m+1); hInner extends the padded row sum to bell j via Finset.sum_subset + stirlingSecond_eq_zero_of_lt + IH; hbell rewrites Mathlib's bell_succ (Fin.sum_univ_eq_sum_range + Finset.sum_range_reflect + Nat.choose_symm) into sum_j C(m,j) bell j; then simp_rw[stirlingSecond_horizontal], Finset.sum_comm, simp_rw[<-Finset.mul_sum], sum_congr+hInner. Both 0-axiom (propext/Classical.choice/Quot.sound), no native_decide. GOTCHAS: Nat.choose_succ_succ' for Pascal in +1 form; index k'+1+1 must match (not k'+2); reflect leaves m+1-1-i unreduced -> simp[Nat.add_sub_cancel] before choose_symm; omega can't do variable*atom unless that product is syntactically shared (rw the equation first).",
+    "builtItems": [],
+    "insights": [
+      "Mathlib's Nat.bell and Nat.stirlingSecond are both DEFINED by recurrences (binomial and triangular resp.) with NO combinatorial partition-count characterization tying them together, so the classical row-sum identity must be proven recurrence-to-recurrence, not by double counting.",
+      "The horizontal Stirling recurrence S(n+1,k+1)=sum_j C(n,j) S(j,k) is the right bridge: it is a single induction on n (the step uses the IH at k AND k-1, both available since the statement is proven for all k simultaneously), and summing it over k directly yields the Bell binomial recurrence.",
+      "stirling-second-kind-oq-01 already shipped the k=2 column S(n,2)=2^{n-1}-1; the sub-diagonal S(n+1,n)=C(n+1,2) is ALREADY in pinned Mathlib (stirlingSecond_succ_self_left). The row-sum identity and the horizontal recurrence are the genuinely-absent gaps."
+    ],
+    "mathlibGaps": [
+      "No connection between Nat.bell and Nat.stirlingSecond in pinned Mathlib (v4.26): the row-sum identity bell n = sum_k stirlingSecond n k is absent.",
+      "The horizontal Stirling recurrence stirlingSecond (n+1) (k+1) = sum_{j<=n} choose n j * stirlingSecond j k is absent (Mathlib has only the triangular recurrence stirlingSecond_succ_succ)."
+    ],
+    "nextSteps": [
+      "Optional: exponential generating function exp(e^x - 1), Dobinski's formula, Touchard's congruence — all genuinely harder and absent from Mathlib."
+    ]
+  },
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://oeis.org/A000110 (Bell numbers)",
+      "https://oeis.org/A008277 (Stirling numbers of the second kind)"
+    ]
+  }
+}

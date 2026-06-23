@@ -1,0 +1,174 @@
+{
+  "id": "erdos-429",
+  "title": "Erdős Problem #429: Sparse Admissible Sets and Prime Shifts",
+  "slug": "erdos-429",
+  "description": "Is sparsity + admissibility sufficient for a prime shift? Answer: NO (Weisenberg 2024 constructed arbitrarily sparse admissible sets with no prime shift).",
+  "meta": {
+    "author": "Weisenberg (2024 disproof), Erdős-Graham (1980 problem)",
+    "sourceUrl": "https://erdosproblems.com/429",
+    "date": "2024",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos429Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "admissible-sets",
+      "covering-systems"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 429,
+    "erdosUrl": "https://erdosproblems.com/429",
+    "erdosProblemStatus": "disproved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Set.Basic",
+        "description": "Basic set operations and membership",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Int.Basic",
+        "description": "Integer arithmetic for covering systems",
+        "module": "Mathlib.Data.Int.Basic"
+      },
+      {
+        "theorem": "padicValNat",
+        "description": "p-adic valuation for modular arithmetic",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+      }
+    ],
+    "originalContributions": [
+      "CoversResidue, CoversAllResidues definitions for residue class coverage",
+      "IsAdmissible definition: avoids all residue classes mod p for each prime",
+      "AvoidedResidue definition and admissible_iff_avoided equivalence proof",
+      "AllPrimesInShift, HasPrimeShift, ErdosConjecture429 formalization",
+      "HasZeroDensity, IsLacunary sparsity condition definitions",
+      "weisenberg_theorem axiom: sparse admissible counterexample exists",
+      "weisenberg_lacunary axiom: even lacunary admissible sets can fail",
+      "erdos_429_disproved theorem: derived disproof from axiom",
+      "IsCoveringSystem definition linking to construction technique",
+      "admissibility_necessary axiom: prime shifts require admissibility",
+      "erdos_429_summary: three-part conjunction packaging all results"
+    ],
+    "axiomCount": 3,
+    "lineCount": 171,
+    "assumptions": "3 axiom(s): weisenberg_theorem, weisenberg_lacunary, admissibility_necessary. See Lean source for complete statements.",
+    "theoremCount": 3,
+    "definitionCount": 10
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this question in their 1980 monograph (p. 85), asking whether sparsity combined with admissibility is sufficient to guarantee a prime shift. An admissible set A avoids at least one residue class mod p for every prime p, which means simple mod-p arguments cannot rule out the existence of n with all n + a prime. The Hardy-Littlewood prime tuples conjecture predicts that finite admissible sets should have infinitely many prime shifts.\n\nThe question was whether this extends to infinite but sparse sets: if A ⊆ ℕ has zero density and is admissible, must some shift n + A consist entirely of primes? This combines two conditions that each seem favorable: admissibility removes the obvious obstruction, and sparsity means fewer simultaneous primality constraints.\n\nWeisenberg (2024) resolved this decisively: NO. He constructed arbitrarily sparse admissible sets — even lacunary ones where consecutive term ratios grow without bound — for which no prime shift exists. The construction uses covering congruences: for each potential shift n, some element a ∈ A forces n + a to be divisible by a specific prime, and these primes collectively cover all possible shifts. This reveals a fundamental gap between the finite and infinite cases of the admissibility condition.",
+    "problemStatement": "Is it true that if $A \\subseteq \\mathbb{N}$ is sparse enough and does not cover all residue classes modulo $p$ for any prime $p$, then there exists some $n$ such that $n + a$ is prime for all $a \\in A$?\n\n**Answer: NO** (Weisenberg 2024)",
+    "text": "Is sparsity + admissibility sufficient for a prime shift? Answer: NO (Weisenberg 2024 constructed arbitrarily sparse admissible sets with no prime shift).",
+    "proofStrategy": "The formalization defines admissibility via residue class avoidance, proves the equivalence between admissibility and having avoided residues for each prime, and records Weisenberg's counterexample results as axioms. The disproof erdos_429_disproved is derived from weisenberg_theorem by contradiction. The summary packages the disproof, basic counterexample, and lacunary strengthening.",
+    "keyInsights": [
+      "**Admissibility**: A set is admissible if for every prime p, at least one residue class mod p is not represented — this is the minimum necessary condition for a prime shift",
+      "**Necessity vs Sufficiency**: Admissibility is necessary for prime shifts (proved) but not sufficient even with extreme sparsity (Weisenberg's counterexample)",
+      "**Covering Congruences**: Weisenberg's construction ensures every potential shift n has some a ∈ A with n + a divisible by a specific prime, blocking all shifts simultaneously",
+      "**Lacunary Strengthening**: Even sets where consecutive ratios a_{n+1}/a_n → ∞ can fail, showing that no growth-rate condition rescues the conjecture",
+      "**Finite vs Infinite Gap**: The Hardy-Littlewood conjecture predicts infinitely many prime shifts for finite admissible tuples, but this breaks down completely in the infinite case"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 44,
+      "endLine": 80,
+      "summary": "Residue coverage, admissibility, and the proved equivalence with avoided residues"
+    },
+    {
+      "id": "prime-shifts",
+      "title": "Prime Shifts and the Conjecture",
+      "startLine": 81,
+      "endLine": 92,
+      "summary": "AllPrimesInShift, HasPrimeShift definitions"
+    },
+    {
+      "id": "sparsity",
+      "title": "Sparsity Conditions",
+      "startLine": 93,
+      "endLine": 106,
+      "summary": "Zero density and lacunary conditions"
+    },
+    {
+      "id": "refutation",
+      "title": "The Erdős Conjecture and Its Refutation",
+      "startLine": 107,
+      "endLine": 133,
+      "summary": "ErdosConjecture429, Weisenberg's theorem, and the proved disproof"
+    },
+    {
+      "id": "covering",
+      "title": "Covering Systems",
+      "startLine": 134,
+      "endLine": 147,
+      "summary": "Covering system definition and admissibility necessity"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 148,
+      "endLine": 171,
+      "summary": "Three-part conjunction: disproof, counterexample, lacunary strengthening"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #429 is DISPROVED. Weisenberg (2024) showed that even arbitrarily sparse admissible sets can fail to have any prime shift, by constructing explicit counterexamples using covering congruence techniques.",
+    "implications": "**Theoretical Significance**: The result reveals a fundamental gap between finite and infinite admissible sets.\n\nWhile the Hardy-Littlewood conjecture predicts infinitely many prime shifts for finite admissible tuples, infinite admissible sets behave very differently even under extreme sparsity constraints. The technique of covering congruences provides a powerful obstruction mechanism.",
+    "openQuestions": [
+      "What additional conditions beyond admissibility guarantee a prime shift for infinite sets?",
+      "Is the Hardy-Littlewood prime tuples conjecture true for all finite admissible sets?",
+      "Can Weisenberg's constructions be made explicit with optimal quantitative bounds?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Set"
+    ],
+    "namespace": "Erdos429",
+    "lineCount": 171,
+    "axiomCount": 3,
+    "theoremCount": 3,
+    "definitionCount": 10,
+    "path": "Proofs/Erdos429Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1113",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-203",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, number-theory, primes"
+    },
+    {
+      "targetId": "erdos-273",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering-systems, number-theory, primes"
+    }
+  ],
+  "sorries": 0
+}

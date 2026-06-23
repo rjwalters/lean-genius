@@ -1,0 +1,252 @@
+{
+  "id": "erdos-110",
+  "title": "Erdős Problem #110: Chromatic Number Growth in Uncountable Graphs",
+  "slug": "erdos-110",
+  "description": "Is there F(n) such that every ℵ₁-chromatic graph has an n-chromatic subgraph on ≤F(n) vertices? DISPROVED by Lambie-Hanson (2020) in ZFC. Earlier, Shelah showed consistency of a negative answer.",
+  "meta": {
+    "author": "Erdős-Hajnal-Szemerédi (conjecture), Shelah (consistency), Lambie-Hanson (2020 ZFC disproof)",
+    "sourceUrl": "https://erdosproblems.com/110",
+    "date": "2020",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos110Problem.lean",
+    "tags": [
+      "graph-theory",
+      "chromatic-number",
+      "erdos",
+      "infinite-graphs",
+      "set-theory",
+      "counterexample",
+      "disproved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 110,
+    "erdosUrl": "https://erdosproblems.com/110",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs on a vertex type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Cardinal",
+        "description": "Cardinal arithmetic including ℵ₀, ℵ₁",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for subgraph bounds",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of chromatic number for infinite graphs using cardinals",
+      "Statement of the Erdős-Hajnal-Szemerédi conjecture",
+      "Axiomatization of de Bruijn-Erdős theorem",
+      "Formalization of Lambie-Hanson's counterexample structure",
+      "Proof that the conjecture is disproved",
+      "erdos_110_summary combining disproof and counterexample existence"
+    ],
+    "relatedProblems": [],
+    "axiomCount": 3,
+    "lineCount": 273,
+    "assumptions": "3 axioms: de_bruijn_erdos (compactness for colorings), lambie_hanson_counterexample (ZFC disproof), graph_compactness (fixed-k coloring compactness). Shelah's consistency and ℵ₀ failure are proved from Lambie-Hanson; an unsound compactness variant was removed.",
+    "theoremCount": 8,
+    "definitionCount": 15
+  },
+  "overview": {
+    "historicalContext": "**Finite Subgraphs of Infinite Chromatic Graphs**\n\nThe de Bruijn-Erdős theorem (1951) states that a graph with infinite chromatic number contains finite subgraphs of every finite chromatic number. But how efficiently? This problem asks whether there's a universal bound F(n) on the size needed to achieve chromatic number n.\n\n**The Conjecture (Erdős-Hajnal-Szemerédi 1982)**: For graphs with chromatic number ℵ₁ (the first uncountable cardinal), there should exist F(n) such that an n-chromatic subgraph exists on at most F(n) vertices. This was already known to fail for ℵ₀-chromatic graphs.\n\n**The Disproof**: Shelah (2005) showed the negative answer is consistent with ZFC. Lambie-Hanson (2020) then constructed an actual ZFC counterexample—no set-theoretic assumptions needed! This completely resolves the problem.",
+    "problemStatement": "**Problem Statement**\n\nIs there a function F: ℕ → ℕ such that every graph G with chromatic number ℵ₁ has, for all sufficiently large n, a subgraph with chromatic number n on at most F(n) vertices?\n\n**Answer**: NO (DISPROVED in ZFC)\n\n**Lambie-Hanson (2020)**: Constructed a graph with chromatic number ℵ₁ such that no such function F exists.\n\n**Note**: The conjecture specifically requires χ(G) = ℵ₁. For χ(G) = ℵ₀, counterexamples were already known.",
+    "text": "Is there F(n) such that every ℵ₁-chromatic graph has an n-chromatic subgraph on ≤F(n) vertices? DISPROVED by Lambie-Hanson (2020) in ZFC. Earlier, Shelah showed consistency of a negative answer.",
+    "proofStrategy": "**The Formalization**\n\n1. Defines chromatic number and k-colorability\n2. Defines induced subgraphs and chromatic subgraph bounds\n3. Introduces cardinals ℵ₀ and ℵ₁ from Mathlib\n4. States the de Bruijn-Erdős theorem (existence without bounds)\n5. States the Erdős-Hajnal-Szemerédi conjecture\n6. Axiomatizes Shelah's consistency result and Lambie-Hanson's ZFC counterexample\n7. Proves the conjecture is FALSE via direct contradiction\n8. Characterizes the counterexample graph structure",
+    "keyInsights": [
+      "DISPROVED in ZFC by Lambie-Hanson (2020) - no set-theoretic assumptions needed",
+      "Shelah (2005) had earlier shown consistency of negative answer",
+      "The conjecture was specifically for ℵ₁-chromatic graphs - it fails for ℵ₀",
+      "de Bruijn-Erdős theorem guarantees existence but not bounded size",
+      "Shows that uncountable chromatic number doesn't imply 'efficient' finite approximations"
+    ],
+    "prerequisites": [
+      "Graph theory (vertices, edges, colorings)",
+      "Combinatorics and number theory",
+      "Set theory and cardinality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-graph-theory",
+      "title": "Basic Graph Theory",
+      "summary": "Chromatic numbers and colorings",
+      "startLine": 31,
+      "endLine": 51,
+      "mathContext": "Defines proper $k$-coloring (`IsProperColoring`), $k$-colorability (`IsKColorable`), and chromatic number $\\chi(G) = \\min\\{k : G \\text{ is } k\\text{-colorable}\\}$ as an `ℕ∞`-valued infimum. The formalization uses `Fin k` as the color set, making colorings functions $V \\to \\text{Fin}\\,k$ with the adjacency constraint $G.\\text{Adj}\\,v\\,w \\Rightarrow c(v) \\neq c(w)$."
+    },
+    {
+      "id": "subgraphs",
+      "title": "Subgraphs and Induced Subgraphs",
+      "summary": "Finite chromatic subgraph definitions",
+      "startLine": 52,
+      "endLine": 70,
+      "mathContext": "The induced subgraph $G[S]$ on $S \\subseteq V$ inherits adjacency: $G[S].\\text{Adj}\\,v\\,w \\iff G.\\text{Adj}\\,v\\,w$ for $v, w \\in S$. `HasFiniteNChromaticSubgraph G n b` asserts $\\exists S$ with $|S| \\leq b$ and $\\chi(G[S]) \\geq n$ — a finite subgraph with high chromatic number and bounded size."
+    },
+    {
+      "id": "cardinals",
+      "title": "Cardinals and Infinite Chromatic Numbers",
+      "summary": "ℵ₀, ℵ₁, and infinite chromatic numbers",
+      "startLine": 71,
+      "endLine": 98,
+      "mathContext": "Cardinal arithmetic for infinite chromatic numbers: $\\aleph_0 = |\\mathbb{N}|$ and $\\aleph_1 = \\aleph_0^+$ (the first uncountable cardinal). `HasChromaticNumberAtLeast G \\kappa` means $G$ is not $k$-colorable for any finite $k < \\kappa$, and `HasChromaticNumber G \\kappa$ adds that $G$ IS $\\kappa$-colorable. The theorem $\\aleph_1 = \\text{succ}(\\aleph_0)$ is proved via `Cardinal.aleph`."
+    },
+    {
+      "id": "de-bruijn-erdos",
+      "title": "de Bruijn-Erdős Theorem",
+      "summary": "Foundation: existence of finite chromatic subgraphs",
+      "startLine": 99,
+      "endLine": 116,
+      "mathContext": "The de Bruijn-Erdős theorem (1951): if $\\chi(G) = \\infty$ (i.e., $\\chi(G) \\geq \\aleph_0$), then for every $n \\in \\mathbb{N}$, $G$ contains a finite subgraph with $\\chi \\geq n$. This is a compactness result — the contrapositive `de_bruijn_erdos_compactness` says: if every finite subgraph is $k$-colorable, then $G$ is $k$-colorable. Crucially, this says NOTHING about the size of the $n$-chromatic subgraph."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Erdős-Hajnal-Szemerédi Conjecture",
+      "summary": "The conjecture that was disproved",
+      "startLine": 117,
+      "endLine": 140,
+      "mathContext": "The Erdős-Hajnal-Szemerédi conjecture (1982): for $\\aleph_1$-chromatic graphs, $\\exists F : \\mathbb{N} \\to \\mathbb{N}$ and $N_0$ such that $\\forall n \\geq N_0$, $G$ has an $n$-chromatic subgraph on $\\leq F(n)$ vertices. The conjecture was motivated by the observation that it fails for $\\aleph_0$-chromatic graphs (`conjecture_fails_aleph0`) but was hoped to hold when $\\chi = \\aleph_1$."
+    },
+    {
+      "id": "shelah",
+      "title": "Shelah's Consistency Result",
+      "summary": "2005: Consistent that no F exists",
+      "startLine": 141,
+      "endLine": 154,
+      "mathContext": "Shelah (2005) showed the conjecture's failure is *consistent* with ZFC: there exists a model of set theory where an $\\aleph_1$-chromatic graph has no uniform bound $F(n)$. This left open whether the failure was a ZFC theorem or merely consistent."
+    },
+    {
+      "id": "lambie-hanson",
+      "title": "Lambie-Hanson's ZFC Disproof",
+      "summary": "2020: Definitive ZFC counterexample and disproof theorem",
+      "startLine": 155,
+      "endLine": 179,
+      "mathContext": "Lambie-Hanson (2020) resolved the problem definitively: the conjecture is FALSE in ZFC. He constructed an $\\aleph_1$-chromatic graph $G_{LH}$ such that for every $F : \\mathbb{N} \\to \\mathbb{N}$ and every $N_0$, there exists $n \\geq N_0$ where $G_{LH}$ has no $n$-chromatic subgraph on $\\leq F(n)$ vertices. The Lean proof `erdos_110_disproved` derives the contradiction in 5 lines from this axiom."
+    },
+    {
+      "id": "growth-rate",
+      "title": "Growth Rate and Compactness",
+      "summary": "Tower function, growth expectation moot, graph compactness",
+      "startLine": 180,
+      "endLine": 207,
+      "mathContext": "Erdős expected $F$ would need to grow at tower-function speed ($2^{2^{\\cdots^n}}$). The `tower k n` function iterates $n \\mapsto 2^n$ $k$ times. The theorem `erdos_growth_expectation_moot` shows Erdős's intuition was correct in spirit: no growth rate suffices because no $F$ exists at all."
+    },
+    {
+      "id": "counterexample",
+      "title": "Properties of the Counterexample",
+      "summary": "LambieHansonGraph structure and existence",
+      "startLine": 208,
+      "endLine": 235,
+      "mathContext": "The `LambieHansonGraph` structure packages the counterexample's properties: (1) $\\chi(G) = \\aleph_1$ exactly, (2) it defeats all proposed bounds $F$, and (3) by de Bruijn-Erdős, $n$-chromatic subgraphs still exist for all $n$ — they just cannot be uniformly bounded in size. The graph-theoretic compactness theorem shows why local (finite) colorability implies global colorability but cannot control subgraph sizes."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_110 and erdos_110_summary theorems",
+      "startLine": 236,
+      "endLine": 261,
+      "mathContext": "Erdős Problem #110 is DISPROVED: the Erdős-Hajnal-Szemerédi conjecture (1982) is false in ZFC. Shelah (2005) showed consistency, Lambie-Hanson (2020) proved it outright. The de Bruijn-Erdős theorem guarantees existence of $n$-chromatic subgraphs but cannot be made uniform over $\\aleph_1$-chromatic graphs."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #110 asked whether ℵ₁-chromatic graphs have uniformly bounded n-chromatic subgraphs. DISPROVED by Lambie-Hanson (2020) in ZFC, building on Shelah's 2005 consistency result. The counterexample shows uncountable chromatic number doesn't guarantee efficient finite chromatic subgraphs.",
+    "implications": "1. **Set Theory Meets Graph Theory**: Resolved a question at the intersection of infinite combinatorics and chromatic theory\n\n**2. de Bruijn-Erdős Limitations**: Shows the theorem's existence guarantee can't be made uniform\n\n3. **Uncountable Cardinals**: Reveals surprising behavior at ℵ₁ - the first uncountable level\n\n4. **ZFC vs Consistency**: Lambie-Hanson's ZFC proof strengthened Shelah's consistency result.",
+    "openQuestions": [
+      "What is the structure of Lambie-Hanson's counterexample graph?",
+      "Are there natural graph classes where uniform bounds do exist?",
+      "What happens at higher cardinals (ℵ₂, ℵ₃, ...)?",
+      "Can the counterexample be made explicit/constructive?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-62",
+      "relationship": "related",
+      "description": "Directly related: asks whether any two ℵ₁-chromatic graphs share a common finite subgraph, another question about finite structure inside uncountably chromatic graphs"
+    },
+    {
+      "targetId": "erdos-111",
+      "relationship": "related",
+      "description": "Companion problem in the series: studies how many edges must be deleted to make ℵ₁-chromatic graphs bipartite, related structure theory"
+    },
+    {
+      "targetId": "erdos-736",
+      "relationship": "related",
+      "description": "Directly relevant: concerns the inheritance of chromatic properties by finite subgraphs of infinite graphs — the central theme of Problem #110"
+    },
+    {
+      "targetId": "erdos-593",
+      "relationship": "related",
+      "description": "Hypergraph analogue of Problem #110: asks the same question about bounded finite subhypergraphs in the uncountably chromatic setting"
+    },
+    {
+      "targetId": "erdos-918",
+      "relationship": "related",
+      "description": "Broadly related: studies chromatic number behavior and structure theory for infinite graphs, overlapping themes of ℵ₀ vs ℵ₁ chromatic behavior"
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "Set-theoretic backdrop: Shelah's consistency result for Problem #110 uses forcing and independence techniques analogous to those used to prove CH independence"
+    }
+  ],
+  "references": [
+    {
+      "key": "LambieHanson2020",
+      "citation": "Lambie-Hanson, C. (2020). Chromatic numbers of ℵ₁-graphs. arXiv:2001.03368.",
+      "type": "paper",
+      "url": "https://arxiv.org/abs/2001.03368",
+      "note": "Definitive ZFC disproof; constructs an ℵ₁-chromatic graph with no uniform bound on sizes of n-chromatic subgraphs"
+    },
+    {
+      "key": "Shelah2005",
+      "citation": "Shelah, S. (2005). On chromatic numbers of graphs. Periodica Mathematica Hungarica 50, 249–260.",
+      "type": "paper",
+      "note": "Showed consistency (relative to ZFC) of a negative answer to Problem #110 via a forcing argument"
+    },
+    {
+      "key": "ErdosHajnalSzemeredi1982",
+      "citation": "Erdős, P., Hajnal, A., and Szemerédi, E. (1982). On almost bipartite large chromatic graphs. Annals of Discrete Mathematics 12, 117–123.",
+      "type": "paper",
+      "note": "Original paper posing the conjecture that every ℵ₁-chromatic graph has n-chromatic subgraphs on ≤F(n) vertices"
+    },
+    {
+      "key": "deBruijnErdos1951",
+      "citation": "de Bruijn, N. G. and Erdős, P. (1951). A colour problem for infinite graphs and a problem in the theory of relations. Indagationes Mathematicae 13, 369–373.",
+      "type": "paper",
+      "note": "Foundational theorem: every graph with infinite chromatic number contains finite subgraphs of every finite chromatic number, without a size bound"
+    },
+    {
+      "key": "Komjath2011",
+      "citation": "Komjáth, P. (2011). Graphs on the uncountable cardinals. In: Open Problems in Mathematics, Springer.",
+      "type": "book-chapter",
+      "note": "Survey of open problems about chromatic numbers of graphs on uncountable vertex sets, including the context of Problem #110 and its relatives"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Cardinal",
+      "Set"
+    ],
+    "namespace": "Erdos110",
+    "lineCount": 273,
+    "axiomCount": 3,
+    "theoremCount": 8,
+    "definitionCount": 15,
+    "path": "Proofs/Erdos110Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

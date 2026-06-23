@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-norm-bridge",
+    "proofId": "fermat-two-squares-oq-01-oq-03-oq-01",
+    "range": { "startLine": 63, "endLine": 70 },
+    "type": "concept",
+    "title": "Bridging the Integer and Rational Norms",
+    "content": "`normSq_cast` proves (N(q) : ℚ) = Quaternion.normSq q.toQuat, identifying the integer Hurwitz norm with the rational quaternion norm of the embedded point. It follows from the parent's `hurwitz_normSq4_toQuat` (normSq4 cast = 4·N(toQuat)) and `normSq_spec` (normSq·4 = normSq4). This bridge is what lets the final norm inequality, naturally living in ℚ, be transferred back to the integer statement N(r) < N(b)."
+  },
+  {
+    "id": "ann-mul-closure",
+    "proofId": "fermat-two-squares-oq-01-oq-03-oq-01",
+    "range": { "startLine": 96, "endLine": 208 },
+    "type": "technique",
+    "title": "Closure under Multiplication via a Four-Way Parity Split",
+    "content": "The remainder r = a − b·q must itself be a Hurwitz integer, so the Hurwitz integers must be closed under multiplication. `hurwitz_mul_closed` proves this directly: split each of a and b into all-even (Lipschitz) or all-odd (half-integer) parity, giving four cases. In each, the product's doubled coordinates are written explicitly in the form 2·W + (linear), where W collects the nonlinear cross terms. Writing them this way is essential: it lets `omega` verify the equal-parity condition (the 2·W part is even, so parity is decided by the linear part), while `ring` verifies the coordinate identities against Mathlib's quaternion multiplication formulas (`re_mul`, `imI_mul`, …)."
+  },
+  {
+    "id": "ann-per-coord",
+    "proofId": "fermat-two-squares-oq-01-oq-03-oq-01",
+    "range": { "startLine": 217, "endLine": 247 },
+    "type": "key-step",
+    "title": "The Complementary-Rounding Inequality",
+    "content": "`per_coord_bound` shows that for any rational x, the squared distance to the nearest integer plus the squared distance to the nearest half-integer is at most ¼: (x − ⌊x⌉)² + ((x − ½) − ⌊x − ½⌉)² ≤ ¼. The proof writes both offsets δ and ε via `round`, notes |δ|, |ε| ≤ ½ (`abs_sub_round`), and shows their integer difference k = round(x − ½) − round(x) lies in {−1, 0} from δ − ε = ½ + k. In each case ε = δ ± ½, and a one-line `nlinarith` with the product (∓δ)(2δ ± 1) ≥ 0 closes the bound. Summed over four coordinates, the integer- and half-integer-roundings have squared errors totalling ≤ 1."
+  },
+  {
+    "id": "ann-covering-radius",
+    "proofId": "fermat-two-squares-oq-01-oq-03-oq-01",
+    "range": { "startLine": 255, "endLine": 293 },
+    "type": "concept",
+    "title": "Covering Radius² ≤ ½: Why ℍ_ℤ Is Euclidean",
+    "content": "`exists_hurwitz_close` builds two candidate Hurwitz integers for a rational quaternion x: qI rounds every coordinate to the nearest integer (an all-even, i.e. Lipschitz, point) and qH rounds every coordinate to the nearest half-integer (an all-odd point). By `per_coord_bound`, N(x − qI) + N(x − qH) ≤ 1, so whichever is smaller is ≤ ½. This is exactly the covering-radius² ≤ ½ statement for the Hurwitz (D₄*) lattice. The Lipschitz lattice alone has covering radius² = 1 (the deep hole ½(1+i+j+k) sits at squared-distance 1), which is why adjoining ω is what makes Euclidean division strict."
+  },
+  {
+    "id": "ann-discharge",
+    "proofId": "fermat-two-squares-oq-01-oq-03-oq-01",
+    "range": { "startLine": 306, "endLine": 343 },
+    "type": "key-step",
+    "title": "Assembling the Euclidean Division",
+    "content": "`hurwitz_euclidean_thm` proves the parent's axiom verbatim. With N(b) > 0, b.toQuat is a unit in the division ring ℍ(ℚ); set x = b⁻¹·a and round it to a Hurwitz q with N(x − q) ≤ ½. Closure gives a Hurwitz r with r.toQuat = a.toQuat − b.toQuat·q.toQuat, and the key factorization r.toQuat = b.toQuat·(x − q.toQuat) yields N(r) = N(b)·N(x − q) ≤ N(b)/2 < N(b) by norm multiplicativity (`map_mul`). The strict inequality is immediate from ½ < 1 — no boundary 'equality impossible' argument is needed. A closing `example` checks the statement matches the axiom's type exactly."
+  }
+]

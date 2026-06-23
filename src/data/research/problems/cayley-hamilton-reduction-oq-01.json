@@ -1,0 +1,123 @@
+{
+  "slug": "cayley-hamilton-reduction-oq-01",
+  "title": "Can this reduction be made computationally efficient for sparse matrices",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "The Cayley-Hamilton reduction is computationally efficient for structured sparse matrices: upper triangular matrices have charpoly = ∏(X - diagonal), block triangular matrices decompose into independent reductions, and nilpotent matrices have bounded polynomial basis.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-02-21T19:21:07.132Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "challenging",
+    "linear-algebra",
+    "matrices",
+    "polynomials",
+    "matrix-exponential",
+    "extension"
+  ],
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-reduction",
+    "cayley-hamilton-reduction-oq-01",
+    "cayley-hamilton-reduction-oq-01-oq-02",
+    "cayley-hamilton-reduction-oq-02",
+    "cayley-hamilton-reduction-oq-02-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-21T19:21:07.132Z",
+  "lastUpdate": "2026-02-24T08:35:25.047Z",
+  "completed": "2026-02-24T08:35:25.047Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonReductionOQ01.lean",
+      "filename": "CayleyHamiltonReductionOQ01.lean",
+      "lineCount": 305,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonReductionOQ01OQ02.lean",
+      "filename": "CayleyHamiltonReductionOQ01OQ02.lean",
+      "lineCount": 211,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonReductionOQ02.lean",
+      "filename": "CayleyHamiltonReductionOQ02.lean",
+      "lineCount": 161,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonReductionOQ02OQ01.lean",
+      "filename": "CayleyHamiltonReductionOQ02OQ01.lean",
+      "lineCount": 397,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonReductionOQ02OQ01Aristotle.lean",
+      "filename": "CayleyHamiltonReductionOQ02OQ01Aristotle.lean",
+      "lineCount": 105,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 12,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonReductionOQ02OQ01Aristotle.lean"
+    }
+  ]
+}

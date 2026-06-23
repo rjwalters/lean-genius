@@ -1,0 +1,158 @@
+{
+  "id": "erdos-1004-oq-03",
+  "title": "Erdős #1004: An Unconditional 0-Axiom Run-Length Bound K ≤ n−1 via Totient Parity",
+  "slug": "erdos-1004-oq-03",
+  "description": "Follow-up to the Erdős #1004 entry (distinct consecutive totient values). The parent's only upper bound on the length of a distinct totient run φ(n+1),…,φ(n+K) is the deep Erdős–Pomerance–Sárközy (1987) bound K ≤ n/exp(c(log n)^{1/3}), recorded there as an AXIOM. This entry contributes the first fully verified, 0-axiom, UNCONDITIONAL bound: for n ≥ 2, every distinct totient run starting at n has length K ≤ n−1 (run_length_le_pred). The proof is elementary parity: for m ≥ 3, φ(m) is even with 2 ≤ φ(m) ≤ m−1 (Nat.totient_even), so the K distinct run values are K distinct even numbers in [2, n+K−1]; halving embeds them into [1,(n+K−1)/2], forcing K ≤ (n+K−1)/2, i.e. K ≤ n−1. It does NOT improve EPS (which is asymptotically far stronger) — it is honestly weaker but holds for ALL n ≥ 2 with no threshold and is axiom-free, and it is SHARP for small n (the maximal run at n=3 is φ(4),φ(5)=2,4 of length 2 = n−1, proved by run_sharp_at_three / no_run_three_three). Fully machine-checked: 0 sorries, 0 axioms (kernel decide only, no native_decide).",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://erdosproblems.com/1004",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1004OQ03.lean",
+    "erdosNumber": 1004,
+    "erdosUrl": "https://erdosproblems.com/1004",
+    "erdosProblemStatus": "open",
+    "erdosPrizeValue": null,
+    "tags": [
+      "number-theory",
+      "euler-totient",
+      "distinct-totient-runs",
+      "parity",
+      "erdos",
+      "unconditional-bound",
+      "axiom-free"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient_even",
+        "description": "For 2 < m, φ(m) is even — the parity engine that restricts the K distinct run values to even numbers",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Nat.totient_lt",
+        "description": "φ(m) < m for m > 1, giving the upper bound φ(m) ≤ m−1 on each run value",
+        "module": "Mathlib.NumberTheory.Totient"
+      },
+      {
+        "theorem": "Finset.card_le_card_of_injOn",
+        "description": "Counts the run via the injective halving map into Icc 1 ((n+K−1)/2), the heart of run_length_le_pred",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.card_Icc",
+        "description": "|Icc a b| = b + 1 − a, used to evaluate both the run length K and the target interval size",
+        "module": "Mathlib.Order.Interval.Finset.Nat"
+      }
+    ],
+    "originalContributions": [
+      "IsDistinctTotientRun: DEFINED a distinct totient run as injectivity of φ on the argument block {n+1,…,n+K} (self-contained form of the parent's predicate)",
+      "totient_even_ge_two / totient_le_pred: PROVED the parity/size facts — for m ≥ 3, φ(m) is even with 2 ≤ φ(m) ≤ m−1",
+      "run_length_le_pred: PROVED the main result — the first UNCONDITIONAL, 0-axiom upper bound K ≤ n−1 (n ≥ 2) on distinct totient run length, complementing the parent's axiomatized EPS bound",
+      "run_length_lt / no_run_of_length_n: PROVED the strict form K < n and the non-existence of a length-n run starting at n ≥ 2",
+      "run_sharp_at_three / no_run_three_three: PROVED SHARPNESS at n = 3 — φ(4),φ(5)=2,4 is a distinct run of length 2 = n−1, and length 3 is impossible (φ(6)=φ(4)=2)"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Erdős #1004 parent (distinct totient runs and the axiomatized EPS bound)",
+      "Euler totient parity: φ(m) even for m ≥ 3",
+      "Finset cardinality and injective-map counting"
+    ],
+    "lineCount": 136,
+    "relatedProblems": [
+      {
+        "id": "erdos-1004",
+        "relationship": "Direct parent: defines distinct totient runs; its only run-length bound is the axiomatized EPS theorem, which this entry complements with an unconditional 0-axiom bound"
+      }
+    ],
+    "assumptions": "None. 0 axioms, 0 sorries (the theorems depend only on the standard foundational axioms propext, Classical.choice, Quot.sound; the concrete sharpness witnesses use kernel `decide`, NOT `native_decide`, so no `Lean.ofReduceBool` is introduced). The bound K ≤ n−1 is honestly WEAKER than the Erdős–Pomerance–Sárközy bound K ≤ n/exp(c(log n)^{1/3}) that the parent records as an axiom; it does not improve EPS. Its value is being fully unconditional (all n ≥ 2, no threshold) and the first axiom-free run-length bound in this problem, and sharp for small n.",
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "structureCount": 0
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1004 asks, for c > 0 and large x, whether some n ≤ x has φ(n+1),…,φ(n+⌊(log x)^c⌋) all distinct — i.e. how long a run of consecutive integers can have pairwise-distinct Euler totients. The state of the art on the upper side is Erdős–Pomerance–Sárközy (1987): a distinct totient run starting at n has length K ≤ n/exp(c(log n)^{1/3}) for large n. This is genuinely deep (it rests on the distribution of integers with large prime factors) and is recorded in the parent gallery entry as an axiom. Elementary methods cannot reach the EPS exponent, but they can give clean unconditional bounds — and the most elementary structural fact about the totient, its evenness for arguments ≥ 3, already halves the trivial count.",
+    "problemStatement": "Bound the length K of a distinct totient run φ(n+1),…,φ(n+K) unconditionally, without invoking the (axiomatized) EPS theorem, and determine whether such a bound can be made axiom-free and sharp for small n.",
+    "text": "A 136-line self-contained file proving that for n ≥ 2 every distinct totient run starting at n has length K ≤ n−1, via the parity of the totient on arguments ≥ 3, together with the strict form K < n, the non-existence of a length-n run, and sharpness at n = 3 — all 0 sorries, 0 axioms.",
+    "proofStrategy": "Inside a run starting at n ≥ 2, every argument m = n+i is ≥ 3, so φ(m) is even (Nat.totient_even) with 2 ≤ φ(m) ≤ m−1 ≤ n+K−1. The map m ↦ φ(m)/2 is therefore injective on the run block {n+1,…,n+K} (equal halves of even numbers force equal totients, then injectivity of φ on the run) and lands in Icc 1 ((n+K−1)/2). Comparing cardinalities (Finset.card_le_card_of_injOn, Nat.card_Icc) gives K ≤ (n+K−1)/2, and omega finishes K ≤ n−1.",
+    "keyInsights": [
+      "**Parity halves the count.** The trivial bound just says the K distinct values fit among the integers ≤ n+K; using that they are all EVEN (φ(m) even for m ≥ 3) halves the available room and yields K ≤ n−1.",
+      "**Axiom-free vs axiomatized.** The parent's only run bound is the EPS axiom; this entry gives a genuinely verified, 0-axiom bound — weaker, but unconditional and resting on nothing beyond the foundational axioms.",
+      "**Unconditional, no threshold.** EPS holds only for n beyond an (ineffective) threshold N₀; the parity bound holds for every n ≥ 2.",
+      "**Sharp for small n.** The bound is tight at n = 3: φ(4),φ(5) = 2,4 is a distinct run of length 2 = n−1, while length 3 fails since φ(6)=φ(4)=2.",
+      "**Halving as an injection.** Encoding 'distinct even values' as an injection m ↦ φ(m)/2 into a half-size interval is the clean combinatorial core, avoiding any analytic input."
+    ],
+    "prerequisites": [
+      "Euler totient and its parity",
+      "Finset cardinality / injective counting",
+      "Erdős #1004 parent entry"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1004",
+      "relationship": "extends",
+      "description": "Complements the parent's axiomatized EPS upper bound with a fully verified, 0-axiom, unconditional bound K ≤ n−1 on distinct totient run length."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 136,
+    "namespace": "Erdos1004OQ03",
+    "opens": ["Finset"],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 5,
+    "computationalVerifications": 0,
+    "lemmaCount": 0,
+    "imports": ["Mathlib"],
+    "path": "Proofs/Erdos1004OQ03.lean",
+    "sorries": 0,
+    "definitionCount": 1
+  },
+  "conclusion": {
+    "summary": "A fully machine-checked (0 sorries, 0 axioms) unconditional upper bound on distinct totient run length: for n ≥ 2, a run φ(n+1),…,φ(n+K) of pairwise-distinct totients has length K ≤ n−1, via the evenness of φ on arguments ≥ 3. The bound is strict (K < n), rules out length-n runs, and is sharp at n = 3.",
+    "implications": "Provides the first axiom-free run-length bound for Erdős #1004, where the deep EPS bound is only available as an axiom. While asymptotically far weaker than EPS, it is unconditional, threshold-free, and exhibits the elementary parity obstruction that underlies why totient runs cannot be too long, offering a verified baseline against which the conjectured (log x)^c growth is measured.",
+    "openQuestions": [
+      "Refine the parity argument with the 2-adic valuation of φ (φ(m) divisible by higher powers of 2 when m has several odd prime factors) to push the unconditional bound below n−1.",
+      "Give an unconditional o(n) bound by elementary means (counting distinct totient values ≤ M more carefully), narrowing the gap toward EPS.",
+      "Formalize a matching lower-bound construction exhibiting distinct totient runs of length growing with n, to bracket the true growth rate."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "run_length_le_pred",
+      "type": "core",
+      "description": "Unconditional, 0-axiom bound: for n ≥ 2 a distinct totient run starting at n has length K ≤ n−1 (PROVED, 0 axioms)",
+      "leanType": "∀ {n K : ℕ}, 2 ≤ n → IsDistinctTotientRun n K → K ≤ n - 1"
+    },
+    {
+      "name": "run_length_lt",
+      "type": "core",
+      "description": "Strict form: a distinct totient run starting at n ≥ 2 has length K < n (PROVED, 0 axioms)",
+      "leanType": "∀ {n K : ℕ}, 2 ≤ n → IsDistinctTotientRun n K → K < n"
+    },
+    {
+      "name": "no_run_of_length_n",
+      "type": "core",
+      "description": "There is no distinct totient run of length n starting at n ≥ 2 (PROVED, 0 axioms)",
+      "leanType": "∀ {n : ℕ}, 2 ≤ n → ¬ IsDistinctTotientRun n n"
+    },
+    {
+      "name": "run_sharp_at_three",
+      "type": "supporting",
+      "description": "Sharpness at n = 3: φ(4),φ(5) = 2,4 is a distinct run of length 2 = n−1 (PROVED, 0 axioms, kernel decide)",
+      "leanType": "IsDistinctTotientRun 3 2"
+    },
+    {
+      "name": "totient_even_ge_two",
+      "type": "supporting",
+      "description": "For m ≥ 3, φ(m) is even and ≥ 2 — the parity fact driving the count (PROVED, 0 axioms)",
+      "leanType": "∀ {m : ℕ}, 3 ≤ m → Even (Nat.totient m) ∧ 2 ≤ Nat.totient m"
+    }
+  ],
+  "sorries": 0
+}

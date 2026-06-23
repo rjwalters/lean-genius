@@ -1,0 +1,38 @@
+{
+  "slug": "algebraic-reals-meager-oq-01",
+  "title": "Package the Full Baire Category Theorem for Perfect Polish Spaces",
+  "phase": "SOLVED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": "Generalize the gallery's abstract uncountability lemma not_countable_of_perfect_t1_baire (T1 + perfect + BaireSpace ⟹ uncountable) to the standard descriptive-set-theory statement: every nonempty perfect Polish space is uncountable, and expose 'complete metric space is a Baire space' as a reusable named result.",
+  "knowledge": {
+    "progressSummary": "SOLVED (build-verified GREEN, axiom-free). Lifted the abstract uncountability lemma not_countable_of_perfect_t1_baire to the standard form 'every nonempty perfect Polish space is uncountable' (uncountable_of_perfect_polishSpace) plus the supporting baireSpace_of_completeMetricSpace. The generality lift is free by instance resolution: Mathlib's chain PolishSpace → IsCompletelyMetrizableSpace → {MetrizableSpace → T2 → T1; IsCompletelyPseudoMetrizableSpace → BaireSpace} discharges both topological hypotheses automatically. 6 new theorems, 0 sorries, [propext, Classical.choice, Quot.sound] only. PR #26822.",
+    "builtItems": [
+      "uncountable_of_perfect_polishSpace : nonempty perfect Polish space ⟹ Uncountable X (Uncountable typeclass form, the standard BCT uncountability statement)",
+      "not_countable_univ_of_perfect_polishSpace : the same as ¬ (Set.univ).Countable",
+      "baireSpace_of_completeMetricSpace : complete metric space is a Baire space (completeness half of the BCT, named wrapper over BaireSpace.of_completelyPseudoMetrizable)",
+      "t1Space_of_polishSpace, baireSpace_of_polishSpace : the two implicit Mathlib instance steps, named",
+      "uncountable_real : ℝ recovered as a corollary (ℝ is a perfect Polish space), a second route to Cantor's theorem"
+    ],
+    "insights": [
+      "The generality lift requires no new mathematics: PolishSpace extends IsCompletelyMetrizableSpace (Topology/MetricSpace/Polish.lean:62), which yields MetrizableSpace → T2Space → T1Space (t2Space_of_metrizableSpace) and IsCompletelyPseudoMetrizableSpace → BaireSpace (BaireSpace.of_completelyPseudoMetrizable). So a [PolishSpace X] [PerfectSpace X] [Nonempty X] context discharges T1Space and BaireSpace by instance resolution and the abstract lemma applies verbatim.",
+      "not_countable_univ_iff (Data/Set/Countable.lean:142) cleanly repackages the ¬(Set.univ).Countable conclusion into the Uncountable X typeclass, which is the idiomatic statement form.",
+      "This subsumes both the bespoke not_countable_real and the companion nested-interval entry: ℝ is just one perfect Polish instance."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Optional: specialize to Cantor space / perfect compact metric spaces, or wire uncountable_of_perfect_polishSpace into other gallery entries needing 'perfect Polish ⟹ uncountable'."
+    ]
+  },
+  "tags": [
+    "topology",
+    "baire-category",
+    "real-analysis",
+    "descriptive-set-theory",
+    "polish-space",
+    "seeker-selected"
+  ],
+  "significance": 5,
+  "tractability": 6
+}

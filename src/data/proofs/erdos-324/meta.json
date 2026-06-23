@@ -1,0 +1,238 @@
+{
+  "id": "erdos-324",
+  "title": "Distinct Polynomial Pair Sums",
+  "slug": "erdos-324",
+  "description": "Does there exist f(x) ∈ ℤ[x] such that all sums f(a) + f(b) with a < b are distinct? Conjectured for f(x) = x⁵. OPEN.",
+  "meta": {
+    "author": "Erdős, Graham (1980)",
+    "sourceUrl": "https://erdosproblems.com/324",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos324Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "polynomial",
+      "additive-combinatorics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 324,
+    "erdosUrl": "https://erdosproblems.com/324",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2025-01-01",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: min_degree_for_distinct (any polynomial with distinct pair sums has degree ≥ 5). distinct_count_eq_binomial now proved. Six former axioms proved: lps_implies_power_distinct (trivial), squares/cubes/quartics_not_distinct (via counterexamples 65/1729/635318657), linear_not_distinct (f(0)+f(3)=f(1)+f(2)). New: quadratic_no_linear_not_distinct (ax²+c fails, 1²+8²=4²+7²=65), monic_neg_linear_quad_not_distinct (x²-(n+2)x+c fails, f(0)+f(1)=f(n+1)+f(n+2)).",
+    "lineCount": 303,
+    "dateUpdated": "2026-05-04",
+    "theoremCount": 14,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed Problem #324 in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p. 53), describing it as 'very annoying.' The question asks whether any polynomial $f \\in \\mathbb{Z}[X]$ can make all sums $f(a) + f(b)$ with $a < b$ nonnegative integers distinct.\n\nThe problem connects to a rich history of equal-sums-of-powers questions. Diophantus studied representations of numbers as sums of squares. Fermat (1640s) characterized which integers are sums of two squares. The failure of $x^2$: $65 = 1^2 + 8^2 = 4^2 + 7^2$ follows from 65 having prime factors 5 and 13, both $\\equiv 1 \\pmod{4}$. The iconic failure of $x^3$ is the Hardy-Ramanujan taxicab number $1729 = 1^3 + 12^3 = 9^3 + 10^3$, discovered by Ramanujan in 1919 during Hardy's hospital visit. Euler (1772) found $59^4 + 158^4 = 133^4 + 134^4$, showing $x^4$ fails.\n\nThe Lander-Parkin-Selfridge (LPS) conjecture (1967) predicts that $x_1^n + x_2^n = y_1^n + y_2^n$ has no nontrivial solutions for $n \\geq 5$, generalizing Fermat's Last Theorem (the $k = 1$ case, proved by Wiles 1995). LPS would immediately resolve Problem #324 via $f(x) = x^5$. Despite extensive computational searches, no counterexample to $a^5 + b^5 = c^5 + d^5$ has been found, making the quintic the natural candidate.",
+    "problemStatement": "Does there exist a polynomial f(x) ∈ ℤ[x] such that all the sums f(a) + f(b) with a < b nonnegative integers are distinct?",
+    "text": "Does there exist f(x) ∈ ℤ[x] such that all sums f(a) + f(b) with a < b are distinct? Conjectured for f(x) = x⁵. OPEN.",
+    "proofStrategy": "We define pairSumFn mapping (a,b) to f(a)+f(b), orderedPairs as {(a,b) | a < b}, and HasDistinctPairSums using Set.InjOn. ErdosProblem324 asks for existence. QuinticConjecture states HasDistinctPairSums for X^5 and quintic_implies_324 proves it implies the main problem. PowerPairSumDistinct generalizes to arbitrary n. Failures for n = 2,3,4 and the minimum degree bound ≥ 5 are axiomatized. The counting function distinctPairSumCount gives C(N+1,2) for distinct pair sums.",
+    "keyInsights": [
+      "**The quintic conjecture**: $f(x) = x^5$ is the simplest candidate, since $x^n$ fails for all $n \\leq 4$. No collision $a^5 + b^5 = c^5 + d^5$ with $a < b, c < d$ has been found computationally.",
+      "**Phase transition at degree 5**: $x^2$ fails ($65 = 1^2 + 8^2 = 4^2 + 7^2$), $x^3$ fails ($1729 = 1^3 + 12^3 = 9^3 + 10^3$, the Hardy-Ramanujan taxicab number), $x^4$ fails (Euler 1772). The arithmetic structure of power sums changes qualitatively at $n = 5$.",
+      "**LPS generalization**: The Lander-Parkin-Selfridge conjecture (1967) predicts no nontrivial solutions to $x_1^n + x_2^n = y_1^n + y_2^n$ for $n \\geq 5$, extending Fermat's Last Theorem. This would immediately resolve Problem #324 via `PowerPairSumDistinct(n)` for all $n \\geq 5$.",
+      "**Sharp degree bound**: `min_degree_for_distinct` establishes $\\deg(f) \\geq 5$ as necessary, combining concrete failures at degrees 0-4. The bound is conjecturally tight (achieved by $x^5$).",
+      "**Maximal sumset property**: For $f$ with distinct pair sums, `distinctPairSumCount f N = \\binom{N+1}{2}$ — the image of $S_f$ on ordered pairs achieves the combinatorial maximum, analogous to Sidon sets achieving maximal sumset size."
+    ],
+    "mathlibDependencies": [
+      "Mathlib.Data.Polynomial.Basic",
+      "Mathlib.Data.Polynomial.Eval",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Function",
+      "Mathlib.Tactic"
+    ],
+    "originalContributions": [
+      "pairSumFn: (a,b) ↦ f(a) + f(b) for f ∈ ℤ[X]",
+      "orderedPairs: {(a,b) | a < b}",
+      "HasDistinctPairSums: Set.InjOn on ordered pairs",
+      "ErdosProblem324: existence of f with distinct pair sums",
+      "QuinticConjecture: HasDistinctPairSums for X^5",
+      "quintic_implies_324: proved QuinticConjecture → ErdosProblem324",
+      "PowerPairSumDistinct: generalized for arbitrary exponent n",
+      "lps_implies_power_distinct: LPS implies power-distinct for n ≥ 5",
+      "squares_not_distinct: proved theorem ¬PowerPairSumDistinct 2",
+      "cubes_not_distinct: proved theorem ¬PowerPairSumDistinct 3",
+      "quartics_not_distinct: proved theorem ¬PowerPairSumDistinct 4",
+      "linear_not_distinct: proved theorem for linear polynomials",
+      "min_degree_for_distinct: axiom degree ≥ 5 (the file's single axiom)",
+      "distinctPairSumCount: count of distinct pair sum values",
+      "distinct_count_eq_binomial: count = C(N+1,2)",
+      "zeroth_power_not_distinct: ¬PowerPairSumDistinct 0 (constant X⁰ gives collision)",
+      "first_power_not_distinct: ¬PowerPairSumDistinct 1 (0+3 = 1+2)",
+      "power_below_five_not_distinct: complete characterization that xⁿ fails for all n < 5"
+    ],
+    "prerequisites": [
+      "Polynomial evaluation over $\\mathbb{Z}$ and $\\mathbb{Z}[X]$",
+      "Sums of powers and Diophantine equations ($a^n + b^n = c^n + d^n$)",
+      "Sidon sets and distinct sumset theory",
+      "Injectivity and $\\texttt{Set.InjOn}$ in Lean 4"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 19,
+      "summary": "Module docstring stating the problem (does some $f \\in \\mathbb{Z}[X]$ have all pair sums $f(a)+f(b)$ distinct?), the conjecture that $x^5$ works, the Lander-Parkin-Selfridge connection, OPEN status, and references (Erdős-Graham 1980, p. 53). Imports Mathlib and opens Polynomial.",
+      "mathContext": "Verified: documentation block with the problem statement, the $x^5$ conjecture, the LPS connection, OPEN status, and the Erdős-Graham (1980) reference."
+    },
+    {
+      "id": "pair-sums",
+      "title": "Section I: Distinct Pair Sums",
+      "startLine": 20,
+      "endLine": 36,
+      "summary": "Defines the core machinery: `pairSumFn` maps $(a,b) \\mapsto f(a) + f(b)$ for $f \\in \\mathbb{Z}[X]$, `orderedPairs` restricts to $\\{(a,b) : a < b\\}$ to avoid commutative collisions, and `HasDistinctPairSums` formalizes injectivity via `Set.InjOn`.",
+      "mathContext": "$S_f(a,b) = f(a) + f(b)$; ordered pairs $\\{(a,b) : a < b\\}$; distinct pair sums $\\Leftrightarrow$ $S_f$ injective on ordered pairs."
+    },
+    {
+      "id": "conjecture",
+      "title": "Section II: The Conjecture",
+      "startLine": 37,
+      "endLine": 45,
+      "summary": "Formalizes Erdős Problem #324 as `ErdosProblem324 : Prop := \\exists f : \\mathbb{Z}[X], \\text{HasDistinctPairSums}\\, f`. The existential quantification asks whether *any* polynomial works, making this an existence problem. Erdős and Graham (1980, p. 53) called it 'very annoying.'",
+      "mathContext": "$\\exists f \\in \\mathbb{Z}[X]: \\forall a < b, c < d, (a,b) \\neq (c,d) \\implies f(a)+f(b) \\neq f(c)+f(d)$."
+    },
+    {
+      "id": "quintic",
+      "title": "Section III: The Quintic Conjecture",
+      "startLine": 46,
+      "endLine": 58,
+      "summary": "Defines `QuinticConjecture := HasDistinctPairSums (X^5)` and proves `quintic_implies_324 : QuinticConjecture \\to ErdosProblem324` by existential introduction $\\langle X^5, h\\rangle$, showing the quintic conjecture is strictly stronger than the main problem.",
+      "mathContext": "$\\text{QuinticConj}: \\forall a < b, c < d, (a,b) \\neq (c,d) \\implies a^5+b^5 \\neq c^5+d^5$. Implies P324 by $\\exists$-intro with $f = X^5$."
+    },
+    {
+      "id": "powers",
+      "title": "Section IV: Power Generalizations",
+      "startLine": 59,
+      "endLine": 130,
+      "summary": "Parametrizes the problem via `PowerPairSumDistinct(n) := HasDistinctPairSums(X^n)`. lps_implies_power_distinct (axiom: LPS implies the property for n ≥ 5), then five PROVED impossibility theorems: squares_not_distinct ($1^2+8^2=4^2+7^2=65$), cubes_not_distinct (taxicab $1729$), quartics_not_distinct (Euler 1772), zeroth_power_not_distinct, first_power_not_distinct, and power_below_five_not_distinct collecting them into the full characterization that $x^n$ fails for all $n < 5$.",
+      "mathContext": "Failures: $1^2+8^2 = 4^2+7^2 = 65$; $1^3+12^3 = 9^3+10^3 = 1729$; $59^4+158^4 = 133^4+134^4 = 635318657$. LPS conjecture: $a^n+b^n = c^n+d^n$ has no nontrivial solutions for $n \\geq 5$."
+    },
+    {
+      "id": "lower-degree",
+      "title": "Section V: Lower Degree Impossibility",
+      "startLine": 131,
+      "endLine": 149,
+      "summary": "linear_not_distinct (PROVED theorem): $f(x) = ax + b$ always produces collisions (pair sums are affine in $a+b$, so $f(0)+f(3)=f(1)+f(2)$). min_degree_for_distinct (the file's single axiom): $\\deg(f) \\geq 5$ is necessary, combining the failures at degrees 0-4.",
+      "mathContext": "Linear: $f(a)+f(b) = a(a_1+b_1)+2b$, so $f(0)+f(3) = f(1)+f(2)$. Axiom min_degree_for_distinct: $\\deg(f) \\leq 4 \\implies \\neg\\text{HasDistinctPairSums}(f)$."
+    },
+    {
+      "id": "constant-polynomials",
+      "title": "Section V.b: Constant Polynomials",
+      "startLine": 150,
+      "endLine": 164,
+      "summary": "constant_not_distinct (PROVED): every constant polynomial $f(x) = c$ fails, since all pair sums collapse to $2c$ regardless of the inputs.",
+      "mathContext": "Constant $f \\equiv c$: $f(a)+f(b) = 2c$ for all $(a,b)$, so $S_f$ is not injective on ordered pairs."
+    },
+    {
+      "id": "quadratic-subcases",
+      "title": "Section V.c: Quadratic Impossibility Subcases",
+      "startLine": 165,
+      "endLine": 195,
+      "summary": "quadratic_no_linear_not_distinct (PROVED): quadratics $ax^2 + c$ with no linear term fail. monic_neg_linear_quad_not_distinct (PROVED): monic quadratics with a negative linear coefficient fail. Both are explicit subcases of the degree-2 impossibility.",
+      "mathContext": "Quadratic subcases of $\\deg(f) \\leq 4 \\implies \\neg\\text{HasDistinctPairSums}(f)$, proved by exhibiting concrete colliding ordered pairs."
+    },
+    {
+      "id": "counting",
+      "title": "Section VI: Counting Pair Sums",
+      "startLine": 196,
+      "endLine": 303,
+      "summary": "Defines `distinctPairSumCount f N` as the cardinality of $\\{f(a) + f(b) : 0 \\leq a < b \\leq N\\}$ via `Finset.image`, and proves distinct_count_eq_binomial: for $f$ with distinct pair sums this count equals $\\binom{N+1}{2}$, the combinatorial maximum (a Sidon-set-like property).",
+      "mathContext": "$|\\{f(a)+f(b) : 0 \\leq a < b \\leq N\\}| = \\binom{N+1}{2}$ when all pair sums are distinct. Maximum: $\\binom{N+1}{2} = N(N+1)/2$ ordered pairs."
+    }
+  ],
+  "crossReferences": [
+    {
+      "relationship": "Both from Erdős-Graham (1980) on polynomial additive combinatorics",
+      "sharedConcepts": [
+        "polynomial arithmetic",
+        "additive combinatorics"
+      ],
+      "targetId": "erdos-321"
+    },
+    {
+      "relationship": "Adjacent Erdős problem on polynomial representations",
+      "sharedConcepts": [
+        "polynomial evaluation",
+        "Erdős-Graham"
+      ],
+      "targetId": "erdos-325"
+    },
+    {
+      "relationship": "Both involve additive structure of polynomial images",
+      "sharedConcepts": [
+        "additive combinatorics",
+        "integer polynomials"
+      ],
+      "targetId": "erdos-332"
+    },
+    {
+      "relationship": "Lagrange's theorem gives representation bounds; pair sums of squares relate to this",
+      "sharedConcepts": [
+        "sums of powers",
+        "representation theory"
+      ],
+      "targetId": "lagrange-four-squares"
+    },
+    {
+      "relationship": "Cauchy-Schwarz bounds additive energy, connected to distinct pair sum counting",
+      "sharedConcepts": [
+        "inequalities",
+        "counting arguments"
+      ],
+      "targetId": "cauchy-schwarz"
+    }
+  ],
+  "references": [
+    {
+      "citation": "P. Erdős and R. L. Graham, 'Old and New Problems and Results in Combinatorial Number Theory,' Monographies de L'Enseignement Mathématique 28, 1980, p. 53",
+      "note": "Original source of Problem #324"
+    },
+    {
+      "citation": "L. J. Lander, T. R. Parkin, and J. L. Selfridge, 'A Survey of Equal Sums of Like Powers,' Mathematics of Computation 21 (1967), 446-459",
+      "note": "The LPS conjecture that would resolve this problem for all n ≥ 5"
+    },
+    {
+      "citation": "G. H. Hardy and S. Ramanujan, 'Asymptotic formulae in combinatory analysis,' Proceedings of the London Mathematical Society 17 (1918), 75-115",
+      "note": "Context for the taxicab number 1729 = 1³ + 12³ = 9³ + 10³"
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #324 on distinct polynomial pair sums. The core result is quintic_implies_324, fully proved, showing QuinticConjecture → ErdosProblem324. The file systematically records failures for degrees 1-4 (with concrete counterexamples: 65, 1729, Euler's quartic sum) and establishes degree ≥ 5 as the sharp lower bound. All axioms represent deep number-theoretic facts (LPS conjecture, failure examples, degree bound).",
+    "implications": "Resolution would have deep connections: (1) proving the quintic conjecture would solve Problem #324 and partially verify LPS; (2) proving LPS would resolve the problem for infinitely many polynomials; (3) the counting result connects to additive combinatorics (Sidon sets, sumset bounds). The formalization demonstrates how a clean Lean encoding using Set.InjOn captures a 40+ year open problem in 114 lines.",
+    "openQuestions": [
+      "Can the remaining axiom min_degree_for_distinct be proved for general (non-power) polynomials of degree 2, 3, 4?",
+      "Can the quintic conjecture be verified computationally for bounded ranges?",
+      "Does a non-monomial polynomial (e.g., x⁵ + x) have distinct pair sums?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Polynomial.Basic",
+      "Mathlib.Data.Polynomial.Eval",
+      "Mathlib.Data.Int.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Set.Function",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": null,
+    "lineCount": 303,
+    "axiomCount": 1,
+    "theoremCount": 14,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos324Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

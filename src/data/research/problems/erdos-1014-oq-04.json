@@ -1,0 +1,96 @@
+{
+  "slug": "erdos-1014-oq-04",
+  "title": "Ramsey Ratio Convergence via Mattheus-Verstraete Bounds",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in graph theory: Ramsey Ratio Convergence via Mattheus-Verstraete Bounds.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-30T22:19:31.121Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "ramsey-theory",
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-101",
+    "erdos-1014",
+    "erdos-1014-oq-01",
+    "erdos-1014-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-30T22:19:31.121Z",
+  "lastUpdate": "2026-03-30T22:19:31.121Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1014OQ01.lean",
+      "filename": "Erdos1014OQ01.lean",
+      "lineCount": 366,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1014OQ02.lean",
+      "filename": "Erdos1014OQ02.lean",
+      "lineCount": 187,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1014Problem.lean",
+      "filename": "Erdos1014Problem.lean",
+      "lineCount": 484,
+      "theoremCount": 15,
+      "axiomCount": 12,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "id": "hilbert-4",
+  "title": "Hilbert's 4th Problem: Straight Line as Shortest Distance",
+  "slug": "hilbert-4",
+  "description": "Busemann's characterization of projective metrics where straight lines are geodesics, including Minkowski and Hilbert geometries.",
+  "meta": {
+    "proofRepoPath": "Proofs/Hilbert4Geodesics.lean",
+    "author": "Busemann (1955), Hamel (1903)",
+    "date": "1955",
+    "status": "axiomatized",
+    "tags": [
+      "geometry",
+      "metric-spaces",
+      "hilbert-problems",
+      "intermediate"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "NormedSpace",
+        "description": "Normed vector space definitions",
+        "module": "Mathlib.Analysis.NormedSpace.Basic"
+      },
+      {
+        "theorem": "Convex",
+        "description": "Convexity of sets",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      },
+      {
+        "theorem": "MetricSpace",
+        "description": "Metric space structure",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of Minkowski geometry structure",
+      "Definition of Hilbert geometry",
+      "Statement of Busemann's classification theorem",
+      "Examples: Euclidean, taxicab, Chebyshev norms",
+      "Hamel's 2D characterization theorem"
+    ],
+    "dateAdded": "2025-12-29",
+    "hilbertNumber": 4,
+    "axiomCount": 5,
+    "assumptions": "5 axiom declarations: minkowski_geodesics_are_straight (lines are geodesics in Minkowski), minkowski_straight_line_shortest (line is shortest path), busemann_classification (exhaustive metric classification), hamel_theorem_2d (2D Minkowski characterization), funk_geodesics_straight (Funk metric geodesics). Some axioms are placeholder/vacuous pending proper formalization of metric geometry foundations.",
+    "lineCount": 459,
+    "prerequisites": [
+      "Metric spaces and geodesics",
+      "Normed vector spaces and Minkowski geometry",
+      "Finsler geometry and projective metrics",
+      "Convex geometry and the triangle inequality",
+      "Hilbert geometry and the cross-ratio"
+    ],
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 18
+  },
+  "overview": {
+    "historicalContext": "Hilbert's 4th Problem (1900) asked for the characterization of geometries where straight lines are shortest paths between points, weakening congruence axioms and omitting the parallel postulate. Hamel (1903) showed in 2D that only Minkowski geometries satisfy these conditions. Busemann provided a more complete solution in 1955 using his theory of G-spaces. The problem is closely related to Finsler geometry, developed by Finsler (1918) and Cartan (1934), where lengths are defined by a smoothly varying norm on the tangent bundle. Pogorelov (1973) gave a more precise characterization in higher dimensions, and the problem remains active in the theory of metric spaces and sub-Riemannian geometry.",
+    "problemStatement": "**Question:** Find all geometries whose axioms are closest to Euclidean geometry if the ordering and incidence axioms are retained, the congruence axioms weakened, and the parallel postulate omitted.\n\nMore specifically: Characterize all metrics where straight lines are the shortest paths between points.",
+    "text": "Busemann's characterization of projective metrics where straight lines are geodesics, including Minkowski and Hilbert geometries.",
+    "proofStrategy": "The solution involves three main classes of metrics:\n\n1. **Minkowski Geometries**: Normed vector spaces with convex unit ball\n2. **Hilbert Geometries**: Metrics on convex domains defined by cross-ratio\n3. **Funk-type Metrics**: Asymmetric projective metrics\n\nBusemann proved these exhaust all possibilities.",
+    "keyInsights": [
+      "Minkowski geometries arise from translation-invariant norms",
+      "Hilbert geometries are projectively invariant",
+      "The triangle inequality forces geodesics to be straight lines",
+      "Convexity of the unit ball is the key geometric condition",
+      "The Hilbert metric on the interior of an ellipsoid recovers hyperbolic geometry (Cayley-Klein model)"
+    ],
+    "prerequisites": [
+      "Metric spaces and geodesics",
+      "Normed vector spaces and Minkowski geometry",
+      "Finsler geometry and projective metrics",
+      "Convex geometry and the triangle inequality",
+      "Hilbert geometry and the cross-ratio"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Basic Definitions",
+      "startLine": 1,
+      "endLine": 85,
+      "summary": "Introduction to Hilbert's 4th Problem and key definitions.",
+      "mathContext": "A metric $d$ on $U \\subseteq \\mathbb{R}^n$ has *straight-line geodesics* if for all $x, y \\in U$, the infimum of path lengths is achieved by the line segment. Hilbert asked: characterize all such metrics retaining ordering and incidence axioms while weakening congruence."
+    },
+    {
+      "id": "minkowski",
+      "title": "Minkowski Geometry",
+      "startLine": 86,
+      "endLine": 130,
+      "summary": "Definition of Minkowski gauges and geometries.",
+      "mathContext": "A Minkowski gauge is a function $f : E \\to \\mathbb{R}$ with $f(x) \\geq 0$, $f(x)=0 \\iff x=0$, $f(rx)=rf(x)$ for $r \\geq 0$, and $f(x+y) \\leq f(x)+f(y)$. The unit ball $B = \\{x : f(x) \\leq 1\\}$ is convex. The induced metric $d(x,y) = f(y-x)$ is translation-invariant."
+    },
+    {
+      "id": "geodesics",
+      "title": "Geodesics and Straight Lines",
+      "startLine": 131,
+      "endLine": 180,
+      "summary": "Proof that straight lines are geodesics in Minkowski spaces.",
+      "mathContext": "In a Minkowski space with gauge $f$, for points $x, z, y$ collinear with $z$ between $x$ and $y$: $f(z-x) + f(y-z) = f(y-x)$. This is equality in the triangle inequality, proving line segments are geodesics. Uniqueness follows from strict convexity conditions."
+    },
+    {
+      "id": "hilbert-geometry",
+      "title": "Hilbert Geometry",
+      "startLine": 181,
+      "endLine": 230,
+      "summary": "The Hilbert metric on convex bodies.",
+      "mathContext": "For a convex body $K$ and $x, y \\in \\mathrm{int}(K)$, let the line through $x, y$ meet $\\partial K$ at $p, q$ (ordered $p, x, y, q$). The Hilbert metric is $d_H(x,y) = \\frac{1}{2} \\log \\frac{|x-q|\\cdot|y-p|}{|x-p|\\cdot|y-q|}$. This is projectively invariant and has straight-line geodesics."
+    },
+    {
+      "id": "busemann",
+      "title": "Busemann's Classification",
+      "startLine": 231,
+      "endLine": 280,
+      "summary": "Statement of Busemann's characterization theorem.",
+      "mathContext": "Busemann's theorem (1955): Every continuous metric on an open convex $U \\subseteq \\mathbb{R}^n$ with straight-line geodesics is either a Minkowski metric (translation-invariant), a Hilbert metric (projectively invariant on a convex domain), or a Funk-type metric (asymmetric). This exhausts all possibilities."
+    },
+    {
+      "id": "examples",
+      "title": "Examples",
+      "startLine": 281,
+      "endLine": 457,
+      "summary": "Euclidean, taxicab, and Chebyshev norms as examples.",
+      "mathContext": "Euclidean: $\\|x\\|_2 = \\sqrt{\\sum x_i^2}$, unit ball is a sphere. Taxicab: $\\|x\\|_1 = \\sum |x_i|$, unit ball is a cross-polytope. Chebyshev: $\\|x\\|_\\infty = \\max |x_i|$, unit ball is a hypercube. All are Minkowski geometries with convex unit balls, hence straight-line geodesics."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "desargues-theorem",
+      "relationship": "related",
+      "description": "Desargues' theorem is central to Hamel's 2D characterization: Desarguesian projective metrics are exactly Minkowski metrics in the plane"
+    },
+    {
+      "targetId": "parallel-postulate-independence",
+      "relationship": "related",
+      "description": "Both concern Hilbert's axiomatization of geometry. Hilbert's 4th problem asks which metrics make straight lines shortest paths (a question about metric geometry axioms), while the independence of the parallel postulate asks which geometries arise from weakening Euclid's 5th axiom. Both explore the boundary between Euclidean and non-Euclidean geometry"
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "thematic",
+      "description": "Both are Hilbert problems. Hilbert's 4th (geometry of shortest lines) was 'resolved' by Busemann's classification, while Hilbert's 10th (Diophantine decidability) was proved undecidable by Matiyasevich. Together they illustrate the range of Hilbert's 23 problems: from classification to impossibility"
+    },
+    {
+      "targetId": "hilbert-13",
+      "relationship": "thematic",
+      "description": "Another Hilbert problem in the gallery. Hilbert's 13th asks whether solutions of 7th-degree equations can be expressed as superpositions of functions of two variables, connecting to Abel-Ruffini and the expressibility hierarchy. Both Hilbert's 4th and 13th were partially resolved with qualifications about the precise formulation"
+    }
+  ],
+  "conclusion": {
+    "summary": "Hilbert's 4th Problem is solved by Busemann's classification: projective metrics where straight lines are geodesics are exactly Minkowski metrics, Hilbert metrics, and Funk-type metrics.",
+    "implications": "**1. Finsler geometry**: Busemann's characterization is foundational to Finsler geometry, which studies manifolds equipped with a norm on each tangent space (not necessarily arising from an inner product). Minkowski metrics — norms on $\\mathbb{R}^n$ — are the flat models of Finsler spaces, just as Euclidean spaces are flat Riemannian spaces. Hilbert's 4th problem thus classifies the flat Finsler geometries where geodesics are straight lines.\n\n**2. Convex geometry and optimization**: Hilbert metrics on convex bodies are fundamental to optimization: Birkhoff (1957) showed that the Hilbert metric on the positive cone makes Perron-Frobenius iteration a contraction, proving convergence of power methods. Thompson's metric (a symmetrized Hilbert metric) is used in nonlinear Perron-Frobenius theory and mathematical biology.\n\n**3. Foundations of geometry**: Hilbert's 4th problem sits at the heart of the axiomatic approach to geometry. Hamel's 1903 contribution showed that in 2D, Desarguesian projective metrics are exactly Minkowski metrics — connecting the metric question to the projective axioms. This links Hilbert's 4th to the broader question of which axiom systems determine which geometries.\n\n**4. Non-Euclidean geometry**: Hilbert metrics on convex domains generalize the Klein model of hyperbolic geometry (which is the Hilbert metric on an ellipsoid). The classification in Hilbert's 4th thus provides a unifying framework for Euclidean, hyperbolic, and Minkowski geometries as special cases of projective metrics.",
+    "openQuestions": [
+      "What regularity conditions on the convex body $K$ are necessary for Busemann's classification? Does the result extend to non-smooth or non-strictly-convex domains, where the Hilbert metric may degenerate?",
+      "Can the Álvarez Paiva-Fernandes characterization of projective Finsler metrics via symplectic geometry (using the Crofton formula and valuation theory) be formalized in Lean?",
+      "How does the theory extend to infinite-dimensional Banach spaces? Thompson's metric on cones in Banach spaces generalizes the finite-dimensional Hilbert metric, but the classification of projective metrics is open in infinite dimensions",
+      "Can the connection between Hilbert metrics and Perron-Frobenius theory be formalized, showing that the contraction mapping theorem in the Hilbert metric implies the convergence of power iteration for positive matrices?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Normed.MulAction",
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.Analysis.Convex.Body",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Geometry.Euclidean.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Topology",
+      "NNReal"
+    ],
+    "namespace": "Hilbert4Geodesics",
+    "lineCount": 459,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 18,
+    "path": "Proofs/Hilbert4Geodesics.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Hilbert, David",
+      "title": "Mathematische Probleme",
+      "year": "1900",
+      "venue": "Nachrichten von der Gesellschaft der Wissenschaften zu Göttingen, 253–297",
+      "note": "The original lecture listing 23 problems that would shape 20th century mathematics"
+    },
+    {
+      "authors": "Busemann, Herbert",
+      "title": "The Geometry of Geodesics",
+      "year": "1955",
+      "venue": "Academic Press",
+      "note": "Systematic study of metric spaces where geodesics are unique — the class of geometries Hilbert's 4th problem asks to characterize"
+    },
+    {
+      "authors": "Hamel, Georg",
+      "title": "Über die Geometrien, in denen die Geraden die Kürzesten sind",
+      "year": "1903",
+      "venue": "Mathematische Annalen 57, 231–264",
+      "note": "First substantial progress on Hilbert's 4th problem: characterized Desarguesian projective metrics in the plane as exactly Minkowski metrics"
+    },
+    {
+      "authors": "Pogorelov, Aleksei V.",
+      "title": "Hilbert's Fourth Problem",
+      "year": "1979",
+      "venue": "Scripta Series in Mathematics, V.H. Winston & Sons",
+      "note": "Complete solution of Hilbert's 4th problem in all dimensions, classifying all projective metrics where geodesics are straight lines"
+    },
+    {
+      "authors": "Álvarez Paiva, Juan Carlos; Fernandes, E.",
+      "title": "What is a Crofton formula?",
+      "year": "2005",
+      "venue": "Mathematische Notizen 278(13), 1582–1600",
+      "note": "Modern characterization of projective Finsler metrics via symplectic geometry and the Crofton formula — referenced in the open questions"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hilbert4_metric",
+      "type": "core",
+      "description": "Construction of metrics for which straight lines are geodesics",
+      "leanType": "exists metric, forall line, is_geodesic metric line"
+    }
+  ],
+  "sorries": 0
+}

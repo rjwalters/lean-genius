@@ -1,0 +1,92 @@
+[
+  {
+    "id": "def-distinct-degrees",
+    "proofId": "erdos-637",
+    "range": { "startLine": 37, "endLine": 43 },
+    "type": "definition",
+    "title": "Distinct Degrees",
+    "content": "distinctDegrees(G) = set of degree values that appear in G. numDistinctDegrees(G) = cardinality of this set.",
+    "significance": "major"
+  },
+  {
+    "id": "def-ramsey-numbers",
+    "proofId": "erdos-637",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "definition",
+    "title": "Clique and Independence Numbers",
+    "content": "ω(G) = clique number (largest complete subgraph). α(G) = independence number (largest independent set).",
+    "significance": "major"
+  },
+  {
+    "id": "def-ramsey-graph",
+    "proofId": "erdos-637",
+    "range": { "startLine": 55, "endLine": 62 },
+    "type": "definition",
+    "title": "Ramsey Graph",
+    "content": "A graph G is a Ramsey graph if ω(G), α(G) = O(log n). Random G(n, 1/2) is typically a Ramsey graph.",
+    "significance": "major"
+  },
+  {
+    "id": "def-induced-subgraph",
+    "proofId": "erdos-637",
+    "range": { "startLine": 71, "endLine": 83 },
+    "type": "definition",
+    "title": "Induced Subgraph",
+    "content": "inducedSubgraph(G, S) = the subgraph of G on vertex set S with edges inherited from G.",
+    "significance": "minor"
+  },
+  {
+    "id": "conj-original",
+    "proofId": "erdos-637",
+    "range": { "startLine": 87, "endLine": 97 },
+    "type": "conjecture",
+    "title": "Original Erdős-Faudree-Sós Conjecture",
+    "content": "Ramsey graphs contain induced subgraphs on ≫ n vertices with ≫ √n distinct degrees. SOLVED by Bukh-Sudakov.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-bukh-sudakov",
+    "proofId": "erdos-637",
+    "range": { "startLine": 101, "endLine": 112 },
+    "type": "theorem",
+    "title": "Bukh-Sudakov (2007)",
+    "content": "First proof of the conjecture: Ramsey graphs have induced subgraphs on ≥ n/2 vertices with ≥ √n/10 distinct degrees.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-strengthened",
+    "proofId": "erdos-637",
+    "range": { "startLine": 116, "endLine": 126 },
+    "type": "conjecture",
+    "title": "Strengthened Conjecture",
+    "content": "Ramsey graphs have ≫ n^{2/3} distinct degrees (globally, no vertex restriction needed). SOLVED by JKLY.",
+    "significance": "major"
+  },
+  {
+    "id": "thm-jkly",
+    "proofId": "erdos-637",
+    "range": { "startLine": 128, "endLine": 137 },
+    "type": "theorem",
+    "title": "JKLY Strengthening (2020)",
+    "content": "Jenssen-Keevash-Long-Yepremyan proved: Ramsey graphs have ≥ cn^{2/3} distinct degrees for some c > 0.",
+    "significance": "major"
+  },
+  {
+    "id": "conj-optimality",
+    "proofId": "erdos-637",
+    "range": { "startLine": 141, "endLine": 151 },
+    "type": "conjecture",
+    "title": "Optimality of Exponent 2/3",
+    "content": "The exponent 2/3 is believed to be optimal. There exist Ramsey graphs with only O(n^{2/3}) distinct degrees.",
+    "significance": "minor"
+  },
+  {
+    "id": "thm-summary",
+    "proofId": "erdos-637",
+    "range": { "startLine": 218, "endLine": 231 },
+    "type": "theorem",
+    "title": "Summary and Progression",
+    "content": "Both conjectures are solved: original (√n degrees) by Bukh-Sudakov, strengthened (n^{2/3} degrees) by JKLY.",
+    "significance": "major"
+  }
+]

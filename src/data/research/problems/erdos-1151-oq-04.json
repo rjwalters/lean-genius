@@ -1,0 +1,212 @@
+{
+  "slug": "erdos-1151-oq-04",
+  "title": "Prove erdos_1941_divergence via Lebesgue Function Growth at Chebyshev Nodes",
+  "phase": "BLOCKED",
+  "status": "blocked",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "axiom erdos_1941_divergence (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq1 : 1 < q) (x : ℝ) (hx : x = Real.cos (↑p * Real.pi / ↑q)) : Filter.Tendsto (fun n => chebyshevInterpSeq (fun _ => 0) x n) Filter.atTop Filter.atTop",
+    "plain": "Can the axiom erdos_1941_divergence be proved in Lean 4 by formalizing the Lebesgue function growth rate Λₙ(cos(πp/q)) → ∞ for rational cosine points with odd p, q?",
+    "whyMatters": [
+      "Eliminates an axiom from Erdos1151Problem.lean, moving from axiomatized to verified",
+      "Connects classical approximation theory (Chebyshev nodes, Lebesgue function) to Lean 4",
+      "Demonstrates how divergence growth rate estimates can be formalized in Mathlib"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "chebyshevNode_mem_Icc: Chebyshev nodes lie in [-1, 1]",
+      "chebyshevNodes_injective: nodes are distinct",
+      "limitPointSet_isClosed: limit point sets are closed"
+    ],
+    "open": [
+      "Lebesgue function growth: Λₙ(cos(πp/q)) → ∞ as n → ∞",
+      "erdos_1941_divergence: divergence of Chebyshev interpolation at rational cosines"
+    ],
+    "goal": "Prove erdos_1941_divergence to eliminate the axiom from the gallery"
+  },
+  "currentState": {
+    "phase": "BLOCKED",
+    "since": "2026-06-09T18:55:00Z",
+    "iteration": 36,
+    "focus": "Session 36 (researcher-3, 2026-06-09, build pending — Cluster A surgically closed; Cluster B still 21 errors): Fold chebyshevInterp_sub proof body L175–180 from 3-line `simp only / simp_rw / exact Finset.sum_sub_distrib` form (S31 PR #17612, typeclass-stuck on SubtractionCommMonoid ?m.15) into single-line `simp only [chebyshevInterp, lagrangeInterp, sub_mul, Finset.sum_sub_distrib]`. Brings structural parity with sibling chebyshevInterp_neg at L168 (already single-`simp only`). Sibling-precedent for the exact 1-line shape confirmed at v4.26.0 Mathlib pin: HurwitzTheorem.lean:607 (`simp only [innerProd, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]` — structurally identical), ProbMethodSecondMomentOQ01.lean:48, HurwitzTheorem.lean:409. Three independent build-clean siblings use this exact `simp only [..., Finset.sum_sub_distrib]` shape. Net change: −2 LOC (2692 → 2690), 0 theorem/def/axiom/sorry delta, 0 sibling-slug touches. Build PENDING (deferred): single Cluster A site closed by construction; Cluster B (21 errors at lines 952–1247) remains out of scope per S35 §6 picker matrix row (b); a fresh Docker build here would still fail with 21 Cluster B errors, so the verifiable improvement is \"22 → 21 errors\" best confirmed in the eventual S38 BUILD-VERIFY after all sub-cluster PRs merge. Sibling-precedent envelope for tactic-glue surgical fixes matches S35 (8 inline fixes shipped by researcher-8). 0 role-overlap with future mechanic Cluster B work (cleanly partitioned: this PR = Cluster A; mechanic batch = Cluster B sub-clusters). nextAction re-anchors to S37 MECHANIC-HANDOFF Cluster B sub-cluster sweeps.\\n\\n---\\n\\nSession 35 (researcher-8, 2026-06-09, BUILD-VERIFY-PARTIAL): Picker matrix S34 §6 row (a) fires — G7 host disk 3.2 → 101 GiB (+97.8 GiB recovery / GREEN); G8 Docker daemon 8s-timeout → 29.5.3 sub-second (GREEN); 23-day INFRA recovery window. G9 .lake self-symlink persists but confirmed non-blocking for Docker builds (overlay volume shadows host self-loop; corroborated by PR #22624 'Docker 3113 jobs clean' today). Build attempt 1: `LEAN_BUILD_TIMEOUT=45m ./proofs/scripts/docker-build.sh Proofs.Erdos1151OQ04` → cache fetch 7727 files + 21 cache-exe jobs + Mathlib elaboration begins → fails with 29 errors at lines 180–2255. Outcome: file not build-verified since pre-S22; 22 of 29 errors latent in S22+ helper infrastructure (masked first by 'build pending' qualifier S22–S31, then by Docker daemon outage S32–S34). Mathlib pin 2df2f0150c byte-stable ≈4.7 mo so accumulated latent drift, not new. S35 ships 8 surgical fixes inline (trailing tactic-glue drift; −3 net LOC, 2695 → 2692): (1) L1758/1882/1895/1897 drop `; ring` after `field_simp`; (2) L1841 drop standalone `ring`; (3) L2055/2073 convert orphan `/-- ... -/` docstring to `/- ... -/` plain comment; (4) L2133–2134 drop redundant `push_cast; ring` (S20 `congr 2` now closes goal alone); (5) L2166 `le_div_iff hd_pos` → `le_div_iff₀ hd_pos` (Mathlib rename; sibling-precedent S15 div_lt_div_iff→div_lt_div_iff₀); (6) L~2255 drop trailing `ring` after `field_simp`. Build attempt 2 after the 8 fixes: 22 errors remain (29 → 22, −7 root + −2 cascade from L2073 parser), all at lines 180–1247. Cluster A (line 180, 1 error): S31 chebyshevInterp_sub `exact Finset.sum_sub_distrib` typeclass instance stuck on SubtractionCommMonoid ?m.15. Cluster B (lines 952–1247, 21 errors): pre-S22 helper region with linarith / unsolved-goals / Application-type-mismatch / omega / mod_cast / positivity / rewrite-pattern-not-found / unknown-tactic mix; 3–5 root-cause sites with cascade likely. S35 nextAction: S36 mechanic-handoff for Cluster A as simplest standalone repair; then sub-cluster sweeps of Cluster B by error-type; then S37 BUILD-VERIFY re-run; expected clean at ∼3060/3060 jobs post-repair.\n\n---\n\nSession 34 (researcher-11, 2026-05-17, doc-only STATE-SYNC): Absorbs 2 intervening PRs in the ~9.5 h post-S33 window — PR #19967 (S34a registry mirror, T-7 min) flipped `research/registry.json` `phase: OBSERVE → ACT` + `lastUpdate` catchup but did NOT bump canonical `currentState.iteration` / `nextAction` / `focus` / `blockers` / `progressSummary` / `nextSteps[]`; PR #19775 (researcher-mechanic, T-6.5 h) batch-synced `leanFiles[i]` for `Erdos1151OQ04.lean` across 6 siblings from stale 1283/29/4 to canonical 2695/66/1 (axiomCount/defCount unchanged). S34 canonically reconciles: iter 33 → 34, since/lastUpdate refresh, focus prepend, nextAction re-anchor as **S35 BUILD-VERIFY** (was \"S33 BUILD-VERIFY\"; the BUILD-VERIFY pass is the deferred next step), blockers [] → 3-entry G7/G8/G9 RED, attemptCounts.total 3 → 4, progressSummary prepend with S34 absorption, nextSteps[0] refresh (\"5.2 Gi avail\" → \"3.2 Gi avail (5 GiB soft floor breached ≥9.5 h)\"). 3 RED INFRA persist: **G7 disk 3.2 GiB avail** (S33 was 5.2 Gi, **−2.0 Gi over ~9 h 45 min**, oscillated to 2.8 Gi during birthday-problem S25 ACT-1 #19997 cycle T-15 min, 2.9 Gi during ballot-problem S80 STATE-SYNC #19994 T-15 min); **G8 Docker daemon `docker info` 8 s timeout / empty ServerVersion** (≥10 h cumulative hung); **G9 `proofs/.lake → proofs/.lake` self-symlink** on main repo (worktree's `proofs/.lake` resolves to the main's self-loop transitively). `Erdos1151Problem.lean` sibling-list entry has separate +30-LOC off-by-one drift (actual `wc -l` 215 vs JSON `lineCount: 185`) deferred to a future mechanic batch per the mechanic's own single-root-cause-fix scope boundary. Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) byte-stable since pre-S32 era; bearer SHA-stable carry-forward chain S22 → S23 → S29 → S32 → S33 → S34 with **no re-walk needed**. 0 Lean / 0 meta.json / 0 lake-manifest / 0 problem.md / 0 knowledge.md body / 0 sibling-slug edits. 0 axiom / 0 sorry change (1 sorry preserved at `divergence_from_lebesgue_growth`).\n\n---\n\nSession 32 (researcher-10, 2026-05-15, build pending — Docker daemon I/O blocked): ACT executing PREP-2 §6 nine-step recipe — cherry-pick of long-stranded commit 2099b97d59a (chebyshev_lebesgue_saturated, 108-LOC private lemma, authored 2026-05-09, never opened as a PR). The lemma is the UBP operator-norm saturation lower bound for the Chebyshev interpolation functional: ∃ f : ℝ → ℝ with |f t| ≤ 1 and chebyshevInterp n f x = chebyshevLebesgue n x. Construction: sign-pattern weights w k = ±1 at each Chebyshev node, f t := ∑ k, w k * indicator(t = chebyshevNode n k); injectivity collapses single-node sum, sign saturates each |lagrangeBasis _ k x|. Applies the PREP-2 §4.1 micro-refactor (Finset.sum_eq_single → sum_eq_single_of_mem with Finset.mem_univ membership pre-supplied) at both call sites, dropping 1 trivially-impossible bullet per site (−2 LOC vs raw cherry-pick). Net change: +106 LOC, +1 theorem (66 total, was 65), sorryCount unchanged at 1 (still divergence_from_lebesgue_growth), axiomCount 0, defCount 5. File: 2589 → 2695 LOC. Build status: PENDING (Docker daemon unresponsive due to 100% host disk pressure; container never reached build phase after 10min); HIGH confidence on bearers + §4.1 substitution via PREP-2 bearer pin audit at lake SHA 2df2f0150c + sibling-precedent confirmation against Erdos671Problem.lean:128-131. See session-33-act-ubp-saturation-cherry-pick.md §5 for honest disclosure + S33 BUILD-VERIFY plan.",
+    "blockers": [
+      {
+        "id": "B1",
+        "kind": "lean-build-latent-errors",
+        "severity": "RESOLVED",
+        "since": "2026-06-12 (S37 BUILD-VERIFY clean; opened 2026-06-09T18:55:00Z at S36)",
+        "evidence": "RESOLVED by S37 (researcher-2, 2026-06-12): full Docker build `./proofs/scripts/docker-build.sh Proofs.Erdos1151OQ04` now SUCCEEDS — 0 errors, 3084 jobs, only the 1 known sorry warning at `divergence_from_lebesgue_growth` (line 2692). Ground-truth build surfaced 19 Cluster B errors (lines 950–1245), not the stale 21 estimate; all 19 were latent Mathlib v4.26.0 API drift and were repaired across 7 build iterations. Root causes fixed: (a) `ring` cannot prove field-inverse identities → explicit `mul_one_div`/`div_div`/`div_mul_div_comm` rewrites (3 sites); (b) `unfold_let` tactic removed → `rw [hu_def]` (2 sites); (c) `Finset.sum_image` now requires `Set.InjOn` → restated `hinj`, plus the `← sum_image` HOU failure replaced by a calc that rewrites the image-sum side; (d) `Real.sin_pi_sub` rewriting the wrong `sin` term → pinned argument; (e) ℕ-truncated-subtraction casts + dropped membership/`hn_ge_2` hyps → explicit `Nat.cast_sub` and `omega` with bounds; (f) harmonic induction capturing context hypotheses → hoisted to a `∀ M` lemma; (g) `Fin 1` term not reduced in the n=1 branch → extended simp set; (h) renamed `div_le_one_of_le` and absent numeric π-bound lemmas (`pi_gt_three`/`pi_gt_3141592` not in scope at this pin) → `div_le_one` + self-contained `2 < π` via `Real.sin_lt` (`sin(π/2)=1<π/2`). Added `import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds` for `Real.sin_lt`. Net +59/−36 LOC; 0 axiom / 0 sorry-count change (still exactly 1 sorry).",
+        "discharge": "DONE. File compiles clean with 1 sorry. Next work is the ACT roadmap (Sorry 2 / `divergence_from_lebesgue_growth`): ContinuousLinearMap packaging Λₙ_x → operator-norm identity ‖Λₙ_x‖ = chebyshevLebesgue n x → Banach–Steinhaus contrapositive."
+      },
+      {
+        "id": "G9",
+        "kind": "lake-symlink-self-loop",
+        "severity": "RED",
+        "since": "≥30 d cumulative",
+        "evidence": "`ls -l /Users/rwalters/GitHub/lean-genius/proofs/.lake` shows `proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake` (self-loop). Worktree's `.loom/worktrees/researcher-8/proofs/.lake` resolves through main's self-loop. Confirmed at 2026-06-09T18:30Z.",
+        "discharge": "Replace self-loop with valid target: `rm /Users/rwalters/GitHub/lean-genius/proofs/.lake && ln -sf /Users/rwalters/GitHub/lean-genius/proofs/.lake-real proofs/.lake` (or equivalent host-level fix). NON-BLOCKING for Docker builds in practice — docker-build.sh overlays persistent Mathlib cache volume at `/workspace/proofs/.lake/build`; container's writable `.lake` shadows the host self-loop; PR #22624 corroborates clean Docker build today through identical host G9 state. Track for future host-level mechanic batch but does NOT gate research progress."
+      },
+      {
+        "id": "B2",
+        "kind": "verification-blackout",
+        "severity": "high",
+        "since": "2026-06-13",
+        "description": "Docker daemon hung + Aristotle backend 404 — no verification route. The S38 ACT (discharge Sorry 2 divergence_from_lebesgue_growth via ContinuousLinearMap + Tietze lift, ~80-120 LOC) is build-dependent and cannot be verified; CI does not build Lean. Flagged blocked to stop depth-first re-claim churn on this RICH (score 76) slug until Docker recovers. S37 left the file BUILD-VERIFY clean (3084 jobs, 1 sorry)."
+      }
+    ],
+    "nextAction": "(Researcher) S38 ACT: file is BUILD-VERIFY clean (S37, 3084 jobs, 1 sorry). Resume the ACT roadmap to discharge Sorry 2 (`divergence_from_lebesgue_growth`): ContinuousLinearMap packaging Λₙ_x via LinearMap.mkContinuous + Tietze lift to C(Icc -1 1, ℝ) (~80–120 LOC) → operator-norm identity ‖Λₙ_x‖ = chebyshevLebesgue n x (~30–50 LOC) → Banach–Steinhaus contrapositive → Sorry 2 discharge (~20–40 LOC). Total to 0 sorries: ~130–210 LOC across ~3 ACT PRs. Each ACT PR must be BUILD-VERIFY'd via ./proofs/scripts/docker-build.sh Proofs.Erdos1151OQ04.\\n",
+    "attemptCounts": {
+      "total": 6,
+      "currentApproach": 1,
+      "approachesTried": 1
+    },
+    "lastUpdate": "2026-06-12T00:00:00Z"
+  },
+  "knowledge": {
+    "progressSummary": "S37 BUILD-VERIFY CLEAN (researcher-2, 2026-06-12): Erdos1151OQ04.lean now builds with 0 errors (full Docker build, 3084 jobs), only the 1 known sorry at `divergence_from_lebesgue_growth` (line 2692). The Cluster B build blocker (B1) is RESOLVED. Ground-truth build showed 19 latent errors at lines 950–1245 (not the stale 21 estimate), all Mathlib v4.26.0 API drift, repaired over 7 build iterations: field-inverse `ring` failures → explicit div rewrites; `unfold_let` removed → `rw [hu_def]`; `Finset.sum_image` now needs `Set.InjOn` (+ HOU fix via image-side calc); `Real.sin_pi_sub` arg pinned; ℕ-truncated-sub casts + restored membership/`hn_ge_2` for `omega`; harmonic induction hoisted to `∀ M` to stop capturing context; `Fin 1` term reduced in n=1 branch; renamed `div_le_one_of_le` and absent numeric π-bound lemmas → `div_le_one` + self-contained `2 < π` via `Real.sin_lt`. Added `import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds`. Net +59/−36 LOC; 0 axiom / 0 sorry-count change. Next: ACT roadmap for Sorry 2 (ContinuousLinearMap packaging → operator-norm identity → Banach–Steinhaus).\n\nS35 BUILD-VERIFY-PARTIAL (researcher-8, 2026-06-09): G7/G8 INFRA recovered (disk 3.2→101 GiB, Docker 8s-timeout→29.5.3); G9 .lake self-symlink persists but non-blocking. First Docker build of Erdos1151OQ04.lean since pre-S22 (~7-week build outage) surfaces 29 latent errors. 8 trailing-tactic-glue errors fixed inline this PR (mechanically obvious: 5× `; ring` after `field_simp` removal, 1× orphan `/--...-/` → `/-...-/`, 1× `le_div_iff` → `le_div_iff₀`, 1× redundant `push_cast; ring`). −3 net LOC (2695 → 2692). 22 latent errors remain at lines 180–1247 (Cluster A: S31 `Finset.sum_sub_distrib` typeclass; Cluster B: pre-S22 helper region linarith/type-mismatch/omega/mod_cast/positivity drift). Mechanic-handoff per S35 §3. Mathlib pin SHA-stable; bearer chain S22 → S35 with no re-walk. 0 axiom / 0 sorry change.\n\nS34 STATE-SYNC (researcher-11, 2026-05-17, doc-only) absorbs PR #19688 (S33 pre-BUILD-VERIFY STATE-SYNC, T-9h45m), PR #19775 (mechanic 6-sibling leanFiles batch, T-6.5h), PR #19967 (S34a thin registry mirror, T-7min) + 3 RED INFRA snapshot (G7 disk 5.2→3.2 GiB / G8 Docker 8s timeout / G9 .lake self-loop) + canonical iter 33→34 / nextAction re-anchor to S35 BUILD-VERIFY / blockers []→3-entry / nextSteps[0] disk-number refresh. Sorry-count, axiom-count, and proof structure unchanged. \n\nPROGRESS (post-S32 ACT, S33 pre-BUILD-VERIFY STATE-SYNC 2026-05-16): 1 sorry remains in Erdos1151OQ04.lean — divergence_from_lebesgue_growth (Sorry 2; the lacunary-series / lim-sup-weakening route). Sorry 1 (trig_sum_harmonic_lb / Step 7a-c) was closed in S29 PR #17580 via case-split between asymptotic (n ≥ N₀(d)) and finite-set (small n) branches combined by min-of-two-constants. S32 ACT (PR #19..., 2026-05-15) cherry-picked the long-stranded chebyshev_lebesgue_saturated lemma (+106 LOC; lineCount 2589 → 2695; theoremCount 65 → 66; sorry 1 unchanged), the UBP operator-norm saturation lower bound for the Chebyshev interpolation functional; combined with the existing chebyshev_upper_bound this yields ‖Λₙ_x‖ = chebyshevLebesgue n x on the L∞ unit ball — the entry point to the Banach–Steinhaus contrapositive that closes Sorry 2. S32 ACT shipped under (build pending — Docker daemon I/O blocked); HIGH confidence on bearers + PREP-2 §4.1 micro-refactor (Finset.sum_eq_single → sum_eq_single_of_mem with Finset.mem_univ membership pre-supplied at 2 call sites). S33 pre-BUILD-VERIFY STATE-SYNC (this iter, doc-only) catches the JSON tail-end drift left by S32 ACT (top-level phase IN-PROGRESS → ACT, currentState.phase same flip, progressSummary refresh, nextSteps[] replace from S22-era stale to S33-S36 plan, attemptCounts 0/0/0 → 3/1/1, since/lastUpdate refresh). Post-Docker-recovery plan: S33 BUILD-VERIFY (5-min doc-only flip pending → verified) → S34 ContinuousLinearMap packaging Λₙ_x via LinearMap.mkContinuous + Tietze lift to C(Icc -1 1, ℝ) (~80-120 LOC) → S35 operator-norm identity ‖Λₙ_x‖ = chebyshevLebesgue n x (~30-50 LOC) → S36 BanachSteinhaus contrapositive to discharge Sorry 2 (~20-40 LOC). Total to 0 sorries: ~130-210 LOC across 3 PRs.",
+    "builtItems": [
+      "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
+      "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
+      "leadingCoeff_T_ofNat : ∀ n ≥ 1, (T ℝ (n : ℤ)).leadingCoeff = 2^(n-1) — Erdos1151OQ04.lean:306",
+      "Build fixes: all Session 3 lemmas compile cleanly in Proofs/Erdos1151OQ04.lean",
+      "chebyshev_product_formula: T_n = 2^{n-1} * prod(X - cos phi_k) — Erdos1151OQ04.lean:309",
+      "lagrange_basis_chebyshev_formula: explicit Lagrange basis via product formula — Erdos1151OQ04.lean:388",
+      "chebyshev_lebesgue_eq: Lebesgue function explicit formula for ALL n when q odd — Erdos1151OQ04.lean:498",
+      "x_not_chebyshev_node: parity lemma, cos(pi*p/q) != chebyshevNode n k for all n when p,q odd — Erdos1151OQ04.lean:534",
+      "chebyshev_lebesgue_eq_all_n: Lebesgue formula for all n when p,q odd — Erdos1151OQ04.lean:601",
+      "chebyshev_lebesgue_growth: proved (Filter.tendsto_atTop_mono + C·log(n+1) → ∞)",
+      "cos_rational_pi_pos_min: ∃ δ > 0 s.t. |cos(nπp/q)| ≥ δ for all n (parity argument)",
+      "x_not_chebyshev_node: cos(πp/q) ≠ chebyshevNode n k for all n,k when p,q odd",
+      "chebyshev_trig_sum_lb: sorry (isolated harmonic sum lower bound: S_n ≥ C₂·n·log(n+1))",
+      "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)",
+      "chebyshev_trig_sum_lb Case 2 PROVED: cos(πp/q) ∈ (-1,1) via parity, arccos setup, reduction to trig_sum_harmonic_lb — Erdos1151OQ04.lean:1146",
+      "trig_sum_harmonic_lb: self-contained sorry for general θ ∈ (0, π), Lipschitz + harmonic Finset argument — Erdos1151OQ04.lean:1192",
+      "cos_pi_p_q_ne_one: cos(πp/q) ≠ 1 when p odd (parity: p = 2kq → even) — Erdos1151OQ04.lean:1217",
+      "exists_nearest_chebyshev_angle: Step 2 of trig_sum_harmonic_lb — for θ ∈ (0,π), n ≥ 1, ∃ k₀ : Fin n with |θ - (2k₀+1)π/(2n)| ≤ π/(2n). Witness: k₀ = ⌊nθ/π⌋. — Erdos1151OQ04.lean:1121",
+      "API drift fix (Session 15): div_lt_div_iff → div_lt_div_iff₀; Nat.harmonic → harmonic; Nat.harmonic_succ → harmonic_succ; Even.not_odd → not_odd_iff_even.mpr — Erdos1151OQ04.lean:889,943-956,1262",
+      "chebyshev_angle_dist_triangle: |θ - φ_k| ≤ |θ - φ_{k₀}| + |k - k₀|·π/n via algebraic identity + abs_add — Erdos1151OQ04.lean:1175",
+      "chebyshev_angle_dist_from_nearest: corollary, |θ - φ_k| ≤ (2|k-k₀|+1)·π/(2n) when k₀ is within π/(2n) of θ — Erdos1151OQ04.lean:1208",
+      "sin_lb_of_in_interior: ∀ d > 0, x ∈ [d/2, π-d/2] ⇒ sin(d/2) ≤ sin(x) — Erdos1151OQ04.lean (Step 4 generic)",
+      "sin_chebyshev_midpoint_lb: corollary at chebyshev midpoints φ_k = (2k+1)π/(2n) — Erdos1151OQ04.lean",
+      "chebyshev_term_lb_at_node: per-term lb sin(φ_k)/|cos θ - cos φ_k| ≥ sin(d/2)·(2n)/((2|k-k₀|+1)·π) — Erdos1151OQ04.lean (Step 5)",
+      "Combined Step 3 + Step 4 + cos-Lipschitz (Real.abs_cos_sub_cos_le) into ready-to-sum per-term lower bound",
+      "odd_harmonic_sum_shifted_lb (m : ℕ) : (1/2)·log(m+2) - 1 ≤ ∑ j ∈ Finset.range m, 1/(2(j+1)+1) — Erdos1151OQ04.lean:1362 (Step 6a, ~20 lines)",
+      "trig_sum_subsum_lb (n hn θ d hd_pos hne k₀ hk₀_close m hm_le h_interior) : sin(d/2)·(2n/π) · Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k| — Erdos1151OQ04.lean:1393 (Step 6b, ~104 lines)",
+      "trig_sum_reindex_symmetry (n hn θ) : Σ_k sin(φ_k)/|cos θ - cn| = Σ_k sin(φ_k)/|cos(π-θ) - cn| via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. Combines Equiv.sum_comp + sin_pi_sub + cos_pi_sub + abs_neg. ~70 lines, Erdos1151OQ04.lean:1498 (Session 18, #17050)",
+      "trig_sum_subsum_log_lb (n hn θ d hd_pos hd_le_pi hne k₀ hk₀_close m hm_le h_interior) : sin(d/2)·(2n/π) · ((1/2)·log(m+2) - 1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k| — Erdos1151OQ04.lean:1510 (Step 6c, ~36 lines, composes 6a + 6b). Recovered from PR #17046 (Session 21)",
+      "trig_sum_small_n_const (θ hne N hN) : ∃ C > 0, ∀ n ∈ {1,...,N}, C·n·log(n+1) ≤ S(θ,n) — Erdos1151OQ04.lean:1675 (Step 7b finite-set min'; ~80 lines, S22)"
+    ],
+    "insights": [
+      "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
+      "Growth rate for rational cosines: Λₙ(cos(πp/q)) ≥ C·log(n)",
+      "Divergence of interpolation sequence follows from Λₙ → ∞ via bump function",
+      "natDegree and leadingCoeff of T_n proved by two-step induction on recurrence T_{n+2} = 2X·T_{n+1} - T_n",
+      "Product formula proof strategy: T_n - Q_n has deg < n and n roots (by Chebyshev node roots + card_roots_le_degree) → T_n = Q_n",
+      "(2 : ℝ[X]) = C 2 via Polynomial.C_ofNat; leadingCoeff_C gives leadingCoeff = 2",
+      "apply lemma fails when conclusion has concrete value (n+2) vs metavar (p.natDegree): use have key := lemma proof; rw [key]",
+      "ℕ strict bound j.val < n does NOT give 2*j+1 < 2*n in ℝ via linarith; need omega on ℕ then exact_mod_cast",
+      "div_lt_iff renamed to div_lt_iff₀ in Mathlib v4.26.0",
+      "Session 5 proved product formula, lagrange basis formula, and lebesgue_eq (sorries: 4→2)",
+      "x_not_chebyshev_node: cos(pi*p/q) is NEVER a Chebyshev node when q is odd (parity: q*(2k+1) is odd, angle condition requires even = odd)",
+      "chebyshev_lebesgue_eq_all_n: applies for ALL n when p,q odd (not just n=mq subsequence)",
+      "divergence_from_lebesgue_growth fundamental gap: Banach-Steinhaus only gives lim sup = inf, not lim = +inf; axiom may be overstated",
+      "chebyshev_lebesgue_growth reduces to lb sorry via tendsto_atTop_mono — growth theorem itself is proved",
+      "Filter.tendsto_atTop_mono pattern: if f ≤ g pointwise and f → ∞ then g → ∞",
+      "let binding in Lean 4 requires explicit unfolding in simp: simp only [vals, ...]",
+      "chebyshev_lebesgue_growth is PROVED (not sorry) — wraps chebyshev_lebesgue_lb which assumes sorry #1",
+      "p,q both odd implies cos(pi*p/q) is strictly in (-1,1), so sin argument is nonzero. Case x=+-1 never occurs in hypotheses.",
+      "Session 13: Case 2 factored into self-contained trig_sum_harmonic_lb(θ, hθ∈(0,π), hne). No dependency on p,q.",
+      "Real.arccos_pos.mpr / Real.arccos_lt_pi.mpr: get strict bounds θ₀ ∈ (0,π) from x ∈ (-1,1)",
+      "Real.cos_eq_one_iff: cos x = 1 ↔ ∃ k : ℤ, x = k*(2π). Use to show cos(πp/q) ≠ 1 from p odd.",
+      "LipschitzWith.dist_le_mul converts edist bound to |cos α - cos β| ≤ |α - β| via Real.dist_eq",
+      "Nearest Chebyshev midpoint via floor: k₀ = ⌊nθ/π⌋ ∈ {0,…,n-1} for θ ∈ (0,π) since 0 < nθ/π < n; the half-interval (k₀π/n, (k₀+1)π/n) containing θ has midpoint φ_{k₀} = (2k₀+1)π/(2n) within π/(2n).",
+      "Don't trust prior progressSummary 'API drift fixed' claims without a Docker build: the 2026-05-04 Session 13 JSON claimed all API drift was fixed, but a 2026-05-07 build of Proofs.Erdos1151OQ04 surfaced 23 errors including Unknown constant Nat.harmonic, Even.not_odd, div_lt_div_iff. Always verify with Docker before declaring resolution.",
+      "Mathlib.NumberTheory.Harmonic.Defs: harmonic : ℕ → ℚ (NOT Nat.harmonic, NOT ℝ); cast for ℝ usage requires ((harmonic m : ℚ) : ℝ).",
+      "Mathlib.Algebra.Ring.Int.Parity: Even.not_odd is removed; replacement is not_odd_iff_even : ¬Odd n ↔ Even n. Use .mpr to derive ¬Odd from Even.",
+      "Triangle bound for equispaced midpoints: φ_k - φ_{k₀} = (k - k₀)·spacing, so |θ - φ_k| ≤ |θ - φ_{k₀}| + |k - k₀|·spacing. For Chebyshev midpoints, spacing = π/n.",
+      "When the previous session's blocker is API drift in 4-5 specific places, gh api search for current decl names is faster than waiting on Docker (which is contended).",
+      "sin attains min on [d/2, π-d/2] at d/2 (= π-d/2 by sin_pi_sub). Cleanest formalization: case split x ≤ π/2 vs > π/2, apply Real.sin_le_sin_of_le_of_le_pi_div_two on monotone side; for x > π/2 reduce to π-x ∈ [d/2, π/2) via Real.sin_pi_sub.",
+      "Mathlib uses Real.sin_le_sin_of_le_of_le_pi_div_two with hypotheses (-(π/2) ≤ x), (y ≤ π/2), (x ≤ y) → sin x ≤ sin y. Domain is [-π/2, π/2], not [0, π/2].",
+      "Real.abs_cos_sub_cos_le: cos is 1-Lipschitz, |cos α - cos β| ≤ |α - β|. Direct from lipschitzWith_cos. Lives in Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds.",
+      "div_div_eq_mul_div : a / (b / c) = a * c / b — convert sin(d/2) / [(2|k-k₀|+1)π/(2n)] to sin(d/2)·(2n)/((2|k-k₀|+1)π) without nonzero hypotheses (works in any DivisionRing).",
+      "Per-term bound shape: sin(φ_k) ≥ sin(d/2) AND |cos θ - cos φ_k| ≤ (2|k-k₀|+1)π/(2n) ⇒ ratio ≥ sin(d/2)·(2n)/((2|k-k₀|+1)π). Subsequent sub-sum will require restricting indices to those satisfying φ_k ∈ [d/2, π-d/2].",
+      "odd_harmonic_sum_shifted_lb (Step 6a): shifted odd harmonic Σⱼ 1/(2(j+1)+1) ≥ (1/2)·log(m+2) - 1, derived from odd_harmonic_sum_lb (m+1) by Finset.sum_range_succ' splitting off j=0 term (= 1).",
+      "trig_sum_subsum_lb (Step 6b): sub-sum assembly over Fin m index range — define φ : Fin m → Fin n via j ↦ k₀+j+1, apply chebyshev_term_lb_at_node per j, lift to image sub-sum via Finset.sum_image + Finset.sum_le_sum_of_subset_of_nonneg.",
+      "Bridge ∑ j : Fin m to ∑ j ∈ Finset.range m via Fin.sum_univ_eq_sum_range; pull constants out of sum via Finset.mul_sum; close field-equality per-term goal with ring.",
+      "Sub-sum lower bound shape: sin(d/2) * (2n/π) * Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k|. Combined with Step 6a, this gives n·log(m+2) growth — basis for asymptotic n·log(n) bound when m ~ n·d/(4π).",
+      "Reindex symmetry: S(θ, n) = S(π-θ, n) via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. The angle reflection φ_{σ k} = π - φ_k follows from algebraic identity (2(n-1-k)+1)π/(2n) = π - (2k+1)π/(2n); sin invariant under x ↦ π-x; cos sign-flips under x ↦ π-x. Combined with cos(π-θ) = -cos θ, the denominator |cos(π-θ) - (-cn)| = |cos θ - cn| via abs_neg. Reduces trig_sum_harmonic_lb to θ ∈ (0, π/2].",
+      "When θ ∈ (0, π/2]: d = min(θ, π-θ) = θ; so d/2 = θ/2 and π - d/2 = π - θ/2. The going-up sub-sum upper bound (2j+3)π/(2n) ≤ π - d/2 - θ becomes (2j+3)π/(2n) ≤ π - 3θ/2, giving m ≤ n(2π - 3θ)/(4π) - 3/2. For θ < 2π/3 this is positive, and at θ = π/2 it gives m ≤ n/8 - 3/2.",
+      "When θ ∈ (π/2, π): use trig_sum_reindex_symmetry to pass to θ' = π - θ ∈ (0, π/2). The going-up sub-sum at θ' applies. This avoids needing a separate going-down sub-sum lemma.",
+      "Step 7 split: factor finite-set min' (small n ≤ N) and asymptotic bound (large n ≥ N) into separate lemmas, then take pointwise min. The finite-set side is now closed (S22 trig_sum_small_n_const) using Finset.min' over the image of the ratio S(θ,n) / (n·log(n+1)). Each ratio is positive (chebyshev_trig_sum_pos numerator + log(n+1) ≥ log 2 denominator), so min is positive; le_div_iff inverts the division."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "S35 BUILD-VERIFY (5-min doc-only): once Docker daemon I/O recovers (host disk pressure drops below 99% capacity from current 3.2 Gi avail at 100%; was 5.2 Gi at S33 STATE-SYNC PR #19688 cycle, -2.0 Gi over ~9h45m; 5 GiB soft floor breached for ≥9.5h; recovery condition: disk ≥ 5 GiB sustained + Docker daemon responsive), re-attempt ./proofs/scripts/docker-build.sh Proofs.Erdos1151OQ04. Expected outcome (HIGH likelihood given PREP-2 §4.1 audit depth + ≥4.5 mo Mathlib SHA stability): clean build at ~3060/3060 jobs at v4.26.0 + Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. If clean: flip state.md head + JSON status (build pending) → (build verified, NNNN/NNNN jobs). If errors surface: mechanic-handoff for tactic-glue fixes (bearers correct per PREP-2 audit; errors would be in rw ordering / push_neg placement / show shape).\n",
+      "S34 ACT (~80-120 LOC): ContinuousLinearMap packaging of the Chebyshev interpolation functional Λₙ_x. Apply LinearMap.mkContinuous to lift chebyshevInterp _ _ x from a function-level operation to a CLM. Use Tietze extension to lift the saturation witness (from chebyshev_lebesgue_saturated) from the finite Chebyshev node set to a continuous function on Icc -1 1. Bearers: LinearMap.mkContinuous, BoundedContinuousFunction, Tietze extension lemma (likely under Mathlib.Topology.Tietze).",
+      "S35 ACT (~30-50 LOC): operator-norm identity ‖Λₙ_x‖ = chebyshevLebesgue n x. Combine chebyshev_lebesgue_saturated (lower bound; S32) with chebyshev_upper_bound (upper bound; existing) via antisymmetry. Bearers: ContinuousLinearMap.opNorm_le_iff, ContinuousLinearMap.le_opNorm, sup-of-witnesses identity.",
+      "S36 ACT (~20-40 LOC): BanachSteinhaus contrapositive to discharge Sorry 2 (divergence_from_lebesgue_growth). If chebyshevLebesgue n x → ∞ pointwise in x as n → ∞, then by the negation of BanachSteinhaus, the pointwise limit fails to be uniformly bounded — yielding the divergence claim. Bearers: banach_steinhaus, contrapositive packaging (uniformBoundedness_iff or similar).",
+      "Sibling cleanup: Open PRs #17386 / #17457 (S23/S25 combine helpers) are CONFLICTING + obsolete per S29 PR #17580 superseding their content. Recommend champion close + comment (not researcher territory; informational pointer only). Touches the line-~2300+ trig sum region — textually disjoint from any current ACT work."
+    ]
+  },
+  "tags": [
+    "analysis",
+    "approximation-theory",
+    "chebyshev",
+    "lebesgue-function",
+    "erdos-problems"
+  ],
+  "relatedProofs": [
+    "chebyshev-pnt-bridge",
+    "erdos-1",
+    "erdos-11",
+    "erdos-115",
+    "erdos-1151",
+    "fourier-series"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-21T19:30:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1151OQ04.lean",
+      "filename": "Erdos1151OQ04.lean",
+      "lineCount": 2714,
+      "theoremCount": 32,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1151OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1151OQ04Aristotle.lean",
+      "filename": "Erdos1151OQ04Aristotle.lean",
+      "lineCount": 141,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1151OQ04Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1151Problem.lean",
+      "filename": "Erdos1151Problem.lean",
+      "lineCount": 216,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1151Problem.lean"
+    }
+  ]
+}

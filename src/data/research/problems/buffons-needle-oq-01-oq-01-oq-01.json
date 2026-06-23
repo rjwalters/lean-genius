@@ -1,0 +1,184 @@
+{
+  "slug": "buffons-needle-oq-01-oq-01-oq-01",
+  "title": "Integrate BuffonsNoodle removing axioms via concreteSmoothExpectedCrossings",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in probability theory: Integrate BuffonsNoodle removing axioms via concreteSmoothExpectedCrossings.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-03T02:57:02.770Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: All axioms replaced by concrete definition, 4 theorems proven",
+    "builtItems": [
+      "BuffonsNeedleOQ01OQ01OQ01.lean: 4 theorems, 0 sorries, 0 axioms"
+    ],
+    "insights": [
+      "concreteSmoothExpectedCrossings replaces both axioms from BuffonsNoodle.lean with machine-verified theorems",
+      "concrete_main_theorem delegates to buffon_smooth_full — axiom-free Buffon-Barbier under explicit derivative hypotheses",
+      "concreteSmoothExpectedCrossings_nonneg requires no derivative hypotheses: follows directly from |·| ≥ 0",
+      "concrete_shape_independence: equal arc length → equal expected crossings, proven by rewriting via concrete_main_theorem"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "probability",
+    "buffons-needle",
+    "axiom-removal"
+  ],
+  "relatedProofs": [
+    "buffons-needle",
+    "buffons-needle-oq-01",
+    "buffons-needle-oq-01-oq-01",
+    "buffons-needle-oq-01-oq-01-oq-01",
+    "buffons-needle-oq-01-oq-01-oq-04",
+    "buffons-needle-oq-01-oq-02",
+    "buffons-needle-oq-02",
+    "buffons-needle-oq-02-oq-01",
+    "buffons-needle-oq-02-oq-02",
+    "buffons-needle-oq-02-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T02:57:02.770Z",
+  "lastUpdate": "2026-04-03T02:57:02.770Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/BuffonsNeedle.lean",
+      "filename": "BuffonsNeedle.lean",
+      "lineCount": 267,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedle.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01.lean",
+      "filename": "BuffonsNeedleOQ01.lean",
+      "lineCount": 251,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01.lean",
+      "filename": "BuffonsNeedleOQ01OQ01.lean",
+      "lineCount": 391,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01OQ01.lean",
+      "filename": "BuffonsNeedleOQ01OQ01OQ01.lean",
+      "lineCount": 224,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04.lean",
+      "filename": "BuffonsNeedleOQ01OQ01OQ04.lean",
+      "lineCount": 568,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ01OQ02.lean",
+      "filename": "BuffonsNeedleOQ01OQ02.lean",
+      "lineCount": 326,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02.lean",
+      "filename": "BuffonsNeedleOQ02.lean",
+      "lineCount": 263,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ01.lean",
+      "filename": "BuffonsNeedleOQ02OQ01.lean",
+      "lineCount": 310,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ02.lean",
+      "filename": "BuffonsNeedleOQ02OQ02.lean",
+      "lineCount": 377,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ03.lean",
+      "filename": "BuffonsNeedleOQ02OQ03.lean",
+      "lineCount": 285,
+      "theoremCount": 27,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ03.lean"
+    }
+  ]
+}

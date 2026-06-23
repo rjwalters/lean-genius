@@ -1,0 +1,411 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 16,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "The Hodge Conjecture: Millennium Prize Problem",
+    "content": "**The Hodge Conjecture**:\n\n> Every **Hodge class** on a smooth projective variety is a rational linear combination of **algebraic cycle** classes.\n\n**Formally**: For X smooth projective over ℂ:\n$$H^{p,p}(X) \\cap H^{2p}(X, \\mathbb{Q}) = \\mathbb{Q}\\text{-span of } \\{\\text{cl}(Z) : Z \\text{ algebraic}\\}$$\n\n**Status: OPEN** — One of 7 Millennium Prize Problems ($1,000,000)\n\n**Essence**: Bridges topology (cohomology) and algebra (subvarieties).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hodge class",
+      "algebraic cycle",
+      "Millennium Prize"
+    ],
+    "mathContext": "See annotation content for formal details of the hodge conjecture: millennium prize problem",
+    "prerequisites": [
+      "Cohomology Theory",
+      "Smooth Projective Varieties",
+      "Algebraic Cycles"
+    ]
+  },
+  {
+    "id": "ann-hodge-structure",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 102,
+      "endLine": 146
+    },
+    "type": "definition",
+    "title": "Pure Hodge Structures with Complexification",
+    "content": "**Pure Hodge Structure of weight k** (enhanced):\n\n- A ℚ-vector space V_ℚ\n- Complexification V_ℂ with **explicit map** ι : V_ℚ →ₗ[ℚ] V_ℂ\n- **Injectivity**: ι is injective (rational lattice embeds faithfully)\n- **Hodge decomposition**: $V_{\\mathbb{C}} = \\bigoplus_{p+q=k} V^{p,q}$\n\n**Key improvement**: The complexification map ι makes the connection between rational classes and the complex decomposition explicit and rigorous.\n\n**Origin**: Arises from cohomology of compact Kähler manifolds.",
+    "mathContext": "ι : V_ℚ →ₗ[ℚ] V_ℂ, injective",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hodge decomposition",
+      "complexification",
+      "Kähler manifold"
+    ],
+    "prerequisites": [
+      "Rational Vector Spaces",
+      "Complexification",
+      "Kähler Manifolds"
+    ]
+  },
+  {
+    "id": "ann-hodge-symmetry",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 148,
+      "endLine": 197
+    },
+    "type": "definition",
+    "title": "Hodge Numbers and Hodge Symmetry (PROVED)",
+    "content": "**Hodge Numbers**: $h^{p,q} = \\dim_{\\mathbb{C}} V^{p,q}$\n\n**Hodge Symmetry** (proved from conjugation axiom):\n$$h^{p,q} = h^{q,p}$$\n\nThis means the **Hodge diamond** is symmetric about its vertical axis.\n\n**Proof**: Direct consequence of the axiom that complex conjugation maps V^{p,q} isomorphically to V^{q,p}, preserving dimension.\n\nThis is one of the few properties we can **prove** rather than axiomatize!",
+    "mathContext": "h^{p,q} = h^{q,p}",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hodge numbers",
+      "Hodge diamond",
+      "complex conjugation"
+    ],
+    "prerequisites": [
+      "Hodge Decomposition",
+      "Complex Conjugation",
+      "Dimension Of Subspaces"
+    ]
+  },
+  {
+    "id": "ann-hodge-filtration",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 199,
+      "endLine": 233
+    },
+    "type": "definition",
+    "title": "Hodge Filtration",
+    "content": "**Hodge Filtration**: Decreasing filtration $F^p$ on $V_{\\mathbb{C}}$:\n$$F^p = \\bigoplus_{i \\geq p} V^{i,k-i}$$\n\nSatisfies:\n- $F^0 = V_{\\mathbb{C}}$ (full space)\n- $F^{k+1} = 0$ (terminates)\n- $F^{p+1} \\subseteq F^p$ (decreasing)\n\n**Recovery**: $V^{p,q} = F^p \\cap \\overline{F^q}$\n\nThe filtration viewpoint is essential for studying **variations of Hodge structure** as the variety deforms.",
+    "mathContext": "F^0 ⊇ F^1 ⊇ ... ⊇ F^{k+1} = 0",
+    "significance": "key",
+    "relatedConcepts": [
+      "filtration",
+      "variation of Hodge structure",
+      "period domain"
+    ],
+    "prerequisites": [
+      "Decreasing Filtrations",
+      "Hodge Decomposition",
+      "Direct Sum Decomposition"
+    ]
+  },
+  {
+    "id": "ann-hodge-class",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 235,
+      "endLine": 258
+    },
+    "type": "definition",
+    "title": "Hodge Classes (Strengthened)",
+    "content": "**Hodge Class** (enhanced definition):\n\nA rational class v ∈ V_ℚ such that its **complexification** ι(v) lies in V^{p,p}:\n$$v \\in V_{\\mathbb{Q}} \\text{ with } \\iota(v) \\in V^{p,p}$$\n\n**Key improvement**: The membership condition uses the actual complexification map ι, not a placeholder `True`. This connects the rational lattice to the complex decomposition rigorously.\n\n**These are the classes the conjecture claims are algebraic!**",
+    "mathContext": "ι(v) ∈ V^{p,p}",
+    "significance": "key",
+    "relatedConcepts": [
+      "complexification",
+      "(p,p) component",
+      "algebraicity"
+    ],
+    "prerequisites": [
+      "Rational Lattice",
+      "Complexification Map",
+      "Hodge Decomposition"
+    ]
+  },
+  {
+    "id": "ann-cycle-class-hodge",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 318,
+      "endLine": 341
+    },
+    "type": "concept",
+    "title": "Cycle Classes are Hodge Classes",
+    "content": "**Key Property**: Every algebraic cycle class is a Hodge class.\n\nThe cycle class map cl : Z^p(X) → H^{2p}(X, ℚ) satisfies:\n$$\\iota(\\text{cl}(Z)) \\in V^{p,p}$$\n\nThis means algebraic classes are *always* Hodge classes. The Hodge Conjecture asks the **converse**: are all Hodge classes algebraic?\n\nThe function `cycleToHodgeClass` constructs a `HodgeClass` from any `AlgebraicCycle`.",
+    "mathContext": "cl(Z) ∈ H^{p,p} ∩ H^{2p}(X,ℚ)",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle class map",
+      "algebraic cycle",
+      "Hodge class"
+    ],
+    "prerequisites": [
+      "Cycle Class Map",
+      "Algebraic Cycles",
+      "Cohomology Classes"
+    ]
+  },
+  {
+    "id": "ann-statement",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 342,
+      "endLine": 365
+    },
+    "type": "concept",
+    "title": "The Hodge Conjecture Statement",
+    "content": "**THE HODGE CONJECTURE**:\n\nFor any smooth projective variety X over ℂ and any p ∈ ℕ:\n\n$$\\forall \\alpha \\in H^{p,p}(X) \\cap H^{2p}(X, \\mathbb{Q}): \\exists Z_1, \\ldots, Z_n, a_1, \\ldots, a_n$$\n$$\\alpha = \\sum_i a_i \\cdot \\text{cl}(Z_i)$$\n\nwhere Zᵢ are algebraic cycles of codimension p and aᵢ ∈ ℚ.\n\n**Status**: OPEN since 1950. Resolving this earns a $1M Millennium Prize!",
+    "mathContext": "Hodge class = ℚ-linear combo of algebraic classes",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hodge conjecture",
+      "algebraic geometry",
+      "open problem"
+    ],
+    "prerequisites": [
+      "Hodge Classes",
+      "Algebraic Cycles",
+      "Rational Linear Combinations"
+    ]
+  },
+  {
+    "id": "ann-lefschetz",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 389,
+      "endLine": 408
+    },
+    "type": "concept",
+    "title": "Lefschetz (1,1) Theorem (PROVEN)",
+    "content": "**Lefschetz (1,1) Theorem (1924)**:\n\nFor ANY smooth projective variety X, every integral Hodge class of type (1,1) is algebraic:\n$$H^{1,1}(X) \\cap H^2(X, \\mathbb{Z}) = \\text{Pic}(X) \\otimes \\mathbb{Z}$$\n\n**Key**: Such classes are first Chern classes of line bundles (= divisor classes).\n\n**Proof idea**: Uses the exponential sequence:\n$$0 \\to \\mathbb{Z} \\to \\mathcal{O}_X \\to \\mathcal{O}_X^* \\to 0$$\n\nThis is the **only proven case** for general varieties!",
+    "mathContext": "H^{1,1} ∩ H²(X,ℤ) algebraic",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lefschetz",
+      "Picard group",
+      "line bundle"
+    ],
+    "prerequisites": [
+      "Exponential Sequence",
+      "Line Bundles",
+      "Picard Group"
+    ]
+  },
+  {
+    "id": "ann-curves-surfaces",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 371,
+      "endLine": 445
+    },
+    "type": "concept",
+    "title": "Hodge Conjecture for Curves and Surfaces (PROVEN)",
+    "content": "**Proven Cases**:\n\n**Curves (dim = 1)**:\n- H^2(X) = ℚ, generated by [X]\n- Trivially algebraic ✓\n\n**Surfaces (dim = 2)**:\n- p = 0: H⁰ = ℚ·1 (constant functions) ✓\n- p = 1: Lefschetz (1,1) theorem ✓\n- p = 2: H⁴ = ℚ·[point] (point class) ✓\n\n**Formalized**: `hodge_conjecture_surfaces` proves all surface cases!",
+    "mathContext": "Curves + surfaces: solved",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "curves",
+      "surfaces",
+      "dimension bounds"
+    ],
+    "prerequisites": [
+      "Lefschetz (1,1) Theorem",
+      "Algebraic Surfaces",
+      "Dimension Bounds"
+    ]
+  },
+  {
+    "id": "ann-integral-hodge",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 472,
+      "endLine": 517
+    },
+    "type": "concept",
+    "title": "Integral Hodge Conjecture and Its Failure",
+    "content": "**Integral vs Rational Hodge Conjecture**:\n\n**Integral version**: Every Hodge class is an **integer** linear combination of cycle classes.\n**Rational version**: Every Hodge class is a **rational** linear combination.\n\n**Atiyah-Hirzebruch (1962)**: Integral version is FALSE!\n- Uses torsion in cohomology and Steenrod operations\n- Later simplified by Totaro (1997)\n\n**Proved theorem**: `integral_implies_rational`\n- If integral version holds, rational version follows\n- Since integral version fails, the two are genuinely different\n\nThis justifies why the Hodge Conjecture specifically uses ℚ coefficients.",
+    "mathContext": "ℤ-Hodge ⟹ ℚ-Hodge, but ℤ-Hodge is false",
+    "significance": "key",
+    "relatedConcepts": [
+      "Atiyah-Hirzebruch",
+      "integral coefficients",
+      "torsion"
+    ],
+    "prerequisites": [
+      "Integral Cohomology",
+      "Torsion Classes",
+      "Steenrod Operations"
+    ]
+  },
+  {
+    "id": "ann-counterexamples",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 518,
+      "endLine": 536
+    },
+    "type": "concept",
+    "title": "Voisin's Kähler Counterexample",
+    "content": "**Voisin (2002)**: Hodge Conjecture fails for Kähler manifolds!\n\n- Constructed a complex torus (Kähler but not projective)\n- Has Hodge classes that are NOT rational combinations of analytic subvariety classes\n- Shows **projectivity is essential**\n\nThe Hodge Conjecture is very precise in its hypotheses:\n- Must be projective (not just Kähler)\n- Must use rational coefficients (not integral)\n- Must be over ℂ (not other fields)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Voisin",
+      "Kähler manifold",
+      "projectivity"
+    ],
+    "mathContext": "See annotation content for formal details of voisin's kähler counterexample",
+    "prerequisites": [
+      "Kähler Manifolds",
+      "Complex Tori",
+      "Projective Varieties"
+    ]
+  },
+  {
+    "id": "ann-standard-conjectures",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 538,
+      "endLine": 605
+    },
+    "type": "concept",
+    "title": "Related Conjectures",
+    "content": "**Web of Conjectures**:\n\n**Grothendieck's Standard Conjectures** (1968):\n- (B) Lefschetz: Lefschetz operator is algebraic\n- (C) Künneth: projectors are algebraic\n- (D) Hodge: intersection pairing positive on primitives\n- **Imply Hodge Conjecture!**\n\n**Mumford-Tate Conjecture**:\n- Relates Hodge structure to Galois action on abelian varieties\n- **Hodge ⟹ Mumford-Tate** (proved as implication)\n\nAll remain open and deeply connected!",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Standard conjectures",
+      "Mumford-Tate",
+      "motives"
+    ],
+    "mathContext": "See annotation content for formal details of related conjectures",
+    "prerequisites": [
+      "Algebraic Correspondences",
+      "Lefschetz Operator",
+      "Abelian Varieties"
+    ]
+  },
+  {
+    "id": "ann-serre-duality",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 607,
+      "endLine": 641
+    },
+    "type": "concept",
+    "title": "Structural Properties: Serre Duality and Additivity",
+    "content": "**Serre Duality for Hodge Numbers**:\n$$h^{p,q} = h^{n-p,n-q}$$\n\nCombined with Hodge symmetry $h^{p,q} = h^{q,p}$, this gives the **full dihedral symmetry** of the Hodge diamond (group of order 4).\n\n**Cycle Class Map Additivity**:\n$$\\text{cl}(Z_1 + Z_2) = \\text{cl}(Z_1) + \\text{cl}(Z_2)$$\n\nThis ensures the image of the cycle class map forms a ℚ-subspace of Hodge classes.",
+    "mathContext": "h^{p,q} = h^{n-p,n-q}, cl additive",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Serre duality",
+      "Hodge diamond",
+      "dihedral symmetry"
+    ],
+    "prerequisites": [
+      "Hodge Numbers",
+      "Serre Duality",
+      "Cycle Class Map"
+    ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 643,
+      "endLine": 692
+    },
+    "type": "concept",
+    "title": "Problem Status: OPEN",
+    "content": "**Hodge Conjecture: Still OPEN since 1950**\n\n**PROVEN cases**:\n- Curves (trivial) ✓\n- Surfaces (Lefschetz + dimension) ✓\n- Divisors on any variety (Lefschetz 1,1) ✓\n- Special abelian varieties (Deligne) ✓\n\n**PROVED properties**:\n- Hodge symmetry h^{p,q} = h^{q,p} ✓\n- Integral ⟹ rational ✓\n\n**FAILS for**:\n- Kähler manifolds (must be projective)\n- Integral coefficients (must use ℚ)\n\n**Prize**: $1,000,000 Millennium Prize awaits!",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "open problem",
+      "known cases",
+      "Millennium Prize"
+    ],
+    "mathContext": "See annotation content for formal details of problem status: open",
+    "prerequisites": [
+      "Hodge Conjecture Statement",
+      "Lefschetz (1,1) Theorem",
+      "Known Special Cases"
+    ]
+  },
+  {
+    "id": "ann-absolute-hodge",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 8699,
+      "endLine": 8761
+    },
+    "type": "insight",
+    "title": "Absolute Hodge Classes: Deligne's Evidence for the Conjecture",
+    "content": "Deligne introduced the notion of absolute Hodge classes: those Hodge classes $\\alpha \\in H^{p,p}(X) \\cap H^{2p}(X, \\mathbb{Q})$ that remain Hodge under all automorphisms $\\sigma \\in \\text{Aut}(\\mathbb{C}/\\mathbb{Q})$. This is a strictly stronger condition than being Hodge. Deligne proved that for abelian varieties, every Hodge class is absolute Hodge — powerful evidence for the Hodge Conjecture since all known algebraic classes are absolute Hodge. However, absolute Hodge $\\ne$ algebraic in general; there is no known way to construct the algebraic cycle from the absolute Hodge property. The formalization axiomatizes the absolute Hodge condition and Deligne's theorem for abelian varieties.",
+    "mathContext": "Absolute Hodge: $\\alpha$ remains in $H^{p,p}(X^\\sigma)$ for all $\\sigma \\in \\text{Aut}(\\mathbb{C}/\\mathbb{Q})$; algebraic $\\implies$ absolute Hodge $\\implies$ Hodge; for abelian varieties: absolute Hodge = Hodge (Deligne)",
+    "significance": "key",
+    "relatedConcepts": [
+      "absolute Hodge class",
+      "Deligne's theorem",
+      "abelian varieties",
+      "automorphisms of ℂ",
+      "algebraic cycles"
+    ],
+    "prerequisites": [
+      "ann-statement"
+    ],
+    "tags": [
+      "absolute-hodge",
+      "deligne",
+      "abelian-varieties"
+    ]
+  },
+  {
+    "id": "ann-tate-conjecture",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 9531,
+      "endLine": 9680
+    },
+    "type": "concept",
+    "title": "The Tate Conjecture: p-adic Analogue of the Hodge Conjecture",
+    "content": "The Tate Conjecture is the arithmetic analogue of the Hodge Conjecture, replacing complex Hodge theory with $\\ell$-adic cohomology over finite fields. For a smooth projective variety $X$ over $\\mathbb{F}_q$, the conjecture asserts that the cycle class map $\\text{CH}^p(X) \\otimes \\mathbb{Q}_\\ell \\to H^{2p}_{\\text{ét}}(X, \\mathbb{Q}_\\ell(p))^{G_{\\mathbb{F}_q}}$ is surjective onto Galois-invariant classes. Tate proved it for divisors on abelian varieties over finite fields; Faltings proved it for divisors on all abelian varieties over number fields. The Hodge-Tate comparison theorem $H^n_{\\text{dR}}(X/K) \\otimes_K \\mathbb{C}_p \\cong \\bigoplus_{p+q=n} H^q(X, \\Omega^p_X) \\otimes_K \\mathbb{C}_p(p)$ connects the two worlds. The formalization axiomatizes the Tate conjecture and its relationship to the Hodge conjecture via comparison theorems.",
+    "mathContext": "Tate: $\\text{CH}^p(X) \\otimes \\mathbb{Q}_\\ell \\twoheadrightarrow H^{2p}(X, \\mathbb{Q}_\\ell(p))^{\\text{Gal}}$; proved for divisors on abelian varieties (Tate, Faltings)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tate conjecture",
+      "ℓ-adic cohomology",
+      "Galois representations",
+      "Faltings theorem",
+      "Hodge-Tate comparison"
+    ],
+    "prerequisites": [
+      "ann-statement"
+    ],
+    "tags": [
+      "tate-conjecture",
+      "p-adic",
+      "galois",
+      "arithmetic"
+    ]
+  },
+  {
+    "id": "ann-hms",
+    "proofId": "hodge-conjecture",
+    "range": {
+      "startLine": 10113,
+      "endLine": 10332
+    },
+    "type": "concept",
+    "title": "Homological Mirror Symmetry and the Hodge Conjecture",
+    "content": "Kontsevich's homological mirror symmetry (HMS, 1994) proposes an equivalence $D^b(\\text{Coh}(X)) \\cong D^b(\\text{Fuk}(\\check{X}))$ between the derived category of coherent sheaves on $X$ and the Fukaya category of its mirror $\\check{X}$. Under mirror symmetry, Hodge classes on $X$ correspond to Lagrangian submanifolds of $\\check{X}$ — objects with a natural geometric/algebraic structure. This suggests a physical approach to the Hodge Conjecture: if mirror symmetry can produce the algebraic cycle from the Lagrangian. The formalization covers Fourier-Mukai transforms (which preserve Hodge structures), Bridgeland stability conditions, and the mirror of a Hodge class. The non-abelian Hodge correspondence (Simpson) provides an independent bridge between topology (flat connections) and algebraic geometry (Higgs bundles).",
+    "mathContext": "HMS: $D^b(\\text{Coh}(X)) \\cong D^b(\\text{Fuk}(\\check{X}))$; Hodge class $\\leftrightarrow$ Lagrangian; Fourier-Mukai preserves Hodge structure",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "homological mirror symmetry",
+      "Kontsevich",
+      "derived categories",
+      "Fukaya category",
+      "Fourier-Mukai",
+      "Lagrangian"
+    ],
+    "prerequisites": [
+      "ann-statement"
+    ],
+    "tags": [
+      "mirror-symmetry",
+      "derived-categories",
+      "fukaya",
+      "kontsevich"
+    ]
+  }
+]

@@ -1,0 +1,214 @@
+[
+  {
+    "id": "ann-412-imports",
+    "proofId": "erdos-412",
+    "range": {
+      "startLine": 30,
+      "endLine": 34
+    },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports `ArithmeticFunction.Defs` for arithmetic function infrastructure, `Nat.Factorization.Basic` for `Nat.divisors` and divisor membership lemmas, `BigOperators.Finprod` for `Finset.sum`, and `Tactic` for proof automation including `native_decide`.",
+    "significance": "supporting",
+    "mathContext": "The formalization uses `Nat.divisors` (the finite set of divisors of $n$) rather than Mathlib's built-in `Nat.ArithmeticFunction.sigma` for directness. The `native_decide` tactic delegates equalities like $\\sigma(6) = 12$ to Lean's kernel for efficient computational verification. The `Finset.sum_le_sum_of_subset` lemma from `BigOperators.Order` is crucial for the growth proof.",
+    "relatedConcepts": [
+      "Nat.divisors",
+      "Finset.sum",
+      "native_decide",
+      "arithmetic functions"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Algebra.BigOperators.Finprod"
+    ]
+  },
+  {
+    "id": "ann-412-sigma-def",
+    "proofId": "erdos-412",
+    "range": {
+      "startLine": 45,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Sum of Divisors Function",
+    "content": "`sigma n = (n.divisors).sum id`: the sum of all divisors of $n$ (including $1$ and $n$). Verified examples via `native_decide`: $\\sigma(1) = 1$, $\\sigma(2) = 3$, $\\sigma(6) = 12$, $\\sigma(12) = 28$, $\\sigma(28) = 56$. Note $6$ and $28$ are perfect numbers ($\\sigma(n) = 2n$).",
+    "significance": "key",
+    "mathContext": "The sum-of-divisors function $\\sigma(n) = \\sum_{d \\mid n} d$ is a fundamental multiplicative arithmetic function: $\\sigma(mn) = \\sigma(m)\\sigma(n)$ when $\\gcd(m,n) = 1$. For primes $p$: $\\sigma(p) = p + 1$. For prime powers: $\\sigma(p^k) = (p^{k+1} - 1)/(p - 1)$. The definition via `Nat.divisors.sum id` is equivalent to Mathlib's `Nat.ArithmeticFunction.sigma 1` but more direct. The verified values $\\sigma(6) = 12 = 2 \\cdot 6$ and $\\sigma(28) = 56 = 2 \\cdot 28$ confirm these are perfect numbers.",
+    "relatedConcepts": [
+      "multiplicative function",
+      "perfect numbers",
+      "Nat.divisors",
+      "Finset.sum"
+    ],
+    "prerequisites": [
+      "Nat.divisors",
+      "Finset.sum",
+      "id"
+    ]
+  },
+  {
+    "id": "ann-412-iter-def",
+    "proofId": "erdos-412",
+    "range": {
+      "startLine": 67,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "Iterated Sum of Divisors",
+    "content": "`iterSigma k n = sigma^[k] n`: the $k$-th iterate $\\sigma_k(n)$ via `Function.iterate`. Base: $\\sigma_0(n) = n$, step: $\\sigma_{k+1}(n) = \\sigma(\\sigma_k(n))$. Example sequences verified: from $2$: $2 \\to 3 \\to 4 \\to 7 \\to 8 \\to 15 \\to \\ldots$; from $3$: $3 \\to 4 \\to 7 \\to 8 \\to 15 \\to \\ldots$. Merge at step $1$: $\\sigma_1(2) = 3 = \\sigma_0(3)$.",
+    "significance": "key",
+    "mathContext": "The iteration $\\sigma_k = \\sigma^{\\circ k}$ defines a discrete dynamical system on $\\mathbb{N}$. Since $\\sigma(n) > n$ for $n \\ge 2$, the orbits are strictly increasing sequences without cycles or fixed points. The key theorems `iterSigma_zero` and `iterSigma_succ` unfold from `Function.iterate_succ_apply'`. The example $\\sigma_1(2) = 3 = \\sigma_0(3)$ shows the simplest merge: for prime $p$, $\\sigma(p) = p + 1$ immediately enters the orbit of $p + 1$.",
+    "relatedConcepts": [
+      "Function.iterate",
+      "discrete dynamical system",
+      "orbit structure",
+      "Collatz conjecture"
+    ],
+    "prerequisites": [
+      "sigma",
+      "Function.iterate",
+      "Function.iterate_succ_apply'"
+    ]
+  },
+  {
+    "id": "ann-412-equiv-def",
+    "proofId": "erdos-412",
+    "range": {
+      "startLine": 98,
+      "endLine": 105
+    },
+    "type": "definition",
+    "title": "$\\sigma$-Equivalence and the Main Conjecture",
+    "content": "`SigmaEquivalent m n`: $\\exists i\\, j,\\, \\sigma_i(m) = \\sigma_j(n)$. Two numbers are $\\sigma$-equivalent if their iterated sequences eventually meet. `Erdos412Conjecture`: $\\forall m, n \\ge 2$, `SigmaEquivalent m n`. All starting points produce sequences that merge into one universal sequence.",
+    "significance": "key",
+    "mathContext": "$\\sigma$-equivalence is an equivalence relation: reflexive ($i = j = 0$), symmetric (swap $i, j$), and transitive (if orbits from $m$ and $n$ both hit $v$, they agree from $v$ onward since $\\sigma$ is deterministic). The conjecture asserts there is exactly one equivalence class on $\\mathbb{N}_{\\ge 2}$. Selfridge's numerical evidence suggests the answer is NO — there may be multiple classes — but no pair has been proven to never merge. Disproving requires showing $\\sigma^i(m) \\ne \\sigma^j(n)$ for all $i, j$, an infinitary statement.",
+    "relatedConcepts": [
+      "equivalence relation",
+      "orbit equivalence",
+      "tail equivalence",
+      "Selfridge's evidence"
+    ],
+    "prerequisites": [
+      "iterSigma",
+      "SigmaEquivalent"
+    ]
+  },
+  {
+    "id": "ann-412-verified",
+    "proofId": "erdos-412",
+    "range": {
+      "startLine": 110,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "Verified $\\sigma$-Equivalences",
+    "content": "Four equivalences proved computationally via `native_decide`: $2 \\equiv 3$ ($\\sigma_1(2) = 3$), $2 \\equiv 4$ ($\\sigma_2(2) = 4$), $5 \\equiv 6$ ($\\sigma_1(5) = 6$), $7 \\equiv 8$ ($\\sigma_1(7) = 8$). All follow from the prime merging pattern: $\\sigma(p) = p + 1$ for primes $p$.",
+    "significance": "supporting",
+    "mathContext": "The easy equivalences all involve a prime $p$ merging with $p + 1$ after one step: $\\sigma(p) = p + 1$. This accounts for consecutive-integer pairs but not pairs like $(m, n)$ where both are large composites with no obvious path to a common value. The witnesses $(i, j)$ are provided explicitly as $\\langle i, j, \\text{by native\\_decide}\\rangle$. Finding pairs that never merge (or proving none exist) requires understanding the global structure of the $\\sigma$-iteration graph on $\\mathbb{N}$.",
+    "relatedConcepts": [
+      "prime merging",
+      "constructive witness",
+      "native_decide",
+      "computational verification"
+    ],
+    "prerequisites": [
+      "SigmaEquivalent",
+      "iterSigma"
+    ]
+  },
+  {
+    "id": "ann-412-aliquot",
+    "proofId": "erdos-412",
+    "range": {
+      "startLine": 130,
+      "endLine": 136
+    },
+    "type": "definition",
+    "title": "Aliquot Sum and Perfect Numbers",
+    "content": "`aliquotSum n = sigma n - n`: the sum of proper divisors. Perfect numbers: $s(6) = 6$, $s(28) = 28$. Unlike $\\sigma$-sequences (strictly increasing for $n \\ge 2$), aliquot sequences $n \\to s(n) \\to s(s(n)) \\to \\ldots$ can decrease, allowing cycles (perfect numbers are fixed points of $s$, amicable pairs are $2$-cycles).",
+    "significance": "supporting",
+    "mathContext": "The aliquot sum $s(n) = \\sigma(n) - n$ is the proper divisor sum. The key distinction: $\\sigma$-sequences are monotonically increasing (no cycles possible), while aliquot sequences can oscillate. A number is **abundant** if $s(n) > n$, **deficient** if $s(n) < n$, **perfect** if $s(n) = n$. The Catalan-Dickson conjecture (still open) asks whether all aliquot sequences eventually terminate or become periodic. Problem #412 avoids this complexity by using $\\sigma$ instead of $s$, but trades periodic behavior for the harder merging question.",
+    "relatedConcepts": [
+      "perfect numbers",
+      "amicable numbers",
+      "Catalan-Dickson conjecture",
+      "abundant/deficient numbers"
+    ],
+    "prerequisites": [
+      "sigma",
+      "Nat.sub"
+    ]
+  },
+  {
+    "id": "ann-412-growth",
+    "proofId": "erdos-412",
+    "range": {
+      "startLine": 142,
+      "endLine": 160
+    },
+    "type": "concept",
+    "title": "Growth Properties of $\\sigma$ (Proved)",
+    "content": "`sigma_ge_succ` (proved): $\\sigma(n) \\ge n + 1$ for $n \\ge 2$. `sigma_gt` (proved): $\\sigma(n) > n$ for $n \\ge 2$. Proof: $\\{1, n\\} \\subseteq \\text{divisors}(n)$ with $1 \\ne n$, so $\\sigma(n) \\ge 1 + n$ by `Finset.sum_le_sum_of_subset`.",
+    "significance": "key",
+    "mathContext": "The proof constructs $\\{1, n\\} \\subseteq \\text{divisors}(n)$ using `Nat.one_mem_divisors` and `Nat.mem_divisors_self`, applies `Finset.sum_le_sum_of_subset` for the lower bound, and uses `Finset.sum_pair` (requiring $1 \\ne n$, i.e., $n \\ge 2$) to evaluate the sum. This is the key structural result: $\\sigma$-sequences from $n \\ge 2$ are strictly increasing and unbounded. It immediately rules out fixed points ($\\sigma(n) = n$) and all periodicity. The strict growth means two sequences either eventually merge or diverge forever — there is no third option.",
+    "relatedConcepts": [
+      "subset sum bound",
+      "Finset.sum_le_sum_of_subset",
+      "strict monotonicity",
+      "no fixed points"
+    ],
+    "prerequisites": [
+      "sigma",
+      "Nat.one_mem_divisors",
+      "Nat.mem_divisors_self",
+      "Finset.sum_le_sum_of_subset"
+    ]
+  },
+  {
+    "id": "ann-412-periodic",
+    "proofId": "erdos-412",
+    "range": {
+      "startLine": 166,
+      "endLine": 172
+    },
+    "type": "definition",
+    "title": "No $\\sigma$-Periodicity (Proved)",
+    "content": "`IsSigmaPeriodic n`: $\\exists k \\ge 1,\\, \\sigma^k(n) = n$. `no_sigma_periodic_step1` (proved): $\\sigma_1(n) > n$ for $n \\ge 2$, ruling out fixed points. By induction, $\\sigma^k(n) > n$ for all $k \\ge 1$, so no $n \\ge 2$ is $\\sigma$-periodic.",
+    "significance": "supporting",
+    "mathContext": "Ruling out periodicity is immediate from strict growth: if $\\sigma^k(n) > \\sigma^{k-1}(n) > \\cdots > n$, then $\\sigma^k(n) \\ne n$. The proof unfolds `Function.iterate_one` and applies `sigma_gt`. This contrasts sharply with aliquot sequences, where periodicity is rich (perfect numbers, amicable pairs, sociable chains). The absence of periodicity in $\\sigma$-iteration makes the dynamics purely \"one-directional\" — all orbits diverge to infinity, and the question is whether diverging orbits eventually coincide.",
+    "relatedConcepts": [
+      "strict growth eliminates cycles",
+      "Function.iterate_one",
+      "one-directional dynamics"
+    ],
+    "prerequisites": [
+      "sigma_gt",
+      "iterSigma",
+      "IsSigmaPeriodic"
+    ]
+  },
+  {
+    "id": "ann-412-summary",
+    "proofId": "erdos-412",
+    "range": {
+      "startLine": 186,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "`erdos_412_summary` (proved): packages three results as a conjunction: (1) $\\sigma(n) > n$ for $n \\ge 2$, (2) $2 \\equiv_\\sigma 3$, (3) $\\sigma_1(n) > n$ for $n \\ge 2$. Proved as $\\langle\\text{sigma\\_gt}, \\text{equiv\\_2\\_3}, \\text{no\\_sigma\\_periodic\\_step1}\\rangle$. The main conjecture `Erdos412Conjecture` remains OPEN and is not asserted.",
+    "significance": "key",
+    "mathContext": "The summary theorem captures the three main verified results without asserting the open conjecture. The triple structure $\\langle \\cdot, \\cdot, \\cdot \\rangle$ uses Lean's anonymous constructor for the conjunction type. Selfridge's computational evidence suggests the conjecture is false — that there exist pairs whose $\\sigma$-sequences never merge — but proving this requires showing $\\sigma^i(m) \\ne \\sigma^j(n)$ for all $i, j \\in \\mathbb{N}$, an infinitary statement that current techniques cannot handle.",
+    "relatedConcepts": [
+      "conjunction packaging",
+      "open problem",
+      "Selfridge's evidence",
+      "infinitary disproof"
+    ],
+    "prerequisites": [
+      "sigma_gt",
+      "equiv_2_3",
+      "no_sigma_periodic_step1"
+    ]
+  }
+]

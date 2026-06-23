@@ -1,0 +1,77 @@
+{
+  "id": "erdos-396-oq-04",
+  "title": "Erdős #396 OQ-04: The Catalan Factor of the Central Binomial Recurrence",
+  "slug": "erdos-396-oq-04",
+  "description": "An elementary closed form C(2(n+1),n+1) = 2(2n+1)·catalan(n), derived by cancelling n+1 from Mathlib's central binomial recurrence, plus the two-term Catalan recurrence (n+2)·catalan(n+1) = 2(2n+1)·catalan(n) and the divisibility refinements it implies — none of which Mathlib records directly.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://erdosproblems.com/396",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos396OQ04.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "binomial-coefficients",
+      "catalan",
+      "divisibility",
+      "recurrence"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "erdosNumber": 396,
+    "erdosUrl": "https://erdosproblems.com/396",
+    "axiomCount": 0,
+    "lineCount": 131,
+    "assumptions": "0 axioms, 0 sorries. All results depend only on the foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms; no sorryAx, no Lean.ofReduceBool / native_decide). Built against Mathlib 4.26.0.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #396 (Erdős–Graham) asks whether, for every k, some n satisfies the descending-factorial divisibility n(n−1)⋯(n−k) ∣ C(2n,n). The gateway fact to all such questions is that n+1 always divides the central binomial coefficient C(2n,n), producing the integer Catalan numbers catalan n = C(2n,n)/(n+1). Mathlib establishes this integrality through a Gosper-style telescoping (gosperCatalan) rather than through the elementary product recurrence, leaving the most natural closed form for the next central binomial coefficient unrecorded.",
+    "problemStatement": "Sharpen the arithmetic of the central binomial recurrence used in Problem #396. Mathlib provides (n+1)·C(2(n+1),n+1) = 2(2n+1)·C(2n,n) and (n+1)·catalan n = C(2n,n). Substituting the second into the first and cancelling n+1 yields C(2(n+1),n+1) = 2(2n+1)·catalan n. What divisibility refinements of the central binomial coefficients follow, and what is the resulting elementary two-term Catalan recurrence?",
+    "text": "An elementary closed form C(2(n+1),n+1) = 2(2n+1)·catalan(n), derived by cancelling n+1 from Mathlib's central binomial recurrence, plus the two-term Catalan recurrence and the divisibility refinements it implies.",
+    "proofStrategy": "Start from Mathlib's `Nat.succ_mul_centralBinom_succ` and rewrite C(2n,n) as (n+1)·catalan n via `succ_mul_catalan_eq_centralBinom`. Cancelling the common nonzero factor n+1 with `Nat.eq_of_mul_eq_mul_left` gives the closed form `centralBinom_succ_eq`. Reading the closed form as a product yields the divisibilities catalan n ∣ C(2(n+1),n+1), 2(2n+1) ∣ C(2(n+1),n+1), the odd factor (2n+1) ∣ C(2(n+1),n+1), and (re-deriving Mathlib) 2 ∣ C(2(n+1),n+1). Applying `succ_mul_catalan_eq_centralBinom` at index n+1 and substituting the closed form gives the two-term Catalan recurrence (n+2)·catalan(n+1) = 2(2n+1)·catalan n. Finally, a short gcd-peeling argument shows the two natural divisors n+1 and 2n+1 are coprime. Three `#eval`-free numeric `example`s sanity-check the closed form and recurrence against C(2,1)=2, C(6,3)=20.",
+    "keyInsights": [
+      "**The Catalan number is the exact cofactor of 2(2n+1).** Cancelling n+1 from the Mathlib recurrence collapses it to C(2(n+1),n+1) = 2(2n+1)·catalan n — a closed form Mathlib does not state, since it derives integrality via Gosper telescoping instead.",
+      "**The odd factor 2n+1 divides the next central binomial coefficient.** This strengthens Mathlib's `two_dvd_centralBinom_succ` (the even factor 2); both factors, and their product 2(2n+1), divide C(2(n+1),n+1).",
+      "**An elementary two-term Catalan recurrence falls out for free.** (n+2)·catalan(n+1) = 2(2n+1)·catalan n is the standard computational recurrence for Catalan numbers, obtained here without binomial coefficients once the closed form is in hand.",
+      "**The two natural divisors are coprime.** gcd(n+1, 2n+1) = 1 (peel 2n+1 = n + 1·(n+1) down to gcd(n,1)=1), explaining why the n+1 and 2n+1 divisibilities act independently on consecutive central binomial coefficients."
+    ],
+    "prerequisites": [
+      "Central binomial coefficients and Catalan numbers",
+      "Elementary divisibility and gcd in ℕ"
+    ]
+  },
+  "conclusion": {
+    "summary": "Starting from two Mathlib facts about the central binomial recurrence, a single cancellation of n+1 yields the closed form C(2(n+1),n+1) = 2(2n+1)·catalan n. From it follow four divisibility statements for the next central binomial coefficient (by catalan n, by 2(2n+1), by the odd factor 2n+1, and by 2), the elementary two-term Catalan recurrence (n+2)·catalan(n+1) = 2(2n+1)·catalan n, and the coprimality of the divisors n+1 and 2n+1. All eight theorems are fully machine-checked with no axioms or sorries.",
+    "implications": "These refinements sharpen the divisibility structure underlying Erdős #396: the recurrence pins down exactly which small factors are guaranteed to divide consecutive central binomial coefficients, separating the contribution of the even factor 2 from the odd factor 2n+1. The explicit Catalan recurrence also gives an axiom-free elementary route to Catalan integrality, parallel to Mathlib's Gosper telescoping.",
+    "openQuestions": [
+      "Does iterating the closed form give a clean product formula for C(2n,n) in terms of the odd double factorial (2n−1)!!, and can that route reprove n+1 ∣ C(2n,n) elementarily?",
+      "Which composite divisors d ∣ C(2(n+1),n+1) are forced beyond 2(2n+1) and n+2, and how do they relate to the descending-factorial products in the #396 conjecture?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "Erdos396OQ04",
+    "lineCount": 131,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos396OQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-396",
+      "relationship": "parent",
+      "description": "Parent problem: descending factorials dividing central binomial coefficients. This OQ sharpens the central binomial recurrence underlying the Catalan divisibility base case."
+    }
+  ],
+  "sorries": 0
+}

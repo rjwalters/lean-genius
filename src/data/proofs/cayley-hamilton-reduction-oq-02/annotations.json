@@ -1,0 +1,182 @@
+[
+  {
+    "id": "ann-charpoly-imports",
+    "proofId": "cayley-hamilton-reduction-oq-02",
+    "range": {
+      "startLine": 22,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Mathlib Characteristic and Minimal Polynomial Infrastructure",
+    "content": "Imports Mathlib's Charpoly.Basic (characteristic polynomial definition and Cayley-Hamilton), Charpoly.Minpoly (relationship between charpoly and minpoly), and Polynomial.Basic (polynomial ring operations including division and modular reduction).",
+    "mathContext": "The characteristic polynomial $\\chi_M = \\det(XI - M) \\in R[X]$ is monic of degree $n$. The minimal polynomial $\\mu_M$ is the monic polynomial of smallest degree with $\\mu_M(M) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "characteristic polynomial",
+      "minimal polynomial",
+      "polynomial ring",
+      "matrix algebra"
+    ],
+    "prerequisites": [
+      "commutative ring theory",
+      "polynomial rings",
+      "matrix algebra"
+    ]
+  },
+  {
+    "id": "ann-minpoly-dvd-charpoly",
+    "proofId": "cayley-hamilton-reduction-oq-02",
+    "range": {
+      "startLine": 38,
+      "endLine": 44
+    },
+    "type": "concept",
+    "title": "Minpoly Divides Charpoly",
+    "content": "Proves μ_M | χ_M in two steps: (1) Cayley-Hamilton gives χ_M(M) = 0 via `Matrix.aeval_self_charpoly`, making χ_M an annihilating polynomial; (2) `minpoly.dvd` says the minimal polynomial divides any annihilating polynomial, yielding the divisibility. This is the foundational structural relationship between the two polynomials.",
+    "mathContext": "$\\mu_M \\mid \\chi_M$. Proof: Cayley-Hamilton gives $\\chi_M(M) = 0$. By the universal property of $\\mu_M$: $\\mu_M \\mid f$ for any $f$ with $f(M) = 0$. Hence $\\mu_M \\mid \\chi_M$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cayley-Hamilton theorem",
+      "universal property of minpoly",
+      "annihilating ideal"
+    ],
+    "prerequisites": [
+      "Cayley-Hamilton theorem",
+      "definition of minimal polynomial"
+    ]
+  },
+  {
+    "id": "ann-degree-comparison",
+    "proofId": "cayley-hamilton-reduction-oq-02",
+    "range": {
+      "startLine": 46,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "Degree Comparison",
+    "content": "Derives deg(μ_M) ≤ deg(χ_M) from the divisibility μ_M | χ_M using `Polynomial.natDegree_le_of_dvd`. The second argument `Matrix.charpoly_ne_zero` ensures χ_M ≠ 0 (it is monic of degree n). Since deg(χ_M) = n, this gives deg(μ_M) ≤ n.",
+    "mathContext": "$\\deg(\\mu_M) \\leq \\deg(\\chi_M) = n$. This follows from $\\mu_M \\mid \\chi_M$ and $\\chi_M \\neq 0$: if $f \\mid g$ and $g \\neq 0$, then $\\deg(f) \\leq \\deg(g)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial degree",
+      "divisibility and degree",
+      "matrix dimension"
+    ],
+    "prerequisites": [
+      "minpoly divides charpoly",
+      "polynomial degree properties"
+    ]
+  },
+  {
+    "id": "ann-reduction-bound",
+    "proofId": "cayley-hamilton-reduction-oq-02",
+    "range": {
+      "startLine": 57,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Minpoly Reduction Degree Bound",
+    "content": "Proves that the remainder p mod μ_M has degree strictly less than deg(μ_M), or is zero. Uses case analysis: if the remainder is nonzero, `Polynomial.natDegree_modByMonic_lt` (applied with `minpoly.monic`) gives the strict bound. This quantifies the efficiency gain: reducing mod μ_M produces polynomials of degree < deg(μ_M) ≤ n.",
+    "mathContext": "$p \\bmod \\mu_M = 0$ or $\\deg(p \\bmod \\mu_M) < \\deg(\\mu_M)$. When $\\deg(\\mu_M) < n$ (derogatory case), this is strictly better than reducing mod $\\chi_M$ which gives degree $< n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial division",
+      "monic polynomial",
+      "Euclidean division"
+    ],
+    "prerequisites": [
+      "monic polynomial division",
+      "minpoly is monic"
+    ]
+  },
+  {
+    "id": "ann-eval-equivalence",
+    "proofId": "cayley-hamilton-reduction-oq-02",
+    "range": {
+      "startLine": 67,
+      "endLine": 74
+    },
+    "type": "insight",
+    "title": "Evaluation Equivalence Under Minpoly Reduction",
+    "content": "Proves that reducing p modulo μ_M does not change the matrix evaluation: (p mod μ_M)(M) = p(M). The proof uses the division algorithm decomposition p = q·μ_M + r (via `Polynomial.modByMonic_add_div`), then evaluates at M: p(M) = q(M)·μ_M(M) + r(M) = q(M)·0 + r(M) = r(M), using `minpoly.aeval` which gives μ_M(M) = 0.",
+    "mathContext": "$(p \\bmod \\mu_M)(M) = p(M)$. Proof: write $p = q \\cdot \\mu_M + r$. Then $p(M) = q(M) \\cdot \\mu_M(M) + r(M) = 0 + r(M)$ since $\\mu_M(M) = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial evaluation",
+      "ring homomorphism",
+      "annihilating polynomial"
+    ],
+    "prerequisites": [
+      "division algorithm for polynomials",
+      "minpoly annihilates M"
+    ]
+  },
+  {
+    "id": "ann-non-derogatory-def",
+    "proofId": "cayley-hamilton-reduction-oq-02",
+    "range": {
+      "startLine": 80,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Non-Derogatory Matrix Definition",
+    "content": "Defines a matrix M as non-derogatory when deg(μ_M) = deg(χ_M). Equivalently, μ_M and χ_M are associates (both monic, same degree, one divides the other implies equality). Non-derogatory matrices have the simplest invariant factor structure: a single invariant factor equal to the characteristic polynomial.",
+    "mathContext": "A matrix $M$ is non-derogatory if $\\deg(\\mu_M) = \\deg(\\chi_M) = n$. This is equivalent to $\\mu_M = \\chi_M$ (since both are monic and $\\mu_M \\mid \\chi_M$ with equal degrees).",
+    "significance": "key",
+    "relatedConcepts": [
+      "invariant factors",
+      "rational canonical form",
+      "companion matrix",
+      "cyclic vector"
+    ],
+    "prerequisites": [
+      "minimal polynomial",
+      "characteristic polynomial",
+      "monic polynomial"
+    ]
+  },
+  {
+    "id": "ann-nonderogatory-equiv",
+    "proofId": "cayley-hamilton-reduction-oq-02",
+    "range": {
+      "startLine": 86,
+      "endLine": 92
+    },
+    "type": "concept",
+    "title": "Equal Efficiency for Non-Derogatory Matrices",
+    "content": "States that for non-derogatory matrices, reduction modulo μ_M and χ_M produce remainders of equal degree (or both zero). Since μ_M = χ_M for non-derogatory matrices, this should follow directly. The sorry likely needs explicit reasoning about the degree equality implying the polynomials are equal (both monic, one divides the other, same degree).",
+    "mathContext": "If $M$ is non-derogatory, then $\\mu_M = \\chi_M$, so $p \\bmod \\mu_M = p \\bmod \\chi_M$ and the reductions have identical degrees.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial equality",
+      "monic divisors",
+      "reduction equivalence"
+    ],
+    "prerequisites": [
+      "non-derogatory definition",
+      "minpoly divides charpoly"
+    ]
+  },
+  {
+    "id": "ann-companion-existence",
+    "proofId": "cayley-hamilton-reduction-oq-02",
+    "range": {
+      "startLine": 94,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "Companion Matrices Are Non-Derogatory",
+    "content": "Claims the existence of non-derogatory matrices: for any monic polynomial p of positive degree, there exists a matrix M (the companion matrix of p) with IsNonDerogatory M. The companion matrix of p has p as both its minimal and characteristic polynomial. This is the canonical construction in rational canonical form theory — every non-derogatory matrix is similar to a companion matrix.",
+    "mathContext": "For any monic $p \\in R[X]$ with $\\deg(p) > 0$, the companion matrix $C_p \\in M_{\\deg(p)}(R)$ satisfies $\\mu_{C_p} = \\chi_{C_p} = p$. Hence $C_p$ is non-derogatory.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "companion matrix",
+      "rational canonical form",
+      "Frobenius normal form"
+    ],
+    "prerequisites": [
+      "companion matrix definition",
+      "non-derogatory definition"
+    ]
+  }
+]

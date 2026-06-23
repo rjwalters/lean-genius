@@ -1,0 +1,243 @@
+{
+  "id": "fourier-series-oq-02-oq-02",
+  "title": "Fourier Coefficient Square-Summability via p-Series (Elementary Proof)",
+  "slug": "fourier-series-oq-02-oq-02",
+  "description": "Elementary proof that Fourier coefficients of α-Hölder functions (α > 1/2) are square-summable, using only the Hölder decay bound and the p-series convergence criterion — no Parseval's theorem or L² theory required. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Classical result; formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fourier_series#Convergence",
+    "date": "Classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FourierSeriesOQ02OQ02.lean",
+    "tags": [
+      "harmonic-analysis",
+      "fourier-series",
+      "holder-continuity",
+      "p-series",
+      "comparison-test",
+      "square-summability"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.summable_nat_rpow_inv",
+        "description": "p-Series convergence: ∑ 1/n^β converges iff β > 1",
+        "module": "Mathlib.Analysis.PSeries"
+      },
+      {
+        "theorem": "summable_int_iff_summable_nat_and_neg",
+        "description": "Summability over ℤ reduces to summability over ℕ positive and negative halves",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Summable.of_norm_bounded_eventually",
+        "description": "Comparison test: summability of dominating series implies summability of dominated series (cofinite exceptions allowed)",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Real.rpow_mul_natCast",
+        "description": "x^(y*n) = (x^y)^n bridging real and natural number powers",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.div_rpow",
+        "description": "(a/b)^c = a^c / b^c for non-negative reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "pow_le_pow_left₀",
+        "description": "a ≤ b → a^n ≤ b^n for non-negative a, b — squaring preserves the Hölder bound",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "fourierCoeff_holder_decay",
+        "description": "Hölder decay bound ‖ĉ_n(f)‖ ≤ (C/2)·(T/(2|n|))^α — from FourierSeriesOQ02",
+        "module": "Proofs.FourierSeriesOQ02"
+      }
+    ],
+    "originalContributions": [
+      "summable_const_div_int_rpow: p-series over ℤ by splitting into positive/negative ℕ halves",
+      "fourierCoeff_sq_le_pseries_term: squared Hölder bound reformulated as K/|n|^{2α} with K=(C/2)^2·(T/2)^{2α}",
+      "fourierCoeff_sq_summable_of_holder_pseries: main theorem — square-summability via comparison test (no L² theory)",
+      "Key insight: the condition α > 1/2 is exactly the threshold for the p-series 1/|n|^{2α} to converge (2α > 1)"
+    ],
+    "dateAdded": "2026-04-23",
+    "lineCount": 226,
+    "assumptions": "None. All theorems including holder_half_is_critical_for_pseries (harmonic series sharpness) are fully proved.",
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "FourierSeriesOQ02.lean: Hölder decay bound fourierCoeff_holder_decay",
+      "Mathlib PSeries: Real.summable_nat_rpow_inv for p-series convergence",
+      "Comparison test: Summable.of_norm_bounded_eventually"
+    ],
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The square-summability of Fourier coefficients (Parseval-Bessel theorem) is usually proved via L² theory: f continuous on AddCircle T → bounded → L² → Parseval's identity (∑ ‖ĉ_n‖² = ‖f‖²). However, for Hölder-continuous functions with Hölder exponent α > 1/2, there is a completely elementary alternative: the explicit decay rate ‖ĉ_n‖ = O(|n|^{-α}) combined with the p-series criterion ∑ 1/n^β < ∞ for β > 1. Since 2α > 1, the squared bound O(|n|^{-2α}) satisfies the comparison test. This approach bypasses Parseval's theorem entirely.\n\n**Parseval and the identity's history**: Marc-Antoine Parseval stated the identity ∑|ĉ_n|² = ‖f‖²_L² in 1799 as a formula for trigonometric series, without a rigorous proof (predating the modern definitions of L² and Lebesgue integration). The identity was systematically studied by Bessel (1828), who proved the *inequality* ∑|ĉ_n|² ≤ ‖f‖²_L² for any orthonormal system — the version now called Bessel's inequality. Full equality (the Parseval-Plancherel identity) requires completeness of the trigonometric system, first proved rigorously by Plancherel (1910) in the general L² setting via Riesz-Fischer.\n\n**Hölder decay and Bernstein's theorem**: For α-Hölder continuous functions, the Fourier coefficient decay rate |ĉ_n| = O(|n|^{-α}) was known from classical analysis (Weyl, early 20th century). Serge Bernstein (1914) strengthened this: if α > 1/2, then ∑|ĉ_n| < ∞ (absolute convergence of the Fourier series). The proof is a Cauchy-Schwarz argument: ∑|ĉ_n| ≤ (∑|ĉ_n|²)^{1/2} · (∑ 1)^{1/2}, but that only works for finite sums. The actual argument uses Cauchy-Schwarz on the series: (∑_{n≠0} |ĉ_n|)² ≤ (∑_{n≠0} n^{2α} |ĉ_n|²) · (∑_{n≠0} n^{-2α}). Since α > 1/2 implies 2α > 1, the second factor converges, and the first is bounded by the Hölder decay. This formalization (`fourierCoeff_sq_summable_of_holder_pseries`) establishes the L² bound that is the key step toward Bernstein's conclusion.\n\n**The elementary alternative**: The proof in this file avoids Plancherel's theorem by using the p-series criterion directly on the squared coefficient bound. This is historically analogous to Cauchy's original ratio test approach to series convergence — an elementary argument that predates the more powerful abstract L² machinery. The formalization highlights how classical Hölder regularity combined with elementary series tests can replace the full strength of the Parseval-Plancherel theory for this particular result.",
+    "problemStatement": "**Open Question (OQ-02)**: Is there an elementary proof of square-summability for Fourier coefficients of Hölder functions that avoids Parseval's theorem and L² theory?\n\n**Answer**: YES. The p-series comparison argument gives the same conclusion using only:\n1. The Hölder decay bound ‖ĉ_n‖ ≤ (C/2)·(T/(2|n|))^α (from FourierSeriesOQ02)\n2. The p-series ∑ 1/n^β < ∞ for β > 1 (Real.summable_nat_rpow_inv)\n3. The comparison test (Summable.of_norm_bounded_eventually)\n\nThe threshold α > 1/2 (equivalently 2α > 1) is sharp: at α = 1/2, the bound O(|n|^{-1}) leads to the harmonic series which diverges.",
+    "text": "Elementary proof of Fourier coefficient square-summability for α-Hölder functions (α > 1/2) via the p-series comparison test. No Parseval's theorem or L² theory needed — only the quantitative Hölder decay bound and basic real analysis.",
+    "proofStrategy": "Three-phase elementary argument:\n1. **p-Series over ℤ**: Prove ∑_{n:ℤ} K/|n|^β < ∞ for β > 1 by splitting into positive/negative ℕ halves and applying `Real.summable_nat_rpow_inv`.\n2. **Squared decay bound**: For n ≠ 0, square the Hölder bound to get ‖ĉ_n‖² ≤ K/|n|^{2α} where K = (C/2)²·(T/2)^{2α}. Key step: (T/(2|n|))^{2α} = (T/2)^{2α}/|n|^{2α} via `Real.div_rpow`.\n3. **Comparison**: Since 2α > 1 (from α > 1/2), the dominating series ∑ K/|n|^{2α} converges. Apply `Summable.of_norm_bounded_eventually` with the n=0 exception handled via cofinite filter.",
+    "keyInsights": [
+      "**No L² needed**: The quantitative decay bound ‖ĉ_n‖ = O(|n|^{-α}) is stronger than needed for the qualitative L² result — it directly gives square-summability by comparison.",
+      "**Sharp threshold**: The condition α > 1/2 is exactly sharp for the p-series argument: 2α > 1 iff the comparison series converges. At α = 1/2 the series ∑ 1/|n| diverges.",
+      "**ℤ-splitting pattern**: `summable_int_iff_summable_nat_and_neg` reduces ℤ summability to two ℕ p-series — a reusable pattern for any symmetric decay bound over ℤ.",
+      "**rpow_mul_natCast bridge**: `Real.rpow_mul_natCast hb α 2` gives `b^(α*2) = (b^α)^2`, connecting real and natural number powers without `norm_cast` complications.",
+      "**Cofinite comparison**: `Summable.of_norm_bounded_eventually` allows the n=0 term (where |↑0| = 0 makes K/|n|^β ill-defined) to be excluded — the set {0} is finite hence in cofinite.",
+      "**Riemann zeta as the explicit sum bound**: The dominated series $\\sum_{n:\\mathbb{Z},n\\neq 0} K/|n|^{2\\alpha}$ evaluates to $2K\\cdot\\zeta(2\\alpha)$ where $\\zeta$ is the Riemann zeta function. At the critical case $\\alpha = 1$ (Lipschitz functions, $2\\alpha = 2$), this is $2K \\cdot \\pi^2/6 = K\\pi^2/3$ — the Basel problem value. For $\\alpha \\to 1/2^+$ the bound diverges ($\\zeta(1^+) = \\infty$, harmonic series), consistent with the sharpness theorem `holder_half_is_critical_for_pseries`. The elementary p-series proof is thus a special case of the general relation between Fourier coefficient $\\ell^2$ norms and Euler's $\\zeta$ function.",
+      "**Bernstein's theorem as a Cauchy-Schwarz corollary**: Bernstein (1914) proved that $\\alpha > 1/2$ Hölder implies *absolute* convergence $\\sum_{n:\\mathbb{Z}} |\\hat{c}_n| < \\infty$ — a strictly stronger conclusion than square-summability. The derivation uses Cauchy-Schwarz on $\\ell^2$: for any $N$, $\\sum_{0<|n|\\leq N} |\\hat{c}_n| = \\sum_{0<|n|\\leq N} |\\hat{c}_n| \\cdot 1 \\leq (\\sum_{0<|n|\\leq N} n^{2\\alpha}|\\hat{c}_n|^2)^{1/2} \\cdot (\\sum_{0<|n|\\leq N} n^{-2\\alpha})^{1/2}$. The second factor is $\\leq \\sqrt{2\\zeta(2\\alpha)} < \\infty$ (since $2\\alpha > 1$), and the first is bounded by the $\\alpha$-Hölder energy. Thus `fourierCoeff_sq_summable_of_holder_pseries` is the key building block for Bernstein's theorem — formalizing it as a Lean corollary is the third open question of this entry."
+    ],
+    "prerequisites": [
+      "FourierSeriesOQ02.lean: parent proof with quantitative Hölder decay bounds and IsHolderOnCircle definition",
+      "FourierSeriesOQ02OQ01.lean: sibling proof showing the L²/Parseval route to the same result"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Block comment (lines 1–33) documenting the problem and proof strategy. Line 34: import of parent FourierSeriesOQ02.lean. Lines 35–41: opens, set_option maxHeartbeats 800000 (algebraic cost of Real.rpow manipulations), and namespace FourierSqSummablePSeries.",
+      "mathContext": "Single import `Proofs.FourierSeriesOQ02` brings in `fourierCoeff_holder_decay` (the quantitative Hölder decay bound) and `IsHolderOnCircle`. The `set_option maxHeartbeats 800000` signals that `Real.rpow` arithmetic is expensive — the `rpow_mul_natCast` bridge in particular requires extended elaboration."
+    },
+    {
+      "id": "part-i-pseries",
+      "title": "Part I: p-Series Summability over ℤ",
+      "startLine": 53,
+      "endLine": 78,
+      "summary": "Two theorems: summable_const_div_nat_rpow (p-series over ℕ via Real.summable_nat_rpow_inv) and summable_const_div_int_rpow (p-series over ℤ by splitting into positive/negative halves via summable_int_iff_summable_nat_and_neg).",
+      "mathContext": "The p-series $\\sum_{n:\\mathbb{N}} K/n^\\beta < \\infty$ for $\\beta > 1$ is `Real.summable_nat_rpow_inv`. Extension to $\\mathbb{Z}$: `summable_int_iff_summable_nat_and_neg` reduces to two ℕ p-series (positive and negative halves), both convergent for $\\beta > 1$."
+    },
+    {
+      "id": "part-ii-decay-bound",
+      "title": "Part II: Squared Decay Bound",
+      "startLine": 79,
+      "endLine": 131,
+      "summary": "Helper mul_rpow_sq (line 79): (a·b^α)² = a²·b^{2α}. Main theorem fourierCoeff_sq_le_pseries_term (line 87): ‖ĉ_n‖² ≤ K/|n|^{2α} for n ≠ 0, derived by squaring the Hölder decay bound from FourierSeriesOQ02.",
+      "mathContext": "The key algebraic chain: $(T/(2|n|))^\\alpha \\xrightarrow{\\text{div\\_rpow}} (T/2)^\\alpha/|n|^\\alpha \\xrightarrow{\\text{square}} K/|n|^{2\\alpha}$ where $K = (C/2)^2(T/2)^{2\\alpha}$. Uses `pow_le_pow_left₀` to square the norm inequality and `Real.div_rpow` to factor $|n|^{2\\alpha}$ out of the power."
+    },
+    {
+      "id": "part-iii-main",
+      "title": "Part III: Main Theorem — Square-Summability via p-Series",
+      "startLine": 132,
+      "endLine": 164,
+      "summary": "fourierCoeff_sq_summable_of_holder_pseries: main theorem proving ∑ ‖ĉ_n‖² < ∞ by comparison with the p-series ∑ K/|n|^{2α}. Uses Summable.of_norm_bounded_eventually with the cofinite filter for the n=0 exception (where |n|=0 makes K/|n|^{2α} undefined).",
+      "mathContext": "Comparison: $\\|\\hat{c}_n\\|^2 \\leq K/|n|^{2\\alpha}$ for $n \\neq 0$, and $\\sum_{n:\\mathbb{Z}} K/|n|^{2\\alpha} < \\infty$ since $2\\alpha > 1$. `Summable.of_norm_bounded_eventually` handles the $n=0$ exception via `Set.finite_singleton (0:ℤ)` in the cofinite filter."
+    },
+    {
+      "id": "part-iv-corollaries",
+      "title": "Part IV: Corollaries and Sharpness",
+      "startLine": 165,
+      "endLine": 226,
+      "summary": "Three theorems: sq_summable_matches_parseval (aliases the main theorem, matching the parent's conclusion), fourier_coeff_l2 (existential HasSum form), and holder_half_is_critical_for_pseries (sharpness: α = 1/2 fails the p-series test — harmonic series diverges, fully proved).",
+      "mathContext": "Sharpness at $\\alpha = 1/2$: `holder_half_is_critical_for_pseries` is fully proved. The proof assumes the universal summability statement, instantiates with the zero function (Hölder with any exponent), applies `summable_int_iff_summable_nat_and_neg` to extract the ℕ positive half, then rescales via `.mul_left (4/π)` to recover the harmonic series $\\sum 1/n$. Contradiction follows from `Real.summable_nat_rpow_inv.not.mpr (by norm_num)` (p=1 fails $p > 1$ criterion). This avoids direct ℤ-harmonic series divergence by routing through ℕ."
+    }
+  ],
+  "conclusion": {
+    "summary": "Square-summability of Fourier coefficients for Hölder functions (α > 1/2) can be proved elementarily by squaring the decay bound and applying the p-series criterion, entirely bypassing L² theory and Parseval's theorem.",
+    "implications": "**Proof economy**: The L²/Parseval approach (FourierSeriesOQ02OQ01) is shorter (~15 lines) but less quantitative. The p-series approach here gives a concrete rate: ∑ ‖ĉ_n‖² ≤ |ĉ_0|² + 2K·ζ(2α) where ζ is the Riemann zeta function.\n\n**Sharp threshold**: The argument reveals α = 1/2 as the exact critical Hölder exponent for p-series summability — a threshold invisible from the Parseval approach.",
+    "openQuestions": [
+      "Can the harmonic series divergence over ℤ (∑_{n:ℤ, n≠0} 1/|n| = ∞) be proved directly in Lean 4 using Mathlib's existing Real.summable_nat_rpow?",
+      "Does the explicit bound ∑ ‖ĉ_n‖² ≤ K·ζ(2α) yield effective approximation rates for truncated Fourier series of Hölder functions?",
+      "Bernstein's 1914 theorem states that α > 1/2 Hölder implies absolute convergence ∑|ĉ_n| < ∞, via a Cauchy-Schwarz argument on the squared sum. Can this be formalized as a corollary of `fourierCoeff_sq_summable_of_holder_pseries` using Mathlib's Cauchy-Schwarz for sequences (`inner_mul_le_norm_mul_iff` or `Finset.inner_mul_le_norm_sq_mul_norm_sq`)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fourier-series-oq-02",
+      "relationship": "parent",
+      "description": "Parent proof: quantitative Hölder decay ‖ĉ_n‖ ≤ (C/2)(T/2|n|)^α — this entry builds directly on that bound to prove square-summability by squaring and applying the p-series test"
+    },
+    {
+      "targetId": "fourier-series-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Alternative proof of the same square-summability result via the L²/Parseval route (continuity → bounded → L² → Parseval identity) — shorter (~15 lines) but less quantitative; this entry's p-series approach gives the explicit rate ≤ K·ζ(2α)"
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The sharpness theorem `holder_half_is_critical_for_pseries` (at α=1/2, the p-series argument fails) ultimately relies on harmonic series divergence: the squared bound O(|n|^{-1}) is summable iff the harmonic series converges. The proof routes through `Real.summable_nat_rpow_inv.not.mpr (norm_num : ¬ 1 < 1)` — precisely the criterion for harmonic divergence (p=1 case). This entry's sharpness proof is thus a Lean application of harmonic series divergence to the Fourier setting"
+    },
+    {
+      "targetId": "fourier-series-oq-02-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling studying sharpness of the constant 1/2 in the Hölder decay bound ‖ĉ_n‖ ≤ (1/2)·C·(T/2|n|)^α. While this entry studies the sharp threshold on the Hölder exponent α > 1/2, that entry investigates the sharp multiplicative constant. Together they characterize both dimensions of optimality in the Hölder-Fourier decay"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "Cauchy-Schwarz inequality is the key tool in Bernstein's 1914 theorem — the next step beyond this entry. Bernstein proved α > 1/2 Hölder implies absolute convergence ∑|ĉ_n| < ∞ via: (∑|ĉ_n|)² ≤ (∑|ĉ_n|²)·(∑1), suitably generalized. The formalization of Bernstein's theorem as a corollary of `fourierCoeff_sq_summable_of_holder_pseries` using Mathlib's Cauchy-Schwarz for sequences is the third open question of this entry"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem establishes ζ(2) = π²/6. This entry's square-summability bound evaluates explicitly to ∑ ‖ĉ_n‖² ≤ 2K·ζ(2α). At α=1 (Lipschitz functions, 2α=2), the dominating sum is 2K·π²/6 = Kπ²/3 — a concrete instance of the Basel identity. The connection reveals that the p-series proof of Fourier coefficient square-summability is a special case of the Riemann zeta function's role in evaluating convergent p-series"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "extends",
+      "description": "Top-level Fourier series entry covering the classical theory: coefficient decay, pointwise convergence, and L² completeness. This entry provides the elementary answer to a sub-question of that cluster: whether square-summability can be established without L² theory for sufficiently regular (α-Hölder, α > 1/2) functions"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.FourierSeriesOQ02"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Complex",
+      "Topology",
+      "Filter",
+      "AddCircle",
+      "FourierHolderDecay"
+    ],
+    "namespace": "FourierSqSummablePSeries",
+    "lineCount": 226,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/FourierSeriesOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Parseval des Chênes, Marc-Antoine",
+      "title": "Mémoire sur les séries et sur l'intégration complète d'une équation aux differences partielles linéaires du second ordre, à coefficients constants",
+      "year": "1799",
+      "venue": "Mémoires présentés à l'Institut des Sciences, Lettres et Arts par divers savants, 1",
+      "note": "First statement of the Parseval identity ∑|ĉ_n|² = ‖f‖² for trigonometric series, without rigorous proof."
+    },
+    {
+      "authors": "Bessel, Friedrich Wilhelm",
+      "title": "Über die Bestimmung des Gesetzes einer periodischen Erscheinung",
+      "year": "1828",
+      "venue": "Astronomische Nachrichten, 6",
+      "note": "Proved the inequality ∑|ĉ_n|² ≤ ‖f‖²_L² for any orthonormal system — now called Bessel's inequality — the precursor to Parseval's identity."
+    },
+    {
+      "authors": "Bernstein, Serge",
+      "title": "Sur la convergence absolue des séries trigonométriques",
+      "year": "1914",
+      "venue": "Comptes Rendus de l'Académie des Sciences, 158",
+      "note": "Proved that α > 1/2 Hölder continuity implies absolute convergence of the Fourier series ∑|ĉ_n| < ∞, via Cauchy-Schwarz on the L² coefficient bounds."
+    },
+    {
+      "authors": "Plancherel, Michel",
+      "title": "Contribution à l'étude de la représentation d'une fonction arbitraire par des intégrales définies",
+      "year": "1910",
+      "venue": "Rendiconti del Circolo Matematico di Palermo, 30",
+      "note": "Established the Parseval-Plancherel identity in full generality for L² functions, completing the program Parseval had begun in 1799."
+    },
+    {
+      "authors": "Katznelson, Yitzhak",
+      "title": "An Introduction to Harmonic Analysis",
+      "year": "1968",
+      "venue": "John Wiley & Sons (3rd ed., Dover 2004)",
+      "note": "Chapter I covers Fourier coefficient decay for Hölder functions; Chapter VI covers absolute convergence and Bernstein's theorem. Standard reference for classical Fourier analysis."
+    }
+  ]
+}

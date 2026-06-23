@@ -1,0 +1,241 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-03",
+  "title": "Nonderogatory Operators via Module Theory (Infinite-Dimensional Extension)",
+  "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-03",
+  "description": "Extends the nonderogatory/cyclic vector theory from finite-dimensional matrices to arbitrary K-modules. A linear endomorphism T on V makes V into a K[X]-module; T is nonderogatory exactly when V is cyclic as a K[X]-module. Builds the evaluation map p ↦ p(T)v, identifies its range with the cyclic subspace, and proves an orbit dimension bound for integral endomorphisms together with the implication that a nonderogatory matrix over an infinite field has a cyclic vector.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cyclic_module",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ03.lean",
+    "tags": [
+      "linear-algebra",
+      "abstract-algebra",
+      "minimal-polynomial",
+      "cyclic-vector",
+      "module-theory",
+      "infinite-dimensional",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.aeval",
+        "description": "Polynomial evaluation as an algebra homomorphism",
+        "module": "Mathlib.RingTheory.Polynomial.Basic"
+      },
+      {
+        "theorem": "minpoly.aeval",
+        "description": "Minimal polynomial annihilates its element",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "minpoly.dvd",
+        "description": "Minpoly divides any annihilating polynomial",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "Submodule.span",
+        "description": "K-linear span of a set",
+        "module": "Mathlib.LinearAlgebra.Span"
+      },
+      {
+        "theorem": "Ideal.mem_span_singleton",
+        "description": "Membership in principal ideal",
+        "module": "Mathlib.RingTheory.Ideal.Basic"
+      }
+    ],
+    "originalContributions": [
+      "cyclicSubspace / IsCyclicVector / IsNonderogatory: module-theoretic definitions generalizing the matrix notions to arbitrary K-modules",
+      "evalMap: the K-linear evaluation map p -> p(T)v, with computational lemmas (evalMap_one/X/X_pow)",
+      "range_evalMap_eq_cyclicSubspace: the range of the evaluation map equals the cyclic subspace",
+      "isCyclicVector_iff_surjective / isCyclicVector_iff_forall_exists: cyclic-vector characterizations via the evaluation map",
+      "annihilator_mul_closed / minpoly_multiple_annihilates / annihilator_congr: annihilator-ideal structure for the K[X]-action",
+      "cyclicSubspace_le_minpoly_degree: orbit dimension bound — for integral T, T^k v lies in span{v,...,T^{d-1}v} once k >= d = deg(minpoly)",
+      "matrix_nonderogatory_implies_module: over an infinite field, a nonderogatory matrix (minpoly = charpoly) has a cyclic vector",
+      "minpoly_minimal_degree: no nonzero polynomial below deg(minpoly) annihilates an integral endomorphism"
+    ],
+    "dateAdded": "2026-03-28",
+    "prerequisites": [
+      "Polynomial evaluation (aeval) and algebra homomorphisms",
+      "Minimal polynomials and integrality",
+      "Submodule span and linear independence",
+      "Ideal theory in commutative rings"
+    ],
+    "relatedProblems": [
+      {
+        "id": "cayley-hamilton-minpoly-oq-05-oq-01",
+        "relationship": "Parent: nonderogatory matrices have cyclic vectors (finite-dimensional)"
+      },
+      {
+        "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-02",
+        "relationship": "Sibling: measure of cyclic vectors (ℝ case)"
+      },
+      {
+        "id": "cayley-hamilton-minpoly-oq-05",
+        "relationship": "Grandparent: minimal polynomial reduction in K-algebras"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 345,
+    "assumptions": "None. All theorems fully proved. matrix_nonderogatory_implies_module uses the parent proof (CayleyHamiltonMinpolyOQ05OQ01). The incorrect structure_theorem_cyclic_iff was replaced with minpoly_minimal_degree (proved via minpoly.dvd).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 19,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "The module-theoretic perspective on linear operators dates to Emmy Noether's foundational work on abstract algebra (1920s-30s). Given a linear endomorphism T on a K-vector space V, the space V acquires a K[X]-module structure via p * v = p(T)v. Under this identification, the 'nonderogatory' condition (minpoly = charpoly in finite dimensions) corresponds to V being a cyclic K[X]-module. This perspective is central to the structure theorem for finitely generated modules over PIDs, which gives the rational canonical form of a matrix. The infinite-dimensional extension raises new phenomena: the annihilator ideal can be trivial (no minimal polynomial), and the structure theorem for f.g. modules no longer directly applies.",
+    "problemStatement": "Extend the nonderogatory/cyclic vector theory from finite-dimensional matrices to arbitrary K-modules. Define nonderogatory in the module-theoretic framework, prove key structural results about cyclic subspaces and annihilator ideals, and demonstrate the theory works for infinite-dimensional spaces.",
+    "proofStrategy": "Define cyclicSubspace T v as the K-span of {T^n v | n in N}. Build the K-linear evaluation map evalMap T v : p -> p(T)v and show its range equals the cyclic subspace (forward by polynomial induction, backward by span induction). Characterize cyclic vectors as surjectivity of evalMap. Establish annihilator-ideal lemmas via commutativity of K[X]. For integral T, derive the orbit dimension bound T^k v in span{v,...,T^{d-1}v} for k >= deg(minpoly) from the monic minimal-polynomial relation, then bridge to the finite-dimensional matrix theory (nonderogatory matrix over an infinite field has a cyclic vector).",
+    "keyInsights": [
+      "The cyclic subspace equals the range of the polynomial action map, connecting geometric (span of Krylov vectors) and algebraic (K[X]-module quotient) perspectives",
+      "For cyclic vectors, pointwise annihilation p(T)v = 0 implies global annihilation p(T) = 0, because K[X] is commutative: p(T)(q(T)v) = q(T)(p(T)v) = 0",
+      "The annihilator ideal of a cyclic vector is generated by the minimal polynomial (when T is integral), connecting the ideal-theoretic and polynomial views",
+      "For an integral endomorphism the cyclic subspace of any vector is finite-dimensional with dimension at most deg(minpoly), bounding orbit size even when the ambient module is infinite-dimensional",
+      "The structure theorem for modules over PIDs gives invariant factors; V is nonderogatory iff it has a single invariant factor (cyclic as K[X]-module)"
+    ],
+    "prerequisites": [
+      "Polynomial evaluation in K-algebras (aeval)",
+      "Minimal polynomials and the integrality condition",
+      "Submodule span, closure under linear maps",
+      "Ideal theory: principal ideals, annihilators"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Module header plus the three core definitions: cyclicSubspace T v (the K-span of the Krylov orbit {T^k v}), IsCyclicVector T v (cyclicSubspace = ⊤), and IsNonderogatory T (∃ a cyclic vector). This is the module-theoretic generalization of nonderogatory from finite-dimensional matrices.",
+      "mathContext": "For a linear endomorphism $T$ on a $K$-module $V$, the cyclic subspace is $\\mathrm{cyc}(T,v) = \\operatorname{span}_K\\{v, Tv, T^2 v, \\ldots\\}$. A vector is cyclic when $\\mathrm{cyc}(T,v) = V$, and $T$ is nonderogatory (module sense) when such a $v$ exists, i.e. $V$ is a cyclic $K[X]$-module under $p \\cdot v = p(T)v$."
+    },
+    {
+      "id": "evaluation-map",
+      "title": "The Evaluation Map",
+      "startLine": 63,
+      "endLine": 98,
+      "summary": "Defines evalMap T v : K[X] →ₗ[K] V, the K-linear map p ↦ p(T)(v), and proves its computational lemmas evalMap_apply (= aeval T p v), evalMap_one (= v), evalMap_X (= T v), and evalMap_X_pow (= T^k v).",
+      "mathContext": "The evaluation map $\\varphi_v : K[X] \\to V$, $p \\mapsto p(T)v$, is the bridge between polynomial algebra and the orbit geometry: it is $K$-linear, sends $1 \\mapsto v$, $X \\mapsto Tv$, and $X^k \\mapsto T^k v$. Its image is the cyclic subspace and its kernel is the annihilator ideal of $v$."
+    },
+    {
+      "id": "cyclic-subspace-properties",
+      "title": "Cyclic Subspace Properties",
+      "startLine": 99,
+      "endLine": 132,
+      "summary": "Basic structural facts: v lies in its own cyclic subspace (mem_cyclicSubspace_self), each T^k v lies in it (pow_mem_cyclicSubspace), and the cyclic subspace is T-invariant (map_cyclicSubspace_le, cyclicSubspace_T_mem).",
+      "mathContext": "$\\mathrm{cyc}(T,v)$ is the smallest $T$-invariant subspace containing $v$. $T$-invariance is shown via $T(T^k v) = T^{k+1} v \\in \\mathrm{cyc}(T,v)$ extended by span induction."
+    },
+    {
+      "id": "range-evalmap",
+      "title": "Image of Evaluation Map = Cyclic Subspace",
+      "startLine": 133,
+      "endLine": 169,
+      "summary": "Proves range_evalMap_eq_cyclicSubspace: the range of evalMap T v equals cyclicSubspace T v. Forward direction uses polynomial induction (p(T)v is a K-combination of T^k v); backward uses span induction (each T^k v = evalMap (X^k)).",
+      "mathContext": "$\\operatorname{range}(\\varphi_v) = \\mathrm{cyc}(T,v)$ identifies the algebraic image $\\{p(T)v : p \\in K[X]\\}$ with the geometric span $\\operatorname{span}\\{T^k v\\}$, the key structural fact linking the two pictures."
+    },
+    {
+      "id": "cyclic-vector-characterization",
+      "title": "Cyclic Vector Characterization",
+      "startLine": 170,
+      "endLine": 186,
+      "summary": "Characterizes cyclic vectors via the evaluation map: isCyclicVector_iff_surjective (v cyclic ↔ evalMap surjective) and isCyclicVector_iff_forall_exists (v cyclic ↔ every w equals p(T)v for some p).",
+      "mathContext": "Since $\\operatorname{range}(\\varphi_v) = \\mathrm{cyc}(T,v)$, cyclicity ($\\mathrm{cyc}(T,v) = V$) is exactly surjectivity of $\\varphi_v$, equivalently $\\forall w\\, \\exists p,\\ p(T)v = w$."
+    },
+    {
+      "id": "annihilator-properties",
+      "title": "Annihilator Properties",
+      "startLine": 187,
+      "endLine": 221,
+      "summary": "Annihilator-ideal lemmas: the minimal polynomial annihilates every vector (minpoly_apply_eq_zero), the annihilator is closed under multiplication (annihilator_mul_closed), any minpoly multiple annihilates (minpoly_multiple_annihilates), and annihilation is invariant modulo minpoly (annihilator_congr).",
+      "mathContext": "The annihilator $\\{p : p(T)v = 0\\}$ is an ideal of $K[X]$ (closed under multiplication by arbitrary $q$). When $T$ is integral, $\\operatorname{minpoly}_K T$ annihilates every $v$, so the annihilator contains $(\\operatorname{minpoly}_K T)$ and is congruence-invariant modulo it."
+    },
+    {
+      "id": "orbit-dimension-bound",
+      "title": "Orbit Dimension Bound",
+      "startLine": 222,
+      "endLine": 291,
+      "summary": "Bounds orbit size even in infinite dimensions: finiteSpan_le_cyclicSubspace (the span of the first d powers sits inside the cyclic subspace) and cyclicSubspace_le_minpoly_degree (for an integral T, T^k v lies in span{v,…,T^{d-1}v} once k ≥ d = deg minpoly).",
+      "mathContext": "If $\\operatorname{minpoly}_K T$ is monic of degree $d$, the relation $\\mu(T)v = 0$ gives $T^d v = -\\sum_{i<d} \\mu_i\\, T^i v$, making $\\operatorname{span}\\{v, Tv, \\ldots, T^{d-1}v\\}$ $T$-invariant. By induction $T^k v$ lies in this finite span for all $k \\ge d$, so the cyclic subspace of any vector has dimension $\\le \\deg(\\operatorname{minpoly}_K T)$."
+    },
+    {
+      "id": "finite-dimensional-relation",
+      "title": "Relating to the Finite-Dimensional Case",
+      "startLine": 292,
+      "endLine": 318,
+      "summary": "Connects the module-theoretic definitions to the matrix theory: defines IsCyclicVectorMatrix and IsNonderogatoryMatrix (minpoly = charpoly), and proves matrix_nonderogatory_implies_module — over an infinite field, a nonderogatory matrix has a cyclic vector (via NonderogatoryComplete from OQ-05-OQ-01).",
+      "mathContext": "In dimension $n>0$ over an infinite field, the matrix notion (minpoly $=$ charpoly) implies the existence of a cyclic vector. The converse holds by the structure theorem but needs more infrastructure, so only the stated direction is formalized here."
+    },
+    {
+      "id": "invariant-factor-decomposition",
+      "title": "Invariant Factor Decomposition (Stated)",
+      "startLine": 319,
+      "endLine": 345,
+      "summary": "Records the minimality property minpoly_minimal_degree: for an integral T on a finite K-module, no nonzero polynomial of degree below deg(minpoly) annihilates T. Note: this holds for ALL integral endomorphisms, not only nonderogatory ones — the genuine nonderogatory characterization (single invariant factor / finrank = deg minpoly) requires the structure theorem and is left as a stated direction.",
+      "mathContext": "By $\\operatorname{minpoly}_K T \\mid p$ for any annihilator $p$, the minimal polynomial has least degree among nonzero annihilators. The full nonderogatory characterization — $T$ nonderogatory iff $V$ has a single invariant factor, equivalently $\\operatorname{finrank}_K V = (\\operatorname{minpoly}_K T).\\mathrm{natDegree}$ — depends on the structure theorem for f.g. modules over the PID $K[X]$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Module-theoretic framework for nonderogatory operators on arbitrary K-modules. Defines the cyclic subspace, the evaluation map p -> p(T)v, and annihilator-ideal structure with full characterization theorems, proves an orbit dimension bound for integral endomorphisms, and connects back to the finite-dimensional matrix case (nonderogatory matrix over an infinite field has a cyclic vector).",
+    "implications": "This extends the finite-dimensional result (OQ-05-OQ-01) to the general module setting. The framework connects to the structure theorem for modules over PIDs: a finitely generated K[X]-module is nonderogatory iff its invariant factor decomposition has a single factor. The orbit dimension bound shows that, even in infinite dimensions, each cyclic subspace of an integral endomorphism is finite-dimensional of dimension at most deg(minpoly).",
+    "openQuestions": [
+      "Formalize the structure theorem for f.g. modules over K[X] and its connection to the rational canonical form",
+      "Characterize which operators on countably-dimensional spaces have cyclic vectors",
+      "Connect the annihilator ideal to the spectrum of T in the infinite-dimensional case"
+    ]
+  },
+  "status": "verified",
+  "badge": "mathlib",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CayleyHamiltonMinpolyOQ05OQ01"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "NonderogatoryModule",
+    "lineCount": 345,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 6,
+    "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01",
+      "relationship": "extends",
+      "description": "Extends the finite-dimensional nonderogatory/cyclic vector result to arbitrary K-modules using the polynomial action framework"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05",
+      "relationship": "extends",
+      "description": "Grandparent: minimal polynomial reduction in K-algebras provides the algebraic foundation"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling: measure of cyclic vectors; both extend the parent in different directions"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer GTM 211, revised 3rd edition",
+      "note": "Chapter XV: structure theorem for modules over PIDs and its applications to linear algebra, including the rational canonical form via invariant factors"
+    },
+    {
+      "authors": "Jacobson, Nathan",
+      "title": "Basic Algebra I",
+      "year": "1985",
+      "venue": "W.H. Freeman, 2nd edition",
+      "note": "Module-theoretic approach to linear algebra: K[X]-module structure, cyclic decomposition, and the connection between invariant factors and rational canonical form"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,175 @@
+{
+  "id": "erdos-359",
+  "title": "Erdos Problem #359: MacMahon's Prime Numbers of Measurement",
+  "slug": "erdos-359",
+  "description": "What is the density of MacMahon's sequence where each term is the smallest integer not expressible as a sum of consecutive earlier terms? Conjectured: a_k ~ (k log k) / (log log k).",
+  "meta": {
+    "author": "MacMahon (1920s), Andrews (1975), Porubsky (1977)",
+    "sourceUrl": "https://erdosproblems.com/359",
+    "date": "1975",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos359Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "sequences",
+      "density",
+      "consecutive-sums"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 359,
+    "erdosUrl": "https://erdosproblems.com/359",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits for growth rate statements",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed intervals for consecutive sums",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strict monotonicity of the sequence",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "IsLeast",
+        "description": "Characterizing the minimum element",
+        "module": "Mathlib.Order.Bounds.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of consecutive sum achievability",
+      "Definition of MacMahon sequence as 'good for 1'",
+      "Verified examples of why 3 and 6 are skipped",
+      "Formalization of Andrews' asymptotic conjecture",
+      "Formalization of Porubsky's density bounds"
+    ],
+    "axiomCount": 0,
+    "lineCount": 207,
+    "assumptions": "0 axioms, 0 sorries. Partial formalization of MacMahon's sequence problem: defines the sequence recursively and proves 6 basic structural properties. The main open conjectures about density and asymptotic growth (macmahon_initial_values, growth_faster_than_linear, etc.) are not formalized.",
+    "theoremCount": 6,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "Erdos Problem #359 concerns MacMahon's 'prime numbers of measurement' (OEIS A002048), a sequence defined by P.A. MacMahon in the early 20th century. The sequence starts with 1, and each subsequent term is the smallest positive integer that cannot be expressed as a sum of consecutive earlier terms.\n\nThe sequence begins: 1, 2, 4, 5, 8, 10, 14, 15, 21, 22, 26, 28, ...\n\nGeorge Andrews studied this sequence in 1975 and conjectured that a_k ~ (k log k) / (log log k). Stefan Porubsky proved partial results in 1977, establishing bounds comparing the sequence to the prime counting function.\n\nThe question of the exact growth rate remains OPEN. It is conjectured that a_k/k tends to infinity (superlinear growth) but a_k/k^{1+c} tends to 0 for any c > 0 (subpolynomial growth).",
+    "problemStatement": "Let $a_1 < a_2 < \\cdots$ be an infinite sequence where $a_1 = n$ and $a_{i+1}$ is the smallest integer not expressible as a sum of consecutive earlier terms $a_j + a_{j+1} + \\cdots + a_k$.\n\n**Questions** (for $n = 1$):\n1. Prove $a_k / k \\to \\infty$\n2. Prove $a_k / k^{1+c} \\to 0$ for any $c > 0$\n\n**Conjecture** (Andrews): $a_k \\sim \\frac{k \\log k}{\\log \\log k}$\n\n**Status**: OPEN",
+    "text": "What is the density of MacMahon's sequence where each term is the smallest integer not expressible as a sum of consecutive earlier terms? Conjectured: a_k ~ (k log k) / (log log k).",
+    "proofStrategy": "We formalize the problem by defining:\n\n1. **ConsecutiveSum**: The sum of terms A(a) + A(a+1) + ... + A(b)\n2. **AchievableSums**: All integers expressible as consecutive sums\n3. **IsGoodFor**: A sequence is 'good for n' if A(0) = n and each A(j+1) is the smallest integer greater than A(j) not in AchievableSums\n4. **IsMacMahonSeq**: The sequence 'good for 1'\n\nThe growth rate conjectures are stated as axioms since they remain open. We verify concrete examples (why 3 and 6 are skipped) and formalize Porubsky's density bounds.",
+    "keyInsights": [
+      "**Consecutive sums**: Unlike subset sums, we only consider sums of consecutive terms. This is more restrictive but creates interesting gaps.",
+      "**OEIS A002048**: The MacMahon sequence 1, 2, 4, 5, 8, 10, 14, 15, ... is well-studied. Note 3 is missing because 3 = 1 + 2.",
+      "**Andrews' conjecture**: The growth rate a_k ~ (k log k) / (log log k) is superlinear but subpolynomial - a delicate intermediate growth.",
+      "**Porubsky's comparison**: The sequence is denser than primes by a factor of at least 1/log(2), connecting to prime number theory.",
+      "**Greedy construction**: The sequence is defined greedily (always pick the smallest non-representable integer), yet its growth rate is analytically subtle — a common phenomenon in additive combinatorics where simple recursive definitions yield complex asymptotic behavior"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 40,
+      "endLine": 71,
+      "summary": "ConsecutiveSum, AchievableSums, IsGoodFor, IsMacMahonSeq definitions."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 72,
+      "endLine": 93,
+      "summary": "Properties: first term is 1, sequence is strictly increasing."
+    },
+    {
+      "id": "known-values",
+      "title": "Known Values",
+      "startLine": 94,
+      "endLine": 135,
+      "summary": "First 8 values: 1, 2, 4, 5, 8, 10, 14, 15. Why 3 and 6 are skipped."
+    },
+    {
+      "id": "growth-conjectures",
+      "title": "Growth Rate Conjectures",
+      "startLine": 136,
+      "endLine": 163,
+      "summary": "Open conjectures: superlinear but subpolynomial growth, Andrews' asymptotic."
+    },
+    {
+      "id": "porubsky",
+      "title": "Porubsky's Results",
+      "startLine": 164,
+      "endLine": 193,
+      "summary": "Porubsky's upper bound and density comparison with primes."
+    },
+    {
+      "id": "general-n",
+      "title": "General Starting Value",
+      "startLine": 194,
+      "endLine": 207,
+      "summary": "Extension to sequences starting with n != 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdos Problem #359 about MacMahon's sequence where each term is the smallest integer not expressible as a consecutive sum of earlier terms. The growth rate conjectures remain OPEN.",
+    "implications": "**Theoretical Significance**: This problem has implications for:\n\n1. **Additive combinatorics**: Consecutive sum representations vs subset sums\n\n**2. Density of integer sequences**: Connection to prime counting function\n\n3. **Asymptotic analysis**: Intermediate growth rates between linear and polynomial.",
+    "openQuestions": [
+      "Prove a_k / k tends to infinity (superlinear growth)",
+      "Prove a_k / k^{1+c} tends to 0 for c > 0 (subpolynomial growth)",
+      "Verify Andrews' conjecture: a_k ~ (k log k) / (log log k)",
+      "Characterize the density for general starting value n"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Set",
+      "Filter"
+    ],
+    "namespace": "Erdos359",
+    "lineCount": 207,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 7,
+    "path": "Proofs/Erdos359Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-421",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-424",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory, sequences"
+    },
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, number-theory"
+    }
+  ],
+  "sorries": 0
+}

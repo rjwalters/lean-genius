@@ -1,0 +1,237 @@
+{
+  "id": "erdos-1062-oq-04",
+  "slug": "erdos-1062-oq-04",
+  "title": "k-Fold \"No Element Divides k Others\" Sets",
+  "description": "Generalizes the Erdős #1062 condition (no element divides two distinct others) to a one-parameter family NoDividesKOthers k: a finite set of positive integers in which no element divides k distinct others, equivalently every element has at most k-1 proper multiples in the set. The family unifies two classical notions as its first two cases — k=1 is exactly a primitive set (no element divides any other) and k=2 is exactly the Erdős #1062 NDTO condition — both proved as if-and-only-if identifications. Establishes the structural backbone of the extremal function maxNDKOSize k n: monotonicity in both n and k, heredity, the size sandwich n - ⌊n/2⌋ ≤ maxNDKOSize k n ≤ n via the primitive upper-half interval, and the sharper k-dependent lower bound maxNDKOSize k n ≥ n − ⌊n/(k+1)⌋ (for k=2, n − ⌊n/3⌋, the order of Lebensold's lower bound). Fully machine-checked: 0 sorries, 0 axioms.",
+  "overview": {
+    "historicalContext": "Erdős Problem #1062 (Guy, Problem B24) asks for the largest A ⊆ {1,…,n} in which no element divides two distinct others; Lebensold (1976) bounded the extremal density between 0.6725 and 0.6736, and whether the limiting density is irrational remains OPEN. The k=1 analogue — primitive sets, in which no element divides any other — is a classical topic (Erdős, Behrend, Besicovitch) with density tending to 0. These two are the first two rungs of a natural ladder indexed by k: forbid each element from dividing k distinct others. This entry formalizes that ladder and proves the two classical conditions are exactly its k=1 and k=2 cases.",
+    "problemStatement": "Formalize the k-fold generalization of the Erdős #1062 condition — sets in which no element divides k distinct others — and establish the structural properties of the corresponding extremal function maxNDKOSize k n, including how it specializes to primitive sets (k=1) and to the NDTO condition (k=2).",
+    "text": "A 357-line, 0-sorry, 0-axiom self-contained formalization (Mathlib only). It reproduces verbatim the gallery Erdős #1062 entry’s two classical predicates (NoDividesTwoOthers, IsPrimitiveFinset), defines properMultiples a A (the proper multiples of a inside A) and NoDividesKOthers k A (every element has fewer than k proper multiples), proves k=1 ⟺ IsPrimitiveFinset and k=2 ⟺ NoDividesTwoOthers, and develops the extremal function maxNDKOSize k n with monotonicity, heredity, a two-sided size bound, and the sharper k-dependent lower bound n − ⌊n/(k+1)⌋.",
+    "proofStrategy": "Count proper multiples via a decidable Finset filter, so the predicate and the extremal function are computable. The k=1 and k=2 identifications reduce to translating the cardinality bound (card < 1 forces the proper-multiple set empty; card < 2 forbids two distinct proper multiples) into the divisibility quantifiers of the classical conditions. Monotonicity in k is immediate from the cardinality bound; heredity follows because passing to a subset shrinks each proper-multiple set (Finset.filter_subset_filter). The lower bound n - ⌊n/2⌋ uses the upper-half interval {⌊n/2⌋+1,…,n}, which is primitive — the smallest proper multiple 2a of any element a already exceeds n — hence NoDividesKOthers k for every k ≥ 1; the upper bound is the trivial cardinality bound on subsets of {1,…,n}.",
+    "keyInsights": [
+      "**One family, two classical notions**: primitive sets and the Erdős #1062 NDTO sets are not separate definitions but the k=1 and k=2 cases of a single predicate NoDividesKOthers k, each recovered as a proved if-and-only-if.",
+      "**The ladder is strictly increasing**: {1,2,3} satisfies NoDividesKOthers 3 but not NoDividesKOthers 2 (1 divides both 2 and 3), so larger k is genuinely more permissive — the extremal function is monotone in k and the inclusions are strict.",
+      "**Decidability kept throughout**: counting proper multiples as a Finset filter makes NoDividesKOthers and the extremal function maxNDKOSize computable, so concrete instances (like the {1,2,3} witness) are settled by decide rather than by hand.",
+      "**A primitive floor for every k**: the upper-half interval is primitive, hence valid for all k ≥ 1, giving the uniform lower bound maxNDKOSize k n ≥ n - ⌊n/2⌋ that sandwiches the extremal function between ⌈n/2⌉ and n before any k-specific construction.",
+      "**Framework, not the open bounds**: the entry deliberately stops at the verified structural backbone; the analogue of Lebensold's sharp density bounds for general k, and the irrationality of any limiting density, remain OPEN and out of scope."
+    ],
+    "prerequisites": [
+      "Finsets: filter, powerset, sup, card, and the Icc interval API",
+      "Elementary divisibility in ℕ (proper multiples, primitive sets)",
+      "The Erdős #1062 condition (NoDividesTwoOthers) and primitive sets (IsPrimitiveFinset), reproduced verbatim from the base entry"
+    ]
+  },
+  "conclusion": {
+    "summary": "A 357-line, 0-sorry, 0-axiom formalization introducing the k-fold family NoDividesKOthers k, proving that its k=1 and k=2 cases are exactly primitive sets and the Erdős #1062 NDTO condition, and establishing the monotonicity, heredity, two-sided size bound n - ⌊n/2⌋ ≤ maxNDKOSize k n ≤ n, and the k-dependent lower bound maxNDKOSize k n ≥ n − ⌊n/(k+1)⌋ of the associated extremal function.",
+    "implications": "The result reframes two classical extremal-set conditions as adjacent rungs of one parametrized ladder, giving a uniform setting in which to ask the Erdős #1062 density question for every k at once. The verified backbone (monotone, hereditary, sandwiched extremal function) is the scaffolding on which sharper k-dependent bounds — the analogue of Lebensold's estimates — could be built.",
+    "openQuestions": [
+      "Prove a matching k-dependent upper bound for maxNDKOSize k n to complement the lower bound n − ⌊n/(k+1)⌋ now established (maxNDKOSize_ge_kfold), pinning down the extremal function more tightly than the trivial ≤ n; for k=2 this would sharpen toward Lebensold's 0.6736n.",
+      "Establish the existence of a limiting density d(k) = lim maxNDKOSize k n / n for each k and locate it, generalizing Lebensold's 0.6725 ≤ d(2) ≤ 0.6736; determine whether d(k) → 1 as k → ∞.",
+      "Decide whether any d(k) is irrational — the k-fold form of the still-open Erdős #1062 question."
+    ]
+  },
+  "sorries": 0,
+  "crossReferences": [
+    {
+      "targetId": "erdos-1062",
+      "relationship": "parent",
+      "description": "The base Erdős #1062 entry studies the k=2 case (no element divides two distinct others) and its extremal function maxNDTOSize, proving the ⌈2n/3⌉ lower bound. This entry generalizes the condition to arbitrary k and proves k=2 ⟺ NoDividesTwoOthers. It is self-contained: the base predicates NoDividesTwoOthers and IsPrimitiveFinset are reproduced verbatim (the entry imports only Mathlib)."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Open problem (no element dividing two others)",
+      "year": "1962",
+      "venue": "Erdős Problems #1062",
+      "note": "The base problem on sets in which no element divides two distinct others."
+    },
+    {
+      "authors": "Lebensold, Kenneth",
+      "title": "A divisibility property of the natural numbers",
+      "year": "1976",
+      "venue": "Studia Sci. Math. Hungar.",
+      "note": "Bounds 0.6725n ≤ f(n) ≤ 0.6736n for the k=2 extremal function."
+    },
+    {
+      "authors": "Guy, Richard K.",
+      "title": "Unsolved Problems in Number Theory",
+      "year": "2004",
+      "venue": "Springer, Problem B24",
+      "note": "Survey context for the divisibility extremal problem."
+    }
+  ],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Section I: The k-Fold Divisibility Condition",
+      "startLine": 41,
+      "endLine": 82,
+      "summary": "Defines properMultiples a A as the Finset of elements b ∈ A with a ∣ b and b ≠ a, then NoDividesKOthers k A as the requirement that every element have fewer than k proper multiples, and the extremal function maxNDKOSize k n as the maximum card over NoDividesKOthers k subsets of {1,…,n}. The filter predicate is decidable, keeping all three definitions computable.",
+      "mathContext": "A has the k-fold property iff ∀ a ∈ A, #{b ∈ A : a ∣ b, b ≠ a} < k; for k=2 this is the Erdős #1062 NDTO condition."
+    },
+    {
+      "id": "structural",
+      "title": "Section II: Elementary Structural Properties",
+      "startLine": 83,
+      "endLine": 121,
+      "summary": "Vacuous validity on the empty set, the degenerate k=0 characterization (only ∅ qualifies), monotonicity in k (a smaller bound implies every larger one), and heredity (subsets inherit the property because each proper-multiple set shrinks).",
+      "mathContext": "card < k is monotone in k, and Finset.filter_subset_filter gives properMultiples a B ⊆ properMultiples a A for B ⊆ A."
+    },
+    {
+      "id": "classical-cases",
+      "title": "Section III: Identifying the Classical Cases (k = 1 and k = 2)",
+      "startLine": 122,
+      "endLine": 177,
+      "summary": "Proves the two headline identifications: NoDividesKOthers 1 ⟺ IsPrimitiveFinset (primitive sets) and NoDividesKOthers 2 ⟺ NoDividesTwoOthers (the Erdős #1062 condition). The first translates card < 1 (empty proper-multiple set) into 'no element divides any other'; the second translates card < 2 (no two distinct proper multiples) into the NDTO triple condition, using a {b,c} pair of size 2 in each direction.",
+      "mathContext": "The classical primitive-set and NDTO conditions are exactly the k=1 and k=2 instances of the family."
+    },
+    {
+      "id": "strict-ladder",
+      "title": "Section IV: Strictly Climbing the Ladder",
+      "startLine": 178,
+      "endLine": 195,
+      "summary": "A decidable witness that the ladder is strict: {1,2,3} is NoDividesKOthers 3 but not NoDividesKOthers 2, because 1 divides the two distinct others 2 and 3.",
+      "mathContext": "Strict inclusions NoDividesKOthers k ⊊ NoDividesKOthers (k+1) at the level of sets, settled by decide."
+    },
+    {
+      "id": "extremal-bounds",
+      "title": "Section V: The Extremal Function — Bounds",
+      "startLine": 196,
+      "endLine": 279,
+      "summary": "Properties of maxNDKOSize k n: the trivial upper bound ≤ n, monotonicity in n and in k, and the lower bound n - ⌊n/2⌋ witnessed by the primitive upper-half interval {⌊n/2⌋+1,…,n} (whose every element's smallest proper multiple 2a already exceeds n). Together these sandwich the extremal function: n - ⌊n/2⌋ ≤ maxNDKOSize k n ≤ n for k ≥ 1.",
+      "mathContext": "The upper-half interval is primitive, hence NoDividesKOthers k for every k ≥ 1, giving a uniform ⌈n/2⌉ lower bound."
+    },
+    {
+      "id": "kfold-lower-bound",
+      "title": "Section VI: The k-Dependent Lower Bound",
+      "startLine": 280,
+      "endLine": 358,
+      "summary": "Strengthens the k-independent primitive floor of Section V with the sharper witness {⌊n/(k+1)⌋+1,…,n}: every element a there exceeds n/(k+1), forcing ⌊n/a⌋ ≤ k, so a has at most k-1 proper multiples ≤ n. Injecting those proper multiples into Icc 2 ⌊n/a⌋ via b ↦ b/a bounds their count, giving maxNDKOSize k n ≥ n − ⌊n/(k+1)⌋. For k=2 this is n − ⌊n/3⌋ ≈ 0.667n, recovering the order of Lebensold's lower bound for the base Erdős #1062 problem.",
+      "mathContext": "For a > n/(k+1) the proper multiples 2a,3a,…,⌊n/a⌋·a number ⌊n/a⌋-1 ≤ k-1, so the interval is NoDividesKOthers k; its cardinality n − ⌊n/(k+1)⌋ is a k-dependent lower bound on the extremal function."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "noDividesKOthers_one_iff_primitive",
+      "type": "core",
+      "description": "k=1 is exactly primitivity: a set is NoDividesKOthers 1 iff no element divides any distinct other",
+      "leanType": "∀ (A : Finset ℕ), NoDividesKOthers 1 A ↔ IsPrimitiveFinset A"
+    },
+    {
+      "name": "noDividesKOthers_two_iff",
+      "type": "core",
+      "description": "k=2 is exactly the Erdős #1062 condition: a set is NoDividesKOthers 2 iff no element divides two distinct others",
+      "leanType": "∀ (A : Finset ℕ), NoDividesKOthers 2 A ↔ NoDividesTwoOthers A"
+    },
+    {
+      "name": "maxNDKOSize_ge_half",
+      "type": "core",
+      "description": "For k ≥ 1, the extremal function is at least n - ⌊n/2⌋, witnessed by the primitive upper-half interval",
+      "leanType": "∀ (k n : ℕ), 1 ≤ k → n - n / 2 ≤ maxNDKOSize k n"
+    },
+    {
+      "name": "maxNDKOSize_mono_k",
+      "type": "supporting",
+      "description": "The extremal function is monotone in the parameter k",
+      "leanType": "∀ {k k' : ℕ}, k ≤ k' → ∀ (n : ℕ), maxNDKOSize k n ≤ maxNDKOSize k' n"
+    },
+    {
+      "name": "noDividesKOthers_subset",
+      "type": "supporting",
+      "description": "Heredity: subsets of a NoDividesKOthers k set are again NoDividesKOthers k",
+      "leanType": "∀ {k : ℕ} {A B : Finset ℕ}, B ⊆ A → NoDividesKOthers k A → NoDividesKOthers k B"
+    },
+    {
+      "name": "maxNDKOSize_ge_kfold",
+      "type": "core",
+      "description": "k-dependent lower bound: maxNDKOSize k n ≥ n − ⌊n/(k+1)⌋, witnessed by the interval {⌊n/(k+1)⌋+1,…,n}; for k=2 gives n−⌊n/3⌋, matching the order of Lebensold lower bound",
+      "leanType": "∀ (k n : ℕ), 1 ≤ k → n - n / (k + 1) ≤ maxNDKOSize k n"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 357,
+    "namespace": "",
+    "opens": [],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "substantiveTheoremCount": 6,
+    "computationalVerifications": 1,
+    "lemmaCount": 2,
+    "imports": [
+      "Mathlib"
+    ],
+    "path": "Proofs/Erdos1062OQ04.lean",
+    "sorries": 0,
+    "definitionCount": 5,
+    "additionalFiles": []
+  },
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://www.erdosproblems.com/1062",
+    "date": "2026-06-19",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1062OQ04.lean",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "extremal-set-theory",
+      "primitive-sets",
+      "erdos-problems",
+      "finset"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.filter_subset_filter",
+        "description": "Filtering a subset by the same predicate yields a subset",
+        "module": "Mathlib.Data.Finset.Filter"
+      },
+      {
+        "theorem": "Finset.one_lt_card",
+        "description": "1 < s.card iff s contains two distinct elements",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_pair",
+        "description": "A two-element set {a,b} with a ≠ b has cardinality 2",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.card_Icc",
+        "description": "The cardinality of the integer interval Icc a b is b + 1 - a",
+        "module": "Mathlib.Order.Interval.Finset.Nat"
+      }
+    ],
+    "originalContributions": [
+      "NoDividesKOthers k / properMultiples / maxNDKOSize: DEFINED the k-fold generalization of the Erdős #1062 divisibility condition and its computable extremal function",
+      "noDividesKOthers_one_iff_primitive: PROVED the k=1 case is exactly primitivity (IsPrimitiveFinset)",
+      "noDividesKOthers_two_iff: PROVED the k=2 case is exactly the Erdős #1062 NoDividesTwoOthers condition",
+      "noDividesKOthers_mono_k / noDividesKOthers_subset: PROVED monotonicity in k and heredity of the family",
+      "ndko_three_not_two_example: VERIFIED (by decide) that {1,2,3} separates k=2 from k=3, so the ladder is strict",
+      "maxNDKOSize_le / maxNDKOSize_mono_n / maxNDKOSize_mono_k / maxNDKOSize_ge_half: PROVED the two-sided bound n - ⌊n/2⌋ ≤ maxNDKOSize k n ≤ n with monotonicity in both arguments",
+      "maxNDKOSize_ge_kfold: PROVED the k-dependent lower bound maxNDKOSize k n ≥ n − ⌊n/(k+1)⌋, witnessed by the interval {⌊n/(k+1)⌋+1,…,n}; for k=2 this gives n − ⌊n/3⌋ ≈ 0.667n, recovering the order of Lebensold's lower bound for the base Erdős #1062 problem"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "The Erdős #1062 condition (NoDividesTwoOthers) and primitive sets (IsPrimitiveFinset), reproduced verbatim",
+      "Finset filter / powerset / sup / card API",
+      "Elementary divisibility in ℕ"
+    ],
+    "lineCount": 357,
+    "relatedProblems": [
+      {
+        "id": "erdos-1062",
+        "relationship": "Parent: the k=2 case (no element divides two distinct others) and its ⌈2n/3⌉ lower bound."
+      }
+    ],
+    "assumptions": "0 axioms. Relies only on Mathlib's Finset and divisibility API and the gallery's verified Erdős #1062 definitions. The sharp k-dependent density bounds and the irrationality of any limiting density remain OPEN and are out of scope.",
+    "theoremCount": 15,
+    "definitionCount": 5,
+    "additionalFiles": []
+  }
+}

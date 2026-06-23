@@ -1,0 +1,216 @@
+{
+  "id": "erdos-687",
+  "title": "Covering Congruences and the Jacobsthal Function",
+  "slug": "erdos-687",
+  "description": "Let Y(x) be the maximal y such that covering congruences for primes ≤ x cover [1,y]. Is Y(x) = o(x²)? $1,000 prize. Known: x·log x·... ≪ Y(x) ≪ x² (Iwaniec 1978, FGKMT 2018).",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/687",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos687Problem.lean",
+    "tags": [
+      "erdos",
+      "number theory",
+      "covering systems",
+      "Jacobsthal function",
+      "prime gaps",
+      "sieve theory"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 687,
+    "erdosUrl": "https://erdosproblems.com/687",
+    "erdosProblemStatus": "open",
+    "axiomCount": 4,
+    "lineCount": 547,
+    "assumptions": "4 axioms: jacobsthalY_eq_jacobsthal, iwaniec_upper, fgkmt_lower, maier_pomerance_conjecture. jacobsthalSet_bddAbove proved via CRT induction. erdos_687_conjecture proved from maier_pomerance_conjecture. Y(3) = 3 proved by parity-residue case analysis. 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 26,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #687 concerns the Jacobsthal function of the primorial, a central object in the theory of covering systems and prime gaps. Jacobsthal (1960) introduced g(n) as the largest gap between consecutive integers coprime to n. For the primorial P(x) = ∏_{p ≤ x} p, we have Y(x) = g(P(x)), connecting covering congruences to prime distribution. Iwaniec (1978) proved Y(x) ≪ x² using the Selberg sieve, a bound that has resisted improvement for nearly 50 years. Rankin (1938) gave the first non-trivial lower bound Y(x) ≫ x · log x · log log x · log log log log x / (log log log x)², which stood for decades. Ford, Green, Konyagin, Maynard, and Tao (2018), as part of their landmark work on large prime gaps, improved Rankin's bound by replacing the double-log denominator. Maier and Pomerance conjectured Y(x) ≪ x · (log x)^{2+o(1)}, which would nearly close the gap. Erdős offered $1,000 for proving Y(x) = o(x²), one of his largest prizes, reflecting the problem's depth and connection to the distribution of primes in arithmetic progressions, sieve methods, and the structure of smooth numbers.",
+    "problemStatement": "Is Y(x) = o(x²)? Is Y(x) ≪ x^{1+o(1)}? What is the true growth rate?",
+    "text": "Let Y(x) be the maximal y such that covering congruences for primes ≤ x cover [1,y]. Is Y(x) = o(x²)? $1,000 prize. Known: x·log x·... ≪ Y(x) ≪ x² (Iwaniec 1978, FGKMT 2018).",
+    "proofStrategy": "We formalize covering systems as functions assigning residue classes to primes ≤ x, define Y(x) via sSup of the achievable covering lengths, introduce the Jacobsthal function g(n) as sSup of maximal gaps, and state the equivalence Y(x) = g(primorial(x)). The $1,000 conjecture, Iwaniec's upper bound, the FGKMT lower bound, and the Maier–Pomerance conjecture are axiomatized. Structural properties (monotonicity, trivial lower bound) are proved from definitions.",
+    "keyInsights": [
+      "**Primorial connection**: $Y(x) = g(P(x))$ where $P(x) = \\prod_{p \\le x} p$ is the primorial, reducing the covering problem to the Jacobsthal function of a highly composite number",
+      "**Iwaniec's sieve bound (1978)**: $Y(x) \\ll x^2$ via the Selberg sieve — this uses the fact that the number of integers in $[1, y]$ not covered by any prime $p \\le x$ is $\\ge y \\prod_{p \\le x}(1 - 1/p) - O(x^2)$ by inclusion-exclusion",
+      "**FGKMT breakthrough (2018)**: $Y(x) \\gg x \\cdot (\\log x)(\\log \\log \\log x)/(\\log \\log x)$, improving Rankin's 1938 bound. Their method uses Maynard–Tao weights from the proof of bounded gaps between primes",
+      "**Maier–Pomerance conjecture**: $Y(x) \\ll x \\cdot (\\log x)^{2+o(1)}$ — if true, the gap between upper and lower bounds would be only a polylogarithmic factor",
+      "**CRT periodicity**: By the Chinese Remainder Theorem, the covering pattern repeats modulo $P(x)$, so $Y(x) \\le P(x)$. The challenge is to show the actual maximum is much smaller"
+    ],
+    "prerequisites": [
+      "Analysis (asymptotic estimates, generating functions)",
+      "Number theory (prime distribution, arithmetic functions)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview-imports",
+      "title": "Overview and Imports",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring: Erdős Problem #687 (OPEN, $1,000 prize) asks for the growth of Y(x), the largest d such that some interval of length d can be sieved coprime to all primes ≤ x. Imports and related-problem references.",
+      "mathContext": "Y(x) is the largest gap coverable by residue classes mod the primes $\\le x$; the prize asks whether $Y(x) = x^{o(1)}$ or grows polynomially."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 46,
+      "endLine": 66,
+      "summary": "Defines the primorial (product of all primes ≤ x) and jacobsthalSet x (the set of achievable gap lengths y via residue-class coverings of the primes ≤ x).",
+      "mathContext": "$\\text{primorial}(x) = \\prod_{p \\le x} p$; $y \\in \\text{jacobsthalSet}(x)$ iff some choice of residues $a_p$ covers $[1,y]$."
+    },
+    {
+      "id": "jacobsthal-function",
+      "title": "The Jacobsthal Function",
+      "startLine": 67,
+      "endLine": 75,
+      "summary": "Defines the Jacobsthal function g(n): the largest gap between consecutive integers coprime to n (one more than the longest run of integers each sharing a factor with n).",
+      "mathContext": "$g(n) = 1 + \\max$ length of a run of consecutive integers all non-coprime to $n$."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties of jacobsthalSet",
+      "startLine": 76,
+      "endLine": 84,
+      "summary": "Basic structural facts: jacobsthalSet x is always nonempty and contains 0 (vacuously, no integers in [1,0]).",
+      "mathContext": "$\\text{jacobsthalSet}(x) \\ne \\emptyset$ and $0 \\in \\text{jacobsthalSet}(x)$ for all $x$."
+    },
+    {
+      "id": "crt-boundedness",
+      "title": "CRT Induction: jacobsthalSet is Bounded",
+      "startLine": 85,
+      "endLine": 177,
+      "summary": "Proves jacobsthalSet x is bounded via a Chinese Remainder Theorem induction (prod_primes_pos' and supporting lemmas), the technical core showing Y(x) is well-defined and finite.",
+      "mathContext": "By CRT over the primes $\\le x$, only finitely many gap lengths are coverable, so $\\sup \\text{jacobsthalSet}(x) = Y(x) < \\infty$."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "startLine": 178,
+      "endLine": 216,
+      "summary": "Downward closure: if y ∈ jacobsthalSet x and y' ≤ y, then y' ∈ jacobsthalSet x, so the set is an initial segment determined by its supremum Y(x).",
+      "mathContext": "$y \\in \\text{jacobsthalSet}(x) \\wedge y' \\le y \\Rightarrow y' \\in \\text{jacobsthalSet}(x)$."
+    },
+    {
+      "id": "concrete-values",
+      "title": "Concrete Values",
+      "startLine": 217,
+      "endLine": 266,
+      "summary": "Concrete membership computations such as 1 ∈ jacobsthalSet 2 (choosing residue a₂ = 1 covers all odd numbers including 1), establishing small base values.",
+      "mathContext": "Explicit covering choices give small-x membership facts like $1 \\in \\text{jacobsthalSet}(2)$."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "startLine": 267,
+      "endLine": 290,
+      "summary": "Monotonicity: jacobsthalSet x₁ ⊆ jacobsthalSet x₂ whenever x₁ ≤ x₂ (a covering for the smaller prime set extends to the larger), hence Y is nondecreasing.",
+      "mathContext": "$x_1 \\le x_2 \\Rightarrow \\text{jacobsthalSet}(x_1) \\subseteq \\text{jacobsthalSet}(x_2)$, so $Y$ is monotone."
+    },
+    {
+      "id": "connection-jacobsthal",
+      "title": "Connection to the Jacobsthal Function",
+      "startLine": 291,
+      "endLine": 303,
+      "summary": "Relates Y to the classical Jacobsthal function: Y(x) = jacobsthal(primorial(x)) − 1, tying the covering formulation to gaps coprime to the primorial.",
+      "mathContext": "$Y(x) = g(\\text{primorial}(x)) - 1$."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Known Bounds",
+      "startLine": 304,
+      "endLine": 326,
+      "summary": "Records the best known upper bound, Iwaniec (1978): Y(x) ≪ x², stated as the headline external result.",
+      "mathContext": "Iwaniec (1978): $Y(x) \\ll x^2$."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture ($1,000)",
+      "startLine": 327,
+      "endLine": 402,
+      "summary": "The $1,000 conjecture that Y(x) grows sub-polynomially, with the supporting asymptotic helper that any C·(log x)^k is eventually dominated by x^ε (polynomial growth beats powers of logarithm).",
+      "mathContext": "Conjecture: $Y(x) = x^{o(1)}$; helper: $\\forall C,k,\\varepsilon > 0,\\ C(\\log x)^k \\le x^\\varepsilon$ eventually."
+    },
+    {
+      "id": "concrete-computations",
+      "title": "Concrete Computations",
+      "startLine": 403,
+      "endLine": 423,
+      "summary": "Computational helper lemmas for small x, e.g. no_prime_le_one (no prime p satisfies p ≤ 1), used to discharge edge cases in the concrete-value proofs.",
+      "mathContext": "Edge-case helpers such as: no prime $p$ satisfies $p \\le 1$."
+    },
+    {
+      "id": "trivial-lower-bound-removed",
+      "title": "Trivial Lower Bound — False (Removed)",
+      "startLine": 424,
+      "endLine": 443,
+      "summary": "Documents a previously-axiomatized lower bound Y(x) ≥ x + 1 that turned out to be FALSE: the argument that every integer in [1,x] has a prime factor ≤ x does not force the covering bound, so the axiom was removed.",
+      "mathContext": "The claimed $Y(x) \\ge x + 1$ is false; a covering need not realize every integer in $[1,x]$ as non-coprime."
+    },
+    {
+      "id": "y2-concrete",
+      "title": "Y(2) = 1: First Nontrivial Concrete Value",
+      "startLine": 444,
+      "endLine": 466,
+      "summary": "Proves Y(2) = 1: for x = 2 the only prime is 2, so any covering picks a single parity class and no y ≥ 2 lies in jacobsthalSet 2.",
+      "mathContext": "$Y(2) = 1$: a single residue mod 2 cannot cover two consecutive integers, so $y \\ge 2 \\notin \\text{jacobsthalSet}(2)$."
+    },
+    {
+      "id": "y3-concrete",
+      "title": "Y(3) = 3: Second Nontrivial Concrete Value",
+      "startLine": 467,
+      "endLine": 547,
+      "summary": "Proves Y(3) = 3: the covering a₂ = 1 (odds) and a₃ = 2 (≡ 2 mod 3) covers {1,2,3}, and 3 is the supremum, giving the second nontrivial exact value.",
+      "mathContext": "$Y(3) = 3$: residues $a_2 = 1,\\ a_3 = 2$ cover $\\{1,2,3\\}$, and no longer interval is coverable."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes Erdős Problem #687 on covering congruences and the Jacobsthal function in 149 lines of Lean 4. The formalization captures Y(x) = g(primorial(x)), the $1,000 prize conjecture Y(x) = o(x²), Iwaniec's x² upper bound, the FGKMT lower bound, the Maier–Pomerance conjecture, and structural properties (monotonicity, trivial bounds). Two key properties are proved from definitions; five deep results are axiomatized.",
+    "implications": "Determining Y(x) would resolve fundamental questions about the distribution of primes in arithmetic progressions, the efficiency of sieve methods, and the structure of smooth numbers. The gap between x² and x · polylog(x) represents one of the largest open gaps in analytic number theory.",
+    "openQuestions": [
+      "Is Y(x) = o(x²)? ($1,000 prize) — even improving Iwaniec's x² to x^{2-δ} for any δ > 0 would be a breakthrough",
+      "Is the Maier–Pomerance conjecture Y(x) ≪ x(log x)^{2+o(1)} correct?",
+      "Can the FGKMT lower bound be improved further, perhaps to x · (log x)^{2-o(1)}?",
+      "What is g(n) for n with many small prime factors beyond primorials?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter"
+    ],
+    "namespace": null,
+    "lineCount": 547,
+    "axiomCount": 4,
+    "theoremCount": 26,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos687Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-688",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering systems, number theory, sieve theory"
+    },
+    {
+      "targetId": "erdos-281",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: covering systems, number theory"
+    },
+    {
+      "targetId": "erdos-929",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: number theory, prime gaps"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,280 @@
+[
+  {
+    "id": "ann-535-header",
+    "proofId": "erdos-535",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #535: GCD-Free $r$-Subsets**\n\nEstimate $f_r(N)$: the maximum size of $A \\subseteq \\{1, \\ldots, N\\}$ with no $r$ elements having equal pairwise gcds.\n\n**Status: OPEN**\n- Upper: $f_r(N) \\leq N^{1/2+o(1)}$ (Abbott-Hanson 1970)\n- Lower: $f_3(N) > N^{c/\\log \\log N}$ (Erdős 1964)\n- Conjectured: lower bound is tight\n\nReferences: Erdős (1964) and Abbott-Hanson (1970) in *Bull. London Math. Soc.*",
+    "mathContext": "The problem studies the Turán-type question for $\\gcd$-defined hypergraphs: given the hypergraph on $\\{1, \\ldots, N\\}$ where $r$-cliques are sets sharing a common pairwise $\\gcd$, what is the maximum independent set? The function $f_r(N)$ is the independence number of this hypergraph.",
+    "significance": "key",
+    "relatedConcepts": [
+      "GCD",
+      "Sunflower problem",
+      "Extremal combinatorics",
+      "Turán-type problems",
+      "Hypergraph independence number"
+    ],
+    "prerequisites": [
+      "Greatest common divisor",
+      "Finset operations",
+      "Asymptotic notation"
+    ]
+  },
+  {
+    "id": "ann-535-imports",
+    "proofId": "erdos-535",
+    "range": {
+      "startLine": 33,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "Imports Mathlib modules for `Nat.gcd`, `Finset`, `Real`, and `Real.log`. Opens `Nat`, `Real`, `Finset` namespaces. The `Real.log` import is needed for the quasi-polynomial bounds $N^{c/\\log \\log N}$.",
+    "mathContext": "The formalization requires both discrete ($\\gcd$, finite sets) and continuous ($\\mathbb{R}$, $\\log$) mathematics, reflecting the problem's position at the intersection of number theory and analysis.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.gcd",
+      "Real.log",
+      "Finset operations"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib structure"
+    ]
+  },
+  {
+    "id": "ann-535-definition",
+    "proofId": "erdos-535",
+    "range": {
+      "startLine": 47,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "HasNoRGCDSubset and HasNoGCDClique",
+    "content": "**HasNoRGCDSubset(A, r):** No $r$-element subset $S \\subseteq A$ has a common pairwise $\\gcd$. Formally: $\\nexists\\, d > 0$ such that $\\gcd(a_i, a_j) = d$ for all distinct $a_i, a_j \\in S$.\n\n**HasNoGCDClique(A, r):** An alternative formulation filtering elements by their $\\gcd$-clique membership. Both capture the same property: $A$ contains no $r$-element '$d$-clique' under the $\\gcd$ relation.",
+    "mathContext": "The condition $\\gcd(a_i, a_j) = d$ for all $i \\neq j$ means all elements are multiples of $d$, and after dividing by $d$, they become pairwise coprime. A $d$-clique of size $r$ in $\\{1, \\ldots, N\\}$ corresponds to $r$ pairwise coprime multiples of $d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "GCD cliques",
+      "Pairwise coprimality",
+      "Hypergraph coloring",
+      "Ramsey-type conditions"
+    ],
+    "prerequisites": [
+      "Nat.gcd",
+      "Finset.filter",
+      "Subset relations"
+    ]
+  },
+  {
+    "id": "ann-535-f",
+    "proofId": "erdos-535",
+    "range": {
+      "startLine": 58,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "The Extremal Function $f_r(N)$",
+    "content": "**$f(r, N)$:** Maximum cardinality of $A \\subseteq \\{1, \\ldots, N\\}$ satisfying `HasNoRGCDSubset A r`. Defined as $\\sup\\{|A| : A \\subseteq \\{1, \\ldots, N\\},\\, \\text{HasNoRGCDSubset}(A, r)\\}$.\n\nThis is a Turán-type extremal function measuring how large a 'clique-free' set can be in the $\\gcd$-hypergraph on $\\{1, \\ldots, N\\}$.",
+    "mathContext": "The function $f_r(N)$ is analogous to the Turán number $\\text{ex}(n, K_r)$ in graph theory, but for a hypergraph defined by the $\\gcd$ relation. The noncomputable $\\text{sSup}$ definition reflects that computing $f_r(N)$ exactly requires exhaustive search.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán numbers",
+      "Extremal graph theory",
+      "Supremum",
+      "Noncomputable definitions"
+    ],
+    "prerequisites": [
+      "sSup",
+      "Set comprehension",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-535-trivial",
+    "proofId": "erdos-535",
+    "range": {
+      "startLine": 70,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Trivial Bound and $r \\geq 3$ Requirement",
+    "content": "**trivial_upper_bound:** $f_r(N) \\leq N$ for $r \\geq 3$. The restriction $r \\geq 3$ is essential: for $r = 2$, every pair trivially forms a 2-clique with $d = \\gcd(a, b)$, so $f_2(N) = 1$.",
+    "mathContext": "For $r = 2$, `HasNoRGCDSubset A 2` forces $|A| \\leq 1$. The interesting regime begins at $r = 3$, where avoiding $\\gcd$-triples is nontrivial.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Trivial bounds",
+      "Degenerate cases",
+      "Parameter constraints"
+    ],
+    "prerequisites": [
+      "Finset cardinality",
+      "GCD properties"
+    ]
+  },
+  {
+    "id": "ann-535-erdos1964",
+    "proofId": "erdos-535",
+    "range": {
+      "startLine": 82,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Erdős's Original Upper Bound (1964)",
+    "content": "**erdos_1964_upper_bound:** $f_r(N) \\leq C \\cdot N^{3/4 + \\varepsilon}$ for all $\\varepsilon > 0$ and $N$ sufficiently large.\n\nThe first non-trivial upper bound, proved by Erdős in 1964 using counting arguments. Superseded by Abbott-Hanson's improvement to exponent $1/2$.",
+    "mathContext": "Erdős's counting argument: bound the number of pairs $(A, S)$ where $S \\subseteq A$ is a bad $r$-subset, then use divisor sums to get $|A|^r \\ll N^{3r/4 + o(1)}$, yielding $|A| \\ll N^{3/4}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Double counting",
+      "Divisor function",
+      "First non-trivial bound"
+    ],
+    "prerequisites": [
+      "Asymptotic notation",
+      "Real exponentiation"
+    ]
+  },
+  {
+    "id": "ann-535-abbotthanson",
+    "proofId": "erdos-535",
+    "range": {
+      "startLine": 97,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "Abbott-Hanson Upper Bound (1970)",
+    "content": "**abbott_hanson_upper_bound:** $f_r(N) \\leq C \\cdot N^{1/2 + \\varepsilon}$ for all $\\varepsilon > 0$ and sufficiently large $N$.\n\nThe **best known upper bound**. Abbott and Hanson improved Erdős's exponent from $3/4$ to $1/2$ using graph-theoretic methods, specifically Turán-type bounds on the $\\gcd$-graph.\n\n**exponent_improvement** verifies $3/4 > 1/2$ by `norm_num`.",
+    "mathContext": "The Abbott-Hanson argument analyzes the graph $G_d$ on $A$ where $a \\sim b$ iff $\\gcd(a,b) = d$. Since no $K_r$ exists in $G_d$, Turán's theorem gives $|E(G_d)| \\leq (1 - 1/(r-1))|A|^2/2$. Summing over all $d$ with divisor estimates yields $|A| \\leq N^{1/2 + o(1)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "GCD graph",
+      "Clique-free graphs",
+      "norm_num tactic"
+    ],
+    "prerequisites": [
+      "Graph theory",
+      "Turán's theorem",
+      "Divisor sum estimates"
+    ]
+  },
+  {
+    "id": "ann-535-lower",
+    "proofId": "erdos-535",
+    "range": {
+      "startLine": 116,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Erdős Lower Bound (1964)",
+    "content": "**erdos_lower_bound:** $f_3(N) > N^{c/\\log \\log N}$ for some $c > 0$ and $N$ sufficiently large.\n\nThis quasi-polynomial lower bound grows slower than $N^\\varepsilon$ for any $\\varepsilon > 0$, but faster than any polylogarithmic function. Erdős's construction uses smooth numbers with controlled prime factorizations to build large sets avoiding $\\gcd$-triples.",
+    "mathContext": "The lower bound $N^{c/\\log \\log N} = \\exp(c \\log N / \\log \\log N)$ is 'quasi-polynomial': for comparison, $\\log^k N \\ll N^{c/\\log \\log N} \\ll N^\\varepsilon$ for any fixed $k$ and $\\varepsilon > 0$. The construction selects numbers with $\\leq k$ prime factors for an appropriate $k \\sim \\log \\log N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Quasi-polynomial growth",
+      "Smooth numbers",
+      "Multiplicative constructions",
+      "Sieve methods"
+    ],
+    "prerequisites": [
+      "Real.log",
+      "Asymptotic growth rates",
+      "Prime factorization"
+    ]
+  },
+  {
+    "id": "ann-535-conjecture",
+    "proofId": "erdos-535",
+    "range": {
+      "startLine": 136,
+      "endLine": 145
+    },
+    "type": "definition",
+    "title": "Erdős's Conjecture",
+    "content": "**ErdosConjecture:** $f_r(N) \\leq C \\cdot N^{c/\\log \\log N}$ for all $r \\geq 3$.\n\nErdős conjectured that the lower bound is the correct order: $f_r(N) \\asymp N^{c/\\log \\log N}$. This would collapse the gap from polynomial to quasi-polynomial — an exponential improvement in the exponent.",
+    "mathContext": "The conjecture would give $\\log f_r(N) = O(\\log N / \\log \\log N)$, improving the current $\\log f_r(N) \\leq (1/2 + o(1)) \\log N$ by a factor of $\\log \\log N$. The gap between bounds spans polynomial vs quasi-polynomial — one of the widest open gaps in combinatorial number theory.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős conjectures",
+      "Tight bounds",
+      "Polynomial vs quasi-polynomial"
+    ],
+    "prerequisites": [
+      "Asymptotic analysis",
+      "Growth rate comparisons"
+    ]
+  },
+  {
+    "id": "ann-535-sunflower",
+    "proofId": "erdos-535",
+    "range": {
+      "startLine": 147,
+      "endLine": 162
+    },
+    "type": "concept",
+    "title": "Connection to Sunflower Conjecture",
+    "content": "**Sunflower Connection:** Erdős's conjecture would follow from a stronger Sunflower Lemma. The original Erdős-Rado (1960) bound for $k$-uniform families without $r$-sunflowers is $(k-1)! \\cdot (r-1)^k$. Removing the factorial to get $c_r^k$ would suffice.\n\nThe reduction: viewing elements of $\\{1, \\ldots, N\\}$ via their prime factorizations as sets of primes, $\\gcd$-cliques correspond to sunflowers in these set families. See gallery: erdos-20 (Sunflower Conjecture).",
+    "mathContext": "A **sunflower** is a family $S_1, \\ldots, S_r$ with $S_i \\cap S_j = Y$ (core) for all $i \\neq j$. The reduction maps $n \\mapsto \\{p : p \\mid n\\}$ (set of prime divisors). Then $\\gcd(a_i, a_j) = d$ for all $i \\neq j$ corresponds to the prime supports forming a sunflower with core $\\{p : p \\mid d\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sunflower lemma",
+      "Erdős-Rado theorem",
+      "Delta-systems",
+      "Prime factorization as sets"
+    ],
+    "prerequisites": [
+      "Combinatorial set theory",
+      "Sunflower definition",
+      "Prime factorization"
+    ]
+  },
+  {
+    "id": "ann-535-techniques",
+    "proofId": "erdos-535",
+    "range": {
+      "startLine": 174,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Proof Techniques",
+    "content": "Three main methods have been applied:\n\n1. **Counting (Erdős):** Double-count bad pairs $(A, S)$ with divisor-sum bounds.\n2. **Graph Theory (Abbott-Hanson):** Turán-type bounds on $\\gcd$-graphs.\n3. **Multiplicative Constructions:** Build large sets from smooth numbers.\n\nThe additive-multiplicative dichotomy ($\\gcd$ is multiplicative, counting is additive) is the fundamental barrier.",
+    "mathContext": "Tools from additive combinatorics (sumset bounds, Freiman's theorem) don't directly apply since $\\gcd$ is multiplicative, while purely multiplicative methods ($L$-functions, character sums) don't capture the extremal structure. Bridging this gap requires new ideas.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Double counting",
+      "Turán's theorem",
+      "Multiplicative number theory",
+      "Additive-multiplicative dichotomy"
+    ],
+    "prerequisites": [
+      "Extremal graph theory",
+      "Divisor bounds"
+    ]
+  },
+  {
+    "id": "ann-535-summary",
+    "proofId": "erdos-535",
+    "range": {
+      "startLine": 211,
+      "endLine": 211
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**erdos_535_summary:** Combines the two key bounds:\n1. Abbott-Hanson: $\\forall r \\geq 3,\\, f_r(N) \\leq C \\cdot N^{1/2 + \\varepsilon}$\n2. Erdős: $f_3(N) > N^{c/\\log \\log N}$\n\nProved by $\\langle \\text{abbott\\_hanson\\_upper\\_bound}, \\text{erdos\\_lower\\_bound} \\rangle$.",
+    "mathContext": "The conjunction $(f_r(N) \\leq N^{1/2+o(1)}) \\wedge (f_3(N) > N^{c/\\log \\log N})$ encapsulates the complete known picture. The gap between exponents $1/2$ and $c/\\log \\log N \\to 0$ is the open problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summary theorems",
+      "Bound gaps",
+      "Open problems"
+    ],
+    "prerequisites": [
+      "Abbott-Hanson bound",
+      "Erdős lower bound"
+    ]
+  }
+]

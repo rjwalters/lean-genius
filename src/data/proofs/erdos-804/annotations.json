@@ -1,0 +1,278 @@
+[
+  {
+    "id": "ann-e804-header",
+    "proofId": "erdos-804",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #804: Independent Sets in Locally Independent Graphs**\n\nThe problem asks: if EVERY small induced subgraph has a good independent set, how good must the GLOBAL independent set be?\n\nErdős and Hajnal conjectured optimistic bounds:\n- f((log n)², n) ≥ n^(1/2 - o(1))\n- f((log n)³, n) ≫ (log n)³\n\n**Both were WRONG!** Alon-Sudakov (2007) proved the true answer is only (log n)² / log log n.",
+    "mathContext": "This is a local-to-global structure problem. Local guarantees (every small subgraph has large independent set) don't translate to global guarantees as strongly as expected.",
+    "significance": "key",
+    "relatedConcepts": [
+      "independent sets",
+      "local-global propagation",
+      "Ramsey theory"
+    ],
+    "prerequisites": [
+      "Independent Sets",
+      "Ramsey Theory",
+      "Asymptotic Notation"
+    ]
+  },
+  {
+    "id": "ann-e804-independent",
+    "proofId": "erdos-804",
+    "range": {
+      "startLine": 50,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Independent Set Definition",
+    "content": "**IsIndependent G S:**\n\nA set S of vertices is independent (or stable) if no two vertices in S are adjacent:\n$$\\forall u, v \\in S, u \\neq v \\implies \\neg G.\\text{Adj}(u, v)$$\n\n**Examples:**\n- In any graph, {v} (singleton) is independent\n- In K_n (complete graph), only singletons are independent\n- In empty graph, any set is independent",
+    "mathContext": "Independent sets are dual to cliques. The complement of an independent set in the complement graph is a clique. Computing the maximum independent set is NP-hard.",
+    "significance": "key",
+    "relatedConcepts": [
+      "stable sets",
+      "vertex covers",
+      "graph coloring"
+    ],
+    "prerequisites": [
+      "Graph Adjacency",
+      "Vertex Sets",
+      "Cliques And Stable Sets"
+    ]
+  },
+  {
+    "id": "ann-e804-alpha",
+    "proofId": "erdos-804",
+    "range": {
+      "startLine": 57,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Independence Number α(G)",
+    "content": "**independenceNumber G:**\n\nα(G) = maximum size of an independent set in G.\n\n**Examples:**\n- α(K_n) = 1 (only singletons work)\n- α(empty graph on n vertices) = n\n- α(cycle C_n) = ⌊n/2⌋\n\nComputing α(G) is NP-hard in general.",
+    "mathContext": "Defined as the supremum of Finset.card over all subsets in the powerset that satisfy IsIndependent. This is noncomputable due to the search over all subsets.",
+    "significance": "key",
+    "relatedConcepts": [
+      "clique number",
+      "chromatic number",
+      "NP-completeness"
+    ],
+    "prerequisites": [
+      "Independent Set",
+      "Finset Cardinality",
+      "Maximization Over Subsets"
+    ]
+  },
+  {
+    "id": "ann-e804-empty-independent",
+    "proofId": "erdos-804",
+    "range": {
+      "startLine": 64,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "Empty Set is Independent",
+    "content": "**empty_is_independent:**\n\nThe empty set ∅ is independent in any graph G. This is vacuously true: the quantifier \"for all u ∈ ∅\" is vacuously satisfied.\n\nThe proof uses absurd to derive a contradiction from the assumption that u ∈ ∅.",
+    "mathContext": "This is the base case for inductive arguments about independent sets. It establishes that the IsIndependent predicate is non-vacuous.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "vacuous truth",
+      "base case",
+      "Finset.not_mem_empty"
+    ],
+    "prerequisites": [
+      "Vacuous Truth",
+      "Empty Set",
+      "Universal Quantifier"
+    ]
+  },
+  {
+    "id": "ann-e804-local-independence",
+    "proofId": "erdos-804",
+    "range": {
+      "startLine": 77,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "Local Independence Property",
+    "content": "**HasLocalIndependence G m k:**\n\nA graph has the (m, k)-local independence property if EVERY induced subgraph on m vertices contains an independent set of size ≥ k.\n\n**Interpretation:** This is a very strong condition! It says that no matter which m vertices you pick, you can find k non-adjacent ones among them.\n\nThe central question of Problem #804: does this local guarantee force a large global independent set?",
+    "mathContext": "This definition quantifies over all m-element subsets of V. For m = (log n)² and k = log n, this says every polylogarithmic-sized subgraph has a logarithmic independent set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "local properties",
+      "induced subgraphs",
+      "Ramsey-type conditions"
+    ],
+    "prerequisites": [
+      "Induced Subgraphs",
+      "Independence Number",
+      "Quantification Over Subsets"
+    ]
+  },
+  {
+    "id": "ann-e804-conjecture-1",
+    "proofId": "erdos-804",
+    "range": {
+      "startLine": 92,
+      "endLine": 105
+    },
+    "type": "concept",
+    "title": "Conjecture 1 (Disproved)",
+    "content": "**erdos_hajnal_conjecture_1_false:**\n\nErdős-Hajnal conjectured: f((log n)², n) ≥ n^(1/2 - o(1))\n\nThis would mean: if every (log n)²-vertex subgraph has α ≥ log n, then the whole graph has α almost √n.\n\n**DISPROVED!** The true bound is only Θ((log n)² / log log n), which is MUCH smaller than √n.\n\nThe conjecture was off by an exponential factor!",
+    "mathContext": "The negation ¬(∀ ε > 0, ...) means there exists ε > 0 for which the bound fails for infinitely many n. The gap between polylogarithmic truth and polynomial conjecture shows a fundamental misunderstanding of propagation strength.",
+    "significance": "key",
+    "relatedConcepts": [
+      "false conjectures",
+      "tight bounds",
+      "polynomial vs polylogarithmic"
+    ],
+    "prerequisites": [
+      "Independence Number",
+      "Polynomial Versus Polylogarithmic",
+      "Little-o Notation"
+    ]
+  },
+  {
+    "id": "ann-e804-conjecture-2",
+    "proofId": "erdos-804",
+    "range": {
+      "startLine": 107,
+      "endLine": 120
+    },
+    "type": "concept",
+    "title": "Conjecture 2 (Disproved)",
+    "content": "**erdos_hajnal_conjecture_2_false:**\n\nErdős-Hajnal conjectured: f((log n)³, n) ≫ (log n)³\n\nThis would mean: if every (log n)³-vertex subgraph has α ≥ log n, then the whole graph has α much larger than (log n)³.\n\n**DISPROVED!** The true bound is only Θ((log n)² / log log n), which is smaller than (log n)³.\n\nRemarkably, increasing m from (log n)² to (log n)³ doesn't significantly improve the global bound!",
+    "mathContext": "This reveals a saturation effect: beyond a threshold, increasing the local window size m doesn't help. The bottleneck for global independence is not local structure but rather global density properties.",
+    "significance": "key",
+    "relatedConcepts": [
+      "saturation effects",
+      "false conjectures",
+      "diminishing returns"
+    ],
+    "prerequisites": [
+      "Local Independence Property",
+      "Asymptotic Growth Rates",
+      "Saturation Effects"
+    ]
+  },
+  {
+    "id": "ann-e804-upper-bound",
+    "proofId": "erdos-804",
+    "range": {
+      "startLine": 128,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Alon-Sudakov Upper Bound",
+    "content": "**alon_sudakov_upper_bound_1:**\n\nThere exist graphs where:\n- Every (log n)²-vertex subgraph has α ≥ log n\n- But the global α is only O((log n)²)\n\n**Construction idea:** Dense random graphs G(n, p) with p ≈ 1 - 1/log n have this property. They're dense enough that global α is small, but sparse enough locally to have good local independent sets.",
+    "mathContext": "The existential quantifier (∃ G) combined with the eventually-for-all (∀ᶠ n) shows that counterexamples exist for all sufficiently large n. The constant C in the O((log n)²) bound comes from the probabilistic analysis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "random graphs",
+      "probabilistic method",
+      "G(n,p)"
+    ],
+    "prerequisites": [
+      "Random Graphs G(n,p)",
+      "Probabilistic Method",
+      "Graph Density"
+    ]
+  },
+  {
+    "id": "ann-e804-lower-bound",
+    "proofId": "erdos-804",
+    "range": {
+      "startLine": 142,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Alon-Sudakov Lower Bound",
+    "content": "**alon_sudakov_lower_bound_1:**\n\nAny graph where every (log n)²-vertex subgraph has α ≥ log n must have:\n$$\\alpha(G) \\geq c \\cdot \\frac{(\\log n)^2}{\\log \\log n}$$\n\n**The log log n factor is crucial!** It appears mysteriously in many extremal combinatorics bounds.\n\nCombined with the upper bound, this gives the tight characterization.",
+    "mathContext": "This is a universal statement (∀ G): every graph with the local property must have a global independent set of this size. The cast to ℝ allows the division by log log n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lower bounds",
+      "tight bounds",
+      "log log factors"
+    ],
+    "prerequisites": [
+      "Independence Number",
+      "Extremal Combinatorics",
+      "Universal Quantification"
+    ]
+  },
+  {
+    "id": "ann-e804-tight-bound-2",
+    "proofId": "erdos-804",
+    "range": {
+      "startLine": 156,
+      "endLine": 174
+    },
+    "type": "concept",
+    "title": "Tight Bound for (log n)³",
+    "content": "**alon_sudakov_tight_bound_2:**\n\n$$f((\\log n)^3, n) \\asymp \\frac{(\\log n)^2}{\\log \\log n}$$\n\n**Surprising fact:** The answer for m = (log n)³ is THE SAME as for m = (log n)² (up to constants)!\n\nIncreasing the local window size by a factor of log n doesn't help the global bound. The bottleneck is elsewhere.",
+    "mathContext": "This axiom combines both lower and upper bounds into a single statement, showing the asymptotic equivalence. The conjunction captures both directions of the ≍ relation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "saturation",
+      "asymptotic equivalence",
+      "tight characterization"
+    ],
+    "prerequisites": [
+      "Asymptotic Equivalence",
+      "Independence Number",
+      "Local Window Size"
+    ]
+  },
+  {
+    "id": "ann-e804-main-theorem",
+    "proofId": "erdos-804",
+    "range": {
+      "startLine": 180,
+      "endLine": 202
+    },
+    "type": "concept",
+    "title": "Main Theorem — Both Conjectures False",
+    "content": "**erdos_804:**\n\nBoth original Erdős-Hajnal conjectures are FALSE:\n\n1. f((log n)², n) ≱ n^(1/2 - o(1))\n2. f((log n)³, n) ≯ (log n)³\n\nProved by exact ⟨conjecture_1_false, conjecture_2_false⟩ — a direct conjunction of the two disproof axioms.",
+    "mathContext": "This is a fully proved Lean theorem, combining the two axioms via an anonymous constructor. The proof term is a pair of the two axiom applications.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős Problem #804",
+      "disproof",
+      "conjunction"
+    ],
+    "prerequisites": [
+      "Disproof By Counterexample",
+      "Logical Conjunction",
+      "Erdos-Hajnal Conjecture"
+    ]
+  },
+  {
+    "id": "ann-e804-resolution",
+    "proofId": "erdos-804",
+    "range": {
+      "startLine": 208,
+      "endLine": 242
+    },
+    "type": "concept",
+    "title": "Full Resolution with Bounds",
+    "content": "**erdos_804_resolution:**\n\nCombines the complete picture:\n1. Both conjectures are false (disproof)\n2. Upper bound: f((log n)², n) ≤ C(log n)² (counterexample exists)\n3. Lower bound: f((log n)², n) ≥ c(log n)²/log log n (universal guarantee)\n\nThis proved theorem packages all four results into a single 4-fold conjunction, giving the definitive answer to Problem #804.",
+    "mathContext": "The proof applies all four axioms: erdos_hajnal_conjecture_1_false, erdos_hajnal_conjecture_2_false, alon_sudakov_upper_bound_1, alon_sudakov_lower_bound_1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete resolution",
+      "summary theorem",
+      "Alon-Sudakov 2007"
+    ],
+    "prerequisites": [
+      "Upper And Lower Bounds",
+      "Tight Asymptotic Bounds",
+      "Logical Conjunction"
+    ]
+  }
+]

@@ -1,0 +1,158 @@
+{
+  "id": "erdos-1000-oq-03",
+  "title": "Erdős #1000 OQ-03: Generalized Totients with Restricted Denominator Conditions",
+  "slug": "erdos-1000-oq-03",
+  "description": "Answers the parent's open question — 'Does the result extend to other generalized totients with different denominator conditions?' — by evaluating the restricted Gauss sums Σ_{d|n, cond} φ(d) in closed form. Headline: Σ_{d|n, p∤d} φ(d) = ordCompl[p] n (the p-free part of n); the p=2 case gives Σ_{d|n, d odd} φ(d) = odd part of n; and the complementary Σ_{d|n, p∣d} φ(d) = n − ordCompl[p] n. A reduced-denominator counting bridge turns each identity into a count of fractions m/n: #{m<n : reduced denominator of m/n is coprime to p} = ordCompl[p] n.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1000",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1000OQ03.lean",
+    "tags": [
+      "number-theory",
+      "totient-function",
+      "gauss-identity",
+      "divisor-sums",
+      "generalized-totient",
+      "erdos"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": 1000,
+    "erdosUrl": "https://erdosproblems.com/1000",
+    "erdosProblemStatus": "solved",
+    "relatedProblems": [
+      "erdos-1000"
+    ],
+    "axiomCount": 0,
+    "lineCount": 240,
+    "assumptions": "No axioms, no native_decide. Every result is proved from Mathlib (Nat.sum_totient, Nat.divisors_filter_dvd_of_dvd, ordProj/ordCompl factorization lemmas, Nat.totient_div_of_dvd). #print axioms reports only propext, Classical.choice, Quot.sound for all headline theorems. This entry proves new closed-form side results about restricted totient sums; it does not resolve any open conjecture (Erdős #1000 was itself settled by Haight).",
+    "theoremCount": 12,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Gauss' divisor-sum identity Σ_{d|n} φ(d) = n (Disquisitiones Arithmeticae, 1801) is the prototype of a 'generalized totient': it reorganizes the n fractions 0/n, 1/n, …, (n−1)/n by their reduced denominator d | n, each value d being hit exactly φ(d) times. Cassels' generalized totient φ_A, the subject of Erdős Problem #1000, is built on exactly this reduced-denominator bookkeeping: φ_A(k) counts the m ≤ n_k whose reduced denominator avoids the earlier terms of a sequence A, and the parent formalization's master theorem expresses it as a restricted Gauss sum Σ_{e | n_k, e admissible} φ(e). Erdős asked (1964) whether the Cesàro average of φ_A(k)/n_k could vanish; Haight answered yes, against Erdős' expectation, using highly composite numbers.\n\nThe parent entry leaves open (OQ-03) whether 'the result extends to other generalized totients with different denominator conditions.' This entry takes the natural reading: replace the sequence-dependent admissibility condition with a fixed arithmetic condition on the reduced denominator — coprimality to a prime p, oddness, divisibility by p — and evaluate the resulting restricted Gauss sums in closed form. The key phenomenon is that a multiplicative denominator condition carves the divisor lattice of n into the divisor lattice of a sub-number: the divisors of n coprime to p are exactly the divisors of the p-free part ordCompl[p] n, so the restricted sum collapses back to a full Gauss sum over that sub-number and equals it.",
+    "problemStatement": "**Generalized totients with restricted denominator conditions.** For the reduced denominator d = n/gcd(n,m) of a fraction m/n, evaluate the restricted Gauss sums Σ_{d | n, cond d} φ(d) — equivalently the counts #{m < n : cond(reduced denominator of m/n)} — for natural arithmetic conditions 'cond':\n\n1. p ∤ d (denominator coprime to a prime p),\n2. d odd (the p = 2 case),\n3. p ∣ d (the complementary condition).",
+    "text": "Evaluates the restricted totient divisor-sums Σ_{d|n, cond} φ(d) in closed form: the p-free condition gives ordCompl[p] n, oddness gives the odd part of n, and divisibility by p gives n − ordCompl[p] n. A reduced-denominator counting bridge expresses each as a count of fractions m/n. All results are 0-axiom verified from Mathlib.",
+    "proofStrategy": "**The engine** (`sum_totient_filter_eq_of_divisors_eq`): if the divisors of n satisfying a condition P are *exactly* the divisors of some m, then Σ_{d|n, P d} φ(d) = Σ_{d|m} φ(d) = m by Gauss' identity (`Nat.sum_totient`). Every closed form below identifies the right m | n.\n\n**Prime-free condition**: for a prime p and d | n, the equivalence p ∤ d ↔ d ∣ ordCompl[p] n holds (`not_dvd_iff_dvd_ordCompl`). Forward: d | n = ordProj·ordCompl with gcd(d, ordProj[p] n) = 1 (since p ∤ d and ordProj is a power of p), so d ∣ ordCompl by `Nat.Coprime.dvd_of_dvd_mul_left`. Backward: d ∣ ordCompl and p ∤ ordCompl force p ∤ d. Then `Nat.divisors_filter_dvd_of_dvd` rewrites the filtered divisor set as (ordCompl[p] n).divisors, and the engine fires.\n\n**Odd case**: rewrite 'Odd d' to '¬ 2 ∣ d' (`Nat.odd_iff` + `Nat.two_dvd_ne_zero`) and specialize p = 2.\n\n**Complement**: `Finset.sum_filter_add_sum_filter_not` splits Gauss' identity Σ_{d|n} φ(d) = n into the p ∣ d and p ∤ d parts; subtracting the p-free part (= ordCompl[p] n) gives n − ordCompl[p] n.\n\n**Counting bridge**: the reduced denominator m ↦ n/gcd(n,m) has fibers of size φ(e) over each divisor e | n (`card_reducedDenom_eq_totient`, via Mathlib's gcd-fiber lemma `Nat.totient_div_of_dvd` after the division identity n/g = e ↔ g = n/e). Partitioning range n over these fibers (`Finset.card_eq_sum_card_fiberwise`) turns each restricted Gauss sum into a count of fractions.",
+    "keyInsights": [
+      "A *multiplicative* denominator condition collapses a restricted Gauss sum to a full one: the divisors of n coprime to p are exactly the divisors of the p-free part ordCompl[p] n, so Σ_{d|n, p∤d} φ(d) = Σ_{d | ordCompl[p] n} φ(d) = ordCompl[p] n.",
+      "The odd-denominator restricted totient evaluates to the odd part of n — the count of m < n whose reduced fraction m/n has an odd denominator is exactly n / 2^{v₂(n)}.",
+      "The p ∣ d and p ∤ d conditions partition Gauss' identity Σ_{d|n} φ(d) = n, giving the complement Σ_{d|n, p∣d} φ(d) = n − ordCompl[p] n for free.",
+      "The reduced denominator n/gcd(n,m) has fiber size φ(e) over each divisor e | n — the same fibration that proves Nat.sum_totient — which lifts every divisor-sum identity to a statement counting fractions m/n, exactly mirroring the parent's phiA_decomposition.",
+      "The whole family degenerates to the classical Gauss identity (`sum_totient_filter_true`) when the denominator condition is vacuous, and every restricted sum is bounded by n (`sum_totient_filter_le`), since it is a sub-sum of Gauss' identity."
+    ],
+    "prerequisites": [
+      "Euler's totient and Gauss' identity Σ_{d|n} φ(d) = n",
+      "p-adic valuation and the factorization split n = ordProj[p] n · ordCompl[p] n",
+      "Coprimality and the divisor lattice of a natural number",
+      "Reduced fractions and the reduced denominator n/gcd(n,m)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "engine",
+      "title": "The Restricted Gauss-Sum Engine",
+      "summary": "`sum_totient_filter_eq_of_divisors_eq`: if {d | n : P d} = m.divisors, then Σ_{d|n, P d} φ(d) = m. A one-line consequence of Gauss' identity Nat.sum_totient, and the engine behind every closed form below.",
+      "startLine": 56,
+      "endLine": 67,
+      "mathContext": "Gauss' identity Σ_{d|m} φ(d) = m says the totient sum over a complete divisor lattice recovers the top element. The engine reduces every restricted sum to this by identifying the sub-number m whose divisor lattice the condition carves out."
+    },
+    {
+      "id": "prime-free",
+      "title": "The Prime-Free and Odd Denominator Conditions",
+      "summary": "`not_dvd_iff_dvd_ordCompl` (for d | n, p∤d ↔ d ∣ ordCompl[p] n), `sum_totient_filter_not_dvd` (Σ_{d|n, p∤d} φ(d) = ordCompl[p] n), and `sum_totient_filter_odd` (the p=2 case: Σ_{d|n, d odd} φ(d) = odd part of n).",
+      "startLine": 69,
+      "endLine": 119,
+      "mathContext": "Writing n = p^a · m with m = ordCompl[p] n coprime to p, a divisor d | n is coprime to p iff it divides m. The Coprime.dvd_of_dvd_mul_left step extracts d | m from d | p^a·m and gcd(d, p^a) = 1; not_dvd_ordCompl supplies the converse. The filtered divisor set is then (ordCompl[p] n).divisors by Nat.divisors_filter_dvd_of_dvd."
+    },
+    {
+      "id": "complement",
+      "title": "The Complementary p ∣ d Condition",
+      "summary": "`sum_totient_filter_dvd`: Σ_{d|n, p∣d} φ(d) = n − ordCompl[p] n, obtained by partitioning Gauss' identity with Finset.sum_filter_add_sum_filter_not and subtracting the p-free part.",
+      "startLine": 121,
+      "endLine": 136,
+      "mathContext": "The conditions p ∣ d and p ∤ d partition the divisors of n, so their totient sums add to Σ_{d|n} φ(d) = n. Since the p-free part equals ordCompl[p] n ≤ n, the divisible part is exactly the deficit n − ordCompl[p] n = (1 − 1/p^?)·… the p-power contribution to n."
+    },
+    {
+      "id": "gauss-recovery",
+      "title": "Degeneration to Gauss and the Universal Bound",
+      "summary": "`sum_totient_filter_true` (vacuous condition recovers Σ_{d|n} φ(d) = n) and `sum_totient_filter_le` (every restricted generalized totient is ≤ n, being a sub-sum of Gauss' identity).",
+      "startLine": 138,
+      "endLine": 152,
+      "mathContext": "Consistency checks: the restricted totients specialize correctly (no condition ⟹ the classical Gauss identity) and are uniformly dominated by n, reflecting that each is a partial sum of the same complete divisor-lattice sum."
+    },
+    {
+      "id": "counting-bridge",
+      "title": "The Reduced-Denominator Counting Bridge",
+      "summary": "`reducedDenom`, the division identity `div_eq_iff_eq_div`, the fiber count `card_reducedDenom_eq_totient` (φ(e) values m < n with reduced denominator e), the master identity `card_reducedDenom_filter`, and the headline counts `card_reducedDenom_not_dvd` / `card_reducedDenom_odd`.",
+      "startLine": 154,
+      "endLine": 239,
+      "mathContext": "The reduced denominator of m/n is n/gcd(n,m). Mathlib's Nat.totient_div_of_dvd gives #{k < n : gcd(n,k) = n/e} = φ(e) for e | n; reframing via n/g = e ↔ g = n/e turns this into a fiber count over reduced denominators. Finset.card_eq_sum_card_fiberwise then assembles #{m<n : P(reducedDenom m n)} = Σ_{e|n, P e} φ(e), the exact analogue of the parent's phiA_decomposition with admissibility condition P."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős #1000 OQ-03 asks whether the generalized-totient theory extends to other denominator conditions. It does, cleanly: restricting Gauss' divisor-sum Σ_{d|n} φ(d) = n to a multiplicative condition on the denominator yields a closed form. The p-free condition gives the p-free part ordCompl[p] n, oddness gives the odd part of n, divisibility by p gives the complement n − ordCompl[p] n, and a reduced-denominator counting bridge expresses each as a count of fractions m/n. All results are 0-axiom verified from Mathlib, with no native_decide.",
+    "implications": "These closed forms isolate the structural core of the parent's generalized totient: the reduced-denominator fibration (each divisor e | n is the denominator of exactly φ(e) fractions m/n) is condition-agnostic, so any divisor condition that respects the multiplicative structure produces a sub-number whose Gauss sum gives the answer. The engine `sum_totient_filter_eq_of_divisors_eq` and the master count `card_reducedDenom_filter` are reusable for any future denominator condition that carves a divisor sub-lattice.",
+    "openQuestions": [
+      "Does the coprime-to-q condition Σ_{d|n, gcd(d,q)=1} φ(d) admit an equally clean closed form (the q-coprime part of n) for composite q, via iterated ordCompl over the prime factors of q?",
+      "Can the restricted sums be assembled into a Dirichlet-series / multiplicative-function identity, expressing Σ_{d|n, p∤d} φ(d) = ordCompl[p] n as a statement about the convolution φ ∗ 1 restricted to p-free divisors?",
+      "Do the closed forms transfer to Jordan's higher totient J_k, where Σ_{d|n} J_k(d) = n^k, giving restricted sums equal to (ordCompl[p] n)^k?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Directly answers open question OQ-03 of the parent Erdős #1000 formalization ('Does the result extend to other generalized totients with different denominator conditions?') by evaluating restricted Gauss sums Σ_{d|n, cond} φ(d) in closed form; the counting bridge card_reducedDenom_filter is the exact analogue of the parent's phiA_decomposition.",
+      "targetId": "erdos-1000"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "C. F. Gauss"
+      ],
+      "title": "Disquisitiones Arithmeticae",
+      "venue": "Leipzig",
+      "year": "1801",
+      "notes": "The source of the divisor-sum identity Σ_{d|n} φ(d) = n that every restricted generalized totient in this file degenerates to. Article 39 establishes the totient's multiplicativity and the reduced-fraction bookkeeping underlying the counting bridge."
+    },
+    {
+      "authors": [
+        "J. W. S. Cassels"
+      ],
+      "title": "Some metrical theorems in Diophantine approximation. I",
+      "venue": "Proceedings of the Cambridge Philosophical Society",
+      "year": "1950",
+      "volume": "46",
+      "pages": "209–218",
+      "notes": "Introduces the generalized totient φ_A whose denominator condition this file varies. The reduced-denominator fibration used here is the same bookkeeping Cassels exploits to relate φ_A to Diophantine approximation."
+    },
+    {
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "Problem 1000",
+      "venue": "erdosproblems.com",
+      "year": "1964",
+      "notes": "The parent problem: whether the Cesàro average of φ_A(k)/n_k can vanish (settled affirmatively by Haight). OQ-03 asks about extending the generalized-totient framework to other denominator conditions, which this entry resolves with closed forms."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "Erdos1000OQ03",
+    "lineCount": 240,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos1000OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

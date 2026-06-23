@@ -1,0 +1,271 @@
+[
+  {
+    "id": "ann-szemeredi-imports",
+    "proofId": "szemeredi-full",
+    "range": {
+      "startLine": 34,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Critical Mathlib Imports",
+    "content": "The import of `Mathlib.Combinatorics.Additive.AP.Three.Defs` provides the `ThreeAPFree` predicate, while `Mathlib.Combinatorics.Additive.Corner.Roth` brings in the full proof chain: Szemerédi Regularity Lemma → Triangle Removal → Corners Theorem → Roth's Theorem. This chain, formalized by Yaël Dillies and Bhavik Mehta (ITP 2022), is one of the deepest results in Mathlib's combinatorics library.",
+    "mathContext": "The chain proves: for $\\varepsilon > 0$ and large $N$, any $A \\subseteq [N]$ with $|A| \\geq \\varepsilon N$ and $A$ being 3-AP-free leads to a contradiction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi regularity lemma",
+      "triangle removal lemma",
+      "corners theorem",
+      "Roth's theorem"
+    ],
+    "prerequisites": [
+      "graph regularity",
+      "additive combinatorics",
+      "Ramsey theory"
+    ]
+  },
+  {
+    "id": "ann-hasaplength-def",
+    "proofId": "szemeredi-full",
+    "range": {
+      "startLine": 49,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "k-term Arithmetic Progression Definition",
+    "content": "Defines `HasAPOfLength S k` as the existence of starting point $a$ and positive common difference $d$ such that all $k$ terms $a, a+d, \\ldots, a+(k-1)d$ belong to $S$. The requirement $d > 0$ excludes degenerate constant sequences. This is the natural set-theoretic formulation rather than the sequence-based version, chosen to interface cleanly with Mathlib's finset operations.",
+    "mathContext": "$\\text{HasAPOfLength}(S, k) \\iff \\exists a, d \\in \\mathbb{N},\\; d > 0 : \\{a + id \\mid 0 \\leq i < k\\} \\subseteq S$",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "van der Waerden's theorem",
+      "syndetic sets"
+    ],
+    "prerequisites": [
+      "set theory",
+      "natural number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-szemeredi-statement",
+    "proofId": "szemeredi-full",
+    "range": {
+      "startLine": 67,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "Formal Statement of Szemerédi's Theorem",
+    "content": "The theorem is stated in its finitary density form: for all $k \\geq 1$ and density $\\delta > 0$, there exists a threshold $N_0$ beyond which every $\\delta$-dense subset of $\\{0, \\ldots, N-1\\}$ contains a $k$-term AP. This is equivalent to the infinitary form (positive upper density implies all AP lengths) via a standard compactness argument. The quantifier structure $\\forall k, \\delta \\; \\exists N_0 \\; \\forall N \\geq N_0$ captures the key content: the threshold depends on both the desired AP length and the density.",
+    "mathContext": "$\\forall k \\geq 1,\\; \\forall \\delta > 0,\\; \\exists N_0 : \\forall N \\geq N_0,\\; A \\subseteq [N],\\; |A| \\geq \\delta N \\implies A \\text{ contains a } k\\text{-AP}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Turán conjecture",
+      "density Hales-Jewett theorem",
+      "Green-Tao theorem"
+    ],
+    "prerequisites": [
+      "density of subsets",
+      "finitary vs infinitary combinatorics"
+    ]
+  },
+  {
+    "id": "ann-k1-trivial",
+    "proofId": "szemeredi-full",
+    "range": {
+      "startLine": 82,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Base Case k=1: Existence Suffices",
+    "content": "A 1-term AP is just a single element, so any nonempty set trivially satisfies the condition. The proof extracts a witness from the nonemptiness hypothesis. Though trivial, this case is needed for the case-split to be exhaustive. The common difference $d=1$ is chosen arbitrarily since only one term is produced.",
+    "mathContext": "$|A| \\geq \\delta N > 0 \\implies A \\neq \\emptyset \\implies \\exists a \\in A$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "nonempty sets"
+    ],
+    "prerequisites": [
+      "Nonempty Finsets",
+      "Density Lower Bounds",
+      "Witness Extraction"
+    ]
+  },
+  {
+    "id": "ann-k2-case-split",
+    "proofId": "szemeredi-full",
+    "range": {
+      "startLine": 87,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "Base Case k=2: Order-Based Case Split",
+    "content": "A 2-term AP is just a pair of distinct elements with the smaller as start and the difference as step. The proof obtains two distinct elements from the cardinality bound, then does a case split on their ordering. In each case, the common difference is the absolute difference of the two elements. The use of `interval_cases i` cleanly handles both index values $i=0$ and $i=1$.",
+    "mathContext": "$|A| \\geq 2 \\implies \\exists a < b \\in A, \\text{ so } \\{a, a + (b-a)\\} = \\{a, b\\}$ is a 2-AP in $A$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "well-ordering of naturals"
+    ],
+    "prerequisites": [
+      "Finset.one_lt_card",
+      "natural number subtraction"
+    ]
+  },
+  {
+    "id": "ann-axiom-k4",
+    "proofId": "szemeredi-full",
+    "range": {
+      "startLine": 121,
+      "endLine": 125
+    },
+    "type": "concept",
+    "title": "The k≥4 Axiom: Where Formalization Meets Open Infrastructure",
+    "content": "This single axiom is the only unproved assumption in the entire formalization. The k≥4 case of Szemerédi's theorem requires either the hypergraph regularity lemma (Rödl–Skokan 2004, Gowers 2007) or Furstenberg's ergodic theory approach (1977), neither of which exists in Mathlib. The axiom is cleanly isolated: it takes exactly the same form as the full theorem but restricted to $k \\geq 4$. This makes the formalization modular — when hypergraph regularity is eventually formalized, this axiom can be replaced with a proof without changing any downstream code.",
+    "mathContext": "The axiom states $\\text{SzemerediTheorem}|_{k \\geq 4}$: the density threshold $N_0(k, \\delta)$ exists for $k \\geq 4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hypergraph regularity lemma",
+      "Furstenberg's correspondence principle",
+      "axiom isolation"
+    ],
+    "prerequisites": [
+      "graph regularity",
+      "ergodic theory",
+      "Ramsey theory"
+    ]
+  },
+  {
+    "id": "ann-threeapfree-equiv",
+    "proofId": "szemeredi-full",
+    "range": {
+      "startLine": 215,
+      "endLine": 254
+    },
+    "type": "concept",
+    "title": "Equivalence Between Custom and Mathlib AP-Free Definitions",
+    "content": "This is the technical bridge enabling the use of Mathlib's Roth theorem. Mathlib's `ThreeAPFree S` says: for all $a, b, c \\in S$, if $a + c = 2b$ then $a = b$ (i.e., the triple is trivial). Our `IsAPFree S 3` says: there is no triple $a, a+d, a+2d$ in $S$ with $d > 0$. The forward direction is straightforward (a 3-AP gives a non-trivial solution to $a + c = 2b$). The reverse direction requires a case split on ordering: given $a + c = 2b$ with $a \\neq b$, we construct either the AP $(a, b, c)$ or $(c, b, a)$ depending on whether $a < b$ or $a > b$.",
+    "mathContext": "$\\text{ThreeAPFree}(S) \\iff \\text{IsAPFree}(S, 3)$: the condition $a + c = 2b$ with $a, b, c \\in S$ and $a \\neq b$ is equivalent to having a 3-AP $\\{a, a+d, a+2d\\} \\subseteq S$ with $d > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schur's theorem",
+      "arithmetic progressions",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "ThreeAPFree definition",
+      "natural number arithmetic",
+      "case analysis"
+    ]
+  },
+  {
+    "id": "ann-roth-via-mathlib",
+    "proofId": "szemeredi-full",
+    "range": {
+      "startLine": 260,
+      "endLine": 271
+    },
+    "type": "concept",
+    "title": "Roth's Theorem via Mathlib's Corners Chain",
+    "content": "This theorem is the crown jewel of the formalization: a fully machine-checked proof of Roth's theorem derived from Mathlib's existing infrastructure. The proof sets $N_0 = \\text{cornersTheoremBound}(\\delta/3)$ and argues by contradiction. If a $\\delta$-dense set $S$ has no 3-AP, then by the equivalence theorem it satisfies `ThreeAPFree`, which contradicts Mathlib's `roth_3ap_theorem_nat`. The bound $\\text{cornersTheoremBound}$ ultimately comes from the Szemerédi regularity lemma, making it a tower-type function — astronomically large for small $\\delta$, but effective.",
+    "mathContext": "Roth (1953): $r_3(N) = o(N)$, i.e., the maximum size of a 3-AP-free subset of $[N]$ is sublinear. Best known bound (Kelley–Meka 2023): $r_3(N) \\leq N \\exp(-C (\\log N)^{1/12})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Roth's theorem",
+      "corners theorem",
+      "triangle removal lemma",
+      "Behrend construction"
+    ],
+    "prerequisites": [
+      "cornersTheoremBound",
+      "ThreeAPFree equivalence",
+      "proof by contradiction"
+    ]
+  },
+  {
+    "id": "ann-full-assembly",
+    "proofId": "szemeredi-full",
+    "range": {
+      "startLine": 318,
+      "endLine": 326
+    },
+    "type": "concept",
+    "title": "The Final Assembly: Four Cases into One Theorem",
+    "content": "The proof of the full Szemerédi theorem is a clean four-way case split using `Nat.lt_or_ge k 4` and `interval_cases k`. For $k < 4$, the possible values are 1, 2, 3 (since $k \\geq 1$), each handled by its dedicated theorem. For $k \\geq 4$, the axiom is invoked. The `interval_cases` tactic automatically enumerates all naturals in the range $[1, 3]$, making the proof concise. This structure ensures that future progress on the k≥4 case requires changing only the axiom — all glue code remains valid.",
+    "mathContext": "$\\text{szemeredi\\_theorem} = \\begin{cases} \\text{szemeredi\\_k1\\_density} & k = 1 \\\\ \\text{szemeredi\\_k2\\_density} & k = 2 \\\\ \\text{roth\\_theorem\\_via\\_mathlib} & k = 3 \\\\ \\text{szemeredi\\_k\\_ge\\_4} & k \\geq 4 \\end{cases}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by cases",
+      "modularity",
+      "axiom reduction"
+    ],
+    "prerequisites": [
+      "density versions of k=1,2",
+      "Roth's theorem",
+      "k≥4 axiom"
+    ]
+  },
+  {
+    "id": "ann-density-k1",
+    "proofId": "szemeredi-full",
+    "range": {
+      "startLine": 283,
+      "endLine": 296
+    },
+    "type": "concept",
+    "title": "Density Version of k=1",
+    "content": "Lifts the basic k=1 result to the density formulation required by the full theorem. The proof needs to show that a $\\delta$-dense subset is nonempty. This requires the real-valued inequality $\\delta \\cdot N > 0$, which follows from $\\delta > 0$ and $N \\geq 1$. The cast from natural to real arithmetic is handled by `exact_mod_cast`. This is a common pattern in combinatorics formalizations: converting between the counting (natural number) and density (real number) perspectives.",
+    "mathContext": "$|S| \\geq \\delta N$ with $\\delta > 0, N \\geq 1$ implies $|S| \\geq 1$, so $S \\neq \\emptyset$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "density arguments",
+      "type coercion in Lean",
+      "casting between ℕ and ℝ"
+    ],
+    "prerequisites": [
+      "real number arithmetic",
+      "Finset.card_pos"
+    ]
+  },
+  {
+    "id": "ann-density-k2",
+    "proofId": "szemeredi-full",
+    "range": {
+      "startLine": 299,
+      "endLine": 313
+    },
+    "type": "concept",
+    "title": "Density Version of k=2 with Ceiling Threshold",
+    "content": "Sets $N_0 = \\lceil 2/\\delta \\rceil$ to ensure any $\\delta$-dense subset of $[N]$ has at least 2 elements. The key calculation: $|S| \\geq \\delta N \\geq \\delta \\cdot (2/\\delta) = 2$. The use of `Nat.le_ceil` and `nlinarith` handles the ceiling arithmetic and nonlinear inequality respectively. The `field_simp` tactic simplifies $\\delta \\cdot (2/\\delta) = 2$ by clearing the denominator.",
+    "mathContext": "$N \\geq \\lceil 2/\\delta \\rceil \\implies \\delta N \\geq 2 \\implies |S| \\geq 2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ceiling function",
+      "density threshold",
+      "nonlinear arithmetic"
+    ],
+    "prerequisites": [
+      "Nat.ceil",
+      "field_simp tactic",
+      "nlinarith tactic"
+    ]
+  },
+  {
+    "id": "ann-corollary",
+    "proofId": "szemeredi-full",
+    "range": {
+      "startLine": 328,
+      "endLine": 333
+    },
+    "type": "concept",
+    "title": "Corollary: Restatement for Readability",
+    "content": "This corollary `dense_set_has_long_ap` is a direct definitional unfolding of `szemeredi_theorem`, provided as a more readable entry point. The name emphasizes the qualitative content: density alone forces long arithmetic progressions. This naming convention follows the Mathlib style of providing human-readable theorem names alongside the more formal statement names.",
+    "mathContext": "For all $k \\geq 1$ and $\\delta > 0$: sufficiently large $\\delta$-dense sets contain $k$-APs.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "API design in proof libraries",
+      "definitional equality"
+    ],
+    "prerequisites": [
+      "SzemerediTheorem"
+    ]
+  }
+]

@@ -1,0 +1,341 @@
+[
+  {
+    "id": "ann-893-header",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Problem Header, Imports, and Namespace",
+    "content": "File header documenting Erdos Problem #893 on the divisor sum of Mersenne numbers, status (OPEN, partially resolved by Kovac-Luca 2025), and references. Imports `Nat.Basic`, `Finset.Basic` for finite sums, `Real.Basic` for the ratio, `Filter.Basic` for limit concepts, and `Tactic`. Opens `Finset` namespace for sum notation and declares namespace `Erdos893`.",
+    "mathContext": "Imports provide `Nat.divisors`, `Finset.sum`, `Finset.Icc`, $\\mathbb{R}$ for ratios, and `Filter` for limit formulations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.divisors",
+      "Finset.sum",
+      "Finset.Icc",
+      "Filter"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "namespace"
+    ]
+  },
+  {
+    "id": "ann-893-tau",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 36,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Divisor Counting Function $\\tau(n)$",
+    "content": "Defines `tau n` as `n.divisors.card`: the number of positive divisors of $n$. This is the standard divisor function $\\tau(n) = \\sigma_0(n) = \\sum_{d \\mid n} 1$. For primes $p$, $\\tau(p) = 2$; for prime powers $p^a$, $\\tau(p^a) = a + 1$. The function is multiplicative: $\\tau(mn) = \\tau(m)\\tau(n)$ when $\\gcd(m,n) = 1$.",
+    "mathContext": "$\\tau(n) = |\\{d \\in \\mathbb{N} : d \\mid n\\}| = \\sigma_0(n)$. Multiplicative: $\\tau(mn) = \\tau(m)\\tau(n)$ for $\\gcd(m,n) = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.divisors",
+      "Finset.card",
+      "multiplicative function",
+      "sigma_0"
+    ],
+    "prerequisites": [
+      "Nat.divisors"
+    ]
+  },
+  {
+    "id": "ann-893-tau-verified",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 45,
+      "endLine": 68
+    },
+    "type": "concept",
+    "title": "Verified $\\tau$ Values for Small Mersenne Numbers",
+    "content": "Proves $\\tau(2^k - 1)$ for $k = 1, \\ldots, 8$ using `native_decide`: $\\tau(1) = 1$, $\\tau(3) = 2$, $\\tau(7) = 2$, $\\tau(15) = 4$, $\\tau(31) = 2$, $\\tau(63) = 6$, $\\tau(127) = 2$, $\\tau(255) = 8$. The Mersenne primes ($3, 7, 31, 127$) have $\\tau = 2$, while composite Mersenne numbers have more divisors. These verified values ground the abstract definitions in concrete computations.",
+    "mathContext": "$\\tau(2^k-1)$ for $k=1,\\ldots,8$: $1, 2, 2, 4, 2, 6, 2, 8$. Mersenne primes at $k = 2, 3, 5, 7$ contribute $\\tau = 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "Mersenne prime",
+      "computational verification",
+      "concrete values"
+    ],
+    "prerequisites": [
+      "tau",
+      "Nat.divisors"
+    ]
+  },
+  {
+    "id": "ann-893-tau-prime",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 69,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "Mersenne Primes Have $\\tau = 2$ (Proved)",
+    "content": "Proves `tau_prime_eq_two`: for any prime $p$, $\\tau(p) = 2$. Uses `Nat.Prime.divisors` which gives $\\{1, p\\}$ as the divisor set of a prime. Applied to Mersenne primes $2^k - 1$, this shows they contribute minimally to $f(n)$.",
+    "mathContext": "$p$ prime $\\implies \\tau(p) = 2$, since $\\text{divisors}(p) = \\{1, p\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.Prime.divisors",
+      "Mersenne prime",
+      "minimal divisor count"
+    ],
+    "prerequisites": [
+      "tau",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "ann-893-f",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 92,
+      "endLine": 94
+    },
+    "type": "definition",
+    "title": "Mersenne Divisor Sum $f(n)$",
+    "content": "Defines `f n` as $\\sum_{k \\in \\text{Icc}(1,n)} \\tau(2^k - 1)$: the cumulative divisor count of the first $n$ Mersenne numbers $2^1 - 1, 2^2 - 1, \\ldots, 2^n - 1$. Uses `Finset.Icc 1 n` for the summation range and `Finset.sum` ($\\sum$) notation. The growth rate of $f$ is erratic because $\\tau(2^k - 1)$ depends sensitively on the factorization of each Mersenne number.",
+    "mathContext": "$f(n) = \\sum_{k=1}^{n} \\tau(2^k - 1)$. Growth depends on factorization structure of $\\{2^k - 1\\}_{k=1}^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum",
+      "Finset.Icc",
+      "Mersenne number",
+      "cumulative sum"
+    ],
+    "prerequisites": [
+      "tau",
+      "Finset.Icc",
+      "Finset.sum"
+    ]
+  },
+  {
+    "id": "ann-893-f-values",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 96,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Verified Values of $f$ and Initial Values Theorem",
+    "content": "Proves $f(1) = 1, f(2) = 3, f(3) = 5, f(4) = 9, f(5) = 11, f(6) = 17, f(7) = 19, f(8) = 27$ via `native_decide`, then collects them into `f_initial_values`. The jumps in $f$ reflect the divisor counts: Mersenne primes add 2, while composite $2^k - 1$ (like $k = 4, 6, 8$) add more. The ratio $f(8)/f(4) = 27/9 = 3$ gives early evidence for growth.",
+    "mathContext": "$f(1,\\ldots,8) = 1, 3, 5, 9, 11, 17, 19, 27$. The ratio $f(8)/f(4) = 3$, $f(6)/f(3) = 17/5 = 3.4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "computational evidence",
+      "growth rate"
+    ],
+    "prerequisites": [
+      "f",
+      "tau verified values"
+    ]
+  },
+  {
+    "id": "ann-893-mono",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 139,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Monotonicity of $f$ (Proved)",
+    "content": "Proves `f_mono`: $m \\le n \\implies f(m) \\le f(n)$. The proof uses `Finset.sum_le_sum_of_subset` with `Finset.Icc_subset_Icc_right`: extending the summation range can only add non-negative terms. This is a genuine Lean proof (no sorry, no native_decide), using the algebraic structure of finite sums.",
+    "mathContext": "$m \\le n \\implies f(m) = \\sum_{k=1}^m \\tau(2^k-1) \\le \\sum_{k=1}^n \\tau(2^k-1) = f(n)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_le_sum_of_subset",
+      "Finset.Icc_subset_Icc_right",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "f",
+      "Finset.Icc"
+    ]
+  },
+  {
+    "id": "ann-893-fpos",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 145,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "Positivity of $f$ (Proved)",
+    "content": "Proves `f_pos`: $1 \\le n \\implies 0 < f(n)$. The proof chains $0 < f(1) = 1$ (from `f_one`) with monotonicity $f(1) \\le f(n)$ (from `f_mono`). This is needed to ensure the ratio $f(2n)/f(n)$ is well-defined (non-zero denominator).",
+    "mathContext": "$n \\ge 1 \\implies f(n) \\ge f(1) = 1 > 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity",
+      "well-definedness",
+      "calc proof"
+    ],
+    "prerequisites": [
+      "f_one",
+      "f_mono"
+    ]
+  },
+  {
+    "id": "ann-893-ratio",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 276,
+      "endLine": 278
+    },
+    "type": "definition",
+    "title": "Ratio $f(2n)/f(n)$",
+    "content": "Defines `ratio n` as $(f(2n) : \\mathbb{R}) / (f(n) : \\mathbb{R})$, casting natural numbers to reals for division. This is the central quantity in Erdos's question. The ratio measures how much the divisor sum grows when the summation range doubles.",
+    "mathContext": "$\\text{ratio}(n) = \\frac{f(2n)}{f(n)} \\in \\mathbb{R}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "division",
+      "Nat.cast",
+      "growth rate",
+      "doubling"
+    ],
+    "prerequisites": [
+      "f",
+      "Real division"
+    ]
+  },
+  {
+    "id": "ann-893-ratio-ge1",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 280,
+      "endLine": 290
+    },
+    "type": "concept",
+    "title": "Ratio $\\ge 1$ (Proved)",
+    "content": "Proves `ratio_ge_one`: $1 \\le n \\implies 1 \\le \\text{ratio}(n)$. The proof uses `le_div_iff₀` (division characterization) and monotonicity $f(n) \\le f(2n)$. This establishes that doubling the range never decreases the ratio. The proof is fully verified with no sorry.",
+    "mathContext": "$n \\ge 1 \\implies \\frac{f(2n)}{f(n)} \\ge 1$ since $f(2n) \\ge f(n)$ by monotonicity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "le_div_iff₀",
+      "exact_mod_cast",
+      "ratio lower bound"
+    ],
+    "prerequisites": [
+      "ratio",
+      "f_mono",
+      "f_pos"
+    ]
+  },
+  {
+    "id": "ann-893-kovac-luca",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 292,
+      "endLine": 294
+    },
+    "type": "concept",
+    "title": "Kovac-Luca: $\\limsup f(2n)/f(n) = \\infty$",
+    "content": "Axiomatizes the main result of Kovac-Luca (2025, arXiv:2506.04883): for every $M > 0$, there exists $n$ with $\\text{ratio}(n) > M$. This rules out any finite upper bound on the ratio but does not establish that the ratio eventually stays large (divergence). The proof builds on a heuristic argument by Cambie.",
+    "mathContext": "$\\limsup_{n \\to \\infty} \\frac{f(2n)}{f(n)} = \\infty$: $\\forall M > 0,\\, \\exists n,\\, \\frac{f(2n)}{f(n)} > M$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limsup",
+      "Kovac-Luca 2025",
+      "arXiv:2506.04883",
+      "unboundedness"
+    ],
+    "prerequisites": [
+      "ratio"
+    ]
+  },
+  {
+    "id": "ann-893-unbounded",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 296,
+      "endLine": 306
+    },
+    "type": "concept",
+    "title": "Ratio Unbounded (Proved from Axiom)",
+    "content": "Proves `ratio_unbounded`: $\\neg \\exists B,\\, \\forall n,\\, \\text{ratio}(n) \\le B$. The proof assumes a bound $B$ exists, applies `kovac_luca_limsup_infinite` with $\\max(B, 1)$ to get a contradicting $n$, and derives a contradiction via `linarith`. This is a genuine proof (modulo the Kovac-Luca axiom) demonstrating formal reasoning with reals.",
+    "mathContext": "$\\neg \\exists B \\in \\mathbb{R},\\, \\forall n,\\, \\frac{f(2n)}{f(n)} \\le B$. Proof by contradiction using Kovac-Luca.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "linarith",
+      "le_max_left",
+      "positivity"
+    ],
+    "prerequisites": [
+      "kovac_luca_limsup_infinite",
+      "ratio"
+    ]
+  },
+  {
+    "id": "ann-893-conjecture",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 308,
+      "endLine": 311
+    },
+    "type": "definition",
+    "title": "Erdos Problem #893: $f(2n)/f(n) \\to \\infty$",
+    "content": "States the open problem as `ErdosProblem893`: for every $M > 0$, there exists $N_0$ such that $\\text{ratio}(n) > M$ for all $n \\ge N_0$. This is strictly stronger than the Kovac-Luca result: it requires the ratio to *eventually* exceed every bound, not just exceed it infinitely often. Defined as a `Prop` since the problem is open.",
+    "mathContext": "$\\text{ErdosProblem893} \\equiv \\forall M > 0,\\, \\exists N_0,\\, \\forall n \\ge N_0,\\, \\frac{f(2n)}{f(n)} > M$",
+    "significance": "key",
+    "relatedConcepts": [
+      "divergence",
+      "limsup vs lim",
+      "open problem",
+      "eventual bound"
+    ],
+    "prerequisites": [
+      "ratio",
+      "limit definition"
+    ]
+  },
+  {
+    "id": "ann-893-weaker",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 313,
+      "endLine": 322
+    },
+    "type": "concept",
+    "title": "Conjecture Implies Kovac-Luca (Proved)",
+    "content": "Proves `kovac_luca_weaker_than_conjecture`: `ErdosProblem893` implies the Kovac-Luca statement. The proof extracts $N_0$ from the conjecture and instantiates $n = N_0$ (using $N_0 \\ge N_0$). This formally establishes the logical hierarchy: divergence (lim) is strictly stronger than unboundedness (limsup).",
+    "mathContext": "$(\\forall M,\\, \\exists N_0,\\, \\forall n \\ge N_0,\\, r(n) > M) \\implies (\\forall M,\\, \\exists n,\\, r(n) > M)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "logical implication",
+      "lim vs limsup",
+      "instantiation"
+    ],
+    "prerequisites": [
+      "ErdosProblem893",
+      "kovac_luca_limsup_infinite"
+    ]
+  },
+  {
+    "id": "ann-893-summary",
+    "proofId": "erdos-893",
+    "range": {
+      "startLine": 324,
+      "endLine": 330
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "Collects the main verified results into `erdos893_summary`: positivity ($f(n) > 0$ for $n \\ge 1$), monotonicity ($f$ is non-decreasing), and unboundedness of the ratio ($\\neg \\exists B,\\, \\forall n,\\, \\text{ratio}(n) \\le B$). This serves as a machine-checkable summary of the formalization's achievements.",
+    "mathContext": "$f(n) > 0$ (for $n \\ge 1$) $\\land$ $f$ monotone $\\land$ $\\neg \\exists B,\\, \\forall n,\\, r(n) \\le B$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "summary theorem",
+      "conjunction",
+      "machine-checked"
+    ],
+    "prerequisites": [
+      "f_pos",
+      "f_mono",
+      "ratio_unbounded"
+    ]
+  }
+]

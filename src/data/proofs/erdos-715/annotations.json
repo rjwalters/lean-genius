@@ -1,0 +1,224 @@
+[
+  {
+    "id": "ann-715-overview",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Problem Overview and Imports",
+    "content": "**Problem Overview.** Erdős Problem #715 (the Berge-Sauer question): Does every 4-regular graph contain a 3-regular subgraph? More generally, is there any r such that every r-regular graph must contain a 3-regular subgraph? Answer: YES (Tashkinov 1982). Every r-regular graph with r ≥ 4 contains a 3-regular subgraph. Imports Mathlib and opens SimpleGraph, Set, Finset namespaces.",
+    "mathContext": "This problem belongs to the **structural theory of regular graphs**, asking how regularity of degree r constrains the existence of regular substructures. The answer reveals a sharp threshold: r = 4 is the minimum degree of regularity that forces a 3-regular subgraph. Below this threshold, 3-regular graphs like K₄ and the Petersen graph are minimal — they contain no proper 3-regular subgraph. The problem was posed by Berge and Sauer, connecting to classical questions about graph factorization.",
+    "relatedConcepts": [
+      "Berge-Sauer question",
+      "regular graph",
+      "graph factorization",
+      "Tashkinov theorem",
+      "structural graph theory"
+    ],
+    "prerequisites": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Finset",
+      "Fintype"
+    ],
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-715-definitions",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 29,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Basic Graph Definitions",
+    "content": "**SimpleGraph', degree, IsRegular.** Defines a custom simple graph structure with adjacency, symmetry, and looplessness. Vertex degree is |{u : G.adj v u}| via Finset.filter. A graph is r-regular if every vertex has degree exactly r.",
+    "mathContext": "A custom `SimpleGraph'` is used rather than Mathlib's `SimpleGraph` to give explicit control over the adjacency relation and avoid universe issues. The degree function counts neighbors by filtering the universal finset, making it computable for finite types. The r-regularity condition δ(G) = Δ(G) = r is the strongest form of degree constraint — it implies the graph is simultaneously 'as sparse as possible' and 'as dense as possible' for its degree.",
+    "relatedConcepts": [
+      "vertex degree",
+      "regular graph",
+      "Finset.filter",
+      "DecidableRel",
+      "adjacency relation"
+    ],
+    "prerequisites": [
+      "Fintype",
+      "DecidableEq",
+      "Finset.filter"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-subgraphs",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 47,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Subgraph Definitions",
+    "content": "**IsSubgraph, IsSpanningSubgraph, inducedSubgraph.** H is a subgraph of G if every edge of H is an edge of G. A spanning subgraph uses the same vertex set. Induced subgraphs restrict adjacency to a vertex subset S.",
+    "mathContext": "The subgraph relation is crucial for stating the Berge-Sauer question: we seek a subgraph H ⊆ G that is k-regular. The distinction between spanning subgraphs (same vertices, fewer edges) and induced subgraphs (fewer vertices, inherited edges) matters: Tashkinov's theorem finds a spanning 3-regular subgraph, which is stronger than just finding an induced one. The induced subgraph construction uses Lean subtypes to restrict the vertex set.",
+    "relatedConcepts": [
+      "subgraph relation",
+      "spanning subgraph",
+      "induced subgraph",
+      "edge deletion",
+      "graph containment"
+    ],
+    "prerequisites": [
+      "SimpleGraph'",
+      "Set",
+      "Subtype"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-main-question",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 63,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "The Central Predicate: HasRegularSubgraph",
+    "content": "**HasRegularSubgraph(r, k).** The general question: does every r-regular graph contain a k-regular subgraph? Universally quantified over all finite types V and graphs G. This captures both the specific Berge-Sauer question (r = 4, k = 3) and its generalizations.",
+    "mathContext": "The predicate `HasRegularSubgraph r k` is existentially quantified over subgraphs H with `IsSubgraph H G ∧ IsRegular H k`. This is the natural parameterization of the problem: for which (r, k) pairs does every r-regular graph contain a k-regular subgraph? The answer forms a 'phase diagram' in the (r, k) plane. For k = 3, the threshold is r = 4 (Tashkinov). For general k, the threshold is an active research question.",
+    "relatedConcepts": [
+      "existence of regular subgraphs",
+      "graph regularity threshold",
+      "universal quantification over graphs",
+      "Berge-Sauer question"
+    ],
+    "prerequisites": [
+      "IsRegular",
+      "IsSubgraph"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-tashkinov",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 71,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "Tashkinov's Theorem and Consequences",
+    "content": "**tashkinov_theorem, regular_has_3_regular, alon_friedland_kalai, five_regular_has_3_regular.** Tashkinov (1982): Every 4-regular graph contains a 3-regular subgraph. Corollary: HasRegularSubgraph r 3 for all r ≥ 4. Alon-Friedland-Kalai (1984): every 4-regular graph plus one edge contains a 3-regular subgraph, directly implying the r ≥ 5 case.",
+    "mathContext": "Tashkinov's proof uses a careful analysis of the structure of 4-regular graphs, showing that edge-disjoint cycles can be combined to form a 3-regular subgraph. The **Alon-Friedland-Kalai** (AFK) strengthening is remarkable: adding just one edge to a 4-regular graph already forces a 3-regular subgraph. This implies the r ≥ 5 case immediately: any 5-regular graph can have an edge removed to become 'almost 4-regular', and AFK applies to find the 3-regular subgraph. The proofs use parity arguments and the structure theory of Eulerian graphs.",
+    "relatedConcepts": [
+      "Tashkinov 1982",
+      "Alon-Friedland-Kalai 1984",
+      "edge-disjoint cycles",
+      "Eulerian decomposition",
+      "graph factor"
+    ],
+    "prerequisites": [
+      "HasRegularSubgraph",
+      "IsRegular",
+      "IsSubgraph"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-counterexamples",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 98,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Counterexamples: K₄ and the Threshold r = 4",
+    "content": "**K4, K4_is_3_regular, K4_minimal_3_regular, three_regular_no_proper_3_subgraph.** K₄ (complete graph on 4 vertices) is 3-regular but has no proper 3-regular subgraph — the only 3-regular spanning subgraph is K₄ itself. This shows the threshold for HasRegularSubgraph(r, 3) is exactly r = 4.",
+    "mathContext": "K₄ has 6 edges and every vertex has degree 3. Any proper subgraph must remove at least one edge, reducing some vertex degree below 3, so no proper 3-regular subgraph exists. This is the smallest counterexample. The argument generalizes: for a 3-regular graph on n vertices to have a proper 3-regular subgraph, it must have enough 'redundancy' in its edge structure — K₄ is too tight. The sharpness of the threshold r = 4 is remarkable: regularity 4 provides exactly enough flexibility.",
+    "relatedConcepts": [
+      "complete graph K₄",
+      "minimal regular graph",
+      "sharpness of threshold",
+      "edge removal argument",
+      "proper subgraph"
+    ],
+    "prerequisites": [
+      "SimpleGraph'",
+      "IsRegular",
+      "K4"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-berge-sauer",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 123,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Berge-Sauer Answer and General Threshold",
+    "content": "**berge_sauer_question, berge_sauer_answer, RegularSubgraphThreshold, threshold_for_3.** The Berge-Sauer question asks whether any r works; the answer is r = 4 (Tashkinov). The general threshold function for k-regular subgraphs is defined, with value 4 for k = 3.",
+    "mathContext": "The `berge_sauer_answer` is proved directly from `tashkinov_theorem` using the witness r = 4. The `RegularSubgraphThreshold k` function generalizes the question: for each k, what is the minimum r such that every r-regular graph contains a k-regular subgraph? For k = 1, the threshold is 1 (trivial: any 1-regular graph is its own 1-regular subgraph). For k = 2, the threshold is 2 (every 2-regular graph is a union of cycles, which are 2-regular). For k = 3, the threshold is 4 (Tashkinov). The general pattern remains an open research direction.",
+    "relatedConcepts": [
+      "Berge-Sauer question",
+      "threshold function",
+      "Nat.find",
+      "witness proof",
+      "graph factorization hierarchy"
+    ],
+    "prerequisites": [
+      "tashkinov_theorem",
+      "HasRegularSubgraph"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-petersen",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 143,
+      "endLine": 174
+    },
+    "type": "definition",
+    "title": "The Petersen Graph",
+    "content": "**petersenGraph, petersen_is_3_regular, petersen_no_proper_3_subgraph.** The Petersen graph is a famous 3-regular graph on 10 vertices with 15 edges. It is defined via outer pentagon (5 vertices in a cycle), inner pentagram (5 vertices with edges skipping 2), and 5 spoke edges. It has no proper 3-regular subgraph, making it another minimal example.",
+    "mathContext": "The **Petersen graph** is one of the most important graphs in combinatorics. It is 3-regular, 3-edge-connected, non-planar, non-Hamiltonian, and has girth 5. It serves as a counterexample to many graph theory conjectures. Here it demonstrates that 3-regular minimality is not unique to K₄ — larger graphs can also be minimal. The construction uses outer cycle (0-1-2-3-4-0), inner pentagram (5-7-9-6-8-5), and spokes (i↔i+5). The adjacency is decidable on Fin 10, though the symmetry and looplessness proofs are left as sorries.",
+    "relatedConcepts": [
+      "Petersen graph",
+      "girth 5",
+      "non-Hamiltonian",
+      "3-regular minimality",
+      "outer cycle + inner pentagram"
+    ],
+    "prerequisites": [
+      "SimpleGraph'",
+      "Fin 10",
+      "modular arithmetic"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-715-edge-counting",
+    "proofId": "erdos-715",
+    "range": {
+      "startLine": 176,
+      "endLine": 189
+    },
+    "type": "concept",
+    "title": "Edge Counting and Parity",
+    "content": "**regular_edge_count, regular_parity.** The handshaking lemma for regular graphs: an r-regular graph on n vertices has rn/2 edges. Necessary condition: rn must be even. This gives a parity obstruction for existence of regular graphs.",
+    "mathContext": "The **handshaking lemma** (Euler 1736) states Σ deg(v) = 2|E|. For r-regular graphs, this gives r·n = 2|E|, so |E| = rn/2. The parity condition `Even (r * n)` is necessary: either r or n must be even. This rules out, e.g., 3-regular graphs on an odd number of vertices. The parity argument is fundamental to the theory of regular graphs and connects to the existence of Eulerian circuits (a graph has an Eulerian circuit iff every vertex has even degree).",
+    "relatedConcepts": [
+      "handshaking lemma",
+      "Euler 1736",
+      "parity condition",
+      "edge counting",
+      "Eulerian circuit"
+    ],
+    "prerequisites": [
+      "IsRegular",
+      "Finset.filter",
+      "Fintype.card"
+    ],
+    "significance": "supporting"
+  }
+]

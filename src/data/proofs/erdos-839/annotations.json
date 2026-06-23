@@ -1,0 +1,442 @@
+[
+  {
+    "id": "ann-839-header",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Problem Header and Imports",
+    "content": "The formalization imports Mathlib's natural number basics, finite sets, and filter theory. The header describes Problem #839 on sequences $1 \\leq a_1 < a_2 < \\cdots$ where no term equals a sum of consecutive earlier terms. Two open questions concern growth rate ($\\limsup a_n/n = \\infty$?) and logarithmic density (vanishing?). Known results include Freud's construction with upper density $19/36$, disproving Erdős's conjecture of $\\leq 1/2$.",
+    "mathContext": "Imports: Finset, Filter.Basic, Nat.Basic for formalizing $\\sum_{k=i}^{j} a_k$, $\\limsup$, and sequence properties.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.Icc",
+      "Filter.limsup",
+      "Real.log"
+    ],
+    "prerequisites": [
+      "number theory",
+      "additive combinatorics"
+    ]
+  },
+  {
+    "id": "ann-839-consecutive-sum",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 23,
+      "endLine": 25
+    },
+    "type": "definition",
+    "title": "Consecutive Sum",
+    "content": "The sum of consecutive terms $a_i + a_{i+1} + \\cdots + a_j$ is computed via `Finset.Icc i j`. This is the basic building block for the avoidance condition. When $i > j$, the sum over the empty interval is $0$. This definition handles both single-term sums ($i = j$, giving $a_i$) and multi-term sums.",
+    "mathContext": "$\\text{consecutiveSum}(a, i, j) = \\sum_{k=i}^{j} a_k = a_i + a_{i+1} + \\cdots + a_j$",
+    "significance": "key",
+    "relatedConcepts": [
+      "partial sum",
+      "contiguous subsequence sum",
+      "Finset.sum"
+    ],
+    "prerequisites": [
+      "arithmetic",
+      "finite sums"
+    ]
+  },
+  {
+    "id": "ann-839-avoid",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 27,
+      "endLine": 30
+    },
+    "type": "definition",
+    "title": "Consecutive Sum Avoidance",
+    "content": "A sequence avoids consecutive-term sums if no term $a_m$ equals $\\sum_{k=i}^{j} a_k$ for any $i \\leq j < m$. This is strictly weaker than avoiding all subset sums (only contiguous blocks are forbidden), but still imposes strong structural constraints. The condition $j < m$ ensures we only look at earlier terms, making this a 'forward-looking' avoidance property.",
+    "mathContext": "$\\forall\\, m,\\; \\forall\\, i \\leq j < m: a_m \\neq \\sum_{k=i}^{j} a_k$",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum-free set",
+      "B-sequence",
+      "Sidon set",
+      "subset sum avoidance"
+    ],
+    "prerequisites": [
+      "additive combinatorics",
+      "sequence theory"
+    ]
+  },
+  {
+    "id": "ann-839-validseq",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 32,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "Valid Sequence",
+    "content": "A valid sequence bundles three properties as a subtype: (1) all terms positive ($a_n > 0$), (2) strictly increasing ($i < j \\implies a_i < a_j$), and (3) consecutive sum avoidance. The subtype formulation `{ a : ℕ → ℕ // ... }` pairs the sequence function with its correctness proof, enabling clean theorem statements.",
+    "mathContext": "$\\text{ValidSeq} = \\{a : \\mathbb{N} \\to \\mathbb{N} \\mid a_n > 0,\\; a_i < a_j \\text{ for } i < j,\\; \\text{AvoidConsecutiveSums}(a)\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "subtype",
+      "dependent type",
+      "sequence property bundling"
+    ],
+    "prerequisites": [
+      "type theory",
+      "sequence theory"
+    ]
+  },
+  {
+    "id": "ann-839-question1",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 39,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Question 1: Growth Rate",
+    "content": "Is $\\limsup_{n \\to \\infty} a_n / n = \\infty$ for every valid sequence? This asks whether the sequence must have arbitrarily large gaps relative to its index. Formalized as: for every real $C$ and valid sequence $a$, there exists $n$ with $a_n / (n+1) > C$. The $n+1$ denominator avoids division by zero at $n = 0$. If true, no valid sequence can be 'eventually linear' — it must grow super-linearly along a subsequence.",
+    "mathContext": "$\\forall\\, a \\in \\text{ValidSeq},\\; \\forall\\, C \\in \\mathbb{R},\\; \\exists\\, n: \\frac{a_n}{n+1} > C$, i.e., $\\limsup \\frac{a_n}{n} = \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lim sup",
+      "growth rate",
+      "super-linear growth",
+      "density"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-839-question2",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 43,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "Question 2: Logarithmic Density",
+    "content": "Does the logarithmic density $(1/\\log x) \\sum_{a_n < x} 1/a_n \\to 0$ as $x \\to \\infty$? Since $\\sum_{n=1}^{x} 1/n \\sim \\log x$ for all integers, vanishing logarithmic density means the sequence is negligible in the harmonic sense — it captures a vanishing fraction of the 'harmonic mass.' This is a stronger sparsity condition than having zero natural density.",
+    "mathContext": "$\\forall\\, a \\in \\text{ValidSeq},\\; \\forall\\, \\varepsilon > 0,\\; \\exists\\, X_0,\\; \\forall\\, X \\geq X_0: \\sum_{\\substack{n : a_n < X}} \\frac{1}{a_n} \\leq \\varepsilon \\cdot \\log X$",
+    "significance": "key",
+    "relatedConcepts": [
+      "logarithmic density",
+      "harmonic sum",
+      "natural density",
+      "analytic density"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "harmonic series"
+    ]
+  },
+  {
+    "id": "ann-839-lower-bound",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 53,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Linear Lower Bound (Proved)",
+    "content": "Every valid sequence satisfies $a_n \\geq n + 1$. The proof is by induction: $a_0 \\geq 1$ (positivity), and $a_{k+1} > a_k \\geq k + 1$ (strict monotonicity), so $a_{k+1} \\geq k + 2$. This is one of the fully proved results in the formalization (no sorry or axiom). It establishes that valid sequences grow at least linearly.",
+    "mathContext": "$\\forall\\, n: a_n \\geq n + 1$ (by induction on $n$, using $a_0 > 0$ and $a_{k+1} > a_k$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "induction",
+      "linear growth",
+      "lower bound"
+    ],
+    "prerequisites": [
+      "mathematical induction",
+      "natural number arithmetic"
+    ]
+  },
+  {
+    "id": "ann-839-single-sum",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 63,
+      "endLine": 66
+    },
+    "type": "concept",
+    "title": "Single-Term Consecutive Sum (Proved)",
+    "content": "The consecutive sum of a single term $a_i$ to $a_i$ (i.e., $i = j$) equals $a_i$ itself. This follows from `Finset.Icc_self`, which states that the interval $[i, i]$ is the singleton $\\{i\\}$. A basic but useful lemma for reducing the avoidance condition to specific cases.",
+    "mathContext": "$\\text{consecutiveSum}(a, i, i) = \\sum_{k \\in [i,i]} a_k = a_i$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "singleton sum",
+      "Finset.Icc_self",
+      "base case"
+    ],
+    "prerequisites": [
+      "finite set theory"
+    ]
+  },
+  {
+    "id": "ann-839-no-repeat",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 68,
+      "endLine": 73
+    },
+    "type": "concept",
+    "title": "No Repeated Values (Proved)",
+    "content": "In a valid (strictly increasing) sequence, no two terms are equal: $j < m \\implies a_m \\neq a_j$. This follows directly from strict monotonicity ($a_j < a_m$). While obvious, this lemma is useful as a building block for more complex arguments about the avoidance property.",
+    "mathContext": "$j < m \\implies a_j < a_m \\implies a_m \\neq a_j$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "strict monotonicity",
+      "injectivity",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "order theory"
+    ]
+  },
+  {
+    "id": "ann-839-avoid-single",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 75,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "No Single-Term Match (Proved)",
+    "content": "The avoidance property implies $a_m \\neq a_j$ for $j < m$ as a special case (consecutive sum of a single term). This is a direct application of the `AvoidConsecutiveSums` definition with $i = j$, where `consecutiveSum a j j = a j`.",
+    "mathContext": "$j < m \\implies a_m \\neq \\sum_{k=j}^{j} a_k = a_j$ (special case of avoidance).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "specialization",
+      "definitional unfolding"
+    ],
+    "prerequisites": [
+      "logic"
+    ]
+  },
+  {
+    "id": "ann-839-empty-sum",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 81,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Empty Consecutive Sum (Proved)",
+    "content": "When $j < i$, the interval $[i, j]$ is empty, so the consecutive sum is $0$. This boundary case is handled via `Finset.Icc_eq_empty`, ensuring the sum function is well-behaved for degenerate ranges.",
+    "mathContext": "$j < i \\implies \\sum_{k=i}^{j} a_k = 0$ (sum over empty set).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "empty sum convention",
+      "Finset.Icc_eq_empty"
+    ],
+    "prerequisites": [
+      "finite set theory"
+    ]
+  },
+  {
+    "id": "ann-839-sum-ge-first",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 86,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "Sum at Least First Term (Proved)",
+    "content": "For a positive sequence, $\\sum_{k=i}^{j} a_k \\geq a_i$ when $i \\leq j$. The proof uses `Finset.sum_le_sum_of_subset_of_nonneg` to show that the sum over $[i, j]$ dominates the sum over $\\{i\\}$. This lower bound is fundamental for analyzing how consecutive sums compare to individual terms.",
+    "mathContext": "$i \\leq j \\wedge a_k > 0 \\implies a_i \\leq \\sum_{k=i}^{j} a_k$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "subset sum monotonicity",
+      "positive term bound"
+    ],
+    "prerequisites": [
+      "finite sums",
+      "order properties"
+    ]
+  },
+  {
+    "id": "ann-839-sum-gt-first",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 98,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "Sum Strictly Greater Than First (Proved)",
+    "content": "For a strictly increasing positive sequence, $\\sum_{k=i}^{j} a_k > a_i$ when $i < j$. The proof shows $a_i + a_j \\leq \\sum_{k=i}^{j} a_k$ by embedding $\\{i, j\\}$ into $[i, j]$, then uses $a_j > 0$. This strict inequality is crucial for showing that avoidance constraints propagate — longer consecutive sums grow faster than individual terms.",
+    "mathContext": "$i < j \\implies a_i < \\sum_{k=i}^{j} a_k$ (since the sum includes at least $a_i + a_j > a_i$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "strict inequality",
+      "Finset.sum_pair",
+      "subset embedding"
+    ],
+    "prerequisites": [
+      "finite sums",
+      "strict monotonicity"
+    ]
+  },
+  {
+    "id": "ann-839-linear-growth",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 115,
+      "endLine": 120
+    },
+    "type": "concept",
+    "title": "Real-Valued Linear Growth (Proved)",
+    "content": "The linear lower bound $a_n \\geq n + 1$ cast into $\\mathbb{R}$: $(n : \\mathbb{R}) + 1 \\leq (a_n : \\mathbb{R})$. This coercion from natural numbers to reals (via `exact_mod_cast`) is needed for the growth rate and density questions, which are stated over $\\mathbb{R}$.",
+    "mathContext": "$\\forall\\, n: (n+1 : \\mathbb{R}) \\leq (a_n : \\mathbb{R})$ (real-valued version of the lower bound).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "type coercion",
+      "exact_mod_cast",
+      "ℕ to ℝ"
+    ],
+    "prerequisites": [
+      "type theory",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-839-liminf",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 201,
+      "endLine": 248
+    },
+    "type": "concept",
+    "title": "Finite lim inf is Achievable",
+    "content": "Erdős observed that $\\liminf a_n/n$ can be finite — there exist valid sequences where $a_n/n$ stays bounded infinitely often. This shows the sequence need not grow super-linearly everywhere; only $\\limsup$ (not $\\liminf$) is conjectured to be infinite. The axiom asserts existence of a valid sequence $a$ and constant $C$ such that for every $N$, some $n \\geq N$ has $a_n/(n+1) \\leq C$.",
+    "mathContext": "$\\exists\\, a \\in \\text{ValidSeq},\\; \\exists\\, C > 0,\\; \\forall\\, N,\\; \\exists\\, n \\geq N: \\frac{a_n}{n+1} \\leq C$, i.e., $\\liminf \\frac{a_n}{n} < \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lim inf",
+      "density fluctuation",
+      "subsequence bound"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "lim inf/lim sup"
+    ]
+  },
+  {
+    "id": "ann-839-reciprocal",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 124,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Reciprocal Sum Lower Bound",
+    "content": "A documented remark (not separately formalized in this file): a valid sequence's reciprocal sum can grow at least as fast as $c \\cdot \\log\\log x$, showing valid sequences can be 'denser than expected' in the harmonic sense. This relates to Question 2 on logarithmic density — slow reciprocal growth would force sparsity, so a $\\log\\log$ lower bound is evidence the density question is delicate.",
+    "mathContext": "$\\exists\\, a \\in \\text{ValidSeq},\\; \\exists\\, c > 0,\\; \\forall\\, X \\geq 3: \\sum_{\\substack{n : a_n < X}} \\frac{1}{a_n} \\geq c \\cdot \\log \\log X$",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic sum",
+      "log log growth",
+      "Mertens' theorem"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "harmonic analysis"
+    ]
+  },
+  {
+    "id": "ann-839-upper-density",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 125,
+      "endLine": 129
+    },
+    "type": "definition",
+    "title": "Upper Density",
+    "content": "The upper density of a valid sequence is defined via `Filter.limsup` as the lim sup of the proportion of terms at most $N$ among $\\{1, \\ldots, N\\}$. Formally, $\\overline{d}(A) = \\limsup_{N \\to \\infty} |\\{n : a_n \\leq N\\}| / N$. This noncomputable definition uses Lean's filter library for the limit superior over the `atTop` filter.",
+    "mathContext": "$\\overline{d}(a) = \\limsup_{N \\to \\infty} \\frac{|\\{n : a_n \\leq N\\}|}{N}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper density",
+      "natural density",
+      "Filter.limsup",
+      "asymptotic density"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "filter theory",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-839-freud",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 131,
+      "endLine": 141
+    },
+    "type": "concept",
+    "title": "Freud's Counterexample",
+    "content": "Freud constructed a valid sequence with upper density $19/36 \\approx 0.528$, disproving Erdős's conjecture that the upper density is at most $1/2$. The construction uses a carefully designed periodic pattern that exploits the 'consecutive only' restriction — it avoids contiguous block sums while maintaining high density. Two axioms capture this: `freud_counterexample` (density $> 1/2$) and `freud_density` (density $= 19/36$).",
+    "mathContext": "$\\exists\\, a \\in \\text{ValidSeq}: \\overline{d}(a) = \\frac{19}{36} > \\frac{1}{2}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "periodic construction",
+      "density optimization"
+    ],
+    "prerequisites": [
+      "combinatorial construction",
+      "density theory"
+    ]
+  },
+  {
+    "id": "ann-839-limsup-machinery",
+    "proofId": "erdos-839",
+    "type": "concept",
+    "range": {
+      "startLine": 151,
+      "endLine": 199
+    },
+    "title": "Counting-Function Machinery for Finite lim inf",
+    "content": "Support lemmas that power the `liminf_finite` proof. `countRatio` packages $a_n/n$ as a real sequence; `countRatio_nonneg` and `countRatio_isCoboundedUnder` give the boundedness needed for `Filter.limsup`/`liminf` to behave. `frequently_lt_of_lt_limsup` extracts a frequently-true inequality below a limsup (proved by contradiction), and `term_le_of_count_gt` converts a lower bound on the counting function into an upper bound on the term $a_n$ for a strictly increasing sequence. Together they bridge Freud's density statement to a finite $\\liminf a_n/n$.",
+    "mathContext": "$c < \\limsup f \\implies \\exists^\\infty n,\\; c < f(n)$; and for strictly increasing $a$, a lower bound on $\\#\\{n : a_n \\le N\\}$ yields an upper bound on $a_n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Filter.limsup",
+      "Filter.liminf",
+      "IsCoboundedUnder",
+      "counting function",
+      "frequently"
+    ],
+    "prerequisites": [
+      "Filter.limsup",
+      "Filter.Frequently",
+      "strict monotonicity"
+    ]
+  },
+  {
+    "id": "ann-839-open",
+    "proofId": "erdos-839",
+    "range": {
+      "startLine": 254,
+      "endLine": 255
+    },
+    "type": "concept",
+    "title": "Open Status: Both Questions Axiomatized",
+    "content": "`Question1` and `Question2` are stated as `Prop` definitions (not axioms) and remain unproven — they are the two open questions of Erdős #839. The file establishes partial results (linear lower bound $a(n) \\ge n+1$, finite $\\liminf a_n/n$, and Freud's upper-density $19/36$ counterexample to Erdős's $\\le 1/2$ conjecture), but neither headline question is resolved. The only axiom in the file is `freud_density`, which encodes Freud's deep periodic construction; everything else is proved.",
+    "mathContext": "Axiom: $\\text{Question1}$ and $\\text{Question2}$ both hold (OPEN, unproved).",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem",
+      "axiom as conjecture",
+      "Erdős problem"
+    ],
+    "prerequisites": [
+      "mathematical logic"
+    ]
+  }
+]

@@ -1,0 +1,218 @@
+{
+  "id": "erdos-310",
+  "title": "Erdos Problem #310: Unit Fractions from Dense Subsets",
+  "slug": "erdos-310",
+  "description": "For any dense subset A of {1,...,N}, can we find S in A such that the sum of 1/n for n in S equals a/b with bounded denominator? YES, proved by Liu-Sawhney (2024).",
+  "meta": {
+    "author": "Liu-Sawhney (2024 resolution), Bloom (2021 foundation), Erdos-Graham (original)",
+    "sourceUrl": "https://erdosproblems.com/310",
+    "date": "2024",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos310Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "unit-fractions",
+      "egyptian-fractions",
+      "density",
+      "combinatorics",
+      "solved"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 310,
+    "erdosUrl": "https://erdosproblems.com/310",
+    "erdosProblemStatus": "proved",
+    "dateAdded": "2026-01-18",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets for unit fraction calculations",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Rat",
+        "description": "Rational number type for representing fractions",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets for density conditions",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite ranges {0,...,N} for subset definitions",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "unitFractionSum definition: sum of 1/n over finite set S",
+      "isDense definition: alpha-density condition for subsets",
+      "hasBoundedDenom definition: bounded denominator property",
+      "erdosGrahamConjecture definition: the formal statement",
+      "liu_sawhney_theorem axiom: the 2024 resolution",
+      "Concrete examples: classic Egyptian fractions 1/2+1/3+1/6=1",
+      "erdos_310 theorem: the main result",
+      "Connection to Erdos-Straus conjecture on 4/n representations"
+    ],
+    "axiomCount": 1,
+    "lineCount": 308,
+    "assumptions": "1 axiom: liu_sawhney_theorem. 0 sorries.",
+    "theoremCount": 12,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "**Erdos Problem #310**\n\nThis problem was posed by Erdos and Graham [ErGr80] and concerns the representation of rational numbers as sums of unit fractions (Egyptian fractions) drawn from dense subsets of integers.\n\n**Key History:**\n- Erdos and Graham: Original problem formulation\n- Croot: Early work on density conditions for unit fraction sums\n- Bloom (2021): Proved the density of integers representable as sums of distinct unit fractions summing to 1\n- Liu and Sawhney (2024): Resolved Erdos #310 by observing Bloom's result implies the conjecture\n\n**Mathematical Setting:**\nThe problem asks: given any subset A of {1,...,N} with |A| >= alpha*N (an alpha-dense set), can we always find S contained in A such that the sum of 1/n for n in S equals a/b where b is bounded by a constant depending only on alpha?\n\nThis touches on deep questions about the distribution of unit fractions and the structure of Egyptian fraction representations.",
+    "problemStatement": "**Problem Statement (Proved)**\n\nLet $\\alpha > 0$ and $N \\geq 1$. Is it true that for any $A \\subseteq \\{1,\\ldots,N\\}$ with $|A| \\geq \\alpha N$, there exists $S \\subseteq A$ such that\n$$\\frac{a}{b} = \\sum_{n \\in S} \\frac{1}{n}$$\nwith $a \\leq b = O_\\alpha(1)$?\n\n**Answer: YES**\n\nLiu and Sawhney (2024) proved that for $(\\log N)^{-1/7+o(1)} \\leq \\alpha \\leq 1/2$, there exists $S \\subseteq A$ with $a/b = \\sum_{n \\in S} 1/n$ where $a \\leq b \\leq \\exp(O(1/\\alpha))$.\n\nThey also proved this bound is **sharp**: the dependence $b \\leq \\exp(O(1/\\alpha))$ cannot be improved.",
+    "text": "For any dense subset A of {1,...,N}, can we find S in A such that the sum of 1/n for n in S equals a/b with bounded denominator? YES, proved by Liu-Sawhney (2024).",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:**\n   - unitFractionSum: sum of 1/n over a finite set\n   - isDense: the alpha-density condition\n   - hasBoundedDenom: bounded denominator property\n   - erdosGrahamConjecture: the formal statement\n\n2. **Main Axioms:**\n   - liu_sawhney_theorem: the 2024 resolution with quantitative bounds (only axiom declared)\n   - Bloom 2021 and Liu-Sawhney sharpness referenced in docstrings only, not axiomatized\n\n3. **Examples:**\n   - Classic Egyptian fractions (1/2 + 1/3 + 1/6 = 1)\n   - Various unit fraction sums verified by norm_num\n\n4. **Related Results:**\n   - Egyptian fraction existence and Croot's theorem referenced in docstrings only, not axiomatized\n   - Connection to Erdos-Straus conjecture\n\n5. **Main Theorem:** erdos_310 uses liu_sawhney_theorem to prove erdosGrahamConjecture",
+    "keyInsights": [
+      "**Egyptian Fractions:** Ancient Egyptians represented all fractions as sums of distinct unit fractions; this problem studies when such representations exist within restricted sets",
+      "**Density Threshold:** The problem asks for a universal constant depending only on density alpha, not on N",
+      "**Bloom's Breakthrough:** The 2021 result on density of integers whose reciprocals sum to 1 was the key enabler",
+      "**Optimal Bounds:** Liu-Sawhney proved b <= exp(O(1/alpha)) is both sufficient AND necessary",
+      "**Greedy Algorithm:** The classical greedy algorithm for Egyptian fractions always terminates, providing existence",
+      "**Connection to Erdos-Straus:** The open conjecture that 4/n = 1/a + 1/b + 1/c for all n >= 2 is related"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "unitFractionSum, isDense, hasBoundedDenom definitions",
+      "startLine": 35,
+      "endLine": 63,
+      "mathContext": "Formal definition: unitFractionSum, isDense, hasBoundedDenom definitions"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "erdosGrahamConjecture definition - the formal problem statement",
+      "startLine": 64,
+      "endLine": 83,
+      "mathContext": "Formal definition: erdosGrahamConjecture definition - the formal problem statement"
+    },
+    {
+      "id": "liu-sawhney",
+      "title": "Liu-Sawhney Theorem",
+      "summary": "liu_sawhney_theorem axiom",
+      "startLine": 84,
+      "endLine": 122,
+      "mathContext": "Verified: liu_sawhney_theorem axiom (only axiom in file; Bloom's result referenced in docstring only)"
+    },
+    {
+      "id": "examples",
+      "title": "Small Examples",
+      "summary": "Verified unit fraction sums: 1/2+1/3+1/6=1, etc.",
+      "startLine": 123,
+      "endLine": 148,
+      "mathContext": "Mathematical content: Verified unit fraction sums: 1/2+1/3+1/6=1, etc."
+    },
+    {
+      "id": "density-examples",
+      "title": "Density Examples",
+      "summary": "full_density_trivial, evenNumbersTo, even_sum_small",
+      "startLine": 149,
+      "endLine": 179,
+      "mathContext": "Mathematical content: full_density_trivial, evenNumbersTo, even_sum_small"
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness of Bounds",
+      "summary": "Sharpness of bounds — docstring commentary on optimality of exp(O(1/α)), not axiomatized",
+      "startLine": 180,
+      "endLine": 198,
+      "mathContext": "Commentary: sharpness of b ≤ exp(O(1/α)) bound; no axiom declaration in this section"
+    },
+    {
+      "id": "egyptian-fractions",
+      "title": "Egyptian Fractions",
+      "summary": "Egyptian fraction representations — docstring commentary only, no axiom declarations",
+      "startLine": 199,
+      "endLine": 224,
+      "mathContext": "Commentary: Egyptian fraction existence and greedy algorithm; no axioms declared in this section"
+    },
+    {
+      "id": "historical-context",
+      "title": "Historical Context",
+      "summary": "erdosStrausConjecture, erdos_straus_3, erdos_straus_5",
+      "startLine": 225,
+      "endLine": 253,
+      "mathContext": "Mathematical content: erdosStrausConjecture, erdos_straus_3, erdos_straus_5"
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "erdos_310 theorem proving erdosGrahamConjecture",
+      "startLine": 254,
+      "endLine": 296,
+      "mathContext": "Verified: erdos_310 theorem proving erdosGrahamConjecture"
+    },
+    {
+      "id": "related-results",
+      "title": "Related Results",
+      "summary": "erdos_310_summary theorem (croot_theorem referenced in docstring only, not declared)",
+      "startLine": 297,
+      "endLine": 308,
+      "mathContext": "Verified: erdos_310_summary theorem; Croot's theorem is referenced in docstring commentary only"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #310 asked whether dense subsets of {1,...,N} always contain a subset whose unit fractions sum to a rational with bounded denominator. The answer is YES, proved by Liu and Sawhney in 2024 building on Bloom's 2021 work. The bound b <= exp(O(1/alpha)) is optimal.",
+    "implications": "**Theoretical Significance**: **Significance**\n\n1. **Egyptian Fraction Theory:** Advances our understanding of which sets contain useful unit fraction sums\n\n2. **Density Methods:** Demonstrates the power of density arguments in number theory\n\n**3. Optimal Bounds:** The sharp characterization b <= exp(O(1/alpha)) gives complete quantitative understanding\n\n4. **Historical Resolution:** Closes a problem from Erdos and Graham's influential 1980 book\n\n5. **Connection to Open Problems:** Related to Erdos-Straus and other unit fraction conjectures.",
+    "openQuestions": [
+      "Explicit constructions of subsets achieving the optimal bound",
+      "Extension to other arithmetic progressions beyond {1,...,N}",
+      "Erdos-Straus conjecture: does 4/n always have a 3-term unit fraction representation?",
+      "Characterization of which specific rationals can be achieved from alpha-dense sets",
+      "Algorithmic aspects: efficient computation of optimal S for given A"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Rat.Order",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.Real.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "Erdos310",
+    "lineCount": 308,
+    "axiomCount": 1,
+    "theoremCount": 12,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos310Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-286",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
+    },
+    {
+      "targetId": "erdos-292",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: density, egyptian-fractions, number-theory, unit-fractions"
+    },
+    {
+      "targetId": "erdos-296",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, number-theory, solved, unit-fractions"
+    }
+  ],
+  "sorries": 0
+}

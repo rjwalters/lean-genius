@@ -1,0 +1,240 @@
+[
+  {
+    "id": "ann-1208-fd-definition",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "F_d(n): Maximum Distance-Sidon Subset Size",
+    "content": "F_d(n) is defined as the minimum over all n-point sets P ⊂ ℝ^d of the maximum size of a 'distance-Sidon' subset Q ⊆ P—a set where all pairwise distances are distinct. The 'minimum over all' is crucial: F_d(n) must hold for every possible point set, not just generic ones. A distance-Sidon set is a geometric analogue of a Sidon set (B₂ set): where Sidon sets avoid repeated pairwise sums, distance-Sidon sets avoid repeated pairwise distances. The function measures the unavoidable worst-case size of such a subset.",
+    "mathContext": "$F_d(n) = \\min_{P \\subset \\mathbb{R}^d, |P|=n} \\max\\{|Q| : Q \\subseteq P,\\ \\forall \\{p,q\\} \\neq \\{r,s\\} \\subseteq Q,\\ d(p,q) \\neq d(r,s)\\}$. A subset $Q$ is 'distance-Sidon' if all $\\binom{|Q|}{2}$ pairwise distances are distinct.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets",
+      "distinct distances",
+      "Ramsey theory for point sets",
+      "distance geometry"
+    ],
+    "prerequisites": [
+      "Euclidean distance",
+      "Sidon sets definition",
+      "min-max problems"
+    ]
+  },
+  {
+    "id": "ann-1208-unit-distance",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "insight",
+    "title": "Unit Distance Problem and the Greedy Lower Bound",
+    "content": "A lower bound for F_d(n) uses the unit distance theorem: among n points in ℝ^d, the number of unit distances (pairs at distance exactly 1) is at most O(n^(4/3)) for d=2 (Spencer–Szemerédi–Trotter 1984) and O(n^(2-2/(d+1)+ε)) in general. By averaging, each distance value r is realized by at most O(n^(1/3)) pairs on average (for d=2). A greedy argument: pick a point, add more points as long as each new point creates only new distances. The maximum number of equal distances per point in the neighborhood implies the greedy process runs for Ω(n^(1/3)) steps.",
+    "mathContext": "Unit distance bound: $|\\{(p,q) \\in P^2 : |p-q| = 1\\}| \\leq C n^{4/3}$ for $d=2$. Total pairs: $\\binom{n}{2} \\approx n^2/2$. Average pairs per distance value $\\leq Cn^{4/3}/n \\cdot 1 = Cn^{1/3}$ (very rough). Greedy gives $F_2(n) \\geq \\Omega(n^{1/3})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Spencer-Szemerédi-Trotter theorem",
+      "unit distance problem",
+      "greedy algorithm for distinct distances",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "unit distance problem history",
+      "Szemerédi-Trotter theorem",
+      "averaging argument"
+    ]
+  },
+  {
+    "id": "ann-1208-guth-katz",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "Guth-Katz 2015: Distinct Distances in the Plane",
+    "content": "The Guth-Katz theorem (2015) resolved Erdős's 1946 distinct distances conjecture: any n points in the plane determine at least Ω(n/log n) distinct distances. This is a global result (about the total number of distinct distances in a point set), while Problem #1208 is a local/Ramsey result (about a subset with all pairwise distances distinct). The polynomial method used in Guth-Katz—analyzing incidences via algebraic varieties—informs approaches to Problem #1208, though the two questions have different difficulty profiles.",
+    "mathContext": "Guth-Katz 2015: For $n$ points in $\\mathbb{R}^2$, $|\\{d(p,q) : p,q \\in P\\}| \\geq \\Omega(n/\\log n)$. Erdős's 1946 conjecture was the lower bound $n^{1-o(1)}$. The polynomial method: realizes point-line incidences via polynomials vanishing on algebraic curves, bounding the number of repeated distances via the number of lines through many points.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Guth-Katz theorem 2015",
+      "polynomial method",
+      "distinct distances conjecture",
+      "algebraic geometry in combinatorics"
+    ],
+    "prerequisites": [
+      "distinct distances problem history",
+      "polynomial method overview",
+      "Szemerédi-Trotter incidence theorem"
+    ]
+  },
+  {
+    "id": "ann-1208-upper-bound",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "Upper Bound: Regular Grids Force Distance Repetitions",
+    "content": "An upper bound for F_d(n) comes from constructing point sets with many distance repetitions. The regular grid {1,...,N}^d (with n ≈ N^d points) has all pairwise distances of the form √(k₁² + ... + kd²) where kᵢ ∈ {0,...,N-1}. The number of distinct distances is at most O(N^2) ≈ O(n^(2/d)), while the maximum distance-Sidon subset size is bounded by the square root of the number of distinct distances: F_d(n) ≤ O(n^(1/d+ε)). For d=2, this gives F_2(n) ≤ O(n^(1/2+ε)).",
+    "mathContext": "Grid $\\{1,\\ldots,N\\}^2$: $n = N^2$ points, $O(N^2)$ distinct distances (Gauss circle problem), maximum distance-Sidon subset has size $\\leq \\sqrt{\\text{distinct distances}} = O(N) = O(n^{1/2})$ (since a distance-Sidon set of size $k$ uses $\\binom{k}{2}$ distinct distances, so $\\binom{k}{2} \\leq O(N^2)$ gives $k = O(N)$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "regular grid point set",
+      "Gauss circle problem",
+      "upper bound constructions",
+      "distance-Sidon bound"
+    ],
+    "prerequisites": [
+      "integer grid distances",
+      "Gauss circle problem (count of lattice points in circle)",
+      "Sidon set size bounds"
+    ]
+  },
+  {
+    "id": "ann-1208-lean-stub",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 18,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Lean Formalization: Distance-Distinct Subsets in EuclideanSpace",
+    "content": "The stub `erdos_1208 : True := by sorry` awaits formalization. Key Lean components needed: (1) `EuclideanSpace ℝ (Fin d)` for ℝ^d; (2) `dist` (from the metric space instance) for Euclidean distance; (3) a predicate `IsDistanceSidon : Finset (EuclideanSpace ℝ (Fin d)) → Prop` checking all pairwise distances are distinct; (4) `F_d (n : ℕ) : ℕ := inf over all n-point Finsets of (sup size of DistanceSidon subset)`. Lean's `Finset.sup` and `Finset.inf` can express this, but the quantifier over all n-point sets requires `setOf` or a Fintype hypothesis.",
+    "mathContext": "Lean 4 sketch: `def isDistanceSidon (Q : Finset (EuclideanSpace ℝ (Fin d))) : Prop := ∀ p q r s ∈ Q, dist p q = dist r s → ({p,q} : Finset _) = {r,s}`. Then `F_d n d := ⨅ (P : Finset (EuclideanSpace ℝ (Fin d))) (_ : P.card = n), ⨆ (Q : Finset _) (_ : Q ⊆ P) (_ : isDistanceSidon Q), Q.card`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "EuclideanSpace in Mathlib",
+      "MetricSpace.dist",
+      "Finset.sup/inf",
+      "IsDistanceSidon predicate"
+    ],
+    "prerequisites": [
+      "Lean 4 EuclideanSpace",
+      "Metric.dist API",
+      "Finset quantifiers in Lean"
+    ]
+  },
+  {
+    "id": "ann-1208-def-sidon",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 37,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "The Distance-Sidon Property",
+    "content": "`IsDistanceSidon Q` formalizes the central object: a finite set $Q$ in a metric space whose $\\binom{|Q|}{2}$ pairwise distances are all distinct. The Lean phrasing is the contrapositive-friendly form — if $\\mathrm{dist}(a,b) = \\mathrm{dist}(c,e)$ then the unordered pairs $\\{a,b\\}$ and $\\{c,e\\}$ coincide. The two trivial cases (`isDistanceSidon_empty`, `isDistanceSidon_singleton`) hold vacuously: with fewer than two points there are no distinct pairs to collide.",
+    "mathContext": "$Q$ is distance-Sidon $\\iff \\forall a,b,c,e \\in Q,\\ \\mathrm{dist}(a,b)=\\mathrm{dist}(c,e) \\Rightarrow (a{=}c \\wedge b{=}e) \\vee (a{=}e \\wedge b{=}c)$. This is the metric analogue of a $B_2$ (Sidon) set, where pairwise *sums* rather than *distances* are distinct.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon-set",
+      "B2-set",
+      "metric-space",
+      "additive-combinatorics"
+    ],
+    "prerequisites": [
+      "MetricSpace",
+      "Finset",
+      "dist"
+    ]
+  },
+  {
+    "id": "ann-1208-size-bound",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 70,
+      "endLine": 109
+    },
+    "type": "theorem",
+    "title": "Key Size Bound: Pairs vs. Distinct Distances (proved in-file)",
+    "content": "`distance_sidon_size_bound` is the entry's genuine machine-checked result — not axiomatized. It proves that a distance-Sidon set $Q$ of size $k$ realizes at least $\\binom{k}{2} = k(k-1)/2$ distinct distance values. The argument is a clean fiber-counting/double-counting proof: each distance value is attained by at most 2 ordered pairs on the off-diagonal (namely $(a,b)$ and $(b,a)$, forced by the distance-Sidon property), so `Finset.card_le_mul_card_image` bounds $|Q.\\mathrm{offDiag}|$ by twice the image size, and `omega`/`linarith` close the arithmetic.",
+    "mathContext": "$\\binom{k}{2} \\le \\#\\{\\text{distinct distances in } Q\\}$. Mechanism: the off-diagonal $Q \\times Q \\setminus \\Delta$ has $k(k-1)$ ordered pairs; the fiber over each distance value has size $\\le 2$; hence $k(k-1) \\le 2\\,D$ where $D$ is the number of distinct distances. This is the combinatorial engine behind the $O(n^{1/2})$ upper bound on $F_2(n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "double-counting",
+      "fiber-bound",
+      "Finset.offDiag",
+      "Finset.card_le_mul_card_image"
+    ],
+    "prerequisites": [
+      "Finset.image",
+      "Finset.offDiag",
+      "Finset.card_le_card"
+    ]
+  },
+  {
+    "id": "ann-1208-axiom-lower",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 122,
+      "endLine": 134
+    },
+    "type": "warning",
+    "title": "Lower Bound Axiom: Spencer–Szemerédi–Trotter",
+    "content": "`fd2_lower_bound` axiomatizes the $\\Omega(n^{1/3})$ lower bound: every $n$-point set in $\\mathbb{R}^2$ contains a distance-Sidon subset of size $\\ge C\\,n^{1/3}$. It is stated as an axiom because its proof rests on the Spencer–Szemerédi–Trotter unit-distance bound (1984) — at most $O(n^{4/3})$ unit distances among $n$ planar points — which is not yet in Mathlib. The intended proof is a greedy extraction: averaging $\\binom{n}{2}$ pairs against $O(n^{4/3})$ repetitions per distance lets a 'add a point with all-new distances' construction run for $\\Omega(n^{1/3})$ steps.",
+    "mathContext": "$\\exists C>0,\\ \\forall n,\\ \\forall P \\subset \\mathbb{R}^2,\\ |P|=n \\Rightarrow \\exists Q \\subseteq P$ distance-Sidon with $|Q| \\ge C\\,n^{1/3}$. The unit-distance bound $u(n) = O(n^{4/3})$ is the key external input.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Szemeredi-Trotter",
+      "unit-distance-problem",
+      "greedy-algorithm",
+      "incidence-geometry"
+    ],
+    "prerequisites": [
+      "EuclideanSpace",
+      "Finset.card",
+      "axiomatization"
+    ]
+  },
+  {
+    "id": "ann-1208-axiom-upper",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 136,
+      "endLine": 147
+    },
+    "type": "warning",
+    "title": "Upper Bound Axiom: The Integer Grid and Gauss Circle Problem",
+    "content": "`fd2_upper_bound` axiomatizes the $O(n^{1/2})$ upper bound: there exist $n$-point configurations (the integer grid $\\{1,\\dots,N\\}^2$) in which every distance-Sidon subset has size $\\le C\\,n^{1/2}$. The grid has only $O(N^2)$ distinct distances (the number of integers below $N^2$ expressible as a sum of two squares — the Gauss circle problem), so by the in-file `distance_sidon_size_bound`, $\\binom{k}{2} \\le O(N^2)$ forces $k \\le O(N) = O(n^{1/2})$. The axiom packages the distinct-distance count for the grid, which Mathlib does not yet provide.",
+    "mathContext": "$\\exists C>0,\\ \\forall n,\\ \\exists P,\\ |P|=n$ with every distance-Sidon $Q \\subseteq P$ obeying $|Q| \\le C\\,n^{1/2}$. The grid $\\{1,\\dots,N\\}^2$ ($n=N^2$) has $\\Theta(N^2/\\sqrt{\\log N})$ distinct distances by Landau's refinement of Gauss's count.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Gauss-circle-problem",
+      "sum-of-two-squares",
+      "integer-grid",
+      "Landau-Ramanujan"
+    ],
+    "prerequisites": [
+      "EuclideanSpace",
+      "distance_sidon_size_bound"
+    ]
+  },
+  {
+    "id": "ann-1208-main",
+    "proofId": "erdos-1208",
+    "range": {
+      "startLine": 149,
+      "endLine": 163
+    },
+    "type": "theorem",
+    "title": "Erdős #1208: The Main Lower-Bound Statement",
+    "content": "`erdos_1208` states the headline result for $d=2$: every $n$-point planar set contains a distance-Sidon subset of size $\\Omega(n^{1/3})$. Since the deep extraction argument is captured by `fd2_lower_bound`, the theorem is a one-line delegation to that axiom. Together with `fd2_upper_bound` this pins the exponent $\\alpha$ in $F_2(n) \\asymp n^\\alpha$ to the interval $[1/3, 1/2]$ — the exact value remains a genuinely open problem in combinatorial geometry.",
+    "mathContext": "$F_2(n) \\ge \\Omega(n^{1/3})$ and $F_2(n) \\le O(n^{1/2})$, so $\\tfrac13 \\le \\alpha \\le \\tfrac12$. Closing this gap (the true growth rate of distance-Sidon subsets) is Erdős Problem #1208.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdos-problems",
+      "open-problem",
+      "distinct-distances",
+      "Guth-Katz"
+    ],
+    "prerequisites": [
+      "fd2_lower_bound",
+      "IsDistanceSidon"
+    ]
+  }
+]

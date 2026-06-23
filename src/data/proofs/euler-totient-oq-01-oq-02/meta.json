@@ -1,0 +1,164 @@
+{
+  "id": "euler-totient-oq-01-oq-02",
+  "title": "The Carmichael Function on Prime Powers: λ(2ᵏ) = 2ᵏ⁻²",
+  "slug": "euler-totient-oq-01-oq-02",
+  "description": "The parent chain (euler-totient) studies Euler's totient φ. Its OQ-01-OQ-02 asks to prove λ(2ᵏ) = 2ᵏ⁻² for k ≥ 3 and related Carmichael (reduced totient) identities. Mathlib defines λ = ArithmeticFunction.Carmichael (the exponent of the unit group (ℤ/nℤ)ˣ) and proves its prime-power values; this entry packages them: λ(2ᵏ) = 2ᵏ⁻² = φ(2ᵏ)/2 for k ≥ 3 (non-cyclic ℤ/2 × ℤ/2ᵏ⁻²), λ(pᵏ) = φ(pᵏ) for odd primes (cyclic), λ(n) ∣ φ(n), and concrete λ(8) = 2, λ(16) = 4. 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Carmichael_function",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "carmichael-function",
+      "euler-totient",
+      "unit-group",
+      "prime-powers",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ArithmeticFunction.Carmichael",
+        "description": "The Carmichael function λ(n), the exponent of (ℤ/nℤ)ˣ (reduced totient)",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Carmichael"
+      },
+      {
+        "theorem": "ArithmeticFunction.carmichael_two_pow_of_ne_two",
+        "description": "λ(2ⁿ) = 2ⁿ⁻² for n ≠ 2",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Carmichael"
+      },
+      {
+        "theorem": "ArithmeticFunction.two_mul_carmichael_two_pow_of_three_le_eq_totient",
+        "description": "2·λ(2ⁿ) = φ(2ⁿ) for n ≥ 3",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Carmichael"
+      },
+      {
+        "theorem": "ArithmeticFunction.carmichael_pow_of_prime_ne_two",
+        "description": "λ(pⁿ) = φ(pⁿ) for an odd prime p (cyclic unit group)",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Carmichael"
+      },
+      {
+        "theorem": "ArithmeticFunction.carmichael_dvd_totient / pow_carmichael",
+        "description": "λ(n) ∣ φ(n), and a^{λ(n)} = 1 for every unit a mod n",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Carmichael"
+      }
+    ],
+    "originalContributions": [
+      "Curated packaging of Mathlib's Carmichael (reduced-totient) API specialized to prime powers: λ(2ᵏ)=2ᵏ⁻², 2·λ(2ᵏ)=φ(2ᵏ), λ(pᵏ)=φ(pᵏ) for odd p, λ(n)∣φ(n), a^{λ(n)}=1 — each a one-line restatement of the corresponding Mathlib lemma (carmichael_two_pow_of_ne_two, two_mul_carmichael_two_pow_of_three_le_eq_totient, carmichael_pow_of_prime_ne_two, carmichael_dvd_totient, pow_carmichael), not independent proofs",
+      "carmichael_eight / carmichael_sixteen: concrete evaluations λ(8)=2, λ(16)=4, obtained from carmichael_two_pow by norm_num — the only genuinely derived (non-delegating) statements in the file"
+    ],
+    "axiomCount": 0,
+    "lineCount": 75,
+    "assumptions": "0 axioms, 0 sorries; all theorems machine-checked (no native_decide — the concrete λ(8), λ(16) follow from the formula by norm_num). #print axioms reports only [propext, Classical.choice, Quot.sound]. The prime-power Carmichael values are obtained directly from Mathlib's ArithmeticFunction.Carmichael development — every substantive theorem is a one-line delegation to a Mathlib lemma, so the core results are Mathlib's, not independently proved here; hence the `mathlib` badge (Tier B). The entry's value is the curated prime-power packaging and the concrete evaluations.",
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "prerequisites": [
+      "Euler's totient φ and the unit group (ℤ/nℤ)ˣ",
+      "The Carmichael function λ as the group exponent (reduced totient)",
+      "Cyclic vs non-cyclic structure of (ℤ/nℤ)ˣ for prime powers",
+      "Euler's theorem and universal exponents"
+    ],
+    "relatedProblems": [
+      {
+        "id": "euler-totient",
+        "relationship": "Parent: Euler's totient φ. This entry answers its OQ-01-OQ-02 on the Carmichael (reduced totient) function λ at prime powers."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Carmichael function λ(n) is the reduced totient: the smallest positive integer such that a^{λ(n)} ≡ 1 (mod n) for every a coprime to n, i.e. the exponent of the unit group (ℤ/nℤ)ˣ. It always divides Euler's totient φ(n) (the order of that group), but can be strictly smaller when the group is not cyclic. The contrast is sharpest at powers of two: (ℤ/2ℤ)ˣ and (ℤ/4ℤ)ˣ are cyclic, but for k ≥ 3 the group (ℤ/2ᵏℤ)ˣ is isomorphic to ℤ/2 × ℤ/2ᵏ⁻², which is not cyclic; its exponent is lcm(2, 2ᵏ⁻²) = 2ᵏ⁻², exactly half of φ(2ᵏ) = 2ᵏ⁻¹. For odd prime powers the unit group is cyclic, so λ(pᵏ) = φ(pᵏ). Carmichael introduced λ in 1910, and it governs the optimal exponent in Euler's theorem (and the period of decimal/binary expansions, RSA key recovery bounds, etc.).\n\nMathlib formalizes λ (ArithmeticFunction.Carmichael) as the exponent of (ℤ/nℤ)ˣ and proves its prime-power values, including λ(2ⁿ) = 2ⁿ⁻² for n ≠ 2 and λ(pⁿ) = φ(pⁿ) for odd primes. This entry packages those as the identities the parent's OQ-01-OQ-02 requests.",
+    "problemStatement": "Prove λ(2ᵏ) = 2ᵏ⁻² for k ≥ 3 and related Carmichael identities: that λ(2ᵏ) is half the totient there, that λ(pᵏ) = φ(pᵏ) for odd primes, that λ(n) divides φ(n), the universal-exponent property a^{λ(n)} = 1, and concrete values λ(8) = 2, λ(16) = 4.",
+    "proofStrategy": "Each identity is the corresponding Mathlib Carmichael theorem restated: carmichael_two_pow = carmichael_two_pow_of_ne_two (k ≥ 3 ⟹ k ≠ 2); two_mul_carmichael_two_pow = two_mul_carmichael_two_pow_of_three_le_eq_totient; carmichael_odd_prime_pow = carmichael_pow_of_prime_ne_two; carmichael_dvd_totient and pow_carmichael are direct. The concrete λ(8), λ(16) instantiate carmichael_two_pow at k = 3, 4 and simplify the powers by norm_num.",
+    "keyInsights": [
+      "λ(n) is the smallest universal exponent — the exponent of (ℤ/nℤ)ˣ — and divides φ(n) (the group order), with equality iff the group is cyclic.",
+      "Powers of two are the key non-cyclic case: for k ≥ 3, (ℤ/2ᵏℤ)ˣ ≅ ℤ/2 × ℤ/2ᵏ⁻², so λ(2ᵏ) = 2ᵏ⁻² = φ(2ᵏ)/2 — half the totient, the strict-divisor phenomenon made concrete.",
+      "Odd prime powers behave oppositely: their unit groups are cyclic, so λ(pᵏ) = φ(pᵏ) and Euler's theorem is already optimal.",
+      "The universal-exponent property a^{λ(n)} = 1 is the sharp form of Euler's theorem, with λ(n) often much smaller than φ(n).",
+      "The general λ of a composite is the lcm of its prime-power values (Mathlib's carmichael_factorization), so these prime-power identities determine λ everywhere."
+    ],
+    "prerequisites": [
+      "The unit group (ℤ/nℤ)ˣ and its order φ(n)",
+      "The Carmichael function as the group exponent",
+      "Structure of (ℤ/2ᵏℤ)ˣ and odd prime-power unit groups",
+      "lcm and the exponent of a product of cyclic groups"
+    ]
+  },
+  "sections": [
+    {
+      "id": "two-powers",
+      "title": "Section I: Powers of Two",
+      "startLine": 31,
+      "endLine": 50,
+      "summary": "carmichael_two_pow (λ(2ᵏ) = 2ᵏ⁻² for k ≥ 3, the OQ's target) and two_mul_carmichael_two_pow (2·λ(2ᵏ) = φ(2ᵏ)) — λ is half the totient at high powers of two.",
+      "mathContext": "The non-cyclic case (ℤ/2 × ℤ/2ᵏ⁻²), where λ is a strict divisor of φ."
+    },
+    {
+      "id": "odd-primes",
+      "title": "Section II: Odd Prime Powers and General Bounds",
+      "startLine": 52,
+      "endLine": 66,
+      "summary": "carmichael_odd_prime_pow (λ(pᵏ) = φ(pᵏ) for odd primes, cyclic case), carmichael_dvd_totient (λ ∣ φ), pow_carmichael (a^{λ(n)} = 1).",
+      "mathContext": "Odd prime powers are cyclic, so λ = φ; in general λ ∣ φ and gives the optimal universal exponent."
+    },
+    {
+      "id": "concrete",
+      "title": "Section III: Concrete Values",
+      "startLine": 68,
+      "endLine": 73,
+      "summary": "carmichael_eight (λ(8) = 2) and carmichael_sixteen (λ(16) = 4), instantiating the 2ᵏ formula.",
+      "mathContext": "Worked values illustrating λ(2ᵏ) = 2ᵏ⁻²."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 75 lines and 7 theorems on the Carmichael function at prime powers: λ(2ᵏ) = 2ᵏ⁻² = φ(2ᵏ)/2 for k ≥ 3 (non-cyclic), λ(pᵏ) = φ(pᵏ) for odd primes (cyclic), λ(n) ∣ φ(n), the universal-exponent property, and λ(8) = 2, λ(16) = 4.",
+    "implications": "This answers the parent's OQ-01-OQ-02, packaging Mathlib's Carmichael prime-power identities. Combined with the lcm formula λ(n) = lcm over prime powers (carmichael_factorization), these determine λ for every n. The result quantifies how far Euler's theorem can be sharpened: the optimal universal exponent λ(n) can be as small as half of φ(n) (powers of two) or equal to it (odd prime powers).",
+    "openQuestions": [
+      "Assemble the full formula λ(n) = lcm of the prime-power values via carmichael_factorization, giving a closed form for arbitrary n.",
+      "Formalize an application: the maximal multiplicative order modulo n equals λ(n) when (ℤ/nℤ)ˣ has an element of that order, characterizing the n for which primitive roots exist."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction.Carmichael",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ArithmeticFunction",
+      "Nat"
+    ],
+    "namespace": "EulerTotientOQ01OQ02",
+    "lineCount": 75,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/EulerTotientOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "extends",
+      "description": "Parent: Euler's totient φ. This entry answers its OQ-01-OQ-02 on the Carmichael (reduced totient) function λ, packaging Mathlib's prime-power identities including λ(2ᵏ) = 2ᵏ⁻² for k ≥ 3."
+    }
+  ],
+  "references": [
+    {
+      "key": "Carmichael1910",
+      "citation": "Carmichael, R.D., Note on a new number theory function, Bull. Amer. Math. Soc. 16 (1910), 232–238.",
+      "type": "paper"
+    },
+    {
+      "key": "HardyWright",
+      "citation": "Hardy, G.H. and Wright, E.M., An Introduction to the Theory of Numbers, 6th ed., Oxford University Press (2008), §6.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,92 @@
+{
+  "slug": "cube-root-3-irrational",
+  "title": "Irrationality of ∛3",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\sqrt[3]{3} \\notin \\mathbb{Q}",
+    "plain": "The cube root of 3 is irrational. This follows the same pattern as cube root of 2—the rational root theorem shows that x³ - 3 = 0 has no rational solutions.",
+    "whyMatters": [
+      "Generalization"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Proofs/CubeRoot3Irrational.lean proves irrational_cbrt3 using the same Mathlib irrational_nrt_of_notint_nrt template as the cube-root-of-2 proof.",
+      "The proof verifies cbrt3_cubed, proves three_not_perfect_cube from the bounds 1^3 < 3 < 2^3, and derives cbrt3_not_int.",
+      "Proof metadata records 5 theorems, 1 definition, 0 axioms, and 0 sorries, plus the alternative theorem irrational_three_pow_one_third."
+    ],
+    "open": [
+      "A fully general Lean theorem for irrational nth roots of non-perfect powers remains the main reusable abstraction.",
+      "Degree-three algebraic-number and Eisenstein-irreducibility strengthenings remain future work."
+    ],
+    "goal": "Record cube-root-of-3 irrationality as the sibling instance showing the cube-root template generalizes cleanly."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2025-12-30T16:04:27-08:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: cube-root-3-irrational\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "irrationality",
+    "polynomial",
+    "algebraic-number-theory"
+  ],
+  "relatedProofs": [
+    "cube-root-3-irrational",
+    "cube-root-3-irrational-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2025-12-30T16:02:07-08:00",
+  "lastUpdate": "2025-12-30T16:04:27-08:00",
+  "completed": "2025-12-30T16:04:27-08:00",
+  "significance": 3,
+  "tractability": 9,
+  "leanFiles": [
+    {
+      "path": "Proofs/CubeRoot3Irrational.lean",
+      "filename": "CubeRoot3Irrational.lean",
+      "lineCount": 84,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3Irrational.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ02.lean",
+      "filename": "CubeRoot3IrrationalOQ02.lean",
+      "lineCount": 124,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ02.lean"
+    }
+  ]
+}

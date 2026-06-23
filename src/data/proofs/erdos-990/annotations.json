@@ -1,0 +1,434 @@
+[
+  {
+    "id": "ann-e990-overview",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "**Erdős Problem #990: Polynomial Root Distribution and the Erdős-Turán Inequality.** For a polynomial f ∈ C[x] of degree d with n nonzero coefficients, is the angular discrepancy of its roots bounded by O(√(n log M))? The classical Erdős-Turán inequality (1950) proves O(√(d log M)); the sparse conjecture replacing d with n remains OPEN.",
+    "mathContext": "The Erdős-Turán inequality is a cornerstone of *equidistribution theory* — the study of how point sets deviate from uniform distribution. For polynomial roots on the unit circle, the *discrepancy* measures the worst-case deviation between the actual root count in an angular sector and the expected count under uniformity. The classical bound O(√(d log M)) depends on the degree d, but sparse polynomials like x^d - 1 (only 2 nonzero terms) suggest that the *sparsity* n, not the degree, should control root distribution. This connects to Weyl's equidistribution criterion, exponential sum estimates, and the broader theory of *low-discrepancy sequences*.",
+    "significance": "key",
+    "relatedConcepts": [
+      "discrepancy theory",
+      "equidistribution",
+      "Mahler measure",
+      "Fourier analysis",
+      "polynomial roots"
+    ],
+    "prerequisites": [
+      "Complex.arg",
+      "Polynomial.Basic",
+      "Finset.card"
+    ],
+    "crossReferences": [
+      {
+        "targetProofId": "erdos-987",
+        "relationship": "related",
+        "description": "Erdős #987 uses exponential sum bounds for sequence discrepancy — the same Erdős-Turán framework applied to integer sequences"
+      },
+      {
+        "targetProofId": "erdos-989",
+        "relationship": "related",
+        "description": "Erdős #989 on circle discrepancy uses Fourier analysis and Bessel functions — the same analytic toolkit underlying the Erdős-Turán inequality"
+      },
+      {
+        "targetProofId": "erdos-992",
+        "relationship": "related",
+        "description": "Erdős #992 studies discrepancy of sequences mod 1, connected to Weyl's criterion and the Erdős-Turán exponential sum method"
+      }
+    ]
+  },
+  {
+    "id": "ann-e990-complexpoly",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 42,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "ComplexPoly",
+    "content": "A complex polynomial of degree at most d, represented as a coefficient sequence `Fin (d+1) → C`. The i-th entry gives the coefficient of x^i.",
+    "mathContext": "The representation `Fin (d+1) → C` is a simple coefficient vector, avoiding Mathlib's `Polynomial` type for direct formalization. This works well for the Erdős-Turán context where we need explicit access to individual coefficients (for computing sparsity and the Mahler measure M). The degree is at most d, with the actual degree determined by the highest nonzero coefficient. Mathlib's `Polynomial.C` and `Polynomial.X` provide an alternative abstract representation, but the coefficient-vector approach is more natural for coefficient-counting problems.",
+    "significance": "key",
+    "relatedConcepts": [
+      "coefficient vector",
+      "Polynomial.C",
+      "Polynomial.X",
+      "Fin type",
+      "Complex numbers"
+    ],
+    "prerequisites": [
+      "Fin",
+      "Complex"
+    ]
+  },
+  {
+    "id": "ann-e990-sparsity",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 50,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "nonzeroCoeffCount (Sparsity)",
+    "content": "The number of nonzero coefficients n in polynomial p, computed by filtering `Finset.univ` for indices i where p(i) ≠ 0. This is the key parameter in the sparse conjecture.",
+    "mathContext": "Sparsity is the central concept distinguishing this problem from the classical Erdős-Turán result. Examples: x^d - 1 has n = 2 but degree d (arbitrarily large); x^d + x^{d-1} + ... + 1 has n = d+1 (maximally dense). The sparse conjecture asserts that n, not d, controls root equidistribution. If true, this would be a dramatic improvement for lacunary (gap) polynomials. The definition uses `Finset.card ∘ Finset.filter`, giving a computable natural number. Note that `sparse_improves_dense` proves n ≤ d+1, so the sparse bound is never worse than the classical bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lacunary polynomial",
+      "Finset.card",
+      "Finset.filter",
+      "sparse representation",
+      "compressed sensing"
+    ],
+    "prerequisites": [
+      "Finset.univ",
+      "Finset.filter",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-e990-argument",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 54,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "argument",
+    "content": "The angle θ ∈ [0, 2π) of a complex number z = |z|e^{iθ}. Uses Mathlib's `Complex.arg` (which returns values in (-π, π]) and shifts negative values by 2π to normalize to [0, 2π).",
+    "mathContext": "The argument function maps C* → [0, 2π), projecting each root onto the unit circle. For the Erdős-Turán inequality, only the angular position matters — the modulus |z| is irrelevant. This is because the inequality bounds the *angular discrepancy* of roots, not their radial distribution. The normalization to [0, 2π) is essential for defining intervals and counting roots in sectors. Mathlib's `arg` returns values in (-π, π], so the shift `arg z + 2π` for negative values maps to [0, 2π). The case z = 0 is handled by returning 0 (roots at the origin have undefined argument).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.arg",
+      "polar form",
+      "angular projection",
+      "branch cut"
+    ],
+    "prerequisites": [
+      "Complex.arg",
+      "Real.pi"
+    ]
+  },
+  {
+    "id": "ann-e990-mahler",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 67,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "mahlerM (Normalization Factor)",
+    "content": "M = (|a₀| + |a₁| + ... + |a_d|) / √(|a₀|·|a_d|). This coefficient-based measure appears in the Erdős-Turán bound. For monic polynomials with |a₀| = |a_d| = 1, M ≥ 2 (axiomatized as `mahler_ge_two`).",
+    "mathContext": "The quantity M is related to but distinct from the *Mahler measure* μ(f) = |a_d| ∏ max(1, |z_i|). The M used here is a *coefficient-based* normalization that controls how 'spread out' the coefficients are relative to the leading and constant terms. The denominator √(|a₀|·|a_d|) normalizes for the scale of f. The logarithm log M appears under the square root in the bound, so M's contribution is mild — even exponentially large M only contributes √(log M). The case a₀·a_d = 0 is handled by defaulting M = 1 (degenerate case where the polynomial has a root at 0 or is of lower degree).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mahler measure",
+      "coefficient sum",
+      "Jensen's formula",
+      "normalization"
+    ],
+    "prerequisites": [
+      "Complex.abs",
+      "Real.sqrt",
+      "Finset.sum"
+    ]
+  },
+  {
+    "id": "ann-e990-rootsinterval",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 93,
+      "endLine": 94
+    },
+    "type": "definition",
+    "title": "rootsInInterval",
+    "content": "Count of roots with argument in [α, β]: filter the root set for roots z where α ≤ argument(z) ≤ β, then take cardinality.",
+    "mathContext": "This is the *empirical counting function* N(I) for interval I = [α, β]. The discrepancy is |N(I) - |I|·d/(2π)|, measuring deviation from the uniform expectation. The counting function is piecewise constant (jumps at each root argument), while the expected count is linear in the interval length. The supremum of discrepancy over all I is the *star discrepancy* D*, a standard measure in equidistribution theory. For d-th roots of unity, N(I) = ⌊|I|·d/(2π)⌋ or ⌈|I|·d/(2π)⌉, giving discrepancy at most 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "empirical distribution",
+      "counting function",
+      "Finset.filter",
+      "star discrepancy"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Finset.card",
+      "argument"
+    ]
+  },
+  {
+    "id": "ann-e990-discrepancy",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 101,
+      "endLine": 102
+    },
+    "type": "definition",
+    "title": "discrepancy",
+    "content": "The absolute deviation |rootsInInterval(α,β) - expectedCount(α,β)| for a single interval [α, β]. Measures how far the actual root count deviates from what uniformity would predict.",
+    "mathContext": "The discrepancy for a single interval is the building block of the *maximum discrepancy* (star discrepancy D*). The Erdős-Turán inequality bounds D* = sup_{0 ≤ α ≤ β ≤ 2π} discrepancy(α,β). The bound is non-trivial only when d is large — for small d, the trivial bound |discrepancy| ≤ d suffices. The discrepancy framework connects to the Koksma-Hlawka inequality in numerical integration, where the integration error is bounded by (variation of f) × (discrepancy of points).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Koksma-Hlawka inequality",
+      "numerical integration",
+      "absolute deviation",
+      "variation"
+    ],
+    "prerequisites": [
+      "rootsInInterval",
+      "expectedCount",
+      "abs"
+    ]
+  },
+  {
+    "id": "ann-e990-maxdisc",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 105,
+      "endLine": 106
+    },
+    "type": "definition",
+    "title": "maxDiscrepancy",
+    "content": "The supremum of discrepancy over all intervals [α, β] ⊆ [0, 2π]. This is the *star discrepancy* D*(p), the central quantity bounded by the Erdős-Turán inequality.",
+    "mathContext": "The supremum is taken over the set of all valid interval parameters {(α, β) : 0 ≤ α ≤ β ≤ 2π}, formalized using `sSup`. In the continuous setting, this supremum is attained (the discrepancy function is piecewise linear in α, β). The star discrepancy D* is the standard measure of equidistribution quality: D* = 0 iff the roots are perfectly uniform (only possible for roots of unity), and D* = Θ(√d) is typical for 'generic' polynomials. The Erdős-Turán bound D* ≤ C√(d log M) is tight up to the log M factor.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sSup",
+      "star discrepancy",
+      "equidistribution quality",
+      "minimax"
+    ],
+    "prerequisites": [
+      "discrepancy",
+      "sSup",
+      "Set.image"
+    ]
+  },
+  {
+    "id": "ann-e990-classical",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 114,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "Classical Erdős-Turán (1950)",
+    "content": "The foundational result: maxDiscrepancy(p) ≤ C · √(d · log M) for some universal constant C > 0. This was the first quantitative equidistribution bound for polynomial roots.",
+    "mathContext": "The proof by Erdős and Turán (1950) uses *exponential sum estimates*. For the polynomial f(x) = a_d ∏(x - z_j), the power sums s_k = Σ z_j^k satisfy |s_k| ≤ (sum of |coefficients|) by Newton's identities. The discrepancy bound follows from the *Erdős-Turán inequality for sequences*: D* ≤ C/N + C Σ_{k=1}^N |s_k|/(k) for any N, optimized by choosing N ~ √(d/log M). This is the same exponential sum method used for equidistribution of sequences mod 1 (connected to Erdős #987, #992). The paper appeared in the Bulletin of the AMS (1950).",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential sums",
+      "Newton's identities",
+      "power sums",
+      "Weyl's criterion"
+    ],
+    "prerequisites": [
+      "maxDiscrepancy",
+      "mahlerM",
+      "Real.sqrt",
+      "Real.log"
+    ],
+    "crossReferences": [
+      {
+        "targetProofId": "erdos-987",
+        "relationship": "uses-same-technique",
+        "description": "The Erdős-Turán exponential sum method for sequences is the same framework used in #987 for sequence discrepancy"
+      }
+    ]
+  },
+  {
+    "id": "ann-e990-ganelius",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 126,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Ganelius Improvement (1954)",
+    "content": "The constant C in the Erdős-Turán bound can be taken ≤ 8. Ganelius improved the explicit numerical constant just 4 years after the original paper.",
+    "mathContext": "Improving the constant in the Erdős-Turán inequality has been a long-running project. The original Erdős-Turán paper gave C without explicit computation. Ganelius (1954) showed C ≤ 8 using sharper estimates on exponential sums. Mignotte (1992) further improved the constant. The quest culminated with Soundararajan (2019) and Steinerberger et al. (2021) determining the *sharp* (optimal) constant, showing it is related to an extremal problem involving Hilbert transforms on L²([0,1]).",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit constants",
+      "Mignotte",
+      "Soundararajan",
+      "optimal bounds"
+    ],
+    "prerequisites": [
+      "erdos_turan_classical"
+    ]
+  },
+  {
+    "id": "ann-e990-sparse",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 138,
+      "endLine": 141
+    },
+    "type": "definition",
+    "title": "sparseConjecture (The Open Problem)",
+    "content": "The open conjecture: maxDiscrepancy(p) ≤ C · √(n · log M) where n is the number of nonzero coefficients. This would replace the degree d with the sparsity n in the Erdős-Turán bound.",
+    "mathContext": "The sparse conjecture is motivated by the observation that lacunary (gap) polynomials have much better root equidistribution than their degree suggests. The polynomial x^d - 1 has degree d but only n = 2 nonzero terms, and its roots (d-th roots of unity) are *perfectly* equidistributed. The conjecture asks whether this is a general phenomenon: does low sparsity always force good equidistribution? A proof would have significant implications for number theory (distribution of algebraic numbers), numerical analysis (interpolation with sparse polynomial bases), and signal processing (compressed sensing with polynomial measurements). The conjecture remains open even for trinomials (n = 3).",
+    "significance": "key",
+    "relatedConcepts": [
+      "lacunary polynomial",
+      "open conjecture",
+      "trinomial",
+      "compressed sensing"
+    ],
+    "prerequisites": [
+      "nonzeroCoeffCount",
+      "maxDiscrepancy",
+      "mahlerM"
+    ]
+  },
+  {
+    "id": "ann-e990-improves",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 144,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "sparse_improves_dense (Proved)",
+    "content": "n ≤ d + 1 always holds: the sparsity is at most the degree plus one. Hence the sparse bound (if true) would always be at least as good as the classical bound.",
+    "mathContext": "The proof is a one-liner: `Finset.card_filter_le _ _` — the cardinality of a filtered set is at most the cardinality of the original set, and `Finset.univ` for `Fin (d+1)` has cardinality d+1. This simple observation shows the sparse conjecture is a *strict strengthening* of the classical Erdős-Turán for polynomials with n < d+1 (i.e., sparse polynomials). The improvement is significant when n ≪ d, e.g., x^{1000} + x + 1 has n = 3 but d = 1000.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_filter_le",
+      "strengthening",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "nonzeroCoeffCount",
+      "Finset.card_filter_le"
+    ]
+  },
+  {
+    "id": "ann-e990-unity",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 150,
+      "endLine": 151
+    },
+    "type": "concept",
+    "title": "Unity Roots Are Sparse",
+    "content": "x^d - 1 has only 2 nonzero coefficients (a₀ = -1, a_d = 1) but degree d. This is the motivating example: maximally sparse yet perfectly equidistributed roots.",
+    "mathContext": "The d-th roots of unity ζ_k = e^{2πik/d} for k = 0,...,d-1 are uniformly spaced at angles 2πk/d. The discrepancy is at most 1 (from integrality). Meanwhile, the classical Erdős-Turán bound gives O(√(d log 2)), which is much worse. The sparse conjecture would give O(√(2 log 2)) = O(1), correctly reflecting the near-perfect equidistribution. This example also shows that the log M factor is essential: for the polynomial x^d - c with |c| very large, M ~ √|c|, and the roots cluster near a circle of radius |c|^{1/d}, with worse angular equidistribution.",
+    "significance": "key",
+    "relatedConcepts": [
+      "roots of unity",
+      "cyclotomic polynomial",
+      "regular polygon",
+      "perfect equidistribution"
+    ],
+    "prerequisites": [
+      "nonzeroCoeffCount"
+    ]
+  },
+  {
+    "id": "ann-e990-sharp",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 160,
+      "endLine": 165
+    },
+    "type": "concept",
+    "title": "Sharp Erdős-Turán Constant",
+    "content": "There exists an optimal constant C_sharp such that the Erdős-Turán inequality holds with C = C_sharp but not with any smaller constant. Determined by Soundararajan (2019) and Steinerberger et al. (2021) after 70 years.",
+    "mathContext": "The sharp constant is characterized by an extremal problem: C_sharp = sup over all trigonometric polynomials T of degree N of the ratio ||T||_∞ / (||T||₂ · √(N log ||T||₁)). Soundararajan connected this to the *Hilbert transform* on L²([0,1]): the optimal bound involves the operator norm of a modified Hilbert transform restricted to trigonometric polynomials. This unexpected connection between polynomial root distribution and harmonic analysis was the key breakthrough. The formalization axiomatizes the existence of C_sharp without specifying its value.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal problem",
+      "operator norm",
+      "trigonometric polynomial",
+      "Soundararajan"
+    ],
+    "prerequisites": [
+      "maxDiscrepancy",
+      "mahlerM"
+    ]
+  },
+  {
+    "id": "ann-e990-hilbert",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 168,
+      "endLine": 169
+    },
+    "type": "concept",
+    "title": "Hilbert Transform Connection",
+    "content": "The optimal constant in the Erdős-Turán inequality is determined by an extremal problem involving Hilbert transforms. Axiomatized as `True` (placeholder for the deep harmonic analysis connection).",
+    "mathContext": "The *Hilbert transform* Hf(x) = PV ∫ f(t)/(x-t) dt is a fundamental operator in harmonic analysis. Soundararajan showed that the sharp constant in Erdős-Turán is related to the norm of H restricted to certain function spaces. This connects polynomial root distribution to: (1) singular integral operators, (2) Fourier multiplier theory, (3) the theory of conjugate functions. The connection arises because the discrepancy can be expressed as a Fourier series involving the polynomial's coefficients, and optimizing the bound reduces to a norm estimate for the Hilbert transform applied to this series.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hilbert transform",
+      "singular integral",
+      "Fourier multiplier",
+      "conjugate function",
+      "principal value"
+    ],
+    "prerequisites": [
+      "sharp_erdos_turan"
+    ],
+    "crossReferences": [
+      {
+        "targetProofId": "erdos-989",
+        "relationship": "uses-same-technique",
+        "description": "Erdős #989 on circle discrepancy also uses Fourier analysis — Bessel functions and harmonic analysis for geometric discrepancy bounds"
+      }
+    ]
+  },
+  {
+    "id": "ann-e990-unityuniform",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 178,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Roots of Unity: Perfect Equidistribution",
+    "content": "The n-th roots of unity (roots of x^n - 1) are exactly uniformly distributed at angles 2πk/n. The discrepancy is at most 1 (from rounding to integers).",
+    "mathContext": "This is the *ideal case*: the d-th roots of unity form a regular d-gon on the unit circle. For any arc I of length |I|, the root count satisfies |N(I) - |I|d/(2π)| ≤ 1. The axiom states that discrepancy is 0 (if the interval endpoints align with root positions) or at most 1 (from integrality). This motivates the sparse conjecture: since x^d - 1 has sparsity 2, the sparse bound √(2 log M) correctly predicts O(1) discrepancy, while the classical bound √(d log M) drastically overestimates.",
+    "significance": "key",
+    "relatedConcepts": [
+      "regular polygon",
+      "uniform distribution",
+      "integrality",
+      "cyclotomic roots"
+    ],
+    "prerequisites": [
+      "maxDiscrepancy",
+      "rootsInInterval"
+    ]
+  },
+  {
+    "id": "ann-e990-littlewood",
+    "proofId": "erdos-990",
+    "range": {
+      "startLine": 187,
+      "endLine": 192
+    },
+    "type": "theorem",
+    "title": "Littlewood Polynomials",
+    "content": "A Littlewood polynomial has all coefficients with |a_i| = 1 or a_i = 0 (typically coefficients ±1). These have maximal sparsity n = d+1 and special root distribution properties.",
+    "mathContext": "Littlewood polynomials are a classical object in analysis. The *Littlewood conjecture* (now theorem, Kahane 1985) states that for random ±1 polynomials of degree d, the roots cluster near the unit circle with discrepancy O(√(d log d)). For Littlewood polynomials, M ≤ (d+1)/1 = d+1, so log M ≤ log(d+1). The Erdős-Turán bound gives D* ≤ C√(d log(d+1)). The axiomatized bound `maxDiscrepancy ≤ √(d log d + d)` reflects the known results for this class. Littlewood polynomials appear in signal processing (binary phase codes) and number theory (Barker sequences).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Kahane",
+      "random polynomial",
+      "binary phase code",
+      "Barker sequence",
+      "flat polynomial"
+    ],
+    "prerequisites": [
+      "ComplexPoly",
+      "maxDiscrepancy"
+    ]
+  }
+]

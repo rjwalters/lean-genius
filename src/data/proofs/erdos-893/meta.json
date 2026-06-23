@@ -1,0 +1,224 @@
+{
+  "id": "erdos-893",
+  "title": "Erdős Problem #893: Divisor Sum of Mersenne Numbers",
+  "slug": "erdos-893",
+  "description": "Define $f(n) = \\sum_{k=1}^n \\tau(2^k - 1)$. Does $f(2n)/f(n) \\to \\infty$? Kovac-Luca (2025) proved $\\limsup = \\infty$. Full divergence remains open.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/893",
+    "date": "1998",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos893Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisors",
+      "mersenne-numbers",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 893,
+    "erdosUrl": "https://erdosproblems.com/893",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "Finset of positive divisors of a natural number",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum of a function over a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.Icc",
+        "description": "Closed interval as a finite set for summation range",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real",
+        "description": "Real numbers for ratio f(2n)/f(n)",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate used for tau_prime_eq_two",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Defined tau via Nat.divisors.card and verified tau(2^k-1) for k=1,...,8 via native_decide",
+      "Proved tau_prime_eq_two: primes have exactly 2 divisors",
+      "Defined f(n) = sum over Finset.Icc 1 n of tau(2^k-1) and verified f(1),...,f(8)",
+      "Proved f_mono (monotonicity) and f_pos (positivity) as genuine Lean proofs",
+      "Defined ratio f(2n)/f(n) and proved ratio_ge_one from monotonicity",
+      "Axiomatized Kovac-Luca (2025) limsup result and proved ratio_unbounded from it",
+      "Stated ErdosProblem893 (full divergence) and proved kovac_luca_weaker_than_conjecture",
+      "Proved tau_ge_two: every n >= 2 has at least 2 divisors (structural bound)",
+      "Proved f_lower_bound: f(n) >= 2n-1 for n >= 1 (stronger than f_ge)",
+      "Proved f_decomp: f(2n) = f(n) + extra terms (key ratio decomposition)",
+      "Proved f_gap_lower_bound: extra terms in f(2n) sum to at least 2n",
+      "Proved mersenne_dvd: if a | b then (2^a - 1) | (2^b - 1) (Mersenne divisibility)",
+      "Proved tau_mersenne_ge_tau: tau(2^k - 1) >= tau(k) via divisor injection d -> 2^d - 1",
+      "Proved f_divisor_sum_lower: f(n) >= sum_{k=1}^n tau(k), connecting f to the divisor summatory function"
+    ],
+    "axiomCount": 1,
+    "lineCount": 332,
+    "assumptions": "1 axiom: kovac_luca_limsup_infinite. See Lean source for the complete statement.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 35,
+    "leanFiles": [
+      {
+        "path": "Proofs/Erdos893Problem.lean",
+        "filename": "Erdos893Problem.lean",
+        "lineCount": 332,
+        "theoremCount": 35,
+        "axiomCount": 1,
+        "defCount": 4,
+        "isAristotle": false
+      }
+    ],
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Erdos posed this problem in 1998 ([Er98]), noting that $f(n) = \\sum_{k=1}^n \\tau(2^k - 1)$ likely has no simple asymptotic formula due to the erratic growth of divisor counts of Mersenne numbers. The function $\\tau(2^k - 1)$ is small ($= 2$) when $2^k - 1$ is a Mersenne prime but can be large when $2^k - 1$ is highly composite. As of 2024, 51 Mersenne primes are known, but their distribution remains mysterious, making the growth of $f$ hard to predict. Kovac and Luca (2025, arXiv:2506.04883) proved $\\limsup f(2n)/f(n) = \\infty$, building on a heuristic by Cambie, but the full divergence $\\lim f(2n)/f(n) = \\infty$ remains open. The problem connects the divisor function (multiplicative number theory) to the arithmetic of Mersenne numbers (exponential number theory), a rare and deep interface.",
+    "problemStatement": "Define $f(n) = \\sum_{k=1}^n \\tau(2^k - 1)$, where $\\tau$ is the divisor counting function. **Does $f(2n)/f(n) \\to \\infty$ as $n \\to \\infty$?**",
+    "text": "Define $f(n) = \\sum_{k=1}^n \\tau(2^k - 1)$. Does $f(2n)/f(n) \\to \\infty$? Kovac-Luca (2025) proved $\\limsup = \\infty$. Full divergence remains open.",
+    "proofStrategy": "The formalization defines `tau` via `Nat.divisors.card` and verifies small values computationally via `native_decide`. The cumulative sum `f` uses `Finset.Icc` and `Finset.sum`. Key structural properties (monotonicity, positivity) are proved as genuine Lean theorems. The ratio `f(2n)/f(n)` is cast to $\\mathbb{R}$, with `ratio_ge_one` proved from monotonicity. The Kovac-Luca result is axiomatized, and `ratio_unbounded` is derived from it by contradiction. The open problem is stated as `ErdosProblem893`, with the logical hierarchy (conjecture implies Kovac-Luca) formally proved.",
+    "keyInsights": [
+      "The file contains substantial proved content: `tau_prime_eq_two`, `f_mono`, `f_pos`, `ratio_ge_one`, `ratio_unbounded`, and `kovac_luca_weaker_than_conjecture` are all genuine Lean proofs (no sorry)",
+      "Kovac-Luca (2025) proved $\\limsup f(2n)/f(n) = \\infty$, which rules out any finite limit but does not establish eventual divergence: the ratio could oscillate with $\\liminf < \\infty$",
+      "Mersenne primes contribute $\\tau = 2$ (minimal), while composite $2^k - 1$ can have many divisors: $\\tau(2^{12} - 1) = \\tau(4095) = 24$, making the growth of $f$ highly non-uniform",
+      "The gap between $\\limsup = \\infty$ (Kovac-Luca) and $\\lim = \\infty$ (the conjecture) requires showing the ratio cannot persistently drop back, which seems to need new ideas about Mersenne factorizations",
+      "Computational evidence ($f(8)/f(4) = 3$, verified values) supports divergence, but the erratic behavior of $\\tau(2^k - 1)$ prevents simple asymptotic arguments",
+      "Mersenne divisibility ($a \\mid b \\Rightarrow (2^a-1) \\mid (2^b-1)$) gives an injection from divisors of $k$ to divisors of $2^k-1$, proving $\\tau(2^k-1) \\geq \\tau(k)$. This yields $f(n) \\geq \\sum_{k=1}^n \\tau(k) \\sim n \\log n$ (Dirichlet), a concrete growth rate lower bound"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-893-header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "File header with problem statement, references (Erdos 1998, Kovac-Luca 2025), status (OPEN). Imports `Nat.Basic`, `Finset.Basic`, `Real.Basic`, `Filter.Basic`, `Tactic`. Opens `Finset`, declares `Erdos893` namespace.",
+      "mathContext": "File header with problem statement, references (Erdos 1998, Kovac-Luca 2025), status (OPEN). Imports `Nat.Basic`, `Finset.Basic`, `Real.Basic`, `Filter.Basic`, `Tactic`. Opens `Finset`, declares `Erdos893` namespace."
+    },
+    {
+      "id": "sec-893-tau",
+      "title": "Divisor Counting Function $\\tau$",
+      "startLine": 31,
+      "endLine": 85,
+      "summary": "Defines `tau n` as `n.divisors.card`. Verifies $\\tau(2^k-1)$ for $k = 1, \\ldots, 8$ via `native_decide`. Proves `tau_prime_eq_two`: primes have exactly 2 divisors.",
+      "mathContext": "Defines `tau n` as `n.divisors.card`. Verifies $\\tau($2^{k}$-1)$ for $k = 1, \\ldots, 8$ via `native_decide`. Proves `tau_prime_eq_two`: primes have exactly 2 divisors."
+    },
+    {
+      "id": "sec-893-f",
+      "title": "Cumulative Sum $f(n)$",
+      "startLine": 86,
+      "endLine": 133,
+      "summary": "Defines `f n` as $\\sum_{k=1}^n \\tau(2^k-1)$ via `Finset.Icc` and `Finset.sum`. Verifies $f(1), \\ldots, f(8)$ via `native_decide` and collects into `f_initial_values`.",
+      "mathContext": "Defines `f n` as $\\sum_{k=1}^n \\tau($2^{k}$-1)$ via `Finset.Icc` and `Finset.sum`. Verifies $f(1), \\ldots, f(8)$ via `native_decide` and collects into `f_initial_values`."
+    },
+    {
+      "id": "sec-893-mono",
+      "title": "Monotonicity and Positivity",
+      "startLine": 134,
+      "endLine": 206,
+      "summary": "Proves `f_mono` ($m \\le n \\implies f(m) \\le f(n)$) via `Finset.sum_le_sum_of_subset` and `f_pos` ($n \\ge 1 \\implies f(n) > 0$) via chaining with $f(1) = 1$.",
+      "mathContext": "Verified: Proves `f_mono` ($m \\le n \\implies f(m) \\le f(n)$) via `Finset.sum_le_sum_of_subset` and `f_pos` ($n \\ge 1 \\implies f(n) > 0$) via chaining with $f(1) = 1$."
+    },
+    {
+      "id": "sec-893-mersenne",
+      "title": "Mersenne Divisibility and Tau Bounds",
+      "startLine": 207,
+      "endLine": 270,
+      "summary": "Proves `mersenne_dvd` ($a \\mid b \\Rightarrow (2^a-1) \\mid (2^b-1)$) by induction on the quotient, `mersenne_injective` ($2^a-1 = 2^b-1 \\Rightarrow a = b$) by strict monotonicity, `tau_mersenne_ge_tau` ($\\tau(2^k-1) \\geq \\tau(k)$) via injection of divisors, and `f_divisor_sum_lower` ($f(n) \\geq \\sum_{k=1}^n \\tau(k)$) connecting $f$ to the divisor summatory function.",
+      "mathContext": "Key structural chain: Mersenne divisibility provides an injection from divisors of $k$ to divisors of $2^k-1$, giving $\\tau(2^k-1) \\geq \\tau(k)$. Summing yields $f(n) \\geq \\sum_{k=1}^n \\tau(k) \\sim n \\log n$ (by Dirichlet's divisor estimate)."
+    },
+    {
+      "id": "sec-893-ratio",
+      "title": "The Ratio $f(2n)/f(n)$",
+      "startLine": 271,
+      "endLine": 285,
+      "summary": "Defines `ratio n` as $(f(2n) : \\mathbb{R}) / (f(n) : \\mathbb{R})$. Proves `ratio_ge_one`: the ratio is at least 1 for $n \\ge 1$.",
+      "mathContext": "Formal definition: Defines `ratio n` as $(f(2n) : \\mathbb{R}) / (f(n) : \\mathbb{R})$. Proves `ratio_ge_one`: the ratio is at least 1 for $n \\ge 1$."
+    },
+    {
+      "id": "sec-893-known",
+      "title": "Known Results: Kovac-Luca",
+      "startLine": 286,
+      "endLine": 301,
+      "summary": "Axiomatizes `kovac_luca_limsup_infinite`: $\\forall M > 0,\\, \\exists n,\\, \\text{ratio}(n) > M$. Proves `ratio_unbounded` by contradiction.",
+      "mathContext": "Verified: Axiomatizes `kovac_luca_limsup_infinite`: $\\forall M > 0,\\, \\exists n,\\, \\text{ratio}(n) > M$. Proves `ratio_unbounded` by contradiction."
+    },
+    {
+      "id": "sec-893-main",
+      "title": "Main Question: $f(2n)/f(n) \\to \\infty$",
+      "startLine": 302,
+      "endLine": 318,
+      "summary": "States `ErdosProblem893` (full divergence, open). Proves `kovac_luca_weaker_than_conjecture`: divergence implies the Kovac-Luca statement.",
+      "mathContext": "Verified: States `ErdosProblem893` (full divergence, open). Proves `kovac_luca_weaker_than_conjecture`: divergence implies the Kovac-Luca statement."
+    },
+    {
+      "id": "sec-893-summary",
+      "title": "Summary Theorem",
+      "startLine": 319,
+      "endLine": 332,
+      "summary": "Collects verified results into `erdos893_summary`: positivity, monotonicity, and ratio unboundedness.",
+      "mathContext": "Bound: Collects verified results into `erdos893_summary`: positivity, monotonicity, and ratio unboundedness."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdos Problem #893 asks whether $f(2n)/f(n) \\to \\infty$ for the Mersenne divisor sum $f(n) = \\sum_{k=1}^n \\tau(2^k-1)$. Kovac-Luca (2025) proved the ratio is unbounded ($\\limsup = \\infty$), but full divergence remains open. The formalization is notably rich in proved content: monotonicity, positivity, ratio bounds, unboundedness, and logical hierarchy are all genuine Lean proofs with 0 sorries.",
+    "implications": "Resolving this would deepen understanding of the divisor structure of Mersenne numbers and the interplay between multiplicative number theory ($\\tau$) and exponential number theory ($2^k - 1$). The gap between $\\limsup = \\infty$ and $\\lim = \\infty$ is a fundamental analytic question about the regularity of Mersenne factorizations.",
+    "openQuestions": [
+      "Does $f(2n)/f(n) \\to \\infty$ as $n \\to \\infty$, or can the ratio oscillate with finite $\\liminf$?",
+      "What is the growth rate of $f(n)$? Is $f(n) \\gg n^{1+\\varepsilon}$ for some $\\varepsilon > 0$?",
+      "How does the distribution of Mersenne primes affect the growth of $f$? If infinitely many Mersenne primes exist, does this slow or accelerate $f$?",
+      "Can the Kovac-Luca method be strengthened to control $\\liminf f(2n)/f(n)$?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers are intimately connected to Mersenne primes via the Euclid-Euler theorem: even perfect numbers have the form 2^(p-1)(2^p-1) where 2^p-1 is a Mersenne prime"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundation",
+      "description": "The prime number theorem and its generalizations govern the asymptotic behavior of divisor sums, providing context for the growth rate of f(n)"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "technique",
+      "description": "The divergence of prime reciprocals (Euler) is an analogue: both study cumulative sums over multiplicative quantities, with the key question being whether growth is unbounded"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos893",
+    "lineCount": 332,
+    "axiomCount": 1,
+    "theoremCount": 35,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos893Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -1,0 +1,292 @@
+{
+  "id": "descartes-rule-of-signs-oq-02",
+  "title": "Budan's Theorem: Generalization of Descartes' Rule to Intervals",
+  "slug": "descartes-rule-of-signs-oq-02",
+  "description": "Budan's theorem (1807) generalizes Descartes' Rule of Signs from counting positive roots to counting roots in any half-open interval (a, b]. For a polynomial p of degree n, the Budan-Fourier sequence at x is [p(x), p'(x), ..., p^(n)(x)]. The sign variation count V_p(x) gives: #roots in (a,b] ≤ V_p(a) - V_p(b), with the difference being even. This is the foundation of modern polynomial root isolation algorithms.",
+  "meta": {
+    "author": "François Budan de Boislaurent (1807); Joseph Fourier (~1820)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Budan%27s_theorem",
+    "date": "1807",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/DescartesRuleOfSignsOQ02.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "roots",
+      "real-analysis",
+      "sign-variations",
+      "root-isolation",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.derivative",
+        "description": "Formal derivative of polynomials",
+        "module": "Mathlib.Algebra.Polynomial.Derivative"
+      },
+      {
+        "theorem": "Polynomial.natDegree_derivative_le",
+        "description": "Degree of derivative ≤ degree - 1",
+        "module": "Mathlib.Algebra.Polynomial.Derivative"
+      },
+      {
+        "theorem": "exists_deriv_eq_zero",
+        "description": "Rolle's theorem: continuous function equal at endpoints has critical point",
+        "module": "Mathlib.Analysis.Calculus.LocalExtr.Rolle"
+      },
+      {
+        "theorem": "Polynomial.continuous",
+        "description": "Polynomial evaluation is continuous",
+        "module": "Mathlib.Topology.Algebra.Polynomial"
+      }
+    ],
+    "originalContributions": [
+      "iterDeriv: k-th iterated derivative definition with commutativity and degree bounds",
+      "budanSequence: Budan-Fourier evaluation sequence [p(x), p'(x), ..., p^(n)(x)]",
+      "signChangesInList: sign change counter for real-valued lists (filters zeros, maps to ±1)",
+      "budanCount: V_p(x) = sign changes in the Budan-Fourier sequence at x",
+      "rootsInInterval: root count in half-open interval (a,b] with multiplicity",
+      "budan_theorem: combined upper bound + parity (∃ k, roots + 2k = V(a) - V(b))",
+      "no_roots_of_equal_budanCount: V(a) = V(b) → no roots in (a,b] (root-free certificate)",
+      "unique_root_of_budanCount_diff_one: V(a) - V(b) = 1 → exactly 1 root (unique root certificate)",
+      "zero_or_two_roots: V(a) - V(b) = 2 → 0 or 2 roots (parity constraint)",
+      "rolle_polynomial: between two roots of p, derivative has a root (fully proved)",
+      "n_roots_derivative_roots: n+1 ordered roots → n derivative roots (fully proved)",
+      "descartes_from_budan: Descartes' rule as special case of Budan (a=0, b→∞)",
+      "iterDeriv_eq_zero: iterated derivative beyond degree is zero (fully proved)",
+      "iterDeriv_coeff: general coefficient formula (p^(k)).coeff j = descFactorial(j+k,k) * p.coeff(j+k) (fully proved)",
+      "iterDeriv_eval_zero: p^(k)(0) = k! * coeff k (fully proved via iterDeriv_coeff)",
+      "poly_eval_at_zero: polynomial evaluation at 0 equals constant coefficient (fully proved)",
+      "budanCount_le_natDegree: V_p(x) ≤ deg(p) structural bound (fully proved)",
+      "rootsInInterval_split: root count additivity over interval splits (fully proved)",
+      "iterDeriv_C_mul: scalar multiplication commutes with iterated derivative (fully proved)",
+      "countAdjacentDiffs_le: sign changes bounded by list length - 1 (fully proved)",
+      "budanCount_diff_split: V(a)-V(b) = (V(a)-V(c)) + (V(c)-V(b)) additivity"
+    ],
+    "dateAdded": "2026-03-24",
+    "axiomCount": 3,
+    "lineCount": 698,
+    "theoremCount": 43,
+    "defCount": 8,
+    "assumptions": "3 axioms: budan_upper_bound (Rolle induction), budan_parity (conjugate pairs), budanCount_large (leading coefficient dominance). See Lean source for complete statements.",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "François Budan de Boislaurent, a physician and amateur mathematician, published *Nouvelle méthode pour la résolution des équations numériques* in 1807. His theorem generalized Descartes' Rule of Signs (1637) from counting positive roots to counting roots in any interval $(a, b]$ by evaluating the polynomial and all its derivatives at the endpoints and comparing sign changes. Budan's original motivation was practical numerical root-finding for engineering applications.\n\nJoseph Fourier independently discovered the same result around 1820, based on lecture notes from the École Polytechnique. Fourier's treatment was more analytical, connecting the sign variation count to the behavior of the Taylor expansion at each endpoint. His work was published posthumously in 1831 (*Analyse des équations déterminées*), leading to the dual name 'Budan-Fourier theorem.' The priority dispute between Budan and Fourier was noted by Sturm himself.\n\nCharles Sturm's 1829 theorem superseded Budan-Fourier for exact root counting by replacing the derivative sequence with a pseudo-remainder sequence (Sturm chain), eliminating the parity gap entirely. However, Budan's theorem remained computationally important because derivative sequences require only $O(n^2)$ arithmetic operations versus $O(n^2 \\log n)$ for Sturm chains (with fast polynomial arithmetic).\n\nThe modern revival of Budan-Fourier came through its role in root isolation algorithms. Alexandre-Joseph-Hidulphe Vincent (1834) proved that continued fraction expansion of a polynomial eventually isolates all positive real roots, with Budan's theorem providing the termination certificates. The VAS algorithm (Vincent-Akritas-Strzeboński, 2005–2008) formalized this into a practical root isolator used in computer algebra systems including Mathematica, Maple, and SageMath. Recent work by Sagraloff and Mehlhorn (2016) achieved near-optimal bit complexity bounds for Budan-based root isolation.",
+    "problemStatement": "**Open Question (descartes-rule-of-signs-oq-02)**: Can Budan's theorem be formalized in Lean 4 as a strict generalization of Descartes' rule?\n\n**The theorem**: For a polynomial p of degree n, let V_p(x) = sign changes in [p(x), p'(x), ..., p^(n)(x)]. Then:\n1. #roots in (a,b] ≤ V_p(a) - V_p(b)\n2. V_p(a) - V_p(b) - #roots is even and non-negative\n\n**Recovery of Descartes**: Taking a = 0 and b → +∞ gives V_p(0) (coefficient sign changes) as the upper bound on positive roots.",
+    "text": "This formalization defines the Budan-Fourier sequence, the sign variation count V_p(x), and states the main theorem with its root isolation applications. The key deep results (upper bound via Rolle induction, parity via conjugate pairs, large-x vanishing) are axiomatized. The root isolation certificates — which are the main algorithmic applications — are fully proved from the axioms.",
+    "proofStrategy": "**Infrastructure (fully proved)**: iterDeriv (iterated derivative), budanSequence, signChangesInList, budanCount, rootsInInterval definitions. iterDeriv commutes with derivative, degree bounds, vanishing beyond degree.\n\n**Root Isolation (fully proved from axioms)**: The practical heart of Budan's theorem — given V_p(a) and V_p(b), we can certify root counts. unique_root_of_budanCount_diff_one uses the parity axiom elegantly: if V(a)-V(b)=1, then roots ≤ 1 (from bound) and 1-roots must be even (from parity), so roots = 1.\n\n**Rolle's Theorem Bridge (fully proved)**: rolle_polynomial and n_roots_derivative_roots provide the calculus foundation that would be used in a full proof of the upper bound axiom.\n\n**Descartes Recovery**: descartes_from_budan shows how Budan's theorem specializes to Descartes' rule at a=0, b→∞, using the budanCount_large axiom.",
+    "keyInsights": [
+      "**Non-increasing sign variation**: $V_p(x)$ is a non-increasing step function of $x$: it can only decrease, and decreases are 'caused' by roots of $p$ or its derivatives. This monotonicity is the structural backbone of the theorem — the variation budget $V_p(a)$ gets spent as $x$ moves rightward through $(a,b]$.",
+      "**Large-$x$ vanishing recovers Descartes**: For $x \\gg 0$, $p^{(k)}(x) \\sim \\frac{n!}{(n-k)!} a_n x^{n-k}$, so all entries in the Budan-Fourier sequence have the same sign as $a_n$: zero sign changes. Thus $V_p(0)$ equals the total variation 'budget,' and $V_p(0) = V(a_0, a_1, \\ldots, a_n)$ (coefficient sign changes) because $p^{(k)}(0) = k! \\cdot a_k$.",
+      "**Root isolation certificates**: The main algorithmic application. $V_p(a) - V_p(b) = 0$ certifies root-free; $= 1$ certifies exactly one root (the parity argument forces this — if roots were 0, the odd difference would violate evenness). These certificates power the VAS bisection algorithm.",
+      "**Budan vs. Sturm**: Budan gives bounds with a parity gap (complex conjugate pairs contribute 0 or 2 to the variation but 0 to the root count). Sturm chains (pseudo-remainder sequences instead of derivatives) eliminate this gap, giving exact counts — at a computational cost roughly $O(n^2 \\log n)$ vs Budan's $O(n^2)$.",
+      "**Axiom architecture**: The 3 axioms isolate exactly the analytical 'hard parts' — Rolle induction (requires strong induction + continuous intermediate value), conjugate pair parity (requires Fundamental Theorem of Algebra), and leading term dominance (requires asymptotic analysis). All algebraic infrastructure and algorithmic consequences are fully proved.",
+      "**Rolle bridge**: `rolle_polynomial` and `n_roots_derivative_roots` are fully proved using Mathlib's `exists_deriv_eq_zero`. These provide the calculus foundation that a full proof of the `budan_upper_bound` axiom would use — the inductive step 'between $n+1$ roots of $p$, $p'$ has $\\geq n$ roots' is the heart of the Rolle induction."
+    ],
+    "prerequisites": [
+      "Polynomial algebra",
+      "Real analysis (Rolle's theorem)",
+      "Complex analysis (conjugate pairs, for parity)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Module docstring on Budan's theorem and the Budan-Fourier sequence, polynomial/derivative/Rolle imports from Mathlib, namespace BudanTheorem, open Polynomial.",
+      "mathContext": "Budan-Fourier theory: the sign-variation count of the derivative sequence $[p, p', \\dots, p^{(n)}]$ bounds the number of real roots in an interval."
+    },
+    {
+      "id": "part1-derivative-sequence",
+      "title": "Part I: The Derivative Sequence",
+      "startLine": 61,
+      "endLine": 124,
+      "summary": "iterDeriv (iterated derivative) with iterDeriv_zero/succ/derivative, natDegree_iterDeriv_le, iterDeriv_eq_zero, and budanSequence (the list [p(x),…,p⁽ⁿ⁾(x)]) with budanSequence_length.",
+      "mathContext": "The Budan sequence at $x$ is $[p(x), p'(x), \\dots, p^{(n)}(x)]$; the $k$-th iterated derivative has degree $\\le \\deg p - k$ and vanishes for $k > \\deg p$."
+    },
+    {
+      "id": "part2-sign-variation",
+      "title": "Part II: Sign Variation Count",
+      "startLine": 125,
+      "endLine": 174,
+      "summary": "countAdjacentDiffs over integer lists and signChangesInList counting sign changes in a real list (signChangesInList_nil for the empty list).",
+      "mathContext": "The sign-variation count $V$ tallies sign changes across consecutive nonzero entries of a list."
+    },
+    {
+      "id": "part3-budan-fourier-count",
+      "title": "Part III: The Budan-Fourier Count V_p(x)",
+      "startLine": 175,
+      "endLine": 197,
+      "summary": "budanCount p x = number of sign changes in the Budan sequence of p at x; budanCount_zero and budanCount_C (zero for the zero polynomial and constants).",
+      "mathContext": "$V_p(x)$ is the sign-variation count of $[p(x), p'(x), \\dots, p^{(n)}(x)]$."
+    },
+    {
+      "id": "part4-roots-in-intervals",
+      "title": "Part IV: Count of Roots in Intervals",
+      "startLine": 198,
+      "endLine": 221,
+      "summary": "rootsInInterval p a b counting roots in (a,b]; rootsInInterval_zero and rootsInInterval_C for the zero polynomial and nonzero constants.",
+      "mathContext": "$\\#\\{\\text{roots of } p \\text{ in } (a,b]\\}$, counted with multiplicity, is the quantity bounded by Budan's theorem."
+    },
+    {
+      "id": "part5-budans-theorem",
+      "title": "Part V: Budan's Theorem — Main Results",
+      "startLine": 222,
+      "endLine": 261,
+      "summary": "The Budan upper bound and parity axioms (budan_upper_bound_axiom, budan_parity_axiom) and their theorem wrappers (budan_upper_bound, budan_parity), combined into budan_theorem.",
+      "mathContext": "Budan's theorem: $\\#\\text{roots}(a,b] \\le V_p(a) - V_p(b)$, with the difference $V_p(a)-V_p(b) - \\#\\text{roots}$ even."
+    },
+    {
+      "id": "part6-root-isolation",
+      "title": "Part VI: Root Isolation Certificates",
+      "startLine": 262,
+      "endLine": 298,
+      "summary": "Root-isolation corollaries from equal/near-equal Budan counts: no_roots_of_equal_budanCount, unique_root_of_budanCount_diff_one, zero_or_two_roots_of_budanCount_diff_two.",
+      "mathContext": "If $V_p(a)-V_p(b)=0$ there are no roots; $=1$ forces exactly one; $=2$ gives zero or two — the basis of bisection root isolation."
+    },
+    {
+      "id": "part7-descartes-special-case",
+      "title": "Part VII: Descartes' Rule as Special Case",
+      "startLine": 299,
+      "endLine": 366,
+      "summary": "budanCount_large_axiom (Budan count vanishes far out), budanCount_eventually_zero, and descartes_from_budan deriving Descartes' rule of signs as the interval (0,∞) case of Budan's theorem.",
+      "mathContext": "Descartes' rule of signs is the $a=0,\\ b\\to\\infty$ specialization of Budan's theorem on positive roots."
+    },
+    {
+      "id": "part8-coefficient-connection",
+      "title": "Part VIII: Connection to Coefficient Sign Variations",
+      "startLine": 367,
+      "endLine": 500,
+      "summary": "Relates the Budan count at 0 to coefficient sign variations: iterDeriv_eq_iterate, iterDeriv_eval_zero (k-th derivative at 0 via coefficients), and budanCount_zero_eq_coeff_sign_changes.",
+      "mathContext": "$V_p(0)$ equals the number of sign changes in the coefficient sequence of $p$, since $p^{(k)}(0) = k!\\,[x^k]p$."
+    },
+    {
+      "id": "part9-structural-theorems",
+      "title": "Part IX: Structural Theorems",
+      "startLine": 501,
+      "endLine": 611,
+      "summary": "Degree bounds and scalar invariance: budanCount_le_natDegree, iterDeriv_C_mul (iterated derivative of c·p), and budanCount_smul (scaling by a nonzero constant preserves the Budan count).",
+      "mathContext": "$V_p(x) \\le \\deg p$, and $V_{c\\cdot p}(x) = V_p(x)$ for $c \\ne 0$ — the count is a degree-bounded scalar invariant."
+    },
+    {
+      "id": "part10-additivity",
+      "title": "Part X: Root Count Additivity",
+      "startLine": 612,
+      "endLine": 636,
+      "summary": "Additivity over split intervals: rootsInInterval_split and budanCount_diff_split, expressing counts on (a,b] as sums over (a,c] and (c,b].",
+      "mathContext": "$\\#\\text{roots}(a,b] = \\#\\text{roots}(a,c] + \\#\\text{roots}(c,b]$ and the Budan differences add accordingly."
+    },
+    {
+      "id": "part11-rolle-connection",
+      "title": "Part XI: Rolle's Theorem Connection",
+      "startLine": 637,
+      "endLine": 666,
+      "summary": "Rolle-based root counting: rolle_polynomial (a root of p′ between consecutive roots of p) and n_roots_derivative_roots (n roots of p force n−1 roots of p′).",
+      "mathContext": "Rolle's theorem: between any two real roots of $p$ lies a root of $p'$, so $\\#\\text{roots}(p') \\ge \\#\\text{roots}(p) - 1$."
+    },
+    {
+      "id": "part12-sturm-chains",
+      "title": "Part XII: Sturm Chains (Framework)",
+      "startLine": 667,
+      "endLine": 698,
+      "summary": "Sturm-chain framework: PolyChain structure, chainVariation (sign-variation count along a chain), budanChain (the derivative chain of p), and chainVariation_budanChain linking it back to budanCount.",
+      "mathContext": "A Sturm/Budan chain generalizes the derivative sequence; chainVariation along budanChain recovers $V_p(x)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization establishes Budan's theorem (1807) as a strict generalization of Descartes' Rule of Signs, extending root counting from positive reals to arbitrary half-open intervals. The 502-line development provides 9 original definitions, 36 theorems, and 3 carefully scoped axioms. The root isolation certificates — the main algorithmic application — are fully proved, while the deeper analytical results (Rolle induction, conjugate pair parity, asymptotic leading term dominance) are axiomatized with detailed proof sketches.",
+    "implications": "**Computational algebra**: Budan-Fourier counts are the foundation of modern polynomial root isolation. The VAS algorithm (Vincent-Akritas-Strzeboński) uses recursive bisection guided by Budan counts to isolate all real roots of a polynomial in $O(n^4)$ arithmetic operations (improved bounds by Sagraloff-Mehlhorn achieve $\\tilde{O}(n^3)$). This formalization provides verified certificates for the key bisection steps.\n\n**Formal verification of numerical algorithms**: The root isolation certificates (`no_roots_of_equal_budanCount`, `unique_root_of_budanCount_diff_one`) are exactly the predicates that a verified root finder would need. A certified implementation could call `budanCount` at interval endpoints and use these certificates to guarantee correctness of isolated roots.\n\n**Sturm's theorem**: The `PolyChain` framework anticipates formalizing Sturm's theorem (1829), which eliminates the parity gap by using pseudo-remainder sequences instead of derivatives. Sturm gives exact root counts: $\\#\\text{roots in } (a,b] = V_{\\text{Sturm}}(a) - V_{\\text{Sturm}}(b)$ with equality rather than an upper bound.",
+    "openQuestions": [
+      "Can the `budan_upper_bound` axiom be fully proved in Lean? The proof requires strong induction on degree with Rolle's theorem at each step — the `rolle_polynomial` and `n_roots_derivative_roots` bridges are already in place, but the sign-change accounting across derivative levels needs careful Lean formalization.",
+      "Can Sturm's theorem be formalized using the `PolyChain` framework? The main challenge is formalizing pseudo-remainder sequences and proving that sign changes in a Sturm chain give exact root counts (not just bounds).",
+      "The `budan_parity` axiom ultimately depends on the Fundamental Theorem of Algebra (complex roots come in conjugate pairs). Can this be derived from Mathlib's FTA formalization, closing the axiom?",
+      "Can we formalize the VAS root isolation algorithm as a verified program that uses the proved root isolation certificates to produce certified root intervals?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "extends",
+      "description": "Budan's theorem strictly generalizes Descartes' Rule: Descartes counts positive roots (the interval $(0, \\infty)$), while Budan counts roots in any interval $(a, b]$. The `descartes_from_budan` theorem recovers Descartes' rule as the special case $a = 0$, $b \\to \\infty$."
+    },
+    {
+      "targetId": "descartes-rule-of-signs-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01 explores a different open question from the parent Descartes entry, complementing Budan's interval generalization with alternative approaches."
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "foundational",
+      "description": "The Intermediate Value Theorem underpins Rolle's theorem, which in turn is the key analytical ingredient for Budan's upper bound. The `rolle_polynomial` bridge in this formalization uses Mathlib's `exists_deriv_eq_zero`, which is proved via IVT."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel-Ruffini shows the general quintic has no radical formula, while Budan-Fourier provides efficient numerical root isolation — the practical counterpart when algebraic solutions fail. The `descartes-rule-of-signs` entry notes Descartes' rule as a tool in Galois group computation for specific quintics."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "foundational",
+      "description": "The parity axiom (`budan_parity`) depends on complex roots coming in conjugate pairs, which is a consequence of the Fundamental Theorem of Algebra applied to real polynomials."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Budan de Boislaurent, François",
+      "title": "Nouvelle méthode pour la résolution des équations numériques",
+      "year": "1807",
+      "venue": "Paris: Courcier",
+      "note": "Original publication of Budan's theorem, establishing the sign variation count for counting roots in intervals"
+    },
+    {
+      "authors": "Fourier, Joseph",
+      "title": "Analyse des équations déterminées",
+      "year": "1831",
+      "venue": "Paris: Firmin Didot (published posthumously)",
+      "note": "Fourier's independent discovery of the same theorem, based on lectures from ~1820. The posthumous publication led to the dual name 'Budan-Fourier theorem'"
+    },
+    {
+      "authors": "Sturm, Charles",
+      "title": "Mémoire sur la résolution des équations numériques",
+      "year": "1829",
+      "venue": "Bulletin des Sciences de Férussac, vol. 11, pp. 419–425",
+      "note": "Introduced Sturm chains (pseudo-remainder sequences) to give exact root counts, eliminating the parity gap in Budan's theorem"
+    },
+    {
+      "authors": "Akritas, Alkiviadis G.",
+      "title": "There is no 'Uspensky's method'",
+      "year": "1986",
+      "venue": "Proceedings of the fifth ACM symposium on Symbolic and algebraic computation (SYMSAC '86), pp. 88–90",
+      "note": "Clarifies the history and naming of real root isolation algorithms based on Budan-Fourier counts, attributing the key algorithmic idea to Vincent (1834)"
+    },
+    {
+      "authors": "Akritas, Alkiviadis G.; Strzeboński, Adam; Vigklas, Panagiotis",
+      "title": "Improving the performance of the continued fractions method using new bounds of positive roots",
+      "year": "2008",
+      "venue": "Nonlinear Analysis: Modelling and Control, vol. 13, no. 3, pp. 265–279",
+      "note": "The VAS (Vincent-Akritas-Strzeboński) algorithm for real root isolation, which uses Budan-Fourier counts to guide efficient bisection"
+    },
+    {
+      "authors": "Sagraloff, Michael; Mehlhorn, Kurt",
+      "title": "Computing real roots of real polynomials",
+      "year": "2016",
+      "venue": "Journal of Symbolic Computation, vol. 73, pp. 46–86",
+      "note": "State-of-the-art complexity analysis for Budan-Fourier-based root isolation, achieving near-optimal bit complexity bounds"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 698,
+    "axiomCount": 3,
+    "path": "Proofs/DescartesRuleOfSignsOQ02.lean",
+    "sorries": 0,
+    "definitionCount": 9,
+    "theoremCount": 43
+  },
+  "sorries": 0
+}

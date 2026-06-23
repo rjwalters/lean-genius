@@ -1,0 +1,259 @@
+[
+  {
+    "id": "ann-e525-header",
+    "proofId": "erdos-525",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "title": "Problem Overview",
+    "content": "Erdős Problem #525 asks about the minimum modulus m(f) = min_{|z|=1} |f(z)| for Littlewood polynomials (polynomials with ±1 coefficients). The problem has been completely resolved through a series of landmark results spanning 55 years.",
+    "mathContext": "Littlewood polynomials f(z) = Σ aₖzᵏ where each aₖ ∈ {-1, +1} are fundamental objects in harmonic analysis. The minimum modulus m(f) measures how close f gets to zero on the unit circle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "littlewood-polynomials",
+      "minimum-modulus",
+      "unit-circle",
+      "random-polynomials"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "harmonic analysis",
+      "polynomials"
+    ]
+  },
+  {
+    "id": "ann-e525-littlewood-def",
+    "proofId": "erdos-525",
+    "type": "definition",
+    "range": {
+      "startLine": 47,
+      "endLine": 53
+    },
+    "title": "Littlewood Polynomials",
+    "content": "A Littlewood polynomial has all coefficients in {-1, +1}. These are also called flat polynomials or Rademacher polynomials. There are exactly 2^(n+1) such polynomials of degree n.",
+    "mathContext": "The definition IsLittlewoodPolynomial checks that every coefficient up to the degree is ±1. LittlewoodPolynomials(n) collects all degree-n Littlewood polynomials as a set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial-coefficients",
+      "rademacher-random-variables",
+      "combinatorics"
+    ],
+    "prerequisites": [
+      "polynomial algebra",
+      "combinatorics",
+      "Lean 4 syntax"
+    ]
+  },
+  {
+    "id": "ann-e525-min-modulus",
+    "proofId": "erdos-525",
+    "type": "definition",
+    "range": {
+      "startLine": 59,
+      "endLine": 64
+    },
+    "title": "Unit Circle and Minimum Modulus",
+    "content": "The unit circle {z ∈ ℂ : |z| = 1} is the domain of study. The minimum modulus m(f) = inf_{|z|=1} |f(z)| measures the closest approach of f to zero on the unit circle.",
+    "mathContext": "minModulus is defined as the infimum (greatest lower bound) of |f(z)| over all z on the unit circle. Since the unit circle is compact and |f| is continuous, this infimum is attained.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit-circle",
+      "infimum",
+      "complex-analysis",
+      "continuous-functions"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "real analysis",
+      "point-set topology"
+    ]
+  },
+  {
+    "id": "ann-e525-almost-all",
+    "proofId": "erdos-525",
+    "type": "concept",
+    "range": {
+      "startLine": 70,
+      "endLine": 84
+    },
+    "title": "Almost All Have m(f) < 1",
+    "content": "The first question is answered affirmatively: all except o(2^n) Littlewood polynomials of degree n have |f(z)| < 1 for some z on the unit circle. This means the 'exceptional' set is negligible.",
+    "mathContext": "HasSmallValue(p) means ∃ z on the unit circle with |p(z)| < 1. The axiom almost_all_small states that the count of exceptions grows slower than 2^n (the total count).",
+    "significance": "key",
+    "relatedConcepts": [
+      "probability",
+      "asymptotic-density",
+      "o-notation"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "probability theory",
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e525-kashin",
+    "proofId": "erdos-525",
+    "type": "concept",
+    "range": {
+      "startLine": 86,
+      "endLine": 97
+    },
+    "title": "Littlewood's Conjecture and Kashin's Theorem",
+    "content": "Littlewood (1966) conjectured that m(f) → 0 in probability as n → ∞. Kashin proved this in 1987: for any ε > 0, almost all Littlewood polynomials of large degree have m(f) < ε.",
+    "mathContext": "LittlewoodConjecture formalizes convergence in probability: for any ε, δ > 0, eventually the fraction of polynomials with m(f) > ε is less than δ. kashin_theorem asserts this holds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convergence-in-probability",
+      "random-trigonometric-polynomials",
+      "littlewood-conjecture"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "measure theory",
+      "harmonic analysis"
+    ]
+  },
+  {
+    "id": "ann-e525-konyagin",
+    "proofId": "erdos-525",
+    "type": "concept",
+    "range": {
+      "startLine": 99,
+      "endLine": 112
+    },
+    "title": "Konyagin's Optimal Bound",
+    "content": "Konyagin (1994) proved the sharp bound m(f) ≤ n^{-1/2+o(1)} almost surely, pinning down the correct rate of decay. The companion result shows the exponent -1/2 cannot be improved.",
+    "mathContext": "konyagin_upper_bound gives the upper bound and konyagin_exponent_tight shows it is essentially optimal. Together they establish m(f) = Θ(n^{-1/2}) in a probabilistic sense.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sharp-bounds",
+      "exponent-optimization",
+      "probabilistic-method"
+    ],
+    "prerequisites": [
+      "probabilistic method",
+      "asymptotic analysis",
+      "probability theory"
+    ]
+  },
+  {
+    "id": "ann-e525-konyagin-schlag",
+    "proofId": "erdos-525",
+    "type": "concept",
+    "range": {
+      "startLine": 114,
+      "endLine": 122
+    },
+    "title": "Konyagin-Schlag Lower Tail",
+    "content": "Konyagin-Schlag (1999) proved that the probability of m(f) being much smaller than n^{-1/2} is proportional to ε. This 'thin lower tail' result was a key step toward the exact distribution.",
+    "mathContext": "The axiom states: for any ε > 0, the fraction of polynomials with m(f) ≤ εn^{-1/2} is at most Cε for some constant C. This gives precise control over the lower tail.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tail-bounds",
+      "probability-distribution",
+      "small-ball-probability"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "real analysis",
+      "anti-concentration inequalities"
+    ]
+  },
+  {
+    "id": "ann-e525-cook-nguyen",
+    "proofId": "erdos-525",
+    "type": "concept",
+    "range": {
+      "startLine": 124,
+      "endLine": 139
+    },
+    "title": "Cook-Nguyen Exact Distribution",
+    "content": "Cook-Nguyen (2021) identified the exact limiting distribution: P(m(f) > εn^{-1/2}) → e^{-ελ} as n → ∞. This is a striking universality result - the distribution doesn't depend on the specific ±1 coefficient scheme.",
+    "mathContext": "cook_nguyen_lambda is an explicit constant and cook_nguyen_distribution formalizes the convergence. The exponential form e^{-ελ} is reminiscent of Gumbel-type extreme value distributions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "universality",
+      "extreme-value-theory",
+      "limiting-distribution",
+      "exponential-distribution"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "extreme value theory",
+      "random matrix universality"
+    ]
+  },
+  {
+    "id": "ann-e525-rudin-shapiro",
+    "proofId": "erdos-525",
+    "type": "definition",
+    "range": {
+      "startLine": 141,
+      "endLine": 162
+    },
+    "title": "Rudin-Shapiro Polynomials and All-Ones Polynomial",
+    "content": "Rudin-Shapiro polynomials are special Littlewood polynomials with a flat bound |p(z)| ≤ √(2^(n+1)) on the unit circle. The all-ones polynomial 1 + z + ... + z^n provides a concrete example with minimum modulus 1/(n+1).",
+    "mathContext": "IsRudinShapiro combines being Littlewood with degree 2^n - 1 and the flat bound. AllOnesPolynomial is the simplest Littlewood polynomial, with minimum modulus decaying as 1/n.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rudin-shapiro-polynomials",
+      "flat-polynomials",
+      "geometric-series"
+    ],
+    "prerequisites": [
+      "polynomial algebra",
+      "complex analysis",
+      "geometric series"
+    ]
+  },
+  {
+    "id": "ann-e525-mahler",
+    "proofId": "erdos-525",
+    "type": "definition",
+    "range": {
+      "startLine": 164,
+      "endLine": 180
+    },
+    "title": "Mahler Measure and Lehmer's Problem",
+    "content": "The Mahler measure M(p) = exp(∫ log|p(e^{2πit})| dt) is the geometric mean of |p| on the unit circle. For Littlewood polynomials, M(p) ≥ 1 implies m(p) ≤ M(p), connecting to Lehmer's famous conjecture.",
+    "mathContext": "MahlerMeasure is defined via integration of log|p| over the unit circle. Lehmer's problem asks whether there exist polynomials with M(p) arbitrarily close to 1, a major open question in number theory.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mahler-measure",
+      "lehmer-conjecture",
+      "number-theory",
+      "algebraic-integers"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "Lebesgue integration",
+      "algebraic number theory"
+    ]
+  },
+  {
+    "id": "ann-e525-summary",
+    "proofId": "erdos-525",
+    "type": "concept",
+    "range": {
+      "startLine": 182,
+      "endLine": 202
+    },
+    "title": "Complete Solution Summary",
+    "content": "Three summary theorems combine the key results: (1) Littlewood's conjecture is true (Kashin), (2) the correct exponent is -1/2 (Konyagin), and (3) the exact limiting distribution is e^{-ελ} (Cook-Nguyen). This completely resolves Erdős Problem #525.",
+    "mathContext": "erdos_525_solved directly applies kashin_theorem. erdos_525_main combines Kashin and Konyagin. erdos_525_answer combines the first question answer with the Cook-Nguyen distribution.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete-resolution",
+      "summary-theorems",
+      "historical-progression"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "harmonic analysis",
+      "asymptotic analysis"
+    ]
+  }
+]

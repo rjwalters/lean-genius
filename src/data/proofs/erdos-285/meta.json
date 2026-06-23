@@ -1,0 +1,207 @@
+{
+  "id": "erdos-285",
+  "title": "Erdős Problem #285: Egyptian Fractions Asymptotics",
+  "slug": "erdos-285",
+  "description": "Let f(k) be the minimal largest denominator in a k-term Egyptian fraction representation of 1. Is f(k) = (1+o(1))·e/(e-1)·k? YES — proved by Martin (2000). The constant e/(e-1) ≈ 1.582 comes from harmonic series structure.",
+  "meta": {
+    "author": "Greg Martin (2000)",
+    "sourceUrl": "https://erdosproblems.com/285",
+    "date": "2000",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos285Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "egyptian-fractions",
+      "asymptotics",
+      "harmonic-series"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 285,
+    "erdosUrl": "https://erdosproblems.com/285",
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.rexp",
+        "description": "Real exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Asymptotics.IsLittleO",
+        "description": "Little-o asymptotic notation",
+        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strictly monotonic functions",
+        "module": "Mathlib.Order.Monotone.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of Egyptian fraction representations and f(k) as minimal largest denominator",
+      "Statement of Martin's asymptotic result as the single axiom, with the asymptotic lower bound derived as a theorem",
+      "Fully verified bounds on the constant e/(e-1): 3/2 < e/(e-1) < 2, e/(e-1) > 79/50, plus the identities 1 + 1/(e-1) and inverse 1 - 1/e",
+      "An unconditional elementary lower bound f(k) ≥ k+1 (via strict_mono_last_ge_succ), proved without the Martin axiom",
+      "Concrete valid-length witnesses for k = 0, 2, 3, 4, 5 and a proof that k = 1 is impossible (a+b = ab forces a = b = 2)"
+    ],
+    "axiomCount": 1,
+    "lineCount": 374,
+    "assumptions": "1 axiom: martin_egyptian_fractions. See Lean source for the complete statement.",
+    "theoremCount": 21,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Egyptian fractions — sums of distinct unit fractions — date to ancient Egypt (the Rhind papyrus, ~1650 BCE). Every positive rational has infinitely many Egyptian fraction representations, but the question of how 'efficient' these can be remained open.\n\nErdős asked: if we want 1 = 1/n₁ + ··· + 1/nₖ with the smallest possible largest denominator nₖ, what is f(k)? The trivial lower bound f(k) ≥ (1+o(1))·e/(e-1)·k follows from the harmonic series.\n\nGreg Martin (2000) proved this bound is tight: f(k) = (1+o(1))·e/(e-1)·k. His paper 'Denser Egyptian Fractions' constructs explicit representations achieving this asymptotic.",
+    "problemStatement": "**Definition**: Let $f(k)$ be the minimal value of the largest denominator $n_k$ such that there exist positive integers $n_1 < n_2 < \\cdots < n_k$ with\n$$1 = \\frac{1}{n_1} + \\frac{1}{n_2} + \\cdots + \\frac{1}{n_k}$$\n\n**Question**: Is $f(k) = (1 + o(1)) \\cdot \\frac{e}{e-1} \\cdot k$?\n\n**Answer**: YES (Martin 2000)\n\nThe constant $e/(e-1) \\approx 1.5819$ is optimal.",
+    "text": "Let f(k) be the minimal largest denominator in a k-term Egyptian fraction representation of 1. Is f(k) = (1+o(1))·e/(e-1)·k? YES — proved by Martin (2000). The constant e/(e-1) ≈ 1.582 comes from harmonic series structure.",
+    "proofStrategy": "We formalize:\n\n1. **Egyptian fraction representations**: Strictly increasing sequences of positive integers whose reciprocals sum to 1\n\n2. **The function f(k)**: Minimum of the largest denominator over all k-term representations\n\n3. **The Egyptian constant**: e/(e-1) ≈ 1.5819..., with verified bounds 3/2 < e/(e-1) < 2 and the identities e/(e-1) = 1 + 1/(e-1) and (e/(e-1))⁻¹ = 1 - 1/e\n\n4. **Martin's result as the single axiom**: f(k) = (1+o(1))·e/(e-1)·(k+1). This is the file's only assumption (axiomCount 1)\n\n5. **The asymptotic lower bound**: derived as a *theorem* (egyptian_lower_bound) from the Martin axiom, not assumed separately\n\n6. **An unconditional elementary bound**: f(k) ≥ k+1 is proved outright (f_ge_succ, via strict_mono_last_ge_succ), independent of the axiom; together with concrete valid-length witnesses (k = 0, 2, 3, 4, 5) and the proof that k = 1 is impossible",
+    "keyInsights": [
+      "**The constant e/(e-1)**: Arises because ∑_{e ≤ n ≤ eu} 1/n ≈ 1 for any u. The interval [e, eu] contains about (e-1)u integers, each contributing ~1/eu on average.",
+      "**Lower bound reasoning**: If nₖ ≈ eu, we need (e-1)u terms from [e, eu] to sum to ~1. So k ≤ (e-1)u = (e-1)/e · nₖ, giving f(k) ≥ e/(e-1) · k.",
+      "**Martin's construction**: The upper bound requires carefully choosing denominators to avoid 'gaps' while maintaining efficiency. Martin's greedy-style algorithm achieves the optimal constant.",
+      "**Historical significance**: This connects ancient Egyptian mathematics (Rhind papyrus algorithms) to modern analytic number theory.",
+      "**Practical implications**: For k=100 terms, f(100) ≈ 158. We can represent 1 using 100 distinct unit fractions with largest denominator ~158."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module docstring stating the problem (minimal largest denominator f(k) in a k+1-term Egyptian fraction representation of 1, and Martin's 2000 answer f(k) = (1+o(1))·e/(e−1)·k), Mathlib imports for the real exponential, little-o asymptotics, and finite sums, and the Erdos285 namespace with its opens.",
+      "mathContext": "Target: $f(k) = (1+o(1))\\cdot\\frac{e}{e-1}\\cdot k$ with $\\frac{e}{e-1} \\approx 1.5819$. Imports `Real.rexp`, `Asymptotics.IsLittleO`, and `Finset` big-operators; the constant's value flows from `Real.exp_one_gt_d9` / `Real.exp_one_lt_d9` bounds used later."
+    },
+    {
+      "id": "background",
+      "title": "Egyptian Fraction Definitions",
+      "startLine": 29,
+      "endLine": 54,
+      "summary": "Core definitions: IsEgyptianRepresentation (a strictly increasing, nonzero sequence n : Fin (k+1) → ℕ with ∑ 1/nᵢ = 1), ValidLengths (the set of k admitting such a representation), and f(k) as the infimum of achievable largest denominators n(last k).",
+      "mathContext": "$\\text{IsEgyptianRepresentation}(k,n) \\equiv \\text{StrictMono}(n) \\wedge 0 \\notin \\text{range}(n) \\wedge \\sum_i \\tfrac{1}{n_i} = 1$. $f(k) = \\inf\\{m : \\exists n,\\ \\text{IsEgyptianRepresentation}(k,n) \\wedge n(\\text{last }k) = m\\}$, indexing over `Fin k.succ` so a 'k-term' problem uses $k+1$ denominators."
+    },
+    {
+      "id": "main-result",
+      "title": "Martin's Asymptotic Result",
+      "startLine": 55,
+      "endLine": 78,
+      "summary": "Defines the Egyptian constant e/(e−1), states Martin's theorem as the single axiom martin_egyptian_fractions (f(k) = (1+o(1))·e/(e−1)·(k+1) on valid lengths), and packages it as erdos_285.",
+      "mathContext": "$\\text{egyptianConstant} = \\frac{e}{e-1}$. The axiom asserts $\\exists o = o(1)$ with $f(k) = (1 + o(k))\\cdot\\frac{e}{e-1}\\cdot(k+1)$ for all $k \\in \\text{ValidLengths}$; `erdos_285` simply re-exposes it. This is the one assumption in the file (axiomCount 1) — Martin's full construction is not formalized."
+    },
+    {
+      "id": "lower-bound",
+      "title": "The Lower Bound (from the Asymptotic)",
+      "startLine": 79,
+      "endLine": 90,
+      "summary": "egyptian_lower_bound: f(k) ≥ (1+o(1))·e/(e−1)·(k+1). Derived as a theorem from the Martin axiom (equality implies ≥), not assumed separately.",
+      "mathContext": "$(1+o(k))\\cdot\\frac{e}{e-1}\\cdot(k+1) \\leq f(k)$ follows from the equality in `martin_egyptian_fractions` via `le_of_eq`. It is a corollary, not an independent axiom — the file's only assumption remains the Martin asymptotic."
+    },
+    {
+      "id": "understanding-constant",
+      "title": "Understanding the Constant e/(e−1)",
+      "startLine": 91,
+      "endLine": 155,
+      "summary": "Bounds and identities pinning down e/(e−1) ≈ 1.5819: egyptianConstant_gt_one, _lt_two, _gt_three_halves, _pos, the decomposition _eq (= 1 + 1/(e−1)), and _inv (1/c = 1 − 1/e, the 'density of usable denominators'). Uses Mathlib's exp_one bounds.",
+      "mathContext": "$1 < \\frac{e}{e-1} < 2$, in fact $\\frac{3}{2} < \\frac{e}{e-1}$, giving $k < f(k) < 2k$ asymptotically. Decomposition: $\\frac{e}{e-1} = 1 + \\frac{1}{e-1}$, and $\\left(\\frac{e}{e-1}\\right)^{-1} = 1 - \\frac1e = \\frac{e-1}{e}$ — the fraction of integers in any range $[a, ea]$ that contribute useful unit fractions."
+    },
+    {
+      "id": "concrete-valid-lengths",
+      "title": "Concrete Valid Lengths",
+      "startLine": 156,
+      "endLine": 202,
+      "summary": "Explicit witnesses proving small k are valid lengths: k=2 (1/2+1/3+1/6), k=3 (1/2+1/4+1/5+1/20), k=4 (1/3+1/4+1/5+1/6+1/20), each verified by exhibiting the denominator vector and checking StrictMono, nonzero, and the reciprocal sum. Also a tighter constant bound egyptianConstant_gt_79_over_50.",
+      "mathContext": "Membership $k \\in \\text{ValidLengths}$ is shown by a concrete $n : \\text{Fin}(k{+}1) \\to \\mathbb{N}$, e.g. $1 = \\tfrac12+\\tfrac13+\\tfrac16$ (k=2). The bound $\\frac{e}{e-1} > \\frac{79}{50} = 1.58$ sharpens the constant using $e < 2.7182818286$."
+    },
+    {
+      "id": "examples",
+      "title": "Worked Examples",
+      "startLine": 203,
+      "endLine": 213,
+      "summary": "Three norm_num-checked identities exhibiting Egyptian fraction representations of 1: the classic 1/2+1/3+1/6, then 1/2+1/4+1/5+1/20 and 1/3+1/4+1/5+1/6+1/20.",
+      "mathContext": "$1 = \\tfrac12+\\tfrac13+\\tfrac16 = \\tfrac12+\\tfrac14+\\tfrac15+\\tfrac1{20} = \\tfrac13+\\tfrac14+\\tfrac15+\\tfrac16+\\tfrac1{20}$, each a distinct-denominator decomposition realizing a small valid length."
+    },
+    {
+      "id": "additional-valid-lengths",
+      "title": "Additional Valid Lengths",
+      "startLine": 214,
+      "endLine": 223,
+      "summary": "zero_mem_validLengths: k=0 is valid via the single-term representation 1 = 1/1, the degenerate base case of ValidLengths.",
+      "mathContext": "$0 \\in \\text{ValidLengths}$ via $n = [1]$: the one-term sum $\\tfrac11 = 1$ trivially satisfies StrictMono (vacuously) and nonzero."
+    },
+    {
+      "id": "additional-properties",
+      "title": "Additional Properties",
+      "startLine": 224,
+      "endLine": 286,
+      "summary": "one_not_mem_validLengths: k=1 is NOT valid — 1 = 1/a + 1/b with a < b forces a = b = 2 (clearing denominators gives ab = a+b), a contradiction. Also five_mem_validLengths via the splitting 1/20 = 1/21 + 1/420 applied to the k=4 witness, with a matching norm_num example.",
+      "mathContext": "$1 \\notin \\text{ValidLengths}$: $\\tfrac1a + \\tfrac1b = 1$ with $a<b$ gives $ab = a+b$, whose only positive solution is $a=b=2$. The splitting $\\tfrac1{20} = \\tfrac1{21} + \\tfrac1{420}$ (since $\\tfrac1n = \\tfrac1{n+1} + \\tfrac1{n(n+1)}$) promotes the k=4 witness to k=5."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties of f",
+      "startLine": 287,
+      "endLine": 374,
+      "summary": "The verified backbone behind the trivial lower bound: strict_mono_last_ge_succ (a strictly increasing positive sequence has n(last k) ≥ k+1), f_set_nonempty (the denominator set is nonempty on valid lengths), f_ge_succ (hence f(k) ≥ k+1), and the constant-interval summaries egyptianConstant_in_interval, _eq_one_plus_inv, _well_defined.",
+      "mathContext": "$f(k) \\geq k+1$: any strictly increasing $n : \\text{Fin}(k{+}1)\\to\\mathbb{N}_{>0}$ has $n(\\text{last }k) \\geq k+1$ (induction: $n_i \\geq i+1$), and `le_csInf` lifts this to the infimum $f(k)$. This is the elementary unconditional bound, complementing the (axiomatic) sharp constant $\\frac{e}{e-1}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #285 about the asymptotic growth of f(k), the minimal largest denominator in k-term Egyptian fraction representations of 1. Martin (2000) proved f(k) = (1+o(1))·e/(e-1)·k, confirming the trivial lower bound is tight.",
+    "implications": "This result shows that Egyptian fraction representations can be made surprisingly 'dense' — the largest denominator grows only linearly in the number of terms, with the optimal constant e/(e-1) ≈ 1.582.",
+    "openQuestions": [
+      "What is the exact value of f(k) for small k?",
+      "Can we improve the o(1) error term to O(1/k)?",
+      "What about Egyptian fraction representations of other rationals p/q?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Analysis.Asymptotics.Lemmas",
+      "Mathlib.Data.Fintype.BigOperators",
+      "Mathlib.Topology.Instances.Real.Lemmas",
+      "Mathlib.Analysis.Complex.ExponentialBounds"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Real",
+      "BigOperators",
+      "Topology",
+      "Real"
+    ],
+    "namespace": "Erdos285",
+    "lineCount": 374,
+    "axiomCount": 1,
+    "theoremCount": 21,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos285Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-284",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, harmonic-series, number-theory"
+    },
+    {
+      "targetId": "erdos-295",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: egyptian-fractions, harmonic-series, number-theory"
+    },
+    {
+      "targetId": "erdos-1054",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: asymptotics, number-theory"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,311 @@
+{
+  "slug": "borsuk-ulam-oq-04",
+  "title": "What are the higher categorical analogues of the covering space argument",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Formalize the covering-space obstruction behind Borsuk-Ulam and a Z/2 G-covering framework that models higher categorical analogues of the argument.",
+    "plain": "Develops the quotient, descent, covering, and equivariance structures around the Borsuk-Ulam covering-space proof. The Lean file proves the classical obstruction from the base Borsuk-Ulam theorem and shows how the Z/2 covering framework recovers the antipodal case.",
+    "whyMatters": [
+      "The covering-space proof is a standard conceptual route to Borsuk-Ulam via projective space.",
+      "The G-covering abstraction points toward higher and equivariant obstruction theories without hiding the classical Z/2 case.",
+      "The metadata distinguishes the proved quotient/equivariance framework from later higher-categorical conjectural extensions."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`projMap_neg` proves that antipodal points project to the same real-projective quotient class.",
+      "`odd_preserves_relation`, `descendOdd`, and `descendOdd_comm` formalize descent of odd maps through the quotient.",
+      "`sphere_fiber_pair` records the antipodal fiber characterization for sphere points.",
+      "`covering_space_obstruction` derives the no-nonzero-odd-map obstruction from the base Borsuk-Ulam theorem.",
+      "`GCovering_z2_involutive`, `antipodalZ2Covering_deck_matches`, and `odd_gives_GEquivariant` connect the G-covering framework back to the classical Z/2 antipodal covering.",
+      "`BorsukUlamOQ04.lean` is recorded with 0 axioms and 0 sorries, while the imported base Borsuk-Ulam file contains an axiom-backed main theorem."
+    ],
+    "open": [
+      "Fully formal Pi-infinity, infinity-topos, and cohomological obstruction theories remain future work.",
+      "Lens-space and Z/p analogues are discussed as next-level generalizations but are not proved in this file."
+    ],
+    "goal": "Make the proved quotient, descent, and Z/2 G-covering framework searchable while clearly marking higher categorical extensions as open."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-23T00:42:35.518Z",
+    "iteration": 3,
+    "focus": "Repaired pre-existing build breaks and added Part 9 ZMod p periodicity; Docker clean. Next: ZMod p lens space construction (requires complex analytic action of p-th roots of unity).",
+    "blockers": [],
+    "nextAction": "Either: (a) define explicit ZMod p action on R^{2n} by 2D rotations and instantiate as GCovering (ZMod p); or (b) generalize the obstruction theorem statement to ZMod p (would need Yang-Borsuk axiom as starting point).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Repaired 7 pre-existing build breaks discovered by Docker validation (the previous 'GCovering framework' session committed without verifying), and added Part 9 (ZMod p periodicity). The new section generalizes GCovering_z2_involutive — which used 1 + 1 = 0 in ZMod 2 — to GCovering_zmod_p_periodic: in any ZMod p covering, iterating the generator action p times yields the identity. The proof uses a clean bridge lemma GCovering.act_one_iterate showing the iterated action matches the natural-number cast, then closes via ZMod.natCast_self. This is the algebraic backbone for lens-space coverings S^{2n-1} → L^{2n-1}(p) and the Yang-Borsuk theorem. Docker build clean (3059 jobs).",
+    "builtItems": [
+      "BorsukUlamOQ04.lean: 295 lines, 4 theorems, 3 axioms, 11 definitions",
+      "Involution structure: self-inverse map with proved setoid properties",
+      "RP n: real projective space as Quotient type",
+      "projMap_neg: proved pi(-x) = pi(x)",
+      "odd_preserves_relation: proved odd maps preserve antipodal equivalence",
+      "descendOdd: descent construction via Quotient.map",
+      "CoveringType: abstraction for both classical and higher categorical coverings",
+      "EquivariantMap: maps between covering types respecting structure",
+      "odd_gives_equivariant: proved odd maps yield equivariant maps between antipodal coverings",
+      "sphere_fiber_pair: proved fiber characterization (replaces false sphere_double_cover axiom)",
+      "fundamental_group_RPn: proved via Fin 2 witness",
+      "GCovering structure: generalizes CoveringType to arbitrary additive group G",
+      "antipodalZ2Covering: S^n → RP^n as ZMod 2 covering",
+      "GCovering_z2_involutive: deck transformation is involution (proved from ZMod 2 arithmetic)",
+      "GCovering.toCoveringType_Z2: every ZMod 2 GCovering is a classical CoveringType",
+      "antipodalZ2Covering_deck_matches: ZMod 2 framework recovers classical negation deck",
+      "GEquivariantMap: equivariant maps between G-coverings",
+      "odd_gives_GEquivariant: odd maps yield GEquivariantMap (proved)",
+      "odd_GEquivariant_extends_equivariant: consistent base maps (proved by rfl)",
+      "BorsukUlamOQ04.lean: rescued 7 pre-existing build breaks (odd_preserves_relation/descendOdd_comm/sphere_fiber_pair/odd_gives_equivariant/covering_space_obstruction/antipodalZ2Covering.act_add/act_proj/odd_gives_GEquivariant) + added Part 9 ZMod p periodicity; Docker clean on Lean 4.26.0 (3059 jobs)",
+      "GCovering.act_one_iterate: bridge lemma (C.act 1)^[k] x = C.act ((k : ZMod p)) x via induction on Function.iterate_succ_apply + act_add",
+      "GCovering_zmod_p_periodic: (C.act 1)^[p] x = x for ANY ZMod p covering — generalizes GCovering_z2_involutive (which forced p = 2)",
+      "GCovering_zmod_p_periodic_two: recovers p = 2 involutivity from the general statement, confirming conservative extension",
+      "Made odd_gives_equivariant and odd_gives_GEquivariant proper `def`s (had `theorem` keyword over structure type)",
+      "Restated covering_space_obstruction to inline oddness as ∀ x, g (-x) = -g x instead of IsOdd (IsOdd requires codomain Fin (m+1), but Fin n is general)"
+    ],
+    "insights": [
+      "Descent of odd maps to RP^n is purely algebraic: odd maps preserve the antipodal equivalence relation",
+      "CoveringType captures the key structure: total/base spaces, projection, deck transformation, compatibility",
+      "The Z/2 case is special: Z/2Z has no higher homotopy, so pi_1 suffices. For general G, higher homotopy groups matter.",
+      "Higher coverings change fiber type: 0-type (classical) to n-type to infinity-type (full local system)",
+      "Borsuk-Ulam in infty-topos language: non-existence of sections in the slice infty-topos over BZ/2",
+      "sphere_double_cover was FALSE: RP defined as quotient of all R^{n+1} by x~-x, but [0] has no sphere representative. Correct RP should quotient S^n or R^{n+1}\\{0}.",
+      "fundamental_group_RPn only claimed existence of a 2-element type — trivially witnessed by Fin 2",
+      "For G = ZMod 2 (discrete): only pi_1 contributes to obstruction; GCovering_z2_involutive shows why",
+      "GCovering generalizes CoveringType: act_zero + act_add + act_proj subsumes deck + deck_inv + deck_proj",
+      "The toCoveringType_Z2 embedding shows classical covering theory is the special case G = ZMod 2",
+      "For general G: obstructions live in H*(BG), not just pi_1(BG). G = U(1) gives H^2; G = SU(2) gives H^4",
+      "The same algebraic mechanism behind Z/2 involutivity (1 + 1 = 0 in ZMod 2) generalizes to ZMod p periodicity (p = 0 in ZMod p) — both reduce to ZMod.natCast_self + act_zero",
+      "fin_cases on (g : ZMod 2) inside a structure literal produces witness `(fun i => i) ⟨0/1, _⟩` that does NOT unify with literal `0`/`1` — must use `by_cases h : g = 0` + `Or.resolve_left` from `∀ a : ZMod 2, a = 0 ∨ a = 1` (decidable via Fintype)",
+      "`theorem` returning a structure type is a hard error in Lean 4.26 — must use `def` (Lean checks the type is a Prop before elaborating body); this caused 2 silently broken declarations in the original file",
+      "Quotient.exact' (with regular apostrophe) is the right lemma for `projMap n y = projMap n x → y ≈ x` via the antipodal setoid; the original file had Unicode prime `’` which silently mis-parsed as a different identifier",
+      "IsOdd in this file requires codomain `EuclideanSpace ℝ (Fin (m + 1))` — for general codomain `Fin n` (without the +1 structure) use raw `∀ x, f (-x) = -f x` instead",
+      "Previous GCovering session committed under 'Building Docker to verify' but never confirmed; the file has been broken on main for the entire intervening period — a counterexample to relying on metadata claims of '0 sorries/0 axioms' without runtime verification"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Define explicit ZMod p action by 2D rotations on R^{2n} ⊂ EuclideanSpace ℝ (Fin (2n))",
+      "Instantiate `lensZpCovering : ℕ → GCovering (ZMod p)` and prove fiber structure",
+      "State generalized Borsuk-Ulam (Yang-Borsuk) as axiom: no continuous ZMod p-equivariant map S^{2n-1} → S^{2m-1} when n > m",
+      "Verify Part 9 is consumed by any downstream proof (currently standalone)"
+    ]
+  },
+  "tags": [
+    "topology",
+    "borsuk-ulam",
+    "covering-spaces",
+    "equivariant-topology",
+    "higher-category-theory",
+    "formalized"
+  ],
+  "relatedProofs": [
+    "borsuk-ulam",
+    "borsuk-ulam-oq-02",
+    "borsuk-ulam-oq-02-oq-01",
+    "borsuk-ulam-oq-02-oq-01-oq-01",
+    "borsuk-ulam-oq-02-oq-01-oq-03",
+    "borsuk-ulam-oq-02-oq-01-oq-04",
+    "borsuk-ulam-oq-02-oq-02",
+    "borsuk-ulam-oq-02-oq-03",
+    "borsuk-ulam-oq-03",
+    "borsuk-ulam-oq-03-oq-01",
+    "borsuk-ulam-oq-03-oq-01-oq-01",
+    "borsuk-ulam-oq-03-oq-03",
+    "borsuk-ulam-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-23T00:42:35.517Z",
+  "lastUpdate": "2026-03-23T00:42:35.517Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BorsukUlam.lean",
+      "filename": "BorsukUlam.lean",
+      "lineCount": 268,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlam.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ01.lean",
+      "filename": "BorsukUlamOQ01.lean",
+      "lineCount": 329,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02.lean",
+      "filename": "BorsukUlamOQ02.lean",
+      "lineCount": 390,
+      "theoremCount": 18,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01.lean",
+      "filename": "BorsukUlamOQ02OQ01.lean",
+      "lineCount": 145,
+      "theoremCount": 6,
+      "axiomCount": 4,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ01.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ01.lean",
+      "lineCount": 139,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ03.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ03.lean",
+      "lineCount": 213,
+      "theoremCount": 14,
+      "axiomCount": 9,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ04.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ04.lean",
+      "lineCount": 252,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ04OQ01.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ04OQ01.lean",
+      "lineCount": 236,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ02.lean",
+      "filename": "BorsukUlamOQ02OQ02.lean",
+      "lineCount": 161,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ03.lean",
+      "filename": "BorsukUlamOQ02OQ03.lean",
+      "lineCount": 252,
+      "theoremCount": 12,
+      "axiomCount": 5,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03.lean",
+      "filename": "BorsukUlamOQ03.lean",
+      "lineCount": 5139,
+      "theoremCount": 217,
+      "axiomCount": 2,
+      "defCount": 35,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ01.lean",
+      "filename": "BorsukUlamOQ03OQ01.lean",
+      "lineCount": 1163,
+      "theoremCount": 47,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ01OQ01.lean",
+      "filename": "BorsukUlamOQ03OQ01OQ01.lean",
+      "lineCount": 435,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ03.lean",
+      "filename": "BorsukUlamOQ03OQ03.lean",
+      "lineCount": 2634,
+      "theoremCount": 123,
+      "axiomCount": 1,
+      "defCount": 30,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ04.lean",
+      "filename": "BorsukUlamOQ03OQ04.lean",
+      "lineCount": 236,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ04.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ04.lean",
+      "filename": "BorsukUlamOQ04.lean",
+      "lineCount": 449,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ04.lean"
+    }
+  ]
+}

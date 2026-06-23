@@ -1,0 +1,2312 @@
+[
+  {
+    "line": 19,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 21,
+    "tactic": "by_contra h_not_even",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "Even (n ^ 2)"
+          },
+          {
+            "names": [
+              "h_not_even"
+            ],
+            "type": "¬Even n"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "Even (n ^ 2)"
+          },
+          {
+            "names": [
+              "h_not_even"
+            ],
+            "type": "¬Even n"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 23,
+    "tactic": "have h_odd : Odd n := Int.odd_iff_not_even.mpr h_not_even",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "Even (n ^ 2)"
+          },
+          {
+            "names": [
+              "h_not_even"
+            ],
+            "type": "¬Even n"
+          },
+          {
+            "names": [
+              "h_odd"
+            ],
+            "type": "Odd n"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "Even (n ^ 2)"
+          },
+          {
+            "names": [
+              "h_not_even"
+            ],
+            "type": "¬Even n"
+          },
+          {
+            "names": [
+              "h_odd"
+            ],
+            "type": "Odd n"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 25,
+    "tactic": "have h_sq_odd : Odd (n^2) := Odd.pow h_odd",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "Even (n ^ 2)"
+          },
+          {
+            "names": [
+              "h_not_even"
+            ],
+            "type": "¬Even n"
+          },
+          {
+            "names": [
+              "h_odd"
+            ],
+            "type": "Odd n"
+          },
+          {
+            "names": [
+              "h_sq_odd"
+            ],
+            "type": "Odd (n ^ 2)"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "Even (n ^ 2)"
+          },
+          {
+            "names": [
+              "h_not_even"
+            ],
+            "type": "¬Even n"
+          },
+          {
+            "names": [
+              "h_odd"
+            ],
+            "type": "Odd n"
+          },
+          {
+            "names": [
+              "h_sq_odd"
+            ],
+            "type": "Odd (n ^ 2)"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 27,
+    "tactic": "exact absurd h (Int.odd_iff_not_even.mp h_sq_odd)",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 30,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 31,
+    "tactic": "obtain ⟨k, hk⟩ := h",
+    "goalsBefore": [
+      {
+        "name": "intro",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "k"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "hk"
+            ],
+            "type": "n = k + k"
+          }
+        ],
+        "conclusion": "4 ∣ n ^ 2"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "intro",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "k"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "hk"
+            ],
+            "type": "n = k + k"
+          }
+        ],
+        "conclusion": "4 ∣ n ^ 2"
+      }
+    ]
+  },
+  {
+    "line": 32,
+    "tactic": "use k^2",
+    "goalsBefore": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "k"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "hk"
+            ],
+            "type": "n = k + k"
+          }
+        ],
+        "conclusion": "n ^ 2 = 4 * k ^ 2"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "k"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "hk"
+            ],
+            "type": "n = k + k"
+          }
+        ],
+        "conclusion": "n ^ 2 = 4 * k ^ 2"
+      }
+    ]
+  },
+  {
+    "line": 33,
+    "tactic": "calc n^2 = (k + k)^2 :=",
+    "goalsBefore": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "k"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "hk"
+            ],
+            "type": "n = k + k"
+          }
+        ],
+        "conclusion": "n ^ 2 = 4 * k ^ 2"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "k"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "hk"
+            ],
+            "type": "n = k + k"
+          }
+        ],
+        "conclusion": "n ^ 2 = 4 * k ^ 2"
+      }
+    ]
+  },
+  {
+    "line": 33,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 33,
+    "tactic": "rw [",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "k"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "hk"
+            ],
+            "type": "n = k + k"
+          }
+        ],
+        "conclusion": "n ^ 2 = (k + k) ^ 2"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "k"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "hk"
+            ],
+            "type": "n = k + k"
+          }
+        ],
+        "conclusion": "n ^ 2 = (k + k) ^ 2"
+      }
+    ]
+  },
+  {
+    "line": 33,
+    "tactic": "hk",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "k"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "hk"
+            ],
+            "type": "n = k + k"
+          }
+        ],
+        "conclusion": "(k + k) ^ 2 = (k + k) ^ 2"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "k"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "hk"
+            ],
+            "type": "n = k + k"
+          }
+        ],
+        "conclusion": "(k + k) ^ 2 = (k + k) ^ 2"
+      }
+    ]
+  },
+  {
+    "line": 33,
+    "tactic": "]",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 33,
+    "tactic": "_ = 4 * k^2 :=",
+    "goalsBefore": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "k"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "hk"
+            ],
+            "type": "n = k + k"
+          }
+        ],
+        "conclusion": "n ^ 2 = 4 * k ^ 2"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "n",
+              "k"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "hk"
+            ],
+            "type": "n = k + k"
+          }
+        ],
+        "conclusion": "n ^ 2 = 4 * k ^ 2"
+      }
+    ]
+  },
+  {
+    "line": 34,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 34,
+    "tactic": "ring",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 44,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 46,
+    "tactic": "exact irrational_sqrt_two",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 51,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 53,
+    "tactic": "by_cases h : 0 ≤ n",
+    "goalsBefore": [
+      {
+        "name": "pos",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "0 ≤ n"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      },
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬0 ≤ n"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "pos",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "0 ≤ n"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      },
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬0 ≤ n"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      }
+    ]
+  },
+  {
+    "line": 54,
+    "tactic": "·",
+    "goalsBefore": [
+      {
+        "name": "pos",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "0 ≤ n"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "pos",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "0 ≤ n"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      }
+    ]
+  },
+  {
+    "line": 55,
+    "tactic": "exact sq_nonneg n",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 56,
+    "tactic": "·",
+    "goalsBefore": [
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬0 ≤ n"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬0 ≤ n"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      }
+    ]
+  },
+  {
+    "line": 57,
+    "tactic": "push_neg at h",
+    "goalsBefore": [
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "n < 0"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "n < 0"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      }
+    ]
+  },
+  {
+    "line": 58,
+    "tactic": "have h1 : n < 0 := h",
+    "goalsBefore": [
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "n < 0"
+          },
+          {
+            "names": [
+              "h1"
+            ],
+            "type": "n < 0"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "n < 0"
+          },
+          {
+            "names": [
+              "h1"
+            ],
+            "type": "n < 0"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      }
+    ]
+  },
+  {
+    "line": 59,
+    "tactic": "have h2 : 0 < n^2 := sq_pos_of_neg h1",
+    "goalsBefore": [
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "n < 0"
+          },
+          {
+            "names": [
+              "h1"
+            ],
+            "type": "n < 0"
+          },
+          {
+            "names": [
+              "h2"
+            ],
+            "type": "0 < n ^ 2"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℤ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "n < 0"
+          },
+          {
+            "names": [
+              "h1"
+            ],
+            "type": "n < 0"
+          },
+          {
+            "names": [
+              "h2"
+            ],
+            "type": "0 < n ^ 2"
+          }
+        ],
+        "conclusion": "0 ≤ n ^ 2"
+      }
+    ]
+  },
+  {
+    "line": 60,
+    "tactic": "exact le_of_lt h2",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 63,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 64,
+    "tactic": "ring",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 67,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 68,
+    "tactic": "intro hpq",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q",
+              "R"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hpq"
+            ],
+            "type": "P → Q"
+          }
+        ],
+        "conclusion": "(Q → R) → P → R"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q",
+              "R"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hpq"
+            ],
+            "type": "P → Q"
+          }
+        ],
+        "conclusion": "(Q → R) → P → R"
+      }
+    ]
+  },
+  {
+    "line": 69,
+    "tactic": "intro hqr",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q",
+              "R"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hpq"
+            ],
+            "type": "P → Q"
+          },
+          {
+            "names": [
+              "hqr"
+            ],
+            "type": "Q → R"
+          }
+        ],
+        "conclusion": "P → R"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q",
+              "R"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hpq"
+            ],
+            "type": "P → Q"
+          },
+          {
+            "names": [
+              "hqr"
+            ],
+            "type": "Q → R"
+          }
+        ],
+        "conclusion": "P → R"
+      }
+    ]
+  },
+  {
+    "line": 70,
+    "tactic": "intro hp",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q",
+              "R"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hpq"
+            ],
+            "type": "P → Q"
+          },
+          {
+            "names": [
+              "hqr"
+            ],
+            "type": "Q → R"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          }
+        ],
+        "conclusion": "R"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q",
+              "R"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hpq"
+            ],
+            "type": "P → Q"
+          },
+          {
+            "names": [
+              "hqr"
+            ],
+            "type": "Q → R"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          }
+        ],
+        "conclusion": "R"
+      }
+    ]
+  },
+  {
+    "line": 71,
+    "tactic": "apply hqr",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q",
+              "R"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hpq"
+            ],
+            "type": "P → Q"
+          },
+          {
+            "names": [
+              "hqr"
+            ],
+            "type": "Q → R"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          }
+        ],
+        "conclusion": "Q"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q",
+              "R"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hpq"
+            ],
+            "type": "P → Q"
+          },
+          {
+            "names": [
+              "hqr"
+            ],
+            "type": "Q → R"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          }
+        ],
+        "conclusion": "Q"
+      }
+    ]
+  },
+  {
+    "line": 72,
+    "tactic": "apply hpq",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q",
+              "R"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hpq"
+            ],
+            "type": "P → Q"
+          },
+          {
+            "names": [
+              "hqr"
+            ],
+            "type": "Q → R"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          }
+        ],
+        "conclusion": "P"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q",
+              "R"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hpq"
+            ],
+            "type": "P → Q"
+          },
+          {
+            "names": [
+              "hqr"
+            ],
+            "type": "Q → R"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          }
+        ],
+        "conclusion": "P"
+      }
+    ]
+  },
+  {
+    "line": 73,
+    "tactic": "exact hp",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 76,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 77,
+    "tactic": "constructor",
+    "goalsBefore": [
+      {
+        "name": "mp",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          }
+        ],
+        "conclusion": "¬(P ∧ Q) → ¬P ∨ ¬Q"
+      },
+      {
+        "name": "mpr",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q → ¬(P ∧ Q)"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "mp",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          }
+        ],
+        "conclusion": "¬(P ∧ Q) → ¬P ∨ ¬Q"
+      },
+      {
+        "name": "mpr",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q → ¬(P ∧ Q)"
+      }
+    ]
+  },
+  {
+    "line": 78,
+    "tactic": "·",
+    "goalsBefore": [
+      {
+        "name": "mp",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          }
+        ],
+        "conclusion": "¬(P ∧ Q) → ¬P ∨ ¬Q"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "mp",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          }
+        ],
+        "conclusion": "¬(P ∧ Q) → ¬P ∨ ¬Q"
+      }
+    ]
+  },
+  {
+    "line": 79,
+    "tactic": "intro h",
+    "goalsBefore": [
+      {
+        "name": "mp",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "mp",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q"
+      }
+    ]
+  },
+  {
+    "line": 80,
+    "tactic": "by_cases hp : P",
+    "goalsBefore": [
+      {
+        "name": "pos",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q"
+      },
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "¬P"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "pos",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q"
+      },
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "¬P"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q"
+      }
+    ]
+  },
+  {
+    "line": 81,
+    "tactic": "·",
+    "goalsBefore": [
+      {
+        "name": "pos",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "pos",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q"
+      }
+    ]
+  },
+  {
+    "line": 81,
+    "tactic": "right",
+    "goalsBefore": [
+      {
+        "name": "pos.h",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          }
+        ],
+        "conclusion": "¬Q"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "pos.h",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          }
+        ],
+        "conclusion": "¬Q"
+      }
+    ]
+  },
+  {
+    "line": 82,
+    "tactic": "intro hq",
+    "goalsBefore": [
+      {
+        "name": "pos.h",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          },
+          {
+            "names": [
+              "hq"
+            ],
+            "type": "Q"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "pos.h",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          },
+          {
+            "names": [
+              "hq"
+            ],
+            "type": "Q"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 83,
+    "tactic": "exact h ⟨hp, hq⟩",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 84,
+    "tactic": "·",
+    "goalsBefore": [
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "¬P"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "neg",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "¬P"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q"
+      }
+    ]
+  },
+  {
+    "line": 84,
+    "tactic": "left",
+    "goalsBefore": [
+      {
+        "name": "neg.h",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "¬P"
+          }
+        ],
+        "conclusion": "¬P"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "neg.h",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬(P ∧ Q)"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "¬P"
+          }
+        ],
+        "conclusion": "¬P"
+      }
+    ]
+  },
+  {
+    "line": 85,
+    "tactic": "exact hp",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 86,
+    "tactic": "·",
+    "goalsBefore": [
+      {
+        "name": "mpr",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q → ¬(P ∧ Q)"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "mpr",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          }
+        ],
+        "conclusion": "¬P ∨ ¬Q → ¬(P ∧ Q)"
+      }
+    ]
+  },
+  {
+    "line": 87,
+    "tactic": "intro h",
+    "goalsBefore": [
+      {
+        "name": "mpr",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬P ∨ ¬Q"
+          }
+        ],
+        "conclusion": "¬(P ∧ Q)"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "mpr",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬P ∨ ¬Q"
+          }
+        ],
+        "conclusion": "¬(P ∧ Q)"
+      }
+    ]
+  },
+  {
+    "line": 88,
+    "tactic": "intro ⟨hp, hq⟩",
+    "goalsBefore": [
+      {
+        "name": "mpr",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬P ∨ ¬Q"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          },
+          {
+            "names": [
+              "hq"
+            ],
+            "type": "Q"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "mpr",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬P ∨ ¬Q"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          },
+          {
+            "names": [
+              "hq"
+            ],
+            "type": "Q"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 89,
+    "tactic": "cases h with",
+    "goalsBefore": [
+      {
+        "name": "mpr",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬P ∨ ¬Q"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          },
+          {
+            "names": [
+              "hq"
+            ],
+            "type": "Q"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "mpr",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "¬P ∨ ¬Q"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          },
+          {
+            "names": [
+              "hq"
+            ],
+            "type": "Q"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 90,
+    "tactic": "| inl hnp =>",
+    "goalsBefore": [
+      {
+        "name": "mpr.inl",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          },
+          {
+            "names": [
+              "hq"
+            ],
+            "type": "Q"
+          },
+          {
+            "names": [
+              "hnp"
+            ],
+            "type": "¬P"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "mpr.inl",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          },
+          {
+            "names": [
+              "hq"
+            ],
+            "type": "Q"
+          },
+          {
+            "names": [
+              "hnp"
+            ],
+            "type": "¬P"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 90,
+    "tactic": "exact hnp hp",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 91,
+    "tactic": "| inr hnq =>",
+    "goalsBefore": [
+      {
+        "name": "mpr.inr",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          },
+          {
+            "names": [
+              "hq"
+            ],
+            "type": "Q"
+          },
+          {
+            "names": [
+              "hnq"
+            ],
+            "type": "¬Q"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "mpr.inr",
+        "hypotheses": [
+          {
+            "names": [
+              "P",
+              "Q"
+            ],
+            "type": "Prop"
+          },
+          {
+            "names": [
+              "hp"
+            ],
+            "type": "P"
+          },
+          {
+            "names": [
+              "hq"
+            ],
+            "type": "Q"
+          },
+          {
+            "names": [
+              "hnq"
+            ],
+            "type": "¬Q"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 91,
+    "tactic": "exact hnq hq",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 94,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 95,
+    "tactic": "induction n with",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "n + 0 = n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "n + 0 = n"
+      }
+    ]
+  },
+  {
+    "line": 96,
+    "tactic": "| zero =>",
+    "goalsBefore": [
+      {
+        "name": "zero",
+        "hypotheses": [],
+        "conclusion": "0 + 0 = 0"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "zero",
+        "hypotheses": [],
+        "conclusion": "0 + 0 = 0"
+      }
+    ]
+  },
+  {
+    "line": 96,
+    "tactic": "rfl",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 97,
+    "tactic": "| succ k ih =>",
+    "goalsBefore": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "k"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "k + 0 = k"
+          }
+        ],
+        "conclusion": "k + 1 + 0 = k + 1"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "succ",
+        "hypotheses": [
+          {
+            "names": [
+              "k"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "ih"
+            ],
+            "type": "k + 0 = k"
+          }
+        ],
+        "conclusion": "k + 1 + 0 = k + 1"
+      }
+    ]
+  },
+  {
+    "line": 97,
+    "tactic": "simp [ih]",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 100,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 101,
+    "tactic": "use n + 1",
+    "goalsBefore": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "n + 1 > n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "n + 1 > n"
+      }
+    ]
+  },
+  {
+    "line": 102,
+    "tactic": "omega",
+    "goalsBefore": [],
+    "goalsAfter": []
+  }
+]

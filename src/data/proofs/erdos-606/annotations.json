@@ -1,0 +1,356 @@
+[
+  {
+    "id": "ann-606-header",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Problem Statement and References",
+    "content": "Erdős Problem #606: Given $n$ distinct points in $\\mathbb{R}^2$, what values can $f(n)$ take, where $f(n)$ is the number of distinct lines determined by these points? The Erdős-Salamon theorem gives a complete characterization for large $n$: the achievable values are $\\{1\\} \\cup [n, \\binom{n}{2}] \\setminus \\{\\binom{n}{2}-1, \\binom{n}{2}-3\\}$.",
+    "mathContext": "The problem asks for the exact set $\\mathcal{A}(n) = \\{k \\in \\mathbb{N} : \\exists \\text{ config } P \\text{ of } n \\text{ points with } f(P) = k\\}$. The answer involves the binomial coefficient $\\binom{n}{2} = \\frac{n(n-1)}{2}$, which counts the maximum number of lines when no three points are collinear.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylvester-Gallai theorem",
+      "Beck's theorem",
+      "incidence geometry",
+      "combinatorial geometry"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "combinatorics",
+      "binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-606-imports",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 30,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "Imports from Mathlib for inner product spaces (defining $\\mathbb{R}^2$ as `EuclideanSpace ℝ (Fin 2)`), finite set cardinality, affine independence, and general tactics. The use of `EuclideanSpace` provides a concrete model of the Euclidean plane with the standard inner product.",
+    "mathContext": "The type `EuclideanSpace ℝ (Fin 2)` is isomorphic to $\\mathbb{R}^2$ with the $\\ell^2$ norm, providing the geometric structure needed for points and lines.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean space",
+      "inner product space",
+      "affine space"
+    ],
+    "prerequisites": [
+      "linear algebra",
+      "Mathlib type system"
+    ]
+  },
+  {
+    "id": "ann-606-point",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 41,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "Point Configuration",
+    "content": "A point in the plane is defined as an element of `EuclideanSpace ℝ (Fin 2)`. A point configuration bundles $n$ points with a proof of injectivity (distinctness). The `Function.Injective` constraint ensures $|P| = n$ exactly — without it, repeated points could artificially deflate line counts.",
+    "mathContext": "A configuration is a map $P: \\{1, \\ldots, n\\} \\to \\mathbb{R}^2$ with $P(i) \\neq P(j)$ for $i \\neq j$. The injectivity condition $P(i) = P(j) \\Rightarrow i = j$ formalizes distinctness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "injective function",
+      "point set",
+      "finite configuration"
+    ],
+    "prerequisites": [
+      "set theory",
+      "function injectivity"
+    ]
+  },
+  {
+    "id": "ann-606-line",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 49,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Lines and Line Equivalence",
+    "content": "A line is defined parametrically by two distinct points $p \\neq q$. The equivalence relation `Line.equiv` identifies lines that contain the same set of points, so the line through $(p,q)$ equals the line through $(q,p)$ or any other pair on the same line. The `onLine` predicate checks if $x$ lies on the line through $p$ and $q$.",
+    "mathContext": "A point $x$ lies on line $\\ell(p,q)$ iff $x = p + t(q - p)$ for some $t \\in \\mathbb{R}$. Two lines $\\ell_1, \\ell_2$ are equivalent iff $\\{x : x \\in \\ell_1\\} = \\{x : x \\in \\ell_2\\}$. This parametric form avoids the slope-intercept representation, which fails for vertical lines.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parametric equation",
+      "affine line",
+      "equivalence relation"
+    ],
+    "prerequisites": [
+      "linear algebra",
+      "parametric curves"
+    ]
+  },
+  {
+    "id": "ann-606-counting",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 64,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "Counting Distinct Lines",
+    "content": "The `distinctPairs` function enumerates ordered pairs $(i,j)$ with $i < j$, giving $\\binom{n}{2}$ pairs. The function `numDistinctLines` counts equivalence classes of lines under `Line.equiv` — this is the key quantity $f(n)$ in the problem. The `maxLines` function computes the upper bound $\\binom{n}{2}$.",
+    "mathContext": "$|\\{(i,j) : 1 \\le i < j \\le n\\}| = \\binom{n}{2} = \\frac{n(n-1)}{2}$. When no three points are collinear, each pair determines a unique line, so $f(n) = \\binom{n}{2}$. In general $f(n) \\le \\binom{n}{2}$ with equality iff points are in general position.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial coefficient",
+      "equivalence classes",
+      "general position"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "equivalence relations"
+    ]
+  },
+  {
+    "id": "ann-606-collinear",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 85,
+      "endLine": 106
+    },
+    "type": "definition",
+    "title": "Collinearity and General Position",
+    "content": "Three points are collinear if they share a common line. `AllCollinear` means every triple is collinear (all $n$ points on one line), giving $f(n) = 1$. `GeneralPosition` means no triple is collinear, giving $f(n) = \\binom{n}{2}$. These are the two extremes of the problem, and the theorems `all_collinear_one_line` and `general_position_max_lines` confirm these boundary values.",
+    "mathContext": "Points $p, q, r$ are collinear iff $\\det(q - p, r - p) = 0$, equivalently iff the vectors $q - p$ and $r - p$ are linearly dependent. General position ($\\forall i \\neq j \\neq k$, not collinear) is a generic condition — it holds for a dense open subset of $(\\mathbb{R}^2)^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear dependence",
+      "determinant test",
+      "generic position",
+      "algebraic variety"
+    ],
+    "prerequisites": [
+      "linear algebra",
+      "determinants"
+    ]
+  },
+  {
+    "id": "ann-606-ordinary",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 110,
+      "endLine": 112
+    },
+    "type": "definition",
+    "title": "Ordinary Line",
+    "content": "An ordinary line passes through exactly 2 points of the configuration. The Sylvester-Gallai theorem guarantees at least one such line whenever the points are not all collinear. This notion is central to the Erdős-Salamon analysis because ordinary lines are the 'simplest' incidence pattern.",
+    "mathContext": "A line $\\ell$ is ordinary for configuration $P$ if $|\\ell \\cap P| = 2$. Equivalently, $\\ell$ is determined by exactly one pair of points from $P$. The dual notion is a $k$-rich line with $|\\ell \\cap P| = k \\ge 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "k-rich line",
+      "point-line duality",
+      "ordinary point"
+    ],
+    "prerequisites": [
+      "incidence geometry"
+    ]
+  },
+  {
+    "id": "ann-606-sylvester",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 114,
+      "endLine": 126
+    },
+    "type": "concept",
+    "title": "Sylvester-Gallai Theorem and Minimum Lines",
+    "content": "The Sylvester-Gallai theorem (1893/1944): if $n \\ge 3$ points are not all collinear, they determine at least one ordinary line. This is axiomatized here since its full proof requires non-trivial arguments (Gallai's proof uses an extremal distance argument). The corollary `min_lines_noncollinear` shows non-collinear points determine $\\ge n$ lines — a key lower bound for the Erdős-Salamon characterization.",
+    "mathContext": "Sylvester-Gallai: $\\neg\\text{AllCollinear}(P) \\Rightarrow \\exists \\ell, |\\ell \\cap P| = 2$. The minimum lines bound $f(n) \\ge n$ for non-collinear configurations follows by induction: remove an ordinary line's 2 points, apply to the remaining $n-2$ points, and account for the new lines created.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gallai's proof",
+      "Melchior's inequality",
+      "Kelly's proof",
+      "extremal principle"
+    ],
+    "prerequisites": [
+      "projective geometry",
+      "well-ordering principle"
+    ]
+  },
+  {
+    "id": "ann-606-achievable",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 128,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Achievable Line Counts and Main Problem",
+    "content": "The set `AchievableLineCounts(n)` formalizes the central question: which integers $k$ can equal $f(n)$ for some configuration of $n$ points? The `Erdos606Statement` captures the structure of the answer — it includes 1 (collinear case) and almost all values in $[n, \\binom{n}{2}]$, with the two specific exceptions.",
+    "mathContext": "$\\mathcal{A}(n) = \\{k \\in \\mathbb{N} : \\exists P \\text{ with } |P| = n, f(P) = k\\}$. The Erdős-Salamon theorem states: for $n \\ge N_0$, $\\mathcal{A}(n) = \\{1\\} \\cup \\{k : n \\le k \\le \\binom{n}{2}\\} \\setminus \\{\\binom{n}{2} - 1, \\binom{n}{2} - 3\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "spectrum problem",
+      "realizability",
+      "inverse problems in combinatorics"
+    ],
+    "prerequisites": [
+      "set theory",
+      "combinatorial geometry"
+    ]
+  },
+  {
+    "id": "ann-606-minus1",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 147,
+      "endLine": 153
+    },
+    "type": "insight",
+    "title": "C(n,2)-1 Not Achievable",
+    "content": "The value $\\binom{n}{2} - 1$ is not achievable for $n \\ge 4$. To have exactly one 'missing' line, exactly one pair of points would need to be collinear with a third point, while all other triples are non-collinear. But if points $p, q, r$ are collinear, this collinearity forces $\\binom{3}{2} - 1 = 2$ 'missing' lines (pairs $(p,q)$, $(p,r)$, $(q,r)$ all determine the same line), not just 1.",
+    "mathContext": "If three points are collinear, they reduce the line count by $\\binom{3}{2} - 1 = 2$, not by 1. More generally, $k$ collinear points reduce the count by $\\binom{k}{2} - 1$. Since $\\binom{k}{2} - 1 \\ge 2$ for $k \\ge 3$, a reduction of exactly 1 is impossible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "collinearity reduction formula",
+      "pigeonhole principle",
+      "geometric rigidity"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "proof by contradiction"
+    ]
+  },
+  {
+    "id": "ann-606-minus3",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 155,
+      "endLine": 161
+    },
+    "type": "insight",
+    "title": "C(n,2)-3 Not Achievable",
+    "content": "The value $\\binom{n}{2} - 3$ is not achievable for $n \\ge 6$. A reduction of 3 from the maximum would require a specific pattern of collinearities. Case analysis shows: one 4-point line gives reduction $\\binom{4}{2} - 1 = 5$; two disjoint 3-point lines give $2 \\times 2 = 4$; one 3-point line gives reduction 2. No combination yields exactly 3.",
+    "mathContext": "The line count reduction from collinearities is $\\sum_\\ell (\\binom{m_\\ell}{2} - 1)$ where $m_\\ell \\ge 3$ is the number of points on each $\\ge 3$-rich line $\\ell$. Since each term $\\binom{m}{2} - 1 \\ge 2$, the possible reductions are $\\{0, 2, 4, 5, 6, \\ldots\\}$, and 3 is excluded.",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition analysis",
+      "collinearity spectrum",
+      "integer representation"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "case analysis"
+    ]
+  },
+  {
+    "id": "ann-606-minus2",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 163,
+      "endLine": 166
+    },
+    "type": "concept",
+    "title": "C(n,2)-2 IS Achievable",
+    "content": "The value $\\binom{n}{2} - 2$ is achievable by placing exactly 3 points on a line and the remaining $n - 3$ points in general position (no other collinearities). The three collinear points contribute 1 line instead of 3, reducing the count by exactly $\\binom{3}{2} - 1 = 2$.",
+    "mathContext": "Construction: place $p_1, p_2, p_3$ on a line $\\ell$, and $p_4, \\ldots, p_n$ in general position with respect to each other and to $\\ell$. Then $f(P) = \\binom{n}{2} - (\\binom{3}{2} - 1) = \\binom{n}{2} - 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit constructions",
+      "perturbation arguments"
+    ],
+    "prerequisites": [
+      "analytic geometry",
+      "general position arguments"
+    ]
+  },
+  {
+    "id": "ann-606-density",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 168,
+      "endLine": 176
+    },
+    "type": "concept",
+    "title": "Erdős Density Result",
+    "content": "Erdős showed that all integers in $[cn^{3/2}, \\binom{n}{2} - 4]$ are achievable for some constant $c > 0$. The constructions use algebraic curves and careful perturbation arguments. The lower bound $cn^{3/2}$ comes from constructing configurations with controlled collinearity patterns using lattice-like structures.",
+    "mathContext": "For each $k \\in [cn^{3/2}, \\binom{n}{2} - 4]$, there exists a configuration $P$ of $n$ points with $f(P) = k$. The gap between $n$ and $cn^{3/2}$ is filled by more delicate constructions in the Erdős-Salamon paper, showing all of $[n, \\binom{n}{2} - 4]$ is achievable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebraic constructions",
+      "lattice points",
+      "perturbation methods"
+    ],
+    "prerequisites": [
+      "algebraic geometry",
+      "number theory"
+    ]
+  },
+  {
+    "id": "ann-606-constructions",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 178,
+      "endLine": 215
+    },
+    "type": "concept",
+    "title": "Explicit Constructions",
+    "content": "Three key constructions establish achievability of boundary values. The collinear configuration $p_i = (i, 0)$ gives $f = 1$. The circle configuration $p_i = (\\cos(2\\pi i/n), \\sin(2\\pi i/n))$ gives $f = \\binom{n}{2}$ since points on a circle are in general position. The $m \\times m$ grid provides intermediate values: the grid's rows, columns, and diagonal lines create controlled collinearities.",
+    "mathContext": "Collinear: $P = \\{(i, 0) : 0 \\le i < n\\}$, $f(P) = 1$. Circle: $P = \\{(\\cos\\frac{2\\pi i}{n}, \\sin\\frac{2\\pi i}{n}) : 0 \\le i < n\\}$, $f(P) = \\binom{n}{2}$. Grid: $P = \\{(i, j) : 0 \\le i, j < m\\}$ with $n = m^2$, $f(P) = \\binom{m^2}{2} - \\Theta(m^3)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "lattice configurations",
+      "trigonometric identities",
+      "grid geometry"
+    ],
+    "prerequisites": [
+      "analytic geometry",
+      "trigonometry"
+    ]
+  },
+  {
+    "id": "ann-606-beck",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 217,
+      "endLine": 227
+    },
+    "type": "concept",
+    "title": "Beck's Theorem",
+    "content": "Beck's theorem (1983) provides a fundamental dichotomy: for $n$ points, either a large fraction ($\\ge n/100$) lies on a single line, or the configuration determines $\\Omega(n^2)$ distinct lines. There is no 'middle ground.' This connects to Problem #606 because it shows that low line counts ($f(n) \\ll n^2$) force many points to be collinear.",
+    "mathContext": "Beck's theorem: either $\\exists \\ell$ with $|\\ell \\cap P| \\ge n/100$, or $f(P) \\ge n^2/10000$. The constant $1/100$ can be replaced by any $\\epsilon > 0$ with a corresponding constant $c(\\epsilon)$ for the line bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Szemerédi-Trotter theorem",
+      "incidence bounds",
+      "sum-product estimates"
+    ],
+    "prerequisites": [
+      "incidence geometry",
+      "probabilistic method"
+    ]
+  },
+  {
+    "id": "ann-606-szemeredi",
+    "proofId": "erdos-606",
+    "range": {
+      "startLine": 229,
+      "endLine": 243
+    },
+    "type": "concept",
+    "title": "Szemerédi-Trotter Incidence Bound",
+    "content": "The Szemerédi-Trotter theorem (1983) bounds the number of point-line incidences: at most $O((nm)^{2/3} + n + m)$ incidences between $n$ points and $m$ lines. This is tight and has been called 'the most important theorem in incidence geometry.' The corollary shows that if no line is too rich ($|\\ell \\cap P| \\le \\sqrt{n}$), then $f(P) = \\Omega(n^2 / \\log n)$.",
+    "mathContext": "Let $I(P, L) = |\\{(p, \\ell) \\in P \\times L : p \\in \\ell\\}|$ count incidences. Then $I(P, L) \\le C((|P| \\cdot |L|)^{2/3} + |P| + |L|)$. When each line has $\\le \\sqrt{n}$ points, total incidences $\\le \\sqrt{n} \\cdot f(P)$, giving $f(P) \\ge \\Omega(n^2/\\log n)$ by the bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "crossing number inequality",
+      "cell decomposition",
+      "Elekes' sum-product"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "algebraic geometry"
+    ]
+  }
+]

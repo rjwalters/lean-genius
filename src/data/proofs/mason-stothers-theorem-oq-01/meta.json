@@ -1,0 +1,140 @@
+{
+  "id": "mason-stothers-theorem-oq-01",
+  "title": "Mason–Stothers: the additive a + b = c form and a clean characteristic-zero degree bound",
+  "slug": "mason-stothers-theorem-oq-01",
+  "description": "The Mason–Stothers theorem is the polynomial analogue of the abc conjecture. Mathlib proves it (Polynomial.abc) only in the homogeneous form a + b + c = 0, and the statement carries a derivative-vanishing escape clause (a' = b' = c' = 0) that is genuinely necessary in positive characteristic. This entry packages two facts Mathlib does not record directly. First, mason_stothers_add restates the theorem in the classical inhomogeneous form a + b = c — the way it is almost always quoted — obtained from Polynomial.abc by feeding it a + b + (-c) = 0 and translating radical, natDegree and derivative of -c back to c via radical_neg, natDegree_neg and derivative_neg. Second, mason_stothers_charZero shows that over a field of characteristic zero the escape clause collapses (derivative p = 0 iff p is constant), so a coprime triple a + b = c with at least one non-constant factor satisfies the unconditional degree bound max{deg a, deg b, deg c} + 1 ≤ deg(rad(a·b·c)). From these we read off the headline inequality deg c < deg(rad(a·b·c)) (natDegree_lt_radical_charZero) and a rigidity corollary mason_stothers_rigidity: in characteristic zero a coprime relation a + b = c whose product has too few distinct roots (deg(rad(a·b·c)) ≤ deg c) is forced to be totally constant. Everything is a 0-axiom derivation from Mathlib's Polynomial.abc.",
+  "meta": {
+    "author": "R. C. Mason / W. W. Stothers (classical); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MasonStothersOQ01.lean",
+    "tags": [
+      "polynomials",
+      "mason-stothers",
+      "abc-conjecture",
+      "radical",
+      "wronskian",
+      "degree-bound",
+      "characteristic-zero",
+      "number-theory",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.abc",
+        "description": "The polynomial ABC theorem over a field: for nonzero coprime a, b, c with a + b + c = 0, either deg + 1 ≤ deg(rad(a·b·c)) for each of a, b, c, or all three derivatives vanish. The engine of every result here.",
+        "module": "Mathlib.NumberTheory.FLT.MasonStothers"
+      },
+      {
+        "theorem": "radical_neg",
+        "description": "radical (-a) = radical a. Lets the substitution c ↦ -c (turning a + b = c into a + b + (-c) = 0) leave the radical of the product a·b·c unchanged.",
+        "module": "Mathlib.RingTheory.Radical"
+      },
+      {
+        "theorem": "Polynomial.natDegree_neg",
+        "description": "natDegree (-p) = natDegree p. Translates the degree bound on -c back to c.",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Definitions"
+      },
+      {
+        "theorem": "Polynomial.derivative_neg",
+        "description": "derivative (-p) = -derivative p; combined with neg_eq_zero this translates the escape clause derivative (-c) = 0 to derivative c = 0.",
+        "module": "Mathlib.Algebra.Polynomial.Derivative"
+      },
+      {
+        "theorem": "Polynomial.natDegree_eq_zero_of_derivative_eq_zero",
+        "description": "Over an additively torsion-free ring (supplied by CharZero field ⟹ IsAddTorsionFree k[X]): derivative p = 0 → natDegree p = 0. This is what kills the escape clause in characteristic zero.",
+        "module": "Mathlib.Algebra.Polynomial.Derivative"
+      }
+    ],
+    "originalContributions": [
+      "mason_stothers_add: the Mason–Stothers theorem in the classical inhomogeneous form a + b = c (coprime nonzero a, b, c over a field), with conclusion (deg + 1 ≤ deg(rad(a·b·c)) for each factor) ∨ (a' = b' = c' = 0). Mathlib records only the homogeneous a + b + c = 0 form; this is the standard textbook phrasing, derived by the c ↦ -c substitution.",
+      "mason_stothers_charZero: over a characteristic-zero field, the unconditional degree bound max{deg a, deg b, deg c} + 1 ≤ deg(rad(a·b·c)) for a coprime triple a + b = c with at least one non-constant factor — the derivative-vanishing escape clause of Polynomial.abc is eliminated.",
+      "natDegree_lt_radical_charZero: the headline ABC degree inequality deg c < deg(rad(a·b·c)) for a non-constant c — the polynomial analogue of the abc inequality height bound.",
+      "mason_stothers_rigidity: the contrapositive rigidity statement — in characteristic zero a coprime triple a + b = c with deg(rad(a·b·c)) ≤ deg c must have a, b, c all constant; equivalently any genuine non-constant coprime relation forces strictly more than deg c distinct roots in the product."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide (hence no Lean.ofReduceBool). Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas. The characteristic-zero results take a [CharZero k] field instance as a hypothesis (a mathematical hypothesis of the statement, not an assumption about unproved facts).",
+    "lineCount": 131,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Mason–Stothers theorem (R. C. Mason 1983, independently W. W. Stothers 1981) is the function-field analogue of Masser and Oesterlé's abc conjecture for integers. Where the abc conjecture predicts that the height of c in a coprime relation a + b = c is bounded by (almost) the radical (product of distinct primes) of abc, Mason–Stothers proves the exact polynomial statement deg c < (number of distinct roots of abc), with no epsilon and no exceptions — apart from the characteristic-p degeneracy where every factor is a p-th power. It gives a one-line proof of Fermat's Last Theorem for polynomials and of Davenport's inequality.",
+    "problemStatement": "Mathlib's Polynomial.abc states Mason–Stothers in the homogeneous form a + b + c = 0 with a derivative-vanishing escape clause. Two natural repackagings are missing: (1) the inhomogeneous form a + b = c in which the theorem is classically quoted, and (2) the clean characteristic-zero statement with the escape clause removed. Can both be derived as 0-axiom corollaries?\n\n**Answer:** Yes. The c ↦ -c substitution gives the a + b = c form directly; in characteristic zero derivative p = 0 forces p constant, so any non-constant coprime triple obeys the unconditional degree bound, yielding the headline inequality deg c < deg(rad(a·b·c)) and a rigidity corollary.",
+    "text": "The polynomial ABC theorem is recast in the textbook form a + b = c and then sharpened over characteristic-zero fields, where the derivative escape clause vanishes, giving the unconditional Mason–Stothers degree bound and a distinct-roots rigidity statement — all with 0 axioms.",
+    "proofStrategy": "1. mason_stothers_add: apply Polynomial.abc to (a, b, -c) using a + b + (-c) = 0. Rewrite radical (a·b·(-c)) = radical (-(a·b·c)) = radical (a·b·c) by radical_neg, natDegree (-c) = natDegree c by natDegree_neg, and derivative (-c) = 0 ↔ derivative c = 0 by derivative_neg/neg_eq_zero.\n2. mason_stothers_charZero: case on mason_stothers_add. The bound branch is the goal; the escape branch gives a' = b' = c' = 0, hence (over a CharZero field, via natDegree_eq_zero_of_derivative_eq_zero) all factors constant, contradicting the non-constant hypothesis.\n3. natDegree_lt_radical_charZero: the c-component of the charZero bound is c.natDegree + 1 ≤ deg(rad), definitionally c.natDegree < deg(rad).\n4. mason_stothers_rigidity: case on mason_stothers_add. The bound branch gives c.natDegree + 1 ≤ deg(rad) ≤ c.natDegree, impossible; so the escape branch holds and every factor is constant.",
+    "keyInsights": [
+      "**The escape clause is not optional in general.** Over 𝔽_p, Xᵖ + 1 = (X + 1)ᵖ is a coprime relation with huge degrees but radical of degree 1; it survives only because every term has zero derivative. The characteristic-zero hypothesis is exactly what rules this out.",
+      "**Homogeneous ↦ inhomogeneous by negation.** Mathlib states the theorem for a + b + c = 0; the textbook a + b = c form is the same theorem with c replaced by -c, and the radical is unit-invariant (radical_neg) so the bound is unchanged.",
+      "**Characteristic zero linearises the dichotomy.** derivative p = 0 ⟺ p is constant over a torsion-free (e.g. CharZero) ring; this turns the disjunction 'bound OR all derivatives zero' into the clean implication 'non-constant ⟹ bound'.",
+      "**Rigidity is the contrapositive.** Reading the degree bound backwards: too few distinct roots in the product (deg rad ≤ deg c) forces total degeneracy — the polynomial shadow of 'abc-triples with small radical are rare'."
+    ],
+    "exampleSections": [
+      {
+        "title": "Why the degree bound is sharp away from the radical",
+        "mathContext": "For the coprime relation a + b = c with deg(rad(a·b·c)) the number of distinct roots of the product, Mason–Stothers gives deg c ≤ deg(rad(a·b·c)) - 1. Equality occurs for families such as Xⁿ - 1 factoring into distinct cyclotomic pieces; the bound cannot be improved by a constant."
+      },
+      {
+        "title": "Polynomial FLT in one line",
+        "mathContext": "If aⁿ + bⁿ = cⁿ with a, b, c coprime non-constant over ℂ and n ≥ 3, then mason_stothers_charZero applied to aⁿ, bⁿ, cⁿ gives n·deg c < deg(rad(aⁿbⁿcⁿ)) = deg(rad(abc)) ≤ deg a + deg b + deg c ≤ 3·max, a contradiction for n ≥ 3 — the function-field Fermat theorem (already in Mathlib as Polynomial.flt)."
+      }
+    ]
+  },
+  "references": [
+    {
+      "authors": "Mason, R. C.",
+      "title": "Diophantine Equations over Function Fields",
+      "year": "1984",
+      "note": "London Mathematical Society Lecture Note Series 96, Cambridge University Press — the original source of the polynomial ABC degree bound."
+    },
+    {
+      "authors": "Stothers, W. W.",
+      "title": "Polynomial identities and Hauptmoduln",
+      "year": "1981",
+      "note": "Quart. J. Math. Oxford 32, 349–370 — the independent discovery of the theorem."
+    },
+    {
+      "authors": "Snyder, Noah",
+      "title": "An Alternative Proof of Mason's Theorem",
+      "year": "2000",
+      "note": "Elemente der Mathematik 55, 93–94 — the Wronskian proof underlying Mathlib's Polynomial.abc."
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Old and new conjectured Diophantine inequalities",
+      "year": "1990",
+      "note": "Bull. Amer. Math. Soc. 23, 37–75 — the abc conjecture and its function-field analogue."
+    }
+  ],
+  "crossReferences": [],
+  "conclusion": {
+    "summary": "Mathlib's polynomial ABC theorem Polynomial.abc (homogeneous form a + b + c = 0, with a derivative-vanishing escape clause) is repackaged into the classical inhomogeneous form a + b = c (mason_stothers_add) and sharpened over characteristic-zero fields, where the escape clause is eliminated: a non-constant coprime triple obeys the unconditional degree bound max{deg a, deg b, deg c} + 1 ≤ deg(rad(a·b·c)) (mason_stothers_charZero), with headline inequality deg c < deg(rad(a·b·c)) (natDegree_lt_radical_charZero) and rigidity corollary (mason_stothers_rigidity). All results are verified with 0 axioms and 0 sorries.",
+    "implications": "Provides the textbook a + b = c statement of Mason–Stothers and a clean characteristic-zero degree bound — the polynomial analogue of the abc inequality — as reusable lemmas, complementing Mathlib's homogeneous formulation and its downstream polynomial Fermat theorem.",
+    "openQuestions": [
+      "State and prove the sharp distinct-roots interpretation deg(rad p) = #{distinct roots of p} over an algebraically closed field, turning the degree bound into an explicit count of distinct roots of a·b·c.",
+      "Derive Davenport's inequality deg(f³ - g²) ≥ (deg f)/2 + 1 for coprime non-constant f, g as a direct corollary of mason_stothers_charZero.",
+      "Formalize the equality case: characterise the coprime triples a + b = c attaining deg c = deg(rad(a·b·c)) - 1."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "UniqueFactorizationMonoid",
+      "UniqueFactorizationDomain"
+    ],
+    "namespace": "MasonStothersOQ01",
+    "lineCount": 131,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/MasonStothersOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

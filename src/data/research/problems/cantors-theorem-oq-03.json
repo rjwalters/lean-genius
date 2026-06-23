@@ -1,0 +1,134 @@
+{
+  "slug": "cantors-theorem-oq-03",
+  "title": "Can we generalize the diagonal argument to other structures beyond sets",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "A hierarchy of diagonal arguments of increasing generality: Lawvere (uniform fixed-point-free dodge), Coordinate Diagonal (pointwise dodge), and König's Principle (heterogeneous types and dodges at each index). König captures cardinal arithmetic (Σ κᵢ < Π λᵢ), while Cantor and Lawvere are special cases. The diagonal works on Bool, ℕ, ℤ, Prop, and any type with a fixed-point-free endomorphism.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-23T07:29:35.463575Z",
+    "iteration": 1,
+    "focus": "Complete: hierarchy of diagonal arguments formalized",
+    "blockers": [],
+    "nextAction": "PR created, awaiting review",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 310 lines, 17 theorems, 0 axioms, 0 sorries. Full hierarchy: Konig > Coordinate > Lawvere. Non-enumerability for N->N, N->Z via successor diagonal.",
+    "builtItems": [
+      "konig_principle: Konig heterogeneous diagonal principle",
+      "coordinate_diagonal: Intermediate pointwise dodge",
+      "lawvere_from_diagonal: Lawvere as coordinate diagonal special case",
+      "cantor_bool/cantor_prop/cantor_set: Cantor variants from Lawvere",
+      "fpf_implies_non_enumerable: Master theorem for non-enumerability",
+      "nat_seq_uncountable/int_seq_uncountable via successor diagonal",
+      "konig_implies_lawvere: Konig subsumes Lawvere via Unit encoding"
+    ],
+    "insights": [
+      "Konig diagonal is the HETEROGENEOUS generalization: different types at each index, different dodges",
+      "Coordinate diagonal is intermediate: same target type but pointwise (not uniform) dodging",
+      "Lawvere is the special case where dodge = g(f(i)(i)) for fixed g",
+      "The diagonal works on ANY type with fixed-point-free endomorphism: Bool, N, Z, Prop",
+      "Konig implies Lawvere via Unit fibers: view f : a -> (a -> b) as (Sigma _ : a, Unit) -> (a -> b)",
+      "Universe inference requires Unit not PUnit when mixing with Type* parameters in Lean 4"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Extend to cardinal-level Konig inequality using Cardinal.mk API",
+      "Formalize cofinality applications of Konig",
+      "Connect to Baire category theorem as topological diagonal"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "generalization"
+  ],
+  "relatedProofs": [
+    "cantors-theorem",
+    "cantors-theorem-oq-01",
+    "cantors-theorem-oq-01-oq-01",
+    "cantors-theorem-oq-02",
+    "cantors-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-23T00:42:35.518Z",
+  "lastUpdate": "2026-03-23T07:29:35.463757Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CantorsTheorem.lean",
+      "filename": "CantorsTheorem.lean",
+      "lineCount": 158,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheorem.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ01.lean",
+      "filename": "CantorsTheoremOQ01.lean",
+      "lineCount": 295,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ01OQ01.lean",
+      "filename": "CantorsTheoremOQ01OQ01.lean",
+      "lineCount": 172,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ02.lean",
+      "filename": "CantorsTheoremOQ02.lean",
+      "lineCount": 282,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ03.lean",
+      "filename": "CantorsTheoremOQ03.lean",
+      "lineCount": 311,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ03.lean"
+    }
+  ]
+}

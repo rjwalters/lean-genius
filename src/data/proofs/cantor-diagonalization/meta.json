@@ -1,0 +1,356 @@
+{
+  "id": "cantor-diagonalization",
+  "title": "Cantor's Diagonalization Theorem",
+  "slug": "cantor-diagonalization",
+  "description": "Cantor's elegant 1891 proof that the real numbers are uncountable, using the famous diagonal argument to show no enumeration can list all infinite binary sequences.",
+  "meta": {
+    "author": "Georg Cantor (1891)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument",
+    "date": "1891",
+    "status": "verified",
+    "tags": [
+      "set-theory",
+      "infinity",
+      "cardinality",
+      "classic",
+      "intermediate",
+      "wiedijk-100"
+    ],
+    "proofRepoPath": "Proofs/CantorDiagonalization.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Logic.Function.Basic",
+        "description": "Basic function definitions and properties (Function.Surjective)",
+        "module": "Mathlib.Logic.Function.Basic"
+      },
+      {
+        "theorem": "Data.Set.Function",
+        "description": "Set type and membership predicates used in the power set version (cantor_powerset)",
+        "module": "Mathlib.Data.Set.Function"
+      }
+    ],
+    "originalContributions": [
+      "Complete diagonal argument formalization",
+      "Power set generalization (cantor_powerset)",
+      "Connection to Russell's Paradox"
+    ],
+    "dateAdded": "2025-12-21",
+    "prerequisites": [
+      "Functions and surjectivity (Function.Surjective)",
+      "Bool type and negation (!b)",
+      "Proof by contradiction (absurd)",
+      "Set theory and power sets (Set, Set.powerset)"
+    ],
+    "wiedijkNumber": 22,
+    "axiomCount": 0,
+    "lineCount": 175,
+    "relatedProblems": [
+      {
+        "id": "cantor-diagonalization-oq-01",
+        "relationship": "Extension of cantor diagonalization"
+      },
+      {
+        "id": "cantor-diagonalization-oq-02",
+        "relationship": "Extension of cantor diagonalization"
+      },
+      {
+        "id": "cantor-diagonalization-oq-04",
+        "relationship": "The retraction formulation of Lawvere's fixed-point theorem — if a type Y codes its own endomorphisms via encode/decode with decode ∘ encode = id, then every f : Y → Y has a fixed point, complementing the surjection version in oq-03"
+      }
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Georg Cantor published the diagonal argument in 1891 in *Über eine elementare Frage der Mannigfaltigkeitslehre*, though he had already proven the uncountability of the reals in 1874 using a nested-intervals argument. The 1891 proof was revolutionary in its simplicity and generality: it works not just for $\\mathbb{R}$ but for any set $S$ versus $S \\to \\{0,1\\}$ (the power set), immediately giving $|S| < |2^S|$ for all sets $S$.\n\nCantor's work was the most controversial mathematics of its era. Leopold Kronecker called him a 'corrupter of youth'; Henri Poincaré considered set theory a 'disease' from which mathematics would eventually recover. But David Hilbert declared: 'No one shall expel us from the paradise that Cantor has created.' Cantor suffered repeated nervous breakdowns, possibly exacerbated by the opposition, and spent his final years in a sanatorium (died 1918).\n\nThe diagonal argument's influence is incalculable. Richard's paradox (1905) and Berry's paradox use diagonal-like constructions. Kurt Gödel used a self-referential diagonal construction in his incompleteness theorems (1931): the sentence 'this sentence is unprovable' diagonalizes over all proofs. Alan Turing (1936) used a diagonal argument to prove the undecidability of the halting problem: the machine that asks 'does this machine halt on itself?' diagonalizes over all Turing machines. Paul Cohen's forcing (1963), which proved the independence of the continuum hypothesis, also relies on diagonal arguments. The technique is arguably the single most important proof method in mathematical logic.",
+    "problemStatement": "Theorem (Cantor, 1891): The set of real numbers is uncountable.\n\nMore precisely: there is no bijection between the natural numbers $\\mathbb{N}$ and the real numbers $\\mathbb{R}$. The 'infinity' of reals is strictly larger than the 'infinity' of naturals:\n\n$$|\\mathbb{N}| < |\\mathbb{R}|$$\n\nWe prove this using infinite binary sequences, which correspond to real numbers in $[0, 1]$ via binary expansion.",
+    "text": "A 175-line formalization of Cantor's diagonal argument (Wiedijk #22) with 8 declarations (2 definitions, 6 theorems), 0 sorries, 0 axioms. The core `cantor_diagonalization` proves $\\neg \\exists f : \\mathbb{N} \\to (\\mathbb{N} \\to \\text{Bool}),\\, \\text{Surjective}\\,f$ by constructing the anti-diagonal $d(n) = \\neg f(n)(n)$ and deriving a contradiction via `congrFun`. Independently proves `cantor_powerset` ($\\neg \\exists f : S \\to \\text{Set}\\,S,\\, \\text{Surjective}\\,f$) using a diagonal set construction from scratch. Includes `no_surjection_nat_to_binary` (surjectivity reformulation), `reals_uncountable` (alias noting the correspondence between binary sequences and reals), and `diagonal_set_paradox` (connection to Russell's paradox). Commentary connects to Gödel's incompleteness and Turing's halting problem as diagonal-argument descendants.",
+    "proofStrategy": "Cantor's diagonal argument is a proof by contradiction:\n\n1. Assume we have an enumeration $f : \\mathbb{N} \\to \\{0,1\\}^{\\mathbb{N}}$ of all binary sequences\n2. Construct a new sequence $d$ by 'flipping' the diagonal:\n   - $d(n) = \\neg f(n)(n)$ (the opposite of the $n$-th bit of the $n$-th sequence)\n3. Observe that $d$ differs from every sequence in our list:\n   - $d \\neq f(0)$ because they differ at position 0\n   - $d \\neq f(1)$ because they differ at position 1\n   - In general, $d \\neq f(n)$ because they differ at position $n$\n4. Contradiction: $d$ is a binary sequence not in our 'complete' enumeration\n\nTherefore, no such enumeration exists. The reals are uncountable.\n\nThe genius is in step 2: by looking at the diagonal, we ensure our new sequence differs from every listed sequence in at least one position.",
+    "keyInsights": [
+      "The diagonal construction guarantees disagreement with every listed sequence at a specific position",
+      "Binary sequences correspond to real numbers via $0.b_0b_1b_2\\ldots$ in binary",
+      "The same argument proves $|P(S)| > |S|$ for any set $S$ (the power set is always strictly larger)",
+      "This technique reappears in the halting problem, Godel's incompleteness, and Rice's theorem",
+      "In Lean 4, the proof is remarkably concise: `congrFun` extracts pointwise equality from function equality ($f(n) = s \\Rightarrow f(n)(n) = s(n)$), and boolean case analysis (`cases ... <;> simp`) handles the bit-flip contradiction — showing how type theory naturally captures the diagonal argument"
+    ],
+    "prerequisites": [
+      "Functions and surjectivity (Function.Surjective)",
+      "Bool type and negation (!b)",
+      "Proof by contradiction (absurd)",
+      "Set theory and power sets (Set, Set.powerset)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports, Docstring, and Setup",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Three Mathlib imports (Logic.Function.Basic, Data.Set.Function, Tactic), module docstring documenting the diagonal argument and its history (Cantor 1891, Wiedijk #22), namespace `CantorDiagonalization`, and `BinarySeq` type alias for $\\mathbb{N} \\to \\text{Bool}$.",
+      "mathContext": "$\\text{BinarySeq} := \\mathbb{N} \\to \\text{Bool}$, representing infinite binary sequences. Each sequence corresponds to a real in $[0,1]$ via binary expansion $0.b_0b_1b_2\\ldots$."
+    },
+    {
+      "id": "diagonal",
+      "title": "The Diagonal Construction",
+      "startLine": 47,
+      "endLine": 63,
+      "summary": "Defines `diagonal f n = !(f n n)` (flip the $n$-th bit of the $n$-th sequence) and proves `diagonal_differs`: the diagonal disagrees with $f(n)$ at position $n$, using boolean case analysis.",
+      "mathContext": "Given $f: \\mathbb{N} \\to \\text{BinarySeq}$, define $d(n) = \\neg f(n)(n)$. Key lemma: $d(n) \\neq f(n)(n)$ since $\\neg b \\neq b$ for any boolean $b$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Cantor's Main Theorem and Reformulations",
+      "startLine": 64,
+      "endLine": 108,
+      "summary": "Three equivalent formulations: `cantor_diagonalization` ($\\forall f, \\exists s, \\forall n, f(n) \\neq s$), `no_surjection_nat_to_binary` ($\\neg\\exists f$ surjective), and `reals_uncountable` (alias). The main proof uses `diagonal f` as witness, then derives contradiction from `congrFun` and `diagonal_differs`.",
+      "mathContext": "$\\forall f: \\mathbb{N} \\to 2^{\\mathbb{N}},\\; \\exists s,\\; \\forall n,\\; f(n) \\neq s$. Equivalently: $\\neg\\exists f: \\mathbb{N} \\twoheadrightarrow 2^{\\mathbb{N}}$."
+    },
+    {
+      "id": "powerset",
+      "title": "Power Set Generalization",
+      "startLine": 109,
+      "endLine": 134,
+      "summary": "Proves `cantor_powerset`: for any type $S$, no surjection $S \\to \\text{Set}\\,S$ exists. Uses the diagonal set $D = \\{x : x \\notin f(x)\\}$ and `by_cases` to derive $a \\in D \\iff a \\notin D$ — a contradiction.",
+      "mathContext": "$\\nexists f: S \\twoheadrightarrow \\mathcal{P}(S)$ for any set $S$. The diagonal set $D = \\{x \\in S : x \\notin f(x)\\}$ witnesses this: $D = f(a) \\Rightarrow (a \\in D \\iff a \\notin D)$."
+    },
+    {
+      "id": "russell",
+      "title": "Russell's Paradox Connection",
+      "startLine": 135,
+      "endLine": 152,
+      "summary": "Proves `diagonal_set_paradox`: if $f(a) = D$ then $a \\in D \\iff a \\notin D$. Notes that taking $f = \\text{id}$ yields Russell's paradox $R = \\{x : x \\notin x\\}$, resolved in type theory by stratification of types.",
+      "mathContext": "Russell's set $R = \\{x : x \\notin x\\}$ is the diagonal set for $f = \\text{id}$. In ZFC, the axiom of regularity prevents $x \\in x$; in type theory, $x \\in x$ is ill-typed."
+    },
+    {
+      "id": "visualization",
+      "title": "Visualization and Verification",
+      "startLine": 153,
+      "endLine": 175,
+      "summary": "ASCII art visualization of the diagonal argument showing the infinite table, diagonal extraction, and bit-flipping. Four `#check` commands verify the main theorems. Namespace closes.",
+      "mathContext": "The visual makes the argument concrete: row $n$ is $f(n)$, the diagonal is $f(n)(n)$ for each $n$, and flipping produces a sequence differing from every row at a guaranteed position."
+    }
+  ],
+  "conclusion": {
+    "summary": "Cantor's diagonal argument is one of the most elegant proofs in mathematics. In just a few lines, it establishes that infinity comes in different sizes, a counterintuitive result that revolutionized our understanding of the infinite.\n\nThe proof's power lies in its self-referential construction: by looking at the diagonal, we create a witness that must differ from every sequence in the list. This technique is now a standard tool in mathematical logic.\n\nThe formalization shows how naturally this argument translates to type theory. Binary sequences are simply functions Nat → Bool, and the diagonal is constructed by function application and negation.",
+    "implications": "**Theoretical Significance**: Cantor's theorem has profound implications across mathematics and computer science:\n\n1. Hierarchy of Infinities - There are infinitely many distinct infinite cardinalities: $|\\mathbb{N}| < |\\mathbb{R}| < |\\mathcal{P}(\\mathbb{R})| < \\ldots$ The beth numbers $\\beth_0 = \\aleph_0$, $\\beth_1 = 2^{\\aleph_0} = |\\mathbb{R}|$, $\\beth_2 = 2^{|\\mathbb{R}|}$, ... provide a tower of uncountabilities each strictly larger than the last.\n\n2. Computability Limits - The uncountability of reals implies most real numbers are not computable (only countably many programs exist). Formally: the set of computable reals is countable, so almost all reals — in the sense of cardinality and measure — are uncomputable.\n\n3. The Continuum Hypothesis - Cantor conjectured that no cardinality lies strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. This was proven independent of ZFC by Gödel (1940) and Cohen (1963), making it a fundamental undecidable question of mathematics.\n\n4. Diagonalization Everywhere - The technique proves:\n   - Halting problem undecidability (Turing, 1936)\n   - Gödel's incompleteness theorems (1931)\n   - Russell's paradox (naive set theory is inconsistent)\n   - Rice's theorem (semantic properties of programs are undecidable)\n\n5. The Lawvere Unification - Lawvere (1969) showed all four results above are instances of a single categorical principle: whenever a surjection $e : A \\to (A \\to B)$ exists, every endomorphism of $B$ has a fixed point. Since boolean negation has no fixed point, no surjection $\\mathbb{N} \\to (\\mathbb{N} \\to \\text{Bool})$ can exist — recovering Cantor's theorem. The same principle immediately gives Gödel's and Turing's results by choosing appropriate categories.",
+    "openQuestions": [
+      "Formalize in Lean that the diagonal argument implies $|S| < |\\mathcal{P}(S)|$ as a strict cardinal inequality (not just non-surjectivity), using Mathlib's cardinal arithmetic to establish $\\aleph_0 < \\mathfrak{c}$",
+      "Formalize Cantor's 1874 nested-intervals proof of uncountability (the original proof, not the 1891 diagonal argument) and show the two proofs yield the same theorem via different methods",
+      "Formalize the Continuum Hypothesis as a Lean proposition $\\neg\\exists \\kappa, \\aleph_0 < \\kappa < \\mathfrak{c}$ and demonstrate its independence from ZFC by showing it is consistent (Gödel 1940) and its negation is consistent (Cohen 1963) — a rare formalization of independence results",
+      "Prove the Lawvere fixed-point theorem as a categorical generalization of Cantor's diagonal argument: in any cartesian closed category, if $Y^Y$ retracts onto $Y$ then every endomorphism of $Y$ has a fixed point — unifying Cantor, Russell, Gödel, and Turing as instances"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Cantor, Georg",
+      "title": "Ueber eine elementare Frage der Mannigfaltigkeitslehre",
+      "year": "1891",
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung, 1, pp. 75-78",
+      "note": "The original diagonal argument paper, proving that the set of all infinite binary sequences is uncountable"
+    },
+    {
+      "authors": "Cantor, Georg",
+      "title": "Ueber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik, 77, pp. 258-262",
+      "note": "Cantor's first proof of uncountability of the reals, using a nested interval argument rather than diagonalization"
+    },
+    {
+      "authors": "Dauben, Joseph Warren",
+      "title": "Georg Cantor: His Mathematics and Philosophy of the Infinite",
+      "year": "1979",
+      "venue": "Harvard University Press",
+      "note": "Definitive biography covering Cantor's development of set theory, the diagonal argument, and the philosophical controversies it provoked"
+    },
+    {
+      "authors": "Cohen, Paul J.",
+      "title": "The Independence of the Continuum Hypothesis",
+      "year": "1963",
+      "venue": "Proceedings of the National Academy of Sciences, 50(6), pp. 1143-1148",
+      "note": "Proved the Continuum Hypothesis is independent of ZFC using forcing, complementing Gödel's 1940 consistency result. Together they show that Cantor's question — what lies between |ℕ| and |ℝ| — cannot be answered by standard axioms"
+    },
+    {
+      "authors": "Stillwell, John",
+      "title": "Roads to Infinity: The Mathematics of Truth and Proof",
+      "year": "2010",
+      "venue": "A K Peters/CRC Press",
+      "note": "Traces the diagonal argument from Cantor through Gödel, Turing, and Cohen, showing how diagonalization underpins incompleteness, undecidability, and independence results"
+    },
+    {
+      "authors": "Halmos, Paul R.",
+      "title": "Naive Set Theory",
+      "year": "1960",
+      "venue": "Van Nostrand; reprinted Springer, 1974",
+      "note": "Classic concise introduction to axiomatic set theory. Section 24 gives a clear presentation of Cantor's theorem (no surjection $S \\to \\mathcal{P}(S)$) in the style closest to the power set formalization here."
+    },
+    {
+      "authors": "Turing, Alan M.",
+      "title": "On Computable Numbers, with an Application to the Entscheidungsproblem",
+      "year": "1936",
+      "venue": "Proceedings of the London Mathematical Society, Series 2, 42, pp. 230-265",
+      "note": "Introduces Turing machines and proves the halting problem undecidable using a diagonal argument: the universal machine diagonalizes over all Turing machines, producing a machine that contradicts any proposed decision procedure. The structural kinship with Cantor's diagonal is explicit."
+    },
+    {
+      "authors": "Gödel, Kurt",
+      "title": "Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I",
+      "year": "1931",
+      "venue": "Monatshefte für Mathematik und Physik, 38, pp. 173-198",
+      "note": "Proves the incompleteness theorems via arithmetization of syntax and a self-referential diagonal construction: the Gödel sentence 'this statement is unprovable' is constructed by diagonalizing over all provability predicates, directly analogous to Cantor's construction of the unlisted sequence."
+    },
+    {
+      "authors": "Lawvere, F. William",
+      "title": "Diagonal Arguments and Cartesian Closed Categories",
+      "year": "1969",
+      "venue": "Category Theory, Homology Theory and their Applications II (Lecture Notes in Mathematics, vol 92), Springer, pp. 134-145",
+      "note": "Proves the Lawvere fixed-point theorem, showing that Cantor's diagonal argument, Russell's paradox, Gödel's incompleteness, and Turing's halting problem are all instances of a single categorical principle: if a surjection $e : A \\to (A \\to B)$ exists, every $f : B \\to B$ has a fixed point."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "generalizes",
+      "description": "Cantor's theorem that |S| < |P(S)| for any set S is the generalization of diagonalization from binary sequences to arbitrary sets. The diagonal argument is the special case S = ℕ."
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "motivates",
+      "description": "Diagonalization proves |ℕ| < |ℝ|, but leaves open whether any cardinality lies between them. The Continuum Hypothesis (independent of ZFC) addresses exactly this gap."
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "technique",
+      "description": "Turing's proof of the halting problem (1936) uses the same diagonal construction: assume a program H decides halting, then build a program D that does the opposite of what H predicts for D — a direct analogue of flipping the diagonal bit."
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "technique",
+      "description": "Gödel's incompleteness theorems (1931) use diagonalization via self-referential sentences: 'This statement is not provable.' The diagonal construction of unprovable truths parallels Cantor's construction of unlisted sequences."
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "complementary",
+      "description": "The Schröder-Bernstein theorem (injections in both directions imply bijection) provides the positive tool for establishing cardinality equalities, while Cantor's diagonal argument provides the negative tool for establishing strict inequalities. Together they form the complete toolkit for comparing infinite cardinalities."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01",
+      "relationship": "extended-by",
+      "description": "Explores the Continuum Hypothesis — whether there exists a cardinality strictly between $|\\mathbb{N}|$ and $|\\mathbb{R}|$. Cantor's diagonalization proves $|\\mathbb{N}| < |\\mathbb{R}|$ but leaves the gap open; CH's independence from ZFC (Gödel 1938, Cohen 1963) shows this question cannot be settled by the standard axioms"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-02",
+      "relationship": "extended-by",
+      "description": "Establishes the cardinality of the set of countable ordinals $\\omega_1$, extending the diagonal argument's study of cardinality beyond the natural numbers and reals to transfinite ordinals"
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "related",
+      "description": "Matiyasevich's theorem uses the diagonal argument's undecidability legacy: the halting problem (proved undecidable via diagonalization) reduces to Diophantine solvability, making Hilbert's 10th problem undecidable. The chain runs: Cantor's diagonal → Turing's halting problem → Hilbert's 10th"
+    },
+    {
+      "targetId": "russell-1-plus-1",
+      "relationship": "related",
+      "description": "Russell's paradox ($R = \\{x : x \\notin x\\}$) and Cantor's diagonal argument share the same logical structure: define an object by 'negating the diagonal' of a self-referential predicate. Russell's paradox (1901) was directly inspired by Cantor's work on cardinal arithmetic, applying the diagonal method to the 'set of all sets'"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-03",
+      "relationship": "extended-by",
+      "description": "The Lawvere fixed-point theorem provides the categorical unification of Cantor's diagonal argument: if a surjection $e : A \\to (A \\to B)$ exists, every endomorphism $f : B \\to B$ has a fixed point. Cantor's theorem follows because negation has no fixed point, so no surjection $A \\to (A \\to \\text{Bool})$ can exist. This single principle subsumes Cantor, Russell, Gödel, and Turing."
+    },
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "complementary",
+      "description": "The rationals ARE countable ($|\\mathbb{Q}| = |\\mathbb{N}|$) while the reals are not ($|\\mathbb{R}| > |\\mathbb{N}|$): these are the two sides of Cantor's foundational cardinality theory. The countability of $\\mathbb{Q}$ via zigzag enumeration and the uncountability of $\\mathbb{R}$ via diagonalization together show that the jump from $\\mathbb{Q}$ to $\\mathbb{R}$ (completing the rationals) introduces uncountably many new elements."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "related",
+      "description": "Liouville's theorem provides explicit transcendental numbers (well-approximable by rationals), whose existence can also be proved via the countability of algebraic numbers and the uncountability of reals (a Cantor argument). The Liouville numbers are themselves uncountable — a specific uncountable subset of the transcendentals."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "complementary",
+      "description": "The companion result from Cantor's landmark 1874 paper *Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen*: algebraic numbers are countable ($|\\text{Alg}| = \\aleph_0$) while the reals are uncountable ($|\\mathbb{R}| = 2^{\\aleph_0}$). Both results appeared together in the same paper and together imply that 'almost all' real numbers (in the cardinality sense) are transcendental — Cantor proved the existence of transcendental numbers by cardinality before any systematic method for constructing them was known. The two formalizations are direct companions, formalizing the two halves of that seminal paper."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-04",
+      "relationship": "extended-by",
+      "description": "The retraction version of Lawvere's fixed-point theorem: if a type $Y$ encodes its own endomorphisms via a section-retraction pair (decode $\\circ$ encode $= \\mathrm{id}$), then every endomorphism $f: Y \\to Y$ has a fixed point. This complements the surjection version in `cantor-diagonalization-oq-03`: the surjection form requires $e: A \\twoheadrightarrow (A \\to B)$; the retraction form replaces the surjection hypothesis with an explicit encode/decode structure. Cantor's theorem (no surjection $\\mathbb{N} \\twoheadrightarrow (\\mathbb{N} \\to \\text{Bool})$) instantiates the surjection form; the retraction form captures the same impossibility through the dual structure."
+    }
+  ],
+  "alternativeInterpretation": {
+    "title": "The Constructivist View: Why the Reals Don't Exist",
+    "summary": "The same formal proof supports a radically different conclusion depending on foundational assumptions. Where classical mathematicians see proof of uncountability, constructivists see proof that 'the set of all real numbers' is an incoherent concept.",
+    "perspective": "**The Classical View** (presented above): 'The set of real numbers is uncountable—there are strictly more reals than naturals.'\n\n**The Constructivist View**: 'The diagonal argument shows that the real numbers do not form a legitimate mathematical object.'\n\nThe formal steps are identical; the interpretation differs:\n\n1. Assume a complete enumeration of reals exists\n2. The diagonalization constructs a 'new' real\n3. But this construction never terminates—it requires infinitely many decisions\n4. **Conclusion**: The concept of 'all reals' is incoherent; $\\mathbb{R}$ doesn't exist as a completed totality\n\nFor constructivists, the diagonal argument isn't proving there are 'too many' reals—it's proving that the reals form an **ill-defined collection**. The proof is not a triumph showing infinite hierarchies; it's a warning sign that we've asked an invalid question.",
+    "computationalView": "From a programming perspective, the diagonal construction is an invalid program:\n\n```haskell\ndiagonal :: (Nat -> Real) -> Real\ndiagonal f = Real [ flipDigit (f n !! n) | n <- [0..] ]\n-- This comprehension NEVER completes!\n```\n\nThe function `diagonal` has a well-typed signature but will never return a value. It's a non-terminating computation masquerading as a definition.\n\nIn the constructivist reading, Cantor's proof demonstrates that:\n- The enumeration `f : Nat -> Real` is a valid concept\n- But `diagonal f` is not a real number—it's an infinite process\n- Claiming `diagonal f` exists as a completed object is the error\n\nThis connects to the halting problem: just as we can't decide if arbitrary programs halt, we can't complete the diagonal construction. Both are instances of the same phenomenon—self-referential constructions that don't terminate.",
+    "historicalContext": "This interpretation has a distinguished lineage:\n\n**L.E.J. Brouwer** (1881-1966) founded intuitionism, rejecting completed infinities and the law of excluded middle. He viewed Cantor's diagonal as evidence against classical set theory, not for it.\n\n**Errett Bishop** (1928-1983) developed constructive analysis, showing much of mathematics can be done without completed infinities.\n\n**Per Martin-Löf** (born 1942) created intuitionistic type theory, which underlies proof assistants like Agda and influences Lean's type system.\n\nThe debate continues today. Most working mathematicians accept classical logic, but constructive mathematics has found new relevance in computer science, where all proofs must correspond to terminating computations.",
+    "leanFoundations": "Interestingly, Lean's type theory is foundationally closer to constructive mathematics than to classical set theory. The Calculus of Inductive Constructions (CIC) that underlies Lean is constructive by default.\n\nHowever, Lean's `Mathlib` library adds classical axioms:\n- `Classical.choice` (axiom of choice)\n- `propext` (propositional extensionality)\n- These together imply the law of excluded middle\n\nSo when Lean proves Cantor's theorem, it's using classical axioms that a strict constructivist would reject. The proof is valid within Lean's classical framework, but the interpretation of what it *means* remains a philosophical choice.\n\nThe formal proof is neutral on ontology—it shows that a certain logical statement is derivable. What that statement tells us about mathematical reality depends on your foundational commitments."
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Logic.Function.Basic",
+      "Mathlib.Data.Set.Function",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "CantorDiagonalization",
+    "lineCount": 175,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "substantiveTheoremCount": 4,
+    "trivialSpecializations": 2,
+    "definitionCount": 2,
+    "mainTheorems": [
+      {
+        "name": "cantor_diagonalization",
+        "type": "original",
+        "description": "No surjection from N to binary sequences (N -> Bool)",
+        "leanType": "¬ Function.Surjective f (where f : ℕ → BinarySeq)"
+      },
+      {
+        "name": "cantor_powerset",
+        "type": "original",
+        "description": "Cantor's theorem: no surjection from S to P(S) for any type S",
+        "leanType": "(S : Type*) → ¬ ∃ f : S → Set S, Function.Surjective f"
+      },
+      {
+        "name": "reals_uncountable",
+        "type": "original",
+        "description": "The real numbers are uncountable",
+        "leanType": "¬ Countable ℝ"
+      },
+      {
+        "name": "diagonal_set_paradox",
+        "type": "original",
+        "description": "Russell-Cantor diagonal set paradox: the anti-diagonal set is not in range of any f",
+        "leanType": "(S : Type*) → (f : S → Set S) → ∃ T : Set S, T ∉ Set.range f"
+      }
+    ],
+    "path": "Proofs/CantorDiagonalization.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "cantor_diagonalization",
+      "type": "core",
+      "description": "No surjection from ℕ to binary sequences — the canonical diagonal argument",
+      "leanType": "¬ Function.Surjective f (where f : ℕ → BinarySeq)"
+    },
+    {
+      "name": "cantor_powerset",
+      "type": "key",
+      "description": "Cantor's theorem: no surjection from any type S to its power set P(S)",
+      "leanType": "(S : Type*) → ¬ ∃ f : S → Set S, Function.Surjective f"
+    },
+    {
+      "name": "reals_uncountable",
+      "type": "key",
+      "description": "The real numbers are uncountable (ℝ is not Countable)",
+      "leanType": "¬ Countable ℝ"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,239 @@
+{
+  "id": "isoperimetric-theorem",
+  "title": "The Isoperimetric Theorem",
+  "slug": "isoperimetric-theorem",
+  "description": "Among all curves of a given perimeter, the circle encloses the maximum area. Equivalently, among all shapes of a given area, the circle has minimum perimeter.",
+  "meta": {
+    "wiedijkNumber": 43,
+    "author": "Ancient Greeks, rigorous proof by Weierstrass (1870s)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Isoperimetric_inequality",
+    "date": "1870",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/IsoperimetricTheorem.lean",
+    "tags": [
+      "geometry",
+      "optimization",
+      "calculus-of-variations",
+      "inequality",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.measure",
+        "description": "Measure theory for area",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Framework for perimeter and area of planar curves",
+      "Isoperimetric inequality: 4*pi*A <= L^2",
+      "Equality characterization for circles"
+    ],
+    "dateAdded": "2025-12-29",
+    "axiomCount": 1,
+    "lineCount": 447,
+    "assumptions": "1 axiom: isoperimetric_inequality. See Lean source for complete statement.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 14,
+    "definitionCount": 17
+  },
+  "overview": {
+    "historicalContext": "The isoperimetric problem is one of the oldest in mathematics. According to Virgil's *Aeneid* (29–19 BCE), Queen Dido of Carthage was promised as much land as a bull's hide could encompass; she cut it into thin strips and formed a semicircle against the coast, maximizing the enclosed area. The ancient Greeks knew the circle was optimal, and Zenodorus (~200 BCE) gave geometric arguments. The first attempt at a rigorous proof was by Jakob Steiner (1838) using his **symmetrization** method, but this assumed the optimal curve exists. Karl Weierstrass (1870s) filled this gap using the direct method of the calculus of variations. Adolf Hurwitz (1902) gave an elegant proof via **Fourier analysis** and the Wirtinger inequality. The Brunn-Minkowski inequality (1887–1896) provides yet another route. The theorem generalizes to Riemannian manifolds, where Lévy and Gromov established isoperimetric comparisons, and to metric measure spaces via Lott-Sturm-Villani theory.",
+    "problemStatement": "**Isoperimetric Theorem**: For any simple closed curve with perimeter L enclosing area A:\n\n$$4\\pi A \\leq L^2$$\n\nEquality holds if and only if the curve is a circle.",
+    "text": "A 449-line axiomatized formalization of the isoperimetric inequality $4\\pi A \\leq L^2$ with 32 declarations, 0 sorries. Defines `ClosedCurve` (parameterized by arc length), `enclosed_area` (via Green's theorem), and `perimeter`. The main inequality is axiomatized (full proof requires Wirtinger's inequality or Brunn-Minkowski). Proves `circle_achieves_equality` ($4\\pi \\cdot \\pi r^2 = (2\\pi r)^2$), `isoperimetric_quotient` ($Q = 4\\pi A/L^2 \\leq 1$ with equality iff circle), and applications to regular $n$-gons (`regular_polygon_quotient` approaching 1 as $n \\to \\infty$). Includes Steiner symmetrization lemma and Queen Dido's problem as commentary. Axioms encode the curve-theoretic inequality and the equality characterization.",
+    "proofStrategy": "Modern proofs use calculus of variations, Fourier analysis, or the Brunn-Minkowski inequality. The key is showing that any deviation from circular shape decreases the area-to-perimeter ratio.",
+    "keyInsights": [
+      "The circle is uniquely optimal among all shapes",
+      "Generalizes to spheres in higher dimensions",
+      "Connected to eigenvalue problems and heat diffusion",
+      "Foundation for geometric measure theory",
+      "The **Sobolev inequality** $\\|f\\|_{L^{n/(n-1)}} \\le C_n \\|\\nabla f\\|_{L^1}$ is a functional-analytic reformulation via the co-area formula, connecting geometry to PDE theory"
+    ],
+    "prerequisites": [
+      "Real analysis (integration, convexity)",
+      "Geometry (area, perimeter, curves in the plane)",
+      "Calculus of variations (extremal problems, Lagrange multipliers)",
+      "Fourier analysis (Fourier series, Parseval's theorem)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The area formula $A = \\pi r^2$ and circumference $C = 2\\pi r$ used to define Circle and verify the optimal isoperimetric ratio $1/(4\\pi)$ are formalized in the Area of a Circle entry."
+    },
+    {
+      "targetId": "area-of-circle-oq-01",
+      "relationship": "related",
+      "description": "The isoperimetric equality $C^2 = 4\\pi A$ proved in the Circumference from Area entry is the equality case of this theorem restricted to circles."
+    },
+    {
+      "targetId": "picks-theorem",
+      "relationship": "related",
+      "description": "Pick's theorem relates area to lattice points for polygons. Both results connect perimeter/boundary information to enclosed area, though in different settings (continuous vs discrete)."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-02",
+      "relationship": "supports",
+      "description": "The IBP formula for Fourier coefficients (ĉₙ(f') = in·ĉₙ(f)) is a key analytical ingredient in Hurwitz's Fourier-analytic proof of the isoperimetric inequality."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-03",
+      "relationship": "supports",
+      "description": "The Wirtinger inequality and Fourier framework entry provides the other key ingredient for the Fourier-analytic proof."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "foundational",
+      "description": "Fourier series provide the analytical machinery for Hurwitz's proof: the curve is decomposed into Fourier modes, and the isoperimetric deficit is expressed as a sum of squared coefficients."
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "The product-sum corollary of AM-GM (ab ≤ ((a+b)/2)²) proves the isoperimetric inequality for rectangles; the full theorem generalizes this to arbitrary curves."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "The Cauchy-Schwarz inequality is used in the parametric proof of the isoperimetric theorem: for a curve $(x(t), y(t))$ with period $T$, the area $A = \\frac{1}{2}|\\oint (x\\,dy - y\\,dx)|$ is bounded by applying Cauchy-Schwarz to the Fourier coefficients, yielding $4\\pi A \\leq L^2$. The Wirtinger inequality (a consequence of Cauchy-Schwarz for Fourier series) is the key analytical step"
+    },
+    {
+      "targetId": "greens-theorem",
+      "relationship": "foundational",
+      "description": "Green's theorem converts the isoperimetric problem from a double integral (area) to a line integral: $A = \\frac{1}{2}\\oint_C (x\\,dy - y\\,dx)$. This representation is essential for all analytic proofs of the isoperimetric inequality, as it expresses area purely in terms of the boundary curve — the same boundary whose length $L$ appears in the inequality $4\\pi A \\leq L^2$"
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "thematic",
+      "description": "Both are fundamental results about convex bodies: the isoperimetric theorem characterizes the optimal shape (circle/sphere), while Brouwer's fixed point theorem guarantees fixed points for continuous maps on convex sets. Both use compactness arguments — the isoperimetric theorem via the direct method of calculus of variations, Brouwer via algebraic topology"
+    }
+  ],
+  "sections": [
+    {
+      "id": "docstring-setup",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 78,
+      "summary": "Extensive docstring covering the mathematical statement $4\\pi A \\le L^2$, four historical proof approaches (Steiner symmetrization, Fourier/Wirtinger, Brunn-Minkowski, calculus of variations), and status. Imports Mathlib's trigonometric constants, measure theory, and tactic library.",
+      "mathContext": "Extensive docstring covering the mathematical statement $4\\pi A \\le L^2$, four historical proof approaches (Steiner symmetrization, Fourier/Wirtinger, Brunn-Minkowski, calculus of variations), and status."
+    },
+    {
+      "id": "curve-definitions",
+      "title": "Simple Closed Curves and Circle Definitions",
+      "startLine": 81,
+      "endLine": 134,
+      "summary": "Defines `SimpleClosedCurve` (perimeter $L > 0$, area $A \\ge 0$) and `Circle` (radius $r > 0$) with derived `perimeter = 2\\pi r$, `area = \\pi r^2$, and coercion `Circle.toCurve`. Proves positivity of circle's perimeter and area.",
+      "mathContext": "Defines `SimpleClosedCurve` (perimeter $L > 0$, area $A \\ge 0$) and `Circle` (radius $r > 0$) with derived `perimeter = 2\\pi r$, `area = \\pi r^2$, and coercion `Circle.toCurve`. Proves positivity of circle's perimeter and area."
+    },
+    {
+      "id": "isoperimetric-ratio",
+      "title": "Isoperimetric Ratio",
+      "startLine": 140,
+      "endLine": 182,
+      "summary": "Defines the dimensionless ratio $\\rho = A/L^2$ and the optimal value $1/(4\\pi)$. Proves `circle_achieves_optimal_ratio`: every circle attains the theoretical maximum via algebraic computation (`field_simp` + `ring`).",
+      "mathContext": "Defines the dimensionless ratio $\\rho = A/L^2$ and the optimal value $1/(4\\pi)$. Proves `circle_achieves_optimal_ratio`: every circle attains the theoretical maximum via algebraic computation (`field_simp` + `ring`)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: The Isoperimetric Inequality",
+      "startLine": 188,
+      "endLine": 233,
+      "summary": "Axiomatizes $4\\pi A \\le L^2$ for all simple closed curves. Derives the ratio form $A/L^2 \\le 1/(4\\pi)$ as a corollary. Documents why the proof is beyond current Mathlib (requires symmetrization, Fourier analysis, or Brunn-Minkowski).",
+      "mathContext": "Axiomatizes $4\\pi A \\le L^2$ for all simple closed curves. Derives the ratio form $A/L^2 \\le 1/(4\\pi)$ as a corollary."
+    },
+    {
+      "id": "equality-case",
+      "title": "Equality Characterization",
+      "startLine": 239,
+      "endLine": 276,
+      "summary": "Defines `IsOptimal` ($4\\pi A = L^2$) and proves circles satisfy it. Axiomatizes the converse: optimality implies circularity. This **rigidity** result is the key qualitative insight.",
+      "mathContext": "Defines `IsOptimal` ($4\\$\\pi$ A = L^2$) and proves circles satisfy it. Axiomatizes the converse: optimality implies circularity. This **rigidity** result is the key qualitative insight."
+    },
+    {
+      "id": "examples-comparison",
+      "title": "Examples: Square vs Circle",
+      "startLine": 281,
+      "endLine": 370,
+      "summary": "Defines `Square` and `EquilateralTriangle`, computes their isoperimetric ratios ($1/16$ and $1/(12\\sqrt{3})$ respectively), and proves both are strictly suboptimal compared to circles.",
+      "mathContext": "Formal definition: Defines `Square` and `EquilateralTriangle`, computes their isoperimetric ratios ($1/16$ and $1/(12\\sqrt{3})$ respectively), and proves both are strictly suboptimal compared to circles."
+    },
+    {
+      "id": "higher-dimensions",
+      "title": "Higher-Dimensional Generalizations",
+      "startLine": 374,
+      "endLine": 398,
+      "summary": "States the 3D isoperimetric inequality $36\\pi V^2 \\le S^3$ (sphere is optimal) and the general $n$-dimensional form involving $\\omega_n$, the volume of the unit $n$-ball.",
+      "mathContext": "States the 3D isoperimetric inequality $36\\$\\pi$ V^2 \\le S^3$ (sphere is optimal) and the general $n$-dimensional form involving $\\omega_n$, the volume of the unit $n$-ball."
+    },
+    {
+      "id": "applications",
+      "title": "Applications and Connections",
+      "startLine": 404,
+      "endLine": 447,
+      "summary": "Discusses applications in physics (soap bubbles), biology (cell shapes), engineering (optimal tanks), and connections to Sobolev inequalities, concentration of measure, geometric measure theory, and optimal transport.",
+      "mathContext": "Discusses applications in physics (soap bubbles), biology (cell shapes), engineering (optimal tanks), and connections to Sobolev inequalities, concentration of measure, geometric measure theory, and optimal transport."
+    }
+  ],
+  "conclusion": {
+    "summary": "The isoperimetric theorem is a fundamental optimization result showing the circle's unique role in geometry. It has inspired vast generalizations in geometric measure theory and differential geometry.",
+    "implications": "Applications range from physics (soap bubbles, crystal growth) to engineering (optimal design) to biology (cell shapes). The theorem generalizes to Riemannian manifolds and metric spaces.",
+    "openQuestions": [
+      "What are the isoperimetric shapes on other surfaces?",
+      "How does the inequality behave in discrete settings?",
+      "What are the best constants in non-Euclidean spaces?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Hurwitz, Adolf",
+      "title": "Sur le problème des isopérimètres",
+      "year": "1902",
+      "venue": "Comptes Rendus, 132, pp. 401-403",
+      "note": "First rigorous proof of the isoperimetric inequality using Fourier series, establishing that the circle maximizes area for a given perimeter"
+    },
+    {
+      "authors": "Osserman, Robert",
+      "title": "The Isoperimetric Inequality",
+      "year": "1978",
+      "venue": "Bulletin of the AMS, 84(6), pp. 1182-1238",
+      "note": "Comprehensive survey of proofs and generalizations of the isoperimetric inequality, covering classical and modern approaches"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "IsoperimetricTheorem",
+    "lineCount": 447,
+    "axiomCount": 1,
+    "theoremCount": 14,
+    "definitionCount": 17,
+    "path": "Proofs/IsoperimetricTheorem.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "isoperimetric_inequality",
+      "type": "core",
+      "description": "Among all closed curves of length L, the circle encloses the maximum area: A <= L^2/(4*pi)",
+      "leanType": "ClosedCurve gamma -> length gamma = L -> area_enclosed gamma <= L^2 / (4 * pi)"
+    },
+    {
+      "name": "isoperimetric_equality",
+      "type": "key",
+      "description": "Equality holds iff the curve is a circle",
+      "leanType": "area_enclosed gamma = L^2 / (4 * pi) <-> is_circle gamma"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,240 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-05",
+  "title": "Minimal Polynomial Reduction in General K-Algebras",
+  "slug": "cayley-hamilton-minpoly-oq-05",
+  "description": "Formalizes modular reduction via the minimal polynomial in general K-algebras: evaluating f at x equals evaluating f mod minpoly(x). Also proves base change behavior in algebra towers K ⊂ L ⊂ A, showing degree can only decrease when extending the base field.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(field_theory)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ05.lean",
+    "tags": [
+      "linear-algebra",
+      "abstract-algebra",
+      "minimal-polynomial",
+      "field-extensions",
+      "scalar-tower",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "minpoly.monic",
+        "description": "Minimal polynomial of an integral element is monic",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "minpoly.aeval",
+        "description": "Minimal polynomial annihilates its element",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "minpoly.dvd",
+        "description": "Minpoly divides any annihilating polynomial",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "Polynomial.modByMonic_add_div",
+        "description": "Division algorithm: f = (f mod m) + m * (f div m)",
+        "module": "Mathlib.Algebra.Polynomial.Div"
+      },
+      {
+        "theorem": "Polynomial.eval₂_map",
+        "description": "eval₂ commutes with polynomial map",
+        "module": "Mathlib.Algebra.Polynomial.Eval.Ring"
+      },
+      {
+        "theorem": "IsScalarTower.algebraMap_eq",
+        "description": "algebraMap factors through scalar towers",
+        "module": "Mathlib.Algebra.Algebra.Tower"
+      },
+      {
+        "theorem": "IsIntegral.tower_top",
+        "description": "Integrality transfers up algebra towers",
+        "module": "Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic"
+      },
+      {
+        "theorem": "Polynomial.natDegree_le_of_dvd",
+        "description": "Degree of divisor bounded by degree of dividend",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Operations"
+      }
+    ],
+    "originalContributions": [
+      "Substantive proofs: minpoly_reduction (calc proof via division algorithm), minpoly_annihilator_iff (bidirectional characterization), minpoly_congruence_iff (quotient structure), power_reduction (efficient computation), minpoly_natDegree_tower_le (tower degree bound)",
+      "Pedagogical wrappers around Mathlib: minpoly_dvd_of_idempotent/involutory/nilpotent (special element divisibility, 2-line proofs via minpoly.dvd), minpoly_dvd_map_of_tower (tower divisibility), minpoly_eq_map_of_irreducible (equality via minpoly.eq_of_irreducible_of_monic)",
+      "Seven-section pedagogical organization mirroring textbook progression from core reduction through annihilator theory to tower behavior"
+    ],
+    "dateAdded": "2026-03-21",
+    "prerequisites": [
+      "Minimal polynomials and the Cayley-Hamilton theorem",
+      "Polynomial evaluation in K-algebras (aeval)",
+      "Field extensions and scalar towers",
+      "Polynomial division algorithm and quotient rings",
+      "Integral elements and algebraic elements in ring theory"
+    ],
+    "relatedProblems": [
+      {
+        "id": "cayley-hamilton-minpoly-oq-02-oq-01",
+        "relationship": "Parent: K-algebra invariance of minpoly under AlgEquiv/AlgHom"
+      },
+      {
+        "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+        "relationship": "Sibling: Skolem-Noether theorem for matrix automorphisms"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 232,
+    "assumptions": "0 axioms, 0 sorries. Built on Mathlib's minimal polynomial infrastructure (minpoly.monic, minpoly.aeval, minpoly.dvd, minpoly.irreducible).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 23,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The minimal polynomial of an algebraic element x in a K-algebra A generates the kernel of the evaluation map K[X] → A. Polynomial arithmetic modulo the minimal polynomial captures all algebraic relations satisfied by x. In a tower K ⊂ L ⊂ A, the minimal polynomial over L divides the base change of the one over K, so the degree can only decrease with larger base fields. The theory of minimal polynomials was central to Cayley and Hamilton's work on matrices in the 1850s-1860s; the Cayley-Hamilton theorem states that a matrix satisfies its own characteristic polynomial, and the minimal polynomial divides it. These results were generalized to abstract algebras by Noether and Artin in the 1920s-1930s, and the universal characterization via the kernel of the evaluation map is fundamental to modern commutative algebra.",
+    "problemStatement": "Formalize (1) modular reduction of polynomial evaluation via the minimal polynomial in general K-algebras, and (2) base change behavior of minimal polynomials in algebra towers.",
+    "text": "Formalizes modular reduction via the minimal polynomial in general K-algebras: evaluating f at x equals evaluating f mod minpoly(x). Also proves base change behavior in algebra towers K ⊂ L ⊂ A, showing degree can only decrease when extending the base field.",
+    "proofStrategy": "For modular reduction: use the division algorithm f = (f mod m) + m · q, then evaluate at x where m(x) = 0. For tower divisibility: map minpoly K x through algebraMap K L to get an annihilating polynomial over L, then apply the universal property of the minimal polynomial over L.",
+    "keyInsights": [
+      "Evaluating f(x) only depends on f mod minpoly(x) — higher-degree information is annihilated",
+      "The annihilator ideal of x is exactly the principal ideal generated by the minimal polynomial",
+      "In algebra towers, the minimal polynomial degree can only decrease when extending the base field",
+      "Equality in towers holds precisely when the base-changed polynomial remains irreducible",
+      "The reduction theorem generalizes the Cayley-Hamilton corollary: any polynomial function of a matrix can be computed by a polynomial of degree less than the matrix size"
+    ],
+    "prerequisites": [
+      "Minimal polynomials and the Cayley-Hamilton theorem",
+      "Polynomial evaluation in K-algebras (aeval)",
+      "Field extensions and scalar towers",
+      "Polynomial division algorithm and quotient rings",
+      "Integral elements and algebraic elements in ring theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Documentation and Setup",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Header documenting the five main results: reduction, annihilator characterization, congruence, power reduction, and degree bounds. Sets up universe-polymorphic variables for a field $K$ and $K$-algebra $A$",
+      "mathContext": "The setup `{K : Type*} [Field K] {A : Type*} [Ring A] [Algebra K A]` works in any $K$-algebra — not just matrix algebras, but field extensions, polynomial quotient rings, group algebras, etc."
+    },
+    {
+      "id": "core-reduction",
+      "title": "Section I: Core Reduction Theorem",
+      "startLine": 34,
+      "endLine": 64,
+      "summary": "The fundamental theorem: $\\text{aeval}\\ x\\ f = \\text{aeval}\\ x\\ (f \\bmod \\text{minpoly}\\ K\\ x)$. Uses the division algorithm $f = (f \\bmod m) + m \\cdot q$, then evaluates at $x$ where $m(x) = 0$",
+      "mathContext": "This says $f(x)$ depends only on $f \\bmod \\mu_x$ where $\\mu_x = \\text{minpoly}(K, x)$. Algebraically, the evaluation map $K[X] \\to A$ factors through $K[X]/(\\mu_x)$."
+    },
+    {
+      "id": "annihilator",
+      "title": "Section II: Annihilator Characterization",
+      "startLine": 66,
+      "endLine": 94,
+      "summary": "Full characterization: $f(x) = 0 \\iff \\mu_x | f$. Shows the annihilator ideal $\\text{Ann}(x) = (\\mu_x)$ is principal. Closure under addition and multiplication follow",
+      "mathContext": "The annihilator ideal $\\{f \\in K[X] : f(x) = 0\\}$ is exactly the principal ideal $(\\mu_x)$, since $K[X]$ is a PID and $\\mu_x$ is the monic generator of minimal degree."
+    },
+    {
+      "id": "congruence",
+      "title": "Section III: Congruence and Quotient Structure",
+      "startLine": 96,
+      "endLine": 110,
+      "summary": "$f(x) = g(x) \\iff \\mu_x | (f - g)$. This identifies the evaluation equivalence relation with congruence modulo $\\mu_x$, making $K[X]/(\\mu_x) \\cong K[x] \\subseteq A$ explicit",
+      "mathContext": "The congruence relation $f \\equiv g \\pmod{\\mu_x}$ captures algebraic equality at $x$: the quotient ring $K[X]/(\\mu_x)$ is isomorphic to the $K$-subalgebra generated by $x$."
+    },
+    {
+      "id": "degree-bounds",
+      "title": "Section IV: Degree Bounds",
+      "startLine": 112,
+      "endLine": 132,
+      "summary": "The remainder $f \\bmod \\mu_x$ has degree $< \\deg(\\mu_x)$. In a domain, $\\deg(\\mu_x) > 0$ since $\\mu_x$ is monic and irreducible (not a unit)",
+      "mathContext": "Every element of $K[x] \\cong K[X]/(\\mu_x)$ has a unique representative of degree $< \\deg(\\mu_x)$, forming a $K$-vector space of dimension $\\deg(\\mu_x)$."
+    },
+    {
+      "id": "power-reduction",
+      "title": "Section V: Power Reduction",
+      "startLine": 134,
+      "endLine": 147,
+      "summary": "Powers $x^k$ reduce via $x^k = (X^k \\bmod \\mu_x)(x)$, and $x$ itself reduces to $(X \\bmod \\mu_x)(x)$. This is the basis for efficient computation in $K[x]/(\\mu_x)$",
+      "mathContext": "Power reduction is the computational content of the isomorphism $K[X]/(\\mu_x) \\cong K[x]$: to compute $x^k$ as a $K$-linear combination of $\\{1, x, \\ldots, x^{d-1}\\}$ where $d = \\deg(\\mu_x)$."
+    },
+    {
+      "id": "special-elements",
+      "title": "Section VI: Special Elements",
+      "startLine": 149,
+      "endLine": 176,
+      "summary": "Minimal polynomial divisibility for special algebraic elements: idempotent ($x^2 = x \\implies \\mu_x | X^2 - X$), involutory ($x^2 = 1 \\implies \\mu_x | X^2 - 1$), nilpotent ($x^d = 0 \\implies \\mu_x | X^d$)",
+      "mathContext": "Each condition $p(x) = 0$ gives $\\mu_x | p$. For idempotents: $\\mu_x | X(X-1)$, so $\\mu_x \\in \\{X, X-1, X(X-1)\\}$. For nilpotents: $\\mu_x | X^d$, so $\\mu_x = X^k$ for some $k \\le d$."
+    },
+    {
+      "id": "algebra-tower",
+      "title": "Section VII: Algebra Tower Reduction",
+      "startLine": 179,
+      "endLine": 232,
+      "summary": "For towers $K \\subseteq L \\subseteq A$: integrality lifts, $\\mu_L(x) | \\text{map}(\\mu_K(x))$, and $\\deg(\\mu_L(x)) \\le \\deg(\\mu_K(x))$. Equality holds when the mapped polynomial stays irreducible",
+      "mathContext": "In the tower $K \\subset L \\subset A$, the minimal polynomial over $L$ divides the base change of the one over $K$: more polynomials are available over $L$, so the degree can only decrease. Equality $\\mu_L = \\text{map}(\\mu_K)$ holds iff $\\mu_K$ stays irreducible over $L$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file develops two complementary theories: (1) modular arithmetic of polynomial evaluation via the minimal polynomial, showing that evaluation depends only on the remainder mod minpoly, and (2) base change behavior in algebra towers, proving degree can only decrease. All 23 theorems are fully verified with 0 sorries and 0 axioms.",
+    "implications": "The modular reduction theory provides the algebraic foundation for efficient computation in quotient algebras K[x]/(minpoly). The tower results extend the K-algebra invariance theory to base-ring-changing transformations.",
+    "openQuestions": [
+      "Can the minpoly over L be characterized via irreducible factors of the mapped minpoly?",
+      "What is the relationship between [L:K] and the degree drop of the minimal polynomial?"
+    ]
+  },
+  "status": "verified",
+  "badge": "mathlib",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "MinpolyReductionAlg",
+    "lineCount": 232,
+    "axiomCount": 0,
+    "theoremCount": 23,
+    "definitionCount": 0,
+    "path": "Proofs/CayleyHamiltonMinpolyOQ05.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Parent: K-algebra invariance of minpoly under AlgEquiv/AlgHom"
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling: Skolem-Noether theorem for matrix automorphisms"
+    }
+  ],
+  "references": [
+    {
+      "key": "Ja85",
+      "citation": "Jacobson, N., Basic Algebra I, 2nd ed., W.H. Freeman (1985), Chapter 4: Polynomials and the minimal polynomial.",
+      "type": "book"
+    },
+    {
+      "key": "La02",
+      "citation": "Lang, S., Algebra, 3rd ed., Springer GTM 211 (2002), Chapter XIV: Representation of One Endomorphism.",
+      "type": "book"
+    },
+    {
+      "key": "HJ13",
+      "citation": "Horn, R.A. and Johnson, C.R., Matrix Analysis, 2nd ed., Cambridge University Press (2013).",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

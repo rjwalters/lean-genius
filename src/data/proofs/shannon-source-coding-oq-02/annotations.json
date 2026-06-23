@@ -1,0 +1,317 @@
+[
+  {
+    "id": "ann-kraft-validity",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 32,
+      "endLine": 36
+    },
+    "type": "definition",
+    "title": "Kraft's Inequality",
+    "content": "Kraft's inequality characterizes the set of achievable codeword lengths for prefix-free (instantaneous) binary codes. A set of lengths $(l_1, \\ldots, l_n)$ can be realized as a prefix-free code if and only if $\\sum_{i=1}^n 2^{-l_i} \\le 1$. The formalization represents the implicit distribution $q_i = 2^{-l_i}$ using the equivalent form $(2^{-1})^{l_i}$.",
+    "mathContext": "$\\text{KraftValid}(l) \\iff \\sum_{i=1}^{n} 2^{-l_i} \\le 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "prefix-free codes",
+      "Kraft's theorem",
+      "McMillan inequality",
+      "uniquely decodable codes"
+    ],
+    "prerequisites": [
+      "binary trees",
+      "prefix-free codes"
+    ]
+  },
+  {
+    "id": "ann-avg-code-length",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 38,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Average Code Length",
+    "content": "The expected code length under probability distribution $p$. This is the quantity that Huffman coding minimizes. For a code used to compress i.i.d. source symbols, $L$ determines the asymptotic compression ratio: $L$ bits per source symbol on average.",
+    "mathContext": "$L(p, l) = \\sum_{i=1}^{n} p_i \\cdot l_i$",
+    "significance": "key",
+    "relatedConcepts": [
+      "expected value",
+      "compression ratio",
+      "bits per symbol"
+    ],
+    "prerequisites": [
+      "probability distributions",
+      "expected value"
+    ]
+  },
+  {
+    "id": "ann-optimality-def",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 42,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "Optimal Code Definition",
+    "content": "A code is optimal if it satisfies Kraft's inequality and no other Kraft-valid code achieves a lower average code length. This universal quantification over all alternative codes makes optimality a strong property — the Huffman algorithm is the canonical constructive witness.",
+    "mathContext": "$\\text{IsOptimal}(p, l) \\iff \\text{KraftValid}(l) \\wedge \\forall l',\\; \\text{KraftValid}(l') \\Rightarrow L(p, l) \\le L(p, l')$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Huffman coding",
+      "minimax optimality",
+      "prefix-free codes"
+    ],
+    "prerequisites": [
+      "Kraft's inequality",
+      "average code length"
+    ]
+  },
+  {
+    "id": "ann-kl-bound",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 51,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Pointwise KL Divergence Bound",
+    "content": "The workhorse inequality: for positive reals $p, q$, we have $p \\ln(p/q) \\ge p - q$. This follows from the concavity of the logarithm, specifically $\\ln(x) \\le x - 1$ applied to $x = q/p$. Summing over all symbols and using Kraft's inequality converts this pointwise bound into the entropy lower bound on code length. This is essentially the proof that KL divergence $D(p \\| q) \\ge 0$ (Gibbs' inequality).",
+    "mathContext": "$p \\cdot \\ln\\!\\left(\\frac{p}{q}\\right) \\ge p - q \\quad \\text{for } p, q > 0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "KL divergence",
+      "Gibbs' inequality",
+      "log-sum inequality",
+      "Jensen's inequality"
+    ],
+    "prerequisites": [
+      "logarithm properties",
+      "concavity of log"
+    ]
+  },
+  {
+    "id": "ann-kraft-term-pos",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 65,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Positivity of Kraft Terms",
+    "content": "Each implicit probability $q_i = 2^{-l_i}$ is strictly positive, which is required to apply the KL divergence bound. This is immediate since $2^{-1} > 0$ and positive reals are closed under exponentiation.",
+    "mathContext": "$2^{-l} > 0 \\quad \\text{for all } l \\in \\mathbb{N}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity",
+      "exponential function"
+    ],
+    "prerequisites": [
+      "Positivity Of Exponentials",
+      "Negative Exponents",
+      "Real Power Function"
+    ]
+  },
+  {
+    "id": "ann-log-kraft",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 69,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "Logarithm of Kraft Terms",
+    "content": "Rewrites $\\ln(2^{-l}) = -l \\cdot \\ln 2$ using the power rule for logarithms and the identity $\\ln(x^{-1}) = -\\ln(x)$. This algebraic step bridges the gap between the code length $l$ appearing in the average code length and the logarithmic terms in the entropy.",
+    "mathContext": "$\\ln\\!\\left((2^{-1})^l\\right) = -l \\cdot \\ln 2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "logarithm identities",
+      "change of base"
+    ],
+    "prerequisites": [
+      "logarithm power rule"
+    ]
+  },
+  {
+    "id": "ann-entropy-lower-bound",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 78,
+      "endLine": 114
+    },
+    "type": "insight",
+    "title": "Entropy Lower Bound on Code Length",
+    "content": "The central theorem: no prefix-free binary code can achieve average code length below $H(p)/\\ln 2$ bits. The proof introduces the implicit distribution $r_i = 2^{-l_i}$ and applies the pointwise KL bound $p_i \\ln(p_i / r_i) \\ge p_i - r_i$ to each symbol. Summing and using Kraft's inequality $\\sum r_i \\le 1$ gives $\\sum p_i \\ln(p_i / r_i) \\ge 0$. Expanding the logarithm yields $L \\cdot \\ln 2 \\ge H(p)$. This is the converse direction of Shannon's source coding theorem: entropy is not just achievable, it is a genuine lower bound.",
+    "mathContext": "$L(p, l) \\cdot \\ln 2 \\ge H(p) = -\\sum_{i} p_i \\ln p_i$",
+    "significance": "key",
+    "relatedConcepts": [
+      "source coding theorem",
+      "Shannon entropy",
+      "data processing inequality",
+      "rate-distortion theory"
+    ],
+    "prerequisites": [
+      "KL divergence",
+      "Kraft's inequality",
+      "Shannon entropy"
+    ]
+  },
+  {
+    "id": "ann-entropy-nonneg",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 120,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Entropy Non-negativity",
+    "content": "Shannon entropy is non-negative for any distribution supported on $[0,1]$. Since $0 < p_i \\le 1$ implies $\\ln(p_i) \\le 0$, each term $-p_i \\ln(p_i) \\ge 0$, and the sum is non-negative. This confirms that the entropy lower bound is meaningful: the minimum average code length is always at least zero.",
+    "mathContext": "$H(p) = -\\sum_i p_i \\ln p_i \\ge 0 \\quad \\text{when } p_i \\in (0, 1]$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Shannon entropy",
+      "maximum entropy",
+      "entropy bounds"
+    ],
+    "prerequisites": [
+      "logarithm properties"
+    ]
+  },
+  {
+    "id": "ann-shannon-length",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 134,
+      "endLine": 137
+    },
+    "type": "definition",
+    "title": "Shannon Code Length",
+    "content": "Shannon's coding scheme assigns symbol $i$ a codeword of length $l_i = \\lceil -\\log_2(p_i) \\rceil$. Since $-\\log_2(p_i)$ is the ideal code length (information content of symbol $i$), rounding up to the nearest integer gives a valid prefix-free code. The formalization uses natural number ceiling $\\lceil \\cdot \\rceil_+$ and natural logarithm, computing $\\lceil -\\ln(p_i) / \\ln 2 \\rceil_+$.",
+    "mathContext": "$l_i^{\\text{Shannon}} = \\lceil -\\log_2(p_i) \\rceil = \\left\\lceil \\frac{-\\ln p_i}{\\ln 2} \\right\\rceil$",
+    "significance": "key",
+    "relatedConcepts": [
+      "self-information",
+      "Shannon-Fano coding",
+      "ceiling function"
+    ],
+    "prerequisites": [
+      "Shannon entropy",
+      "binary logarithm"
+    ]
+  },
+  {
+    "id": "ann-shannon-kraft",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 143,
+      "endLine": 171
+    },
+    "type": "insight",
+    "title": "Shannon Code Satisfies Kraft's Inequality",
+    "content": "The key insight is that $2^{-l_i} \\le p_i$ for each symbol: since $l_i = \\lceil \\log_2(1/p_i) \\rceil \\ge \\log_2(1/p_i)$, we get $2^{-l_i} \\le 2^{-\\log_2(1/p_i)} = p_i$. Therefore $\\sum 2^{-l_i} \\le \\sum p_i = 1$. The formalization converts the ceiling inequality to a logarithmic inequality, then uses $\\exp$ monotonicity to lift it to the value level. This is the constructive content: Shannon coding produces a valid prefix-free code.",
+    "mathContext": "$2^{-l_i^{\\text{Shannon}}} \\le p_i \\implies \\sum 2^{-l_i} \\le \\sum p_i = 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kraft's inequality",
+      "ceiling function properties",
+      "exponential monotonicity"
+    ],
+    "prerequisites": [
+      "Kraft's inequality",
+      "ceiling function",
+      "logarithm-exponential duality"
+    ]
+  },
+  {
+    "id": "ann-shannon-upper",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 177,
+      "endLine": 214
+    },
+    "type": "insight",
+    "title": "Shannon Coding Upper Bound",
+    "content": "Shannon coding achieves average code length within 1 bit of the entropy: $L_S < H_2(p) + 1$, or equivalently $L_S \\cdot \\ln 2 < H(p) + \\ln 2$. The proof uses the ceiling bound $\\lceil x \\rceil < x + 1$ for $x \\ge 0$, applied to each symbol's ideal code length. The strict inequality requires the alphabet to be nonempty ($n > 0$). This gap of at most 1 bit per symbol can be reduced to $1/k$ bits by coding blocks of $k$ symbols — the content of Shannon's source coding theorem.",
+    "mathContext": "$L_S \\cdot \\ln 2 < H(p) + \\ln 2 \\iff L_S < H_2(p) + 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "source coding theorem",
+      "block coding",
+      "arithmetic coding",
+      "asymptotic equipartition property"
+    ],
+    "prerequisites": [
+      "ceiling function",
+      "Shannon code length",
+      "entropy lower bound"
+    ]
+  },
+  {
+    "id": "ann-exchange-argument",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 220,
+      "endLine": 307
+    },
+    "type": "concept",
+    "title": "Optimal Code Monotonicity (Exchange Argument)",
+    "content": "In any optimal prefix-free code, more probable symbols receive shorter or equal codewords. The proof is by contradiction via the exchange argument: if $p_i > p_j$ but $l_i > l_j$, swapping the codewords (lengths) of symbols $i$ and $j$ leaves the Kraft sum unchanged yet strictly reduces the average code length by $(p_i - p_j)(l_i - l_j) > 0$, contradicting optimality. This structural property is essential for the Huffman construction. It is fully formalized here: the swap is realized as a double `Function.update`, Kraft-validity is preserved via `Finset.sum_equiv` over `Equiv.swap i j`, and the strict decrease is reduced to the two affected terms.",
+    "mathContext": "$p_i > p_j \\wedge \\text{IsOptimal}(p, l) \\implies l_i \\le l_j$",
+    "significance": "key",
+    "relatedConcepts": [
+      "exchange argument",
+      "greedy algorithms",
+      "rearrangement inequality"
+    ],
+    "prerequisites": [
+      "optimal codes",
+      "average code length"
+    ]
+  },
+  {
+    "id": "ann-huffman-optimal",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 313,
+      "endLine": 330
+    },
+    "type": "concept",
+    "title": "Huffman Optimality (Axiomatized)",
+    "content": "Huffman's 1952 theorem: among all prefix-free binary codes, the Huffman code achieves minimum average codeword length. The proof proceeds by strong induction on the alphabet size $n$. The base case $n=2$ is immediate (both symbols get length-1 codewords). For the inductive step, the monotonicity axiom places the two least probable symbols at maximum depth. Merging them into a super-symbol reduces the problem to $n-1$ symbols, where the inductive hypothesis applies. This is axiomatized because full formalization requires the Huffman tree data structure and the merge/unmerge correspondence.",
+    "mathContext": "$n \\ge 2 \\implies \\exists l,\\; \\text{IsOptimal}(p, l)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Huffman algorithm",
+      "binary tree construction",
+      "greedy optimality",
+      "Matroid theory"
+    ],
+    "prerequisites": [
+      "optimal code monotonicity",
+      "induction on alphabet size"
+    ]
+  },
+  {
+    "id": "ann-tight-bounds",
+    "proofId": "shannon-source-coding-oq-02",
+    "range": {
+      "startLine": 336,
+      "endLine": 355
+    },
+    "type": "insight",
+    "title": "Tight Bounds on Optimal Code Length",
+    "content": "The capstone corollary combining all preceding results: the optimal code length is sandwiched as $H(p)/\\ln 2 \\le L^* < H(p)/\\ln 2 + 1$. The lower bound comes from the entropy theorem (no code beats entropy), and the upper bound from optimality ($L^* \\le L_S$) combined with the Shannon coding bound ($L_S < H_2 + 1$). This sandwich shows that entropy in bits, $H_2(p)$, characterizes the optimal compression rate to within a single bit — the quantitative content of Shannon's source coding theorem for prefix-free codes.",
+    "mathContext": "$H_2(p) \\le L^* < H_2(p) + 1 \\quad \\text{where } H_2(p) = H(p)/\\ln 2$",
+    "significance": "key",
+    "relatedConcepts": [
+      "source coding theorem",
+      "compression limit",
+      "operational entropy",
+      "redundancy"
+    ],
+    "prerequisites": [
+      "entropy lower bound",
+      "Shannon coding upper bound",
+      "Huffman optimality"
+    ]
+  }
+]

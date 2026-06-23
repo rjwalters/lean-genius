@@ -1,0 +1,408 @@
+{
+  "id": "prime-number-theorem",
+  "title": "The Prime Number Theorem",
+  "slug": "prime-number-theorem",
+  "description": "The prime counting function pi(x) is asymptotically equivalent to x/ln(x). This describes the distribution of prime numbers among positive integers.",
+  "meta": {
+    "wiedijkNumber": 5,
+    "author": "Hadamard & de la Vallee Poussin (1896)",
+    "sourceUrl": "https://github.com/AlexKontorovich/PrimeNumberTheoremAnd",
+    "date": "1896",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PrimeNumberTheorem.lean",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "primes",
+      "asymptotic",
+      "wiedijk-100",
+      "classic"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.primeCounting",
+        "description": "Prime counting function π(x)",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Asymptotics.IsEquivalent",
+        "description": "Asymptotic equivalence notation (~[filter])",
+        "module": "Mathlib.Analysis.Asymptotics.Defs"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on ℝ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "intervalIntegral",
+        "description": "Integration over intervals for Li(x) definition",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Multiple equivalent formulations (ratio, asymptotic, error term, Li) with proved equivalences",
+      "Consequences: prime density → 0, nth prime ~ n ln n, Mertens sum, prime gaps",
+      "Connection to Riemann Hypothesis via von Koch's conditional error bound",
+      "Chebyshev's pre-PNT bounds as elementary comparison",
+      "PROVED ratio_iff_equiv from Mathlib isEquivalent_iff_tendsto_one + field_simp (13A→8A)",
+      "PROVED equiv_iff_error: definitional — IsEquivalent IS the little-o condition",
+      "PROVED li_iff_equiv via transitivity/symmetry of ~[l] from li_equiv_approx_axiom",
+      "PROVED prime_counting_tendsto_top from Nat.tendsto_primeCounting ∘ tendsto_nat_floor_atTop",
+      "PROVED prime_density_tends_to_zero from PNT via Tendsto.mul + div_atTop"
+    ],
+    "dateAdded": "2025-12-29",
+    "axiomCount": 8,
+    "lineCount": 460,
+    "assumptions": "8 axioms: primeNumberTheorem (PNT itself), li_equiv_approx_axiom (Li ~ x/ln x), nth_prime_asymptotic_axiom, mertens_sum_primes_axiom, prime_gaps_sublinear_axiom, RiemannHypothesis_statement, pnt_rh_error_axiom, chebyshev_bounds_axiom. Eliminated 5 axioms by proving from Mathlib: ratio_iff_equiv (via isEquivalent_iff_tendsto_one), equiv_iff_error (definitional), li_iff_equiv (transitivity of ~), prime_counting_tendsto_top (Nat.tendsto_primeCounting), prime_density_tends_to_zero (from PNT).",
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "Real analysis (limits, integrals, asymptotic analysis)",
+      "Complex analysis (contour integration, analytic functions)",
+      "Number theory (prime counting function, arithmetic functions)",
+      "Logarithmic integral and asymptotic notation"
+    ],
+    "theoremCount": 15,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "The Prime Number Theorem was conjectured by Legendre (1798, in the form π(x) ≈ x/(ln x − 1.08366)) and Gauss (1849, in the form π(x) ~ Li(x) based on logarithm tables). Chebyshev (1852) made the first rigorous progress, proving 0.92 < π(x)ln(x)/x < 1.11 using the central binomial coefficient, and showing that if the limit exists it must equal 1. Riemann's 1859 memoir introduced the zeta function for complex s, the explicit formula connecting π(x) to zeros of ζ, and the Riemann Hypothesis — laying the entire framework used 37 years later. Hadamard and de la Vallée Poussin independently proved PNT in 1896, each establishing a zero-free region for ζ(s) on Re(s) = 1 via the trigonometric identity 3 + 4cos θ + cos 2θ ≥ 0 and Tauberian methods. Erdős and Selberg gave independent elementary proofs in 1949, avoiding complex analysis entirely — the priority dispute is one of the most famous controversies in 20th century mathematics. Newman (1980) and Zagier (1997) gave streamlined analytic proofs fitting on one or two pages. Korobov and Vinogradov (1958) independently established the best known zero-free region, giving the error bound π(x) = Li(x) + O(x·exp(−c(ln x)^{3/5}(ln ln x)^{−1/5})). Avigad et al. provided the first formal proof in Isabelle (2007), and Kontorovich, Tao, et al. completed a full Lean 4 formalization (2024) in the PrimeNumberTheoremAnd project.",
+    "problemStatement": "**Theorem**: The prime counting function π(x) satisfies:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x)}{x/\\ln x} = 1$$\n\nEquivalently, π(x) ~ x/ln(x). The density of primes near x is approximately 1/ln(x), and the logarithmic integral Li(x) = ∫₂ˣ dt/ln t gives a substantially better numerical approximation.",
+    "text": "The prime counting function pi(x) is asymptotically equivalent to x/ln(x). This describes the distribution of prime numbers among positive integers.",
+    "proofStrategy": "The analytic proof (Hadamard, de la Vallée Poussin) establishes a zero-free region for ζ(s) on Re(s) = 1 using the identity 3 + 4cos(θ) + cos(2θ) ≥ 0, then applies Tauberian theorems to convert this analytic information into the asymptotic formula. The formalization axiomatizes PNT based on the PrimeNumberTheoremAnd project, then derives consequences and equivalent formulations.",
+    "keyInsights": [
+      "The distribution of primes is governed by the Riemann zeta function via Euler's product ζ(s) = Π_p(1−p⁻ˢ)⁻¹",
+      "Li(x) = ∫₂ˣ dt/ln(t) is a far better approximation than x/ln(x) — at 10⁹, Li is off by 1,701 vs x/ln x off by 2.6 million",
+      "The Riemann Hypothesis would give the optimal error term O(√x · log x) via von Koch's theorem",
+      "Chebyshev's bounds (1852) showed the limit, if it exists, must be 1 — 44 years before existence was proved",
+      "Four equivalent formulations — ratio, asymptotic, error term, Li — are all proved equivalent in the formalization"
+    ],
+    "prerequisites": [
+      "Number theory (primes, divisibility)",
+      "Mathematical analysis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "startLine": 1,
+      "endLine": 89,
+      "summary": "Defines primePi (via Mathlib's Nat.primeCounting), primeApprox (x/ln x), and logIntegral Li(x) = ∫₂ˣ dt/ln t.",
+      "mathContext": "\\(\\pi(x) = \\#\\{p \\leq x : p \\text{ prime}\\}\\), \\(\\text{primeApprox}(x) = x/\\ln x\\), \\(\\text{Li}(x) = \\int_2^x \\frac{dt}{\\ln t}\\)"
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Prime Number Theorem",
+      "startLine": 90,
+      "endLine": 128,
+      "summary": "Four equivalent formulations: ratio (π·ln x/x → 1), asymptotic (π ~ x/ln x), error (π − x/ln x = o(x/ln x)), and Li form (π ~ Li).",
+      "mathContext": "\\(\\lim_{x\\to\\infty}\\frac{\\pi(x)\\ln x}{x} = 1\\); equivalently \\(\\pi(x) \\sim x/\\ln x\\), \\(\\pi(x) - x/\\ln x = o(x/\\ln x)\\), and \\(\\pi(x) \\sim \\mathrm{Li}(x)\\)"
+    },
+    {
+      "id": "equivalences",
+      "title": "Equivalence of Formulations",
+      "startLine": 129,
+      "endLine": 199,
+      "summary": "Proved equivalences between all four PNT formulations (3 axioms eliminated). Only Li(x) ~ x/ln(x) remains axiomatized.",
+      "mathContext": "\\(f \\sim g \\iff f - g = o(g)\\); transitivity: \\(\\pi \\sim x/\\ln x \\sim \\mathrm{Li}(x)\\) because \\(\\mathrm{Li}(x) = x/\\ln x + x/\\ln^2 x + \\cdots\\)"
+    },
+    {
+      "id": "main-axiom",
+      "title": "The Main Theorem (Axiomatized)",
+      "startLine": 200,
+      "endLine": 227,
+      "summary": "PNT axiomatized based on PrimeNumberTheoremAnd project; corollaries derive asymptotic and Li forms.",
+      "mathContext": "\\(\\texttt{axiom primeNumberTheorem}\\colon \\text{Tendsto}(\\lambda x,\\, \\pi(x)\\ln x/x)\\;\\texttt{atTop}\\;(\\mathcal{N}\\,1)\\); key step: \\(\\zeta(1+it)\\neq 0\\) via \\(3+4\\cos\\theta+\\cos 2\\theta\\geq 0\\)"
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences of PNT",
+      "startLine": 228,
+      "endLine": 317,
+      "summary": "Prime density → 0, nth prime ~ n ln n, Mertens' sum of reciprocals ~ ln ln x, and prime gaps are sublinear.",
+      "mathContext": "\\(\\pi(x)/x \\to 0\\); \\(p_n \\sim n\\ln n\\); \\(\\sum_{p\\leq x}1/p = \\ln\\ln x + M + o(1)\\) where \\(M\\approx 0.2615\\); prime gaps \\(= o(x)\\)"
+    },
+    {
+      "id": "rh-connection",
+      "title": "Stronger Versions (Conditional on RH)",
+      "startLine": 318,
+      "endLine": 362,
+      "summary": "Riemann Hypothesis stated; von Koch's theorem gives |π(x)−Li(x)| = O(√x ln x) conditionally.",
+      "mathContext": "RH: all non-trivial zeros of \\(\\zeta(s)\\) satisfy \\(\\operatorname{Re}(s)=1/2\\). Von Koch (1901): RH \\(\\Rightarrow |\\pi(x)-\\mathrm{Li}(x)| = O(\\sqrt{x}\\ln x)\\)"
+    },
+    {
+      "id": "elementary-bounds",
+      "title": "Elementary Bounds",
+      "startLine": 363,
+      "endLine": 408,
+      "summary": "Chebyshev's pre-PNT bounds (0.92 < π·ln x/x < 1.11), infinitude of primes, and Euler product connection.",
+      "mathContext": "Chebyshev (1852): \\(0.92 < \\pi(x)\\ln x/x < 1.11\\) for large \\(x\\). Euler product: \\(\\zeta(s) = \\prod_p (1-p^{-s})^{-1}\\) for \\(\\operatorname{Re}(s)>1\\)"
+    },
+    {
+      "id": "numerical-evidence",
+      "title": "Numerical Evidence",
+      "startLine": 409,
+      "endLine": 426,
+      "summary": "Tabulated values of π(x), x/ln x, and Li(x) for x up to 10¹², illustrating that Li(x) is consistently the sharper approximation.",
+      "mathContext": "\\(\\pi(10^9)=50{,}847{,}534\\) vs \\(\\mathrm{Li}(10^9)\\approx 50{,}849{,}235\\) and \\(10^9/\\ln 10^9\\approx 48{,}254{,}942\\); relative error of \\(\\mathrm{Li}\\) decays faster"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 427,
+      "endLine": 460,
+      "summary": "Recap of the statement π(x) ~ x/ln x, the sharper Li(x) form, unconditional and RH error terms, the analytic proof techniques (ζ(s), zero-free region, Tauberian theorems), and historical context (Gauss/Legendre → Hadamard/de la Vallée Poussin 1896).",
+      "mathContext": "Unconditional: \\(\\pi(x)=\\mathrm{Li}(x)+O\\!\\left(x\\,e^{-c\\sqrt{\\ln x}}\\right)\\); under RH: \\(\\pi(x)=\\mathrm{Li}(x)+O(\\sqrt{x}\\ln x)\\)"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Prime Number Theorem is one of the crowning achievements of 19th century mathematics, connecting the discrete world of primes to the continuous world of analysis through the Riemann zeta function. The formalization presents four equivalent formulations with axiomatized equivalences, derives key consequences, and connects to the Riemann Hypothesis.",
+    "implications": "PNT is foundational for cryptography: RSA and elliptic-curve cryptography rely on the prime density estimate 1/ln(x) to guarantee that random key generation finds primes efficiently — a 1024-bit prime is found after roughly 1024·ln(2) ≈ 710 random odd candidates on average. In computational number theory, PNT underlies the complexity analysis of primality tests (AKS, Miller-Rabin) and sieving algorithms. In analytic number theory, PNT in arithmetic progressions (π(x; q, a) ~ x/(φ(q) ln x)) underpins the structure of Dirichlet L-functions and the Generalized Riemann Hypothesis. The Brun-Titchmarsh inequality and Bombieri-Vinogradov theorem are quantitative refinements that feed into Goldbach-type results. The Green-Tao theorem (2004) — primes contain arbitrarily long arithmetic progressions — uses Szemerédi's theorem and PNT-type estimates for its prime pseudorandomness measure. PNT also motivates the Birch–Swinnerton-Dyer conjecture: BSD posits an analytic rank formula for elliptic curve L-functions that is philosophically parallel to PNT's statement about the Riemann zeta function.",
+    "openQuestions": [
+      "The Riemann Hypothesis: do all non-trivial zeros of ζ(s) have real part 1/2?",
+      "What is the true size of the error term |π(x) − Li(x)|? (Cramér's conjecture: O(√x · ln²x))",
+      "Can PNT be proved elementarily with error bounds matching the analytic proof?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "strengthens",
+      "description": "The PNT provides the quantitative density π(x) ~ x/ln(x) that strengthens Euclid's qualitative result that primes are infinite."
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "related",
+      "description": "The Riemann Hypothesis implies the strongest known error term in the PNT: π(x) = Li(x) + O(√x log x)."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Both concern the distribution of primes. The Basel problem ζ(2) = π²/6 is an early evaluation of the Riemann zeta function whose zeros control prime distribution."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n]$) is an elementary consequence of PNT: $\\pi(2n) - \\pi(n) \\sim n/\\ln n \\to \\infty$. Historically, Chebyshev's 1852 proof of Bertrand's postulate used proto-PNT techniques (bounds on $\\theta(x)$), and Erdős's 1932 elementary proof foreshadowed the Erdős-Selberg elementary proof of PNT (1949)"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "Euler's proof that $\\sum 1/p$ diverges (1737) was the first quantitative result on prime distribution. PNT refines this: $\\sum_{p \\leq x} 1/p \\sim \\ln\\ln x$, a consequence of $\\pi(x) \\sim x/\\ln x$ via partial summation"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "extends",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions ($\\exists$ infinitely many primes $\\equiv a \\pmod{q}$ when $\\gcd(a,q)=1$) is strengthened by PNT in arithmetic progressions: $\\pi(x; q, a) \\sim x/(\\varphi(q) \\ln x)$, proving primes are equidistributed among residue classes"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Euler's totient function $\\varphi(n)$ appears in PNT for arithmetic progressions: $\\pi(x; q, a) \\sim x/(\\varphi(q) \\ln x)$. The totient also connects to prime distribution through the formula $\\varphi(n)/n = \\prod_{p | n}(1 - 1/p)$"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Stirling's approximation $n! \\sim \\sqrt{2\\pi n}(n/e)^n$ and PNT are both asymptotic results about discrete sequences with continuous approximations. The prime-counting analog of Stirling is $\\pi(x) \\sim \\text{Li}(x) = \\int_2^x dt/\\ln t$. Both involve the logarithm as the bridge between multiplicative and additive structure"
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "related",
+      "description": "Both are landmark achievements in number theory. Wiles's proof of FLT (1995) uses the modularity of elliptic curves and Galois representations — the same analytic number theory toolkit (L-functions, complex analysis) that underpins PNT. The connection between primes and modular forms runs deep through the Langlands program"
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "related",
+      "description": "PNT shows the average gap between primes near x is ln(x), growing without bound. Zhang's 2013 theorem (and Maynard-Tao 2014) shows infinitely many prime gaps are bounded by a fixed constant — a dramatic refinement: despite average gaps growing, small gaps recur infinitely often. PNT provides the baseline estimate that makes the bounded-gaps result surprising"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's identity e^{iπ} + 1 = 0 involves the same transcendental constants (e, π, i) that appear throughout analytic number theory. More directly, Euler's product formula ζ(s) = ∏_p(1 − p^{−s})^{−1}, which Euler discovered, is the fundamental bridge between the zeta function and primes; it is the starting point for every analytic proof of PNT"
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Quadratic reciprocity, proved by Gauss, characterizes which primes p have a given residue mod q. It is a precursor to Dirichlet's L-functions and the equidistribution of primes in arithmetic progressions (PNT in progressions). Both theorems reveal deep structure in prime distribution: reciprocity governs which residue classes contain primes, PNT governs how densely"
+    },
+    {
+      "targetId": "birch-swinnerton-dyer",
+      "relationship": "related",
+      "description": "BSD is a deep analogue of PNT for elliptic curves: where PNT relates π(x) ~ x/ln(x) via the Riemann zeta function, BSD relates the rank of an elliptic curve to the order of vanishing of its L-function at s=1. Both belong to the Langlands program framework where arithmetic properties are governed by analytic behavior of L-functions near critical points"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hadamard, Jacques",
+      "title": "Sur la distribution des zéros de la fonction ζ(s) et ses conséquences arithmétiques",
+      "year": "1896",
+      "venue": "Bulletin de la Société Mathématique de France 24, 199–220",
+      "note": "Independent proof (with de la Vallée Poussin) of the Prime Number Theorem: π(x) ~ x/ln(x)"
+    },
+    {
+      "authors": "de la Vallée Poussin, Charles-Jean",
+      "title": "Recherches analytiques sur la théorie des nombres premiers",
+      "year": "1896",
+      "venue": "Annales de la Société Scientifique de Bruxelles 20, 183–256",
+      "note": "Independent proof of PNT in the same year as Hadamard, using non-vanishing of ζ(1+it)"
+    },
+    {
+      "authors": "Riemann, Bernhard",
+      "title": "Über die Anzahl der Primzahlen unter einer gegebenen Größe",
+      "year": "1859",
+      "venue": "Monatsberichte der Berliner Akademie, 671–680",
+      "note": "Seminal paper introducing the Riemann zeta function for complex s, the explicit formula for π(x), and the Riemann Hypothesis; laid the entire framework used in the 1896 proofs"
+    },
+    {
+      "authors": "Chebyshev, Pafnuty",
+      "title": "Mémoire sur les nombres premiers",
+      "year": "1852",
+      "venue": "Journal de mathématiques pures et appliquées 17, 366–390",
+      "note": "Proved 0.92 < π(x)ln(x)/x < 1.11 for large x using central binomial coefficient analysis; showed the limit, if it exists, must be 1 — forty-four years before Hadamard and de la Vallée Poussin"
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "On a new method in elementary number theory which leads to an elementary proof of the prime number theorem",
+      "year": "1949",
+      "venue": "Proceedings of the National Academy of Sciences 35(7), 374–384",
+      "note": "Elementary proof of PNT avoiding complex analysis, proved simultaneously with Selberg; the priority dispute between Erdős and Selberg over the elementary proof is one of the most famous controversies in 20th century mathematics"
+    },
+    {
+      "authors": "Selberg, Atle",
+      "title": "An elementary proof of the prime-number theorem",
+      "year": "1949",
+      "venue": "Annals of Mathematics 50(2), 305–313",
+      "note": "Elementary proof avoiding complex analysis — alongside Erdős's independent elementary proof"
+    },
+    {
+      "authors": "Korobov, Nikolai M.",
+      "title": "Estimates of trigonometric sums and their applications",
+      "year": "1958",
+      "venue": "Uspekhi Matematicheskikh Nauk 13(4), 185–192",
+      "note": "Together with Vinogradov (1958), established the best known zero-free region for ζ(s): Re(s) ≥ 1 − c/(ln|t|)^{2/3}(ln ln|t|)^{1/3}, giving the error bound π(x) = Li(x) + O(x·exp(−c(ln x)^{3/5}(ln ln x)^{−1/5}))"
+    },
+    {
+      "authors": "Newman, Donald J.",
+      "title": "Simple analytic proof of the prime number theorem",
+      "year": "1980",
+      "venue": "American Mathematical Monthly 87(9), 693–696",
+      "note": "Remarkably short (one-page) analytic proof of PNT using a streamlined Tauberian theorem; the basis for Zagier's 1997 simplification"
+    },
+    {
+      "authors": "Zagier, Don",
+      "title": "Newman's short proof of the prime number theorem",
+      "year": "1997",
+      "venue": "American Mathematical Monthly 104(8), 705–708",
+      "note": "A two-page proof of PNT based on Newman's approach; widely regarded as the most elegant complete proof, requiring only basic complex analysis"
+    },
+    {
+      "authors": "Avigad, Jeremy; Donnelly, Kevin; Gray, David; Raff, Paul",
+      "title": "A formally verified proof of the prime number theorem",
+      "year": "2007",
+      "venue": "ACM Transactions on Computational Logic 9(1), Article 2",
+      "note": "First complete formal proof of PNT, in Isabelle/HOL; the project took several years and involved formalizing substantial complex analysis"
+    },
+    {
+      "authors": "Kontorovich, Alex; Tao, Terence; et al.",
+      "title": "PrimeNumberTheoremAnd (Lean 4 formalization)",
+      "year": "2024",
+      "venue": "GitHub: AlexKontorovich/PrimeNumberTheoremAnd",
+      "note": "Complete Lean 4 formalization of PNT and related results; the source for the axiomatized theorem in this gallery entry. The project formalizes the full analytic proof including the zero-free region and Tauberian arguments"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Analysis.Asymptotics.Defs",
+      "Mathlib.Analysis.Asymptotics.AsymptoticEquivalent",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Integrals.Basic",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "Real",
+      "Set",
+      "Nat",
+      "Asymptotics",
+      "MeasureTheory",
+      "Topology",
+      "BigOperators"
+    ],
+    "namespace": "PrimeNumberTheorem",
+    "lineCount": 460,
+    "axiomCount": 8,
+    "theoremCount": 15,
+    "definitionCount": 9,
+    "substantiveTheoremCount": 5,
+    "mainTheorems": [
+      {
+        "name": "all_formulations_equiv",
+        "type": "bridge",
+        "description": "All four PNT formulations (ratio, equivalence, error, Li) are equivalent",
+        "leanType": "PrimeNumberTheorem_Ratio ↔ PrimeNumberTheorem_Equiv ∧ ..."
+      },
+      {
+        "name": "prime_asymptotic",
+        "type": "wrapper",
+        "description": "π(x) ~ x/ln(x) in the equivalence formulation",
+        "leanType": "PrimeNumberTheorem_Equiv"
+      },
+      {
+        "name": "prime_li_asymptotic",
+        "type": "wrapper",
+        "description": "π(x) ~ Li(x) in the logarithmic integral formulation",
+        "leanType": "PrimeNumberTheorem_Li"
+      },
+      {
+        "name": "prime_density_tends_to_zero",
+        "type": "wrapper",
+        "description": "The density of primes π(x)/x tends to 0",
+        "leanType": "Tendsto (fun x => primePi x / x) atTop (nhds 0)"
+      },
+      {
+        "name": "pnt_rh_error",
+        "type": "wrapper",
+        "description": "Under RH, the error |π(x) - Li(x)| = O(√x ln x)",
+        "leanType": "RiemannHypothesis → |primePi x - logIntegral x| = O(√x · ln x)"
+      }
+    ],
+    "path": "Proofs/PrimeNumberTheorem.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/PrimeNumberTheoremOQ01OQ01.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "all_formulations_equiv",
+      "type": "bridge",
+      "description": "All four PNT formulations (ratio, equivalence, error, Li) are equivalent",
+      "leanType": "PNT_Ratio <-> PNT_Equiv and PNT_Error and PNT_Li"
+    },
+    {
+      "name": "prime_asymptotic",
+      "type": "core",
+      "description": "pi(x) ~ x/ln(x) as x -> infinity",
+      "leanType": "PrimeNumberTheorem_Equiv"
+    },
+    {
+      "name": "pnt_rh_error",
+      "type": "synthesis",
+      "description": "Under RH, |pi(x) - Li(x)| = O(sqrt(x) ln x) (von Koch)",
+      "leanType": "RiemannHypothesis -> |primePi x - logIntegral x| = O(sqrt(x) * ln(x))"
+    }
+  ],
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/PrimeNumberTheoremOQ01OQ01.lean"
+  ]
+}

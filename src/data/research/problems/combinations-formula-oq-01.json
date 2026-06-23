@@ -1,0 +1,132 @@
+{
+  "slug": "combinations-formula-oq-01",
+  "title": "Binomial identities and generalized combination formulas",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\sum_i \\binom{m}{i}\\binom{n}{r-i}=\\binom{m+n}{r},\\quad \\sum_{k=0}^{n}\\binom{n}{k}=2^n,\\quad {n\\brack k}_q\\rvert_{q=1}=\\binom{n}{k}.",
+    "plain": "Organize the Lean-supported binomial identity track around Vandermonde's identity, hockey-stick sums, row sums, Catalan and central-binomial estimates, and q-binomial specializations at q = 1.",
+    "whyMatters": [
+      "These binomial identities are reusable infrastructure for finite combinatorics and generating-function arguments.",
+      "The q-binomial track connects ordinary combinations to polynomial analogues.",
+      "Most declared files are zero-axiom and zero-sorry; the only visible caveat is a separate Aristotle sketch with sorries."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`vandermonde` proves the convolution identity for ordinary binomial coefficients.",
+      "`hockey_stick`, `choose_product`, `choose_row_sum`, and `choose_alternating_sum` cover standard Pascal-triangle identities.",
+      "`central_binom_le` bounds central binomial coefficients by `4 ^ n`.",
+      "`qBinom_at_one`, `qBinom_vandermonde`, and `vandermonde_at_one` connect q-binomial identities back to ordinary binomial identities."
+    ],
+    "open": [
+      "`CombinationsFormulaOQ02Aristotle.lean` is a sketch file with four sorries; the main non-Aristotle files listed here are zero-sorry."
+    ],
+    "goal": "Present the completed binomial-identity and q-binomial support as reusable combinatorial metadata."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-02-06T19:32:14.357Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "generalization",
+    "binomial-coefficients",
+    "vandermonde",
+    "catalan-numbers",
+    "q-binomial",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "combinations-formula",
+    "combinations-formula-oq-01",
+    "combinations-formula-oq-02",
+    "combinations-formula-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-09T23:59:13.857Z",
+  "completed": "2026-02-09T23:59:13.857Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/CombinationsFormula.lean",
+      "filename": "CombinationsFormula.lean",
+      "lineCount": 401,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormula.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ01.lean",
+      "filename": "CombinationsFormulaOQ01.lean",
+      "lineCount": 186,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ01.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ02.lean",
+      "filename": "CombinationsFormulaOQ02.lean",
+      "lineCount": 313,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ02.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ02Aristotle.lean",
+      "filename": "CombinationsFormulaOQ02Aristotle.lean",
+      "lineCount": 58,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ03.lean",
+      "filename": "CombinationsFormulaOQ03.lean",
+      "lineCount": 751,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ03.lean"
+    }
+  ]
+}

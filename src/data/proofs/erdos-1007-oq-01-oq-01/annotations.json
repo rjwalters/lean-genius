@@ -1,0 +1,383 @@
+[
+  {
+    "id": "ann-erd1007-known-min-edges",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Known Minimum Edge Counts",
+    "content": "Tabulates the six known values of minEdges(d) — the minimum number of edges in a graph of dimension exactly $d$: $f(0)=0, f(1)=1, f(2)=3, f(3)=6, f(4)=9, f(5)=15$. The pattern $f(d) = \\binom{d+1}{2}$ holds for all $d \\neq 4$; the **$d=4$ anomaly** where $f(4)=9 < \\binom{5}{2}=10$ (because $K_{3,3}$ with 9 edges beats $K_5$ with 10) is the central tension point in the monotonicity question.",
+    "mathContext": "$f(0)=0,\\; f(1)=1,\\; f(2)=3,\\; f(3)=6,\\; f(4)=9,\\; f(5)=15$. Note $f(d) = \\binom{d+1}{2}$ for $d \\neq 4$, but $f(4) = 9 < \\binom{5}{2} = 10$ (the $d=4$ anomaly).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "graph dimension",
+      "unit-distance graphs",
+      "complete graph",
+      "binomial coefficients"
+    ],
+    "prerequisites": [
+      "graph theory basics",
+      "Fin type in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-erd1007-min-edges-constraints",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 57,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "Constraint Structure for Minimum Edge Functions",
+    "content": "Captures the properties any candidate for the true minEdges function must satisfy: (1) agreement with the six known values $f(0)=0, \\ldots, f(5)=15$; (2) lower bound $d \\leq f(d)$ for $d \\geq 1$ (every dimension-$d$ graph needs at least $d$ edges); (3) upper bound $f(d) \\leq \\binom{d+1}{2}$ for $d \\geq 1$ (the complete graph $K_{d+1}$ always achieves dimension $d$). Crucially, monotonicity is **not** assumed — it is the property being investigated. The structure enables conditional reasoning: derive consequences from these minimal constraints alone.",
+    "mathContext": "$\\text{MinEdgesConstraints}(f) \\iff f|_{[0,5]} = (0,1,3,6,9,15) \\,\\land\\, \\forall d \\geq 1,\\; d \\leq f(d) \\leq \\binom{d+1}{2}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "function constraints",
+      "bundled hypotheses",
+      "Prop-valued structures"
+    ],
+    "prerequisites": [
+      "Lean 4 structures",
+      "proposition bundling"
+    ]
+  },
+  {
+    "id": "ann-erd1007-known-monotone",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 72,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Known Values Are Monotone",
+    "content": "A direct verification that the six known values $0, 1, 3, 6, 9, 15$ form a non-decreasing sequence. The proof uses `interval_cases` to exhaustively check all $\\binom{6}{2} = 15$ pairs $(i,j)$ with $i \\leq j$ in Fin 6. Although elementary, this is a necessary base case: all subsequent monotonicity extensions rest on this foundation. Note the sequence is strictly increasing despite the $d=4$ anomaly — $f(4) = 9 > 6 = f(3)$.",
+    "mathContext": "$0 \\leq 1 \\leq 3 \\leq 6 \\leq 9 \\leq 15$ — the known values are monotone (in fact strictly increasing).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone sequences",
+      "binomial coefficients",
+      "finite verification"
+    ],
+    "prerequisites": [
+      "knownMinEdges definition",
+      "Fin 6 case analysis"
+    ]
+  },
+  {
+    "id": "ann-erd1007-monotone-on-known",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Monotonicity on the Known Range [0,5]",
+    "content": "Lifts the previous finite check into a genuine monotonicity statement on the natural number interval {0,...,5}. Whereas knownMinEdges_monotone compared adjacent known values, this theorem asserts the full order-preserving property: if d₁ ≤ d₂ ≤ 5 then f(d₁) ≤ f(d₂). The proof combines the adjacency lemma with transitivity of ≤, establishing the inductive bridge between known data and the open conjecture for d ≥ 6.",
+    "mathContext": "$\\forall d_1, d_2 \\leq 5,\\; d_1 \\leq d_2 \\implies f(d_1) \\leq f(d_2)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone functions",
+      "interval restriction",
+      "order-preserving maps"
+    ],
+    "prerequisites": [
+      "knownMinEdges_monotone",
+      "natural number ordering"
+    ]
+  },
+  {
+    "id": "ann-erd1007-monotone-iff-consecutive",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 91,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "Monotonicity Equivalent to Consecutive Comparisons",
+    "content": "A classical reduction: a function ℕ → ℕ is monotone if and only if it satisfies f(d) ≤ f(d+1) for all d. The backward direction (consecutive implies global) proceeds by induction, chaining adjacent inequalities. This equivalence is strategically important because it converts the difficult global monotonicity conjecture into a local question: does each step f(d) to f(d+1) preserve order? Subsequent theorems exploit this by focusing on individual transitions rather than all pairs.",
+    "mathContext": "$f \\text{ monotone} \\iff \\forall d,\\; f(d) \\leq f(d+1)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone functions",
+      "consecutive differences",
+      "induction on naturals"
+    ],
+    "prerequisites": [
+      "Monotone predicate",
+      "natural number induction"
+    ]
+  },
+  {
+    "id": "ann-erd1007-monotone-reduces-large",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 103,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Monotonicity Reduces to d ≥ 5",
+    "content": "Given that f agrees with the known table on [0,5] and that the known values are themselves monotone, the full monotonicity of f reduces to verifying f(d) ≤ f(d+1) only for d ≥ 5. The cases d < 5 are discharged by the known-table verification. This reduction is a crucial structural insight: it focuses all effort on the unexplored territory d ≥ 5, where the Erdős conjecture lives. The proof strategy is to split on whether d ≤ 4 or d ≥ 5, handling the former by table lookup.",
+    "mathContext": "$f \\text{ monotone} \\iff \\forall d \\geq 5,\\; f(d) \\leq f(d+1)$ (given $f|_{[0,5]} = \\text{knownMinEdges}$)",
+    "significance": "key",
+    "relatedConcepts": [
+      "case splitting",
+      "finite verification",
+      "reduction to hard cases"
+    ],
+    "prerequisites": [
+      "monotone_on_known",
+      "monotone_iff_consecutive",
+      "knownMinEdges agreement"
+    ]
+  },
+  {
+    "id": "ann-erd1007-deficiency-def",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 129,
+      "endLine": 130
+    },
+    "type": "definition",
+    "title": "Deficiency: Gap Below Complete Graph Bound",
+    "content": "Defines the deficiency $\\delta(d) = \\binom{d+1}{2} - f(d)$, measuring how far $f(d)$ falls below the complete graph bound. When $\\delta(d) = 0$, the complete graph $K_{d+1}$ is optimal for dimension $d$. The only known non-zero deficiency is $\\delta(4) = 1$, where $K_{3,3}$ beats $K_5$. Bounding the deficiency is the key engine of the monotonicity proof: the central theorem shows $\\delta(d) \\leq d$ suffices for monotonicity. The definition uses natural number subtraction, so $\\delta(d) = 0$ when $f(d) \\geq \\binom{d+1}{2}$.",
+    "mathContext": "$\\delta(d) = \\binom{d+1}{2} - f(d)$, where $\\binom{d+1}{2} = \\frac{d(d+1)}{2}$ is the edge count of $K_{d+1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "deficiency",
+      "complete graphs",
+      "edge density",
+      "graph dimension"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "graph dimension"
+    ]
+  },
+  {
+    "id": "ann-erd1007-known-deficiency",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 132,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "Known Deficiency Values: Zero Except d=4",
+    "content": "Computes the deficiency $\\delta(d) = \\binom{d+1}{2} - f(d)$ for all known values: $\\delta(0)=0, \\delta(1)=0, \\delta(2)=0, \\delta(3)=0, \\delta(4)=1, \\delta(5)=0$. The $d=4$ case is the unique anomaly: $K_{3,3}$ achieves dimension 4 with only 9 edges, one fewer than $K_5$'s 10 edges. This single non-zero deficiency is the entire source of difficulty — for all other known values, the complete graph is optimal. The proof uses `native_decide` for the arithmetic.",
+    "mathContext": "$\\delta(d) = \\binom{d+1}{2} - f(d)$: values are $(0, 0, 0, 0, 1, 0)$ for $d = 0, \\ldots, 5$. The $d=4$ anomaly: $\\binom{5}{2} - 9 = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "complete graphs",
+      "extremal graphs",
+      "zero deficiency"
+    ],
+    "prerequisites": [
+      "deficiency definition",
+      "knownMinEdges values"
+    ]
+  },
+  {
+    "id": "ann-erd1007-choose-succ-step",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 140,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Pascal's Rule Helper for Binomial Step",
+    "content": "A technical lemma establishing C(d+2,2) = C(d+1,2) + (d+1), which is the one-step increment formula for triangular numbers. This is a special case of Pascal's identity C(n+1,k) = C(n,k) + C(n,k-1). In the context of the deficiency argument, this formula tracks how the conjectured optimum C(d+1,2) grows as d increases by 1: it grows by exactly d+1. Any proof that f(d+1) = f(d) + (d+1) therefore implies f matches C(·+1,2) at the next step too.",
+    "mathContext": "$\\binom{d+2}{2} = \\binom{d+1}{2} + (d+1)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pascal's identity",
+      "triangular numbers",
+      "binomial coefficients"
+    ],
+    "prerequisites": [
+      "Nat.choose in Mathlib",
+      "Pascal's rule"
+    ]
+  },
+  {
+    "id": "ann-erd1007-deficiency-implies-monotone",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 156,
+      "endLine": 199
+    },
+    "type": "concept",
+    "title": "Deficiency Bound Implies Monotonicity",
+    "content": "The central structural result of the formalization: if $\\delta(d) = \\binom{d+1}{2} - f(d) \\leq d$ for all $d \\geq 1$, then $f$ is monotone. The proof chains three inequalities for $d_1 < d_2$: (1) $f(d_1) \\leq \\binom{d_1+1}{2}$ from the upper bound constraint; (2) $\\binom{d_1+1}{2} \\leq \\binom{d_2}{2}$ from binomial monotonicity since $d_1 + 1 \\leq d_2$; (3) $\\binom{d_2}{2} \\leq f(d_2)$ because Pascal's rule gives $\\binom{d_2+1}{2} - d_2 = \\binom{d_2}{2}$ and the deficiency bound gives $f(d_2) \\geq \\binom{d_2+1}{2} - d_2$. This is the formalization's key insight: the deficiency bound turns the upper bound constraint into a usable lower bound at the next level.",
+    "mathContext": "$\\forall d \\geq 1,\\; \\delta(d) \\leq d \\implies f \\text{ monotone}$. Proof chain: $f(d_1) \\leq \\binom{d_1+1}{2} \\leq \\binom{d_2}{2} = \\binom{d_2+1}{2} - d_2 \\leq f(d_2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "deficiency bounds",
+      "inductive monotonicity",
+      "extremal graph theory"
+    ],
+    "prerequisites": [
+      "choose_succ_step",
+      "deficiency definition",
+      "monotone_reduces_to_large"
+    ]
+  },
+  {
+    "id": "ann-erd1007-monotone-far-apart",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 201,
+      "endLine": 216
+    },
+    "type": "concept",
+    "title": "Gap Theorem: Monotonicity for Widely Separated Degrees",
+    "content": "An unconditional result: if $\\binom{d_1+1}{2} \\leq d_2$ (the upper bound at $d_1$ doesn't exceed the lower bound at $d_2$), then $f(d_1) \\leq f(d_2)$ with no additional hypotheses beyond the base constraints. The proof is a direct `calc` chain: $f(d_1) \\leq \\binom{d_1+1}{2} \\leq d_2 \\leq f(d_2)$. This provides 'free' monotonicity between widely separated degrees — for example, $f(5) \\leq f(d)$ for all $d \\geq 15$ since $\\binom{6}{2} = 15$. The critical gap is $d = 5 \\to 6$ where $\\binom{6}{2} = 15 > 6$, so the theorem doesn't apply.",
+    "mathContext": "$\\binom{d_1+1}{2} \\leq d_2 \\implies f(d_1) \\leq f(d_2)$. Chain: $f(d_1) \\leq \\binom{d_1+1}{2} \\leq d_2 \\leq f(d_2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "gap lemmas",
+      "binomial growth",
+      "interval monotonicity"
+    ],
+    "prerequisites": [
+      "deficiency_bound_implies_monotone",
+      "binomial coefficient growth"
+    ]
+  },
+  {
+    "id": "ann-erd1007-critical-gap",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 218,
+      "endLine": 273
+    },
+    "type": "concept",
+    "title": "Critical Gap: f(5) ≤ f(6) iff 15 ≤ f(6)",
+    "content": "A key threshold result: the monotonicity step from d=5 to d=6 is equivalent to f(6) ≥ 15. Since f(5) = 15 is known, f(5) ≤ f(6) iff 15 ≤ f(6). This pins down exactly what needs to be verified at the boundary of the known region. The d=5 to d=6 transition is the first step beyond the verified table and thus serves as the proof-of-concept for extending monotonicity. If one can show f(6) ≥ 15, then combined with the deficiency argument, the full conjecture may follow by induction.",
+    "mathContext": "$f(5) \\leq f(6) \\iff 15 \\leq f(6)$ since $f(5) = 15 = \\binom{6}{2}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "boundary cases",
+      "threshold phenomena",
+      "first unknown step"
+    ],
+    "prerequisites": [
+      "knownMinEdges(5) = 15",
+      "monotone_reduces_to_large"
+    ]
+  },
+  {
+    "id": "ann-erd1007-complete-graph-optimal",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 275,
+      "endLine": 276
+    },
+    "type": "definition",
+    "title": "Complete Graph Optimality Conjecture",
+    "content": "Formalizes the complete graph optimality conjecture: for $d \\neq 4$ with $d \\geq 1$, the minimum edges for a graph of dimension $d$ is exactly $\\binom{d+1}{2}$, achieved by $K_{d+1}$. The exclusion of $d=4$ is essential — $K_{3,3}$ achieves dimension 4 with only 9 edges, beating $K_5$'s 10. Stated as a `def` returning `Prop`, this allows other theorems to take it as a hypothesis, enabling conditional reasoning: 'if optimality holds, then monotonicity follows'.",
+    "mathContext": "$\\text{complete\\_graph\\_optimal}'(f) \\iff \\forall d \\neq 4,\\; d \\geq 1 \\implies f(d) = \\binom{d+1}{2}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "complete graphs",
+      "extremal graph theory",
+      "Erdős conjectures",
+      "graph dimension"
+    ],
+    "prerequisites": [
+      "graph dimension",
+      "unit-distance embeddings",
+      "complete graph K_{d+1}"
+    ]
+  },
+  {
+    "id": "ann-erd1007-optimal-implies-monotone",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 278,
+      "endLine": 294
+    },
+    "type": "concept",
+    "title": "Optimality Conjecture Implies Monotonicity",
+    "content": "A conditional theorem: if the complete-graph optimality conjecture holds (f(d) = C(d+1,2) for all d), then f is monotone. The proof is direct — C(d+1,2) is strictly increasing in d — but the theorem has important metamathematical significance. It establishes that the optimality conjecture is strictly stronger than the monotonicity conjecture, so proving monotonicity is the right first step. It also validates the overall research strategy: resolve the weaker monotonicity question before attacking the full optimality question.",
+    "mathContext": "$\\left(\\forall d,\\; f(d) = \\binom{d+1}{2}\\right) \\implies f \\text{ monotone}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "implication hierarchy",
+      "optimality vs. monotonicity",
+      "triangular number monotonicity"
+    ],
+    "prerequisites": [
+      "complete_graph_optimal' definition",
+      "binomial coefficient monotonicity"
+    ]
+  },
+  {
+    "id": "ann-erd1007-half-quadratic-implies-monotone",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 296,
+      "endLine": 352
+    },
+    "type": "concept",
+    "title": "Half-Quadratic Lower Bound Implies Monotonicity",
+    "content": "A weaker sufficient condition: if $f(d) \\geq \\binom{d}{2}$ for all $d \\geq 2$, then $f$ is monotone. This is much weaker than full optimality ($f(d) = \\binom{d+1}{2}$) — it only asks that $f$ exceeds the 'previous' complete graph count. The proof reduces to the deficiency bound: $f(d) \\geq \\binom{d}{2} = \\binom{d+1}{2} - d$ means $\\delta(d) \\leq d$, and the central theorem applies. This provides a concrete sufficient condition: if one can show that every dimension-$d$ graph needs at least $\\binom{d}{2}$ edges (the edges in $K_d$), monotonicity follows immediately.",
+    "mathContext": "$\\forall d \\geq 2,\\; f(d) \\geq \\binom{d}{2} \\implies f \\text{ monotone}$. Key identity: $\\binom{d}{2} = \\binom{d+1}{2} - d$, so this is equivalent to $\\delta(d) \\leq d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic bounds",
+      "quadratic growth",
+      "sufficient conditions for monotonicity"
+    ],
+    "prerequisites": [
+      "deficiency_bound_implies_monotone",
+      "monotone_reduces_to_large"
+    ]
+  },
+  {
+    "id": "ann-erd1007-at-least-linear",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 354,
+      "endLine": 364
+    },
+    "type": "concept",
+    "title": "Linear Lower Bound on f(d)",
+    "content": "Establishes the unconditional lower bound $f(d) \\geq d$ for all $d \\geq 1$ — a direct consequence of the `lower_bound` field in `MinEdgesConstraints`. Intuitively, a graph of dimension $d$ must be embeddable in $\\mathbb{R}^d$ with unit-distance edges, and such an embedding requires at least $d$ edges to span $d$ dimensions. While far from the conjectured quadratic growth $f(d) \\approx \\binom{d+1}{2} \\approx d^2/2$, this linear bound is the best unconditional result available from the constraints alone.",
+    "mathContext": "$\\forall d \\geq 1,\\; d \\leq f(d)$ (unconditional from `MinEdgesConstraints`)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "linear bounds",
+      "graph dimension",
+      "unconditional results"
+    ],
+    "prerequisites": [
+      "MinEdgesConstraints",
+      "unit-distance embeddings"
+    ]
+  },
+  {
+    "id": "ann-erd1007-growth-bracket",
+    "proofId": "erdos-1007-oq-01-oq-01",
+    "range": {
+      "startLine": 366,
+      "endLine": 388
+    },
+    "type": "concept",
+    "title": "Growth Bracketing: f(d) Between Linear and Quadratic",
+    "content": "The final major result brackets the growth of f: the linear bound d ≤ f(d) from below and (conditionally) C(d+1,2) from above give d ≤ f(d) ≤ d(d+1)/2. This bracketing is the clearest statement of what is known vs. conjectured: the lower bound is proven, the upper bound is the conjecture. The gap between linear and quadratic growth is the precise region of uncertainty for the Erdős problem. The formalization makes this explicit, setting up the research agenda: close the gap by improving the lower bound toward the half-quadratic threshold.",
+    "mathContext": "$d \\leq f(d) \\leq \\binom{d+1}{2}$ (lower bound proven; upper bound conjectural optimum)",
+    "significance": "key",
+    "relatedConcepts": [
+      "growth rates",
+      "bracketing arguments",
+      "open problems"
+    ],
+    "prerequisites": [
+      "at_least_linear",
+      "complete_graph_optimal'",
+      "asymptotic analysis"
+    ]
+  }
+]

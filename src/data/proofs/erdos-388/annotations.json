@@ -1,0 +1,222 @@
+[
+  {
+    "id": "erdos-388-imports",
+    "proofId": "erdos-388",
+    "type": "concept",
+    "range": {
+      "startLine": 32,
+      "endLine": 36
+    },
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib for tactics, `Nat.Factorial.Basic` (for the factorial connection), and `Finset.LocallyFinite` (for `Finset.Icc` used in the product definition). Opens `Finset` and `BigOperators` namespaces for $\\prod$ notation.",
+    "mathContext": "The product $\\prod_{i=1}^k (m+i)$ uses `Finset.Icc 1 k` as the index set and `BigOperators` for the $\\prod$ notation. The factorial connection $(m+1) \\cdots (m+k) = (m+k)!/m!$ requires `Nat.Factorial`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "BigOperators",
+      "Finset.Icc",
+      "factorial"
+    ],
+    "prerequisites": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Factorial.Basic"
+    ]
+  },
+  {
+    "id": "erdos-388-consecutive-product",
+    "proofId": "erdos-388",
+    "type": "definition",
+    "range": {
+      "startLine": 42,
+      "endLine": 43
+    },
+    "title": "Consecutive Product",
+    "content": "Defines the product of $k$ consecutive integers starting from $m+1$: $(m+1)(m+2) \\cdots (m+k) = \\prod_{i=1}^k (m+i)$. This equals the factorial ratio $(m+k)!/m!$ and the scaled binomial coefficient $\\binom{m+k}{k} \\cdot k!$. The product is always divisible by $k!$ (it counts permutations of $k$ objects from $m+k$).",
+    "mathContext": "$$\\text{consecutiveProduct}(m, k) = \\prod_{i=1}^k (m+i) = \\frac{(m+k)!}{m!} = \\binom{m+k}{k} \\cdot k!$$ For $m = 0$: $\\text{consecutiveProduct}(0, k) = k!$. The prime factorization of this product is central to the Erdős–Selfridge theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "falling factorial",
+      "binomial coefficient",
+      "factorial ratio",
+      "Pochhammer symbol"
+    ],
+    "prerequisites": [
+      "Finset.Icc",
+      "Finset.prod"
+    ]
+  },
+  {
+    "id": "erdos-388-solution-structure",
+    "proofId": "erdos-388",
+    "type": "definition",
+    "range": {
+      "startLine": 48,
+      "endLine": 56
+    },
+    "title": "Equal Product Solution",
+    "content": "Encodes a solution to the equal-products equation: two blocks of consecutive integers with $k_1, k_2 > 3$ (ruling out small-case infinite families), disjoint blocks ($m_1 + k_1 \\leq m_2$, preventing trivial overlap), and equal products. The structure carries proofs of all constraints alongside the data.",
+    "mathContext": "A solution is a tuple $(m_1, m_2, k_1, k_2)$ with $k_1, k_2 > 3$, $m_1 + k_1 \\leq m_2$, and $\\prod_{i=1}^{k_1}(m_1+i) = \\prod_{j=1}^{k_2}(m_2+j)$. The threshold $k > 3$ is essential: for $k \\leq 3$, parametric families of solutions exist (e.g., $1 \\cdot 2 \\cdot 3 = 6 = 6$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Diophantine equations",
+      "structure types",
+      "proof-carrying data"
+    ],
+    "prerequisites": [
+      "consecutiveProduct",
+      "natural number ordering"
+    ]
+  },
+  {
+    "id": "erdos-388-solution-set",
+    "proofId": "erdos-388",
+    "type": "definition",
+    "range": {
+      "startLine": 59,
+      "endLine": 60
+    },
+    "title": "Solution Set",
+    "content": "Defines `equalProductSolutions` as the set of all solutions (just `Set.univ` on the type). The finiteness conjecture asks whether this set is finite.",
+    "mathContext": "The solution set is $\\{(m_1, m_2, k_1, k_2) : k_i > 3, m_1 + k_1 \\leq m_2, \\prod(m_1+i) = \\prod(m_2+j)\\}$. Finiteness means $\\exists N, \\forall \\text{sol}, m_2 \\leq N$ (bounding the second block position suffices since $k_i$ are then bounded by the product size).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Set.univ",
+      "finiteness",
+      "Set.Finite"
+    ],
+    "prerequisites": [
+      "EqualProductSolution"
+    ]
+  },
+  {
+    "id": "erdos-388-main-conjecture",
+    "proofId": "erdos-388",
+    "type": "concept",
+    "range": {
+      "startLine": 68,
+      "endLine": 69
+    },
+    "title": "Finiteness Conjecture (Problem #388)",
+    "content": "The main open conjecture: there are only finitely many solutions to the equal-products equation with $k_1, k_2 > 3$ and disjoint blocks. Formalized as $\\exists N, \\forall \\text{sol}, m_2 \\leq N$. This is a strong Diophantine finiteness statement — the $k > 3$ threshold is believed to be sharp.",
+    "mathContext": "**Conjecture (Erdős)**: $|\\{(m_1, m_2, k_1, k_2) : k_i > 3, m_1+k_1 \\leq m_2, \\prod_{i=1}^{k_1}(m_1+i) = \\prod_{j=1}^{k_2}(m_2+j)\\}| < \\infty$. Even the question of whether any non-trivial solutions exist (with $k_1 \\neq k_2$ or $m_1 \\neq m_2$) remains open for $k_i > 3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Diophantine finiteness",
+      "Faltings theorem analogy",
+      "effective bounds"
+    ],
+    "prerequisites": [
+      "EqualProductSolution",
+      "consecutiveProduct"
+    ]
+  },
+  {
+    "id": "erdos-388-proportional-structure",
+    "proofId": "erdos-388",
+    "type": "definition",
+    "range": {
+      "startLine": 76,
+      "endLine": 83
+    },
+    "title": "Proportional Product Solution",
+    "content": "Generalizes to the proportional-products equation $a \\cdot \\prod(m_1+i) = b \\cdot \\prod(m_2+j)$ with fixed nonzero constants $a, b$ and the weaker threshold $k_1 > 2$. This captures the case where two blocks have products differing by a rational factor $b/a$.",
+    "mathContext": "The proportional version asks: for fixed $a/b \\in \\mathbb{Q}^+$, are there only finitely many $(m_1, m_2, k_1, k_2)$ with $k_1 > 2$, $m_1 + k_1 \\leq m_2$, and $a \\cdot \\frac{(m_1+k_1)!}{m_1!} = b \\cdot \\frac{(m_2+k_2)!}{m_2!}$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "proportional Diophantine equations",
+      "rational ratios",
+      "generalization"
+    ],
+    "prerequisites": [
+      "consecutiveProduct",
+      "EqualProductSolution"
+    ]
+  },
+  {
+    "id": "erdos-388-generalized-conjecture",
+    "proofId": "erdos-388",
+    "type": "concept",
+    "range": {
+      "startLine": 89,
+      "endLine": 90
+    },
+    "title": "Generalized Finiteness Conjecture",
+    "content": "For any fixed nonzero $a, b$, the proportional-products equation should have only finitely many solutions with $k_1 > 2$. This is strictly stronger than the main conjecture (which is the case $a = b = 1, k_i > 3$).",
+    "mathContext": "**Generalized conjecture**: $\\forall a, b > 0, \\; |\\{\\text{solutions to } a \\cdot \\prod(m_1+i) = b \\cdot \\prod(m_2+j), k_1 > 2\\}| < \\infty$. The $k_1 > 2$ threshold (instead of $> 3$) is possible because the proportional factor $a/b$ absorbs some small-case families.",
+    "significance": "key",
+    "relatedConcepts": [
+      "uniform finiteness",
+      "parametric Diophantine problems"
+    ],
+    "prerequisites": [
+      "ProportionalProductSolution"
+    ]
+  },
+  {
+    "id": "erdos-388-erdos-selfridge",
+    "proofId": "erdos-388",
+    "type": "concept",
+    "range": {
+      "startLine": 97,
+      "endLine": 99
+    },
+    "title": "Erdős–Selfridge Theorem (1975)",
+    "content": "A product of two or more consecutive positive integers is never a perfect power: $(m+1)(m+2) \\cdots (m+k) \\neq n^r$ for $k \\geq 2, r \\geq 2, m > 0$. This landmark result of Paul Erdős and John Selfridge settled a long-standing conjecture using the Bertrand postulate and $p$-adic valuations. It implies that consecutive products have 'rich' prime factorizations that prevent perfect-power structure.",
+    "mathContext": "**Erdős–Selfridge (1975)**: $\\prod_{i=1}^k (m+i) \\neq n^r$ for $k \\geq 2, r \\geq 2, m \\geq 1$. The proof analyzes the $p$-adic valuation $v_p(\\prod(m+i))$: by Bertrand's postulate, there exists a prime $p$ with $m+1 \\leq p \\leq m+k$ that divides exactly one factor, making $v_p(\\text{product})$ odd — contradicting the $r$-th power condition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "perfect powers",
+      "p-adic valuation",
+      "Bertrand postulate",
+      "Catalan conjecture"
+    ],
+    "prerequisites": [
+      "consecutiveProduct",
+      "Nat.pow"
+    ]
+  },
+  {
+    "id": "erdos-388-factorial-connection",
+    "proofId": "erdos-388",
+    "type": "concept",
+    "range": {
+      "startLine": 104,
+      "endLine": 105
+    },
+    "title": "Factorial Connection",
+    "content": "The fundamental identity $\\text{consecutiveProduct}(m, k) \\cdot m! = (m+k)!$, linking products of consecutive integers to factorial ratios. Stated as a multiplicative identity rather than division to stay in $\\mathbb{N}$. This transforms the equal-products equation into a relation between factorial ratios.",
+    "mathContext": "$\\prod_{i=1}^k (m+i) \\cdot m! = (m+k)!$, equivalently $\\prod_{i=1}^k (m+i) = \\frac{(m+k)!}{m!} = (m+k)^{\\underline{k}}$ (falling factorial). The equal-products equation becomes $\\frac{(m_1+k_1)!}{m_1!} = \\frac{(m_2+k_2)!}{m_2!}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "factorial",
+      "falling factorial",
+      "Pochhammer symbol",
+      "divisibility"
+    ],
+    "prerequisites": [
+      "consecutiveProduct",
+      "Nat.factorial"
+    ]
+  },
+  {
+    "id": "erdos-388-trivial-solution",
+    "proofId": "erdos-388",
+    "type": "concept",
+    "range": {
+      "startLine": 109,
+      "endLine": 110
+    },
+    "title": "Trivial Solution Family",
+    "content": "When $m_1 = m_2$ and $k_1 = k_2$, the products are trivially equal by reflexivity. The disjointness constraint $m_1 + k_1 \\leq m_2$ in `EqualProductSolution` excludes this degenerate case, since $m_1 + k_1 \\leq m_1$ requires $k_1 = 0$, contradicting $k_1 > 3$.",
+    "mathContext": "The identity solution $\\prod_{i=1}^k (m+i) = \\prod_{i=1}^k (m+i)$ is excluded by the disjointness condition. Without it, the problem is trivial. Note that even with disjointness, there could be 'near-trivial' solutions like shifted rearrangements.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trivial solutions",
+      "disjointness condition",
+      "degenerate cases"
+    ],
+    "prerequisites": [
+      "consecutiveProduct",
+      "rfl"
+    ]
+  }
+]

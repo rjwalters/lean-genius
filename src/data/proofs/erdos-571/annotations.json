@@ -1,0 +1,250 @@
+[
+  {
+    "id": "ann-e571-context",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Problem Statement, Background, and Imports",
+    "content": "Erdos Problem #571 (the Erdos-Simonovits conjecture, 1984) asks whether every rational $\\alpha \\in [1,2)$ is a Turan exponent: does there exist a bipartite graph $G$ with $\\text{ex}(n;G) \\asymp n^\\alpha$? The interval $[1,2)$ is forced by two classical bounds: trees give $\\text{ex}(n;T) = \\Theta(n)$ (exponent 1), while the Kovari-Sos-Turan theorem gives $\\text{ex}(n;G) = O(n^{2-1/s})$ for bipartite $G$ (exponent $< 2$). Imports Mathlib for basic arithmetic, sets, finiteness, and injective functions.",
+    "mathContext": "$\\alpha \\in [1,2) \\cap \\mathbb{Q}$ is a Turan exponent iff $\\exists$ bipartite $G$: $\\text{ex}(n;G) \\asymp n^\\alpha$",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal graph theory",
+      "Turan numbers",
+      "bipartite forbidden subgraphs"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "Function.Injective",
+      "Set.univ"
+    ]
+  },
+  {
+    "id": "ann-e571-graph-defs",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 35,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "Graph Foundations: Adjacency, Bipartiteness, Subgraph Containment",
+    "content": "Defines `Graph V` as a structure with `adj : V \\to V \\to \\text{Prop}` plus `symm` and `loopless` axioms. `IsBipartite G` requires a partition $V = A \\sqcup B$ with all edges crossing from $A$ to $B$. `edgeCount` filters `Finset.univ` for ordered pairs with $p.1 < p.2$ and adjacency. `ContainsCopy G H` uses an injective homomorphism $f$ preserving edges (one direction only -- not induced). `IsFree H G` negates containment.",
+    "mathContext": "$G = (V, E)$ with $\\text{adj}$ symmetric and irreflexive; bipartite iff $V = A \\sqcup B$ with $E \\subseteq A \\times B$; $|E(G)| = |\\{(u,v) : u < v,\\, G.\\text{adj}(u,v)\\}|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "simple graphs",
+      "bipartite graphs",
+      "subgraph isomorphism",
+      "graph homomorphism"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "Function.Injective",
+      "Set.univ",
+      "Set.inter"
+    ]
+  },
+  {
+    "id": "ann-e571-asymptotic",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 63,
+      "endLine": 72
+    },
+    "type": "definition",
+    "title": "Asymptotic Notation: Theta and Big-O",
+    "content": "Defines `AsymptoticEquiv f g` ($f \\asymp g$) requiring constants $c_1, c_2 > 0$ and threshold $N_0$ with $c_1 g(n) \\le f(n) \\le c_2 g(n)$ for all $n \\ge N_0$. This is $f = \\Theta(g)$. Also defines `IsBigO f g` ($f = O(g)$) via $|f(n)| \\le c|g(n)|$. These are custom definitions rather than Mathlib's `Asymptotics.IsO` because the formalization works with $\\mathbb{N} \\to \\mathbb{R}$ functions directly and needs explicit constant witnesses for the Turan exponent definition.",
+    "mathContext": "$f \\asymp g \\iff \\exists c_1, c_2 > 0,\\, N_0:\\; \\forall n \\ge N_0,\\; c_1 g(n) \\le f(n) \\le c_2 g(n)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic equivalence",
+      "big-O notation",
+      "Theta notation"
+    ],
+    "prerequisites": [
+      "Real arithmetic",
+      "natural number ordering"
+    ]
+  },
+  {
+    "id": "ann-e571-turan-exp",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 74,
+      "endLine": 88
+    },
+    "type": "definition",
+    "title": "Turan Exponent Definition",
+    "content": "Defines `IsTuranExponent \\alpha` requiring $1 \\le \\alpha < 2$ and the existence of a bipartite graph $G$ on some finite vertex type $V$ together with a function `ex : \\mathbb{N} \\to \\mathbb{R}` satisfying $\\text{ex} \\asymp n^\\alpha$. The extremal number is represented existentially rather than defined computationally (which would require sorry for the supremum over all $G$-free graphs). This design choice avoids definition sorries while capturing the mathematical content faithfully.",
+    "mathContext": "$\\alpha$ is a Turan exponent iff $1 \\le \\alpha < 2$ and $\\exists$ bipartite $G,\\; \\text{ex}(n;G) \\asymp n^\\alpha$",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal numbers",
+      "forbidden subgraph problems",
+      "rational exponents"
+    ],
+    "prerequisites": [
+      "IsBipartite",
+      "AsymptoticEquiv",
+      "Rat.cast to Real"
+    ]
+  },
+  {
+    "id": "ann-e571-conjecture",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 90,
+      "endLine": 98
+    },
+    "type": "definition",
+    "title": "The Erdos-Simonovits Conjecture (1984)",
+    "content": "States `erdos_571_conjecture` as a `Prop` (not a theorem): every rational $\\alpha$ with $1 \\le \\alpha < 2$ satisfies `IsTuranExponent \\alpha`. Defined as a `def` rather than a `theorem` because the conjecture is OPEN -- we cannot prove it. This is the correct formalization approach for open problems: state the conjecture as a definition and prove partial results (specific exponent families) as theorems referencing the same `IsTuranExponent` predicate.",
+    "mathContext": "$\\forall \\alpha \\in [1,2) \\cap \\mathbb{Q},\\; \\alpha \\text{ is a Turan exponent}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "open conjectures",
+      "extremal graph theory",
+      "rational spectrum"
+    ],
+    "prerequisites": [
+      "IsTuranExponent",
+      "Rat ordering"
+    ]
+  },
+  {
+    "id": "ann-e571-cjl",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 100,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Conlon-Janzer-Lee Exponents: 3/2 - 1/(2s)",
+    "content": "Axiomatizes that $3/2 - 1/(2s)$ is a Turan exponent for each $s \\ge 2$, giving $\\{5/4, 7/6, 9/8, 11/10, \\ldots\\}$ accumulating at $3/2$ from below. The witness graphs are subdivisions of bipartite graphs: start with $K_{s,t}$, subdivide each edge into a path of length $\\ell$, and tune $\\ell$ to control the extremal number's growth rate. The subdivision technique works because replacing edges with long paths reduces the 'density' of the forbidden graph in a quantifiable way, lowering the exponent from $2 - 1/s$ toward specific rationals.",
+    "mathContext": "$\\forall s \\ge 2:\\; 3/2 - 1/(2s) \\in \\{5/4, 7/6, 9/8, \\ldots\\}$ is a Turan exponent; witness: subdivided bipartite graphs",
+    "significance": "key",
+    "relatedConcepts": [
+      "graph subdivisions",
+      "Turan exponent families",
+      "accumulation points"
+    ],
+    "prerequisites": [
+      "IsTuranExponent",
+      "rational arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e571-jq",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 111,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Jiang-Qiu Exponent Families (2020, 2023)",
+    "content": "Three axiomatized families: (1) $4/3 - 1/(3s)$ for $s \\ge 2$ (accumulates at $4/3$), (2) $5/4 - 1/(4s)$ for $s \\ge 2$ (accumulates at $5/4$), and (3) the crucial $1 + a/b$ with $b > a^2$ and $a \\ge 1$ (covers infinitely many low exponents). The third family is the most significant: it addresses the difficult regime near 1 where standard subdivision constructions fail. The condition $b > a^2$ is a consequence of the algebraic construction -- the witness graphs come from norm-type constructions over finite fields, where the exponent depends on the relationship between parameters.",
+    "mathContext": "$4/3 - 1/(3s)$, $5/4 - 1/(4s)$ for $s \\ge 2$; $1 + a/b$ for $a \\ge 1,\\, b > a^2$ (low exponents near 1)",
+    "significance": "key",
+    "relatedConcepts": [
+      "low exponent regime",
+      "algebraic constructions",
+      "norm graphs"
+    ],
+    "prerequisites": [
+      "IsTuranExponent",
+      "Nat.pow for a^2 condition"
+    ]
+  },
+  {
+    "id": "ann-e571-jmy",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 129,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Jiang-Ma-Yepremyan Exponents and 7/5",
+    "content": "Axiomatizes that $2 - 2/(2b+1)$ is a Turan exponent for $b \\ge 2$, producing $\\{6/5, 10/7, 14/9, \\ldots\\}$ accumulating at 2 through odd-denominator rationals. The specific value $7/5$ is separately axiomatized as `exponent_7_5`. The constructions use hypergraph-based techniques: start with a $(2b+1)$-uniform hypergraph Turan problem, 'encode' it as a bipartite graph problem via incidence structures, and transfer the exponent from the hypergraph setting to the graph setting.",
+    "mathContext": "$2 - 2/(2b+1)$ for $b \\ge 2$: $\\{6/5, 10/7, 14/9, \\ldots\\}$; also $7/5 = 2 - 3/5$ specifically",
+    "significance": "key",
+    "relatedConcepts": [
+      "hypergraph Turan theory",
+      "incidence structures",
+      "odd-denominator exponents"
+    ],
+    "prerequisites": [
+      "IsTuranExponent",
+      "rational arithmetic"
+    ]
+  },
+  {
+    "id": "ann-e571-cj-near2",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 138,
+      "endLine": 144
+    },
+    "type": "concept",
+    "title": "Conlon-Janzer Near-Two Exponents (2022)",
+    "content": "Axiomatizes that $2 - a/b$ with $a \\ge 2$ and $b \\ge (a-1)^2$ is a Turan exponent. This covers a dense set of rationals in $[7/4, 2)$: for any target $\\alpha$ close to 2, choose $a$ and $b$ such that $2 - a/b \\approx \\alpha$ with $b \\ge (a-1)^2$. The condition $b \\ge (a-1)^2$ comes from the algebraic construction using random algebraic graphs over finite fields -- specifically, polynomials of degree $a-1$ in $\\mathbb{F}_q[x]$ have at most $(a-1)^2$ roots in appropriate extensions.",
+    "mathContext": "$2 - a/b$ for $a \\ge 2,\\, b \\ge (a-1)^2$: dense near 2; all $\\alpha \\ge 7/4$ covered",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebraic graph constructions",
+      "polynomial root bounds",
+      "dense coverage near 2"
+    ],
+    "prerequisites": [
+      "IsTuranExponent",
+      "Nat.pow for (a-1)^2"
+    ]
+  },
+  {
+    "id": "ann-e571-bukh-conlon",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 146,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Bukh-Conlon Finite Family Theorem (2018)",
+    "content": "Axiomatizes the strongest partial result: every rational $\\alpha \\in [1,2)$ is achievable for a finite FAMILY $\\mathcal{F}$ of bipartite graphs, i.e., $\\text{ex}(n; \\mathcal{F}) \\asymp n^\\alpha$ where $\\text{ex}(n; \\mathcal{F})$ forbids all graphs in $\\mathcal{F}$ simultaneously. The axiom existentially quantifies over a family size $k$ and an extremal function. The gap between families and single graphs is fundamental: a family can forbid 'complementary' structures that no single graph captures, making the family version strictly easier.",
+    "mathContext": "$\\forall \\alpha \\in [1,2) \\cap \\mathbb{Q},\\; \\exists$ finite family $\\mathcal{F}$ of bipartite graphs: $\\text{ex}(n; \\mathcal{F}) \\asymp n^\\alpha$",
+    "significance": "key",
+    "relatedConcepts": [
+      "forbidden family extremal numbers",
+      "Bukh-Conlon theorem",
+      "family vs single graph"
+    ],
+    "prerequisites": [
+      "AsymptoticEquiv",
+      "Rat.cast"
+    ]
+  },
+  {
+    "id": "ann-e571-classical",
+    "proofId": "erdos-571",
+    "range": {
+      "startLine": 160,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Classical Upper Bounds: Kovari-Sos-Turan and Bondy-Simonovits",
+    "content": "Two foundational axioms justifying the interval $[1,2)$. `kovari_sos_turan` (1954): $\\text{ex}(n; K_{s,t}) = O(n^{2-1/s})$ for $s \\le t$, proved by double counting -- if a bipartite graph avoids $K_{s,t}$, then counting common neighborhoods of $s$-sets bounds the edge density. `bondy_simonovits_upper`: for ANY bipartite $G$, there exists $k \\ge 1$ with $\\text{ex}(n;G) = O(n^{2-1/k})$. Together these establish that bipartite Turan exponents cannot reach 2, justifying the open interval $[1,2)$.",
+    "mathContext": "$\\text{ex}(n; K_{s,t}) = O(n^{2-1/s})$ for $s \\le t$; $\\forall$ bipartite $G,\\; \\exists k:\\; \\text{ex}(n;G) = O(n^{2-1/k})$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kovari-Sos-Turan theorem",
+      "Zarankiewicz problem",
+      "Bondy-Simonovits theorem"
+    ],
+    "prerequisites": [
+      "IsBigO",
+      "Real.rpow",
+      "double counting"
+    ]
+  }
+]

@@ -1,0 +1,121 @@
+{
+  "id": "vandermonde-interpolation-oq-01",
+  "title": "Vandermonde Nonvanishing, the Finite Identity Theorem, and Interpolation Uniqueness",
+  "slug": "vandermonde-interpolation-oq-01",
+  "description": "Over a field, n distinct nodes give a Vandermonde matrix V_{ij} = v_i^j with nonzero determinant ∏_{i<j}(v_j − v_i), so the evaluation map p ↦ (p(v_0),…,p(v_{n−1})) is injective on polynomials of degree < n. Two consequences: the finite identity theorem (a polynomial of degree < n vanishing at n distinct points is zero) and interpolation uniqueness (two polynomials of degree < n agreeing at n distinct points are equal). This supplies the Polynomial.eval bridge that Mathlib leaves at the coefficient-vector level. 3 theorems, 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde_matrix",
+    "date": "Alexandre-Théophile Vandermonde (18th century)",
+    "status": "verified",
+    "tags": [
+      "linear-algebra",
+      "polynomials",
+      "interpolation",
+      "vandermonde",
+      "determinants",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/VandermondeInterpolationOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 3 theorems fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). No native_decide is used anywhere.",
+    "originalContributions": [
+      "vandermonde_det_ne_zero: distinct nodes give a nonzero Vandermonde determinant (specialization of det_vandermonde_ne_zero_iff)",
+      "eq_zero_of_eval_eq_zero: the finite identity theorem — a polynomial of degree < n vanishing at n distinct points is the zero polynomial, bridging Mathlib's coefficient-vector Vandermonde lemma to Polynomial.eval",
+      "eq_of_eval_eq: interpolation uniqueness — two polynomials of degree < n agreeing at n distinct points are equal (at most one interpolant of degree < n)"
+    ],
+    "dateAdded": "2026-06-20",
+    "lineCount": 65,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Vandermonde matrix and its determinant ∏_{i<j}(x_j − x_i) are the linear-algebraic heart of polynomial interpolation. Nonvanishing of the determinant for distinct nodes is equivalent to the unique solvability of the interpolation system, and underlies Lagrange and Newton interpolation, Gaussian quadrature, and the theory of polynomial evaluation codes (Reed–Solomon). The finite identity theorem — a low-degree polynomial with too many roots must vanish — is one of the most-used facts in algebra.",
+    "problemStatement": "**Open Question (OQ-01, Vandermonde / interpolation)**: From the nonvanishing of the Vandermonde determinant at distinct nodes, derive the identity theorem (degree < n polynomial vanishing at n points is zero) and interpolation uniqueness (degree < n polynomial through n points is unique), bridging Mathlib's coefficient-vector form to Polynomial.eval.\n\n**Formalized**: vandermonde_det_ne_zero, eq_zero_of_eval_eq_zero, eq_of_eval_eq.",
+    "text": "A 65-line formalization. vandermonde_det_ne_zero specializes Mathlib's det_vandermonde_ne_zero_iff: distinct (injective) nodes give det ≠ 0. The substance is eq_zero_of_eval_eq_zero — the finite identity theorem — which bridges Mathlib's coefficient-vector lemma (eq_zero_of_forall_index_sum_mul_pow_eq_zero) to Polynomial.eval: writing p.eval (v j) as ∑_{i<n} p.coeff i · (v j)^i (eval_eq_sum_range') and converting the range-sum to a Fin n sum, the vanishing at all nodes forces the coefficient vector to be zero, hence p = 0. Interpolation uniqueness (eq_of_eval_eq) follows by applying the identity theorem to p − q. All 3 theorems compile with 0 sorries and 0 axioms; no native_decide is used.",
+    "proofStrategy": "**vandermonde_det_ne_zero**: det_vandermonde_ne_zero_iff.mpr applied to the injectivity of the nodes.\n\n**eq_zero_of_eval_eq_zero**: For each node j, eval_eq_sum_range' (using natDegree p < n) rewrites p.eval (v j) = ∑_{i ∈ range n} p.coeff i · (v j)^i; Fin.sum_univ_eq_sum_range converts this to a Fin n sum, matching the hypothesis of eq_zero_of_forall_index_sum_mul_pow_eq_zero, which (from node injectivity) forces the coefficient vector i ↦ p.coeff i to vanish on Fin n. Coefficients of index ≥ n vanish by coeff_eq_zero_of_natDegree_lt, so every coefficient is zero and p = 0 by Polynomial.ext.\n\n**eq_of_eval_eq**: natDegree (p − q) ≤ max (natDegree p) (natDegree q) < n, and p − q vanishes at every node, so p − q = 0 by the identity theorem; sub_eq_zero gives p = q.",
+    "keyInsights": [
+      "**Distinct nodes ⟺ invertible evaluation**: the Vandermonde determinant ∏_{i<j}(v_j − v_i) is nonzero exactly when the nodes are distinct, which is precisely when the evaluation-at-nodes map is a bijection on degree-< n polynomials.",
+      "**Too many roots forces zero**: a nonzero polynomial of degree < n has fewer than n roots; vanishing at n distinct points therefore forces the zero polynomial — the finite identity theorem, here obtained from linear algebra rather than root-counting.",
+      "**Interpolation is unique**: two degree-< n polynomials agreeing at n points differ by a degree-< n polynomial with n roots, hence agree everywhere — at most one interpolant of degree < n through n given values.",
+      "**The bridge Mathlib leaves open**: Mathlib proves the coefficient-vector statement (an injective node set kills a vanishing coefficient combination) but not the Polynomial.eval form; the work here is exactly translating eval to the coefficient sum via eval_eq_sum_range' and Fin.sum_univ_eq_sum_range.",
+      "**0-axiom, no native_decide**: every step is kernel-checked, depending only on propext / Classical.choice / Quot.sound."
+    ],
+    "prerequisites": [
+      "The Vandermonde matrix vandermonde v and its determinant (Mathlib LinearAlgebra/Vandermonde.lean)",
+      "det_vandermonde_ne_zero_iff (det ≠ 0 ↔ nodes injective) and eq_zero_of_forall_index_sum_mul_pow_eq_zero",
+      "Polynomial evaluation and eval_eq_sum_range' (p.eval x = ∑_{i<n} p.coeff i · x^i for natDegree p < n)",
+      "Fin.sum_univ_eq_sum_range converting between Fin n and range n sums",
+      "natDegree of a difference (natDegree_sub_le) and Polynomial.ext / coeff_eq_zero_of_natDegree_lt"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "integral-root-theorem-oq-01",
+      "relationship": "related",
+      "description": "Both constrain polynomials by their roots: the rational root theorem restricts the rational roots of an integer polynomial, while the finite identity theorem says a degree-< n polynomial with n roots must vanish. Together they reflect the principle that a low-degree polynomial cannot have too many roots."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "VandermondeInterpolationOQ01",
+    "lineCount": 65,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/VandermondeInterpolationOQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "eq_zero_of_eval_eq_zero",
+      "type": "core",
+      "statement": "$v$ injective, $\\deg p < n$, $p(v_j) = 0\\ \\forall j$ $\\Rightarrow$ $p = 0$",
+      "significance": "The finite identity theorem: a polynomial of degree < n vanishing at n distinct points is the zero polynomial. Bridges Mathlib's coefficient-vector Vandermonde lemma to Polynomial.eval.",
+      "description": "Degree < n polynomial with n roots is zero."
+    },
+    {
+      "name": "eq_of_eval_eq",
+      "type": "core",
+      "statement": "$v$ injective, $\\deg p, \\deg q < n$, $p(v_j) = q(v_j)\\ \\forall j$ $\\Rightarrow$ $p = q$",
+      "significance": "Interpolation uniqueness: at most one polynomial of degree < n passes through n given values. Follows by applying the identity theorem to p − q.",
+      "description": "Interpolation through n points is unique."
+    },
+    {
+      "name": "vandermonde_det_ne_zero",
+      "type": "supporting",
+      "statement": "$v$ injective $\\Rightarrow$ $\\det(\\mathrm{vandermonde}\\,v) \\ne 0$",
+      "significance": "Distinct nodes give a nonzero Vandermonde determinant ∏_{i<j}(v_j − v_i) — the invertibility of the evaluation system that powers both theorems.",
+      "description": "Distinct nodes ⟹ nonzero Vandermonde determinant."
+    }
+  ],
+  "references": [
+    {
+      "text": "Vandermonde matrix and determinant ∏_{i<j}(x_j − x_i); nonvanishing for distinct nodes and polynomial interpolation.",
+      "url": "https://en.wikipedia.org/wiki/Vandermonde_matrix"
+    },
+    {
+      "text": "Polynomial interpolation — existence and uniqueness of the degree-< n interpolant through n distinct points.",
+      "url": "https://en.wikipedia.org/wiki/Polynomial_interpolation"
+    },
+    {
+      "text": "Mathlib4: Matrix.det_vandermonde, Matrix.det_vandermonde_ne_zero_iff, eq_zero_of_forall_index_sum_mul_pow_eq_zero (LinearAlgebra/Vandermonde.lean); Polynomial.eval_eq_sum_range', Fin.sum_univ_eq_sum_range.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
+  "conclusion": {
+    "summary": "From the nonvanishing of the Vandermonde determinant at distinct nodes (vandermonde_det_ne_zero), derives the finite identity theorem — a polynomial of degree < n vanishing at n distinct points is zero (eq_zero_of_eval_eq_zero) — and interpolation uniqueness — degree-< n polynomials agreeing at n distinct points are equal (eq_of_eval_eq). The work bridges Mathlib's coefficient-vector Vandermonde lemma to Polynomial.eval. All 3 theorems verified with 0 sorries and 0 axioms, no native_decide.",
+    "implications": "Vandermonde nonvanishing is the linear-algebraic foundation of polynomial interpolation: it guarantees a unique interpolant of degree < n through n distinct points, and the finite identity theorem (a low-degree polynomial cannot have too many roots) is ubiquitous in algebra, coding theory (Reed–Solomon), and numerical analysis (Lagrange/Newton interpolation, Gaussian quadrature).",
+    "openQuestions": [
+      "Construct the explicit Lagrange interpolant and prove it realizes the unique interpolant guaranteed here",
+      "Generalize from a field to an integral domain, and to the existence half (surjectivity of evaluation) for the full interpolation isomorphism",
+      "Quantify conditioning: relate the Vandermonde determinant's size to the node spacing for numerical interpolation"
+    ]
+  },
+  "sorries": 0
+}

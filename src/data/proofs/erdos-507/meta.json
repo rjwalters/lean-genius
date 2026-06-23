@@ -1,0 +1,195 @@
+{
+  "id": "erdos-507",
+  "title": "Erdős Problem #507: Heilbronn's Triangle Problem",
+  "slug": "erdos-507",
+  "description": "Estimate α(n), the smallest area such that every n-point set in the unit disk contains a triangle of area ≤ α(n). Best bounds: (log n)/n² ≪ α(n) ≪ 1/n^{7/6+o(1)}. Status: OPEN.",
+  "meta": {
+    "author": "Heilbronn (original problem, 1940s); Erdős (1/n² lower bound); Komlós–Pintz–Szemerédi (1981, 1982); Cohen–Pohoata–Zakharov (2024)",
+    "sourceUrl": "https://erdosproblems.com/507",
+    "date": "1940s",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos507Problem.lean",
+    "tags": [
+      "erdos",
+      "geometry",
+      "discrete-geometry",
+      "combinatorial-geometry",
+      "open"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 507,
+    "erdosUrl": "https://erdosproblems.com/507",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on ℝ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real exponentiation x^y",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "sSup",
+        "description": "Supremum of a set of reals",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "triangleArea: determinant-based area formula for three points in ℝ²",
+      "IsInUnitDisk: predicate for point sets in the closed unit disk",
+      "minTriangleArea: infimum of triangle areas over all triples",
+      "heilbronn: the Heilbronn function α(n) as supremum of minimum triangle areas",
+      "lower_bound_trivial: Erdős's greedy 1/n² lower bound (axiomatized)",
+      "upper_bound_trivial: pigeonhole 1/n upper bound (axiomatized)",
+      "kps_lower_bound: KPS (log n)/n² lower bound (axiomatized)",
+      "kps_upper_bound: KPS n^{-8/7} upper bound (axiomatized)",
+      "cpz_upper_bound: CPZ n^{-7/6} upper bound (axiomatized)",
+      "heilbronn_exponent_range: exponent bounds 7/6 ≤ β ≤ 2 (axiomatized)",
+      "higher_dimensional_analog: d-dimensional trivial bounds (axiomatized)"
+    ],
+    "dateAdded": "2026-01-19",
+    "axiomCount": 0,
+    "lineCount": 83,
+    "assumptions": "0 axioms, 0 sorries. Partial formalization of Heilbronn's Triangle Problem: defines triangle geometry framework. The main bounds (lower_bound_trivial, kps_lower_bound, Heilbronn upper bound) are referenced in comments but not formalized as Lean axioms.",
+    "theoremCount": 0,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Hans Heilbronn posed the triangle problem in the 1940s while at the University of Bristol: given $n$ points in a convex region, how small must the smallest triangle area be? Erdős quickly observed the lower bound $\\alpha(n) \\geq c/n^2$ via a greedy placement argument and conjectured that the true order should be closer to $1/n^2$ than to $1/n$. The problem attracted attention from some of the strongest combinatorialists of the 20th century. In 1981, Komlós, Pintz, and Szemerédi [KPS81] achieved the first breakthrough on the upper bound side, proving $\\alpha(n) \\leq C/n^{8/7}$ using Szemerédi's regularity lemma—one of the early geometric applications of this fundamental tool. The following year, the same trio [KPS82] improved the lower bound to $\\alpha(n) \\geq c(\\log n)/n^2$ using a sophisticated probabilistic argument involving the Lovász Local Lemma. Remarkably, both bounds stood essentially unchanged for over 40 years. In 2024, Cohen, Pohoata, and Zakharov [CPZ24] finally improved the upper bound to $\\alpha(n) \\leq C/n^{7/6+o(1)}$ using incidence geometry and the polynomial method of Guth and Katz. The gap between the lower bound exponent 2 and upper bound exponent 7/6 remains enormous, making this one of the most fundamental open problems in combinatorial geometry.",
+    "problemStatement": "**Problem Statement (OPEN)**\n\nLet $\\alpha(n)$ be the largest value such that every set of $n$ points in the unit disk contains three points forming a triangle of area $\\leq \\alpha(n)$. Estimate $\\alpha(n)$.\n\n**Best bounds:** $c \\cdot \\frac{\\log n}{n^2} \\leq \\alpha(n) \\leq \\frac{C}{n^{7/6+o(1)}}$.\n\n**Exponent:** Writing $\\alpha(n) = n^{-\\beta+o(1)}$, we have $7/6 \\leq \\beta \\leq 2$.",
+    "text": "Estimate α(n), the smallest area such that every n-point set in the unit disk contains a triangle of area ≤ α(n). Best bounds: (log n)/n² ≪ α(n) ≪ 1/n^{7/6+o(1)}. Status: OPEN.",
+    "proofStrategy": "The formalization defines the triangle area via the determinant formula, point configurations in the unit disk, and the Heilbronn function $\\alpha(n)$ as the supremum of minimum triangle areas. The trivial bounds ($1/n^2$ and $1/n$), the KPS improvements ($(\\log n)/n^2$ and $n^{-8/7}$), and the CPZ breakthrough ($n^{-7/6}$) are axiomatized. The exponent range theorem and a higher-dimensional analog are also stated.",
+    "keyInsights": [
+      "**Minimax formulation:** Heilbronn's function $\\alpha(n)$ is a minimax: maximize (over configurations) the minimum (over triples) triangle area—a natural extremal geometry problem",
+      "**Four-decade stagnation:** Both the KPS lower bound $(\\log n)/n^2$ (1982) and upper bound $n^{-8/7}$ (1981) stood for over 40 years before CPZ improved the upper bound to $n^{-7/6}$ in 2024",
+      "**Polynomial method breakthrough:** Cohen–Pohoata–Zakharov used the Guth–Katz polynomial partitioning method and Szemerédi–Trotter incidence bounds to bypass the regularity-lemma bottleneck",
+      "**Enormous exponent gap:** The true exponent $\\beta$ lies in $[7/6, 2]$—a gap of $5/6 \\approx 0.833$—and even determining whether $\\beta < 2$ (improving the lower bound beyond $n^{-2+o(1)}$) seems out of reach",
+      "**Connection to incidence geometry:** Upper bounds on $\\alpha(n)$ are equivalent to lower bounds on point-line incidences, linking Heilbronn's problem to the Szemerédi–Trotter theorem and its generalizations"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Geometry (Euclidean, combinatorial)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Dependencies",
+      "startLine": 19,
+      "endLine": 24,
+      "summary": "Imports $\\texttt{Real.log}$, $\\texttt{Real.rpow}$, $\\texttt{Finset.Card}$, $\\texttt{Real.Basic}$, and $\\texttt{Tactic}$ from Mathlib for logarithmic bounds, real exponentiation, finite point sets, and proof automation.",
+      "mathContext": "Imports $\\texttt{Real.log}$, $\\texttt{Real.rpow}$, $\\texttt{Finset.Card}$, $\\texttt{Real.Basic}$, and $\\texttt{Tactic}$ from Mathlib for logarithmic bounds, real exponentiation, finite point sets, and proof automation."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Geometric Definitions",
+      "startLine": 25,
+      "endLine": 46,
+      "summary": "Defines $\\texttt{triangleArea}(p,q,r) = \\frac{1}{2}|x_1(y_2-y_3) + x_2(y_3-y_1) + x_3(y_1-y_2)|$, $\\texttt{IsInUnitDisk}(P) \\iff \\forall p \\in P,\\; p_1^2 + p_2^2 \\leq 1$, $\\texttt{minTriangleArea}$ via iterated $\\inf$, and the Heilbronn function $\\alpha(n) = \\sup_{|P|=n} \\Delta_{\\min}(P)$.",
+      "mathContext": "Defines $\\texttt{triangleArea}(p,q,r) = \\frac{1}{2}|x_1(y_2-y_3) + x_2(y_3-y_1) + x_3(y_1-y_2)|$, $\\texttt{IsInUnitDisk}(P) \\iff \\forall p \\in P,\\; p_1^2 + p_2^2 \\leq 1$, $\\texttt{minTriangleArea}$ via iterated $\\inf$, and the Heilbronn function $\\alpha(n) = \\sup_{|P|=n} \\Delta_{\\min}(P)$."
+    },
+    {
+      "id": "trivial-lower",
+      "title": "Erdős's Lower Bound $\\alpha(n) \\gg 1/n^2$",
+      "startLine": 47,
+      "endLine": 54,
+      "summary": "Axiomatizes $\\alpha(n) \\geq c/n^2$ from Erdős's greedy placement: each new point avoids $O(n^2)$ thin forbidden strips of total measure $O(1/n)$, leaving room for placement.",
+      "mathContext": "Axiomatizes $\\$\\alpha$(n) \\geq c/$n^{2}$$ from Erdős's greedy placement: each new point avoids $$O($n^{2}$)$$ thin forbidden strips of total measure $$O(1/n)$$, leaving room for placement."
+    },
+    {
+      "id": "trivial-upper",
+      "title": "Trivial Upper Bound $\\alpha(n) \\ll 1/n$",
+      "startLine": 55,
+      "endLine": 60,
+      "summary": "Axiomatizes $\\alpha(n) \\leq C/n$ via pigeonhole: partition the disk into $n/3$ strips of width $O(1/n)$; some strip contains $\\geq 3$ points forming a triangle of area $O(1/n)$.",
+      "mathContext": "Axiomatizes $\\$\\alpha$(n) \\leq C/n$ via pigeonhole: partition the disk into $n/3$ strips of width $$O(1/n)$$; some strip contains $\\geq 3$ points forming a triangle of area $$O(1/n)$$."
+    },
+    {
+      "id": "kps-lower",
+      "title": "KPS Lower Bound $(\\log n)/n^2$",
+      "startLine": 61,
+      "endLine": 69,
+      "summary": "Axiomatizes the Komlós–Pintz–Szemerédi (1982) improvement: $\\alpha(n) \\geq c(\\log n)/n^2$ via the Lovász Local Lemma applied to random point placement. Still the best known lower bound.",
+      "mathContext": "Axiomatizes the Komlós–Pintz–Szemerédi (1982) improvement: $\\$\\alpha$(n) \\geq c(\\$\\log n$)/$n^{2}$$ via the Lovász Local Lemma applied to random point placement. Still the best known lower bound."
+    },
+    {
+      "id": "kps-upper",
+      "title": "KPS Upper Bound $n^{-8/7}$",
+      "startLine": 70,
+      "endLine": 78,
+      "summary": "Axiomatizes the KPS (1981) result $\\alpha(n) \\leq C/n^{8/7}$ using the Szemerédi regularity lemma to find structured subconfigurations forcing small triangles.",
+      "mathContext": "Axiomatizes the KPS (1981) result $\\$\\alpha$(n) \\leq C/n^{8/7}$ using the Szemerédi regularity lemma to find structured subconfigurations forcing small triangles."
+    },
+    {
+      "id": "cpz-upper",
+      "title": "CPZ Upper Bound $n^{-7/6}$ (2024)",
+      "startLine": 79,
+      "endLine": 83,
+      "summary": "Axiomatizes the Cohen–Pohoata–Zakharov breakthrough: $\\alpha(n) \\leq C/n^{7/6+o(1)}$, improving the KPS exponent via incidence geometry and the polynomial partitioning method.",
+      "mathContext": "Axiomatizes the Cohen–Pohoata–Zakharov breakthrough: $\\$\\alpha$(n) \\leq C/n^{7/6+o(1)}$, improving the KPS exponent via incidence geometry and the polynomial partitioning method."
+    }
+  ],
+  "conclusion": {
+    "summary": "Heilbronn's triangle problem is one of the most fundamental open problems in combinatorial geometry. The Lean formalization defines the Heilbronn function α(n) as a minimax over point configurations and triangle areas, then axiomatizes the full chain of bounds: Erdős's greedy 1/n² (1940s), the pigeonhole 1/n, the KPS improvements to (log n)/n² and n^{-8/7} (1981–82), and the CPZ breakthrough n^{-7/6} (2024). The true exponent β lies in [7/6, 2].",
+    "implications": "Closing the exponent gap would resolve a question at the intersection of combinatorial geometry, incidence geometry, and the polynomial method. The problem connects to Szemerédi–Trotter type bounds, the Guth–Katz framework, and questions about the structure of extremal point configurations.",
+    "openQuestions": [
+      "What is the true exponent β in α(n) = n^{−β+o(1)}? Is β = 2 (Erdős's conjecture) or closer to 7/6?",
+      "Can the lower bound be improved beyond (log n)/n², perhaps to n^{−2+δ} for some δ > 0?",
+      "Can the CPZ upper bound exponent 7/6 be pushed further toward 2?",
+      "What do extremal configurations (maximizing the minimum triangle area) look like for large n?",
+      "What are the optimal exponents for the higher-dimensional analogs α_d(n)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 83,
+    "axiomCount": 0,
+    "theoremCount": 0,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos507Problem.lean",
+    "sorries": 0
+  },
+  "references": [
+    "Heilbronn: original problem (1940s)",
+    "Komlós–Pintz–Szemerédi (1982): lower bound (log n)/n²",
+    "Komlós–Pintz–Szemerédi (1981): upper bound 1/n^{8/7}",
+    "Cohen–Pohoata–Zakharov (2024): upper bound 1/n^{7/6+o(1)}",
+    "https://erdosproblems.com/507"
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1084",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, discrete-geometry, open"
+    },
+    {
+      "targetId": "erdos-653",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: combinatorial-geometry, discrete-geometry, open"
+    },
+    {
+      "targetId": "erdos-654",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: discrete-geometry, geometry, open"
+    }
+  ],
+  "sorries": 0
+}

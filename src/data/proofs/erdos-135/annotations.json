@@ -1,0 +1,145 @@
+[
+  {
+    "id": "ann-e135-header",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Problem Overview: Four Points, Five Distances",
+    "content": "**Erdős Problem #135** ($250 prize, now closed): Let A ⊂ ℝ² be an n-point set where any 4 points determine at least 5 distinct distances. Must A have Ω(n²) total distinct distances?\n\n**Answer: NO** — disproved by Terence Tao in September 2024 (arXiv:2409.01343). Tao constructed n-point sets with the five-distance property but only O(n²/√log n) distinct distances.\n\n**Key technique**: Randomized algebraic curves (parabolas mod p) over finite fields avoid forbidden 4-point patterns (parallelograms, etc.). Random affine transformations and probabilistic deletion eliminate remaining bad 4-tuples.\n\n**Connection to Guth-Katz**: The known lower bound (≥ cn/√log n for any n points) and Tao's upper bound (≤ Cn²/√log n for five-distance sets) have the same log exponent 1/2 — the gap is exactly a factor of n.",
+    "mathContext": "Imports: PiL2 for EuclideanSpace ℝ (Fin 2), Convex.Hull for collinearity, Finset.Basic for combinatorics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "distinct-distances",
+      "five-distance-property",
+      "disproved",
+      "Guth-Katz"
+    ],
+    "prerequisites": [
+      "Euclidean Plane Geometry",
+      "Distinct Distances Problem",
+      "Asymptotic Notation"
+    ]
+  },
+  {
+    "id": "ann-e135-defs",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 40,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "Core Definitions: Distances and Forbidden Patterns",
+    "content": "**distinctDistances A**: the set of all positive pairwise distances in A. Defined by filtering A × A for distinct pairs, then imaging under `dist`.\n\n**distanceCount A**: cardinality of distinctDistances A.\n\n**fourPointDistances p₁ p₂ p₃ p₄**: a Finset containing all 6 pairwise distances of 4 points. Since it's a Finset, duplicate distances are merged — e.g., a square has only 2 distinct distances so card = 2.\n\n**HasFiveDistanceProperty A**: every 4-tuple of distinct points in A has `fourPointDistances.card ≥ 5`. This means at most 1 distance is shared among the 6 pairs.\n\n**IsParallelogram**: two pairs of opposite sides equal. **IsForbiddenPattern**: fewer than 5 distances.",
+    "mathContext": "`fourPointDistances` uses a Finset literal `{a, b, c, d, e, f}` which requires `DecidableEq ℝ` — available via `Classical.decEq` under `noncomputable`. The cardinality is ≤ 6 and reflects actual distinct distance values.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "EuclideanSpace",
+      "Finset.filter",
+      "Finset.card",
+      "parallelogram"
+    ],
+    "prerequisites": [
+      "Pairwise Distances",
+      "Finset Cardinality",
+      "Decidable Equality"
+    ]
+  },
+  {
+    "id": "ann-e135-conjecture",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 72,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Erdős Conjecture #135",
+    "content": "**ErdosConjecture135**: ∃ c > 0, ∀ A with the five-distance property, distanceCount A ≥ c·n².\n\nThis asserts that local distance diversity (every 4 points have ≥ 5 distinct distances) forces global distance diversity (the total count is at least quadratic in n). Erdős expected that the rigid constraint on 4-point subsets would propagate to force many distinct distances overall.\n\nTao's 2024 result shows this intuition is false: the five-distance property is compatible with a nearly-minimal O(n²/√log n) distance count.",
+    "mathContext": "The quadratic bound n² would be tight for regular grids (which achieve Θ(n/√log n) distances, much fewer). The conjecture asked for Ω(n²) which is the maximum possible.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "quadratic-distances",
+      "local-vs-global",
+      "extremal-combinatorics"
+    ],
+    "prerequisites": [
+      "HasFiveDistanceProperty",
+      "distanceCount"
+    ]
+  },
+  {
+    "id": "ann-e135-tao-axioms",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 80,
+      "endLine": 98
+    },
+    "type": "concept",
+    "title": "Tao's Disproof and Guth-Katz",
+    "content": "**erdos_135_false** (axiom): ¬ErdosConjecture135 — the conjecture is false (Tao 2024).\n\n**tao_counterexample** (axiom): The explicit construction — for every n ≥ 2, there exists an n-point set with the five-distance property and at most C·n²/√(log n) distinct distances. The construction uses parabolas over 𝔽_p (prime fields), lifted to ℝ² via an embedding, with random affine transformations to eliminate forbidden patterns.\n\n**guth_katz_lower_bound** (axiom): ∃ c > 0, ∀ n-point sets A (n ≥ 2), distanceCount A ≥ c·n/√(log n). This is Guth-Katz (2015), resolving Erdős's distinct distances conjecture. Note: this lower bound applies to ANY point set, regardless of the five-distance property.",
+    "mathContext": "The Guth-Katz proof uses algebraic geometry (polynomial method) and the joints theorem. It improved the Erdős distinct distances bound from n^{0.8} to n/√(log n), essentially matching the conjectured tight bound.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "arXiv:2409.01343",
+      "Guth-Katz-2015",
+      "parabola-construction",
+      "polynomial-method"
+    ],
+    "prerequisites": [
+      "HasFiveDistanceProperty",
+      "distanceCount",
+      "ErdosConjecture135"
+    ]
+  },
+  {
+    "id": "ann-e135-parallelogram",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 100,
+      "endLine": 114
+    },
+    "type": "concept",
+    "title": "Parallelograms as Forbidden Patterns",
+    "content": "**parallelogram_few_distances** (axiom): A parallelogram with distinct vertices has ≤ 3 distinct distances — the two (possibly equal) side lengths and the diagonal. This makes parallelograms 'forbidden patterns': they fail the five-distance requirement.\n\n**tao_avoids_parallelograms** (axiom): The key property of Tao's construction — sets with the five-distance property contain no parallelogram. This is what parabola-based constructions guarantee: parabola sections $(ax+by)^2 ≡ cx+dy+e \\pmod{p}$ have no 4 points forming a parallelogram.\n\n**Why parallelograms have ≤ 3 distances**: In a parallelogram ABCD, we have AB = CD (opposite sides equal) and AD = BC. The six distances {AB, AC, AD, BC, BD, CD} reduce to at most {AB, AD, AC} = 3 values (or 2 if AB = AD, a rhombus).",
+    "mathContext": "`IsParallelogram p₁ p₂ p₃ p₄` is defined by vector equality: p₁ - p₂ = p₄ - p₃ (parallel side) OR p₁ - p₃ = p₄ - p₂ (other diagonal split). The three clauses cover all labelings.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parallelogram",
+      "forbidden-pattern",
+      "parabola-construction",
+      "mod-p"
+    ],
+    "prerequisites": [
+      "IsParallelogram",
+      "fourPointDistances",
+      "HasFiveDistanceProperty"
+    ]
+  },
+  {
+    "id": "ann-e135-theorems",
+    "proofId": "erdos-135",
+    "range": {
+      "startLine": 116,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "Three Proved Consequences",
+    "content": "**erdos_135_disproved** (proved): just `erdos_135_false` — a one-liner confirming the disproof.\n\n**parallelogram_forbidden** (proved): Combines `parallelogram_few_distances` (≤ 3 distances) with `norm_num` to get < 5 distances. This is a small but illustrative result: the arithmetic fact 3 < 5 connects the geometric axiom to the abstract `IsForbiddenPattern` definition.\n\n**tao_optimal_up_to_log** (proved): The most interesting consequence — combines `guth_katz_lower_bound` and `tao_counterexample` to show both bounds have the form Θ(n/√log n) × n^α for the five-distance property sets. The proof is purely structural: obtain the existential witnesses from each axiom and combine them. This theorem highlights that Tao's construction is 'optimal up to a polynomial' in the log factor.",
+    "mathContext": "The proof of `tao_optimal_up_to_log` is 3 lines: `obtain ⟨c, hc, hbound⟩ := guth_katz_lower_bound; obtain ⟨C, hC, htao⟩ := tao_counterexample; exact ⟨c, C, hc, hC, hbound, htao⟩`. The structural proof works because both axioms are ∃-statements with the right types.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.lt_of_le_of_lt",
+      "norm_num",
+      "omega",
+      "existential-instantiation"
+    ],
+    "prerequisites": [
+      "erdos_135_false",
+      "parallelogram_few_distances",
+      "guth_katz_lower_bound",
+      "tao_counterexample"
+    ]
+  }
+]

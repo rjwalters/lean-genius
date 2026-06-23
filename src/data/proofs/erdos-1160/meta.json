@@ -1,0 +1,190 @@
+{
+  "id": "erdos-1160",
+  "title": "Erdős Problem #1160: Group Counting Function Maximized at Powers of 2",
+  "slug": "erdos-1160",
+  "description": "Let g(n) denote the number of non-isomorphic groups of order n. Conjecture: if n ≤ 2^m then g(n) ≤ g(2^m). Powers of 2 maximize the group-counting function.",
+  "meta": {
+    "author": "Erdős (conjecture), Blackburn-Neumann-Venkataraman (2007 survey), Pantelidakis (2003 partial result)",
+    "sourceUrl": "https://erdosproblems.com/1160",
+    "date": "2007",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1160Problem.lean",
+    "tags": [
+      "erdos",
+      "group-theory",
+      "enumeration",
+      "open-problem",
+      "p-groups",
+      "asymptotic-analysis"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 10,
+    "erdosNumber": 1160,
+    "erdosUrl": "https://erdosproblems.com/1160",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-24",
+    "mathlib_version": "4.26.0",
+    "lineCount": 329,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Finite range of natural numbers",
+        "module": "Mathlib.Data.Finset.Range"
+      },
+      {
+        "theorem": "Finset.single_le_sum",
+        "description": "Single element bounded by sum of nonneg terms",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      }
+    ],
+    "originalContributions": [
+      "numGroups axiomatization: group counting function g(n) with known values",
+      "erdos_1160 conjecture: formal statement that 2^m maximizes g(n) for n ≤ 2^m",
+      "erdos_1160_strong: stronger conjecture about sum of g(n) for n < 2^m",
+      "erdos_1160_equiv: proved equivalence of two formulations",
+      "strong_implies_original: proved stronger conjecture implies original",
+      "erdos_1160_n_eq_one: proved conjecture for n=1",
+      "erdos_1160_prime: proved conjecture for prime n",
+      "pantelidakis_odd: axiomatized partial result for odd n",
+      "numGroups_prime_power_pos: proved positivity for prime powers from numGroups_prime + monotonicity",
+      "erdos_1160_m_eq_two: proved conjecture for all n ≤ 4 (m=2 case)",
+      "erdos_1160_m_eq_three: proved conjecture for all n ≤ 8 (m=3 case)",
+      "numGroups_prime_sq: generalized g(p²)=2 for all primes (subsumes numGroups_four)",
+      "numGroups_pq: combined axiom for g(pq) classification (2 if q|(p-1), 1 otherwise)",
+      "numGroups_prime_cube: generalized g(p³)=5 for all primes (subsumes numGroups_eight)",
+      "erdos_1160_m_eq_four: proved conjecture for all n ≤ 16 (m=4 case)"
+    ],
+    "assumptions": "10 axiom declarations: numGroups function, numGroups_zero/one/prime/prime_sq/prime_cube (structural), numGroups_pq (combined pq classification), numGroups_twelve/sixteen (specific values), numGroups_prime_power_mono. pantelidakis_odd and numGroups_two_power_growth are Prop defs (unused known results).",
+    "theoremCount": 24,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "The problem of which integer orders maximize the group counting function has been studied since at least the 1960s. The conjecture that powers of 2 are the maximizers is attributed variously to Erdős, Higman, and others. The super-exponential growth of $g(2^m) \\approx 2^{(2/27)m^3}$ arises from the rich structure of $p$-groups: as the exponent $m$ grows, the number of non-isomorphic 2-groups explodes due to the combinatorial explosion of possible commutator structures.\n\nThe group counting function $g(n)$ (OEIS A000001) was studied systematically from the late 19th century, starting with Hölder's classification of groups of small order. Higman (1960) and Sims (1965) independently established the fundamental asymptotic formula $\\log_2 g(2^m) \\sim \\frac{2}{27}m^3$, showing that the number of groups of order $2^m$ dwarfs those of any comparable non-prime-power order.\n\nPantelidakis (2003) made the first major progress by proving the conjecture for odd $n$ when $m$ is sufficiently large ($m \\geq 3619$). The key tool is the Feit–Thompson theorem (odd-order groups are solvable), which gives tight control over the enumeration of odd-order groups via Hall's theorem. The stronger conjecture of Blackburn, Neumann, and Venkataraman (2007, Question 22.18) asserts that $\\sum_{n < 2^m} g(n) \\leq g(2^m)$ for all sufficiently large $m$, reflecting how overwhelmingly 2-groups dominate the landscape of finite group theory.\n\nThe constant $\\frac{2}{27}$ arises from counting nilpotent Lie algebras over $\\mathbb{F}_2$: via the Lazard correspondence, most 2-groups of order $2^m$ are in bijection with such algebras of dimension $m$, and the enumeration reduces to counting certain antisymmetric bilinear forms modulo equivalence.",
+    "problemStatement": "Let $g(n)$ denote the number of non-isomorphic groups of order $n$. Conjecture: for all $m \\in \\mathbb{N}$ and all $n \\leq 2^m$, we have $g(n) \\leq g(2^m)$. That is, powers of 2 maximize the group counting function among all integers up to a given bound.",
+    "proofStrategy": "The formalization axiomatizes $g(n)$ since Lean/Mathlib has no computable group enumeration function, then states the conjecture in two equivalent forms (universally quantified and Finset-based). The proof establishes the equivalence of these formulations, proves the conjecture for the base cases $n = 1$ and $n$ prime (where $g(n) = 1$), and axiomatizes Pantelidakis's deeper result for odd $n$. The stronger BNV conjecture ($\\sum_{n < 2^m} g(n) \\leq g(2^m)$) is also formalized, with a proof that it implies the original via `Finset.single_le_sum`. The asymptotic growth rate is captured as an $\\varepsilon$-$N$ statement about $\\log_2 g(2^m) / m^3 \\to 2/27$.",
+    "keyInsights": [
+      "The group counting function $g(n)$ is wildly erratic: $g(p) = 1$ for every prime $p$, but $g(2^m)$ grows super-exponentially as $2^{(2/27)m^3}$, making 2-groups by far the dominant source of finite group diversity.",
+      "The Lazard correspondence between $p$-groups of class less than $p$ and nilpotent Lie algebras over $\\mathbb{F}_p$ explains the constant $\\frac{2}{27}$: it reduces group enumeration to counting antisymmetric bilinear maps modulo linear equivalence.",
+      "The formalization proves the stronger BNV conjecture implies the original via a single-element-to-sum bound (`Finset.single_le_sum`), a clean example of how summation inequalities connect pointwise and aggregate forms of dominance.",
+      "Pantelidakis's restriction to odd $n$ exploits the Feit–Thompson theorem (all odd-order groups are solvable), which combined with Hall's theorem gives tight enumeration bounds — a strategy that fails for even orders where non-solvable groups appear.",
+      "The equivalence proof between universally quantified and Finset-range formulations demonstrates that the conjecture is computationally verifiable for any fixed $m$, though exponential growth of $2^m$ makes direct verification infeasible beyond small cases."
+    ],
+    "prerequisites": [
+      "Finite group theory",
+      "Sylow theorems",
+      "p-group classification",
+      "Asymptotic analysis",
+      "Nilpotent Lie algebras"
+    ]
+  },
+  "sections": [
+    {
+      "id": "group-counting",
+      "title": "Section I: The Group Counting Function",
+      "startLine": 30,
+      "endLine": 100,
+      "summary": "Axiomatization of the group counting function numGroups : ℕ → ℕ (OEIS A000001) plus structural axioms g(p)=1, g(p²)=2, g(p³)=5, the g(pq) classification, and specific values g(12)=5, g(16)=14. Derived theorems compute g(2), g(4), g(6), g(8) and the q|(p-1) split. Since Lean/Mathlib has no computable group enumeration, the base values are declared as axioms.",
+      "mathContext": "$g(n) = |\\{G : |G| = n\\}/\\cong|$; axioms $g(p)=1$, $g(p^2)=2$, $g(p^3)=5$, $g(pq) = 2$ iff $q \\mid p-1$ else $1$; derived $g(2)=1, g(4)=2, g(6)=2, g(8)=5$."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Section II: Basic Properties",
+      "startLine": 101,
+      "endLine": 124,
+      "summary": "Monotonicity of g(p^k) in k for fixed prime p (axiom numGroups_prime_power_mono), positivity of g(p^k) for k ≥ 1 (proved from g(p)=1 + monotonicity), and g(2^m) ≥ 1 (proved without a general positivity axiom).",
+      "mathContext": "$g(p^{k_1}) \\leq g(p^{k_2})$ for $k_1 \\leq k_2$; $g(p^k) > 0$ for $k \\geq 1$; $g(2^m) \\geq 1$"
+    },
+    {
+      "id": "conjecture",
+      "title": "Section III: The Main Conjecture",
+      "startLine": 125,
+      "endLine": 150,
+      "summary": "States the main conjecture in two equivalent forms (erdos_1160 and erdos_1160_alt) and proves their equivalence (erdos_1160_equiv). The universally quantified form (∀ m n, n ≤ 2^m → g(n) ≤ g(2^m)) matches the Finset-range form, enabling computational verification for fixed m.",
+      "mathContext": "$\\forall m, n \\in \\mathbb{N},\\; n \\leq 2^m \\implies g(n) \\leq g(2^m)$"
+    },
+    {
+      "id": "stronger-conjecture",
+      "title": "Section IV: Stronger Conjecture (BNV07)",
+      "startLine": 151,
+      "endLine": 169,
+      "summary": "Formalizes the dramatically stronger conjecture of Blackburn–Neumann–Venkataraman (Question 22.18): the sum of g(n) over all n < 2^m is dominated by g(2^m) alone for sufficiently large m. Proves strong_implies_original via Finset.single_le_sum.",
+      "mathContext": "$\\exists M,\\; \\forall m \\geq M: \\sum_{n=0}^{2^m-1} g(n) \\leq g(2^m)$"
+    },
+    {
+      "id": "partial-results",
+      "title": "Section V: Known Partial Results",
+      "startLine": 170,
+      "endLine": 192,
+      "summary": "Verifies the conjecture for base cases: n = 1 (trivially g(1) = 1 ≤ g(2^m), erdos_1160_n_eq_one), prime n (g(p) = 1, erdos_1160_prime), and states Pantelidakis's 2003 result for odd n when m ≥ 3619 as a Prop def (unused known result).",
+      "mathContext": "$g(1) = 1 \\leq g(2^m)$; $g(p) = 1$ for prime $p$; Pantelidakis: odd $n \\leq 2^m,\\, m \\geq 3619 \\implies g(n) \\leq g(2^m)$"
+    },
+    {
+      "id": "asymptotics",
+      "title": "Section VI: Asymptotic Growth",
+      "startLine": 193,
+      "endLine": 207,
+      "summary": "States the Higman–Sims asymptotic formula log₂(g(2^m)) / m³ → 2/27 as m → ∞ as a Prop def (unused known result). This super-exponential growth is the fundamental reason powers of 2 are conjectured to maximize the group counting function.",
+      "mathContext": "$\\lim_{m \\to \\infty} \\frac{\\log_2 g(2^m)}{m^3} = \\frac{2}{27}$"
+    },
+    {
+      "id": "structural-results",
+      "title": "Section VII: Structural Results",
+      "startLine": 208,
+      "endLine": 329,
+      "summary": "Proves the conjecture for all small bounds: n=0 (g(0)=0), powers of two (erdos_1160_power_of_two), reflexivity (erdos_1160_self), and exhaustive case checks for m=1 (n≤2), m=2 (n≤4), m=3 (n≤8), m=4 (n≤16) via interval_cases plus helper values g(9)=2, g(10)=2, g(14)=2, g(15)=1. Concludes with erdos_1160_lift extending a verified m to the range [0,2^m] at m+1.",
+      "mathContext": "Verified base cases $g(n) \\le g(2^m)$ for all $n \\le 2^m$ with $m \\le 4$; $g(2^k) \\le g(2^m)$ for $k \\le m$; an inductive lift step on the lower range."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1160 and its strengthened BNV form, proves the equivalence of two conjecture formulations, verifies the conjecture for m ≤ 4 (all n ≤ 16), and axiomatizes the key known partial result (Pantelidakis for odd n) and the Higman–Sims asymptotic formula. Structural axioms for g(p), g(p²), g(p³), and g(pq) enable deriving many group counts from general principles rather than individual value axioms. 10 axioms encode the group counting function and its known properties, since group enumeration is not available in Lean/Mathlib.",
+    "implications": "A proof of the full conjecture would establish that 2-groups are the dominant source of finite group diversity at every scale — a fundamental structural fact about finite group theory. The BNV stronger form would imply that the diversity of 2-groups grows so fast that a single order $2^m$ harbors more non-isomorphic groups than all smaller orders combined. Progress on this conjecture is closely tied to advances in $p$-group enumeration and nilpotent Lie algebra classification.",
+    "openQuestions": [
+      "Can the Pantelidakis threshold of $m \\geq 3619$ for odd $n$ be significantly lowered, perhaps to $m \\geq 10$ or smaller?",
+      "Is the BNV stronger conjecture ($\\sum_{n<2^m} g(n) \\leq g(2^m)$) true for all $m \\geq 7$, and can this threshold be determined computationally?",
+      "Can the conjecture be extended to other primes: does $g(p^m)$ dominate $g(n)$ for all $n \\leq p^m$ when $p$ is fixed?",
+      "What is the correct error term in the Higman–Sims formula — is $\\log_2 g(2^m) = \\frac{2}{27}m^3 + O(m^{8/3})$ sharp?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundation",
+      "description": "The Sylow theorems provide the structural decomposition of finite groups into p-subgroups that underpins group enumeration. Pantelidakis's partial result for odd n relies on Sylow-theoretic bounds."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundation",
+      "description": "Lagrange's theorem (subgroup order divides group order) constrains which orders can appear as subgroup orders, a basic ingredient in group enumeration."
+    },
+    {
+      "targetId": "inverse-galois",
+      "relationship": "related",
+      "description": "Both problems concern the structure and diversity of finite groups. The inverse Galois problem asks which groups arise as Galois groups, while Erdős #1160 asks which orders maximize the group counting function."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "The Abel–Ruffini theorem connects to group theory through the non-solvability of the symmetric group S₅. The distinction between solvable and non-solvable groups is relevant to Pantelidakis's approach, which exploits solvability of odd-order groups."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 329,
+    "axiomCount": 10,
+    "path": "Proofs/Erdos1160Problem.lean",
+    "sorries": 0,
+    "definitionCount": 5,
+    "theoremCount": 24
+  },
+  "sorries": 0
+}

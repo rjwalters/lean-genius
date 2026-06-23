@@ -1,0 +1,170 @@
+[
+  {
+    "id": "ann-buffon-oq02-01-header",
+    "proofId": "buffons-needle-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "3D Buffon: From Parallel Lines to Parallel Planes",
+    "content": "The header explains the 3D generalization of Buffon's Needle. The 2D formula E = 2L/(πd) (for parallel lines) becomes E = L/(2d) (for parallel planes) in 3D. The dimensional crossing factors are α₂ = 2/π ≈ 0.637 and α₃ = 1/2 = 0.5. The key computation is the sphere average E_{S²}[|cos φ|] = 1/2, which follows from ∫₀^π sin φ |cos φ| dφ = 1. The proof is organized into 4 parts: (I) the fundamental integral, (II) sphere average, (III) noodle theorem properties, (IV) dimension comparison.",
+    "mathContext": "In ℝⁿ, the expected crossings of a curve with a hyperplane family depends on the crossing factor $\\alpha_n = E_{S^{n-1}}[|u_1|]$. For $n=2$: $\\alpha_2 = \\frac{2}{\\pi}$ (sphere $S^1$ = circle). For $n=3$: $\\alpha_3 = \\frac{1}{2}$ (sphere $S^2$, polar angle integral). Result: $E[\\text{crossings}] = \\alpha_n \\cdot L/d$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "BuffonsNeedle",
+      "BuffonsNoodle",
+      "BuffonsNeedleOQ01",
+      "sphere average",
+      "crossing factor"
+    ],
+    "prerequisites": [
+      "2D Buffon formula",
+      "Sphere S²",
+      "polar coordinates"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq02-02-sign-lemmas",
+    "proofId": "buffons-needle-oq-02",
+    "range": {
+      "startLine": 46,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "Sign of cos θ: The Two-Region Decomposition",
+    "content": "Two private lemmas establish the sign of cosine on each half-interval. On [0,π/2]: cos θ ≥ 0 by `Real.cos_nonneg_of_mem_Icc`, which requires the interval [-π/2, π/2], so the lower bound linarith uses hθ.1 ≥ 0 and π/2 > 0 to get θ ≥ -π/2. On [π/2,π]: cos θ ≤ 0 by `Real.cos_nonpos_of_pi_div_two_le_of_le`, which requires θ ≤ π + π/2. Since hθ.2 gives θ ≤ π, we use `le_trans hθ.2 (by linarith [pi_div_two_pos])` to reach the required bound π ≤ π + π/2.",
+    "mathContext": "Sign of cosine: $\\cos\\theta \\geq 0$ for $\\theta \\in [-\\pi/2, \\pi/2]$ and $\\cos\\theta \\leq 0$ for $\\theta \\in [\\pi/2, 3\\pi/2]$. The Mathlib API `cos_nonpos_of_pi_div_two_le_of_le` covers the wider range $[\\pi/2, \\pi + \\pi/2]$, so we need `le_trans` to extend $\\theta \\leq \\pi$ to $\\theta \\leq \\pi + \\pi/2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.cos_nonneg_of_mem_Icc",
+      "Real.cos_nonpos_of_pi_div_two_le_of_le",
+      "abs_of_nonneg",
+      "abs_of_nonpos"
+    ],
+    "prerequisites": [
+      "absolute value sign lemmas",
+      "trigonometric sign on intervals"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq02-03-sub-integrals",
+    "proofId": "buffons-needle-oq-02",
+    "range": {
+      "startLine": 64,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "FTC Integrals: 1/2 + 1/2 via Antiderivatives",
+    "content": "Two lemmas compute the integrals on each half-interval using `integral_eq_sub_of_hasDerivAt` (FTC). For ∫₀^{π/2} sin θ cos θ dθ: the antiderivative is sin²θ/2, with HasDerivAt proved via `(Real.hasDerivAt_sin θ).pow 2 |>.div_const 2` and `convert ... using 1; ring` (since d(sin²θ/2)/dθ = 2·sin θ·cos θ/2 = sin θ·cos θ). Evaluation gives sin²(π/2)/2 - sin²(0)/2 = 1/2 - 0. For ∫_{π/2}^π sin θ(-cos θ) dθ: antiderivative is cos²θ/2, evaluation gives cos²(π)/2 - cos²(π/2)/2 = 1/2 - 0.",
+    "mathContext": "FTC pattern: $\\int_a^b f'(x)\\,dx = f(b) - f(a)$. Antiderivative chain: $\\frac{d}{d\\theta}\\left(\\frac{\\sin^2\\theta}{2}\\right) = \\sin\\theta\\cos\\theta$ and $\\frac{d}{d\\theta}\\left(\\frac{\\cos^2\\theta}{2}\\right) = -\\sin\\theta\\cos\\theta = \\sin\\theta(-\\cos\\theta)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "integral_eq_sub_of_hasDerivAt",
+      "HasDerivAt.pow",
+      "HasDerivAt.div_const",
+      "sin_pi_div_two",
+      "cos_pi"
+    ],
+    "prerequisites": [
+      "FTC for interval integrals",
+      "HasDerivAt chain rules",
+      "sin/cos values at π/2 and π"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq02-04-key-integral",
+    "proofId": "buffons-needle-oq-02",
+    "range": {
+      "startLine": 100,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Key 3D Integral: ∫₀^π sin θ |cos θ| dθ = 1",
+    "content": "The fundamental theorem of this file. The proof strategy: (1) use `← integral_add_adjacent_intervals hint1 hint2` to split ∫₀^π into ∫₀^{π/2} + ∫_{π/2}^π; (2) use `integral_congr` on each piece to replace |cos θ| with ±cos θ using the sign lemmas; (3) apply the sub-integral results to get 1/2 + 1/2 = 1. Key API note: `integral_add_adjacent_intervals` has direction `∫ a..b + ∫ b..c = ∫ a..c`, so we need `← ` to rewrite `∫ 0..π` into the sum. For `integral_congr`, the goal after `intro θ hθ` is in lambda form `(fun x => ...) θ = (fun x => ...) θ`, requiring `simp only [sign_lemma hθ]` rather than `rw` to handle beta-reduction.",
+    "mathContext": "The integral $\\int_0^\\pi \\sin\\theta|\\cos\\theta|\\,d\\theta$ is the essential sphere-average computation: $E_{S^2}[|\\cos\\varphi|] = \\frac{1}{4\\pi}\\int_0^{2\\pi}d\\theta\\int_0^\\pi|\\cos\\varphi|\\sin\\varphi\\,d\\varphi = \\frac{2\\pi}{4\\pi}\\cdot 1 = \\frac{1}{2}$. Compare to the 2D analogue $\\int_0^\\pi|\\sin\\theta|\\,d\\theta = 2$, which yields $\\alpha_2 = 2/\\pi$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "integral_add_adjacent_intervals",
+      "integral_congr",
+      "simp_only with abs lemmas",
+      "FTC"
+    ],
+    "prerequisites": [
+      "integral splitting",
+      "abs_cos sign lemmas",
+      "FTC sub-integrals"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq02-05-sphere-average",
+    "proofId": "buffons-needle-oq-02",
+    "range": {
+      "startLine": 131,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "3D Sphere Average = 1/2: The Crossing Factor",
+    "content": "sphere_average_abs_cos formalizes the sphere-average computation: (1/4π) × (2π) × (∫₀^π sin θ |cos θ| dθ) = 1/2. After substituting the computed integral (= 1) via `rw [integral_sin_abs_cos]`, the goal becomes (1/(4π)) × (2π) × 1 = 1/2, which is π · 1/(2π) = 1/2. Closed by `field_simp [pi_ne_zero]; norm_num`. The statement is expressed as a product to match the polar-coordinate decomposition of the sphere integral.",
+    "mathContext": "In polar coordinates on $S^2$: $dS = \\sin\\varphi\\,d\\varphi\\,d\\theta$. Sphere area = $4\\pi$. Average of $|\\cos\\varphi|$ over $S^2$: $\\frac{1}{4\\pi}\\int_0^{2\\pi}d\\theta\\int_0^\\pi|\\cos\\varphi|\\sin\\varphi\\,d\\varphi = \\frac{2\\pi}{4\\pi}\\cdot 1 = \\frac{1}{2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sphere measure",
+      "polar coordinates",
+      "crossing factor α₃ = 1/2",
+      "field_simp"
+    ],
+    "prerequisites": [
+      "integral_sin_abs_cos",
+      "field arithmetic with π"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq02-06-noodle-theorem",
+    "proofId": "buffons-needle-oq-02",
+    "range": {
+      "startLine": 151,
+      "endLine": 214
+    },
+    "type": "concept",
+    "title": "3D Buffon Noodle: Properties and Linearity of Expectation",
+    "content": "Part III establishes the `buffon3d (L d : ℝ) : ℝ := L / (2 * d)` function and its key properties. buffon3d_eq_crossing_factor: L/(2d) = (1/2) × (L/d) shows the factor decomposition. buffon3d_scale_d uses `field_simp [hc', hd']` which closes the goal directly (no `ring` needed). buffon3d_noodle: ∑ buffon3d(Lᵢ, d) = buffon3d(∑ Lᵢ, d) follows from `Finset.sum_div` since everything divides by the same 2d. This is the Buffon noodle theorem: expected crossings depend only on total arc length, not on path shape.",
+    "mathContext": "Linearity of expectation: $E\\left[\\sum_i X_i\\right] = \\sum_i E[X_i]$. For a polygonal path with segment lengths $L_1,\\ldots,L_n$: $E[\\text{crossings}] = \\sum_i \\frac{L_i}{2d} = \\frac{L_1+\\cdots+L_n}{2d} = \\frac{L}{2d}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linearity of expectation",
+      "Finset.sum_div",
+      "shape independence",
+      "arc length"
+    ],
+    "prerequisites": [
+      "buffon3d definition",
+      "field arithmetic",
+      "Finset.sum properties"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq02-07-dimension-comparison",
+    "proofId": "buffons-needle-oq-02",
+    "range": {
+      "startLine": 215,
+      "endLine": 257
+    },
+    "type": "concept",
+    "title": "Dimension Comparison: α₃ = 1/2 < 2/π = α₂",
+    "content": "Part IV proves three comparison results. crossing_factor_3d_lt_2d (1/2 < 2/π): proved by rewriting as 2/π - 1/2 > 0, then showing the difference = (4-π)/(2π) > 0 via π < 4. This approach avoids `div_lt_div_iff` and `lt_div_iff` which are not accessible by those names via `rw` in this Mathlib version. buffon3d_lt_buffon2d uses a calc chain: L/(2d) = (1/2)·(L/d) < (2/π)·(L/d) = 2L/(πd), with the middle step from `mul_lt_mul_of_pos_right crossing_factor_3d_lt_2d`. buffon3d_to_buffon2d_ratio = 4/π via field_simp + ring.",
+    "mathContext": "The crossing factor decreases with dimension: $\\alpha_2 = 2/\\pi \\approx 0.637 > 1/2 = \\alpha_3$. The difference is $2/\\pi - 1/2 = (4-\\pi)/(2\\pi) > 0$ since $\\pi < 4$. The ratio $\\alpha_2/\\alpha_3 = (2/\\pi)/(1/2) = 4/\\pi \\approx 1.273$, meaning the 2D model predicts about 27% more crossings than the 3D model for the same curve length and spacing.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pi_lt_four",
+      "crossing factor comparison",
+      "mul_lt_mul_of_pos_right",
+      "calc proof"
+    ],
+    "prerequisites": [
+      "crossing_factor_3d_lt_2d",
+      "buffon3d definition",
+      "field arithmetic"
+    ]
+  }
+]

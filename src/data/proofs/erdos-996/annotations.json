@@ -1,0 +1,680 @@
+[
+  {
+    "id": "ann-996-header",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Problem Statement",
+    "content": "Erdős Problem #996 asks: For lacunary sequences and L² functions, if the Fourier error decays like 1/(log log log n)^C, does the strong law of large numbers hold? This connects harmonic analysis, probability, and ergodic theory.",
+    "mathContext": "Given a lacunary sequence $n_1 < n_2 < \\cdots$ and $f \\in L^2([0,1])$ with Fourier partial sums $f_N$, the question is whether $\\|f - f_N\\|_2 = O((\\log\\log\\log N)^{-C})$ for some absolute $C > 0$ implies $\\frac{1}{N}\\sum_{k \\leq N} f(\\{\\alpha n_k\\}) \\to \\int_0^1 f(x)\\,dx$ for a.e. $\\alpha$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strong law of large numbers",
+      "lacunary sequences",
+      "Fourier series",
+      "equidistribution"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "Fourier analysis",
+      "probability theory"
+    ]
+  },
+  {
+    "id": "ann-996-imports",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 38,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Mathlib Imports",
+    "content": "We import measure theory (for integration and almost-everywhere statements), Fourier analysis on the circle, logarithm functions, and filter theory for limits. These form the mathematical foundation.",
+    "mathContext": "Key imports: `MeasureTheory.Integral.Bochner` for $\\int f\\,d\\mu$, `Analysis.Fourier.AddCircle` for Fourier coefficients on $\\mathbb{R}/\\mathbb{Z}$, `SpecialFunctions.Log` for iterated $\\log$, and `Filter.Basic` for `Tendsto` (limits along filters).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bochner integral",
+      "AddCircle Fourier theory",
+      "filter limits"
+    ],
+    "prerequisites": [
+      "Lean 4 Mathlib"
+    ]
+  },
+  {
+    "id": "ann-996-lacunary-def",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 52,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Lacunary Sequences",
+    "content": "A sequence n₁ < n₂ < ... is **lacunary** if n(k+1)/n(k) ≥ λ for some λ > 1. This means the gaps grow exponentially. Example: 2^k has gaps doubling each time.",
+    "mathContext": "A sequence $(n_k)_{k \\geq 0}$ of positive integers is lacunary if $\\exists \\lambda > 1, \\forall k: n_{k+1}/n_k \\geq \\lambda$. Equivalently, $n_k \\geq n_0 \\lambda^k$, so the sequence grows at least exponentially. The term comes from Latin 'lacuna' (gap), reflecting the exponentially widening gaps between terms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential growth",
+      "Hadamard lacunarity",
+      "gap sequences"
+    ],
+    "prerequisites": [
+      "sequences",
+      "ratio test"
+    ]
+  },
+  {
+    "id": "ann-996-powers-2",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 58,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "Powers of 2 are Lacunary",
+    "content": "The sequence 1, 2, 4, 8, 16, ... (powers of 2) is lacunary with λ = 2. Each term is exactly twice the previous, so the ratio is constant at 2.",
+    "mathContext": "For $n_k = 2^k$, we have $n_{k+1}/n_k = 2^{k+1}/2^k = 2 \\geq 2$ for all $k$. The proof uses `Nat.cast_mul`, `div_self`, and `norm_num` to verify the ratio bound in $\\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "geometric sequence",
+      "binary representation"
+    ],
+    "prerequisites": [
+      "exponentiation",
+      "division in ℝ"
+    ]
+  },
+  {
+    "id": "ann-996-powers-3",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 72,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Powers of 3 are Lacunary",
+    "content": "Similarly, 1, 3, 9, 27, ... (powers of 3) is lacunary with λ = 3. Any geometric sequence a^k with a ≥ 2 is lacunary.",
+    "mathContext": "For $n_k = 3^k$, the ratio $3^{k+1}/3^k = 3$ is constant. More generally, $a^k$ is lacunary with ratio $a$ for any integer $a \\geq 2$. These are the simplest examples; Raikov's theorem shows the SLLN holds unconditionally for such sequences.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "geometric sequence",
+      "Raikov's theorem"
+    ],
+    "prerequisites": [
+      "exponentiation"
+    ]
+  },
+  {
+    "id": "ann-996-strict-mono",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 86,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Lacunary Implies Increasing",
+    "content": "Any lacunary sequence is strictly increasing. Since n(k+1)/n(k) > 1, we have n(k+1) > n(k) for all k.",
+    "mathContext": "If $n_{k+1}/n_k \\geq \\lambda > 1$ and $n_0 > 0$, then $n_{k+1} > n_k$ for all $k$, so the sequence is $\\texttt{StrictMono}$. This is stated with a `sorry` — it requires an inductive argument using the positivity of $n_0$ and the lower bound on the ratio.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "StrictMono",
+      "monotone sequences"
+    ],
+    "prerequisites": [
+      "order theory",
+      "induction"
+    ]
+  },
+  {
+    "id": "ann-996-fourier-partial",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 93,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "Fourier Partial Sums",
+    "content": "The Nth Fourier partial sum fₙ(x) uses frequencies from -N to N. It's the best L² approximation of f using trigonometric polynomials of degree N.",
+    "mathContext": "The Nth partial sum is $f_N(x) = \\sum_{n=-N}^{N} \\hat{f}(n) e^{2\\pi i n x}$ where $\\hat{f}(n) = \\int_0^1 f(t) e^{-2\\pi i n t}\\,dt$ are the Fourier coefficients. By Bessel's inequality, $\\|f_N\\|_2 \\leq \\|f\\|_2$, and by Parseval, $\\|f - f_N\\|_2^2 = \\sum_{|n|>N} |\\hat{f}(n)|^2 \\to 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fourier coefficients",
+      "trigonometric polynomials",
+      "Bessel's inequality",
+      "best L² approximation"
+    ],
+    "prerequisites": [
+      "Fourier analysis",
+      "L² spaces",
+      "complex exponentials"
+    ]
+  },
+  {
+    "id": "ann-996-fourier-error",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 100,
+      "endLine": 102
+    },
+    "type": "theorem",
+    "title": "Fourier Error",
+    "content": "The L² error ‖f - fₙ‖₂ measures how well the partial sum approximates f. Smoother functions have faster-decaying error. This decay rate is central to Problem #996.",
+    "mathContext": "The error $\\|f - f_N\\|_2 = \\left(\\int_0^1 |f(x) - f_N(x)|^2\\,dx\\right)^{1/2} = \\left(\\sum_{|n|>N} |\\hat{f}(n)|^2\\right)^{1/2}$ by Parseval. For $f$ with $k$ derivatives in $L^2$, $|\\hat{f}(n)| = O(|n|^{-k})$, giving $\\|f - f_N\\|_2 = O(N^{-k+1/2})$. The problem concerns functions with much slower decay.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Parseval's identity",
+      "Sobolev regularity",
+      "rate of approximation"
+    ],
+    "prerequisites": [
+      "L² norm",
+      "Fourier coefficient decay"
+    ]
+  },
+  {
+    "id": "ann-996-parseval",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 104,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "Parseval's Identity",
+    "content": "Parseval's identity: the L² norm of f equals the sum of squared Fourier coefficients. This connects the function space norm to the frequency domain.",
+    "mathContext": "Parseval's identity states $\\int_0^1 |f(x)|^2\\,dx = \\sum_{n \\in \\mathbb{Z}} |\\hat{f}(n)|^2$. This is the isometry between $L^2([0,1])$ and $\\ell^2(\\mathbb{Z})$ via the Fourier transform. It is axiomatized here because the full proof requires Mathlib's Fourier theory on AddCircle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Plancherel theorem",
+      "isometry",
+      "L²-ℓ² correspondence"
+    ],
+    "prerequisites": [
+      "Fourier analysis",
+      "Hilbert space theory"
+    ]
+  },
+  {
+    "id": "ann-996-frac",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 111,
+      "endLine": 112
+    },
+    "type": "definition",
+    "title": "Fractional Part",
+    "content": "The fractional part {x} = x - ⌊x⌋ gives the remainder when x is divided by 1. This maps ℝ to [0,1), which is where we evaluate the periodic function f.",
+    "mathContext": "The fractional part $\\{x\\} = x - \\lfloor x \\rfloor \\in [0,1)$ implements the quotient map $\\mathbb{R} \\to \\mathbb{R}/\\mathbb{Z}$. For periodic $f$ with period 1, $f(\\{x\\}) = f(x)$. The orbit $\\{\\alpha n_k\\}_{k \\geq 1}$ samples $[0,1)$ and its equidistribution is the content of the strong law.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "floor function",
+      "quotient map",
+      "periodic functions"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-996-ergodic-avg",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 114,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "Ergodic Average",
+    "content": "The ergodic average (1/N) Σₖ<N f({α·nₖ}) samples f along the orbit of α under the lacunary sequence. This is a 'time average' along the dynamical trajectory.",
+    "mathContext": "The ergodic average $S_N(f, \\alpha) = \\frac{1}{N}\\sum_{k=0}^{N-1} f(\\{\\alpha n_k\\})$ is the Cesàro mean of $f$ evaluated at the orbit points $\\{\\alpha n_k\\} \\in [0,1)$. The strong law asserts $S_N \\to \\int_0^1 f$ a.s., which is an 'ergodic theorem' for the dynamical system $x \\mapsto \\{\\alpha \\cdot\\}$ sampled at lacunary times.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cesàro mean",
+      "Birkhoff ergodic theorem",
+      "orbit sampling",
+      "time average"
+    ],
+    "prerequisites": [
+      "ergodic theory",
+      "dynamical systems"
+    ]
+  },
+  {
+    "id": "ann-996-space-avg",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 119,
+      "endLine": 122
+    },
+    "type": "definition",
+    "title": "Space Average",
+    "content": "The space average ∫₀¹ f(x)dx is the integral of f over [0,1]. The strong law says the ergodic average converges to this for almost every starting point α.",
+    "mathContext": "The space average $\\bar{f} = \\int_0^1 f(x)\\,dx$ is the zeroth Fourier coefficient $\\hat{f}(0)$. The ergodic theorem equates the time average (along orbits) with the space average (over the phase space), a central theme in ergodic theory since Birkhoff (1931).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bochner integral",
+      "zeroth Fourier coefficient",
+      "ergodic theorem"
+    ],
+    "prerequisites": [
+      "integration",
+      "measure theory"
+    ]
+  },
+  {
+    "id": "ann-996-strong-law-def",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 126,
+      "endLine": 129
+    },
+    "type": "definition",
+    "title": "Strong Law Holds",
+    "content": "The strong law holds for (f, n, α) if the ergodic average converges to the space average as N → ∞. This is the pointwise ergodic theorem for the specific α.",
+    "mathContext": "Formally, $\\texttt{StrongLawHolds}(f, n, \\alpha)$ means $\\texttt{Tendsto}\\;(S_N(f,\\alpha))\\;\\texttt{atTop}\\;(\\mathcal{N}(\\bar{f}))$, i.e., for every $\\epsilon > 0$, there exists $N_0$ such that $|S_N - \\bar{f}| < \\epsilon$ for all $N \\geq N_0$. This is pointwise (not just in probability) convergence — hence 'strong' law.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tendsto",
+      "filter convergence",
+      "almost sure convergence",
+      "pointwise ergodic theorem"
+    ],
+    "prerequisites": [
+      "topology",
+      "filter theory",
+      "limits"
+    ]
+  },
+  {
+    "id": "ann-996-strong-law-ae",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 131,
+      "endLine": 134
+    },
+    "type": "definition",
+    "title": "Strong Law Almost Everywhere",
+    "content": "The strong law holds almost everywhere if it holds for almost every α ∈ [0,1]. This uses measure theory: the set of 'bad' α has measure zero.",
+    "mathContext": "The a.e. version uses Lean's `∀ᵐ α ∂μ` (for almost all $\\alpha$ w.r.t. measure $\\mu$), specialized to Lebesgue measure on $[0,1]$. The set $\\{\\alpha : S_N(f,\\alpha) \\not\\to \\bar{f}\\}$ has measure zero. This is stronger than convergence in probability and is the natural mode for the law of large numbers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "almost everywhere",
+      "null sets",
+      "Borel-Cantelli lemma"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "Lebesgue measure"
+    ]
+  },
+  {
+    "id": "ann-996-raikov",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 138,
+      "endLine": 145
+    },
+    "type": "concept",
+    "title": "Raikov's Theorem",
+    "content": "**Raikov**: For geometric sequences nₖ = aᵏ (a ≥ 2), the strong law holds for ALL f ∈ L² without any Fourier decay condition. Geometric sequences are 'maximally lacunary'.",
+    "mathContext": "Raikov proved: for $a \\geq 2$ integer and any $f \\in L^2([0,1])$, $\\frac{1}{N}\\sum_{k=1}^{N} f(\\{\\alpha a^k\\}) \\to \\int_0^1 f$ for a.e. $\\alpha$. No decay condition on $\\|f - f_N\\|_2$ is needed because the geometric gaps $(a^{k+1} - a^k = (a-1)a^k)$ ensure very strong quasi-independence of the values $f(\\{\\alpha a^k\\})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "geometric sequences",
+      "unconditional convergence",
+      "maximal lacunarity"
+    ],
+    "prerequisites": [
+      "L² functions",
+      "almost sure convergence"
+    ]
+  },
+  {
+    "id": "ann-996-ksz",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 147,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "Kac-Salem-Zygmund (1948)",
+    "content": "**KSZ 1948**: If Fourier error decays like 1/(log n)^c for c > 1, the strong law holds for any lacunary sequence. First general result for non-geometric lacunary sequences.",
+    "mathContext": "Kac, Salem, and Zygmund proved: if $(n_k)$ is lacunary and $\\|f - f_N\\|_2 \\leq (\\log N)^{-c}$ for $c > 1$, then $S_N \\to \\bar{f}$ a.e. The condition $c > 1$ ensures the error series $\\sum_N \\|f - f_N\\|_2^2 (\\log N)^{-\\delta}$ converges, enabling a Borel-Cantelli argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Borel-Cantelli lemma",
+      "summability conditions",
+      "gap theorems"
+    ],
+    "prerequisites": [
+      "Fourier analysis",
+      "probability theory"
+    ]
+  },
+  {
+    "id": "ann-996-erdos-1949",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 156,
+      "endLine": 162
+    },
+    "type": "concept",
+    "title": "Erdős (1949)",
+    "content": "**Erdős 1949**: Improved to 1/(log log n)^c for c > 1. This was a significant improvement, replacing log with log log.",
+    "mathContext": "Erdős showed that the weaker condition $\\|f - f_N\\|_2 \\leq (\\log\\log N)^{-c}$ for $c > 1$ still suffices. Since $\\log\\log N \\ll \\log N$, this allows much slower Fourier decay. The proof refines the KSZ argument by exploiting the quasi-independence of lacunary sequences more carefully.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated logarithm",
+      "improved decay conditions"
+    ],
+    "prerequisites": [
+      "Fourier analysis",
+      "lacunary quasi-independence"
+    ]
+  },
+  {
+    "id": "ann-996-matsuyama",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 164,
+      "endLine": 170
+    },
+    "type": "concept",
+    "title": "Matsuyama (1966)",
+    "content": "**Matsuyama 1966**: Further improved the exponent from c > 1 to c > 1/2 for log log decay. This is currently the best known result. Halving the exponent is a major improvement.",
+    "mathContext": "Matsuyama proved: $\\|f - f_N\\|_2 \\leq (\\log\\log N)^{-c}$ with $c > 1/2$ suffices. The exponent $1/2$ is suggestive of the central limit theorem: if the $f(\\{\\alpha n_k\\})$ were truly independent with variance $\\sigma^2$, the variance of $S_N$ would be $\\sigma^2/N$, and $c > 1/2$ ensures the Borel-Cantelli condition $\\sum P(|S_N - \\bar{f}| > \\epsilon) < \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "optimal exponent",
+      "central limit theorem analogy",
+      "Borel-Cantelli criterion"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "variance bounds"
+    ]
+  },
+  {
+    "id": "ann-996-problem-def",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 174,
+      "endLine": 182
+    },
+    "type": "definition",
+    "title": "Problem #996 Statement",
+    "content": "**THE OPEN QUESTION**: Is there a constant C such that 1/(log log log n)^C decay suffices? This asks if we can add another 'log' to the hierarchy.",
+    "mathContext": "The formal statement: $\\exists C > 0$ such that $\\|f - f_N\\|_2 = O((\\log\\log\\log N)^{-C})$ implies $S_N \\to \\bar{f}$ a.e. for all lacunary $(n_k)$. The threshold $k \\geq 16$ ensures $\\log\\log\\log k > 0$. If true, this would be a dramatic weakening of the Fourier regularity requirement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated logarithm",
+      "open problem",
+      "Fourier regularity threshold"
+    ],
+    "prerequisites": [
+      "all preceding definitions"
+    ]
+  },
+  {
+    "id": "ann-996-open-status",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 184,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Open Status",
+    "content": "The problem remains OPEN. We don't know if log log log decay (with any exponent) is sufficient for the strong law.",
+    "mathContext": "As of 2026, no proof or counterexample is known. The difficulty is that the quasi-independence of lacunary sequences weakens as the decay condition weakens, and current techniques cannot handle the triple-iterated logarithm regime.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open conjecture",
+      "barrier to progress"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-996-floor-power",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 189,
+      "endLine": 193
+    },
+    "type": "definition",
+    "title": "Floor Power Question",
+    "content": "Related question: Does the strong law hold for nₖ = ⌊aᵏ⌋ with real a > 1? This is between geometric (a integer) and general lacunary sequences.",
+    "mathContext": "For real $a > 1$, the sequence $n_k = \\lfloor a^k \\rfloor$ is lacunary (with ratio approaching $a$) but not exactly geometric. Raikov's theorem covers integer $a \\geq 2$; the real case introduces Diophantine complications since $\\{\\alpha \\lfloor a^k \\rfloor\\}$ and $\\{\\alpha a^k\\}$ differ by $O(\\alpha)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "floor function",
+      "Diophantine approximation",
+      "near-geometric sequences"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "number theory"
+    ]
+  },
+  {
+    "id": "ann-996-bounded",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 197,
+      "endLine": 199
+    },
+    "type": "definition",
+    "title": "Bounded Function Question",
+    "content": "Another open question: Does the strong law hold for ALL bounded functions f and lacunary sequences n, without any Fourier decay condition?",
+    "mathContext": "If $f \\in L^\\infty([0,1])$ (bounded), then $\\hat{f}(n) = O(1)$ and $\\|f - f_N\\|_2 \\to 0$ (since $f \\in L^2$), but the decay rate is uncontrolled. The question is whether boundedness alone (without specifying Fourier decay) suffices for the SLLN along lacunary sequences.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "L∞ functions",
+      "unconditional convergence",
+      "Carleson's theorem"
+    ],
+    "prerequisites": [
+      "function spaces",
+      "Fourier analysis"
+    ]
+  },
+  {
+    "id": "ann-996-decay-structure",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 201,
+      "endLine": 212
+    },
+    "type": "definition",
+    "title": "Decay Condition Structure",
+    "content": "We formalize the hierarchy of decay conditions: log, log log, log log log. Each is weaker than the previous, and we track which are known to suffice.",
+    "mathContext": "The `DecayCondition` structure bundles a name, rate function $\\rho : \\mathbb{N} \\to \\mathbb{R}$, and a boolean `sufficient`. The hierarchy $\\frac{1}{(\\log n)^c} \\gg \\frac{1}{(\\log\\log n)^c} \\gg \\frac{1}{(\\log\\log\\log n)^c}$ reflects increasingly weak regularity assumptions. Each additional $\\log$ allows $f$ to be less smooth.",
+    "significance": "key",
+    "relatedConcepts": [
+      "decay rate hierarchy",
+      "regularity assumptions",
+      "nested logarithms"
+    ],
+    "prerequisites": [
+      "iterated logarithms",
+      "asymptotic comparison"
+    ]
+  },
+  {
+    "id": "ann-996-log-decay",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 214,
+      "endLine": 218
+    },
+    "type": "definition",
+    "title": "Log Decay",
+    "content": "The log decay condition: error ≤ 1/(log n)^c for c > 1. This was the original KSZ (1948) requirement.",
+    "mathContext": "The condition $\\|f - f_N\\|_2 \\leq (\\log N)^{-c}$ with $c > 1$ ensures $\\sum_N (\\log N)^{-2c}$ converges (since $2c > 2 > 1$), which feeds into the Borel-Cantelli argument. This is the strongest (most restrictive) condition in the hierarchy.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "KSZ theorem",
+      "convergence of series",
+      "Borel-Cantelli"
+    ],
+    "prerequisites": [
+      "series convergence",
+      "iterated logarithm"
+    ]
+  },
+  {
+    "id": "ann-996-loglog-decay",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 220,
+      "endLine": 224
+    },
+    "type": "definition",
+    "title": "Log Log Decay",
+    "content": "The log log decay condition: error ≤ 1/(log log n)^c. Erdős (1949) showed c > 1 suffices; Matsuyama (1966) improved to c > 1/2.",
+    "mathContext": "The condition $\\|f - f_N\\|_2 \\leq (\\log\\log N)^{-c}$ with $c > 1/2$ is the current state of the art. The `sufficient` field is set to `c > 1/2` reflecting Matsuyama's improvement. The improvement from $c > 1$ to $c > 1/2$ is analogous to the optimal exponent in the law of the iterated logarithm.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Matsuyama's theorem",
+      "optimal exponent",
+      "law of iterated logarithm"
+    ],
+    "prerequisites": [
+      "iterated logarithm",
+      "Borel-Cantelli"
+    ]
+  },
+  {
+    "id": "ann-996-logloglog-decay",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 226,
+      "endLine": 230
+    },
+    "type": "definition",
+    "title": "Log Log Log Decay",
+    "content": "The log log log decay condition: error ≤ 1/(log log log n)^c. UNKNOWN whether any exponent c suffices. This is Problem #996.",
+    "mathContext": "The `sufficient` field is set to `false` (unknown). Since $\\log\\log\\log n$ grows extremely slowly (e.g., $\\log\\log\\log(10^{10^{10}}) \\approx 3.1$), a function satisfying this condition can have very rough Fourier behavior. Whether the quasi-independence of lacunary sequences can compensate for such weak regularity is the heart of the problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triple-iterated logarithm",
+      "ultra-slow growth",
+      "open question"
+    ],
+    "prerequisites": [
+      "iterated logarithm",
+      "lacunary quasi-independence"
+    ]
+  },
+  {
+    "id": "ann-996-quasi-indep",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 234,
+      "endLine": 240
+    },
+    "type": "concept",
+    "title": "Quasi-Independence",
+    "content": "Lacunary sequences have 'quasi-independence': the fractional parts {α·nₖ} behave almost like independent random variables. This is why probabilistic tools apply.",
+    "mathContext": "The quasi-independence property means $\\mathrm{Cov}(e^{2\\pi i m\\{\\alpha n_j\\}}, e^{2\\pi i m\\{\\alpha n_k\\}}) \\approx 0$ for $j \\neq k$, because the lacunary gap condition prevents resonances between frequencies $mn_j$ and $mn_k$. This is formalized as a placeholder `True` — the actual proof requires deep harmonic analysis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "independence",
+      "covariance decay",
+      "resonance avoidance",
+      "exponential sum estimates"
+    ],
+    "prerequisites": [
+      "probability theory",
+      "harmonic analysis"
+    ]
+  },
+  {
+    "id": "ann-996-not-lacunary",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 242,
+      "endLine": 249
+    },
+    "type": "concept",
+    "title": "Consecutive Not Lacunary",
+    "content": "The consecutive integers n(k) = k+1 are NOT lacunary: (k+2)/(k+1) → 1, not ≥ λ > 1. The strong law can fail for such sequences.",
+    "mathContext": "For $n_k = k+1$, the ratio $n_{k+1}/n_k = (k+2)/(k+1) = 1 + 1/(k+1) \\to 1$ as $k \\to \\infty$. By the Archimedean property, for any $\\lambda > 1$, there exists $k$ with $(k+2)/(k+1) < \\lambda$, contradicting lacunarity. The `sorry` requires formalizing this Archimedean argument.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Archimedean property",
+      "non-lacunary sequences",
+      "counterexample"
+    ],
+    "prerequisites": [
+      "limits",
+      "Archimedean property"
+    ]
+  },
+  {
+    "id": "ann-996-known-gap",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 251,
+      "endLine": 265
+    },
+    "type": "concept",
+    "title": "The Known Gap",
+    "content": "We KNOW log log decay with c > 1/2 suffices (Matsuyama). We DON'T KNOW if log log log decay ever suffices. The gap is one iterated logarithm.",
+    "mathContext": "The theorem packages the known result $\\forall c > 1/2, \\ldots \\texttt{StrongLawHoldsAE}$ (from Matsuyama) with a trivial `True` placeholder for the open question. The gap between $(\\log\\log N)^{-1/2-\\epsilon}$ and $(\\log\\log\\log N)^{-C}$ decay is enormous — the latter allows functions whose Fourier coefficients decrease at a barely perceptible rate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "state of the art",
+      "open gap",
+      "barrier to progress"
+    ],
+    "prerequisites": [
+      "Matsuyama's theorem"
+    ]
+  },
+  {
+    "id": "ann-996-weyl",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 277,
+      "endLine": 281
+    },
+    "type": "concept",
+    "title": "Weyl Equidistribution",
+    "content": "Weyl's theorem: {αn} is equidistributed mod 1 for irrational α. This is a precursor—lacunary sequences give a 'sparse' version with similar equidistribution.",
+    "mathContext": "Weyl (1916) proved: if $\\alpha$ is irrational, then $\\{\\alpha, 2\\alpha, 3\\alpha, \\ldots\\}$ is equidistributed mod 1, i.e., $\\frac{1}{N}\\sum_{k=1}^N f(\\{k\\alpha\\}) \\to \\int_0^1 f$ for all Riemann integrable $f$. The lacunary version replaces $k$ with $n_k$, sampling only at lacunary times, which makes the problem harder.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Weyl's criterion",
+      "equidistribution",
+      "exponential sum method"
+    ],
+    "prerequisites": [
+      "irrational rotation",
+      "Riemann integration"
+    ]
+  },
+  {
+    "id": "ann-996-summary",
+    "proofId": "erdos-996",
+    "range": {
+      "startLine": 283,
+      "endLine": 311
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "**SUMMARY**: We know log log decay with c > 1/2 works (Matsuyama). The question of whether log log log decay suffices remains OPEN. The formalization captures both the known results and the open problem.",
+    "mathContext": "The summary theorem asserts $\\exists c > 1/2, \\forall f, n, \\ldots$ (witnessed by $c = 1$, using `matsuyama_1966 1 (\\text{by norm\\_num})$) conjoined with `True`. The choice $c = 1 > 1/2$ satisfies Matsuyama's hypothesis, giving an explicit witness for the known result while the open question remains as a trivial placeholder.",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential witness",
+      "conjunction packaging",
+      "problem status"
+    ],
+    "prerequisites": [
+      "Matsuyama's theorem",
+      "norm_num"
+    ]
+  }
+]

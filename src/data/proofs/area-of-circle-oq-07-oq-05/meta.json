@@ -1,0 +1,133 @@
+{
+  "id": "area-of-circle-oq-07-oq-05",
+  "slug": "area-of-circle-oq-07-oq-05",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.PoissonSummation",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "Filter",
+      "Topology",
+      "Set"
+    ],
+    "namespace": "AreaOfCircleOQ07OQ05",
+    "lineCount": 118,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ07OQ05.lean",
+    "sorries": 0
+  },
+  "title": "The Second Moment of the Gaussian ∫ x² e^{-x²} = √π/2",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ07OQ05.lean",
+    "tags": [
+      "analysis",
+      "gaussian-integral",
+      "integration-by-parts",
+      "special-functions",
+      "measure-theory",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 118,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "gaussian_second_moment: ∫_ℝ x² e^{-x²} dx = √π/2 — the first nontrivial moment of the standard Gaussian weight, established by integration by parts on the whole real line (MeasureTheory.integral_mul_deriv_eq_deriv_mul). Writing x²e^{-x²} = x·(x e^{-x²}) and recognizing x e^{-x²} = d/dx(-½ e^{-x²}), the boundary term collapses and the second moment reduces to ½ of the parent's zeroth moment √π. This is the Γ(3/2) = √π/2 moment realized directly as a real Lebesgue integral, distinct from the sibling entries which all study the zeroth moment (parent value √π, complex parameter, half-line, squared value).",
+      "tendsto_mul_gaussian_cocompact: x e^{-x²} → 0 at both ends of the real line, the Gaussian-decay fact that makes the integration-by-parts boundary term vanish. Packaged from Mathlib's tendsto_rpow_abs_mul_exp_neg_mul_sq_cocompact by stripping the absolute value through tendsto_zero_iff_norm_tendsto_zero, then split across atBot/atTop via cocompact_eq_atBot_atTop."
+    ],
+    "prerequisites": [
+      "Lebesgue integration over ℝ (MeasureTheory)",
+      "Integration by parts on (-∞, ∞): MeasureTheory.integral_mul_deriv_eq_deriv_mul",
+      "The parent zeroth moment: integral_gaussian (∫ e^{-b x²} = √(π/b))",
+      "Gaussian decay of polynomial weights: tendsto_rpow_abs_mul_exp_neg_mul_sq_cocompact",
+      "Integrability of x^s e^{-b x²}: integrable_rpow_mul_exp_neg_mul_sq",
+      "Parent: area-of-circle-oq-07 (the real Gaussian ∫ e^{-x²} = √π)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_mul_deriv_eq_deriv_mul",
+        "description": "Integration by parts on (-∞, ∞): ∫ u v' = b' - a' - ∫ u' v, given the derivatives, integrability of u·v' and u'·v, and convergence of the boundary product u·v at ±∞. Applied with u = x, v = -½ e^{-x²}.",
+        "module": "Mathlib.MeasureTheory.Integral.IntegralEqImproper"
+      },
+      {
+        "theorem": "integral_gaussian",
+        "description": "∫ x : ℝ, e^{-b x²} = √(π/b). At b = 1 this is the parent value √π, the zeroth moment that the second moment reduces to (after the boundary term vanishes).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "tendsto_rpow_abs_mul_exp_neg_mul_sq_cocompact",
+        "description": "|x|^s e^{-a x²} → 0 along the cocompact filter for a > 0 — Gaussian decay beats any power. With s = 1, a = 1 this gives x e^{-x²} → 0 at ±∞, the vanishing boundary term.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.PoissonSummation"
+      },
+      {
+        "theorem": "integrable_rpow_mul_exp_neg_mul_sq",
+        "description": "x^s e^{-b x²} is integrable over ℝ for b > 0 and s > -1. At s = 2 this supplies integrability of the integrand x² e^{-x²} (via Real.rpow_natCast to identify the real power x^(2:ℝ) with the natural power x²).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "area-of-circle-oq-07-oq-05-oq-01",
+      "question": "Evaluate the general even moment ∫_ℝ x^{2n} e^{-x²} dx = (2n-1)!!·√π / 2^n by induction on n, with the second moment (n = 1) as the base case, exhibiting the double-factorial recursion that integration by parts generates.",
+      "significance": "medium"
+    },
+    {
+      "id": "area-of-circle-oq-07-oq-05-oq-02",
+      "question": "Recover √π/2 as ½·Γ(3/2) directly through the substitution u = x² and Mathlib's Real.Gamma, identifying the second moment with a Gamma special value rather than computing it by parts.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "extends",
+      "description": "Parent. The zeroth moment ∫_ℝ e^{-x²} = √π. This entry computes the second moment ∫_ℝ x² e^{-x²} = √π/2, which integration by parts reduces to exactly half of the parent value."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-02",
+      "relationship": "related",
+      "description": "Sibling. The half-line zeroth moment ∫_{Ioi 0} e^{-x²} = √π/2. Numerically equal to this entry's full-line second moment, but for an entirely different reason (even symmetry vs. the x² weight)."
+    },
+    {
+      "targetId": "gaussian-integral",
+      "relationship": "related",
+      "description": "The Gaussian integral family. This entry adds the first weighted moment ∫ x² e^{-x²} to the gallery's collection of Gaussian evaluations."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_gaussian (∫ e^{-b x²} = √(π/b)) and the integrability lemma integrable_rpow_mul_exp_neg_mul_sq used here."
+    },
+    {
+      "title": "Fourier Analysis",
+      "author": "Elias M. Stein and Rami Shakarchi",
+      "year": "2003",
+      "venue": "Princeton University Press",
+      "description": "Classical treatment of Gaussian moments ∫ x^{2n} e^{-x²} and the integration-by-parts recursion that this entry's second moment instantiates at n = 1."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The second moment of the standard Gaussian weight is ∫_ℝ x² e^{-x²} dx = √π/2. The proof is integration by parts on the whole real line (MeasureTheory.integral_mul_deriv_eq_deriv_mul): with u = x and v = -½ e^{-x²}, the integrand factors as u·v' = x·(x e^{-x²}) = x² e^{-x²}, the boundary product u·v = -½ x e^{-x²} tends to 0 at ±∞ (Gaussian decay, tendsto_rpow_abs_mul_exp_neg_mul_sq_cocompact), and the surviving term is -∫ u'·v = ½ ∫ e^{-x²} = ½·√π (the parent value, integral_gaussian). 118 lines, 2 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "The second moment √π/2 is the n = 1 case of the even-moment family ∫ x^{2n} e^{-x²} = (2n-1)!!·√π/2^n, equivalently ½·Γ(3/2)·2 — the variance integral that normalizes the standard Gaussian. Establishing it as a genuine real Lebesgue integral (rather than a Gamma special value) gives a self-contained base case for the double-factorial recursion and a template for higher moments, where each application of integration by parts lowers the power by two.",
+    "openQuestions": [
+      "Prove the general even moment ∫ x^{2n} e^{-x²} = (2n-1)!!·√π/2^n by induction, with this second moment as the base case.",
+      "Recover √π/2 as ½·Γ(3/2) via u = x² and Real.Gamma."
+    ]
+  }
+}

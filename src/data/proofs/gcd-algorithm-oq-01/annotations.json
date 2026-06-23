@@ -1,0 +1,332 @@
+[
+  {
+    "id": "ann-gcd-oq01-imports",
+    "proofId": "gcd-algorithm-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 4
+    },
+    "title": "Imports and Dependencies",
+    "content": "Imports `Data.Nat.Fib.Basic` for Fibonacci number definitions and lemmas (`fib`, `fib_add_two`, `Nat.fib_mono`, `fib_lt_fib_succ`), `Data.Nat.GCD.Basic` for GCD infrastructure, `Data.Nat.Log` for `Nat.log` used in the logarithmic and 5-digit bounds, and `Tactic` for proof automation including `omega`, `linarith`, `ring`, and `native_decide`.",
+    "mathContext": "Key Mathlib lemmas: $\\text{fib\\_add\\_two}: \\text{fib}(n+2) = \\text{fib}(n) + \\text{fib}(n+1)$, $\\text{fib\\_mono}: m \\leq n \\implies \\text{fib}(m) \\leq \\text{fib}(n)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fibonacci sequence",
+      "natural number logarithm",
+      "GCD",
+      "proof automation"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Nat.Fib.Basic",
+      "Mathlib.Data.Nat.Log",
+      "Mathlib.Tactic"
+    ]
+  },
+  {
+    "id": "ann-gcd-oq01-step-count",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": {
+      "startLine": 37,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Euclidean Step Counting Function",
+    "content": "Defines `euclideanSteps a b` as the number of division steps in the Euclidean algorithm before reaching remainder 0. If $b = 0$, returns 0; otherwise computes `euclideanSteps b (a % b) + 1`. Termination is proved using the fact that $a \\bmod b < b$ for $b > 0$ (`Nat.mod_lt`). The function counts the same steps as `Nat.gcd` but returns the count rather than the result.",
+    "mathContext": "$\\text{euclideanSteps}(a, b) = \\begin{cases} 0 & b = 0 \\\\ \\text{euclideanSteps}(b, a \\bmod b) + 1 & b > 0 \\end{cases}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euclidean algorithm",
+      "well-founded recursion",
+      "Nat.mod_lt",
+      "termination proof"
+    ],
+    "prerequisites": [
+      "Nat.mod_lt",
+      "Nat.pos_of_ne_zero"
+    ]
+  },
+  {
+    "id": "ann-gcd-oq01-unfolding",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 69
+    },
+    "type": "concept",
+    "title": "Unfolding Lemmas for euclideanSteps",
+    "content": "Three structural lemmas: `euclideanSteps_zero` (simp lemma, $b = 0$ case), `euclideanSteps_pos_eq` ($b > 0$ gives the recursive equation), and `euclideanSteps_ge_one` ($b > 0$ implies at least 1 step). These are the interface lemmas through which all subsequent proofs reason about `euclideanSteps`, avoiding direct unfolding of the recursive definition.",
+    "mathContext": "$b > 0 \\implies \\text{euclideanSteps}(a, b) = \\text{euclideanSteps}(b, a \\bmod b) + 1 \\geq 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "simp lemma",
+      "API design",
+      "recursive definition unfolding"
+    ],
+    "prerequisites": [
+      "euclideanSteps",
+      "Nat.pos_iff_ne_zero"
+    ]
+  },
+  {
+    "id": "ann-gcd-oq01-lame-bound",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 143
+    },
+    "type": "concept",
+    "title": "Core Lame Bound via Strong Induction",
+    "content": "The core result, proved by strong induction (`Nat.strongRecOn`) on the step count $n$. The two-part invariant: if $\\text{euclideanSteps}(a, b) = n$ with $b > 0$, then (1) $\\text{fib}(n+1) \\leq b$, and (2) for $n \\geq 2$, $\\text{fib}(n) \\leq a \\bmod b$. The base cases $n = 0$ (impossible since $b > 0$), $n = 1$ (remainder is 0, so $b \\geq \\text{fib}(2) = 1$), and the inductive step $n + 2$ which uses the Fibonacci recurrence $\\text{fib}(n+3) = \\text{fib}(n+2) + \\text{fib}(n+1)$ and the division algorithm $b = (b/r) \\cdot r + b \\bmod r \\geq r + b \\bmod r$.",
+    "mathContext": "$\\text{euclideanSteps}(a, b) = n \\wedge b > 0 \\implies \\text{fib}(n+1) \\leq b \\wedge (n \\geq 2 \\implies \\text{fib}(n) \\leq a \\bmod b)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "strong induction",
+      "Fibonacci recurrence",
+      "division algorithm",
+      "Nat.strongRecOn"
+    ],
+    "prerequisites": [
+      "euclideanSteps_pos_eq",
+      "euclideanSteps_zero",
+      "fib_add_two",
+      "Nat.div_add_mod"
+    ]
+  },
+  {
+    "id": "ann-gcd-oq01-lame-classical",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": {
+      "startLine": 145,
+      "endLine": 147
+    },
+    "type": "concept",
+    "title": "Lame's Theorem (Classical Form)",
+    "content": "Lame's Theorem in its classical form: $\\text{fib}(\\text{steps} + 1) \\leq b$ when $b > 0$. A direct corollary of `lame_pair_bound` by extracting the first component. This is the fundamental result connecting Euclidean algorithm complexity to Fibonacci growth, first proved by Gabriel Lame in 1844, making it one of the earliest results in computational complexity.",
+    "mathContext": "$b > 0 \\implies \\text{fib}(\\text{euclideanSteps}(a, b) + 1) \\leq b$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lame's theorem",
+      "Fibonacci lower bound",
+      "algorithm analysis",
+      "computational complexity history"
+    ],
+    "prerequisites": [
+      "lame_pair_bound"
+    ]
+  },
+  {
+    "id": "ann-gcd-oq01-contrapositive",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": {
+      "startLine": 150,
+      "endLine": 155
+    },
+    "type": "concept",
+    "title": "Contrapositive of Lame's Theorem",
+    "content": "Contrapositive form: if $b < \\text{fib}(k+2)$, then $\\text{euclideanSteps}(a, b) \\leq k$. More convenient for deriving explicit upper bounds. The proof is by contradiction: assuming $\\text{steps} > k$, Lame's theorem gives $\\text{fib}(\\text{steps}+1) \\leq b$, and monotonicity of Fibonacci (`Nat.fib_mono`) gives $\\text{fib}(k+2) \\leq \\text{fib}(\\text{steps}+1)$, contradicting $b < \\text{fib}(k+2)$.",
+    "mathContext": "$b > 0 \\wedge b < \\text{fib}(k+2) \\implies \\text{euclideanSteps}(a, b) \\leq k$",
+    "significance": "key",
+    "relatedConcepts": [
+      "contrapositive",
+      "Fibonacci monotonicity",
+      "upper bound derivation"
+    ],
+    "prerequisites": [
+      "lame_theorem",
+      "Nat.fib_mono"
+    ]
+  },
+  {
+    "id": "ann-gcd-oq01-fib-mod",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": {
+      "startLine": 162,
+      "endLine": 167
+    },
+    "type": "concept",
+    "title": "Fibonacci Mod Recurrence",
+    "content": "Key lemma: $\\text{fib}(n+2) \\bmod \\text{fib}(n+1) = \\text{fib}(n)$ for $n \\geq 2$. Follows from the Fibonacci recurrence $\\text{fib}(n+2) = \\text{fib}(n) + \\text{fib}(n+1)$ and the fact that $\\text{fib}(n) < \\text{fib}(n+1)$ for $n \\geq 2$ (`fib_lt_fib_succ`). This shows consecutive Fibonacci pairs reduce to the previous pair under one Euclidean step.",
+    "mathContext": "$n \\geq 2 \\implies \\text{fib}(n+2) \\bmod \\text{fib}(n+1) = \\text{fib}(n)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fibonacci recurrence",
+      "modular arithmetic",
+      "fib_lt_fib_succ",
+      "Nat.add_mod_right"
+    ],
+    "prerequisites": [
+      "fib_add_two",
+      "fib_lt_fib_succ",
+      "Nat.mod_eq_of_lt"
+    ]
+  },
+  {
+    "id": "ann-gcd-oq01-worst-case",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": {
+      "startLine": 171,
+      "endLine": 192
+    },
+    "type": "concept",
+    "title": "Fibonacci Worst-Case Optimality",
+    "content": "Proves $\\text{euclideanSteps}(\\text{fib}(n+2), \\text{fib}(n+1)) = n$ for all $n \\geq 1$, by induction on $n$. The base case $n = 1$ is verified by `native_decide`. The inductive step uses `fib_mod_fib` to show each Euclidean step reduces $(\\text{fib}(k+3), \\text{fib}(k+2))$ to $(\\text{fib}(k+2), \\text{fib}(k+1))$. Combined with Lame's theorem, this establishes that consecutive Fibonacci numbers are the unique worst-case inputs (up to the bound).",
+    "mathContext": "$n \\geq 1 \\implies \\text{euclideanSteps}(\\text{fib}(n+2), \\text{fib}(n+1)) = n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "worst-case optimality",
+      "tight bound",
+      "Fibonacci reduction",
+      "native_decide"
+    ],
+    "prerequisites": [
+      "euclideanSteps_pos_eq",
+      "fib_mod_fib",
+      "Nat.fib_pos"
+    ]
+  },
+  {
+    "id": "ann-gcd-oq01-exp-bound",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": {
+      "startLine": 203,
+      "endLine": 218
+    },
+    "type": "concept",
+    "title": "Exponential Fibonacci Lower Bound",
+    "content": "Proves $\\text{fib}(2n+1) \\geq 2^n$ by induction. The inductive step uses $\\text{fib}(2k+3) = \\text{fib}(2k+2) + \\text{fib}(2k+1)$ and $\\text{fib}(2k+2) = \\text{fib}(2k) + \\text{fib}(2k+1)$, giving $\\text{fib}(2k+3) = 2 \\cdot \\text{fib}(2k+1) + \\text{fib}(2k) \\geq 2 \\cdot 2^k = 2^{k+1}$. This bridges Fibonacci growth to powers of 2, enabling the logarithmic step bound.",
+    "mathContext": "$\\forall n:\\; 2^n \\leq \\text{fib}(2n+1)$. Proof: $\\text{fib}(2k+3) \\geq 2 \\cdot \\text{fib}(2k+1) \\geq 2^{k+1}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fibonacci growth rate",
+      "golden ratio",
+      "exponential lower bound",
+      "induction"
+    ],
+    "prerequisites": [
+      "fib_add_two",
+      "fib_one"
+    ]
+  },
+  {
+    "id": "ann-gcd-oq01-log-bound",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": {
+      "startLine": 221,
+      "endLine": 231
+    },
+    "type": "concept",
+    "title": "Logarithmic Step Bound",
+    "content": "Derives $\\text{euclideanSteps}(a, b) \\leq 2 \\log_2(b) + 2$ by chaining: $b < 2^{L+1}$ (definition of $L = \\lfloor \\log_2 b \\rfloor$), $2^{L+1} \\leq \\text{fib}(2(L+1)+1)$ (exponential lower bound), and $\\text{fib}(2(L+1)+1) \\leq \\text{fib}(2L+4)$ (monotonicity). Then `lame_step_bound` gives $\\text{steps} \\leq 2L + 2$. This confirms the $O(\\log b)$ worst-case complexity.",
+    "mathContext": "$b > 0 \\implies \\text{euclideanSteps}(a, b) \\leq 2 \\lfloor \\log_2 b \\rfloor + 2 = O(\\log b)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "logarithmic complexity",
+      "Nat.log",
+      "calc chain",
+      "O(log n) bound"
+    ],
+    "prerequisites": [
+      "lame_step_bound",
+      "fib_exponential_lower",
+      "Nat.fib_mono",
+      "Nat.lt_pow_succ_log_self"
+    ]
+  },
+  {
+    "id": "ann-gcd-oq01-digits",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": {
+      "startLine": 237,
+      "endLine": 237
+    },
+    "type": "concept",
+    "title": "Decimal Digits Function",
+    "content": "Defines `decimalDigits b = ⌊log₁₀(b)⌋ + 1`, the number of decimal digits of $b$. For $b \\in [10^{k-1}, 10^k)$, this returns $k$. Verified by `native_decide` on examples: $\\text{decimalDigits}(1) = 1$, $\\text{decimalDigits}(10) = 2$, $\\text{decimalDigits}(100) = 3$.",
+    "mathContext": "$\\text{decimalDigits}(b) = \\lfloor \\log_{10} b \\rfloor + 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decimal representation",
+      "Nat.log",
+      "digit counting"
+    ],
+    "prerequisites": [
+      "Nat.log"
+    ]
+  },
+  {
+    "id": "ann-gcd-oq01-5digit",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": {
+      "startLine": 250,
+      "endLine": 262
+    },
+    "type": "concept",
+    "title": "Lame's Classical 5-Digit Bound",
+    "content": "Lame's famous 1844 result: $\\text{euclideanSteps}(a, b) \\leq 5 \\cdot \\text{decimalDigits}(b)$ for $b < 10^{20}$. Uses the intermediate result $\\text{fib}(5k+2) \\geq 10^k$ (proved by `interval_cases` and `native_decide` for $k \\leq 20$). The bound $b < 10^{20}$ ensures $d + 1 \\leq 20$ so the Fibonacci-vs-power-of-10 comparison applies. For unrestricted $b$, the result follows from $\\text{fib}(n) \\sim \\varphi^n / \\sqrt{5}$ where $\\log_{10} \\varphi \\approx 0.209 > 1/5$.",
+    "mathContext": "$b < 10^{20} \\wedge b > 0 \\implies \\text{steps} \\leq 5 \\cdot \\text{decimalDigits}(b)$. Uses $\\text{fib}(5k+2) \\geq 10^k$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lame's theorem",
+      "decimal digit bound",
+      "interval_cases",
+      "native_decide",
+      "golden ratio"
+    ],
+    "prerequisites": [
+      "lame_step_bound",
+      "fib_ge_pow10",
+      "decimalDigits",
+      "Nat.lt_pow_succ_log_self"
+    ]
+  },
+  {
+    "id": "ann-gcd-oq01-avg-infra",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": {
+      "startLine": 276,
+      "endLine": 282
+    },
+    "type": "concept",
+    "title": "Finite Average Computation Infrastructure",
+    "content": "Defines `totalSteps N` as the sum of $\\text{euclideanSteps}(i+1, j+1)$ over all pairs with $1 \\leq j+1 \\leq i+1 \\leq N$, and `pairCount N = N(N+1)/2$ as the number of such pairs. The ratio $\\text{totalSteps}(N) / \\text{pairCount}(N)$ gives the exact finite average for inputs up to $N$. Verified: $\\text{totalSteps}(1) = 1$, $\\text{totalSteps}(2) = 3$, $\\text{totalSteps}(3) = 7$.",
+    "mathContext": "$\\text{totalSteps}(N) = \\sum_{i=1}^{N} \\sum_{j=1}^{i} \\text{euclideanSteps}(i, j)$, $\\text{pairCount}(N) = N(N+1)/2$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sum",
+      "average complexity",
+      "numerical verification",
+      "Finset.range"
+    ],
+    "prerequisites": [
+      "euclideanSteps",
+      "Finset.range",
+      "Finset.sum"
+    ]
+  },
+  {
+    "id": "ann-gcd-oq01-dixon",
+    "proofId": "gcd-algorithm-oq-01",
+    "range": {
+      "startLine": 297,
+      "endLine": 309
+    },
+    "type": "concept",
+    "title": "Dixon's Theorem (Asymptotic Average)",
+    "content": "Dixon's theorem (1970): the average number of Euclidean algorithm steps for inputs up to $N$ is $(12 \\ln 2 / \\pi^2) \\ln N \\approx 0.8427 \\ln N$. The proof uses the ergodic theory of the Gauss map $T(x) = \\{1/x\\}$ (fractional part of reciprocal) on $[0,1]$ with invariant measure $d\\mu = (\\ln 2)^{-1} (1+x)^{-1} dx$. The connection: continued fraction partial quotients of $a/b$ correspond to Euclidean steps, and Birkhoff's ergodic theorem gives the average. None of this machinery (continued fractions, ergodic theory, the Gauss map) is available in Mathlib as of v4.26.0.",
+    "mathContext": "Dixon (1970): $\\frac{1}{N^2} \\sum_{1 \\leq b \\leq a \\leq N} \\text{steps}(a,b) \\to \\frac{12 \\ln 2}{\\pi^2} \\ln N \\approx 0.8427 \\ln N$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dixon's theorem",
+      "Gauss map",
+      "continued fractions",
+      "ergodic theory",
+      "Birkhoff's theorem"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "continued fractions",
+      "ergodic theory"
+    ]
+  }
+]

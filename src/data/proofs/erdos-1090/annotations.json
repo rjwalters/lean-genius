@@ -1,0 +1,394 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 1,
+      "endLine": 34
+    },
+    "type": "concept",
+    "title": "Module Header and Imports",
+    "content": "The file imports four Mathlib modules: `EuclideanDist` for the Euclidean space type, `Data.Real.Basic` for ℝ, `Data.Finset.Basic` for finite sets, and `Data.Set.Finite.Basic` for finiteness predicates. Opens `Set` and `Finset` namespaces for convenient access.",
+    "significance": "supporting",
+    "mathContext": "`import Mathlib.Analysis.InnerProductSpace.EuclideanDist` provides `EuclideanSpace ℝ (Fin 2)` — a 2-dimensional real inner product space. `open Set Finset` brings `Set.Nonempty`, `Finset.card`, `Finset.filter`, etc. into scope without qualification. The namespace `Erdos1090` scopes all definitions.",
+    "relatedConcepts": [
+      "EuclideanSpace",
+      "Finset",
+      "module structure"
+    ],
+    "prerequisites": [
+      "Lean 4 import and namespace system",
+      "Mathlib library organization",
+      "Euclidean inner product spaces"
+    ]
+  },
+  {
+    "id": "ann-point-def",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 40,
+      "endLine": 44
+    },
+    "type": "definition",
+    "title": "Point in the Plane",
+    "content": "**Point** is an `abbrev` for `EuclideanSpace ℝ (Fin 2)`, giving a 2-dimensional real Euclidean space with standard inner product, norm, and distance. As an `abbrev`, it is definitionally transparent — Lean unfolds it automatically.",
+    "significance": "supporting",
+    "mathContext": "`abbrev Point := EuclideanSpace ℝ (Fin 2)` — an abbreviation rather than `def` so that typeclass instances (AddCommGroup, Module ℝ, InnerProductSpace, MetricSpace) apply automatically without coercion. Points support vector subtraction `p - q` and scalar multiplication `t • v` used throughout.",
+    "relatedConcepts": [
+      "EuclideanSpace",
+      "abbrev vs def",
+      "typeclass transparency"
+    ],
+    "prerequisites": [
+      "EuclideanSpace ℝ (Fin n) as a vector space",
+      "Lean 4 abbrev vs def and definitional transparency",
+      "typeclass inference (Module, InnerProductSpace)"
+    ]
+  },
+  {
+    "id": "ann-two-coloring",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 46,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Two-Coloring",
+    "content": "**TwoColoring A** assigns a Boolean color to each point in set A. Using `A → Bool` rather than `Point → Bool` restricts the coloring to the relevant set.",
+    "significance": "supporting",
+    "mathContext": "`def TwoColoring (A : Set Point) := A → Bool` — the domain is the subtype `↥A` (points with a proof of membership). Note that `MonochromaticKCollinear` later uses `Point → Bool` instead, avoiding subtype coercions for the Finset-based version.",
+    "relatedConcepts": [
+      "Bool",
+      "subtype",
+      "coloring functions"
+    ],
+    "prerequisites": [
+      "2-coloring of a set",
+      "Lean subtypes and membership coercion",
+      "Boolean-valued functions"
+    ]
+  },
+  {
+    "id": "ann-collinear-def",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 52,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "Collinearity",
+    "content": "**Collinear p q r** holds when r lies on the line through p and q, expressed as `∃ t : ℝ, r - p = t • (q - p)`. This parameterization r = p + t(q - p) covers the entire line: t = 0 gives p, t = 1 gives q, and other values give points beyond.",
+    "significance": "key",
+    "mathContext": "`def Collinear (p q r : Point) : Prop := ∃ t : ℝ, r - p = t • (q - p)` — uses the vector space structure on `EuclideanSpace ℝ (Fin 2)`. The scalar `t : ℝ` parameterizes the line. This definition is used in `SylvesterGallai` but the main Ramsey framework uses the `Line` structure instead.",
+    "relatedConcepts": [
+      "scalar multiplication",
+      "vector subtraction",
+      "line parameterization"
+    ],
+    "prerequisites": [
+      "vector subtraction and scalar multiplication in ℝ²",
+      "parametric description of a line",
+      "existential quantifiers in Lean Prop"
+    ]
+  },
+  {
+    "id": "ann-line-structure",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 66,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Line Structure and OnLine Predicate",
+    "content": "**Line** is a structure with a base `point`, a non-zero `direction` vector, and a proof `nonzero : direction ≠ 0`. **OnLine l p** holds when `∃ t : ℝ, p = l.point + t • l.direction`. This is the primary line representation used by `IsKCollinear`.",
+    "significance": "key",
+    "mathContext": "`structure Line where point : Point; direction : Point; nonzero : direction ≠ 0` bundles the base point and direction with a non-degeneracy proof. `def OnLine (l : Line) (p : Point) : Prop := ∃ t : ℝ, p = l.point + t • l.direction` parameterizes points on the line. The `nonzero` field prevents the degenerate case where all points would trivially satisfy `OnLine`.",
+    "relatedConcepts": [
+      "structure type",
+      "non-degeneracy condition",
+      "parametric line"
+    ],
+    "prerequisites": [
+      "parametric line p + t·d in a vector space",
+      "Lean 4 structure types with proof fields",
+      "non-degeneracy conditions (direction ≠ 0)"
+    ]
+  },
+  {
+    "id": "ann-monochromatic-def",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 85,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "Monochromatic Set",
+    "content": "**IsMonochromatic S c** requires all points in S to receive the same color: `∀ p q : S, c p = c q`. This uses the subtype coloring `TwoColoring S`.",
+    "significance": "supporting",
+    "mathContext": "`def IsMonochromatic (S : Set Point) (c : TwoColoring S) : Prop := ∀ p q : S, c p = c q` — quantifies over subtype elements `p q : ↥S`. Note this definition is not directly used by the Ramsey framework, which uses the simpler `∀ p q ∈ S, c p = c q` formulation in `MonochromaticKCollinear`.",
+    "relatedConcepts": [
+      "subtype quantification",
+      "color uniformity",
+      "Bool equality"
+    ],
+    "prerequisites": [
+      "two-colorings as functions to Bool",
+      "subtype quantification in Lean",
+      "monochromatic set"
+    ]
+  },
+  {
+    "id": "ann-k-collinear-def",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 92,
+      "endLine": 106
+    },
+    "type": "definition",
+    "title": "k-Collinear and Monochromatic k-Collinear",
+    "content": "**IsKCollinear S k** requires `S.card ≥ k` and all points in S lying on a common line. **MonochromaticKCollinear A k c** existentially finds a subset S ⊆ A that is k-collinear and monochromatic under coloring c. This is the central predicate linking geometry and Ramsey theory.",
+    "significance": "key",
+    "mathContext": "`def IsKCollinear (S : Finset Point) (k : ℕ) : Prop := S.card ≥ k ∧ ∃ l : Line, ∀ p ∈ S, OnLine l p` combines cardinality and collinearity. `def MonochromaticKCollinear (A : Finset Point) (k : ℕ) (c : Point → Bool) : Prop := ∃ S : Finset Point, S ⊆ A ∧ IsKCollinear S k ∧ ∀ p q : Point, p ∈ S → q ∈ S → c p = c q` — note the coloring is `Point → Bool` (total function) rather than the subtype-based `TwoColoring`.",
+    "relatedConcepts": [
+      "Finset.card",
+      "Finset subset",
+      "existential witness"
+    ],
+    "prerequisites": [
+      "Finset and Finset.card",
+      "the Line structure and OnLine predicate",
+      "Ramsey-type monochromatic configurations"
+    ]
+  },
+  {
+    "id": "ann-ramsey-property",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 112,
+      "endLine": 125
+    },
+    "type": "definition",
+    "title": "Ramsey Property and Erdős Question",
+    "content": "**HasRamseyProperty A k** universally quantifies over all 2-colorings: every coloring must produce a monochromatic k-collinear subset. **Erdos1090Question k** existentially quantifies over point sets: does any finite A have this property for k ≥ 3?",
+    "significance": "key",
+    "mathContext": "`def HasRamseyProperty (A : Finset Point) (k : ℕ) : Prop := ∀ c : Point → Bool, MonochromaticKCollinear A k c` — the universal quantifier over colorings makes this a strong property. `def Erdos1090Question (k : ℕ) : Prop := k ≥ 3 → ∃ A : Finset Point, HasRamseyProperty A k` — the `k ≥ 3` guard is part of the definition (not a hypothesis), so `Erdos1090Question k` for k < 3 is vacuously true.",
+    "relatedConcepts": [
+      "universal quantification",
+      "Ramsey property",
+      "vacuous truth"
+    ],
+    "prerequisites": [
+      "Ramsey theory and unavoidable monochromatic structures",
+      "universal vs existential quantification",
+      "vacuous truth of guarded implications"
+    ]
+  },
+  {
+    "id": "ann-graham-selfridge",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 131,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "Graham-Selfridge Theorem (k=3)",
+    "content": "**graham_selfridge** (axiom): There exists a finite set A ⊂ ℝ² with the Ramsey property for k=3. **k3_case**: Proves `Erdos1090Question 3` by introducing the k ≥ 3 hypothesis (discarded via `_`) and applying the axiom directly.",
+    "significance": "key",
+    "mathContext": "`axiom graham_selfridge : ∃ A : Finset Point, HasRamseyProperty A 3` — the existential witness is an unspecified finite set. `theorem k3_case : Erdos1090Question 3 := by intro _; exact graham_selfridge` — the `intro _` discards the `3 ≥ 3` hypothesis since `graham_selfridge` already provides the conclusion. This is the historical base case before Hunter's general approach.",
+    "relatedConcepts": [
+      "axiom",
+      "existential construction",
+      "base case"
+    ],
+    "prerequisites": [
+      "the Ramsey property (HasRamseyProperty)",
+      "axioms in Lean and existential witnesses",
+      "base case k=3 of the Erdős #1090 problem"
+    ]
+  },
+  {
+    "id": "ann-combinatorial-line",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 152,
+      "endLine": 166
+    },
+    "type": "definition",
+    "title": "Combinatorial Line Structure",
+    "content": "**CombinatorialLine k n** captures a line in the grid [k]ⁿ: coordinates split into `fixed` (with assigned `fixedValues`) and `varying` (which all change together from 0 to k-1). The `disjoint` and `nonempty_varying` fields ensure well-formedness.",
+    "significance": "key",
+    "mathContext": "`structure CombinatorialLine (k n : ℕ) where fixed : Finset (Fin n); fixedValues : Fin n → Fin k; varying : Finset (Fin n); disjoint : Disjoint fixed varying; nonempty_varying : varying.Nonempty` — the line consists of k points, one for each value `i : Fin k`, where point i has `fixedValues coord` at fixed coordinates and `i` at varying coordinates. `Disjoint` uses Finset's lattice structure.",
+    "relatedConcepts": [
+      "Hales-Jewett",
+      "Fin type",
+      "Disjoint predicate"
+    ],
+    "prerequisites": [
+      "the combinatorial cube [k]ⁿ",
+      "combinatorial lines (fixed vs varying coordinates)",
+      "Fin n indexing and Finset.Disjoint"
+    ]
+  },
+  {
+    "id": "ann-hales-jewett",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 168,
+      "endLine": 177
+    },
+    "type": "concept",
+    "title": "Hales-Jewett Theorem",
+    "content": "**hales_jewett** (axiom): For any k ≥ 1 and r ≥ 1, there exists dimension n such that any r-coloring of [k]ⁿ contains a monochromatic combinatorial line. This fundamental Ramsey result (1963) implies van der Waerden's theorem as a corollary.",
+    "significance": "key",
+    "mathContext": "`axiom hales_jewett (k r : ℕ) (hk : k ≥ 1) (hr : r ≥ 1) : ∃ n : ℕ, ∀ c : (Fin n → Fin k) → Fin r, ∃ line : CombinatorialLine k n, ∀ i j : Fin k, c (fun coord => if coord ∈ line.varying then i else line.fixedValues coord) = c (fun coord => if coord ∈ line.varying then j else line.fixedValues coord)` — the monochromaticity condition states that all k points on the line receive the same color, expressed by pairwise equality for all `i j : Fin k`.",
+    "relatedConcepts": [
+      "Hales-Jewett theorem",
+      "van der Waerden",
+      "Ramsey dimension"
+    ],
+    "prerequisites": [
+      "the Hales-Jewett theorem",
+      "combinatorial lines in [k]ⁿ",
+      "van der Waerden's theorem as a corollary"
+    ]
+  },
+  {
+    "id": "ann-generic-projection",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 179,
+      "endLine": 192
+    },
+    "type": "concept",
+    "title": "Generic Projection",
+    "content": "**generic_projection** (axiom): For any k and n, there exists a map proj : [k]ⁿ → Point that is (1) injective on [k]ⁿ, and (2) maps every combinatorial line to a geometric line. This is the transfer mechanism from combinatorial to geometric Ramsey theory.",
+    "significance": "key",
+    "mathContext": "`axiom generic_projection (k n : ℕ) : ∃ proj : (Fin n → Fin k) → Point, (∀ x y, proj x = proj y → x = y) ∧ (∀ line : CombinatorialLine k n, ∃ gline : Line, ∀ i : Fin k, OnLine gline (proj (fun coord => if coord ∈ line.varying then i else line.fixedValues coord)))` — the injectivity ensures distinct grid points map to distinct plane points; the line preservation ensures combinatorial collinearity becomes geometric collinearity.",
+    "relatedConcepts": [
+      "generic position",
+      "algebraic independence",
+      "structure preservation"
+    ],
+    "prerequisites": [
+      "generic / algebraically independent projections",
+      "injective structure-preserving maps",
+      "transfer from combinatorial to geometric collinearity"
+    ]
+  },
+  {
+    "id": "ann-hunter-observation",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 194,
+      "endLine": 200
+    },
+    "type": "concept",
+    "title": "Hunter's Observation",
+    "content": "**hunter_observation** (axiom): For k ≥ 3, there exists a finite set A with the Ramsey property for k. This combines Hales-Jewett (monochromatic combinatorial line in [k]ⁿ) with generic projection (transferring to ℝ²). The pullback argument: any 2-coloring of the projected points induces a 2-coloring of [k]ⁿ.",
+    "significance": "key",
+    "mathContext": "`axiom hunter_observation (k : ℕ) (hk : k ≥ 3) : ∃ A : Finset Point, HasRamseyProperty A k` — this is the key axiom that bridges combinatorial and geometric Ramsey theory. The proof idea: take n from `hales_jewett k 2`, project [k]ⁿ to ℝ² via `generic_projection`, let A = image. Any 2-coloring of A pulls back to a 2-coloring of [k]ⁿ, which has a monochromatic combinatorial line, which projects to k monochromatic collinear points.",
+    "relatedConcepts": [
+      "pullback coloring",
+      "transfer principle",
+      "composition of axioms"
+    ],
+    "prerequisites": [
+      "the Hales-Jewett theorem and generic projection",
+      "pullback of a coloring along a map",
+      "the transfer principle (combinatorial to geometric Ramsey)"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 206,
+      "endLine": 214
+    },
+    "type": "concept",
+    "title": "Main Result: Erdős #1090 Solved",
+    "content": "**erdos_1090_affirmative**: For every k ≥ 3, `Erdos1090Question k` holds — there exists a finite set with the Ramsey property for k. The proof is a three-line application of `hunter_observation`.",
+    "significance": "key",
+    "mathContext": "`theorem erdos_1090_affirmative : ∀ k ≥ 3, Erdos1090Question k := by intro k hk; intro _; exact hunter_observation k hk` — the first `intro` binds k and hk (the ≥ 3 hypothesis); the second `intro _` discards the redundant `k ≥ 3` guard inside `Erdos1090Question`; `exact` applies the axiom. This clean proof structure shows the main theorem is essentially a direct corollary of Hunter's observation.",
+    "relatedConcepts": [
+      "intro tactic",
+      "exact tactic",
+      "corollary"
+    ],
+    "prerequisites": [
+      "Hunter's observation for general k",
+      "Lean intro and exact tactics",
+      "deriving a theorem as a corollary of an axiom"
+    ]
+  },
+  {
+    "id": "ann-bounds",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 244,
+      "endLine": 264
+    },
+    "type": "concept",
+    "title": "Size Bounds",
+    "content": "**ramseyNumber k** is defined (noncomputably) as the minimum |A| with the Ramsey property. **ramsey_lower_bound** (sorry) states R(k) ≥ k — trivially since we need at least k points. **r3_small** (axiom) states R(3) ≤ 9, showing a 9-point set suffices for the k=3 case.",
+    "significance": "supporting",
+    "mathContext": "`noncomputable def ramseyNumber (k : ℕ) : ℕ` uses `Nat.find` — noncomputable because the search over all finite point sets is not constructive. `theorem ramsey_lower_bound (k : ℕ) (hk : k ≥ 3) : ramseyNumber k ≥ k := by sorry` — the only sorry in the file. `axiom r3_small : ∃ A : Finset Point, A.card ≤ 9 ∧ HasRamseyProperty A 3` bounds the k=3 case.",
+    "relatedConcepts": [
+      "noncomputable",
+      "Nat.find",
+      "sorry",
+      "optimization"
+    ],
+    "prerequisites": [
+      "Ramsey number as a minimization problem",
+      "noncomputable definitions and Nat.find",
+      "sorry placeholders in Lean"
+    ]
+  },
+  {
+    "id": "ann-sylvester-gallai",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 270,
+      "endLine": 282
+    },
+    "type": "concept",
+    "title": "Sylvester-Gallai Theorem",
+    "content": "**SylvesterGallai** defines the property that a non-collinear point set has an ordinary line (containing exactly 2 points). **sylvester_gallai** (axiom) states this for sets of ≥ 3 points not all on one line. This classical incidence geometry result provides structural constraints complementing the Ramsey approach.",
+    "significance": "supporting",
+    "mathContext": "`def SylvesterGallai (A : Finset Point) (hA : ¬ ∀ p q r ∈ A, Collinear p q r) : Prop := ∃ l : Line, (A.filter (OnLine l)).card = 2` — uses `Finset.filter` to count points on line l. `axiom sylvester_gallai` provides the theorem with hypotheses `A.card ≥ 3` and `¬ ∃ l : Line, ∀ p ∈ A, OnLine l p`.",
+    "relatedConcepts": [
+      "ordinary lines",
+      "Finset.filter",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "the Sylvester-Gallai theorem and ordinary lines",
+      "incidence geometry of points and lines",
+      "Finset.filter for counting incidences"
+    ]
+  },
+  {
+    "id": "ann-generalizations",
+    "proofId": "erdos-1090",
+    "range": {
+      "startLine": 300,
+      "endLine": 327
+    },
+    "type": "definition",
+    "title": "Generalizations",
+    "content": "**Erdos1090Generalized k r** extends to r-colorings (r ≥ 2): any r-coloring of A has k monochromatic collinear points. **Erdos1090HigherDim d k** considers ℝᵈ with hyperplanes. Both follow from the general Hales-Jewett theorem, which handles arbitrary numbers of colors.",
+    "significance": "supporting",
+    "mathContext": "`def Erdos1090Generalized (k r : ℕ) : Prop := k ≥ 3 → r ≥ 2 → ∃ A : Finset Point, ∀ c : Point → Fin r, ∃ S, ...` uses `Fin r` for r colors. `def Erdos1090HigherDim (d k : ℕ) : Prop` uses `Fin d → ℝ` for d-dimensional points. `axiom erdos_1090_generalized` asserts the r-color version holds.",
+    "relatedConcepts": [
+      "Fin r",
+      "higher dimensions",
+      "Hales-Jewett generalization"
+    ],
+    "prerequisites": [
+      "r-colorings via Fin r",
+      "higher-dimensional Euclidean space ℝᵈ and hyperplanes",
+      "the general (multi-color) Hales-Jewett theorem"
+    ]
+  }
+]

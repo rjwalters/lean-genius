@@ -1,0 +1,129 @@
+{
+  "id": "erdos-1211",
+  "title": "Erdős Problem #1211: Logarithmic Density of Sum Sets in a Partition of ℕ",
+  "slug": "erdos-1211",
+  "description": "Partition ℕ = A ∪ B disjointly. Let S(A) be the set of all finite subset sums of A, and S(B) similarly. The logarithmic upper density δ̄(X) = limsup (1/log x) ∑_{n∈X, n≤x} 1/n measures how dense X is in the harmonic sense. The problem asks: must max(δ̄(S(A)), δ̄(S(B))) exceed 1/2?",
+  "meta": {
+    "author": "Unknown",
+    "sourceUrl": "https://erdosproblems.com/1211",
+    "date": "",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1211Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "additive-combinatorics",
+      "density",
+      "subset-sums"
+    ],
+    "lineCount": 53,
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1211,
+    "erdosUrl": "https://erdosproblems.com/1211",
+    "erdosProblemStatus": "solved",
+    "axiomCount": 2,
+    "assumptions": "2 axiom(s) and 0 sorry(s). See the Lean source for the axiom declarations.",
+    "theoremCount": 1,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "This problem belongs to Erdős's deep program on the density theory of sum sets and additive bases. The foundational concept of density for additive number theory was Schnirelmann density (1930), defined as $d(A) = \\inf_{n \\ge 1} |A \\cap \\{1,\\ldots,n\\}|/n$. Schnirelmann proved every integer > 1 is the sum of at most $C$ elements of $A$ whenever $A \\cup (2A) \\cup \\ldots$ covers $\\mathbb{N}$, giving the first quantitative version of Waring's problem. However, Schnirelmann density is insensitive to sparse sets: a set containing all powers of 2 has Schnirelmann density 0 yet generates $\\mathbb{N}$ as subset sums (binary representations).\n\nThe logarithmic density $\\overline{\\delta}(X) = \\limsup_{x \\to \\infty} \\frac{1}{\\log x} \\sum_{n \\in X, n \\leq x} \\frac{1}{n}$ is better adapted to multiplicative and harmonic structure. It satisfies $\\overline{\\delta}(\\mathbb{N}) = 1$ (harmonic series diverges), $\\overline{\\delta}(\\text{primes}) = 0$ (Mertens: $\\sum_{p \\le x} 1/p \\sim \\ln \\ln x$), and $\\overline{\\delta}(\\text{even integers}) = 1/2$. Unlike natural density, it weighs small integers more heavily, which matches how subset sums build up: small elements of $A$ generate many small subset sums, and these dominate the logarithmic sum.\n\nErdős systematically studied how the logarithmic density of $A$ controls the logarithmic density of its subset sum set $S(A)$. The generating Dirichlet series $\\sum_{n \\in S(A)} n^{-s} = \\prod_{a \\in A}(1 + a^{-s})$ connects analytic continuation near $s=1$ to the logarithmic density of $S(A)$: by Mertens's formula, $\\log \\prod_{a \\in A}(1 + a^{-1}) \\approx \\sum_{a \\in A} 1/a$, so large harmonic sum of $A$ implies large density of $S(A)$. Problem #1211 asks for the optimal partition constant, in the spirit of Ramsey theory: any partition must have at least one dense sum set.",
+    "problemStatement": "Let $\\mathbb{N} = A \\cup B$ be a partition of the positive integers into disjoint sets $A$ and $B$. Let $S(A) = \\{\\sum_{a \\in F} a : F \\subseteq A, F \\text{ finite and nonempty}\\}$ be the set of all finite subset sums of $A$, and define $S(B)$ analogously. Define the logarithmic upper density $\\overline{\\delta}(X) = \\limsup_{x \\to \\infty} \\frac{1}{\\log x} \\sum_{\\substack{n \\in X \\\\ n \\leq x}} \\frac{1}{n}$. Must $\\max(\\overline{\\delta}(S(A)), \\overline{\\delta}(S(B))) > 1/2$? The answer is yes, with a specific constant $c > 1/2$ as the sharp threshold.",
+    "proofStrategy": "The Lean file contains a stub `True := by sorry`. A formalization would require: (1) defining the logarithmic upper density $\\overline{\\delta}$ using `Filter.limsup` and harmonic sums; (2) defining $S(A)$ as the image of all finite subsets of $A$ under the sum map; (3) proving that for any partition $A \\cup B = \\mathbb{N}$, $\\max(\\overline{\\delta}(S(A)), \\overline{\\delta}(S(B))) \\geq c$ for the sharp constant $c$. The proof likely uses generating-function or Dirichlet series methods: the Dirichlet series $\\sum_{n \\in S(A)} n^{-s}$ factors as $\\prod_{a \\in A}(1 + a^{-s})$, and the density of $S(A)$ near $s = 1$ is controlled by $\\sum_{a \\in A} 1/a$.",
+    "keyInsights": [
+      "The logarithmic density $\\overline{\\delta}(X)$ is the natural density for this problem because the generating Dirichlet series $\\sum_{n \\in S(A)} n^{-s} = \\prod_{a \\in A}(1 + a^{-s})$ has its behavior near $s=1$ controlled by $\\sum_{a \\in A} 1/a$ (via $\\log \\prod (1 + a^{-1}) \\approx \\sum 1/a$).",
+      "Since $\\{1/n : n \\in \\mathbb{N}\\}$ sums to diverge, any partition $A \\cup B$ must have $\\sum_{a \\in A} 1/a + \\sum_{b \\in B} 1/b = \\infty$; so at least one of $\\sum 1/a$ or $\\sum 1/b$ diverges, giving at least one dense sum set—but the problem asks for the sharp density constant.",
+      "The subset sum set $S(A)$ contains $A$ itself and all pairwise sums, so $\\overline{\\delta}(S(A)) \\geq \\overline{\\delta}(A)$; but the sum set can be much denser than $A$ itself—for example, if $A = \\{1, 2, 4, 8, \\ldots\\}$ (powers of 2), then $S(A) = \\mathbb{N}$ (binary representations).",
+      "The threshold $c > 1/2$ reflects an extremal partition: one can construct partitions where both $S(A)$ and $S(B)$ have logarithmic density close to $1/2$, but not below the threshold $c$. Finding this extremal partition characterizes the answer.",
+      "This is a Ramsey-type result for infinite partitions: unlike Ramsey theory for colorings, which gives monochromatic substructures, here we get a density guarantee for at least one sum set—a quantitative Ramsey statement."
+    ]
+  },
+  "sections": [
+    {
+      "id": "source-header",
+      "title": "Source Reference and Problem Status",
+      "startLine": 1,
+      "endLine": 6,
+      "summary": "Header block identifying Erdős Problem #1211 with its source URL (erdosproblems.com/1211) and solved status. The problem concerns logarithmic density of subset sum sets in a partition of ℕ.",
+      "mathContext": "The problem is marked SOLVED on erdosproblems.com. The answer establishes a constant c > 1/2: any partition ℕ = A ∪ B satisfies max(δ̄(S(A)), δ̄(S(B))) ≥ c, with an extremal example showing c cannot be replaced by any larger constant."
+    },
+    {
+      "id": "problem-statement",
+      "title": "Core Problem: Subset Sum Density for Partition of ℕ",
+      "startLine": 7,
+      "endLine": 10,
+      "summary": "The LaTeX problem statement: for partition ℕ = A ∪ B, the subset sum sets S(A) and S(B) satisfy max(δ̄(S(A)), δ̄(S(B))) > 1/2. Defines the logarithmic upper density δ̄(X) = limsup (1/log x) ∑_{n∈X, n≤x} 1/n.",
+      "mathContext": "δ̄(X) = limsup_{x→∞} (1/log x) ∑_{n∈X, n≤x} 1/n. The subset sum set S(A) = {∑_{a∈F} a : F ⊆ A, F finite}. Claim: for any partition ℕ = A ∪ B, max(δ̄(S(A)), δ̄(S(B))) ≥ c for a specific c > 1/2."
+    },
+    {
+      "id": "extremal-constant",
+      "title": "Sharp Constant and Extremal Example",
+      "startLine": 11,
+      "endLine": 14,
+      "summary": "The problem specifies a constant c > 1/2 as the sharp threshold: an example is given showing that c cannot be replaced by any larger constant. The extremal partition achieves max density exactly c in both sum sets, characterizing the optimal partition.",
+      "mathContext": "From erdosproblems.com: 'an example which shows c cannot be replaced by any larger constant.' The extremal partition likely involves a geometric or arithmetic progression: for $A = \\{n : n \\equiv 1 \\pmod{2}\\}$ (odd numbers) and $B = \\{n : n \\equiv 0 \\pmod{2}\\}$ (even), both $S(A)$ and $S(B)$ are dense. The sharp c is determined by optimizing over all partitions."
+    },
+    {
+      "id": "imports",
+      "title": "Imports",
+      "startLine": 16,
+      "endLine": 16,
+      "summary": "Imports the full Mathlib library. A targeted formalization would import Filter.limsup (for the limsup definition of logarithmic density), Topology.Algebra.InfiniteSum (for harmonic series convergence), and Data.Finset.Basic (for finite subset sums).",
+      "mathContext": "Key Mathlib infrastructure for a formalization: `Filter.limsup atTop` provides the limsup over the cofinite filter needed for δ̄(X). `Finset.sum` and `Set.image` handle subset sums. The Euler product ∏_{a ∈ A}(1 + a^{-s}) would require `Finprod` or `tsum` from Mathlib's analysis library, paired with `Real.log` and `Real.summable_one_div_nat_rpow` for harmonic series bounds."
+    },
+    {
+      "id": "placeholder-theorem",
+      "title": "Placeholder: Partition Sum Density Theorem",
+      "startLine": 18,
+      "endLine": 23,
+      "summary": "Placeholder `erdos_1211 : True := by sorry` for the eventual formalization. The target theorem type would state: for any disjoint partition A ∪ B = ℕ, max(δ̄(S(A)), δ̄(S(B))) ≥ c for a constant c > 1/2 depending only on the partition structure.",
+      "mathContext": "A Lean 4 formalization requires: (1) `def logDensity (X : Set ℕ) : ℝ := Filter.limsup atTop (fun x => (1/Real.log x) * ∑ n in Finset.range x, if n ∈ X then (1:ℝ)/n else 0)`, (2) `def subsetSums (A : Set ℕ) : Set ℕ := {n | ∃ F : Finset ℕ, ↑F ⊆ A ∧ F.sum id = n}`, and (3) the main theorem asserting max density exceeds 1/2 for any partition."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1211 asks for the minimum achievable maximum logarithmic density of sum sets in a partition of ℕ. The answer is a constant c > 1/2: any partition ℕ = A ∪ B satisfies max(δ̄(S(A)), δ̄(S(B))) ≥ c. The Lean formalization is pending.",
+    "implications": "A formalization of this result would extend Lean's library of density and sum-set results in additive combinatorics. The logarithmic density formalism connects to Mathlib's `Filter.limsup` and `Nat.summable` infrastructure. The generating-function approach (Euler product for subset sums) is a bridge between analytic and combinatorial methods that would be valuable to formalize.",
+    "openQuestions": [
+      "What is the exact sharp constant $c$ in $\\max(\\overline{\\delta}(S(A)), \\overline{\\delta}(S(B))) \\geq c$? The problem statement on erdosproblems.com says $c > 1/2$ with an extremal example showing $c$ cannot be replaced by any larger constant.",
+      "Is there a connection between this problem and Kneser's theorem or the Cauchy–Davenport theorem on sum set density in abelian groups?",
+      "Can Mathlib's `Filter.limsup` infrastructure be used to formalize logarithmic density, and are there existing Mathlib lemmas about Euler products $\\prod_{a \\in A}(1 + a^{-s})$ that could support this formalization?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-28-additive-bases",
+      "relationship": "related",
+      "description": "Complementary: #28 (Erdős-Turán additive bases) studies when A+A covers all large integers; #1211 asks about logarithmic density of finite subset sum sets, connecting additive basis theory to density-analytic methods."
+    },
+    {
+      "targetId": "erdos-1208",
+      "relationship": "related",
+      "description": "Neighbor in the Erdős 1200s cluster: both involve extremal questions about combinatorial subsets with quantitative density/size constraints, sourced from the same era of Erdős's work."
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "uses-technique",
+      "description": "Logarithmic density technique: δ̄(X) = limsup (1/log x) Σ 1/n uses the same 1/n-weighted harmonic summation as the prime reciprocal sum, formalized via Filter.limsup in Mathlib."
+    },
+    {
+      "targetId": "erdos-530",
+      "relationship": "related",
+      "description": "Sibling in sum-set theory: #530 (maximum Sidon subset of a finite set) and #1211 (logarithmic density of partition sum sets) are both extremal problems about structured subsets, sharing the combinatorial density framework."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": null,
+    "lineCount": 53,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 2,
+    "sorries": 0,
+    "path": "Proofs/Erdos1211Problem.lean"
+  }
+}

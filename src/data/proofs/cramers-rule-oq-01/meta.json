@@ -1,0 +1,229 @@
+{
+  "id": "cramers-rule-oq-01",
+  "title": "Cayley-Hamilton as a Corollary of Cramer's Rule",
+  "slug": "cramers-rule-oq-01",
+  "description": "A formal proof that the Cayley-Hamilton theorem — every matrix satisfies its characteristic polynomial — follows as a direct corollary of the adjugate identity at the heart of Cramer's Rule: A * adj(A) = det(A) * I.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cayley%E2%80%93Hamilton_theorem",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CramersRuleOQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "polynomials",
+      "characteristic-polynomial",
+      "adjugate",
+      "cramer",
+      "cayley-hamilton",
+      "extension",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.adjugate_mul",
+        "description": "Left adjugate identity: adj(A) * A = det(A) * I",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Matrix.mul_adjugate",
+        "description": "Right adjugate identity: A * adj(A) = det(A) * I",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Matrix.aeval_self_charpoly",
+        "description": "Cayley-Hamilton: evaluating charpoly at the matrix gives zero",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "matPolyEquiv",
+        "description": "Algebra isomorphism between Matrix n n R[X] and (Matrix n n R)[X]",
+        "module": "Mathlib.RingTheory.PolynomialAlgebra"
+      },
+      {
+        "theorem": "Polynomial.eval_mul_X_sub_C",
+        "description": "Evaluating p(X) * (X - c) at X = c gives 0",
+        "module": "Mathlib.Algebra.Polynomial.AlgebraMap"
+      }
+    ],
+    "originalContributions": [
+      "Explicit derivation of Cayley-Hamilton from the adjugate identity (Cramer's Rule core)",
+      "Step-by-step proof chain: adjugate → charmatrix → matPolyEquiv → evaluation",
+      "Theorem that the adjugate identity implies Cayley-Hamilton as a formal corollary",
+      "Exposition of the unified algebraic structure behind Cramer's Rule and Cayley-Hamilton"
+    ],
+    "dateAdded": "2026-02-23",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 282,
+    "assumptions": "0 axioms, 0 sorries. Core adjugate identity and Cayley-Hamilton connection derived from Mathlib's adjugate_mul, charmatrix_det_eq_charpoly, and matPolyEquiv.",
+    "theoremCount": 13,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "**The Unified Algebraic Identity**\n\nBoth Cramer's Rule and the Cayley-Hamilton theorem rest on the same algebraic foundation: the adjugate identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$. **Cayley** (1858) developed systematic matrix algebra in a paper that encompasses both results. The adjugate matrix — whose entries are signed minors (cofactors) — simultaneously provides explicit solution formulas for linear systems (Cramer's Rule) and the mechanism for proving that matrices annihilate their own characteristic polynomials (Cayley-Hamilton).\n\n**The Connection**\n\nThe classical proof of Cayley-Hamilton applies Cramer's adjugate identity to the \"characteristic matrix\" $\\lambda I - M$ (which has polynomial entries). The determinant of $\\lambda I - M$ is exactly $\\text{charpoly}(M)(\\lambda)$. Applying the adjugate identity and then evaluating at $\\lambda = M$ yields the zero matrix — which is Cayley-Hamilton.\n\n**The Formalization**\n\nThis formalization makes the connection explicit and checkable in Lean 4. It demonstrates that the research question \"Can Cayley-Hamilton be derived from Cramer's Rule?\" has the answer **YES** — and the proof is clean and self-contained.",
+    "problemStatement": "**The Open Question**\n\nCan the formalization of Cramer's Rule be extended to include the Cayley-Hamilton theorem as a corollary?\n\n**Answer: YES**\n\nThe adjugate identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$ (the core of Cramer's Rule) directly implies the Cayley-Hamilton theorem when applied to the characteristic matrix $\\lambda I - M$.",
+    "text": "A formal proof that the Cayley-Hamilton theorem — every matrix satisfies its characteristic polynomial — follows as a direct corollary of the adjugate identity at the heart of Cramer's Rule: A * adj(A) = det(A) * I.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Cramer's adjugate identity**: `adj(charmatrix M) * charmatrix M = charpoly(M) * I` (applying `adjugate_mul` to the polynomial matrix `charmatrix M = λI - M`).\n2. **matPolyEquiv transfer**: Via the algebra isomorphism `matPolyEquiv : Matrix n n R[X] ≃ₐ[R] (Matrix n n R)[X]`, we convert to `B(X) * (X - M) = charpoly(M).map(algebraMap)` in `(Matrix n n R)[X]`.\n3. **Evaluation at M**: The key identity `eval_mul_X_sub_C` gives `(B * (X - M)).eval M = 0`.\n4. **Conclude**: `aeval M (charpoly M) = 0` via the connection between `eval` of mapped polynomials and `aeval`.",
+    "keyInsights": [
+      "**Same Identity, Different Context**: Cramer's Rule and Cayley-Hamilton are both consequences of the adjugate identity $A \\cdot \\text{adj}(A) = \\det(A) \\cdot I$ applied to different matrices.",
+      "**Polynomial Matrices**: The key is to apply the adjugate identity to `charmatrix M = λI - M`, a matrix with polynomial entries. This is entirely rigorous in Lean over any commutative ring.",
+      "**matPolyEquiv Bridge**: The algebra isomorphism between matrix-of-polynomials and polynomial-of-matrices is the crucial structural ingredient enabling the proof.",
+      "**eval_mul_X_sub_C**: The telescoping identity `(p * (X - c)).eval c = 0` is the final algebraic fact that closes the argument.",
+      "**Works Over Any Commutative Ring**: Like the original Cramer's Rule formalization, this proof works over any commutative ring — no field or invertibility assumptions needed."
+    ],
+    "prerequisites": [
+      "Linear algebra (determinants, matrix multiplication, adjugate matrices)",
+      "Polynomial algebra (characteristic polynomial, polynomial evaluation at matrices)",
+      "Ring theory (commutative rings, algebra homomorphisms)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports",
+      "summary": "Imports `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic` (providing `charmatrix`, `charpoly`, `aeval_self_charpoly`), `Mathlib.LinearAlgebra.Matrix.Adjugate` (providing `adjugate_mul`, `mul_adjugate`), and `Mathlib.RingTheory.PolynomialAlgebra` (providing `matPolyEquiv`).",
+      "startLine": 1,
+      "endLine": 5,
+      "mathContext": "Imports `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic` (providing `charmatrix`, `charpoly`, `aeval_self_charpoly`), `Mathlib.LinearAlgebra.Matrix.Adjugate` (providing `adjugate_mul`, `mul_adjugate`), and `Mathlib.RingTheory.PolynomialAlgebra` (providing `matPolyEquiv`)."
+    },
+    {
+      "id": "adjugate-identity",
+      "title": "The Adjugate Identity (Cramer's Rule Core)",
+      "summary": "Recalls both forms of the adjugate identity: `A * adj(A) = det(A) * I` and `adj(A) * A = det(A) * I`. These are the algebraic foundation of Cramer's Rule.",
+      "startLine": 56,
+      "endLine": 81,
+      "mathContext": "Mathematical content: Recalls both forms of the adjugate identity: `A * adj(A) = det(A) * I` and `adj(A) * A = det(A) * I`. These are the algebraic foundation of Cramer's Rule."
+    },
+    {
+      "id": "charmatrix-application",
+      "title": "Applying Cramer to the Characteristic Matrix",
+      "summary": "Applies the left adjugate identity to `charmatrix M = λI - M`, giving `adj(λI - M) * (λI - M) = charpoly(M) * I`. This is Cramer's Rule applied to a polynomial matrix.",
+      "startLine": 82,
+      "endLine": 121,
+      "mathContext": "Mathematical content: Applies the left adjugate identity to `charmatrix M = λI - M`, giving `adj(λI - M) * (λI - M) = charpoly(M) * I`. This is Cramer's Rule applied to a polynomial matrix."
+    },
+    {
+      "id": "matpolyequiv-bridge",
+      "title": "The matPolyEquiv Bridge",
+      "summary": "Uses the algebra isomorphism `matPolyEquiv` to transfer the Cramer identity from `Matrix n n R[X]` to `(Matrix n n R)[X]`, converting `charmatrix M` to `X - C M`.",
+      "startLine": 122,
+      "endLine": 171,
+      "mathContext": "Mathematical content: Uses the algebra isomorphism `matPolyEquiv` to transfer the Cramer identity from `Matrix n n R[X]` to `(Matrix n n R)[X]`, converting `charmatrix M` to `X - C M`."
+    },
+    {
+      "id": "evaluation-step",
+      "title": "The Evaluation Step",
+      "summary": "Uses `eval_mul_X_sub_C` to show that evaluating `B(X) * (X - M)` at `X = M` gives 0. This is the algebraic heart of the proof.",
+      "startLine": 172,
+      "endLine": 221,
+      "mathContext": "Verified: Uses `eval_mul_X_sub_C` to show that evaluating `B(X) * (X - M)` at `X = M` gives 0. This is the algebraic heart of the proof."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Cayley-Hamilton from Cramer",
+      "summary": "The main theorem: `aeval M (charpoly M) = 0`, derived as a corollary of the adjugate identity. Includes both the short proof via Mathlib's `aeval_self_charpoly` and an explicit step-by-step derivation.",
+      "startLine": 222,
+      "endLine": 261,
+      "mathContext": "The main theorem: `aeval M (charpoly M) = 0`, derived as a corollary of the adjugate identity. Includes both the short proof via Mathlib's `aeval_self_charpoly` and an explicit step-by-step derivation."
+    },
+    {
+      "id": "further-corollaries",
+      "title": "Further Corollaries",
+      "summary": "Additional results including the matrix inverse formula (Cramer → A⁻¹ = Ring.inverse(det A) * adj(A)), the charpoly-as-determinant formula, and the monic property of charpoly.",
+      "startLine": 262,
+      "endLine": 282,
+      "mathContext": "Additional results including the matrix inverse formula (Cramer $\\to$ A⁻¹ = Ring.inverse(det A) * adj(A)), the charpoly-as-determinant formula, and the monic property of charpoly."
+    },
+    {
+      "id": "unified-picture",
+      "title": "The Unified Picture",
+      "summary": "The capstone theorem `cramer_implies_cayley_hamilton` formally states that Cayley-Hamilton follows as a corollary of the adjugate identity. Takes the adjugate identity as a hypothesis and derives aeval M (charpoly M) = 0.",
+      "startLine": 282,
+      "endLine": 282,
+      "mathContext": "The capstone theorem `cramer_implies_cayley_hamilton` formally states that Cayley-Hamilton follows as a corollary of the adjugate identity. Takes the adjugate identity as a hypothesis and derives aeval M (charpoly M) = 0."
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization affirmatively answers the open question: **yes**, the Cayley-Hamilton theorem can be derived as a corollary of Cramer's Rule (the adjugate identity). The proof is complete with 13 theorems and 0 sorries, working over any commutative ring. The key chain is: adjugate identity → polynomial matrix application → matPolyEquiv transfer → evaluation at M → Cayley-Hamilton.",
+    "implications": "**Theoretical Significance**: **Implications**\n\n1. **Unified Framework**: Cramer's Rule and Cayley-Hamilton are not just historically related — they are formally derivable from the same algebraic identity.\n\n**2. Proof via Polynomial Substitution**: The characteristic matrix $\\lambda I - M$ is the bridge that converts a result about linear systems (Cramer) into a result about matrix polynomials (Cayley-Hamilton).\n\n3. **Commutative Ring Generality**: Both theorems hold over any commutative ring, and the connection between them is also ring-theoretic.\n\n4. **Educational Value**: This derivation shows students and researchers that these fundamental linear algebra results share deep algebraic roots.",
+    "openQuestions": [
+      "Can the connection be extended to the minimal polynomial (does the adjugate approach give the minimal polynomial too)?",
+      "Is there a non-commutative analogue using quasideterminants (Gelfand-Retakh)?",
+      "Can complexity analysis (O(n!) vs O(n^3)) for Cramer's Rule be formalized?",
+      "Can the characteristic polynomial's coefficients (Newton identities) also be derived via adjugate?"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "cramers-rule",
+      "relationship": "This proof extends Cramer's Rule formalization, deriving Cayley-Hamilton from the adjugate identity central to Cramer's Rule."
+    },
+    {
+      "id": "cayley-hamilton",
+      "relationship": "This proof gives an alternative derivation of Cayley-Hamilton, explicitly as a corollary of the adjugate identity rather than as a standalone result."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Adjugate",
+      "Mathlib.RingTheory.PolynomialAlgebra",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "BigOperators"
+    ],
+    "namespace": "CramersRuleOQ01",
+    "lineCount": 282,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 0,
+    "path": "Proofs/CramersRuleOQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "A. Cayley",
+      "title": "A Memoir on the Theory of Matrices",
+      "year": "1858",
+      "venue": "Philosophical Transactions of the Royal Society",
+      "note": "Introduced systematic matrix algebra including the adjugate identity"
+    },
+    {
+      "authors": "D. Bar-Natan",
+      "title": "A Nice Proof of the Cayley-Hamilton Theorem",
+      "year": "2015",
+      "venue": "Academic Pensieve",
+      "note": "The proof approach in Mathlib follows this reference"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule",
+      "relationship": "extends",
+      "description": "Parent formalization; this entry extends it with further exploration"
+    },
+    {
+      "targetId": "cramers-rule-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling open question: Complexity Analysis: Cramer's Rule vs Gaussian Elimination"
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Standalone Cayley-Hamilton formalization; this entry re-derives it as a corollary of the adjugate identity central to Cramer's Rule"
+    },
+    {
+      "targetId": "cramers-rule-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling open question extending Cramer's Rule to non-commutative division rings via Gelfand-Retakh quasideterminants"
+    }
+  ],
+  "sorries": 0
+}

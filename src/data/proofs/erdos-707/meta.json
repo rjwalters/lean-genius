@@ -1,0 +1,182 @@
+{
+  "id": "erdos-707",
+  "title": "Erdős Problem #707: Embedding Sidon Sets in Perfect Difference Sets",
+  "slug": "erdos-707",
+  "description": "Can every finite Sidon set be embedded in a perfect difference set modulo p^2+p+1 for some prime p? DISPROVED: Hall (1947) and Alexeev-Mixon (2025) provided counterexamples.",
+  "meta": {
+    "author": "Hall (1947), Alexeev-Mixon (2025)",
+    "sourceUrl": "https://erdosproblems.com/707",
+    "date": "1947-2025",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos707Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "sidon-sets",
+      "perfect-difference-sets",
+      "counterexample"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 707,
+    "erdosUrl": "https://erdosproblems.com/707",
+    "erdosProblemStatus": "disproved",
+    "erdosPrizeValue": "$1000",
+    "dateAdded": "2026-01-17",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset",
+        "description": "Finite sets with decidable membership",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime numbers in natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "ZMod",
+        "description": "Integers modulo n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Clean definitions of Sidon sets and perfect difference sets",
+      "Formal statement that the conjecture is FALSE",
+      "Three counterexamples: {1,2,4,8}, {1,2,4,8,13}, {1,3,9,10,13}",
+      "Singer construction axiom for existence of perfect difference sets",
+      "Size bound theorem for perfect difference sets",
+      "Verified proof that {1,2,4} is a Sidon set",
+      "Connection to Sidon set density problems"
+    ],
+    "axiomCount": 1,
+    "lineCount": 161,
+    "assumptions": "1 axiom: singer_construction (Singer 1938 — for prime p, ∃ perfect difference set B in Z_{p²+p+1} with |B|=p+1). 0 sorries.",
+    "theoremCount": 2,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "This problem connects two classical structures in additive combinatorics: **Sidon sets** (where all pairwise sums are distinct) and **perfect difference sets** (where every nonzero residue appears exactly once as a difference).\n\nErdős posed this question around 1977-1980, offering a $1000 prize. He asked whether every finite Sidon set could be embedded in a perfect difference set modulo p²+p+1 for some prime p. This would have significant implications for the maximum density of Sidon sets.\n\nRemarkably, the conjecture had already been disproved by **Marshall Hall Jr. in 1947** - before Erdős even asked the question! Hall showed that {1,3,9,10,13} cannot extend to any perfect difference set. This was rediscovered by **Alexeev and Mixon in 2025**, who independently proved {1,2,4,8} cannot extend for primes, and {1,2,4,8,13} cannot extend at all. Their proof was formalized in Lean with AI assistance.",
+    "problemStatement": "**Erdős Problem #707**: Let $A \\subseteq \\mathbb{N}$ be a finite Sidon set. Is there some set $B$ with $A \\subseteq B$ which is a perfect difference set modulo $p^2+p+1$ for some prime $p$?\n\n**Status**: DISPROVED\n\n**Prize**: $1000 (offered 1980)\n\n**Counterexamples**:\n- $\\{1,3,9,10,13\\}$ cannot extend to any perfect difference set (Hall 1947)\n- $\\{1,2,4,8\\}$ cannot extend mod $p^2+p+1$ for any prime $p$ (Alexeev-Mixon 2025)\n- $\\{1,2,4,8,13\\}$ cannot extend to any perfect difference set (Alexeev-Mixon 2025)\n\n**Positive Results**:\n- Size $\\leq 3$ Sidon sets can always be extended (Sawin)\n- Singer construction gives perfect difference sets for $n = p^2+p+1$",
+    "text": "Can every finite Sidon set be embedded in a perfect difference set modulo p^2+p+1 for some prime p? DISPROVED: Hall (1947) and Alexeev-Mixon (2025) provided counterexamples.",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Define Sidon sets**: A set where all pairwise sums are distinct: $a + b = c + d$ with $a \\leq b$ and $c \\leq d$ implies $\\{a,b\\} = \\{c,d\\}$.\n\n2. **Define perfect difference sets**: A set $B$ where every nonzero element of $\\mathbb{Z}/n\\mathbb{Z}$ appears exactly once as a difference $b_1 - b_2$ for $b_1 \\neq b_2$ in $B$.\n\n3. **State the disproved conjecture**: Axiomatize that the statement is FALSE.\n\n4. **Provide counterexamples**: Three specific Sidon sets that cannot be extended.\n\n5. **Include positive results**: Singer construction for existence, small Sidon sets extendability.\n\n6. **Verify examples**: Prove {1,2,4} is a Sidon set by explicit case analysis.",
+    "keyInsights": [
+      "**Sidon sets vs B₂ sequences**: A Sidon set has distinct pairwise sums. Equivalently, all pairwise differences are distinct. These are also called B₂ sequences.",
+      "**Perfect difference sets**: Related to cyclic projective planes. A set B mod n where every nonzero residue appears exactly once as b₁ - b₂. This forces |B|(|B|-1) = n-1.",
+      "**Singer construction (1938)**: For any prime power p, there exists a perfect difference set mod p²+p+1 of size p+1. Example: {0,1,3} is perfect mod 7.",
+      "**Why Hall's result was forgotten**: Hall's 1947 paper focused on cyclic projective planes, not Sidon sets. The connection wasn't recognized when Erdős posed the problem 30 years later.",
+      "**Size-4 remains open**: While specific size-4 Sidon sets fail, it's unknown if ALL size-4 Sidon sets fail. The candidate {0,1,3,11} resists known constructions."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Additive combinatorics (sumsets, density)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Problem statement, status (DISPROVED), prize, and references.",
+      "mathContext": "Mathematical content: Problem statement, status (DISPROVED), prize, and references."
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 30,
+      "endLine": 39,
+      "summary": "Mathlib imports for Finset, primes, and modular arithmetic.",
+      "mathContext": "Mathematical content: Mathlib imports for Finset, primes, and modular arithmetic."
+    },
+    {
+      "id": "definitions",
+      "title": "Key Definitions",
+      "startLine": 40,
+      "endLine": 69,
+      "summary": "IsSidon, IsSidonDiff, and IsPerfectDifferenceSet definitions.",
+      "mathContext": "Formal definition: IsSidon, IsSidonDiff, and IsPerfectDifferenceSet definitions."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Conjecture is FALSE",
+      "startLine": 70,
+      "endLine": 92,
+      "summary": "The disproved statement and formal negation.",
+      "mathContext": "Mathematical content: The disproved statement and formal negation."
+    },
+    {
+      "id": "counterexamples",
+      "title": "Counterexamples",
+      "startLine": 93,
+      "endLine": 133,
+      "summary": "Three counterexamples: {1,2,4,8}, {1,2,4,8,13}, {1,3,9,10,13}.",
+      "mathContext": "Mathematical content: Three counterexamples: {1,2,4,8}, {1,2,4,8,13}, {1,3,9,10,13}."
+    },
+    {
+      "id": "positive-results",
+      "title": "Positive Results",
+      "startLine": 134,
+      "endLine": 159,
+      "summary": "Size bound, Singer construction, small Sidon extendability.",
+      "mathContext": "Bound: Size bound, Singer construction, small Sidon extendability."
+    },
+    {
+      "id": "density",
+      "title": "Connection to Density",
+      "startLine": 160,
+      "endLine": 161,
+      "summary": "Link to Erdős Problem #329 on Sidon set density.",
+      "mathContext": "Mathematical content: Link to Erdős Problem #329 on Sidon set density."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #707 on embedding Sidon sets in perfect difference sets. The conjecture was DISPROVED: Hall (1947) and Alexeev-Mixon (2025) showed specific Sidon sets cannot be extended. We define Sidon sets and perfect difference sets, axiomatize the counterexamples, and verify that {1,2,4} is indeed a Sidon set. The Singer construction provides positive existence results.",
+    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Additive combinatorics**: Sidon sets are fundamental in the study of sum-free structures\n2. **Projective geometry**: Perfect difference sets correspond to cyclic projective planes\n**3. Sidon set density**: The conjecture, if true, would have implied optimal density bounds\n4. **AI-assisted proofs**: Alexeev-Mixon's 2025 proof was formalized with ChatGPT assistance\n5. **Historical mathematics**: Hall's 1947 result was forgotten for 30 years until Erdős re-asked the question.",
+    "openQuestions": [
+      "Can EVERY Sidon set of size 4 be extended to a perfect difference set?",
+      "What is the structure of maximal non-extendable Sidon sets?",
+      "Is {0,1,3,11} truly a counterexample for size-4 Sidon extension?",
+      "What is the relationship between Sidon extendability and the Singer construction?",
+      "Can machine learning help identify non-extendable Sidon sets?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos707",
+    "lineCount": 161,
+    "axiomCount": 1,
+    "theoremCount": 2,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos707Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-14",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets"
+    },
+    {
+      "targetId": "erdos-152",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets"
+    },
+    {
+      "targetId": "erdos-153",
+      "relationship": "related",
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, sidon-sets"
+    }
+  ],
+  "sorries": 0
+}

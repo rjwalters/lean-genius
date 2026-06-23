@@ -1,0 +1,321 @@
+[
+  {
+    "id": "ann-oq03-01-header",
+    "proofId": "greens-theorem-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "OQ-03: From Dummy Placeholder to Concrete Simply-Connected Region",
+    "content": "The base GreensTheorem.lean had only `structure GreenRegion where dummy : Unit` — no mathematical content — and `axiom greens_theorem_general : True` (trivially satisfied by anything). OQ-03 asked whether we can replace these placeholders with a concrete structure for a simply-connected planar region and a non-trivial Green's theorem. The answer is YES using Type I (vertically simple) regions, the standard approach from Apostol's Mathematical Analysis §17.4.",
+    "mathContext": "**Type I region**: $D = \\{(x,y) \\mid a \\leq x \\leq b, \\; f(x) \\leq y \\leq g(x)\\}$ where $f, g$ are continuous with $f(x) \\leq g(x)$. **Green's theorem**: $\\oint_{\\partial D}(P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)dA$. For TypeI regions, the double integral is the iterated integral $\\int_a^b \\int_{f(x)}^{g(x)} (\\cdot)\\,dy\\,dx$.",
+    "summary": "OQ-03 replaces dummy GreenRegion with concrete TypeI (vertically simple) regions for Green's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "TypeIRegion",
+      "GreenRegion",
+      "vertically simple region",
+      "simply-connected domain"
+    ],
+    "prerequisites": [
+      "intervalIntegral",
+      "Set.Icc",
+      "HasDerivAt"
+    ]
+  },
+  {
+    "id": "ann-oq03-02-structure",
+    "proofId": "greens-theorem-oq-03",
+    "range": {
+      "startLine": 56,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "TypeIRegion: Replacing dummy : Unit with Real Geometric Data",
+    "content": "The TypeIRegion structure has 6 fields: bounds a, b : ℝ; curves f, g : ℝ → ℝ; strict inequality hab : a < b; ordering constraint hfg : ∀ x ∈ Set.Icc a b, f x ≤ g x. Note: ContinuousOn is NOT in the structure fields — this avoids a typeclass resolution loop in Lean 4 where `ContinuousOn f (Set.Icc a b)` causes a stuck instance problem in structure definitions. Continuity is passed as a parameter to theorems that need it.\n\nThe typeI_mem_iff theorem gives the explicit iff characterization. typeI_lower_mem and typeI_upper_mem show that the boundary curves lie in the region — proved via the hfg ordering constraint and le_refl. typeI_nonempty uses the left endpoint (a, f(a)) as a witness.",
+    "mathContext": "**Structure fields**: `a b : ℝ` (base interval), `f g : ℝ → ℝ` (boundary curves), `hab : a < b` (nondegenerate), `hfg : ∀ x ∈ Icc a b, f x ≤ g x` (ordering). **Membership**: $(x,y) \\in D \\iff a \\leq x \\leq b \\text{ and } f(x) \\leq y \\leq g(x)$. **Boundary curves**: $(x, f(x))$ and $(x, g(x))$ lie in $D$ for all $x \\in [a,b]$.",
+    "summary": "TypeIRegion structure with bounds a < b, curves f ≤ g, membership iff, boundary inclusion, and nonemptiness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "TypeIRegion",
+      "Set.Icc",
+      "Set.Nonempty",
+      "le_refl"
+    ],
+    "prerequisites": [
+      "Lean 4 structure syntax",
+      "Set.mem_setOf_eq"
+    ]
+  },
+  {
+    "id": "ann-oq03-03-rectangles",
+    "proofId": "greens-theorem-oq-03",
+    "range": {
+      "startLine": 91,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "Rectangles as Special TypeI Regions",
+    "content": "The rectToTypeI constructor creates the rectangle [a,b]×[c,d] as a TypeI region by taking constant boundary curves f = const c and g = const d. The key theorem rectTypeI_set_eq proves the set equality (rectToTypeI).toSet = Set.Icc a b ×ˢ Set.Icc c d using ext + simp + constructor/rintro pattern.\n\nThis connects OQ03 back to OQ01: the rectangle case in GreensTheoremOQ01.lean is now recognized as a special TypeI region. The unit square [0,1]² is the canonical example, proved to contain its center (1/2, 1/2) by norm_num.",
+    "mathContext": "**Rectangle as TypeI**: $f \\equiv c$, $g \\equiv d$ with $c \\leq d$. Then $D = [a,b] \\times [c,d]$. **Set equality**: `toSet = Icc a b ×ˢ Icc c d` proved by `ext ⟨x, y⟩` + membership unfolding. **Unit square**: `rectToTypeI 0 1 0 1 (by norm_num) (by norm_num)`.",
+    "summary": "Rectangle [a,b]×[c,d] as TypeI with constant curves; set equality and unit square example.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rectToTypeI",
+      "unitSquareTypeI",
+      "Set.prod",
+      "Set.Icc"
+    ],
+    "prerequisites": [
+      "Set.mem_prod",
+      "Set.mem_Icc",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-oq03-04-area",
+    "proofId": "greens-theorem-oq-03",
+    "range": {
+      "startLine": 123,
+      "endLine": 157
+    },
+    "type": "definition",
+    "title": "Area Formula via intervalIntegral: Area(D) = ∫_a^b (g(x) - f(x)) dx",
+    "content": "TypeIRegion.area is a noncomputable def using Mathlib's intervalIntegral. The area nonnegativity proof (typeI_area_nonneg) uses intervalIntegral.integral_nonneg with R.hab.le for the interval ordering, then linarith from hfg to establish g(x) - f(x) ≥ 0 pointwise.\n\nFor rectangles, typeI_rect_area proves (rectToTypeI).area = (b-a)*(d-c) by using show to reduce to a constant integral, then rw [integral_const, smul_eq_mul] — the rewrite closes the goal via rfl (no ring needed). The unit square area = 1 follows by unfold + rw + norm_num.",
+    "mathContext": "**Area formula**: $\\text{Area}(D) = \\int_a^b (g(x) - f(x))\\,dx$. **Nonnegativity**: $g(x) - f(x) \\geq 0$ on $[a,b]$ from `hfg`, so `integral_nonneg` applies. **Rectangle**: $\\int_a^b (d-c)\\,dx = (b-a)(d-c)$ via `integral_const`. **Key Lean fact**: `rw [integral_const, smul_eq_mul]` closes `(b-a)*(d-c) = (b-a)*(d-c)` automatically via `rfl` — no `ring` needed after `smul_eq_mul`.",
+    "summary": "Area = ∫_a^b (g-f) dx; proved nonneg via integral_nonneg; rectangle area = (b-a)(d-c).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "intervalIntegral.integral_nonneg",
+      "intervalIntegral.integral_const",
+      "smul_eq_mul",
+      "TypeIRegion.area"
+    ],
+    "prerequisites": [
+      "intervalIntegral",
+      "Set.Icc membership in integral_nonneg",
+      "noncomputable def"
+    ]
+  },
+  {
+    "id": "ann-oq03-05-iterated-integral",
+    "proofId": "greens-theorem-oq-03",
+    "range": {
+      "startLine": 158,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Iterated Integral: The Double Integral as Outer-x, Inner-y Integration",
+    "content": "TypeIRegion.iteratedIntegral F = ∫ x in a..b, ∫ y in f(x)..g(x), F(x,y) is the standard double integral over a TypeI region. The integration order is outer-x inner-y, matching the TypeI region shape.\n\nNote: this is OPPOSITE to GreensTheoremOQ01's rectDoubleIntegral which is outer-y inner-x. The two are equal by Fubini (for rectangles), but the Fubini swap requires measurability/integrability hypotheses and is NOT proved here.\n\ntypeI_area_is_iterated_one proves Area = iteratedIntegral(const 1) using congr 1 + ext + integral_const + smul_eq_mul + mul_one. This is the key geometric fact connecting area to double integration.",
+    "mathContext": "**Iterated integral**: $\\iint_D F\\,dA = \\int_a^b \\left(\\int_{f(x)}^{g(x)} F(x,y)\\,dy\\right)dx$. **Area as integral of 1**: $\\text{Area}(D) = \\iint_D 1\\,dA = \\int_a^b (g(x)-f(x))\\,dx$. **Order matters**: TypeI is $(dx\\,dy)$ order (outer $x$, inner $y$); OQ01's `rectDoubleIntegral` is $(dy\\,dx)$ order — they're equal by Fubini but Fubini is not proved here.",
+    "summary": "Double integral as iterated integral ∫_a^b ∫_{f(x)}^{g(x)} F dy dx; area equals iterated integral of 1.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "TypeIRegion.iteratedIntegral",
+      "typeI_area_is_iterated_one",
+      "Fubini theorem",
+      "intervalIntegral"
+    ],
+    "prerequisites": [
+      "congr 1",
+      "ext",
+      "intervalIntegral.integral_const",
+      "mul_one"
+    ]
+  },
+  {
+    "id": "ann-oq03-06-greens-theorem",
+    "proofId": "greens-theorem-oq-03",
+    "range": {
+      "startLine": 181,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Green's Theorem Axiom: Concrete Non-Trivial Formulation",
+    "content": "greens_theorem_typeI is an axiom (not True!) stating the concrete Green's theorem formula for TypeI regions. Unlike the base file's `axiom greens_theorem_general : True`, this axiom has substantive mathematical content: it equates the iterated integral of (∂Q/∂x - ∂P/∂y) to a specific combination of four boundary integrals involving P, Q along the curves f(x), g(x) and the vertical sides.\n\nThe boundary formula uses deriv R.g x and deriv R.f x — the chain rule terms from parametrizing the boundary curves. The smoothness hypotheses hP_smooth and hQ_smooth use HasDerivAt (pointwise differentiability), not ContinuousOn — this is intentional for generality.\n\nA full proof sketch: ∬ ∂P/∂y dA = inner FTC: ∫_a^b [P(x,g(x)) - P(x,f(x))] dx. For ∬ ∂Q/∂x dA, apply FTC to outer integral + Fubini. The boundary decomposes into lower curve (with -P), upper curve (with P and Q), right side, left side.",
+    "mathContext": "**Green's theorem**: $\\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right)dA = \\oint_{\\partial D} P\\,dx + Q\\,dy$. **For TypeI boundary**: lower curve $(x, f(x))$ contributes $\\int_a^b Q(x,f(x)) f'(x)\\,dx + \\int_a^b P(x,f(x))\\,dx$; upper curve $(x,g(x))$ contributes with opposite sign; vertical sides $x=a$ (downward) and $x=b$ (upward) contribute $\\int_{f(a)}^{g(a)}$ and $\\int_{f(b)}^{g(b)}$ terms. **Key**: `deriv R.f x` and `deriv R.g x` appear in boundary Q-integrals from chain rule.",
+    "summary": "Green's theorem axiom for TypeI regions with concrete boundary formula using deriv f and deriv g.",
+    "significance": "key",
+    "relatedConcepts": [
+      "greens_theorem_typeI",
+      "HasDerivAt",
+      "deriv",
+      "iteratedIntegral",
+      "boundary decomposition"
+    ],
+    "prerequisites": [
+      "Green's theorem for Type I regions",
+      "FTC for variable limits",
+      "chain rule for parametric curves",
+      "Apostol Mathematical Analysis §17.4"
+    ]
+  },
+  {
+    "id": "ann-oq03-07-inner-ftc-P",
+    "proofId": "greens-theorem-oq-03",
+    "range": {
+      "startLine": 233,
+      "endLine": 249
+    },
+    "type": "concept",
+    "title": "Inner FTC for TypeI: The P Contribution (Proved, 0 Axioms)",
+    "content": "`typeI_inner_ftc_P` is the computational heart of the standard Green's theorem proof. It proves $\\int_a^b \\int_{f(x)}^{g(x)} \\partial P/\\partial y\\,dy\\,dx = \\int_a^b [P(x,g(x)) - P(x,f(x))]\\,dx$ in just 3 lines: unfold the iterated integral definition, then apply `integral_congr` to reduce to showing equality of inner integrals, where `integral_eq_sub_of_hasDerivAt` (the FTC for interval integrals) closes each one. This requires `HasDerivAt` for $P$ in the $y$-variable and `IntervalIntegrable` for $\\partial P/\\partial y$.",
+    "mathContext": "$\\int_a^b \\left[\\int_{f(x)}^{g(x)} \\frac{\\partial P}{\\partial y}(x,y)\\,dy\\right]dx = \\int_a^b [P(x,g(x)) - P(x,f(x))]\\,dx$. The inner integral is evaluated by the FTC: $\\int_{f(x)}^{g(x)} \\frac{\\partial P}{\\partial y}\\,dy = P(x,g(x)) - P(x,f(x))$. Then `integral_congr` lifts this pointwise equality to the outer integral.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fundamental theorem of calculus",
+      "integral_eq_sub_of_hasDerivAt",
+      "integral_congr",
+      "iterated integral"
+    ],
+    "prerequisites": [
+      "HasDerivAt",
+      "IntervalIntegrable",
+      "intervalIntegral"
+    ]
+  },
+  {
+    "id": "ann-oq03-08-P-boundary",
+    "proofId": "greens-theorem-oq-03",
+    "range": {
+      "startLine": 251,
+      "endLine": 266
+    },
+    "type": "insight",
+    "title": "P Boundary Sign Flip: Orientation Matters",
+    "content": "`typeI_P_boundary` proves $\\int_a^b [P(x,f(x)) - P(x,g(x))]\\,dx = -\\iint_D \\partial P/\\partial y\\,dA$. The sign flip comes from boundary orientation: in Green's theorem, the lower curve $f(x)$ is traversed left-to-right (contributing $+P$) but the upper curve $g(x)$ right-to-left (contributing $-P$). The proof rewrites $P(x,f(x)) - P(x,g(x)) = -(P(x,g(x)) - P(x,f(x)))$ via `ring`, then applies `intervalIntegral.integral_neg` to pull out the minus sign.",
+    "mathContext": "The boundary orientation: $\\partial D$ is traversed counterclockwise. Lower curve: left-to-right ($+P\\,dx$). Upper curve: right-to-left ($-P\\,dx$). Net P contribution: $\\int_a^b P(x,f(x))\\,dx - \\int_a^b P(x,g(x))\\,dx = -\\iint_D \\frac{\\partial P}{\\partial y}\\,dA$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "boundary orientation",
+      "counterclockwise convention",
+      "integral_neg",
+      "sign convention"
+    ],
+    "prerequisites": [
+      "typeI_inner_ftc_P",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-oq03-09-typeII",
+    "proofId": "greens-theorem-oq-03",
+    "range": {
+      "startLine": 291,
+      "endLine": 342
+    },
+    "type": "definition",
+    "title": "TypeIIRegion: The Dual Structure for the Q Contribution",
+    "content": "`TypeIIRegion` is the dual of `TypeIRegion` with roles of $x$ and $y$ swapped: $D = \\{(x,y) \\mid c \\leq y \\leq d,\\, h(y) \\leq x \\leq k(y)\\}$. Fields: bounds $c < d$, curves $h, k$ with $h(y) \\leq k(y)$ on $[c,d]$. This structure is needed for the Q contribution to Green's theorem, where the FTC is applied in the $x$-direction with $y$ as the outer variable. The section proves membership iff, nonemptiness (witness $(h(c), c)$), iterated integral ($\\int_c^d \\int_{h(y)}^{k(y)} F\\,dx\\,dy$), area ($\\int_c^d (k(y)-h(y))\\,dy$), and area nonnegativity. The `rectToTypeII` constructor completes the duality for rectangles.",
+    "mathContext": "TypeII region: $D = \\{(x,y) \\mid c \\leq y \\leq d,\\, h(y) \\leq x \\leq k(y)\\}$. Iterated integral: $\\iint_D F\\,dA = \\int_c^d \\int_{h(y)}^{k(y)} F(x,y)\\,dx\\,dy$. For rectangles: $h \\equiv a$, $k \\equiv b$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "TypeIIRegion",
+      "horizontally simple",
+      "Fubini's theorem",
+      "dual structure"
+    ],
+    "prerequisites": [
+      "TypeIRegion",
+      "intervalIntegral"
+    ]
+  },
+  {
+    "id": "ann-oq03-10-inner-ftc-Q",
+    "proofId": "greens-theorem-oq-03",
+    "range": {
+      "startLine": 344,
+      "endLine": 377
+    },
+    "type": "concept",
+    "title": "Inner FTC for TypeII: The Q Contribution (Proved, 0 Axioms)",
+    "content": "`typeII_inner_ftc_Q` proves $\\int_c^d \\int_{h(y)}^{k(y)} \\partial Q/\\partial x\\,dx\\,dy = \\int_c^d [Q(k(y),y) - Q(h(y),y)]\\,dy$, completely symmetric to the TypeI P result. The proof is identical: unfold `iteratedIntegral`, apply `integral_congr`, close each inner integral with `integral_eq_sub_of_hasDerivAt`. The companion `typeII_Q_boundary` shows no sign flip is needed for Q (unlike P), because the boundary orientation contributes $+Q\\,dy$ on the right curve and $-Q\\,dy$ on the left curve, matching the FTC direction.",
+    "mathContext": "$\\int_c^d \\left[\\int_{h(y)}^{k(y)} \\frac{\\partial Q}{\\partial x}(x,y)\\,dx\\right]dy = \\int_c^d [Q(k(y),y) - Q(h(y),y)]\\,dy$. No sign flip: right boundary contributes $+Q$, left boundary $-Q$, matching the natural FTC direction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "typeII_inner_ftc_Q",
+      "Q boundary",
+      "symmetric proof",
+      "integral_congr"
+    ],
+    "prerequisites": [
+      "TypeIIRegion.iteratedIntegral",
+      "integral_eq_sub_of_hasDerivAt"
+    ]
+  },
+  {
+    "id": "ann-oq03-11-disk",
+    "proofId": "greens-theorem-oq-03",
+    "range": {
+      "startLine": 387,
+      "endLine": 425
+    },
+    "type": "insight",
+    "title": "Disk Membership: x²+y²≤r² via Square Root Arithmetic",
+    "content": "`diskTypeI` constructs the closed disk as a TypeI region with lower boundary $y = -\\sqrt{r^2-x^2}$ and upper boundary $y = \\sqrt{r^2-x^2}$. The main result `disk_mem_iff` proves the equivalence $(x,y) \\in D \\iff x^2+y^2 \\leq r^2$. The forward direction uses `sq_le_sq'` to convert the bounds $-\\sqrt{r^2-x^2} \\leq y \\leq \\sqrt{r^2-x^2}$ into $y^2 \\leq r^2-x^2$, then `Real.sq_sqrt` to remove the square root. The reverse direction reconstructs the bounds from $|y| \\leq \\sqrt{r^2-x^2}$ using `Real.sqrt_le_sqrt` and `abs_le`. The $x$-bounds $-r \\leq x \\leq r$ are recovered from $x^2 \\leq r^2$ via `nlinarith` with `sq_nonneg (x \\pm r)`.",
+    "mathContext": "Disk as TypeI: $f(x) = -\\sqrt{r^2-x^2}$, $g(x) = \\sqrt{r^2-x^2}$, base $[-r, r]$. Membership: $-\\sqrt{r^2-x^2} \\leq y \\leq \\sqrt{r^2-x^2} \\iff y^2 \\leq r^2-x^2 \\iff x^2+y^2 \\leq r^2$. Key lemmas: `sq_le_sq'`, `Real.sq_sqrt`, `Real.sqrt_le_sqrt`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "disk",
+      "TypeI region",
+      "sq_le_sq'",
+      "abs_le",
+      "Real.sqrt_le_sqrt"
+    ],
+    "prerequisites": [
+      "Real.sqrt_nonneg",
+      "Real.sq_sqrt",
+      "nlinarith"
+    ]
+  },
+  {
+    "id": "ann-oq03-12-semicircle-area",
+    "proofId": "greens-theorem-oq-03",
+    "range": {
+      "startLine": 460,
+      "endLine": 477
+    },
+    "type": "concept",
+    "title": "Semicircle Area from Disk: integral_smul Relates 2√(r²-x²) to √(r²-x²)",
+    "content": "`disk_area_eq_twice_semicircle` proves that the disk area equals twice the upper semicircle area. The disk integrand is $\\sqrt{r^2-x^2} - (-\\sqrt{r^2-x^2}) = 2\\sqrt{r^2-x^2}$, while the semicircle integrand is $\\sqrt{r^2-x^2} - 0 = \\sqrt{r^2-x^2}$. The proof uses `intervalIntegral.integral_smul` to factor out the 2, then `smul_eq_mul` to convert scalar multiplication to ordinary multiplication. From the axiom `disk_area_eq_pi` ($\\text{Area}_{\\text{disk}} = \\pi r^2$), `upper_semicircle_area` derives $\\text{Area}_{\\text{semi}} = \\pi r^2/2$ by `linarith`.",
+    "mathContext": "$\\int_{-r}^r 2\\sqrt{r^2-x^2}\\,dx = 2 \\int_{-r}^r \\sqrt{r^2-x^2}\\,dx$, so $\\text{Area}_{\\text{disk}} = 2 \\cdot \\text{Area}_{\\text{semicircle}}$. With $\\text{Area}_{\\text{disk}} = \\pi r^2$: $\\text{Area}_{\\text{semicircle}} = \\pi r^2/2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "integral_smul",
+      "smul_eq_mul",
+      "disk area",
+      "semicircle area",
+      "pi"
+    ],
+    "prerequisites": [
+      "disk_area_eq_pi",
+      "diskTypeI",
+      "upperSemicircleTypeI"
+    ]
+  },
+  {
+    "id": "ann-oq03-13-rectangle-greens",
+    "proofId": "greens-theorem-oq-03",
+    "range": {
+      "startLine": 496,
+      "endLine": 555
+    },
+    "type": "insight",
+    "title": "Full Green's Theorem for Rectangles: Both Halves Combined",
+    "content": "The culmination: `rectTypeI_set_eq_rectTypeII_set` proves that rectangles viewed as TypeI and TypeII have identical point sets (via `ext` + member reordering). `rect_P_contribution` and `rect_Q_contribution` provide the two halves of Green's theorem for rectangles, each proved from the respective inner FTC without axioms. Together: $\\iint_{[a,b]\\times[c,d]} (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA = \\int_c^d [Q(b,y)-Q(a,y)]\\,dy - \\int_a^b [P(x,d)-P(x,c)]\\,dx$. This is the full Green's theorem for the most basic simply-connected domain, proved entirely from the FTC.",
+    "mathContext": "For $R = [a,b]\\times[c,d]$: $\\iint_R \\frac{\\partial Q}{\\partial x}\\,dA = \\int_c^d [Q(b,y)-Q(a,y)]\\,dy$ (TypeII FTC) and $\\iint_R \\frac{\\partial P}{\\partial y}\\,dA = \\int_a^b [P(x,d)-P(x,c)]\\,dx$ (TypeI FTC). Subtract: full Green's theorem for rectangles.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Green's theorem for rectangles",
+      "TypeI-TypeII duality",
+      "Fubini compatibility",
+      "fundamental theorem of calculus"
+    ],
+    "prerequisites": [
+      "typeI_inner_ftc_P",
+      "typeII_inner_ftc_Q",
+      "rectTypeI_set_eq_rectTypeII_set"
+    ]
+  }
+]

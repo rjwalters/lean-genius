@@ -1,0 +1,129 @@
+{
+  "slug": "divisibility-rules-oq-02",
+  "title": "[Problem Title]",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-05T23:12:43-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Fully verified (0 sorries, 0 axioms). General alternating block divisibility rule proved and instantiated for 7, 13, 11, 101.",
+    "builtItems": [
+      "DivisibilityRulesOQ02.lean:54 — dvd_iff_dvd_altDigitSum (general rule)",
+      "DivisibilityRulesOQ02.lean:36 — seven_modEq_altDigitSum_1000",
+      "DivisibilityRulesOQ02.lean:73 — seven_dvd_iff_altDigitSum",
+      "DivisibilityRulesOQ02.lean:84 — thirteen_dvd_iff_altDigitSum",
+      "DivisibilityRulesOQ02.lean:118 — eleven_dvd_iff_altDigitSum",
+      "DivisibilityRulesOQ02.lean:123 — hundredone_dvd_iff_altDigitSum"
+    ],
+    "insights": [
+      "General theorem dvd_iff_dvd_altDigitSum: for b ≡ -1 (mod d), d | n ↔ d | altDigitSum b n",
+      "1000 ≡ -1 (mod 7) and (mod 13) because 7 × 11 × 13 = 1001 = 1000 + 1",
+      "All classical alternating-sum divisibility rules are one-line instances of a single algebraic theorem",
+      "Key congruences proved by native_decide; divisibility equivalences follow from modEq linearity"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: divisibility-rules-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "divisibility-rules",
+    "divisibility-rules-oq-01",
+    "divisibility-rules-oq-01-oq-01",
+    "divisibility-rules-oq-01-oq-01-oq-01",
+    "divisibility-rules-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-06T06:37:41.264Z",
+  "lastUpdate": "2026-04-12T21:07:23.997Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/DivisibilityRules.lean",
+      "filename": "DivisibilityRules.lean",
+      "lineCount": 393,
+      "theoremCount": 38,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityRules.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityRulesOQ01.lean",
+      "filename": "DivisibilityRulesOQ01.lean",
+      "lineCount": 413,
+      "theoremCount": 41,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityRulesOQ01.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityRulesOQ01OQ01.lean",
+      "filename": "DivisibilityRulesOQ01OQ01.lean",
+      "lineCount": 109,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityRulesOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityRulesOQ01OQ01OQ01.lean",
+      "filename": "DivisibilityRulesOQ01OQ01OQ01.lean",
+      "lineCount": 168,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityRulesOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityRulesOQ02.lean",
+      "filename": "DivisibilityRulesOQ02.lean",
+      "lineCount": 143,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityRulesOQ02.lean"
+    }
+  ]
+}

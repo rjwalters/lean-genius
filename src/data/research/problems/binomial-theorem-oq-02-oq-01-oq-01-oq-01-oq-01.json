@@ -1,0 +1,423 @@
+{
+  "slug": "binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01",
+  "title": "Discharge multinomialPMF_sum_eq_one by combining the gallery's piAntidiag bridge with Mathlib's multinomial theorem",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall \\alpha\\ [\\mathrm{DecidableEq}\\,\\alpha]\\;\\forall (s : \\mathrm{Finset}\\,\\alpha)\\;\\forall (p : \\alpha \\to \\mathbb{R}_{\\geq 0}^{\\infty})\\;\\forall (n : \\mathbb{N}),\\;\\bigl(\\textstyle\\sum_{i \\in s} p_i = 1\\bigr) \\;\\Longrightarrow\\;\\textstyle\\sum_{k : \\mathrm{Composition}\\,\\alpha\\,s\\,n} \\binom{n}{k}\\,\\textstyle\\prod_{i \\in s} p_i^{k_i} = 1.",
+    "plain": "The parent file BinomialTheoremOQ02OQ01OQ01.lean declares multinomialPMF_sum_eq_one (the multinomial PMF normalization) as a sorry on which the full PMF construction and four downstream sorries depend. The sibling child file BinomialTheoremOQ02OQ01OQ01OQ01.lean already proves the structural bridge sum_composition_eq_piAntidiag_sum (sum over the Composition Fintype equals sum over Finset.piAntidiag), and Mathlib v4.26.0 provides Finset.sum_pow_eq_sum_piAntidiag (the multinomial theorem in any CommSemiring). The question is whether composing those two lemmas, plus the hypothesis (sum p = 1) and one_pow, yields the normalization in ENNReal. The S1 audit answers YES, and lays out a ~50-60 line proof skeleton.",
+    "whyMatters": [
+      "Unblocks four downstream sorries in BinomialTheoremOQ02OQ01OQ01.lean (multinomialPMF_support, multinomial_marginal_binomial, multinomial_mean, multinomial_covariance) — all of which require multinomialPMF to be a well-formed PMF.",
+      "Validates the parent's design philosophy: the parent's §Feasibility Analysis explicitly names Finset.sum_pow_eq_sum_piAntidiag as the Mathlib hook for normalization; this slug provides a 0-sorries, 0-axioms machine verification of that claim.",
+      "Demonstrates the reusable composition-pattern bridge: pairing a gallery Composition Fintype with Mathlib's piAntidiag via a structural Fintype.ofEquiv. The same pattern transfers to any combinatorial PMF (Dirichlet-multinomial, hypergeometric, Pólya urn), and this slug is the smallest end-to-end exhibit."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Finset.sum_pow_eq_sum_piAntidiag (Mathlib v4.26.0, pin 2df2f015, Mathlib/Data/Nat/Choose/Multinomial.lean line 301-304): for any CommSemiring R, (∑ i ∈ s, f i)^n = ∑ k ∈ s.piAntidiag n, multinomial s k * ∏ i ∈ s, f i ^ k i.",
+      "CompositionFintype.sum_composition_eq_piAntidiag_sum (gallery, BinomialTheoremOQ02OQ01OQ01OQ01.lean line 145-153): for any AddCommMonoid M, ∑ c : Composition α s n, f c.counts = ∑ k ∈ s.piAntidiag n, f k.",
+      "BinomialTheoremOQ02OQ01OQ01.Composition Fintype instance (parent file lines 58-69): the local Composition type has a Fintype structure via the piAntidiag bridge inlined.",
+      "ENNReal carries a CommSemiring instance (Mathlib.Topology.Instances.ENNReal); 1^n = 1 for n : ℕ via one_pow."
+    ],
+    "open": [
+      "Discharge BinomialTheoremOQ02OQ01OQ01.multinomialPMF_sum_eq_one (parent file lines 98-102) via the chain: Fintype.sum_equiv compositionTypeEquiv → CompositionFintype.sum_composition_eq_piAntidiag_sum → Finset.sum_pow_eq_sum_piAntidiag (reversed) → rw [hp] → rw [one_pow]."
+    ],
+    "goal": "Produce a Lean 4 file proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean (~50-60 lines, 0 axioms, 0 sorries) containing (i) a 10-line compositionTypeEquiv bridge between BinomialTheoremOQ02OQ01OQ01.Composition and CompositionFintype.Composition, and (ii) a theorem multinomialPMF_sum_eq_one_proved that closes the parent's sorry by sum_equiv + the two existing lemmas. Add an import line to proofs/Proofs.lean in alphabetical position. Target: build verified inside Docker; ≤ 60 lines."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-12T12:05:00.000Z",
+    "iteration": 5,
+    "focus": "S5 STATE-SYNC (researcher-4, 2026-05-16) — doc-only catchup absorbing residual drift S4 (2026-05-14) did not explicitly scope. State.md head and JSON currentState.phase were already aligned at COMPLETED after S4. S5 catches up (a) currentState.iteration 3→5, (b) knowledge.nextSteps (dropped 5 already-discharged S2/S3/S4 items), (c) bootstraps the sessions/ directory, and (d) packages leanFiles[] drift handoff for mechanic (informational only — not edited here): BinomialTheoremOQ02OQ01OQ01.lean is JSON lineCount=265 sorryCount=5 vs actual 292/4 (S3 closed multinomialPMF_sum_eq_one line-104 sorry); BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean is missing entirely from leanFiles[] despite being the leaf file this slug created in S2 ACT (123 LOC, 1 theorem, 1 def, 0 sorries, 0 axioms on origin/main). The slug remains COMPLETED — axiomatized-final per problem.md and knowledge.md §10; the four parent-file sorries are explicit non-goals for sibling slugs.",
+    "blockers": [],
+    "nextAction": "None for research — slug is COMPLETED — axiomatized-final. For mechanic: leanFiles[i] for parent BinomialTheoremOQ02OQ01OQ01.lean in this slug's JSON is stale (lineCount 265→292, sorryCount 5→4); the leaf file BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean (123 LOC, 1 thm, 1 def, 0/0) is missing from leanFiles[] entirely. Sibling slugs would carry the four out-of-scope parent-file sorries (multinomialPMF_support, multinomial_marginal_binomial, multinomial_mean, multinomial_covariance) if/when those are added to the pool.",
+    "attemptCounts": {
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S3 back-port (researcher-6, 2026-05-12): closed the parent's multinomialPMF_sum_eq_one sorry directly by adding `import Proofs.BinomialTheoremOQ02OQ01OQ01OQ01` to the parent and inlining the same 4-step rw chain S2 used (anonymous record-wise Equiv → Fintype.sum_equiv → sum_composition_eq_piAntidiag_sum → ← sum_pow_eq_sum_piAntidiag → hp + one_pow). The state.md S2 next-action's `exact BinomialTheoremOQ02OQ01OQ01.multinomialPMF_sum_eq_one_proved s p n hp` (one-line wrapper) is not possible because the new sibling file (where _proved lives) imports the parent — so the back-port is a duplicate inline proof body. The new file remains useful as a publicly-named witness. // S2 ACT-A (researcher-11, 2026-05-12): the deferred multinomialPMF_sum_eq_one was proved sorry-free in a new sibling file BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean (~110 lines). The proof closes the route documented in S1: namespace bridge via compositionTypeEquiv, Fintype.sum_equiv, CompositionFintype.sum_composition_eq_piAntidiag_sum, ← Finset.sum_pow_eq_sum_piAntidiag, hp + one_pow. Added the import to proofs/Proofs.lean. // S1 OBSERVE (2026-05-12, researcher-10): scaffolded the four artifact files for a previously empty (knowledge-score 0) tier-B slug. Mathlib v4.26.0 API audit at pin 2df2f015 confirms Finset.sum_pow_eq_sum_piAntidiag exists at Mathlib/Data/Nat/Choose/Multinomial.lean line 301-304, requires [CommSemiring R], and is stable across recent Mathlib releases.",
+    "builtItems": [
+      "**(S3 NEW)** proofs/Proofs/BinomialTheoremOQ02OQ01OQ01.lean — closed line-104 sorry on multinomialPMF_sum_eq_one via inline anonymous Equiv plus the same 4-step rw chain; added top-level `import Proofs.BinomialTheoremOQ02OQ01OQ01OQ01` (no cycle: sibling does not import parent); ~24 lines net.",
+      "**(S2 NEW)** proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean — namespace-bridge file with compositionTypeEquiv (record-wise identity Equiv between parent and sibling Composition types) and multinomialPMF_sum_eq_one_proved (the proven normalization theorem); ~110 lines, sorry-free, build verified (BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean)",
+      "**(S2 NEW)** proofs/Proofs.lean — added import in alphabetical position between OQ01OQ01OQ01.lean and OQ01OQ01OQ02.lean",
+      "problem.md (formal statement + Lean target signature + non-claims)",
+      "knowledge.md (Mathlib API audit + parent/sibling-child audit + namespace-bridge analysis + candidate proof skeleton)",
+      "state.md (S1 phase + S2 plan + risks)",
+      "src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01.json (enriched from imagine stub)"
+    ],
+    "insights": [
+      "Finset.sum_pow_eq_sum_piAntidiag is the canonical Mathlib hook for multinomial-theorem-in-CommSemiring; the gallery's piAntidiag-based Composition Fintype is precisely the structure needed to apply it.",
+      "ENNReal is a CommSemiring (via Mathlib.Topology.Instances.ENNReal), so the multinomial theorem applies without any wrapper or coercion lemma beyond Nat.cast.",
+      "The two structurally-identical Composition types in the parent (BinomialTheoremOQ02OQ01OQ01.Composition) and the child (CompositionFintype.Composition) require a 10-line bridge equivalence. This is the only nontrivial S2 subtask; the actual normalization proof is a 4-step rw chain.",
+      "The full proof skeleton fits in ~50-60 lines, suggesting S2 ACT-A is single-session sized."
+    ],
+    "mathlibGaps": [
+      "No Mathlib PMF.multinomial constructor exists — this slug discharges only the gallery-internal sorry, not an upstream contribution. A separate (sub-)slug would be needed to package multinomialPMF as a candidate Mathlib PR; that is explicitly out of scope here."
+    ],
+    "nextSteps": [
+      "Slug COMPLETED — axiomatized-final. No further research steps. Mechanic handoff: refresh leanFiles[i] for BinomialTheoremOQ02OQ01OQ01.lean (stale: lineCount 265→292, sorryCount 5→4 post-S3 back-port) and add a leanFiles[] entry for BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean (missing; created by S2 ACT, currently 123 LOC, 1 theorem, 1 def, 0 sorries, 0 axioms on origin/main). See sessions/2026-05-16-s5-state-sync-completed-final.md §3 for ready-to-paste mechanic payload."
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "multinomial",
+    "fintype",
+    "piAntidiag",
+    "composition",
+    "probability",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "binomial-theorem",
+    "binomial-theorem-oq-01",
+    "binomial-theorem-oq-01-oq-01",
+    "binomial-theorem-oq-02",
+    "binomial-theorem-oq-02-oq-01",
+    "binomial-theorem-oq-02-oq-01-oq-01",
+    "binomial-theorem-oq-02-oq-01-oq-01-oq-01",
+    "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "binomial-theorem-oq-02-oq-01-oq-02",
+    "binomial-theorem-oq-02-oq-01-oq-03",
+    "binomial-theorem-oq-02-oq-02",
+    "binomial-theorem-oq-02-oq-02-oq-01",
+    "binomial-theorem-oq-02-oq-03",
+    "binomial-theorem-oq-02-oq-04",
+    "binomial-theorem-oq-03",
+    "binomial-theorem-oq-03-oq-02",
+    "binomial-theorem-oq-03-oq-02-oq-03",
+    "binomial-theorem-oq-04",
+    "binomial-theorem-oq-04-oq-01",
+    "binomial-theorem-oq-04-oq-02",
+    "binomial-theorem-oq-04-oq-02-oq-01",
+    "binomial-theorem-oq-04-oq-03",
+    "binomial-theorem-oq-04-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://github.com/leanprover-community/mathlib4/blob/2df2f0150c275ad53cb3c90f7c98ec15a56a1a67/Mathlib/Data/Nat/Choose/Multinomial.lean#L301-L304",
+      "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01.lean#L98-L102",
+      "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01.lean#L145-L153"
+    ],
+    "mathlib": [
+      "Finset.sum_pow_eq_sum_piAntidiag (Mathlib/Data/Nat/Choose/Multinomial.lean, line 301-304): multinomial theorem for CommSemiring.",
+      "Finset.sum_pow_eq_sum_piAntidiag_of_commute (same file, line 220): commutative-pairwise variant.",
+      "Nat.multinomial (same file, line 43): the multinomial coefficient as a ℕ.",
+      "Finset.mem_piAntidiag: membership characterization for piAntidiag (sum=n ∧ support⊆s).",
+      "Mathlib.Topology.Instances.ENNReal: CommSemiring instance for ℝ≥0∞.",
+      "Mathlib.Probability.ProbabilityMassFunction.Basic: PMF type and tsum normalization.",
+      "Fintype.sum_equiv (Mathlib.Data.Fintype.BigOperators): sum-transfer along an equivalence.",
+      "one_pow (Mathlib.Algebra.Group.Basic): 1^n = 1."
+    ]
+  },
+  "started": "2026-05-12T08:02:11.448Z",
+  "lastUpdate": "2026-05-16T14:30:00.000Z",
+  "significance": 5,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BinomialTheorem.lean",
+      "filename": "BinomialTheorem.lean",
+      "lineCount": 176,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheorem.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ01.lean",
+      "filename": "BinomialTheoremOQ01.lean",
+      "lineCount": 264,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ01Aristotle.lean",
+      "filename": "BinomialTheoremOQ01Aristotle.lean",
+      "lineCount": 112,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ01OQ01.lean",
+      "filename": "BinomialTheoremOQ01OQ01.lean",
+      "lineCount": 221,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02.lean",
+      "filename": "BinomialTheoremOQ02.lean",
+      "lineCount": 281,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01.lean",
+      "filename": "BinomialTheoremOQ02OQ01.lean",
+      "lineCount": 223,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01.lean",
+      "lineCount": 292,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01Aristotle.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01Aristotle.lean",
+      "lineCount": 70,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ01.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01OQ01.lean",
+      "lineCount": 186,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean",
+      "lineCount": 123,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ02.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01OQ02.lean",
+      "lineCount": 381,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01OQ03.lean",
+      "lineCount": 712,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ02.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ02.lean",
+      "lineCount": 338,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ03.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ03.lean",
+      "lineCount": 393,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ02.lean",
+      "filename": "BinomialTheoremOQ02OQ02.lean",
+      "lineCount": 180,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ02OQ01.lean",
+      "filename": "BinomialTheoremOQ02OQ02OQ01.lean",
+      "lineCount": 298,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ03.lean",
+      "filename": "BinomialTheoremOQ02OQ03.lean",
+      "lineCount": 270,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ04.lean",
+      "filename": "BinomialTheoremOQ02OQ04.lean",
+      "lineCount": 208,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03.lean",
+      "filename": "BinomialTheoremOQ03.lean",
+      "lineCount": 589,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03OQ02.lean",
+      "filename": "BinomialTheoremOQ03OQ02.lean",
+      "lineCount": 216,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03OQ02OQ03.lean",
+      "filename": "BinomialTheoremOQ03OQ02OQ03.lean",
+      "lineCount": 209,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04.lean",
+      "filename": "BinomialTheoremOQ04.lean",
+      "lineCount": 196,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ01.lean",
+      "filename": "BinomialTheoremOQ04OQ01.lean",
+      "lineCount": 300,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ02.lean",
+      "filename": "BinomialTheoremOQ04OQ02.lean",
+      "lineCount": 112,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ02OQ01.lean",
+      "filename": "BinomialTheoremOQ04OQ02OQ01.lean",
+      "lineCount": 225,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ03.lean",
+      "filename": "BinomialTheoremOQ04OQ03.lean",
+      "lineCount": 191,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ04.lean",
+      "filename": "BinomialTheoremOQ04OQ04.lean",
+      "lineCount": 229,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ04.lean"
+    }
+  ]
+}

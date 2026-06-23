@@ -1,0 +1,2130 @@
+[
+  {
+    "line": 25,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 27,
+    "tactic": "exact Nat.dvd_factorial hk hkn",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 31,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 32,
+    "tactic": "have h : n.factorial ≥ 1 := Nat.factorial_pos n",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "n.factorial ≥ 1"
+          }
+        ],
+        "conclusion": "n.factorial + 1 ≥ 2"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "h"
+            ],
+            "type": "n.factorial ≥ 1"
+          }
+        ],
+        "conclusion": "n.factorial + 1 ≥ 2"
+      }
+    ]
+  },
+  {
+    "line": 33,
+    "tactic": "omega",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 37,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 38,
+    "tactic": "have hsub : p ∣ (a + 1) - a := Nat.dvd_sub' h2 h1",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "p",
+              "a"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "h1"
+            ],
+            "type": "p ∣ a"
+          },
+          {
+            "names": [
+              "h2"
+            ],
+            "type": "p ∣ a + 1"
+          },
+          {
+            "names": [
+              "hsub"
+            ],
+            "type": "p ∣ a + 1 - a"
+          }
+        ],
+        "conclusion": "p ∣ 1"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "p",
+              "a"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "h1"
+            ],
+            "type": "p ∣ a"
+          },
+          {
+            "names": [
+              "h2"
+            ],
+            "type": "p ∣ a + 1"
+          },
+          {
+            "names": [
+              "hsub"
+            ],
+            "type": "p ∣ a + 1 - a"
+          }
+        ],
+        "conclusion": "p ∣ 1"
+      }
+    ]
+  },
+  {
+    "line": 39,
+    "tactic": "simp only [add_tsub_cancel_left] at hsub",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "p",
+              "a"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "h1"
+            ],
+            "type": "p ∣ a"
+          },
+          {
+            "names": [
+              "h2"
+            ],
+            "type": "p ∣ a + 1"
+          },
+          {
+            "names": [
+              "hsub"
+            ],
+            "type": "p ∣ 1"
+          }
+        ],
+        "conclusion": "p ∣ 1"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "p",
+              "a"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "h1"
+            ],
+            "type": "p ∣ a"
+          },
+          {
+            "names": [
+              "h2"
+            ],
+            "type": "p ∣ a + 1"
+          },
+          {
+            "names": [
+              "hsub"
+            ],
+            "type": "p ∣ 1"
+          }
+        ],
+        "conclusion": "p ∣ 1"
+      }
+    ]
+  },
+  {
+    "line": 40,
+    "tactic": "exact hsub",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 58,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 59,
+    "tactic": "intro n",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > n"
+      }
+    ]
+  },
+  {
+    "line": 61,
+    "tactic": "let Q := n.factorial + 1",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > n"
+      }
+    ]
+  },
+  {
+    "line": 63,
+    "tactic": "have hQ : Q ≥ 2 := factorial_succ_ge_two n",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > n"
+      }
+    ]
+  },
+  {
+    "line": 64,
+    "tactic": "have hQ_ne_one : Q ≠ 1 :=",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > n"
+      }
+    ]
+  },
+  {
+    "line": 64,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 64,
+    "tactic": "omega",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 66,
+    "tactic": "have ⟨p, hp_prime, hp_dvd⟩ := Nat.exists_prime_and_dvd hQ_ne_one",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          }
+        ],
+        "conclusion": "∃ p, Nat.Prime p ∧ p > n"
+      }
+    ]
+  },
+  {
+    "line": 68,
+    "tactic": "use p",
+    "goalsBefore": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          }
+        ],
+        "conclusion": "Nat.Prime p ∧ p > n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          }
+        ],
+        "conclusion": "Nat.Prime p ∧ p > n"
+      }
+    ]
+  },
+  {
+    "line": 69,
+    "tactic": "constructor",
+    "goalsBefore": [
+      {
+        "name": "h.left",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          }
+        ],
+        "conclusion": "Nat.Prime p"
+      },
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          }
+        ],
+        "conclusion": "p > n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h.left",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          }
+        ],
+        "conclusion": "Nat.Prime p"
+      },
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          }
+        ],
+        "conclusion": "p > n"
+      }
+    ]
+  },
+  {
+    "line": 70,
+    "tactic": "·",
+    "goalsBefore": [
+      {
+        "name": "h.left",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          }
+        ],
+        "conclusion": "Nat.Prime p"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h.left",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          }
+        ],
+        "conclusion": "Nat.Prime p"
+      }
+    ]
+  },
+  {
+    "line": 70,
+    "tactic": "exact hp_prime",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 71,
+    "tactic": "·",
+    "goalsBefore": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          }
+        ],
+        "conclusion": "p > n"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          }
+        ],
+        "conclusion": "p > n"
+      }
+    ]
+  },
+  {
+    "line": 72,
+    "tactic": "by_contra h_not_gt",
+    "goalsBefore": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          },
+          {
+            "names": [
+              "h_not_gt"
+            ],
+            "type": "¬p > n"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          },
+          {
+            "names": [
+              "h_not_gt"
+            ],
+            "type": "¬p > n"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 73,
+    "tactic": "push_neg at h_not_gt",
+    "goalsBefore": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          },
+          {
+            "names": [
+              "h_not_gt"
+            ],
+            "type": "p ≤ n"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          },
+          {
+            "names": [
+              "h_not_gt"
+            ],
+            "type": "p ≤ n"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 75,
+    "tactic": "have hp_pos : 0 < p := hp_prime.pos",
+    "goalsBefore": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          },
+          {
+            "names": [
+              "h_not_gt"
+            ],
+            "type": "p ≤ n"
+          },
+          {
+            "names": [
+              "hp_pos"
+            ],
+            "type": "0 < p"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          },
+          {
+            "names": [
+              "h_not_gt"
+            ],
+            "type": "p ≤ n"
+          },
+          {
+            "names": [
+              "hp_pos"
+            ],
+            "type": "0 < p"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 76,
+    "tactic": "have hp_dvd_fact : p ∣ n.factorial := dvd_factorial hp_pos h_not_gt",
+    "goalsBefore": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          },
+          {
+            "names": [
+              "h_not_gt"
+            ],
+            "type": "p ≤ n"
+          },
+          {
+            "names": [
+              "hp_pos"
+            ],
+            "type": "0 < p"
+          },
+          {
+            "names": [
+              "hp_dvd_fact"
+            ],
+            "type": "p ∣ n.factorial"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          },
+          {
+            "names": [
+              "h_not_gt"
+            ],
+            "type": "p ≤ n"
+          },
+          {
+            "names": [
+              "hp_pos"
+            ],
+            "type": "0 < p"
+          },
+          {
+            "names": [
+              "hp_dvd_fact"
+            ],
+            "type": "p ∣ n.factorial"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 79,
+    "tactic": "have hp_dvd_one : p ∣ 1 := dvd_of_dvd_add_one hp_dvd_fact hp_dvd",
+    "goalsBefore": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          },
+          {
+            "names": [
+              "h_not_gt"
+            ],
+            "type": "p ≤ n"
+          },
+          {
+            "names": [
+              "hp_pos"
+            ],
+            "type": "0 < p"
+          },
+          {
+            "names": [
+              "hp_dvd_fact"
+            ],
+            "type": "p ∣ n.factorial"
+          },
+          {
+            "names": [
+              "hp_dvd_one"
+            ],
+            "type": "p ∣ 1"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          },
+          {
+            "names": [
+              "h_not_gt"
+            ],
+            "type": "p ≤ n"
+          },
+          {
+            "names": [
+              "hp_pos"
+            ],
+            "type": "0 < p"
+          },
+          {
+            "names": [
+              "hp_dvd_fact"
+            ],
+            "type": "p ∣ n.factorial"
+          },
+          {
+            "names": [
+              "hp_dvd_one"
+            ],
+            "type": "p ∣ 1"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 81,
+    "tactic": "have hp_eq_one : p = 1 := Nat.dvd_one.mp hp_dvd_one",
+    "goalsBefore": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          },
+          {
+            "names": [
+              "h_not_gt"
+            ],
+            "type": "p ≤ n"
+          },
+          {
+            "names": [
+              "hp_pos"
+            ],
+            "type": "0 < p"
+          },
+          {
+            "names": [
+              "hp_dvd_fact"
+            ],
+            "type": "p ∣ n.factorial"
+          },
+          {
+            "names": [
+              "hp_dvd_one"
+            ],
+            "type": "p ∣ 1"
+          },
+          {
+            "names": [
+              "hp_eq_one"
+            ],
+            "type": "p = 1"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "h.right",
+        "hypotheses": [
+          {
+            "names": [
+              "n"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "Q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hQ"
+            ],
+            "type": "Q ≥ 2"
+          },
+          {
+            "names": [
+              "hQ_ne_one"
+            ],
+            "type": "Q ≠ 1"
+          },
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hp_prime"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_dvd"
+            ],
+            "type": "p ∣ Q"
+          },
+          {
+            "names": [
+              "h_not_gt"
+            ],
+            "type": "p ≤ n"
+          },
+          {
+            "names": [
+              "hp_pos"
+            ],
+            "type": "0 < p"
+          },
+          {
+            "names": [
+              "hp_dvd_fact"
+            ],
+            "type": "p ∣ n.factorial"
+          },
+          {
+            "names": [
+              "hp_dvd_one"
+            ],
+            "type": "p ∣ 1"
+          },
+          {
+            "names": [
+              "hp_eq_one"
+            ],
+            "type": "p = 1"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 83,
+    "tactic": "exact hp_prime.ne_one hp_eq_one",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 92,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 93,
+    "tactic": "exact unbounded_primes p",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 96,
+    "tactic": "by",
+    "goalsBefore": [],
+    "goalsAfter": []
+  },
+  {
+    "line": 97,
+    "tactic": "intro ⟨p, _, hp_largest⟩",
+    "goalsBefore": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "left✝"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_largest"
+            ],
+            "type": "∀ (q : ℕ), Nat.Prime q → q ≤ p"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "hypotheses": [
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "left✝"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_largest"
+            ],
+            "type": "∀ (q : ℕ), Nat.Prime q → q ≤ p"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 98,
+    "tactic": "obtain ⟨q, hq_prime, hq_gt⟩ := unbounded_primes p",
+    "goalsBefore": [
+      {
+        "name": "intro.intro",
+        "hypotheses": [
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "left✝"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_largest"
+            ],
+            "type": "∀ (q : ℕ), Nat.Prime q → q ≤ p"
+          },
+          {
+            "names": [
+              "q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hq_prime"
+            ],
+            "type": "Nat.Prime q"
+          },
+          {
+            "names": [
+              "hq_gt"
+            ],
+            "type": "q > p"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "intro.intro",
+        "hypotheses": [
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "left✝"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_largest"
+            ],
+            "type": "∀ (q : ℕ), Nat.Prime q → q ≤ p"
+          },
+          {
+            "names": [
+              "q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hq_prime"
+            ],
+            "type": "Nat.Prime q"
+          },
+          {
+            "names": [
+              "hq_gt"
+            ],
+            "type": "q > p"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 99,
+    "tactic": "have hq_le := hp_largest q hq_prime",
+    "goalsBefore": [
+      {
+        "name": "intro.intro",
+        "hypotheses": [
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "left✝"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_largest"
+            ],
+            "type": "∀ (q : ℕ), Nat.Prime q → q ≤ p"
+          },
+          {
+            "names": [
+              "q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hq_prime"
+            ],
+            "type": "Nat.Prime q"
+          },
+          {
+            "names": [
+              "hq_gt"
+            ],
+            "type": "q > p"
+          },
+          {
+            "names": [
+              "hq_le"
+            ],
+            "type": "q ≤ p"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ],
+    "goalsAfter": [
+      {
+        "name": "intro.intro",
+        "hypotheses": [
+          {
+            "names": [
+              "p"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "left✝"
+            ],
+            "type": "Nat.Prime p"
+          },
+          {
+            "names": [
+              "hp_largest"
+            ],
+            "type": "∀ (q : ℕ), Nat.Prime q → q ≤ p"
+          },
+          {
+            "names": [
+              "q"
+            ],
+            "type": "ℕ"
+          },
+          {
+            "names": [
+              "hq_prime"
+            ],
+            "type": "Nat.Prime q"
+          },
+          {
+            "names": [
+              "hq_gt"
+            ],
+            "type": "q > p"
+          },
+          {
+            "names": [
+              "hq_le"
+            ],
+            "type": "q ≤ p"
+          }
+        ],
+        "conclusion": "False"
+      }
+    ]
+  },
+  {
+    "line": 100,
+    "tactic": "omega",
+    "goalsBefore": [],
+    "goalsAfter": []
+  }
+]

@@ -1,0 +1,502 @@
+[
+  {
+    "id": "ann-conjecture-statement",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Uniform Eisenstein Conjecture for cos(π/p)",
+    "content": "The opening docstring states the central conjecture: for every odd prime $p \\geq 3$, the minimal polynomial of $2 + 2\\cos(\\pi/p)$ over $\\mathbb{Q}$ is Eisenstein at $p$. This generalizes the classical Wantzel-Galois angle-trisection impossibility argument (which used the case $p=3$ on $\\cos(20°) = \\cos(\\pi/9)$ — note that $9$ is not prime, but the same shape of argument applies). The file gives a Level-2 implementation: the parametric polynomial $r : \\mathbb{N} \\to \\mathbb{Z}[X]$ is defined explicitly for $p \\in \\{5, 7, 11, 13\\}$, Eisenstein at $p$ is verified for each case, and the uniform statement remains a `sorry`. The justification sketch invokes cyclotomic ramification: $2 + 2\\cos(\\pi/p) = (1 + \\zeta_{2p})(1 + \\zeta_{2p}^{-1})$ is a uniformizer of the unique prime above $p$ in $\\mathbb{Z}[2\\cos(\\pi/p)]$, with norm $\\Phi_{2p}(-1) = \\Phi_p(1) = p$.",
+    "mathContext": "Conjecture: $\\forall p \\geq 3 \\text{ prime, odd}: \\exists q \\in \\mathbb{Z}[X], \\deg q = \\tfrac{p-1}{2} \\wedge q \\text{ monic} \\wedge q \\text{ is Eisenstein at } (p).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Eisenstein's criterion",
+      "cyclotomic polynomials",
+      "totally ramified extensions",
+      "minimal polynomial of cos(π/p)",
+      "angle trisection impossibility"
+    ],
+    "prerequisites": [
+      "algebraic number theory",
+      "cyclotomic fields",
+      "Galois theory of cyclotomic extensions",
+      "ramification of primes"
+    ]
+  },
+  {
+    "id": "ann-r-definition",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 73,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "Parametric Polynomial r : ℕ → ℤ[X]",
+    "content": "The single definition `r` packages four explicit polynomials by pattern-matching on $p$. This is a deliberate design choice: rather than four separate definitions (`r5`, `r7`, `r11`, `r13`), one parametric symbol makes the conjecture statement uniform — `∃ q, q.natDegree = (p-1)/2 ∧ q.Monic ∧ q.IsEisensteinAt (span {p})`. The polynomials are exactly the images of $X^{(p-1)/2}\\Phi_{2p}(1 + X/?)$... more concretely, $r_p$ is the characteristic polynomial of $2 + 2\\cos(\\pi/p)$ shifted so the constant term is $\\pm p$. The fallback `| _ => 0` is a placeholder for primes outside the verified set; the general conjecture asserts the existence of *some* polynomial with the right structure, not that `r p` itself is that polynomial.",
+    "mathContext": "$r_5 = X^2 - 5X + 5$, $\\quad r_7 = X^3 - 7X^2 + 14X - 7$, $\\quad r_{11} = X^5 - 11X^4 + 44X^3 - 77X^2 + 55X - 11$, $\\quad r_{13} = X^6 - 13X^5 + 65X^4 - 156X^3 + 182X^2 - 91X + 13$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimal polynomial",
+      "Chebyshev polynomials",
+      "elementary symmetric polynomials in roots of unity",
+      "noncomputable definitions in Lean"
+    ],
+    "prerequisites": [
+      "Polynomial.X and Polynomial.C in Mathlib",
+      "pattern matching in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-p5-eisenstein",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 133,
+      "endLine": 166
+    },
+    "type": "insight",
+    "title": "Eisenstein at p = 5 via Decidable Coefficient Arithmetic",
+    "content": "The proof `r_5_isEisensteinAt` discharges the three Eisenstein obligations via `Polynomial.IsEisensteinAt`'s anonymous constructor `⟨_, _, _⟩`: (1) leading coefficient $1 \\notin (5)$, (2) every sub-leading coefficient lies in $(5)$, (3) constant term $5 \\notin (5^2) = (25)$. Each goal reduces to a finite case-split: `interval_cases k` enumerates $k \\in \\{0, 1\\}$ for the sub-leading range $k < \\text{natDegree} = 2$, and `decide` or `norm_num` closes each via integer divisibility. The pattern `simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]` reduces `(X² - C 5 * X + C 5).coeff k` to a literal integer for each $k$ — this is the workhorse simp set for coefficient computation throughout the file.",
+    "mathContext": "Eisenstein at $(5)$ for $r_5 = X^2 - 5X + 5$: $a_2 = 1 \\notin (5)$, $a_1 = -5 \\in (5)$, $a_0 = 5 \\in (5)$, $a_0 = 5 \\notin (25)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Polynomial.IsEisensteinAt structure",
+      "Ideal.mem_span_singleton",
+      "interval_cases tactic",
+      "decide tactic for integer divisibility"
+    ],
+    "prerequisites": [
+      "Mathlib.RingTheory.Polynomial.Eisenstein.Basic",
+      "Polynomial.coeff lemmas"
+    ]
+  },
+  {
+    "id": "ann-p7-eisenstein",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 167,
+      "endLine": 197
+    },
+    "type": "insight",
+    "title": "Eisenstein at p = 7: Same Template, Three Sub-leading Cases",
+    "content": "The $p=7$ case is the canonical 'cubic Eisenstein' polynomial — exactly the degree-3 case underlying the angle-trisection impossibility of $\\cos(\\pi/7)$. All three sub-leading coefficients $(-7, 14, -7)$ are divisible by $7$, with $14 = 2 \\cdot 7$ being the only non-trivial multiple. The proof is byte-for-byte the same shape as $p=5$: change the prime, change the polynomial, change the natDegree bound, and Lean discharges the goals mechanically. This regularity foreshadows the general pattern: once the polynomial is written down with integer coefficients, the Eisenstein verification is mechanical — the deep content of the conjecture lies in showing the polynomial *exists* with the right shape, which is the cyclotomic-ramification problem.",
+    "mathContext": "$r_7 = X^3 - 7X^2 + 14X - 7$. Coefficients: $(-7, 14, -7) \\in (7)$; constant $-7$, and $-7 \\bmod 49 \\neq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Eisenstein's criterion",
+      "minimal polynomial of cos(π/7)",
+      "Chebyshev polynomial T₃"
+    ],
+    "prerequisites": [
+      "Polynomial.IsEisensteinAt",
+      "integer divisibility"
+    ]
+  },
+  {
+    "id": "ann-p11-eisenstein",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 198,
+      "endLine": 230
+    },
+    "type": "insight",
+    "title": "Eisenstein at p = 11: New Gallery Content",
+    "content": "The $p = 11$ verification is the first such formal proof in the gallery (siblings cover $p = 5$ and $p = 7$). The polynomial $r_{11} = X^5 - 11X^4 + 44X^3 - 77X^2 + 55X - 11$ has natDegree 5, hence the `interval_cases k` step enumerates $k \\in \\{0, 1, 2, 3, 4\\}$ — five cases instead of two or three, but the runtime cost is still negligible because each coefficient is a small integer literal. Note the divisibility witnesses: $44 = 4 \\cdot 11$, $77 = 7 \\cdot 11$, $55 = 5 \\cdot 11$. These coefficients are *not* arbitrary — they arise from the elementary symmetric polynomials in the roots $\\{2 + 2\\cos(k\\pi/11) : k \\text{ odd}, 1 \\leq k \\leq 9\\}$, and Newton's identities express each in terms of power sums of $2\\cos(k\\pi/11)$, all of which are conjugates of the trace of $\\zeta_{22}$.",
+    "mathContext": "$r_{11} = X^5 - 11X^4 + 44X^3 - 77X^2 + 55X - 11$; roots are conjugates of $2 + 2\\cos(\\pi/11)$; coefficients are elementary symmetric polynomials, each divisible by $11$ by ramification.",
+    "significance": "key",
+    "relatedConcepts": [
+      "elementary symmetric polynomials",
+      "Newton's identities",
+      "trace of cyclotomic units",
+      "real subfield of ℚ(ζ₂₂)"
+    ],
+    "prerequisites": [
+      "Vieta's formulas",
+      "cyclotomic units"
+    ]
+  },
+  {
+    "id": "ann-p13-eisenstein",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 231,
+      "endLine": 264
+    },
+    "type": "insight",
+    "title": "Eisenstein at p = 13: Degree-6 Polynomial",
+    "content": "The $p = 13$ polynomial $r_{13}$ has degree $(13-1)/2 = 6$, the largest in this file. Divisibility witnesses: $65 = 5 \\cdot 13$, $156 = 12 \\cdot 13$, $182 = 14 \\cdot 13$, $91 = 7 \\cdot 13$. The middle coefficient $182$ has the largest absolute value among all four polynomials; it arises as $\\binom{6}{2} \\cdot \\text{(symmetric function of degree 2 in the roots)}$. The verification follows the same template, just with six interval cases. A key sanity check: the constant term is $+13$, not $-13$, in contrast with $r_7$ (constant $-7$). The sign of the constant term equals $(-1)^{(p-1)/2}$ times the product of the roots — for $p = 13$, $(p-1)/2 = 6$ is even, so the sign is positive.",
+    "mathContext": "$r_{13} = X^6 - 13X^5 + 65X^4 - 156X^3 + 182X^2 - 91X + 13$. Constant sign $(-1)^6 \\prod \\text{roots} > 0$ since all roots $2 + 2\\cos(k\\pi/13)$ are positive for $k$ odd, $1 \\leq k \\leq 11$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "product of conjugates",
+      "sign of the norm",
+      "regular 26-gon constructibility (not constructible since (13-1)/2 = 6 not a power of 2)"
+    ],
+    "prerequisites": [
+      "Vieta's formulas",
+      "Galois conjugates of cos(kπ/13)"
+    ]
+  },
+  {
+    "id": "ann-eisenstein-packaged",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 265,
+      "endLine": 290
+    },
+    "type": "concept",
+    "title": "Packaged Empirical Verification",
+    "content": "`eisenstein_verified_small_primes` is the empirical kernel of the conjecture: the conjunction of the four per-prime Eisenstein claims. Its proof is the anonymous tuple `⟨r_5_isEisensteinAt, r_7_isEisensteinAt, r_11_isEisensteinAt, r_13_isEisensteinAt⟩` — no new mathematical content, just a packaging step. This is useful for downstream consumers: a single import gives all four cases. It also documents which primes are *empirically settled* in the gallery, in contrast to the open uniform conjecture below. The pattern — verify finitely many cases, then state the uniform conjecture as a target — is common in computational number theory: BSD verified for all curves of conductor $\\leq N$, Goldbach verified up to $4 \\times 10^{18}$, Riemann verified for the first $10^{13}$ zeros.",
+    "mathContext": "$(r_5 \\text{ Eis at } 5) \\wedge (r_7 \\text{ Eis at } 7) \\wedge (r_{11} \\text{ Eis at } 11) \\wedge (r_{13} \\text{ Eis at } 13)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "empirical verification in number theory",
+      "And.intro / anonymous constructors",
+      "computational verification of conjectures"
+    ],
+    "prerequisites": [
+      "Lean structure introduction"
+    ]
+  },
+  {
+    "id": "ann-r11-irreducible",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 395,
+      "endLine": 416
+    },
+    "type": "insight",
+    "title": "Irreducibility of r₁₁ via Eisenstein's Criterion",
+    "content": "`r_11_irreducible` applies `Polynomial.irreducible_of_eisenstein_criterion` — a stronger statement than `IsEisensteinAt` alone, packaging the additional hypotheses needed to conclude *irreducibility* over $\\mathbb{Z}$ (hence over $\\mathbb{Q}$ by Gauss's lemma). The required inputs are: (1) the ideal $(11)$ is prime — discharged via `Int.prime_iff_natAbs_prime`; (2) leading coefficient not in $(11)$; (3) all sub-leading coefficients in $(11)$ — discharged by `interval_cases` over the integer-degree bound `WithBot.coe_lt_coe`; (4) degree positive — `Nat.zero_lt_succ`; (5) constant term not in $(11^2)$; (6) primitivity — derived from monic via `r_11_monic.isPrimitive`. The key subtlety: the degree hypothesis uses `Polynomial.degree` (a `WithBot ℕ`) rather than `natDegree`, requiring the `WithBot.coe_lt_coe.mp` step to extract a usable integer inequality.",
+    "mathContext": "$r_{11}$ is irreducible over $\\mathbb{Z}$. Eisenstein at prime $11$ with $\\deg r_{11} = 5 > 0$, monic (hence primitive). By Gauss's lemma, also irreducible over $\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Eisenstein's criterion for irreducibility",
+      "Gauss's lemma",
+      "primitive polynomial",
+      "WithBot ℕ in Mathlib",
+      "minimal polynomial of 2 + 2cos(π/11)"
+    ],
+    "prerequisites": [
+      "Polynomial.irreducible_of_eisenstein_criterion",
+      "Int.prime_iff_natAbs_prime",
+      "Polynomial.Monic.isPrimitive"
+    ]
+  },
+  {
+    "id": "ann-r13-irreducible",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 417,
+      "endLine": 438
+    },
+    "type": "insight",
+    "title": "Irreducibility of r₁₃ — Galois Implications",
+    "content": "`r_13_irreducible` follows the same template as $r_{11}$ but the conclusion is mathematically richer: since $r_{13}$ is monic, integer, and irreducible of degree $6$, it is the minimal polynomial of any of its roots over $\\mathbb{Q}$. Combined with the (informal) identification of $2 + 2\\cos(\\pi/13)$ as one such root, this proves $[\\mathbb{Q}(\\cos(\\pi/13)) : \\mathbb{Q}] = 6$. The Galois group of the splitting field is then a subgroup of $S_6$, and in fact equals $(\\mathbb{Z}/13)^\\times / \\{\\pm 1\\} \\cong \\mathbb{Z}/6$ — the cyclic group of order $6$. This implies the regular $26$-gon (and hence the regular $13$-gon) is *not constructible* by straightedge and compass: $6$ is not a power of $2$, so the field extension is not a tower of quadratic extensions. This recovers a special case of the Gauss-Wantzel theorem: the regular $p$-gon is constructible iff $p$ is a Fermat prime $2^{2^k} + 1$.",
+    "mathContext": "$r_{13}$ irreducible $\\Rightarrow$ $[\\mathbb{Q}(\\cos(\\pi/13)) : \\mathbb{Q}] = 6$. Since $6 = 2 \\cdot 3$ is not a power of $2$, $\\cos(\\pi/13)$ is *not* constructible. Gal$(\\mathbb{Q}(\\zeta_{26})^+/\\mathbb{Q}) \\cong (\\mathbb{Z}/13)^\\times / \\{\\pm 1\\} \\cong \\mathbb{Z}/6$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gauss-Wantzel theorem",
+      "regular polygon constructibility",
+      "Fermat primes",
+      "Galois group of cyclotomic extensions",
+      "real subfield of ℚ(ζₙ)"
+    ],
+    "prerequisites": [
+      "constructible numbers and tower law",
+      "Galois group of ℚ(ζₙ)/ℚ",
+      "complex conjugation as Galois element"
+    ]
+  },
+  {
+    "id": "ann-uniform-conjecture",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 1351,
+      "endLine": 1378
+    },
+    "type": "concept",
+    "title": "Uniform Conjecture: The Open Problem",
+    "content": "The statement `eisenstein_conjecture_cos_pi_p` asserts the conjecture for *every* odd prime $p \\geq 3$. The proof is `sorry`, marking this as the open content of the file. The cyclotomic-ramification proof requires three ingredients, two available in Mathlib and one a significant gap: (a) $\\Phi_{2p}(-1) = \\Phi_p(1) = p$ for $p$ odd — derivable from `Polynomial.cyclotomic_prime_eq_X_pow_sub_one` and $\\Phi_{2p}(X) = \\Phi_p(-X)$; (b) $(1 + \\zeta_{2p})$ is a uniformizer of the unique prime above $p$ in $\\mathbb{Z}[\\zeta_{2p}]$, descending to $(1+\\zeta)(1+\\zeta^{-1}) = 2 + 2\\cos(\\pi/p)$ in the real subfield; (c) **the main gap** — Neukirch's local-field theorem: if $\\alpha$ is a uniformizer of a totally ramified extension $L/K$ of local fields, then the minimal polynomial of $\\alpha$ is Eisenstein at the maximal ideal of $\\mathcal{O}_K$. Mathlib has substantial local-field infrastructure (`IsLocalRing`, `DiscreteValuationRing`, `UniqueFactorizationMonoid`) but not this exact theorem in fully general form. The challenge is plumbing the global-to-local reduction.",
+    "mathContext": "Conjecture: $\\forall p \\geq 3, p$ prime, $p$ odd, $\\exists q \\in \\mathbb{Z}[X]$ with $\\deg q = (p-1)/2$, $q$ monic, $q$ Eisenstein at $(p)$. Status: **open** in this gallery (sorry). Empirically: verified for $p \\in \\{3, 5, 7, 11, 13\\}$ in this file and siblings.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclotomic ramification",
+      "totally ramified local extensions",
+      "uniformizer",
+      "Neukirch Algebraic Number Theory Chapter II.6",
+      "local-global compatibility",
+      "discrete valuation rings"
+    ],
+    "prerequisites": [
+      "p-adic local fields",
+      "ramification index and residue degree",
+      "ring of integers in a number field",
+      "Mathlib.NumberTheory.Cyclotomic.Basic"
+    ]
+  },
+  {
+    "id": "ann-empirical-packaged",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 267,
+      "endLine": 290
+    },
+    "type": "theorem",
+    "title": "Empirical Verification Packaged for Five Primes",
+    "content": "`eisenstein_verified_small_primes` bundles the five base cases: each parametric polynomial r(3), r(5), r(7), r(11), r(13) is Eisenstein at its prime p in the precise Mathlib sense `Polynomial.IsEisensteinAt (Ideal.span {p})`. The p = 3 case is the degenerate degree-1 base case r(3) = X − 3, whose lone sub-leading coefficient is its constant term −3 ∈ (3). For p = 11 and p = 13 this is the first formal Eisenstein verification in the gallery; p = 5, 7 agree (up to the substitution Y = 2X + 2) with the sibling files `AngleTrisectionCos20GalOQ01OQ02` and `AngleTrisectionCos20GalOQ01`.",
+    "mathContext": "A monic $f \\in \\mathbb{Z}[X]$ is **Eisenstein at a prime ideal** $(p)$ iff $p \\mid a_k$ for all $k < \\deg f$, $p \\nmid$ leading coeff, and $p^2 \\nmid a_0$. Eisenstein $\\Rightarrow$ irreducible over $\\mathbb{Q}$ (Gauss's lemma). Here $r(p)$ is conjecturally the minimal polynomial of $2 + 2\\cos(\\pi/p)$, of degree $(p-1)/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Eisenstein's criterion",
+      "IsEisensteinAt",
+      "minimal polynomial",
+      "irreducibility"
+    ],
+    "prerequisites": [
+      "Eisenstein's criterion",
+      "ideals in ℤ",
+      "polynomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-vieta-norm-trace",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 291,
+      "endLine": 392
+    },
+    "type": "insight",
+    "title": "Vieta Fingerprints: Norm and Trace Coefficient Patterns",
+    "content": "Two structural fingerprints pin down both Vieta endpoints of r(p), each matching the field-theoretic prediction for the minimal polynomial of 2 + 2cos(π/p):\n\n- **Norm (constant term)**: `r_constantCoeff_eq_signed_p` proves (r p).coeff 0 = (−1)^((p−1)/2) · p for p ∈ {3,5,7,11,13}, matching N(2 + θ_p) = (−1)^((p−1)/2) · Φ_{2p}(−1) = (−1)^((p−1)/2) · p.\n- **Trace (sub-leading coefficient)**: `r_subLeadingCoeff_eq_neg_p` proves the next-to-top coefficient is uniformly −p, encoding −Tr(2 + θ_p) = −p (Vieta: sub-leading of a monic minpoly = −sum of conjugates). The boundary case p = 3 is recorded separately by `r_3_traceCoeff` because its index (3−1)/2 − 1 = 0 collides with the constant term.\n\nAny general proof via the cyclotomic-ramification route must reproduce both fingerprints — they are the empirical evidence motivating the uniform conjecture.",
+    "mathContext": "By Vieta, for a monic $f = X^n + c_{n-1}X^{n-1} + \\dots + c_0$ the constant term is $(-1)^n \\prod \\text{(roots)} = (-1)^n N$ and the sub-leading term is $-\\sum \\text{(roots)} = -\\mathrm{Tr}$. The trace equals $p$ because the $(p-1)/2$ conjugates $2 + 2\\cos(k\\pi/p)$ ($k$ odd) sum to $(p-1) + 1 = p$, using $\\sum_{k\\text{ odd}} 2\\cos(k\\pi/p) = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Vieta's formulas",
+      "field norm and trace",
+      "cyclotomic polynomial",
+      "conjugates"
+    ],
+    "prerequisites": [
+      "Vieta's formulas",
+      "norm and trace of a field extension",
+      "cos(kπ/p) sums"
+    ]
+  },
+  {
+    "id": "ann-irreducibility-galois",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 395,
+      "endLine": 438
+    },
+    "type": "theorem",
+    "title": "Irreducibility of r₁₁ and r₁₃ via Eisenstein",
+    "content": "`r_11_irreducible` and `r_13_irreducible` upgrade the Eisenstein verifications into genuine irreducibility over ℤ via `Polynomial.irreducible_of_eisenstein_criterion`. r(11) = X⁵ − 11X⁴ + 44X³ − 77X² + 55X − 11 and r(13) = X⁶ − 13X⁵ + 65X⁴ − 156X³ + 182X² − 91X + 13 are each Eisenstein at their defining prime, hence irreducible. Since r(p) is the (conjectural) minimal polynomial of 2 + 2cos(π/p), irreducibility of degree (p−1)/2 certifies [ℚ(cos(π/p)) : ℚ] = (p−1)/2 — the degree obstruction underlying classical constructibility/trisection impossibility results.",
+    "mathContext": "Eisenstein at $(p)$ with $p^2 \\nmid a_0$ forces irreducibility over $\\mathbb{Q}$; combined with primitivity (`Monic.isPrimitive`) and Gauss's lemma it gives irreducibility over $\\mathbb{Z}$. Degree $(p-1)/2$ being a power-of-2-free integer for $p \\equiv 1 \\pmod 3$ is what blocks straightedge-and-compass construction of $\\cos(\\pi/p)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Eisenstein criterion",
+      "irreducible_of_eisenstein_criterion",
+      "constructibility",
+      "degree of a field extension"
+    ],
+    "prerequisites": [
+      "Eisenstein's criterion",
+      "Gauss's lemma",
+      "constructible numbers"
+    ]
+  },
+  {
+    "id": "ann-s5-cyclotomic-anchor",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 439,
+      "endLine": 585
+    },
+    "type": "insight",
+    "title": "S5 — Cyclotomic Anchor Φ_{2p}(−1) = p and the Norm Bridge",
+    "content": "S5 makes the cyclotomic side of the norm fingerprint concrete for p ∈ {3,5,7}. Each explicit form cyclotomic(2p) ℤ (Φ₆ = X²−X+1, Φ₁₀ = X⁴−X³+X²−X+1, Φ₁₄ = X⁶−X⁵+…+1) is derived from Mathlib's `eq_cyclotomic_iff` using the divisor structure of 2p, then evaluated: Φ_{2p}(−1) = p. The bridge theorems `r_p_constantCoeff_eq_cyclotomic` then equate the gallery's algebraic constant term with the cyclotomic prediction (−1)^((p−1)/2) · Φ_{2p}(−1), verifying the norm fingerprint on two independent computational paths — direct coefficient arithmetic and Mathlib's cyclotomic API.",
+    "mathContext": "For odd prime $p$, the primitive $2p$-th roots are the negatives of the primitive $p$-th roots, so $\\Phi_{2p}(X) = \\Phi_p(-X)$ and $\\Phi_{2p}(-1) = \\Phi_p(1) = p$. Mathlib's `eq_cyclotomic_iff` characterizes $\\Phi_n$ via $P \\cdot \\prod_{d \\mid n,\\, d<n} \\Phi_d = X^n - 1$; the explicit $\\Phi_{2p}$ forms are obtained by unfolding this product over $\\mathrm{properDivisors}(2p)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclotomic polynomial",
+      "eq_cyclotomic_iff",
+      "field norm",
+      "properDivisors"
+    ],
+    "prerequisites": [
+      "cyclotomic polynomials",
+      "roots of unity",
+      "Mathlib cyclotomic API"
+    ]
+  },
+  {
+    "id": "ann-s6-anchor-extension",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 586,
+      "endLine": 718
+    },
+    "type": "insight",
+    "title": "S6 — Cyclotomic Anchor Extended to p ∈ {11, 13}",
+    "content": "S6 extends the per-prime cyclotomic bridge to the remaining gallery primes p ∈ {11, 13}, completing the verified set {3,5,7,11,13}. The same three-step template is applied: derive cyclotomic(p) ℤ via `eq_cyclotomic_iff` with properDivisors p = {1}; derive cyclotomic(2p) ℤ via properDivisors(2p) = {1,2,p}; then evaluate at −1 to obtain Φ_{2p}(−1) = p. With this, the empirical sign pattern (r p).coeff 0 = (−1)^((p−1)/2) · Φ_{2p}(−1) is matched against Mathlib's API for *every* explicitly defined case of r, leaving no per-prime gap for the uniform lift to close.",
+    "mathContext": "$\\Phi_{22}(-1) = 11$ and $\\Phi_{26}(-1) = 13$ extend the anchor. The per-prime route still relies on explicit ring identities; the genuinely uniform statement $\\Phi_{2p}(X) = \\Phi_p(-X)$ for all odd $p$ is deferred to S7–S9, where it becomes a single $\\mathbb{Z}[X]$ identity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cyclotomic polynomial",
+      "eq_cyclotomic_iff",
+      "divisor structure",
+      "norm fingerprint"
+    ],
+    "prerequisites": [
+      "cyclotomic polynomials",
+      "properDivisors of 2p",
+      "polynomial evaluation"
+    ]
+  },
+  {
+    "id": "ann-s7-divisors-backbone",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 719,
+      "endLine": 803
+    },
+    "type": "lemma",
+    "title": "S7 — Combinatorial Backbone: divisors of 2p",
+    "content": "`divisors_two_mul_odd_prime` proves that for an odd prime p, the divisors of 2p are exactly {1, 2, p, 2p}. This is the combinatorial backbone for the uniform cyclotomic bridge: it lets the product ∏_{d ∣ 2p} Φ_d be expanded into exactly four explicit factors. The forward direction splits on the parity of a divisor k — if 2 ∣ k write k = 2m and cancel to get m ∣ p (so m ∈ {1,p}); if 2 ∤ k then gcd(k,2)=1 forces k ∣ p directly. The case p = 2 is excluded (its divisor set degenerates to {1,2,4}), which is why oddness is a hypothesis.",
+    "mathContext": "For odd prime $p$, $2p$ has exactly the divisors $\\{1, 2, p, 2p\\}$ since $2$ and $p$ are distinct primes (so $\\tau(2p) = 4$). The proof uses coprimality: $\\gcd(k,2)=1 \\wedge k \\mid 2p \\Rightarrow k \\mid p$, and $2m \\mid 2p \\Rightarrow m \\mid p$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "divisors",
+      "coprimality",
+      "Nat.divisors",
+      "prime factorization"
+    ],
+    "prerequisites": [
+      "divisibility in ℕ",
+      "coprimality",
+      "prime numbers"
+    ]
+  },
+  {
+    "id": "ann-s8-uniform-bridge",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 804,
+      "endLine": 930
+    },
+    "type": "insight",
+    "title": "S8 — Uniform Cyclotomic Bridge Φ_{2p}(X)·(X+1) = Xᵖ+1",
+    "content": "`cyclotomic_two_mul_prime_mul_X_add_one_uniform` is the structural turning point: it proves cyclotomic(2p) ℤ · (X+1) = Xᵖ + 1 for *every* odd prime p, in one uniform statement that replaces the five per-prime ring identities of S5+S6. The proof assembles: (1) the S7 divisor enumeration {1,2,p,2p}; (2) Mathlib's `prod_cyclotomic_eq_X_pow_sub_one` giving ∏Φ_d = X^{2p} − 1; (3) the explicit Φ₁ = X−1, Φ₂ = X+1; (4) `cyclotomic_prime_mul_X_sub_one` for (X−1)·Φ_p = Xᵖ−1; (5) the factorization X^{2p}−1 = (Xᵖ−1)(Xᵖ+1); and (6) cancellation of the nonzero factor Xᵖ−1 in the integral domain ℤ[X]. This exposes Φ_{2p} as the 'X ↦ −X conjugate' of Φ_p without ever entering a splitting field.",
+    "mathContext": "Pairing the standard $\\Phi_p(X)(X-1) = X^p - 1$ with the new $\\Phi_{2p}(X)(X+1) = X^p + 1$ gives the cyclotomic duality over odd primes. Cancellation is valid because $\\mathbb{Z}[X]$ is an integral domain and $X^p - 1 \\ne 0$ (it evaluates to $-1$ at $0$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclotomic duality",
+      "prod_cyclotomic_eq_X_pow_sub_one",
+      "integral domain",
+      "polynomial cancellation"
+    ],
+    "prerequisites": [
+      "cyclotomic polynomials",
+      "integral domains",
+      "polynomial factorization"
+    ]
+  },
+  {
+    "id": "ann-s9-uniform-anchor",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 931,
+      "endLine": 1057
+    },
+    "type": "insight",
+    "title": "S9 — Φ_{2p} = ∑(−X)ⁱ and Uniform Φ_{2p}(−1) = p",
+    "content": "S9 lifts the per-prime numerical anchors to all odd primes in two steps. First, `cyclotomic_two_mul_prime_eq_geom_neg_series` proves the explicit formula cyclotomic(2p) ℤ = ∑_{i<p} (−X)ⁱ — the classical informal identity Φ_{2p}(X) = Φ_p(−X), now a genuine ring identity in ℤ[X], obtained by combining the S8 bridge with the geometric-series identity `geom_sum_mul` and `Odd.neg_pow`, then cancelling the monic factor (X+1). Second, `cyclotomic_two_mul_prime_eval_neg_one_uniform` evaluates this at X = −1: each term ((−X)ⁱ).eval(−1) = 1ⁱ = 1, so the sum of p ones is p. This is the uniform norm anchor Φ_{2p}(−1) = p, valid beyond the verified gallery primes.",
+    "mathContext": "$\\Phi_{2p}(X) = \\sum_{i<p}(-X)^i$ follows from $\\big(\\sum_{i<p}(-X)^i\\big)(X+1) = X^p+1$ (geometric series with $(-X)^p = -X^p$ for $p$ odd) and the S8 bridge, cancelling $X+1 \\ne 0$. Evaluating at $-1$: $(-(-1))^i = 1$, so $\\Phi_{2p}(-1) = \\sum_{i<p} 1 = p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "geometric series",
+      "geom_sum_mul",
+      "Odd.neg_pow",
+      "cyclotomic evaluation"
+    ],
+    "prerequisites": [
+      "geometric series identity",
+      "polynomial evaluation",
+      "monic polynomials"
+    ]
+  },
+  {
+    "id": "ann-s10-uniform-constant",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 1058,
+      "endLine": 1134
+    },
+    "type": "theorem",
+    "title": "S10 — Uniform Constant-Coefficient Corollary",
+    "content": "S10 collapses the empirical norm fingerprint into a single Finset-quantified statement. `r_constantCoeff_eq_signed_cyclotomic_uniform` restates the S5/S6 per-prime bridges with uniform (2p) indexing (which reduces definitionally to the literal indices {6,10,14,22,26}); `r_constantCoeff_eq_signed_uniform` then rewrites the cyclotomic evaluation via the S9 anchor to recover (r p).coeff 0 = (−1)^((p−1)/2) · p without case analysis. The quantification stays over the verified set {3,5,7,11,13} because r p = 0 outside it — the uniformity achieved is in the *cyclotomic indexing*, not yet in the parametric polynomial r itself; closing the latter gap is exactly the open conjecture.",
+    "mathContext": "The corollary re-derives the per-prime $\\,(r\\,p).\\mathrm{coeff}\\,0 = (-1)^{(p-1)/2}\\,p\\,$ through the cyclotomic-anchor route: $S9$'s $\\Phi_{2p}(-1) = p$ collapses the cyclotomic factor to plain $p$. It is a proof-of-concept that the cyclotomic machinery reproduces the empirical sign pattern — the template a full proof must follow.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset quantification",
+      "cyclotomic anchor",
+      "norm fingerprint",
+      "uniform indexing"
+    ],
+    "prerequisites": [
+      "Finset membership case-split",
+      "cyclotomic evaluation",
+      "polynomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-s15-trace-bridge",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 1135,
+      "endLine": 1348
+    },
+    "type": "insight",
+    "title": "S15 — Uniform Trace Bridge: sub-leading coefficient = −p",
+    "content": "S15 delivers the trace counterpart of the S10 norm corollary, completing both Vieta endpoints through the cyclotomic-anchor route. Stage 1 (`cyclotomic_two_mul_prime_subLeadingCoeff_uniform`) proves (cyclotomic(2p) ℤ).coeff (p−2) = −1 for all odd primes, by distributing coeff (p−2) over the S9 geometric series ∑(−X)ⁱ: only the i = p−2 term survives, contributing (−1)^(p−2) = −1 (odd exponent). Stage 2a (`r_subLeadingCoeff_via_moebius_uniform`) splits the trace as −(p−1) + Φ_{2p}.coeff(p−2), and Stage 2b combines the two stages to recover (r p).coeff ((p−1)/2 − 1) = −p for p ∈ {5,7,11,13}. The private helper `neg_X_pow_coeff_eq` distributes coeff k over (−X)ⁱ. p = 3 is excluded since its index collides with the constant term.",
+    "mathContext": "The trace fingerprint $-p$ splits as $-(p-1)$ (the $+2$ shift across the $(p-1)/2$ real conjugates) plus $\\Phi_{2p}.\\mathrm{coeff}(p-2) = -1$ (encoding $\\mu(2p) = 1$). Stage 1 is the trace analogue of the S9 norm anchor — both descend from the single identity $\\Phi_{2p} = \\sum_{i<p}(-X)^i$, evaluated (norm) vs. read off at index $p-2$ (trace).",
+    "significance": "key",
+    "relatedConcepts": [
+      "field trace",
+      "Möbius function",
+      "polynomial coefficients",
+      "cyclotomic anchor"
+    ],
+    "prerequisites": [
+      "field trace",
+      "Finset.sum_eq_single",
+      "coefficient extraction"
+    ]
+  },
+  {
+    "id": "ann-p3-eisenstein",
+    "proofId": "angle-trisection-cos-20-gal-oq-01-oq-03",
+    "range": {
+      "startLine": 97,
+      "endLine": 132
+    },
+    "type": "theorem",
+    "title": "Eisenstein at p = 3: The Degree-1 Boundary Case",
+    "content": "The p = 3 case is the degenerate base case: r(3) = X − 3 has degree (3−1)/2 = 1, so it is trivially monic and irreducible. It is Eisenstein at 3 because its only sub-leading coefficient is the constant term −3 ∈ (3), with 3² = 9 ∤ 3. This boundary case is recorded explicitly throughout the file (e.g. the trace index (3−1)/2 − 1 = 0 collides with the constant term, so r_3_traceCoeff is stated separately) to keep the uniform statements honest at their lower endpoint.",
+    "mathContext": "$r(3) = X - 3$ corresponds to $2 + 2\\cos(\\pi/3) = 2 + 2\\cdot\\tfrac12 = 3$, a rational number — consistent with $[\\mathbb{Q}(\\cos(\\pi/3)):\\mathbb{Q}] = 1 = (3-1)/2$. Degree-1 monic polynomials are vacuously irreducible.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Eisenstein criterion",
+      "degenerate case",
+      "minimal polynomial",
+      "cos(π/3)"
+    ],
+    "prerequisites": [
+      "Eisenstein's criterion",
+      "degree of a polynomial"
+    ]
+  }
+]

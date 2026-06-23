@@ -1,0 +1,163 @@
+[
+  {
+    "id": "ann-e326-imports",
+    "proofId": "erdos-326",
+    "range": {
+      "startLine": 1,
+      "endLine": 16
+    },
+    "type": "concept",
+    "title": "Problem Overview",
+    "content": "This module formalizes Erdős Problem #326, an **open problem** in additive combinatorics. The question asks: given any set A that's an additive basis of order 2, can we always find a sub-basis B with 'irregular' growth?",
+    "mathContext": "We import Mathlib for filters (to express limits), topology (for convergence), and set operations. The `open scoped Topology` allows convenient notation for limits.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib",
+      "filters",
+      "topology"
+    ],
+    "prerequisites": [
+      "Mathlib filter and topology imports",
+      "limits and convergence notation",
+      "open problems in additive combinatorics"
+    ]
+  },
+  {
+    "id": "ann-e326-add-basis",
+    "proofId": "erdos-326",
+    "range": {
+      "startLine": 37,
+      "endLine": 42
+    },
+    "type": "definition",
+    "title": "Additive Basis",
+    "content": "An **additive basis** is a set A of natural numbers such that every sufficiently large integer can be written as a sum of elements from A. Think of it as a 'generating set' for large integers under addition.",
+    "mathContext": "Formally: there exists N such that for all n >= N, we can find elements a₁, ..., aₖ from A with a₁ + ... + aₖ = n. The number of summands k can vary.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive combinatorics",
+      "representation",
+      "generating sets"
+    ],
+    "prerequisites": [
+      "sums of natural numbers",
+      "representing integers as sums of set elements",
+      "the notion of a generating set under addition"
+    ]
+  },
+  {
+    "id": "ann-e326-order-k-basis",
+    "proofId": "erdos-326",
+    "range": {
+      "startLine": 44,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "Additive Basis of Order k",
+    "content": "A basis of **order k** requires at most k summands. An order 2 basis means every large number is a sum of at most 2 elements. The perfect squares have order 4 (Lagrange's theorem).",
+    "mathContext": "The constraint `m <= k` in the definition bounds the number of summands. Lower order = denser set required. Order 2 is quite restrictive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange four-square theorem",
+      "Goldbach conjecture",
+      "representation number"
+    ],
+    "prerequisites": [
+      "additive bases and number of summands",
+      "Lagrange's four-square theorem",
+      "bounding representation length by k"
+    ]
+  },
+  {
+    "id": "ann-e326-growth-ratio",
+    "proofId": "erdos-326",
+    "range": {
+      "startLine": 68,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "Growth Ratio bₖ/k²",
+    "content": "For an enumerated set B = {b₁ < b₂ < ...}, the **growth ratio** bₖ/k² measures how fast the elements grow. For an order 2 basis, this ratio is bounded above (can't grow faster than quadratic).",
+    "mathContext": "The `noncomputable` keyword is needed because real division isn't computable in Lean. The ratio bₖ/k² has a natural upper bound from counting arguments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic growth",
+      "density",
+      "enumeration"
+    ],
+    "prerequisites": [
+      "enumerating a set in increasing order",
+      "real division and the noncomputable keyword",
+      "quadratic asymptotic growth bounds"
+    ]
+  },
+  {
+    "id": "ann-e326-no-limit",
+    "proofId": "erdos-326",
+    "range": {
+      "startLine": 85,
+      "endLine": 89
+    },
+    "type": "definition",
+    "title": "Non-Convergence",
+    "content": "A sequence has **no limit** if it doesn't converge to any real number. This could mean oscillation, unboundedness, or other irregular behavior. Erdős asks if we can always find such irregular sub-bases.",
+    "mathContext": "The definition `HasNoGrowthLimit` asserts that for every real x, the sequence does NOT tend to x. This is stronger than just not having a finite limit.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convergence",
+      "oscillation",
+      "limit superior/inferior"
+    ],
+    "prerequisites": [
+      "convergence of a real sequence to a limit",
+      "negating tendsto for every real x",
+      "oscillation and unbounded behavior"
+    ]
+  },
+  {
+    "id": "ann-e326-main-axiom",
+    "proofId": "erdos-326",
+    "range": {
+      "startLine": 101,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Main Theorem (Open Problem)",
+    "content": "**Erdős Problem #326**: Given any order 2 basis A, must there exist a sub-basis B with non-convergent growth ratio? This is stated as a disjunction: either YES for all A, or NO for some A.",
+    "mathContext": "We use `axiom` because the answer is unknown. The disjunction P ∨ ¬P is always true, so this captures the mathematical question without assuming an answer. A proof of either disjunct would resolve the problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problems",
+      "existential statements",
+      "law of excluded middle"
+    ],
+    "prerequisites": [
+      "existential statements over sub-bases",
+      "the law of excluded middle as a disjunction",
+      "axioms encoding unresolved problems"
+    ]
+  },
+  {
+    "id": "ann-e326-cassels",
+    "proofId": "erdos-326",
+    "range": {
+      "startLine": 126,
+      "endLine": 136
+    },
+    "type": "concept",
+    "title": "Cassels' Theorem (1957)",
+    "content": "**Cassels disproved Erdős's original conjecture** by constructing an order 2 basis A where the growth ratio aₖ/k² converges to a positive limit. This shows 'nice' bases exist.",
+    "mathContext": "The existential statement guarantees a basis with `0 < x` and `HasGrowthLimit a x`. Cassels' construction is explicit but technical. This answered the A=B version negatively.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "construction",
+      "convergent sequences"
+    ],
+    "prerequisites": [
+      "counterexample construction to a conjecture",
+      "convergence of the growth ratio to a positive limit",
+      "Cassels' 1957 explicit basis"
+    ]
+  }
+]

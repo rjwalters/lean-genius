@@ -1,0 +1,187 @@
+{
+  "slug": "dissection-of-cubes-oq-01",
+  "title": "Minimum number of repeated sizes needed in a cube dissection",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Every cube dissection must have ≥ 2 cubes sharing the same size (strengthening Wiedijk #82). This formalization proves the quantitative lower bound: the set of 'colliding cubes' in any nonempty dissection has cardinality ≥ 2. The open question is whether exactly 2 is achievable — whether a cube can be dissected with only one repeated size, all others distinct.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-02-21T19:21:07.134Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS — formalized OQ, proved lower bound",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Investigate if `HasMinimalCollision` is geometrically achievable",
+      "Try to prove `smaller_cube_above_axiom` using the formal disjointness conditions",
+      "Formalize volume identity: `∑ c.side³ = 1`",
+      "Consider submitting the remaining geometric axioms to Aristotle"
+    ],
+    "markdown": "# Problem: Minimum number of repeated sizes needed in a cube dissection\n\n## Problem Summary\n\n**Open question**: Given that a cube cannot be dissected into finitely many cubes of all different sizes (Wiedijk #82), what is the minimum number of cubes that must participate in size collisions?\n\n**Known facts**:\n- Main theorem (Wiedijk #82): Any cube dissection must have ≥ 1 pair of same-size cubes\n- Lower bound (proved here): Any nonempty cube dissection has ≥ 2 colliding cubes\n- Open: Can exactly 2 cubes share a size? (HasMinimalCollision achievable?)\n\n**Status**: PROGRESS — formalized OQ, proved lower bound\n\n---\n\n## Session 2026-02-21 (Session 1) - Initial Exploration and Formalization\n\n**Mode**: FRESH\n**Outcome**: progress\n\n### What I Did\n\n1. **Investigated existing proof** (`DissectionOfCubes.lean`):\n   - Found 4 axioms: 2 provable, 2 requiring geometric reasoning\n   - `chain_length_bounded_axiom` → proved via `Fintype.card_le_of_injective`\n   - `smallest_cube_top_is_floor_axiom` → proved via `Finset.exists_min_image`\n   - `smaller_cube_above_axiom` → kept as axiom (requires 3D geometric covering)\n   - `all_different_implies_long_chains_axiom` → kept as axiom (depends on above)\n\n2. **Fixed bugs in DissectionOfCubes.lean**:\n   - Removed `deriving Repr` (unsafe `Real.instRepr`)\n   - Made `cubesTouchingBottom`/`cubesTouchingPlane` `noncomputable` (need classical `DecidablePred` for ℝ)\n\n3. **Created `DissectionOfCubesOQ01.lean`**:\n   - `IsCollisionPair d c₁ c₂`: two distinct cubes with same size\n   - `sizeClass d c`: Finset of cubes with same size as c (classical, noncomputable)\n   - `collidingCubes d`: Finset of cubes that share size with some other cube (noncomputable)\n   - `every_dissection_has_collision`: proved from main theorem\n   - `collision_class_at_least_two`: proved via `Finset.one_lt_card`\n   - `at_least_two_colliding_cubes`: proved via `Finset.card_pair` and cardinality\n   - `HasMinimalCollision d`: defined as `(collidingCubes d).card = 2`\n\n### Key Findings\n\n- Two proofs eliminated axiom status: `chain_length_bounded` and `smallest_cube_top_is_floor`\n- Sorries reduced from 4 → 2 in the base proof\n- Quantitative lower bound: `2 ≤ (collidingCubes d).card` for any nonempty dissection\n- The geometric `covers_unit_cube : True` placeholder is the fundamental blocker for full proof\n\n### Files Modified\n\n- `proofs/Proofs/DissectionOfCubes.lean`: proved 2 axioms, fixed noncomputable issues\n- `proofs/Proofs/DissectionOfCubesOQ01.lean`: new OQ formalization file (builds clean)\n- `src/data/proofs/dissection-of-cubes/meta.json`: sorries updated 4→2\n- `src/data/research/problems/dissection-of-cubes-oq-01.json`: knowledge updated\n\n### Next Steps\n\n1. Investigate if `HasMinimalCollision` is geometrically achievable\n2. Try to prove `smaller_cube_above_axiom` using the formal disjointness conditions\n3. Formalize volume identity: `∑ c.side³ = 1`\n4. Consider submitting the remaining geometric axioms to Aristotle\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "challenging",
+    "geometry",
+    "impossibility",
+    "infinite-descent",
+    "combinatorics",
+    "wiedijk-100"
+  ],
+  "relatedProofs": [
+    "dissection-of-cubes",
+    "dissection-of-cubes-oq-01",
+    "dissection-of-cubes-oq-01-oq-01",
+    "dissection-of-cubes-oq-01-oq-03",
+    "dissection-of-cubes-oq-02",
+    "dissection-of-cubes-oq-02-oq-02",
+    "dissection-of-cubes-oq-02-wip-01",
+    "dissection-of-cubes-oq-03",
+    "dissection-of-cubes-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-21T19:21:07.134Z",
+  "lastUpdate": "2026-02-24T05:02:41.701Z",
+  "completed": "2026-02-24T05:02:41.701Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/DissectionOfCubes.lean",
+      "filename": "DissectionOfCubes.lean",
+      "lineCount": 367,
+      "theoremCount": 7,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubes.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01.lean",
+      "filename": "DissectionOfCubesOQ01.lean",
+      "lineCount": 275,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01OQ01.lean",
+      "filename": "DissectionOfCubesOQ01OQ01.lean",
+      "lineCount": 329,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01OQ03.lean",
+      "filename": "DissectionOfCubesOQ01OQ03.lean",
+      "lineCount": 257,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02.lean",
+      "filename": "DissectionOfCubesOQ02.lean",
+      "lineCount": 380,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02OQ02.lean",
+      "filename": "DissectionOfCubesOQ02OQ02.lean",
+      "lineCount": 455,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ02WIP01.lean",
+      "filename": "DissectionOfCubesOQ02WIP01.lean",
+      "lineCount": 104,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ02WIP01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ03.lean",
+      "filename": "DissectionOfCubesOQ03.lean",
+      "lineCount": 600,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ03.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ04.lean",
+      "filename": "DissectionOfCubesOQ04.lean",
+      "lineCount": 562,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ04.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ04Aristotle.lean",
+      "filename": "DissectionOfCubesOQ04Aristotle.lean",
+      "lineCount": 90,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ04Aristotle.lean"
+    }
+  ]
+}

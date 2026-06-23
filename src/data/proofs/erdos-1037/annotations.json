@@ -1,0 +1,807 @@
+[
+  {
+    "id": "ann-1037-imports",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
+    "type": "concept",
+    "title": "Imports and Problem Overview",
+    "content": "Module documentation describing Erdős Problem #1037 on degree diversity and Ramsey properties. Imports all of Mathlib. The problem asks whether graphs with many distinct degrees (each appearing at most twice) must contain large homogeneous subgraphs.",
+    "mathContext": "Chen and Erdős conjectured: if $G$ on $n$ vertices has at most $2$ vertices of each degree and more than $(1/2 + \\varepsilon)n$ distinct degrees, must $\\max(\\omega(G), \\alpha(G)) \\gg \\log n$? Cambie-Chan-Hunter (2025) disproved this.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "degree sequence",
+      "Ramsey theory",
+      "homogeneous subgraph"
+    ],
+    "prerequisites": [
+      "Mathlib",
+      "SimpleGraph"
+    ]
+  },
+  {
+    "id": "ann-1037-vertexcount",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 30,
+      "endLine": 32
+    },
+    "type": "definition",
+    "title": "vertexCount",
+    "content": "Number of vertices in the graph, defined as Fintype.card V.",
+    "mathContext": "$n = |V(G)|$, the order of the graph.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "graph order",
+      "Fintype.card"
+    ],
+    "prerequisites": [
+      "Fintype"
+    ]
+  },
+  {
+    "id": "ann-1037-degree",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 34,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "degree",
+    "content": "Degree of a vertex v in graph G: the number of vertices adjacent to v.",
+    "mathContext": "$\\deg_G(v) = |\\{u \\in V : uv \\in E(G)\\}|$. In a simple graph on $n$ vertices, $0 \\leq \\deg(v) \\leq n-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "vertex degree",
+      "degree sequence",
+      "handshaking lemma"
+    ],
+    "prerequisites": [
+      "SimpleGraph.degree"
+    ]
+  },
+  {
+    "id": "ann-1037-degreemultiset",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 41,
+      "endLine": 43
+    },
+    "type": "definition",
+    "title": "degreeMultiset",
+    "content": "The multiset of all vertex degrees, obtained by mapping degree over all vertices. Preserves multiplicities.",
+    "mathContext": "The degree multiset $\\{\\deg(v) : v \\in V\\}$ (with repetitions) captures the full degree sequence. Its underlying set gives the distinct degrees.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "degree sequence",
+      "Multiset",
+      "Erdős-Gallai theorem"
+    ],
+    "prerequisites": [
+      "Finset.univ",
+      "Multiset.map"
+    ]
+  },
+  {
+    "id": "ann-1037-distinctdegrees",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 45,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "distinctDegrees",
+    "content": "The set of distinct degree values appearing in the graph, obtained by imaging the degree function over all vertices.",
+    "mathContext": "$D(G) = \\{\\deg(v) : v \\in V\\}$ as a set (no repetitions). For a simple graph on $n$ vertices, $D(G) \\subseteq \\{0, 1, \\ldots, n-1\\}$, so $|D(G)| \\leq n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "degree set",
+      "distinct degrees",
+      "degree diversity"
+    ],
+    "prerequisites": [
+      "Finset.image",
+      "SimpleGraph.degree"
+    ]
+  },
+  {
+    "id": "ann-1037-distinctcount",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 49,
+      "endLine": 50
+    },
+    "type": "definition",
+    "title": "distinctDegreeCount",
+    "content": "The number of distinct degree values in the graph: |D(G)|.",
+    "mathContext": "$|D(G)|$ counts how many different degree values appear. Note: if both degree $0$ and degree $n-1$ appear, the graph has both isolated and universal vertices, which is impossible unless $n \\leq 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "degree diversity measure",
+      "degree set cardinality"
+    ],
+    "prerequisites": [
+      "distinctDegrees",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-1037-multiplicity",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 52,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "degreeMultiplicity",
+    "content": "How many vertices have degree exactly d: the multiplicity of d in the degree sequence.",
+    "mathContext": "$\\text{mult}(d) = |\\{v \\in V : \\deg(v) = d\\}|$. The problem constrains $\\text{mult}(d) \\leq 2$ for all $d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "degree multiplicity",
+      "degree class",
+      "vertex partition by degree"
+    ],
+    "prerequisites": [
+      "Finset.filter",
+      "SimpleGraph.degree"
+    ]
+  },
+  {
+    "id": "ann-1037-limited",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 60,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "hasLimitedMultiplicity",
+    "content": "Every degree occurs at most twice: mult(d) ≤ 2 for all d. This is the key structural constraint in the Chen-Erdős conjecture.",
+    "mathContext": "$\\forall d \\in \\mathbb{N},\\; |\\{v : \\deg(v) = d\\}| \\leq 2$. With $n$ vertices and each degree appearing at most twice, we get at least $\\lceil n/2 \\rceil$ distinct degrees.",
+    "significance": "key",
+    "relatedConcepts": [
+      "degree multiplicity bound",
+      "antimagic labeling"
+    ],
+    "prerequisites": [
+      "degreeMultiplicity"
+    ]
+  },
+  {
+    "id": "ann-1037-manydistinct",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 64,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "hasManyDistinctDegrees",
+    "content": "The number of distinct degrees exceeds (1/2 + ε)n. This asks for 'more than half' the possible degrees to appear, parametrized by ε > 0.",
+    "mathContext": "$|D(G)| > (1/2 + \\varepsilon) \\cdot n$. For $\\varepsilon > 0$, this requires the degree sequence to be genuinely diverse, not merely satisfying the trivial lower bound from limited multiplicity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "degree diversity threshold",
+      "Chen-Erdős parameter"
+    ],
+    "prerequisites": [
+      "distinctDegreeCount",
+      "vertexCount"
+    ]
+  },
+  {
+    "id": "ann-1037-chenerdos",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 68,
+      "endLine": 70
+    },
+    "type": "definition",
+    "title": "isChenErdosGraph",
+    "content": "A graph satisfies the Chen-Erdős conditions if it has limited multiplicity (each degree ≤ 2 times) and many distinct degrees (> (1/2 + ε)n).",
+    "mathContext": "$G$ is a Chen-Erdős graph with parameter $\\varepsilon$ if $\\text{mult}(d) \\leq 2$ for all $d$ and $|D(G)| > (1/2 + \\varepsilon)n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chen-Erdős conditions",
+      "degree-constrained graph"
+    ],
+    "prerequisites": [
+      "hasLimitedMultiplicity",
+      "hasManyDistinctDegrees"
+    ]
+  },
+  {
+    "id": "ann-1037-independent",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 76,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "isIndependentSet",
+    "content": "A vertex set S is independent if no two vertices in S are adjacent.",
+    "mathContext": "$S$ is independent if $\\forall u, v \\in S,\\; u \\neq v \\implies uv \\notin E(G)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "independent set",
+      "stability number"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj"
+    ]
+  },
+  {
+    "id": "ann-1037-clique",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 80,
+      "endLine": 82
+    },
+    "type": "definition",
+    "title": "isClique",
+    "content": "A vertex set S is a clique if every pair of distinct vertices in S are adjacent.",
+    "mathContext": "$S$ is a clique if $\\forall u, v \\in S,\\; u \\neq v \\implies uv \\in E(G)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "clique",
+      "complete subgraph"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj"
+    ]
+  },
+  {
+    "id": "ann-1037-trivialset",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 84,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "isTrivialSet",
+    "content": "A set is trivial if it is an independent set or a clique — the homogeneous sets of Ramsey theory.",
+    "mathContext": "$S$ is trivial iff $S$ is independent or $S$ is a clique. These are the monochromatic sets in the edge-coloring interpretation of Ramsey's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "homogeneous set",
+      "Ramsey theory",
+      "monochromatic set"
+    ],
+    "prerequisites": [
+      "isIndependentSet",
+      "isClique"
+    ]
+  },
+  {
+    "id": "ann-1037-maxtrivial",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 88,
+      "endLine": 95
+    },
+    "type": "definition",
+    "title": "maxTrivialSize",
+    "content": "The size of the largest trivial (independent or clique) subset of G, computed as the supremum over the powerset filtered by isTrivialSet.",
+    "mathContext": "$\\text{maxTrivial}(G) = \\max(\\omega(G), \\alpha(G))$, the larger of the clique number and independence number. Ramsey's theorem guarantees $\\text{maxTrivial}(G) \\geq \\frac{1}{2}\\log_2 n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number",
+      "clique number",
+      "independence number"
+    ],
+    "prerequisites": [
+      "isTrivialSet",
+      "Finset.sup"
+    ]
+  },
+  {
+    "id": "ann-1037-conjecture",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 101,
+      "endLine": 107
+    },
+    "type": "definition",
+    "title": "chenErdosConjecture",
+    "content": "The Chen-Erdős conjecture: for every ε > 0, there exists c > 0 such that every Chen-Erdős graph G has maxTrivialSize(G) > c · log n. In other words, degree diversity should force trivial subgraphs 'much larger' than the Ramsey-guaranteed O(log n).",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists c > 0,\\; \\forall G$ satisfying isChenErdosGraph($\\varepsilon$): $\\text{maxTrivial}(G) > c \\cdot \\log n$. The conjecture asks whether degree diversity gives a Ramsey-type improvement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chen-Erdős conjecture",
+      "Ramsey improvement",
+      "degree-Ramsey connection"
+    ],
+    "prerequisites": [
+      "isChenErdosGraph",
+      "maxTrivialSize",
+      "Real.log"
+    ]
+  },
+  {
+    "id": "ann-1037-false",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 109,
+      "endLine": 110
+    },
+    "type": "warning",
+    "title": "chenErdos_false",
+    "content": "Axiomatizes that the Chen-Erdős conjecture is false, as proved by Cambie-Chan-Hunter. This is a stated assumption: the file records the mathematical result rather than re-deriving the full construction in Lean.",
+    "mathContext": "$\\neg$ chenErdosConjecture: the conjecture fails. Degree diversity does not improve Ramsey bounds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "conjecture disproval"
+    ],
+    "prerequisites": [
+      "chenErdosConjecture"
+    ]
+  },
+  {
+    "id": "ann-1037-cambieconst",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 116,
+      "endLine": 117
+    },
+    "type": "definition",
+    "title": "cambieConstant",
+    "content": "The constant 3/4 achieved by the Cambie-Chan-Hunter counterexample: their construction has at least 3n/4 distinct degrees with each degree appearing at most twice.",
+    "mathContext": "The Cambie-Chan-Hunter construction achieves $|D(G)| \\geq \\frac{3n}{4}$, which exceeds $(1/2 + \\varepsilon)n$ for any $\\varepsilon < 1/4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "optimal constant",
+      "3/4 threshold"
+    ],
+    "prerequisites": [
+      "degree multiplicity",
+      "distinct degree count",
+      "graphic degree sequences"
+    ]
+  },
+  {
+    "id": "ann-1037-exceedshalf",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 119,
+      "endLine": 122
+    },
+    "type": "concept",
+    "title": "cambie_exceeds_half",
+    "content": "Verification that 3/4 > 1/2, confirming the counterexample exceeds the conjecture's threshold.",
+    "mathContext": "$3/4 > 1/2$, so the construction with $\\geq 3n/4$ distinct degrees satisfies hasManyDistinctDegrees for $\\varepsilon < 1/4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "arithmetic verification"
+    ],
+    "prerequisites": [
+      "cambieConstant"
+    ]
+  },
+  {
+    "id": "ann-1037-construction",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 124,
+      "endLine": 132
+    },
+    "type": "concept",
+    "title": "Cambie-Chan-Hunter Construction",
+    "content": "Axiomatizes the existence of the Cambie-Chan-Hunter counterexample: for every n ≥ 4, there exists a graph on n vertices with limited multiplicity (each degree ≤ 2 times), at least 3n/4 distinct degrees, and max trivial size O(log n).",
+    "mathContext": "$\\forall n \\geq 4,\\; \\exists G$ on $n$ vertices: $\\text{mult}(d) \\leq 2$ for all $d$, $|D(G)| \\geq 3n/4$, and $\\text{maxTrivial}(G) \\leq C \\log n$ for some constant $C > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit construction",
+      "Cambie-Chan-Hunter 2025"
+    ],
+    "prerequisites": [
+      "hasLimitedMultiplicity",
+      "distinctDegreeCount",
+      "maxTrivialSize"
+    ]
+  },
+  {
+    "id": "ann-1037-counterexworks",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 134,
+      "endLine": 154
+    },
+    "type": "concept",
+    "title": "counterexample_works",
+    "content": "The Cambie-Chan-Hunter construction disproves the conjecture for any ε < 1/4: there exist Chen-Erdős graphs with max trivial size only O(log n). Proved in Lean by instantiating the construction axiom at n = 4 and discharging the degree-diversity inequality with linarith.",
+    "mathContext": "For any $0 < \\varepsilon < 1/4$, the construction yields $G$ with isChenErdosGraph($\\varepsilon$) and $\\text{maxTrivial}(G) = O(\\log n)$, directly contradicting the conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjecture disproval",
+      "parameter range"
+    ],
+    "prerequisites": [
+      "cambieChanHunter_construction",
+      "isChenErdosGraph"
+    ]
+  },
+  {
+    "id": "ann-1037-ramsey",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 160,
+      "endLine": 162
+    },
+    "type": "warning",
+    "title": "ramseyNumber",
+    "content": "The diagonal Ramsey number R(k,k): the minimum n such that every graph on n vertices contains a clique or independent set of size k. Axiomatized since exact values are unknown. Two classical facts frame the problem: Ramsey's theorem guarantees every graph on ≥ R(k,k) vertices has a trivial set of size k, while Erdős's 1947 probabilistic lower bound R(k,k) ≥ 2^{k/2} shows that graphs on n vertices need only have trivial sets of size O(log n) — exactly the baseline that the Chen-Erdős conjecture hoped degree diversity could beat.",
+    "mathContext": "$R(k,k) = \\min\\{n : \\forall G \\text{ on } n \\text{ vertices},\\; \\text{maxTrivial}(G) \\geq k\\}$. Bounds $2^{k/2} \\leq R(k,k) \\leq 4^k$ (lower bound: Erdős 1947, probabilistic method). Equivalently, every $G$ on $n$ vertices satisfies $\\text{maxTrivial}(G) \\geq \\tfrac{1}{2}\\log_2 n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey number",
+      "diagonal Ramsey",
+      "Erdős 1947",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "clique number and independence number",
+      "Ramsey's theorem",
+      "first moment method"
+    ]
+  },
+  {
+    "id": "ann-1037-nohelp",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 166,
+      "endLine": 185
+    },
+    "type": "concept",
+    "title": "degree_diversity_no_ramsey_help",
+    "content": "The counterexample shows degree diversity doesn't help Ramsey: there exist graphs with ≥ 3n/4 distinct degrees (each ≤ 2 times) where the max trivial size is only O(log n), matching the Ramsey-guaranteed minimum.",
+    "mathContext": "There exists $G$ with $\\text{mult}(d) \\leq 2$, $|D(G)| \\geq 3n/4$, but $\\text{maxTrivial}(G) = O(\\log n)$. Degree diversity is independent of Ramsey-type structure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "degree-Ramsey independence",
+      "counterexample application"
+    ],
+    "prerequisites": [
+      "cambieChanHunter_construction"
+    ]
+  },
+  {
+    "id": "ann-1037-degreesum",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 191,
+      "endLine": 194
+    },
+    "type": "concept",
+    "title": "degree_sum_eq_twice_edges",
+    "content": "The handshaking lemma: the sum of all vertex degrees equals twice the number of edges. Proved directly from Mathlib's SimpleGraph.sum_degrees_eq_twice_card_edges.",
+    "mathContext": "$\\sum_{v \\in V} \\deg(v) = 2|E(G)|$. Each edge $uv$ contributes $1$ to $\\deg(u)$ and $1$ to $\\deg(v)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "handshaking lemma",
+      "degree-edge relation"
+    ],
+    "prerequisites": [
+      "SimpleGraph.degree",
+      "SimpleGraph.edgeFinset"
+    ]
+  },
+  {
+    "id": "ann-1037-limitedbound",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 196,
+      "endLine": 219
+    },
+    "type": "concept",
+    "title": "limited_multiplicity_bound",
+    "content": "With limited multiplicity (each degree ≤ 2 times), the number of vertices is at most twice the number of distinct degrees, equivalently |D(G)| ≥ ⌈n/2⌉. Proved by partitioning the vertex set into degree fibers via Finset.card_eq_sum_card_fiberwise and bounding each fiber by 2.",
+    "mathContext": "If $\\text{mult}(d) \\leq 2$ for all $d$, then $n = \\sum_d \\text{mult}(d) \\leq 2 \\cdot |D(G)|$, so $|D(G)| \\geq \\lceil n/2 \\rceil$. This is the k = 2 instance of multiplicity_k_bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pigeonhole bound",
+      "degree counting",
+      "Finset.card_eq_sum_card_fiberwise"
+    ],
+    "prerequisites": [
+      "hasLimitedMultiplicity",
+      "distinctDegreeCount"
+    ]
+  },
+  {
+    "id": "ann-1037-maxdeg",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 221,
+      "endLine": 222
+    },
+    "type": "definition",
+    "title": "maxPossibleDegree",
+    "content": "The maximum possible degree in a simple graph on n vertices: n-1.",
+    "mathContext": "$\\Delta_{\\max} = n - 1$, achieved when a vertex is adjacent to all others.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "maximum degree",
+      "complete graph"
+    ],
+    "prerequisites": [
+      "vertexCount"
+    ]
+  },
+  {
+    "id": "ann-1037-degreebound",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 224,
+      "endLine": 240
+    },
+    "type": "concept",
+    "title": "degree_bound",
+    "content": "Every vertex has degree at most n-1. Proved by observing that a vertex's neighbor set is a subset of all other vertices (no self-loops), so its cardinality is at most |V| - 1.",
+    "mathContext": "$\\deg(v) = |N(v)| \\leq |V \\setminus \\{v\\}| = n - 1$, since $v \\notin N(v)$ in a simple graph. Establishes the degree range $\\{0, 1, \\ldots, n-1\\}$ that bounds $|D(G)| \\leq n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "maximum degree",
+      "neighbor finset",
+      "Finset.card_erase_of_mem"
+    ],
+    "prerequisites": [
+      "maxPossibleDegree",
+      "SimpleGraph.neighborFinset"
+    ]
+  },
+  {
+    "id": "ann-1037-optimal",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 246,
+      "endLine": 247
+    },
+    "type": "definition",
+    "title": "optimalDistinctBound",
+    "content": "The constant 3/4 representing the optimal fraction of distinct degrees achievable with multiplicity ≤ 2.",
+    "mathContext": "The Cambie-Chan-Hunter construction shows $|D(G)| \\geq (3/4 - o(1))n$ is achievable with $\\text{mult}(d) \\leq 2$, and $3/4$ is essentially optimal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "optimal bound",
+      "extremal degree sequence"
+    ],
+    "prerequisites": [
+      "limited multiplicity constraint",
+      "handshaking lemma parity",
+      "asymptotic optimality"
+    ]
+  },
+  {
+    "id": "ann-1037-maxdistinct",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 249,
+      "endLine": 253
+    },
+    "type": "concept",
+    "title": "distinct_degree_count_le_vertex_count",
+    "content": "The number of distinct degree values is at most the number of vertices: |D(G)| ≤ n. A trivial but necessary sanity bound, proved from Finset.card_image_le (the degree map sends n vertices onto the distinct-degree set). The nontrivial extremal direction — that 3n/4 distinct degrees are achievable with multiplicity ≤ 2 — is recorded via cambieConstant and the construction axiom, not as an upper-bound theorem.",
+    "mathContext": "$|D(G)| = |\\text{image}(\\deg)| \\leq |V| = n$. Combined with limited_multiplicity_bound ($|D(G)| \\geq \\lceil n/2 \\rceil$), the distinct-degree count for a multiplicity-$\\leq 2$ graph lies in $[\\lceil n/2 \\rceil, n]$, and the extremal value is $3n/4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cardinality bound",
+      "Finset.card_image_le"
+    ],
+    "prerequisites": [
+      "distinctDegrees",
+      "vertexCount"
+    ]
+  },
+  {
+    "id": "ann-1037-cambieoptimal",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 255,
+      "endLine": 278
+    },
+    "type": "concept",
+    "title": "cambie_is_optimal",
+    "content": "The Cambie-Chan-Hunter construction is asymptotically optimal: for any ε > 0 and sufficiently large n, there exist graphs with limited multiplicity achieving at least (3/4 - ε)n distinct degrees. Proved by instantiating the construction axiom and bounding (3/4)n ≥ (3/4 - ε)n with nlinarith.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\; \\exists N$ such that $\\forall n \\geq N$: $\\exists G$ with $\\text{mult}(d) \\leq 2$ and $|D(G)| \\geq (3/4 - \\varepsilon)n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "asymptotic optimality",
+      "extremal construction"
+    ],
+    "prerequisites": [
+      "optimalDistinctBound",
+      "hasLimitedMultiplicity"
+    ]
+  },
+  {
+    "id": "ann-1037-multk",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 284,
+      "endLine": 286
+    },
+    "type": "definition",
+    "title": "hasMultiplicityAtMost",
+    "content": "Generalization: every degree occurs at most k times, extending from the k=2 case of the original problem.",
+    "mathContext": "$\\text{mult}(d) \\leq k$ for all $d$. For general $k$, the maximum distinct degrees is conjectured to be $(k/(k+1))n + O(1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "general multiplicity bound",
+      "degree multiplicity generalization"
+    ],
+    "prerequisites": [
+      "degreeMultiplicity"
+    ]
+  },
+  {
+    "id": "ann-1037-generalbound",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 288,
+      "endLine": 289
+    },
+    "type": "definition",
+    "title": "generalMultiplicityBound",
+    "content": "The conjectured general bound k/(k+1) for maximum fraction of distinct degrees with multiplicity at most k.",
+    "mathContext": "Conjectured: with $\\text{mult}(d) \\leq k$, $|D(G)| \\leq (k/(k+1))n + O(1)$. For $k=2$: bound is $2/3$, but the actual optimum is $3/4 > 2/3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "general bound conjecture",
+      "multiplicity-degree tradeoff"
+    ],
+    "prerequisites": [
+      "pigeonhole principle",
+      "k-bounded multiplicity",
+      "degree sequence realizability"
+    ]
+  },
+  {
+    "id": "ann-1037-genconj",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 291,
+      "endLine": 299
+    },
+    "type": "definition",
+    "title": "generalBoundConjecture",
+    "content": "The general bound conjecture: for every k ≥ 1 there is a constant C such that any graph with multiplicity ≤ k has at most (k/(k+1))n + C distinct degrees. This conjecture is FALSE — already at k = 2 the Cambie-Chan-Hunter construction achieves 3n/4 > (2/3)n distinct degrees.",
+    "mathContext": "$\\forall k \\geq 1,\\; \\exists C,\\; \\forall G$ with $\\text{mult}(d) \\leq k$: $|D(G)| \\leq \\tfrac{k}{k+1} n + C$. Falsified at $k = 2$ since $3n/4 > (2/3)n + C$ for all large $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "general bound conjecture",
+      "universe-polymorphic quantifier",
+      "open question oq-02"
+    ],
+    "prerequisites": [
+      "hasMultiplicityAtMost",
+      "generalMultiplicityBound"
+    ]
+  },
+  {
+    "id": "ann-1037-mult2",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 301,
+      "endLine": 305
+    },
+    "type": "concept",
+    "title": "multiplicity_two_bound",
+    "content": "For k=2, the general multiplicity bound gives 2/3, which is beaten by the Cambie-Chan-Hunter construction achieving 3/4.",
+    "mathContext": "$k/(k+1)|_{k=2} = 2/3$. But the actual optimum for $k=2$ is $3/4$, so the general bound formula $k/(k+1)$ is not tight at $k=2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "special case computation"
+    ],
+    "prerequisites": [
+      "generalMultiplicityBound"
+    ]
+  },
+  {
+    "id": "ann-1037-beats",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 307,
+      "endLine": 310
+    },
+    "type": "concept",
+    "title": "cambie_beats_general",
+    "content": "The Cambie constant 3/4 exceeds the general bound 2/3 for k=2, showing the general formula k/(k+1) is not tight.",
+    "mathContext": "$3/4 > 2/3$: the Cambie-Chan-Hunter construction exceeds the naive general bound, demonstrating the formula $k/(k+1)$ underestimates the true maximum for $k=2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bound comparison",
+      "formula tightness"
+    ],
+    "prerequisites": [
+      "cambieConstant",
+      "generalMultiplicityBound"
+    ]
+  },
+  {
+    "id": "ann-1037-multkbound",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 312,
+      "endLine": 336
+    },
+    "type": "concept",
+    "title": "multiplicity_k_bound",
+    "content": "General pigeonhole bound: with multiplicity at most k, the number of vertices is at most k times the number of distinct degrees, i.e. |D(G)| ≥ n/k. Generalizes limited_multiplicity_bound (the k = 2 case) via the same fiberwise partition by degree value.",
+    "mathContext": "If $\\text{mult}(d) \\leq k$ for all $d$, then $n = \\sum_{d \\in D(G)} \\text{mult}(d) \\leq k \\cdot |D(G)|$, so $|D(G)| \\geq n/k$. Proved with Finset.card_eq_sum_card_fiberwise, avoiding the PairwiseDisjoint shape of Finset.card_biUnion.",
+    "significance": "key",
+    "relatedConcepts": [
+      "general pigeonhole",
+      "fiberwise partition",
+      "open question oq-02"
+    ],
+    "prerequisites": [
+      "hasMultiplicityAtMost",
+      "distinctDegreeCount"
+    ]
+  },
+  {
+    "id": "ann-1037-genfalse",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 338,
+      "endLine": 350
+    },
+    "type": "concept",
+    "title": "general_bound_conjecture_informally_false",
+    "content": "Records that the general bound conjecture fails on informal grounds: the naive k → k/(k+1) extrapolation already underestimates the truth at k = 2, where the Cambie-Chan-Hunter construction reaches 3n/4 against the predicted (2/3)n + C. Currently an alias for cambie_beats_general; a full Lean disproof from the construction axiom is deferred because matching the Type* universe quantifier in generalBoundConjecture against the axiom's concrete Type carrier requires extra universe handling.",
+    "mathContext": "At $k = 2$: conjecture predicts $|D(G)| \\leq (2/3)n + C$, but $3n/4 > (2/3)n + C$ for $n > 12C$. The numerical gap is captured by cambie_beats_general and multiplicity_k_bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjecture disproval",
+      "universe polymorphism",
+      "deferred formalization"
+    ],
+    "prerequisites": [
+      "generalBoundConjecture",
+      "cambie_beats_general"
+    ]
+  },
+  {
+    "id": "ann-1037-disproved",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 356,
+      "endLine": 363
+    },
+    "type": "concept",
+    "title": "erdos_1037_disproved",
+    "content": "The main result: there exists ε > 0 (specifically 1/8) and a graph satisfying Chen-Erdős conditions with max trivial size only O(log n), disproving the conjecture.",
+    "mathContext": "$\\exists \\varepsilon > 0,\\; \\exists G$: isChenErdosGraph($\\varepsilon$) and $\\text{maxTrivial}(G) \\leq C \\log n$. Takes $\\varepsilon = 1/8 < 1/4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "main theorem",
+      "conjecture disproval"
+    ],
+    "prerequisites": [
+      "chenErdosConjecture",
+      "cambieChanHunter_construction"
+    ]
+  },
+  {
+    "id": "ann-1037-answer",
+    "proofId": "erdos-1037",
+    "range": {
+      "startLine": 365,
+      "endLine": 366
+    },
+    "type": "concept",
+    "title": "erdos_1037_answer",
+    "content": "The answer to Erdős #1037 is NO: ¬chenErdosConjecture, derived directly from the axiomatized chenErdos_false.",
+    "mathContext": "The Chen-Erdős conjecture is false: degree diversity does not improve Ramsey-type bounds on homogeneous subgraph sizes.",
+    "significance": "key",
+    "relatedConcepts": [
+      "final answer",
+      "Problem 1037 resolution"
+    ],
+    "prerequisites": [
+      "chenErdos_false"
+    ]
+  }
+]

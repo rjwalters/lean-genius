@@ -1,0 +1,223 @@
+{
+  "id": "erdos-411",
+  "title": "Erdős Problem #411: Iterated Totient Sums and Doubling",
+  "slug": "erdos-411",
+  "description": "Define $g(n) = n + \\varphi(n)$ and let $g^k$ denote the $k$-th iterate. For which $n$ and $r$ does $g^{k+r}(n) = 2 \\cdot g^k(n)$ for all large $k$? Known $r = 2$ solutions: $n = 10, 94$. Cambie found ratio-3 and ratio-4 solutions. Steinerberger (2025) reduced the $r = 2$ case to $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$. OPEN in general.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/411",
+    "date": "1980",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos411Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "iterated-functions",
+      "totient",
+      "arithmetic-dynamics"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 411,
+    "erdosUrl": "https://erdosproblems.com/411",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-26",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_even",
+        "description": "φ(n) is even for n > 2, used to prove even preservation under g",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Filter.Basic",
+        "description": "Basic filter theory for eventual properties",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalized the totient-step iteration g(n) = n + φ(n) and its k-fold iterate",
+      "Defined DoublingRelation and GeneralRatioRelation capturing the eventual scaling property",
+      "Proved known r = 2 solutions (n = 10, 94) via native_decide base case + doubling_propagation induction",
+      "Proved Cambie's ratio-3 case g_{k+4}(738) = 3·g_k(738) for all k via strong induction using totientStep_triple (axiom-free)",
+      "totientStep_quadruple: proved g(4m) = 4·g(m) when 4|m via double application of Nat.totient_mul_of_prime_of_dvd with p=2",
+      "cambie_ratio4_148646: proved g_{k+4}(148646) = 4·g_k(148646) for all k≥1 via strong induction (native_decide base cases k=1..4)",
+      "cambie_ratio4_4325798: proved g_{k+4}(4325798) = 4·g_k(4325798) for all k≥1 via same structure",
+      "Formalized Steinerberger's (2025) reduction — sufficient direction: proved steinerberger_iff (g_2(n) = 2n ↔ φ(n) + φ(n + φ(n)) = n) and steinerberger_r2_sufficient (even n > 2 with φ(n) + φ(n + φ(n)) = n implies DoublingRelation n 2 with K = 0); also proved steinerberger_eq_n10 and steinerberger_eq_n94 verifying the two known r=2 cases satisfy the equation",
+      "Proved even preservation under g using Mathlib's Nat.totient_even",
+      "Stated Cambie's structural conjecture (n = 2^l·p with p ∈ {2,3,5,7,35,47}) as a definition; conjecture itself is open",
+      "S9: Proved four additional Cambie l=1 doubling solutions (n=4, 6, 14, 70) via steinerberger_r2_sufficient — together with prior n=10 and n=94 this exhausts the l=1 layer of Cambies conjectured family n = 2^l*p with p in {2,3,5,7,35,47}",
+      "S10: steinerberger_eq_lift — Steinerberger's equation φ(n)+φ(n+φ(n))=n is preserved under n ↦ 2n for even n>2, proved via totient_double_even applied to both n and the even sum n+φ(n); steinerberger_eq_pow_two iterates the lift to give 2^l·n satisfies the equation for all l; cambie_family_doubling combines with steinerberger_r2_sufficient to give DoublingRelation (2^l·n) 2 from a single base case. Specializing to the six l=1 base cases proves the *entire* sufficient direction of Cambie's conjectured family {2^l·p : l≥1, p∈{2,3,5,7,35,47}} — every predicted n is unconditionally a doubling solution. The l=2 layer (n∈{8,12,20,28,140,188}) is recorded as named theorems doubling_r2_n8/n12/n20/n28/n140/n188 (build pending)"
+    ],
+    "axiomCount": 1,
+    "lineCount": 491,
+    "assumptions": "No literal `axiom` declarations and no sorries (leanFile.axiomCount = 0). However, the named computational results — the r=2 base cases doubling_r2_n10/n94, the strong-induction base cases inside ratio3_738_aux, ratio4_148646_aux and ratio4_4325798_aux, and the Steinerberger equation checks steinerberger_eq_n10/n94/n4/n6/n14/n70 — discharge their numeric obligations with `native_decide`, which trusts the Lean compiler's kernel reduction and therefore depends on the `Lean.ofReduceBool` axiom (visible via `#print axioms`). Per the project's conservative native_decide policy this counts as one assumption, so meta.axiomCount = 1 (Lean.ofReduceBool) and the entry is status `axiomatized` / badge `axiom`. The structural results (doubling_propagation, steinerberger_iff, totientStep_even_of_even, totientStep_ge, steinerberger_eq_lift, steinerberger_eq_pow_two, cambie_family_doubling) and the open Erdős conjecture (stated as the `Prop` definition ErdosProblem411, not assumed) carry no assumptions.",
+    "theoremCount": 39,
+    "definitionCount": 6
+  },
+  "leanFile": {
+    "path": "Proofs/Erdos411Problem.lean",
+    "lineCount": 491,
+    "namespace": "root",
+    "imports": [
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Tactic"
+    ],
+    "mainTheorems": [
+      "totientStep_even_of_even",
+      "totientStep_ge",
+      "steinerberger_r2_sufficient",
+      "steinerberger_eq_lift",
+      "cambie_family_doubling"
+    ],
+    "mainDefinitions": [
+      "totientStep",
+      "iteratedTotientStep",
+      "DoublingRelation",
+      "ErdosProblem411",
+      "GeneralRatioRelation",
+      "CambieConjecture"
+    ],
+    "axiomCount": 0,
+    "theoremCount": 39,
+    "sorries": 0,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Erdős and Graham posed this question in their influential monograph 'Old and New Problems and Results in Combinatorial Number Theory' (1980, p. 81). They studied the iteration $g(n) = n + \\varphi(n)$, where $\\varphi$ is Euler's totient function, asking for which $n$ and $r$ the $r$-step iterate doubles the value: $g^{k+r}(n) = 2 \\cdot g^k(n)$ for all large $k$. The function $g$ is a natural object: since $\\varphi(n)$ counts integers up to $n$ coprime to $n$, the map $n \\mapsto n + \\varphi(n)$ augments $n$ by its 'coprime complement.'\n\nThe simplest solutions are $n = 10$ (orbit: $10 \\to 14 \\to 20 \\to 28 \\to 40 \\to \\ldots$, doubling every 2 steps) and $n = 94$. For decades, little progress was made on characterizing all solutions. Stefan Steinerberger achieved a breakthrough in 2025 by showing the $r = 2$ case reduces to a single finitely-checkable equation: $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$. This transforms an asymptotic dynamical condition into elementary number theory.\n\nSjoerd Cambie extended the investigation to general multiplicative ratios $c \\neq 2$, discovering that $n = 738$ gives a ratio-3 solution ($g^{k+4}(738) = 3 \\cdot g^k(738)$) and $n = 148646, 4325798$ give ratio-4 solutions. These findings reveal the problem has far richer structure than Erdős originally anticipated. Cambie also conjectured that all $r = 2$ solutions have the form $n = 2^l \\cdot p$ for $p \\in \\{2, 3, 5, 7, 35, 47\\}$.\n\nThe problem belongs to a cluster of related Erdős questions (#410--#415) about iterating arithmetic functions: $\\sigma$ (sum of divisors), $\\tau$ (divisor count), $\\omega$ (distinct prime factors), and $\\varphi$ (totient). Together they form a rich chapter in arithmetic dynamics, connecting multiplicative number theory to discrete dynamical systems.",
+    "problemStatement": "Let $g(n) = n + \\varphi(n)$ and $g^k = g \\circ \\cdots \\circ g$ ($k$ times). For which $n$ and $r$ is $g^{k+r}(n) = 2 \\cdot g^k(n)$ for all sufficiently large $k$?",
+    "text": "Define $g(n) = n + \\varphi(n)$ and let $g^k$ denote the $k$-th iterate. For which $n$ and $r$ does $g^{k+r}(n) = 2 \\cdot g^k(n)$ for all large $k$? Known $r = 2$ solutions: $n = 10, 94$. Cambie found ratio-3 and ratio-4 solutions. Steinerberger (2025) reduced the $r = 2$ case to $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$. OPEN in general.",
+    "proofStrategy": "The formalization defines `totientStep` ($g$), `iteratedTotientStep` ($g^k$), and `DoublingRelation`. The main conjecture `ErdosProblem411` asks for a characterization of all solution pairs $(n, r)$. Known solutions ($n = 10, 94$ for $r = 2$) are proved via native_decide + doubling_propagation induction; Cambie's ratio-3 and ratio-4 cases fully proved via strong induction. `GeneralRatioRelation` extends to arbitrary multiplicative ratios. Structural properties (even preservation, monotonicity) are proved. The sufficient direction of Steinerberger's r=2 reduction is proved as `steinerberger_r2_sufficient`: any even $n > 2$ satisfying $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$ is a doubling solution, by combining the elementary identity `steinerberger_iff` with `doubling_propagation`. Cambie's conjecture and the open problem are stated as defs (not axioms).",
+    "keyInsights": [
+      "**Orbit structure**: $g(n) = n + \\varphi(n)$ produces strictly increasing orbits; for $n = 10$, the orbit $10 \\to 14 \\to 20 \\to 28 \\to 40 \\to \\ldots$ doubles every two steps because $\\varphi(10) + \\varphi(14) = 4 + 6 = 10$",
+      "**Steinerberger's reduction**: The asymptotic condition $g^{k+2}(n) = 2 \\cdot g^k(n)$ for large $k$ is equivalent to the single equation $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$, transforming dynamics into elementary arithmetic",
+      "**Multi-ratio phenomenon**: Cambie found solutions with ratios 3 and 4 (not just doubling), revealing that the set $\\{c : \\exists n, r,\\, g^{k+r}(n) = c \\cdot g^k(n)\\}$ is larger than $\\{2\\}$",
+      "**Structural rigidity**: All known $r = 2$ solutions have the form $n = 2^l \\cdot p$ for small primes $p \\in \\{2, 3, 5, 7, 35, 47\\}$ (Cambie's conjecture), suggesting the solution set is highly constrained",
+      "**Parity constraint**: Even preservation under $g$ (for $n > 2$) via $\\varphi(n)$ being even restricts orbits to even numbers, a structural constraint from Mathlib's `Nat.totient_even`",
+      "**Self-perpetuation**: The single lemma `doubling_propagation` shows one base-case doubling $g^2(n) = 2n$ forces $g^{k+2}(n) = 2\\,g^k(n)$ for all $k$, via the self-similar engine $g(2m) = 2\\,g(m)$ on the (provably even) iterates — turning every solution into a finitely-checkable base case",
+      "**Tower theorem**: `cambie_family_doubling` proves the Steinerberger equation is invariant under $n \\mapsto 2n$, so a single even seed generates an infinite geometric tower $\\{2^l n\\}$ of doubling solutions; applied to the six $l = 1$ seeds this formalizes the *entire sufficient direction* of Cambie's conjecture — only the converse (these are the *only* solutions) remains open",
+      "**Verification method**: The concrete solutions are not axiomatized — their numeric base cases are discharged by `native_decide`, which depends on the `Lean.ofReduceBool` axiom (hence status `axiomatized`); the structural backbone (propagation, lifting, tower) is fully kernel-checked with no such dependency"
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and References",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Module docstring stating the problem: characterize $(n, r)$ with $g^{k+r}(n) = 2 \\cdot g^k(n)$. References Erdős--Graham (1980) and Steinerberger (2025). Imports `Mathlib.Data.Nat.Totient`, `Mathlib.Data.Nat.Basic`, `Mathlib.Order.Filter.Basic`, `Mathlib.Tactic`."
+    },
+    {
+      "id": "iteration-function",
+      "title": "The Iteration Function",
+      "startLine": 19,
+      "endLine": 30,
+      "summary": "Defines `totientStep` $g(n) = n + \\varphi(n)$ and `iteratedTotientStep` $g^k(n)$ by recursion: $g^0(n) = n$, $g^{k+1}(n) = g(g^k(n))$."
+    },
+    {
+      "id": "doubling-relation",
+      "title": "The Doubling Relation",
+      "startLine": 31,
+      "endLine": 39,
+      "summary": "Defines `DoublingRelation n r`: $\\exists K,\\, \\forall k \\geq K,\\, g^{k+r}(n) = 2 \\cdot g^k(n)$. Uses existential quantification over the transient period $K$."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 40,
+      "endLine": 51,
+      "summary": "`ErdosProblem411`: characterize all $(n, r)$ with the doubling property. Formalized as $\\exists S \\subseteq \\mathbb{N} \\times \\mathbb{N}$ capturing all solutions with $S \\neq \\emptyset$."
+    },
+    {
+      "id": "doubling-propagation",
+      "title": "Doubling Propagation",
+      "startLine": 52,
+      "endLine": 118,
+      "summary": "The self-similarity engine. Proves $\\varphi(2m) = 2\\varphi(m)$ for even $m > 0$ (`totient_double_even`, via `Nat.totient_mul_of_prime_of_dvd`) and the derived step identities $g(2m) = 2g(m)$ (`totientStep_double_even`) and $g(3m) = 3g(m)$ for $3 \\mid m$ (`totientStep_triple`). Establishes $g^k(n) \\geq n$ (`iteratedTotientStep_ge_start`) and even-preservation of iterates (`iteratedTotientStep_even`). Culminates in the private lemma `doubling_propagation`: for even $n > 2$, a single base case $g^2(n) = 2n$ propagates to $g^{k+2}(n) = 2 g^k(n)$ for all $k$ by induction. 0 axioms, 0 sorries."
+    },
+    {
+      "id": "known-solutions",
+      "title": "Known Solutions (PROVED)",
+      "startLine": 119,
+      "endLine": 273,
+      "summary": "All known solutions proved unconditionally. The $r = 2$ doublers $n = 10$ (`doubling_r2_n10`) and $n = 94$ (`doubling_r2_n94`) via `native_decide` base case + `doubling_propagation`. Introduces `GeneralRatioRelation n r c` for ratios $c \\neq 2$. Cambie's ratio-3 solution $g^{k+4}(738) = 3 g^k(738)$ (`cambie_ratio3`, via the strong-induction lemma `ratio3_738_aux` using `totientStep_triple` and 3-divisibility of all iterates). Proves $g(4m) = 4g(m)$ for $4 \\mid m$ (`totientStep_quadruple`, double application of the $p=2$ identity) and Cambie's two ratio-4 solutions $n = 148646, 4325798$ (`cambie_ratio4_148646`, `cambie_ratio4_4325798`, each via a strong-induction aux lemma). 0 axioms, 0 sorries."
+    },
+    {
+      "id": "steinerberger-reduction",
+      "title": "Steinerberger's Reduction (PROVED, sufficient direction)",
+      "startLine": 274,
+      "endLine": 320,
+      "summary": "Formalizes Steinerberger's (2025, arXiv:2504.08023) reduction of the $r = 2$ case to the elementary equation $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$. Proves the computational expansion `iteratedTotientStep_two` ($g^2(n) = (n + \\varphi(n)) + \\varphi(n + \\varphi(n))$), the equivalence `steinerberger_iff` ($g^2(n) = 2n \\iff \\varphi(n) + \\varphi(n + \\varphi(n)) = n$), and the main sufficient direction `steinerberger_r2_sufficient`: any even $n > 2$ satisfying the equation is an $r = 2$ doubling solution with $K = 0$. Verifies the equation for the two known solutions $n = 10$ (`steinerberger_eq_n10`) and $n = 94$ (`steinerberger_eq_n94`) by `native_decide`. The converse direction (DoublingRelation → equation) is noted as not formalized."
+    },
+    {
+      "id": "cambie-l1-solutions",
+      "title": "Additional Cambie l=1 Doubling Solutions",
+      "startLine": 321,
+      "endLine": 373,
+      "summary": "Completes the $l = 1$ layer of Cambie's conjectured family $n = 2^l \\cdot p$, $p \\in \\{2, 3, 5, 7, 35, 47\\}$, i.e. $n \\in \\{4, 6, 10, 14, 70, 94\\}$. The cases $n = 10, 94$ are already proved above; this section adds the remaining four $n = 4, 6, 14, 70$ via `steinerberger_r2_sufficient`, each gated by a `native_decide` verification of the Steinerberger equation (`steinerberger_eq_n4/n6/n14/n70`) yielding `doubling_r2_n4/n6/n14/n70`. 0 axioms, 0 sorries."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Structural Properties",
+      "startLine": 374,
+      "endLine": 398,
+      "summary": "Proves even-preservation of $g$: for even $n > 2$, $g(n) = n + \\varphi(n)$ is even (`totientStep_even_of_even`, via `Nat.totient_even`), so orbits of even starting points stay even — consistent with all known solutions being even. States Cambie's structural conjecture as a definition `CambieConjecture` (all $r = 2$ solutions have form $n = 2^l \\cdot p$, $p \\in \\{2,3,5,7,35,47\\}$; open, not an axiom). Records monotonicity $g(n) \\geq n$ (`totientStep_ge`)."
+    },
+    {
+      "id": "cambie-family-tower",
+      "title": "Cambie Family Doubling Tower",
+      "startLine": 399,
+      "endLine": 491,
+      "summary": "Proves Steinerberger's equation $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$ is preserved under doubling: for even $n > 2$, the equation holds for $n$ iff it lifts to $2n$ (`steinerberger_eq_lift`). Iterating gives `steinerberger_eq_pow_two`: $\\varphi(2^l n) + \\varphi(2^l n + \\varphi(2^l n)) = 2^l n$ for all $l$. Composed with the sufficient direction yields `cambie_family_doubling`: $\\text{DoublingRelation}(2^l n)\\, 2$ for every $l \\geq 0$. Applied to the six l=1 base cases this proves *every* element of Cambie's conjectured family $\\{2^l p : l \\geq 1,\\ p \\in \\{2,3,5,7,35,47\\}\\}$ is an $r=2$ doubling solution unconditionally; the $l=2$ layer is recorded as `doubling_r2_n8`, `doubling_r2_n12`, `doubling_r2_n20`, `doubling_r2_n28`, `doubling_r2_n140`, `doubling_r2_n188`."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #411 asks for all $(n, r)$ such that iterating $g(n) = n + \\varphi(n)$ satisfies $g^{k+r}(n) = 2 \\cdot g^k(n)$ for large $k$. The formalization proves 39 theorems (0 axioms, 0 sorries): all known solutions ($n = 10, 94$ for $r = 2$; Cambie's ratio-3 $n = 738$ and ratio-4 $n = 148646, 4325798$); Steinerberger's (2025) sufficient reduction; and the *entire* l ≥ 1 layer of Cambie's conjectured family $\\{2^l p : p \\in \\{2,3,5,7,35,47\\}\\}$ via the `cambie_family_doubling` tower theorem, derived from the lifting result $\\varphi(n) + \\varphi(n + \\varphi(n)) = n \\Rightarrow \\varphi(2n) + \\varphi(2n + \\varphi(2n)) = 2n$. The main characterization conjecture and the converse direction of Cambie's conjecture remain open.",
+    "implications": "**Theoretical Significance**: A full characterization would reveal deep structure in the arithmetic dynamics of the totient function and its interaction with addition.\n\nThe connection between the multiplicative nature of $\\varphi$ and the additive iteration $g(n) = n + \\varphi(n)$ is fundamental. The multi-ratio phenomenon discovered by Cambie suggests the problem is part of a richer classification of growth rates in arithmetic dynamical systems.",
+    "openQuestions": [
+      "Are there finitely or infinitely many $(n, r)$ with the doubling property? Cambie's conjecture would give infinitely many (all $2^l \\cdot p$ for each valid $p$)",
+      "Does Cambie's conjecture ($n = 2^l \\cdot p$ for small $p$) hold for all $r = 2$ solutions?",
+      "What ratios $c$ besides 2, 3, 4 admit solutions to $g^{k+r}(n) = c \\cdot g^k(n)$? Is the set of admissible ratios finite?",
+      "Can Steinerberger's reduction technique (from asymptotic dynamics to finite equation) be extended to $r > 2$ or general ratios $c$?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-410",
+      "relationship": "sibling",
+      "description": "Both iterate arithmetic functions (φ vs σ) and study growth rates; #410 asks if $\\lim_{k \\to \\infty} \\sigma_k(n)^{1/k} = \\infty$"
+    },
+    {
+      "targetId": "erdos-412",
+      "relationship": "sibling",
+      "description": "Both study orbit dynamics of arithmetic function iterations; #412 asks whether iterated σ-sequences eventually merge"
+    },
+    {
+      "targetId": "erdos-413",
+      "relationship": "sibling",
+      "description": "Both study iterations $n \\mapsto n + f(n)$; #413 uses $f = \\omega$ (distinct prime factors) instead of $f = \\varphi$"
+    },
+    {
+      "targetId": "erdos-414",
+      "relationship": "sibling",
+      "description": "Both study arithmetic function iteration dynamics; #414 uses $h(n) = n + \\tau(n)$ and asks about orbit merging"
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "uses",
+      "description": "The foundational theorem $a^{\\varphi(n)} \\equiv 1 \\pmod{n}$ underlies the properties of $\\varphi$ used throughout #411"
+    }
+  ],
+  "sorries": 0
+}

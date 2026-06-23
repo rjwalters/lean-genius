@@ -1,0 +1,132 @@
+[
+  {
+    "id": "ann-amgm-oq03-oq02-oq01-oq01-ext-def",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 50,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Extended Power Mean: Continuous Completion at r = 0",
+    "content": "The standard weighted power mean M_r(z, w) = (Σ wᵢ zᵢʳ)^{1/r} is defined only for r ≠ 0. The `extWeightedPowerMean` definition fills the r = 0 gap by setting M_0 = GM = ∏ zᵢ^{wᵢ} (the weighted geometric mean). This is mathematically justified: by L'Hôpital's rule or logarithmic differentiation, lim_{r→0} (Σ wᵢ zᵢʳ)^{1/r} = exp(Σ wᵢ log zᵢ) = ∏ zᵢ^{wᵢ} = GM. The Lean definition uses a dependent if (`dif_pos`/`dif_neg`) to case-split on r = 0, with the two simp lemmas `extWeightedPowerMean_zero` and `extWeightedPowerMean_of_ne_zero` unwrapping this definition in proofs.",
+    "mathContext": "`noncomputable def extWeightedPowerMean (r : ℝ) : ℝ := if h : r = 0 then weightedGeomMean s w z else weightedPowerMean s w z r h`. Continuity: $\\lim_{r\\to 0} \\left(\\sum_i w_i z_i^r\\right)^{1/r} = \\exp\\!\\left(\\sum_i w_i \\log z_i\\right) = \\prod_i z_i^{w_i} = \\mathrm{GM}$. In Lean, `dif_pos rfl : extWeightedPowerMean s w z 0 = weightedGeomMean s w z`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "weighted geometric mean",
+      "L'Hôpital's rule for r→0 limit",
+      "dependent if in Lean 4",
+      "dif_pos / dif_neg lemmas",
+      "noncomputable definition"
+    ],
+    "prerequisites": [
+      "weighted power mean definition (r ≠ 0)",
+      "weighted geometric mean definition",
+      "L'Hôpital's rule",
+      "Lean dependent if syntax"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq03-oq02-oq01-oq01-unified",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Four-Case Proof: Complete Power Mean Monotonicity",
+    "content": "The `extWeightedPowerMean_monotone` proof unifies all cases via exhaustive case splitting on (r = 0, t = 0). The four cases are: (1) r = 0, t = 0: trivial—both sides are GM, giving equality. (2) r = 0, t ≠ 0: since r ≤ t and r = 0, t ≠ 0, we have t > 0; apply `geom_mean_le_power_mean_pos`. (3) r ≠ 0, t = 0: since r ≤ 0 and r ≠ 0, we have r < 0; apply `power_mean_le_geom_mean_neg`. (4) r ≠ 0, t ≠ 0: apply `power_mean_monotone_all`. The Lean proof uses `rcases eq_or_ne r 0` and `rcases eq_or_ne t 0` for the case split, then `lt_of_le_of_ne` to recover strict inequality in cases 2 and 3. Each case reduces to a previously proved lemma from the parent files.",
+    "mathContext": "Proof structure: `rcases eq_or_ne r 0 with hr | hr; rcases eq_or_ne t 0 with ht | ht`. Case (r=0,t≠0): $t > 0$ from $0 = r \\leq t$ and $t \\neq 0$, so `lt_of_le_of_ne (hr ▸ hrt) (Ne.symm ht) : 0 < t`. Case (r≠0,t=0): $r < 0$ from `lt_of_le_of_ne (ht ▸ hrt) hr`. Full monotonicity: $M_r \\leq M_t$ for all $r \\leq t \\in \\mathbb{R}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rcases in Lean 4",
+      "eq_or_ne tactic pattern",
+      "lt_of_le_of_ne",
+      "power_mean_monotone_all",
+      "geom_mean_le_power_mean_pos",
+      "power_mean_le_geom_mean_neg"
+    ],
+    "prerequisites": [
+      "parent lemmas from OQ03 and OQ03OQ02OQ01 files",
+      "Lean rcases syntax",
+      "Ne.symm lemma",
+      "lt_of_le_of_ne"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq03-oq02-oq01-oq01-history",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Hardy-Littlewood-Pólya and the Complete Power Mean Hierarchy",
+    "content": "The power mean M_r forms a continuous, strictly increasing chain in r (for all positive weights and non-constant positive inputs). Hardy, Littlewood, and Pólya's 1934 book 'Inequalities' systematically treated power means and proved the full monotonicity theorem. The special cases were known much earlier: AM ≥ GM was proved by Cauchy (1821) by forward-backward induction; HM ≤ GM ≤ AM goes back at least to ancient Greek mathematics (the arithmetic, geometric, and harmonic means were studied by Pythagoras). The extension to all r ∈ ℝ via the limit at r = 0 was formalized in the mid-20th century. The full chain is: ... ≤ M_{-∞} = min ≤ ... ≤ M_{-1} = HM ≤ M_0 = GM ≤ M_1 = AM ≤ M_2 = QM ≤ ... ≤ M_{+∞} = max.",
+    "mathContext": "Power mean chain: $M_{-\\infty} = \\min \\leq M_r \\leq M_s \\leq M_{+\\infty} = \\max$ for $r \\leq s$. Limits: $\\lim_{r\\to -\\infty} M_r = \\min_i z_i$ (min) and $\\lim_{r\\to +\\infty} M_r = \\max_i z_i$ (max). The QM (quadratic mean / RMS) is $M_2 = \\sqrt{\\sum w_i z_i^2}$. Cauchy's AM-GM (1821): proved by forward-backward induction for $n = 2^k$, then reduced to $n-1$ from $n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hardy-Littlewood-Pólya Inequalities (1934)",
+      "Cauchy's AM-GM proof (1821)",
+      "min as M_{-∞}, max as M_{+∞}",
+      "quadratic mean (RMS)",
+      "power mean chain"
+    ],
+    "prerequisites": [
+      "weighted power mean family M_r",
+      "AM-GM inequality",
+      "HM ≤ AM inequality",
+      "limit of power mean as r → ±∞"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq03-oq02-oq01-oq01-hm-gm-am",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 107,
+      "endLine": 129
+    },
+    "type": "insight",
+    "title": "HM ≤ GM ≤ AM as a Direct Corollary of Unified Monotonicity",
+    "content": "The `hm_le_gm_le_am` theorem derives the classical triple inequality directly from `extWeightedPowerMean_monotone` by instantiating r = -1, 0, 1. Since -1 ≤ 0 ≤ 1, the unified theorem gives M_{-1} ≤ M_0 ≤ M_1, which reads as HM ≤ GM ≤ AM. The proof uses two applications of the unified theorem: first with hrt : (-1 : ℝ) ≤ 0 (giving HM ≤ GM), then with hrt : (0 : ℝ) ≤ 1 (giving GM ≤ AM). The Lean proof rewrites using `extWeightedPowerMean_of_ne_zero` (for r = ±1) and `extWeightedPowerMean_zero` (for r = 0) to convert from the extended definition back to `weightedPowerMean` and `weightedGeomMean`. This is a clean example of how unified theorems enable direct derivation of special cases.",
+    "mathContext": "HM: $M_{-1}(z,w) = \\left(\\sum_i w_i z_i^{-1}\\right)^{-1} = \\frac{1}{\\sum_i w_i / z_i}$. GM: $M_0 = \\prod_i z_i^{w_i}$. AM: $M_1 = \\sum_i w_i z_i$. Inequality: HM $\\leq$ GM $\\leq$ AM. Lean: `extWeightedPowerMean_monotone ... (show (-1:ℝ) ≤ 0 by norm_num)` gives HM ≤ GM; the rewrite `extWeightedPowerMean_of_ne_zero ... (by norm_num : (-1:ℝ) ≠ 0)` extracts the standard power mean.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic mean",
+      "geometric mean",
+      "arithmetic mean",
+      "norm_num tactic",
+      "special case derivation from unified theorem"
+    ],
+    "prerequisites": [
+      "harmonic mean definition as M_{-1}",
+      "geometric mean as M_0",
+      "arithmetic mean as M_1",
+      "Lean norm_num tactic"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq03-oq02-oq01-oq01-monotone",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 130,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Monotone Function Characterization for Mathlib Integration",
+    "content": "The `extWeightedPowerMean_monotone_fun` theorem wraps the point-wise monotonicity into Mathlib's `Monotone` typeclass: `Monotone (extWeightedPowerMean s w z)` asserts that the function r ↦ M_r is a `Monotone` function (in the sense `∀ a b, a ≤ b → f a ≤ f b`). This enables using `extWeightedPowerMean s w z` with any Mathlib infrastructure that expects a `Monotone` argument—for example, monotone composition, `Monotone.comp`, or order-theoretic results. The proof is a one-liner: `fun _ _ hrt => extWeightedPowerMean_monotone s w z hw hw' hz hrt`. This pattern (wrapping a universal inequality into a `Monotone` instance) is standard in Lean 4 and allows the theorem to participate in tactic automation via `mono`.",
+    "mathContext": "`theorem extWeightedPowerMean_monotone_fun ... : Monotone (extWeightedPowerMean s w z) := fun _ _ hrt => extWeightedPowerMean_monotone ... hrt`. `Monotone f` is `∀ ⦃a b⦄, a ≤ b → f a ≤ f b` in Mathlib. The `mono` tactic can then discharge monotonicity goals involving `extWeightedPowerMean` automatically.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Monotone typeclass in Mathlib",
+      "mono tactic",
+      "Monotone.comp",
+      "order theory in Lean 4",
+      "function wrapper pattern"
+    ],
+    "prerequisites": [
+      "Monotone definition in Mathlib",
+      "mono tactic",
+      "Lean 4 anonymous function syntax `fun _ _ => ...`"
+    ]
+  }
+]

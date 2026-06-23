@@ -1,0 +1,80 @@
+{
+  "slug": "erdos-288",
+  "title": "Erdős #288",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Is it true that there are only finitely many pairs of intervals $I_1,I_2$ such that\\[\\sum_{n_1\\in I_1}\\frac{1}{n_1}+\\sum_{n_2\\in I_2}\\frac{1}{n_2}\\in \\mathbb{N}?\\]\n\n\n\nFor example,\\[\\frac{1}{3}+\\frac{1}{4}+\\frac{1}{5}+\\frac{1}{6}+\\frac{1}{20}=1.\\]This is still open even if $\\lvert I_2\\rvert=1$. It is perhaps true with two intervals replaced by any $k$ intervals.",
+    "plain": "Is it true that there are only finitely many pairs of intervals $I_1,I_2$ such that\\[\\sum_{n_1\\in I_1}\\frac{1}{n_1}+\\sum_{n_2\\in I_2}\\frac{1}{n_2}\\in \\mathbb{N}?\\]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-18T11:20:09Z",
+    "iteration": 2,
+    "focus": "Surveyed Lean metadata and remaining axiom surface.",
+    "blockers": [],
+    "nextAction": "Attack erdos_288 directly or add more verified finite interval examples.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: 8 theorems, 1 axiom, 0 sorries. The main finite-interval-pair conjecture remains axiomatized; singleton and k-interval variants are definitions/comments only, with two harmonic-sum examples proved by computation.",
+    "builtItems": [
+      "Confirmed erdos_288 is the only remaining axiom; singleton and k-interval variants are not axiomatized.",
+      "Lean proves example_sum_one and example_sum_one_v2 for concrete integer harmonic sums.",
+      "Lean proves harmonicInterval_singleton, harmonicInterval_pos, harmonicInterval_from_one, and harmonicInterval_ge_inv_first."
+    ],
+    "insights": [
+      "ErdosConjecture288 is represented as Set.Finite integerSumPairs and is the lone conjectural axiom.",
+      "singletonPairs and kIntervalPairs support variant statements but have no theorem-backed conjecture axioms in this file.",
+      "Current proof-health surface is clean for metadata purposes: 8T/1A/0S."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Formalize the singleton-I2 conjecture only if a later theorem needs it.",
+      "Try additional concrete interval-pair examples if computational evidence would be useful."
+    ],
+    "markdown": "# Erdős #288 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that there are only finitely many pairs of intervals $I_1,I_2$ such that\\[\\sum_{n_1\\in I_1}\\frac{1}{n_1}+\\sum_{n_2\\in I_2}\\frac{1}{n_2}\\in \\mathbb{N}?\\]\n\n\n\nFor example,\\[\\frac{1}{3}+\\frac{1}{4}+\\frac{1}{5}+\\frac{1}{6}+\\frac{1}{20}=1.\\]This is still open even if $\\lvert I_2\\rvert=1$. It is perhaps true with two intervals replaced by any $k$ intervals.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #287\n- Problem #289\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-28",
+    "erdos-288"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T22:42:54.055Z",
+  "lastUpdate": "2026-05-18T11:20:09Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos288Problem.lean",
+      "filename": "Erdos288Problem.lean",
+      "lineCount": 215,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos288Problem.lean"
+    }
+  ]
+}

@@ -1,0 +1,248 @@
+{
+  "id": "brouwer-fixed-point-oq-02",
+  "title": "Computational Complexity of Approximate Fixed Points (OQ-02)",
+  "slug": "brouwer-fixed-point-oq-02",
+  "description": "A comprehensive formalization of the computational complexity landscape for finding approximate fixed points. Covers binary search optimality (O(log 1/epsilon) in 1D), contraction mapping convergence with explicit error bounds, PPAD structure and solution existence via pigeonhole, Sperner's lemma, fixed point stability under perturbation, and Krasnoselskii-Mann averaged iteration.",
+  "meta": {
+    "author": "Brouwer (1911), Banach (1922), Sperner (1928), Chen-Deng (2009)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/PPAD_(complexity)",
+    "date": "2009",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ02.lean",
+    "additionalFiles": [
+      "Proofs/BrouwerFixedPointOQ02Ext.lean",
+      "Proofs/BrouwerFixedPointOQ02Stability.lean",
+      "Proofs/BrouwerFixedPointOQ02OQ03.lean"
+    ],
+    "tags": [
+      "topology",
+      "fixed-point-theory",
+      "computational-complexity",
+      "PPAD",
+      "contraction-mapping",
+      "Sperner-lemma",
+      "stability",
+      "advanced"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "exists_mem_Icc_isFixedPt_of_mapsTo",
+        "description": "Intermediate value theorem: continuous self-map of [a,b] has a fixed point",
+        "module": "Mathlib.Topology.Order.IntermediateValue"
+      },
+      {
+        "theorem": "Metric.tendsto_atTop",
+        "description": "Characterization of convergence in metric spaces",
+        "module": "Mathlib.Topology.MetricSpace.Basic"
+      },
+      {
+        "theorem": "tendsto_pow_atTop_nhds_zero_of_lt_one",
+        "description": "Geometric sequences with ratio < 1 converge to 0",
+        "module": "Mathlib.Topology.Algebra.Order.LiminfLimsup"
+      }
+    ],
+    "originalContributions": [
+      "Complete PPAD formalization with path-following and pigeonhole argument",
+      "Fixed point stability under map perturbation (delta/(1-L) bound)",
+      "Krasnoselskii-Mann averaged iteration analysis",
+      "Parametric sensitivity for contraction families",
+      "Binary search convergence with explicit 1/2^n bounds",
+      "Contraction iteration complexity with a priori error bounds"
+    ],
+    "dateAdded": "2026-03-12",
+    "axiomCount": 0,
+    "lineCount": 391,
+    "assumptions": "0 axioms, 0 sorries. 1D fixed point existence uses Mathlib's exists_mem_Icc_isFixedPt_of_mapsTo (Brouwer FPT).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 13,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "The computational complexity of finding fixed points interweaves topology, analysis, and computational complexity theory across a century of development. L.E.J. Brouwer (1911) proved existence non-constructively using degree theory, sparking foundational debates about constructive mathematics — Brouwer himself later rejected his own proof's methods. Stefan Banach (1922) provided the first constructive algorithm: iterate a contraction and converge geometrically, yielding explicit error bounds. Emanuel Sperner (1928) supplied the combinatorial foundation with his simplex labeling lemma, which Knaster, Kuratowski, and Mazurkiewicz used to give an independent proof of Brouwer's theorem. The complexity-theoretic revolution came with Christos Papadimitriou's introduction of PPAD (1994), identifying a class of total search problems whose totality follows from the 'parity argument on directed graphs.' Xi Chen and Xiaotie Deng (2009) proved that computing approximate Brouwer fixed points is PPAD-complete in dimensions $\\geq 2$, resolving a major open question. In 1D, however, the bisection method achieves optimal $O(\\log(1/\\varepsilon))$ query complexity — a dramatic complexity gap between one and higher dimensions. John Nash's proof (1950) that every finite game has an equilibrium relies on Brouwer's theorem, and the PPAD-completeness of Nash equilibrium computation (Daskalakis-Goldberg-Papadimitriou 2009) is a direct descendant of this line of work.",
+    "problemStatement": "OQ-02: What is the computational complexity of finding approximate fixed points?\n\nGiven a continuous function f: [0,1]^n -> [0,1]^n and epsilon > 0, find x such that |f(x) - x| <= epsilon.\n\nIn 1D: O(log 1/epsilon) queries suffice (binary search) and are necessary.\nIn >= 2D: The problem is PPAD-complete (Chen-Deng 2009).",
+    "text": "A comprehensive formalization of the computational complexity landscape for finding approximate fixed points. Covers binary search optimality (O(log 1/epsilon) in 1D), contraction mapping convergence with explicit error bounds, PPAD structure and solution existence via pigeonhole, Sperner's lemma, fixed point stability under perturbation, and Krasnoselskii-Mann averaged iteration.",
+    "proofStrategy": "The formalization builds the complexity picture from multiple angles:\n\n1. **Existence** (IVT): Continuous [0,1] -> [0,1] functions have fixed points\n2. **Binary search**: Bisection narrows sign-change intervals by 1/2^n, giving O(log 1/epsilon)\n3. **Contraction mapping**: L-Lipschitz maps with L < 1 converge geometrically with explicit error bounds\n4. **PPAD structure**: Defined PPAD instances with source/sink/path structure, proved solutions exist via pigeonhole\n5. **Sperner's lemma**: 1D case connecting combinatorial and analytic perspectives\n6. **Stability**: Fixed points are Lipschitz-continuous in the map (delta/(1-L) perturbation bound)\n7. **Averaged iteration**: Krasnoselskii-Mann damping with Lipschitz constant (1-t(1-L))",
+    "keyInsights": [
+      "Binary search is optimal for 1D: O(log 1/epsilon) queries, with each query halving the uncertainty",
+      "Contraction mappings give O(log 1/epsilon) via geometric convergence, with explicit error bounds converting approximate to exact proximity",
+      "The PPAD principle (path-following + pigeonhole) captures why higher-dimensional fixed point search is hard: the directed path structure forces exhaustive exploration",
+      "Fixed point stability under perturbation (delta/(1-L) bound) justifies using approximate oracles without losing accuracy",
+      "Krasnoselskii-Mann averaged iteration can stabilize non-contractive maps by damping the step size"
+    ],
+    "prerequisites": [
+      "Topology (compactness, connectedness, continuous maps)",
+      "Algebraic topology (fundamental group, degree theory)",
+      "Analysis (intermediate value theorem, multivariable calculus)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Setup",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Imports Mathlib, opens the `Set` namespace, and establishes the `BrouwerOQ02` namespace. The file addresses OQ-02: What is the computational complexity of finding approximate fixed points? All 7 main theorems are fully proved (0 sorries, 0 axioms).",
+      "mathContext": "Imports Mathlib, opens the `Set` namespace, and establishes the `BrouwerOQ02` namespace. The file addresses OQ-02: What is the computational complexity of finding approximate fixed points? All 7 main theorems are fully proved (0 sorries, 0 axioms)."
+    },
+    {
+      "id": "discrete-ivt",
+      "title": "1D Discrete IVT",
+      "startLine": 29,
+      "endLine": 45,
+      "summary": "Proves the discrete intermediate value theorem: a sign-changing integer sequence $f: \\mathbb{N} \\to \\mathbb{Z}$ with $f(0) \\geq 0$ and $f(N) < 0$ has an adjacent sign change $f(i) \\geq 0, f(i+1) < 0$. This is the combinatorial foundation for the bisection method and a 1D instance of Sperner's lemma.",
+      "mathContext": "Proves the discrete intermediate value theorem: a sign-changing integer sequence $f: \\mathbb{N} \\to \\mathbb{Z}$ with $f(0) \\geq 0$ and $f(N) < 0$ has an adjacent sign change $f(i) \\geq 0, f(i+1) < 0$. This is the combinatorial foundation for the bisection method and a 1D instance of Sperner's lemma."
+    },
+    {
+      "id": "approximate-fixed-points",
+      "title": "Approximate Fixed Points",
+      "startLine": 46,
+      "endLine": 61,
+      "summary": "Defines $\\varepsilon$-approximate fixed points ($|f(x) - x| \\leq \\varepsilon$) and proves existence for continuous self-maps of $[0,1]$ via the IVT. The exact fixed point guaranteed by Brouwer's theorem is trivially $\\varepsilon$-approximate for any $\\varepsilon > 0$.",
+      "mathContext": "Defines $\\varepsilon$-approximate fixed points ($|f(x) - x| \\leq \\varepsilon$) and proves existence for continuous self-maps of $[0,1]$ via the IVT. The exact fixed point guaranteed by Brouwer's theorem is trivially $\\varepsilon$-approximate for any $\\varepsilon > 0$."
+    },
+    {
+      "id": "convergence",
+      "title": "Convergence of Approximations",
+      "startLine": 62,
+      "endLine": 125,
+      "summary": "Proves that $1/n$-approximate fixed points converge to exact ones: if $x_n \\to x^*$ with $|f(x_n) - x_n| \\leq 1/n$, then $f(x^*) = x^*$. The proof uses a triangle inequality argument with $\\varepsilon = |f(x^*) - x^*|/2$, combining metric convergence and the approximation bounds.",
+      "mathContext": "Proves that $1/n$-approximate fixed points converge to exact ones: if $x_n \\to x^*$ with $|f(x_n) - x_n| \\leq 1/n$, then $f(x^*) = x^*$. The proof uses a triangle inequality argument with $\\varepsilon = |f(x^*) - x^*|/2$, combining metric convergence and the approximation bounds."
+    },
+    {
+      "id": "contraction-convergence",
+      "title": "Contraction Mapping Convergence",
+      "startLine": 126,
+      "endLine": 177,
+      "summary": "Establishes geometric convergence for $L$-contractions: $|f(f^n(x_0)) - f^n(x_0)| \\leq L^n |f(x_0) - x_0|$ (a priori error bound), and proves the iterate sequence is Cauchy using $L^n \\to 0$ from Mathlib's `tendsto_pow_atTop_nhds_zero_of_lt_one`.",
+      "mathContext": "Establishes geometric convergence for $L$-contractions: $|f(f^n(x_0)) - f^n(x_0)| \\leq L^n |f(x_0) - x_0|$ (a priori error bound), and proves the iterate sequence is Cauchy using $L^n \\to 0$ from Mathlib's `tendsto_pow_atTop_nhds_zero_of_lt_one`."
+    },
+    {
+      "id": "binary-search",
+      "title": "Binary Search",
+      "startLine": 178,
+      "endLine": 216,
+      "summary": "Formalizes the bisection method: after $n$ steps, the sign-change interval for $g(x) = f(x) - x$ has width $\\leq 1/2^n$, yielding $O(\\log(1/\\varepsilon))$ query complexity. The base case uses $g(0) \\geq 0$ and $g(1) \\leq 0$ from the self-map property; each step evaluates the midpoint.",
+      "mathContext": "Formalizes the bisection method: after $n$ steps, the sign-change interval for $g(x) = f(x) - x$ has width $\\leq 1/2^n$, yielding $O(\\log(1/\\varepsilon))$ query complexity. The base case uses $g(0) \\geq 0$ and $g(1) \\leq 0$ from the self-map property; each step evaluates the midpoint."
+    },
+    {
+      "id": "ppad-structure",
+      "title": "PPAD Structure",
+      "startLine": 217,
+      "endLine": 366,
+      "summary": "Complete formalization of PPAD: defines instances with successor/predecessor consistency, proves path injectivity via strong induction on $i + j$, establishes path termination via the pigeonhole principle ($|V|+1$ distinct vertices in a finite set), and concludes with the PPAD principle: every finite PPAD instance has a solution (a sink $v \\neq s$ with $\\text{succ}(v) = \\text{none}$).",
+      "mathContext": "Complete formalization of PPAD: defines instances with successor/predecessor consistency, proves path injectivity via strong induction on $i + j$, establishes path termination via the pigeonhole principle ($|V|+1$ distinct vertices in a finite set), and concludes with the PPAD principle: every finite PPAD instance has a solution (a sink $v \\neq s$ with $\\text{succ}(v) = \\text{none}$)."
+    },
+    {
+      "id": "summary",
+      "title": "Complete 1D Picture",
+      "startLine": 367,
+      "endLine": 391,
+      "summary": "Bundles the three core 1D results: (1) $\\exists x, f(x) = x$ (Brouwer/IVT), (2) $\\forall \\varepsilon > 0, \\exists x, |f(x)-x| \\leq \\varepsilon$ (approximability), (3) $\\forall n, \\exists x, |f(x)-x| \\leq 2^{-n}$ (efficient computability via bisection). Contrasts with PPAD-completeness in higher dimensions.",
+      "mathContext": "Bundles the three core 1D results: (1) $\\exists x, f(x) = x$ (Brouwer/IVT), (2) $\\forall \\varepsilon > 0, \\exists x, |f(x)-x| \\leq \\varepsilon$ (approximability), (3) $\\forall n, \\exists x, |f(x)-x| \\leq 2^{-n}$ (efficient computability via bisection)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a comprehensive treatment of the computational complexity of approximate fixed points. In one dimension, binary search achieves optimal O(log 1/epsilon) complexity. For contractions, geometric convergence with explicit error bounds gives the same asymptotic rate. The PPAD formalization captures why higher-dimensional fixed point search is fundamentally harder.",
+    "implications": "**Theoretical Significance**: The stability results show that fixed point computation is robust: approximate function evaluations (oracle model) suffice with controlled error amplification (delta/(1-L)).\n\nThe Krasnoselskii-Mann iteration extends applicability to non-contractive maps via damping. Together, these results form the theoretical foundation for numerical fixed point algorithms in optimization, economics (Nash equilibria), and differential equations.",
+    "openQuestions": [
+      "Can the PPAD formalization be extended to higher dimensions with a formal Sperner-to-Brouwer reduction?",
+      "What is the optimal query complexity for specific function classes (e.g., Holder continuous, smooth)?",
+      "Can Newton's method quadratic convergence (O(log log 1/epsilon)) be formalized for smooth functions?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "extends",
+      "description": "Base Brouwer fixed-point theorem — this file extends it by formalizing the computational complexity landscape: binary search optimality, contraction convergence rates, PPAD structure, and stability under perturbation"
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "Borsuk-Ulam implies Brouwer FP via the no-retraction theorem — both are foundational topological fixed-point results, and this file's PPAD analysis connects to the computational complexity of BU-type search problems"
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "uses",
+      "description": "IVT provides the 1D fixed-point existence via exists_mem_Icc_isFixedPt_of_mapsTo — the binary search algorithm in this file exploits IVT's constructive nature to achieve O(log 1/ε) convergence"
+    },
+    {
+      "targetId": "schauder-fixed-point",
+      "relationship": "related",
+      "description": "Schauder extends Brouwer FP to infinite dimensions — this file's contraction mapping and Krasnoselskii-Mann iteration analyses connect to Schauder's broader fixed-point framework"
+    },
+    {
+      "targetId": "borsuk-ulam-oq-03",
+      "relationship": "related",
+      "description": "BU-OQ-03 proves the axiom reduction BU → no-retraction → Brouwer FP — this file explores the computational side of the same fixed-point landscape"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Chen, X. and Deng, X.",
+      "title": "Settling the complexity of two-player Nash equilibrium",
+      "year": "2006",
+      "venue": "Proceedings of the 47th Annual IEEE Symposium on Foundations of Computer Science (FOCS), 261–272",
+      "note": "Proves PPAD-completeness of 2-player Nash equilibrium; the techniques extend to PPAD-completeness of Brouwer approximate fixed points in ≥2 dimensions"
+    },
+    {
+      "authors": "Papadimitriou, C. H.",
+      "title": "On the complexity of the parity argument and other inefficient proofs of existence",
+      "year": "1994",
+      "venue": "Journal of Computer and System Sciences, 48(3), 498–532",
+      "note": "Introduces the PPAD complexity class capturing the computational hardness of path-following arguments, foundational to this formalization"
+    },
+    {
+      "authors": "Banach, S.",
+      "title": "Sur les opérations dans les ensembles abstraits et leur application aux équations intégrales",
+      "year": "1922",
+      "venue": "Fundamenta Mathematicae, 3, 133–181",
+      "note": "Original proof of the Banach contraction mapping theorem with geometric convergence, formalized here as contraction_convergence"
+    },
+    {
+      "authors": "Sperner, E.",
+      "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+      "year": "1928",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg, 6, 265–272",
+      "note": "Sperner's lemma on simplex labelings, used here in the 1D discrete IVT and as the combinatorial foundation for Brouwer's theorem"
+    },
+    {
+      "authors": "Daskalakis, C., Goldberg, P. W., and Papadimitriou, C. H.",
+      "title": "The complexity of computing a Nash equilibrium",
+      "year": "2009",
+      "venue": "SIAM Journal on Computing, 39(1), 195–259",
+      "note": "Proves PPAD-completeness of Nash equilibrium via a Brouwer fixed-point reduction, directly connected to this file's PPAD formalization"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "BrouwerOQ02",
+    "lineCount": 391,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 5,
+    "path": "Proofs/BrouwerFixedPointOQ02.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/BrouwerFixedPointOQ02Ext.lean",
+      "Proofs/BrouwerFixedPointOQ02Stability.lean",
+      {
+        "path": "Proofs/BrouwerFixedPointOQ02OQ03.lean",
+        "lineCount": 214,
+        "theorems": 5,
+        "definitions": 3,
+        "axioms": 0,
+        "sorries": 1,
+        "description": "Companion file for the sibling open question OQ-02-OQ-03 (Newton's method quadratic convergence). Establishes the one-step quadratic bound |xₙ₊₁ − x*| ≤ M/(2m) · |xₙ − x*|² for C² functions via Mathlib's Taylor remainder, with the explicit error formula xₙ₊₁ − x* = f''(ξ)/(2f'(xₙ)) · (x* − xₙ)². One remaining sorry in newton_convergence_rate (iterated 2^n-rate induction step). Namespace NewtonMethod."
+      }
+    ]
+  },
+  "sorries": 0
+}

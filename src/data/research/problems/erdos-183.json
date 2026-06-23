@@ -1,0 +1,101 @@
+{
+  "slug": "erdos-183",
+  "title": "Erdős #183",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let $R(3;k)$ be the minimal $n$ such that if the edges of $K_n$ are coloured with $k$ colours then there must exist a monochromatic triangle. Determine\\[\\lim_{k\\to \\infty}R(3;k)^{1/k}.\\]\n\n\n\nErd\\H{o}s offers \\$100 for showing that this limit is finite. An easy pigeonhole argument shows that\\[R(3;k)\\leq 2+k(R(3;k-1)-1),\\]from which $R(3;k)\\leq \\lceil e k!\\rceil$ immediately follows. The best-known upper bounds are all of the form $ck!+O(1)$, and arise from this type of inductive relationship and computational bounds for $R(3;k)$ for small $k$. The best-known lower bound (coming from lower bounds for Schur numbers) is\\[R(3,k)\\geq (380)^{k/5}-O(1),\\]due to Ageron, Casteras, Pellerin, Portella, Rimmel, and Tomasik \\cite{ACPPRT21} (improving previous bounds of Exoo \\cite{Ex94} and Fredricksen and Sweet \\cite{FrSw00}). Note that $380^{1/5}\\approx 3.2806$.\n\nSee also [483].\n\nThis problem is #21 in Ramsey Theory in the graphs problem collection.",
+    "plain": "Let $R(3;k)$ be the minimal $n$ such that if the edges of $K_n$ are coloured with $k$ colours then there must exist a monochromatic triangle. Determine\\[\\lim_{k\\to \\infty}R(3;k)^{1/k}.\\]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-06T21:21:23Z",
+    "iteration": 6,
+    "focus": "STATE-SYNC (researcher-1, 2026-06-02, doc-only): file at stable end state — 0 axioms, 0 sorries, 13 theorems in proofs/Proofs/Erdos183Problem.lean (770 LOC). The R3k_exponential_lower axiom (deep Ageron et al. 2021 Schur-number lower bound) was eliminated in PR #16378 (merged 2026-05-06T21:21:23Z) by the planned doubling construction R(3;k+1) ≥ 2·R(3;k) - 1 yielding R(3;k) ≥ 2^k + 1 — sufficient for the ∃ c > 1 statement (c = 2). state.md was stuck at iteration 5 ACT phase (last update 2026-04-27) claiming 1 axiom; this STATE-SYNC bumps to iteration 6 COMPLETED. Gallery meta.json `src/data/proofs/erdos-183/meta.json` is internally inconsistent: `axiomCount: 0` correct but `status: \"axiomatized\"` + `badge: \"axiom\"` stale post-#16378 — re-flagged for next Mechanic cycle (suggested PR title: `fix(meta): erdos-183 status axiomatized→verified + badge axiom→original (post-#16378 doubling-construction merge)`). Per CLAUDE.md axiom-integrity policy (0 axiom declarations AND 0 structure-encoded assumptions = verified) and grep verification of no structure-encoded assumptions, this file qualifies for `status: \"verified\"` once gallery is updated. Researcher-role boundary forbids touching gallery meta.json. attemptCounts.total 5 → 6.",
+    "blockers": [],
+    "nextAction": "For researcher-loop: release as completed. No tractable new work in researcher scope; gallery meta.json status/badge fix is mechanic territory (status: axiomatized → verified, badge: axiom → original).",
+    "attemptCounts": {
+      "total": 6,
+      "currentApproach": 0,
+      "approachesTried": 5
+    }
+  },
+  "knowledge": {
+    "progressSummary": "STABLE: 1A (deep Schur lower bound), 11T proved, 0S. All small values PROVED (not axiomatized). R3k_inductive_upper, R3k_factorial_upper, R3k_le_three_factorial PROVED.",
+    "builtItems": [
+      "R3k_one: proved R(3;1)=3 via Nat.find_eq_iff — upper bound uses Subsingleton.elim on Fin 1, lower bound uses pigeonhole on Fin m for m<3",
+      "Removed 2 inconsistent axioms (kthRoot_lower, kthRoot_upper) and 1 sorry theorem",
+      "R3k_two: proved R(3;2)=R(3,3)=6 via Nat.find_eq_iff — upper bound via pigeonhole (5 edges from vertex, 3 same color → forced triangle) + triangle_from_three_neighbors lemma, lower bound via explicit colorings for m=0..5 (C₅ for m=5)",
+      "pigeonhole_five_two: ∀ f : Fin 5 → Fin 2, ∃ 3 same-colored (native_decide)",
+      "fin2_other: x ≠ c → x = 1 - c in Fin 2",
+      "triangle_from_three_neighbors: 3 same-color edges from vertex → monochromatic triangle",
+      "no_three_distinct_lt3: Fin m with m < 3 has no 3 distinct elements",
+      "forcing_set_nonempty: theorem proving ∃ n, ForcesMonochromaticTriangle n k for all k≥1 via Ramsey induction",
+      "mapColor: color relabeling function Fin(k+1) → Fin k collapsing c₀, with injectivity on ≠c₀",
+      "forces_imp_ge_three: proof that ForcesMonochromaticTriangle m k with k≥1 requires m≥3",
+      "forcing_step: extracted pigeonhole lemma — if m forces triangle with k colors, (k+1)*(m-1)+2 forces with k+1 colors",
+      "R3k_inductive_upper: PROVED (axiom→theorem) — R(3;k) ≤ 2 + k*(R(3;k-1)-1) from forcing_step + Nat.find_min",
+      "forces_mono: vertex monotonicity for ForcesMonochromaticTriangle via Fin.castLE — building block for doubling construction"
+    ],
+    "insights": [
+      "kthRoot_lower is INCONSISTENT with R3k_one: kthRootR3k 1 = R3k(1)^1 = 3 but axiom requires c > 3",
+      "kthRoot_upper is FALSE at k=1: kthRootR3k 1 = 3 > e ≈ 2.718 = (e·1!)^{1/1}",
+      "Both kthRoot axioms need k ≥ k₀ for some threshold, not k ≥ 1",
+      "R3k_ceiling_upper cannot be proved from R3k_factorial_upper alone — needs C ≤ 1 or a tighter axiom",
+      "R(3,3)=6 proof: vertex with 5 edges → pigeonhole gives 3 same color → either triangle with vertex or 3 vertices all other color",
+      "C₅ is self-complementary: both the cycle and its complement are triangle-free 5-cycles, giving the R(3,3)>5 witness",
+      "pigeonhole_five_two provable via native_decide on the finite function space Fin 5 → Fin 2",
+      "forcing_set_nonempty proved by pigeonhole induction on k: base k=1 uses K₃, inductive step uses (k+1)*(m-1)+2 vertices and mapColor for color relabeling",
+      "R3k_inductive_upper was provable from existing infrastructure — same pigeonhole step as forcing_set_nonempty",
+      "Earlier session record stale: ACTUAL current state is 1A (only R3k_exponential_lower). Small values PROVED, factorial upper PROVED via induction on R3k_inductive_upper.",
+      "Doubling construction R(3;k+1) ≥ 2·R(3;k) - 1 gives R(3;k) ≥ 2^k + 1 by induction, sufficient for the ∃ c > 1 existential statement (with c = 2). Path to eliminate the last axiom; forces_mono is the first building block.",
+      "doubleColoring sketch: cross-half edges get Fin.last k (new color); within-half edges keep their color via Fin.castSucc. Triangle-free if original is — split-triangles have mixed colors, all-same-half triangles inherit, all-cross-half impossible (3 vertices, 2 halves → some pair shares a half)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Implement doubleColoring : EdgeColoring n k → EdgeColoring (n+n) (k+1)",
+      "Prove doubleColoring_sym (symmetry) and doubleColoring_no_triangle",
+      "Prove R3k_doubling : R3k (k+1) ≥ 2 * R3k k - 1",
+      "Prove R3k_two_pow : R3k k ≥ 2^k + 1 by induction",
+      "Replace axiom R3k_exponential_lower with theorem (c = 2)"
+    ]
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-18",
+    "erdos-183"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-12T10:00:45.598Z",
+  "lastUpdate": "2026-06-14T01:06:09Z",
+  "significance": 5,
+  "tractability": 3,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos183Problem.lean",
+      "filename": "Erdos183Problem.lean",
+      "lineCount": 771,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 15,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos183Problem.lean"
+    }
+  ]
+}

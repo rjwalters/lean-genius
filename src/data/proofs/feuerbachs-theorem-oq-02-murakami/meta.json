@@ -1,0 +1,162 @@
+{
+  "id": "feuerbachs-theorem-oq-02-murakami",
+  "title": "Grace's Theorem (3D Feuerbach) for the Trirectangular Tetrahedron",
+  "slug": "feuerbachs-theorem-oq-02-murakami",
+  "description": "A verified positive 3D analogue of Feuerbach's theorem for the trirectangular tetrahedron (right-angle vertex at the origin, mutually perpendicular legs a, b, c). The sphere through the opposite-face vertices A, B, C is internally tangent to BOTH the insphere and the D-exsphere, and its centre Θ and radius R are RATIONAL in (a, b, c) — the tangency surd t = √(a²b²+b²c²+c²a²) cancels. This is the elementary trirectangular case of Grace's theorem (Maehara–Martini 2020), the special case where the general 3D Feuerbach question (refuted for the N₂₄ candidate in feuerbachs-theorem-oq-02) admits a clean positive answer.",
+  "meta": {
+    "author": "Grace (1917); Maehara & Martini (2020)",
+    "date": "2026-06-15",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "solid-geometry",
+      "tetrahedra",
+      "feuerbach",
+      "tangency",
+      "trirectangular",
+      "sphere",
+      "insphere-exsphere"
+    ],
+    "proofRepoPath": "Proofs/StatementOnly_FeuerbachOQ02Murakami_GraceTrirectangular.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "linear_combination",
+        "description": "Tactic for closing polynomial identities modulo a hypothesis (here the surd relation t² = a²b²+b²c²+c²a²)",
+        "module": "Mathlib.Tactic.LinearCombination"
+      },
+      {
+        "theorem": "field_simp",
+        "description": "Clears denominators (the shared 2σ = 2(a+b+c)) to reduce rational-function goals to ring identities",
+        "module": "Mathlib.Tactic.FieldSimp"
+      }
+    ],
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "lineCount": 125,
+    "assumptions": "None beyond the geometric hypotheses a, b, c > 0 and the surd encoding t² = a²b²+b²c²+c²a² with t ≥ 0 (t is the genuine tangency surd, not an added assumption). 0 axiom declarations, 0 structure-encoded assumptions, 0 sorries. Build verified GREEN (Docker, 2026-06-15) and registered in Proofs.lean.",
+    "originalContributions": [
+      "Lean 4 formalization of the trirectangular case of Grace's theorem: a single bundled theorem stating the three incidence identities (sphere through A, B, C) and two internal-tangency identities (to the insphere and the D-exsphere) over real variables a, b, c with the tangency surd encoded as t² = a²b²+b²c²+c²a²",
+      "Demonstrates the surd cancellation that makes the sphere's centre Θ = ((a+b)(a+c), (a+b)(b+c), (a+c)(b+c))/(2σ) and radius R = (a²+b²+c²+ab+bc+ca)/(2σ) rational in the leg data, the 3D analogue of the rational nine-point centre in 2D",
+      "Establishes the proof discipline (field_simp to clear the shared 2σ denominator, then ring for incidence and linear_combination 2·ht for tangency) that survives Lean's treatment of (2σ)⁻¹ as an opaque atom — a bare linear_combination with an inverse-denominator coefficient fails ring",
+      "Provides a verified positive counterpart to feuerbachs-theorem-oq-02, which refutes the (N₂₄, R/3) candidate sphere: the trirectangular tetrahedron is a tractable class where a correct Feuerbach-type sphere provably exists"
+    ],
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Feuerbach's theorem (1822) — that a triangle's nine-point circle is tangent to its incircle and three excircles — has long invited a 3D analogue for tetrahedra (Court 1934, Murakami 1952). The companion entry feuerbachs-theorem-oq-02 shows the naive candidate (the (N₂₄, R/3)-sphere) is FALSE even for orthocentric tetrahedra. Grace's theorem (1917), revisited with an elementary trirectangular proof by Maehara & Martini (Amer. Math. Monthly 127(10):897–910, 2020), gives a genuine positive analogue: for a tetrahedron there is a sphere through one face's vertices that is internally tangent to a homothetic tangent-sphere pair. This entry formalizes the cleanest case — the trirectangular (right-corner) tetrahedron — where every quantity is explicit and the tangency surd cancels.",
+    "problemStatement": "For the trirectangular tetrahedron with vertices A=(a,0,0), B=(0,b,0), C=(0,0,c), D=(0,0,0) (a,b,c > 0), is the sphere through A, B, C that is internally tangent to the insphere also internally tangent to the D-exsphere, and are its centre and radius rational in (a,b,c)?",
+    "text": "Yes. With t = √(a²b²+b²c²+c²a²), σ = a+b+c, the sphere of centre Θ = ((a+b)(a+c), (a+b)(b+c), (a+c)(b+c))/(2σ) and radius R = (a²+b²+c²+ab+bc+ca)/(2σ) passes through A, B, C and is internally tangent to BOTH the insphere (centre ρin·(1,1,1), ρin = (ab+bc+ca − t)/(2σ)) and the D-exsphere (centre ρex·(1,1,1), ρex = (ab+bc+ca + t)/(2σ)). The surd t appears in the two tangent spheres but cancels from Θ and R.",
+    "proofStrategy": "State the five defining identities as one theorem over real variables, encoding the tangency surd by the relation t² = a²b²+b²c²+c²a². Substitute the closed forms for Θ, R, ρin, ρex; clear the shared denominator 2σ with field_simp (σ ≠ 0 by positivity). The three incidence goals then close by ring (pure polynomial identities). The two tangency goals close by linear_combination 2·ht: their t²-terms reduce via the surd relation and their odd-in-t parts vanish identically, which is exactly why the SAME centre and radius serve both the insphere and the D-exsphere (the involution t ↦ −t swaps them).",
+    "keyInsights": [
+      "The tangency surd t = √(a²b²+b²c²+c²a²) cancels from the centre Θ and radius R, leaving them rational in (a,b,c) — the 3D echo of the rational 2D nine-point centre",
+      "One sphere is internally tangent to BOTH the insphere and the D-exsphere because the odd-in-t part of each tangency residual is identically zero; the involution t ↦ −t maps the insphere identity to the D-exsphere identity",
+      "Encoding the surd as the polynomial relation t² = a²b²+b²c²+c²a² turns a problem about √ into a pure (field) ring-identity problem closable by linear_combination",
+      "Clearing denominators with field_simp BEFORE linear_combination is essential: ring treats (2σ)⁻¹ and (2σ²)⁻¹ as distinct opaque atoms, so the post-clear ht-coefficient must be the integer 2, not 1/(2σ²)",
+      "At the base point (a,b,c) = (2,3,6): Θ = (40,45,72)/22 and R = 85/22, the explicitly checked instance"
+    ],
+    "prerequisites": [
+      "Feuerbach's theorem (2D case)",
+      "Euclidean geometry in R^3",
+      "Tetrahedron geometry (insphere, exsphere)",
+      "Sphere tangency"
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring-geometry",
+      "title": "Doc-comment: Geometry and Closed Forms",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "The doc-comment fixes the trirectangular tetrahedron A=(a,0,0), B=(0,b,0), C=(0,0,c), D=0 and records the closed forms for the tangent-sphere centre Θ, radius R, and the insphere/D-exsphere radii ρin, ρex (carrying the surd t=√(a²b²+b²c²+c²a²)). It cites the prior S0–S7 hand/numeric verification, the base case T0=(2,3,6) giving Θ=(40,45,72)/22, R=85/22, and the Maehara–Martini reference, and notes the proof tactics and the symbolic certificate (15/15 PASS).",
+      "mathContext": "The trirectangular tetrahedron is the simplest non-degenerate tetrahedron with a clean Feuerbach analogue: legs along the coordinate axes make every distinguished sphere explicit. Θ and R are RATIONAL in (a,b,c) — the surd t cancels — the 3D analogue of the 2D nine-point centre being rational in the triangle data."
+    },
+    {
+      "id": "imports-options",
+      "title": "Imports, Options & noncomputable section",
+      "startLine": 40,
+      "endLine": 67,
+      "summary": "Imports all of Mathlib, opens the BigOperators/Real/Nat/Classical/Pointwise scopes, and sets elaboration and pretty-printing options: maxHeartbeats 0 (unbounded, for the heavy field_simp/ring), bounded synthInstance limits, full pp.fullNames/binder-type printing, and autoImplicit/relaxedAutoImplicit false for binder hygiene; opens a noncomputable section since the reals and √ are noncomputable.",
+      "mathContext": "maxHeartbeats 0 lifts the elaboration budget for the denominator-clearing ring normalisation; the statement is over ℝ, so `noncomputable section` is required for the surd t and the rational closed forms."
+    },
+    {
+      "id": "grace-theorem",
+      "title": "Grace's Theorem (Trirectangular): the Five Defining Identities",
+      "startLine": 70,
+      "endLine": 92,
+      "summary": "The theorem grace_feuerbach_trirectangular bundles five real identities under the hypotheses a,b,c>0, t²=a²b²+b²c²+c²a², t≥0 and the closed forms for Θ=(qx,qy,qz), R, ρin, ρex: (1)–(3) the sphere through A, B, C; (4) internal tangency to the insphere centred at ρin·(1,1,1); (5) internal tangency to the D-exsphere centred at ρex·(1,1,1).",
+      "mathContext": "Each incidence goal $(q_x-a)^2+q_y^2+q_z^2 = R^2$ (and cyclic) is a rational-function identity in $(a,b,c)$; each tangency goal $(q_x-\\rho)^2+(q_y-\\rho)^2+(q_z-\\rho)^2 = (R-\\rho)^2$ holds modulo the single surd relation $t^2=a^2b^2+b^2c^2+c^2a^2$."
+    },
+    {
+      "id": "proof-tactics",
+      "title": "The Proof: Substitute, Clear, Combine",
+      "startLine": 93,
+      "endLine": 100,
+      "summary": "After establishing σ = a+b+c ≠ 0 by positivity and substituting all six closed forms, the goal splits into the five conjuncts: the three incidence goals close by `field_simp; ring` (genuine 2σ-cleared polynomial identities), and the two tangency goals close by `field_simp; linear_combination 2 * ht`, the surd relation entering with the post-clear coefficient 2.",
+      "mathContext": "$\\texttt{linear\\_combination}\\,2\\cdot ht$ supplies $2(t^2 - (a^2b^2+b^2c^2+c^2a^2)) = 0$ to `ring`; the coefficient 2 is the image of the analytic $1/(2\\sigma^2)$ after `field_simp` clears the $(2\\sigma)^{-1}$ denominators."
+    },
+    {
+      "id": "proof-notes",
+      "title": "Proof Notes: Coefficient Discipline and Surd Cancellation",
+      "startLine": 101,
+      "endLine": 125,
+      "summary": "Commentary recording that the build is GREEN (Lean-checked 2026-06-15, 0 sorry / 0 axiom, registered in Proofs.lean) and corroborated by the symbolic certificate verify_grace_proof_certificate.py (15/15 PASS). Explains why the incidence goals are genuine 2σ-cleared identities (not bare (a+b+c)⁻² identities) and why each tangency goal needs field_simp before linear_combination 2*ht.",
+      "mathContext": "The even-in-t cancellation (odd-in-t part ≡ 0; the even part forcing the shared pencil constant G = abc/σ) is the structural reason the SAME Θ, R are tangent to both spheres of the D-homothety pair. This mirrors the 2D Feuerbach mechanism where one circle touches both incircle and an excircle."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "feuerbachs-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Complements OQ-02's refutation of the (N₂₄, R/3) candidate with a verified POSITIVE 3D Feuerbach result for the trirectangular tetrahedron (Grace's theorem)"
+    },
+    {
+      "targetId": "feuerbachs-theorem",
+      "relationship": "answers-question",
+      "description": "Gives a positive special-case answer to OQ-02 ('What is the 3D analogue of Feuerbach's theorem for tetrahedra?') via Grace's theorem for trirectangular tetrahedra"
+    }
+  ],
+  "conclusion": {
+    "summary": "For the trirectangular tetrahedron, a single sphere through the opposite-face vertices A, B, C is internally tangent to both the insphere and the D-exsphere, with rational centre Θ and radius R despite the irrational radii of the two tangent spheres. The result is fully machine-checked in Lean (0 sorry, 0 axiom) and is the elementary trirectangular case of Grace's theorem.",
+    "implications": "Where feuerbachs-theorem-oq-02 shows the naive (N₂₄, R/3) candidate fails, this entry exhibits a tractable tetrahedron class where a correct Feuerbach-type tangency provably holds. The surd-cancellation mechanism (encode t by t², clear denominators, close by linear_combination) is a reusable template for tangency identities involving square-root radii.",
+    "openQuestions": [
+      "Extend the verified positive result from the trirectangular class to general orthocentric (or isodynamic) tetrahedra.",
+      "Formalize Grace's theorem in its full generality (Maehara–Martini), of which the trirectangular case is the elementary instance.",
+      "Relate the rational centre Θ to a canonical tetrahedron centre (the analogue of the nine-point centre)."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators",
+      "Real",
+      "Nat",
+      "Classical",
+      "Pointwise"
+    ],
+    "namespace": "FeuerbachOQ02MurakamiStatement",
+    "lineCount": 125,
+    "axiomCount": 0,
+    "theoremCount": 1,
+    "substantiveTheoremCount": 1,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/StatementOnly_FeuerbachOQ02Murakami_GraceTrirectangular.lean",
+    "sorries": 0,
+    "additionalFiles": []
+  },
+  "mainTheorems": [
+    {
+      "name": "grace_feuerbach_trirectangular",
+      "type": "core",
+      "description": "For the trirectangular tetrahedron with legs a,b,c>0, the sphere of centre Θ=((a+b)(a+c),(a+b)(b+c),(a+c)(b+c))/(2σ) and radius R=(a²+b²+c²+ab+bc+ca)/(2σ) passes through A=(a,0,0), B=(0,b,0), C=(0,0,c) and is internally tangent to both the insphere (radius ρin=(ab+bc+ca−t)/(2σ)) and the D-exsphere (radius ρex=(ab+bc+ca+t)/(2σ)), where t=√(a²b²+b²c²+c²a²). Proved by field_simp;ring (incidence) and field_simp;linear_combination 2*ht (tangency).",
+      "leanType": "(a b c t : ℝ) → 0 < a → 0 < b → 0 < c → t^2 = a^2*b^2+b^2*c^2+c^2*a^2 → 0 ≤ t → (qx qy qz R ρin ρex : ℝ) → … → (incidence A ∧ incidence B ∧ incidence C ∧ tangent insphere ∧ tangent D-exsphere)"
+    }
+  ],
+  "sorries": 0
+}

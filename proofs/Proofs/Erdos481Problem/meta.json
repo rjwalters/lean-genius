@@ -1,0 +1,17 @@
+{
+  "problem_number": 481,
+  "title": "Affine Sequence Iteration and Eventual Repetition",
+  "status": "solved",
+  "solvers": ["Klarner (1982)"],
+  "source_url": "https://erdosproblems.com/481",
+  "overview": "Let a₁,...,aᵣ,b₁,...,bᵣ ∈ ℕ with Σ(1/aᵢ) > 1. For sequence A, define T(A) = (aᵢxⱼ + bᵢ). Starting with A₁=(1) and iterating, prove some Aₖ has repeated elements. Klarner (1982) proved this by showing the density condition Σ(1/aᵢ) > 1 implies the affine semigroup is non-free, causing collisions.",
+  "sections": [],
+  "conclusion": "The conjecture is TRUE: when Σ(1/aᵢ) > 1, repeated elements must eventually appear. The key insight connects to semigroup theory: the affine semigroup is free iff Σ(1/aᵢ) ≤ 1. Non-freeness implies relations, which manifest as collisions in the sequence. Extended by Kolpakov-Talambutsa to more general settings.",
+  "references": [
+    "Erdős-Graham [ErGr80, p.96] - Original problem",
+    "Klarner [Kl82] - First proof",
+    "Kolpakov-Talambutsa - Generalization"
+  ],
+  "related_problems": [480, 482],
+  "tags": ["number-theory", "affine-maps", "semigroups", "iteration"]
+}

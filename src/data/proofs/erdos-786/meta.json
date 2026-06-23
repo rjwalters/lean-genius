@@ -1,0 +1,223 @@
+{
+  "id": "erdos-786",
+  "title": "Erdős Problem #786: Multiplicative Cardinality Sets",
+  "slug": "erdos-786",
+  "description": "For any ε > 0, is there a set A of density > 1-ε such that equal products from A must have equal numbers of factors? Selfridge achieved density 1/e - ε; whether arbitrarily high density is possible remains OPEN.",
+  "meta": {
+    "author": "Selfridge (density 1/e), Ruzsa (upper bound)",
+    "sourceUrl": "https://erdosproblems.com/786",
+    "date": "1965-1973",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos786Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "multiplicative-structure",
+      "density",
+      "factorization"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 786,
+    "erdosUrl": "https://erdosproblems.com/786",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-16",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.prod",
+        "description": "Product over finite sets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets as natural numbers",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limits and convergence",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function for density 1/e",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of IsMulCardSet for multiplicative cardinality sets",
+      "Definition of HasNaturalDensity using Filter.Tendsto",
+      "Statement of density and finite conjectures as Props",
+      "Axiomatization of mod 4 and Selfridge examples",
+      "Verified examples of mod 4 residues"
+    ],
+    "axiomCount": 2,
+    "lineCount": 166,
+    "assumptions": "2 axioms: mod4_example, selfridge_construction. 0 sorries.",
+    "theoremCount": 1,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #786 was posed around 1965 and appears in several of Erdős's papers from 1965, 1969, and 1973. The problem asks about 'multiplicative cardinality sets' - sets where equal products must come from equal numbers of factors.\n\nThe simplest example is integers ≡ 2 (mod 4), which achieves density 1/4. Each such integer has exactly one factor of 2, so a product of k elements has exactly k factors of 2, forcing equal products to have equal factor counts.\n\nSelfridge constructed a more sophisticated example achieving density 1/e - ε for any ε > 0. His construction uses consecutive primes p₁ < ... < pₖ where the sum of reciprocals crosses 1, and takes integers divisible by exactly one of these primes.\n\nRuzsa reportedly proved an upper bound showing density 1 is impossible (size ≤ (1-c)N for some c > 0), but this proof was never published.",
+    "problemStatement": "**Erdős Problem #786**: For any $\\varepsilon > 0$, does there exist a set $A \\subset \\mathbb{N}$ with density $> 1 - \\varepsilon$ such that whenever\n$$a_1 \\cdot a_2 \\cdots a_r = b_1 \\cdot b_2 \\cdots b_s$$\nwith $a_i, b_j \\in A$, we must have $r = s$?\n\n**Status**: OPEN\n\n**Known Results**:\n- Integers $\\equiv 2 \\pmod{4}$: density $1/4$\n- Selfridge construction: density $1/e - \\varepsilon$ for any $\\varepsilon > 0$\n- Ruzsa (unpublished): maximum size $\\leq (1-c)N$ for some $c > 0$\n\n**Second Question**: Can we find $A \\subset \\{1,\\ldots,N\\}$ of size $\\geq (1-o(1))N$?",
+    "text": "For any ε > 0, is there a set A of density > 1-ε such that equal products from A must have equal numbers of factors? Selfridge achieved density 1/e - ε; whether arbitrarily high density is possible remains OPEN.",
+    "proofStrategy": "We formalize the problem and its known partial results:\n\n1. **Define MulCardSet**: Equal products must have equal factor counts\n2. **Define natural density**: Using Filter.Tendsto for limit as n → ∞\n3. **State the conjectures**: DensityConjecture and FiniteConjecture as Props\n4. **Axiomatize examples**: mod 4 residues (density 1/4) and Selfridge (density 1/e - ε)\n5. **Document bounds**: Ruzsa's unpublished upper bound and log 2 lower bound are described in docstrings (not formalized as axioms)\n6. **Verify examples**: Concrete mod 4 calculations via native_decide",
+    "keyInsights": [
+      "**The core constraint**: A multiplicative cardinality set forces factorization patterns to be unique. If a·b = c·d with all in A, then we must have 2 = 2 factors on each side.",
+      "**Why mod 4 works**: Integers ≡ 2 (mod 4) have exactly one factor of 2. A product of r such integers has exactly r factors of 2. So equal products require equal counts.",
+      "**Selfridge's clever construction**: Choose consecutive primes where ∑(1/pᵢ) crosses 1. Elements divisible by exactly one prime form a MulCardSet with density approaching 1/e.",
+      "**The 1/e barrier**: The density 1/e ≈ 0.368 appears naturally from the inclusion-exclusion formula for 'divisible by exactly one prime'. Can we break this barrier?",
+      "**Ruzsa's claimed bound**: If density 1 were achievable, almost all integers would satisfy the property. Ruzsa's argument (never published) shows this leads to a contradiction."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Number theory (primes, divisibility)",
+      "Asymptotic density and counting"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Problem statement, status (OPEN), and known results.",
+      "mathContext": "Mathematical content: Problem statement, status (OPEN), and known results."
+    },
+    {
+      "id": "main-def",
+      "title": "Main Definition",
+      "startLine": 31,
+      "endLine": 42,
+      "summary": "IsMulCardSet definition: equal products must have equal factor counts.",
+      "mathContext": "Formal definition: IsMulCardSet definition: equal products must have equal factor counts."
+    },
+    {
+      "id": "density",
+      "title": "Natural Density",
+      "startLine": 43,
+      "endLine": 50,
+      "summary": "HasNaturalDensity using Filter.Tendsto.",
+      "mathContext": "Mathematical content: HasNaturalDensity using Filter.Tendsto."
+    },
+    {
+      "id": "conjectures",
+      "title": "The Open Questions",
+      "startLine": 51,
+      "endLine": 71,
+      "summary": "DensityConjecture and FiniteConjecture as formal Props.",
+      "mathContext": "Mathematical content: DensityConjecture and FiniteConjecture as formal Props."
+    },
+    {
+      "id": "examples",
+      "title": "Known Examples",
+      "startLine": 72,
+      "endLine": 108,
+      "summary": "mod 4 example (density 1/4) and Selfridge construction (density 1/e - ε).",
+      "mathContext": "Mathematical content: mod 4 example (density 1/4) and Selfridge construction (density 1/e - ε)."
+    },
+    {
+      "id": "bounds",
+      "title": "Upper and Lower Bounds (documentation)",
+      "startLine": 109,
+      "endLine": 129,
+      "summary": "Docstrings describing Ruzsa's (1-c)N upper bound and log 2 lower bound; neither is formalized as an axiom or theorem.",
+      "mathContext": "Documentation only: Ruzsa's (1-c)N upper bound and log 2 lower bound are described in comments but not declared in Lean."
+    },
+    {
+      "id": "insight",
+      "title": "Why These Sets Work",
+      "startLine": 130,
+      "endLine": 143,
+      "summary": "Explanation of the factorization pattern uniqueness.",
+      "mathContext": "Mathematical content: Explanation of the factorization pattern uniqueness."
+    },
+    {
+      "id": "verified",
+      "title": "Verified Examples",
+      "startLine": 144,
+      "endLine": 157,
+      "summary": "Concrete mod 4 calculations via native_decide.",
+      "mathContext": "Mathematical content: Concrete mod 4 calculations via native_decide."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 158,
+      "endLine": 166,
+      "summary": "Main summary theorem combining known results.",
+      "mathContext": "Verified: Main summary theorem combining known results."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize Erdős Problem #786, the question of how dense a multiplicative cardinality set can be. The problem remains OPEN: Selfridge achieved density 1/e - ε using consecutive primes, but whether arbitrarily high density is achievable is unknown. Ruzsa claimed an upper bound showing density 1 is impossible, but his proof was never published.",
+    "implications": "**Theoretical Significance**: This problem connects number theory and combinatorics:\n\n1. **Multiplicative structure**: Understanding which sets preserve factor count information\n**2. Prime distribution**: Selfridge's construction uses prime reciprocal sums\n3. **Density methods**: Techniques for proving density bounds on structured sets\n4. **Open research**: The gap between 1/e and (1-c) density remains unexplored.",
+    "openQuestions": [
+      "Can density > 1/e be achieved?",
+      "What is the optimal constant c in Ruzsa's bound?",
+      "Can Ruzsa's proof be reconstructed and published?",
+      "What about products with repetitions (multisets instead of sets)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-437",
+      "relationship": "related",
+      "description": "Both study multiplicative structure of integer sets; #437 concerns square partial products while #786 concerns multiplicative cardinality (factor count uniqueness)"
+    },
+    {
+      "targetId": "erdos-841",
+      "relationship": "related",
+      "description": "Companion multiplicative structure problem; both investigate density limitations imposed by multiplicative constraints on integer sets"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The prime number theorem underlies the density analysis of multiplicative cardinality sets, especially Selfridge's 1/e construction using prime reciprocal sums"
+    }
+  ],
+  "references": [
+    {
+      "title": "On some problems of a statistical group-theory, I",
+      "author": "Erdős, P. and Turán, P.",
+      "year": "1965",
+      "description": "Early appearance of Problem #786 on multiplicative cardinality sets and their density"
+    },
+    {
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "author": "Erdős, P. and Graham, R. L.",
+      "year": "1980",
+      "description": "Comprehensive discussion of the problem with Selfridge's density 1/e construction"
+    },
+    {
+      "title": "On the distribution of the number of prime factors of sums a+b",
+      "author": "Erdős, P.",
+      "year": "1973",
+      "description": "Further discussion of multiplicative structure problems including Ruzsa's unpublished upper bound"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "BigOperators",
+      "Topology"
+    ],
+    "namespace": "Erdos786",
+    "lineCount": 166,
+    "axiomCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos786Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

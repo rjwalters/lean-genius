@@ -1,0 +1,373 @@
+[
+  {
+    "id": "ann-profinite-def",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 46,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "IsProfiniteGroup Structure",
+    "content": "Defines a profinite group as a topological group that is compact, Hausdorff, and totally disconnected. Rather than using Lean's `TopologicalGroup` class directly (which causes elaboration issues), the structure requires continuous multiplication and continuous inversion as separate fields alongside `CompactSpace`, `T2Space`, and `TotallyDisconnectedSpace`.",
+    "mathContext": "A profinite group $G$ is equivalently: (1) a compact Hausdorff totally disconnected topological group, or (2) an inverse limit $\\varprojlim_{i} G_i$ of finite discrete groups. The two definitions are equivalent by a theorem of Nikolov and Segal. Every open subgroup of a profinite group has finite index, and every subgroup of finite index is open (for finitely generated profinite groups).",
+    "significance": "key",
+    "relatedConcepts": [
+      "compact space",
+      "Hausdorff space",
+      "totally disconnected space",
+      "inverse limit",
+      "topological group"
+    ],
+    "prerequisites": [
+      "point-set topology",
+      "topological groups",
+      "compactness"
+    ]
+  },
+  {
+    "id": "ann-prop-def",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 66,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "IsProP: Pro-p Group Condition",
+    "content": "A topological group $G$ is pro-p if every open normal subgroup $N \\trianglelefteq G$ has index $[G:N] = p^k$ for some $k$. This is a typeclass, making it available for instance resolution in downstream proofs. The definition captures the property that every finite quotient of $G$ is a $p$-group, without explicitly constructing those quotients.",
+    "mathContext": "A pro-$p$ group is a profinite group $G$ such that $G \\cong \\varprojlim G/N$ where each $G/N$ is a finite $p$-group. Equivalently, $[G:N]$ is a power of $p$ for every open normal $N$. The free pro-$p$ group on $d$ generators is the pro-$p$ completion of the free group $F_d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-group",
+      "open subgroup",
+      "normal subgroup",
+      "subgroup index",
+      "pro-p completion"
+    ],
+    "prerequisites": [
+      "group theory",
+      "subgroup index",
+      "normal subgroups",
+      "topological groups"
+    ]
+  },
+  {
+    "id": "ann-prop-subgroup",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 75,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "IsProPSubgroup: Closed Pro-p Subgroups",
+    "content": "Defines a pro-p subgroup as a subgroup that is both closed (as a subset of the ambient group) and pro-p (with the subspace topology). The closedness condition is essential: in a profinite group, closed subgroups are themselves profinite, while non-closed subgroups may lack the compactness needed for the Sylow theory to work.",
+    "mathContext": "In a profinite group $G$, a subgroup $H$ is closed if and only if $H = \\varprojlim H/(H \\cap N)$ where $N$ ranges over open normal subgroups of $G$. Closedness ensures $H$ inherits the profinite structure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "closed set",
+      "subspace topology",
+      "profinite subgroup"
+    ],
+    "prerequisites": [
+      "topology",
+      "closed sets",
+      "subspace topology"
+    ]
+  },
+  {
+    "id": "ann-sylow-prop-structure",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 81,
+      "endLine": 87
+    },
+    "type": "definition",
+    "title": "SylowProP: Maximal Pro-p Subgroups",
+    "content": "A Sylow pro-p subgroup bundles a subgroup with proofs that it is closed, pro-p, and maximal among closed pro-p subgroups. The maximality condition states: if $H$ is closed, pro-p, and contains the Sylow subgroup, then $H$ equals the Sylow subgroup. This mirrors the classical definition where Sylow $p$-subgroups are maximal $p$-subgroups.",
+    "mathContext": "A Sylow pro-$p$ subgroup $P$ of a profinite group $G$ is a maximal closed pro-$p$ subgroup. Equivalently, $P = \\varprojlim P_N$ where $P_N$ is a Sylow $p$-subgroup of the finite quotient $G/N$. Every pro-$p$ subgroup is contained in some Sylow pro-$p$ subgroup.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylow p-subgroup",
+      "maximal subgroup",
+      "Zorn's lemma"
+    ],
+    "prerequisites": [
+      "Sylow theorems for finite groups",
+      "maximal elements in posets"
+    ]
+  },
+  {
+    "id": "ann-existence-axiom",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 102,
+      "endLine": 110
+    },
+    "type": "insight",
+    "title": "Axiom: Pro-p Sylow Existence via Zorn's Lemma",
+    "content": "The existence axiom states that every profinite group has at least one Sylow pro-p subgroup. The proof (sketched in the docstring) applies Zorn's lemma to the poset of closed pro-p subgroups ordered by inclusion. The trivial subgroup $\\{e\\}$ is pro-p, ensuring nonemptiness. For any chain, the closure of the union is an upper bound: it is closed by construction, and pro-p because any open normal subgroup $N$ covers the chain, and by compactness a finite subchain suffices.",
+    "mathContext": "The key step: if $\\{H_i\\}$ is a chain of closed pro-$p$ subgroups, then $\\overline{\\bigcup H_i}$ is pro-$p$. For any open normal $N$, $\\overline{\\bigcup H_i} \\cdot N / N \\cong \\bigcup (H_i N/N)$, and since each $H_i N/N$ is a $p$-group and the union is a directed union of $p$-groups, it is a $p$-group.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zorn's lemma",
+      "directed union",
+      "compactness argument",
+      "chain condition"
+    ],
+    "prerequisites": [
+      "Zorn's lemma",
+      "compactness",
+      "directed limits of p-groups"
+    ]
+  },
+  {
+    "id": "ann-conjugacy-axiom",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 112,
+      "endLine": 122
+    },
+    "type": "insight",
+    "title": "Axiom: Pro-p Sylow Conjugacy via Finite Approximation",
+    "content": "The conjugacy axiom asserts that any two Sylow pro-p subgroups $P, Q$ are conjugate: there exists $g \\in G$ with $gPg^{-1} = Q$. The proof strategy is a hallmark of profinite group theory: reduce to finite quotients, solve the finite problem, then lift back using compactness. For each open normal $N$, the images $PN/N$ and $QN/N$ are Sylow $p$-subgroups of the finite group $G/N$, hence conjugate. The conjugating elements form a coset of $N$, giving a decreasing family of nonempty closed sets whose intersection (nonempty by compactness) gives the desired $g$.",
+    "mathContext": "For each open normal $N \\trianglelefteq_o G$, define $C_N = \\{g \\in G : g(PN/N)g^{-1} = QN/N\\}$. Each $C_N$ is a nonempty closed subset of $G$ (nonempty by finite Sylow conjugacy). If $N_1 \\leq N_2$, then $C_{N_1} \\subseteq C_{N_2}$, so $\\{C_N\\}$ has the finite intersection property. By compactness, $\\bigcap_N C_N \\neq \\emptyset$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjugacy",
+      "finite intersection property",
+      "inverse limit",
+      "finite approximation"
+    ],
+    "prerequisites": [
+      "Sylow conjugacy for finite groups",
+      "finite intersection property",
+      "compactness"
+    ]
+  },
+  {
+    "id": "ann-frattini-axiom",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 124,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Axiom: Frattini Argument for Profinite Groups",
+    "content": "The profinite Frattini argument states: if $N \\trianglelefteq G$ is a closed normal subgroup and $P$ is a Sylow pro-$p$ subgroup of $N$, then $G = N \\cdot N_G(P)$. This generalizes the classical Frattini argument from finite group theory and is a key tool for analyzing the structure of profinite groups via their normal subgroups.",
+    "mathContext": "The classical Frattini argument: if $N \\trianglelefteq G$ and $P \\in \\mathrm{Syl}_p(N)$, then $G = N \\cdot N_G(P)$. The proof: for any $g \\in G$, $gPg^{-1}$ is also a Sylow $p$-subgroup of $N$ (since $N$ is normal), so $gPg^{-1} = nPn^{-1}$ for some $n \\in N$, giving $n^{-1}g \\in N_G(P)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Frattini argument",
+      "normalizer",
+      "normal subgroup",
+      "semidirect product"
+    ],
+    "prerequisites": [
+      "Sylow conjugacy",
+      "normalizer of a subgroup"
+    ]
+  },
+  {
+    "id": "ann-projection-axiom",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 132,
+      "endLine": 139
+    },
+    "type": "concept",
+    "title": "Axiom: Sylow Pro-p Projects to p-Groups",
+    "content": "States that the image of a Sylow pro-p subgroup under a continuous surjective homomorphism to a finite group is a $p$-group. This is the bridge between profinite and finite Sylow theory: when passing to a finite quotient $G/N$, the Sylow pro-$p$ subgroup $P$ maps to a Sylow $p$-subgroup $P/(P \\cap N)$ of the finite group.",
+    "mathContext": "If $\\varphi: G \\twoheadrightarrow H$ is a continuous surjection to a finite group and $P$ is a Sylow pro-$p$ subgroup, then $\\varphi(P)$ is a $p$-group. In fact, $\\varphi(P)$ is a Sylow $p$-subgroup of $H$ when $\\varphi$ is the quotient map $G \\to G/N$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "surjective homomorphism",
+      "quotient group",
+      "p-group",
+      "image of subgroup"
+    ],
+    "prerequisites": [
+      "group homomorphisms",
+      "quotient groups",
+      "p-groups"
+    ]
+  },
+  {
+    "id": "ann-trivial-intersection",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 141,
+      "endLine": 146
+    },
+    "type": "insight",
+    "title": "Axiom: Distinct Primes Give Trivial Intersection",
+    "content": "For distinct primes $p \\neq q$, the Sylow pro-$p$ and Sylow pro-$q$ subgroups intersect trivially: $P \\cap Q = \\{e\\}$. This follows from the corresponding finite result (a group that is both a $p$-group and a $q$-group must be trivial) lifted through the inverse system.",
+    "mathContext": "If $P$ is pro-$p$ and $Q$ is pro-$q$ with $p \\neq q$, then $P \\cap Q$ is both pro-$p$ and pro-$q$. Every finite quotient of $P \\cap Q$ has order dividing both a power of $p$ and a power of $q$, hence has order 1. So $P \\cap Q$ is trivial.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "coprime orders",
+      "trivial intersection",
+      "direct product decomposition"
+    ],
+    "prerequisites": [
+      "p-groups and q-groups for distinct primes"
+    ]
+  },
+  {
+    "id": "ann-compact-theorem",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 154,
+      "endLine": 159
+    },
+    "type": "concept",
+    "title": "Compactness of Sylow Pro-p Subgroups",
+    "content": "A one-line proof that Sylow pro-p subgroups of compact groups are compact: a closed subset of a compact space is compact. This uses Mathlib's `IsClosed.isCompact` lemma directly. The compactness of Sylow pro-p subgroups is crucial because many profinite arguments (such as the conjugacy proof) rely on the finite intersection property for compact sets.",
+    "mathContext": "In a compact topological space $X$, every closed subset $C \\subseteq X$ is compact. Since a Sylow pro-$p$ subgroup $P$ is closed by definition, $P$ is compact in any compact ambient group.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "compact space",
+      "closed subset",
+      "Heine-Borel property"
+    ],
+    "prerequisites": [
+      "compactness",
+      "closed subsets of compact spaces"
+    ]
+  },
+  {
+    "id": "ann-bot-prop",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 161,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Trivial Subgroup is Pro-p",
+    "content": "Proves that the trivial subgroup $\\{e\\}$ (denoted $\\bot$ in Mathlib's lattice of subgroups) is a closed pro-p subgroup for any prime $p$. Closedness follows from $\\{e\\}$ being a singleton in a T2 (Hausdorff) space. For the pro-p condition: the trivial group has a unique quotient by any subgroup, so the index is always 1 = $p^0$. The proof constructs this by showing the quotient $\\bot / N$ is subsingleton (all elements of $\\bot$ are equal), then deriving `Nat.card_unique`.",
+    "mathContext": "The trivial group $\\{e\\}$ is pro-$p$ for every prime $p$ because its only finite quotient is the trivial group, which has order $1 = p^0$. This is the base case for Zorn's lemma in the existence proof: the poset of closed pro-$p$ subgroups is nonempty.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "trivial subgroup",
+      "Hausdorff space",
+      "singleton closed",
+      "subsingleton quotient"
+    ],
+    "prerequisites": [
+      "Hausdorff spaces",
+      "quotient groups",
+      "cardinality"
+    ]
+  },
+  {
+    "id": "ann-normal-sorry",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 192,
+      "endLine": 204
+    },
+    "type": "concept",
+    "title": "Uniqueness Implies Normality (sorry)",
+    "content": "States that if a profinite group has a unique Sylow pro-p subgroup, then that subgroup is normal. The proof is incomplete (sorry): the full argument requires constructing the conjugate $gPg^{-1}$ as a `SylowProP` structure (showing it is closed, pro-p, and maximal), then applying the uniqueness hypothesis to conclude $gPg^{-1} = P$. This is the only remaining sorry in the formalization.",
+    "mathContext": "If $P$ is the unique Sylow pro-$p$ subgroup of $G$, then for any $g \\in G$, $gPg^{-1}$ is also a Sylow pro-$p$ subgroup (conjugation preserves closedness, pro-$p$, and maximality). By uniqueness, $gPg^{-1} = P$, so $P \\trianglelefteq G$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "normal subgroup",
+      "conjugation",
+      "characteristic subgroup",
+      "unique Sylow subgroup"
+    ],
+    "prerequisites": [
+      "conjugation preserves subgroup properties",
+      "normal subgroups"
+    ]
+  },
+  {
+    "id": "ann-finite-recovery",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 210,
+      "endLine": 226
+    },
+    "type": "insight",
+    "title": "IsProP Equivalent to IsPGroup for Finite Groups",
+    "content": "The central bridge theorem: for a finite group $G$ with discrete topology, being pro-$p$ is equivalent to being a $p$-group. The forward direction extracts the index of $\\bot$ (which equals $|G|$) from the pro-$p$ condition and applies `IsPGroup.of_card`. The reverse uses `IsPGroup.to_quotient` to show every quotient of a $p$-group is a $p$-group. In discrete topology, every subset is open, so the only open normal subgroup that matters is $\\bot$ itself.",
+    "mathContext": "For a finite group $G$ with discrete topology, the only open normal subgroups are all subgroups (since every set is open). But $\\mathrm{IsProP}$ only needs $[G:\\bot] = |G| = p^k$, which is exactly $\\mathrm{IsPGroup}$. Conversely, if $G$ is a $p$-group, every quotient $G/N$ has $p$-power order by Lagrange's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "discrete topology",
+      "p-group",
+      "finite group",
+      "Lagrange's theorem"
+    ],
+    "prerequisites": [
+      "p-groups",
+      "discrete topology",
+      "quotient groups"
+    ]
+  },
+  {
+    "id": "ann-finite-sylow-bridge",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 228,
+      "endLine": 238
+    },
+    "type": "insight",
+    "title": "Classical Sylow Subgroups are Pro-p",
+    "content": "Shows that every classical Sylow $p$-subgroup of a finite group (with discrete topology) is both closed and pro-p. Closedness is trivial in discrete topology (every subset is closed). The pro-p condition follows from `IsPGroup.to_quotient`: since a Sylow $p$-subgroup is a $p$-group, all its quotients are $p$-groups, so every open normal subgroup has $p$-power index.",
+    "mathContext": "For a finite group $G$, a Sylow $p$-subgroup $P$ satisfies $|P| = p^{v_p(|G|)}$ where $v_p$ is the $p$-adic valuation. With discrete topology, $P$ is automatically closed and every quotient $P/N$ is a $p$-group, so $P$ is pro-$p$. This shows the profinite Sylow theory strictly generalizes the classical one.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylow p-subgroup",
+      "discrete topology",
+      "p-adic valuation"
+    ],
+    "prerequisites": [
+      "Sylow theorems for finite groups",
+      "discrete topology"
+    ]
+  },
+  {
+    "id": "ann-prop-card",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 240,
+      "endLine": 250
+    },
+    "type": "concept",
+    "title": "Pro-p Subgroups Have p-Power Order",
+    "content": "For a finite group, any pro-p subgroup has order equal to a power of $p$. The proof extracts the index of $\\bot$ in $H$ (which equals $|H|$) from the pro-p condition and applies it with the discrete topology where every subgroup is open. This is the finite-group consequence of the pro-p definition.",
+    "mathContext": "If $H \\leq G$ is pro-$p$ and $G$ is finite, then $|H| = p^k$ for some $k$. Combined with Lagrange's theorem ($|H| \\mid |G|$), this gives $p^k \\mid |G|$, recovering the classical constraint on Sylow subgroup orders.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "subgroup order",
+      "Lagrange's theorem",
+      "p-power order"
+    ],
+    "prerequisites": [
+      "subgroup index",
+      "Lagrange's theorem"
+    ]
+  },
+  {
+    "id": "ann-counting-theorem",
+    "proofId": "sylow-theorems-oq-02",
+    "range": {
+      "startLine": 256,
+      "endLine": 262
+    },
+    "type": "insight",
+    "title": "Sylow Counting Theorem in Finite Quotients",
+    "content": "Applies Mathlib's `card_sylow_modEq_one` to show that in any finite group (and hence in any finite quotient of a profinite group), the number of Sylow $p$-subgroups satisfies $n_p \\equiv 1 \\pmod{p}$. This is a one-line proof wrapping the existing Mathlib result. In the profinite context, this constraint holds in every finite quotient $G/N$, giving a system of compatible congruences.",
+    "mathContext": "The third Sylow theorem: $n_p = |\\mathrm{Syl}_p(G)| \\equiv 1 \\pmod{p}$ and $n_p \\mid [G:P]$ for any $P \\in \\mathrm{Syl}_p(G)$. For profinite $G$, this holds in each quotient $G/N$: $n_p(G/N) \\equiv 1 \\pmod{p}$. The numbers $\\{n_p(G/N)\\}_N$ form a compatible system in the inverse limit.",
+    "significance": "key",
+    "relatedConcepts": [
+      "third Sylow theorem",
+      "modular arithmetic",
+      "counting theorem"
+    ],
+    "prerequisites": [
+      "Sylow counting theorem",
+      "modular congruence"
+    ]
+  }
+]

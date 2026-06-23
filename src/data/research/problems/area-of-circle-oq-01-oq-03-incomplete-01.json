@@ -1,0 +1,61 @@
+{
+  "slug": "area-of-circle-oq-01-oq-03-incomplete-01",
+  "title": "Complete Isoperimetric Inequality: C² ≥ 4πA",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Complete Isoperimetric Inequality: C² ≥ 4πA.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-03-28T17:58:20.659Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY: File has 2 sorries (Fourier IBP + arc-length reparam). Core Fourier analysis proved by Aristotle. Both sorries require significant Mathlib API work.",
+    "builtItems": [],
+    "insights": [
+      "File is 1477 lines, 0 axioms, 2 real sorries — Fourier-analytic proof of isoperimetric inequality",
+      "Sorry 1 (line 395): fourierCoeffOn_deriv_periodic — IBP for Fourier coefficients needs fourierCoeffOn_of_hasDerivAt + boundary term cancellation",
+      "Sorry 2 (line 909): exists_arclength_reparam — arc-length reparametrization needs inverse function theorem on integrals",
+      "Aristotle proved parseval_periodic_real and fourier_decomposition — the heavy Fourier analysis is done",
+      "Main gap: connecting Fourier decomposition to the isoperimetric bound C²≥4πA"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "area-of-circle",
+    "area-of-circle-oq-01",
+    "area-of-circle-oq-01-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-28T17:58:20.659Z",
+  "lastUpdate": "2026-03-28T17:58:20.659Z",
+  "significance": 7,
+  "tractability": 6
+}

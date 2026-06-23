@@ -1,0 +1,106 @@
+{
+  "slug": "ptolemys-complex-proof-oq-01",
+  "title": "Ptolemy Complex Proof OQ-01: Equality Case and Same-Ray Converse",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For complex points z1, z2, z3, z4, prove that equality in the triangle-inequality proof of Ptolemy is equivalent to a same-ray condition and implies proportionality of the opposite-side product vectors.",
+    "plain": "Backfills metadata for the equality-case direction of the complex proof of Ptolemy's theorem. The Lean file proves that Ptolemy equality is governed by the same-ray condition and yields the expected proportionality statement.",
+    "whyMatters": [
+      "Ptolemy's theorem connects cyclic geometry with metric inequalities.",
+      "The complex-number proof reduces the equality case to a precise triangle-inequality equality condition.",
+      "The converse/equality metadata helps distinguish the proved algebraic condition from broader concyclicity goals."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`ptolemy_equality_iff_sameRay` proves the equivalence between Ptolemy equality and the same-ray condition in the complex proof setup.",
+      "`ptolemy_equality_implies_proportional` derives positive proportionality from equality.",
+      "`ptolemy_equality_implies_sameRay` records the direct same-ray consequence.",
+      "`PtolemysComplexProofOQ01.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "A complete geometric concyclicity classification is outside this exact equality-case file."
+    ],
+    "goal": "Make the theorem-backed Ptolemy equality-case converse discoverable from metadata."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-04-04T17:22:17-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: ptolemys-complex-proof-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "geometry",
+    "complex-analysis",
+    "ptolemys-theorem",
+    "equality-cases",
+    "inequality",
+    "formalized"
+  ],
+  "relatedProofs": [
+    "ptolemys-complex-proof",
+    "ptolemys-complex-proof-oq-01",
+    "ptolemys-complex-proof-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-04T17:22:17-07:00",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/PtolemysComplexProof.lean",
+      "filename": "PtolemysComplexProof.lean",
+      "lineCount": 146,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysComplexProof.lean"
+    },
+    {
+      "path": "Proofs/PtolemysComplexProofOQ01.lean",
+      "filename": "PtolemysComplexProofOQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysComplexProofOQ01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysComplexProofOQ02.lean",
+      "filename": "PtolemysComplexProofOQ02.lean",
+      "lineCount": 352,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysComplexProofOQ02.lean"
+    }
+  ]
+}

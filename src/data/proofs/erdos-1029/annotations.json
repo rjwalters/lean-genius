@@ -1,0 +1,170 @@
+[
+  {
+    "id": "ann-1029-overview",
+    "proofId": "erdos-1029",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Problem Overview: Ramsey Number Growth Rate",
+    "content": "Erdős Problem #1029 (1993) asks whether R(k)/(k·2^{k/2}) → ∞, where R(k) is the diagonal Ramsey number. This is one of the most important open problems in combinatorics, with a $100 prize for proof and $1000 for disproof. The formalization defines Ramsey numbers via Nat.find using an axiomatized existence result, states the known upper and lower bounds, and formulates the conjecture as a Filter.Tendsto statement.",
+    "mathContext": "The gap between the lower bound ~2^{k/2} and upper bound ~4^k is enormous. Despite 90 years of work since Erdős-Szekeres, neither the base 4 in the upper bound nor the base √2 in the lower bound has been improved. This problem asks whether the lower bound can be improved by even a factor tending to infinity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey-theory",
+      "probabilistic-method",
+      "exponential-growth",
+      "open-problems"
+    ],
+    "prerequisites": [
+      "diagonal Ramsey number R(k)",
+      "asymptotic notation (Landau symbols)",
+      "complete graph 2-colorings"
+    ]
+  },
+  {
+    "id": "ann-1029-ramsey-def",
+    "proofId": "erdos-1029",
+    "range": {
+      "startLine": 39,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Ramsey Number Definition",
+    "content": "R(k) is defined as the minimal n such that every 2-coloring of K_n contains a monochromatic K_k. Edge colorings assign a Boolean to each unordered pair (Sym2 V). The existence of such n is axiomatized via ramsey_exists, allowing R to be defined as Nat.find (ramsey_exists k). The specification theorem R_spec follows directly from Nat.find_spec.",
+    "mathContext": "The use of Nat.find ensures R(k) is truly minimal. The axiomatization of ramsey_exists replaces the Erdős-Szekeres inductive proof, which would require substantial formalization of the recurrence R(s,t) ≤ R(s-1,t) + R(s,t-1) and the base cases.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.find",
+      "edge-coloring",
+      "monochromatic-clique",
+      "Ramsey-existence"
+    ],
+    "prerequisites": [
+      "least element via well-ordering",
+      "Sym2 (unordered pairs)",
+      "pigeonhole principle"
+    ]
+  },
+  {
+    "id": "ann-1029-bounds",
+    "proofId": "erdos-1029",
+    "range": {
+      "startLine": 70,
+      "endLine": 92
+    },
+    "type": "concept",
+    "title": "Classical Bounds on R(k)",
+    "content": "Four axiomatized bounds capture the state of knowledge: (1) Erdős-Szekeres upper bound R(k) ≤ C(2k-2, k-1), proved by induction in 1935; (2) asymptotic upper bound R(k) ≤ C·4^k/√k from Stirling's approximation; (3) probabilistic lower bound R(k) ≥ c·k·2^{k/2}; (4) Spencer's improvement giving the constant √2/e ≈ 0.52.",
+    "mathContext": "The upper bound uses a simple double counting argument. The lower bound is a landmark application of the probabilistic method: count expected monochromatic k-cliques in a random 2-coloring. Spencer's refinement uses the Lovász Local Lemma to handle dependencies between clique events.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdos-Szekeres",
+      "binomial-coefficient",
+      "probabilistic-method",
+      "Lovasz-Local-Lemma"
+    ],
+    "prerequisites": [
+      "Erdos-Szekeres recurrence R(s,t) <= R(s-1,t)+R(s,t-1)",
+      "Stirling approximation of factorials",
+      "expected value of random monochromatic cliques"
+    ]
+  },
+  {
+    "id": "ann-1029-conjecture",
+    "proofId": "erdos-1029",
+    "range": {
+      "startLine": 93,
+      "endLine": 123
+    },
+    "type": "concept",
+    "title": "The Main Conjecture and Equivalence",
+    "content": "The conjecture is formalized as Tendsto ramseyRatio atTop atTop, where ramseyRatio k = R(k)/(k·2^{k/2}). An equivalent formulation using explicit ε-δ style (for every M, ratio eventually exceeds M) is proved equivalent via Filter.map_atTop_atTop. This demonstrates how Mathlib's filter framework connects topological and quantifier-based formulations.",
+    "mathContext": "The equivalence proof unpacks Tendsto in terms of Filter.map_atTop_atTop, showing that divergence to infinity is equivalent to the ∀M ∃K ∀k≥K formulation. This is a clean application of Mathlib's filter API.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "atTop",
+      "divergence",
+      "equivalent-formulations"
+    ],
+    "prerequisites": [
+      "epsilon-delta divergence to infinity",
+      "eventually filter quantifiers",
+      "monotone reindexing of sequences"
+    ]
+  },
+  {
+    "id": "ann-1029-negation",
+    "proofId": "erdos-1029",
+    "range": {
+      "startLine": 124,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Lower Bound and Negation Analysis",
+    "content": "Spencer's result gives ratio_bounded_below: for any ε > 0, the ratio eventually exceeds √2/e - ε. The negation of the conjecture is formalized as conjectureNegation: the ratio is bounded above by some M. The equivalence between ¬conjecture and conjectureNegation is axiomatized, as it requires careful analysis of filter negation and boundedness.",
+    "mathContext": "The negation equivalence relates the filter-theoretic statement ¬(Tendsto f atTop atTop) to the existence of a uniform upper bound. This is not entirely trivial since the conjecture concerns divergence to +∞, and its negation involves limsup being finite.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Spencer-bound",
+      "limsup",
+      "filter-negation",
+      "boundedness"
+    ],
+    "prerequisites": [
+      "negation of filter convergence",
+      "bounded-above sequences",
+      "limit superior of a sequence"
+    ]
+  },
+  {
+    "id": "ann-1029-small-values",
+    "proofId": "erdos-1029",
+    "range": {
+      "startLine": 141,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "Known Ramsey Numbers",
+    "content": "The known exact values are axiomatized: R(1)=1 (trivial), R(2)=2, R(3)=6 (the party problem), R(4)=18 (Greenwood-Gleason 1955). For R(5), only bounds are known: 43 ≤ R(5) ≤ 48. The difficulty of computing even R(5) exactly illustrates the explosive growth of Ramsey numbers.",
+    "mathContext": "R(3)=6 is the classic 'party problem': among 6 people, there must be 3 mutual friends or 3 mutual strangers. R(4)=18 was proved using the Paley graph on F_17 for the lower bound. The gap for R(5) has resisted computational attacks for decades.",
+    "significance": "key",
+    "relatedConcepts": [
+      "party-problem",
+      "Greenwood-Gleason",
+      "Paley-graph",
+      "computational-Ramsey"
+    ],
+    "prerequisites": [
+      "Greenwood-Gleason construction R(4)=18",
+      "Paley graph self-complementarity",
+      "exhaustive computational clique search"
+    ]
+  },
+  {
+    "id": "ann-1029-ratios",
+    "proofId": "erdos-1029",
+    "range": {
+      "startLine": 162,
+      "endLine": 190
+    },
+    "type": "concept",
+    "title": "Ratio Values and Prize",
+    "content": "The ratio R(k)/(k·2^{k/2}) is computed for k=3 (≈0.707) and k=4 (=1.125), showing the ratio crosses 1 between k=3 and k=4. These small values suggest the ratio may be increasing, consistent with the conjecture. Erdős offered $100 for proof and $1000 for disproof, one of his many famous problem prizes.",
+    "mathContext": "The computed ratios use the exact values R(3)=6 and R(4)=18. The proofs are by ring normalization after substituting the known values. The increasing trend from 0.707 to 1.125 is suggestive but far from conclusive evidence for divergence.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ratio-computation",
+      "small-cases",
+      "Erdos-prizes",
+      "numerical-evidence"
+    ],
+    "prerequisites": [
+      "exact substitution of known R(k) values",
+      "ring normalization over the reals",
+      "half-integer powers of 2"
+    ]
+  }
+]

@@ -1,0 +1,266 @@
+[
+  {
+    "id": "ann-338-header",
+    "proofId": "erdos-338",
+    "range": {
+      "startLine": 1,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "Erdős Problem #338: Restricted Order of Additive Bases",
+    "content": "The header states an open problem in additive number theory: given a set $A \\subseteq \\mathbb{N}$ that is an additive basis of order $h$ (every large integer is a sum of $\\leq h$ elements from $A$ with repetition), what are the conditions for $A$ to have a *restricted order* — the least $t$ such that every large integer is a sum of $\\leq t$ *distinct* elements?\n\nThe key known results form a rich landscape: Bateman showed restricted order can fail to exist for $h \\geq 3$; Kelly (1957) proved order 2 implies restricted order $\\leq 4$; Hennecart (2005) showed this bound is tight by constructing an order-2 basis with restricted order exactly 4, disproving Kelly's conjecture. The Hegyvári-Hennecart-Plagne lower bound $2^{k-2} + k - 1$ shows restricted order can grow exponentially with the basis order.",
+    "mathContext": "An additive basis $A$ of order $h$: $\\forall n \\gg 0$, $\\exists a_1, \\ldots, a_j \\in A$ with $j \\leq h$ and $\\sum a_i = n$. Restricted order $t$: same but with $a_i$ all distinct. The gap between $h$ and $t$ measures how much repetitions help. For squares: $h = 4$ (Lagrange), $t = 5$ (Pall 1933).",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive bases",
+      "restricted order",
+      "Waring's problem",
+      "sumsets"
+    ],
+    "prerequisites": [
+      "additive number theory",
+      "Waring's problem"
+    ]
+  },
+  {
+    "id": "ann-338-part9-comment",
+    "proofId": "erdos-338",
+    "range": {
+      "startLine": 320,
+      "endLine": 347
+    },
+    "type": "concept",
+    "title": "Part IX: Summary of Known Results and Open Questions",
+    "content": "The summary comment catalogs the formalization's scope: Kelly's theorem (order 2 $\\Rightarrow$ restricted order $\\leq 4$), the disproof of Kelly's conjecture (restricted order 3 is not always sufficient), Hennecart's tight example, and the HHP exponential lower bound.\n\nThe open questions highlight what remains unknown: characterizing when restricted order exists, bounding it in terms of basis order, and the 'robustness' question — if $A \\setminus F$ remains a basis for every finite $F$, must $A$ have finite restricted order? This robustness condition is strictly weaker than having restricted order.",
+    "mathContext": "Open: If $A$ is a basis of order $h$ and $A \\setminus F$ is a basis for all finite $F \\subset A$, does $A$ have restricted order? Known: $h = 2 \\Rightarrow t \\leq 4$ (Kelly). For $h \\geq 3$: restricted order may not exist (Bateman), but when it does, $t \\geq 2^{h-2} + h - 1$ is possible (HHP).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "open problems",
+      "robustness of bases",
+      "Kelly's theorem"
+    ],
+    "prerequisites": [
+      "previous parts"
+    ]
+  },
+  {
+    "id": "ann-338-basis-defs",
+    "proofId": "erdos-338",
+    "range": {
+      "startLine": 47,
+      "endLine": 92
+    },
+    "type": "definition",
+    "title": "Basis and Restricted Order Definitions",
+    "content": "The core definitions formalize the distinction between order and restricted order. IsBasisOfOrder(A, h) uses Multiset (allowing repetition): every large n = x₁ + x₂ + ... + xₖ with xᵢ ∈ A and k ≤ h. IsExactOrder requires h to be tight: A is a basis of order h but NOT h−1. HasRestrictedOrder(A, t) uses Finset (requiring distinctness): every large n = s₁ + s₂ + ... + sₖ with distinct sᵢ ∈ A and k ≤ t. The key mathematical distinction: Multiset ℕ allows {2, 2, 3} while Finset ℕ requires {2, 3, 5}. HasFiniteRestrictedOrder is the existential ∃ t, HasRestrictedOrder A t, and minimalRestrictedOrder computes the least such t via Nat.find.",
+    "mathContext": "**Order $h$**: $\\forall n \\ge N,\\; \\exists x_1, \\ldots, x_k \\in A$ (with repetition) : $k \\le h$ and $\\sum x_i = n$.\n\n**Restricted order $t$**: $\\forall n \\ge N,\\; \\exists \\{s_1, \\ldots, s_k\\} \\subseteq A$ (**distinct**) : $k \\le t$ and $\\sum s_i = n$.\n\nThe distinction: `Multiset` (order) vs `Finset` (restricted). Not all bases have finite restricted order.",
+    "significance": "key",
+    "relatedConcepts": [
+      "additive basis",
+      "Schnirelmann density",
+      "Multiset vs Finset",
+      "Waring's problem",
+      "Nat.find"
+    ],
+    "prerequisites": [
+      "Multiset",
+      "Finset",
+      "Finset.sum",
+      "Set ℕ"
+    ]
+  },
+  {
+    "id": "ann-338-bateman",
+    "proofId": "erdos-338",
+    "range": {
+      "startLine": 98,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "Bateman's Observation: Order ≥ 3 Doesn't Imply Restricted Order",
+    "content": "Bateman's example A = {1} ∪ {x > 0 : h | x} is a basis of order h (represent n using h−r copies of h and r copies of 1, where n ≡ r mod h) but has NO finite restricted order for h ≥ 3. The reason: the only elements are 1 and multiples of h. A restricted representation of n must use distinct elements, so at most one copy of 1 and distinct multiples h, 2h, 3h, .... The sum of the first t multiples of h is h·t(t+1)/2, which grows as t², but we need sums up to n with only t summands, requiring t ~ √(2n/h). Since t grows unboundedly, no fixed t works. The theorem bateman_observation is genuinely proved by pairing the two axioms.",
+    "mathContext": "$$A = \\{1\\} \\cup \\{x > 0 : h \\mid x\\} = \\{1, h, 2h, 3h, \\ldots\\}$$\n**Basis of order $h$**: $n = qh + r$ where $0 \\le r < h$, so $n = r \\cdot 1 + q \\cdot h$ using $r + q \\le h$ summands (with repetition of $1$).\n\n**No restricted order**: The distinct multiples $h, 2h, \\ldots, th$ sum to $h \\cdot t(t+1)/2$. To represent $n$ using distinct elements, we need $t \\gtrsim \\sqrt{2n/h} \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiples of h",
+      "quadratic growth",
+      "division algorithm",
+      "distinct summands"
+    ],
+    "prerequisites": [
+      "IsBasisOfOrder",
+      "HasFiniteRestrictedOrder",
+      "batemanSet"
+    ]
+  },
+  {
+    "id": "ann-338-kelly",
+    "proofId": "erdos-338",
+    "range": {
+      "startLine": 122,
+      "endLine": 144
+    },
+    "type": "concept",
+    "title": "Kelly's Theorem and Conjecture (1957)",
+    "content": "Kelly proved the remarkable result that EVERY basis of order 2 has restricted order at most 4. The proof uses a clever pigeonhole argument: if A is a basis of order 2, then for large n, n = a + b with a, b ∈ A. Among the many representations (a, b), one can find 4 distinct elements that sum to n (possibly via combining two different representations). Kelly conjectured the bound should be 3, not 4 — this conjecture stood for nearly 50 years before Hennecart disproved it in 2005. The theorem kelly_conjecture_false has a sorry because the proof requires the Hennecart construction; the genuine proof is given later as hennecart_disproves_kelly.",
+    "mathContext": "**Kelly's Theorem**: If $A$ is a basis of order $2$, then $A$ has restricted order $\\le 4$.\n\n**Kelly's Conjecture** (FALSE): If $A$ is a basis of order $2$, then $A$ has restricted order $\\le 3$.\n\nKelly's conjecture reduces the bound by 1. The gap: some order-2 bases require restricted order exactly 4 (not 3).",
+    "significance": "key",
+    "relatedConcepts": [
+      "order-2 bases",
+      "pigeonhole argument",
+      "Kelly's conjecture",
+      "50-year conjecture"
+    ],
+    "prerequisites": [
+      "IsBasisOfOrder",
+      "HasRestrictedOrder",
+      "kellyConjecture"
+    ]
+  },
+  {
+    "id": "ann-338-hennecart",
+    "proofId": "erdos-338",
+    "range": {
+      "startLine": 150,
+      "endLine": 167
+    },
+    "type": "concept",
+    "title": "Hennecart's Counterexample (2005)",
+    "content": "Hennecart constructed an explicit basis of order 2 with restricted order EXACTLY 4 — not 3. The construction (axiomatized as hennecart_basis) uses a carefully designed set where order-2 representations exist but no large enough integer can be written as a sum of 3 distinct elements. The disproof hennecart_disproves_kelly is genuinely proved in Lean: it assumes kellyConjecture, applies it to hennecart_basis (which is order 2 by axiom) to get restricted order ≤ 3, but hennecart_restricted_order_four.2 asserts ¬HasRestrictedOrder hennecart_basis 3. Contradiction.",
+    "mathContext": "**Hennecart (2005)**: $\\exists A$ basis of order $2$ with restricted order exactly $4$:\n$$\\text{HasRestrictedOrder}(A, 4) \\land \\neg\\text{HasRestrictedOrder}(A, 3)$$\nThis disproves Kelly's conjecture that restricted order $\\le 3$ suffices. The Lean proof: assume Kelly's conjecture → apply to Hennecart's basis → get restricted order $\\le 3$ → contradiction with $\\neg\\text{HasRestrictedOrder}(A, 3)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "proof by contradiction",
+      "Kelly's conjecture disproved"
+    ],
+    "prerequisites": [
+      "kellyConjecture",
+      "hennecart_basis axiom",
+      "IsBasisOfOrder"
+    ]
+  },
+  {
+    "id": "ann-338-squares",
+    "proofId": "erdos-338",
+    "range": {
+      "startLine": 173,
+      "endLine": 213
+    },
+    "type": "concept",
+    "title": "Classical Examples: Squares and Triangular Numbers",
+    "content": "Two classical number-theoretic sets illustrate the order/restricted order gap. SQUARES: By Lagrange's four-squares theorem (1770), every positive integer is a sum of 4 squares, giving order 4. Pall (1933) showed restricted order is 5 — some integers require 5 distinct squares. The gap of 1 arises because without repetition, representations like 4 = 2² need to use other squares. TRIANGULAR NUMBERS: Gauss's 'Eureka' theorem (1796) shows order 3. Schinzel (1954) proved restricted order is also 3, making triangular numbers a rare case where order = restricted order. The theorems triangular_orders_equal and squares_orders_differ are both genuinely proved by pairing axioms.",
+    "mathContext": "**Squares** $\\{k^2 : k \\ge 0\\}$: order $= 4$ (Lagrange), restricted order $= 5$ (Pall). Gap $= 1$.\n\n**Triangular** $\\{k(k+1)/2 : k \\ge 0\\}$: order $= 3$ (Gauss), restricted order $= 3$ (Schinzel). Gap $= 0$.\n\nThe squares example: $n = a^2 + b^2 + c^2 + d^2$ allows $a = b$, but distinct-squares representation may need $5$ terms.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange four-squares theorem",
+      "Gauss Eureka theorem",
+      "Pall's theorem",
+      "Schinzel's theorem"
+    ],
+    "prerequisites": [
+      "squares",
+      "triangular",
+      "IsBasisOfOrder",
+      "HasRestrictedOrder"
+    ]
+  },
+  {
+    "id": "ann-338-hhp",
+    "proofId": "erdos-338",
+    "range": {
+      "startLine": 219,
+      "endLine": 236
+    },
+    "type": "concept",
+    "title": "HHP Exponential Lower Bound (2007)",
+    "content": "Hegyvári, Hennecart, and Plagne proved the most striking result: for order k ≥ 2, there exist bases whose restricted order is at least 2^{k−2} + k − 1, which is EXPONENTIAL in k. For k = 2: bound = 1 + 1 = 2 (trivial). For k = 3: bound = 2 + 2 = 4. For k = 4: bound = 4 + 3 = 7. For k = 10: bound = 256 + 9 = 265. The theorem exponential_gap is genuinely proved from the axiom hhp_lower_bound: it obtains the basis A, then proves ∀ t, HasRestrictedOrder A t → t ≥ 2^{k−2} + k − 1 by contraposition using push_neg.",
+    "mathContext": "**HHP (2007)**: For $k \\ge 2$, $\\exists A$ basis of order $k$ with restricted order $\\ge 2^{k-2} + k - 1$.\n\nThe **exponential gap**: order $k$ vs restricted order $\\ge 2^{k-2} + k - 1$. Values:\n| $k$ | order | min restricted order |\n|-----|-------|---------------------|\n| 2 | 2 | 2 |\n| 3 | 3 | 4 |\n| 4 | 4 | 7 |\n| 5 | 5 | 12 |\n| 10 | 10 | 265 |",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential growth",
+      "order-restricted order gap",
+      "push_neg tactic",
+      "contraposition"
+    ],
+    "prerequisites": [
+      "hhp_lower_bound axiom",
+      "IsBasisOfOrder",
+      "HasRestrictedOrder"
+    ]
+  },
+  {
+    "id": "ann-338-open-questions",
+    "proofId": "erdos-338",
+    "range": {
+      "startLine": 242,
+      "endLine": 274
+    },
+    "type": "definition",
+    "title": "The Four Main Open Questions",
+    "content": "The four open questions formalized as Prop definitions capture the complete landscape of Problem #338. OpenQuestion1: characterize when restricted order exists (∃ predicate P with HasFiniteRestrictedOrder A ↔ P A). OpenQuestion2: bound restricted order by a function of order (∃ f with restricted order ≤ f(order)). OpenQuestion3: characterize when order = restricted order (∃ P with IsBasisOfOrder A h ∧ HasRestrictedOrder A h ↔ IsBasisOfOrder A h ∧ P A). OpenQuestion4: robustness — if removing any finite set preserves the basis, must restricted order exist? IsRobustBasis formalizes this as ∀ F : Finset ℕ, IsBasisOfOrder (A \\ ↑F) h.",
+    "mathContext": "**Q1**: $\\exists P : \\text{HasFiniteRestrictedOrder}(A) \\iff P(A)$\n\n**Q2**: $\\exists f : \\text{restricted\\_order}(A) \\le f(\\text{order}(A))$ (the HHP bound shows $f(k) \\ge 2^{k-2} + k - 1$)\n\n**Q3**: $\\exists P : (\\text{order} = \\text{restricted\\_order}) \\iff P(A)$\n\n**Q4**: $(\\forall F \\text{ finite},\\; A \\setminus F \\text{ is basis}) \\implies \\text{HasFiniteRestrictedOrder}(A)$?",
+    "significance": "key",
+    "relatedConcepts": [
+      "characterization problem",
+      "robustness",
+      "function bounding",
+      "predicate existence"
+    ],
+    "prerequisites": [
+      "HasFiniteRestrictedOrder",
+      "IsBasisOfOrder",
+      "IsRobustBasis"
+    ]
+  },
+  {
+    "id": "ann-338-properties",
+    "proofId": "erdos-338",
+    "range": {
+      "startLine": 280,
+      "endLine": 318
+    },
+    "type": "concept",
+    "title": "Basic Properties of Restricted Order",
+    "content": "Three structural properties are formalized. restricted_implies_regular (genuinely proved): if A has restricted order t, it has regular order t — convert the Finset to Multiset via s.val. This shows every restricted representation is also a regular representation. order_le_restricted_order (sorry): if A has exact order h and restricted order t, then h ≤ t. Intuitively, restricted representations are harder (no repetition), so more summands may be needed. restricted_order_monotone (genuinely proved): HasRestrictedOrder A t implies HasRestrictedOrder A (t+1) via Nat.le_succ_of_le on the cardinality bound. This shows the restricted order predicate is upward closed.",
+    "mathContext": "**Restricted ⟹ Regular**: $\\text{HasRestrictedOrder}(A, t) \\implies \\text{IsBasisOfOrder}(A, t)$. Proof: `Finset` $\\subseteq$ `Multiset` (convert via `.val`).\n\n**Order $\\le$ Restricted**: $\\text{IsExactOrder}(A, h) \\land \\text{HasRestrictedOrder}(A, t) \\implies h \\le t$. (Sorry)\n\n**Monotonicity**: $\\text{HasRestrictedOrder}(A, t) \\implies \\text{HasRestrictedOrder}(A, t+1)$. Proof: $|s| \\le t \\implies |s| \\le t+1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.val",
+      "Multiset conversion",
+      "monotonicity",
+      "Nat.le_succ_of_le"
+    ],
+    "prerequisites": [
+      "HasRestrictedOrder",
+      "IsBasisOfOrder",
+      "IsExactOrder",
+      "Finset.val"
+    ]
+  },
+  {
+    "id": "ann-338-summary",
+    "proofId": "erdos-338",
+    "range": {
+      "startLine": 349,
+      "endLine": 361
+    },
+    "type": "concept",
+    "title": "Summary Theorem",
+    "content": "The summary theorem erdos_338_summary is genuinely proved, assembling four key results: (1) Kelly's theorem (∀ order-2 basis, restricted order ≤ 4), (2) Kelly's conjecture is false (¬kellyConjecture via hennecart_disproves_kelly), (3) squares have order 4 and restricted order 5, (4) triangular numbers have both orders equal to 3. The proof uses refine to split the conjunction, then dispatches each goal with the appropriate axiom combination. Final tally: 2 sorries (kelly_conjecture_false has a sorry but is superseded by hennecart_disproves_kelly which is fully proved; order_le_restricted_order has a sorry), 11 axioms, and 7 genuinely proved theorems.",
+    "mathContext": "**Proved**: Kelly's theorem $\\land$ $\\neg$Kelly's conjecture $\\land$ squares$(4, 5)$ $\\land$ triangulars$(3, 3)$.\n\nThe file status: $2$ sorries, $11$ axioms, $7$ genuinely proved theorems (bateman_observation, hennecart_disproves_kelly, triangular_orders_equal, squares_orders_differ, exponential_gap, restricted_implies_regular, restricted_order_monotone, erdos_338_summary).",
+    "significance": "key",
+    "relatedConcepts": [
+      "summary theorem",
+      "OPEN problem",
+      "proof inventory",
+      "refine tactic"
+    ],
+    "prerequisites": [
+      "kelly_theorem",
+      "hennecart_disproves_kelly",
+      "squares axioms",
+      "triangular axioms"
+    ]
+  }
+]

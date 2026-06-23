@@ -1,0 +1,1249 @@
+/-
+# Pick's Theorem OQ-01-OQ-01-OQ-01: Bridge from Primitive Triangulation + GCD Boundary Count
+
+Open Question (from `picks-theorem-oq-01-oq-01`):
+"Can Pick's theorem `I + B/2 - 1 = Area` be derived in Lean 4 by combining
+primitive triangulation with a boundary-point count via the GCD formula
+(boundary points on segment from v1 to v2 = gcd(|v2.1-v1.1|, |v2.2-v1.2|))?"
+
+## Status (S2 OBSERVE — base-case interior count, build-verified)
+
+S2 introduces a decidable definition of the *real* strictly-interior
+lattice-point count (`realInteriorCount`) as a `Finset` cardinality, and
+verifies on three concrete triangles that `realInteriorCount = pickInterior`.
+This closes the "base case" of the eventual Pick induction: for every
+primitive (`|det| = 1`) triangle, the formula `pickInterior = 0` agrees
+with the true count of strictly-interior lattice points.
+
+S1 set up the bridge data structures that connect:
+
+- `PicksTheoremOQ01OQ01` — every lattice triangle decomposes into exactly
+  `|det T|` primitive (i.e. `|det| = 1`) lattice sub-triangles.
+- `PicksTheoremOQ02` — the segment from `(0,0)` to `(a,b)` (with `a, b : ℕ`)
+  contains exactly `Nat.gcd a b + 1` integer lattice points.
+
+We define:
+
+1. `LatticeTriangle` — a mirror of the structure in `PicksTheoremOQ01OQ01`,
+   carrying three integer-coordinate vertices.  (We restate the definition
+   in our own namespace to keep this file self-contained; the math is the
+   same.)
+2. `twiceArea` — `|det T|`, equal to `2 · Area(T)` by the shoelace formula.
+3. `edgeGCD i` — the GCD of `(|Δx_i|, |Δy_i|)` for edge `i ∈ {0,1,2}`.
+4. `boundaryCount` — the sum of three `edgeGCD` values; equal to the
+   number of boundary lattice points of `T` (each edge contributes
+   `gcd + 1` points, with the three shared vertex endpoints double-counted
+   so `B = Σ (gcd + 1) - 3 = Σ gcd`).
+5. `pickInterior` — the rational number `twiceArea/2 - boundaryCount/2 + 1`,
+   i.e. `I` computed via Pick's formula.
+
+## The Bridge Claim (the answer to OQ-01-OQ-01-OQ-01)
+
+**Yes, in principle.**  Given `PicksTheoremOQ01OQ01` and `PicksTheoremOQ02`,
+Pick's theorem for lattice triangles becomes a finite computation
+`pickInterior T = realInteriorCount T`.  The reduction proceeds in three
+algebraic steps:
+
+  Step 1 (Area side).  By the shoelace formula (`PicksTheoremOQ01.lean`,
+  Part II), `2 · Area(T) = |det T|`.  By primitive triangulation
+  (`PicksTheoremOQ01OQ01.exists_primitive_triangulation`), every triangle
+  decomposes into `|det T|` primitive triangles, each of area `1/2`.
+
+  Step 2 (Boundary side).  By the GCD boundary formula
+  (`PicksTheoremOQ02.card_segmentPoints`), the segment from `(0,0)` to
+  `(a,b)` carries `gcd(a,b) + 1` lattice points.  Translation invariance
+  (Step 1 of `onSegment`) extends this to arbitrary segments, so any
+  triangle edge from `(x_1,y_1)` to `(x_2,y_2)` carries
+  `gcd(|x_2 - x_1|, |y_2 - y_1|) + 1` lattice points, and the boundary
+  total is `Σ_i edgeGCD i + 3 - 3 = Σ_i edgeGCD i = boundaryCount T`.
+
+  Step 3 (Algebraic identity).  Pick's formula
+  `Area = I + B/2 - 1` rearranges to `I = Area - B/2 + 1 = pickInterior T`.
+
+The remaining work is the **inductive step** that fuses primitive area
+contributions and primitive boundary contributions consistently across
+shared edges.  This file does not attempt that fusion — it scaffolds the
+bridge data structures and verifies the formula on three concrete
+triangles (unit, 2-by-1, 3-by-3).
+
+## What This File Proves (sorry-free, 0 axioms)
+
+- The three small-case computations:
+  * Unit right triangle `{(0,0), (1,0), (0,1)}`: `I = 0`, `B = 3`,
+    `2A = 1`, `pickInterior = 0`, **`realInteriorCount = 0`** (S2).
+  * Right triangle `{(0,0), (2,0), (0,1)}`: `I = 0`, `B = 4`, `2A = 2`,
+    `pickInterior = 0`, **`realInteriorCount = 0`** (S2).
+  * Right triangle `{(0,0), (3,0), (0,3)}`: `I = 1`, `B = 9`, `2A = 9`,
+    `pickInterior = 1`, **`realInteriorCount = 1`** (S2; interior point
+    `(1, 1)`).
+- The bridge identity `2 · pickInterior + boundaryCount = twiceArea + 2`,
+  i.e. Pick's formula in cleared-denominator form.
+- The non-negativity sanity check `pickInterior ≥ 0` for the three test
+  triangles (showing the formula does produce a valid interior count).
+- S2: the agreement theorem `realInteriorCount T = pickInterior T` on each
+  of the three test triangles (cast to `ℚ`).
+
+## Architecture
+
+- Section I: Mirror definitions (`LatticeTriangle`, `det`).
+- Section II: Bridge data (`twiceArea`, `edgeGCD`, `boundaryCount`,
+  `pickInterior`).
+- Section III: Algebraic identity (`pick_formula_cleared`).
+- Section IV: Verification on three concrete triangles (`pickInterior`).
+- Section V: Non-negativity sanity checks.
+- Section VI (S2): Real strictly-interior lattice-point count via a
+  decidable bounding-box filter (`StrictInterior`, `boundingBox`,
+  `realInterior`, `realInteriorCount`).
+- Section VII (S2): `realInteriorCount = pickInterior` on the three test
+  triangles (base-case agreement).
+
+The companion files `PicksTheoremOQ01OQ01.lean` and `PicksTheoremOQ02.lean`
+remain the load-bearing pieces; this file simply names the bridge and
+makes the composition explicit.
+-/
+
+import Mathlib.Data.Int.GCD
+import Mathlib.Data.Int.Interval
+import Mathlib.Data.Nat.GCD.Basic
+import Mathlib.Data.Finset.Prod
+import Mathlib.Tactic
+
+namespace PicksTheoremOQ01OQ01OQ01
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION I: Mirror Definitions
+-- ════════════════════════════════════════════════════════════════
+
+/-- A lattice triangle with three vertices in `ℤ²`. -/
+structure LatticeTriangle where
+  v1 : ℤ × ℤ
+  v2 : ℤ × ℤ
+  v3 : ℤ × ℤ
+  deriving Repr
+
+/-- Signed determinant: `det(T) = (v2 - v1) × (v3 - v1)` (2D cross product).
+    Equals twice the signed area of `T`. -/
+def LatticeTriangle.det (T : LatticeTriangle) : ℤ :=
+  (T.v2.1 - T.v1.1) * (T.v3.2 - T.v1.2) - (T.v3.1 - T.v1.1) * (T.v2.2 - T.v1.2)
+
+/-- Non-degenerate triangles have non-zero determinant (positive area). -/
+def LatticeTriangle.NonDegenerate (T : LatticeTriangle) : Prop := T.det ≠ 0
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION II: Bridge Data Structures
+-- ════════════════════════════════════════════════════════════════
+
+/-- Twice the area of `T`, as a natural number (`= |det T|`). -/
+def LatticeTriangle.twiceArea (T : LatticeTriangle) : ℕ := T.det.natAbs
+
+/-- The pair of absolute differences `(|Δx_i|, |Δy_i|)` for edge `i`.
+    Edges are indexed `0 : v1 → v2`, `1 : v2 → v3`, `2 : v3 → v1`. -/
+def LatticeTriangle.edgeDelta (T : LatticeTriangle) : Fin 3 → ℕ × ℕ
+  | 0 => ((T.v2.1 - T.v1.1).natAbs, (T.v2.2 - T.v1.2).natAbs)
+  | 1 => ((T.v3.1 - T.v2.1).natAbs, (T.v3.2 - T.v2.2).natAbs)
+  | 2 => ((T.v1.1 - T.v3.1).natAbs, (T.v1.2 - T.v3.2).natAbs)
+
+/-- The GCD-based lattice-point count *minus the shared endpoint* for edge `i`.
+    By `PicksTheoremOQ02.card_segmentPoints`, this is `gcd(|Δx|, |Δy|)`. -/
+def LatticeTriangle.edgeGCD (T : LatticeTriangle) (i : Fin 3) : ℕ :=
+  Nat.gcd (T.edgeDelta i).1 (T.edgeDelta i).2
+
+/-- Boundary lattice-point count of `T`, computed via the GCD formula.
+    Each of the three edges contributes `gcd(|Δx|, |Δy|) + 1` lattice
+    points, with the three vertex endpoints each double-counted (shared
+    between two edges), so `B = Σ_i (gcd + 1) - 3 = Σ_i gcd`. -/
+def LatticeTriangle.boundaryCount (T : LatticeTriangle) : ℕ :=
+  T.edgeGCD 0 + T.edgeGCD 1 + T.edgeGCD 2
+
+/-- Pick's formula for the interior-point count of `T`, as a rational:
+    `I = Area - B/2 + 1 = (twiceArea - boundaryCount + 2) / 2`. -/
+def LatticeTriangle.pickInterior (T : LatticeTriangle) : ℚ :=
+  (T.twiceArea : ℚ) / 2 - (T.boundaryCount : ℚ) / 2 + 1
+
+/-- Pick's formula for the interior-point count of `T`, expressed via the
+    cleared-denominator integer formula `2 · I + B - 2A = 2`.
+
+    This is the form most useful for inductive proofs: it sidesteps
+    division by 2 and lets us reason in `ℕ` or `ℤ`. -/
+def LatticeTriangle.pickInteriorNum (T : LatticeTriangle) : ℤ :=
+  ((T.twiceArea : ℤ) - (T.boundaryCount : ℤ) + 2)
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION III: Algebraic Bridge Identity
+-- ════════════════════════════════════════════════════════════════
+
+/-- **Cleared-denominator form** of Pick's interior formula.
+
+    By construction, `2 · pickInterior T = pickInteriorNum T`, so the two
+    versions agree.  This identity is the engine that converts a question
+    about half-integers into a question about integers. -/
+theorem two_mul_pickInterior (T : LatticeTriangle) :
+    2 * T.pickInterior = (T.pickInteriorNum : ℚ) := by
+  unfold LatticeTriangle.pickInterior LatticeTriangle.pickInteriorNum
+  push_cast
+  ring
+
+/-- **Pick's formula in standard form**:
+    `twiceArea = 2 · pickInterior + boundaryCount - 2`, equivalently
+    `Area = I + B/2 - 1` after dividing by `2`. -/
+theorem pick_formula_cleared (T : LatticeTriangle) :
+    (T.twiceArea : ℚ) = 2 * T.pickInterior + (T.boundaryCount : ℚ) - 2 := by
+  unfold LatticeTriangle.pickInterior
+  ring
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION IV: Concrete Verification on Three Triangles
+-- ════════════════════════════════════════════════════════════════
+
+/-! ### Test triangle 1: Unit right triangle `{(0,0), (1,0), (0,1)}`
+
+  - `det = 1`, so `twiceArea = 1`, `Area = 1/2`.
+  - Edges `(0,0)→(1,0)`, `(1,0)→(0,1)`, `(0,1)→(0,0)` have GCDs
+    `gcd(1,0) = 1`, `gcd(1,1) = 1`, `gcd(0,1) = 1`, summing to `B = 3`.
+  - `pickInterior = 1/2 - 3/2 + 1 = 0`.  ✓ (Interior count is `0`.) -/
+
+/-- The unit right triangle. -/
+def unitTriangle : LatticeTriangle := ⟨(0, 0), (1, 0), (0, 1)⟩
+
+theorem unitTriangle_twiceArea : unitTriangle.twiceArea = 1 := by
+  native_decide
+
+theorem unitTriangle_boundaryCount : unitTriangle.boundaryCount = 3 := by
+  native_decide
+
+theorem unitTriangle_pickInterior : unitTriangle.pickInterior = 0 := by
+  unfold LatticeTriangle.pickInterior
+  rw [unitTriangle_twiceArea, unitTriangle_boundaryCount]
+  norm_num
+
+theorem unitTriangle_pickInteriorNum : unitTriangle.pickInteriorNum = 0 := by
+  unfold LatticeTriangle.pickInteriorNum
+  rw [unitTriangle_twiceArea, unitTriangle_boundaryCount]
+  native_decide
+
+/-! ### Test triangle 2: 2-by-1 right triangle `{(0,0), (2,0), (0,1)}`
+
+  - `det = 2`, so `twiceArea = 2`, `Area = 1`.
+  - Edges: GCDs `gcd(2,0) = 2`, `gcd(2,1) = 1`, `gcd(0,1) = 1`, summing
+    to `B = 4`.
+  - `pickInterior = 1 - 2 + 1 = 0`.  ✓ (Interior count is `0`.) -/
+
+/-- Right triangle with legs `2` and `1`. -/
+def triangle_2_1 : LatticeTriangle := ⟨(0, 0), (2, 0), (0, 1)⟩
+
+theorem triangle_2_1_twiceArea : triangle_2_1.twiceArea = 2 := by
+  native_decide
+
+theorem triangle_2_1_boundaryCount : triangle_2_1.boundaryCount = 4 := by
+  native_decide
+
+theorem triangle_2_1_pickInterior : triangle_2_1.pickInterior = 0 := by
+  unfold LatticeTriangle.pickInterior
+  rw [triangle_2_1_twiceArea, triangle_2_1_boundaryCount]
+  norm_num
+
+/-! ### Test triangle 3: 3-by-3 right triangle `{(0,0), (3,0), (0,3)}`
+
+  - `det = 9`, so `twiceArea = 9`, `Area = 9/2`.
+  - Edges: GCDs `gcd(3,0) = 3`, `gcd(3,3) = 3`, `gcd(0,3) = 3`, summing
+    to `B = 9`.
+  - `pickInterior = 9/2 - 9/2 + 1 = 1`.  ✓ (Interior point is `(1,1)`.) -/
+
+/-- Right triangle with legs `3` and `3` (one interior point at `(1,1)`). -/
+def triangle_3_3 : LatticeTriangle := ⟨(0, 0), (3, 0), (0, 3)⟩
+
+theorem triangle_3_3_twiceArea : triangle_3_3.twiceArea = 9 := by
+  native_decide
+
+theorem triangle_3_3_boundaryCount : triangle_3_3.boundaryCount = 9 := by
+  native_decide
+
+theorem triangle_3_3_pickInterior : triangle_3_3.pickInterior = 1 := by
+  unfold LatticeTriangle.pickInterior
+  rw [triangle_3_3_twiceArea, triangle_3_3_boundaryCount]
+  norm_num
+
+/-! ### Sanity: the cleared form agrees across all three. -/
+
+theorem unitTriangle_pick_cleared :
+    (unitTriangle.twiceArea : ℚ) =
+      2 * unitTriangle.pickInterior + (unitTriangle.boundaryCount : ℚ) - 2 :=
+  pick_formula_cleared unitTriangle
+
+theorem triangle_2_1_pick_cleared :
+    (triangle_2_1.twiceArea : ℚ) =
+      2 * triangle_2_1.pickInterior + (triangle_2_1.boundaryCount : ℚ) - 2 :=
+  pick_formula_cleared triangle_2_1
+
+theorem triangle_3_3_pick_cleared :
+    (triangle_3_3.twiceArea : ℚ) =
+      2 * triangle_3_3.pickInterior + (triangle_3_3.boundaryCount : ℚ) - 2 :=
+  pick_formula_cleared triangle_3_3
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION V: Concrete Sanity Checks (non-negativity of pickInterior)
+-- ════════════════════════════════════════════════════════════════
+
+theorem unitTriangle_pickInterior_nonneg : 0 ≤ unitTriangle.pickInterior := by
+  rw [unitTriangle_pickInterior]
+
+theorem triangle_2_1_pickInterior_nonneg : 0 ≤ triangle_2_1.pickInterior := by
+  rw [triangle_2_1_pickInterior]
+
+theorem triangle_3_3_pickInterior_nonneg : 0 ≤ triangle_3_3.pickInterior := by
+  rw [triangle_3_3_pickInterior]; norm_num
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION VI (S2): Real Strictly-Interior Lattice-Point Count
+-- ════════════════════════════════════════════════════════════════
+
+/-- Twice the signed area of triangle `(a, b, p)` via the 2D cross product
+    `(b - a) × (p - a)`.  The sign records orientation: positive when
+    `(a, b, p)` is counter-clockwise. -/
+def cross2 (a b p : ℤ × ℤ) : ℤ :=
+  (b.1 - a.1) * (p.2 - a.2) - (p.1 - a.1) * (b.2 - a.2)
+
+/-- A lattice point `p` is **strictly interior** to a triangle `T` if all
+    three edge cross products (for the cyclic sequence `(v_i, v_{i+1}, p)`)
+    share the same strict sign.  This excludes edge and vertex points.
+
+    The two disjuncts handle the two possible orientations of `T`
+    (counter-clockwise: all cross products `> 0`; clockwise: all `< 0`). -/
+def LatticeTriangle.StrictInterior (T : LatticeTriangle) (p : ℤ × ℤ) : Prop :=
+  (0 < cross2 T.v1 T.v2 p ∧ 0 < cross2 T.v2 T.v3 p ∧ 0 < cross2 T.v3 T.v1 p) ∨
+  (cross2 T.v1 T.v2 p < 0 ∧ cross2 T.v2 T.v3 p < 0 ∧ cross2 T.v3 T.v1 p < 0)
+
+instance (T : LatticeTriangle) (p : ℤ × ℤ) : Decidable (T.StrictInterior p) := by
+  unfold LatticeTriangle.StrictInterior
+  infer_instance
+
+/-- Smallest `x`-coordinate among the vertices of `T`. -/
+def LatticeTriangle.xmin (T : LatticeTriangle) : ℤ :=
+  min (min T.v1.1 T.v2.1) T.v3.1
+
+/-- Largest `x`-coordinate among the vertices of `T`. -/
+def LatticeTriangle.xmax (T : LatticeTriangle) : ℤ :=
+  max (max T.v1.1 T.v2.1) T.v3.1
+
+/-- Smallest `y`-coordinate among the vertices of `T`. -/
+def LatticeTriangle.ymin (T : LatticeTriangle) : ℤ :=
+  min (min T.v1.2 T.v2.2) T.v3.2
+
+/-- Largest `y`-coordinate among the vertices of `T`. -/
+def LatticeTriangle.ymax (T : LatticeTriangle) : ℤ :=
+  max (max T.v1.2 T.v2.2) T.v3.2
+
+/-- The bounding-box `Finset` of lattice points enclosing the vertices of
+    `T`.  Every interior (and boundary) lattice point of `T` lies in this
+    finite rectangle. -/
+def LatticeTriangle.boundingBox (T : LatticeTriangle) : Finset (ℤ × ℤ) :=
+  (Finset.Icc T.xmin T.xmax) ×ˢ (Finset.Icc T.ymin T.ymax)
+
+/-- The set of strictly-interior lattice points of `T` as a `Finset`,
+    obtained by filtering the bounding box through `StrictInterior`. -/
+def LatticeTriangle.realInterior (T : LatticeTriangle) : Finset (ℤ × ℤ) :=
+  T.boundingBox.filter T.StrictInterior
+
+/-- The strictly-interior lattice-point count `I(T)`.  This is the "real"
+    geometric quantity Pick's formula `pickInterior` is supposed to match. -/
+def LatticeTriangle.realInteriorCount (T : LatticeTriangle) : ℕ :=
+  T.realInterior.card
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION VII (S2): Base-Case Agreement `realInteriorCount = pickInterior`
+-- ════════════════════════════════════════════════════════════════
+
+/-! ### Unit triangle `{(0,0), (1,0), (0,1)}` — primitive (`|det| = 1`).
+
+  This is the **base case** of the future Pick induction: for any
+  primitive triangle, `realInteriorCount = 0 = pickInterior`.  Here we
+  verify the unit instance; the general primitive case will be proved
+  in S3 once we have the additivity lemma for shared edges. -/
+
+theorem unitTriangle_realInteriorCount : unitTriangle.realInteriorCount = 0 := by
+  native_decide
+
+/-- Pick's formula holds on the unit triangle:
+    `realInteriorCount = pickInterior = 0`. -/
+theorem unitTriangle_pick_agrees :
+    (unitTriangle.realInteriorCount : ℚ) = unitTriangle.pickInterior := by
+  rw [unitTriangle_realInteriorCount, unitTriangle_pickInterior]
+  norm_num
+
+/-! ### 2-by-1 right triangle `{(0,0), (2,0), (0,1)}` (interior count = 0). -/
+
+theorem triangle_2_1_realInteriorCount : triangle_2_1.realInteriorCount = 0 := by
+  native_decide
+
+theorem triangle_2_1_pick_agrees :
+    (triangle_2_1.realInteriorCount : ℚ) = triangle_2_1.pickInterior := by
+  rw [triangle_2_1_realInteriorCount, triangle_2_1_pickInterior]
+  norm_num
+
+/-! ### 3-by-3 right triangle `{(0,0), (3,0), (0,3)}` (interior count = 1).
+
+  The unique strictly-interior lattice point is `(1, 1)`:
+  - `cross2 (0,0) (3,0) (1,1) = 3·1 - 1·0 = 3 > 0`
+  - `cross2 (3,0) (0,3) (1,1) = (-3)·1 - (-2)·3 = 3 > 0`
+  - `cross2 (0,3) (0,0) (1,1) = 0·(-2) - 1·(-3) = 3 > 0`
+  All three cross products are strictly positive, so `(1,1) ∈ realInterior`.
+  No other point in `[0,3]²` satisfies all three. -/
+
+theorem triangle_3_3_realInteriorCount : triangle_3_3.realInteriorCount = 1 := by
+  native_decide
+
+theorem triangle_3_3_pick_agrees :
+    (triangle_3_3.realInteriorCount : ℚ) = triangle_3_3.pickInterior := by
+  rw [triangle_3_3_realInteriorCount, triangle_3_3_pickInterior]
+  norm_num
+
+/-! ### Summary
+
+  The three theorems `unitTriangle_pick_agrees`, `triangle_2_1_pick_agrees`,
+  and `triangle_3_3_pick_agrees` establish base-case agreement between the
+  real interior-lattice-point count and the rational `pickInterior` on the
+  three test triangles.  Combined with Section IV's
+  `unitTriangle_pickInterior`, `triangle_2_1_pickInterior`, and
+  `triangle_3_3_pickInterior`, we obtain Pick's theorem **as a verified
+  computation** on these specific triangles, fully discharging the
+  formula's claim there.
+
+  The remaining steps (S3, S4) are:
+
+  - S3: Additivity lemma — when two triangles `T₁`, `T₂` share an edge
+    `e` with `gcd(e) = 1` (no interior boundary lattice points), the real
+    interior counts satisfy
+    `realInteriorCount (T₁ ∪ T₂) = realInteriorCount T₁
+                                    + realInteriorCount T₂
+                                    + (boundary points strictly on e)`,
+    and the same identity holds for `pickInterior` by `pick_formula_cleared`.
+  - S4: Close the induction via
+    `PicksTheoremOQ01OQ01.exists_primitive_triangulation`: every lattice
+    triangle decomposes into `|det|` primitive sub-triangles, each
+    contributing `pickInterior = 0`, and the boundary/area accounting
+    aggregates correctly via the additivity lemma. -/
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION VIII (S3-prep): Primitive Case `twiceArea = 1` ⇒ `I = 0`
+-- ════════════════════════════════════════════════════════════════
+
+/-! ### The partition-sum identity
+
+For any test point `p`, the three edge cross-products of `T` against
+`p` sum to the signed determinant `T.det`.  Geometrically: the three
+sub-triangles `(v_i, v_{i+1}, p)` tile `T` (with signs), so twice
+their signed areas sum to twice the signed area of `T`. -/
+
+/-- **Partition-sum identity**: the three edge cross-products of `T`
+    against any lattice point `p` sum to `T.det` (= twice the signed
+    area of `T`).  Discrete analogue of the additivity of signed
+    area under triangulation: the three sub-triangles `(vᵢ, vᵢ₊₁, p)`
+    tile `T` with appropriate signs. -/
+theorem cross2_partition_sum (T : LatticeTriangle) (p : ℤ × ℤ) :
+    cross2 T.v1 T.v2 p + cross2 T.v2 T.v3 p + cross2 T.v3 T.v1 p = T.det := by
+  unfold cross2 LatticeTriangle.det
+  ring
+
+/-! ### No strict-interior lattice points in a primitive triangle
+
+If `T.twiceArea = 1`, the `StrictInterior` predicate fails at every
+lattice point.  This is the general primitive base case of the
+Pick induction. -/
+
+/-- **Primitive case — no strict interior points**: for a primitive
+    lattice triangle (`twiceArea = 1`), no lattice point is strictly
+    interior.
+
+    *Proof idea.* The three cross-products `cross2 vᵢ vᵢ₊₁ p` sum to
+    `T.det` (`cross2_partition_sum`), whose absolute value is
+    `T.twiceArea = 1`.  If all three were of the same strict sign
+    (the `StrictInterior` condition), each would have absolute value
+    `≥ 1`, so the sum would have absolute value `≥ 3`, contradicting
+    `|sum| = 1`.  `omega` discharges the integer-arithmetic
+    contradiction in both orientations. -/
+theorem primitive_no_strict_interior (T : LatticeTriangle)
+    (h : T.twiceArea = 1) (p : ℤ × ℤ) : ¬ T.StrictInterior p := by
+  intro hsi
+  have hsum := cross2_partition_sum T p
+  unfold LatticeTriangle.twiceArea at h
+  unfold LatticeTriangle.StrictInterior at hsi
+  rcases hsi with ⟨h1, h2, h3⟩ | ⟨h1, h2, h3⟩ <;> omega
+
+/-- **Primitive case (S3-prep): `twiceArea = 1` ⇒ `realInteriorCount = 0`**.
+
+    For every lattice triangle `T` with `|det T| = 1`, the strictly-
+    interior lattice-point count is zero.  This is the **general
+    primitive base case** of the Pick induction.
+
+    The lemma strictly generalises `unitTriangle_realInteriorCount`
+    (which handled the specific triangle `{(0,0), (1,0), (0,1)}` via
+    `native_decide`) to *every* primitive triangle in `ℤ²`,
+    independent of orientation, vertex labelling, or position.
+
+    The proof is purely algebraic: combining `cross2_partition_sum`
+    with `|T.det| = T.twiceArea = 1` forces the three cross-products
+    not to all share the same strict sign, which is exactly the
+    failure of `StrictInterior p`.  No bounding-box enumeration is
+    required; the conclusion holds at every lattice point. -/
+theorem primitive_realInteriorCount_zero (T : LatticeTriangle)
+    (h : T.twiceArea = 1) : T.realInteriorCount = 0 := by
+  unfold LatticeTriangle.realInteriorCount LatticeTriangle.realInterior
+  rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  exact fun p _ => primitive_no_strict_interior T h p
+
+/-- **Sanity check**: the unit-triangle base case `unitTriangle_realInteriorCount`
+    is now recovered as a *uniform* corollary of the general primitive
+    lemma — not relying on `native_decide` on the specific vertex
+    coordinates.  This proves that the S3-prep generalisation is
+    consistent with the S2 base-case computation. -/
+example : unitTriangle.realInteriorCount = 0 :=
+  primitive_realInteriorCount_zero unitTriangle unitTriangle_twiceArea
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION IX (S3a-plus): Primitive case — `pickInterior = 0`
+-- ════════════════════════════════════════════════════════════════
+
+/-! ### Primitive case: every edge GCD is `1`, hence `pickInterior T = 0`
+
+S3-prep (`primitive_realInteriorCount_zero`) closed the geometric side
+of the primitive base case: every primitive triangle has zero strictly-
+interior lattice points.  S3a-plus closes the *formula* side: every
+primitive triangle also has `pickInterior T = 0` (by Pick's identity,
+since `boundaryCount = 3` once each edge GCD is `1`).
+
+Combining the two, `(realInteriorCount T : ℚ) = pickInterior T` for
+every primitive `T`, not only the three concrete witnesses verified by
+`native_decide` in Section VII.
+
+The proof factors through the signed edge vector for each edge: define
+`signedDelta i : ℤ × ℤ` (the absolute-value-free version of
+`edgeDelta i`), express `T.det` cyclically as a `ℤ`-linear combination
+of its two components, and conclude `edgeGCD i ∣ T.twiceArea`; with
+`T.twiceArea = 1` the only natural-number divisor is `1`.
+
+Per the S3a-prep bearer audit (`#18950`), the Mathlib v4.26.0 / Lean
+core API points used are: `Nat.gcd_dvd_left/right`,
+`Nat.eq_one_of_dvd_one`, `Int.natCast_dvd_natCast`, `Int.dvd_natAbs`,
+`Int.natAbs_dvd_natAbs` — all stable on the lockfile pin. -/
+
+/-- The **signed** edge vector for edge `i`, retaining direction
+    information that `edgeDelta i` (which is component-wise
+    `Int.natAbs`) discards.  Used purely to express `T.det` as a
+    `ℤ`-linear combination uniformly across the three edges. -/
+def LatticeTriangle.signedDelta (T : LatticeTriangle) : Fin 3 → ℤ × ℤ
+  | 0 => (T.v2.1 - T.v1.1, T.v2.2 - T.v1.2)
+  | 1 => (T.v3.1 - T.v2.1, T.v3.2 - T.v2.2)
+  | 2 => (T.v1.1 - T.v3.1, T.v1.2 - T.v3.2)
+
+/-- `edgeDelta i` recovers `signedDelta i` componentwise via `Int.natAbs`. -/
+lemma edgeDelta_eq_natAbs_signedDelta (T : LatticeTriangle) (i : Fin 3) :
+    T.edgeDelta i = ((T.signedDelta i).1.natAbs, (T.signedDelta i).2.natAbs) := by
+  fin_cases i <;> rfl
+
+/-- The *other* edge vector emanating from `v_i` in the cyclic
+    factorisation of `T.det`.  Pairs with `signedDelta i` so that
+    `T.det = signedDelta_i.1 · crossDelta_i.2 − crossDelta_i.1 · signedDelta_i.2`. -/
+def LatticeTriangle.crossDelta (T : LatticeTriangle) : Fin 3 → ℤ × ℤ
+  | 0 => (T.v3.1 - T.v1.1, T.v3.2 - T.v1.2)
+  | 1 => (T.v1.1 - T.v2.1, T.v1.2 - T.v2.2)
+  | 2 => (T.v2.1 - T.v3.1, T.v2.2 - T.v3.2)
+
+/-- **Cyclic factorisation of the determinant**: for every edge index
+    `i`, `T.det` is a `ℤ`-linear combination of the two coordinates of
+    `signedDelta i`, with `crossDelta i` supplying the cofactors.
+
+    This is the algebraic content of "the 2×2 determinant is invariant
+    under cyclic permutation of the three vertices" — for `i = 0` it is
+    the literal definition of `T.det`; for `i = 1, 2` it is the same
+    determinant computed against a cyclically shifted base vertex. -/
+lemma det_eq_signedDelta_factor (T : LatticeTriangle) (i : Fin 3) :
+    T.det = (T.signedDelta i).1 * (T.crossDelta i).2
+             - (T.crossDelta i).1 * (T.signedDelta i).2 := by
+  unfold LatticeTriangle.det LatticeTriangle.signedDelta LatticeTriangle.crossDelta
+  fin_cases i <;> ring
+
+/-- The edge GCD (as a `ℤ`) divides the first component of `signedDelta i`. -/
+lemma edgeGCD_dvd_signedDelta_fst (T : LatticeTriangle) (i : Fin 3) :
+    (T.edgeGCD i : ℤ) ∣ (T.signedDelta i).1 := by
+  have h : T.edgeGCD i ∣ (T.signedDelta i).1.natAbs := by
+    unfold LatticeTriangle.edgeGCD
+    rw [edgeDelta_eq_natAbs_signedDelta]
+    exact Nat.gcd_dvd_left _ _
+  exact Int.dvd_natAbs.mp (Int.natCast_dvd_natCast.mpr h)
+
+/-- The edge GCD (as a `ℤ`) divides the second component of `signedDelta i`. -/
+lemma edgeGCD_dvd_signedDelta_snd (T : LatticeTriangle) (i : Fin 3) :
+    (T.edgeGCD i : ℤ) ∣ (T.signedDelta i).2 := by
+  have h : T.edgeGCD i ∣ (T.signedDelta i).2.natAbs := by
+    unfold LatticeTriangle.edgeGCD
+    rw [edgeDelta_eq_natAbs_signedDelta]
+    exact Nat.gcd_dvd_right _ _
+  exact Int.dvd_natAbs.mp (Int.natCast_dvd_natCast.mpr h)
+
+/-- The edge GCD (as a `ℤ`) divides `T.det`.  Combines the cyclic
+    determinant factorisation with the two component-wise divisibilities. -/
+lemma edgeGCD_dvd_det (T : LatticeTriangle) (i : Fin 3) :
+    (T.edgeGCD i : ℤ) ∣ T.det := by
+  rw [det_eq_signedDelta_factor T i]
+  exact ((edgeGCD_dvd_signedDelta_fst T i).mul_right _).sub
+        ((edgeGCD_dvd_signedDelta_snd T i).mul_left _)
+
+/-- The edge GCD divides `T.twiceArea` (= `|T.det|`).  Direct corollary
+    of `edgeGCD_dvd_det` after collapsing through `Int.natAbs`. -/
+lemma edgeGCD_dvd_twiceArea (T : LatticeTriangle) (i : Fin 3) :
+    T.edgeGCD i ∣ T.twiceArea := by
+  have h : (T.edgeGCD i : ℤ) ∣ T.det := edgeGCD_dvd_det T i
+  have h' : (T.edgeGCD i : ℤ).natAbs ∣ T.det.natAbs :=
+    Int.natAbs_dvd_natAbs.mpr h
+  simpa [LatticeTriangle.twiceArea] using h'
+
+/-- **Primitive case — every edge GCD is `1`**.  For every primitive
+    lattice triangle (`twiceArea = 1`) and every edge index `i`, the
+    edge GCD equals `1` — equivalently, the segment from `v_i` to
+    `v_{i+1}` contains no interior lattice points. -/
+theorem primitive_edgeGCD_eq_one (T : LatticeTriangle) (h : T.twiceArea = 1)
+    (i : Fin 3) : T.edgeGCD i = 1 := by
+  have hdvd : T.edgeGCD i ∣ T.twiceArea := edgeGCD_dvd_twiceArea T i
+  rw [h] at hdvd
+  exact Nat.eq_one_of_dvd_one hdvd
+
+/-- **Primitive case — boundary count is `3`**.  Each edge contributes
+    `edgeGCD = 1` lattice points to the boundary count, so the total is
+    exactly `3` (one for each vertex/edge cycle). -/
+theorem primitive_boundaryCount_eq_three (T : LatticeTriangle)
+    (h : T.twiceArea = 1) : T.boundaryCount = 3 := by
+  unfold LatticeTriangle.boundaryCount
+  rw [primitive_edgeGCD_eq_one T h 0, primitive_edgeGCD_eq_one T h 1,
+      primitive_edgeGCD_eq_one T h 2]
+
+/-- **Primitive case — Pick's formula gives `pickInterior = 0`**.  For
+    every primitive lattice triangle (`twiceArea = 1`), Pick's formula
+    `I = A − B/2 + 1 = 1/2 − 3/2 + 1` evaluates to `0`.  This matches the
+    geometric count `realInteriorCount = 0` (S3-prep). -/
+theorem primitive_pickInterior_zero (T : LatticeTriangle)
+    (h : T.twiceArea = 1) : T.pickInterior = 0 := by
+  unfold LatticeTriangle.pickInterior
+  rw [primitive_boundaryCount_eq_three T h, h]
+  norm_num
+
+/-- **Primitive base case — agreement of `realInteriorCount` and
+    `pickInterior`**.  For every primitive lattice triangle
+    (`twiceArea = 1`), the geometric count of strictly-interior lattice
+    points matches the rational value of Pick's formula.  This is the
+    clean primitive base case of the eventual Pick induction. -/
+theorem primitive_pick_agrees (T : LatticeTriangle) (h : T.twiceArea = 1) :
+    (T.realInteriorCount : ℚ) = T.pickInterior := by
+  rw [primitive_realInteriorCount_zero T h, primitive_pickInterior_zero T h]
+  simp
+
+/-- **Sanity check**: the unit-triangle agreement
+    `unitTriangle.realInteriorCount = unitTriangle.pickInterior`
+    (originally `native_decide` in S2, restated `unfold + norm_num` in S1)
+    is now recovered uniformly as a corollary of `primitive_pick_agrees`. -/
+example : (unitTriangle.realInteriorCount : ℚ) = unitTriangle.pickInterior :=
+  primitive_pick_agrees unitTriangle unitTriangle_twiceArea
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION VIII (S3b-act-1): ℤ-anchored Lattice Segment Points
+-- ════════════════════════════════════════════════════════════════
+
+namespace LatticeTriangle
+
+/-- Lattice points lying on the closed segment from `v` to `w` in `ℤ × ℤ`,
+    parametrised by `k · (Δ / g)` where `g = Int.gcd Δx Δy` and `Δ = w - v`.
+    Generalises `PicksTheoremOQ02.segmentPoints (a b : ℕ)` (origin-anchored
+    ℕ-coords) to arbitrary ℤ-coord, vertex-anchored segments. -/
+noncomputable def latticeSegmentPoints (v w : ℤ × ℤ) : Finset (ℤ × ℤ) :=
+  let dx : ℤ := w.1 - v.1
+  let dy : ℤ := w.2 - v.2
+  let g  : ℕ := Int.gcd dx dy
+  (Finset.range (g + 1)).image
+    (fun k : ℕ => (v.1 + (k : ℤ) * (dx / (g : ℤ)),
+                   v.2 + (k : ℤ) * (dy / (g : ℤ))))
+
+end LatticeTriangle
+
+/-- Injectivity of the segment parametrisation on `Finset.range (g + 1)`.
+    Used by `card_latticeSegmentPoints` to count via `Finset.card_image_of_injOn`. -/
+private theorem parametrisation_injOn_range (v w : ℤ × ℤ) :
+    Set.InjOn
+      (fun k : ℕ => (v.1 + (k : ℤ) * ((w.1 - v.1) / ((Int.gcd (w.1 - v.1) (w.2 - v.2) : ℕ) : ℤ)),
+                     v.2 + (k : ℤ) * ((w.2 - v.2) / ((Int.gcd (w.1 - v.1) (w.2 - v.2) : ℕ) : ℤ))))
+      ↑(Finset.range ((Int.gcd (w.1 - v.1) (w.2 - v.2) : ℕ) + 1)) := by
+  set dx : ℤ := w.1 - v.1 with hdx_def
+  set dy : ℤ := w.2 - v.2 with hdy_def
+  set g  : ℕ := Int.gcd dx dy with hg_def
+  intro k₁ hk₁ k₂ hk₂ heq
+  rw [Finset.mem_coe, Finset.mem_range] at hk₁ hk₂
+  by_cases hg : g = 0
+  · -- g = 0 ⟹ Finset.range 1 = {0} ⟹ k₁, k₂ < 1 ⟹ k₁ = k₂ = 0 by omega.
+    omega
+  · -- g ≠ 0. Pair-eq decomposition; cancel v.{1,2}; factor (k₁-k₂)·(d/g) = 0.
+    obtain ⟨hxeq, hyeq⟩ := Prod.mk.inj heq
+    have hk_dx : ((k₁ : ℤ) - k₂) * (dx / (g : ℤ)) = 0 := by linear_combination hxeq
+    have hk_dy : ((k₁ : ℤ) - k₂) * (dy / (g : ℤ)) = 0 := by linear_combination hyeq
+    -- `Int.ne_zero_of_gcd` : `Int.gcd x y ≠ 0 → x ≠ 0 ∨ y ≠ 0`
+    -- (Mathlib/Data/Int/GCD.lean:202).
+    rcases Int.ne_zero_of_gcd hg with hxne | hyne
+    · -- dx ≠ 0 ⟹ dx/g ≠ 0 (since g ∣ dx exactly and dx ≠ 0)
+      have hdx_g_ne : dx / (g : ℤ) ≠ 0 := by
+        intro hzero
+        have := Int.ediv_mul_cancel (Int.gcd_dvd_left dx dy : (g : ℤ) ∣ dx)
+        rw [hzero, zero_mul] at this
+        exact hxne this.symm
+      have hcast : (k₁ : ℤ) = (k₂ : ℤ) := by
+        rcases mul_eq_zero.mp hk_dx with h | h
+        · linarith
+        · exact absurd h hdx_g_ne
+      exact_mod_cast hcast
+    · -- symmetric: dy ≠ 0 ⟹ dy/g ≠ 0 ⟹ k₁ = k₂
+      have hdy_g_ne : dy / (g : ℤ) ≠ 0 := by
+        intro hzero
+        have := Int.ediv_mul_cancel (Int.gcd_dvd_right dx dy : (g : ℤ) ∣ dy)
+        rw [hzero, zero_mul] at this
+        exact hyne this.symm
+      have hcast : (k₁ : ℤ) = (k₂ : ℤ) := by
+        rcases mul_eq_zero.mp hk_dy with h | h
+        · linarith
+        · exact absurd h hdy_g_ne
+      exact_mod_cast hcast
+
+/-- Cardinality of `latticeSegmentPoints`: counts `Int.gcd Δx Δy + 1` lattice
+    points on the closed segment from `v` to `w`. Generalises
+    `PicksTheoremOQ02.card_segmentPoints` to ℤ-coords. -/
+theorem card_latticeSegmentPoints (v w : ℤ × ℤ) :
+    (LatticeTriangle.latticeSegmentPoints v w).card =
+    Int.gcd (w.1 - v.1) (w.2 - v.2) + 1 := by
+  unfold LatticeTriangle.latticeSegmentPoints
+  rw [Finset.card_image_of_injOn (parametrisation_injOn_range v w),
+      Finset.card_range]
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION IX (S3b-act-2): Edge-Interior Witness for `edgeGCD ≥ 2` (Case (a))
+-- ════════════════════════════════════════════════════════════════
+
+namespace LatticeTriangle
+
+/-- Edge `i` of `T` connects vertex `vEdgeStart i` to vertex `vEdgeEnd i`,
+    following the same edge convention as `edgeDelta`:
+    edge 0 = v1→v2, edge 1 = v2→v3, edge 2 = v3→v1. -/
+def vEdgeStart (T : LatticeTriangle) : Fin 3 → ℤ × ℤ
+  | 0 => T.v1
+  | 1 => T.v2
+  | 2 => T.v3
+
+/-- Edge endpoint: edge 0 → v2, edge 1 → v3, edge 2 → v1. -/
+def vEdgeEnd (T : LatticeTriangle) : Fin 3 → ℤ × ℤ
+  | 0 => T.v2
+  | 1 => T.v3
+  | 2 => T.v1
+
+/-- Compatibility: `edgeGCD i` equals `Int.gcd` of the signed differences
+    `vEdgeEnd i - vEdgeStart i`.  Holds by `rfl` after `fin_cases` because
+    `Int.gcd a b = Nat.gcd a.natAbs b.natAbs` and `edgeDelta i` is defined
+    via the same signed differences (each component passed through
+    `natAbs`). -/
+lemma edgeGCD_eq_Int_gcd (T : LatticeTriangle) (i : Fin 3) :
+    T.edgeGCD i =
+      Int.gcd ((T.vEdgeEnd i).1 - (T.vEdgeStart i).1)
+              ((T.vEdgeEnd i).2 - (T.vEdgeStart i).2) := by
+  fin_cases i <;> rfl
+
+/-- `p` lies in the strict interior of edge `i` of `T`: it is on the segment
+    from `vEdgeStart i` to `vEdgeEnd i`, but distinct from both endpoints. -/
+def OnStrictEdgeInterior (T : LatticeTriangle) (i : Fin 3) (p : ℤ × ℤ) : Prop :=
+  p ∈ latticeSegmentPoints (T.vEdgeStart i) (T.vEdgeEnd i) ∧
+  p ≠ T.vEdgeStart i ∧ p ≠ T.vEdgeEnd i
+
+end LatticeTriangle
+
+/-- **S3b-act-2 — Case (a) witness for `exists_nonvertex_lattice_point`**:
+    when edge `i` of `T` has `edgeGCD ≥ 2`, there is a lattice point in the
+    strict interior of that edge.
+
+    The witness is the parameter-`k = 1` point of the gcd-parametrisation:
+    `vᵢ + Δ/g` where `Δ = vᵢ₊₁ - vᵢ` and `g = Int.gcd Δx Δy`.  Since `g ≥ 2`,
+    `k = 1` lies strictly between `k = 0` (the start endpoint) and `k = g`
+    (the end endpoint), so the witness is a lattice point distinct from
+    both vertices.
+
+    Combined with the Case (b) primitive-triangle witness (separate work),
+    this closes `exists_nonvertex_lattice_point` — the geometric
+    prerequisite for the full Pick's-theorem induction (S3b PREP §4.1). -/
+theorem exists_nonvertex_lattice_point_of_edgeGCD_ge_two
+    (T : LatticeTriangle) (i : Fin 3) (hg : 2 ≤ T.edgeGCD i) :
+    ∃ p : ℤ × ℤ, T.OnStrictEdgeInterior i p := by
+  rw [T.edgeGCD_eq_Int_gcd i] at hg
+  set v := T.vEdgeStart i with hv_def
+  set w := T.vEdgeEnd i with hw_def
+  set dx : ℤ := w.1 - v.1 with hdx_def
+  set dy : ℤ := w.2 - v.2 with hdy_def
+  set g  : ℕ := Int.gcd dx dy with hg_def
+  -- After `set`, the hypothesis reads `hg : 2 ≤ g`.
+  have hgne0 : g ≠ 0 := by omega
+  have hgZne : (g : ℤ) ≠ 0 := by exact_mod_cast hgne0
+  have hgZge2 : (2 : ℤ) ≤ (g : ℤ) := by exact_mod_cast hg
+  have hdvdx : (g : ℤ) ∣ dx := Int.gcd_dvd_left dx dy
+  have hdvdy : (g : ℤ) ∣ dy := Int.gcd_dvd_right dx dy
+  refine ⟨(v.1 + dx / (g : ℤ), v.2 + dy / (g : ℤ)), ?_, ?_, ?_⟩
+  · -- Membership in latticeSegmentPoints v w via Finset.mem_image with k = 1.
+    show (v.1 + dx / (g : ℤ), v.2 + dy / (g : ℤ)) ∈
+         LatticeTriangle.latticeSegmentPoints v w
+    unfold LatticeTriangle.latticeSegmentPoints
+    refine Finset.mem_image.mpr ⟨1, ?_, ?_⟩
+    · -- 1 ∈ Finset.range (g + 1).  `show` bridges the let-bound inner gcd
+      -- with the outer `set g := Int.gcd dx dy`.
+      show 1 ∈ Finset.range (g + 1)
+      exact Finset.mem_range.mpr (by omega)
+    · -- The witness equals the k=1 image: simp-fold via the set-equations.
+      show (v.1 + (1 : ℤ) * (dx / (g : ℤ)),
+            v.2 + (1 : ℤ) * (dy / (g : ℤ))) =
+           (v.1 + dx / (g : ℤ), v.2 + dy / (g : ℤ))
+      simp
+  · -- Witness ≠ v.  p = v ⟹ dx/g = 0 ∧ dy/g = 0 ⟹ dx = 0 ∧ dy = 0 ⟹ g = 0, ⊥.
+    intro hpv
+    have hxz : dx / (g : ℤ) = 0 := by
+      have h : v.1 + dx / (g : ℤ) = v.1 := congrArg Prod.fst hpv
+      linarith
+    have hyz : dy / (g : ℤ) = 0 := by
+      have h : v.2 + dy / (g : ℤ) = v.2 := congrArg Prod.snd hpv
+      linarith
+    have hdx0 : dx = 0 := by
+      have heq := Int.ediv_mul_cancel hdvdx
+      rw [hxz, zero_mul] at heq
+      exact heq.symm
+    have hdy0 : dy = 0 := by
+      have heq := Int.ediv_mul_cancel hdvdy
+      rw [hyz, zero_mul] at heq
+      exact heq.symm
+    have hg0 : g = 0 := by
+      show Int.gcd dx dy = 0
+      rw [hdx0, hdy0]; rfl
+    omega
+  · -- Witness ≠ w.  p = w ⟹ dx/g = dx ∧ dy/g = dy
+    --              ⟹ dx·g = dx ∧ dy·g = dy   (using g ∣ Δ)
+    --              ⟹ dx·(g-1) = 0 ∧ dy·(g-1) = 0
+    --              ⟹ dx = 0 ∧ dy = 0           (since g ≥ 2)
+    --              ⟹ g = Int.gcd 0 0 = 0, contradicting g ≥ 2.
+    intro hpw
+    have hxw : dx / (g : ℤ) = dx := by
+      have h : v.1 + dx / (g : ℤ) = w.1 := congrArg Prod.fst hpw
+      linarith
+    have hyw : dy / (g : ℤ) = dy := by
+      have h : v.2 + dy / (g : ℤ) = w.2 := congrArg Prod.snd hpw
+      linarith
+    have hxg : dx * (g : ℤ) = dx := by
+      have heq := Int.ediv_mul_cancel hdvdx
+      rw [hxw] at heq
+      exact heq
+    have hyg : dy * (g : ℤ) = dy := by
+      have heq := Int.ediv_mul_cancel hdvdy
+      rw [hyw] at heq
+      exact heq
+    have hdx0 : dx = 0 := by
+      have hf : dx * ((g : ℤ) - 1) = 0 := by linarith
+      rcases mul_eq_zero.mp hf with h | h
+      · exact h
+      · linarith
+    have hdy0 : dy = 0 := by
+      have hf : dy * ((g : ℤ) - 1) = 0 := by linarith
+      rcases mul_eq_zero.mp hf with h | h
+      · exact h
+      · linarith
+    have hg0 : g = 0 := by
+      show Int.gcd dx dy = 0
+      rw [hdx0, hdy0]; rfl
+    omega
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION XI (S3b-act-3): No Edge-Interior Witness When `edgeGCD = 1`
+--                          (Case (a) Converse)
+-- ════════════════════════════════════════════════════════════════
+
+/-! ### Primitive edges have no strict-interior lattice points
+
+The converse of `exists_nonvertex_lattice_point_of_edgeGCD_ge_two`
+(S3b-act-2 Case (a)).  When edge `i` of `T` has `edgeGCD i = 1`, the
+lattice-point segment along that edge consists of **exactly** its two
+endpoints, so the strict interior of the edge contains no lattice point.
+
+This completes the edge-interior characterisation for the future
+Pick's-theorem induction: for any non-degenerate primitive lattice
+triangle, every edge has `edgeGCD = 1` (by `primitive_edgeGCD_eq_one`),
+hence every edge has no interior lattice point — the search for
+non-vertex lattice points must move to the geometric interior, where
+`primitive_no_strict_interior` likewise rules them out.
+
+## Proof strategy
+
+`card_latticeSegmentPoints v w = edgeGCD i + 1`.  When `edgeGCD i = 1`,
+this gives `card = 2`.  Both endpoints `v = vEdgeStart i` and
+`w = vEdgeEnd i` lie in the segment (`k = 0` and `k = g = 1`
+parametrisations), and they are distinct (`v = w` would force
+`Int.gcd 0 0 = 0 ≠ 1`).  So `{v, w} ⊆ segment` with both sides of
+cardinality `2`, hence `segment = {v, w}`.  Any `p ∈ segment` must
+therefore equal `v` or `w`, contradicting the strict-interior
+constraints `p ≠ v` and `p ≠ w`.
+-/
+
+namespace LatticeTriangle
+
+/-- The start vertex `v` lies in the lattice segment from `v` to `w`,
+    witnessed by the `k = 0` parameter. -/
+lemma vStart_mem_latticeSegmentPoints (v w : ℤ × ℤ) :
+    v ∈ latticeSegmentPoints v w := by
+  unfold latticeSegmentPoints
+  refine Finset.mem_image.mpr ⟨0, ?_, ?_⟩
+  · exact Finset.mem_range.mpr (by omega)
+  · simp
+
+/-- The end vertex `w` lies in the lattice segment from `v` to `w`,
+    witnessed by the `k = g` parameter (where `g = Int.gcd Δx Δy`).
+    Uses `Int.ediv_mul_cancel` on each component via `g ∣ Δx` and
+    `g ∣ Δy`. -/
+lemma vEnd_mem_latticeSegmentPoints (v w : ℤ × ℤ) :
+    w ∈ latticeSegmentPoints v w := by
+  unfold latticeSegmentPoints
+  set dx : ℤ := w.1 - v.1 with hdx_def
+  set dy : ℤ := w.2 - v.2 with hdy_def
+  set g  : ℕ := Int.gcd dx dy with hg_def
+  refine Finset.mem_image.mpr ⟨g, ?_, ?_⟩
+  · show g ∈ Finset.range (g + 1)
+    exact Finset.mem_range.mpr (by omega)
+  · have hdvdx : (g : ℤ) ∣ dx := Int.gcd_dvd_left dx dy
+    have hdvdy : (g : ℤ) ∣ dy := Int.gcd_dvd_right dx dy
+    have hxe : (g : ℤ) * (dx / (g : ℤ)) = dx := by
+      rw [mul_comm]; exact Int.ediv_mul_cancel hdvdx
+    have hye : (g : ℤ) * (dy / (g : ℤ)) = dy := by
+      rw [mul_comm]; exact Int.ediv_mul_cancel hdvdy
+    show (v.1 + (g : ℤ) * (dx / (g : ℤ)),
+          v.2 + (g : ℤ) * (dy / (g : ℤ))) = w
+    rw [hxe, hye]
+    show (v.1 + dx, v.2 + dy) = w
+    rw [hdx_def, hdy_def]
+    ext <;> simp
+
+end LatticeTriangle
+
+/-- **S3b-act-3 — Case (a) converse**.  When edge `i` of `T` has
+    `edgeGCD i = 1` (primitive edge), no lattice point lies in the
+    strict interior of that edge.
+
+    The segment from `vEdgeStart i` to `vEdgeEnd i` has cardinality
+    `edgeGCD i + 1 = 2` by `card_latticeSegmentPoints`; the two
+    endpoints (distinct because `edgeGCD = 1 ≠ 0`) exhaust the segment,
+    so `OnStrictEdgeInterior i p` (which requires `p` to be on the
+    segment but distinct from both endpoints) is unsatisfiable.
+
+    Together with `exists_nonvertex_lattice_point_of_edgeGCD_ge_two`
+    (Case (a)), this gives a complete characterisation:
+    `(∃ p, T.OnStrictEdgeInterior i p) ↔ 2 ≤ T.edgeGCD i`.  For
+    primitive triangles (`twiceArea = 1`), `primitive_edgeGCD_eq_one`
+    forces `edgeGCD i = 1`, so this lemma rules out all edge-interior
+    lattice points; combined with `primitive_no_strict_interior`,
+    every non-vertex lattice point candidate is eliminated. -/
+theorem no_strict_edge_interior_of_edgeGCD_eq_one
+    (T : LatticeTriangle) (i : Fin 3) (h : T.edgeGCD i = 1) :
+    ∀ p, ¬ T.OnStrictEdgeInterior i p := by
+  intro p hp
+  obtain ⟨hmem, hne_v, hne_w⟩ := hp
+  -- Step 1: card S = 2 from card_latticeSegmentPoints + edgeGCD i = 1.
+  have hcard : (LatticeTriangle.latticeSegmentPoints
+                  (T.vEdgeStart i) (T.vEdgeEnd i)).card = 2 := by
+    have := card_latticeSegmentPoints (T.vEdgeStart i) (T.vEdgeEnd i)
+    rw [← T.edgeGCD_eq_Int_gcd i, h] at this
+    exact this
+  -- Step 2: both endpoints lie in the segment.
+  have hv_mem : T.vEdgeStart i ∈ LatticeTriangle.latticeSegmentPoints
+                  (T.vEdgeStart i) (T.vEdgeEnd i) :=
+    LatticeTriangle.vStart_mem_latticeSegmentPoints _ _
+  have hw_mem : T.vEdgeEnd i ∈ LatticeTriangle.latticeSegmentPoints
+                  (T.vEdgeStart i) (T.vEdgeEnd i) :=
+    LatticeTriangle.vEnd_mem_latticeSegmentPoints _ _
+  -- Step 3: endpoints are distinct (otherwise Int.gcd 0 0 = 0 ≠ 1).
+  have hvw : T.vEdgeStart i ≠ T.vEdgeEnd i := by
+    intro heq
+    have hdx0 : (T.vEdgeEnd i).1 - (T.vEdgeStart i).1 = 0 := by rw [heq]; ring
+    have hdy0 : (T.vEdgeEnd i).2 - (T.vEdgeStart i).2 = 0 := by rw [heq]; ring
+    have hg0 : Int.gcd ((T.vEdgeEnd i).1 - (T.vEdgeStart i).1)
+                       ((T.vEdgeEnd i).2 - (T.vEdgeStart i).2) = 0 := by
+      rw [hdx0, hdy0]; rfl
+    rw [← T.edgeGCD_eq_Int_gcd i] at hg0
+    rw [h] at hg0
+    exact one_ne_zero hg0
+  -- Step 4: {v, w} ⊆ segment and both sides have card 2, so segment = {v, w}.
+  have hpair_sub : ({T.vEdgeStart i, T.vEdgeEnd i} : Finset (ℤ × ℤ)) ⊆
+                   LatticeTriangle.latticeSegmentPoints
+                     (T.vEdgeStart i) (T.vEdgeEnd i) := by
+    intro x hx
+    rcases Finset.mem_insert.mp hx with hxv | hxw
+    · rw [hxv]; exact hv_mem
+    · rw [Finset.mem_singleton] at hxw; rw [hxw]; exact hw_mem
+  have hpair_card : ({T.vEdgeStart i, T.vEdgeEnd i} : Finset (ℤ × ℤ)).card = 2 := by
+    rw [Finset.card_insert_of_notMem (by simp [hvw]), Finset.card_singleton]
+  have hSeq : LatticeTriangle.latticeSegmentPoints
+                (T.vEdgeStart i) (T.vEdgeEnd i) =
+              ({T.vEdgeStart i, T.vEdgeEnd i} : Finset (ℤ × ℤ)) := by
+    symm
+    exact Finset.eq_of_subset_of_card_le hpair_sub (by rw [hcard, hpair_card])
+  -- Step 5: p ∈ segment = {v, w}, so p = v or p = w — both contradict hne_*.
+  rw [hSeq] at hmem
+  rcases Finset.mem_insert.mp hmem with hp_v | hp_w
+  · exact hne_v hp_v
+  · rw [Finset.mem_singleton] at hp_w
+    exact hne_w hp_w
+
+/-- **S3b-act-3 — characterisation of edge-interior witnesses**.  Combines
+    `exists_nonvertex_lattice_point_of_edgeGCD_ge_two` (Case (a)) and
+    `no_strict_edge_interior_of_edgeGCD_eq_one` (Case (a) converse) into
+    a single biconditional: edge `i` carries a strict-interior lattice
+    point iff `edgeGCD i ≥ 2`.
+
+    The `↔` form makes this directly usable in the future
+    `exists_nonvertex_lattice_point` proof, which case-splits on whether
+    any edge has `edgeGCD ≥ 2`. -/
+theorem exists_strict_edge_interior_iff_edgeGCD_ge_two
+    (T : LatticeTriangle) (i : Fin 3) :
+    (∃ p, T.OnStrictEdgeInterior i p) ↔ 2 ≤ T.edgeGCD i := by
+  refine ⟨?_, exists_nonvertex_lattice_point_of_edgeGCD_ge_two T i⟩
+  intro ⟨p, hp⟩
+  -- We get contradiction unless edgeGCD i ≥ 2.  Argue by contrapositive:
+  -- edgeGCD i < 2 means edgeGCD i ∈ {0, 1}.
+  by_contra hlt
+  push_neg at hlt
+  rcases (by omega : T.edgeGCD i = 0 ∨ T.edgeGCD i = 1) with hg0 | hg1
+  · -- edgeGCD i = 0.  Then both v and w are equal (since Int.gcd Δx Δy = 0
+    -- forces Δx = Δy = 0), and the segment is just {v}, so card = 1.  But
+    -- `OnStrictEdgeInterior` requires p in the segment with p ≠ v, impossible.
+    -- Alternatively: g = 0 ⟹ segment has card 1, and (p ∈ segment, p ≠ v) is
+    -- self-contradictory.
+    have hcard : (LatticeTriangle.latticeSegmentPoints
+                    (T.vEdgeStart i) (T.vEdgeEnd i)).card = 1 := by
+      have := card_latticeSegmentPoints (T.vEdgeStart i) (T.vEdgeEnd i)
+      rw [← T.edgeGCD_eq_Int_gcd i, hg0] at this
+      exact this
+    -- p ∈ segment and v ∈ segment; if p ≠ v then card ≥ 2, contradicting card = 1.
+    have hv_mem : T.vEdgeStart i ∈ LatticeTriangle.latticeSegmentPoints
+                    (T.vEdgeStart i) (T.vEdgeEnd i) :=
+      LatticeTriangle.vStart_mem_latticeSegmentPoints _ _
+    obtain ⟨hmem, hne_v, _⟩ := hp
+    have hsub : ({p, T.vEdgeStart i} : Finset (ℤ × ℤ)) ⊆
+                LatticeTriangle.latticeSegmentPoints
+                  (T.vEdgeStart i) (T.vEdgeEnd i) := by
+      intro x hx
+      rcases Finset.mem_insert.mp hx with hxp | hxv
+      · rw [hxp]; exact hmem
+      · rw [Finset.mem_singleton] at hxv; rw [hxv]; exact hv_mem
+    have hcard2 : ({p, T.vEdgeStart i} : Finset (ℤ × ℤ)).card = 2 := by
+      rw [Finset.card_insert_of_notMem (by simp [hne_v]), Finset.card_singleton]
+    have : 2 ≤ 1 := by
+      have := Finset.card_le_card hsub
+      rw [hcard2, hcard] at this
+      exact this
+    omega
+  · -- edgeGCD i = 1.  Direct application of S3b-act-3.
+    exact no_strict_edge_interior_of_edgeGCD_eq_one T i hg1 p hp
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION XII (S4-prep): Translation Invariance of the Pick Bridge
+-- ════════════════════════════════════════════════════════════════
+
+/-! ### Why translation invariance is the next step
+
+The future Pick induction (S4/S5) decomposes a triangle into `|det|`
+primitive sub-triangles and reasons about each.  Every step of that
+argument needs to *reposition* a sub-triangle to a canonical location
+(e.g. anchor a vertex at the origin) without changing any of the
+Pick data.  This section proves exactly that: translating all three
+vertices by a fixed lattice vector `t` leaves invariant
+
+  * the determinant `det` (hence `twiceArea`),
+  * every `edgeGCD` (hence `boundaryCount`),
+  * the rational `pickInterior` and the integer `pickInteriorNum`,
+  * the orientation predicate `StrictInterior` (up to the same shift),
+  * and — the substantive result — the geometric count
+    `realInteriorCount`, via an explicit `Finset` bijection.
+
+Unlike the S2 base-case agreements (which are `native_decide` facts
+about three concrete triangles), these lemmas hold for *every* lattice
+triangle and *every* translation vector.  The capstone
+`pick_agrees_translate_iff` records the payoff: Pick's agreement is a
+translation-invariant property, so it suffices to prove it at any single
+canonical position. -/
+
+namespace LatticeTriangle
+
+/-- Translate every vertex of `T` by a fixed lattice vector `t`. -/
+def translate (T : LatticeTriangle) (t : ℤ × ℤ) : LatticeTriangle :=
+  ⟨(T.v1.1 + t.1, T.v1.2 + t.2),
+   (T.v2.1 + t.1, T.v2.2 + t.2),
+   (T.v3.1 + t.1, T.v3.2 + t.2)⟩
+
+end LatticeTriangle
+
+/-! #### Algebraic invariances (det / area / boundary / Pick formula) -/
+
+/-- The determinant is translation-invariant: shifting all vertices by `t`
+    cancels in every coordinate difference. -/
+lemma det_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).det = T.det := by
+  simp only [LatticeTriangle.det, LatticeTriangle.translate]
+  ring
+
+/-- `twiceArea = |det|` is translation-invariant. -/
+lemma twiceArea_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).twiceArea = T.twiceArea := by
+  unfold LatticeTriangle.twiceArea
+  rw [det_translate]
+
+/-- Each signed edge vector is unchanged by translation (the shift `t`
+    cancels in the difference of consecutive vertices). -/
+lemma signedDelta_translate (T : LatticeTriangle) (t : ℤ × ℤ) (i : Fin 3) :
+    (T.translate t).signedDelta i = T.signedDelta i := by
+  fin_cases i <;>
+    simp only [LatticeTriangle.signedDelta, LatticeTriangle.translate,
+      Prod.mk.injEq] <;>
+    refine ⟨?_, ?_⟩ <;> ring
+
+/-- Each absolute edge delta is unchanged by translation. -/
+lemma edgeDelta_translate (T : LatticeTriangle) (t : ℤ × ℤ) (i : Fin 3) :
+    (T.translate t).edgeDelta i = T.edgeDelta i := by
+  rw [edgeDelta_eq_natAbs_signedDelta, edgeDelta_eq_natAbs_signedDelta,
+      signedDelta_translate]
+
+/-- Each edge GCD is translation-invariant. -/
+lemma edgeGCD_translate (T : LatticeTriangle) (t : ℤ × ℤ) (i : Fin 3) :
+    (T.translate t).edgeGCD i = T.edgeGCD i := by
+  unfold LatticeTriangle.edgeGCD
+  rw [edgeDelta_translate]
+
+/-- The boundary lattice-point count is translation-invariant. -/
+lemma boundaryCount_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).boundaryCount = T.boundaryCount := by
+  unfold LatticeTriangle.boundaryCount
+  rw [edgeGCD_translate, edgeGCD_translate, edgeGCD_translate]
+
+/-- Pick's rational interior formula is translation-invariant. -/
+lemma pickInterior_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).pickInterior = T.pickInterior := by
+  unfold LatticeTriangle.pickInterior
+  rw [twiceArea_translate, boundaryCount_translate]
+
+/-- The cleared-denominator integer form is translation-invariant. -/
+lemma pickInteriorNum_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).pickInteriorNum = T.pickInteriorNum := by
+  unfold LatticeTriangle.pickInteriorNum
+  rw [twiceArea_translate, boundaryCount_translate]
+
+/-! #### Geometric invariance (orientation predicate and interior count) -/
+
+/-- Translating the two reference vertices by `t` is the same as shifting
+    the test point by `-t`: `cross2 (a+t) (b+t) p = cross2 a b (p - t)`. -/
+lemma cross2_translate_pt (a b p t : ℤ × ℤ) :
+    cross2 (a.1 + t.1, a.2 + t.2) (b.1 + t.1, b.2 + t.2) p
+      = cross2 a b (p.1 - t.1, p.2 - t.2) := by
+  unfold cross2
+  ring
+
+/-- A point is strictly interior to the translated triangle iff its
+    back-shift `p - t` is strictly interior to the original.  Both
+    orientation disjuncts transport simultaneously. -/
+lemma strictInterior_translate (T : LatticeTriangle) (t p : ℤ × ℤ) :
+    (T.translate t).StrictInterior p ↔ T.StrictInterior (p.1 - t.1, p.2 - t.2) := by
+  simp only [LatticeTriangle.StrictInterior, LatticeTriangle.translate]
+  rw [cross2_translate_pt, cross2_translate_pt, cross2_translate_pt]
+
+/-! #### Bounding-box transport (each extreme coordinate shifts by `t`) -/
+
+lemma xmin_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).xmin = T.xmin + t.1 := by
+  simp only [LatticeTriangle.xmin, LatticeTriangle.translate]
+  omega
+
+lemma xmax_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).xmax = T.xmax + t.1 := by
+  simp only [LatticeTriangle.xmax, LatticeTriangle.translate]
+  omega
+
+lemma ymin_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).ymin = T.ymin + t.2 := by
+  simp only [LatticeTriangle.ymin, LatticeTriangle.translate]
+  omega
+
+lemma ymax_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).ymax = T.ymax + t.2 := by
+  simp only [LatticeTriangle.ymax, LatticeTriangle.translate]
+  omega
+
+/-- A point lies in the translated bounding box iff its back-shift lies in
+    the original bounding box. -/
+lemma mem_boundingBox_translate (T : LatticeTriangle) (t q : ℤ × ℤ) :
+    q ∈ (T.translate t).boundingBox ↔
+      (q.1 - t.1, q.2 - t.2) ∈ T.boundingBox := by
+  simp only [LatticeTriangle.boundingBox, Finset.mem_product, Finset.mem_Icc,
+    xmin_translate, xmax_translate, ymin_translate, ymax_translate]
+  omega
+
+/-! #### The substantive result: `realInteriorCount` is translation-invariant -/
+
+/-- The strictly-interior lattice points of the translated triangle are
+    exactly the image of those of the original under the shift map
+    `p ↦ p + t`.  This packages the orientation and bounding-box
+    transports into a single `Finset` identity. -/
+theorem realInterior_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).realInterior
+      = T.realInterior.image (fun p : ℤ × ℤ => (p.1 + t.1, p.2 + t.2)) := by
+  ext q
+  simp only [LatticeTriangle.realInterior, Finset.mem_filter, Finset.mem_image]
+  constructor
+  · rintro ⟨hbb, hsi⟩
+    exact ⟨(q.1 - t.1, q.2 - t.2),
+      ⟨(mem_boundingBox_translate T t q).mp hbb,
+       (strictInterior_translate T t q).mp hsi⟩,
+      by simp⟩
+  · rintro ⟨p, ⟨hbb, hsi⟩, rfl⟩
+    refine ⟨?_, ?_⟩
+    · rw [mem_boundingBox_translate]; simpa using hbb
+    · rw [strictInterior_translate]; simpa using hsi
+
+/-- **Translation invariance of the interior count.**  For every lattice
+    triangle `T` and every shift `t`, the strictly-interior lattice-point
+    count is unchanged.  The shift map is a bijection on lattice points,
+    so the filtered bounding boxes have equal cardinality.
+
+    This is the general repositioning lemma the Pick induction needs:
+    a primitive sub-triangle may be translated to any canonical anchor
+    without affecting its geometric interior count. -/
+theorem realInteriorCount_translate (T : LatticeTriangle) (t : ℤ × ℤ) :
+    (T.translate t).realInteriorCount = T.realInteriorCount := by
+  unfold LatticeTriangle.realInteriorCount
+  rw [realInterior_translate]
+  apply Finset.card_image_of_injective
+  intro a b hab
+  simp only [Prod.mk.injEq] at hab
+  exact Prod.ext (add_right_cancel hab.1) (add_right_cancel hab.2)
+
+/-- **Capstone — Pick's agreement is translation-invariant.**  The property
+    "the real interior count equals Pick's formula" holds for `T` iff it
+    holds for any translate `T.translate t`.  Consequently it suffices to
+    establish Pick's theorem at a single canonical position (e.g. a vertex
+    anchored at the origin), and the general case follows by translation.
+
+    Both sides of the equivalence reduce to the same statement once the
+    two invariances `realInteriorCount_translate` and
+    `pickInterior_translate` are applied. -/
+theorem pick_agrees_translate_iff (T : LatticeTriangle) (t : ℤ × ℤ) :
+    ((T.translate t).realInteriorCount : ℚ) = (T.translate t).pickInterior
+      ↔ ((T.realInteriorCount : ℚ) = T.pickInterior) := by
+  rw [realInteriorCount_translate, pickInterior_translate]
+
+/-- **Sanity check.**  The primitive base case `primitive_pick_agrees`
+    transports across translation: any translate of a primitive triangle
+    still satisfies Pick's agreement (its `twiceArea` is also `1`).  This
+    confirms the new invariance machinery is consistent with the S3a
+    primitive base case. -/
+example (T : LatticeTriangle) (t : ℤ × ℤ) (h : T.twiceArea = 1) :
+    ((T.translate t).realInteriorCount : ℚ) = (T.translate t).pickInterior :=
+  (pick_agrees_translate_iff T t).mpr (primitive_pick_agrees T h)
+
+end PicksTheoremOQ01OQ01OQ01

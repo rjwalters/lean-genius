@@ -1,0 +1,151 @@
+{
+  "slug": "combinations-formula-oq-02",
+  "title": "Combinations Formula: Connections to Catalan Numbers and Combinatorial Sequences",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "C_n = (1/(n+1)) * binomial(2*n,n), with Catalan recurrence and central-binomial bounds formalized for n in N.",
+    "plain": "Develops the Catalan-number side of the combinations formula project. The Lean file defines Catalan numbers from central binomial coefficients, verifies the first values, proves positivity and growth bounds, and records the convolution recurrence used across Catalan-counting arguments.",
+    "whyMatters": [
+      "Catalan numbers connect binomial coefficients to trees, paths, parenthesizations, and many other counting problems.",
+      "The entry turns the combinations formula into reusable Catalan and central-binomial infrastructure rather than a single isolated identity.",
+      "Verified tables and bounds make the result useful for downstream combinatorics entries that need small values or asymptotic estimates."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Defines `catalan n` as `Nat.centralBinom n / (n + 1)` and proves the initial values C_0 through C_5.",
+      "Proves `catalan_mul_succ`, `catalan_pos`, and monotonicity for positive indices.",
+      "Establishes central-binomial bounds including `centralBinom_le_four_pow` and `centralBinom_ge_two_pow`.",
+      "Proves the Catalan convolution recurrence in `catalan_convolution` for the verified Catalan sequence."
+    ],
+    "open": [
+      "The Aristotle companion file still contains exploratory sorry placeholders; the main `CombinationsFormulaOQ02.lean` evidence is the completed file used for this metadata entry."
+    ],
+    "goal": "Document the completed Catalan-number and central-binomial toolkit attached to the combinations formula family."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-04-03T22:29:17.628Z",
+    "iteration": 1,
+    "focus": "Proof complete, 0 sorries",
+    "blockers": [],
+    "nextAction": "Await Docker build to confirm compilation",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 0 sorries. catalan_convolution proved via Mathlib bridge (catalan_succ' + antidiagonal conversion). PR #10487 awaiting Docker build.",
+    "builtItems": [
+      "Created Proofs/CombinationsFormulaOQ02.lean (240 lines, 20 theorems, 2 defs, 5 sorries)",
+      "Proved centralBinom_le_four_pow: C(2n,n) <= 4^n",
+      "Proved catalan_le_four_pow: C_n <= 4^n",
+      "Verified catalan_zero through catalan_five by norm_num",
+      "Proved choose_2n_succ via double absorption + symmetry",
+      "Proved catalan_mul_succ via Nat.sub_mul + choose_2n_succ",
+      "Proved catalan_pos via catalan_mul_succ + choose_pos",
+      "Proved centralBinom_ge_two_pow inductive step via Pascal+symmetry+monotonicity",
+      "Proved catalan_mono via catalan_step helper (nlinarith)",
+      "Added centralBinom_succ_eq helper lemma",
+      "Proved catalan_convolution via _root_.catalan bridge + catalan_succ' + Finset.Nat.sum_antidiagonal_eq_sum_range_succ"
+    ],
+    "insights": [
+      "Catalan def C_n = C(2n,n) - C(2n,n+1) avoids division (stays in Nat)",
+      "C(2n,n) <= 4^n proved via row sum: Nat.sum_range_choose gives 2^{2n}",
+      "Convolution verified numerically for n=0,1,2; full proof needs induction via Vandermonde",
+      "BallotProblemOQ03 already defines Cn and proves catalan_formula — potential for cross-reference",
+      "Absorption identity (n+1)*C(n,k) = C(n+1,k+1)*(k+1) + symmetry yields C(2n,n+1)*(n+1) = C(2n,n)*n",
+      "C(2(n+1),n+1) = 2*C(2n+1,n) via Pascal+symmetry — key for monotonicity and lower bound",
+      "catalan_convolution likely needs Vandermonde identity or generating functions — hardest remaining sorry",
+      "catalan_convolution does NOT need Vandermonde: bridge to Mathlib recursive catalan via catalan_eq_centralBinom_div + Nat.mul_div_cancel suffices"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "catalan-numbers",
+    "binomial-coefficients",
+    "central-binomial-coefficients",
+    "recurrences",
+    "completed"
+  ],
+  "relatedProofs": [
+    "combinations-formula",
+    "combinations-formula-oq-01",
+    "combinations-formula-oq-02",
+    "combinations-formula-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-03T22:29:17.628Z",
+  "lastUpdate": "2026-04-13T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CombinationsFormula.lean",
+      "filename": "CombinationsFormula.lean",
+      "lineCount": 401,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormula.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ01.lean",
+      "filename": "CombinationsFormulaOQ01.lean",
+      "lineCount": 186,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ01.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ02.lean",
+      "filename": "CombinationsFormulaOQ02.lean",
+      "lineCount": 313,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ02.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ02Aristotle.lean",
+      "filename": "CombinationsFormulaOQ02Aristotle.lean",
+      "lineCount": 58,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ03.lean",
+      "filename": "CombinationsFormulaOQ03.lean",
+      "lineCount": 751,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ03.lean"
+    }
+  ]
+}

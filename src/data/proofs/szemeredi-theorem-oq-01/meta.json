@@ -1,0 +1,361 @@
+{
+  "id": "szemeredi-theorem-oq-01",
+  "title": "Kelley–Meka Quantitative Bound for 3-AP-Free Sets",
+  "slug": "szemeredi-theorem-oq-01",
+  "description": "Axiomatized formalization of the Kelley–Meka 2023 breakthrough bound r_3(N) ≤ N · exp(-c (log N)^{1/12}), stated against Mathlib's `rothNumberNat`. The Kelley–Meka proof relies on sifted Fourier analysis over Bohr sets and U^3-flavored inverse theorem control — none of which is present in Mathlib 4.26 — so the bound itself is recorded as an axiom and a non-axiomatic density corollary is derived.",
+  "meta": {
+    "author": "Zander Kelley and Raghu Meka (formalized in Lean 4)",
+    "date": "2023",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/SzemerediTheoremOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "density-bounds",
+      "kelley-meka",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "dateAdded": "2026-06-03",
+    "mathlibDependencies": [
+      {
+        "theorem": "rothNumberNat",
+        "description": "Maximum size of a 3-AP-free subset of {0,...,N-1}",
+        "module": "Mathlib.Combinatorics.Additive.AP.Three.Defs"
+      },
+      {
+        "theorem": "Real.exp",
+        "description": "Real exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Exp"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real-exponent power on reals (used for (log N)^{1/12})",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Statement of the Kelley–Meka (2023) bound `r_3(N) ≤ N · exp(-c (log N)^{1/12})` in Lean 4 against `Mathlib.Combinatorics.Additive.Corner.Roth.rothNumberNat`.",
+      "Non-axiomatic density corollary `rothNumberNat_density_le_kelley_meka` showing the axiom implies `r_3(N)/N ≤ exp(-c (log N)^{1/12})` once `N ≥ max N₀ 1`.",
+      "Documentation of the rate gap between Mathlib's tower-type `cornersTheoremBound` (which gives an iterated-log class density rate) and the quasi-polynomial Kelley–Meka rate.",
+      "Pointer to the recommended sibling slug `szemeredi-theorem-oq-01-incomplete-01` for the Salem–Spencer-quantitative Approach B, BLOCKED on the same Bohr-set / sifted-Fourier / U^3 upstream infrastructure."
+    ],
+    "lineCount": 88,
+    "assumptions": "1 axiom (`kelley_meka_bound`) encoding the Kelley–Meka 2023 quantitative density bound. Discharging it would require formalizing Bohr sets, sifted Fourier analysis on Z/NZ, and the U^3 inverse-theorem control used in the original proof — none of which is in Mathlib 4.26.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "relatedProblems": [
+      {
+        "id": "szemeredi-theorem",
+        "relationship": "Qualitative ancestor — Szemerédi's 1975 theorem that any positive-density subset of ℕ contains arbitrarily long APs. The Kelley–Meka bound is a sharp k=3 quantitative refinement."
+      },
+      {
+        "id": "roth-theorem",
+        "relationship": "Roth's 1953 theorem — the original o(N) qualitative statement that this bound quantitatively refines, via a 70-year sequence of incremental improvements culminating in Kelley–Meka's quasi-polynomial rate."
+      },
+      {
+        "id": "roth-theorem-k3",
+        "relationship": "Mathlib's `roth_3ap_theorem_nat` companion in the gallery — the existing Mathlib chain whose tower-type rate this entry's axiomatic bound surpasses by an exponential-class margin."
+      },
+      {
+        "id": "roth-theorem-k3-oq-01",
+        "relationship": "Open question on density bounds for 3-AP-free sets — within the same problem family this entry's bound answers (with the strongest known upper bound)."
+      },
+      {
+        "id": "szemeredi-regularity",
+        "relationship": "Szemerédi regularity lemma — the structural tool whose tower-type bounds (`SzemerediRegularity.bound`) drive Mathlib's existing `cornersTheoremBound` chain, illustrating exactly why Kelley–Meka's quasi-polynomial rate cannot be derived from Mathlib's current machinery."
+      },
+      {
+        "id": "szemeredi-core",
+        "relationship": "Core combinatorial extraction of Szemerédi-style arguments — provides the qualitative scaffolding against which the Kelley–Meka quantitative refinement is measured."
+      },
+      {
+        "id": "szemeredi-counting",
+        "relationship": "Counting-lemma formalization in the gallery — complementary structural ingredient that, like Szemerédi regularity, would need quasi-polynomial-strength refinements to combine with sifted-Fourier methods for an unconditional Kelley–Meka."
+      },
+      {
+        "id": "szemeredi-full-oq-02",
+        "relationship": "Sibling density entry proving `r_3(N) = o(N)` as `IsLittleO`. This entry refines that asymptotic statement to the quasi-polynomial Kelley–Meka rate `exp(-c (log N)^{1/12})`, providing the sharp quantitative form of the same density obstruction."
+      },
+      {
+        "id": "szemeredi-hypergraph-core",
+        "relationship": "Hypergraph-regularity route to Szemerédi-type theorems — an alternative proof strategy whose own tower-type rates the Kelley–Meka method circumvents at the k=3 case by switching to sifted Fourier."
+      },
+      {
+        "id": "erdos-28-additive-bases",
+        "relationship": "Erdős additive-bases problem — sits in the same Erdős-density family of additive-combinatorics questions, sharing the structure-vs-randomness theme that powers the Kelley–Meka argument."
+      },
+      {
+        "id": "roth-theorem-k3-oq-03",
+        "relationship": "Gowers-norm density increment for k-APs. The k=3 case (`U^3` inverse theorem) is exactly the structured/random dichotomy that the Kelley–Meka argument exploits; OQ-03 sets up the general-k framework against which this entry's `U^3` axiom slots in."
+      },
+      {
+        "id": "roth-theorem-k3-oq-02",
+        "relationship": "Triangle-removal proof of Roth (Ruzsa–Szemerédi). Methodological contrast: graph regularity (tower-type rate) vs sifted Fourier (quasi-polynomial rate)."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The size r_3(N) of the largest 3-AP-free subset of {1,...,N} has been studied since Roth's 1953 Fourier-analytic proof that r_3(N) = o(N), via a CN/log log N upper bound. The progression of best upper bounds:\n\n- 1953: Roth, r_3(N) ≪ N / log log N (Fourier).\n- 1987: Heath-Brown, r_3(N) ≪ N (log N)^{-c}.\n- 1999: Bourgain, r_3(N) ≪ N (log N)^{-1/2+o(1)}, then 2008 to ≪ N (log log N)^2 / (log N)^{2/3}.\n- 2011: Sanders, r_3(N) ≪ N (log log N)^5 / log N — the first bound matching the `1/log N` barrier (up to a `log log` correction) and the result that crystallised the modern Bohr-set / spectral framework on which Kelley–Meka builds.\n- 2017: Schoen, r_3(N) ≪ N (log log N)^4 / log N.\n- 2020: Bloom and Sisask, r_3(N) ≪ N (log N)^{-1-c}, the first bound strictly below 1/log N.\n- 2023: Kelley and Meka, r_3(N) ≤ N · exp(-c (log N)^{1/12}), a quasi-polynomial rate, by far the largest jump since Roth.\n\nThe matching lower bound is Behrend (1946): r_3(N) ≥ N · exp(-c sqrt(log N)). Closing the gap between Kelley–Meka and Behrend is one of the central open problems in additive combinatorics.\n\n**2023 context.** Kelley–Meka was announced essentially simultaneously with Gowers–Green–Manners–Tao's proof of the Polynomial Freiman–Ruzsa (Marton) conjecture over `F_2^n`. The two results share machinery (entropy / spectral structure-vs-randomness arguments on abelian groups) but are technically independent. Their joint appearance in 2023 marks the most active period in quantitative additive combinatorics since the Heath-Brown / Bourgain era of the late 1980s.\n\n**Cap-set parallel.** Throughout the 2010s, the cap-set problem (largest 3-AP-free subset of F_3^n) served as the algebraic model problem against which the integer case Z/NZ was benchmarked. Croot–Lev–Pach (2016) and Ellenberg–Gijswijt (2017) solved the cap-set problem via the polynomial method, obtaining a bound of `(2.756...)^n` — a strictly polynomial rate in the group size `3^n` and an exponential improvement over the Behrend-type lower bound for cap-sets. The natural question was whether the polynomial method transfers to Z/NZ. It does not: the method depends on polynomial-degree bounds over a finite field, and Z/NZ lacks an analogous degree structure. The seven-year gap between Ellenberg–Gijswijt 2017 and Kelley–Meka 2023 measures how much the integer case resisted polynomial-method analogues — Kelley–Meka had to develop entirely different machinery (sifted Fourier + U^3 inverse theorem) for the same structure-vs-randomness dichotomy.",
+    "problemStatement": "**Formal statement (axiom)**: There exists an absolute constant c > 0 such that for all sufficiently large N,\n  rothNumberNat N ≤ N · exp(-c · (log N)^{1/12}).\n\nHere `rothNumberNat N` is the Mathlib invariant: the maximum size of a 3-AP-free subset of {0,...,N-1}.",
+    "text": "Records the Kelley–Meka (2023) breakthrough density bound for 3-AP-free sets as an axiom in Lean 4 and derives the corresponding density form `r_3(N)/N ≤ exp(-c (log N)^{1/12})` as a non-axiomatic corollary.",
+    "proofStrategy": "**Why this is an axiom**: Kelley–Meka's proof proceeds via (i) a structure-vs-randomness dichotomy in Fourier space, (ii) sifted spectral arguments over carefully chosen Bohr sets, and (iii) a U^3-flavored inverse-theorem control to handle the structured case. Bohr sets, sifted Fourier analysis on Z/NZ, and the U^3 inverse theorem are not yet in Mathlib 4.26; a full formalization would require building each of those (an estimated several thousand lines of upstream infrastructure).\n\n**Why Mathlib's existing chain does not suffice**: Mathlib's `roth_3ap_theorem_nat` is driven by `cornersTheoremBound`, whose own docstring states that it depends on `SzemerediRegularity.bound`, a tower-type exponential. Inverting a tower-type bound to extract a density rate yields an iterated-logarithm class rate (`O(N / log* N)`), which is much weaker than Kelley–Meka's quasi-polynomial rate. The Kelley–Meka rate cannot be derived as a corollary of the existing Mathlib chain.\n\n**Non-axiomatic content**: `rothNumberNat_density_le_kelley_meka` shows the axiom implies `r_3(N)/N ≤ exp(-c (log N)^{1/12})` for `N ≥ max N₀ 1`. The proof uses `div_le_iff₀` to rewrite the division, then closes by `mul_comm` against the axiom.",
+    "keyInsights": [
+      "The Kelley–Meka 2023 bound r_3(N) ≤ N · exp(-c (log N)^{1/12}) is currently the best known upper bound for 3-AP-free sets and is the closest any quantitative argument has come to the Behrend lower bound N · exp(-c sqrt(log N)).",
+      "Mathlib's tower-type `cornersTheoremBound` cannot derive a Kelley–Meka rate. Inverting a tower-type function yields an iterated-logarithm class density rate, which is asymptotically much weaker than `exp(-c (log N)^{1/12})`. The two bounds belong to genuinely different complexity classes.",
+      "The Kelley–Meka proof rests on three ingredients absent from Mathlib 4.26: Bohr sets (additive structures used to localize Fourier analysis), sifted Fourier methods on Z/NZ (a sieve-theory-flavored refinement of the Hardy–Littlewood circle method on cyclic groups), and U^3 inverse-theorem control (a quadratic-Fourier statement). Each is a substantial upstream project.",
+      "Stating the Kelley–Meka bound against Mathlib's `rothNumberNat` makes the axiom directly composable with the rest of the additive-combinatorics gallery: any future formalization of Kelley–Meka can replace the axiom by a `theorem` without disturbing downstream consumers.",
+      "The non-axiomatic density corollary `rothNumberNat_density_le_kelley_meka` certifies that the axiom is non-vacuous in the asymptotic direction: it directly produces the form `r_3(N)/N ≤ exp(-c (log N)^{1/12})` that is most often cited in surveys.",
+      "The exponent 1/12 in Kelley–Meka is not the best possible; subsequent work has improved it (e.g., Bloom–Sisask follow-ups). This entry intentionally fixes 1/12 to match the original paper, leaving exponent-improvement as a separate follow-up question.",
+      "The gap between Kelley–Meka (exp(-c (log N)^{1/12})) and Behrend (exp(-c sqrt(log N))) leaves an open exponent question: what is the right exponent θ such that r_3(N) = N · exp(-(log N)^θ + o(1))? Kelley–Meka give θ ≥ 1/12 (i.e., the upper bound holds with exponent ≥ 1/12), Behrend gives θ ≤ 1/2. Closing this gap is a central open problem; even Behrend's exponent 1/2 is conjectured to be sharp for the lower bound side, so the question reduces to whether the upper bound can be pushed to exponent 1/2.",
+      "Once Bohr sets and sifted Fourier are formalized (per the prerequisites laid out in this entry), the Kelley–Meka axiom can be discharged *without* changing this file's downstream API: every consumer continues to import `kelley_meka_bound` and the density corollary `rothNumberNat_density_le_kelley_meka` as before. This is the gallery's `axiomatized → verified` upgrade pathway in action: an axiom whose statement is calibrated to Mathlib's existing combinator (`rothNumberNat`) can later be replaced by a `theorem` with no consumer-side breakage. Compare with the `abel-ruffini` chain, where the upgrade analogue replaced axioms about `Gal(x^5 − 4x + 2)` with a full bijectivity proof — same pattern, different domain.",
+      "Kelley–Meka (2023) and the Gowers–Green–Manners–Tao (2023) proof of the Polynomial Freiman–Ruzsa / Marton conjecture over `F_2^n` were announced essentially simultaneously and share the broader entropy / spectral structure-vs-randomness framework on abelian groups, although they are technically independent. The two results together mark 2023 as the most active year in quantitative additive combinatorics since the late-1980s Heath-Brown / Bourgain era. PFR has since been formalized in Lean 4 (Tao et al., Blueprint project, 2024), so the gallery may eventually carry a PFR entry that exhibits, in parallel with this one, the same `axiomatized → verified` upgrade pattern applied to a different structural lemma.",
+      "Sanders 2011 (`r_3(N) ≪ N (log log N)^5 / log N`) is the direct technical ancestor of Kelley–Meka: it crystallised the modern Bohr-set / spectral framework on `Z/NZ`. Kelley–Meka then replaced Sanders' poly-logarithmic density-increment with a *sifted* Fourier increment that runs the structure-vs-randomness dichotomy through a `U^3` inverse theorem rather than purely through L^2 spectral bounds. Documenting this lineage in the gallery helps future formalizers identify the most economical upstream-Mathlib path: Sanders 2011 is the natural intermediate target before attacking the full Kelley–Meka bound.",
+      "The cap-set problem (largest 3-AP-free subset of `F_3^n`) is the algebraic model problem for Roth/Kelley–Meka, and the gap between the two cases is structural. Croot–Lev–Pach (2016) and Ellenberg–Gijswijt (2017) settled the cap-set problem with a polynomial-method argument giving a bound of `(2.756...)^n` — *polynomial* in the group size `3^n`, an exponential improvement over the Behrend-type cap-set lower bound. The polynomial method does **not** transfer to `Z/NZ`: it relies on degree bounds for `F_3`-polynomials, and `Z/NZ` carries no analogous polynomial-degree structure. The seven-year gap from Ellenberg–Gijswijt to Kelley–Meka is exactly the time it took to find a sifted-Fourier substitute for the polynomial method on the integers. Recording this dichotomy here is what frames the Kelley–Meka rate `exp(-c (log N)^{1/12})` as essentially the best possible *non-algebraic* density bound currently available."
+    ],
+    "prerequisites": [
+      "Roth's theorem in its qualitative form (covered by `szemeredi-theorem`)",
+      "Mathlib's `rothNumberNat` and `Mathlib.Combinatorics.Additive.Corner.Roth`",
+      "Real analysis: `Real.log`, `Real.exp`, `Real.rpow` (`Mathlib.Analysis.SpecialFunctions.Log.Basic`, `.Pow.Real`)",
+      "Density argument bookkeeping (`div_le_iff₀`, `mul_comm`)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-statement-status",
+      "title": "Header: Bound Statement and Status",
+      "startLine": 1,
+      "endLine": 16,
+      "summary": "Opening docstring block. States the Kelley–Meka bound `r_3(N) ≤ N · exp(-c (log N)^{1/12})` against Mathlib's `rothNumberNat`, flags the entry's `Status: Axiomatized` (Bohr sets, sifted Fourier over `Z/NZ`, and the `U^3` inverse theorem are absent from Mathlib 4.26), and frames the contribution as recording the *quantitative* shape of the current best bound rather than duplicating the existing qualitative chain.",
+      "mathContext": "Headline equation in the docstring: $r_3(N) \\le N \\cdot \\exp(-c (\\log N)^{1/12})$. The `1/12` exponent is the original Kelley–Meka 2023 value; status `axiomatized` is the gallery's marker for *stated against a Mathlib invariant, proof gap documented*."
+    },
+    {
+      "id": "rate-gap-motivation",
+      "title": "Why Honestly Stronger Than the Existing Chain",
+      "startLine": 17,
+      "endLine": 26,
+      "summary": "Motivation block explaining why this entry cannot be derived as a corollary of existing Mathlib work. Mathlib's `roth_3ap_theorem_nat` is driven by `cornersTheoremBound`, which itself depends on `SzemerediRegularity.bound` — a tower-type exponential. Inverting a tower-type rate yields an iterated-logarithm (`log*`) density class, asymptotically much weaker than Kelley–Meka's quasi-polynomial `exp(-c (log N)^{1/12})`. The rate gap is exactly what forces axiomatization here.",
+      "mathContext": "Complexity-class hierarchy in play: $\\log^*$ (iterated log, from tower inversion) $\\prec$ $1 / (\\log N)^k$ (polylog) $\\prec$ $\\exp(-c (\\log N)^{1/12})$ (quasi-poly, Kelley–Meka) $\\prec$ $N^{-\\delta}$ (polynomial, conjectural)."
+    },
+    {
+      "id": "sibling-and-reference",
+      "title": "Companion Sibling Note and Reference",
+      "startLine": 27,
+      "endLine": 41,
+      "summary": "Closing docstring block pointing to (i) the recommended sibling slug `szemeredi-theorem-oq-01-incomplete-01`, which tracks an attempted Salem–Spencer-quantitative Approach B that was investigated in research/problems/szemeredi-theorem-oq-01/ Session 2 and ruled out (it is `BLOCKED` on the same Bohr-set / sifted-Fourier / U^3 infrastructure), and (ii) the canonical Kelley–Meka 2023 reference (FOCS 2023, full version Annals of Mathematics, 2024).",
+      "mathContext": "Sibling Approach B (`O(N / \\log \\log N)` via Salem–Spencer-quantitative) is BLOCKED at the same upstream-Mathlib boundary, so the gallery records *both* paths as axiomatized while waiting for Bohr sets / sifted Fourier / `U^3` to land in Mathlib."
+    },
+    {
+      "id": "imports-namespace-open",
+      "title": "Imports, Namespace, and `open Real`",
+      "startLine": 43,
+      "endLine": 50,
+      "summary": "Minimal-footprint import set: `Mathlib.Combinatorics.Additive.Corner.Roth` (supplies `rothNumberNat`, the canonical 3-AP-free invariant), `Mathlib.Analysis.SpecialFunctions.Log.Basic` (supplies `Real.log`), `Mathlib.Analysis.SpecialFunctions.Pow.Real` (supplies the `Real.rpow` instance so `(log N) ^ ((1:ℝ)/12)` is the real-exponent power, not the ℕ-truncated `0`), and `Mathlib.Tactic` (umbrella). `namespace SzemerediTheoremOQ01` scopes the axiom; `open Real` lets the file read `exp` / `log` in either qualified or unqualified form.",
+      "mathContext": "Each import supplies exactly one essential ingredient. Omitting `Pow.Real` collapses the bound to `r_3(N) ≤ N · exp(-c)` because the `1/12` exponent would be interpreted at type `ℕ` and equal `0`."
+    },
+    {
+      "id": "axiom-docstring",
+      "title": "`kelley_meka_bound` Docstring",
+      "startLine": 52,
+      "endLine": 61,
+      "summary": "Documentation block introducing the axiom. Frames the bound in plain English ('there exists an absolute constant `c > 0` such that for all sufficiently large `N`, every 3-AP-free subset of `{0, …, N-1}` has size at most `N · exp(-c (log N)^{1/12})`'), calibrates it explicitly to Mathlib's `rothNumberNat` so future downstream theorems can compose directly with the additive-combinatorics gallery, and pins the `1/12` exponent to the original Kelley–Meka 2023 value (noting that subsequent improvements may push it up but are not in scope).",
+      "mathContext": "Calibration choice: the docstring commits to using *exactly* `rothNumberNat` from `Mathlib.Combinatorics.Additive.Corner.Roth`. This forecloses a tempting alternative (introducing a custom `r3` definition local to the file) that would force every downstream consumer to insert translation glue."
+    },
+    {
+      "id": "axiom-declaration",
+      "title": "`kelley_meka_bound` Axiom Declaration",
+      "startLine": 62,
+      "endLine": 65,
+      "summary": "The four-line axiom proper: `axiom kelley_meka_bound : ∃ c : ℝ, 0 < c ∧ ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → (rothNumberNat N : ℝ) ≤ (N : ℝ) * Real.exp (-(c * Real.log (N : ℝ) ^ ((1 : ℝ) / 12)))`. The existential-of-existential shape (`∃ c, ∃ N₀, …`) is what the corollary's `obtain ⟨c, hc, N₀, hbound⟩` will destructure in a single step. The `(1 : ℝ) / 12` annotation forces `Real.rpow` rather than `Nat.pow`.",
+      "mathContext": "Lean type: $\\exists c \\in \\mathbb{R},\\ 0 < c \\land \\exists N_0 \\in \\mathbb{N},\\ \\forall N \\geq N_0,\\ (\\text{rothNumberNat } N : \\mathbb{R}) \\leq N \\cdot \\exp(-c \\cdot (\\log N)^{1/12})$. The threshold $N_0$ absorbs the small-$N$ regime where $\\log N \\leq 0$."
+    },
+    {
+      "id": "corollary-docstring",
+      "title": "Density Corollary Docstring",
+      "startLine": 67,
+      "endLine": 73,
+      "summary": "Documentation for `rothNumberNat_density_le_kelley_meka`. Explains that under the axiom, the density `r_3(N)/N` is bounded above by `exp(-c (log N)^{1/12})` once `N ≥ max N₀ 1`, and emphasizes this is the form most commonly cited in surveys: the right-hand side `1 / exp(c (log N)^{1/12})` beats *every* `1 / (log N)^k`, which is the structural sense in which the Kelley–Meka rate is genuinely quasi-polynomial rather than poly-logarithmic.",
+      "mathContext": "Density form vs absolute form: $\\frac{r_3(N)}{N} \\leq \\exp(-c (\\log N)^{1/12})$. For any $k > 0$, $\\exp(-c (\\log N)^{1/12}) = o((\\log N)^{-k})$ as $N \\to \\infty$, which formalizes 'quasi-polynomial beats poly-log'."
+    },
+    {
+      "id": "corollary-proof",
+      "title": "`rothNumberNat_density_le_kelley_meka` Theorem and Proof",
+      "startLine": 74,
+      "endLine": 86,
+      "summary": "**Proved (no new axioms).** The 9-line tactic proof: (1) `obtain ⟨c, hc, N₀, hbound⟩ := kelley_meka_bound` destructures the existential-of-existential axiom; (2) `refine ⟨c, hc, max N₀ 1, ?_⟩` re-packages the witness using *threshold fusion* — the `max N₀ 1` simultaneously enforces the axiom's `N₀ ≤ N` and the corollary's `1 ≤ N` positivity requirement; (3) `le_max_left`/`le_max_right` extract both consequences; (4) `Nat.lt_of_succ_le` + `exact_mod_cast` lifts `1 ≤ N` to `(0 : ℝ) < N`; (5) `rw [div_le_iff₀ hN_pos, mul_comm]` rewrites the density goal `r_3(N)/N ≤ E` to the absolute form `r_3(N) ≤ N · E`; (6) `exact hb` closes by the axiom specialization `hbound N hN₀`. This is the canonical Mathlib *absolute-bound ↦ density-corollary* skeleton.",
+      "mathContext": "Tactic chain: $\\text{obtain} \\to \\text{refine (threshold fusion)} \\to \\text{le\\_max\\_*} \\to \\text{exact\\_mod\\_cast positivity} \\to \\text{div\\_le\\_iff}_0 + \\text{mul\\_comm} \\to \\text{exact axiom}$. The `div_le_iff₀` (not `div_le_iff`) variant is the strict-positive (`0 < N`) form; it is the right choice given the positivity hypothesis we have available."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "extends",
+      "description": "Provides the quantitative density form of the qualitative Roth/Szemerédi result formalized in `szemeredi-theorem`. The Kelley–Meka bound is asymptotically much sharper than what `cornersTheoremBound` gives via inversion."
+    },
+    {
+      "targetId": "szemeredi-full-oq-02",
+      "relationship": "related",
+      "description": "Sibling density entry proving `r_3(N) = o(N)` as `IsLittleO`. This entry refines that asymptotic statement to the quasi-polynomial Kelley–Meka rate `exp(-c (log N)^{1/12})`."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The regularity-lemma chain underlying Mathlib's `cornersTheoremBound`. The Kelley–Meka rate is methodologically distinct from regularity-based arguments; documenting that distinction is part of this entry's motivation."
+    },
+    {
+      "targetId": "szemeredi-counting",
+      "relationship": "related",
+      "description": "AP-counting infrastructure; Kelley–Meka uses spectral / Fourier methods rather than counting, so this is a complementary technique."
+    },
+    {
+      "targetId": "roth-theorem-k3-oq-03",
+      "relationship": "related",
+      "description": "Gowers-norm / U^k density-increment framework for k-APs. The Kelley–Meka argument's `U^3` inverse-theorem control (the missing-from-Mathlib ingredient axiomatized here) is precisely the k=3 case of the Gowers-norm machinery this OQ-03 entry sets up — so a future formalization of Kelley–Meka would discharge this entry's axiom while simultaneously instantiating OQ-03 at k=3."
+    },
+    {
+      "targetId": "roth-theorem-k3-oq-02",
+      "relationship": "related",
+      "description": "Ruzsa–Szemerédi triangle-removal proof of Roth's theorem. Methodological contrast: triangle removal is a graph-theoretic / regularity route (the tower-type chain whose rate Kelley–Meka surpasses), so OQ-02 documents the slower of the two paradigms that Kelley–Meka's Fourier-analytic argument leaves behind."
+    },
+    {
+      "targetId": "roth-theorem",
+      "relationship": "extends",
+      "description": "Roth's 1953 theorem — the original `r_3(N) = o(N)` qualitative statement and its first quantitative refinement `r_3(N) ≪ N / log log N` via Fourier methods on `Z/NZ`. The Kelley–Meka 2023 bound `r_3(N) ≤ N · exp(-c (log N)^{1/12})` is the culminating step in a 70-year sequence of quantitative refinements: Roth (1953, `1/log log N`), Heath-Brown (1987, `(log N)^{-c}`), Bourgain (1999/2008, `(log N)^{-1/2+o(1)}` then `(log log N)^2/(log N)^{2/3}`), Sanders (2011, `(log log N)^5/log N` — the first bound matching the `1/log N` barrier and introducing the Bohr-set / spectral framework Kelley–Meka builds on), Schoen (2017), Bloom–Sisask (2020, first below `1/log N`), Kelley–Meka (2023, quasi-polynomial). The asymptotic gap closed between Roth and Kelley–Meka is the largest single jump in the chain."
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "extends",
+      "description": "Mathlib's `roth_3ap_theorem_nat` companion — the existing gallery formalization of the qualitative Roth theorem via `cornersTheoremBound` (whose tower-type `SzemerediRegularity.bound` dependency yields an iterated-logarithm class density rate `O(N / log* N)` when inverted). The Kelley–Meka bound axiomatized here surpasses that rate by an exponential-class margin (`exp(-c (log N)^{1/12})` vs `1/log* N`), illustrating exactly why the Kelley–Meka rate cannot be derived as a corollary of Mathlib's current regularity-based machinery — the motivating reason for the axiomatization choice in this entry."
+    },
+    {
+      "targetId": "roth-theorem-k3-oq-01",
+      "relationship": "related",
+      "description": "Open question on density bounds for 3-AP-free sets — the same problem family this entry's axiom answers (with the strongest known upper bound `exp(-c (log N)^{1/12})`). OQ-01 frames the bound landscape against the Behrend lower bound `exp(-c sqrt(log N))`, making the `1/12 vs 1/2` exponent gap explicit; this entry slots into that frame as the current best upper-bound contributor."
+    },
+    {
+      "targetId": "szemeredi-core",
+      "relationship": "related",
+      "description": "Core combinatorial extraction of Szemerédi-style arguments — the qualitative `r_3(N) = o(N)` scaffolding against which the Kelley–Meka quantitative refinement is measured. The two entries are complementary: `szemeredi-core` supplies the soft asymptotic, this entry supplies the sharp quantitative rate; together they give both the existence and the strength of the density obstruction to 3-AP-free sets."
+    },
+    {
+      "targetId": "szemeredi-hypergraph-core",
+      "relationship": "related",
+      "description": "Hypergraph-regularity route to Szemerédi-type theorems for general `k`. The Kelley–Meka method specifically circumvents the tower-type rates produced by hypergraph regularity at the `k = 3` case by switching to sifted Fourier analysis and `U^3` inverse-theorem control. The methodological contrast — hypergraph regularity (general `k`, tower-type) vs sifted Fourier (`k = 3`, quasi-polynomial) — is the central trade-off that this entry's axiom encodes."
+    },
+    {
+      "targetId": "erdos-28-additive-bases",
+      "relationship": "related",
+      "description": "Erdős additive-bases problem — a sibling Erdős-density question in additive combinatorics, sharing the same structure-vs-randomness theme that powers the Kelley–Meka argument. Both problems ask how dense a subset of `[1, N]` can be while satisfying a forbidden-configuration constraint (no 3-AP here, basis-of-order-`h` complement there); both are governed by the same Bohr-set / Fourier-analytic toolkit on `Z/NZ`."
+    }
+  ],
+  "conclusion": {
+    "summary": "Records the Kelley–Meka (2023) quantitative bound for 3-AP-free sets as an axiom in Lean 4, stated against `Mathlib.Combinatorics.Additive.Corner.Roth.rothNumberNat`, and derives the standard density corollary `r_3(N)/N ≤ exp(-c (log N)^{1/12})`. The axiom encapsulates the Bohr-set / sifted-Fourier / U^3 infrastructure currently missing from Mathlib 4.26.",
+    "implications": "**Why it matters**:\n1. **Closes the qualitative-vs-quantitative gap.** The gallery already proves `r_3(N) = o(N)` (Roth). The Kelley–Meka bound certifies the current best quasi-polynomial rate against the same Mathlib invariant.\n2. **Documents an upstream-Mathlib gap.** The rate gap between `cornersTheoremBound` (tower-type) and Kelley–Meka (`exp(-c (log N)^{1/12})`) is a concrete formalization target for future Mathlib contributors.\n3. **Provides a stable axiom interface.** A future Lean proof of Kelley–Meka can replace `kelley_meka_bound` by a theorem without breaking downstream consumers.\n4. **Anchors a Behrend-vs-Kelley–Meka discussion.** Kelley–Meka leaves an exponent gap with Behrend's lower bound `exp(-c sqrt(log N))`; recording the Kelley–Meka side here makes the gap concrete.",
+    "openQuestions": [
+      "Can the Kelley–Meka exponent `1/12` be improved? Subsequent work has nudged it; a follow-up gallery entry could record the current best.",
+      "Closing the Kelley–Meka / Behrend gap (1/12 vs 1/2 in the (log N)^α exponent) is open. What is the true exponent?",
+      "Can Bohr sets, sifted Fourier analysis on Z/NZ, and the U^3 inverse theorem be formalized in Mathlib, allowing this axiom to be discharged?",
+      "Approach B (Salem–Spencer quantitative `O(N / log log N)`) is recommended as the sibling slug `szemeredi-theorem-oq-01-incomplete-01`. When will the upstream infrastructure for that bound be available?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Additive.Corner.Roth",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "SzemerediTheoremOQ01",
+    "lineCount": 88,
+    "axiomCount": 1,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "path": "Proofs/SzemerediTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Kelley, Zander; Meka, Raghu",
+      "title": "Strong bounds for 3-progressions",
+      "year": "2023",
+      "venue": "FOCS 2023 (full version: Annals of Mathematics, 2024)",
+      "note": "The breakthrough quasi-polynomial bound `r_3(N) ≤ N · exp(-c (log N)^{1/12})`; the statement axiomatized in this file."
+    },
+    {
+      "authors": "Behrend, Felix A.",
+      "title": "On sets of integers which contain no three terms in arithmetical progression",
+      "year": "1946",
+      "venue": "Proceedings of the National Academy of Sciences 32, 331–332",
+      "note": "Lower bound `r_3(N) ≥ N · exp(-c sqrt(log N))` matching Kelley–Meka up to the exponent on `log N` inside the exponential."
+    },
+    {
+      "authors": "Bloom, Thomas F.; Sisask, Olof",
+      "title": "Breaking the logarithmic barrier in Roth's theorem on arithmetic progressions",
+      "year": "2020",
+      "venue": "arXiv:2007.03528",
+      "note": "First bound below `N / log N`: `r_3(N) ≪ N (log N)^{-1-c}`. Predecessor to Kelley–Meka."
+    },
+    {
+      "authors": "Roth, Klaus F.",
+      "title": "On certain sets of integers",
+      "year": "1953",
+      "venue": "Journal of the London Mathematical Society 28, 104–109",
+      "note": "Original quantitative bound `r_3(N) ≪ N / log log N`; the qualitative statement is the k=3 case in `szemeredi-theorem`."
+    },
+    {
+      "authors": "Sanders, Tom",
+      "title": "On Roth's theorem on progressions",
+      "year": "2011",
+      "venue": "Annals of Mathematics 174, 619–636",
+      "note": "First bound matching the `1/log N` barrier up to a `log log` correction: `r_3(N) ≪ N (log log N)^5 / log N`. The Bohr-set / spectral framework introduced and consolidated here is a direct ancestor of the Kelley–Meka argument."
+    },
+    {
+      "authors": "Gowers, W. Timothy; Green, Ben; Manners, Freddie; Tao, Terence",
+      "title": "On a conjecture of Marton",
+      "year": "2023",
+      "venue": "arXiv:2311.05762 (Annals of Mathematics, to appear)",
+      "note": "Resolution of the Polynomial Freiman–Ruzsa (Marton) conjecture over `F_2^n`. Independent of Kelley–Meka but co-temporal and methodologically adjacent (entropy / spectral structure-vs-randomness on abelian groups); together they mark 2023 as a peak year for quantitative additive combinatorics."
+    },
+    {
+      "authors": "Croot, Ernie; Lev, Vsevolod F.; Pach, Péter Pál",
+      "title": "Progression-free sets in Z_4^n are exponentially small",
+      "year": "2017",
+      "venue": "Annals of Mathematics 185, 331–337",
+      "note": "Polynomial-method breakthrough in the F_q^n cap-set family. Together with Ellenberg–Gijswijt (which adapted the argument to the F_3^n cap-set problem proper), this is the algebraic model-problem result whose method does **not** transfer to Z/NZ — the obstruction that left Roth's theorem stuck at poly-log rates until Kelley–Meka 2023."
+    },
+    {
+      "authors": "Ellenberg, Jordan S.; Gijswijt, Dion",
+      "title": "On large subsets of F_q^n with no three-term arithmetic progression",
+      "year": "2017",
+      "venue": "Annals of Mathematics 185, 339–343",
+      "note": "Adapts Croot–Lev–Pach to the F_3^n cap-set problem, giving the polynomial bound `(2.756...)^n`. This is the strongest 3-AP density result of the post-2016 polynomial-method era and the benchmark against which Kelley–Meka's quasi-polynomial Z/NZ rate is measured."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "kelley_meka_bound",
+      "type": "core",
+      "description": "Kelley–Meka 2023 quantitative density bound for 3-AP-free sets (axiom)",
+      "leanType": "∃ c > 0, ∃ N₀, ∀ N ≥ N₀, (rothNumberNat N : ℝ) ≤ N · Real.exp (-(c * Real.log N ^ (1/12)))"
+    },
+    {
+      "name": "rothNumberNat_density_le_kelley_meka",
+      "type": "supporting",
+      "description": "Density form of the Kelley–Meka bound: `r_3(N)/N ≤ exp(-c (log N)^{1/12})` for `N ≥ max N₀ 1`",
+      "leanType": "∃ c > 0, ∃ N₀, ∀ N ≥ N₀, (rothNumberNat N : ℝ) / N ≤ Real.exp (-(c * Real.log N ^ (1/12)))"
+    }
+  ],
+  "sorries": 0
+}

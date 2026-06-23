@@ -1,0 +1,268 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "dissection-of-cubes-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "concept",
+    "title": "Problem Context: Dehn-Sydler Completeness",
+    "content": "The Dehn-Sydler theorem (1965) completely answers Hilbert's Third Problem: two polyhedra in $\\mathbb{R}^3$ are scissors congruent if and only if they have equal volume AND equal Dehn invariant $D(P) \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$. This formalization constructs the proper algebraic Dehn invariant using Mathlib's tensor product infrastructure and proves that rational-angle polyhedra (like the cube) have $D = 0$ while the regular tetrahedron has $D \\neq 0$.",
+    "mathContext": "$D(P) = \\sum_e \\ell(e) \\otimes [\\theta(e)] \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$ where $\\ell(e)$ is edge length and $\\theta(e)$ is dihedral angle. The tensor product structure automatically identifies rational-multiple-of-$\\pi$ angles with zero.",
+    "significance": "key",
+    "prerequisites": [
+      "scissors congruence",
+      "tensor products",
+      "Hilbert's Third Problem"
+    ],
+    "relatedConcepts": [
+      "Dehn invariant",
+      "Hilbert's Third Problem",
+      "scissors congruence",
+      "tensor product"
+    ]
+  },
+  {
+    "id": "ann-angle-quot",
+    "proofId": "dissection-of-cubes-oq-02-oq-02",
+    "range": {
+      "startLine": 39,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "The Angle Quotient Group \u211d/\u03c0\u2124",
+    "content": "Three definitions construct the angle quotient group:\n\n1. `piMultiples`: the additive subgroup $\\pi\\mathbb{Z} = \\{n\\pi : n \\in \\mathbb{Z}\\} \\subset \\mathbb{R}$, via `AddSubgroup.zmultiples`\n2. `AngleQuot`: the quotient $\\mathbb{R}/\\pi\\mathbb{Z}$\n3. `angleClass \u03b8`: the canonical projection $\\theta \\mapsto [\\theta]$\n\nThe quotient identifies angles differing by integer multiples of $\\pi$. An element $[\\theta]$ has infinite order iff $\\theta/\\pi$ is irrational.",
+    "mathContext": "$\\mathbb{R}/\\pi\\mathbb{Z} \\cong \\mathbb{R}/\\mathbb{Z}$ via $\\theta \\mapsto \\theta/\\pi$. Torsion elements are exactly rational multiples of $\\pi$.",
+    "significance": "key",
+    "prerequisites": [
+      "AddSubgroup.zmultiples",
+      "QuotientAddGroup",
+      "quotient groups"
+    ],
+    "relatedConcepts": [
+      "quotient group",
+      "angle equivalence",
+      "torsion elements"
+    ]
+  },
+  {
+    "id": "ann-angle-props",
+    "proofId": "dissection-of-cubes-oq-02-oq-02",
+    "range": {
+      "startLine": 57,
+      "endLine": 83
+    },
+    "type": "insight",
+    "title": "Properties of \u211d/\u03c0\u2124",
+    "content": "Four properties: `angleClass_int_mul_pi` ($[n\\pi] = 0$), `angleClass_pi` ($[\\pi] = 0$), `zsmul_angleClass` ($n \\cdot [\\theta] = [n\\theta]$), and `zsmul_eq_zero_iff` ($n \\cdot [\\theta] = 0 \\iff \\exists m, n\\theta = m\\pi$). These establish the algebraic infrastructure for the torsion vanishing argument.",
+    "mathContext": "$n \\cdot [\\theta] = [n\\theta]$ and $n \\cdot [\\theta] = 0 \\iff n\\theta \\in \\pi\\mathbb{Z}$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "QuotientAddGroup.mk_add",
+      "QuotientAddGroup.eq_zero_iff"
+    ],
+    "relatedConcepts": [
+      "quotient group axioms",
+      "Z-action",
+      "torsion characterization"
+    ]
+  },
+  {
+    "id": "ann-dehn-group",
+    "proofId": "dissection-of-cubes-oq-02-oq-02",
+    "range": {
+      "startLine": 89,
+      "endLine": 98
+    },
+    "type": "definition",
+    "title": "The Dehn Invariant Group \u211d \u2297_\u2124 (\u211d/\u03c0\u2124)",
+    "content": "`DehnGroup = TensorProduct \u2124 \u211d AngleQuot`. Elements are formal $\\mathbb{Z}$-linear combinations $\\sum_i r_i \\otimes [\\theta_i]$ satisfying bilinearity. `edgeTerm len angle` constructs a single edge's contribution $\\ell \\otimes [\\theta]$.",
+    "mathContext": "$\\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$: the tensor product over $\\mathbb{Z}$ enforces $(n \\cdot r) \\otimes x = r \\otimes (n \\cdot x)$, which kills torsion when $\\mathbb{R}$ is divisible.",
+    "significance": "key",
+    "prerequisites": [
+      "TensorProduct",
+      "TensorProduct.tmul"
+    ],
+    "relatedConcepts": [
+      "tensor product",
+      "Z-module",
+      "Dehn invariant"
+    ]
+  },
+  {
+    "id": "ann-torsion-vanishing",
+    "proofId": "dissection-of-cubes-oq-02-oq-02",
+    "range": {
+      "startLine": 104,
+      "endLine": 151
+    },
+    "type": "insight",
+    "title": "Rational Angle Vanishing: The Central Algebraic Argument",
+    "content": "Three theorems form the algebraic heart:\n\n1. `real_zsmul_div`: $n \\cdot (r/n) = r$ \u2014 $\\mathbb{R}$ is divisible\n2. `tmul_torsion_eq_zero`: If $n \\cdot x = 0$ (torsion), then $r \\otimes x = 0$ for ALL $r$\n3. `rational_angle_vanishes`: $r \\otimes [q\\pi] = 0$ for all $q \\in \\mathbb{Q}$\n\nThe proof of (2): $r = n \\cdot (r/n)$ by divisibility, so $r \\otimes x = (n \\cdot (r/n)) \\otimes x = (r/n) \\otimes (n \\cdot x) = (r/n) \\otimes 0 = 0$. The $\\mathbb{Z}$-bilinearity moves $n$ from left to right factor, where it annihilates $x$.\n\nFor (3): $[q\\pi]$ has order dividing $q.\\text{den}$, since $q.\\text{den} \\cdot [q\\pi] = [q.\\text{num} \\cdot \\pi] = 0$.",
+    "mathContext": "$r \\otimes x = (n \\cdot \\frac{r}{n}) \\otimes x = \\frac{r}{n} \\otimes (n \\cdot x) = \\frac{r}{n} \\otimes 0 = 0$. This uses $\\mathbb{R}$ being a divisible $\\mathbb{Z}$-module (equivalently, flat over $\\mathbb{Z}$).",
+    "significance": "key",
+    "prerequisites": [
+      "TensorProduct.smul_tmul'",
+      "TensorProduct.smul_tmul",
+      "TensorProduct.tmul_zero"
+    ],
+    "relatedConcepts": [
+      "divisible group",
+      "torsion vanishing",
+      "flatness",
+      "tensor product over PID"
+    ]
+  },
+  {
+    "id": "ann-special-angles",
+    "proofId": "dissection-of-cubes-oq-02-oq-02",
+    "range": {
+      "startLine": 153,
+      "endLine": 181
+    },
+    "type": "insight",
+    "title": "Special Angles and Cube Dehn Invariant",
+    "content": "Corollaries of `rational_angle_vanishes`: edges with $\\pi/2$, $\\pi$, or $\\pi/3$ dihedral angles contribute zero. `cube_dehn_zero` follows: all 12 cube edges have angle $\\pi/2 = (1/2)\\pi$, so $D(\\text{cube}) = 0$.",
+    "mathContext": "$D(\\text{cube}) = 12a \\otimes [\\pi/2] = 0$ since $\\pi/2 = (1/2)\\pi$ is rational \u00d7 $\\pi$.",
+    "significance": "key",
+    "prerequisites": [
+      "rational_angle_vanishes"
+    ],
+    "relatedConcepts": [
+      "cube geometry",
+      "zero Dehn invariant",
+      "space-filling polyhedra"
+    ]
+  },
+  {
+    "id": "ann-tetrahedron",
+    "proofId": "dissection-of-cubes-oq-02-oq-02",
+    "range": {
+      "startLine": 187,
+      "endLine": 227
+    },
+    "type": "insight",
+    "title": "Tetrahedron: Irrational Angle and D \u2260 0",
+    "content": "`tetAngle = arccos(1/3)` is the dihedral angle of a regular tetrahedron. By Niven's theorem (axiom, proved in parent file), $\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$, so $[\\arccos(1/3)]$ has infinite order in $\\mathbb{R}/\\pi\\mathbb{Z}$. The flatness axiom then gives $6a \\otimes [\\arccos(1/3)] \\neq 0$ for $a > 0$.\n\nThis is the contrast that drives Hilbert's Third Problem: cube angles are rational \u00d7 $\\pi$ (torsion \u2192 vanishes), tetrahedron angles are irrational \u00d7 $\\pi$ (infinite order \u2192 persists).",
+    "mathContext": "$\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$ (Niven). Therefore $D(\\text{tet}) = 6a \\otimes [\\arccos(1/3)] \\neq 0$.",
+    "significance": "key",
+    "prerequisites": [
+      "niven_arccos_third",
+      "tmul_infinite_order_ne_zero"
+    ],
+    "relatedConcepts": [
+      "Niven's theorem",
+      "irrational angles",
+      "flatness over PID"
+    ]
+  },
+  {
+    "id": "ann-hilbert-third",
+    "proofId": "dissection-of-cubes-oq-02-oq-02",
+    "range": {
+      "startLine": 274,
+      "endLine": 285
+    },
+    "type": "insight",
+    "title": "Hilbert's Third Problem: Cube \u2247 Tetrahedron",
+    "content": "`hilbert_third_problem`: $D(\\text{cube}) = 0 \\neq D(\\text{tetrahedron})$, so the cube and tetrahedron are not scissors congruent. This answers Hilbert's Third Problem (1900) negatively. The proof is four lines: assume equality, substitute $D(\\text{cube}) = 0$, contradict $D(\\text{tet}) \\neq 0$.",
+    "mathContext": "$D(\\text{cube}) = 0$ and $D(\\text{tet}) \\neq 0 \\Rightarrow D(\\text{cube}) \\neq D(\\text{tet})$.",
+    "significance": "key",
+    "prerequisites": [
+      "cube_dehn_zero",
+      "tet_dehn_ne_zero"
+    ],
+    "relatedConcepts": [
+      "Hilbert's Third Problem",
+      "scissors congruence invariant"
+    ]
+  },
+  {
+    "id": "ann-octahedron",
+    "proofId": "dissection-of-cubes-oq-02-oq-02",
+    "range": {
+      "startLine": 291,
+      "endLine": 328
+    },
+    "type": "insight",
+    "title": "Octahedron: D(oct) = -D(tet)",
+    "content": "The octahedron's dihedral angle $\\arccos(-1/3) = \\pi - \\arccos(1/3)$ gives $[\\arccos(-1/3)] = -[\\arccos(1/3)]$ in $\\mathbb{R}/\\pi\\mathbb{Z}$ (since $[\\pi] = 0$). Therefore $D(\\text{oct}) = -D(\\text{tet}) \\neq 0$: the octahedron is also not scissors congruent to the cube.",
+    "mathContext": "$[\\arccos(-1/3)] = [\\pi - \\arccos(1/3)] = [\\pi] - [\\arccos(1/3)] = -[\\arccos(1/3)]$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "arccos_neg_third",
+      "TensorProduct.tmul_neg"
+    ],
+    "relatedConcepts": [
+      "octahedron geometry",
+      "arccos identity",
+      "negation in tensor products"
+    ]
+  },
+  {
+    "id": "ann-dehn-sydler-statement",
+    "proofId": "dissection-of-cubes-oq-02-oq-02",
+    "range": {
+      "startLine": 334,
+      "endLine": 382
+    },
+    "type": "concept",
+    "title": "Dehn-Sydler Completeness Theorem (Stated, Not Formalized)",
+    "content": "The Dehn-Sydler theorem states $P \\cong_{\\text{sc}} Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. The forward direction ($\\Rightarrow$) is Dehn's 1900 result: cutting creates paired edges with angles summing to $\\pi$, which cancel since $[\\pi] = 0$. The backward direction ($\\Leftarrow$) is Sydler's deep 1965 theorem, requiring analysis of orthogonal prisms and an inductive exchange argument. Note: in this file the invariance properties (`dehn_preserved_by_scissors`, `volume_preserved_by_scissors`) are PLACEHOLDER theorems of the form `True → x = x := fun _ => rfl` — they record the statements but carry no geometric content (the actual scissors-congruence preservation is not formalized). The headline result that IS fully proved here is Hilbert's Third Problem (cube and tetrahedron have different Dehn invariants, hence are not scissors-congruent).",
+    "mathContext": "$P \\cong_{\\text{sc}} Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. This completely classifies scissors congruence in $\\mathbb{R}^3$ by two computable invariants.",
+    "significance": "key",
+    "prerequisites": [
+      "Dehn invariant construction",
+      "Sydler's sufficiency proof (1965)"
+    ],
+    "relatedConcepts": [
+      "complete invariants",
+      "Sydler's theorem",
+      "scissors congruence classification"
+    ]
+  },
+  {
+    "id": "ann-2d-contrast",
+    "proofId": "dissection-of-cubes-oq-02-oq-02",
+    "range": {
+      "startLine": 388,
+      "endLine": 414
+    },
+    "type": "insight",
+    "title": "2D Contrast: Why Area Suffices for Polygons",
+    "content": "`polygon_angle_trivial` shows $r \\otimes [q\\pi] = 0$ for rational $q$ (just reuses `rational_angle_vanishes`). `dehn_zero_of_rational_angles` proves that any polyhedron whose dihedral angles are all rational multiples of $\\pi$ has $D = 0$, by induction over the edge list. This explains why the Dehn invariant doesn't appear in 2D: after triangulating a polygon, all internal angles are integer multiples of $\\pi$ (each triangle has angle sum $\\pi$), so the 2D Dehn invariant is identically zero. Area alone classifies polygon scissors congruence (Bolyai-Gerwien, 1833).",
+    "mathContext": "2D: area alone classifies scissors congruence (Bolyai-Gerwien 1833). 3D: volume + Dehn invariant (Dehn-Sydler 1965). For $n \\geq 4$: Jessen-Thorup (1978) showed volume + Dehn invariant do NOT suffice \u2014 additional invariants are needed.",
+    "significance": "supporting",
+    "prerequisites": [
+      "rational_angle_vanishes",
+      "Bolyai-Gerwien theorem",
+      "List.foldl"
+    ],
+    "relatedConcepts": [
+      "Bolyai-Gerwien theorem",
+      "polygon triangulation",
+      "higher-dimensional scissors congruence"
+    ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "dissection-of-cubes-oq-02-oq-02",
+    "range": {
+      "startLine": 420,
+      "endLine": 445
+    },
+    "type": "insight",
+    "title": "Summary: Zero Axioms",
+    "content": "The closing summary records that the formalization uses 0 axioms (reduced from an earlier 6-axiom draft): `niven_arccos_third` (arccos(1/3) is not a rational multiple of π), `tmul_infinite_order_ne_zero` (the flatness theorem), and `arccos_neg_third` are all now genuinely PROVED rather than assumed. Key proved results: `tmul_torsion_eq_zero`, `rational_angle_vanishes`, `cube_dehn_zero`, `tet_dehn_ne_zero`, `hilbert_third_problem`, `oct_dehn_ne_zero`, `dehn_zero_of_rational_angles`. The two `dehn_*_preserved_by_scissors` declarations remain `True`-valued placeholders, so the Dehn-Sydler completeness direction is stated but not formalized.",
+    "mathContext": "The formalization establishes: $D(\\text{cube}) = 0$, $D(\\text{tet}) \\neq 0$, $D(\\text{oct}) = -D(\\text{tet}) \\neq 0$, and $D(P) = 0$ for all rational-angle polyhedra.",
+    "significance": "supporting",
+    "prerequisites": [
+      "all preceding theorems"
+    ],
+    "relatedConcepts": [
+      "axiom budget",
+      "formalization completeness"
+    ]
+  }
+]

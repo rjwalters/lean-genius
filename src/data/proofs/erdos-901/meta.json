@@ -1,0 +1,232 @@
+{
+  "id": "erdos-901",
+  "title": "Erdős #901: Property B and Hypergraph Coloring",
+  "slug": "erdos-901",
+  "description": "Find m(n) = minimum edges in an n-uniform hypergraph without Property B (not 2-colorable). Known: √(n/log n)·2^n ≪ m(n) ≪ n²·2^n. Erdős-Lovász conjecture: m(n) = Θ(n·2^n). OPEN.",
+  "leanFile": {
+    "path": "Proofs/Erdos901Problem.lean",
+    "imports": [
+      "Mathlib.Combinatorics.SetFamily.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos901",
+    "lineCount": 238,
+    "axiomCount": 0,
+    "sorries": 19,
+    "definitionCount": 10,
+    "theoremCount": 19,
+    "additionalFiles": [
+      "Proofs/Erdos901Aristotle.lean",
+      "Proofs/Erdos901ProblemAristotle.lean",
+      "Proofs/Stubs/Erdos901Aristotle.lean",
+      "Proofs/Stubs/Erdos901Problem.lean",
+      "Proofs/Stubs/Erdos901ProblemAristotle.lean"
+    ]
+  },
+  "meta": {
+    "author": "Paul Erdős, László Lovász",
+    "sourceUrl": "https://erdosproblems.com/901",
+    "date": "1963-1975",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos901Problem.lean",
+    "tags": [
+      "erdos",
+      "hypergraph",
+      "coloring",
+      "property-b",
+      "combinatorics",
+      "probabilistic-method",
+      "open-problem"
+    ],
+    "badge": "wip",
+    "sorries": 19,
+    "erdosNumber": 901,
+    "erdosUrl": "https://erdosproblems.com/901",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib.Combinatorics.SetFamily.Basic",
+        "description": "Mathlib.Combinatorics.SetFamily.Basic"
+      },
+      {
+        "theorem": "Mathlib.Data.Finset.Basic",
+        "description": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Mathlib.Data.Fintype.Basic",
+        "description": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+        "description": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+        "description": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "UniformHypergraph: structure for n-uniform hypergraphs as Finset (Finset V)",
+      "HasPropertyB/LacksPropertyB: formal definitions of Property B",
+      "m(n): extremal function via sInf over hypergraphs lacking Property B",
+      "m_2_eq_3, m_3_eq_7, m_4_eq_23: exact values stated",
+      "erdos_lower_bound: m(n) > 2^{n-1}",
+      "beck_lower_bound: m(n) >> n^{1/3} · 2^n via LLL",
+      "rs_lower_bound: m(n) >> √(n/log n) · 2^n (best known)",
+      "erdos_upper_bound: m(n) < n² · 2^n",
+      "ErdosLovaszConjecture: m(n) = Θ(n · 2^n) via Filter.atTop",
+      "lll_property_b: Lovász Local Lemma application for sparse hypergraphs",
+      "chromaticNumber: hypergraph chromatic number via sInf",
+      "lacks_propertyB_iff_chromatic_ge_3: characterization via chromatic number",
+      "hypergraph_m2: explicit construction for m(2) = 3"
+    ],
+    "axiomCount": 0,
+    "lineCount": 238,
+    "assumptions": "No axioms. 19 sorry(s) remain in the formalization.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 19,
+    "definitionCount": 10,
+    "additionalFiles": [
+      "Proofs/Erdos901Aristotle.lean",
+      "Proofs/Erdos901ProblemAristotle.lean",
+      "Proofs/Stubs/Erdos901Aristotle.lean",
+      "Proofs/Stubs/Erdos901Problem.lean",
+      "Proofs/Stubs/Erdos901ProblemAristotle.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Property B was introduced by E.W. Miller in 1937, named after **Felix Bernstein** who studied 2-colorings of set families in his 1908 work on set theory. A hypergraph has Property B if its vertices can be 2-colored with no monochromatic edge.\n\n**Erdős (1963–64)** initiated the systematic study of $m(n)$, the minimum number of edges in an $n$-uniform hypergraph lacking Property B, in his paper \"On a combinatorial problem\" (Acta Mathematica Hungarica). Using the **probabilistic method** — a random 2-coloring makes each edge monochromatic with probability $2^{1-n}$ — he proved $m(n) > 2^{n-1}$. For the upper bound, he constructed explicit hypergraphs showing $m(n) < n^2 \\cdot 2^n$.\n\nThe **Lovász Local Lemma** (Erdős–Lovász, 1975, \"Problems and results on 3-chromatic hypergraphs\") gave a systematic tool: if each edge intersects fewer than $2^{n-1}$ others, a proper 2-coloring exists. This motivated the **Erdős–Lovász conjecture** $m(n) = \\Theta(n \\cdot 2^n)$. **Beck (1977–78)** improved the lower bound to $n^{1/3} \\cdot 2^n$ using the LLL on a dependency graph. **Radhakrishnan and Srinivasan (2000)** achieved the current best lower bound $\\sqrt{n/\\log n} \\cdot 2^n$ via an iterative resampling argument.\n\nExact values are known for small $n$: $m(2) = 3$, $m(3) = 7$ (the **Fano plane** $PG(2,2)$, the unique Steiner triple system $S(2,3,7)$), and $m(4) = 23$ (Östergård 2014, computer search). The gap between $\\sqrt{n/\\log n}$ and $n$ in the coefficient of $2^n$ remains one of the central open problems in probabilistic combinatorics.",
+    "problemStatement": "Let $m(n)$ be the minimum number of edges in an $n$-uniform hypergraph that does NOT have Property B (i.e., is not 2-colorable). Estimate $m(n)$. Known: $\\sqrt{n/\\log n} \\cdot 2^n \\ll m(n) \\ll n^2 \\cdot 2^n$. Conjecture: $m(n) = \\Theta(n \\cdot 2^n)$.",
+    "text": "Find m(n) = minimum edges in an n-uniform hypergraph without Property B (not 2-colorable). Known: √(n/log n)·2^n ≪ m(n) ≪ n²·2^n. Erdős-Lovász conjecture: m(n) = Θ(n·2^n). OPEN.",
+    "proofStrategy": "The formalization defines $n$-uniform hypergraphs as structures with a `Finset (Finset V)` of edges, each of cardinality $n$. Property B is formalized as the existence of a 2-coloring with no monochromatic edge. The function $m(n)$ is defined via `sInf`. Exact values $m(2) = 3$, $m(3) = 7$, $m(4) = 23$ are stated. The four main lower bounds (Erdős $2^{n-1}$, Beck $n^{1/3} \\cdot 2^n$, Pluhár $n^{1/4} \\cdot 2^n$, Radhakrishnan-Srinivasan $\\sqrt{n/\\log n} \\cdot 2^n$) and the Erdős upper bound $n^2 \\cdot 2^n$ are formalized. The Erdős-Lovász conjecture is stated via `Filter.atTop`. The Lovász Local Lemma application, the complete hypergraph construction, and the chromatic number characterization are included. The file has 19 sorries, reflecting the deep probabilistic and computational arguments needed.",
+    "keyInsights": [
+      "**Property B is 2-colorability**: $\\texttt{HasPropertyB}(H) \\iff \\chi(H) \\leq 2$. The minimum $m(n)$ asks: how many edges must an $n$-uniform hypergraph have before 2-colorability is forced to fail?",
+      "**Probabilistic method gives $m(n) > 2^{n-1}$**: A random 2-coloring makes each $n$-edge monochromatic with probability $2 \\cdot (1/2)^n = 2^{1-n}$. With $< 2^{n-1}$ edges, the expected monochromatic count is $< 1$, so some coloring works.",
+      "**Lovász Local Lemma (LLL) for sparse hypergraphs**: If each edge intersects $< 2^{n-1}$ others, then $ep(d+1) \\leq 1$ where $p = 2^{1-n}$ and $d < 2^{n-1}$, so the LLL guarantees a proper 2-coloring exists. This gives $m(n) = \\Omega(2^n / n)$ from the LLL alone.",
+      "**Radhakrishnan-Srinivasan resampling**: The best lower bound $m(n) \\gg \\sqrt{n/\\log n} \\cdot 2^n$ uses an iterative recoloring strategy: start with a random coloring, identify monochromatic edges, and randomly recolor their vertices. The analysis bounds the number of rounds before all edges are properly colored.",
+      "**Fano plane and $m(3) = 7$**: The Fano plane $PG(2, 2)$ — the unique Steiner triple system $S(2, 3, 7)$ with 7 points and 7 lines of 3 points each — is the smallest 3-uniform hypergraph without Property B. Every 2-coloring of its 7 points creates a monochromatic triple."
+    ],
+    "prerequisites": [
+      "Combinatorics and number theory",
+      "Combinatorics (counting, extremal problems)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-629",
+      "relationship": "related",
+      "description": "List chromatic number problem — m(k) ≤ n(k) ≤ m(k+1) connects Property B to list coloring"
+    },
+    {
+      "targetId": "erdos-533",
+      "relationship": "related",
+      "description": "Hypergraph coloring and Ramsey-type bounds — related extremal problems on set families"
+    },
+    {
+      "targetId": "erdos-117",
+      "relationship": "related",
+      "description": "Combinatorial bounds via the probabilistic method — shares proof techniques using random coloring arguments"
+    }
+  ],
+  "sections": [
+    {
+      "id": "hypergraph",
+      "title": "Hypergraph Definitions",
+      "startLine": 36,
+      "endLine": 47,
+      "summary": "Defines `UniformHypergraph V n` as a structure with a `Finset (Finset V)` of edges, each of cardinality $n$. Includes `edgeCount` for $|E(H)|$.",
+      "mathContext": "Formal definition: Defines `UniformHypergraph V n` as a structure with a `Finset (Finset V)` of edges, each of cardinality $n$. Includes `edgeCount` for $|E(H)|$."
+    },
+    {
+      "id": "property-b",
+      "title": "Property B",
+      "startLine": 48,
+      "endLine": 72,
+      "summary": "Defines `TwoColoring` ($V \\to \\mathrm{Fin}\\, 2$), `IsMonochromatic`, `HasPropertyB` ($\\exists$ proper 2-coloring), and `LacksPropertyB` ($\\forall$ colorings have a monochromatic edge). States the dichotomy $\\texttt{HasPropertyB} \\iff \\neg\\texttt{LacksPropertyB}$.",
+      "mathContext": "Defines `TwoColoring` ($V \\to \\mathrm{Fin}\\, 2$), `IsMonochromatic`, `HasPropertyB` ($\\exists$ proper 2-coloring), and `LacksPropertyB` ($\\forall$ colorings have a monochromatic edge). States the dichotomy $\\texttt{HasPropertyB} \\iff \\neg\\texttt{LacksPropertyB}$."
+    },
+    {
+      "id": "m-function",
+      "title": "The Function $m(n)$",
+      "startLine": 73,
+      "endLine": 87,
+      "summary": "Defines $m(n) = \\inf\\{|E(H)| : H \\text{ is } n\\text{-uniform},\\, \\texttt{LacksPropertyB}(H)\\}$ via `sInf`. States well-definedness $m(n) > 0$ for $n \\ge 2$ and monotonicity.",
+      "mathContext": "Formal definition: Defines $m(n) = \\inf\\{|E(H)| : H \\text{ is } n\\text{-uniform},\\, \\texttt{LacksPropertyB}(H)\\}$ via `sInf`. States well-definedness $m(n) > 0$ for $n \\ge 2$ and monotonicity."
+    },
+    {
+      "id": "exact",
+      "title": "Exact Values",
+      "startLine": 88,
+      "endLine": 101,
+      "summary": "States $m(2) = 3$, $m(3) = 7$ (the Fano plane $PG(2,2)$), $m(4) = 23$ (Östergård 2014 computer search). All sorries.",
+      "mathContext": "Mathematical content: States $m(2) = 3$, $m(3) = 7$ (the Fano plane $PG(2,2)$), $m(4) = 23$ (Östergård 2014 computer search). All sorries."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "startLine": 102,
+      "endLine": 125,
+      "summary": "Four lower bounds in historical order: Erdős $m(n) > 2^{n-1}$ (1963), Beck $m(n) \\gg n^{1/3} \\cdot 2^n$ (1977), Radhakrishnan–Srinivasan $m(n) \\gg \\sqrt{n/\\log n} \\cdot 2^n$ (2000, best known), Pluhár $m(n) \\gg n^{1/4} \\cdot 2^n$ (2009, simplified proof).",
+      "mathContext": "Four lower bounds in historical order: Erdős $m(n) > 2^{n-1}$ (1963), Beck $m(n) \\gg n^{1/3} \\cdot 2^n$ (1977), Radhakrishnan–Srinivasan $m(n) \\gg \\sqrt{n/\\log n} \\cdot 2^n$ (2000, best known), Pluhár $m(n) \\gg n^{1/4} \\cdot 2^n$ (2009, simplified proof)."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "startLine": 126,
+      "endLine": 137,
+      "summary": "Erdős upper bound $m(n) < n^2 \\cdot 2^n$ via explicit construction, and a probabilistic bound $m(n) \\le C \\cdot n \\cdot 2^n$ supporting the conjecture.",
+      "mathContext": "Erdős upper bound $m(n) < $n^{2}$ \\cdot $2^{n}$$ via explicit construction, and a probabilistic bound $m(n) \\le C \\cdot n \\cdot $2^{n}$$ supporting the conjecture."
+    },
+    {
+      "id": "conjecture",
+      "title": "Erdős-Lovász Conjecture",
+      "startLine": 138,
+      "endLine": 152,
+      "summary": "States $m(n) = \\Theta(n \\cdot 2^n)$ via `Filter.atTop` with constants $c_1, c_2 > 0$. Includes the `current_gap` theorem showing the known bounds $\\sqrt{n/\\log n} \\cdot 2^n \\ll m(n) \\ll n^2 \\cdot 2^n$.",
+      "mathContext": "States $m(n) = \\Theta(n \\cdot 2^n)$ via `Filter.atTop` with constants $c_1, c_2 > 0$. Includes the `current_gap` theorem showing the known bounds $\\sqrt{n/\\log n} \\cdot 2^n \\ll m(n) \\ll n^2 \\cdot 2^n$."
+    },
+    {
+      "id": "constructions",
+      "title": "Constructions",
+      "startLine": 153,
+      "endLine": 167,
+      "summary": "The complete $n$-uniform hypergraph on $2n-1$ vertices lacks Property B by pigeonhole. Explicit `hypergraph_m2` construction for $m(2) = 3$ with three edges $\\{0,1\\}, \\{0,2\\}, \\{1,2\\}$ on 4 vertices.",
+      "mathContext": "Mathematical content: The complete $n$-uniform hypergraph on $2n-1$ vertices lacks Property B by pigeonhole. Explicit `hypergraph_m2` construction for $m(2) = 3$ with three edges $\\{0,1\\}, \\{0,2\\}, \\{1,2\\}$ on 4 vertices."
+    },
+    {
+      "id": "probabilistic",
+      "title": "Probabilistic Method",
+      "startLine": 168,
+      "endLine": 181,
+      "summary": "Lovász Local Lemma application: if each edge intersects $< 2^{n-1}$ others, Property B holds. Includes the monochromatic probability computation $\\Pr[\\text{monochromatic}] = 2^{1-n}$.",
+      "mathContext": "Lovász Local Lemma application: if each edge intersects $< $$2^{{n-1}$}$$ others, Property B holds. Includes the monochromatic probability computation $\\Pr[\\text{monochromatic}] = $$2^{{1-n}$}$$."
+    },
+    {
+      "id": "connections",
+      "title": "Connections",
+      "startLine": 182,
+      "endLine": 238,
+      "summary": "Link to list chromatic number (Problem #629) via $m(k) \\le m(k+1)$. Defines `chromaticNumber` via `sInf` and proves the characterization $\\texttt{LacksPropertyB}(H) \\iff \\chi(H) \\ge 3$.",
+      "mathContext": "Formal definition: Link to list chromatic number (Problem #629) via $m(k) \\le m(k+1)$. Defines `chromaticNumber` via `sInf` and proves the characterization $\\texttt{LacksPropertyB}(H) \\iff \\chi(H) \\ge 3$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #901 on Property B and hypergraph coloring. The function $m(n)$ — the minimum edges in an $n$-uniform hypergraph without Property B — is bounded by $\\sqrt{n/\\log n} \\cdot 2^n \\ll m(n) \\ll n^2 \\cdot 2^n$. The formalization includes the full chain of lower bounds (Erdős, Beck, Pluhár, Radhakrishnan-Srinivasan), exact values for small $n$, the Erdős-Lovász conjecture, the Lovász Local Lemma, and connections to chromatic number theory.",
+    "implications": "**Theoretical Significance**: Property B is a foundational concept in combinatorics, connecting hypergraph coloring, the probabilistic method, and the Lovász Local Lemma.\n\nUnderstanding $m(n)$ has implications for discrepancy theory, derandomization, and the algorithmic aspects of the LLL (via Moser-Tardos). The gap between $\\sqrt{n/\\log n}$ and $n$ in the coefficient is one of the most important open problems in probabilistic combinatorics.",
+    "openQuestions": [
+      "Is $m(n) = \\Theta(n \\cdot 2^n)$ as the Erdős-Lovász conjecture predicts? Even proving $m(n) = \\omega(\\sqrt{n} \\cdot 2^n)$ would be a breakthrough.",
+      "What is $m(5)$? No exact value is known for $n \\geq 5$.",
+      "Can the Radhakrishnan-Srinivasan lower bound $\\sqrt{n/\\log n} \\cdot 2^n$ be improved to $\\sqrt{n} \\cdot 2^n$ by removing the $\\log n$ factor?",
+      "Is there an algorithmic version: can a proper 2-coloring be found efficiently for hypergraphs with $< m(n)$ edges?",
+      "What is the relationship between $m(n)$ and the cover number $\\tau(n)$ (minimum vertices to hit all edges)?"
+    ]
+  },
+  "sorries": 19
+}

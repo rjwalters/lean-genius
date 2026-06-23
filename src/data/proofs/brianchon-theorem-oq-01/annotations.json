@@ -1,0 +1,249 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "brianchon-theorem-oq-01",
+    "range": {
+      "startLine": 7,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Brianchon's Theorem as the Dual of Pascal",
+    "content": "**Brianchon's Theorem (1806)**: If a hexagon is *circumscribed* about a conic — each of its six sides tangent to the conic — then the three main diagonals joining opposite vertices are **concurrent** (they pass through a single point, the *Brianchon point*). This is the exact projective dual of **Pascal's hexagon theorem (1639)**, which concerns a hexagon *inscribed* in a conic and concludes that the three intersections of opposite sides are *collinear*. Duality swaps 'point' with 'line', 'inscribed' with 'circumscribed', and 'collinear' with 'concurrent'. The single deep geometric input (six points on a conic ⟹ Pascal collinearity) is taken as the axiom `conic_implies_pascal`, identical to the one the `pascals-hexagon` gallery entry assumes; no new axiom is introduced.",
+    "mathContext": "The strategy avoids re-deriving the conic theory by transporting Pascal across the polarity $P \\mapsto C \\cdot P$. The new, axiom-free content is the bridge $\\text{Pascal collinear} \\Rightarrow \\text{Brianchon concurrent}$, proved by pure linear algebra over $\\mathbb{R}^3$. Historically Brianchon's result was one of the first dramatic demonstrations of the duality principle, predating its systematic development by Poncelet and Gergonne.",
+    "significance": "key",
+    "relatedConcepts": [
+      "projective-duality",
+      "conic-sections",
+      "pole-polar",
+      "incidence-theorem"
+    ],
+    "prerequisites": [
+      "projective-plane",
+      "principle-of-duality"
+    ]
+  },
+  {
+    "id": "ann-projective-model",
+    "proofId": "brianchon-theorem-oq-01",
+    "range": {
+      "startLine": 72,
+      "endLine": 114
+    },
+    "type": "definition",
+    "title": "Homogeneous Coordinate Model in ℝ³",
+    "content": "Points and lines of the projective plane are both modeled as nonzero vectors in $\\mathbb{R}^3$. The **join** of two points and the **meet** of two lines are *both* the cross product (`lineThrough` and `lineIntersection`). Three points are `collinear`, and dually three lines `concurrent`, iff the $3\\times3$ matrix of their coordinate vectors has vanishing determinant. A conic is a symmetric $3\\times3$ matrix $C$, with $p$ on the conic iff $p^{\\mathsf T} C p = 0$.",
+    "mathContext": "In $\\mathbb{RP}^2$ a point is a class $[x:y:z]$ of nonzero vectors up to scaling. The identity $\\det(p,q,r) = (p \\times q)\\cdot r$ makes the determinant the universal incidence test. Crucially, `collinear` and `concurrent` are *the same function* — 'the determinant vanishes' — so the point/line duality is literally the relabelling of a vector as a point or as a line. The quadratic form $\\sum_{i,j} C_{ij}\\,p_i\\,p_j$ encodes the conic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "homogeneous-coordinates",
+      "cross-product",
+      "matrix-determinant",
+      "self-dual-coordinates"
+    ],
+    "prerequisites": [
+      "Fin 3 → ℝ",
+      "scalar-triple-product"
+    ]
+  },
+  {
+    "id": "ann-cofactor-identity",
+    "proofId": "brianchon-theorem-oq-01",
+    "range": {
+      "startLine": 121,
+      "endLine": 133
+    },
+    "type": "theorem",
+    "title": "The Cofactor Cross-Product Identity",
+    "content": "`crossProduct_mulMatrix`: $(M\\cdot u)\\times(M\\cdot v) = (\\operatorname{adj} M)^{\\mathsf T}\\cdot(u\\times v)$. This single degree-3 polynomial identity is the algebraic heart of pole–polar duality: the join/meet operation intertwines the **point map** $M$ with the **line map** $(\\operatorname{adj} M)^{\\mathsf T}$ (the cofactor matrix). It is discharged entirely by `ring` after expanding both sides with `Matrix.adjugate_fin_three`.",
+    "mathContext": "For a linear map $M$ on $\\mathbb{R}^3$, applying $M$ to points pushes lines forward by the inverse-transpose up to scale; over a ring without inverting, the cofactor matrix $\\operatorname{adj} M = \\det(M)\\,M^{-1}$ supplies that map polynomially. The identity is a $3\\times3$ instance of the Binet–Cauchy formula relating exterior powers: $\\Lambda^2 M$ acting on bivectors corresponds, under the Hodge star $u\\wedge v \\leftrightarrow u\\times v$, to $(\\operatorname{adj} M)^{\\mathsf T}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "adjugate-matrix",
+      "Binet-Cauchy",
+      "exterior-algebra",
+      "pole-polar"
+    ],
+    "prerequisites": [
+      "cofactor-matrix",
+      "cross-product"
+    ]
+  },
+  {
+    "id": "ann-det-transport",
+    "proofId": "brianchon-theorem-oq-01",
+    "range": {
+      "startLine": 135,
+      "endLine": 149
+    },
+    "type": "theorem",
+    "title": "Determinant Transport Under a Fixed Matrix",
+    "content": "`det_threeVectorMatrix_mulMatrix`: $\\det(M\\cdot u,\\,M\\cdot v,\\,M\\cdot w) = \\det M \\cdot \\det(u,v,w)$. Applying a fixed matrix to all three rows multiplies the triple determinant by $\\det M$. The proof factors the row-stacked matrix as $\\text{(rows }u,v,w)\\cdot M^{\\mathsf T}$ and applies `det_mul` with `det_transpose`.",
+    "mathContext": "Because $\\det M \\cdot 0 = 0$, this lemma is exactly what propagates a *vanishing* source determinant to a vanishing target determinant — and it does so **without any nondegeneracy hypothesis** on $M$. This is why the duality bridge needs no assumption $\\det C \\neq 0$: collinearity (a zero determinant) is forced to concurrency regardless of whether $C$ is invertible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "determinant-multiplicativity",
+      "matrix-determinant",
+      "incidence-preservation"
+    ],
+    "prerequisites": [
+      "Matrix.det_mul",
+      "Matrix.det_transpose"
+    ]
+  },
+  {
+    "id": "ann-dual-matrix",
+    "proofId": "brianchon-theorem-oq-01",
+    "range": {
+      "startLine": 155,
+      "endLine": 170
+    },
+    "type": "lemma",
+    "title": "Iterated Cofactor Collapses to det C · C",
+    "content": "For a symmetric $3\\times3$ conic, `dual_matrix_eq` shows the iterated cofactor matrix $\\big((\\operatorname{adj} C)^{\\mathsf T}\\big)^{\\!\\operatorname{adj}\\,\\mathsf T}$ collapses to the *single* linear map $\\det C \\cdot C$. Symmetry feeds two facts: a symmetric matrix equals its transpose (`transpose_of_symmetric`), and the adjugate of a symmetric matrix is symmetric (`adjugate_symmetric`).",
+    "mathContext": "The general fact is $\\operatorname{adj}(\\operatorname{adj} A) = (\\det A)^{n-2}\\,A$; for $n=3$ the exponent is $1$, so $\\operatorname{adj}(\\operatorname{adj} C) = \\det C \\cdot C$. Applying the cofactor identity twice (once with $M=C$, once with $M=\\operatorname{adj} C$) therefore replaces a double polarity by one fixed scaling map. This is the structural reason Brianchon collapses cleanly onto Pascal in dimension 3 specifically.",
+    "significance": "key",
+    "relatedConcepts": [
+      "adjugate-adjugate",
+      "symmetric-matrix",
+      "pole-polar"
+    ],
+    "prerequisites": [
+      "Matrix.adjugate_adjugate",
+      "Matrix.adjugate_transpose"
+    ]
+  },
+  {
+    "id": "ann-circumscribed",
+    "proofId": "brianchon-theorem-oq-01",
+    "range": {
+      "startLine": 176,
+      "endLine": 183
+    },
+    "type": "definition",
+    "title": "The Circumscribed Hexagon by Polarity",
+    "content": "The tangent line to conic $C$ at a contact point $P$ is the **polar** $C \\cdot P$ (`tangentLine`). A vertex of the circumscribed hexagon (`circVertex`) is the meet of the tangent lines at two adjacent contact points — i.e. the intersection of two adjacent sides. So the entire circumscribed hexagon is the projective dual of the inscribed hexagon of contact points $A,\\dots,F$.",
+    "mathContext": "Pole–polar duality with respect to $C$ sends a point $P$ on the conic to its tangent line $\\ell = C P$, and conversely a tangent line back to its contact point via $\\operatorname{adj} C$. The contact hexagon's sides are the polars $CA, CB, \\dots, CF$; its vertices $CA \\times CB$ etc. are exactly where the cofactor identity will be applied.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tangent-line",
+      "pole-polar",
+      "dual-hexagon"
+    ],
+    "prerequisites": [
+      "conic-polarity"
+    ]
+  },
+  {
+    "id": "ann-diag-eq",
+    "proofId": "brianchon-theorem-oq-01",
+    "range": {
+      "startLine": 189,
+      "endLine": 199
+    },
+    "type": "lemma",
+    "title": "Each Diagonal Is the Dual Image of a Pascal Point",
+    "content": "**Key reduction.** `diag_eq` shows a circumscribed-hexagon diagonal `lineThrough (circVertex C P Q) (circVertex C R S)` equals the fixed linear map $\\det C \\cdot C$ applied to the corresponding **Pascal point** `lineIntersection (lineThrough P Q) (lineThrough R S)`. The proof unfolds the definitions, applies the cofactor identity bottom-up (inner meets first, then the outer join), and rewrites with `dual_matrix_eq`.",
+    "mathContext": "Each diagonal is a triple cross product $\\big((CP\\times CQ)\\times(CR\\times CS)\\big)$. The cofactor identity peels $C$ off the inner meets producing $(\\operatorname{adj} C)^{\\mathsf T}$ factors, and the outer join introduces a further cofactor; `dual_matrix_eq` then fuses the iterated cofactors into $\\det C \\cdot C$ acting on the Pascal point $\\big((P\\times Q)\\times(R\\times S)\\big)$. This is the precise sense in which Brianchon's configuration is the polar image of Pascal's.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Pascal-point",
+      "pole-polar",
+      "dual-configuration"
+    ],
+    "prerequisites": [
+      "cofactor-identity",
+      "adjugate-adjugate"
+    ]
+  },
+  {
+    "id": "ann-bridge",
+    "proofId": "brianchon-theorem-oq-01",
+    "range": {
+      "startLine": 205,
+      "endLine": 229
+    },
+    "type": "theorem",
+    "title": "The Axiom-Free Duality Bridge",
+    "content": "`concurrent_brianchon_of_collinear_pascal` is the central deliverable: for a symmetric conic with six contact points, **if** the three Pascal points are collinear, **then** the three Brianchon diagonals are concurrent. It is proved with **no axioms and no `sorry`** — `#print axioms` reports only `propext`, `Classical.choice`, `Quot.sound`. The proof rewrites each diagonal via `diag_eq`, transports the determinant by `det_threeVectorMatrix_mulMatrix`, and uses Pascal's vanishing determinant with `mul_zero`.",
+    "mathContext": "This makes the Pascal/Brianchon duality completely explicit and reusable: $\\det(\\text{diagonals}) = \\det(\\det C\\cdot C)\\cdot\\det(\\text{Pascal points}) = (\\det C)^4 \\cdot 0 = 0$. Because the final step multiplies by $0$, no nondegeneracy on $C$ is required. The same template — cofactor cross-product identity plus determinant transport — dualizes other incidence theorems (e.g. the dual of Pappus, Desargues self-duality).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "projective-duality",
+      "Pascal-theorem",
+      "axiom-free",
+      "incidence-theorem"
+    ],
+    "prerequisites": [
+      "det-transport",
+      "diag-eq"
+    ]
+  },
+  {
+    "id": "ann-pascal-axiom",
+    "proofId": "brianchon-theorem-oq-01",
+    "range": {
+      "startLine": 235,
+      "endLine": 260
+    },
+    "type": "concept",
+    "title": "Contact Hexagon and the Shared Pascal Axiom",
+    "content": "`ContactHexagon C` bundles six points $A,B,C',D,E,F$ together with proofs that each lies on the conic $C$. The lone axiom `conic_implies_pascal` states that these six concyclic points make the three opposite-side intersections collinear — exactly the deep fact `pascals-hexagon` axiomatizes as `conic_implies_pascal_constraint`, restated here in collinearity form and reused unchanged. **No new axiom is introduced** by this entry.",
+    "mathContext": "Pascal's theorem is itself a consequence of the Cayley–Bacharach theorem (a cubic through 8 of 9 base points passes through the 9th) or of the Sylvester reduction to the standard conic $xy=z^2$. Axiomatizing it isolates that single geometric input; everything Brianchon-specific in this file is then verified, so the assumption count for Brianchon equals that for Pascal: exactly one.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cayley-Bacharach",
+      "Pascal-theorem",
+      "axiom-integrity",
+      "conic-locus"
+    ],
+    "prerequisites": [
+      "structure-fields",
+      "pointOnConic"
+    ]
+  },
+  {
+    "id": "ann-brianchon-theorem",
+    "proofId": "brianchon-theorem-oq-01",
+    "range": {
+      "startLine": 266,
+      "endLine": 291
+    },
+    "type": "theorem",
+    "title": "Brianchon's Theorem (Concurrency)",
+    "content": "`brianchon_theorem`: for a symmetric conic $C$ and any contact hexagon, the three main diagonals `brianchonDiag1/2/3` are concurrent. The proof is a one-liner: feed Pascal's axiom `conic_implies_pascal C hex` into the axiom-free bridge `concurrent_brianchon_of_collinear_pascal`. It therefore uses **no axiom beyond** `conic_implies_pascal`.",
+    "mathContext": "Here concurrency is recorded as the vanishing of the diagonals' coefficient determinant $\\det(\\text{diag}_1,\\text{diag}_2,\\text{diag}_3) = 0$. This is the standard projective statement of Brianchon's theorem, dual to Pascal's $\\det(\\text{Pascal points}) = 0$. The next part strengthens this determinant condition to a genuine common point.",
+    "significance": "key",
+    "relatedConcepts": [
+      "concurrency",
+      "main-diagonals",
+      "projective-duality"
+    ],
+    "prerequisites": [
+      "duality-bridge",
+      "Pascal-axiom"
+    ]
+  },
+  {
+    "id": "ann-brianchon-point",
+    "proofId": "brianchon-theorem-oq-01",
+    "range": {
+      "startLine": 297,
+      "endLine": 370
+    },
+    "type": "theorem",
+    "title": "The Genuine Brianchon Point",
+    "content": "The bare determinant condition is also satisfied degenerately (e.g. two coincident diagonals). `brianchon_point` recovers Brianchon's classical claim of a *single* common point: under the natural nondegeneracy hypothesis that the first two diagonals actually meet in a well-defined point (`lineIntersection (brianchonDiag1 hex) (brianchonDiag2 hex) ≠ 0`), all three diagonals pass through one explicit projective point. The witness is that meet; the first two incidences are the self-incidence identities `dotProduct_self_crossProduct` / `dotProduct_crossProduct_self`, and the third is exactly the concurrency from `brianchon_theorem`, re-expressed via the scalar-triple-product identity `det(a,b,c) = c·(a×b)`.",
+    "mathContext": "Incidence is $\\ell \\cdot X = 0$ (`onLine`). The meet $X = \\text{diag}_1 \\times \\text{diag}_2$ automatically satisfies $\\text{diag}_1\\cdot X = 0$ and $\\text{diag}_2\\cdot X = 0$ since $u\\cdot(u\\times v) = v\\cdot(u\\times v) = 0$. The third incidence $\\text{diag}_3 \\cdot X = 0$ is the concurrency determinant under the identification $\\det(\\text{diag}_1,\\text{diag}_2,\\text{diag}_3) = \\text{diag}_3 \\cdot(\\text{diag}_1\\times\\text{diag}_2)$. This upgrade is pure linear algebra: no axiom beyond `conic_implies_pascal`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brianchon-point",
+      "scalar-triple-product",
+      "nondegeneracy",
+      "concurrency"
+    ],
+    "prerequisites": [
+      "meet-incidence",
+      "scalar-triple-product"
+    ]
+  }
+]

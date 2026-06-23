@@ -1,0 +1,232 @@
+[
+  {
+    "id": "ann-schauder-overview",
+    "proofId": "schauder-fixed-point-oq-01",
+    "range": {
+      "startLine": 10,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "The Schauder Projection Lemma: Bridging Finite and Infinite Dimensions",
+    "content": "The Schauder projection lemma is the technical engine behind the Schauder fixed point theorem. It answers a fundamental question: how can we approximate an infinite-dimensional compact set by something finite-dimensional? The lemma says that for any compact set K and any tolerance epsilon, we can build a continuous map that nearly preserves K while mapping it into a finite-dimensional convex hull. This finite-dimensional reduction is what allows the Brouwer fixed point theorem (which only works in finite dimensions) to be leveraged in Banach spaces and other infinite-dimensional settings.",
+    "mathContext": "Given compact $K \\subseteq E$ and $\\varepsilon > 0$, $\\exists \\pi: E \\to E$ continuous with $\\pi(K) \\subseteq \\mathrm{conv}\\{x_1,\\ldots,x_n\\}$ and $\\|\\pi(x) - x\\| < \\varepsilon$ for all $x \\in K$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Schauder fixed point theorem",
+      "Brouwer fixed point theorem",
+      "finite-dimensional approximation",
+      "functional analysis"
+    ],
+    "prerequisites": [
+      "Brouwer Fixed Point Theorem",
+      "Compact Sets",
+      "Convex Hull"
+    ]
+  },
+  {
+    "id": "ann-convex-hull-compactness",
+    "proofId": "schauder-fixed-point-oq-01",
+    "range": {
+      "startLine": 50,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Convex Hull of Finite Sets: Closedness and Compactness",
+    "content": "These two auxiliary results establish that convex hulls of finite sets in normed spaces behave well topologically. The closedness result follows from a deep fact in finite-dimensional analysis: convex hulls of compact (hence finite) sets in normed spaces are closed. The compactness result is even stronger, following from the Caratheodory representation theorem which shows the convex hull of a finite set is the continuous image of a compact simplex. Both results are applied as one-liners via Mathlib, demonstrating the power of the library's existing infrastructure.",
+    "mathContext": "For finite $s \\subseteq E$: $\\mathrm{conv}(s)$ is closed; for $\\mathrm{pts}: \\mathrm{Fin}\\, n \\to E$: $\\mathrm{conv}(\\mathrm{range}(\\mathrm{pts}))$ is compact.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "convex hull",
+      "compactness",
+      "Caratheodory theorem",
+      "finite-dimensional topology"
+    ],
+    "prerequisites": [
+      "Convex Hull",
+      "Compactness In Normed Spaces",
+      "Caratheodory Theorem"
+    ]
+  },
+  {
+    "id": "ann-bump-function-def",
+    "proofId": "schauder-fixed-point-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Bump Functions: The Building Blocks of Partition of Unity",
+    "content": "The bump function phi(x) = max(0, epsilon - ||x - c||) is the key ingredient for constructing a partition of unity. It is a piecewise-linear radial function centered at c that is positive inside the open ball B(c, epsilon) and zero outside. The max with zero ensures nonnegativity, while the linear decay from the center provides continuity. This specific choice of bump function is computationally simple and avoids the need for smooth (C-infinity) cutoffs, which would be overkill for the Schauder projection lemma.",
+    "mathContext": "$\\varphi_c(x) = \\max(0,\\, \\varepsilon - \\|x - c\\|)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "partition of unity",
+      "radial function",
+      "Lipschitz continuity",
+      "piecewise-linear functions"
+    ],
+    "prerequisites": [
+      "Norm On Normed Spaces",
+      "Open Balls",
+      "Piecewise-Linear Functions"
+    ]
+  },
+  {
+    "id": "ann-bump-properties",
+    "proofId": "schauder-fixed-point-oq-01",
+    "range": {
+      "startLine": 73,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Four Properties of Bump Functions That Drive the Proof",
+    "content": "The proof establishes four critical properties of each bump function: (1) nonnegativity, which follows immediately from the max with zero; (2) continuity, proved by composing continuous operations (norm, subtraction, max); (3) positivity inside the epsilon-ball, since epsilon - ||x - c|| > 0 when ||x - c|| < epsilon; and (4) vanishing outside the ball, since max(0, negative) = 0. The contrapositive of property (4) gives property (5): if the bump is positive, then x is within epsilon of the center. This last fact is the engine of the approximation bound, ensuring only nearby centers contribute to the weighted average.",
+    "mathContext": "$\\varphi_c(x) > 0 \\iff \\|x - c\\| < \\varepsilon$; and $\\varphi_c(x) > 0 \\implies \\|x - c\\| < \\varepsilon$",
+    "significance": "key",
+    "relatedConcepts": [
+      "support of a function",
+      "continuity composition",
+      "contrapositive reasoning"
+    ],
+    "prerequisites": [
+      "ann-bump-function-def"
+    ]
+  },
+  {
+    "id": "ann-bump-sum-positivity",
+    "proofId": "schauder-fixed-point-oq-01",
+    "range": {
+      "startLine": 110,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Sum of Bumps: Positivity via Finite Covering",
+    "content": "The sum of bump functions S(x) = sum_i phi_i(x) is nonneg everywhere (sum of nonneg terms) and strictly positive on K (because the epsilon-balls cover K, so at least one bump is positive at each point). The positivity on K is essential: it ensures the Schauder projection pi(x) = (sum phi_i * x_i) / S(x) has a well-defined denominator. The proof uses Finset.single_le_sum to show that a single positive summand forces the entire sum to be positive, a clean use of Lean's finite sum API.",
+    "mathContext": "$S(x) = \\sum_{i=1}^n \\varphi_i(x) > 0$ for all $x \\in K$, since $K \\subseteq \\bigcup_i B(x_i, \\varepsilon)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite cover",
+      "well-definedness",
+      "sum positivity",
+      "Finset API"
+    ],
+    "prerequisites": [
+      "ann-bump-properties"
+    ]
+  },
+  {
+    "id": "ann-schauder-proj-def",
+    "proofId": "schauder-fixed-point-oq-01",
+    "range": {
+      "startLine": 136,
+      "endLine": 140
+    },
+    "type": "definition",
+    "title": "The Schauder Projection: A Weighted Average Construction",
+    "content": "The Schauder projection pi(x) = (1/S(x)) * sum(phi_i(x) * x_i) is defined as a weighted average of the center points, where the weights are proportional to the bump function values. In Lean, this is expressed as an inverse-scalar multiplication of the weighted vector sum. The definition is elegant: it is the unique point in the convex hull of the centers that is 'closest' to x in the sense of the bump-function weighting. The notation (bumpSum)^(-1) * sum is idiomatic Lean for the normalized weighted combination.",
+    "mathContext": "$\\pi(x) = \\frac{\\sum_i \\varphi_i(x) \\cdot x_i}{\\sum_i \\varphi_i(x)} = S(x)^{-1} \\cdot \\sum_i \\varphi_i(x) \\cdot x_i$",
+    "significance": "key",
+    "relatedConcepts": [
+      "weighted average",
+      "convex combination",
+      "partition of unity",
+      "barycentric coordinates"
+    ],
+    "prerequisites": [
+      "ann-bump-sum-positivity"
+    ]
+  },
+  {
+    "id": "ann-continuity-proof",
+    "proofId": "schauder-fixed-point-oq-01",
+    "range": {
+      "startLine": 146,
+      "endLine": 157
+    },
+    "type": "concept",
+    "title": "Continuity via ContinuousOn and Nonvanishing Denominator",
+    "content": "The continuity proof uses ContinuousOn rather than global Continuous because the projection is only well-defined where S(x) > 0. The key step is ContinuousOn.inv_0, which requires showing the denominator never vanishes on the domain -- exactly the positivity result from Part 3. The numerator sum(phi_i(x) * x_i) is continuous by continuous_finset_sum, and the product of a continuous scalar function with a continuous vector function is continuous. This quotient-of-continuous-functions pattern is standard in partition-of-unity proofs.",
+    "mathContext": "$\\pi$ is continuous on $U = \\{x : S(x) > 0\\} \\supseteq K$, since $S^{-1}$ and $\\sum \\varphi_i \\cdot x_i$ are both continuous on $U$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ContinuousOn",
+      "quotient of continuous functions",
+      "nonvanishing denominator",
+      "Mathlib topology API"
+    ],
+    "prerequisites": [
+      "ann-bump-sum-positivity",
+      "ann-schauder-proj-def"
+    ]
+  },
+  {
+    "id": "ann-convex-hull-membership",
+    "proofId": "schauder-fixed-point-oq-01",
+    "range": {
+      "startLine": 161,
+      "endLine": 184
+    },
+    "type": "concept",
+    "title": "Convex Hull Membership: The Weighted Average Is a Convex Combination",
+    "content": "The proof that pi(x) lies in the convex hull of the centers is a beautiful application of the characterization of convex hulls via convex combinations. The weights w_i = phi_i(x)/S(x) are nonneg (since each phi_i >= 0 and S > 0) and sum to 1 (by construction). The proof rewrites the projection as sum(w_i * x_i) and then invokes Mathlib's convex_convexHull.sum_mem, which says that any convex combination of points in a convex set lies in the set. The algebraic manipulation uses div_eq_mul_inv and mul_inv_cancel to verify the weight normalization.",
+    "mathContext": "$w_i = \\varphi_i(x)/S(x) \\geq 0$, $\\sum w_i = 1$, so $\\pi(x) = \\sum w_i x_i \\in \\mathrm{conv}(\\{x_1,\\ldots,x_n\\})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convex combination",
+      "barycentric coordinates",
+      "weight normalization",
+      "convexHull API"
+    ],
+    "prerequisites": [
+      "ann-schauder-proj-def",
+      "ann-bump-properties"
+    ]
+  },
+  {
+    "id": "ann-approximation-bound",
+    "proofId": "schauder-fixed-point-oq-01",
+    "range": {
+      "startLine": 188,
+      "endLine": 233
+    },
+    "type": "concept",
+    "title": "The Epsilon-Approximation Bound: Only Nearby Centers Contribute",
+    "content": "This is the most technically involved part of the proof. The key insight is that ||pi(x) - x|| is small because pi(x) is a weighted average of centers x_i, and only centers within distance epsilon of x have nonzero weight. The proof rewrites pi(x) - x as S(x)^(-1) * sum(phi_i(x) * (x_i - x)), applies the triangle inequality to the sum, then bounds each term: if phi_i(x) = 0 the term vanishes, and if phi_i(x) > 0 then ||x_i - x|| < epsilon. The strict inequality requires Finset.sum_lt_sum, which needs at least one strictly smaller summand -- guaranteed by the existence of a positive bump. The calculation concludes with inv_mul_lt_iff to cancel the S(x) factor.",
+    "mathContext": "$\\|\\pi(x) - x\\| = S^{-1} \\|\\sum \\varphi_i(x_i - x)\\| \\leq S^{-1} \\sum \\varphi_i \\|x_i - x\\| < S^{-1} \\cdot S \\cdot \\varepsilon = \\varepsilon$",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle inequality",
+      "norm estimation",
+      "weighted average bounds",
+      "strict inequality in finite sums"
+    ],
+    "prerequisites": [
+      "ann-bump-properties",
+      "ann-schauder-proj-def"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "schauder-fixed-point-oq-01",
+    "range": {
+      "startLine": 254,
+      "endLine": 296
+    },
+    "type": "concept",
+    "title": "The Main Theorem: Assembly via Compactness",
+    "content": "The main theorem ties everything together. First, compactness of K produces a finite subcover of epsilon-balls (via IsCompact.elim_finite_subcover_image). The centers are then indexed by Fin N through Fintype.truncEquivFin. The covering property is translated from the set-theoretic union to the norm-based formulation needed by the bump functions. Finally, the three established properties -- continuity, convex hull membership, and epsilon-approximation -- are packaged into the existential witness. The proof is constructive in the sense that the projection map is explicitly defined, not merely shown to exist.",
+    "mathContext": "$K$ compact $\\Rightarrow$ $\\exists$ finite $\\{x_i\\} \\subset K$ with $K \\subseteq \\bigcup B(x_i, \\varepsilon)$ $\\Rightarrow$ construct $\\pi$ with all required properties.",
+    "significance": "key",
+    "relatedConcepts": [
+      "compactness",
+      "finite subcover",
+      "constructive existence",
+      "Fintype equivalence"
+    ],
+    "prerequisites": [
+      "ann-continuity-proof",
+      "ann-convex-hull-membership",
+      "ann-approximation-bound"
+    ]
+  }
+]

@@ -1,0 +1,205 @@
+{
+  "id": "minkowski-fundamental-theorem-oq-01",
+  "title": "Successive Minima — Infrastructure for Minkowski's Second Theorem",
+  "slug": "minkowski-fundamental-theorem-oq-01",
+  "description": "Answers OQ-01 of minkowski-fundamental-theorem ('Can Minkowski's second theorem on successive minima be formalized with the same infrastructure?') by building the successive-minima framework directly on the parent's custom Lattice / ConvexBody API: scaling of symmetric convex bodies, the 'k independent lattice points in a set' predicate, the i-th successive minimum λᵢ with positivity and monotonicity (λ₀ ≤ λ₁ ≤ ⋯), the precise statement of the second-theorem upper bound, and the first-minimum specialization λ₀ ≤ 1 derived from the parent's first theorem. The deep product bound itself is stated as a scaffold and left as the open analytic core.",
+  "meta": {
+    "author": "Hermann Minkowski (1896); Lean 4 formalization (research, 2026)",
+    "date": "1896",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MinkowskiFundamentalTheoremOQ01.lean",
+    "tags": [
+      "number-theory",
+      "geometry-of-numbers",
+      "minkowski-theorem",
+      "successive-minima",
+      "lattices",
+      "convex-bodies"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 208,
+    "assumptions": "0 axioms, 0 sorries. Built on the parent file's custom Lattice / ConvexBody / HasVolume API (Proofs.MinkowskiFundamentalTheorem). The first-minimum bound is derived from the parent's verified `minkowski_fundamental` (first theorem). HONEST SCOPE: this is the definitional framework plus the order structure of the successive minima and the first-minimum specialization — NOT the full second theorem. The product bound λ₁⋯λₙ·vol(S) ≤ 2ⁿ·covolume(L) is stated as a Prop scaffold (`secondTheorem_upper_statement`) and is not proved here; its proof is the open analytic core.",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-06-21",
+    "theoremCount": 8,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Minkowski's *first* (fundamental) theorem states that a centrally symmetric convex body of volume greater than 2ⁿ·covolume(L) must contain a nonzero lattice point. In his 1896 *Geometrie der Zahlen* Minkowski went further and introduced the **successive minima** λ₁ ≤ λ₂ ≤ ⋯ ≤ λₙ of a symmetric convex body S with respect to a lattice L: λᵢ is the least scaling factor c such that cS contains i linearly independent lattice points. His *second* theorem sharpens the first by bounding the full product of the successive minima:\n\n    (2ⁿ / n!) · covolume(L) ≤ λ₁ λ₂ ⋯ λₙ · vol(S) ≤ 2ⁿ · covolume(L).\n\nThe upper bound generalizes the first theorem (which is essentially the λ₁ statement), while the lower bound is an independent and more delicate result. The second theorem is a cornerstone of the geometry of numbers, underlying transference theorems, reduction theory, and modern lattice-based cryptanalysis.",
+    "problemStatement": "**Open Question (minkowski-fundamental-theorem, OQ #1):** *Can Minkowski's second theorem (on successive minima) be formalized with the same infrastructure?*\n\nThis entry answers the **infrastructure** half affirmatively: the parent's custom `Lattice` / `ConvexBody` / `HasVolume` API is rich enough to define the successive minima and to derive their basic order structure and the first-minimum specialization of the first theorem. The deep analytic content of the second theorem — the product bound itself — is stated precisely as a scaffold but is left open.",
+    "text": "Working entirely on top of the parent file's bespoke geometry-of-numbers API, this file defines scaling of a symmetric convex body, the predicate `IndepLatticePoints L k T` ('T contains k linearly independent lattice points'), the admissible-scaling sets, and the i-th successive minimum `successiveMinimum L S i = sInf {c > 0 : cS contains i+1 independent lattice points}`. It then proves the monotonicity λ₀ ≤ λ₁ ≤ ⋯ (when the higher minimum is attained), positivity, and — as the `i = 0` shadow of the second theorem — that λ₀ ≤ 1 once vol(S) exceeds the critical volume, by feeding a nonzero lattice point from the parent's `minkowski_fundamental` into the admissible set for the first minimum.",
+    "proofStrategy": "1. **Scaling** (`ConvexBody.scale`): `c • S.carrier` is again convex (`Convex.smul`), centrally symmetric (push the negation through the pointwise scaling), and nonempty; this packages the scaled body cS into the parent's `ConvexBody` structure.\n\n2. **Independent lattice points** (`IndepLatticePoints`): existence of a linearly independent family `v : Fin k → ℝⁿ` lying in both the set and the lattice. Antitonicity in k (`.mono`) drops surplus coordinates via `Fin.castLE`.\n\n3. **Successive minima** (`successiveMinimum`): `sInf` of the admissible-scaling set `{c > 0 : c•S contains i+1 independent lattice points}`. The set is bounded below by 0, giving nonnegativity (`Real.sInf_nonneg`); a higher index has a smaller admissible set (`admissibleScalings_subset` via `IndepLatticePoints.mono`), giving monotonicity through `csInf_le_csInf` once the higher set is nonempty.\n\n4. **First-minimum bound** (`firstMinimum_le_one_of_volume_gt`): when vol(S) > 2ⁿ·covolume(L), the parent's `minkowski_fundamental` yields a nonzero x ∈ S ∩ L. A single nonzero vector is linearly independent, so 1 is an admissible scaling for λ₀; hence λ₀ = sInf(...) ≤ 1.\n\n5. **Second theorem upper bound** (`secondTheorem_upper_statement`): stated as a `Prop` scaffold `(∏ i, λᵢ) · vol(S) ≤ 2ⁿ · covolume(L)`; its proof requires a basis realizing the successive minima and a simultaneous reduction argument, and is left as the open core.",
+    "keyInsights": [
+      "The parent's custom `ConvexBody` / `Lattice` API is expressive enough to carry the entire successive-minima definitional layer — scaling, independent-lattice-point predicate, and the sInf-based minima — without leaving its abstraction.",
+      "Monotonicity of the successive minima is purely order-theoretic: a larger index demands more independent points, shrinking the admissible-scaling set, so its infimum can only grow (`csInf` is antitone in the set).",
+      "Minkowski's first theorem is exactly the i=0 case of the second: a nonzero lattice point in S is a single independent point in 1·S, so λ₀ ≤ 1 follows immediately from `minkowski_fundamental`.",
+      "Pointwise scalar multiplication on sets (`c • S.carrier`) requires the `Pointwise` scoped instances, and the single-vector linear-independence step needs the `Unique (Fin (0+1))` instance supplied explicitly — small but essential Lean-engineering details.",
+      "The genuine difficulty of the second theorem is concentrated entirely in the product bound, which is isolated here as a precise Prop scaffold rather than hidden behind a sorry."
+    ],
+    "prerequisites": [
+      "Minkowski's fundamental (first) theorem — see minkowski-fundamental-theorem in the gallery",
+      "Lattices and covolumes in ℝⁿ",
+      "Centrally symmetric convex bodies",
+      "Infima of sets of reals (sInf, csInf) and linear independence of finite families"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble: Imports and Setup",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Imports Mathlib and the parent Proofs.MinkowskiFundamentalTheorem; opens the parent namespace, Set, and the Pointwise scoped instances. Header documents the second theorem and the honest scope.",
+      "mathContext": "The file reuses the parent's `Lattice`, `ConvexBody`, `HasVolume`, `criticalVolume`, `latticePoints`, and `minkowski_fundamental`, so the entire successive-minima layer stays inside the parent's abstraction."
+    },
+    {
+      "id": "scaling",
+      "title": "Part I: Scaling a Convex Body",
+      "startLine": 53,
+      "endLine": 78,
+      "summary": "ConvexBody.scale (c • S as a ConvexBody), scale_carrier (@[simp]), and scale_one.",
+      "mathContext": "Scaling by c > 0 dilates the body; convexity, central symmetry, and nonemptiness are all preserved under the pointwise action c • (·). The scaled body cS is the object whose lattice content defines the successive minima."
+    },
+    {
+      "id": "indep-lattice-points",
+      "title": "Part II: Independent Lattice Points in a Set",
+      "startLine": 79,
+      "endLine": 97,
+      "summary": "IndepLatticePoints L k T predicate and its antitonicity IndepLatticePoints.mono in k.",
+      "mathContext": "λᵢ counts how much the body must be scaled to capture i linearly independent lattice points; the predicate and its monotonicity in k are the combinatorial backbone of the definition."
+    },
+    {
+      "id": "successive-minima",
+      "title": "Part III: The Successive Minima",
+      "startLine": 98,
+      "endLine": 137,
+      "summary": "admissibleScalings, successiveMinimum (= sInf), admissibleScalings_bddBelow, successiveMinimum_nonneg, admissibleScalings_subset, and successiveMinimum_mono (λᵢ ≤ λⱼ for i ≤ j).",
+      "mathContext": "The i-th successive minimum is the infimum of admissible scalings. Boundedness below by 0 gives nonnegativity; the admissible sets are nested (more points ⟹ fewer scalings), so the infima are monotone in the index — exactly the chain λ₀ ≤ λ₁ ≤ ⋯ ≤ λₙ₋₁."
+    },
+    {
+      "id": "second-theorem-and-first-minimum",
+      "title": "Part IV: Second Theorem Statement and the First-Minimum Bound",
+      "startLine": 138,
+      "endLine": 169,
+      "summary": "secondTheorem_upper_statement (Prop scaffold for the product bound) and firstMinimum_le_one_of_volume_gt (λ₀ ≤ 1 from minkowski_fundamental).",
+      "mathContext": "The upper bound of the second theorem is stated precisely as a Prop but not proved (the open analytic core). The first-minimum bound λ₀ ≤ 1 is the i=0 shadow of the theorem and follows directly from the parent's first theorem: a nonzero lattice point in S witnesses that 1 is an admissible scaling."
+    }
+  ],
+  "conclusion": {
+    "summary": "The successive-minima framework for Minkowski's second theorem is fully constructible on the parent's custom geometry-of-numbers API, with the order structure (λ₀ ≤ λ₁ ≤ ⋯), positivity, and the first-minimum specialization λ₀ ≤ 1 all proved with 0 axioms and 0 sorries. The product bound of the second theorem is isolated as a precise Prop scaffold and remains the open analytic core.",
+    "implications": "This confirms that OQ-01's infrastructure question has a positive answer at the definitional and order-theoretic level: no new foundational machinery is needed to state and reason about successive minima beyond the parent's Lattice/ConvexBody API. The remaining work — the product bound and its matching lower bound — is purely the analytic reduction-of-bases argument, now cleanly separated from the framework.",
+    "openQuestions": [
+      "Prove the upper bound `secondTheorem_upper_statement`: (∏ λᵢ)·vol(S) ≤ 2ⁿ·covolume(L), via a basis realizing the successive minima and a simultaneous reduction argument.",
+      "State and prove the matching lower bound (2ⁿ/n!)·covolume(L) ≤ (∏ λᵢ)·vol(S).",
+      "Establish existence/attainment of each λᵢ (admissibleScalings nonempty) so that the monotonicity hypothesis `hne` can be discharged unconditionally."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "minkowski-fundamental-theorem",
+      "relationship": "extends",
+      "description": "Parent: Minkowski's fundamental (first) theorem. This entry reuses its Lattice / ConvexBody / HasVolume API and derives the first-minimum bound directly from its `minkowski_fundamental`."
+    },
+    {
+      "targetId": "minkowski-fundamental-theorem-oq-02",
+      "relationship": "related",
+      "description": "Sibling OQ-02: the Minkowski class number bound — another extension of the fundamental theorem, via the canonical embedding of number fields."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.MinkowskiFundamentalTheorem"
+    ],
+    "opens": [
+      "MinkowskiFundamentalTheorem",
+      "Set",
+      "Pointwise"
+    ],
+    "namespace": "MinkowskiSecondTheorem",
+    "lineCount": 208,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 5,
+    "mainTheorems": [
+      {
+        "name": "firstMinimum_le_one_of_volume_gt",
+        "type": "core",
+        "description": "The first successive minimum satisfies λ₀ ≤ 1 once vol(S) > 2ⁿ·covolume(L) — the i=0 shadow of the second theorem, derived from the parent's first theorem.",
+        "leanType": "(n : ℕ) → [NeZero n] → (L : Lattice n) → (S : ConvexBody n) → [hv : HasVolume n S] → hv.volume > criticalVolume n L → successiveMinimum n L S ⟨0, _⟩ ≤ 1"
+      },
+      {
+        "name": "successiveMinimum_mono",
+        "type": "key",
+        "description": "The successive minima are monotone: λᵢ ≤ λⱼ for i ≤ j (when the higher minimum's admissible set is nonempty).",
+        "leanType": "(n : ℕ) → [NeZero n] → (L : Lattice n) → (S : ConvexBody n) → {i j : Fin n} → i ≤ j → (admissibleScalings n L S j).Nonempty → successiveMinimum n L S i ≤ successiveMinimum n L S j"
+      },
+      {
+        "name": "secondTheorem_upper_statement",
+        "type": "supporting",
+        "description": "The precise Prop statement of the second theorem's upper bound (∏ λᵢ)·vol(S) ≤ 2ⁿ·covolume(L) — a scaffold, left as the open analytic core.",
+        "leanType": "(n : ℕ) → (L : Lattice n) → (S : ConvexBody n) → [HasVolume n S] → Prop"
+      }
+    ],
+    "path": "Proofs/MinkowskiFundamentalTheoremOQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "firstMinimum_le_one_of_volume_gt",
+      "type": "core",
+      "description": "The first successive minimum satisfies λ₀ ≤ 1 once vol(S) > 2ⁿ·covolume(L) — the i=0 shadow of the second theorem, derived from the parent's first theorem.",
+      "leanType": "(n : ℕ) → [NeZero n] → (L : Lattice n) → (S : ConvexBody n) → [hv : HasVolume n S] → hv.volume > criticalVolume n L → successiveMinimum n L S ⟨0, _⟩ ≤ 1"
+    },
+    {
+      "name": "successiveMinimum_mono",
+      "type": "key",
+      "description": "The successive minima are monotone: λᵢ ≤ λⱼ for i ≤ j (when the higher minimum's admissible set is nonempty).",
+      "leanType": "(n : ℕ) → [NeZero n] → (L : Lattice n) → (S : ConvexBody n) → {i j : Fin n} → i ≤ j → (admissibleScalings n L S j).Nonempty → successiveMinimum n L S i ≤ successiveMinimum n L S j"
+    },
+    {
+      "name": "successiveMinimum_nonneg",
+      "type": "supporting",
+      "description": "Every successive minimum is nonnegative (the admissible-scaling set is bounded below by 0).",
+      "leanType": "(n : ℕ) → [NeZero n] → (L : Lattice n) → (S : ConvexBody n) → (i : Fin n) → 0 ≤ successiveMinimum n L S i"
+    },
+    {
+      "name": "IndepLatticePoints.mono",
+      "type": "supporting",
+      "description": "Containing m independent lattice points implies containing k of them for any k ≤ m.",
+      "leanType": "{n : ℕ} → {L : Lattice n} → {k m : ℕ} → {T : Set (EuclideanN n)} → k ≤ m → IndepLatticePoints n L m T → IndepLatticePoints n L k T"
+    },
+    {
+      "name": "ConvexBody.scale",
+      "type": "supporting",
+      "description": "Scaling a symmetric convex body by a real factor c yields a symmetric convex body c • S.",
+      "leanType": "(n : ℕ) → ℝ → ConvexBody n → ConvexBody n"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Minkowski, Hermann",
+      "title": "Geometrie der Zahlen",
+      "year": "1896",
+      "venue": "Leipzig: Teubner",
+      "note": "Introduces the successive minima and proves the second theorem bounding their product"
+    },
+    {
+      "authors": "Cassels, J. W. S.",
+      "title": "An Introduction to the Geometry of Numbers",
+      "year": "1959",
+      "venue": "Springer-Verlag, Grundlehren 99",
+      "note": "Chapter VIII develops the successive minima and Minkowski's second theorem in full"
+    },
+    {
+      "authors": "Gruber, P. M. and Lekkerkerker, C. G.",
+      "title": "Geometry of Numbers",
+      "year": "1987",
+      "venue": "North-Holland",
+      "note": "Comprehensive modern treatment of successive minima, transference theorems, and reduction theory"
+    }
+  ],
+  "sorries": 0
+}

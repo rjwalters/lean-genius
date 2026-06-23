@@ -1,0 +1,164 @@
+[
+  {
+    "id": "ann-431-overview",
+    "proofId": "erdos-431",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Problem Overview and Background",
+    "content": "**Erdős Problem #431: Inverse Goldbach Problem**\n\nOstmann's inverse Goldbach problem asks: do there exist infinite sets A, B ⊆ ℕ such that A + B agrees with the primes up to finitely many exceptions? This reverses Goldbach's conjecture, which asks about expressing numbers AS sums of primes.\n\n**Conjecture:** NO such pair exists.\n\nThe problem connects additive combinatorics with prime distribution theory. The key tension is between the multiplicative structure of primes (which makes them 'thin' and pseudo-random) and the additive structure of sumsets (which makes them 'thick' and structured).\n\n**References:**\n- Elsholtz-Harper, 'Additive decompositions of sets with restricted prime factors' (2015)\n- Elsholtz, 'A remark on Hofmann and Tolev' (2001)\n- Tao-Ziegler, 'Narrow progressions in the primes' (2023)",
+    "mathContext": "∃? A, B infinite with A + B =_{fin} {p : Nat.Prime p}",
+    "significance": "key",
+    "relatedConcepts": [
+      "sumset",
+      "primes",
+      "additive decomposition",
+      "inverse problem"
+    ],
+    "prerequisites": [
+      "Goldbach's conjecture",
+      "prime number distribution",
+      "set arithmetic (Minkowski sums)"
+    ]
+  },
+  {
+    "id": "ann-431-definitions",
+    "proofId": "erdos-431",
+    "range": {
+      "startLine": 33,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Sumset and Finite Agreement",
+    "content": "**Core Definitions**\n\nThe formalization builds from three primitives:\n\n- **Sumset A B:** The set {a + b : a ∈ A, b ∈ B}, defined as a set comprehension\n- **Primes:** The set {p : Nat.Prime p} of all prime numbers\n- **AgreeFinitely S T:** Both S \\ T and T \\ S are finite — equivalently, the symmetric difference S ∆ T is finite\n\nThe symmetric difference characterization (agreeFinitely_iff) is axiomatized. AgreeFinitely is the right notion for 'equality up to finite exceptions' — it's an equivalence relation on sets.",
+    "mathContext": "A + B := {n | ∃ a ∈ A, ∃ b ∈ B, n = a + b}; AgreeFinitely S T ↔ (S ∆ T).Finite",
+    "significance": "key",
+    "relatedConcepts": [
+      "sumset",
+      "symmetric difference",
+      "finite exceptions"
+    ],
+    "prerequisites": [
+      "set-builder notation",
+      "finite vs. infinite sets",
+      "set difference operations"
+    ]
+  },
+  {
+    "id": "ann-431-conjecture",
+    "proofId": "erdos-431",
+    "range": {
+      "startLine": 54,
+      "endLine": 69
+    },
+    "type": "theorem",
+    "title": "The Inverse Goldbach Conjecture",
+    "content": "**Formal Statement**\n\nInverseGoldbachPair A B holds when A and B are both infinite and Sumset A B agrees with Primes up to finitely many exceptions. The conjecture (InverseGoldbachConjecture) asserts that no such pair exists.\n\nThe requirement that A and B are infinite is essential — without it, trivial solutions exist (e.g., A = {2} and B = {p - 2 : p prime, p > 2} gives a finite-exception agreement). The axiom inverse_goldbach_conjectured records the widely-held belief that the conjecture is true.",
+    "mathContext": "InverseGoldbachConjecture := ¬∃ A B, A.Infinite ∧ B.Infinite ∧ (A + B) =_{fin} Primes",
+    "significance": "key",
+    "relatedConcepts": [
+      "inverse problem",
+      "conjecture",
+      "infinite sets"
+    ],
+    "prerequisites": [
+      "existential and negation quantifiers",
+      "predicates on sets",
+      "Lean axiom declarations"
+    ]
+  },
+  {
+    "id": "ann-431-growth",
+    "proofId": "erdos-431",
+    "range": {
+      "startLine": 71,
+      "endLine": 99
+    },
+    "type": "concept",
+    "title": "Elsholtz-Harper Growth Bounds and Prime Counting",
+    "content": "**Counting Functions and Asymptotics**\n\nThe countingFunction |A ∩ [1,x]| counts elements of A up to x. GrowthBounds captures the Elsholtz-Harper (2015) result: if InverseGoldbachPair A B holds, then for large x:\n\n  c₁ · √x / (log x · log log x) ≤ |A ∩ [1,x]| ≤ c₂ · √x · log log x\n\nThis is remarkably tight — the upper and lower bounds differ only by a (log x · (log log x)²) factor. The bounds force A and B to grow like √x, which is natural: if both have ~√x elements up to x, their sumset has ~x elements, matching the prime counting function π(x) ~ x/log x up to logarithmic factors.\n\nThe prime number theorem π(x) ~ x/log x is axiomatized as a limit statement using Filter.Tendsto.",
+    "mathContext": "√x/(log x · log log x) ≪ |A ∩ [1,x]| ≪ √x · log log x; π(x)/[x/log x] → 1",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting function",
+      "growth rate",
+      "prime number theorem"
+    ],
+    "prerequisites": [
+      "asymptotic notation (≪, ~)",
+      "logarithm growth rates",
+      "limits and filters (Filter.Tendsto)"
+    ]
+  },
+  {
+    "id": "ann-431-elsholtz",
+    "proofId": "erdos-431",
+    "range": {
+      "startLine": 101,
+      "endLine": 140
+    },
+    "type": "concept",
+    "title": "Three-Set Case and Restricted Sumsets",
+    "content": "**Elsholtz (2001) and Tao-Ziegler (2023)**\n\nElsholtz completely resolved the three-set analog: no infinite sets A, B, C (each with ≥ 2 elements) can satisfy A + B + C = Primes (mod finite). The proof uses the fact that triple sumsets have too much additive structure to match the pseudo-random distribution of primes.\n\nIn the positive direction, Tao and Ziegler (2023) showed that infinite B, C exist with the restricted sumset {b + c : b ∈ B, c ∈ C, with index constraint} entirely contained in the primes. This is weaker than full equality (inclusion vs. agreement) and does not contradict the conjecture.\n\nThe no_triple_solution theorem follows immediately from the elsholtz_2001 axiom.",
+    "mathContext": "¬∃ A B C, A + B + C =_{fin} Primes; ∃ B C infinite, B + C ⊆ Primes",
+    "significance": "key",
+    "relatedConcepts": [
+      "triple sumset",
+      "restricted sumset",
+      "Tao-Ziegler"
+    ],
+    "prerequisites": [
+      "set inclusion vs. equality",
+      "pseudorandomness of primes",
+      "iterated sumsets"
+    ]
+  },
+  {
+    "id": "ann-431-goldbach",
+    "proofId": "erdos-431",
+    "range": {
+      "startLine": 142,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "Goldbach Connection and Structural Constraints",
+    "content": "**Relationship to Goldbach's Conjecture**\n\nGoldbach's conjecture states every even n > 2 is a sum of two primes. The theorem goldbach_implies_sumset formalizes: if Goldbach holds, then Primes + Primes ⊇ {even n > 2}. This is a PROVED theorem (not axiomatized) — the proof unfolds the definitions directly.\n\nThe axiom primes_sumset_not_primes states Primes + Primes ≠ Primes (mod finite). The reason: Primes + Primes contains all sufficiently large even numbers (by Goldbach), but primes are almost all odd. So the symmetric difference is infinite.\n\nThe structural constraint must_contain_small_elements axiomatizes that any hypothetical solution A, B must have small elements (1 or 2) in specific configurations.",
+    "mathContext": "Goldbach ⟹ Primes + Primes ⊇ {even n > 2}; Primes + Primes ≠_{fin} Primes",
+    "significance": "key",
+    "relatedConcepts": [
+      "Goldbach conjecture",
+      "parity constraint",
+      "structural necessity"
+    ],
+    "prerequisites": [
+      "parity (even/odd numbers)",
+      "subset relations",
+      "definitional unfolding in Lean"
+    ]
+  },
+  {
+    "id": "ann-431-summary",
+    "proofId": "erdos-431",
+    "range": {
+      "startLine": 175,
+      "endLine": 213
+    },
+    "type": "concept",
+    "title": "Summary: Problem #431 is OPEN",
+    "content": "**Summary of Known Results**\n\nThe erdos_431_statement theorem bundles the key equivalence and results:\n1. InverseGoldbachConjecture ↔ ¬∃ infinite A, B with A + B =_{fin} Primes\n2. Any such A, B must satisfy Elsholtz-Harper growth bounds\n3. The three-set case is completely ruled out\n\nThe erdos_431_summary and erdos_431 theorems provide a clean conjunction of the three main known results: Elsholtz (2001) on triples, Elsholtz-Harper (2015) on growth bounds, and Tao-Ziegler (2023) on restricted sumsets. The two-set case remains one of the most important open problems in additive prime number theory.",
+    "mathContext": "(¬∃ A B C triple) ∧ (∀ pair → bounds) ∧ (∃ restricted ⊆ primes)",
+    "significance": "key",
+    "relatedConcepts": [
+      "open problem",
+      "summary",
+      "known results"
+    ],
+    "prerequisites": [
+      "logical equivalence (↔)",
+      "conjunction of statements",
+      "open vs. resolved problems"
+    ]
+  }
+]

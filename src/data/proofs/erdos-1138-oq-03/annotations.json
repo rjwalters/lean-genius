@@ -1,0 +1,174 @@
+[
+  {
+    "id": "ann-e1138oq03-00-header",
+    "proofId": "erdos-1138-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "Module Overview, Definitions, and Architecture",
+    "content": "This file extends the base Erdős #1138 formalization by resolving all sorries and converting previously axiomatized bounds to proved theorems. The architecture mirrors the logical dependency chain: definitions (Part I) feed into the BddAbove foundation (Part II), which enables the Bertrand-based bounds (Part IV), monotonicity (Part V), and the Cramér sublinearity result (Part VI).\n\n**`primeGapSet x`**: The set of all prime gaps $d = q - p$ where $p, q$ are consecutive primes with $q \\leq x$. The consecutiveness condition — $\\forall r,\\, \\text{Prime}(r) \\wedge p < r \\Rightarrow q \\leq r$ — ensures we count only gaps between adjacent primes, not arbitrary prime differences.\n\n**`maxPrimeGap x = sSup (primeGapSet x)`**: The maximal prime gap function $G(x)$. Using `sSup` (the supremum in ℕ's conditionally complete lattice) requires `BddAbove`, which Part II establishes. When the gap set is empty (for $x \\leq 2$), `csSup_empty` gives 0.",
+    "mathContext": "$G(x) = \\sup\\{q - p : p, q \\text{ consecutive primes}, q \\leq x\\}$. The function $G(x)$ is central to prime gap theory: Cramér conjectured $G(x) \\sim (\\log x)^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime gaps",
+      "consecutive primes",
+      "conditionally complete lattice (sSup)",
+      "BddAbove requirement",
+      "maximal prime gap function G(x)"
+    ],
+    "prerequisites": [
+      "Nat.Prime",
+      "Set and sSup in Lean",
+      "conditionally complete lattice"
+    ]
+  },
+  {
+    "id": "ann-e1138oq03-01-bddabove",
+    "proofId": "erdos-1138-oq-03",
+    "range": {
+      "startLine": 40,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "BddAbove Foundation and sSup Bounds",
+    "content": "**`primeGap_le_x`**: Every prime gap $d = q - p$ satisfies $d \\leq x$, since $d \\leq q \\leq x$ by `Nat.sub_le` and the bound $q \\leq x$ from the gap set definition. This simple observation is the foundation for all `sSup`-based reasoning.\n\n**`primeGapSet_bddAbove`**: Wraps `primeGap_le_x` into a `BddAbove` instance, which is the precondition for `csSup_le` (the key tool for proving $\\text{sSup}(S) \\leq b$ from $\\forall s \\in S,\\, s \\leq b$).\n\n**`maxPrimeGap_le`**: $G(x) \\leq x$ for all $x$. The proof does a case split: if `primeGapSet x` is nonempty, apply `csSup_le` with the bound from `primeGap_le_x`; if empty, `csSup_empty` gives 0 which is trivially $\\leq x$. This pattern — case split on `Nonempty` then apply `csSup_le` vs `csSup_empty` — recurs throughout the file for every `sSup` bound.",
+    "mathContext": "$d = q - p \\leq q \\leq x$, so $\\text{primeGapSet}(x) \\subseteq [0, x]$ and $G(x) = \\text{sSup}(\\text{primeGapSet}(x)) \\leq x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "BddAbove",
+      "csSup_le",
+      "csSup_empty",
+      "Nat.sub_le",
+      "conditional lattice case split pattern"
+    ],
+    "prerequisites": [
+      "Nat.sub_le",
+      "ConditionallyCompleteLattice API"
+    ]
+  },
+  {
+    "id": "ann-e1138oq03-02-empty",
+    "proofId": "erdos-1138-oq-03",
+    "range": {
+      "startLine": 62,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Small Values: Empty Gap Sets for x ≤ 2",
+    "content": "**`primeGapSet_zero/one/two`**: The gap set is empty for $x \\leq 2$ because no pair of distinct primes $p < q$ can satisfy $q \\leq x$: for $x = 0$ or $x = 1$, even a single prime requires $q \\geq 2 > x$; for $x = 2$, only $q = 2$ is prime, but then $p < 2$ forces $p \\leq 1$, which is not prime. All three proofs work by `ext d` to reduce to elementwise membership, then `omega` after extracting the prime bound `hp.two_le` or `hq.two_le`.\n\n**`maxPrimeGap_le_two`**: $G(2) = 0$ follows from `primeGapSet_two` (empty set) and `csSup_empty (α := ℕ)`. The explicit type annotation `(α := ℕ)` is needed because `sSup ∅ = 0` is specific to ℕ (or more generally, to lattices with `⊥ = 0`).",
+    "mathContext": "For $x \\leq 2$: no two distinct primes satisfy $q \\leq x$, so $\\text{primeGapSet}(x) = \\emptyset$ and $G(x) = 0$. The first nontrivial gap is $3 - 2 = 1$ at $x = 3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.Prime.two_le",
+      "Set extensionality",
+      "omega tactic",
+      "csSup_empty"
+    ],
+    "prerequisites": [
+      "Nat.Prime.two_le",
+      "Set.ext"
+    ]
+  },
+  {
+    "id": "ann-e1138oq03-03-bertrand",
+    "proofId": "erdos-1138-oq-03",
+    "range": {
+      "startLine": 85,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "Bertrand-Based Bounds: gap ≤ p and gap ≤ x/2",
+    "content": "**`prime_gap_le_prev_prime`** (was axiom): For consecutive primes $p < q$, the gap $q - p \\leq p$. The proof uses Mathlib's `Nat.bertrand`: given $p \\neq 0$, there exists a prime $r$ with $p < r \\leq 2p$. By consecutiveness, $q \\leq r$ (since $q$ is the next prime after $p$ and $r$ is prime with $p < r$). Then $q - p \\leq r - p \\leq 2p - p = p$. The final step is dispatched by `omega`.\n\nThis is a strengthening of Bertrand's postulate from 'there exists a prime in $(n, 2n]$' to a concrete bound on consecutive prime gaps. Historically, Bertrand conjectured this in 1845, Chebyshev proved it in 1850, and Ramanujan (1919) and Erdős (1932, age 19!) gave elementary proofs.\n\n**`maxPrimeGap_le_half`**: $G(x) \\leq x/2$ for $x \\geq 25$. From `prime_gap_le_prev_prime`: $d \\leq p$, so $2d \\leq d + p = q \\leq x$, giving $d \\leq x/2$. The $x \\geq 25$ condition ensures the gap set is nonempty (the primes 23, 29 give a gap at $x = 29$). The proof uses the same `csSup_le` + `csSup_empty` case split pattern.",
+    "mathContext": "Bertrand: $\\forall p > 0,\\, \\exists r$ prime with $p < r \\leq 2p$. Consecutiveness: $q \\leq r$. So $q - p \\leq 2p - p = p$, and $2(q-p) \\leq q \\leq x \\Rightarrow q - p \\leq x/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bertrand's postulate (Nat.bertrand)",
+      "Chebyshev's proof (1850)",
+      "Erdős's elementary proof (1932)",
+      "consecutive prime gap bound",
+      "omega tactic for linear arithmetic"
+    ],
+    "prerequisites": [
+      "Nat.bertrand",
+      "Nat.Prime.ne_zero",
+      "omega tactic"
+    ]
+  },
+  {
+    "id": "ann-e1138oq03-04-mono",
+    "proofId": "erdos-1138-oq-03",
+    "range": {
+      "startLine": 114,
+      "endLine": 131
+    },
+    "type": "concept",
+    "title": "Monotonicity of Gap Sets and Maximal Gaps",
+    "content": "**`primeGapSet_mono`**: If $x \\leq y$, then $\\text{primeGapSet}(x) \\subseteq \\text{primeGapSet}(y)$. The proof is a one-line weakening of the $q \\leq x$ bound to $q \\leq y$ via `le_trans hqx hxy`. All other conditions (primality, consecutiveness, gap formula) are unchanged.\n\n**`maxPrimeGap_mono`**: $G(x) \\leq G(y)$ when $x \\leq y$. Uses `csSup_le_csSup` from the conditionally complete lattice API, which requires: (1) `BddAbove` for the larger set (from `primeGapSet_bddAbove y`), (2) `Nonempty` for the smaller set (case split), and (3) subset inclusion (from `primeGapSet_mono`). The empty case again uses `csSup_empty`.\n\nMonotonicity is expected: as $x$ grows, more prime pairs become eligible, so the gap set can only grow and its supremum can only increase.",
+    "mathContext": "$x \\leq y \\Rightarrow \\text{primeGapSet}(x) \\subseteq \\text{primeGapSet}(y) \\Rightarrow G(x) = \\text{sSup}(\\text{primeGapSet}(x)) \\leq \\text{sSup}(\\text{primeGapSet}(y)) = G(y)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "csSup_le_csSup",
+      "set inclusion",
+      "monotone function",
+      "BddAbove propagation"
+    ],
+    "prerequisites": [
+      "primeGapSet_bddAbove",
+      "csSup_le_csSup"
+    ]
+  },
+  {
+    "id": "ann-e1138oq03-05-cramer",
+    "proofId": "erdos-1138-oq-03",
+    "range": {
+      "startLine": 132,
+      "endLine": 196
+    },
+    "type": "concept",
+    "title": "Cramér Sublinearity: C·(log x)² = o(x)",
+    "content": "**`cramer_implies_gap_sublinear`** (was sorry): For all $\\varepsilon > 0$ and $C > 0$, there exists $N$ such that $C(\\log x)^2 \\leq \\varepsilon x$ for all $x \\geq N$. This formalizes the statement that $(\\log x)^2 = o(x)$, which is the key consequence of Cramér's conjecture for prime gap growth rates.\n\nThe proof is a 6-step chain:\n1. **log bound**: `Real.log_le_rpow_div` with $\\delta = 1/4$ gives $\\log x \\leq 4x^{1/4}$\n2. **Squaring**: $(\\log x)^2 \\leq 16x^{1/2}$ via `sq_le_sq'` and `rpow_mul` to combine $x^{1/4} \\cdot x^{1/4} = x^{1/2}$\n3. **rpow identity**: $x^{1/2} \\cdot x^{1/2} = x$ via `rpow_add`\n4. **Threshold bound**: $(16C/\\varepsilon)^2 \\leq x$ from the choice $N = \\lceil(16C/\\varepsilon)^2\\rceil + 1$\n5. **Square root extraction**: $16C/\\varepsilon \\leq x^{1/2}$ from step 4 via `nlinarith` with the square difference trick\n6. **Final assembly**: $C(\\log x)^2 \\leq 16Cx^{1/2} \\leq \\varepsilon x^{1/2} \\cdot x^{1/2} = \\varepsilon x$\n\nThe key Lean insight is using `Real.log_le_rpow_div` as an explicit substitute for L'Hôpital-type reasoning. The `nlinarith` calls handle the quadratic inequalities that arise from squaring.\n\n**Connection to Cramér's conjecture**: Cramér (1936) conjectured $G(x) \\sim (\\log x)^2$ based on a probabilistic model where each integer $n$ is 'prime' independently with probability $1/\\log n$. If true, this gives $G(x) = O((\\log x)^2)$, and the sublinearity $(\\log x)^2 = o(x)$ proved here is a much weaker consequence. The strongest unconditional result is Baker-Harman-Pintz: $G(x) \\leq x^{0.525}$.",
+    "mathContext": "$\\log x \\leq 4x^{1/4} \\Rightarrow (\\log x)^2 \\leq 16x^{1/2}$. Then $16C \\cdot x^{1/2} \\leq \\varepsilon \\cdot x$ when $x \\geq (16C/\\varepsilon)^2$. The threshold $N = \\lceil(16C/\\varepsilon)^2\\rceil + 1$ ensures $N \\leq x \\Rightarrow C(\\log x)^2 \\leq \\varepsilon x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cramér's conjecture",
+      "Real.log_le_rpow_div",
+      "rpow_mul (exponent arithmetic)",
+      "nlinarith (nonlinear arithmetic)",
+      "asymptotic notation (little-o)",
+      "probabilistic prime model"
+    ],
+    "prerequisites": [
+      "Real.log and rpow API",
+      "Nat.ceil",
+      "nlinarith tactic",
+      "field_simp tactic"
+    ]
+  },
+  {
+    "id": "ann-e1138oq03-06-bhp",
+    "proofId": "erdos-1138-oq-03",
+    "range": {
+      "startLine": 198,
+      "endLine": 228
+    },
+    "type": "concept",
+    "title": "Baker-Harman-Pintz Axiom and Summary",
+    "content": "**`baker_harman_pintz`** (axiom): $G(x) \\leq x^{0.525}$ unconditionally for $x \\geq 25$. This is the best known unconditional prime gap bound, proved by Baker, Harman, and Pintz (2001) using exponential sum techniques and sieve methods far beyond Mathlib's current scope. The exponent 0.525 improves on a long line: Hoheisel (1930) proved $G(x) \\leq x^{1-1/33000}$, followed by improvements by Ingham, Huxley, Heath-Brown, and others, with the 0.525 exponent representing the state of the art for over two decades.\n\nThe file closes with a summary section documenting all 12 proved theorems (0 sorries) and the single axiom. The progression from BddAbove foundation through Bertrand bounds to Cramér sublinearity and the Baker-Harman-Pintz axiom mirrors the historical development of prime gap bounds: elementary methods (Bertrand/Chebyshev) → analytic methods (Cramér, rpow estimates) → deep unconditional results (sieve theory).\n\nOn the Riemann Hypothesis, one can prove $G(x) \\leq C\\sqrt{x}\\log x$ (Cramér 1920), a much stronger bound than $x^{0.525}$. The gap between what RH gives and the Baker-Harman-Pintz unconditional bound illustrates how much information the hypothesis encodes about prime distribution.",
+    "mathContext": "Baker-Harman-Pintz (2001): $G(x) \\leq x^{0.525}$ unconditionally. On RH: $G(x) \\leq C\\sqrt{x}\\log x$. Cramér conjecture: $G(x) \\sim (\\log x)^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Baker-Harman-Pintz theorem",
+      "exponential sum methods",
+      "sieve theory",
+      "Riemann Hypothesis connection",
+      "Cramér's conjecture",
+      "Hoheisel's theorem"
+    ],
+    "prerequisites": [
+      "analytic number theory background",
+      "prime gap function G(x)"
+    ]
+  }
+]

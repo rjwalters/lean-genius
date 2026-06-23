@@ -1,0 +1,129 @@
+{
+  "slug": "dirichlets-theorem-oq-02-oq-01",
+  "title": "Generalized Riemann Hypothesis for Dirichlet L-functions",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "S",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in number theory: Generalized Riemann Hypothesis for Dirichlet L-functions.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-04-21T14:15:16.635Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "number-theory",
+    "grh",
+    "l-functions",
+    "axiomatized",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "dirichlets-theorem",
+    "dirichlets-theorem-oq-01",
+    "dirichlets-theorem-oq-02",
+    "dirichlets-theorem-oq-02-oq-01",
+    "dirichlets-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-04-21T14:15:16.634Z",
+  "lastUpdate": "2026-04-21T14:15:16.634Z",
+  "significance": 9,
+  "tractability": 2,
+  "leanFiles": [
+    {
+      "path": "Proofs/DirichletsTheorem.lean",
+      "filename": "DirichletsTheorem.lean",
+      "lineCount": 314,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheorem.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ01.lean",
+      "filename": "DirichletsTheoremOQ01.lean",
+      "lineCount": 706,
+      "theoremCount": 31,
+      "axiomCount": 5,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ02.lean",
+      "filename": "DirichletsTheoremOQ02.lean",
+      "lineCount": 102,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ02OQ01.lean",
+      "filename": "DirichletsTheoremOQ02OQ01.lean",
+      "lineCount": 367,
+      "theoremCount": 16,
+      "axiomCount": 4,
+      "defCount": 9,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ03.lean",
+      "filename": "DirichletsTheoremOQ03.lean",
+      "lineCount": 140,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheoremOQ03Incomplete01.lean",
+      "filename": "DirichletsTheoremOQ03Incomplete01.lean",
+      "lineCount": 155,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ03Incomplete01.lean"
+    }
+  ]
+}

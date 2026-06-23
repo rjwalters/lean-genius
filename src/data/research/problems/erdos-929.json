@@ -1,0 +1,120 @@
+{
+  "slug": "erdos-929",
+  "title": "Erdős #929",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let S(k) be the least x such that the set of n for which each of n+1, ..., n+k has at least one prime factor <= x has positive upper density. Estimate S(k), in particular whether S(k) >= k^(1-o(1)).",
+    "plain": "How small can the prime-factor threshold be while still forcing blocks of k consecutive shifted integers to each have a small prime factor on a positive-density set of starts?",
+    "plainEnglish": "How small can the prime-factor threshold be while still forcing blocks of k consecutive shifted integers to each have a small prime factor on a positive-density set of starts?",
+    "whyMatters": [
+      "Clarifies that the Lean predicate is small-factor, not x-smoothness of all prime factors.",
+      "Connects elementary factorial progressions with deep sieve bounds for prime gaps.",
+      "The current Lean file proves structural thresholds without declaring Rosser or FGKMT bounds as axioms."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`HasSmallFactor`, `SmoothBlock`, `smoothBlockSet`, and `smoothThreshold` formalize the small-prime-factor threshold.",
+      "A factorial arithmetic-progression witness proves positive density for x = k+1 and hence S(k) <= k+1.",
+      "`smoothThreshold_mono` proves monotonicity in k.",
+      "`smooth_threshold_2` proves S(2)=3.",
+      "Density-ratio monotonicity and singleton/finite-density infrastructure are proved without source axioms."
+    ],
+    "open": [
+      "The conjectural lower bound S(k) >= k^(1-o(1)).",
+      "Rosser-sieve and FGKMT-style quantitative bounds are documented as comments, not Lean theorems or axioms."
+    ],
+    "goal": "Keep the small-factor semantics explicit and separate proved threshold infrastructure from commented deep sieve bounds."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-04T00:00:00Z",
+    "iteration": 3,
+    "focus": "The Lean source has 0 axioms and 0 sorries; concrete sandwich 3 <= S(k) <= k+1 for k >= 2 is now formalized via smoothThreshold_ge_three. The deeper conjecture S(k) >= k^{1-o(1)} remains a Prop definition.",
+    "blockers": [],
+    "nextAction": "Optional: prove S(3) = 3 by combining smoothThreshold_ge_three with a positive-density witness at x = 3 (AP n ≡ 1 mod 6).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "CURRENT: 23 theorem/lemma declarations, 7 definitions, 0 axioms, 0 sorries. The formalization uses `HasSmallFactor` (some prime factor <= x), proves positive-density factorial/AP witnesses, S(k) <= k+1, monotonicity, S(2)=3, and the general lower bound S(k) >= 3 for k >= 2; Rosser and FGKMT bounds remain comments only.",
+    "builtItems": [
+      "`HasSmallFactor`, `SmoothBlock`, and `smoothBlockSet`",
+      "`Set.upperDensity`, `densityRatio`, and monotonicity lemmas",
+      "`smoothThreshold` and `trivial_upper`",
+      "`smoothBlockSet_pos_density` via factorial/AP starts",
+      "`smoothThreshold_mono`",
+      "`smooth_threshold_2`",
+      "`smoothBlockSet_empty_of_ge_two_le_one` and `smoothBlockSet_two_sub_zero_of_ge_two` (antitone-lifted from k=2)",
+      "`upperDensity_empty`",
+      "`smoothThreshold_ge_three` — general lower bound S(k) >= 3 for k >= 2"
+    ],
+    "insights": [
+      "The original x-smooth reading is wrong for this Lean file; the predicate is existence of a prime factor <= x.",
+      "The factorial/AP witness uses starts of the form `(k+1)! * t + 1`, yielding a positive-density lower bound sufficient for S(k) <= k+1.",
+      "`smoothThreshold` is a noncomputable threshold definition, not an axiom.",
+      "`Erdos929Conjecture` is an open Prop, not a proved theorem.",
+      "Deep sieve bounds are not represented by active source axioms."
+    ],
+    "mathlibGaps": [
+      "No general AP density lemma: need to prove arithmetic progressions have positive upper density from scratch"
+    ],
+    "nextSteps": [
+      "Avoid reintroducing x-smooth/all-prime-factor wording.",
+      "Formalize Rosser or FGKMT bounds only as real theorems if supporting analysis exists.",
+      "Use the S(2)=3 proof as the small concrete example."
+    ],
+    "markdown": "# Erdős #929 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ be large and let $S(k)$ be the minimal $x$ such that there is a positive density set of $n$ where\\[n+1,n+2,\\ldots,n+k\\]are all divisible by primes $\\leq x$.\n\nEstimate $S(k)$ - in particular, is it true that $S(k)\\geq k^{1-o(1)}$?\n\n\n\nIt follows from Rosser's sieve that $S(k)> k^{1/2-o(1)}$.\n\nIt is trivial that $S(k)\\leq k+1$ since, for example, one can take $n\\equiv 1\\pmod{(k+1)!}$. The best bound on large gaps between primes due to Ford, Green, Konyagin, Maynard, and Tao \\cite{FGKMT18} (see [4]) implies\\[S(k) \\ll k \\frac{\\log\\log\\log k}{\\log\\log k\\log\\log\\log\\log k}.\\]\n\n\n\n\nReferences\n\n\n[FGKMT18] Ford, Kevin and Green, Ben and Konyagin, Sergei and Maynard, James and Tao, Terence, Long gaps between primes. J. Amer. Math. Soc. (2018), 65-105.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #4\n- Problem #928\n- Problem #930\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n- FGKMT18\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+  },
+  "tags": [
+    "erdos",
+    "number-theory",
+    "small-prime-factors",
+    "sieve-methods",
+    "prime-gaps",
+    "open"
+  ],
+  "relatedProofs": [
+    "erdos-9",
+    "erdos-92",
+    "erdos-929"
+  ],
+  "references": {
+    "papers": [
+      "Rosser sieve lower-bound context",
+      "Ford-Green-Konyagin-Maynard-Tao large prime gap bounds"
+    ],
+    "urls": [
+      "https://erdosproblems.com/929"
+    ],
+    "mathlib": [
+      "Filter.limsup",
+      "Finset.filter",
+      "Nat.factorial",
+      "Nat.minFac"
+    ]
+  },
+  "started": "2026-01-15T11:43:50.650Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos929Problem.lean",
+      "filename": "Erdos929Problem.lean",
+      "lineCount": 377,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos929Problem.lean"
+    }
+  ]
+}

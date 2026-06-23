@@ -1,0 +1,16 @@
+{
+  "problem_number": 600,
+  "title": "Edge-Triangle Containment Thresholds",
+  "status": "open",
+  "solvers": [],
+  "source_url": "https://erdosproblems.com/600",
+  "overview": "Let e(n,r) be the minimal number of edges such that every graph on n vertices with ≥ e(n,r) edges, where each edge is in at least one triangle, must have some edge in at least r triangles. Questions: (1) Does e(n,r+1) - e(n,r) → ∞? (2) Does e(n,r+1) / e(n,r) → 1?",
+  "sections": [],
+  "conclusion": "OPEN - Ruzsa-Szemerédi (1978) proved e(n,r) = o(n²) for fixed r, but both questions about the behavior of consecutive thresholds remain unsolved.",
+  "references": [
+    "Erdős [Er87] - Original problem formulation",
+    "Ruzsa-Szemerédi [RuSz78] - e(n,r) = o(n²) result"
+  ],
+  "related_problems": [80],
+  "tags": ["graph-theory", "extremal-combinatorics", "triangle-counting", "open"]
+}

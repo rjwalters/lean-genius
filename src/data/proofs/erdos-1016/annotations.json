@@ -1,0 +1,245 @@
+[
+  {
+    "id": "erdos-1016-ann-pancyclic",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 33,
+      "endLine": 34
+    },
+    "type": "definition",
+    "title": "Pancyclic Graph",
+    "content": "A graph on $n$ vertices is pancyclic if it contains cycles of every length $k$ for $3 \\leq k \\leq n$. This is strictly stronger than being Hamiltonian (which only requires a cycle of length $n$). The concept was introduced by Bondy (1971) who proved that sufficiently dense graphs are pancyclic or bipartite.",
+    "mathContext": "A graph $G$ on $n$ vertices is pancyclic if $\\forall k \\in \\{3, 4, \\ldots, n\\}$, $G$ contains a cycle $C_k$. Pancyclicity is a strengthening of Hamiltonicity: Hamiltonian $\\Leftarrow$ pancyclic, but not conversely in general.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hamiltonian cycle",
+      "cycle spectrum",
+      "Bondy's theorem",
+      "vertex-pancyclic"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "cycle theory"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-excess",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 39,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Pancyclic Excess h(n)",
+    "content": "The pancyclic excess $h(n) = \\min\\{|E(G)| - n : G \\text{ is pancyclic on } n \\text{ vertices}\\}$ measures how many edges beyond $n$ (the Hamiltonian cycle count) are needed to ensure all cycle lengths. Since a Hamiltonian cycle has $n$ edges but only one cycle length, additional edges are needed to 'fill in' the missing cycle lengths $3, 4, \\ldots, n-1$.",
+    "mathContext": "$h(n) = \\min_{G \\text{ pancyclic}} (|E(G)| - n)$. Known: $\\lfloor\\log_2(n-1)\\rfloor - 1 \\leq h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "edge-minimal graphs",
+      "extremal graph theory",
+      "edge threshold"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "extremal combinatorics"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-iterlog",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 45,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "Iterated Logarithm log*",
+    "content": "The iterated logarithm $\\log^* n$ is the number of times $\\log_2$ must be applied to $n$ before the result is $\\leq 1$. It grows incredibly slowly: $\\log^*(2^{65536}) = 5$. Its appearance in the upper bound for $h(n)$ reflects a hierarchical doubling structure in pancyclic graph constructions.",
+    "mathContext": "$\\log^* n = \\min\\{k \\geq 0 : \\log_2^{(k)}(n) \\leq 1\\}$ where $\\log_2^{(k)}$ denotes $k$-fold application of $\\log_2$. For all practical purposes $\\log^* n \\leq 5$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated functions",
+      "tower function",
+      "inverse Ackermann",
+      "slowly growing functions"
+    ],
+    "prerequisites": [
+      "analysis",
+      "recursive functions"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-conjecture",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 55,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Main Conjecture: h(n) >= log_2 n + log* n - O(1)",
+    "content": "Erdos conjectured that the lower bound on $h(n)$ should match the George-Khodkar-Wallis upper bound up to an additive constant, giving $h(n) = \\lfloor\\log_2 n\\rfloor + \\log^* n + \\Theta(1)$. This would determine $h(n)$ to within a constant. The conjecture implies that the hierarchical construction giving the upper bound is essentially optimal.",
+    "mathContext": "$\\exists C$ such that $h(n) + C \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n$ for all $n \\geq 3$. Combined with the upper bound, this gives $h(n) = \\lfloor\\log_2 n\\rfloor + \\log^* n + \\Theta(1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal graph theory",
+      "tight bounds",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "graph theory"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-weaker",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 61,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Weaker Question: h(n) - log_2 n -> infinity",
+    "content": "Even the weaker statement that $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$ as $n \\to \\infty$ is open. Erdos noted that he could not prove this, making it a remarkable example of a problem where the answer is known to within $\\log^* n + O(1)$ yet even the first-order correction to the leading term is unproved.",
+    "mathContext": "$\\forall M, \\exists N$ such that $h(n) \\geq \\lfloor\\log_2 n\\rfloor + M$ for all $n \\geq N$. This is strictly weaker than the main conjecture.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divergence",
+      "second-order asymptotics",
+      "slowly growing corrections"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-bondy",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 69,
+      "endLine": 71
+    },
+    "type": "concept",
+    "title": "Bondy's Lower Bound (Griffin 2013)",
+    "content": "The lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$ was conjectured by Bondy in 1971 and first published with proof by Griffin in 2013. The argument uses the fact that each additional edge beyond a Hamiltonian cycle can at most double the range of achievable cycle lengths, leading to the logarithmic bound.",
+    "mathContext": "$h(n) + 1 \\geq \\lfloor\\log_2(n-1)\\rfloor$ for all $n \\geq 3$. The key idea: with $h$ extra edges beyond a Hamiltonian cycle, the number of achievable cycle lengths is at most $2^h$, so $2^h \\geq n - 2$ gives $h \\geq \\log_2(n-2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "doubling argument",
+      "cycle insertion",
+      "edge counting"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "logarithmic bounds"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-gkw",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 76,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "George-Khodkar-Wallis Upper Bound (2016)",
+    "content": "George, Khodkar, and Wallis (2016) proved that $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ by explicitly constructing pancyclic graphs with this many excess edges. The construction uses a hierarchical approach: starting with a Hamiltonian cycle, edges are added in $\\log_2 n$ stages to double the range of available cycle lengths, with $\\log^* n$ additional correction stages.",
+    "mathContext": "$\\exists C$ such that $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + C$ for all $n \\geq 3$. The construction is recursive, with each level handling a tower of exponentials.",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit constructions",
+      "hierarchical graph building",
+      "recursive doubling"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "constructive combinatorics"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-hamiltonian",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 84,
+      "endLine": 85
+    },
+    "type": "concept",
+    "title": "Hamiltonian Edge Count Baseline",
+    "content": "A Hamiltonian cycle on $n$ vertices has exactly $n$ edges and contains only cycles of length $n$. Therefore $h(n) \\geq 0$: at least $n$ edges are needed, and any pancyclic graph is Hamiltonian. The excess $h(n)$ measures the cost of upgrading from Hamiltonian to pancyclic.",
+    "mathContext": "$h(n) \\geq 0$ since every pancyclic graph is Hamiltonian, and Hamiltonian graphs have at least $n$ edges.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hamiltonian cycle",
+      "edge count",
+      "Ore's theorem"
+    ],
+    "prerequisites": [
+      "graph theory"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-bondy-quad",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 89,
+      "endLine": 90
+    },
+    "type": "concept",
+    "title": "Bondy's Quadratic Threshold for Pancyclicity",
+    "content": "Bondy (1971) proved that any graph with $n$ vertices and at least $n^2/4$ edges is either pancyclic or bipartite (and hence has no odd cycles). This quadratic threshold $n^2/4$ is far from the tight bound of $n + O(\\log n)$, but was historically the first pancyclicity result. The bipartite exception is necessary since $K_{n/2,n/2}$ has $n^2/4$ edges but no odd cycles.",
+    "mathContext": "$|E(G)| \\geq n^2/4 \\implies G$ is pancyclic or bipartite. Note $n^2/4 \\gg n + \\log_2 n$ for large $n$, so this is very far from tight.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bondy's theorem",
+      "Turan's theorem",
+      "bipartite graphs",
+      "Ore's theorem"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "Turan theory"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-monotone",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 94,
+      "endLine": 96
+    },
+    "type": "concept",
+    "title": "Monotonicity of Pancyclicity",
+    "content": "Adding edges preserves pancyclicity: if $G$ is pancyclic and $G \\subseteq G'$ (same vertex set, more edges), then $G'$ is pancyclic. This is because adding edges can only create new cycles, never destroy existing ones. This means the set of pancyclic graphs on $n$ vertices is upward-closed in the edge-inclusion order.",
+    "mathContext": "Pancyclicity is a monotone graph property: $G \\subseteq G'$ and $G$ pancyclic $\\implies G'$ pancyclic.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone graph properties",
+      "upward-closed families",
+      "graph minors"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "order theory"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-small",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 99,
+      "endLine": 105
+    },
+    "type": "concept",
+    "title": "Small Cases: h(3) = 0, h(4) = 1",
+    "content": "The triangle $K_3$ is the smallest pancyclic graph with $h(3) = 0$: it has 3 edges = $n$ edges and contains the only required cycle ($C_3$). For $n = 4$, we need cycles of lengths 3 and 4. A 4-cycle plus one diagonal gives 5 = 4 + 1 edges, so $h(4) = 1$. Further values: $h(5) = 2$, $h(6) = 2$, $h(7) = 2$ (OEIS A105206).",
+    "mathContext": "$h(3) = 0$ ($K_3$ is pancyclic), $h(4) = 1$ ($C_4$ plus one diagonal). The sequence begins $0, 1, 2, 2, 2, 3, 3, 3, 3, 4, \\ldots$ (OEIS A105206).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "complete graphs",
+      "OEIS A105206",
+      "small extremal examples"
+    ],
+    "prerequisites": [
+      "graph theory"
+    ]
+  }
+]

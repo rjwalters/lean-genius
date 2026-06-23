@@ -1,0 +1,56 @@
+{
+  "slug": "erdos-1198",
+  "title": "Erd\u0151s #1198",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(LaTeX not available)",
+    "plain": "If $\\mathbb{N}$ is $2$-coloured then must there exist an infinite set $A=\\{a_1<\\cdots\\}$ such that all expressions of the shape\n$$\\prod_{i\\in S_1}a_i+\\cdots+\\prod_{i\\in S_k}a_i,$$\nfor disjoint $S_1,\\ldots,S_k$ (excluding the trivial expressions $a_i$) are the same colour?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-01-16T08:44:15.251Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erd\u0151s #1198 - Knowledge Base\n\n## Problem Statement\n\nIf $\\mathbb{N}$ is $2$-coloured then must there exist an infinite set $A=\\{a_1<\\cdots\\}$ such that all expressions of the shape\n$$\\prod_{i\\in S_1}a_i+\\cdots+\\prod_{i\\in S_k}a_i,$$\nfor disjoint $S_1,\\ldots,S_k$ (excluding the trivial expressions $a_i$) are the same colour?\n\n## Status\n\n**Erd\u0151s Database Status**: SOLVED\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-16*\n"
+  },
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-11",
+    "erdos-119"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-01-16T08:44:15.251Z",
+  "lastUpdate": "2026-03-13T07:52:17.061Z",
+  "significance": 7,
+  "tractability": 6
+}

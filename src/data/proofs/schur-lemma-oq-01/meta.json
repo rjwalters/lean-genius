@@ -1,0 +1,183 @@
+{
+  "id": "schur-lemma-oq-01",
+  "title": "Schur's Lemma: the scalar form for irreducible representations over an algebraically closed field",
+  "slug": "schur-lemma-oq-01",
+  "description": "Mathlib's module-theoretic Schur's Lemma stops at the dichotomy (a map between simple modules is bijective or zero) and the resulting division-ring structure; the celebrated scalar corollary — that over an algebraically closed field every endomorphism of a finite-dimensional irreducible representation is multiplication by a scalar — is available only abstractly, inside the 𝕜-linear category machinery (`CategoryTheory.endomorphism_simple_eq_smul_id`) and `FDRep`. This entry proves the concrete module-language scalar form used in character theory: for a simple A-module M finite-dimensional over an algebraically closed field k, every A-linear endomorphism equals c • id for some c ∈ k. The proof is the classical eigenvalue argument — pick an eigenvalue c of f as a k-linear map, then f − c·id is a non-injective endomorphism of a simple module, hence zero by Schur's dichotomy.",
+  "meta": {
+    "author": "Issai Schur (1905); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SchursLemma.lean",
+    "tags": [
+      "algebra",
+      "representation-theory",
+      "module-theory",
+      "simple-module",
+      "schur-lemma",
+      "eigenvalue",
+      "irreducible-representation",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearMap.bijective_or_eq_zero",
+        "description": "Schur's Lemma (dichotomy): a linear map between two simple modules is either bijective or the zero map — the engine that turns 'not injective' into 'zero'",
+        "module": "Mathlib.RingTheory.SimpleModule.Basic"
+      },
+      {
+        "theorem": "Module.End.exists_eigenvalue",
+        "description": "Over an algebraically closed field, every endomorphism of a nonzero finite-dimensional vector space has an eigenvalue; supplies the scalar c and a nonzero eigenvector",
+        "module": "Mathlib.LinearAlgebra.Eigenspace.Triangularizable"
+      },
+      {
+        "theorem": "Module.End.HasEigenvector.apply_eq_smul",
+        "description": "An eigenvector v with eigenvalue c satisfies f v = c • v; combined with v ≠ 0 it witnesses non-injectivity of f − c·id",
+        "module": "Mathlib.LinearAlgebra.Eigenspace.Basic"
+      },
+      {
+        "theorem": "Module.End.instDivisionRing",
+        "description": "Schur's Lemma (division ring): the endomorphism ring of a simple module is a division ring; re-exported here",
+        "module": "Mathlib.RingTheory.SimpleModule.Basic"
+      },
+      {
+        "theorem": "CategoryTheory.endomorphism_simple_eq_smul_id",
+        "description": "The abstract 𝕜-linear categorical scalar form of Schur's lemma; re-exported for completeness alongside the concrete module form",
+        "module": "Mathlib.CategoryTheory.Preadditive.Schur"
+      },
+      {
+        "theorem": "FDRep.finrank_hom_simple_simple",
+        "description": "Schur's Lemma for finite-dimensional representations: dim Hom(V,W) is 1 if V ≅ W and 0 otherwise, over an algebraically closed field; re-exported",
+        "module": "Mathlib.RepresentationTheory.FDRep"
+      }
+    ],
+    "originalContributions": [
+      "schur_endomorphism_scalar: the headline — over an algebraically closed field k, every A-linear endomorphism of a simple A-module M that is finite-dimensional over k is multiplication by a scalar, ∃ c : k, ∀ m, f m = c • m. This concrete module-language form is not in Mathlib (only the abstract categorical/FDRep versions are); it is derived via the eigenvalue argument",
+      "schur_endomorphism_eq_smul_id: the same result packaged as an equality of linear maps, f = c • LinearMap.id — the 'absolute simplicity' statement that the endomorphism algebra of M is exactly the scalars k",
+      "hom_bijective_or_zero: the dichotomy restated as the named Schur headline (re-export of LinearMap.bijective_or_eq_zero)",
+      "homEquivOfNeZero: a nonzero homomorphism between simple modules is upgraded to a linear isomorphism M ≃ₗ[R] N",
+      "hom_eq_zero_of_not_linearEquiv: the orthogonality form — between two non-isomorphic simple modules the only homomorphism is zero",
+      "endDivisionRing: the division-ring structure on End(M) for a simple module, surfaced as a named definition",
+      "categorical_endomorphism_scalar: the abstract 𝕜-linear categorical scalar form, re-exported",
+      "fdRep_finrank_hom_simple_simple: the FDRep hom-space dimension count (1 if isomorphic, 0 otherwise), re-exported"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide. Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 185,
+    "theoremCount": 6,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Schur's Lemma, proved by Issai Schur in 1905, is the foundational rigidity result of representation theory. It comes in two halves: a homomorphism between two irreducible representations is either an isomorphism or zero, and — over an algebraically closed field — an endomorphism of an irreducible representation is a scalar. The second half is what makes character theory work: it forces the centre of a group algebra to act by scalars on each irreducible, underlies the orthogonality relations, and is the reason irreducible representations of abelian groups are one-dimensional.",
+    "problemStatement": "Mathlib records the module-theoretic dichotomy (`LinearMap.bijective_or_eq_zero`) and the division-ring structure on a simple module's endomorphism ring, and it proves the scalar form abstractly for 𝕜-linear categories and `FDRep`. But it does not state the concrete module-language scalar corollary — the one written `∃ c, f = c • id` for an A-linear endomorphism of a finite-dimensional simple module. Can that textbook statement be derived cleanly from the pieces Mathlib already has?\n\n**Answer:** Yes. View the endomorphism as a k-linear map, take an eigenvalue c (algebraic closure + finite dimension), and observe that f − c·id is a non-injective endomorphism of a simple module, hence zero by the dichotomy.",
+    "text": "For a simple A-module M finite-dimensional over an algebraically closed field k, every A-linear endomorphism f of M satisfies f m = c • m for a single scalar c ∈ k. The result is obtained from Mathlib's eigenvalue existence theorem and the bijective-or-zero dichotomy, verified in Lean with no axioms.",
+    "proofStrategy": "1. hom_bijective_or_zero / homEquivOfNeZero / hom_eq_zero_of_not_linearEquiv / endDivisionRing: restate the half of Schur's lemma that Mathlib already has (dichotomy, iso-upgrade, orthogonality, division ring) so the full picture lives in one file.\n2. schur_endomorphism_scalar (headline): let g := f.restrictScalars k be the underlying k-linear endomorphism. Since k is algebraically closed and M is finite-dimensional and nonzero (a simple module is nontrivial), Module.End.exists_eigenvalue yields an eigenvalue c with eigenvector v ≠ 0 satisfying g v = c • v. The A-linear map h := f − c • id then kills v, so h is not injective; by LinearMap.bijective_or_eq_zero applied to the simple module M, h = 0, i.e. f m = c • m for all m.\n3. schur_endomorphism_eq_smul_id: repackage as the linear-map equality f = c • LinearMap.id.\n4. categorical_endomorphism_scalar, fdRep_finrank_hom_simple_simple: re-export Mathlib's abstract categorical scalar form and the FDRep hom-space dimension count.",
+    "keyInsights": [
+      "**Algebraic closure enters exactly once — as an eigenvalue.** The whole gap between Mathlib's dichotomy and the scalar form is the existence of an eigenvalue; everything else is the dichotomy. This is precisely why the scalar form fails over non-closed fields (e.g. ℝ, where rotation endomorphisms of an irreducible 2-dimensional representation are not scalars).",
+      "**Restriction of scalars bridges A-linearity and k-linearity.** The endomorphism f is A-linear, but eigenvalues live in the field k; viewing f through `restrictScalars k` lets the eigenvalue machinery apply while the eigenvector relation is read back into the A-module to feed Schur's dichotomy.",
+      "**'Not injective' is the trigger.** Schur's dichotomy is usually quoted as 'iso or zero', but the usable contrapositive is 'a non-bijective endomorphism of a simple module is zero'. The eigenvector exhibits a nonzero kernel element of f − c·id, which is all that is needed.",
+      "**Scalar form = absolute simplicity.** schur_endomorphism_eq_smul_id says the endomorphism algebra of M is exactly k·id ≅ k. Over an algebraically closed field every simple module is therefore absolutely simple — the statement that makes the centre of a group algebra act by scalars on each irreducible."
+    ],
+    "prerequisites": [
+      "Modules over a ring and over a k-algebra; simple (irreducible) modules",
+      "Restriction of scalars and the underlying k-vector-space structure of an A-module",
+      "Eigenvalues and eigenvectors; existence of an eigenvalue over an algebraically closed field in finite dimension",
+      "Schur's Lemma in its dichotomy form (a map between simples is bijective or zero)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Statement",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "File-level docstring laying out the three classical layers of Schur's lemma and pinpointing the gap: Mathlib has the dichotomy and division ring, and the abstract categorical/FDRep scalar form, but not the concrete module-language scalar corollary. Imports the simple-module, eigenspace, and FDRep APIs.",
+      "mathContext": "Schur's Lemma across its module-theoretic and categorical formulations."
+    },
+    {
+      "id": "dichotomy",
+      "title": "Layer 1 & 2: Dichotomy and Division Ring",
+      "startLine": 60,
+      "endLine": 87,
+      "summary": "hom_bijective_or_zero (a hom between simples is bijective or zero), homEquivOfNeZero (a nonzero hom is a linear iso), hom_eq_zero_of_not_linearEquiv (non-isomorphic simples admit only the zero hom), and endDivisionRing (End of a simple module is a division ring) — re-exports of Mathlib's general module-theoretic Schur lemma.",
+      "mathContext": "The half of Schur's lemma valid over any ring."
+    },
+    {
+      "id": "scalar-form",
+      "title": "Layer 3: The Scalar Form",
+      "startLine": 89,
+      "endLine": 139,
+      "summary": "schur_endomorphism_scalar (headline): over an algebraically closed field, every A-linear endomorphism of a finite-dimensional simple module is multiplication by a scalar, proved by the eigenvalue argument. schur_endomorphism_eq_smul_id packages it as f = c • id, the absolute-simplicity statement.",
+      "mathContext": "Endomorphisms of an irreducible representation over an algebraically closed field are scalars."
+    },
+    {
+      "id": "categorical-fdrep",
+      "title": "Categorical and FDRep Forms",
+      "startLine": 141,
+      "endLine": 185,
+      "summary": "categorical_endomorphism_scalar re-exports the abstract 𝕜-linear categorical scalar form; fdRep_finrank_hom_simple_simple re-exports the FDRep hom-space dimension count (1 if the irreducibles are isomorphic, 0 otherwise).",
+      "mathContext": "Mathlib's packaging of Schur's lemma for FDRep and 𝕜-linear categories."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Schur, Issai",
+      "title": "Neue Begründung der Theorie der Gruppencharaktere",
+      "year": "1905",
+      "note": "Original source of the lemma and its scalar corollary"
+    },
+    {
+      "authors": "Serre, Jean-Pierre",
+      "title": "Linear Representations of Finite Groups",
+      "year": "1977",
+      "note": "§2.2: Schur's Lemma and its consequences for the structure of irreducible representations"
+    },
+    {
+      "authors": "Fulton, William; Harris, Joe",
+      "title": "Representation Theory: A First Course",
+      "year": "1991",
+      "note": "Schur's Lemma over ℂ and the scalar form used throughout character theory"
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "maschke-theorem-oq-01",
+      "reason": "Maschke's theorem (complete reducibility) and Schur's lemma are the two pillars of the representation theory of finite groups; together they yield the Wedderburn decomposition of the group algebra."
+    },
+    {
+      "id": "nakayama-lemma-oq-01",
+      "reason": "Another module-theoretic entry deriving the textbook specialization (here the scalar form, there the local-ring form) from Mathlib's more general statements."
+    }
+  ],
+  "conclusion": {
+    "summary": "The concrete module-language scalar form of Schur's Lemma — every A-linear endomorphism of a finite-dimensional simple module over an algebraically closed field is c • id (schur_endomorphism_scalar, schur_endomorphism_eq_smul_id) — is derived from Mathlib's eigenvalue existence theorem and the bijective-or-zero dichotomy, and presented alongside the dichotomy, division-ring, orthogonality, categorical, and FDRep forms. All results are verified with 0 axioms and 0 sorries.",
+    "implications": "Supplies the form of Schur's lemma actually used in character theory and the structure theory of group algebras — the statement that an irreducible representation over an algebraically closed field has endomorphism algebra exactly the scalars — which Mathlib previously offered only through its abstract categorical interface.",
+    "openQuestions": [
+      "Can the converse rigidity be formalized — that if every endomorphism of a finite-dimensional module is a scalar then the module is simple (given it is nonzero)?",
+      "Does the scalar form specialize cleanly to `Representation k G V` to recover the classical statement that an irreducible complex representation of an abelian group is one-dimensional?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.SimpleModule.Basic",
+      "Mathlib.LinearAlgebra.Eigenspace.Triangularizable",
+      "Mathlib.RepresentationTheory.FDRep",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Module",
+      "CategoryTheory",
+      "CategoryTheory.Limits"
+    ],
+    "namespace": "SchursLemma",
+    "lineCount": 185,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "path": "Proofs/SchursLemma.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

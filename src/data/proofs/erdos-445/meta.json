@@ -1,0 +1,254 @@
+{
+  "id": "erdos-445",
+  "title": "Erdős Problem #445: Multiplicative Inverses in Short Intervals",
+  "slug": "erdos-445",
+  "description": "For c > 1/2, can we find a,b ∈ (n, n+p^c) with ab ≡ 1 (mod p) for large primes p? Heath-Brown proved this for c > 3/4 using Kloosterman sums. The range c ∈ (1/2, 3/4] remains OPEN.",
+  "meta": {
+    "author": "Heath-Brown (2000), Heilbronn",
+    "sourceUrl": "https://erdosproblems.com/445",
+    "date": "2000",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos445Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "modular-arithmetic",
+      "kloosterman-sums",
+      "open"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 445,
+    "erdosUrl": "https://erdosproblems.com/445",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "ZMod",
+        "description": "Integers modulo n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Complex.abs",
+        "description": "Complex absolute value for Kloosterman bounds",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "HasInverse, OpenInterval, HasInversePairInInterval definitions",
+      "MainConjecture and StrongConjecture formal statements",
+      "heilbronn_threshold and heilbronn_unpublished axioms",
+      "KloostermanSum axiom and weil_bound",
+      "heath_brown_2000 axiom: c > 3/4 result",
+      "heath_brown_threshold and current_knowledge proved theorems",
+      "erdos_445_summary: two-part conjunction of known results"
+    ],
+    "axiomCount": 5,
+    "lineCount": 141,
+    "assumptions": "5 axioms: heilbronn_threshold, heilbronn_unpublished, KloostermanSum, and 2 more. See Lean source for complete statements.",
+    "theoremCount": 3,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Erdős asked whether for any $c > 1/2$, a sufficiently large prime $p$ guarantees that every interval $(n, n + p^c)$ contains a pair $a, b$ with $ab \\equiv 1 \\pmod{p}$. The heuristic reasoning is compelling: an interval of length $L = p^c$ contains roughly $L^2/p = p^{2c-1}$ inverse pairs, which exceeds 1 exactly when $c > 1/2$.\n\nThe problem belongs to a family of questions about the distribution of multiplicative structure in short intervals mod $p$, originating in the work of I.M. Vinogradov (1927) on the least quadratic non-residue and extended by Burgess (1962) to character sums over short intervals. Heilbronn proved the conjecture for $c$ sufficiently close to 1 in an unpublished result, using Pólya–Vinogradov-type character sum bounds that suffice when the interval length is close to $p$.\n\nThe breakthrough came from D.R. Heath-Brown in his 2000 paper, which used Kloosterman sum estimates — particularly the Weil bound $|K(m,n;p)| \\leq 2\\sqrt{p}$, proved by André Weil in 1948 as a consequence of the Riemann hypothesis for curves over finite fields — combined with careful incomplete sum averaging to push the threshold down to $c > 3/4$. The factor $3/4$ arises from balancing the main term ($\\sim p^{2c-1}$) against the error term ($\\sim p^{1/2} \\cdot p^c$): dominance requires $2c - 1 > c - 1/2$, i.e., $c > 1/2$, but rigorous control of the incomplete sums introduces an additional $p^{1/4}$ loss.\n\nThe gap $c \\in (1/2, 3/4]$ remains completely open. The Weil bound itself is sharp (attained for certain Kloosterman sums), so improvement cannot come from better individual sum estimates. Progress likely requires either better averaging over families of Kloosterman sums, or entirely different approaches such as the Selberg sieve or additive combinatorial methods. The problem connects to the broader theme of how multiplicative structure modulo primes distributes across short intervals — a central question linking analytic number theory, algebraic geometry, and combinatorics.",
+    "problemStatement": "**Problem Statement (Open)**\n\nFor any $c > 1/2$, if $p$ is a sufficiently large prime, then for any $n \\geq 0$, there exist $a, b \\in (n, n + p^c)$ such that $ab \\equiv 1 \\pmod{p}$.\n\n**Known Results:**\n- **Heilbronn** (unpublished): True for $c$ sufficiently close to 1\n- **Heath-Brown** (2000): True for all $c > 3/4$\n\n**Status: OPEN** for $c \\in (1/2, 3/4]$.",
+    "text": "For c > 1/2, can we find a,b ∈ (n, n+p^c) with ab ≡ 1 (mod p) for large primes p? Heath-Brown proved this for c > 3/4 using Kloosterman sums. The range c ∈ (1/2, 3/4] remains OPEN.",
+    "proofStrategy": "The formalization defines HasInverse (ab ≡ 1 mod p) and HasInversePairInInterval for intervals of length p^c. The main conjecture and a stronger version (c = 1/2 exact threshold) are stated as Prop definitions. Heilbronn's result is axiomatized with an existential threshold, and Heath-Brown's c > 3/4 result is a separate axiom. Kloosterman sums are axiomatized with the Weil bound. Two theorems are proved: heath_brown_threshold (c₀ = 3/4) and current_knowledge (Heath-Brown + range inclusion). The summary combines both known results.",
+    "keyInsights": [
+      "**Heuristic threshold at $c = 1/2$:** An interval of length $p^c$ contains $\\sim p^{2c-1}$ inverse pairs by a birthday-paradox argument (choose two of $p^c$ elements; probability of being inverses is $1/p$). This exceeds 1 when $c > 1/2$, suggesting the conjecture's boundary is sharp.",
+      "**Kloosterman sums detect inverse pairs:** $K(m,n;p) = \\sum_{x=1}^{p-1} e^{2\\pi i(mx + nx^{-1})/p}$ arises naturally when using Fourier analysis on $(\\mathbb{Z}/p\\mathbb{Z})^*$ to count the number of inverse pairs in an interval. The pair count becomes a sum over Kloosterman sums weighted by interval indicator functions.",
+      "**Weil bound $|K| \\leq 2\\sqrt{p}$:** André Weil proved this in 1948 as a consequence of the Riemann hypothesis for curves over $\\mathbb{F}_p$. The Kloosterman sum corresponds to a character sum on the curve $y^2 = (x-m)(x-n)$ over $\\mathbb{F}_p$, and the $\\sqrt{p}$ bound follows from the Hasse–Weil inequality for the number of rational points. This bound is sharp: there exist $m, n, p$ with $|K(m,n;p)| = 2\\sqrt{p} \\cos(\\theta)$ for specific $\\theta$.",
+      "**Heath-Brown's $3/4$ threshold:** The factor $3/4$ arises from the incomplete sum error: averaging Kloosterman sums over an interval of length $p^c$ introduces an error $\\sim p^{c/2 + 1/4}$, which is dominated by the main term $p^{2c-1}$ only when $2c - 1 > c/2 + 1/4$, i.e., $c > 5/6$. Heath-Brown's careful averaging technique improves this to $c > 3/4$.",
+      "**The $3/4$ barrier is structural, not just technical:** Since individual Kloosterman sums attain the Weil bound, the $\\sqrt{p}$ cancellation cannot be improved for single sums. Breaking $3/4$ requires exploiting cancellation *between* different Kloosterman sums — a deep and largely unexplored phenomenon.",
+      "**Connection to the Linnik–Selberg conjecture:** The distribution of multiplicative inverses mod $p$ is related to the equidistribution of $\\{a/p, a^{-1}/p\\}$ on the unit torus $[0,1)^2$. The density of this point set is governed by the same Kloosterman sums, linking Erdős 445 to the broader program of understanding the arithmetic geometry of modular curves.",
+      "**Gap $c \\in (1/2, 3/4]$ remains open:** No progress has been made on this range since Heath-Brown (2000). Candidate approaches include: deeper averaging of Kloosterman sum families (Deshouillers–Iwaniec), the $\\delta$-method of Duke–Friedlander–Iwaniec, or additive combinatorial methods (Bourgain's sum-product inequalities over $\\mathbb{F}_p$)."
+    ],
+    "prerequisites": [
+      "Elementary number theory (primes, modular arithmetic, multiplicative inverses mod p)",
+      "Analytic number theory (exponential sums, character sums, Fourier analysis on finite groups)",
+      "Algebraic geometry over finite fields (Weil's Riemann hypothesis for curves, Hasse–Weil bounds)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "basic-definitions",
+      "title": "Basic Definitions",
+      "summary": "Defines `HasInverse` (the modular inverse relation $ab \\equiv 1 \\pmod{p}$), `OpenInterval` (the interval $(n, n+p^c)$), and `HasInversePairInInterval` (existence of $a, b$ in the interval with $ab \\equiv 1$).",
+      "startLine": 33,
+      "endLine": 48,
+      "mathContext": "For prime $p$ and $a \\in (\\mathbb{Z}/p\\mathbb{Z})^*$, the inverse $a^{-1}$ satisfies $a \\cdot a^{-1} \\equiv 1 \\pmod{p}$. The problem: can both $a$ and $a^{-1}$ lie in the same short interval $(n, n + p^c)$?"
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Conjecture",
+      "summary": "`MainConjecture c`: for $c > 1/2$ and large primes $p$, an inverse pair exists in some interval of length $p^c$. `StrongConjecture`: the same for ALL intervals.",
+      "startLine": 49,
+      "endLine": 62,
+      "mathContext": "Heuristic: $p^c$ elements in the interval, each with a uniformly random inverse. Expected pairs $\\sim p^{2c-1}$, which diverges for $c > 1/2$."
+    },
+    {
+      "id": "heilbronn",
+      "title": "Heilbronn's Result",
+      "summary": "Axiomatizes Heilbronn's result: the conjecture holds for $c$ sufficiently close to 1. Uses character sum estimates over short intervals.",
+      "startLine": 63,
+      "endLine": 74,
+      "mathContext": "Heilbronn: $\\exists \\delta > 0$ s.t. $c > 1 - \\delta \\Rightarrow$ inverse pairs exist. Polya-Vinogradov bounds suffice for intervals of length close to $p$."
+    },
+    {
+      "id": "heath-brown",
+      "title": "Heath-Brown's Result (2000)",
+      "summary": "Defines `KloostermanSum` $K(m,n;p) = \\sum_{a} e(ma + na^{-1})/p)$, axiomatizes the Weil bound $|K| \\leq 2\\sqrt{p}$, and Heath-Brown's theorem: the conjecture holds for $c > 3/4$.",
+      "startLine": 75,
+      "endLine": 99,
+      "mathContext": "Kloosterman sum: $K(m,n;p) = \\sum_{a=1}^{p-1} e^{2\\pi i(ma + na^{-1})/p}$. Weil bound (1948): $|K(m,n;p)| \\leq 2\\sqrt{p}$. Heath-Brown reduces the inverse pair problem to incomplete Kloosterman sum estimates."
+    },
+    {
+      "id": "open-range",
+      "title": "The Open Range",
+      "summary": "Defines `OpenRange`: the interval $c \\in (1/2, 3/4]$ where neither proof nor disproof is known. Breaking the $3/4$ barrier requires estimates beyond current Kloosterman technology.",
+      "startLine": 100,
+      "endLine": 117,
+      "mathContext": "The gap: Kloosterman methods give cancellation $\\sim \\sqrt{p}$ but need $\\sim p^{3/4}$ for intervals of length $p^c$ with $c \\leq 3/4$. New techniques needed."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "`erdos_445_summary`: conjunction of Heilbronn ($c$ close to 1) and Heath-Brown ($c > 3/4$), with the open range $c \\in (1/2, 3/4]$ explicitly identified.",
+      "startLine": 118,
+      "endLine": 141,
+      "mathContext": "Known: conjecture holds for $c > 3/4$. Open: $c \\in (1/2, 3/4]$. Threshold $c = 1/2$ is conjectured to be sharp."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #445 is OPEN for c ∈ (1/2, 3/4]. It asks whether multiplicative inverse pairs exist in intervals of length p^c for c > 1/2. Heilbronn proved this for c close to 1, and Heath-Brown (2000) proved it for c > 3/4 using Kloosterman sums. The summary theorem combines both known results.",
+    "implications": "A resolution would advance our understanding of multiplicative structure mod p in short intervals, connecting to exponential sum estimates and the distribution of inverses. The problem is representative of the broader challenge of converting heuristic counting arguments into rigorous proofs.",
+    "openQuestions": [
+      "Does the conjecture hold for $c \\in (1/2, 3/4]$? This is the core open problem. Even proving it for $c > 0.7$ would represent significant progress beyond Heath-Brown's $3/4$ threshold.",
+      "Is $c = 1/2$ the exact threshold? The heuristic argument predicts it, but constructing explicit counterexamples for $c < 1/2$ (intervals lacking inverse pairs) requires understanding the worst-case distribution of inverses, not just the average case.",
+      "Can Bourgain's sum-product methods over $\\mathbb{F}_p$ be applied? Bourgain (2005) proved that sets in $\\mathbb{F}_p$ grow under both addition and multiplication. Since the inverse map $a \\mapsto a^{-1}$ is multiplicative, sum-product estimates might provide alternative counting arguments for inverse pairs in intervals.",
+      "What happens in higher dimensions? The natural generalization asks about $k$-tuples $a_1, \\ldots, a_k$ in a short interval with $a_1 \\cdots a_k \\equiv 1 \\pmod{p}$. The heuristic threshold shifts to $c > k/(2k-1)$.",
+      "Can the problem be attacked via the spectral theory of automorphic forms? The Kloosterman sums that appear are precisely the Fourier coefficients of Poincaré series on $\\text{GL}_2$, connecting to the Ramanujan–Petersson conjecture (proved by Deligne). Deeper spectral information (e.g., the Kuznetsov trace formula) might yield better averaging."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Padics.PadicVal",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Real"
+    ],
+    "namespace": "Erdos445",
+    "lineCount": 141,
+    "axiomCount": 5,
+    "theoremCount": 3,
+    "definitionCount": 6,
+    "path": "Proofs/Erdos445Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1056",
+      "relationship": "related",
+      "description": "Consecutive interval products $\\equiv 1 \\pmod{p}$: asks about products rather than pairs of inverses in short intervals. Both problems probe the distribution of multiplicative structure mod $p$ in short intervals, and both rely on exponential sum techniques."
+    },
+    {
+      "targetId": "erdos-478",
+      "relationship": "related",
+      "description": "Factorial residues mod primes: concerns the multiplicative structure of $(\\mathbb{Z}/p\\mathbb{Z})^*$, specifically which residues $n! \\pmod{p}$ can take. Like Problem 445, it asks how structured multiplicative objects distribute across residue classes."
+    },
+    {
+      "targetId": "erdos-985",
+      "relationship": "related",
+      "description": "Prime primitive roots: whether small primes are primitive roots of large primes. Both problems ask about the multiplicative group $(\\mathbb{Z}/p\\mathbb{Z})^*$ and use exponential sum methods (character sums for primitive roots, Kloosterman sums for inverse pairs)."
+    },
+    {
+      "targetId": "erdos-512",
+      "relationship": "related",
+      "description": "Littlewood's conjecture on exponential sums: asks for lower bounds on $\\max |\\sum a_n e^{in\\theta}|$. The exponential sum techniques underlying both problems are closely related — Kloosterman sums are a specific family of exponential sums over finite fields."
+    },
+    {
+      "targetId": "erdos-510",
+      "relationship": "related",
+      "description": "Chowla's cosine problem: another Erdős problem about exponential/trigonometric sums. The Kloosterman sums in Problem 445 can be written as cosine sums, connecting the two problems through harmonic analysis on finite groups."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "foundational",
+      "description": "Gauss's quadratic reciprocity (1801) initiated the study of multiplicative structure mod $p$. The Gauss sums $g(\\chi) = \\sum_{a} \\chi(a) e^{2\\pi i a/p}$ that appear in quadratic reciprocity are ancestors of the Kloosterman sums $K(m,n;p)$ central to Problem 445."
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "The existence of primitive roots guarantees $(\\mathbb{Z}/p\\mathbb{Z})^*$ is cyclic, which underlies the multiplicative inverse structure that Problem 445 studies. The inverse map $a \\mapsto a^{-1}$ is the automorphism $g^k \\mapsto g^{-k}$ of this cyclic group."
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "foundational",
+      "description": "CRT provides the algebraic foundation for modular arithmetic. The inverse relation $ab \\equiv 1 \\pmod{p}$ is the simplest case of the modular system-solving that CRT addresses in the multi-modulus setting."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Heath-Brown, D.R.",
+      "title": "Arithmetic applications of Kloosterman sums",
+      "year": "2000",
+      "venue": "Nieuw Archief voor Wiskunde, vol. 1, pp. 380–384",
+      "note": "The key paper proving the conjecture for c > 3/4 using Kloosterman sum averaging. Heath-Brown combines the Weil bound with careful analysis of incomplete sums to obtain the current best threshold."
+    },
+    {
+      "authors": "Weil, André",
+      "title": "On some exponential sums",
+      "year": "1948",
+      "venue": "Proceedings of the National Academy of Sciences, vol. 34, no. 5, pp. 204–207",
+      "note": "Proves the bound |K(m,n;p)| ≤ 2√p as a consequence of the Riemann hypothesis for curves over finite fields. This is the fundamental input to Heath-Brown's argument and remains the sharpest bound on individual Kloosterman sums."
+    },
+    {
+      "authors": "Iwaniec, Henryk; Kowalski, Emmanuel",
+      "title": "Analytic Number Theory",
+      "year": "2004",
+      "venue": "American Mathematical Society Colloquium Publications, vol. 53",
+      "note": "Standard reference for Kloosterman sums (Chapter 11), the Weil bound, and their applications to problems about the distribution of multiplicative inverses. Contains the Kuznetsov trace formula connecting Kloosterman sums to automorphic forms."
+    },
+    {
+      "authors": "Bourgain, Jean",
+      "title": "More on the sum-product phenomenon in prime fields and applications",
+      "year": "2005",
+      "venue": "International Journal of Number Theory, vol. 1, no. 1, pp. 1–32",
+      "note": "Proves sum-product estimates over F_p that could provide alternative approaches to inverse pair counting in short intervals, bypassing the Kloosterman sum framework entirely."
+    },
+    {
+      "authors": "Kloosterman, H.D.",
+      "title": "On the representation of numbers in the form ax² + by² + cz² + dt²",
+      "year": "1926",
+      "venue": "Acta Mathematica, vol. 49, pp. 407–464",
+      "note": "Introduced the Kloosterman sums K(m,n;p) that are central to Problem 445. Originally developed for the four-squares representation problem, these sums became fundamental tools in analytic number theory."
+    },
+    {
+      "authors": "Shparlinski, Igor E.",
+      "title": "Distribution of inverses and multiples of small integers and the Sato–Tate conjecture on average",
+      "year": "2007",
+      "venue": "Michigan Mathematical Journal, vol. 56, no. 1, pp. 99–111",
+      "note": "Studies the distribution of multiplicative inverses mod p in short intervals, directly extending Heath-Brown's work on Problem 445. Uses the Sato–Tate conjecture for Kloosterman sums to obtain averaged results."
+    },
+    {
+      "authors": "Garaev, Moubariz Z.",
+      "title": "The sum-product estimate for large subsets of prime fields",
+      "year": "2008",
+      "venue": "Proceedings of the American Mathematical Society, vol. 136, no. 8, pp. 2735–2739",
+      "note": "Improves Bourgain's sum-product estimates over F_p, relevant to combinatorial approaches to the inverse pair problem that could bypass exponential sum methods."
+    }
+  ],
+  "sorries": 0
+}

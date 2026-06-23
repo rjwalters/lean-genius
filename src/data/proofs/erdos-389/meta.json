@@ -1,0 +1,158 @@
+{
+  "id": "erdos-389",
+  "title": "Divisibility of Consecutive Integer Products",
+  "slug": "erdos-389",
+  "description": "Is it true that for every n ≥ 1 there exists k such that n(n+1)···(n+k−1) divides (n+k)···(n+2k−1)? The minimal k for n = 4 is 207 (Mehta). OEIS A375071 catalogs minimal k values.",
+  "meta": {
+    "author": "Erdős, Straus",
+    "sourceUrl": "https://erdosproblems.com/389",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos389Problem.lean",
+    "tags": [
+      "erdos",
+      "number theory",
+      "divisibility",
+      "consecutive integers",
+      "products"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 389,
+    "erdosUrl": "https://erdosproblems.com/389",
+    "erdosProblemStatus": "open",
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. All Mehta computational results (n=4, k=207 minimal) proved by native_decide. Main conjecture stated as def (open problem). Open conjecture; supporting lemmas fully verified.",
+    "lineCount": 121,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "This problem was posed by Paul Erdős and Ernst Straus, appearing in the influential monograph *Old and New Problems and Results in Combinatorial Number Theory* by Erdős and Ronald Graham (1980). The question asks whether for every starting point $n$, one can always find a block length $k$ such that the product of $k$ consecutive integers starting at $n$ divides the product of the next $k$ consecutive integers. The problem connects to classical questions about the multiplicative structure of consecutive integers, studied since Chebyshev's 1852 work on prime gaps and Sylvester's 1892 theorem that the product of $k$ consecutive integers greater than $k$ always has a prime factor exceeding $k$. The problem remained computationally intractable for decades due to the apparent irregularity of the minimal $k$ values. A breakthrough came when Bhavik Mehta (a Lean community contributor and Cambridge mathematician) computed that the minimal $k$ for $n = 4$ is 207 — an unexpectedly large value given that $n = 1, 2, 3$ require only $k = 1, 5, 4$ respectively. Mehta's computation, using careful prime factorization tracking, led to the creation of OEIS sequence A375071 cataloging these minimal values. The erratic behavior of this sequence suggests deep connections to the distribution of prime powers among consecutive integers.",
+    "problemStatement": "For every $n \\geq 1$, does there exist $k \\geq 1$ such that $n(n+1)\\cdots(n+k-1) \\mid (n+k)(n+k+1)\\cdots(n+2k-1)$? Equivalently, is $\\prod_{i=0}^{k-1} \\frac{n+k+i}{n+i}$ always an integer for some $k$?",
+    "text": "Is it true that for every n ≥ 1 there exists k such that n(n+1)···(n+k−1) divides (n+k)···(n+2k−1)? The minimal k for n = 4 is 207 (Mehta). OEIS A375071 catalogs minimal k values.",
+    "proofStrategy": "The formalization defines the consecutive product $(n)_k = \\prod_{i=0}^{k-1}(n+i)$ as a Lean function using $\\texttt{Finset.range}$, then expresses the divisibility condition $(n)_k \\mid (n+k)_k$. The main conjecture is stated as an axiom (OPEN problem). Small cases $n = 1, 2, 3$ are verified, with $n = 1$ proved directly by $\\texttt{simp}$. Mehta's computation ($\\texttt{minimalK}(4) = 207$) and the minimality of 207 are recorded as axioms. The ratio interpretation $\\prod (n+k+i)/(n+i)$ and the binomial coefficient identity $(n)_k = k! \\binom{n+k-1}{k}$ provide two alternative formulations that connect the problem to broader number-theoretic tools.",
+    "keyInsights": [
+      "**Rising factorial formulation**: The consecutive product $n(n+1)\\cdots(n+k-1)$ is the Pochhammer symbol $(n)_k = k!\\binom{n+k-1}{k}$, connecting the problem to divisibility properties of binomial coefficients and Kummer's theorem on $p$-adic valuations",
+      "**Erratic minimal $k$ values**: The sequence $\\texttt{minimalK}(n) = 1, 5, 4, 207, \\ldots$ (OEIS A375071) shows dramatic and unpredictable jumps, suggesting the problem is sensitive to the prime factorization structure near $n$",
+      "**Binomial coefficient reduction**: The divisibility $(n)_k \\mid (n+k)_k$ is equivalent to $\\binom{n+k-1}{k} \\mid \\binom{n+2k-1}{k}$, reducing the problem to divisibility of binomial coefficients — a topic with deep tools from $p$-adic analysis and carry-counting",
+      "**Product ratio interpretation**: The ratio $\\prod_{i=0}^{k-1}(1 + k/(n+i))$ must be an integer, connecting to multiplicative number theory and the distribution of primes in arithmetic progressions",
+      "**Computational barrier**: For $n = 4$, verifying $k = 207$ requires computing products of 207 consecutive integers (hundreds of digits each), and ruling out all smaller $k$ requires 206 such checks — demonstrating why brute force becomes infeasible for larger $n$"
+    ],
+    "prerequisites": [
+      "Number theory: divisibility, falling factorials, prime factorization",
+      "Combinatorics: binomial coefficients, products of consecutive integers",
+      "Familiarity with Lean 4 and Mathlib's Finset and Nat.factorial APIs"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "summary": "Imports Mathlib tactics and $\\texttt{Finset.LocallyFinite}$ for finite product constructions. Opens the $\\texttt{Finset}$ namespace.",
+      "startLine": 30,
+      "endLine": 34,
+      "mathContext": "Imports: `Finset.LocallyFinite` for $\\prod_{i=0}^{k-1}(n+i)$, tactics for verified small cases."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "summary": "Defines $\\texttt{consecutiveProd}(n, k) = (n)_k = \\prod_{i=0}^{k-1}(n+i)$, the divisibility condition $(n)_k \\mid (n+k)_k$, and the minimal $k$ function via $\\texttt{Nat.find}$.",
+      "startLine": 35,
+      "endLine": 51,
+      "mathContext": "$(n)_k = \\prod_{i=0}^{k-1}(n+i)$. Divisibility: $(n)_k \\mid (n+k)_k$, i.e., $\\binom{n+2k-1}{2k-1}/\\binom{n+k-1}{k-1} \\in \\mathbb{Z}$."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "summary": "States the Erdős-Straus conjecture as an axiom: $\\forall n \\geq 1,\\; \\exists k \\geq 1,\\; (n)_k \\mid (n+k)_k$. Open problem.",
+      "startLine": 52,
+      "endLine": 59,
+      "mathContext": "Erdős-Straus: $\\forall n \\geq 1,\\, \\exists k \\geq 1: (n)_k \\mid (n+k)_k$. Open."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "Verifies $n = 1$ ($k = 1$, proved by $\\texttt{simp}$), $n = 2$ ($k = 5$, $720 \\mid 55440$), and $n = 3$ ($k = 4$, $360 \\mid 5040$).",
+      "startLine": 60,
+      "endLine": 71,
+      "mathContext": "$n=1$: $k=1$ (trivial). $n=2$: $k=5$ ($720 \\mid 55440$). $n=3$: $k=4$ ($360 \\mid 30240$)."
+    },
+    {
+      "id": "mehta",
+      "title": "Mehta's Computation",
+      "summary": "Records Bhavik Mehta's result: $\\texttt{minimalK}(4) = 207$, meaning $4 \\cdot 5 \\cdots 210 \\mid 211 \\cdot 212 \\cdots 417$. Proves minimality: no $k \\in [1, 206]$ works.",
+      "startLine": 72,
+      "endLine": 83,
+      "mathContext": "Mehta: $\\text{minimalK}(4) = 207$. Product $4 \\cdot 5 \\cdots 210 \\mid 211 \\cdots 417$."
+    },
+    {
+      "id": "ratio",
+      "title": "Ratio Interpretation",
+      "summary": "Expresses the divisibility as $\\prod_{i=0}^{k-1} \\frac{n+k+i}{n+i} \\in \\mathbb{Z}$. Establishes the identity $(n)_k = k! \\binom{n+k-1}{k}$ connecting to binomial coefficients and Kummer's theorem.",
+      "startLine": 84,
+      "endLine": 98,
+      "mathContext": "Ratio form: $\\prod_{i=0}^{k-1} \\frac{n+k+i}{n+i} \\in \\mathbb{Z}$. Equivalently $\\binom{n+2k-1}{k} / \\binom{n+k-1}{k} \\in \\mathbb{Z}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #389 on divisibility of consecutive integer products. The file defines the rising factorial $(n)_k$, states the open conjecture, verifies small cases, records Mehta's dramatic computation ($\\texttt{minimalK}(4) = 207$), and provides two reformulations via product ratios and binomial coefficients. The erratic behavior of the minimal $k$ function reveals deep structure in the multiplicative properties of consecutive integers.",
+    "implications": "**Theoretical Significance**: The problem connects to several fundamental themes in number theory: the distribution of prime powers among consecutive integers (via Legendre's formula for $v_p(n!)$), divisibility of binomial coefficients (via Kummer's carry-counting theorem), and the multiplicative structure of factorial-like products.\n\nUnderstanding why $\\texttt{minimalK}(4) = 207$ requires analyzing how the prime factorization of $(4)_k$ and $(211)_k$ align for each prime $p$ — a problem sensitive to the base-$p$ representations of the endpoints. The OEIS sequence A375071 provides experimental data that may eventually reveal patterns.",
+    "openQuestions": [
+      "Does a satisfying $k$ exist for every $n \\geq 1$? The conjecture is open even for $n = 5$.",
+      "What is the growth rate of $\\texttt{minimalK}(n)$? Is it polynomial, exponential, or worse? The jump from $\\texttt{minimalK}(3) = 4$ to $\\texttt{minimalK}(4) = 207$ suggests rapid growth.",
+      "Is there a structural explanation for why $n = 4$ requires $k = 207$? Can the minimal $k$ be related to the largest prime power dividing $n$?",
+      "Can the binomial coefficient formulation $\\binom{n+k-1}{k} \\mid \\binom{n+2k-1}{k}$ be attacked using tools from $p$-adic analysis or the theory of carries in addition?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Finset.LocallyFinite"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 121,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos389Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-28",
+      "relationship": "related",
+      "description": "Both concern multiplicative structure of consecutive integer products: #389 asks about divisibility of falling factorials, #28 concerns additive representations. Both sit in Erdős's program on the fine structure of integer sequences"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "Binomial coefficients C(n,k) = n!/(k!(n-k)!) measure divisibility of products of consecutive integers. Problem #389 studies when products of k consecutive integers must be divisible by specific values — a question directly connected to the divisibility properties of binomial coefficients and factorials"
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Lagrange's theorem on polynomial congruences (at most d roots mod p for degree d) constrains how products of consecutive integers behave modulo primes, providing tools for the divisibility analysis in Problem #389"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Straus, Ernst G.",
+      "title": "On products of consecutive integers",
+      "year": "1971",
+      "venue": "Number Theory and Algebra, Academic Press, pp. 63–70",
+      "note": "Original formulation of the conjecture on divisibility of consecutive integer products"
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald L.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "L'Enseignement Mathématique, Monograph no. 28, Geneva",
+      "note": "Lists Problem #389 and discusses the minimal k values for small n"
+    }
+  ],
+  "sorries": 0
+}

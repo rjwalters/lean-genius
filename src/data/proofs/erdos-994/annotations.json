@@ -1,0 +1,471 @@
+[
+  {
+    "id": "ann-994-header",
+    "proofId": "erdos-994",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "title": "Problem Overview: Khintchine's Equidistribution Conjecture",
+    "content": "Erdős Problem #994 asks whether Khintchine's 1923 conjecture is true: for almost all $\\alpha$, does the sequence $\\{k\\alpha\\}$ equidistribute in every measurable $E \\subseteq (0,1)$? Marstrand (1970) showed this is FALSE—the quantifiers $\\forall E$ and $\\forall^{\\text{a.e.}} \\alpha$ cannot be exchanged.",
+    "mathContext": "The conjecture asks whether $\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E \\text{ meas.},\\; \\frac{1}{n}|\\{k \\leq n : \\{k\\alpha\\} \\in E\\}| \\to \\lambda(E)$. This is the quantifier reversal of Weyl's theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Weyl equidistribution",
+      "Khintchine conjecture",
+      "quantifier exchange",
+      "Lebesgue measure"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "equidistribution mod 1",
+      "continued fractions"
+    ]
+  },
+  {
+    "id": "ann-994-frac",
+    "proofId": "erdos-994",
+    "type": "definition",
+    "range": {
+      "startLine": 45,
+      "endLine": 45
+    },
+    "title": "Fractional Part Function",
+    "content": "Defines $\\{x\\} = x - \\lfloor x \\rfloor$, the fractional part of a real number. This is the fundamental operation underlying equidistribution modulo 1. The formalization uses Lean's `Int.floor` for the floor function.",
+    "mathContext": "$\\text{frac}(x) = x - \\lfloor x \\rfloor \\in [0, 1)$ for all $x \\in \\mathbb{R}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "floor function",
+      "modular arithmetic",
+      "periodic function"
+    ],
+    "prerequisites": [
+      "real numbers",
+      "integer floor"
+    ]
+  },
+  {
+    "id": "ann-994-frac-bounds",
+    "proofId": "erdos-994",
+    "type": "concept",
+    "range": {
+      "startLine": 48,
+      "endLine": 53
+    },
+    "title": "Fractional Part Bounds",
+    "content": "Two proved theorems establishing that $0 \\leq \\{x\\} < 1$ for all $x$. `frac_nonneg` uses `Int.floor_le` ($\\lfloor x \\rfloor \\leq x$) and `frac_lt_one` uses `Int.sub_one_lt_floor` ($x - 1 < \\lfloor x \\rfloor$). These are among the few fully proved results in the file.",
+    "mathContext": "$\\lfloor x \\rfloor \\leq x \\Rightarrow \\{x\\} \\geq 0$ and $x < \\lfloor x \\rfloor + 1 \\Rightarrow \\{x\\} < 1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "floor function properties",
+      "simp tactic",
+      "Int.floor_le"
+    ],
+    "prerequisites": [
+      "frac",
+      "integer floor properties"
+    ]
+  },
+  {
+    "id": "ann-994-fracseq",
+    "proofId": "erdos-994",
+    "type": "definition",
+    "range": {
+      "startLine": 56,
+      "endLine": 56
+    },
+    "title": "Fractional Part Sequence",
+    "content": "Defines $\\{k\\alpha\\}_{k=1}^{\\infty}$, the sequence of fractional parts of multiples of $\\alpha$. This is the object studied by Weyl's equidistribution theorem (1916). For irrational $\\alpha$, this sequence is dense in $[0,1)$ and equidistributed in intervals.",
+    "mathContext": "$\\text{fracSequence}(\\alpha, k) = \\{k\\alpha\\} = k\\alpha - \\lfloor k\\alpha \\rfloor$. For irrational $\\alpha$, the orbit $\\{\\{k\\alpha\\}\\}_{k \\geq 1}$ is dense in $[0,1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrational rotation",
+      "orbit",
+      "equidistribution mod 1",
+      "Weyl sequence"
+    ],
+    "prerequisites": [
+      "frac",
+      "irrational numbers"
+    ]
+  },
+  {
+    "id": "ann-994-indicator",
+    "proofId": "erdos-994",
+    "type": "definition",
+    "range": {
+      "startLine": 59,
+      "endLine": 60
+    },
+    "title": "Indicator Function",
+    "content": "Defines $\\mathbf{1}_E(x) = 1$ if $x \\in E$, $0$ otherwise. Used to count hits: $\\sum_{k=1}^n \\mathbf{1}_E(\\{k\\alpha\\})$ is the number of fractional parts landing in $E$.",
+    "mathContext": "$\\mathbf{1}_E(x) = \\begin{cases} 1 & x \\in E \\\\ 0 & x \\notin E \\end{cases}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "characteristic function",
+      "set membership",
+      "counting"
+    ],
+    "prerequisites": [
+      "set theory"
+    ]
+  },
+  {
+    "id": "ann-994-count",
+    "proofId": "erdos-994",
+    "type": "definition",
+    "range": {
+      "startLine": 67,
+      "endLine": 68
+    },
+    "title": "Count of Hits in E",
+    "content": "Counts how many of $\\{\\alpha\\}, \\{2\\alpha\\}, \\ldots, \\{n\\alpha\\}$ fall in $E$, implemented using `Finset.range n` filtered by the membership predicate. The shift `k + 1` ensures we count from $k = 1$ (since `Finset.range n` gives $0, 1, \\ldots, n-1$).",
+    "mathContext": "$\\text{countInE}(\\alpha, E, n) = |\\{k \\in \\{1, \\ldots, n\\} : \\{k\\alpha\\} \\in E\\}|$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.filter",
+      "counting function",
+      "empirical distribution"
+    ],
+    "prerequisites": [
+      "fracSequence",
+      "Finset operations"
+    ]
+  },
+  {
+    "id": "ann-994-empfreq",
+    "proofId": "erdos-994",
+    "type": "definition",
+    "range": {
+      "startLine": 71,
+      "endLine": 72
+    },
+    "title": "Empirical Frequency",
+    "content": "Normalizes the count by $n$ to get the empirical frequency $\\frac{1}{n}|\\{k \\leq n : \\{k\\alpha\\} \\in E\\}|$. Equidistribution means this converges to $\\lambda(E)$ as $n \\to \\infty$.",
+    "mathContext": "$f_n(\\alpha, E) = \\frac{\\text{countInE}(\\alpha, E, n)}{n} \\to \\lambda(E)$ if equidistributed",
+    "significance": "key",
+    "relatedConcepts": [
+      "sample mean",
+      "frequency",
+      "law of large numbers analogy"
+    ],
+    "prerequisites": [
+      "countInE"
+    ]
+  },
+  {
+    "id": "ann-994-isequid",
+    "proofId": "erdos-994",
+    "type": "definition",
+    "range": {
+      "startLine": 75,
+      "endLine": 76
+    },
+    "title": "Equidistribution Predicate",
+    "content": "Defines `IsEquidistributed α E μ` as `Tendsto (empiricalFrequency α E) atTop (nhds μ)`: the empirical frequency converges to $\\mu = \\lambda(E)$ in the topology of $\\mathbb{R}$. This is the precise limit condition that both Weyl and Khintchine concern.",
+    "mathContext": "$\\text{IsEquidistributed}(\\alpha, E, \\mu) \\;\\Leftrightarrow\\; \\lim_{n \\to \\infty} f_n(\\alpha, E) = \\mu$ where $\\mu = \\lambda(E)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "nhds filter",
+      "atTop filter",
+      "convergence"
+    ],
+    "prerequisites": [
+      "empiricalFrequency",
+      "topological convergence",
+      "Mathlib filters"
+    ]
+  },
+  {
+    "id": "ann-994-weyl",
+    "proofId": "erdos-994",
+    "type": "concept",
+    "range": {
+      "startLine": 85,
+      "endLine": 86
+    },
+    "title": "Weyl's Equidistribution Theorem (Axiomatized)",
+    "content": "Axiomatizes Weyl's theorem: for any fixed measurable $E \\subseteq (0,1)$, the sequence $\\{k\\alpha\\}$ is equidistributed in $E$ for almost every $\\alpha$. The exceptional null set $N_E$ depends on $E$—this is precisely what Khintchine tried to strengthen.",
+    "mathContext": "$\\forall E \\text{ meas.},\\; E \\subseteq (0,1) \\;\\Rightarrow\\; \\forall^{\\text{a.e.}} \\alpha,\\; \\lim_{n \\to \\infty} f_n(\\alpha, E) = \\lambda(E)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Weyl equidistribution",
+      "almost everywhere",
+      "exceptional set",
+      "Lebesgue measure"
+    ],
+    "prerequisites": [
+      "IsEquidistributed",
+      "MeasurableSet",
+      "ae measure filter"
+    ]
+  },
+  {
+    "id": "ann-994-weylstate",
+    "proofId": "erdos-994",
+    "type": "definition",
+    "range": {
+      "startLine": 89,
+      "endLine": 91
+    },
+    "title": "Weyl's Statement as Proposition",
+    "content": "Packages Weyl's theorem as a single proposition `WeylStatement`: for all measurable $E \\subseteq (0,1)$, almost every $\\alpha$ gives equidistribution. The quantifier order is $\\forall E,\\; \\forall^{\\text{a.e.}} \\alpha$.",
+    "mathContext": "$\\text{WeylStatement} \\equiv \\forall E,\\; (\\text{meas.} \\wedge E \\subseteq (0,1)) \\Rightarrow \\forall^{\\text{a.e.}} \\alpha,\\; \\text{IsEquidistributed}(\\alpha, E, \\lambda(E))$",
+    "significance": "key",
+    "relatedConcepts": [
+      "proposition packaging",
+      "WeylOrder",
+      "quantifier order"
+    ],
+    "prerequisites": [
+      "weyl_theorem",
+      "IsEquidistributed"
+    ]
+  },
+  {
+    "id": "ann-994-weyltrue",
+    "proofId": "erdos-994",
+    "type": "concept",
+    "range": {
+      "startLine": 94,
+      "endLine": 96
+    },
+    "title": "Weyl's Theorem is True",
+    "content": "Proves `weyl_is_true : WeylStatement` by introducing $E$ and its measurability/containment hypotheses, then applying the `weyl_theorem` axiom. This is a simple wrapper making the axiom usable as a named theorem.",
+    "mathContext": "Proved: $\\text{WeylStatement}$ holds (by applying the axiom `weyl_theorem`)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "axiom application",
+      "intro tactic",
+      "exact tactic"
+    ],
+    "prerequisites": [
+      "WeylStatement",
+      "weyl_theorem"
+    ]
+  },
+  {
+    "id": "ann-994-khint",
+    "proofId": "erdos-994",
+    "type": "definition",
+    "range": {
+      "startLine": 104,
+      "endLine": 107
+    },
+    "title": "Khintchine's Conjecture",
+    "content": "Defines `KhintchineConjecture` as $\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$ (measurable, $\\subseteq (0,1)$), equidistribution holds. This reverses the quantifier order from Weyl's theorem. The conjecture asks: can the exceptional null set be chosen independently of $E$?",
+    "mathContext": "$\\text{KhintchineConjecture} \\equiv \\forall^{\\text{a.e.}} \\alpha,\\; \\forall E \\text{ meas.} \\subseteq (0,1),\\; \\text{IsEquidistributed}(\\alpha, E, \\lambda(E))$",
+    "significance": "key",
+    "relatedConcepts": [
+      "quantifier exchange",
+      "universal null set",
+      "measure zero"
+    ],
+    "prerequisites": [
+      "IsEquidistributed",
+      "ae measure filter"
+    ]
+  },
+  {
+    "id": "ann-994-khint-alt",
+    "proofId": "erdos-994",
+    "type": "definition",
+    "range": {
+      "startLine": 110,
+      "endLine": 113
+    },
+    "title": "Khintchine's Conjecture (Explicit Null Set)",
+    "content": "An equivalent formulation making the null set explicit: $\\exists S$ with $\\lambda(S) = 0$ such that for all $\\alpha \\notin S$ and all measurable $E \\subseteq (0,1)$, equidistribution holds. This makes clear that the conjecture asks for a single universal null set $S$.",
+    "mathContext": "$\\text{KhintchineConjecture'} \\equiv \\exists S \\subseteq \\mathbb{R},\\; \\lambda(S) = 0 \\;\\wedge\\; \\forall \\alpha \\notin S,\\; \\forall E,\\; \\text{IsEquidistributed}(\\alpha, E, \\lambda(E))$",
+    "significance": "key",
+    "relatedConcepts": [
+      "null set",
+      "universal exceptional set",
+      "measure zero"
+    ],
+    "prerequisites": [
+      "KhintchineConjecture",
+      "Lebesgue measure"
+    ]
+  },
+  {
+    "id": "ann-994-weylord",
+    "proofId": "erdos-994",
+    "type": "definition",
+    "range": {
+      "startLine": 124,
+      "endLine": 125
+    },
+    "title": "Weyl Quantifier Order",
+    "content": "Makes the quantifier order of Weyl's theorem explicit: $\\forall E,\\; \\forall^{\\text{a.e.}} \\alpha$ (for each set, almost all $\\alpha$ work). The null set $N_E = \\{\\alpha : \\alpha \\text{ fails for } E\\}$ depends on $E$.",
+    "mathContext": "$\\text{WeylOrder} \\equiv \\forall E,\\; \\forall^{\\text{a.e.}} \\alpha,\\; \\text{IsEquidistributed}(\\alpha, E, \\lambda(E))$. The null set $N_E$ satisfies $\\lambda(N_E) = 0$ but may vary with $E$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quantifier order",
+      "parameter-dependent null set",
+      "Fubini's theorem"
+    ],
+    "prerequisites": [
+      "WeylStatement",
+      "ae measure filter"
+    ]
+  },
+  {
+    "id": "ann-994-khintord",
+    "proofId": "erdos-994",
+    "type": "definition",
+    "range": {
+      "startLine": 128,
+      "endLine": 129
+    },
+    "title": "Khintchine Quantifier Order",
+    "content": "Makes Khintchine's quantifier order explicit: $\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$ (almost all $\\alpha$ work for every set simultaneously). This would require a single null set $N$ independent of $E$—which Marstrand showed is impossible.",
+    "mathContext": "$\\text{KhintchineOrder} \\equiv \\forall^{\\text{a.e.}} \\alpha,\\; \\forall E \\text{ meas.},\\; \\text{IsEquidistributed}(\\alpha, E, \\lambda(E))$. Would need $N = \\bigcap_E N_E^c$ to have full measure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quantifier exchange",
+      "universal null set",
+      "KhintchineConjecture"
+    ],
+    "prerequisites": [
+      "WeylOrder",
+      "KhintchineConjecture"
+    ]
+  },
+  {
+    "id": "ann-994-exchange",
+    "proofId": "erdos-994",
+    "type": "concept",
+    "range": {
+      "startLine": 132,
+      "endLine": 132
+    },
+    "title": "Quantifier Exchange Fails",
+    "content": "Axiomatizes the key negative result: even though `WeylOrder` is true, `KhintchineOrder` does not follow. This captures the mathematical essence of the problem: $\\forall E\\; \\forall^{\\text{a.e.}} \\alpha \\not\\Rightarrow \\forall^{\\text{a.e.}} \\alpha\\; \\forall E$.",
+    "mathContext": "$\\text{WeylOrder} \\Rightarrow \\neg\\text{KhintchineOrder}$. The implication $\\text{WeylOrder} \\Rightarrow \\text{KhintchineOrder}$ fails because $\\bigcup_E N_E$ can have positive measure.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quantifier non-commutativity",
+      "uncountable union of null sets",
+      "counterexample"
+    ],
+    "prerequisites": [
+      "WeylOrder",
+      "KhintchineOrder"
+    ]
+  },
+  {
+    "id": "ann-994-marstrand",
+    "proofId": "erdos-994",
+    "type": "concept",
+    "range": {
+      "startLine": 141,
+      "endLine": 141
+    },
+    "title": "Marstrand's Disproof",
+    "content": "Axiomatizes Marstrand's 1970 result: `¬KhintchineConjecture`. The Khintchine conjecture is FALSE. Marstrand showed that for any irrational $\\alpha$, one can construct a measurable $E_\\alpha$ (depending on the continued fraction expansion of $\\alpha$) where equidistribution fails.",
+    "mathContext": "$\\neg\\text{KhintchineConjecture}$: there is no null set $S$ such that $\\forall \\alpha \\notin S,\\; \\forall E,\\; f_n(\\alpha, E) \\to \\lambda(E)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Marstrand 1970",
+      "counterexample",
+      "continued fraction construction"
+    ],
+    "prerequisites": [
+      "KhintchineConjecture"
+    ]
+  },
+  {
+    "id": "ann-994-construct",
+    "proofId": "erdos-994",
+    "type": "concept",
+    "range": {
+      "startLine": 145,
+      "endLine": 147
+    },
+    "title": "Marstrand's Construction (Existential Witness)",
+    "content": "Axiomatizes the existence of a specific counterexample: there exist $\\alpha$ and measurable $E \\subseteq (0,1)$ such that $\\{k\\alpha\\}$ is NOT equidistributed in $E$. This is the constructive content of Marstrand's proof.",
+    "mathContext": "$\\exists \\alpha,\\; \\exists E \\text{ meas.} \\subseteq (0,1),\\; \\lim_{n \\to \\infty} f_n(\\alpha, E) \\neq \\lambda(E)$ (or the limit does not exist)",
+    "significance": "key",
+    "relatedConcepts": [
+      "existential witness",
+      "counterexample construction",
+      "continued fractions"
+    ],
+    "prerequisites": [
+      "IsEquidistributed",
+      "marstrand_disproof"
+    ]
+  },
+  {
+    "id": "ann-994-badset",
+    "proofId": "erdos-994",
+    "type": "concept",
+    "range": {
+      "startLine": 150,
+      "endLine": 152
+    },
+    "title": "Bad Set Exists for Every Irrational α",
+    "content": "The strongest form of the disproof: for EVERY irrational $\\alpha$, there exists a measurable 'bad' set $E_\\alpha$ where equidistribution fails. This shows the failure is universal, not restricted to special $\\alpha$. The construction of $E_\\alpha$ uses the specific continued fraction expansion of $\\alpha$.",
+    "mathContext": "$\\forall \\alpha \\text{ irrational},\\; \\exists E_\\alpha \\text{ meas.} \\subseteq (0,1),\\; \\neg\\text{IsEquidistributed}(\\alpha, E_\\alpha, \\lambda(E_\\alpha))$",
+    "significance": "key",
+    "relatedConcepts": [
+      "universal counterexample",
+      "α-dependent construction",
+      "continued fraction expansion"
+    ],
+    "prerequisites": [
+      "Irrational",
+      "IsEquidistributed",
+      "marstrand_construction"
+    ]
+  },
+  {
+    "id": "ann-994-placeholder-defs",
+    "proofId": "erdos-994",
+    "type": "definition",
+    "range": {
+      "startLine": 159,
+      "endLine": 169
+    },
+    "title": "Failure Mechanism: Exceptional Sets and Avoidance",
+    "content": "Two placeholder definitions documenting the mechanism behind the failure. `exceptionalSetIssue` notes that while each $N_E$ has measure zero, $\\bigcup_E N_E$ over uncountably many measurable $E$ can have positive measure. `avoidanceConstruction` notes that Marstrand builds $E$ by 'tracking' the continued fraction convergents of $\\alpha$.",
+    "mathContext": "The uncountable union issue: $\\lambda(N_E) = 0$ for each $E$, but $\\lambda(\\bigcup_E N_E)$ may be positive. Countable additivity does not apply to uncountable unions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "uncountable union",
+      "measure additivity",
+      "continued fraction convergents"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "countable vs uncountable"
+    ]
+  },
+  {
+    "id": "ann-994-weyleq",
+    "proofId": "erdos-994",
+    "type": "concept",
+    "range": {
+      "startLine": 176,
+      "endLine": 178
+    },
+    "title": "Weyl Equidistribution for Intervals",
+    "content": "Axiomatizes Weyl's original result for intervals: for any irrational $\\alpha$ and any subinterval $(a,b) \\subseteq [0,1]$, the empirical frequency converges to $b - a$. Note: this holds for ALL irrational $\\alpha$, with no exceptional set—a stark contrast to the measurable set case.",
+    "mathContext": "$\\forall \\alpha \\text{ irrational},\\; \\forall 0 \\leq a < b \\leq 1,\\; \\lim_{n \\to \\infty} f_n(\\alpha, (a,b)) = b - a$. No exceptional set needed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Weyl's criterion",
+      "exponential sums",
+      "interval equidistribution",
+      "three-distance theorem"
+    ],
+    "prerequisites": [
+      "empiricalFrequency",
+      "Irrational",
+      "Tendsto"
+    ]
+  }
+]

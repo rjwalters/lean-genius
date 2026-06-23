@@ -1,0 +1,109 @@
+{
+  "slug": "collatz-structured-oq-04",
+  "title": "Collatz structured cases and stopping-time growth",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "T(n)=\\begin{cases}n/2&2\\mid n\\\\3n+1&2\\nmid n\\end{cases},\\quad \\operatorname{ReachesOne}(n):=\\exists k, T^k(n)=1,\\quad S(N)=\\frac1N\\sum_{n\\le N}\\sigma(n).",
+    "plain": "Study structured Collatz inputs, bounded cycle obstructions, and average stopping-time growth while keeping the full conjecture explicit as open. The Lean files prove powers-of-two and small-value cases, period-4 and halving-bound constraints, and stopping-time definitions, with deep global claims recorded as axioms.",
+    "whyMatters": [
+      "Structured Collatz families are a practical formalization target short of the full unsolved conjecture.",
+      "Small-cycle exclusions expose the arithmetic constraints behind parity-pattern approaches.",
+      "Average stopping-time growth connects computable Collatz dynamics with analytic number-theory heuristics."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`pow_two_reaches_one` proves that powers of two reach one under Collatz iteration.",
+      "`no_j1_period4_cycle` rules out a one-odd-step period-4 cycle under the stated parity hypotheses.",
+      "`min_halvings_five_odd` and its siblings give explicit halving lower bounds for five through eight odd steps.",
+      "`stoppingTime_one` and `stoppingTime_two` verify base stopping-time values in the average-stopping-time framework."
+    ],
+    "open": [
+      "The full Collatz conjecture, a closed form for Mersenne-like stopping times, and the asymptotic growth of average stopping time remain open.",
+      "The declared Lean files intentionally use axioms for global external claims such as the full conjecture, Eliahou's cycle bound, and Terras density."
+    ],
+    "goal": "Separate the proved structured Collatz cases from axiom-backed global theory so future work can safely target one bounded family or analytic claim at a time."
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-03-29T18:32:39.304Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "number-theory",
+    "dynamical-systems",
+    "collatz",
+    "stopping-time",
+    "cycles",
+    "axiom-backed"
+  ],
+  "relatedProofs": [
+    "collatz-structured",
+    "collatz-structured-oq-02-oq-01",
+    "collatz-structured-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-29T18:32:39.303Z",
+  "lastUpdate": "2026-03-29T18:32:39.303Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CollatzStructured.lean",
+      "filename": "CollatzStructured.lean",
+      "lineCount": 208,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructured.lean"
+    },
+    {
+      "path": "Proofs/CollatzStructuredOQ02OQ01.lean",
+      "filename": "CollatzStructuredOQ02OQ01.lean",
+      "lineCount": 214,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CollatzStructuredOQ03.lean",
+      "filename": "CollatzStructuredOQ03.lean",
+      "lineCount": 150,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ03.lean"
+    }
+  ]
+}
