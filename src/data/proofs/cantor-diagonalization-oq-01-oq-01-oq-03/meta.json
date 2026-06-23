@@ -83,10 +83,16 @@
   ],
   "sections": [
     {
-      "title": "The continuum function and monotonicity",
+      "title": "Overview, the continuum function, and the helper",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Docstring positioning the file against the parent (CH + König/Easton at 2^{ℵ₀}) and stating Easton's three constraints; imports Mathlib, opens Cardinal/Ordinal, defines contFn α = 2^{ℵ_α}, and proves the helper two_ne_zero_card ((2:Cardinal) ≠ 0) used by the monotonicity lemma."
+    },
+    {
+      "title": "Monotonicity",
       "startLine": 44,
-      "endLine": 59,
-      "summary": "contFn α = 2^{ℵ_α}, the helper (2:Cardinal) ≠ 0, and contFn_monotone (monotone in the index)."
+      "endLine": 49,
+      "summary": "contFn_monotone (monotone in the index, via power_le_power_left and aleph_le_aleph) — only ≤, not strict, between distinct indices."
     },
     {
       "title": "Cantor and König constraints",
