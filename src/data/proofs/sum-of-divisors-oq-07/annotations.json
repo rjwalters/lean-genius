@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "sum-of-divisors-oq-07",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "context",
+    "title": "Closed Geometric-Product Form of σₖ for Every Exponent k",
+    "content": "Mathlib evaluates σₖ only in open form: a geometric sum on prime powers and a product-of-sums over a factorization. OQ-04 collapsed the inner series into closed form but only for k = 1. This entry proves the closed geometric-product form for arbitrary k, reducing everything to `geom_sum_mul` with base x = pᵏ: it collapses each inner sum ∑ p^{jk} into (p^{k(i+1)}−1)/(pᵏ−1) and assembles across the whole factorization.",
+    "mathContext": "$\\sigma_k(n) = \\prod_{p\\mid n}\\dfrac{p^{k(v_p(n)+1)}-1}{p^k-1}$, the closed form of Mathlib's $\\prod_{p\\mid n}\\sum_{j\\le v_p(n)} p^{jk}$.",
+    "significance": "context",
+    "relatedConcepts": ["divisor-power sum σₖ", "geometric series", "multiplicativity", "prime factorization"],
+    "prerequisites": ["σₖ on prime powers", "geometric sums", "multiplicative functions"]
+  },
+  {
+    "id": "ann-geom-collapse",
+    "proofId": "sum-of-divisors-oq-07",
+    "range": { "startLine": 40, "endLine": 51 },
+    "type": "theorem",
+    "title": "The Underlying Geometric Collapse",
+    "content": "The engine: (∑_{j≤i} p^{jk})·(pᵏ−1) = p^{k(i+1)}−1 over ℤ. This is `geom_sum_mul` applied to base x = pᵏ, after re-indexing the summand p^{jk} = (pᵏ)ʲ via `pow_mul`. Every closed-form result in the file is an instance of this identity at the right base and exponent.",
+    "mathContext": "$\\Big(\\sum_{j=0}^{i} p^{jk}\\Big)(p^k-1) = p^{k(i+1)}-1$, i.e. $\\sum_{j=0}^{i}(p^k)^j = \\dfrac{(p^k)^{i+1}-1}{p^k-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["geometric series identity", "geom_sum_mul", "re-indexing exponents"],
+    "prerequisites": ["finite geometric sum", "pow_mul"]
+  },
+  {
+    "id": "ann-prime-pow",
+    "proofId": "sum-of-divisors-oq-07",
+    "range": { "startLine": 53, "endLine": 60 },
+    "type": "theorem",
+    "title": "Closed Form on a Prime Power (All k)",
+    "content": "σₖ(pⁱ)·(pᵏ−1) = p^{k(i+1)}−1, generalizing OQ-04's k = 1 case to arbitrary exponents. The proof rewrites σₖ(pⁱ) via `sigma_apply_prime_pow` into the geometric sum, then applies `geom_sigma_sum`. Multiplying by (pᵏ−1) keeps everything in ℤ without division.",
+    "mathContext": "$\\sigma_k(p^i)(p^k-1) = p^{k(i+1)}-1$, equivalently $\\sigma_k(p^i) = \\dfrac{p^{k(i+1)}-1}{p^k-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["σₖ on prime powers", "closed form", "generalization of OQ-04"],
+    "prerequisites": ["sigma_apply_prime_pow", "the geometric collapse"]
+  },
+  {
+    "id": "ann-two-primes",
+    "proofId": "sum-of-divisors-oq-07",
+    "range": { "startLine": 62, "endLine": 78 },
+    "type": "theorem",
+    "title": "Closed Form on a Two-Prime Product pᵃqᵇ",
+    "content": "Distinct primes give coprime prime powers, so σₖ factors (`isMultiplicative_sigma`) and each factor collapses by the prime-power identity. The two single-prime equalities are combined with `linear_combination` to produce the product identity σₖ(pᵃqᵇ)·(pᵏ−1)(qᵏ−1) = (p^{k(a+1)}−1)(q^{k(b+1)}−1). This is the two-factor model for the general case.",
+    "mathContext": "$\\sigma_k(p^a q^b)(p^k-1)(q^k-1) = (p^{k(a+1)}-1)(q^{k(b+1)}-1)$, via $\\gcd(p^a,q^b)=1$ and multiplicativity.",
+    "significance": "supporting",
+    "relatedConcepts": ["multiplicativity", "coprime prime powers", "linear_combination"],
+    "prerequisites": ["multiplicative functions", "the prime-power closed form"]
+  },
+  {
+    "id": "ann-general",
+    "proofId": "sum-of-divisors-oq-07",
+    "range": { "startLine": 80, "endLine": 93 },
+    "type": "theorem",
+    "title": "The General Closed Geometric-Product Form",
+    "content": "The headline: for n ≠ 0, σₖ(n)·∏_{p∣n}(pᵏ−1) = ∏_{p∣n}(p^{k(vₚ(n)+1)}−1). Starting from Mathlib's product-of-sums, distribute the ∏(pᵏ−1) factors into the product (`prod_mul_distrib`) and collapse each factor with `geom_sigma_sum` (`prod_congr`). This is the fully general closed form across the entire factorization, with the prime-power and two-prime cases as special instances.",
+    "mathContext": "$\\sigma_k(n)\\prod_{p\\mid n}(p^k-1) = \\prod_{p\\mid n}\\big(p^{k(v_p(n)+1)}-1\\big)$ for $n\\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": ["product over prime factors", "factorization", "prod_mul_distrib", "closed form"],
+    "prerequisites": ["sigma product-of-sums", "Finset.prod manipulation"]
+  }
+]
