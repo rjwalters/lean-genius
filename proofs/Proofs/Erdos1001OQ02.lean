@@ -163,7 +163,7 @@ theorem convergence_faster_than_sqrtN (A c : ℝ) (hA : 0 < A) (hc : c > 1)
   -- log x / x^(1/2) → 0, so A * log N / √N → 0 on ℕ
   have hA_log_sqrt : Tendsto (fun n : ℕ => A * (Real.log ↑n / Real.sqrt ↑n)) atTop (nhds 0) := by
     have hlog12 : Tendsto (fun x : ℝ => Real.log x / x ^ ((1:ℝ)/2)) atTop (nhds 0) :=
-      Real.tendsto_log_div_rpow_atTop (1/2) (by norm_num)
+      (isLittleO_log_rpow_atTop (by norm_num : (0:ℝ) < 1/2)).tendsto_div_nhds_zero
     have h : Tendsto (fun n : ℕ => A * (Real.log ↑n / (↑n : ℝ) ^ ((1:ℝ)/2))) atTop (nhds 0) := by
       have := (hlog12.comp tendsto_natCast_atTop_atTop).const_mul A
       simpa [mul_zero] using this
@@ -178,12 +178,13 @@ theorem convergence_faster_than_sqrtN (A c : ℝ) (hA : 0 < A) (hc : c > 1)
   -- hN : |A * (log N / sqrt N)| < c'
   -- Derive: A * |log N| / sqrt N < c'
   have hN_abs : A * |Real.log ↑N| / Real.sqrt ↑N < c' := by
+    rw [mul_div_assoc]
     rwa [abs_mul, abs_div, abs_of_pos hA, abs_of_pos hsqrt_pos] at hN
   -- Multiply out: A * |log N| < c' * sqrt N
   -- Then: A * |log N| * sqrt N < c' * (sqrt N)² = c' * N
   have hkey : A * |Real.log ↑N| * Real.sqrt ↑N < c' * (Real.sqrt ↑N * Real.sqrt ↑N) := by
     have hmul : A * |Real.log ↑N| < c' * Real.sqrt ↑N := by
-      rwa [div_lt_iff hsqrt_pos] at hN_abs
+      rwa [div_lt_iff₀ hsqrt_pos] at hN_abs
     calc A * |Real.log ↑N| * Real.sqrt ↑N
         < c' * Real.sqrt ↑N * Real.sqrt ↑N := mul_lt_mul_of_pos_right hmul hsqrt_pos
       _ = c' * (Real.sqrt ↑N * Real.sqrt ↑N) := by ring
@@ -193,7 +194,7 @@ theorem convergence_faster_than_sqrtN (A c : ℝ) (hA : 0 < A) (hc : c > 1)
   have h2 : c' * ‖1 / Real.sqrt ↑N‖ = c' / Real.sqrt ↑N := by
     rw [Real.norm_eq_abs, abs_div, abs_one, abs_of_pos hsqrt_pos]; ring
   -- A * |log N| / N ≤ c' / sqrt N ↔ A * |log N| * sqrt N ≤ c' * N = c' * (sqrt N)²
-  rw [h1, h2, div_le_div_iff hNr hsqrt_pos, ← hsq]
+  rw [h1, h2, div_le_div_iff₀ hNr hsqrt_pos, ← hsq]
   linarith [hkey]
 
 /-- The rate is sharper than the a priori O(1) bound (trivially).
@@ -210,7 +211,7 @@ theorem rate_is_nontrivial (A c : ℝ) (hA : 0 < A) (hc : c > 1)
   simp only [div_one]
   -- log x / x → 0 on ℝ (from tendsto_log_div_rpow_atTop with p = 1)
   have hlogdiv : Tendsto (fun x : ℝ => Real.log x / x) atTop (nhds 0) := by
-    have h := Real.tendsto_log_div_rpow_atTop 1 one_pos
+    have h := (isLittleO_log_rpow_atTop one_pos).tendsto_div_nhds_zero
     simpa [Real.rpow_one] using h
   -- Pull back to ℕ via Nat.cast coercion
   have hlogdiv_nat : Tendsto (fun n : ℕ => Real.log ↑n / (↑n : ℝ)) atTop (nhds 0) :=

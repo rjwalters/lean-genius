@@ -167,7 +167,6 @@ def FareyFraction (n : ℕ) : Set ℚ :=
 theorem est_pi_squared_explanation :
     f 1 (Real.exp 1) = 12 / π^2 := by
   simp [f]
-  ring
 
 /-
 ## Outside the EST Regime (Open Question oq-01)

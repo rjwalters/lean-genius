@@ -115,12 +115,12 @@ noncomputable def twoParamF (α β : ℝ) (n : ℕ) : ℝ :=
 noncomputable def cauchyDistribution (ρ : ℝ) (c : ℝ) : ℝ :=
   1 / π * Real.arctan (ρ * c) + 1 / 2
 
-/-- The Cauchy distribution function is a valid distribution function. -/
+/- The Cauchy distribution function is a valid distribution function. -/
 /-- Two-parameter level set. -/
 def twoParamLevelSet (n : ℕ) (c : ℝ) : Set (ℝ × ℝ) :=
   { p : ℝ × ℝ | p.1 ∈ Ioo 0 1 ∧ p.2 ∈ Ioo 0 1 ∧ twoParamF p.1 p.2 n ≤ c }
 
-/-- Kesten (1960): The two-parameter variant has Cauchy limit distribution.
+/- Kesten (1960): The two-parameter variant has Cauchy limit distribution.
     There exists ρ > 0 such that the level set measure converges to
     g(c) = (1/π) arctan(ρc) + 1/2. -/
 /-
@@ -141,8 +141,8 @@ theorem one_param_is_specialization (α : ℝ) (n : ℕ) :
 Fixing β = 0 destroys the ergodic independence Kesten used.
 -/
 
-/-- For fixed irrational α, f(α, n) is bounded (does not diverge). -/
-/-- The inner sum |S(α, n)| ≤ C · log n for irrational α,
+/- For fixed irrational α, f(α, n) is bounded (does not diverge). -/
+/- The inner sum |S(α, n)| ≤ C · log n for irrational α,
     where C depends on α's continued fraction expansion. -/
 /-
 ## Partial Results
@@ -151,9 +151,9 @@ Weyl equidistribution implies the sum S(α, n) grows sublinearly,
 justifying the log n normalization.
 -/
 
-/-- Weyl equidistribution: The average deviation tends to zero.
+/- Weyl equidistribution: The average deviation tends to zero.
     This means (1/n) Σ (1/2 - {αk}) → 0 for irrational α. -/
-/-- For rational α = p/q, the sum S(α, n) is periodic with period q. -/
+/- For rational α = p/q, the sum S(α, n) is periodic with period q. -/
 /-
 ## Summary
 
