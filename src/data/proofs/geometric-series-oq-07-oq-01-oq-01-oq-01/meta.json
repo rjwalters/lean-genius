@@ -73,6 +73,44 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "The Eulerian numbers ⟨m,j⟩ count the permutations of {1,…,m} with exactly j descents (positions where a permutation steps down). They were introduced by Leonhard Euler in his 18th-century study of the sums ∑ nᵐ rⁿ and the alternating-sign expansions that became the Eulerian polynomials, and are a staple of modern enumerative combinatorics (Graham–Knuth–Patashnik, Concrete Mathematics). They satisfy the triangle recurrence ⟨m,k⟩ = (k+1)⟨m−1,k⟩ + (m−k)⟨m−1,k−1⟩, sum to m! across each row (Worpitzky), and are palindromic by the descent-reversal bijection. They sit beside the Stirling numbers of the second kind as the two natural combinatorial bases for the polynomials governing geometric-series moments: the parent chain (geometric-series-oq-07 and its descendants) shows the moment numerator ∑ nᵐ rⁿ is the Eulerian polynomial, originally defined there only by an analytic differential recurrence. Mathlib formalizes Eulerian graphs and circuits but, at the time of writing, not the Eulerian numbers — so this entry builds the triangle from scratch.",
+    "problemStatement": "The parent entry (Frobenius' identity) proves the geometric-moment numerator equals the Eulerian polynomial Eₘ, but defines Eₘ only by its first-order differential recurrence E₀ = 1, E_{m+1} = X(1−X)E′ₘ + (m+1)X·Eₘ. It leaves open the textbook identification of the coefficients of Eₘ with the combinatorial Eulerian numbers ⟨m,j⟩. Concretely: prove E_{m+1}(X) = ∑_{j=0}^{m} ⟨m+1,j⟩·X^{j+1}, where ⟨m,j⟩ is defined by the descent triangle recurrence.",
+    "proofStrategy": "Define ⟨m,j⟩ from scratch by the triangle recurrence (eulerian) and establish its boundary vanishing (eulerian_eq_zero_of_lt, eulerian_succ_self). Then prove eulerPoly_eq_eulerianNumbers by induction on m, reusing the parent's eulerPoly and its differential recurrence eulerPoly_succ. The base case is the parent's eulerPoly_one (E₁ = X). The inductive step substitutes the monomial form of Eₘ into the differential recurrence, differentiates the monomial sum, and splits the coefficient (m+1) = (j+1) + (m−j) so that the two terms X(1−X)E′ₘ and (m+1)X·Eₘ align exactly with the two terms (k+2)⟨m+1,k+1⟩ and (m+1−k)⟨m+1,k⟩ of the triangle recurrence; finite-sum reindexing (Finset.sum_range_succ/succ') and the diagonal vanishing lemma reconcile the boundary terms, and ring closes each coefficient. Composing with the parent's Frobenius identity yields the Stirling-form expansion (stirlingForm_eq_eulerianNumbers); low-order rows are checked by kernel decide.",
+    "keyInsights": [
+      "Two different recurrences define the same polynomial: the parent's analytic differential recurrence E_{m+1} = X(1−X)E′ₘ + (m+1)X·Eₘ reproduces, coefficient by coefficient, the combinatorial descent triangle ⟨m,k⟩ = (k+1)⟨m−1,k⟩ + (m−k)⟨m−1,k−1⟩ — the bridge is the single algebraic identity (m+1) = (j+1) + (m−j).",
+      "The formal derivative is what converts a differential recurrence on polynomials into an additive recurrence on coefficients: differentiating ∑ ⟨m,j⟩X^{j+1} brings down the factor (j+1), which becomes one of the two triangle coefficients.",
+      "Boundary control is essential and combinatorially meaningful: ⟨n,j⟩ = 0 for n < j and ⟨n+1,n+1⟩ = 0 encode that a length-m permutation has between 0 and m−1 descents, and these are exactly the vanishings that make the generating sum finite and the reindexing exact.",
+      "The geometric-moment numerator has two combinatorial faces: the Stirling form S(m,k)·k! (a surjection count) and the Eulerian form ⟨m,j⟩ (a descent count) are coefficients of one and the same polynomial — Worpitzky's bridge between surjections and descents.",
+      "Building the Eulerian triangle over an arbitrary commutative ring R (via the C-homomorphism bookkeeping) makes it a reusable, Mathlib-independent foundation for further Eulerian-number theory (row sums, palindromy, Worpitzky's identity)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "eulerian-numbers",
+      "title": "The Combinatorial Eulerian Numbers",
+      "startLine": 47,
+      "endLine": 83,
+      "summary": "Defines ⟨m,j⟩ from scratch by the descent triangle recurrence (eulerian) with its simp/rfl lemmas, proves the boundary vanishing ⟨n,j⟩=0 for n<j (eulerian_eq_zero_of_lt) and ⟨n+1,n+1⟩=0 (eulerian_succ_self), and provides the C-homomorphism cast helper C_natCast_mul for transporting integer coefficients into R[X].",
+      "mathContext": "⟨n+1,k+1⟩ = (k+2)⟨n,k+1⟩ + (n−k)⟨n,k⟩, ⟨m,0⟩ = 1; ⟨n,j⟩ = 0 for n < j."
+    },
+    {
+      "id": "coefficient-identification",
+      "title": "Coefficients of the Eulerian Polynomial",
+      "startLine": 85,
+      "endLine": 174,
+      "summary": "The main result eulerPoly_eq_eulerianNumbers: E_{m+1}(X) = ∑_{j=0}^{m} ⟨m+1,j⟩X^{j+1}, by induction matching the parent's differential recurrence to the triangle recurrence via the split (m+1) = (j+1)+(m−j). Composing with the parent's Frobenius identity gives the Stirling-form expansion stirlingForm_eq_eulerianNumbers.",
+      "mathContext": "E_{m+1}(X) = ∑ⱼ ⟨m+1,j⟩X^{j+1}; ∑ₖ S(m+1,k)k!Xᵏ(1−X)^{m+1−k} = ∑ⱼ ⟨m+1,j⟩X^{j+1}."
+    },
+    {
+      "id": "low-order-rows",
+      "title": "The Low-Order Eulerian Rows",
+      "startLine": 176,
+      "endLine": 192,
+      "summary": "Verifies the rows ⟨1,0⟩=1; ⟨2,·⟩=(1,1); ⟨3,·⟩=(1,4,1) by kernel decide, and expands the main theorem at m=2 over ℚ[X] to confirm E₃(X) = X + 4X² + X³, matching the parent's E₃. The symmetric rows already exhibit the Eulerian palindromy.",
+      "mathContext": "⟨3,·⟩ = (1,4,1), so E₃(X) = X + 4X² + X³."
+    }
+  ],
   "openQuestions": [
     {
       "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",

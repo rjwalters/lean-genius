@@ -1,0 +1,74 @@
+[
+  {
+    "id": "eulerian-def",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+    "range": { "startLine": 49, "endLine": 64 },
+    "type": "definition",
+    "title": "The Combinatorial Eulerian Numbers ⟨m,j⟩",
+    "content": "Defines the Eulerian numbers ⟨m,j⟩ — the number of permutations of {1,…,m} with exactly j descents — from scratch via the classical triangle recurrence ⟨n+1,k+1⟩ = (k+2)·⟨n,k+1⟩ + (n−k)·⟨n,k⟩ with ⟨m,0⟩ = 1. This is necessary because Mathlib provides Eulerian graphs and circuits but no Eulerian numbers or polynomials. The four-way pattern match handles the base row, the left edge, and the recursive interior; the simp lemmas eulerian_zero_zero/zero_succ/succ_zero and the rfl-lemma eulerian_succ_succ expose the recurrence as a definitional equation, which is what lets the later induction rewrite coefficient by coefficient.",
+    "mathContext": "$\\langle n+1,k+1\\rangle=(k+2)\\langle n,k+1\\rangle+(n-k)\\langle n,k\\rangle,\\ \\langle m,0\\rangle=1$; equivalently $\\langle m,k\\rangle=(k+1)\\langle m-1,k\\rangle+(m-k)\\langle m-1,k-1\\rangle$.",
+    "significance": "key",
+    "relatedConcepts": ["Eulerian numbers", "descent statistic", "triangle recurrence", "permutation statistics"],
+    "prerequisites": ["combinatorics of permutations", "recursively defined functions"]
+  },
+  {
+    "id": "vanishing-lemmas",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+    "range": { "startLine": 66, "endLine": 78 },
+    "type": "technique",
+    "title": "Vanishing Above and On the Diagonal",
+    "content": "Two boundary lemmas pin the support of each Eulerian row. eulerian_eq_zero_of_lt: ⟨n,j⟩ = 0 for n < j (a permutation of n elements has at most n−1 descents), by induction on n with omega controlling the index arithmetic of the recurrence. eulerian_succ_self: ⟨n+1,n+1⟩ = 0 (the maximum number of descents of a length-(n+1) permutation is n), obtained from the recurrence since the (n−k) coefficient vanishes when k = n and the remaining term is above-diagonal. These lemmas are exactly what make the row sum ∑_{j=0}^{m} ⟨m+1,j⟩X^{j+1} finite and correctly indexed — the diagonal term drops out cleanly during the main induction (hz, add_zero).",
+    "mathContext": "$\\langle n,j\\rangle=0$ for $n<j$, and $\\langle n+1,n+1\\rangle=0$: each row $m$ is supported on $0\\le j\\le m-1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["support of a sequence", "boundary conditions", "induction"],
+    "prerequisites": ["mathematical induction", "Presburger arithmetic"]
+  },
+  {
+    "id": "cast-helper",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+    "range": { "startLine": 80, "endLine": 83 },
+    "type": "technique",
+    "title": "Moving Eulerian Coefficients Under C",
+    "content": "C_natCast_mul is a small ring-homomorphism bookkeeping lemma: C(a)·C(b) = C(a·b) for naturals coerced into R[X], proved from map_mul. It is the bridge that lets the integer triangle recurrence (a statement about ℕ) be transported faithfully into a coefficient identity in the polynomial ring R[X] over an arbitrary commutative ring R, so the combinatorial recurrence and the polynomial differential recurrence can be matched term by term.",
+    "mathContext": "$C(a)\\cdot C(b)=C(ab)$ in $R[X]$, where $C:R\\to R[X]$ is the constant-polynomial ring homomorphism.",
+    "significance": "technical",
+    "relatedConcepts": ["ring homomorphism", "Polynomial.C", "coefficient transport"],
+    "prerequisites": ["ring homomorphisms", "polynomial rings"]
+  },
+  {
+    "id": "main-theorem",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+    "range": { "startLine": 85, "endLine": 166 },
+    "type": "theorem",
+    "title": "The Eulerian Polynomial Generates Its Eulerian Row",
+    "content": "The headline result eulerPoly_eq_eulerianNumbers: for m ≥ 1, E_{m+1}(X) = ∑_{j=0}^{m} ⟨m+1,j⟩·X^{j+1}, identifying the coefficients of the parent's recurrence-defined Eulerian polynomial with the combinatorial Eulerian numbers. The proof is induction on m. The base case is the parent's eulerPoly_one (E₁ = X). The step substitutes the inductive monomial form into the differential recurrence E_{m+1} = X(1−X)E′ₘ + (m+1)X·Eₘ: it computes the derivative of the monomial sum (hD), splits the coefficient (m+1) = (j+1) + (m−j) (hcast) so the two pieces of the differential recurrence align with the two pieces of the triangle recurrence (hLHS), then peels the constant term, applies the Eulerian recurrence to each interior coefficient (hsplit), and reconciles a re-indexing of the (k+2)⟨m+1,k+1⟩ sum (hS1) using the diagonal vanishing lemma. The differential recurrence reproduces the triangle recurrence exactly, coefficient by coefficient.",
+    "mathContext": "$E_{m+1}(X)=\\sum_{j=0}^{m}\\langle m+1,j\\rangle X^{j+1}$, with the split $(m+1)=(j+1)+(m-j)$ matching $X(1-X)E'_m+(m+1)XE_m$ to the triangle recurrence.",
+    "significance": "key",
+    "relatedConcepts": ["generating polynomial", "differential recurrence", "formal derivative", "coefficient extraction", "induction"],
+    "prerequisites": ["polynomial formal derivatives", "finite sum reindexing", "mathematical induction"]
+  },
+  {
+    "id": "stirling-form",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+    "range": { "startLine": 168, "endLine": 174 },
+    "type": "theorem",
+    "title": "The Stirling Numerator Expanded Over Eulerian Numbers",
+    "content": "stirlingForm_eq_eulerianNumbers composes the parent's Frobenius identity (eulerPoly = stirlingForm) with the main result to expand the geometric-moment numerator directly over the Eulerian numbers: ∑_{k=0}^{m+1} S(m+1,k)·k!·Xᵏ·(1−X)^{m+1−k} = ∑_{j=0}^{m} ⟨m+1,j⟩·X^{j+1}. This exhibits the same polynomial as two combinatorial faces: the Stirling form S(m,k)·k! counts surjections, while the Eulerian form ⟨m,j⟩ counts descents — the geometric-moment numerator's coefficients are, on the nose, the descent numbers.",
+    "mathContext": "$\\sum_{k=0}^{m+1} S(m+1,k)\\,k!\\,X^k(1-X)^{m+1-k}=\\sum_{j=0}^{m}\\langle m+1,j\\rangle X^{j+1}$.",
+    "significance": "key",
+    "relatedConcepts": ["Frobenius identity", "Stirling numbers", "Worpitzky", "surjection count"],
+    "prerequisites": ["Stirling numbers of the second kind", "generating functions"]
+  },
+  {
+    "id": "low-order-rows",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+    "range": { "startLine": 176, "endLine": 190 },
+    "type": "insight",
+    "title": "The Low-Order Eulerian Rows",
+    "content": "Two examples sanity-check the construction against the parent's explicit polynomials. The first verifies the rows ⟨1,0⟩ = 1; ⟨2,0⟩ = ⟨2,1⟩ = 1; ⟨3,0⟩ = 1, ⟨3,1⟩ = 4, ⟨3,2⟩ = 1 by kernel decide. The second expands the main theorem at m = 2 over ℚ[X] to confirm E₃(X) = ⟨3,0⟩X + ⟨3,1⟩X² + ⟨3,2⟩X³ = X + 4X² + X³, matching the parent's E₃. The symmetric rows (1; 1,1; 1,4,1) already display the Eulerian palindromy ⟨m,j⟩ = ⟨m,m−1−j⟩ that an open question asks to prove in general. Note these checks use kernel decide, not native_decide, so the entry stays axiom-clean.",
+    "mathContext": "$\\langle 3,\\cdot\\rangle=(1,4,1)$, so $E_3(X)=X+4X^2+X^3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["worked examples", "Eulerian triangle", "palindromy", "kernel decide"],
+    "prerequisites": ["evaluation of polynomials"]
+  }
+]
