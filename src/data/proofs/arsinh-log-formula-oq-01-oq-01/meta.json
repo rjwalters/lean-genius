@@ -1,0 +1,165 @@
+{
+  "id": "arsinh-log-formula-oq-01-oq-01",
+  "slug": "arsinh-log-formula-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "intervalIntegral",
+      "MeasureTheory"
+    ],
+    "namespace": "ArsinhLogFormulaOQ01OQ01",
+    "lineCount": 135,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "path": "Proofs/ArsinhLogFormulaOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "Antiderivative of 1/√(1 + x²): the arsinh Calculus Capstone",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArsinhLogFormulaOQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "special-functions",
+      "hyperbolic-functions",
+      "inverse-hyperbolic",
+      "arsinh",
+      "integration",
+      "fundamental-theorem-of-calculus",
+      "antiderivative",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 135,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "integral_one_div_sqrt_one_add_sq: the Fundamental-Theorem-of-Calculus evaluation ∫_a^b 1/√(1 + t²) dt = arsinh b − arsinh a — the definite-integral incarnation of 'arsinh is an antiderivative of 1/√(1+x²)', which is the parent's first open question made precise. Mathlib records the derivative (Real.hasDerivAt_arsinh) but not this integral.",
+      "integral_eq_log_sub_log: the logarithmic closed form of the integral, ∫_a^b 1/√(1 + t²) dt = log(b + √(1+b²)) − log(a + √(1+a²)), obtained by unfolding arsinh to the parent's logarithmic form.",
+      "integral_zero_to / integral_zero_to_log: the normalised antiderivative (C = 0) ∫_0^b 1/√(1 + t²) dt = arsinh b = log(b + √(1+b²)), anchoring the constant of integration at arsinh 0 = 0.",
+      "integral_symmetric: the even-integrand identity ∫_{-a}^a 1/√(1 + t²) dt = 2·arsinh a, combining the FTC evaluation with the oddness of arsinh.",
+      "hasDerivAt_arsinh' / deriv_arsinh_eq: the antiderivative fact (arsinh)' x = 1/√(1 + x²) restated in fractional form (Mathlib states it as (√(1+x²))⁻¹), matching the integrand — this is the exact '∫ 1/√(1+x²) dx = arsinh x + C' content of the open question.",
+      "integral_zero_to_three_quarters / integral_zero_to_four_thirds: concrete evaluations ∫_0^{3/4} = log 2 and ∫_0^{4/3} = log 3, tying the calculus back to the parent's closed-form values via the (3,4,5) Pythagorean triple.",
+      "continuous_integrand / intervalIntegrable_integrand / sqrt_one_add_sq_pos: the supporting analytic API (the integrand is everywhere positive, continuous, and hence interval-integrable) needed to apply the FTC."
+    ],
+    "prerequisites": [
+      "Mathlib's derivative Real.hasDerivAt_arsinh : HasDerivAt arsinh (√(1 + x²))⁻¹ x",
+      "The Fundamental Theorem of Calculus intervalIntegral.integral_eq_sub_of_hasDerivAt",
+      "Continuity of √ (Real.continuous_sqrt) and Continuous.intervalIntegrable for interval integrability",
+      "The parent's logarithmic form arsinh x = log(x + √(1 + x²)) (Mathlib's definition) and Real.arsinh_zero, Real.arsinh_neg"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.hasDerivAt_arsinh",
+        "description": "HasDerivAt arsinh (√(1 + x²))⁻¹ x — the antiderivative fact from which the integral identity follows; restated here in fractional form 1/√(1+x²).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Arsinh"
+      },
+      {
+        "theorem": "intervalIntegral.integral_eq_sub_of_hasDerivAt",
+        "description": "The Fundamental Theorem of Calculus: if HasDerivAt f (f' x) x on the interval and f' is interval-integrable, then ∫_a^b f' = f b − f a. Applied with f = arsinh.",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus"
+      },
+      {
+        "theorem": "Real.continuous_sqrt",
+        "description": "Continuity of √, composed with 1 + x² to give continuity (and hence interval integrability) of the integrand 1/√(1+x²).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      },
+      {
+        "theorem": "Real.arsinh_zero / Real.arsinh_neg",
+        "description": "arsinh 0 = 0 (fixing C = 0 in the normalised integral) and arsinh(−x) = −arsinh x (driving the symmetric-interval doubling identity).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Arsinh"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The integral ∫ dx/√(1 + x²) = arsinh x + C = log(x + √(1 + x²)) + C is one of the standard entries in every integral table, and it is exactly what makes the inverse hyperbolic sine ubiquitous in calculus: it computes the arc length of the catenary y = cosh x (whose length element is √(1 + sinh²) = cosh, integrating to sinh, while the inverse substitution is governed by arsinh), and it is the prototype trigonometric-substitution integral handled by x = sinh u rather than x = tan u. The parent entry developed the algebraic theory of arsinh — its logarithmic closed form and its addition/subtraction/doubling calculus — but stopped short of the calculus identity that motivates the function in the first place. Mathlib supplies the derivative Real.hasDerivAt_arsinh; the present entry closes the loop by turning that derivative into the definite-integral evaluation via the Fundamental Theorem of Calculus, supplying the logarithmic closed form, the normalised (C = 0) antiderivative, the even-integrand symmetric-interval identity, and concrete logarithmic values.",
+    "problemStatement": "Establish ∫ 1/√(1 + x²) dx = arsinh x + C from Mathlib's hasDerivAt_arsinh, exhibiting arsinh as the antiderivative of the integrand. Concretely: prove the FTC evaluation ∫_a^b 1/√(1+t²) dt = arsinh b − arsinh a, its logarithmic closed form, the normalisation ∫_0^b = arsinh b = log(b + √(1+b²)), the symmetric-interval identity ∫_{-a}^a = 2·arsinh a, and concrete values ∫_0^{3/4} = log 2, ∫_0^{4/3} = log 3.",
+    "proofStrategy": "Restate Mathlib's Real.hasDerivAt_arsinh (derivative (√(1+x²))⁻¹) in fractional form 1/√(1+x²) via one_div, giving hasDerivAt_arsinh' — the precise antiderivative fact. The integrand is continuous everywhere (denominator √(1+x²) > 0 by positivity, composed continuity of √), hence interval-integrable. The Fundamental Theorem of Calculus intervalIntegral.integral_eq_sub_of_hasDerivAt then yields ∫_a^b 1/√(1+t²) dt = arsinh b − arsinh a directly. The logarithmic closed form is the parent's arsinh x = log(x + √(1+x²)) unfolded (rfl). Setting a = 0 and using arsinh_zero = 0 normalises the constant; the symmetric interval uses arsinh_neg to collapse arsinh a − arsinh(−a) to 2·arsinh a. Concrete values reuse the parent's (3,4,5)-triple computation: √(1+(3/4)²) = 5/4 makes the surd rational, so ∫_0^{3/4} = arsinh(3/4) = log(3/4 + 5/4) = log 2.",
+    "keyInsights": [
+      "The whole capstone is one application of the FTC to a single derivative fact: once arsinh is known to be an antiderivative of 1/√(1+x²), the definite integral over any interval is forced to be arsinh b − arsinh a. The only analytic content beyond Mathlib's derivative is interval-integrability, which follows from continuity.",
+      "Mathlib states the derivative with an inverse, (√(1+x²))⁻¹, while the integrand is naturally written 1/√(1+x²); the one-line one_div restatement is what makes the FTC apply syntactically — a small but necessary bridge.",
+      "Anchoring the lower limit at 0, where arsinh 0 = 0, is the honest way to pin the 'arbitrary constant C' to a concrete value: ∫_0^b 1/√(1+t²) dt = arsinh b, with no free constant left.",
+      "Because the integrand 1/√(1+t²) is even and arsinh is odd, the integral over a symmetric interval doubles cleanly: ∫_{-a}^a = arsinh a − arsinh(−a) = 2·arsinh a — a parity fact that needs no separate computation.",
+      "The (3,4,5) Pythagorean triple turns the surd rational and the integral into a clean logarithm: ∫_0^{3/4} 1/√(1+t²) dt = log 2. This links the calculus capstone directly to the parent's concrete closed-form values arsinh(3/4) = log 2 and arsinh(4/3) = log 3."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: the arsinh Antiderivative",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "States the open question (∫ 1/√(1+x²) dx = arsinh x + C from hasDerivAt_arsinh) and enumerates the theorems supplied: the antiderivative fact, the FTC evaluation, its logarithmic closed form, the normalised ∫_0^b, the symmetric-interval doubling, and the concrete logarithmic values.",
+      "mathContext": "$\\int \\frac{dx}{\\sqrt{1+x^2}} = \\operatorname{arsinh} x + C = \\log(x + \\sqrt{1+x^2}) + C$."
+    },
+    {
+      "id": "antiderivative-and-integrability",
+      "title": "Antiderivative Fact and Integrability",
+      "startLine": 38,
+      "endLine": 74,
+      "summary": "sqrt_one_add_sq_pos (denominator positivity), hasDerivAt_arsinh' (the derivative restated as 1/√(1+x²)), deriv_arsinh_eq (the deriv form), continuous_integrand and intervalIntegrable_integrand — the analytic API the FTC consumes.",
+      "mathContext": "$(\\operatorname{arsinh})'(x) = \\dfrac{1}{\\sqrt{1+x^2}}$, integrand continuous and interval-integrable."
+    },
+    {
+      "id": "ftc-evaluation",
+      "title": "The Fundamental Theorem of Calculus Evaluation",
+      "startLine": 76,
+      "endLine": 113,
+      "summary": "integral_one_div_sqrt_one_add_sq (∫_a^b = arsinh b − arsinh a), integral_eq_log_sub_log (logarithmic closed form), integral_zero_to and integral_zero_to_log (the normalised ∫_0^b = arsinh b = log(b + √(1+b²))), and integral_symmetric (∫_{-a}^a = 2·arsinh a).",
+      "mathContext": "$\\int_a^b \\frac{dt}{\\sqrt{1+t^2}} = \\operatorname{arsinh} b - \\operatorname{arsinh} a$; $\\int_{-a}^a = 2\\operatorname{arsinh} a$."
+    },
+    {
+      "id": "concrete-values",
+      "title": "Concrete Logarithmic Evaluations",
+      "startLine": 115,
+      "endLine": 135,
+      "summary": "integral_zero_to_three_quarters (∫_0^{3/4} = log 2) and integral_zero_to_four_thirds (∫_0^{4/3} = log 3), using the (3,4,5) triple to rationalise √(1+x²) and reuse the parent's closed-form values.",
+      "mathContext": "$\\int_0^{3/4} \\frac{dt}{\\sqrt{1+t^2}} = \\log 2$, $\\int_0^{4/3} \\frac{dt}{\\sqrt{1+t^2}} = \\log 3$."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "arsinh-log-formula-oq-01-oq-01-oq-01",
+      "question": "Derive the catenary arc-length formula: the length of y = cosh x over [0, b] equals sinh b, and re-express the arc-length integral of a general curve via the arsinh substitution to recover ∫_0^b √(1 + t²) dt = ½(b√(1+b²) + arsinh b).",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "arsinh-log-formula-oq-01",
+      "relationship": "parent",
+      "description": "The parent develops the algebraic theory of arsinh (logarithmic closed form, addition/subtraction/doubling laws, concrete values). This entry answers its first open question, supplying the calculus side: arsinh as the antiderivative of 1/√(1+x²) and the resulting definite-integral evaluations."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Arsinh",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Real.arsinh, its derivative Real.hasDerivAt_arsinh, and the inverse-pair / oddness lemmas."
+    },
+    {
+      "title": "Mathlib4: MeasureTheory.Integral.IntervalIntegral.FundThmCalculus",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of intervalIntegral.integral_eq_sub_of_hasDerivAt, the Fundamental Theorem of Calculus used to turn the derivative fact into the integral evaluation."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Answers the parent's first open question: arsinh is exhibited as the antiderivative of 1/√(1 + x²). From Mathlib's Real.hasDerivAt_arsinh (restated in fractional form) and the continuity-driven interval-integrability of the integrand, the Fundamental Theorem of Calculus yields ∫_a^b 1/√(1+t²) dt = arsinh b − arsinh a, with its logarithmic closed form log(b+√(1+b²)) − log(a+√(1+a²)). The normalisation ∫_0^b = arsinh b pins the constant of integration (arsinh 0 = 0); the even integrand and the oddness of arsinh give ∫_{-a}^a = 2·arsinh a; and the (3,4,5) Pythagorean triple yields the concrete values ∫_0^{3/4} = log 2 and ∫_0^{4/3} = log 3. 135 lines, 12 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The derivative is Mathlib's and the FTC is a standard tool (hence the mathlib badge), but the integral identity, its logarithmic and normalised forms, the symmetric-interval doubling, and the concrete logarithmic evaluations are new to the gallery and complete the arsinh story begun by the parent — joining the algebraic addition calculus to the calculus identity that motivates the function. It also lays the groundwork for the catenary arc-length integral.",
+    "openQuestions": [
+      "Derive the catenary arc-length formula ∫_0^b √(1 + t²) dt = ½(b√(1+b²) + arsinh b) via the arsinh substitution."
+    ]
+  }
+}
