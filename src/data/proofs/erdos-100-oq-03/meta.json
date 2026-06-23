@@ -1,0 +1,169 @@
+{
+  "id": "erdos-100-oq-03",
+  "title": "Erdős #100 OQ: The Optimal Linear Constant in Dimension 1 is c = 1",
+  "slug": "erdos-100-oq-03",
+  "description": "For the 1-dimensional analogue of Erdős #100 (collinear points with integer pairwise distances), the optimal linear constant is exactly c = 1: diam(A) ≥ |A| − 1, sharp via the arithmetic progression {0,1,…,n−1}.",
+  "meta": {
+    "author": "Researcher (Lean Genius)",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "erdos-problems",
+      "combinatorial-geometry",
+      "number-theory",
+      "extremal-combinatorics",
+      "sharp-bound",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.floor_intCast",
+        "description": "Floor of an integer-valued real returns the integer (used to view shifted points in ℤ)",
+        "module": "Mathlib.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "Int.card_Icc",
+        "description": "Cardinality of an integer interval Icc a b is (b + 1 − a).toNat (the packing count)",
+        "module": "Mathlib.Order.Interval.Finset.Int"
+      },
+      {
+        "theorem": "Finset.card_image_of_injOn",
+        "description": "Image under an injective-on map preserves cardinality (the shift map is injective)",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "Proved the sharp 1-dimensional lower bound diam(A) ≥ |A| − 1 for any collinear set with integer pairwise distances — exactly the Erdos100StrongConjecture bound, but unconditional in dimension 1",
+      "Proved sharpness: the arithmetic progression {0,1,…,n−1} attains diam = n − 1, so the optimal linear constant is exactly c = 1",
+      "Formalized the dimension-free packing inequality #(distinct distances) ≤ diam, the inequality underlying every known lower bound on the open planar problem"
+    ],
+    "dateAdded": "2026-06-23",
+    "erdosNumber": 100,
+    "proofRepoPath": "Proofs/Erdos100OQ03.lean",
+    "axiomCount": 0,
+    "lineCount": 273,
+    "assumptions": "None. 0 axioms (only the standard propext / Classical.choice / Quot.sound foundational axioms, which do not count), 0 sorries, no native_decide. Fully machine-checked.",
+    "theoremCount": 11,
+    "definitionCount": 3
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup: Integer Distances and Diameter on the Line",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Defines IntegerDistances A (every pairwise difference of points in the finite set A ⊆ ℝ is an integer — on the line this is exactly the integer-distance condition of Erdős #100) and diam A (max minus min). The header explains why the 1-D case is tractable while the planar case is open: on a line the points are totally ordered, but in ℝ² distances from a single point need not be distinct.",
+      "mathContext": "Erdős #100 asks whether n points in ℝ² with all pairwise distances positive integers must have diameter ≫ n. The best planar lower bounds are n^{3/4} (Kanold) and cn/log n (Guth–Katz). The linear question — does diam ≥ cn hold, and with what optimal c — is open. Restricting to collinear points (dimension 1) makes the problem an elementary chain argument."
+    },
+    {
+      "id": "shift-lemma",
+      "title": "Key Arithmetic Lemma: Shifted Points are Nonnegative Integers",
+      "startLine": 62,
+      "endLine": 87,
+      "summary": "shift_eq_floor: if A has integer distances and m = min A, then for every a ∈ A the shift a − m equals its own floor (it is a genuine integer real) and that floor is ≥ 0. This is the bridge that lets us view A as a set of nonnegative integers via the total map a ↦ ⌊a − m⌋, with no choice needed.",
+      "mathContext": "Since all pairwise differences are integers, a − m is an integer for every a; and m being the minimum forces a − m ≥ 0. Using Int.floor as the ℝ → ℤ map (rather than choice) keeps the construction definitionally transparent: ⌊a − m⌋ recovers the integer exactly because Int.floor_intCast."
+    },
+    {
+      "id": "main-bound",
+      "title": "Main Lower Bound: diam(A) ≥ |A| − 1",
+      "startLine": 88,
+      "endLine": 138,
+      "summary": "diam_ge_card_sub_one: the heart of the entry. The map a ↦ ⌊a − min⌋ is injective on A (the shifts are genuine integers), so it sends the n points to n distinct integers in [0, ⌊diam⌋]. An integer interval of that length holds at most ⌊diam⌋ + 1 of them (Int.card_Icc), so n ≤ ⌊diam⌋ + 1 ≤ diam + 1, giving diam ≥ n − 1.",
+      "mathContext": "This is the pigeonhole/packing core: n distinct integers spanning a range of length L force L ≥ n − 1. The largest of the n − 1 distances from the leftmost point is therefore ≥ n − 1, and that distance is the diameter. The same proof shows the planar difficulty is exactly the failure of injectivity of distance-from-a-point in ℝ²."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness: the Arithmetic Progression {0,1,…,n−1}",
+      "startLine": 139,
+      "endLine": 222,
+      "summary": "Builds apSet n = {0,1,…,n−1} ⊆ ℝ and proves: it has n points (apSet_card), integer distances (apSet_integerDistances), min 0 and max n−1 (apSet_min, apSet_max), hence diam = n − 1 (apSet_diam). The capstone optimal_constant_one packages the lower bound and the matching witness: c = 1 is optimal in dimension 1.",
+      "mathContext": "Equality diam = n − 1 in the lower bound shows the constant cannot be improved. The integer points 0,1,…,n−1 are the canonical collinear integer-distance configuration; their distinct distances are exactly {1,2,…,n−1}, each differing from the next by 1 — the extremal pattern."
+    },
+    {
+      "id": "packing",
+      "title": "Dimension-Free Packing: #(distinct distances) ≤ diam",
+      "startLine": 223,
+      "endLine": 273,
+      "summary": "distinct_distances_le_diam: the distinct pairwise distances of an integer-distance set are distinct positive integers in {1,…,⌊diam⌋}, so their number is ≤ diam. This holds in every dimension and is the inequality every known lower bound (Kanold, Guth–Katz) feeds into — combined with a distinct-distance lower bound it yields a diameter lower bound.",
+      "mathContext": "This formalizes the connection noted in the parent Erdős #100 file: since distances are positive integers ≤ diam, #distinct distances ≤ diam. In ℝ² the minimum number of distinct distances is Θ(n/√log n) (Guth–Katz), which is precisely why only diam ≥ cn/log n is known there; in ℝ¹ the number of distinct distances is ≥ n − 1, recovering the sharp linear bound."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős #100 concerns finite point sets in ℝ² with all pairwise distances positive integers — integer distance sets — and asks how small the diameter can be for n points. Anning and Erdős (1945) proved any infinite integer distance set in the plane is collinear, so the interesting finite non-collinear case is genuinely two-dimensional. The best known lower bounds on the minimum diameter are Kanold's n^{3/4} and the Guth–Katz cn/log n (via distinct distances, 2015); whether the true growth is linear, and what the optimal linear constant would be, remains open. This entry settles the question completely in the degenerate but well-defined one-dimensional analogue: among collinear integer-distance configurations the optimal linear constant is exactly 1.",
+    "problemStatement": "What is the optimal constant c in a linear diameter bound diam ≥ c·n for integer distance sets? In dimension 1 (collinear points), we prove c = 1 exactly: diam(A) ≥ |A| − 1 always holds, with equality for {0,1,…,n−1}.",
+    "text": "On a line, the n − 1 distances from the leftmost point are distinct positive integers, so the largest — the diameter — is at least n − 1; the integer points {0,…,n−1} show this is sharp.",
+    "proofStrategy": "Shift the set so its minimum is 0; every point becomes a nonnegative integer (all pairwise differences are integers). The map a ↦ ⌊a − min⌋ is injective, embedding the n points as n distinct integers in [0, ⌊diam⌋]. The integer-interval packing bound (Int.card_Icc) gives n ≤ diam + 1, i.e. diam ≥ n − 1. Sharpness is the explicit progression {0,…,n−1}. A dimension-free packing lemma (#distinct distances ≤ diam) records why the planar problem is harder.",
+    "keyInsights": [
+      "The bound diam ≥ n − 1 is exactly the `Erdos100StrongConjecture` that the sibling entry erdos-100-oq-02 can only assume as an axiom — but in dimension 1 it is unconditional and fully proved here.",
+      "The proof reduces the geometry to a one-line packing fact: n distinct integers in an interval force the interval to have length ≥ n − 1. Using Int.floor as a total ℝ → ℤ map avoids any appeal to choice in the construction.",
+      "Sharpness is genuine, not asymptotic: {0,1,…,n−1} achieves diam = n − 1 exactly, so the optimal linear constant in dimension 1 is precisely 1 — no o(1) slack.",
+      "The contrast with the open planar problem is structural and explicit: in ℝ² the n − 1 distances from one point need not be distinct (points can be equidistant), so the chain argument collapses. This is exactly why only diam ≥ cn/log n is known in the plane.",
+      "The dimension-free inequality #(distinct distances) ≤ diam is the common denominator of all known lower bounds: pair it with a distinct-distance lower bound to obtain a diameter lower bound. In ℝ¹ the distinct-distance count is ≥ n − 1; in ℝ² it is only Θ(n/√log n)."
+    ]
+  },
+  "conclusion": {
+    "summary": "Completely resolves the optimal-linear-constant question for the one-dimensional analogue of Erdős #100: among collinear point sets with integer pairwise distances, diam(A) ≥ |A| − 1 always, with equality for the arithmetic progression {0,1,…,n−1}. Hence the optimal linear constant is exactly c = 1. The result is fully verified with 0 axioms and no native_decide.",
+    "implications": "The 1-D result is the unconditional truth behind the planar Erdos100StrongConjecture (diam ≥ n−1), which the sibling entry erdos-100-oq-02 can only assume. It isolates precisely where the planar problem becomes hard — the loss of injectivity of distance-from-a-point — and formalizes the dimension-free packing inequality (#distinct distances ≤ diam) that all known lower bounds exploit. The reusable IntegerDistances / diam framework over ℝ supports further collinear-configuration results.",
+    "openQuestions": [
+      "Does the linear bound diam ≥ c·n hold in ℝ² at all, and if so what is the optimal c? The 1-D answer c = 1 is a lower bound on the difficulty; the planar constant (if the linear bound holds) is conjectured to be Θ(1) but is unproven beyond the cn/log n regime.",
+      "Can the packing inequality #(distinct distances) ≤ diam be combined with a formalized Guth–Katz distinct-distance bound to give a fully verified planar diam ≥ cn/log n, replacing the axiom used in the sibling chain?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "extends",
+      "targetId": "erdos-100",
+      "description": "Answers the open question 'what is the optimal constant c in the linear bound diam ≥ c·n' for the one-dimensional analogue of Erdős #100, where we prove c = 1 exactly."
+    },
+    {
+      "proofId": "erdos-100-oq-02",
+      "relationship": "sibling",
+      "description": "The sibling frames the planar growth-rate dichotomy Θ(n) vs Θ(n/log n) and assumes the strong conjecture diam ≥ n−1 as an axiom (Erdos100StrongConjecture). This entry proves that exact bound unconditionally in dimension 1 and shows it is sharp, giving the optimal constant c = 1 for the collinear case."
+    },
+    {
+      "proofId": "erdos-100-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01 develops the Anning–Erdős / Guth–Katz structure of the planar problem; this entry contributes the sharp one-dimensional boundary, c = 1, and the dimension-free packing inequality #(distinct distances) ≤ diam that connects the two."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos100OQ03",
+    "lineCount": 273,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 3,
+    "path": "Proofs/Erdos100OQ03.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "diam_ge_card_sub_one",
+      "type": "theorem",
+      "description": "For a nonempty collinear set with integer pairwise distances, diam(A) ≥ |A| − 1 (the sharp 1-D lower bound)."
+    },
+    {
+      "name": "optimal_constant_one",
+      "type": "theorem",
+      "description": "The optimal linear constant in dimension 1 is c = 1: the bound diam ≥ |A| − 1 holds for every integer-distance set, and the witness {0,…,n−1} has |A| = n and diam = n − 1."
+    },
+    {
+      "name": "apSet_diam",
+      "type": "theorem",
+      "description": "The arithmetic progression {0,1,…,n−1} has diameter exactly n − 1, witnessing sharpness."
+    },
+    {
+      "name": "distinct_distances_le_diam",
+      "type": "theorem",
+      "description": "Dimension-free packing inequality: the number of distinct pairwise distances of an integer-distance set is ≤ its diameter."
+    }
+  ],
+  "sorries": 0
+}
