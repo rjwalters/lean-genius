@@ -1,0 +1,124 @@
+{
+  "id": "urysohns-lemma-oq-01-oq-02",
+  "slug": "urysohns-lemma-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Metric"
+    ],
+    "namespace": "UrysohnsLemmaOQ01OQ02",
+    "lineCount": 165,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/UrysohnsLemmaOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "title": "The Metric Urysohn Function Is Lipschitz for Positively Separated Sets",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/UrysohnsLemmaOQ01OQ02.lean",
+    "tags": [
+      "topology",
+      "metric-space",
+      "urysohns-lemma",
+      "lipschitz",
+      "infDist",
+      "separation",
+      "modulus-of-continuity",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 165,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "urysohnFn: the explicit metric Urysohn function urysohnFn s t x = infDist x s / (infDist x s + infDist x t), repeated from the companion entry urysohns-lemma-oq-01 so this file is self-contained",
+      "abs_infDist_sub_le: the distance-to-a-set function is 1-Lipschitz in absolute-value form, |infDist x s - infDist y s| ≤ dist x y (the only metric input the estimate needs), derived from Metric.lipschitz_infDist_pt",
+      "delta_le_infDist_add: positive separation of the sets propagates to the denominator — if every p ∈ s, q ∈ t satisfy δ ≤ dist p q, then δ ≤ infDist x s + infDist x t for every point x (triangle inequality plus the inf characterisation Metric.le_infDist)",
+      "urysohnFn_abs_sub_le: the sharp quantitative bound |f(x) - f(y)| ≤ dist x y / δ when the denominator is bounded below by δ > 0, via the telescoping identity f(x)-f(y) = (a(x)b(y)-a(y)b(x))/(D(x)D(y)) and the numerator estimate |a(x)b(y)-a(y)b(x)| ≤ D(x)·dist x y",
+      "lipschitzWith_urysohnFn: the headline result — under a uniform denominator lower bound δ > 0 the explicit Urysohn function is LipschitzWith (1/δ), upgrading the companion file's qualitative continuity to a modulus",
+      "lipschitzWith_urysohnFn_of_separated: the same conclusion from genuine set separation (nonempty sets at mutual distance ≥ δ > 0), combining delta_le_infDist_add with the headline bound",
+      "uniformContinuous_urysohnFn: uniform continuity of the separator as an immediate consequence of being Lipschitz, recovering the companion file's continuity with an explicit modulus",
+      "lipschitzWith_urysohnFn_zero_one: concrete capstone — the standard separator of {0} and {1} on ℝ, x ↦ |x|/(|x|+|x-1|), is 1-Lipschitz (the points are distance 1 apart, so the modulus is 1/δ = 1)"
+    ],
+    "prerequisites": [
+      "The explicit metric Urysohn function urysohnFn s t x = infDist x s / (infDist x s + infDist x t) (companion entry urysohns-lemma-oq-01)",
+      "Metric.infDist and its 1-Lipschitz property Metric.lipschitz_infDist_pt, plus Metric.infDist_nonneg and the inf characterisation Metric.le_infDist",
+      "Metric.infDist_le_infDist_add_dist: the triangle inequality for distance-to-a-set",
+      "LipschitzWith and LipschitzWith.of_dist_le_mul / LipschitzWith.uniformContinuous",
+      "Real.toNNReal and Real.coe_toNNReal for bundling the modulus 1/δ as a ℝ≥0 constant"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Metric.lipschitz_infDist_pt",
+        "description": "The map x ↦ infDist x s is 1-Lipschitz; unwound to |infDist x s - infDist y s| ≤ dist x y, the single metric input driving the Lipschitz estimate.",
+        "module": "Mathlib.Topology.MetricSpace.HausdorffDistance"
+      },
+      {
+        "theorem": "Metric.le_infDist",
+        "description": "For a nonempty set, r ≤ infDist x s ↔ ∀ y ∈ s, r ≤ dist x y — used to propagate set separation to the denominator lower bound.",
+        "module": "Mathlib.Topology.MetricSpace.HausdorffDistance"
+      },
+      {
+        "theorem": "Metric.infDist_le_infDist_add_dist",
+        "description": "infDist x s ≤ infDist y s + dist x y, the triangle inequality for distance-to-a-set, completing the denominator separation lemma.",
+        "module": "Mathlib.Topology.MetricSpace.HausdorffDistance"
+      },
+      {
+        "theorem": "LipschitzWith.of_dist_le_mul",
+        "description": "A map satisfying dist (f x) (f y) ≤ K · dist x y is LipschitzWith K — packages the pointwise bound into the bundled modulus.",
+        "module": "Mathlib.Topology.MetricSpace.Lipschitz"
+      },
+      {
+        "theorem": "div_le_div_iff₀",
+        "description": "Cross-multiplication for inequalities of positive-denominator quotients, reducing the assembled bound to a polynomial inequality discharged by nlinarith.",
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "urysohns-lemma-oq-01-oq-02-oq-01",
+      "question": "Is the modulus 1/δ sharp? Exhibit sets (e.g. two points at distance δ in ℝ or a normed space) where the best Lipschitz constant of urysohnFn equals 1/δ, and characterise when a strictly smaller constant is attainable.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "urysohns-lemma-oq-01",
+      "relationship": "parent",
+      "description": "Defines urysohnFn and proves it continuous, [0,1]-valued, and equal to 0 on s and 1 on t; this entry resolves that entry's open question oq-01-oq-02 by supplying the Lipschitz modulus."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Topology.MetricSpace.HausdorffDistance",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Metric.infDist and its 1-Lipschitz property, the engine behind the modulus bound."
+    },
+    {
+      "title": "Paul Urysohn, Über die Mächtigkeit der zusammenhängenden Mengen",
+      "author": "P. Urysohn",
+      "year": "1925",
+      "venue": "Mathematische Annalen",
+      "description": "Origin of Urysohn's lemma; the explicit metric witness whose modulus is quantified here."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The companion entry urysohns-lemma-oq-01 constructs the explicit metric Urysohn function urysohnFn s t x = infDist x s / (infDist x s + infDist x t) for disjoint nonempty closed sets and proves it continuous — a qualitative statement carrying no modulus. This entry upgrades continuity to a quantitative Lipschitz estimate for positively separated sets. Writing a(·) = infDist · s and b(·) = infDist · t (each 1-Lipschitz, abs_infDist_sub_le), the quotient difference telescopes to f(x)-f(y) = (a(x)b(y)-a(y)b(x))/(D(x)D(y)) with |a(x)b(y)-a(y)b(x)| ≤ D(x)·dist x y, giving the sharp pointwise bound |f(x)-f(y)| ≤ dist x y / δ whenever the denominator D = a+b is bounded below by δ > 0 (urysohnFn_abs_sub_le). The headline lipschitzWith_urysohnFn packages this as LipschitzWith (1/δ); lipschitzWith_urysohnFn_of_separated discharges the denominator bound from genuine set separation (δ ≤ dist p q for all p ∈ s, q ∈ t) via delta_le_infDist_add; uniformContinuous_urysohnFn recovers the companion continuity with a modulus; and lipschitzWith_urysohnFn_zero_one verifies the concrete separator of {0} and {1} on ℝ is 1-Lipschitz. 165 lines, 7 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "implications": "The result turns the textbook Urysohn separator into a genuinely quantitative tool: on the complement of a fixed separation gap it is Lipschitz with an explicit, dimension-free modulus 1/δ depending only on the gap, not on the ambient space. This is the estimate behind uniform smoothing constructions and partitions of unity with controlled gradients, and it cleanly recovers the companion file's continuity. The modulus is governed entirely by the inf-distance triangle inequality, so it holds verbatim in any metric space.",
+    "openQuestions": [
+      "Is the modulus 1/δ sharp, and when is a strictly smaller Lipschitz constant attainable?"
+    ]
+  }
+}
