@@ -992,6 +992,7 @@ import Proofs.Erdos1021OQ01
 import Proofs.Erdos1021OQ01Aristotle
 import Proofs.Erdos1021Problem
 import Proofs.Erdos1022OQ01
+import Proofs.Erdos1022OQ02
 import Proofs.Erdos1022OQ03
 import Proofs.Erdos1022Problem
 import Proofs.Erdos1023InterFree
