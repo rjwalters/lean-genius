@@ -41,7 +41,9 @@
     "keyInsights": [
       "Working inside the commutative subalgebra K[f] = adjoin K {f} makes both the commutation [s, n] = 0 and the 'polynomial in f' clause automatic.",
       "Uniqueness reduces to a single fact: an operator that is simultaneously semisimple and nilpotent is zero — applied to s₁ - s₂ = n₂ - n₁.",
-      "The perfect-field hypothesis is exactly what makes a difference of commuting semisimple operators semisimple (IsSemisimple.sub_of_commute), which is the new Mathlib ingredient enabling uniqueness."
+      "The perfect-field hypothesis is exactly what makes a difference of commuting semisimple operators semisimple (IsSemisimple.sub_of_commute), which is the new Mathlib ingredient enabling uniqueness.",
+      "Existence is genuinely constructive: Mathlib's proof runs a Newton/Hensel-type iteration (following Chambert-Loir) entirely inside K[f], so the semisimple and nilpotent parts emerge as honest polynomials in f rather than as abstract spectral projections.",
+      "The result is the basis-free refinement of the Jordan canonical form: rather than choosing a Jordan basis, one decomposes the operator itself — and unlike the parent entry's axiomatized Jordan-form/minpoly relationship, this additive splitting is reached with 0 axioms over any perfect field."
     ],
     "prerequisites": [
       "Semisimple and nilpotent linear operators",
