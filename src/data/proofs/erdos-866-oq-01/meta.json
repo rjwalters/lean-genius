@@ -55,6 +55,40 @@
       "Formalization cleanly separates the settled shell of #866 (lower bound 1, exponent bookkeeping) from the open frontier (exact g_4, the log and √N rates, the true exponent α_k)."
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Background and Honest Scope",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring: Erdős #866's threshold g_k(N), the odd-number extremal set witnessing g_k(N) ≥ 1, the companion's k=3-only gap this entry closes, and an explicit statement that the hard growth rates remain open.",
+      "mathContext": "g_k(N) ≥ 1 for all k ≥ 3; general upper bound g_k(N) ≪ N^{1−2^{-k}}."
+    },
+    {
+      "id": "definitions",
+      "title": "Self-Contained Definitions",
+      "startLine": 54,
+      "endLine": 69,
+      "summary": "Interval {1,…,2N}, the HasAllPairwiseSums predicate, the oddNumbers extremal set, and the exponent upperExponent k = 1 − 2^{-k}, all re-declared locally so the file imports nothing from the companion.",
+      "mathContext": "HasAllPairwiseSums A b ≡ ∀ i<j, b_i+b_j ∈ A; oddNumbers N = odd elements of {1,…,2N}."
+    },
+    {
+      "id": "parity-obstruction",
+      "title": "The Parity Obstruction for all k ≥ 3",
+      "startLine": 71,
+      "endLine": 99,
+      "summary": "oddNumbers_no_triple (base case k=3 by parity pigeonhole) and oddNumbers_no_ktuple (the generalization, by restricting an alleged k-tuple to its first three coordinates via Fin.castLE) — establishing g_k(N) ≥ 1 for every k ≥ 3.",
+      "mathContext": "Among any three integers two share parity ⟹ even sum ⟹ not odd; restrict k-tuple to a triple via Fin.castLE."
+    },
+    {
+      "id": "upper-exponent",
+      "title": "The Upper-Bound Exponent 1 − 2^{-k}",
+      "startLine": 101,
+      "endLine": 132,
+      "summary": "upperExponent_nonneg and upperExponent_lt_one ([0,1) boundedness ⟹ sub-linearity), upperExponent_strictMono (full StrictMono), and upperExponent_tendsto_one (limit 1).",
+      "mathContext": "0 ≤ 1 − 2^{-k} < 1, strictly increasing, with limit 1 as k → ∞."
+    }
+  ],
   "conclusion": {
     "summary": "Six machine-checked results (0 axioms, 0 sorries) for Erdős #866. The headline oddNumbers_no_ktuple promotes the parity obstruction to all k ≥ 3, establishing g_k(N) ≥ 1 for every k ≥ 3 (the companion proved only k = 3). The remaining results pin down the upper-bound exponent 1 − 2^{-k}: it lies in [0,1), is strictly increasing (full StrictMono), and converges to 1.",
     "implications": "The lower bound g_k(N) ≥ 1 is now formalized at the full generality claimed for the problem, and the qualitative behaviour of the general upper exponent (sub-linear, monotone, limit 1) is recorded precisely. Together they fix the elementary envelope inside which the hard rates g_5 ≍ log N and g_6 ≍ √N live.",
