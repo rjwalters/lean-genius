@@ -81,18 +81,21 @@
   ],
   "sections": [
     {
+      "id": "endpoint-monotone",
       "title": "Endpoint sequences are monotone",
       "startLine": 44,
       "endLine": 64,
       "summary": "bisect_left_seq_mono and bisect_right_seq_anti promote the parent's per-step monotonicity to the full sequences of left/right endpoints."
     },
     {
+      "id": "convergence-exact-zero",
       "title": "Convergence to an exact zero",
       "startLine": 66,
       "endLine": 128,
       "summary": "bisect_tendsto_root: monotone bounded convergence gives the left limit c; the width (b−a)/2ⁿ → 0 forces the right endpoints and midpoints to c ∈ [a,b]; continuity transports the sign invariant to give f c = 0."
     },
     {
+      "id": "recovering-classical-ivt",
       "title": "Recovering the classical IVT",
       "startLine": 130,
       "endLine": 137,
