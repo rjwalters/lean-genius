@@ -1,0 +1,74 @@
+[
+  {
+    "id": "explicit-root",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01",
+    "range": { "startLine": 66, "endLine": 74 },
+    "type": "technique",
+    "title": "Explicit Square Root in Odd Order",
+    "content": "exists_sq_eq_of_odd_card writes |G| = 2m+1 (from Odd) and exhibits the square root explicitly: x^(m+1) squares to x. The proof is a one-line exponent identity — (x^(m+1))^2 = x^((m+1)·2) = x^(|G|+1) = x^|G| · x = x — collapsing via pow_card_eq_one (Lagrange/Euler: x^|G| = 1). Crucially the root is constructed, not merely asserted to exist, so the result is computational rather than an existence statement pulled from cardinality counting.",
+    "mathContext": "$|G| = 2m+1 \\implies x = (x^{m+1})^2$, since $(x^{m+1})^2 = x^{2m+2} = x^{|G|} \\cdot x = x$.",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange's theorem", "exponent of a group", "cyclic groups", "Euler's theorem"],
+    "prerequisites": ["group theory", "order of an element"]
+  },
+  {
+    "id": "squaring-bijective",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01",
+    "range": { "startLine": 76, "endLine": 86 },
+    "type": "insight",
+    "title": "Squaring Is a Bijection",
+    "content": "sq_surjective_of_odd_card packages the explicit root as surjectivity of x ↦ x², and sq_bijective_of_odd_card upgrades this to a bijection by the finite-set pigeonhole principle (Finite.injective_iff_surjective: a self-map of a finite type is injective iff surjective). The structural payoff is that every element of an odd-order group has a *unique* square root — the engine behind countless parity-free arguments, e.g. extracting unique 'half' elements without a 1/2 ∈ ℤ.",
+    "mathContext": "On a finite $G$, surjective $\\implies$ bijective, so $x \\mapsto x^2$ is a permutation of $G$ when $|G|$ is odd; unique square roots exist.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "finite sets", "group automorphisms", "Frobenius / power maps"],
+    "prerequisites": ["group theory", "finite cardinality"]
+  },
+  {
+    "id": "no-involution",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01",
+    "range": { "startLine": 90, "endLine": 103 },
+    "type": "insight",
+    "title": "No Involutions in Odd Order",
+    "content": "no_involution_of_odd_card shows x² = 1 forces x = 1 when |G| is odd. From x² = 1, orderOf x ∣ 2 (orderOf_dvd_of_pow_eq_one), so the order is 1 or 2 (Nat.dvd_prime); order 2 would give 2 ∣ |G| via Lagrange (orderOf_dvd_card), contradicting oddness by omega. This is the exact contrapositive of the parent's even-order corollary 'even order ⟹ an involution exists', and the elementary fact behind why 'half the group is its own inverse' can never happen in odd order.",
+    "mathContext": "$x^2 = 1 \\implies \\operatorname{ord}(x) \\mid 2$; if $\\operatorname{ord}(x) = 2$ then $2 \\mid |G|$, impossible for odd $|G|$, so $x = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["involution", "order of an element", "Lagrange's theorem", "prime divisors"],
+    "prerequisites": ["group theory", "divisibility"]
+  },
+  {
+    "id": "sharp-boundary",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01",
+    "range": { "startLine": 105, "endLine": 127 },
+    "type": "concept",
+    "title": "Sharp Boundary: Involutions Iff Even Order",
+    "content": "involution_iff_even_card welds the two sides together into an equivalence: a finite group contains a nontrivial self-inverse element iff |G| is even. The forward direction is the new odd-order result (no involutions ⟹ even when one exists); the backward direction is Cauchy's theorem at the prime p = 2 (exists_prime_orderOf_dvd_card), which manufactures an order-2 element from 2 ∣ |G|. This sharpens the parent's one-directional corollary into a clean iff — the precise dividing line between the odd and even worlds.",
+    "mathContext": "$(\\exists x \\neq 1,\\, x^2 = 1) \\iff 2 \\mid |G|$. Backward: Cauchy at $p=2$. Forward: contrapositive of no_involution_of_odd_card.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy's theorem", "involution", "parity", "Feit–Thompson theorem"],
+    "prerequisites": ["group theory", "Cauchy's theorem"]
+  },
+  {
+    "id": "additive-form",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01",
+    "range": { "startLine": 130, "endLine": 138 },
+    "type": "technique",
+    "title": "Additive Form: Doubling Is Surjective",
+    "content": "exists_two_nsmul_eq_of_odd_card is the additive transcription of the squaring-surjective result: in a finite additive group of odd order every element is a double, x = 2 • ((m+1) • x). The multiplicative identity (x^(m+1))² = x becomes the additive 2 • ((m+1) • x) = x, with card_nsmul_eq_zero (the additive analogue of pow_card_eq_one) replacing the power law. This is exactly the statement that 'division by 2' is well-defined in odd-order abelian groups such as ℤ/(2k+1)ℤ.",
+    "mathContext": "In a finite additive group with $|G| = 2m+1$: $2 \\cdot ((m+1)\\cdot x) = (2m+2)\\cdot x = |G|\\cdot x + x = x$, so doubling is surjective.",
+    "significance": "supporting",
+    "relatedConcepts": ["additive groups", "scalar multiplication (nsmul)", "modular arithmetic", "division by 2"],
+    "prerequisites": ["group theory", "additive notation"]
+  },
+  {
+    "id": "concrete-instances",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01",
+    "range": { "startLine": 142, "endLine": 149 },
+    "type": "definition",
+    "title": "Concrete Witnesses in ℤ/3ℤ and ℤ/5ℤ",
+    "content": "zmod3_double_surjective, zmod5_double_surjective and zmod3_no_involution realise the abstract phenomena in the smallest nontrivial odd-order groups: doubling is onto and 0 is the unique self-inverse element. All three are dispatched by kernel decide (not native_decide), so they add no trust assumptions — the file stays genuinely 0-axiom (no Lean.ofReduceBool). These finite checks make the general theorems tangible and serve as regression sanity checks on the abstract statements.",
+    "mathContext": "In $\\mathbb{Z}/3\\mathbb{Z}$ and $\\mathbb{Z}/5\\mathbb{Z}$: $y \\mapsto 2y$ is a bijection and $x + x = 0 \\implies x = 0$. Verified by kernel `decide`, 0 axioms.",
+    "significance": "technical",
+    "relatedConcepts": ["cyclic groups", "ℤ/nℤ", "decidability", "kernel computation"],
+    "prerequisites": ["modular arithmetic", "Lean decide tactic"]
+  }
+]

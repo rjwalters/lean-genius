@@ -35,9 +35,19 @@
       "classic"
     ],
     "badge": "original",
+    "axiomCount": 0,
     "sorries": 0,
+    "lineCount": 151,
+    "theoremCount": 8,
+    "definitionCount": 0,
     "dateAdded": "2026-06-22",
     "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "pow_card_eq_one: x ^ |G| = 1 in a finite group (Lagrange/Euler), the single fact driving the explicit square-root identity",
+      "Finite.injective_iff_surjective: on a finite type a self-map is injective iff surjective, used to upgrade surjective squaring to bijective",
+      "orderOf_dvd_of_pow_eq_one and orderOf_dvd_card: order divides any annihilating exponent and divides |G| (Lagrange)",
+      "exists_prime_orderOf_dvd_card: Cauchy's theorem proper — p ∣ |G| yields an element of order p (the p = 2 case supplies the involution)"
+    ],
     "mathlibDependencies": [
       {
         "theorem": "pow_card_eq_one",
@@ -69,76 +79,110 @@
         "description": "Fintype.card G • x = 0 in a finite additive group; the additive analogue of pow_card_eq_one used for the doubling-surjective form.",
         "module": "Mathlib.GroupTheory.OrderOfElement"
       }
-    ],
-    "annotations": [
-      {
-        "id": "explicit-root",
-        "title": "Explicit Square Root in Odd Order",
-        "startLine": 66,
-        "endLine": 74,
-        "summary": "exists_sq_eq_of_odd_card: writing |G| = 2m+1, the element x^(m+1) squares to x via (x^(m+1))^2 = x^((m+1)*2) = x^(|G|+1) = x^|G| * x = x, using pow_card_eq_one.",
-        "mathContext": "Odd order ⟹ every element is a square, with an explicit root."
-      },
-      {
-        "id": "squaring-bijective",
-        "title": "Squaring Is a Bijection",
-        "startLine": 76,
-        "endLine": 88,
-        "summary": "sq_surjective_of_odd_card and sq_bijective_of_odd_card: the explicit root makes x ↦ x^2 surjective, and on a finite group surjective ⟹ bijective, so every element has a unique square root.",
-        "mathContext": "Odd order ⟹ the squaring map is bijective."
-      },
-      {
-        "id": "no-involution",
-        "title": "No Involutions in Odd Order",
-        "startLine": 90,
-        "endLine": 103,
-        "summary": "no_involution_of_odd_card: if x^2 = 1 then orderOf x ∣ 2; being 2 would force 2 ∣ |G| against oddness, so orderOf x = 1 and x = 1. The exact contrapositive of the parent's even-order involution corollary.",
-        "mathContext": "Odd order ⟹ x^2 = 1 forces x = 1."
-      },
-      {
-        "id": "sharp-boundary",
-        "title": "Sharp Boundary: Involutions Iff Even Order",
-        "startLine": 105,
-        "endLine": 128,
-        "summary": "involution_iff_even_card: a finite group has a nontrivial element with x^2 = 1 iff |G| is even. Forward is the new odd-order result; backward is Cauchy at p = 2. Upgrades the parent's one-directional corollary to an equivalence.",
-        "mathContext": "Existence of an involution ⟺ even order."
-      },
-      {
-        "id": "additive-form",
-        "title": "Additive Form: Doubling Is Surjective",
-        "startLine": 130,
-        "endLine": 140,
-        "summary": "exists_two_nsmul_eq_of_odd_card: in a finite additive group of odd order every element is a double, x = 2 • ((m+1) • x), the additive translation of the squaring-surjective result.",
-        "mathContext": "Odd order ⟹ doubling is surjective."
-      },
-      {
-        "id": "concrete-instances",
-        "title": "Concrete Witnesses in ZMod 3 and ZMod 5",
-        "startLine": 142,
-        "endLine": 149,
-        "summary": "zmod3_double_surjective, zmod5_double_surjective and zmod3_no_involution exhibit the odd-order phenomena concretely: doubling is onto and the only self-inverse element is 0. All by kernel decide, no native_decide, so 0 axioms.",
-        "mathContext": "Odd-order phenomena realised in ZMod 3 and ZMod 5, 0 axioms."
-      }
-    ],
-    "references": [
-      {
-        "authors": "Cauchy, Augustin-Louis",
-        "title": "Mémoire sur les arrangements que l'on peut former avec des lettres données",
-        "year": "1845",
-        "note": "Exercices d'analyse et de physique mathématique 3, 151–252 — the original theorem; the even prime p = 2 is the source of involutions, switched off in odd order."
-      },
-      {
-        "authors": "Isaacs, I. Martin",
-        "title": "Finite Group Theory",
-        "year": "2008",
-        "note": "Graduate Studies in Mathematics 92, AMS — odd order as the standing hypothesis where squaring is a bijection and no involutions occur."
-      },
-      {
-        "authors": "Feit, Walter; Thompson, John G.",
-        "title": "Solvability of groups of odd order",
-        "year": "1963",
-        "note": "Pacific Journal of Mathematics 13, 775–1029 — the deep structure theory of odd-order groups, whose elementary opening observation is the absence of involutions."
-      }
     ]
-  }
+  },
+  "overview": {
+    "historicalContext": "Cauchy's theorem (Augustin-Louis Cauchy, 1845) — every prime $p$ dividing $|G|$ yields an element of order exactly $p$ — is the first genuine converse to Lagrange's theorem and the historical seed of Sylow theory (1872). Its single even prime $p = 2$ is the sole source of involutions, so the even/odd parity of $|G|$ cleanly partitions finite groups into a world with self-inverse elements and a world without. The odd-order side, where this entry lives, is one of the most consequential dividing lines in all of group theory: the absence of involutions is the elementary opening observation of the Feit–Thompson theorem (1963), whose 255-page proof established that every finite group of odd order is solvable — a cornerstone of the classification of finite simple groups. The companion fact that the squaring map is then a bijection (odd-order groups have unique square roots) is folklore used throughout the structure theory of finite groups and recurs in the theory of $2$-divisible / uniquely $2$-divisible groups. Mathlib formalizes Cauchy's theorem and Lagrange's theorem but packages none of these odd-order corollaries; this entry supplies them.",
+    "problemStatement": "Fix a finite group $G$. The parent records the $p = 2$ corollary of Cauchy: if $|G|$ is even then $G$ contains an involution (an element $x \\neq 1$ with $x^2 = 1$). This entry establishes the complementary odd-order structure and the resulting sharp boundary. (1) If $|G|$ is odd then every $x \\in G$ is a square, with the explicit root $x = (x^{m+1})^2$ where $|G| = 2m+1$; hence $x \\mapsto x^2$ is surjective and (G finite) bijective. (2) If $|G|$ is odd then $x^2 = 1 \\implies x = 1$, i.e. no involutions. (3) Welding the two: $G$ contains a nontrivial self-inverse element $\\iff |G|$ is even. (4) The additive transcription: in a finite additive group of odd order, doubling $y \\mapsto 2 \\cdot y$ is surjective. Concrete $\\mathbb{Z}/3\\mathbb{Z}$ and $\\mathbb{Z}/5\\mathbb{Z}$ witnesses are checked by kernel `decide`.",
+    "proofStrategy": "Everything flows from one exponent identity. Writing $|G| = 2m+1$, the element $x^{m+1}$ satisfies $(x^{m+1})^2 = x^{2m+2} = x^{|G|+1} = x^{|G|} \\cdot x = x$ by `pow_card_eq_one` — this is exists_sq_eq_of_odd_card. Surjectivity of squaring is then immediate, and Finite.injective_iff_surjective upgrades it to bijectivity (the finite-set pigeonhole principle). The no-involution result runs the divisibility the other way: $x^2 = 1$ gives $\\operatorname{ord}(x) \\mid 2$ (orderOf_dvd_of_pow_eq_one), so $\\operatorname{ord}(x) \\in \\{1, 2\\}$; order $2$ would force $2 \\mid |G|$ via Lagrange (orderOf_dvd_card), which `omega` rejects against oddness, leaving $x = 1$. The sharp boundary involution_iff_even_card assembles both directions: forward is the contrapositive just proved, backward invokes Cauchy at $p = 2$ (exists_prime_orderOf_dvd_card) to manufacture an order-2 element from $2 \\mid |G|$. The additive form mirrors the multiplicative argument with `two_nsmul`, `add_nsmul`, and card_nsmul_eq_zero in place of the power laws, and the $\\mathbb{Z}/n\\mathbb{Z}$ instances finish by kernel `decide`.",
+    "keyInsights": [
+      "Parity of $|G|$ is the whole story. The single even prime $2$ in Cauchy's theorem is the only possible source of involutions, so 'odd order' is exactly 'the prime $2$ is absent' — and every odd-order corollary here is a shadow of that one arithmetic fact.",
+      "The square root is constructed, not just shown to exist. Most existence proofs of square roots in odd-order groups argue by cardinality; here $x^{m+1}$ is written down explicitly, turning the statement into a closed-form computation and making the additive 'division by 2' literally a formula.",
+      "Bijectivity is bought with the pigeonhole principle, not extra structure. Surjectivity of $x \\mapsto x^2$ comes free from the explicit root; finiteness alone (Finite.injective_iff_surjective) supplies injectivity, so unique square roots hold in *every* odd-order group, abelian or not.",
+      "The result is a genuine iff, sharpening the parent's one-way corollary. The parent proves 'even order $\\Rightarrow$ involution'; pairing it with the new 'odd order $\\Rightarrow$ no involution' pins down involutions *exactly* — they exist iff $2 \\mid |G|$ — which is the cleanest possible boundary statement.",
+      "This is the elementary doorway to deep theory. 'Odd-order groups have no involutions' is the first sentence of the structure theory behind Feit–Thompson (odd-order groups are solvable); the entry formalizes precisely the parity observation that opens that programme.",
+      "The 0-axiom claim is honest. The concrete $\\mathbb{Z}/3\\mathbb{Z}$ and $\\mathbb{Z}/5\\mathbb{Z}$ checks use kernel `decide`, not `native_decide`, so no `Lean.ofReduceBool` is incurred — the file is verified outright, not merely axiomatized."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: The Odd-Order Boundary",
+      "startLine": 6,
+      "endLine": 58,
+      "summary": "Frames the file as the odd-order companion to the parent's even-order corollary of Cauchy's theorem. Lays out the six results — explicit square root, squaring bijective, no involutions, the sharp involution-iff-even-order boundary, the additive doubling form, and the concrete ZMod 3 / ZMod 5 witnesses — and notes none are packaged in Mathlib. Records the verification status (0 sorries, 0 axioms, kernel decide only, no native_decide).",
+      "mathContext": "Parity of $|G|$ partitions finite groups: $p = 2$ in Cauchy's theorem is the sole source of involutions, switched off precisely in odd order."
+    },
+    {
+      "id": "squaring",
+      "title": "Squaring in Odd-Order Groups",
+      "startLine": 64,
+      "endLine": 86,
+      "summary": "exists_sq_eq_of_odd_card constructs the explicit root x^(m+1) for |G| = 2m+1 via the identity (x^(m+1))^2 = x^(|G|+1) = x using pow_card_eq_one. sq_surjective_of_odd_card repackages this as surjectivity of x ↦ x², and sq_bijective_of_odd_card upgrades to a bijection through Finite.injective_iff_surjective, giving unique square roots.",
+      "mathContext": "$(x^{m+1})^2 = x^{2m+2} = x^{|G|}\\cdot x = x$, so $x \\mapsto x^2$ is a permutation of an odd-order $G$."
+    },
+    {
+      "id": "no-involutions",
+      "title": "Absence of Involutions",
+      "startLine": 88,
+      "endLine": 103,
+      "summary": "no_involution_of_odd_card proves x² = 1 ⟹ x = 1 in odd order: orderOf x ∣ 2 (orderOf_dvd_of_pow_eq_one), so the order is 1 or 2; order 2 forces 2 ∣ |G| via orderOf_dvd_card, rejected by omega against oddness. This is the exact contrapositive of the parent's even-order involution corollary.",
+      "mathContext": "$x^2 = 1 \\implies \\operatorname{ord}(x) \\mid 2$; $\\operatorname{ord}(x) = 2$ would give $2 \\mid |G|$, impossible for odd $|G|$."
+    },
+    {
+      "id": "sharp-boundary",
+      "title": "Sharp Boundary: Involutions Iff Even Order",
+      "startLine": 105,
+      "endLine": 127,
+      "summary": "involution_iff_even_card welds both directions into an equivalence: a finite group has a nontrivial self-inverse element iff |G| is even. Forward is the contrapositive of no_involution_of_odd_card; backward applies Cauchy at p = 2 (exists_prime_orderOf_dvd_card) to manufacture an order-2 element from 2 ∣ |G|. Upgrades the parent's one-directional corollary to an iff.",
+      "mathContext": "$(\\exists x \\neq 1,\\ x^2 = 1) \\iff 2 \\mid |G|$ — the precise dividing line between the odd and even worlds."
+    },
+    {
+      "id": "additive-form",
+      "title": "Additive Form: Doubling Is Surjective",
+      "startLine": 128,
+      "endLine": 138,
+      "summary": "exists_two_nsmul_eq_of_odd_card transcribes the squaring-surjective result additively: in a finite additive group of odd order every element is a double, x = 2 • ((m+1) • x), using two_nsmul, add_nsmul and card_nsmul_eq_zero in place of the power laws. This is 'division by 2 is well-defined' for odd-order additive groups.",
+      "mathContext": "$2 \\cdot ((m+1)\\cdot x) = (2m+2)\\cdot x = |G|\\cdot x + x = x$, so doubling is surjective."
+    },
+    {
+      "id": "concrete-instances",
+      "title": "Concrete Witnesses in ℤ/3ℤ and ℤ/5ℤ (kernel decide)",
+      "startLine": 140,
+      "endLine": 151,
+      "summary": "zmod3_double_surjective, zmod5_double_surjective and zmod3_no_involution realise the phenomena in the smallest nontrivial odd-order groups: doubling is onto and 0 is the unique self-inverse element. All by kernel decide (not native_decide), so no Lean.ofReduceBool is incurred and the file stays genuinely 0-axiom.",
+      "mathContext": "In $\\mathbb{Z}/3\\mathbb{Z}$, $\\mathbb{Z}/5\\mathbb{Z}$: $y \\mapsto 2y$ bijective and $x + x = 0 \\implies x = 0$, by kernel `decide`."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-group-theorem-oq-01",
+      "relationship": "extends",
+      "description": "The parent entry: Cauchy's theorem and its even-order corollary that a group of even order contains an involution. This entry proves the complementary odd-order structure and welds the two into the sharp iff involution_iff_even_card, upgrading the parent's one-directional corollary to an equivalence."
+    },
+    {
+      "targetId": "group-order-prime-squared-abelian-oq-01",
+      "relationship": "related",
+      "description": "Another finite-group structure result built on Cauchy/Sylow-style counting (groups of order p² are abelian). Both entries extract order-and-divisibility consequences of Lagrange and Cauchy about the fine structure of small finite groups."
+    }
+  ],
+  "conclusion": {
+    "summary": "Working on the odd-order side of Cauchy's theorem, the entry proves that a finite group of odd order has unique square roots and no involutions, then welds these into a sharp boundary. exists_sq_eq_of_odd_card gives the explicit root x^(m+1) for |G| = 2m+1; sq_surjective_of_odd_card / sq_bijective_of_odd_card make x ↦ x² a permutation of G. no_involution_of_odd_card shows x² = 1 ⟹ x = 1, and involution_iff_even_card combines this with Cauchy at p = 2 into the equivalence: a finite group has a nontrivial self-inverse element iff its order is even. exists_two_nsmul_eq_of_odd_card transcribes the squaring result additively (doubling is surjective), and the ZMod 3 / ZMod 5 instances verify both phenomena concretely by kernel decide. 151 lines, 8 theorems, 0 definitions, 0 axioms, 0 sorries (no native_decide, so genuinely verified rather than axiomatized).",
+    "implications": "The single exponent identity (x^(m+1))² = x organizes the entire odd-order picture: it yields the explicit square root, surjectivity (hence, via finiteness, bijectivity) of squaring, and — read as a divisibility — the absence of involutions. The resulting iff is the cleanest statement of when involutions exist, sharpening the parent's one-way corollary. It is also the elementary parity observation that opens the structure theory of odd-order groups (the gateway to Feit–Thompson solvability), here formalized with no assumptions beyond Mathlib's Lagrange/Cauchy infrastructure.",
+    "openQuestions": [
+      "Generalize unique square roots to unique p-th roots: in a finite group with gcd(p, |G|) = 1 the map x ↦ x^p is a bijection (the explicit root is x^(k) for k·p ≡ 1 mod |G|). Formalize this and recover the squaring result as the p = 2 case.",
+      "Formalize the next step of the odd-order programme — e.g. that an odd-order group acting on itself by conjugation has every non-identity orbit of odd size — as a bridge toward the Feit–Thompson solvability theorem.",
+      "State and prove the abelian sharpening: a finite abelian group is uniquely 2-divisible iff it has odd order, connecting this entry to the theory of divisible groups."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Mémoire sur les arrangements que l'on peut former avec des lettres données",
+      "year": "1845",
+      "note": "Exercices d'analyse et de physique mathématique 3, 151–252 — the original theorem; the even prime p = 2 is the source of involutions, switched off in odd order."
+    },
+    {
+      "authors": "Isaacs, I. Martin",
+      "title": "Finite Group Theory",
+      "year": "2008",
+      "note": "Graduate Studies in Mathematics 92, AMS — odd order as the standing hypothesis where squaring is a bijection and no involutions occur."
+    },
+    {
+      "authors": "Feit, Walter; Thompson, John G.",
+      "title": "Solvability of groups of odd order",
+      "year": "1963",
+      "note": "Pacific Journal of Mathematics 13, 775–1029 — the deep structure theory of odd-order groups, whose elementary opening observation is the absence of involutions."
+    }
+  ]
 }
