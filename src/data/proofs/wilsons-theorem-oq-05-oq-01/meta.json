@@ -1,0 +1,173 @@
+{
+  "id": "wilsons-theorem-oq-05-oq-01",
+  "title": "Wilson's Theorem Completed: The Trichotomy of (n−1)! mod n",
+  "slug": "wilsons-theorem-oq-05-oq-01",
+  "description": "Wilson's theorem only describes (n−1)! mod n on the primes. This entry supplies the complete classification for every n ≥ 2, in classical ZMod-free form: (n−1)! % n = n−1 when n is prime, = 2 at the lone exception n = 4, and = 0 for every other composite n. The new content is the composite divisibility n ∣ (n−1)! for composite n ≠ 4. Fully verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Researcher (Lean Genius)",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "wilsons-theorem",
+      "factorial",
+      "primality",
+      "congruence",
+      "classification",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.prime_iff_fac_equiv_neg_one",
+        "description": "Wilson's theorem in ZMod form: for n ≠ 1, n is prime ↔ ((n−1)! : ZMod n) = −1. Transported here to the classical Nat.ModEq remainder identity.",
+        "module": "Mathlib.NumberTheory.Wilson"
+      },
+      {
+        "theorem": "Nat.dvd_factorial",
+        "description": "0 < a → a ≤ b → a ∣ b! — the basic divisor-of-factorial fact underlying the composite-divisibility engine.",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.factorial_dvd_factorial",
+        "description": "a ≤ b → a! ∣ b! — lifts a divisibility of b! up to m! when b ≤ m.",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.minFac_prime / Nat.minFac_le_of_dvd",
+        "description": "The least prime factor minFac n is prime and is ≤ every divisor ≥ 2 — used to split a composite n into two factors p ≤ q below n.",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_natCast_iff",
+        "description": "(a : ZMod n) = (b : ZMod n) ↔ a ≡ b [MOD n] — the bridge converting Mathlib's ZMod Wilson statement into a natural-number congruence.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Proved factorial_pred_mod, the complete trichotomy: for every n ≥ 2, (n−1)! % n = (if n.Prime then n−1 else if n = 4 then 2 else 0) — a single classification theorem extending Wilson's theorem from the primes to all moduli, stated entirely without ZMod.",
+      "Proved dvd_factorial_pred_of_not_prime, the new (composite) content: for composite n ≥ 2 with n ≠ 4, n ∣ (n−1)!. The proof splits n = p·q via its least prime factor p = minFac n: if p < q the distinct factors p, q ≤ n−1 give n ∣ (n−1)!; if p = q then n = p² with p ≥ 3, and the distinct factors p, 2p ≤ n−1 give 2n ∣ (n−1)!.",
+      "Isolated the reusable engine mul_dvd_factorial: 0 < a < b ≤ m → a·b ∣ m!, capturing 'two distinct positive factors below m multiply into m!' from Nat.dvd_factorial and Nat.factorial_dvd_factorial.",
+      "Proved factorial_pred_mod_eq_zero_iff: for n ≥ 2, (n−1)! % n = 0 ↔ (¬n.Prime ∧ n ≠ 4) — the vanishing of the Wilson remainder detects 'composite and not 4' exactly, pinning n = 4 as the unique composite modulus whose factorial residue is nonzero.",
+      "Re-derived the prime branch ZMod-free (factorial_pred_mod_of_prime): for prime n, (n−1)! % n = n−1, transporting Mathlib's ZMod Wilson biconditional through ((n−1 : ℕ) : ZMod n) = −1."
+    ],
+    "dateAdded": "2026-06-23",
+    "proofRepoPath": "Proofs/WilsonsTheoremOQ05OQ01.lean",
+    "axiomCount": 0,
+    "lineCount": 161,
+    "assumptions": "None. 0 axioms (only the standard propext / Classical.choice / Quot.sound foundational axioms, which do not count), 0 sorries, no native_decide (the n = 4 value is closed by kernel-checked decide). Fully machine-checked.",
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "id": "engine",
+      "title": "The Engine: Distinct Factors Multiply into m!",
+      "startLine": 51,
+      "endLine": 62,
+      "summary": "mul_dvd_factorial: if 0 < a < b ≤ m then a·b ∣ m!. Proof: a ∣ (b−1)! since a ≤ b−1, so a·b ∣ b·(b−1)! = b!, and b! ∣ m! because b ≤ m.",
+      "mathContext": "This small lemma is the whole arithmetic engine of the composite case: a modulus that factors into two distinct parts below itself divides the factorial. Everything in the composite branch reduces to producing two such factors."
+    },
+    {
+      "id": "composite-divisibility",
+      "title": "Composite Divisibility: n ∣ (n−1)! for n ≠ 4",
+      "startLine": 64,
+      "endLine": 111,
+      "summary": "dvd_factorial_pred_of_not_prime splits n = p·q via its least prime factor p = minFac n. Either p < q (distinct factors below n) or p = q, in which case n = p² with p ≥ 3 (since n ≠ 4) and the distinct factors p, 2p lie below n. factorial_pred_mod_of_not_prime then reads this off as (n−1)! % n = 0.",
+      "mathContext": "This is the content Wilson's theorem leaves untouched. The single obstruction to n ∣ (n−1)! is that n be a prime (no proper factorization) or n = 4 = 2² (a square of a prime too small for p and 2p to fit below n). For every other composite n, the modulus is 'spread out' across (n−1)!."
+    },
+    {
+      "id": "prime-branch",
+      "title": "The Prime Branch (Wilson), ZMod-Free",
+      "startLine": 113,
+      "endLine": 125,
+      "summary": "factorial_pred_mod_of_prime: for prime n, (n−1)! % n = n−1. Transported from Mathlib's ZMod-valued Wilson biconditional via the identity ((n−1 : ℕ) : ZMod n) = −1 and ZMod.natCast_eq_natCast_iff, then reduced to a bare remainder using n−1 < n.",
+      "mathContext": "Wilson's theorem is classically the congruence (n−1)! ≡ −1 ≡ n−1 (mod n). Mathlib phrases it inside ZMod n; this branch restates it as the natural-number remainder identity so that the trichotomy can be expressed without ever leaving ℕ."
+    },
+    {
+      "id": "trichotomy",
+      "title": "The Complete Trichotomy and Its Zero-Set",
+      "startLine": 127,
+      "endLine": 161,
+      "summary": "factorial_pred_mod assembles the full classification: (n−1)! % n = if n.Prime then n−1 else if n = 4 then 2 else 0, for all n ≥ 2. factorial_pred_mod_eq_zero_iff characterizes the vanishing case ((n−1)! % n = 0 ↔ ¬n.Prime ∧ n ≠ 4), and four_factorial_pred_mod records the exceptional value 3! % 4 = 2 explicitly.",
+      "mathContext": "Combining the prime branch (residue n−1), the composite branch (residue 0), and the single exception n = 4 (residue 2) gives a complete decision procedure for (n−1)! mod n. The residue is therefore a primality-and-exception detector: it is 0 exactly off the primes and 4, equals 2 only at 4, and equals n−1 exactly on the primes."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Wilson's theorem (stated by Ibn al-Haytham c. 1000, by Wilson and Waring in 1770, first proved by Lagrange in 1771) says (n−1)! ≡ −1 (mod n) iff n is prime. The complementary composite behaviour is an old folklore exercise: for composite n the factorial (n−1)! is divisible by n, with the single exception n = 4, where 3! = 6 ≡ 2 (mod 4). Together these give a complete classification of (n−1)! mod n, sometimes attributed to the elementary number-theory tradition surrounding Wilson's and Clement's theorems. The parent gallery family wilsons-theorem(-oq-*) formalizes Wilson's biconditional; this entry closes the remaining (composite) side and packages the whole trichotomy in classical ZMod-free form.",
+    "problemStatement": "Wilson's theorem determines (n−1)! mod n only when n is prime. What is the residue for the remaining (composite) n, and can the complete value of (n−1)! mod n be classified for every n ≥ 2 without leaving the natural numbers?",
+    "text": "For n ≥ 2 the remainder (n−1)! mod n is completely determined by the arithmetic type of n. If n is prime it equals n−1 (Wilson). If n is composite and n ≠ 4 it equals 0, because n factors into two distinct parts below n that both appear in the product (n−1)·(n−2)···1. The only exception is n = 4 = 2², too small for the factors 2 and 2·2 to fit below it, where the residue is 2.",
+    "proofStrategy": "Reduce the composite case to a divisibility n ∣ (n−1)!. Write n = p·q with p = minFac n its least prime factor; since n is composite, p < n and the cofactor q ≥ 2 satisfies p ≤ q < n. If p < q the two distinct factors p, q ≤ n−1 give n ∣ (n−1)! directly via the engine mul_dvd_factorial; if p = q then n = p² and, ruling out n = 4 forces p ≥ 3, so the distinct factors p and 2p both lie at or below n−1 and give 2n ∣ (n−1)!. The prime case is Mathlib's Wilson theorem transported out of ZMod, and the n = 4 value is closed by decide. Assemble the three branches into one if-then-else classification.",
+    "keyInsights": [
+      "Wilson's theorem is only the prime row of a complete 3-row table; the missing rows are governed entirely by the single divisibility n ∣ (n−1)!.",
+      "That divisibility holds for every composite n except 4, and the reason is structural: a composite n always factors into two distinct parts below n (using the least prime factor and, in the square case, the doubling p ↦ 2p), and distinct factors below n both appear in (n−1)!.",
+      "n = 4 = 2² is the unique exception precisely because it is the smallest prime square: 2 and 2·2 = 4 are not both strictly below 4, so the factorization argument has no room.",
+      "Stated ZMod-free, the residue (n−1)! mod n becomes an explicit elementary classifier: 0 off {primes} ∪ {4}, the value 2 at 4, and n−1 on the primes — a complete decision rule and a self-contained primality criterion."
+    ]
+  },
+  "conclusion": {
+    "summary": "Completes Wilson's theorem to the full trichotomy of (n−1)! mod n for every n ≥ 2: n−1 on primes, 2 at n = 4, and 0 on all other composites. The new content is the composite divisibility n ∣ (n−1)! (n ≠ 4), proved by factoring n into two distinct parts below itself. Fully verified, 0 axioms, 0 sorries, no native_decide.",
+    "implications": "Turns Wilson's theorem from a primality criterion into a complete classification: the remainder (n−1)! mod n is now known explicitly for all n. The biconditional factorial_pred_mod_eq_zero_iff makes the residue an exact detector of 'composite and not 4', and the reusable lemma mul_dvd_factorial supports further factorial-divisibility results. Everything is expressed in classical Nat.ModEq / remainder form, matching the way Wilson's theorem is usually stated and used.",
+    "openQuestions": [
+      "Higher-order Wilson quotients: the Wilson quotient ((n−1)! + 1)/n for primes n and the residue of ((n−1)! + 1)/n mod n (Wilson primes, where n² ∣ (n−1)! + 1) — can the elementary divisibility framework here say anything about their distribution?",
+      "Gauss's generalization of Wilson's theorem to the product of units in ZMod n (= −1 iff n ∈ {1,2,4,p^k,2p^k}, else +1): can the present ZMod-free, classification-style treatment be extended to that full product-of-units trichotomy?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "extends",
+      "targetId": "wilsons-theorem-oq-05",
+      "description": "Extends the parent entry, which states Wilson's theorem as the classical remainder identity (n−1)! % n = n−1 ⟺ n prime, by supplying the composite side and assembling the complete trichotomy of (n−1)! mod n."
+    },
+    {
+      "relationship": "extends",
+      "targetId": "wilsons-theorem",
+      "description": "Completes the gallery's Wilson family: Wilson's theorem describes (n−1)! mod n on the primes; this entry classifies the residue for every modulus n ≥ 2."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Wilson",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "WilsonsTheoremOQ05OQ01",
+    "lineCount": 161,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/WilsonsTheoremOQ05OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "factorial_pred_mod",
+      "type": "theorem",
+      "description": "The complete trichotomy: for every n ≥ 2, (n−1)! % n = (if n.Prime then n−1 else if n = 4 then 2 else 0) — Wilson's theorem extended from the primes to all moduli, ZMod-free."
+    },
+    {
+      "name": "dvd_factorial_pred_of_not_prime",
+      "type": "theorem",
+      "description": "The new composite content: for composite n ≥ 2 with n ≠ 4, n ∣ (n−1)!, proved by factoring n into two distinct parts below itself via its least prime factor."
+    },
+    {
+      "name": "factorial_pred_mod_eq_zero_iff",
+      "type": "theorem",
+      "description": "For n ≥ 2, (n−1)! % n = 0 ↔ (¬n.Prime ∧ n ≠ 4): the Wilson remainder vanishes exactly off the primes and the single exception n = 4."
+    },
+    {
+      "name": "mul_dvd_factorial",
+      "type": "theorem",
+      "description": "Reusable engine: 0 < a < b ≤ m ⟹ a·b ∣ m! — two distinct positive factors below m multiply into m!."
+    },
+    {
+      "name": "factorial_pred_mod_of_prime",
+      "type": "theorem",
+      "description": "The prime branch (Wilson) ZMod-free: for prime n, (n−1)! % n = n−1, transported from Mathlib's ZMod-valued Wilson biconditional."
+    }
+  ],
+  "sorries": 0
+}
