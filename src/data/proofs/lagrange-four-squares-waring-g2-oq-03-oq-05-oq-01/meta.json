@@ -108,6 +108,23 @@
       }
     ]
   },
+  "openQuestions": [
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
+      "question": "Determine the exact normalized extremal constant: the family a k gives error 4k+6 at a k ≈ 4^k, i.e. (N − 6·excludedCount N)/log₄ N → 4 along it. Is 4 the true limsup of the normalized one-sided error over all N, or do other residue chains (or interleavings of descents) push it strictly higher?",
+      "significance": "medium"
+    },
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-02",
+      "question": "Characterize the full spectrum {N − 6·excludedCount N : N ∈ ℕ} of attained error values: which nonnegative integers occur, with what asymptotic frequency, and does the pair (N mod 8, error) equidistribute according to a stationary measure of the underlying 4-descent dynamics?",
+      "significance": "low"
+    },
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-03",
+      "question": "Apply the same residue-reduction template to the exceptional sets of the other two-class ternary genera (x²+y²+2z², x²+2y²+2z², …): is the corresponding density error always one-sided, and is its sign determined solely by the signs in the increment table of the relevant 2-adic descent?",
+      "significance": "medium"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-05",
