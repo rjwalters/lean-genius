@@ -59,6 +59,44 @@
     "dateAdded": "2026-06-21",
     "mathlib_version": "4.26.0"
   },
+  "overview": {
+    "historicalContext": "A square matrix is nonderogatory when its minimal and characteristic polynomials coincide, equivalently (Frobenius) when it admits a cyclic vector — a single vector whose iterated images under the matrix span the whole space. This is the linear-algebra backbone of rational canonical form. The easy direction (a cyclic vector forces minpoly = charpoly) is elementary; the converse — every nonderogatory matrix has a cyclic vector — is classically proved via the structure theorem for modules over a PID or rational canonical form, machinery that is heavy to formalize and, in some routes, implicitly assumes an infinite field. This entry isolates the one case where the converse is fully constructive and field-agnostic: the single nilpotent Jordan block N with Nⁿ = 0 and Nⁿ⁻¹ ≠ 0.",
+    "problemStatement": "Prove the converse of the cyclic-vector / nonderogatory equivalence for the maximal-nilpotent case over an ARBITRARY field: if N satisfies Nⁿ = 0 and Nⁿ⁻¹ ≠ 0 then N has a cyclic vector. Also characterize this hypothesis arithmetically as minpoly K N = Xⁿ.",
+    "proofStrategy": "Constructive. Since Nⁿ⁻¹ ≠ 0, some standard basis vector v has Nⁿ⁻¹v ≠ 0 (exists_mulVec_ne_zero). The Krylov vectors {v, Nv, …, Nⁿ⁻¹v} are then linearly independent: apply Nⁿ⁻¹⁻ʲ to a vanishing linear combination — terms above degree j die by nilpotency, terms below by descending induction — leaving cⱼ Nⁿ⁻¹v = 0, hence cⱼ = 0 (nilpotent_krylov_independent). Linear independence of the power orbit is exactly cyclicity (isCyclicVector_of_linearIndependent, via aeval_eq_sum_range'). Separately, minpoly K N = Xⁿ is obtained from Nⁿ = 0 (so minpoly ∣ Xⁿ), primeness of X (minpoly = Xⁱ), and Nⁿ⁻¹ ≠ 0 (forcing i = n).",
+    "keyInsights": [
+      "**The nilpotent case needs no infinite field.** The general converse routes through rational canonical form or PID module theory; for a single Jordan block the cyclic vector is built by hand, so the result holds over finite fields too — exactly the gap the infinite-field sibling cannot cover.",
+      "**Cyclicity = Krylov linear independence.** A vector is cyclic iff its power orbit {v, Nv, …, Nⁿ⁻¹v} is linearly independent; the proof expands p(N)v over this power basis (aeval_eq_sum_range') so that no nonzero low-degree polynomial annihilates v.",
+      "**Nilpotency peels coefficients one at a time.** Applying the right power of N to a linear relation kills high-degree terms outright and, with descending induction, isolates each coefficient against the nonzero Nⁿ⁻¹v — an elementary substitute for module-theoretic generators.",
+      "**minpoly = Xⁿ is the clean restatement.** The maximal-nilpotent hypothesis Nⁿ = 0 ∧ Nⁿ⁻¹ ≠ 0 is exactly minpoly K N = Xⁿ (X prime ⟹ minpoly is a power of X; the nonvanishing pins the exponent), tying the construction to the degree-n (nonderogatory) framing of the parent.",
+      "**Honest scope.** This discharges the parent's axiomatized converse only for the maximal-nilpotent case; the general nonderogatory converse remains axiomatized, and the infinite-field sibling's full assembly still carries a `sorry`."
+    ],
+    "prerequisites": [
+      "Minimal and characteristic polynomials; nonderogatory matrices and cyclic vectors",
+      "Krylov / power-orbit linear independence and aeval over a power basis",
+      "Nilpotent matrices and the single Jordan block; primeness of X in K[X]"
+    ]
+  },
+  "conclusion": {
+    "summary": "A self-contained, 0-axiom, 0-sorry formalization (238 lines, 9 theorems, 1 definition) of the constructive converse of the cyclic-vector / nonderogatory equivalence for maximal-nilpotent matrices over an arbitrary field: if Nⁿ = 0 and Nⁿ⁻¹ ≠ 0 then N has an explicit cyclic vector. It also gives the arithmetic characterization minpoly K N = Xⁿ ⟺ (Nⁿ = 0 ∧ Nⁿ⁻¹ ≠ 0) and natDegree(minpoly K N) = n.",
+    "implications": "Discharges the parent entry's axiomatized converse for the nilpotent single-Jordan-block case — and crucially over finite fields, which the infinite-field sibling cannot reach — by an explicit Krylov construction needing no rational-canonical-form or PID machinery. The reproved Krylov-independence helpers are reusable infrastructure for cyclic-vector arguments elsewhere in the Cayley–Hamilton / minimal-polynomial family.",
+    "openQuestions": [
+      "Extend the constructive converse from a single nilpotent Jordan block to a general nilpotent matrix (direct sum of blocks), and then to arbitrary nonderogatory matrices over any field, fully discharging the parent's axiom.",
+      "Repair the infinite-field sibling (CayleyHamiltonMinpolyOQ04Backward) whose downstream assembly carries a `sorry` and a bit-rotted `ring` step under Mathlib 4.26.0.",
+      "Connect the explicit cyclic vector to a constructive rational canonical form over finite fields, where genericity arguments are unavailable."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-04",
+      "relationship": "extends",
+      "description": "Parent entry: proves cyclic ⟹ nonderogatory and axiomatizes the converse. This entry discharges the converse for the maximal-nilpotent (single Jordan block) case over an arbitrary field, by an explicit cyclic-vector construction."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
+      "relationship": "complements",
+      "description": "Sibling that proves the converse for infinite fields but leaves its main assembly as a `sorry`. This entry handles the orthogonal case that needs neither an infinite field nor factorization machinery (finite fields included), reproving the shared Krylov-independence helpers inline."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
