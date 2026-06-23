@@ -1,0 +1,162 @@
+{
+  "id": "burnside-counting-oq-04-oq-01",
+  "title": "Unconditional Binary Bracelets of Length 4: |bracelets(4,2)| = 6 Without native_decide",
+  "slug": "burnside-counting-oq-04-oq-01",
+  "description": "Removes the native_decide dependency from the headline dihedral bracelet count. The parent entries burnside-counting and burnside-counting-oq-04 establish that there are exactly 6 binary bracelets of length 4 (orbits of the 2-colourings of a square under the full dihedral group D_4 of rotations and reflections), but both close the final numeric count with native_decide, which trusts the Lean compiler's kernel reduction and therefore depends on the Lean.ofReduceBool axiom. This file builds a concrete action of DihedralGroup 4 on the positions ZMod 4 of the square (rotation r i : x ↦ x + i, reflection sr i : x ↦ -x - i), lifts it to the 16 colourings Coloring = ZMod 4 → Fin 2 via Mathlib's arrow action (g • c) x = c (g⁻¹ • x), and counts the orbits with Mathlib's Burnside lemma MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group. The single computational step — the total number of colourings fixed across all 8 group elements equals 48 — is discharged by ordinary kernel decide (the carrier has only 16 elements), not native_decide. Burnside then forces 48 = |orbits|·8, so |orbits| = 6. The result bracelet_count_4_2 is genuinely verified: #print axioms lists only propext, Classical.choice, Quot.sound — no Lean.ofReduceBool. This directly answers the first open question of burnside-counting-oq-04. Fully verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Burnside / Pólya theory; formalized for lean-genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BurnsideCountingOQ04OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "group-action",
+      "burnside",
+      "dihedral-group",
+      "bracelets",
+      "orbit-counting",
+      "group-theory",
+      "kernel-decide",
+      "native-decide-elimination"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group",
+        "description": "Burnside's lemma: Σ_{g∈G} |Fix(g)| = |X/G|·|G|. Supplies the orbit-counting engine; this file feeds it the kernel-checked fixed-point total 48 and the dihedral order 8 to extract the orbit count 6.",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "MulAction.arrowAction",
+        "description": "The action of G on the function space A → B induced by an action of G on A, via (g • f) a = f (g⁻¹ • a). Used to lift the concrete D_4 action on positions ZMod 4 to the colourings ZMod 4 → Fin 2.",
+        "module": "Mathlib.GroupTheory.GroupAction.Basic"
+      },
+      {
+        "theorem": "DihedralGroup.card",
+        "description": "|DihedralGroup n| = 2n, giving |D_4| = 8, the divisor Burnside's lemma uses to turn the fixed-point total 48 into the orbit count.",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Dihedral"
+      },
+      {
+        "theorem": "Nat.card_eq_fintype_card",
+        "description": "Bridges Fintype.card and the instance-independent Nat.card. Used to reconcile the Fintype instance and orbit-quotient spelling synthesised inside Burnside's lemma (Quotient (orbitRel …)) with the API form orbitRel.Quotient … appearing in the goal.",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      }
+    ],
+    "originalContributions": [
+      "posAct / posMulAction: a concrete geometric action of DihedralGroup 4 on the four positions ZMod 4 of a square (rotation r i : x ↦ x + i, reflection sr i : x ↦ -x - i), with both MulAction laws discharged by kernel decide on the 8-element group",
+      "colMulAction: the lift of that action to the 16 colourings Coloring = ZMod 4 → Fin 2 via Mathlib's arrowAction, together with a computable DecidablePred fixed-point instance so that each fixed-point set is a kernel-computable Fintype",
+      "sum_fixedBy_eq: the eight per-element fixed-point counts (16,2,4,2 for the rotations and 8,4,8,4 for the reflections) sum to 48, proved by ordinary kernel decide over the 16-element carrier — the step the parent entries close with native_decide",
+      "bracelet_count_4_2: combining sum_fixedBy_eq with Burnside's lemma and |D_4| = 8 forces the orbit count to be 6, with #print axioms confirming only propext / Classical.choice / Quot.sound (no Lean.ofReduceBool), upgrading the count from axiomatized (via native_decide) to verified"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. The decisive enumeration uses ordinary kernel decide, not native_decide, so the result does NOT depend on Lean.ofReduceBool. #print axioms bracelet_count_4_2 lists only the standard foundational axioms propext, Classical.choice, Quot.sound.",
+    "lineCount": 131,
+    "theoremCount": 2,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Burnside's lemma counts the orbits of a finite group action as the average number of fixed points. For the dihedral group D_n acting on the n beads of a cycle (rotations together with reflections) it yields the bracelet numbers (OEIS A000029); for binary colourings of a square, D_4, the count is 6. In a formal setting the small finite count is tempting to discharge with native_decide, which compiles the decision procedure and runs it — but native_decide trusts the Lean compiler and so introduces the Lean.ofReduceBool axiom, leaving the result merely axiomatized rather than fully kernel-verified. The honest alternative is to keep the enumeration small enough that the trusted kernel can evaluate it directly with decide.",
+    "problemStatement": "Can the headline dihedral bracelet count |bracelets(4,2)| = 6 be established without native_decide, i.e. without depending on the Lean.ofReduceBool axiom?",
+    "text": "There are exactly 6 orbits of the 16 two-colourings of a square under the full dihedral group D_4. We prove this from Burnside's lemma with the fixed-point total computed by ordinary kernel decide rather than native_decide, so the result is Lean.ofReduceBool-free.",
+    "proofStrategy": "Define the concrete action posAct of DihedralGroup 4 on the positions ZMod 4 (rotations x ↦ x + i, reflections x ↦ -x - i) and verify the two MulAction laws by kernel decide on the eight group elements. Lift to colourings ZMod 4 → Fin 2 with Mathlib's arrowAction, and provide a computable DecidablePred instance for membership in each fixedBy set so the fixed-point Fintypes are kernel-computable. The carrier has only 16 elements, so sum_fixedBy_eq — the total number of (g, c) with g • c = c, summed over the 8 elements of D_4, equals 48 — is proved by ordinary decide. Burnside's lemma gives Σ_g |Fix(g)| = |orbits|·|D_4|; substituting the total 48 and |D_4| = 8 yields 48 = |orbits|·8, so |orbits| = 6 by omega. The one technical subtlety is that Burnside's lemma states its orbit side with the spelling Quotient (orbitRel α β) and its own synthesised Fintype instance, whereas the goal uses the API name orbitRel.Quotient α β; these are definitionally equal but syntactically distinct, so both sides are moved to the instance-independent Nat.card and the two spellings are reconciled with a rfl bridge before reading off the count.",
+    "keyInsights": [
+      "native_decide is unnecessary here: the carrier ZMod 4 → Fin 2 has only 16 elements, so the entire fixed-point enumeration (48 across 8 group elements) is small enough for the trusted kernel to evaluate with ordinary decide — keeping the result free of the Lean.ofReduceBool axiom",
+      "Making each fixed-point set kernel-computable only requires a DecidablePred instance for g • c = c, obtained via decidable_of_iff from decidable equality of colourings; this is what lets decide succeed without compilation",
+      "The reusable pattern is: define a concrete finite group action, lift it to colourings by the arrow action, and discharge Burnside's fixed-point side with decide — turning any small native_decide orbit count into a genuinely verified one",
+      "Burnside's lemma and the goal spell the orbit quotient differently (Quotient (orbitRel …) versus orbitRel.Quotient …) with distinct Fintype instances; routing both through Nat.card makes the kernel-checked total and the goal share a single atom"
+    ],
+    "prerequisites": [
+      "Group actions, orbits, and the orbit-counting (Burnside/Cauchy–Frobenius) lemma",
+      "The dihedral group DihedralGroup n and its action on a cycle by rotations and reflections",
+      "The arrow action of a group on a function space, and decidability/Fintype instances for fixed-point sets",
+      "The distinction between kernel decide and native_decide, and the Lean.ofReduceBool axiom the latter introduces"
+    ]
+  },
+  "sections": [
+    {
+      "id": "positions",
+      "title": "A Concrete D_4 Action on the Positions of the Square",
+      "startLine": 54,
+      "endLine": 72,
+      "summary": "posAct sends a rotation r i to x ↦ x + i and a reflection sr i to x ↦ -x - i on the positions ZMod 4; the two MulAction laws are finite identities discharged by kernel decide.",
+      "mathContext": "$r_i \\cdot x = x + i,\\qquad s_i \\cdot x = -x - i \\quad (x \\in \\mathbb{Z}/4\\mathbb{Z})$."
+    },
+    {
+      "id": "lift",
+      "title": "Lift to Colourings by the Arrow Action",
+      "startLine": 74,
+      "endLine": 89,
+      "summary": "The action on positions induces an action on the 16 colourings ZMod 4 → Fin 2 via Mathlib's arrowAction, (g • c) x = c (g⁻¹ • x); a DecidablePred instance makes each fixed-point set a kernel-computable Fintype.",
+      "mathContext": "$(g \\cdot c)(x) = c(g^{-1} \\cdot x),\\qquad c : \\mathbb{Z}/4\\mathbb{Z} \\to \\{0,1\\}$."
+    },
+    {
+      "id": "count",
+      "title": "The Bracelet Count via Burnside's Lemma",
+      "startLine": 91,
+      "endLine": 131,
+      "summary": "The fixed-point counts 16,2,4,2 (rotations) and 8,4,8,4 (reflections) sum to 48 by kernel decide; Burnside's lemma with |D_4| = 8 then forces 48 = |orbits|·8, so |bracelets(4,2)| = 6, with #print axioms confirming no Lean.ofReduceBool.",
+      "mathContext": "$\\sum_{g \\in D_4} |\\mathrm{Fix}(g)| = 48 = |\\text{orbits}| \\cdot 8 \\Rightarrow |\\text{bracelets}(4,2)| = 6$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Burnside, W.",
+      "title": "Theory of Groups of Finite Order",
+      "year": "1897",
+      "note": "The orbit-counting (Cauchy–Frobenius) lemma underlying necklace and bracelet enumeration"
+    },
+    {
+      "authors": "Pólya, G.",
+      "title": "Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen",
+      "year": "1937",
+      "note": "Enumeration under group actions; dihedral bracelet counts"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "burnside-counting-oq-04",
+      "relationship": "extends",
+      "description": "Answers the first open question of oq-04: builds a concrete dihedral action on the colourings and discharges the bracelet count by kernel computation, yielding an unconditional |bracelets| = 6 where the parent closes the analogous cyclic count only with native_decide."
+    },
+    {
+      "targetId": "burnside-counting",
+      "relationship": "related",
+      "description": "Upgrades the base entry's dihedral bracelet count from axiomatized (via native_decide / Lean.ofReduceBool) to fully kernel-verified."
+    },
+    {
+      "targetId": "burnside-counting-oq-03",
+      "relationship": "related",
+      "description": "oq-03 supplies the rotation-fixed counts k^gcd(n,r); this entry computes the full dihedral fixed-point profile (rotations and reflections) concretely for n = 4, k = 2."
+    }
+  ],
+  "conclusion": {
+    "summary": "The headline dihedral bracelet count |bracelets(4,2)| = 6 is established without native_decide. A concrete action of DihedralGroup 4 on the positions ZMod 4 is lifted to the 16 colourings by the arrow action; the fixed-point total 48 is computed by ordinary kernel decide; and Burnside's lemma with |D_4| = 8 forces the orbit count 6. #print axioms confirms the result depends only on propext, Classical.choice, Quot.sound — no Lean.ofReduceBool.",
+    "implications": "Upgrades a headline combinatorial count from axiomatized (via native_decide) to verified, and exhibits a reusable, fully kernel-checked pattern: define a concrete finite group action, lift it to colourings by the arrow action, and discharge Burnside's fixed-point side by decide.",
+    "openQuestions": [
+      "Generalise the concrete construction to a parametric kernel-verified bracelet count |bracelets(n,k)| for a range of small (n,k), replacing the per-element decide with a uniform fixed-point computation over DihedralGroup n.",
+      "Identify the threshold at which the carrier k^n becomes too large for kernel decide and a structural (per-symmetry closed-form) computation is required instead of direct enumeration."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.GroupAction.Quotient",
+      "Mathlib.GroupTheory.SpecificGroups.Dihedral",
+      "Mathlib.Data.Fintype.Card",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MulAction",
+      "Finset"
+    ],
+    "namespace": "BurnsideCountingOQ04OQ01",
+    "lineCount": 131,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 2,
+    "path": "Proofs/BurnsideCountingOQ04OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
