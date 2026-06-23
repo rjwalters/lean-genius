@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-oq03-unique-real-root",
+    "proofId": "cube-root-3-irrational-oq-03",
+    "type": "theorem",
+    "range": { "startLine": 64, "endLine": 71 },
+    "title": "∛3 is the unique real cube root of 3",
+    "content": "`unique_real_cube_root (x : ℝ) : x ^ 3 = 3 ↔ x = cbrt3`. The forward direction uses `cube_injective`, the injectivity of `x ↦ x³` on ℝ. Cubing is an ODD power, so by `Odd.strictMono_pow` it is strictly monotone on any linearly ordered ring, hence injective. Given `x³ = 3 = (∛3)³`, injectivity forces `x = ∛3`. This single-real-root fact is the crux of non-normality: the other two roots of X³−3 must therefore be non-real.",
+    "mathContext": "Over ℝ, $t \\mapsto t^3$ is a strictly increasing bijection (its derivative $3t^2 \\geq 0$ vanishes only at $0$, never reversing monotonicity), so $t^3 = 3$ has exactly one real solution $\\sqrt[3]{3}$. The remaining roots of $X^3-3$ are $\\omega\\sqrt[3]{3}$ and $\\omega^2\\sqrt[3]{3}$ with $\\omega = e^{2\\pi i/3}$, which are genuinely complex.",
+    "significance": "key",
+    "relatedConcepts": ["strict monotonicity", "odd powers", "injectivity", "real roots"],
+    "prerequisites": ["Odd.strictMono_pow", "Function.Injective"]
+  },
+  {
+    "id": "ann-oq03-quadratic-pos",
+    "proofId": "cube-root-3-irrational-oq-03",
+    "type": "theorem",
+    "range": { "startLine": 74, "endLine": 77 },
+    "title": "The real quadratic cofactor has no real root",
+    "content": "`quadratic_cofactor_pos (x : ℝ) : 0 < x² + ∛3·x + ∛9`. The cofactor of (X − ∛3) in X³−3 is the quadratic X² + ∛3·X + (∛3)². Its discriminant is (∛3)² − 4(∛3)² = −3(∛3)² < 0, so it is strictly positive everywhere. The Lean proof completes the square: 4(x² + ∛3·x + ∛9) = (2x + ∛3)² + 3(∛3)² > 0, discharged by `nlinarith` with hints `sq_nonneg (2x + ∛3)` and `mul_pos cbrt3_pos cbrt3_pos`.",
+    "mathContext": "A real quadratic $ax^2+bx+c$ with $a>0$ and discriminant $b^2-4ac<0$ is strictly positive. Here $b^2-4ac = (\\sqrt[3]{3})^2 - 4(\\sqrt[3]{3})^2 = -3\\,\\sqrt[3]{9} < 0$, so the cofactor never vanishes on ℝ — it carries the two non-real roots.",
+    "significance": "key",
+    "relatedConcepts": ["discriminant", "completing the square", "positive definite quadratic", "nlinarith"],
+    "prerequisites": ["sq_nonneg", "nlinarith"]
+  },
+  {
+    "id": "ann-oq03-not-splits-real",
+    "proofId": "cube-root-3-irrational-oq-03",
+    "type": "theorem",
+    "range": { "startLine": 92, "endLine": 109 },
+    "title": "X³−3 does not split over ℝ",
+    "content": "`not_splits_over_real : ¬ (X³ − 3 : ℝ[X]).Splits`. Using the real factorization X³−3 = (X−∛3)·Q with Q = X²+∛3·X+∛9, `splits_mul_iff` reduces a hypothetical splitting to `Q.Splits`. But a splitting degree-2 polynomial has a root by `Splits.exists_eval_eq_zero`, contradicting `quadratic_cofactor_pos`. Note this Mathlib (v4.26.0) uses the refactored ONE-argument predicate `p.Splits` (splits over its own coefficient field); the old `Splits i f` is now `(f.map i).Splits`.",
+    "mathContext": "`Polynomial.Splits` of $p$ over a field means $p$ is a unit times a product of linear factors. A cubic splits over ℝ iff all three roots are real. Since $X^3-3$ has a single real root, it does not split over ℝ — equivalently, it has non-real roots. This is the field-theoretic shadow of the analytic single-root fact.",
+    "significance": "critical",
+    "relatedConcepts": ["polynomial splitting", "splits_mul_iff", "Splits.exists_eval_eq_zero", "linear factors"],
+    "prerequisites": ["Polynomial.Splits", "real_factorization"]
+  },
+  {
+    "id": "ann-oq03-minpoly",
+    "proofId": "cube-root-3-irrational-oq-03",
+    "type": "theorem",
+    "range": { "startLine": 162, "endLine": 167 },
+    "title": "Minimal polynomial of ∛3 over ℚ is X³−3",
+    "content": "`minpoly_cbrt3 : minpoly ℚ ∛3 = X³ − 3`. Self-contained: `irreducible_X_cubed_sub_C` uses Kummer's criterion `X_pow_sub_C_irreducible_iff_of_prime` at the prime 3 (X³−3 is irreducible over ℚ ⟺ 3 has no rational cube root, which `not_cube_rat` supplies from the irrationality of ∛3), then `minpoly.eq_of_irreducible_of_monic` with the monic witness `monic_X_pow_sub_C`. Establishes [ℚ(∛3):ℚ] = 3.",
+    "mathContext": "The minimal polynomial of an algebraic number $\\alpha$ over $\\mathbb{Q}$ is the unique monic irreducible $\\mathbb{Q}$-polynomial with $\\alpha$ as a root; its degree equals $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]$. For $\\sqrt[3]{3}$ this is $X^3-3$ (Eisenstein/Kummer-irreducible at $p=3$), giving degree $3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["minimal polynomial", "Kummer irreducibility", "Eisenstein criterion", "field degree"],
+    "prerequisites": ["minpoly.eq_of_irreducible_of_monic", "X_pow_sub_C_irreducible_iff_of_prime"]
+  },
+  {
+    "id": "ann-oq03-not-normal",
+    "proofId": "cube-root-3-irrational-oq-03",
+    "type": "theorem",
+    "range": { "startLine": 183, "endLine": 189 },
+    "title": "ℚ(∛3)/ℚ is not normal (the headline)",
+    "content": "`cbrt3_not_normal : ¬ Normal ℚ ℚ⟮∛3⟯`. If ℚ(∛3) were normal then by `Normal.splits` the minimal polynomial of the generator would split inside ℚ(∛3). Pushing this splitting along the tower ℚ ⊆ ℚ(∛3) ⊆ ℝ via `splits_of_isScalarTower` yields a splitting of (X³−3) over ℝ, contradicting `not_splits_over_real`. Hence ℚ(∛3) is a degree-3 extension that is NOT normal, and therefore not Galois.",
+    "mathContext": "An algebraic extension $E/F$ is normal iff the minimal polynomial of every element of $E$ splits in $E$. A degree-3 separable extension is Galois iff it is normal. Here $\\mathbb{Q}(\\sqrt[3]{3})$ is real, so it cannot contain the non-real conjugates $\\omega\\sqrt[3]{3}, \\omega^2\\sqrt[3]{3}$; the minimal polynomial $X^3-3$ does not split, so the extension is non-normal. Its Galois (normal) closure is $\\mathbb{Q}(\\sqrt[3]{3},\\omega)$, degree $6$ with Galois group $S_3$ — the smallest non-abelian Galois group.",
+    "significance": "critical",
+    "relatedConcepts": ["normal extension", "Galois extension", "Normal.splits", "splits_of_isScalarTower", "Galois closure", "S_3"],
+    "prerequisites": ["Normal", "Normal.splits", "IsScalarTower", "minpoly_cbrt3"]
+  }
+]

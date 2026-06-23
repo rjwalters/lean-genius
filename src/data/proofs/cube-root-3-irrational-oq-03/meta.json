@@ -1,0 +1,38 @@
+{
+  "id": "cube-root-3-irrational-oq-03",
+  "title": "ℚ(∛3) is degree 3 but not normal (not Galois)",
+  "slug": "cube-root-3-irrational-oq-03",
+  "description": "Open question cube-root-3-irrational-oq-03. The sibling entries establish the SIZE of the extension ℚ(∛3): X³−3 is irreducible over ℚ, it is the minimal polynomial of ∛3, and the extension has degree 3. This entry establishes the STRUCTURE: ℚ(∛3)/ℚ is a degree-3 extension that is NOT normal (not Galois) — the classic first example of a finite separable but non-normal extension. The obstruction is real-analytic: cubing is strictly monotone on ℝ, so X³−3 has a UNIQUE real root ∛3; over ℝ it factors as (X−∛3)(X²+∛3·X+∛9), and the quadratic cofactor has negative discriminant (∛9−4∛9 = −3∛9 < 0), hence is strictly positive with no real root. Therefore X³−3 does not split even over all of ℝ ⊇ ℚ(∛3), so the minimal polynomial of ∛3 fails to split inside ℚ(∛3): the extension is not normal. 17 theorems, 1 definition, 0 axioms, self-contained.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CubeRoot3IrrationalOQ03.lean",
+    "tags": [
+      "field-theory",
+      "galois-theory",
+      "normal-extension",
+      "irrationality",
+      "number-theory",
+      "cube-roots",
+      "polynomial-splitting"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified (0 axioms beyond Lean/Mathlib foundations propext/Classical.choice/Quot.sound; no sorry, no native_decide). Self-contained: re-derives cbrt3, cbrt3_cubed, and irrationality of ∛3 from import Mathlib only.",
+    "lineCount": 191,
+    "theoremCount": 17,
+    "definitionCount": 1,
+    "originalContributions": [
+      "cbrt3_not_normal: ¬ Normal ℚ ℚ⟮∛3⟯ — the headline; a degree-3 extension that is not normal/Galois, proved via Normal.splits + splits_of_isScalarTower (pushing the splitting hypothesis from ℚ(∛3) into ℝ) + the real non-splitting obstruction",
+      "not_splits_over_real: ¬ (X³ − 3 : ℝ[X]).Splits — X³−3 does not split into linear factors over ℝ; proved by exhibiting the degree-2 real cofactor with no real root (splits_mul_iff + Splits.exists_eval_eq_zero)",
+      "unique_real_cube_root: ∀ x:ℝ, x³ = 3 ↔ x = ∛3 — ∛3 is the unique real cube root (cubing is injective on ℝ as an odd power)",
+      "quadratic_cofactor_pos: ∀ x:ℝ, 0 < x² + ∛3·x + ∛9 — the cofactor has negative discriminant, completing the square via nlinarith",
+      "real_factorization: X³ − 3 = (X − ∛3)(X² + ∛3·X + ∛9) over ℝ[X]",
+      "minpoly_cbrt3: minpoly ℚ ∛3 = X³ − 3 (self-contained, via Kummer irreducibility at the prime 3)"
+    ]
+  },
+  "conclusion": "ℚ(∛3) is a degree-3 extension of ℚ that is not normal, hence not Galois. The result isolates the real-analytic reason: a real number's cube is strictly monotone, so X³−3 has only one real root and its two complex conjugate roots ω∛3, ω²∛3 lie outside the real field ℚ(∛3). The normal (Galois) closure is ℚ(∛3, ω) of degree 6, with Galois group S₃. This is the textbook first example showing that 'finite + separable' does not imply 'normal'."
+}
