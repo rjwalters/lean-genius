@@ -20,7 +20,7 @@
       "research",
       "extension"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -59,7 +59,7 @@
     "dateAdded": "2026-06-21",
     "axiomCount": 0,
     "lineCount": 167,
-    "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions. No `native_decide` is used; the named small-case instances (s4_solvable etc.) reach back through the parent's `decide`-based, native_decide-free A₄ argument, so the kernel-checked status is preserved. `#print axioms` on the main results reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no `Lean.ofReduceBool`, no `sorryAx`.",
+    "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions (core result via Mathlib bridge: the forward direction is Mathlib's `solvable_of_ker_le_range` applied to the sign sequence, the backward direction is Mathlib's `subgroup_solvable_of_solvable` instance — this file supplies the bridge, not an independent solvability proof, hence the `mathlib` badge). No `native_decide` is used; the named small-case instances (s4_solvable etc.) reach back through the parent's `decide`-based, native_decide-free A₄ argument, so the kernel-checked status is preserved. `#print axioms` on the main results reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no `Lean.ofReduceBool`, no `sorryAx`.",
     "mathlib_version": "4.26.0",
     "theoremCount": 12,
     "definitionCount": 0,
