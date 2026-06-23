@@ -1,0 +1,59 @@
+[
+  {
+    "id": "ann-cd-oq01-overview",
+    "proofId": "erdos-1054-construction-d-oq-01",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "concept",
+    "title": "From case-by-case checks to one structural theorem",
+    "content": "The parent file `Erdos1054ConstructionD` verifies *specific* numbers as representable — $1+p+p^2$ for $p=2,3,5,7,11,13$, and the Mersenne numbers $3,7,15,31,\\ldots$ — each by a separate `native_decide` computation. This file replaces all of them with a single observation.\n\nRecall $n$ is **representable** if it occurs as a partial sum of the *sorted* divisor list of some $m \\geq 1$. The partial sums of $[d_1 < d_2 < \\cdots < d_t]$ are $[d_1,\\; d_1{+}d_2,\\; \\ldots,\\; d_1{+}\\cdots{+}d_t]$. The **last** one is the sum of *all* divisors, i.e. the sum-of-divisors function $\\sigma(m) = \\sum_{d \\mid m} d$.\n\nHence: **for every $m \\geq 1$, $\\sigma(m)$ is representable**, witnessed by $m$ itself. Every concrete check in the parent is a special case — $\\sigma(p^2) = 1+p+p^2$, $\\sigma(2^k) = 2^{k+1}-1$ — and the general theorem needs no `native_decide`, so it is free of the `Lean.ofReduceBool` axiom.",
+    "mathContext": "σ(m) = ∑_{d∣m} d is the classical sum-of-divisors function. The result says the entire image of σ lands inside the representable set, for a completely elementary structural reason: σ(m) is the final cumulative sum of the increasing divisor sequence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős #1054",
+      "sum-of-divisors function σ",
+      "partial divisor sums",
+      "representability",
+      "native_decide elimination"
+    ],
+    "prerequisites": [
+      "divisors of a natural number",
+      "cumulative (scan) sums of a list"
+    ]
+  },
+  {
+    "id": "ann-cd-oq01-foldl",
+    "proofId": "erdos-1054-construction-d-oq-01",
+    "range": { "startLine": 65, "endLine": 75 },
+    "type": "technique",
+    "title": "The accumulator identity for scanl",
+    "content": "`partialDivisorSums m` is the tail of `scanl (·+·) 0 (sortedDivisors m)`. Batteries' `List.getLast_scanl` says the last entry of a `scanl` is `foldl (·+·) 0 L` — the running total. To identify that total with the list *sum*, we prove the small generalized lemma `foldl_add_acc : L.foldl (·+·) a = a + L.sum` by induction on `L` with the accumulator `a` generalized.\n\nGeneralizing the accumulator is essential: the naive statement `L.foldl (·+·) 0 = L.sum` does not strengthen the induction hypothesis enough, because the recursive call threads a *non-zero* accumulator `0 + d_1`.",
+    "mathContext": "foldl with a moving accumulator: foldl (+) a [x₁,…,xₙ] = a + (x₁ + ⋯ + xₙ). Proven by induction generalizing a.",
+    "significance": "supporting",
+    "relatedConcepts": ["list folds", "scanl/foldl", "induction generalization"],
+    "prerequisites": ["structural induction on lists"]
+  },
+  {
+    "id": "ann-cd-oq01-key",
+    "proofId": "erdos-1054-construction-d-oq-01",
+    "range": { "startLine": 85, "endLine": 120 },
+    "type": "technique",
+    "title": "σ(m) is the final partial sum",
+    "content": "The membership proof `sum_divisors_mem_partialSums` proceeds in three moves. (1) Rewrite the finset sum $\\sum_{d\\mid m} d$ to the list sum of `sortedDivisors m` using that the sort is a permutation of the divisor finset (`Finset.sort_perm_toList` + `Finset.sum_toList`). (2) Since $1 \\mid m$ (so the divisor finset is nonempty), the sorted list is `a :: l`, and `partialDivisorSums m` unfolds to `scanl (·+·) (0+a) l`. (3) The `getLast` of that `scanl` is in the list (`List.getLast_mem`) and equals `foldl (·+·) (0+a) l = (a::l).sum` by the accumulator identity. Therefore the divisor sum is a member.\n\nThe headline `sum_divisors_representable` then packages this with the witness `m`.",
+    "mathContext": "Nonemptiness from 1 ∈ m.divisors (Nat.one_mem_divisors, m ≥ 1); the last scanl entry carries the total of all divisors.",
+    "significance": "key",
+    "relatedConcepts": ["sorted divisors", "permutation invariance of sums", "scanl last element"],
+    "prerequisites": ["Finset.sort", "List.getLast"]
+  },
+  {
+    "id": "ann-cd-oq01-geom",
+    "proofId": "erdos-1054-construction-d-oq-01",
+    "range": { "startLine": 130, "endLine": 168 },
+    "type": "concept",
+    "title": "Prime-power corollary and recovered families",
+    "content": "Specializing $m = p^k$ and using `Nat.sum_divisors_prime_pow` ($\\sum_{d \\mid p^k} d = \\sum_{i=0}^{k} p^i$) yields `geom_sum_representable`: **every geometric sum $1 + p + \\cdots + p^k$ for a prime $p$ is representable**, with witness $p^k$.\n\nTwo families fall out immediately. With $k=2$ we recover the parent's Construction D headline $1+p+p^2$ (`prime_sq_sum_representable'`). With $p=2$ we recover the Mersenne numbers $\\sum_{i=0}^{k} 2^i = 2^{k+1}-1$ (`mersenne_representable`). Both are now fully verified, without the `native_decide` the parent used for its concrete instances.",
+    "mathContext": "∑_{i=0}^k p^i = (p^{k+1}-1)/(p-1) is the geometric sum; for p=2 it is the Mersenne number 2^{k+1}-1. All such values are σ of a prime power, hence representable.",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "Mersenne numbers", "prime powers", "Erdős #1054 Construction D"],
+    "prerequisites": ["sum of divisors of a prime power", "geometric sums"]
+  }
+]
