@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-oq07-background",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-07",
+    "range": { "startLine": 3, "endLine": 66 },
+    "type": "context",
+    "title": "The multiplier mechanism of the Dirichlet/Minkowski route",
+    "content": "The file opens with a careful account of why three-square sufficiency (n ≠ 4^a(8b+7) ⟹ n = x²+y²+z²) is hard for the residue classes n mod 8 ∈ {1,2,5,6}. The geometry-of-numbers step ThreeSquares.dirichlet_key_lemma consumes a multiplier d ≥ 1, a prime p = d·n − 1, and a quadratic-residue condition legendreSym p (−d) = 1; from these it extracts a short lattice vector descending to a representation of n. The apparent obstruction is that d must grow unboundedly for these classes, so the Dirichlet selection looks like it must control a moving target. This file dissolves that appearance.",
+    "mathContext": "$n = x^2+y^2+z^2 \\iff n \\neq 4^a(8b+7)$, with the sublattice $L=\\{(x,y,z): p\\mid x-ry,\\ p\\mid z\\}$ and prime $p = d\\cdot n - 1$.",
+    "significance": "context",
+    "relatedConcepts": ["geometry of numbers", "Minkowski's theorem", "three-square theorem", "quadratic residues", "lattice reduction"],
+    "prerequisites": ["additive number theory", "geometry of numbers", "Legendre symbol"]
+  },
+  {
+    "id": "ann-oq07-natcast-mul",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-07",
+    "range": { "startLine": 70, "endLine": 78 },
+    "type": "technique",
+    "title": "The key residue identity d·n ≡ 1 (mod p)",
+    "content": "The whole reduction rests on one elementary congruence. Encoding p = d·n − 1 as the ℕ-equation d·n = p + 1 and casting into ZMod p, the term p vanishes (ZMod.natCast_self) and 1 survives, giving (d : ZMod p)·(n : ZMod p) = 1. Working with d·n = p + 1 rather than a subtraction keeps everything in ℕ and avoids truncated-subtraction pitfalls. This single line is what makes −d and −n mutually inverse mod p downstream.",
+    "mathContext": "$d\\cdot n = p+1 \\implies d\\cdot n \\equiv 1 \\pmod p$, i.e. $(\\bar d)(\\bar n) = 1$ in $\\mathbb{Z}/p\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["modular arithmetic", "ZMod", "ring homomorphism", "casting"],
+    "prerequisites": ["modular arithmetic", "ring theory"]
+  },
+  {
+    "id": "ann-oq07-multiplier-reduction",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-07",
+    "range": { "startLine": 80, "endLine": 110 },
+    "type": "insight",
+    "title": "Multiplier–QR reduction: legendreSym p (−d) = legendreSym p (−n)",
+    "content": "The headline theorem. Because (−d)·(−n) = d·n ≡ 1 (mod p), the product −d · −n is the unit 1, which is a square; hence its Legendre symbol is 1. By multiplicativity legendreSym p (−d) · legendreSym p (−n) = 1, and since each factor is ±1 (legendreSym.eq_one_or_neg_one, valid because both arguments are nonzero mod p), a product equal to 1 forces the two symbols to be equal. Crucially this is reciprocity-free — it uses only multiplicativity, the square-characterisation legendreSym.eq_one_iff, and the ±1 dichotomy. The unbounded multiplier d is thereby eliminated from the residue bookkeeping: the QR condition becomes a condition on −n alone.",
+    "mathContext": "$(-d)(-n) = dn \\equiv 1 \\pmod p$, so $\\left(\\tfrac{-d}{p}\\right)\\left(\\tfrac{-n}{p}\\right)=1$ with each factor $\\pm 1 \\implies \\left(\\tfrac{-d}{p}\\right)=\\left(\\tfrac{-n}{p}\\right)$.",
+    "significance": "key",
+    "relatedConcepts": ["Legendre symbol", "multiplicativity", "quadratic residues", "units modulo p", "Euler's criterion"],
+    "prerequisites": ["Legendre symbol", "quadratic residues", "finite fields"]
+  },
+  {
+    "id": "ann-oq07-selection-criterion",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-07",
+    "range": { "startLine": 112, "endLine": 124 },
+    "type": "concept",
+    "title": "Selection criterion: the QR hypothesis depends only on n",
+    "content": "Two corollaries package the reduction for downstream use. legendreSym_neg_d_eq_one_iff rewrites the equality into a biconditional: legendreSym p (−d) = 1 ⟺ legendreSym p (−n) = 1. legendreSym_neg_n_one_imp_neg_d_one extracts the single direction actually consumed by dirichlet_key_lemma — that legendreSym p (−n) = 1 forces the geometry's hypothesis legendreSym p (−d) = 1. The point is that legendreSym p (−n) = 1 is governed entirely by p mod 4n (via reciprocity for the Jacobi symbol), an honestly fixed congruence target, whereas legendreSym p (−d) appeared to depend on the moving multiplier.",
+    "mathContext": "$\\left(\\tfrac{-d}{p}\\right)=1 \\iff \\left(\\tfrac{-n}{p}\\right)=1$, the latter determined by $p \\bmod 4n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["quadratic reciprocity", "Jacobi symbol", "congruence conditions", "biconditional"],
+    "prerequisites": ["quadratic reciprocity", "Legendre symbol"]
+  },
+  {
+    "id": "ann-oq07-coprime-pred",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-07",
+    "range": { "startLine": 126, "endLine": 129 },
+    "type": "technique",
+    "title": "Coprimality of consecutive integers (n−1, n)",
+    "content": "A small helper feeding Dirichlet's hypothesis: gcd(n−1, n) = 1 for n ≥ 1, since consecutive integers share no common factor. It is proved by Nat.coprime_self_sub_left reducing gcd(n−1, n) to gcd(1, n), then Nat.coprime_one_left. This coprimality is exactly what licenses choosing the residue class p ≡ n − 1 ≡ −1 (mod n) in Dirichlet's theorem.",
+    "mathContext": "$\\gcd(n-1, n) = 1$ for all $n \\geq 1$.",
+    "significance": "technical",
+    "relatedConcepts": ["coprimality", "Euclidean algorithm", "consecutive integers"],
+    "prerequisites": ["elementary number theory"]
+  },
+  {
+    "id": "ann-oq07-dirichlet-supply",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-07",
+    "range": { "startLine": 131, "endLine": 156 },
+    "type": "technique",
+    "title": "Dirichlet supply of multiplier primes p ≡ −1 (mod n)",
+    "content": "For every n ≥ 2 and bound N there is a prime p > N of multiplier shape p = d·n − 1. The prime is produced by Mathlib's recently-added Dirichlet theorem Nat.forall_exists_prime_gt_and_modEq in the class p ≡ n − 1 (mod n), legitimate by the coprimality above. The proof then pins p % n = n − 1 (via Nat.mod_eq_of_lt) and — to keep divisibility inside omega's linear fragment — repackages the quotient p / n as a fresh existential variable q with n·q + (n−1) = p, so the multiplier is d := q + 1. This sidesteps omega's inability to reason about p / n for a symbolic divisor n.",
+    "mathContext": "$\\forall n\\geq 2,\\ \\forall N,\\ \\exists\\, p > N$ prime with $p \\equiv -1 \\pmod n$, i.e. $p = d\\cdot n - 1$, $d\\geq 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet's theorem", "primes in arithmetic progressions", "L-functions", "omega decision procedure"],
+    "prerequisites": ["analytic number theory", "Dirichlet's theorem on primes in AP"]
+  },
+  {
+    "id": "ann-oq07-assembled",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-07",
+    "range": { "startLine": 158, "endLine": 169 },
+    "type": "insight",
+    "title": "Assembled selection layer: a d-free fixed-target problem",
+    "content": "The capstone combines supply and reduction: for every n ≥ 2 and bound N there is a multiplier prime p > N for which legendreSym p (−n) = 1 already forces the geometry's hypothesis legendreSym p (−d) = 1. This is precisely the number-theoretic input the unbounded-multiplier classes need, now stated with d entirely absent from the residue side condition. The Fact p.Prime instance is threaded through as the standard hook required by legendreSym. Honest scope: this does not by itself discharge sufficiency — the companion geometry dirichlet_key_lemma is established only for d ∈ {1,2}; the residual gap is purely geometric (a d-uniform descent), as recorded in the open questions.",
+    "mathContext": "$\\exists\\, p>N$ prime, $p = d\\cdot n-1$, with $\\left(\\tfrac{-n}{p}\\right)=1 \\implies \\left(\\tfrac{-d}{p}\\right)=1$.",
+    "significance": "key",
+    "relatedConcepts": ["three-square theorem", "geometry of numbers", "Dirichlet's theorem", "ternary quadratic forms"],
+    "prerequisites": ["geometry of numbers", "quadratic forms", "Legendre symbol"]
+  }
+]
