@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-setup",
+    "proofId": "open-mapping-theorem-oq-01",
+    "range": { "startLine": 33, "endLine": 36 },
+    "type": "context",
+    "title": "The Banach-space Setting",
+    "content": "Everything is stated over a nontrivially normed field 𝕜 and two Banach spaces E, F — `NormedAddCommGroup` + `NormedSpace 𝕜 _` + `CompleteSpace _`. The `CompleteSpace` assumptions on *both* spaces are not cosmetic: completeness is exactly what the entire theory turns on. A continuous linear bijection between incomplete normed spaces can fail to have a continuous inverse; the open mapping theorem is the statement of precisely what completeness, through the Baire category theorem, guarantees.",
+    "mathContext": "$E, F$ Banach spaces over a nontrivially normed field $\\mathbb{K}$; the bounded-linear-map type is $E \\to_L[\\mathbb{K}] F$.",
+    "significance": "context",
+    "relatedConcepts": ["Banach space", "completeness", "bounded linear map", "normed field"],
+    "prerequisites": ["normed vector spaces", "completeness", "functional analysis"]
+  },
+  {
+    "id": "ann-open-mapping",
+    "proofId": "open-mapping-theorem-oq-01",
+    "range": { "startLine": 39, "endLine": 53 },
+    "type": "concept",
+    "title": "The Open Mapping Theorem and Quotient Maps",
+    "content": "`open_mapping` re-exports `ContinuousLinearMap.isOpenMap`: a surjective bounded linear map between Banach spaces sends open sets to open sets. The standard proof runs through Baire category — the image of the unit ball is non-meagre, so contains a ball around 0 — followed by a completeness-powered iteration to drop the closure. `isOpen_image_of_surjective` is the pointwise form one applies in practice, and `quotient_map` records the sharper fact that such a surjection is a quotient map: the topology on F is exactly the one induced from E, with no extra information in F's norm beyond what f transports.",
+    "mathContext": "$f : E \\to_L F$ surjective $\\Rightarrow f$ is open, and $F$ carries the quotient topology induced by $f$.",
+    "significance": "key",
+    "relatedConcepts": ["open map", "quotient map", "Baire category theorem", "surjection", "induced topology"],
+    "prerequisites": ["open maps", "Baire category", "quotient topology"]
+  },
+  {
+    "id": "ann-bounded-inverse",
+    "proofId": "open-mapping-theorem-oq-01",
+    "range": { "startLine": 57, "endLine": 77 },
+    "type": "technique",
+    "title": "The Bounded Inverse Theorem",
+    "content": "Applied to a *bijection*, the open mapping theorem says the set-theoretic inverse is continuous — the bounded inverse theorem, the result that most sharply distinguishes Banach spaces from general normed spaces. `equivOfBijective` packages this as a continuous linear equivalence E ≃L[𝕜] F: take the algebraic `LinearEquiv.ofBijective` and upgrade it with `toContinuousLinearEquivOfContinuous f.continuous`, the inverse's continuity being supplied for free by the open mapping theorem. `exists_bounded_inverse` then reads off the bundled two-sided inverse g : F →L[𝕜] E as the equivalence's `symm`, with `symm_apply_apply` / `apply_symm_apply` discharging the two round-trip identities.",
+    "mathContext": "A continuous linear bijection $f : E \\to_L F$ between Banach spaces is a linear homeomorphism: $\\exists\\, g : F \\to_L E$ with $g \\circ f = \\mathrm{id}$, $f \\circ g = \\mathrm{id}$.",
+    "significance": "key",
+    "relatedConcepts": ["bounded inverse theorem", "continuous linear equivalence", "linear homeomorphism", "ContinuousLinearEquiv.ofBijective"],
+    "prerequisites": ["bijections", "continuous inverses", "linear equivalences"]
+  },
+  {
+    "id": "ann-norm-equiv",
+    "proofId": "open-mapping-theorem-oq-01",
+    "range": { "startLine": 81, "endLine": 103 },
+    "type": "insight",
+    "title": "Norm Equivalence: the Quantitative Corollary",
+    "content": "`norm_equiv_of_bijective` is the one result here assembled rather than re-exported: a continuous linear bijection gives constants 0 < c ≤ C with c‖x‖ ≤ ‖f x‖ ≤ C‖x‖, so the pullback norm x ↦ ‖f x‖ is equivalent to the original. The upper bound is mere continuity: C = ‖f‖ + 1 from `f.le_opNorm`. The lower bound is the genuine content of the open mapping theorem: with the bounded inverse g, ‖x‖ = ‖g(f x)‖ ≤ ‖g‖·‖f x‖, so c = 1/(‖g‖ + 1) works (the +1 keeps the denominator positive without a separate ‖g‖ ≠ 0 case). The two inequalities are closed by `nlinarith` from the operator-norm bounds and `norm_nonneg`. Morally c is 1/‖f⁻¹‖ — the constant the open mapping theorem produces but never names.",
+    "mathContext": "$\\exists\\, 0 < c \\le C,\\ \\forall x:\\ c\\lVert x\\rVert \\le \\lVert f x\\rVert \\le C\\lVert x\\rVert$; lower bound $c = 1/(\\lVert g\\rVert+1)$, upper bound $C = \\lVert f\\rVert + 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["norm equivalence", "operator norm", "le_opNorm", "graph norm", "nlinarith"],
+    "prerequisites": ["operator norms", "norm inequalities"]
+  },
+  {
+    "id": "ann-closed-graph",
+    "proofId": "open-mapping-theorem-oq-01",
+    "range": { "startLine": 107, "endLine": 131 },
+    "type": "concept",
+    "title": "The Closed Graph Theorem",
+    "content": "Equivalent to the open mapping theorem (it is the bounded inverse theorem applied to the projection from the graph), the closed graph theorem inverts the usual burden of proving an operator bounded: instead of producing an estimate ‖g x‖ ≤ M‖x‖, one checks only that the graph is closed. `closed_graph` re-exports `LinearMap.continuous_of_isClosed_graph` (topological form); `closed_graph_seq` gives the sequential criterion — continuity follows if uₙ → x and g uₙ → y force y = g x — which is usually the form actually verified; and `toContinuousOfClosedGraph` packages the upgrade as a bundled ContinuousLinearMap constructor `ContinuousLinearMap.ofIsClosedGraph`, with a simp lemma confirming it agrees with g pointwise.",
+    "mathContext": "A linear $g : E \\to F$ between Banach spaces with $\\mathrm{graph}(g)$ closed in $E \\times F$ is automatically continuous.",
+    "significance": "key",
+    "relatedConcepts": ["closed graph theorem", "graph of a linear map", "automatic continuity", "sequential continuity"],
+    "prerequisites": ["closed sets", "graphs of functions", "continuity criteria"]
+  },
+  {
+    "id": "ann-concrete-instances",
+    "proofId": "open-mapping-theorem-oq-01",
+    "range": { "startLine": 133, "endLine": 165 },
+    "type": "context",
+    "title": "Non-vacuous Witnesses",
+    "content": "Three examples instantiate the abstract hypotheses to guard against the theorems being formally true but never applicable. The identity of a Banach space is open (the trivial witness). The first-coordinate projection ℝ² → ℝ — `ContinuousLinearMap.fst` with `Prod.fst_surjective` — is a genuinely non-injective surjection that is open. And doubling x ↦ 2x on ℝ, realised as `(2 : ℝ) • ContinuousLinearMap.id`, is shown bijective by hand (injective via linarith, surjective with witness y/2) so that `norm_equiv_of_bijective` delivers concrete equivalence constants for ‖2x‖ versus ‖x‖.",
+    "mathContext": "Witnesses: $\\mathrm{id}_E$ open; $\\mathrm{Prod.fst} : \\mathbb{R}^2 \\to \\mathbb{R}$ open and non-injective; $x \\mapsto 2x$ a bijection with norm equivalent to the standard one.",
+    "significance": "context",
+    "relatedConcepts": ["coordinate projection", "identity map", "scalar multiplication", "concrete examples"],
+    "prerequisites": ["product spaces", "linear maps on ℝ"]
+  }
+]
