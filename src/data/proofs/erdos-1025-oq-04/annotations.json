@@ -1,0 +1,98 @@
+[
+  {
+    "id": "erdos-1025-oq-04-ann-definitions",
+    "proofId": "erdos-1025-oq-04",
+    "range": { "startLine": 40, "endLine": 55 },
+    "type": "definition",
+    "title": "Relaxed Pair Functions, Validity, and Independence",
+    "content": "The four core definitions. RelaxedPairFunction is just a two-argument function Fin n → Fin n → Fin n with NO constraint — the relaxation. Valid f restores the original Erdős–Hajnal hypothesis that f x y avoids both endpoints whenever x ≠ y. Independent f X says the image of every distinct pair drawn from X lands outside X. ValidOn f W is validity quantified only over pairs lying inside a subset W — the predicate that makes the Part 2 recovery argument work.",
+    "mathContext": "$\\text{Valid}(f) \\iff \\forall x \\neq y,\\ f(x,y) \\notin \\{x,y\\}$;\\quad $\\text{Independent}(f,X) \\iff \\forall x,y \\in X,\\ x \\neq y \\Rightarrow f(x,y) \\notin X$;\\quad $\\text{ValidOn}(f,W) \\iff \\forall x,y \\in W,\\ x \\neq y \\Rightarrow f(x,y) \\notin \\{x,y\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["set mappings", "pair functions", "independent sets", "Erdős–Hajnal problem"],
+    "prerequisites": ["finite types (Fin n)", "Finset basics"]
+  },
+  {
+    "id": "erdos-1025-oq-04-ann-singleton",
+    "proofId": "erdos-1025-oq-04",
+    "range": { "startLine": 59, "endLine": 68 },
+    "type": "technique",
+    "title": "Empty and Singleton Sets are Always Independent",
+    "content": "Both proofs are unconditional in f: an empty set has no pairs to violate independence, and a singleton {a} contains no two distinct elements, so the antecedent x ≠ y is never satisfied. These supply the trivial size-1 witness used to pin the relaxed guarantee at exactly 1 in Part 1.",
+    "mathContext": "$\\text{Independent}(f,\\varnothing)$ and $\\text{Independent}(f,\\{a\\})$ hold vacuously: the pair condition quantifies over distinct $x,y$, of which there are none.",
+    "significance": "supporting",
+    "relatedConcepts": ["vacuous truth", "extremal witnesses"],
+    "prerequisites": ["Finset.mem_singleton"]
+  },
+  {
+    "id": "erdos-1025-oq-04-ann-valid-pair",
+    "proofId": "erdos-1025-oq-04",
+    "range": { "startLine": 70, "endLine": 84 },
+    "type": "insight",
+    "title": "Validity IS the g(n) ≥ 2 Lower Bound",
+    "content": "For a valid f, every 2-element set {a,b} is independent. The proof is a four-way case split matching {x,y} against {a,b}; in the two cross cases the validity facts f x y ≠ x and f x y ≠ y are exactly what is needed. The key conceptual point: the cheap lower bound g(n) ≥ 2 is content-free — it is a direct restatement of the validity axiom. All the hard mathematics (Erdős–Hajnal/Spencer/Conlon–Fox–Sudakov) lives in pushing 2 up to Θ(√n).",
+    "mathContext": "$\\text{Valid}(f) \\wedge a \\neq b \\Rightarrow \\text{Independent}(f,\\{a,b\\})$. Independence of a single pair is literally the validity condition $f(a,b) \\notin \\{a,b\\}$, so $g(n) \\geq 2$ is automatic.",
+    "significance": "key",
+    "relatedConcepts": ["lower bounds", "free sets", "case analysis"],
+    "prerequisites": ["Finset.mem_insert", "case splitting in Lean"]
+  },
+  {
+    "id": "erdos-1025-oq-04-ann-fbad",
+    "proofId": "erdos-1025-oq-04",
+    "range": { "startLine": 86, "endLine": 97 },
+    "type": "concept",
+    "title": "The Maximally Degenerate Witness fbad(x,y) = x",
+    "content": "fbad always returns its first argument, so f x y = x ∈ {x,y} for every ordered pair — degeneracy is total. fbad_not_valid shows it fails the validity hypothesis for n ≥ 2 by exhibiting the concrete distinct pair (0,1). This single explicit function is the engine of the collapse result.",
+    "mathContext": "$f_{\\mathrm{bad}}(x,y) = x$. For $n \\geq 2$, the pair $(0,1)$ has $f_{\\mathrm{bad}}(0,1) = 0 \\in \\{0,1\\}$, so $\\text{Valid}(f_{\\mathrm{bad}})$ fails.",
+    "significance": "key",
+    "relatedConcepts": ["counterexamples", "extremal constructions", "degeneracy"],
+    "prerequisites": ["Fin.ext_iff"]
+  },
+  {
+    "id": "erdos-1025-oq-04-ann-collapse",
+    "proofId": "erdos-1025-oq-04",
+    "range": { "startLine": 99, "endLine": 117 },
+    "type": "insight",
+    "title": "Collapse: Unbounded Degeneracy Forces Guarantee = 1",
+    "content": "relaxed_collapse: any independent set under fbad has card ≤ 1, because two distinct elements a,b ∈ X would give fbad a b = a ∈ X, contradicting independence (proved via Finset.card_le_one). Combined with the singleton witness, relaxed_g_eq_one pins the relaxed guarantee at exactly 1 for n ≥ 2. This is the sharpest possible contrast with the valid case (Θ(√n)) and certifies that the validity hypothesis is not a technical convenience but the entire source of the guarantee.",
+    "mathContext": "$\\text{Independent}(f_{\\mathrm{bad}},X) \\Rightarrow |X| \\leq 1$, and the singleton attains $1$. Hence the relaxed guarantee equals $1$, versus $g(n) = \\Theta(\\sqrt{n})$ in the valid regime.",
+    "significance": "key",
+    "relatedConcepts": ["sharp thresholds", "necessity of hypotheses", "Finset.card_le_one"],
+    "prerequisites": ["Finset cardinality bounds"]
+  },
+  {
+    "id": "erdos-1025-oq-04-ann-degenerate-set",
+    "proofId": "erdos-1025-oq-04",
+    "range": { "startLine": 119, "endLine": 124 },
+    "type": "definition",
+    "title": "Measuring Degeneracy: the Set of Degenerate Ordered Pairs",
+    "content": "degenerateSet f filters the product Fin n × Fin n down to the distinct ordered pairs (x,y) whose image f x y lands in {x,y}. Its cardinality is the budget k of Part 2. Counting ordered (rather than unordered) pairs over-counts by at most a factor of two, which is absorbed harmlessly into the 2k endpoint bound and keeps the Finset bookkeeping elementary.",
+    "mathContext": "$\\text{degenerateSet}(f) = \\{(x,y) \\in \\mathrm{Fin}\\,n \\times \\mathrm{Fin}\\,n : x \\neq y \\wedge f(x,y) \\in \\{x,y\\}\\}$. Its cardinality bounds the violation budget $k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.filter", "violation budgets", "ordered vs unordered counting"],
+    "prerequisites": ["product Finsets", "Finset.filter"]
+  },
+  {
+    "id": "erdos-1025-oq-04-ann-recovery",
+    "proofId": "erdos-1025-oq-04",
+    "range": { "startLine": 126, "endLine": 160 },
+    "type": "technique",
+    "title": "Recovery: Deleting ≤ 2k Tainted Endpoints Restores Validity",
+    "content": "The structural heart of Part 2. The tainted set T is the union of the two coordinate images of the degenerate set, so |T| ≤ |D.image fst| + |D.image snd| ≤ 2|D| ≤ 2k (via card_union_le and card_image_le). Then W = univ \\ T has |W| = n − |T| ≥ n − 2k (via card_univ_diff). By construction any distinct pair inside W is non-degenerate, i.e. f is ValidOn W: if f x y hit an endpoint, (x,y) would be in D and one of x,y would be in T, contradicting membership in W. Bounded degeneracy thus reduces, up to a bounded shrink of the ground set, to the original valid problem.",
+    "mathContext": "$|T| \\leq 2k$, so $W = \\mathrm{univ} \\setminus T$ satisfies $|W| \\geq n - 2k$ and $\\text{ValidOn}(f,W)$. A sublinear budget $k = o(n)$ leaves a $(1-o(1))$-fraction of vertices valid.",
+    "significance": "key",
+    "relatedConcepts": ["deletion method", "structural reduction", "Finset.card_univ_diff", "Finset.card_union_le"],
+    "prerequisites": ["Finset complements", "image cardinality bounds"]
+  },
+  {
+    "id": "erdos-1025-oq-04-ann-recovery-pair",
+    "proofId": "erdos-1025-oq-04",
+    "range": { "startLine": 162, "endLine": 187 },
+    "type": "insight",
+    "title": "An Independent Pair Survives Bounded Degeneracy",
+    "content": "validOn_pair_independent ports valid_pair_independent into the restricted ValidOn setting. recovery_independent_pair then chains it with recovery: when n − 2k ≥ 2 the recovered W has |W| > 1, so Finset.one_lt_card extracts two distinct vertices a,b ∈ W, and {a,b} is independent of size 2 (Finset.card_pair). This shows the relaxed problem with a bounded violation budget inherits at least the trivial guarantee of the valid problem — and, on the surviving (1−o(1))-fraction, the full Θ(√n) theory.",
+    "mathContext": "$|\\text{degenerateSet}(f)| \\leq k \\wedge n - 2k \\geq 2 \\Rightarrow \\exists X,\\ \\text{Independent}(f,X) \\wedge |X| = 2$, extracted from $W$ via $1 < |W|$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.one_lt_card", "Finset.card_pair", "robustness to violations"],
+    "prerequisites": ["extracting elements from large Finsets"]
+  }
+]
