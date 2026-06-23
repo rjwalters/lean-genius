@@ -66,7 +66,7 @@
       }
     ],
     "originalContributions": [
-      "isGδ_compl_of_countable: PROVED in any T1 space the complement of a countable set is a Gδ — realized as the countable intersection ⋂_{a ∈ s} {a}ᶜ of open singleton-complements (no such named lemma in Mathlib)",
+      "isGδ_compl_of_countable: in any T1 space the complement of a countable set is a Gδ — realized as the countable intersection ⋂_{a ∈ s} {a}ᶜ of open singleton-complements; re-proved in-file from IsGδ.biInter_of_isOpen rather than imported (Mathlib's Set.Countable.isGδ_compl states the same fact)",
       "dense_compl_of_countable: PROVED in a perfect T1 Baire space the complement of a countable set is dense (via meagreness of the countable set, reusing the parent's countable_isMeagre)",
       "isGδ_dense_compl_of_countable: PROVED the abstract dense-Gδ packaging — the complement of a countable set in a perfect T1 Baire space is a dense Gδ",
       "not_isGδ_of_dense_isMeagre: PROVED a dense meagre set in a nonempty Baire space is never a Gδ — the abstract mechanism behind 'ℚ is not a Gδ' (a dense Gδ would be residual, forcing both it and its complement meagre, hence univ meagre, contradiction)",
@@ -93,7 +93,7 @@
         "relationship": "Grandparent: the algebraic reals are countable (the countability input reused here)"
       }
     ],
-    "assumptions": "0 axioms (only propext, Classical.choice, Quot.sound — the standard Mathlib triple; no sorryAx, no native_decide). Relies on Mathlib's Gδ / Baire-category infrastructure, the perfect/T1/Baire structure of ℝ, and the countability and density of the algebraic reals.",
+    "assumptions": "0 axioms (only propext, Classical.choice, Quot.sound — the standard Mathlib triple; no sorryAx, no native_decide). Relies on Mathlib's Gδ / Baire-category infrastructure, the perfect/T1/Baire structure of ℝ, and the countability and density of the algebraic reals. Note: the abstract lemma isGδ_compl_of_countable coincides with Mathlib's existing Set.Countable.isGδ_compl (it is re-proved here from IsGδ.biInter_of_isOpen, not imported); the headline contribution is the concrete transcendental dense-Gδ result and the dual not-Gδ corollary for the algebraic reals, for which Mathlib provides only the irrational/rational analogue.",
     "theoremCount": 9,
     "definitionCount": 0,
     "additionalFiles": []
