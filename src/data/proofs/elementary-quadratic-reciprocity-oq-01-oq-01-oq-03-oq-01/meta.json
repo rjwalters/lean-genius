@@ -2,7 +2,7 @@
   "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03-oq-01",
   "title": "Diagonal Jacobi Sums Are Cyclotomic Integers: J(χ,χ) ∈ ℤ[ζ_n]",
   "slug": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03-oq-01",
-  "description": "For a multiplicative character χ of order dividing n on a finite field F (values in an integral domain R), the diagonal Jacobi sum J(χ,χ) = ∑ₓ χ(x)·χ(1−x) lies in the cyclotomic subring ℤ[μ] = Algebra.adjoin ℤ {μ}, where μ is a primitive n-th root of unity in R — not merely in the ambient codomain R. This is the diagonal (φ = χ) specialization of Mathlib's general two-character integrality lemma `jacobiSum_mem_algebraAdjoin_of_pow_eq_one`, recorded as a standalone, directly citable statement together with the `orderOf χ = n` bridge that downstream higher-reciprocity arguments use. Honest scope: a routine specialization of an existing Mathlib result, supplied as precisely-stated reusable infrastructure rather than a new theorem. 0 sorries, 0 axioms.",
+  "description": "For a multiplicative character χ of order dividing n on a finite field F (values in an integral domain R), the diagonal Jacobi sum J(χ,χ) = ∑ₓ χ(x)·χ(1−x) lies in the cyclotomic subring ℤ[μ] = Algebra.adjoin ℤ {μ}, where μ is a primitive n-th root of unity in R — not merely in the ambient codomain R. This is the diagonal (φ = χ) specialization of Mathlib's general two-character integrality lemma `jacobiSum_mem_algebraAdjoin_of_pow_eq_one`, recorded as a standalone, directly citable statement together with the `orderOf χ = n` bridge that downstream higher-reciprocity arguments use. The entry additionally upgrades subring membership to genuine integrality over ℤ (`IsIntegral ℤ (jacobiSum χ φ)`), realizing the classical fact that Jacobi sums are *algebraic integers*: since the root of unity μ is integral over ℤ, the adjoin ℤ[μ] is module-finite over ℤ, so every element — in particular J(χ,χ) — is integral. Honest scope: a routine specialization/strengthening of existing Mathlib results, supplied as precisely-stated reusable infrastructure rather than new mathematics. 0 sorries, 0 axioms.",
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/JacobiSum/Basic.html",
@@ -22,23 +22,24 @@
     ],
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 71,
-    "theoremCount": 2,
+    "lineCount": 111,
+    "theoremCount": 5,
     "definitionCount": 0,
     "dateAdded": "2026-06-19",
     "mathlib_version": "4.26.0",
-    "assumptions": "None beyond Mathlib's foundational axioms (propext / Classical.choice / Quot.sound). No `sorry`, no `axiom`, no `decide`/`native_decide`; the two theorems compose existing Mathlib lemmas (`jacobiSum_mem_algebraAdjoin_of_pow_eq_one`, `pow_orderOf_eq_one`). The result holds over any finite field F and integral domain R (`Fintype F`, `Field F`, `CommRing R`, `IsDomain R`). NOTE: the local Docker build harness was unavailable in this session, so the file is verified at the Mathlib-source level (every cited lemma signature checked against the pinned mathlib v4.26.0 checkout) but not yet machine-built here; the deployer gates on a successful build before publication.",
+    "assumptions": "None beyond Mathlib's foundational axioms (propext / Classical.choice / Quot.sound). No `sorry`, no `axiom`, no `decide`/`native_decide`; the five theorems compose existing Mathlib lemmas (`jacobiSum_mem_algebraAdjoin_of_pow_eq_one`, `pow_orderOf_eq_one`, `IsPrimitiveRoot.isIntegral`, `IsIntegral.fg_adjoin_singleton`, `IsIntegral.of_mem_of_fg`). The result holds over any finite field F and integral domain R (`Fintype F`, `Field F`, `CommRing R`, `IsDomain R`). Machine-verified: the file elaborates cleanly under Lean 4 / Mathlib v4.26.0, and `#print axioms` on all three integrality theorems reports only `[propext, Classical.choice, Quot.sound]`.",
     "originalContributions": [
       "Records the diagonal Jacobi-sum integrality fact `jacobiSum χ χ ∈ Algebra.adjoin ℤ {μ}` (under `χ ^ n = 1` and `IsPrimitiveRoot μ n`) as a standalone, directly citable `theorem jacobiSum_self_mem_algebraAdjoin` — the exact φ = χ instance of Mathlib's two-character `jacobiSum_mem_algebraAdjoin_of_pow_eq_one` that the higher power-reciprocity laws actually invoke.",
       "Supplies the order-of bridge `jacobiSum_self_mem_algebraAdjoin_of_orderOf`: from `orderOf χ = n` it derives `χ ^ n = 1` via `pow_orderOf_eq_one` and concludes membership in ℤ[μ]. This is the form available downstream, where a character is presented with its order (3 for cubic, 4 for quartic reciprocity).",
-      "Establishes the structural prerequisite of cubic/quartic reciprocity in usable form: the reciprocity symbol is read off J(χ,χ) modulo a prime of ℤ[ζ_n], which is only meaningful once J(χ,χ) is known to lie in ℤ[ζ_n]."
+      "Upgrades subring membership to genuine algebraic integrality: `jacobiSum_isIntegral` proves `IsIntegral ℤ (jacobiSum χ φ)` and its diagonal `jacobiSum_self_isIntegral` proves `IsIntegral ℤ (jacobiSum χ χ)`. Membership in ℤ[μ] is not literally `IsIntegral ℤ`; the upgrade routes through `IsPrimitiveRoot.isIntegral` (μ is integral over ℤ) → `IsIntegral.fg_adjoin_singleton` (ℤ[μ] is module-finite over ℤ) → `IsIntegral.of_mem_of_fg` (every element of a finite ℤ-subalgebra is integral). This realizes the classical statement that Jacobi sums are algebraic integers — the precise sense in which J(χ,χ) is a cyclotomic *integer*.",
+      "Establishes the structural prerequisite of cubic/quartic reciprocity in usable form: the reciprocity symbol is read off J(χ,χ) modulo a prime of ℤ[ζ_n], which is only meaningful once J(χ,χ) is known to be an algebraic integer lying in ℤ[ζ_n]."
     ]
   },
   "overview": {
     "historicalContext": "**Jacobi sums and higher reciprocity.** Gauss introduced what are now called Gauss and Jacobi sums to prove quadratic reciprocity; their deeper role is in the *higher* reciprocity laws. For a multiplicative character χ of order n on a finite field, the Jacobi sum J(χ,χ) = ∑ₓ χ(x)χ(1−x) is an algebraic integer, and crucially it lies in the cyclotomic ring ℤ[ζ_n] of the n-th roots of unity — not just in whatever ring receives the character values. Eisenstein and later authors exploited exactly this to formulate cubic (n = 3) and quartic (n = 4) reciprocity: the reciprocity symbol is obtained by reducing J(χ,χ) modulo a prime ideal of ℤ[ζ_n].\n\n**The Mathlib lemma.** Mathlib's `NumberTheory/JacobiSum/Basic.lean` proves the general two-character statement `jacobiSum_mem_algebraAdjoin_of_pow_eq_one`: if χ ^ n = φ ^ n = 1 and μ is a primitive n-th root of unity, then J(χ,φ) ∈ Algebra.adjoin ℤ {μ}. The proof expands the sum and shows each term χ(x)·φ(1−x) is a product of values that individually lie in ℤ[μ] (each character value is a power of μ).\n\n**This entry.** The application to reciprocity uses the *diagonal* case φ = χ. This file isolates that case and packages it with the order hypothesis, so the integrality step is a one-line citation rather than a re-instantiation each time.",
     "problemStatement": "For a finite field F and a multiplicative character χ : MulChar F R (R an integral domain) with χ ^ n = 1, and a primitive n-th root of unity μ ∈ R, prove that the diagonal Jacobi sum jacobiSum χ χ lies in Algebra.adjoin ℤ {μ} (= ℤ[μ] ⊆ R). Provide also the variant phrased from orderOf χ = n.",
-    "text": "A short Lean 4 / Mathlib file (0 sorries, 0 axioms). `jacobiSum_self_mem_algebraAdjoin` is the diagonal specialization, proved in one line as `jacobiSum_mem_algebraAdjoin_of_pow_eq_one hχ hχ hμ`. `jacobiSum_self_mem_algebraAdjoin_of_orderOf` rebases the hypothesis on `orderOf χ = n`, rewriting `pow_orderOf_eq_one χ` through the order equality to obtain `χ ^ n = 1`.",
-    "proofStrategy": "1. **Diagonal instance.** Mathlib already proves J(χ,φ) ∈ ℤ[μ] for χ ^ n = φ ^ n = 1. Setting φ := χ and supplying the single hypothesis χ ^ n = 1 twice yields J(χ,χ) ∈ ℤ[μ] directly.\n\n2. **Order bridge.** When the character is given by its order, `pow_orderOf_eq_one χ : χ ^ orderOf χ = 1` combined with `orderOf χ = n` (rewriting via `▸`) supplies the χ ^ n = 1 hypothesis the first theorem needs. `MulChar F R` is a `CommGroup`, hence a `Monoid`, so `pow_orderOf_eq_one` applies.",
+    "text": "A short Lean 4 / Mathlib file (0 sorries, 0 axioms, 5 theorems). `jacobiSum_self_mem_algebraAdjoin` is the diagonal specialization, proved in one line as `jacobiSum_mem_algebraAdjoin_of_pow_eq_one hχ hχ hμ`. `jacobiSum_self_mem_algebraAdjoin_of_orderOf` rebases the hypothesis on `orderOf χ = n`, rewriting `pow_orderOf_eq_one χ` through the order equality to obtain `χ ^ n = 1`. `jacobiSum_isIntegral` / `jacobiSum_self_isIntegral` then upgrade membership in ℤ[μ] to genuine `IsIntegral ℤ`, via `IsIntegral.of_mem_of_fg` applied to the finitely-generated subalgebra ℤ[μ].",
+    "proofStrategy": "1. **Diagonal instance.** Mathlib already proves J(χ,φ) ∈ ℤ[μ] for χ ^ n = φ ^ n = 1. Setting φ := χ and supplying the single hypothesis χ ^ n = 1 twice yields J(χ,χ) ∈ ℤ[μ] directly.\n\n2. **Order bridge.** When the character is given by its order, `pow_orderOf_eq_one χ : χ ^ orderOf χ = 1` combined with `orderOf χ = n` (rewriting via `▸`) supplies the χ ^ n = 1 hypothesis the first theorem needs. `MulChar F R` is a `CommGroup`, hence a `Monoid`, so `pow_orderOf_eq_one` applies.\n\n3. **Integrality upgrade.** Membership J(χ,φ) ∈ ℤ[μ] is not literally `IsIntegral ℤ`. Since μ is a primitive root of unity it is integral over ℤ (`IsPrimitiveRoot.isIntegral`, needing 0 < n from `NeZero`), so the subalgebra ℤ[μ] = `Algebra.adjoin ℤ {μ}` is module-finite over ℤ (`IsIntegral.fg_adjoin_singleton`). Then `IsIntegral.of_mem_of_fg` concludes that every element of this finite ℤ-subalgebra — in particular J(χ,φ) — is integral over ℤ.",
     "keyInsights": [
       "**The diagonal is the case that matters.** Although Mathlib's lemma is stated for two independent characters, the higher-reciprocity application only ever uses φ = χ — the reciprocity symbol is read off J(χ,χ). Isolating the diagonal gives the exact statement the downstream argument cites.",
       "**Integrality is what makes the reciprocity symbol well-defined.** Reading the symbol off J(χ,χ) modulo a prime of ℤ[ζ_n] presupposes J(χ,χ) ∈ ℤ[ζ_n]; this membership is the structural prerequisite, not an afterthought.",
@@ -63,11 +64,23 @@
       "type": "supporting",
       "description": "The diagonal integrality conclusion derived from the order hypothesis orderOf χ = n: via pow_orderOf_eq_one this yields χ ^ n = 1, hence jacobiSum χ χ ∈ Algebra.adjoin ℤ {μ}. The form available when a character is presented with its order.",
       "leanType": "orderOf χ = n → IsPrimitiveRoot μ n → jacobiSum χ χ ∈ Algebra.adjoin ℤ {μ}"
+    },
+    {
+      "name": "jacobiSum_isIntegral",
+      "type": "core",
+      "description": "Jacobi sums are algebraic integers (general two-character form): if χ ^ n = φ ^ n = 1 and μ is a primitive n-th root of unity, then jacobiSum χ φ is integral over ℤ. Upgrades Mathlib's subring-membership lemma to genuine IsIntegral ℤ, using that ℤ[μ] is module-finite over ℤ (the root of unity μ is integral over ℤ).",
+      "leanType": "χ ^ n = 1 → φ ^ n = 1 → IsPrimitiveRoot μ n → IsIntegral ℤ (jacobiSum χ φ)"
+    },
+    {
+      "name": "jacobiSum_self_isIntegral",
+      "type": "core",
+      "description": "The diagonal Jacobi sum is an algebraic integer: jacobiSum χ χ is integral over ℤ whenever χ ^ n = 1 and μ is a primitive n-th root of unity. The φ = χ specialization of jacobiSum_isIntegral — the precise sense in which J(χ,χ) is a cyclotomic integer, the object whose reduction modulo a prime of ℤ[ζ_n] defines the reciprocity symbol.",
+      "leanType": "χ ^ n = 1 → IsPrimitiveRoot μ n → IsIntegral ℤ (jacobiSum χ χ)"
     }
   ],
   "conclusion": {
-    "summary": "The entry records the diagonal Jacobi-sum integrality fact J(χ,χ) ∈ ℤ[ζ_n] — the structural prerequisite of the higher power-reciprocity laws — as a standalone, directly citable theorem, plus an order-of variant. Both are one-line compositions of existing Mathlib lemmas (`jacobiSum_mem_algebraAdjoin_of_pow_eq_one`, `pow_orderOf_eq_one`), with 0 axioms and 0 sorries.",
-    "implications": "This is supporting number-theory infrastructure, not new mathematics: Mathlib already proves the general two-character integrality. The contribution is packaging the diagonal case with the order bridge so the reciprocity arguments can cite a single named lemma. It does not advance the open cubic-reciprocity question on the parent entry; it supplies one of the ingredients that question depends on.",
+    "summary": "The entry records the diagonal Jacobi-sum membership fact J(χ,χ) ∈ ℤ[ζ_n] — the structural prerequisite of the higher power-reciprocity laws — as a standalone, directly citable theorem, plus an order-of variant, and upgrades membership to genuine algebraic integrality `IsIntegral ℤ (jacobiSum χ χ)`. All five theorems are short compositions of existing Mathlib lemmas (`jacobiSum_mem_algebraAdjoin_of_pow_eq_one`, `pow_orderOf_eq_one`, `IsPrimitiveRoot.isIntegral`, `IsIntegral.fg_adjoin_singleton`, `IsIntegral.of_mem_of_fg`), with 0 axioms and 0 sorries.",
+    "implications": "This is supporting number-theory infrastructure, not new mathematics: Mathlib already proves the general two-character subring-membership statement. The contribution is packaging the diagonal case with the order bridge and the integrality upgrade so the reciprocity arguments can cite single named lemmas for both `J(χ,χ) ∈ ℤ[ζ_n]` and `IsIntegral ℤ (J(χ,χ))`. It does not advance the open cubic-reciprocity question on the parent entry; it supplies two of the ingredients that question depends on.",
     "openQuestions": [
       "Formalize the full cubic reciprocity law (π/q)₃ = (q/π)₃ on the parent entry, for which this diagonal integrality is the membership step.",
       "Give an explicit description of which element of ℤ[ζ_n] the diagonal Jacobi sum equals (beyond membership), e.g. the −1 + z·(μ−1)² normal form that Mathlib's `exists_jacobiSum_eq_neg_one_add` provides for n > 2.",
@@ -104,10 +117,10 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 71,
+    "lineCount": 111,
     "axiomCount": 0,
     "sorries": 0,
-    "theoremCount": 2,
+    "theoremCount": 5,
     "definitionCount": 0
   }
 }
