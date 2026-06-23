@@ -1,0 +1,150 @@
+{
+  "id": "mason-stothers-theorem-oq-01-oq-02",
+  "title": "Davenport's inequality as a 0-axiom corollary of Mason–Stothers (characteristic zero)",
+  "slug": "mason-stothers-theorem-oq-01-oq-02",
+  "description": "Davenport's inequality bounds how small the degree of f³ − g² can be relative to f: for coprime polynomials f, g over a characteristic-zero field with f non-constant and f³ ≠ g², deg f + 2 ≤ 2·deg(f³ − g²), i.e. deg(f³ − g²) ≥ ½·deg f + 1. It is the polynomial shadow of Hall's conjecture on |x³ − y²| for integers. This entry answers the second open question of the parent (mason-stothers-theorem-oq-01): derive Davenport directly from mason_stothers_charZero. The proof applies Mason–Stothers in the additive form a + b = c to the coprime triple a = f³, b = −g², c = f³ − g², extracting the two lower bounds 3·deg f + 1 ≤ deg(rad(a·b·c)) and 2·deg g + 1 ≤ deg(rad(a·b·c)). The combinatorial input is an upper bound on the radical degree proved here as radical_cube_sq_mul_dvd: rad(f³·g²·c) ∣ f·g·c with no coprimality hypothesis, via radical_mul_dvd, radical_pow (rad(pⁿ) = rad p) and radical_dvd_self, giving deg rad ≤ deg f + deg g + deg c. Feeding the two lower bounds and this upper bound to omega yields deg f + 2 ≤ 2·deg(f³ − g²). Everything is a 0-axiom derivation from the parent entry's mason_stothers_charZero.",
+  "meta": {
+    "author": "H. Davenport (1965, classical); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MasonStothersOQ01OQ02.lean",
+    "tags": [
+      "polynomials",
+      "mason-stothers",
+      "davenport-inequality",
+      "abc-conjecture",
+      "radical",
+      "degree-bound",
+      "characteristic-zero",
+      "hall-conjecture",
+      "number-theory",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "radical_mul_dvd",
+        "description": "radical (a * b) ∣ radical a * radical b, with NO coprimality hypothesis. Splits radical (f³·g²·c) across the product; the key tool for the radical-degree upper bound.",
+        "module": "Mathlib.RingTheory.Radical"
+      },
+      {
+        "theorem": "radical_pow",
+        "description": "radical (a ^ n) = radical a for n ≠ 0. Collapses the powers rad(f³) = rad f and rad(g²) = rad g, so the radical loses no information about exponents.",
+        "module": "Mathlib.RingTheory.Radical"
+      },
+      {
+        "theorem": "radical_dvd_self",
+        "description": "radical a ∣ a. Returns from rad f, rad g, rad c to f, g, c, completing rad(f³·g²·c) ∣ f·g·c.",
+        "module": "Mathlib.RingTheory.Radical"
+      },
+      {
+        "theorem": "radical_neg",
+        "description": "radical (-a) = radical a. Identifies rad(f³·(−g²)·c) with rad(f³·g²·c) (they differ by the unit −1), so the upper bound applies to the product appearing in Mason–Stothers.",
+        "module": "Mathlib.RingTheory.Radical"
+      },
+      {
+        "theorem": "Polynomial.natDegree_le_of_dvd",
+        "description": "p ∣ q and q ≠ 0 ⟹ natDegree p ≤ natDegree q. Converts the divisibility rad(f³·g²·c) ∣ f·g·c into the degree inequality deg rad ≤ deg f + deg g + deg c.",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Lemmas"
+      },
+      {
+        "theorem": "Polynomial.natDegree_pow",
+        "description": "natDegree (p ^ n) = n * natDegree p. Supplies deg(f³) = 3·deg f and deg(g²) = 2·deg g for the final omega step.",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Definitions"
+      }
+    ],
+    "originalContributions": [
+      "radical_cube_sq_mul_dvd: the hypothesis-free divisibility rad(f³·g²·c) ∣ f·g·c over a field, bounding the number of distinct roots of f³·g²·c by deg f + deg g + deg c. The radical-degree input to Davenport, proved from radical_mul_dvd / radical_pow / radical_dvd_self without any coprimality assumption.",
+      "davenport: Davenport's inequality deg f + 2 ≤ 2·deg(f³ − g²) for coprime f, g over a characteristic-zero field with f non-constant and f³ ≠ g², assembled in-file from the parent's mason_stothers_charZero (applied to the triple f³ − g² = f³ + (−g²)) and the radical-degree upper bound. Not a Mathlib export.",
+      "natDegree_cube_sub_sq_ge: the height form deg(f³ − g²) ≥ ½·deg f + 1, rendered over ℕ as f.natDegree / 2 + 1 ≤ (f³ − g²).natDegree."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide (hence no Lean.ofReduceBool). Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas and the parent entry's mason_stothers_charZero (itself 0-axiom). The [CharZero k] field instance and the coprimality / non-constancy / f³ ≠ g² hypotheses are mathematical hypotheses of Davenport's statement, not assumptions about unproved facts.",
+    "lineCount": 132,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Davenport's inequality (H. Davenport, 1965, 'On f³(t) − g²(t)') is the polynomial analogue of Hall's conjecture, which asks how small |x³ − y²| can be for integers x, y. In the polynomial setting Davenport proved the sharp lower bound deg(f³ − g²) ≥ ½·deg f + 1 for coprime non-constant f, g — there is no epsilon and no exceptional set, in contrast to the still-open integer Hall conjecture. The inequality is one of the classic one-line consequences of the Mason–Stothers theorem (the function-field abc), alongside the polynomial Fermat theorem.",
+    "problemStatement": "The parent entry proves the characteristic-zero Mason–Stothers degree bound mason_stothers_charZero. Its second open question asks: can Davenport's inequality deg(f³ − g²) ≥ ½·deg f + 1 be derived directly as a 0-axiom corollary?\n\n**Answer:** Yes. Apply mason_stothers_charZero to the coprime additive triple f³ + (−g²) = f³ − g². The two lower bounds on deg(rad) coming from the f³ and g² terms, combined with the hypothesis-free upper bound rad(f³·g²·c) ∣ f·g·c, give deg f + 2 ≤ 2·deg(f³ − g²) by linear arithmetic.",
+    "text": "Davenport's inequality deg f + 2 ≤ 2·deg(f³ − g²) for coprime non-constant f, g in characteristic zero, obtained as a direct 0-axiom corollary of the parent's Mason–Stothers degree bound and a hypothesis-free upper bound on the radical degree.",
+    "proofStrategy": "1. radical_cube_sq_mul_dvd: rad(f³·g²·c) ∣ f·g·c. Split rad(f³·g²) ∣ rad(f³)·rad(g²) = rad f · rad g (radical_mul_dvd, radical_pow), then rad f ∣ f, rad g ∣ g, rad c ∣ c (radical_dvd_self) and combine with one more radical_mul_dvd and mul_dvd_mul.\n2. davenport: set a = f³, b = −g², c = f³ − g². Verify a, b, c ≠ 0; IsCoprime f g ⟹ IsCoprime f³ (−g²) (IsCoprime.pow, neg_right); a + b = c by ring; f³ non-constant supplies the Mason–Stothers non-triviality disjunct. mason_stothers_charZero gives 3·deg f + 1 ≤ deg(rad(f³·(−g²)·c)) and 2·deg g + 1 ≤ same. Rewrite rad(f³·(−g²)·c) = rad(f³·g²·c) (radical_neg, since the product differs from f³·g²·c by −1). Bound deg(rad(f³·g²·c)) ≤ deg f + deg g + deg c via radical_cube_sq_mul_dvd and natDegree_le_of_dvd / natDegree_mul. Feed the two lower bounds, the upper bound, deg(f³) = 3·deg f and deg(g²) = 2·deg g to omega.\n3. natDegree_cube_sub_sq_ge: omega from davenport.",
+    "keyInsights": [
+      "**Davenport is Mason–Stothers for the triple (f³, −g², f³ − g²).** Choosing this coprime additive triple turns the abstract degree bound max{deg a, deg b} + 1 ≤ deg rad into two concrete inequalities 3·deg f + 1 ≤ R and 2·deg g + 1 ≤ R.",
+      "**The radical upper bound needs no coprimality.** rad(f³·g²·c) ∣ f·g·c holds because the radical is insensitive to exponents (rad(pⁿ) = rad p) and rad(ab) ∣ rad a · rad b unconditionally; the cube and the square contribute only deg f and deg g, not 3·deg f and 2·deg g, to the distinct-root count.",
+      "**Sandwiching two lower bounds against one upper bound.** Adding 3F + 1 ≤ R and 2G + 1 ≤ R and using 2R ≤ 2(F + G + C) cancels the G terms and gives F + 2 ≤ 2C — Davenport's inequality — purely by omega.",
+      "**Characteristic zero is inherited from the parent.** mason_stothers_charZero already eliminated the derivative-vanishing escape clause; over 𝔽_p the inequality can fail (e.g. f, g built from p-th powers), so the [CharZero k] hypothesis is essential and is carried straight through."
+    ],
+    "exampleSections": [
+      {
+        "title": "Sharpness: the bound deg(f³ − g²) ≥ ½·deg f + 1 is attained",
+        "mathContext": "Davenport's inequality is sharp: there exist coprime f, g with deg(f³ − g²) exactly ½·deg f + 1 (the classical 'Davenport pairs', related to Belyi maps and dessins d'enfants). The omega step here proves the inequality; equality cases are the subject of a separate study of extremal triples."
+      },
+      {
+        "title": "Why the integer Hall conjecture stays open",
+        "mathContext": "The integer analogue — that |x³ − y²| ≥ c·√x for some constant c (Hall's conjecture) — has no known unconditional proof, and the radical-degree argument has no integer counterpart because there is no 'derivative' lowering degrees. Davenport's polynomial inequality is the cautionary success story: the function-field abc (Mason–Stothers) is a theorem, while integer abc / Hall remain conjectural."
+      }
+    ]
+  },
+  "references": [
+    {
+      "authors": "Davenport, H.",
+      "title": "On f³(t) − g²(t)",
+      "year": "1965",
+      "note": "Norske Vid. Selsk. Forh. (Trondheim) 38, 86–87 — the original proof of the polynomial inequality deg(f³ − g²) ≥ ½·deg f + 1."
+    },
+    {
+      "authors": "Stothers, W. W.",
+      "title": "Polynomial identities and Hauptmoduln",
+      "year": "1981",
+      "note": "Quart. J. Math. Oxford 32, 349–370 — the Mason–Stothers theorem from which Davenport follows."
+    },
+    {
+      "authors": "Hall, Marshall",
+      "title": "The Diophantine equation x³ − y² = k",
+      "year": "1971",
+      "note": "Computers in Number Theory, 173–198 — the integer conjecture that Davenport's polynomial inequality models."
+    },
+    {
+      "authors": "Zannier, Umberto",
+      "title": "On Davenport's bound for the degree of f³ − g² and Riemann's existence theorem",
+      "year": "1995",
+      "note": "Acta Arith. 71, 107–137 — sharpness and the connection to Belyi maps / dessins d'enfants."
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "mason-stothers-theorem-oq-01",
+      "relation": "Parent entry. Supplies mason_stothers_charZero, the characteristic-zero Mason–Stothers degree bound that this Davenport derivation rests on; this entry answers its second open question."
+    }
+  ],
+  "conclusion": {
+    "summary": "Davenport's inequality deg f + 2 ≤ 2·deg(f³ − g²) (equivalently deg(f³ − g²) ≥ ½·deg f + 1) for coprime non-constant f, g over a characteristic-zero field with f³ ≠ g² is derived as a 0-axiom corollary of the parent's mason_stothers_charZero. The proof applies Mason–Stothers to the coprime triple f³ + (−g²) = f³ − g² and feeds the resulting lower bounds, together with the hypothesis-free radical-degree upper bound rad(f³·g²·c) ∣ f·g·c (radical_cube_sq_mul_dvd), to omega. Verified with 0 axioms, 0 sorries, no native_decide.",
+    "implications": "Closes the second open question of mason-stothers-theorem-oq-01 and packages the textbook Davenport inequality — the polynomial shadow of Hall's conjecture — as a reusable 0-axiom lemma built directly on the gallery's Mason–Stothers infrastructure.",
+    "openQuestions": [
+      "Characterise the extremal (Davenport) pairs attaining deg(f³ − g²) = ½·deg f + 1, connecting them to Belyi maps and the count of distinct roots of f³ − g².",
+      "Generalise to deg(fᵐ − gⁿ) for coprime f, g with 1/m + 1/n < 1, recovering the Davenport–Zannier bound (1 − 1/m − 1/n)·deg(fᵐ) + 1 from the same Mason–Stothers input."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.MasonStothersOQ01"
+    ],
+    "opens": [
+      "Polynomial",
+      "UniqueFactorizationMonoid",
+      "UniqueFactorizationDomain"
+    ],
+    "namespace": "MasonStothersOQ01OQ02",
+    "lineCount": 132,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/MasonStothersOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
