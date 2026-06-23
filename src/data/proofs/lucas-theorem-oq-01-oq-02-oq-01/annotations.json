@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-lucas-sierpinski-context",
+    "proofId": "lucas-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "From the Sierpiński count 3^m to density and dimension",
+    "content": "Pascal's triangle mod 2 is the Sierpiński gasket. The grandparent proved Glaisher's single-row count oddCount n = 2^(s₂ n); the parent summed it to the block count ∑_{n<2^m} oddCount n = 3^m. This file draws the two classical asymptotic consequences: (1) the odd entries have density 0 among all entries — almost every binomial coefficient is even — because the total entry count grows like 4^m/2 while the odd count grows only like 3^m; (2) the box-counting exponent log(3^m)/log(2^m) equals the Sierpiński dimension log₂ 3 ≈ 1.585 exactly for every m ≥ 1, with 1 < log₂ 3 < 2.",
+    "mathContext": "$\\frac{3^m}{\\text{totalEntries}\\,m}\\to 0$ and $\\frac{\\log 3^m}{\\log 2^m} = \\log_2 3$, the gasket's exactly-self-similar dimension, $1<\\log_2 3<2$.",
+    "significance": "context",
+    "relatedConcepts": ["Sierpiński gasket", "fractal dimension", "natural density", "Pascal's triangle mod 2", "Glaisher's formula"],
+    "prerequisites": ["binomial coefficients mod 2", "binary digit sum", "asymptotic density"]
+  },
+  {
+    "id": "ann-lucas-sierpinski-blocksum",
+    "proofId": "lucas-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 45, "endLine": 91 },
+    "type": "technique",
+    "title": "Block-sum engine: ∑ 2^(s₂ n) = 3^m, reproved inline",
+    "content": "The Sierpiński count is reproved self-containedly from Glaisher's formula. s2_step gives the digit-sum recursion s₂ n = n%2 + s₂(n/2); s2_two_pow_add shows prepending a leading 1-bit increments the digit sum, s₂(2^m + k) = s₂(k) + 1 for k < 2^m. From this, sum_two_pow_s2 proves the block sum ∑_{n<2^m} 2^(s₂ n) satisfies T(m+1) = 3·T(m), hence equals 3^m (splitting range(2^(m+1)) into two halves, the upper half contributing a factor 2). sum_oddCount_eq_three_pow rewrites 2^(s₂ n) as oddCount n via the grandparent's oddCount_eq_two_pow_s2.",
+    "mathContext": "$s_2(2^m+k) = s_2(k)+1$ $\\Rightarrow$ $\\sum_{n<2^{m+1}} 2^{s_2 n} = 3\\sum_{n<2^m} 2^{s_2 n}$ $\\Rightarrow$ $= 3^m$.",
+    "significance": "supporting",
+    "relatedConcepts": ["binary digit sum recursion", "Finset.sum_range_add", "self-similarity", "induction"],
+    "prerequisites": ["binary representation", "sums over Finset.range", "induction on m"]
+  },
+  {
+    "id": "ann-lucas-sierpinski-total",
+    "proofId": "lucas-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 95, "endLine": 128 },
+    "type": "technique",
+    "title": "Total entry count and the even-entry complement",
+    "content": "totalEntries m = ∑_{n<2^m}(n+1) is the triangular number of entries in the first 2^m rows. sum_range_succ_mul_two gives Gauss' sum doubled (to stay in ℕ): (∑_{n<N}(n+1))·2 = N(N+1), so two_mul_totalEntries gives the clean identity 2·totalEntries m = 2^m·(2^m+1). Since the odd entries are a subset of each row (oddCount_le_row: oddCount n ≤ n+1), Finset.sum_le_sum yields 3^m ≤ totalEntries m (three_pow_le_totalEntries), so the even entries number totalEntries m − 3^m, a genuine nonnegative quantity (evenEntries_eq).",
+    "mathContext": "$2\\cdot\\text{totalEntries}\\,m = 2^m(2^m+1)$; $3^m\\le\\text{totalEntries}\\,m$; even entries $= \\text{totalEntries}\\,m - 3^m$.",
+    "significance": "key",
+    "relatedConcepts": ["triangular number", "Gauss summation", "Finset.sum_le_sum", "Nat.sub_add_cancel"],
+    "prerequisites": ["triangular numbers", "natural-number subtraction", "termwise sum bounds"]
+  },
+  {
+    "id": "ann-lucas-sierpinski-density",
+    "proofId": "lucas-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 132, "endLine": 172 },
+    "type": "insight",
+    "title": "Density 0: almost all binomial coefficients are even",
+    "content": "four_pow_div_two_le_totalEntries casts the integer identity to ℝ and uses 2·totalEntries m = 4^m + 2^m ≥ 4^m to get totalEntries m ≥ 4^m/2 (via nlinarith). oddDensity m := 3^m/totalEntries m is then squeezed: oddDensity_le bounds it by 3^m/(4^m/2) = 2·(3/4)^m (gcongr on the denominator + field_simp). Finally oddDensity_tendsto_zero applies squeeze_zero with the geometric limit (3/4)^m → 0 (tendsto_pow_atTop_nhds_zero_of_lt_one). The ratio of bases 3 and 4 is the whole content: (3/4)^m → 0.",
+    "mathContext": "$\\text{oddDensity}\\,m = \\frac{3^m}{\\text{totalEntries}\\,m}\\le \\frac{3^m}{4^m/2} = 2\\left(\\frac34\\right)^m\\to 0$.",
+    "significance": "key",
+    "relatedConcepts": ["squeeze_zero", "geometric sequence limit", "natural density zero", "gcongr"],
+    "prerequisites": ["limits of sequences", "squeeze theorem", "geometric decay"]
+  },
+  {
+    "id": "ann-lucas-sierpinski-dimension",
+    "proofId": "lucas-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 176, "endLine": 204 },
+    "type": "concept",
+    "title": "The exact Sierpiński box-counting dimension log₂ 3",
+    "content": "sierpinskiDimension := logb 2 3. boxCount_ratio_eq_dimension shows log(3^m)/log(2^m) = log₂ 3 EXACTLY for every m ≥ 1 — not a limit: Real.log_pow turns it into (m·log 3)/(m·log 2) and the common factor m cancels, reflecting that the gasket is exactly self-similar so every resolution sees the same exponent. one_lt_sierpinskiDimension and sierpinskiDimension_lt_two give the strict fractal bounds 1 < log₂ 3 < 2 via log 2 < log 3 < log 4 = 2·log 2 (Real.log_lt_log).",
+    "mathContext": "$\\frac{\\log 3^m}{\\log 2^m} = \\frac{m\\log 3}{m\\log 2} = \\log_2 3$, with $\\log 2<\\log 3<\\log 4 = 2\\log 2$ giving $1<\\log_2 3<2$.",
+    "significance": "key",
+    "relatedConcepts": ["box-counting dimension", "Real.logb", "Real.log_pow", "self-similar fractal", "Hausdorff dimension"],
+    "prerequisites": ["logarithms", "box-counting dimension", "self-similarity scaling"]
+  },
+  {
+    "id": "ann-lucas-sierpinski-sanity",
+    "proofId": "lucas-theorem-oq-01-oq-02-oq-01",
+    "range": { "startLine": 208, "endLine": 216 },
+    "type": "context",
+    "title": "Concrete sanity checks",
+    "content": "Three kernel-decide examples confirm the counts at small m: totalEntries 2 = 10 (first 4 rows, 9 odd + 1 even), totalEntries 3 = 36 (first 8 rows, 27 odd + 9 even), and 2·totalEntries 3 = 8·9 = 72. Using kernel decide (not native_decide) keeps the file axiom-free — no Lean.ofReduceBool.",
+    "mathContext": "$\\text{totalEntries}\\,2 = 10$, $\\text{totalEntries}\\,3 = 36$, $2\\cdot 36 = 72 = 8\\cdot 9$.",
+    "significance": "context",
+    "relatedConcepts": ["kernel decide", "axiom-free verification", "worked example"],
+    "prerequisites": ["small-case computation"]
+  }
+]
