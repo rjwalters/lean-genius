@@ -1,0 +1,75 @@
+{
+  "id": "erdos-1000-oq-03-oq-01",
+  "title": "The Combinatorial Jordan Totient and Its Gauss Identity",
+  "slug": "erdos-1000-oq-03-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1000OQ03OQ01",
+    "lineCount": 246,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos1000OQ03OQ01.lean",
+    "sorries": 0
+  },
+  "description": "The parent entry erdos-1000-oq-03 develops Jordan's totient J_k via the Dirichlet convolution J_k = μ * pow k, and its docstring asserts — without proof — that J_k(n) counts the k-tuples in (ℤ/n)^k whose coordinates together with n are setwise coprime. This entry closes that gap by taking the honest combinatorial definition jordanCount k n = #{ a : Fin k → {0,…,n-1} : gcd(a₀,…,a_{k-1}, n) = 1 } and proving, from first principles, the structural facts that make it the genuine k-dimensional generalisation of Euler's φ. The headline jordan_count_divisor_sum establishes the geometric Gauss identity ∑_{d∣n} jordanCount k d = n^k: every one of the n^k tuples is classified by the divisor gcd(a, n), and the fibre over each d rescales bijectively (a ↦ aⱼ/d) to the coprime tuples mod n/d. From it follow jordan_count_one (J_k(1)=1), jordan_count_le_pow (J_k(n) ≤ n^k), the Euler recovery jordan_count_eq_totient (jordanCount 1 n = φ(n)), Gauss's classical sum_totient_eq_self (∑_{d∣n} φ(d) = n) as a k=1 corollary, and the prime-power closed form jordan_count_prime_pow_sub (J_k(p^{m+1}) = p^{(m+1)k} − p^{mk}, telescoping the divisor sum via Nat.sum_divisors_prime_pow), which at k=1 is φ(p^{m+1}) = p^{m+1} − p^m. The crux is fiber_card, a Finset.card_bij' with explicit scaling maps, with the gcd of a coordinatewise-scaled tuple handled by Finset.gcd_mul_left. Together with the parent's convolution theory, this shows the two standard definitions of J_k — the analytic μ * pow k and the geometric tuple count — obey the same Gauss divisor-sum law and both restrict to Euler's φ at k=1. Fully machine-verified with no axioms and no sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1000OQ03OQ01.lean",
+    "tags": [
+      "number-theory",
+      "jordan-totient",
+      "euler-totient",
+      "gauss-identity",
+      "divisor-sum",
+      "combinatorics",
+      "bijection",
+      "multiplicative-function"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 246,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "assumptions": ""
+  },
+  "overview": {
+    "historicalContext": "Camille Jordan introduced the totient $J_k$ in 1870 as the count of $k$-tuples of residues mod $n$ that, together with $n$, are setwise coprime — equivalently, the number of points of $(\\mathbb{Z}/n)^k$ that generate the group, or the number of primitive vectors in the discrete torus. For $k=1$ it is Euler's $\\varphi$. The two faces of $J_k$ — the geometric tuple count and the analytic Dirichlet convolution $\\mu * \\mathrm{id}^k$ with Euler product $J_k(n) = n^k\\prod_{p\\mid n}(1-p^{-k})$ — are classically identified through the divisor-sum identity $\\sum_{d\\mid n} J_k(d) = n^k$, the exact generalisation of Gauss's $\\sum_{d\\mid n}\\varphi(d) = n$. The parent gallery entry built the convolution side; this entry builds the combinatorial side and recovers the same Gauss law directly from the geometry of the tuple count.",
+    "problemStatement": "Define $\\mathrm{jordanCount}\\,k\\,n$ as the number of tuples $a : \\{0,\\dots,k-1\\} \\to \\{0,\\dots,n-1\\}$ with $\\gcd(a_0,\\dots,a_{k-1},n) = 1$. Prove the divisor-sum identity $\\sum_{d\\mid n}\\mathrm{jordanCount}\\,k\\,d = n^k$, deduce that $\\mathrm{jordanCount}\\,1\\,n = \\varphi(n)$ (recovering Euler's totient and Gauss's $\\sum_{d\\mid n}\\varphi(d)=n$), and compute the prime-power values $\\mathrm{jordanCount}\\,k\\,(p^{m+1}) = p^{(m+1)k} - p^{mk}$ — all without axioms.",
+    "proofStrategy": "The headline `jordan_count_divisor_sum` partitions the set of all $n^k$ tuples in $\\{0,\\dots,n-1\\}^k$ by the value $d = \\gcd(\\gcd(a), n) \\in \\mathrm{divisors}(n)$ using `Finset.card_eq_sum_card_fiberwise`. The key lemma `fiber_card` shows each fibre has exactly $\\mathrm{jordanCount}\\,k\\,(n/d)$ elements, via `Finset.card_bij'` with the explicit mutually-inverse maps $a \\mapsto (a_j/d)_j$ and $b \\mapsto (d\\,b_j)_j$: divisibility $d \\mid a_j$ comes from $d \\mid \\gcd(a) \\mid a_j$, and the gcd of a scaled tuple satisfies $\\gcd(d\\,b) = d\\,\\gcd(b)$ (`gcd_smul`, from `Finset.gcd_mul_left`), so $\\gcd(\\gcd(a),n)=d$ exactly when the reduced tuple is coprime to $n/d$. Summing and reindexing with `Nat.sum_div_divisors` gives $\\sum_{d\\mid n}\\mathrm{jordanCount}\\,k\\,d = n^k$. The corollaries are short: `jordan_count_eq_totient` is a length-one `card_bij'` using $\\gcd$ of a singleton tuple (`gcd_fin_one`); `sum_totient_eq_self` specialises the headline to $k=1$; and `jordan_count_prime_pow` telescopes the divisor sum over $\\mathrm{divisors}(p^{m+1}) = \\{p^0,\\dots,p^{m+1}\\}$ via `Nat.sum_divisors_prime_pow` and `Finset.sum_range_succ`.",
+    "keyInsights": [
+      "The single divisor-sum identity $\\sum_{d\\mid n} J_k(d) = n^k$ carries the whole theory: $J_k(1)=1$, the bound $J_k(n)\\le n^k$, the prime-power values, and (at $k=1$) Gauss's totient identity all drop out of it. The combinatorial proof of this one identity is therefore the entire content.",
+      "The fibre bijection is pure rescaling: tuples with $\\gcd(a,n)=d$ are precisely $d$ times the tuples mod $n/d$ that are coprime to $n/d$. The gcd of a coordinatewise-scaled tuple equals $d$ times the gcd ($\\gcd(d\\,b)=d\\,\\gcd(b)$), which turns the divisibility condition into a clean coprimality condition one dimension down.",
+      "Working with the entrywise gcd via Mathlib's `Finset.gcd` (over `Fin k`) rather than an ad-hoc fold makes the scaling lemma a one-liner (`Finset.gcd_mul_left`) and the divisor-membership of $\\gcd(a,n)$ immediate, keeping the bijection's side conditions elementary.",
+      "The result is the geometric mirror of the parent entry's convolution development: both define $J_k$ and both prove $\\sum_{d\\mid n} J_k(d) = n^k$, so the analytic $\\mu * \\mathrm{pow}\\,k$ and the geometric tuple count are shown to be the same arithmetic function — and both collapse to Euler's $\\varphi$ at $k=1$."
+    ]
+  },
+  "conclusion": {
+    "summary": "The combinatorial Jordan totient $\\mathrm{jordanCount}\\,k\\,n$ — the number of $k$-tuples of residues setwise coprime to $n$ — is machine-verified to satisfy the geometric Gauss identity $\\sum_{d\\mid n}\\mathrm{jordanCount}\\,k\\,d = n^k$, to bound $J_k(n)\\le n^k$, to equal Euler's $\\varphi$ at $k=1$ (whence $\\sum_{d\\mid n}\\varphi(d)=n$), and to take the prime-power values $J_k(p^{m+1}) = p^{(m+1)k} - p^{mk}$. No axioms and no sorries.",
+    "implications": "This proves the combinatorial characterisation that the parent entry erdos-1000-oq-03 only asserts, so the analytic (Dirichlet convolution $\\mu*\\mathrm{pow}\\,k$) and geometric (coprime tuple count) definitions of Jordan's totient are now both formalised and shown to coincide via the shared divisor-sum law. The $k=1$ specialisation gives an independent, combinatorial proof of Gauss's $\\sum_{d\\mid n}\\varphi(d)=n$.",
+    "openQuestions": [
+      "Can multiplicativity of $\\mathrm{jordanCount}$ be proved directly by a CRT bijection $(\\mathbb{Z}/mn)^k \\cong (\\mathbb{Z}/m)^k \\times (\\mathbb{Z}/n)^k$ for coprime $m,n$, giving a second, convolution-free route to the Euler product $J_k(n) = n^k\\prod_{p\\mid n}(1-p^{-k})$?",
+      "Does the same fibre-rescaling argument count primitive vectors under other group structures — e.g. tuples generating $(\\mathbb{Z}/n)$ as a ring, or matrices over $\\mathbb{Z}/n$ of full rank — yielding GL-analogues of the Jordan totient with their own divisor-sum identities?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "erdos-1000-oq-03",
+      "relationship": "extends",
+      "description": "The parent develops Jordan's totient via the Dirichlet convolution μ * pow k and proves ∑_{d∣n} J_k(d) = n^k analytically, asserting (without proof) the combinatorial count interpretation. This entry proves that combinatorial characterisation and re-derives the same divisor-sum law geometrically."
+    },
+    {
+      "proofId": "euler-totient-oq-02-oq-01",
+      "relationship": "related",
+      "description": "That entry poses the generalisation of Euler's product formula to J_k; here the prime-power closed form J_k(p^{m+1}) = p^{(m+1)k} − p^{mk} is obtained combinatorially, and jordan_count_eq_totient pins down the k=1 case as Euler's φ."
+    }
+  ]
+}
