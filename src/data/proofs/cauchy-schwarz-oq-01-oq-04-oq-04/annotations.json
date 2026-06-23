@@ -1,0 +1,104 @@
+[
+  {
+    "id": "ann-cs0404-header",
+    "proofId": "cauchy-schwarz-oq-01-oq-04-oq-04",
+    "range": { "startLine": 1, "endLine": 70 },
+    "type": "concept",
+    "title": "Module Header: The Converse of Parseval",
+    "content": "Imports Mathlib's InnerProductSpace.l2Space (HilbertBasis and the construction HilbertBasis.mkOfOrthogonalEqBot) and Tactic. The file is deliberately self-contained — it imports only Mathlib and reproduces the parent's forward Parseval identity as parseval_of_hilbertBasis. The docstring frames the parent's fourth open question (the converse of Parseval) and records a sharpening: triviality of the orthogonal complement, hence density of the span, follows from Parseval alone, with orthonormality re-entering only to package the total family as a Hilbert basis. Variables declare a complete inner product space $E$ over an RCLike field $\\mathbb{k}$ and a family $v : \\iota \\to E$.",
+    "mathContext": "Goal: for orthonormal $v$, characterize when $v$ is (the coercion of) a Hilbert basis. Answer: exactly when $\\sum_i \\|\\langle v_i, x\\rangle\\|^2 = \\|x\\|^2$ for every $x$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Parseval's identity",
+      "Hilbert basis",
+      "orthogonal complement",
+      "complete orthonormal system"
+    ],
+    "prerequisites": [
+      "inner product spaces",
+      "orthonormality",
+      "Hilbert space completeness",
+      "Mathlib l2Space API"
+    ]
+  },
+  {
+    "id": "ann-cs0404-core",
+    "proofId": "cauchy-schwarz-oq-01-oq-04-oq-04",
+    "range": { "startLine": 78, "endLine": 100 },
+    "type": "technique",
+    "title": "The Analytic Core: Parseval ⟹ Trivial Orthogonal Complement",
+    "content": "orthogonal_eq_bot_of_parseval is the substance of the converse. Given that Parseval holds for every $x$, take any $y \\in (\\operatorname{span} v)^\\perp$. Each basis vector $v_i$ lies in the span (Submodule.subset_span ∘ Set.mem_range_self), so Submodule.mem_orthogonal gives $\\langle v_i, y\\rangle = 0$ for all $i$. The Parseval sum for $y$ is therefore $\\sum_i \\|0\\|^2 = 0$ (tsum_zero), and Parseval equates this to $\\|y\\|^2$; pow_eq_zero_iff and norm_eq_zero force $y = 0$. Notably this argument uses neither completeness nor orthonormality of $v$.",
+    "mathContext": "$y \\perp \\operatorname{span}(v) \\Rightarrow \\forall i,\\ \\langle v_i, y\\rangle = 0 \\Rightarrow \\|y\\|^2 = \\sum_i \\|\\langle v_i, y\\rangle\\|^2 = 0 \\Rightarrow y = 0$, i.e. $(\\operatorname{span} v)^\\perp = \\bot$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "orthogonal complement",
+      "Fourier coefficients",
+      "Submodule.mem_orthogonal",
+      "energy argument"
+    ],
+    "prerequisites": [
+      "orthogonal complements of submodules",
+      "tsum of a zero family",
+      "norm and pow_eq_zero_iff"
+    ]
+  },
+  {
+    "id": "ann-cs0404-construction",
+    "proofId": "cauchy-schwarz-oq-01-oq-04-oq-04",
+    "range": { "startLine": 108, "endLine": 122 },
+    "type": "technique",
+    "title": "Completing to a Hilbert Basis Without Enlargement",
+    "content": "hilbertBasisOfParseval feeds the trivial orthogonal complement into Mathlib's HilbertBasis.mkOfOrthogonalEqBot, producing a genuine Hilbert basis from the orthonormal family $v$ and the Parseval hypothesis. coe_hilbertBasisOfParseval records that the resulting basis coerces back to $v$ itself: completeness is achieved without adding a single vector. This step requires CompleteSpace $E$ and is where orthonormality of $v$ is finally used.",
+    "mathContext": "$(\\operatorname{span} v)^\\perp = \\bot$ together with orthonormality $\\Rightarrow v$ is a HilbertBasis with $\\lceil b\\rceil = v$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "HilbertBasis.mkOfOrthogonalEqBot",
+      "complete orthonormal system",
+      "total family"
+    ],
+    "prerequisites": [
+      "Hilbert bases",
+      "trivial orthogonal complement"
+    ]
+  },
+  {
+    "id": "ann-cs0404-totality",
+    "proofId": "cauchy-schwarz-oq-01-oq-04-oq-04",
+    "range": { "startLine": 128, "endLine": 134 },
+    "type": "concept",
+    "title": "Totality: Density of the Span",
+    "content": "span_topologicalClosure_eq_top_of_parseval translates the trivial orthogonal complement into density of the span. In a complete space, Submodule.orthogonal_orthogonal_eq_closure identifies the topological closure with the double orthogonal complement; since the (single) orthogonal complement is $\\bot$, bot_orthogonal_eq_top gives closure $= \\top$. Like Part I, this uses only Parseval, not orthonormality.",
+    "mathContext": "$\\overline{\\operatorname{span}(v)} = (\\operatorname{span} v)^{\\perp\\perp} = \\bot^\\perp = \\top$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "topological closure of a submodule",
+      "double orthogonal complement",
+      "density"
+    ],
+    "prerequisites": [
+      "orthogonal_orthogonal_eq_closure",
+      "completeness"
+    ]
+  },
+  {
+    "id": "ann-cs0404-iff",
+    "proofId": "cauchy-schwarz-oq-01-oq-04-oq-04",
+    "range": { "startLine": 140, "endLine": 156 },
+    "type": "key-step",
+    "title": "The Headline Equivalence",
+    "content": "parseval_of_hilbertBasis reproduces the forward Parseval identity through the $\\ell^2$ isometry b.repr: the squared coefficients sum to $\\|b.\\text{repr}\\,x\\|^2 = \\|x\\|^2$ via lp.norm_rpow_eq_tsum (with the $p = 2$ exponent normalized through Real.rpow_natCast) and b.repr.norm_map. parseval_iff_isHilbertBasis then assembles both directions into the characterization of complete orthonormal systems: Parseval holds for every vector if and only if $v$ is the underlying family of a Hilbert basis. The forward direction is Parts I-II; the backward direction is parseval_of_hilbertBasis after rewriting $b\\,i = v\\,i$.",
+    "mathContext": "$(\\forall x,\\ \\sum_i \\|\\langle v_i, x\\rangle\\|^2 = \\|x\\|^2) \\iff \\exists\\, b : \\text{HilbertBasis},\\ \\lceil b\\rceil = v$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Parseval's identity",
+      "ℓ² isometry b.repr",
+      "lp.norm_rpow_eq_tsum",
+      "completeness characterization"
+    ],
+    "prerequisites": [
+      "HilbertBasis.repr linear isometry",
+      "ℓ² norm formula",
+      "the converse direction (Parts I-II)"
+    ]
+  }
+]
