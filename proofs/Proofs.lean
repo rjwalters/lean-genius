@@ -3424,6 +3424,7 @@ import Proofs.SolutionOfCubicOQ03OQ01
 import Proofs.SolutionOfCubicOQ03OQ02
 import Proofs.SolutionOfCubicOQ03OQ03
 import Proofs.SolutionOfCubicOQ03OQ05
+import Proofs.VietaGeneralOQ030505OQ01
 import Proofs.SolutionOfCubicOQ05
 import Proofs.SophieGermain
 import Proofs.SophieGermainOQ01
