@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-extension-closed-set",
+    "proofId": "tietze-extension-theorem-oq-01",
+    "range": { "startLine": 50, "endLine": 64 },
+    "type": "concept",
+    "title": "The Tietze Extension Theorem",
+    "content": "`tietze_extension` re-exports Mathlib's abstract result `ContinuousMap.exists_restrict_eq`: in a normal space X, a continuous map on a closed set s valued in any `TietzeExtension` space Y extends to a continuous map on all of X restricting to the original. `tietze_extension_real` is the ℝ-valued specialisation, ℝ being a TietzeExtension instance. This is the functional-extension counterpart of Urysohn's lemma — extending continuous data from a closed subset is exactly what normality buys. Both are direct re-exports (hence the mathlib badge).",
+    "mathContext": "$f \\in C(s, Y)$ on closed $s \\Rightarrow \\exists\\, g \\in C(X, Y),\\ g|_s = f$, for $Y$ a TietzeExtension space.",
+    "significance": "key",
+    "relatedConcepts": ["Tietze extension theorem", "normal space", "TietzeExtension class", "continuous extension"],
+    "prerequisites": ["normal spaces", "continuous maps", "closed sets"]
+  },
+  {
+    "id": "ann-bounded-form",
+    "proofId": "tietze-extension-theorem-oq-01",
+    "range": { "startLine": 66, "endLine": 86 },
+    "type": "technique",
+    "title": "Range-Constrained and Sup-Norm-Preserving Extension",
+    "content": "`tietze_extension_Icc` strengthens the theorem to preserve range bounds: an [a,b]-valued function extends to an [a,b]-valued one, via `exists_restrict_eq_forall_mem_of_closed` with the target Icc a b made `OrdConnected`. `tietze_extension_abs_le` is the sharp sup-norm form — if |f| ≤ M on s then f extends with |g| ≤ M everywhere — obtained by extending into the interval [-M, M] and translating membership through `abs_le`. The bounded forms are the ones actually used in analysis, where an extension must stay within prescribed bounds (e.g. uniform approximation, partitions of unity).",
+    "mathContext": "$f([s]) \\subseteq [a,b] \\Rightarrow \\exists\\, g,\\ g([X]) \\subseteq [a,b]$; and $|f| \\le M \\Rightarrow |g| \\le M$.",
+    "significance": "supporting",
+    "relatedConcepts": ["range-constrained extension", "OrdConnected", "sup-norm", "abs_le", "Set.Icc"],
+    "prerequisites": ["intervals", "order-connected sets"]
+  },
+  {
+    "id": "ann-closed-embedding",
+    "proofId": "tietze-extension-theorem-oq-01",
+    "range": { "startLine": 88, "endLine": 96 },
+    "type": "concept",
+    "title": "The Closed-Embedding Form",
+    "content": "`tietze_extension_closedEmbedding` re-exports `ContinuousMap.exists_extension`: along a closed embedding e : X₁ → X into a normal space, every f : C(X₁, ℝ) extends to g : C(X, ℝ) with g ∘ e = f. This is the coordinate-free packaging — instead of speaking of a closed subset and restriction, it speaks of a closed embedding and composition, the form that composes cleanly in categorical/functorial arguments and matches how Mathlib states the most general version.",
+    "mathContext": "$e : X_1 \\hookrightarrow X$ a closed embedding $\\Rightarrow \\exists\\, g \\in C(X, \\mathbb{R}),\\ g \\circ e = f$.",
+    "significance": "supporting",
+    "relatedConcepts": ["closed embedding", "coordinate-free packaging", "ContinuousMap.exists_extension"],
+    "prerequisites": ["embeddings", "function composition"]
+  },
+  {
+    "id": "ann-clopen-boundary",
+    "proofId": "tietze-extension-theorem-oq-01",
+    "range": { "startLine": 108, "endLine": 139 },
+    "type": "insight",
+    "title": "The Clopen Boundary Function: Reversing Urysohn ⟹ Tietze",
+    "content": "The heart of the new content. To derive Urysohn from Tietze, one needs a continuous {0,1} boundary datum on a closed set. The construction takes the closed set s ∪ t and observes that the preimage of t is clopen in that subspace: closed as a preimage of the closed t, and open because its complement within s ∪ t is exactly the closed set s (this is where disjointness of s and t is used, via Set.disjoint_left). A function constant on each piece of a clopen partition is locally constant; the indicator is rewritten as ![1, 0] ∘ (LocallyConstant.ofIsClopen ...), and `IsLocallyConstant.continuous` makes it continuous — sidestepping any direct ε-δ argument for a function that looks discontinuous globally.",
+    "mathContext": "On $s \\cup t$, $\\mathrm{Subtype.val}^{-1}(t)$ is clopen, so the indicator $\\mathbf{1}_t$ is locally constant, hence continuous.",
+    "significance": "key",
+    "relatedConcepts": ["clopen set", "locally constant function", "subspace topology", "LocallyConstant.ofIsClopen", "indicator function"],
+    "prerequisites": ["clopen sets", "subspace topology", "locally constant maps"]
+  },
+  {
+    "id": "ann-urysohn-extraction",
+    "proofId": "tietze-extension-theorem-oq-01",
+    "range": { "startLine": 140, "endLine": 162 },
+    "type": "technique",
+    "title": "Extending the Boundary Data to a Urysohn Separator",
+    "content": "With the continuous {0,1} boundary function on the closed set s ∪ t, the bounded Tietze theorem `exists_restrict_eq_forall_mem_of_closed` (target Icc 0 1) produces g : C(X, ℝ) with 0 ≤ g ≤ 1 restricting to it. To read off the separation values, `DFunLike.congr_fun` applied to the restriction equality at the subtype points ⟨x, Or.inl hx⟩ and ⟨x, Or.inr hx⟩ gives g x = (if x ∈ t then 1 else 0); `if_neg` on s (x ∉ t by disjointness) and `if_pos` on t collapse this to g = 0 on s and g = 1 on t. The result urysohn_of_tietze is Urysohn's lemma — proving the textbook implication run backwards.",
+    "mathContext": "$\\exists\\, f \\in C(X, \\mathbb{R}),\\ f \\equiv 0$ on $s,\\ f \\equiv 1$ on $t,\\ 0 \\le f \\le 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Urysohn's lemma", "bounded Tietze extension", "DFunLike.congr_fun", "functional separation"],
+    "prerequisites": ["restriction of functions", "if-then-else reasoning"]
+  },
+  {
+    "id": "ann-point-separation",
+    "proofId": "tietze-extension-theorem-oq-01",
+    "range": { "startLine": 164, "endLine": 174 },
+    "type": "context",
+    "title": "Functional Separation of a Point",
+    "content": "`urysohn_point_of_tietze` is the singleton corollary: in a normal T1 space a point x₀ outside a closed set t is functionally separated from it (f x₀ = 0, f = 1 on t, 0 ≤ f ≤ 1). Because T1 spaces have closed points (`isClosed_singleton`), this is just urysohn_of_tietze applied to s = {x₀}, with disjointness from x₀ ∉ t. It illustrates that the closed-set theorem subsumes the pointwise separation otherwise attributed to complete regularity.",
+    "mathContext": "$x_0 \\notin t$ closed, $X$ normal $T_1$ $\\Rightarrow \\exists\\, f,\\ f(x_0)=0,\\ f \\equiv 1$ on $t,\\ 0 \\le f \\le 1$.",
+    "significance": "context",
+    "relatedConcepts": ["T1 space", "isClosed_singleton", "point separation", "complete regularity"],
+    "prerequisites": ["T1 spaces", "singletons"]
+  }
+]
