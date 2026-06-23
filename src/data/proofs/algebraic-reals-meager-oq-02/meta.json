@@ -1,0 +1,165 @@
+{
+  "id": "algebraic-reals-meager-oq-02",
+  "title": "Measure versus category: the algebraic reals are small in both senses, but the two notions diverge",
+  "slug": "algebraic-reals-meager-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Transcendental.Liouville.Residual",
+      "Mathlib.NumberTheory.Transcendental.Liouville.Measure",
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.RingTheory.Localization.Integral",
+      "Mathlib.Algebra.AlgebraicCard",
+      "Mathlib.Topology.GDelta.Basic",
+      "Mathlib.Topology.Perfect",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set",
+      "Topology",
+      "MeasureTheory",
+      "Filter"
+    ],
+    "namespace": "AlgebraicRealsMeagerOQ02",
+    "lineCount": 223,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 0,
+    "path": "Proofs/AlgebraicRealsMeagerOQ02.lean",
+    "sorries": 0
+  },
+  "description": "The parent entry shows the algebraic reals are meagre (topologically small); its measure-theoretic companion shows they are also null (Lebesgue measure zero). So the algebraic reals are small in both senses at once — but this entry shows that is exceptional, not typical. The two notions of smallness, meagre (category) and null (measure), are genuinely independent, witnessed by the Liouville numbers: that set is simultaneously comeagre (residual — Mathlib's eventually_residual_liouville) and null (volume_setOf_liouville). From this one witness the entry extracts (1) measure-category independence in both directions — a comeagre null set and a meagre conull set — plus the abstract disjointness of the two genericity filters residual ℝ and ae volume (Real.disjoint_residual_ae); (2) an Erdős–Sierpiński-style decomposition ℝ = A ∪ B with A meagre and B null, a partition of the line into a topologically negligible piece and a measure-negligible piece; (3) a refinement of the parent — since every Liouville number is transcendental (bridging ℤ- and ℚ-transcendence via IsFractionRing.isAlgebraic_iff), the comeagre-yet-null Liouville set sits inside the transcendental reals, so the transcendentals contain a comeagre subset of measure zero; (4) the capstone contrast: the algebraic reals are small in both senses (meagre AND null) while the transcendentals are large in both (comeagre AND conull) — the special aligned case the Liouville phenomenon shows is not forced. Self-contained over Mathlib (no project imports), 18 theorems, 0 axioms, 0 sorries, no native_decide.",
+  "meta": {
+    "author": "Lean formalization original (structural follow-up to the meagre algebraic reals)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlgebraicRealsMeagerOQ02.lean",
+    "tags": [
+      "topology",
+      "baire-category",
+      "measure-theory",
+      "meagre-set",
+      "residual-set",
+      "liouville-numbers",
+      "transcendental-numbers",
+      "real-analysis",
+      "descriptive-set-theory",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "eventually_residual_liouville",
+        "description": "∀ᶠ x in residual ℝ, Liouville x — the Liouville numbers are a residual (comeagre) set. Recast as set membership, this is the comeagre half of the comeagre-yet-null witness.",
+        "module": "Mathlib.NumberTheory.Transcendental.Liouville.Residual"
+      },
+      {
+        "theorem": "volume_setOf_liouville",
+        "description": "volume {x : ℝ | Liouville x} = 0 — the Liouville numbers have Lebesgue measure zero; the null half of the witness.",
+        "module": "Mathlib.NumberTheory.Transcendental.Liouville.Measure"
+      },
+      {
+        "theorem": "Real.disjoint_residual_ae",
+        "description": "Disjoint (residual ℝ) (ae volume) — the two genericity filters (topological and measure-theoretic) are disjoint; the abstract statement of measure-category independence.",
+        "module": "Mathlib.NumberTheory.Transcendental.Liouville.Measure"
+      },
+      {
+        "theorem": "Liouville.transcendental",
+        "description": "Liouville x → Transcendental ℤ x — every Liouville number is transcendental over ℤ; used to place the Liouville witness inside the transcendental reals.",
+        "module": "Mathlib.NumberTheory.Transcendental.Liouville.Basic"
+      },
+      {
+        "theorem": "IsFractionRing.isAlgebraic_iff",
+        "description": "IsAlgebraic A x ↔ IsAlgebraic K x for K the fraction field of A; with ℤ ⊂ ℚ ⊂ ℝ this identifies ℤ- and ℚ-transcendence, bridging Liouville.transcendental (over ℤ) to the parent's ¬ IsAlgebraic ℚ.",
+        "module": "Mathlib.RingTheory.Localization.Integral"
+      },
+      {
+        "theorem": "Algebraic.countable",
+        "description": "{x : A | IsAlgebraic R x} is countable for countable R; with R = ℚ gives the countability used to re-derive that the algebraic reals are meagre and null self-containedly.",
+        "module": "Mathlib.Algebra.AlgebraicCard"
+      },
+      {
+        "theorem": "Set.Countable.measure_zero",
+        "description": "A countable set has measure zero under any atomless measure; applied to the (countable) algebraic reals to get nullity.",
+        "module": "Mathlib.MeasureTheory.Measure.Typeclasses.NoAtoms"
+      },
+      {
+        "theorem": "isMeagre_iff_countable_union_isNowhereDense",
+        "description": "A set is meagre iff contained in a countable union of nowhere-dense sets; the basis for the self-contained countable ⟹ meagre lemma on ℝ.",
+        "module": "Mathlib.Topology.GDelta.Basic"
+      }
+    ],
+    "annotations": [
+      {
+        "id": "countable-meagre",
+        "title": "Self-contained: countable ⟹ meagre on ℝ",
+        "startLine": 70,
+        "endLine": 90,
+        "summary": "isMeagre_of_isNowhereDense, isNowhereDense_singleton and countable_isMeagre re-derive (over Mathlib, no project import) that a countable subset of ℝ is meagre: singletons are nowhere dense because ℝ has no isolated points, and a countable set is a countable union of them.",
+        "mathContext": "A countable set in a perfect T1 Baire space is meagre."
+      },
+      {
+        "id": "liouville-witness",
+        "title": "The Liouville witness: comeagre yet null",
+        "startLine": 97,
+        "endLine": 127,
+        "summary": "liouville_residual, nonLiouville_isMeagre, liouville_volume_zero and liouville_comeagre_and_null assemble the single set that is residual (topologically almost all of ℝ) and yet has Lebesgue measure zero — the engine of the whole entry.",
+        "mathContext": "The Liouville numbers are simultaneously comeagre and null."
+      },
+      {
+        "id": "independence",
+        "title": "Measure–category independence",
+        "startLine": 130,
+        "endLine": 153,
+        "summary": "residual_ae_disjoint (the two genericity filters are disjoint), exists_residual_volume_zero (a comeagre set can be null) and exists_isMeagre_compl_volume_zero (a meagre set can have full measure) record the independence in both directions.",
+        "mathContext": "Topological genericity and full measure are mutually independent."
+      },
+      {
+        "id": "decomposition",
+        "title": "Erdős–Sierpiński-style decomposition ℝ = A ∪ B",
+        "startLine": 155,
+        "endLine": 168,
+        "summary": "exists_meagre_null_decomposition splits the line as a disjoint union of a meagre set A (non-Liouville reals) and a null set B (Liouville reals). Impossible with a single smallness notion — a Baire space is not meagre in itself and ℝ is not null — so this is precisely measure-category independence made concrete.",
+        "mathContext": "ℝ partitions into a meagre set and a null set."
+      },
+      {
+        "id": "transcendental-tie",
+        "title": "Refining the parent: a comeagre null set inside the transcendentals",
+        "startLine": 171,
+        "endLine": 191,
+        "summary": "liouville_subset_transcendental (every Liouville number is transcendental, via Liouville.transcendental and the ℤ/ℚ fraction-field bridge) and transcendental_contains_comeagre_null show the comeagre-yet-null Liouville set lies inside the transcendental reals — sharpening the parent's residual-transcendentals result.",
+        "mathContext": "The transcendental reals contain a comeagre subset of measure zero."
+      },
+      {
+        "id": "capstone",
+        "title": "Capstone: the aligned exceptional case",
+        "startLine": 193,
+        "endLine": 222,
+        "summary": "algebraicReals_meagre_and_null (algebraic reals small in both senses) versus transcendentalReals_comeagre_and_conull (transcendentals large in both) — the special aligned situation that the Liouville phenomenon shows is not forced by either smallness notion alone.",
+        "mathContext": "Algebraic reals: meagre AND null; transcendentals: comeagre AND conull."
+      }
+    ],
+    "references": [
+      {
+        "authors": "Oxtoby, John C.",
+        "title": "Measure and Category: A Survey of the Analogies between Topological and Measure Spaces",
+        "year": "1980",
+        "note": "Graduate Texts in Mathematics 2, Springer (2nd ed.) — the canonical treatment of the measure/category duality and the meagre-versus-null decomposition of ℝ."
+      },
+      {
+        "authors": "Liouville, Joseph",
+        "title": "Sur des classes très-étendues de quantités dont la valeur n'est ni algébrique ni même réductible à des irrationnelles algébriques",
+        "year": "1851",
+        "note": "Journal de mathématiques pures et appliquées 16, 133–142 — the Liouville numbers, here the explicit comeagre-yet-null witness."
+      },
+      {
+        "authors": "Erdős, Paul; Sierpiński, Wacław",
+        "title": "On the dual of the measure-category theorem",
+        "year": "1934",
+        "note": "Classical results on the symmetry between meagre and null sets, including decompositions of ℝ of the form proved here."
+      }
+    ]
+  }
+}
