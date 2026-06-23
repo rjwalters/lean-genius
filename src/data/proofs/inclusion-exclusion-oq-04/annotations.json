@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-incexcl-oq04-header",
+    "proofId": "inclusion-exclusion-oq-04",
+    "range": { "startLine": 6, "endLine": 42 },
+    "type": "context",
+    "title": "The sieve (dual) form of inclusion–exclusion",
+    "content": "The header states the goal: count elements lying in NONE of a finite family {S i}, the complementary (sieve) form of inclusion–exclusion, as opposed to the union form. The key formula is #(none) = Σ_{t⊆s} (−1)^|t| |⋂_{i∈t} S i| over ALL subsets t (the empty subset gives +|α| via the convention ⋂_∅ = α). This is the form underlying the sieve of Eratosthenes, Euler's totient product, and derangement/surjection counts — anywhere one counts objects avoiding a list of bad properties.",
+    "mathContext": "$\\#\\{x : \\forall i\\in s,\\ x\\notin S_i\\} = \\sum_{t\\subseteq s} (-1)^{|t|}\\,\\big|\\bigcap_{i\\in t} S_i\\big|$.",
+    "significance": "context",
+    "relatedConcepts": ["inclusion–exclusion", "sieve of Eratosthenes", "Euler totient", "derangements"],
+    "prerequisites": ["finite sets", "cardinality"]
+  },
+  {
+    "id": "ann-incexcl-oq04-avoiding",
+    "proofId": "inclusion-exclusion-oq-04",
+    "range": { "startLine": 51, "endLine": 70 },
+    "type": "definition",
+    "title": "Part I: the avoiding set",
+    "content": "The 'avoiding set' s.inf (fun i => (S i)ᶜ) collects elements in none of the S i. mem_avoid_iff gives the membership characterisation (x avoids every S i ⟺ x is in the inf of complements), and avoid_eq_compl_biUnion identifies it as univ \\ ⋃ S i — the complement of the union. Both are immediate from Finset.mem_inf. This complement-of-union viewpoint is what makes the bridge identity transparent.",
+    "mathContext": "$\\inf_{i\\in s}(S_i)^c = \\{x : \\forall i\\in s,\\, x\\notin S_i\\} = \\text{univ} \\setminus \\bigcup_{i\\in s} S_i$.",
+    "significance": "supporting",
+    "relatedConcepts": ["complement", "infimum of Finsets", "biUnion", "De Morgan"],
+    "prerequisites": ["Finset operations"]
+  },
+  {
+    "id": "ann-incexcl-oq04-sieve",
+    "proofId": "inclusion-exclusion-oq-04",
+    "range": { "startLine": 72, "endLine": 104 },
+    "type": "insight",
+    "title": "Part II: the sieve formula and the bridge identity",
+    "content": "card_avoid_sieve states the headline alternating sum over all subsets, delegating to Mathlib's Finset.inclusion_exclusion_card_inf_compl. The bridge identity card_avoid_eq_card_univ_sub_biUnion proves #(none) = |α| − |⋃ S i| from avoid_eq_compl_biUnion and card_sdiff (closed by omega), linking the dual form to the union form. card_biUnion_eq_card_univ_sub_avoid is its rearrangement — the practical 'at least one' sieve step.",
+    "mathContext": "$\\#(\\text{none}) = \\sum_{t\\subseteq s}(-1)^{|t|}|\\bigcap_{i\\in t} S_i|$ and $\\#(\\text{none}) = |\\alpha| - |\\bigcup_i S_i|$.",
+    "significance": "key",
+    "relatedConcepts": ["inclusion–exclusion", "union form", "complementation", "card_sdiff"],
+    "prerequisites": ["the avoiding set", "cardinality identities"]
+  },
+  {
+    "id": "ann-incexcl-oq04-small",
+    "proofId": "inclusion-exclusion-oq-04",
+    "range": { "startLine": 106, "endLine": 147 },
+    "type": "technique",
+    "title": "Part III: explicit two- and three-set sieves",
+    "content": "card_avoid_two and card_avoid_three give the explicit closed forms, proved from scratch via De Morgan (Aᶜ∩Bᶜ = (A∪B)ᶜ) and the basic identity card_union_add_card_inter rather than specialised from the general theorem — so they stand alone. The three-set case folds two applications of card_union_add_card_inter together with the distributivity rewrites (A∪B)∩C = (A∩C)∪(B∩C) and (A∩C)∩(B∩C) = A∩B∩C, then omega.",
+    "mathContext": "$|A^c\\cap B^c| = |\\alpha| - |A| - |B| + |A\\cap B|$; $|A^c\\cap B^c\\cap C^c| = |\\alpha| - \\sum|A| + \\sum|A\\cap B| - |A\\cap B\\cap C|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["two-set sieve", "three-set sieve", "De Morgan's laws", "card_union_add_card_inter"],
+    "prerequisites": ["cardinality identities", "set distributivity"]
+  },
+  {
+    "id": "ann-incexcl-oq04-bonferroni",
+    "proofId": "inclusion-exclusion-oq-04",
+    "range": { "startLine": 149, "endLine": 160 },
+    "type": "concept",
+    "title": "Part IV: a Bonferroni-type bound",
+    "content": "card_avoid_two_le records that the avoiding count never exceeds |α| — the simplest Bonferroni-type estimate, obtained by chaining card_le_card (intersection ⊆ a factor) with card_le_univ. Bonferroni bounds are the partial-sum truncations of the inclusion–exclusion series that bracket the true count; this is the trivial first instance.",
+    "mathContext": "$|A^c\\cap B^c| \\le |\\alpha|$, a Bonferroni-type one-sided estimate from truncating the sieve.",
+    "significance": "context",
+    "relatedConcepts": ["Bonferroni inequalities", "partial sums", "cardinality bounds"],
+    "prerequisites": ["cardinality monotonicity"]
+  },
+  {
+    "id": "ann-incexcl-oq04-example",
+    "proofId": "inclusion-exclusion-oq-04",
+    "range": { "startLine": 161, "endLine": 187 },
+    "type": "context",
+    "title": "Part V: a concrete sieve count",
+    "content": "Among the ten residues Fin 10, those divisible by neither 2 nor 3 are {1,5,7}, count 3. The first example checks the raw cardinality by kernel decide; the second confirms it matches the two-set sieve formula 10 − 5 − 4 + 2 = 3. Using decide (not native_decide) keeps the file axiom-free (no Lean.ofReduceBool). This is the sieve of Eratosthenes in miniature.",
+    "mathContext": "$|\\{0,2,4,6,8\\}^c \\cap \\{0,3,6,9\\}^c| = 10 - 5 - 4 + 2 = 3 = |\\{1,5,7\\}|$ in $\\mathrm{Fin}\\,10$.",
+    "significance": "context",
+    "relatedConcepts": ["sieve of Eratosthenes", "kernel decide", "worked example", "axiom-free"],
+    "prerequisites": ["modular arithmetic"]
+  }
+]
