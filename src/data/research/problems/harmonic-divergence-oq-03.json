@@ -29,9 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: alternating harmonic = log 2, 0-axiom verified (PR pending)",
+    "builtItems": [
+      "altHarmonic_tendsto_log_two: partial sums → log 2 (HarmonicDivergenceOQ03.lean)",
+      "hasSum_altTerm_mul_pow: generating function ∑(−1)ⁿ/(n+1)xⁿ = log(1+x)/x",
+      "exists_tendsto_altPartial: convergence via alternating series test",
+      "not_summable_altTerm: conditional (not unconditional) convergence"
+    ],
+    "insights": [
+      "Alternating harmonic series 1−1/2+1/3−⋯ = log 2 is the boundary value x→1⁻ of the Mercator power series; Mathlib only has the interior |x|<1 lemma (hasSum_pow_div_log_of_abs_lt_one), so Abel's limit theorem is required.",
+      "Series is only conditionally convergent: ¬Summable altTerm (via summable_norm_iff + harmonic divergence), so the sum is an ordered limit of partial sums, not a tsum/HasSum."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
