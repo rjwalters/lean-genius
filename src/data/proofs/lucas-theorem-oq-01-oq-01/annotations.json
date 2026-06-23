@@ -1,0 +1,102 @@
+[
+  {
+    "id": "fine-oq0101-ann-defs",
+    "proofId": "lucas-theorem-oq-01-oq-01",
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "definition",
+    "title": "Non-Divisible Row and Count (fineRow, fineCount)",
+    "content": "Two definitions generalise the parent's p = 2 setup to an arbitrary prime p. `fineRow p n` is the Finset of columns k ∈ {0,…,n} for which p ∤ C(n,k), and `fineCount p n` is its cardinality — the number of entries in row n of Pascal's triangle not divisible by p. For p = 2 these are exactly the parent's `oddRow` / `oddCount`. The target is Fine's closed form fineCount p n = ∏ᵢ (nᵢ+1) over the base-p digits nᵢ of n.",
+    "mathContext": "$\\mathrm{fineCount}(p,n) = \\#\\{k \\le n : p \\nmid \\binom{n}{k}\\}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pascal's triangle mod p",
+      "Lucas' theorem",
+      "base-p digits",
+      "Finset cardinality"
+    ],
+    "prerequisites": [
+      "base-p expansions",
+      "binomial coefficients",
+      "prime divisibility"
+    ]
+  },
+  {
+    "id": "fine-oq0101-ann-coprime",
+    "proofId": "lucas-theorem-oq-01-oq-01",
+    "range": { "startLine": 62, "endLine": 75 },
+    "type": "theorem",
+    "title": "Digit-wise Coprimality: C(r,s) coprime to p ⟺ s ≤ r",
+    "content": "For a prime p and a digit value r < p, the small binomial C(r,s) is coprime to p exactly when s ≤ r. The s > r branch is immediate: C(r,s) = 0 and p ∣ 0. For s ≤ r, the factorial identity C(r,s)·s!·(r−s)! = r! shows any prime dividing C(r,s) would divide r!; but p ∤ r! since r < p (Nat.Prime.dvd_factorial gives p ∣ r! ⟺ p ≤ r). This is the survival criterion for a single base-p digit, and the engine that turns Lucas mod p into a counting recursion.",
+    "mathContext": "$r < p \\implies \\bigl(p \\nmid \\tbinom{r}{s} \\iff s \\le r\\bigr).$",
+    "significance": "key-step",
+    "relatedConcepts": [
+      "p-adic valuation",
+      "factorial identity",
+      "prime not dividing small factorial"
+    ],
+    "prerequisites": [
+      "Nat.choose_mul_factorial_mul_factorial",
+      "Nat.Prime.dvd_factorial"
+    ]
+  },
+  {
+    "id": "fine-oq0101-ann-pointwise",
+    "proofId": "lucas-theorem-oq-01-oq-01",
+    "range": { "startLine": 83, "endLine": 97 },
+    "type": "theorem",
+    "title": "Pointwise Non-Divisibility via Lucas mod p",
+    "content": "Writing the row index as p·n+r with last base-p digit r < p, the single step of Lucas' theorem (Mathlib's choose_modEq_choose_mod_mul_choose_div_nat, with (p·n+r)%p = r and (p·n+r)/p = n) gives C(p·n+r, k) ≡ C(r, k%p)·C(n, k/p) (mod p). As p is prime it divides the product iff a factor, and C(r, k%p) is coprime to p exactly when k%p ≤ r (previous lemma). Hence p ∤ C(p·n+r, k) ⟺ k%p ≤ r ∧ p ∤ C(n, k/p) — the general-p analogue of the parent's odd_choose_two_mul (r = 0) and odd_choose_two_mul_add_one (r = 1).",
+    "mathContext": "$p \\nmid \\tbinom{pn+r}{k} \\iff k \\bmod p \\le r \\ \\wedge\\ p \\nmid \\tbinom{n}{\\lfloor k/p\\rfloor}.$",
+    "significance": "key-step",
+    "relatedConcepts": [
+      "Lucas' theorem single step",
+      "modular arithmetic of binomials",
+      "digit-wise divisibility"
+    ],
+    "prerequisites": [
+      "Nat.Choose.choose_modEq_choose_mod_mul_choose_div_nat",
+      "Nat.Prime.dvd_mul"
+    ]
+  },
+  {
+    "id": "fine-oq0101-ann-recursion",
+    "proofId": "lucas-theorem-oq-01-oq-01",
+    "range": { "startLine": 106, "endLine": 151 },
+    "type": "theorem",
+    "title": "The Multiplicative Recursion fineCount p (p·n+r) = (r+1)·fineCount p n",
+    "content": "Partition row p·n+r by the last base-p digit s = k%p. The pointwise law identifies the surviving columns with the image of the product fineRow p n ×ˢ {0,…,r} under the map (j,s) ↦ p·j+s. That map is injective on the product (s < p recovers s = k%p and j = k/p by div/mod), so Finset.card_image_of_injOn and Finset.card_product give fineCount p (p·n+r) = fineCount p n · (r+1). This is the (r+1)-branch generalisation of the parent's even/odd split j ↦ 2j and j ↦ 2j+1, and the combinatorial mirror of the base-p digit recursion digits p (p·n+r) = r :: digits p n.",
+    "mathContext": "$\\mathrm{fineCount}(p,\\,pn+r) = (r+1)\\,\\mathrm{fineCount}(p,n), \\qquad 0 \\le r < p.$",
+    "significance": "key-step",
+    "relatedConcepts": [
+      "image of a Finset product",
+      "injective reindexing",
+      "base-p digit recursion"
+    ],
+    "prerequisites": [
+      "Finset.card_image_of_injOn",
+      "Finset.card_product",
+      "Nat.mul_add_div / Nat.mul_add_mod"
+    ]
+  },
+  {
+    "id": "fine-oq0101-ann-finetheorem",
+    "proofId": "lucas-theorem-oq-01-oq-01",
+    "range": { "startLine": 174, "endLine": 189 },
+    "type": "theorem",
+    "title": "Fine's Theorem: fineCount p n = ∏ᵢ (nᵢ+1)",
+    "content": "A strong induction on n closes the closed form. The base case fineCount p 0 = 1 (only C(0,0) = 1, coprime to p) matches the empty digit product. For n > 0, peel the last base-p digit with Nat.digits_def' (digits p n = n%p :: digits p (n/p)) and apply the multiplicative recursion at the decomposition n = p·(n/p) + n%p, so fineCount p n = (n%p + 1)·fineCount p (n/p), which by induction equals (n%p + 1)·∏(digits p (n/p) + 1) = ∏(digits p n + 1). Specialising to p = 2 — where every digit nᵢ ∈ {0,1} so nᵢ+1 ∈ {1,2} — recovers Glaisher's oddCount n = 2^(s₂ n) from the parent entry.",
+    "mathContext": "$\\mathrm{fineCount}(p,n) = \\prod_{i} (n_i + 1), \\qquad n = (n_a\\dots n_1 n_0)_p.$",
+    "significance": "main-result",
+    "relatedConcepts": [
+      "Fine's theorem",
+      "base-p digit product",
+      "Sierpiński/Lucas fractal",
+      "strong induction"
+    ],
+    "prerequisites": [
+      "Nat.digits_def'",
+      "Nat.strong_induction_on",
+      "List.prod_cons"
+    ]
+  }
+]

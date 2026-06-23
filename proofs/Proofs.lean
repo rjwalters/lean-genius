@@ -3142,6 +3142,7 @@ import Proofs.LovaszLocalLemmaOQ02
 import Proofs.LovaszLocalLemmaOQ02Aristotle
 import Proofs.LucasLehmerTestOQ01
 import Proofs.LucasTheoremOQ01
+import Proofs.LucasTheoremOQ01OQ01
 import Proofs.LucasTheoremOQ01OQ02
 import Proofs.LucasTheoremOQ01OQ02OQ01
 import Proofs.MachinFromAddition
