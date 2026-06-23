@@ -1,0 +1,86 @@
+[
+  {
+    "id": "tsrn-ann-context",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-06",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "context",
+    "title": "What is unconditional, and what is not",
+    "content": "The header isolates the logical bookkeeping of the whole entry. Two gallery facts are taken as proved and axiom-free: integral necessity (`ThreeSquares.excluded_form_not_sum_three_sq`: $4^a(8b+7)$ is never a sum of three integer squares) and the Davenport–Cassels descent (`ThreeSquaresDavenportCassels.exists_int_sq_of_rat_sq`: rational representability by $x^2+y^2+z^2$ forces integral representability). Everything in this file is a *consequence* of combining those two. The only genuinely open input — quarantined to a single hypothesis — is sufficiency over $\\mathbb{Q}$ (Hasse–Minkowski solvability), which Mathlib does not yet contain.",
+    "mathContext": "Legendre: $n = x^2+y^2+z^2$ solvable over $\\mathbb{Z}$ $\\iff$ $n \\neq 4^a(8b+7)$. The necessity ($\\Rightarrow$) half is unconditional; this file lifts it to $\\mathbb{Q}$.",
+    "significance": "context",
+    "relatedConcepts": ["three-square theorem", "Davenport-Cassels lemma", "Hasse-Minkowski principle", "local-global principle"],
+    "prerequisites": ["quadratic forms", "additive number theory"]
+  },
+  {
+    "id": "tsrn-ann-imports",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-06",
+    "range": { "startLine": 34, "endLine": 42 },
+    "type": "technique",
+    "title": "Importing the two axiom-free pillars",
+    "content": "The file imports the three sibling modules it depends on — `ThreeSquares` (integral necessity), `ThreeSquaresDavenportCassels` (the descent), and `ThreeSquaresRationalBridge` (the trivial $\\mathbb{Z}\\subseteq\\mathbb{Q}$ inclusion plus the named open hypothesis `ThreeSquaresRationalSolvability`). Opening the `ThreeSquares` and `ThreeSquaresRationalBridge` namespaces brings `IsExcludedForm`, `excluded_form_not_sum_three_sq`, and `rat_sq_of_int_sq` into scope without qualification. No new mathematical content is introduced here; this entry is purely a synthesis layer.",
+    "mathContext": "Dependency graph: this file $= \\text{descent} \\;\\wedge\\; \\text{integral necessity} \\;\\wedge\\; (\\mathbb{Z}\\subseteq\\mathbb{Q})$.",
+    "significance": "technical",
+    "relatedConcepts": ["module dependencies", "namespace management"],
+    "prerequisites": ["Lean 4 module system"]
+  },
+  {
+    "id": "tsrn-ann-iff",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-06",
+    "range": { "startLine": 44, "endLine": 54 },
+    "type": "insight",
+    "title": "Rational = integral, packaged as an honest Iff",
+    "content": "`three_rat_sq_iff_three_int_sq` is the headline result: for the single form $x^2+y^2+z^2$, an integer $n$ is a sum of three *rational* squares exactly when it is a sum of three *integer* squares. The forward direction is the Davenport–Cassels descent (denominators can never help); the reverse is the one-line inclusion of $\\mathbb{Z}$ into $\\mathbb{Q}$. This is the first place the descent is recorded as a clean equivalence rather than a one-way implication — making explicit that the rational and integral representation problems for this form are literally the same problem.",
+    "mathContext": "$(\\exists x,y,z\\in\\mathbb{Q},\\; x^2+y^2+z^2=n) \\iff (\\exists a,b,c\\in\\mathbb{Z},\\; a^2+b^2+c^2=n)$. The descent works because every rational point of the sphere is within squared-distance $\\le 3/4 < 1$ of a lattice point.",
+    "significance": "key",
+    "relatedConcepts": ["Davenport-Cassels descent", "nearest-integer rounding", "rational points on quadrics"],
+    "prerequisites": ["quadratic forms", "rational points"]
+  },
+  {
+    "id": "tsrn-ann-rational-necessity",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-06",
+    "range": { "startLine": 56, "endLine": 72 },
+    "type": "insight",
+    "title": "Rational necessity: the 2-adic obstruction is rational",
+    "content": "`excluded_form_not_sum_three_rat_sq` lifts Legendre's necessity from $\\mathbb{Z}$ to $\\mathbb{Q}$: a number of the form $4^a(8b+7)$ is not even a sum of three *rational* squares. A priori, allowing denominators could only make representability easier, so this is genuinely new content rather than a restatement. The proof is a clean contradiction: a rational representation would, by the Iff above, yield an integral one, contradicting the unconditional integral necessity `excluded_form_not_sum_three_sq`. The `push_cast` step merely reconciles the $\\mathbb{N}\\to\\mathbb{Z}\\to\\mathbb{Q}$ coercions so the hypothesis matches Davenport–Cassels' integer-indexed statement.",
+    "mathContext": "If $n = 4^a(8b+7)$ then $\\neg\\,\\exists x,y,z\\in\\mathbb{Q}:\\, x^2+y^2+z^2=n$. The obstruction lives in $\\mathbb{Q}_2$: the form $x^2+y^2+z^2$ represents $n$ over $\\mathbb{Q}$ only if it does over every completion, and it fails over $\\mathbb{Q}_2$ exactly on this family.",
+    "significance": "key",
+    "relatedConcepts": ["2-adic obstruction", "p-adic numbers", "proof by contradiction", "Legendre three-square theorem"],
+    "prerequisites": ["p-adic numbers", "quadratic forms over local fields"]
+  },
+  {
+    "id": "tsrn-ann-sqclass-rat",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-06",
+    "range": { "startLine": 74, "endLine": 87 },
+    "type": "technique",
+    "title": "Square-class invariance over the rationals",
+    "content": "`three_rat_sq_iff_sq_mul` shows representability is invariant under multiplication by a nonzero rational square: $n$ is a sum of three rational squares iff $m^2 n$ is. The proof is constructive in both directions — scale a representation of $n$ coordinatewise by $m$ to get one of $m^2 n$, or divide by $m$ to go back. Lean discharges the forward identity by `ring` and the backward one by `field_simp` (clearing the $1/m$ denominators) followed by `linear_combination`, which certifies the polynomial identity against the hypothesis. The nonvanishing hypothesis $m \\neq 0$ is essential for the division.",
+    "mathContext": "$(\\exists x,y,z:\\,x^2+y^2+z^2=n) \\iff (\\exists x,y,z:\\,x^2+y^2+z^2=m^2 n)$ for $m\\neq 0$. Forward: $(x,y,z)\\mapsto(mx,my,mz)$. Backward: $(x,y,z)\\mapsto(x/m,y/m,z/m)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["square class", "scaling invariance", "field_simp", "linear_combination"],
+    "prerequisites": ["field arithmetic", "quadratic forms"]
+  },
+  {
+    "id": "tsrn-ann-sqclass-nat",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-06",
+    "range": { "startLine": 89, "endLine": 100 },
+    "type": "concept",
+    "title": "Reduction to the squarefree part",
+    "content": "`three_rat_sq_iff_natSq_mul` is the natural-number specialisation of square-class invariance: $s$ and $m^2 s$ are simultaneously sums of three rational squares. This is precisely the step that powers the gallery's squarefree reduction — every natural number factors as (square) × (squarefree part), so rational three-square representability is a function of the squarefree part alone. Consequently the still-open Hasse–Minkowski input is only ever needed for *squarefree* arguments. The proof rewrites the cast $((m^2 s : \\mathbb{N}):\\mathbb{Q}) = (m:\\mathbb{Q})^2\\cdot(s:\\mathbb{Q})$ via `push_cast` and then defers to the rational version.",
+    "mathContext": "Write $s = k^2 \\cdot \\mathrm{sf}(s)$ with $\\mathrm{sf}(s)$ squarefree. Then $s$ is a sum of three rational squares iff $\\mathrm{sf}(s)$ is — the open sufficiency question reduces to squarefree $n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["squarefree part", "square class", "type coercions", "push_cast"],
+    "prerequisites": ["elementary number theory", "type coercions in Lean"]
+  },
+  {
+    "id": "tsrn-ann-full-char",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-06",
+    "range": { "startLine": 102, "endLine": 115 },
+    "type": "insight",
+    "title": "The full characterization, with the open part quarantined",
+    "content": "`three_rat_sq_iff_not_excluded` assembles the complete rational characterization: $n$ is a sum of three rational squares iff $n$ is not of the excluded form. Crucially, the two halves draw on different resources. The necessity ($\\rightarrow$) half is the *unconditional* `excluded_form_not_sum_three_rat_sq` proved above; only the sufficiency ($\\leftarrow$) half consumes the open hypothesis `ThreeSquaresRationalSolvability`, supplied here as the argument `hRat`. This single line pins down exactly how much of the three-square 'if' direction remains open — everything except rational solvability for squarefree non-excluded $n$.",
+    "mathContext": "$(\\exists x,y,z\\in\\mathbb{Q}:\\,x^2+y^2+z^2=n) \\iff \\neg\\,\\mathrm{IsExcludedForm}(n)$, conditional on `ThreeSquaresRationalSolvability`. Forward half unconditional; backward half $=$ Hasse–Minkowski.",
+    "significance": "key",
+    "relatedConcepts": ["local-global principle", "Hasse-Minkowski", "conditional theorem", "open problem isolation"],
+    "prerequisites": ["Hasse-Minkowski principle", "quadratic forms over Q"]
+  }
+]

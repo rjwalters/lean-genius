@@ -21,6 +21,70 @@
     "sorries": 0
   },
   "title": "Rational Three Squares: the Unconditional Half via Davenport-Cassels",
+  "description": "Combines the gallery's two axiom-free pillars — integral necessity for the three-square theorem and the Davenport-Cassels descent — into the unconditional half of the rational characterization: rational and integral three-square representability coincide, the excluded family 4^a(8b+7) is non-representable even over ℚ, and representability is invariant under square classes (so only the squarefree part matters). The residual open content is isolated to a single Hasse-Minkowski solvability hypothesis.",
+  "overview": {
+    "historicalContext": "Legendre's three-square theorem (1798) characterizes the integers represented by x²+y²+z² as exactly those not of the form 4^a(8b+7). Its necessity half is elementary 2-adic arithmetic; its sufficiency half is deep, classically resting on the theory of ternary quadratic forms or on Dirichlet's theorem on primes in arithmetic progressions. The Davenport-Cassels lemma — due in essence to Aubry (1912) and given its standard form by Cassels, popularized through Davenport and Mordell's 1955 work — observes that for forms whose every rational point lies within distance < 1 of a lattice point, rational representability already implies integral representability via a nearest-integer descent. The sum of three squares is the boundary case: the maximal squared distance from a rational point of the sphere to the integer lattice is 3/4 < 1, whereas for four squares it is exactly 1 and the descent breaks. This entry packages that descent as a clean equivalence and traces out precisely which parts of the rational analogue of Legendre's theorem follow unconditionally.",
+    "problemStatement": "Over ℚ, characterize the integers $n$ representable as $x^2+y^2+z^2$ with $x,y,z\\in\\mathbb{Q}$. Determine which portion of this characterization is unconditional (derivable from already-formalized, axiom-free facts) and which portion requires the still-unformalized Hasse-Minkowski solvability input.",
+    "proofStrategy": "Treat the file as a synthesis layer over two proved gallery facts. (1) Promote the Davenport-Cassels descent to an honest Iff `three_rat_sq_iff_three_int_sq` by pairing it with the trivial $\\mathbb{Z}\\subseteq\\mathbb{Q}$ inclusion. (2) Lift Legendre's necessity to ℚ by contradiction: a rational representation of an excluded number would descend to an integral one, contradicting `excluded_form_not_sum_three_sq`. (3) Establish square-class invariance constructively by coordinatewise scaling, discharged with `ring`, `field_simp`, and `linear_combination`. (4) Specialize scaling to ℕ to expose the squarefree reduction. (5) Assemble the full characterization `three_rat_sq_iff_not_excluded` so that only its sufficiency half consumes the open hypothesis, quarantining the open content to a single statement.",
+    "keyInsights": [
+      "Denominators never help: for x²+y²+z² the rational and integral representation problems are literally identical (an Iff, not merely an implication), because the sphere's rational points are always within squared-distance 3/4 < 1 of the integer lattice.",
+      "The 2-adic obstruction is rational, not merely integral: the family 4^a(8b+7) fails to be a sum of three squares even when arbitrary rational coordinates are allowed, so the local failure at the prime 2 is intrinsic to the form over ℚ.",
+      "Representability is a square-class invariant: n and m²·n behave identically, so the entire question depends only on the squarefree part of n — collapsing the open sufficiency problem to squarefree arguments.",
+      "The open frontier is a single point: every part of the rational three-square characterization except sufficiency for squarefree non-excluded n is now unconditional and machine-checked; the lone missing input is the Hasse-Minkowski local-global solvability statement absent from Mathlib.",
+      "Four squares is the boundary failure of the same method: the Davenport-Cassels descent that makes three squares 'rational = integral' breaks for four squares precisely because the maximal lattice distance rises from 3/4 to 1."
+    ]
+  },
+  "sections": [
+    {
+      "id": "context-header",
+      "title": "Context: the unconditional vs. the open",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Docstring laying out the two axiom-free inputs (integral necessity and the Davenport-Cassels descent) and quarantining the single open piece (rational sufficiency / Hasse-Minkowski). States the file is free of axiom, sorry, and native_decide."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and namespace",
+      "startLine": 34,
+      "endLine": 42,
+      "summary": "Imports the three dependency modules and opens the ThreeSquares and ThreeSquaresRationalBridge namespaces, bringing IsExcludedForm, excluded_form_not_sum_three_sq, and rat_sq_of_int_sq into scope."
+    },
+    {
+      "id": "iff-rational-integral",
+      "title": "Rational equals integral (Davenport-Cassels Iff)",
+      "startLine": 44,
+      "endLine": 54,
+      "summary": "`three_rat_sq_iff_three_int_sq`: the descent packaged as an equivalence — n is a sum of three rational squares iff it is a sum of three integer squares. Forward = the descent, reverse = ℤ ⊆ ℚ."
+    },
+    {
+      "id": "rational-necessity",
+      "title": "Rational necessity",
+      "startLine": 56,
+      "endLine": 72,
+      "summary": "`excluded_form_not_sum_three_rat_sq`: the excluded family 4^a(8b+7) is not even a sum of three rational squares, proved by descending a hypothetical rational representation to an integer one and invoking integral necessity."
+    },
+    {
+      "id": "square-class-rational",
+      "title": "Square-class invariance (rational scalar)",
+      "startLine": 74,
+      "endLine": 87,
+      "summary": "`three_rat_sq_iff_sq_mul`: n is a sum of three rational squares iff m²·n is, for m ≠ 0, by coordinatewise scaling; discharged with ring, field_simp, and linear_combination."
+    },
+    {
+      "id": "square-class-nat",
+      "title": "Square-class invariance (natural scalar) and squarefree reduction",
+      "startLine": 89,
+      "endLine": 100,
+      "summary": "`three_rat_sq_iff_natSq_mul`: the ℕ-indexed scaling form, the rational step behind the gallery's squarefree reduction — representability depends only on the squarefree part of n."
+    },
+    {
+      "id": "full-characterization",
+      "title": "Full rational characterization (conditional)",
+      "startLine": 102,
+      "endLine": 115,
+      "summary": "`three_rat_sq_iff_not_excluded`: n is a sum of three rational squares iff ¬IsExcludedForm n, conditional only on ThreeSquaresRationalSolvability; necessity half unconditional, sufficiency half consumes the hypothesis."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
