@@ -56,6 +56,8 @@ import Proofs.AlgebraicNumbersCountableOQ02OQ04
 import Proofs.AlgebraicNumbersCountableOQ04
 import Proofs.AlgebraicNumbersCountableOQ05
 import Proofs.AlgebraicRealsMeager
+import Proofs.AlgebraicRealsMeagerOQ02
+import Proofs.AlgebraicRealsMeagerOQ03
 import Proofs.AlgebraicRealsNull
 import Proofs.AlternatingSeriesTestOQ01
 import Proofs.AmgmInequalityOQ02
