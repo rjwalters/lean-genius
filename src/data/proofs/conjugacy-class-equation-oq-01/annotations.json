@@ -1,0 +1,50 @@
+[
+  {
+    "id": "conjclass-oq01-ann-header",
+    "proofId": "conjugacy-class-equation-oq-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "A Conjugacy Class Is an Orbit",
+    "content": "The single conceptual move of the file: the conjugacy class of g is the orbit of g under the conjugation action `ConjAct G ↷ G`. Once that identification is made, every arithmetic property of the class — its size, its divisibility — follows from the orbit–stabilizer theorem. Mathlib already supplies orbit–stabilizer, the orbit↔class-carrier and stabilizer↔centralizer bridges, and the summed class equation, but not the clean per-class divisibility identity proved here, which is the arithmetic engine behind the class equation and its corollaries (e.g. p-groups have nontrivial center). The setup imports Mathlib, opens MulAction/Subgroup/ConjAct, and fixes a group G.",
+    "mathContext": "$\\mathrm{class}(g) = \\mathrm{orbit}_{\\mathrm{ConjAct}\\,G}(g); \\qquad |G| = |Z(G)| + \\sum_i [G : C_G(g_i)].$",
+    "significance": "key",
+    "relatedConcepts": ["conjugation action", "ConjAct", "orbit–stabilizer theorem", "class equation"],
+    "prerequisites": ["group actions", "conjugacy classes", "centralizers"]
+  },
+  {
+    "id": "conjclass-oq01-ann-product",
+    "proofId": "conjugacy-class-equation-oq-01",
+    "range": { "startLine": 37, "endLine": 53 },
+    "type": "theorem",
+    "title": "Orbit–Stabilizer for Conjugation",
+    "content": "`conjClass_card_mul_card_centralizer` proves |class(g)|·|C_G(g)| = |G|. Three rewrites assemble it: `ConjAct.orbit_eq_carrier_conjClasses` identifies the class carrier with the conjugation orbit, so (with `Nat.card_coe_set_eq` and `MulAction.index_stabilizer`) the class size is the stabilizer index; `ConjAct.stabilizer_eq_centralizer` identifies that stabilizer with the centralizer of g; and `Subgroup.index_mul_card` multiplies index by order to give Nat.card (ConjAct G), transported back to Nat.card G along the MulEquiv `ConjAct.toConjAct`.",
+    "mathContext": "$|\\mathrm{class}(g)| \\cdot |C_G(g)| = |G|.$",
+    "significance": "critical",
+    "relatedConcepts": ["index_stabilizer", "index_mul_card", "stabilizer = centralizer", "MulEquiv transport"],
+    "prerequisites": ["orbit–stabilizer in index form", "Subgroup index", "ConjAct bridges"]
+  },
+  {
+    "id": "conjclass-oq01-ann-index",
+    "proofId": "conjugacy-class-equation-oq-01",
+    "range": { "startLine": 55, "endLine": 63 },
+    "type": "theorem",
+    "title": "Class Size = Index of the Centralizer",
+    "content": "`conjClass_card_eq_index_centralizer` states |class(g)| = [G : C_G(g)] directly. The proof rewrites the centralizer back to the conjugation-stabilizer (`stabilizer_eq_centralizer`), the class carrier to the orbit (`orbit_eq_carrier_conjClasses`), and applies `MulAction.index_stabilizer` (orbit size = stabilizer index). This is the form of the class equation one actually cites — the summand [G : C_G(gᵢ)] in |G| = |Z(G)| + Σ [G : C_G(gᵢ)].",
+    "mathContext": "$|\\mathrm{class}(g)| = [G : C_G(g)].$",
+    "significance": "key",
+    "relatedConcepts": ["centralizer index", "class equation summand", "orbit–stabilizer"],
+    "prerequisites": ["the orbit/stabilizer/centralizer bridges"]
+  },
+  {
+    "id": "conjclass-oq01-ann-dvd-instance",
+    "proofId": "conjugacy-class-equation-oq-01",
+    "range": { "startLine": 65, "endLine": 79 },
+    "type": "theorem",
+    "title": "Per-Class Divisibility and the S₃ Witness",
+    "content": "`conjClass_card_dvd_card`: |class(g)| ∣ |G|, immediate from the product identity (the centralizer order is the explicit cofactor `⟨_, …⟩`). This per-class divisibility — not the summed class equation — is what Mathlib leaves implicit and is the key step in, e.g., proving a nontrivial p-group has nontrivial center. The closing example specializes to S₃ = Equiv.Perm (Fin 3): computing Nat.card = 3! = 6 by kernel `decide` (no native_decide), every conjugacy class size divides 6. Stated with Nat.card and Subgroup.index, the identities hold for any group and recover the classical finite statements without a Fintype instance.",
+    "mathContext": "$|\\mathrm{class}(g)| \\mid |G|; \\qquad |S_3| = 3! = 6,\\ \\text{every class size} \\mid 6.$",
+    "significance": "critical",
+    "relatedConcepts": ["divisibility", "p-group center", "Sylow theory", "kernel decide"],
+    "prerequisites": ["the product identity", "Nat.card of a permutation group"]
+  }
+]
