@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-erdos1004oq02-header",
+    "proofId": "erdos-1004-oq-02",
+    "range": { "startLine": 3, "endLine": 41 },
+    "type": "context",
+    "title": "Why finite fibers make the run question well-posed",
+    "content": "The header sets up the role of this entry within Erdős #1004. The parent asks how long a run of distinct consecutive totient values φ(n+1),…,φ(n+K) can be; for that to constrain anything, each value must be attained by only finitely many integers. This file supplies that finite-to-one fact with an explicit, elementary, 0-axiom bound φ(n)² ≥ n/2, packaged as a multiplicative invariant so that a single per-prime-power inequality propagates to all n.",
+    "mathContext": "$\\varphi(n)^2 \\ge n/2$, i.e. $n \\le 2\\varphi(n)^2$, sharp at $n=2$ ($2\\varphi(2)^2 = 2$); odd refinement $n \\le \\varphi(n)^2$ for odd $n$.",
+    "significance": "context",
+    "relatedConcepts": ["Euler totient", "multiplicative functions", "finite fibers", "Erdős problems"],
+    "prerequisites": ["Euler totient", "number theory"]
+  },
+  {
+    "id": "ann-erdos1004oq02-primepow-odd",
+    "proofId": "erdos-1004-oq-02",
+    "range": { "startLine": 49, "endLine": 64 },
+    "type": "technique",
+    "title": "Odd prime-power core: pᵏ ≤ φ(pᵏ)²",
+    "content": "The strong (factor-of-2-free) bound for odd prime powers. Writing k = j+1 and φ(p^(j+1)) = p^j(p−1) (totient_prime_pow_succ), the claim p^j·p ≤ (p^j(p−1))² reduces, after pulling out p^j, to the base inequality p ≤ (p−1)² for p ≥ 3 — discharged by nlinarith after substituting p = m+3. The calc chain then scales by Q = p^j (using Q ≤ Q²) and folds back into a perfect square.",
+    "mathContext": "For prime $p \\ge 3$, $k \\ge 1$: $p^k \\le \\varphi(p^k)^2$. Core fact $p \\le (p-1)^2$ holds for $p \\ge 3$ since $(p-1)^2 - p = p^2 - 3p + 1 > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime powers", "totient of prime power", "nlinarith", "polynomial inequalities"],
+    "prerequisites": ["Euler totient", "prime powers"]
+  },
+  {
+    "id": "ann-erdos1004oq02-primepow-two",
+    "proofId": "erdos-1004-oq-02",
+    "range": { "startLine": 66, "endLine": 82 },
+    "type": "technique",
+    "title": "General prime-power core: pᵏ ≤ 2·φ(pᵏ)²",
+    "content": "The weaker bound carrying the factor of 2, valid for every prime including p = 2. The same reduction φ(p^(j+1)) = p^j(p−1) leaves the base inequality p ≤ 2(p−1)² for p ≥ 2 — true even at p = 2 where it reads 2 ≤ 2·1 = 2 (tight). This single factor of 2 at the prime 2 is the entire source of slack in the global bound, isolated here.",
+    "mathContext": "For any prime $p$, $k \\ge 1$: $p^k \\le 2\\varphi(p^k)^2$. Base case $p \\le 2(p-1)^2$ is tight at $p = 2$ ($2 = 2\\cdot 1$).",
+    "significance": "supporting",
+    "relatedConcepts": ["prime powers", "totient of prime power", "sharpness", "nlinarith"],
+    "prerequisites": ["Euler totient", "prime powers"]
+  },
+  {
+    "id": "ann-erdos1004oq02-invariant",
+    "proofId": "erdos-1004-oq-02",
+    "range": { "startLine": 86, "endLine": 132 },
+    "type": "insight",
+    "title": "The multiplicative invariant that closes the recursion",
+    "content": "The heart of the proof. Neither bound alone is closed under coprime multiplication (the factor of 2 would double in a product), so the statement is strengthened to the conjunction P(n): (Odd n → n ≤ φ(n)²) ∧ (n ≤ 2φ(n)²). Nat.recOnPosPrimePosCoprime reduces P to: prime powers (handled by the two core lemmas), the base cases 0 and 1, and coprime products. In a coprime product a·b at most one factor is even, so the factor of 2 is spent on that one even factor while the bare odd bound covers the other — making P genuinely multiplicative. The coprime case splits on the parity of a, using gcd(a,b)=1 to force the other factor odd.",
+    "mathContext": "$P(n): (\\text{Odd } n \\to n \\le \\varphi(n)^2) \\wedge (n \\le 2\\varphi(n)^2)$. With $\\varphi(ab) = \\varphi(a)\\varphi(b)$ for $\\gcd(a,b)=1$, at most one of $a,b$ is even, so the factor $2$ is never spent twice.",
+    "significance": "key",
+    "relatedConcepts": ["multiplicative induction", "recOnPosPrimePosCoprime", "totient_mul", "coprime factorization", "strengthening hypotheses"],
+    "prerequisites": ["multiplicative functions", "coprimality", "induction principles"]
+  },
+  {
+    "id": "ann-erdos1004oq02-headline",
+    "proofId": "erdos-1004-oq-02",
+    "range": { "startLine": 134, "endLine": 147 },
+    "type": "concept",
+    "title": "Headline bounds and sharpness at n = 2",
+    "content": "The two halves of the invariant are projected out as the public theorems: totient_sq_two_ge (n ≤ 2φ(n)² for all n) and totient_sq_ge_of_odd (n ≤ φ(n)² for odd n). The example 2 = 2·φ(2)², closed by kernel decide, certifies the constant 2 is optimal — it cannot be lowered without failing at n = 2. Using kernel decide rather than native_decide keeps the entry free of Lean.ofReduceBool.",
+    "mathContext": "$n \\le 2\\varphi(n)^2$ (all $n$); $n \\le \\varphi(n)^2$ (odd $n$); sharp: $2 = 2\\varphi(2)^2$.",
+    "significance": "key",
+    "relatedConcepts": ["totient lower bound", "sharpness", "kernel decide", "axiom-free"],
+    "prerequisites": ["Euler totient"]
+  },
+  {
+    "id": "ann-erdos1004oq02-fiber",
+    "proofId": "erdos-1004-oq-02",
+    "range": { "startLine": 149, "endLine": 162 },
+    "type": "insight",
+    "title": "Finite-to-one: every totient fiber is finite",
+    "content": "The structural payoff. From n ≤ 2φ(n)² follows the explicit fiber bound totient_fiber_bound: φ(n)=v ⟹ n ≤ 2v². Hence totient_fiber_finite shows {n : φ(n) = v} is finite by exhibiting it as a subset of the finite initial segment Iic (2v²) = {0,…,2v²}. This is exactly the finite-to-one property the parent problem presupposes — without it, distinctness of consecutive totient values would impose no arithmetic constraint.",
+    "mathContext": "$\\varphi(n) = v \\Rightarrow n \\le 2v^2$, so $\\{n : \\varphi(n) = v\\} \\subseteq \\{0, 1, \\dots, 2v^2\\}$ is finite for every $v$.",
+    "significance": "key",
+    "relatedConcepts": ["finite fibers", "finite-to-one maps", "Set.Finite", "initial segments"],
+    "prerequisites": ["Euler totient", "finiteness of sets"]
+  },
+  {
+    "id": "ann-erdos1004oq02-real",
+    "proofId": "erdos-1004-oq-02",
+    "range": { "startLine": 164, "endLine": 172 },
+    "type": "context",
+    "title": "Real-analytic restatement √(n/2) ≤ φ(n)",
+    "content": "The only analytic touch in an otherwise purely arithmetic file. Casting n ≤ 2φ(n)² into ℝ gives n/2 ≤ φ(n)²; monotonicity of √ (Real.sqrt_le_sqrt) plus Real.sqrt_sq on the nonnegative φ(n) yields √(n/2) ≤ φ(n). This is the familiar textbook form of the bound, recovered here as a corollary of the integer inequality rather than proved analytically.",
+    "mathContext": "$\\sqrt{n/2} \\le \\varphi(n)$, from $n/2 \\le \\varphi(n)^2$ via $\\sqrt{\\cdot}$ monotone and $\\sqrt{x^2} = x$ for $x \\ge 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["square root", "monotonicity", "casting ℕ to ℝ", "Real.sqrt_sq"],
+    "prerequisites": ["real analysis", "square roots"]
+  }
+]
