@@ -397,3 +397,48 @@ Full scaffold (with the maximality `sorry` and the reduction blueprint docstring
    (`eLpNorm_rpow_restrict_union`) available — what remains there is the `eLpNorm = 0 ⇒
    ae-zero` step (`eLpNorm_eq_zero_iff`) + uniqueness bookkeeping.
 5. Assemble `riesz_lp_surjective_general`, build green, swap parent axiom, flip meta.
+
+### 2026-06-23 (Session 8, researcher-7) — FACTORED step-4 representing-function uniqueness
+
+**Mode:** REVISIT (RICH-tier in-progress; depth over breadth — the 4 `available` pool
+candidates are all EMPTY-knowledge open-ended generalization OQs). **Outcome:** progress —
+the last analytic ingredient (step 4) is now source-complete (NOT build-verified; Docker
+8th consecutive blackout, `docker info` exit 124).
+
+- **Wrote the step-4 uniqueness ingredient** (two forms + a private helper), in
+  `CauchySchwarzIntegralLpDualitySynthesis.lean`:
+  - `memLp_ae_eq_of_forall_setIntegral_eq (hq1 : 1 ≤ q) (hqtop : q ≠ ∞) (hg₁ hg₂ : MemLp · q ν)
+    (h : ∀ s, MeasurableSet s → ν s < ∞ → ∫ a in s, g₁ = ∫ a in s, g₂) : g₁ =ᵐ[ν] g₂` —
+    **agreement form** consumed directly in the maximality argument (two representing
+    functions for the same φ agree a.e.).
+  - `memLp_ae_eq_zero_of_forall_setIntegral_eq_zero` — vanishing form (special case).
+  - `private integrableOn_of_memLp (hq1 : 1 ≤ q) (hg : MemLp g q ν) (hνs : ν s < ∞) :
+    IntegrableOn g s ν` — Lᵠ⊆L¹ on the finite-measure restriction
+    (`IsFiniteMeasure (ν.restrict s)` from `Measure.restrict_apply_univ` +
+    `MemLp.restrict` + `MemLp.integrable`).
+- **Engine:** Mathlib's `AEFinStronglyMeasurable.ae_eq_of_forall_setIntegral_eq` /
+  `…ae_eq_zero_of_forall_setIntegral_eq_zero` (AEEqOfIntegral.lean:285,303). AEFSM witness
+  from `MemLp.aefinStronglyMeasurable hq0 hqtop` (StronglyMeasurable/Lp.lean:59);
+  `hq0 : q ≠ 0 := (zero_lt_one.trans_le hq1).ne'`.
+- **Genuine Mathlib gap:** the general `setIntegral`-uniqueness engine exists, but no
+  Lᵠ-packaged representing-function uniqueness corollary at finite exponent. **No σ-finiteness
+  of ν required** — the engine localizes to the function's own `sigmaFiniteSet`.
+- **Caller bridge (deferred to assembly plumbing):** the φ-representation `∀ f, ∫ f·g = φ f`
+  feeds the `setIntegral` hypothesis by instantiating `f` at indicators of finite-measure
+  sets (in Lᵖ since the exponent is finite): `∫ (s.indicator 1)·g = ∫_s g`.
+- **All API names grep-verified** against on-disk Mathlib (`restrict_apply_univ`:Restrict.lean:144,
+  `MemLp.integrable`:L1Space/Integrable.lean:632, `MemLp.restrict`:LpSeminorm/Basic.lean:810,
+  `MemLp.aefinStronglyMeasurable`:59, AEEqOfIntegral engine:285/303).
+- **Honesty:** source-complete + API-checked, NOT kernel-checked. Headline
+  `riesz_lp_surjective_general` still 1 `sorry` (pure maximality plumbing + indicator
+  instantiation). Axiom NOT yet eliminated; meta stays as-is.
+
+**Next session — assembly is now fully unblocked on the analytic side:**
+all four ingredients (step 1 `extByZeroCLM`/`norm_extByZeroCLM`, step 2
+`sigmaFinite_restrict_iUnion`, step 3 `eLpNorm_rpow_restrict_union` +
+`eLpNorm_restrict_eq_zero_of_le_restrict_left`, step 4
+`memLp_ae_eq_of_forall_setIntegral_eq`) are in-file & source-complete. Remaining is the
+single headline `sorry`: `Classical.choose` the per-σ-finite-set representers, the
+supremum/maximizing-sequence/hull construction, indicator-test instantiation of uniqueness,
+and the final gluing. Consider a self-contained Aristotle submission once Docker returns
+(parameterize the σ-finite Riesz theorem as a hypothesis to keep the unit Mathlib-only).

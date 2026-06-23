@@ -41,7 +41,7 @@
   ],
   "phase": "ACT",
   "knowledge": {
-    "progressSummary": "PROGRESS: step-1 extByZeroCLM pullback CLM now re-exposed in-file (public def + coeFn + isometry) from new general Mathlib API; all 3 analytic ingredients (steps 1,2,3) now factored and public; single headline sorry remains = maximizing-sequence assembly + σ-finite Riesz invocation",
+    "progressSummary": "PROGRESS (source-complete, NOT kernel-checked; Docker 8th blackout): step-4 representing-function uniqueness factored (memLp_ae_eq_of_forall_setIntegral_eq). All four analytic ingredients now in-file; headline riesz_lp_surjective_general still 1 sorry = pure maximality plumbing. Axiom NOT yet eliminated.",
     "insights": [
       "The previously-flagged Lean infrastructure gaps are RESOLVED. Mathlib supplies the sigma-finite support of any Lp function (0<p<inf) via MeasureTheory.MemLp.aefinStronglyMeasurable (Mathlib/MeasureTheory/Function/StronglyMeasurable/Lp.lean:59) -> AEFinStronglyMeasurable, whose .sigmaFiniteSet / .measurableSet / .ae_eq_zero_compl / sigmaFinite_restrict instance (StronglyMeasurable/AEStronglyMeasurable.lean:892-916) give a measurable set S with mu.restrict S sigma-finite and f=0 a.e. off S.",
       "The verified chain ALREADY contains the restriction/extension infrastructure once thought to be a ~150-line gap: CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean proves eLpNorm (S.indicator f) p mu = eLpNorm f p (mu.restrict S) (line 246), MemLp f p (mu.restrict S) -> MemLp (S.indicator f) p mu (line 260), and the extension-by-zero ISOMETRY extByZeroCLM : Lp p (mu.restrict S) ->L Lp p mu (line 266, currently private).",
@@ -54,7 +54,8 @@
       "Measure.restrict_apply (Restrict.lean:110) lets the cover-finiteness step avoid needing the spanning sets measurable — only S n measurable is required, which matches AEFinStronglyMeasurable.sigmaFiniteSet.",
       "Step 3 gluing rests on q-POWER additivity of eLpNorm over disjoint supports (the seminorm itself is only Minkowski-subadditive); the q-th power splits exactly via Measure.restrict_union + lintegral_add_measure, with the outer (·)^(1/q) cancelled by ENNReal.rpow_mul + one_div_mul_cancel",
       "Step-3 vanishing is a clean corollary of eLpNorm_rpow_restrict_union: monotone rpow on the seminorm bound, cancel the finite A-term via ENNReal.add_le_add_iff_left, then rpow_eq_zero_iff_of_pos + eLpNorm_eq_zero_iff. No new Mathlib gap beyond the additivity already proved.",
-      "Mathlib now provides BOTH helper lemmas the private extByZeroCLM depended on, as fully general (any exponent, no p≠0/p≠∞) lemmas: memLp_indicator_iff_restrict (LpSeminorm/Basic.lean:710) and eLpNorm_indicator_eq_eLpNorm_restrict (LpSeminorm/Basic.lean:612). This retires the documented Lean infrastructure gap for re-exposing the extension-by-zero CLM."
+      "Mathlib now provides BOTH helper lemmas the private extByZeroCLM depended on, as fully general (any exponent, no p≠0/p≠∞) lemmas: memLp_indicator_iff_restrict (LpSeminorm/Basic.lean:710) and eLpNorm_indicator_eq_eLpNorm_restrict (LpSeminorm/Basic.lean:612). This retires the documented Lean infrastructure gap for re-exposing the extension-by-zero CLM.",
+      "Step-4 uniqueness needs NO σ-finiteness of ν: Mathlib AEFinStronglyMeasurable.ae_eq_zero_of_forall_setIntegral_eq_zero localizes to the function's own σ-finite support (sigmaFiniteSet). Indicators of finite-measure sets lie in Lᵖ (finite exponent) so the φ-representation can be tested set-wise."
     ],
     "builtItems": [
       "memLp_exists_sigmaFinite_support — bridge lemma: for 0<p<inf, every f in Lp(mu) is a.e. supported on a measurable S with mu.restrict S sigma-finite (proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean). High-confidence (uses only confirmed Mathlib API) but UNVERIFIED this session (no build).",
@@ -64,7 +65,8 @@
       "eLpNorm_restrict_eq_zero_of_le_restrict_left (step-3 a.e.-identification mechanism: maximality bound + q-power additivity ⟹ representing function vanishes a.e. off the maximal set) in CauchySchwarzIntegralLpDualitySynthesis.lean — PR #28389",
       "extByZeroCLM: public noncomputable def in CauchySchwarzIntegralLpDualitySynthesis.lean — extension-by-zero isometric CLM Lp(μ.restrict S)→L Lp(μ), rebuilt from general Mathlib API (no private helpers, only [Fact (1≤p)])",
       "extByZeroCLM_coeFn_ae: applied CLM acts a.e. as S.indicator (verified hext_ind idiom)",
-      "norm_extByZeroCLM: extByZeroCLM is an isometry ‖extByZeroCLM hS f‖=‖f‖ — supplies the uniform ‖φ∘ext‖≤‖φ‖ bound for the maximizing-supremum finiteness"
+      "norm_extByZeroCLM: extByZeroCLM is an isometry ‖extByZeroCLM hS f‖=‖f‖ — supplies the uniform ‖φ∘ext‖≤‖φ‖ bound for the maximizing-supremum finiteness",
+      "memLp_ae_eq_of_forall_setIntegral_eq + memLp_ae_eq_zero_of_forall_setIntegral_eq_zero (CauchySchwarzIntegralLpDualitySynthesis.lean): step-4 Lᵠ representing-function UNIQUENESS — two Lᵠ functions (1≤q<∞) representing the same functional agree a.e., via testing against finite-measure-set indicators + AEFinStronglyMeasurable.ae_eq_of_forall_setIntegral_eq. Private helper integrableOn_of_memLp (Lᵠ⊆L¹ on finite-measure restriction)."
     ],
     "mathlibGaps": [
       "Mathlib has NO general Lp-Lq duality / Riesz surjectivity (no *Dual* Lp file under MeasureTheory/Function). This remains a genuine Mathlib gap that the gallery chain fills.",
@@ -72,12 +74,12 @@
       "sigmaFinite_restrict_iUnion (countable union of σ-finite restrictions is σ-finite-restricted) is NOT a Mathlib one-liner — needs building; step-2 hull ingredient",
       "No countable-union form of SigmaFinite (μ.restrict (⋃ n, S n)) in Mathlib (only binary s ∪ t). Candidate upstream contribution.",
       "No packaged q-power disjoint-union additivity for eLpNorm at general finite exponent (Mathlib has only Minkowski subadditivity eLpNorm_add_le and unit-exponent eLpNorm_one_add_measure) — proved here as eLpNorm_rpow_restrict_union",
-      "CLOSED (was a gap): the extByZeroCLM helper lemmas memLp_indicator_of_restrict_loc / eLpNorm_indicator_eq_restrict_loc are now subsumed by Mathlib general API"
+      "CLOSED (was a gap): the extByZeroCLM helper lemmas memLp_indicator_of_restrict_loc / eLpNorm_indicator_eq_restrict_loc are now subsumed by Mathlib general API",
+      "Mathlib has the setIntegral-uniqueness engine (AEFinStronglyMeasurable.ae_eq_of_forall_setIntegral_eq) but NOT an Lᵠ-packaged representing-function uniqueness corollary at finite exponent — now filled here."
     ],
     "nextSteps": [
-      "Assemble the headline sorry: define φₛ = φ.comp (extByZeroCLM hS) per σ-finite S, invoke riesz_lp_surjective_sigma_finite to get g_S, pick maximizing sequence S_n with ‖g_{S_n}‖_q→sup, set T=⋃S_n (sigmaFinite_restrict_iUnion), extract g_T",
-      "Cross-level consistency: g_U=g_T a.e. on T (uniqueness) and =0 off T (eLpNorm_restrict_eq_zero_of_le_restrict_left) — both factored lemmas now available",
-      "NOTE: synthesis file imports only Mathlib; invoking the σ-finite Riesz theorem requires importing the gallery file CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01 — decide whether to couple or restate"
+      "Assemble riesz_lp_surjective_general: (a) for each σ-finite measurable S, Classical.choose g_S from σ-finite Riesz of φ∘extByZeroCLM, with ‖g_S‖_q ≤ ‖φ‖ (norm_extByZeroCLM); (b) c=⨆_S‖g_S‖_q, maximizing sequence Sₙ, T=⋃Sₙ (sigmaFinite_restrict_iUnion); (c) realize sup on T via memLp_ae_eq_of_forall_setIntegral_eq; (d) for f, U=T∪supp f, glue via eLpNorm_restrict_eq_zero_of_le_restrict_left ⇒ g_U=g_T off-vanishing; build green, swap parent axiom, flip meta axiomatized→verified.",
+      "All analytic ingredients (steps 1-4) now factored & source-complete; only the sup/sequence/gluing PLUMBING + indicator-test instantiation remain in the single headline sorry."
     ]
   }
 }

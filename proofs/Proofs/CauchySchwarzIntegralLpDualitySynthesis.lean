@@ -83,13 +83,19 @@ genuine Mathlib gap, proved here from `Measure.sigmaFinite_of_countable`),
 disjoint union, the analytic identity driving the maximality gluing, also absent from
 Mathlib for a general finite exponent), and `eLpNorm_restrict_eq_zero_of_le_restrict_left`
 (step 3's a.e.-identification *mechanism*: from the maximality bound and that additivity
-identity, the representing function is forced to vanish a.e. off the maximal set). Step 1
-is now in-file too: `extByZeroCLM` (the extension-by-zero pullback CLM) and its isometry
-`norm_extByZeroCLM` are re-exposed here, rebuilt from general Mathlib API. The headline
-reduction `riesz_lp_surjective_general` still carries a single `sorry` for the remaining
-maximality *plumbing* (choosing a maximizing sequence, invoking the σ-finite Riesz
-theorem per piece via this pullback, and stitching together the now-factored facts) — it
-does **not** yet eliminate the axiom.
+identity, the representing function is forced to vanish a.e. off the maximal set). Step 4's
+uniqueness of the representing function is now factored too —
+`memLp_ae_eq_of_forall_setIntegral_eq` (and its vanishing form
+`memLp_ae_eq_zero_of_forall_setIntegral_eq_zero`): two Lᵠ functions representing the same
+functional agree a.e., obtained by testing against finite-measure-set indicators and
+applying Mathlib's `setIntegral`-uniqueness engine. This is what realizes the supremum on
+the maximizing hull `T` and identifies `g_U` with `g_T` on overlaps. Step 1 is in-file too:
+`extByZeroCLM` (the extension-by-zero pullback CLM) and its isometry `norm_extByZeroCLM` are
+re-exposed here, rebuilt from general Mathlib API. The headline reduction
+`riesz_lp_surjective_general` still carries a single `sorry` for the remaining maximality
+*plumbing* (choosing a maximizing sequence, invoking the σ-finite Riesz theorem per piece
+via this pullback, instantiating uniqueness at indicators, and stitching together the
+now-factored facts) — it does **not** yet eliminate the axiom.
 
 NOT BUILD-VERIFIED: the local Docker build wrapper has been hanging and Aristotle is
 unavailable, so `sigmaFinite_restrict_iUnion` is source-complete but its proof has not
@@ -252,6 +258,66 @@ theorem eLpNorm_restrict_eq_zero_of_le_restrict_left
     (ENNReal.rpow_eq_zero_iff_of_pos hqr).mp hbz
   exact (eLpNorm_eq_zero_iff hgmeas hq0).mp hb0
 
+/-- An Lᵠ function with `1 ≤ q` is integrable on every finite-measure set: restricting
+    to `s` gives a finite measure on which `Lᵠ ⊆ L¹`. Helper for the uniqueness lemmas. -/
+private theorem integrableOn_of_memLp {ν : Measure α} {g : α → ℝ} {q : ℝ≥0∞}
+    (hq1 : 1 ≤ q) (hg : MemLp g q ν) {s : Set α} (hνs : ν s < ∞) :
+    IntegrableOn g s ν := by
+  haveI : IsFiniteMeasure (ν.restrict s) :=
+    ⟨by rw [Measure.restrict_apply_univ]; exact hνs⟩
+  exact (hg.restrict s).integrable hq1
+
+/-- **Uniqueness of the Lᵠ representing function — vanishing form** (step 4 ingredient).
+    For `1 ≤ q < ∞`, a function `g ∈ Lᵠ(ν)` that integrates to zero over *every*
+    finite-measure set is zero a.e.
+
+    In the maximality argument this is the engine that turns "represents the zero
+    functional" into "is a.e. zero": testing the representation `∀ f, ∫ f·g = 0`
+    against the indicators of finite-measure sets (which lie in `Lᵖ` because the
+    exponent is finite) yields exactly the `setIntegral`-vanishing hypothesis below,
+    so the representing function attached to a σ-finite piece is determined a.e. — the
+    fact step 4 needs to identify `g_U` with `g_T` on the overlap and to realize the
+    supremum on the maximizing hull `T`.
+
+    Mathlib supplies the general `setIntegral`-uniqueness engine
+    (`AEFinStronglyMeasurable.ae_eq_zero_of_forall_setIntegral_eq_zero`), but not this
+    Lᵠ-packaged corollary: the only work is producing the `AEFinStronglyMeasurable`
+    witness (`MemLp.aefinStronglyMeasurable`, valid since `q ≠ 0, ∞`) and the
+    finite-set integrability side condition (`integrableOn_of_memLp`). No σ-finiteness
+    of `ν` is needed — the engine localizes to the function's own σ-finite support. -/
+theorem memLp_ae_eq_zero_of_forall_setIntegral_eq_zero {ν : Measure α}
+    {g : α → ℝ} {q : ℝ≥0∞} (hq1 : 1 ≤ q) (hqtop : q ≠ ∞) (hg : MemLp g q ν)
+    (hzero : ∀ s : Set α, MeasurableSet s → ν s < ∞ → ∫ a in s, g a ∂ν = 0) :
+    g =ᵐ[ν] 0 := by
+  have hq0 : q ≠ 0 := (zero_lt_one.trans_le hq1).ne'
+  exact (hg.aefinStronglyMeasurable hq0 hqtop).ae_eq_zero_of_forall_setIntegral_eq_zero
+    (fun s _ hνs => integrableOn_of_memLp hq1 hg hνs) hzero
+
+/-- **Uniqueness of the Lᵠ representing function — agreement form** (step 4 ingredient).
+    For `1 ≤ q < ∞`, two functions `g₁, g₂ ∈ Lᵠ(ν)` with equal integrals over every
+    finite-measure set agree a.e.
+
+    This is the form consumed directly in the maximality argument: when both `g₁` and
+    `g₂` represent the same bounded functional on `Lᵖ(ν)` (so `∫ f·g₁ = φ f = ∫ f·g₂`
+    for all `f`), instantiating at indicators of finite-measure sets gives the
+    `setIntegral`-agreement hypothesis, hence `g₁ =ᵐ g₂`. With `ν = μ.restrict Sₙ` and
+    `Sₙ ⊆ T` this is what forces `g_{Sₙ}` to coincide with `g_T` on `Sₙ`, so that the
+    supremum `c = ⨆_S ‖g_S‖_q` is realized on the hull `T`.
+
+    Mathlib's `AEFinStronglyMeasurable.ae_eq_of_forall_setIntegral_eq` provides the
+    engine; this packages it for Lᵠ functions. -/
+theorem memLp_ae_eq_of_forall_setIntegral_eq {ν : Measure α}
+    {g₁ g₂ : α → ℝ} {q : ℝ≥0∞} (hq1 : 1 ≤ q) (hqtop : q ≠ ∞)
+    (hg₁ : MemLp g₁ q ν) (hg₂ : MemLp g₂ q ν)
+    (h : ∀ s : Set α, MeasurableSet s → ν s < ∞ →
+      ∫ a in s, g₁ a ∂ν = ∫ a in s, g₂ a ∂ν) :
+    g₁ =ᵐ[ν] g₂ := by
+  have hq0 : q ≠ 0 := (zero_lt_one.trans_le hq1).ne'
+  exact (hg₁.aefinStronglyMeasurable hq0 hqtop).ae_eq_of_forall_setIntegral_eq
+    (fun s _ hνs => integrableOn_of_memLp hq1 hg₁ hνs)
+    (fun s _ hνs => integrableOn_of_memLp hq1 hg₂ hνs) h
+    (hg₂.aefinStronglyMeasurable hq0 hqtop)
+
 /-- **Extension-by-zero CLM** (step 1 ingredient): the isometric embedding
     `Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ` sending `f` to its extension by zero
     `S.indicator f`.
@@ -351,12 +417,13 @@ theorem norm_extByZeroCLM {S : Set α} (hS : MeasurableSet S)
     (`sigmaFinite_restrict_iUnion`), step 3's `q`-power norm additivity over the
     disjoint gluing pieces `T` and `U \ T` (`eLpNorm_rpow_restrict_union`), and the
     a.e.-identification mechanism that turns the maximality bound into vanishing off
-    `T` (`eLpNorm_restrict_eq_zero_of_le_restrict_left`), and step 1's extension-by-zero
-    pullback `extByZeroCLM` (with isometry `norm_extByZeroCLM`). What remains is the
-    *plumbing* that strings them together: pulling `φ` back along `extByZeroCLM` per
-    σ-finite set to invoke the σ-finite Riesz theorem, choosing a maximizing sequence, and
-    extracting `g_T` — after which `g_U = g_T` a.e. follows from the now-available
-    factored lemmas. -/
+    `T` (`eLpNorm_restrict_eq_zero_of_le_restrict_left`), step 4's uniqueness of the
+    representing function (`memLp_ae_eq_of_forall_setIntegral_eq`), and step 1's
+    extension-by-zero pullback `extByZeroCLM` (with isometry `norm_extByZeroCLM`). What
+    remains is the *plumbing* that strings them together: pulling `φ` back along
+    `extByZeroCLM` per σ-finite set to invoke the σ-finite Riesz theorem, choosing a
+    maximizing sequence, and extracting `g_T` — after which `g_U = g_T` a.e. follows from
+    the now-available factored lemmas. -/
 theorem riesz_lp_surjective_general
     (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal) [Fact (1 ≤ p)] :
