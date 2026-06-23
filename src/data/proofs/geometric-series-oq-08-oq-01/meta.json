@@ -132,6 +132,11 @@
       "targetId": "geometric-series-oq-07",
       "relationship": "sibling",
       "description": "A sibling weighted extension: oq-07 computes the second moment ∑ n²·rⁿ of the INFINITE series, while this entry gives the FINITE first-moment closed form ∑_{k<n} k·xᵏ and recovers the infinite first moment x/(1 − x)² in the limit."
+    },
+    {
+      "targetId": "geometric-series-oq-08-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Child entry answering this entry's open question. It promotes the first moment to the SECOND moment, giving the division-free closed form for ∑_{k<n} k²·xᵏ over any commutative ring, with field form over (1 − x)³ and infinite limit x(1 + x)/(1 − x)³ — the next member of the ∑ kᵐ·xᵏ hierarchy that raises the denominator order by one with each weight."
     }
   ],
   "references": [
