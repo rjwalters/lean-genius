@@ -1,0 +1,50 @@
+[
+  {
+    "id": "conjclass-oq0101-ann-header",
+    "proofId": "conjugacy-class-equation-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "concept",
+    "title": "From Cardinality Form to Centralizer-Index Form",
+    "content": "The file assembles the textbook numeric class equation |G| = |Z(G)| + Σ [G : C_G(gᵢ)] from two ingredients it does not reprove: the parent identity conjClass_card_eq_index_centralizer (|class(g)| = [G : C_G(g)]) and Mathlib's summed class equation Group.nat_card_center_add_sum_card_noncenter_eq_card, which is stated in cardinality form (each noncentral class contributes |x.carrier|). The new content is to choose a representative x.out for each class and rewrite |x.carrier| as the centralizer index [G : C_G(x.out)], producing the index form actually cited in applications, plus the divisibility step that powers them.",
+    "mathContext": "$|Z(G)| + \\sum_{x} |x.\\mathrm{carrier}| = |G| \\;\\Longrightarrow\\; |G| = |Z(G)| + \\sum_i [G : C_G(g_i)].$",
+    "significance": "key",
+    "relatedConcepts": ["class equation", "centralizer index", "ConjClasses.noncenter", "p-group center"],
+    "prerequisites": ["conjugacy classes", "centralizers", "finite sums over sets"]
+  },
+  {
+    "id": "conjclass-oq0101-ann-transport",
+    "proofId": "conjugacy-class-equation-oq-01-oq-01",
+    "range": { "startLine": 51, "endLine": 63 },
+    "type": "theorem",
+    "title": "Per-Class Transport to a Representative",
+    "content": "index_centralizer_out_eq_card_carrier proves [G : C_G(x.out)] = |x.carrier| for every conjugacy class x. The representative is x.out = Quotient.out x; the key fact ConjClasses.mk (Quotient.out x) = x is exactly Quotient.out_eq (since ConjClasses.mk a = ⟦a⟧). Rewriting backwards through the parent lemma conjClass_card_eq_index_centralizer (Quotient.out x) and then through this equality converts the per-element identity into a statement about the class x itself, ready to be summed.",
+    "mathContext": "$[G : C_G(x.\\mathrm{out})] = |x.\\mathrm{carrier}|, \\qquad \\mathrm{ConjClasses.mk}\\,(x.\\mathrm{out}) = x.$",
+    "significance": "critical",
+    "relatedConcepts": ["Quotient.out_eq", "conjClass_card_eq_index_centralizer", "class representatives"],
+    "prerequisites": ["the parent per-class identity", "quotient representatives"]
+  },
+  {
+    "id": "conjclass-oq0101-ann-equation",
+    "proofId": "conjugacy-class-equation-oq-01-oq-01",
+    "range": { "startLine": 64, "endLine": 82 },
+    "type": "theorem",
+    "title": "The Centralizer-Index Class Equation",
+    "content": "card_center_add_sum_index_eq_card states |Z(G)| + Σᶠ x ∈ noncenter G, [G : C_G(x.out)] = |G|. The proof builds a single rewrite `key` via finsum_mem_congr, replacing every noncentral summand [G : C_G(x.out)] by |x.carrier| using the transport lemma, which turns the goal into Mathlib's Group.nat_card_center_add_sum_card_noncenter_eq_card. This is the form of the class equation that names the centralizer index of each class, rather than its raw cardinality.",
+    "mathContext": "$|Z(G)| + \\sum_{x \\in \\mathrm{noncenter}\\,G} [G : C_G(x.\\mathrm{out})] = |G|.$",
+    "significance": "key",
+    "relatedConcepts": ["finsum_mem_congr", "Group.nat_card_center_add_sum_card_noncenter_eq_card", "noncentral classes"],
+    "prerequisites": ["finite sums over sets", "the per-class transport lemma"]
+  },
+  {
+    "id": "conjclass-oq0101-ann-engine",
+    "proofId": "conjugacy-class-equation-oq-01-oq-01",
+    "range": { "startLine": 83, "endLine": 119 },
+    "type": "theorem",
+    "title": "The Arithmetic Engine and the S₃ Instance",
+    "content": "prime_dvd_card_center_of_dvd_indices: if p ∣ |G| and p ∣ [G : C_G(x.out)] for every noncentral class, then p ∣ |Z(G)|. The noncentral set is finite (Set.toFinite), so finsum_mem_eq_finite_toFinset_sum turns the finsum into a Finset.sum and Finset.dvd_sum gives p ∣ Σ; then |Z(G)| = |G| - Σ (Nat.eq_sub_of_add_eq applied to the class equation) and Nat.dvd_sub yields p ∣ |Z(G)|. Specialized to a nontrivial finite p-group, every noncentral index is a positive power of p, so p ∣ |Z(G)| and the center is nontrivial. The closing example instantiates the class equation for S₃ = Equiv.Perm (Fin 3).",
+    "mathContext": "$p \\mid |G| \\;\\wedge\\; \\big(\\forall i,\\ p \\mid [G : C_G(g_i)]\\big) \\;\\Longrightarrow\\; p \\mid |Z(G)|.$",
+    "significance": "critical",
+    "relatedConcepts": ["Finset.dvd_sum", "Nat.dvd_sub", "p-group nontrivial center", "first Sylow theorem"],
+    "prerequisites": ["divisibility of finite sums", "Nat subtraction and divisibility"]
+  }
+]
