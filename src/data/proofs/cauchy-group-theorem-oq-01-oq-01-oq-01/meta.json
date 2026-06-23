@@ -1,0 +1,158 @@
+{
+  "id": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+  "title": "The n-th power map is a bijection on a finite group iff gcd(n, |G|) = 1",
+  "slug": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.OrderOfElement",
+      "Mathlib.GroupTheory.Perm.Cycle.Type",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Function"
+    ],
+    "namespace": "",
+    "lineCount": 128,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "description": "The full coprime-exponent criterion for the power map, answering the sibling entry's first open question. On any finite group G, the n-th power map x ↦ xⁿ is a bijection if and only if gcd(n, |G|) = 1 — abelian or not. Mathlib supplies only the forward implication (Nat.Coprime.pow_left_bijective, built from the explicit inverse powCoprime via Bézout). The converse — bijectivity forces coprimality — is the new content and is not in Mathlib: if a prime p divides gcd(n, |G|), Cauchy's theorem produces an element x of order p, and since p ∣ n we get xⁿ = 1 = 1ⁿ with x ≠ 1, defeating injectivity. The two directions combine into pow_bijective_iff_coprime, restated for injective and surjective forms (on a finite self-map all three coincide), a Fintype.card phrasing, and the corollary pow_bijective_iff_odd_card that recovers the sibling's squaring boundary (n = 2 ⟺ |G| odd) as a special case. Two 0-axiom ZMod witnesses (cubing bijective on ℤ/5, not on ℤ/6) by kernel decide.",
+  "overview": {
+    "historicalContext": "Cauchy's 1845 theorem — a prime p dividing |G| forces an element of order p — is the seed of all local structure theory of finite groups. One of its cleanest consequences concerns the power map x ↦ xⁿ. When gcd(n, |G|) = 1 this map is a bijection (its inverse is another power map, supplied by Bézout coefficients), the multiplicative shadow of 'n is invertible modulo the exponent of G'. The converse — that bijectivity can only happen when n is coprime to |G| — is exactly where Cauchy re-enters: a common prime factor manufactures a nontrivial element killed by the n-th power. The element-of-coprime-order map underlies regular elements in algebraic groups, the coprime action machinery of the odd-order theorem, and the Schur–Zassenhaus splitting (where Mathlib's powCoprime is used). The sibling entry settled the n = 2 boundary (squaring is a bijection iff |G| is odd); this entry proves the general statement and lists the squaring case as the corollary.",
+    "problemStatement": "Characterize exactly when the n-th power map on a finite group is a bijection. Prove the two-directional criterion: for a finite group G and n : ℕ, the map x ↦ xⁿ is a bijection if and only if gcd(n, |G|) = 1, valid for arbitrary (not necessarily abelian) finite groups, and exhibit the n = 2 special case as the odd-order squaring boundary of the sibling entry.",
+    "proofStrategy": "Forward (coprime ⟹ bijection) is Mathlib's Nat.Coprime.pow_left_bijective: from Bézout a·|G| + b·n = 1 the map x ↦ x^b inverts x ↦ xⁿ because x^|G| = 1. The converse (bijection ⟹ coprime) is proved by contraposition: if gcd(|G|, n) ≠ 1 take a prime p ∣ gcd via Nat.exists_prime_and_dvd; then p ∣ |G| and p ∣ n. Cauchy (exists_prime_orderOf_dvd_card') yields x with orderOf x = p, so x ≠ 1, while orderOf_dvd_iff_pow_eq_one and p ∣ n give xⁿ = 1 = 1ⁿ — two distinct elements with equal n-th power, contradicting injectivity. Bundling the directions gives the iff; Finite.injective_iff_bijective / surjective_iff_bijective propagate it to the injective and surjective forms; Nat.coprime_two_right rewrites the n = 2 case to 'Odd |G|'. Concrete ZMod 5 / ZMod 6 witnesses rewrite Nat.card via Fintype.card_multiplicative and ZMod.card, then kernel decide — no native_decide, so 0 axioms.",
+    "keyInsights": [
+      "The criterion holds for ALL finite groups, not just abelian ones: although x ↦ xⁿ is not a homomorphism when G is nonabelian, it still acts within each cyclic subgroup ⟨x⟩ where powers commute, and both the Bézout inverse and the Cauchy obstruction live entirely inside such cyclic subgroups.",
+      "The converse is genuinely new relative to Mathlib, which packages only the coprime ⟹ bijection direction (powCoprime / pow_left_bijective). Cauchy's theorem is precisely the tool that turns the one-directional lemma into an iff: a shared prime factor of n and |G| is exactly an element the power map cannot avoid collapsing.",
+      "The obstruction is local and explicit: a single prime p ∣ gcd(n, |G|) already breaks injectivity, via one Cauchy element of order p, with no need to analyze the whole group.",
+      "The n = 2 instance reproduces the sibling entry's boundary 'squaring is a bijection ⟺ |G| odd' as a one-line corollary (Nat.coprime_two_right), showing that result was the prime-2 shadow of a uniform coprimality phenomenon.",
+      "Axiom hygiene is preserved: the concrete ZMod witnesses use kernel decide (after rewriting Nat.card to a literal), avoiding native_decide and the Lean.ofReduceBool axiom, so every statement depends only on the three foundational axioms."
+    ]
+  },
+  "sections": [
+    {
+      "id": "two-directions",
+      "title": "The Two Directions",
+      "startLine": 59,
+      "endLine": 86,
+      "summary": "pow_bijective_of_coprime restates the Mathlib forward implication (coprime ⟹ bijection, inverse x ↦ x^(gcdB |G| n)). coprime_of_pow_bijective is the new converse: a prime p ∣ gcd(n, |G|) yields a Cauchy element of order p with xⁿ = 1 = 1ⁿ, breaking injectivity.",
+      "mathContext": "x ↦ xⁿ bijective ⟸ gcd(n,|G|)=1 (Bézout inverse); bijective ⟹ gcd(n,|G|)=1 (Cauchy obstruction)."
+    },
+    {
+      "id": "criterion",
+      "title": "The Coprime Criterion and Its Forms",
+      "startLine": 88,
+      "endLine": 116,
+      "summary": "pow_bijective_iff_coprime bundles the two directions. On a finite self-map injective = surjective = bijective, so pow_injective_iff_coprime and pow_surjective_iff_coprime hold verbatim. pow_bijective_iff_coprime_card gives the Fintype.card phrasing, and pow_bijective_iff_odd_card recovers the sibling's squaring boundary at n = 2.",
+      "mathContext": "Bijective (·^n) ↔ (Nat.card G).Coprime n, equivalently for injective/surjective, and ↔ Odd |G| when n = 2."
+    },
+    {
+      "id": "witnesses",
+      "title": "Concrete ZMod Witnesses",
+      "startLine": 117,
+      "endLine": 128,
+      "summary": "Cubing is a bijection on the cyclic group of order 5 (gcd(3,5)=1) and fails to be one on the cyclic group of order 6 (gcd(3,6)=3). Both checks rewrite Nat.card via Fintype.card_multiplicative and ZMod.card to a literal, then close by kernel decide, keeping the file 0-axiom.",
+      "mathContext": "x ↦ x³ on ℤ/5 is a bijection; on ℤ/6 it is not — concrete instances of the criterion."
+    }
+  ],
+  "conclusion": {
+    "summary": "The power map x ↦ xⁿ on a finite group is a bijection exactly when gcd(n, |G|) = 1, with no abelian hypothesis. Mathlib's one-directional coprime ⟹ bijection lemma becomes a sharp iff once Cauchy's theorem supplies the converse obstruction, and the criterion descends to the injective and surjective forms and to a Fintype.card restatement. The sibling entry's odd-order squaring boundary falls out as the n = 2 corollary, and concrete ℤ/5 and ℤ/6 witnesses keep the development genuinely 0-axiom.",
+    "implications": [
+      "Answers the first open question of the sibling entry cauchy-group-theorem-oq-01-oq-01 in full generality, generalizing its squaring (n = 2) boundary to every exponent n.",
+      "Contributes the converse direction missing from Mathlib (which exports only Nat.Coprime.pow_left_bijective / powCoprime), packaged as a clean biconditional usable as a regular-element / coprime-exponent criterion.",
+      "Isolates Cauchy's theorem as the exact mechanism behind the converse: a common prime factor of n and |G| is precisely an obstruction element, a viewpoint that recurs in coprime-action arguments."
+    ],
+    "openQuestions": [
+      "Does the same biconditional hold for the n-th power map on an infinite group under a suitable finiteness-of-torsion or finite-exponent hypothesis, or does the converse genuinely require |G| < ∞?",
+      "Can the explicit inverse be packaged as a group-theoretic functor sending each finite group with gcd(n,|G|)=1 to the power automorphism, functorially in G, mirroring the additive 'division by n' on coprime-order modules?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-group-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Answers this sibling's first listed open question: it generalizes the squaring (n = 2) bijection boundary to the full coprime-exponent criterion for arbitrary n, and recovers the sibling's 'squaring bijective ⟺ odd order' as the corollary pow_bijective_iff_odd_card."
+    },
+    {
+      "targetId": "cauchy-group-theorem-oq-01",
+      "relationship": "builds-on",
+      "description": "Uses Cauchy's theorem (the existence of an element of prime order p whenever p ∣ |G|), the grandparent entry's subject, as the engine of the converse direction."
+    }
+  ],
+  "meta": {
+    "author": "Lean formalization original (structural follow-up to Cauchy's theorem)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "finite-groups",
+      "cauchy-theorem",
+      "order-of-element",
+      "power-map",
+      "coprime-exponent",
+      "bijection",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Coprime.pow_left_bijective",
+        "description": "If gcd(|G|, n) = 1 then x ↦ xⁿ is bijective (built from the explicit inverse powCoprime via Bézout); the forward direction of the criterion.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "exists_prime_orderOf_dvd_card'",
+        "description": "Cauchy's theorem (Finite/Nat.card form): p ∣ |G| yields an element of order exactly p; supplies the obstruction element in the converse direction.",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Type"
+      },
+      {
+        "theorem": "Nat.exists_prime_and_dvd",
+        "description": "Any n ≠ 1 has a prime factor; applied to gcd(|G|, n) ≠ 1 to extract the prime p dividing both |G| and n.",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      },
+      {
+        "theorem": "orderOf_dvd_iff_pow_eq_one",
+        "description": "orderOf x ∣ n ↔ xⁿ = 1; with orderOf x = p ∣ n this gives xⁿ = 1, collapsing x onto 1.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "Finite.injective_iff_bijective",
+        "description": "For a self-map of a finite type, injective ↔ bijective; propagates the criterion to the injective and surjective forms.",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Nat.coprime_two_right",
+        "description": "n.Coprime 2 ↔ Odd n; rewrites the n = 2 instance of the criterion into the sibling's odd-order squaring boundary.",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "references": [
+      {
+        "authors": "Cauchy, Augustin-Louis",
+        "title": "Mémoire sur les arrangements que l'on peut former avec des lettres données",
+        "year": "1845",
+        "note": "Exercices d'analyse et de physique mathématique 3, 151–252 — the existence of elements of prime order, the engine of the converse direction."
+      },
+      {
+        "authors": "Isaacs, I. Martin",
+        "title": "Finite Group Theory",
+        "year": "2008",
+        "note": "Graduate Studies in Mathematics 92, AMS — coprime power/automorphism maps and regular elements in finite groups."
+      },
+      {
+        "authors": "Robinson, Derek J. S.",
+        "title": "A Course in the Theory of Groups",
+        "year": "1996",
+        "note": "Graduate Texts in Mathematics 80, Springer — coprime actions and the role of gcd(n, |G|) in power and fixed-point arguments."
+      }
+    ]
+  }
+}

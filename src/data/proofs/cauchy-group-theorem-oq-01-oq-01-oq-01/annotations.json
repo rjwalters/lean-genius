@@ -1,0 +1,136 @@
+[
+  {
+    "id": "forward-coprime",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 59,
+      "endLine": 65
+    },
+    "type": "theorem",
+    "title": "Forward Direction: Coprime Exponent Gives a Bijection",
+    "content": "`pow_bijective_of_coprime`: if gcd(|G|, n) = 1 then x ↦ xⁿ is a bijection. This is Mathlib's `Nat.Coprime.pow_left_bijective`, built from the explicit equivalence `powCoprime` whose inverse is the power map x ↦ x^(gcdB |G| n). The mechanism is Bézout: from a·|G| + b·n = 1 we get (xⁿ)^b = x^(b·n) = x^(1 - a·|G|) = x, because x^|G| = 1. Restated here so the converse can complete the iff.",
+    "mathContext": "Bézout gives $a|G| + bn = 1$, so $(x^n)^b = x^{bn} = x^{1 - a|G|} = x\\,(x^{|G|})^{-a} = x$. The inverse of $x \\mapsto x^n$ is $x \\mapsto x^b$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Bézout's identity",
+      "coprime exponents",
+      "powCoprime equivalence",
+      "Lagrange's theorem"
+    ],
+    "prerequisites": [
+      "finite group theory",
+      "Bézout's identity"
+    ]
+  },
+  {
+    "id": "converse-cauchy",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 67,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "Converse Direction (new): Bijectivity Forces Coprimality",
+    "content": "`coprime_of_pow_bijective`: if x ↦ xⁿ is a bijection on the finite group G then gcd(|G|, n) = 1. This direction is NOT in Mathlib and is the genuinely new content. Proof by contraposition: if gcd(|G|, n) ≠ 1, take a prime p ∣ gcd via `Nat.exists_prime_and_dvd`, so p ∣ |G| and p ∣ n. Cauchy's theorem (`exists_prime_orderOf_dvd_card'`) produces x with orderOf x = p, hence x ≠ 1; and since p = orderOf x divides n, `orderOf_dvd_iff_pow_eq_one` gives xⁿ = 1 = 1ⁿ. So x and 1 are distinct elements with equal n-th power, contradicting injectivity. Cauchy is exactly the tool that converts a common prime factor into an obstruction element.",
+    "mathContext": "If $p \\mid \\gcd(|G|,n)$, Cauchy gives $x$ of order $p$ with $x \\ne 1$; since $p \\mid n$, $x^n = 1 = 1^n$, so $x \\mapsto x^n$ is not injective.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Cauchy's theorem",
+      "order of an element",
+      "contrapositive",
+      "prime obstruction"
+    ],
+    "prerequisites": [
+      "Cauchy's theorem",
+      "order of an element"
+    ]
+  },
+  {
+    "id": "criterion-iff",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 88,
+      "endLine": 103
+    },
+    "type": "theorem",
+    "title": "The Coprime Criterion and Its Injective/Surjective Forms",
+    "content": "`pow_bijective_iff_coprime` bundles the two directions into the sharp biconditional: x ↦ xⁿ is a bijection ⟺ gcd(|G|, n) = 1, for an arbitrary finite group (no abelian hypothesis — the power map acts within each cyclic subgroup ⟨x⟩ where everything commutes). Because a self-map of a finite type is injective iff surjective iff bijective, `pow_injective_iff_coprime` and `pow_surjective_iff_coprime` follow at once from `Finite.injective_iff_bijective` and `Finite.surjective_iff_bijective`.",
+    "mathContext": "$\\text{Bijective}(x \\mapsto x^n) \\iff \\gcd(n,|G|)=1$, equivalently injective or surjective, for every finite group $G$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "biconditional characterization",
+      "finite self-maps",
+      "injective iff surjective",
+      "coprime-exponent theorem"
+    ],
+    "prerequisites": [
+      "finite group theory",
+      "pigeonhole principle"
+    ]
+  },
+  {
+    "id": "fintype-card-form",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 107
+    },
+    "type": "theorem",
+    "title": "Fintype.card Restatement",
+    "content": "`pow_bijective_iff_coprime_card`: the same criterion phrased with `Fintype.card G` in place of `Nat.card G`, matching the customary gcd(n, |G|) wording. The two cardinalities agree on a finite group via `Nat.card_eq_fintype_card`.",
+    "mathContext": "$\\text{Bijective}(x \\mapsto x^n) \\iff \\gcd(n, |G|)=1$ with $|G| = \\text{Fintype.card } G$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.card vs Fintype.card",
+      "cardinality of finite groups"
+    ],
+    "prerequisites": [
+      "finite types in Lean"
+    ]
+  },
+  {
+    "id": "odd-card-corollary",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 109,
+      "endLine": 116
+    },
+    "type": "theorem",
+    "title": "Recovering the Sibling's Squaring Boundary",
+    "content": "`pow_bijective_iff_odd_card`: the n = 2 instance of the criterion. Since `Nat.coprime_two_right` says n.Coprime 2 ↔ Odd n, the criterion specializes to: squaring x ↦ x² is a bijection ⟺ |G| is odd. This reproduces in one line the central boundary of the sibling entry cauchy-group-theorem-oq-01-oq-01, exhibiting that result as the prime-2 shadow of the uniform coprimality phenomenon.",
+    "mathContext": "$\\text{Bijective}(x \\mapsto x^2) \\iff \\text{Odd}(|G|)$ — the $n = 2$ case, recovering the sibling's odd-order squaring boundary.",
+    "significance": "important",
+    "relatedConcepts": [
+      "squaring map",
+      "odd order",
+      "involutions",
+      "specialization"
+    ],
+    "prerequisites": [
+      "parity of group order"
+    ]
+  },
+  {
+    "id": "zmod-witnesses",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 117,
+      "endLine": 128
+    },
+    "type": "example",
+    "title": "Concrete ZMod Witnesses (0-axiom)",
+    "content": "Two concrete instances of the criterion on cyclic groups. Cubing is a bijection on Multiplicative (ZMod 5) since gcd(3, 5) = 1, and is NOT a bijection on Multiplicative (ZMod 6) since gcd(3, 6) = 3 ≠ 1. Each check rewrites the noncomputable `Nat.card` to a literal via `Nat.card_eq_fintype_card`, `Fintype.card_multiplicative` and `ZMod.card`, then closes by kernel `decide`. Using kernel decide rather than native_decide avoids the `Lean.ofReduceBool` axiom, so the whole file depends only on the three foundational axioms.",
+    "mathContext": "$x \\mapsto x^3$ is a bijection on $\\mathbb{Z}/5$ ($\\gcd(3,5)=1$) but not on $\\mathbb{Z}/6$ ($\\gcd(3,6)=3$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cyclic groups",
+      "kernel decide",
+      "axiom hygiene",
+      "ZMod"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "decidability in Lean"
+    ]
+  }
+]
