@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-soc-oq0102-rootform",
+    "proofId": "solution-of-cubic-oq-01-oq-02",
+    "range": {
+      "startLine": 113,
+      "endLine": 124
+    },
+    "type": "insight",
+    "title": "Three Distinct Real Roots Force Δ > 0",
+    "body": "From the real root form Δ = a⁴·((x₁−x₂)(x₁−x₃)(x₂−x₃))², the all-real case is pure positivity. For any real roots the bracket is a real number, so Δ = a⁴·(real)² ≥ 0; when the roots are distinct each difference is nonzero, the product is nonzero, its square is strictly positive, and a⁴ > 0 (since a ≠ 0), giving Δ > 0. This is the first leg of the classical discriminant test, and it is exactly where the order structure of ℝ — absent over ℂ — enters."
+  },
+  {
+    "id": "ann-soc-oq0102-conjpair",
+    "proofId": "solution-of-cubic-oq-01-oq-02",
+    "range": {
+      "startLine": 157,
+      "endLine": 174
+    },
+    "type": "insight",
+    "title": "The Conjugate-Pair Case is a Real Ring Identity",
+    "body": "For a real root r and a non-real conjugate pair m ± n·i, the Vieta coefficients b = −a(r+2m), c = a(2rm + m²+n²), d = −a·r(m²+n²) are all real, and the discriminant collapses to the single real polynomial identity Δ = −4a⁴n²((r−m)²+n²)², proved by one ring call with no complex arithmetic. The sign-flipping factor −4n² is precisely (w − w̄)² = (2n·i)². With n ≠ 0 (a genuine non-real pair), positivity reads off Δ < 0 — the second leg of the discriminant test."
+  },
+  {
+    "id": "ann-soc-oq0102-bridge",
+    "proofId": "solution-of-cubic-oq-01-oq-02",
+    "range": {
+      "startLine": 186,
+      "endLine": 204
+    },
+    "type": "technique",
+    "title": "Casting Back to Certify the Conjugate Pair",
+    "body": "realDiscriminant_conj_pair_root_form certifies that the chosen real parametrization really is the Vieta data of the complex roots r, w, w̄ with w = m + n·i. It casts realDiscriminant to ℂ (realDiscriminant_cast), applies the sibling's complex generalDiscriminant_eq_root_form with x₁ = r, x₂ = w, x₃ = w̄, and discharges the three Vieta equalities componentwise via Complex.ext — keeping the real coefficients whole under the ℝ → ℂ cast so re/im reduce by ofReal_re/ofReal_im and ring closes. This guarantees the negativity is caused by an actual non-real conjugate pair, not an artifact of the parametrization."
+  },
+  {
+    "id": "ann-soc-oq0102-trichotomy",
+    "proofId": "solution-of-cubic-oq-01-oq-02",
+    "range": {
+      "startLine": 205,
+      "endLine": 219
+    },
+    "type": "insight",
+    "title": "One Cubic in Each Regime",
+    "body": "The three sanity checks instantiate the discriminant test: x³ − x = x(x−1)(x+1) has three distinct real roots and Δ = 4 > 0; x³ + x = x(x²+1) has the real root 0 and the conjugate pair ±i with Δ = −4 < 0 (the n = 1, m = r = 0 instance of the conjugate-pair identity); x³ − 3x + 2 = (x−1)²(x+2) has a repeated real root and Δ = 0. Together they sweep the full trichotomy Δ > 0 / Δ < 0 / Δ = 0."
+  }
+]
