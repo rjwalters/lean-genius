@@ -6,6 +6,11 @@ import Mathlib.Tactic
 
 This file isolates the HARD (but classical) result for automated proof search.
 
+The headline recurrence `largeSchroder_holonomic` is now proved *unconditionally on top of*
+the single convolution lemma `largeSchroder_conv_holonomic` (the reduction is a routine
+`linear_combination`, recorded below).  Hence the **only** remaining `sorry` — the sole piece
+needing generating-function / creative-telescoping machinery — is `largeSchroder_conv_holonomic`.
+
 The large Schröder numbers `L = Nat.largeSchroder` satisfy the order-two holonomic
 (P-recursive) linear recurrence
 
@@ -43,10 +48,26 @@ theorem largeSchroder_conv_holonomic (n : ℕ) :
   sorry
 
 /-- **Order-two holonomic recurrence for the large Schröder numbers.**
-`(n + 3) * L (n+2) + n * L n = 3 * (2n + 3) * L (n+1)`. -/
+`(n + 3) * L (n+2) + n * L n = 3 * (2n + 3) * L (n+1)`.
+
+This is a *mechanical consequence* of the convolution-form recurrence
+`largeSchroder_conv_holonomic` together with the defining quadratic recurrence
+`Nat.largeSchroder_succ` (which gives `L (n+1) = L n + Q n` and
+`L (n+2) = L (n+1) + Q (n+1)`).  Substituting both and eliminating the
+convolution sum `Q (n+1)` via the convolution form leaves a linear identity
+in `L n`, `Q n`, `Q (n+1)` that `linear_combination` discharges.  Thus the
+only genuinely hard content is `largeSchroder_conv_holonomic`. -/
 theorem largeSchroder_holonomic (n : ℕ) :
     (n + 3) * largeSchroder (n + 2) + n * largeSchroder n
       = 3 * (2 * n + 3) * largeSchroder (n + 1) := by
-  sorry
+  have hconv := largeSchroder_conv_holonomic n
+  rw [largeSchroder_succ (n + 1), largeSchroder_succ n]
+  -- After the two rewrites, both the goal and `hconv` are expressed in `largeSchroder n`
+  -- and the two convolution sums `Q n` and `Q (n+1)`; abstract the latter so the remaining
+  -- step is a pure linear identity.
+  set S := ∑ i ≤ n, largeSchroder i * largeSchroder (n - i)
+  set T := ∑ i ≤ n + 1, largeSchroder i * largeSchroder (n + 1 - i)
+  zify at hconv ⊢
+  linear_combination hconv
 
 end Nat
