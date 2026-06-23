@@ -3656,6 +3656,7 @@ import Proofs.UrysohnsLemmaOQ01
 import Proofs.UrysohnsLemmaOQ01OQ02
 import Proofs.VanAubelTheoremOQ01
 import Proofs.VandermondeInterpolationOQ01
+import Proofs.VandermondeInterpolationOQ01OQ01
 import Proofs.VarignonTheorem
 import Proofs.VietasFormulas
 import Proofs.VietasFormulasOQ02

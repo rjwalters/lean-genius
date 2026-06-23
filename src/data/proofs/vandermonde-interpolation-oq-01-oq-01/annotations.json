@@ -1,0 +1,58 @@
+[
+  {
+    "id": "vandermonde-interpolation-oq-01-oq-01-module-header",
+    "proofId": "vandermonde-interpolation-oq-01-oq-01",
+    "type": "concept",
+    "range": { "startLine": 1, "endLine": 36 },
+    "title": "Module Header: The Lagrange Interpolant as the Realizer",
+    "content": "The companion entry proves **uniqueness** of the degree-$<n$ interpolant through $n$ distinct nodes $v$. This file supplies the matching **existence** half: the explicit **Lagrange interpolant** $\\mathrm{interp}\\,v\\,r = \\sum_i r_i\\,\\ell_i$ (with $\\ell_i$ the $i$-th Lagrange basis polynomial, $\\ell_i(v_j) = \\delta_{ij}$) takes the value $r_j$ at each node and has degree $<n$, so the interpolation problem is **well-posed** — a unique solution exists, and it is exactly this formula. Mathlib's `Lagrange.*` API supplies the engine; the work is recasting it in the $\\mathrm{Fin}\\,n$ / `Polynomial.eval` / `natDegree` idiom and exposing existence-and-uniqueness as $\\exists!$."
+  },
+  {
+    "id": "vandermonde-interpolation-oq-01-oq-01-interp-def",
+    "proofId": "vandermonde-interpolation-oq-01-oq-01",
+    "type": "definition",
+    "range": { "startLine": 53, "endLine": 54 },
+    "title": "The Explicit Lagrange Interpolant",
+    "content": "`interp v r := Lagrange.interpolate univ v r`. Concretely $\\sum_{i} C(r_i)\\cdot \\mathrm{basis}\\,v\\,i$, the degree-$<n$ polynomial $\\sum_i r_i\\,\\ell_i$ whose value at $v_j$ is $r_j$. This is the explicit existence witness complementing the companion's abstract uniqueness."
+  },
+  {
+    "id": "vandermonde-interpolation-oq-01-oq-01-eval",
+    "proofId": "vandermonde-interpolation-oq-01-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 56, "endLine": 61 },
+    "title": "Existence: the Interpolant Hits the Data",
+    "content": "`eval_interp`: $(\\mathrm{interp}\\,v\\,r)(v_j) = r_j$ for every node $j$. Immediate from Mathlib's `Lagrange.eval_interpolate_at_node` (using $v$ injective on `univ`, $j \\in$ `univ`). This is the existence half — the interpolation system is solvable, and the Lagrange formula is a solution."
+  },
+  {
+    "id": "vandermonde-interpolation-oq-01-oq-01-degree",
+    "proofId": "vandermonde-interpolation-oq-01-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 63, "endLine": 87 },
+    "title": "Degree Bound and the degree ↔ natDegree Bridge",
+    "content": "`degree_interp_lt`: $\\deg(\\mathrm{interp}\\,v\\,r) < n$, from `Lagrange.degree_interpolate_lt` with $\\#\\mathrm{univ} = n$. `natDegree_interp_lt` recasts this in the companion's $\\deg_{\\mathbb N} < n$ idiom for $n \\ge 1$: Mathlib's `degree < \\#s` form correctly includes the zero polynomial, so the bridge case-splits on $\\mathrm{interp} = 0$ (then $\\deg_{\\mathbb N} = 0 < n$ needs $0 < n$) versus nonzero (then `degree_eq_natDegree` + `Nat.cast_lt` transfer the bound)."
+  },
+  {
+    "id": "vandermonde-interpolation-oq-01-oq-01-eq-interp",
+    "proofId": "vandermonde-interpolation-oq-01-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 89, "endLine": 97 },
+    "title": "The Interpolant Is the Unique Answer",
+    "content": "`eq_interp_of_eval_eq`: any polynomial $p$ of degree $<n$ with $p(v_j) = r_j$ at every node **equals** $\\mathrm{interp}\\,v\\,r$ (via `Lagrange.eq_interpolate_of_eval_eq`). So the explicit Lagrange formula is not merely *a* solution but *the* solution — the realizer of the unique interpolant from the companion entry."
+  },
+  {
+    "id": "vandermonde-interpolation-oq-01-oq-01-existsunique",
+    "proofId": "vandermonde-interpolation-oq-01-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 99, "endLine": 114 },
+    "title": "Well-Posedness: ∃! Interpolant",
+    "content": "`existsUnique_interp`: $\\exists!\\,p,\\ \\deg p < n \\wedge \\forall j,\\ p(v_j) = r_j$. Existence from `eval_interp` + `degree_interp_lt`; uniqueness from `eq_interp_of_eval_eq`. `existsUnique_interp_natDegree` ($n \\ge 1$) gives the same in the companion's $\\deg_{\\mathbb N} < n$ framing via the degree↔natDegree bridge. This is the complete well-posedness statement: the interpolation problem has exactly one degree-$<n$ solution, and it is the Lagrange interpolant."
+  },
+  {
+    "id": "vandermonde-interpolation-oq-01-oq-01-reproduction-linearity",
+    "proofId": "vandermonde-interpolation-oq-01-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 116, "endLine": 132 },
+    "title": "Reproduction and Linearity",
+    "content": "`interp_eval_self`: interpolating the sampled values of a degree-$<n$ polynomial $f$ returns $f$ — Lagrange interpolation is a **left inverse to evaluation** on the degree-$<n$ subspace. `interp_add` / `interp_smul`: the data-to-interpolant map $r \\mapsto \\mathrm{interp}\\,v\\,r$ is $F$-**linear** (`map_add` / `map_smul` of Mathlib's `LinearMap` `interpolate`), the structural fact behind superposition and basis expansion in interpolation."
+  }
+]
