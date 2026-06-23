@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-cbs-sigma01-stage",
+    "proofId": "schroeder-bernstein-oq-04-oq-01-oq-01",
+    "range": { "startLine": 79, "endLine": 88 },
+    "type": "definition",
+    "title": "The Stage Family",
+    "content": "stage f g n = (step f g)^[n] (baseSet g) names the finite approximations of the parent's reachableSet. stage f g 0 is baseSet g, and stage f g (n+1) = step f g (stage f g n) by Function.iterate_succ_apply'. Membership in reachableSet is exactly an existential over this family, so the stages are where the Σ⁰₁ structure lives.",
+    "mathContext": "$\\operatorname{stage}_n = \\operatorname{step}^{[n]}(A_0)$, $\\operatorname{stage}_{n+1} = \\operatorname{step}(\\operatorname{stage}_n)$.",
+    "significance": "key",
+    "relatedConcepts": ["orbit classification", "function iteration", "approximation stages"],
+    "prerequisites": ["Function.iterate", "Function.iterate_succ_apply'"]
+  },
+  {
+    "id": "ann-cbs-sigma01-form",
+    "proofId": "schroeder-bernstein-oq-04-oq-01-oq-01",
+    "range": { "startLine": 90, "endLine": 111 },
+    "type": "key-result",
+    "title": "The Σ⁰₁ Logical Form",
+    "content": "mem_reachable_iff_exists_stage holds by Iff.rfl: a ∈ reachableSet f g ↔ ∃ n, a ∈ stage f g n. With reachableSet_eq_iUnion (reachableSet = ⋃ n, stage f g n) and stage_mono (the stages increase), this is precisely the shape of a semi-decidable predicate — an existential over a uniform, monotone family of stages.",
+    "mathContext": "$a \\in R \\iff \\exists n,\\ a \\in \\operatorname{stage}_n$, $R = \\bigcup_n \\operatorname{stage}_n$, $\\operatorname{stage}$ monotone.",
+    "significance": "key",
+    "relatedConcepts": ["semi-decidable predicate", "Σ⁰₁", "arithmetical hierarchy", "indexed union"],
+    "prerequisites": ["Set.mem_iUnion", "monotone_nat_of_le_succ"]
+  },
+  {
+    "id": "ann-cbs-sigma01-halts",
+    "proofId": "schroeder-bernstein-oq-04-oq-01-oq-01",
+    "range": { "startLine": 113, "endLine": 123 },
+    "type": "proof-technique",
+    "title": "Semi-Decision Halts on Members",
+    "content": "exists_least_stage uses Nat.find under a local classical instance to produce, for any member, a least certifying stage with the minimality property. This is the positive half of semi-decidability: a search enumerating the stages terminates on every genuine member. Crucially it provides no certificate of non-membership — the defining asymmetry of Σ⁰₁ versus decidable.",
+    "mathContext": "$a \\in R \\Rightarrow \\exists N,\\ a \\in \\operatorname{stage}_N \\wedge \\forall m,\\ a \\in \\operatorname{stage}_m \\to N \\le m$.",
+    "significance": "key",
+    "relatedConcepts": ["least witness", "well-ordering of ℕ", "halting on members"],
+    "prerequisites": ["Nat.find", "Nat.find_spec", "Nat.find_min'"]
+  },
+  {
+    "id": "ann-cbs-sigma01-decid",
+    "proofId": "schroeder-bernstein-oq-04-oq-01-oq-01",
+    "range": { "startLine": 125, "endLine": 161 },
+    "type": "key-result",
+    "title": "Decidability ⟺ Stabilization",
+    "content": "If two consecutive stages coincide, stage_const_of_stationary propagates the fixed point to all later indices, and reachableSet_eq_stage_of_stationary collapses the whole union to that single stage. So membership is decidable exactly once the iteration stabilizes. For a Fintype a fixed point must occur (a strictly increasing chain of subsets of a finite type terminates), which is precisely what makes the parent's finite case decidable. Unbounded, never-stabilizing search is the sole obstruction.",
+    "mathContext": "$\\operatorname{stage}_N = \\operatorname{stage}_{N+1} \\Rightarrow R = \\operatorname{stage}_N$.",
+    "significance": "key",
+    "relatedConcepts": ["fixed point", "stabilization", "decidable predicate", "finite case recovery"],
+    "prerequisites": ["Set.iUnion_subset", "Set.subset_iUnion", "Nat.exists_eq_add_of_le"]
+  },
+  {
+    "id": "ann-cbs-sigma01-unbounded",
+    "proofId": "schroeder-bernstein-oq-04-oq-01-oq-01",
+    "range": { "startLine": 163, "endLine": 243 },
+    "type": "key-result",
+    "title": "The Search Is Genuinely Unbounded (ℕ-Shift)",
+    "content": "Instantiating at α = β = ℕ, f = g = Nat.succ: baseSet = {0} and the stages are the truncated evens {0,2,…,2N} — proved by the bound m ∈ stage n → m ≤ 2n together with 2n ∈ stage n. So the least certifying stage of 2N is exactly N: unbounded_search exhibits, for every N, a member 2(N+1) not yet reached at stage N, and stage_succ_ne shows no stage is ever stationary. This is the precise formal meaning of the parent's 'no a-priori bound on the number of iterations', and the criterion of the previous section is never met here.",
+    "mathContext": "$\\operatorname{stage}_N = \\{0,2,\\dots,2N\\}$, $2(N+1) \\in R \\setminus \\operatorname{stage}_N$, $\\operatorname{stage}_N \\ne \\operatorname{stage}_{N+1}$.",
+    "significance": "key",
+    "relatedConcepts": ["shift map", "unbounded search", "non-stabilization", "concrete counterexample"],
+    "prerequisites": ["Nat.succ_ne_zero", "induction", "omega"]
+  }
+]
