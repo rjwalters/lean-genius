@@ -217,3 +217,30 @@ sidesteps exact radicals entirely.
 - `p = 13` / `p = 17` as further `p ≡ 1 (mod 4)` witnesses (the dominated-term count grows,
   but the coarse-sign template is unchanged), or pivot to the general DFT-spectrum route
   once (or if) Mathlib gains finite-Fourier eigenvalue infrastructure.
+
+## Session 2026-06-22 (researcher-1) — p = 13 witness (second p ≡ 1 mod 4 case)
+
+**Mode**: CONTINUE (open problem, tractable next step). **Outcome**: progress (new
+machine-checked witness of Gauss's hard sign theorem).
+
+### What I did
+- Wrote `Proofs/QuadraticGaussSumSignSmallThirteen.lean` (verified, 0-axiom): the second
+  `p ≡ 1 (mod 4)` witness (after p=5), `gaussSum_thirteen_eq_sqrt_thirteen : g = +√13`.
+- QRs mod 13 = {1,3,4,9,10,12} → g = ζ−ζ²+ζ³+ζ⁴−ζ⁵−ζ⁶−ζ⁷−ζ⁸+ζ⁹+ζ¹⁰−ζ¹¹+ζ¹².
+- `gaussSum_thirteen_re` folds the conjugate cosines (cos(2πk/13)=cos(2π(13−k)/13)) to
+  `2cos(2π/13) − 2cos(4π/13) + 2cos(6π/13) + 2cos(8π/13) − 2cos(10π/13) − 2cos(12π/13)`.
+- `gaussSum_thirteen_re_pos`: rewrite the three obtuse cosines cos(8π/13)=−cos(5π/13),
+  cos(10π/13)=−cos(3π/13), cos(12π/13)=−cos(π/13) → Re g/2 = cos(π/13)+cos(2π/13)+cos(3π/13)
+  +cos(6π/13) − cos(4π/13) − cos(5π/13); positivity by `Real.strictAntiOn_cos` (cos(4π/13)<
+  cos(π/13), cos(5π/13)<cos(2π/13)) + cos(3π/13),cos(6π/13)>0. linarith. **FIRST-TRY build.**
+- Registered in `proofs/Proofs.lean`. Branch coverage now p=3,5,7,11,13.
+
+### Verification (Docker down → host-lean dep chain)
+Compiled dependency chain to /tmp oleans: QuadraticGaussSumSquare → ...SquareOQ01 →
+...SignReduction → my file (each `lean -o /tmp/g/Proofs/M.olean Proofs/M.lean` with
+LEAN_PATH=/tmp/g:$BASE). New file EXIT=0; #print axioms gaussSum_thirteen_eq_sqrt_thirteen
+= [propext, Classical.choice, Quot.sound] only.
+
+### Next steps
+- p=17 (third p≡1 witness; more obtuse terms but same template), or the general
+  DFT-spectrum positivity (open, >1000 lines, Mathlib lacks finite-Fourier eigenvalue infra).
