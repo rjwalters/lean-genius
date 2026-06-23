@@ -1,0 +1,82 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "hilbert-10-oq-04-oq-03-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "context",
+    "title": "Two Vocabularies for the Same gcd",
+    "content": "The parent entry built an *explicit, computable* solver for the linear Diophantine equation $a_0x_0 + \\dots + a_{n-1}x_{n-1} = c$, whose solvability test is a hand-rolled fold `vecGcd n a = Int.gcd (a 0) (Int.gcd (a 1) (…))`, defined by structural recursion so the extended-Euclidean witness peels off one coordinate at a time. Mathlib instead packages the gcd of a family abstractly as `Finset.gcd`, the normalized gcd over a `NormalizedGCDMonoid` — the object of the structural theory of finitely generated ideals and invariant factors. This file **bridges** the two: it proves the bespoke fold equals the abstract `Finset.gcd`, then deduces that solvability is equivalent to the abstract gcd-divisibility criterion. Constructive content and structural content turn out to be one predicate.",
+    "mathContext": "$\\mathrm{vecGcd}\\,n\\,a = \\mathrm{Finset.univ.gcd}\\,a$, hence $(\\exists x,\\ \\sum_i a_i x_i = c) \\iff \\mathrm{Finset.univ.gcd}\\,a \\mid c$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Hilbert's 10th problem",
+      "linear Diophantine equations",
+      "Bézout's identity",
+      "normalized GCD monoid"
+    ],
+    "prerequisites": [
+      "greatest common divisor",
+      "linear Diophantine equations",
+      "structural recursion"
+    ]
+  },
+  {
+    "id": "ann-bridge",
+    "proofId": "hilbert-10-oq-04-oq-03-oq-01-oq-01",
+    "range": { "startLine": 44, "endLine": 69 },
+    "type": "insight",
+    "title": "The Bridge: vecGcd = Finset.gcd",
+    "content": "The core identity `vecGcd_eq_finset_gcd`: the parent's recursive fold equals Mathlib's normalized `Finset.univ.gcd a`, proved by induction on $n$. The inductive step is an exact lockstep of two head/tail decompositions: `Fin.univ_succ` rewrites the index set as `cons 0 (map Fin.succ univ)`, and `Finset.gcd_insert` peels the head, turning the abstract gcd into `GCDMonoid.gcd (a 0) ((map succ univ).gcd a)`. `Finset.map_eq_image` + `Finset.gcd_image` reindex the tail to `univ.gcd (a ∘ Fin.succ)` — definitionally `Fin.tail a` — while `Int.coe_gcd` identifies the cast `Int.gcd` of the fold with the abstract `GCDMonoid.gcd`. The two heads agree and the inductive hypothesis on `Fin.tail a` closes the goal.",
+    "mathContext": "Inductive step: $\\mathrm{GCDMonoid.gcd}(a_0, \\mathrm{vecGcd}\\,n\\,(\\mathrm{tail}\\,a)) = \\mathrm{GCDMonoid.gcd}(a_0, \\mathrm{univ.gcd}(a\\circ\\mathrm{succ}))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fin.univ_succ",
+      "Finset.gcd_insert",
+      "Int.coe_gcd",
+      "structural induction"
+    ],
+    "prerequisites": [
+      "induction on Fin (n+1)",
+      "Finset.gcd API",
+      "normalized vs concrete gcd"
+    ]
+  },
+  {
+    "id": "ann-equivalence",
+    "proofId": "hilbert-10-oq-04-oq-03-oq-01-oq-01",
+    "range": { "startLine": 71, "endLine": 101 },
+    "type": "concept",
+    "title": "Solvability ⇔ gcd Divisibility",
+    "content": "With the bridge, the divisibility criterion `Finset.univ.gcd a ∣ c` becomes provably equivalent to solvability of $\\sum_i a_i x_i = c$. The **easy** direction `finset_gcd_dvd_of_solvable`: the gcd divides every coefficient (`Finset.gcd_dvd`), hence every summand, hence the sum (`Finset.dvd_sum`). The **hard** direction `solvable_of_finset_gcd_dvd` is discharged *verbatim* by the parent's constructive `exists_vec_combo`, with the hypothesis transported through the bridge `vecGcd_eq_finset_gcd`. The packaged biconditional `solvable_iff_finset_gcd_dvd` is a fully-proved iff whose forward implication carries an actual solution vector — no associate-juggling, because both gcds are normalized to be non-negative.",
+    "mathContext": "$(\\exists x,\\ \\sum_i a_i x_i = c) \\iff \\mathrm{Finset.univ.gcd}\\,a \\mid c$; hard direction reuses the explicit extended-Euclidean witness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bézout's identity",
+      "constructive witness",
+      "Finset.dvd_sum",
+      "decidable predicate"
+    ],
+    "prerequisites": [
+      "the bridge above",
+      "divisibility of sums",
+      "the parent's exists_vec_combo"
+    ]
+  },
+  {
+    "id": "ann-sanity",
+    "proofId": "hilbert-10-oq-04-oq-03-oq-01-oq-01",
+    "range": { "startLine": 103, "endLine": 111 },
+    "type": "concept",
+    "title": "Worked Instances Through the Abstract Criterion",
+    "content": "Two concrete equations are solved by invoking the biconditional's reverse direction with a `decide`-checked divisibility: $3x + 5y = 1$ fires because $\\gcd\\{3,5\\} = 1 \\mid 1$, and $6x + 4y = 10$ because $\\gcd\\{6,4\\} = 2 \\mid 10$. These exercise the whole chain — the abstract `Finset.gcd` criterion produces an existence proof backed by the parent's constructive solver.",
+    "mathContext": "$\\gcd\\{3,5\\} = 1 \\mid 1$ and $\\gcd\\{6,4\\} = 2 \\mid 10$, both discharged by `decide`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "worked examples",
+      "decide tactic"
+    ],
+    "prerequisites": [
+      "the biconditional above"
+    ]
+  }
+]
