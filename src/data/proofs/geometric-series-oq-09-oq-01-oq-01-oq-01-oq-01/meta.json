@@ -1,0 +1,182 @@
+{
+  "id": "geometric-series-oq-09-oq-01-oq-01-oq-01-oq-01",
+  "slug": "geometric-series-oq-09-oq-01-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Group",
+      "Mathlib.Logic.Equiv.Fin.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "GeometricSeriesOQ09OQ01OQ01OQ01OQ01",
+    "lineCount": 236,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "path": "Proofs/GeometricSeriesOQ09OQ01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Converse Multisection: Residue-Subseries Summability ⟺ Summability, with Asymmetric Hypotheses",
+  "description": "Answers the parent's open question by establishing the CONVERSE of the residue multisection and pinning down the minimal hypotheses of each direction. The parent (geometric-series-oq-09-oq-01-oq-01-oq-01) proved the forward multisection of an arbitrary summable family f : ℕ → M over a COMPLETE Hausdorff uniform abelian group. This entry shows the converse is structurally cheaper: if each residue subseries n ↦ f(q·n+a) (a < q) has sum S a, then HasSum f (∑_{a<q} S a) — over ANY topological commutative additive monoid with continuous addition, with NO completeness and NO group structure. The proof embeds each residue subseries into ℕ × Fin q supported on a single fiber (Function.Injective.hasSum_iff), so the q subseries assemble as a finite sum of HasSums (hasSum_sum) which transports back along Nat.divModEquiv (Equiv.hasSum_iff). Consequently summable_of_residues (residue summability ⟹ Summable f) and the value identity ∑_{a<q} ∑_n f(q·n+a) = ∑_m f m hold over a merely Hausdorff (T2) monoid — the completeness of the forward file is dropped. The forward inclusion is genuinely harder: extracting an infinite subseries from a convergent series needs the Cauchy criterion, so Summable.comp_injective requires a complete uniform group. Hence the two directions are ASYMMETRIC, and the two-sided equivalence Summable f ↔ ∀ a, Summable (n ↦ f(q·n+a)) holds over a complete uniform abelian group.",
+  "overview": {
+    "historicalContext": "The q-section (multisection) of a series ∑_m c_m extracts, for each residue a mod q, the subseries ∑_n c_{q·n+a}. The geometric ancestry built it analytically (closed forms r^a/(1−r^q)); the parent chain recast it as a reindexing of HasSum along the bijection ℕ ≃ ℕ × Fin q (Nat.divModEquiv), proving the FORWARD direction — summable f yields summable residue subseries and the regrouping identity — over a complete Hausdorff uniform abelian group. The completeness there is doing real work: it is what makes each infinite residue subseries converge (Summable.comp_injective). The natural next question, which this entry answers, is the two-sided refinement: is the converse true, and how much of that completeness is actually needed on each side?",
+    "problemStatement": "For f : ℕ → M and a modulus q ≠ 0 with the property that every residue subseries n ↦ f(q·n+a) (a : Fin q) is summable: (1) is f itself summable (a converse to the multisection)? (2) does ∑_{a<q} ∑_n f(q·n+a) = ∑_m f m persist when M is only Hausdorff, not complete? (3) what are the minimal hypotheses making residue-subseries summability EQUIVALENT to summability of f?",
+    "proofStrategy": "Converse (no completeness): for each a : Fin q define fiber f q a : ℕ × Fin q → M sending p to f(q·p.1 + a) on the fiber {p.2 = a} and 0 elsewhere. The injection ℕ → ℕ × Fin q, n ↦ (n,a), has range exactly that fiber, so Function.Injective.hasSum_iff turns HasSum (residue a) (S a) into HasSum (fiber f q a) (S a). The pointwise sum ∑_{a:Fin q} fiber f q a p collapses (Finset.sum_eq_single) to the reindexed term f(q·p.1 + p.2); summing the q embeddings as a finite combination of HasSums (hasSum_sum) gives HasSum (fun p => f(q·p.1+p.2)) (∑_a S a), which transports back to HasSum f (∑_a S a) along (Nat.divModEquiv q).symm.hasSum_iff. This uses only AddCommMonoid + ContinuousAdd. summable_of_residues and (under T2) tsum_multisection_of_residues / its Finset.range form follow. Forward (completeness): summable_residue is hf.comp_injective along the injective residue map n ↦ q·n+a (residue_injective), which in Mathlib lives in the complete-uniform-group section — extracting an infinite subseries needs the Cauchy criterion. summable_iff_residues packages both directions over a complete uniform abelian group.",
+    "keyInsights": [
+      "The converse multisection needs NO completeness and NO group structure — only a topological commutative additive monoid with continuous addition. Because the number of residues q is finite, reconstructing f is a FINITE sum of HasSums (hasSum_sum), each a residue subseries embedded on a single fiber of ℕ × Fin q via Function.Injective.hasSum_iff. Completeness was an artifact of the forward direction, never the converse.",
+      "The two directions are genuinely ASYMMETRIC. Forward (Summable f ⟹ residue subseries summable) extracts an INFINITE subseries from a convergent series, which converges only by the Cauchy criterion — hence a complete uniform group (Summable.comp_injective). Converse (residue subseries summable ⟹ Summable f) reassembles f from FINITELY many given sums and needs nothing. So the difficulty lives entirely on the forward side.",
+      "The value identity ∑_{a<q} ∑_n f(q·n+a) = ∑_m f m drops from a complete uniform group (parent) to a merely Hausdorff (T2) topological monoid: once the residue subseries are assumed summable, the identity is the tsum of the converse HasSum, and T2 only supplies uniqueness of the sum.",
+      "The single-fiber embedding is the technical heart: a residue subseries n ↦ f(q·n+a), viewed as a function on ℕ × Fin q supported on the fiber {p.2 = a}, has the SAME HasSum (Function.Injective.hasSum_iff), because the injection n ↦ (n,a) has that fiber as its range and the function vanishes off it.",
+      "The minimal-hypotheses answer: residue-subseries summability ⟺ summability of f holds over a complete Hausdorff uniform abelian group; the ⟸ direction (converse) alone holds over any ContinuousAdd monoid, and the value identity over any T2 such monoid."
+    ]
+  },
+  "sections": [
+    {
+      "id": "residue-injectivity",
+      "title": "Injectivity of the Residue Map",
+      "startLine": 76,
+      "endLine": 84,
+      "summary": "residue_injective: n ↦ q·n+a is injective ℕ → ℕ for q ≠ 0 (Nat.eq_of_mul_eq_mul_left after Nat.add_right_cancel). Shared by both the single-fiber embedding and the forward direction.",
+      "mathContext": "$n\\mapsto qn+a$ injective for $q\\neq0$."
+    },
+    {
+      "id": "converse-monoid",
+      "title": "The Converse over a Topological Commutative Additive Monoid",
+      "startLine": 89,
+      "endLine": 189,
+      "summary": "fiber/hasSum_fiber: a residue subseries embedded into ℕ × Fin q on the single fiber {p.2 = a} has the same HasSum (Function.Injective.hasSum_iff). hasSum_of_residues (main): if each residue subseries has sum S a then HasSum f (∑_{a<q} S a), a finite sum of fiber HasSums (hasSum_sum) collapsed by Finset.sum_eq_single and transported along (Nat.divModEquiv q).symm.hasSum_iff — NO completeness, NO group. summable_of_residues: residue summability ⟹ Summable f. tsum_multisection_of_residues / _range: the value identity ∑_{a<q} ∑_n f(q·n+a) = ∑_m f m over a merely T2 monoid. summable_of_even_odd and tsum_even_add_odd_of_residues: the q=2 specialisations.",
+      "mathContext": "Each residue subseries summable $\\Rightarrow$ $\\mathrm{HasSum}\\,f\\,(\\sum_{a<q} S_a)$, over any $\\mathrm{ContinuousAdd}$ monoid; value identity over $T_2$."
+    },
+    {
+      "id": "forward-equivalence",
+      "title": "The Forward Direction and the Two-Sided Equivalence",
+      "startLine": 199,
+      "endLine": 220,
+      "summary": "summable_residue: each residue subseries of a summable f is summable, via Summable.comp_injective along the injective residue map — this consumes completeness (the lemma lives in the complete-uniform-group section). summable_iff_residues: the two-sided characterisation Summable f ↔ ∀ a : Fin q, Summable (n ↦ f(q·n+a)) over a complete Hausdorff uniform abelian group, the forward half needing completeness and the converse half needing none.",
+      "mathContext": "Forward needs completeness (Cauchy criterion); equivalence over a complete uniform abelian group."
+    },
+    {
+      "id": "concrete-check",
+      "title": "Concrete Check",
+      "startLine": 222,
+      "endLine": 236,
+      "summary": "A sanity check on n ↦ (1/2)^n: the converse recovers the value identity ∑_n (1/2)^(2n) + ∑_n (1/2)^(2n+1) = ∑_m (1/2)^m from the summability of the even and odd subseries, with no completeness invoked at the multisection step.",
+      "mathContext": "$\\sum_n (1/2)^{2n}+\\sum_n (1/2)^{2n+1}=\\sum_m (1/2)^m$."
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ09OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "infinite-series",
+      "summability",
+      "multisection",
+      "converse",
+      "reindexing",
+      "topological-monoid",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 236,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "hasSum_of_residues: the CONVERSE multisection — if each residue subseries n ↦ f(q·n+a) has sum S a, then HasSum f (∑_{a<q} S a), over ANY topological commutative additive monoid with continuous addition, with no completeness and no group structure. This answers geometric-series-oq-09-oq-01-oq-01-oq-01's open question.",
+      "The single-fiber embedding fiber / hasSum_fiber: a residue subseries viewed as a function on ℕ × Fin q supported on one fiber has the same HasSum (Function.Injective.hasSum_iff), the technical device that makes the converse a finite sum of HasSums (hasSum_sum).",
+      "summable_of_residues: residue-subseries summability ⟹ Summable f, over a bare ContinuousAdd monoid — the converse to the forward file's summable_residue.",
+      "tsum_multisection_of_residues and its Finset.range form: the regrouping value identity ∑_{a<q} ∑_n f(q·n+a) = ∑_m f m over a merely Hausdorff (T2) topological monoid, dropping the completeness hypothesis of the parent.",
+      "summable_iff_residues: the two-sided characterisation Summable f ↔ ∀ a : Fin q, Summable (n ↦ f(q·n+a)) over a complete Hausdorff uniform abelian group, exhibiting the ASYMMETRY — the forward implication consumes completeness (a subseries converges only by the Cauchy criterion), the converse needs none.",
+      "The q=2 specialisations summable_of_even_odd and tsum_even_add_odd_of_residues (∑_n f(2n)+∑_n f(2n+1)=∑_m f m without completeness), residue_injective, and a concrete check on n ↦ (1/2)^n."
+    ],
+    "prerequisites": [
+      "Function.Injective.hasSum_iff: HasSum (f ∘ g) a ↔ HasSum f a for injective g whose range contains the support of f — the single-fiber embedding device (monoid-level)",
+      "hasSum_sum: a finite sum of HasSums is a HasSum of the pointwise sum (needs ContinuousAdd)",
+      "Equiv.hasSum_iff and Nat.divModEquiv: transport HasSum along ℕ ≃ ℕ × Fin q, m ↦ (m/q, m%q)",
+      "Finset.sum_eq_single, Fin.sum_univ_eq_sum_range (collapsing the fiberwise sum and rewriting to Finset.range)",
+      "Summable.comp_injective (complete uniform group): summability descends along injections — the forward direction's completeness-consuming step",
+      "Parent: geometric-series-oq-09-oq-01-oq-01-oq-01 (the forward multisection of an arbitrary summable family)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Function.Injective.hasSum_iff",
+        "description": "For injective g with f vanishing off its range, HasSum (f ∘ g) a ↔ HasSum f a. Used (monoid-level) to identify a residue subseries with its single-fiber embedding into ℕ × Fin q.",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Defs"
+      },
+      {
+        "theorem": "hasSum_sum",
+        "description": "A finite sum of HasSums has the pointwise sum as its sum (∑ i ∈ s, HasSum (f i) (a i) ⟹ HasSum (fun b => ∑ i ∈ s, f i b) (∑ i ∈ s, a i)). Assembles the q single-fiber embeddings into one HasSum; the only ContinuousAdd input of the converse.",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Equiv.hasSum_iff",
+        "description": "HasSum (f ∘ e) a ↔ HasSum f a for an equivalence e. Applied with e = (Nat.divModEquiv q).symm to transport the two-dimensional HasSum on ℕ × Fin q back to f on ℕ.",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Nat.divModEquiv",
+        "description": "The bijection ℕ ≃ ℕ × Fin n, a ↦ (a/n, a%n), with inverse (q,r) ↦ q·n + r. The index relabelling underlying the residue decomposition.",
+        "module": "Mathlib.Logic.Equiv.Fin.Basic"
+      },
+      {
+        "theorem": "Summable.comp_injective",
+        "description": "If f is summable and i injective then f ∘ i is summable; lives in the complete-uniform-group section. The forward direction's single, completeness-consuming step (a subseries of a convergent series converges by the Cauchy criterion).",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Group"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-09-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "question": "Is the completeness in the forward direction necessary, or merely sufficient? Construct an incomplete Hausdorff topological abelian group M and a family f : ℕ → M that is summable but with some residue subseries (q = 2) NOT summable — exhibiting a summable series with a non-summable even part — thereby showing Summable.comp_injective genuinely fails without completeness and that the equivalence summable_iff_residues cannot be stated over a bare topological group.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-09-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent. The parent proved the FORWARD multisection of an arbitrary summable family over a complete Hausdorff uniform abelian group: Summable f yields each residue subseries summable and ∑_{a<q} ∑_n f(q·n+a) = ∑_m f m. This entry answers its open question with the CONVERSE — residue-subseries summability ⟹ Summable f and the same value identity — over a bare topological monoid (no completeness, no group), and isolates the asymmetry: only the forward direction needs completeness (the Cauchy criterion for extracting an infinite subseries)."
+    },
+    {
+      "targetId": "geometric-series-oq-09-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent. The grandparent recast the q-fold geometric splitting as a reindexing of the geometric HasSum along Nat.divModEquiv. The converse here uses the same bijection in reverse: it transports a finite assembly of residue-subseries HasSums (built on the fibers of ℕ × Fin q) back to f, reconstructing the whole series from its q residue parts."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Topology.Algebra.InfiniteSum.Defs / Basic (Function.Injective.hasSum_iff, hasSum_sum, Equiv.hasSum_iff)",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Monoid-level infinite-sum API: reindexing along injections and equivalences, and finite sums of HasSums — the engines of the completeness-free converse."
+    },
+    {
+      "title": "Mathlib4: Topology.Algebra.InfiniteSum.Group (Summable.comp_injective)",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Descent of summability along an injection in a complete uniform group — the completeness-consuming forward step, illustrating why the two directions are asymmetric."
+    },
+    {
+      "title": "Concrete Mathematics (multisection of power series)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for the q-section of a power series into q subseries indexed by residue classes mod q."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The converse of the residue multisection is established and the minimal hypotheses of each direction are pinned down. If every residue subseries n ↦ f(q·n+a) (a : Fin q) has sum S a, then HasSum f (∑_{a<q} S a) — over ANY topological commutative additive monoid with continuous addition, via a finite sum (hasSum_sum) of single-fiber embeddings (Function.Injective.hasSum_iff) transported along Nat.divModEquiv. Hence summable_of_residues (residue summability ⟹ Summable f) and the value identity ∑_{a<q} ∑_n f(q·n+a) = ∑_m f m (tsum_multisection_of_residues) hold with NO completeness — only T2 for the identity. The forward inclusion (summable_residue) is genuinely harder, consuming completeness via Summable.comp_injective, so the two-sided equivalence summable_iff_residues holds over a complete Hausdorff uniform abelian group. 236 lines, 10 theorems, 1 definition, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "Answers geometric-series-oq-09-oq-01-oq-01-oq-01's open question two-sidedly and exhibits the asymmetry the question anticipated: residue-subseries summability is EQUIVALENT to summability of f over a complete uniform abelian group, but the converse implication alone is completeness-free (a finite reconstruction), while the forward implication necessarily extracts an infinite subseries and so depends on the Cauchy criterion. The value identity survives the drop from complete to merely Hausdorff. This sharpens the parent's 'completeness so each residue subseries converges' to 'completeness only for the forward direction'.",
+    "openQuestions": [
+      "Is completeness necessary (not just sufficient) for the forward direction? Exhibit an incomplete Hausdorff topological abelian group and a summable f whose even part is not summable, showing the equivalence cannot drop completeness."
+    ]
+  }
+}
