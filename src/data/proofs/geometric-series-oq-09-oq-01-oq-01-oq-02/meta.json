@@ -3,6 +3,17 @@
   "slug": "geometric-series-oq-09-oq-01-oq-01-oq-02",
   "title": "The Roots-of-Unity Multisection Filter for an Absolutely Convergent Series",
   "description": "Extracts a single residue subseries of an absolutely convergent complex series as a discrete-Fourier average of rotated full sums: for a primitive q-th root of unity ω (canonically exp(2πi/q)), Summable (‖f ·‖), and residue a < q, ∑_n f(q·n+a) = q⁻¹ · ∑_{j<q} (ω^{j·a})⁻¹ · ∑_m ω^{j·m}·f(m). This is the classical roots-of-unity filter (series multisection): the inner sum is the original series with its m-th term rotated by ω^{j·m}, and the outer DFT-weighted average over j annihilates every residue class except a. The proof rests on the orthogonality collapse q⁻¹·∑_{j<q} ((ω^a)⁻¹ω^m)^j = ⟦m ≡ a (mod q)⟧ — a q-fold geometric sum that vanishes off the residue class because z := (ω^a)⁻¹ω^m satisfies z^q = 1 (geom_sum_eq) — combined with the absolutely-convergent interchange of the finite DFT sum with the infinite series (each twist ω^{j·m}·f(m) is absolutely summable since ‖ω^{j·m}‖ = 1) and the reindexing of the surviving indicator-weighted series onto the residue subseries. This is the analytic/Fourier counterpart to the sibling geometric-series-oq-09-oq-01-oq-01-oq-01, which realises the same multisection combinatorially as a Fubini regrouping; this version genuinely requires the complex field (roots of unity) and absolute convergence.",
+  "overview": {
+    "historicalContext": "The roots-of-unity filter (series multisection) is a classical tool of generating-function combinatorics, treated as a staple in Graham–Knuth–Patashnik's Concrete Mathematics: to extract the terms of a power series whose index lies in a fixed residue class mod q, average the series against the q-th roots of unity. It is the discrete-Fourier analogue of extracting a Fourier coefficient by integrating against a character, and underlies countless evaluations of partial sums of binomial coefficients (∑_k C(n, qk+a)) and lacunary series. The mechanism is the orthogonality of the additive characters of ℤ/qℤ — the same orthogonality that powers the discrete Fourier transform. This entry isolates the analytic core of the filter for an arbitrary absolutely convergent complex series.",
+    "problemStatement": "The parent's open question asks how to express the residue subseries ∑_n f(q·n+a) of a series ∑_m f(m) in terms of the whole series. Can a single residue class be projected out of an arbitrary absolutely convergent complex series as a discrete-Fourier average of rotated copies of the entire series, and what convergence hypothesis does that genuinely require?\n\n**Answer:** Yes. For a primitive q-th root of unity ω and a < q, ∑_n f(q·n+a) = q⁻¹·∑_{j<q} (ω^{j·a})⁻¹·∑_m ω^{j·m}·f(m). It needs the complex field (roots of unity) and absolute convergence — the bounded twist ω^{j·m} preserves absolute but not conditional summability.",
+    "proofStrategy": "(1) Reindexing infrastructure: residue_injective / residue_self_modEq / residue_mem_range identify the residue class a mod q with the image of n ↦ q·n+a (for a < q). (2) Orthogonality (inline hEm): rewrite the j-th DFT coefficient as zʲ with z = (ω^a)⁻¹ω^m; since z^q = 1, the q-fold geometric sum collapses — q when z = 1 and 0 otherwise (geom_sum_eq) — and z = 1 ⇔ m ≡ a (mod q) via IsOfFinOrder.pow_eq_pow_iff_modEq with orderOf ω = q. (3) Interchange: each twisted series ω^{j·m}·f(m) is absolutely summable (‖ω‖ = 1), so the finite DFT sum commutes with the infinite series (Summable.tsum_finsetSum), reducing the RHS to ∑_m ⟦m ≡ a⟧·f(m). (4) Reindex that indicator-weighted series onto ∑_n f(q·n+a) via Function.Injective.hasSum_iff. Specialise to ω = exp(2πi/q) and to q = 2 (ω = -1).",
+    "keyInsights": [
+      "The filter is character orthogonality in disguise: q⁻¹·∑_{j<q} ((ω^a)⁻¹ω^m)^j is the indicator ⟦m ≡ a (mod q)⟧ because the q-fold geometric sum of a q-th root of unity z is q when z = 1 and 0 otherwise — exactly the orthogonality relations of the additive characters of ℤ/qℤ.",
+      "Primitivity of ω is what makes the dichotomy sharp: z = (ω^a)⁻¹ω^m equals 1 iff ω^m = ω^a iff m ≡ a (mod q), which needs orderOf ω = q (IsPrimitiveRoot.eq_orderOf). A non-primitive root would collapse extra residue classes together.",
+      "Absolute convergence enters exactly once — to commute the finite DFT sum with the infinite series. The twist ω^{j·m} is a bounded multiplier (‖ω^{j·m}‖ = 1), so it preserves absolute but not conditional summability; this is precisely why the analytic filter needs more than the sibling's combinatorial Fubini, which works for any summable family.",
+      "Specialised to f(m) = r^m the identity reproduces the grandparent's geometric closed form ∑_n r^{q·n+a} = r^a/(1−r^q): the roots-of-unity filter is the residue-selecting projection of which the geometric multisection is one instance, and the q = 2 case is the familiar even/odd decomposition ∑_n f(2n) = ½(∑_m f(m) + ∑_m (−1)^m f(m))."
+    ]
+  },
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -106,6 +117,48 @@
       "targetId": "geometric-series-oq-09-oq-01",
       "relationship": "extends",
       "description": "Grandparent. The grandparent computed the geometric multisection ∑_n r^(q·n+a) = r^a/(1−r^q) from closed forms. The roots-of-unity filter here is the residue-selecting projection that, specialised to f(m) = r^m, reproduces that closed form — but applies to any absolutely convergent series, not only the geometric one."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module header and context",
+      "startLine": 3,
+      "endLine": 47,
+      "summary": "States the roots-of-unity filter ∑_n f(q·n+a) = q⁻¹·∑_{j<q} (ω^{j·a})⁻¹·∑_m ω^{j·m}·f(m) for an absolutely convergent complex series, contrasts it with the sibling's combinatorial Fubini multisection (the analytic vs combinatorial facets), and explains the new content beyond Mathlib (the orthogonality assembly).",
+      "mathContext": "$\\sum_n f(qn+a) = q^{-1}\\sum_{j<q}(\\omega^{ja})^{-1}\\sum_m\\omega^{jm}f(m)$."
+    },
+    {
+      "id": "reindexing",
+      "title": "Residue-class reindexing lemmas",
+      "startLine": 49,
+      "endLine": 75,
+      "summary": "Opens the namespace and Complex/Finset; residue_injective (n ↦ q·n+a injective for q ≠ 0), residue_self_modEq (q·n+a ≡ a mod q), and residue_mem_range (for a < q the class a is exactly {q·n+a}) — the infrastructure for the final reindexing.",
+      "mathContext": "$\\{m \\equiv a \\pmod q\\} = \\{qn+a\\}$ for $a < q$."
+    },
+    {
+      "id": "orthogonality",
+      "title": "The orthogonality collapse (inside multisection_filter)",
+      "startLine": 77,
+      "endLine": 141,
+      "summary": "The main theorem multisection_filter begins by recording ‖ω‖ = 1, the finite order and orderOf ω = q, summability of each twisted series, and the orthogonality lemma hEm: q⁻¹·∑_{j<q} (ω^{ja})⁻¹ω^{jm} = ⟦m ≡ a⟧, via z = (ω^a)⁻¹ω^m with z^q = 1, geom_sum_eq, and pow_eq_pow_iff_modEq.",
+      "mathContext": "$q^{-1}\\sum_{j<q} z^j = [\\,m\\equiv a\\,]$, $z=(\\omega^a)^{-1}\\omega^m$, $z^q=1$."
+    },
+    {
+      "id": "interchange-reindex",
+      "title": "Interchange and reindexing onto the subseries",
+      "startLine": 142,
+      "endLine": 180,
+      "summary": "Rewrites the RHS as ∑_m ⟦m ≡ a⟧·f(m) by commuting the finite DFT sum with the infinite series (Summable.tsum_finsetSum, licensed by absolute convergence), then reindexes that indicator-weighted series onto ∑_n f(q·n+a) via Function.Injective.hasSum_iff, completing the proof.",
+      "mathContext": "RHS $= \\sum_m [\\,m\\equiv a\\,]f(m) = \\sum_n f(qn+a)$."
+    },
+    {
+      "id": "specializations",
+      "title": "Canonical root and the q = 2 even filter",
+      "startLine": 182,
+      "endLine": 205,
+      "summary": "multisection_filter_exp specialises to ω = exp(2πi/q) (Complex.isPrimitiveRoot_exp); tsum_even_filter is the q = 2 even-part filter ∑_n f(2n) = ½(∑_m f(m) + ∑_m (−1)^m f(m)) via ω = −1.",
+      "mathContext": "$\\sum_n f(2n) = \\tfrac12(\\sum_m f(m) + \\sum_m (-1)^m f(m))$."
     }
   ],
   "conclusion": {
