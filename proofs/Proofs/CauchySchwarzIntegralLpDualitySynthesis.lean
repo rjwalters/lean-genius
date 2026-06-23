@@ -17,17 +17,28 @@ case to the already-proven σ-finite case**, which is the classical strategy of
 Folland, *Real Analysis* (2nd ed.), Theorem 6.16 (valid precisely because
 `1 < p < ∞`).
 
-## What is already verified (0 axioms, 0 sorries) in the dependency chain
+## State of the dependency chain (source-complete; not re-build-verified this session)
+
+The reduction in this file targets the σ-finite Riesz theorem. The chain below is
+**source-complete** — `grep` finds no `sorry` *tactic* and no `axiom` in any of these
+files (the only "sorry" tokens are historical notes in their docstrings). It has,
+however, **not** been re-verified under the Docker build wrapper this session (daemon
+hung), so "0 sorry / 0 axiom" is a static-source fact, not a fresh kernel check:
 
 * `RieszLpSurjectivity.riesz_lp_surjective_from_rn`  — finite-measure case
-  (CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean). Radon–Nikodým + Lᵖ machinery.
+  (CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean; 0 sorry / 0 axiom). Radon–Nikodým + Lᵖ.
 * `RieszSigmaFinite.riesz_lp_surjective_sigma_finite` — **σ-finite case**
-  (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean), built from the finite case by
-  spanning-set localization (`localization_existence`) + an Lᵖ density extension.
-* `extByZeroCLM : Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ` — the extension-by-zero
-  **isometry** (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean, currently
-  `private`; trivially re-exposable), together with the restriction isometry
+  (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean; 0 sorry / 0 axiom), built from the
+  finite case by spanning-set localization (`localization_existence`) + an Lᵖ density
+  extension (both discharged; the docstring "HARD sorry" tags are historical).
+* `extByZeroCLM : Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ` — the extension-by-zero CLM
+  (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean; 0 sorry / 0 axiom;
+  currently `private`, trivially re-exposable), together with the restriction isometry
   `eLpNorm (S.indicator f) p μ = eLpNorm f p (μ.restrict S)`.
+
+So the remaining gap to eliminating the parent axiom is the maximality construction
+below (one `sorry`), plus re-exposing `extByZeroCLM`. Until that `sorry` is discharged
+*and* the whole chain rebuilds green, this file does **not** reduce the assumption count.
 
 ## The remaining mathematical content: a maximality argument
 
@@ -49,8 +60,9 @@ see `memLp_exists_sigmaFinite_support` below). The reduction goes:
    extended by `0` off `T`.
 
 The only non-mechanical step is this maximality construction
-(`riesz_representing_function_maximal` below). All other ingredients are already in
-the verified chain or in Mathlib.
+(`riesz_representing_function_maximal` below). The remaining ingredients are *either*
+already in Mathlib (the bridge lemma's σ-finite-support fact) *or* source-complete in the
+dependency chain (the σ-finite Riesz theorem and `extByZeroCLM`); see the accounting above.
 
 ## Status
 
