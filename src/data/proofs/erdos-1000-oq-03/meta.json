@@ -1,0 +1,146 @@
+{
+  "id": "erdos-1000-oq-03",
+  "title": "Jordan's Totient $J_k$: an Axiom-Free Generalization of Euler's $\\varphi$",
+  "slug": "erdos-1000-oq-03",
+  "description": "Answers the open question of whether the divisor-sum and multiplicativity theory of Euler's totient extends to other generalized totients. The canonical generalization is Jordan's totient J_k(n) = n^k ∏_{p∣n}(1 − p^{−k}) (Camille Jordan, 1870), which counts the k-tuples in (ℤ/n)^k coprime to n and satisfies J_1 = φ. Rather than the combinatorial counting definition, this entry takes the Dirichlet-convolution definition J_k = μ * pow k inside Mathlib's ring of integer arithmetic functions, which makes the deep identities fall out of the single ring fact μ * ζ = 1. Proves, with 0 axioms and 0 sorries (no native_decide): the headline divisor-sum identity ∑_{d∣n} J_k(d) = n^k (the exact generalization of Gauss's ∑_{d∣n} φ(d) = n), the prime-power values J_k(p^a) = p^{ka} − p^{k(a−1)} by telescoping, multiplicativity, the integer product formula J_k(n) = ∏_{p^a ∥ n}(p^{ka} − p^{k(a−1)}), the recovery J_1(n) = φ(n) via Möbius inversion, and the bounds 0 ≤ J_k(n) ≤ n^k. The companion analytic entry erdos-1001-oq-03 takes the facts J_1 = φ and J_k ≤ n^k as axioms; both are proved here, so that entry's elementary core is no longer axiomatic.",
+  "meta": {
+    "author": "Classical (Camille Jordan, 1870); the divisor-sum / product theory of J_k formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Jordan%27s_totient_function",
+    "date": "1870",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1000OQ03.lean",
+    "tags": [
+      "number-theory",
+      "jordan-totient",
+      "euler-totient",
+      "arithmetic-functions",
+      "dirichlet-convolution",
+      "multiplicative-functions",
+      "moebius-inversion",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 170,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (no native_decide). #print axioms confirms every headline theorem (jordan_divisor_sum, jordan_prime_pow, jordan_one_eq_totient, jordan_eq_prod, jordan_le_pow) depends only on the foundational propext, Classical.choice, Quot.sound. The proof rests on Mathlib's ArithmeticFunction framework: the Dirichlet-convolution apply lemma `coe_mul_zeta_apply`, the Möbius unit law `moebius_mul_coe_zeta` (μ * ζ = 1), multiplicativity of μ and pow, the factorization decomposition `IsMultiplicative.multiplicative_factorization`, Möbius inversion `sum_eq_iff_sum_mul_moebius_eq`, and Gauss's `Nat.sum_totient`.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ArithmeticFunction.coe_mul_zeta_apply",
+        "description": "`(f * ζ) x = ∑ i ∈ divisors x, f i`. Turns the Dirichlet relation J_k * ζ = pow k into the pointwise divisor-sum identity ∑_{d∣n} J_k(d) = n^k.",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Zeta"
+      },
+      {
+        "theorem": "ArithmeticFunction.moebius_mul_coe_zeta",
+        "description": "`(μ * ζ : ArithmeticFunction ℤ) = 1`: the Möbius function is the Dirichlet inverse of ζ. This single ring identity is the engine: J_k * ζ = (μ * pow k) * ζ = pow k * (μ * ζ) = pow k.",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Moebius"
+      },
+      {
+        "theorem": "ArithmeticFunction.IsMultiplicative.multiplicative_factorization",
+        "description": "`f n = ∏_{p^a ∥ n} f(p^a)` for multiplicative f and n ≠ 0. Combined with the prime-power formula it yields the integer product formula for J_k and its nonnegativity.",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Defs"
+      },
+      {
+        "theorem": "ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq",
+        "description": "Möbius inversion over a ring. Applied to Gauss's ∑_{d∣n} φ(d) = n it expresses φ(n) = ∑_{d∣n} μ(d)·(n/d), which is exactly J_1(n), proving J_1 = φ.",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Moebius"
+      },
+      {
+        "theorem": "Nat.sum_totient",
+        "description": "Gauss's identity `∑_{d∣n} φ(d) = n`. Supplies the input to Möbius inversion for J_1 = φ and is the k = 1 case of the headline divisor-sum identity proved here.",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.sum_divisors_prime_pow",
+        "description": "`∑_{d ∣ p^k} f(d) = ∑_{i ∈ range(k+1)} f(p^i)`. Reduces the divisor-sum over a prime power to a range sum, enabling the telescoping proof of J_k(p^a) = p^{ka} − p^{k(a−1)}.",
+        "module": "Mathlib.NumberTheory.Divisors"
+      }
+    ],
+    "originalContributions": [
+      "`jordanTotient k := μ * pow k`: an honest, computation-free definition of Jordan's totient of order k as a Dirichlet convolution in `ArithmeticFunction ℤ`, from which all identities are derived structurally.",
+      "`jordan_divisor_sum`: the headline `∑_{d∣n} J_k(d) = n^k`, the exact generalization of Gauss's `∑_{d∣n} φ(d) = n` to all orders k.",
+      "`jordan_prime_pow`: the prime-power values `J_k(p^a) = p^{ka} − p^{k(a−1)}`, proved by telescoping the divisor-sum identity across p^a and p^{a−1} (no Möbius computation).",
+      "`jordan_eq_prod`: the integer product formula `J_k(n) = ∏_{p^a ∥ n}(p^{ka} − p^{k(a−1)})` — the answer, in integer-product form, to the open question posed in euler-totient-oq-02-oq-01 on generalizing Euler's product formula to J_k.",
+      "`jordan_one_eq_totient`: `J_1(n) = φ(n)`, via Möbius inversion of Gauss's identity — proves the fact taken as `axiom jordan_one` in the gallery entry erdos-1001-oq-03.",
+      "`jordan_le_pow` and `jordan_nonneg`: the bounds `0 ≤ J_k(n) ≤ n^k`; the upper bound proves the fact taken as `axiom jordan_le_pow` in erdos-1001-oq-03.",
+      "`jordan_isMultiplicative`, `jordan_one`, `jordan_mul_zeta`: J_k is multiplicative, J_k(1) = 1, and the defining Dirichlet relation J_k * ζ = pow k."
+    ],
+    "prerequisites": [
+      "Euler's totient φ and Gauss's divisor-sum identity ∑_{d∣n} φ(d) = n",
+      "Arithmetic functions and Dirichlet convolution; the Möbius function μ as the inverse of ζ",
+      "Multiplicative functions and the prime-power factorization decomposition",
+      "Möbius inversion over a commutative ring"
+    ],
+    "dateAdded": "2026-06-22",
+    "relatedProblems": [
+      {
+        "id": "erdos-1001-oq-03",
+        "relationship": "De-axiomatizes: that analytic density entry introduces Jordan's totient via `axiom jordan_one` (J_1 = φ) and `axiom jordan_le_pow` (J_k ≤ n^k). Both are proved here from an honest 0-axiom definition, removing the elementary assumptions from its axiom list."
+      },
+      {
+        "id": "euler-totient-oq-02-oq-01",
+        "relationship": "Answers: that entry explicitly poses, as an open question, whether the product formula for φ generalizes to the Jordan totient J_k(n) = n^k ∏_{p∣n}(1 − 1/p^k). `jordan_eq_prod` answers it in integer-product form, and `jordan_one_eq_totient` confirms the J_1 = φ specialization."
+      },
+      {
+        "id": "euler-totient-oq-09",
+        "relationship": "Sibling: oq-09 establishes the power law φ(n^k) = n^{k−1}·φ(n) for Euler's φ via its product formula; this entry develops the parallel divisor-sum and product theory for the higher-order Jordan generalization J_k."
+      }
+    ]
+  },
+  "leanFile": {
+    "lineCount": 170,
+    "path": "Proofs/Erdos1000OQ03.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 9
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Camille Jordan introduced the higher-order totient J_k in 1870 as the natural generalization of Euler's φ: J_k(n) counts the k-tuples (a_1, …, a_k) in (ℤ/nℤ)^k whose entries together with n are setwise coprime, with J_1 = φ. It obeys the same structural laws as φ — it is multiplicative, has prime-power values J_k(p^a) = p^{ka} − p^{k(a−1)}, factors as J_k(n) = n^k ∏_{p∣n}(1 − p^{−k}), and satisfies the divisor-sum identity ∑_{d∣n} J_k(d) = n^k, generalizing Gauss's ∑_{d∣n} φ(d) = n. Its Dirichlet series ∑ J_k(n)/n^s = ζ(s−k)/ζ(s) makes it the engine of counting problems for primitive lattice vectors, including the higher-dimensional Diophantine-approximation density studied in the companion gallery entry erdos-1001-oq-03. Mathlib formalizes Euler's φ and the full ArithmeticFunction / Möbius framework but does not define Jordan's totient.",
+    "problemStatement": "**Open Question (erdos-1000-oq-03):** does the divisor-sum and multiplicativity theory of Euler's totient extend to other generalized totients? Develop, in the canonical case of Jordan's totient J_k, an elementary axiom-free account of the divisor-sum identity, multiplicativity, the prime-power values, the product formula, and the recovery of φ at k = 1.",
+    "text": "Define J_k = μ * pow k as a Dirichlet convolution in ArithmeticFunction ℤ. Then ∑_{d∣n} J_k(d) = n^k for n > 0, J_k is multiplicative with J_k(p^a) = p^{ka} − p^{k(a−1)} and J_k(n) = ∏_{p^a ∥ n}(p^{ka} − p^{k(a−1)}), J_1 = φ, and 0 ≤ J_k(n) ≤ n^k. All are machine-checked with 0 axioms.",
+    "proofStrategy": "The whole development is organized around the single Mathlib fact μ * ζ = 1 (`moebius_mul_coe_zeta`). From the definition J_k = μ * pow k, associativity/commutativity give J_k * ζ = pow k (`jordan_mul_zeta`); applying `coe_mul_zeta_apply` and `pow_apply` yields the divisor-sum identity ∑_{d∣n} J_k(d) = n^k (`jordan_divisor_sum`). Setting n = 1 gives J_k(1) = 1. Multiplicativity (`jordan_isMultiplicative`) is `isMultiplicative_moebius.mul isMultiplicative_pow.natCast`. The prime-power values come from telescoping: with S(m) = ∑_{i ∈ range(m+1)} J_k(p^i) = p^{km} (the divisor sum over p^m rewritten by `Nat.sum_divisors_prime_pow`), `Finset.sum_range_succ` gives J_k(p^a) = S(a) − S(a−1) = p^{ka} − p^{k(a−1)}. Feeding these into `multiplicative_factorization` gives the integer product formula and, since each factor is nonnegative (p ≥ 1 and k(a−1) ≤ ka), nonnegativity; `Finset.single_le_sum` on the divisor-sum identity then bounds J_k(n) ≤ n^k. Finally J_1 = φ is Möbius inversion (`sum_eq_iff_sum_mul_moebius_eq`) applied to Gauss's `Nat.sum_totient`: φ(n) = ∑_{d∣n} μ(d)·(n/d) = J_1(n).",
+    "keyInsights": [
+      "**The Dirichlet-convolution definition trivializes the hard identities.** Defining J_k = μ * pow k rather than by a counting formula turns the divisor-sum identity into the one-line ring computation J_k * ζ = pow k, since μ is the Dirichlet inverse of ζ. No bijection or partition argument is needed.",
+      "**Telescoping beats Möbius bookkeeping for prime powers.** The values J_k(p^a) = p^{ka} − p^{k(a−1)} follow from differencing the divisor-sum identity at p^a and p^{a−1}, avoiding any direct evaluation of ∑ μ(d)(p^a/d)^k.",
+      "**J_1 = φ is Gauss's identity read backwards.** Möbius inversion converts ∑_{d∣n} φ(d) = n into φ(n) = ∑_{d∣n} μ(d)·(n/d), which is exactly the n-th value of μ * pow 1 = J_1 — so the recovery of Euler's totient is automatic, not a separate calculation.",
+      "**The product formula is the multiplicative shadow of the prime-power values.** Once J_k is known to be multiplicative, `multiplicative_factorization` assembles J_k(n) from its prime-power values, giving the integer form ∏(p^{ka} − p^{k(a−1)}) of Jordan's classical product n^k ∏(1 − p^{−k})."
+    ],
+    "prerequisites": [
+      "Euler's totient φ and Gauss's identity ∑_{d∣n} φ(d) = n",
+      "Dirichlet convolution of arithmetic functions; μ as the inverse of ζ",
+      "Multiplicative functions and prime-power factorization",
+      "Möbius inversion over a commutative ring"
+    ]
+  },
+  "conclusion": {
+    "summary": "Jordan's totient J_k, defined as the Dirichlet convolution μ * pow k, satisfies the full analogue of Euler's totient theory: ∑_{d∣n} J_k(d) = n^k, multiplicativity, prime-power values J_k(p^a) = p^{ka} − p^{k(a−1)}, the integer product formula ∏_{p^a ∥ n}(p^{ka} − p^{k(a−1)}), J_1 = φ, and 0 ≤ J_k(n) ≤ n^k. 9 theorems, 1 definition, 170 lines, 0 sorries, 0 axioms (no native_decide), every headline result confirmed by #print axioms to use only propext / Classical.choice / Quot.sound.",
+    "implications": "The development gives the gallery a reusable, axiom-free Jordan totient. It directly de-axiomatizes the companion analytic entry erdos-1001-oq-03, which had assumed J_1 = φ and J_k ≤ n^k, and it answers the open question of euler-totient-oq-02-oq-01 by exhibiting the product formula for J_k. The Dirichlet-convolution approach is a template: any multiplicative function expressible as μ * (something) inherits its divisor-sum identity from μ * ζ = 1, so the same three-line pattern produces divisor-sum laws for further generalized totients and related arithmetic functions.",
+    "openQuestions": [
+      "Formalize the combinatorial identity J_k(n) = #{ v ∈ (ZMod n)^k : the entries of v together with n are setwise coprime }, matching the convolution definition to the lattice-point count and recovering the rational product n^k ∏(1 − p^{−k}) over ℚ.",
+      "Prove the Dirichlet-series identity ∑_{n} J_k(n)/n^s = ζ(s − k)/ζ(s) as a formal relation, the analytic engine behind the primitive-lattice-vector counts in erdos-1001-oq-03.",
+      "Establish the cross-order convolution laws (e.g. J_k * J_l versus J_{k+l}) and the inequality chain J_k(n) ≥ J_{k−1}(n)·(n − something), quantifying how the totient grows with its order k."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1001-oq-03",
+      "relationship": "related",
+      "description": "That analytic Diophantine-approximation density entry introduces Jordan's totient via `axiom jordan_one` (J_1 = φ) and `axiom jordan_le_pow` (J_k ≤ n^k). This entry proves both from an honest 0-axiom definition, so the elementary facts that entry assumed are now theorems."
+    },
+    {
+      "targetId": "euler-totient-oq-02-oq-01",
+      "relationship": "related",
+      "description": "That entry explicitly poses, as an open question, whether Euler's product formula generalizes to the Jordan totient J_k(n) = n^k ∏_{p∣n}(1 − 1/p^k). `jordan_eq_prod` answers it in integer-product form and `jordan_one_eq_totient` confirms the k = 1 specialization J_1 = φ."
+    },
+    {
+      "targetId": "euler-totient-oq-09",
+      "relationship": "sibling",
+      "description": "oq-09 establishes the power law φ(n^k) = n^{k−1}·φ(n) for Euler's φ through its product formula. This entry develops the parallel divisor-sum and product theory for the higher-order generalization J_k, of which φ = J_1 is the first case."
+    }
+  ]
+}
