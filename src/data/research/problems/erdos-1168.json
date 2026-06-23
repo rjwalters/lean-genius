@@ -68,7 +68,8 @@
   "relatedProofs": [
     "erdos-1",
     "erdos-11",
-    "erdos-116"
+    "erdos-116",
+    "erdos-1168"
   ],
   "references": {
     "papers": [],
@@ -83,22 +84,22 @@
     {
       "path": "Proofs/Erdos1168Aristotle.lean",
       "filename": "Erdos1168Aristotle.lean",
-      "lineCount": 70,
+      "lineCount": 69,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1168Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos1168Problem.lean",
       "filename": "Erdos1168Problem.lean",
-      "lineCount": 255,
+      "lineCount": 256,
       "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 9,
-      "sorryCount": 2,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1168Problem.lean"
     }

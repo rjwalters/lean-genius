@@ -79,8 +79,25 @@
   "relatedProofs": [
     "combinations-formula",
     "combinations-formula-oq-01",
+    "combinations-formula-oq-01-oq-01",
+    "combinations-formula-oq-01-oq-04",
     "combinations-formula-oq-02",
-    "combinations-formula-oq-03"
+    "combinations-formula-oq-03",
+    "combinations-formula-oq-03-oq-06",
+    "combinations-formula-oq-05",
+    "combinations-formula-oq-05-oq-01",
+    "combinations-formula-oq-05-oq-01-oq-01",
+    "combinations-formula-oq-05-oq-01-oq-01-oq-01",
+    "combinations-formula-oq-06",
+    "combinations-formula-oq-07",
+    "combinations-formula-oq-07-oq-01",
+    "combinations-formula-oq-07-oq-02",
+    "combinations-formula-oq-07-oq-03",
+    "combinations-formula-oq-07-oq-04",
+    "combinations-formula-oq-07-oq-05",
+    "combinations-formula-oq-07-oq-06",
+    "combinations-formula-oq-08",
+    "combinations-formula-oq-09"
   ],
   "references": {
     "papers": [],
@@ -115,6 +132,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ01.lean"
     },
     {
+      "path": "Proofs/CombinationsFormulaOQ01OQ01.lean",
+      "filename": "CombinationsFormulaOQ01OQ01.lean",
+      "lineCount": 51,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ01OQ04.lean",
+      "filename": "CombinationsFormulaOQ01OQ04.lean",
+      "lineCount": 190,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ01OQ04.lean"
+    },
+    {
       "path": "Proofs/CombinationsFormulaOQ02.lean",
       "filename": "CombinationsFormulaOQ02.lean",
       "lineCount": 313,
@@ -128,24 +167,189 @@
     {
       "path": "Proofs/CombinationsFormulaOQ02Aristotle.lean",
       "filename": "CombinationsFormulaOQ02Aristotle.lean",
-      "lineCount": 58,
+      "lineCount": 115,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 4,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ02Aristotle.lean"
     },
     {
       "path": "Proofs/CombinationsFormulaOQ03.lean",
       "filename": "CombinationsFormulaOQ03.lean",
-      "lineCount": 751,
+      "lineCount": 780,
       "theoremCount": 24,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ03.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ03OQ06.lean",
+      "filename": "CombinationsFormulaOQ03OQ06.lean",
+      "lineCount": 242,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ03OQ06.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ05.lean",
+      "filename": "CombinationsFormulaOQ05.lean",
+      "lineCount": 115,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ05.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ05OQ01.lean",
+      "filename": "CombinationsFormulaOQ05OQ01.lean",
+      "lineCount": 110,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ05OQ01OQ01.lean",
+      "filename": "CombinationsFormulaOQ05OQ01OQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ05OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ05OQ01OQ01OQ01.lean",
+      "filename": "CombinationsFormulaOQ05OQ01OQ01OQ01.lean",
+      "lineCount": 164,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ05OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ06.lean",
+      "filename": "CombinationsFormulaOQ06.lean",
+      "lineCount": 119,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ06.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ07.lean",
+      "filename": "CombinationsFormulaOQ07.lean",
+      "lineCount": 77,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ07.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ07OQ01.lean",
+      "filename": "CombinationsFormulaOQ07OQ01.lean",
+      "lineCount": 130,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ07OQ01.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ07OQ02.lean",
+      "filename": "CombinationsFormulaOQ07OQ02.lean",
+      "lineCount": 119,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ07OQ02.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ07OQ03.lean",
+      "filename": "CombinationsFormulaOQ07OQ03.lean",
+      "lineCount": 138,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ07OQ03.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ07OQ04.lean",
+      "filename": "CombinationsFormulaOQ07OQ04.lean",
+      "lineCount": 159,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ07OQ04.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ07OQ05.lean",
+      "filename": "CombinationsFormulaOQ07OQ05.lean",
+      "lineCount": 174,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ07OQ05.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ07OQ06.lean",
+      "filename": "CombinationsFormulaOQ07OQ06.lean",
+      "lineCount": 146,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ07OQ06.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ08.lean",
+      "filename": "CombinationsFormulaOQ08.lean",
+      "lineCount": 103,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ08.lean"
+    },
+    {
+      "path": "Proofs/CombinationsFormulaOQ09.lean",
+      "filename": "CombinationsFormulaOQ09.lean",
+      "lineCount": 123,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ09.lean"
     }
   ]
 }

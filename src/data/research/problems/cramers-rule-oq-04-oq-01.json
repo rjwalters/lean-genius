@@ -1,0 +1,227 @@
+{
+  "slug": "cramers-rule-oq-04-oq-01",
+  "title": "cramers-rule-oq-04-oq-01",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-14 (S1, researcher-3)",
+    "iteration": 1,
+    "focus": "",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge: cramers-rule-oq-04-oq-01 (algebraic Cayley-Hamilton via adjugate)\n\n## Problem framing\nParent `CramersRuleOQ04.lean` proves constant-ring adjugate identities\n(`A * adj A = det A • 1`, etc.). OQ-04-OQ-01 asks to lift these to the\ncharacteristic matrix `xI − A` over `R[X]` and derive Cayley-Hamilton —\ni.e. `adj(xI−A)·(xI−A) = charpoly(A)·I`, then substitute `A`.\n\n## Insight 1 — The OQ's proof object IS Mathlib's Cayley-Hamilton proof\nMathlib defines `charpoly M := (charmatrix M).det` and proves\n`aeval_self_charpoly` by exactly this adjugate-of-`charmatrix` route. So the OQ\nis not asking for new mathematics; it asks the project to expose/wrap content\nalready upstream. Key bearers (master, 2026-06-14):\n- `Matrix.charmatrix` (= `xI − A` over `R[X]`), `Matrix/Charpoly/Basic.lean:49`.\n- `Matrix.charpoly := (charmatrix M).det`, same file :132.\n- `Matrix.mul_adjugate` / `Matrix.adjugate_mul` (`Matrix/Adjugate.lean`).\n- `Matrix.aeval_self_charpoly` (`Matrix/Charpoly/Coeff.lean`) — Cayley-Hamilton\n  over arbitrary commutative rings. Also in `docs/100.yaml` (formalized).\n\n## Insight 2 — The adjugate identity is ring-generic (why singular A is fine)\n`A * adj A = det A • 1` holds over ANY commutative ring with NO invertibility\nhypothesis — it is a polynomial identity in the entries (Mathlib: `mul_adjugate`).\nThat is precisely why the proof works for the singular characteristic matrix and\nwhy Cayley-Hamilton needs no field assumption. The cert confirms this on a\ndet-0 matrix and over ℤ (non-field).\n\n## Insight 3 — Numerical anchor (`verify_cayley_hamilton.py`, 14/14 PASS)\nFor explicit + seeded-random integer matrices (n=2..4) and a singular case:\n(1) `charpoly = det(xI−A)`, (2) `adj(xI−A)(xI−A) = charpoly·I` (both sides),\n(3) Cayley-Hamilton `Σ c_k A^k = 0`. Regression oracle for the Lean wrapper.\n\n## Recommended wrapper (Docker-gated)\n```\ntheorem cayley_hamilton (A : Matrix n n R) : aeval A A.charpoly = 0 :=\n  Matrix.aeval_self_charpoly A\ntheorem charmatrix_adjugate_identity (A : Matrix n n R) :\n    A.charmatrix * A.charmatrix.adjugate = A.charpoly • 1 := by\n  rw [Matrix.mul_adjugate]   -- charpoly A = (charmatrix A).det by def\n```\n\n## Open threads\n- Confirm exact defeq for the `• 1` step (`charpoly` vs `(charmatrix A).det`)\n  once Docker is back — likely a single `rfl`/`Matrix.charpoly` unfold.\n\n## Links\n- Parent: [[cramers-rule-oq-04]] (adjugate generalized-inverse identities).\n- Same make-ephemeral-verification-durable vein as the Matrix-Tree cert in\n  [[project-researcher-3-20260614m-konigsberg-matrixtree-orient]].\n",
+    "archivedSessions": [
+      {
+        "filename": "2026-06-14-s1-orient.md",
+        "date": "unknown",
+        "sessionNumber": 1,
+        "markdown": "# Session 1 — ORIENT (researcher-3, 2026-06-14)\n\n**Status at start**: fresh OQ, knowledge 0, no research dir. Docker down\n(build-free cycle). Claimed by id (claim-random kept re-serving the contended\npell-equation-oq-05 / upstream-blocked MODERATE+ tier).\n\n## Goal\nAnswer OQ-04-OQ-01: formalize the algebraic Cayley-Hamilton proof via\n`adj(xI − A)·(xI − A) = charpoly(A)·I`, lifting the parent file's constant-ring\nadjugate identities to the characteristic matrix.\n\n## What I did\n1. Read parent `CramersRuleOQ04.lean`: it already proves the constant-ring\n   adjugate identities (`adjugate_right/left`, reflexive). The OQ is the\n   polynomial-matrix extension culminating in Cayley-Hamilton.\n2. Surveyed Mathlib **master**: the entire route is upstream —\n   `Matrix.charmatrix` (`xI − A`), `Matrix.charpoly := (charmatrix M).det`,\n   `Matrix.mul_adjugate`/`adjugate_mul`, and `Matrix.aeval_self_charpoly`\n   (Cayley-Hamilton over arbitrary commutative rings; `docs/100.yaml`). The OQ's\n   identity is literally `mul_adjugate (charmatrix A)`.\n3. Wrote and ran `verify_cayley_hamilton.py` (sympy): 14/14 PASS over ℤ\n   (incl. a singular matrix and seeded-random n=2..4) for the three facts the\n   wrapper rests on — charpoly=det(xI−A), the two-sided adjugate identity, and\n   `p(A)=0`.\n\n## Findings / verdict\n- **OQ-04-OQ-01 is a ~10-40 LOC wrapper, not new mathematics.** Mathlib already\n  realizes the exact adjugate-of-characteristic-matrix proof. Recommended ACT\n  (in `state.md`/`knowledge.md`): add `cayley_hamilton := aeval_self_charpoly`\n  and `charmatrix_adjugate_identity` via `mul_adjugate`, keeping the file's\n  \"0 axioms, 0 sorries\" status.\n- The adjugate identity is ring-generic (no invertibility) — confirmed on a\n  det-0 matrix; this is why Cayley-Hamilton needs no field hypothesis.\n\n## Why no .lean this cycle\nDocker down; the two-line wrapper relies on `charpoly`/`charmatrix` defeq\nbookkeeping (the `• 1` step) that I won't claim builds without a checker. The\nbearer survey + sympy cert are the honest durable surface; the cert is a\nregression oracle for the transcription.\n\n## Next pickup\nSingle-cycle ACT under Docker: transcribe the wrapper, resolve the `mul_adjugate`\n`• 1` defeq, build-check. Optionally mark the OQ effectively-resolved-upstream.\n"
+      }
+    ]
+  },
+  "tags": [],
+  "relatedProofs": [
+    "cramers-rule",
+    "cramers-rule-oq-01",
+    "cramers-rule-oq-01-oq-02",
+    "cramers-rule-oq-01-oq-02-oq-01",
+    "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "cramers-rule-oq-01-oq-03",
+    "cramers-rule-oq-01-oq-04",
+    "cramers-rule-oq-02",
+    "cramers-rule-oq-02-oq-02",
+    "cramers-rule-oq-03",
+    "cramers-rule-oq-04",
+    "cramers-rule-oq-04-oq-01",
+    "cramers-rule-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-16T04:40:01.647Z",
+  "lastUpdate": "2026-06-22T15:26:14.900Z",
+  "completed": "2026-06-22T15:26:14.900Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/CramersRule.lean",
+      "filename": "CramersRule.lean",
+      "lineCount": 162,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRule.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01.lean",
+      "filename": "CramersRuleOQ01.lean",
+      "lineCount": 283,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ02.lean",
+      "filename": "CramersRuleOQ01OQ02.lean",
+      "lineCount": 471,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ02OQ01.lean",
+      "filename": "CramersRuleOQ01OQ02OQ01.lean",
+      "lineCount": 322,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean",
+      "filename": "CramersRuleOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 378,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ03.lean",
+      "filename": "CramersRuleOQ01OQ03.lean",
+      "lineCount": 229,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ04.lean",
+      "filename": "CramersRuleOQ01OQ04.lean",
+      "lineCount": 328,
+      "theoremCount": 17,
+      "axiomCount": 4,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ02.lean",
+      "filename": "CramersRuleOQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ02.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ02OQ02.lean",
+      "filename": "CramersRuleOQ02OQ02.lean",
+      "lineCount": 190,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ03.lean",
+      "filename": "CramersRuleOQ03.lean",
+      "lineCount": 176,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ03.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ03OQ03.lean",
+      "filename": "CramersRuleOQ03OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ04.lean",
+      "filename": "CramersRuleOQ04.lean",
+      "lineCount": 176,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ04.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ04OQ01.lean",
+      "filename": "CramersRuleOQ04OQ01.lean",
+      "lineCount": 72,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ05.lean",
+      "filename": "CramersRuleOQ05.lean",
+      "lineCount": 149,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ05.lean"
+    }
+  ]
+}

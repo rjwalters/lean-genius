@@ -3,34 +3,6 @@
   "title": "Divisibility by 3 OQ-03-OQ-02: Base-Parametric Digital Roots",
   "description": "Records the Lean base-parametric digital-root and divisibility rules for Nat.digits in arbitrary bases.",
   "problemStatement": {
-    "formal": "Define `digitalRootBase b n` and prove congruence/divisibility rules modulo b - 1 for base-b digit sums.",
-    "plain": "Generalizes the decimal digital-root rule to any base b, including reusable divisibility tests for factors of b - 1.",
-    "whyMatters": [
-      "It turns the familiar divisibility-by-3 rule into a base-independent theorem.",
-      "The proof uses Mathlib digit-sum congruence lemmas instead of ad hoc decimal arithmetic.",
-      "Concrete octal, hexadecimal, and base-7 checks make the theorem computationally testable."
-    ]
-  },
-  "knownResults": {
-    "proven": [
-      "`digitalRootBase` defines the base-b digital-root function.",
-      "`digitSum_mod_base_pred` and `congruence` prove the digit-sum congruence modulo b - 1.",
-      "`digitalRootBase_range`, `digitalRootBase_single`, and `digitalRootBase_idempotent` prove the expected root behavior.",
-      "`div_pred_iff_div_digitSum` and `factor_div_rule` give the divisibility tests.",
-      "`hex_div15`, `oct_div7`, and the concrete root examples check non-decimal bases.",
-      "`DivisibilityBy3OQ03OQ02.lean` is recorded with 0 axioms and 0 sorries."
-    ],
-    "open": [
-      "The file gives divisibility rules for factors of b - 1, not a full catalogue of all digit tests for arbitrary moduli."
-    ],
-    "goal": "Expose the completed base-parametric digital-root formalization and its verified divisibility rules."
-  },
-  "source": {
-    "proofId": "divisibility-by-3-oq-03",
-    "proofTitle": "Efficient Digital Root Computation via Modular Arithmetic",
-    "type": "open-question"
-  },
-  "problemStatement": {
     "formal": "For base b >= 3, formalize digitalRootBase b n and its congruence to n modulo b - 1 using Nat.digits b n.",
     "plain": "Generalize the familiar base-10 digit-sum divisibility rule to arbitrary bases by proving that the digital root tracks residues modulo b - 1.",
     "whyMatters": [
@@ -50,6 +22,11 @@
     "open": [],
     "goal": "Expose the completed base-parametrized digital-root theorem family without changing the underlying proof artifacts."
   },
+  "source": {
+    "proofId": "divisibility-by-3-oq-03",
+    "proofTitle": "Efficient Digital Root Computation via Modular Arithmetic",
+    "type": "open-question"
+  },
   "category": "extension",
   "tractability": "challenging",
   "tags": [
@@ -66,6 +43,8 @@
   "relatedProofs": [
     "divisibility-by-3",
     "divisibility-by-3-oq-02",
+    "divisibility-by-3-oq-02-oq-01",
+    "divisibility-by-3-oq-02-oq-01-oq-01",
     "divisibility-by-3-oq-03",
     "divisibility-by-3-oq-03-oq-02",
     "divisibility-by-3-oq-04",
@@ -96,6 +75,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ02OQ01.lean",
+      "filename": "DivisibilityBy3OQ02OQ01.lean",
+      "lineCount": 185,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ02OQ01OQ01.lean",
+      "filename": "DivisibilityBy3OQ02OQ01OQ01.lean",
+      "lineCount": 244,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ02OQ01OQ01.lean"
     },
     {
       "path": "Proofs/DivisibilityBy3OQ03.lean",

@@ -58,8 +58,11 @@
     "binary-gcd-oq-01",
     "binary-gcd-oq-01-oq-04",
     "binary-gcd-oq-02",
+    "binary-gcd-oq-02-oq-01",
+    "binary-gcd-oq-02-oq-02",
     "binary-gcd-oq-03",
-    "binary-gcd-oq-03-oq-02"
+    "binary-gcd-oq-03-oq-02",
+    "binary-gcd-oq-03-oq-02-incomplete-01"
   ],
   "references": {
     "papers": [],
@@ -116,10 +119,32 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ02.lean"
     },
     {
+      "path": "Proofs/BinaryGcdOQ02OQ01.lean",
+      "filename": "BinaryGcdOQ02OQ01.lean",
+      "lineCount": 177,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ02OQ02.lean",
+      "filename": "BinaryGcdOQ02OQ02.lean",
+      "lineCount": 202,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ02OQ02.lean"
+    },
+    {
       "path": "Proofs/BinaryGcdOQ03.lean",
       "filename": "BinaryGcdOQ03.lean",
-      "lineCount": 488,
-      "theoremCount": 15,
+      "lineCount": 489,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 13,
       "sorryCount": 0,
@@ -140,13 +165,35 @@
     {
       "path": "Proofs/BinaryGcdOQ03OQ02.lean",
       "filename": "BinaryGcdOQ03OQ02.lean",
-      "lineCount": 2225,
-      "theoremCount": 65,
+      "lineCount": 2278,
+      "theoremCount": 66,
       "axiomCount": 0,
       "defCount": 6,
-      "sorryCount": 10,
+      "sorryCount": 9,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ02Incomplete01.lean",
+      "filename": "BinaryGcdOQ03OQ02Incomplete01.lean",
+      "lineCount": 285,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ02Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ02PathA.lean",
+      "filename": "BinaryGcdOQ03OQ02PathA.lean",
+      "lineCount": 3141,
+      "theoremCount": 83,
+      "axiomCount": 0,
+      "defCount": 16,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ02PathA.lean"
     }
   ]
 }

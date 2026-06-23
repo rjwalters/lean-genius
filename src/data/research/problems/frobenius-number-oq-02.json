@@ -55,7 +55,9 @@
   "relatedProofs": [
     "frobenius-number",
     "frobenius-number-oq-01",
-    "frobenius-number-oq-03"
+    "frobenius-number-oq-02",
+    "frobenius-number-oq-03",
+    "frobenius-number-oq-04"
   ],
   "references": {
     "papers": [],
@@ -103,13 +105,24 @@
     {
       "path": "Proofs/FrobeniusNumberOQ03.lean",
       "filename": "FrobeniusNumberOQ03.lean",
-      "lineCount": 226,
-      "theoremCount": 15,
+      "lineCount": 441,
+      "theoremCount": 27,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ03.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ04.lean",
+      "filename": "FrobeniusNumberOQ04.lean",
+      "lineCount": 123,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ04.lean"
     }
   ]
 }

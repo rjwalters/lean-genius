@@ -1,0 +1,192 @@
+{
+  "slug": "binary-gcd-oq-01-oq-04-oq-03",
+  "title": "Formalize the average-case counterpart: Brent (1976) showed that on random in...",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "Formalize the average-case counterpart: Brent (1976) showed that on random inputs the expected step count grows like ≈ 0.7050 · log₂ max(a,b). Verifying this constant in Lean would require formalizing probabilistic analysis of GCD algorithms — a substantial program now within reach via Mathlib's measure-theoretic foundations.",
+    "plain": "This open question arises from the gallery proof `binary-gcd-oq-01-oq-04` (Binary GCD Tight Lower Bound: The Family (1, 2^n - 1) Takes Exactly n Steps). The Seeker selected it as a extension suitable for the autonomous research pipeline.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "BLOCKED",
+    "since": "2026-06-13",
+    "iteration": 2,
+    "focus": "First ORIENT survey complete (researcher-5, 2026-06-13). Verdict: this OQ is BLOCKED-scale,",
+    "activeApproach": "None viable during the current verification blackout. The only honest, parent-consistent",
+    "blockers": [
+      "- **Mathematical**: Brent's constant 0.7050 is the leading coefficient of an asymptotic"
+    ],
+    "nextAction": "Leave BLOCKED. Re-evaluate only if (a) Docker recovers AND someone commits to the",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: binary-gcd-oq-01-oq-04-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n**Question (Seeker, gallery-gap):** Formalize the *average-case* counterpart of the\nbinary-GCD step-count bound — Brent (1976) showed that on random inputs the expected step\ncount grows like ≈ `0.7050 · log₂ max(a,b)`. Formalize this constant in Lean 4.\n\nThe parent gallery proof `binary-gcd-oq-01-oq-04` (`proofs/Proofs/BinaryGcdOQ01OQ04.lean`)\nis about the **worst case**: the family `(1, 2ⁿ−1)` takes exactly `n` steps, making the\n`O(log a + log b)` upper bound tight. It works over a concrete deterministic step counter\n`binaryGcdSteps : ℕ → ℕ → ℕ` (parent `BinaryGcdOQ01`). The present OQ asks the orthogonal\n*average-case* question, which requires an entirely different (probabilistic/dynamical) toolkit.\n\n---\n\n## Insights\n\n### What the constant 0.7050 actually is\n\nBrent's constant is **not** an elementary closed form. It is the leading coefficient of the\nmean step count and is defined via the spectrum of a **Ruelle–Mayer transfer operator**\nattached to the binary Euclidean algorithm viewed as a random dynamical system:\n\n- **Brent (1976)** modelled the algorithm as a random dynamical system and obtained\n  `≈ 0.705 · log₂ N` *heuristically*, from numerical investigation of the dominant\n  eigenvalue / invariant density of the associated transfer operator. This was a conjecture,\n  not a theorem.\n- **Vallée (1998)**, \"Dynamics of the Binary Euclidean Algorithm: Functional Analysis and\n  Operators,\" modified Brent's model with an induction scheme and *rigorously* proved an\n  asymptotic formula for the mean number of steps — but its relationship to Brent's original\n  heuristic constant remained conjectural.\n- **Full rigorous resolution** (≈2014, arXiv:1409.0729 / Adv. Math. 2015) established the\n  previously conjectural analytic properties of Brent's transfer operator (spectral gap,\n  unique continuous invariant density) and, combined with classical analytic number theory,\n  proved the conjectured formulae — resolving open questions promoted by Knuth (TAOCP).\n\nSo the value `0.7050…` is the leading constant of an asymptotic whose rigorous determination\ntook ~40 years and a research monograph's worth of transfer-operator / Perron–Frobenius\nspectral theory.\n\n### Mathlib coverage — essentially none of the required machinery\n\nA faithful Lean formalization would need, at minimum:\n- a probability model on input pairs (random integers / odd integers ≤ N),\n- the binary Euclidean dynamical system and its **Ruelle–Mayer / Perron–Frobenius transfer\n  operator** on a suitable function space,\n- a **spectral-gap** theorem for that operator and existence/uniqueness of an invariant\n  continuous density,\n- Tauberian / Dirichlet-series asymptotics tying the dominant eigenvalue to the mean step\n  count.\n\nMathlib4 has general measure theory and some functional analysis, but it has **no** transfer\noperators for number-theoretic dynamical systems, no Gauss–Kuzmin / Vallée continued-fraction\ndynamics, and no average-case algorithm analysis. This is building a subfield, not wiring an\nexisting API.\n\n### Realistic tractability\n\nThe Seeker tractability score of **7/10 is wrong** for this OQ. A rigorous proof of the\nconstant is **BLOCKED-scale** (research-monograph; ≫1000 LOC of new Mathlib infrastructure).\nRealistic tractability ≈ 1–2. The parent's deterministic `binaryGcdSteps` infrastructure\ngives **no leverage** here — the worst-case combinatorics and the average-case spectral\nanalysis share only the algorithm definition, not the proof machinery.\n\n### Parent-consistent deliverable (deferred)\n\nThe honest, parent-consistent path is *not* to prove the constant but to:\n1. Define the expected step count `E_N = (average of binaryGcdSteps over a model on inputs ≤ N)`.\n2. State `axiom brent_average_case : E_N ~ C · log₂ N` (with `C` introduced as an\n   `axiom`/`noncomputable def`, since it is only spectrally defined), mirroring how the parent\n   OQ-02 family axiomatizes its bounds.\n3. Optionally prove only the *trivial* sandwich `E_N ≤ 2·log₂ N + O(1)` by averaging the\n   parent's deterministic worst-case bound — this is provable but does **not** capture `0.7050`.\n\nEven step (1) requires fixing a precise probability model, which the natural-language statement\nleaves open. All Lean steps are **Docker-gated** and deferred until the build infra returns.\n\n---\n\n## Dead Ends\n\n- **\"Direct Mathlib API wiring\"** (problem.md approach 1): no applicable API exists for\n  average-case GCD analysis or transfer operators.\n- **\"Sibling reuse\"** (problem.md approach 2): the parent worst-case proof is purely\n  combinatorial induction over `binaryGcdSteps 1 (2k+1)`; it does not generalize to an\n  expectation and provides no probabilistic scaffolding.\n\n---\n\n## References\n\n- R. P. Brent (1976), *Analysis of the binary Euclidean algorithm.*\n- B. Vallée (1998), *Dynamics of the Binary Euclidean Algorithm: Functional Analysis and\n  Operators*, Algorithmica.\n- *A rigorous version of R. P. Brent's model for the binary Euclidean algorithm*,\n  arXiv:1409.0729 (Adv. Math. 2015).\n- Knuth, *TAOCP* Vol. 2 (open questions on binary GCD averages).\n"
+  },
+  "tags": [
+    "algorithms",
+    "number-theory",
+    "gcd",
+    "complexity",
+    "tight-bounds",
+    "intermediate",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "binary-gcd",
+    "binary-gcd-oq-01",
+    "binary-gcd-oq-01-oq-04",
+    "binary-gcd-oq-02",
+    "binary-gcd-oq-02-oq-01",
+    "binary-gcd-oq-02-oq-02",
+    "binary-gcd-oq-03",
+    "binary-gcd-oq-03-oq-02",
+    "binary-gcd-oq-03-oq-02-incomplete-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-13T12:52:52.056Z",
+  "lastUpdate": "2026-06-13T14:53:03.184Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/BinaryGcdOQ01.lean",
+      "filename": "BinaryGcdOQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ01OQ03.lean",
+      "filename": "BinaryGcdOQ01OQ03.lean",
+      "lineCount": 226,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ01OQ04.lean",
+      "filename": "BinaryGcdOQ01OQ04.lean",
+      "lineCount": 158,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ02.lean",
+      "filename": "BinaryGcdOQ02.lean",
+      "lineCount": 135,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ02.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ02OQ01.lean",
+      "filename": "BinaryGcdOQ02OQ01.lean",
+      "lineCount": 177,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ02OQ02.lean",
+      "filename": "BinaryGcdOQ02OQ02.lean",
+      "lineCount": 202,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03.lean",
+      "filename": "BinaryGcdOQ03.lean",
+      "lineCount": 489,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ01.lean",
+      "filename": "BinaryGcdOQ03OQ01.lean",
+      "lineCount": 240,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ02.lean",
+      "filename": "BinaryGcdOQ03OQ02.lean",
+      "lineCount": 2278,
+      "theoremCount": 66,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 9,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ02Incomplete01.lean",
+      "filename": "BinaryGcdOQ03OQ02Incomplete01.lean",
+      "lineCount": 285,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ02Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ02PathA.lean",
+      "filename": "BinaryGcdOQ03OQ02PathA.lean",
+      "lineCount": 3141,
+      "theoremCount": 83,
+      "axiomCount": 0,
+      "defCount": 16,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ02PathA.lean"
+    }
+  ]
+}

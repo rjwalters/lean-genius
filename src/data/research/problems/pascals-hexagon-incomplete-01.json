@@ -8,11 +8,21 @@
   "problemStatement": {
     "formal": "\\exists M : \\text{Mat}_{3\\times 3}(\\mathbb{R}),\\, \\det M \\neq 0 \\land \\forall p,\\, p \\in C \\iff \\pi(M)(p) \\in C_0",
     "plain": "PascalsHexagon.lean (Wiedijk #77) has 1 sorry: Sylvester's law connecting an arbitrary real conic to the standard conic via a projective transformation. Prove using Mathlib's spectral theorem for quadratic forms.",
-    "whyMatters": ["Completes Wiedijk #77 Pascal's hexagon theorem", "Demonstrates projective equivalence of real conics", "Classic application of Sylvester's law of inertia"]
+    "whyMatters": [
+      "Completes Wiedijk #77 Pascal's hexagon theorem",
+      "Demonstrates projective equivalence of real conics",
+      "Classic application of Sylvester's law of inertia"
+    ]
   },
   "knownResults": {
-    "proven": ["All Pascal constraint steps except Sylvester's law", "projTransform and stdConic defined", "ProjPoint and Conic structures complete"],
-    "open": ["Sylvester's law: any conic of signature (2,1) is congruent to x²+y²-z²"],
+    "proven": [
+      "All Pascal constraint steps except Sylvester's law",
+      "projTransform and stdConic defined",
+      "ProjPoint and Conic structures complete"
+    ],
+    "open": [
+      "Sylvester's law: any conic of signature (2,1) is congruent to x²+y²-z²"
+    ],
     "goal": ""
   },
   "currentState": {
@@ -44,12 +54,26 @@
     "completion"
   ],
   "relatedProofs": [
-    "pascals-hexagon"
+    "pascals-hexagon",
+    "pascals-hexagon-incomplete-01"
   ],
   "references": {
     "papers": [],
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-04-21T16:44:08+02:00"
+  "started": "2026-04-21T16:44:08+02:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/PascalsHexagonIncomplete01.lean",
+      "filename": "PascalsHexagonIncomplete01.lean",
+      "lineCount": 153,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagonIncomplete01.lean"
+    }
+  ]
 }

@@ -46,9 +46,12 @@
   ],
   "relatedProofs": [
     "cube-root-3-irrational",
+    "cube-root-3-irrational-oq-01",
     "cube-root-3-irrational-oq-02",
     "cube-root-3-irrational-oq-02-oq-01",
-    "cube-root-3-irrational-oq-02-oq-02"
+    "cube-root-3-irrational-oq-02-oq-02",
+    "cube-root-3-irrational-oq-03",
+    "cube-root-3-irrational-oq-04"
   ],
   "references": {
     "papers": [],
@@ -70,6 +73,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3Irrational.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ01.lean",
+      "filename": "CubeRoot3IrrationalOQ01.lean",
+      "lineCount": 131,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ01.lean"
     },
     {
       "path": "Proofs/CubeRoot3IrrationalOQ02.lean",
@@ -105,10 +119,21 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ02OQ02.lean"
     },
     {
+      "path": "Proofs/CubeRoot3IrrationalOQ03.lean",
+      "filename": "CubeRoot3IrrationalOQ03.lean",
+      "lineCount": 186,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ03.lean"
+    },
+    {
       "path": "Proofs/CubeRoot3IrrationalOQ04.lean",
       "filename": "CubeRoot3IrrationalOQ04.lean",
-      "lineCount": 1290,
-      "theoremCount": 16,
+      "lineCount": 2000,
+      "theoremCount": 19,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -116,15 +141,70 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ04.lean"
     },
     {
+      "path": "Proofs/CubeRoot3IrrationalOQ04A12.lean",
+      "filename": "CubeRoot3IrrationalOQ04A12.lean",
+      "lineCount": 389,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ04A12.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ04Degree.lean",
+      "filename": "CubeRoot3IrrationalOQ04Degree.lean",
+      "lineCount": 84,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ04Degree.lean"
+    },
+    {
       "path": "Proofs/CubeRoot3IrrationalOQ04Helpers.lean",
       "filename": "CubeRoot3IrrationalOQ04Helpers.lean",
-      "lineCount": 473,
-      "theoremCount": 15,
+      "lineCount": 1050,
+      "theoremCount": 29,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ04NotQuadratic.lean",
+      "filename": "CubeRoot3IrrationalOQ04NotQuadratic.lean",
+      "lineCount": 151,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ04NotQuadratic.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ04Stream.lean",
+      "filename": "CubeRoot3IrrationalOQ04Stream.lean",
+      "lineCount": 422,
+      "theoremCount": 37,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ04Stream.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ04StreamCanonical.lean",
+      "filename": "CubeRoot3IrrationalOQ04StreamCanonical.lean",
+      "lineCount": 185,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ04StreamCanonical.lean"
     }
   ]
 }

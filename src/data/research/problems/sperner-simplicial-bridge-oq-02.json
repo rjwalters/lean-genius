@@ -1,0 +1,95 @@
+{
+  "slug": "sperner-simplicial-bridge-oq-02",
+  "title": "Does this bridge extend to Mathlib''s `Geometry",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Extracted as a `generalization` follow-up to the gallery proof `sperner-simplicial-bridge` and classified as `challenging` based on the gallery extractor heuristics. The full prose statement above describes what the Researcher should explore.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-09",
+    "iteration": 1,
+    "focus": "Reading the source gallery proof `sperner-simplicial-bridge` and translating the open question into a precise Lean statement.",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge: sperner-simplicial-bridge-oq-02\n\n## Established Facts\n\n(None yet — populated during OBSERVE.)\n\n## Open Questions Within This Problem\n\n- The main open question (see `problem.md`).\n\n## Failed Approaches\n\n(None yet.)\n\n## Promising Leads\n\n(None yet.)\n"
+  },
+  "tags": [
+    "combinatorics",
+    "topology",
+    "sperner",
+    "simplicial-complex",
+    "pseudomanifold",
+    "bridge"
+  ],
+  "relatedProofs": [
+    "sperner-simplicial-bridge",
+    "sperner-simplicial-bridge-oq-01",
+    "sperner-simplicial-bridge-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-13T12:52:52.051Z",
+  "lastUpdate": "2026-06-21T20:16:01.691Z",
+  "completed": "2026-06-21T20:16:01.691Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/SpernerSimplicialBridge.lean",
+      "filename": "SpernerSimplicialBridge.lean",
+      "lineCount": 612,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialBridge.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialBridgeOQ01.lean",
+      "filename": "SpernerSimplicialBridgeOQ01.lean",
+      "lineCount": 271,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialBridgeOQ01.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialBridgeOQ02.lean",
+      "filename": "SpernerSimplicialBridgeOQ02.lean",
+      "lineCount": 219,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialBridgeOQ02.lean"
+    }
+  ]
+}

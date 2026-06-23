@@ -1,0 +1,69 @@
+{
+  "slug": "happy-number-oq-01",
+  "title": "Happy Numbers — Dichotomy of the Digit-Square Map",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "4 \\to 16 \\to 37 \\to 58 \\to 89 \\to 145 \\to 42 \\to 20 \\to 4 .",
+    "plain": "Square each digit of a number and add the squares; repeat. Every starting number",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-16T08:31:11-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: happy-number-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "digits",
+    "dynamics",
+    "happy-numbers",
+    "decidable"
+  ],
+  "relatedProofs": [
+    "happy-number-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-16T18:50:58.858Z",
+  "lastUpdate": "2026-06-16T18:50:58.937Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/HappyNumberOQ01.lean",
+      "filename": "HappyNumberOQ01.lean",
+      "lineCount": 176,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HappyNumberOQ01.lean"
+    }
+  ]
+}

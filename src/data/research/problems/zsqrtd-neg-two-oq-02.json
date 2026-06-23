@@ -100,9 +100,13 @@
     "research"
   ],
   "relatedProofs": [
-    "zsqrtd-neg-two",
+    "fermat-two-squares",
     "lagrange-four-squares-waring-g2",
-    "fermat-two-squares"
+    "zsqrtd-neg-two",
+    "zsqrtd-neg-two-oq-01",
+    "zsqrtd-neg-two-oq-02",
+    "zsqrtd-neg-two-oq-03",
+    "zsqrtd-neg-two-oq-03-oq-01"
   ],
   "references": {
     "papers": [
@@ -119,5 +123,62 @@
   "started": "2026-06-15T07:35:00.000Z",
   "lastUpdate": "2026-06-19T00:00:00.000Z",
   "significance": 7,
-  "tractability": 4
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/ZsqrtdNegTwo.lean",
+      "filename": "ZsqrtdNegTwo.lean",
+      "lineCount": 477,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwo.lean"
+    },
+    {
+      "path": "Proofs/ZsqrtdNegTwoOQ01.lean",
+      "filename": "ZsqrtdNegTwoOQ01.lean",
+      "lineCount": 108,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwoOQ01.lean"
+    },
+    {
+      "path": "Proofs/ZsqrtdNegTwoOQ02.lean",
+      "filename": "ZsqrtdNegTwoOQ02.lean",
+      "lineCount": 163,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwoOQ02.lean"
+    },
+    {
+      "path": "Proofs/ZsqrtdNegTwoOQ03.lean",
+      "filename": "ZsqrtdNegTwoOQ03.lean",
+      "lineCount": 560,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwoOQ03.lean"
+    },
+    {
+      "path": "Proofs/ZsqrtdNegTwoOQ03OQ01.lean",
+      "filename": "ZsqrtdNegTwoOQ03OQ01.lean",
+      "lineCount": 342,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwoOQ03OQ01.lean"
+    }
+  ]
 }

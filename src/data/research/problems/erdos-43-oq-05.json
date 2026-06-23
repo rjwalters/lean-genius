@@ -71,6 +71,7 @@
     "erdos-433",
     "erdos-434",
     "erdos-435",
+    "erdos-435-oq-01",
     "erdos-436",
     "erdos-437",
     "erdos-438",
@@ -86,8 +87,8 @@
     {
       "path": "Proofs/Erdos430Problem.lean",
       "filename": "Erdos430Problem.lean",
-      "lineCount": 250,
-      "theoremCount": 5,
+      "lineCount": 276,
+      "theoremCount": 8,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
@@ -161,6 +162,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos434Problem.lean"
     },
     {
+      "path": "Proofs/Erdos435PrimePowerObstruction.lean",
+      "filename": "Erdos435PrimePowerObstruction.lean",
+      "lineCount": 84,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos435PrimePowerObstruction.lean"
+    },
+    {
       "path": "Proofs/Erdos435Problem.lean",
       "filename": "Erdos435Problem.lean",
       "lineCount": 234,
@@ -196,22 +208,22 @@
     {
       "path": "Proofs/Erdos437Aristotle.lean",
       "filename": "Erdos437Aristotle.lean",
-      "lineCount": 104,
+      "lineCount": 132,
       "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos437Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos437Problem.lean",
       "filename": "Erdos437Problem.lean",
-      "lineCount": 285,
+      "lineCount": 291,
       "theoremCount": 5,
       "axiomCount": 4,
       "defCount": 9,
-      "sorryCount": 3,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos437Problem.lean"
     },

@@ -32,9 +32,9 @@
     {
       "path": "Proofs/Erdos731Problem.lean",
       "filename": "Erdos731Problem.lean",
-      "lineCount": 302,
-      "theoremCount": 21,
-      "axiomCount": 3,
+      "lineCount": 440,
+      "theoremCount": 31,
+      "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
@@ -52,15 +52,37 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos732Problem.lean"
     },
     {
+      "path": "Proofs/Erdos733LimitBounds.lean",
+      "filename": "Erdos733LimitBounds.lean",
+      "lineCount": 106,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos733LimitBounds.lean"
+    },
+    {
       "path": "Proofs/Erdos733Problem.lean",
       "filename": "Erdos733Problem.lean",
-      "lineCount": 275,
+      "lineCount": 287,
       "theoremCount": 6,
       "axiomCount": 2,
       "defCount": 6,
       "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos733Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos733RichLines.lean",
+      "filename": "Erdos733RichLines.lean",
+      "lineCount": 186,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos733RichLines.lean"
     },
     {
       "path": "Proofs/Erdos734Problem.lean",
@@ -74,12 +96,34 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos734Problem.lean"
     },
     {
+      "path": "Proofs/Erdos735OQ04.lean",
+      "filename": "Erdos735OQ04.lean",
+      "lineCount": 244,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos735OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos735OQ04Tetrahedron.lean",
+      "filename": "Erdos735OQ04Tetrahedron.lean",
+      "lineCount": 97,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos735OQ04Tetrahedron.lean"
+    },
+    {
       "path": "Proofs/Erdos735Problem.lean",
       "filename": "Erdos735Problem.lean",
-      "lineCount": 211,
-      "theoremCount": 3,
-      "axiomCount": 7,
-      "defCount": 17,
+      "lineCount": 248,
+      "theoremCount": 5,
+      "axiomCount": 5,
+      "defCount": 16,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos735Problem.lean"
@@ -87,11 +131,11 @@
     {
       "path": "Proofs/Erdos736Problem.lean",
       "filename": "Erdos736Problem.lean",
-      "lineCount": 204,
-      "theoremCount": 2,
+      "lineCount": 249,
+      "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 9,
-      "sorryCount": 1,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos736Problem.lean"
     },
@@ -158,6 +202,7 @@
     "erdos-731",
     "erdos-732",
     "erdos-733",
+    "erdos-733-oq-02",
     "erdos-734",
     "erdos-735",
     "erdos-736",

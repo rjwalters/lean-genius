@@ -3,34 +3,6 @@
   "title": "Euler Totient OQ-02-OQ-01: Factorization Product Formula",
   "description": "Records the Lean factorization/product-formula route for Euler's totient function using Mathlib's prime-factorization infrastructure.",
   "problemStatement": {
-    "formal": "Derive totient product formulas from Nat.factorization and multiplicativity, including rational and divisor-product presentations.",
-    "plain": "Formalizes the standard product formula for Euler's totient function by reducing it to the prime-power factorization of n.",
-    "whyMatters": [
-      "It connects the computational totient API to the classical product over prime divisors.",
-      "The file provides concrete checked examples such as phi(12), phi(30), and phi(360).",
-      "The proof clarifies that the product formula is a consequence of factorization plus multiplicativity."
-    ]
-  },
-  "knownResults": {
-    "proven": [
-      "`totient_factorization_formula` states the factorization-product version for nonzero n.",
-      "`totient_rational_formula` and `totient_div_primes_formula` expose rational and divisor-product forms.",
-      "`totient_from_multiplicativity` derives the formula from multiplicativity and prime powers.",
-      "`totient_twelve_via_formula`, `totient_360`, and `totient_rational_30` verify sample computations.",
-      "`totient_density` and `totient_density_same_support` record density consequences.",
-      "`EulerTotientOQ02OQ01.lean` is recorded with 0 axioms and 0 sorries."
-    ],
-    "open": [
-      "The file focuses on the factorization route, not on a separate analytic theory of average totient order."
-    ],
-    "goal": "Surface the completed totient product-formula formalization as a verified extension of multiplicativity."
-  },
-  "source": {
-    "proofId": "euler-totient-oq-02",
-    "proofTitle": "Multiplicativity of Euler's Totient Function",
-    "type": "open-question"
-  },
-  "problemStatement": {
     "formal": "Formalize Euler's totient product formula using Nat.factorization and product over prime factors.",
     "plain": "Express phi(n) as a product over prime-power contributions, then derive rational-form and density interpretations.",
     "whyMatters": [
@@ -50,6 +22,11 @@
     "open": [],
     "goal": "Expose the completed factorization-based totient formula and its computational corollaries."
   },
+  "source": {
+    "proofId": "euler-totient-oq-02",
+    "proofTitle": "Multiplicativity of Euler's Totient Function",
+    "type": "open-question"
+  },
   "category": "generalization",
   "tractability": "challenging",
   "tags": [
@@ -64,10 +41,17 @@
   "relatedProofs": [
     "euler-totient",
     "euler-totient-oq-01",
+    "euler-totient-oq-01-oq-01",
+    "euler-totient-oq-01-oq-02",
+    "euler-totient-oq-01-oq-03",
     "euler-totient-oq-02",
     "euler-totient-oq-02-oq-01",
     "euler-totient-oq-03",
-    "euler-totient-oq-04"
+    "euler-totient-oq-04",
+    "euler-totient-oq-05",
+    "euler-totient-oq-06",
+    "euler-totient-oq-07",
+    "euler-totient-oq-09"
   ],
   "status": "completed",
   "selectedDate": "2026-04-12",
@@ -87,13 +71,68 @@
     {
       "path": "Proofs/EulerTotientOQ01.lean",
       "filename": "EulerTotientOQ01.lean",
-      "lineCount": 84,
+      "lineCount": 88,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ01OQ01.lean",
+      "filename": "EulerTotientOQ01OQ01.lean",
+      "lineCount": 77,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ01OQ02.lean",
+      "filename": "EulerTotientOQ01OQ02.lean",
+      "lineCount": 76,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ01OQ03.lean",
+      "filename": "EulerTotientOQ01OQ03.lean",
+      "lineCount": 240,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ01OQ03Keygen.lean",
+      "filename": "EulerTotientOQ01OQ03Keygen.lean",
+      "lineCount": 78,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01OQ03Keygen.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ01OQ03Minimal.lean",
+      "filename": "EulerTotientOQ01OQ03Minimal.lean",
+      "lineCount": 55,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01OQ03Minimal.lean"
     },
     {
       "path": "Proofs/EulerTotientOQ02.lean",
@@ -138,6 +177,61 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ04.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ04OQ01.lean",
+      "filename": "EulerTotientOQ04OQ01.lean",
+      "lineCount": 165,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ05.lean",
+      "filename": "EulerTotientOQ05.lean",
+      "lineCount": 179,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ05.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ06.lean",
+      "filename": "EulerTotientOQ06.lean",
+      "lineCount": 83,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ06.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ07.lean",
+      "filename": "EulerTotientOQ07.lean",
+      "lineCount": 107,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ07.lean"
+    },
+    {
+      "path": "Proofs/EulerTotientOQ09.lean",
+      "filename": "EulerTotientOQ09.lean",
+      "lineCount": 122,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ09.lean"
     }
   ]
 }

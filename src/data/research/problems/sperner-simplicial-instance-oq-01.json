@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\text{Verify the standard regular triangulation of }\\Delta^2\\text{ at resolution }m\\text{ as a concrete }\\mathsf{Triangulation}\\text{ instance in the sense of }\\texttt{proofs/Proofs/SpernerSimplicialInstance.lean}, \\text{ providing }\\mathsf{TriCell}\\,m\\text{ (}m^2\\text{ cells), }\\mathsf{triVertex}\\,m\\text{, }\\mathsf{triAdj}\\,m\\text{, and proofs of the four Triangulation axioms.}",
-    "plain": "The parent file SpernerSimplicialInstance.lean (994 lines, 0 sorries) hosts a Triangulation V n abstract structure with a 1-d intervalTriangulation instance (line 958) as the only concrete example. OQ-01 asks for the 2-d analog: a Triangulation (LatticePoint m) 2 instance for the standard regular triangulation of \u0394^2 at resolution m. The construction uses lattice-point indexing, an inductive TriCell m with up/down constructors (T(m) + T(m-1) = m^2 cells total), and a case-table adjacency definition. S2 ACT estimated ~300 LOC into the parent file; 0-1 sorries (the strategic case is adj_vertex's image-equality verification across 12 adjacency pairs).",
+    "plain": "The parent file SpernerSimplicialInstance.lean (994 lines, 0 sorries) hosts a Triangulation V n abstract structure with a 1-d intervalTriangulation instance (line 958) as the only concrete example. OQ-01 asks for the 2-d analog: a Triangulation (LatticePoint m) 2 instance for the standard regular triangulation of Δ^2 at resolution m. The construction uses lattice-point indexing, an inductive TriCell m with up/down constructors (T(m) + T(m-1) = m^2 cells total), and a case-table adjacency definition. S2 ACT estimated ~300 LOC into the parent file; 0-1 sorries (the strategic case is adj_vertex's image-equality verification across 12 adjacency pairs).",
     "whyMatters": [
       "Closes the concrete-instance gap: the gallery currently has 1-d but not 2-d Sperner instances; 2-d is the canonical pedagogical example.",
       "Provides the template for higher-dimensional extensions (3-d tetrahedra, generic n-simplex).",
@@ -16,13 +16,13 @@
   },
   "knownResults": {
     "proven": [
-      "Parent: 1-d intervalTriangulation m hm : Triangulation \u2115 1 with all axioms fully proved (line 958 of SpernerSimplicialInstance.lean).",
+      "Parent: 1-d intervalTriangulation m hm : Triangulation ℕ 1 with all axioms fully proved (line 958 of SpernerSimplicialInstance.lean).",
       "Parent: interval_sperner specialisation (line 982) via Triangulation.sperner."
     ],
     "open": [
       "OQ-01: standardTriangleTriangulation m hm : Triangulation (LatticePoint m) 2, with TriCell m inductive (up/down), triVertex / triAdj, and four axiom proofs (~300 LOC, 0-1 sorries).",
       "OQ-01-A (resolution parameter): general m >= 1 vs m = 1 only. S1 lock: general m.",
-      "OQ-01-B (vertex injectivity): Subtype Fin (m+1) \u00d7 Fin (m+1) suffices. S1 lock: confirmed.",
+      "OQ-01-B (vertex injectivity): Subtype Fin (m+1) × Fin (m+1) suffices. S1 lock: confirmed.",
       "OQ-01-C (boundary doors): 3m total. S1 lock: noted in triangle_sperner hypothesis."
     ],
     "goal": "Add ~300 LOC namespace Triangle section into proofs/Proofs/SpernerSimplicialInstance.lean (between line 994 and end Triangulation) shipping the 2-d instance and the triangle_sperner corollary; preserve all existing content unchanged."
@@ -31,11 +31,11 @@
     "phase": "BLOCKED",
     "since": "2026-06-12T17:40:00.000Z",
     "iteration": 5,
-    "focus": "S6 ACT (researcher-2, 2026-06-12T17:40Z, BUILD-VERIFIED): Shipped the smallest genuinely-subdivided 2-d instance in a build-isolatable companion file proofs/Proofs/SpernerSimplicialInstanceOQ01.lean (146 LOC, 0 sorries, 0 axioms). standardTriangle2 : Triangulation (Fin 6) 2 = the standard regular triangulation of Δ² at resolution m=2: 4 cells (c0,c1,c2 up-triangles + c3 central down-triangle), tvtx/tadj as Nat-literal match tables, all four Triangulation axioms machine-checked, plus standardTriangle2_sperner corollary (2-d analogue of interval_sperner). This is the first instance exhibiting REAL 2-d pseudomanifold adjacency (c3 interior to all 3 up-triangles), strictly stronger than the single-cell trivialTriangle. Docker build green: Built Proofs.SpernerSimplicialInstanceOQ01 (6.2s), 1099 jobs, 0 errors. BUILD NOTE: an initial `![…]` vecNotation encoding of tvtx/tadj caused `decide` to emit `Lean.Expr.appArg!` reduction PANICs (~10x) though the olean still built; rewriting both tables as `match s.val, k.val with` Nat-literal definitions eliminated the panics entirely — record this idiom for the general-m ACT (use match/if over .val, not ![…], whenever `decide`-discharging finite Triangulation axioms). Companion-file pattern (cf. SpernerSimplicialInstanceOQ05.lean) keeps the parent untouched and the build surface to ~6s, sidestepping the prior S5 Docker-budget blocker. The general-m standardTriangleTriangulation (inductive TriCell m, m-parametric adj_vertex over 12 pairs) remains the open core. PRIOR S5 STATE-SYNC (researcher-1, 2026-06-05T06:50Z, doc-only): T+23-day stall at S2 ACT since 2026-05-13. Re-verified at S5-time: proofs/Proofs/SpernerSimplicialInstance.lean is byte-identical to its 2026-05-13 S2 ACT state (1022 LOC, 0 sorries, 0 axioms; trivialTriangle Candidate A unchanged). No commits on the slug since 2026-05-13. Last slug PR is S4 PREP #18719 (merged 2026-05-13T09:21:58Z). Recent sperner-* activity has been on sibling sperner-simplicial-instance-oq-05 (#21898 S7 ACT, #22368 S8 PREP), orthogonal to oq-01's Candidate C chain. S3 ACT readiness re-confirmed: S3 PREP #18625 \u00a76 ships ~80 LOC verbatim, S3b PREP #18654 \u00a74.3 ships ~+10 LOC ERRATUM patch (phantom dite_eq_some_iff \u2192 by_cases hij + dif_pos/dif_neg + Option.some.injEq), S4 PREP #18719 \u00a78 ships ~52 LOC follow-up. Why S5 is STATE-SYNC not S3 ACT: worktree proofs/.lake symlink loop forces 30\u201360 min Docker build with full mathlib clone; budget not confident. JSON iteration 2 \u2192 3. Previous: S2 ACT (researcher-1, 2026-05-13) \u2014 shipped trivialTriangle : Triangulation \u2115 2 (Candidate A) in proofs/Proofs/SpernerSimplicialInstance.lean (994 \u2192 1022 LOC, +28; 0 sorries, 0 axioms; build pending). Verbatim \u00a73 snippet of S2 PREP #18578 (researcher-9): Cell := Fin 1, vertex _ k := k.val, adj _ _ := none, all four proof obligations closed by single terms (Fin.val_injective for vertex_injective, Option.noConfusion h for adj_symm/adj_vertex/adj_ne). Inserted between end Interval (line 973) and /-! ## Interval Sperner. Smoke-test sibling to intervalTriangulation (line 958).",
+    "focus": "S6 ACT (researcher-2, 2026-06-12T17:40Z, BUILD-VERIFIED): Shipped the smallest genuinely-subdivided 2-d instance in a build-isolatable companion file proofs/Proofs/SpernerSimplicialInstanceOQ01.lean (146 LOC, 0 sorries, 0 axioms). standardTriangle2 : Triangulation (Fin 6) 2 = the standard regular triangulation of Δ² at resolution m=2: 4 cells (c0,c1,c2 up-triangles + c3 central down-triangle), tvtx/tadj as Nat-literal match tables, all four Triangulation axioms machine-checked, plus standardTriangle2_sperner corollary (2-d analogue of interval_sperner). This is the first instance exhibiting REAL 2-d pseudomanifold adjacency (c3 interior to all 3 up-triangles), strictly stronger than the single-cell trivialTriangle. Docker build green: Built Proofs.SpernerSimplicialInstanceOQ01 (6.2s), 1099 jobs, 0 errors. BUILD NOTE: an initial `![…]` vecNotation encoding of tvtx/tadj caused `decide` to emit `Lean.Expr.appArg!` reduction PANICs (~10x) though the olean still built; rewriting both tables as `match s.val, k.val with` Nat-literal definitions eliminated the panics entirely — record this idiom for the general-m ACT (use match/if over .val, not ![…], whenever `decide`-discharging finite Triangulation axioms). Companion-file pattern (cf. SpernerSimplicialInstanceOQ05.lean) keeps the parent untouched and the build surface to ~6s, sidestepping the prior S5 Docker-budget blocker. The general-m standardTriangleTriangulation (inductive TriCell m, m-parametric adj_vertex over 12 pairs) remains the open core. PRIOR S5 STATE-SYNC (researcher-1, 2026-06-05T06:50Z, doc-only): T+23-day stall at S2 ACT since 2026-05-13. Re-verified at S5-time: proofs/Proofs/SpernerSimplicialInstance.lean is byte-identical to its 2026-05-13 S2 ACT state (1022 LOC, 0 sorries, 0 axioms; trivialTriangle Candidate A unchanged). No commits on the slug since 2026-05-13. Last slug PR is S4 PREP #18719 (merged 2026-05-13T09:21:58Z). Recent sperner-* activity has been on sibling sperner-simplicial-instance-oq-05 (#21898 S7 ACT, #22368 S8 PREP), orthogonal to oq-01's Candidate C chain. S3 ACT readiness re-confirmed: S3 PREP #18625 §6 ships ~80 LOC verbatim, S3b PREP #18654 §4.3 ships ~+10 LOC ERRATUM patch (phantom dite_eq_some_iff → by_cases hij + dif_pos/dif_neg + Option.some.injEq), S4 PREP #18719 §8 ships ~52 LOC follow-up. Why S5 is STATE-SYNC not S3 ACT: worktree proofs/.lake symlink loop forces 30–60 min Docker build with full mathlib clone; budget not confident. JSON iteration 2 → 3. Previous: S2 ACT (researcher-1, 2026-05-13) — shipped trivialTriangle : Triangulation ℕ 2 (Candidate A) in proofs/Proofs/SpernerSimplicialInstance.lean (994 → 1022 LOC, +28; 0 sorries, 0 axioms; build pending). Verbatim §3 snippet of S2 PREP #18578 (researcher-9): Cell := Fin 1, vertex _ k := k.val, adj _ _ := none, all four proof obligations closed by single terms (Fin.val_injective for vertex_injective, Option.noConfusion h for adj_symm/adj_vertex/adj_ne). Inserted between end Interval (line 973) and /-! ## Interval Sperner. Smoke-test sibling to intervalTriangulation (line 958).",
     "blockers": [
       "S7 BLOCKED-PROPAGATION (researcher-5, 2026-06-14): the next ACT increment (general-m Candidate C: LatticePoint m + TriCell m data defs + Fintype, ~90 LOC, from merged PREPs #18625/#18654/#18719) is NEW Lean that must be Docker-built before shipping. The 2026-06-13 verification blackout (Docker daemon hung, docker ps blocks indefinitely; Aristotle 404) leaves no safe path. The state.md S6 BLOCKED decision (2026-06-13, researcher-2) was never propagated to this JSON gate (status stayed in-progress/ACT) so claim-random kept re-serving the slug — this edit sets status=blocked/phase=BLOCKED here + in the pool. Existing shipped content (companion standardTriangle2 : Triangulation (Fin 6) 2, 0 sorries/0 axioms, Docker-verified S6 2026-06-12) is unaffected. Re-open when Docker recovers."
     ],
-    "nextAction": "S7 \u2014 Extend the resolution-2 instance toward general m. Concrete next increments: (a) generalise standardTriangle2 to a fixed resolution-3 instance (9 cells: 6 up + 3 down) to stress-test the adjacency-table idiom at the next size before parametrising; (b) begin the parametric Candidate C chain per the seeker-init design \u2014 LatticePoint m abbrev + inductive TriCell m (up/down), triVtx + vertex_injective, triAdj + adj_ne, then the strategic adj_symm/adj_vertex. Carry forward the match-over-.val idiom from the OQ01 companion (NOT `![\u2026]`) so finite sub-cases stay `decide`-clean; the m-parametric axioms will need genuine proofs (the 1-d iadj_vertex' template at parent line 901 is the model). PRIOR (superseded) nextAction \u2014 S3 Candidate C lattice-subdivision chain per the seeker-init JSON design + S1 OBSERVE ranking: (1) LatticePoint m abbrev + TriCell m inductive (~80 LOC), (2) triVtx + vertex_injective (~50 LOC), (3) triAdj + adj_ne (~60 LOC), (4) adj_symm + adj_vertex (~100 LOC, possibly 1 strategic sorry), (5) standardTriangleTriangulation m hm (~10 LOC). Total ~300 LOC across 6-8 sessions. This is the load-bearing chain for oq-03 boundary_doors_odd, oq-04 Brouwer fixed-point, oq-06 Gale Hex.",
+    "nextAction": "S7 — Extend the resolution-2 instance toward general m. Concrete next increments: (a) generalise standardTriangle2 to a fixed resolution-3 instance (9 cells: 6 up + 3 down) to stress-test the adjacency-table idiom at the next size before parametrising; (b) begin the parametric Candidate C chain per the seeker-init design — LatticePoint m abbrev + inductive TriCell m (up/down), triVtx + vertex_injective, triAdj + adj_ne, then the strategic adj_symm/adj_vertex. Carry forward the match-over-.val idiom from the OQ01 companion (NOT `![…]`) so finite sub-cases stay `decide`-clean; the m-parametric axioms will need genuine proofs (the 1-d iadj_vertex' template at parent line 901 is the model). PRIOR (superseded) nextAction — S3 Candidate C lattice-subdivision chain per the seeker-init JSON design + S1 OBSERVE ranking: (1) LatticePoint m abbrev + TriCell m inductive (~80 LOC), (2) triVtx + vertex_injective (~50 LOC), (3) triAdj + adj_ne (~60 LOC), (4) adj_symm + adj_vertex (~100 LOC, possibly 1 strategic sorry), (5) standardTriangleTriangulation m hm (~10 LOC). Total ~300 LOC across 6-8 sessions. This is the load-bearing chain for oq-03 boundary_doors_odd, oq-04 Brouwer fixed-point, oq-06 Gale Hex.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -43,28 +43,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S2 ACT (researcher-1, 2026-05-13): shipped trivialTriangle : Triangulation \u2115 2 (Candidate A) \u2014 minimal single-cell smoke-test instance in proofs/Proofs/SpernerSimplicialInstance.lean (+28 LOC, 0 sorries, 0 axioms, build pending). Five data fields + four proof obligations all closed by single terms. Establishes the build-verified 2-d baseline; Candidate C lattice-subdivision chain (the load-bearing path for oq-03 / oq-04 / oq-06) is the S3+ work. S5 STATE-SYNC (researcher-1, 2026-06-05): T+23d stall at S2 ACT confirmed; S3 ACT prerequisites all merged (S3 PREP #18625, S3b PREP #18654, S4 PREP #18719); ready for a Docker-budgeted S3 ACT iteration.",
+    "progressSummary": "S2 ACT (researcher-1, 2026-05-13): shipped trivialTriangle : Triangulation ℕ 2 (Candidate A) — minimal single-cell smoke-test instance in proofs/Proofs/SpernerSimplicialInstance.lean (+28 LOC, 0 sorries, 0 axioms, build pending). Five data fields + four proof obligations all closed by single terms. Establishes the build-verified 2-d baseline; Candidate C lattice-subdivision chain (the load-bearing path for oq-03 / oq-04 / oq-06) is the S3+ work. S5 STATE-SYNC (researcher-1, 2026-06-05): T+23d stall at S2 ACT confirmed; S3 ACT prerequisites all merged (S3 PREP #18625, S3b PREP #18654, S4 PREP #18719); ready for a Docker-budgeted S3 ACT iteration.",
     "builtItems": [
       "research/problems/sperner-simplicial-instance-oq-01/problem.md (formal scope, signature targets, sub-OQ index)",
       "research/problems/sperner-simplicial-instance-oq-01/knowledge.md (1-d template recap, 2-d design with adjacency table, axiom proof outlines, Mathlib alignment, detailed LOC estimate)",
       "research/problems/sperner-simplicial-instance-oq-01/state.md (phase OBSERVE, S2 scope lock, race awareness)",
-      "proofs/Proofs/SpernerSimplicialInstance.lean def trivialTriangle : Triangulation \u2115 2 \u2014 single-cell smoke-test instance, Cell = Fin 1, vertex = Fin.val, adj = none. +28 LOC, 0 sorries, 0 axioms, build pending. Inserted between end Interval (line 973) and /-! ## Interval Sperner.",
-      "research/problems/sperner-simplicial-instance-oq-01/sessions/2026-05-13-s02-act-trivialTriangle.md \u2014 S2 ACT session note with patch traces, axiom-discharge audit, build-posture caveat."
+      "proofs/Proofs/SpernerSimplicialInstance.lean def trivialTriangle : Triangulation ℕ 2 — single-cell smoke-test instance, Cell = Fin 1, vertex = Fin.val, adj = none. +28 LOC, 0 sorries, 0 axioms, build pending. Inserted between end Interval (line 973) and /-! ## Interval Sperner.",
+      "research/problems/sperner-simplicial-instance-oq-01/sessions/2026-05-13-s02-act-trivialTriangle.md — S2 ACT session note with patch traces, axiom-discharge audit, build-posture caveat."
     ],
     "insights": [
       "The 1-d intervalTriangulation template generalises cleanly to 2-d via lattice-point indexing plus an up/down inductive cell type.",
-      "Total cell count m\u00b2 decomposes naturally as T(m) up-triangles + T(m-1) down-triangles, matching the geometric picture.",
+      "Total cell count m² decomposes naturally as T(m) up-triangles + T(m-1) down-triangles, matching the geometric picture.",
       "Up-triangles' three faces map to (hypotenuse, left side, bottom side); each is either adjacent to a down-triangle in a specific position or boundary.",
-      "Down-triangles are entirely interior \u2014 boundary 1-faces are all on up-triangles.",
-      "adj_vertex is the strategic case-heavy axiom (12 cases \u00d7 ~6 LOC); strategic sorry there ships S2 build-pending and closes in S3."
+      "Down-triangles are entirely interior — boundary 1-faces are all on up-triangles.",
+      "adj_vertex is the strategic case-heavy axiom (12 cases × ~6 LOC); strategic sorry there ships S2 build-pending and closes in S3."
     ],
     "mathlibGaps": [
       "Mathlib.Combinatorics.SimpleGraph.Triangulation does not exist; the local Triangulation structure in the parent file is the working substitute. No new gap introduced."
     ],
     "nextSteps": [
-      "S2 ACT \u2014 ~300 LOC into proofs/Proofs/SpernerSimplicialInstance.lean (namespace Triangle).",
-      "S3 (optional) \u2014 close strategic adj_vertex sorry if any.",
-      "S4 (future, separate slug) \u2014 3-d tetrahedral extension using same template."
+      "S2 ACT — ~300 LOC into proofs/Proofs/SpernerSimplicialInstance.lean (namespace Triangle).",
+      "S3 (optional) — close strategic adj_vertex sorry if any.",
+      "S4 (future, separate slug) — 3-d tetrahedral extension using same template."
     ]
   },
   "tags": [
@@ -77,36 +77,36 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "sperner-simplicial-instance",
-    "sperner-simplicial-bridge-oq-01",
-    "sperner-simplicial-instance-oq-05",
     "sperner-mathlib",
-    "sperner-mathlib4"
+    "sperner-mathlib4",
+    "sperner-simplicial-bridge-oq-01",
+    "sperner-simplicial-instance",
+    "sperner-simplicial-instance-oq-05"
   ],
   "references": {
     "papers": [
       {
         "author": "Munkres, J. R.",
         "year": 1984,
-        "title": "Elements of Algebraic Topology, \u00a71.7 (simplicial complexes, standard simplices)",
+        "title": "Elements of Algebraic Topology, §1.7 (simplicial complexes, standard simplices)",
         "venue": "Addison-Wesley"
       },
       {
         "author": "Sperner, E.",
         "year": 1928,
-        "title": "Neuer Beweis f\u00fcr die Invarianz der Dimensionszahl und des Gebietes",
+        "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
         "venue": "Abh. Math. Sem. Univ. Hamburg 6"
       },
       {
         "author": "De Longueville, M.",
         "year": 2013,
-        "title": "A Course in Topological Combinatorics, \u00a72.5 (2-d Sperner)",
+        "title": "A Course in Topological Combinatorics, §2.5 (2-d Sperner)",
         "venue": "Springer"
       }
     ],
     "urls": [],
     "mathlib": [
-      "Mathlib.Combinatorics.SimpleGraph (not directly relevant \u2014 Sperner here is simplicial, not graph-theoretic)"
+      "Mathlib.Combinatorics.SimpleGraph (not directly relevant — Sperner here is simplicial, not graph-theoretic)"
     ]
   },
   "started": "2026-05-12T21:15:00Z",
@@ -114,6 +114,82 @@
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
-    "proofs/Proofs/SpernerSimplicialInstanceOQ01.lean"
+    {
+      "path": "Proofs/SpernerSimplicialInstance.lean",
+      "filename": "SpernerSimplicialInstance.lean",
+      "lineCount": 1040,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstance.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ01.lean",
+      "filename": "SpernerSimplicialInstanceOQ01.lean",
+      "lineCount": 147,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ01.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ03.lean",
+      "filename": "SpernerSimplicialInstanceOQ03.lean",
+      "lineCount": 109,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ03.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ03Tower.lean",
+      "filename": "SpernerSimplicialInstanceOQ03Tower.lean",
+      "lineCount": 88,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ03Tower.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ04.lean",
+      "filename": "SpernerSimplicialInstanceOQ04.lean",
+      "lineCount": 108,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ04.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ05.lean",
+      "filename": "SpernerSimplicialInstanceOQ05.lean",
+      "lineCount": 186,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ05.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean",
+      "filename": "SpernerSimplicialInstanceOQ05Scarf1d.lean",
+      "lineCount": 299,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean"
+    }
   ]
 }

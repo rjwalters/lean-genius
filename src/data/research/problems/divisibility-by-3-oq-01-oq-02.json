@@ -1,0 +1,158 @@
+{
+  "slug": "divisibility-by-3-oq-01-oq-02",
+  "title": "Extend truncation coverage beyond 19 (23, 29, 31, 37, 41, 43)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Extend truncation coverage beyond 19 (23, 29, 31, 37, 41, 43)",
+    "plain": "This open question arises from the gallery proof `divisibility-by-3-oq-01` (Formal Divisibility Rules for Various Bases and Moduli). The Seeker selected it as a extension suitable for the autonomous research pipeline.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-13T00:00:00-07:00",
+    "iteration": 2,
+    "focus": "Extending the parametric truncation framework to the two missing primes (41, 43).",
+    "activeApproach": "Instantiate the existing `truncation_pos` / `truncation_neg` parametric theorems at",
+    "blockers": [
+      "- Build verification blocked: Docker daemon down (2026-06-13 verification blackout)."
+    ],
+    "nextAction": "After Docker is restored, run",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: divisibility-by-3-oq-01-oq-02\n\nExtend truncation coverage beyond 19 (23, 29, 31, 37, 41, 43).\n\n---\n\n## Problem Understanding\n\nThe parent entry `divisibility-truncation-general` (file\n`proofs/Proofs/DivisibilityTruncationGeneral.lean`) proves two **parametric**\nosculator theorems that subsume every base-10 truncation divisibility test:\n\n- `truncation_pos d c n` : for `d` coprime to 10 with positive osculator `c`\n  (`d ∣ 10c − 1`), `d ∣ n ↔ d ∣ (n/10 + c·(n%10))`.\n- `truncation_neg d c n` : for `d` coprime to 10 with negative osculator `c`\n  (`d ∣ 10c + 1`), `d ∣ n ↔ d ∣ (n/10 − c·(n%10))`.\n\nThe osculator `c` is just `10⁻¹ mod d` (positive case) or `d − 10⁻¹` (negative\ncase); it always exists because `gcd(d, 10) = 1`. So \"extending coverage\" to a new\nprime is purely a matter of supplying its osculator constant — **no new machinery**.\n\n---\n\n## Insights\n\n- The OQ list is 23, 29, 31, 37, 41, 43. Of these, **23, 29, 31, 37 were already\n  present** in `DivisibilityTruncationGeneral.lean` (`twentythree_dvd_trunc`, …,\n  `thirtyseven_dvd_trunc`). Only **41 and 43 were genuinely missing.**\n- Osculators computed and added:\n  - **41**: negative osculator `c = 4`, since `10·4 + 1 = 41 = 41·1`\n    → `41 ∣ n ↔ 41 ∣ (n/10 − 4·(n%10))`  (`fortyone_dvd_trunc`).\n  - **43**: positive osculator `c = 13`, since `10·13 − 1 = 129 = 43·3`\n    → `43 ∣ n ↔ 43 ∣ (n/10 + 13·(n%10))`  (`fortythree_dvd_trunc`).\n- Added a bundling theorem `extended_truncation_coverage` collecting all six\n  primes (23–43) as the explicit answer to this OQ.\n- Coprimality discharged by `by decide` and the osculator witness by `⟨k, by norm_num⟩`,\n  exactly mirroring the four existing 23/29/31/37 instances — so the new code is\n  structurally identical to already-merged, building code.\n\n## Dead Ends\n\n- None. This OQ is fully tractable: it is an instantiation of an existing general\n  theorem, not new mathematics.\n\n---\n\n## Session Log\n\n### Session 2026-06-13 (S1) — ORIENT → ACT\n\n**Mode**: FRESH\n**Outcome**: progress (proof code written; build-unverified — Docker daemon down)\n\n**What I did**\n- Surveyed the parent truncation framework; found 23/29/31/37 already covered.\n- Computed osculators for the two missing primes (41 neg c=4, 43 pos c=13) and\n  added `fortyone_dvd_trunc`, `fortythree_dvd_trunc`, two osculator-table examples,\n  and an `extended_truncation_coverage` bundling theorem.\n\n**Files modified**\n- `proofs/Proofs/DivisibilityTruncationGeneral.lean`\n\n**Build status**\n- NOT verified locally: Docker daemon is down (verification blackout 2026-06-13).\n  The additions are textually identical in structure to the adjacent merged\n  23/29/31/37 instances, so confidence is high, but the deployer's Docker build\n  must confirm before this OQ is marked `completed`.\n\n**Next steps**\n- After Docker is restored: `./proofs/scripts/docker-build.sh Proofs.DivisibilityTruncationGeneral`.\n  If green, flip candidate status available → completed and (optionally) generate a\n  follow-up OQ on whether `c` can be produced uniformly via a decidable osculator function.\n"
+  },
+  "tags": [
+    "number-theory",
+    "divisibility",
+    "modular-arithmetic",
+    "extension",
+    "comprehensive",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "divisibility-by-3",
+    "divisibility-by-3-oq-01",
+    "divisibility-by-3-oq-02",
+    "divisibility-by-3-oq-02-oq-01",
+    "divisibility-by-3-oq-02-oq-01-oq-01",
+    "divisibility-by-3-oq-03",
+    "divisibility-by-3-oq-03-oq-02",
+    "divisibility-by-3-oq-04",
+    "divisibility-by-3-oq-04-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-13T12:52:52.056Z",
+  "lastUpdate": "2026-06-13T14:53:03.186Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/DivisibilityBy3.lean",
+      "filename": "DivisibilityBy3.lean",
+      "lineCount": 236,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ02.lean",
+      "filename": "DivisibilityBy3OQ02.lean",
+      "lineCount": 163,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ02OQ01.lean",
+      "filename": "DivisibilityBy3OQ02OQ01.lean",
+      "lineCount": 185,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ02OQ01OQ01.lean",
+      "filename": "DivisibilityBy3OQ02OQ01OQ01.lean",
+      "lineCount": 244,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ03.lean",
+      "filename": "DivisibilityBy3OQ03.lean",
+      "lineCount": 271,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ03.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ03OQ02.lean",
+      "filename": "DivisibilityBy3OQ03OQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ04.lean",
+      "filename": "DivisibilityBy3OQ04.lean",
+      "lineCount": 230,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityBy3OQ04OQ02.lean",
+      "filename": "DivisibilityBy3OQ04OQ02.lean",
+      "lineCount": 229,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04OQ02.lean"
+    }
+  ]
+}

@@ -75,7 +75,17 @@
   ],
   "relatedProofs": [
     "pell-equation",
-    "pell-equation-oq-01"
+    "pell-equation-oq-01",
+    "pell-equation-oq-02",
+    "pell-equation-oq-04",
+    "pell-equation-oq-04-oq-01",
+    "pell-equation-oq-06-oq-01",
+    "pell-equation-oq-06-oq-02",
+    "pell-equation-oq-06-oq-04",
+    "pell-equation-oq-06-oq-05",
+    "pell-equation-oq-06-oq-06",
+    "pell-equation-oq-06-oq-07",
+    "pell-equation-oq-07"
   ],
   "references": {
     "papers": [],
@@ -86,5 +96,160 @@
   "lastUpdate": "2026-06-14T21:05:00-07:00",
   "significance": 6,
   "tractability": 4,
-  "leanFiles": []
+  "leanFiles": [
+    {
+      "path": "Proofs/PellEquation.lean",
+      "filename": "PellEquation.lean",
+      "lineCount": 299,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquation.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ01.lean",
+      "filename": "PellEquationOQ01.lean",
+      "lineCount": 196,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ01.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ02.lean",
+      "filename": "PellEquationOQ02.lean",
+      "lineCount": 106,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ02.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ04.lean",
+      "filename": "PellEquationOQ04.lean",
+      "lineCount": 252,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ04.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ04OQ01.lean",
+      "filename": "PellEquationOQ04OQ01.lean",
+      "lineCount": 277,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ05.lean",
+      "filename": "PellEquationOQ05.lean",
+      "lineCount": 331,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ05.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ06.lean",
+      "filename": "PellEquationOQ06.lean",
+      "lineCount": 147,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ06.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ06OQ01.lean",
+      "filename": "PellEquationOQ06OQ01.lean",
+      "lineCount": 168,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ06OQ01.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ06OQ02.lean",
+      "filename": "PellEquationOQ06OQ02.lean",
+      "lineCount": 180,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ06OQ02.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ06OQ04.lean",
+      "filename": "PellEquationOQ06OQ04.lean",
+      "lineCount": 217,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ06OQ04.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ06OQ05.lean",
+      "filename": "PellEquationOQ06OQ05.lean",
+      "lineCount": 162,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ06OQ05.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ06OQ06.lean",
+      "filename": "PellEquationOQ06OQ06.lean",
+      "lineCount": 205,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ06OQ06.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ06OQ07.lean",
+      "filename": "PellEquationOQ06OQ07.lean",
+      "lineCount": 178,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ06OQ07.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ07.lean",
+      "filename": "PellEquationOQ07.lean",
+      "lineCount": 232,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ07.lean"
+    }
+  ]
 }

@@ -1,15 +1,15 @@
 {
   "slug": "fundamental-theorem-calculus-oq-01-oq-01",
-  "title": "Can AC \u2192 BV be proved directly from the \u03b5-\u03b4 definition, or does it require ad...",
+  "title": "Can AC → BV be proved directly from the ε-δ definition, or does it require ad...",
   "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "BoundedVariationOn F (Set.Icc a b)",
-    "plain": "Formal mathematical investigation: Can AC \u2192 BV be proved directly from the \u03b5-\u03b4 definition, or does it require ad....",
+    "plain": "Formal mathematical investigation: Can AC → BV be proved directly from the ε-δ definition, or does it require ad....",
     "whyMatters": [],
-    "informal": "Can AC \u2192 BV be proved directly from the \u03b5-\u03b4 definition, or does it require additional Mathlib infrastructure for total variation?"
+    "informal": "Can AC → BV be proved directly from the ε-δ definition, or does it require additional Mathlib infrastructure for total variation?"
   },
   "knownResults": {
     "proven": [],
@@ -30,26 +30,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS: dd_eq_zero_2D proof written. Build 1 failed (norm_num metavar in fderiv_right). Build 2 submitted with explicit \u2115\u221e annotations. PR #16107.",
+    "progressSummary": "IN-PROGRESS: dd_eq_zero_2D proof written. Build 1 failed (norm_num metavar in fderiv_right). Build 2 submitted with explicit ℕ∞ annotations. PR #16107.",
     "builtItems": [
       "ac_implies_bv: BoundedVariationOn F (Icc a b) from AbsolutelyContinuousOn F a b (line 154)",
       "eVariationOn_le_of_forall: upper-bound criterion for eVariationOn via iSup_le (line 38)",
-      "fin_telescoping: \u2211 k : Fin n, (u(k+1) - u(k)) = u(n) - u(0) (line 47)",
-      "eVariationOn_le_one_of_short: short interval variation \u2264 1 from AC condition (line 58)",
+      "fin_telescoping: ∑ k : Fin n, (u(k+1) - u(k)) = u(n) - u(0) (line 47)",
+      "eVariationOn_le_one_of_short: short interval variation ≤ 1 from AC condition (line 58)",
       "eVariationOn_le_n: inductive splitting via Icc_add_Icc (line 101)"
     ],
     "insights": [
       "eVariationOn is a supremum over monotone partitions; bounding it reduces to bounding each partition sum (iSup_le)",
-      "For a short interval [c,d] with d-c < \u03b4, total partition length \u2264 d-c by telescoping, so AC gives sum < 1",
-      "eVariationOn.Icc_add_Icc provides inductive splitting: n pieces each \u2264 1 gives total \u2264 n < top",
+      "For a short interval [c,d] with d-c < δ, total partition length ≤ d-c by telescoping, so AC gives sum < 1",
+      "eVariationOn.Icc_add_Icc provides inductive splitting: n pieces each ≤ 1 gives total ≤ n < top",
       "Converting real-valued AC bound to ENNReal uses ofReal_sum_of_nonneg + ofReal_le_ofReal",
       "No additional Mathlib infrastructure needed beyond Mathlib.Analysis.BoundedVariation",
-      "ContDiff.fderiv_right has implicit {m : \u2115\u221e} \u2014 must annotate as ContDiff \u211d 1 (fderiv \u211d f) to fix metavar in norm_num side conditions",
-      "HasDerivAt.clm_apply takes two HasDerivAt args (CLM-valued func + vector func) \u2014 product rule derivative c(u x)\u00b71 + c(x)\u00b70; simp [map_zero, add_zero] clears the extra term"
+      "ContDiff.fderiv_right has implicit {m : ℕ∞} — must annotate as ContDiff ℝ 1 (fderiv ℝ f) to fix metavar in norm_num side conditions",
+      "HasDerivAt.clm_apply takes two HasDerivAt args (CLM-valued func + vector func) — product rule derivative c(u x)·1 + c(x)·0; simp [map_zero, add_zero] clears the extra term"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Jordan decomposition: BV \u2192 difference of monotone functions (next axiom in parent)",
+      "Jordan decomposition: BV → difference of monotone functions (next axiom in parent)",
       "Check if Mathlib has BoundedVariationOn.jordanDecomposition or similar"
     ]
   },
@@ -88,9 +88,9 @@
     {
       "path": "Proofs/FundamentalTheoremCalculusLebesgue.lean",
       "filename": "FundamentalTheoremCalculusLebesgue.lean",
-      "lineCount": 275,
-      "theoremCount": 5,
-      "axiomCount": 2,
+      "lineCount": 310,
+      "theoremCount": 7,
+      "axiomCount": 1,
       "defCount": 1,
       "sorryCount": 2,
       "isAristotle": false,
@@ -99,8 +99,8 @@
     {
       "path": "Proofs/FundamentalTheoremCalculusLebesgueOQ01.lean",
       "filename": "FundamentalTheoremCalculusLebesgueOQ01.lean",
-      "lineCount": 186,
-      "theoremCount": 1,
+      "lineCount": 234,
+      "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -132,22 +132,22 @@
     {
       "path": "Proofs/FundamentalTheoremCalculusStokes.lean",
       "filename": "FundamentalTheoremCalculusStokes.lean",
-      "lineCount": 366,
+      "lineCount": 396,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 7,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokes.lean"
     },
     {
       "path": "Proofs/FundamentalTheoremCalculusStokesAristotle.lean",
       "filename": "FundamentalTheoremCalculusStokesAristotle.lean",
-      "lineCount": 64,
+      "lineCount": 138,
       "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 4,
-      "sorryCount": 2,
+      "sorryCount": 3,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokesAristotle.lean"
     }

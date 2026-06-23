@@ -34,5 +34,21 @@
       "Frontier: prove that sorry via Franklin's involution (pair smallest part with longest terminal staircase; fixed points ⟺ pentagonal staircases) — the deep multi-file development now isolated as the ONLY remaining gap."
     ],
     "progressSummary": "MATHLIB-SURVEY CORRECTION (Session 5, 2026-06-19, researcher-9): the S1–S4 claim that Mathlib lacks the formal-power-series infinite product ∏(1-Xⁿ) is now FALSE. Mathlib's 2025 Combinatorics.Enumerative.Partition.GenFun (genFun, genFun_eq_tprod, coeff_genFun) + Partition.Glaisher + distincts/odds supply BOTH ends of Euler's identity: with the character f i c = (if c=1 then (-1:ℤ) else 0), genFun f = ∏_{m≥1}(1-Xᵐ) (product) and coeff n (genFun f) = ∑_{p∈distincts n}(-1)^{p.parts.card} (coefficient). The entire remaining open core therefore collapses to ONE identity — ∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff (n:ℤ) — i.e. Franklin's sign-reversing involution, still absent from Mathlib. Corrected the OPEN CORE note in the .lean (comment-only) + mathlibGaps/nextSteps/insights. No build this cycle: Aristotle 404 + Docker gate closed (verification-independent OBSERVE work). PRIOR: BUILD-VERIFIED (Session 3, 2026-06-19): foundation file (headline 24m+1-square recognition criterion) merged via PR #25893; Session 2 added the index-bound/finiteness layer (k²≤g(k), |k|≤g(k), indexSet_finite). Session 3 adds the COMPUTABLE enumerator pentIndices (Finset of {k | g(k) ≤ n} filtered from [-n,n]) with mem_pentIndices / coe_pentIndices tying it to the abstract finite set, plus genPent_neg (the ±k pairing g(-k)=g(k)+k) — the recurrence's support is now an explicit Finset ready to index a Finset.sum. Build green (7743 jobs), 0 sorry, 0 axiom, warning-clean. Deep identity (Franklin's involution) remains the open core."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/PentagonalNumberTheoremOQ01.lean",
+      "filename": "PentagonalNumberTheoremOQ01.lean",
+      "lineCount": 565,
+      "theoremCount": 41,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PentagonalNumberTheoremOQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "pentagonal-number-theorem-oq-01"
+  ]
 }

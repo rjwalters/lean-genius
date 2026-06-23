@@ -42,11 +42,38 @@
     "abundant-numbers",
     "decidability"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "abundant-number-oq-01",
+    "abundant-number-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-06-18T23:18:44-07:00"
+  "started": "2026-06-18T23:18:44-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/AbundantNumberOQ01.lean",
+      "filename": "AbundantNumberOQ01.lean",
+      "lineCount": 40,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ01.lean"
+    },
+    {
+      "path": "Proofs/AbundantNumberOQ02.lean",
+      "filename": "AbundantNumberOQ02.lean",
+      "lineCount": 116,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02.lean"
+    }
+  ]
 }

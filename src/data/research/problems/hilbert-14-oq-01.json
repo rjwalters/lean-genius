@@ -89,7 +89,10 @@
   ],
   "relatedProofs": [
     "hilbert-14",
-    "hilbert-14-oq-01"
+    "hilbert-14-oq-01",
+    "hilbert-14-oq-02",
+    "hilbert-14-oq-02-oq-01",
+    "hilbert-14-oq-04"
   ],
   "references": {
     "papers": [],
@@ -107,20 +110,9 @@
   "tractability": 5,
   "leanFiles": [
     {
-      "path": "Proofs/Hilbert14NonReductive.lean",
-      "filename": "Hilbert14NonReductive.lean",
-      "lineCount": 323,
-      "theoremCount": 12,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert14NonReductive.lean"
-    },
-    {
       "path": "Proofs/Hilbert14Invariants.lean",
       "filename": "Hilbert14Invariants.lean",
-      "lineCount": 364,
+      "lineCount": 369,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 1,
@@ -131,13 +123,57 @@
     {
       "path": "Proofs/Hilbert14InvariantsOQ01.lean",
       "filename": "Hilbert14InvariantsOQ01.lean",
-      "lineCount": 148,
+      "lineCount": 149,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert14InvariantsOQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert14NonReductive.lean",
+      "filename": "Hilbert14NonReductive.lean",
+      "lineCount": 324,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert14NonReductive.lean"
+    },
+    {
+      "path": "Proofs/Hilbert14OQ02.lean",
+      "filename": "Hilbert14OQ02.lean",
+      "lineCount": 101,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert14OQ02.lean"
+    },
+    {
+      "path": "Proofs/Hilbert14OQ02OQ01.lean",
+      "filename": "Hilbert14OQ02OQ01.lean",
+      "lineCount": 137,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert14OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert14OQ04.lean",
+      "filename": "Hilbert14OQ04.lean",
+      "lineCount": 101,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert14OQ04.lean"
     }
   ]
 }

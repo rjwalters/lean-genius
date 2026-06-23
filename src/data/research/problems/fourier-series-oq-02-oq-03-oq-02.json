@@ -21,11 +21,11 @@
     "iteration": 3,
     "focus": "Sorry-elimination roadmap clear; disk now available (117 GB free as of 2026-05-03). 2 sorries (exp_dominates_polynomial, analytic_hierarchy) and 3 axioms (contour_shift_decay, rate_is_sharp, paley_wiener_converse) remain.",
     "blockers": [
-      "exp_dominates_polynomial needs Filter.cofinite on \u2124 + Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero + rpow \u2264 npow bound for |n| \u2265 1. API verification needed before writing (~50-80 lines).",
-      "analytic_hierarchy needs exp_dominates_polynomial + Summable.of_nonneg_of_le with exp_decay_summable(\u03b4/2) as comparison (~40 lines).",
+      "exp_dominates_polynomial needs Filter.cofinite on ℤ + Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero + rpow ≤ npow bound for |n| ≥ 1. API verification needed before writing (~50-80 lines).",
+      "analytic_hierarchy needs exp_dominates_polynomial + Summable.of_nonneg_of_le with exp_decay_summable(δ/2) as comparison (~40 lines).",
       "Axiom elimination requires substantial Mathlib infrastructure (~700-1100 lines per file roadmap)."
     ],
-    "nextAction": "Close exp_dominates_polynomial via: (1) rw [Filter.eventually_cofinite]; (2) show {n : \u2124 | M*exp(-c|n|) > C*|n|\u207b\u00b9^\u03b1} \u2286 {n : \u2124 | |n| \u2264 N} for large N; (3) use Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero (Nat.ceil \u03b1 + 1) + composition with (c *\u00b7). Then close analytic_hierarchy via Summable.of_nonneg_of_le.",
+    "nextAction": "Close exp_dominates_polynomial via: (1) rw [Filter.eventually_cofinite]; (2) show {n : ℤ | M*exp(-c|n|) > C*|n|⁻¹^α} ⊆ {n : ℤ | |n| ≤ N} for large N; (3) use Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero (Nat.ceil α + 1) + composition with (c *·). Then close analytic_hierarchy via Summable.of_nonneg_of_le.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -49,12 +49,12 @@
       "The sharp constant K(f) = sup_n |c_n|*exp(2*pi*delta*|n|/T) equals the strip boundary norm for natural boundaries",
       "Strip width delta plays the same role as Holder exponent alpha but gives exponentially faster decay",
       "The Poisson kernel P_r(x) with r in (0,1) has exact exponential decay with strip width -T*ln(r)/(2*pi)",
-      "exp_decay_summable: needs \u2124-indexed geometric series decomposition (split into n\u22650 and n<0)",
+      "exp_decay_summable: needs ℤ-indexed geometric series decomposition (split into n≥0 and n<0)",
       "sharpConstant proofs: require ciSup_le / le_ciSup from ConditionallyCompleteLattice API",
       "exp_dominates_polynomial: Real.tendsto_pow_mul_exp_neg_atTop_nhds in Mathlib may help",
-      "sharpConstant_optimal proved: ciSup_le reduces to showing each term \u2264 K, then exp(-a)*exp(a)=1 gives the bound",
+      "sharpConstant_optimal proved: ciSup_le reduces to showing each term ≤ K, then exp(-a)*exp(a)=1 gives the bound",
       "Data fix: leanFiles was pointing to FourierSeries.lean (parent) not FourierSeriesOQ02OQ03OQ02.lean",
-      "ciSup_const.symm converts constant value to iSup over nonempty Prop index; le_ciSup lifts to outer iSup. Pattern: calc x = iSup (const) \u2264 iSup (outer)",
+      "ciSup_const.symm converts constant value to iSup over nonempty Prop index; le_ciSup lifts to outer iSup. Pattern: calc x = iSup (const) ≤ iSup (outer)",
       "AUDIT 2026-04-27: research/problems/fourier-series-oq-02-oq-03-oq-02/ directory was missing (problem.md, state.md, knowledge.md not created). Now populated.",
       "Real.tendsto_rpow_mul_exp_neg_atTop_nhds_zero (if it exists) is the right primitive for exp_dominates_polynomial; otherwise use Nat.ceil alpha bound.",
       "analytic_hierarchy reduces cleanly to exp_decay_abs_convergence + exp_dominates_polynomial via Summable.of_nonneg_of_le."
@@ -85,7 +85,9 @@
     "fourier-series-oq-02-oq-03",
     "fourier-series-oq-02-oq-03-oq-02",
     "fourier-series-oq-03",
-    "fourier-series-oq-04"
+    "fourier-series-oq-04",
+    "fourier-series-oq-04-oq-01",
+    "fourier-series-oq-04-wip-01"
   ],
   "references": {
     "papers": [],
@@ -241,13 +243,24 @@
     {
       "path": "Proofs/FourierSeriesOQ04OQ01.lean",
       "filename": "FourierSeriesOQ04OQ01.lean",
-      "lineCount": 280,
-      "theoremCount": 8,
+      "lineCount": 599,
+      "theoremCount": 15,
       "axiomCount": 1,
       "defCount": 4,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ04WIP01.lean",
+      "filename": "FourierSeriesOQ04WIP01.lean",
+      "lineCount": 124,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04WIP01.lean"
     }
   ]
 }

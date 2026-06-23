@@ -1,0 +1,109 @@
+{
+  "slug": "buffons-noodle-oq-02",
+  "title": "Make the Polygonal Buffon's Noodle Theorem Axiom-Free",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\mathbb{E}[\\text{crossings}] = \\sum_{i=1}^{k} p(\\ell_i), \\qquad p(\\ell) = \\frac{2\\ell}{\\pi d},",
+    "plain": "Buffon's Noodle says the expected number of times a dropped curve crosses the floor lines depends",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "DELIVER",
+    "since": "2026-06-19T17:27:54-07:00",
+    "iteration": 2,
+    "focus": "Composition lemma shipped; problem premise corrected. See knowledge.md.",
+    "activeApproach": "Approach 1 (Direct substitution bridge) — completed, but reframed: the target was",
+    "blockers": [
+      "Smooth case only: `buffon_noodle_smooth_eq` needs Mathlib kinematic-measure /"
+    ],
+    "nextAction": "Ship companion + record; leave the smooth-case axioms as the genuine open residue.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: buffons-noodle-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nGoal as stated: eliminate the \"axiomatized\" per-segment crossing probability\n`segmentCrossingProb = 2ℓ/(πd)` in `BuffonsNoodle.lean` by deriving it from the registered\nBuffon's Needle entry, upgrading the base `buffons-noodle` gallery entry from\n`axiomatized`/`axiom` to `verified`/`original`.\n\n---\n\n## Insights\n\n### 1. The stated premise is inaccurate — the polygonal case is already axiom-free\n`BuffonsNoodle.segmentCrossingProb ℓ d` is a plain `noncomputable def` equal to\n`2 * ℓ / (π * d)`, **not** an `axiom`. The polygonal noodle theorem\n`BuffonsNoodle.buffon_noodle_polygon : N.expectedCrossings d = 2 * N.totalLength / (π * d)`\nis proven purely by linearity of a finite sum — it uses **no axioms**. So there is no\nper-segment axiom to \"discharge\"; the polygonal result never depended on one.\n\n### 2. The real axioms are the *smooth*-case Cauchy–Crofton primitives\n`BuffonsNoodle.lean` carries exactly two `axiom` declarations, both in Part VI (smooth\ncurves):\n- `smoothExpectedCrossings (γ : ℝ → ℝ × ℝ) (a b d : ℝ) : ℝ` — the primitive \"expected\n  crossings of a C¹ curve\" functional.\n- `buffon_noodle_smooth_eq : smoothExpectedCrossings γ a b d = 2 * planarCurveArcLength γ a b / (π*d)`\n  — the Barbier law for smooth curves.\nThese encode the genuine integral-geometry content (kinematic measure on the space of\nlines, plus a polygonal→smooth arc-length approximation of the crossing functional). They\nare independent of the polygonal theorem and are a multi-week Mathlib gap, not a bridge.\n`leanFile.axiomCount = 2` in the base entry reflects these two, not `segmentCrossingProb`.\n\n### 3. The genuine, deliverable composition: Needle → Noodle (axiom-free)\nThe Buffon's Needle entry *does* derive the constant by integration:\n`BuffonsNeedle.buffon_needle_probability'`\n  : `(∫ θ in 0..π, (ℓ/2)·sin θ) / ((d/2)·π) = 2ℓ/(πd)`  (for `π ≠ 0`, `d ≠ 0`),\nwith `BuffonsNeedle.crossingRegion_area : ∫₀^π (ℓ/2)·sin θ = ℓ` the favorable area and\n`(d/2)·π` the sample-space area. Substituting this into `segmentCrossingProb` and the\nnoodle sum makes every per-segment value *derived from the Needle entry* rather than\nasserted, composing the two gallery entries end to end with **0 axioms, 0 sorries**. This\nis what `proofs/Proofs/BuffonsNoodleOQ02.lean` delivers\n(`segmentCrossingProb_eq_needle_ratio`, `expectedCrossings_eq_sum_needle_ratio`,\n`buffon_noodle_via_needle`). It substantiates the problem's real intent without changing\nthe base entry's axiom count (those 2 axioms remain, for the smooth case only).\n\n### 4. Convention compatibility checks out\nBoth entries use the same short-segment parametrization: angle `θ ∈ [0, π]`, offset\n`x ∈ [0, d/2]`, crossing condition `x ≤ (ℓ/2) sin θ`. No normalization mismatch — the\nNeedle area ratio and the Noodle constant are literally the same expression `2ℓ/(πd)`, so\nthe bridge is `rw [← buffon_needle_probability']` after `unfold segmentCrossingProb`.\n\n---\n\n## Dead Ends\n\n- **\"Discharge the segment axiom to make `buffons-noodle` verified.\"** There is no such\n  axiom; nothing to discharge in the polygonal case. The base entry's `axiomatized` status\n  (if asserted) would instead be attributable to the smooth-case axioms (#2), which this\n  bridge does not remove.\n- **Cauchy–Crofton route for the per-segment value.** Overkill: the Needle entry already\n  supplies the value by a one-line integral; the Crofton machinery would only be needed for\n  the smooth-curve axioms, which remain genuinely open.\n"
+  },
+  "tags": [
+    "geometric-probability",
+    "integral-geometry",
+    "buffon",
+    "linearity-of-expectation",
+    "cauchy-crofton",
+    "arc-length"
+  ],
+  "relatedProofs": [
+    "buffons-noodle",
+    "buffons-noodle-oq-01",
+    "buffons-noodle-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-20T00:49:11.207Z",
+  "lastUpdate": "2026-06-20T05:40:20.241Z",
+  "completed": "2026-06-20T05:40:20.241Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/BuffonsNoodle.lean",
+      "filename": "BuffonsNoodle.lean",
+      "lineCount": 453,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodle.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNoodleOQ01.lean",
+      "filename": "BuffonsNoodleOQ01.lean",
+      "lineCount": 215,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNoodleOQ02.lean",
+      "filename": "BuffonsNoodleOQ02.lean",
+      "lineCount": 102,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNoodleOQ03.lean",
+      "filename": "BuffonsNoodleOQ03.lean",
+      "lineCount": 280,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ03.lean"
+    }
+  ]
+}

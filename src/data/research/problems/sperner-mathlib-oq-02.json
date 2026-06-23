@@ -9,7 +9,14 @@
   "started": "2026-06-18",
   "lastUpdate": "2026-06-18",
   "path": "proofs/Proofs/SpernerMathlibOQ02.lean",
-  "tags": ["combinatorics", "sperner", "kkm", "parity", "lower-bound", "gallery-extracted"],
+  "tags": [
+    "combinatorics",
+    "sperner",
+    "kkm",
+    "parity",
+    "lower-bound",
+    "gallery-extracted"
+  ],
   "problemStatement": "Does the door-counting parity argument behind Sperner's lemma extend from existence (exists_panchromatic) to a lower bound on the panchromatic cell count (a KKM-type counting refinement)?",
   "knownResults": "Parent sperner-mathlib proves sperner_parity (panchromatic count congruent mod 2 to boundary door count) and exists_panchromatic (odd boundary => a panchromatic cell exists). Classical Sperner gives an ODD number of fully-labeled simplices.",
   "currentState": "RESOLVED at the count level. PR #25931 registers SpernerMathlibOQ02.lean with odd_card_panchromatic (Odd count), one_le_card_panchromatic (1 <= count), and unconditional Sperner-coloring versions deriving boundary oddness via boundary_doors_odd_of_last_face. parity_bound_sharp documents that mod-2 counting cannot exceed the 1 <= bound.",
@@ -32,5 +39,55 @@
       "Construct an explicit geometric witness (e.g. the 1-d interval with one cell) proving the 1 <= bound is attained, formalizing sharpness beyond the number-theoretic parity_bound_sharp; requires re-exposing the private interval infrastructure."
     ],
     "progressSummary": "COMPLETE (count-level): PR #25931 lifts Sperner existence to a cardinality lower bound (Odd, 1 <=), unconditional for Sperner colorings, with documented sharpness. 0 sorries / 0 axioms."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/SpernerMathlib.lean",
+      "filename": "SpernerMathlib.lean",
+      "lineCount": 898,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerMathlib.lean"
+    },
+    {
+      "path": "Proofs/SpernerMathlib4.lean",
+      "filename": "SpernerMathlib4.lean",
+      "lineCount": 733,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerMathlib4.lean"
+    },
+    {
+      "path": "Proofs/SpernerMathlibHyper.lean",
+      "filename": "SpernerMathlibHyper.lean",
+      "lineCount": 564,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerMathlibHyper.lean"
+    },
+    {
+      "path": "Proofs/SpernerMathlibOQ02.lean",
+      "filename": "SpernerMathlibOQ02.lean",
+      "lineCount": 214,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerMathlibOQ02.lean"
+    }
+  ],
+  "relatedProofs": [
+    "sperner-mathlib",
+    "sperner-mathlib4"
+  ]
 }

@@ -1,13 +1,13 @@
 {
   "slug": "birch-swinnerton-dyer-oq-06-oq-02",
-  "title": "Connect the height pairing matrix values to actual N\u00e9ron-Tate heights compute...",
+  "title": "Connect the height pairing matrix values to actual Néron-Tate heights compute...",
   "phase": "NEW",
   "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Connect the height pairing matrix values to actual N\u00e9ron-Tate heights compute....",
+    "plain": "Formal mathematical investigation: Connect the height pairing matrix values to actual Néron-Tate heights compute....",
     "whyMatters": []
   },
   "knownResults": {
@@ -42,7 +42,7 @@
     "insights": [
       "Curve 389a: y^2+y = x^3+x^2-2x has a1=0, a2=1, a3=1, a4=-2, a6=0",
       "y-coordinate formula: y2 = lambda*(x1-x2) - y1 - 1 (NOT -lambda*(x1+x2)+y1-1)",
-      "Naive height approx log(3)/4 \u2248 0.275 and log(121)/16 \u2248 0.300 undershoot h11=0.7622 due to large local heights at p=389",
+      "Naive height approx log(3)/4 ≈ 0.275 and log(121)/16 ≈ 0.300 undershoot h11=0.7622 due to large local heights at p=389",
       "P1+P2=(1,0) shows generators are not negatives of each other",
       "All computations over Q verifiable by norm_num -- no Mathlib elliptic curve API needed"
     ],
@@ -61,7 +61,8 @@
   ],
   "relatedProofs": [
     "birch-swinnerton-dyer",
-    "birch-swinnerton-dyer-oq-06"
+    "birch-swinnerton-dyer-oq-06",
+    "birch-swinnerton-dyer-oq-06-oq-02"
   ],
   "references": {
     "papers": [],
@@ -116,6 +117,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyerOQ06.lean"
+    },
+    {
+      "path": "Proofs/BirchSwinnertonDyerOQ06OQ02.lean",
+      "filename": "BirchSwinnertonDyerOQ06OQ02.lean",
+      "lineCount": 250,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirchSwinnertonDyerOQ06OQ02.lean"
     }
   ]
 }

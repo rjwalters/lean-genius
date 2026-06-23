@@ -41,6 +41,7 @@
     "erdos-6",
     "erdos-60",
     "erdos-606",
+    "erdos-606-oq-01",
     "erdos-606-oq-03",
     "erdos-606-oq-03-oq-03"
   ],
@@ -52,6 +53,17 @@
   "started": "2026-03-30T04:12:19.656Z",
   "lastUpdate": "2026-03-30T04:12:19.669Z",
   "leanFiles": [
+    {
+      "path": "Proofs/Erdos606OQ01.lean",
+      "filename": "Erdos606OQ01.lean",
+      "lineCount": 205,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos606OQ01.lean"
+    },
     {
       "path": "Proofs/Erdos606OQ03.lean",
       "filename": "Erdos606OQ03.lean",
@@ -66,7 +78,7 @@
     {
       "path": "Proofs/Erdos606OQ03OQ03.lean",
       "filename": "Erdos606OQ03OQ03.lean",
-      "lineCount": 509,
+      "lineCount": 517,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 5,

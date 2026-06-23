@@ -25,5 +25,80 @@
       "Prove #E(K_{⌈n/2⌉,⌊n/2⌋}) = ⌈n/2⌉·⌊n/2⌋ = ⌊n²/4⌋ for a self-contained complete-bipartite tightness proof",
       "Derive structural corollaries from the complete-bipartite form: extremal graph is bipartite, 2-chromatic, diameter ≤ 2"
     ]
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/MantelTheorem.lean",
+      "filename": "MantelTheorem.lean",
+      "lineCount": 85,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheorem.lean"
+    },
+    {
+      "path": "Proofs/MantelTheoremOQ03.lean",
+      "filename": "MantelTheoremOQ03.lean",
+      "lineCount": 105,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/MantelTheoremOQ04.lean",
+      "filename": "MantelTheoremOQ04.lean",
+      "lineCount": 112,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/MantelTheoremOQ04OQ01.lean",
+      "filename": "MantelTheoremOQ04OQ01.lean",
+      "lineCount": 148,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheoremOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/MantelTheoremOQ04OQ02.lean",
+      "filename": "MantelTheoremOQ04OQ02.lean",
+      "lineCount": 143,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheoremOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/MantelTheoremUniqueness.lean",
+      "filename": "MantelTheoremUniqueness.lean",
+      "lineCount": 71,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheoremUniqueness.lean"
+    }
+  ],
+  "relatedProofs": [
+    "mantel-theorem",
+    "mantel-theorem-oq-03",
+    "mantel-theorem-oq-04",
+    "mantel-theorem-oq-04-oq-01",
+    "mantel-theorem-oq-04-oq-02"
+  ]
 }

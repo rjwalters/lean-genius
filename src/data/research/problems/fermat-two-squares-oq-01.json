@@ -75,7 +75,11 @@
   ],
   "relatedProofs": [
     "fermat-two-squares",
-    "fermat-two-squares-oq-01"
+    "fermat-two-squares-oq-01",
+    "fermat-two-squares-oq-01-oq-03",
+    "fermat-two-squares-oq-01-oq-03-oq-01",
+    "fermat-two-squares-oq-04",
+    "fermat-two-squares-oq-05"
   ],
   "references": {
     "papers": [],
@@ -108,6 +112,50 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ01.lean"
+    },
+    {
+      "path": "Proofs/FermatTwoSquaresOQ01OQ03.lean",
+      "filename": "FermatTwoSquaresOQ01OQ03.lean",
+      "lineCount": 358,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/FermatTwoSquaresOQ01OQ03OQ01.lean",
+      "filename": "FermatTwoSquaresOQ01OQ03OQ01.lean",
+      "lineCount": 351,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ01OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/FermatTwoSquaresOQ04.lean",
+      "filename": "FermatTwoSquaresOQ04.lean",
+      "lineCount": 226,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ04.lean"
+    },
+    {
+      "path": "Proofs/FermatTwoSquaresOQ05.lean",
+      "filename": "FermatTwoSquaresOQ05.lean",
+      "lineCount": 153,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatTwoSquaresOQ05.lean"
     }
   ]
 }

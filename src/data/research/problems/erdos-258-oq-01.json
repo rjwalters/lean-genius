@@ -28,5 +28,34 @@
       "Probe exact denominators of T_N in the subpolynomial zone to test whether q·T_N∈ℤ is ever sustainable (evidence toward YES = irrational)."
     ],
     "progressSummary": "ORIENT: reduced OQ-01 to liminf_N T_N(a)=0; proved (informally) the engine + a NEW non-monotone sufficient condition (polynomial growth). Open zone isolated to subpolynomial non-monotone aₙ→∞."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos258OQ01.lean",
+      "filename": "Erdos258OQ01.lean",
+      "lineCount": 256,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 14,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos258OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos258Problem.lean",
+      "filename": "Erdos258Problem.lean",
+      "lineCount": 109,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos258Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-2",
+    "erdos-25",
+    "erdos-258"
+  ]
 }

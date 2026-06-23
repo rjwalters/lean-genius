@@ -45,7 +45,8 @@
     "frobenius-number",
     "frobenius-number-oq-01",
     "frobenius-number-oq-02",
-    "frobenius-number-oq-03"
+    "frobenius-number-oq-03",
+    "frobenius-number-oq-04"
   ],
   "references": {
     "papers": [],
@@ -54,7 +55,61 @@
   },
   "started": "2026-06-19T22:45:54-07:00",
   "leanFiles": [
-    "proofs/Proofs/FrobeniusNumberOQ04.lean"
+    {
+      "path": "Proofs/FrobeniusNumber.lean",
+      "filename": "FrobeniusNumber.lean",
+      "lineCount": 325,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumber.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ01.lean",
+      "filename": "FrobeniusNumberOQ01.lean",
+      "lineCount": 160,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ01.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ02.lean",
+      "filename": "FrobeniusNumberOQ02.lean",
+      "lineCount": 102,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ02.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ03.lean",
+      "filename": "FrobeniusNumberOQ03.lean",
+      "lineCount": 441,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ03.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusNumberOQ04.lean",
+      "filename": "FrobeniusNumberOQ04.lean",
+      "lineCount": 123,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ04.lean"
+    }
   ],
   "insights": [
     "Sylvester–Frobenius g(m,n)=mn-m-n for coprime m,n>1 is Mathlib's `frobeniusNumber_pair : FrobeniusNumber (m*n-m-n) {m,n}` where `FrobeniusNumber n s := IsGreatest {k | k ∉ AddSubmonoid.closure s} n` — a canonical predicate, NOT a function. The gallery parent `Proofs/FrobeniusNumber.lean` instead uses a homemade `Representable`/`frobeniusNumber` API; this entry's distinct value is restating the theorem on Mathlib's verified IsGreatest/closure footing.",

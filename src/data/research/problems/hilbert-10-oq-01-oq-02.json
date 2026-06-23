@@ -168,7 +168,13 @@
   "relatedProofs": [
     "hilbert-10",
     "hilbert-10-oq-01",
-    "hilbert-10-oq-04"
+    "hilbert-10-oq-01-oq-02",
+    "hilbert-10-oq-04",
+    "hilbert-10-oq-04-oq-03",
+    "hilbert-10-oq-04-oq-03-oq-01",
+    "hilbert-10-oq-04-oq-03-oq-01-oq-01",
+    "hilbert-10-oq-04-oq-03-oq-02",
+    "hilbert-10-oq-04-oq-03-oq-02-oq-01"
   ],
   "references": {
     "papers": [
@@ -222,26 +228,81 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ01.lean"
     },
     {
+      "path": "Proofs/Hilbert10OQ01OQ02.lean",
+      "filename": "Hilbert10OQ01OQ02.lean",
+      "lineCount": 3446,
+      "theoremCount": 102,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ01OQ02.lean"
+    },
+    {
       "path": "Proofs/Hilbert10OQ04.lean",
       "filename": "Hilbert10OQ04.lean",
-      "lineCount": 251,
-      "theoremCount": 10,
-      "axiomCount": 5,
+      "lineCount": 316,
+      "theoremCount": 11,
+      "axiomCount": 4,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ04.lean"
     },
     {
-      "path": "Proofs/Hilbert10OQ01OQ02.lean",
-      "filename": "Hilbert10OQ01OQ02.lean",
-      "lineCount": 3174,
-      "theoremCount": 90,
-      "axiomCount": 1,
-      "defCount": 15,
+      "path": "Proofs/Hilbert10OQ04OQ03.lean",
+      "filename": "Hilbert10OQ04OQ03.lean",
+      "lineCount": 109,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/Hilbert10OQ04OQ03OQ01.lean",
+      "filename": "Hilbert10OQ04OQ03OQ01.lean",
+      "lineCount": 132,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ01OQ02.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ04OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert10OQ04OQ03OQ01OQ01.lean",
+      "filename": "Hilbert10OQ04OQ03OQ01OQ01.lean",
+      "lineCount": 114,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ04OQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert10OQ04OQ03OQ02.lean",
+      "filename": "Hilbert10OQ04OQ03OQ02.lean",
+      "lineCount": 95,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ04OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/Hilbert10OQ04OQ03OQ02OQ01.lean",
+      "filename": "Hilbert10OQ04OQ03OQ02OQ01.lean",
+      "lineCount": 150,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ04OQ03OQ02OQ01.lean"
     }
   ]
 }

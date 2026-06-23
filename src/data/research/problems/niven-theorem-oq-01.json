@@ -74,9 +74,48 @@
     ]
   },
   "approaches": [],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "niven-theorem-oq-01",
+    "niven-theorem-oq-02",
+    "niven-theorem-oq-03"
+  ],
   "references": [
     "Ivan Niven, Irrational Numbers, Carus Mathematical Monographs 11 (1956), Corollary 3.12.",
     "Mathlib/NumberTheory/Niven.lean (Alex Meiburg, Snir Broshi, 2025) — the assembled theorem and the core integrality lemmas this entry delegates to."
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/NivenTheorem.lean",
+      "filename": "NivenTheorem.lean",
+      "lineCount": 105,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NivenTheorem.lean"
+    },
+    {
+      "path": "Proofs/NivenTheoremOQ02.lean",
+      "filename": "NivenTheoremOQ02.lean",
+      "lineCount": 96,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NivenTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/NivenTheoremOQ03.lean",
+      "filename": "NivenTheoremOQ03.lean",
+      "lineCount": 144,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NivenTheoremOQ03.lean"
+    }
   ]
 }

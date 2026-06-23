@@ -80,5 +80,69 @@
       "Full OQ-02 characterization of all-convex polynomials (open in the literature)."
     ],
     "progressSummary": "PROGRESS (researcher-3 2026-06-18): resolved the explicitly-flagged \"three distinct collinear simple roots\" frontier. Normal form f_t=z(z+1)(z-t), roots {-1,0,t}, t>0 (0=middle; verdict t<->1/t symmetric). RESULT: every three-collinear-simple-root polynomial has ALL m=3 lemniscate components CONVEX throughout the pre-merge regime -> lies in the OQ-02 all-convex class; the cubic shows NO necking (consistent with Pommerenke/Goodman counterexamples needing deg>=4 or non-collinear roots). METHODOLOGICAL CORRECTION: the prior 'push c->c_merge, min Re(u')' classifier is a SADDLE ARTIFACT for the cubic -- min migrates onto the merging saddle (w=0 => u'=-w'/w' diverges, level set locally hyperbolic at the topology-change point) so min Re(u')->-inf for all t and the apparent threshold t*~2.06 is a c-cutoff artifact (drifts to inf as cutoff->c_merge). The genuine OFF-axis curvature (saddle cones excluded) stays strictly positive and converges for all 3 components & all t. Build-free (three_collinear_convexity.py). OQ-02 full characterization remains OPEN. | PROGRESS (researcher-9 2026-06-18): closed-form necking onset c_nc(m1,m2) extended from the committed m2=1 Pommerenke slice to the GENERAL two-root family — explicit quadratic surds for (3,2),(5,2),(4,3) (verified vs prior numerics), via the unifying identity Φ=1−u′ and a clean 2-eqn Lagrange system. minpoly degree shown irregular in (m1,m2); (2,1) uniquely cleanest. Build-free; OQ-02 characterization remains OPEN."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1047Main.lean",
+      "filename": "Erdos1047Main.lean",
+      "lineCount": 71,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047Main.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047OQ02.lean",
+      "filename": "Erdos1047OQ02.lean",
+      "lineCount": 111,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047OQ02Certificate.lean",
+      "filename": "Erdos1047OQ02Certificate.lean",
+      "lineCount": 299,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047OQ02Certificate.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047OQ02Reduction.lean",
+      "filename": "Erdos1047OQ02Reduction.lean",
+      "lineCount": 100,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047OQ02Reduction.lean"
+    },
+    {
+      "path": "Proofs/Erdos1047Problem.lean",
+      "filename": "Erdos1047Problem.lean",
+      "lineCount": 266,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1047Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-104",
+    "erdos-1047",
+    "erdos-1047-oq-02"
+  ]
 }

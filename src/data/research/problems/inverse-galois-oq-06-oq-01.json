@@ -20,7 +20,9 @@
     "since": "2026-06-06T08:10:00Z",
     "iteration": 2,
     "focus": "Iteration 2 (researcher-1, 2026-06-06, S2 OBSERVE substantive, doc-only PR pending): state.md ↔ JSON sync after T+63d template-stub gap. Prior feasibility-survey content already in JSON (|Gal| ∈ {5,10,60}; eliminate 5 and 20; D₅ hard via Dedekind) now mirrored into state.md. Local Lean file `Proofs/InverseGaloisOQ06OQ01.lean` audited at git HEAD: 255 LOC, 13 thm, 0 sorries, 0 literal `axiom` declarations BUT **transitively 1 axiom** via line 252 `theorem three_dvd_gal_card_proved := InverseGaloisA5.three_dvd_gal_card`. The bridge from mod-7 irreducible cubic factor to 3 ∣ |Gal| is NOT eliminated. Sibling slug `inverse-galois-a5-oq-01` works on same target axiom via Frobenius at p=7 — iter 7 (S4h PREP, 2026-06-02, paste-ready 32-LOC sub-step (a) typeclass plumbing, 16-bearer set 7× attested at pin SHA `2df2f0150c…` with 17-day zero drift). This slug was racing the sibling without coordination; state-sync prevents further wasted effort. Three options recommended: (A) subsume into sibling; (B) retarget as general Dedekind upstream track (RECOMMENDED — aligns with problem.md title, 300-500 LOC upstream value); (C) maintain status quo. Anti-recommendation: do NOT spawn parallel Frobenius track here — sibling owns it. S2 doc-only: 0 Lean edits, 0 leanFiles[] edits, 0 gallery meta.json edits.",
-    "blockers": ["Pool-status retargeting decision (Options A/B/C) pending deployer/champion pick; this iteration cannot self-resolve the overlap with sibling slug `inverse-galois-a5-oq-01`."],
+    "blockers": [
+      "Pool-status retargeting decision (Options A/B/C) pending deployer/champion pick; this iteration cannot self-resolve the overlap with sibling slug `inverse-galois-a5-oq-01`."
+    ],
     "nextAction": "S2-bis (doc-only, RECOMMENDED): write problem.md / JSON retargeting amendment framing the slug as the general Dedekind theorem upstream track (Option B), with `subsumes`/`subsumedBy` link to sibling `inverse-galois-a5-oq-01`. Defer pool-status reconciliation to deployer/champion. **Alternative (S3 ORIENT)**: pivot to Option C status quo and extend local Lean file to cover `gal_card_ne_20` (~40 LOC, A₅ simple → no order-20 subgroup per JSON insights[3]); bounded scope, immediate ACT-shippable. **Conservative**: pause this slug at S2 OBSERVE-substantive (this iteration) until deployer/champion picks Option A/B/C.",
     "attemptCounts": {
       "total": 1,
@@ -61,7 +63,12 @@
   ],
   "relatedProofs": [
     "inverse-galois",
+    "inverse-galois-a5",
+    "inverse-galois-a5-oq-02",
+    "inverse-galois-a5-oq-03",
     "inverse-galois-d4",
+    "inverse-galois-d4-oq-01",
+    "inverse-galois-d4-oq-03",
     "inverse-galois-f20",
     "inverse-galois-oq-01",
     "inverse-galois-oq-02",
@@ -78,7 +85,7 @@
     {
       "path": "Proofs/InverseGalois.lean",
       "filename": "InverseGalois.lean",
-      "lineCount": 1883,
+      "lineCount": 1878,
       "theoremCount": 106,
       "axiomCount": 4,
       "defCount": 1,
@@ -96,6 +103,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5Dedekind.lean",
+      "filename": "InverseGaloisA5Dedekind.lean",
+      "lineCount": 90,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5Dedekind.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5OQ02.lean",
+      "filename": "InverseGaloisA5OQ02.lean",
+      "lineCount": 198,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5OQ02.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5OQ03.lean",
+      "filename": "InverseGaloisA5OQ03.lean",
+      "lineCount": 206,
+      "theoremCount": 9,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5OQ03.lean"
     },
     {
       "path": "Proofs/InverseGaloisA5Resultant.lean",
@@ -140,6 +180,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisD4OQ01.lean",
+      "filename": "InverseGaloisD4OQ01.lean",
+      "lineCount": 203,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4OQ01.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisD4OQ01External.lean",
+      "filename": "InverseGaloisD4OQ01External.lean",
+      "lineCount": 172,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4OQ01External.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisD4OQ03.lean",
+      "filename": "InverseGaloisD4OQ03.lean",
+      "lineCount": 236,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 15,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4OQ03.lean"
     },
     {
       "path": "Proofs/InverseGaloisF20.lean",

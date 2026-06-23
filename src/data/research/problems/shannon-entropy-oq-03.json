@@ -62,8 +62,10 @@
   "relatedProofs": [
     "shannon-entropy",
     "shannon-entropy-oq-01",
+    "shannon-entropy-oq-01-oq-01",
     "shannon-entropy-oq-02",
-    "shannon-entropy-oq-03"
+    "shannon-entropy-oq-03",
+    "shannon-entropy-oq-03-oq-01"
   ],
   "references": {
     "papers": [],
@@ -120,6 +122,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ01Aristotle.lean"
     },
     {
+      "path": "Proofs/ShannonEntropyOQ01OQ01.lean",
+      "filename": "ShannonEntropyOQ01OQ01.lean",
+      "lineCount": 90,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropyOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/ShannonEntropyOQ02.lean",
       "filename": "ShannonEntropyOQ02.lean",
       "lineCount": 384,
@@ -151,6 +164,17 @@
       "sorryCount": 3,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSAAristotle.lean"
+    },
+    {
+      "path": "Proofs/ShannonEntropySSAEq.lean",
+      "filename": "ShannonEntropySSAEq.lean",
+      "lineCount": 449,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonEntropySSAEq.lean"
     }
   ]
 }

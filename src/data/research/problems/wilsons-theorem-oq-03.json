@@ -79,9 +79,16 @@
     "wilsons-theorem-oq-01",
     "wilsons-theorem-oq-01-oq-01",
     "wilsons-theorem-oq-02",
+    "wilsons-theorem-oq-02-ext",
+    "wilsons-theorem-oq-02-ext-oq-01",
+    "wilsons-theorem-oq-02-oq-02",
     "wilsons-theorem-oq-03",
     "wilsons-theorem-oq-04",
-    "wilsons-theorem-oq-04-oq-02"
+    "wilsons-theorem-oq-04-oq-02",
+    "wilsons-theorem-oq-05",
+    "wilsons-theorem-oq-05-oq-01",
+    "wilsons-theorem-oq-05-oq-01-oq-01",
+    "wilsons-theorem-oq-05-oq-01-oq-01-oq-01"
   ],
   "references": {
     "papers": [
@@ -127,8 +134,8 @@
       "path": "Proofs/WilsonsTheoremOQ01OQ01.lean",
       "filename": "WilsonsTheoremOQ01OQ01.lean",
       "lineCount": 124,
-      "theoremCount": 8,
-      "axiomCount": 2,
+      "theoremCount": 9,
+      "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
@@ -155,6 +162,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ02Ext.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ02ExtOQ01.lean",
+      "filename": "WilsonsTheoremOQ02ExtOQ01.lean",
+      "lineCount": 221,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ02ExtOQ01.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ02ExtOQ02.lean",
+      "filename": "WilsonsTheoremOQ02ExtOQ02.lean",
+      "lineCount": 91,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ02ExtOQ02.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ02OQ02.lean",
+      "filename": "WilsonsTheoremOQ02OQ02.lean",
+      "lineCount": 603,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ02OQ02.lean"
     },
     {
       "path": "Proofs/WilsonsTheoremOQ03.lean",
@@ -188,6 +228,50 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ05.lean",
+      "filename": "WilsonsTheoremOQ05.lean",
+      "lineCount": 81,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ05.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ05OQ01.lean",
+      "filename": "WilsonsTheoremOQ05OQ01.lean",
+      "lineCount": 170,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ05OQ01OQ01.lean",
+      "filename": "WilsonsTheoremOQ05OQ01OQ01.lean",
+      "lineCount": 262,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ05OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/WilsonsTheoremOQ05OQ01OQ01OQ01.lean",
+      "filename": "WilsonsTheoremOQ05OQ01OQ01OQ01.lean",
+      "lineCount": 169,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ05OQ01OQ01OQ01.lean"
     }
   ]
 }

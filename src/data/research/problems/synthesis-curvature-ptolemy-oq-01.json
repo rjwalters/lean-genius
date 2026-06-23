@@ -6,7 +6,13 @@
   "phase": "COMPLETED",
   "tier": "C",
   "tractability": 8,
-  "tags": ["differential-equations", "curvature", "trigonometry", "synthesis", "ptolemy"],
+  "tags": [
+    "differential-equations",
+    "curvature",
+    "trigonometry",
+    "synthesis",
+    "ptolemy"
+  ],
   "started": "2026-06-14",
   "lastUpdate": "2026-06-15",
   "path": "proofs/Proofs/SynthesisCurvaturePtolemyOQ01.lean",
@@ -35,5 +41,32 @@
       "Possible follow-up OQ (new slug): uniqueness of the IVP solution (any y with y''+K·y=0, y(0)=0, y'(0)=1 equals curvatureSin K) via Mathlib ODE uniqueness."
     ],
     "progressSummary": "RESOLVED & MERGED (#24239): full Lean proof of the curvature ODE y''+K·y=0 + initial conditions across all three regimes, registered in Proofs.lean, sorry-free and axiom-free. Math also exact-verified symbolically (verify_ode.py). Local Docker machine-check pending only the 2026-06-15 blackout."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/SynthesisCurvaturePtolemy.lean",
+      "filename": "SynthesisCurvaturePtolemy.lean",
+      "lineCount": 362,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SynthesisCurvaturePtolemy.lean"
+    },
+    {
+      "path": "Proofs/SynthesisCurvaturePtolemyOQ01.lean",
+      "filename": "SynthesisCurvaturePtolemyOQ01.lean",
+      "lineCount": 217,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SynthesisCurvaturePtolemyOQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "synthesis-curvature-ptolemy"
+  ]
 }

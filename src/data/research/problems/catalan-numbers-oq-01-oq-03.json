@@ -7,7 +7,13 @@
   "started": "2026-06-23",
   "lastUpdate": "2026-06-23",
   "path": "src/data/proofs/catalan-numbers-oq-01-oq-03",
-  "tags": ["combinatorics", "schroder-numbers", "recurrence", "holonomic", "growth-bound"],
+  "tags": [
+    "combinatorics",
+    "schroder-numbers",
+    "recurrence",
+    "holonomic",
+    "growth-bound"
+  ],
   "problemStatement": "Develop the large Schröder numbers Nat.largeSchroder (Mathlib provides only the quadratic convolution recurrence and evenness): prove positivity, growth bounds, and the order-two holonomic recurrence (n+3)·L(n+2) + n·L n = 3·(2n+3)·L(n+1), the Schröder analogue of the Catalan first-order recurrence in catalan-numbers-oq-01.",
   "currentState": "Positivity, convolution lower bound, step growth 3·L(n+1) ≤ L(n+2), and exponential bound 2·3ⁿ ≤ L(n+1) are proved and verified (0 axioms, 0 sorries) in Proofs/SchroderLinearRecurrence.lean. The order-two holonomic recurrence remains a sorry in the companion Proofs/SchroderLinearRecurrenceAristotle.lean, awaiting automated proof search (Aristotle service was unavailable this session).",
   "knowledge": {
@@ -40,10 +46,46 @@
   },
   "knownResults": [],
   "leanFiles": [
-    "Proofs/SchroderLinearRecurrence.lean",
-    "Proofs/SchroderLinearRecurrenceAristotle.lean"
+    {
+      "path": "Proofs/CatalanNumbersOQ01.lean",
+      "filename": "CatalanNumbersOQ01.lean",
+      "lineCount": 64,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ02.lean",
+      "filename": "CatalanNumbersOQ01OQ02.lean",
+      "lineCount": 176,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ02OQ01.lean",
+      "filename": "CatalanNumbersOQ01OQ02OQ01.lean",
+      "lineCount": 138,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ02OQ01.lean"
+    }
   ],
-  "relatedProofs": ["catalan-numbers-oq-01"],
+  "relatedProofs": [
+    "catalan-numbers-oq-01",
+    "catalan-numbers-oq-01-oq-02",
+    "catalan-numbers-oq-01-oq-02-oq-01",
+    "catalan-numbers-oq-01-oq-03"
+  ],
   "references": [],
   "phaseHistory": []
 }

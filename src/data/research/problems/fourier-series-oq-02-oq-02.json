@@ -1,13 +1,13 @@
 {
   "slug": "fourier-series-oq-02-oq-02",
-  "title": "Fourier Coefficient Decay \u2014 fourierCoeff_sq_summable_of_holder via p-Series",
+  "title": "Fourier Coefficient Decay — fourierCoeff_sq_summable_of_holder via p-Series",
   "phase": "COMPLETED",
   "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "f \\in C^\\alpha(\\mathbb{T}),\\ \\alpha > \\tfrac{1}{2} \\implies \\sum_{n \\neq 0} |\\hat{f}(n)|^2 < \\infty",
-    "plain": "H\u00f6lder continuous functions have Fourier coefficients decaying like $|n|^{-\\alpha}$. When $\\alpha > 1/2$, the series of squared coefficients converges (since $\\sum |n|^{-2\\alpha}$ is a convergent p-series with exponent $2\\alpha > 1$).",
+    "plain": "Hölder continuous functions have Fourier coefficients decaying like $|n|^{-\\alpha}$. When $\\alpha > 1/2$, the series of squared coefficients converges (since $\\sum |n|^{-2\\alpha}$ is a convergent p-series with exponent $2\\alpha > 1$).",
     "whyMatters": []
   },
   "knownResults": {
@@ -67,7 +67,9 @@
     "fourier-series-oq-02-oq-03",
     "fourier-series-oq-02-oq-03-oq-02",
     "fourier-series-oq-03",
-    "fourier-series-oq-04"
+    "fourier-series-oq-04",
+    "fourier-series-oq-04-oq-01",
+    "fourier-series-oq-04-wip-01"
   ],
   "references": {
     "papers": [],
@@ -226,13 +228,24 @@
     {
       "path": "Proofs/FourierSeriesOQ04OQ01.lean",
       "filename": "FourierSeriesOQ04OQ01.lean",
-      "lineCount": 280,
-      "theoremCount": 8,
+      "lineCount": 599,
+      "theoremCount": 15,
       "axiomCount": 1,
       "defCount": 4,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ04WIP01.lean",
+      "filename": "FourierSeriesOQ04WIP01.lean",
+      "lineCount": 124,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04WIP01.lean"
     }
   ]
 }

@@ -26,5 +26,35 @@
       "Quantify the largest angle actually attained by the cube configuration as a function of d, and investigate uniqueness of the extremal configuration up to affine equivalence."
     ],
     "progressSummary": "PROGRESS: shipped 0-axiom verified construction half of Danzer–Grünbaum (2^d cube vertices realise a non-obtuse configuration in ℝ^d), PR for erdos-504-oq-01. Upper bound remains open."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos504OQ01.lean",
+      "filename": "Erdos504OQ01.lean",
+      "lineCount": 174,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos504OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos504Problem.lean",
+      "filename": "Erdos504Problem.lean",
+      "lineCount": 218,
+      "theoremCount": 1,
+      "axiomCount": 4,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos504Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-5",
+    "erdos-50",
+    "erdos-504",
+    "erdos-504-oq-01"
+  ]
 }

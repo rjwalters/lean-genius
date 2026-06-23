@@ -75,6 +75,8 @@
     "bounded-prime-gaps-oq-01-oq-03",
     "bounded-prime-gaps-oq-03",
     "bounded-prime-gaps-oq-03-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-01-oq-01",
     "bounded-prime-gaps-oq-03-oq-01-oq-04",
     "bounded-prime-gaps-oq-04",
     "bounded-prime-gaps-oq-04-oq-01",
@@ -157,6 +159,39 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01.lean"
     },
     {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean",
+      "lineCount": 407,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ01.lean",
+      "lineCount": 233,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean",
+      "lineCount": 255,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean",
       "filename": "BoundedPrimeGapsOQ03OQ01OQ04.lean",
       "lineCount": 188,
@@ -170,11 +205,11 @@
     {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
       "filename": "BoundedPrimeGapsOQ03OQ02.lean",
-      "lineCount": 954,
-      "theoremCount": 26,
+      "lineCount": 998,
+      "theoremCount": 27,
       "axiomCount": 2,
       "defCount": 4,
-      "sorryCount": 2,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean"
     },

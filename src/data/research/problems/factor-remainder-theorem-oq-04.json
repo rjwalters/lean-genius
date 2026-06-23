@@ -57,7 +57,9 @@
   ],
   "relatedProofs": [
     "factor-remainder-nullstellensatz",
-    "factor-remainder-theorem"
+    "factor-remainder-theorem",
+    "factor-remainder-theorem-oq-01",
+    "factor-remainder-theorem-oq-05"
   ],
   "references": {
     "papers": [],
@@ -81,6 +83,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheorem.lean"
     },
     {
+      "path": "Proofs/FactorRemainderTheoremOQ01.lean",
+      "filename": "FactorRemainderTheoremOQ01.lean",
+      "lineCount": 72,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheoremOQ01.lean"
+    },
+    {
       "path": "Proofs/FactorRemainderTheoremOQ02.lean",
       "filename": "FactorRemainderTheoremOQ02.lean",
       "lineCount": 103,
@@ -101,6 +114,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/FactorRemainderTheoremOQ05.lean",
+      "filename": "FactorRemainderTheoremOQ05.lean",
+      "lineCount": 124,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheoremOQ05.lean"
     }
   ]
 }

@@ -1,13 +1,13 @@
 {
   "slug": "fourier-series-oq-01",
-  "title": "Carleson's theorem (L\u00b2 Fourier series converge pointwise a.e.) \u2014 axiomatized",
+  "title": "Carleson's theorem (L² Fourier series converge pointwise a.e.) — axiomatized",
   "phase": "COMPLETED",
   "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "theorem carleson_ae_convergence (f : AddCircle T \u2192 \u2102) (hf : Mem\u2112p f 2 haarAddCircle) : \u2200\u1d50 x \u2202haarAddCircle, Tendsto (fun N => fourierPartialSum f N x) atTop (\ud835\udcdd (f x))",
-    "plain": "Carleson's theorem: every L\u00b2 function on the circle has Fourier partial sums converging pointwise almost everywhere. The Lean proof architecture is complete; the deep input is the Carleson-Hunt weak-type maximal inequality, which is axiomatized (beyond current Mathlib).",
+    "formal": "theorem carleson_ae_convergence (f : AddCircle T → ℂ) (hf : Memℒp f 2 haarAddCircle) : ∀ᵐ x ∂haarAddCircle, Tendsto (fun N => fourierPartialSum f N x) atTop (𝓝 (f x))",
+    "plain": "Carleson's theorem: every L² function on the circle has Fourier partial sums converging pointwise almost everywhere. The Lean proof architecture is complete; the deep input is the Carleson-Hunt weak-type maximal inequality, which is axiomatized (beyond current Mathlib).",
     "whyMatters": [
       "One of the central theorems of 20th-century harmonic analysis",
       "Demonstrates how a deep result can be reduced to routine infrastructure plus explicit Carleson-Hunt axioms"
@@ -15,13 +15,13 @@
   },
   "knownResults": {
     "proven": [
-      "carleson_ae_convergence: pointwise a.e. convergence of Fourier partial sums for L\u00b2 functions",
+      "carleson_ae_convergence: pointwise a.e. convergence of Fourier partial sums for L² functions",
       "carleson_continuous: corollary for continuous functions",
-      "carleson_and_parseval: joint L\u00b2 + pointwise convergence statement",
+      "carleson_and_parseval: joint L² + pointwise convergence statement",
       "Supporting infrastructure (fourierPartialSum_continuous, divergenceSet_subset_of_approx, IsTrigPoly framework, etc.)"
     ],
     "open": [
-      "Eliminating the two remaining axioms (carlesonData, carleson_hunt_maximal) would require a full formalization of time-frequency analysis \u2014 separate large project."
+      "Eliminating the two remaining axioms (carlesonData, carleson_hunt_maximal) would require a full formalization of time-frequency analysis — separate large project."
     ],
     "goal": "Formalize Carleson theorem with the remaining deep Carleson-Hunt inputs isolated as axioms - DONE."
   },
@@ -31,7 +31,7 @@
     "iteration": 2,
     "focus": "Closed: 0 sorries, proof architecture complete; status axiomatized with 2 axioms (Carleson constant + Carleson-Hunt weak-type inequality), both deep results beyond current Mathlib.",
     "blockers": [],
-    "nextAction": "None \u2014 removing the remaining axioms would require a separate large formalization project for time-frequency analysis.",
+    "nextAction": "None — removing the remaining axioms would require a separate large formalization project for time-frequency analysis.",
     "attemptCounts": {
       "total": 5,
       "currentApproach": 2,
@@ -61,19 +61,19 @@
       "fourierPartialSum_smul: fixed integral_mul_left to integral_const_mul"
     ],
     "insights": [
-      "Carleson theorem (1966) states L\u00b2 Fourier series converge pointwise a.e.",
+      "Carleson theorem (1966) states L² Fourier series converge pointwise a.e.",
       "Key architecture: Carleson maximal operator S*f(x) = sup_N |S_N f(x)|",
-      "Carleson-Hunt weak-type (2,2) inequality is the deep part \u2014 axiomatized",
+      "Carleson-Hunt weak-type (2,2) inequality is the deep part — axiomatized",
       "Reduction from maximal inequality to a.e. convergence via density argument is provable",
-      "Trigonometric polynomials are dense in L\u00b2 (Stone-Weierstrass/Mathlib) and converge exactly",
+      "Trigonometric polynomials are dense in L² (Stone-Weierstrass/Mathlib) and converge exactly",
       "No Carleson formalization in current Mathlib v4.26.0; external Carleson4 project exists",
       "trigPoly_dense_L2 provable from Mathlib span_fourier_closure_eq_top (wrapped as span_fourier_dense in FourierSeries.lean:258). Use hasSum_fourier_series_L2 for L2 convergence, then g = fourierPartialSum f N for large N.",
-      "fourierPartialSum_add and divergenceSet_subset_of_approx need Mem\u2112p hypotheses added (f,g integrability). divergenceSet_measure_bound already provides these via its caller. fourierCoeff linearity follows from integral_sub with L2 integrability.",
+      "fourierPartialSum_add and divergenceSet_subset_of_approx need Memℒp hypotheses added (f,g integrability). divergenceSet_measure_bound already provides these via its caller. fourierCoeff linearity follows from integral_sub with L2 integrability.",
       "Only 2 axioms remain in the current OQ01 target file: carlesonData and carleson_hunt_maximal. Eliminating them is a separate large time-frequency-analysis formalization project.",
-      "trigPoly_partialSum_eq has subtle issue: IsTrigPoly only constrains Fourier coefficients, not pointwise representation. \u2200 x equality needs continuity of g or a.e. version.",
-      "carleson_ae_convergence fully proved \u2014 density argument + countable union via measure_iUnion_null",
+      "trigPoly_partialSum_eq has subtle issue: IsTrigPoly only constrains Fourier coefficients, not pointwise representation. ∀ x equality needs continuity of g or a.e. version.",
+      "carleson_ae_convergence fully proved — density argument + countable union via measure_iUnion_null",
       "Markov inequality sorry: use mul_meas_ge_le_pow_eLpNorm (p=2) from LpSeminorm.ChebyshevMarkov",
-      "Markov step proved without eLpNorm API: use mul_meas_ge_le_lintegral\u2080 on \u2016h\u2016\u00b2 directly, connect via ofReal_integral_eq_lintegral_ofReal"
+      "Markov step proved without eLpNorm API: use mul_meas_ge_le_lintegral₀ on ‖h‖² directly, connect via ofReal_integral_eq_lintegral_ofReal"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -94,7 +94,9 @@
     "fourier-series-oq-02-oq-03",
     "fourier-series-oq-02-oq-03-oq-02",
     "fourier-series-oq-03",
-    "fourier-series-oq-04"
+    "fourier-series-oq-04",
+    "fourier-series-oq-04-oq-01",
+    "fourier-series-oq-04-wip-01"
   ],
   "references": {
     "papers": [],
@@ -250,13 +252,24 @@
     {
       "path": "Proofs/FourierSeriesOQ04OQ01.lean",
       "filename": "FourierSeriesOQ04OQ01.lean",
-      "lineCount": 280,
-      "theoremCount": 8,
+      "lineCount": 599,
+      "theoremCount": 15,
       "axiomCount": 1,
       "defCount": 4,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ04WIP01.lean",
+      "filename": "FourierSeriesOQ04WIP01.lean",
+      "lineCount": 124,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04WIP01.lean"
     }
   ]
 }

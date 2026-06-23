@@ -47,10 +47,14 @@
   "relatedProofs": [
     "chinese-remainder-constructive",
     "chinese-remainder-constructive-oq-03",
+    "chinese-remainder-constructive-oq-03-oq-01",
     "chinese-remainder-constructive-oq-03-oq-03",
     "chinese-remainder-constructive-oq-04",
+    "chinese-remainder-constructive-oq-04-oq-02",
     "chinese-remainder-constructive-oq-04-oq-03",
-    "chinese-remainder-constructive-oq-04-oq-04"
+    "chinese-remainder-constructive-oq-04-oq-04",
+    "chinese-remainder-constructive-oq-04-oq-05",
+    "chinese-remainder-constructive-oq-05"
   ],
   "references": {
     "papers": [],
@@ -65,7 +69,7 @@
     {
       "path": "Proofs/ChineseRemainderConstructive.lean",
       "filename": "ChineseRemainderConstructive.lean",
-      "lineCount": 416,
+      "lineCount": 417,
       "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 2,
@@ -83,6 +87,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ03.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ03OQ01.lean",
+      "filename": "ChineseRemainderConstructiveOQ03OQ01.lean",
+      "lineCount": 276,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ03OQ01.lean"
     },
     {
       "path": "Proofs/ChineseRemainderConstructiveOQ03OQ03.lean",
@@ -107,6 +122,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04.lean"
     },
     {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04OQ02.lean",
+      "filename": "ChineseRemainderConstructiveOQ04OQ02.lean",
+      "lineCount": 181,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04OQ02.lean"
+    },
+    {
       "path": "Proofs/ChineseRemainderConstructiveOQ04OQ03.lean",
       "filename": "ChineseRemainderConstructiveOQ04OQ03.lean",
       "lineCount": 100,
@@ -127,6 +153,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04OQ04.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ04OQ05.lean",
+      "filename": "ChineseRemainderConstructiveOQ04OQ05.lean",
+      "lineCount": 147,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ04OQ05.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderConstructiveOQ05.lean",
+      "filename": "ChineseRemainderConstructiveOQ05.lean",
+      "lineCount": 111,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderConstructiveOQ05.lean"
     }
   ]
 }

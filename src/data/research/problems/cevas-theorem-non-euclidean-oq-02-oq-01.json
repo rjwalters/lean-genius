@@ -49,8 +49,11 @@
   "relatedProofs": [
     "cevas-theorem",
     "cevas-theorem-non-euclidean",
+    "cevas-theorem-non-euclidean-oq-01",
     "cevas-theorem-non-euclidean-oq-02",
-    "cevas-theorem-non-euclidean-oq-02-oq-01"
+    "cevas-theorem-non-euclidean-oq-02-oq-01",
+    "cevas-theorem-non-euclidean-oq-02-oq-01-oq-01",
+    "cevas-theorem-non-euclidean-oq-03"
   ],
   "references": {
     "papers": [],
@@ -75,6 +78,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclidean.lean"
     },
     {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ01.lean",
+      "filename": "CevasTheoremNonEuclideanOQ01.lean",
+      "lineCount": 129,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ01.lean"
+    },
+    {
       "path": "Proofs/CevasTheoremNonEuclideanOQ02.lean",
       "filename": "CevasTheoremNonEuclideanOQ02.lean",
       "lineCount": 310,
@@ -95,6 +109,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ02OQ01OQ01.lean",
+      "filename": "CevasTheoremNonEuclideanOQ02OQ01OQ01.lean",
+      "lineCount": 232,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ03.lean",
+      "filename": "CevasTheoremNonEuclideanOQ03.lean",
+      "lineCount": 175,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ03.lean"
     }
   ]
 }

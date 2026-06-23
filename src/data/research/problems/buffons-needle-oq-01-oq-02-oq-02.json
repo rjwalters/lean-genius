@@ -68,11 +68,16 @@
     "buffons-needle-oq-01-oq-01-oq-01",
     "buffons-needle-oq-01-oq-01-oq-04",
     "buffons-needle-oq-01-oq-01-oq-04-oq-01",
+    "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01",
     "buffons-needle-oq-01-oq-02",
+    "buffons-needle-oq-01-oq-02-oq-02",
     "buffons-needle-oq-01-oq-04",
     "buffons-needle-oq-02",
     "buffons-needle-oq-02-oq-01",
     "buffons-needle-oq-02-oq-02",
+    "buffons-needle-oq-02-oq-02-oq-01",
+    "buffons-needle-oq-02-oq-02-oq-01-oq-01",
+    "buffons-needle-oq-02-oq-02-oq-01-oq-01-oq-01",
     "buffons-needle-oq-02-oq-03"
   ],
   "references": {
@@ -87,7 +92,7 @@
     {
       "path": "Proofs/BuffonsNeedle.lean",
       "filename": "BuffonsNeedle.lean",
-      "lineCount": 267,
+      "lineCount": 255,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 3,
@@ -215,6 +220,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ02OQ01.lean",
+      "filename": "BuffonsNeedleOQ02OQ02OQ01.lean",
+      "lineCount": 152,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ02OQ01OQ01.lean",
+      "filename": "BuffonsNeedleOQ02OQ02OQ01OQ01.lean",
+      "lineCount": 191,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ02OQ01OQ01OQ01.lean",
+      "filename": "BuffonsNeedleOQ02OQ02OQ01OQ01OQ01.lean",
+      "lineCount": 351,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ02OQ01OQ01OQ01.lean"
     },
     {
       "path": "Proofs/BuffonsNeedleOQ02OQ03.lean",

@@ -64,7 +64,11 @@
   ],
   "relatedProofs": [
     "chebyshev-bounds",
-    "chebyshev-bounds-oq-04"
+    "chebyshev-bounds-oq-02",
+    "chebyshev-bounds-oq-03",
+    "chebyshev-bounds-oq-04",
+    "chebyshev-bounds-oq-04-oq-01",
+    "chebyshev-bounds-oq-04-oq-01-oq-01"
   ],
   "references": {
     "papers": [],
@@ -88,9 +92,31 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBounds.lean"
     },
     {
+      "path": "Proofs/ChebyshevBoundsOQ02.lean",
+      "filename": "ChebyshevBoundsOQ02.lean",
+      "lineCount": 136,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBoundsOQ02.lean"
+    },
+    {
+      "path": "Proofs/ChebyshevBoundsOQ03.lean",
+      "filename": "ChebyshevBoundsOQ03.lean",
+      "lineCount": 101,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBoundsOQ03.lean"
+    },
+    {
       "path": "Proofs/ChebyshevBoundsOQ04.lean",
       "filename": "ChebyshevBoundsOQ04.lean",
-      "lineCount": 386,
+      "lineCount": 387,
       "theoremCount": 10,
       "axiomCount": 2,
       "defCount": 2,
@@ -101,13 +127,46 @@
     {
       "path": "Proofs/ChebyshevBoundsOQ04Aristotle.lean",
       "filename": "ChebyshevBoundsOQ04Aristotle.lean",
-      "lineCount": 222,
+      "lineCount": 223,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBoundsOQ04Aristotle.lean"
+    },
+    {
+      "path": "Proofs/ChebyshevBoundsOQ04OQ01.lean",
+      "filename": "ChebyshevBoundsOQ04OQ01.lean",
+      "lineCount": 382,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/ChebyshevBoundsOQ04OQ01Mertens.lean",
+      "filename": "ChebyshevBoundsOQ04OQ01Mertens.lean",
+      "lineCount": 100,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBoundsOQ04OQ01Mertens.lean"
+    },
+    {
+      "path": "Proofs/ChebyshevBoundsOQ04OQ01OQ01WeakMertensStatementOnly.lean",
+      "filename": "ChebyshevBoundsOQ04OQ01OQ01WeakMertensStatementOnly.lean",
+      "lineCount": 168,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBoundsOQ04OQ01OQ01WeakMertensStatementOnly.lean"
     }
   ]
 }

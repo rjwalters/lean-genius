@@ -91,9 +91,11 @@
     "erdos-1060",
     "erdos-1061",
     "erdos-1062",
+    "erdos-1062-oq-04",
     "erdos-1063",
     "erdos-1064",
     "erdos-1065",
+    "erdos-1065-incomplete-01",
     "erdos-1065-oq-05",
     "erdos-1066",
     "erdos-1066-oq-04",
@@ -132,6 +134,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1061Problem.lean"
     },
     {
+      "path": "Proofs/Erdos1062OQ04.lean",
+      "filename": "Erdos1062OQ04.lean",
+      "lineCount": 358,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1062OQ04.lean"
+    },
+    {
       "path": "Proofs/Erdos1062Problem.lean",
       "filename": "Erdos1062Problem.lean",
       "lineCount": 190,
@@ -145,8 +158,8 @@
     {
       "path": "Proofs/Erdos1063Problem.lean",
       "filename": "Erdos1063Problem.lean",
-      "lineCount": 170,
-      "theoremCount": 5,
+      "lineCount": 191,
+      "theoremCount": 6,
       "axiomCount": 3,
       "defCount": 4,
       "sorryCount": 0,
@@ -167,7 +180,7 @@
     {
       "path": "Proofs/Erdos1065BatemanHorn.lean",
       "filename": "Erdos1065BatemanHorn.lean",
-      "lineCount": 460,
+      "lineCount": 461,
       "theoremCount": 35,
       "axiomCount": 1,
       "defCount": 3,
@@ -185,6 +198,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065CunninghamChains.lean"
+    },
+    {
+      "path": "Proofs/Erdos1065Incomplete01.lean",
+      "filename": "Erdos1065Incomplete01.lean",
+      "lineCount": 182,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065Incomplete01.lean"
     },
     {
       "path": "Proofs/Erdos1065Problem.lean",
@@ -244,9 +268,9 @@
     {
       "path": "Proofs/Erdos1069Problem.lean",
       "filename": "Erdos1069Problem.lean",
-      "lineCount": 180,
-      "theoremCount": 2,
-      "axiomCount": 2,
+      "lineCount": 245,
+      "theoremCount": 6,
+      "axiomCount": 1,
       "defCount": 12,
       "sorryCount": 0,
       "isAristotle": false,
@@ -255,8 +279,8 @@
     {
       "path": "Proofs/Erdos106OQ02.lean",
       "filename": "Erdos106OQ02.lean",
-      "lineCount": 620,
-      "theoremCount": 17,
+      "lineCount": 750,
+      "theoremCount": 28,
       "axiomCount": 5,
       "defCount": 14,
       "sorryCount": 0,

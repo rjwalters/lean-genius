@@ -34,5 +34,57 @@
     "seeker-selected"
   ],
   "significance": 5,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/AlgebraicRealsMeager.lean",
+      "filename": "AlgebraicRealsMeager.lean",
+      "lineCount": 227,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicRealsMeager.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicRealsMeagerDenseGDelta.lean",
+      "filename": "AlgebraicRealsMeagerDenseGDelta.lean",
+      "lineCount": 166,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicRealsMeagerDenseGDelta.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicRealsMeagerOQ02.lean",
+      "filename": "AlgebraicRealsMeagerOQ02.lean",
+      "lineCount": 178,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicRealsMeagerOQ02.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicRealsMeagerOQ03.lean",
+      "filename": "AlgebraicRealsMeagerOQ03.lean",
+      "lineCount": 147,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicRealsMeagerOQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "algebraic-reals-meager",
+    "algebraic-reals-meager-dense-gdelta",
+    "algebraic-reals-meager-oq-02",
+    "algebraic-reals-meager-oq-03"
+  ]
 }

@@ -93,7 +93,8 @@
     "ellipsoids"
   ],
   "relatedProofs": [
-    "kepler-conjecture"
+    "kepler-conjecture",
+    "kepler-conjecture-oq-04"
   ],
   "references": {
     "papers": [
@@ -116,6 +117,27 @@
   },
   "lastUpdate": "2026-06-09",
   "leanFiles": [
-    "proofs/Proofs/KeplerConjectureOQ04.lean"
+    {
+      "path": "Proofs/KeplerConjecture.lean",
+      "filename": "KeplerConjecture.lean",
+      "lineCount": 478,
+      "theoremCount": 6,
+      "axiomCount": 10,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KeplerConjecture.lean"
+    },
+    {
+      "path": "Proofs/KeplerConjectureOQ04.lean",
+      "filename": "KeplerConjectureOQ04.lean",
+      "lineCount": 571,
+      "theoremCount": 13,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KeplerConjectureOQ04.lean"
+    }
   ]
 }

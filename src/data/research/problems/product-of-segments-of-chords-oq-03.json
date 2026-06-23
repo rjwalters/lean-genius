@@ -36,7 +36,9 @@
     "since": "2026-06-13T00:00:00.000Z",
     "iteration": 18,
     "focus": "S18 BLOCKED (verification blackout, researcher-1, 2026-06-13): no build-free work remains. S17 STATE-SYNC (#23000) already brought the registry current — file is 265 LOC, 1 genuine sorry (line 125, the (⟹) Cramer direction of the headline iff), 0 axioms on origin/main; the (⟸) half is proven unconditionally as concyclic_implies_concyclicityDet_zero. The single open sorry is build-dependent ACT (Cramer paste, ~80 LOC) and both verification routes are down this session: docker info reports the daemon down and the Aristotle MCP backend returns 'Resource not found' (404). Flagged blocked (status active→blocked) to stop claim churn during the blackout rather than re-surveying or writing another PREP memo.",
-    "blockers": ["Verification blackout 2026-06-13: Docker daemon down + Aristotle MCP backend 404 — the only open work (the (⟹) Cramer direction, sorry @ ProductOfSegmentsOfChordsOQ03.lean:125) is build-dependent ACT and cannot be verified."],
+    "blockers": [
+      "Verification blackout 2026-06-13: Docker daemon down + Aristotle MCP backend 404 — the only open work (the (⟹) Cramer direction, sorry @ ProductOfSegmentsOfChordsOQ03.lean:125) is build-dependent ACT and cannot be verified."
+    ],
     "nextAction": "S18 ACT (when Docker recovers): (a) wire the proven concyclic_implies_concyclicityDet_zero into the (⟸) branch of concyclicityDet_eq_zero_iff_concyclic, leaving only the (⟹) sorry; (b) replace the (hNonCollinear : True) placeholder with the algebraic 2×2 non-collinearity (S3 PREP Choice 1b); (c) discharge (⟹) via Matrix.cramer on the implicit-circle system (S3 ACT, ~80 LOC). Build: ./proofs/scripts/docker-build.sh Proofs.ProductOfSegmentsOfChordsOQ03.",
     "attemptCounts": {
       "total": 17,
@@ -107,5 +109,55 @@
     "seeker-selected"
   ],
   "createdAt": "2026-05-12T15:12:46Z",
-  "lastUpdatedAt": "2026-06-13T00:00:00Z"
+  "lastUpdatedAt": "2026-06-13T00:00:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/ProductOfSegmentsOfChords.lean",
+      "filename": "ProductOfSegmentsOfChords.lean",
+      "lineCount": 515,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChords.lean"
+    },
+    {
+      "path": "Proofs/ProductOfSegmentsOfChordsConverse.lean",
+      "filename": "ProductOfSegmentsOfChordsConverse.lean",
+      "lineCount": 328,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChordsConverse.lean"
+    },
+    {
+      "path": "Proofs/ProductOfSegmentsOfChordsOQ01.lean",
+      "filename": "ProductOfSegmentsOfChordsOQ01.lean",
+      "lineCount": 229,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChordsOQ01.lean"
+    },
+    {
+      "path": "Proofs/ProductOfSegmentsOfChordsOQ03.lean",
+      "filename": "ProductOfSegmentsOfChordsOQ03.lean",
+      "lineCount": 266,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChordsOQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "product-of-segments-of-chords",
+    "product-of-segments-of-chords-oq-01"
+  ]
 }

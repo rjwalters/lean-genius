@@ -72,7 +72,8 @@
     "taylor-sincos-convergence",
     "taylor-theorem",
     "taylor-theorem-oq-02",
-    "taylor-theorem-oq-03"
+    "taylor-theorem-oq-03",
+    "taylor-theorem-oq-03-oq-01"
   ],
   "references": {
     "papers": [],
@@ -91,20 +92,9 @@
   "tractability": 7,
   "leanFiles": [
     {
-      "path": "Proofs/TaylorTheoremOQ02.lean",
-      "filename": "TaylorTheoremOQ02.lean",
-      "lineCount": 218,
-      "theoremCount": 9,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ02.lean"
-    },
-    {
       "path": "Proofs/TaylorTheorem.lean",
       "filename": "TaylorTheorem.lean",
-      "lineCount": 202,
+      "lineCount": 203,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 1,
@@ -113,15 +103,37 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheorem.lean"
     },
     {
+      "path": "Proofs/TaylorTheoremOQ02.lean",
+      "filename": "TaylorTheoremOQ02.lean",
+      "lineCount": 219,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ02.lean"
+    },
+    {
       "path": "Proofs/TaylorTheoremOQ03.lean",
       "filename": "TaylorTheoremOQ03.lean",
-      "lineCount": 268,
+      "lineCount": 269,
       "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/TaylorTheoremOQ03OQ01.lean",
+      "filename": "TaylorTheoremOQ03OQ01.lean",
+      "lineCount": 161,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ03OQ01.lean"
     }
   ]
 }

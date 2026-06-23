@@ -177,9 +177,12 @@
     "brouwer-fixed-point",
     "brouwer-fixed-point-oq-01",
     "brouwer-fixed-point-oq-01-oq-02",
+    "brouwer-fixed-point-oq-01-oq-02-oq-02",
     "brouwer-fixed-point-oq-01-oq-02-oq-03",
     "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01",
     "brouwer-fixed-point-oq-01-oq-03",
+    "brouwer-fixed-point-oq-01-oq-03-oq-01",
+    "brouwer-fixed-point-oq-01-oq-03-oq-01-oq-01",
     "brouwer-fixed-point-oq-02",
     "brouwer-fixed-point-oq-02-oq-01",
     "brouwer-fixed-point-oq-02-oq-02",
@@ -255,6 +258,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G10.lean"
     },
     {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02G11.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02G11.lean",
+      "lineCount": 86,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G11.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02G12.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02G12.lean",
+      "lineCount": 127,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G12.lean"
+    },
+    {
       "path": "Proofs/BrouwerFixedPointOQ01OQ02G6.lean",
       "filename": "BrouwerFixedPointOQ01OQ02G6.lean",
       "lineCount": 89,
@@ -288,6 +313,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G8.lean"
     },
     {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ02.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02OQ02.lean",
+      "lineCount": 143,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02OQ02.lean"
+    },
+    {
       "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean",
       "filename": "BrouwerFixedPointOQ01OQ02OQ03.lean",
       "lineCount": 172,
@@ -319,6 +355,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ03OQ01.lean",
+      "filename": "BrouwerFixedPointOQ01OQ03OQ01.lean",
+      "lineCount": 699,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ03OQ01OQ01.lean",
+      "filename": "BrouwerFixedPointOQ01OQ03OQ01OQ01.lean",
+      "lineCount": 334,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ03OQ01OQ01.lean"
     },
     {
       "path": "Proofs/BrouwerFixedPointOQ02.lean",
@@ -365,6 +423,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ02.lean"
     },
     {
+      "path": "Proofs/BrouwerFixedPointOQ02OQ02OQ01.lean",
+      "filename": "BrouwerFixedPointOQ02OQ02OQ01.lean",
+      "lineCount": 128,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ02OQ01.lean"
+    },
+    {
       "path": "Proofs/BrouwerFixedPointOQ02OQ03.lean",
       "filename": "BrouwerFixedPointOQ02OQ03.lean",
       "lineCount": 215,
@@ -400,10 +469,10 @@
     {
       "path": "Proofs/BrouwerFixedPointOQ04OQ01.lean",
       "filename": "BrouwerFixedPointOQ04OQ01.lean",
-      "lineCount": 297,
+      "lineCount": 306,
       "theoremCount": 8,
       "axiomCount": 2,
-      "defCount": 6,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ01.lean"

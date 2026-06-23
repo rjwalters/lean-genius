@@ -54,7 +54,25 @@
     "probability",
     "factorial-moments"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "derangements",
+    "derangements-convergence",
+    "derangements-convergence-oq-01",
+    "derangements-convergence-oq-01-oq-01",
+    "derangements-convergence-oq-02",
+    "derangements-convergence-oq-03",
+    "derangements-convergence-oq-03-oq-01",
+    "derangements-convergence-oq-03-oq-01-oq-02",
+    "derangements-convergence-oq-03-oq-02",
+    "derangements-oq-02",
+    "derangements-oq-02-oq-01",
+    "derangements-oq-02-oq-02",
+    "derangements-oq-02-oq-02-oq-01",
+    "derangements-oq-03",
+    "derangements-oq-03-oq-01",
+    "derangements-oq-03-oq-01-oq-02",
+    "derangements-oq-03-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -72,5 +90,194 @@
     "Proofs/DerangementsOQ02OQ02OQ01.lean — main theorem sum_descFactorial_fixedPoints_eq_factorial: ∑_{σ:Perm(Fin n)} (|Fix σ|).descFactorial k = n! for k ≤ n.",
     "Helper def fixedEmbEquiv + lemma card_fixedBy_emb: the embeddings Fin k ↪ Fin n fixed by σ biject with Fin k ↪ {fixed points of σ}, so their count is (|Fix σ|).descFactorial k (via Fintype.card_embedding_eq).",
     "Corollaries: sum_fixedPoints_eq_factorial_via_moment (k=1 recovers parent E[X]=1), moment_sum_eq_card_perm, sum_second_factorial_moment (k=2 ⇒ Var(X)=1), and sum_descFactorial_fixedPoints_eq_zero (k>n ⇒ sum 0)."
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/Derangements.lean",
+      "filename": "Derangements.lean",
+      "lineCount": 228,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Derangements.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergence.lean",
+      "filename": "DerangementsConvergence.lean",
+      "lineCount": 273,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergence.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ01.lean",
+      "filename": "DerangementsConvergenceOQ01.lean",
+      "lineCount": 153,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ01OQ01.lean",
+      "filename": "DerangementsConvergenceOQ01OQ01.lean",
+      "lineCount": 255,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ02.lean",
+      "filename": "DerangementsConvergenceOQ02.lean",
+      "lineCount": 240,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ03.lean",
+      "filename": "DerangementsConvergenceOQ03.lean",
+      "lineCount": 89,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ03.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ03OQ01.lean",
+      "filename": "DerangementsConvergenceOQ03OQ01.lean",
+      "lineCount": 118,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ03OQ01OQ02.lean",
+      "filename": "DerangementsConvergenceOQ03OQ01OQ02.lean",
+      "lineCount": 267,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsConvergenceOQ03OQ02.lean",
+      "filename": "DerangementsConvergenceOQ03OQ02.lean",
+      "lineCount": 83,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02.lean",
+      "filename": "DerangementsOQ02.lean",
+      "lineCount": 358,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02OQ01.lean",
+      "filename": "DerangementsOQ02OQ01.lean",
+      "lineCount": 124,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02OQ02.lean",
+      "filename": "DerangementsOQ02OQ02.lean",
+      "lineCount": 250,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ02OQ02OQ01.lean",
+      "filename": "DerangementsOQ02OQ02OQ01.lean",
+      "lineCount": 184,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03.lean",
+      "filename": "DerangementsOQ03.lean",
+      "lineCount": 406,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03OQ01.lean",
+      "filename": "DerangementsOQ03OQ01.lean",
+      "lineCount": 244,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03OQ01OQ02.lean",
+      "filename": "DerangementsOQ03OQ01OQ02.lean",
+      "lineCount": 413,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DerangementsOQ03OQ02.lean",
+      "filename": "DerangementsOQ03OQ02.lean",
+      "lineCount": 383,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsOQ03OQ02.lean"
+    }
   ]
 }

@@ -80,7 +80,10 @@
     "dilworth",
     "mirsky"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "dilworth-theorem-oq-01",
+    "dilworth-theorem-oq-01-oq-01"
+  ],
   "references": {
     "papers": [
       "R. P. Dilworth, A Decomposition Theorem for Partially Ordered Sets, Ann. Math. 51 (1950) 161-166",
@@ -97,5 +100,18 @@
   "lastUpdate": "2026-06-16T08:00:00.000Z",
   "completed": "2026-06-16T08:00:00.000Z",
   "significance": 5,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/DilworthTheoremOQ01.lean",
+      "filename": "DilworthTheoremOQ01.lean",
+      "lineCount": 128,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DilworthTheoremOQ01.lean"
+    }
+  ]
 }

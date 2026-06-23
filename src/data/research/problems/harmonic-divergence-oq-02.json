@@ -71,7 +71,9 @@
     "harmonic-divergence",
     "harmonic-divergence-oq-01",
     "harmonic-divergence-oq-02",
-    "harmonic-divergence-oq-04"
+    "harmonic-divergence-oq-03",
+    "harmonic-divergence-oq-04",
+    "harmonic-divergence-oq-05"
   ],
   "references": {
     "papers": [],
@@ -108,13 +110,24 @@
     {
       "path": "Proofs/HarmonicDivergenceOQ02.lean",
       "filename": "HarmonicDivergenceOQ02.lean",
-      "lineCount": 289,
-      "theoremCount": 14,
+      "lineCount": 290,
+      "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HarmonicDivergenceOQ02.lean"
+    },
+    {
+      "path": "Proofs/HarmonicDivergenceOQ03.lean",
+      "filename": "HarmonicDivergenceOQ03.lean",
+      "lineCount": 154,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HarmonicDivergenceOQ03.lean"
     },
     {
       "path": "Proofs/HarmonicDivergenceOQ04.lean",
@@ -126,6 +139,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HarmonicDivergenceOQ04.lean"
+    },
+    {
+      "path": "Proofs/HarmonicDivergenceOQ05.lean",
+      "filename": "HarmonicDivergenceOQ05.lean",
+      "lineCount": 146,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HarmonicDivergenceOQ05.lean"
     }
   ]
 }

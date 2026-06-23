@@ -67,9 +67,11 @@
     "birthday-problem-oq-01-oq-01",
     "birthday-problem-oq-02",
     "birthday-problem-oq-02-oq-01",
+    "birthday-problem-oq-02-oq-01-oq-02",
     "birthday-problem-oq-03",
     "birthday-problem-oq-03-oq-01",
     "birthday-problem-oq-03-oq-01-oq-01",
+    "birthday-problem-oq-03-oq-01-oq-01-oq-05",
     "birthday-problem-oq-03-oq-01-oq-02",
     "birthday-problem-oq-03-oq-03"
   ],
@@ -127,7 +129,7 @@
       "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01.lean"
     },
@@ -143,10 +145,32 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01Aristotle.lean"
     },
     {
+      "path": "Proofs/BirthdayProblemOQ01OQ01OQ03.lean",
+      "filename": "BirthdayProblemOQ01OQ01OQ03.lean",
+      "lineCount": 124,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01OQ03Schur.lean",
+      "filename": "BirthdayProblemOQ01OQ01OQ03Schur.lean",
+      "lineCount": 99,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01OQ03Schur.lean"
+    },
+    {
       "path": "Proofs/BirthdayProblemOQ01OQ02.lean",
       "filename": "BirthdayProblemOQ01OQ02.lean",
-      "lineCount": 205,
-      "theoremCount": 3,
+      "lineCount": 264,
+      "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -174,6 +198,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02OQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ02OQ01OQ02.lean",
+      "lineCount": 141,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02OQ01OQ02.lean"
     },
     {
       "path": "Proofs/BirthdayProblemOQ03.lean",
@@ -209,10 +244,21 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ01.lean"
     },
     {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ05.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ01OQ05.lean",
+      "lineCount": 78,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ01OQ05.lean"
+    },
+    {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
-      "lineCount": 2264,
-      "theoremCount": 54,
+      "lineCount": 2312,
+      "theoremCount": 56,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,

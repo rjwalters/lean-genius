@@ -6,8 +6,8 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\u2200 R > C, \u2203 \u03b4 > 0, \u2203 N, \u2200 n \u2265 N, \u2200 code with rate \u2265 R, P_e \u2265 \u03b4",
-    "plain": "When transmission rate R exceeds channel capacity C, error probability is bounded away from zero for sufficiently long codes. Specifically, P_e \u2265 (R-C)/(2R) for n \u2265 2/(R-C).",
+    "formal": "∀ R > C, ∃ δ > 0, ∃ N, ∀ n ≥ N, ∀ code with rate ≥ R, P_e ≥ δ",
+    "plain": "When transmission rate R exceeds channel capacity C, error probability is bounded away from zero for sufficiently long codes. Specifically, P_e ≥ (R-C)/(2R) for n ≥ 2/(R-C).",
     "whyMatters": [
       "Proves the algebraic converse chain for Shannon channel coding modulo the combined Fano-MI bound axiom",
       "Provides a quantitative lower bound on error probability above capacity",
@@ -16,17 +16,17 @@
   },
   "knownResults": {
     "proven": [
-      "channel_coding_converse_asymptotic: P_e \u2265 (R-C)/(2R) for n \u2265 \u23082/(R-C)\u2309",
-      "converse_from_combined_bound: Fano-MI bound \u2192 P_e \u2265 1 - (nC+1)/(nR)",
-      "threshold_bound: n \u2265 2/(R-C) \u2192 (R-C)/(2R) \u2264 1 - (nC+1)/(nR)",
-      "converse_delta_pos: \u03b4 = (R-C)/(2R) > 0 when R > C",
-      "rate_ge_implies_log: R \u2264 rate_of_code \u2192 nR \u2264 log M"
+      "channel_coding_converse_asymptotic: P_e ≥ (R-C)/(2R) for n ≥ ⌈2/(R-C)⌉",
+      "converse_from_combined_bound: Fano-MI bound → P_e ≥ 1 - (nC+1)/(nR)",
+      "threshold_bound: n ≥ 2/(R-C) → (R-C)/(2R) ≤ 1 - (nC+1)/(nR)",
+      "converse_delta_pos: δ = (R-C)/(2R) > 0 when R > C",
+      "rate_ge_implies_log: R ≤ rate_of_code → nR ≤ log M"
     ],
     "open": [
-      "Strong converse: P_e \u2192 1 as n \u2192 \u221e for fixed R > C",
+      "Strong converse: P_e → 1 as n → ∞ for fixed R > C",
       "Reduce fano_mi_converse_bound to Fano inequality + MI chain rule"
     ],
-    "goal": "Quantitative converse: P_e \u2265 (R-C)/(2R) for n \u2265 2/(R-C)"
+    "goal": "Quantitative converse: P_e ≥ (R-C)/(2R) for n ≥ 2/(R-C)"
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -46,10 +46,10 @@
   "knowledge": {
     "insights": [
       "Axiomatizing Fano + MI as single combined bound avoids unformalized probability theory",
-      "Asymptotic version (\u2203N, \u2200n\u2265N) is cleaner than \u2200n since small-n requires extra argument",
-      "capacity_nonneg requires [Nonempty \u03b1] typeclass on channel input type",
-      "nlinarith solves the key quadratic step (1-P_e)\u00b7log M \u2264 n\u00b7C+1 directly",
-      "Threshold algebra: n\u00b7(R-C)\u22652 \u2192 n\u00b7R\u00b2\u2265n\u00b7C\u00b7R+2R via mul_le_mul_of_nonneg_right + ring"
+      "Asymptotic version (∃N, ∀n≥N) is cleaner than ∀n since small-n requires extra argument",
+      "capacity_nonneg requires [Nonempty α] typeclass on channel input type",
+      "nlinarith solves the key quadratic step (1-P_e)·log M ≤ n·C+1 directly",
+      "Threshold algebra: n·(R-C)≥2 → n·R²≥n·C·R+2R via mul_le_mul_of_nonneg_right + ring"
     ],
     "builtItems": [
       "codeErrorProb def: ShannonChannelCodingOQ02OQ03.lean:33",
@@ -62,7 +62,7 @@
     ],
     "mathlibGaps": [
       "Mutual information subadditivity for n-step memoryless channels (needed to eliminate fano_mi axiom)",
-      "Conditional entropy decrease under data processing (needed to formalize H(W|Y^n) \u2264 H(W|\u0174))"
+      "Conditional entropy decrease under data processing (needed to formalize H(W|Y^n) ≤ H(W|Ŵ))"
     ],
     "nextSteps": [
       "Eliminate fano_mi_converse_bound by composing the Fano bridge with mutual-information chain-rule infrastructure.",
@@ -76,18 +76,73 @@
     {
       "path": "Proofs/ShannonChannelCoding.lean",
       "filename": "ShannonChannelCoding.lean",
-      "lineCount": 556,
-      "theoremCount": 16,
-      "axiomCount": 3,
+      "lineCount": 613,
+      "theoremCount": 18,
+      "axiomCount": 2,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCoding.lean"
     },
     {
+      "path": "Proofs/ShannonChannelCodingAWGN.lean",
+      "filename": "ShannonChannelCodingAWGN.lean",
+      "lineCount": 200,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingAWGN.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingBEC.lean",
+      "filename": "ShannonChannelCodingBEC.lean",
+      "lineCount": 244,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingBEC.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingBECOQ01.lean",
+      "filename": "ShannonChannelCodingBECOQ01.lean",
+      "lineCount": 278,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingBECOQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ01.lean",
+      "filename": "ShannonChannelCodingOQ01.lean",
+      "lineCount": 131,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ01.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingOQ01OQ01.lean",
+      "filename": "ShannonChannelCodingOQ01OQ01.lean",
+      "lineCount": 196,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/ShannonChannelCodingOQ02.lean",
       "filename": "ShannonChannelCodingOQ02.lean",
-      "lineCount": 298,
+      "lineCount": 299,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 1,
@@ -98,7 +153,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
       "filename": "ShannonChannelCodingOQ02OQ01.lean",
-      "lineCount": 313,
+      "lineCount": 319,
       "theoremCount": 6,
       "axiomCount": 1,
       "defCount": 0,
@@ -197,6 +252,10 @@
   ],
   "relatedProofs": [
     "shannon-channel-coding",
+    "shannon-channel-coding-awgn",
+    "shannon-channel-coding-bec",
+    "shannon-channel-coding-bec-oq-01",
+    "shannon-channel-coding-oq-01",
     "shannon-channel-coding-oq-02",
     "shannon-channel-coding-oq-02-oq-01",
     "shannon-channel-coding-oq-02-oq-03",

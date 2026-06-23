@@ -166,7 +166,8 @@
   "relatedProofs": [
     "friendship-theorem",
     "friendship-theorem-oq-01",
-    "friendship-theorem-oq-03"
+    "friendship-theorem-oq-03",
+    "friendship-theorem-oq-04"
   ],
   "references": {
     "papers": [],
@@ -192,11 +193,11 @@
     {
       "path": "Proofs/FriendshipTheoremOQ01.lean",
       "filename": "FriendshipTheoremOQ01.lean",
-      "lineCount": 2277,
+      "lineCount": 2276,
       "theoremCount": 74,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 4,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ01.lean"
     },
@@ -221,6 +222,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ04.lean",
+      "filename": "FriendshipTheoremOQ04.lean",
+      "lineCount": 628,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ04Amalgam.lean",
+      "filename": "FriendshipTheoremOQ04Amalgam.lean",
+      "lineCount": 122,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ04Amalgam.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ04Universal.lean",
+      "filename": "FriendshipTheoremOQ04Universal.lean",
+      "lineCount": 129,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ04Universal.lean"
     }
   ]
 }

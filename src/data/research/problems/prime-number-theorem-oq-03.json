@@ -41,7 +41,8 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "prime-number-theorem"
+    "prime-number-theorem",
+    "prime-number-theorem-oq-01"
   ],
   "references": {
     "papers": [],
@@ -63,6 +64,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeNumberTheorem.lean"
+    },
+    {
+      "path": "Proofs/PrimeNumberTheoremOQ01.lean",
+      "filename": "PrimeNumberTheoremOQ01.lean",
+      "lineCount": 316,
+      "theoremCount": 15,
+      "axiomCount": 5,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeNumberTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PrimeNumberTheoremOQ01OQ01.lean",
+      "filename": "PrimeNumberTheoremOQ01OQ01.lean",
+      "lineCount": 61,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeNumberTheoremOQ01OQ01.lean"
     }
   ]
 }

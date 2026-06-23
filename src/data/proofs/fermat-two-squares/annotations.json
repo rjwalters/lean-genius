@@ -15,11 +15,6 @@
       "Mathlib",
       "sum of squares",
       "prime characterization"
-    ],
-    "prerequisites": [
-      "prime numbers and divisibility",
-      "sums of two squares a²+b²",
-      "Mathlib's number-theory API"
     ]
   },
   {
@@ -39,11 +34,6 @@
       "Fermat",
       "Euler",
       "Lagrange"
-    ],
-    "prerequisites": [
-      "prime numbers and their congruence classes mod 4",
-      "the statement that some primes are sums of two squares",
-      "basic history of number theory (Fermat, Euler)"
     ]
   },
   {
@@ -62,11 +52,6 @@
       "involutions",
       "combinatorial proof",
       "Zagier"
-    ],
-    "prerequisites": [
-      "involutions (self-inverse maps) and their fixed points",
-      "parity of fixed-point sets",
-      "representing p = x²+4yz as a lattice/triple count"
     ]
   },
   {
@@ -84,11 +69,6 @@
     "relatedConcepts": [
       "modular arithmetic",
       "characterization theorem"
-    ],
-    "prerequisites": [
-      "prime numbers mod 4",
-      "sums of two squares",
-      "if-and-only-if characterizations"
     ]
   },
   {
@@ -106,11 +86,6 @@
     "relatedConcepts": [
       "Fermat's original statement",
       "prime classification"
-    ],
-    "prerequisites": [
-      "congruence classes of primes mod 4",
-      "quadratic residues and −1 being a square mod p",
-      "sums of two squares"
     ]
   },
   {
@@ -120,7 +95,7 @@
       "startLine": 55,
       "endLine": 87
     },
-    "type": "concept",
+    "type": "technique",
     "title": "The Prime 2: A Special Case",
     "content": "2 = 1² + 1² is trivially a sum of two squares.\n\nNote that 2 ≡ 2 (mod 4), so it's neither in the \"1 mod 4\" nor the \"3 mod 4\" category. The theorem correctly handles this edge case.",
     "mathContext": "2 is the only even prime, making it unique in many ways.",
@@ -128,11 +103,6 @@
     "relatedConcepts": [
       "special cases",
       "edge cases"
-    ],
-    "prerequisites": [
-      "the prime 2 and the identity 2 = 1²+1²",
-      "why 2 is the even-prime edge case",
-      "sums of two squares"
     ]
   },
   {
@@ -150,11 +120,6 @@
     "relatedConcepts": [
       "impossibility proof",
       "modular arithmetic"
-    ],
-    "prerequisites": [
-      "arithmetic mod 4 of squares (squares are 0 or 1 mod 4)",
-      "proof by contradiction",
-      "primes p ≡ 3 (mod 4)"
     ]
   },
   {
@@ -172,11 +137,6 @@
     "relatedConcepts": [
       "examples",
       "verification"
-    ],
-    "prerequisites": [
-      "the p ≡ 1 (mod 4) characterization",
-      "computing a²+b² decompositions",
-      "prime congruence classes"
     ]
   },
   {
@@ -194,11 +154,6 @@
     "relatedConcepts": [
       "prime classification",
       "complete characterization"
-    ],
-    "prerequisites": [
-      "primes split by residue mod 4 (and the prime 2)",
-      "the full sum-of-two-squares theorem",
-      "exhaustive case classification"
     ]
   },
   {
@@ -216,11 +171,6 @@
     "relatedConcepts": [
       "Gaussian integers",
       "algebraic number theory",
-      "quadratic reciprocity"
-    ],
-    "prerequisites": [
-      "the Gaussian integers ℤ[i] and their norm N(a+bi)=a²+b²",
-      "prime factorization and ramification/splitting in ℤ[i]",
       "quadratic reciprocity"
     ]
   }

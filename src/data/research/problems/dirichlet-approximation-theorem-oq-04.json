@@ -37,9 +37,11 @@
     "Mathlib AddCircle normed-group API: AddCircle.norm_eq (‖(x:AddCircle p)‖ = |x − round(p⁻¹·x)·p|), AddCircle.norm_coe_eq_abs_iff, AddCircle.coe_neg."
   ],
   "relatedProofs": [
+    "dirichlet-approximation-theorem",
     "dirichlet-approximation-theorem (parent, existence of good approximations by pigeonhole)",
     "dirichlet-approximation-theorem-oq-01 (sibling, infinitude/counting of good approximations)",
     "dirichlet-approximation-theorem-oq-03 (sibling, Minkowski geometry-of-numbers re-derivation)",
+    "dirichlet-approximation-theorem-oq-04",
     "dirichlet-approximation-theorem-oq-05 (sibling, dual sharpness lower bound for the golden ratio)"
   ],
   "currentState": {

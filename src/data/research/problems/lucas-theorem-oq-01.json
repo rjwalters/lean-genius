@@ -55,12 +55,51 @@
     "prime",
     "binomial-coefficients"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "lucas-theorem-oq-01",
+    "lucas-theorem-oq-01-oq-02",
+    "lucas-theorem-oq-01-oq-02-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
     "mathlib": []
   },
   "started": "2026-06-16T03:58:03-07:00",
-  "lastUpdate": "2026-06-16T18:50:58.741Z"
+  "lastUpdate": "2026-06-16T18:50:58.741Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/LucasTheoremOQ01.lean",
+      "filename": "LucasTheoremOQ01.lean",
+      "lineCount": 207,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LucasTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/LucasTheoremOQ01OQ02.lean",
+      "filename": "LucasTheoremOQ01OQ02.lean",
+      "lineCount": 116,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LucasTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LucasTheoremOQ01OQ02OQ01.lean",
+      "filename": "LucasTheoremOQ01OQ02OQ01.lean",
+      "lineCount": 219,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LucasTheoremOQ01OQ02OQ01.lean"
+    }
+  ]
 }
