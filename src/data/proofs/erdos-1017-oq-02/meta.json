@@ -1,0 +1,99 @@
+{
+  "id": "erdos-1017-oq-02",
+  "title": "Erdős #1017: extremality of the balanced split in the Turán bound ⌊n²/4⌋",
+  "slug": "erdos-1017-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos1017OQ02",
+    "lineCount": 149,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos1017OQ02.lean",
+    "sorries": 0
+  },
+  "description": "Establishes WHY the balanced complete bipartite graph is the Erdős-Goodman-Pósa extremal graph for Erdős Problem #1017 (clique partition: f(n,k) = min complete subgraphs to edge-partition an n-vertex k-edge graph, with bound f <= floor(n^2/4)). Writing the n vertices as a + (n - a), the complete bipartite graph K_{a,n-a} has a*(n - a) edges. This entry proves the edge count is maximised exactly at the balanced split: the integer AM-GM kernel 4ab <= (a+b)^2 (and its strict form when a != b) yields the upper bound a*(n - a) <= T(n) = floor(n^2/4) for every split a <= n; the balanced split a = floor(n/2) attains it (floor(n/2)*(n - floor(n/2)) = T(n)); so T(n) is exactly the maximum (exists_balanced_max); and for even n = 2m the maximiser is unique (every a != m gives strictly fewer than m^2 edges). Companion files give the edge count and triangle-freeness of K_{a,b} (Erdos1017OQ01) and the closed forms of T (Erdos1017OQ03); this one explains why the balanced split, and no other, realises the Turán value. Self-contained (re-declares T, depends only on Mathlib). 8 theorems, 1 definition, 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "date": "formalized 2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1017OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "extremal-graph-theory",
+      "turan",
+      "clique-partition",
+      "erdos-problems"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "axiomCount": 0,
+    "assumptions": "Machine-checked against the Mathlib pin (Lean v4.26.0). 0 sorries, 0 axiom declarations, no native_decide; #print axioms reports only the standard foundational axioms [propext, Classical.choice, Quot.sound] for every theorem. Self-contained: the Turán bound T(n) = n^2/4 is re-declared (the companion Erdos1017OQ01.lean carries 2 axioms egp_theorem and k4free_partition_number, which are not imported or used here). Honest scope: the extremal-graph arithmetic (balanced complete bipartite split maximises edge count) underlying the extremal example, not the open clique-partition question itself.",
+    "lineCount": 149,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "originalContributions": [
+      "four_mul_mul_le_add_sq: the integer AM-GM kernel 4*a*b <= (a+b)^2 over the naturals, proved by exposing the perfect-square gap (a-b)^2 via a case split that avoids truncated subtraction",
+      "four_mul_mul_lt_add_sq: the STRICT integer AM-GM 4*a*b < (a+b)^2 whenever a != b",
+      "mul_compl_le_turanBound: the upper bound a*(n - a) <= T(n) for every split a <= n -- no complete bipartite graph on n vertices exceeds floor(n^2/4) edges",
+      "balanced_mul_compl_eq_turanBound: equality at balance floor(n/2)*(n - floor(n/2)) = T(n) -- the balanced split attains the bound",
+      "exists_balanced_max: consequently T(n) is exactly the maximum of a*(n - a) over all splits, witnessed by a = floor(n/2)",
+      "even_unbalanced_lt: uniqueness for even n = 2m -- the balanced split is the UNIQUE maximiser, every a != m gives strictly fewer than m^2 = T(2m) edges"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1017 (Erdős-Goodman-Pósa, 1966) asks for f(n,k), the minimum number of complete subgraphs needed to edge-partition every n-vertex k-edge graph. The bound f <= floor(n^2/4) is achieved by the balanced complete bipartite (Turán) graph K_{floor(n/2),ceil(n/2)}, which is triangle-free and thus needs each of its floor(n^2/4) edges as a separate clique. The open question is whether f < floor(n^2/4) is possible once k > n^2/4 and large cliques (K_4 or bigger) are present; the K_4-free case is resolved by Gyori-Keszegh (2017). The fact that the balanced split maximises a*(n-a) = ab subject to a+b = n is the classical quarter-square extremality at the heart of Mantel's and Turán's theorems.",
+    "problemStatement": "Among all complete bipartite splits K_{a,n-a} of an n-vertex set, the edge count a*(n - a) is bounded by the Turán quantity T(n) = floor(n^2/4) and attained exactly at the balanced split a = floor(n/2); for even n this maximiser is unique. This is the extremal-graph fact that singles out the Erdős-Goodman-Pósa extremal graph.",
+    "proofStrategy": "The engine is the integer AM-GM inequality 4ab <= (a+b)^2, whose gap is the perfect square (a-b)^2. Over the naturals we avoid truncated subtraction by the case split a <= b / b <= a: writing the larger as the smaller plus d, the goal reduces to 0 <= d^2 (non-strict) or 1 <= d^2 (strict, when a != b forces d >= 1), discharged by nlinarith. The upper bound a*(n - a) <= floor(n^2/4) follows via Nat.le_div_iff_mul_le and the kernel applied to a, n - a, using a + (n - a) = n. Equality at balance splits on parity (Nat.even_or_odd) and reuses the closed forms T(2m) = m^2, T(2m+1) = m(m+1); existence of the maximiser is then immediate with witness floor(n/2). Uniqueness for even n applies the strict kernel and cancels the factor 4 via Nat.lt_of_mul_lt_mul_left.",
+    "keyInsights": [
+      "The classical reason the Turán/EGP extremal graph is the BALANCED complete bipartite graph is the integer quarter-square extremality: ab is maximised at a = b given a + b = n, with maximum floor(n^2/4).",
+      "Over the naturals the perfect-square gap (a-b)^2 must be exposed by a case split rather than subtraction, turning the AM-GM certificate into the elementary fact 0 <= d^2 (or 1 <= d^2 strictly).",
+      "Combining the universal upper bound with equality at balance turns floor(n^2/4) from 'an upper bound' into 'the exact maximum', witnessed constructively by a = floor(n/2).",
+      "For even n the maximiser is unique (the gap (m-a)^2 is positive whenever a != m), pinning down K_{m,m} as the sole edge-maximiser; for odd n the two near-balanced splits K_{m,m+1} tie."
+    ]
+  },
+  "sections": [
+    {
+      "id": "amgm-kernel",
+      "title": "Integer AM-GM Kernel",
+      "summary": "four_mul_mul_le_add_sq (4ab <= (a+b)^2) and its strict form four_mul_mul_lt_add_sq (a != b).",
+      "startLine": 60,
+      "endLine": 90,
+      "mathContext": "The square gap (a-b)^2 is exposed by case-splitting a <= b / b <= a and writing the larger as smaller + d, reducing to 0 <= d^2 (resp. 1 <= d^2)."
+    },
+    {
+      "id": "extremality",
+      "title": "Upper Bound, Equality at Balance, and Uniqueness",
+      "summary": "mul_compl_le_turanBound (a*(n-a) <= T(n)), balanced_mul_compl_eq_turanBound (equality at floor(n/2)), exists_balanced_max (T(n) is the maximum), even_unbalanced_lt (unique maximiser for even n).",
+      "startLine": 91,
+      "endLine": 149,
+      "mathContext": "Nat.le_div_iff_mul_le converts the floor bound to the kernel; parity split plus the closed forms give equality at balance; Nat.lt_of_mul_lt_mul_left cancels the factor 4 for strict uniqueness."
+    }
+  ],
+  "conclusion": {
+    "summary": "Among complete bipartite graphs K_{a,n-a} on n vertices, the edge count a*(n - a) is at most the Turán bound T(n) = floor(n^2/4) and equals it exactly at the balanced split a = floor(n/2); thus T(n) is the maximum, and for even n the balanced split is the unique maximiser. This is the extremal-graph fact that makes the balanced complete bipartite graph THE Erdős-Goodman-Pósa extremal example. Self-contained over Mathlib via the integer AM-GM kernel 4ab <= (a+b)^2.",
+    "implications": "The result pins down the extremal graph behind Erdős #1017's sharp bound: floor(n^2/4) is realised by the balanced split and (for even n) by no other complete bipartite split. The integer AM-GM kernel and the quarter-square maximum are reusable across extremal graph theory (Mantel/Turán edge maxima, Cauchy-Schwarz-free product bounds).",
+    "openQuestions": [
+      "Resolve the parametric Erdős #1017 question: can f(n,k) < floor(n^2/4) when k > n^2/4 and the graph contains K_4 or larger cliques?",
+      "Extend the uniqueness statement to odd n by characterising the two tied near-balanced splits K_{floor(n/2),ceil(n/2)}.",
+      "Connect the extremality here to the full Erdős-Goodman-Pósa lower bound by exhibiting the balanced complete bipartite graph as the worst case for the clique-partition number."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1017-oq-01",
+      "relationship": "parent",
+      "description": "The main Erdős #1017 clique-partition file, which defines turanBound, proves K_{a,b} has a*b edges and is triangle-free, and records the product form and non-strict monotonicity of T. This child supplies the extremality that singles out the balanced split as the edge-maximiser."
+    },
+    {
+      "targetId": "erdos-1017-oq-03",
+      "relationship": "sibling",
+      "description": "Supplies the parity-split closed forms T(2m) = m^2 and T(2m+1) = m(m+1) reused here to prove equality at the balanced split, plus the strict growth and real envelope of T."
+    }
+  ]
+}
