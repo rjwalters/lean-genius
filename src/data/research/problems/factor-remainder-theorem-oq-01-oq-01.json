@@ -1,0 +1,127 @@
+{
+  "slug": "factor-remainder-theorem-oq-01-oq-01",
+  "title": "Taylor-coefficient form of the multiplicity factor theorem",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{For } p \\in K[X],\\ a \\in K:\\quad (\\mathrm{taylor}\\ a\\ p).\\mathrm{coeff}\\ k = \\frac{p^{(k)}(a)}{k!}, \\qquad (X - C\\,a)^k \\mid p \\iff \\forall i < k,\\ (\\mathrm{taylor}\\ a\\ p).\\mathrm{coeff}\\ i = 0.",
+    "plain": "The parent entry proves that $(X-a)^k$ divides a polynomial $p$ exactly when $p$ and its first $k-1$ derivatives all vanish at $a$. This open question asks for the equivalent, more computational restatement in terms of the **Taylor expansion** of $p$ about $a$: the order-$k$ Taylor coefficient is $p^{(k)}(a)/k!$, so $(X-a)^k \\mid p$ iff the first $k$ Taylor coefficients of $p$ at $a$ vanish. The point is to route the criterion through Mathlib's `Polynomial.taylor` rather than iterated derivatives.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-23T09:30:19-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Taylor-coefficient form proved over arbitrary CommRing (7 thms, 0 axioms, verified). Generalizes parent OQ-01 beyond char-0 and addresses spirit of its 2nd OQ (Hasse derivatives in positive characteristic). PR pending.",
+    "builtItems": [
+      "X_pow_dvd_taylor_iff (Proofs/FactorRemainderTheoremOQ01OQ01.lean:59): X^k ∣ taylor a p ↔ (X-a)^k ∣ p via taylorEquiv + map_dvd_iff",
+      "pow_dvd_iff_taylor_coeff_eq_zero (:77): MAIN — (X-a)^k ∣ p ↔ ∀ m<k, (taylor a p).coeff m = 0, over any CommRing",
+      "pow_dvd_iff_hasseDeriv_eval_eq_zero (:86): positive-characteristic Hasse form",
+      "factor_theorem_taylor (:92), double_root_iff_taylor (:104): k=1,2 cases",
+      "iterate_derivative_eval_eq_factorial_smul_taylor_coeff (:127) + pow_dvd_iff_iterate_derivative_eval_eq_zero (:139): char-0 bridge to parent (derivative^[m] p).eval a = m!·coeff"
+    ],
+    "insights": [
+      "The Taylor coefficient (taylor a p).coeff m is DEFINED as (hasseDeriv m p).eval a (no division), so the Taylor-coefficient multiplicity criterion holds over ANY commutative ring — strictly more general than the parent OQ-01 char-0 field.",
+      "Keystone: the substitution X ↦ X + a is Mathlib Polynomial.taylorEquiv, an ALGEBRA EQUIVALENCE; map_dvd_iff reflects divisibility, sending (X-a)^k ↦ X^k, reducing multiplicity to monomial divisibility X^k ∣ taylor a p.",
+      "X_pow_dvd_iff (X^n ∣ f ↔ ∀ d<n, f.coeff d = 0) then reads off the first k coefficients — making the main theorem a 2-rewrite proof."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Exhibit explicit F_p polynomial where ordinary-derivative criterion fails but Hasse/Taylor succeeds (quantify the char-0 gap).",
+      "Relate (taylor a p).coeff m to finite differences / Newton interpolation coefficients."
+    ],
+    "markdown": "# Knowledge Base: factor-remainder-theorem-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "algebra",
+    "polynomials",
+    "taylor-expansion"
+  ],
+  "relatedProofs": [
+    "factor-remainder-nullstellensatz",
+    "factor-remainder-theorem",
+    "factor-remainder-theorem-oq-01",
+    "factor-remainder-theorem-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-23T16:32:41.646Z",
+  "lastUpdate": "2026-06-23T16:32:41.753Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/FactorRemainderTheorem.lean",
+      "filename": "FactorRemainderTheorem.lean",
+      "lineCount": 259,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheorem.lean"
+    },
+    {
+      "path": "Proofs/FactorRemainderTheoremOQ01.lean",
+      "filename": "FactorRemainderTheoremOQ01.lean",
+      "lineCount": 72,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/FactorRemainderTheoremOQ02.lean",
+      "filename": "FactorRemainderTheoremOQ02.lean",
+      "lineCount": 103,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/FactorRemainderTheoremOQ03.lean",
+      "filename": "FactorRemainderTheoremOQ03.lean",
+      "lineCount": 287,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/FactorRemainderTheoremOQ05.lean",
+      "filename": "FactorRemainderTheoremOQ05.lean",
+      "lineCount": 124,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorRemainderTheoremOQ05.lean"
+    }
+  ]
+}
