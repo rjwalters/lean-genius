@@ -32,7 +32,7 @@
     },
     "type": "concept",
     "title": "Gaussian Distribution as Infinitely Divisible",
-    "content": "Constructs the Gaussian characteristic exponent ψ(t) = iμt - σ²t²/2 and the Gaussian triplet (μ, σ², 0). The zero Lévy measure means no jumps — Gaussian distributions are the unique infinitely divisible laws with continuous sample paths. The construction proves ψ(0) = 0 and continuity via fun_prop, then packages everything into an InfDivisible instance. The gaussianExponent_zero sorry involves Complex.ofReal arithmetic that should be provable with ring-style tactics.",
+    "content": "Constructs the Gaussian characteristic exponent ψ(t) = iμt - σ²t²/2 and the Gaussian triplet (μ, σ², 0). The zero Lévy measure means no jumps — Gaussian distributions are the unique infinitely divisible laws with continuous sample paths. The construction proves ψ(0) = 0 and continuity via fun_prop, then packages everything into an InfDivisible instance. The normalization ψ(0) = 0 is proved as `gaussianExponent_zero` via `unfold` + `simp`.",
     "mathContext": "For $X \\sim N(\\mu, \\sigma^2)$: $\\varphi_X(t) = e^{i\\mu t - \\sigma^2 t^2/2}$, so $\\psi(t) = i\\mu t - \\sigma^2 t^2/2$. The triplet is $(\\mu, \\sigma^2, 0)$, with $\\nu = 0$ reflecting the absence of jumps.",
     "significance": "key",
     "relatedConcepts": [
