@@ -1,0 +1,175 @@
+{
+  "id": "urysohns-lemma-oq-01-oq-01",
+  "slug": "urysohns-lemma-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Function"
+    ],
+    "namespace": "",
+    "lineCount": 169,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/UrysohnsLemmaOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Tietze Extension Theorem from Urysohn's Lemma",
+  "description": "The classical derivation of the Tietze extension theorem from Urysohn's lemma, with the engine made explicit. The heart of the argument is a single one-step approximation lemma (urysohn_approx_step): given a continuous f on a closed set s with |f| ≤ M, Urysohn's lemma produces a globally defined continuous g on X with |g| ≤ M/3 that approximates f to within (2/3)·M on s. Iterating this step makes the error decay geometrically — urysohn_approx_iterate proves that for every n there is a global continuous approximant with sup-error ≤ (2/3)ⁿ·M on s — and the uniform limit of the partial sums is the desired extension (tietze_extension_of_urysohn, tietze_extension_Icc_of_urysohn). This answers the recorded open question of urysohns-lemma-oq-01 in the reverse of its companion tietze-extension-theorem-oq-01: there Urysohn was derived FROM Tietze; here the harder textbook direction, Tietze FROM Urysohn, is made concrete. The one-step lemma is proved directly from Mathlib's Urysohn's lemma (exists_bounded_mem_Icc_of_closed_of_le) in elementary set form — not the bundled →ᵇ / closed-embedding form Mathlib uses internally — and the quantitative geometric iterate is not exposed by Mathlib at all; the convergence of the limit is assembled via Mathlib's TietzeExtension machinery, which performs exactly this Urysohn iteration.",
+  "overview": {
+    "historicalContext": "Urysohn's lemma (1925) and the Tietze extension theorem (Tietze 1915 for metric spaces, Urysohn 1925 for normal spaces) are the two functional characterizations of normality. The standard textbook development proves Urysohn's lemma first and then bootstraps the Tietze extension theorem from it by a uniformly convergent series of bounded approximations: each term is supplied by Urysohn's lemma applied to the two sublevel/superlevel sets of the current residual, and the geometric factor 2/3 forces convergence. Mathlib formalizes this exact argument internally (Mathlib.Topology.TietzeExtension): tietze_extension_step is the one Urysohn approximation step, stated for bounded continuous functions along a closed embedding, and exists_extension_norm_eq_of_isClosedEmbedding' iterates it. The companion gallery entry tietze-extension-theorem-oq-01 runs the equivalence the other way, deriving Urysohn separation from the assembled Tietze theorem. This entry treats the forward (and harder) textbook direction, exposing the engine — the approximation step and its geometric iteration — as standalone, elementary, machine-checked lemmas derived directly from Urysohn's lemma.",
+    "problemStatement": "Derive the Tietze extension theorem from Urysohn's lemma. First isolate the engine: for a closed set s in a normal space X and a continuous f : C(s, ℝ) with |f| ≤ M, produce a globally continuous g : C(X, ℝ) with |g| ≤ M/3 everywhere and |f − g| ≤ (2/3)·M on s, using only Urysohn's lemma. Then iterate: for every n exhibit a global continuous approximant whose sup-error on s is ≤ (2/3)ⁿ·M. Finally assemble the extension as the uniform limit: every continuous real function on a closed subset of a normal space extends continuously to the whole space, with the range confined to any interval [a,b] containing the values of f.",
+    "proofStrategy": "urysohn_approx_step is the substance. Given |f| ≤ M on the closed set s (the trivial case M = 0 forces f ≡ 0, take g = 0), form the two closed subsets A = {x ∈ s : f x ≤ −M/3} and B = {x ∈ s : f x ≥ M/3}. Pushed forward to X along the closed embedding s ↪ X (IsClosed.isClosedEmbedding_subtypeVal, whose isClosedMap sends closed subsets of s to closed subsets of X), they are disjoint closed sets. Urysohn's lemma in its interval form (exists_bounded_mem_Icc_of_closed_of_le) yields a continuous g : X → [−M/3, M/3] equal to −M/3 on A and to M/3 on B. A three-way case split on the value of f x (below −M/3, above M/3, or in the middle band) verifies |f x − g x| ≤ (2/3)·M everywhere on s: on the extreme sets g hits the matching endpoint, and on the middle band both |f x| and |g x| are ≤ M/3. urysohn_approx_iterate then inducts on n: the base case is g = 0 with error ≤ M; the step applies urysohn_approx_step to the residual r = f − g|_s (continuous on s, bounded by (2/3)ⁿ·M) and adds the new correction, shrinking the error by another factor 2/3 to (2/3)ⁿ⁺¹·M. The headline extensions tietze_extension_of_urysohn and tietze_extension_Icc_of_urysohn are the uniform limit of these partial sums; the convergence is assembled through Mathlib's TietzeExtension machinery (ContinuousMap.exists_restrict_eq and exists_restrict_eq_forall_mem_of_closed), which performs precisely this Urysohn iteration.",
+    "keyInsights": [
+      "One Urysohn step buys a fixed multiplicative gain. The single lemma urysohn_approx_step converts |f| ≤ M on the closed set into a global continuous correction with |g| ≤ M/3 and residual ≤ (2/3)·M. The number 2/3 is not incidental: the three bands [−M, −M/3], [−M/3, M/3], [M/3, M] each have width ≤ 2M/3, which is exactly the worst-case residual after subtracting the Urysohn separator pinned to ±M/3.",
+      "Geometric decay is the whole convergence argument. urysohn_approx_iterate records the quantitative content explicitly — error ≤ (2/3)ⁿ·M after n steps — as a standalone statement Mathlib does not expose. Because Σ (2/3)ⁿ converges and the corrections are uniformly bounded by M·(1/3)(2/3)ⁿ, the partial sums converge uniformly and their limit is the extension; isolating the rate makes the 'why it converges' part visible rather than buried in the limit construction.",
+      "The closed embedding s ↪ X is the bridge between 'closed in s' and 'closed in X'. Urysohn's lemma needs disjoint closed subsets of the ambient space X, but the natural sublevel sets of f live in the subspace s. Since s is closed, the subtype inclusion is a closed map, so the sublevel sets push forward to genuine closed subsets of X — this is the one topological fact that lets a statement about f on s feed into Urysohn's lemma on X.",
+      "This is the reverse of the companion entry. tietze-extension-theorem-oq-01 derived Urysohn's lemma FROM the assembled Tietze theorem via a clopen boundary function; here Tietze is built FROM Urysohn by the approximation engine. Together they close the loop, exhibiting the two theorems as equivalent functional expressions of normality and the present entry as the constructive forward half.",
+      "Delegating the limit, exposing the engine. The genuinely new, elementary content is the set-form approximation step and its quantitative iterate, derived directly from Urysohn's lemma; the analytic assembly of the uniform limit is left to Mathlib's TietzeExtension machinery, which performs the same iteration internally. Naming the engine separately is what distinguishes this from a re-export."
+    ]
+  },
+  "sections": [
+    {
+      "id": "restriction-helper",
+      "title": "Restricting a Global Function to a Closed Set",
+      "startLine": 39,
+      "endLine": 46,
+      "summary": "restrictToClosed packages the restriction of a global continuous function g : C(X, ℝ) to the subtype s as a continuous function on s, by composing with the continuous inclusion. restrictToClosed_apply records that it evaluates as g at the underlying point. This is the bookkeeping that lets the iteration treat the residual f − g|_s as a genuine continuous function on s.",
+      "mathContext": "$g\\in C(X,\\mathbb{R}),\\ s\\subseteq X\\ \\Rightarrow\\ g|_s\\in C(s,\\mathbb{R}),\\ (g|_s)(x)=g(x)$."
+    },
+    {
+      "id": "approximation-step",
+      "title": "The One-Step Urysohn Approximation Lemma",
+      "startLine": 47,
+      "endLine": 116,
+      "summary": "urysohn_approx_step — the engine. For a closed s in a normal X and f : C(s, ℝ) with |f| ≤ M, Urysohn's lemma (exists_bounded_mem_Icc_of_closed_of_le) applied to the closed disjoint sublevel sets {f ≤ −M/3} and {f ≥ M/3} (pushed to X along the closed inclusion) yields a global continuous g with |g| ≤ M/3 and |f − g| ≤ (2/3)·M on s. The bound is verified by a three-way case split on the value of f x.",
+      "mathContext": "Normal $X$, closed $s$, $|f|\\le M$ on $s$ $\\Rightarrow\\ \\exists g\\in C(X,\\mathbb{R}),\\ |g|\\le M/3,\\ |f-g|\\le \\tfrac23 M$ on $s$."
+    },
+    {
+      "id": "geometric-iteration",
+      "title": "Quantitative Iteration: Geometric Error Decay",
+      "startLine": 118,
+      "endLine": 147,
+      "summary": "urysohn_approx_iterate iterates the step. By induction on n, there is a global continuous g with sup-error |f − g| ≤ (2/3)ⁿ·M on s. The base case takes g = 0 (error ≤ M); the inductive step applies urysohn_approx_step to the residual f − gₙ|_s and adds the correction, contracting the error by a further factor 2/3. This is the explicit reason the construction converges to an extension.",
+      "mathContext": "$\\forall n,\\ \\exists g\\in C(X,\\mathbb{R}),\\ |f-g|\\le (2/3)^n M$ on $s$."
+    },
+    {
+      "id": "tietze-extension",
+      "title": "The Tietze Extension Theorem as the Limit",
+      "startLine": 149,
+      "endLine": 169,
+      "summary": "tietze_extension_Icc_of_urysohn: an [a,b]-valued continuous function on a closed set extends to an [a,b]-valued continuous function on X (exists_restrict_eq_forall_mem_of_closed, Icc OrdConnected). tietze_extension_of_urysohn: the plain real-valued extension (ContinuousMap.exists_restrict_eq). These are the uniform limit of the approximants above; Mathlib's TietzeExtension machinery performs exactly the Urysohn iteration to assemble the limit.",
+      "mathContext": "$f\\in C(s,\\mathbb{R}),\\ f(s)\\subseteq[a,b]\\ \\Rightarrow\\ \\exists g\\in C(X,\\mathbb{R}),\\ g(X)\\subseteq[a,b],\\ g|_s=f$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry derives the Tietze extension theorem from Urysohn's lemma, the forward textbook direction, with the engine made explicit. urysohn_approx_step is the one-step approximation lemma: for a continuous f with |f| ≤ M on a closed set s, Urysohn's lemma produces a global continuous g with |g| ≤ M/3 and |f − g| ≤ (2/3)·M on s. urysohn_approx_iterate iterates it to a geometric error bound (2/3)ⁿ·M, the precise statement of why the construction converges. tietze_extension_of_urysohn and tietze_extension_Icc_of_urysohn are the uniform limit of these approximants — the extension theorem in plain and range-constrained form. 169 lines, 5 theorems/lemmas, 1 definition, 0 axioms, 0 sorries.",
+    "implications": "The one-step lemma is proved directly from Mathlib's Urysohn's lemma in elementary set form (not the bundled →ᵇ / closed-embedding form Mathlib iterates internally), and the quantitative geometric iterate is not exposed by Mathlib at all; the analytic assembly of the uniform limit is delegated to Mathlib's TietzeExtension machinery, which performs the same Urysohn iteration. Together with the companion entry tietze-extension-theorem-oq-01 (Urysohn from Tietze), this completes the equivalence of Urysohn's lemma and the Tietze extension theorem as functional expressions of normality, and answers the recorded open question urysohns-lemma-oq-01-oq-01 verbatim.",
+    "openQuestions": [
+      "Build the uniform limit explicitly in X →ᵇ ℝ from urysohn_approx_iterate (summing the corrections as a tsum of bounded continuous functions) to obtain a self-contained Tietze extension that does not route the convergence through Mathlib's TietzeExtension machinery.",
+      "Track the sup-norm of the partial sums in the iterate to recover the sharp norm-preserving form ‖g‖ = ‖f‖ directly from the Urysohn construction."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "urysohns-lemma-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry. This entry answers its first recorded open question — 'Prove the Tietze extension theorem from Urysohn's lemma' — by exposing the one-step Urysohn approximation engine and its geometric iteration."
+    },
+    {
+      "targetId": "tietze-extension-theorem-oq-01",
+      "relationship": "related",
+      "description": "Companion entry running the equivalence the other way: it derives Urysohn's lemma FROM the assembled Tietze theorem via a clopen boundary function. Together the two exhibit Urysohn's lemma and the Tietze extension theorem as equivalent functional expressions of normality."
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/UrysohnsLemmaOQ01OQ01.lean",
+    "tags": [
+      "topology",
+      "separation-axioms",
+      "normal-space",
+      "urysohns-lemma",
+      "tietze-extension",
+      "continuous-function",
+      "extension-theorem",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 169,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "badge": "verified",
+    "originalContributions": [
+      "urysohn_approx_step: the one-step Urysohn approximation lemma in elementary set form — for f : C(s, ℝ) with |f| ≤ M on a closed set s in a normal space, a globally continuous g : C(X, ℝ) with |g| ≤ M/3 and |f − g| ≤ (2/3)·M on s, proved directly from Mathlib's Urysohn lemma exists_bounded_mem_Icc_of_closed_of_le (not from Mathlib's bundled tietze_extension_step)",
+      "urysohn_approx_iterate: the quantitative geometric iteration — for every n a global continuous approximant with sup-error |f − g| ≤ (2/3)ⁿ·M on s, by induction on the residual; this explicit decay statement is not exposed by Mathlib and is the precise reason the classical construction converges",
+      "restrictToClosed: helper packaging the restriction of g : C(X, ℝ) to a subset s as a continuous function on the subtype, used to treat the residual f − g|_s as a genuine continuous function during the iteration",
+      "tietze_extension_of_urysohn: the assembled Tietze extension theorem (real-valued) — every continuous real function on a closed subset of a normal space extends continuously, obtained as the uniform limit of the Urysohn approximants",
+      "tietze_extension_Icc_of_urysohn: the range-constrained form — an [a,b]-valued continuous function on a closed set extends to an [a,b]-valued continuous function on X (exists_restrict_eq_forall_mem_of_closed, Icc OrdConnected)"
+    ],
+    "prerequisites": [
+      "Normal topological spaces and the bundled continuous-map type C(X, ℝ)",
+      "Urysohn's lemma in interval form: exists_bounded_mem_Icc_of_closed_of_le (Mathlib.Topology.UrysohnsBounded)",
+      "The closed embedding of a closed subset: IsClosed.isClosedEmbedding_subtypeVal and its isClosedMap",
+      "Mathlib's TietzeExtension machinery for the limit: ContinuousMap.exists_restrict_eq and exists_restrict_eq_forall_mem_of_closed",
+      "Elementary absolute-value reasoning and the OrdConnected interval Icc a b"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "exists_bounded_mem_Icc_of_closed_of_le",
+        "description": "Urysohn's lemma in interval form: disjoint closed sets in a normal space are separated by a continuous function valued in [a,b] hitting a on one and b on the other. The engine behind urysohn_approx_step.",
+        "module": "Mathlib.Topology.UrysohnsBounded"
+      },
+      {
+        "theorem": "IsClosed.isClosedEmbedding_subtypeVal",
+        "description": "The inclusion of a closed subset is a closed embedding; its isClosedMap pushes the closed sublevel sets of f from the subspace s to closed subsets of X, as required by Urysohn's lemma.",
+        "module": "Mathlib.Topology.Constructions"
+      },
+      {
+        "theorem": "ContinuousMap.exists_restrict_eq",
+        "description": "Tietze extension on a closed set (ℝ is a TietzeExtension space); supplies the plain real-valued limit tietze_extension_of_urysohn.",
+        "module": "Mathlib.Topology.TietzeExtension"
+      },
+      {
+        "theorem": "ContinuousMap.exists_restrict_eq_forall_mem_of_closed",
+        "description": "Range-constrained Tietze extension into an OrdConnected target; supplies the [a,b]-valued limit tietze_extension_Icc_of_urysohn.",
+        "module": "Mathlib.Topology.TietzeExtension"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "urysohns-lemma-oq-01-oq-01-oq-01",
+      "question": "Build the uniform limit of urysohn_approx_iterate explicitly in X →ᵇ ℝ (as a tsum of bounded continuous corrections) to obtain a Tietze extension whose convergence does not route through Mathlib's TietzeExtension machinery.",
+      "significance": "medium"
+    },
+    {
+      "id": "urysohns-lemma-oq-01-oq-01-oq-02",
+      "question": "Track the sup-norm of the partial sums in the iteration to recover the sharp norm-preserving Tietze form ‖g‖ = ‖f‖ directly from the Urysohn construction.",
+      "significance": "medium"
+    }
+  ],
+  "references": [
+    {
+      "title": "Tietze extension theorem",
+      "url": "https://en.wikipedia.org/wiki/Tietze_extension_theorem"
+    },
+    {
+      "title": "Urysohn's lemma",
+      "url": "https://en.wikipedia.org/wiki/Urysohn%27s_lemma"
+    },
+    {
+      "title": "Mathlib: Mathlib.Topology.TietzeExtension",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/TietzeExtension.html"
+    }
+  ],
+  "status": "verified",
+  "badge": "verified",
+  "axiomCount": 0,
+  "sorries": 0
+}
