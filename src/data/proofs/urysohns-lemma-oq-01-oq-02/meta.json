@@ -18,6 +18,7 @@
     "sorries": 0
   },
   "title": "The Metric Urysohn Function Is Lipschitz for Positively Separated Sets",
+  "description": "The parent entry builds the explicit metric Urysohn function f(x) = d(x,s)/(d(x,s) + d(x,t)) separating two disjoint nonempty closed sets and proves it merely continuous. This entry supplies the quantitative regularity left open: when s and t are separated by a positive gap δ (δ ≤ d(a,b) for all a ∈ s, b ∈ t), f is δ⁻¹-Lipschitz. The argument is elementary — a separation lower bound pinning the denominator ≥ δ, the 1-Lipschitz property of distance-to-a-set functions, and a quotient estimate — and needs neither closedness nor disjointness as separate hypotheses. Bundled as LipschitzWith (Real.toNNReal δ⁻¹), with uniform continuity, an explicit gap-dependent modulus, and a 1-Lipschitz instance on ℝ ({0},{1}).",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -77,6 +78,55 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Urysohn's lemma (Pavel Urysohn, 1925) is the foundational separation result of point-set topology: in a normal space, any two disjoint closed sets can be separated by a continuous [0,1]-valued function — the qualitative ability to 'interpolate' between closed sets, and the engine behind the Tietze extension theorem and partitions of unity. In a metric space the lemma admits a strikingly explicit witness, f(x) = d(x,s)/(d(x,s) + d(x,t)), bypassing the dyadic open-set scaffolding of the general proof. The classical statement asks only for continuity, but the explicit metric formula carries far more structure when the sets stay a positive distance apart: it is genuinely Lipschitz, with a modulus controlled by the separation gap. This quantitative refinement is what is needed wherever a separating or bump function must come with effective bounds — smoothing arguments, quantitative partitions of unity, and Lipschitz extension theory.",
+    "problemStatement": "Let $(X,d)$ be a metric space and $s, t \\subseteq X$ nonempty sets separated by a gap $\\delta > 0$, meaning $\\delta \\le d(a,b)$ for all $a \\in s$, $b \\in t$. For the explicit Urysohn function $f(x) = \\dfrac{d(x,s)}{d(x,s) + d(x,t)}$, show that $f$ is $\\delta^{-1}$-Lipschitz: $|f(x) - f(y)| \\le \\delta^{-1} d(x,y)$ for all $x, y$, equivalently the sharp form $\\delta\\,|f(x) - f(y)| \\le d(x,y)$.",
+    "proofStrategy": "Three elementary steps. (1) Separation lower bound (sep_le_infDist_add): for every x, δ ≤ d(x,s) + d(x,t). For a ∈ s, b ∈ t the triangle inequality gives δ ≤ d(a,b) ≤ d(x,a) + d(x,b); taking the infimum over a (Metric.le_infDist) then over b yields the bound, which in particular pins the Urysohn denominator g = d(·,s) + d(·,t) at ≥ δ > 0 everywhere. (2) The distance-to-a-set functions are 1-Lipschitz (abs_infDist_sub_le), from the two-sided Metric.infDist_le_infDist_add_dist. (3) Quotient estimate (mul_dist_urysohnFn_le): with u = d(·,s), v = d(·,t), one has f(x) − f(y) = (u(x)v(y) − u(y)v(x))/(g(x)g(y)), and the numerator factors as u(x)(v(y) − v(x)) + v(x)(u(x) − u(y)), bounded in absolute value by (u(x) + v(x))·d(x,y) = g(x)·d(x,y) via the 1-Lipschitz bounds. Dividing and using g(y) ≥ δ gives δ·|f(x) − f(y)| ≤ d(x,y), closed by nlinarith. Scaling by δ⁻¹ gives the modulus (dist_urysohnFn_le), and lipschitzWith_iff_dist_le_mul bundles it as LipschitzWith (Real.toNNReal δ⁻¹); uniform continuity and the explicit modulus dist_urysohnFn_lt follow immediately.",
+    "keyInsights": [
+      "Positive separation is a single hypothesis that subsumes both closedness and disjointness. The classical Urysohn lemma needs disjoint closed sets in a normal space; here the one quantitative condition δ ≤ d(a,b) does all the work, and neither closedness nor disjointness is assumed separately — they are consequences of a positive gap.",
+      "The separation gap is exactly the obstruction that makes the denominator safe. The whole construction hinges on d(x,s) + d(x,t) never vanishing; sep_le_infDist_add shows it is bounded below by δ everywhere, which is simultaneously what prevents division by zero and what produces the Lipschitz constant δ⁻¹.",
+      "Lipschitz regularity is built additively from 1-Lipschitz pieces. Distance-to-a-set functions are automatically 1-Lipschitz; the Urysohn function is a quotient of such pieces, and the quotient rule turns two 1-Lipschitz numerator factors plus a denominator bounded below by δ into a δ⁻¹-Lipschitz function. No appeal to the abstract Urysohn machinery is needed.",
+      "The constant degrades precisely as the sets approach. The modulus δ⁻¹ blows up as δ → 0, quantifying the intuition that separating two nearly-touching sets requires an increasingly steep function — and on ℝ with s = {0}, t = {δ} the explicit f(x) = |x|/(|x| + |x − δ|) is exactly δ⁻¹-Lipschitz, showing the constant is at least essentially sharp.",
+      "This upgrades a qualitative existence statement to an effective one. The parent entry proves only continuity; tracking the Lipschitz constant turns 'there is a separating function' into 'here is a separating function with this explicit modulus', the form usable in quantitative analysis where constants must be carried."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "The Explicit Urysohn Function",
+      "startLine": 45,
+      "endLine": 55,
+      "summary": "Fixes a metric space X and restates the explicit metric Urysohn function urysohnFn s t x = infDist x s / (infDist x s + infDist x t) from the parent entry, making this file self-contained."
+    },
+    {
+      "id": "preparatory-lemmas",
+      "title": "Two Preparatory Lemmas",
+      "startLine": 57,
+      "endLine": 92,
+      "summary": "sep_le_infDist_add proves the separation lower bound δ ≤ infDist x s + infDist x t for every x, by taking the infimum (Metric.le_infDist) over a ∈ s then b ∈ t of δ ≤ d(a,b) ≤ d(x,a) + d(x,b); this pins the denominator ≥ δ > 0. abs_infDist_sub_le proves the distance-to-a-set function is 1-Lipschitz via the two-sided Metric.infDist_le_infDist_add_dist."
+    },
+    {
+      "id": "lipschitz-estimate",
+      "title": "The Lipschitz Estimate",
+      "startLine": 94,
+      "endLine": 160,
+      "summary": "mul_dist_urysohnFn_le is the core: the sharp pointwise bound δ·|f(x) − f(y)| ≤ d(x,y), via the quotient identity f(x) − f(y) = (u(x)v(y) − u(y)v(x))/(g(x)g(y)) and the numerator bound |u(x)v(y) − u(y)v(x)| ≤ g(x)·d(x,y) (closed by nlinarith). dist_urysohnFn_le scales by δ⁻¹ to the modulus, and lipschitzWith_urysohnFn bundles it as LipschitzWith (Real.toNNReal δ⁻¹)."
+    },
+    {
+      "id": "continuity-corollaries",
+      "title": "Uniform Continuity and Explicit Modulus",
+      "startLine": 162,
+      "endLine": 183,
+      "summary": "uniformContinuous_urysohnFn derives uniform continuity directly from the Lipschitz bound (LipschitzWith.uniformContinuous). dist_urysohnFn_lt records the explicit gap-dependent modulus of continuity: d(x,y) < δ·ε forces |f(x) − f(y)| < ε."
+    },
+    {
+      "id": "concrete-instance",
+      "title": "A Concrete Instance on ℝ",
+      "startLine": 184,
+      "endLine": 198,
+      "summary": "On ℝ the singletons {0} and {1} have gap 1, so the explicit Urysohn function separating them is 1-Lipschitz (LipschitzWith 1), instantiating the abstract bound and confirming the modulus is non-vacuous."
+    }
+  ],
   "openQuestions": [
     {
       "id": "urysohns-lemma-oq-01-oq-02-oq-01",
@@ -86,8 +136,9 @@
   ],
   "crossReferences": [
     {
-      "id": "urysohns-lemma-oq-01",
-      "relationship": "Parent entry constructing the explicit metric Urysohn function urysohnFn and proving it continuous; this entry supplies the quantitative Lipschitz refinement the parent records as an open question."
+      "targetId": "urysohns-lemma-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry constructing the explicit metric Urysohn function urysohnFn and proving it continuous; this entry supplies the quantitative Lipschitz refinement (modulus δ⁻¹ for sets separated by gap δ) that the parent records as an open question."
     }
   ],
   "references": [
