@@ -1,0 +1,193 @@
+{
+  "id": "cauchy-group-theorem-oq-01-oq-01",
+  "title": "The Cauchy characterization: order-p elements detect prime divisors",
+  "slug": "cauchy-group-theorem-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Perm.Cycle.Type",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.Data.ZMod.QuotientGroup",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Subgroup"
+    ],
+    "namespace": "CauchyGroupTheoremOQ01OQ01",
+    "lineCount": 131,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/CauchyGroupTheoremOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "description": "Cauchy's theorem (a prime p dividing |G| yields an element of order p) is exactly one direction of a biconditional; its converse is the elementary half of Lagrange's theorem (orderOf x ∣ |G|). This entry proves the full Cauchy characterization — for a prime p, a finite group has an element of order p iff p ∣ |G| — together with its structural consequences: the order-p subgroup is in fact cyclic (the genuine seed of the Sylow tower), and at p = 2 the characterization becomes the involution ⟺ even-order biconditional, upgrading the parent's one-directional even-order-implies-involution corollary. Verified 0-axiom, with concrete positive and negative checks in ZMod 6.",
+  "meta": {
+    "author": "Cauchy (1845) + Lagrange; Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchyGroupTheoremOQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "finite-groups",
+      "cauchy-theorem",
+      "lagrange-theorem",
+      "order-of-element",
+      "cyclic-group",
+      "involution",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "orderOf_dvd_natCard",
+        "description": "orderOf x ∣ Nat.card G — the elementary Lagrange fact. Read at a prime-order element it gives the converse of Cauchy (prime_dvd_card_of_exists_orderOf), the forward direction of the characterization.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "addOrderOf_dvd_natCard",
+        "description": "Additive form of orderOf_dvd_natCard; refutes an element of additive order 5 in ZMod 6 since 5 ∤ 6.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "exists_prime_orderOf_dvd_card'",
+        "description": "Cauchy's theorem (Nat.card / [Finite G] form): p ∣ |G| yields an element of order p. The backward direction of the characterization.",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Type"
+      },
+      {
+        "theorem": "isCyclic_of_prime_card",
+        "description": "A finite group of prime order is cyclic. Promotes the order-p subgroup zpowers x to a cyclic subgroup in exists_isCyclic_subgroup_card_eq.",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "Nat.card_zpowers",
+        "description": "Nat.card (zpowers a) = orderOf a; turns a Cauchy element of order p into a subgroup of order p.",
+        "module": "Mathlib.Data.ZMod.QuotientGroup"
+      },
+      {
+        "theorem": "orderOf_eq_prime",
+        "description": "For prime p, x^p = 1 and x ≠ 1 imply orderOf x = p; the (⟸) half of the order-2 ⟺ involution bridge.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "pow_orderOf_eq_one",
+        "description": "x ^ orderOf x = 1; combined with orderOf x = 2 yields x * x = 1 in the (⟹) half of the involution bridge.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "even_iff_two_dvd",
+        "description": "Even n ↔ 2 ∣ n; converts the even-order side of exists_involution_iff_even_card into a divisibility hypothesis for the p = 2 characterization.",
+        "module": "Mathlib.Algebra.Ring.Parity"
+      },
+      {
+        "theorem": "Nat.card_zmod",
+        "description": "Nat.card (ZMod n) = n; supplies |ZMod 6| = 6 for the concrete negative check.",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      }
+    ],
+    "originalContributions": [
+      "prime_dvd_card_of_exists_orderOf: the converse of Cauchy — an element of order p forces p ∣ |G|. This is orderOf_dvd_natCard specialised to a prime-order element, the easy (Lagrange) direction Mathlib does not package.",
+      "exists_orderOf_eq_prime_iff_dvd: the full Cauchy characterization — for a prime p, a finite group has an element of order exactly p iff p ∣ |G|. Forward = Lagrange, backward = Cauchy. Mathlib records neither the packaged biconditional nor the easy direction.",
+      "exists_isCyclic_subgroup_card_eq: strengthens the parent's cauchy_subgroup — the order-p subgroup is cyclic (a group of prime order is cyclic), so p ∣ |G| yields a *cyclic* subgroup of order p, the actual seed of the Sylow tower. New content.",
+      "orderOf_eq_two_iff_involution: the bridge orderOf x = 2 ↔ x ≠ 1 ∧ x * x = 1, identifying order-2 elements with non-trivial involutions.",
+      "exists_involution_iff_even_card: upgrades the parent's one-directional exists_involution_of_even_card to a biconditional — a finite group has a non-trivial involution iff its order is even — as the p = 2 instance of the characterization. New content.",
+      "exists_involution_zmod6 / no_addOrderOf_five_zmod6: the two faces of the characterization in ZMod 6 (order 6 = 2·3) — the involution 3 exists (p = 2 ∣ 6), while no element of additive order 5 exists (5 ∤ 6, via the additive Lagrange direction). Kernel decide only, no native_decide."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified: 0 axioms, 0 sorries. The positive ZMod 6 witness uses kernel `decide` (not `native_decide`); the negative check is derived from addOrderOf_dvd_natCard, so the file does not depend on Lean.ofReduceBool. Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 131,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Cauchy's 1845 theorem and Lagrange's theorem are the two halves of the dictionary between the prime divisors of |G| and the element orders that actually occur in a finite group G. Lagrange (easy direction) says every element order divides |G|; Cauchy (hard direction) says every prime divisor of |G| is realised as an element order. Putting them together at a prime p gives a clean biconditional. The p = 2 instance — a group has an involution iff its order is even — is the entry point to the entire structure theory of groups of even order, from Brauer–Fowler to Feit–Thompson.",
+    "problemStatement": "The parent entry repackages Cauchy's theorem (p ∣ |G| ⟹ element of order p) and its corollaries. But Cauchy is only one direction: when is there an element of order p? Mathlib has the elementary converse orderOf_dvd_natCard but never packages the biconditional, never records that the resulting order-p subgroup is cyclic, and proves the even-order/involution link in only one direction. Can the sharp characterization and its structural consequences be stated?\n\n**Answer:** Yes. For a prime p, a finite group has an element of order p iff p ∣ |G| (Lagrange forward, Cauchy backward). The order-p subgroup zpowers x is cyclic because every group of prime order is cyclic. At p = 2 the characterization reads: a non-trivial involution exists iff |G| is even — the parent's corollary upgraded to a biconditional. In ZMod 6 the involution 3 exists while no element of order 5 does, exhibiting both faces.",
+    "text": "The full Cauchy characterization (an element of order p exists iff the prime p divides |G|) is proved by combining Mathlib's Cauchy theorem with the elementary Lagrange fact orderOf x ∣ |G|, and then its structural consequences are drawn: the order-p subgroup is cyclic, and at p = 2 the involution ⟺ even-order biconditional follows, with both faces witnessed concretely in ZMod 6.",
+    "proofStrategy": "1. prime_dvd_card_of_exists_orderOf: from orderOf x = p rewrite p as orderOf x and apply orderOf_dvd_natCard.\n2. exists_orderOf_eq_prime_iff_dvd: package the two directions — the converse just proved, and Mathlib's exists_prime_orderOf_dvd_card'.\n3. exists_isCyclic_subgroup_card_eq: take a Cauchy element x; zpowers x has Nat.card = orderOf x = p (Nat.card_zpowers), and a group of prime order is cyclic (isCyclic_of_prime_card).\n4. orderOf_eq_two_iff_involution: (⟹) orderOf x = 2 gives x ≠ 1 (else orderOf 1 = 1) and x*x = x^(orderOf x) = 1; (⟸) orderOf_eq_prime from x^2 = 1 and x ≠ 1.\n5. exists_involution_iff_even_card: rewrite Even via even_iff_two_dvd, then the p = 2 characterization, then the involution bridge under exists_congr.\n6. ZMod 6: the involution 3 by decide; the absence of an order-5 element from addOrderOf_dvd_natCard with Nat.card_zmod (5 ∤ 6 by omega).",
+    "keyInsights": [
+      "**Cauchy is half of a biconditional**: the converse — an element of order p forces p ∣ |G| — is the elementary Lagrange fact orderOf_dvd_natCard, so the sharp statement of which primes appear as element orders costs only a one-line packaging Mathlib omits.",
+      "**The order-p subgroup is cyclic for free**: a group of prime order is automatically cyclic (isCyclic_of_prime_card), so the subgroup zpowers x that Cauchy produces is not just of order p but cyclic — exactly the form the Sylow construction iterates.",
+      "**Involution ⟺ even order is the p = 2 characterization**: identifying order-2 elements with non-trivial involutions (x*x = x^(orderOf x) = 1) turns the biconditional at p = 2 into the classical even-order/involution equivalence, upgrading the parent's one-directional corollary.",
+      "**The negative face needs Lagrange, not decide**: `addOrderOf` does not reduce under kernel computation, so the absence of an order-5 element in ZMod 6 is certified through addOrderOf_dvd_natCard (5 ∤ 6) rather than by deciding addOrderOf x = 5 — keeping the file free of native_decide and Lean.ofReduceBool."
+    ],
+    "prerequisites": [
+      "Cauchy's theorem and Lagrange's theorem for finite groups",
+      "The order of an element (orderOf) and orderOf x ∣ |G|",
+      "Cyclic groups and that a group of prime order is cyclic",
+      "The additive group ZMod n and additive order (addOrderOf)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Statement",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "File-level docstring: Cauchy is one direction of a biconditional whose converse is the elementary Lagrange fact. Lists the characterization, the cyclic order-p subgroup, the involution ⟺ even-order biconditional, and the two concrete ZMod 6 faces. Imports the Mathlib Cauchy file, the cyclic-groups file, the ZMod files, and Tactic.",
+      "mathContext": "The Cauchy/Lagrange characterization of element orders by prime divisors."
+    },
+    {
+      "id": "converse",
+      "title": "The Converse of Cauchy (Lagrange direction)",
+      "startLine": 58,
+      "endLine": 73,
+      "summary": "prime_dvd_card_of_exists_orderOf: an element of order p forces p ∣ |G|, via orderOf_dvd_natCard at a prime-order element. The forward half of the characterization.",
+      "mathContext": "Element of order p ⟹ p ∣ |G|."
+    },
+    {
+      "id": "characterization",
+      "title": "The Cauchy Characterization",
+      "startLine": 75,
+      "endLine": 83,
+      "summary": "exists_orderOf_eq_prime_iff_dvd: for a prime p, an element of order p exists iff p ∣ |G| — Lagrange forward, Cauchy backward.",
+      "mathContext": "(∃ x, orderOf x = p) ↔ p ∣ |G|."
+    },
+    {
+      "id": "cyclic-subgroup",
+      "title": "Cyclic Subgroup of Order p",
+      "startLine": 85,
+      "endLine": 96,
+      "summary": "exists_isCyclic_subgroup_card_eq: p ∣ |G| yields a cyclic subgroup of order p — zpowers x of a Cauchy element, cyclic because a group of prime order is cyclic. Strengthens the parent's cauchy_subgroup.",
+      "mathContext": "p ∣ |G| ⟹ G has a cyclic subgroup of order p."
+    },
+    {
+      "id": "involution-bridge",
+      "title": "Order-2 ⟺ Involution, and Involution ⟺ Even Order",
+      "startLine": 98,
+      "endLine": 122,
+      "summary": "orderOf_eq_two_iff_involution identifies order-2 elements with non-trivial involutions; exists_involution_iff_even_card then reads the p = 2 characterization as: a non-trivial involution exists iff |G| is even — the parent's corollary upgraded to a biconditional.",
+      "mathContext": "(∃ x ≠ 1, x*x = 1) ↔ Even |G|."
+    },
+    {
+      "id": "concrete-instances",
+      "title": "Both Faces in ZMod 6",
+      "startLine": 124,
+      "endLine": 131,
+      "summary": "exists_involution_zmod6: the involution 3 exists (2 ∣ 6). no_addOrderOf_five_zmod6: no element of additive order 5 (5 ∤ 6), derived from addOrderOf_dvd_natCard rather than by brute force. Kernel decide only, 0 axioms.",
+      "mathContext": "Positive and negative faces of the characterization in ZMod 6."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Mémoire sur les arrangements que l'on peut former avec des lettres données",
+      "year": "1845",
+      "note": "Exercices d'analyse et de physique mathématique 3, 151–252 — a prime dividing the order of a group yields an element of that order"
+    },
+    {
+      "authors": "Lagrange, Joseph-Louis",
+      "title": "Réflexions sur la résolution algébrique des équations",
+      "year": "1771",
+      "note": "The order of every element divides the order of the group — the elementary converse direction of the characterization"
+    },
+    {
+      "authors": "Isaacs, I. Martin",
+      "title": "Finite Group Theory",
+      "year": "2008",
+      "note": "Graduate Studies in Mathematics 92, AMS — Cauchy's theorem as the base case of Sylow theory and the even-order involution principle"
+    }
+  ]
+}
