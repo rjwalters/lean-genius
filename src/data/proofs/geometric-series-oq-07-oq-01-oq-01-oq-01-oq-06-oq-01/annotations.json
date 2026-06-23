@@ -1,0 +1,82 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06-oq-01",
+    "range": { "startLine": 1, "endLine": 56 },
+    "type": "context",
+    "title": "Problem Statement and the Corrected Inverse Formula",
+    "content": "The docstring states open question oq-06-oq-01: the binomial inverse of the parent's forward Eulerian → Stirling identity i!·S(n,i) = ∑_{j<n} C(j,n−i)·⟨n,j⟩. Crucially, it records that the open question's proposed inverse ⟨n,k⟩ = ∑_j (−1)^{k−j}·C(n−j,k−j)·j!·S(n,j) is incorrect — for n=3, k=0 every term but j=0 vanishes (negative lower binomial index) and the surviving term carries 0!·S(3,0) = 0, giving 0 ≠ ⟨3,0⟩ = 1. The corrected and proved statement is ⟨n,k⟩ = ∑_{i≤n} (−1)^{n−i−k}·C(n−i,k)·i!·S(n,i), verified numerically for all rows n ≤ 7. The proof is previewed as binomial inversion driven by the orthogonality ∑_m (−1)^{m−k}·C(m,k)·C(j,m) = [j=k].",
+    "mathContext": "Forward: $i!\\,S(n,i) = \\sum_{j<n}\\binom{j}{n-i}\\langle n,j\\rangle$. Inverse (corrected): $\\langle n,k\\rangle = \\sum_{i\\le n}(-1)^{n-i-k}\\binom{n-i}{k}\\,i!\\,S(n,i)$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Eulerian numbers",
+      "Stirling numbers of the second kind",
+      "binomial inversion",
+      "Worpitzky's identity"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "binomial coefficients",
+      "binomial transforms"
+    ]
+  },
+  {
+    "id": "ann-binom-ortho",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06-oq-01",
+    "range": { "startLine": 58, "endLine": 121 },
+    "type": "technique",
+    "title": "Binomial Orthogonality: the Inversion Kernel",
+    "content": "binom_ortho proves ∑_{m≤N} (−1)^{m−k}·C(m,k)·C(j,m) = [j=k] for j ≤ N — the statement that the binomial-triangle matrix (C(m,k)) and its signed transpose ((−1)^{m−k}·C(m,k)) are mutually inverse (the discrete analogue of Möbius inversion on the binomial lattice). The branch j<k is dispatched directly: every term vanishes (C(m,k)=0 for m≤j<k, C(j,m)=0 for m>j). For k≤j the sum over range(N+1) is split into range k (zero since C(m,k)=0 for m<k) and Ico k (N+1); the survivors are reindexed m = k+t (Finset.sum_Ico_eq_sum_range) and each term rewritten by the subset-of-a-subset identity C(j,k+t)·C(k+t,k) = C(j,k)·C(j−k,t) (Nat.choose_mul). Factoring out C(j,k) leaves ∑_t (−1)^t·C(j−k,t), extended to the full row range(j−k+1) (the extra terms vanish) and evaluated to [j−k=0] by Int.alternating_sum_range_choose. Truncated ℕ subtraction in the exponent is harmless because C(m,k) already kills the m<k terms.",
+    "mathContext": "$\\sum_{m\\le N}(-1)^{m-k}\\binom{m}{k}\\binom{j}{m} = \\binom{j}{k}\\sum_{t}(-1)^t\\binom{j-k}{t} = \\binom{j}{k}(1-1)^{j-k} = [j=k]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial inversion",
+      "subset-of-a-subset identity",
+      "alternating binomial sum",
+      "Möbius inversion"
+    ],
+    "prerequisites": [
+      "binomial coefficient identities",
+      "Finset reindexing",
+      "natural number subtraction in Lean"
+    ]
+  },
+  {
+    "id": "ann-eulerian-inverse",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06-oq-01",
+    "range": { "startLine": 123, "endLine": 184 },
+    "type": "key-step",
+    "title": "The Inverse Pairing by Binomial Inversion",
+    "content": "eulerian_inverse proves ⟨n,k⟩ = ∑_{i≤n} (−1)^{n−i−k}·C(n−i,k)·i!·S(n,i) for 1 ≤ n and k ≤ n−1. It substitutes the parent's forward identity i!·S(n,i) = ∑_{j<n} C(j,n−i)·⟨n,j⟩ (cast to ℤ via push_cast) into each summand (hsub), swaps the i- and j-summations with Finset.sum_comm, and for each fixed j factors ⟨n,j⟩ out and reflects the summation index i ↦ n−i with Finset.sum_range_reflect — turning the inner sum into the standard orthogonality form so binom_ortho evaluates it to [j=k] (hinner). The outer sum ∑_{j<n} ⟨n,j⟩·[j=k] then collapses to ⟨n,k⟩ via Finset.sum_ite_eq', using k ∈ range n (k ≤ n−1). The only substantive input is the forward identity; everything else is the inversion machinery.",
+    "mathContext": "$\\sum_i(-1)^{n-i-k}\\binom{n-i}{k}\\,i!\\,S(n,i) = \\sum_j\\langle n,j\\rangle\\!\\sum_i(-1)^{n-i-k}\\binom{n-i}{k}\\binom{j}{n-i} = \\sum_j\\langle n,j\\rangle[j=k] = \\langle n,k\\rangle$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "binomial inversion",
+      "double sum interchange",
+      "index reflection",
+      "Eulerian–Stirling duality"
+    ],
+    "prerequisites": [
+      "Finset.sum_comm",
+      "Finset.sum_range_reflect",
+      "casting ℕ sums to ℤ"
+    ]
+  },
+  {
+    "id": "ann-concrete-rows",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06-oq-01",
+    "range": { "startLine": 186, "endLine": 190 },
+    "type": "context",
+    "title": "Corroboration on Concrete Rows",
+    "content": "Three kernel-decidable sanity checks confirm the inverse formula on small rows: ⟨3,1⟩ = 4, ⟨4,1⟩ = 11, and ⟨4,2⟩ = 11, each equated to its signed Stirling sum ∑_{i≤n} (−1)^{n−i−k}·C(n−i,k)·i!·S(n,i). All use kernel decide rather than native_decide, so they add no axiom dependency (no Lean.ofReduceBool).",
+    "mathContext": "$\\langle 4,2\\rangle = 11 = \\sum_{i\\le 4}(-1)^{4-i-2}\\binom{4-i}{2}\\,i!\\,S(4,i)$.",
+    "significance": "standard",
+    "relatedConcepts": [
+      "decidable verification",
+      "kernel decide"
+    ],
+    "prerequisites": [
+      "Eulerian and Stirling number values"
+    ]
+  }
+]
