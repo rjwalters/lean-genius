@@ -1,5 +1,28 @@
 [
   {
+    "id": "residue-reduction",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01",
+    "range": {
+      "startLine": 20,
+      "endLine": 50
+    },
+    "type": "insight",
+    "title": "The Residue Reduction: a Single mod-8 Increment Table",
+    "content": "The docstring records the conceptual heart of the file before any theorem. Starting from the parent's 4-descent recursion excludedCount N = ⌊N/8⌋ + excludedCount ⌈N/4⌉, the error E(N) = 6·excludedCount N − N telescopes to E(N) = E(⌈N/4⌉) + δ(N), where the per-step increment δ(N) = ⌊(N mod 8 + 3)/4⌋ − (N mod 8) depends ONLY on N mod 8. Evaluating it on the eight residues 0..7 gives the table 0, 0, −1, −2, −3, −3, −4, −5. This single observation collapses a two-variable error analysis into eight numbers: the sign of every entry (all ≤ 0) settles one-sidedness, and the most negative SUSTAINABLE entry (−4, on residue 6) fixes the growth rate. Everything below is a corollary of reading this table.",
+    "mathContext": "$E(N) = E(\\lceil N/4\\rceil) + \\delta(N)$, $\\delta(N) = \\left\\lfloor\\tfrac{(N\\bmod 8)+3}{4}\\right\\rfloor - (N\\bmod 8) \\in \\{0,0,-1,-2,-3,-3,-4,-5\\}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "telescoping recursion",
+      "residue reduction",
+      "2-adic self-similarity",
+      "error term"
+    ],
+    "prerequisites": [
+      "asymptotic density",
+      "floor and mod arithmetic"
+    ]
+  },
+  {
     "id": "one-sided",
     "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01",
     "range": {
