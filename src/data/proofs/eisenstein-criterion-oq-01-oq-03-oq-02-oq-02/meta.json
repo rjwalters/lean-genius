@@ -132,6 +132,56 @@
       "description": "Concrete ℂ instance of the degree formula."
     }
   ],
+  "sections": [
+    {
+      "id": "context",
+      "title": "Why irreducibility pins the degree",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "The file docstring lays out the strategy: minpoly ℚ ζ is a priori a monic divisor of Φ_p, and irreducibility of Φ_p (from the parent's elementary Eisenstein-route result) forces it to equal Φ_p, so [ℚ(ζ):ℚ] = deg Φ_p = φ(p) = p − 1.",
+      "mathContext": "Irreducibility of $\\Phi_p$ is the single nontrivial input; the field degree $p-1$ is its intended payoff."
+    },
+    {
+      "id": "setup",
+      "title": "Setup: prime p, primitive root in a char-zero field",
+      "startLine": 31,
+      "endLine": 41,
+      "summary": "Imports Mathlib and the parent entry; opens Polynomial and IntermediateField scopes; fixes a prime p (Fact p.Prime) and a primitive p-th root of unity ζ in an arbitrary characteristic-zero field L.",
+      "mathContext": "Working over a general CharZero field keeps the argument algebraic; CharZero supplies the NeZero ((p:ℕ):ℚ) instance."
+    },
+    {
+      "id": "minpoly",
+      "title": "minpoly_eq_cyclotomic — the minimal polynomial is Φ_p",
+      "startLine": 42,
+      "endLine": 52,
+      "summary": "Feeds the parent's cyclotomic_prime_irreducible_rat into IsPrimitiveRoot.minpoly_eq_cyclotomic_of_irreducible to conclude minpoly ℚ ζ = cyclotomic p ℚ — identifying Φ_p as the minimal polynomial.",
+      "mathContext": "$\\operatorname{minpoly}_{\\mathbb{Q}}\\zeta = \\Phi_p$, the first half of the open question."
+    },
+    {
+      "id": "degree",
+      "title": "minpoly_natDegree — degree p − 1",
+      "startLine": 54,
+      "endLine": 57,
+      "summary": "Rewrites the minimal polynomial as Φ_p, then natDegree_cyclotomic and Nat.totient_prime give degree totient p = p − 1.",
+      "mathContext": "$\\deg\\Phi_p=\\varphi(p)=p-1$ for prime $p$."
+    },
+    {
+      "id": "finrank",
+      "title": "finrank_adjoin — [ℚ(ζ):ℚ] = p − 1",
+      "startLine": 59,
+      "endLine": 66,
+      "summary": "Uses IntermediateField.adjoin.finrank (with ζ integral over ℚ via IsPrimitiveRoot.isIntegral and IsIntegral.tower_top) to convert the minimal-polynomial degree into the field-extension degree p − 1.",
+      "mathContext": "$[\\mathbb{Q}(\\zeta):\\mathbb{Q}]=\\deg(\\operatorname{minpoly}_{\\mathbb{Q}}\\zeta)=p-1$ — the headline result."
+    },
+    {
+      "id": "capstone",
+      "title": "exists_complex_primitiveRoot_finrank — ℂ instance",
+      "startLine": 68,
+      "endLine": 74,
+      "summary": "Instantiates the result in ℂ: Complex.isPrimitiveRoot_exp gives ζ_p = exp(2πi/p) as a primitive p-th root of unity, and finrank_adjoin yields [ℚ(ζ_p):ℚ] = p − 1.",
+      "mathContext": "$[\\mathbb{Q}(e^{2\\pi i/p}):\\mathbb{Q}]=p-1$, the familiar concrete cyclotomic field."
+    }
+  ],
   "references": [
     {
       "text": "Gauss, C. F. (1801). Disquisitiones Arithmeticae. Irreducibility of Φ_p and the structure of cyclotomic fields.",
