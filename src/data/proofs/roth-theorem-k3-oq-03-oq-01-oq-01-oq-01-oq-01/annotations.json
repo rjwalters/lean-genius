@@ -2,7 +2,10 @@
   {
     "id": "ann-roth03010101-overview",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 1, "endLine": 54 },
+    "range": {
+      "startLine": 1,
+      "endLine": 54
+    },
     "type": "context",
     "title": "Affine Covariance: Completing the Symmetry Group of the AP-Counting Average",
     "content": "The header places this file at the bottom of a four-generation lineage that builds the normalized k-AP counting operator\n\n  Λ_k(f₀,…,f_{k-1}) = E_{x,d ∈ ZMod N} ∏_{i<k} fᵢ(x + i·d)\n\nand studies its structure: the great-grandparent defines Λ_k and its degenerate identities, the grandparent proves multilinearity, and the parent records two symmetries — translation invariance and the order-reversing reflection i↦k−1−i. Those cover the *additive* part of the symmetry group of an arithmetic progression. What was missing is the *multiplicative* part: the count is also unchanged when the whole configuration is dilated by an invertible scalar.\n\nThis file supplies it. The headline `kAPCount_affine` proves the full **affine covariance**: for any unit `a ∈ (ZMod N)ˣ` and any translate `t`, replacing every fᵢ by `y ↦ fᵢ(a·y + t)` leaves Λ_k fixed. Geometrically, the affine map φ(y) = a·y + t carries the progression {x, x+d, …, x+(k−1)d} to the progression with base point a·x+t and common difference a·d — still an arithmetic progression — and the substitution (x,d) ↦ (a·x+t, a·d) is a *bijection* of (ZMod N)² precisely because a is invertible. Bijectivity preserves the averaging measure, so the count is fixed.\n\nThis exhibits the one-dimensional affine group GA(1, ZMod N) = (ZMod N)ˣ ⋉ ZMod N acting on Λ_k by symmetries; two corollaries (`kAPCount_dilate`, `kAPCount_translate_of_affine`) isolate the multiplicative and additive pieces. All 0-axiom. The references are Gowers' 2001 proof of Szemerédi's theorem and Tao's higher-order Fourier analysis.",
@@ -24,7 +27,10 @@
   {
     "id": "ann-roth03010101-setup",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 55, "endLine": 61 },
+    "range": {
+      "startLine": 55,
+      "endLine": 61
+    },
     "type": "technique",
     "title": "Importing the Lineage and Fixing ZMod N",
     "content": "`import Proofs.RothTheoremOQ03OQ01OQ01OQ01` pulls in the parent's symmetry results, and transitively the grandparent's multilinearity and the great-grandparent's definition of `kAPCount` and `gowersNorm` — so `kAPCount` is in scope without redefinition. `open Finset BigOperators` brings the `∑`/`∏` big-operator notation and the `Finset`/`Fintype` lemma namespaces into scope.\n\n`variable {N : ℕ} [NeZero N]` fixes the finite cyclic group `ZMod N` as the ambient space, with `[NeZero N]` ensuring `N ≠ 0` so that `ZMod N` is genuinely finite (order N) and the normalized averages `E_{x,d}` over `(ZMod N)²` are well-defined. The same `[NeZero N]` finiteness is what makes `Fintype.sum_equiv` — reindexing a finite sum along a bijection — applicable later.",
@@ -45,7 +51,10 @@
   {
     "id": "ann-roth03010101-mulunit",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 63, "endLine": 77 },
+    "range": {
+      "startLine": 67,
+      "endLine": 77
+    },
     "type": "definition",
     "title": "mulUnit: Multiplication by a Unit as a Permutation of ZMod N",
     "content": "`mulUnit a` packages multiplication by a unit `a : (ZMod N)ˣ` as an `Equiv` (a bijection with explicit inverse) of `ZMod N` — this is the multiplicative/dilation half of the affine reindexing. The construction:\n- `toFun x := ↑a * x` — multiply by a;\n- `invFun x := ↑a⁻¹ * x` — multiply by the inverse unit a⁻¹;\n- `left_inv` is `Units.inv_mul_cancel_left a x`, i.e. ↑a⁻¹·(↑a·x) = x;\n- `right_inv` is `Units.mul_inv_cancel_left a x`, i.e. ↑a·(↑a⁻¹·x) = x.\n\nThe crucial point is *why the inverse exists*: multiplication by an arbitrary ring element need not be a bijection (multiplication by a zero-divisor collapses ZMod N), but multiplication by a **unit** is invertible with inverse multiplication by a⁻¹. This is exactly the algebraic content behind 'd ↦ a·d is a bijection iff a is invertible.' The `@[simp] theorem mulUnit_apply` exposes `mulUnit a x = ↑a · x` definitionally (`rfl`) so later `simp` calls can unfold it.",
@@ -67,7 +76,10 @@
   {
     "id": "ann-roth03010101-affine",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 79, "endLine": 105 },
+    "range": {
+      "startLine": 83,
+      "endLine": 105
+    },
     "type": "insight",
     "title": "kAPCount_affine: The Double Average Reindexed by Two Independent Bijections",
     "content": "The headline theorem: `Λ_k(f₀(a·+t),…,f_{k-1}(a·+t)) = Λ_k(f₀,…,f_{k-1})` for every unit `a` and translate `t`. The proof exploits a structural fact — the affine map is **diagonal** in the averaging variables: the new base point a·x+t depends only on x, and the new common difference a·d only on d. So instead of one product-bijection of (ZMod N)², two *independent single-variable* reindexings suffice.\n\n- `unfold kAPCount; congr 1` strips the normalization scalar, leaving the raw double sum.\n- `Fintype.sum_equiv ((mulUnit a).trans (Equiv.addRight t))` reindexes the **outer** x-average by the composite bijection x ↦ a·x+t — `mulUnit a` does the dilation, `Equiv.addRight t` the translate, `Equiv.trans` composes them.\n- `Fintype.sum_equiv (mulUnit a)` reindexes the **inner** d-average by d ↦ a·d.\n- `Finset.prod_congr rfl` then matches the k-fold product factor-by-factor, reducing to the pointwise AP-shift identity.\n- `simp only [Equiv.trans_apply, mulUnit_apply, Equiv.coe_addRight, nsmul_eq_mul]` unfolds the equivalences and converts `i.val • z` (nsmul) into the ring product `↑i.val · z`, after which `congr 1; ring` discharges the ring identity\n\n  a·(x + i·d) + t = (a·x + t) + i·(a·d).\n\nThe whole argument is 'change of variables in a finite sum,' and `Fintype.sum_equiv` is the formal embodiment of 'reindexing a finite average along a bijection leaves it unchanged.'",
@@ -91,7 +103,10 @@
   {
     "id": "ann-roth03010101-dilate",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 107, "endLine": 122 },
+    "range": {
+      "startLine": 111,
+      "endLine": 122
+    },
     "type": "insight",
     "title": "kAPCount_dilate: The Genuinely New Multiplicative Symmetry",
     "content": "Dilation invariance is the `t = 0` specialization: `Λ_k(f₀(a·),…) = Λ_k(f₀,…)` for any unit `a`. The proof is `have h := kAPCount_affine k f a 0; simpa using h` — instantiate affine covariance at translate 0 and let `simpa` clear the trailing `+ 0`.\n\nThe docstring stresses that this symmetry is *not* a corollary of the parent's translation invariance or reflection symmetry — it is an independent generator of the symmetry group. A vivid witness: taking `a = −1` gives `Λ_k(f₀(−·),…) = Λ_k(f₀,…)`, the point reflection through the origin that *keeps the slot order*. This is genuinely distinct from the parent's order-reversing reflection symmetry `i ↦ k−1−i`, which reverses which function sits in which slot. So dilation enlarges the known symmetry group rather than re-deriving part of it.",
@@ -113,7 +128,10 @@
   {
     "id": "ann-roth03010101-translate",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 124, "endLine": 132 },
+    "range": {
+      "startLine": 124,
+      "endLine": 132
+    },
     "type": "technique",
     "title": "kAPCount_translate_of_affine: Recovering the Parent's Translation Invariance",
     "content": "The `a = 1` specialization recovers translation invariance: `Λ_k(f₀(·+t),…) = Λ_k(f₀,…)`. The proof is `have h := kAPCount_affine k f 1 t; simpa using h` — instantiate affine covariance at the identity unit `1 : (ZMod N)ˣ`, and `simpa` reduces `↑(1:(ZMod N)ˣ)·y` to `y`.\n\nThe point of recording this corollary is *consistency*, not novelty: it confirms that the new affine covariance result genuinely **subsumes** the parent's `kAPCount_translate` — the additive symmetry is exactly the multiplicative-identity slice of the affine action. Together, `kAPCount_dilate` (t=0, a free) and `kAPCount_translate_of_affine` (a=1, t free) decompose the full GA(1, ZMod N) = (ZMod N)ˣ ⋉ ZMod N action into its multiplicative and additive generators, completing the symmetry picture the lineage set out to describe.",
