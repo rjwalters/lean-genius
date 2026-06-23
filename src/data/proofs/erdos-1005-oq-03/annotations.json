@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-erdos1005oq03-header",
+    "proofId": "erdos-1005-oq-03",
+    "range": { "startLine": 4, "endLine": 51 },
+    "type": "context",
+    "title": "The adjacency question behind Farey runs",
+    "content": "The header positions the file as the structural prerequisite for Erdős #1005 (runs of consecutive Farey fractions): before one can study runs, one must know exactly when two fractions are adjacent in F_n. The parent supplies the unimodular package (gap formula, mediant coprimality and betweenness) but not the denominator arithmetic that decides adjacency. Note the self-containment: the FareyFraction scaffold is re-declared rather than imported, because the parent's import Mathlib.Data.Rat.Basic no longer resolves under Mathlib v4.26.0.",
+    "mathContext": "Farey sequence $F_n$: reduced $a/b \\in [0,1]$ with $b \\le n$, increasing. Adjacent neighbours satisfy the unimodular relation $bc - ad = 1$.",
+    "significance": "context",
+    "relatedConcepts": ["Farey sequence", "Stern–Brocot tree", "mediant", "unimodular relation"],
+    "prerequisites": ["rational numbers", "number theory"]
+  },
+  {
+    "id": "ann-erdos1005oq03-scaffold",
+    "proofId": "erdos-1005-oq-03",
+    "range": { "startLine": 59, "endLine": 75 },
+    "type": "definition",
+    "title": "Farey fractions and the unimodular relation",
+    "content": "The core data: FareyFraction n is a pair (p,q) with 0 ≤ p ≤ q, 1 ≤ q ≤ n, and gcd(p,q)=1 — a reduced fraction of order n in [0,1]. FareyFraction.toRat sends it to the rational p/q. IsConsecutiveFarey f g is the unimodular predicate g.p·f.q − f.p·g.q = 1, the algebraic signature of adjacency that every theorem here takes as hypothesis.",
+    "mathContext": "$a/b < c/d$ unimodular $\\iff bc - ad = 1$; here encoded over ℕ as $g.p\\cdot f.q - f.p\\cdot g.q = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["reduced fractions", "coprimality", "unimodular relation"],
+    "prerequisites": ["greatest common divisor"]
+  },
+  {
+    "id": "ann-erdos1005oq03-mediant-coprime",
+    "proofId": "erdos-1005-oq-03",
+    "range": { "startLine": 81, "endLine": 91 },
+    "type": "technique",
+    "title": "The mediant is already in lowest terms",
+    "content": "mediant_coprime: from the unimodular relation bc = ad + 1, the mediant (a+c)/(b+d) is reduced, gcd(a+c, b+d) = 1. The proof is a clean divisibility argument: any common divisor g of a+c and b+d divides both b(a+c) and a(b+d); since b(a+c) = a(b+d) + 1, g divides 1. This self-contained re-proof replaces the parent's copy (unreachable under v4.26.0) and is exactly what sharpness needs to exhibit the mediant as a bona fide Farey fraction.",
+    "mathContext": "$bc = ad + 1 \\Rightarrow \\gcd(a+c, b+d) = 1$, since $b(a+c) = a(b+d) + 1$ forces any common divisor to divide $1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["mediant", "coprimality", "Bézout-type argument"],
+    "prerequisites": ["divisibility", "greatest common divisor"]
+  },
+  {
+    "id": "ann-erdos1005oq03-order",
+    "proofId": "erdos-1005-oq-03",
+    "range": { "startLine": 97, "endLine": 121 },
+    "type": "technique",
+    "title": "Order as cross-multiplication; mediant betweenness",
+    "content": "toRat_lt_iff translates the rational order f.toRat < g.toRat into the integer cross-multiplication f.p·g.q < g.p·f.q (valid because denominators are positive) — the bridge that lets every later proof work over ℤ rather than ℚ. mediant_between then shows the mediant (a+c)/(b+d) lies strictly between a/b < c/d, each inequality reduced by div_lt_div_iff₀ to a polynomial fact closed by nlinarith.",
+    "mathContext": "$\\dfrac{p}{q} < \\dfrac{p'}{q'} \\iff p q' < p' q$ (for $q,q' > 0$); and $\\dfrac{a}{b} < \\dfrac{a+c}{b+d} < \\dfrac{c}{d}$ when $a/b < c/d$.",
+    "significance": "supporting",
+    "relatedConcepts": ["cross-multiplication", "mediant", "ordering of rationals"],
+    "prerequisites": ["inequalities over ordered fields"]
+  },
+  {
+    "id": "ann-erdos1005oq03-engine",
+    "proofId": "erdos-1005-oq-03",
+    "range": { "startLine": 127, "endLine": 161 },
+    "type": "insight",
+    "title": "The engine: any in-between fraction has denominator ≥ b + d",
+    "content": "The arithmetic heart of the file. For a/b < p/q < c/d with the outer pair unimodular, the strict orders give the integer inequalities pb − aq ≥ 1 and cq − pd ≥ 1. The identity q·(bc − ad) = d·(pb − aq) + b·(cq − pd) — verified by linear_combination against the unimodular relation — collapses, since bc − ad = 1, to q = d·(pb − aq) + b·(cq − pd) ≥ d + b. No Farey-sequence enumeration is used; the bound is purely identity-plus-positivity, and nlinarith assembles it.",
+    "mathContext": "$q\\,(bc - ad) = d\\,(pb - aq) + b\\,(cq - pd)$; with $bc - ad = 1$ and both brackets $\\ge 1$, $q \\ge b + d$. Equality $\\iff$ the in-between fraction is the mediant.",
+    "significance": "key",
+    "relatedConcepts": ["linear_combination", "unimodular identity", "denominator bound", "Stern–Brocot insertion"],
+    "prerequisites": ["integer arithmetic", "linear algebra identities"]
+  },
+  {
+    "id": "ann-erdos1005oq03-sufficiency",
+    "proofId": "erdos-1005-oq-03",
+    "range": { "startLine": 163, "endLine": 171 },
+    "type": "concept",
+    "title": "Sufficiency: b + d > n ⟹ adjacent",
+    "content": "farey_adjacent_of_denom_sum_gt: if the denominators of a unimodular pair sum past the order (n < b + d), no order-n fraction can lie strictly between them. Immediate from the engine — any intermediate h would have h.q ≥ b + d > n, contradicting h.q ≤ n. Adjacency thus needs no construction of the Farey sequence at all.",
+    "mathContext": "$n < b + d \\Rightarrow$ no $h \\in F_n$ with $a/b < h < c/d$, since such $h$ would force $h.q \\ge b + d > n$.",
+    "significance": "key",
+    "relatedConcepts": ["Farey adjacency", "denominator-sum criterion"],
+    "prerequisites": ["the intermediate-denominator bound"]
+  },
+  {
+    "id": "ann-erdos1005oq03-sharpness",
+    "proofId": "erdos-1005-oq-03",
+    "range": { "startLine": 173, "endLine": 194 },
+    "type": "concept",
+    "title": "Sharpness: b + d ≤ n ⟹ the mediant separates them",
+    "content": "mediant_lt_n_not_adjacent: the converse obstruction. When b + d ≤ n the mediant (a+c)/(b+d) is constructed as a genuine FareyFraction of order n — coprimality from mediant_coprime, denominator bound from hsum, value strictly between via mediant_between — witnessing that the pair is NOT adjacent. Equivalently the mediant first enters F_n at order exactly b + d, the Stern–Brocot insertion order.",
+    "mathContext": "$b + d \\le n \\Rightarrow \\dfrac{a+c}{b+d} \\in F_n$ and $a/b < \\dfrac{a+c}{b+d} < c/d$; the mediant appears first at order $b+d$.",
+    "significance": "key",
+    "relatedConcepts": ["mediant", "Stern–Brocot tree", "sharpness", "explicit witness"],
+    "prerequisites": ["mediant coprimality", "mediant betweenness"]
+  },
+  {
+    "id": "ann-erdos1005oq03-iff",
+    "proofId": "erdos-1005-oq-03",
+    "range": { "startLine": 196, "endLine": 210 },
+    "type": "insight",
+    "title": "The headline equivalence",
+    "content": "farey_adjacency_iff packages sufficiency and sharpness into a single criterion: a unimodular pair a/b < c/d is adjacent in F_n if and only if b + d > n. Forward by contradiction (if b + d ≤ n the mediant breaks adjacency); backward is sufficiency. This pins the adjacency threshold exactly at the denominator sum and is the structural foundation any analysis of Farey runs must rest on.",
+    "mathContext": "Unimodular $a/b < c/d$ adjacent in $F_n \\iff n < b + d$.",
+    "significance": "key",
+    "relatedConcepts": ["Farey adjacency criterion", "if-and-only-if", "Erdős #1005"],
+    "prerequisites": ["sufficiency", "sharpness"]
+  }
+]

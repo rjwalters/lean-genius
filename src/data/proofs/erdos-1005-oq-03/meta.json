@@ -62,6 +62,64 @@
       "Best-approximation transfer: formalize the corollary that for two consecutive convergents of a continued fraction the denominator-sum criterion forces the standard 'no better approximation with smaller denominator' property, linking this entry to Diophantine approximation."
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Background: the adjacency question",
+      "startLine": 4,
+      "endLine": 51,
+      "summary": "Module docstring framing the file as the structural prerequisite for Erdős #1005: it determines exactly when two Farey fractions are adjacent. Notes the self-contained FareyFraction scaffold (the parent's import no longer resolves under Mathlib v4.26.0) and previews the four headline results."
+    },
+    {
+      "id": "scaffold",
+      "title": "§1 Farey fractions",
+      "startLine": 55,
+      "endLine": 75,
+      "summary": "Definitions: the FareyFraction n structure (reduced p/q with q ≤ n), its rational value toRat, and the unimodular adjacency predicate IsConsecutiveFarey (g.p·f.q − f.p·g.q = 1)."
+    },
+    {
+      "id": "mediant-coprime",
+      "title": "§2 Mediant coprimality",
+      "startLine": 77,
+      "endLine": 91,
+      "summary": "mediant_coprime: from bc = ad + 1 the mediant (a+c)/(b+d) is in lowest terms, via the divisibility identity b(a+c) = a(b+d) + 1. A self-contained re-proof of the parent's lemma, reused for sharpness."
+    },
+    {
+      "id": "order",
+      "title": "§3 Order and mediant betweenness",
+      "startLine": 93,
+      "endLine": 121,
+      "summary": "toRat_lt_iff converts rational order into integer cross-multiplication (the bridge to ℤ arithmetic); mediant_between shows the mediant lies strictly between two unimodular neighbours."
+    },
+    {
+      "id": "engine",
+      "title": "§4a The denominator engine",
+      "startLine": 123,
+      "endLine": 161,
+      "summary": "intermediate_denom_ge: any fraction strictly between a unimodular pair has denominator q ≥ b + d, proved from the identity q·(bc−ad) = d·(pb−aq) + b·(cq−pd) collapsing under bc−ad=1 with both brackets ≥ 1."
+    },
+    {
+      "id": "sufficiency",
+      "title": "§4b Sufficiency",
+      "startLine": 163,
+      "endLine": 171,
+      "summary": "farey_adjacent_of_denom_sum_gt: a unimodular pair with b + d > n is adjacent in F_n — any intermediate fraction would need denominator ≥ b + d > n."
+    },
+    {
+      "id": "sharpness",
+      "title": "§4c Sharpness",
+      "startLine": 173,
+      "endLine": 194,
+      "summary": "mediant_lt_n_not_adjacent: when b + d ≤ n the mediant (a+c)/(b+d) is an explicit order-n Farey fraction strictly between the pair, so adjacency fails; the mediant first appears at order exactly b + d."
+    },
+    {
+      "id": "iff",
+      "title": "§4d The adjacency criterion",
+      "startLine": 196,
+      "endLine": 210,
+      "summary": "farey_adjacency_iff: a unimodular pair a/b < c/d is adjacent in F_n if and only if b + d > n — sufficiency and sharpness combined into the headline equivalence."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-1005",
