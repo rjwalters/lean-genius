@@ -2,7 +2,10 @@
   {
     "id": "ann-roth030101-overview",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01",
-    "range": { "startLine": 1, "endLine": 35 },
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
     "type": "context",
     "title": "Multilinearity: the Structural Engine of the Generalized von Neumann Inequality",
     "content": "The header sets the stage. The parent file `Proofs.RothTheoremOQ03OQ01` builds the normalized k-AP counting operator\n\n  Λ_k(f₀,…,f_{k-1}) = E_{x,d ∈ ZMod N} ∏_{i<k} fᵢ(x + i·d)\n\nand proves the *value* identities: Λ_k(c,…,c) = cᵏ, Λ_k(1,…,1) = 1, and that a zero slot annihilates the count. This child file supplies the one *structural* property that all of those constructions exist to be used through — **multilinearity**: Λ_k is additive and homogeneous in each of its k arguments separately.\n\nWhy multilinearity is the whole point: every density-increment and energy-increment argument in the Roth/Szemerédi circle expands an indicator `1_A` along a decomposition `1_A = δ·1 + (1_A − δ)` and feeds the pieces into Λ_k slot by slot. Linearity in each slot is exactly what lets you expand `Λ_k(1_A,…,1_A)` into a sum of 2ᵏ terms — a 'structured' main term δᵏ plus error terms each carrying at least one copy of the balanced function `g = 1_A − δ`. The generalized von Neumann inequality then bounds those error terms by the Gowers norm `‖g‖_{U^{k-1}}`. Without multilinearity, none of that bookkeeping is legal.\n\nThe import line `import Proofs.RothTheoremOQ03OQ01` pulls in `kAPCount` and `gowersNorm` from the parent; `open Finset BigOperators` brings the big-operator `∏`/`∑` notation and the `Finset` lemma namespace into scope. Everything is proved 0-axiom (only `propext`/`Classical.choice`/`Quot.sound`, no `native_decide`).",
@@ -24,7 +27,10 @@
   {
     "id": "ann-roth030101-variable",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01",
-    "range": { "startLine": 37, "endLine": 38 },
+    "range": {
+      "startLine": 31,
+      "endLine": 38
+    },
     "type": "technique",
     "title": "The Ambient Group ZMod N with NeZero N",
     "content": "`variable {N : ℕ} [NeZero N]` fixes the cyclic group `ZMod N` as the ambient space for the whole file. The `[NeZero N]` instance guarantees `N ≠ 0`, which makes `ZMod N` a genuine finite group of order `N` (`ZMod 0` is `ℤ`, the infinite case, which would break the *normalized* averages `E_{x,d}` that divide by `N²`). This matches the parent's setting: the counting operator Λ_k is a double expectation over `x, d ∈ ZMod N`, so the finiteness of the group is what makes the average well-defined and the proofs purely algebraic.\n\nMarking `N` implicit (`{N : ℕ}`) lets it be inferred from the function arguments `f : Fin k → ZMod N → ℂ`, keeping the theorem statements uncluttered.",
@@ -45,7 +51,10 @@
   {
     "id": "ann-roth030101-engine",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01",
-    "range": { "startLine": 39, "endLine": 51 },
+    "range": {
+      "startLine": 39,
+      "endLine": 51
+    },
     "type": "technique",
     "title": "prod_update_factor: Pulling One Slot Out of the k-AP Product",
     "content": "This is the factorization engine that powers everything else. The claim: replacing slot `j` of the tuple `f` by an arbitrary function `v` (written `Function.update f j v`) lets you pull the j-th factor `v(x + j·d)` clean out of the k-fold product, leaving the *untouched* factors `∏_{i ≠ j} fᵢ(x + i·d)` over `univ.erase j`.\n\nThe proof is three precise rewrites:\n1. `Finset.mul_prod_erase univ … (mem_univ j)` splits `∏_{i ∈ univ}` as `(j-th factor) · ∏_{i ∈ univ.erase j}` — the canonical 'isolate one factor of a finite product' lemma. Applied in reverse (`← `), it is the target shape.\n2. `congr 1` reduces the goal to matching the two pieces separately.\n3. `Function.update_self` evaluates the isolated factor: `(Function.update f j v) j = v`, so the j-th factor is exactly `v(x + j·d)`.\n4. `Function.update_of_ne` (under `Finset.prod_congr`, using `Finset.ne_of_mem_erase` to supply `i ≠ j`) shows that every surviving factor `i ∈ univ.erase j` is untouched: `(Function.update f j v) i = f i`.\n\nThe elegance is that this single lemma is *slot-generic* and *value-generic*: it works for any slot `j` and any replacement `v`, so both additivity (take `v = a+b`) and homogeneity (take `v = c•a`) reduce to it.",
@@ -68,7 +77,10 @@
   {
     "id": "ann-roth030101-add-slot",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01",
-    "range": { "startLine": 53, "endLine": 65 },
+    "range": {
+      "startLine": 53,
+      "endLine": 65
+    },
     "type": "insight",
     "title": "kAPCount_add_slot: Additivity in Each Argument",
     "content": "First half of multilinearity: Λ_k is additive in its j-th slot, `Λ_k(…, a+b, …) = Λ_k(…, a, …) + Λ_k(…, b, …)`. The proof is the engine plus careful distribution of the double average.\n\n- `unfold kAPCount` exposes the double sum `∑_x ∑_d (…)` (the normalized expectation E_{x,d}).\n- `simp only [prod_update_factor, Pi.add_apply, add_mul]`: the engine rewrites each inner product into `(update slot)(x+j·d) · P` where `P = ∏_{i≠j} fᵢ(x+i·d)`; `Pi.add_apply` evaluates `(a+b)(x+j·d) = a(x+j·d) + b(x+j·d)` (pointwise addition of functions); `add_mul` splits `(a(·)+b(·))·P = a(·)·P + b(·)·P`.\n- `rw [← mul_add]` then `congr 1` peels off the shared normalization scalar, reducing to the sum-level identity.\n- `Finset.sum_add_distrib` (applied twice — once for the outer `∑_x`, once inside for `∑_d` via `Finset.sum_congr`) distributes `∑ (uₓ + vₓ) = ∑ uₓ + ∑ vₓ` across both layers of the average.\n\nNote the proof never touches the other k−1 functions: they are sealed inside `P` by the engine, and additivity is purely the linearity of finite summation. This is why multilinearity holds in *every* slot simultaneously — the argument is symmetric in `j`.",
@@ -90,7 +102,10 @@
   {
     "id": "ann-roth030101-smul-slot",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01",
-    "range": { "startLine": 67, "endLine": 80 },
+    "range": {
+      "startLine": 67,
+      "endLine": 80
+    },
     "type": "insight",
     "title": "kAPCount_smul_slot: Homogeneity in Each Argument",
     "content": "Second half of multilinearity: Λ_k is homogeneous in its j-th slot, `Λ_k(…, c•a, …) = c · Λ_k(…, a, …)`. Together with additivity this gives full ℂ-linearity in each argument.\n\n- `unfold kAPCount` again exposes the double sum.\n- `simp only [prod_update_factor, Pi.smul_apply, smul_eq_mul]`: the engine isolates the j-th factor; `Pi.smul_apply` evaluates `(c • a)(x+j·d) = c • a(x+j·d)`; `smul_eq_mul` turns the scalar action on ℂ into ordinary multiplication `c · a(x+j·d)`.\n- `rw [mul_left_comm]` then `congr 1` arranges the scalar `c` to be pulled outside, reducing to a sum-level claim.\n- `Finset.mul_sum` (twice, threaded through `Finset.sum_congr` for the inner `∑_d`) pulls `c` out through both layers of the average: `∑ (c · uₓ) = c · ∑ uₓ`.\n- The innermost goal closes with `ring`, which clears the leftover associativity/commutativity of the ℂ multiplication `c · (a(x+j·d) · P)`.\n\nAs with additivity, the other functions are sealed in `P`, so homogeneity is just the fact that a constant scalar factors out of a finite sum.",
@@ -113,7 +128,10 @@
   {
     "id": "ann-roth030101-norm-nonneg",
     "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01",
-    "range": { "startLine": 82, "endLine": 88 },
+    "range": {
+      "startLine": 82,
+      "endLine": 88
+    },
     "type": "concept",
     "title": "gowersNorm_nonneg: The First Metric Property of the Gowers Norm",
     "content": "The Gowers Uˢ norm is nonnegative: `0 ≤ gowersNorm N s f`. The proof is a one-liner — `unfold gowersNorm; exact norm_nonneg _` — because the parent file *defines* `gowersNorm` as a genuine modulus `‖·‖` (a real-valued norm extracted from the Gowers inner product / the 2ˢ-fold box average). Nonnegativity is therefore definitional, inherited from Mathlib's `norm_nonneg`.\n\nWhy it matters: to use `‖g‖_{U^{k-1}}` as a *control* on the error terms in the generalized von Neumann inequality, one needs it to behave like a norm. Nonnegativity is the first of those metric axioms — a bound of the form `|error| ≤ ‖g‖_{U^{k-1}}` is only meaningful once the right-hand side is known to be ≥ 0. The remaining metric properties (positivity as a 2ˢ-fold average, the triangle inequality, and genuine seminorm structure) are flagged as open questions for follow-up entries.\n\nThe `[NeZero N]` instance reappears in the signature because `gowersNorm` averages over `ZMod N` and needs the finite-group normalization.",
