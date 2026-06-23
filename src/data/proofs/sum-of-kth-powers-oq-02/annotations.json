@@ -163,7 +163,7 @@
     "type": "concept",
     "title": "ζ(s) Antitone",
     "content": "The theorem `tsum_inv_rpow_antitone` proves ζ(s₂) ≤ ζ(s₁) whenever $1 < s_1 \\le s_2$. The proof compares the two summable series term-by-term via `hasSum_le`: for $n \\ge 1$ the bound $(n^{s_2})^{-1} \\le (n^{s_1})^{-1}$ is exactly `inv_rpow_antitone`, and the $n=0$ term vanishes on both sides since $0^{s} = 0$ (`Real.zero_rpow`). Summability on each side comes from `summable_inv_rpow`. Fully proved (no sorry).",
-    "mathContext": "$1 < s_1 \\leq s_2 \\Rightarrow \\zeta(s_2) \\leq \\zeta(s_1)$. **Sorry.**",
+    "mathContext": "$1 < s_1 \\leq s_2 \\Rightarrow \\zeta(s_2) \\leq \\zeta(s_1)$. **Proved.**",
     "significance": "key",
     "relatedConcepts": [
       "tsum comparison",
@@ -183,7 +183,7 @@
     "type": "concept",
     "title": "ζ(s) ≥ 1 for s > 1",
     "content": "The theorem `one_le_tsum_inv_rpow` proves $\\zeta(s) \\ge 1$ for $s > 1$. The proof isolates the $n=1$ term, which contributes $1^{-s} = 1$ (`Real.one_rpow`), and bounds the whole sum below by that single term via `le_hasSum`, using nonnegativity of every term (`positivity`). Fully proved (no sorry).",
-    "mathContext": "$\\zeta(s) \\geq 1$ for $s > 1$. **Sorry.**",
+    "mathContext": "$\\zeta(s) \\geq 1$ for $s > 1$. **Proved.**",
     "significance": "supporting",
     "relatedConcepts": [
       "lower bound",
@@ -203,7 +203,7 @@
     "type": "concept",
     "title": "ζ(s) ≤ π²/6 for s ≥ 2",
     "content": "The theorem `tsum_inv_rpow_le_zeta_two` proves $\\zeta(s) \\le \\pi^2/6$ for $s \\ge 2$. The calc chain first applies antitonicity (`tsum_inv_rpow_antitone`) to reduce from exponent $s$ to exponent $2$, then rewrites the real-power series $(n^2)^{-1}$ as the classical $1/n^2$ via `Real.rpow_natCast`, and finally invokes the Basel result `zeta_two_eq` to evaluate the bound as $\\pi^2/6$. Fully proved (no sorry).",
-    "mathContext": "$\\zeta(s) \\leq \\pi^2/6$ for $s \\geq 2$. **Sorry.**",
+    "mathContext": "$\\zeta(s) \\leq \\pi^2/6$ for $s \\geq 2$. **Proved.**",
     "significance": "supporting",
     "relatedConcepts": [
       "upper bound",
@@ -266,8 +266,8 @@
     },
     "type": "concept",
     "title": "Verification",
-    "content": "Type-checks all 14 results. 11 fully proved, 3 with sorry (tsum ordering).",
-    "mathContext": "14 results: 11 proved, 3 sorry.",
+    "content": "Type-checks all 14 results. All 14 fully proved (no sorry), including the three tsum ordering theorems.",
+    "mathContext": "14 results: all proved.",
     "significance": "supporting",
     "relatedConcepts": [
       "#check command"
