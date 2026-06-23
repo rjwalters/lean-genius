@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-pbfm-oq02-overview",
+    "proofId": "property-b-first-moment-oq-02",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Ramsey's Lower Bound as Property B in Disguise",
+    "content": "The docstring states the goal — Erdős' 1947 probabilistic diagonal Ramsey lower bound — and the structural insight that makes the proof a near-trivial reuse. The claim C(n,k)·2^(1−C(k,2)) < 1 ⟹ R(k,k) > n is shown to be literally an instance of the parent's Property B theorem applied to a derived hypergraph: the 'vertices' being 2-coloured are the EDGES of K_n, and each k-subset S contributes one 'hyperedge' — the bundle of its C(k,2) internal edges. Monochromatic-on-S is exactly the parent's Mono predicate, so the parent's count card_mono and first-moment principle exists_zero_of_sum_lt_card carry the whole argument. The only new content is |edgesWithin S| = C(|S|,2).",
+    "mathContext": "$\\binom{n}{k}\\,2^{\\,1-\\binom{k}{2}} < 1 \\;\\Longrightarrow\\; R(k,k) > n$; clearing the fraction (valid for $k\\ge 2$): $\\binom{n}{k}\\cdot 2 < 2^{\\binom{k}{2}}$.",
+    "significance": "context",
+    "relatedConcepts": ["probabilistic method", "Ramsey numbers", "Property B", "first moment method", "Erdős"],
+    "prerequisites": ["Ramsey theory", "combinatorics"]
+  },
+  {
+    "id": "ann-pbfm-oq02-edge-model",
+    "proofId": "property-b-first-moment-oq-02",
+    "range": { "startLine": 41, "endLine": 56 },
+    "type": "definition",
+    "title": "Modeling Edges as the Coloured Ground Set",
+    "content": "The reinterpretation that powers the reuse. Edge P := {e : Finset P // e.card = 2} models the edges of K_n as the 2-element subsets, an abbrev so it inherits a Fintype instance; an edge 2-colouring is then just a function Edge P → Bool. edgesWithin S filters the edges contained in a vertex set S — the edge bundle of the clique on S. MonoClique S c := Mono (edgesWithin S) c declares 'S is monochromatic' as exactly the parent file's Mono predicate on the derived vertex set Edge P, which is precisely what lets card_mono be reused verbatim. The Decidable instance is needed so MonoClique can be used inside Finset.filter.",
+    "mathContext": "$\\text{Edge}(P) := \\{e : \\text{Finset } P \\mid |e| = 2\\}, \\quad \\text{edgesWithin}(S) := \\{e \\mid e \\subseteq S\\}, \\quad \\text{MonoClique}(S,c) := \\text{Mono}(\\text{edgesWithin}(S), c).$",
+    "significance": "key",
+    "relatedConcepts": ["complete graph K_n", "subtype", "graph coloring", "decidability"],
+    "prerequisites": ["Finset", "Fintype instances", "subtypes in Lean"]
+  },
+  {
+    "id": "ann-pbfm-oq02-card-edges",
+    "proofId": "property-b-first-moment-oq-02",
+    "range": { "startLine": 62, "endLine": 77 },
+    "type": "theorem",
+    "title": "The One New Identity: a k-Clique Has C(k,2) Edges",
+    "content": "card_edgesWithin is the single genuinely new lemma. It proves |edgesWithin S| = C(|S|,2) without constructing any explicit pairing of vertices: Subtype.val carries edgesWithin S injectively onto S.powersetCard 2 (the 2-subsets of S), established by an ext + simp that matches 'edge ⊆ S' against 'a 2-subset of S'. Then card_image_of_injective (with Subtype.coe_injective) transfers the count, and Finset.card_powersetCard evaluates #(powersetCard 2 S) = C(|S|,2). Everything else in the file is imported from the parent.",
+    "mathContext": "$|\\text{edgesWithin}(S)| = \\binom{|S|}{2}$, via the bijection $\\text{edgesWithin}(S) \\xrightarrow{\\;\\sim\\;} \\binom{S}{2}$ by $e \\mapsto (e : \\text{Finset } P)$.",
+    "significance": "key",
+    "relatedConcepts": ["binomial coefficient", "powersetCard", "injective image", "Subtype.val"],
+    "prerequisites": ["Finset cardinality", "card_powersetCard"]
+  },
+  {
+    "id": "ann-pbfm-oq02-per-clique",
+    "proofId": "property-b-first-moment-oq-02",
+    "range": { "startLine": 94, "endLine": 115 },
+    "type": "technique",
+    "title": "Per-Clique Count: Reusing the Parent's card_mono",
+    "content": "After dispatching the k > n case vacuously (no k-cliques ⟹ any colouring works), the per-clique colour count is delegated entirely to the parent. hinner shows that for any k-clique S, the number of colourings monochromatic on S equals 2·2^(N − C(k,2)), where N = |Edge P|. The bundle edgesWithin S is nonempty because its size C(k,2) ≥ 1 when k ≥ 2 (Nat.choose_pos hk). Converting the indicator sum to a filter cardinality, card_mono (the parent's exact count for a t-edge bundle) followed by card_edgesWithin gives the value — no probabilistic reasoning is redone here.",
+    "mathContext": "$\\#\\{c : \\text{Mono}(\\text{edgesWithin}(S), c)\\} = 2\\cdot 2^{\\,N - \\binom{k}{2}}, \\quad N = |\\text{Edge}(P)| = \\binom{n}{2}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["card_mono", "monochromatic colorings", "indicator sums", "case analysis"],
+    "prerequisites": ["the parent Property B count", "Finset.card_filter"]
+  },
+  {
+    "id": "ann-pbfm-oq02-fubini",
+    "proofId": "property-b-first-moment-oq-02",
+    "range": { "startLine": 116, "endLine": 123 },
+    "type": "technique",
+    "title": "Linearity of Expectation via Fubini",
+    "content": "hsum computes the total number of (colouring, monochromatic k-clique) incidences by swapping the order of summation — the integer-counting form of linearity of expectation. Finset.card_filter rewrites each clique-count as a sum of indicators, Finset.sum_comm swaps the sum over colourings with the sum over k-cliques, and the per-clique value hinner is constant across cliques, so Finset.sum_const collapses it to #(powersetCard k univ)·(2·2^(N−C(k,2))). The number of k-cliques #(powersetCard k univ) = C(n,k) is supplied later by card_powersetCard.",
+    "mathContext": "$\\sum_{c} \\#\\{S : \\text{MonoClique}(S,c)\\} = \\sum_{S} \\#\\{c : \\text{MonoClique}(S,c)\\} = \\binom{n}{k}\\cdot 2\\cdot 2^{\\,N-\\binom{k}{2}}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["linearity of expectation", "Fubini", "sum_comm", "double counting"],
+    "prerequisites": ["interchanging finite sums", "Finset.sum_const"]
+  },
+  {
+    "id": "ann-pbfm-oq02-threshold",
+    "proofId": "property-b-first-moment-oq-02",
+    "range": { "startLine": 124, "endLine": 153 },
+    "type": "insight",
+    "title": "The Threshold and the First-Moment Step",
+    "content": "The crux: the incidence total is compared to the 2^N colourings in the sample space (hcard). The neat move is keeping N = |Edge P| abstract — the ambient edge count C(n,2) is never evaluated. Only C(k,2) ≤ N is needed (hle, from edgesWithin S₀ ⊆ univ), which lets 2^N factor as 2^(C(k,2))·2^(N−C(k,2)). Then the strict inequality hlt reduces exactly to the dimensionless hypothesis C(n,k)·2 < 2^(C(k,2)), proved by a calc with Nat.mul_lt_mul_right. Finally exists_zero_of_sum_lt_card (the parent's first-moment principle) extracts a colouring c whose monochromatic-clique filter is empty, so no k-subset is monochromatic under c.",
+    "mathContext": "$\\binom{n}{k}\\cdot 2\\cdot 2^{\\,N-\\binom{k}{2}} < 2^{\\binom{k}{2}}\\cdot 2^{\\,N-\\binom{k}{2}} = 2^N \\iff \\binom{n}{k}\\cdot 2 < 2^{\\binom{k}{2}}.$",
+    "significance": "key",
+    "relatedConcepts": ["first moment method", "pigeonhole", "exists_zero_of_sum_lt_card", "exponent arithmetic"],
+    "prerequisites": ["the first moment principle", "Nat exponent lemmas"]
+  },
+  {
+    "id": "ann-pbfm-oq02-corollary",
+    "proofId": "property-b-first-moment-oq-02",
+    "range": { "startLine": 155, "endLine": 167 },
+    "type": "theorem",
+    "title": "Corollary: R(k,k) > n as a Ramsey Witness",
+    "content": "exists_ramsey_coloring restates the main result in witness form: under the same hypothesis there is an edge 2-colouring c of K_n such that every k-subset S (with |S| = k) fails to be monochromatic. It is a one-line repackaging of ramsey_lower_bound, converting the membership condition S ∈ powersetCard k univ into the cardinality condition S.card = k via mem_powersetCard. This is the self-contained sense in which R(k,k) > n: some colouring avoids all monochromatic k-cliques.",
+    "mathContext": "$\\exists c : \\text{Edge}(P) \\to \\text{Bool},\\ \\forall S,\\ |S| = k \\Rightarrow \\neg\\,\\text{MonoClique}(S,c) \\;\\Rightarrow\\; R(k,k) > n.$",
+    "significance": "supporting",
+    "relatedConcepts": ["Ramsey witness", "diagonal Ramsey number", "mem_powersetCard"],
+    "prerequisites": ["Ramsey numbers"]
+  }
+]
