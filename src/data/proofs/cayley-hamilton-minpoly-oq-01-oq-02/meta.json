@@ -17,11 +17,11 @@
       "nilpotent",
       "perfect-field"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-06-21",
     "axiomCount": 0,
-    "assumptions": "None. The results are fully machine-checked over an arbitrary perfect field K and a finite-dimensional K-vector space V; #print axioms reports only propext, Classical.choice, Quot.sound.",
+    "assumptions": "None beyond Mathlib. The results are fully machine-checked over an arbitrary perfect field K and a finite-dimensional K-vector space V; #print axioms reports only propext, Classical.choice, Quot.sound. The existence half (the decomposition itself) is obtained via Mathlib's Newton-iteration theorem Module.End.exists_isNilpotent_isSemisimple, and uniqueness is assembled from Mathlib's IsSemisimple.sub_of_commute and eq_zero_of_isNilpotent_isSemisimple; this file contributes the explicit polynomial-in-f witnesses, the commutation lemmas, and the packaged ExistsUnique statement (which Mathlib leaves as a TODO).",
     "lineCount": 129,
     "theoremCount": 5,
     "definitionCount": 0,
