@@ -73,6 +73,20 @@
       "mathContext": "The weight f k = k has constant forward differences f(k+1)−f k = 1, so smul_eq_mul + push_cast + ring reduce the Abel transform to a sum of geometric partial sums."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "sum_range_mul_geom",
+      "type": "headline",
+      "description": "Closed form for the finite arithmetico-geometric sum: over any field, for r ≠ 1, ∑_{k<n} k·rᵏ = (r − n·rⁿ + (n−1)·rⁿ⁺¹)/(r−1)². Proved by induction with field_simp + ring on the step.",
+      "leanType": "∀ {K : Type*} [Field K] {r : K}, r ≠ 1 → ∀ (n : ℕ), ∑ k ∈ Finset.range n, (k : K) * r ^ k = (r - n * r ^ n + (n - 1) * r ^ (n + 1)) / (r - 1) ^ 2"
+    },
+    {
+      "name": "sum_range_mul_geom_eq_byParts",
+      "type": "core",
+      "description": "The same sum re-derived via Abel's summation by parts: ∑_{k<n} k·rᵏ = (n−1)·Gₙ − ∑_{i<n−1} G_{i+1} with Gₘ = ∑_{j<m} rʲ. The constant forward differences of the weight collapse the correction to a sum of geometric partial sums.",
+      "leanType": "∀ {K : Type*} [Field K] (r : K) (n : ℕ), ∑ k ∈ Finset.range n, (k : K) * r ^ k = (↑(n - 1) : K) * (∑ i ∈ Finset.range n, r ^ i) - ∑ i ∈ Finset.range (n - 1), (∑ j ∈ Finset.range (i + 1), r ^ j)"
+    }
+  ],
   "conclusion": {
     "summary": "This entry supplies the exact finite arithmetico-geometric identity ∑_{k<n} k·rᵏ = (r − n·rⁿ + (n−1)·rⁿ⁺¹)/(r−1)² over any field, both by induction and via Abel's summation by parts — the finite refinement underpinning the gallery's infinite ∑ k·rᵏ = r/(1−r)².",
     "implications": "The closed form is the workhorse of discrete calculus and generating-function manipulation; the summation-by-parts derivation exhibits the discrete analogue of integration by parts as the structural source of the formula.",
