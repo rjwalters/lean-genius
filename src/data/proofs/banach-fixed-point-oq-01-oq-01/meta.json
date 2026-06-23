@@ -96,8 +96,9 @@
   ],
   "crossReferences": [
     {
-      "id": "banach-fixed-point-oq-01",
-      "reason": "The parent entry: the Banach contraction mapping theorem (existence and uniqueness of a fixed point for a contraction on a complete space), of which Picard–Lindelöf is the canonical application."
+      "targetId": "banach-fixed-point-oq-01",
+      "relationship": "extends",
+      "description": "The parent entry: the Banach contraction mapping theorem (existence and uniqueness of a fixed point for a contraction on a complete space), of which Picard–Lindelöf is the canonical application. This entry packages that application as clean local existence/uniqueness theorems for y' = f(y)."
     }
   ],
   "conclusion": {
@@ -109,6 +110,48 @@
       "Quantify the interval of existence ε in terms of the Lipschitz constant and the bound on f, recovering the classical estimate ε ≥ min(a/L, 1/K)."
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module header and context",
+      "startLine": 3,
+      "endLine": 29,
+      "summary": "Frames Picard–Lindelöf as the prototypical contraction-mapping application: the IVP y' = f(y), y(t₀) = x₀ recast as the fixed point of the Picard integral operator (P y)(t) = x₀ + ∫ f(y), and notes that Mathlib does the contraction internally (IsPicardLindelof, FunSpace, Grönwall) without exposing a clean autonomous statement.",
+      "mathContext": "$(Py)(t) = x_0 + \\int_{t_0}^t f(y(s))\\,ds$; $y = Py$."
+    },
+    {
+      "id": "setup",
+      "title": "Setup: autonomous field on a normed space",
+      "startLine": 31,
+      "endLine": 35,
+      "summary": "Opens Set and Metric, declares namespace PicardLindelofOQ01, and fixes a real normed space E (completeness added per-theorem) carrying the autonomous vector field f : E → E.",
+      "mathContext": "$E$ a real normed space, $f : E \\to E$ time-independent."
+    },
+    {
+      "id": "existence",
+      "title": "Local existence (exists_local_solution)",
+      "startLine": 37,
+      "endLine": 53,
+      "summary": "exists_local_solution: a C¹ field near x₀ gives a solution α on (t₀-ε, t₀+ε) with α t₀ = x₀, by delegating to Mathlib's contraction-based local-flow theorem and instantiating the curve family at the centre x₀ (in the closed ball since r > 0).",
+      "mathContext": "$f \\in C^1$ near $x_0 \\Rightarrow \\exists\\,\\varepsilon>0,\\ \\alpha,\\ \\alpha(t_0)=x_0,\\ \\alpha'=f\\circ\\alpha$ on $(t_0-\\varepsilon,t_0+\\varepsilon)$."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Local uniqueness (solution_unique)",
+      "startLine": 55,
+      "endLine": 71,
+      "summary": "solution_unique: for a Lipschitz field, two solutions on (a,b) agreeing at an interior point coincide on (a,b), via Grönwall's ODE_solution_unique_of_mem_Ioo specialized to the time-independent field v t := f and set s t := univ (Lipschitz-on-univ from LipschitzWith.lipschitzOnWith).",
+      "mathContext": "$f$ Lipschitz, $\\alpha(t_0)=\\beta(t_0) \\Rightarrow \\alpha = \\beta$ on $(a,b)$."
+    },
+    {
+      "id": "combined",
+      "title": "Combined existence and uniqueness (exists_unique_local_solution)",
+      "startLine": 73,
+      "endLine": 89,
+      "summary": "exists_unique_local_solution: a C¹ and globally Lipschitz field admits a local solution unique among all solutions on the interval with the same initial value — built by taking the existence solution, noting t₀ ∈ (t₀-ε, t₀+ε), and feeding competitors into solution_unique.",
+      "mathContext": "$f \\in C^1$ near $x_0$ and Lipschitz $\\Rightarrow \\exists!$ local solution of $y'=f(y),\\,y(t_0)=x_0$."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
