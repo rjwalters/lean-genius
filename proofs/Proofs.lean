@@ -3503,6 +3503,7 @@ import Proofs.SumOfKthPowersOQ03
 import Proofs.SumOfKthPowersOQ04
 import Proofs.SumOfKthPowersOQ04Aristotle
 import Proofs.SumOfKthPowersOQ05
+import Proofs.SumOfKthPowersOQ05OQ01
 import Proofs.SumOfOddsStatementOnly
 import Proofs.SummationByPartsOQ01
 import Proofs.SummationByPartsOQ01OQ01OQ01

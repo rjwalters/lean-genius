@@ -1,0 +1,182 @@
+{
+  "id": "sum-of-kth-powers-oq-05-oq-01",
+  "title": "Power Sums mod p: the Natural-Number Congruence ∑_{i<p} iᵏ ≡ −1 iff (p−1)∣k",
+  "slug": "sum-of-kth-powers-oq-05-oq-01",
+  "description": "Carries the parent's ZMod p power-sum dichotomy down to an honest natural-number congruence: ∑_{i=0}^{p-1} iᵏ ≡ (if k ≠ 0 and (p−1)∣k then p−1 else 0) (mod p). The bridge is a reindexing of the complete field sum by the residues 0,1,…,p−1 (a bijection range p ≃ ZMod p via Nat.cast / ZMod.val) composed with the Nat.cast/ModEq correspondence (↑a = ↑b in ZMod p) ↔ a ≡ b [MOD p]; the field's −1 becomes the residue p−1. Yields the exact divisibility criterion p ∣ ∑_{i<p} iᵏ ⟺ ¬(k ≠ 0 ∧ (p−1)∣k), the odd-prime residue sum 0+1+⋯+(p−1) ≡ 0 (mod p), and an integer form ∑_{i<p} (i:ℤ)ᵏ ≡ −1 (mod p) recovering FiniteField.sum_pow_units' −1 directly. This is the elementary form of the dichotomy actually used to prove power-sum divisibilities. Verified, 0 axioms.",
+  "meta": {
+    "author": "classical (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fermat%27s_little_theorem",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "power-sums",
+      "modular-arithmetic",
+      "zmod",
+      "congruences",
+      "fermat-little-theorem",
+      "divisibility",
+      "finite-fields",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/SumOfKthPowersOQ05OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.natCast_eq_natCast_iff",
+        "description": "(↑a = ↑b in ZMod c) ↔ a ≡ b [MOD c] — the cast/ModEq correspondence that turns the ZMod p equation into a natural-number congruence",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset.sum_bij'",
+        "description": "reindexes the complete field sum ∑_{x : ZMod p} by the residues range p via the bijection x ↦ ZMod.val x with inverse Nat.cast",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Defs"
+      },
+      {
+        "theorem": "ZMod.val_natCast_of_lt / ZMod.natCast_zmod_val / ZMod.val_lt",
+        "description": "the two inverse identities making range p ≃ ZMod p a bijection: ((↑i).val = i for i < p) and (↑(x.val) = x), with val landing in range p",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Int.natCast_modEq_iff",
+        "description": "(↑a ≡ ↑b [ZMOD n]) ↔ a ≡ b [MOD n] — lifts the natural-number congruence to the integer form ∑ (i:ℤ)ᵏ ≡ −1",
+        "module": "Mathlib.Data.Int.ModEq"
+      },
+      {
+        "theorem": "Nat.modEq_zero_iff_dvd",
+        "description": "a ≡ 0 [MOD n] ↔ n ∣ a — converts the congruence into the divisibility criterion for p ∣ ∑_{i<p} iᵏ",
+        "module": "Mathlib.Data.Nat.ModEq"
+      }
+    ],
+    "originalContributions": [
+      "sum_range_pow_cast: the reindexing bridge ((∑_{i<p} iᵏ : ℕ) : ZMod p) = ∑_{x : ZMod p} xᵏ, identifying the residues range p with ZMod p via Finset.sum_bij' (ZMod.val ↔ Nat.cast)",
+      "sum_range_pow_modEq: the headline ℕ congruence ∑_{i<p} iᵏ ≡ (if k≠0 ∧ (p−1)∣k then p−1 else 0) (mod p), the natural-number face of the parent's ZMod p dichotomy",
+      "sum_range_pow_modEq_neg_one: the −1 face, ∑_{i<p} iᵏ ≡ p−1 (mod p) when k ≠ 0 and (p−1)∣k",
+      "dvd_sum_range_pow_iff: the exact divisibility criterion p ∣ ∑_{i<p} iᵏ ⟺ ¬(k ≠ 0 ∧ (p−1)∣k)",
+      "sum_range_self_modEq_zero: 0+1+⋯+(p−1) ≡ 0 (mod p) for every odd prime (the k=1 instance)",
+      "sum_range_pow_intModEq_neg_one: the integer form ∑_{i<p} (i:ℤ)ᵏ ≡ −1 (mod p), recovering the −1 of FiniteField.sum_pow_units without rewriting it as p−1",
+      "Concrete decide-checked instances over ZMod 5 and ZMod 7 (0-axiom, no native_decide)"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 141,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only propext, Classical.choice, Quot.sound — the standard foundational axioms — appear in #print axioms). Concrete instances use kernel decide (not native_decide), so no Lean.ofReduceBool dependency. Builds on the parent entry SumOfKthPowersOQ05.sum_pow_zmod.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The mod-p evaluation of power sums is the arithmetic heart of Fermat's little theorem and the von Staudt–Clausen theorem. The parent entry (sum-of-kth-powers-oq-05) proved the dichotomy in the ring ZMod p: ∑_{x∈ZMod p} xᵏ = −1 when k ≠ 0 and (p−1)∣k, else 0. But the version a number theorist actually writes — and the version used to prove statements like 'p divides the sum of the k-th powers of the first p integers' — is a congruence between honest natural numbers: ∑_{i=0}^{p-1} iᵏ ≡ … (mod p). Translating between a ring equation in ZMod p and a ℕ/ℤ congruence is routine but not free: it requires reindexing the sum over the abstract field by the concrete residues 0,1,…,p−1 and invoking the Nat.cast/ModEq dictionary. This entry performs exactly that descent, and reads off the divisibility criterion, the classical residue-sum identity, and an integer form.",
+    "problemStatement": "**Open Question (sum-of-kth-powers-oq-05, follow-up #1)**: Derive the Nat-congruence corollary ∑_{i<p} iᵏ ≡ (if k≠0 ∧ (p−1)∣k then p−1 else 0) (mod p) by casting the parent's ZMod p dichotomy back to ℕ via Nat.ModEq.\n\n**Result**: sum_range_pow_modEq — the natural-number congruence — together with the −1 face, the divisibility criterion dvd_sum_range_pow_iff, the odd-prime residue sum, and the integer form.",
+    "text": "For a prime p, the sum of the k-th powers of the residues 0,1,…,p−1 is congruent to p−1 (equivalently −1) modulo p exactly when k ≠ 0 and (p−1) divides k, and to 0 in every other case. Hence p divides ∑_{i<p} iᵏ precisely when that condition fails.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. `sum_range_pow_cast` is the bridge: after `push_cast` the goal is ∑_{i<p} (↑i)ᵏ = ∑_{x : ZMod p} xᵏ, proved by `Finset.sum_bij'` with the forward map x ↦ ZMod.val x (landing in range p by `ZMod.val_lt`) and inverse i ↦ (i : ZMod p); the two round-trip identities are `ZMod.natCast_zmod_val` and `ZMod.val_natCast_of_lt`.\n2. `sum_range_pow_modEq` rewrites the target congruence through `ZMod.natCast_eq_natCast_iff` (cast both sides to ZMod p), applies the bridge and the parent's `SumOfKthPowersOQ05.sum_pow_zmod`, then `split_ifs`: in the divisible case the residue p−1 casts to −1 via `Nat.cast_sub` and `ZMod.natCast_self`.\n3. `sum_range_pow_modEq_neg_one` is the `if_pos` specialization; `dvd_sum_range_pow_iff` turns the congruence into divisibility via `Nat.modEq_zero_iff_dvd`, using that p ∤ (p−1) to rule out the divisible case.\n4. `sum_range_self_modEq_zero` instantiates k = 1 (since (p−1)∤1 once p > 2).\n5. `sum_range_pow_intModEq_neg_one` lifts the ℕ statement to ℤ with `Int.natCast_modEq_iff` and identifies ↑(p−1) with −1 via `Int.modEq_iff_dvd`.",
+    "keyInsights": [
+      "**Ring equation → arithmetic congruence.** The parent lives in the ring ZMod p; this entry produces the ℕ statement ∑_{i<p} iᵏ ≡ … (mod p) used in elementary number theory. The translation is exactly the Nat.cast/ModEq correspondence `(↑a = ↑b) ↔ a ≡ b [MOD p]`.",
+      "**Residues are a bijective reindex of the field.** Summing over the abstract type ZMod p equals summing over the concrete residues range p; the bijection is Nat.cast with inverse ZMod.val, packaged by Finset.sum_bij'. This is the only non-formal ingredient.",
+      "**−1 becomes p−1.** In ℕ the field value −1 is the residue p−1; the cast `((p−1 : ℕ) : ZMod p) = −1` (via Nat.cast_sub and ZMod.natCast_self) is what makes the dichotomy land on a genuine natural number.",
+      "**A clean divisibility test.** p ∣ ∑_{i<p} iᵏ holds iff it is NOT the case that k ≠ 0 and (p−1)∣k — i.e. the low power sums (and the empty-exponent case) all vanish mod p, while the (p−1)∣k sums are ≡ −1."
+    ],
+    "prerequisites": [
+      "The parent dichotomy SumOfKthPowersOQ05.sum_pow_zmod over ZMod p",
+      "The Nat.cast/ModEq correspondence ZMod.natCast_eq_natCast_iff and Int.natCast_modEq_iff",
+      "Finset reindexing via sum_bij' and the ZMod.val ↔ Nat.cast bijection on range p"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring framing the descent from the ZMod p dichotomy to a natural-number congruence, the Mathlib and parent imports, and the namespace.",
+      "mathContext": "$\\sum_{i=0}^{p-1} i^k \\pmod p$ from $\\sum_{x \\in \\mathbb{Z}/p} x^k$."
+    },
+    {
+      "id": "bridge",
+      "title": "Reindexing Bridge",
+      "startLine": 41,
+      "endLine": 54,
+      "summary": "sum_range_pow_cast: the cast of the ℕ power sum over range p equals the complete field sum over ZMod p, via Finset.sum_bij' with the ZMod.val ↔ Nat.cast bijection.",
+      "mathContext": "$\\left(\\textstyle\\sum_{i<p} i^k : \\mathbb{Z}/p\\right) = \\sum_{x : \\mathbb{Z}/p} x^k$"
+    },
+    {
+      "id": "main",
+      "title": "The Natural-Number Congruence",
+      "startLine": 56,
+      "endLine": 75,
+      "summary": "sum_range_pow_modEq (the headline ℕ dichotomy via natCast_eq_natCast_iff + the parent sum_pow_zmod) and sum_range_pow_modEq_neg_one (the −1 / p−1 face).",
+      "mathContext": "$\\sum_{i<p} i^k \\equiv \\begin{cases} p-1 & k \\neq 0,\\ (p-1)\\mid k \\\\ 0 & \\text{else}\\end{cases} \\pmod p$"
+    },
+    {
+      "id": "consequences",
+      "title": "Divisibility, Residue Sum, and Integer Form",
+      "startLine": 77,
+      "endLine": 122,
+      "summary": "dvd_sum_range_pow_iff (p ∣ ∑ ⟺ ¬(k≠0 ∧ (p−1)∣k)), sum_range_self_modEq_zero (residues sum to 0 for odd primes), and sum_range_pow_intModEq_neg_one (the integer −1 form).",
+      "mathContext": "$p \\mid \\sum_{i<p} i^k \\iff \\neg(k \\neq 0 \\wedge (p-1)\\mid k)$; $\\sum_{i<p} i \\equiv 0 \\pmod p$."
+    },
+    {
+      "id": "instances",
+      "title": "Concrete Instances",
+      "startLine": 124,
+      "endLine": 141,
+      "summary": "decide-verified instances over ZMod 5 and ZMod 7, including both the congruence form and the divisibility criterion (0-axiom, no native_decide).",
+      "mathContext": "$\\sum_{i<5} i^4 \\equiv 4 \\pmod 5$; $5 \\mid \\sum_{i<5} i^2$; $5 \\nmid \\sum_{i<5} i^4$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "sum-of-kth-powers-oq-05",
+      "relationship": "extends",
+      "description": "Parent entry: proves the ZMod p dichotomy ∑_{x∈ZMod p} xᵏ = −1 iff (p−1)∣k. This follow-up casts that ring equation down to the natural-number congruence ∑_{i<p} iᵏ ≡ … (mod p), exactly the parent's first listed open question."
+    },
+    {
+      "targetId": "sum-of-kth-powers-oq-04",
+      "relationship": "related",
+      "description": "OQ-04 gives Euler–Maclaurin asymptotics for integer power sums; this entry develops the orthogonal modular face as an explicit ℕ/ℤ congruence and divisibility criterion."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) descent of the parent's ZMod p power-sum dichotomy to a natural-number congruence: ∑_{i<p} iᵏ ≡ (if k≠0 ∧ (p−1)∣k then p−1 else 0) (mod p), with the −1 face, the exact divisibility criterion, the odd-prime residue sum, and an integer form.",
+    "implications": "Provides the elementary, computation-ready form of the mod-p power-sum dichotomy — a congruence between natural numbers rather than an equation in the ring ZMod p — which is the version used to establish power-sum divisibilities and Bernoulli-number p-integrality.",
+    "openQuestions": [
+      "Use sum_range_pow_modEq to formalize the von Staudt–Clausen congruence on the p-integral part of Bernoulli numbers B_k for (p−1)∣k.",
+      "Generalize the reindexing bridge to ∑_{i<n} iᵏ (mod n) for composite n, where the units no longer fill all nonzero residues and the dichotomy is replaced by a CRT/totient-indexed sum."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.SumOfKthPowersOQ05"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "SumOfKthPowersOQ05OQ01",
+    "lineCount": 141,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/SumOfKthPowersOQ05OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Ireland, Kenneth and Rosen, Michael",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Springer Graduate Texts in Mathematics 84, 2nd ed.",
+      "note": "Chapter 4: sums of powers of residues mod p and their role in Bernoulli number congruences"
+    },
+    {
+      "authors": "Hardy, G. H. and Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th ed.",
+      "note": "Power sums and congruences modulo a prime; Fermat's little theorem"
+    }
+  ],
+  "sorries": 0
+}
