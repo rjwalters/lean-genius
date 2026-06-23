@@ -1,0 +1,156 @@
+{
+  "id": "cauchy-schwarz-oq-01-oq-04-oq-04",
+  "title": "The Converse of Parseval: Completeness from the Equality Case",
+  "slug": "cauchy-schwarz-oq-01-oq-04-oq-04",
+  "description": "Proves the converse of Parseval's identity: an orthonormal family in a Hilbert space satisfies ∑' i, |⟨vᵢ,x⟩|² = ‖x‖² for every x if and only if it is the underlying family of a Hilbert basis. Parseval forces the orthogonal complement of the span to vanish, completing the family to a Hilbert basis without enlargement.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Parseval%27s_identity",
+    "date": "Classical (Parseval 1799, Hilbert 1904-1910); formalized 2026",
+    "status": "verified",
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/CauchySchwarzOQ01OQ04OQ04.lean",
+    "tags": [
+      "functional-analysis",
+      "hilbert-spaces",
+      "inner-product-spaces",
+      "parseval-identity",
+      "orthonormal-systems",
+      "hilbert-basis",
+      "completeness"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "None beyond Lean's standard foundational axioms (propext, Classical.choice, Quot.sound; verified via #print axioms). E is a complete inner product space over an RCLike field.",
+    "lineCount": 156,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "originalContributions": [
+      "orthogonal_eq_bot_of_parseval: Parseval-for-all-x ⟹ (span 𝕜 (range v))ᗮ = ⊥. The analytic core, using neither completeness nor orthonormality — if every Fourier coefficient ⟪vᵢ,y⟫ vanishes then ‖y‖² = ∑' 0 = 0",
+      "hilbertBasisOfParseval: constructs a HilbertBasis from an orthonormal family satisfying Parseval, via HilbertBasis.mkOfOrthogonalEqBot (no enlargement)",
+      "coe_hilbertBasisOfParseval: the constructed Hilbert basis has v itself as its underlying family",
+      "span_topologicalClosure_eq_top_of_parseval: totality — Parseval ⟹ the span of v is dense (uses orthogonal_orthogonal_eq_closure and bot_orthogonal_eq_top)",
+      "parseval_of_hilbertBasis: the forward Parseval identity ∑' i, |⟨bᵢ,x⟩|² = ‖x‖² via the ℓ² isometry b.repr (reproduced so the file is self-contained)",
+      "parseval_iff_isHilbertBasis: the headline equivalence — Parseval-for-all-x ⟺ ∃ HilbertBasis b, ⇑b = v, characterizing complete orthonormal systems"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Marc-Antoine Parseval noted in 1799 that for a 'complete' trigonometric system the sum of squared Fourier coefficients equals the squared norm, $\\sum_n (a_n^2 + b_n^2) = \\frac{1}{\\pi}\\int_0^{2\\pi} f^2$. Bessel (1828) supplied the corresponding inequality for arbitrary orthonormal systems. The decisive question — exactly which orthonormal systems achieve equality — was answered by the abstract theory of Hilbert spaces developed by David Hilbert (1904-1910) and crystallized in the Riesz-Fischer theorem (1907): equality in Bessel's inequality for every vector is precisely the condition that the orthonormal system be *complete*, i.e. a Hilbert basis. The parent entry formalized Bessel's inequality and the forward Parseval identity (a Hilbert basis satisfies Parseval). This entry closes the loop with the converse: Parseval for every vector forces completeness.",
+    "problemStatement": "If an orthonormal family v in a Hilbert space satisfies ∑' i, ‖⟪vᵢ,x⟫‖² = ‖x‖² for every x, must v be (the underlying family of) a Hilbert basis?",
+    "text": "YES, and the equivalence is sharp. The key is that the Parseval identity, applied to a vector y orthogonal to the whole family, gives ‖y‖² = ∑' i, ‖⟪vᵢ,y⟫‖² = ∑' i, 0 = 0, so y = 0. Hence the orthogonal complement of span(v) is trivial, and Mathlib's HilbertBasis.mkOfOrthogonalEqBot packages v as a Hilbert basis whose underlying family is v itself — no vectors need to be added. The forward direction is the parent's Parseval identity, reproduced here through the ℓ² isometry b.repr so the file stands alone.",
+    "proofStrategy": "Part I (orthogonal_eq_bot_of_parseval) is the analytic core: by Submodule.mem_orthogonal each basis vector lies in the span, so membership in (span v)ᗮ kills every Fourier coefficient; the Parseval sum then collapses to 0 and pow_eq_zero_iff/norm_eq_zero force the vector to be 0. Part II builds the Hilbert basis via mkOfOrthogonalEqBot and records that its coercion is v. Part III derives density of the span from orthogonal_orthogonal_eq_closure and bot_orthogonal_eq_top. Part IV reproduces the forward Parseval identity via lp.norm_rpow_eq_tsum and b.repr.norm_map, and assembles the headline iff.",
+    "keyInsights": [
+      "Parseval for every x is equivalent to completeness of the orthonormal system",
+      "The converse needs only Parseval: triviality of (span v)ᗮ follows without re-invoking orthonormality — a vector orthogonal to all vᵢ has zero Parseval energy",
+      "Orthonormality re-enters only to *package* the total family as a genuine Hilbert basis (mkOfOrthogonalEqBot)",
+      "In a complete space, trivial orthogonal complement equals density of the span (orthogonal_orthogonal_eq_closure)",
+      "The completion adds no vectors: the resulting Hilbert basis has v itself as its underlying family"
+    ],
+    "prerequisites": [
+      "Inner product spaces, orthonormality, and orthogonal complements",
+      "Hilbert bases (complete orthonormal systems) and the ℓ² representation isometry",
+      "Bessel's inequality and the forward Parseval identity (parent entry)",
+      "Density / topological closure of submodules in a Hilbert space"
+    ]
+  },
+  "conclusion": {
+    "summary": "The converse of Parseval's identity is formalized in Lean 4: an orthonormal family satisfies Parseval for every vector if and only if it is the underlying family of a Hilbert basis. The substantive direction shows that Parseval forces the orthogonal complement of the span to vanish, so the family completes to a Hilbert basis without enlargement. This answers the parent entry's fourth open question affirmatively and sharpens it: the totality conclusion uses only Parseval, not orthonormality.",
+    "implications": "**Completes the Bessel/Parseval circle**: The parent entry proved Bessel's inequality and that a Hilbert basis satisfies Parseval; this entry supplies the converse, giving the exact characterization of complete orthonormal systems. Together they say: for an orthonormal family, equality in Bessel's inequality for every vector ⟺ completeness.\n\n**Density from energy**: The sharpening — that triviality of the orthogonal complement (hence density of the span) follows from Parseval alone — isolates exactly where orthonormality is needed. It is needed only to name the total family as a Hilbert basis, not to prove totality.\n\n**Fourier analysis**: This is the abstract form of the statement that a complete orthonormal system reconstructs every vector from its Fourier coefficients. Equality in Parseval is the 'no energy lost' condition underlying convergence of Fourier expansions.",
+    "openQuestions": [
+      "Promote the equivalence to the single-vector level: characterize, for a fixed x, equality ∑' i, ‖⟪vᵢ,x⟫‖² = ‖x‖² as membership of x in the closure of span(v) (the per-vector Bessel equality case).",
+      "Derive the Riesz-Fischer isometry as a corollary: combine this completeness characterization with the ℓ² representation to exhibit E ≃ₗᵢ ℓ²(ι,𝕜) explicitly when Parseval holds."
+    ]
+  },
+  "leanFile": {
+    "namespace": "CauchySchwarzOQ01OQ04OQ04",
+    "lineCount": 156,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/CauchySchwarzOQ01OQ04OQ04.lean",
+    "sorries": 0,
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.l2Space",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "scoped InnerProductSpace ENNReal"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-oq-01-oq-04",
+      "relationship": "answers",
+      "description": "Answers the parent's fourth open question: the converse of Parseval, characterizing complete orthonormal systems as exactly those satisfying Parseval for every vector."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01",
+      "relationship": "extends",
+      "description": "Continues the Cauchy-Schwarz / orthonormal-systems chain into the completeness characterization of Hilbert bases."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "foundational",
+      "description": "Root Cauchy-Schwarz proof; Bessel's inequality and its Parseval equality case are the Hilbert-space generalization."
+    }
+  ],
+  "references": [
+    {
+      "text": "Parseval, M.-A. (1806). Mémoire sur les séries et sur l'intégration complète d'une équation aux différences partielles linéaires du second ordre, à coefficiens constans.",
+      "url": "https://en.wikipedia.org/wiki/Parseval%27s_identity"
+    },
+    {
+      "text": "Riesz, F. (1907). Sur les systèmes orthogonaux de fonctions. C. R. Acad. Sci. Paris 144, 615-619.",
+      "url": "https://en.wikipedia.org/wiki/Riesz%E2%80%93Fischer_theorem"
+    },
+    {
+      "text": "Kreyszig, E. (1978). Introductory Functional Analysis with Applications. Wiley. Ch. 3.5-3.6 on Bessel, Parseval, and total orthonormal sets.",
+      "url": "https://en.wikipedia.org/wiki/Hilbert_space"
+    }
+  ],
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 70,
+      "summary": "Imports Mathlib's l2Space (HilbertBasis, mkOfOrthogonalEqBot) and Tactic. Docstring frames the open question — the converse of Parseval — and records the sharpening that totality needs only Parseval. Declares the inner product space E over an RCLike field 𝕜 and the family v : ι → E.",
+      "mathContext": "$E$ a complete inner product space over $\\mathbb{k}$ ($\\mathbb{R}$ or $\\mathbb{C}$); $v : \\iota \\to E$ orthonormal; goal: characterize when $v$ is a Hilbert basis."
+    },
+    {
+      "id": "analytic-core",
+      "title": "Part I: Parseval Forces a Trivial Orthogonal Complement",
+      "startLine": 71,
+      "endLine": 100,
+      "summary": "Proves orthogonal_eq_bot_of_parseval: if Parseval holds for every x then (span 𝕜 (range v))ᗮ = ⊥. A vector y in the orthogonal complement has every Fourier coefficient ⟪vᵢ,y⟫ = 0 (Submodule.mem_orthogonal), so the Parseval sum is 0 and ‖y‖ = 0. Uses neither completeness nor orthonormality.",
+      "mathContext": "$y \\perp \\operatorname{span}(v) \\Rightarrow \\|y\\|^2 = \\sum_i \\|\\langle v_i, y\\rangle\\|^2 = 0 \\Rightarrow y = 0$."
+    },
+    {
+      "id": "construction",
+      "title": "Part II: Completing to a Hilbert Basis",
+      "startLine": 101,
+      "endLine": 122,
+      "summary": "Defines hilbertBasisOfParseval via HilbertBasis.mkOfOrthogonalEqBot applied to the trivial orthogonal complement, and proves coe_hilbertBasisOfParseval: the constructed basis has v as its underlying family. Requires CompleteSpace E.",
+      "mathContext": "$(\\operatorname{span} v)^\\perp = \\bot \\Rightarrow v$ is a HilbertBasis with $\\lceil b \\rceil = v$."
+    },
+    {
+      "id": "totality",
+      "title": "Part III: Totality (Density of the Span)",
+      "startLine": 123,
+      "endLine": 134,
+      "summary": "Proves span_topologicalClosure_eq_top_of_parseval: Parseval makes the span dense. Uses Submodule.orthogonal_orthogonal_eq_closure and bot_orthogonal_eq_top.",
+      "mathContext": "$\\overline{\\operatorname{span}(v)} = (\\operatorname{span} v)^{\\perp\\perp} = \\bot^\\perp = \\top$."
+    },
+    {
+      "id": "headline-iff",
+      "title": "Part IV: Forward Parseval and the Headline Equivalence",
+      "startLine": 135,
+      "endLine": 156,
+      "summary": "Proves parseval_of_hilbertBasis (forward Parseval via the ℓ² isometry b.repr, lp.norm_rpow_eq_tsum) and assembles parseval_iff_isHilbertBasis: Parseval for every x ⟺ ∃ HilbertBasis b, ⇑b = v.",
+      "mathContext": "$(\\forall x,\\; \\sum_i \\|\\langle v_i, x\\rangle\\|^2 = \\|x\\|^2) \\iff \\exists\\, b : \\text{HilbertBasis},\\; \\lceil b \\rceil = v$."
+    }
+  ],
+  "sorries": 0
+}
