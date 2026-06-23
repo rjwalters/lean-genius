@@ -1084,6 +1084,7 @@ import Proofs.Erdos1037Aristotle
 import Proofs.Erdos1037Problem
 import Proofs.Erdos1038Problem
 import Proofs.Erdos1039Aristotle
+import Proofs.Erdos1039Conformal
 import Proofs.Erdos1039Problem
 import Proofs.Erdos1039ProblemAristotle
 import Proofs.Erdos103OQ01
