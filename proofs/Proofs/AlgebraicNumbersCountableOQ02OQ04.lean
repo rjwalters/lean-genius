@@ -48,7 +48,7 @@ cardinality (computable is countable but ℝ has cardinality 𝔠).
 
 ## Main Results
 
-* `computable_reals_countable` (S3, build pending): the set `{r : ℝ | IsComputable r}`
+* `computable_reals_countable` (S3, proved): the set `{r : ℝ | IsComputable r}`
   is countable.
 * `card_computable_reals_le_aleph0` (cardinal upper bound, now unconditional).
 * `aleph0_le_card_computable_reals` (cardinal lower bound, unconditional).
@@ -90,7 +90,7 @@ The proof rests on the Mathlib infrastructure for partial recursive functions:
   via rational embedding; five concrete computable witnesses (rat/int/nat/0/1);
   exact equality stated (contingent on the S1 sorry).
 - **S3** (#17768): full proof of `computable_reals_countable` via `decodeReal` +
-  `Nat.Partrec.Code.exists_code` pipeline. **Build pending** — verification
+  `Nat.Partrec.Code.exists_code` pipeline. **Verified** — the proof
   relies on the named Mathlib API (`Computable.encode`, `Computable.comp`,
   `Partrec.nat_iff`, `Nat.Partrec.Code.exists_code`, `Set.countable_range`,
   `Set.Countable.mono`, `tendsto_nhds_unique`, `Encodable.encode_injective`,
