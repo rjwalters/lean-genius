@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-context",
+    "proofId": "catalan-numbers-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "context",
+    "title": "The Arithmetic of the Catalan Numbers",
+    "content": "The oddness of the Catalan numbers — Cₙ is odd precisely when n+1 is a power of two — is a classical gem combining Kummer's theorem (1852, the p-adic valuation of a binomial coefficient counts base-p carries) and Legendre's formula (v_p(m!) = (m − s_p(m))/(p−1)). For the central binomial coefficient the base-2 carry count is the binary digit sum s₂(n), and the factor n+1 dividing C(2n,n) (the Catalan denominator) supplies the correction term. Mathlib records the Catalan numbers and the central-binomial bridge but no divisibility/parity facts; this is the gallery's first entry on their arithmetic structure.",
+    "mathContext": "$v_2(C_n) = s_2(n) - v_2(n+1) = s_2(n+1) - 1$; $C_n$ odd $\\iff n+1 = 2^k$.",
+    "significance": "context",
+    "relatedConcepts": ["Catalan numbers", "Kummer's theorem", "Legendre's formula", "p-adic valuation", "binary digit sum"],
+    "prerequisites": ["p-adic valuation", "binomial coefficients"]
+  },
+  {
+    "id": "ann-digit-lemmas",
+    "proofId": "catalan-numbers-oq-01-oq-02",
+    "range": { "startLine": 35, "endLine": 86 },
+    "type": "technique",
+    "title": "Binary Digit-Sum Toolkit",
+    "content": "These elementary lemmas about the binary digit sum s₂ underpin everything. sum_digits_two_mul records the doubling invariance s₂(2n)=s₂(n) (a 0 bit is prepended). sum_digits_two_pos says s₂(n)>0 for n>0. The pair sum_digits_two_eq_one_imp/iff proves the crucial characterisation s₂(n)=1 ⟺ n is a power of two, by strong induction peeling the lowest bit: an even n reduces to n/2; an odd n with s₂=1 must have n/2=0, so n=1=2⁰. This single-bit characterisation is the only genuine digit recursion in the file — the carry identity later avoids digit induction entirely.",
+    "mathContext": "$s_2(2n) = s_2(n)$; $s_2(2^k) = 1$; $s_2(n) = 1 \\iff \\exists k,\\ n = 2^k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["binary digit sum", "power of two", "strong induction", "Nat.digits"],
+    "prerequisites": ["base-b digit representations", "induction"]
+  },
+  {
+    "id": "ann-legendre-kummer",
+    "proofId": "catalan-numbers-oq-01-oq-02",
+    "range": { "startLine": 88, "endLine": 107 },
+    "type": "concept",
+    "title": "Legendre and Base-2 Kummer",
+    "content": "Two reusable valuation facts are specialised to p=2 from Mathlib's general theorems. padicValNat_two_factorial gives Legendre's formula v₂(m!) = m − s₂(m) (from sub_one_mul_padicValNat_factorial, with p−1=1). padicValNat_two_centralBinom gives the base-2 Kummer identity v₂(C(2n,n)) = s₂(n), instantiating Mathlib's digit-sum Kummer lemma at (2n,n): the carries cancel to leave s₂(n) + s₂(n) − s₂(2n) = s₂(n) since s₂(2n)=s₂(n). These are reused, not re-proved — the contribution is their Catalan-specific consequence.",
+    "mathContext": "$v_2(m!) = m - s_2(m)$ (Legendre); $v_2\\binom{2n}{n} = s_2(n)$ (base-2 Kummer).",
+    "significance": "key",
+    "relatedConcepts": ["Legendre's formula", "Kummer's theorem", "central binomial coefficient", "padicValNat"],
+    "prerequisites": ["p-adic valuation of factorials", "Kummer's theorem"]
+  },
+  {
+    "id": "ann-carry-identity",
+    "proofId": "catalan-numbers-oq-01-oq-02",
+    "range": { "startLine": 109, "endLine": 122 },
+    "type": "insight",
+    "title": "The Carry Identity Without Digit Bookkeeping",
+    "content": "Incrementing n in binary clears the v₂(n+1) trailing ones and sets one higher bit, so s₂(n) + 1 = s₂(n+1) + v₂(n+1). The elegant point is that this is proved with NO induction on the binary increment: apply Legendre's v₂(m!)=m−s₂(m) to both n and n+1, split v₂((n+1)!) = v₂(n+1) + v₂(n!) via valuation additivity on (n+1)! = (n+1)·n!, and feed the three resulting equations (with the digit-sum bounds s₂(m) ≤ m) to omega. The carry combinatorics that one would normally track by hand is fully absorbed into linear arithmetic over the factorial valuations.",
+    "mathContext": "$s_2(n) + 1 = s_2(n+1) + v_2(n+1)$, from $v_2(n!),\\,v_2((n+1)!)$ and $v_2((n+1)!) = v_2(n+1) + v_2(n!)$.",
+    "significance": "key",
+    "relatedConcepts": ["carry identity", "binary increment", "valuation additivity", "omega tactic"],
+    "prerequisites": ["Legendre's formula", "p-adic valuation additivity"]
+  },
+  {
+    "id": "ann-catalan-valuation",
+    "proofId": "catalan-numbers-oq-01-oq-02",
+    "range": { "startLine": 123, "endLine": 151 },
+    "type": "concept",
+    "title": "The Valuation Formula v₂(Cₙ) = s₂(n+1) − 1",
+    "content": "The main result. Taking the 2-adic valuation across the Catalan bridge (n+1)·Cₙ = C(2n,n), additivity gives v₂(n+1) + v₂(Cₙ) = v₂(C(2n,n)) = s₂(n), so v₂(Cₙ) = s₂(n) − v₂(n+1) (padicValNat_two_catalan). The Catalan denominator n+1 is exactly the −v₂(n+1) correction to the central-binomial valuation. Combining with the carry identity then repackages this as the clean closed form v₂(Cₙ) = s₂(n+1) − 1 (padicValNat_two_catalan_eq), with catalan_ne_zero supplying the nonzero side condition the valuation additivity needs.",
+    "mathContext": "$v_2(C_n) = s_2(n) - v_2(n+1) = s_2(n+1) - 1$ (combining with the carry identity).",
+    "significance": "key",
+    "relatedConcepts": ["Catalan numbers", "p-adic valuation", "central binomial bridge", "valuation additivity"],
+    "prerequisites": ["p-adic valuation", "Catalan-central binomial identity"]
+  },
+  {
+    "id": "ann-oddness",
+    "proofId": "catalan-numbers-oq-01-oq-02",
+    "range": { "startLine": 153, "endLine": 175 },
+    "type": "concept",
+    "title": "Oddness ⟺ n+1 a Power of Two",
+    "content": "The headline parity corollary. Cₙ is odd ⟺ ¬2∣Cₙ ⟺ v₂(Cₙ)=0 (via padicValNat_dvd_iff_le) ⟺ s₂(n+1)=1 (closed form) ⟺ n+1 is a power of two (sum_digits_two_eq_one_iff), i.e. n = 2ᵏ−1. So the odd Catalan numbers sit at indices 0,1,3,7,15,…. The concrete examples confirm C₀,C₁,C₃,C₇ odd (n+1 = 1,2,4,8) and C₂ = 2 even, the latter by kernel decide on ¬Odd 2 — no native_decide, keeping the file axiom-free.",
+    "mathContext": "$C_n$ odd $\\iff v_2(C_n) = 0 \\iff s_2(n+1) = 1 \\iff n+1 = 2^k \\iff n = 2^k - 1$. Odd indices: $0,1,3,7,15,\\dots$",
+    "significance": "key",
+    "relatedConcepts": ["parity", "power of two", "Mersenne-shifted indices", "padicValNat_dvd_iff_le"],
+    "prerequisites": ["p-adic valuation", "parity", "powers of two"]
+  }
+]
