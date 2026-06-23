@@ -24,10 +24,11 @@ Working over `ℤ⟦X⟧` (subtraction is needed for differentiation), let
 
 These sessions had **no working Lean verifier** (docker build unresponsive, no prebuilt Mathlib
 oleans) and **no Aristotle** (service 404).  The file is therefore *not* kernel-verified yet; it
-awaits the deployer build-gate.  Progress this session: `schroderIntSeries_diff` is now **proved**
-(was a `sorry`), reducing the file to a **single** remaining `sorry`
-(`largeSchroder_holonomic_via_ode`, the coefficient extraction — full case analysis now worked out
-inline below).
+awaits the deployer build-gate.  Progress this session: the final coefficient-extraction `sorry`
+(`Nat.largeSchroder_holonomic_via_ode`) is now **discharged**, so the file is **sorry-free**
+(pending build-gate verification).  The extraction is factored through a reusable, fully general
+power-series lemma `PowerSeries.coeff_recurrence_of_ode` (independent of the specific Schröder
+coefficients), with the `Nat`-level statement obtained by `exact_mod_cast`.
 
 What *is* established with certainty this session:
 
@@ -35,20 +36,23 @@ What *is* established with certainty this session:
   (`L = 1,2,6,22,90,394,1806`; convolution `Q = 1,4,16,68,304`).
 * The **discriminant** and **ODE** `linear_combination` certificates below were verified
   *symbolically* (sympy): the ring identity `goalLHS − goalRHS − (certificate) = 0` reduces to `0`.
-  These are the genuinely hard algebraic steps (elimination of `g²` and `g·g'`), and the ODE is
-  now **certified** modulo a single remaining mechanical lemma marked `sorry`:
-    * `Nat.largeSchroder_holonomic_via_ode` — coefficient extraction via `coeff_derivative`
-       and `coeff_X_pow_mul'` (documented inline, full case analysis worked out).
-  The differentiation step `schroderIntSeries_diff` (pure `Derivation` / Leibniz bookkeeping)
-  is now **proved** by applying `derivative ℤ` to the defining quadratic and expanding with the
-  `Derivation` simp set.  The remaining extraction is HARD-but-mechanical and ideal for Aristotle.
+  These are the genuinely hard algebraic steps (elimination of `g²` and `g·g'`).
+* The coefficient-extraction recurrence was **hand-verified term by term** (see the proof outline
+  on `coeff_recurrence_of_ode`): each `coeff (n+2) (Xᵏ · g⁽ⁱ⁾)` is computed via `coeff_X_pow_mul'`
+  + `coeff_derivative`, and the residual is the ring identity
+  `n·aₙ + (n+3)·a_{n+2} = 3·(2n+3)·a_{n+1}` (closed by `linear_combination`, coefficient `1`).
+  The only `n`-dependent boundary is the `X³·g'` term, which vanishes at `n = 0` exactly where
+  `n·aₙ` does (`rcases n`).
+* The differentiation step `schroderIntSeries_diff` (pure `Derivation` / Leibniz bookkeeping)
+  is **proved** by applying `derivative ℤ` to the defining quadratic and expanding with the
+  `Derivation` simp set.
 
 ## Architectural note
 
 This **direct ODE route proves the headline recurrence directly**, without the convolution-form
 intermediate `Nat.largeSchroder_conv_holonomic` (the sole remaining `sorry` in
-`SchroderLinearRecurrenceAristotle.lean`).  Once the remaining extraction `sorry` below is
-discharged, the convolution detour can be retired.  Mathlib's `PowerSeries.catalanSeries_sq_mul_X_add_one`
+`SchroderLinearRecurrenceAristotle.lean`).  With the extraction `sorry` now discharged here, that
+convolution detour can be retired.  Mathlib's `PowerSeries.catalanSeries_sq_mul_X_add_one`
 stops at the analogous quadratic (its only TODO is the closed form), so there is **no Mathlib
 precedent** for the ODE/extraction steps performed here.
 -/
@@ -136,6 +140,68 @@ theorem schroderIntSeries_ode :
       + (-4 * X ^ 2 * (derivative ℤ) schroderIntSeries
           - 2 * X * schroderIntSeries - X - 1) * schroderIntSeries_quadratic
 
+/-- **Coefficient extraction from the linear ODE (general form).**
+
+For *any* series `g ∈ ℤ⟦X⟧` satisfying the large-Schröder linear ODE
+`X·(X²-6X+1)·g' = (3X-1)·g + (X+1)`, the coefficients `aₙ := coeff n g` obey the
+order-two holonomic recurrence
+
+  `(n + 3)·a_{n+2} + n·aₙ = 3·(2n+3)·a_{n+1}`.
+
+**Proof outline.** Apply `coeff (n+2)` to the ODE.  After expanding the polynomial factor
+`X·(X²-6X+1) = X³ - 6·X² + X` and pushing `coeff` through the linear structure
+(`map_add`/`map_sub`/`coeff_C_mul`), each term is a coefficient of `Xᵏ · g` or `Xᵏ · g'`,
+evaluated with `coeff_X_pow_mul'` and `coeff_derivative`:
+
+* `coeff (n+2) (X³·g') = n·aₙ`        (boundary-gated at `n = 0`, where it is `0 = 0·a₀`);
+* `coeff (n+2) (X²·g') = (n+1)·a_{n+1}`;
+* `coeff (n+2) (X·g')  = (n+2)·a_{n+2}`;
+* `coeff (n+2) (X·g)   = a_{n+1}`,  and the bare `X`, `1` contribute `0` (since `n+2 ≥ 2`).
+
+Equating LHS and RHS gives
+`n·aₙ - 6·(n+1)·a_{n+1} + (n+2)·a_{n+2} = 3·a_{n+1} - a_{n+2}`, i.e. the claimed recurrence
+(the residual ring rearrangement is closed by `linear_combination`). -/
+theorem coeff_recurrence_of_ode (g : ℤ⟦X⟧)
+    (hode : X * (X ^ 2 - 6 * X + 1) * (derivative ℤ) g
+        = (3 * X - 1) * g + (X + 1)) (n : ℕ) :
+    ((n : ℤ) + 3) * (coeff (n + 2)) g + (n : ℤ) * (coeff n) g
+      = 3 * (2 * (n : ℤ) + 3) * (coeff (n + 1)) g := by
+  -- The `X³·g'` term is the only one with a vanishing boundary at `n = 0`.
+  have hX3 : (coeff (n + 2)) (X ^ 3 * (derivative ℤ) g) = (n : ℤ) * (coeff n) g := by
+    rcases n with _ | m
+    · rw [coeff_X_pow_mul']; simp
+    · rw [coeff_X_pow_mul', if_pos (show 3 ≤ m + 1 + 2 by omega),
+        show m + 1 + 2 - 3 = m by omega, coeff_derivative]
+      push_cast; ring
+  have hX2 : (coeff (n + 2)) (X ^ 2 * (derivative ℤ) g)
+      = ((n : ℤ) + 1) * (coeff (n + 1)) g := by
+    rw [coeff_X_pow_mul', if_pos (show 2 ≤ n + 2 by omega),
+      show n + 2 - 2 = n by omega, coeff_derivative]
+    push_cast; ring
+  have hX1 : (coeff (n + 2)) (X ^ 1 * (derivative ℤ) g)
+      = ((n : ℤ) + 2) * (coeff (n + 2)) g := by
+    rw [coeff_X_pow_mul', if_pos (show 1 ≤ n + 2 by omega),
+      show n + 2 - 1 = n + 1 by omega, coeff_derivative]
+    push_cast; ring
+  have hXg : (coeff (n + 2)) (X ^ 1 * g) = (coeff (n + 1)) g := by
+    rw [coeff_X_pow_mul', if_pos (show 1 ≤ n + 2 by omega), show n + 2 - 1 = n + 1 by omega]
+  have hX0 : (coeff (n + 2)) (X : ℤ⟦X⟧) = 0 := by
+    rw [coeff_X, if_neg (show ¬ (n + 2 = 1) by omega)]
+  have h1 : (coeff (n + 2)) (1 : ℤ⟦X⟧) = 0 := by
+    rw [coeff_one, if_neg (show ¬ (n + 2 = 0) by omega)]
+  -- Expand the polynomial factor and split off the constants `6 = C 6`, `3 = C 3`.
+  have key := congrArg (coeff (n + 2)) hode
+  rw [show X * (X ^ 2 - 6 * X + 1) * (derivative ℤ) g
+        = X ^ 3 * (derivative ℤ) g - C (6 : ℤ) * (X ^ 2 * (derivative ℤ) g)
+          + X ^ 1 * (derivative ℤ) g by
+        rw [show (6 : ℤ⟦X⟧) = C (6 : ℤ) by simp]; ring,
+      show (3 * X - 1) * g + (X + 1)
+        = C (3 : ℤ) * (X ^ 1 * g) - g + X + 1 by
+        rw [show (3 : ℤ⟦X⟧) = C (3 : ℤ) by simp]; ring] at key
+  simp only [map_add, map_sub, coeff_C_mul] at key
+  rw [hX3, hX2, hX1, hXg, hX0, h1] at key
+  linear_combination key
+
 end PowerSeries
 
 namespace Nat
@@ -165,16 +231,17 @@ Equating and simplifying (valid for **all** `n ≥ 0`):
 `(n+3)*L(n+2) + n*L n = (6n+9)*L(n+1) = 3*(2n+3)*L(n+1)` — the statement.
 Numerically verified for `n = 0..3` (`L = 1,2,6,22,90`).
 
-Lean recipe: `have key := congrArg (coeff (n+2)) schroderIntSeries_ode`; rewrite the products into
-`X^k * g'` / `X^k * g` form (`ring_nf` or explicit `sub`/`mul` lemmas), push `coeff` through with
-`map_add`/`map_sub`/`coeff_X_pow_mul'`/`coeff_derivative`/`schroderIntSeries_coeff`, split on
-`n = 0 | n+1` for the `if 1 ≤ n` gate, then `push_cast`/`ring`/`omega`.  The pitfalls (numerals as
-constant series, `coeff` non-multiplicativity, `coeff_derivative` index) make this ideal for a
-verifier-backed session or Aristotle; left as a scoped `sorry`.  This route supersedes the
-convolution-form intermediate `Nat.largeSchroder_conv_holonomic`. -/
+The extraction itself is performed once, in full generality, by
+`PowerSeries.coeff_recurrence_of_ode` (any `g` satisfying the ODE).  Here we instantiate it at
+`g = schroderIntSeries`, rewrite the coefficients via `schroderIntSeries_coeff`, and descend from
+the `ℤ`-coefficient identity to the `ℕ`-statement with `exact_mod_cast`.  This direct ODE route
+supersedes the convolution-form intermediate `Nat.largeSchroder_conv_holonomic`. -/
 theorem largeSchroder_holonomic_via_ode (n : ℕ) :
     (n + 3) * largeSchroder (n + 2) + n * largeSchroder n
       = 3 * (2 * n + 3) * largeSchroder (n + 1) := by
-  sorry
+  have h := PowerSeries.coeff_recurrence_of_ode PowerSeries.schroderIntSeries
+    PowerSeries.schroderIntSeries_ode n
+  simp only [PowerSeries.schroderIntSeries_coeff] at h
+  exact_mod_cast h
 
 end Nat
