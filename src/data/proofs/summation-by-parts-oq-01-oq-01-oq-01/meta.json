@@ -1,0 +1,135 @@
+{
+  "id": "summation-by-parts-oq-01-oq-01-oq-01",
+  "slug": "summation-by-parts-oq-01-oq-01-oq-01",
+  "title": "The General Abel Degree-Lowering Recursion for Geometric-Weighted Sums",
+  "description": "Over any commutative ring, for every sequence f : ℕ → R, every r, and every n (no hypotheses), (r−1)·∑_{k<n} f(k)·rᵏ = f(n)·rⁿ − f(0) − ∑_{k<n} (f(k+1)−f(k))·r^{k+1}. This is Abel's summation by parts specialised to a geometric weight: it turns a sum weighted by an arbitrary sequence f into the same sum weighted by the forward difference Δf = f(k+1)−f(k), plus an explicit boundary term — the uniform degree-lowering engine behind every ∑ kᵐ·rᵏ closed form. It recovers the geometric series (f≡1), the first-order ∑ k·rᵏ reduction (Δf≡1), and the second-order ∑ k²·rᵏ reduction (Δf=2k+1, the step the parent entry did by hand). Answers the parent entry's first open question.",
+  "overview": {
+    "historicalContext": "The parent ladder $\\sum_k r^k \\to \\sum_k k\\,r^k \\to \\sum_k k^2 r^k$ records, one rung at a time, the closed forms for arithmetic weights against a geometric factor — each previously proved by a bespoke induction. The recorded open question asks for the *uniform mechanism* generating all of them: the recursion that drops $\\sum k^m r^k$ to $\\sum k^{m-1} r^k$ and bottoms out at the geometric series. The classical name for that mechanism is **Abel's summation by parts**; against a geometric sequence it takes an especially clean shape, because the geometric partial sums are themselves geometric. The point of this entry is that the mechanism is not special to polynomials at all: it is a hypothesis-free identity for *every* sequence over *every* commutative ring, with the polynomial closed forms falling out as specialisations.",
+    "problemStatement": "**Theorem (★).** For a commutative ring $R$, any $f : \\mathbb{N} \\to R$, any $r \\in R$, and any $n \\in \\mathbb{N}$,\n$$(r-1)\\sum_{k=0}^{n-1} f(k)\\,r^{k} \\;=\\; f(n)\\,r^{n} \\;-\\; f(0) \\;-\\; \\sum_{k=0}^{n-1}\\bigl(f(k+1)-f(k)\\bigr)\\,r^{k+1}.$$\nEquivalently, factoring $r$ from the correction term, $(r-1)\\sum f(k) r^k = f(n)r^n - f(0) - r\\sum (\\Delta f)(k)\\,r^{k}$ with $\\Delta f(k)=f(k+1)-f(k)$. There are **no** side hypotheses — in particular no $r\\neq1$, since both sides are polynomials in $r$ and the sequence values. Over a field with $r\\neq1$ this rearranges to $\\sum f(k)r^k = \\bigl(f(n)r^n - f(0) - \\sum(\\Delta f)(k)r^{k+1}\\bigr)/(r-1)$.",
+    "proofStrategy": "**Induction on $n$ (headline).** The base case $n=0$ is the empty sum on both sides. For the step, `Finset.sum_range_succ` peels the top term off both the weighted sum and the difference sum; substituting the induction hypothesis for $(r-1)\\sum_{k<m}$ leaves an identity in the atoms $f(m), f(m+1), f(0), r^m, r$ that is polynomial and closed by `ring`. No summation-by-parts lemma is invoked — the recursion is the elementary content *behind* `Finset.sum_range_by_parts`, exhibited directly so that it holds over an arbitrary commutative ring.\n\n**Specialisations read straight off (★).** Setting $f\\equiv 1$ makes every difference vanish and gives $(r-1)\\sum r^k = r^n - 1$ (the geometric series, bottom of the ladder). Setting $f(k)=k$ gives constant differences $\\Delta f\\equiv1$ and reduces the first-order sum to a pure geometric sum. Setting $f(k)=k^2$ gives linear differences $\\Delta f=2k+1$ and reduces the second-order sum to a first-order weighted sum — exactly the degree-lowering step the parent entry carried out by hand.",
+    "keyInsights": [
+      "**One identity generates the whole ladder.** Each $\\sum k^m r^k$ closed form is a corollary of (★): apply it with $f(k)=k^m$, observe $\\Delta(k^m)$ has degree $m-1$, and recurse. The bespoke per-degree inductions of the parent entries are repackaged as a single statement plus its iteration.",
+      "**No hypotheses, any ring.** Because (★) is a polynomial identity in $r$ — both sides expand to the same formal expression — it needs neither $r\\neq1$ nor a field nor convergence. The familiar division form $\\sum f(k)r^k = (\\text{boundary})/(r-1)$ is just the field-and-$r\\neq1$ shadow obtained by dividing through.",
+      "**Forward difference is the right invariant.** Writing the correction as $r\\sum(\\Delta f)(k)r^k$ shows the transform $f \\mapsto \\Delta f$ acting on the weight, with the boundary term $f(n)r^n - f(0)$ as the cocycle. This is the discrete, finite-sum analogue of integration by parts $\\int u\\,dv = uv - \\int v\\,du$ with $dv = r^k$."
+    ]
+  },
+  "sections": [
+    {
+      "id": "general-recursion",
+      "title": "The General Recursion over a Commutative Ring",
+      "startLine": 75,
+      "endLine": 101,
+      "summary": "geom_weighted_recursion: (r−1)·∑_{k<n} f(k)·rᵏ = f(n)·rⁿ − f(0) − ∑_{k<n} (f(k+1)−f(k))·r^{k+1} for any f, r, n over any CommRing, proved by induction with sum_range_succ + ring. geom_weighted_recursion_factored pulls r out of the correction to display the f ↦ Δf transform.",
+      "mathContext": "The inductive step, after peeling the top term off both sums via Finset.sum_range_succ and substituting the IH, is a polynomial identity in f(m), f(m+1), f(0), rᵐ, r closed by ring — no division and no r ≠ 1, so the identity lives over an arbitrary commutative ring."
+    },
+    {
+      "id": "division-form",
+      "title": "Division Form over a Field",
+      "startLine": 103,
+      "endLine": 112,
+      "summary": "geom_weighted_recursion_div: over a field with r ≠ 1, ∑_{k<n} f(k)·rᵏ = (f(n)·rⁿ − f(0) − ∑ (f(k+1)−f(k))·r^{k+1})/(r−1), obtained from the ring identity by eq_div_iff once r − 1 is invertible.",
+      "mathContext": "The hypothesis r ≠ 1 enters only here, to invert r − 1; the underlying content is the hypothesis-free ring identity of the previous section."
+    },
+    {
+      "id": "ladder-specializations",
+      "title": "Reading the Ladder off the Engine",
+      "startLine": 114,
+      "endLine": 151,
+      "summary": "geom_sum_via_recursion (f ≡ 1 ⟹ (r−1)·∑ rᵏ = rⁿ − 1, the geometric base case), sum_range_id_mul_geom_recursion (f = k, Δf ≡ 1 ⟹ first-order sum reduces to a geometric sum), and sum_range_sq_mul_geom_recursion (f = k², Δf = 2k+1 ⟹ second-order sum reduces to a first-order weighted sum) — the three rungs derived uniformly from the single recursion.",
+      "mathContext": "Each corollary instantiates f in geom_weighted_recursion and simplifies the forward difference via push_cast + ring; the second-order case reproduces, as a one-line corollary, the degree-lowering step the parent entry summation-by-parts-oq-01-oq-01 established by a dedicated summation-by-parts computation."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry proves the single hypothesis-free identity (r−1)·∑_{k<n} f(k)·rᵏ = f(n)·rⁿ − f(0) − ∑_{k<n} (f(k+1)−f(k))·r^{k+1}, valid for every sequence f over every commutative ring, and reads the geometric series and the first- and second-order arithmetico-geometric sums off it as corollaries. It answers the parent entry's first open question: the uniform mechanism behind every ∑ kᵐ·rᵏ closed form is the forward-difference recursion f ↦ Δf with explicit boundary term.",
+    "implications": "The recursion is the discrete, finite analogue of integration by parts against dv = rᵏ, and it makes the degree-lowering ladder ∑ kᵐ rᵏ ↝ ∑ kᵐ⁻¹ rᵏ ↝ … ↝ ∑ rᵏ explicit and machine-checked. Because it carries no hypotheses and lives over any commutative ring, it is reusable infrastructure for any future entry that needs a closed form for a geometrically-weighted sum.",
+    "openQuestions": [
+      "Iterating the recursion d+1 times kills a degree-d polynomial weight; can this be packaged as a single closed-form theorem ∑_{k<n} P(k)·rᵏ = (Q(n,r)·rⁿ − Q(0,r))/(r−1)^{deg P + 1} with Q built from the finite differences of P, formalised via Polynomial and the finite-difference operator?",
+      "Does an analogous hypothesis-free recursion hold for a non-geometric base sequence g with (g(k+1) − c·g(k)) telescoping — i.e. a general discrete Abel transform ∑ f(k)·g(k) = boundary − ∑ Δf(k)·G(k+1) packaged for reuse over a commutative ring?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "summation-by-parts-oq-01-oq-01",
+      "relationship": "extension",
+      "description": "The parent entry derives the single closed form ∑_{k<n} k²·rᵏ and performs, by hand, the degree-lowering step from second order to first order. This entry generalises that step to the recursion (★) for an arbitrary sequence over an arbitrary commutative ring, and recovers the parent's reduction as the f(k)=k² corollary. Answers the parent's first open question."
+    },
+    {
+      "targetId": "summation-by-parts-oq-01",
+      "relationship": "extension",
+      "description": "The grandparent: the first-order sum ∑_{k<n} k·rᵏ. Its closed form is the f(k)=k corollary of the recursion proved here (constant forward differences Δf ≡ 1)."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "foundation",
+      "description": "The base geometric series ∑_{k<n} rᵏ = (rⁿ−1)/(r−1) is the f ≡ 1 corollary (geom_sum_via_recursion), the bottom rung of the ladder where every forward difference vanishes."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Module",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "SummationByPartsOQ01OQ01OQ01",
+    "lineCount": 152,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/SummationByPartsOQ01OQ01OQ01.lean"
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Classical (Abel summation by parts); formalized for the lean-genius gallery",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SummationByPartsOQ01OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "finite-sums",
+      "arithmetico-geometric",
+      "summation-by-parts",
+      "abel-summation",
+      "finite-differences",
+      "geometric-series",
+      "recursion",
+      "commutative-ring",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "∑ i ∈ range (n+1), f i = (∑ i ∈ range n, f i) + f n — the step driving the induction on both the weighted sum and the forward-difference sum",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.mul_sum",
+        "description": "Pulls the scalar r out of the correction sum to display the factored form r·∑ (Δf)(k)·rᵏ",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "eq_div_iff",
+        "description": "a = b / c ↔ a * c = b for c ≠ 0 — converts the ring identity to the field division form once r − 1 is invertible",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      }
+    ],
+    "originalContributions": [
+      "A single hypothesis-free identity (r−1)·∑_{k<n} f(k)·rᵏ = f(n)·rⁿ − f(0) − ∑_{k<n} (f(k+1)−f(k))·r^{k+1}, valid for every sequence f : ℕ → R over every commutative ring and every r, n — Abel's summation by parts specialised to a geometric weight, proved directly by induction (no summation-by-parts black box) so that it holds with no field, no r ≠ 1, and no convergence hypothesis",
+      "The factored form (r−1)·∑ f(k)·rᵏ = f(n)·rⁿ − f(0) − r·∑ (f(k+1)−f(k))·rᵏ, exhibiting the transform f ↦ Δf (forward difference) on the weight with boundary term f(n)·rⁿ − f(0): the discrete, finite-sum analogue of integration by parts against dv = rᵏ",
+      "Uniform derivation of the ladder as corollaries of the one recursion: f ≡ 1 gives the geometric series (r−1)·∑ rᵏ = rⁿ − 1; f(k)=k reduces the first-order sum to a geometric sum (Δf ≡ 1); f(k)=k² reduces the second-order sum to a first-order weighted sum (Δf = 2k+1) — reproducing as a one-line corollary the degree-lowering step the parent entry established by a dedicated computation",
+      "Answers the first open question recorded by summation-by-parts-oq-01-oq-01: the uniform mechanism generating every ∑ kᵐ·rᵏ closed form is the forward-difference recursion proved here"
+    ],
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "lineCount": 152,
+    "theoremCount": 6,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on propext, Classical.choice, Quot.sound; no native_decide, no Lean.ofReduceBool).",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
+  }
+}
