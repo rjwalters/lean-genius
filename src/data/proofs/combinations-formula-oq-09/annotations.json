@@ -89,7 +89,7 @@
   {
     "id": "ann-combo09-second-moment",
     "proofId": "combinations-formula-oq-09",
-    "range": { "startLine": 75, "endLine": 110 },
+    "range": { "startLine": 79, "endLine": 110 },
     "type": "insight",
     "title": "Second Moment: One Absorption Reduces k² to the First Moment + Row Sum",
     "content": "The shifted second moment `sum_range_succ_succ_sq_mul_choose`: ∑_{k=0}^{n+2} k²·C(n+2,k) = (n+2)(n+3)·2ⁿ. The elegance is that it needs **no new combinatorial idea** — a single absorption collapses the quadratic weight onto the already-proven first moment.\n1. Peel k=0 with `Finset.sum_range_succ'`; the term `0²·C = 0` vanishes (`zero_pow` since the exponent 2 ≠ 0).\n2. **`hterm`**: write `k² = k·k` (`pow_two`), apply `absorb (n+1) k` once so that `(k+1)²·C(n+2,k+1) = (n+2)·((k+1)·C(n+1,k))`, and `ring`-normalize. Factor `(n+2)` out with `← Finset.mul_sum`.\n3. **`hsplit`**: split the remaining `(k+1)·C(n+1,k) = k·C(n+1,k) + C(n+1,k)` termwise (`Finset.sum_add_distrib` + `ring`), so the sum becomes the first moment of row n+1 *plus* the row sum of row n+1.\n4. Close with `sum_range_succ_mul_choose` (= (n+1)·2ⁿ) and `Nat.sum_range_choose` (= 2ⁿ⁺¹), then `ring`: (n+2)·((n+1)·2ⁿ + 2ⁿ⁺¹) = (n+2)(n+3)·2ⁿ.\n\nThe classical `sum_range_sq_mul_choose` (for n ≥ 2) follows by `Nat.exists_eq_add_of_le` writing n = 2 + m, with `omega` discharging the arithmetic `2+m−2 = m` etc., then `simpa`. This is the inductive engine behind the open question about general factorial moments: each higher moment peels onto lower ones by repeated absorption.",
@@ -113,7 +113,7 @@
   {
     "id": "ann-combo09-checks",
     "proofId": "combinations-formula-oq-09",
-    "range": { "startLine": 112, "endLine": 122 },
+    "range": { "startLine": 116, "endLine": 122 },
     "type": "context",
     "title": "Sanity Checks at n = 4 by decide",
     "content": "Two worked numerical verifications anchor the abstract identities at n = 4, each closed by `decide`. Because `range 5` is tiny, `decide` is ordinary kernel reduction on concrete numerals (not `native_decide`), so these checks add no axioms beyond the foundational ones — the 0-axiom claim is preserved.\n\nWith C(4,k) = 1, 4, 6, 4, 1:\n- First moment: ∑_{k=0}^{4} k·C(4,k) = 0·1 + 1·4 + 2·6 + 3·4 + 4·1 = 0+4+12+12+4 = 32 = 4·2³. ✓\n- Second moment: ∑_{k=0}^{4} k²·C(4,k) = 0·1 + 1·4 + 4·6 + 9·4 + 16·1 = 0+4+24+36+16 = 80 = 4·5·2². ✓\n\n(The inline term-by-term breakdowns written in the source docstrings, '0+4+24+48+32' and '0+4+48+144+128', do not themselves sum to 32 and 80 — they are loose/incorrect annotations in the comments. The `decide`-checked equalities `= 4·2³` and `= 4·5·2²` are the actual verified statements and are correct.) These checks guard against off-by-one errors in the index shifts.",
