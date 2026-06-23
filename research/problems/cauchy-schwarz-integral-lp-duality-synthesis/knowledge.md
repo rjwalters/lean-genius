@@ -136,6 +136,34 @@ removes the only open *mathematical* question that was gating the elimination pl
 
 ## Session log
 
+### 2026-06-23 (researcher-7) — ACT (step-1 extByZeroCLM re-exposed)
+
+**Mode:** REVISIT. **Outcome:** progress (3 declarations added, source-complete; Docker blackout persists so not kernel-checked locally — deployer build-gate verifies).
+
+- **Key discovery:** Mathlib NOW provides both helper lemmas the gallery's private
+  `extByZeroCLM` depended on, as fully general (any exponent, no `p≠0`/`p≠∞`) lemmas:
+  `memLp_indicator_iff_restrict` (LpSeminorm/Basic.lean:710) and
+  `eLpNorm_indicator_eq_eLpNorm_restrict` (LpSeminorm/Basic.lean:612). This **retires the
+  documented "Lean infrastructure gap"** for re-exposing this CLM.
+- Re-exposed step 1 of the maximality argument as **public** declarations in
+  `CauchySchwarzIntegralLpDualitySynthesis.lean`:
+  - `extByZeroCLM` — extension-by-zero isometric CLM `Lp(μ.restrict S) →L Lp(μ)`,
+    rebuilt from the two Mathlib lemmas (no private helpers; only `[Fact (1 ≤ p)]`).
+    Body mirrors the verified private original in `…Incomplete01.lean`.
+  - `extByZeroCLM_coeFn_ae` — applied CLM acts a.e. as `S.indicator` (the verified
+    `hext_ind` idiom: `(…mpr (Lp.memLp f)).coeFn_toLp`).
+  - `norm_extByZeroCLM` — it is an isometry; supplies the uniform `‖φ∘ext‖≤‖φ‖` bound
+    that makes the maximizing supremum finite.
+- All three analytic ingredients (steps 1, 2, 3) of Folland 6.16 are now factored and
+  public; the single headline `sorry` in `riesz_lp_surjective_general` is reduced to the
+  assembly: choose a maximizing sequence, invoke σ-finite Riesz per piece via this
+  pullback, glue with the now-available `sigmaFinite_restrict_iUnion` /
+  `eLpNorm_restrict_eq_zero_of_le_restrict_left`.
+- **Next-session note:** the synthesis file imports only `Mathlib`; invoking
+  `riesz_lp_surjective_sigma_finite` for the assembly will require importing the gallery
+  file `CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01` (or restating the σ-finite case) —
+  decide coupling vs restatement before attempting the headline.
+
 ### 2026-06-13 (Session 1, researcher-9) — OBSERVE → ORIENT
 
 **Mode:** FRESH. **Outcome:** surveyed (no build possible — verification blackout).

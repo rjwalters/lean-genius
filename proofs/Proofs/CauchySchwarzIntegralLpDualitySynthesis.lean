@@ -31,13 +31,20 @@ hung), so "0 sorry / 0 axiom" is a static-source fact, not a fresh kernel check:
   (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean; 0 sorry / 0 axiom), built from the
   finite case by spanning-set localization (`localization_existence`) + an Lᵖ density
   extension (both discharged; the docstring "HARD sorry" tags are historical).
-* `extByZeroCLM : Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ` — the extension-by-zero CLM
-  (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean; 0 sorry / 0 axiom;
-  currently `private`, trivially re-exposable), together with the restriction isometry
-  `eLpNorm (S.indicator f) p μ = eLpNorm f p (μ.restrict S)`.
+* `extByZeroCLM : Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ` — the extension-by-zero CLM.
+  Now **re-exposed in this file** (below) as a public `def`, rebuilt directly from
+  general Mathlib API: `memLp_indicator_iff_restrict` supplies the carrier and
+  `eLpNorm_indicator_eq_eLpNorm_restrict` supplies the restriction isometry
+  `eLpNorm (S.indicator f) p μ = eLpNorm f p (μ.restrict S)`. Both Mathlib lemmas hold
+  for every exponent (no `p ≠ 0` / `p ≠ ∞` side conditions), so the previously-`private`
+  gallery helpers in `…Incomplete01.lean` are no longer needed — the "infrastructure
+  gap" recorded there for this map is closed. `norm_extByZeroCLM` records that it is an
+  isometry.
 
 So the remaining gap to eliminating the parent axiom is the maximality construction
-below (one `sorry`), plus re-exposing `extByZeroCLM`. Until that `sorry` is discharged
+below (one `sorry`): step 1's `extByZeroCLM` pullback is now in-file, so what is left is
+choosing a maximizing sequence, invoking the σ-finite Riesz theorem per piece, and
+stringing together the now-factored analytic lemmas. Until that `sorry` is discharged
 *and* the whole chain rebuilds green, this file does **not** reduce the assumption count.
 
 ## The remaining mathematical content: a maximality argument
@@ -47,8 +54,9 @@ For an arbitrary measure `μ` and `1 < p < ∞`, every `f ∈ Lᵖ(μ)` is suppo
 see `memLp_exists_sigmaFinite_support` below). The reduction goes:
 
 1. For each measurable `S` with `μ.restrict S` σ-finite, pull `φ` back along
-   `extByZeroCLM` to a functional on `Lp ℝ p (μ.restrict S)`, and apply the σ-finite
-   Riesz theorem to obtain `g_S ∈ Lq(μ.restrict S)` with `‖g_S‖_q ≤ ‖φ‖`.
+   `extByZeroCLM` (provided below) to a functional on `Lp ℝ p (μ.restrict S)`, and apply
+   the σ-finite Riesz theorem to obtain `g_S ∈ Lq(μ.restrict S)` with `‖g_S‖_q ≤ ‖φ‖`
+   (the bound uses `norm_extByZeroCLM`: extension by zero is an isometry).
 2. Let `c = ⨆_S ‖g_S‖_q` (bounded above by `‖φ‖`, so finite). Pick σ-finite sets
    `S_n` with `‖g_{S_n}‖_q → c`; set `T = ⋃ₙ S_n`. Then `μ.restrict T` is σ-finite
    (countable union of σ-finite pieces — discharged below by
@@ -75,11 +83,13 @@ genuine Mathlib gap, proved here from `Measure.sigmaFinite_of_countable`),
 disjoint union, the analytic identity driving the maximality gluing, also absent from
 Mathlib for a general finite exponent), and `eLpNorm_restrict_eq_zero_of_le_restrict_left`
 (step 3's a.e.-identification *mechanism*: from the maximality bound and that additivity
-identity, the representing function is forced to vanish a.e. off the maximal set). The
-headline reduction `riesz_lp_surjective_general` still carries a single `sorry` for the
-remaining maximality *plumbing* (step 1's `extByZeroCLM` pullback, choosing a maximizing
-sequence, and invoking these now-factored analytic facts) — it does **not** yet
-eliminate the axiom.
+identity, the representing function is forced to vanish a.e. off the maximal set). Step 1
+is now in-file too: `extByZeroCLM` (the extension-by-zero pullback CLM) and its isometry
+`norm_extByZeroCLM` are re-exposed here, rebuilt from general Mathlib API. The headline
+reduction `riesz_lp_surjective_general` still carries a single `sorry` for the remaining
+maximality *plumbing* (choosing a maximizing sequence, invoking the σ-finite Riesz
+theorem per piece via this pullback, and stitching together the now-factored facts) — it
+does **not** yet eliminate the axiom.
 
 NOT BUILD-VERIFIED: the local Docker build wrapper has been hanging and Aristotle is
 unavailable, so `sigmaFinite_restrict_iUnion` is source-complete but its proof has not
@@ -242,6 +252,89 @@ theorem eLpNorm_restrict_eq_zero_of_le_restrict_left
     (ENNReal.rpow_eq_zero_iff_of_pos hqr).mp hbz
   exact (eLpNorm_eq_zero_iff hgmeas hq0).mp hb0
 
+/-- **Extension-by-zero CLM** (step 1 ingredient): the isometric embedding
+    `Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ` sending `f` to its extension by zero
+    `S.indicator f`.
+
+    This is the operator that pulls a bounded functional `φ` on `Lp ℝ p μ` back to a
+    functional `φ.comp (extByZeroCLM hS)` on the σ-finite piece `Lp ℝ p (μ.restrict S)`,
+    where `riesz_lp_surjective_sigma_finite` applies — step 1 of the maximality argument
+    for the headline reduction below.
+
+    Both ingredients of the construction are now plain Mathlib lemmas:
+    `memLp_indicator_iff_restrict` (`MemLp (S.indicator f) p μ ↔ MemLp f p (μ.restrict S)`)
+    supplies the carrier, and `eLpNorm_indicator_eq_eLpNorm_restrict`
+    (`eLpNorm (S.indicator f) p μ = eLpNorm f p (μ.restrict S)`) supplies the isometry.
+    Both hold for **every** exponent with no `p ≠ 0` / `p ≠ ∞` side conditions, so the
+    map needs only `[Fact (1 ≤ p)]`. This **retires the "Lean infrastructure gap"** the
+    earlier σ-finite file flagged for re-exposing this CLM: the only previously-private
+    helpers (`memLp_indicator_of_restrict_loc`, `eLpNorm_indicator_eq_restrict_loc`) are
+    now subsumed by general Mathlib API. -/
+noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
+    {p : ℝ≥0∞} [Fact (1 ≤ p)] :
+    Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ :=
+  LinearMap.mkContinuous
+    { toFun := fun f =>
+        ((memLp_indicator_iff_restrict hS).mpr (Lp.memLp f)).toLp _
+      map_add' := fun f₁ f₂ => by
+        rw [Lp.ext_iff]
+        filter_upwards [
+          ((memLp_indicator_iff_restrict hS).mpr (Lp.memLp (f₁ + f₂))).coeFn_toLp,
+          ((memLp_indicator_iff_restrict hS).mpr (Lp.memLp f₁)).coeFn_toLp,
+          ((memLp_indicator_iff_restrict hS).mpr (Lp.memLp f₂)).coeFn_toLp,
+          Lp.coeFn_add
+            (((memLp_indicator_iff_restrict hS).mpr (Lp.memLp f₁)).toLp _)
+            (((memLp_indicator_iff_restrict hS).mpr (Lp.memLp f₂)).toLp _),
+          (Measure.ae_restrict_iff' hS).mp (Lp.coeFn_add f₁ f₂)]
+          with a h12 h1 h2 hadd hinner
+        rw [h12, hadd, h1, h2]
+        simp only [Set.indicator_apply, Pi.add_apply]
+        split_ifs with ha
+        · exact hinner ha
+        · ring
+      map_smul' := fun c f => by
+        rw [Lp.ext_iff]
+        filter_upwards [
+          ((memLp_indicator_iff_restrict hS).mpr (Lp.memLp (c • f))).coeFn_toLp,
+          ((memLp_indicator_iff_restrict hS).mpr (Lp.memLp f)).coeFn_toLp,
+          Lp.coeFn_smul c
+            (((memLp_indicator_iff_restrict hS).mpr (Lp.memLp f)).toLp _),
+          (Measure.ae_restrict_iff' hS).mp (Lp.coeFn_smul c f)]
+          with a hcf hf hsmul hinner
+        rw [hcf, hsmul, hf, RingHom.id_apply]
+        simp only [Set.indicator_apply, Pi.smul_apply]
+        split_ifs with ha
+        · simp [hinner ha]
+        · simp }
+    1
+    (fun f => by
+      simp only [LinearMap.coe_mk, AddHom.coe_mk, one_mul]
+      have hh := (memLp_indicator_iff_restrict hS).mpr (Lp.memLp f)
+      have heq : ‖hh.toLp _‖ = ‖f‖ := by
+        simp only [Lp.norm_def]
+        congr 1
+        rw [eLpNorm_congr_ae hh.coeFn_toLp, eLpNorm_indicator_eq_eLpNorm_restrict hS]
+      exact heq.le)
+
+/-- The extension-by-zero CLM acts pointwise (a.e.) as `S.indicator`. -/
+theorem extByZeroCLM_coeFn_ae {S : Set α} (hS : MeasurableSet S)
+    {p : ℝ≥0∞} [Fact (1 ≤ p)] (f : Lp ℝ p (μ.restrict S)) :
+    (extByZeroCLM hS f : α → ℝ) =ᵐ[μ] S.indicator (f : α → ℝ) :=
+  ((memLp_indicator_iff_restrict hS).mpr (Lp.memLp f)).coeFn_toLp
+
+/-- **`extByZeroCLM` is an isometry.** Extension by zero preserves the Lᵖ-norm
+    (`‖S.indicator f‖_{Lp μ} = ‖f‖_{Lp (μ.restrict S)}`), so pulling a functional back
+    along it does not increase its operator norm: `‖φ.comp (extByZeroCLM hS)‖ ≤ ‖φ‖`.
+    This uniform bound is what makes the supremum over σ-finite pieces in the maximality
+    argument finite. -/
+theorem norm_extByZeroCLM {S : Set α} (hS : MeasurableSet S)
+    {p : ℝ≥0∞} [Fact (1 ≤ p)] (f : Lp ℝ p (μ.restrict S)) :
+    ‖extByZeroCLM hS f‖ = ‖f‖ := by
+  simp only [Lp.norm_def]
+  congr 1
+  rw [eLpNorm_congr_ae (extByZeroCLM_coeFn_ae hS f),
+    eLpNorm_indicator_eq_eLpNorm_restrict hS]
+
 /-- **Riesz representation for Lᵖ — arbitrary measure** (`1 < p < ∞`).
 
     Every bounded linear functional on `Lp ℝ p μ`, for *any* measure `μ`, is
@@ -258,10 +351,12 @@ theorem eLpNorm_restrict_eq_zero_of_le_restrict_left
     (`sigmaFinite_restrict_iUnion`), step 3's `q`-power norm additivity over the
     disjoint gluing pieces `T` and `U \ T` (`eLpNorm_rpow_restrict_union`), and the
     a.e.-identification mechanism that turns the maximality bound into vanishing off
-    `T` (`eLpNorm_restrict_eq_zero_of_le_restrict_left`). What remains is the *plumbing*
-    that strings them together: pulling `φ` back along `extByZeroCLM` per σ-finite set
-    to invoke the σ-finite Riesz theorem, choosing a maximizing sequence, and extracting
-    `g_T` — after which `g_U = g_T` a.e. follows from the now-available factored lemmas. -/
+    `T` (`eLpNorm_restrict_eq_zero_of_le_restrict_left`), and step 1's extension-by-zero
+    pullback `extByZeroCLM` (with isometry `norm_extByZeroCLM`). What remains is the
+    *plumbing* that strings them together: pulling `φ` back along `extByZeroCLM` per
+    σ-finite set to invoke the σ-finite Riesz theorem, choosing a maximizing sequence, and
+    extracting `g_T` — after which `g_U = g_T` a.e. follows from the now-available
+    factored lemmas. -/
 theorem riesz_lp_surjective_general
     (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal) [Fact (1 ≤ p)] :
