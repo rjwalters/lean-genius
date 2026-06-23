@@ -67,12 +67,16 @@ dependency chain (the σ-finite Riesz theorem and `extByZeroCLM`); see the accou
 
 ## Status
 
-WORK IN PROGRESS. Two ingredient lemmas are now source-complete and self-contained:
+WORK IN PROGRESS. Three ingredient lemmas are now source-complete and self-contained:
 the bridge lemma `memLp_exists_sigmaFinite_support` (σ-finite support of an Lᵖ
-function) and `sigmaFinite_restrict_iUnion` (step 2: countable-union σ-finiteness, a
-genuine Mathlib gap, proved here from `Measure.sigmaFinite_of_countable`). The headline
-reduction `riesz_lp_surjective_general` still carries a single `sorry` for the
-remaining maximality steps (1) and (3) — it does **not** yet eliminate the axiom.
+function), `sigmaFinite_restrict_iUnion` (step 2: countable-union σ-finiteness, a
+genuine Mathlib gap, proved here from `Measure.sigmaFinite_of_countable`), and
+`eLpNorm_rpow_restrict_union` (step 3: `q`-power Lᵠ-seminorm additivity over a
+disjoint union, the analytic identity driving the maximality gluing, also absent from
+Mathlib for a general finite exponent). The headline reduction
+`riesz_lp_surjective_general` still carries a single `sorry` for the remaining
+maximality *plumbing* (step 1's `extByZeroCLM` pullback and step 3's sequence/gluing
+bookkeeping) — it does **not** yet eliminate the axiom.
 
 NOT BUILD-VERIFIED: the local Docker build wrapper has been hanging and Aristotle is
 unavailable, so `sigmaFinite_restrict_iUnion` is source-complete but its proof has not
@@ -161,6 +165,37 @@ theorem sigmaFinite_restrict_iUnion {S : ℕ → Set α}
       exact Set.mem_union_left _ (Set.mem_iUnion.2 ⟨(n, k), hk, hn⟩)
     · exact Set.mem_union_right _ hx
 
+/-- **Lᵠ-seminorm `q`-power additivity over a disjoint union** (step 3 ingredient).
+    For `0 < q < ∞` and disjoint measurable sets `A`, `B`, the `q`-th power of the
+    Lᵠ-seminorm is additive over `A ∪ B`:
+
+      `‖g‖_{q, A ∪ B}^q = ‖g‖_{q, A}^q + ‖g‖_{q, B}^q`.
+
+    This is the analytic identity behind the maximality *gluing* in step 3 below.
+    Combined with the maximality bound `‖g_U‖_q ≤ c = ‖g_T‖_q`, additivity over the
+    disjoint pieces `T` and `U \ T` (with `U = T ∪ (U \ T)`) gives
+    `‖g_U‖_{q,T}^q + ‖g_U‖_{q,U\T}^q = ‖g_U‖_{q,U}^q ≤ ‖g_T‖_{q,T}^q`; since the
+    representing function on `T` is unique (`‖g_U‖_{q,T} = ‖g_T‖_q`), the `U \ T`
+    contribution is forced to `0`, so `g_U = 0` a.e. off `T`.
+
+    Mathlib supplies the underlying disjoint additivity of the lower integral
+    (`Measure.restrict_union` + `lintegral_add_measure`) and the unit-exponent
+    measure-additivity `eLpNorm_one_add_measure`, but **not** this packaged
+    `q`-power identity for `eLpNorm` at a general finite exponent (source-searched).
+    The `q`-th power is the right invariant to state it on: the seminorm itself is
+    only *sub*additive (Minkowski, `eLpNorm_add_le`), whereas its `q`-th power
+    splits exactly over disjoint supports. -/
+theorem eLpNorm_rpow_restrict_union {g : α → ℝ} {A B : Set α}
+    (hB : MeasurableSet B) (hAB : Disjoint A B)
+    {q : ℝ≥0∞} (hq0 : q ≠ 0) (hqtop : q ≠ ∞) :
+    eLpNorm g q (μ.restrict (A ∪ B)) ^ q.toReal
+      = eLpNorm g q (μ.restrict A) ^ q.toReal
+        + eLpNorm g q (μ.restrict B) ^ q.toReal := by
+  have hqr : q.toReal ≠ 0 := ENNReal.toReal_ne_zero.2 ⟨hq0, hqtop⟩
+  simp only [eLpNorm_eq_lintegral_rpow_enorm hq0 hqtop, ← ENNReal.rpow_mul,
+    one_div_mul_cancel hqr, ENNReal.rpow_one]
+  rw [Measure.restrict_union hAB hB, lintegral_add_measure]
+
 /-- **Riesz representation for Lᵖ — arbitrary measure** (`1 < p < ∞`).
 
     Every bounded linear functional on `Lp ℝ p μ`, for *any* measure `μ`, is
@@ -172,10 +207,14 @@ theorem sigmaFinite_restrict_iUnion {S : ℕ → Set α}
 
     REMAINING WORK: the `sorry` below is the maximality construction
     (`riesz_representing_function_maximal`). It is HARD (classical, Folland 6.16),
-    not OPEN. Of its three steps, step 2's σ-finiteness of the maximizing union
-    `T = ⋃ₙ Sₙ` is now factored out and discharged by `sigmaFinite_restrict_iUnion`
-    above; what remains is (1) pulling `φ` back along `extByZeroCLM` per σ-finite set,
-    and (3) the supremum-realization + a.e. gluing of the representing functions. -/
+    not OPEN. Of its three steps, two analytic ingredients are now factored out and
+    source-complete above: step 2's σ-finiteness of the maximizing union `T = ⋃ₙ Sₙ`
+    (`sigmaFinite_restrict_iUnion`), and step 3's `q`-power norm additivity over the
+    disjoint gluing pieces `T` and `U \ T` (`eLpNorm_rpow_restrict_union`). What
+    remains is the *plumbing* that strings them together: (1) pulling `φ` back along
+    `extByZeroCLM` per σ-finite set to invoke the σ-finite Riesz theorem, and the
+    bookkeeping of (3) — choosing a maximizing sequence, extracting `g_T`, and the
+    a.e. identification `g_U = g_T` from the now-available additivity identity. -/
 theorem riesz_lp_surjective_general
     (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal) [Fact (1 ≤ p)] :
