@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-similar-def",
+    "proofId": "matrix-similarity-invariants-oq-01",
+    "range": { "startLine": 27, "endLine": 30 },
+    "type": "definition",
+    "title": "The Similarity Relation B = P A P⁻¹",
+    "content": "Defines `Similar A B` as the existence of an invertible matrix P (a unit of the matrix ring) with B = P·A·P⁻¹. Using the unit group `(Matrix n n R)ˣ` rather than a raw invertibility hypothesis makes P⁻¹ available definitionally and keeps the algebra clean. Similarity is the matrix-level shadow of 'the same linear map written in a different basis'.",
+    "mathContext": "$A \\sim B \\iff \\exists\\,P \\in (\\mathrm{Mat}_n(R))^\\times,\\ B = P A P^{-1}$. Change of basis: $[\\,T\\,]_{\\mathcal{C}} = P\\,[\\,T\\,]_{\\mathcal{B}}\\,P^{-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["matrix similarity", "conjugation", "change of basis", "unit group of a matrix ring"],
+    "prerequisites": ["matrices over a commutative ring", "invertible matrices", "units of a ring"]
+  },
+  {
+    "id": "ann-equivalence-relation",
+    "proofId": "matrix-similarity-invariants-oq-01",
+    "range": { "startLine": 33, "endLine": 54 },
+    "type": "technique",
+    "title": "Similarity Is an Equivalence Relation",
+    "content": "Reflexivity uses P = 1 (conjugation by the identity); symmetry conjugates back by P⁻¹; transitivity composes the conjugators as Q·P (with (QP)⁻¹ = P⁻¹Q⁻¹). These bundle into `similar_equivalence : Equivalence Similar` and the `similarSetoid`, so 'up to similarity' is a genuine quotient. Working in the unit group makes each step a one-line `simp` with associativity and `mul_inv_rev`.",
+    "mathContext": "Refl: $A = 1\\,A\\,1^{-1}$. Symm: $B=PAP^{-1} \\Rightarrow A = P^{-1}B(P^{-1})^{-1}$. Trans: $(P,Q) \\mapsto QP$ with $(QP)^{-1}=P^{-1}Q^{-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["equivalence relation", "setoid / quotient", "conjugation", "group of units"],
+    "prerequisites": ["equivalence relations", "matrix multiplication and inverses"]
+  },
+  {
+    "id": "ann-det-invariant",
+    "proofId": "matrix-similarity-invariants-oq-01",
+    "range": { "startLine": 56, "endLine": 59 },
+    "type": "theorem",
+    "title": "Determinant Is a Similarity Invariant",
+    "content": "det(P A P⁻¹) = det A, delegating to Mathlib's `Matrix.det_units_conj`. The underlying reason is multiplicativity of det: det(P)·det(A)·det(P)⁻¹ = det(A) in the commutative ring R. The determinant is the simplest of the three invariants.",
+    "mathContext": "$\\det(PAP^{-1}) = \\det P \\cdot \\det A \\cdot (\\det P)^{-1} = \\det A$ (multiplicativity of $\\det$).",
+    "significance": "key",
+    "relatedConcepts": ["determinant", "multiplicativity", "similarity invariant"],
+    "prerequisites": ["determinant of a product", "units in a commutative ring"]
+  },
+  {
+    "id": "ann-trace-invariant",
+    "proofId": "matrix-similarity-invariants-oq-01",
+    "range": { "startLine": 61, "endLine": 64 },
+    "type": "theorem",
+    "title": "Trace Is a Similarity Invariant",
+    "content": "trace(P A P⁻¹) = trace A, via Mathlib's `Matrix.trace_units_conj`. The reason is the cyclic property of trace: tr(PAP⁻¹) = tr(P⁻¹PA) = tr(A). Trace invariance is what makes the coefficient of the second-highest charpoly term basis-independent.",
+    "mathContext": "$\\mathrm{tr}(PAP^{-1}) = \\mathrm{tr}(P^{-1}PA) = \\mathrm{tr}(A)$ (cyclicity of trace).",
+    "significance": "key",
+    "relatedConcepts": ["trace", "cyclic invariance", "similarity invariant"],
+    "prerequisites": ["trace of a matrix", "cyclic property tr(AB)=tr(BA)"]
+  },
+  {
+    "id": "ann-charpoly-invariant",
+    "proofId": "matrix-similarity-invariants-oq-01",
+    "range": { "startLine": 66, "endLine": 70 },
+    "type": "theorem",
+    "title": "Characteristic Polynomial Is a Similarity Invariant",
+    "content": "charpoly(P A P⁻¹) = charpoly A, via Mathlib's `Matrix.charpoly_units_conj`. This is the strongest of the three: det and trace are two of its coefficients (constant term up to sign, and the (n−1)-degree coefficient). Because the full polynomial is preserved, so is the entire spectrum with multiplicities.",
+    "mathContext": "$\\chi_{PAP^{-1}}(X) = \\det(XI - PAP^{-1}) = \\det(P(XI-A)P^{-1}) = \\chi_A(X)$.",
+    "significance": "key",
+    "relatedConcepts": ["characteristic polynomial", "spectrum", "similarity invariant", "coefficients det and trace"],
+    "prerequisites": ["characteristic polynomial", "determinant of conjugate"]
+  },
+  {
+    "id": "ann-eigenvalues-corollary",
+    "proofId": "matrix-similarity-invariants-oq-01",
+    "range": { "startLine": 72, "endLine": 76 },
+    "type": "theorem",
+    "title": "Corollary: Similar Matrices Have the Same Eigenvalues",
+    "content": "Over an integral domain, equal characteristic polynomials force equal multisets of roots — so similar matrices share their eigenvalues with multiplicities. The proof is a one-line `congrArg Polynomial.roots` applied to `charpoly_eq`. The `IsDomain R` hypothesis is needed so root multiplicities are well-behaved.",
+    "mathContext": "$\\chi_A = \\chi_B \\implies \\mathrm{roots}(\\chi_A) = \\mathrm{roots}(\\chi_B)$ as multisets (over an integral domain).",
+    "significance": "supporting",
+    "relatedConcepts": ["eigenvalues", "polynomial roots", "multiset of roots", "integral domain"],
+    "prerequisites": ["characteristic polynomial roots", "integral domains", "congrArg"]
+  },
+  {
+    "id": "ann-invariants-packaged",
+    "proofId": "matrix-similarity-invariants-oq-01",
+    "range": { "startLine": 78, "endLine": 82 },
+    "type": "theorem",
+    "title": "The Three Classical Invariants, Packaged",
+    "content": "`Similar.invariants` bundles det, trace, and charpoly invariance into a single conjunction — the unified 'these are all similarity invariants' statement that Mathlib proves piecewise but never collects. This is the headline deliverable: a one-stop lemma for downstream use.",
+    "mathContext": "$A \\sim B \\implies \\det B = \\det A \\,\\land\\, \\mathrm{tr}\\,B = \\mathrm{tr}\\,A \\,\\land\\, \\chi_B = \\chi_A.$",
+    "significance": "key",
+    "relatedConcepts": ["similarity invariants", "determinant", "trace", "characteristic polynomial"],
+    "prerequisites": ["the three invariance lemmas"]
+  }
+]
