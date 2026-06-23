@@ -78,14 +78,32 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Imports and the Discharged Companions",
+      "startLine": 67,
+      "endLine": 77,
+      "summary": "Opens the IsoperimetricCapstone namespace and imports the three 0-axiom companion files that discharged the parent's analytic axioms: the Fourier/Wirtinger bound (…Fourier), both Cauchy–Schwarz bounds (…CauchySchwarz), and the inverse-function-theorem arc-length reparametrization for regular curves (…IFT). This file's role is purely to assemble them."
+    },
+    {
       "id": "part-i",
-      "title": "The algebraic kernel",
-      "text": "`isoperimetric_arithmetic_kernel` reproves the parent's purely-algebraic step: from 2A ≤ cS, S² ≤ 2π·Sxy, Sxy ≤ 2πc², and L = 2πc it deduces 4πA ≤ L². No integrals or measures appear. It is re-proved here so the capstone is self-contained and independent of the bit-rotted parent file."
+      "title": "The Algebraic Kernel",
+      "startLine": 78,
+      "endLine": 110,
+      "summary": "isoperimetric_arithmetic_kernel reproves the parent's purely-algebraic step: from 2A ≤ cS, S² ≤ 2π·Sxy, Sxy ≤ 2πc², and L = 2πc it deduces 4πA ≤ L² (via S² ≤ (2πc)² ⟹ S ≤ 2πc by Real.sqrt_sq, then chaining with nlinarith). No integrals or measures appear; re-proved here so the capstone is self-contained and independent of the bit-rotted parent file."
     },
     {
       "id": "part-ii",
-      "title": "Assembling the axiom-free isoperimetric inequality",
-      "text": "`isoperimetric_inequality_regular` is the capstone. It applies exists_nice_reparam_for_regular (IFT, 0-axiom) to get a constant-speed zero-mean reparametrization ρ of γ, then invokes the Wirtinger sum bound and both Cauchy–Schwarz bounds (each 0-axiom) on ρ, bridges 2·ρ.area = |∫(ρ.x·ρ.y' − ρ.y·ρ.x')|, and feeds everything to the kernel. The circumference/area preservation of ρ transports the bound back to γ, giving 4πA ≤ L² with #print axioms reporting only the foundational propext / Classical.choice / Quot.sound."
+      "title": "Assembling the Axiom-Free Isoperimetric Inequality",
+      "startLine": 112,
+      "endLine": 165,
+      "summary": "isoperimetric_inequality_regular is the capstone. It applies exists_nice_reparam_for_regular (IFT, 0-axiom) to get a constant-speed (c = L/2π) zero-mean reparametrization ρ of γ, names S = ∫√(x²+y²) and Sxy = ∫(x²+y²), invokes the Wirtinger sum bound (Sxy ≤ 2πc²) and both Cauchy–Schwarz bounds (S² ≤ 2π·Sxy and |∫(x·y'−y·x')| ≤ c·S) on ρ, bridges 2·ρ.area = |∫(ρ.x·ρ.y' − ρ.y·ρ.x')|, and feeds everything to the kernel. ρ's circumference/area preservation transports the bound back to γ — 4πA ≤ L² with #print axioms reporting only propext / Classical.choice / Quot.sound."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent isoperimetric entry, which proved 4πA ≤ L² for smooth closed curves from five disclosed analytic axioms (Fourier decomposition, constant-speed reparametrization, the Wirtinger sum bound, and two Cauchy–Schwarz bounds). This capstone replaces every one of those axioms with its independently-discharged 0-axiom companion and assembles them into a fully axiom-free proof on the regular locus — the maximal honest endpoint, since the reparametrization axiom is genuinely false at stationary points."
     }
   ]
 }
